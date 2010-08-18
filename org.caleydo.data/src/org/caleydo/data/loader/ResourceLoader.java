@@ -23,8 +23,7 @@ import com.sun.opengl.util.texture.TextureIO;
  * @author Marc Streit
  */
 public class ResourceLoader {
-	public BufferedReader getResource(String sFileName)
-			throws FileNotFoundException {
+	public BufferedReader getResource(String sFileName) throws FileNotFoundException {
 		BufferedReader file;
 
 		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
@@ -37,16 +36,15 @@ public class ResourceLoader {
 		return file;
 	}
 
-	public InputSource getInputSource(String sFileName)
-			throws FileNotFoundException {
+	public InputSource getInputSource(String sFileName) throws FileNotFoundException {
 
 		InputSource inputSource;
 
 		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
 			inputSource = new InputSource(loadResourceAsInputStream(sFileName));
 		} else {
-			inputSource = new InputSource(new BufferedInputStream(
-					new FileInputStream(sFileName)));
+			inputSource = new InputSource(new BufferedInputStream(new FileInputStream(
+					sFileName)));
 		}
 
 		return inputSource;
@@ -71,8 +69,7 @@ public class ResourceLoader {
 		URL url = this.getClass().getClassLoader().getResource(sFileName);
 
 		if (url == null)
-			throw new IllegalStateException("Cannot load resource URL: "
-					+ sFileName);
+			throw new IllegalStateException("Cannot load resource URL: " + sFileName);
 
 		return url;
 	}
@@ -85,8 +82,8 @@ public class ResourceLoader {
 				texture = TextureIO.newTexture(TextureIO.newTextureData(
 						loadResourceAsInputStream(sFileName), true, "GIF"));
 			} else {
-				texture = TextureIO.newTexture(TextureIO.newTextureData(
-						new File(sFileName), true, "GIF"));
+				texture = TextureIO.newTexture(TextureIO.newTextureData(new File(
+						sFileName), true, "GIF"));
 			}
 		} catch (Exception e) {
 			throw new IllegalStateException("Cannot load texture: " + sFileName);
@@ -104,8 +101,7 @@ public class ResourceLoader {
 		file = this.getClass().getClassLoader().getResourceAsStream(sFileName);
 
 		if (file == null)
-			throw new IllegalStateException("Cannot load resource: "
-					+ sFileName);
+			throw new IllegalStateException("Cannot load resource: " + sFileName);
 
 		return file;
 	}

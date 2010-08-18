@@ -97,12 +97,9 @@ public class HeatMapPreferencePage extends FieldEditorPreferencePage implements
 				GLHierarchicalHeatMap heatMap = (GLHierarchicalHeatMap) glView;
 				// if(!heatMap.isRenderedRemote())
 				// {
-				heatMap.setNumberOfSamplesToShow(numRandomSamplesFE
-						.getIntValue());
-				heatMap.setNumberOfSamplesPerTexture(numSamplesPerTexture
-						.getIntValue());
-				heatMap.setNumberOfSamplesPerHeatmap(numSamplesPerHeatmap
-						.getIntValue());
+				heatMap.setNumberOfSamplesToShow(numRandomSamplesFE.getIntValue());
+				heatMap.setNumberOfSamplesPerTexture(numSamplesPerTexture.getIntValue());
+				heatMap.setNumberOfSamplesPerHeatmap(numSamplesPerHeatmap.getIntValue());
 				// }
 			}
 		}

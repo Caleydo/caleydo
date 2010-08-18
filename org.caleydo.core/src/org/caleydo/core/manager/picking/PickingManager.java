@@ -322,7 +322,7 @@ public class PickingManager {
 
 		/* create 5x5 pixel picking region near cursor location */
 		GLU glu = new GLU();
-		glu.gluPickMatrix(pickPoint.x, (viewport[3] - pickPoint.y),// 
+		glu.gluPickMatrix(pickPoint.x, (viewport[3] - pickPoint.y),//
 			5.0, 5.0, viewport, 0); // pick width and height is set to 5
 		// (i.e. picking tolerance)
 
@@ -352,8 +352,8 @@ public class PickingManager {
 		ArrayList<Integer> iAlPickedObjectId = processHits(iHitCount, iArPickingBuffer);
 
 		if (iAlPickedObjectId.size() > 0) {
-			processPicks(iAlPickedObjectId, ePickingMode, tmpPickPoint, glMouseListener
-				.getPickedPointDragStart());
+			processPicks(iAlPickedObjectId, ePickingMode, tmpPickPoint,
+				glMouseListener.getPickedPointDragStart());
 		}
 	}
 

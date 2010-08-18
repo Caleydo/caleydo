@@ -59,7 +59,7 @@ public class HeatMapLayoutDetailViewMid extends AHeatMapLayoutDetailView {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	@Override
 	public Vec3f getDendrogramButtonPosition() {
 		return new Vec3f(positionX + getDendrogramLineWidth(), positionY

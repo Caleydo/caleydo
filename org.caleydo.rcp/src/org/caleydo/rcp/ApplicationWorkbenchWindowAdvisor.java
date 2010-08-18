@@ -23,7 +23,7 @@ public class ApplicationWorkbenchWindowAdvisor
 	 */
 	public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		super(configurer);
-		
+
 		// Init the core because the workbench must already be initialized for the XML startup progress bar
 		StartupProcessor.get().initCore();
 	}
@@ -71,9 +71,11 @@ public class ApplicationWorkbenchWindowAdvisor
 		}
 
 		// Set status line in caleydo core
-		GeneralManager.get().getSWTGUIManager().setExternalRCPStatusLine(
-			getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(),
-			getWindowConfigurer().getWindow().getShell().getDisplay());
+		GeneralManager
+			.get()
+			.getSWTGUIManager()
+			.setExternalRCPStatusLine(getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(),
+				getWindowConfigurer().getWindow().getShell().getDisplay());
 
 		if (DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.generic") != null) {
 

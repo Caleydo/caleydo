@@ -20,16 +20,15 @@ public class ContentSelectionRenderer extends AContentRenderer {
 	public void renderSelection(final GL gl, SelectionType selectionType) {
 
 		// content selection
-		Set<Integer> selectedSet = heatMap.getContentSelectionManager()
-				.getElements(selectionType);
+		Set<Integer> selectedSet = heatMap.getContentSelectionManager().getElements(
+				selectionType);
 		float width = x;
 		float yPosition = y;
 		float xPosition = 0;
 
+		gl.glColor4fv(selectionType.getColor(), 0);
+		gl.glLineWidth(SELECTED_LINE_WIDTH);
 
-			gl.glColor4fv(selectionType.getColor(), 0);
-			gl.glLineWidth(SELECTED_LINE_WIDTH);
-		
 		int lineIndex = 0;
 		// FIXME this iterates over all elements but could do by only iterating
 		// of the selected elements
@@ -39,21 +38,18 @@ public class ContentSelectionRenderer extends AContentRenderer {
 				continue;
 			for (Integer currentLine : selectedSet) {
 				if (currentLine == contentIndex) {
-					float fieldHeight = contentSpacing
-							.getFieldHeight(contentIndex);
+					float fieldHeight = contentSpacing.getFieldHeight(contentIndex);
 					// width = heatMap.getStorageVA().size() * fieldWidth;
 					yPosition = contentSpacing.getYDistances().get(lineIndex);
 					xPosition = 0;
 					gl.glPushName(heatMap.getPickingManager().getPickingID(
-							heatMap.getID(),
-							EPickingType.HEAT_MAP_LINE_SELECTION, currentLine));
+							heatMap.getID(), EPickingType.HEAT_MAP_LINE_SELECTION,
+							currentLine));
 
 					gl.glBegin(GL.GL_LINE_LOOP);
 					gl.glVertex3f(xPosition, yPosition, SELECTION_Z);
-					gl.glVertex3f(xPosition, yPosition + fieldHeight,
-							SELECTION_Z);
-					gl.glVertex3f(xPosition + width, yPosition + fieldHeight,
-							SELECTION_Z);
+					gl.glVertex3f(xPosition, yPosition + fieldHeight, SELECTION_Z);
+					gl.glVertex3f(xPosition + width, yPosition + fieldHeight, SELECTION_Z);
 					gl.glVertex3f(xPosition + width, yPosition, SELECTION_Z);
 					gl.glEnd();
 					gl.glPopName();

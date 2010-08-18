@@ -12,8 +12,7 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 	float level1Size = 0;
 	int spread = 3;
 
-	public FishEyeSpacingCalculator(GLHeatMap heatMap, float y,
-			float contentElements) {
+	public FishEyeSpacingCalculator(GLHeatMap heatMap, float y, float contentElements) {
 		super(heatMap, y, contentElements);
 
 	}
@@ -21,8 +20,8 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 	@Override
 	public void calculateFieldHeights() {
 
-		spread = (int)(y / (HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT *3));
-		
+		spread = (int) (y / (HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT * 3));
+
 		Set<Integer> zoomedElements = heatMap.getZoomedElements();
 		float baseSize = (y - (zoomedElements.size() * HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT));
 
@@ -82,8 +81,7 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 							.get(selectedContentIndex - count)))
 						return level1Size;
 					else if (selectedContentIndex < contentElements - count
-							&& contentID == contentVA.get(selectedContentIndex
-									+ count))
+							&& contentID == contentVA.get(selectedContentIndex + count))
 						return level1Size;
 				}
 			}

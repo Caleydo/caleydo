@@ -41,8 +41,8 @@ public class HierarchicalClusterer
 		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
 
 			tree = new Tree<ClusterNode>(set.getDataDomain().getContentIDType());
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
 
 			for (int nr = 0; nr < storageVA.size(); nr++) {
 				buffer.append("@attribute Patient" + nr + " real\n");
@@ -57,8 +57,8 @@ public class HierarchicalClusterer
 
 					int tempPercentage = (int) ((float) icnt / contentVA.size() * 100);
 					if (iPercentage == tempPercentage) {
-						GeneralManager.get().getEventPublisher().triggerEvent(
-							new ClusterProgressEvent(iPercentage, false));
+						GeneralManager.get().getEventPublisher()
+							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
@@ -80,9 +80,9 @@ public class HierarchicalClusterer
 		}
 		else {
 			tree = new Tree<ClusterNode>(set.getDataDomain().getStorageIDType());
-			
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
+
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
 
 			for (int nr = 0; nr < contentVA.size(); nr++) {
 				buffer.append("@attribute Gene" + nr + " real\n");
@@ -96,8 +96,8 @@ public class HierarchicalClusterer
 
 					int tempPercentage = (int) ((float) isto / storageVA.size() * 100);
 					if (iPercentage == tempPercentage) {
-						GeneralManager.get().getEventPublisher().triggerEvent(
-							new ClusterProgressEvent(iPercentage, false));
+						GeneralManager.get().getEventPublisher()
+							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
@@ -117,15 +117,18 @@ public class HierarchicalClusterer
 				}
 			}
 		}
-		GeneralManager.get().getEventPublisher().triggerEvent(
-			new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
+		GeneralManager
+			.get()
+			.getEventPublisher()
+			.triggerEvent(
+				new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
 		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING)
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Cobweb clustering of genes in progress"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Cobweb clustering of genes in progress"));
 		else
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Cobweb clustering of experiments in progress"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Cobweb clustering of experiments in progress"));
 
 		Instances data = null;
 
@@ -246,8 +249,11 @@ public class HierarchicalClusterer
 		// set.setAlClusterSizes(temp);
 		// set.setAlExamples(alExamples);
 
-		GeneralManager.get().getEventPublisher().triggerEvent(
-			new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
+		GeneralManager
+			.get()
+			.getEventPublisher()
+			.triggerEvent(
+				new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
 		TempResult tempResult = new TempResult();
 		tempResult.indices = indices;
@@ -275,8 +281,7 @@ public class HierarchicalClusterer
 				int clusterNr = 0;
 				clusterNr = currentNode.getClusterNum();
 
-				ClusterNode currentGraph =
-					new ClusterNode(tree, "Node_" + clusterNr, clusterNr, false, -1);
+				ClusterNode currentGraph = new ClusterNode(tree, "Node_" + clusterNr, clusterNr, false, -1);
 				// currentGraph.setNrElements(1);
 
 				tree.addChild(clusterNode, currentGraph);

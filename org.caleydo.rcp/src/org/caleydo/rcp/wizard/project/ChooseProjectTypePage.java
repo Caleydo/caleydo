@@ -97,8 +97,8 @@ public class ChooseProjectTypePage
 	public ChooseProjectTypePage() {
 		super(PAGE_NAME, PAGE_NAME, null);
 
-		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader().getResource(
-			"resources/wizard/wizard.png")));
+		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
+			.getResource("resources/wizard/wizard.png")));
 
 		this.setDescription("Which data do you want to analyze?");
 
@@ -111,6 +111,7 @@ public class ChooseProjectTypePage
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createControl(Composite parent) {
 		parentWizard = (Wizard) this.getWizard();
 
@@ -120,8 +121,8 @@ public class ChooseProjectTypePage
 		final TabFolder tabFolder = new TabFolder(composite, SWT.BORDER);
 
 		projectMode =
-			ProjectMode.valueOf(GeneralManager.get().getPreferenceStore().getString(
-				PreferenceConstants.LAST_CHOSEN_PROJECT_MODE));
+			ProjectMode.valueOf(GeneralManager.get().getPreferenceStore()
+				.getString(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE));
 
 		createSampleTab(tabFolder);
 		createGeneticUseCaseTab(tabFolder);
@@ -343,8 +344,8 @@ public class ChooseProjectTypePage
 
 		// Set organism which was used in last session
 		Organism lastChosenOrganism =
-			Organism.valueOf(GeneralManager.get().getPreferenceStore().getString(
-				PreferenceConstants.LAST_CHOSEN_ORGANISM));
+			Organism.valueOf(GeneralManager.get().getPreferenceStore()
+				.getString(PreferenceConstants.LAST_CHOSEN_ORGANISM));
 		if (lastChosenOrganism == Organism.HOMO_SAPIENS) {
 			btnOrganismHuman.setSelection(true);
 			organism = Organism.HOMO_SAPIENS;
@@ -360,8 +361,8 @@ public class ChooseProjectTypePage
 
 		// Set if pathways were loaded in last session
 		String sLastChosenPathwayDataSources =
-			GeneralManager.get().getPreferenceStore().getString(
-				PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
+			GeneralManager.get().getPreferenceStore()
+				.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
 
 		if (sLastChosenPathwayDataSources.isEmpty())
 			btnLoadPathwayData.setSelection(false);
@@ -396,7 +397,7 @@ public class ChooseProjectTypePage
 			btnLoadBioCartaPathwayData.setSelection(false);
 			bLoadBioCartaPathwayData = false;
 		}
-		
+
 		btnLoadKEGGPathwayData.setEnabled(btnLoadPathwayData.getSelection());
 		btnLoadBioCartaPathwayData.setEnabled(btnLoadPathwayData.getSelection());
 

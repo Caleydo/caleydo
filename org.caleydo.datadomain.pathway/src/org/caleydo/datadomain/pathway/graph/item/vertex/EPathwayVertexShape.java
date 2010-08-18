@@ -14,7 +14,5 @@ public enum EPathwayVertexShape {
 	roundrectangle,
 
 	// BIOCARTA types
-	rect,
-	poly,
-	line
+	rect, poly, line
 }

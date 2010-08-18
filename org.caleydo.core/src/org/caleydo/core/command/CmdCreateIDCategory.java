@@ -28,6 +28,7 @@ public class CmdCreateIDCategory
 	/**
 	 * Load data from file using a token pattern.
 	 */
+	@Override
 	public void doCommand() {
 
 		createdObject = IDCategory.registerCategory(categoryName);

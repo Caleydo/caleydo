@@ -33,14 +33,12 @@ public class PathwayToolBarContainer extends ToolBarContainer {
 		List<IToolBarItem> elements = new ArrayList<IToolBarItem>();
 
 		TextureAction textureAction = new TextureAction(pathwayToolBarMediator);
-		textureAction.setTexturesEnabled(targetViewData
-				.isPathwayTexturesEnabled());
+		textureAction.setTexturesEnabled(targetViewData.isPathwayTexturesEnabled());
 		elements.add(textureAction);
 
 		GeneMappingAction geneMappingAction = new GeneMappingAction(
 				pathwayToolBarMediator);
-		geneMappingAction.setGeneMappingEnabled(targetViewData
-				.isGeneMappingEnabled());
+		geneMappingAction.setGeneMappingEnabled(targetViewData.isGeneMappingEnabled());
 		elements.add(geneMappingAction);
 
 		// TODO: neighborhood currently broken
@@ -57,8 +55,7 @@ public class PathwayToolBarContainer extends ToolBarContainer {
 		return pathwayToolBarMediator;
 	}
 
-	public void setPathwayToolBarMediator(
-			PathwayToolBarMediator pathwayToolBarMediator) {
+	public void setPathwayToolBarMediator(PathwayToolBarMediator pathwayToolBarMediator) {
 		this.pathwayToolBarMediator = pathwayToolBarMediator;
 	}
 

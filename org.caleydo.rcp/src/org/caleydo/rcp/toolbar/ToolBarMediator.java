@@ -92,6 +92,7 @@ public class ToolBarMediator
 		this.toolBarView = toolBarView;
 	}
 
+	@Override
 	public void registerEventListeners() {
 		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
@@ -109,6 +110,7 @@ public class ToolBarMediator
 		eventPublisher.addListener(SelectionUpdateEvent.class, groupHighlightingListener);
 	}
 
+	@Override
 	public void unregisterEventListeners() {
 		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
@@ -131,6 +133,7 @@ public class ToolBarMediator
 	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 		final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				listener.handleEvent(event);
 			}

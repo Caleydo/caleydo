@@ -23,8 +23,8 @@ public class CloseOrResetContainedViews extends Action implements IToolBarItem {
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override

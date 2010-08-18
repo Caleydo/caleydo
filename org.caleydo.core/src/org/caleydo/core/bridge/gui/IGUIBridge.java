@@ -30,7 +30,7 @@ public interface IGUIBridge {
 	 *            the GUI ID (e.g. RCP)
 	 */
 	public void closeView(String viewGUIID);
-	
+
 	public void init();
 
 }

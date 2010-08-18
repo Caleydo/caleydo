@@ -63,6 +63,7 @@ public abstract class AView
 	 * 
 	 * @param iParentContainerId
 	 */
+	@Override
 	public void setParentContainerId(int iParentContainerId) {
 		this.parentContainerID = iParentContainerId;
 	}
@@ -99,6 +100,7 @@ public abstract class AView
 		eventPublisher.triggerEvent(event);
 	}
 
+	@Override
 	public String getViewType() {
 		return viewType;
 	}

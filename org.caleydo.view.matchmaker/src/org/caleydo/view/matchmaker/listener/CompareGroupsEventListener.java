@@ -10,7 +10,7 @@ public class CompareGroupsEventListener extends AEventListener<GLMatchmaker> {
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof CompareGroupsEvent) {
-			
+
 			handler.setSetsToCompare(((CompareGroupsEvent) event).getSets());
 		}
 	}

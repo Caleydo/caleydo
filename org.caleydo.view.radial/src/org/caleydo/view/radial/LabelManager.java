@@ -74,8 +74,8 @@ public class LabelManager {
 	 * @param fHierarchyOuterRadius
 	 *            Radius of the whole radial hierarchy.
 	 */
-	public void drawAllLabels(GL gl, GLU glu, float fScreenWidth,
-			float fScreenHeight, float fHierarchyOuterRadius) {
+	public void drawAllLabels(GL gl, GLU glu, float fScreenWidth, float fScreenHeight,
+			float fHierarchyOuterRadius) {
 
 		textRenderer = new CaleydoTextRenderer(new Font(LABEL_FONT_NAME,
 				LABEL_FONT_STYLE, LABEL_FONT_SIZE), false);
@@ -101,8 +101,7 @@ public class LabelManager {
 				fBendPointY = fUnitVectorY * fHierarchyOuterRadius * 1.05f;
 			}
 			LabelContainer labelContainer = createLabelContainer(gl, label,
-					LEFT_CONTAINER_SPACING, fYCenter + fBendPointY,
-					fScreenHeight);
+					LEFT_CONTAINER_SPACING, fYCenter + fBendPointY, fScreenHeight);
 			ArrayList<LabelContainer> alContainers = alLeftContainers;
 
 			float fXMouseOverContainerPosition = fXCenter + fSegmentXCenter
@@ -112,29 +111,25 @@ public class LabelManager {
 						- RIGHT_CONTAINER_SPACING - labelContainer.getWidth(),
 						labelContainer.getYContainerCenter());
 				alContainers = alRightContainers;
-				fXMouseOverContainerPosition = fXCenter + fSegmentXCenter
-						- MARKER_RADIUS - labelContainer.getWidth();
+				fXMouseOverContainerPosition = fXCenter + fSegmentXCenter - MARKER_RADIUS
+						- labelContainer.getWidth();
 			}
 
-			updateContainerPositionOnControlBoxCollision(labelContainer,
-					fXCenter);
+			updateContainerPositionOnControlBoxCollision(labelContainer, fXCenter);
 
 			if (label.getSegmentLabelDepth() >= iMaxSegmentDepth) {
-				labelContainer.setContainerPosition(
-						fXMouseOverContainerPosition, fYCenter
-								+ fSegmentYCenter);
+				labelContainer.setContainerPosition(fXMouseOverContainerPosition,
+						fYCenter + fSegmentYCenter);
 				labelContainer.draw(gl, true);
 				drawSegmentMarker(gl, glu, fXCenter + fSegmentXCenter, fYCenter
 						+ fSegmentYCenter);
 			} else if (!doesLabelCollide(labelContainer, alContainers, fXCenter
-					+ fSegmentXCenter, fYCenter + fSegmentYCenter, fXCenter,
-					fBendPointX)) {
+					+ fSegmentXCenter, fYCenter + fSegmentYCenter, fXCenter, fBendPointX)) {
 				alContainers.add(labelContainer);
 
 				labelContainer.draw(gl, true);
-				drawLink(gl, glu, fXCenter, fYCenter, fSegmentXCenter,
-						fSegmentYCenter, fBendPointX, fBendPointY,
-						labelContainer);
+				drawLink(gl, glu, fXCenter, fYCenter, fSegmentXCenter, fSegmentYCenter,
+						fBendPointX, fBendPointY, labelContainer);
 			}
 		}
 	}
@@ -170,9 +165,7 @@ public class LabelManager {
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.LABEL_TEXT_COLOR, 0);
 		gl.glBegin(GL.GL_LINE_STRIP);
-		gl
-				.glVertex3f(fXCenter + fSegmentXCenter, fYCenter
-						+ fSegmentYCenter, 0);
+		gl.glVertex3f(fXCenter + fSegmentXCenter, fYCenter + fSegmentYCenter, 0);
 		gl.glVertex3f(fXCenter + fBendPointX, fYCenter + fBendPointY, 0);
 		if (fSegmentXCenter <= 0) {
 			gl.glVertex3f(labelContainer.getRight(), fYCenter + fBendPointY, 0);
@@ -181,8 +174,7 @@ public class LabelManager {
 		}
 		gl.glEnd();
 
-		drawSegmentMarker(gl, glu, fXCenter + fSegmentXCenter, fYCenter
-				+ fSegmentYCenter);
+		drawSegmentMarker(gl, glu, fXCenter + fSegmentXCenter, fYCenter + fSegmentYCenter);
 	}
 
 	/**
@@ -197,8 +189,7 @@ public class LabelManager {
 	 * @param fYPosition
 	 *            Y coordinate of the marker.
 	 */
-	private void drawSegmentMarker(GL gl, GLU glu, float fXPosition,
-			float fYPosition) {
+	private void drawSegmentMarker(GL gl, GLU glu, float fXPosition, float fYPosition) {
 		gl.glColor4fv(RadialHierarchyRenderStyle.LABEL_TEXT_COLOR, 0);
 		gl.glPushMatrix();
 		gl.glTranslatef(fXPosition, fYPosition, 0);
@@ -246,8 +237,8 @@ public class LabelManager {
 		labelContainer.addLabelLines(gl, label.getLines());
 
 		if (labelContainer.getTop() > fScreenHeight) {
-			labelContainer.setContainerPosition(labelContainer.getLeft(),
-					fScreenHeight - (labelContainer.getHeight() / 2.0f));
+			labelContainer.setContainerPosition(labelContainer.getLeft(), fScreenHeight
+					- (labelContainer.getHeight() / 2.0f));
 		}
 		if (labelContainer.getBottom() < 0) {
 			labelContainer.setContainerPosition(labelContainer.getLeft(),
@@ -282,8 +273,7 @@ public class LabelManager {
 
 		if (labelContainer.getLeft() < fXCenter) {
 			labelContainer.setContainerPosition(rectControlBox.getMaxX()
-					+ LEFT_CONTAINER_SPACING, labelContainer
-					.getYContainerCenter());
+					+ LEFT_CONTAINER_SPACING, labelContainer.getYContainerCenter());
 		} else {
 			labelContainer.setContainerPosition(rectControlBox.getMinX()
 					- RIGHT_CONTAINER_SPACING - labelContainer.getWidth(),
@@ -322,11 +312,9 @@ public class LabelManager {
 				return true;
 			}
 		}
-		if ((fBendPointX >= 0)
-				&& (fXCenter + fBendPointX > containerToTest.getLeft()))
+		if ((fBendPointX >= 0) && (fXCenter + fBendPointX > containerToTest.getLeft()))
 			return true;
-		if ((fBendPointX < 0)
-				&& (fXCenter + fBendPointX < containerToTest.getRight()))
+		if ((fBendPointX < 0) && (fXCenter + fBendPointX < containerToTest.getRight()))
 			return true;
 		// It is assumed that the LabelContainer for the MouseOver Element is
 		// created first, since it is

@@ -20,6 +20,7 @@ public abstract class ATreeMapNode extends AHierarchyElement<ATreeMapNode> {
 		this.root = root;
 	}
 
+	@Override
 	public float getSize() {
 		List<ATreeMapNode> list = getChildren();
 		if (list == null || list.size() == 0)
@@ -30,15 +31,17 @@ public abstract class ATreeMapNode extends AHierarchyElement<ATreeMapNode> {
 		}
 		return size;
 	}
-	
+
 	public abstract int getPickingID();
 
 	public abstract Color getColorAttribute();
 
 	public abstract float getSizeAttribute();
 
+	@Override
 	public abstract ArrayList<ATreeMapNode> getChildren();
 
+	@Override
 	public abstract String getLabel();
 
 	public AbstractTree getRoot() {

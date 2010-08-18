@@ -58,6 +58,7 @@ public class DataDomainManager {
 
 		try {
 			IDataDomain dataDomain = (IDataDomain) ce[0].createExecutableExtension("class");
+
 			register(dataDomain);
 			return dataDomain;
 		}

@@ -52,21 +52,19 @@ public class SetBarItem implements IDraggable, IDropArea {
 		this.textRenderer = textRenderer;
 		this.setBar = setBar;
 		hashSelectionColors = new HashMap<Integer, float[]>();
-		hashSelectionColors.put(SELECTION_STATUS_NORMAL, new float[] { 0.5f,
-				0.5f, 0.5f, 1.0f });
+		hashSelectionColors.put(SELECTION_STATUS_NORMAL, new float[] { 0.5f, 0.5f, 0.5f,
+				1.0f });
 		float[] mouseOverColor = SelectionType.MOUSE_OVER.getColor();
 		hashSelectionColors.put(SELECTION_STATUS_MOUSE_OVER, mouseOverColor);
-		hashSelectionColors
-				.put(SELECTION_STATUS_DRAGGED, new float[] { mouseOverColor[0],
-						mouseOverColor[1], mouseOverColor[2], 0.5f });
+		hashSelectionColors.put(SELECTION_STATUS_DRAGGED, new float[] {
+				mouseOverColor[0], mouseOverColor[1], mouseOverColor[2], 0.5f });
 	}
 
 	public void render(GL gl) {
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
 				EPickingType.COMPARE_SET_BAR_ITEM_SELECTION, id));
-		renderItemBody(gl, selectionStatus, position.x(), position.y(),
-				position.z());
+		renderItemBody(gl, selectionStatus, position.x(), position.y(), position.z());
 		gl.glPopName();
 
 		float fontScaling = determineFontScaling();
@@ -132,8 +130,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 	 * @return Scaling factor for the specified text.
 	 */
 	private float determineFontScaling() {
-		Rectangle2D bounds = textRenderer
-				.getBounds(TEXT_FOR_HEIGHT_CALCULATION);
+		Rectangle2D bounds = textRenderer.getBounds(TEXT_FOR_HEIGHT_CALCULATION);
 		float scaling = (height - VERTICAL_TEXT_PADDING_PORTION * height)
 				/ (float) bounds.getHeight();
 
@@ -157,10 +154,8 @@ public class SetBarItem implements IDraggable, IDropArea {
 		Rectangle2D bounds = textRenderer.getBounds(text);
 
 		return new Vec3f((position.x() + width / 2.0f)
-				- ((float) bounds.getWidth() * fontScaling / 2.0f), position
-				.y()
-				+ (VERTICAL_TEXT_PADDING_PORTION / 2.0f * height),
-				position.z() + 0.1f);
+				- ((float) bounds.getWidth() * fontScaling / 2.0f), position.y()
+				+ (VERTICAL_TEXT_PADDING_PORTION / 2.0f * height), position.z() + 0.1f);
 	}
 
 	public ISet getSet() {
@@ -196,31 +191,29 @@ public class SetBarItem implements IDraggable, IDropArea {
 	}
 
 	@Override
-	public void handleDragging(GL gl, float mouseCoordinateX,
-			float mouseCoordinateY) {
+	public void handleDragging(GL gl, float mouseCoordinateX, float mouseCoordinateY) {
 
 		float draggedPositionX = mouseCoordinateX + draggingSpacingX;
 		float draggedPositionY = mouseCoordinateY + draggingSpacingY;
 
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 		// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-		renderItemBody(gl, SELECTION_STATUS_DRAGGED, draggedPositionX,
-				draggedPositionY, 1.0f);
+		renderItemBody(gl, SELECTION_STATUS_DRAGGED, draggedPositionX, draggedPositionY,
+				1.0f);
 		gl.glEnd();
 		gl.glPopAttrib();
 	}
 
 	@Override
-	public void setDraggingStartPoint(float mouseCoordinateX,
-			float mouseCoordinateY) {
+	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
 		draggingSpacingX = position.x() - mouseCoordinateX;
 		draggingSpacingY = position.y() - mouseCoordinateY;
 
 	}
 
 	@Override
-	public void handleDragOver(GL gl, Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY) {
+	public void handleDragOver(GL gl, Set<IDraggable> draggables, float mouseCoordinateX,
+			float mouseCoordinateY) {
 		if (draggables.size() != 1)
 			return;
 		IDraggable draggable = (IDraggable) draggables.toArray()[0];
@@ -231,8 +224,8 @@ public class SetBarItem implements IDraggable, IDropArea {
 
 			SetBarItem item = (SetBarItem) draggable;
 
-			if (Math.abs(mouseCoordinateX - position.x()) < Math
-					.abs(mouseCoordinateX - (position.x() + width))) {
+			if (Math.abs(mouseCoordinateX - position.x()) < Math.abs(mouseCoordinateX
+					- (position.x() + width))) {
 				if (item.getID() == id - 1)
 					return;
 				renderDropPositionMarker(gl, position.x());
@@ -247,9 +240,8 @@ public class SetBarItem implements IDraggable, IDropArea {
 	}
 
 	@Override
-	public void handleDrop(GL gl, Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY,
-			DragAndDropController dragAndDropController) {
+	public void handleDrop(GL gl, Set<IDraggable> draggables, float mouseCoordinateX,
+			float mouseCoordinateY, DragAndDropController dragAndDropController) {
 
 		if (draggables.size() != 1)
 			return;
@@ -261,8 +253,8 @@ public class SetBarItem implements IDraggable, IDropArea {
 
 			SetBarItem item = (SetBarItem) draggable;
 
-			if (Math.abs(mouseCoordinateX - position.x()) < Math
-					.abs(mouseCoordinateX - (position.x() + width))) {
+			if (Math.abs(mouseCoordinateX - position.x()) < Math.abs(mouseCoordinateX
+					- (position.x() + width))) {
 				if (item.getID() == id - 1)
 					return;
 				setBar.moveItem(item, id);

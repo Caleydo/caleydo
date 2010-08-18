@@ -92,29 +92,28 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 		float fBottomSceneBorder = -2 * fYScaling;
 
 		if (bIsZoomedIn) {
-			transform.setTranslation(new Vec3f(fLeftSceneBorder,
-					fBottomSceneBorder, 0));
+			transform.setTranslation(new Vec3f(fLeftSceneBorder, fBottomSceneBorder, 0));
 
 			if (fAspectRatio < 0.65f) {
 
 				if (fAspectRatio < 0.61f) {
-					transform.setScale(new Vec3f(fScalingFactorFocusLevel
-							* fYScaling * 0.97f, fScalingFactorFocusLevel
-							* fYScaling * 0.97f, fScalingFactorFocusLevel));
+					transform.setScale(new Vec3f(fScalingFactorFocusLevel * fYScaling
+							* 0.97f, fScalingFactorFocusLevel * fYScaling * 0.97f,
+							fScalingFactorFocusLevel));
 				} else {
-					transform.setScale(new Vec3f(fScalingFactorFocusLevel
-							* fYScaling * 0.9f, fScalingFactorFocusLevel
-							* fYScaling * 0.9f, fScalingFactorFocusLevel));
+					transform.setScale(new Vec3f(fScalingFactorFocusLevel * fYScaling
+							* 0.9f, fScalingFactorFocusLevel * fYScaling * 0.9f,
+							fScalingFactorFocusLevel));
 				}
 			} else {
 				if (fAspectRatio > 0.75f) {
-					transform.setScale(new Vec3f(fScalingFactorFocusLevel
-							* fXScaling * 0.6f, fScalingFactorFocusLevel
-							* fXScaling * 0.6f, fScalingFactorFocusLevel));
+					transform.setScale(new Vec3f(fScalingFactorFocusLevel * fXScaling
+							* 0.6f, fScalingFactorFocusLevel * fXScaling * 0.6f,
+							fScalingFactorFocusLevel));
 				} else {
-					transform.setScale(new Vec3f(fScalingFactorFocusLevel
-							* fXScaling * 0.52f, fScalingFactorFocusLevel
-							* fXScaling * 0.52f, fScalingFactorFocusLevel));
+					transform.setScale(new Vec3f(fScalingFactorFocusLevel * fXScaling
+							* 0.52f, fScalingFactorFocusLevel * fXScaling * 0.52f,
+							fScalingFactorFocusLevel));
 				}
 			}
 		} else {
@@ -139,21 +138,18 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 			fTiltAngleRad_Horizontal = (float) Math
 					.acos((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth)
 							/ 2
-							/ (float) Math
-									.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
-											+ Math
-													.pow(
-															((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2),
-															2)));
+							/ (float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
+									+ Math.pow(
+											((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2),
+											2)));
 
 			fTiltAngleRad_Vertical = Vec3f.convertGrad2Radiant(90);
 
 			float fScalingCorrection = (float) Math
 					.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
-							+ Math
-									.pow(
-											((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2),
-											2)) / 4f;
+							+ Math.pow(
+									((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2),
+									2)) / 4f;
 
 			// handle case when height > width
 			if (fAspectRatio > 0.71f) {
@@ -161,35 +157,27 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 					fAspectRatio = 1 / fAspectRatio;
 				}
 
-				fTiltAngleRad_Vertical = (float) Math
-						.acos((4 * fAspectRatio - 4)
-								/ 2
-								/ (float) Math
-										.sqrt(Math
-												.pow(4 * (1 - fZoomFactor), 2)
-												+ Math
-														.pow(
-																((4 * fAspectRatio - 4) / 2),
-																2)));
+				fTiltAngleRad_Vertical = (float) Math.acos((4 * fAspectRatio - 4)
+						/ 2
+						/ (float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
+								+ Math.pow(((4 * fAspectRatio - 4) / 2), 2)));
 
 				fTiltAngleRad_Horizontal = Vec3f.convertGrad2Radiant(90);
 
-				fScalingCorrection = (float) Math.sqrt(Math.pow(
-						4 * (1 - fZoomFactor), 2)
+				fScalingCorrection = (float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
 						+ Math.pow(((4 * fAspectRatio - 4) / 2), 2)) / 4f;
 
 				// TOP BUCKET WALL
 				transform = new Transform();
 				transform.setTranslation(new Vec3f(-2, 2 * fAspectRatio - 4f
-						* (float) Math.cos(fTiltAngleRad_Vertical)
-						* fScalingCorrection, 4 - 4
-						* (float) Math.sin(fTiltAngleRad_Vertical)
-						* (1 - fZoomFactor)));
+						* (float) Math.cos(fTiltAngleRad_Vertical) * fScalingCorrection,
+						4 - 4 * (float) Math.sin(fTiltAngleRad_Vertical)
+								* (1 - fZoomFactor)));
 				transform.setScale(new Vec3f(fScalingFactorStackLevel,
 						fScalingFactorStackLevel * fScalingCorrection,
 						fScalingFactorStackLevel * fScalingCorrection));
-				transform.setRotation(new Rotf(new Vec3f(1, 0, 0),
-						fTiltAngleRad_Vertical));
+				transform
+						.setRotation(new Rotf(new Vec3f(1, 0, 0), fTiltAngleRad_Vertical));
 				stackLevel.getElementByPositionIndex(0).setTransform(transform);
 
 				// BOTTOM BUCKET WALL
@@ -214,11 +202,11 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 
 				// RIGHT BUCKET WALL
 				transform = new Transform();
-				transform.setTranslation(new Vec3f(2 - 4f
-						* (float) Math.cos(fTiltAngleRad_Horizontal)
-						* fScalingCorrection, -2, 4 - 4
-						* (float) Math.sin(fTiltAngleRad_Horizontal)
-						* fScalingCorrection));
+				transform.setTranslation(new Vec3f(
+						2 - 4f * (float) Math.cos(fTiltAngleRad_Horizontal)
+								* fScalingCorrection, -2, 4 - 4
+								* (float) Math.sin(fTiltAngleRad_Horizontal)
+								* fScalingCorrection));
 				transform.setScale(new Vec3f(fScalingFactorStackLevel,
 						fScalingFactorStackLevel * (1 - fZoomFactor),
 						fScalingFactorStackLevel * (1 - fZoomFactor)));
@@ -230,21 +218,20 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 				// TOP BUCKET WALL
 				transform = new Transform();
 				transform.setTranslation(new Vec3f(-2, 2 - 4f
-						* (float) Math.cos(fTiltAngleRad_Vertical)
-						* fScalingCorrection, 4 - 4
-						* (float) Math.sin(fTiltAngleRad_Vertical)
-						* (1 - fZoomFactor)));
+						* (float) Math.cos(fTiltAngleRad_Vertical) * fScalingCorrection,
+						4 - 4 * (float) Math.sin(fTiltAngleRad_Vertical)
+								* (1 - fZoomFactor)));
 				transform.setScale(new Vec3f(fScalingFactorStackLevel,
 						fScalingFactorStackLevel * (1 - fZoomFactor),
 						fScalingFactorStackLevel * (1 - fZoomFactor)));
-				transform.setRotation(new Rotf(new Vec3f(1, 0, 0),
-						fTiltAngleRad_Vertical));
+				transform
+						.setRotation(new Rotf(new Vec3f(1, 0, 0), fTiltAngleRad_Vertical));
 				stackLevel.getElementByPositionIndex(0).setTransform(transform);
 
 				// LEFT BUCKET WALL
 				transform = new Transform();
-				transform.setTranslation(new Vec3f(fPoolLayerWidth - 2 * 1
-						/ fAspectRatio, -2, 4));
+				transform.setTranslation(new Vec3f(
+						fPoolLayerWidth - 2 * 1 / fAspectRatio, -2, 4));
 				transform.setScale(new Vec3f(fScalingFactorStackLevel
 						* fScalingCorrection, fScalingFactorStackLevel,
 						fScalingFactorStackLevel * fScalingCorrection));
@@ -264,12 +251,12 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 
 				// RIGHT BUCKET WALL
 				transform = new Transform();
-				transform.setTranslation(new Vec3f(-fPoolLayerWidth + 2 * 1
-						/ fAspectRatio - 4f
-						* (float) Math.cos(fTiltAngleRad_Horizontal)
-						* fScalingCorrection, -2, 4 - 4
-						* (float) Math.sin(fTiltAngleRad_Horizontal)
-						* fScalingCorrection));
+				transform
+						.setTranslation(new Vec3f(-fPoolLayerWidth + 2 * 1 / fAspectRatio
+								- 4f * (float) Math.cos(fTiltAngleRad_Horizontal)
+								* fScalingCorrection, -2, 4 - 4
+								* (float) Math.sin(fTiltAngleRad_Horizontal)
+								* fScalingCorrection));
 				transform.setScale(new Vec3f(fScalingFactorStackLevel
 						* fScalingCorrection, fScalingFactorStackLevel,
 						fScalingFactorStackLevel * fScalingCorrection));
@@ -311,10 +298,9 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 
 			// TOP BUCKET WALL
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(fLeftSceneBorder,
-					fBottomSceneBorder, 0f));
-			transform.setScale(new Vec3f(fScalingFactorZoomedIn,
-					fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+			transform.setTranslation(new Vec3f(fLeftSceneBorder, fBottomSceneBorder, 0f));
+			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
+					fScalingFactorZoomedIn));
 			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
 
 			stackLevel.getElementByPositionIndex(0).setTransform(transform);
@@ -322,13 +308,13 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 			// LEFT BUCKET WALL
 			transform = new Transform();
 			if (bVerticalStack)
-				transform.setTranslation(new Vec3f(fLeftSceneBorder,
-						fBottomSceneBorder + 9 * fScalingFactorZoomedIn, 0));
+				transform.setTranslation(new Vec3f(fLeftSceneBorder, fBottomSceneBorder
+						+ 9 * fScalingFactorZoomedIn, 0));
 			else
 				transform.setTranslation(new Vec3f(fLeftSceneBorder + 9
 						* fScalingFactorZoomedIn, fBottomSceneBorder, 0));
-			transform.setScale(new Vec3f(fScalingFactorZoomedIn,
-					fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
+					fScalingFactorZoomedIn));
 			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
 
 			stackLevel.getElementByPositionIndex(1).setTransform(transform);
@@ -336,13 +322,13 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 			// BOTTOM BUCKET WALL
 			transform = new Transform();
 			if (bVerticalStack)
-				transform.setTranslation(new Vec3f(fLeftSceneBorder,
-						fBottomSceneBorder + 18 * fScalingFactorZoomedIn, 0));
+				transform.setTranslation(new Vec3f(fLeftSceneBorder, fBottomSceneBorder
+						+ 18 * fScalingFactorZoomedIn, 0));
 			else
 				transform.setTranslation(new Vec3f(fLeftSceneBorder + 18
 						* fScalingFactorZoomedIn, fBottomSceneBorder, 0));
-			transform.setScale(new Vec3f(fScalingFactorZoomedIn,
-					fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
+					fScalingFactorZoomedIn));
 			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
 
 			stackLevel.getElementByPositionIndex(2).setTransform(transform);
@@ -350,13 +336,13 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 			// RIGHT BUCKET WALL
 			transform = new Transform();
 			if (bVerticalStack)
-				transform.setTranslation(new Vec3f(fLeftSceneBorder,
-						fBottomSceneBorder + 27 * fScalingFactorZoomedIn, 0));
+				transform.setTranslation(new Vec3f(fLeftSceneBorder, fBottomSceneBorder
+						+ 27 * fScalingFactorZoomedIn, 0));
 			else
 				transform.setTranslation(new Vec3f(fLeftSceneBorder + 27
 						* fScalingFactorZoomedIn, fBottomSceneBorder, 0));
-			transform.setScale(new Vec3f(fScalingFactorZoomedIn,
-					fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
+					fScalingFactorZoomedIn));
 			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
 
 			stackLevel.getElementByPositionIndex(3).setTransform(transform);
@@ -392,13 +378,12 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(-2f / fAspectRatio, fYAdd, fZ));
 
-			transform.setScale(new Vec3f(fScalingFactorPoolLevel
-					* fSelectedScaling, fScalingFactorPoolLevel
-					* fSelectedScaling, fScalingFactorPoolLevel
-					* fSelectedScaling));
+			transform.setScale(new Vec3f(fScalingFactorPoolLevel * fSelectedScaling,
+					fScalingFactorPoolLevel * fSelectedScaling, fScalingFactorPoolLevel
+							* fSelectedScaling));
 
-			poolLevel.getElementByPositionIndex(iRemoteLevelElementIndex)
-					.setTransform(transform);
+			poolLevel.getElementByPositionIndex(iRemoteLevelElementIndex).setTransform(
+					transform);
 			iRemoteLevelElementIndex++;
 		}
 
@@ -415,8 +400,8 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 			fZ = 4.02f;
 
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(2f / fAspectRatio - fPoolLayerWidth
-				+ 0.10f, -2.01f, fZ));
+		transform.setTranslation(new Vec3f(2f / fAspectRatio - fPoolLayerWidth + 0.10f,
+				-2.01f, fZ));
 		transform.setScale(new Vec3f(fScalingFactorSelectionLevel,
 				fScalingFactorSelectionLevel, fScalingFactorSelectionLevel));
 
@@ -442,16 +427,16 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(-2f, 0, 0f));
-		transform.setScale(new Vec3f(fScalingFactorSpawnLevel,
-				fScalingFactorSpawnLevel, fScalingFactorSpawnLevel));
+		transform.setScale(new Vec3f(fScalingFactorSpawnLevel, fScalingFactorSpawnLevel,
+				fScalingFactorSpawnLevel));
 
 		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
 
 		return spawnLevel;
 	}
 
-	public RemoteLevel initFocusLevelTrack(GL gl,
-			Rectangle viewRectScreenCoords, Point upperLeftScreenPos) {
+	public RemoteLevel initFocusLevelTrack(GL gl, Rectangle viewRectScreenCoords,
+			Point upperLeftScreenPos) {
 		//
 		// fArHeadPosition =
 		// GeneralManager.get().getTrackDataProvider().getEyeTrackData();
@@ -584,8 +569,7 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 
 		// Top plane
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, BUCKET_HEIGHT,
-				BUCKET_DEPTH));
+		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, BUCKET_HEIGHT, BUCKET_DEPTH));
 		transform.setRotation(new Rotf(new Vec3f(1, 0, 0), (Vec3f
 				.convertGrad2Radiant(270) - fAngle)));
 		transform.setScale(new Vec3f(1, 1, 1));
@@ -597,8 +581,8 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 		// Left plane
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, 0, BUCKET_DEPTH));
-		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), (Vec3f
-				.convertGrad2Radiant(90) - fAngle)));
+		transform.setRotation(new Rotf(new Vec3f(0, 1, 0),
+				(Vec3f.convertGrad2Radiant(90) - fAngle)));
 		transform.setScale(new Vec3f(1, 1, 1));
 		stackLevel.getElementByPositionIndex(1).setTransform(transform);
 
@@ -607,8 +591,7 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 
 		// Bottom plane
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, -BUCKET_HEIGHT,
-				BUCKET_DEPTH));
+		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, -BUCKET_HEIGHT, BUCKET_DEPTH));
 		transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), (Vec3f
 				.convertGrad2Radiant(90) - fAngle)));
 		transform.setScale(new Vec3f(1, 1, 1));
@@ -673,8 +656,7 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 
 		// Top plane
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, BUCKET_HEIGHT,
-				BUCKET_DEPTH));
+		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, BUCKET_HEIGHT, BUCKET_DEPTH));
 		transform.setRotation(new Rotf(new Vec3f(1, 0, 0), (Vec3f
 				.convertGrad2Radiant(270) - fAngle)));
 		transform.setScale(new Vec3f(1, 1, 1));
@@ -686,8 +668,8 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 		// Left plane
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, 0, BUCKET_DEPTH));
-		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), (Vec3f
-				.convertGrad2Radiant(90) - fAngle)));
+		transform.setRotation(new Rotf(new Vec3f(0, 1, 0),
+				(Vec3f.convertGrad2Radiant(90) - fAngle)));
 		transform.setScale(new Vec3f(1, 1, 1));
 		stackLevel.getElementByPositionIndex(1).setTransform(transform);
 
@@ -696,8 +678,7 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 
 		// Bottom plane
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, -BUCKET_HEIGHT,
-				BUCKET_DEPTH));
+		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, -BUCKET_HEIGHT, BUCKET_DEPTH));
 		transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), (Vec3f
 				.convertGrad2Radiant(90) - fAngle)));
 		transform.setScale(new Vec3f(1, 1, 1));

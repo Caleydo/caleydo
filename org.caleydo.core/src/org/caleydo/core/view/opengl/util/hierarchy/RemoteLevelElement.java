@@ -24,7 +24,7 @@ public class RemoteLevelElement
 	 * {@link #dataDomainBasedView}
 	 */
 	private AGLView glView = null;
-	
+
 	/** this is the same as {@link #glView}, only the type is different */
 	private IDataDomainBasedView<?> dataDomainBasedView = null;
 

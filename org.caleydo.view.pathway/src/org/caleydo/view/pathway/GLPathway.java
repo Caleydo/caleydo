@@ -1043,7 +1043,7 @@ public class GLPathway extends AGLView implements
 	@Override
 	public void setDataDomain(PathwayDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		
+
 		// initialize internal gene selection manager
 		selectionManager = new SelectionManager(dataDomain.getPrimaryIDType());
 	}

@@ -331,7 +331,7 @@ public class GLBookmarkManager extends AGLView implements
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		
+
 		ContentBookmarkContainer geneContainer = new ContentBookmarkContainer(this,
 				dataDomain.getContentIDCategory(),
 				dataDomain.getPrimaryContentMappingType());

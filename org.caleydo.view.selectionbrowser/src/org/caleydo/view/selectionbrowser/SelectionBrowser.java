@@ -48,14 +48,14 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Info area that is located in the side-bar. It shows the current view and the current selection (in a tree).
+ * Info area that is located in the side-bar. It shows the current view and the
+ * current selection (in a tree).
  * 
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class SelectionBrowser
-	implements ISelectionUpdateHandler, IContentVAUpdateHandler, ISelectionCommandHandler,
-	IViewCommandHandler {
+public class SelectionBrowser implements ISelectionUpdateHandler,
+		IContentVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	GeneralManager generalManager = null;
 	EventPublisher eventPublisher = null;
@@ -78,7 +78,6 @@ public class SelectionBrowser
 	private RedrawViewListener redrawViewListener;
 	private ClearSelectionsListener clearSelectionsListener;
 
-
 	/**
 	 * Constructor.
 	 */
@@ -91,9 +90,8 @@ public class SelectionBrowser
 
 	private void initContent() {
 		ContentVAType contentVAType = ContentVAType.CONTENT;
-		ISetBasedDataDomain dataDomain =
-			((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
-				"org.caleydo.datadomain.genetic"));
+		ISetBasedDataDomain dataDomain = ((ISetBasedDataDomain) DataDomainManager
+				.getInstance().getDataDomain("org.caleydo.datadomain.genetic"));
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 
 		ContentVirtualArray contentVA = dataDomain.getContentVA(contentVAType);
@@ -136,11 +134,13 @@ public class SelectionBrowser
 
 		btnMerge.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				lblTest.setText("Merge Clicked!");
 				mergeSelections();
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent event) {
 				lblTest.setText("Merge Default Clicked!");
 			}
@@ -148,11 +148,13 @@ public class SelectionBrowser
 
 		btnSub.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				lblTest.setText("Del Clicked!");
 				deleteSelections();
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent event) {
 				lblTest.setText("Del Default Clicked!");
 			}
@@ -230,8 +232,7 @@ public class SelectionBrowser
 			if (bIsFirst) {
 				bIsFirst = false;
 				firstSelectionType = (SelectionType) selection.getData();
-			}
-			else {
+			} else {
 				SelectionType tmpSelectionType = (SelectionType) selection.getData();
 				tmpString += tmpSelectionType.toString() + ",";
 				contentSelectionManager.moveType(tmpSelectionType, firstSelectionType);
@@ -261,19 +262,19 @@ public class SelectionBrowser
 		contentTree.removeAll();
 		for (SelectionType tmpSelectionType : sTypes) {
 
-			if (SelectionType.isDefaultType(tmpSelectionType) || !tmpSelectionType.isManaged())
+			if (SelectionType.isDefaultType(tmpSelectionType)
+					|| !tmpSelectionType.isManaged())
 				continue;
 
 			TreeItem item = new TreeItem(contentTree, SWT.NONE);
 
 			float[] fArColor = tmpSelectionType.getColor();
 
-			color =
-				new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255), (int) (fArColor[1] * 255),
-					(int) (fArColor[2] * 255));
+			color = new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
+					(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
 
 			item.setText(tmpSelectionType.toString() + " ("
-				+ contentSelectionManager.getNumberOfElements(tmpSelectionType) + ")");
+					+ contentSelectionManager.getNumberOfElements(tmpSelectionType) + ")");
 			item.setBackground(color);
 			item.setData(tmpSelectionType);
 			contentTree.setExpanded(true);
@@ -281,10 +282,11 @@ public class SelectionBrowser
 	}
 
 	@Override
-	public void handleSelectionUpdate(final ISelectionDelta selectionDelta, final boolean scrollToSelection,
-		final String info) {
+	public void handleSelectionUpdate(final ISelectionDelta selectionDelta,
+			final boolean scrollToSelection, final String info) {
 		contentSelectionManager.setDelta(selectionDelta);
 		parentComposite.getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				updateContentTree();
 			}
@@ -292,7 +294,8 @@ public class SelectionBrowser
 	}
 
 	@Override
-	public void handleSelectionCommand(IDCategory category, final SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(IDCategory category,
+			final SelectionCommand selectionCommand) {
 
 		// nothing to do here
 	}
@@ -313,13 +316,15 @@ public class SelectionBrowser
 	}
 
 	/**
-	 * handling method for updates about the info text displayed in the this info-area
+	 * handling method for updates about the info text displayed in the this
+	 * info-area
 	 * 
 	 * @param info
 	 *            short-info of the sender to display
 	 */
 	public void handleInfoAreaUpdate(final String info) {
 		parentComposite.getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				lblTest.setText(info);
 			}
@@ -327,9 +332,10 @@ public class SelectionBrowser
 	}
 
 	/**
-	 * Registers the listeners for this view to the event system. To release the allocated resources
-	 * unregisterEventListeners() has to be called.
+	 * Registers the listeners for this view to the event system. To release the
+	 * allocated resources unregisterEventListeners() has to be called.
 	 */
+	@Override
 	public void registerEventListeners() {
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
@@ -337,7 +343,8 @@ public class SelectionBrowser
 
 		virtualArrayUpdateListener = new ContentVAUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
-		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
+		eventPublisher.addListener(VirtualArrayUpdateEvent.class,
+				virtualArrayUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
@@ -353,9 +360,10 @@ public class SelectionBrowser
 	}
 
 	/**
-	 * Unregisters the listeners for this view from the event system. To release the allocated resources
-	 * unregisterEventListenrs() has to be called.
+	 * Unregisters the listeners for this view from the event system. To release
+	 * the allocated resources unregisterEventListenrs() has to be called.
 	 */
+	@Override
 	public void unregisterEventListeners() {
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
@@ -384,9 +392,10 @@ public class SelectionBrowser
 	}
 
 	@Override
-	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
-		final AEvent event) {
+	public synchronized void queueEvent(
+			final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				listener.handleEvent(event);
 			}

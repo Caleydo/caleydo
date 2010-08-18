@@ -2329,8 +2329,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			alAxisSpacing.remove(iMovedAxisPosition);
 			alAxisSpacing.add(iSwitchAxisWithThis, fWidth);
 
-			StorageVADelta vaDelta = new StorageVADelta(storageVAType,
-					storageIDType);
+			StorageVADelta vaDelta = new StorageVADelta(storageVAType, storageIDType);
 			vaDelta.add(VADeltaItem.move(iMovedAxisPosition, iSwitchAxisWithThis));
 			sendStorageVAUpdateEvent(vaDelta);
 			iMovedAxisPosition = iSwitchAxisWithThis;

@@ -10,6 +10,7 @@ import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.rcp.action.toolbar.view.StartClusteringAction;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -22,19 +23,19 @@ public class ActivateViewListener
 
 		try {
 			if ((event instanceof LoadPathwayEvent || event instanceof LoadPathwaysByGeneEvent)
-				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
-					"org.caleydo.view.datawindows") == null
-				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
-					"org.caleydo.view.dataflipper") == null) {
-				
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-					"org.caleydo.view.bucket");
+				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.findView("org.caleydo.view.datawindows") == null
+				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.findView("org.caleydo.view.dataflipper") == null) {
+
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.showView("org.caleydo.view.bucket");
 			}
 			else if (event instanceof OpenMatchmakerViewEvent) {
 
 				try {
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-						"org.caleydo.view.matchmaker");
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+						.showView("org.caleydo.view.matchmaker");
 				}
 				catch (PartInitException e) {
 					// TODO Auto-generated catch block
@@ -58,13 +59,13 @@ public class ActivateViewListener
 
 			}
 			else if (event instanceof OpenViewEvent)
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-					((OpenViewEvent) event).getViewType());
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.showView(((OpenViewEvent) event).getViewType());
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();
-			GeneralManager.get().getLogger().log(
-				new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Unable to open bucket view.", e));
+			GeneralManager.get().getLogger()
+				.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Unable to open bucket view.", e));
 		}
 	}
 }

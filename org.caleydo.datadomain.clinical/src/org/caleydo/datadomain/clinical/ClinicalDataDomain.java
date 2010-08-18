@@ -82,8 +82,7 @@ public class ClinicalDataDomain extends ASetBasedDataDomain {
 	protected void assignIDCategories() {
 		contentIDCategory = IDCategory.getIDCategory("EXPERIMENT");
 		storageIDCategory = IDCategory.getIDCategory("EXPERIMENT_DATA");
-		
-	
+
 	}
 
 }

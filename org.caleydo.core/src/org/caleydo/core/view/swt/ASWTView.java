@@ -50,6 +50,7 @@ public abstract class ASWTView
 	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 		final AEvent event) {
 		parentComposite.getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				listener.handleEvent(event);
 			}
@@ -60,7 +61,7 @@ public abstract class ASWTView
 	public Composite getComposite() {
 		return parentComposite;
 	}
-	
+
 	@Override
 	public void registerEventListeners() {
 		// TODO Auto-generated method stub

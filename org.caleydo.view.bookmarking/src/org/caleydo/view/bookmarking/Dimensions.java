@@ -74,8 +74,8 @@ public class Dimensions {
 
 	@Override
 	public String toString() {
-		return "xOrigin: " + xOrigin + ", yOrigin: " + yOrigin + ", widht: "
-				+ width + ", height: " + height;
+		return "xOrigin: " + xOrigin + ", yOrigin: " + yOrigin + ", widht: " + width
+				+ ", height: " + height;
 	}
 
 }

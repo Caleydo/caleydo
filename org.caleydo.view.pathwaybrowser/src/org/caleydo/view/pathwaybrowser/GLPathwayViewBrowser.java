@@ -42,17 +42,18 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 
 	}
 
-
 	@Override
 	protected void addInitialViews() {
 
-//		for (int pathwayIndex = 0; pathwayIndex < MAX_VIEWS; pathwayIndex++) {
-//			SerializedPathwayView pathway = new SerializedPathwayView();
-//			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager()
-//					.getAllItems().toArray()[pathwayIndex]).getID());
-//			pathway.setDataDomainType(dataDomain.getDataDomainType());
-//			newViews.add(pathway);
-//		}
+		// for (int pathwayIndex = 0; pathwayIndex < MAX_VIEWS; pathwayIndex++)
+		// {
+		// SerializedPathwayView pathway = new SerializedPathwayView();
+		// pathway.setPathwayID(((PathwayGraph)
+		// GeneralManager.get().getPathwayManager()
+		// .getAllItems().toArray()[pathwayIndex]).getID());
+		// pathway.setDataDomainType(dataDomain.getDataDomainType());
+		// newViews.add(pathway);
+		// }
 	}
 
 	@Override
@@ -188,8 +189,8 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 	public void addPathwayView(int iPathwayID) {
 		if (!PathwayManager.get().isPathwayVisible(
 				PathwayManager.get().getItem(iPathwayID))) {
-			SerializedPathwayView serPathway = new SerializedPathwayView(dataDomain
-					.getDataDomainType());
+			SerializedPathwayView serPathway = new SerializedPathwayView(
+					dataDomain.getDataDomainType());
 			serPathway.setPathwayID(iPathwayID);
 			newViews.add(serPathway);
 		}
@@ -215,12 +216,12 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 			PathwayManager.get().resetPathwayVisiblityState();
 		}
 	}
-	
+
 	@Override
 	public boolean readyForLoadingNewViews() {
 		return super.readyForLoadingNewViews();
 	}
-	
+
 	@Override
 	public void setConnectionLinesEnabled(boolean enabled) {
 		// TODO Auto-generated method stub

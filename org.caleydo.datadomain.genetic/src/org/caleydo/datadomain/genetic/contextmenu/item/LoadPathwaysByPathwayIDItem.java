@@ -8,12 +8,12 @@ import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
- * Implementation of AContextMenuItem for loading pathways by pathway IDs. Automatically creates the events.
+ * Implementation of AContextMenuItem for loading pathways by pathway IDs.
+ * Automatically creates the events.
  * 
  * @author Alexander Lex
  */
-public class LoadPathwaysByPathwayIDItem
-	extends AContextMenuItem {
+public class LoadPathwaysByPathwayIDItem extends AContextMenuItem {
 
 	private int numberOfOccurences = 0;
 

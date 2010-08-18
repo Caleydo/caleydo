@@ -5,8 +5,7 @@ import java.util.Set;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.view.grouper.event.CopyGroupsEvent;
 
-public class CopyGroupsItem
-	extends AContextMenuItem {
+public class CopyGroupsItem extends AContextMenuItem {
 
 	public CopyGroupsItem(Set<Integer> setGroupsToCopy) {
 		super();

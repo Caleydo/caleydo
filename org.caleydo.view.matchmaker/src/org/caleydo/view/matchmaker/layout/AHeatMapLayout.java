@@ -40,8 +40,8 @@ public abstract class AHeatMapLayout {
 		totalSpaceForAllHeatMapWrappers = 0;
 	}
 
-	public void setLayoutParameters(float positionX, float positionY,
-			float totalHeight, float totalWidth) {
+	public void setLayoutParameters(float positionX, float positionY, float totalHeight,
+			float totalWidth) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.totalHeight = totalHeight;
@@ -150,8 +150,7 @@ public abstract class AHeatMapLayout {
 		return remoteRenderCommands;
 	}
 
-	public void setTotalSpaceForAllHeatMapWrappers(
-			float totalSpaceForAllHeatMapWrappers) {
+	public void setTotalSpaceForAllHeatMapWrappers(float totalSpaceForAllHeatMapWrappers) {
 		this.totalSpaceForAllHeatMapWrappers = totalSpaceForAllHeatMapWrappers;
 	}
 
@@ -211,8 +210,8 @@ public abstract class AHeatMapLayout {
 		ContentVirtualArray contentVA = heatMapWrapper.getContentVA();
 		ContentGroupList contentGroupList = contentVA.getGroupList();
 		Group group = contentGroupList.get(groupID);
-		float positionY = getOverviewHeatMapSamplePositionY(
-				group.getEndIndex(), group.getGroupIndex());
+		float positionY = getOverviewHeatMapSamplePositionY(group.getEndIndex(),
+				group.getGroupIndex());
 
 		return new Vec3f(getOverviewHeatMapPosition().x(), positionY,
 				getOverviewHeatMapPosition().z());
@@ -227,8 +226,8 @@ public abstract class AHeatMapLayout {
 
 	public Vec3f getOverviewGroupPosition(int groupID) {
 		Vec3f groupBarPosition = getOverviewGroupBarPosition();
-		return new Vec3f(groupBarPosition.x(), getOverviewHeatMapGroupPosition(
-				groupID).y(), groupBarPosition.z());
+		return new Vec3f(groupBarPosition.x(), getOverviewHeatMapGroupPosition(groupID)
+				.y(), groupBarPosition.z());
 	}
 
 	public float getOverviewClusterBorderSize() {
@@ -256,8 +255,7 @@ public abstract class AHeatMapLayout {
 		return -1;
 	}
 
-	public float getOverviewHeatMapSamplePositionY(int contentIndex,
-			int groupIndex) {
+	public float getOverviewHeatMapSamplePositionY(int contentIndex, int groupIndex) {
 
 		float sampleHeight = getOverviewHeatMapSampleHeight();
 		return getOverviewHeatMapPosition().y() + getOverviewHeight()

@@ -66,14 +66,14 @@ public class NumericalStorage
 
 	@Override
 	public void log10() {
-		hashCContainers.put(EDataRepresentation.LOG10, ((INumericalCContainer) hashCContainers
-			.get(EDataRepresentation.RAW)).log(10));
+		hashCContainers.put(EDataRepresentation.LOG10,
+			((INumericalCContainer) hashCContainers.get(EDataRepresentation.RAW)).log(10));
 	}
 
 	@Override
 	public void log2() {
-		hashCContainers.put(EDataRepresentation.LOG2, ((INumericalCContainer) hashCContainers
-			.get(EDataRepresentation.RAW)).log(2));
+		hashCContainers.put(EDataRepresentation.LOG2,
+			((INumericalCContainer) hashCContainers.get(EDataRepresentation.RAW)).log(2));
 	}
 
 	@Override

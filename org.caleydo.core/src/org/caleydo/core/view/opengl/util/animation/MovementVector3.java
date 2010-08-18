@@ -32,10 +32,12 @@ public class MovementVector3
 		return z.getMovementValue();
 	}
 
+	@Override
 	public boolean isTargetReached() {
 		return (super.isTargetReached() && z.isTargetValueReached());
 	}
 
+	@Override
 	public void move(double timePassed) {
 		super.move(timePassed);
 		z.move(timePassed);

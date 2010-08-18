@@ -124,6 +124,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 		// 3);//setSize(, 3);
 
 		colorMappingPreviewLabel.addMouseListener(new MouseListener() {
+			@Override
 			public void mouseDown(MouseEvent e) {
 
 			}
@@ -219,6 +220,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 	@Override
 	public void handleRedrawView() {
 		colorMappingPreviewLabel.getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				updateColorLabel();
 			}
@@ -273,6 +275,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 			final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
 
 		parentComposite.getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				listener.handleEvent(event);
 			}

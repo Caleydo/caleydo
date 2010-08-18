@@ -14,27 +14,27 @@ public class RenderCommandFactory {
 			TextureManager textureManager, TextRenderer textRenderer) {
 
 		hashRenderCommands = new HashMap<ERenderCommandType, IHeatMapRenderCommand>();
-		hashRenderCommands.put(ERenderCommandType.OVERVIEW_GROUP_BAR,
-				new OverviewGroupBarRenderCommand(viewID, pickingManager,
-						textureManager));
+		hashRenderCommands
+				.put(ERenderCommandType.OVERVIEW_GROUP_BAR,
+						new OverviewGroupBarRenderCommand(viewID, pickingManager,
+								textureManager));
 		hashRenderCommands.put(ERenderCommandType.OVERVIEW_HEATMAP,
 				new OverviewHeatMapRenderCommand(viewID, pickingManager));
 		hashRenderCommands.put(ERenderCommandType.OVERVIEW_SLIDER,
-				new OverviewSliderRenderCommand(viewID, pickingManager,
-						textureManager));
+				new OverviewSliderRenderCommand(viewID, pickingManager, textureManager));
 		hashRenderCommands.put(ERenderCommandType.DETAIL_HEATMAPS,
 				new DetailHeatMapsRenderCommand(viewID, pickingManager));
 		hashRenderCommands.put(ERenderCommandType.CAPTION_LABEL,
 				new CaptionLabelRenderCommand(textRenderer));
-		hashRenderCommands.put(ERenderCommandType.DENDROGRAM_BUTTON,
-				new DendrogramButtonRenderCommand(viewID, pickingManager,
-						textureManager));
+		hashRenderCommands
+				.put(ERenderCommandType.DENDROGRAM_BUTTON,
+						new DendrogramButtonRenderCommand(viewID, pickingManager,
+								textureManager));
 		hashRenderCommands.put(ERenderCommandType.DENDROGRAM,
 				new DendrogramRenderCommand());
 	}
 
-	public IHeatMapRenderCommand getRenderCommand(
-			ERenderCommandType renderCommandType) {
+	public IHeatMapRenderCommand getRenderCommand(ERenderCommandType renderCommandType) {
 		return hashRenderCommands.get(renderCommandType);
 	}
 }

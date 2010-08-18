@@ -17,6 +17,5 @@ public interface IElementRepCreator {
 	 *            View ID of the radial hierarchy.
 	 */
 	public void createElementRep(PartialDisc partialDisc, int iViewIDfloat,
-			float fHierarchyCenterX, float fHierarchyCenterY,
-			float fHierarchyCenterZ);
+			float fHierarchyCenterX, float fHierarchyCenterY, float fHierarchyCenterZ);
 }

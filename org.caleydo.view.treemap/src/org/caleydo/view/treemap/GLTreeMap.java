@@ -140,6 +140,7 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						glParentView.getParentGLCanvas().getParentComposite()
 								.addKeyListener(glKeyListener);

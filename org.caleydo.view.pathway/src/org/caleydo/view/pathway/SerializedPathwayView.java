@@ -52,8 +52,8 @@ public class SerializedPathwayView extends ASerializedView {
 
 	@Override
 	public ViewFrustum getViewFrustum() {
-		ViewFrustum viewFrustum = new ViewFrustum(EProjectionMode.ORTHOGRAPHIC,
-				-4, 4, -4, 4, -20, 20);
+		ViewFrustum viewFrustum = new ViewFrustum(EProjectionMode.ORTHOGRAPHIC, -4, 4,
+				-4, 4, -20, 20);
 		return viewFrustum;
 	}
 

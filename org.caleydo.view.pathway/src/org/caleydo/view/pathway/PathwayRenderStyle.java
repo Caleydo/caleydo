@@ -15,12 +15,9 @@ public class PathwayRenderStyle extends GeneralRenderStyle {
 	public static final float COMPOUND_NODE_WIDTH = 8 * SCALING_FACTOR_X / 2.0f;
 	public static final float COMPOUND_NODE_HEIGHT = 8 * SCALING_FACTOR_X / 2.0f;
 
-	public static final float[] ENZYME_NODE_COLOR = new float[] { 0.3f, 0.3f,
-			0.3f, 1 };
-	public static final float[] COMPOUND_NODE_COLOR = new float[] { 0.3f, 0.3f,
-			0.3f, 1 };
-	public static final float[] PATHWAY_NODE_COLOR = new float[] { 0.7f, 0.7f,
-			1f, 1 };
+	public static final float[] ENZYME_NODE_COLOR = new float[] { 0.3f, 0.3f, 0.3f, 1 };
+	public static final float[] COMPOUND_NODE_COLOR = new float[] { 0.3f, 0.3f, 0.3f, 1 };
+	public static final float[] PATHWAY_NODE_COLOR = new float[] { 0.7f, 0.7f, 1f, 1 };
 
 	public static final float[] RELATION_EDGE_COLOR = new float[] { 0, 0, 1, 1 };
 	public static final float[] REACTION_EDGE_COLOR = new float[] { 0, 0, 1, 1 };
@@ -148,8 +145,8 @@ public class PathwayRenderStyle extends GeneralRenderStyle {
 	 */
 	public float[] getNeighborhoodNodeColorByDepth(final int depth) {
 		if (depth >= neighborhoodNodeColorArraysize)
-			throw new IllegalStateException("getNeighborhoodNodeColorByDepth("
-					+ depth + ") exceed range!");
+			throw new IllegalStateException("getNeighborhoodNodeColorByDepth(" + depth
+					+ ") exceed range!");
 		return this.neighborhoodNodeColorArray[depth];
 	}
 }

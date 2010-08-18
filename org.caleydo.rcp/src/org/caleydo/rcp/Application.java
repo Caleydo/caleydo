@@ -49,7 +49,7 @@ public class Application
 
 		// if (Application.applicationMode == ApplicationMode.PLEX_CLIENT) {
 		// Application.initData = GroupwareUtils.startPlexClient(serverAddress);
-		
+
 		// if (bDeleteRestoredWorkbenchState) {
 		// removeStoredWorkbenchState();
 		// }
@@ -66,6 +66,7 @@ public class Application
 
 		final Display display = workbench.getDisplay();
 		display.syncExec(new Runnable() {
+			@Override
 			public void run() {
 				if (!display.isDisposed()) {
 					workbench.close();

@@ -14,16 +14,11 @@ import org.caleydo.view.scatterplot.GLScatterPlot;
 
 public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 
-	
-
-	
-
 	public static final float[] X_AXIS_COLOR = { 0.0f, 0.0f, 0.0f, 1.0f };
 	public static final float X_AXIS_LINE_WIDTH = 2.0f;
 	public static final float[] Y_AXIS_COLOR = { 0.0f, 0.0f, 0.0f, 1.0f };
 	public static final float Y_AXIS_LINE_WIDTH = 2.0f;
 	public static float XYAXISDISTANCE = 0.2f;
-	
 
 	public static int NR_TEXTURESX = 5;
 	public static int NR_TEXTURESY = 5;
@@ -54,29 +49,23 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 	public static final float LABEL_Z = 0.005f;
 	public static final float MATRIX_SELECTIONTEXTURES_Z = 0.004f;
 	public static final float MATRIX_SELECTIONRECTANGLE_Z = 0.005f;
-	public static final float MATRIX_HISTOGRAMM_Z=0.006f;
-	public static final float HIGHLIGHTED_SCATTERPOINT_Z=0.006f;
-	public static final float TEXT_ON_LABEL_Z = 0.007f;				
-	public static final float MAINVIEW_ZOOM_Z=0.008f;
-	public static final float SELECTION_RECTANGLE_Z=0.009f;
-	
-	
-	
-	
+	public static final float MATRIX_HISTOGRAMM_Z = 0.006f;
+	public static final float HIGHLIGHTED_SCATTERPOINT_Z = 0.006f;
+	public static final float TEXT_ON_LABEL_Z = 0.007f;
+	public static final float MAINVIEW_ZOOM_Z = 0.008f;
+	public static final float SELECTION_RECTANGLE_Z = 0.009f;
+
 	public static final float AXIS_MARKER_WIDTH = 0.02f;
 
-	
 	private float fCenterXOffset = 0;
 	private float fCenterYOffset = 0;
 	public float fCenterCorrectionFacktor = 0;
 
 	private boolean bIsEmbedded = true;
-	
 
 	private float fSizeHeatmapArrow = 0.17f;
 
-	public ScatterPlotRenderStyle(GLScatterPlot scatterPlot,
-			IViewFrustum viewFrustum) {
+	public ScatterPlotRenderStyle(GLScatterPlot scatterPlot, IViewFrustum viewFrustum) {
 
 		super(viewFrustum);
 
@@ -91,8 +80,6 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 		else
 			XYAXISDISTANCE = 0.5f;
 	}
-
-	
 
 	public float transformNorm2GlobalX(float value) {
 		return getAxisWidth() * value + XYAXISDISTANCE;
@@ -157,7 +144,6 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 		return iPointSize;
 	}
 
-	
 	public float getRenderWidth() {
 
 		// return fRenderWith;

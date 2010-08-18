@@ -47,10 +47,12 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 				dragAndDropController, compareViewStateController);
 	}
 
+	@Override
 	public void setSetsToCompare(ArrayList<ISet> setsToCompare) {
 		setBar.setSets(setsToCompare);
 	}
 
+	@Override
 	public void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode,
 			int iExternalID, Pick pick, boolean isControlPressed) {
 		SelectionType selectionType = null;
@@ -166,14 +168,17 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 				isControlPressed);
 	}
 
+	@Override
 	public int getNumSetsInFocus() {
 		return numSetsInFocus;
 	}
 
+	@Override
 	public boolean isInitialized() {
 		return isInitialized;
 	}
 
+	@Override
 	public void handleContentGroupListUpdate(int setID, ContentGroupList contentGroupList) {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			if (heatMapWrapper.getSet().getID() == setID) {

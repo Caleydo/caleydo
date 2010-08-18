@@ -52,6 +52,7 @@ public class ColorMappingManager
 		return colorMappingManager;
 	}
 
+	@Override
 	public void registerEventListeners() {
 
 		updateColorMappingListener = new UpdateColorMappingListener();
@@ -63,6 +64,7 @@ public class ColorMappingManager
 	/**
 	 * TODO from where should this method be called? are managers released anywhere?
 	 */
+	@Override
 	public void unregisterEventListeners() {
 
 		if (updateColorMappingListener != null) {
@@ -158,6 +160,7 @@ public class ColorMappingManager
 	 * @param colorMapping
 	 *            changed {@link ColorMapping} to store
 	 */
+	@Override
 	public void distributeColorMapping(ColorMapping colorMapping) {
 		hashColorMapping.put(colorMapping.getColorMappingType(), colorMapping);
 		colorMapping.writeToPrefStore();

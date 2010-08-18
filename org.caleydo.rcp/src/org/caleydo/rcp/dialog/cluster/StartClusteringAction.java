@@ -63,8 +63,8 @@ public class StartClusteringAction
 	private float fclusterFactorExperiments = 1f;
 
 	private String[] sArTypeOptions = { "DETERMINED_DEPENDING_ON_USE_CASE", "Experiment", "Both dimensions" };
-	private String[] sArDistOptions =
-		{ "Euclid distance", "Manhattan distance", "Chebyshev distance", "Pearson correlation" };
+	private String[] sArDistOptions = { "Euclid distance", "Manhattan distance", "Chebyshev distance",
+			"Pearson correlation" };
 	private String[] sArDistOptionsWeka = { "Euclid distance", "Manhattan distance" };// ,"Chebyshev distance"};
 	private String[] sArTreeClusterer = { "Complete Linkage", "Average Linkage", "Single Linkage" };
 
@@ -90,7 +90,9 @@ public class StartClusteringAction
 
 		this.parentComposite = parentComposite;
 
-		sArTypeOptions[0] = ((ISetBasedDataDomain)DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic")).getContentName(true, false);
+		sArTypeOptions[0] =
+			((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+				"org.caleydo.datadomain.genetic")).getContentName(true, false);
 	}
 
 	@Override
@@ -112,8 +114,8 @@ public class StartClusteringAction
 			@Override
 			public void helpRequested(HelpEvent e) {
 				try {
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-						"org.caleydo.view.browser");
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+						.showView("org.caleydo.view.browser");
 
 					final String URL_HELP_CLUSTERING =
 						"http://www.caleydo.org/help/gene_expression.html#Clustering";
@@ -138,8 +140,8 @@ public class StartClusteringAction
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-						"org.caleydo.view.browser");
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+						.showView("org.caleydo.view.browser");
 
 					String stHelp = "http://www.caleydo.org/help/gene_expression.html#Cobweb";
 
@@ -226,11 +228,13 @@ public class StartClusteringAction
 		clusterType = sArTypeOptions[0];
 
 		ModifyListener listenerIntGenes = new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				valueChangedInt((Text) e.widget, true);
 			}
 		};
 		ModifyListener listenerIntExperiments = new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				valueChangedInt((Text) e.widget, false);
 			}
@@ -330,12 +334,14 @@ public class StartClusteringAction
 		});
 
 		ModifyListener listenerFloatGenes = new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				valueChangedFloat((Text) e.widget, true);
 			}
 		};
 
 		ModifyListener listenerFloatExperiments = new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				valueChangedFloat((Text) e.widget, false);
 			}

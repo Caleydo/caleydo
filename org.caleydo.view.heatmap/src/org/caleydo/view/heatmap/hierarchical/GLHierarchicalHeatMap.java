@@ -148,7 +148,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	private ColorMapping colorMapper;
 
-
 	private int iNrTextures = 0;
 	/** array of textures for holding the data samples */
 	private ArrayList<Texture> AlTextures = new ArrayList<Texture>();
@@ -367,6 +366,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		// Register keyboard listener to GL canvas
 		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
 			}
@@ -385,6 +385,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						glParentView.getParentGLCanvas().getParentComposite()
 								.addKeyListener(glKeyListener);
@@ -4837,6 +4838,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	private void warn() {
 		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				Shell shell = new Shell();
 				MessageBox messageBox = new MessageBox(shell, SWT.CANCEL);

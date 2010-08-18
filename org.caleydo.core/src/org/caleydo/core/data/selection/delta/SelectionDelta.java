@@ -103,6 +103,7 @@ public class SelectionDelta
 		return newDelta;
 	}
 
+	@Override
 	public void addConnectionID(int iSelectionID, int iConnectionID) {
 		SelectionDeltaItem item = selectionItems.get(iSelectionID);
 		if (item == null)
@@ -132,6 +133,7 @@ public class SelectionDelta
 		return idType;
 	}
 
+	@Override
 	public void setIDType(IDType idType) {
 		this.idType = idType;
 	}

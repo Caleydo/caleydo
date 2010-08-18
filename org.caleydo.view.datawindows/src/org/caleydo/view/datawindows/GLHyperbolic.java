@@ -49,7 +49,8 @@ import org.caleydo.view.pathway.SerializedPathwayView;
  * @author Marc Streit
  */
 @SuppressWarnings("unused")
-public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler, IPathwayLoader {
+public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
+		IPathwayLoader {
 
 	public final static String VIEW_ID = "org.caleydo.view.hyperbolic";
 
@@ -613,6 +614,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler, IP
 		}
 	}
 
+	@Override
 	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
 
 		for (PathwayGraph pathway : newPathwayGraphs) {

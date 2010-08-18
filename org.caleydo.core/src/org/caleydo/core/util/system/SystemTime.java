@@ -75,6 +75,7 @@ public class SystemTime
 		setNumSmoothingSamples(samples.length);
 	}
 
+	@Override
 	public void update() {
 
 		long tmpTime = System.currentTimeMillis();
@@ -97,11 +98,13 @@ public class SystemTime
 		curTime = newCurTime;
 	}
 
+	@Override
 	public double time() {
 
 		return curTime;
 	}
 
+	@Override
 	public double deltaT() {
 
 		return deltaT;

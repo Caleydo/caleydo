@@ -63,8 +63,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 	public static final float[] GATE_BODY_COLOR = { 0.61f, 0.705f, 1.0f, 0.8f };
 
 	public static final float[] ANGULAR_COLOR = { 0.17f, 0.45f, 0.84f, 1 };
-	public static final float[] ANGULAR_POLYGON_COLOR = { 0.17f, 0.45f, 0.84f,
-			0.4f };
+	public static final float[] ANGULAR_POLYGON_COLOR = { 0.17f, 0.45f, 0.84f, 0.4f };
 
 	public static final float ANGLUAR_LINE_WIDTH = 4;
 
@@ -110,8 +109,8 @@ public class PCRenderStyle extends GeneralRenderStyle {
 	public static final int MIN_AXIS_LABEL_TEXT_SIZE = 60;
 	public static final int MIN_NUMBER_TEXT_SIZE = 55;
 
-	public final PolyLineState normalState = new PolyLineState(
-			SelectionType.NORMAL, (1000));
+	public final PolyLineState normalState = new PolyLineState(SelectionType.NORMAL,
+			(1000));
 
 	private GLParallelCoordinates pcs;
 
@@ -153,13 +152,12 @@ public class PCRenderStyle extends GeneralRenderStyle {
 			numberOfSpacings = 2.5f;
 
 		if (pcs.bShowSelectionHeatMap)
-			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING
-					* numberOfSpacings * getScaling()
-					- pcs.glBookmarks.getViewFrustum().getWidth();
+			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * numberOfSpacings
+					* getScaling() - pcs.glBookmarks.getViewFrustum().getWidth();
 
 		else
-			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING
-					* numberOfSpacings * getScaling();
+			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * numberOfSpacings
+					* getScaling();
 	}
 
 	public float getXAxisStart() {
@@ -172,8 +170,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 
 	public float getAxisHeight() {
 		return viewFrustum.getHeight()
-				- (COORDINATE_TOP_SPACING + COORDINATE_BOTTOM_SPACING)
-				* getScaling();
+				- (COORDINATE_TOP_SPACING + COORDINATE_BOTTOM_SPACING) * getScaling();
 	}
 
 	public float getXSpacing() {
@@ -186,16 +183,13 @@ public class PCRenderStyle extends GeneralRenderStyle {
 		return COORDINATE_BOTTOM_SPACING * getScaling();
 	}
 
-	public PolyLineState getPolyLineState(SelectionType selectionType,
-			int nrElements) {
+	public PolyLineState getPolyLineState(SelectionType selectionType, int nrElements) {
 		if (hashSelectionTypeToPolylineState.containsKey(selectionType)) {
-			PolyLineState state = hashSelectionTypeToPolylineState
-					.get(selectionType);
+			PolyLineState state = hashSelectionTypeToPolylineState.get(selectionType);
 			state.updateOcclusionPrev(nrElements);
 			return state;
 		} else {
-			PolyLineState newState = new PolyLineState(selectionType,
-					nrElements);
+			PolyLineState newState = new PolyLineState(selectionType, nrElements);
 			hashSelectionTypeToPolylineState.put(selectionType, newState);
 			return newState;
 		}

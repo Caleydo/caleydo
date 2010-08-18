@@ -23,6 +23,7 @@ public class Path {
 
 	/**
 	 * Append node to the node last added
+	 * 
 	 * @param newNode
 	 */
 	public void addNode(INode newNode) {
@@ -36,9 +37,8 @@ public class Path {
 			lastNode = newNode;
 		}
 	}
-	
-	public void addNode(INode existingNode, INode newNode)
-	{
+
+	public void addNode(INode existingNode, INode newNode) {
 		graph.addVertex(newNode);
 		graph.addEdge(existingNode, newNode);
 		lastNode = newNode;
@@ -47,11 +47,11 @@ public class Path {
 	public Set<DefaultEdge> getEdgesOf(INode node) {
 		return graph.edgesOf(node);
 	}
-	
+
 	public INode getLastNode() {
 		return lastNode;
 	}
-	
+
 	public void setLastNode(INode lastNode) {
 		this.lastNode = lastNode;
 	}
@@ -77,24 +77,21 @@ public class Path {
 	public DefaultDirectedGraph<INode, DefaultEdge> getGraph() {
 		return graph;
 	}
-	
-	
-	public static void main(String args[])
-	{
+
+	public static void main(String args[]) {
 		Path path = new Path();
-//		path.addNode(new Node("Oans", "Oansaview"));
-//		Node node = new Node("Zwoa", "Zwoaview");
-//		path.addNode(node);
-//		path.addNode(new Node("Drei", "Dreierview"));
-//		path.addNode(node,  new Node("Via", "Viaraview"));
-		
-		
-//		for(Node tempNode : path.getFollowingNodes(node))
-//		{
-//			System.out.println(tempNode);
-//		}
-//		System.out.println("");
-//		
-//		System.out.println(path.getGraph());
+		// path.addNode(new Node("Oans", "Oansaview"));
+		// Node node = new Node("Zwoa", "Zwoaview");
+		// path.addNode(node);
+		// path.addNode(new Node("Drei", "Dreierview"));
+		// path.addNode(node, new Node("Via", "Viaraview"));
+
+		// for(Node tempNode : path.getFollowingNodes(node))
+		// {
+		// System.out.println(tempNode);
+		// }
+		// System.out.println("");
+		//
+		// System.out.println(path.getGraph());
 	}
 }

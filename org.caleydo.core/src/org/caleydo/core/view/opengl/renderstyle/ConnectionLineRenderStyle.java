@@ -9,7 +9,7 @@ public class ConnectionLineRenderStyle {
 	public static final float[] CONNECTION_LINE_COLOR_1 = { 1f, 1f, 0f, 1f };
 	public static final float[] CONNECTION_LINE_COLOR_2 = { 0.25f, 0.6f, 1f, 1f };
 
-	public static float[] CONNECTION_LINE_COLOR = { 1f, 1f, 0f, 1f };//SelectionType.MOUSE_OVER.getColor();
+	public static float[] CONNECTION_LINE_COLOR = { 1f, 1f, 0f, 1f };// SelectionType.MOUSE_OVER.getColor();
 	// public static float[] CONNECTION_LINE_COLOR = { 0.54f, 0.17f, 0.89f, 1f}; // blue-violet
 	// public static float[] CONNECTION_LINE_COLOR = { 0.79f, 1f, 0.44f, 1f}; // dark olive green
 	// public static float[] CONNECTION_LINE_COLOR = { 1f, 0.49f, 0.31f, 1f}; // coral

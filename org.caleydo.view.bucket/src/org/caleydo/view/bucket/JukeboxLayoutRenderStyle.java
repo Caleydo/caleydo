@@ -15,8 +15,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
  * 
  * @author Marc Streit
  */
-public class JukeboxLayoutRenderStyle
-	extends ARemoteViewLayoutRenderStyle {
+public class JukeboxLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 
 	/**
 	 * Constructor.
@@ -30,7 +29,7 @@ public class JukeboxLayoutRenderStyle
 	 * Constructor.
 	 */
 	public JukeboxLayoutRenderStyle(IViewFrustum viewFrustum,
-		final ARemoteViewLayoutRenderStyle previousLayoutStyle) {
+			final ARemoteViewLayoutRenderStyle previousLayoutStyle) {
 		super(viewFrustum, previousLayoutStyle);
 		initLayout();
 	}
@@ -53,7 +52,7 @@ public class JukeboxLayoutRenderStyle
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(0f / fAspectRatio, -0.9f, 0f));
 		transform.setScale(new Vec3f(fScalingFactorFocusLevel, fScalingFactorFocusLevel,
-			fScalingFactorFocusLevel));
+				fScalingFactorFocusLevel));
 
 		focusLevel.getElementByPositionIndex(0).setTransform(transform);
 
@@ -78,8 +77,8 @@ public class JukeboxLayoutRenderStyle
 			// transform.setTranslation(new Vec3f(-2.7f + fLayerYPos, 1.1f, 0));
 			// transform.setRotation(new Rotf(new Vec3f(-0.7f, -1f, 0),
 			// fTiltAngleRad));
-			transform.setScale(new Vec3f(fScalingFactorStackLevel, fScalingFactorStackLevel,
-				fScalingFactorStackLevel));
+			transform.setScale(new Vec3f(fScalingFactorStackLevel,
+					fScalingFactorStackLevel, fScalingFactorStackLevel));
 			transform.setRotation(new Rotf(new Vec3f(-1f, -0.7f, 0), fTiltAngleRad));
 
 			stackLevel.getElementByPositionIndex(iLevelIndex).setTransform(transform);
@@ -99,8 +98,7 @@ public class JukeboxLayoutRenderStyle
 		for (RemoteLevelElement element : poolLevel.getAllElements()) {
 			if (element.getID() == iSelectedRemoteLevelElementID) {
 				fSelectedScaling = 2;
-			}
-			else {
+			} else {
 				fSelectedScaling = 1;
 			}
 
@@ -109,10 +107,12 @@ public class JukeboxLayoutRenderStyle
 
 			fYAdd += 0.19f * fSelectedScaling;
 
-			transform.setScale(new Vec3f(fSelectedScaling * fScalingFactorPoolLevel, fSelectedScaling
-				* fScalingFactorPoolLevel, fSelectedScaling * fScalingFactorPoolLevel));
+			transform.setScale(new Vec3f(fSelectedScaling * fScalingFactorPoolLevel,
+					fSelectedScaling * fScalingFactorPoolLevel, fSelectedScaling
+							* fScalingFactorPoolLevel));
 
-			poolLevel.getElementByPositionIndex(iRemoteLevelElementID).setTransform(transform);
+			poolLevel.getElementByPositionIndex(iRemoteLevelElementID).setTransform(
+					transform);
 			iRemoteLevelElementID++;
 		}
 
@@ -127,10 +127,11 @@ public class JukeboxLayoutRenderStyle
 			// Store current model-view matrix
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(fMemoPos, -1.4f, 4.1f));
-			transform.setScale(new Vec3f(fScalingFactorSelectionLevel, fScalingFactorSelectionLevel,
-				fScalingFactorSelectionLevel));
+			transform.setScale(new Vec3f(fScalingFactorSelectionLevel,
+					fScalingFactorSelectionLevel, fScalingFactorSelectionLevel));
 
-			selectionLevel.getElementByPositionIndex(0).setTransform(transform);;
+			selectionLevel.getElementByPositionIndex(0).setTransform(transform);
+			;
 
 			fMemoPos += 0.42f;
 		}
@@ -152,8 +153,8 @@ public class JukeboxLayoutRenderStyle
 	public RemoteLevel initTransitionLevel() {
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(0f, 0f, 4.1f));
-		transform.setScale(new Vec3f(fScalingFactorTransitionLevel, fScalingFactorTransitionLevel,
-			fScalingFactorTransitionLevel));
+		transform.setScale(new Vec3f(fScalingFactorTransitionLevel,
+				fScalingFactorTransitionLevel, fScalingFactorTransitionLevel));
 
 		transitionLevel.getElementByPositionIndex(0).setTransform(transform);
 
@@ -165,9 +166,10 @@ public class JukeboxLayoutRenderStyle
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(-4.4f, 3.9f, 4.1f));
 		transform.setScale(new Vec3f(fScalingFactorSpawnLevel, fScalingFactorSpawnLevel,
-			fScalingFactorSpawnLevel));
+				fScalingFactorSpawnLevel));
 
-		spawnLevel.getElementByPositionIndex(0).setTransform(transform);;
+		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
+		;
 
 		return spawnLevel;
 	}

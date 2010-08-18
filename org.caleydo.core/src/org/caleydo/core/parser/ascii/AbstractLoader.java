@@ -58,7 +58,7 @@ public abstract class AbstractLoader {
 		this.sFileName = sFileName;
 		this.swtGuiManager = GeneralManager.get().getSWTGUIManager();
 	}
-	
+
 	/**
 	 * Set the current token separator.
 	 * 
@@ -181,7 +181,9 @@ public abstract class AbstractLoader {
 
 		try {
 
-			GeneralManager.get().getLogger()
+			GeneralManager
+				.get()
+				.getLogger()
 				.log(
 					new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start loading file " + sFileName
 						+ "..."));
@@ -197,9 +199,12 @@ public abstract class AbstractLoader {
 			throw new RuntimeException("Could not read data file '" + sFileName + "'", e);
 		}
 
-		GeneralManager.get().getLogger().log(
-			new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "File " + sFileName
-				+ " successfully loaded."));
+		GeneralManager
+			.get()
+			.getLogger()
+			.log(
+				new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "File " + sFileName
+					+ " successfully loaded."));
 
 		setArraysToStorages();
 

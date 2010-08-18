@@ -16,21 +16,23 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
-public class PathwayLoadingProgressIndicatorAction
-	implements IWorkbenchWindowActionDelegate {
+public class PathwayLoadingProgressIndicatorAction implements
+		IWorkbenchWindowActionDelegate {
+	@Override
 	public void run(IAction action) {
 		Job job = new Job("Loading pathways...   ") {
 			@Override
 			public IStatus run(IProgressMonitor monitor) {
 
 				PreferenceStore prefStore = GeneralManager.get().getPreferenceStore();
-				String sPathwayDataSources =
-					prefStore.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
+				String sPathwayDataSources = prefStore
+						.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
 
 				if (!sPathwayDataSources.isEmpty()) {
 
 					// Turn on busy mode
-					ViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
+					ViewManager viewManager = GeneralManager.get()
+							.getViewGLCanvasManager();
 					viewManager.requestBusyMode(this);
 
 					monitor.beginTask("Loading pathways", 100);
@@ -39,17 +41,22 @@ public class PathwayLoadingProgressIndicatorAction
 						monitor.subTask("KEGG");
 
 						PathwayManager.get().createPathwayDatabase(
-							EPathwayDatabaseType.KEGG, "data/xml/", "data/images/", "");
-						PathwayLoaderThread.loadAllPathwaysByType(PathwayManager.get().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG));
+								EPathwayDatabaseType.KEGG, "data/xml/", "data/images/",
+								"");
+						PathwayLoaderThread.loadAllPathwaysByType(PathwayManager.get()
+								.getPathwayDatabaseByType(EPathwayDatabaseType.KEGG));
 						// monitor.worked(50);
 					}
 
-					if (sPathwayDataSources.contains(EPathwayDatabaseType.BIOCARTA.getName())) {
+					if (sPathwayDataSources.contains(EPathwayDatabaseType.BIOCARTA
+							.getName())) {
 						monitor.subTask("BioCarta");
 
 						PathwayManager.get().createPathwayDatabase(
-							EPathwayDatabaseType.BIOCARTA, "data/html/", "data/images/", "data/html");
-						PathwayLoaderThread.loadAllPathwaysByType(PathwayManager.get().getPathwayDatabaseByType(EPathwayDatabaseType.BIOCARTA));
+								EPathwayDatabaseType.BIOCARTA, "data/html/",
+								"data/images/", "data/html");
+						PathwayLoaderThread.loadAllPathwaysByType(PathwayManager.get()
+								.getPathwayDatabaseByType(EPathwayDatabaseType.BIOCARTA));
 						// monitor.worked(50);
 					}
 
@@ -65,14 +72,17 @@ public class PathwayLoadingProgressIndicatorAction
 		job.schedule();
 	}
 
+	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
 	}
 
+	@Override
 	public void init(IWorkbenchWindow window) {
 		// TODO Auto-generated method stub
 	}
 
+	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
 		// TODO Auto-generated method stub
 	}

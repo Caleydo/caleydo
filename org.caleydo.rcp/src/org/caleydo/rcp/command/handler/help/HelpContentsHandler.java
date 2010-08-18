@@ -15,6 +15,7 @@ public class HelpContentsHandler
 
 	private final static String URL_HELP_CONTENTS = "http://www.caleydo.org/help/help.html";
 
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		try {

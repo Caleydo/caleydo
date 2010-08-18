@@ -10,15 +10,14 @@ import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
-public class GroupDrawingStrategyMouseOver extends
-		AGroupDrawingStrategyRectangular {
+public class GroupDrawingStrategyMouseOver extends AGroupDrawingStrategyRectangular {
 
 	private PickingManager pickingManager;
 	private GrouperRenderStyle renderStyle;
 	private int iViewID;
 
-	public GroupDrawingStrategyMouseOver(PickingManager pickingManager,
-			int iViewID, GrouperRenderStyle renderStyle) {
+	public GroupDrawingStrategyMouseOver(PickingManager pickingManager, int iViewID,
+			GrouperRenderStyle renderStyle) {
 		this.pickingManager = pickingManager;
 		this.iViewID = iViewID;
 		this.renderStyle = renderStyle;
@@ -29,11 +28,9 @@ public class GroupDrawingStrategyMouseOver extends
 			TextRenderer textRenderer) {
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.GROUPER_GROUP_SELECTION, groupRepresentation
-						.getID()));
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT
-				| GL.GL_LINE_BIT);
-		
+				EPickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+
 		gl.glColor4fv(renderStyle.getGroupColorForLevel(groupRepresentation
 				.getHierarchyLevel()), 0);
 
@@ -64,10 +61,8 @@ public class GroupDrawingStrategyMouseOver extends
 			TextRenderer textRenderer) {
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.GROUPER_GROUP_SELECTION, groupRepresentation
-						.getID()));
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT
-				| GL.GL_LINE_BIT);
+				EPickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 
 		gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
 

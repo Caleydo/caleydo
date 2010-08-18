@@ -63,31 +63,35 @@ public class SampleView extends ViewPart {
 	 */
 
 	class ViewContentProvider implements IStructuredContentProvider {
+		@Override
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 		}
 
+		@Override
 		public void dispose() {
 		}
 
+		@Override
 		public Object[] getElements(Object parent) {
 			return new String[] { "One", "Two", "Three" };
 		}
 	}
 
-	class ViewLabelProvider extends LabelProvider implements
-			ITableLabelProvider {
+	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
+		@Override
 		public String getColumnText(Object obj, int index) {
 			return getText(obj);
 		}
 
+		@Override
 		public Image getColumnImage(Object obj, int index) {
 			return getImage(obj);
 		}
 
 		@Override
 		public Image getImage(Object obj) {
-			return PlatformUI.getWorkbench().getSharedImages().getImage(
-					ISharedImages.IMG_OBJ_ELEMENT);
+			return PlatformUI.getWorkbench().getSharedImages()
+					.getImage(ISharedImages.IMG_OBJ_ELEMENT);
 		}
 	}
 
@@ -106,16 +110,15 @@ public class SampleView extends ViewPart {
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
-				| SWT.V_SCROLL);
+		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
 		viewer.setSorter(new NameSorter());
 		viewer.setInput(getViewSite());
 
 		// Create the help context id for the viewer's control
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(),
-				"org.caleydo.view.scatterplot.viewer");
+		PlatformUI.getWorkbench().getHelpSystem()
+				.setHelp(viewer.getControl(), "org.caleydo.view.scatterplot.viewer");
 		makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();
@@ -126,6 +129,7 @@ public class SampleView extends ViewPart {
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
+			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				SampleView.this.fillContextMenu(manager);
 			}
@@ -185,8 +189,7 @@ public class SampleView extends ViewPart {
 			@Override
 			public void run() {
 				ISelection selection = viewer.getSelection();
-				Object obj = ((IStructuredSelection) selection)
-						.getFirstElement();
+				Object obj = ((IStructuredSelection) selection).getFirstElement();
 				showMessage("Double-click detected on " + obj.toString());
 			}
 		};
@@ -194,6 +197,7 @@ public class SampleView extends ViewPart {
 
 	private void hookDoubleClickAction() {
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
+			@Override
 			public void doubleClick(DoubleClickEvent event) {
 				doubleClickAction.run();
 			}
@@ -201,8 +205,8 @@ public class SampleView extends ViewPart {
 	}
 
 	private void showMessage(String message) {
-		MessageDialog.openInformation(viewer.getControl().getShell(),
-				"Sample View", message);
+		MessageDialog.openInformation(viewer.getControl().getShell(), "Sample View",
+				message);
 	}
 
 	/**

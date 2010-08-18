@@ -8,8 +8,7 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class CreateSelectionTypesAction extends AToolBarAction implements
-		IToolBarItem {
+public class CreateSelectionTypesAction extends AToolBarAction implements IToolBarItem {
 
 	public static final String TEXT = "Brush with colors";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/occlusion_prevention.png";
@@ -24,8 +23,8 @@ public class CreateSelectionTypesAction extends AToolBarAction implements
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 		super.setChecked(createSelectionTypes);
 	}
 
@@ -41,8 +40,8 @@ public class CreateSelectionTypesAction extends AToolBarAction implements
 		else
 			createSelectionTypes = true;
 
-		GeneralManager.get().getEventPublisher().triggerEvent(
-				new CreateSelectionTypesEvent(createSelectionTypes));
+		GeneralManager.get().getEventPublisher()
+				.triggerEvent(new CreateSelectionTypesEvent(createSelectionTypes));
 	};
 
 }

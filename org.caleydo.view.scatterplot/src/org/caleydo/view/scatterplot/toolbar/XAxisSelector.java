@@ -60,24 +60,23 @@ public class XAxisSelector extends ControlContribution implements IToolBarItem,
 				XAxisSelectorEvent xAxisSelectorEvent = new XAxisSelectorEvent();
 				xAxisSelectorEvent.setSender(this);
 				xAxisSelectorEvent.setSelectedAxis(iSelection);
-				GeneralManager.get().getEventPublisher().triggerEvent(
-						xAxisSelectorEvent);
+				GeneralManager.get().getEventPublisher().triggerEvent(xAxisSelectorEvent);
 			}
 		});
 
 		initAxisComboListener = new InitXAxisComboListener();
 		initAxisComboListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(
-				InitAxisComboEvent.class, initAxisComboListener);
+		GeneralManager.get().getEventPublisher()
+				.addListener(InitAxisComboEvent.class, initAxisComboListener);
 
 		return composite;
 	}
 
 	@Override
-	public void queueEvent(
-			final AEventListener<? extends IListenerOwner> listener,
+	public void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 			final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				listener.handleEvent(event);
 			}
@@ -107,8 +106,8 @@ public class XAxisSelector extends ControlContribution implements IToolBarItem,
 	public void dispose() {
 		// Unregister event listener
 		if (initAxisComboListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(
-					initAxisComboListener);
+			GeneralManager.get().getEventPublisher()
+					.removeListener(initAxisComboListener);
 			initAxisComboListener = null;
 		}
 	}
@@ -116,12 +115,12 @@ public class XAxisSelector extends ControlContribution implements IToolBarItem,
 	@Override
 	public void registerEventListeners() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

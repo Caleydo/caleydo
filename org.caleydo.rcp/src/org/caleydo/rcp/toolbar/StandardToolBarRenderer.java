@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.ToolBar;
 public class StandardToolBarRenderer
 	implements IToolBarRenderer {
 
+	@Override
 	public Runnable createRenderJob(RcpToolBarView toolBarView, List<AToolBarContent> toolBarContents) {
 		DefaultToolBarRenderJob job = new DefaultToolBarRenderJob();
 		job.setToolBarView(toolBarView);
@@ -37,10 +38,12 @@ public class StandardToolBarRenderer
 		return job;
 	}
 
+	@Override
 	public GridLayout createLayout() {
 		return new GridLayout(10, false);
 	}
 
+	@Override
 	public void addGeneralToolBarActions(Group group) {
 
 		// Needed to simulate toolbar wrapping which is not implemented for
@@ -65,10 +68,10 @@ public class StandardToolBarRenderer
 		toolBarManager.add(new TakeSnapshotAction());
 
 		toolBarManager2.add(new StartClusteringAction());
-//		toolBarManager2.add(new OpenSearchViewAction());
+		// toolBarManager2.add(new OpenSearchViewAction());
 		toolBarManager2.add(new ClearSelectionsAction());
 		toolBarManager2.add(new RestoreOriginalDataAction());
-		
+
 		// toolBarManager2.add(new MagnifyingGlassAction());
 
 		toolBarManager.update(true);
@@ -82,6 +85,7 @@ public class StandardToolBarRenderer
 		spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
 	}
 
+	@Override
 	public int calcWrapCount(int size) {
 		int wrapCount;
 
@@ -95,6 +99,7 @@ public class StandardToolBarRenderer
 		return wrapCount;
 	}
 
+	@Override
 	public GridData createStandardGridData() {
 		return new GridData(GridData.FILL_VERTICAL);
 	}

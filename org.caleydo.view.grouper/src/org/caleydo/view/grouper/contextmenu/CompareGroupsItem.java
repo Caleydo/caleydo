@@ -6,8 +6,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.event.view.OpenMatchmakerViewEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 
-public class CompareGroupsItem
-	extends AContextMenuItem {
+public class CompareGroupsItem extends AContextMenuItem {
 
 	public CompareGroupsItem(ArrayList<ISet> setsToCompare) {
 		super();

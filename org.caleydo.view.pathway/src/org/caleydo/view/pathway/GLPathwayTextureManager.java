@@ -45,8 +45,8 @@ public class GLPathwayTextureManager {
 		String sPathwayTexturePath = pathway.getImageLink();
 		EPathwayDatabaseType type = pathway.getType();
 
-		sPathwayTexturePath = PathwayManager.get()
-				.getPathwayDatabaseByType(type).getImagePath()
+		sPathwayTexturePath = PathwayManager.get().getPathwayDatabaseByType(type)
+				.getImagePath()
 				+ sPathwayTexturePath;
 
 		generalManager.getLogger().log(
@@ -88,10 +88,8 @@ public class GLPathwayTextureManager {
 
 		TextureCoords texCoords = tmpPathwayTexture.getImageTexCoords();
 
-		float fTextureWidth = PathwayRenderStyle.SCALING_FACTOR_X
-				* pathway.getWidth();
-		float fTextureHeight = PathwayRenderStyle.SCALING_FACTOR_Y
-				* pathway.getHeight();
+		float fTextureWidth = PathwayRenderStyle.SCALING_FACTOR_X * pathway.getWidth();
+		float fTextureHeight = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
 
 		// gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().
 		// getPickingManager()

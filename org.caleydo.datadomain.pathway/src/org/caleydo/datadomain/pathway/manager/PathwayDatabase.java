@@ -10,8 +10,7 @@ import org.caleydo.core.manager.specialized.Organism;
  * 
  * @author Marc Streit
  */
-public class PathwayDatabase
-	implements Serializable {
+public class PathwayDatabase implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,8 +25,8 @@ public class PathwayDatabase
 	/**
 	 * Constructor.
 	 */
-	public PathwayDatabase(final EPathwayDatabaseType type, final String sXMLPath, final String sImagePath,
-		final String sImageMapPath) {
+	public PathwayDatabase(final EPathwayDatabaseType type, final String sXMLPath,
+			final String sImagePath, final String sImageMapPath) {
 		this.type = type;
 		this.sXMLPath = sXMLPath;
 		this.sImagePath = sImagePath;
@@ -35,14 +34,20 @@ public class PathwayDatabase
 
 		String sUserHomePath = System.getProperty(GeneralManager.USER_HOME_TEMPLATE);
 
-		this.sXMLPath = sXMLPath.replace(GeneralManager.USER_HOME_TEMPLATE, sUserHomePath);
-		this.sXMLPath = this.sXMLPath.replace(GeneralManager.CALEYDO_FOLDER_TEMPLATE, GeneralManager.CALEYDO_FOLDER);
+		this.sXMLPath = sXMLPath
+				.replace(GeneralManager.USER_HOME_TEMPLATE, sUserHomePath);
+		this.sXMLPath = this.sXMLPath.replace(GeneralManager.CALEYDO_FOLDER_TEMPLATE,
+				GeneralManager.CALEYDO_FOLDER);
 
-		this.sImagePath = sImagePath.replace(GeneralManager.USER_HOME_TEMPLATE, sUserHomePath);
-		this.sImagePath = this.sImagePath.replace(GeneralManager.CALEYDO_FOLDER_TEMPLATE, GeneralManager.CALEYDO_FOLDER);
+		this.sImagePath = sImagePath.replace(GeneralManager.USER_HOME_TEMPLATE,
+				sUserHomePath);
+		this.sImagePath = this.sImagePath.replace(GeneralManager.CALEYDO_FOLDER_TEMPLATE,
+				GeneralManager.CALEYDO_FOLDER);
 
-		this.sImageMapPath = sImageMapPath.replace(GeneralManager.USER_HOME_TEMPLATE, sUserHomePath);
-		this.sImageMapPath = this.sImageMapPath.replace(GeneralManager.CALEYDO_FOLDER_TEMPLATE, GeneralManager.CALEYDO_FOLDER);
+		this.sImageMapPath = sImageMapPath.replace(GeneralManager.USER_HOME_TEMPLATE,
+				sUserHomePath);
+		this.sImageMapPath = this.sImageMapPath.replace(
+				GeneralManager.CALEYDO_FOLDER_TEMPLATE, GeneralManager.CALEYDO_FOLDER);
 
 		if (type == EPathwayDatabaseType.KEGG) {
 			Organism eOrganism = GeneralManager.get().getOrganism();
@@ -50,8 +55,7 @@ public class PathwayDatabase
 			if (eOrganism == Organism.HOMO_SAPIENS) {
 				this.sImagePath += "hsa/";
 				this.sXMLPath += "hsa/";
-			}
-			else if (eOrganism == Organism.MUS_MUSCULUS) {
+			} else if (eOrganism == Organism.MUS_MUSCULUS) {
 				this.sImagePath += "mmu/";
 				this.sXMLPath += "mmu/";
 			}

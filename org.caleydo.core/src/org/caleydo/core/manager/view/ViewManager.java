@@ -94,7 +94,6 @@ public class ViewManager
 		glViewCreators = new ArrayList<IViewCreator>();
 	}
 
-	
 	public void init() {
 		fpsAnimator = new FPSAnimator(60);
 
@@ -104,7 +103,7 @@ public class ViewManager
 		displayLoopExecution.executeMultiple(connectedElementRepManager);
 	}
 
-	
+	@Override
 	public boolean hasItem(int iItemId) {
 		if (hashItems.containsKey(iItemId))
 			return true;
@@ -126,7 +125,6 @@ public class ViewManager
 		return hashGLViewID2GLView.get(iItemID);
 	}
 
-	
 	public IView createView(String viewType, int parentContainerID, String label) {
 		IView view = null;
 
@@ -144,7 +142,6 @@ public class ViewManager
 		return view;
 	}
 
-	
 	public IView createGLView(final EManagedObjectType useViewType, final int iParentContainerID,
 		final String sLabel) {
 		IView view = null;
@@ -163,7 +160,6 @@ public class ViewManager
 		return view;
 	}
 
-	
 	public AGLView createGLView(String viewID, GLCaleydoCanvas glCanvas, final String label,
 		final IViewFrustum viewFrustum) {
 		GeneralManager
@@ -208,7 +204,6 @@ public class ViewManager
 		return glView;
 	}
 
-	
 	public boolean registerGLCanvas(final GLCaleydoCanvas glCanvas) {
 		int iGLCanvasID = glCanvas.getID();
 
@@ -226,7 +221,6 @@ public class ViewManager
 		return true;
 	}
 
-	
 	public boolean unregisterGLCanvas(final GLCaleydoCanvas glCanvas) {
 
 		if (glCanvas == null)
@@ -239,7 +233,6 @@ public class ViewManager
 		return true;
 	}
 
-	
 	public void registerGLEventListenerByGLCanvas(final GLCaleydoCanvas glCanvas,
 		final AGLView gLEventListener) {
 		hashGLViewID2GLView.put(gLEventListener.getID(), gLEventListener);
@@ -267,7 +260,6 @@ public class ViewManager
 		hashItems.clear();
 	}
 
-	
 	public void unregisterGLView(final AGLView gViews) {
 
 		if (gViews == null)
@@ -286,12 +278,10 @@ public class ViewManager
 		hashGLViewID2GLView.remove(gViews.getID());
 	}
 
-	
 	public Collection<GLCaleydoCanvas> getAllGLCanvas() {
 		return hashGLCanvasID2GLCanvas.values();
 	}
 
-	
 	public Collection<AGLView> getAllGLViews() {
 		return hashGLViewID2GLView.values();
 	}
@@ -308,7 +298,6 @@ public class ViewManager
 		return infoAreaManager;
 	}
 
-	
 	public void startAnimator() {
 
 		// // add all canvas objects before starting animator
@@ -324,19 +313,16 @@ public class ViewManager
 		fpsAnimator.setPrintExceptions(true);
 	}
 
-	
 	public void stopAnimator() {
 		if (fpsAnimator.isAnimating())
 			fpsAnimator.stop();
 	}
 
-	
 	public void registerGLCanvasToAnimator(final GLCanvas glCanvas) {
 
 		fpsAnimator.add(glCanvas);
 	}
 
-	
 	public void unregisterGLCanvasFromAnimator(final GLCaleydoCanvas glCanvas) {
 		fpsAnimator.remove(glCanvas);
 	}
@@ -407,7 +393,7 @@ public class ViewManager
 		generalManager.getGUIBridge().createView(serializedView);
 	}
 
-	
+	@Override
 	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 		final AEvent event) {
 		// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getDisplay().asyncExec(new
@@ -418,7 +404,7 @@ public class ViewManager
 		// });
 	}
 
-	
+	@Override
 	public void registerEventListeners() {
 		GeneralManager generalManager = GeneralManager.get();
 		EventPublisher eventPublisher = generalManager.getEventPublisher();
@@ -428,8 +414,8 @@ public class ViewManager
 		eventPublisher.addListener(CreateGUIViewEvent.class, createGUIViewListener);
 	}
 
+	@Override
 	@SuppressWarnings("unused")
-	
 	public void unregisterEventListeners() {
 		GeneralManager generalManager = GeneralManager.get();
 		EventPublisher eventPublisher = generalManager.getEventPublisher();
@@ -449,12 +435,10 @@ public class ViewManager
 		return displayLoopExecution;
 	}
 
-	
 	public void addViewCreator(IViewCreator glViewCreator) {
 		glViewCreators.add(glViewCreator);
 	}
 
-	
 	public IViewCreator getViewCreator(String viewType) {
 
 		for (IViewCreator glViewCreator : glViewCreators) {

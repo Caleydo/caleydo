@@ -41,23 +41,20 @@ public class AnimationPullInDetailOutside extends ADrawingStateAnimation {
 	 *            NavigationHistory instance that shall be used.
 	 */
 	public AnimationPullInDetailOutside(DrawingController drawingController,
-			GLRadialHierarchy radialHierarchy,
-			NavigationHistory navigationHistory) {
+			GLRadialHierarchy radialHierarchy, NavigationHistory navigationHistory) {
 		super(drawingController, radialHierarchy, navigationHistory);
 		fAnimationDuration = DEFAULT_ANIMATION_DURATION;
 	}
 
 	@Override
-	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu,
-			double dTimePassed) {
+	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu, double dTimePassed) {
 		PartialDisc pdCurrentSelectedElement = radialHierarchy
 				.getCurrentSelectedElement();
-		PartialDisc pdCurrentRootElement = radialHierarchy
-				.getCurrentRootElement();
+		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
 
 		if (!bAnimationStarted) {
-			initAnimationFirstPart(fXCenter, fYCenter,
-					pdCurrentSelectedElement, pdCurrentRootElement);
+			initAnimationFirstPart(fXCenter, fYCenter, pdCurrentSelectedElement,
+					pdCurrentRootElement);
 			iAnimationPart = 1;
 			bAnimationStarted = true;
 			radialHierarchy.setAnimationActive(true);
@@ -75,31 +72,28 @@ public class AnimationPullInDetailOutside extends ADrawingStateAnimation {
 		pdCurrentRootElement.setPDDrawingStrategyChildren(
 				drawingStrategyManager.getDefaultDrawingStrategy(),
 				iDisplayedOverviewDepth);
-		pdCurrentSelectedElement
-				.setPDDrawingStrategyChildren(
-						drawingStrategyManager
-								.createDrawingStrategy(EPDDrawingStrategyType.INVISIBLE),
-						iDisplayedDetailViewDepth);
+		pdCurrentSelectedElement.setPDDrawingStrategyChildren(drawingStrategyManager
+				.createDrawingStrategy(EPDDrawingStrategyType.INVISIBLE),
+				iDisplayedDetailViewDepth);
 
-		pdCurrentRootElement.drawHierarchyFull(gl, glu, mvOverviewWidth
-				.getMovementValue(), iDisplayedOverviewDepth);
+		pdCurrentRootElement.drawHierarchyFull(gl, glu,
+				mvOverviewWidth.getMovementValue(), iDisplayedOverviewDepth);
 
 		pdCurrentSelectedElement.setPDDrawingStrategyChildren(
 				drawingStrategyManager.getDefaultDrawingStrategy(),
 				iDisplayedDetailViewDepth);
 
 		pdCurrentSelectedElement.drawHierarchyAngular(gl, glu,
-				mvDetailViewWidth.getMovementValue(),
-				iDisplayedDetailViewDepth, mvDetailViewStartAngle
-						.getMovementValue(), mvDetailViewAngle
-						.getMovementValue(), mvDetailViewInnerRadius
-						.getMovementValue());
+				mvDetailViewWidth.getMovementValue(), iDisplayedDetailViewDepth,
+				mvDetailViewStartAngle.getMovementValue(),
+				mvDetailViewAngle.getMovementValue(),
+				mvDetailViewInnerRadius.getMovementValue());
 
 		if (haveMovementValuesReachedTargets()) {
 			iAnimationPart++;
 			if (iAnimationPart == 2) {
-				initAnimationSecondPart(fXCenter, fYCenter,
-						pdCurrentSelectedElement, pdCurrentRootElement);
+				initAnimationSecondPart(fXCenter, fYCenter, pdCurrentSelectedElement,
+						pdCurrentRootElement);
 			}
 			if (iAnimationPart > 2) {
 				bAnimationStarted = false;
@@ -114,11 +108,12 @@ public class AnimationPullInDetailOutside extends ADrawingStateAnimation {
 			radialHierarchy.setAnimationActive(false);
 			radialHierarchy.setCurrentSelectedElement(pdCurrentRootElement);
 
-			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement,
-					pdCurrentRootElement, radialHierarchy
-							.getMaxDisplayedHierarchyDepth());
-			radialHierarchy.setNewSelection(SelectionType.SELECTION,
-					pdCurrentRootElement);
+			navigationHistory
+					.addNewHistoryEntry(dsNext, pdCurrentRootElement,
+							pdCurrentRootElement,
+							radialHierarchy.getMaxDisplayedHierarchyDepth());
+			radialHierarchy
+					.setNewSelection(SelectionType.SELECTION, pdCurrentRootElement);
 			radialHierarchy.setDisplayListDirty();
 		}
 		gl.glPopMatrix();
@@ -139,25 +134,22 @@ public class AnimationPullInDetailOutside extends ADrawingStateAnimation {
 	 *            Current root partial disc.
 	 */
 	private void initAnimationFirstPart(float fXCenter, float fYCenter,
-			PartialDisc pdCurrentSelectedElement,
-			PartialDisc pdCurrentRootElement) {
+			PartialDisc pdCurrentSelectedElement, PartialDisc pdCurrentRootElement) {
 
 		iDisplayedDetailViewDepth = pdCurrentSelectedElement.getCurrentDepth();
 		iDisplayedOverviewDepth = pdCurrentRootElement.getCurrentDepth();
 
 		float fCurrentSelectedElementStartAngle = pdCurrentSelectedElement
 				.getCurrentStartAngle();
-		float fCurrentSelectedElementAngle = pdCurrentSelectedElement
-				.getCurrentAngle();
+		float fCurrentSelectedElementAngle = pdCurrentSelectedElement.getCurrentAngle();
 		float fCurrentSelectedElementInnerRadius = pdCurrentSelectedElement
 				.getCurrentInnerRadius();
-		float fCurrentSelectedElementWidth = pdCurrentSelectedElement
-				.getCurrentWidth();
+		float fCurrentSelectedElementWidth = pdCurrentSelectedElement.getCurrentWidth();
 
 		float fCurrentRootWidth = pdCurrentRootElement.getCurrentWidth();
 
-		pdCurrentRootElement.simulateDrawHierarchyFull(pdCurrentRootElement
-				.getCurrentWidth(), iDisplayedOverviewDepth);
+		pdCurrentRootElement.simulateDrawHierarchyFull(
+				pdCurrentRootElement.getCurrentWidth(), iDisplayedOverviewDepth);
 
 		float fCurrentSelectedElementTargetAngle = pdCurrentSelectedElement
 				.getCurrentAngle();
@@ -168,20 +160,18 @@ public class AnimationPullInDetailOutside extends ADrawingStateAnimation {
 			fCurrentSelectedElementTargetStartAngle += 360;
 		}
 
-		mvDetailViewAngle = createNewMovementValue(
-				fCurrentSelectedElementAngle,
+		mvDetailViewAngle = createNewMovementValue(fCurrentSelectedElementAngle,
 				fCurrentSelectedElementTargetAngle, fAnimationDuration);
 		mvDetailViewStartAngle = createNewMovementValue(
 				fCurrentSelectedElementStartAngle,
 				fCurrentSelectedElementTargetStartAngle, fAnimationDuration);
 		mvDetailViewInnerRadius = createNewMovementValue(
-				fCurrentSelectedElementInnerRadius,
-				fCurrentSelectedElementInnerRadius, fAnimationDuration);
-		mvDetailViewWidth = createNewMovementValue(
-				fCurrentSelectedElementWidth, fCurrentSelectedElementWidth,
+				fCurrentSelectedElementInnerRadius, fCurrentSelectedElementInnerRadius,
 				fAnimationDuration);
-		mvOverviewWidth = createNewMovementValue(fCurrentRootWidth,
-				fCurrentRootWidth, fAnimationDuration);
+		mvDetailViewWidth = createNewMovementValue(fCurrentSelectedElementWidth,
+				fCurrentSelectedElementWidth, fAnimationDuration);
+		mvOverviewWidth = createNewMovementValue(fCurrentRootWidth, fCurrentRootWidth,
+				fAnimationDuration);
 	}
 
 	/**
@@ -199,18 +189,15 @@ public class AnimationPullInDetailOutside extends ADrawingStateAnimation {
 	 *            Current root partial disc.
 	 */
 	private void initAnimationSecondPart(float fXCenter, float fYCenter,
-			PartialDisc pdCurrentSelectedElement,
-			PartialDisc pdCurrentRootElement) {
+			PartialDisc pdCurrentSelectedElement, PartialDisc pdCurrentRootElement) {
 
 		float fCurrentRootWidth = pdCurrentRootElement.getCurrentWidth();
-		float fCurrentSelectedElementWidth = pdCurrentSelectedElement
-				.getCurrentWidth();
+		float fCurrentSelectedElementWidth = pdCurrentSelectedElement.getCurrentWidth();
 		float fCurrentSelecedElementInnderRadius = pdCurrentSelectedElement
 				.getCurrentInnerRadius();
 		float fCurrentSelectedElementStartAngle = pdCurrentSelectedElement
 				.getCurrentStartAngle();
-		float fCurrentSelectedElementAngle = pdCurrentSelectedElement
-				.getCurrentAngle();
+		float fCurrentSelectedElementAngle = pdCurrentSelectedElement.getCurrentAngle();
 
 		float fHierarchyOuterRadius = Math.min(fXCenter
 				* RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE, fYCenter
@@ -225,19 +212,18 @@ public class AnimationPullInDetailOutside extends ADrawingStateAnimation {
 
 		alMovementValues.clear();
 
-		mvOverviewWidth = createNewMovementValue(fCurrentRootWidth,
+		mvOverviewWidth = createNewMovementValue(fCurrentRootWidth, fTargetWidth,
+				fAnimationDuration);
+		mvDetailViewWidth = createNewMovementValue(fCurrentSelectedElementWidth,
 				fTargetWidth, fAnimationDuration);
-		mvDetailViewWidth = createNewMovementValue(
-				fCurrentSelectedElementWidth, fTargetWidth, fAnimationDuration);
 		mvDetailViewInnerRadius = createNewMovementValue(
 				fCurrentSelecedElementInnderRadius,
 				fCurrentSelectedElementTargetInnerRadius, fAnimationDuration);
-		mvDetailViewAngle = createNewMovementValue(
-				fCurrentSelectedElementAngle, fCurrentSelectedElementAngle,
-				fAnimationDuration);
+		mvDetailViewAngle = createNewMovementValue(fCurrentSelectedElementAngle,
+				fCurrentSelectedElementAngle, fAnimationDuration);
 		mvDetailViewStartAngle = createNewMovementValue(
-				fCurrentSelectedElementStartAngle,
-				fCurrentSelectedElementStartAngle, fAnimationDuration);
+				fCurrentSelectedElementStartAngle, fCurrentSelectedElementStartAngle,
+				fAnimationDuration);
 	}
 
 	@Override

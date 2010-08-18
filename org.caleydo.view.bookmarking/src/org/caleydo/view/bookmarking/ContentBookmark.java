@@ -29,13 +29,13 @@ class ContentBookmark extends ABookmark {
 
 	@Override
 	public void render(GL gl) {
-//		String sContent = GeneralManager.get().getIDMappingManager().getID(
-//				manager.getDataDomain().getPrimaryContentMappingType(), EIDType.GENE_SYMBOL, id);
-//
+		// String sContent = GeneralManager.get().getIDMappingManager().getID(
+		// manager.getDataDomain().getPrimaryContentMappingType(),
+		// EIDType.GENE_SYMBOL, id);
+		//
 		float yOrigin = dimensions.getYOrigin() - 0.08f;
 		String sContent = manager.getDataDomain().getStorageLabel(idType, id);
-		RenderingHelpers.renderText(gl, textRenderer, sContent, dimensions
-				.getXOrigin()
+		RenderingHelpers.renderText(gl, textRenderer, sContent, dimensions.getXOrigin()
 				+ BookmarkRenderStyle.SIDE_SPACING, yOrigin,
 				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 

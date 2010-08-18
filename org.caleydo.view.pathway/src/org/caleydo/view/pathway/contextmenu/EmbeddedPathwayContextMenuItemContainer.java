@@ -19,7 +19,8 @@ public class EmbeddedPathwayContextMenuItemContainer extends AItemContainer {
 	public EmbeddedPathwayContextMenuItemContainer() {
 		super();
 
-		if (DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic") == null)
+		if (DataDomainManager.getInstance().getDataDomain(
+				"org.caleydo.datadomain.genetic") == null)
 			throw new IllegalStateException(
 					"This context menu container is only valid for genetic data");
 

@@ -31,6 +31,7 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 	public final static String VIEW_ID = "org.caleydo.view.template";
 
 	private TemplateRenderStyle renderStyle;
+
 	/**
 	 * Constructor.
 	 * 
@@ -66,6 +67,7 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						glParentView.getParentGLCanvas().getParentComposite()
 								.addKeyListener(glKeyListener);
@@ -96,7 +98,7 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 	public void display(GL gl) {
 
 		// TODO: IMPLEMENT GL STUFF
-		
+
 		gl.glBegin(GL.GL_QUADS);
 		gl.glColor3f(0, 1, 0);
 		gl.glVertex3f(0, 0, 0);
@@ -154,37 +156,37 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void handleRedrawView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void handleUpdateView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void handleClearSelections() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void clearAllSelections() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void broadcastElements(EVAOperation type) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

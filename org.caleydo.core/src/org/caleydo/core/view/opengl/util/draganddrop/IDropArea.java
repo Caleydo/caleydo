@@ -6,10 +6,9 @@ import javax.media.opengl.GL;
 
 public interface IDropArea {
 
-	public void handleDragOver(GL gl, Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY);
+	public void handleDragOver(GL gl, Set<IDraggable> draggables, float mouseCoordinateX,
+		float mouseCoordinateY);
 
-	public void handleDrop(GL gl, Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY,
-			DragAndDropController dragAndDropController);
+	public void handleDrop(GL gl, Set<IDraggable> draggables, float mouseCoordinateX, float mouseCoordinateY,
+		DragAndDropController dragAndDropController);
 }

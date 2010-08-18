@@ -28,8 +28,7 @@ public class RcpGLTemplateView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedTemplateView serializedView = new SerializedTemplateView(
-				dataDomainType);
+		SerializedTemplateView serializedView = new SerializedTemplateView(dataDomainType);
 		return serializedView;
 	}
 

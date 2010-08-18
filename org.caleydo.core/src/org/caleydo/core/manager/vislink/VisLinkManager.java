@@ -229,6 +229,7 @@ public class VisLinkManager
 		return responseBuf.toString();
 	}
 
+	@Override
 	public void run() {
 		ConnectedElementRepresentationManager cerm =
 			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
@@ -238,6 +239,7 @@ public class VisLinkManager
 			if (ccm != null) {
 				cerm.setNewCanvasVertices(false);
 				display.asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						SelectionPoint2DList screenPoints = new SelectionPoint2DList();
 						for (SelectionPoint2DList canvasPoints : ccm.values()) {

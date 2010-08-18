@@ -22,7 +22,9 @@ public interface IContentVAUpdateHandler
 	/**
 	 * Handler method to be called by the {@link ReplaceContentVAListener} when a {@link ReplaceVAEvent} was
 	 * received.
-	 * @param setID TODO
+	 * 
+	 * @param setID
+	 *            TODO
 	 * @param vaType
 	 *            the type of the VA which is updated
 	 */

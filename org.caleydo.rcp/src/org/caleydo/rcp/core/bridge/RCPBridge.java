@@ -23,24 +23,25 @@ import org.eclipse.ui.PlatformUI;
 
 public class RCPBridge
 	implements IGUIBridge, IListenerOwner {
-	
+
 	private String sFileNameCurrentDataSet;
-	
+
 	private ClusterSetListener clusterSetListener;
-	
+
 	public RCPBridge() {
 		clusterSetListener = new ClusterSetListener();
 	}
-	
+
+	@Override
 	public void init() {
 		registerEventListeners();
 	}
-	
+
 	@Override
 	public void closeApplication() {
 
 		unregisterEventListeners();
-		
+
 		try {
 			new ExitHandler().execute(null);
 		}
@@ -49,21 +50,22 @@ public class RCPBridge
 		}
 	}
 
+	@Override
 	public void registerEventListeners() {
 
 		clusterSetListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(ClusterSetEvent.class,
-			clusterSetListener);
+		GeneralManager.get().getEventPublisher().addListener(ClusterSetEvent.class, clusterSetListener);
 
 	}
 
+	@Override
 	public void unregisterEventListeners() {
 		if (clusterSetListener != null) {
 			GeneralManager.get().getEventPublisher().removeListener(clusterSetListener);
 			clusterSetListener = null;
 		}
 	}
-	
+
 	@Override
 	public void setShortInfo(String sMessage) {
 		// PlatformUI.getWorkbench().getActiveWorkbenchWindow();
@@ -88,6 +90,7 @@ public class RCPBridge
 	@Override
 	public void createView(final ASerializedView serializedView) {
 		Display.getDefault().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					IWorkbenchPage page =
@@ -109,6 +112,7 @@ public class RCPBridge
 	@Override
 	public void closeView(final String viewGUIID) {
 		Display.getDefault().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				IViewPart viewToClose =
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(viewGUIID);
@@ -121,7 +125,7 @@ public class RCPBridge
 	@Override
 	public void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				listener.handleEvent(event);

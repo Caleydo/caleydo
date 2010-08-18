@@ -21,7 +21,7 @@ import org.caleydo.core.view.opengl.util.animation.MovementValue;
  * @author Christian Partl
  */
 @XmlType
-@XmlSeeAlso( { AnimationNewRootElement.class, AnimationParentRootElement.class,
+@XmlSeeAlso({ AnimationNewRootElement.class, AnimationParentRootElement.class,
 		AnimationPopOutDetailOutside.class, AnimationPullInDetailOutside.class })
 public abstract class ADrawingStateAnimation extends ADrawingState {
 
@@ -51,8 +51,7 @@ public abstract class ADrawingStateAnimation extends ADrawingState {
 	 *            NavigationHistory instance that shall be used.
 	 */
 	public ADrawingStateAnimation(DrawingController drawingController,
-			GLRadialHierarchy radialHierarchy,
-			NavigationHistory navigationHistory) {
+			GLRadialHierarchy radialHierarchy, NavigationHistory navigationHistory) {
 
 		super(drawingController, radialHierarchy, navigationHistory);
 		fPreviousTimeStamp = 0;
@@ -135,17 +134,17 @@ public abstract class ADrawingStateAnimation extends ADrawingState {
 	 *            value.
 	 * @return Instance of the newly created movement value.
 	 */
-	protected MovementValue createNewMovementValue(float fStartValue,
-			float fTargetValue, float fMovementDuration) {
+	protected MovementValue createNewMovementValue(float fStartValue, float fTargetValue,
+			float fMovementDuration) {
 
 		float fSpeed = (fTargetValue - fStartValue) / fMovementDuration;
 		MovementValue movementValue;
 		if (fSpeed > 0)
-			movementValue = new MovementValue(fStartValue, fTargetValue,
-					fSpeed, MovementValue.CRITERION_GREATER_OR_EQUAL);
+			movementValue = new MovementValue(fStartValue, fTargetValue, fSpeed,
+					MovementValue.CRITERION_GREATER_OR_EQUAL);
 		else
-			movementValue = new MovementValue(fStartValue, fTargetValue,
-					fSpeed, MovementValue.CRITERION_SMALLER_OR_EQUAL);
+			movementValue = new MovementValue(fStartValue, fTargetValue, fSpeed,
+					MovementValue.CRITERION_SMALLER_OR_EQUAL);
 
 		alMovementValues.add(movementValue);
 

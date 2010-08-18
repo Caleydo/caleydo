@@ -95,7 +95,7 @@ public abstract class ATemplate {
 	}
 
 	public void recalculateSpacings() {
-//		setParameters();
+		// setParameters();
 	}
 
 	public float getYOverhead() {

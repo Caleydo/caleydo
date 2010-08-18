@@ -690,6 +690,7 @@ public class CNode
 	 * 
 	 * @return the revision
 	 */
+	@Override
 	public String getRevision() {
 		return RevisionUtils.extract("$Revision: 1.25 $");
 	}

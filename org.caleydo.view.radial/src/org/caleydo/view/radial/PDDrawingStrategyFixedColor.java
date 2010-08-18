@@ -14,8 +14,7 @@ import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
  * @author Christian Partl
  */
 
-public class PDDrawingStrategyFixedColor extends
-		APDDrawingStrategyChildIndicator {
+public class PDDrawingStrategyFixedColor extends APDDrawingStrategyChildIndicator {
 
 	private float fFillColorR;
 	private float fFillColorG;
@@ -37,8 +36,7 @@ public class PDDrawingStrategyFixedColor extends
 	 *            ID of the view where the elements will be displayed. Needed
 	 *            for picking.
 	 */
-	public PDDrawingStrategyFixedColor(PickingManager pickingManager,
-			int iViewID) {
+	public PDDrawingStrategyFixedColor(PickingManager pickingManager, int iViewID) {
 		super(pickingManager, iViewID);
 
 		fFillColorR = 0.0f;
@@ -60,22 +58,19 @@ public class PDDrawingStrategyFixedColor extends
 		float fRadius = pdDiscToDraw.getCurrentWidth();
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw
-						.getElementID()));
+				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
-			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(),
-					fRadius, pdDiscToDraw.getCurrentStartAngle(), pdDiscToDraw
-							.getCurrentAngle());
+			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(), fRadius,
+					pdDiscToDraw.getCurrentStartAngle(), pdDiscToDraw.getCurrentAngle());
 		}
 
 		gl.glColor4f(fFillColorR, fFillColorG, fFillColorB, fFillAlpha);
 		GLPrimitives.renderCircle(glu, fRadius, iNumSlicesPerFullDisc);
 
 		gl.glColor4f(fBorderColorR, fBorderColorG, fBorderColorB, fBorderAlpha);
-		GLPrimitives.renderCircleBorder(gl, glu, fRadius,
-				iNumSlicesPerFullDisc,
+		GLPrimitives.renderCircleBorder(gl, glu, fRadius, iNumSlicesPerFullDisc,
 				RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_WIDTH);
 
 		gl.glPopAttrib();
@@ -95,8 +90,7 @@ public class PDDrawingStrategyFixedColor extends
 		float fWidth = pdDiscToDraw.getCurrentWidth();
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw
-						.getElementID()));
+				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
@@ -104,14 +98,12 @@ public class PDDrawingStrategyFixedColor extends
 		}
 
 		gl.glColor4f(fFillColorR, fFillColorG, fFillColorB, fFillAlpha);
-		GLPrimitives.renderPartialDisc(glu, fInnerRadius,
-				fInnerRadius + fWidth, fStartAngle, fAngle,
-				iNumSlicesPerFullDisc);
+		GLPrimitives.renderPartialDisc(glu, fInnerRadius, fInnerRadius + fWidth,
+				fStartAngle, fAngle, iNumSlicesPerFullDisc);
 
 		gl.glColor4f(fBorderColorR, fBorderColorG, fBorderColorB, fBorderAlpha);
 		GLPrimitives.renderPartialDiscBorder(gl, glu, fInnerRadius,
-				fInnerRadius + fWidth, fStartAngle, fAngle,
-				iNumSlicesPerFullDisc,
+				fInnerRadius + fWidth, fStartAngle, fAngle, iNumSlicesPerFullDisc,
 				RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_WIDTH);
 
 		gl.glPopAttrib();
@@ -131,8 +123,7 @@ public class PDDrawingStrategyFixedColor extends
 	 * @param fAlpha
 	 *            Transparency value of the fill color.
 	 */
-	public void setFillColor(float fColorR, float fColorG, float fColorB,
-			float fAlpha) {
+	public void setFillColor(float fColorR, float fColorG, float fColorB, float fAlpha) {
 		fFillColorR = fColorR;
 		fFillColorG = fColorG;
 		fFillColorB = fColorB;
@@ -151,8 +142,7 @@ public class PDDrawingStrategyFixedColor extends
 	 * @param fAlpha
 	 *            Transparency value of the border color.
 	 */
-	public void setBorderColor(float fColorR, float fColorG, float fColorB,
-			float fAlpha) {
+	public void setBorderColor(float fColorR, float fColorG, float fColorB, float fAlpha) {
 		fBorderColorR = fColorR;
 		fBorderColorG = fColorG;
 		fBorderColorB = fColorB;

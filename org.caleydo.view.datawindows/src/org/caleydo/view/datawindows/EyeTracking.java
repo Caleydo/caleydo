@@ -53,14 +53,15 @@ public class EyeTracking {
 	}
 
 	public void receiveData() {
-		
-			receivedEyeData = tracker.getEyeTrackData();
-			rawEyeTrackerPosition[0] = (int) receivedEyeData[0];
-			rawEyeTrackerPosition[1] = (int) receivedEyeData[1];
-//			if(this.rawEyeTrackerPosition[0]!=0){
-//			//System.out.println("eyeTracker Working: "+ rawEyeTrackerPosition[0]+" "+rawEyeTrackerPosition[0]);
-//			}
-		
+
+		receivedEyeData = tracker.getEyeTrackData();
+		rawEyeTrackerPosition[0] = (int) receivedEyeData[0];
+		rawEyeTrackerPosition[1] = (int) receivedEyeData[1];
+		// if(this.rawEyeTrackerPosition[0]!=0){
+		// //System.out.println("eyeTracker Working: "+
+		// rawEyeTrackerPosition[0]+" "+rawEyeTrackerPosition[0]);
+		// }
+
 	}
 
 	public void cutWindowOffset(int x, int y) {
@@ -92,20 +93,20 @@ public class EyeTracking {
 		// there is no need to handle overflow
 		double deltaTime = time.deltaT();
 		totalTime = totalTime + deltaTime;
-		//System.out.println("pause status: "+eyeTrackerPauseStatus);
+		// System.out.println("pause status: "+eyeTrackerPauseStatus);
 		if (this.eyeTrackerPauseStatus > 0) {
-			
+
 			this.eyeTrackerPauseStatus -= deltaTime;
 		} else {
-		
+
 			this.eyeTrackerPauseStatus = 0;
 		}
 
 		time.update();
-		this.coordinateList.add(new EyeCoordinateListEntry(
-				rawEyeTrackerPosition, totalTime));
+		this.coordinateList.add(new EyeCoordinateListEntry(rawEyeTrackerPosition,
+				totalTime));
 		int size = coordinateList.size();
-	
+
 		double dx;
 		double dy;
 		EyeCoordinateListEntry actualEntry;
@@ -128,9 +129,8 @@ public class EyeTracking {
 				}
 			}
 		}
-		
+
 		if (this.eyeTrackerPauseStatus == 0) {
-		
 
 			this.fixedCoordinate[0] = this.rawEyeTrackerPosition[0];
 			this.fixedCoordinate[1] = this.rawEyeTrackerPosition[1];
@@ -150,5 +150,5 @@ public class EyeTracking {
 	public void pauseEyeTracker() {
 		this.eyeTrackerPauseStatus = this.pauseTime;
 	}
-	
+
 }

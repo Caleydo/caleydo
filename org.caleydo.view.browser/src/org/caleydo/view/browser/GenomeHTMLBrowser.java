@@ -126,6 +126,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 		subContributionComposite.getParent().layout();
 	}
 
+	@Override
 	public void handleSelectionUpdate(final ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		if (selectionDelta.getIDType().getIDCategory() != dataDomain
@@ -133,6 +134,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 			return;
 
 		Display.getDefault().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				if (!checkInternetConnection())
 					return;
@@ -143,76 +145,89 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 				for (SelectionDeltaItem selectionDeltaItem : selectionDelta) {
 					if (selectionDeltaItem.getSelectionType() == SelectionType.SELECTION) {
 
-//						// Integer iRefSeqID =
-//						// generalManager.getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
-//						// EIDType.REFSEQ_MRNA_INT,
-//						// selectionDeltaItem.getPrimaryID());
-//
-//						int expressionIndex = selectionDeltaItem.getPrimaryID();
-//
-//						// FIXME: Due to new mapping system, a mapping involving
-//						// expression index can return a
-//						// Set of
-//						// values, depending on the IDType that has been
-//						// specified when loading expression
-//						// data.
-//						// Possibly a different handling of the Set is required.
-//						Set<String> setRefSeqIDs = generalManager.getIDMappingManager()
-//								.getIDAsSet(EIDType.EXPRESSION_INDEX,
-//										EIDType.REFSEQ_MRNA, expressionIndex);
-//
-//						String sRefSeqID = null;
-//						if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-//							sRefSeqID = (String) setRefSeqIDs.toArray()[0];
-//						}
-//
-//						// FIXME: Due to new mapping system, a mapping involving
-//						// expression index can return a
-//						// Set of
-//						// values, depending on the IDType that has been
-//						// specified when loading expression
-//						// data.
-//						// Possibly a different handling of the Set is required.
-//						Set<Integer> setDavidIDs = generalManager.getIDMappingManager()
-//								.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.DAVID,
-//										expressionIndex);
-//
-//						Integer iDavidID = null;
-//						if ((setDavidIDs != null && !setDavidIDs.isEmpty())) {
-//							iDavidID = (Integer) setDavidIDs.toArray()[0];
-//						}
-//
-//						if (iDavidID == null)
-//							continue;
-//
-//						if (iItemsToLoad == 0) {
-//							String sURL = urlGenerator.createURL(eBrowserQueryType,
-//									iDavidID);
-//
-//							browser.setUrl(sURL);
-//							browser.update();
-//							textURL.setText(sURL);
-//
-//							iAlDavidID.clear();
-//							// list.removeAll();
-//						}
+						// // Integer iRefSeqID =
+						// //
+						// generalManager.getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
+						// // EIDType.REFSEQ_MRNA_INT,
+						// // selectionDeltaItem.getPrimaryID());
+						//
+						// int expressionIndex =
+						// selectionDeltaItem.getPrimaryID();
+						//
+						// // FIXME: Due to new mapping system, a mapping
+						// involving
+						// // expression index can return a
+						// // Set of
+						// // values, depending on the IDType that has been
+						// // specified when loading expression
+						// // data.
+						// // Possibly a different handling of the Set is
+						// required.
+						// Set<String> setRefSeqIDs =
+						// generalManager.getIDMappingManager()
+						// .getIDAsSet(EIDType.EXPRESSION_INDEX,
+						// EIDType.REFSEQ_MRNA, expressionIndex);
+						//
+						// String sRefSeqID = null;
+						// if ((setRefSeqIDs != null &&
+						// !setRefSeqIDs.isEmpty())) {
+						// sRefSeqID = (String) setRefSeqIDs.toArray()[0];
+						// }
+						//
+						// // FIXME: Due to new mapping system, a mapping
+						// involving
+						// // expression index can return a
+						// // Set of
+						// // values, depending on the IDType that has been
+						// // specified when loading expression
+						// // data.
+						// // Possibly a different handling of the Set is
+						// required.
+						// Set<Integer> setDavidIDs =
+						// generalManager.getIDMappingManager()
+						// .getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.DAVID,
+						// expressionIndex);
+						//
+						// Integer iDavidID = null;
+						// if ((setDavidIDs != null && !setDavidIDs.isEmpty()))
+						// {
+						// iDavidID = (Integer) setDavidIDs.toArray()[0];
+						// }
+						//
+						// if (iDavidID == null)
+						// continue;
+						//
+						// if (iItemsToLoad == 0) {
+						// String sURL =
+						// urlGenerator.createURL(eBrowserQueryType,
+						// iDavidID);
+						//
+						// browser.setUrl(sURL);
+						// browser.update();
+						// textURL.setText(sURL);
+						//
+						// iAlDavidID.clear();
+						// // list.removeAll();
+						// }
 
-//						String sOutput = "";
-//						sOutput = sOutput
-//								+ generalManager.getIDMappingManager().getID(
-//										EIDType.DAVID, EIDType.GENE_SYMBOL, iDavidID);
-//
-//						sOutput = sOutput + "\n";
-//						sOutput = sOutput + sRefSeqID;
-//
-//						if (iAlDavidID.contains(selectionDeltaItem.getPrimaryID())) {
-//							continue;
-//						}
-//
-//						// list.add(sOutput);
-//						iAlDavidID.add(iDavidID);
-//
-//						iItemsToLoad++;
+						// String sOutput = "";
+						// sOutput = sOutput
+						// + generalManager.getIDMappingManager().getID(
+						// EIDType.DAVID, EIDType.GENE_SYMBOL, iDavidID);
+						//
+						// sOutput = sOutput + "\n";
+						// sOutput = sOutput + sRefSeqID;
+						//
+						// if
+						// (iAlDavidID.contains(selectionDeltaItem.getPrimaryID()))
+						// {
+						// continue;
+						// }
+						//
+						// // list.add(sOutput);
+						// iAlDavidID.add(iDavidID);
+						//
+						// iItemsToLoad++;
 					}
 				}
 

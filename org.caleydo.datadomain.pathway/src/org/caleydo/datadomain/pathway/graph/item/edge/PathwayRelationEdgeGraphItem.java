@@ -6,13 +6,13 @@ import org.caleydo.core.data.graph.ACaleydoGraphItem;
 import org.caleydo.util.graph.EGraphItemKind;
 
 /**
- * Pathway relation edge belonging to the overall pathway graph. Used for KEGG pathways.
+ * Pathway relation edge belonging to the overall pathway graph. Used for KEGG
+ * pathways.
  * 
  * @author Marc Streit
  */
-public class PathwayRelationEdgeGraphItem
-	extends ACaleydoGraphItem
-	implements Serializable {
+public class PathwayRelationEdgeGraphItem extends ACaleydoGraphItem implements
+		Serializable {
 
 	private static final long serialVersionUID = 1L;
 

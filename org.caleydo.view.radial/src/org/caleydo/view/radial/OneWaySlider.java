@@ -84,8 +84,7 @@ public class OneWaySlider extends AGLGUIElement {
 		bIsDraggingFirstTime = false;
 		bIsBodySelected = false;
 
-		fSlidingElementHeight = Math.min(fHeight * 0.2f,
-				SLIDING_ELEMENT_MAX_HEIGHT);
+		fSlidingElementHeight = Math.min(fHeight * 0.2f, SLIDING_ELEMENT_MAX_HEIGHT);
 		fDownButtonHeight = Math.min(fHeight * 0.2f, DOWN_BUTTON_MAX_HEIGHT);
 		if (iMaxValue - iMinValue - 1 == 0) {
 			fDrawingStep = iValueStep
@@ -98,8 +97,8 @@ public class OneWaySlider extends AGLGUIElement {
 		fSlidingElementDrawingPosition = fDownButtonHeight + iSelectedValue
 				* fDrawingStep;
 
-		textRenderer = new TextRenderer(new Font(SLIDER_FONT_NAME,
-				SLIDER_FONT_STYLE, SLIDER_FONT_SIZE), false);
+		textRenderer = new TextRenderer(new Font(SLIDER_FONT_NAME, SLIDER_FONT_STYLE,
+				SLIDER_FONT_SIZE), false);
 	}
 
 	/**
@@ -120,9 +119,8 @@ public class OneWaySlider extends AGLGUIElement {
 	 * @param iSliderBodyID
 	 *            Picking ID for the slider body.
 	 */
-	public void draw(GL gl, PickingManager pickingManager,
-			TextureManager textureManager, int iViewID, int iSliderID,
-			int iSliderButtonID, int iSliderBodyID) {
+	public void draw(GL gl, PickingManager pickingManager, TextureManager textureManager,
+			int iViewID, int iSliderID, int iSliderButtonID, int iSliderBodyID) {
 
 		gl.glPushMatrix();
 
@@ -131,12 +129,9 @@ public class OneWaySlider extends AGLGUIElement {
 
 		beginGUIElement(gl, scalingPivot);
 
-		gl.glPushName(pickingManager
-				.getPickingID(iViewID,
-						EPickingType.RAD_HIERARCHY_SLIDER_BODY_SELECTION,
-						iSliderBodyID));
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT
-				| GL.GL_LINE_BIT);
+		gl.glPushName(pickingManager.getPickingID(iViewID,
+				EPickingType.RAD_HIERARCHY_SLIDER_BODY_SELECTION, iSliderBodyID));
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 
 		gl.glColor3f(0.6f, 0.6f, 0.6f);
 		gl.glBegin(GL.GL_POLYGON);
@@ -155,44 +150,40 @@ public class OneWaySlider extends AGLGUIElement {
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(0, fSlidingElementDrawingPosition, 0.1f);
 		gl.glVertex3f(fWidth, fSlidingElementDrawingPosition, 0.1f);
-		gl.glVertex3f(fWidth, fSlidingElementDrawingPosition
-				+ fSlidingElementHeight, 0.1f);
-		gl.glVertex3f(0,
-				fSlidingElementDrawingPosition + fSlidingElementHeight, 0.1f);
+		gl.glVertex3f(fWidth, fSlidingElementDrawingPosition + fSlidingElementHeight,
+				0.1f);
+		gl.glVertex3f(0, fSlidingElementDrawingPosition + fSlidingElementHeight, 0.1f);
 		gl.glEnd();
 
 		gl.glPopName();
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.RAD_HIERARCHY_SLIDER_BUTTON_SELECTION,
-				iSliderButtonID));
+				EPickingType.RAD_HIERARCHY_SLIDER_BUTTON_SELECTION, iSliderButtonID));
 
 		Vec3f lowerLeftCorner = new Vec3f(fWidth, fDownButtonHeight, 0);
 		Vec3f lowerRightCorner = new Vec3f(0, fDownButtonHeight, 0);
 		Vec3f upperRightCorner = new Vec3f(0, 0, 0);
 		Vec3f upperLeftCorner = new Vec3f(fWidth, 0, 0);
 
-		textureManager
-				.renderTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE,
-						lowerLeftCorner, lowerRightCorner, upperRightCorner,
-						upperLeftCorner, 1, 1, 1, 1);
+		textureManager.renderTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE,
+				lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner, 1,
+				1, 1, 1);
 
 		gl.glPopName();
 
 		Rectangle2D bounds = textRenderer.getBounds(new Integer(iSelectedValue)
 				.toString());
-		float fFontScaling = determineFontScaling(gl, new Integer(
-				iSelectedValue).toString());
+		float fFontScaling = determineFontScaling(gl,
+				new Integer(iSelectedValue).toString());
 
-		float fTextPositionX = fWidth / 2.0f
-				- ((float) bounds.getWidth() / 2.0f) * fFontScaling;
-		float fTextPositionY = fSlidingElementDrawingPosition
-				+ fSlidingElementHeight / 2.0f
-				- ((float) bounds.getHeight() / 2.0f) * fFontScaling;
+		float fTextPositionX = fWidth / 2.0f - ((float) bounds.getWidth() / 2.0f)
+				* fFontScaling;
+		float fTextPositionY = fSlidingElementDrawingPosition + fSlidingElementHeight
+				/ 2.0f - ((float) bounds.getHeight() / 2.0f) * fFontScaling;
 		textRenderer.setColor(1, 1, 1, 1);
 		textRenderer.begin3DRendering();
 
-		textRenderer.draw3D(new Integer(iSelectedValue).toString(),
-				fTextPositionX, fTextPositionY, 0.2f, fFontScaling);
+		textRenderer.draw3D(new Integer(iSelectedValue).toString(), fTextPositionX,
+				fTextPositionY, 0.2f, fFontScaling);
 
 		textRenderer.end3DRendering();
 		textRenderer.flush();
@@ -219,8 +210,7 @@ public class OneWaySlider extends AGLGUIElement {
 		// fSlidingElementHeight);
 
 		Rectangle2D bounds = textRenderer.getBounds(sText);
-		float fScalingWidth = (fWidth - 0.3f * fWidth)
-				/ (float) bounds.getWidth();
+		float fScalingWidth = (fWidth - 0.3f * fWidth) / (float) bounds.getWidth();
 		float fScalingHeight = (fSlidingElementHeight - 0.3f * fSlidingElementHeight)
 				/ (float) bounds.getHeight();
 
@@ -252,8 +242,7 @@ public class OneWaySlider extends AGLGUIElement {
 		float fYCoordinate = fArTargetWorldCoordinates[1];
 
 		if (bIsDraggingFirstTime) {
-			fDraggingBottomSpacing = fYCoordinate
-					- fSlidingElementDrawingPosition;
+			fDraggingBottomSpacing = fYCoordinate - fSlidingElementDrawingPosition;
 			bIsDraggingFirstTime = false;
 		}
 
@@ -330,8 +319,7 @@ public class OneWaySlider extends AGLGUIElement {
 
 	public void setHeight(float fHeight) {
 		this.fHeight = fHeight;
-		fSlidingElementHeight = Math.min(fHeight * 0.2f,
-				SLIDING_ELEMENT_MAX_HEIGHT);
+		fSlidingElementHeight = Math.min(fHeight * 0.2f, SLIDING_ELEMENT_MAX_HEIGHT);
 		fDownButtonHeight = Math.min(fHeight * 0.2f, DOWN_BUTTON_MAX_HEIGHT);
 		fDrawingStep = iValueStep
 				* ((fHeight - fSlidingElementHeight - fDownButtonHeight) / (iMaxValue

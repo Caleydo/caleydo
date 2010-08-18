@@ -13,8 +13,8 @@ public class OverviewSliderRenderCommand implements IHeatMapRenderCommand {
 	private int viewID;
 	private TextureManager textureManager;
 
-	public OverviewSliderRenderCommand(int viewID,
-			PickingManager pickingManager, TextureManager textureManager) {
+	public OverviewSliderRenderCommand(int viewID, PickingManager pickingManager,
+			TextureManager textureManager) {
 		this.viewID = viewID;
 		this.pickingManager = pickingManager;
 		this.textureManager = textureManager;
@@ -23,11 +23,9 @@ public class OverviewSliderRenderCommand implements IHeatMapRenderCommand {
 	@Override
 	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
 
-		VerticalSlider slider = heatMapWrapper.getOverview()
-				.getOverviewSlider();
+		VerticalSlider slider = heatMapWrapper.getOverview().getOverviewSlider();
 
-		slider.draw(gl, pickingManager, textureManager, viewID, heatMapWrapper
-				.getID());
+		slider.draw(gl, pickingManager, textureManager, viewID, heatMapWrapper.getID());
 
 	}
 

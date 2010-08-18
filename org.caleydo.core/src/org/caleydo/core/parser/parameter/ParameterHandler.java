@@ -42,6 +42,7 @@ public final class ParameterHandler
 		hashKey2Boolean = new ParameterKeyValueDataAndDefault<Boolean>();
 	}
 
+	@Override
 	public void clear() {
 
 		synchronized (getClass()) {
@@ -81,7 +82,7 @@ public final class ParameterHandler
 
 	@Override
 	public Integer getValueInt(final String key) {
-		
+
 		return hashKey2Integer.getValue(key);
 	}
 
@@ -203,34 +204,34 @@ public final class ParameterHandler
 			switch (type) {
 				case BOOL:
 					try {
-						hashKey2Boolean.setValueAndDefaultValue(key, Boolean.valueOf(value), Boolean
-							.valueOf(defaultValue));
+						hashKey2Boolean.setValueAndDefaultValue(key, Boolean.valueOf(value),
+							Boolean.valueOf(defaultValue));
 					}
 					catch (NumberFormatException nfe) {
-						hashKey2Boolean.setValueAndDefaultValue(key, Boolean.valueOf(defaultValue), Boolean
-							.valueOf(defaultValue));
+						hashKey2Boolean.setValueAndDefaultValue(key, Boolean.valueOf(defaultValue),
+							Boolean.valueOf(defaultValue));
 					}
 					break;
 
 				case FLOAT:
 					try {
-						hashKey2Float.setValueAndDefaultValue(key, Float.valueOf(value), Float
-							.valueOf(defaultValue));
+						hashKey2Float.setValueAndDefaultValue(key, Float.valueOf(value),
+							Float.valueOf(defaultValue));
 					}
 					catch (NumberFormatException nfe) {
-						hashKey2Float.setValueAndDefaultValue(key, Float.valueOf(defaultValue), Float
-							.valueOf(defaultValue));
+						hashKey2Float.setValueAndDefaultValue(key, Float.valueOf(defaultValue),
+							Float.valueOf(defaultValue));
 					}
 					break;
 
 				case INT:
 					try {
-						hashKey2Integer.setValueAndDefaultValue(key, Integer.valueOf(value), Integer
-							.valueOf(defaultValue));
+						hashKey2Integer.setValueAndDefaultValue(key, Integer.valueOf(value),
+							Integer.valueOf(defaultValue));
 					}
 					catch (NumberFormatException nfe) {
-						hashKey2Integer.setValueAndDefaultValue(key, Integer.valueOf(defaultValue), Integer
-							.valueOf(defaultValue));
+						hashKey2Integer.setValueAndDefaultValue(key, Integer.valueOf(defaultValue),
+							Integer.valueOf(defaultValue));
 					}
 					break;
 

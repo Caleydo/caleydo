@@ -159,6 +159,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		compareViewStateController.init(gl);
 
 		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				KeyListener listener = new org.eclipse.swt.events.KeyAdapter() {
 
@@ -183,6 +184,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 		// Register keyboard listener to GL canvas
 		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
 			}
@@ -198,6 +200,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						glParentView.getParentGLCanvas().getParentComposite()
 								.addKeyListener(glKeyListener);

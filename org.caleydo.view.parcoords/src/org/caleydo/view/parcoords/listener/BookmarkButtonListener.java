@@ -10,8 +10,7 @@ import org.caleydo.view.parcoords.GLParallelCoordinates;
  * 
  * @author Alexander Lex
  */
-public class BookmarkButtonListener extends
-		AEventListener<GLParallelCoordinates> {
+public class BookmarkButtonListener extends AEventListener<GLParallelCoordinates> {
 
 	@Override
 	public void handleEvent(AEvent event) {

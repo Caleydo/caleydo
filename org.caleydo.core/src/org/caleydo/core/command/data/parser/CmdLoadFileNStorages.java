@@ -63,8 +63,8 @@ public class CmdLoadFileNStorages
 		iAlStorageIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(iAlStorageIDs);
 
 		int[] iArrayStartStop =
-			StringConversionTool.convertStringToIntArray(parameterHandler
-				.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
+			StringConversionTool.convertStringToIntArray(
+				parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
 
 		if (iArrayStartStop.length > 0) {
 			loadDataParameters.setStartParseFileAtLine(iArrayStartStop[0]);
@@ -83,7 +83,7 @@ public class CmdLoadFileNStorages
 			}
 		}
 
-		dataDomain = 
+		dataDomain =
 			(ASetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
 				parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE4.getXmlKey()));
 		loadDataParameters.setDataDomain(dataDomain);
@@ -123,7 +123,7 @@ public class CmdLoadFileNStorages
 		generalManager.getGUIBridge().setFileNameCurrentDataSet(loadDataParameters.getFileName());
 
 		dataDomain.setLoadDataParameters(loadDataParameters);
-		
+
 		dataDomain.updateSetInViews();
 	}
 

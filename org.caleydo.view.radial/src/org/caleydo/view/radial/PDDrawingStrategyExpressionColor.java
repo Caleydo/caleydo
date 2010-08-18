@@ -19,8 +19,7 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
  * 
  * @author Christian Partl
  */
-public class PDDrawingStrategyExpressionColor extends
-		APDDrawingStrategyChildIndicator {
+public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildIndicator {
 
 	/**
 	 * Constructor.
@@ -32,8 +31,7 @@ public class PDDrawingStrategyExpressionColor extends
 	 *            ID of the view where the elements will be displayed. Needed
 	 *            for picking.
 	 */
-	public PDDrawingStrategyExpressionColor(PickingManager pickingManager,
-			int iViewID) {
+	public PDDrawingStrategyExpressionColor(PickingManager pickingManager, int iViewID) {
 		super(pickingManager, iViewID);
 	}
 
@@ -46,22 +44,19 @@ public class PDDrawingStrategyExpressionColor extends
 		float fRadius = pdDiscToDraw.getCurrentWidth();
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw
-						.getElementID()));
+				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
-			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(),
-					fRadius, pdDiscToDraw.getCurrentStartAngle(), pdDiscToDraw
-							.getCurrentAngle());
+			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(), fRadius,
+					pdDiscToDraw.getCurrentStartAngle(), pdDiscToDraw.getCurrentAngle());
 		}
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR, 0);
 		GLPrimitives.renderCircle(glu, fRadius, iNumSlicesPerFullDisc);
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_COLOR, 0);
-		GLPrimitives.renderCircleBorder(gl, glu, fRadius,
-				iNumSlicesPerFullDisc,
+		GLPrimitives.renderCircleBorder(gl, glu, fRadius, iNumSlicesPerFullDisc,
 				RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_WIDTH);
 
 		gl.glPopAttrib();
@@ -81,8 +76,7 @@ public class PDDrawingStrategyExpressionColor extends
 		float fWidth = pdDiscToDraw.getCurrentWidth();
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw
-						.getElementID()));
+				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
@@ -91,14 +85,12 @@ public class PDDrawingStrategyExpressionColor extends
 
 		gl.glColor4fv(getColor(pdDiscToDraw), 0);
 
-		GLPrimitives.renderPartialDisc(glu, fInnerRadius,
-				fInnerRadius + fWidth, fStartAngle, fAngle,
-				iNumSlicesPerFullDisc);
+		GLPrimitives.renderPartialDisc(glu, fInnerRadius, fInnerRadius + fWidth,
+				fStartAngle, fAngle, iNumSlicesPerFullDisc);
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_COLOR, 0);
 		GLPrimitives.renderPartialDiscBorder(gl, glu, fInnerRadius,
-				fInnerRadius + fWidth, fStartAngle, fAngle,
-				iNumSlicesPerFullDisc,
+				fInnerRadius + fWidth, fStartAngle, fAngle, iNumSlicesPerFullDisc,
 				RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_WIDTH);
 
 		gl.glPopAttrib();

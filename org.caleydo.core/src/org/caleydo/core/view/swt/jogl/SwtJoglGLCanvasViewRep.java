@@ -27,8 +27,8 @@ public class SwtJoglGLCanvasViewRep
 	 * Constructor.
 	 */
 	public SwtJoglGLCanvasViewRep(int iParentContainerId, String sLabel) {
-		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
-			EManagedObjectType.VIEW_SWT_JOGL_CONTAINER));
+		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager()
+			.createID(EManagedObjectType.VIEW_SWT_JOGL_CONTAINER));
 	}
 
 	@Override

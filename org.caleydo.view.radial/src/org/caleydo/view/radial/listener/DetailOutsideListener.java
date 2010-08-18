@@ -12,8 +12,7 @@ public class DetailOutsideListener extends AEventListener<GLRadialHierarchy> {
 
 		if (event instanceof DetailOutsideEvent) {
 			DetailOutsideEvent detailOutsideEvent = (DetailOutsideEvent) event;
-			handler.handleAlternativeSelection(detailOutsideEvent
-					.getElementID());
+			handler.handleAlternativeSelection(detailOutsideEvent.getElementID());
 		}
 
 	}

@@ -1,6 +1,5 @@
 package org.caleydo.view.datawindows;
 
-
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.Tree;
 
@@ -13,25 +12,24 @@ public class PoincareNode extends AHierarchyElement<PoincareNode> {
 	private PoincareNode openLink;
 	private boolean linked = false;
 	private int levelOfDetail = 0;
-	
+
 	public boolean markedToRemove = false;
 	public boolean nonExistent = false;
-	public boolean eyeTrackable=false;
-	
+	public boolean eyeTrackable = false;
+
 	String nodeName;
 	int iComparableValue;
-	public boolean highLighted=false;
+	public boolean highLighted = false;
 
-	public PoincareNode(Tree<PoincareNode> tree, String nodeName,
-			int iComparableValue) {
+	public PoincareNode(Tree<PoincareNode> tree, String nodeName, int iComparableValue) {
 		super(tree);
-		
+
 		this.iComparableValue = iComparableValue;
 		this.nodeName = nodeName;
 		this.id = iComparableValue;
-		
+
 		this.position = new float[2];
-		                             
+
 	}
 
 	public void setLinked(boolean linked) {

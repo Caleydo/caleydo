@@ -30,25 +30,24 @@ public class DrawingController {
 	public DrawingController(GLRadialHierarchy radialHierarchy,
 			NavigationHistory navigationHistory) {
 		drawingStates = new HashMap<EDrawingStateType, ADrawingState>();
-		currentDrawingState = new DrawingStateFullHierarchy(this,
-				radialHierarchy, navigationHistory);
+		currentDrawingState = new DrawingStateFullHierarchy(this, radialHierarchy,
+				navigationHistory);
 		drawingStates.put(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY,
 				currentDrawingState);
 		drawingStates.put(EDrawingStateType.ANIMATION_NEW_ROOT_ELEMENT,
-				new AnimationNewRootElement(this, radialHierarchy,
-						navigationHistory));
+				new AnimationNewRootElement(this, radialHierarchy, navigationHistory));
 		drawingStates.put(EDrawingStateType.DRAWING_STATE_DETAIL_OUTSIDE,
-				new DrawingStateDetailOutside(this, radialHierarchy,
-						navigationHistory));
+				new DrawingStateDetailOutside(this, radialHierarchy, navigationHistory));
 		drawingStates.put(EDrawingStateType.ANIMATION_PARENT_ROOT_ELEMENT,
-				new AnimationParentRootElement(this, radialHierarchy,
-						navigationHistory));
-		drawingStates.put(EDrawingStateType.ANIMATION_POP_OUT_DETAIL_OUTSIDE,
-				new AnimationPopOutDetailOutside(this, radialHierarchy,
-						navigationHistory));
-		drawingStates.put(EDrawingStateType.ANIMATION_PULL_IN_DETAIL_OUTSIDE,
-				new AnimationPullInDetailOutside(this, radialHierarchy,
-						navigationHistory));
+				new AnimationParentRootElement(this, radialHierarchy, navigationHistory));
+		drawingStates
+				.put(EDrawingStateType.ANIMATION_POP_OUT_DETAIL_OUTSIDE,
+						new AnimationPopOutDetailOutside(this, radialHierarchy,
+								navigationHistory));
+		drawingStates
+				.put(EDrawingStateType.ANIMATION_PULL_IN_DETAIL_OUTSIDE,
+						new AnimationPullInDetailOutside(this, radialHierarchy,
+								navigationHistory));
 	}
 
 	/**

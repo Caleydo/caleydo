@@ -88,7 +88,7 @@ public class DetailViewLayoutStateNormal extends ADetailViewLayoutState {
 	public float getOverviewSliderWidth() {
 		return totalWidth * OVERVIEW_SLIDER_WIDTH_PORTION;
 	}
-	
+
 	@Override
 	public float getTotalOverviewWidth() {
 		return totalWidth * OVERVIEW_TOTAL_WIDTH_PORTION;
@@ -122,7 +122,7 @@ public class DetailViewLayoutStateNormal extends ADetailViewLayoutState {
 
 		return remoteRenderCommands;
 	}
-	
+
 	@Override
 	public float getOverviewHeight() {
 		return totalHeight * OVERVIEW_HEIGHT_PORTION;

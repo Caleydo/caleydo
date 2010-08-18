@@ -50,8 +50,7 @@ public class RectangleItem extends ALabelItem {
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(vecPosition.x(), vecPosition.y() - 0.01f, 0);
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - 0.01f, 0);
-		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() + fHeight
-				- 0.01f, 0);
+		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() + fHeight - 0.01f, 0);
 		gl.glVertex3f(vecPosition.x(), vecPosition.y() + fHeight - 0.01f, 0);
 		gl.glEnd();
 

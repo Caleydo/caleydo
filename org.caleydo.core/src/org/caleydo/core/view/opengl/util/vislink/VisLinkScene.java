@@ -59,11 +59,11 @@ public class VisLinkScene {
 		ConnectionLineRenderStyle.ANIMATION =
 			GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATION);
 		ConnectionLineRenderStyle.CONNECTION_LINE_STYLE =
-			EVisLinkStyleType.getStyleType(GeneralManager.get().getPreferenceStore().getInt(
-				PreferenceConstants.VISUAL_LINKS_STYLE));
+			EVisLinkStyleType.getStyleType(GeneralManager.get().getPreferenceStore()
+				.getInt(PreferenceConstants.VISUAL_LINKS_STYLE));
 		ConnectionLineRenderStyle.ANIMATED_HIGHLIGHTING =
-			GeneralManager.get().getPreferenceStore().getBoolean(
-				PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO);
+			GeneralManager.get().getPreferenceStore()
+				.getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO);
 
 		// callRenderLine(gl);
 

@@ -31,7 +31,7 @@ public class RestoreOriginalDataAction
 
 		for (IDataDomain dataDomain : DataDomainManager.getInstance().getDataDomains()) {
 			if (dataDomain instanceof ISetBasedDataDomain)
-				((ISetBasedDataDomain)dataDomain).restoreOriginalContentVA();
+				((ISetBasedDataDomain) dataDomain).restoreOriginalContentVA();
 		}
 	}
 }

@@ -9,7 +9,7 @@ public class SimpleSlerp {
 	private Time time;
 	public float state = 0;
 	public float endingCondition;
-	public float relativeState=0;
+	public float relativeState = 0;
 
 	public SimpleSlerp() {
 		time = new SystemTime();
@@ -22,19 +22,19 @@ public class SimpleSlerp {
 
 	public boolean doASlerp() {
 
-		slerpFactor = speed * (float)time.deltaT();
-		
+		slerpFactor = speed * (float) time.deltaT();
+
 		if (endingCondition >= 0) {
-			relativeState=state-relativeState;
-			
+			relativeState = state - relativeState;
+
 			state = state + slerpFactor;
 			if (state >= endingCondition) {
 				state = endingCondition;
 				return false;
-			}	
+			}
 		} else {
-			relativeState=state+relativeState;
-			
+			relativeState = state + relativeState;
+
 			state = state - slerpFactor;
 			if (state <= endingCondition) {
 				state = endingCondition;

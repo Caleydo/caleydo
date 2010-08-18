@@ -8,8 +8,7 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class Toggle2AxisModeAction extends AToolBarAction implements
-		IToolBarItem {
+public class Toggle2AxisModeAction extends AToolBarAction implements IToolBarItem {
 	public static final String TEXT = "Enable/Disable 2x2 Axis Mode (b)";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/bookmark.png";
 
@@ -21,15 +20,14 @@ public class Toggle2AxisModeAction extends AToolBarAction implements
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
 	public void run() {
 		super.run();
 
-		GeneralManager.get().getEventPublisher().triggerEvent(
-				new Toggle2AxisEvent());
+		GeneralManager.get().getEventPublisher().triggerEvent(new Toggle2AxisEvent());
 	};
 }

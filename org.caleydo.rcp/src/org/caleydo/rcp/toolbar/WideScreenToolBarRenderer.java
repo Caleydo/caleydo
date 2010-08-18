@@ -69,9 +69,9 @@ public class WideScreenToolBarRenderer
 		// IToolBarItem startClustering = new StartClusteringAction(targetViewID);
 		// actionList.add(startClustering);
 
-//		if (DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic") != null) {
-//			toolBarManager2.add(new OpenSearchViewAction());
-//		}
+		// if (DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic") != null) {
+		// toolBarManager2.add(new OpenSearchViewAction());
+		// }
 
 		toolBarManager2.add(new ClearSelectionsAction());
 		toolBarManager2.add(new StartClusteringAction());

@@ -10,9 +10,7 @@ import org.caleydo.util.graph.EGraphItemKind;
  * 
  * @author Marc Streit
  */
-public class PathwayVertexGraphItem
-	extends ACaleydoGraphItem
-	implements Serializable {
+public class PathwayVertexGraphItem extends ACaleydoGraphItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,16 +30,15 @@ public class PathwayVertexGraphItem
 	 * @param sExternalLink
 	 * @param sReactionId
 	 */
-	public PathwayVertexGraphItem(final String sName, final String sType, final String sExternalLink,
-		final String sReactionId) {
+	public PathwayVertexGraphItem(final String sName, final String sType,
+			final String sExternalLink, final String sReactionId) {
 
 		super(EGraphItemKind.NODE);
 
 		// Check if type exists - otherwise assign "other"
 		try {
 			type = EPathwayVertexType.valueOf(sType);
-		}
-		catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			type = EPathwayVertexType.other;
 		}
 

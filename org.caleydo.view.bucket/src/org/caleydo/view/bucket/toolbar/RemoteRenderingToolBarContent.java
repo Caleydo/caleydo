@@ -62,8 +62,7 @@ public class RemoteRenderingToolBarContent extends AToolBarContent {
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		IToolBarItem closeOrResetContainedViews = new CloseOrResetContainedViews(
-				mediator);
+		IToolBarItem closeOrResetContainedViews = new CloseOrResetContainedViews(mediator);
 		actionList.add(closeOrResetContainedViews);
 		// IAction toggleLayoutAction = new ToggleLayoutAction(viewID);
 		// alToolbar.add(toggleLayoutAction);
@@ -72,8 +71,7 @@ public class RemoteRenderingToolBarContent extends AToolBarContent {
 				.isConnectionLinesEnabled());
 		actionList.add(toggleConnectionLinesAction);
 
-		NavigationModeAction navigationModeAction = new NavigationModeAction(
-				mediator);
+		NavigationModeAction navigationModeAction = new NavigationModeAction(mediator);
 		actionList.add(navigationModeAction);
 
 		ToggleZoomAction toggleZoomAction = new ToggleZoomAction(mediator);

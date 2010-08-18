@@ -24,8 +24,7 @@ public class DendrogramRenderStyle extends GeneralRenderStyle {
 
 	GLDendrogram<?> dendrogram;
 
-	public DendrogramRenderStyle(GLDendrogram<?> dendrogram,
-			IViewFrustum viewFrustum) {
+	public DendrogramRenderStyle(GLDendrogram<?> dendrogram, IViewFrustum viewFrustum) {
 
 		super(viewFrustum);
 

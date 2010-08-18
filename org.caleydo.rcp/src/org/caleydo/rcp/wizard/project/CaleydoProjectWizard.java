@@ -67,13 +67,15 @@ public class CaleydoProjectWizard
 
 			ProjectMode projectMode = page.getProjectMode();
 			if (projectMode == ProjectMode.LOAD_PROJECT) {
-				
+
 				SerializationStartupProcedure startupProcedure =
-					(SerializationStartupProcedure) StartupProcessor.get().createStartupProcedure(ApplicationMode.SERIALIZATION);
+					(SerializationStartupProcedure) StartupProcessor.get().createStartupProcedure(
+						ApplicationMode.SERIALIZATION);
 			}
 			else if (projectMode == ProjectMode.SAMPLE_PROJECT) {
 				SerializationStartupProcedure startupProcedure =
-					(SerializationStartupProcedure) StartupProcessor.get().createStartupProcedure(ApplicationMode.SERIALIZATION);
+					(SerializationStartupProcedure) StartupProcessor.get().createStartupProcedure(
+						ApplicationMode.SERIALIZATION);
 				startupProcedure.loadSampleProject(true);
 			}
 			else if (projectMode == ProjectMode.GENE_EXPRESSION_SAMPLE_DATA) {
@@ -102,7 +104,7 @@ public class CaleydoProjectWizard
 
 				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
 					sNewPathwayDataSources);
-				
+
 				GUIStartupProcedure startupProcedure =
 					(GUIStartupProcedure) StartupProcessor.get().createStartupProcedure(ApplicationMode.GUI);
 				StartupProcessor.get().getAppInitData().setLoadPathways(loadPathways);

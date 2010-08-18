@@ -178,6 +178,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 
 		// Register keyboard listener to GL canvas
 		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
 			}
@@ -193,6 +194,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						glParentView.getParentGLCanvas().getParentComposite()
 								.addKeyListener(glKeyListener);

@@ -26,8 +26,8 @@ public class UseZoomAction extends AToolBarAction implements IToolBarItem {
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 		super.setChecked(useZoom);
 	}
 
@@ -44,7 +44,6 @@ public class UseZoomAction extends AToolBarAction implements IToolBarItem {
 			useZoom = true;
 
 		super.setChecked(useZoom);
-		GeneralManager.get().getEventPublisher().triggerEvent(
-				new UseZoomEvent(useZoom));
+		GeneralManager.get().getEventPublisher().triggerEvent(new UseZoomEvent(useZoom));
 	};
 }

@@ -41,20 +41,23 @@ public class ExceptionHandler {
 	 */
 	public void handleViewException(RuntimeException exception, final AGLView glEventListener) {
 
-		GeneralManager.get().getLogger().log(
-			new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, "Caught Exception: "
-				+ exception.getMessage(), exception));
+		GeneralManager
+			.get()
+			.getLogger()
+			.log(
+				new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, "Caught Exception: "
+					+ exception.getMessage(), exception));
 
 		glEventListener.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				MessageBox messageBox =
 					new MessageBox(glEventListener.getParentGLCanvas().getParentComposite().getShell(),
 						SWT.OK);
 				messageBox.setText("Error in view");
-				messageBox
-					.setMessage("An unexpected error occured in view "
-						+ glEventListener.getShortInfo()
-						+ ". The view will be closed now. See the error log for details. You can try to re-open it.");
+				messageBox.setMessage("An unexpected error occured in view "
+					+ glEventListener.getShortInfo()
+					+ ". The view will be closed now. See the error log for details. You can try to re-open it.");
 				messageBox.open();
 			}
 		});

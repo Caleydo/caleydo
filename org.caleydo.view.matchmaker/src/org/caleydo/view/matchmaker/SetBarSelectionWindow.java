@@ -43,8 +43,7 @@ public class SetBarSelectionWindow implements IDraggable {
 
 	public SetBarSelectionWindow(int id, int viewID, SetBar setBar,
 			ArrayList<SetBarItem> items, PickingManager pickingManager,
-			TextureManager textureManager,
-			DragAndDropController dragAndDropController) {
+			TextureManager textureManager, DragAndDropController dragAndDropController) {
 		this.id = id;
 		this.viewID = viewID;
 		this.setBar = setBar;
@@ -71,79 +70,66 @@ public class SetBarSelectionWindow implements IDraggable {
 			return;
 
 		SetBarItem lowestItem = items.get(lowestItemIndex);
-		SetBarItem highestItem = items.get(lowestItemIndex + numSelectedItems
-				- 1);
+		SetBarItem highestItem = items.get(lowestItemIndex + numSelectedItems - 1);
 		Vec3f lowestItemPosition = lowestItem.getPosition();
 		Vec3f highestItemPosition = highestItem.getPosition();
 		float arrowWidth = 0.08f * lowestItem.getWidth();
-		float rightArrowPositionX = highestItemPosition.x()
-				+ highestItem.getWidth() - arrowWidth;
+		float rightArrowPositionX = highestItemPosition.x() + highestItem.getWidth()
+				- arrowWidth;
 		float width = highestItemPosition.x() + highestItem.getWidth()
 				- lowestItemPosition.x() - 2.0f * arrowWidth;
 
 		if (isPickable) {
 			gl.glPushName(pickingManager.getPickingID(viewID,
-					EPickingType.COMPARE_SELECTION_WINDOW_ARROW_LEFT_SELECTION,
-					id));
+					EPickingType.COMPARE_SELECTION_WINDOW_ARROW_LEFT_SELECTION, id));
 
-			renderArrow(gl, lowestItemPosition, arrowWidth, alpha, true,
-					zOffset);
+			renderArrow(gl, lowestItemPosition, arrowWidth, alpha, true, zOffset);
 
 			gl.glPopName();
 
-			gl
-					.glPushName(pickingManager
-							.getPickingID(
-									viewID,
-									EPickingType.COMPARE_SELECTION_WINDOW_ARROW_RIGHT_SELECTION,
-									id));
+			gl.glPushName(pickingManager.getPickingID(viewID,
+					EPickingType.COMPARE_SELECTION_WINDOW_ARROW_RIGHT_SELECTION, id));
 
-			renderArrow(gl, new Vec3f(rightArrowPositionX, lowestItemPosition
-					.y(), lowestItemPosition.z()), arrowWidth, alpha, false,
-					zOffset);
+			renderArrow(gl, new Vec3f(rightArrowPositionX, lowestItemPosition.y(),
+					lowestItemPosition.z()), arrowWidth, alpha, false, zOffset);
 
 			gl.glPopName();
 
 			gl.glPushName(pickingManager.getPickingID(viewID,
 					EPickingType.COMPARE_SELECTION_WINDOW_SELECTION, id));
 
-			renderBody(gl, lowestItemPosition, arrowWidth, width, alpha,
-					zOffset);
+			renderBody(gl, lowestItemPosition, arrowWidth, width, alpha, zOffset);
 
 			gl.glPopName();
 
 		} else {
 
-			renderArrow(gl, lowestItemPosition, arrowWidth, alpha, true,
-					zOffset);
-			renderArrow(gl, new Vec3f(rightArrowPositionX, lowestItemPosition
-					.y(), lowestItemPosition.z()), arrowWidth, alpha, false,
-					zOffset);
-			renderBody(gl, lowestItemPosition, arrowWidth, width, alpha,
-					zOffset);
+			renderArrow(gl, lowestItemPosition, arrowWidth, alpha, true, zOffset);
+			renderArrow(gl, new Vec3f(rightArrowPositionX, lowestItemPosition.y(),
+					lowestItemPosition.z()), arrowWidth, alpha, false, zOffset);
+			renderBody(gl, lowestItemPosition, arrowWidth, width, alpha, zOffset);
 		}
 	}
 
-	private void renderArrow(GL gl, Vec3f position, float arrowWidth,
-			float alpha, boolean isLeft, float zOffset) {
+	private void renderArrow(GL gl, Vec3f position, float arrowWidth, float alpha,
+			boolean isLeft, float zOffset) {
 
-		Vec3f lowerLeftCorner = new Vec3f(position.x(), positionY, position.z()
-				+ zOffset);
-		Vec3f lowerRightCorner = new Vec3f(position.x() + arrowWidth,
-				positionY, position.z() + zOffset);
-		Vec3f upperRightCorner = new Vec3f(position.x() + arrowWidth, positionY
-				+ height, position.z() + zOffset);
-		Vec3f upperLeftCorner = new Vec3f(position.x(), positionY + height,
+		Vec3f lowerLeftCorner = new Vec3f(position.x(), positionY, position.z() + zOffset);
+		Vec3f lowerRightCorner = new Vec3f(position.x() + arrowWidth, positionY,
 				position.z() + zOffset);
+		Vec3f upperRightCorner = new Vec3f(position.x() + arrowWidth, positionY + height,
+				position.z() + zOffset);
+		Vec3f upperLeftCorner = new Vec3f(position.x(), positionY + height, position.z()
+				+ zOffset);
 
 		if (isLeft) {
 			textureManager.renderTexture(gl, EIconTextures.HEAT_MAP_ARROW,
-					lowerRightCorner, upperRightCorner, upperLeftCorner,
-					lowerLeftCorner, 1, 1, 1, alpha);
+					lowerRightCorner, upperRightCorner, upperLeftCorner, lowerLeftCorner,
+					1, 1, 1, alpha);
 		} else {
 			textureManager.renderTexture(gl, EIconTextures.HEAT_MAP_ARROW,
-					upperLeftCorner, lowerLeftCorner, lowerRightCorner,
-					upperRightCorner, 1, 1, 1, alpha);
+					upperLeftCorner, lowerLeftCorner, lowerRightCorner, upperRightCorner,
+					1, 1, 1, alpha);
 		}
 
 	}
@@ -156,15 +142,14 @@ public class SetBarSelectionWindow implements IDraggable {
 
 		float[] selectionColor = SelectionType.SELECTION.getColor();
 
-		gl.glColor4f(selectionColor[0], selectionColor[1], selectionColor[2],
-				alpha);
+		gl.glColor4f(selectionColor[0], selectionColor[1], selectionColor[2], alpha);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(lowestItemPosition.x() + arrowWidth, positionY,
 				lowestItemPosition.z() + zOffset);
 		gl.glVertex3f(lowestItemPosition.x() + arrowWidth + width, positionY,
 				lowestItemPosition.z() + zOffset);
-		gl.glVertex3f(lowestItemPosition.x() + arrowWidth + width, positionY
-				+ height, lowestItemPosition.z() + zOffset);
+		gl.glVertex3f(lowestItemPosition.x() + arrowWidth + width, positionY + height,
+				lowestItemPosition.z() + zOffset);
 		gl.glVertex3f(lowestItemPosition.x() + arrowWidth, positionY + height,
 				lowestItemPosition.z() + zOffset);
 		gl.glEnd();
@@ -205,8 +190,7 @@ public class SetBarSelectionWindow implements IDraggable {
 	}
 
 	@Override
-	public void handleDragging(GL gl, float mouseCoordinateX,
-			float mouseCoordinateY) {
+	public void handleDragging(GL gl, float mouseCoordinateX, float mouseCoordinateY) {
 
 		switch (draggingSelection) {
 		case COMPARE_SELECTION_WINDOW_SELECTION:
@@ -221,8 +205,8 @@ public class SetBarSelectionWindow implements IDraggable {
 		}
 
 		if (dragged) {
-			renderWindow(gl, numSelectedItemsDragging, lowestItemIndexDragging,
-					0.5f, false, -0.001f);
+			renderWindow(gl, numSelectedItemsDragging, lowestItemIndexDragging, 0.5f,
+					false, -0.001f);
 		}
 	}
 
@@ -234,8 +218,7 @@ public class SetBarSelectionWindow implements IDraggable {
 			return;
 
 		int currentItemIndex = currentItem.getID();
-		int newNumSelectedItems = lowestItemIndex + numSelectedItems
-				- currentItemIndex;
+		int newNumSelectedItems = lowestItemIndex + numSelectedItems - currentItemIndex;
 
 		if ((newNumSelectedItems >= minSelectedItems)
 				&& (newNumSelectedItems <= maxSelectedItems)) {
@@ -280,22 +263,19 @@ public class SetBarSelectionWindow implements IDraggable {
 			newLowestItemIndex = items.size() - numSelectedItems;
 
 		dragged = true;
-		itemAtDraggingPosition = items.get(lowestItemIndex
-				+ draggingIndexOffset);
+		itemAtDraggingPosition = items.get(lowestItemIndex + draggingIndexOffset);
 		numSelectedItemsDragging = numSelectedItems;
 		lowestItemIndexDragging = newLowestItemIndex;
 
 	}
 
 	@Override
-	public void setDraggingStartPoint(float mouseCoordinateX,
-			float mouseCoordinateY) {
+	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
 
 		switch (draggingSelection) {
 		case COMPARE_SELECTION_WINDOW_SELECTION:
 			itemAtDraggingPosition = getItemFromXCoordinate(mouseCoordinateX);
-			draggingIndexOffset = itemAtDraggingPosition.getID()
-					- lowestItemIndex;
+			draggingIndexOffset = itemAtDraggingPosition.getID() - lowestItemIndex;
 			break;
 		}
 
@@ -364,8 +344,7 @@ public class SetBarSelectionWindow implements IDraggable {
 		if (pickingMode == EPickingMode.CLICKED) {
 			draggingSelection = pickingType;
 			dragAndDropController.clearDraggables();
-			dragAndDropController.setDraggingStartPosition(pick
-					.getPickedPoint());
+			dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
 			dragAndDropController.addDraggable(this);
 			dragAndDropController.startDragging();
 

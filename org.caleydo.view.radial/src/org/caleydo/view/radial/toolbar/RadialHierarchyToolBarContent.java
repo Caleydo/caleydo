@@ -42,8 +42,8 @@ public class RadialHierarchyToolBarContent extends AToolBarContent {
 		IToolBarItem changeColorMode = new ChangeColorModeAction(targetViewID);
 		// IToolBarItem magnifyingGlass = new ToggleMagnifyingGlassAction();
 		if (depthSlider == null) {
-			depthSlider = new DepthSlider("", serializedView
-					.getMaxDisplayedHierarchyDepth());
+			depthSlider = new DepthSlider("",
+					serializedView.getMaxDisplayedHierarchyDepth());
 		}
 		actionList.add(goBackInHistory);
 		actionList.add(goForthInHistory);

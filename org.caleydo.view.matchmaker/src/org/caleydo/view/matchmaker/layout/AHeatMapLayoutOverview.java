@@ -93,8 +93,7 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 			return totalWidth;
 		float heatOverviewHeatMapWidth = (totalSpaceForAllHeatMapWrappers / (float) numTotalExperiments)
 				* (float) numExperiments;
-		if (heatOverviewHeatMapWidth > totalWidth
-				|| heatOverviewHeatMapWidth < 0)
+		if (heatOverviewHeatMapWidth > totalWidth || heatOverviewHeatMapWidth < 0)
 			return totalWidth;
 		return heatOverviewHeatMapWidth;
 	}
@@ -170,37 +169,37 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 	public Vec3f getDendrogramLinePosition() {
 		return new Vec3f(0, 0, 0);
 	}
-	
+
 	@Override
 	public float getDendrogramLineHeight() {
 		return 0;
 	}
-	
+
 	@Override
 	public float getDendrogramLineWidth() {
 		return 0;
 	}
-	
+
 	@Override
 	public void useDendrogram(boolean useDendrogram) {
-		
+
 	}
-	
+
 	@Override
 	public Vec3f getDendrogramPosition() {
 		return new Vec3f(0, 0, 0);
 	}
-	
+
 	@Override
 	public float getDendrogramHeight() {
 		return 0;
 	}
-	
+
 	@Override
 	public float getDendrogramWidth() {
 		return 0;
 	}
-	
+
 	@Override
 	public boolean isDendrogramUsed() {
 		return false;

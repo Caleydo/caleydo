@@ -48,6 +48,7 @@ public abstract class AXmlParserHandler
 		return false;
 	}
 
+	@Override
 	public final void setHandlerDestoryedAfterClosingTag(final boolean setHandlerDestoryedAfterClosingTag) {
 
 		this.bDestroyHandlerAfterClosingTag = setHandlerDestoryedAfterClosingTag;
@@ -58,6 +59,7 @@ public abstract class AXmlParserHandler
 	 * 
 	 * @see org.caleydo.core.parser.xml.IXmlParserHandler#initHandler()
 	 */
+	@Override
 	public void initHandler() {
 
 		// generalManager.logMsg(
@@ -70,6 +72,7 @@ public abstract class AXmlParserHandler
 	 * 
 	 * @see org.caleydo.core.parser.xml.IXmlParserHandler#destroyHandler()
 	 */
+	@Override
 	public void destroyHandler() {
 
 		// generalManager.logMsg(

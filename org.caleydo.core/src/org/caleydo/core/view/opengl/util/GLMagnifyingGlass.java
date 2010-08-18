@@ -80,12 +80,14 @@ public class GLMagnifyingGlass {
 			float[] fArTargetWorldCoordinates =
 				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x
 					- capturedRegionWidth, currentPoint.y + capturedRegionHeight);
-			gl.glRasterPos2f(Math.max(fArTargetWorldCoordinates[0], 0), Math.max(
-				fArTargetWorldCoordinates[1], 0));
+			gl.glRasterPos2f(Math.max(fArTargetWorldCoordinates[0], 0),
+				Math.max(fArTargetWorldCoordinates[1], 0));
 			gl.glPixelZoom(zoomFactorX, zoomFactorY);
-			gl.glCopyPixels(Math.max(currentPoint.x - (int) (capturedRegionWidth / zoomFactorX), 0), Math
-				.max((yOrigin + currentHeight) - currentPoint.y - (int) (capturedRegionHeight / zoomFactorY),
-					0), capturedRegionWidth, capturedRegionHeight, GL.GL_COLOR);
+			gl.glCopyPixels(
+				Math.max(currentPoint.x - (int) (capturedRegionWidth / zoomFactorX), 0),
+				Math.max((yOrigin + currentHeight) - currentPoint.y
+					- (int) (capturedRegionHeight / zoomFactorY), 0), capturedRegionWidth,
+				capturedRegionHeight, GL.GL_COLOR);
 			gl.glPixelZoom(1.0f, 1.0f);
 		}
 		gl.glEnable(GL.GL_DEPTH_TEST);

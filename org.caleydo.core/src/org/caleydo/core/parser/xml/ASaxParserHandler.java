@@ -157,6 +157,7 @@ public abstract class ASaxParserHandler
 	 * 
 	 * @see org.caleydo.core.parser.xml.ISaxParserHandler#reset()
 	 */
+	@Override
 	public void reset() {
 
 		sErrorMessage = "";

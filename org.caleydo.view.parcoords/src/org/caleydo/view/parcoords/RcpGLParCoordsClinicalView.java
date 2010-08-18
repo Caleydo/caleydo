@@ -25,7 +25,8 @@ public class RcpGLParCoordsClinicalView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView(dataDomainType);
+		SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView(
+				dataDomainType);
 		return serializedView;
 	}
 

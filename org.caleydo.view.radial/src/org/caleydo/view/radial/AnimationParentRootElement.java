@@ -44,8 +44,7 @@ public class AnimationParentRootElement extends ADrawingStateAnimation {
 	 *            NavigationHistory instance that shall be used.
 	 */
 	public AnimationParentRootElement(DrawingController drawingController,
-			GLRadialHierarchy radialHierarchy,
-			NavigationHistory navigationHistory) {
+			GLRadialHierarchy radialHierarchy, NavigationHistory navigationHistory) {
 
 		super(drawingController, radialHierarchy, navigationHistory);
 		fAnimationDuration = DEFAULT_ANIMATION_DURATION;
@@ -224,8 +223,7 @@ public class AnimationParentRootElement extends ADrawingStateAnimation {
 	// =====================================
 
 	@Override
-	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu,
-			double dTimePassed) {
+	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu, double dTimePassed) {
 		PartialDisc pdCurrentSelectedElement = radialHierarchy
 				.getCurrentSelectedElement();
 
@@ -245,9 +243,10 @@ public class AnimationParentRootElement extends ADrawingStateAnimation {
 				mvCurrentSelectedColorG.getMovementValue(),
 				mvCurrentSelectedColorB.getMovementValue(), 1);
 
-		pdCurrentSelectedElement.drawHierarchyAngular(gl, glu, mvCurrentWidth
-				.getMovementValue(), iTargetDepth, mvCurrentStartAngle
-				.getMovementValue(), mvCurrentAngle.getMovementValue(),
+		pdCurrentSelectedElement.drawHierarchyAngular(gl, glu,
+				mvCurrentWidth.getMovementValue(), iTargetDepth,
+				mvCurrentStartAngle.getMovementValue(),
+				mvCurrentAngle.getMovementValue(),
 				mvCurrentInnerRadius.getMovementValue());
 
 		if (haveMovementValuesReachedTargets()) {
@@ -265,10 +264,8 @@ public class AnimationParentRootElement extends ADrawingStateAnimation {
 			radialHierarchy.setCurrentSelectedElement(pdNewRootElement);
 
 			navigationHistory.addNewHistoryEntry(dsNext, pdNewRootElement,
-					pdNewRootElement, radialHierarchy
-							.getMaxDisplayedHierarchyDepth());
-			radialHierarchy.setNewSelection(SelectionType.SELECTION,
-					pdNewRootElement);
+					pdNewRootElement, radialHierarchy.getMaxDisplayedHierarchyDepth());
+			radialHierarchy.setNewSelection(SelectionType.SELECTION, pdNewRootElement);
 			radialHierarchy.setDisplayListDirty();
 		}
 		gl.glPopMatrix();
@@ -289,16 +286,15 @@ public class AnimationParentRootElement extends ADrawingStateAnimation {
 			PartialDisc pdCurrentSelectedElement) {
 
 		float fCurrentAngle = pdCurrentSelectedElement.getCurrentAngle();
-		float fCurrentInnerRadius = pdCurrentSelectedElement
-				.getCurrentInnerRadius();
-		float fCurrentStartAngle = pdCurrentSelectedElement
-				.getCurrentStartAngle();
+		float fCurrentInnerRadius = pdCurrentSelectedElement.getCurrentInnerRadius();
+		float fCurrentStartAngle = pdCurrentSelectedElement.getCurrentStartAngle();
 		float fCurrentWidth = pdCurrentSelectedElement.getCurrentWidth();
 
 		PartialDisc pdNewRootElement = pdCurrentSelectedElement.getParent();
 
-		int iDisplayedHierarchyDepth = Math.min(radialHierarchy
-				.getMaxDisplayedHierarchyDepth(), pdNewRootElement.getDepth());
+		int iDisplayedHierarchyDepth = Math.min(
+				radialHierarchy.getMaxDisplayedHierarchyDepth(),
+				pdNewRootElement.getDepth());
 
 		float fTargetWidth = Math.min(fXCenter
 				* RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE, fYCenter
@@ -306,15 +302,13 @@ public class AnimationParentRootElement extends ADrawingStateAnimation {
 				/ iDisplayedHierarchyDepth;
 
 		pdNewRootElement.setCurrentStartAngle(0);
-		pdNewRootElement.simulateDrawHierarchyFull(fTargetWidth,
-				iDisplayedHierarchyDepth);
+		pdNewRootElement
+				.simulateDrawHierarchyFull(fTargetWidth, iDisplayedHierarchyDepth);
 
 		iTargetDepth = pdCurrentSelectedElement.getCurrentDepth();
 		float fTargetAngle = pdCurrentSelectedElement.getCurrentAngle();
-		float fSimulatedStartAngle = pdCurrentSelectedElement
-				.getCurrentStartAngle();
-		float fTargetInnerRadius = pdCurrentSelectedElement
-				.getCurrentInnerRadius();
+		float fSimulatedStartAngle = pdCurrentSelectedElement.getCurrentStartAngle();
+		float fTargetInnerRadius = pdCurrentSelectedElement.getCurrentInnerRadius();
 
 		float fCurrentMidAngle = fCurrentStartAngle + (fCurrentAngle / 2.0f);
 		while (fCurrentMidAngle > 360) {
@@ -362,14 +356,14 @@ public class AnimationParentRootElement extends ADrawingStateAnimation {
 		mvCurrentWidth = createNewMovementValue(fCurrentWidth, fTargetWidth,
 				fAnimationDuration);
 		mvCurrentSelectedColorR = createNewMovementValue(
-				RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[0],
-				fArRGB[0], fAnimationDuration);
+				RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[0], fArRGB[0],
+				fAnimationDuration);
 		mvCurrentSelectedColorG = createNewMovementValue(
-				RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[1],
-				fArRGB[1], fAnimationDuration);
+				RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[1], fArRGB[1],
+				fAnimationDuration);
 		mvCurrentSelectedColorB = createNewMovementValue(
-				RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[2],
-				fArRGB[2], fAnimationDuration);
+				RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[2], fArRGB[2],
+				fAnimationDuration);
 
 		dsFixedColor = (PDDrawingStrategyFixedColor) radialHierarchy
 				.getDrawingStrategyManager().createDrawingStrategy(
@@ -817,7 +811,7 @@ public class AnimationParentRootElement extends ADrawingStateAnimation {
 	// float fTargetAngle = pdCurrentSelectedElement.getCurrentAngle();
 	// float fSimulatedStartAngle =
 	// pdCurrentSelectedElement.getCurrentStartAngle();
-	//		
+	//
 	// float fTargetStartAngle = fSimulatedStartAngle + (fTargetAngle / 2.0f) +
 	// 180;
 	// while (fTargetStartAngle > 360) {
@@ -826,13 +820,13 @@ public class AnimationParentRootElement extends ADrawingStateAnimation {
 	// while (fTargetStartAngle < 0) {
 	// fTargetStartAngle += 360;
 	// }
-	//		
+	//
 	//
 	// if (Math.abs((fCurrentStartAngle - fTargetStartAngle)) >
 	// Math.abs(((fTargetStartAngle - 360) -
 	// fCurrentStartAngle)))
 	// fTargetStartAngle -= 360;
-	//		
+	//
 	// alMovementValues.clear();
 	//
 	// mvCurrentStartAngle = createNewMovementValue(fCurrentStartAngle,
@@ -842,8 +836,8 @@ public class AnimationParentRootElement extends ADrawingStateAnimation {
 	// pdCurrentSelectedElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
 	// .getDefaultDrawingStrategy(),
 	// radialHierarchy.getMaxDisplayedHierarchyDepth());
-	//		
-	//		
+	//
+	//
 	// iDisplayedHierarchyDepth =
 	// Math.min(radialHierarchy.getMaxDisplayedHierarchyDepth(),
 	// pdCurrentSelectedElement.getHierarchyDepth());
@@ -853,10 +847,10 @@ public class AnimationParentRootElement extends ADrawingStateAnimation {
 	// fYCenter
 	// * RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE)
 	// / (float) iDisplayedHierarchyDepth;
-	//		
+	//
 	// pdCurrentSelectedElement.simulateDrawHierarchyFull(fTargetWidth,
 	// iDisplayedHierarchyDepth);
-	//		
+	//
 	// dsFixedColor =
 	// (PDDrawingStrategyFixedColor)
 	// DrawingStrategyManager.get().createDrawingStrategy(

@@ -16,8 +16,7 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
  * 
  * @author Christian Partl
  */
-public class PDDrawingStrategyLabelDecorator extends
-		APDDrawingStrategyDecorator {
+public class PDDrawingStrategyLabelDecorator extends APDDrawingStrategyDecorator {
 
 	/**
 	 * Constructor.
@@ -39,8 +38,8 @@ public class PDDrawingStrategyLabelDecorator extends
 			drawingStrategy.drawFullCircle(gl, glu, pdDiscToDraw);
 		}
 
-		LabelInfo labelInfo = new LabelInfo(0, 0, 0, pdDiscToDraw
-				.getDrawingStrategyDepth());
+		LabelInfo labelInfo = new LabelInfo(0, 0, 0,
+				pdDiscToDraw.getDrawingStrategyDepth());
 
 		AHierarchyElement<?> hierarchyData = pdDiscToDraw.getHierarchyData();
 		ClusterNode clusterNode = null;
@@ -72,10 +71,8 @@ public class PDDrawingStrategyLabelDecorator extends
 		// and moves counter-clockwise
 		fMidAngle = -1 * (fMidAngle - 90);
 		float fMidAngleRadiants = fMidAngle * (float) Math.PI / 180.0f;
-		float fSegmentXCenter = (float) Math.cos(fMidAngleRadiants)
-				* fCenterRadius;
-		float fSegmentYCenter = (float) Math.sin(fMidAngleRadiants)
-				* fCenterRadius;
+		float fSegmentXCenter = (float) Math.cos(fMidAngleRadiants) * fCenterRadius;
+		float fSegmentYCenter = (float) Math.sin(fMidAngleRadiants) * fCenterRadius;
 
 		LabelInfo labelInfo = new LabelInfo(fSegmentXCenter, fSegmentYCenter,
 				fCenterRadius, pdDiscToDraw.getDrawingStrategyDepth());
@@ -115,8 +112,8 @@ public class PDDrawingStrategyLabelDecorator extends
 	 * @param labelInfo
 	 *            LabelInfo object that shall contain the label data.
 	 */
-	private void setupClusterNodeLabel(PartialDisc pdDiscToDraw,
-			ClusterNode clusterNode, LabelInfo labelInfo) {
+	private void setupClusterNodeLabel(PartialDisc pdDiscToDraw, ClusterNode clusterNode,
+			LabelInfo labelInfo) {
 
 		float fAverageExpressionValue = clusterNode.getAverageExpressionValue();
 		float fStandardDeviation = clusterNode.getStandardDeviation();
@@ -128,11 +125,9 @@ public class PDDrawingStrategyLabelDecorator extends
 		RectangleItem leftRectangleItem = new RectangleItem(fArRGB, 1, 1, true);
 
 		fArRGB = cmExpression.getColor(fAverageExpressionValue);
-		RectangleItem middleRectangleItem = new RectangleItem(fArRGB, 1, 1,
-				true);
+		RectangleItem middleRectangleItem = new RectangleItem(fArRGB, 1, 1, true);
 
-		fArRGB = cmExpression.getColor(fAverageExpressionValue
-				+ fStandardDeviation);
+		fArRGB = cmExpression.getColor(fAverageExpressionValue + fStandardDeviation);
 		RectangleItem rightRectangleItem = new RectangleItem(fArRGB, 1, 1, true);
 
 		TextItem meanItem = new TextItem("Mean/Std-Dev:  ");
@@ -176,8 +171,7 @@ public class PDDrawingStrategyLabelDecorator extends
 	 * @param labelInfo
 	 *            LabelInfo object that shall contain the label data.
 	 */
-	private void setupDefaultLabel(AHierarchyElement<?> hierarchyData,
-			LabelInfo labelInfo) {
+	private void setupDefaultLabel(AHierarchyElement<?> hierarchyData, LabelInfo labelInfo) {
 
 		TextItem textItem = new TextItem(hierarchyData.getLabel());
 		LabelLine labelLine = new LabelLine();

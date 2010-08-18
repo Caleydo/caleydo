@@ -13,8 +13,8 @@ public class NewContentGroupInfoEventListener extends AEventListener<GLMatchmake
 		if (event instanceof NewContentGroupInfoEvent) {
 			NewContentGroupInfoEvent newContentGroupInfoEvent = (NewContentGroupInfoEvent) event;
 			if (newContentGroupInfoEvent.getVAType() == ContentVAType.CONTENT) {
-				handler.handleContentGroupListUpdate(newContentGroupInfoEvent
-						.getSetID(), newContentGroupInfoEvent.getGroupList());
+				handler.handleContentGroupListUpdate(newContentGroupInfoEvent.getSetID(),
+						newContentGroupInfoEvent.getGroupList());
 			}
 		}
 

@@ -46,24 +46,24 @@ public class ViewCameraPitchRollYaw
 
 	private void updateRollZ(final float fSetRadiant) {
 
-		quatRollZ.set(new Vec3f((float) Math.sin(fSetRadiant * 0.5f), 0, 0), (float) Math
-			.cos(fSetRadiant * 0.5f));
+		quatRollZ.set(new Vec3f((float) Math.sin(fSetRadiant * 0.5f), 0, 0),
+			(float) Math.cos(fSetRadiant * 0.5f));
 
 		updateQuaternion();
 	}
 
 	private void updatePitchY(final float fSetRadiant) {
 
-		quatPitchY.set(new Vec3f(0, (float) Math.sin(fSetRadiant * 0.5f), 0), (float) Math
-			.cos(fSetRadiant * 0.5f));
+		quatPitchY.set(new Vec3f(0, (float) Math.sin(fSetRadiant * 0.5f), 0),
+			(float) Math.cos(fSetRadiant * 0.5f));
 
 		updateQuaternion();
 	}
 
 	private void updateYawX(final float fSetRadiant) {
 
-		quatYawX.set(new Vec3f(0, 0, (float) Math.sin(fSetRadiant * 0.5f)), (float) Math
-			.cos(fSetRadiant * 0.5f));
+		quatYawX.set(new Vec3f(0, 0, (float) Math.sin(fSetRadiant * 0.5f)),
+			(float) Math.cos(fSetRadiant * 0.5f));
 
 		updateQuaternion();
 	}

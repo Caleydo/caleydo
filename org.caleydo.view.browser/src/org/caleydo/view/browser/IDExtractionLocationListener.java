@@ -21,8 +21,8 @@ public class IDExtractionLocationListener extends LocationAdapter {
 	/**
 	 * Constructor.
 	 */
-	public IDExtractionLocationListener(final Browser browser,
-			final int iBrowserId, final int iSelectionSetId) {
+	public IDExtractionLocationListener(final Browser browser, final int iBrowserId,
+			final int iSelectionSetId) {
 		generalManager = GeneralManager.get();
 	}
 
@@ -51,8 +51,8 @@ public class IDExtractionLocationListener extends LocationAdapter {
 		ArrayList<Integer> iAlSelectionId = null;
 		ArrayList<Integer> iAlSelectionDepth = null;
 		if (event.location.contains(sSearchPhrase_NCBIGeneId)) {
-			String sExtractedID = event.location
-					.substring(sSearchPhrase_NCBIGeneId.length());
+			String sExtractedID = event.location.substring(sSearchPhrase_NCBIGeneId
+					.length());
 
 			Integer iDavidId = generalManager.getIDMappingManager().getID(
 					IDType.getIDType("ENTREZ_GENE_ID"), IDType.getIDType("DAVID"),
@@ -94,8 +94,8 @@ public class IDExtractionLocationListener extends LocationAdapter {
 				return;
 
 			Integer.valueOf(
-					event.location.substring(iPathwayIdIndex, event.location
-							.lastIndexOf('+'))).intValue();
+					event.location.substring(iPathwayIdIndex,
+							event.location.lastIndexOf('+'))).intValue();
 
 			// iArSelectionId = new int[0];
 			// iArSelectionDepth = new int[0];

@@ -108,7 +108,8 @@ public class IDCreator {
 	 */
 	private int calculateID(EManagedObjectType type, int iCount) {
 		if (iCount > 99999)
-			throw new IllegalStateException("ID Overflow for type "+type+". Number of IDs is limited to 99,999 per type");
+			throw new IllegalStateException("ID Overflow for type " + type
+				+ ". Number of IDs is limited to 99,999 per type");
 		return iCount * 100 + type.getIdPrefix();
 	}
 }

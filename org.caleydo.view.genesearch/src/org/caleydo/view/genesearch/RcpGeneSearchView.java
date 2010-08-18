@@ -568,6 +568,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 		geneTable.setMenu(menu);
 
 		menu.addListener(SWT.Show, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				MenuItem[] menuItems = menu.getItems();
 				for (int i = 0; i < menuItems.length; i++) {
@@ -701,6 +702,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 		pathwayTable.setMenu(menu);
 
 		menu.addListener(SWT.Show, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 
 				MenuItem[] menuItems = menu.getItems();
@@ -790,6 +792,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 
 		final int colIndex = iColumnIndex;
 		Comparator comparator = new Comparator() {
+			@Override
 			public int compare(Object o1, Object o2) {
 				return ((TableItem) o1).getText(colIndex).compareTo(
 						((TableItem) o2).getText(colIndex));

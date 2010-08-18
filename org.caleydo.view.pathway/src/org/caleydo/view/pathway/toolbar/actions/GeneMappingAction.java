@@ -26,8 +26,8 @@ public class GeneMappingAction extends Action implements IToolBarItem {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(GeneralManager.get()
-				.getResourceLoader().getImage(
-						PlatformUI.getWorkbench().getDisplay(), ICON)));
+				.getResourceLoader()
+				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override

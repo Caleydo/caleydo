@@ -11,8 +11,7 @@ public class RadialHierarchyRenderStyle extends GeneralRenderStyle {
 
 	public static float[] PARTIAL_DISC_BORDER_COLOR = { 1, 1, 1, 1 };
 	public static float[] PARTIAL_DISC_ROOT_COLOR = { 1, 1, 1, 1 };
-	public static float[] PARTIAL_DISC_MOUSE_OVER_COLOR = { 0.6f, 0.8f, 0.8f,
-			1.0f };
+	public static float[] PARTIAL_DISC_MOUSE_OVER_COLOR = { 0.6f, 0.8f, 0.8f, 1.0f };
 	public static float PARTIAL_DISC_BORDER_WIDTH = 2;
 	public static float PARTIAL_DISC_TRANSPARENCY = 0.5f;
 	public static float PARTIAL_DISC_MIN_DISPLAYED_ANGLE = 1.0f;

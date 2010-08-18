@@ -104,8 +104,8 @@ public class AffinityClusterer
 
 		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
 
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
 
 			float[] dArInstance1 = new float[storageVA.size()];
 			float[] dArInstance2 = new float[storageVA.size()];
@@ -119,8 +119,8 @@ public class AffinityClusterer
 					int tempPercentage = (int) ((float) icnt1 / contentVA.size() * 100);
 
 					if (iPercentage == tempPercentage) {
-						GeneralManager.get().getEventPublisher().triggerEvent(
-							new ClusterProgressEvent(iPercentage, false));
+						GeneralManager.get().getEventPublisher()
+							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
@@ -174,8 +174,8 @@ public class AffinityClusterer
 		}
 		else {
 
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
 
 			float[] dArInstance1 = new float[contentVA.size()];
 			float[] dArInstance2 = new float[contentVA.size()];
@@ -189,8 +189,8 @@ public class AffinityClusterer
 					int tempPercentage = (int) ((float) isto1 / storageVA.size() * 100);
 
 					if (iPercentage == tempPercentage) {
-						GeneralManager.get().getEventPublisher().triggerEvent(
-							new ClusterProgressEvent(iPercentage, false));
+						GeneralManager.get().getEventPublisher()
+							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
@@ -242,8 +242,11 @@ public class AffinityClusterer
 				sto++;
 			}
 		}
-		GeneralManager.get().getEventPublisher().triggerEvent(
-			new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
+		GeneralManager
+			.get()
+			.getEventPublisher()
+			.triggerEvent(
+				new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 		return 0;
 	}
 
@@ -287,19 +290,19 @@ public class AffinityClusterer
 		int iPercentage = 1;
 
 		if (eClustererType == EClustererType.CONTENT_CLUSTERING)
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Affinity propagation of genes in progress"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Affinity propagation of genes in progress"));
 		else
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Affinity propagation of experiments in progress"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Affinity propagation of experiments in progress"));
 
 		while (bIterate) {
 			iNrIterations++;
 
 			int tempPercentage = (int) ((float) iNrIterations / iMaxIterations * 100);
 			if (iPercentage == tempPercentage) {
-				GeneralManager.get().getEventPublisher().triggerEvent(
-					new ClusterProgressEvent(iPercentage, false));
+				GeneralManager.get().getEventPublisher()
+					.triggerEvent(new ClusterProgressEvent(iPercentage, false));
 				iPercentage++;
 			}
 
@@ -495,8 +498,11 @@ public class AffinityClusterer
 
 		indices = getAl(alExamples, alClusterSizes, idxExamples, idx, eClustererType);
 
-		GeneralManager.get().getEventPublisher().triggerEvent(
-			new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
+		GeneralManager
+			.get()
+			.getEventPublisher()
+			.triggerEvent(
+				new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
 		TempResult tempResult = new TempResult();
 		tempResult.clusterSizes = alClusterSizes;
@@ -602,6 +608,5 @@ public class AffinityClusterer
 		return affinityPropagation(clusterState.getClustererType());
 
 	}
-
 
 }

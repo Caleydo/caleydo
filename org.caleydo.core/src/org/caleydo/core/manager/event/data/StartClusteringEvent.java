@@ -20,7 +20,7 @@ public class StartClusteringEvent
 	private ClusterState clusterState;
 
 	private Integer setID;
-	
+
 	/**
 	 * default no-arg constructor
 	 */
@@ -28,19 +28,19 @@ public class StartClusteringEvent
 		// nothing to initialize here
 	}
 
-//	public StartClusteringEvent(ClusterState state) {
-//		this.ClusterState = state;
-//	}
+	// public StartClusteringEvent(ClusterState state) {
+	// this.ClusterState = state;
+	// }
 
 	public StartClusteringEvent(ClusterState state, Integer setID) {
 		this.clusterState = state;
 		this.setID = setID;
 	}
-	
+
 	public void setSet(Integer setID) {
 		this.setID = setID;
 	}
-	
+
 	public Integer getSetID() {
 		return setID;
 	}

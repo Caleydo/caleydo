@@ -20,8 +20,8 @@ public class OverviewGroupBarRenderCommand implements IHeatMapRenderCommand {
 	private int viewID;
 	private TextureManager textureManager;
 
-	public OverviewGroupBarRenderCommand(int viewID,
-			PickingManager pickingManager, TextureManager textureManager) {
+	public OverviewGroupBarRenderCommand(int viewID, PickingManager pickingManager,
+			TextureManager textureManager) {
 		this.viewID = viewID;
 		this.pickingManager = pickingManager;
 		this.textureManager = textureManager;
@@ -31,8 +31,7 @@ public class OverviewGroupBarRenderCommand implements IHeatMapRenderCommand {
 	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
 
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
-		ContentVirtualArray contentVA = heatMapWrapper.getOverview()
-				.getContentVA();
+		ContentVirtualArray contentVA = heatMapWrapper.getOverview().getContentVA();
 
 		gl.glPushMatrix();
 		ContentGroupList contentGroupList = contentVA.getGroupList();
@@ -52,18 +51,19 @@ public class OverviewGroupBarRenderCommand implements IHeatMapRenderCommand {
 				EIconTextures iconTextures = (group.getSelectionType() == SelectionType.SELECTION) ? EIconTextures.HEAT_MAP_GROUP_SELECTED
 						: EIconTextures.HEAT_MAP_GROUP_NORMAL;
 
-				gl.glPushName(pickingManager.getPickingID(viewID, layout
-						.getGroupPickingType(), group.getGroupIndex()));
-				Vec3f lowerLeftCorner = new Vec3f(groupPosition.x(), groupPosition.y(), groupPosition.z());
+				gl.glPushName(pickingManager.getPickingID(viewID,
+						layout.getGroupPickingType(), group.getGroupIndex()));
+				Vec3f lowerLeftCorner = new Vec3f(groupPosition.x(), groupPosition.y(),
+						groupPosition.z());
 				Vec3f lowerRightCorner = new Vec3f(groupPosition.x() + groupWidth,
 						groupPosition.y(), groupPosition.z());
 				Vec3f upperRightCorner = new Vec3f(groupPosition.x() + groupWidth,
 						groupPosition.y() + groupHeight, groupPosition.z());
-				Vec3f upperLeftCorner = new Vec3f(groupPosition.x(), groupPosition.y() + groupHeight, groupPosition.z());
+				Vec3f upperLeftCorner = new Vec3f(groupPosition.x(), groupPosition.y()
+						+ groupHeight, groupPosition.z());
 
 				textureManager.renderTexture(gl, iconTextures, lowerLeftCorner,
-						lowerRightCorner, upperRightCorner, upperLeftCorner, 1,
-						1, 1, 1);
+						lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 				gl.glPopName();
 			}

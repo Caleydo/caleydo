@@ -212,6 +212,7 @@ public class TabularDataView extends ASWTView implements
 		contentTable.setLayoutData(data);
 
 		contentTable.addListener(SWT.MouseDown, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				Rectangle clientArea = contentTable.getClientArea();
 				Point pt = new Point(event.x, event.y);
@@ -226,6 +227,7 @@ public class TabularDataView extends ASWTView implements
 						final int column = iColIndex;
 						final Text text = new Text(contentTable, SWT.NONE);
 						Listener textListener = new Listener() {
+							@Override
 							public void handleEvent(final Event e) {
 								switch (e.type) {
 								case SWT.FocusOut:
@@ -437,6 +439,7 @@ public class TabularDataView extends ASWTView implements
 
 	private void addColumn(final int index, final int storageNumber) {
 		composite.getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				TableColumn column = new TableColumn(contentTable, SWT.NONE, index);
 				IStorage storage = set.get(storageNumber);
@@ -461,6 +464,7 @@ public class TabularDataView extends ASWTView implements
 	 */
 	private void reactOnExternalSelection() {
 		composite.getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				if (contentTable.isDisposed())
 					return;
@@ -664,6 +668,7 @@ public class TabularDataView extends ASWTView implements
 				switch (deltaItem.getType()) {
 				case REMOVE:
 					composite.getDisplay().asyncExec(new Runnable() {
+						@Override
 						public void run() {
 							contentTable.getColumn(iVAIndex + 3).dispose();
 						}

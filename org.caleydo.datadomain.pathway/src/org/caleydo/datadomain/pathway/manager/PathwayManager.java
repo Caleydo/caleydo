@@ -84,9 +84,9 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		hashPathwayToVisibilityState = new HashMap<PathwayGraph, Boolean>();
 
 		rootPathwayGraph = new Graph(0);
-		
+
 		xmlParserManager = new PathwayParserManager();
-		
+
 		KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
 		xmlParserManager.registerAndInitSaxHandler(kgmlParser);
 		BioCartaPathwayImageMapSaxHandler biocartaPathwayParser = new BioCartaPathwayImageMapSaxHandler();
@@ -171,6 +171,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		return rootPathwayGraph;
 	}
 
+	@Override
 	public Collection<PathwayGraph> getAllItems() {
 		waitUntilPathwayLoadingIsFinished();
 
@@ -280,7 +281,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 		throw new IllegalStateException("Unknown pathway database " + type);
 	}
-	
+
 	public PathwayParserManager getXmlParserManager() {
 		return xmlParserManager;
 	}

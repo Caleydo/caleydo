@@ -7,11 +7,9 @@ public abstract class ARCPViewCreator
 	extends AViewCreator {
 
 	public ARCPViewCreator(String viewType) {
-		super(viewType);		
+		super(viewType);
 	}
-	
+
 	public abstract CaleydoRCPViewPart createView(int parentContainerID, String label);
-
-
 
 }

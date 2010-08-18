@@ -4,8 +4,7 @@ public class GeneClusterElementRepCreator implements IElementRepCreator {
 
 	@Override
 	public void createElementRep(PartialDisc partialDisc, int iViewID,
-			float fHierarchyCenterX, float fHierarchyCenterY,
-			float fHierarchyCenterZ) {
+			float fHierarchyCenterX, float fHierarchyCenterY, float fHierarchyCenterZ) {
 
 		// APDDrawingStrategy drawingStrategy =
 		// partialDisc.getDrawingStrategy();

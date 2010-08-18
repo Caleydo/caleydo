@@ -9,8 +9,7 @@ import org.eclipse.swt.events.KeyEvent;
  * 
  * @author Christian Partl
  */
-public class GLRadialHierarchyKeyListener extends
-		GLKeyListener<GLRadialHierarchy> {
+public class GLRadialHierarchyKeyListener extends GLKeyListener<GLRadialHierarchy> {
 
 	GLRadialHierarchy radialHierarchy;
 

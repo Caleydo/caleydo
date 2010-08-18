@@ -66,7 +66,7 @@ public class LookupTableLoader
 				try {
 					// Check if line consists of just one entity
 					if (sLine.length() != 0 && strTokenText.countTokens() == 1) {
-						
+
 						// Special case for creating indexing of storages
 						if (mappingType.getToIDType().getTypeName().equals("content_")) {
 
@@ -110,8 +110,8 @@ public class LookupTableLoader
 							if (mappingType.getToIDType().getTypeName().contains("content_")) {
 
 								if (mappingType.getFromIDType().getTypeName().equals("REF_SEQ")) {
-//									 Remove multiple RefSeqs because all point to
-//									 the same gene DAVID ID
+									// Remove multiple RefSeqs because all point to
+									// the same gene DAVID ID
 									if (buffer.contains(";")) {
 										buffer = sLine.substring(0, sLine.indexOf(";"));
 									}
@@ -176,7 +176,7 @@ public class LookupTableLoader
 
 							break;
 						} // end of: while (( strToken.hasMoreTokens()
-						// )&&(bMaintainLoop)) {
+							// )&&(bMaintainLoop)) {
 					}
 				}
 				catch (NoSuchElementException nsee) {

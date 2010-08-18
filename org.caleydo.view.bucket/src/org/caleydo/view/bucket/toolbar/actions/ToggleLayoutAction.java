@@ -17,8 +17,8 @@ public class ToggleLayoutAction extends AToolBarAction {
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 		setChecked(false);
 	}
 

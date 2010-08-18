@@ -63,7 +63,6 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	
 	private void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.pathway");

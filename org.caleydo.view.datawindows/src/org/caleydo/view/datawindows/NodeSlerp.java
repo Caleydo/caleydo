@@ -32,8 +32,8 @@ public class NodeSlerp {
 		tempVector[0] = targetPoint[0] - startPoint[0];
 		tempVector[1] = targetPoint[1] - startPoint[1];
 
-		length = (float) Math.sqrt(tempVector[0] * tempVector[0]
-				+ tempVector[1] * tempVector[1]);
+		length = (float) Math.sqrt(tempVector[0] * tempVector[0] + tempVector[1]
+				* tempVector[1]);
 		directionVector = new float[2];
 		directionVector[0] = tempVector[0] / length;
 		directionVector[1] = tempVector[1] / length;
@@ -48,7 +48,7 @@ public class NodeSlerp {
 
 	public boolean doASlerp(float[] position) {
 
-		if (position==null){
+		if (position == null) {
 			return false;
 		}
 		actualPoint = position.clone();
@@ -83,9 +83,9 @@ public class NodeSlerp {
 
 			tempVector[0] = targetPoint[0] - actualPoint[0];
 			tempVector[1] = targetPoint[1] - actualPoint[1];
-			
-			oldDistanceToTarget = (float) Math.sqrt(tempVector[0]
-					* tempVector[0] + tempVector[1] * tempVector[1]);
+
+			oldDistanceToTarget = (float) Math.sqrt(tempVector[0] * tempVector[0]
+					+ tempVector[1] * tempVector[1]);
 
 			for (int i = 0; i < numberOfIterations; i++) {
 				actualPoint = position.clone();
@@ -93,8 +93,8 @@ public class NodeSlerp {
 				tempVector[0] = targetPoint[0] - calcuatedPosition[0];
 				tempVector[1] = targetPoint[1] - calcuatedPosition[1];
 				oldDistanceToTarget = distanceToTarget;
-				distanceToTarget = (float) Math.sqrt(tempVector[0]
-						* tempVector[0] + tempVector[1] * tempVector[1]);
+				distanceToTarget = (float) Math.sqrt(tempVector[0] * tempVector[0]
+						+ tempVector[1] * tempVector[1]);
 
 				// decide, if the last transformation was to much:
 
@@ -131,8 +131,8 @@ public class NodeSlerp {
 
 		tempVector[0] = targetPoint[0] - actualPoint[0];
 		tempVector[1] = targetPoint[1] - actualPoint[1];
-		dLength = (float) Math.sqrt(tempVector[0] * tempVector[0]
-				+ tempVector[1] * tempVector[1]);
+		dLength = (float) Math.sqrt(tempVector[0] * tempVector[0] + tempVector[1]
+				* tempVector[1]);
 
 		directionVector[0] = tempVector[0] / dLength;
 		directionVector[1] = tempVector[1] / dLength;

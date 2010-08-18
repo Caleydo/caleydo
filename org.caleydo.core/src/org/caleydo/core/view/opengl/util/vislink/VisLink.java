@@ -18,7 +18,7 @@ import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 public class VisLink {
 
 	private ArrayList<Vec3f> linePoints;
-	
+
 	/**
 	 * Constructor (for straight lines)
 	 * 
@@ -227,11 +227,11 @@ public class VisLink {
 	/**
 	 * Generates vertices for a polygon line from a given set of curve points.
 	 * 
-	 *@param gl
+	 * @param gl
 	 *            The GL Object
-	 *@param curvePoints
+	 * @param curvePoints
 	 *            Set of curve points
-	 *@param width
+	 * @param width
 	 *            The width of the resulting line
 	 * @return A list of vertices (polygon line)
 	 * @throws IllegalargumentException
@@ -729,13 +729,13 @@ public class VisLink {
 	// visLink.polygonLineAA(gl, shadow);
 	// else
 	// visLink.polygonLine(gl, shadow);
-	//			
+	//
 	// }
 	// else
 	// throw new IllegalArgumentException( "Need at least two points to render a line!" );
 	// }
-	//	
-	//	
+	//
+	//
 	// /**
 	// * Creates a straight polygon visual link.
 	// *
@@ -753,8 +753,8 @@ public class VisLink {
 	// else
 	// visLink.polygonLine(gl, shadow);
 	// }
-	//	
-	//	
+	//
+	//
 	// /**
 	// * Renders a polygon line. Recommended for lines with higher width.
 	// *
@@ -762,16 +762,16 @@ public class VisLink {
 	// * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
 	// */
 	// protected void polygonLine(final GL gl, boolean shadow) {
-	//		
+	//
 	// if(shadow == true)
 	// drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR,
 	// (ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * 1.5f), 1);
-	//		
+	//
 	// drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR,
 	// ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH, 1);
 	// }
-	//	
-	//	
+	//
+	//
 	// /**
 	// * Renders a polygon line with AA. Recommended for lines with higher width.
 	// *
@@ -784,7 +784,7 @@ public class VisLink {
 	// (ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * 1.5f),
 	// ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
 	// }
-	//		
+	//
 	// drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR,
 	// ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
 	// }
@@ -799,11 +799,11 @@ public class VisLink {
 	// performance.
 	// */
 	// protected void drawPolygonLine(final GL gl, float[] RGBA, float width, int quality) {
-	//		
+	//
 	// try {
 	// checkRGBA(RGBA);
 	// } catch(IllegalArgumentException iae) {throw iae;}
-	//		
+	//
 	// float red = RGBA[0];
 	// float green = RGBA[1];
 	// float blue = RGBA[2];
@@ -811,29 +811,29 @@ public class VisLink {
 	// float alphaChange = alpha / quality;
 	// float unit = width / quality;
 	// float lineWidth = width - (((quality - 1) * unit) / 2);
-	//		
+	//
 	// ArrayList<Vec3f> vertices = new ArrayList<Vec3f>();
-	//		
+	//
 	// for(int j = 1; j <= quality; j++) {
 	// // The spline attributes
 	// gl.glColor4fv(new float[]{red, green, blue, alpha}, 0);
-	//			
+	//
 	// vertices.clear();
 	// vertices = generatePolygonVertices(gl, linePoints, lineWidth);
-	//			
+	//
 	// // the spline
 	// gl.glBegin(GL.GL_QUAD_STRIP);
 	// for(int i = 0; i < vertices.size(); i++) {
 	// gl.glVertex3f(vertices.get(i).x(), vertices.get(i).y(), vertices.get(i).z());
 	// }
 	// gl.glEnd();
-	//			
+	//
 	// alpha -= alphaChange;
 	// lineWidth += unit;
 	// }
 	// }
-	//	
-	//	
+	//
+	//
 	// /**
 	// * Draws the first [segments] segments of the line (AA-Quality can be specified)
 	// *
@@ -852,13 +852,13 @@ public class VisLink {
 	// drawSegments)
 	// throws IllegalArgumentException
 	// {
-	//		
+	//
 	// try {
 	// checkRGBA(RGBA);
 	// } catch(IllegalArgumentException iae) {throw iae;}
-	//		
+	//
 	// quality = (quality < 1) ? 1 : quality; // line should be drawn at least 1 time
-	//		
+	//
 	// float red = RGBA[0];
 	// float green = RGBA[1];
 	// float blue = RGBA[2];
@@ -867,36 +867,36 @@ public class VisLink {
 	// float unit = width / quality;
 	// float lineWidth = width - (((quality - 1) * unit) / 2);
 	// long limit = (drawSegments + 1) * 2; // n segments have n+1 vertices
-	//		
+	//
 	// ArrayList<Vec3f> vertices = new ArrayList<Vec3f>();
-	//		
+	//
 	// for(int j = 1; j <= quality; j++) {
 	// // The spline attributes
 	// gl.glColor4fv(new float[]{red, green, blue, alpha}, 0);
-	//			
+	//
 	// vertices.clear();
 	// vertices = generatePolygonVertices(gl, linePoints, lineWidth);
-	//			
+	//
 	// if(limit > vertices.size()) {
 	// limit = vertices.size();
 	// throw new
 	// IllegalArgumentException("Parameter segments is higher than the number of curve-segments. Capped it to max.");
 	// }
-	//			
+	//
 	// // the spline
 	// gl.glBegin(GL.GL_QUAD_STRIP);
 	// for(int i = 0; i < limit; i++) {
 	// gl.glVertex3f(vertices.get(i).x(), vertices.get(i).y(), vertices.get(i).z());
 	// }
 	// gl.glEnd();
-	//			
+	//
 	// alpha -= alphaChange;
 	// lineWidth += unit;
 	// }
 	// return (limit >= vertices.size()) ? true : false;
 	// }
-	//	
-	//	
+	//
+	//
 	// /**
 	// * Draws the last [segments] segments of the line (AA-Quality can be specified)
 	// *
@@ -915,11 +915,11 @@ public class VisLink {
 	// long drawSegments)
 	// throws IllegalArgumentException
 	// {
-	//		
+	//
 	// try {
 	// checkRGBA(RGBA);
 	// } catch(IllegalArgumentException iae) {throw iae;}
-	//		
+	//
 	// float red = RGBA[0];
 	// float green = RGBA[1];
 	// float blue = RGBA[2];
@@ -928,29 +928,29 @@ public class VisLink {
 	// float unit = width / quality;
 	// float lineWidth = width - (((quality - 1) * unit) / 2);
 	// long limit = (drawSegments + 1) * 2; // n segments have n+1 vertices
-	//		
+	//
 	// ArrayList<Vec3f> vertices = new ArrayList<Vec3f>();
-	//		
+	//
 	// for(int j = 1; j <= quality; j++) {
 	// // The spline attributes
 	// gl.glColor4fv(new float[]{red, green, blue, alpha}, 0);
-	//			
+	//
 	// vertices.clear();
 	// vertices = generatePolygonVertices(gl, linePoints, lineWidth);
-	//			
+	//
 	// if(limit > vertices.size()) {
 	// limit = vertices.size();
 	// throw new
 	// IllegalArgumentException("Parameter segments is higher than the number of curve-segments. Capped it to max.");
 	// }
-	//			
+	//
 	// // the spline
 	// gl.glBegin(GL.GL_QUAD_STRIP);
 	// for(int i = (vertices.size() - 1); i >= (vertices.size() - limit); i--) {
 	// gl.glVertex3f(vertices.get(i).x(), vertices.get(i).y(), vertices.get(i).z());
 	// }
 	// gl.glEnd();
-	//			
+	//
 	// alpha -= alphaChange;
 	// lineWidth += unit;
 	// }
@@ -995,7 +995,7 @@ public class VisLink {
 	// drawPolygonLineReverse(gl, width, color, antiAliasingQuality, segmentsToDraw);
 	// }
 
-	//	
+	//
 	// /**
 	// * Renders the polygon line w/o further options
 	// *
@@ -1016,7 +1016,7 @@ public class VisLink {
 	// else
 	// throw new IllegalArgumentException( "Need at least two points to render a line!" );
 	// }
-	//	
+	//
 	// /**
 	// * Renders the halo of the polygon line
 	// *
@@ -1037,7 +1037,7 @@ public class VisLink {
 	// else
 	// throw new IllegalArgumentException( "Need at least two points to render a line!" );
 	// }
-	//	
+	//
 	// /**
 	// * This method is called by renderPolygonLineHalo
 	// * @param gl the GL Object
@@ -1048,12 +1048,12 @@ public class VisLink {
 	// halo[1] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[1];
 	// halo[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
 	// halo[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 2f;
-	//		
+	//
 	// float halo_width = ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH * 3;
-	//		
+	//
 	// drawPolygonLine(gl, halo, halo_width, 5);
 	// }
-	//	
+	//
 	// /**
 	// * This method is called by renderPolygonLine
 	// * @param gl the GL Object
@@ -1062,13 +1062,13 @@ public class VisLink {
 	// drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, width,
 	// ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
 	// }
-	//	
-	//	
+	//
+	//
 	// protected void polygonLineWithHaloTexture(final GL gl) {
-	//		
+	//
 	// ArrayList<Vec3f> polygonLineVertices = generatePolygonVertices(gl, linePoints,
 	// ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
-	//		
+	//
 	// // The spline attributes
 	// gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
 	//
@@ -1077,16 +1077,16 @@ public class VisLink {
 	// String("resources/vislinktextures/glowTextureYellow.png"));
 	// texture.enable();
 	// texture.bind();
-	//		
+	//
 	// gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
 	// // gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
 	// // gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_BLEND);
 	// // gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_DECAL);
-	//		
+	//
 	// // gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
 	// // gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP);
 	// TextureCoords texCoords = texture.getImageTexCoords();
-	//		
+	//
 	// // the spline
 	// gl.glBegin(GL.GL_QUAD_STRIP);
 	// for(int i = 0; i < polygonLineVertices.size(); i++) {
@@ -1098,7 +1098,7 @@ public class VisLink {
 	// gl.glTexCoord2f( texCoords.right(), texCoords.bottom());
 	// }
 	// gl.glEnd();
-	//		
+	//
 	// texture.disable();
 	// }
 
@@ -1109,14 +1109,14 @@ public class VisLink {
 	// halo[1] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[1];
 	// halo[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
 	// halo[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 2;
-	//			
+	//
 	// // int[] curBlendFunc = new int[5];
 	// // gl.glGetIntegerv(GL.GL_BLEND_SRC_RGB, curBlendFunc, 0);
 	// // gl.glGetIntegerv(GL.GL_BLEND_DST_RGB, curBlendFunc, 1);
 	// // gl.glGetIntegerv(GL.GL_BLEND_SRC_ALPHA, curBlendFunc, 2);
 	// // gl.glGetIntegerv(GL.GL_BLEND_DST_ALPHA, curBlendFunc, 3);
 	// // gl.glGetIntegerv(GL.GL_BLEND_EQUATION, curBlendFunc, 4);
-	//			
+	//
 	// // System.out.println(curBlendFunc[0] + "  " + curBlendFunc[1] + "  " + curBlendFunc[2] + "  " +
 	// curBlendFunc[3]);
 	//
@@ -1127,15 +1127,15 @@ public class VisLink {
 	// GL.GL_ONE_MINUS_SRC_ALPHA);
 	// // gl.glBlendFuncSeparate(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA, GL.GL_SRC_ALPHA,
 	// GL.GL_ONE_MINUS_SRC_ALPHA); // standard
-	//			
+	//
 	// // gl.glLogicOp(GL.GL_SET);
 	// // gl.glBlendEquation(GL.GL_LOGIC_OP);
 	// // gl.glBlendEquationSeparate(GL.GL_MAX, GL.GL_LOGIC_OP);
-	//			
+	//
 	// drawPolygonLine(gl, halo, 4f, 5);
 	// drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 1f,
 	// ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-	//			
+	//
 	// // gl.glBlendFunc(curBlendFunc[0], curBlendFunc[1]);
 	// // gl.glBlendFuncSeparate(curBlendFunc[0], curBlendFunc[1], curBlendFunc[2], curBlendFunc[3]);
 	// // gl.glBlendEquation(curBlendFunc[4]);
@@ -1145,30 +1145,30 @@ public class VisLink {
 	// }
 
 	// protected void polygonLineWithHalo(final GL gl) {
-	//        
+	//
 	// this.blurTexture[0] = createBlurTexture(gl);
 	// this.frameBufferObject[0] = createFrameBufferObject(gl);
-	//		
+	//
 	// if (frameBufferObject[0] == -1) {
 	// System.err.println("error: couldn't create framebuffer object needed for halo. rendering normal polygon line instead.");
 	// polygonLine(gl, false);
 	// return;
 	// }
-	//		
+	//
 	// IntBuffer viewportBuffer = BufferUtil.newIntBuffer(4);
-	//		
+	//
 	// // store current viewport
 	// gl.glGetIntegerv(GL.GL_VIEWPORT, viewportBuffer);
 	// this.viewportX = viewportBuffer.get(0);
 	// this.viewportY = viewportBuffer.get(1);
 	// this.viewportWidth = viewportBuffer.get(2);
 	// this.viewportHeight = viewportBuffer.get(3);
-	//    	
+	//
 	// // for(int i = 0; i < viewportBuffer.capacity(); i++)
 	// // System.out.print(viewportBuffer.get(i) + "  ");
 	// // System.out.println();
-	//    	
-	//    	
+	//
+	//
 	// // line with blur effect
 	// renderToTexture(gl);
 	// // restore default FB
@@ -1177,17 +1177,17 @@ public class VisLink {
 	// gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
 	// polygonLine(gl, false);
 	// drawBlur(gl, 25, 0.02f);
-	//    	
+	//
 	// // delete the Buffers
 	// gl.glDeleteTextures(1, blurTexture, 0);
 	// gl.glDeleteFramebuffersEXT(1, frameBufferObject, 0);
 	// gl.glDeleteTextures(1, colorBuff, 0);
 	// gl.glDeleteRenderbuffersEXT(1, depthBuff, 0);
 	// }
-	//	
-	//	
+	//
+	//
 	// private int createBlurTexture(GL gl) { // Create An Empty Texture
-	//		
+	//
 	// ByteBuffer data = BufferUtil.newByteBuffer(TEXTURE_SIZE * TEXTURE_SIZE); // Create Storage Space For
 	// Texture Data (128x128x4)
 	// data.limit(data.capacity());
@@ -1202,7 +1202,7 @@ public class VisLink {
 	//
 	// return txtnumber[0]; // Return The Texture ID
 	// }
-	//	
+	//
 	// private void viewOrtho(GL gl) // Set Up An Ortho View
 	// {
 	// gl.glMatrixMode(GL.GL_PROJECTION); // Select Projection
@@ -1221,20 +1221,20 @@ public class VisLink {
 	// gl.glMatrixMode(GL.GL_MODELVIEW); // Select Modelview
 	// gl.glPopMatrix(); // Pop The Matrix
 	// }
-	//    
+	//
 	// private void renderToTexture(GL gl) {
-	//    	
+	//
 	// // if FBO couldn't be created, we can't render to texture and therefore can't use halo
 	// if (frameBufferObject[0] == -1) {
 	// System.err.println("error: couldn't create framebuffer object needed for halo.");
 	// return;
 	// }
-	//    	
+	//
 	// gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, frameBufferObject[0]);
-	//    	
+	//
 	// // Set Our Viewport (Match Texture Size)
 	// gl.glViewport(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
-	//        
+	//
 	// gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
 	// gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 	//
@@ -1245,18 +1245,18 @@ public class VisLink {
 	// gl.glCopyTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_LUMINANCE, 0, 0, TEXTURE_SIZE, TEXTURE_SIZE, 0);
 	// }
 	//
-	//    
+	//
 	// private void drawBlur(GL gl, int times, float inc) {
-	//    	
+	//
 	// // if fbo couldn't be created, we can't render to texture and therefore can't use halo
 	// if (frameBufferObject[0] == -1) {
 	// System.err.println("error: couldn't create framebuffer object needed for halo.");
 	// return;
 	// }
-	//    	
+	//
 	// float spost = 0.0f; // Starting Texture Coordinate Offset
 	// float alpha = 0.2f; // Starting Alpha Value
-	//		
+	//
 	// // Disable AutoTexture Coordinates
 	// // gl.glDisable(GL.GL_TEXTURE_GEN_S);
 	// // gl.glDisable(GL.GL_TEXTURE_GEN_T);
@@ -1267,39 +1267,39 @@ public class VisLink {
 	// gl.glEnable(GL.GL_BLEND); // Enable Blending
 	// gl.glBindTexture(GL.GL_TEXTURE_2D, blurTexture[0]); // Bind To The Blur Texture
 	// viewOrtho(gl); // Switch To An Ortho View
-	//		
+	//
 	// float alphainc = alpha / times; // alphainc=0.2f / Times To Render Blur
-	//		
+	//
 	// gl.glBegin(GL.GL_QUADS); // Begin Drawing Quads
 	// for (int num = 0; num < times; num++) // Number Of Times To Render Blur
 	// {
 	// gl.glColor4f(1.0f, 1.0f, 1.0f, alpha); // Set The Alpha Value (Starts At 0.2)
 	// gl.glTexCoord2f(0 + spost, 1 - spost); // Texture Coordinate ( 0, 1 )
 	// gl.glVertex2f(0, 0); // First Vertex ( 0, 0 )
-	//		
+	//
 	// gl.glTexCoord2f(0 + spost, 0 + spost); // Texture Coordinate ( 0, 0 )
 	// gl.glVertex2f(0, viewportHeight); // Second Vertex ( 0, 480 )
-	//		
+	//
 	// gl.glTexCoord2f(1 - spost, 0 + spost); // Texture Coordinate ( 1, 0 )
 	// gl.glVertex2f(viewportWidth, viewportHeight); // Third Vertex ( 640, 480 )
-	//		
+	//
 	// gl.glTexCoord2f(1 - spost, 1 - spost); // Texture Coordinate ( 1, 1 )
 	// gl.glVertex2f(viewportWidth, 0); // Fourth Vertex ( 640, 0 )
-	//		
+	//
 	// spost += inc; // Gradually Increase spost (Zooming Closer To Texture Center)
 	// alpha = alpha - alphainc; // Gradually Decrease alpha (Gradually Fading Image Out)
 	// }
 	// gl.glEnd(); // Done Drawing Quads
-	//		
+	//
 	// viewPerspective(gl); // Switch To A Perspective View
-	//		
+	//
 	// gl.glEnable(GL.GL_DEPTH_TEST); // Enable Depth Testing
 	// gl.glDisable(GL.GL_TEXTURE_2D);
 	// gl.glDisable(GL.GL_BLEND); // Disable Blending
 	// gl.glBindTexture(GL.GL_TEXTURE_2D, 0); // Unbind The Blur Texture
 	// }
-	//    
-	//    
+	//
+	//
 	// /**
 	// * Creates a frame buffer object.
 	// * @return the newly created frame buffer object is or -1 if a frame buffer object could not be created
@@ -1309,7 +1309,7 @@ public class VisLink {
 	// int[] frameBuffer = new int[1];
 	// gl.glGenFramebuffersEXT(1, frameBuffer, 0);
 	// gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, frameBuffer[0]);
-	//		
+	//
 	// // Create a TEXTURE_SIZE x TEXTURE_SIZE RGBA texture that will be used as color attachment
 	// // for the fbo.
 	// int[] colorBuffer = new int[1];
@@ -1319,14 +1319,14 @@ public class VisLink {
 	// GL.GL_UNSIGNED_BYTE, BufferUtil.newByteBuffer(TEXTURE_SIZE * TEXTURE_SIZE * 4));
 	// gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
 	// gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
-	//		
+	//
 	// // Attach the texture to the frame buffer as the color attachment. This
 	// // will cause the results of rendering to the FBO to be written in the blur texture.
 	// gl.glFramebufferTexture2DEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_COLOR_ATTACHMENT0_EXT, GL.GL_TEXTURE_2D,
 	// colorBuffer[0], 0);
 	//
 	// gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
-	//		
+	//
 	// // Create a 24-bit TEXTURE_SIZE x TEXTURE_SIZE depth buffer for the FBO.
 	// // We need this to get correct rendering results.
 	// int[] depthBuffer = new int[1];
@@ -1334,11 +1334,11 @@ public class VisLink {
 	// gl.glBindRenderbufferEXT(GL.GL_RENDERBUFFER_EXT, depthBuffer[0]);
 	// gl.glRenderbufferStorageEXT(GL.GL_RENDERBUFFER_EXT, GL.GL_DEPTH_COMPONENT24, TEXTURE_SIZE,
 	// TEXTURE_SIZE);
-	//		
+	//
 	// // Attach the newly created depth buffer to the FBO.
 	// gl.glFramebufferRenderbufferEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_DEPTH_ATTACHMENT_EXT,
 	// GL.GL_RENDERBUFFER_EXT, depthBuffer[0]);
-	//		
+	//
 	// // Make sure the framebuffer object is complete (i.e. set up correctly)
 	// int status = gl.glCheckFramebufferStatusEXT(GL.GL_FRAMEBUFFER_EXT);
 	// if (status == GL.GL_FRAMEBUFFER_COMPLETE_EXT) {

@@ -62,8 +62,8 @@ public class GLCell extends AGLView {
 	}
 
 	@Override
-	public void initRemote(GL gl, AGLView glParentView,
-			GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+	public void initRemote(GL gl, AGLView glParentView, GLMouseListener glMouseListener,
+			GLInfoAreaManager infoAreaManager) {
 		this.glMouseListener = glMouseListener;
 		init(gl);
 	}
@@ -104,8 +104,7 @@ public class GLCell extends AGLView {
 
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
-		Texture tempTexture = textureManager.getIconTexture(gl,
-				EIconTextures.CELL_MODEL);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.CELL_MODEL);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -115,8 +114,8 @@ public class GLCell extends AGLView {
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.025f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop()
-				- viewFrustum.getBottom(), -0.025f);
+		gl.glVertex3f(viewFrustum.getLeft(),
+				viewFrustum.getTop() - viewFrustum.getBottom(), -0.025f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
 		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(),
 				viewFrustum.getTop() - viewFrustum.getBottom(), -0.025f);
@@ -193,7 +192,7 @@ public class GLCell extends AGLView {
 	public String getShortInfo() {
 		// PathwayGraph pathway =
 		// (generalManager.getPathwayManager().getItem(iPathwayID));
-		//		
+		//
 		// return pathway.getTitle() + " (" +pathway.getType().getName() + ")";
 
 		return null;

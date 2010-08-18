@@ -15,9 +15,7 @@ public class InitYAxisComboListener extends AEventListener<YAxisSelector> {
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof InitAxisComboEvent) {
-			handler
-					.initComboString(((InitAxisComboEvent) event)
-							.getAxisNames());
+			handler.initComboString(((InitAxisComboEvent) event).getAxisNames());
 		}
 	}
 

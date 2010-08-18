@@ -13,8 +13,7 @@ import org.xml.sax.SAXException;
  * @author Marc Streit
  * @author Michael Kalkusch
  */
-public class PathwayImageMapSaxHandler
-	extends AXmlParserHandler {
+public class PathwayImageMapSaxHandler extends AXmlParserHandler {
 
 	protected Attributes attributes;
 
@@ -27,8 +26,8 @@ public class PathwayImageMapSaxHandler
 	}
 
 	@Override
-	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
-		Attributes attributes) throws SAXException {
+	public void startElement(String namespaceURI, String sSimpleName,
+			String sQualifiedName, Attributes attributes) throws SAXException {
 
 		String sElementName = sSimpleName;
 		this.attributes = attributes;
@@ -40,8 +39,7 @@ public class PathwayImageMapSaxHandler
 		if (attributes != null) {
 			if (sElementName.equals("imagemap")) {
 				handleImageMapTag();
-			}
-			else if (sElementName.equals("area")) {
+			} else if (sElementName.equals("area")) {
 				handleAreaTag();
 			}
 		}
@@ -49,7 +47,7 @@ public class PathwayImageMapSaxHandler
 
 	@Override
 	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
-		throws SAXException {
+			throws SAXException {
 
 		// emit("</"+sName+">");
 
@@ -58,7 +56,8 @@ public class PathwayImageMapSaxHandler
 		if (null != eName) {
 			if (eName.equals(sOpeningTag)) {
 				/**
-				 * section (xml block) finished, call callback function from XmlParserManager
+				 * section (xml block) finished, call callback function from
+				 * XmlParserManager
 				 */
 				xmlParserManager.sectionFinishedByHandler(this);
 			}
@@ -66,7 +65,8 @@ public class PathwayImageMapSaxHandler
 	}
 
 	/**
-	 * Reacts on the elements of the imagemap tag. An example imagemap tag looks like this:
+	 * Reacts on the elements of the imagemap tag. An example imagemap tag looks
+	 * like this:
 	 */
 	protected void handleImageMapTag() {
 
@@ -82,12 +82,13 @@ public class PathwayImageMapSaxHandler
 			sImageLink = attributes.getValue(0);
 		}
 
-		//generalManager.getPathwayManager().createPathwayImageMap(sImageLink);
+		// generalManager.getPathwayManager().createPathwayImageMap(sImageLink);
 	}
 
 	/**
-	 * Reacts on the elements of the area tag. An example area tag looks like this: <area shape="rect"
-	 * coords="439,63,558,98" link="data/XML/pathways/map01196.html" />
+	 * Reacts on the elements of the area tag. An example area tag looks like
+	 * this: <area shape="rect" coords="439,63,558,98"
+	 * link="data/XML/pathways/map01196.html" />
 	 */
 	protected void handleAreaTag() {
 
@@ -105,11 +106,9 @@ public class PathwayImageMapSaxHandler
 
 			if (sAttributeName.equals("coords")) {
 				sCoords = attributes.getValue(iAttributeIndex);
-			}
-			else if (sAttributeName.equals("link")) {
+			} else if (sAttributeName.equals("link")) {
 				sImageLink = attributes.getValue(iAttributeIndex);
-			}
-			else if (sAttributeName.equals("shape")) {
+			} else if (sAttributeName.equals("shape")) {
 				sShape = attributes.getValue(iAttributeIndex);
 			}
 
@@ -124,7 +123,8 @@ public class PathwayImageMapSaxHandler
 
 		rectArea.x = Integer.parseInt(token.nextToken());
 		rectArea.y = Integer.parseInt(token.nextToken());
-		rectArea.add(Integer.parseInt(token.nextToken()), Integer.parseInt(token.nextToken()));
+		rectArea.add(Integer.parseInt(token.nextToken()),
+				Integer.parseInt(token.nextToken()));
 
 		// ((PathwayManager)
 		// generalManager.getPathwayManager()).getCurrentPathwayImageMap().addArea(rectArea,

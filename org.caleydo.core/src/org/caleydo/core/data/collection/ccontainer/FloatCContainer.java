@@ -112,8 +112,7 @@ public class FloatCContainer
 	//
 	// return new FloatCContainer(fArTarget);
 	// }
-	
-	
+
 	@Override
 	public FloatCContainer log(int iBase) {
 		float[] fArTarget = new float[fArContainer.length];

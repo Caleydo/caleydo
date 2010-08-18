@@ -51,8 +51,7 @@ public abstract class APDDrawingStrategy {
 	 * @param pdDiscToDraw
 	 *            Partial disc that shall be drawn.
 	 */
-	public abstract void drawPartialDisc(GL gl, GLU glu,
-			PartialDisc pdDiscToDraw);
+	public abstract void drawPartialDisc(GL gl, GLU glu, PartialDisc pdDiscToDraw);
 
 	/**
 	 * Draws a full circle in a way determined by the concrete drawing strategy

@@ -10,8 +10,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
  * 
  * @author Marc Streit
  */
-public class GLConnectionLineRendererJukebox
-	extends AGLConnectionLineRenderer {
+public class GLConnectionLineRendererJukebox extends AGLConnectionLineRenderer {
 	/**
 	 * Constructor.
 	 * 
@@ -19,8 +18,8 @@ public class GLConnectionLineRendererJukebox
 	 * @param stackLevel
 	 * @param poolLevel
 	 */
-	public GLConnectionLineRendererJukebox(final RemoteLevel focusLevel, final RemoteLevel stackLevel,
-		final RemoteLevel poolLevel) {
+	public GLConnectionLineRendererJukebox(final RemoteLevel focusLevel,
+			final RemoteLevel stackLevel, final RemoteLevel poolLevel) {
 		super();
 	}
 

@@ -11,7 +11,7 @@ public class CompareGroupsEvent
 	private ArrayList<ISet> setsToCompare;
 
 	public CompareGroupsEvent(ArrayList<ISet> setsToCompare) {
-				
+
 		this.setsToCompare = setsToCompare;
 	}
 

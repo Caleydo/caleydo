@@ -15,6 +15,7 @@ public class ReportBugHandler
 
 	private final static String URL_REPORT_BUG = "https://trac.icg.tugraz.at/projects/org.caleydo/newticket";
 
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		try {

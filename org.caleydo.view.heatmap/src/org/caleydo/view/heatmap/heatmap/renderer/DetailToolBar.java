@@ -57,7 +57,7 @@ public class DetailToolBar extends ARenderer {
 		// for (int i = 0; i < points.size(); i++)
 		// gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0f);
 		// gl.glEnd();
-		//		
+		//
 		// compareConnectionRenderer.render(gl, outputPoints);
 
 		float sideSpacing = 2 * spacing;
@@ -98,14 +98,16 @@ public class DetailToolBar extends ARenderer {
 		float secondButtonOffset = 2 * sideSpacing + buttonSize;
 
 		int nrTotal = heatMap.getContentVA().size();
-		int nrVisible = nrTotal - heatMap.getContentSelectionManager().getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
+		int nrVisible = nrTotal
+				- heatMap.getContentSelectionManager().getNumberOfElements(
+						GLHeatMap.SELECTION_HIDDEN);
 
 		String content;
-		if(nrVisible == nrTotal)
+		if (nrVisible == nrTotal)
 			content = nrTotal + " elements";
 		else
 			content = nrVisible + "/" + nrTotal + " elements";
-		
+
 		gl.glColor3f(1, 1, 1);
 		gl.glTranslatef(secondButtonOffset, spacing * 2, 0);
 		textRender.begin3DRendering();

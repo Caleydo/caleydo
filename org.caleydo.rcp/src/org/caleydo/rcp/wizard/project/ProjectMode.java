@@ -2,7 +2,6 @@ package org.caleydo.rcp.wizard.project;
 
 import org.caleydo.core.data.selection.VirtualArray;
 
-
 public enum ProjectMode {
 
 	GENE_EXPRESSION_NEW_DATA,

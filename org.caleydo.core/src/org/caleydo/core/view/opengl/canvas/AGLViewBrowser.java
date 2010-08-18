@@ -503,10 +503,10 @@ public abstract class AGLViewBrowser
 			return;
 		}
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT, element
-			.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION, glView
-			.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
+			element.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION,
+			glView.getID()));
 
 		gl.glPushMatrix();
 
@@ -715,8 +715,8 @@ public abstract class AGLViewBrowser
 	private void renderEmptyBucketWall(final GL gl, RemoteLevelElement element, RemoteLevel level) {
 		gl.glPushMatrix();
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT, element
-			.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
+			element.getID()));
 
 		Transform transform = element.getTransform();
 		Vec3f translation = transform.getTranslation();
@@ -1006,10 +1006,10 @@ public abstract class AGLViewBrowser
 		// gl.glVertex3f(fXOrigin + 3f, fYOrigin- fHeight / 2f + 1.5f , 0f);
 		// gl.glEnd();
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT, element
-			.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION, element
-			.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
+			element.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION,
+			element.getID()));
 	}
 
 	private void doSlerpActions(final GL gl) {
@@ -1532,8 +1532,7 @@ public abstract class AGLViewBrowser
 		if (isSlerpActive)
 			return;
 
-		if (!newViews.isEmpty() && readyForLoadingNewViews()
-			&& arSlerpActions.isEmpty()) {
+		if (!newViews.isEmpty() && readyForLoadingNewViews() && arSlerpActions.isEmpty()) {
 
 			ASerializedView serView = newViews.remove(0);
 			AGLView view = createView(gl, serView);
@@ -1635,7 +1634,9 @@ public abstract class AGLViewBrowser
 			destination = poolLevel.getNextFree();
 		}
 		else {
-			GeneralManager.get().getLogger()
+			GeneralManager
+				.get()
+				.getLogger()
 				.log(
 					new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 						"No empty space left to add new view!"));
@@ -1798,9 +1799,9 @@ public abstract class AGLViewBrowser
 		// // serializedForm.setNeighborhoodEnabled(neighborhoodEnabled);
 		// // serializedForm.setGeneMappingEnabled(geneMappingEnabled);
 		// serializedForm.setConnectionLinesEnabled(connectionLinesEnabled);
-		//		
+		//
 		// ViewManager viewManager = generalManager.getViewGLCanvasManager();
-		//		
+		//
 		// ArrayList<ASerializedView> remoteViews = new
 		// ArrayList<ASerializedView>(
 		// focusLevel.getAllElements().size());
@@ -1811,7 +1812,7 @@ public abstract class AGLViewBrowser
 		// }
 		// }
 		// serializedForm.setFocusViews(remoteViews);
-		//		
+		//
 		// remoteViews = new ArrayList<ASerializedView>(stackLevel
 		// .getAllElements().size());
 		// for (RemoteLevelElement rle : stackLevel.getAllElements()) {
@@ -1821,7 +1822,7 @@ public abstract class AGLViewBrowser
 		// }
 		// }
 		// serializedForm.setStackViews(remoteViews);
-		//		
+		//
 		// return serializedForm;
 
 		throw new IllegalStateException("TODO implement view browser serialization");

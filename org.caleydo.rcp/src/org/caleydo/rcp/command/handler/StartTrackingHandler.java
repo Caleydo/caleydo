@@ -10,6 +10,7 @@ public class StartTrackingHandler
 	extends AbstractHandler
 	implements IHandler {
 
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		GeneralManager.get().getTrackDataProvider().startTracking();

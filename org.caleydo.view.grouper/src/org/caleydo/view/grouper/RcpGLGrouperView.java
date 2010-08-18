@@ -25,8 +25,7 @@ public class RcpGLGrouperView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedGrouperView serializedView = new SerializedGrouperView(
-			dataDomainType);
+		SerializedGrouperView serializedView = new SerializedGrouperView(dataDomainType);
 		return serializedView;
 	}
 

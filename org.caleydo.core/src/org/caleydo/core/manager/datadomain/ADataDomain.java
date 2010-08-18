@@ -95,10 +95,12 @@ public abstract class ADataDomain
 		this.loadDataParameters = loadDataParameters;
 	}
 
+	@Override
 	public String getBootstrapFileName() {
 		return bootsTrapFileName;
 	}
 
+	@Override
 	public void setBootstrapFileName(String bootsTrapFileName) {
 		this.bootsTrapFileName = bootsTrapFileName;
 	}

@@ -95,8 +95,8 @@ public class ClusteringProgressBar
 
 		shell = new Shell();
 		shell.setText(algorithmType.getName());
-		shell.setImage(GeneralManager.get().getResourceLoader().getImage(shell.getDisplay(),
-			"resources/icons/view/storagebased/clustering.png"));
+		shell.setImage(GeneralManager.get().getResourceLoader()
+			.getImage(shell.getDisplay(), "resources/icons/view/storagebased/clustering.png"));
 
 		// Center shell on screen
 		Monitor primary = shell.getDisplay().getPrimaryMonitor();
@@ -293,6 +293,7 @@ public class ClusteringProgressBar
 	@Override
 	public void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				listener.handleEvent(event);
 			}
@@ -303,10 +304,10 @@ public class ClusteringProgressBar
 	public void registerEventListeners() {
 		clusterProgressListener = new ClusterProgressListener();
 		clusterProgressListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(ClusterProgressEvent.class,
-			clusterProgressListener);
-		GeneralManager.get().getEventPublisher().addListener(RenameProgressBarEvent.class,
-			clusterProgressListener);
+		GeneralManager.get().getEventPublisher()
+			.addListener(ClusterProgressEvent.class, clusterProgressListener);
+		GeneralManager.get().getEventPublisher()
+			.addListener(RenameProgressBarEvent.class, clusterProgressListener);
 	}
 
 	@Override

@@ -28,13 +28,13 @@ public class SerializedParallelCoordinatesView extends ASerializedView {
 
 	@Override
 	public ViewFrustum getViewFrustum() {
-		ViewFrustum viewFrustum = new ViewFrustum(EProjectionMode.ORTHOGRAPHIC,
-				0, 8, 0, 8, -20, 20);
+		ViewFrustum viewFrustum = new ViewFrustum(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0,
+				8, -20, 20);
 		return viewFrustum;
 	}
 
 	@Override
-	public  String getViewType() {
+	public String getViewType() {
 		return GLParallelCoordinates.VIEW_ID;
 	}
 }

@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Shell;
  * 
  * @author Marc Streit
  */
-public class SWTGUIManager  {
+public class SWTGUIManager {
 	protected GeneralManager generalManager;
 
 	/**

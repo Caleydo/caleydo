@@ -10,6 +10,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class OpenTemplateHandler extends AbstractHandler implements IHandler {
 
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()

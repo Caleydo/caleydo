@@ -48,7 +48,7 @@ public class GeneralRenderStyle {
 	protected static final float BUTTON_WIDTH = 0.018f;
 
 	protected IViewFrustum viewFrustum;
-	
+
 	/** The selection type for which vislinks should be rendered */
 	public static final SelectionType VISLINK_SELECTION_TYPE = SelectionType.SELECTION;
 

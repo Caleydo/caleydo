@@ -15,6 +15,7 @@ public class KnownBugsHandler
 
 	private final static String URL_KNOWN_BUGS = "https://trac.icg.tugraz.at/projects/org.caleydo/report/1";
 
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		try {

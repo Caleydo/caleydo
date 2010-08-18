@@ -127,6 +127,7 @@ public class StandardGroupwareManager
 		return serverAddress;
 	}
 
+	@Override
 	public void setServerAddress(String serverAddress) {
 		this.serverAddress = serverAddress;
 	}
@@ -139,6 +140,7 @@ public class StandardGroupwareManager
 		this.networkName = networkName;
 	}
 
+	@Override
 	public ApplicationInitData getInitData() {
 		return initData;
 	}

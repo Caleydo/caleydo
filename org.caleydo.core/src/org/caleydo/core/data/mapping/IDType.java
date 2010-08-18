@@ -22,17 +22,19 @@ public class IDType {
 	 */
 	public IDType() {
 	}
-	
+
 	/**
 	 * Should be used for de-serialization only
+	 * 
 	 * @param idCategory
 	 */
 	public void setIdCategory(IDCategory idCategory) {
 		this.idCategory = idCategory;
 	}
-	
+
 	/**
 	 * Should be used for de-serialization only
+	 * 
 	 * @param idCategory
 	 */
 	public void setStorageType(EStorageType storageType) {
@@ -84,10 +86,10 @@ public class IDType {
 	public IDCategory getIDCategory() {
 		return idCategory;
 	}
-	
+
 	@Override
 	public String toString() {
 		return typeName;
 	}
-	
+
 }

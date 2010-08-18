@@ -11,6 +11,7 @@ public class CaptionCageRenderer extends AContentRenderer {
 		super(heatMap);
 	}
 
+	@Override
 	public void render(GL gl) {
 
 		float yPosition = y;
@@ -20,39 +21,39 @@ public class CaptionCageRenderer extends AContentRenderer {
 		gl.glColor3f(0.6f, 0.6f, 0.6f);
 		gl.glLineWidth(1);
 
-//		if (!contentSpacing.isUseFishEye()) {
+		// if (!contentSpacing.isUseFishEye()) {
 
-			ContentVirtualArray contentVA = heatMap.getContentVA();
+		ContentVirtualArray contentVA = heatMap.getContentVA();
 
-			for (Integer contentID : contentVA) {
-				if (heatMap.isHideElements()
-						&& heatMap.getContentSelectionManager().checkStatus(
-								GLHeatMap.SELECTION_HIDDEN, contentID)) {
-					continue;
-				}
-				// else if (heatMap.getContentSelectionManager().checkStatus(
-				// SelectionType.SELECTION, iContentIndex)
-				// || heatMap.getContentSelectionManager().checkStatus(
-				// SelectionType.MOUSE_OVER, iContentIndex)) {
-				// fieldHeight = selectedFieldHeight;
-				//
-				// } else {
-				//
-				// fieldHeight = normalFieldHeight;
-				// }
-				fieldHeight = contentSpacing.getFieldHeight(contentID);
-
-				gl.glBegin(GL.GL_LINE_STRIP);
-				gl.glVertex3f(xPosition, yPosition, 0);
-				// gl.glVertex3f(xPosition , yPosition - fieldHeight, 0);
-				// gl.glVertex3f(xPosition + x, yPosition - fieldHeight, 0);
-				gl.glVertex3f(xPosition + x, yPosition, 0);
-				gl.glEnd();
-
-				yPosition -= fieldHeight;
-
+		for (Integer contentID : contentVA) {
+			if (heatMap.isHideElements()
+					&& heatMap.getContentSelectionManager().checkStatus(
+							GLHeatMap.SELECTION_HIDDEN, contentID)) {
+				continue;
 			}
-//		}
+			// else if (heatMap.getContentSelectionManager().checkStatus(
+			// SelectionType.SELECTION, iContentIndex)
+			// || heatMap.getContentSelectionManager().checkStatus(
+			// SelectionType.MOUSE_OVER, iContentIndex)) {
+			// fieldHeight = selectedFieldHeight;
+			//
+			// } else {
+			//
+			// fieldHeight = normalFieldHeight;
+			// }
+			fieldHeight = contentSpacing.getFieldHeight(contentID);
+
+			gl.glBegin(GL.GL_LINE_STRIP);
+			gl.glVertex3f(xPosition, yPosition, 0);
+			// gl.glVertex3f(xPosition , yPosition - fieldHeight, 0);
+			// gl.glVertex3f(xPosition + x, yPosition - fieldHeight, 0);
+			gl.glVertex3f(xPosition + x, yPosition, 0);
+			gl.glEnd();
+
+			yPosition -= fieldHeight;
+
+		}
+		// }
 		gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(x, 0, 0);

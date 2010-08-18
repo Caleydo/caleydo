@@ -37,6 +37,7 @@ public class AutoSaver
 	/**
 	 * Saves the project if enough time has passed since the last auto save operation.
 	 */
+	@Override
 	public void run() {
 		if ((new Date()).getTime() > lastSaveTimeStamp.getTime() + DEFAULT_INTERVAL) {
 			ProjectSaver projectSaver = new ProjectSaver();

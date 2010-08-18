@@ -313,6 +313,7 @@ public abstract class AGLView
 	/**
 	 * Reset the view to its initial state by calling {@link #initData()}
 	 */
+	@Override
 	public void resetView() {
 		initData();
 	}

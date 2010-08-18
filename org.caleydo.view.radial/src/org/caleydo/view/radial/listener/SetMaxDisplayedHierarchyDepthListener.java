@@ -17,9 +17,8 @@ public class SetMaxDisplayedHierarchyDepthListener extends
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof SetMaxDisplayedHierarchyDepthEvent) {
-			handler
-					.setMaxDisplayedHierarchyDepth(((SetMaxDisplayedHierarchyDepthEvent) event)
-							.getMaxDisplayedHierarchyDepth());
+			handler.setMaxDisplayedHierarchyDepth(((SetMaxDisplayedHierarchyDepthEvent) event)
+					.getMaxDisplayedHierarchyDepth());
 		}
 
 	}

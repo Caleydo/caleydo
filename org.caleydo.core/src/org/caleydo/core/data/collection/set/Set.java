@@ -206,6 +206,7 @@ public class Set
 			+ externalDataRep);
 	}
 
+	@Override
 	public double getNormalizedForRaw(double dRaw) {
 		if (!isSetHomogeneous)
 			throw new IllegalStateException(
@@ -358,6 +359,7 @@ public class Set
 		hashContentData.put(vaType, contentData);
 	}
 
+	@Override
 	public void setStorageVA(StorageVAType vaType, StorageVirtualArray virtualArray) {
 		StorageData storageData = hashStorageData.get(vaType);
 		if (storageData == null)
@@ -368,6 +370,7 @@ public class Set
 		hashStorageData.put(vaType, storageData);
 	}
 
+	@Override
 	public EExternalDataRepresentation getExternalDataRep() {
 		return externalDataRep;
 	}

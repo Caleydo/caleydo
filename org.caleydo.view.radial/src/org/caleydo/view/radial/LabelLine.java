@@ -67,8 +67,8 @@ public class LabelLine {
 
 		for (ALabelItem currentItem : alLabelItems) {
 			if (currentItem instanceof TextItem) {
-				((TextItem) currentItem).setRenderingProperties(gl,
-						textRenderer, fTextScaling);
+				((TextItem) currentItem).setRenderingProperties(gl, textRenderer,
+						fTextScaling);
 			}
 
 			if ((iConsideredLabelTypes & currentItem.getLabelItemType()) > 0) {

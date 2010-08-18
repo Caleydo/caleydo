@@ -6,7 +6,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 
 public class StatisticsFoldChangeReductionItem
 	extends AContextMenuItem {
-	
+
 	public StatisticsFoldChangeReductionItem(ISet set1, ISet set2) {
 		super();
 		setText("Fold Change Reduction");

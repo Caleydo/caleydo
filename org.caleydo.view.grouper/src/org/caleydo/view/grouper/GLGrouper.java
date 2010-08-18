@@ -4,8 +4,8 @@ import gleem.linalg.Vec3f;
 
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -179,6 +179,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 
 		// Register keyboard listener to GL canvas
 		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
 			}
@@ -381,6 +382,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						glParentView.getParentGLCanvas().getParentComposite()
 								.addKeyListener(glKeyListener);
@@ -758,8 +760,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 				break;
 			case DRAGGED:
 				if (group != null && group.isCollapsed()) {
-					double dCurrentTimeStamp = GregorianCalendar.getInstance()
-							.getTimeInMillis();
+					double dCurrentTimeStamp = Calendar.getInstance().getTimeInMillis();
 
 					if (dCurrentTimeStamp - dCollapseButtonDragOverTime > 500
 							&& group.getID() == iDraggedOverCollapseButtonID) {
@@ -1325,7 +1326,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		}
 
 		selectionManager = new SelectionManager(tree.getNodeIDType());
-//		selectionManager.addSelectionType(selectionTypeClicked);
+		// selectionManager.addSelectionType(selectionTypeClicked);
 
 		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
 				selectionTypeClicked);

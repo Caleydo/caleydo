@@ -7,8 +7,7 @@ import org.caleydo.view.matchmaker.rendercommand.RenderCommandFactory;
 
 public class HeatMapLayoutDetailViewRight extends AHeatMapLayoutDetailView {
 
-	public HeatMapLayoutDetailViewRight(
-			RenderCommandFactory renderCommandFactory) {
+	public HeatMapLayoutDetailViewRight(RenderCommandFactory renderCommandFactory) {
 		super(renderCommandFactory);
 	}
 
@@ -19,27 +18,27 @@ public class HeatMapLayoutDetailViewRight extends AHeatMapLayoutDetailView {
 
 	@Override
 	public Vec3f getOverviewPosition() {
-		return new Vec3f(positionX + getDetailWidth() + getGapWidth(),
-				positionY + getDendrogramBottomSpacing(), 0.0f);
+		return new Vec3f(positionX + getDetailWidth() + getGapWidth(), positionY
+				+ getDendrogramBottomSpacing(), 0.0f);
 	}
 
 	@Override
 	public Vec3f getOverviewGroupBarPosition() {
 		return new Vec3f(positionX + getDetailWidth() + getGapWidth()
-				+ getOverviewHeatMapWidth(), positionY
-				+ getDendrogramBottomSpacing(), 0.0f);
+				+ getOverviewHeatMapWidth(), positionY + getDendrogramBottomSpacing(),
+				0.0f);
 	}
 
 	@Override
 	public Vec3f getOverviewHeatMapPosition() {
-		return new Vec3f(positionX + getDetailWidth() + getGapWidth(),
-				positionY + getDendrogramBottomSpacing(), 0.0f);
+		return new Vec3f(positionX + getDetailWidth() + getGapWidth(), positionY
+				+ getDendrogramBottomSpacing(), 0.0f);
 	}
 
 	@Override
 	public float getOverviewSliderPositionX() {
-		return positionX + getDetailWidth() + getGapWidth()
-				+ getOverviewHeatMapWidth() + getOverviewGroupBarWidth();
+		return positionX + getDetailWidth() + getGapWidth() + getOverviewHeatMapWidth()
+				+ getOverviewGroupBarWidth();
 	}
 
 	@Override
@@ -62,21 +61,19 @@ public class HeatMapLayoutDetailViewRight extends AHeatMapLayoutDetailView {
 	@Override
 	public Vec3f getDendrogramButtonPosition() {
 		return new Vec3f(positionX + totalWidth - getDendrogramLineWidth()
-				- getDendrogramButtonWidth(), positionY
-				+ getDendrogramBottomSpacing() + getOverviewHeight()
-				+ getCaptionLabelVerticalSpacing() / 2.0f, 0.0f);
+				- getDendrogramButtonWidth(), positionY + getDendrogramBottomSpacing()
+				+ getOverviewHeight() + getCaptionLabelVerticalSpacing() / 2.0f, 0.0f);
 	}
 
 	@Override
 	public Vec3f getDendrogramLinePosition() {
-		return new Vec3f(positionX + totalWidth - getDendrogramLineWidth(),
-				positionY + getDendrogramBottomSpacing(), 0.0f);
+		return new Vec3f(positionX + totalWidth - getDendrogramLineWidth(), positionY
+				+ getDendrogramBottomSpacing(), 0.0f);
 	}
 
 	@Override
 	public Vec3f getDendrogramPosition() {
 		return new Vec3f(positionX + totalWidth - getDendrogramLineWidth()
-				- getDendrogramWidth(), positionY
-				+ getDendrogramBottomSpacing(), -1.0f);
+				- getDendrogramWidth(), positionY + getDendrogramBottomSpacing(), -1.0f);
 	}
 }

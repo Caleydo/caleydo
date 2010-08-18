@@ -7,9 +7,10 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
  * <p>
- * Item for loading all pathway by specifying a gene. The event can either be specified manually or the
- * convenience method {@link LoadPathwaysByGeneItem#setRefSeqInt(int)} can be used, which creates the event
- * automatically.
+ * Item for loading all pathway by specifying a gene. The event can either be
+ * specified manually or the convenience method
+ * {@link LoadPathwaysByGeneItem#setRefSeqInt(int)} can be used, which creates
+ * the event automatically.
  * </p>
  * <p>
  * Text and icon have default values but can be overriden.
@@ -17,8 +18,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  * 
  * @author Alexander Lex
  */
-public class LoadPathwaysByGeneItem
-	extends AContextMenuItem {
+public class LoadPathwaysByGeneItem extends AContextMenuItem {
 
 	/**
 	 * Constructor which sets the default values for icon and text
@@ -30,7 +30,8 @@ public class LoadPathwaysByGeneItem
 	}
 
 	/**
-	 * Convenience method that automatically creates a {@link LoadPathwaysByGeneEvent} based on a RefSeqInt
+	 * Convenience method that automatically creates a
+	 * {@link LoadPathwaysByGeneEvent} based on a RefSeqInt
 	 * 
 	 * @param david
 	 *            the david ID

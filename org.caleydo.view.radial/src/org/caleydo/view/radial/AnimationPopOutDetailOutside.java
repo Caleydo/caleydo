@@ -41,24 +41,21 @@ public class AnimationPopOutDetailOutside extends ADrawingStateAnimation {
 	 *            NavigationHistory instance that shall be used.
 	 */
 	public AnimationPopOutDetailOutside(DrawingController drawingController,
-			GLRadialHierarchy radialHierarchy,
-			NavigationHistory navigationHistory) {
+			GLRadialHierarchy radialHierarchy, NavigationHistory navigationHistory) {
 		super(drawingController, radialHierarchy, navigationHistory);
 		fAnimationDuration = DEFAULT_ANIMATION_DURATION;
 	}
 
 	@Override
-	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu,
-			double dTimePassed) {
+	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu, double dTimePassed) {
 
 		PartialDisc pdCurrentSelectedElement = radialHierarchy
 				.getCurrentSelectedElement();
-		PartialDisc pdCurrentRootElement = radialHierarchy
-				.getCurrentRootElement();
+		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
 
 		if (!bAnimationStarted) {
-			initAnimationFirstPart(fXCenter, fYCenter,
-					pdCurrentSelectedElement, pdCurrentRootElement);
+			initAnimationFirstPart(fXCenter, fYCenter, pdCurrentSelectedElement,
+					pdCurrentRootElement);
 			iAnimationPart = 1;
 			bAnimationStarted = true;
 			radialHierarchy.setAnimationActive(true);
@@ -76,14 +73,12 @@ public class AnimationPopOutDetailOutside extends ADrawingStateAnimation {
 		pdCurrentRootElement.setPDDrawingStrategyChildren(
 				drawingStrategyManager.getDefaultDrawingStrategy(),
 				iDisplayedOverviewDepth);
-		pdCurrentSelectedElement
-				.setPDDrawingStrategyChildren(
-						drawingStrategyManager
-								.createDrawingStrategy(EPDDrawingStrategyType.INVISIBLE),
-						iDisplayedDetailViewDepth);
+		pdCurrentSelectedElement.setPDDrawingStrategyChildren(drawingStrategyManager
+				.createDrawingStrategy(EPDDrawingStrategyType.INVISIBLE),
+				iDisplayedDetailViewDepth);
 
-		pdCurrentRootElement.drawHierarchyFull(gl, glu, mvOverviewWidth
-				.getMovementValue(), iDisplayedOverviewDepth);
+		pdCurrentRootElement.drawHierarchyFull(gl, glu,
+				mvOverviewWidth.getMovementValue(), iDisplayedOverviewDepth);
 
 		pdCurrentSelectedElement.setPDDrawingStrategyChildren(
 				drawingStrategyManager.getDefaultDrawingStrategy(),
@@ -91,25 +86,23 @@ public class AnimationPopOutDetailOutside extends ADrawingStateAnimation {
 
 		if (iAnimationPart == 1) {
 			pdCurrentSelectedElement.drawHierarchyAngular(gl, glu,
-					mvDetailViewWidth.getMovementValue(),
-					iDisplayedDetailViewDepth, pdCurrentSelectedElement
-							.getCurrentStartAngle(), pdCurrentSelectedElement
-							.getCurrentAngle(), mvDetailViewInnerRadius
-							.getMovementValue());
+					mvDetailViewWidth.getMovementValue(), iDisplayedDetailViewDepth,
+					pdCurrentSelectedElement.getCurrentStartAngle(),
+					pdCurrentSelectedElement.getCurrentAngle(),
+					mvDetailViewInnerRadius.getMovementValue());
 		} else {
 			pdCurrentSelectedElement.drawHierarchyAngular(gl, glu,
-					mvDetailViewWidth.getMovementValue(),
-					iDisplayedDetailViewDepth, mvDetailViewStartAngle
-							.getMovementValue(), mvDetailViewAngle
-							.getMovementValue(), mvDetailViewInnerRadius
-							.getMovementValue());
+					mvDetailViewWidth.getMovementValue(), iDisplayedDetailViewDepth,
+					mvDetailViewStartAngle.getMovementValue(),
+					mvDetailViewAngle.getMovementValue(),
+					mvDetailViewInnerRadius.getMovementValue());
 		}
 
 		if (haveMovementValuesReachedTargets()) {
 			iAnimationPart++;
 			if (iAnimationPart == 2) {
-				initAnimationSecondPart(fXCenter, fYCenter,
-						pdCurrentSelectedElement, pdCurrentRootElement);
+				initAnimationSecondPart(fXCenter, fYCenter, pdCurrentSelectedElement,
+						pdCurrentRootElement);
 			}
 			if (iAnimationPart > 2) {
 				bAnimationStarted = false;
@@ -124,8 +117,8 @@ public class AnimationPopOutDetailOutside extends ADrawingStateAnimation {
 			radialHierarchy.setAnimationActive(false);
 
 			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement,
-					pdCurrentSelectedElement, radialHierarchy
-							.getMaxDisplayedHierarchyDepth());
+					pdCurrentSelectedElement,
+					radialHierarchy.getMaxDisplayedHierarchyDepth());
 			radialHierarchy.setNewSelection(SelectionType.SELECTION,
 					pdCurrentSelectedElement);
 			radialHierarchy.setDisplayListDirty();
@@ -148,17 +141,13 @@ public class AnimationPopOutDetailOutside extends ADrawingStateAnimation {
 	 *            Current root partial disc.
 	 */
 	private void initAnimationFirstPart(float fXCenter, float fYCenter,
-			PartialDisc pdCurrentSelectedElement,
-			PartialDisc pdCurrentRootElement) {
+			PartialDisc pdCurrentSelectedElement, PartialDisc pdCurrentRootElement) {
 
 		float fCurrentRootWidth = pdCurrentRootElement.getCurrentWidth();
 
-		int iMaxDisplayedHierarchyDepth = radialHierarchy
-				.getMaxDisplayedHierarchyDepth();
-		int iCurrentSelectedElementHierarchyDepth = pdCurrentSelectedElement
-				.getDepth();
-		float fCurrentSelectedElementWidth = pdCurrentSelectedElement
-				.getCurrentWidth();
+		int iMaxDisplayedHierarchyDepth = radialHierarchy.getMaxDisplayedHierarchyDepth();
+		int iCurrentSelectedElementHierarchyDepth = pdCurrentSelectedElement.getDepth();
+		float fCurrentSelectedElementWidth = pdCurrentSelectedElement.getCurrentWidth();
 		float fCurrentSelecedElementInnderRadius = pdCurrentSelectedElement
 				.getCurrentInnerRadius();
 		int iDepthToRoot = pdCurrentSelectedElement
@@ -166,8 +155,8 @@ public class AnimationPopOutDetailOutside extends ADrawingStateAnimation {
 
 		float fDetailViewScreenPercentage;
 
-		iDisplayedDetailViewDepth = Math.min(iMaxDisplayedHierarchyDepth
-				- iDepthToRoot, iCurrentSelectedElementHierarchyDepth);
+		iDisplayedDetailViewDepth = Math.min(iMaxDisplayedHierarchyDepth - iDepthToRoot,
+				iCurrentSelectedElementHierarchyDepth);
 
 		if (iMaxDisplayedHierarchyDepth <= RadialHierarchyRenderStyle.MIN_DISPLAYED_DETAIL_DEPTH + 1) {
 			fDetailViewScreenPercentage = RadialHierarchyRenderStyle.MIN_DETAIL_SCREEN_PERCENTAGE;
@@ -181,40 +170,34 @@ public class AnimationPopOutDetailOutside extends ADrawingStateAnimation {
 					* fPercentageStep;
 		}
 
-		float fDetailViewTargetWidth = Math.min(fXCenter
-				* fDetailViewScreenPercentage, fYCenter
-				* fDetailViewScreenPercentage)
-				/ iDisplayedDetailViewDepth;
+		float fDetailViewTargetWidth = Math.min(fXCenter * fDetailViewScreenPercentage,
+				fYCenter * fDetailViewScreenPercentage) / iDisplayedDetailViewDepth;
 
 		float fOverviewScreenPercentage = 1.0f - (fDetailViewScreenPercentage
 				+ (1.0f - RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE) + RadialHierarchyRenderStyle.DETAIL_RADIUS_DELTA_SCREEN_PERCENTAGE);
 		iDisplayedOverviewDepth = Math.min(iMaxDisplayedHierarchyDepth,
 				pdCurrentRootElement.getDepth());
 
-		float fTotalOverviewWidth = Math.min(fXCenter
-				* fOverviewScreenPercentage, fYCenter
-				* fOverviewScreenPercentage);
-		float fOverviewTargetWidth = fTotalOverviewWidth
-				/ iDisplayedOverviewDepth;
+		float fTotalOverviewWidth = Math.min(fXCenter * fOverviewScreenPercentage,
+				fYCenter * fOverviewScreenPercentage);
+		float fOverviewTargetWidth = fTotalOverviewWidth / iDisplayedOverviewDepth;
 
 		float fDetailViewTargetInnerRadius = fTotalOverviewWidth
-				+ Math
-						.min(
-								fXCenter
-										* RadialHierarchyRenderStyle.DETAIL_RADIUS_DELTA_SCREEN_PERCENTAGE,
-								fYCenter
-										* RadialHierarchyRenderStyle.DETAIL_RADIUS_DELTA_SCREEN_PERCENTAGE);
+				+ Math.min(
+						fXCenter
+								* RadialHierarchyRenderStyle.DETAIL_RADIUS_DELTA_SCREEN_PERCENTAGE,
+						fYCenter
+								* RadialHierarchyRenderStyle.DETAIL_RADIUS_DELTA_SCREEN_PERCENTAGE);
 
 		alMovementValues.clear();
 
-		mvOverviewWidth = createNewMovementValue(fCurrentRootWidth,
-				fOverviewTargetWidth, fAnimationDuration);
-		mvDetailViewWidth = createNewMovementValue(
-				fCurrentSelectedElementWidth, fDetailViewTargetWidth,
+		mvOverviewWidth = createNewMovementValue(fCurrentRootWidth, fOverviewTargetWidth,
 				fAnimationDuration);
+		mvDetailViewWidth = createNewMovementValue(fCurrentSelectedElementWidth,
+				fDetailViewTargetWidth, fAnimationDuration);
 		mvDetailViewInnerRadius = createNewMovementValue(
-				fCurrentSelecedElementInnderRadius,
-				fDetailViewTargetInnerRadius, fAnimationDuration);
+				fCurrentSelecedElementInnderRadius, fDetailViewTargetInnerRadius,
+				fAnimationDuration);
 	}
 
 	/**
@@ -232,13 +215,11 @@ public class AnimationPopOutDetailOutside extends ADrawingStateAnimation {
 	 *            Current root partial disc.
 	 */
 	private void initAnimationSecondPart(float fXCenter, float fYCenter,
-			PartialDisc pdCurrentSelectedElement,
-			PartialDisc pdCurrentRootElement) {
+			PartialDisc pdCurrentSelectedElement, PartialDisc pdCurrentRootElement) {
 
 		float fCurrentSelectedElementStartAngle = pdCurrentSelectedElement
 				.getCurrentStartAngle();
-		float fCurrentSelectedElementAngle = pdCurrentSelectedElement
-				.getCurrentAngle();
+		float fCurrentSelectedElementAngle = pdCurrentSelectedElement.getCurrentAngle();
 
 		float fMidAngle = fCurrentSelectedElementStartAngle
 				+ (fCurrentSelectedElementAngle / 2.0f);
@@ -249,12 +230,11 @@ public class AnimationPopOutDetailOutside extends ADrawingStateAnimation {
 		while (fMidAngle < 0) {
 			fMidAngle += 360;
 		}
-		float fAngleToAdd = (fMidAngle > fCurrentSelectedElementStartAngle) ? -180
-				: 180;
+		float fAngleToAdd = (fMidAngle > fCurrentSelectedElementStartAngle) ? -180 : 180;
 		float fCurrentSelectedElementTargetStartAngle = fMidAngle + fAngleToAdd;
 
-		mvDetailViewAngle = createNewMovementValue(
-				fCurrentSelectedElementAngle, 360, fAnimationDuration);
+		mvDetailViewAngle = createNewMovementValue(fCurrentSelectedElementAngle, 360,
+				fAnimationDuration);
 		mvDetailViewStartAngle = createNewMovementValue(
 				fCurrentSelectedElementStartAngle,
 				fCurrentSelectedElementTargetStartAngle, fAnimationDuration);

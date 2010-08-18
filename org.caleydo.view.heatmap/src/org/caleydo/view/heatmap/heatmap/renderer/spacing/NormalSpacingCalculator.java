@@ -7,11 +7,11 @@ public class NormalSpacingCalculator extends ASpacingCalculator {
 	private float selectedFieldHeight;
 	private float normalFieldHeight;
 
-	public NormalSpacingCalculator(GLHeatMap heatMap, float y,
-			float contentElements) {
+	public NormalSpacingCalculator(GLHeatMap heatMap, float y, float contentElements) {
 		super(heatMap, y, contentElements);
 	}
 
+	@Override
 	public void calculateFieldHeights() {
 
 		normalFieldHeight = y / contentElements;

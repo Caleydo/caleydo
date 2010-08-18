@@ -61,8 +61,8 @@ public abstract class AClusterer
 	public void registerEventListeners() {
 		clustererCanceledListener = new ClustererCanceledListener();
 		clustererCanceledListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(ClustererCanceledEvent.class,
-			clustererCanceledListener);
+		GeneralManager.get().getEventPublisher()
+			.addListener(ClustererCanceledEvent.class, clustererCanceledListener);
 
 	}
 

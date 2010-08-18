@@ -30,6 +30,7 @@ public class CmdDataCreateDataDomain
 	/**
 	 * Load data from file using a token pattern.
 	 */
+	@Override
 	public void doCommand() {
 		createdObject = createDataDomain(dataDomainType);
 	}

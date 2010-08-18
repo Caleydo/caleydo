@@ -8,7 +8,8 @@ import org.caleydo.core.manager.datadomain.AssociationManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
-public class HistoryNode implements INode {
+public class HistoryNode
+	implements INode {
 
 	private static int INTERFACE_ID_COUNTER = 0;
 
@@ -44,6 +45,7 @@ public class HistoryNode implements INode {
 		return "[" + dataDomainType + "]";
 	}
 
+	@Override
 	public String getDataDomainType() {
 		return dataDomainType;
 	}
@@ -77,13 +79,12 @@ public class HistoryNode implements INode {
 	}
 
 	public Integer getFirstInterfaceID() {
-		
+
 		// FIXME: hack to ensure that the order of interfaces corresponds to the one needed in our workflow
-		if (dataDomainType.equals("org.caleydo.datadomain.genetic"))
-		{
+		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 			return hashInterfaceTypeToInterfaceID.get("org.caleydo.view.parcoords");
 		}
-		
+
 		return hashInterfaceTypeToInterfaceID.get(dataDomainViewAssociationManager.getViewTypesForDataDomain(
 			dataDomainType).toArray()[0]);
 	}
@@ -93,20 +94,18 @@ public class HistoryNode implements INode {
 	}
 
 	public String[] getAllInterfaces() {
-		
 
 		String[] tmp = new String[hashInterfaceIDToInterfaceType.size()];
-		
+
 		// FIXME: hack to ensure that the order of interfaces corresponds to the one needed in our workflow
-		if (dataDomainType.equals("org.caleydo.datadomain.genetic"))
-		{
+		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 			tmp[0] = "org.caleydo.view.parcoords";
 			tmp[1] = "org.caleydo.analytical.clustering";
 			tmp[2] = "org.caleydo.view.heatmap.hierarchical";
 			tmp[3] = "org.caleydo.view.texture"; // this is the fake browser
 			return tmp;
 		}
-		
+
 		hashInterfaceTypeToInterfaceID.keySet().toArray(tmp);
 		return tmp;
 	}

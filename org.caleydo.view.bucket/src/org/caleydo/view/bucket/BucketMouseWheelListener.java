@@ -17,8 +17,8 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
  * 
  * @author Marc Streit
  */
-public class BucketMouseWheelListener extends MouseAdapter implements
-		MouseWheelListener, MouseMotionListener {
+public class BucketMouseWheelListener extends MouseAdapter implements MouseWheelListener,
+		MouseMotionListener {
 
 	private GLBucket bucketGLEventListener;
 
@@ -119,8 +119,7 @@ public class BucketMouseWheelListener extends MouseAdapter implements
 					.enablePicking(false);
 		}
 		GeneralManager.get().getViewGLCanvasManager()
-				.getConnectedElementRepresentationManager()
-				.clearTransformedConnections();
+				.getConnectedElementRepresentationManager().clearTransformedConnections();
 
 	}
 

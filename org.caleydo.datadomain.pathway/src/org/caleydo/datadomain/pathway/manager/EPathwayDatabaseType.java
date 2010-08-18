@@ -7,8 +7,7 @@ package org.caleydo.datadomain.pathway.manager;
  */
 public enum EPathwayDatabaseType {
 
-	KEGG("KEGG", "www.genome.jp/kegg"),
-	BIOCARTA("BioCarta", "www.biocarta.com");
+	KEGG("KEGG", "www.genome.jp/kegg"), BIOCARTA("BioCarta", "www.biocarta.com");
 
 	private String sName;
 

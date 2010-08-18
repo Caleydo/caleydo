@@ -87,6 +87,7 @@ public class Cobweb
 	/**
 	 * Signals the end of the updating.
 	 */
+	@Override
 	public void updateFinished() {
 		determineNumberOfClusters();
 	}
@@ -199,6 +200,7 @@ public class Cobweb
 	 * @throws Exception
 	 *             if something goes wrong
 	 */
+	@Override
 	public void updateClusterer(Instance newInstance) throws Exception {
 		m_numberOfClustersDetermined = false;
 
@@ -230,6 +232,7 @@ public class Cobweb
 	 * 
 	 * @return the revision
 	 */
+	@Override
 	public String getRevision() {
 		return RevisionUtils.extract("$Revision: 1.25 $");
 	}

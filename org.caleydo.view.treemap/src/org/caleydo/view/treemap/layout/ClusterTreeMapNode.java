@@ -6,34 +6,32 @@ import java.util.ArrayList;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
-public class ClusterTreeMapNode extends ATreeMapNode{
+public class ClusterTreeMapNode extends ATreeMapNode {
 
-	public static ClusterTreeMapNode createFromClusterNodeTree(Tree<ClusterNode> tree){
+	public static ClusterTreeMapNode createFromClusterNodeTree(Tree<ClusterNode> tree) {
 		ClusterNode clusterNode = tree.getRoot();
-		if(clusterNode!=null){
+		if (clusterNode != null) {
 			ClusterTreeMapNode treemapNode = new ClusterTreeMapNode();
-			treemapNode.data=clusterNode;
+			treemapNode.data = clusterNode;
 			createHelp(treemapNode, clusterNode);
 			return treemapNode;
 		}
 		return null;
 	}
-	
-	private static void createHelp(ClusterTreeMapNode treemapNode, ClusterNode clusterNode){
-		if(clusterNode.getChildren()==null)
+
+	private static void createHelp(ClusterTreeMapNode treemapNode, ClusterNode clusterNode) {
+		if (clusterNode.getChildren() == null)
 			return;
-		for(ClusterNode clusterChild : clusterNode.getChildren()){
+		for (ClusterNode clusterChild : clusterNode.getChildren()) {
 			ClusterTreeMapNode treemapChild = new ClusterTreeMapNode();
-			treemapChild.data=clusterChild;
+			treemapChild.data = clusterChild;
 			treemapNode.children.add(treemapChild);
 			createHelp(treemapChild, clusterChild);
 		}
 	}
-	
+
 	ClusterNode data;
 	ArrayList<ATreeMapNode> children = new ArrayList<ATreeMapNode>();
-
-
 
 	@Override
 	public Color getColorAttribute() {
@@ -61,7 +59,7 @@ public class ClusterTreeMapNode extends ATreeMapNode{
 	public int getPickingID() {
 		return data.getID();
 	}
-	
+
 	public ClusterNode getData() {
 		return data;
 	}

@@ -1,6 +1,5 @@
 package org.caleydo.core.manager.event.view.browser;
 
-
 /**
  * This type is passed to browser to know how to handle the incoming string. Example: For an search on PubMed
  * just an element ID is sent to the browser. Because of the EBrowserQueryType the browser knows that the ID
@@ -10,26 +9,14 @@ package org.caleydo.core.manager.event.view.browser;
  */
 public enum EBrowserQueryType {
 	PROCESS_STRING_WITHOUT_CHANGE("", "", null),
-	PubMed(
-		"PubMed",
-		"http://www.ncbi.nlm.nih.gov/sites/entrez?db=pubmed&cmd=search&term=",
-		"GENE_SYMBOL"),
+	PubMed("PubMed", "http://www.ncbi.nlm.nih.gov/sites/entrez?db=pubmed&cmd=search&term=", "GENE_SYMBOL"),
 	EntrezGene(
 		"Entrez",
 		"http://www.ncbi.nlm.nih.gov/sites/entrez?db=gene&cmd=search&term=",
 		"ENTREZ_GENE_ID"),
-	KEGG_HomoSapiens(
-		"KEGG (homo sapiens)",
-		"http://www.genome.jp/dbget-bin/www_bget?hsa+",
-		"ENTREZ_GENE_ID"),
-	KEGG_MusMusculus(
-		"KEGG (mus musculus)",
-		"http://www.genome.jp/dbget-bin/www_bget?mmu+",
-		"ENTREZ_GENE_ID"),
-	GeneCards(
-		"GeneCards",
-		"http://www.genecards.org/cgi-bin/carddisp.pl?gene=",
-		"GENE_SYMBOL"),
+	KEGG_HomoSapiens("KEGG (homo sapiens)", "http://www.genome.jp/dbget-bin/www_bget?hsa+", "ENTREZ_GENE_ID"),
+	KEGG_MusMusculus("KEGG (mus musculus)", "http://www.genome.jp/dbget-bin/www_bget?mmu+", "ENTREZ_GENE_ID"),
+	GeneCards("GeneCards", "http://www.genecards.org/cgi-bin/carddisp.pl?gene=", "GENE_SYMBOL"),
 	Ensembl_HomoSapiens(
 		"Ensembl (homo sapiens)",
 		"http://www.ensembl.org/Homo_sapiens/Search/Summary?species=Homo_sapiens;idx=;q=",

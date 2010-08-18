@@ -26,8 +26,8 @@ public class UseSortingAction extends AToolBarAction implements IToolBarItem {
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 		super.setChecked(useSorting);
 	}
 
@@ -42,10 +42,10 @@ public class UseSortingAction extends AToolBarAction implements IToolBarItem {
 			useSorting = false;
 		else
 			useSorting = true;
-		
+
 		super.setChecked(useSorting);
 
-		GeneralManager.get().getEventPublisher().triggerEvent(
-				new UseSortingEvent(useSorting));
+		GeneralManager.get().getEventPublisher()
+				.triggerEvent(new UseSortingEvent(useSorting));
 	};
 }

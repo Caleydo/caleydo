@@ -15,12 +15,13 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * Class is able to parse BioCarta pathway files. The creation of the pathway objects is triggered.
+ * Class is able to parse BioCarta pathway files. The creation of the pathway
+ * objects is triggered.
+ * 
  * @author Marc Streit
  */
-public class BioCartaPathwayImageMapSaxHandler
-	extends AXmlParserHandler {
-	
+public class BioCartaPathwayImageMapSaxHandler extends AXmlParserHandler {
+
 	private PathwayItemManager pathwayItemManager;
 	private PathwayManager pathwayManager;
 
@@ -50,8 +51,8 @@ public class BioCartaPathwayImageMapSaxHandler
 	}
 
 	@Override
-	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
-		Attributes attributes) throws SAXException {
+	public void startElement(String namespaceURI, String sSimpleName,
+			String sQualifiedName, Attributes attributes) throws SAXException {
 
 		String sElementName = sSimpleName;
 		this.attributes = attributes;
@@ -63,11 +64,9 @@ public class BioCartaPathwayImageMapSaxHandler
 		if (attributes != null) {
 			if (sElementName.equals("b")) {
 				handleTitleTag();
-			}
-			else if (sElementName.equals("img")) {
+			} else if (sElementName.equals("img")) {
 				handleImageLinkTag();
-			}
-			else if (sElementName.equals("area")) {
+			} else if (sElementName.equals("area")) {
 				handleAreaTag();
 			}
 		}
@@ -75,7 +74,7 @@ public class BioCartaPathwayImageMapSaxHandler
 
 	@Override
 	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
-		throws SAXException {
+			throws SAXException {
 
 		String sName = "".equals(sSimpleName) ? sQualifiedName : sSimpleName;
 
@@ -125,8 +124,7 @@ public class BioCartaPathwayImageMapSaxHandler
 
 			if (sAttributeName.equals("src")) {
 				sImageLink = attributes.getValue(iAttributeIndex);
-			}
-			else if (sAttributeName.equals("name")) {
+			} else if (sAttributeName.equals("name")) {
 				sName = attributes.getValue(iAttributeIndex);
 			}
 		}
@@ -134,11 +132,11 @@ public class BioCartaPathwayImageMapSaxHandler
 		if (sImageLink.length() == 0 || sName.length() == 0)
 			return;
 
-		sImageLink = sImageLink.substring(sImageLink.lastIndexOf('/') + 1, sImageLink.length());
+		sImageLink = sImageLink.substring(sImageLink.lastIndexOf('/') + 1,
+				sImageLink.length());
 
-		currentPathway =
-			pathwayManager.createPathway(EPathwayDatabaseType.BIOCARTA, "<name>", sTitle, sImageLink,
-				BIOCARTA_EXTERNAL_URL_PATHWAY + sName);
+		currentPathway = pathwayManager.createPathway(EPathwayDatabaseType.BIOCARTA,
+				"<name>", sTitle, sImageLink, BIOCARTA_EXTERNAL_URL_PATHWAY + sName);
 
 		sTitle = "";
 	}
@@ -159,18 +157,16 @@ public class BioCartaPathwayImageMapSaxHandler
 
 			if (sAttributeName.equals("shape")) {
 				sShape = attributes.getValue(iAttributeIndex);
-			}
-			else if (sAttributeName.equals("coords")) {
+			} else if (sAttributeName.equals("coords")) {
 				sCoords = attributes.getValue(iAttributeIndex);
-			}
-			else if (sAttributeName.equals("href")) {
+			} else if (sAttributeName.equals("href")) {
 				sExternalLink = attributes.getValue(iAttributeIndex);
 
 				if (sExternalLink.contains("BCID=")) {
 					// Create name from link
-					sName =
-						sExternalLink.substring(sExternalLink.lastIndexOf("BCID=") + 5, sExternalLink
-							.length());
+					sName = sExternalLink.substring(
+							sExternalLink.lastIndexOf("BCID=") + 5,
+							sExternalLink.length());
 				}
 			}
 		}
@@ -178,17 +174,17 @@ public class BioCartaPathwayImageMapSaxHandler
 		// Convert BioCarta ID to DAVID ID
 		IDMappingManager genomeIdManager = generalManager.getIDMappingManager();
 
-		Set<Integer> iSetDavidID = genomeIdManager.getID(IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("DAVID"), sName);
+		Set<Integer> iSetDavidID = genomeIdManager.getID(
+				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("DAVID"), sName);
 
 		if (iSetDavidID == null)
 			return;
 
-		ArrayList<IGraphItem> alVertex =
-			pathwayItemManager.createVertexGene(sName, "gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink,
-				"", iSetDavidID);
+		ArrayList<IGraphItem> alVertex = pathwayItemManager.createVertexGene(sName,
+				"gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink, "", iSetDavidID);
 
 		pathwayItemManager.createVertexRep(currentPathway, alVertex, sName, sShape,
-			sCoords);
+				sCoords);
 	}
 
 	@Override

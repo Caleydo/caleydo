@@ -12,8 +12,7 @@ public class GLHierarchicalHeatMapKeyListener extends
 
 	private GLHierarchicalHeatMap glHierarchicalHeatMap;
 
-	public GLHierarchicalHeatMapKeyListener(
-			GLHierarchicalHeatMap glHierarchicalHeatMap) {
+	public GLHierarchicalHeatMapKeyListener(GLHierarchicalHeatMap glHierarchicalHeatMap) {
 
 		this.glHierarchicalHeatMap = glHierarchicalHeatMap;
 	}

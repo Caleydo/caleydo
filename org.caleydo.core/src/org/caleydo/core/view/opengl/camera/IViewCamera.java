@@ -187,5 +187,6 @@ public interface IViewCamera
 	 * 
 	 * @return details in ViewCamera
 	 */
+	@Override
 	public abstract String toString();
 }

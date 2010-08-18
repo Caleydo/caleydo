@@ -54,9 +54,12 @@ public class GLCaleydoCanvas
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
-		GeneralManager.get().getLogger().log(
-			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Creating canvas with ID " + iGLCanvasID
-				+ "." + "\nOpenGL capabilities:" + drawable.getChosenGLCapabilities()));
+		GeneralManager
+			.get()
+			.getLogger()
+			.log(
+				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Creating canvas with ID " + iGLCanvasID
+					+ "." + "\nOpenGL capabilities:" + drawable.getChosenGLCapabilities()));
 
 		GL gl = drawable.getGL();
 
@@ -108,7 +111,7 @@ public class GLCaleydoCanvas
 		// clear screen
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
-		//fpsCounter.draw();
+		// fpsCounter.draw();
 	}
 
 	@Override

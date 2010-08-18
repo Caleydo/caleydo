@@ -90,9 +90,9 @@ public class TemplateRenderer {
 								.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
 					}
 
-					contentSpacing.calculateContentSpacing(contentElements,
-							heatMap.getStorageVA().size(),
-							parameters.sizeScaledX, parameters.sizeScaledY);
+					contentSpacing.calculateContentSpacing(contentElements, heatMap
+							.getStorageVA().size(), parameters.sizeScaledX,
+							parameters.sizeScaledY);
 
 				}
 				((AContentRenderer) renderer).setContentSpacing(contentSpacing);
@@ -106,11 +106,9 @@ public class TemplateRenderer {
 		frustumChanged();
 		for (RenderParameters parameters : renderers) {
 			ARenderer renderer = parameters.renderer;
-			gl.glTranslatef(parameters.transformScaledX,
-					parameters.transformScaledY, 0);
+			gl.glTranslatef(parameters.transformScaledX, parameters.transformScaledY, 0);
 			renderer.render(gl);
-			gl.glTranslatef(-parameters.transformScaledX,
-					-parameters.transformScaledY, 0);
+			gl.glTranslatef(-parameters.transformScaledX, -parameters.transformScaledY, 0);
 		}
 	}
 
@@ -128,18 +126,18 @@ public class TemplateRenderer {
 	}
 
 	public float getElementHeight(int contentID) {
-//		int contentIndex = heatMap.getContentVA().indexOf(contentID);
-//		if (contentIndex < 0)
-//			return 0;
+		// int contentIndex = heatMap.getContentVA().indexOf(contentID);
+		// if (contentIndex < 0)
+		// return 0;
 		return contentSpacing.getFieldHeight(contentID);
-//		if (heatMap.getContentSelectionManager().checkStatus(
-//				SelectionType.MOUSE_OVER, contentID)
-//				|| heatMap.getContentSelectionManager().checkStatus(
-//						SelectionType.SELECTION, contentID))
-//
-//			return contentSpacing.getSelectedFieldHeight();
-//
-//		return contentSpacing.getNormalFieldHeight();
+		// if (heatMap.getContentSelectionManager().checkStatus(
+		// SelectionType.MOUSE_OVER, contentID)
+		// || heatMap.getContentSelectionManager().checkStatus(
+		// SelectionType.SELECTION, contentID))
+		//
+		// return contentSpacing.getSelectedFieldHeight();
+		//
+		// return contentSpacing.getNormalFieldHeight();
 	}
 
 	public float getElementWidth(int storageID) {

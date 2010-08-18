@@ -7,7 +7,7 @@ import org.caleydo.view.matchmaker.event.UseZoomEvent;
 
 /**
  * @author Alexander Lex
- *
+ * 
  */
 public class UseZoomListener extends AEventListener<GLMatchmaker> {
 

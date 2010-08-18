@@ -8,7 +8,7 @@ public interface IStatisticsPerformer {
 	public void init();
 
 	public void performTest();
-	
+
 	public void twoSidedTTest(ArrayList<ISet> setsToCompare);
 
 	public void foldChange(ISet set1, ISet set2);

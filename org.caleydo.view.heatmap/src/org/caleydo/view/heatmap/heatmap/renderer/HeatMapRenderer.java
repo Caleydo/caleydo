@@ -23,6 +23,7 @@ public class HeatMapRenderer extends AContentRenderer {
 				EColorMappingType.GENE_EXPRESSION);
 	}
 
+	@Override
 	public void render(final GL gl) {
 
 		contentSpacing.getYDistances().clear();
@@ -64,8 +65,8 @@ public class HeatMapRenderer extends AContentRenderer {
 
 			for (Integer iStorageIndex : heatMap.getStorageVA()) {
 
-				renderElement(gl, iStorageIndex, contentID, yPosition,
-						xPosition, fieldHeight, fieldWidth);
+				renderElement(gl, iStorageIndex, contentID, yPosition, xPosition,
+						fieldHeight, fieldWidth);
 
 				xPosition += fieldWidth;
 
@@ -79,17 +80,16 @@ public class HeatMapRenderer extends AContentRenderer {
 	}
 
 	private void renderElement(final GL gl, final int iStorageIndex,
-			final int iContentIndex, final float fYPosition,
-			final float fXPosition, final float fFieldHeight,
-			final float fFieldWidth) {
+			final int iContentIndex, final float fYPosition, final float fXPosition,
+			final float fFieldHeight, final float fFieldWidth) {
 
 		IStorage storage = heatMap.getSet().get(iStorageIndex);
 		float fLookupValue = storage.getFloat(EDataRepresentation.NORMALIZED,
 				iContentIndex);
 
 		float fOpacity = 0;
-		if (heatMap.getContentSelectionManager().checkStatus(
-				SelectionType.DESELECTED, iContentIndex)) {
+		if (heatMap.getContentSelectionManager().checkStatus(SelectionType.DESELECTED,
+				iContentIndex)) {
 			fOpacity = 0.3f;
 		} else {
 			fOpacity = 1.0f;
@@ -97,8 +97,7 @@ public class HeatMapRenderer extends AContentRenderer {
 
 		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
 
-		gl.glColor4f(fArMappingColor[0], fArMappingColor[1],
-				fArMappingColor[2], fOpacity);
+		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
 				EPickingType.HEAT_MAP_STORAGE_SELECTION, iStorageIndex));
@@ -107,8 +106,7 @@ public class HeatMapRenderer extends AContentRenderer {
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);
-		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition + fFieldHeight,
-				FIELD_Z);
+		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition + fFieldHeight, FIELD_Z);
 		gl.glVertex3f(fXPosition, fYPosition + fFieldHeight, FIELD_Z);
 		gl.glEnd();
 
@@ -118,10 +116,9 @@ public class HeatMapRenderer extends AContentRenderer {
 
 	public float getYCoordinateByContentIndex(int contentIndex) {
 
-		return y
-				- contentSpacing.getYDistances().get(contentIndex)
-				- contentSpacing.getFieldHeight(heatMap.getContentVA().get(
-						contentIndex)) / 2;
+		return y - contentSpacing.getYDistances().get(contentIndex)
+				- contentSpacing.getFieldHeight(heatMap.getContentVA().get(contentIndex))
+				/ 2;
 	}
 
 	public float getXCoordinateByStorageIndex(int storageIndex) {

@@ -78,10 +78,10 @@ public class Activator extends AbstractUIPlugin {
 
 	private void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		
+
 		// TODO: ADD THE POSSIBLE DATA DOMAINS FOR THIS VIEW
-		//dataDomainTypes.add("org.caleydo.datadomain.genetic");
-		
+		// dataDomainTypes.add("org.caleydo.datadomain.genetic");
+
 		DataDomainManager.getInstance().getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, PLUGIN_ID);
 	}

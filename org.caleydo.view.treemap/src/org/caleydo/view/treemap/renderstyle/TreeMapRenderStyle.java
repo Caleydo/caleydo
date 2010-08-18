@@ -18,8 +18,4 @@ public class TreeMapRenderStyle extends GeneralRenderStyle {
 		// TODO Auto-generated constructor stub
 	}
 
-	
-
-	
-
 }

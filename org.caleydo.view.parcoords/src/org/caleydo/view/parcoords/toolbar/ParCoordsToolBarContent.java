@@ -42,8 +42,7 @@ public class ParCoordsToolBarContent extends AToolBarContent {
 		int targetViewID = getTargetViewData().getViewID();
 
 		// all pc views
-		IToolBarItem angularBrushingAction = new AngularBrushingAction(
-				targetViewID);
+		IToolBarItem angularBrushingAction = new AngularBrushingAction(targetViewID);
 		actionList.add(angularBrushingAction);
 		// IAction occlusionPreventionAction = new
 		// OcclusionPreventionAction(iViewID);
@@ -53,8 +52,7 @@ public class ParCoordsToolBarContent extends AToolBarContent {
 		actionList.add(resetAxisSpacing);
 
 		if (renderType == STANDARD_RENDERING) {
-			IToolBarItem saveSelectionsAction = new SaveSelectionsAction(
-					targetViewID);
+			IToolBarItem saveSelectionsAction = new SaveSelectionsAction(targetViewID);
 			actionList.add(saveSelectionsAction);
 			IToolBarItem resetViewAction = new ResetViewAction(targetViewID);
 			actionList.add(resetViewAction);

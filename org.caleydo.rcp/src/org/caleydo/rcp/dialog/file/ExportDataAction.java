@@ -187,8 +187,8 @@ public class ExportDataAction
 				continue;
 
 			SetExporter exporter = new SetExporter();
-//			exporter.export(this, sFileName, eWichViewToExport);
-			
+			// exporter.export(this, sFileName, eWichViewToExport);
+
 			ISet set = setBasedDataDomain.getSet();
 			IDType targetIDType = setBasedDataDomain.getPrimaryContentMappingType();
 			if (set instanceof MetaSet)
@@ -200,7 +200,7 @@ public class ExportDataAction
 				exporter.export(set, sFileName, EWhichViewToExport.WHOLE_DATA, targetIDType);
 			}
 			else if (radios[2].getSelection()) {
-				exporter.exportGroups(set,sFileName, genesToExport, experimentsToExport, targetIDType);
+				exporter.exportGroups(set, sFileName, genesToExport, experimentsToExport, targetIDType);
 			}
 
 		}

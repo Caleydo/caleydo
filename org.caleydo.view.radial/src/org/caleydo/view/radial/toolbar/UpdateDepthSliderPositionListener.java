@@ -9,8 +9,7 @@ import org.caleydo.core.manager.event.view.radial.UpdateDepthSliderPositionEvent
  * 
  * @author Christian Partl
  */
-public class UpdateDepthSliderPositionListener extends
-		AEventListener<DepthSlider> {
+public class UpdateDepthSliderPositionListener extends AEventListener<DepthSlider> {
 
 	@Override
 	public void handleEvent(AEvent event) {

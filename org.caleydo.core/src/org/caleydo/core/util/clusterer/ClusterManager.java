@@ -60,6 +60,7 @@ public class ClusterManager {
 		if (clusterResult == null) {
 
 			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+				@Override
 				public void run() {
 					Shell shell = new Shell();
 					MessageBox messageBox = new MessageBox(shell, SWT.ERROR);

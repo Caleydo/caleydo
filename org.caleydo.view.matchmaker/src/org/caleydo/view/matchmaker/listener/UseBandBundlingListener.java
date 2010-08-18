@@ -7,7 +7,7 @@ import org.caleydo.view.matchmaker.event.UseBandBundlingEvent;
 
 /**
  * @author Marc Streit
- *
+ * 
  */
 public class UseBandBundlingListener extends AEventListener<GLMatchmaker> {
 

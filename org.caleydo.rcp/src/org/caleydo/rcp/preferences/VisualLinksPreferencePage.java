@@ -64,8 +64,8 @@ public class VisualLinksPreferencePage
 			GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATION);
 		width = GeneralManager.get().getPreferenceStore().getFloat(PreferenceConstants.VISUAL_LINKS_WIDTH);
 		animatedHalo =
-			GeneralManager.get().getPreferenceStore().getBoolean(
-				PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO);
+			GeneralManager.get().getPreferenceStore()
+				.getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO);
 
 		style = styleTypes.get(iCurrentlyUsedStyle);
 

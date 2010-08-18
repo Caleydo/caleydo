@@ -102,9 +102,12 @@ public class Activator extends AbstractUIPlugin {
 
 		DataDomainManager.getInstance().getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, PLUGIN_ID);
-		DataDomainManager.getInstance().getAssociationManager()
-		.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLHierarchicalHeatMap.VIEW_ID);
-		
+		DataDomainManager
+				.getInstance()
+				.getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
+						GLHierarchicalHeatMap.VIEW_ID);
+
 	}
 
 }

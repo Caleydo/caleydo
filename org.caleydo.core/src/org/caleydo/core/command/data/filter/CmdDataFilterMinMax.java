@@ -36,6 +36,7 @@ public class CmdDataFilterMinMax
 	 * Calculates the minimum and the maximum of either a set or a storage depending on what has been set
 	 * using the setAttributes methods
 	 */
+	@Override
 	public void doCommand() {
 
 		if (myStorage == null && mySet != null) {

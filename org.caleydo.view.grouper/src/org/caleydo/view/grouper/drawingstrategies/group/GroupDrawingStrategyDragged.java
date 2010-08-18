@@ -9,8 +9,7 @@ import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
-public class GroupDrawingStrategyDragged extends
-		AGroupDrawingStrategyRectangular {
+public class GroupDrawingStrategyDragged extends AGroupDrawingStrategyRectangular {
 
 	private GrouperRenderStyle renderStyle;
 
@@ -25,47 +24,41 @@ public class GroupDrawingStrategyDragged extends
 
 	}
 
-	public void drawDraggedGroup(GL gl,
-			GroupRepresentation groupRepresentation, float fMouseCoordinateX,
-			float fMouseCoordinateY, float fDraggingStartMouseCoordinateX,
-			float fDraggingStartMouseCoordinateY) {
+	public void drawDraggedGroup(GL gl, GroupRepresentation groupRepresentation,
+			float fMouseCoordinateX, float fMouseCoordinateY,
+			float fDraggingStartMouseCoordinateX, float fDraggingStartMouseCoordinateY) {
 
-		float fGroupColor[] = renderStyle
-				.getGroupColorForLevel(groupRepresentation.getHierarchyLevel());
+		float fGroupColor[] = renderStyle.getGroupColorForLevel(groupRepresentation
+				.getHierarchyLevel());
 		float fColor[] = { fGroupColor[0], fGroupColor[1], fGroupColor[2], 0.5f };
-		drawDragged(gl, groupRepresentation, fMouseCoordinateX,
-				fMouseCoordinateY, fDraggingStartMouseCoordinateX,
-				fDraggingStartMouseCoordinateY, fColor);
+		drawDragged(gl, groupRepresentation, fMouseCoordinateX, fMouseCoordinateY,
+				fDraggingStartMouseCoordinateX, fDraggingStartMouseCoordinateY, fColor);
 
 	}
 
 	public void drawDraggedLeaf(GL gl, GroupRepresentation groupRepresentation,
 			float fMouseCoordinateX, float fMouseCoordinateY,
-			float fDraggingStartMouseCoordinateX,
-			float fDraggingStartMouseCoordinateY) {
+			float fDraggingStartMouseCoordinateX, float fDraggingStartMouseCoordinateY) {
 
 		float fColor[] = { GrouperRenderStyle.TEXT_BG_COLOR[0],
-				GrouperRenderStyle.TEXT_BG_COLOR[1],
-				GrouperRenderStyle.TEXT_BG_COLOR[2], 0.5f };
-		drawDragged(gl, groupRepresentation, fMouseCoordinateX,
-				fMouseCoordinateY, fDraggingStartMouseCoordinateX,
-				fDraggingStartMouseCoordinateY, fColor);
+				GrouperRenderStyle.TEXT_BG_COLOR[1], GrouperRenderStyle.TEXT_BG_COLOR[2],
+				0.5f };
+		drawDragged(gl, groupRepresentation, fMouseCoordinateX, fMouseCoordinateY,
+				fDraggingStartMouseCoordinateX, fDraggingStartMouseCoordinateY, fColor);
 
 	}
 
 	private void drawDragged(GL gl, GroupRepresentation groupRepresentation,
 			float fMouseCoordinateX, float fMouseCoordinateY,
-			float fDraggingStartMouseCoordinateX,
-			float fDraggingStartMouseCoordinateY, float fColor[]) {
+			float fDraggingStartMouseCoordinateX, float fDraggingStartMouseCoordinateY,
+			float fColor[]) {
 
 		float fHeight = groupRepresentation.getHeight();
 		float fWidth = groupRepresentation.getWidth();
 
-		Vec3f vecRealGroupPosition = groupRepresentation
-				.getDraggingStartPosition();
-		Vec3f vecScaledRealGroupPosition = getScaledPosition(gl,
-				vecRealGroupPosition, groupRepresentation
-						.getHierarchyPosition());
+		Vec3f vecRealGroupPosition = groupRepresentation.getDraggingStartPosition();
+		Vec3f vecScaledRealGroupPosition = getScaledPosition(gl, vecRealGroupPosition,
+				groupRepresentation.getHierarchyPosition());
 
 		float fRealRelDraggingPosX = vecScaledRealGroupPosition.x()
 				- fDraggingStartMouseCoordinateX;
@@ -82,12 +75,10 @@ public class GroupDrawingStrategyDragged extends
 
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(vecPosition.x(), vecPosition.y(), vecPosition.z());
-		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition
-				.z());
+		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition.z());
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight,
 				vecPosition.z());
-		gl.glVertex3f(vecPosition.x(), vecPosition.y() - fHeight, vecPosition
-				.z());
+		gl.glVertex3f(vecPosition.x(), vecPosition.y() - fHeight, vecPosition.z());
 		gl.glEnd();
 
 		endGUIElement(gl);

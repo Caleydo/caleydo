@@ -86,7 +86,7 @@ public abstract class AGLGUIElement {
 	public float getScaledSizeOf(GL gl, float value) {
 		return value * getScaling(gl, true);
 	}
-	
+
 	/**
 	 * Gets the size the specified value would have when scaling it. Note that the scaling is dependent on the
 	 * current window size and the minimum size of the gui element.
@@ -97,7 +97,7 @@ public abstract class AGLGUIElement {
 	 *            Value for which the scaled size shall be calculated.
 	 * @param useWidthAsReference
 	 *            Determines whether the scaling us calculated relative to the width of height of the
-	 *            viewport.            
+	 *            viewport.
 	 * @return Scaled value.
 	 */
 	public float getScaledSizeOf(GL gl, float value, boolean useWidthAsReference) {
@@ -190,9 +190,8 @@ public abstract class AGLGUIElement {
 		float scaling = getScaling(gl, true);
 
 		return new Vec3f(((position.x() - scalingPivot.x()) * scaling) + scalingPivot.x(),
-			((position.y() - scalingPivot.y()) * scaling) + scalingPivot.y(), ((position.z() - scalingPivot
-				.z()) * scaling)
-				+ scalingPivot.z());
+			((position.y() - scalingPivot.y()) * scaling) + scalingPivot.y(),
+			((position.z() - scalingPivot.z()) * scaling) + scalingPivot.z());
 	}
 
 	/**

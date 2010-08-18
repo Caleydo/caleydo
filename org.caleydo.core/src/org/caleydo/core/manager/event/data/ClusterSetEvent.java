@@ -34,7 +34,7 @@ public class ClusterSetEvent
 	public ArrayList<ISet> setSets() {
 		return sets;
 	}
-	
+
 	public ArrayList<ISet> getSets() {
 		return sets;
 	}

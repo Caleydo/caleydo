@@ -12,6 +12,7 @@ public class OpenCollabHandler
 	extends AbstractHandler
 	implements IHandler {
 
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// HandlerUtil.getActiveWorkbenchWindow(event).close();
 		try {

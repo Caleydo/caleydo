@@ -33,6 +33,7 @@ public class CmdCreateIDType
 	/**
 	 * Load data from file using a token pattern.
 	 */
+	@Override
 	public void doCommand() {
 
 		createdObject = IDType.registerType(typeName, idCategory, storageType);

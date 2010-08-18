@@ -14,8 +14,8 @@ import org.caleydo.core.util.clusterer.EDrawingStateType;
  * @author Christian Partl
  */
 @XmlType
-@XmlSeeAlso( { DrawingStateDetailOutside.class,
-		DrawingStateFullHierarchy.class, ADrawingStateAnimation.class })
+@XmlSeeAlso({ DrawingStateDetailOutside.class, DrawingStateFullHierarchy.class,
+		ADrawingStateAnimation.class })
 public abstract class ADrawingState {
 
 	/**
@@ -42,8 +42,7 @@ public abstract class ADrawingState {
 	 *            NavigationHistory instance that shall be used.
 	 */
 	public ADrawingState(DrawingController drawingController,
-			GLRadialHierarchy radialHierarchy,
-			NavigationHistory navigationHistory) {
+			GLRadialHierarchy radialHierarchy, NavigationHistory navigationHistory) {
 		this.drawingController = drawingController;
 		this.radialHierarchy = radialHierarchy;
 		this.navigationHistory = navigationHistory;

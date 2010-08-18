@@ -14,8 +14,8 @@ public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 
 	@Override
 	public Vec3f getDetailPosition() {
-		return new Vec3f(positionX + getDendrogramLineSpacing()
-				+ getOverviewWidth() + getGapWidth(), positionY, 0.0f);
+		return new Vec3f(positionX + getDendrogramLineSpacing() + getOverviewWidth()
+				+ getGapWidth(), positionY, 0.0f);
 	}
 
 	@Override
@@ -27,15 +27,15 @@ public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 	@Override
 	public Vec3f getOverviewGroupBarPosition() {
 		return new Vec3f(positionX + getDendrogramLineSpacing()
-				+ getOverviewSliderWidth(), positionY
-				+ getDendrogramBottomSpacing(), 0.0f);
+				+ getOverviewSliderWidth(), positionY + getDendrogramBottomSpacing(),
+				0.0f);
 	}
 
 	@Override
 	public Vec3f getOverviewHeatMapPosition() {
 		return new Vec3f(positionX + getDendrogramLineSpacing()
-				+ getOverviewSliderWidth() + getOverviewGroupBarWidth(),
-				positionY + getDendrogramBottomSpacing(), 0.0f);
+				+ getOverviewSliderWidth() + getOverviewGroupBarWidth(), positionY
+				+ getDendrogramBottomSpacing(), 0.0f);
 	}
 
 	@Override
@@ -54,10 +54,9 @@ public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 		float leftSpacing = Math.max(getDendrogramLineWidth()
 				+ getDendrogramButtonWidth(), getDendrogramLineSpacing());
 
-		return new Vec3f(positionX + leftSpacing
-				+ getCaptionLabelHorizontalSpacing(), positionY
-				+ getDendrogramBottomSpacing() + getOverviewHeight()
-				+ getCaptionLabelVerticalSpacing(), 0.0f);
+		return new Vec3f(positionX + leftSpacing + getCaptionLabelHorizontalSpacing(),
+				positionY + getDendrogramBottomSpacing() + getOverviewHeight()
+						+ getCaptionLabelVerticalSpacing(), 0.0f);
 	}
 
 	@Override
@@ -69,8 +68,7 @@ public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 
 	@Override
 	public Vec3f getDendrogramLinePosition() {
-		return new Vec3f(positionX, positionY + getDendrogramBottomSpacing(),
-				0.0f);
+		return new Vec3f(positionX, positionY + getDendrogramBottomSpacing(), 0.0f);
 	}
 
 	@Override

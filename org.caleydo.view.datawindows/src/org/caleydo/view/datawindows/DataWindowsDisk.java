@@ -48,8 +48,6 @@ public class DataWindowsDisk extends PoincareDisk {
 
 	public void displayDetailLevels() {
 
-		
-
 		// drawCircle(levelOfDetailLimits[2] * displayScaleFactorX,
 		// canvasWidth / 2, canvasHeight / 2);
 		// drawCircle(levelOfDetailLimits[1] * displayScaleFactorX,
@@ -73,9 +71,8 @@ public class DataWindowsDisk extends PoincareDisk {
 		return 0;
 	}
 
-	public void renderTree(GL gl, TextureManager texManager,
-			PickingManager pickManager, int iViewID, float viewingWidth,
-			float viewingHeight) {
+	public void renderTree(GL gl, TextureManager texManager, PickingManager pickManager,
+			int iViewID, float viewingWidth, float viewingHeight) {
 
 		this.gl = gl;
 
@@ -136,51 +133,42 @@ public class DataWindowsDisk extends PoincareDisk {
 			size = getMetric(node.getPosition(), nodeSize);
 		}
 
-		int iPickingID = pickingManager.getPickingID(iUniqueID,
-				EPickingType.DATAW_NODE, node.iComparableValue);
+		int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.DATAW_NODE,
+				node.iComparableValue);
 
 		gl.glPushName(iPickingID);
 		// different textures for different detail levels
 		if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 2) {
 			node.eyeTrackable = false;
-			
+
 			this.eyeTrackableNodes.remove(node);
-			
 
 			size[0] = size[0] * 4;
 			size[1] = size[1] * 4;
-			Vec3f lowerLeftCorner = new Vec3f(
-					(-size[0] + node.getZoomedPosition()[0]
-							* displayScaleFactorX + canvasWidth / 2),
-					(-size[1] * (canvasHeight / canvasWidth)
-							+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
-					0);
-			Vec3f lowerRightCorner = new Vec3f(
-					(size[0] + node.getZoomedPosition()[0]
-							* displayScaleFactorX + canvasWidth / 2),
-					(-size[1] * (canvasHeight / canvasWidth)
-							+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
-					0);
-			Vec3f upperRightCorner = new Vec3f(
-					(size[0] + node.getZoomedPosition()[0]
-							* displayScaleFactorX + canvasWidth / 2),
-					(size[1] * (canvasHeight / canvasWidth)
-							+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
-					0);
-			Vec3f upperLeftCorner = new Vec3f(
-					(-size[0] + node.getZoomedPosition()[0]
-							* displayScaleFactorX + canvasWidth / 2),
-					(size[1] * (canvasHeight / canvasWidth)
-							+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
-					0);
+			Vec3f lowerLeftCorner = new Vec3f((-size[0] + node.getZoomedPosition()[0]
+					* displayScaleFactorX + canvasWidth / 2), (-size[1]
+					* (canvasHeight / canvasWidth) + node.getZoomedPosition()[1]
+					* displayScaleFactorY + canvasHeight / 2), 0);
+			Vec3f lowerRightCorner = new Vec3f((size[0] + node.getZoomedPosition()[0]
+					* displayScaleFactorX + canvasWidth / 2), (-size[1]
+					* (canvasHeight / canvasWidth) + node.getZoomedPosition()[1]
+					* displayScaleFactorY + canvasHeight / 2), 0);
+			Vec3f upperRightCorner = new Vec3f((size[0] + node.getZoomedPosition()[0]
+					* displayScaleFactorX + canvasWidth / 2), (size[1]
+					* (canvasHeight / canvasWidth) + node.getZoomedPosition()[1]
+					* displayScaleFactorY + canvasHeight / 2), 0);
+			Vec3f upperLeftCorner = new Vec3f((-size[0] + node.getZoomedPosition()[0]
+					* displayScaleFactorX + canvasWidth / 2), (size[1]
+					* (canvasHeight / canvasWidth) + node.getZoomedPosition()[1]
+					* displayScaleFactorY + canvasHeight / 2), 0);
 
 			Vec3f scalingPivot = new Vec3f(1, 1, 1);
 
 			textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_ICON,
-					lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, scalingPivot, 1, 1, 1, 1, 0);
-		} 
-		if(distanceToDetaillevel(node.getDistanceFromOrigin()) == 1) {
+					lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
+					scalingPivot, 1, 1, 1, 1, 0);
+		}
+		if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 1) {
 
 			if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 1) {
 				if (node == this.getCenteredNode()) {
@@ -190,20 +178,18 @@ public class DataWindowsDisk extends PoincareDisk {
 				}
 			}
 
-			if(this.eyeTrackableNodes.contains(node)==false){
-			this.eyeTrackableNodes.add(node);
+			if (this.eyeTrackableNodes.contains(node) == false) {
+				this.eyeTrackableNodes.add(node);
 			}
-			
+
 			node.eyeTrackable = true;
 
 			float[] position = new float[2];
-			position[0] = -size[0] * canvasWidth / 2
-					+ node.getZoomedPosition()[0] * displayScaleFactorX
-					+ canvasWidth / 2;
-			position[1] = -size[1] * canvasHeight / 2
-					* (canvasHeight / canvasWidth)
-					+ node.getZoomedPosition()[1] * displayScaleFactorY
-					+ canvasHeight / 2;
+			position[0] = -size[0] * canvasWidth / 2 + node.getZoomedPosition()[0]
+					* displayScaleFactorX + canvasWidth / 2;
+			position[1] = -size[1] * canvasHeight / 2 * (canvasHeight / canvasWidth)
+					+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight
+					/ 2;
 
 			hyperbolic.drawRemoteView(gl, node, position, size[0]);
 
@@ -245,8 +231,7 @@ public class DataWindowsDisk extends PoincareDisk {
 		float coordinateLength2;
 
 		coordinateLength = (float) Math.sqrt((double) coordinateLength);
-		float projectionFactor = (2 * radiussquare)
-				/ (radiussquare + coordinateLength);
+		float projectionFactor = (2 * radiussquare) / (radiussquare + coordinateLength);
 		// if direction is true, the point will be projected, otherwise the
 		// point will be unprojected
 		if (direction == true) {
@@ -257,14 +242,13 @@ public class DataWindowsDisk extends PoincareDisk {
 			float error;
 			for (coordinateLength = 0; coordinateLength < 100; coordinateLength += 0.01) {
 
-				projectionFactor = (2 * radiussquare)
-						/ (radiussquare + coordinateLength);
+				projectionFactor = (2 * radiussquare) / (radiussquare + coordinateLength);
 
 				coordinate[0] = point[0] * projectionFactor;
 				coordinate[1] = point[1] * projectionFactor;
 
-				coordinateLength2 = coordinate[0] * coordinate[0]
-						+ coordinate[1] * coordinate[1];
+				coordinateLength2 = coordinate[0] * coordinate[0] + coordinate[1]
+						* coordinate[1];
 				coordinateLength2 = (float) Math.sqrt(coordinateLength2);
 
 				projectionFactor = (2 * radiussquare)
@@ -286,8 +270,8 @@ public class DataWindowsDisk extends PoincareDisk {
 		return coordinate;
 	}
 
-	public void drawLine(PoincareNode node1, PoincareNode node2,
-			int numberOfDetails, int mode) {
+	public void drawLine(PoincareNode node1, PoincareNode node2, int numberOfDetails,
+			int mode) {
 
 		if (numberOfDetails != 0) {
 
@@ -382,35 +366,33 @@ public class DataWindowsDisk extends PoincareDisk {
 	public PoincareNode processEyeTrackerAction(float[] normedEyePosition,
 			ArrayList<NodeSlerp> arSlerpActions, boolean mouseControlled) {
 		PoincareNode returnNode = null;
-	
+
 		if (mouseControlled) {
-			
+
 			returnNode = findNodeByCoordinate(normedEyePosition, 0);
 			if (returnNode != null) {
 				float[] emptyPoint = new float[2];
 				emptyPoint[0] = 0;
 				emptyPoint[1] = 0;
-				arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
-						emptyPoint));
+				arSlerpActions
+						.add(new NodeSlerp(4, returnNode.getPosition(), emptyPoint));
 			}
 
 			return returnNode;
 		}
 
-		 //if (this.distanceFromOrigin(normedEyePosition) <
-		 //this.levelOfDetailLimits[0]) {
+		// if (this.distanceFromOrigin(normedEyePosition) <
+		// this.levelOfDetailLimits[0]) {
 
-		returnNode = findNodeByCoordinate(normedEyePosition,1f);
-		 //}		
-		
-		
+		returnNode = findNodeByCoordinate(normedEyePosition, 1f);
+		// }
+
 		if (this.eyeTrackableNodes.contains(returnNode)) {
-			System.out.println("returnnode: "+ normedEyePosition[0]);
+			System.out.println("returnnode: " + normedEyePosition[0]);
 			float[] emptyPoint = new float[2];
 			emptyPoint[0] = 0;
 			emptyPoint[1] = 0;
-			arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
-					emptyPoint));
+			arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(), emptyPoint));
 			return returnNode;
 		} else {
 			return null;
@@ -451,8 +433,6 @@ public class DataWindowsDisk extends PoincareDisk {
 	public void insertNode(PoincareNode node, PoincareNode parentNode) {
 
 		float[] actualPosition = new float[2];
-
-		
 
 		this.getTree().addChild(parentNode, node);
 		this.moebiusLayoutTree(2);

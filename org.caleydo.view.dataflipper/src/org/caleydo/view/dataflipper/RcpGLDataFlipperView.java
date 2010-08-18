@@ -27,7 +27,7 @@ public class RcpGLDataFlipperView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		
+
 		SerializedDataFlipperView serializedView = new SerializedDataFlipperView();
 		return serializedView;
 	}

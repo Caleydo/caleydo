@@ -18,11 +18,11 @@ public class OpenMatchmakerViewEvent
 	extends OpenViewEvent {
 
 	ArrayList<ISet> setsToCompare;
-	
+
 	public ArrayList<ISet> getSetsToCompare() {
 		return setsToCompare;
 	}
-	
+
 	public void setSetsToCompare(ArrayList<ISet> setsToCompare) {
 		this.setsToCompare = setsToCompare;
 	}

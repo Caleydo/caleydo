@@ -59,8 +59,8 @@ public class PreferenceManager {
 			// If stored version is older then current version - remove old Caleydo folder
 			// Test 1st and 2nd number of version string
 			if (sStoredVersion.equals("")
-				|| (new Integer(sStoredVersion.substring(0, 1)) <= new Integer(GeneralManager.VERSION
-					.substring(0, 1)) && new Integer(sStoredVersion.substring(2, 3)) < new Integer(
+				|| (new Integer(sStoredVersion.substring(0, 1)) <= new Integer(
+					GeneralManager.VERSION.substring(0, 1)) && new Integer(sStoredVersion.substring(2, 3)) < new Integer(
 					GeneralManager.VERSION.substring(2, 3)))) {
 
 				MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
@@ -81,10 +81,10 @@ public class PreferenceManager {
 		}
 
 		if (preferenceStore.getBoolean(PreferenceConstants.USE_PROXY)) {
-			System.setProperty("network.proxy_host", preferenceStore
-				.getString(PreferenceConstants.PROXY_SERVER));
-			System.setProperty("network.proxy_port", preferenceStore
-				.getString(PreferenceConstants.PROXY_PORT));
+			System.setProperty("network.proxy_host",
+				preferenceStore.getString(PreferenceConstants.PROXY_SERVER));
+			System.setProperty("network.proxy_port",
+				preferenceStore.getString(PreferenceConstants.PROXY_PORT));
 		}
 	}
 

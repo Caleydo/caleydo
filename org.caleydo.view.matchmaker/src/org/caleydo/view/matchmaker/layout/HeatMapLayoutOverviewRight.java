@@ -13,14 +13,14 @@ public class HeatMapLayoutOverviewRight extends AHeatMapLayoutOverview {
 	@Override
 	public Vec3f getCaptionLabelPosition(float textWidth) {
 		return new Vec3f(positionX + totalWidth - textWidth
-				- getCaptionLabelHorizontalSpacing(), positionY
-				+ getOverviewHeight() + getCaptionLabelVerticalSpacing(), 0.0f);
+				- getCaptionLabelHorizontalSpacing(), positionY + getOverviewHeight()
+				+ getCaptionLabelVerticalSpacing(), 0.0f);
 	}
 
 	@Override
 	public Vec3f getOverviewHeatMapPosition() {
-		return new Vec3f(positionX + (totalWidth - getOverviewHeatMapWidth()),
-				positionY, 0.0f);
+		return new Vec3f(positionX + (totalWidth - getOverviewHeatMapWidth()), positionY,
+				0.0f);
 	}
 
 }

@@ -20,10 +20,10 @@ public class VerticalSlider {
 	private AHeatMapLayout layout;
 	private float relativeBottomPositionY;
 	private float relativeTopPositionY;
-//	private float relativeSliderHeight;
+	// private float relativeSliderHeight;
 	private float sliderBottomPositionY;
 	private float sliderTopPositionY;
-//	private float sliderHeight;
+	// private float sliderHeight;
 	private float arrowHeight;
 	private boolean isBodyDragging;
 	private boolean isArrowUpDragging;
@@ -32,7 +32,7 @@ public class VerticalSlider {
 	private boolean isDraggingFirstTime = true;
 
 	public VerticalSlider(AHeatMapLayout layout) {
-//		relativeSliderHeight = 0.25f;
+		// relativeSliderHeight = 0.25f;
 		relativeTopPositionY = 1.0f;
 		relativeBottomPositionY = 0.75f;
 		this.layout = layout;
@@ -55,55 +55,46 @@ public class VerticalSlider {
 		float sliderPositionX = layout.getOverviewSliderPositionX();
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
-				EPickingType.COMPARE_OVERVIEW_SLIDER_ARROW_DOWN_SELECTION,
-				pickingID));
-		Vec3f upperLeftCorner = new Vec3f(sliderPositionX,
-				sliderBottomPositionY, 0.0f);
+				EPickingType.COMPARE_OVERVIEW_SLIDER_ARROW_DOWN_SELECTION, pickingID));
+		Vec3f upperLeftCorner = new Vec3f(sliderPositionX, sliderBottomPositionY, 0.0f);
 		Vec3f upperRightCorner = new Vec3f(sliderPositionX + sliderWidth,
 				sliderBottomPositionY, 0.0f);
 		Vec3f lowerRightCorner = new Vec3f(sliderPositionX + sliderWidth,
 				sliderBottomPositionY + arrowHeight, 0.0f);
-		Vec3f lowerLeftCorner = new Vec3f(sliderPositionX,
-				sliderBottomPositionY + arrowHeight, 0.0f);
+		Vec3f lowerLeftCorner = new Vec3f(sliderPositionX, sliderBottomPositionY
+				+ arrowHeight, 0.0f);
 
-		textureManager.renderTexture(gl, EIconTextures.HEAT_MAP_ARROW,
-				lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
+		textureManager.renderTexture(gl, EIconTextures.HEAT_MAP_ARROW, lowerLeftCorner,
+				lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 		gl.glPopName();
 
 		// fill gap between cursor
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
-		gl
-				.glPushName(pickingManager.getPickingID(viewID,
-						EPickingType.COMPARE_OVERVIEW_SLIDER_BODY_SELECTION,
-						pickingID));
+		gl.glPushName(pickingManager.getPickingID(viewID,
+				EPickingType.COMPARE_OVERVIEW_SLIDER_BODY_SELECTION, pickingID));
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), 0.0f);
 		gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(), 0.0f);
-		gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y() + bodyHeight,
-				0.0f);
-		gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y() + bodyHeight,
-				0.0f);
+		gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y() + bodyHeight, 0.0f);
+		gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y() + bodyHeight, 0.0f);
 		gl.glEnd();
 		gl.glPopName();
 
 		// Polygon for iLastElement-Cursor
 		gl.glPushName(pickingManager.getPickingID(viewID,
-				EPickingType.COMPARE_OVERVIEW_SLIDER_ARROW_UP_SELECTION,
-				pickingID));
+				EPickingType.COMPARE_OVERVIEW_SLIDER_ARROW_UP_SELECTION, pickingID));
 
-		lowerLeftCorner = new Vec3f(sliderPositionX, sliderTopPositionY
+		lowerLeftCorner = new Vec3f(sliderPositionX, sliderTopPositionY - arrowHeight,
+				0.0f);
+		lowerRightCorner = new Vec3f(sliderPositionX + sliderWidth, sliderTopPositionY
 				- arrowHeight, 0.0f);
-		lowerRightCorner = new Vec3f(sliderPositionX + sliderWidth,
-				sliderTopPositionY - arrowHeight, 0.0f);
-		upperRightCorner = new Vec3f(sliderPositionX + sliderWidth,
-				sliderTopPositionY, 0.0f);
+		upperRightCorner = new Vec3f(sliderPositionX + sliderWidth, sliderTopPositionY,
+				0.0f);
 		upperLeftCorner = new Vec3f(sliderPositionX, sliderTopPositionY, 0.0f);
 
-		textureManager.renderTexture(gl, EIconTextures.HEAT_MAP_ARROW,
-				lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
+		textureManager.renderTexture(gl, EIconTextures.HEAT_MAP_ARROW, lowerLeftCorner,
+				lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 		gl.glPopName();
 
 	}
@@ -155,7 +146,7 @@ public class VerticalSlider {
 			newSliderBottomPositionY = layout.getOverviewMaxSliderPositionY()
 					- sliderHeight;
 			newSliderTopPositionY = layout.getOverviewMaxSliderPositionY();
-		} else if(newSliderBottomPositionY < layout.getOverviewMinSliderPositionY()) {
+		} else if (newSliderBottomPositionY < layout.getOverviewMinSliderPositionY()) {
 			newSliderBottomPositionY = layout.getOverviewMinSliderPositionY();
 			newSliderTopPositionY = layout.getOverviewMinSliderPositionY() + sliderHeight;
 		}
@@ -193,8 +184,7 @@ public class VerticalSlider {
 
 	private void setSliderBottomPositionY(float sliderPositionY) {
 		if (sliderPositionY + (2.0f * arrowHeight) > sliderTopPositionY) {
-			this.sliderBottomPositionY = sliderTopPositionY
-					- (2.0f * arrowHeight);
+			this.sliderBottomPositionY = sliderTopPositionY - (2.0f * arrowHeight);
 		} else if (sliderPositionY < layout.getOverviewMinSliderPositionY()) {
 			this.sliderBottomPositionY = layout.getOverviewMinSliderPositionY();
 		} else {
@@ -206,56 +196,54 @@ public class VerticalSlider {
 		if (sliderPositionY > layout.getOverviewMaxSliderPositionY()) {
 			this.sliderTopPositionY = layout.getOverviewMaxSliderPositionY();
 		} else if (sliderPositionY - (2.0f * arrowHeight) < sliderBottomPositionY) {
-			this.sliderTopPositionY = sliderBottomPositionY
-					+ (2.0f * arrowHeight);
+			this.sliderTopPositionY = sliderBottomPositionY + (2.0f * arrowHeight);
 		} else {
 			this.sliderTopPositionY = sliderPositionY;
 		}
 	}
 
-//	private void setSliderHeight(float sliderHeight) {
-//		if (sliderHeight + sliderBottomPositionY > layout
-//				.getOverviewMaxSliderPositionY()) {
-//			this.sliderHeight = layout.getOverviewMaxSliderPositionY()
-//					- sliderBottomPositionY;
-//		} else if (sliderHeight < 2.0f * arrowHeight) {
-//			this.sliderHeight = 2.0f * arrowHeight;
-//		} else {
-//			this.sliderHeight = sliderHeight;
-//		}
-//	}
+	// private void setSliderHeight(float sliderHeight) {
+	// if (sliderHeight + sliderBottomPositionY > layout
+	// .getOverviewMaxSliderPositionY()) {
+	// this.sliderHeight = layout.getOverviewMaxSliderPositionY()
+	// - sliderBottomPositionY;
+	// } else if (sliderHeight < 2.0f * arrowHeight) {
+	// this.sliderHeight = 2.0f * arrowHeight;
+	// } else {
+	// this.sliderHeight = sliderHeight;
+	// }
+	// }
 
-//	private float getRelativeSize(float absoluteSize) {
-//		return absoluteSize / layout.getOverviewHeight();
-//	}
+	// private float getRelativeSize(float absoluteSize) {
+	// return absoluteSize / layout.getOverviewHeight();
+	// }
 
 	private float getRelativeYCoordinate(float absoluteYCoordinate) {
 		return (absoluteYCoordinate - layout.getOverviewMinSliderPositionY())
 				/ layout.getOverviewHeight();
 	}
 
-//	private void setRelativeSliderHeight(float relativeSliderHeight) {
-//		if (relativeBottomPositionY + relativeSliderHeight > 1.0f) {
-//			this.relativeSliderHeight = 1.0f - relativeBottomPositionY;
-//		} else if (relativeSliderHeight < 2.0f * getRelativeSize(arrowHeight)) {
-//			this.relativeSliderHeight = 2.0f * getRelativeSize(arrowHeight);
-//		} else {
-//			this.relativeSliderHeight = relativeSliderHeight;
-//		}
-//	}
+	// private void setRelativeSliderHeight(float relativeSliderHeight) {
+	// if (relativeBottomPositionY + relativeSliderHeight > 1.0f) {
+	// this.relativeSliderHeight = 1.0f - relativeBottomPositionY;
+	// } else if (relativeSliderHeight < 2.0f * getRelativeSize(arrowHeight)) {
+	// this.relativeSliderHeight = 2.0f * getRelativeSize(arrowHeight);
+	// } else {
+	// this.relativeSliderHeight = relativeSliderHeight;
+	// }
+	// }
 
-//	private void setRelativeBottomPositionY(float relativePositionY) {
-//		if (relativePositionY + relativeSliderHeight > 1.0f) {
-//			this.relativeBottomPositionY = 1.0f - relativeSliderHeight;
-//		} else if (relativePositionY < 0.0f) {
-//			this.relativeBottomPositionY = 0.0f;
-//		} else {
-//			this.relativeBottomPositionY = relativePositionY;
-//		}
-//	}
+	// private void setRelativeBottomPositionY(float relativePositionY) {
+	// if (relativePositionY + relativeSliderHeight > 1.0f) {
+	// this.relativeBottomPositionY = 1.0f - relativeSliderHeight;
+	// } else if (relativePositionY < 0.0f) {
+	// this.relativeBottomPositionY = 0.0f;
+	// } else {
+	// this.relativeBottomPositionY = relativePositionY;
+	// }
+	// }
 
-	public void handleSliderSelection(EPickingType pickingType,
-			EPickingMode pickingMode) {
+	public void handleSliderSelection(EPickingType pickingType, EPickingMode pickingMode) {
 
 		if (pickingMode != EPickingMode.CLICKED)
 			return;
@@ -275,18 +263,18 @@ public class VerticalSlider {
 		isDraggingFirstTime = true;
 	}
 
-//	public float getSliderHeight() {
-//		return sliderHeight;
-//	}
+	// public float getSliderHeight() {
+	// return sliderHeight;
+	// }
 
 	public float getSliderBottomPositionY() {
 		return sliderBottomPositionY;
 	}
-	
+
 	public float getSliderTopPositionY() {
 		return sliderTopPositionY;
 	}
-	
+
 	public float getSliderHeight() {
 		return sliderTopPositionY - sliderBottomPositionY;
 	}

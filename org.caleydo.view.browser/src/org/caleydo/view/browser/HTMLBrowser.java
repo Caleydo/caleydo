@@ -73,8 +73,8 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 	 * Constructor.
 	 */
 	public HTMLBrowser(final int iParentContainerId, final String sLabel) {
-		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
-				EManagedObjectType.VIEW_SWT_BROWSER_GENERAL));
+		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager()
+				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENERAL));
 		viewType = VIEW_ID;
 		init();
 	}
@@ -149,6 +149,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 		browserBarComposite.setLayoutData(data);
 
 		Listener listener = new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				if (!checkInternetConnection())
 					return;
@@ -174,6 +175,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 		homeButton.addListener(SWT.Selection, listener);
 
 		textURL.addListener(SWT.DefaultSelection, new Listener() {
+			@Override
 			public void handleEvent(Event e) {
 				url = textURL.getText();
 				drawView();
@@ -182,6 +184,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 
 		parentComposite.getDisplay().addFilter(SWT.FocusIn, new Listener() {
 
+			@Override
 			public void handleEvent(Event event) {
 
 				if (!event.widget.getClass().equals(this.getClass()))
@@ -229,6 +232,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 		try {
 			parentComposite.getDisplay().asyncExec(new Runnable() {
 
+				@Override
 				public void run() {
 					if (!checkInternetConnection())
 						return;
@@ -321,7 +325,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 		loader.data = new ImageData[] { screenshot.getImageData() };
 		loader.save(GeneralManager.CALEYDO_HOME_PATH + "browser.png", SWT.IMAGE_PNG);
 
-		//System.out.println("Write screenshot");
+		// System.out.println("Write screenshot");
 
 		screenshot.dispose();
 	}
@@ -335,15 +339,16 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 				browser.getDisplay().timerExec(-1, timer);
 				timer = null;
 			}
-			
+
 			timer = new Runnable() {
+				@Override
 				public void run() {
 					browser.getDisplay().timerExec(time, this);
 					makeScreenshot();
 				}
 			};
 			browser.getDisplay().timerExec(time, timer);
-			
+
 		} else {
 			if (timer != null)
 				browser.getDisplay().timerExec(-1, timer);

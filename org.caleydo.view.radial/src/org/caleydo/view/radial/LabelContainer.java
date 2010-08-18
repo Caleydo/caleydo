@@ -93,8 +93,8 @@ public class LabelContainer {
 			fHeight += CONTAINER_LINE_SPACING + fLineHeight;
 			updateLinePositions();
 			LabelLine lastLine = alLabelLines.get(alLabelLines.size() - 1);
-			fYLinePosition = lastLine.getPosition().y()
-					- CONTAINER_LINE_SPACING - fLineHeight;
+			fYLinePosition = lastLine.getPosition().y() - CONTAINER_LINE_SPACING
+					- fLineHeight;
 		}
 
 		labelLine.setPosition(fXLinePosition, fYLinePosition);
@@ -109,8 +109,7 @@ public class LabelContainer {
 	 * @param fYContainerCenter
 	 *            Y coordinate of the center of the label container.
 	 */
-	public void setContainerPosition(float fXContainerLeft,
-			float fYContainerCenter) {
+	public void setContainerPosition(float fXContainerLeft, float fYContainerCenter) {
 		this.fXContainerLeft = fXContainerLeft;
 		this.fYContainerCenter = fYContainerCenter;
 		updateLinePositions();
@@ -151,10 +150,8 @@ public class LabelContainer {
 	 */
 	public boolean doContainersCollide(LabelContainer container) {
 
-		if (getTop() < container.getBottom()
-				|| container.getTop() < getBottom()
-				|| container.getRight() < getLeft()
-				|| getRight() < container.getLeft()) {
+		if (getTop() < container.getBottom() || container.getTop() < getBottom()
+				|| container.getRight() < getLeft() || getRight() < container.getLeft()) {
 			return false;
 		}
 		return true;

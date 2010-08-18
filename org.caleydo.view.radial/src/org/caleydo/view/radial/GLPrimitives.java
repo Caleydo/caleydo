@@ -29,14 +29,13 @@ public class GLPrimitives {
 	 *            full disc. Higher numbers produce a better approximation but
 	 *            the performance is worse.
 	 */
-	public static void renderPartialDisc(GLU glu, float fInnerRadius,
-			float fOuterRadius, float fStartAngle, float fAngle,
-			int iNumSlicesPerFullDisc) {
+	public static void renderPartialDisc(GLU glu, float fInnerRadius, float fOuterRadius,
+			float fStartAngle, float fAngle, int iNumSlicesPerFullDisc) {
 
 		GLUquadric quadric = glu.gluNewQuadric();
 		int iMinNumSlices = fAngle < 180 ? 2 : 3;
-		int iNumSlices = Math.max(Math.round(fAngle / 360.0f
-				* iNumSlicesPerFullDisc), iMinNumSlices);
+		int iNumSlices = Math.max(Math.round(fAngle / 360.0f * iNumSlicesPerFullDisc),
+				iMinNumSlices);
 
 		glu.gluQuadricDrawStyle(quadric, GLU.GLU_FILL);
 		glu.gluPartialDisk(quadric, fInnerRadius, fOuterRadius, iNumSlices, 1,
@@ -67,14 +66,14 @@ public class GLPrimitives {
 	 * @param fBorderWidth
 	 *            Width of the drawn border.
 	 */
-	public static void renderPartialDiscBorder(GL gl, GLU glu,
-			float fInnerRadius, float fOuterRadius, float fStartAngle,
-			float fAngle, int iNumSlicesPerFullDisc, float fBorderWidth) {
+	public static void renderPartialDiscBorder(GL gl, GLU glu, float fInnerRadius,
+			float fOuterRadius, float fStartAngle, float fAngle,
+			int iNumSlicesPerFullDisc, float fBorderWidth) {
 
 		GLUquadric quadric = glu.gluNewQuadric();
 		int iMinNumSlices = fAngle < 180 ? 2 : 3;
-		int iNumSlices = Math.max(Math.round(fAngle / 360.0f
-				* iNumSlicesPerFullDisc), iMinNumSlices);
+		int iNumSlices = Math.max(Math.round(fAngle / 360.0f * iNumSlicesPerFullDisc),
+				iMinNumSlices);
 
 		gl.glLineWidth(fBorderWidth);
 		glu.gluQuadricDrawStyle(quadric, GLU.GLU_SILHOUETTE);
@@ -96,8 +95,7 @@ public class GLPrimitives {
 	 *            full disc. Higher numbers produce a better approximation but
 	 *            the performance is worse.
 	 */
-	public static void renderCircle(GLU glu, float fRadius,
-			int iNumSlicesPerFullDisc) {
+	public static void renderCircle(GLU glu, float fRadius, int iNumSlicesPerFullDisc) {
 		GLUquadric quadric = glu.gluNewQuadric();
 
 		glu.gluQuadricDrawStyle(quadric, GLU.GLU_FILL);

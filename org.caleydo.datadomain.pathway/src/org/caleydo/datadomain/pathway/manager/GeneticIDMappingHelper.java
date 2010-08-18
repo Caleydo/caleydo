@@ -51,16 +51,17 @@ public class GeneticIDMappingHelper {
 		// set to avoid duplicate pathways
 		Set<PathwayGraph> newPathways = new HashSet<PathwayGraph>();
 
-		PathwayVertexGraphItem pathwayVertexGraphItem = convertGeneIDToPathwayVertex(idType, geneID);
+		PathwayVertexGraphItem pathwayVertexGraphItem = convertGeneIDToPathwayVertex(
+				idType, geneID);
 		if (pathwayVertexGraphItem == null)
 			return null;
 
-		List<IGraphItem> pathwayItems =
-			pathwayVertexGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
+		List<IGraphItem> pathwayItems = pathwayVertexGraphItem
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
 
 		for (IGraphItem pathwayItem : pathwayItems) {
-			PathwayGraph pathwayGraph =
-				(PathwayGraph) pathwayItem.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).get(0);
+			PathwayGraph pathwayGraph = (PathwayGraph) pathwayItem.getAllGraphByType(
+					EGraphItemHierarchy.GRAPH_PARENT).get(0);
 			newPathways.add(pathwayGraph);
 		}
 
@@ -72,7 +73,8 @@ public class GeneticIDMappingHelper {
 	 * 
 	 * @param idType
 	 * @param geneID
-	 * @return the PathwayVertexGraphItem corresponding to the mapping or null if no such mapping exists
+	 * @return the PathwayVertexGraphItem corresponding to the mapping or null
+	 *         if no such mapping exists
 	 */
 	public PathwayVertexGraphItem convertGeneIDToPathwayVertex(IDType idType, int geneID) {
 
@@ -80,17 +82,17 @@ public class GeneticIDMappingHelper {
 		Integer iDavidID = -1;
 
 		if (idType == IDType.getIDType("REF_SEQ_MRNA_INT")) {
-			iDavidID = idMappingManager.getID(IDType.getIDType("REF_SEQ_MRNA_INT"), IDType.getIDType("DAVID"), geneID);
-		}
-		else if (idType == IDType.getIDType("DAVID")) {
+			iDavidID = idMappingManager.getID(IDType.getIDType("REF_SEQ_MRNA_INT"),
+					IDType.getIDType("DAVID"), geneID);
+		} else if (idType == IDType.getIDType("DAVID")) {
 			iDavidID = geneID;
-		}
-		else
+		} else
 			return null;
 
 		if (iDavidID == null || iDavidID == -1)
 			return null;
-		// throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
+		// throw new
+		// IllegalStateException("Cannot resolve RefSeq ID to David ID.");
 
 		return PathwayItemManager.get().getPathwayVertexGraphItemByDavidId(iDavidID);
 	}

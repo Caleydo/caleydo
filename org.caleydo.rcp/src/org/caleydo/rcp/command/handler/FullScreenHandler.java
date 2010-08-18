@@ -11,6 +11,7 @@ public class FullScreenHandler
 	extends AbstractHandler
 	implements IHandler {
 
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// Toggle full screen status
 		Shell shell = HandlerUtil.getActiveShell(event).getShell();

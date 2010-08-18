@@ -20,11 +20,10 @@ public class DendrogramRenderCommand implements IHeatMapRenderCommand {
 	@Override
 	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
 
-		GLDendrogram<ContentGroupList> dendrogram = heatMapWrapper
-				.getDendrogram();
+		GLDendrogram<ContentGroupList> dendrogram = heatMapWrapper.getDendrogram();
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
-		
-		if(layout instanceof HeatMapLayoutDetailViewRight) {
+
+		if (layout instanceof HeatMapLayoutDetailViewRight) {
 			dendrogram.setMirrored(true);
 		}
 

@@ -46,11 +46,9 @@ public class SetBar extends AGLGUIElement {
 	private SetBarSelectionWindow selectionWindow;
 	private ACompareViewState viewState;
 
-	public SetBar(int viewID, PickingManager pickingManager,
-			TextRenderer textRenderer,
-			DragAndDropController dragAndDropController,
-			GLMouseListener glMouseListener, AGLView view,
-			ContextMenu contextMenu, TextureManager textureManager) {
+	public SetBar(int viewID, PickingManager pickingManager, TextRenderer textRenderer,
+			DragAndDropController dragAndDropController, GLMouseListener glMouseListener,
+			AGLView view, ContextMenu contextMenu, TextureManager textureManager) {
 		this.viewID = viewID;
 		this.pickingManager = pickingManager;
 		this.textRenderer = textRenderer;
@@ -71,7 +69,7 @@ public class SetBar extends AGLGUIElement {
 		for (SetBarItem item : items) {
 			item.render(gl);
 		}
-		
+
 	}
 
 	public Vec3f getPosition() {
@@ -91,8 +89,7 @@ public class SetBar extends AGLGUIElement {
 	public void setHeight(GL gl, float height) {
 		this.height = getScaledSizeOf(gl, height, false);
 		updateItemProperties();
-		selectionWindow
-				.setHeight(this.height * SELECTION_WINDOW_HEIGHT_PROTION);
+		selectionWindow.setHeight(this.height * SELECTION_WINDOW_HEIGHT_PROTION);
 		selectionWindow.setPositionY(position.y()
 				+ ((1 - SELECTION_WINDOW_HEIGHT_PROTION) * this.height) / 2.0f);
 	}
@@ -123,8 +120,7 @@ public class SetBar extends AGLGUIElement {
 			item.setHeight(height * ITEM_HEIGHT_PROTION);
 			item.setWidth(itemWidth);
 			item.setPosition(new Vec3f(currentPositionX, position.y()
-					+ ((1 - ITEM_HEIGHT_PROTION) * this.height) / 2.0f,
-					position.z()));
+					+ ((1 - ITEM_HEIGHT_PROTION) * this.height) / 2.0f, position.z()));
 			items.add(item);
 			currentPositionX += item.getWidth();
 			itemID++;
@@ -132,8 +128,8 @@ public class SetBar extends AGLGUIElement {
 
 		if (viewState != null) {
 			selectionWindow.setLowestItemIndex(0);
-			selectionWindow.setNumSelectedItems(Math.min(viewState
-					.getNumSetsInFocus(), items.size()));
+			selectionWindow.setNumSelectedItems(Math.min(viewState.getNumSetsInFocus(),
+					items.size()));
 			selectionWindow.setMaxSelectedItems(viewState.getMaxSetsInFocus());
 			selectionWindow.setMinSelectedItems(viewState.getMinSetsInFocus());
 
@@ -141,8 +137,7 @@ public class SetBar extends AGLGUIElement {
 		}
 	}
 
-	public void handleSetBarItemSelection(int itemID, EPickingMode pickingMode,
-			Pick pick) {
+	public void handleSetBarItemSelection(int itemID, EPickingMode pickingMode, Pick pick) {
 
 		SetBarItem item = items.get(itemID);
 
@@ -152,8 +147,7 @@ public class SetBar extends AGLGUIElement {
 		switch (pickingMode) {
 		case CLICKED:
 			dragAndDropController.clearDraggables();
-			dragAndDropController.setDraggingStartPosition(pick
-					.getPickedPoint());
+			dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
 			dragAndDropController.addDraggable(item);
 			dragAndDropController.startDragging();
 			break;
@@ -170,15 +164,13 @@ public class SetBar extends AGLGUIElement {
 
 			break;
 		case RIGHT_CLICKED:
-			contextMenu.addContextMenueItem(new DuplicateSetBarElementItem(
-					itemID));
+			contextMenu.addContextMenueItem(new DuplicateSetBarElementItem(itemID));
 			ArrayList<ISet> sets = new ArrayList<ISet>();
 			sets.add(items.get(itemID).getSet());
 			contextMenu.addContextMenueItem(new ClusterSetItem(sets));
 			contextMenu.addContextMenueItem(new AdjustPValueItem());
-			contextMenu.setLocation(pick.getPickedPoint(), view
-					.getParentGLCanvas().getWidth(), view.getParentGLCanvas()
-					.getHeight());
+			contextMenu.setLocation(pick.getPickedPoint(), view.getParentGLCanvas()
+					.getWidth(), view.getParentGLCanvas().getHeight());
 			contextMenu.setMasterGLView(view);
 			break;
 		case DRAGGED:
@@ -192,8 +184,7 @@ public class SetBar extends AGLGUIElement {
 	public void handleSetBarSelectionWindowSelection(int externalID,
 			EPickingType pickingType, EPickingMode pickingMode, Pick pick) {
 
-		selectionWindow.handleSelection(externalID, pickingType, pickingMode,
-				pick);
+		selectionWindow.handleSelection(externalID, pickingType, pickingMode, pick);
 	}
 
 	public void moveItem(SetBarItem itemToMove, int newIndex) {
@@ -222,8 +213,8 @@ public class SetBar extends AGLGUIElement {
 
 		SetBarItem item = items.get(itemID);
 
-		SetBarItem clone = new SetBarItem(itemID, viewID, pickingManager,
-				textRenderer, this);
+		SetBarItem clone = new SetBarItem(itemID, viewID, pickingManager, textRenderer,
+				this);
 		clone.setSet(item.getSet());
 
 		ArrayList<SetBarItem> oldSelection = selectionWindow.getSelectedItems();
@@ -251,8 +242,7 @@ public class SetBar extends AGLGUIElement {
 			item.setHeight(height * ITEM_HEIGHT_PROTION);
 			item.setWidth(itemWidth);
 			item.setPosition(new Vec3f(currentPositionX, position.y()
-					+ ((1 - ITEM_HEIGHT_PROTION) * this.height) / 2.0f,
-					position.z()));
+					+ ((1 - ITEM_HEIGHT_PROTION) * this.height) / 2.0f, position.z()));
 			itemID++;
 			currentPositionX += itemWidth;
 		}
@@ -299,8 +289,7 @@ public class SetBar extends AGLGUIElement {
 	}
 
 	public void increaseLowestItemIndex(int offset) {
-		selectionWindow.setLowestItemIndex(selectionWindow.getLowestItemIndex()
-				+ offset);
+		selectionWindow.setLowestItemIndex(selectionWindow.getLowestItemIndex() + offset);
 	}
 
 	public void setWindowSize(int windowSize) {

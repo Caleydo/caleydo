@@ -482,6 +482,7 @@ public class FileLoadDataAction
 		txtMin = new Text(filterGroup, SWT.BORDER);
 		txtMin.setEnabled(false);
 		txtMin.addListener(SWT.Verify, new Listener() {
+			@Override
 			public void handleEvent(Event e) {
 				// Only allow digits
 				String string = e.text;
@@ -513,6 +514,7 @@ public class FileLoadDataAction
 		txtMax = new Text(filterGroup, SWT.BORDER);
 		txtMax.setEnabled(false);
 		txtMax.addListener(SWT.Verify, new Listener() {
+			@Override
 			public void handleEvent(Event e) {
 				// Only allow digits
 				String string = e.text;

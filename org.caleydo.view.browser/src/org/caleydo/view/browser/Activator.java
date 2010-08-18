@@ -38,8 +38,8 @@ public class Activator extends AbstractUIPlugin {
 		plugin = this;
 
 		registerDataDomains();
-		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
-				new ViewCreator(PLUGIN_ID));
+		GeneralManager.get().getViewGLCanvasManager()
+				.addViewCreator(new ViewCreator(PLUGIN_ID));
 	}
 
 	/*
@@ -63,7 +63,7 @@ public class Activator extends AbstractUIPlugin {
 	public static Activator getDefault() {
 		return plugin;
 	}
-	
+
 	private void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");

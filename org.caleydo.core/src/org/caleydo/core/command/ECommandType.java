@@ -46,7 +46,7 @@ public enum ECommandType {
 	TAG_ATTRIBUTE5("cmd", "attrib5", ""),
 	TAG_DETAIL("cmd", "detail", ""),
 	TAG_LABEL("cmd", "label", ""),
-//	TAG_PARENT("cmd", "label", ""),
+	// TAG_PARENT("cmd", "label", ""),
 	TAG_POS_GL_ORIGIN("cmd", "gl_origin", "0 0 0"),
 
 	/** Values indicate axis: (X,Y,Z) and rotation-angle (ALPHA) in (radiant). */

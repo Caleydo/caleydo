@@ -14,8 +14,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class RcpInfoAreaView
-	extends CaleydoRCPViewPart {
+public class RcpInfoAreaView extends CaleydoRCPViewPart {
 
 	public static final String VIEW_ID = "org.caleydo.view.info";
 
@@ -38,8 +37,7 @@ public class RcpInfoAreaView
 
 		if (bHorizontal) {
 			parentComposite.setLayout(new GridLayout(10, false));
-		}
-		else {
+		} else {
 			parentComposite.setLayout(new GridLayout(1, false));
 		}
 
@@ -62,28 +60,23 @@ public class RcpInfoAreaView
 		GridLayout layout;
 		if (bHorizontal) {
 			layout = new GridLayout(2, false);
-		}
-		else {
+		} else {
 			layout = new GridLayout(1, false);
 		}
 
-		layout.marginBottom =
-			layout.marginTop =
-				layout.marginLeft =
-					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
+		layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
 		layout.marginHeight = layout.marginWidth = 0;
 
 		infoComposite.setLayout(layout);
 		infoArea = new InfoArea();
 
-	
 		// in the meantime:
 
 		if (dataDomainType == null)
 			dataDomainType = "org.caleydo.datadomain.genetic";
 
-		infoArea.setDataDomain((ASetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
-			dataDomainType));
+		infoArea.setDataDomain((ASetBasedDataDomain) DataDomainManager.getInstance()
+				.getDataDomain(dataDomainType));
 		infoArea.registerEventListeners();
 		infoArea.createControl(infoComposite);
 	}

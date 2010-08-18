@@ -9,13 +9,13 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class OpenRadialHierarchyHandler extends AbstractHandler implements
-		IHandler {
+public class OpenRadialHierarchyHandler extends AbstractHandler implements IHandler {
 
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			IViewPart vp = HandlerUtil.getActiveWorkbenchWindow(event)
-					.getActivePage().showView(GLRadialHierarchy.VIEW_ID);
+			IViewPart vp = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
+					.showView(GLRadialHierarchy.VIEW_ID);
 			System.out.println("vp=" + vp);
 		} catch (PartInitException e) {
 			e.printStackTrace();

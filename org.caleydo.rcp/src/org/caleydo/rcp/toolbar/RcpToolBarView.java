@@ -140,6 +140,7 @@ public class RcpToolBarView
 			final AGLView glView = ((AGLView) eventTrigger);
 
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+				@Override
 				public void run() {
 					// Check if toolbar is present
 					for (Group group : viewSpecificGroups) {

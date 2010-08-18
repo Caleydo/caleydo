@@ -7,7 +7,7 @@ import org.caleydo.view.matchmaker.event.UseSortingEvent;
 
 /**
  * @author Alexander Lex
- *
+ * 
  */
 public class UseSortingListener extends AEventListener<GLMatchmaker> {
 

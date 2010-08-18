@@ -229,8 +229,7 @@ public interface ICompositeGraphic extends IDraggable {
 	 *            be added to the list.
 	 */
 	public void getOrderedCompositeList(Set<ICompositeGraphic> setComposites,
-			ArrayList<ICompositeGraphic> alComposites,
-			boolean topLevelElementsOnly);
+			ArrayList<ICompositeGraphic> alComposites, boolean topLevelElementsOnly);
 
 	/**
 	 * @return The root element of the composite hierarchy.
@@ -269,8 +268,7 @@ public interface ICompositeGraphic extends IDraggable {
 	 * @param newChild
 	 *            New child that should replace the old one.
 	 */
-	public void replaceChild(ICompositeGraphic childToReplace,
-			ICompositeGraphic newChild);
+	public void replaceChild(ICompositeGraphic childToReplace, ICompositeGraphic newChild);
 
 	/**
 	 * Creates a deep copy of the current composite, also children are copied.

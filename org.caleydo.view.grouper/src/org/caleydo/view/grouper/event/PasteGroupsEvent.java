@@ -2,8 +2,7 @@ package org.caleydo.view.grouper.event;
 
 import org.caleydo.core.manager.event.AEvent;
 
-public class PasteGroupsEvent
-	extends AEvent {
+public class PasteGroupsEvent extends AEvent {
 
 	private int iParentGroupID = -1;
 

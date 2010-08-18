@@ -28,8 +28,9 @@ public class ScatterplotToolBarContent extends AToolBarContent {
 	public static final String VIEW_TITLE = "Scatterplot";
 
 	private IToolBarItem pointSizeSlider;
-//	private IToolBarItem xAxisSelector;
-//	private IToolBarItem yAxisSelector;
+
+	// private IToolBarItem xAxisSelector;
+	// private IToolBarItem yAxisSelector;
 
 	@Override
 	public Class<?> getViewClass() {
@@ -58,7 +59,7 @@ public class ScatterplotToolBarContent extends AToolBarContent {
 
 		IToolBarItem toggleMatrixZoom = new ToggleMatrixZoomAction(targetViewID);
 		actionList.add(toggleMatrixZoom);
-		
+
 		IToolBarItem toggleMainViewZoom = new ToggleMainViewZoomAction(targetViewID);
 		actionList.add(toggleMainViewZoom);
 

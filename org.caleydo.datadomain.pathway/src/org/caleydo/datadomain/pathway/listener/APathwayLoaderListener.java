@@ -8,7 +8,6 @@ import org.caleydo.datadomain.pathway.IPathwayLoader;
  * 
  * @author Marc Streit
  */
-public abstract class APathwayLoaderListener
-	extends AEventListener<IPathwayLoader> {
+public abstract class APathwayLoaderListener extends AEventListener<IPathwayLoader> {
 
 }

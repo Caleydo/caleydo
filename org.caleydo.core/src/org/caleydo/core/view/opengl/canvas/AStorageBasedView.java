@@ -337,6 +337,7 @@ public abstract class AStorageBasedView
 		setDisplayListDirty();
 	}
 
+	@Override
 	public void handleStorageVAUpdate(StorageVADelta delta, String info) {
 		storageVA.setGroupList(null);
 		reactOnStorageVAChanges(delta);

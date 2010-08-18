@@ -22,8 +22,9 @@ public class TreeMapToolBarContent extends AToolBarContent {
 	public static final String VIEW_TITLE = "Scatterplot";
 
 	private IToolBarItem pointSizeSlider;
-//	private IToolBarItem xAxisSelector;
-//	private IToolBarItem yAxisSelector;
+
+	// private IToolBarItem xAxisSelector;
+	// private IToolBarItem yAxisSelector;
 
 	@Override
 	public Class<?> getViewClass() {
@@ -41,9 +42,6 @@ public class TreeMapToolBarContent extends AToolBarContent {
 
 		int targetViewID = getTargetViewData().getViewID();
 
-	
-
-	
 		actionList.add(pointSizeSlider);
 
 		// if (xAxisSelector == null) {

@@ -36,12 +36,12 @@ public abstract class ADataEventManager implements ISelectionUpdateHandler {
 	/**
 	 * Register all event listeners used by the DataEventHandler.
 	 */
+	@Override
 	public void registerEventListeners() {
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class,
-				selectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		registerDataSpecificEventListeners();
 	}
@@ -49,6 +49,7 @@ public abstract class ADataEventManager implements ISelectionUpdateHandler {
 	/**
 	 * Unregister all event listeners used by the DataEventHandler.
 	 */
+	@Override
 	public void unregisterEventListeners() {
 
 		if (selectionUpdateListener != null) {
@@ -60,8 +61,7 @@ public abstract class ADataEventManager implements ISelectionUpdateHandler {
 	}
 
 	@Override
-	public void queueEvent(AEventListener<? extends IListenerOwner> listener,
-			AEvent event) {
+	public void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
 		radialHierarchy.queueEvent(listener, event);
 	}
 
@@ -75,8 +75,8 @@ public abstract class ADataEventManager implements ISelectionUpdateHandler {
 	 * @param pdSelected
 	 *            Partial disc that has been selected.
 	 */
-	public abstract void triggerDataSelectionEvents(
-			SelectionType selectionType, PartialDisc pdSelected);
+	public abstract void triggerDataSelectionEvents(SelectionType selectionType,
+			PartialDisc pdSelected);
 
 	/**
 	 * Registers all data type specific event listeners.

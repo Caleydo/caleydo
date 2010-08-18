@@ -57,12 +57,12 @@ public class Pair<T, E>
 	// public int compareTo(Pair<T, E> checkedPair) {
 	// int compareResultFirst = first.compareTo(checkedPair.getFirst());
 	// int compareResultSecond = second.compareTo(checkedPair.getSecond());
-	//			
+	//
 	// if(compareResultFirst > 0 && compareResultSecond > 0)
 	// return 1;
 	// if(compareResultFirst == 0 && compareResultSecond == 0)
 	// return 0;
-	//			
+	//
 	// return -1;
 	// }
 

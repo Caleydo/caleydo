@@ -47,7 +47,7 @@ public class StatisticsResult {
 	public void setOneSiddedTTestResult(double[] pValueVector) {
 		oneSidedTTestResult = pValueVector;
 	}
-	
+
 	public double[] getOneSidedTTestResult() {
 		return oneSidedTTestResult;
 	}
@@ -61,7 +61,7 @@ public class StatisticsResult {
 	public HashMap<ISet, Pair<double[], FoldChangeSettings>> getAllFoldChangeResults() {
 		return setToFoldChangeResult;
 	}
-	
+
 	public HashMap<ISet, ArrayList<Double>> getAllTwoSidedTTestResults() {
 		return setToTwoSidedTTestResult;
 	}
@@ -74,7 +74,7 @@ public class StatisticsResult {
 	public void setFoldChangeSettings(ISet set, FoldChangeSettings foldChangeSettings) {
 		setToFoldChangeResult.get(set).setSecond(foldChangeSettings);
 	}
-	
+
 	public void clearStatisticsResults() {
 		setToFoldChangeResult.clear();
 		setToTwoSidedTTestResult.clear();
@@ -89,65 +89,65 @@ public class StatisticsResult {
 	// * @return the content VA fulfilling the cutoff value.
 	// */
 	// public ContentVirtualArray getVABasedOnTwoSidedTTestResult(ISet compareSet, float cutOffPValue) {
-	//		
+	//
 	// ContentVirtualArray filteredVA = new ContentVirtualArray(ContentVAType.CONTENT);
 	// ContentVirtualArray origVA = compareSet.getContentVA(ContentVAType.CONTENT);
-	//	
+	//
 	// ArrayList<Double> compareResultVector = setToTwoSidedTTestResult.get(compareSet);
-	//		
+	//
 	// for (Integer contentIndex = 0; contentIndex < origVA.size(); contentIndex++) {
-	//			
+	//
 	// Integer contentID = origVA.get(contentIndex);
 	// if (compareResultVector.get(contentIndex) < cutOffPValue)
 	// filteredVA.appendUnique(contentID);
 	// }
-	//		
+	//
 	// return filteredVA;
 	// }
-	//	
-//	/**
-//	 * Calculate and return the content VA based on a given cutoff fold change.
-//	 * 
-//	 * @param set
-//	 *            The set for which the VA comparison result needs to be calculated.
-//	 * @param foldChange
-//	 *            A cutoff foldChange value.
-//	 * @return the content VA greater than the cutoff fold change value.
-//	 */
-//	public ContentVirtualArray getVABasedOnFoldChangeResult(ISet compareSet) {
-//
-//		ContentVirtualArray filteredVA = new ContentVirtualArray(ContentVAType.CONTENT);
-//		ContentVirtualArray origVA = compareSet.getContentVA(ContentVAType.CONTENT);
-//
-//		double[] resultVector = setToFoldChangeResult.get(compareSet).getFirst();
-//		double foldChangeRatio = setToFoldChangeResult.get(compareSet).getSecond().getRatio();
-//
-//		for (Integer contentIndex = 0; contentIndex < origVA.size(); contentIndex++) {
-//
-//			Integer contentID = origVA.get(contentIndex);
-//			if (resultVector[contentIndex] > foldChangeRatio)
-//				filteredVA.appendUnique(contentID);
-//		}
-//
-//		return filteredVA;
-//	}
-	
+	//
+	// /**
+	// * Calculate and return the content VA based on a given cutoff fold change.
+	// *
+	// * @param set
+	// * The set for which the VA comparison result needs to be calculated.
+	// * @param foldChange
+	// * A cutoff foldChange value.
+	// * @return the content VA greater than the cutoff fold change value.
+	// */
+	// public ContentVirtualArray getVABasedOnFoldChangeResult(ISet compareSet) {
+	//
+	// ContentVirtualArray filteredVA = new ContentVirtualArray(ContentVAType.CONTENT);
+	// ContentVirtualArray origVA = compareSet.getContentVA(ContentVAType.CONTENT);
+	//
+	// double[] resultVector = setToFoldChangeResult.get(compareSet).getFirst();
+	// double foldChangeRatio = setToFoldChangeResult.get(compareSet).getSecond().getRatio();
+	//
+	// for (Integer contentIndex = 0; contentIndex < origVA.size(); contentIndex++) {
+	//
+	// Integer contentID = origVA.get(contentIndex);
+	// if (resultVector[contentIndex] > foldChangeRatio)
+	// filteredVA.appendUnique(contentID);
+	// }
+	//
+	// return filteredVA;
+	// }
+
 	public int getElementNumberOfFoldChangeReduction(ISet compareSet) {
-		
+
 		int numberOfElements = 0;
 		ContentVirtualArray origVA = compareSet.getContentData(ContentVAType.CONTENT).getContentVA();
 
 		double[] resultVector = setToFoldChangeResult.get(compareSet).getFirst();
 		FoldChangeSettings settings = setToFoldChangeResult.get(compareSet).getSecond();
-		
+
 		double foldChangeRatio = settings.getRatio();
 		FoldChangeEvaluator foldChangeEvaluator = settings.getEvaluator();
 
 		for (Integer contentIndex = 0; contentIndex < origVA.size(); contentIndex++) {
-			
+
 			switch (foldChangeEvaluator) {
 				case LESS:
-					if (resultVector[contentIndex]*-1 < foldChangeRatio)
+					if (resultVector[contentIndex] * -1 < foldChangeRatio)
 						continue;
 					break;
 				case GREATER:
@@ -159,8 +159,9 @@ public class StatisticsResult {
 						continue;
 					break;
 			}
-			
-			//System.out.println("Found valid gene fulfilling statistics criteria: " +compareSet +" "+contentIndex);
+
+			// System.out.println("Found valid gene fulfilling statistics criteria: " +compareSet
+			// +" "+contentIndex);
 			numberOfElements++;
 		}
 

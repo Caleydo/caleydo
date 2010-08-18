@@ -4,7 +4,7 @@ import org.caleydo.core.manager.event.AEvent;
 
 public class CreateSelectionTypesEvent
 	extends AEvent {
-	
+
 	private boolean createSelectionTypes;
 
 	public CreateSelectionTypesEvent() {
@@ -21,6 +21,8 @@ public class CreateSelectionTypesEvent
 	public boolean isCreateSelectionTypes() {
 		return createSelectionTypes;
 	}
+
+	@Override
 	public boolean checkIntegrity() {
 		return true;
 	}

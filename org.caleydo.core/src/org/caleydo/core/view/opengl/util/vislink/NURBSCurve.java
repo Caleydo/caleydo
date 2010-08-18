@@ -71,8 +71,8 @@ public class NURBSCurve {
 		this.d = 3;
 		// this.numberOfSegments = numberOfSegments;
 
-//		float[] knots = { 0.0f, 0.0f, 1.0f, 2.0f, 3.0f, 3.0f };
-		float[] knots = generateKnotsVector(n+1, d);
+		// float[] knots = { 0.0f, 0.0f, 1.0f, 2.0f, 3.0f, 3.0f };
+		float[] knots = generateKnotsVector(n + 1, d);
 		this.knots = knots;
 
 		this.u_min = (this.knots[this.d - 1]);
@@ -105,8 +105,8 @@ public class NURBSCurve {
 		this.n = controlPoints.size() - 1;
 		this.d = 3;
 
-//		float[] knots = { 0.0f, 0.0f, 1.0f, 2.0f, 3.0f, 3.0f };
-		float[] knots = generateKnotsVector(n+1, d);
+		// float[] knots = { 0.0f, 0.0f, 1.0f, 2.0f, 3.0f, 3.0f };
+		float[] knots = generateKnotsVector(n + 1, d);
 		this.knots = knots;
 
 		this.u_min = (this.knots[this.d - 1]);
@@ -124,23 +124,23 @@ public class NURBSCurve {
 	}
 
 	// public NURBSCurve(ArrayList<Vec3f> controlPoints, int numberOfSegments) {
-	//		
+	//
 	// this.controlPoints = controlPoints;
-	//		
+	//
 	// this.n = controlPoints.size() - 1;
 	// this.d = 3;
 	// this.numberOfSegments = numberOfSegments;
-	//		
+	//
 	// float[] knots = {0.0f, 0.0f, 1.0f, 2.0f, 3.0f, 3.0f};
 	// this.knots = knots;
-	//		
+	//
 	// this.u_min = (float) (this.knots[this.d-1]);
 	// this.u_max = (float) (this.knots[this.n+1]);
 	// this.u = 0.0f;
 	// this.step_length = (float) (this.knots[this.n+1] - this.knots[this.d-1]) / (float)
 	// (this.numberOfSegments);
-	//		 
-	//		
+	//
+	//
 	// // ArrayList<Vec3f> curvePoints = new ArrayList<Vec3f>(numberOfSegments+1);
 	// ArrayList<Vec3f> curvePoints = new ArrayList<Vec3f>();
 	// curvePoints.add(controlPoints.get(0));
@@ -305,33 +305,36 @@ public class NURBSCurve {
 		distance = dstPoint.minus(srcPoint).length();
 		return distance;
 	}
-	
+
 	/**
 	 * Generates the knots vector needed for the spline calculation
 	 * 
-	 * @param numberOfControlPoints The number of given control points
-	 * @param degree The degree of the spline
+	 * @param numberOfControlPoints
+	 *            The number of given control points
+	 * @param degree
+	 *            The degree of the spline
 	 * @return The knots vector with (numberOfControlPoints + degree + 1) elements
 	 */
 	protected float[] generateKnotsVector(int numberOfControlPoints, int degree) {
-		
+
 		int n = numberOfControlPoints + degree + 1;
-		
+
 		float[] knots = new float[n];
-		
+
 		knots[0] = 0;
 		knots[1] = 0;
-		
-		for(int i = 2; i < (n - 1); i++) {
+
+		for (int i = 2; i < (n - 1); i++) {
 			knots[i] = (i - 1);
 		}
-		
-		knots[n-1] = n - 3;
-		
-//		System.out.println("numberOfControlPoints=" + numberOfControlPoints + " + degree=" + degree + " + 1 = " + n);
-//		for(int i = 0; i < n; i++)
-//			System.out.print(knots[i] + " ");
-		
+
+		knots[n - 1] = n - 3;
+
+		// System.out.println("numberOfControlPoints=" + numberOfControlPoints + " + degree=" + degree +
+		// " + 1 = " + n);
+		// for(int i = 0; i < n; i++)
+		// System.out.print(knots[i] + " ");
+
 		return knots;
 	}
 

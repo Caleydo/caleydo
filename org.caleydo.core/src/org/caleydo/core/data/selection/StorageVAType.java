@@ -19,11 +19,10 @@ public class StorageVAType
 		if (registeredTypes == null)
 			registeredTypes = new HashMap<StorageVAType, Boolean>();
 		registeredTypes.put(this, null);
-	
+
 	}
-	
-	StorageVAType(String stringRep)
-	{
+
+	StorageVAType(String stringRep) {
 		this();
 		this.stringRep = stringRep;
 	}

@@ -13,8 +13,7 @@ import org.caleydo.core.manager.picking.PickingManager;
  * 
  * @author Christian Partl
  */
-public abstract class APDDrawingStrategyChildIndicator extends
-		APDDrawingStrategy {
+public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrategy {
 	private static final float MAX_TRIANGLE_FITTING_TEST_ANGLE = 45.0f;
 
 	private float[] fArChildIndicatorColor;
@@ -33,8 +32,7 @@ public abstract class APDDrawingStrategyChildIndicator extends
 	 *            ID of the view where the elements will be displayed. Needed
 	 *            for picking.
 	 */
-	public APDDrawingStrategyChildIndicator(PickingManager pickingManager,
-			int iViewID) {
+	public APDDrawingStrategyChildIndicator(PickingManager pickingManager, int iViewID) {
 		super(pickingManager, iViewID);
 		fArChildIndicatorColor = RadialHierarchyRenderStyle.CHILD_INDICATOR_COLOR;
 		fTransparency = 1.0f;
@@ -44,8 +42,7 @@ public abstract class APDDrawingStrategyChildIndicator extends
 	public abstract void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw);
 
 	@Override
-	public abstract void drawPartialDisc(GL gl, GLU glu,
-			PartialDisc pdDiscToDraw);
+	public abstract void drawPartialDisc(GL gl, GLU glu, PartialDisc pdDiscToDraw);
 
 	/**
 	 * Draws a child indicator (triangle) according to the parameters of a
@@ -77,22 +74,20 @@ public abstract class APDDrawingStrategyChildIndicator extends
 		// Calculation of triangle width is only necessary if angle is small
 		if (fAngle < MAX_TRIANGLE_FITTING_TEST_ANGLE) {
 			Vec2f vecTriangleLeft = getRadialPosition(fStartAngle, fOuterRadius);
-			Vec2f vecTriangleRight = getRadialPosition(fStartAngle + fAngle,
-					fOuterRadius);
+			Vec2f vecTriangleRight = getRadialPosition(fStartAngle + fAngle, fOuterRadius);
 
-			float fTriangleWidth = (float) Math.sqrt(Math.pow(vecTriangleLeft
-					.x()
+			float fTriangleWidth = (float) Math.sqrt(Math.pow(vecTriangleLeft.x()
 					- vecTriangleRight.x(), 2)
 					+ Math.pow(vecTriangleLeft.y() - vecTriangleRight.y(), 2));
 
 			if (fTriangleWidth < 2.0f * fTriangleHeight) {
-				drawIsoscelesTriangle(gl, fTriangleHeight,
-						fTriangleWidth / 2.0f, vecTriangleTop, -fMidAngle);
+				drawIsoscelesTriangle(gl, fTriangleHeight, fTriangleWidth / 2.0f,
+						vecTriangleTop, -fMidAngle);
 				return;
 			}
 		}
-		drawIsoscelesTriangle(gl, fTriangleHeight, fTriangleHeight,
-				vecTriangleTop, -fMidAngle);
+		drawIsoscelesTriangle(gl, fTriangleHeight, fTriangleHeight, vecTriangleTop,
+				-fMidAngle);
 	}
 
 	/**

@@ -163,14 +163,13 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		cmd.setAttributes("org.caleydo.datadomain.pathway");
 		cmd.doCommand();
 
-		getParentGLCanvas().getParentComposite().getDisplay().asyncExec(
-				new Runnable() {
-					@Override
-					public void run() {
-						upperLeftScreenPos = getParentGLCanvas()
-								.getParentComposite().toDisplay(1, 1);
-					}
-				});
+		getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				upperLeftScreenPos = getParentGLCanvas().getParentComposite().toDisplay(
+						1, 1);
+			}
+		});
 	}
 
 	@Override
@@ -184,8 +183,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public void initRemote(final GL gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
 
@@ -254,12 +252,12 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 		// transforming the hyperbolic view:
 		Transform heatmapTransform = new Transform();
-		heatmapTransform.setTranslation(new Vec3f((float) layoutHotSpot[0]+0.1f,
+		heatmapTransform.setTranslation(new Vec3f((float) layoutHotSpot[0] + 0.1f,
 				(float) layoutHotSpot[1], 0));
 
-		heatmapTransform.setScale(new Vec3f(
-				(float) (canvasWidth - layoutHotSpot[0]) / canvasWidth,
-				(float) (canvasHeight - layoutHotSpot[1]) / canvasHeight, 1));
+		heatmapTransform.setScale(new Vec3f((float) (canvasWidth - layoutHotSpot[0])
+				/ canvasWidth, (float) (canvasHeight - layoutHotSpot[1]) / canvasHeight,
+				1));
 
 		remoteElementHeatMap.setTransform(heatmapTransform);
 
@@ -267,7 +265,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		// remoteElementHeatMap.getGLView().getViewFrustum().setLeft(0);
 		// remoteElementHeatMap.getGLView().getViewFrustum().setRight(canvasWidth-layoutHotSpot[1]);
 		// remoteElementHeatMap.getGLView().getViewFrustum().setTop(canvasHeight-layoutHotSpot[0]);
-		//		
+		//
 		Transform hyperbolicTransform = new Transform();
 		hyperbolicTransform.setScale(new Vec3f(layoutHotSpot[0] / canvasWidth,
 				1 * fAspectRatio, 1));
@@ -275,19 +273,19 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		remoteElementHyperbolic.setTransform(hyperbolicTransform);
 
 		Transform parCoordsTransform = new Transform();
-		parCoordsTransform.setTranslation(new Vec3f((float) layoutHotSpot[0],
-				(float) 0, 0));
+		parCoordsTransform.setTranslation(new Vec3f((float) layoutHotSpot[0], (float) 0,
+				0));
 		parCoordsTransform.setScale(new Vec3f(
-				 (float)(canvasWidth - layoutHotSpot[0]) / 8,
+				(float) (canvasWidth - layoutHotSpot[0]) / 8,
 				(float) layoutHotSpot[1] / 8, 1));
 
 		remoteElementParCoords.setTransform(parCoordsTransform);
-		//        
+		//
 		// remoteElementParCoords.getGLView().getViewFrustum().setBottom(0);
 		// remoteElementParCoords.getGLView().getViewFrustum().setLeft(0);
 		// remoteElementParCoords.getGLView().getViewFrustum().setRight(canvasWidth-layoutHotSpot[0]);
 		// remoteElementParCoords.getGLView().getViewFrustum().setTop(layoutHotSpot[1]);
-		//		
+		//
 		renderRemoteLevelElement(gl, remoteElementHyperbolic);
 		renderRemoteLevelElement(gl, remoteElementHeatMap);
 		renderRemoteLevelElement(gl, remoteElementParCoords);
@@ -299,20 +297,18 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 			mousePositionInt[0] = this.glMouseListener.mousePosition[0];
 			mousePositionInt[1] = this.glMouseListener.mousePosition[1];
-			
+
 			// position should be set on real mouse position on the
 			// screen
 			this.eyeTracker.setRawEyeTrackerPosition(mousePositionInt);
-			eyeTracker.cutWindowOffset(upperLeftScreenPos.x,
-					upperLeftScreenPos.y);
+			eyeTracker.cutWindowOffset(upperLeftScreenPos.x, upperLeftScreenPos.y);
 			eyeTracker.checkForFixedCoordinate();
 		}
 		if (selectedInput == inputType.EYETRACKER_ONLY) {
 			eyeTracker.receiveData();
-			eyeTracker.cutWindowOffset(upperLeftScreenPos.x,
-					upperLeftScreenPos.y);
+			eyeTracker.cutWindowOffset(upperLeftScreenPos.x, upperLeftScreenPos.y);
 			eyeTracker.checkForFixedCoordinate();
-			
+
 		}
 
 		// if (selectedInput == inputType.EYETRACKER_ONLY
@@ -332,8 +328,9 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		}
 		if (selectedInput == inputType.EYETRACKER_ONLY
 				|| selectedInput == inputType.EYETRACKER_SIMULATED) {
-			if (eyeTracker.getFixedCoordinate()[0] != 0 && eyeTracker.eyeTrackerPauseStatus==0) {	
-			this.evaluateUserSelection();
+			if (eyeTracker.getFixedCoordinate()[0] != 0
+					&& eyeTracker.eyeTrackerPauseStatus == 0) {
+				this.evaluateUserSelection();
 			}
 		}
 
@@ -350,8 +347,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		gl.glEndList();
 	}
 
-	private void renderRemoteLevelElement(final GL gl,
-			RemoteLevelElement element) {
+	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element) {
 
 		AGLView glView = element.getGLView();
 		if (glView == null) {
@@ -372,8 +368,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		float fAngle = rot.get(axis);
 
 		gl.glTranslatef(translation.x(), translation.y(), translation.z());
-		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
-				axis.z());
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
 		glView.displayRemote(gl);
@@ -422,9 +417,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 				evaluateUserSelection();
 				break;
 			case RIGHT_CLICKED:
-				contextMenu.setLocation(pick.getPickedPoint(),
-						getParentGLCanvas().getWidth(), getParentGLCanvas()
-								.getHeight());
+				contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
+						.getWidth(), getParentGLCanvas().getHeight());
 				contextMenu.setMasterGLView(this);
 				break;
 			}
@@ -442,21 +436,14 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 			float[] translation = new float[2];
 			float[] scalation = new float[2];
-			translation[0] = remoteElementHyperbolic.getTransform()
-					.getTranslation().x();
-			translation[1] = remoteElementHyperbolic.getTransform()
-					.getTranslation().y();
-			scalation[0] = remoteElementHyperbolic.getTransform().getScale()
-					.x();
-			scalation[1] = remoteElementHyperbolic.getTransform().getScale()
-					.y();
+			translation[0] = remoteElementHyperbolic.getTransform().getTranslation().x();
+			translation[1] = remoteElementHyperbolic.getTransform().getTranslation().y();
+			scalation[0] = remoteElementHyperbolic.getTransform().getScale().x();
+			scalation[1] = remoteElementHyperbolic.getTransform().getScale().y();
 			if (translation != null && scalation != null) {
-				
-				
-				
-				foundNode = this.directHyperbolicView
-						.setEyeTrackerAction(eyeTracker.getFixedCoordinate(),
-								translation, scalation,false);
+
+				foundNode = this.directHyperbolicView.setEyeTrackerAction(
+						eyeTracker.getFixedCoordinate(), translation, scalation, false);
 			}
 			// reset the fixed eyetracker coordinate:
 			eyeTracker.resetFixedCoordinate();
@@ -479,12 +466,10 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 							.getTranslation().x();
 					translation[1] = remoteElementHyperbolic.getTransform()
 							.getTranslation().y();
-					scalation[0] = remoteElementHyperbolic.getTransform()
-							.getScale().x();
-					scalation[1] = remoteElementHyperbolic.getTransform()
-							.getScale().y();
-					this.directHyperbolicView.setEyeTrackerAction(
-							mousePosition, translation, scalation,true);
+					scalation[0] = remoteElementHyperbolic.getTransform().getScale().x();
+					scalation[1] = remoteElementHyperbolic.getTransform().getScale().y();
+					this.directHyperbolicView.setEyeTrackerAction(mousePosition,
+							translation, scalation, true);
 				}
 			}
 		}
@@ -558,8 +543,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		remoteElementHyperbolic = new RemoteLevelElement(null);
 		remoteElementHyperbolic.setGLView(view);
 
-		mouseWheelListener = new DataWindowsMouseWheelListener(
-				this.directHyperbolicView);
+		mouseWheelListener = new DataWindowsMouseWheelListener(this.directHyperbolicView);
 
 		canvas.removeMouseWheelListener(glMouseListener);
 		canvas.addMouseWheelListener(mouseWheelListener);
@@ -593,16 +577,14 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 		AGLView glView = cmdView.getCreatedObject();
 		if (glView instanceof IDataDomainBasedView<?>)
-			((IDataDomainBasedView<IDataDomain>) glView)
-					.setDataDomain(DataDomainManager.getInstance()
-							.getDataDomain(serView.getDataDomainType()));
+			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
+					.getInstance().getDataDomain(serView.getDataDomainType()));
 		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
 
-			glPathway.setPathway(((SerializedPathwayView) serView)
-					.getPathwayID());
+			glPathway.setPathway(((SerializedPathwayView) serView).getPathwayID());
 			glPathway.enablePathwayTextures(true);
 			glPathway.enableNeighborhood(false);
 			glPathway.enableGeneMapping(false);
@@ -626,25 +608,19 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 		if (view == remoteViewType.HYPERBOLIC) {
 			viewSlerpStartPoint = layoutHotSpot.clone();
-			viewSlerpTargetPoint[0] = defaultLayoutHotSpot[0]
-					* zoomPointHyperbolic[0];
-			viewSlerpTargetPoint[1] = defaultLayoutHotSpot[1]
-					* zoomPointHyperbolic[1];
+			viewSlerpTargetPoint[0] = defaultLayoutHotSpot[0] * zoomPointHyperbolic[0];
+			viewSlerpTargetPoint[1] = defaultLayoutHotSpot[1] * zoomPointHyperbolic[1];
 			simpleSlerpActions.add(new SimpleSlerp());
 		} else if (view == remoteViewType.HEATMAP) {
 
 			viewSlerpStartPoint = layoutHotSpot.clone();
-			viewSlerpTargetPoint[0] = defaultLayoutHotSpot[0]
-					* zoomPointHeatmap[0];
-			viewSlerpTargetPoint[1] = defaultLayoutHotSpot[1]
-					* zoomPointHeatmap[1];
+			viewSlerpTargetPoint[0] = defaultLayoutHotSpot[0] * zoomPointHeatmap[0];
+			viewSlerpTargetPoint[1] = defaultLayoutHotSpot[1] * zoomPointHeatmap[1];
 			simpleSlerpActions.add(new SimpleSlerp());
 		} else if (view == remoteViewType.PARCOORDS) {
 			viewSlerpStartPoint = layoutHotSpot.clone();
-			viewSlerpTargetPoint[0] = defaultLayoutHotSpot[0]
-					* zoomPointParCoord[0];
-			viewSlerpTargetPoint[1] = defaultLayoutHotSpot[1]
-					* zoomPointParCoord[1];
+			viewSlerpTargetPoint[0] = defaultLayoutHotSpot[0] * zoomPointParCoord[0];
+			viewSlerpTargetPoint[1] = defaultLayoutHotSpot[1] * zoomPointParCoord[1];
 			simpleSlerpActions.add(new SimpleSlerp());
 		}
 
@@ -664,14 +640,13 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		}
 	}
 
-	public void moveLayoutPoint(float[] targetPoint, float[] startPoint,
-			float state) {
+	public void moveLayoutPoint(float[] targetPoint, float[] startPoint, float state) {
 
 		float[] relativePosition = new float[2];
 		relativePosition[0] = startPoint[0] - targetPoint[0];
 		relativePosition[1] = startPoint[1] - targetPoint[1];
-		float distance = relativePosition[0] * relativePosition[0]
-				+ relativePosition[1] * relativePosition[1];
+		float distance = relativePosition[0] * relativePosition[0] + relativePosition[1]
+				* relativePosition[1];
 		distance = (float) Math.sqrt(distance);
 		distance = distance * state;
 

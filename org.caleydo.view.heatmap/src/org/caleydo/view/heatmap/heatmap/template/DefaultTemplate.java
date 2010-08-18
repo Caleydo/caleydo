@@ -9,14 +9,14 @@ public class DefaultTemplate extends ATemplate {
 
 	@Override
 	public void setParameters() {
-		
+
 		templateRenderer.clearRenderers();
-		
+
 		Row row = new Row();
 		row.sizeY = 1;
 		// heat map
 		RenderParameters heatMapLayout = new RenderParameters();
-//		heatMapLayout.sizeX = 0.715f;
+		// heatMapLayout.sizeX = 0.715f;
 		heatMapLayout.sizeX = 0.806f;
 		heatMapLayout.sizeY = 0.883f;
 		heatMapLayout.renderer = new HeatMapRenderer(templateRenderer.heatMap);
@@ -40,15 +40,14 @@ public class DefaultTemplate extends ATemplate {
 		row.appendElement(contentSelectionLayout);
 		row.appendElement(storageSelectionLayout);
 		row.appendElement(heatMapLayout);
-	
 
 		RenderParameters spacing = new RenderParameters();
 		spacing.sizeX = 0.01f;
 		row.appendElement(spacing);
-		
+
 		// content captions
 		RenderParameters contentCaptionLayout = new RenderParameters();
-		contentCaptionLayout.sizeX = 1-heatMapLayout.sizeX;
+		contentCaptionLayout.sizeX = 1 - heatMapLayout.sizeX;
 		contentCaptionLayout.sizeY = heatMapLayout.sizeY;
 		// heatMapLayout.grabY = true;
 		contentCaptionLayout.transformX = 0.7f + templateRenderer.SPACING;
@@ -62,7 +61,7 @@ public class DefaultTemplate extends ATemplate {
 		add(row);
 
 		spacing = new RenderParameters();
-		spacing.sizeY = 1-heatMapLayout.sizeY;
+		spacing.sizeY = 1 - heatMapLayout.sizeY;
 		add(spacing);
 
 	}

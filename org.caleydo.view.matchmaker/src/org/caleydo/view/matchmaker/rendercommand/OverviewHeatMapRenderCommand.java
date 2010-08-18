@@ -20,8 +20,7 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 	private PickingManager pickingManager;
 	private int viewID;
 
-	public OverviewHeatMapRenderCommand(int viewID,
-			PickingManager pickingManager) {
+	public OverviewHeatMapRenderCommand(int viewID, PickingManager pickingManager) {
 		this.viewID = viewID;
 		this.pickingManager = pickingManager;
 	}
@@ -31,8 +30,7 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
 
-		ContentVirtualArray contentVA = heatMapWrapper.getOverview()
-				.getContentVA();
+		ContentVirtualArray contentVA = heatMapWrapper.getOverview().getContentVA();
 		ContentGroupList contentGroupList = contentVA.getGroupList();
 
 		for (int i = 0; i < contentGroupList.size(); i++) {
@@ -40,12 +38,11 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 					.getOverviewHeatMapGroupPosition(i);
 			float height = layout.getOverviewHeatMapGroupHeight(i);
 
-			gl.glPushName(pickingManager.getPickingID(viewID, layout
-					.getGroupPickingType(), i));
+			gl.glPushName(pickingManager.getPickingID(viewID,
+					layout.getGroupPickingType(), i));
 			gl.glPushMatrix();
 			gl.glTranslatef(overviewHeatMapGroupPosition.x(),
-					overviewHeatMapGroupPosition.y(),
-					overviewHeatMapGroupPosition.z());
+					overviewHeatMapGroupPosition.y(), overviewHeatMapGroupPosition.z());
 
 			ArrayList<Texture> overviewTextures = heatMapWrapper.getOverview()
 					.getClusterTextures(i);
@@ -55,11 +52,10 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 			gl.glPopName();
 		}
 
-//		drawSelections(gl, layout, contentSelectionManager, contentVA);
+		// drawSelections(gl, layout, contentSelectionManager, contentVA);
 
 	}
 
-	
 	@Override
 	public ERenderCommandType getRenderCommandType() {
 		return ERenderCommandType.OVERVIEW_HEATMAP;

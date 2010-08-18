@@ -30,7 +30,7 @@ public class ClearSelectionsAction
 		ClearSelectionsEvent event = new ClearSelectionsEvent();
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
-		
+
 		RemoveManagedSelectionTypesEvent resetSelectionTypesEvent = new RemoveManagedSelectionTypesEvent();
 		resetSelectionTypesEvent.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(resetSelectionTypesEvent);

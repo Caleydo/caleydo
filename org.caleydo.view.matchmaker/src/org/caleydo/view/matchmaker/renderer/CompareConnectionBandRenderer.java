@@ -10,20 +10,19 @@ import javax.media.opengl.glu.GLUtessellator;
 
 import org.caleydo.view.matchmaker.renderer.util.TesselationCallback;
 
-public class CompareConnectionBandRenderer
-		implements
-			ICompareConnectionRenderer {
+public class CompareConnectionBandRenderer implements ICompareConnectionRenderer {
 
 	private GLU glu;
-	//private int displayListID;
-	
+	// private int displayListID;
+
 	private GLUtessellator tobj;
 
+	@Override
 	public void init(GL gl) {
 		glu = new GLU();
 
 		TesselationCallback tessCallback = new TesselationCallback(gl, glu);
-		
+
 		tobj = glu.gluNewTess();
 
 		glu.gluTessCallback(tobj, GLU.GLU_TESS_VERTEX, tessCallback);// vertexCallback);
@@ -35,18 +34,19 @@ public class CompareConnectionBandRenderer
 		gl.glShadeModel(GL.GL_SMOOTH);
 	}
 
+	@Override
 	public void display(GL gl) {
-		
-//		gl.glCallList(displayListID);
-//		gl.glFlush();
-		
+
+		// gl.glCallList(displayListID);
+		// gl.glFlush();
+
 		TesselationCallback tessCallback = new TesselationCallback(gl, glu);
 
-		double star[][] = new double[][]{// [5][6]; 6x5 in java
-		{2.50, 5.00, 0.0, 1.0, 0.0, 1.0}, {3.250, 2.000, 0.0, 1.0, 1.0, 0.0},
-				{4.000, 5.00, 0.0, 0.0, 1.0, 1.0},
-				{2.500, 1.500, 0.0, 1.0, 0.0, 0.0},
-				{4.000, 1.500, 0.0, 0.0, 1.0, 0.0}};
+		double star[][] = new double[][] {// [5][6]; 6x5 in java
+		{ 2.50, 5.00, 0.0, 1.0, 0.0, 1.0 }, { 3.250, 2.000, 0.0, 1.0, 1.0, 0.0 },
+				{ 4.000, 5.00, 0.0, 0.0, 1.0, 1.0 },
+				{ 2.500, 1.500, 0.0, 1.0, 0.0, 0.0 },
+				{ 4.000, 1.500, 0.0, 0.0, 1.0, 0.0 } };
 
 		GLUtessellator tobj = glu.gluNewTess();
 
@@ -72,7 +72,8 @@ public class CompareConnectionBandRenderer
 		glu.gluTessEndPolygon(tobj);
 		glu.gluDeleteTess(tobj);
 	}
-	
+
+	@Override
 	public void render(GL gl, ArrayList<Vec3f> points) {
 
 		double inputPoints[][] = new double[points.size()][3];
@@ -85,16 +86,16 @@ public class CompareConnectionBandRenderer
 		gl.glShadeModel(GL.GL_SMOOTH);
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-//		glu.gluTessProperty(tobj, //
-//				GLU.GLU_TESS_WINDING_RULE, //
-//				GLU.GLU_TESS_WINDING_POSITIVE);
+		// glu.gluTessProperty(tobj, //
+		// GLU.GLU_TESS_WINDING_RULE, //
+		// GLU.GLU_TESS_WINDING_POSITIVE);
 		glu.gluTessBeginPolygon(tobj, null);
 		glu.gluTessBeginContour(tobj);
-		
+
 		for (int pointIndex = 0; pointIndex < points.size(); pointIndex++) {
 			glu.gluTessVertex(tobj, inputPoints[pointIndex], 0, inputPoints[pointIndex]);
 		}
-		
+
 		glu.gluTessEndContour(tobj);
 		glu.gluTessEndPolygon(tobj);
 		glu.gluDeleteTess(tobj);

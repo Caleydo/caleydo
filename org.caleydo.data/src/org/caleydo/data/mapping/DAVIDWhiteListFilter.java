@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 /**
- * Helper tool to generate organism specific mapping files. Original david files are filtered by using a gene
- * whitelist specific to an organism.
+ * Helper tool to generate organism specific mapping files. Original david files
+ * are filtered by using a gene whitelist specific to an organism.
  * 
  * @author Marc Streit
  */
@@ -26,22 +26,23 @@ public class DAVIDWhiteListFilter {
 	// private static final String FILE_NAME = "DAVID2GENE_SYMBOL.txt";
 	private static final String FILE_NAME = "DAVID2ENSEMBL_GENE_ID.txt";
 
-	public DAVIDWhiteListFilter()
-		throws IOException {
+	public DAVIDWhiteListFilter() throws IOException {
 
-		writer = new PrintWriter("data/genome/mapping/david/" + ORGANISM + "_" + FILE_NAME);
+		writer = new PrintWriter("data/genome/mapping/david/" + ORGANISM + "_"
+				+ FILE_NAME);
 	}
 
 	protected void convertData() throws IOException {
 
 		// Reading input by lines
-		BufferedReader in = new BufferedReader(new FileReader("data/genome/mapping/david/" + FILE_NAME));
+		BufferedReader in = new BufferedReader(new FileReader(
+				"data/genome/mapping/david/" + FILE_NAME));
 
 		String sInputLine = "";
 		String sFilter = "";
 
-		BufferedReader whitelist =
-			new BufferedReader(new FileReader("data/genome/mapping/david/DAVID_" + ORGANISM + ".txt"));
+		BufferedReader whitelist = new BufferedReader(new FileReader(
+				"data/genome/mapping/david/DAVID_" + ORGANISM + ".txt"));
 
 		ArrayList<Integer> alFilter = new ArrayList<Integer>();
 
@@ -74,8 +75,7 @@ public class DAVIDWhiteListFilter {
 
 			whitelistFilter.convertData();
 
-		}
-		catch (IOException ioe) {
+		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
 	}

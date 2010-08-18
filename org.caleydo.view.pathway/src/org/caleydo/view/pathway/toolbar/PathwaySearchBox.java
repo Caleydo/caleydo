@@ -26,8 +26,7 @@ import org.eclipse.swt.widgets.Display;
  * 
  * @author Marc Streit
  */
-public class PathwaySearchBox extends ControlContribution implements
-		IToolBarItem {
+public class PathwaySearchBox extends ControlContribution implements IToolBarItem {
 
 	public static final int TOOLBAR_WIDTH = 173;
 
@@ -52,8 +51,9 @@ public class PathwaySearchBox extends ControlContribution implements
 		pathwaySearchBox.setItems(items);
 		pathwaySearchBox.setTextLimit(21);
 
-		if (!GeneralManager.get().getPreferenceStore().getString(
-				PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES).isEmpty()) {
+		if (!GeneralManager.get().getPreferenceStore()
+				.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES)
+				.isEmpty()) {
 			pathwaySearchBox.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusGained(FocusEvent e) {
@@ -67,7 +67,8 @@ public class PathwaySearchBox extends ControlContribution implements
 						return;
 					}
 
-					Collection<PathwayGraph> allPathways = PathwayManager.get().getAllItems();
+					Collection<PathwayGraph> allPathways = PathwayManager.get()
+							.getAllItems();
 					String[] sArSearchItems = new String[allPathways.size()];
 					int iIndex = 0;
 					String sPathwayTitle = "";
@@ -99,8 +100,8 @@ public class PathwaySearchBox extends ControlContribution implements
 		pathwaySearchBox.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				String sSearchEntity = pathwaySearchBox
-						.getItem(pathwaySearchBox.getSelectionIndex());
+				String sSearchEntity = pathwaySearchBox.getItem(pathwaySearchBox
+						.getSelectionIndex());
 				// sSearchEntity = sSearchEntity.substring(0,
 				// sSearchEntity.indexOf(" ("));
 
@@ -114,7 +115,7 @@ public class PathwaySearchBox extends ControlContribution implements
 		//
 		// if (e.character != SWT.CR)
 		// return;
-		//				
+		//
 		// String sSearchEntity =
 		// pathwaySearchBox.getItem(pathwaySearchBox.getSelectionIndex());
 		// loadPathway(sSearchEntity);
@@ -142,8 +143,7 @@ public class PathwaySearchBox extends ControlContribution implements
 		return pathwayToolBarMediator;
 	}
 
-	public void setPathwayToolBarMediator(
-			PathwayToolBarMediator pathwayToolBarMediator) {
+	public void setPathwayToolBarMediator(PathwayToolBarMediator pathwayToolBarMediator) {
 		this.pathwayToolBarMediator = pathwayToolBarMediator;
 	}
 
@@ -167,8 +167,8 @@ public class PathwaySearchBox extends ControlContribution implements
 
 		sEntity = sEntity.substring(0, sEntity.indexOf(" ("));
 
-		PathwayGraph pathway = PathwayManager.get()
-				.searchPathwayByName(sEntity, ePathwayDatabaseType);
+		PathwayGraph pathway = PathwayManager.get().searchPathwayByName(sEntity,
+				ePathwayDatabaseType);
 
 		if (pathway == null)
 			return false;

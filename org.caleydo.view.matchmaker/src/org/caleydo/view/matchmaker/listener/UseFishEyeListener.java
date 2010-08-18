@@ -7,7 +7,7 @@ import org.caleydo.view.matchmaker.event.UseFishEyeEvent;
 
 /**
  * @author Alexander Lex
- *
+ * 
  */
 public class UseFishEyeListener extends AEventListener<GLMatchmaker> {
 

@@ -26,8 +26,8 @@ public class UseBandBundlingAction extends AToolBarAction implements IToolBarIte
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 		super.setChecked(renderBands);
 	}
 
@@ -44,7 +44,7 @@ public class UseBandBundlingAction extends AToolBarAction implements IToolBarIte
 			renderBands = true;
 
 		super.setChecked(renderBands);
-		GeneralManager.get().getEventPublisher().triggerEvent(
-				new UseBandBundlingEvent(renderBands));
+		GeneralManager.get().getEventPublisher()
+				.triggerEvent(new UseBandBundlingEvent(renderBands));
 	};
 }

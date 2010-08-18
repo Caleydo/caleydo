@@ -42,6 +42,7 @@ public class NominalCContainer<T>
 	 * @param sAlPossibleValues
 	 *            the List
 	 */
+	@Override
 	public void setPossibleValues(ArrayList<T> alPossibleValues) {
 		// TODO: check if all values in the raw list are also in the other list
 		setUpMapping(alPossibleValues);

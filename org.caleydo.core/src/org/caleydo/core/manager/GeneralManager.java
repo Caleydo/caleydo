@@ -52,15 +52,15 @@ public class GeneralManager {
 	 */
 	public static final String CALEYDO_FOLDER_TEMPLATE = "caleydo.folder";
 	public static final String CALEYDO_FOLDER = ".caleydo_" + VERSION;
-	public static final String CALEYDO_HOME_PATH =
-		System.getProperty(USER_HOME_TEMPLATE) + File.separator + CALEYDO_FOLDER + File.separator;
+	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME_TEMPLATE) + File.separator
+		+ CALEYDO_FOLDER + File.separator;
 	public static final String USER_HOME = "user.home";
 
 	public static final String sDelimiter_Paser_DataItemBlock = "@";
 	public static final String sDelimiter_Parser_DataItems = " ";
 	public static final String sDelimiter_Parser_DataType = ";";
 	public static final String sDelimiter_Parser_DataItems_Tab = "\t";
-	
+
 	public static final boolean IS_IN_RELEASE_MODE = true;
 
 	/**
@@ -174,7 +174,7 @@ public class GeneralManager {
 	public ViewManager getViewGLCanvasManager() {
 		return viewGLCanvasManager;
 	}
-	
+
 	public SWTGUIManager getSWTGUIManager() {
 		return sWTGUIManager;
 	}

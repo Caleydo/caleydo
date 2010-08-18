@@ -46,8 +46,8 @@ public class Gate extends AGate {
 	 * @param renderStyle
 	 *            Render Style.
 	 */
-	public Gate(int gateID, int axisID, float lowerValue, float upperValue,
-			ISet set, PCRenderStyle renderStyle) {
+	public Gate(int gateID, int axisID, float lowerValue, float upperValue, ISet set,
+			PCRenderStyle renderStyle) {
 		this.gateID = gateID;
 		this.axisID = axisID;
 		this.upperValue = upperValue;
@@ -56,8 +56,7 @@ public class Gate extends AGate {
 		this.renderStyle = renderStyle;
 		// top = upperValue;
 		// bottom = lowerValue;
-		top = (float) set.getNormalizedForRaw(upperValue)
-				* renderStyle.getAxisHeight();
+		top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
 		bottom = (float) set.getNormalizedForRaw(lowerValue)
 				* renderStyle.getAxisHeight();
 		minSize = 100;
@@ -79,74 +78,66 @@ public class Gate extends AGate {
 	 *            Unique ID of the view.
 	 */
 	@Override
-	public void draw(GL gl, PickingManager pickingManager,
-			TextureManager textureManager, CaleydoTextRenderer textRenderer,
-			int iViewID) {
+	public void draw(GL gl, PickingManager pickingManager, TextureManager textureManager,
+			CaleydoTextRenderer textRenderer, int iViewID) {
 
-		top = (float) set.getNormalizedForRaw(upperValue)
-				* renderStyle.getAxisHeight();
+		top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
 		// top = upperValue;
 
 		// Scaled bottom = unscaled bottom !
 		bottom = (float) set.getNormalizedForRaw(lowerValue)
 				* renderStyle.getAxisHeight();
 		// bottom = upperValue;
-		float unscaledTop = getRealCoordinateFromScaledCoordinate(gl, top,
-				bottom);
+		float unscaledTop = getRealCoordinateFromScaledCoordinate(gl, top, bottom);
 
 		Vec3f scalingPivot = new Vec3f(currentPosition, bottom, GATE_Z);
 
 		beginGUIElement(gl, scalingPivot);
 
 		gl.glColor4f(1, 1, 1, 0f);
-		int PickingID = pickingManager.getPickingID(iViewID,
-				EPickingType.REMOVE_GATE, gateID);
+		int PickingID = pickingManager.getPickingID(iViewID, EPickingType.REMOVE_GATE,
+				gateID);
 		gl.glPushName(PickingID);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(currentPosition + GATE_WIDTH, unscaledTop
-				- GATE_TIP_HEIGHT, GATE_Z);
+		gl.glVertex3f(currentPosition + GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT, GATE_Z);
 		gl.glVertex3f(currentPosition + 0.1828f - GATE_WIDTH, unscaledTop
 				- GATE_TIP_HEIGHT, GATE_Z);
-		gl.glVertex3f(currentPosition + 0.1828f - GATE_WIDTH, unscaledTop,
-				GATE_Z);
+		gl.glVertex3f(currentPosition + 0.1828f - GATE_WIDTH, unscaledTop, GATE_Z);
 		gl.glVertex3f(currentPosition + GATE_WIDTH, unscaledTop, GATE_Z);
 		gl.glEnd();
 		gl.glPopName();
 
 		// The tip of the gate
-		Vec3f lowerLeftCorner = new Vec3f(currentPosition - GATE_WIDTH,
+		Vec3f lowerLeftCorner = new Vec3f(currentPosition - GATE_WIDTH, unscaledTop
+				- GATE_TIP_HEIGHT, GATE_Z);
+		Vec3f lowerRightCorner = new Vec3f(currentPosition + 0.1828f - GATE_WIDTH,
 				unscaledTop - GATE_TIP_HEIGHT, GATE_Z);
-		Vec3f lowerRightCorner = new Vec3f(currentPosition + 0.1828f
-				- GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT, GATE_Z);
-		Vec3f upperRightCorner = new Vec3f(currentPosition + 0.1828f
-				- GATE_WIDTH, unscaledTop, GATE_Z);
-		Vec3f upperLeftCorner = new Vec3f(currentPosition - GATE_WIDTH,
+		Vec3f upperRightCorner = new Vec3f(currentPosition + 0.1828f - GATE_WIDTH,
 				unscaledTop, GATE_Z);
+		Vec3f upperLeftCorner = new Vec3f(currentPosition - GATE_WIDTH, unscaledTop,
+				GATE_Z);
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
 				EPickingType.GATE_TIP_SELECTION, gateID));
 
-		textureManager.renderTexture(gl, EIconTextures.GATE_TOP,
-				lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
+		textureManager.renderTexture(gl, EIconTextures.GATE_TOP, lowerLeftCorner,
+				lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 		float menuHeight = 8 * GATE_WIDTH / 3.5f;
 
-		lowerLeftCorner.set(currentPosition - 7 * GATE_WIDTH, unscaledTop
-				+ menuHeight, GATE_Z);
-		lowerRightCorner.set(currentPosition + GATE_WIDTH, unscaledTop
-				+ menuHeight, GATE_Z);
-		upperRightCorner.set(currentPosition + GATE_WIDTH, unscaledTop, GATE_Z);
-		upperLeftCorner.set(currentPosition - 7 * GATE_WIDTH, unscaledTop,
+		lowerLeftCorner.set(currentPosition - 7 * GATE_WIDTH, unscaledTop + menuHeight,
 				GATE_Z);
+		lowerRightCorner.set(currentPosition + GATE_WIDTH, unscaledTop + menuHeight,
+				GATE_Z);
+		upperRightCorner.set(currentPosition + GATE_WIDTH, unscaledTop, GATE_Z);
+		upperLeftCorner.set(currentPosition - 7 * GATE_WIDTH, unscaledTop, GATE_Z);
 
-		textureManager.renderTexture(gl, EIconTextures.GATE_MENUE,
-				lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
+		textureManager.renderTexture(gl, EIconTextures.GATE_MENUE, lowerLeftCorner,
+				lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 		textRenderer.setColor(1, 1, 1, 1);
-		renderNumber(textRenderer, Formatter.formatNumber(upperValue),
-				currentPosition - 5 * GATE_WIDTH, unscaledTop + 0.02f);
+		renderNumber(textRenderer, Formatter.formatNumber(upperValue), currentPosition
+				- 5 * GATE_WIDTH, unscaledTop + 0.02f);
 		gl.glPopName();
 
 		// if (set.isSetHomogeneous())
@@ -168,14 +159,13 @@ public class Gate extends AGate {
 				+ PCRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
 		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom
 				+ PCRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
-		upperRightCorner.set(currentPosition + GATE_WIDTH, unscaledTop
-				- GATE_TIP_HEIGHT, GATE_Z);
-		upperLeftCorner.set(currentPosition - GATE_WIDTH, unscaledTop
-				- GATE_TIP_HEIGHT, GATE_Z);
+		upperRightCorner.set(currentPosition + GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT,
+				GATE_Z);
+		upperLeftCorner.set(currentPosition - GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT,
+				GATE_Z);
 
-		textureManager.renderTexture(gl, EIconTextures.GATE_BODY,
-				lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
+		textureManager.renderTexture(gl, EIconTextures.GATE_BODY, lowerLeftCorner,
+				lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 		gl.glPopName();
 
@@ -189,24 +179,21 @@ public class Gate extends AGate {
 		upperLeftCorner.set(currentPosition - GATE_WIDTH, bottom
 				+ PCRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
 
-		textureManager.renderTexture(gl, EIconTextures.GATE_BOTTOM,
-				lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
+		textureManager.renderTexture(gl, EIconTextures.GATE_BOTTOM, lowerLeftCorner,
+				lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
-		lowerLeftCorner.set(currentPosition - 7 * GATE_WIDTH, bottom
-				- menuHeight, GATE_Z);
-		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom - menuHeight,
-				GATE_Z);
+		lowerLeftCorner
+				.set(currentPosition - 7 * GATE_WIDTH, bottom - menuHeight, GATE_Z);
+		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom - menuHeight, GATE_Z);
 		upperRightCorner.set(currentPosition + GATE_WIDTH, bottom, GATE_Z);
 		upperLeftCorner.set(currentPosition - 7 * GATE_WIDTH, bottom, GATE_Z);
 
-		textureManager.renderTexture(gl, EIconTextures.GATE_MENUE,
-				lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
+		textureManager.renderTexture(gl, EIconTextures.GATE_MENUE, lowerLeftCorner,
+				lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 		textRenderer.setColor(1, 1, 1, 1);
-		renderNumber(textRenderer, Formatter.formatNumber(lowerValue),
-				currentPosition - 5 * GATE_WIDTH, bottom - menuHeight + 0.02f);
+		renderNumber(textRenderer, Formatter.formatNumber(lowerValue), currentPosition
+				- 5 * GATE_WIDTH, bottom - menuHeight + 0.02f);
 		gl.glPopName();
 
 		endGUIElement(gl);
@@ -227,16 +214,16 @@ public class Gate extends AGate {
 	 *            Y coordinate of the position where the number shall be
 	 *            rendered.
 	 */
-	private void renderNumber(CaleydoTextRenderer textRenderer,
-			String rawValue, float xOrigin, float yOrigin) {
+	private void renderNumber(CaleydoTextRenderer textRenderer, String rawValue,
+			float xOrigin, float yOrigin) {
 
 		textRenderer.begin3DRendering();
 
 		float scaling = 0.0035f;
 		if (rawValue.length() > 4)
 			scaling = 0.003f;
-		textRenderer.draw3D(rawValue, xOrigin, yOrigin,
-				PCRenderStyle.TEXT_ON_LABEL_Z, scaling);
+		textRenderer.draw3D(rawValue, xOrigin, yOrigin, PCRenderStyle.TEXT_ON_LABEL_Z,
+				scaling);
 		textRenderer.end3DRendering();
 	}
 
@@ -296,8 +283,8 @@ public class Gate extends AGate {
 	@Override
 	public void setBottom(float bottom) {
 		this.bottom = bottom;
-		lowerValue = (float) set.getRawForNormalized(bottom
-				/ renderStyle.getAxisHeight());
+		lowerValue = (float) set
+				.getRawForNormalized(bottom / renderStyle.getAxisHeight());
 
 		double setMin = set.getMinAs(EExternalDataRepresentation.NORMAL);
 
@@ -315,8 +302,7 @@ public class Gate extends AGate {
 	@Override
 	public void setTop(float top) {
 		this.top = top;
-		upperValue = (float) set.getRawForNormalized(top
-				/ renderStyle.getAxisHeight());
+		upperValue = (float) set.getRawForNormalized(top / renderStyle.getAxisHeight());
 
 		double setMax = set.getMaxAs(EExternalDataRepresentation.NORMAL);
 
@@ -333,8 +319,7 @@ public class Gate extends AGate {
 	 */
 	public void setUpperValue(float upperValue) {
 		this.upperValue = upperValue;
-		top = (float) set.getNormalizedForRaw(upperValue)
-				* renderStyle.getAxisHeight();
+		top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
 	}
 
 	/**

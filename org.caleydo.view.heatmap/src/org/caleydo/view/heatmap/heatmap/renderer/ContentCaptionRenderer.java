@@ -26,6 +26,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 				false);
 	}
 
+	@Override
 	public void render(GL gl) {
 
 		float yPosition = y;

@@ -68,7 +68,8 @@ public class TreePorter {
 	 * @throws JAXBException
 	 *             in case of a XML-serialization error
 	 */
-	public Tree<ClusterNode> importTree(String fileName, IDType idType) throws JAXBException, FileNotFoundException {
+	public Tree<ClusterNode> importTree(String fileName, IDType idType) throws JAXBException,
+		FileNotFoundException {
 
 		Tree<ClusterNode> tree = new Tree<ClusterNode>(idType);
 		tree.initializeIDTypes(IDType.getIDType(leaveIDTypeString));

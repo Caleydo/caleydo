@@ -47,15 +47,15 @@ public class StartClusteringAction
 
 		StartClusteringEvent event = null;
 		// if (clusterState != null && set != null)
-		if (sets == null || sets.size() == 0)
-		{
+		if (sets == null || sets.size() == 0) {
 			sets = new ArrayList<ISet>();
-			sets.add(((ISetBasedDataDomain)DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic")).getSet());
+			sets.add(((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+				"org.caleydo.datadomain.genetic")).getSet());
 		}
-		for(ISet tmpSet : sets) {
+		for (ISet tmpSet : sets) {
 			event = new StartClusteringEvent(clusterState, tmpSet.getID());
 			event.setDataDomainType("org.caleydo.datadomain.genetic");
-			GeneralManager.get().getEventPublisher().triggerEvent(event);			
+			GeneralManager.get().getEventPublisher().triggerEvent(event);
 		}
 	}
 

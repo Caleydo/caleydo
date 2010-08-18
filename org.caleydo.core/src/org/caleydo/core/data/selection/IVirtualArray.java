@@ -20,6 +20,7 @@ public interface IVirtualArray<ConcreteType extends IVirtualArray<ConcreteType, 
 	/**
 	 * Returns an Iterator<Integer> of type VAIterator, which allows to iterate over the virtual array
 	 */
+	@Override
 	public VAIterator iterator();
 
 	/**

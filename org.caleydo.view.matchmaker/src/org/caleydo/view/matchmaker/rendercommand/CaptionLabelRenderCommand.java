@@ -37,9 +37,8 @@ public class CaptionLabelRenderCommand implements IHeatMapRenderCommand {
 		float captionLabelHeight = layout.getCaptionLabelHeight();
 		float captionLabelWidth = layout.getCaptionLabelWidth();
 		float fFontScaling = determineFontScaling(gl, textToRender, layout);
-		Vec3f captionLabelPosition = layout
-				.getCaptionLabelPosition((float) bounds.getWidth()
-						* fFontScaling);
+		Vec3f captionLabelPosition = layout.getCaptionLabelPosition((float) bounds
+				.getWidth() * fFontScaling);
 
 		// float fTextPositionX = fWidth / 2.0f
 		// - ((float) bounds.getWidth() / 2.0f) * fFontScaling;
@@ -50,8 +49,7 @@ public class CaptionLabelRenderCommand implements IHeatMapRenderCommand {
 		textRenderer.begin3DRendering();
 
 		textRenderer.draw3D(textToRender, captionLabelPosition.x(),
-				captionLabelPosition.y(), captionLabelPosition.z(),
-				fFontScaling);
+				captionLabelPosition.y(), captionLabelPosition.z(), fFontScaling);
 
 		textRenderer.end3DRendering();
 		textRenderer.flush();
@@ -72,10 +70,8 @@ public class CaptionLabelRenderCommand implements IHeatMapRenderCommand {
 		float captionLabelWidth = layout.getCaptionLabelWidth();
 
 		Rectangle2D bounds = textRenderer.getBounds(text);
-		float fScalingWidth = captionLabelWidth
-				/ (float) bounds.getWidth();
-		float fScalingHeight = captionLabelHeight
-				/ (float) bounds.getHeight();
+		float fScalingWidth = captionLabelWidth / (float) bounds.getWidth();
+		float fScalingHeight = captionLabelHeight / (float) bounds.getHeight();
 
 		return Math.min(fScalingHeight, fScalingWidth);
 	}

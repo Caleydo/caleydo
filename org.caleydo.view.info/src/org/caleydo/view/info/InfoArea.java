@@ -58,15 +58,17 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Info area that is located in the side-bar. It shows the current view and the current selection (in a tree).
+ * Info area that is located in the side-bar. It shows the current view and the
+ * current selection (in a tree).
  * 
  * @author Marc Streit
  * @author Alexander Lex
  * @deprecated move to RCPInforAreaView
  */
-public class InfoArea
-	implements IDataDomainBasedView<ASetBasedDataDomain>, ISelectionUpdateHandler, IContentVAUpdateHandler,
-	IStorageVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
+@Deprecated
+public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
+		ISelectionUpdateHandler, IContentVAUpdateHandler, IStorageVAUpdateHandler,
+		ISelectionCommandHandler, IViewCommandHandler {
 
 	private static String viewType = "org.caleydo.view.infoarea";
 
@@ -119,7 +121,7 @@ public class InfoArea
 		dataDomainTypes.add("org.caleydo.datadomain.clinical");
 
 		DataDomainManager.getInstance().getAssociationManager()
-			.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	public Control createControl(final Composite parent) {
@@ -185,25 +187,26 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleSelectionUpdate(final ISelectionDelta selectionDelta, final boolean scrollToSelection,
-		final String info) {
+	public void handleSelectionUpdate(final ISelectionDelta selectionDelta,
+			final boolean scrollToSelection, final String info) {
 		if (selectionDelta.getIDType() == contentSelectionManager.getIDType()) {
 			contentSelectionManager.setDelta(selectionDelta);
 			updateTree(true, contentSelectionManager, contentTree, info);
-		}
-		else if (selectionDelta.getIDType() == storageSelectionManager.getIDType()) {
+		} else if (selectionDelta.getIDType() == storageSelectionManager.getIDType()) {
 			storageSelectionManager.setDelta(selectionDelta);
 			updateTree(false, storageSelectionManager, storageTree, info);
-		}
-		else
-			throw new IllegalStateException("Mapping does not match, no selection manager can handle: "
-				+ selectionDelta.getIDType());
+		} else
+			throw new IllegalStateException(
+					"Mapping does not match, no selection manager can handle: "
+							+ selectionDelta.getIDType());
 
 	}
 
-	private void updateTree(final boolean isContent, final SelectionManager selectionManager,
-		final TreeItem tree, final String info) {
+	private void updateTree(final boolean isContent,
+			final SelectionManager selectionManager, final TreeItem tree,
+			final String info) {
 		parentComposite.getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 
 				if (info != null) {
@@ -215,21 +218,25 @@ public class InfoArea
 					item.dispose();
 				}
 
-				Set<Integer> mouseOverIDs = selectionManager.getElements(SelectionType.MOUSE_OVER);
+				Set<Integer> mouseOverIDs = selectionManager
+						.getElements(SelectionType.MOUSE_OVER);
 				createItems(isContent, tree, SelectionType.MOUSE_OVER, mouseOverIDs);
 
-				Set<Integer> selectedIDs = selectionManager.getElements(SelectionType.SELECTION);
+				Set<Integer> selectedIDs = selectionManager
+						.getElements(SelectionType.SELECTION);
 				createItems(isContent, tree, SelectionType.SELECTION, selectedIDs);
 
 			}
 		});
 	}
 
-	private void createItems(boolean isContent, TreeItem tree, SelectionType selectionType, Set<Integer> ids) {
+	private void createItems(boolean isContent, TreeItem tree,
+			SelectionType selectionType, Set<Integer> ids) {
 		Color color;
 		int[] intColor = selectionType.getIntColor();
 
-		color = new Color(parentComposite.getDisplay(), intColor[0], intColor[1], intColor[2]);
+		color = new Color(parentComposite.getDisplay(), intColor[0], intColor[1],
+				intColor[2]);
 
 		for (Integer id : ids) {
 			String name;
@@ -250,24 +257,27 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleSelectionCommand(IDCategory category, final SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(IDCategory category,
+			final SelectionCommand selectionCommand) {
 
 		if (parentComposite.isDisposed())
 			return;
 
 		parentComposite.getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				ESelectionCommandType cmdType;
 
 				cmdType = selectionCommand.getSelectionCommandType();
-				if (cmdType == ESelectionCommandType.RESET || cmdType == ESelectionCommandType.CLEAR_ALL) {
+				if (cmdType == ESelectionCommandType.RESET
+						|| cmdType == ESelectionCommandType.CLEAR_ALL) {
 					selectionTree.removeAll();
-				}
-				else if (cmdType == ESelectionCommandType.CLEAR) {
+				} else if (cmdType == ESelectionCommandType.CLEAR) {
 					// Flush old items that become
 					// deselected/normal
 					for (TreeItem tmpItem : selectionTree.getItems()) {
-						if (tmpItem.getData("selection_type") == selectionCommand.getSelectionType()) {
+						if (tmpItem.getData("selection_type") == selectionCommand
+								.getSelectionType()) {
 							tmpItem.dispose();
 						}
 					}
@@ -300,13 +310,15 @@ public class InfoArea
 	}
 
 	/**
-	 * handling method for updates about the info text displayed in the this info-area
+	 * handling method for updates about the info text displayed in the this
+	 * info-area
 	 * 
 	 * @param info
 	 *            short-info of the sender to display
 	 */
 	public void handleInfoAreaUpdate(final String info) {
 		parentComposite.getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				lblViewInfoContent.setText(info);
 			}
@@ -314,9 +326,10 @@ public class InfoArea
 	}
 
 	/**
-	 * Registers the listeners for this view to the event system. To release the allocated resources
-	 * unregisterEventListeners() has to be called.
+	 * Registers the listeners for this view to the event system. To release the
+	 * allocated resources unregisterEventListeners() has to be called.
 	 */
+	@Override
 	public void registerEventListeners() {
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
@@ -362,9 +375,10 @@ public class InfoArea
 	}
 
 	/**
-	 * Unregisters the listeners for this view from the event system. To release the allocated resources
-	 * unregisterEventListenrs() has to be called.
+	 * Unregisters the listeners for this view from the event system. To release
+	 * the allocated resources unregisterEventListenrs() has to be called.
 	 */
+	@Override
 	public void unregisterEventListeners() {
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
@@ -409,9 +423,10 @@ public class InfoArea
 	}
 
 	@Override
-	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
-		final AEvent event) {
+	public synchronized void queueEvent(
+			final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				listener.handleEvent(event);
 

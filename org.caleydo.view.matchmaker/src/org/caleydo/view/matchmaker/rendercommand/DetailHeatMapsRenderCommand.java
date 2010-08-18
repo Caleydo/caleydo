@@ -24,54 +24,49 @@ public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 
 	@Override
 	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
-//		int numTotalSamples = 0;
-		HashMap<Group, Boolean> selectedGroups = heatMapWrapper
-				.getSelectedGroups();
+		// int numTotalSamples = 0;
+		HashMap<Group, Boolean> selectedGroups = heatMapWrapper.getSelectedGroups();
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
 
-//		float totalHeatMapOverheadSize = 0;
-//		float totalMinSize = 0;
-//		for (Group group : selectedGroups.keySet()) {
-//			GLHeatMap heatMap = heatMapWrapper
-//					.getHeatMap(group.getGroupIndex());
-//			numTotalSamples += heatMap.getNumberOfVisibleElements();
-//			totalHeatMapOverheadSize += heatMap.getRequiredOverheadSpacing();
-//			if (heatMap.isForceMinSpacing()) {
-//				totalMinSize += heatMap.getMinSpacing()
-//						* heatMap.getNumberOfVisibleElements();
-//			}
-//		}
+		// float totalHeatMapOverheadSize = 0;
+		// float totalMinSize = 0;
+		// for (Group group : selectedGroups.keySet()) {
+		// GLHeatMap heatMap = heatMapWrapper
+		// .getHeatMap(group.getGroupIndex());
+		// numTotalSamples += heatMap.getNumberOfVisibleElements();
+		// totalHeatMapOverheadSize += heatMap.getRequiredOverheadSpacing();
+		// if (heatMap.isForceMinSpacing()) {
+		// totalMinSize += heatMap.getMinSpacing()
+		// * heatMap.getNumberOfVisibleElements();
+		// }
+		// }
 
-//		heatMapWrapper.calculateHeatMapPositions();
+		// heatMapWrapper.calculateHeatMapPositions();
 		layout.calculateDrawingParameters();
 
 		for (Group group : selectedGroups.keySet()) {
 
-			GLHeatMap heatMap = heatMapWrapper
-					.getHeatMap(group.getGroupIndex());
+			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupIndex());
 			if (heatMap == null)
 				continue;
-//			int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
+			// int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
 
-			float heatMapHeight = layout.getDetailHeatMapHeight(group
-					.getGroupIndex());
+			float heatMapHeight = layout.getDetailHeatMapHeight(group.getGroupIndex());
 			Vec3f heatMapPosition = heatMapWrapper.getHeatMapPosition(group
 					.getGroupIndex());
 
-			gl.glTranslatef(heatMapPosition.x(), heatMapPosition.y(),
-					heatMapPosition.z());
+			gl.glTranslatef(heatMapPosition.x(), heatMapPosition.y(), heatMapPosition.z());
 			heatMap.getViewFrustum().setLeft(heatMapPosition.x());
 			heatMap.getViewFrustum().setBottom(heatMapPosition.y());
 			heatMap.getViewFrustum().setRight(
 					heatMapPosition.x() + layout.getDetailWidth());
-			heatMap.getViewFrustum()
-					.setTop(heatMapPosition.y() + heatMapHeight);
+			heatMap.getViewFrustum().setTop(heatMapPosition.y() + heatMapHeight);
 
 			if (heatMapWrapper.isNewSelection()) {
 				heatMap.setDisplayListDirty();
 			}
-			gl.glPushName(pickingManager.getPickingID(viewID, layout
-					.getHeatMapPickingType(), group.getGroupIndex()));
+			gl.glPushName(pickingManager.getPickingID(viewID,
+					layout.getHeatMapPickingType(), group.getGroupIndex()));
 			heatMap.displayRemote(gl);
 			gl.glPopName();
 

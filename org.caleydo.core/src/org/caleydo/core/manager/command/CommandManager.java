@@ -43,10 +43,10 @@ public class CommandManager {
 		}
 
 		createdCommand.doCommand();
-		
+
 		return createdCommand;
 	}
-	
+
 	/**
 	 * Create a new command assigned to a cmdType.
 	 * 
@@ -58,7 +58,7 @@ public class CommandManager {
 		ICommand createdCommand = null;
 
 		switch (cmdType) {
-			
+
 			case CREATE_ID_CATEGORY: {
 				createdCommand = new CmdCreateIDCategory(cmdType);
 				break;
@@ -66,7 +66,7 @@ public class CommandManager {
 			case CREATE_ID_TYPE: {
 				createdCommand = new CmdCreateIDType(cmdType);
 				break;
-			}			
+			}
 			case LOAD_LOOKUP_TABLE_FILE: {
 				createdCommand = new CmdLoadFileLookupTable(cmdType);
 				break;

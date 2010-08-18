@@ -24,8 +24,8 @@ public class NeighborhoodAction extends Action {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(GeneralManager.get()
-				.getResourceLoader().getImage(
-						PlatformUI.getWorkbench().getDisplay(), ICON)));
+				.getResourceLoader()
+				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
 		setChecked(neighborhoodEnabled);
 	}
 

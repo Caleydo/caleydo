@@ -86,15 +86,14 @@ public class ComparerDetailTemplate extends ATemplate {
 				hmRow.appendElement(cage);
 				hmRow.appendElement(spacing);
 				hmRow.appendElement(caption);
-			}	
+			}
 			hmRow.appendElement(storageSelectionLayout);
 			hmRow.appendElement(hm);
-		
 
 		} else {
 			hmRow.appendElement(storageSelectionLayout);
 			hmRow.appendElement(hm);
-		
+
 			if (renderCaptions) {
 				hmRow.appendElement(cage);
 				hmRow.appendElement(spacing);

@@ -23,8 +23,8 @@ public class GLOffScreenTextureRenderer {
 		}
 	}
 
-	public void renderToTexture(GL gl, int iViewID, int iTextureIndex,
-			int iViewWidth, int iViewHeight) {
+	public void renderToTexture(GL gl, int iViewID, int iTextureIndex, int iViewWidth,
+			int iViewHeight) {
 		gl.glViewport(0, 0, 1024, 1024);
 
 		gl.glLoadIdentity();
@@ -60,8 +60,7 @@ public class GLOffScreenTextureRenderer {
 
 		// Copy Our ViewPort To The Blur Texture (From 0,0 To 1024,1024... No
 		// Border)
-		gl.glCopyTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 0, 0, 1024, 1024,
-				0);
+		gl.glCopyTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 0, 0, 1024, 1024, 0);
 
 		// Clear The Screen And Depth Buffer
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -70,16 +69,13 @@ public class GLOffScreenTextureRenderer {
 	}
 
 	public void renderRubberBucket(final GL gl, RemoteLevel stackLevel,
-			BucketLayoutRenderStyle bucketLayoutRenderStyle,
-			GLBucket glRemoteRendering) {
+			BucketLayoutRenderStyle bucketLayoutRenderStyle, GLBucket glRemoteRendering) {
 		gl.glColor4f(1f, 1f, 1f, 1f);
 
 		float fBucketBottomLeft = bucketLayoutRenderStyle.getBucketBottomLeft();
-		float fBucketBottomRight = bucketLayoutRenderStyle
-				.getBucketBottomRight();
+		float fBucketBottomRight = bucketLayoutRenderStyle.getBucketBottomRight();
 		float fBucketBottomTop = bucketLayoutRenderStyle.getBucketBottomTop();
-		float fBucketBottomBottom = bucketLayoutRenderStyle
-				.getBucketBottomBottom();
+		float fBucketBottomBottom = bucketLayoutRenderStyle.getBucketBottomBottom();
 
 		float fNormalizedHeadDist = bucketLayoutRenderStyle.getHeadDistance();
 
@@ -90,11 +86,11 @@ public class GLOffScreenTextureRenderer {
 			// Vec3f translation = transform.getTranslation();
 			// Vec3f scale = transform.getScale();
 			// Rotf rot = transform.getRotation();
-			//  
+			//
 			// float fPlaneWidth = 5;//(float)Math.sqrt((double)(Math.pow(fAK,2)
 			// + Math.pow(fGK,2)));
 			// Vec3f axis = new Vec3f();
-			//    		
+			//
 			// float angle = rot.get(axis);
 			//
 			// gl.glTranslatef(translation.x(), translation.y(),
@@ -110,7 +106,7 @@ public class GLOffScreenTextureRenderer {
 			// gl.glVertex3f(4, fPlaneWidth, 0);
 			// gl.glVertex3f(0, fPlaneWidth, 0);
 			// gl.glEnd();
-			//        	
+			//
 			// gl.glPopMatrix();
 			// gl.glColor4f(1, 1, 1, 1);
 
@@ -121,8 +117,7 @@ public class GLOffScreenTextureRenderer {
 			// Top face
 			gl.glBegin(GL.GL_QUADS);
 			gl.glTexCoord2f(0, 0);
-			gl.glVertex3f(fBucketBottomLeft, fBucketBottomTop,
-					fNormalizedHeadDist);
+			gl.glVertex3f(fBucketBottomLeft, fBucketBottomTop, fNormalizedHeadDist);
 			gl.glTexCoord2f(0, 1);
 			gl.glVertex3f(-BucketLayoutRenderStyle.BUCKET_WIDTH,
 					BucketLayoutRenderStyle.BUCKET_HEIGHT,
@@ -132,8 +127,7 @@ public class GLOffScreenTextureRenderer {
 					BucketLayoutRenderStyle.BUCKET_HEIGHT,
 					BucketLayoutRenderStyle.BUCKET_DEPTH);
 			gl.glTexCoord2f(1, 0);
-			gl.glVertex3f(fBucketBottomRight, fBucketBottomTop,
-					fNormalizedHeadDist);
+			gl.glVertex3f(fBucketBottomRight, fBucketBottomTop, fNormalizedHeadDist);
 			gl.glEnd();
 
 			gl.glEnable(GL.GL_DEPTH_TEST);
@@ -163,11 +157,9 @@ public class GLOffScreenTextureRenderer {
 					BucketLayoutRenderStyle.BUCKET_HEIGHT,
 					BucketLayoutRenderStyle.BUCKET_DEPTH);
 			gl.glTexCoord2f(1, 1);
-			gl.glVertex3f(fBucketBottomLeft, fBucketBottomTop,
-					fNormalizedHeadDist);
+			gl.glVertex3f(fBucketBottomLeft, fBucketBottomTop, fNormalizedHeadDist);
 			gl.glTexCoord2f(1, 0);
-			gl.glVertex3f(fBucketBottomLeft, fBucketBottomBottom,
-					fNormalizedHeadDist);
+			gl.glVertex3f(fBucketBottomLeft, fBucketBottomBottom, fNormalizedHeadDist);
 			gl.glTexCoord2f(0, 0);
 			gl.glVertex3f(-BucketLayoutRenderStyle.BUCKET_WIDTH,
 					-BucketLayoutRenderStyle.BUCKET_HEIGHT,
@@ -187,8 +179,7 @@ public class GLOffScreenTextureRenderer {
 			// Bottom face
 			gl.glBegin(GL.GL_QUADS);
 			gl.glTexCoord2f(0, 1);
-			gl.glVertex3f(fBucketBottomLeft, fBucketBottomBottom,
-					fNormalizedHeadDist);
+			gl.glVertex3f(fBucketBottomLeft, fBucketBottomBottom, fNormalizedHeadDist);
 			gl.glTexCoord2f(0, 0);
 			gl.glVertex3f(-BucketLayoutRenderStyle.BUCKET_WIDTH,
 					-BucketLayoutRenderStyle.BUCKET_HEIGHT,
@@ -198,8 +189,7 @@ public class GLOffScreenTextureRenderer {
 					-BucketLayoutRenderStyle.BUCKET_HEIGHT,
 					BucketLayoutRenderStyle.BUCKET_DEPTH);
 			gl.glTexCoord2f(1, 1);
-			gl.glVertex3f(fBucketBottomRight, fBucketBottomBottom,
-					fNormalizedHeadDist);
+			gl.glVertex3f(fBucketBottomRight, fBucketBottomBottom, fNormalizedHeadDist);
 			gl.glEnd();
 
 			gl.glEnable(GL.GL_DEPTH_TEST);
@@ -215,8 +205,7 @@ public class GLOffScreenTextureRenderer {
 			// Right face
 			gl.glBegin(GL.GL_QUADS);
 			gl.glTexCoord3f(0, 1, 0);
-			gl.glVertex3f(fBucketBottomRight, fBucketBottomTop,
-					fNormalizedHeadDist);
+			gl.glVertex3f(fBucketBottomRight, fBucketBottomTop, fNormalizedHeadDist);
 			gl.glTexCoord3f(1, 1, 0);
 			gl.glVertex3f(BucketLayoutRenderStyle.BUCKET_WIDTH,
 					BucketLayoutRenderStyle.BUCKET_HEIGHT,
@@ -226,8 +215,7 @@ public class GLOffScreenTextureRenderer {
 					-BucketLayoutRenderStyle.BUCKET_HEIGHT,
 					BucketLayoutRenderStyle.BUCKET_DEPTH);
 			gl.glTexCoord3f(0, 0, 0);
-			gl.glVertex3f(fBucketBottomRight, fBucketBottomBottom,
-					fNormalizedHeadDist);
+			gl.glVertex3f(fBucketBottomRight, fBucketBottomBottom, fNormalizedHeadDist);
 			gl.glEnd();
 
 			gl.glEnable(GL.GL_DEPTH_TEST);
@@ -249,10 +237,8 @@ public class GLOffScreenTextureRenderer {
 		// Build Texture Using Information In data
 		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, 4, 1024, 1024, 0, GL.GL_RGBA,
 				GL.GL_UNSIGNED_BYTE, data);
-		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
-				GL.GL_LINEAR);
-		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
-				GL.GL_LINEAR);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
 
 		return txtnumber[0]; // Return The Texture ID
 	}

@@ -14,9 +14,8 @@ public class ChangeQueryTypeListener extends ABrowserListener {
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof ChangeQueryTypeEvent) {
-			((GenomeHTMLBrowser) handler)
-					.changeQueryType(((ChangeQueryTypeEvent) event)
-							.getQueryType());
+			((GenomeHTMLBrowser) handler).changeQueryType(((ChangeQueryTypeEvent) event)
+					.getQueryType());
 		}
 	}
 

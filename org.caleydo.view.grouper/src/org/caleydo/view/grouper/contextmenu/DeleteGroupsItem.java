@@ -5,8 +5,7 @@ import java.util.Set;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.view.grouper.event.DeleteGroupsEvent;
 
-public class DeleteGroupsItem
-	extends AContextMenuItem {
+public class DeleteGroupsItem extends AContextMenuItem {
 
 	public DeleteGroupsItem(Set<Integer> setGroupsToDelete) {
 		super();

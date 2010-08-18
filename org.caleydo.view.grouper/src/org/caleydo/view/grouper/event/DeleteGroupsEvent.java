@@ -4,8 +4,7 @@ import java.util.Set;
 
 import org.caleydo.core.manager.event.AEvent;
 
-public class DeleteGroupsEvent
-	extends AEvent {
+public class DeleteGroupsEvent extends AEvent {
 
 	private Set<Integer> setGroupsToDelete;
 

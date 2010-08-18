@@ -33,7 +33,7 @@ public class RenderParameters {
 	public void setRenderer(ARenderer renderer) {
 		this.renderer = renderer;
 	}
-	
+
 	public void setSizeX(float sizeX) {
 		this.sizeX = sizeX;
 	}

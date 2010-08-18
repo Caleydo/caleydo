@@ -6,7 +6,6 @@ package org.caleydo.core.parser.parameter;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-
 /**
  * @author Michael Kalkusch
  */
@@ -56,6 +55,7 @@ public final class ParameterKeyValueDataAndDefault<T>
 		hashKey2Generic.put(key, value);
 	}
 
+	@Override
 	public void setValueAndDefaultValue(final String key, final T value, final T defaultValue) {
 
 		hashKey2Generic.put(key, value);

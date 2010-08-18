@@ -51,7 +51,7 @@ public class YAxisSelector extends ControlContribution implements IToolBarItem,
 		// combo.add("Peter");
 		// combo.add("Korl");
 		// combo.select(1);
-		//		
+		//
 
 		combo.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -61,24 +61,23 @@ public class YAxisSelector extends ControlContribution implements IToolBarItem,
 				YAxisSelectorEvent yAxisSelectorEvent = new YAxisSelectorEvent();
 				yAxisSelectorEvent.setSender(this);
 				yAxisSelectorEvent.setSelectedAxis(iSelection);
-				GeneralManager.get().getEventPublisher().triggerEvent(
-						yAxisSelectorEvent);
+				GeneralManager.get().getEventPublisher().triggerEvent(yAxisSelectorEvent);
 			}
 		});
 
 		initAxisComboListener = new InitYAxisComboListener();
 		initAxisComboListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(
-				InitAxisComboEvent.class, initAxisComboListener);
+		GeneralManager.get().getEventPublisher()
+				.addListener(InitAxisComboEvent.class, initAxisComboListener);
 
 		return composite;
 	}
 
 	@Override
-	public void queueEvent(
-			final AEventListener<? extends IListenerOwner> listener,
+	public void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 			final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				listener.handleEvent(event);
 			}
@@ -109,8 +108,8 @@ public class YAxisSelector extends ControlContribution implements IToolBarItem,
 	public void dispose() {
 		// Unregister event listener
 		if (initAxisComboListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(
-					initAxisComboListener);
+			GeneralManager.get().getEventPublisher()
+					.removeListener(initAxisComboListener);
 			initAxisComboListener = null;
 		}
 	}
@@ -118,12 +117,12 @@ public class YAxisSelector extends ControlContribution implements IToolBarItem,
 	@Override
 	public void registerEventListeners() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

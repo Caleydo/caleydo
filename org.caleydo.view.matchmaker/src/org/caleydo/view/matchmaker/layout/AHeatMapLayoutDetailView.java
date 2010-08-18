@@ -39,11 +39,9 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 		super(renderCommandFactory);
 		state = new DetailViewLayoutStateNormal(this);
 
-		localRenderCommands.addAll(state
-				.getLocalRenderCommands(renderCommandFactory));
+		localRenderCommands.addAll(state.getLocalRenderCommands(renderCommandFactory));
 
-		remoteRenderCommands.addAll(state
-				.getRemoteRenderCommands(renderCommandFactory));
+		remoteRenderCommands.addAll(state.getRemoteRenderCommands(renderCommandFactory));
 		useDendrogram = false;
 
 		// hashHeatMapPositions = new HashMap<Integer, Vec3f>();
@@ -51,15 +49,13 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 	}
 
 	@Override
-	public void setLayoutParameters(float positionX, float positionY,
-			float totalHeight, float totalWidth) {
+	public void setLayoutParameters(float positionX, float positionY, float totalHeight,
+			float totalWidth) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.totalHeight = totalHeight;
 		this.totalWidth = totalWidth;
-		state
-				.setLayoutParameters(positionX, positionY, totalHeight,
-						totalWidth);
+		state.setLayoutParameters(positionX, positionY, totalHeight, totalWidth);
 	}
 
 	@Override
@@ -221,9 +217,9 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 		return state.getDetailHeatMapHeight(heatMapID);
 	}
 
-//	public float getDetailHeatMapGapHeight() {
-//		return state.getDetailHeatMapGapHeight();
-//	}
+	// public float getDetailHeatMapGapHeight() {
+	// return state.getDetailHeatMapGapHeight();
+	// }
 
 	@Override
 	public float getCaptionLabelWidth() {
@@ -308,28 +304,26 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 
 	@Override
 	public void useDendrogram(boolean useDendrogram) {
-		if(this.useDendrogram == useDendrogram)
+		if (this.useDendrogram == useDendrogram)
 			return;
-		
+
 		this.useDendrogram = useDendrogram;
 
-		
-		if(useDendrogram) {
+		if (useDendrogram) {
 			float dendrogramButtonWidth = getDendrogramButtonWidth();
-			DetailViewLayoutStateDendrogram dendrogramState = new DetailViewLayoutStateDendrogram(this);
+			DetailViewLayoutStateDendrogram dendrogramState = new DetailViewLayoutStateDendrogram(
+					this);
 			dendrogramState.setDendrogramButtonWidth(dendrogramButtonWidth);
 			state = dendrogramState;
 		} else {
 			state = new DetailViewLayoutStateNormal(this);
 		}
-		
+
 		localRenderCommands.clear();
 		remoteRenderCommands.clear();
-		localRenderCommands.addAll(state
-				.getLocalRenderCommands(renderCommandFactory));
+		localRenderCommands.addAll(state.getLocalRenderCommands(renderCommandFactory));
 
-		remoteRenderCommands.addAll(state
-				.getRemoteRenderCommands(renderCommandFactory));
+		remoteRenderCommands.addAll(state.getRemoteRenderCommands(renderCommandFactory));
 	}
 
 	@Override
@@ -341,12 +335,12 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 	public float getDendrogramWidth() {
 		return state.getDendrogramWidth();
 	}
-	
+
 	@Override
 	public boolean isDendrogramUsed() {
 		return useDendrogram;
 	}
-	
+
 	protected float getDendrogramBottomSpacing() {
 		return state.getDendrogramBottomSpacing();
 	}

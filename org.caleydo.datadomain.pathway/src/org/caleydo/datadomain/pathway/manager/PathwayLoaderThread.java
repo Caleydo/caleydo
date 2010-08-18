@@ -19,8 +19,7 @@ import org.eclipse.core.runtime.Status;
  * 
  * @author Marc Streit
  */
-public class PathwayLoaderThread
-	extends Thread {
+public class PathwayLoaderThread extends Thread {
 
 	private GeneralManager generalManager;
 
@@ -36,7 +35,8 @@ public class PathwayLoaderThread
 		this.pathwayDatabases = pathwayDatabases;
 
 		generalManager.getLogger().log(
-			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start pathway databases loader thread"));
+				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
+						"Start pathway databases loader thread"));
 
 		start();
 	}
@@ -64,60 +64,56 @@ public class PathwayLoaderThread
 		// File[] arFiles = folder.listFiles();
 
 		GeneralManager generalManager = GeneralManager.get();
-		
+
 		generalManager.getLogger().log(
-			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start parsing " + pathwayDatabase.getName()
-				+ " pathways."));
+				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start parsing "
+						+ pathwayDatabase.getName() + " pathways."));
 
 		BufferedReader file = null;
 		String sLine = null;
 		String sFileName = "";
 		String sPathwayPath = pathwayDatabase.getXMLPath();
 		IPathwayResourceLoader pathwayResourceLoader = null;
-		Organism eOrganism =
-			GeneralManager.get().getOrganism();
+		Organism eOrganism = GeneralManager.get().getOrganism();
 
 		if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG) {
 
 			if (eOrganism == Organism.HOMO_SAPIENS) {
 				sFileName = "data/pathway_list_KEGG_homo_sapiens.txt";
-			}
-			else if (eOrganism == Organism.MUS_MUSCULUS) {
+			} else if (eOrganism == Organism.MUS_MUSCULUS) {
 				sFileName = "data/pathway_list_KEGG_mus_musculus.txt";
-			}
-			else {
-				throw new IllegalStateException("Cannot load pathways from organism " + eOrganism);
-			}
-
-			generalManager.getSWTGUIManager()
-				.setProgressBarTextFromExternalThread("Loading KEGG Pathways...");
-		}
-		else if (pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA) {
-
-			if (eOrganism == Organism.HOMO_SAPIENS) {
-				sFileName = "data/pathway_list_BIOCARTA_homo_sapiens.txt";
-			}
-			else if (eOrganism == Organism.MUS_MUSCULUS) {
-				sFileName = "data/pathway_list_BIOCARTA_mus_musculus.txt";
-			}
-			else {
-				throw new IllegalStateException("Cannot load pathways from organism " + eOrganism);
+			} else {
+				throw new IllegalStateException("Cannot load pathways from organism "
+						+ eOrganism);
 			}
 
 			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
-				"Loading BioCarta Pathways...");
+					"Loading KEGG Pathways...");
+		} else if (pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA) {
+
+			if (eOrganism == Organism.HOMO_SAPIENS) {
+				sFileName = "data/pathway_list_BIOCARTA_homo_sapiens.txt";
+			} else if (eOrganism == Organism.MUS_MUSCULUS) {
+				sFileName = "data/pathway_list_BIOCARTA_mus_musculus.txt";
+			} else {
+				throw new IllegalStateException("Cannot load pathways from organism "
+						+ eOrganism);
+			}
+
+			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
+					"Loading BioCarta Pathways...");
 		}
 
 		PathwayManager.get().createPathwayResourceLoader(pathwayDatabase.getType());
-		pathwayResourceLoader =
-			PathwayManager.get().getPathwayResourceLoader(pathwayDatabase.getType());
+		pathwayResourceLoader = PathwayManager.get().getPathwayResourceLoader(
+				pathwayDatabase.getType());
 
 		int iPathwayIndex = 0;
 
 		try {
 
 			if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG
-				|| pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA)
+					|| pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA)
 				file = pathwayResourceLoader.getResource(sFileName);
 			else
 				file = GeneralManager.get().getResourceLoader().getResource(sFileName);
@@ -131,35 +127,40 @@ public class PathwayLoaderThread
 				sPathwayName = tokenizer.nextToken();
 
 				// Skip non pathway files
-				if (!sPathwayName.endsWith(".xml") && !sLine.contains("h_") && !sLine.contains("m_")) {
+				if (!sPathwayName.endsWith(".xml") && !sLine.contains("h_")
+						&& !sLine.contains("m_")) {
 					continue;
 				}
 
-				PathwayManager.get().getXmlParserManager().parseXmlFileByName(sPathwayPath + sPathwayName);
+				PathwayManager.get().getXmlParserManager()
+						.parseXmlFileByName(sPathwayPath + sPathwayName);
 
-				tmpPathwayGraph =
-					((PathwayManager) PathwayManager.get()).getCurrenPathwayGraph();
-				tmpPathwayGraph.setWidth(Integer.valueOf(tokenizer.nextToken()).intValue());
-				tmpPathwayGraph.setHeight(Integer.valueOf(tokenizer.nextToken()).intValue());
+				tmpPathwayGraph = ((PathwayManager) PathwayManager.get())
+						.getCurrenPathwayGraph();
+				tmpPathwayGraph.setWidth(Integer.valueOf(tokenizer.nextToken())
+						.intValue());
+				tmpPathwayGraph.setHeight(Integer.valueOf(tokenizer.nextToken())
+						.intValue());
 
 				int iImageWidth = tmpPathwayGraph.getWidth();
 				int iImageHeight = tmpPathwayGraph.getHeight();
 
 				if (iImageWidth == -1 || iImageHeight == -1) {
 					generalManager.getLogger().log(
-						new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Pathway texture width="
-							+ iImageWidth + " / height=" + iImageHeight));
+							new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
+									"Pathway texture width=" + iImageWidth + " / height="
+											+ iImageHeight));
 				}
 
 				iPathwayIndex++;
 			}
 
-		}
-		catch (FileNotFoundException e) {
-			throw new IllegalStateException("Pathway list file " + sFileName + " not found.");
-		}
-		catch (IOException e) {
-			throw new IllegalStateException("Error reading data from pathway list file: " + sFileName);
+		} catch (FileNotFoundException e) {
+			throw new IllegalStateException("Pathway list file " + sFileName
+					+ " not found.");
+		} catch (IOException e) {
+			throw new IllegalStateException("Error reading data from pathway list file: "
+					+ sFileName);
 		}
 
 		// if (tmpGLRemoteRendering3D != null)
@@ -168,7 +169,7 @@ public class PathwayLoaderThread
 		// }
 
 		generalManager.getLogger().log(
-			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Finished parsing "
-				+ pathwayDatabase.getName() + " pathways."));
+				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Finished parsing "
+						+ pathwayDatabase.getName() + " pathways."));
 	}
 }

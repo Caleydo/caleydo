@@ -110,6 +110,7 @@ public final class SearchBox
 		arrow = new Button(this, arrowStyle);
 
 		listener = new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				if (popup == event.widget) {
 					popupEvent(event);
@@ -137,6 +138,7 @@ public final class SearchBox
 			}
 		};
 		filter = new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				Shell shell = ((Control) event.widget).getShell();
 				if (shell == SearchBox.this.getShell()) {

@@ -9,12 +9,12 @@ public class DuplicateSetBarItemEventListener extends AEventListener<GLMatchmake
 
 	@Override
 	public void handleEvent(AEvent event) {
-		
-		if(event instanceof DuplicateSetBarItemEvent) {
+
+		if (event instanceof DuplicateSetBarItemEvent) {
 			DuplicateSetBarItemEvent duplicateSetBarItemEvent = (DuplicateSetBarItemEvent) event;
 			handler.handleDuplicateSetBarItem(duplicateSetBarItemEvent.getItemID());
 		}
-		
+
 	}
 
 }

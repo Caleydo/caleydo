@@ -338,7 +338,8 @@ public class TabularAsciiDataReader
 						iArGroupInfo = alGroupInfo.get(2);
 						SetUtils.setStorageGroupList((Set) set, StorageVAType.STORAGE, iArGroupInfo);
 						iArGroupRepr = alGroupInfo.get(3);
-						SetUtils.setStorageGroupRepresentatives((Set) set, StorageVAType.STORAGE, iArGroupRepr);
+						SetUtils.setStorageGroupRepresentatives((Set) set, StorageVAType.STORAGE,
+							iArGroupRepr);
 					}
 					return;
 

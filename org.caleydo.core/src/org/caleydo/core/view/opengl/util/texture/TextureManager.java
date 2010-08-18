@@ -49,7 +49,7 @@ public class TextureManager {
 		}
 		return mapPathToTexture.get(texturePath);
 	}
-	
+
 	public void renewTexture(String texturePath) {
 		Texture tmpTexture = GeneralManager.get().getResourceLoader().getTexture(texturePath);
 		mapPathToTexture.put(texturePath, tmpTexture);
@@ -120,10 +120,10 @@ public class TextureManager {
 
 	public void renderTexture(GL gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner,
 		Vec3f lowerRightCorner, Vec3f upperRightCorner, Vec3f upperLeftCorner, float[] color) {
-		renderTexture(gl, eIconTextures, lowerLeftCorner,
-			lowerRightCorner, upperRightCorner, upperLeftCorner, color[0], color[1], color[2], color[3]);
+		renderTexture(gl, eIconTextures, lowerLeftCorner, lowerRightCorner, upperRightCorner,
+			upperLeftCorner, color[0], color[1], color[2], color[3]);
 	}
-	
+
 	/**
 	 * Renders a texture on a rectangle with the specified minimum size.
 	 * 

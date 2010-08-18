@@ -13,8 +13,6 @@ public class ViewCreator extends ARCPViewCreator {
 		super(viewType);
 	}
 
-
-
 	@Override
 	public ASerializedView createSerializedView() {
 
@@ -26,11 +24,8 @@ public class ViewCreator extends ARCPViewCreator {
 		return new InfoToolBarContent();
 	}
 
-
-
 	@Override
 	public CaleydoRCPViewPart createView(int parentContainerID, String label) {
-		
 		return new RcpInfoAreaView();
 	}
 }

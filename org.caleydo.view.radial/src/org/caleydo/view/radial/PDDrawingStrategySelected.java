@@ -44,23 +44,19 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 		float fRadius = pdDiscToDraw.getCurrentWidth();
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw
-						.getElementID()));
+				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
-			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(),
-					fRadius, pdDiscToDraw.getCurrentStartAngle(), pdDiscToDraw
-							.getCurrentAngle());
+			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(), fRadius,
+					pdDiscToDraw.getCurrentStartAngle(), pdDiscToDraw.getCurrentAngle());
 		}
 
-		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_MOUSE_OVER_COLOR,
-				0);
+		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_MOUSE_OVER_COLOR, 0);
 		GLPrimitives.renderCircle(glu, fRadius, iNumSlicesPerFullDisc);
 
 		gl.glColor4fv(fArBorderColor, 0);
-		GLPrimitives.renderCircleBorder(gl, glu, fRadius,
-				iNumSlicesPerFullDisc,
+		GLPrimitives.renderCircleBorder(gl, glu, fRadius, iNumSlicesPerFullDisc,
 				RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_WIDTH);
 
 		gl.glPopAttrib();
@@ -80,23 +76,19 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 		float fWidth = pdDiscToDraw.getCurrentWidth();
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw
-						.getElementID()));
+				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
 			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
 		}
 
-		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_MOUSE_OVER_COLOR,
-				0);
-		GLPrimitives.renderPartialDisc(glu, fInnerRadius,
-				fInnerRadius + fWidth, fStartAngle, fAngle,
-				iNumSlicesPerFullDisc);
+		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_MOUSE_OVER_COLOR, 0);
+		GLPrimitives.renderPartialDisc(glu, fInnerRadius, fInnerRadius + fWidth,
+				fStartAngle, fAngle, iNumSlicesPerFullDisc);
 		gl.glColor4fv(fArBorderColor, 0);
 		GLPrimitives.renderPartialDiscBorder(gl, glu, fInnerRadius,
-				fInnerRadius + fWidth, fStartAngle, fAngle,
-				iNumSlicesPerFullDisc,
+				fInnerRadius + fWidth, fStartAngle, fAngle, iNumSlicesPerFullDisc,
 				RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_WIDTH);
 
 		gl.glPopAttrib();
@@ -151,8 +143,7 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 	 * @return Connection point coordinates as float array with length 3.
 	 */
 	public float[] getElementRepConnectionPoint(PartialDisc disc,
-			float fHierarchyCenterX, float fHierarchyCenterY,
-			float fHierarchyCenterZ) {
+			float fHierarchyCenterX, float fHierarchyCenterY, float fHierarchyCenterZ) {
 		float fStartAngle = disc.getCurrentStartAngle();
 		float fInnerRadius = disc.getCurrentInnerRadius();
 
@@ -168,7 +159,6 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 		float fConnectionPointY = ((float) Math.sin(fStartAngleRadiants) * fInnerRadius)
 				+ fHierarchyCenterY;
 
-		return new float[] { fConnectionPointX, fConnectionPointY,
-				fHierarchyCenterZ };
+		return new float[] { fConnectionPointX, fConnectionPointY, fHierarchyCenterZ };
 	}
 }

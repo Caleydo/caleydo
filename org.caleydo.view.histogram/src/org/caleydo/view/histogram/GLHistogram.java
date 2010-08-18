@@ -95,7 +95,6 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 		// registerEventListeners();
 	}
 
-
 	@Override
 	public void init(GL gl) {
 
@@ -649,7 +648,6 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 		}
 	}
 
-
 	@Override
 	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
@@ -660,10 +658,9 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 		this.dataDomain = dataDomain;
 	}
 
-
 	@Override
 	public void setSet(ISet set) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

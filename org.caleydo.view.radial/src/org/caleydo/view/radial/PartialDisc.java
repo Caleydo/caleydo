@@ -39,8 +39,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 *            Cluster node that the partial disc shall correspond to.
 	 */
 	public PartialDisc(Tree<PartialDisc> partialDiscTree,
-			AHierarchyElement<?> hierarchyElement,
-			APDDrawingStrategy drawingStrategy) {
+			AHierarchyElement<?> hierarchyElement, APDDrawingStrategy drawingStrategy) {
 
 		super(partialDiscTree);
 		// setNode(this);
@@ -162,8 +161,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 			float fStartAngle, float fAngle, float fInnerRadius) {
 
 		fStartAngle = getValidAngle(fStartAngle);
-		setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius,
-				iDepth);
+		setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius, iDepth);
 
 		if (fAngle >= RadialHierarchyRenderStyle.PARTIAL_DISC_MIN_DISPLAYED_ANGLE) {
 			drawingStrategy.drawPartialDisc(gl, glu, this);
@@ -173,8 +171,8 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 		float fAnglePerSizeUnit = fAngle / fSize;
 
 		if (iDepth > 0) {
-			drawAllChildren(gl, glu, fWidth, fStartAngle,
-					fInnerRadius + fWidth, fAnglePerSizeUnit, iDepth, false);
+			drawAllChildren(gl, glu, fWidth, fStartAngle, fInnerRadius + fWidth,
+					fAnglePerSizeUnit, iDepth, false);
 		}
 	}
 
@@ -197,19 +195,18 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 * @param fInnerRadius
 	 *            Specifies the inner radius of the root partial disc.
 	 */
-	public void simulateDrawHierarchyAngular(float fWidth, int iDepth,
-			float fStartAngle, float fAngle, float fInnerRadius) {
+	public void simulateDrawHierarchyAngular(float fWidth, int iDepth, float fStartAngle,
+			float fAngle, float fInnerRadius) {
 
 		fStartAngle = getValidAngle(fStartAngle);
-		setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius,
-				iDepth);
+		setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius, iDepth);
 		iDepth--;
 
 		float fAnglePerSizeUnit = fAngle / fSize;
 
 		if (iDepth > 0) {
-			drawAllChildren(null, null, fWidth, fStartAngle, fInnerRadius
-					+ fWidth, fAnglePerSizeUnit, iDepth, true);
+			drawAllChildren(null, null, fWidth, fStartAngle, fInnerRadius + fWidth,
+					fAnglePerSizeUnit, iDepth, true);
 		}
 	}
 
@@ -238,14 +235,12 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 *            drawing should just be simulated.
 	 * @return The angle with which the current partial disc was drawn.
 	 */
-	private float drawHierarchy(GL gl, GLU glu, float fWidth,
-			float fStartAngle, float fInnerRadius, float fAnglePerSizeUnit,
-			int iDepth, boolean bSimulation) {
+	private float drawHierarchy(GL gl, GLU glu, float fWidth, float fStartAngle,
+			float fInnerRadius, float fAnglePerSizeUnit, int iDepth, boolean bSimulation) {
 
 		float fAngle = fSize * fAnglePerSizeUnit;
 		fStartAngle = getValidAngle(fStartAngle);
-		setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius,
-				iDepth);
+		setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius, iDepth);
 
 		if (!bSimulation
 				&& fAngle >= RadialHierarchyRenderStyle.PARTIAL_DISC_MIN_DISPLAYED_ANGLE) {
@@ -255,9 +250,8 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 		iDepth--;
 
 		if (iDepth > 0) {
-			drawAllChildren(gl, glu, fWidth, fStartAngle,
-					fInnerRadius + fWidth, fAnglePerSizeUnit, iDepth,
-					bSimulation);
+			drawAllChildren(gl, glu, fWidth, fStartAngle, fInnerRadius + fWidth,
+					fAnglePerSizeUnit, iDepth, bSimulation);
 		}
 		return fAngle;
 	}
@@ -283,9 +277,8 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 *            Specifies whether the partial disc should be really drwan or
 	 *            drawing should just be simulated.
 	 */
-	private void drawAllChildren(GL gl, GLU glu, float fWidth,
-			float fStartAngle, float fInnerRadius, float fAnglePerSizeUnit,
-			int iDepth, boolean bSimulation) {
+	private void drawAllChildren(GL gl, GLU glu, float fWidth, float fStartAngle,
+			float fInnerRadius, float fAnglePerSizeUnit, int iDepth, boolean bSimulation) {
 
 		float fChildStartAngle = fStartAngle;
 		ArrayList<PartialDisc> alChildren = tree.getChildren(this);
@@ -293,9 +286,9 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 		if (alChildren != null) {
 			for (int i = 0; i < alChildren.size(); i++) {
 				PartialDisc pdCurrentChild = alChildren.get(i);
-				fChildStartAngle += pdCurrentChild.drawHierarchy(gl, glu,
-						fWidth, fChildStartAngle, fInnerRadius,
-						fAnglePerSizeUnit, iDepth, bSimulation);
+				fChildStartAngle += pdCurrentChild.drawHierarchy(gl, glu, fWidth,
+						fChildStartAngle, fInnerRadius, fAnglePerSizeUnit, iDepth,
+						bSimulation);
 			}
 		}
 	}
@@ -310,8 +303,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 */
 	public boolean isAChildDrawn() {
 
-		if ((iCurrentDepth == 1) || (!hasChildren())
-				|| (pdLargestChild == null)) {
+		if ((iCurrentDepth == 1) || (!hasChildren()) || (pdLargestChild == null)) {
 			return false;
 		}
 
@@ -417,8 +409,8 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 * @param iDepth
 	 *            Depth of the sub-tree.
 	 */
-	public void setPDDrawingStrategyChildren(
-			APDDrawingStrategy drawingStrategy, int iDepth) {
+	public void setPDDrawingStrategyChildren(APDDrawingStrategy drawingStrategy,
+			int iDepth) {
 		this.drawingStrategy = drawingStrategy;
 		iDrawingStrategyDepth = iDepth;
 		iDepth--;
@@ -427,8 +419,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 		if (iDepth > 0 && alChildren != null) {
 			for (int i = 0; i < alChildren.size(); i++) {
 				PartialDisc pdCurrentChild = alChildren.get(i);
-				pdCurrentChild.setPDDrawingStrategyChildren(drawingStrategy,
-						iDepth);
+				pdCurrentChild.setPDDrawingStrategyChildren(drawingStrategy, iDepth);
 			}
 		}
 	}
@@ -443,8 +434,8 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 * @param iDepth
 	 *            Depth of the sub-tree.
 	 */
-	public void decoratePDDrawingStrategyChildren(
-			APDDrawingStrategyDecorator decorator, int iDepth) {
+	public void decoratePDDrawingStrategyChildren(APDDrawingStrategyDecorator decorator,
+			int iDepth) {
 		APDDrawingStrategyDecorator myDecorator = decorator.clone();
 		myDecorator.setDrawingStrategy(drawingStrategy);
 		drawingStrategy = myDecorator;
@@ -455,8 +446,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 		if (iDepth > 0 && alChildren != null) {
 			for (int i = 0; i < alChildren.size(); i++) {
 				PartialDisc pdCurrentChild = alChildren.get(i);
-				pdCurrentChild.decoratePDDrawingStrategyChildren(decorator,
-						iDepth);
+				pdCurrentChild.decoratePDDrawingStrategyChildren(decorator, iDepth);
 			}
 		}
 	}
@@ -555,8 +545,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 		if (pdCurrentRootElement == this)
 			return true;
 		int iParentPathLength = getParentPathLength(pdCurrentRootElement);
-		if ((iParentPathLength >= iDisplayedHierarchyDepth)
-				|| (iParentPathLength == -1)) {
+		if ((iParentPathLength >= iDisplayedHierarchyDepth) || (iParentPathLength == -1)) {
 			return false;
 		}
 		return true;
@@ -583,8 +572,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 		if (alParentPath == null)
 			return null;
 		if (alParentPath.size() >= iDisplayedHierarchyDepth)
-			return alParentPath.get(alParentPath.size()
-					- iDisplayedHierarchyDepth);
+			return alParentPath.get(alParentPath.size() - iDisplayedHierarchyDepth);
 		return this;
 	}
 

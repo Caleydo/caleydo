@@ -24,6 +24,7 @@ public class MinimumSizeComposite
 		super(parent, style);
 		registerEventListeners();
 		addListener(SWT.MouseWheel, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 
 				Point origin = getOrigin();
@@ -46,6 +47,7 @@ public class MinimumSizeComposite
 	@Override
 	public void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				listener.handleEvent(event);
 			}
@@ -56,8 +58,8 @@ public class MinimumSizeComposite
 	public void registerEventListeners() {
 		setMinSizeEventListener = new SetMinViewSizeEventListener();
 		setMinSizeEventListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(SetMinViewSizeEvent.class,
-			setMinSizeEventListener);
+		GeneralManager.get().getEventPublisher()
+			.addListener(SetMinViewSizeEvent.class, setMinSizeEventListener);
 	}
 
 	@Override

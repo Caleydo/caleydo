@@ -47,6 +47,7 @@ public class Histogram
 	/**
 	 * Iterator for the histogram.
 	 */
+	@Override
 	public Iterator<Integer> iterator() {
 		return histogram.iterator();
 	}

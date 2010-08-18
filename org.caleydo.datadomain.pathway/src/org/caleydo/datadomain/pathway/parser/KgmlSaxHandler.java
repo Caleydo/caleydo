@@ -17,15 +17,14 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * XML Parser that is able to load KEGG pathway files. The KEGG XML files follow the KGML. The class triggers
- * the calls in the PathwayManager that actually creates the pathway graph and the items + item reps.
+ * XML Parser that is able to load KEGG pathway files. The KEGG XML files follow
+ * the KGML. The class triggers the calls in the PathwayManager that actually
+ * creates the pathway graph and the items + item reps.
  * 
  * @author Marc Streit
  */
-public class KgmlSaxHandler
-	extends AXmlParserHandler
-	implements IXmlParserHandler {
-	
+public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandler {
+
 	private PathwayItemManager pathwayItemManager;
 	private PathwayManager pathwayManager;
 
@@ -70,8 +69,8 @@ public class KgmlSaxHandler
 	}
 
 	@Override
-	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
-		Attributes attributes) throws SAXException {
+	public void startElement(String namespaceURI, String sSimpleName,
+			String sQualifiedName, Attributes attributes) throws SAXException {
 
 		String sElementName = sSimpleName;
 		this.attributes = attributes;
@@ -83,11 +82,9 @@ public class KgmlSaxHandler
 		if (attributes != null) {
 			if (sElementName.equals("pathway")) {
 				handlePathwayTag();
-			}
-			else if (sElementName.equals("entry")) {
+			} else if (sElementName.equals("entry")) {
 				handleEntryTag();
-			}
-			else if (sElementName.equals("graphics")) {
+			} else if (sElementName.equals("graphics")) {
 				handleGraphicsTag();
 			}
 			// else if (sElementName.equals("relation")) {
@@ -107,14 +104,15 @@ public class KgmlSaxHandler
 
 	@Override
 	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
-		throws SAXException {
+			throws SAXException {
 
 		String eName = "".equals(sSimpleName) ? sQualifiedName : sSimpleName;
 
 		if (null != eName) {
 			if (eName.equals(sOpeningTag)) {
 				/**
-				 * section (xml block) finished, call callback function from XmlParserManager
+				 * section (xml block) finished, call callback function from
+				 * XmlParserManager
 				 */
 				xmlParserManager.sectionFinishedByHandler(this);
 			}
@@ -122,8 +120,9 @@ public class KgmlSaxHandler
 	}
 
 	/**
-	 * Reacts on the elements of the pathway tag. An example pathway tag looks like this: <pathway
-	 * name="path:map00271" org="map" number="00271" title="Methionine metabolism"
+	 * Reacts on the elements of the pathway tag. An example pathway tag looks
+	 * like this: <pathway name="path:map00271" org="map" number="00271"
+	 * title="Methionine metabolism"
 	 * image="http://www.genome.jp/kegg/pathway/map/map00271.gif"
 	 * link="http://www.genome.jp/dbget-bin/show_pathway?map00271">
 	 */
@@ -144,8 +143,7 @@ public class KgmlSaxHandler
 
 			if (sAttributeName.equals("name")) {
 				sName = attributes.getValue(iAttributeIndex);
-			}
-			else if (sAttributeName.equals("title")) {
+			} else if (sAttributeName.equals("title")) {
 				sTitle = attributes.getValue(iAttributeIndex);
 			}
 			// else if (sAttributeName.equals("number"))
@@ -154,8 +152,7 @@ public class KgmlSaxHandler
 			// }
 			else if (sAttributeName.equals("image")) {
 				sImageLink = attributes.getValue(iAttributeIndex);
-			}
-			else if (sAttributeName.equals("link")) {
+			} else if (sAttributeName.equals("link")) {
 				sExternalLink = attributes.getValue(iAttributeIndex);
 			}
 		}
@@ -164,21 +161,21 @@ public class KgmlSaxHandler
 			sTitle = "unknown title";
 		}
 
-		String sPathwayTexturePath =
-			sImageLink.substring(sImageLink.lastIndexOf('/') + 1, sImageLink.length());
+		String sPathwayTexturePath = sImageLink.substring(
+				sImageLink.lastIndexOf('/') + 1, sImageLink.length());
 
-		// FIX inconsistency between XML data which state the pathway images as GIFs - but we have them as
+		// FIX inconsistency between XML data which state the pathway images as
+		// GIFs - but we have them as
 		// PNGs
 		sPathwayTexturePath = sPathwayTexturePath.replace(".gif", ".png");
 
-		currentPathway =
-			pathwayManager.createPathway(EPathwayDatabaseType.KEGG, sName, sTitle, sPathwayTexturePath,
-				sExternalLink);
+		currentPathway = pathwayManager.createPathway(EPathwayDatabaseType.KEGG, sName,
+				sTitle, sPathwayTexturePath, sExternalLink);
 	}
 
 	/**
-	 * Reacts on the elements of the entry tag. An example entry tag looks like this: <entry id="1"
-	 * name="ec:1.8.4.1" type="enzyme" reaction="rn:R01292"
+	 * Reacts on the elements of the entry tag. An example entry tag looks like
+	 * this: <entry id="1" name="ec:1.8.4.1" type="enzyme" reaction="rn:R01292"
 	 * link="http://www.genome.jp/dbget-bin/www_bget?enzyme+1.8.4.1">
 	 */
 	protected void handleEntryTag() {
@@ -196,18 +193,15 @@ public class KgmlSaxHandler
 			}
 
 			if (sAttributeName.equals("id")) {
-				// iEntryId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
-			}
-			else if (sAttributeName.equals("name")) {
+				// iEntryId =
+				// Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
+			} else if (sAttributeName.equals("name")) {
 				sName = attributes.getValue(iAttributeIndex);
-			}
-			else if (sAttributeName.equals("type")) {
+			} else if (sAttributeName.equals("type")) {
 				sType = attributes.getValue(iAttributeIndex);
-			}
-			else if (sAttributeName.equals("link")) {
+			} else if (sAttributeName.equals("link")) {
 				sExternalLink = attributes.getValue(iAttributeIndex);
-			}
-			else if (sAttributeName.equals("reaction")) {
+			} else if (sAttributeName.equals("reaction")) {
 				sReactionId = attributes.getValue(iAttributeIndex);
 			}
 		}
@@ -229,13 +223,13 @@ public class KgmlSaxHandler
 				}
 
 				try {
-					iDavidId =
-						generalManager.getIDMappingManager().getID(IDType.getIDType("ENTREZ_GENE_ID"), IDType.getIDType("DAVID"),
+					iDavidId = generalManager.getIDMappingManager().getID(
+							IDType.getIDType("ENTREZ_GENE_ID"),
+							IDType.getIDType("DAVID"),
 							Integer.valueOf(sTmpVertexName.substring(4)));
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					// TODO: investigate!!
-//					System.out.println("TODO: check why the parsing error occurs");
+					// System.out.println("TODO: check why the parsing error occurs");
 				}
 
 				if (iDavidId == null) {
@@ -251,11 +245,11 @@ public class KgmlSaxHandler
 				iSetDavidID.add(iDavidId);
 			}
 
-			alCurrentVertex.addAll(pathwayItemManager.createVertexGene(sTmpVertexName, sType, sExternalLink,
-				sReactionId, iSetDavidID));
-		}
-		else {
-			currentVertex = pathwayItemManager.createVertex(sName, sType, sExternalLink, sReactionId);
+			alCurrentVertex.addAll(pathwayItemManager.createVertexGene(sTmpVertexName,
+					sType, sExternalLink, sReactionId, iSetDavidID));
+		} else {
+			currentVertex = pathwayItemManager.createVertex(sName, sType, sExternalLink,
+					sReactionId);
 
 			if (currentVertex == null)
 				throw new IllegalStateException("New pathway vertex is null");
@@ -265,9 +259,9 @@ public class KgmlSaxHandler
 	}
 
 	/**
-	 * Reacts on the elements of the graphics tag. An example graphics tag looks like this: <graphics
-	 * name="1.8.4.1" fgcolor="#000000" bgcolor="#FFFFFF" type="rectangle" x="142" y="304" width="45"
-	 * height="17"/>
+	 * Reacts on the elements of the graphics tag. An example graphics tag looks
+	 * like this: <graphics name="1.8.4.1" fgcolor="#000000" bgcolor="#FFFFFF"
+	 * type="rectangle" x="142" y="304" width="45" height="17"/>
 	 */
 	protected void handleGraphicsTag() {
 
@@ -281,32 +275,25 @@ public class KgmlSaxHandler
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			sAttributeName = attributes.getLocalName(iAttributeIndex);
 
-			try
-			{
-			if ("".equals(sAttributeName)) {
-				sAttributeName = attributes.getQName(iAttributeIndex);
-			}
+			try {
+				if ("".equals(sAttributeName)) {
+					sAttributeName = attributes.getQName(iAttributeIndex);
+				}
 
-			if (sAttributeName.equals("name")) {
-				sName = attributes.getValue(iAttributeIndex);
-			}
-			else if (sAttributeName.equals("height")) {
-				shHeight = new Short(attributes.getValue(iAttributeIndex));
-			}
-			else if (sAttributeName.equals("width")) {
-				shWidth = new Short(attributes.getValue(iAttributeIndex));
-			}
-			else if (sAttributeName.equals("x")) {
-				shXPosition = new Short(attributes.getValue(iAttributeIndex));
-			}
-			else if (sAttributeName.equals("y")) {
-				shYPosition = new Short(attributes.getValue(iAttributeIndex));
-			}
-			else if (sAttributeName.equals("type")) {
-				sShapeType = attributes.getValue(iAttributeIndex);
-			}
-			}
-			catch (NumberFormatException e) {
+				if (sAttributeName.equals("name")) {
+					sName = attributes.getValue(iAttributeIndex);
+				} else if (sAttributeName.equals("height")) {
+					shHeight = new Short(attributes.getValue(iAttributeIndex));
+				} else if (sAttributeName.equals("width")) {
+					shWidth = new Short(attributes.getValue(iAttributeIndex));
+				} else if (sAttributeName.equals("x")) {
+					shXPosition = new Short(attributes.getValue(iAttributeIndex));
+				} else if (sAttributeName.equals("y")) {
+					shYPosition = new Short(attributes.getValue(iAttributeIndex));
+				} else if (sAttributeName.equals("type")) {
+					sShapeType = attributes.getValue(iAttributeIndex);
+				}
+			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
 		}
@@ -316,18 +303,20 @@ public class KgmlSaxHandler
 			return;
 
 		// IGraphItem vertexRep =
-		pathwayItemManager.createVertexRep(currentPathway, alCurrentVertex, sName, sShapeType, shXPosition,
-			shYPosition, shWidth, shHeight);
+		pathwayItemManager.createVertexRep(currentPathway, alCurrentVertex, sName,
+				sShapeType, shXPosition, shYPosition, shWidth, shHeight);
 
 		// hashKgmlEntryIdToVertexRepId.put(iCurrentEntryId, vertexRep);
-		// hashKgmlNameToVertexRepId.put(((PathwayVertexGraphItem) currentVertex).getName(), vertexRep);
-		// hashKgmlReactionIdToVertexRepId.put(((PathwayVertexGraphItem) currentVertex).getReactionId(),
+		// hashKgmlNameToVertexRepId.put(((PathwayVertexGraphItem)
+		// currentVertex).getName(), vertexRep);
+		// hashKgmlReactionIdToVertexRepId.put(((PathwayVertexGraphItem)
+		// currentVertex).getReactionId(),
 		// vertexRep);
 	}
 
 	/**
-	 * Reacts on the elements of the relation tag. An example relation tag looks like this: <relation
-	 * entry1="28" entry2="32" type="ECrel">
+	 * Reacts on the elements of the relation tag. An example relation tag looks
+	 * like this: <relation entry1="28" entry2="32" type="ECrel">
 	 */
 	protected void handleRelationTag() {
 
@@ -335,7 +324,8 @@ public class KgmlSaxHandler
 		// int iTargetVertexId = 0;
 		// String sType = "";
 		//
-		// for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
+		// for (int iAttributeIndex = 0; iAttributeIndex <
+		// attributes.getLength(); iAttributeIndex++) {
 		// sAttributeName = attributes.getLocalName(iAttributeIndex);
 		//
 		// if ("".equals(sAttributeName)) {
@@ -346,10 +336,12 @@ public class KgmlSaxHandler
 		// sType = attributes.getValue(iAttributeIndex);
 		// }
 		// else if (sAttributeName.equals("entry1")) {
-		// iSourceVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
+		// iSourceVertexId =
+		// Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
 		// }
 		// else if (sAttributeName.equals("entry2")) {
-		// iTargetVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
+		// iTargetVertexId =
+		// Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
 		// }
 		//
 		// // System.out.println("Attribute name: " +sAttributeName);
@@ -357,8 +349,10 @@ public class KgmlSaxHandler
 		// // +attributes.getValue(iAttributeIndex));
 		// }
 		//
-		// IGraphItem graphItemIn = hashKgmlEntryIdToVertexRepId.get(iSourceVertexId);
-		// IGraphItem graphItemOut = hashKgmlEntryIdToVertexRepId.get(iTargetVertexId);
+		// IGraphItem graphItemIn =
+		// hashKgmlEntryIdToVertexRepId.get(iSourceVertexId);
+		// IGraphItem graphItemOut =
+		// hashKgmlEntryIdToVertexRepId.get(iTargetVertexId);
 		//
 		// // Create edge (data)
 		// IGraphItem relationEdge =
@@ -369,26 +363,27 @@ public class KgmlSaxHandler
 		// .getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT), sType);
 		//
 		// // Create edge representation
-		// pathwayItemManager.createRelationEdgeRep(currentPathway, relationEdge, graphItemIn, graphItemOut);
+		// pathwayItemManager.createRelationEdgeRep(currentPathway,
+		// relationEdge, graphItemIn, graphItemOut);
 
 	}
 
-	//    	
+	//
 	// protected void handleSubtypeTag() {
-	//    	
+	//
 	// String sName = "";
 	// int iCompoundId = 0;
-	//		
+	//
 	// for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength();
 	// iAttributeIndex++)
 	// {
 	// sAttributeName = attributes.getLocalName(iAttributeIndex);
-	//		
+	//
 	// if ("".equals(sAttributeName))
 	// {
 	// sAttributeName = attributes.getQName(iAttributeIndex);
 	// }
-	//				
+	//
 	// if (sAttributeName.equals("name"))
 	// sName = attributes.getValue(iAttributeIndex);
 	// else if (sAttributeName.equals("value"))
@@ -404,12 +399,12 @@ public class KgmlSaxHandler
 	// iCompoundId = new Integer(attributes.getValue(iAttributeIndex));
 	// }
 	//
-	// 
+	//
 	// //System.out.println("Attribute name: " +sAttributeName);
 	// //System.out.println("Attribute value: "
 	// +attributes.getValue(iAttributeIndex));
 	// }
-	//		
+	//
 	// if (sName.equals("compound"))
 	// {
 	// //retrieve the internal element ID and add the compound value to the edge
@@ -417,17 +412,18 @@ public class KgmlSaxHandler
 	// addRelationCompound(kgmlIdToElementIdLUT.get(iCompoundId));
 	// }
 	// }
-	//    
+	//
 	/**
-	 * Reacts on the elements of the reaction tag. An example reaction tag looks like this: <reaction
-	 * name="rn:R01001" type="irreversible">
+	 * Reacts on the elements of the reaction tag. An example reaction tag looks
+	 * like this: <reaction name="rn:R01001" type="irreversible">
 	 */
 	protected void handleReactionTag() {
 
 		// String sReactionName = "";
 		// String sReactionType = "";
 		//
-		// for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
+		// for (int iAttributeIndex = 0; iAttributeIndex <
+		// attributes.getLength(); iAttributeIndex++) {
 		// sAttributeName = attributes.getLocalName(iAttributeIndex);
 		//
 		// if ("".equals(sAttributeName)) {
@@ -443,22 +439,25 @@ public class KgmlSaxHandler
 		// }
 		//
 		// currentReactionSubstrateEdgeRep =
-		// pathwayItemManager.createReactionEdge(currentPathway, sReactionName, sReactionType);
+		// pathwayItemManager.createReactionEdge(currentPathway, sReactionName,
+		// sReactionType);
 		//
 		// currentReactionProductEdgeRep =
-		// pathwayItemManager.createReactionEdge(currentPathway, sReactionName, sReactionType);
+		// pathwayItemManager.createReactionEdge(currentPathway, sReactionName,
+		// sReactionType);
 
 	}
 
 	/**
-	 * Reacts on the elements of the reaction substrate tag. An example reaction substrate tag looks like
-	 * this: <substrate name="cpd:C01118"/>
+	 * Reacts on the elements of the reaction substrate tag. An example reaction
+	 * substrate tag looks like this: <substrate name="cpd:C01118"/>
 	 */
 	protected void handleReactionSubstrateTag() {
 
 		// String sReactionSubstrateName = "";
 		//
-		// for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
+		// for (int iAttributeIndex = 0; iAttributeIndex <
+		// attributes.getLength(); iAttributeIndex++) {
 		// sAttributeName = attributes.getLocalName(iAttributeIndex);
 		//
 		// if ("".equals(sAttributeName)) {
@@ -470,49 +469,61 @@ public class KgmlSaxHandler
 		// }
 		// }
 		//
-		// IGraphItem graphItemIn = hashKgmlNameToVertexRepId.get(sReactionSubstrateName);
+		// IGraphItem graphItemIn =
+		// hashKgmlNameToVertexRepId.get(sReactionSubstrateName);
 		//
 		// IGraphItem graphItemOut =
 		// hashKgmlReactionIdToVertexRepId
-		// .get(((PathwayReactionEdgeGraphItem) currentReactionSubstrateEdgeRep.getAllItemsByProp(
+		// .get(((PathwayReactionEdgeGraphItem)
+		// currentReactionSubstrateEdgeRep.getAllItemsByProp(
 		// EGraphItemProperty.ALIAS_PARENT).get(0)).getReactionId());
 		//
 		// if (graphItemIn == null || graphItemOut == null)
 		// return;
 		//
-		// currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemIn, EGraphItemProperty.INCOMING);
+		// currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemIn,
+		// EGraphItemProperty.INCOMING);
 		//
-		// currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemOut, EGraphItemProperty.OUTGOING);
+		// currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemOut,
+		// EGraphItemProperty.OUTGOING);
 		//
 		// IGraphItem tmpReactionEdge =
-		// (PathwayReactionEdgeGraphItem) currentReactionSubstrateEdgeRep.getAllItemsByProp(
+		// (PathwayReactionEdgeGraphItem)
+		// currentReactionSubstrateEdgeRep.getAllItemsByProp(
 		// EGraphItemProperty.ALIAS_PARENT).get(0);
 		//
 		// if (tmpReactionEdge == null)
 		// return;
 		//
-		// if (graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
+		// if
+		// (graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size()
+		// == 0)
 		// return;
 		//
 		// tmpReactionEdge.addItemDoubleLinked(graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)
 		// .get(0), EGraphItemProperty.INCOMING);
 		//
-		// if (graphItemOut.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
+		// if
+		// (graphItemOut.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size()
+		// == 0)
 		// return;
 		//
-		// tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemOut.getAllItemsByProp(
-		// EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.OUTGOING);
+		// tmpReactionEdge.addItemDoubleLinked((IGraphItem)
+		// graphItemOut.getAllItemsByProp(
+		// EGraphItemProperty.ALIAS_PARENT).get(0),
+		// EGraphItemProperty.OUTGOING);
 	}
 
 	/**
-	 * Reacts on the elements of the reaction product tag. An example reaction product tag looks like this:
-	 * <product name="cpd:C02291"/>
+	 * Reacts on the elements of the reaction product tag. An example reaction
+	 * product tag looks like this: <product name="cpd:C02291"/>
 	 */
 	protected void handleReactionProductTag() {
 
 		// String sReactionProductName = "";
 		//
-		// for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
+		// for (int iAttributeIndex = 0; iAttributeIndex <
+		// attributes.getLength(); iAttributeIndex++) {
 		// sAttributeName = attributes.getLocalName(iAttributeIndex);
 		//
 		// if ("".equals(sAttributeName)) {
@@ -525,38 +536,51 @@ public class KgmlSaxHandler
 		// }
 		//
 		// // Compound
-		// IGraphItem graphItemOut = hashKgmlNameToVertexRepId.get(sReactionProductName);
+		// IGraphItem graphItemOut =
+		// hashKgmlNameToVertexRepId.get(sReactionProductName);
 		//
 		// // Enzyme
 		// IGraphItem graphItemIn =
-		// hashKgmlReactionIdToVertexRepId.get(((PathwayReactionEdgeGraphItem) currentReactionProductEdgeRep
+		// hashKgmlReactionIdToVertexRepId.get(((PathwayReactionEdgeGraphItem)
+		// currentReactionProductEdgeRep
 		// .getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0)).getReactionId());
 		//
 		// if (graphItemIn == null || graphItemOut == null)
 		// return;
 		//
-		// currentReactionProductEdgeRep.addItemDoubleLinked(graphItemIn, EGraphItemProperty.INCOMING);
+		// currentReactionProductEdgeRep.addItemDoubleLinked(graphItemIn,
+		// EGraphItemProperty.INCOMING);
 		//
-		// currentReactionProductEdgeRep.addItemDoubleLinked(graphItemOut, EGraphItemProperty.OUTGOING);
+		// currentReactionProductEdgeRep.addItemDoubleLinked(graphItemOut,
+		// EGraphItemProperty.OUTGOING);
 		//
 		// IGraphItem tmpReactionEdge =
-		// (PathwayReactionEdgeGraphItem) currentReactionProductEdgeRep.getAllItemsByProp(
+		// (PathwayReactionEdgeGraphItem)
+		// currentReactionProductEdgeRep.getAllItemsByProp(
 		// EGraphItemProperty.ALIAS_PARENT).get(0);
 		//
 		// if (tmpReactionEdge == null)
 		// return;
 		//
-		// if (graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
+		// if
+		// (graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size()
+		// == 0)
 		// return;
 		//
-		// tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemIn.getAllItemsByProp(
-		// EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.INCOMING);
+		// tmpReactionEdge.addItemDoubleLinked((IGraphItem)
+		// graphItemIn.getAllItemsByProp(
+		// EGraphItemProperty.ALIAS_PARENT).get(0),
+		// EGraphItemProperty.INCOMING);
 		//
-		// if (graphItemOut.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
+		// if
+		// (graphItemOut.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size()
+		// == 0)
 		// return;
 		//
-		// tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemOut.getAllItemsByProp(
-		// EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.OUTGOING);
+		// tmpReactionEdge.addItemDoubleLinked((IGraphItem)
+		// graphItemOut.getAllItemsByProp(
+		// EGraphItemProperty.ALIAS_PARENT).get(0),
+		// EGraphItemProperty.OUTGOING);
 	}
 
 	/**

@@ -152,6 +152,5 @@ public class MovementValue {
 	public void setCreterionType(int iCreterionType) {
 		this.iCreterionType = iCreterionType;
 	}
-	
 
 }

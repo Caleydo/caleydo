@@ -54,40 +54,34 @@ public class DragAndDropController {
 		if (isDragging) {
 			Point mouseWinCoords = glMouseListener.getPickedPoint();
 
-			float[] fArTargetWorldCoordinates = GLCoordinateUtils
-					.convertWindowCoordinatesToWorldCoordinates(gl,
-							mouseWinCoords.x, mouseWinCoords.y);
+			float[] fArTargetWorldCoordinates =
+				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, mouseWinCoords.x,
+					mouseWinCoords.y);
 
 			if (dropArea != null) {
-				dropArea.handleDragOver(gl, draggables,
-						fArTargetWorldCoordinates[0],
-						fArTargetWorldCoordinates[1]);
+				dropArea.handleDragOver(gl, draggables, fArTargetWorldCoordinates[0],
+					fArTargetWorldCoordinates[1]);
 			}
 
 			for (IDraggable draggable : draggables) {
 				if (isDraggingFirstTime) {
-					float[] fArStartDraggingWorldCoordinates = GLCoordinateUtils
-							.convertWindowCoordinatesToWorldCoordinates(gl,
-									startDraggingWindowCoords.x,
-									startDraggingWindowCoords.y);
-					draggable.setDraggingStartPoint(
-							fArStartDraggingWorldCoordinates[0],
-							fArStartDraggingWorldCoordinates[1]);
+					float[] fArStartDraggingWorldCoordinates =
+						GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
+							startDraggingWindowCoords.x, startDraggingWindowCoords.y);
+					draggable.setDraggingStartPoint(fArStartDraggingWorldCoordinates[0],
+						fArStartDraggingWorldCoordinates[1]);
 				}
-				draggable.handleDragging(gl, fArTargetWorldCoordinates[0],
-						fArTargetWorldCoordinates[1]);
+				draggable.handleDragging(gl, fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1]);
 			}
 
 			if (glMouseListener.wasMouseReleased()) {
 				isDragging = false;
 				for (IDraggable draggable : draggables) {
-					draggable.handleDrop(gl, fArTargetWorldCoordinates[0],
-							fArTargetWorldCoordinates[1]);
+					draggable.handleDrop(gl, fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1]);
 				}
 				if (dropArea != null) {
-					dropArea.handleDrop(gl, draggables,
-							fArTargetWorldCoordinates[0],
-							fArTargetWorldCoordinates[1], this);
+					dropArea.handleDrop(gl, draggables, fArTargetWorldCoordinates[0],
+						fArTargetWorldCoordinates[1], this);
 
 				}
 				view.setDisplayListDirty();

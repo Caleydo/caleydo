@@ -12,9 +12,7 @@ import org.caleydo.util.graph.EGraphItemProperty;
  * 
  * @author Marc Streit
  */
-public class PathwayVertexGraphItemRep
-	extends ACaleydoGraphItem
-	implements Serializable {
+public class PathwayVertexGraphItemRep extends ACaleydoGraphItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +33,8 @@ public class PathwayVertexGraphItemRep
 	 * @param sShapeType
 	 * @param sCoords
 	 */
-	public PathwayVertexGraphItemRep(final String sName, final String sShapeType, final String sCoords) {
+	public PathwayVertexGraphItemRep(final String sName, final String sShapeType,
+			final String sCoords) {
 		super(EGraphItemKind.NODE);
 
 		shape = EPathwayVertexShape.valueOf(sShapeType);
@@ -54,8 +53,8 @@ public class PathwayVertexGraphItemRep
 	 * @param shWidth
 	 * @param shHeight
 	 */
-	public PathwayVertexGraphItemRep(final String sName, final String sShapeType, final short shX,
-		final short shY, final short shWidth, final short shHeight) {
+	public PathwayVertexGraphItemRep(final String sName, final String sShapeType,
+			final short shX, final short shY, final short shWidth, final short shHeight) {
 		super(EGraphItemKind.NODE);
 
 		if (sShapeType == null || sShapeType.isEmpty())
@@ -71,7 +70,8 @@ public class PathwayVertexGraphItemRep
 	}
 
 	/**
-	 * Example: 213,521,202,515,248,440,261,447,213,521 Currently used for BioCarta input.
+	 * Example: 213,521,202,515,248,440,261,447,213,521 Currently used for
+	 * BioCarta input.
 	 */
 	private void setCoordsByCommaSeparatedString(final String sCoords) {
 
@@ -83,12 +83,14 @@ public class PathwayVertexGraphItemRep
 
 		while (sToken.hasMoreTokens()) {
 			// Filter white spaces
-			short shXCoord = Short.valueOf(sToken.nextToken().replace(" ", "")).shortValue();
+			short shXCoord = Short.valueOf(sToken.nextToken().replace(" ", ""))
+					.shortValue();
 
 			if (!sToken.hasMoreTokens())
 				return;
 
-			short shYCoord = Short.valueOf(sToken.nextToken().replace(" ", "")).shortValue();
+			short shYCoord = Short.valueOf(sToken.nextToken().replace(" ", ""))
+					.shortValue();
 
 			shArCoords[iCount][0] = shXCoord;
 			shArCoords[iCount][1] = shYCoord;
@@ -97,8 +99,8 @@ public class PathwayVertexGraphItemRep
 		}
 	}
 
-	private void setRectangularCoords(final short shX, final short shY, final short shWidth,
-		final short shHeight) {
+	private void setRectangularCoords(final short shX, final short shY,
+			final short shWidth, final short shHeight) {
 
 		shArCoords = new short[4][2];
 
@@ -126,8 +128,8 @@ public class PathwayVertexGraphItemRep
 	}
 
 	public EPathwayVertexType getType() {
-		return ((PathwayVertexGraphItem) this.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0))
-			.getType();
+		return ((PathwayVertexGraphItem) this.getAllItemsByProp(
+				EGraphItemProperty.ALIAS_PARENT).get(0)).getType();
 	}
 
 	public short[][] getCoords() {

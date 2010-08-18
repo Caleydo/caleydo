@@ -304,6 +304,7 @@ public abstract class ASetBasedDataDomain
 		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, dataDomainType, vaType));
 	}
 
+	@Override
 	public void replaceStorageVA(String dataDomainType, StorageVAType vaType) {
 		throw new IllegalStateException("UseCases shouldn't react to this");
 	}

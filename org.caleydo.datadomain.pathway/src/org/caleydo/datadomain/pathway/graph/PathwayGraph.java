@@ -13,9 +13,8 @@ import org.caleydo.util.graph.core.Graph;
  * 
  * @author Marc Streit
  */
-public class PathwayGraph
-	extends Graph
-	implements IUniqueObject, Serializable, Comparable<PathwayGraph> {
+public class PathwayGraph extends Graph implements IUniqueObject, Serializable,
+		Comparable<PathwayGraph> {
 	private static final long serialVersionUID = 1L;
 
 	private EPathwayDatabaseType type;
@@ -32,8 +31,8 @@ public class PathwayGraph
 
 	private int iHeight = -1;
 
-	public PathwayGraph(final EPathwayDatabaseType type, final String sName, final String sTitle,
-		final String sImageLink, final String sLink) {
+	public PathwayGraph(final EPathwayDatabaseType type, final String sName,
+			final String sTitle, final String sImageLink, final String sLink) {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.PATHWAY));
 
 		this.type = type;
@@ -109,16 +108,17 @@ public class PathwayGraph
 	}
 
 	/**
-	 * Checks if the given object is equals to this one by comparing the internal unique-id
+	 * Checks if the given object is equals to this one by comparing the
+	 * internal unique-id
 	 * 
-	 * @return <code>true</code> if the 2 objects are equal, <code>false</code> otherwise
+	 * @return <code>true</code> if the 2 objects are equal, <code>false</code>
+	 *         otherwise
 	 */
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof IUniqueObject) {
 			return this.getID() == ((IUniqueObject) other).getID();
-		}
-		else {
+		} else {
 			return false;
 		}
 	}

@@ -17,8 +17,7 @@ import org.caleydo.datadomain.pathway.rcp.PathwayLoadingProgressIndicatorAction;
  */
 @XmlType
 @XmlRootElement
-public class PathwayDataDomain
-	extends ADataDomain {
+public class PathwayDataDomain extends ADataDomain {
 
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.pathway";
 
@@ -28,24 +27,23 @@ public class PathwayDataDomain
 	 * Constructor.
 	 */
 	public PathwayDataDomain() {
-		
+
 		dataDomainType = DATA_DOMAIN_TYPE;
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
 		PathwayManager.get().triggerParsingPathwayDatabases();
-		
+
 		// Trigger pathway loading
 		new PathwayLoadingProgressIndicatorAction().run(null);
-		
+
 		primaryIDType = IDType.getIDType("PATHWAY_VERTEX");
 	}
-	
+
 	public IDType getPrimaryIDType() {
 		return primaryIDType;
 	}
-	
-	public IDType getDavidIDType()
-	{
+
+	public IDType getDavidIDType() {
 		return IDType.getIDType("DAVID");
 	}
 }

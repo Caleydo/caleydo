@@ -14,6 +14,7 @@ public interface IGroupList<ConcreteType extends IGroupList<ConcreteType, VA, VA
 	/**
 	 * Returns an Iterator<Group> of type GroupIterator, which allows to iterate over the group list
 	 */
+	@Override
 	public GroupIterator iterator();
 
 	/**

@@ -5,8 +5,9 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 /**
- * Class holds the data of a pathway image map. A image map holds regions of the image and a link that should
- * followed when the user clicks in the (rectangular) region.
+ * Class holds the data of a pathway image map. A image map holds regions of the
+ * image and a link that should followed when the user clicks in the
+ * (rectangular) region.
  * 
  * @author Marc Streit
  */
@@ -51,8 +52,8 @@ public class PathwayImageMap {
 	}
 
 	/**
-	 * Method takes a point and looks if the point is contained in one of the areas. If a containing area is
-	 * found the corresponding link is returned.
+	 * Method takes a point and looks if the point is contained in one of the
+	 * areas. If a containing area is found the corresponding link is returned.
 	 * 
 	 * @param point
 	 *            Point to check for intersection.

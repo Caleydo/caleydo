@@ -49,8 +49,7 @@ public final class DrawingStrategyManager {
 		this.alColorModes.clear();
 		this.alColorModes.addAll(alColorModes);
 		iColorModeIndex = 0;
-		dsDefault = createDrawingStrategy(this.alColorModes
-				.get(iColorModeIndex));
+		dsDefault = createDrawingStrategy(this.alColorModes.get(iColorModeIndex));
 	}
 
 	/**
@@ -61,8 +60,7 @@ public final class DrawingStrategyManager {
 		iColorModeIndex++;
 		if (iColorModeIndex >= alColorModes.size())
 			iColorModeIndex = 0;
-		dsDefault = createDrawingStrategy(this.alColorModes
-				.get(iColorModeIndex));
+		dsDefault = createDrawingStrategy(this.alColorModes.get(iColorModeIndex));
 	}
 
 	/**

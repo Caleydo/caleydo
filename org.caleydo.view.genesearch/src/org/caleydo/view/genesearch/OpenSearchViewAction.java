@@ -6,8 +6,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-public class OpenSearchViewAction
-	extends AToolBarAction {
+public class OpenSearchViewAction extends AToolBarAction {
 	public static final String TEXT = "Search";
 	public static final String ICON = "resources/icons/general/search.png";
 
@@ -19,8 +18,8 @@ public class OpenSearchViewAction
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-			.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
@@ -28,9 +27,9 @@ public class OpenSearchViewAction
 		super.run();
 
 		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(RcpGeneSearchView.VIEW_ID);
-		}
-		catch (PartInitException e) {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.showView(RcpGeneSearchView.VIEW_ID);
+		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
 	}

@@ -11,27 +11,25 @@ import org.eclipse.ui.IFolderLayout;
 import org.osgi.framework.BundleException;
 
 /**
- * Abstract startup procedure.
- * Handling of view initialization and application init data.
+ * Abstract startup procedure. Handling of view initialization and application init data.
  * 
  * @author Marc Streit
- *
  */
 public abstract class AStartupProcedure {
 
 	protected ApplicationInitData appInitData;
-	
+
 	public void init(ApplicationInitData appInitData) {
 		this.appInitData = appInitData;
 		initializeStartViews();
 	}
-	
+
 	public void execute() {
 		loadPathways();
 	}
 
 	public abstract void addDefaultStartViews();
-	
+
 	/**
 	 * Parses through the list of start-views to initialize them by creating default serialized
 	 * representations of them.
@@ -81,12 +79,11 @@ public abstract class AStartupProcedure {
 			layout.addView(startViewID);
 		}
 	}
-	
 
 	private void loadPathways() {
 		if (!appInitData.isLoadPathways())
 			return;
-		
+
 		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
 		cmd.setAttributes("org.caleydo.datadomain.pathway");
 		cmd.doCommand();

@@ -15,7 +15,7 @@ public class RcpHTMLBrowserView extends CaleydoRCPViewPart {
 	@SuppressWarnings("unchecked")
 	public void createPartControl(Composite parent) {
 		browserView = (GenomeHTMLBrowser) GeneralManager.get().getViewGLCanvasManager()
-				.createView(GenomeHTMLBrowser.VIEW_ID, -1, "Browser");
+				.createView(HTMLBrowser.VIEW_ID, -1, "Browser");
 
 		browserView.initViewRCP(parent);
 		browserView.drawView();

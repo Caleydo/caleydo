@@ -677,6 +677,7 @@ public class SelectionManager
 		listener.handleEvent(event);
 	}
 
+	@Override
 	public void registerEventListeners() {
 
 		addSelectionTypeListener = new SelectionTypeListener();
@@ -693,6 +694,7 @@ public class SelectionManager
 
 	}
 
+	@Override
 	public void unregisterEventListeners() {
 		if (addSelectionTypeListener != null) {
 			GeneralManager.get().getEventPublisher().removeListener(addSelectionTypeListener);

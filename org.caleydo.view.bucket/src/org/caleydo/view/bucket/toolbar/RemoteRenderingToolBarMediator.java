@@ -77,6 +77,7 @@ public class RemoteRenderingToolBarMediator implements IRemoteRenderingHandler {
 		eventPublisher.triggerEvent(event);
 	}
 
+	@Override
 	public void toggleNavigationMode() {
 		ToggleNavigationModeEvent event = new ToggleNavigationModeEvent();
 		event.setSender(this);
@@ -89,6 +90,7 @@ public class RemoteRenderingToolBarMediator implements IRemoteRenderingHandler {
 		eventPublisher.triggerEvent(event);
 	}
 
+	@Override
 	public void toggleZoom() {
 		ToggleZoomEvent event = new ToggleZoomEvent();
 		event.setSender(this);
@@ -96,11 +98,11 @@ public class RemoteRenderingToolBarMediator implements IRemoteRenderingHandler {
 	}
 
 	@Override
-	public void queueEvent(
-			final AEventListener<? extends IListenerOwner> listener,
+	public void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 			final AEvent event) {
 		System.out.println("queue: listener.handleEvent(event);");
 		Display.getDefault().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				listener.handleEvent(event);
 				System.out.println("listener.handleEvent(event);");
@@ -136,8 +138,7 @@ public class RemoteRenderingToolBarMediator implements IRemoteRenderingHandler {
 
 	@Override
 	public void setConnectionLinesEnabled(boolean enabled) {
-		toolBarContent.toggleConnectionLinesAction
-				.setConnectionLinesEnabled(enabled);
+		toolBarContent.toggleConnectionLinesAction.setConnectionLinesEnabled(enabled);
 	}
 
 	@Override

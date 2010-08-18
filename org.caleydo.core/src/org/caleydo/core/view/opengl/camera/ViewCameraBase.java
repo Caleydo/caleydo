@@ -66,6 +66,7 @@ public class ViewCameraBase
 		mat4fCameraViewMatrix.setTranslation(v3fCameraPosition);
 	}
 
+	@Override
 	public boolean hasViewCameraChanged() {
 
 		return bHasChanged;
@@ -78,6 +79,7 @@ public class ViewCameraBase
 		mat4fCameraViewMatrix.setTranslation(v3fCameraPosition);
 	}
 
+	@Override
 	public void addCameraPosition(final Vec3f setPos) {
 
 		v3fCameraPosition = new Vec3f(v3fCameraPosition);
@@ -110,6 +112,7 @@ public class ViewCameraBase
 		updateMatrix();
 	}
 
+	@Override
 	public void setHasChanged(final boolean bSetHasChanged) {
 
 		this.bHasChanged = bSetHasChanged;
@@ -138,11 +141,13 @@ public class ViewCameraBase
 		return new Rotf(this.rotfCameraRotation);
 	}
 
+	@Override
 	public final float getCameraRotationGrad(Vec3f axis) {
 
 		return (float) Math.toDegrees(rotfCameraRotation.get(axis));
 	}
 
+	@Override
 	public final float getCameraRotationRadiant(Vec3f axis) {
 
 		return rotfCameraRotation.get(axis);
@@ -163,6 +168,7 @@ public class ViewCameraBase
 			+ this.rotfCameraRotation.toString();
 	}
 
+	@Override
 	public final void setCameraRotationVec3f(final Vec3f setRotVec3f) {
 
 		/**
@@ -180,16 +186,17 @@ public class ViewCameraBase
 			helpRot_cos.x() * helpRot_cos.y() * helpRot_cos.z() - helpRot_sin.x() * helpRot_sin.y()
 				* helpRot_sin.z();
 
-		rotfCameraRotation.set(new Vec3f(helpRot_cos.x() * helpRot_sin.y() * helpRot_cos.z()
-			+ helpRot_sin.x() * helpRot_sin.y() * helpRot_sin.z(),
+		rotfCameraRotation.set(
+			new Vec3f(helpRot_cos.x() * helpRot_sin.y() * helpRot_cos.z() + helpRot_sin.x() * helpRot_sin.y()
+				* helpRot_sin.z(),
 
-		helpRot_sin.x() * helpRot_sin.y() * helpRot_cos.z() - helpRot_cos.x() * helpRot_sin.y()
-			* helpRot_sin.z(),
+			helpRot_sin.x() * helpRot_sin.y() * helpRot_cos.z() - helpRot_cos.x() * helpRot_sin.y()
+				* helpRot_sin.z(),
 
-		helpRot_sin.x() * helpRot_cos.y() * helpRot_cos.z() + helpRot_cos.x() * helpRot_cos.y()
-			* helpRot_sin.z()),
+			helpRot_sin.x() * helpRot_cos.y() * helpRot_cos.z() + helpRot_cos.x() * helpRot_cos.y()
+				* helpRot_sin.z()),
 
-		w);
+			w);
 	}
 
 	public final void addCameraRotationVec3f(final Vec3f setRotVec3f) {
@@ -212,42 +219,48 @@ public class ViewCameraBase
 				* helpRot_sin.z();
 
 		Rotf temp = new Rotf();
-		temp.set(new Vec3f(helpRot_cos.x() * helpRot_sin.y() * helpRot_cos.z() + helpRot_sin.x()
-			* helpRot_sin.y() * helpRot_sin.z(),
+		temp.set(
+			new Vec3f(helpRot_cos.x() * helpRot_sin.y() * helpRot_cos.z() + helpRot_sin.x() * helpRot_sin.y()
+				* helpRot_sin.z(),
 
-		helpRot_sin.x() * helpRot_sin.y() * helpRot_cos.z() - helpRot_cos.x() * helpRot_sin.y()
-			* helpRot_sin.z(),
+			helpRot_sin.x() * helpRot_sin.y() * helpRot_cos.z() - helpRot_cos.x() * helpRot_sin.y()
+				* helpRot_sin.z(),
 
-		helpRot_sin.x() * helpRot_cos.y() * helpRot_cos.z() + helpRot_cos.x() * helpRot_cos.y()
-			* helpRot_sin.z()),
+			helpRot_sin.x() * helpRot_cos.y() * helpRot_cos.z() + helpRot_cos.x() * helpRot_cos.y()
+				* helpRot_sin.z()),
 
-		w);
+			w);
 
 		rotfCameraRotation.times(temp);
 	}
 
+	@Override
 	public final Vec3f getCameraRotationEuler() {
 
 		return v3fCameraRotationEuler;
 	}
 
+	@Override
 	public void setCameraRotationEuler(final Vec3f setRotEuler) {
 
 		v3fCameraRotationEuler = setRotEuler;
 
 	}
 
+	@Override
 	public void addCameraRotationEuler(final Vec3f addRotEuler) {
 
 		v3fCameraRotationEuler.add(addRotEuler);
 	}
 
+	@Override
 	public void addCameraRotation(final Rotf setRot) {
 
 		Rotf buffer = rotfCameraRotation.times(setRot);
 		rotfCameraRotation = buffer;
 	}
 
+	@Override
 	public void addCameraScale(final Vec3f setScale) {
 
 		v3fCameraScale.add(setScale);
@@ -261,6 +274,7 @@ public class ViewCameraBase
 		return new Vec3f(v3fCameraScale);
 	}
 
+	@Override
 	public void clone(IViewCamera cloneFromCamera) {
 
 		this.v3fCameraPosition = new Vec3f(cloneFromCamera.getCameraPosition());

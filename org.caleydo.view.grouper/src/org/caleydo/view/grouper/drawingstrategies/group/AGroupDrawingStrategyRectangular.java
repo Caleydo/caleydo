@@ -219,8 +219,8 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(vecPosition.x(), vecPosition.y(), vecPosition.z());
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition.z());
-		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight, vecPosition
-				.z());
+		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight,
+				vecPosition.z());
 		gl.glVertex3f(vecPosition.x(), vecPosition.y() - fHeight, vecPosition.z());
 		gl.glEnd();
 
@@ -238,8 +238,8 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(vecPosition.x(), vecPosition.y(), vecPosition.z());
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition.z());
-		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight, vecPosition
-				.z());
+		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight,
+				vecPosition.z());
 		gl.glVertex3f(vecPosition.x(), vecPosition.y() - fHeight, vecPosition.z());
 		gl.glEnd();
 
@@ -343,9 +343,9 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 
 		gl.glColor3f(0.0f, 0.0f, 0.0f);
 		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(vecPosition.x(), vecPosition.y()
-				- alDropPositions.get(iDropPositionIndex), groupRepresentation
-				.getPosition().z());
+		gl.glVertex3f(vecPosition.x(),
+				vecPosition.y() - alDropPositions.get(iDropPositionIndex),
+				groupRepresentation.getPosition().z());
 		gl.glVertex3f(vecPosition.x() + groupRepresentation.getWidth(), vecPosition.y()
 				- alDropPositions.get(iDropPositionIndex), groupRepresentation
 				.getPosition().z());
@@ -374,8 +374,8 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(vecPosition.x(), vecPosition.y(), vecPosition.z());
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition.z());
-		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight, vecPosition
-				.z());
+		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight,
+				vecPosition.z());
 		gl.glVertex3f(vecPosition.x(), vecPosition.y() - fHeight, vecPosition.z());
 		gl.glEnd();
 

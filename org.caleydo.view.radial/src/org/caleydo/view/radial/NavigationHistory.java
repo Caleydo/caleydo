@@ -49,8 +49,7 @@ public class NavigationHistory {
 	 *            Current maximum hierarchy depth that can be displayed.
 	 */
 	public void addNewHistoryEntry(ADrawingState drawingState,
-			PartialDisc pdCurrentRootElement,
-			PartialDisc pdCurrentSelectedElement,
+			PartialDisc pdCurrentRootElement, PartialDisc pdCurrentSelectedElement,
 			int iMaxDisplayedHierarchyDepth) {
 
 		if (iCurrentEntryPosition < alHistoryEntries.size() - 1) {
@@ -60,9 +59,8 @@ public class NavigationHistory {
 		}
 
 		iCurrentEntryPosition++;
-		alHistoryEntries.add(new HistoryEntry(drawingState,
-				pdCurrentRootElement, pdCurrentSelectedElement,
-				iMaxDisplayedHierarchyDepth));
+		alHistoryEntries.add(new HistoryEntry(drawingState, pdCurrentRootElement,
+				pdCurrentSelectedElement, iMaxDisplayedHierarchyDepth));
 	}
 
 	/**
@@ -100,13 +98,11 @@ public class NavigationHistory {
 	 */
 	private void applyCurrentHistoryEntry() {
 
-		HistoryEntry heCurrentEntry = alHistoryEntries
-				.get(iCurrentEntryPosition);
+		HistoryEntry heCurrentEntry = alHistoryEntries.get(iCurrentEntryPosition);
 		PartialDisc pdRootElement = heCurrentEntry.getRootElement();
 		PartialDisc pdSelectedElement = heCurrentEntry.getSelectedElement();
 
-		pdRootElement.setCurrentStartAngle(heCurrentEntry
-				.getRootElementStartAngle());
+		pdRootElement.setCurrentStartAngle(heCurrentEntry.getRootElementStartAngle());
 		pdSelectedElement.setCurrentStartAngle(heCurrentEntry
 				.getSelectedElementStartAngle());
 
@@ -120,15 +116,14 @@ public class NavigationHistory {
 		updateDepthSliderPositionEvent.setSender(radialHierarchy);
 		updateDepthSliderPositionEvent.setDepthSliderPosition(heCurrentEntry
 				.getMaxDisplayedHierarchyDepth());
-		GeneralManager.get().getEventPublisher().triggerEvent(
-				updateDepthSliderPositionEvent);
+		GeneralManager.get().getEventPublisher()
+				.triggerEvent(updateDepthSliderPositionEvent);
 
 		drawingController.setDrawingState(heCurrentEntry.getDrawingState());
 
 		radialHierarchy.setDisplayListDirty();
 
-		radialHierarchy.setNewSelection(SelectionType.SELECTION,
-				pdSelectedElement);
+		radialHierarchy.setNewSelection(SelectionType.SELECTION, pdSelectedElement);
 	}
 
 	/**
@@ -165,19 +160,16 @@ public class NavigationHistory {
 	 *            New value for the maximum displayed hierarchy depth of the
 	 *            current history entry.
 	 */
-	public void setCurrentMaxDisplayedHierarchyDepth(
-			int iMaxDisplayedHierarchyDepth) {
+	public void setCurrentMaxDisplayedHierarchyDepth(int iMaxDisplayedHierarchyDepth) {
 
 		if (iCurrentEntryPosition < 0)
 			return;
-		HistoryEntry heCurrentEntry = alHistoryEntries
-				.get(iCurrentEntryPosition);
+		HistoryEntry heCurrentEntry = alHistoryEntries.get(iCurrentEntryPosition);
 		if (heCurrentEntry == null) {
 			return;
 		}
 
-		heCurrentEntry
-				.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
+		heCurrentEntry.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
 	}
 
 	/**
@@ -194,14 +186,12 @@ public class NavigationHistory {
 	 *            Current maximum hierarchy depth that can be displayed.
 	 */
 	public void replaceCurrentHistoryEntry(ADrawingState drawingState,
-			PartialDisc pdCurrentRootElement,
-			PartialDisc pdCurrentSelectedElement,
+			PartialDisc pdCurrentRootElement, PartialDisc pdCurrentSelectedElement,
 			int iMaxDisplayedHierarchyDepth) {
 
 		if (iCurrentEntryPosition < 0)
 			return;
-		HistoryEntry heCurrentEntry = alHistoryEntries
-				.get(iCurrentEntryPosition);
+		HistoryEntry heCurrentEntry = alHistoryEntries.get(iCurrentEntryPosition);
 		if (heCurrentEntry == null) {
 			return;
 		}
@@ -209,8 +199,7 @@ public class NavigationHistory {
 		heCurrentEntry.setDrawingState(drawingState);
 		heCurrentEntry.setRootElement(pdCurrentRootElement);
 		heCurrentEntry.setSelectedElement(pdCurrentSelectedElement);
-		heCurrentEntry
-				.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
+		heCurrentEntry.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
 
 	}
 

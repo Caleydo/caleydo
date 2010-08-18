@@ -5,8 +5,7 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.view.scatterplot.GLScatterPlot;
 
-public class UseRandomSamplingListener extends
-		AEventListener<GLScatterPlot> {
+public class UseRandomSamplingListener extends AEventListener<GLScatterPlot> {
 
 	@Override
 	public void handleEvent(AEvent event) {

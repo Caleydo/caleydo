@@ -60,7 +60,7 @@ public class RemoteLevel {
 	// {
 	// if (!alRemoteLevelElement.contains(element))
 	// return;
-	//		
+	//
 	// alRemoteLevelElement.remove(element);
 	// }
 

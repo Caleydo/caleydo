@@ -40,10 +40,8 @@ public class PDDrawingStrategyRainbow extends APDDrawingStrategyChildIndicator {
 		ArrayList<ColorMarkerPoint> alMarkerPoints = new ArrayList<ColorMarkerPoint>();
 
 		alMarkerPoints.add(new ColorMarkerPoint(0.0f, 1.0f, 0.0f, 0.0f));
-		alMarkerPoints.add(new ColorMarkerPoint((120.0f / 360.0f), 0.0f, 1.0f,
-				0.0f));
-		alMarkerPoints.add(new ColorMarkerPoint((240.0f / 360.0f), 0.0f, 0.0f,
-				1.0f));
+		alMarkerPoints.add(new ColorMarkerPoint((120.0f / 360.0f), 0.0f, 1.0f, 0.0f));
+		alMarkerPoints.add(new ColorMarkerPoint((240.0f / 360.0f), 0.0f, 0.0f, 1.0f));
 		alMarkerPoints.add(new ColorMarkerPoint(1.0f, 1.0f, 0.0f, 0.0f));
 
 		ColorMappingManager.get().initColorMapping(EColorMappingType.RAINBOW,
@@ -59,22 +57,19 @@ public class PDDrawingStrategyRainbow extends APDDrawingStrategyChildIndicator {
 		float fRadius = pdDiscToDraw.getCurrentWidth();
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw
-						.getElementID()));
+				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
-			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(),
-					fRadius, pdDiscToDraw.getCurrentStartAngle(), pdDiscToDraw
-							.getCurrentAngle());
+			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(), fRadius,
+					pdDiscToDraw.getCurrentStartAngle(), pdDiscToDraw.getCurrentAngle());
 		}
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR, 0);
 		GLPrimitives.renderCircle(glu, fRadius, iNumSlicesPerFullDisc);
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_COLOR, 0);
-		GLPrimitives.renderCircleBorder(gl, glu, fRadius,
-				iNumSlicesPerFullDisc,
+		GLPrimitives.renderCircleBorder(gl, glu, fRadius, iNumSlicesPerFullDisc,
 				RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_WIDTH);
 
 		gl.glPopAttrib();
@@ -93,8 +88,7 @@ public class PDDrawingStrategyRainbow extends APDDrawingStrategyChildIndicator {
 		float fWidth = pdDiscToDraw.getCurrentWidth();
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw
-						.getElementID()));
+				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
@@ -103,14 +97,12 @@ public class PDDrawingStrategyRainbow extends APDDrawingStrategyChildIndicator {
 
 		gl.glColor4fv(getColor(pdDiscToDraw), 0);
 
-		GLPrimitives.renderPartialDisc(glu, fInnerRadius,
-				fInnerRadius + fWidth, fStartAngle, fAngle,
-				iNumSlicesPerFullDisc);
+		GLPrimitives.renderPartialDisc(glu, fInnerRadius, fInnerRadius + fWidth,
+				fStartAngle, fAngle, iNumSlicesPerFullDisc);
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_COLOR, 0);
 		GLPrimitives.renderPartialDiscBorder(gl, glu, fInnerRadius,
-				fInnerRadius + fWidth, fStartAngle, fAngle,
-				iNumSlicesPerFullDisc,
+				fInnerRadius + fWidth, fStartAngle, fAngle, iNumSlicesPerFullDisc,
 				RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_WIDTH);
 
 		gl.glPopAttrib();

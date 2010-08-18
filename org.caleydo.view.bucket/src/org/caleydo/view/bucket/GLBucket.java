@@ -1072,11 +1072,11 @@ public class GLBucket extends AGLView implements
 		} else if (view.getViewType().equals("org.caleydo.view.pathway")) {
 			textureViewSymbol = textureManager.getIconTexture(gl,
 					EIconTextures.PATHWAY_SYMBOL);
-		} 
-//		else if (view.getViewType().equals("org.caleydo.view.glyph")) {
-//			textureViewSymbol = textureManager.getIconTexture(gl,
-//					EIconTextures.GLYPH_SYMBOL);
-//		}
+		}
+		// else if (view.getViewType().equals("org.caleydo.view.glyph")) {
+		// textureViewSymbol = textureManager.getIconTexture(gl,
+		// EIconTextures.GLYPH_SYMBOL);
+		// }
 		// else if (view instanceof GLCell) {
 		// textureViewSymbol = textureManager.getIconTexture(gl,
 		// EIconTextures.GLYPH_SYMBOL);
@@ -1794,6 +1794,7 @@ public class GLBucket extends AGLView implements
 	 * 
 	 * @param iPathwayID
 	 */
+	@Override
 	public void addPathwayView(final int iPathwayID) {
 
 		if (!PathwayManager.get().isPathwayVisible(
@@ -1931,8 +1932,8 @@ public class GLBucket extends AGLView implements
 				break;
 
 			}
-//			infoAreaManager.setData(iExternalID, dataDomain.get,
-//					pick.getPickedPoint(), 0.3f);// pick.getDepth());
+			// infoAreaManager.setData(iExternalID, dataDomain.get,
+			// pick.getPickedPoint(), 0.3f);// pick.getDepth());
 			break;
 
 		case BUCKET_MOVE_IN_ICON_SELECTION:
@@ -2450,8 +2451,7 @@ public class GLBucket extends AGLView implements
 	 * @param GL
 	 */
 	private void initNewView(GL gl) {
-		if (!newViews.isEmpty()
-				&& PathwayManager.get().isPathwayLoadingFinished()
+		if (!newViews.isEmpty() && PathwayManager.get().isPathwayLoadingFinished()
 				&& arSlerpActions.isEmpty()) {
 
 			ASerializedView serView = newViews.remove(0);
@@ -2575,7 +2575,8 @@ public class GLBucket extends AGLView implements
 
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView)
-					.setDataDomain((IDataDomain) DataDomainManager.getInstance().getDataDomain(serView.getDataDomainType()));
+					.setDataDomain((IDataDomain) DataDomainManager.getInstance()
+							.getDataDomain(serView.getDataDomainType()));
 		}
 
 		if (glView instanceof GLPathway) {
@@ -2626,6 +2627,7 @@ public class GLBucket extends AGLView implements
 		canvasManager.releaseBusyMode(this);
 	}
 
+	@Override
 	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
 
 		// add new pathways to bucket
@@ -2941,6 +2943,7 @@ public class GLBucket extends AGLView implements
 		return geneMappingEnabled;
 	}
 
+	@Override
 	public void setGeneMappingEnabled(boolean geneMappingEnabled) {
 		this.geneMappingEnabled = geneMappingEnabled;
 	}
@@ -2949,6 +2952,7 @@ public class GLBucket extends AGLView implements
 		return pathwayTexturesEnabled;
 	}
 
+	@Override
 	public void setPathwayTexturesEnabled(boolean pathwayTexturesEnabled) {
 		this.pathwayTexturesEnabled = pathwayTexturesEnabled;
 	}
@@ -2957,6 +2961,7 @@ public class GLBucket extends AGLView implements
 		return neighborhoodEnabled;
 	}
 
+	@Override
 	public void setNeighborhoodEnabled(boolean neighborhoodEnabled) {
 		this.neighborhoodEnabled = neighborhoodEnabled;
 	}
@@ -2965,14 +2970,17 @@ public class GLBucket extends AGLView implements
 		return connectionLinesEnabled;
 	}
 
+	@Override
 	public void setConnectionLinesEnabled(boolean connectionLinesEnabled) {
 		this.connectionLinesEnabled = connectionLinesEnabled;
 	}
 
+	@Override
 	public void toggleNavigationMode() {
 		this.bEnableNavigationOverlay = !bEnableNavigationOverlay;
 	}
 
+	@Override
 	public void toggleZoom() {
 		bucketMouseWheelListener.triggerZoom(!bucketMouseWheelListener.isZoomedIn());
 	}

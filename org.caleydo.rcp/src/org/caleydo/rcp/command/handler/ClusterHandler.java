@@ -9,6 +9,7 @@ import org.eclipse.core.commands.IHandler;
 public class ClusterHandler
 	extends AbstractHandler
 	implements IHandler {
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		StartClusteringAction action = new StartClusteringAction();
@@ -20,7 +21,7 @@ public class ClusterHandler
 		//
 		// if (clusterState != null)
 		// GeneralManager.get().getEventPublisher().triggerEvent(new StartClusteringEvent(clusterState));
-		//	
+		//
 		return null;
 	}
 }

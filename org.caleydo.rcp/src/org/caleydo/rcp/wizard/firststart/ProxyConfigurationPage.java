@@ -49,14 +49,15 @@ public final class ProxyConfigurationPage
 	public ProxyConfigurationPage() {
 		super(PAGE_NAME, PAGE_NAME, null);
 
-		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader().getResource(
-			"resources/wizard/wizard.png")));
+		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
+			.getResource("resources/wizard/wizard.png")));
 
 		thisPage = this;
 
 		setPageComplete(false);
 	}
 
+	@Override
 	public void createControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
 		RowLayout layout = new RowLayout(SWT.VERTICAL);
@@ -86,21 +87,21 @@ public final class ProxyConfigurationPage
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-//				updateInternetStatusLabel();
-//
-//				PreferenceStore prefStore =
-//					Application.caleydoCoreBootloader.getGeneralManager().getPreferenceStore();
-//				prefStore.setValue(PreferenceConstants.USE_PROXY, bUseProxy);
-//
-//				if (bUseProxy) {
-//					prefStore.setValue(PreferenceConstants.PROXY_SERVER, txtProxyServer.getText());
-//					prefStore.setValue(PreferenceConstants.PROXY_PORT, txtProxyPort.getText());
-//
-//					System.setProperty("network.proxy_host", prefStore
-//						.getString(PreferenceConstants.PROXY_SERVER));
-//					System.setProperty("network.proxy_port", prefStore
-//						.getString(PreferenceConstants.PROXY_PORT));
-//				}
+				// updateInternetStatusLabel();
+				//
+				// PreferenceStore prefStore =
+				// Application.caleydoCoreBootloader.getGeneralManager().getPreferenceStore();
+				// prefStore.setValue(PreferenceConstants.USE_PROXY, bUseProxy);
+				//
+				// if (bUseProxy) {
+				// prefStore.setValue(PreferenceConstants.PROXY_SERVER, txtProxyServer.getText());
+				// prefStore.setValue(PreferenceConstants.PROXY_PORT, txtProxyPort.getText());
+				//
+				// System.setProperty("network.proxy_host", prefStore
+				// .getString(PreferenceConstants.PROXY_SERVER));
+				// System.setProperty("network.proxy_port", prefStore
+				// .getString(PreferenceConstants.PROXY_PORT));
+				// }
 			}
 		});
 
@@ -160,6 +161,7 @@ public final class ProxyConfigurationPage
 		txtProxyPort = new Text(groupProxySettings, SWT.BORDER);
 		txtProxyPort.setEnabled(false);
 		txtProxyPort.addListener(SWT.Verify, new Listener() {
+			@Override
 			public void handleEvent(Event e) {
 				String string = e.text;
 				char[] chars = new char[string.length()];
@@ -215,12 +217,12 @@ public final class ProxyConfigurationPage
 			}
 		}
 		catch (Exception e) {
-//			Application.bIsInterentConnectionOK = false;
+			// Application.bIsInterentConnectionOK = false;
 			setPageComplete(false);
 			return false;
 		}
 
-//		Application.bIsInterentConnectionOK = true;
+		// Application.bIsInterentConnectionOK = true;
 		setPageComplete(true);
 		return true;
 	}

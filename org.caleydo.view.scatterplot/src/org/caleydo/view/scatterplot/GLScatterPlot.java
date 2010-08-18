@@ -276,6 +276,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		// Register keyboard listener to GL canvas
 		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
 			}
@@ -327,6 +328,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						glParentView.getParentGLCanvas().getParentComposite()
 								.addKeyListener(glKeyListener);

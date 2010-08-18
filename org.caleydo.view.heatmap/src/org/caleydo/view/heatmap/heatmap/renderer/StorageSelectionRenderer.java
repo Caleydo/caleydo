@@ -20,10 +20,10 @@ public class StorageSelectionRenderer extends AContentRenderer {
 	public void renderSelection(final GL gl, SelectionType selectionType) {
 
 		// content selection
-		Set<Integer> selectedSet = heatMap.getContentSelectionManager()
-				.getElements(selectionType);
-//		float width = x;
-//		float yPosition = y;
+		Set<Integer> selectedSet = heatMap.getContentSelectionManager().getElements(
+				selectionType);
+		// float width = x;
+		// float yPosition = y;
 		float xPosition = 0;
 
 		if (selectionType == SelectionType.SELECTION) {
@@ -34,13 +34,11 @@ public class StorageSelectionRenderer extends AContentRenderer {
 			gl.glLineWidth(MOUSE_OVER_LINE_WIDTH);
 		}
 
-	
 		// storage selection
 		gl.glEnable(GL.GL_LINE_STIPPLE);
 		gl.glLineStipple(2, (short) 0xAAAA);
 
-		selectedSet = heatMap.getStorageSelectionManager().getElements(
-				selectionType);
+		selectedSet = heatMap.getStorageSelectionManager().getElements(selectionType);
 		int columnIndex = 0;
 		for (int tempColumn : heatMap.getStorageVA()) {
 			for (Integer selectedColumn : selectedSet) {
@@ -49,18 +47,20 @@ public class StorageSelectionRenderer extends AContentRenderer {
 
 					xPosition = columnIndex * contentSpacing.getFieldWidth();
 
-//					gl.glPushName(heatMap.getPickingManager().getPickingID(
-//							heatMap.getID(),
-//							EPickingType.HEAT_MAP_STORAGE_SELECTION,
-//							selectedColumn));
+					// gl.glPushName(heatMap.getPickingManager().getPickingID(
+					// heatMap.getID(),
+					// EPickingType.HEAT_MAP_STORAGE_SELECTION,
+					// selectedColumn));
 
 					gl.glBegin(GL.GL_LINE_LOOP);
 					gl.glVertex3f(xPosition, y, SELECTION_Z);
 					gl.glVertex3f(xPosition, 0, SELECTION_Z);
-					gl.glVertex3f(xPosition + contentSpacing.getFieldWidth(), 0, SELECTION_Z);
-					gl.glVertex3f(xPosition + contentSpacing.getFieldWidth(), y, SELECTION_Z);
+					gl.glVertex3f(xPosition + contentSpacing.getFieldWidth(), 0,
+							SELECTION_Z);
+					gl.glVertex3f(xPosition + contentSpacing.getFieldWidth(), y,
+							SELECTION_Z);
 					gl.glEnd();
-//					gl.glPopName();
+					// gl.glPopName();
 				}
 			}
 			columnIndex++;

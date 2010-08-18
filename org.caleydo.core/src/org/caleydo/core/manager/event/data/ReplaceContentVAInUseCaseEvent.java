@@ -13,10 +13,10 @@ import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
  * Event that can be called by views if their virtual array has changed so significantly that it is
  * inefficient (or even impossible) to communicate this via {@link VirtualArrayDelta}s. A possible example is
  * the saving of brushes in the parallel coordinates.
- *</p>
- *<p>
+ * </p>
+ * <p>
  * This event should not be received by the individual views, but by the UseCase
- *</p>
+ * </p>
  * 
  * @author Alexander Lex
  */
@@ -33,7 +33,7 @@ public class ReplaceContentVAInUseCaseEvent
 		ContentVirtualArray virtualArray) {
 		super(set, dataDomain, vaType, virtualArray);
 	}
-	
+
 	public ReplaceContentVAInUseCaseEvent(String dataDomain, ContentVAType vaType,
 		ContentVirtualArray virtualArray) {
 		super(dataDomain, vaType, virtualArray);

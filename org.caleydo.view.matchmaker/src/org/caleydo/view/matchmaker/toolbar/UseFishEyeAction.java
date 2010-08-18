@@ -26,8 +26,8 @@ public class UseFishEyeAction extends AToolBarAction implements IToolBarItem {
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 		super.setChecked(useFishEye);
 	}
 
@@ -43,7 +43,7 @@ public class UseFishEyeAction extends AToolBarAction implements IToolBarItem {
 		else
 			useFishEye = true;
 
-		GeneralManager.get().getEventPublisher().triggerEvent(
-				new UseFishEyeEvent(useFishEye));
+		GeneralManager.get().getEventPublisher()
+				.triggerEvent(new UseFishEyeEvent(useFishEye));
 	};
 }

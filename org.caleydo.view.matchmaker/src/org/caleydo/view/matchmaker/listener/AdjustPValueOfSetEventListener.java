@@ -9,8 +9,8 @@ public class AdjustPValueOfSetEventListener extends AEventListener<GLMatchmaker>
 
 	@Override
 	public void handleEvent(AEvent event) {
-		
-		if(event instanceof AdjustPValueEvent) {
+
+		if (event instanceof AdjustPValueEvent) {
 			handler.handleAdjustPValue();
 		}
 	}

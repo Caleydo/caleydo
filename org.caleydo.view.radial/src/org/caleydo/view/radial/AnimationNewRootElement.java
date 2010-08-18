@@ -47,8 +47,7 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	 *            NavigationHistory instance that shall be used.
 	 */
 	public AnimationNewRootElement(DrawingController drawingController,
-			GLRadialHierarchy radialHierarchy,
-			NavigationHistory navigationHistory) {
+			GLRadialHierarchy radialHierarchy, NavigationHistory navigationHistory) {
 
 		super(drawingController, radialHierarchy, navigationHistory);
 		fAnimationDuration = DEFAULT_ANIMATION_DURATION;
@@ -206,8 +205,7 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	// ========================================
 
 	@Override
-	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu,
-			double dTimePassed) {
+	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu, double dTimePassed) {
 
 		PartialDisc pdCurrentSelectedElement = radialHierarchy
 				.getCurrentSelectedElement();
@@ -221,16 +219,17 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 		moveValues(dTimePassed);
 
 		dsFixedColor.setFillColor(mvCurrentRootColorR.getMovementValue(),
-				mvCurrentRootColorG.getMovementValue(), mvCurrentRootColorB
-						.getMovementValue(), 1);
+				mvCurrentRootColorG.getMovementValue(),
+				mvCurrentRootColorB.getMovementValue(), 1);
 
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
 		gl.glTranslatef(fXCenter, fYCenter, 0);
 
-		pdCurrentSelectedElement.drawHierarchyAngular(gl, glu, mvCurrentWidth
-				.getMovementValue(), fTargetDepth, mvCurrentRootStartAngle
-				.getMovementValue(), mvCurrentRootAngle.getMovementValue(),
+		pdCurrentSelectedElement.drawHierarchyAngular(gl, glu,
+				mvCurrentWidth.getMovementValue(), fTargetDepth,
+				mvCurrentRootStartAngle.getMovementValue(),
+				mvCurrentRootAngle.getMovementValue(),
 				mvCurrentRootInnerRadius.getMovementValue());
 
 		if (haveMovementValuesReachedTargets()) {
@@ -245,8 +244,8 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 			radialHierarchy.setAnimationActive(false);
 			radialHierarchy.setCurrentRootElement(pdCurrentSelectedElement);
 
-			navigationHistory.addNewHistoryEntry(dsNext,
-					pdCurrentSelectedElement, pdCurrentSelectedElement,
+			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentSelectedElement,
+					pdCurrentSelectedElement,
 					radialHierarchy.getMaxDisplayedHierarchyDepth());
 			radialHierarchy.setNewSelection(SelectionType.SELECTION,
 					pdCurrentSelectedElement);
@@ -270,24 +269,21 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	private void initAnimation(float fXCenter, float fYCenter,
 			PartialDisc pdCurrentSelectedElement) {
 
-		float fCurrentSelectedAngle = pdCurrentSelectedElement
-				.getCurrentAngle();
+		float fCurrentSelectedAngle = pdCurrentSelectedElement.getCurrentAngle();
 		float fCurrentSelectedInnerRadius = pdCurrentSelectedElement
 				.getCurrentInnerRadius();
 		float fCurrentSelectedStartAngle = pdCurrentSelectedElement
 				.getCurrentStartAngle();
 		float fCurrentWidth = pdCurrentSelectedElement.getCurrentWidth();
 
-		fTargetDepth = Math.min(
-				radialHierarchy.getMaxDisplayedHierarchyDepth(),
+		fTargetDepth = Math.min(radialHierarchy.getMaxDisplayedHierarchyDepth(),
 				pdCurrentSelectedElement.getDepth());
 		float fTargetWidth = Math.min(fXCenter
 				* RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE, fYCenter
 				* RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE)
 				/ fTargetDepth;
 
-		float fMidAngle = fCurrentSelectedStartAngle
-				+ (fCurrentSelectedAngle / 2.0f);
+		float fMidAngle = fCurrentSelectedStartAngle + (fCurrentSelectedAngle / 2.0f);
 		fTargetDepth = pdCurrentSelectedElement.getCurrentDepth();
 
 		while (fMidAngle > 360) {
@@ -329,22 +325,18 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 		mvCurrentRootAngle = createNewMovementValue(fCurrentSelectedAngle,
 				TARGET_ROOT_ANGLE, fAnimationDuration);
 
-		mvCurrentRootStartAngle = createNewMovementValue(
-				fCurrentSelectedStartAngle, 0, fAnimationDuration);
-		mvCurrentRootInnerRadius = createNewMovementValue(
-				fCurrentSelectedInnerRadius, TARGET_ROOT_INNER_RADIUS,
+		mvCurrentRootStartAngle = createNewMovementValue(fCurrentSelectedStartAngle, 0,
 				fAnimationDuration);
+		mvCurrentRootInnerRadius = createNewMovementValue(fCurrentSelectedInnerRadius,
+				TARGET_ROOT_INNER_RADIUS, fAnimationDuration);
 		mvCurrentWidth = createNewMovementValue(fCurrentWidth, fTargetWidth,
 				fAnimationDuration);
 		mvCurrentRootColorR = createNewMovementValue(fArRGB[0],
-				RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[0],
-				fAnimationDuration);
+				RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[0], fAnimationDuration);
 		mvCurrentRootColorG = createNewMovementValue(fArRGB[1],
-				RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[1],
-				fAnimationDuration);
+				RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[1], fAnimationDuration);
 		mvCurrentRootColorB = createNewMovementValue(fArRGB[2],
-				RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[2],
-				fAnimationDuration);
+				RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[2], fAnimationDuration);
 
 		dsFixedColor = (PDDrawingStrategyFixedColor) radialHierarchy
 				.getDrawingStrategyManager().createDrawingStrategy(
@@ -600,7 +592,7 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	// fTargetDepth, mvCurrentRootStartAngle.getMovementValue(),
 	// mvCurrentRootAngle
 	// .getMovementValue(), mvCurrentRootInnerRadius.getMovementValue());
-	//			
+	//
 	// }
 	// else {
 	// pdCurrentSelectedElement.drawHierarchyAngular(gl, glu,
@@ -659,9 +651,9 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	// float fCurrentSelectedStartAngle =
 	// pdCurrentSelectedElement.getCurrentStartAngle();
 	// fTargetDepth = pdCurrentSelectedElement.getCurrentDepth();
-	//		
+	//
 	// float fTargetStartAngle = 0;
-	//		
+	//
 	// if(fCurrentSelectedStartAngle > 360 - fCurrentSelectedStartAngle)
 	// fTargetStartAngle = 360;
 	//
@@ -693,7 +685,7 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	// float fCurrentSelectedStartAngle =
 	// pdCurrentSelectedElement.getCurrentStartAngle();
 	// float fCurrentWidth = pdCurrentSelectedElement.getCurrentWidth();
-	//		
+	//
 	// fTargetDepth =
 	// Math.min(radialHierarchy.getMaxDisplayedHierarchyDepth(),
 	// pdCurrentSelectedElement
@@ -703,11 +695,11 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	// fYCenter
 	// * RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE)
 	// / fTargetDepth;
-	//		
+	//
 	// float fMidAngle = fCurrentSelectedStartAngle + (fCurrentSelectedAngle /
 	// 2.0f);
 	// fTargetDepth = pdCurrentSelectedElement.getCurrentDepth();
-	//		
+	//
 	// while (fMidAngle > 360) {
 	// fMidAngle -= 360;
 	// }
@@ -717,7 +709,7 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	// float fAngleToAdd = (fMidAngle > fCurrentSelectedStartAngle) ? -180 :
 	// 180;
 	// float fSelectedTargetStartAngle = fMidAngle + fAngleToAdd;
-	//		
+	//
 	// float fArRGB[];
 	// if
 	// (DrawingStrategyManager.get().getDefaultDrawingStrategy().getDrawingStrategyType()
@@ -733,9 +725,9 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	// fArRGB =
 	// cmExpression.getColor(pdCurrentSelectedElement.getAverageExpressionValue());
 	// }
-	//		
+	//
 	// alMovementValues.clear();
-	//		
+	//
 	// mvCurrentRootAngle =
 	// createNewMovementValue(fCurrentSelectedAngle, TARGET_ROOT_ANGLE,
 	// fAnimationDuration);
@@ -759,12 +751,12 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	// createNewMovementValue(fArRGB[2],
 	// RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[2],
 	// fAnimationDuration);
-	//		
+	//
 	// dsFixedColor =
 	// (PDDrawingStrategyFixedColor)
 	// DrawingStrategyManager.get().getDrawingStrategy(
 	// EPDDrawingStrategyType.FIXED_COLOR);
-	//		
+	//
 	// pdCurrentSelectedElement.setPDDrawingStrategy(dsFixedColor);
 	// }
 

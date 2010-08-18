@@ -50,8 +50,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	private DrawingStrategyManager drawingStrategyManager;
 	private GLGrouper glGrouper;
 
-	public GroupRepresentation(ClusterNode clusterNode,
-			GrouperRenderStyle renderStyle,
+	public GroupRepresentation(ClusterNode clusterNode, GrouperRenderStyle renderStyle,
 			IGroupDrawingStrategy drawingStrategy,
 			DrawingStrategyManager drawingStrategyManager, GLGrouper glGrouper,
 			boolean bLeaf) {
@@ -91,8 +90,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	}
 
 	@Override
-	public void handleDragging(GL gl, float fMouseCoordinateX,
-			float fMouseCoordinateY) {
+	public void handleDragging(GL gl, float fMouseCoordinateX, float fMouseCoordinateY) {
 
 		GroupDrawingStrategyDragged drawingStrategyDragged = (GroupDrawingStrategyDragged) drawingStrategyManager
 				.getGroupDrawingStrategy(EGroupDrawingStrategyType.DRAGGED);
@@ -101,17 +99,15 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 					fMouseCoordinateY, fDraggingStartMouseCoordinateX,
 					fDraggingStartMouseCoordinateY);
 		} else {
-			drawingStrategyDragged.drawDraggedGroup(gl, this,
-					fMouseCoordinateX, fMouseCoordinateY,
-					fDraggingStartMouseCoordinateX,
+			drawingStrategyDragged.drawDraggedGroup(gl, this, fMouseCoordinateX,
+					fMouseCoordinateY, fDraggingStartMouseCoordinateX,
 					fDraggingStartMouseCoordinateY);
 		}
 
 	}
 
 	@Override
-	public void setDraggingStartPoint(float fMouseCoordinateX,
-			float fMouseCoordinateY) {
+	public void setDraggingStartPoint(float fMouseCoordinateX, float fMouseCoordinateY) {
 		fDraggingStartMouseCoordinateX = fMouseCoordinateX;
 		fDraggingStartMouseCoordinateY = fMouseCoordinateY;
 		vecDraggingStartPosition = new Vec3f(vecPosition);
@@ -134,14 +130,12 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 			return;
 		}
 
-		drawingStrategyRectangular.drawDropPositionMarker(gl, this,
-				iDropPositionIndex);
+		drawingStrategyRectangular.drawDropPositionMarker(gl, this, iDropPositionIndex);
 	}
 
 	@Override
-	public void handleDrop(GL gl, Set<IDraggable> setDraggables,
-			float fMouseCoordinateX, float fMouseCoordinateY,
-			DragAndDropController dragAndDropController) {
+	public void handleDrop(GL gl, Set<IDraggable> setDraggables, float fMouseCoordinateX,
+			float fMouseCoordinateY, DragAndDropController dragAndDropController) {
 
 		int iDropPositionIndex = getDropPositionIndex(gl, setDraggables,
 				fMouseCoordinateX, fMouseCoordinateY);
@@ -256,8 +250,8 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	 */
 	public float getScaledHeight(int viewportHeight) {
 		if (drawingStrategy instanceof AGLGUIElement)
-			return ((AGLGUIElement) drawingStrategy).getScaledSizeOf(
-					viewportHeight, fHeight);
+			return ((AGLGUIElement) drawingStrategy).getScaledSizeOf(viewportHeight,
+					fHeight);
 		return fHeight;
 	}
 
@@ -270,8 +264,8 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	 */
 	public float getScaledWidth(int viewportWidth) {
 		if (drawingStrategy instanceof AGLGUIElement)
-			return ((AGLGUIElement) drawingStrategy).getScaledSizeOf(
-					viewportWidth, fWidth);
+			return ((AGLGUIElement) drawingStrategy).getScaledSizeOf(viewportWidth,
+					fWidth);
 		return fWidth;
 	}
 
@@ -417,8 +411,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 			if (selectionManager.checkStatus(SelectionType.MOUSE_OVER, getID())) {
 				drawingStrategy = drawingStrategyManager
 						.getGroupDrawingStrategy(EGroupDrawingStrategyType.MOUSE_OVER);
-			} else if (selectionManager.checkStatus(SelectionType.SELECTION,
-					getID())) {
+			} else if (selectionManager.checkStatus(SelectionType.SELECTION, getID())) {
 				drawingStrategy = drawingStrategyManager
 						.getGroupDrawingStrategy(EGroupDrawingStrategyType.SELECTION);
 			} else {
@@ -519,8 +512,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 
 	@Override
 	public void getOrderedCompositeList(Set<ICompositeGraphic> setComposites,
-			ArrayList<ICompositeGraphic> alComposites,
-			boolean topLevelElementsOnly) {
+			ArrayList<ICompositeGraphic> alComposites, boolean topLevelElementsOnly) {
 
 		if (alComposites == null || setComposites == null)
 			return;
@@ -549,9 +541,8 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 
 	@Override
 	public ICompositeGraphic getShallowCopy() {
-		GroupRepresentation copy = new GroupRepresentation(clusterNode,
-				renderStyle, drawingStrategy, drawingStrategyManager,
-				glGrouper, bLeaf);
+		GroupRepresentation copy = new GroupRepresentation(clusterNode, renderStyle,
+				drawingStrategy, drawingStrategyManager, glGrouper, bLeaf);
 		copy.alChildren = alChildren;
 		copy.vecHierarchyPosition = vecHierarchyPosition;
 		copy.vecPosition = vecPosition;
@@ -590,8 +581,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	}
 
 	@Override
-	public void replaceChild(ICompositeGraphic childToReplace,
-			ICompositeGraphic newChild) {
+	public void replaceChild(ICompositeGraphic childToReplace, ICompositeGraphic newChild) {
 		int iChildIndex = alChildren.indexOf(childToReplace);
 
 		if (iChildIndex == -1)
@@ -610,18 +600,16 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 			copiedNode = new ClusterNode(tree, clusterNode.getNodeName(),
 					iConsecutiveID[0], false, clusterNode.getLeafID());
 		} else {
-			copiedNode = new ClusterNode(tree, clusterNode.getNodeName()
-					+ "_copy", iConsecutiveID[0], false, clusterNode
-					.getLeafID());
+			copiedNode = new ClusterNode(tree, clusterNode.getNodeName() + "_copy",
+					iConsecutiveID[0], false, clusterNode.getLeafID());
 		}
-		GroupRepresentation copy = new GroupRepresentation(copiedNode,
-				renderStyle, drawingStrategy, drawingStrategyManager,
-				glGrouper, bLeaf);
+		GroupRepresentation copy = new GroupRepresentation(copiedNode, renderStyle,
+				drawingStrategy, drawingStrategyManager, glGrouper, bLeaf);
 		copy.addSelectionTypes(selectionTypes);
 		for (ICompositeGraphic child : alChildren) {
 			iConsecutiveID[0]++;
-			ICompositeGraphic copiedChild = child.createDeepCopyWithNewIDs(
-					tree, iConsecutiveID);
+			ICompositeGraphic copiedChild = child.createDeepCopyWithNewIDs(tree,
+					iConsecutiveID);
 			copy.add(copiedChild);
 		}
 
@@ -673,10 +661,9 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 			children.append(", Name: " + child.getName() + "; ");
 		}
 
-		System.out.println("ID: " + getID() + ", Name: " + getName()
-				+ ", Parent: " + ((parent != null) ? parent.getID() : "null")
-				+ ", NumChildren: " + alChildren.size()
-				+ ", NumDropPositions: " + alDropPositions.size());
+		System.out.println("ID: " + getID() + ", Name: " + getName() + ", Parent: "
+				+ ((parent != null) ? parent.getID() : "null") + ", NumChildren: "
+				+ alChildren.size() + ", NumDropPositions: " + alDropPositions.size());
 		System.out.println("Children: " + children.toString() + "\n");
 
 		if (!bLeaf && alDropPositions.size() != alChildren.size() + 1)

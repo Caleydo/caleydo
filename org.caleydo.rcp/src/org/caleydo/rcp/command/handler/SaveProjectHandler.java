@@ -9,6 +9,7 @@ import org.eclipse.core.commands.IHandler;
 public class SaveProjectHandler
 	extends AbstractHandler
 	implements IHandler {
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		new SaveProjectAction().run();

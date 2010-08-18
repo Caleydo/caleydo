@@ -30,7 +30,7 @@ public class DataDomainGraph {
 		dataDomainGraph.addVertex(GENETIC);
 		dataDomainGraph.addVertex(PATHWAY);
 		dataDomainGraph.addVertex(ORGAN);
-		
+
 		dataDomainGraph.addEdge(CLINICAL, GENETIC);
 		dataDomainGraph.addEdge(CLINICAL, TISSUE);
 		dataDomainGraph.addEdge(CLINICAL, ORGAN);
@@ -52,7 +52,7 @@ public class DataDomainGraph {
 	public SimpleGraph<String, Edge> getGraph() {
 		return dataDomainGraph;
 	}
-	
+
 	public static void main(String args[]) {
 		DataDomainGraph graph = new DataDomainGraph();
 

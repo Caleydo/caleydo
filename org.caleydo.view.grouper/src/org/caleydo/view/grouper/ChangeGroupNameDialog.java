@@ -26,7 +26,7 @@ public class ChangeGroupNameDialog {
 		// shell.open();
 		final Shell dialog = new Shell(display, SWT.DIALOG_TRIM);
 		final Text text = new Text(dialog, SWT.SHADOW_IN);
-	    text.setBounds(140, 40, 100, 25);
+		text.setBounds(140, 40, 100, 25);
 		text.setText(groupRep.getName());
 		final Button okButton = new Button(dialog, SWT.PUSH);
 		okButton.setText("&OK");
@@ -48,8 +48,6 @@ public class ChangeGroupNameDialog {
 		dialog.pack();
 		dialog.open();
 
-	
-
 		Listener okListener = new Listener() {
 
 			@Override
@@ -62,12 +60,11 @@ public class ChangeGroupNameDialog {
 
 			}
 		};
-		
+
 		okButton.addListener(SWT.Selection, okListener);
 
 		cancelButton.addListener(SWT.Selection, okListener);
-		
-		
+
 		while (!dialog.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
@@ -102,7 +99,7 @@ public class ChangeGroupNameDialog {
 // // buttonCancel.setText("Cancel");
 // // buttonCancel.setBounds(120, 55, 80, 25);
 //
-//	
+//
 //
 // // Listener listener = new Listener() {
 // // public void handleEvent(Event event) {

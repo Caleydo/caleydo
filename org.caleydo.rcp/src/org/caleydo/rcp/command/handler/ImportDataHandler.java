@@ -10,13 +10,14 @@ import org.eclipse.swt.widgets.Shell;
 public class ImportDataHandler
 	extends AbstractHandler
 	implements IHandler {
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell shell = new Shell();
 		// shell.setMaximized(true);
 		LoadDataDialog dialog = new LoadDataDialog(shell);
 		dialog.open();
 
-		//		
+		//
 		// org.eclipse.ui.internal.views.log.LogView log;
 		// log.
 		// log.P_USE_LIMIT

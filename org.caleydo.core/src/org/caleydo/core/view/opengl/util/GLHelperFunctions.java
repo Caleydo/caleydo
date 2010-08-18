@@ -36,8 +36,8 @@ public class GLHelperFunctions {
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
 		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
-		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getTop()
-			- viewFrustum.getBottom(), 0);
+		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(),
+			viewFrustum.getTop() - viewFrustum.getBottom(), 0);
 		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop() - viewFrustum.getBottom(), 0);
 
 		gl.glEnd();

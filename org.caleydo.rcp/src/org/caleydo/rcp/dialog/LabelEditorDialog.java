@@ -62,6 +62,7 @@ public class LabelEditorDialog
 		buttonCancel.setText("Cancel");
 
 		text.addListener(SWT.Modify, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				try {
 					sLabel = text.getText();
@@ -74,12 +75,14 @@ public class LabelEditorDialog
 		});
 
 		buttonOK.addListener(SWT.Selection, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				shell.dispose();
 			}
 		});
 
 		buttonCancel.addListener(SWT.Selection, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				sLabel = null;
 				shell.dispose();
@@ -87,6 +90,7 @@ public class LabelEditorDialog
 		});
 
 		shell.addListener(SWT.Traverse, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				if (event.detail == SWT.TRAVERSE_ESCAPE) {
 					event.doit = false;

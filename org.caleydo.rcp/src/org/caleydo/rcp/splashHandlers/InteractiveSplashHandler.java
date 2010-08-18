@@ -21,12 +21,12 @@ public class InteractiveSplashHandler
 	private ProgressBar progressBar;
 
 	private static Shell shell;
-	
+
 	@Override
 	public void init(Shell splash) {
 		// Store the shell
 		super.init(splash);
-		
+
 		shell = splash;
 
 		// Create UI
@@ -41,7 +41,7 @@ public class InteractiveSplashHandler
 
 		splash.setText("Loading Caleydo...");
 	}
-	
+
 	public static Shell getShell() {
 		return shell;
 	}
@@ -99,8 +99,8 @@ public class InteractiveSplashHandler
 		copyrightLabel.setBounds(385, 312, 180, 16);
 		copyrightLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(progressBar,
-			progressMessageLabel);
+		GeneralManager.get().getSWTGUIManager()
+			.setExternalProgressBarAndLabel(progressBar, progressMessageLabel);
 
 		// Application.startCaleydoCore();
 	}
@@ -113,10 +113,12 @@ public class InteractiveSplashHandler
 
 		// Make sure that splash screen remains the active window
 		splash.addFocusListener(new FocusListener() {
+			@Override
 			public void focusGained(FocusEvent e) {
 				// nothing to do
 			}
 
+			@Override
 			public void focusLost(FocusEvent e) {
 				splash.forceActive();
 			}
@@ -125,10 +127,10 @@ public class InteractiveSplashHandler
 
 	@Override
 	public void dispose() {
-//		if (!Application.bDoExit) {
+		// if (!Application.bDoExit) {
 
-			// Start OpenGL rendering
-			GeneralManager.get().getViewGLCanvasManager().startAnimator();
-//		}
+		// Start OpenGL rendering
+		GeneralManager.get().getViewGLCanvasManager().startAnimator();
+		// }
 	}
 }

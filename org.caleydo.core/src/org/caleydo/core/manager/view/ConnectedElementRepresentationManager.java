@@ -197,8 +197,7 @@ public class ConnectedElementRepresentationManager
 	 *            the id of the object to be connected
 	 * @return a list of the representations of the points
 	 */
-	public ArrayList<SelectedElementRep> getSelectedElementRepsByElementID(IDType idType,
-		final int iElementID) {
+	public ArrayList<SelectedElementRep> getSelectedElementRepsByElementID(IDType idType, final int iElementID) {
 
 		ArrayList<SelectedElementRep> tempList = sourceConnectionsByType.get(idType).get(iElementID);
 
@@ -329,6 +328,7 @@ public class ConnectedElementRepresentationManager
 	/**
 	 * Registers the event listeners.
 	 */
+	@Override
 	public void registerEventListeners() {
 		clearConnectionsListener = new ClearConnectionsListener();
 		clearConnectionsListener.setHandler(this);
@@ -344,6 +344,7 @@ public class ConnectedElementRepresentationManager
 		eventPublisher.addListener(AddSelectionEvent.class, addSelectionListener);
 	}
 
+	@Override
 	@SuppressWarnings("unused")
 	public void unregisterEventListeners() {
 		if (clearConnectionsListener != null) {

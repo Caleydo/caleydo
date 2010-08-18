@@ -16,14 +16,14 @@ public class PoincareDisk {
 	public float centeredNodeSize = 1;
 	private float layoutLenseFactor = 1.45f;
 	private boolean calculateRootNodeAngleSwitch = false;
-    protected ArrayList<PoincareNode> eyeTrackableNodes;
-	
+	protected ArrayList<PoincareNode> eyeTrackableNodes;
+
 	public PoincareDisk() {
 		radius = 1f;
 		nodeSize = 0.1f;
 		lineWidth = 2;
 		absolutePosition = new float[2];
-		eyeTrackableNodes=new ArrayList<PoincareNode>();
+		eyeTrackableNodes = new ArrayList<PoincareNode>();
 	}
 
 	public Tree<PoincareNode> getTree() {
@@ -59,12 +59,11 @@ public class PoincareDisk {
 
 	// applies a moebiustransformation on an node calls this method for the
 	// children
-	private boolean translateNodeMoebius(PoincareNode node,
-			float[] translationVector) {
+	private boolean translateNodeMoebius(PoincareNode node, float[] translationVector) {
 		// do the transformation:
-		ComplexNumber tempVector = moebiusTransformation(new ComplexNumber(node
-				.getPosition()[0], node.getPosition()[1]), new ComplexNumber(
-				translationVector[0], translationVector[1]));
+		ComplexNumber tempVector = moebiusTransformation(
+				new ComplexNumber(node.getPosition()[0], node.getPosition()[1]),
+				new ComplexNumber(translationVector[0], translationVector[1]));
 
 		// converting the complex numbers into coordinates
 		float[] newPoint = new float[2];
@@ -232,8 +231,7 @@ public class PoincareDisk {
 		root.iComparableValue = treeNodeCounter;
 		root.setChildrenAngleOffset(0);
 		if (mode == 2)
-			moebiusNodeLayout(root, (float) (Math.PI / 2), (float) Math.PI,
-					mode);
+			moebiusNodeLayout(root, (float) (Math.PI / 2), (float) Math.PI, mode);
 		if (mode == 1)
 			moebiusNodeLayout(root, 0, 0, mode);
 	}
@@ -277,20 +275,18 @@ public class PoincareDisk {
 					(double) relativePoint[0] / layoutLenseFactor,
 					(double) relativePoint[1] / layoutLenseFactor);
 
-			ComplexNumber startingPoint = new ComplexNumber(newPoint[0],
-					newPoint[1]);
+			ComplexNumber startingPoint = new ComplexNumber(newPoint[0], newPoint[1]);
 
 			ComplexNumber targetPoint = new ComplexNumber(0, 0);
-			targetPoint.setValue(moebiusTransformation(startingPoint,
-					relativeTargetPoint));
+			targetPoint
+					.setValue(moebiusTransformation(startingPoint, relativeTargetPoint));
 
 			// translation of the complex number position into a coordinate
 			newPoint[0] = (float) targetPoint.getRealPart();
 			newPoint[1] = (float) targetPoint.getImaginaryPart();
 
 			children.get(i).setPosition(newPoint);
-			children.get(i).setDistanceFromOrigin(
-					this.distanceFromOrigin(newPoint));
+			children.get(i).setDistanceFromOrigin(this.distanceFromOrigin(newPoint));
 
 			treeNodeCounter++;
 			children.get(i).iComparableValue = treeNodeCounter;
@@ -325,12 +321,10 @@ public class PoincareDisk {
 		ComplexNumber targetPoint = new ComplexNumber(0, 0);
 
 		float[] eVectorPos = getEV(position);
-		ComplexNumber relativeTargetPoint = new ComplexNumber(eVectorPos[0]
-				* -length, eVectorPos[1] * -length);
-		ComplexNumber startingPoint = new ComplexNumber(position[0],
-				position[1]);
-		targetPoint.setValue(moebiusTransformation(startingPoint,
-				relativeTargetPoint));
+		ComplexNumber relativeTargetPoint = new ComplexNumber(eVectorPos[0] * -length,
+				eVectorPos[1] * -length);
+		ComplexNumber startingPoint = new ComplexNumber(position[0], position[1]);
+		targetPoint.setValue(moebiusTransformation(startingPoint, relativeTargetPoint));
 
 		float[] returnValue = new float[2];
 		returnValue[0] = (float) targetPoint.getRealPart();
@@ -371,8 +365,8 @@ public class PoincareDisk {
 				distance = distancePoints(getNodeByCompareableValue(counter)
 						.getZoomedPosition(), coordinate);
 
-				float[] size = getMetric(getNodeByCompareableValue(counter)
-						.getPosition(), nodeSize);
+				float[] size = getMetric(
+						getNodeByCompareableValue(counter).getPosition(), nodeSize);
 
 				nodeRadius = this.distanceFromOrigin(size);
 
@@ -413,8 +407,8 @@ public class PoincareDisk {
 		}
 		// System.out.println("entgültig "+closestNode.getPosition()[0]+" "+closestNode.getPosition()[1]);
 		currentDistance = currentDistance
-				- this.getMetric(closestNode.getPosition(),
-						this.nodeSize * 1.4142f)[0] - intend;
+				- this.getMetric(closestNode.getPosition(), this.nodeSize * 1.4142f)[0]
+				- intend;
 
 		returnValue[0] = currentDistance * 0.7071f;
 		returnValue[1] = currentDistance * 0.7071f;
@@ -488,14 +482,12 @@ public class PoincareDisk {
 						(double) relativePosition[1]);
 				complexParentPosition.setValue((double) parentPosition[0],
 						(double) parentPosition[1]);
-				complexParentPosition = this.moebiusTransformation(
-						complexParentPosition, moebiusTransformation);
+				complexParentPosition = this.moebiusTransformation(complexParentPosition,
+						moebiusTransformation);
 
 				// calculating the new vector from the current node to its root
-				relativePosition[0] = (float) complexParentPosition
-						.getRealPart();
-				relativePosition[1] = (float) complexParentPosition
-						.getImaginaryPart();
+				relativePosition[0] = (float) complexParentPosition.getRealPart();
+				relativePosition[1] = (float) complexParentPosition.getImaginaryPart();
 
 				float[] eV = getEV(relativePosition);
 				float angle = (float) Math.atan2(eV[1], eV[0]);
@@ -514,8 +506,7 @@ public class PoincareDisk {
 				if (this.calculateRootNodeAngleSwitch == true) {
 					if (currentNode.getChildren() != null) {
 
-						childPosition = currentNode.getChildren().get(0)
-								.getPosition();
+						childPosition = currentNode.getChildren().get(0).getPosition();
 
 						float[] relativePosition = new float[2];
 						relativePosition[0] = -currentPosition[0];
@@ -527,18 +518,15 @@ public class PoincareDisk {
 						ComplexNumber moebiusTransformation = new ComplexNumber();
 						ComplexNumber complexParentPosition = new ComplexNumber();
 
-						moebiusTransformation.setValue(
-								(double) relativePosition[0],
+						moebiusTransformation.setValue((double) relativePosition[0],
 								(double) relativePosition[1]);
-						complexParentPosition.setValue(
-								(double) childPosition[0],
+						complexParentPosition.setValue((double) childPosition[0],
 								(double) childPosition[1]);
 
 						complexParentPosition = this.moebiusTransformation(
 								complexParentPosition, moebiusTransformation);
 
-						relativePosition[0] = (float) complexParentPosition
-								.getRealPart();
+						relativePosition[0] = (float) complexParentPosition.getRealPart();
 						relativePosition[1] = (float) complexParentPosition
 								.getImaginaryPart();
 

@@ -8,8 +8,7 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class GoBackInHistoryAction extends AToolBarAction implements
-		IToolBarItem {
+public class GoBackInHistoryAction extends AToolBarAction implements IToolBarItem {
 
 	public static final String TEXT = "Back";
 	public static final String ICON = "resources/icons/view/general/undo.png";
@@ -18,16 +17,15 @@ public class GoBackInHistoryAction extends AToolBarAction implements
 		super(viewID);
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 		setChecked(false);
 	}
 
 	@Override
 	public void run() {
 		super.run();
-		GeneralManager.get().getEventPublisher().triggerEvent(
-				new GoBackInHistoryEvent());
+		GeneralManager.get().getEventPublisher().triggerEvent(new GoBackInHistoryEvent());
 		setChecked(false);
 	};
 }

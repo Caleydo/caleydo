@@ -24,23 +24,28 @@ public abstract class AGLMiniView
 
 	}
 
+	@Override
 	public abstract void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin);
 
+	@Override
 	public final float getWidth() {
 
 		return fWidth;
 	}
 
+	@Override
 	public final float getHeight() {
 
 		return fHeight;
 	}
 
+	@Override
 	public void setWidth(final float fWidth) {
 
 		this.fWidth = fWidth;
 	}
 
+	@Override
 	public void setHeight(final float fHeight) {
 
 		this.fHeight = fHeight;

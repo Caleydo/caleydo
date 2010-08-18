@@ -81,8 +81,8 @@ public class ColorMapping {
 
 		setUpMapping();
 		notANumberColor =
-			ConversionTools.getFloatColorFromString(GeneralManager.get().getPreferenceStore().getString(
-				PreferenceConstants.NAN_COLOR));
+			ConversionTools.getFloatColorFromString(GeneralManager.get().getPreferenceStore()
+				.getString(PreferenceConstants.NAN_COLOR));
 	}
 
 	/**

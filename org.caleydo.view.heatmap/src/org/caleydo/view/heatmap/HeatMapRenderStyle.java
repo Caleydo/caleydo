@@ -75,8 +75,7 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 		// alFieldWidths = new ArrayList<FieldWidthElement>();
 
 		// init fish eye
-		float fDelta = (selectedFieldHeight - normalFieldHeight)
-				/ (iLevels + 1);
+		float fDelta = (selectedFieldHeight - normalFieldHeight) / (iLevels + 1);
 		hashLevelToWidth = new HashMap<Integer, Float>();
 		hashLevelToWidth.put(iNotSelectedLevel, normalFieldHeight);
 		float fCurrentWidth = normalFieldHeight;
@@ -103,31 +102,26 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 
 	}
 
-	
-
 	/**
 	 * Initializes or updates field sizes based on selections, virtual arrays
 	 * etc. Call this every time something has changed.
 	 */
 	public void updateFieldSizesWithFish() {
-		int numberSelected = heatMap.getContentSelectionManager()
-				.getNumberOfElements(SelectionType.MOUSE_OVER);
-		numberSelected += heatMap.getContentSelectionManager()
-				.getNumberOfElements(SelectionType.SELECTION);
+		int numberSelected = heatMap.getContentSelectionManager().getNumberOfElements(
+				SelectionType.MOUSE_OVER);
+		numberSelected += heatMap.getContentSelectionManager().getNumberOfElements(
+				SelectionType.SELECTION);
 
 		int numberTotal = heatMap.getContentVA().size();
 
 		float selecteFieldHeightPercentage = SELECTED_FIELD_HEIGHT_PERCENTAGE;
-		if (numberSelected > 0
-				&& SELECTED_FIELD_HEIGHT_PERCENTAGE * numberSelected > 1) {
+		if (numberSelected > 0 && SELECTED_FIELD_HEIGHT_PERCENTAGE * numberSelected > 1) {
 			selecteFieldHeightPercentage = 1.0f / numberSelected;
 		}
 
-		selectedFieldHeight = getRenderHeight()
-				* MAXIMUM_SELECTED_AREA_PERCENTAGE
+		selectedFieldHeight = getRenderHeight() * MAXIMUM_SELECTED_AREA_PERCENTAGE
 				* selecteFieldHeightPercentage;
-		normalFieldHeight = (getRenderHeight() - numberSelected
-				* selectedFieldHeight)
+		normalFieldHeight = (getRenderHeight() - numberSelected * selectedFieldHeight)
 				/ (numberTotal - numberSelected);
 
 		normalFieldHeight = normalFieldHeight > selectedFieldHeight ? selectedFieldHeight
@@ -178,7 +172,6 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 
 		this.fWidthLevel3 = fWidthLevel3;
 	}
-
 
 	public float getYCenter() {
 

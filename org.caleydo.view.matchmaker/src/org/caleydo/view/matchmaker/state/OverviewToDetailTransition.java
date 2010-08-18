@@ -39,6 +39,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 		animationDuration = 0.5f;
 	}
 
+	@Override
 	protected void finish() {
 		for (int i = 0; i < heatMapWrappers.size(); i++) {
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);

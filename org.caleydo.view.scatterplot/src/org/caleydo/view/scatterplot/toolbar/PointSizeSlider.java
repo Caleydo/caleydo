@@ -22,8 +22,8 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Juergen Pillhofer
  */
-public class PointSizeSlider extends ControlContribution implements
-		IToolBarItem, IListenerOwner {
+public class PointSizeSlider extends ControlContribution implements IToolBarItem,
+		IListenerOwner {
 
 	private Listener listener;
 	// private UpdateDepthSliderPositionListener updateSliderPositionListener;
@@ -49,12 +49,12 @@ public class PointSizeSlider extends ControlContribution implements
 		slider.setLayoutData(new GridData(130, 20));
 
 		listener = new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				SetPointSizeEvent setPointSizeEvent = new SetPointSizeEvent();
 				setPointSizeEvent.setSender(this);
 				setPointSizeEvent.setPointSize(slider.getSelection());
-				GeneralManager.get().getEventPublisher().triggerEvent(
-						setPointSizeEvent);
+				GeneralManager.get().getEventPublisher().triggerEvent(setPointSizeEvent);
 			}
 
 		};
@@ -71,10 +71,10 @@ public class PointSizeSlider extends ControlContribution implements
 	}
 
 	@Override
-	public void queueEvent(
-			final AEventListener<? extends IListenerOwner> listener,
+	public void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 			final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				listener.handleEvent(event);
 			}
@@ -105,12 +105,12 @@ public class PointSizeSlider extends ControlContribution implements
 	@Override
 	public void registerEventListeners() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

@@ -48,11 +48,11 @@ public class RCPViewManager
 		activateViewListener = new ActivateViewListener();
 		activateViewListener.setHandler(this);
 		GeneralManager.get().getEventPublisher().addListener(LoadPathwayEvent.class, activateViewListener);
-		GeneralManager.get().getEventPublisher().addListener(LoadPathwaysByGeneEvent.class,
-			activateViewListener);
+		GeneralManager.get().getEventPublisher()
+			.addListener(LoadPathwaysByGeneEvent.class, activateViewListener);
 		GeneralManager.get().getEventPublisher().addListener(OpenViewEvent.class, activateViewListener);
-		GeneralManager.get().getEventPublisher().addListener(OpenMatchmakerViewEvent.class,
-			activateViewListener);
+		GeneralManager.get().getEventPublisher()
+			.addListener(OpenMatchmakerViewEvent.class, activateViewListener);
 	}
 
 	@Override

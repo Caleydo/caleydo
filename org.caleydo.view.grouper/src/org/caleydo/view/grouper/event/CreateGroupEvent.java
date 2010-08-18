@@ -4,8 +4,7 @@ import java.util.Set;
 
 import org.caleydo.core.manager.event.AEvent;
 
-public class CreateGroupEvent
-	extends AEvent {
+public class CreateGroupEvent extends AEvent {
 
 	private Set<Integer> setContainedGroups;
 

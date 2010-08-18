@@ -20,8 +20,8 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * @deprecated STILL IN USE????
  */
 @Deprecated
-public class ParCoordsPreferencePage extends FieldEditorPreferencePage
-		implements IWorkbenchPreferencePage {
+public class ParCoordsPreferencePage extends FieldEditorPreferencePage implements
+		IWorkbenchPreferencePage {
 
 	private IntegerFieldEditor numRandomSamplesFE;
 	private BooleanFieldEditor limitRemoteToContext;
@@ -82,8 +82,7 @@ public class ParCoordsPreferencePage extends FieldEditorPreferencePage
 				GLParallelCoordinates parCoords = (GLParallelCoordinates) glView;
 				// if(!heatMap.isRenderedRemote())
 				// {
-				parCoords.setNumberOfSamplesToShow(numRandomSamplesFE
-						.getIntValue());
+				parCoords.setNumberOfSamplesToShow(numRandomSamplesFE.getIntValue());
 				// }
 			}
 		}

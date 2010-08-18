@@ -73,8 +73,8 @@ public class KMeansClusterer
 
 		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
 
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
 
 			int iNrElements = contentVA.size();
 
@@ -93,8 +93,8 @@ public class KMeansClusterer
 				if (bClusteringCanceled == false) {
 					int tempPercentage = (int) ((float) icnt / contentVA.size() * 100);
 					if (iPercentage == tempPercentage) {
-						GeneralManager.get().getEventPublisher().triggerEvent(
-							new ClusterProgressEvent(iPercentage, false));
+						GeneralManager.get().getEventPublisher()
+							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
@@ -118,8 +118,8 @@ public class KMeansClusterer
 		}
 		else {
 
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
 
 			int iNrElements = storageVA.size();
 
@@ -138,8 +138,8 @@ public class KMeansClusterer
 				if (bClusteringCanceled == false) {
 					int tempPercentage = (int) ((float) isto / contentVA.size() * 100);
 					if (iPercentage == tempPercentage) {
-						GeneralManager.get().getEventPublisher().triggerEvent(
-							new ClusterProgressEvent(iPercentage, false));
+						GeneralManager.get().getEventPublisher()
+							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
@@ -160,15 +160,18 @@ public class KMeansClusterer
 				}
 			}
 		}
-		GeneralManager.get().getEventPublisher().triggerEvent(
-			new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
+		GeneralManager
+			.get()
+			.getEventPublisher()
+			.triggerEvent(
+				new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
 		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING)
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("KMeans clustering of genes in progress"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("KMeans clustering of genes in progress"));
 		else
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("KMeans clustering of experiments in progress"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("KMeans clustering of experiments in progress"));
 
 		Instances data = null;
 
@@ -296,8 +299,11 @@ public class KMeansClusterer
 		// set.setAlClusterSizes(count);
 		// set.setAlExamples(alExamples);
 
-		GeneralManager.get().getEventPublisher().triggerEvent(
-			new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
+		GeneralManager
+			.get()
+			.getEventPublisher()
+			.triggerEvent(
+				new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
 		return tempResult;
 	}

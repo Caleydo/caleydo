@@ -12,8 +12,8 @@ public class ClusterProgressListener
 	public void handleEvent(AEvent event) {
 		if (event instanceof ClusterProgressEvent) {
 			ClusterProgressEvent clusterProgressEvent = (ClusterProgressEvent) event;
-			handler.setProgress(clusterProgressEvent.isForSimilaritiesBar(), clusterProgressEvent
-				.getPercentCompleted());
+			handler.setProgress(clusterProgressEvent.isForSimilaritiesBar(),
+				clusterProgressEvent.getPercentCompleted());
 		}
 		if (event instanceof RenameProgressBarEvent) {
 			RenameProgressBarEvent renameProgressBarEvent = (RenameProgressBarEvent) event;

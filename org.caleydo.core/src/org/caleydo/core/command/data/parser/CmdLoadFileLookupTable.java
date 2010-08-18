@@ -154,6 +154,7 @@ public class CmdLoadFileLookupTable
 	 * 
 	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
+	@Override
 	public void doCommand() {
 		LookupTableLoader loader = null;
 

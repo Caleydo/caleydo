@@ -6,7 +6,6 @@ import org.caleydo.core.manager.GeneralManager;
  * Startup procedure for XML bootstrapping.
  * 
  * @author Marc Streit
- *
  */
 public class XMLStartupProcedure
 	extends AStartupProcedure {
@@ -19,15 +18,15 @@ public class XMLStartupProcedure
 
 	@Override
 	public void init(ApplicationInitData appInitData) {
-		
+
 		super.init(appInitData);
-		
+
 		GeneralManager.get().getXmlParserManager().parseXmlFileByName(fileName);
 	}
 
 	@Override
 	public void addDefaultStartViews() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

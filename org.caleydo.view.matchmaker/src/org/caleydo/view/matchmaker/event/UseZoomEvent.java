@@ -4,7 +4,7 @@ import org.caleydo.core.manager.event.AEvent;
 
 /**
  * @author Alexander Lex
- *
+ * 
  */
 public class UseZoomEvent extends AEvent {
 

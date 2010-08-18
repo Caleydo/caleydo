@@ -47,8 +47,8 @@ public class ExportDataDialog
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		newShell.setText("Export Data");
-		newShell.setImage(GeneralManager.get().getResourceLoader().getImage(newShell.getDisplay(),
-			"resources/icons/general/export_data.png"));
+		newShell.setImage(GeneralManager.get().getResourceLoader()
+			.getImage(newShell.getDisplay(), "resources/icons/general/export_data.png"));
 	}
 
 	@Override

@@ -12,9 +12,8 @@ public class HeatMapLayoutOverviewLeft extends AHeatMapLayoutOverview {
 
 	@Override
 	public Vec3f getCaptionLabelPosition(float textWidth) {
-		return new Vec3f(positionX + getCaptionLabelHorizontalSpacing(),
-				positionY + getOverviewHeight()
-						+ getCaptionLabelVerticalSpacing(), 0.0f);
+		return new Vec3f(positionX + getCaptionLabelHorizontalSpacing(), positionY
+				+ getOverviewHeight() + getCaptionLabelVerticalSpacing(), 0.0f);
 	}
 
 	@Override

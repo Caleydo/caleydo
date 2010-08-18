@@ -35,8 +35,7 @@ public class TextItem extends ALabelItem {
 	@Override
 	public void draw(GL gl) {
 		float[] text_color = RadialHierarchyRenderStyle.LABEL_TEXT_COLOR;
-		textRenderer.setColor(text_color[0], text_color[1], text_color[2],
-				text_color[3]);
+		textRenderer.setColor(text_color[0], text_color[1], text_color[2], text_color[3]);
 
 		textRenderer.renderText(gl, sText, vecPosition.x(), vecPosition.y(), 0,
 				fTextScaling, RadialHierarchyRenderStyle.LABEL_TEXT_MIN_SIZE);
@@ -57,9 +56,8 @@ public class TextItem extends ALabelItem {
 		this.textRenderer = textRenderer;
 		this.fTextScaling = fTextScaling;
 
-		Rectangle2D bounds = textRenderer.getScaledBounds(gl,
-				sTextForHeightCalculation, fTextScaling,
-				RadialHierarchyRenderStyle.LABEL_TEXT_MIN_SIZE);
+		Rectangle2D bounds = textRenderer.getScaledBounds(gl, sTextForHeightCalculation,
+				fTextScaling, RadialHierarchyRenderStyle.LABEL_TEXT_MIN_SIZE);
 		fHeight = (float) bounds.getHeight();
 		bounds = textRenderer.getScaledBounds(gl, sText, fTextScaling,
 				RadialHierarchyRenderStyle.LABEL_TEXT_MIN_SIZE);

@@ -19,8 +19,8 @@ public class DendrogramButtonRenderCommand implements IHeatMapRenderCommand {
 	private int viewID;
 	private TextureManager textureManager;
 
-	public DendrogramButtonRenderCommand(int viewID,
-			PickingManager pickingManager, TextureManager textureManager) {
+	public DendrogramButtonRenderCommand(int viewID, PickingManager pickingManager,
+			TextureManager textureManager) {
 		this.viewID = viewID;
 		this.pickingManager = pickingManager;
 		this.textureManager = textureManager;
@@ -44,44 +44,40 @@ public class DendrogramButtonRenderCommand implements IHeatMapRenderCommand {
 		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
-				EPickingType.COMPARE_DENDROGRAM_BUTTON_SELECTION,
-				heatMapWrapper.getID()));
-		Vec3f lowerLeftCorner = new Vec3f(position.x(), position.y(), position
-				.z());
+				EPickingType.COMPARE_DENDROGRAM_BUTTON_SELECTION, heatMapWrapper.getID()));
+		Vec3f lowerLeftCorner = new Vec3f(position.x(), position.y(), position.z());
 		Vec3f lowerRightCorner = new Vec3f(position.x() + width, position.y(),
 				position.z());
-		Vec3f upperRightCorner = new Vec3f(position.x() + width, position.y()
-				+ height, position.z());
+		Vec3f upperRightCorner = new Vec3f(position.x() + width, position.y() + height,
+				position.z());
 		Vec3f upperLeftCorner = new Vec3f(position.x(), position.y() + height,
 				position.z());
 
-		if ((layout instanceof HeatMapLayoutDetailViewRight && !layout
-				.isDendrogramUsed())
+		if ((layout instanceof HeatMapLayoutDetailViewRight && !layout.isDendrogramUsed())
 				|| (layout instanceof HeatMapLayoutDetailViewLeft && layout
 						.isDendrogramUsed())) {
 			textureManager.renderTexture(gl, EIconTextures.HEAT_MAP_ARROW,
-					upperLeftCorner, lowerLeftCorner, lowerRightCorner,
-					upperRightCorner, 1, 1, 1, 1);
+					upperLeftCorner, lowerLeftCorner, lowerRightCorner, upperRightCorner,
+					1, 1, 1, 1);
 		} else {
 			textureManager.renderTexture(gl, EIconTextures.HEAT_MAP_ARROW,
-					lowerRightCorner, upperRightCorner, upperLeftCorner,
-					lowerLeftCorner, 1, 1, 1, 1);
+					lowerRightCorner, upperRightCorner, upperLeftCorner, lowerLeftCorner,
+					1, 1, 1, 1);
 		}
 
 		gl.glPopName();
 
 		if (layout instanceof HeatMapLayoutDetailViewLeft) {
-			linePosition.setX(linePosition.x()
-					+ layout.getDendrogramLineWidth());
+			linePosition.setX(linePosition.x() + layout.getDendrogramLineWidth());
 		}
 
-//		gl.glLineWidth(1f);
-//		gl.glColor4f(1, 0, 0, 1);
-//		gl.glBegin(GL.GL_LINES);
-//		gl.glVertex3f(linePosition.x(), linePosition.y(), linePosition.z());
-//		gl.glVertex3f(linePosition.x(), linePosition.y()
-//				+ layout.getDendrogramLineHeight(), linePosition.z());
-//		gl.glEnd();
+		// gl.glLineWidth(1f);
+		// gl.glColor4f(1, 0, 0, 1);
+		// gl.glBegin(GL.GL_LINES);
+		// gl.glVertex3f(linePosition.x(), linePosition.y(), linePosition.z());
+		// gl.glVertex3f(linePosition.x(), linePosition.y()
+		// + layout.getDendrogramLineHeight(), linePosition.z());
+		// gl.glEnd();
 
 		gl.glPopAttrib();
 

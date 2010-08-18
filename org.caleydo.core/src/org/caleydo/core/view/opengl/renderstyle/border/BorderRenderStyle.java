@@ -25,10 +25,12 @@ public class BorderRenderStyle
 
 	protected int glList = -1;
 
+	@Override
 	public void setBorderWidth(final int width) {
 		iBorderWidth = width;
 	}
 
+	@Override
 	public void setBorder(int borderpart, boolean onoff) {
 		if ((borderpart & BORDER.LEFT) == BORDER.LEFT) {
 			bBorderLeft = onoff;
@@ -48,14 +50,17 @@ public class BorderRenderStyle
 
 	}
 
+	@Override
 	public void setBorderColor(Vec4f color) {
 		vBorderColor = color;
 	}
 
+	@Override
 	public void init(GL gl) {
 
 	}
 
+	@Override
 	public void display(GL gl) {
 		if (glList < 0)
 			return;

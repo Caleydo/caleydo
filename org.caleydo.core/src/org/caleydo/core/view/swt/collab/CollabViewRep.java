@@ -72,8 +72,8 @@ public class CollabViewRep
 	 * @param sLabel
 	 */
 	public CollabViewRep(final int iParentContainerId, final String sLabel) {
-		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
-			EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
+		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager()
+			.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class CollabViewRep
 
 	@Override
 	public void registerEventListeners() {
-			testSerializationListener = new TestSerializationListener();
+		testSerializationListener = new TestSerializationListener();
 		testSerializationListener.setHandler(this);
 		eventPublisher.addListener(TestSerializationEvent.class, testSerializationListener);
 
@@ -281,6 +281,7 @@ public class CollabViewRep
 		tree.setLayoutData(data);
 
 		Listener itemListener = new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				System.out.println("itemListener.handleEvent()");
 				removeDataControls();

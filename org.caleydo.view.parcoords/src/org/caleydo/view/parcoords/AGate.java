@@ -25,8 +25,7 @@ public abstract class AGate extends AGLGUIElement {
 	protected float bottom;
 
 	public abstract void draw(GL gl, PickingManager pickingManager,
-			TextureManager textureManager, CaleydoTextRenderer textRenderer,
-			int iViewID);
+			TextureManager textureManager, CaleydoTextRenderer textRenderer, int iViewID);
 
 	/**
 	 * Sets the current position (x coordinate) of the gate.
@@ -59,9 +58,8 @@ public abstract class AGate extends AGLGUIElement {
 	 * @param isGateDraggingFirstTime
 	 *            Specifies whether the gate is dragged the first time or not.
 	 */
-	public void handleDragging(GL gl, float mousePositionX,
-			float mousePositionY, EPickingType draggedObject,
-			boolean isGateDraggingFirstTime) {
+	public void handleDragging(GL gl, float mousePositionX, float mousePositionY,
+			EPickingType draggedObject, boolean isGateDraggingFirstTime) {
 
 		if (isGateDraggingFirstTime) {
 			mouseTopSpacing = top - mousePositionY;

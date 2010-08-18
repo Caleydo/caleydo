@@ -113,10 +113,11 @@ public class GLPathwayContentCreator {
 
 		// hashElementId2MappingColorArray.clear();
 
-//		if (!generalManager.getIDMappingManager().hasMapping(EIDType.REFSEQ_MRNA_INT,
-//				EIDType.EXPRESSION_INDEX)) {
-//			bEnableGeneMapping = false;
-//		}
+		// if
+		// (!generalManager.getIDMappingManager().hasMapping(EIDType.REFSEQ_MRNA_INT,
+		// EIDType.EXPRESSION_INDEX)) {
+		// bEnableGeneMapping = false;
+		// }
 	}
 
 	public void buildPathwayDisplayList(final GL gl, final IUniqueObject containingView,
@@ -902,7 +903,8 @@ public class GLPathwayContentCreator {
 			// when loading expression data.
 			// Possibly a different handling of the Set is required.
 			for (Object iExpressionIndex : idMappingManager.<Integer, Object> getIDAsSet(
-					glPathwayView.getDataDomain().getDavidIDType(), glPathwayView.getMappingDataDomain().getContentIDType(),
+					glPathwayView.getDataDomain().getDavidIDType(), glPathwayView
+							.getMappingDataDomain().getContentIDType(),
 					((Integer) iDavidID))) {
 
 				return colorMapper.getColor(geneticDataDomain

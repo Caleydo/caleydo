@@ -98,9 +98,9 @@ public class GLScatterPlotKeyListener extends GLKeyListener<GLScatterPlot> {
 		case SWT.ARROW_RIGHT:
 			glScatterplot.leftRightSelect(true);
 			break;
-		 case SWT.CR:
-		      this.glScatterplot.confirmCurrentSelection();
-		      break;
+		case SWT.CR:
+			this.glScatterplot.confirmCurrentSelection();
+			break;
 		case SWT.HOME:
 			glScatterplot.clearAllSelections();
 			break;

@@ -30,7 +30,6 @@ public abstract class ACmdExternalAttributes
 
 	protected String detail = "";
 
-	
 	/**
 	 * Constructor
 	 */

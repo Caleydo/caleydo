@@ -221,7 +221,7 @@ public class CmdCreateView
 				(IDataDomainBasedView<IDataDomain>) createdObject;
 			dataDomainBasedView.setDataDomain(dataDomain);
 		}
-		
+
 		createdObject.initialize();
 	}
 

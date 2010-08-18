@@ -5,8 +5,7 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.view.parcoords.GLParallelCoordinates;
 
-public class UseRandomSamplingListener extends
-		AEventListener<GLParallelCoordinates> {
+public class UseRandomSamplingListener extends AEventListener<GLParallelCoordinates> {
 
 	@Override
 	public void handleEvent(AEvent event) {

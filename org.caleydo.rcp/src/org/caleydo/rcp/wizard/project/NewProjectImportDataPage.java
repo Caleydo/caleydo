@@ -27,8 +27,8 @@ public class NewProjectImportDataPage
 	public NewProjectImportDataPage() {
 		super(PAGE_NAME, PAGE_NAME, null);
 
-		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader().getResource(
-			"resources/wizard/wizard.png")));
+		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
+			.getResource("resources/wizard/wizard.png")));
 
 		setPageComplete(true);
 	}

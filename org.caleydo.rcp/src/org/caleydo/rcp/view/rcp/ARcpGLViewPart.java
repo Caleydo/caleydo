@@ -100,8 +100,8 @@ public abstract class ARcpGLViewPart
 		}
 		else {
 			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, iParentCanvasID);
-				}
-		
+		}
+
 		String dataDomainType = determineDataDomain(serializedView);
 		cmdView.setDataDomainType(dataDomainType);
 		cmdView.doCommand();

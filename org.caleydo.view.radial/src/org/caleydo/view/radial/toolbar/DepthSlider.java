@@ -50,13 +50,14 @@ public class DepthSlider extends ControlContribution implements IToolBarItem,
 		slider.setLayoutData(new GridData(130, 20));
 
 		listener = new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				SetMaxDisplayedHierarchyDepthEvent setMaxDisplayedHierarchyDepthEvent = new SetMaxDisplayedHierarchyDepthEvent();
 				setMaxDisplayedHierarchyDepthEvent.setSender(this);
 				setMaxDisplayedHierarchyDepthEvent.setMaxDisplayedHierarchyDepth(slider
 						.getSelection());
-				GeneralManager.get().getEventPublisher().triggerEvent(
-						setMaxDisplayedHierarchyDepthEvent);
+				GeneralManager.get().getEventPublisher()
+						.triggerEvent(setMaxDisplayedHierarchyDepthEvent);
 			}
 
 		};
@@ -71,6 +72,7 @@ public class DepthSlider extends ControlContribution implements IToolBarItem,
 	public void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 			final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				listener.handleEvent(event);
 			}
@@ -99,16 +101,19 @@ public class DepthSlider extends ControlContribution implements IToolBarItem,
 	public void registerEventListeners() {
 		updateSliderPositionListener = new UpdateDepthSliderPositionListener();
 		updateSliderPositionListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(
-				UpdateDepthSliderPositionEvent.class, updateSliderPositionListener);
+		GeneralManager
+				.get()
+				.getEventPublisher()
+				.addListener(UpdateDepthSliderPositionEvent.class,
+						updateSliderPositionListener);
 
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		if (updateSliderPositionListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(
-					updateSliderPositionListener);
+			GeneralManager.get().getEventPublisher()
+					.removeListener(updateSliderPositionListener);
 			updateSliderPositionListener = null;
 		}
 

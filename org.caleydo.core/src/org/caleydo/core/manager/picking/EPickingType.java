@@ -8,14 +8,14 @@ package org.caleydo.core.manager.picking;
  */
 public enum EPickingType {
 	BACKGROUND,
-	BACKGROUND_HYPERBOLIC,	
-	
-	//bucket
+	BACKGROUND_HYPERBOLIC,
+
+	// bucket
 	BUCKET_MOVE_IN_ICON_SELECTION,
 	BUCKET_MOVE_OUT_ICON_SELECTION,
 	BUCKET_MOVE_LEFT_ICON_SELECTION,
 	BUCKET_MOVE_RIGHT_ICON_SELECTION,
-	
+
 	REMOTE_VIEW_LOCK,
 	REMOTE_VIEW_REMOVE,
 	REMOTE_VIEW_DRAG,
@@ -23,7 +23,7 @@ public enum EPickingType {
 	INTERFACE_SELECTION,
 	DATA_DOMAIN_SELECTION,
 	NEXT_DATA_DOMAIN_SELECTION,
-	
+
 	/** A remote level element is the place-holder for a view, basically the wall behind a view */
 	REMOTE_LEVEL_ELEMENT,
 	MEMO_PAD_SELECTION,
@@ -137,18 +137,14 @@ public enum EPickingType {
 	COMPARE_SELECTION_WINDOW_ARROW_RIGHT_SELECTION,
 	COMPARE_RIBBON_SELECTION,
 
-	
 	// treemap
 	TREEMAP_ELEMENT_SELECTED,
-	
+
 	CONTEXT_MENU_SELECTION,
 	CONTEXT_MENU_SCROLL_DOWN,
 	CONTEXT_MENU_SCROLL_UP,
 
-	
-	
 	// datawindows
 	DATAW_NODE;
-	
-	
+
 }

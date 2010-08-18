@@ -27,8 +27,7 @@ public abstract class APDDrawingStrategyDecorator extends APDDrawingStrategy {
 	 *            ID of the view where the elements will be displayed. Needed
 	 *            for picking.
 	 */
-	public APDDrawingStrategyDecorator(PickingManager pickingManager,
-			int iViewID) {
+	public APDDrawingStrategyDecorator(PickingManager pickingManager, int iViewID) {
 		super(pickingManager, iViewID);
 	}
 
@@ -36,8 +35,7 @@ public abstract class APDDrawingStrategyDecorator extends APDDrawingStrategy {
 	public abstract void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw);
 
 	@Override
-	public abstract void drawPartialDisc(GL gl, GLU glu,
-			PartialDisc pdDiscToDraw);
+	public abstract void drawPartialDisc(GL gl, GLU glu, PartialDisc pdDiscToDraw);
 
 	/**
 	 * Gets the decorated drawing strategy.

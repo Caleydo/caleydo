@@ -1,11 +1,11 @@
 package org.caleydo.view.scatterplot;
 
-public  class ScatterPlotHelper {
-	
+public class ScatterPlotHelper {
+
 	public static float getSpace(float x, float y) {
 		return x * y;
 	}
-	
+
 	public static boolean getCorrelation(float x, float y) {
 		float fCorrelation = 1.3f;
 		if ((x / y) > fCorrelation)
@@ -15,18 +15,16 @@ public  class ScatterPlotHelper {
 
 		return true;
 	}
-	
+
 	public static float[] getSelectionColor(int iColorNr) {
-		
-		
-		float fBrighness=0.9f;
+
+		float fBrighness = 0.9f;
 		int iWhiteness = 20;
-		
-		
-		int color =(iColorNr+7) % 10;
-		
+
+		int color = (iColorNr + 7) % 10;
+
 		float[] fArMappingColor = new float[] { 0F, 0F, 0F, 0F };
-		
+
 		switch (color) {
 		case 1:
 			fArMappingColor = new float[] { 31, 120, 180, 1 };
@@ -45,7 +43,7 @@ public  class ScatterPlotHelper {
 			break;
 		case 6:
 			fArMappingColor = new float[] { 166, 206, 227, 1 };
-			break;		
+			break;
 		case 7:
 			fArMappingColor = new float[] { 253, 191, 111, 1 };
 			break;
@@ -58,17 +56,17 @@ public  class ScatterPlotHelper {
 		case 0:
 			fArMappingColor = new float[] { 106, 61, 154, 1 };
 			break;
-			
+
 		default:
 			fArMappingColor = new float[] { 0, 0, 0, 1 };
 		}
-		
-		
-		for (int i=0;i<3;i++)
-		{
-			fArMappingColor[i] = fBrighness*((fArMappingColor[i]-iWhiteness)/255f);
-			if(fArMappingColor[i]>1) fArMappingColor[i]=1;
-			if(fArMappingColor[i]<0) fArMappingColor[i]=0;
+
+		for (int i = 0; i < 3; i++) {
+			fArMappingColor[i] = fBrighness * ((fArMappingColor[i] - iWhiteness) / 255f);
+			if (fArMappingColor[i] > 1)
+				fArMappingColor[i] = 1;
+			if (fArMappingColor[i] < 0)
+				fArMappingColor[i] = 0;
 		}
 		return fArMappingColor;
 
