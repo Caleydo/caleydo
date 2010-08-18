@@ -76,7 +76,7 @@
 		attrib1="DAVID_2_GENE_SYMBOL REVERSE" attrib2="\t" attrib3="0 -1" attrib5="false" />
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/david/ORGANISM_DAVID2GENE_NAME.txt"
-		attrib1="DAVID_2_GENE_NAME" attrib2="\t" attrib3="0 -1" attrib5="false" />
+		attrib1="DAVID_2_GENE_NAME REVERSE" attrib2="\t" attrib3="0 -1" attrib5="false" />
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE"
 		detail="data/genome/mapping/ORGANISM_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt"

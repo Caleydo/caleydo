@@ -2,6 +2,7 @@ package org.caleydo.view.genesearch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -99,11 +100,11 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 
 	private SearchViewMediator searchViewMediator;
 
-	private IDType geneSymbol = IDType.getIDType("GENE_SYMBOL");
-	private IDType david = IDType.getIDType("DAVID");
-	private IDType geneName = IDType.getIDType("GENE_NAME");
-	private IDType refseqMrna = IDType.getIDType("REFSEQ_MRNA");
-	private IDType refseqMrnaInt = IDType.getIDType("REFSEQ_MRNA_INT");
+	private IDType geneSymbolIDType = IDType.getIDType("GENE_SYMBOL");
+	private IDType davidIDType = IDType.getIDType("DAVID");
+	private IDType geneNameIDType = IDType.getIDType("GENE_NAME");
+	private IDType refseqMrnaIDTYpe = IDType.getIDType("REFSEQ_MRNA");
+	private IDType refseqMrnaIntIDType = IDType.getIDType("REFSEQ_MRNA_INT");
 	private IDType entrez = IDType.getIDType("ENTREZ_GENE_ID");
 
 	public RcpGeneSearchView() {
@@ -154,35 +155,35 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 
 		useGeneSymbol = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneSymbol.setText("Gene symbol");
-		if (generalManager.getIDMappingManager().hasMapping(geneSymbol, david))
+		if (generalManager.getIDMappingManager().hasMapping(geneSymbolIDType, davidIDType))
 			useGeneSymbol.setSelection(true);
 		else
 			useGeneSymbol.setEnabled(false);
 
 		useGeneName = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneName.setText("Gene name (full)");
-		if (idMappingManager.hasMapping(geneName, david))
+		if (idMappingManager.hasMapping(geneNameIDType, davidIDType))
 			useGeneName.setSelection(true);
 		else
 			useGeneName.setEnabled(false);
 
 		useGeneRefSeqID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneRefSeqID.setText("RefSeq ID");
-		if (generalManager.getIDMappingManager().hasMapping(refseqMrna, david))
+		if (generalManager.getIDMappingManager().hasMapping(refseqMrnaIDTYpe, davidIDType))
 			useGeneRefSeqID.setSelection(true);
 		else
 			useGeneRefSeqID.setEnabled(false);
 
 		useGeneEntrezGeneID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneEntrezGeneID.setText("Entrez Gene ID");
-		if (generalManager.getIDMappingManager().hasMapping(entrez, david))
+		if (generalManager.getIDMappingManager().hasMapping(entrez, davidIDType))
 			useGeneEntrezGeneID.setSelection(true);
 		else
 			useGeneEntrezGeneID.setEnabled(false);
 
 		useGeneDavidID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneDavidID.setText("David ID");
-		if (generalManager.getIDMappingManager().hasMapping(david, refseqMrnaInt))
+		if (generalManager.getIDMappingManager().hasMapping(davidIDType, refseqMrnaIntIDType))
 			useGeneDavidID.setSelection(true);
 		else
 			useGeneDavidID.setEnabled(false);
@@ -438,41 +439,41 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 
 		if (useGeneSymbol.getSelection()) {
 			for (Object sGeneSymbol : idMappingManager.getMap(
-					MappingType.getType(geneSymbol, david)).keySet()) {
+					MappingType.getType(geneSymbolIDType, davidIDType)).keySet()) {
 				regexMatcher = pattern.matcher((String) sGeneSymbol);
 				if (regexMatcher.find())
-					iArDavidGeneResults.add((Integer) idMappingManager.getID(geneSymbol,
-							david, sGeneSymbol));
+					iArDavidGeneResults.add((Integer) idMappingManager.getID(geneSymbolIDType,
+							davidIDType, sGeneSymbol));
 			}
 		}
 
 		if (useGeneEntrezGeneID.getSelection()) {
 			for (Object iEntrezGeneID : idMappingManager.getMap(
-					MappingType.getType(entrez, david)).keySet()) {
+					MappingType.getType(entrez, davidIDType)).keySet()) {
 				regexMatcher = pattern.matcher(iEntrezGeneID.toString());
 				if (regexMatcher.find())
 					iArDavidGeneResults.add((Integer) idMappingManager.getID(entrez,
-							david, iEntrezGeneID));
+							davidIDType, iEntrezGeneID));
 			}
 		}
 
 		if (useGeneRefSeqID.getSelection()) {
-			for (Object sGeneSymbol : idMappingManager.getMap(
-					MappingType.getType(refseqMrna, david)).keySet()) {
-				regexMatcher = pattern.matcher((String) sGeneSymbol);
+			for (Object refSeqMrna : idMappingManager.getMap(
+					MappingType.getType(refseqMrnaIDTYpe, davidIDType)).keySet()) {
+				regexMatcher = pattern.matcher((String) refSeqMrna);
 				if (regexMatcher.find())
-					iArDavidGeneResults.add((Integer) idMappingManager.getID(refseqMrna,
-							david, sGeneSymbol));
+					iArDavidGeneResults.addAll((Collection<? extends Integer>) idMappingManager.getID(refseqMrnaIDTYpe,
+							davidIDType, refSeqMrna));
 			}
 		}
 
 		if (useGeneName.getSelection()) {
 			for (Object sGeneName : idMappingManager.getMap(
-					MappingType.getType(geneName, david)).keySet()) {
+					MappingType.getType(geneNameIDType, davidIDType)).keySet()) {
 				regexMatcher = pattern.matcher((String) sGeneName);
 				if (regexMatcher.find())
 					iArDavidGeneResults.add((Integer) generalManager
-							.getIDMappingManager().getID(geneName, david, sGeneName));
+							.getIDMappingManager().getID(geneNameIDType, davidIDType, sGeneName));
 			}
 		}
 
@@ -489,7 +490,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 
 			try {
 				for (Object sRefSeqID : idMappingManager.<Integer, Set<Object>> getID(
-						david, refseqMrna, iDavidID)) {
+						davidIDType, refseqMrnaIDTYpe, iDavidID)) {
 					sRefSeqIDs += sRefSeqID + " ";
 				}
 			} catch (NullPointerException npe) {
@@ -497,17 +498,17 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 			}
 
 			String sEntrezGeneID = "";
-			Integer iEntrezGeneID = idMappingManager.getID(david, entrez, iDavidID);
+			Integer iEntrezGeneID = idMappingManager.getID(davidIDType, entrez, iDavidID);
 			if (iEntrezGeneID == null)
 				sEntrezGeneID = "<No Mapping>";
 			else
 				sEntrezGeneID = iEntrezGeneID.toString();
 
-			String sGeneSymbol = idMappingManager.getID(david, geneSymbol, iDavidID);
+			String sGeneSymbol = idMappingManager.getID(davidIDType, geneSymbolIDType, iDavidID);
 			if (sGeneSymbol == null)
 				sGeneSymbol = "<Unknown>";
 
-			String sGeneName = idMappingManager.getID(david, geneName, iDavidID);
+			String sGeneName = idMappingManager.getID(davidIDType, geneNameIDType, iDavidID);
 			if (sGeneName == null)
 				sGeneName = "<Unknown>";
 
@@ -515,7 +516,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 			// current data set
 			String sExpressionValueInCurrentDataSet = "NOT FOUND";
 
-			Set<Integer> setExpIndex = idMappingManager.getIDAsSet(david,
+			Set<Integer> setExpIndex = idMappingManager.getIDAsSet(davidIDType,
 					dataDomain.getContentIDType(), iDavidID);
 			// h.getExpressionIndicesFromDavid(iDavidID);
 
