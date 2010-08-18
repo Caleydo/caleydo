@@ -3,7 +3,7 @@ package org.caleydo.datadomain.pathway.parser;
 import java.awt.Rectangle;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
+import org.caleydo.core.parser.xml.AXmlParserHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -58,7 +58,7 @@ public class PathwayImageMapSaxHandler
 		if (null != eName) {
 			if (eName.equals(sOpeningTag)) {
 				/**
-				 * section (xml block) finished, call callback function from IXmlParserManager
+				 * section (xml block) finished, call callback function from XmlParserManager
 				 */
 				xmlParserManager.sectionFinishedByHandler(this);
 			}
@@ -132,8 +132,8 @@ public class PathwayImageMapSaxHandler
 	}
 
 	/**
-	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
-	 * @see org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
+	 * @see org.caleydo.core.parser.xml.IXmlParserHandler#destroyHandler()
+	 * @see org.caleydo.core.parser.xml.AXmlParserHandler#destroyHandler()
 	 */
 	@Override
 	public void destroyHandler() {

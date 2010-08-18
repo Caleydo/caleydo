@@ -1,7 +1,7 @@
 package org.caleydo.rcp;
 
-import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.serialize.AutoSaver;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.eclipse.jface.preference.IPreferenceNode;
@@ -70,7 +70,7 @@ public class ApplicationWorkbenchAdvisor
 
 		// FIXME: turn on auto saver here when data domain integration is finished
 		//autoSaver = new AutoSaver();
-		// IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+		// ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
 		// vm.getDisplayLoopExecution().executeMultiple(autoSaver);
 	}
 
@@ -101,7 +101,7 @@ public class ApplicationWorkbenchAdvisor
 	public boolean preShutdown() {
 		super.preShutdown();
 
-		IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+		ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
 		vm.getDisplayLoopExecution().stopMultipleExecution(autoSaver);
 		autoSaver = null;
 

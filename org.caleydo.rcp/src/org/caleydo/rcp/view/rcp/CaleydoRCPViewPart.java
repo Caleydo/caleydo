@@ -3,10 +3,10 @@ package org.caleydo.rcp.view.rcp;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IView;
@@ -32,7 +32,7 @@ public abstract class CaleydoRCPViewPart
 
 	protected static ArrayList<IAction> alToolbar;
 
-	protected IEventPublisher eventPublisher = null;
+	protected EventPublisher eventPublisher = null;
 
 	protected IView view;
 

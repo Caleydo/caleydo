@@ -5,7 +5,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;
-import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**

@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.util.slerp;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 

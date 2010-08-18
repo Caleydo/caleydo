@@ -6,7 +6,7 @@ import java.util.Vector;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.view.glyph.gridview.data.GlyphAttributeType;
 import org.caleydo.view.glyph.manager.GlyphManager;
@@ -18,7 +18,7 @@ import org.caleydo.view.glyph.manager.GlyphManager;
  */
 public class GlyphEntry {
 
-	private IGeneralManager generalManager;
+	private GeneralManager generalManager;
 
 	private GlyphManager gman;
 

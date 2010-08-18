@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.general;
+package org.caleydo.core.manager;
 
 import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_COLOR;
 import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_LEFT_SPREAD;
@@ -11,7 +11,6 @@ import static org.caleydo.core.util.preferences.PreferenceConstants.NUMBER_OF_CO
 import java.io.File;
 import java.io.IOException;
 
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.view.browser.EBrowserQueryType;
 import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.util.preferences.PreferenceConstants;
@@ -47,11 +46,11 @@ public class PreferenceManager {
 
 	void initialize() {
 
-		preferenceStore = new PreferenceStore(IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME);
+		preferenceStore = new PreferenceStore(GeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME);
 		initializeDefaultPreferences();
 
 		try {
-			if (IGeneralManager.VERSION == null)
+			if (GeneralManager.VERSION == null)
 				throw new IllegalStateException("Cannot determine current version of Caleydo.");
 
 			preferenceStore.load();
@@ -60,18 +59,18 @@ public class PreferenceManager {
 			// If stored version is older then current version - remove old Caleydo folder
 			// Test 1st and 2nd number of version string
 			if (sStoredVersion.equals("")
-				|| (new Integer(sStoredVersion.substring(0, 1)) <= new Integer(IGeneralManager.VERSION
+				|| (new Integer(sStoredVersion.substring(0, 1)) <= new Integer(GeneralManager.VERSION
 					.substring(0, 1)) && new Integer(sStoredVersion.substring(2, 3)) < new Integer(
-					IGeneralManager.VERSION.substring(2, 3)))) {
+					GeneralManager.VERSION.substring(2, 3)))) {
 
 				MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
 				messageBox.setText("Clean old data");
 				messageBox.setMessage("You have downloaded a new major version of Caleydo ("
-					+ IGeneralManager.VERSION
+					+ GeneralManager.VERSION
 					+ "). \nYour old Caleydo settings and pathway data will be discarded and newly created.");
 				messageBox.open();
 
-				FileOperations.deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH));
+				FileOperations.deleteDir(new File(GeneralManager.CALEYDO_HOME_PATH));
 
 				initCaleydoFolder();
 			}
@@ -122,7 +121,7 @@ public class PreferenceManager {
 		store.setDefault(PreferenceConstants.DATA_FILTER_LEVEL, "only_context");
 		store.setDefault(PreferenceConstants.PERFORMANCE_LEVEL, "low");
 
-		store.setDefault(PreferenceConstants.VERSION, IGeneralManager.VERSION);
+		store.setDefault(PreferenceConstants.VERSION, GeneralManager.VERSION);
 		store.setDefault(PreferenceConstants.FIRST_START, true);
 		store.setDefault(PreferenceConstants.PATHWAY_DATA_OK, "");
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_ORGANISM, Organism.HOMO_SAPIENS.name());
@@ -142,21 +141,21 @@ public class PreferenceManager {
 	private void initCaleydoFolder() {
 
 		// Create .caleydo folder
-		if (!new File(IGeneralManager.CALEYDO_HOME_PATH).exists()) {
-			if (!new File(IGeneralManager.CALEYDO_HOME_PATH).mkdir())
+		if (!new File(GeneralManager.CALEYDO_HOME_PATH).exists()) {
+			if (!new File(GeneralManager.CALEYDO_HOME_PATH).mkdir())
 				throw new IllegalStateException(
 					"Unable to create home folder .caleydo. Check user permissions!");
 		}
 
 		// Create log folder in .caleydo
-		if (!new File(IGeneralManager.CALEYDO_HOME_PATH + "logs").exists()) {
-			if (!new File(IGeneralManager.CALEYDO_HOME_PATH + "logs").mkdir()) {
+		if (!new File(GeneralManager.CALEYDO_HOME_PATH + "logs").exists()) {
+			if (!new File(GeneralManager.CALEYDO_HOME_PATH + "logs").mkdir()) {
 				throw new IllegalStateException(
 					"Unable to create log folder .caleydo/log. Check user permissions!");
 			}
 		}
 		// logger.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Create new preference store at "
-		// + IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME));
+		// + GeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME));
 
 	}
 }

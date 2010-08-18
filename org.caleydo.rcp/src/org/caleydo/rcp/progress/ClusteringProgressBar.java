@@ -1,12 +1,12 @@
 package org.caleydo.rcp.progress;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.ClustererCanceledEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.eclipse.swt.SWT;

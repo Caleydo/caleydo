@@ -2,7 +2,7 @@ package org.caleydo.rcp.startup;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.rcp.view.RCPViewManager;

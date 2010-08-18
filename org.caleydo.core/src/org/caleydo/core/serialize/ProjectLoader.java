@@ -13,10 +13,9 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.manager.general.GeneralManager;
 
 /**
  * Restores the state of the application from a given file.
@@ -26,7 +25,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 public class ProjectLoader {
 
 	/** full path to directory to temporarily store the projects file before zipping */
-	public static final String TEMP_PROJECT_DIR_NAME = IGeneralManager.CALEYDO_HOME_PATH + "tempLoad"
+	public static final String TEMP_PROJECT_DIR_NAME = GeneralManager.CALEYDO_HOME_PATH + "tempLoad"
 		+ File.separator;
 
 	/**

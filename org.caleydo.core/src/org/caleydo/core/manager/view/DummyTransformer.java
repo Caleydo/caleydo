@@ -10,8 +10,7 @@ import java.util.Map.Entry;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
@@ -74,7 +73,7 @@ public class DummyTransformer
 					connectionMap.put(connections.getKey(), repList);
 				}
 
-				IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+				ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
 				for (SelectedElementRep sel : connections.getValue()) {
 					AGLView view = vm.getGLView(sel.getSourceViewID());
 					RemoteLevelElement rle = view.getRemoteLevelElement();

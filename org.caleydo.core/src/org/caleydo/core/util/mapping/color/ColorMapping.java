@@ -6,7 +6,7 @@ import java.util.Collections;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.eclipse.jface.preference.PreferenceStore;

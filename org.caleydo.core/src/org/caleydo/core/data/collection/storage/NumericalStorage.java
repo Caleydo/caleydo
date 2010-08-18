@@ -6,7 +6,7 @@ import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 
 /**

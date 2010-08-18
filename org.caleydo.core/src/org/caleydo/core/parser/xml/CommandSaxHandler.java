@@ -1,11 +1,10 @@
-package org.caleydo.core.parser.xml.sax.handler.command;
+package org.caleydo.core.parser.xml;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 import org.caleydo.core.parser.parameter.ParameterHandler;
-import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -147,7 +146,7 @@ public class CommandSaxHandler
 					bCommandBuffer_isActive = false;
 
 					/**
-					 * section (xml block) finished, call callback function from IXmlParserManager
+					 * section (xml block) finished, call callback function from XmlParserManager
 					 */
 					xmlParserManager.sectionFinishedByHandler(this);
 

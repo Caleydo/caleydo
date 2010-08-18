@@ -1,6 +1,5 @@
 package org.caleydo.core.manager.datadomain;
 
-import org.caleydo.core.manager.IDataDomain;
 
 public interface IDataDomainBasedView<DataDomainType extends IDataDomain> {
 

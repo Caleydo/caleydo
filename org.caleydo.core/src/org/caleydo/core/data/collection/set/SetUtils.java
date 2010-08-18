@@ -28,10 +28,9 @@ import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageGroupList;
 import org.caleydo.core.data.selection.StorageVAType;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.ascii.TabularAsciiDataReader;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -93,7 +92,7 @@ public class SetUtils {
 	 *            set-data to save
 	 */
 	public static void saveSetFile(LoadDataParameters parameters, byte[] data) {
-		File homeDir = new File(IGeneralManager.CALEYDO_HOME_PATH);
+		File homeDir = new File(GeneralManager.CALEYDO_HOME_PATH);
 		File setFile;
 		try {
 			setFile = File.createTempFile(DATA_FILE_PREFIX, "csv", homeDir);
@@ -354,7 +353,7 @@ public class SetUtils {
 	 *            set-data to save
 	 */
 	public static void saveGeneTreeFile(LoadDataParameters parameters, String data) {
-		File homeDir = new File(IGeneralManager.CALEYDO_HOME_PATH);
+		File homeDir = new File(GeneralManager.CALEYDO_HOME_PATH);
 		File geneFile;
 		try {
 			geneFile = File.createTempFile(CONTENT_TREE_FILE_PREFIX, "xml", homeDir);
@@ -375,7 +374,7 @@ public class SetUtils {
 	 *            set-data to save
 	 */
 	public static void saveExperimentsTreeFile(LoadDataParameters parameters, String data) {
-		File homeDir = new File(IGeneralManager.CALEYDO_HOME_PATH);
+		File homeDir = new File(GeneralManager.CALEYDO_HOME_PATH);
 		File expFile;
 		try {
 			expFile = File.createTempFile(STORAGE_TREE_FILE_PREFIX, "xml", homeDir);
@@ -403,7 +402,7 @@ public class SetUtils {
 					.get()
 					.getLogger()
 					.log(
-						new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Loading gene tree from file "
+						new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Loading gene tree from file "
 							+ geneTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
@@ -431,7 +430,7 @@ public class SetUtils {
 					.get()
 					.getLogger()
 					.log(
-						new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID,
+						new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
 							"Loading experiments tree from file " + experimentsTreeFileName));
 
 				TreePorter treePorter = new TreePorter();

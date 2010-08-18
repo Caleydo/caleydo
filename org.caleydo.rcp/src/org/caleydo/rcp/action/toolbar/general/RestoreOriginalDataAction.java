@@ -1,8 +1,8 @@
 package org.caleydo.rcp.action.toolbar.general;
 
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;

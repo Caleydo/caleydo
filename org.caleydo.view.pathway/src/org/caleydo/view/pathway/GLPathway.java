@@ -23,8 +23,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
@@ -41,6 +40,7 @@ import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -426,7 +426,7 @@ public class GLPathway extends AGLView implements
 			//
 			// if (iSetRefSeq == null) {
 			// generalManager.getLogger().log(
-			// new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID,
+			// new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
 			// "No RefSeq IDs found for David: " + iDavidID));
 			// continue;
 			// }
@@ -473,7 +473,7 @@ public class GLPathway extends AGLView implements
 
 		PathwayVertexGraphItem pathwayVertexGraphItem;
 
-		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
+		IDMappingManager idMappingManager = generalManager.getIDMappingManager();
 
 		for (SelectionDeltaItem item : selectionDelta) {
 
@@ -549,14 +549,14 @@ public class GLPathway extends AGLView implements
 		int iImageHeight = pathway.getHeight();
 
 		generalManager.getLogger().log(
-				new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID,
+				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
 						"Pathway texture width=" + iImageWidth + " / height="
 								+ iImageHeight));
 
 		if (iImageWidth == -1 || iImageHeight == -1) {
 			generalManager
 					.getLogger()
-					.log(new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID,
+					.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
 							"Problem because pathway texture width or height is invalid!"));
 		}
 
@@ -798,7 +798,7 @@ public class GLPathway extends AGLView implements
 
 		ContentVADelta delta = new ContentVADelta(ContentVAType.CONTENT_CONTEXT,
 				dataDomain.getDavidIDType());
-		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
+		IDMappingManager idMappingManager = generalManager.getIDMappingManager();
 
 		for (IGraphItem tmpPathwayVertexGraphItemRep : pathway
 				.getAllItemsByKind(EGraphItemKind.NODE)) {
@@ -821,7 +821,7 @@ public class GLPathway extends AGLView implements
 				// if (iSetRefSeq == null) {
 				//
 				// generalManager.getLogger().log(
-				// new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID,
+				// new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
 				// "No RefSeq IDs found for David: " + iDavidID));
 				// continue;
 				// }

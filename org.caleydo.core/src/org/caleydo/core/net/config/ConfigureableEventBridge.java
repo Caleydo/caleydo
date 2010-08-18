@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
@@ -55,7 +54,7 @@ public class ConfigureableEventBridge
 		this.bridge = bridge;
 	}
 
-	public IEventPublisher getPublisher() {
+	public EventPublisher getPublisher() {
 		return publisher;
 	}
 

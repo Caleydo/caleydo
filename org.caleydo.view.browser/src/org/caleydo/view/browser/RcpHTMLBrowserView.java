@@ -1,9 +1,9 @@
 package org.caleydo.view.browser;
 
-import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
 

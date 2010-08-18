@@ -12,13 +12,12 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.opengl.CmdCreateView;
-import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.command.view.CmdCreateView;
+import org.caleydo.core.command.view.CmdViewCreateRcpGLCanvas;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.view.IView;
@@ -79,7 +78,7 @@ public abstract class ARcpGLViewPart
 
 		String viewType = serializedView.getViewType();
 
-		IGeneralManager generalManager = GeneralManager.get();
+		GeneralManager generalManager = GeneralManager.get();
 
 		CmdCreateView cmdView =
 			(CmdCreateView) generalManager.getCommandManager().createCommandByType(

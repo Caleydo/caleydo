@@ -1,7 +1,5 @@
-package org.caleydo.core.parser.xml.sax.handler.recursion;
+package org.caleydo.core.parser.xml;
 
-import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
-import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.xml.sax.Attributes;
 
 /**

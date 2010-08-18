@@ -11,12 +11,11 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.RemoveManagedSelectionTypesEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -495,7 +494,7 @@ public class SelectionManager
 					.get()
 					.getLogger()
 					.log(
-						new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "No internal id for "
+						new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "No internal id for "
 							+ item.getPrimaryID()));
 
 				continue;

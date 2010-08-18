@@ -12,7 +12,7 @@ import java.util.Vector;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.view.glyph.GlyphRenderStyle;
 import org.caleydo.view.glyph.gridview.data.GlyphDataLoader;
@@ -34,7 +34,7 @@ import org.eclipse.core.runtime.Status;
 public class GLGlyphGrid {
 	private boolean bEnableWorldGrid = true;
 
-	private IGeneralManager generalManager = null;
+	private GeneralManager generalManager = null;
 
 	private GlyphManager gman = null;
 
@@ -298,7 +298,7 @@ public class GLGlyphGrid {
 		}
 
 		generalManager.getLogger().log(
-			new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+			new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 				"Someone wanted a Glyph GL List on the grid position " + x + ", " + y
 					+ ", but there is nothing"));
 		return -1;
@@ -370,7 +370,7 @@ public class GLGlyphGrid {
 
 		if (!glyphs_.containsKey(id)) {
 			generalManager.getLogger().log(
-				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "Someone wanted a Glyph with the id "
+				new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "Someone wanted a Glyph with the id "
 					+ id + " but it doesn't exist."));
 			return null;
 		}

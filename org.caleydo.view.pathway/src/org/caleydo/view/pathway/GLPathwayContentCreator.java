@@ -12,11 +12,10 @@ import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
+import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -45,7 +44,7 @@ import org.eclipse.core.runtime.Status;
  * @author Marc Streit
  */
 public class GLPathwayContentCreator {
-	private IGeneralManager generalManager;
+	private GeneralManager generalManager;
 
 	private static final float Z_OFFSET = 0.01f;
 
@@ -72,7 +71,7 @@ public class GLPathwayContentCreator {
 
 	private ArrayList<Integer> iArSelectedEdgeRepId;
 
-	private IIDMappingManager idMappingManager;
+	private IDMappingManager idMappingManager;
 
 	private PathwayItemManager pathwayItemManager;
 
@@ -459,7 +458,7 @@ public class GLPathwayContentCreator {
 
 		if (vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).toArray().length == 0) {
 			generalManager.getLogger().log(
-					new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+					new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 							"Cannot create pathway vertex. Pathway node representation "
 									+ vertexRep.getName() + " has not parent in graph!"));
 			return;

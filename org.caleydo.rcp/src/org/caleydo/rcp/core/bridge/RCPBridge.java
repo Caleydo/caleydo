@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ClusterSetEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.rcp.action.toolbar.view.StartClusteringAction;

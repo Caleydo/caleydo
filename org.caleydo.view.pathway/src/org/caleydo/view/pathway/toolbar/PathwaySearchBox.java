@@ -2,8 +2,8 @@ package org.caleydo.view.pathway.toolbar;
 
 import java.util.Collection;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;

@@ -111,7 +111,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 		return heatMap.getDataDomain().getContentLabel(contentID);
 		// String sContent = "";
 		//
-		// IIDMappingManager idMappingManager =
+		// IDMappingManager idMappingManager =
 		// GeneralManager.get().getIDMappingManager();
 		// // ESetType setType = heatMap.getSet().getSetType();
 		// if (heatMap.getDataDomain().getDataDomainType().equals(

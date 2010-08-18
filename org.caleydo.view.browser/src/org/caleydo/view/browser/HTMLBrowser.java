@@ -3,9 +3,8 @@ package org.caleydo.view.browser;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializedDummyView;
@@ -225,7 +224,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 	@Override
 	public void drawView() {
 		generalManager.getLogger().log(
-				new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Load " + url));
+				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Load " + url));
 
 		try {
 			parentComposite.getDisplay().asyncExec(new Runnable() {
@@ -241,7 +240,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 			});
 		} catch (SWTException swte) {
 			generalManager.getLogger().log(
-					new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID,
+					new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
 							"Error while loading " + url, swte));
 		}
 	}

@@ -1,7 +1,7 @@
 package org.caleydo.rcp;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.perspective.PartListener;
 import org.caleydo.rcp.startup.StartupProcessor;

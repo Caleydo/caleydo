@@ -12,10 +12,10 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.view.ConnectionMap;
 import org.caleydo.core.manager.view.SelectedElementRepList;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
@@ -51,7 +51,7 @@ public class GLConnectionLineRendererBucket
 
 	@Override
 	protected void renderConnectionLines(final GL gl) {
-		IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
+		ViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
 
 		for (Entry<IDType, ConnectionMap> typeConnections : connectedElementRepManager
 			.getTransformedConnectionsByType().entrySet()) {

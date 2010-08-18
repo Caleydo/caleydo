@@ -7,10 +7,9 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -59,7 +58,7 @@ public class CmdDataCreateSet
 		fillSets(createdObject);
 
 		generalManager.getLogger().log(
-			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "New Set with internal ID "
+			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "New Set with internal ID "
 				+ createdObject.getID() + " and external ID " + externalID + " created."));
 
 		dataDomain.setSet(createdObject);
@@ -76,12 +75,12 @@ public class CmdDataCreateSet
 
 		StringTokenizer strToken_StorageBlock =
 			new StringTokenizer(parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE2.getXmlKey()),
-				IGeneralManager.sDelimiter_Paser_DataItemBlock);
+				GeneralManager.sDelimiter_Paser_DataItemBlock);
 
 		while (strToken_StorageBlock.hasMoreTokens()) {
 			StringTokenizer strToken_StorageId =
 				new StringTokenizer(strToken_StorageBlock.nextToken(),
-					IGeneralManager.sDelimiter_Parser_DataItems);
+					GeneralManager.sDelimiter_Parser_DataItems);
 
 			while (strToken_StorageId.hasMoreTokens()) {
 				storageIDs.add(Integer.valueOf(strToken_StorageId.nextToken()).intValue());
@@ -99,7 +98,7 @@ public class CmdDataCreateSet
 				.get()
 				.getLogger()
 				.log(
-					new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Lazy creation of data domain "
+					new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Lazy creation of data domain "
 						+ sAttrib3));
 		}
 	}

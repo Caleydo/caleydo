@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.core.parser.xml.sax.handler;
+package org.caleydo.core.parser.xml;
 
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.xml.sax.Attributes;

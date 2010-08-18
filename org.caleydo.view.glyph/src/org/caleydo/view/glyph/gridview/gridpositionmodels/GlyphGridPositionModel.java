@@ -8,7 +8,7 @@ import java.util.Vector;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.view.glyph.GlyphRenderStyle;
 import org.caleydo.view.glyph.gridview.GlyphEntry;
@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.Status;
  * @author Stefan Sauer
  */
 public class GlyphGridPositionModel {
-	protected IGeneralManager generalManager = null;
+	protected GeneralManager generalManager = null;
 	protected GlyphRenderStyle renderStyle = null;
 
 	protected Vec2i worldLimit = null;
@@ -89,7 +89,7 @@ public class GlyphGridPositionModel {
 	 */
 	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap_, ArrayList<GlyphEntry> gg) {
 		GeneralManager.get().getLogger().log(
-			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "setGlyphPositions in base class called"));
+			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "setGlyphPositions in base class called"));
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class GlyphGridPositionModel {
 	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap_, ArrayList<GlyphEntry> gg,
 		int centerX, int centerY) {
 		GeneralManager.get().getLogger().log(
-			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "setGlyphPositions in base class called"));
+			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "setGlyphPositions in base class called"));
 	}
 
 	/**

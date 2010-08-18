@@ -7,10 +7,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.specialized.Organism;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -23,7 +22,7 @@ import org.eclipse.core.runtime.Status;
 public class PathwayLoaderThread
 	extends Thread {
 
-	private IGeneralManager generalManager;
+	private GeneralManager generalManager;
 
 	private Collection<PathwayDatabase> pathwayDatabases;
 
@@ -37,7 +36,7 @@ public class PathwayLoaderThread
 		this.pathwayDatabases = pathwayDatabases;
 
 		generalManager.getLogger().log(
-			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Start pathway databases loader thread"));
+			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start pathway databases loader thread"));
 
 		start();
 	}
@@ -46,7 +45,7 @@ public class PathwayLoaderThread
 	public void run() {
 		super.run();
 
-		IViewManager viewManager = generalManager.getViewGLCanvasManager();
+		ViewManager viewManager = generalManager.getViewGLCanvasManager();
 		viewManager.requestBusyMode(this);
 
 		Iterator<PathwayDatabase> iterPathwayDatabase = pathwayDatabases.iterator();
@@ -64,10 +63,10 @@ public class PathwayLoaderThread
 		// File folder = new File(sXMLPath);
 		// File[] arFiles = folder.listFiles();
 
-		IGeneralManager generalManager = GeneralManager.get();
+		GeneralManager generalManager = GeneralManager.get();
 		
 		generalManager.getLogger().log(
-			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Start parsing " + pathwayDatabase.getName()
+			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start parsing " + pathwayDatabase.getName()
 				+ " pathways."));
 
 		BufferedReader file = null;
@@ -148,7 +147,7 @@ public class PathwayLoaderThread
 
 				if (iImageWidth == -1 || iImageHeight == -1) {
 					generalManager.getLogger().log(
-						new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Pathway texture width="
+						new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Pathway texture width="
 							+ iImageWidth + " / height=" + iImageHeight));
 				}
 
@@ -169,7 +168,7 @@ public class PathwayLoaderThread
 		// }
 
 		generalManager.getLogger().log(
-			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Finished parsing "
+			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Finished parsing "
 				+ pathwayDatabase.getName() + " pathways."));
 	}
 }

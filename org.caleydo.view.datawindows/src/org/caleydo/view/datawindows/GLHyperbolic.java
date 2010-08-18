@@ -11,13 +11,13 @@ import java.util.Set;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.opengl.CmdCreateView;
+import org.caleydo.core.command.view.CmdCreateView;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.command.CommandManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
@@ -421,7 +421,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler, IP
 	@SuppressWarnings("unchecked")
 	private AGLView createView(GL gl, ASerializedView serView) {
 
-		ICommandManager cm = generalManager.getCommandManager();
+		CommandManager cm = generalManager.getCommandManager();
 		CmdCreateView cmdView = (CmdCreateView) cm
 				.createCommandByType(ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(serView.getViewType());

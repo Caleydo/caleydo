@@ -3,14 +3,14 @@ package org.caleydo.core.net;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 
 /**
  * <p>
- * Sends all events received by one {@link IEventPublisher) to another {@link EventPublisher}.
+ * Sends all events received by one {@link EventPublisher) to another {@link EventPublisher}.
  * <p>
  * <p>
  * Therefore instances of this class are registered to an {@link EventPublisher} as listener while the target-
@@ -31,7 +31,7 @@ public class EventFilterBridge
 	private String name;
 
 	/** {@link EventPublisher} to bridge incoming events to */
-	private IEventPublisher targetEventPublisher = null;
+	private EventPublisher targetEventPublisher = null;
 
 	/** <code>true</code> when local events should be bridged, <code>false</code> otherwise */
 	private boolean bridgeLocalEvents;
@@ -109,11 +109,11 @@ public class EventFilterBridge
 		return true;
 	}
 
-	public IEventPublisher getTargetEventPublisher() {
+	public EventPublisher getTargetEventPublisher() {
 		return targetEventPublisher;
 	}
 
-	public void setTargetEventPublisher(IEventPublisher targetEventPublisher) {
+	public void setTargetEventPublisher(EventPublisher targetEventPublisher) {
 		this.targetEventPublisher = targetEventPublisher;
 	}
 

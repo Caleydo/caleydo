@@ -3,9 +3,9 @@ package org.caleydo.core.view;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.eclipse.swt.widgets.Composite;
 
@@ -27,7 +27,7 @@ public abstract class AView
 
 	protected GeneralManager generalManager;
 
-	protected IEventPublisher eventPublisher;
+	protected EventPublisher eventPublisher;
 
 	protected int parentContainerID;
 

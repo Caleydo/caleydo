@@ -12,7 +12,7 @@ import org.caleydo.core.data.collection.ccontainer.ICContainer;
 import org.caleydo.core.data.collection.ccontainer.IntCContainer;
 import org.caleydo.core.data.collection.ccontainer.IntCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.NumericalCContainer;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Abstact Storage class. Implements all of the methods the different IStorages share

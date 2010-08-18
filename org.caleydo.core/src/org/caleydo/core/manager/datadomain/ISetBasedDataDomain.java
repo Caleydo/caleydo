@@ -1,4 +1,4 @@
-package org.caleydo.core.manager;
+package org.caleydo.core.manager.datadomain;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.IDCategory;

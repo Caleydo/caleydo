@@ -3,10 +3,10 @@ package org.caleydo.rcp.action.toolbar.view;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.dialog.cluster.StartClusteringDialog;

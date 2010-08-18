@@ -1,7 +1,7 @@
 package org.caleydo.view.matchmaker.toolbar;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.matchmaker.CreateSelectionTypesEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.action.AToolBarAction;

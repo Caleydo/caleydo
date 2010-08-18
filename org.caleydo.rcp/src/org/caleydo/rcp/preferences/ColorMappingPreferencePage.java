@@ -2,10 +2,10 @@ package org.caleydo.rcp.preferences;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -139,7 +139,7 @@ public class ColorMappingPreferencePage
 		ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION)
 			.initiFromPreferenceStore();
 
-		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		RedrawViewEvent redrawEvent = new RedrawViewEvent();
 		redrawEvent.setSender(this);
 		eventPublisher.triggerEvent(redrawEvent);

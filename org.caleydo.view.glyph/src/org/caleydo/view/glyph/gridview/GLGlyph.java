@@ -27,8 +27,8 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.EventPublisher;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -915,7 +915,7 @@ public class GLGlyph
 
 					if (g == null) {
 						generalManager.getLogger().log(
-							new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "Glyph with external ID "
+							new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "Glyph with external ID "
 								+ iExternalID + " not found!"));
 						return;
 					}
@@ -1168,7 +1168,7 @@ public class GLGlyph
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		EventPublisher eventPublisher = generalManager.getEventPublisher();
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
@@ -1215,7 +1215,7 @@ public class GLGlyph
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		EventPublisher eventPublisher = generalManager.getEventPublisher();
 
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);

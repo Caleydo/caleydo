@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;

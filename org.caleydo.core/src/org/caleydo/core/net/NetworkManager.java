@@ -8,13 +8,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.net.event.ClientListEvent;
 import org.caleydo.core.net.event.ClientListListener;
 import org.caleydo.core.net.event.ConnectToServerEvent;
@@ -70,11 +68,11 @@ public class NetworkManager
 	/** list of connected caleydo applications */
 	private List<Connection> connections;
 
-	/** {@link IGeneralManager} of this caleydo application */
-	private IGeneralManager generalManager;
+	/** {@link GeneralManager} of this caleydo application */
+	private GeneralManager generalManager;
 
-	/** Central {@link IEventPublisher} of this caleydo application */
-	private IEventPublisher centralEventPublisher;
+	/** Central {@link EventPublisher} of this caleydo application */
+	private EventPublisher centralEventPublisher;
 
 	/** status information indicator */
 	private ENetworkStatus status;
@@ -296,7 +294,7 @@ public class NetworkManager
 			centralEventPublisher.triggerEvent(event);
 		}
 		catch (ConnectException ex) {
-			log.log(new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Could not connect to server", ex));
+			log.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Could not connect to server", ex));
 			if (clientListListener != null) {
 				centralEventPublisher.removeListener(clientListListener);
 				clientListListener = null;
@@ -450,7 +448,7 @@ public class NetworkManager
 	 * 
 	 * @return {@link NetworkManager#centralEventPublisher}
 	 */
-	public IEventPublisher getCentralEventPublisher() {
+	public EventPublisher getCentralEventPublisher() {
 		return centralEventPublisher;
 	}
 
@@ -459,7 +457,7 @@ public class NetworkManager
 	 * 
 	 * @param {@link NetworkManager#centralEventPublisher}
 	 */
-	public void setCentralEventPublisher(IEventPublisher centralEventPublisher) {
+	public void setCentralEventPublisher(EventPublisher centralEventPublisher) {
 		this.centralEventPublisher = centralEventPublisher;
 	}
 

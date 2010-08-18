@@ -3,7 +3,7 @@ package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.wavefrontobjectloader.ObjectGroup;
 import org.caleydo.core.view.opengl.util.wavefrontobjectloader.ObjectLoader;
@@ -129,7 +129,7 @@ public class GlyphObjectDefinition {
 
 	public String getGlyphAnchorPlace(String name, ANCHOR anchor) {
 		if (!parts.containsKey(name)) {
-			logger.log(new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+			logger.log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 				"GlyphObjectDefinition::getAnchorPlace() - " + "part does not exist '" + name + "'"));
 			return null;
 		}
@@ -148,7 +148,7 @@ public class GlyphObjectDefinition {
 	 */
 	public void addGlyphPartParameter(String name, String type, String value, String description) {
 		if (!parts.containsKey(name)) {
-			logger.log(new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+			logger.log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 				"GlyphObjectDefinition::addGlyphPartParameter() - " + "part does not exist '" + name + "'"));
 			return;
 		}
@@ -170,7 +170,7 @@ public class GlyphObjectDefinition {
 	public GlyphObjectDefinitionPart getObjectPartDefinition(String name) {
 		if (!parts.containsKey(name)) {
 			logger
-				.log(new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+				.log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 					"GlyphObjectDefinition::getObjectPartDefinition() - " + "part does not exist '" + name
 						+ "'"));
 			return null;
@@ -180,7 +180,7 @@ public class GlyphObjectDefinition {
 
 	public boolean canPartScale(String name, DIRECTION dir) {
 		if (!parts.containsKey(name)) {
-			logger.log(new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+			logger.log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 				"GlyphObjectDefinition::canPartScale() - " + "part does not exist '" + name + "'"));
 			return false;
 		}
@@ -190,7 +190,7 @@ public class GlyphObjectDefinition {
 	public boolean canPartColorChange(String name) {
 
 		if (!parts.containsKey(name)) {
-			logger.log(new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+			logger.log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 				"GlyphObjectDefinition::canPartColorChange() - " + "part does not exist '" + name + "'"));
 			return false;
 		}
@@ -213,7 +213,7 @@ public class GlyphObjectDefinition {
 	 */
 	public String getPartParameterDescription(String name, EGlyphSettingIDs type, DIRECTION dir) {
 		if (!parts.containsKey(name)) {
-			logger.log(new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+			logger.log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 				"GlyphObjectDefinition::getPartParameterDescription() - " + "part does not exist '" + name
 					+ "'"));
 			return "";
@@ -230,7 +230,7 @@ public class GlyphObjectDefinition {
 
 	public void setPartParameterIndex(String name, EGlyphSettingIDs type, DIRECTION dir, int colNum) {
 		if (!parts.containsKey(name)) {
-			logger.log(new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+			logger.log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 				"GlyphObjectDefinition::setPartParameterIndex() - " + "part does not exist '" + name + "'"));
 			return;
 		}
@@ -241,7 +241,7 @@ public class GlyphObjectDefinition {
 
 	public int getPartParameterIndexExternal(String name, EGlyphSettingIDs type, DIRECTION dir) {
 		if (!parts.containsKey(name)) {
-			logger.log(new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+			logger.log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 				"GlyphObjectDefinition::setPartParameterIndex() - " + "part does not exist '" + name + "'"));
 			return -1;
 		}
@@ -250,7 +250,7 @@ public class GlyphObjectDefinition {
 
 	public int getPartParameterIndexInternal(String name, EGlyphSettingIDs type, DIRECTION dir) {
 		if (!parts.containsKey(name)) {
-			logger.log(new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+			logger.log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 				"GlyphObjectDefinition::setPartParameterIndex() - " + "part does not exist '" + name + "'"));
 			return -1;
 		}

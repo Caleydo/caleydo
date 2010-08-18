@@ -2,7 +2,7 @@ package org.caleydo.core.command;
 
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.mapping.IDCategory;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -33,7 +33,7 @@ public class CmdCreateIDCategory
 		createdObject = IDCategory.registerCategory(categoryName);
 
 		generalManager.getLogger().log(
-			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Created ID Type " + createdObject));
+			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Created ID Type " + createdObject));
 	}
 
 	@Override

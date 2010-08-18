@@ -3,9 +3,8 @@ package org.caleydo.core.parser.ascii;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -46,11 +45,11 @@ public abstract class AbstractLoader {
 	/**
 	 * Define the separator TAB is the default token.
 	 */
-	protected String sTokenSeperator = IGeneralManager.sDelimiter_Parser_DataItems_Tab;
+	protected String sTokenSeperator = GeneralManager.sDelimiter_Parser_DataItems_Tab;
 
 	protected int iLineInFile = 0;
 
-	protected ISWTGUIManager swtGuiManager;
+	protected SWTGUIManager swtGuiManager;
 
 	/**
 	 * Constructor.
@@ -184,7 +183,7 @@ public abstract class AbstractLoader {
 
 			GeneralManager.get().getLogger()
 				.log(
-					new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Start loading file " + sFileName
+					new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start loading file " + sFileName
 						+ "..."));
 			BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
@@ -199,7 +198,7 @@ public abstract class AbstractLoader {
 		}
 
 		GeneralManager.get().getLogger().log(
-			new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "File " + sFileName
+			new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "File " + sFileName
 				+ " successfully loaded."));
 
 		setArraysToStorages();

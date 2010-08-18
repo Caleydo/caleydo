@@ -2,8 +2,8 @@ package org.caleydo.view.pathwaybrowser;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.view.pathwaybrowser.creator.ViewCreator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

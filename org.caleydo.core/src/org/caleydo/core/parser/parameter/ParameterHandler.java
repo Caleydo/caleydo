@@ -9,8 +9,7 @@ import gleem.linalg.Vec4f;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.parser.parameter.data.ParameterKeyValueDataAndDefault;
+import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Handles attributes from XML file used to create objects.
@@ -246,7 +245,7 @@ public final class ParameterHandler
 
 				case VEC3F: {
 					StringTokenizer tokenizer =
-						new StringTokenizer(value, IGeneralManager.sDelimiter_Parser_DataItems);
+						new StringTokenizer(value, GeneralManager.sDelimiter_Parser_DataItems);
 
 					if (tokenizer.countTokens() != 3)
 						throw new IllegalArgumentException("Error in parameter " + key + "=[" + value
@@ -261,7 +260,7 @@ public final class ParameterHandler
 
 				case VEC4F: {
 					StringTokenizer tokenizer =
-						new StringTokenizer(value, IGeneralManager.sDelimiter_Parser_DataItems);
+						new StringTokenizer(value, GeneralManager.sDelimiter_Parser_DataItems);
 
 					if (tokenizer.countTokens() != 4)
 						throw new IllegalArgumentException("Error in parameter " + key + "=[" + value

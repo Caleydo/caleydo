@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
-import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.util.collection.MultiHashMap;
 
 /**

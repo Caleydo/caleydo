@@ -1,4 +1,4 @@
-package org.caleydo.core.manager;
+package org.caleydo.core.manager.datadomain;
 
 import java.util.Set;
 

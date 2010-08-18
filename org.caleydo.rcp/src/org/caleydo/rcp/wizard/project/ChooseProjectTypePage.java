@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.util.Date;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.util.preferences.PreferenceConstants;

@@ -2,8 +2,8 @@ package org.caleydo.view.genesearch;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.view.genesearch.creator.ViewCreator;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

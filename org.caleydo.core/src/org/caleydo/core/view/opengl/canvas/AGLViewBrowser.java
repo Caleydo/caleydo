@@ -12,26 +12,25 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.opengl.CmdCreateView;
+import org.caleydo.core.command.view.CmdCreateView;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.command.CommandManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
@@ -1305,7 +1304,7 @@ public abstract class AGLViewBrowser
 			newViews.clear();
 		}
 
-		IViewManager viewManager = generalManager.getViewGLCanvasManager();
+		ViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		if (reinitialize) {
 			ArrayList<AGLView> removeView = new ArrayList<AGLView>();
@@ -1593,7 +1592,7 @@ public abstract class AGLViewBrowser
 
 		viewActivationEvent.setViews(views);
 
-		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		eventPublisher.triggerEvent(viewActivationEvent);
 	}
 
@@ -1638,7 +1637,7 @@ public abstract class AGLViewBrowser
 		else {
 			GeneralManager.get().getLogger()
 				.log(
-					new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+					new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 						"No empty space left to add new view!"));
 			newViews.clear();
 			return false;
@@ -1666,7 +1665,7 @@ public abstract class AGLViewBrowser
 	@SuppressWarnings("unchecked")
 	protected AGLView createView(GL gl, ASerializedView serView) {
 
-		ICommandManager cm = generalManager.getCommandManager();
+		CommandManager cm = generalManager.getCommandManager();
 		CmdCreateView cmdView = (CmdCreateView) cm.createCommandByType(ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(serView.getViewType());
 		cmdView.setAttributesFromSerializedForm(serView);
@@ -1717,7 +1716,7 @@ public abstract class AGLViewBrowser
 	 * Disables picking and enables busy mode
 	 */
 	public void disableUserInteraction() {
-		IViewManager canvasManager = generalManager.getViewGLCanvasManager();
+		ViewManager canvasManager = generalManager.getViewGLCanvasManager();
 		canvasManager.getPickingManager().enablePicking(false);
 		canvasManager.requestBusyMode(this);
 	}
@@ -1726,7 +1725,7 @@ public abstract class AGLViewBrowser
 	 * Enables picking and disables busy mode
 	 */
 	public void enableUserInteraction() {
-		IViewManager canvasManager = generalManager.getViewGLCanvasManager();
+		ViewManager canvasManager = generalManager.getViewGLCanvasManager();
 		canvasManager.getPickingManager().enablePicking(true);
 		canvasManager.releaseBusyMode(this);
 	}
@@ -1800,7 +1799,7 @@ public abstract class AGLViewBrowser
 		// // serializedForm.setGeneMappingEnabled(geneMappingEnabled);
 		// serializedForm.setConnectionLinesEnabled(connectionLinesEnabled);
 		//		
-		// IViewManager viewManager = generalManager.getViewGLCanvasManager();
+		// ViewManager viewManager = generalManager.getViewGLCanvasManager();
 		//		
 		// ArrayList<ASerializedView> remoteViews = new
 		// ArrayList<ASerializedView>(

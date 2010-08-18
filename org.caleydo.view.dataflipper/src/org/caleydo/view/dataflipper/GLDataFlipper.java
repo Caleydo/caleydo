@@ -14,25 +14,24 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
-import org.caleydo.core.command.view.opengl.CmdCreateView;
+import org.caleydo.core.command.view.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVAType;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.ISetBasedDataDomain;
-import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.command.CommandManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.AssociationManager;
 import org.caleydo.core.manager.datadomain.DataDomainGraph;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.ClusterSetEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.path.GuidanceNode;
 import org.caleydo.core.manager.path.HistoryNode;
 import org.caleydo.core.manager.path.INode;
@@ -42,6 +41,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
@@ -673,7 +673,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		viewActivationEvent.setViews(views);
 
-		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		eventPublisher.triggerEvent(viewActivationEvent);
 	}
 
@@ -703,7 +703,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	 */
 	private AGLView createView(GL gl, ASerializedView serView) {
 
-		ICommandManager commandManager = generalManager.getCommandManager();
+		CommandManager commandManager = generalManager.getCommandManager();
 		CmdCreateView cmdView = (CmdCreateView) commandManager
 				.createCommandByType(ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(serView.getViewType());
@@ -726,7 +726,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	 * Disables picking and enables busy mode
 	 */
 	public void disableUserInteraction() {
-		IViewManager canvasManager = generalManager.getViewGLCanvasManager();
+		ViewManager canvasManager = generalManager.getViewGLCanvasManager();
 		canvasManager.getPickingManager().enablePicking(false);
 		canvasManager.requestBusyMode(this);
 	}
@@ -735,7 +735,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	 * Enables picking and disables busy mode
 	 */
 	public void enableUserInteraction() {
-		IViewManager canvasManager = generalManager.getViewGLCanvasManager();
+		ViewManager canvasManager = generalManager.getViewGLCanvasManager();
 		canvasManager.getPickingManager().enablePicking(true);
 		canvasManager.releaseBusyMode(this);
 	}
@@ -1349,7 +1349,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		SerializedDataFlipperView serializedForm = new SerializedDataFlipperView();
 		serializedForm.setViewID(this.getID());
 
-		// IViewManager viewManager = generalManager.getViewGLCanvasManager();
+		// ViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		// ArrayList<ASerializedView> remoteViews =
 		// new ArrayList<ASerializedView>(focusLevel.getAllElements().size());

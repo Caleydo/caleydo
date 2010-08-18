@@ -1,12 +1,12 @@
 package org.caleydo.view.radial;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 
@@ -20,7 +20,7 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 public abstract class ADataEventManager implements ISelectionUpdateHandler {
 	protected SelectionUpdateListener selectionUpdateListener;
 	protected GLRadialHierarchy radialHierarchy;
-	protected IEventPublisher eventPublisher;
+	protected EventPublisher eventPublisher;
 
 	/**
 	 * Constructor.

@@ -1,7 +1,7 @@
 package org.caleydo.datadomain.pathway.rcp;
 
-import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayLoaderThread;
@@ -30,7 +30,7 @@ public class PathwayLoadingProgressIndicatorAction
 				if (!sPathwayDataSources.isEmpty()) {
 
 					// Turn on busy mode
-					IViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
+					ViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
 					viewManager.requestBusyMode(this);
 
 					monitor.beginTask("Loading pathways", 100);

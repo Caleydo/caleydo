@@ -98,7 +98,7 @@ public abstract class AToolBarContent {
 	 * retrieving any toolbar content.
 	 * 
 	 * @param viewID
-	 *            as used by IViewManager of the target view
+	 *            as used by ViewManager of the target view
 	 */
 	public void setTargetViewData(ASerializedView serializedView) {
 		targetViewData = serializedView;

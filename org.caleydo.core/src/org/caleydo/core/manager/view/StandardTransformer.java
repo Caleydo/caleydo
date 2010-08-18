@@ -11,13 +11,12 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.selection.NewConnectionsEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.listener.NewConnectionsListener;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.swt.graphics.Point;
@@ -32,7 +31,7 @@ public class StandardTransformer
 	implements ISelectionTransformer, IListenerOwner {
 
 	/** reference for common usage */
-	private IEventPublisher eventPublisher;
+	private EventPublisher eventPublisher;
 
 	/** viewID of the view related to this {@link ISelectionTransformer} implementation */
 	protected int viewID;
@@ -84,7 +83,7 @@ public class StandardTransformer
 		final double[] wc = new double[4];
 		final GLU glu = new GLU();
 
-		IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+		ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
 		AGLView view = vm.getGLView(viewID);
 		int canvasHeight = view.getParentGLCanvas().getHeight();
 

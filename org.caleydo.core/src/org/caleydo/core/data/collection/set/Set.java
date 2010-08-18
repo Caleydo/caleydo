@@ -19,11 +19,10 @@ import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.data.set.SetManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -431,7 +430,7 @@ public class Set
 
 	@Override
 	public void destroy() {
-		IGeneralManager gm = GeneralManager.get();
+		GeneralManager gm = GeneralManager.get();
 		IStorageManager sm = gm.getStorageManager();
 		for (Integer storageID : hashStorages.keySet()) {
 			sm.unregisterItem(storageID);
@@ -443,7 +442,7 @@ public class Set
 	@Override
 	public void finalize() {
 		GeneralManager.get().getLogger()
-			.log(new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Set " + this + "destroyed"));
+			.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Set " + this + "destroyed"));
 	}
 
 	@Override

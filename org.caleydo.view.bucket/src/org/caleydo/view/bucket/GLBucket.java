@@ -14,20 +14,18 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.opengl.CmdCreateView;
+import org.caleydo.core.command.view.CmdCreateView;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
-import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.command.CommandManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
@@ -44,13 +42,13 @@ import org.caleydo.core.manager.event.view.remote.ResetRemoteRendererEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleZoomEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
@@ -2240,7 +2238,7 @@ public class GLBucket extends AGLView implements
 			newViews.clear();
 		}
 
-		IViewManager viewManager = generalManager.getViewGLCanvasManager();
+		ViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		if (reinitialize) {
 			ArrayList<AGLView> removeView = new ArrayList<AGLView>();
@@ -2493,7 +2491,7 @@ public class GLBucket extends AGLView implements
 
 		viewActivationEvent.setViews(views);
 
-		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		eventPublisher.triggerEvent(viewActivationEvent);
 	}
 
@@ -2539,7 +2537,7 @@ public class GLBucket extends AGLView implements
 			GeneralManager
 					.get()
 					.getLogger()
-					.log(new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+					.log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 							"No empty space left to add new pathway!"));
 			newViews.clear();
 			return false;
@@ -2567,7 +2565,7 @@ public class GLBucket extends AGLView implements
 	@SuppressWarnings("unchecked")
 	private AGLView createView(GL gl, ASerializedView serView) {
 
-		ICommandManager cm = generalManager.getCommandManager();
+		CommandManager cm = generalManager.getCommandManager();
 		CmdCreateView cmdView = (CmdCreateView) cm
 				.createCommandByType(ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(serView.getViewType());
@@ -2616,7 +2614,7 @@ public class GLBucket extends AGLView implements
 	 * Disables picking and enables busy mode
 	 */
 	public void disableUserInteraction() {
-		IViewManager canvasManager = generalManager.getViewGLCanvasManager();
+		ViewManager canvasManager = generalManager.getViewGLCanvasManager();
 		canvasManager.getPickingManager().enablePicking(false);
 		canvasManager.requestBusyMode(this);
 	}
@@ -2625,7 +2623,7 @@ public class GLBucket extends AGLView implements
 	 * Enables picking and disables busy mode
 	 */
 	public void enableUserInteraction() {
-		IViewManager canvasManager = generalManager.getViewGLCanvasManager();
+		ViewManager canvasManager = generalManager.getViewGLCanvasManager();
 		canvasManager.getPickingManager().enablePicking(true);
 		canvasManager.releaseBusyMode(this);
 	}

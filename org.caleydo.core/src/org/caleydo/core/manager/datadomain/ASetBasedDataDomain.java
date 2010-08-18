@@ -18,11 +18,10 @@ import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
@@ -33,7 +32,7 @@ import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererType;
@@ -74,8 +73,8 @@ public abstract class ASetBasedDataDomain
 	protected ContentSelectionManager contentSelectionManager;
 	protected StorageSelectionManager storageSelectionManager;
 
-	/** central {@link IEventPublisher} to receive and send events */
-	protected IEventPublisher eventPublisher;
+	/** central {@link EventPublisher} to receive and send events */
+	protected EventPublisher eventPublisher;
 
 	public ASetBasedDataDomain() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
@@ -474,7 +473,7 @@ public abstract class ASetBasedDataDomain
 		if (contentSelectionManager == null)
 			return;
 
-		IIDMappingManager mappingManager = GeneralManager.get().getIDMappingManager();
+		IDMappingManager mappingManager = GeneralManager.get().getIDMappingManager();
 		if (mappingManager.hasMapping(selectionDelta.getIDType(), contentSelectionManager.getIDType())) {
 			contentSelectionManager.setDelta(selectionDelta);
 		}

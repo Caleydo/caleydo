@@ -21,17 +21,17 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
-import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
+import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.ReplaceContentVAInUseCaseListener;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
@@ -66,7 +66,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	private ForeignSelectionUpdateListener clinicalSelectionUpdateListener;
 	private ForeignSelectionCommandListener clinicalSelectionCommandListener;
 
-	private IIDMappingManager idMappingManager = GeneralManager.get()
+	private IDMappingManager idMappingManager = GeneralManager.get()
 			.getIDMappingManager();
 
 	/**

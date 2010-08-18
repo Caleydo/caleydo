@@ -1,6 +1,6 @@
 package org.caleydo.rcp.view.rcp;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.swt.collab.CollabViewRep;
 import org.eclipse.swt.widgets.Composite;
 

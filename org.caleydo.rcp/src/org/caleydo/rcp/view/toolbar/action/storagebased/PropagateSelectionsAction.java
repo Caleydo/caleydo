@@ -1,7 +1,7 @@
 package org.caleydo.rcp.view.toolbar.action.storagebased;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.storagebased.BookmarkButtonEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.action.AToolBarAction;

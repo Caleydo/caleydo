@@ -1,6 +1,6 @@
 package org.caleydo.core.view.swt.collab;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.net.Connection;
 import org.caleydo.core.net.NetworkEventReceiver;
 import org.caleydo.core.net.NetworkManager;

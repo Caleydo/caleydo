@@ -1,11 +1,11 @@
 package org.caleydo.view.scatterplot.toolbar;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.storagebased.InitAxisComboEvent;
 import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;

@@ -6,10 +6,9 @@ import java.util.StringTokenizer;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.ascii.TabularAsciiDataReader;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.system.StringConversionTool;
@@ -52,7 +51,7 @@ public class CmdLoadFileNStorages
 
 		StringTokenizer tokenizer =
 			new StringTokenizer(parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE2.getXmlKey()),
-				IGeneralManager.sDelimiter_Parser_DataItems);
+				GeneralManager.sDelimiter_Parser_DataItems);
 
 		iAlStorageIDs = new ArrayList<Integer>();
 
@@ -74,7 +73,7 @@ public class CmdLoadFileNStorages
 
 				if (iArrayStartStop[0] > iArrayStartStop[1] && iArrayStartStop[1] != -1) {
 					generalManager.getLogger().log(
-						new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID, "Ignore stop inde="
+						new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, "Ignore stop inde="
 							+ iArrayStartStop[1] + " because it is maller that start index="
 							+ iArrayStartStop[0]));
 
@@ -101,7 +100,7 @@ public class CmdLoadFileNStorages
 	@Override
 	public void doCommand() {
 		generalManager.getLogger().log(
-			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Loading data from file "
+			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Loading data from file "
 				+ loadDataParameters.getFileName() + " using token pattern "
 				+ loadDataParameters.getInputPattern() + ". Data is stored in Storage with ID "
 				+ iAlStorageIDs.toString()));

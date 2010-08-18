@@ -7,17 +7,17 @@ import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 
 public class SearchViewMediator {
 
-	IEventPublisher eventPublisher;
+	EventPublisher eventPublisher;
 
 	public SearchViewMediator() {
 		eventPublisher = GeneralManager.get().getEventPublisher();

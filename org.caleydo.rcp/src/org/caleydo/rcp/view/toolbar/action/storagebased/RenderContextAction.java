@@ -1,6 +1,6 @@
 package org.caleydo.rcp.view.toolbar.action.storagebased;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;

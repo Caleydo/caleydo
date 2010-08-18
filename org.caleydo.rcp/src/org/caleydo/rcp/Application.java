@@ -1,6 +1,6 @@
 package org.caleydo.rcp;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ApplicationInitData;
 import org.caleydo.rcp.startup.StartupProcessor;
 import org.eclipse.equinox.app.IApplication;

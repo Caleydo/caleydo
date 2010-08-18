@@ -3,7 +3,7 @@ package org.caleydo.core.util.wii;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.swt.graphics.Point;
 
 import wiiusej.WiiUseApiManager;

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ccontainer.NominalCContainer;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 
 /**

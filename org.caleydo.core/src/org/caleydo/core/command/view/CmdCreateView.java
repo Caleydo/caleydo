@@ -1,4 +1,4 @@
-package org.caleydo.core.command.view.opengl;
+package org.caleydo.core.command.view;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -8,11 +8,11 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 import org.caleydo.core.serialize.ASerializedView;
@@ -83,7 +83,7 @@ public class CmdCreateView
 			(float) Math.toRadians(vec4fRotation.w()));
 
 		StringTokenizer frustumToken =
-			new StringTokenizer(attrib3, IGeneralManager.sDelimiter_Parser_DataItems);
+			new StringTokenizer(attrib3, GeneralManager.sDelimiter_Parser_DataItems);
 
 		// try
 		// {
@@ -198,7 +198,7 @@ public class CmdCreateView
 	@Override
 	public void doCommand() {
 
-		IViewManager glCanvasManager = generalManager.getViewGLCanvasManager();
+		ViewManager glCanvasManager = generalManager.getViewGLCanvasManager();
 
 		GLCaleydoCanvas glCanvas = generalManager.getViewGLCanvasManager().getCanvas(parentCanvasID);
 

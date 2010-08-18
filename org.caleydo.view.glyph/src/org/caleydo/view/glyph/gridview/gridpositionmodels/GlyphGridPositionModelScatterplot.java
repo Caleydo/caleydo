@@ -10,7 +10,7 @@ import java.util.Vector;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.glyph.GlyphRenderStyle;
 import org.caleydo.view.glyph.gridview.GlyphEntry;
 import org.caleydo.view.glyph.gridview.GlyphGridPosition;
@@ -73,7 +73,7 @@ public class GlyphGridPositionModelScatterplot
 
 		if (xdata == null || ydata == null) {
 			generalManager.getLogger().log(
-				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+				new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 					"Scatterplot axix definition corrupt! (" + iScatterParameterX + ", " + iScatterParameterY
 						+ ")"));
 			return;
@@ -253,7 +253,7 @@ public class GlyphGridPositionModelScatterplot
 
 		if (tx == null || ty == null) {
 			generalManager.getLogger().log(
-				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+				new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 					"setGlyphPositionsScatterplot(); Scatterplot axix definition corrupt!"));
 			return;
 		}

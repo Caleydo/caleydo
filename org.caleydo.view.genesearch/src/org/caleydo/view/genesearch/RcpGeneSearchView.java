@@ -10,11 +10,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.mapping.MappingType;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -84,7 +83,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 	private Label pathwayContainingGeneLabel;
 	private Label horizontalSeparator;
 
-	private IGeneralManager generalManager;
+	private GeneralManager generalManager;
 
 	private Button usePathways;
 	private Button useGeneSymbol;
@@ -96,7 +95,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 	private Button showOnlyGenesContainedInAnyPathway;
 	private boolean bShowOnlyGenesContainedInAnyPathway = false;
 
-	private IIDMappingManager idMappingManager;
+	private IDMappingManager idMappingManager;
 
 	private SearchViewMediator searchViewMediator;
 

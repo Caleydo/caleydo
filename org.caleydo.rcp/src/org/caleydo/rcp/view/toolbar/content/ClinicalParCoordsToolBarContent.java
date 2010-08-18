@@ -3,7 +3,7 @@ package org.caleydo.rcp.view.toolbar.content;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.view.toolbar.ActionToolBarContainer;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;

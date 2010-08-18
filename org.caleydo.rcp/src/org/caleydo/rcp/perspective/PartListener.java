@@ -3,11 +3,11 @@ package org.caleydo.rcp.perspective;
 import java.util.List;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.RemoveViewSpecificItemsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.ViewEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.IView;
 import org.caleydo.rcp.toolbar.RcpToolBarView;
 import org.caleydo.rcp.toolbar.ToolBarContentFactory;
@@ -34,7 +34,7 @@ import org.eclipse.ui.PlatformUI;
 public class PartListener
 	implements IPartListener2, IUniqueObject {
 
-	IEventPublisher eventPublisher;
+	EventPublisher eventPublisher;
 
 	public PartListener() {
 		eventPublisher = GeneralManager.get().getEventPublisher();

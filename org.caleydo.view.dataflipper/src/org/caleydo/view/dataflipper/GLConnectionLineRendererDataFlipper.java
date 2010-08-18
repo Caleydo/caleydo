@@ -10,10 +10,10 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.view.ConnectionMap;
 import org.caleydo.core.manager.view.SelectedElementRepList;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -53,7 +53,7 @@ public class GLConnectionLineRendererDataFlipper extends AGLConnectionLineRender
 
 		VisLinkAnimationStage connectionLines = new VisLinkAnimationStage();
 
-		IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
+		ViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
 		for (Entry<IDType, ConnectionMap> typeConnections : connectedElementRepManager
 				.getTransformedConnectionsByType().entrySet()) {
 			ArrayList<ArrayList<Vec3f>> alPointLists = null;

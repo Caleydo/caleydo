@@ -5,8 +5,7 @@ import java.util.LinkedList;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -24,7 +23,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLPathwayTextureManager {
 
-	private IGeneralManager generalManager;
+	private GeneralManager generalManager;
 
 	private HashMap<PathwayGraph, Texture> hashPathwayToTexture;
 
@@ -51,7 +50,7 @@ public class GLPathwayTextureManager {
 				+ sPathwayTexturePath;
 
 		generalManager.getLogger().log(
-				new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID,
+				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
 						"Load pathway texture with ID: " + pathway.getID()));
 
 		if (type == EPathwayDatabaseType.BIOCARTA) {

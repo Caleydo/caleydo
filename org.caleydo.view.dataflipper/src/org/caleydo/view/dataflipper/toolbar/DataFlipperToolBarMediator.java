@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Display;
  */
 public class DataFlipperToolBarMediator implements IListenerOwner {
 
-	// private IEventPublisher eventPublisher;
+	// private EventPublisher eventPublisher;
 
 	/**
 	 * related toolBarContent that contains the gui-control items for

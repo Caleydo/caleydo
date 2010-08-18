@@ -20,9 +20,9 @@ import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -71,7 +71,7 @@ public abstract class ACompareViewState {
 	protected ArrayList<AHeatMapLayout> layouts;
 
 	protected RenderCommandFactory renderCommandFactory;
-	protected IEventPublisher eventPublisher;
+	protected EventPublisher eventPublisher;
 	protected ASetBasedDataDomain dataDomain;
 	protected DragAndDropController dragAndDropController;
 	protected CompareViewStateController compareViewStateController;

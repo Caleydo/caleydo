@@ -9,15 +9,14 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.selection.AddSelectionEvent;
 import org.caleydo.core.manager.event.view.selection.ClearConnectionsEvent;
 import org.caleydo.core.manager.event.view.selection.ClearTransformedConnectionsEvent;
 import org.caleydo.core.manager.event.view.selection.NewConnectionsEvent;
 import org.caleydo.core.manager.execution.ADisplayLoopEventHandler;
 import org.caleydo.core.manager.execution.DisplayLoopExecution;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.listener.AddSelectionListener;
 import org.caleydo.core.manager.view.listener.ClearConnectionsListener;
 import org.caleydo.core.manager.view.listener.ClearTransformedConnectionsListener;
@@ -57,10 +56,10 @@ public class ConnectedElementRepresentationManager
 	private static ConnectedElementRepresentationManager connectedElementRepresenationManager;
 
 	/** Stored reference for common usage */
-	protected IGeneralManager generalManager;
+	protected GeneralManager generalManager;
 
 	/** Stored reference for common usage */
-	protected IEventPublisher eventPublisher;
+	protected EventPublisher eventPublisher;
 
 	/** Stores a {@link ConnectionMap} for each possible type as originally provided by the views. */
 	HashMap<IDType, ConnectionMap> sourceConnectionsByType;

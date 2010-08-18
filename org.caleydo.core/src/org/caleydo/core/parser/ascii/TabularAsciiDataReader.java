@@ -13,9 +13,8 @@ import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.StorageVAType;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -76,7 +75,7 @@ public class TabularAsciiDataReader
 
 		StringTokenizer tokenizer = new StringTokenizer(tokenPattern);
 
-		final String sTokenPatternParserSeperator = IGeneralManager.sDelimiter_Parser_DataType;
+		final String sTokenPatternParserSeperator = GeneralManager.sDelimiter_Parser_DataType;
 
 		while (tokenizer.hasMoreTokens()) {
 			String sBuffer = tokenizer.nextToken(sTokenPatternParserSeperator);
@@ -111,7 +110,7 @@ public class TabularAsciiDataReader
 					.get()
 					.getLogger()
 					.log(
-						new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "Unknown column data type: "
+						new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "Unknown column data type: "
 							+ tokenPattern));
 			}
 		}
@@ -229,7 +228,7 @@ public class TabularAsciiDataReader
 								MessageDialog.openError(new Shell(), "Error during parsing", sErrorMessage);
 
 								GeneralManager.get().getLogger()
-									.log(new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID, sErrorMessage));
+									.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, sErrorMessage));
 								throw nfe;
 							}
 

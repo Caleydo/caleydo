@@ -1,6 +1,6 @@
 package org.caleydo.core.view.swt.collab;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.net.GroupwareUtils;
 import org.caleydo.core.net.IGroupwareManager;
 import org.eclipse.swt.widgets.Event;

@@ -1,9 +1,9 @@
 package org.caleydo.core.manager.view;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.net.NetworkManager;
 
 /**

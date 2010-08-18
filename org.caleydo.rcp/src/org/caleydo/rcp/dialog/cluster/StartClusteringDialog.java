@@ -1,6 +1,6 @@
 package org.caleydo.rcp.dialog.cluster;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.swt.widgets.Composite;

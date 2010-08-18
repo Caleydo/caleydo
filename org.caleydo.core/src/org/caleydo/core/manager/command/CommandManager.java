@@ -1,40 +1,36 @@
 package org.caleydo.core.manager.command;
 
+import org.caleydo.core.command.CmdCreateIDCategory;
+import org.caleydo.core.command.CmdCreateIDType;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
-import org.caleydo.core.manager.AManager;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.command.factory.CommandFactory;
+import org.caleydo.core.command.data.CmdDataCreateDataDomain;
+import org.caleydo.core.command.data.CmdDataCreateSet;
+import org.caleydo.core.command.data.CmdDataCreateStorage;
+import org.caleydo.core.command.data.CmdDataCreateVirtualArray;
+import org.caleydo.core.command.data.CmdSetDataRepresentation;
+import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
+import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
+import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
+import org.caleydo.core.command.system.CmdSystemExit;
+import org.caleydo.core.command.view.CmdCreateView;
+import org.caleydo.core.command.view.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
- * Manager for creating and exporting commands.
+ * Manager for creating commands.
  * 
- * @author Michael Kalkusch
  * @author Marc Streit
  */
-public class CommandManager
-	extends AManager<ICommand>
-	implements ICommandManager {
-
-	private CommandFactory commandFactory;
+public class CommandManager {
 
 	/**
-	 * Constructor.
+	 * Create a new command. Calls createCommandByType(CommandType) internal.
+	 * 
+	 * @param phAttributes
+	 *            Define several attributes and assign them in new Command
+	 * @return new Command with attributes defined in phAttributes
 	 */
-	public CommandManager() {
-		commandFactory = new CommandFactory();
-	}
-
-	@Override
-	public ICommand createCommandByType(final ECommandType cmdType) {
-
-		ICommand createdCommand = commandFactory.createCommandByType(cmdType);
-
-		return createdCommand;
-	}
-
-	@Override
 	public ICommand createCommand(final IParameterHandler phAttributes) {
 
 		ECommandType cmdType =
@@ -50,64 +46,75 @@ public class CommandManager
 		
 		return createdCommand;
 	}
+	
+	/**
+	 * Create a new command assigned to a cmdType.
+	 * 
+	 * @param cmdType
+	 *            specify the ICommand to be created.
+	 * @return new ICommand
+	 */
+	public ICommand createCommandByType(final ECommandType cmdType) {
+		ICommand createdCommand = null;
 
-//	@Override
-//	public void writeSerializedObjects(final String sFileName) {
-//		try {
-//			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(sFileName));
-//
-//			// First write number of command objects
-//			out.writeInt(vecUndo.size());
-//
-//			// Iterate over commands
-//			for (ICommand tmpCmd : vecUndo) {
-//				out.writeObject(tmpCmd);
-//
-//				GeneralManager.get().getLogger().log(
-//					new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Serialize command: ["
-//						+ tmpCmd.getInfoText() + "]"));
-//			}
-//
-//			out.close();
-//
-//		}
-//		catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	@Override
-//	public void readSerializedObjects(final String sFileName) {
-//
-//		try {
-//			ObjectInputStream in = new ObjectInputStream(new FileInputStream(sFileName));
-//
-//			int iCmdCount = in.readInt();
-//			for (int iCmdIndex = 0; iCmdIndex < iCmdCount; iCmdIndex++) {
-//				// vecCmdHandle.add((ICommand)in.readObject());
-//				ACommand tmpCmd = (ACommand) in.readObject();
-//				tmpCmd.doCommand();
-//			}
-//
-//			in.close();
-//
-//		}
-//		catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+		switch (cmdType) {
+			
+			case CREATE_ID_CATEGORY: {
+				createdCommand = new CmdCreateIDCategory(cmdType);
+				break;
+			}
+			case CREATE_ID_TYPE: {
+				createdCommand = new CmdCreateIDType(cmdType);
+				break;
+			}			
+			case LOAD_LOOKUP_TABLE_FILE: {
+				createdCommand = new CmdLoadFileLookupTable(cmdType);
+				break;
+			}
+			case LOAD_DATA_FILE: {
+				createdCommand = new CmdLoadFileNStorages(cmdType);
+				break;
+			}
+			case CREATE_DATA_DOMAIN: {
+				createdCommand = new CmdDataCreateDataDomain(cmdType);
+				break;
+			}
+			case CREATE_STORAGE: {
+				createdCommand = new CmdDataCreateStorage(cmdType);
+				break;
+			}
+			case CREATE_VIRTUAL_ARRAY: {
+				createdCommand = new CmdDataCreateVirtualArray(cmdType);
+				break;
+			}
+			case CREATE_SET_DATA: {
+				createdCommand = new CmdDataCreateSet(cmdType);
+				break;
+			}
+			case CREATE_VIEW_RCP_GLCANVAS: {
+				createdCommand = new CmdViewCreateRcpGLCanvas(cmdType);
+				break;
+			}
+			case CREATE_GL_VIEW: {
+				createdCommand = new CmdCreateView(cmdType);
+				break;
+			}
+			case SYSTEM_SHUT_DOWN: {
+				createdCommand = new CmdSystemExit(cmdType);
+				break;
+			}
+			case SET_DATA_REPRESENTATION: {
+				createdCommand = new CmdSetDataRepresentation(cmdType);
+				break;
+			}
+			case DATA_FILTER_MIN_MAX: {
+				createdCommand = new CmdDataFilterMinMax(cmdType);
+				break;
+			}
+			default:
+				throw new IllegalStateException("Unsupported CommandQueue key= [" + cmdType + "]");
+		}
+
+		return createdCommand;
+	}
 }

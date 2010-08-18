@@ -20,10 +20,10 @@ import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAEvent;
@@ -505,7 +505,7 @@ public abstract class AStorageBasedView
 		}
 		catch (InvalidAttributeValueException e) {
 			generalManager.getLogger().log(
-				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+				new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 					"Can not handle data type of update in selectionDelta", e));
 		}
 	}

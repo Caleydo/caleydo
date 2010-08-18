@@ -6,10 +6,9 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.gui.SWTGUIManager;
+import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.mapping.MappingType;
 
 /**
@@ -22,7 +21,7 @@ public class LookupTableLoader
 	extends AbstractLoader {
 	protected MappingType mappingType;
 
-	protected final IIDMappingManager genomeIdManager;
+	protected final IDMappingManager genomeIdManager;
 
 	/**
 	 * Factor with that the line index must be multiplied to get a normalized (0-100) progress percentage
@@ -30,7 +29,7 @@ public class LookupTableLoader
 	 */
 	protected float fProgressBarFactor = 0;
 
-	protected ISWTGUIManager swtGuiManager;
+	protected SWTGUIManager swtGuiManager;
 
 	/**
 	 * Constructor.
@@ -43,7 +42,7 @@ public class LookupTableLoader
 		swtGuiManager = GeneralManager.get().getSWTGUIManager();
 		genomeIdManager = GeneralManager.get().getIDMappingManager();
 
-		setTokenSeperator(IGeneralManager.sDelimiter_Parser_DataType);
+		setTokenSeperator(GeneralManager.sDelimiter_Parser_DataType);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package org.caleydo.view.pathway.toolbar;
 
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
@@ -8,7 +9,6 @@ import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 /**
@@ -18,7 +18,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
  */
 public class PathwayToolBarMediator {
 
-	IEventPublisher eventPublisher;
+	EventPublisher eventPublisher;
 
 	public PathwayToolBarMediator() {
 		eventPublisher = GeneralManager.get().getEventPublisher();

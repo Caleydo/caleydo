@@ -2,7 +2,7 @@ package org.caleydo.view.bucket;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;

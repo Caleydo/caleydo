@@ -3,7 +3,7 @@ package org.caleydo.datadomain.pathway.graph;
 import java.io.Serializable;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.util.graph.core.Graph;

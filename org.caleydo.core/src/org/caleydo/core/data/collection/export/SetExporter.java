@@ -17,9 +17,9 @@ import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
-import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
+import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
@@ -51,7 +51,7 @@ public class SetExporter {
 			// IUseCase useCase = GeneralManager.get().getUseCase(set.getSetType().getDataDomain());
 			//
 			String identifier;
-			IIDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
+			IDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer iContentIndex : alGenes) {
 				if (set.getDataDomain().getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 					Set<String> setRefSeqIDs =
@@ -128,7 +128,7 @@ public class SetExporter {
 			int index = 0;
 			int offset = 0;
 			String identifier;
-			IIDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
+			IDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer iContentIndex : contentVA) {
 				if (useCase.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 

@@ -6,12 +6,10 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IXmlParserManager;
-import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
-import org.caleydo.core.parser.xml.sax.handler.command.CommandSaxHandler;
-import org.caleydo.core.parser.xml.sax.handler.recursion.OpenExternalXmlFileSaxHandler;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.parser.xml.CommandSaxHandler;
+import org.caleydo.core.parser.xml.IXmlParserHandler;
+import org.caleydo.core.parser.xml.OpenExternalXmlFileSaxHandler;
 import org.ccil.cowan.tagsoup.HTMLSchema;
 import org.ccil.cowan.tagsoup.Parser;
 import org.xml.sax.Attributes;
@@ -23,20 +21,17 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * Administer several XML-SaxHandelers. Switches between several XML-SaxHandeler automatically, based by a
- * registered tag. Acts as proxy for other derived objects from IXmlParserManager
+ * registered tag. Acts as proxy for other derived objects from XmlParserManager
  * 
- * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
- * @see org.caleydo.core.manager.IXmlParserManager
  * @author Michael Kalkusch
  * @author Marc Streit
  */
 public class XmlParserManager
-	extends DefaultHandler
-	implements IXmlParserManager {
+	extends DefaultHandler {
 
 	protected boolean bUnloadSaxHandlerAfterBootstraping = false;
 
-	protected IGeneralManager generalManager;
+	protected GeneralManager generalManager;
 
 	/**
 	 * Token to avoid registering and unregistering handlers during processing XMl data.
@@ -122,7 +117,20 @@ public class XmlParserManager
 		return true;
 	}
 
-	@Override
+	/**
+	 * Register a SaxHandler by its opening Tag. Calls getXmlActivationTag() and hasOpeningTagOnlyOnce() for
+	 * each handler and registers the handler using this data. Also calls initHandler() on the new Handler.
+	 * 
+	 * @see org.caleydo.core.parser.xml.IXmlParserHandler#initHandler()
+	 * @see org.caleydo.core.parser.xml.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
+	 * @see org.caleydo.core.parser.xml.IXmlParserHandler#getXmlActivationTag()
+	 * @param handler
+	 *            register handler to an opening tag.
+	 * @param sOpeningAndClosingTag
+	 *            defines opening and closing tag triggering the handler to become active.
+	 * @return TRUE if Handler could be register and FALSE if either handler or its associated opening Tag was
+	 *         already registered.
+	 */
 	public final boolean registerAndInitSaxHandler(IXmlParserHandler handler) {
 
 		assert handler != null : "Can not handle null pointer as handler";
@@ -152,7 +160,12 @@ public class XmlParserManager
 		return true;
 	}
 
-	@Override
+	/**
+	 * Unregister a Handler by its String
+	 * 
+	 * @param sOpeningAndClosingTag
+	 *            tag to identify handler.
+	 */
 	public final void unregisterSaxHandler(final String sActivationXmlTag) {
 		if (bProcessingXmlDataNow)
 			throw new IllegalStateException(
@@ -172,12 +185,15 @@ public class XmlParserManager
 		return;
 	}
 
-	@Override
+	/**
+	 * Get the current XmlSaxParser handler or null if no handler ist active.
+	 * 
+	 * @return reference to current XmlSaxParser handler
+	 */
 	public final IXmlParserHandler getCurrentXmlParserHandler() {
 		return this.currentHandler;
 	}
 
-	@Override
 	public void initHandlers() {
 		OpenExternalXmlFileSaxHandler externalFileHandler = new OpenExternalXmlFileSaxHandler();
 		CommandSaxHandler cmdHandler = new CommandSaxHandler();
@@ -233,8 +249,11 @@ public class XmlParserManager
 	}
 
 	/**
-	 * @see org.caleydo.core.manager.IXmlParserManager#startElementSearch4Tag(Stringt, Stringt, Stringt,
-	 *      org.xml.sax.Attributes)
+	 * Call this method, if current tag was not handled by startElement(String, String, String,
+	 * org.xml.sax.Attributes) of org.caleydo.core.parser.handler.IXmlParserHandler
+	 * 
+	 * @see org.caleydo.core.parser.xml.IXmlParserHandler
+	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 */
 	public void startElementSearch4Tag(String uri, String localName, String qName, Attributes attrib) {
 
@@ -288,7 +307,11 @@ public class XmlParserManager
 	}
 
 	/**
-	 * @see org.caleydo.core.manager.IXmlParserManager#endElementSearch4Tag(Stringt, Stringt, Stringt)
+	 * Call this method if the current tag was not handled by endElement(String, String, String) of
+	 * org.caleydo.core.parser.handler.IXmlParserHandler
+	 * 
+	 * @see org.caleydo.core.parser.xml.IXmlParserHandler
+	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 */
 	public void endElementSearch4Tag(String uri, String localName, String qName) {
 
@@ -303,6 +326,15 @@ public class XmlParserManager
 		}
 	}
 
+	/**
+	 * Callback called by org.caleydo.core.parser.handler.IXmlParserHandler if closing tag is read in
+	 * endElement()
+	 * 
+	 * @see org.caleydo.core.parser.xml.IXmlParserHandler
+	 * @see orl.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
+	 * @param handler
+	 *            calling handler, that just read its closing tag
+	 */
 	public final void sectionFinishedByHandler(IXmlParserHandler handler) {
 
 		assert handler != null : "Can not handel null pointer!";
@@ -324,7 +356,13 @@ public class XmlParserManager
 		setXmlFileProcessedNow(true);
 	}
 
-	@Override
+	/**
+	 * Open a new XML file and start parsing it.
+	 * 
+	 * @param filename
+	 *            XML file name.
+	 * @return true if file existed and was parsed successfully
+	 */
 	public boolean parseXmlFileByName(final String fileName) {
 
 		InputSource inputSource = getInputSource(fileName);
@@ -393,6 +431,9 @@ public class XmlParserManager
 		return inputSource;
 	}
 
+	/**
+	 * Cleanup called by Manager after Handler is not used any more.
+	 */
 	public void destroyHandler() {
 
 		if (llXmlParserStack != null) {

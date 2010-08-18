@@ -3,8 +3,7 @@ package org.caleydo.rcp.startup;
 import java.io.IOException;
 import java.util.Map;
 
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -157,7 +156,7 @@ public class StartupProcessor {
 	public void shutdown() {
 
 		// Save preferences before shutdown
-		IGeneralManager generalManager = GeneralManager.get();
+		GeneralManager generalManager = GeneralManager.get();
 		try {
 			generalManager.getLogger().log(
 				new Status(IStatus.WARNING, Activator.PLUGIN_ID, "Save Caleydo preferences..."));

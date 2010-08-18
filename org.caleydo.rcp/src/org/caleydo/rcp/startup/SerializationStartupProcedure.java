@@ -1,6 +1,6 @@
 package org.caleydo.rcp.startup;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectLoader;
 import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.Application;

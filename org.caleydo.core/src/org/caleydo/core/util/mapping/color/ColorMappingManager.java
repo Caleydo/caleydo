@@ -3,13 +3,13 @@ package org.caleydo.core.util.mapping.color;
 import java.util.ArrayList;
 import java.util.EnumMap;
 
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.histogram.UpdateColorMappingEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.listener.IColorMappingHandler;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateColorMappingListener;
@@ -28,7 +28,7 @@ public class ColorMappingManager
 	private static ColorMappingManager colorMappingManager = null;
 	private EnumMap<EColorMappingType, ColorMapping> hashColorMapping = null;
 
-	private IEventPublisher eventPublisher;
+	private EventPublisher eventPublisher;
 	private UpdateColorMappingListener updateColorMappingListener;
 
 	/**

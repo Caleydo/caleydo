@@ -9,9 +9,8 @@ import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.data.set.SetManager;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
@@ -52,7 +51,7 @@ public class CmdSetDataRepresentation
 		 * Fill storage IDs
 		 */
 		StringTokenizer strToken_DataTypes =
-			new StringTokenizer(attrib2, IGeneralManager.sDelimiter_Parser_DataItems);
+			new StringTokenizer(attrib2, GeneralManager.sDelimiter_Parser_DataItems);
 
 		while (strToken_DataTypes.hasMoreTokens()) {
 			iAlIDs.add(Integer.valueOf(strToken_DataTypes.nextToken()).intValue());

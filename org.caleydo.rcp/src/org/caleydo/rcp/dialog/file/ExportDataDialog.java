@@ -2,7 +2,7 @@ package org.caleydo.rcp.dialog.file;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;

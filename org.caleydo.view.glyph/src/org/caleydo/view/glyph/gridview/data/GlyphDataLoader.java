@@ -13,8 +13,8 @@ import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.IDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.view.glyph.gridview.GlyphEntry;
 import org.caleydo.view.glyph.manager.GlyphManager;
@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.Status;
  */
 public class GlyphDataLoader {
 
-	private IGeneralManager generalManager;
+	private GeneralManager generalManager;
 	private GlyphManager gman = null;
 
 	private HashMap<Integer, GlyphEntry> glyphs = new HashMap<Integer, GlyphEntry>();
@@ -80,7 +80,7 @@ public class GlyphDataLoader {
 									.get()
 									.getLogger()
 									.log(
-										new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+										new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 											"GlyphDataLoader: no numerical data found"
 												+ " - empty line in csv file?????"));
 								temp2[i] = -1;
@@ -96,7 +96,7 @@ public class GlyphDataLoader {
 									.get()
 									.getLogger()
 									.log(
-										new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+										new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 											"GlyphDataLoader: no numerical data found"
 												+ " - empty line in csv file?????"));
 								temp2[i] = -1;
@@ -118,7 +118,7 @@ public class GlyphDataLoader {
 
 						if (t2 == -1 && !value.equals("-1")) {
 							this.generalManager.getLogger().log(
-								new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+								new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 									"GlyphDataLoader: No data mapping found for " + tmpStorage.getLabel()
 										+ " value " + value));
 						}
@@ -150,12 +150,12 @@ public class GlyphDataLoader {
 		if (aliStoreMapped.size() <= 0) {
 			this.generalManager.getLogger()
 				.log(
-					new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID,
+					new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
 						"GlyphDataLoader: No data in file found"));
 			return;
 		}
 
-		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
+		IDMappingManager idMappingManager = generalManager.getIDMappingManager();
 		// now convert the storages to real glyphs
 
 		// if (!IdMappingManager.hasMapping(EIDType.EXPERIMENT, EIDType.EXPERIMENT_INDEX)) {

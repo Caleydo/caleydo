@@ -1,6 +1,6 @@
 package org.caleydo.view.datawindows;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.datawindows.creator.ViewCreatorDataWindows;
 import org.caleydo.view.datawindows.creator.ViewCreatorHyperbolic;
 import org.eclipse.jface.resource.ImageDescriptor;

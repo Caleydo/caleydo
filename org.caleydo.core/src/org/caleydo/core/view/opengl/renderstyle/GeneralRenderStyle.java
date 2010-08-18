@@ -1,9 +1,9 @@
 package org.caleydo.core.view.opengl.renderstyle;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.SetMinViewSizeEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
@@ -146,7 +146,7 @@ public class GeneralRenderStyle {
 	}
 
 	private void sendSetMinSizeEvent(AGLView view) {
-		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		SetMinViewSizeEvent event = new SetMinViewSizeEvent();
 		event.setMinViewSize(minViewWidth, minViewHeight);
 		event.setView(view);

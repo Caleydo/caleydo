@@ -2,15 +2,15 @@ package org.caleydo.rcp.toolbar;
 
 import java.util.List;
 
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.RemoveViewSpecificItemsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.IView;
 import org.caleydo.rcp.toolbar.listener.GroupHighlightingListener;
 import org.caleydo.rcp.toolbar.listener.RemoveViewSpecificItemsEventListener;
@@ -93,7 +93,7 @@ public class ToolBarMediator
 	}
 
 	public void registerEventListeners() {
-		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
 		viewActivationListener = new ViewActivationListener();
 		viewActivationListener.setHandler(this);
@@ -110,7 +110,7 @@ public class ToolBarMediator
 	}
 
 	public void unregisterEventListeners() {
-		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
 		if (viewActivationListener != null) {
 			eventPublisher.removeListener(ViewActivationEvent.class, viewActivationListener);

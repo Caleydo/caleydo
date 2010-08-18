@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.net.Connection;
 import org.caleydo.core.net.ENetworkStatus;
 import org.caleydo.core.net.EventFilterBridge;
@@ -256,7 +256,7 @@ public class CollabViewRep
 		label.setText("");
 
 		org.eclipse.swt.widgets.List viewList = new org.eclipse.swt.widgets.List(testControls, SWT.LEFT);
-		IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+		ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
 		Collection<AGLView> views = vm.getAllGLViews();
 		int[] viewIds = new int[views.size()];
 		int viewIndex = 0;

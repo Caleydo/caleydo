@@ -9,7 +9,7 @@ import java.util.HashMap;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.opengl.CmdCreateView;
+import org.caleydo.core.command.view.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentGroupList;
@@ -24,12 +24,11 @@ import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -64,7 +63,7 @@ public class HeatMapWrapper {
 	private HeatMapOverview overview;
 	private ISet set;
 
-	private IGeneralManager generalManager;
+	private GeneralManager generalManager;
 	private ContentVirtualArray contentVA;
 	private AHeatMapLayout layout;
 	private HashMap<Integer, GLHeatMap> hashHeatMaps;
@@ -83,7 +82,7 @@ public class HeatMapWrapper {
 	private IGLRemoteRenderingView parentView;
 
 	// private SelectionUpdateListener selectionUpdateListener;
-	private IEventPublisher eventPublisher;
+	private EventPublisher eventPublisher;
 	private ContentSelectionManager contentSelectionManager;
 
 	private boolean useSorting = true;

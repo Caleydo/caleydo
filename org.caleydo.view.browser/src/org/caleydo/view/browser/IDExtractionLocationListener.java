@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.util.graph.EGraphItemProperty;
@@ -15,7 +14,7 @@ import org.eclipse.swt.browser.LocationAdapter;
 import org.eclipse.swt.browser.LocationEvent;
 
 public class IDExtractionLocationListener extends LocationAdapter {
-	private IGeneralManager generalManager;
+	private GeneralManager generalManager;
 
 	private boolean bSkipNextChangeEvent = false;
 

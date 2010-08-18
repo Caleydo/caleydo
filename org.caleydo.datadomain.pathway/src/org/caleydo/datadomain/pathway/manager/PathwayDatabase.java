@@ -1,12 +1,8 @@
 package org.caleydo.datadomain.pathway.manager;
 
-import static org.caleydo.core.manager.IGeneralManager.CALEYDO_FOLDER;
-import static org.caleydo.core.manager.IGeneralManager.CALEYDO_FOLDER_TEMPLATE;
-import static org.caleydo.core.manager.IGeneralManager.USER_HOME_TEMPLATE;
-
 import java.io.Serializable;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.specialized.Organism;
 
 /**
@@ -37,16 +33,16 @@ public class PathwayDatabase
 		this.sImagePath = sImagePath;
 		this.sImageMapPath = sImageMapPath;
 
-		String sUserHomePath = System.getProperty(USER_HOME_TEMPLATE);
+		String sUserHomePath = System.getProperty(GeneralManager.USER_HOME_TEMPLATE);
 
-		this.sXMLPath = sXMLPath.replace(USER_HOME_TEMPLATE, sUserHomePath);
-		this.sXMLPath = this.sXMLPath.replace(CALEYDO_FOLDER_TEMPLATE, CALEYDO_FOLDER);
+		this.sXMLPath = sXMLPath.replace(GeneralManager.USER_HOME_TEMPLATE, sUserHomePath);
+		this.sXMLPath = this.sXMLPath.replace(GeneralManager.CALEYDO_FOLDER_TEMPLATE, GeneralManager.CALEYDO_FOLDER);
 
-		this.sImagePath = sImagePath.replace(USER_HOME_TEMPLATE, sUserHomePath);
-		this.sImagePath = this.sImagePath.replace(CALEYDO_FOLDER_TEMPLATE, CALEYDO_FOLDER);
+		this.sImagePath = sImagePath.replace(GeneralManager.USER_HOME_TEMPLATE, sUserHomePath);
+		this.sImagePath = this.sImagePath.replace(GeneralManager.CALEYDO_FOLDER_TEMPLATE, GeneralManager.CALEYDO_FOLDER);
 
-		this.sImageMapPath = sImageMapPath.replace(USER_HOME_TEMPLATE, sUserHomePath);
-		this.sImageMapPath = this.sImageMapPath.replace(CALEYDO_FOLDER_TEMPLATE, CALEYDO_FOLDER);
+		this.sImageMapPath = sImageMapPath.replace(GeneralManager.USER_HOME_TEMPLATE, sUserHomePath);
+		this.sImageMapPath = this.sImageMapPath.replace(GeneralManager.CALEYDO_FOLDER_TEMPLATE, GeneralManager.CALEYDO_FOLDER);
 
 		if (type == EPathwayDatabaseType.KEGG) {
 			Organism eOrganism = GeneralManager.get().getOrganism();

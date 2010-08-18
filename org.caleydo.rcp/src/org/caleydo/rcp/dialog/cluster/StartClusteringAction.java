@@ -2,10 +2,10 @@ package org.caleydo.rcp.dialog.cluster;
 
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.StorageVAType;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;

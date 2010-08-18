@@ -10,10 +10,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.event.EventPublisher;
 
 /**
  * <p>
@@ -28,7 +28,8 @@ import org.caleydo.core.manager.general.GeneralManager;
  * @author Werner Puff
  */
 public class NetworkEventPublisher
-	implements IEventPublisher, Runnable {
+	extends EventPublisher
+	implements Runnable {
 
 	/** queue for the events to sent */
 	private BlockingQueue<AEvent> eventQueue;
@@ -56,7 +57,7 @@ public class NetworkEventPublisher
 	}
 
 	/**
-	 * Not supported. This {@link IEventPublisher}-implementation does not support listeners.
+	 * Not supported. This {@link EventPublisher}-implementation does not support listeners.
 	 * 
 	 * @throws UnsupportedOperationException
 	 */
@@ -66,7 +67,7 @@ public class NetworkEventPublisher
 	}
 
 	/**
-	 * Not supported. This {@link IEventPublisher}-implementation does not support listeners.
+	 * Not supported. This {@link EventPublisher}-implementation does not support listeners.
 	 * 
 	 * @throws UnsupportedOperationException
 	 */
@@ -76,7 +77,7 @@ public class NetworkEventPublisher
 	}
 
 	/**
-	 * Not supported. This {@link IEventPublisher}-implementation does not support listeners.
+	 * Not supported. This {@link EventPublisher}-implementation does not support listeners.
 	 * 
 	 * @throws UnsupportedOperationException
 	 */

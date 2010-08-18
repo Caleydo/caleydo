@@ -10,7 +10,7 @@ public class TestButtonListener
 
 	@Override
 	public void handleEvent(Event e) {
-		// IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+		// ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
 		// for (IView v : vm.getAllGLEventListeners()) {
 		// if (v.getClass().equals(GLRemoteRendering.class)) {
 		// GLRemoteRendering rr = (GLRemoteRendering) v;

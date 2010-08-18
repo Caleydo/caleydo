@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.IStatus;
@@ -71,21 +71,21 @@ public class ObjectLoader {
 				if (line.startsWith("s")) {
 					// TODO wavefront smoothing groups are not implemented
 					GeneralManager.get().getLogger().log(
-						new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID,
+						new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
 							"Wavefront Object Loader hasn't implemented smoothing groups yet."));
 				}
 				// handle merging group
 				if (line.startsWith("mg")) {
 					// TODO wavefront merging groups is not implemented
 					GeneralManager.get().getLogger().log(
-						new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID,
+						new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
 							"Wavefront Object Loader hasn't implemented merging groups yet."));
 				}
 				// handle object name
 				if (line.startsWith("o")) {
 					// TODO wavefront object name is not implemented
 					GeneralManager.get().getLogger().log(
-						new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID,
+						new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
 							"Wavefront Object Loader hasn't implemented object names yet."));
 				}
 

@@ -2,8 +2,8 @@ package org.caleydo.view.heatmap;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.view.heatmap.creator.ViewCreatorDendrogramHorizontal;
 import org.caleydo.view.heatmap.creator.ViewCreatorDendrogramVertical;
 import org.caleydo.view.heatmap.creator.ViewCreatorHeatMap;

@@ -2,10 +2,10 @@ package org.caleydo.rcp.preferences;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.util.vislink.EVisLinkStyleType;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -201,7 +201,7 @@ public class VisualLinksPreferencePage
 		store.setValue(PreferenceConstants.VISUAL_LINKS_WIDTH, width);
 		store.setValue(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO, animatedHalo);
 
-		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		RedrawViewEvent redrawEvent = new RedrawViewEvent();
 		redrawEvent.setSender(this);
 		eventPublisher.triggerEvent(redrawEvent);

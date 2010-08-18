@@ -1,8 +1,7 @@
-package org.caleydo.core.parser.xml.sax.handler;
+package org.caleydo.core.parser.xml;
 
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IXmlParserManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.parser.XmlParserManager;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -15,8 +14,8 @@ public abstract class AXmlParserHandler
 
 	private boolean bDestroyHandlerAfterClosingTag = false;
 
-	protected final IGeneralManager generalManager;
-	protected final IXmlParserManager xmlParserManager;
+	protected final GeneralManager generalManager;
+	protected final XmlParserManager xmlParserManager;
 
 	protected String sOpeningTag = "";
 
@@ -57,7 +56,7 @@ public abstract class AXmlParserHandler
 	/**
 	 * Sends init message to logger.
 	 * 
-	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#initHandler()
+	 * @see org.caleydo.core.parser.xml.IXmlParserHandler#initHandler()
 	 */
 	public void initHandler() {
 
@@ -69,7 +68,7 @@ public abstract class AXmlParserHandler
 	/**
 	 * Sends init message to logger.
 	 * 
-	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
+	 * @see org.caleydo.core.parser.xml.IXmlParserHandler#destroyHandler()
 	 */
 	public void destroyHandler() {
 

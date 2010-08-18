@@ -3,7 +3,7 @@ package org.caleydo.rcp.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;

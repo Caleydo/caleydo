@@ -114,7 +114,7 @@ public class GlyphDefinitionSaxHandler
 			}
 			if (eName.equals(sOpeningTag)) {
 				/**
-				 * section (xml block) finished, call callback function from IXmlParserManager
+				 * section (xml block) finished, call callback function from XmlParserManager
 				 */
 				xmlParserManager.sectionFinishedByHandler(this);
 			}

@@ -9,15 +9,13 @@ import java.util.Set;
 import javax.media.opengl.GLCanvas;
 
 import org.caleydo.core.manager.AManager;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
 import org.caleydo.core.manager.execution.DisplayLoopExecution;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.view.creator.AGLViewCreator;
@@ -40,15 +38,15 @@ import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
 
 /**
- * Manage all canvas, view, ViewReps and GLCanvas objects.
+ * Manage all canvas, view and canvas objects.
  * 
- * @author Michael Kalkusch
  * @author Marc Streit
  * @author Alexander Lex
  */
 public class ViewManager
 	extends AManager<IView>
-	implements IViewManager, IListenerOwner {
+	implements IListenerOwner {
+
 	protected HashMap<Integer, GLCaleydoCanvas> hashGLCanvasID2GLCanvas;
 
 	protected HashMap<GLCaleydoCanvas, ArrayList<AGLView>> hashGLCanvas2GLView;
@@ -96,7 +94,7 @@ public class ViewManager
 		glViewCreators = new ArrayList<IViewCreator>();
 	}
 
-	@Override
+	
 	public void init() {
 		fpsAnimator = new FPSAnimator(60);
 
@@ -106,7 +104,7 @@ public class ViewManager
 		displayLoopExecution.executeMultiple(connectedElementRepManager);
 	}
 
-	@Override
+	
 	public boolean hasItem(int iItemId) {
 		if (hashItems.containsKey(iItemId))
 			return true;
@@ -128,7 +126,7 @@ public class ViewManager
 		return hashGLViewID2GLView.get(iItemID);
 	}
 
-	@Override
+	
 	public IView createView(String viewType, int parentContainerID, String label) {
 		IView view = null;
 
@@ -146,7 +144,7 @@ public class ViewManager
 		return view;
 	}
 
-	@Override
+	
 	public IView createGLView(final EManagedObjectType useViewType, final int iParentContainerID,
 		final String sLabel) {
 		IView view = null;
@@ -165,15 +163,18 @@ public class ViewManager
 		return view;
 	}
 
-	@Override
+	
 	public AGLView createGLView(String viewID, GLCaleydoCanvas glCanvas, final String label,
 		final IViewFrustum viewFrustum) {
-		GeneralManager.get().getLogger().log(
-			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Creating GL canvas view from type: ["
-				+ viewID + "] and label: [" + label + "]"));
+		GeneralManager
+			.get()
+			.getLogger()
+			.log(
+				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Creating GL canvas view from type: ["
+					+ viewID + "] and label: [" + label + "]"));
 
 		AGLView glView = null;
-		
+
 		// Force plugins of start views to load
 		try {
 			if (viewID.contains("hierarchical") || viewID.contains("vertical")
@@ -207,13 +208,13 @@ public class ViewManager
 		return glView;
 	}
 
-	@Override
+	
 	public boolean registerGLCanvas(final GLCaleydoCanvas glCanvas) {
 		int iGLCanvasID = glCanvas.getID();
 
 		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasID)) {
 			generalManager.getLogger().log(
-				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "GL Canvas with ID " + iGLCanvasID
+				new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "GL Canvas with ID " + iGLCanvasID
 					+ " is already registered! Do nothing."));
 
 			return false;
@@ -225,7 +226,7 @@ public class ViewManager
 		return true;
 	}
 
-	@Override
+	
 	public boolean unregisterGLCanvas(final GLCaleydoCanvas glCanvas) {
 
 		if (glCanvas == null)
@@ -238,7 +239,7 @@ public class ViewManager
 		return true;
 	}
 
-	@Override
+	
 	public void registerGLEventListenerByGLCanvas(final GLCaleydoCanvas glCanvas,
 		final AGLView gLEventListener) {
 		hashGLViewID2GLView.put(gLEventListener.getID(), gLEventListener);
@@ -255,7 +256,9 @@ public class ViewManager
 		glCanvas.addGLEventListener(gLEventListener);
 	}
 
-	@Override
+	/**
+	 * Removes all views, canvas and GL event listeners
+	 */
 	public void cleanup() {
 
 		hashGLCanvasID2GLCanvas.clear();
@@ -264,7 +267,7 @@ public class ViewManager
 		hashItems.clear();
 	}
 
-	@Override
+	
 	public void unregisterGLView(final AGLView gViews) {
 
 		if (gViews == null)
@@ -283,12 +286,12 @@ public class ViewManager
 		hashGLViewID2GLView.remove(gViews.getID());
 	}
 
-	@Override
+	
 	public Collection<GLCaleydoCanvas> getAllGLCanvas() {
 		return hashGLCanvasID2GLCanvas.values();
 	}
 
-	@Override
+	
 	public Collection<AGLView> getAllGLViews() {
 		return hashGLViewID2GLView.values();
 	}
@@ -305,7 +308,7 @@ public class ViewManager
 		return infoAreaManager;
 	}
 
-	@Override
+	
 	public void startAnimator() {
 
 		// // add all canvas objects before starting animator
@@ -321,19 +324,19 @@ public class ViewManager
 		fpsAnimator.setPrintExceptions(true);
 	}
 
-	@Override
+	
 	public void stopAnimator() {
 		if (fpsAnimator.isAnimating())
 			fpsAnimator.stop();
 	}
 
-	@Override
+	
 	public void registerGLCanvasToAnimator(final GLCanvas glCanvas) {
 
 		fpsAnimator.add(glCanvas);
 	}
 
-	@Override
+	
 	public void unregisterGLCanvasFromAnimator(final GLCaleydoCanvas glCanvas) {
 		fpsAnimator.remove(glCanvas);
 	}
@@ -349,7 +352,14 @@ public class ViewManager
 		return activeSWTView;
 	}
 
-	@Override
+	/**
+	 * Requests busy mode for the application. This method should be called whenever a process needs to stop
+	 * any user interaction with the application, e.g. when starting up or when loading multiple pathways.
+	 * Usually this should result disabling user events and showing a loading screen animation.
+	 * 
+	 * @param requestInstance
+	 *            object that wants to request busy mode
+	 */
 	public void requestBusyMode(Object requestInstance) {
 		if (requestInstance == null) {
 			throw new IllegalArgumentException("requestInstance must not be null");
@@ -368,7 +378,13 @@ public class ViewManager
 		}
 	}
 
-	@Override
+	/**
+	 * Releases a previously requested busy mode. Releases are only performed by passing the originally
+	 * requesting object to this method.
+	 * 
+	 * @param requestInstance
+	 *            the object that requested the busy mode
+	 */
 	public void releaseBusyMode(Object requestInstance) {
 		if (requestInstance == null) {
 			throw new IllegalArgumentException("requestInstance must not be null");
@@ -391,7 +407,7 @@ public class ViewManager
 		generalManager.getGUIBridge().createView(serializedView);
 	}
 
-	@Override
+	
 	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 		final AEvent event) {
 		// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getDisplay().asyncExec(new
@@ -402,10 +418,10 @@ public class ViewManager
 		// });
 	}
 
-	@Override
+	
 	public void registerEventListeners() {
-		IGeneralManager generalManager = GeneralManager.get();
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		GeneralManager generalManager = GeneralManager.get();
+		EventPublisher eventPublisher = generalManager.getEventPublisher();
 
 		createGUIViewListener = new CreateGUIViewListener();
 		createGUIViewListener.setHandler(this);
@@ -413,10 +429,10 @@ public class ViewManager
 	}
 
 	@SuppressWarnings("unused")
-	@Override
+	
 	public void unregisterEventListeners() {
-		IGeneralManager generalManager = GeneralManager.get();
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		GeneralManager generalManager = GeneralManager.get();
+		EventPublisher eventPublisher = generalManager.getEventPublisher();
 
 		if (createGUIViewListener != null) {
 			eventPublisher.removeListener(createGUIViewListener);
@@ -424,17 +440,21 @@ public class ViewManager
 		}
 	}
 
-	@Override
+	/**
+	 * Retrieves the {@link DisplayLoopExecution} related to the {@link ViewManager}'s display loop.
+	 * 
+	 * @return {@link DisplayLoopExecution} for executing code in the display loop
+	 */
 	public DisplayLoopExecution getDisplayLoopExecution() {
 		return displayLoopExecution;
 	}
 
-	@Override
+	
 	public void addViewCreator(IViewCreator glViewCreator) {
 		glViewCreators.add(glViewCreator);
 	}
 
-	@Override
+	
 	public IViewCreator getViewCreator(String viewType) {
 
 		for (IViewCreator glViewCreator : glViewCreators) {

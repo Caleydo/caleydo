@@ -1,4 +1,4 @@
-package org.caleydo.core.parser.xml.sax;
+package org.caleydo.core.parser.xml;
 
 import org.xml.sax.Attributes;
 

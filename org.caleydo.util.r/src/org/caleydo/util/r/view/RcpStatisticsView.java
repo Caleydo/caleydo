@@ -1,8 +1,8 @@
 package org.caleydo.util.r.view;
 
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
 

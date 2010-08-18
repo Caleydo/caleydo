@@ -2,9 +2,9 @@ package org.caleydo.core.view.opengl.util.overlay.contextmenu;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**

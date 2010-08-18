@@ -5,9 +5,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.ISWTWidget;
 import org.caleydo.core.view.swt.widget.ASWTWidget;
@@ -31,11 +29,9 @@ import org.eclipse.swt.widgets.Shell;
  * from AManager since it does not manages IUniqueObjects.
  * 
  * @author Marc Streit
- * @author Michael Kalkusch
  */
-public class SWTGUIManager
-	implements ISWTGUIManager {
-	protected IGeneralManager generalManager;
+public class SWTGUIManager  {
+	protected GeneralManager generalManager;
 
 	/**
 	 * SWT Display represents a thread.
@@ -67,7 +63,11 @@ public class SWTGUIManager
 		compositeMap = new HashMap<Integer, Composite>();
 	}
 
-	@Override
+	/**
+	 * Method creates a shell with a given label and layout.
+	 * 
+	 * @return Unique shell ID
+	 */
 	public int createWindow(String sLabel, String sLayoutAttributes) {
 		Shell newShell = new Shell(display);
 		newShell.setLayout(new GridLayout());
@@ -84,7 +84,9 @@ public class SWTGUIManager
 		return iShellID;
 	}
 
-	@Override
+	/**
+	 * Searches for the parent window and creates a new composite in that window.
+	 */
 	public void createComposite(int iUniqueId, int iUniqueParentContainerId, String layoutAttributes) {
 
 		// TODO check if parent exists
@@ -100,7 +102,6 @@ public class SWTGUIManager
 		newComposite.setLayoutData(gridData);
 	}
 
-	@Override
 	public ISWTWidget createWidget(final EManagedObjectType useWidgetType, int iUniqueParentContainerId) {
 
 		// TODO Check if window id is valid and print error message
@@ -125,7 +126,6 @@ public class SWTGUIManager
 		return createWidget(useWidgetType, composite);
 	}
 
-	@Override
 	public ISWTWidget createWidget(final EManagedObjectType useWidgetType,
 		final Composite externalParentComposite) {
 		ASWTWidget newSWTWidget;
@@ -158,7 +158,7 @@ public class SWTGUIManager
 		gridLayout.numColumns = 1;
 
 		StringTokenizer token =
-			new StringTokenizer(sLayoutAttributes, IGeneralManager.sDelimiter_Parser_DataItems);
+			new StringTokenizer(sLayoutAttributes, GeneralManager.sDelimiter_Parser_DataItems);
 
 		layoutType = token.nextToken();
 
@@ -179,7 +179,6 @@ public class SWTGUIManager
 		newComposite.setLayout(gridLayout);
 	}
 
-	@Override
 	public void runApplication() {
 		Iterator<Shell> shellIterator;
 		Shell currentShell;
@@ -202,7 +201,6 @@ public class SWTGUIManager
 		}
 	}
 
-	@Override
 	public void setProgressBarPercentage(int iPercentage) {
 		if (loadingProgressBar.isDisposed())
 			return;
@@ -210,21 +208,19 @@ public class SWTGUIManager
 		loadingProgressBar.setSelection(iPercentage);
 	}
 
-	@Override
 	public void setProgressBarPercentageFromExternalThread(final int iPercentage) {
-//		if (loadingProgressBar.isDisposed())
-//			return;
+		// if (loadingProgressBar.isDisposed())
+		// return;
 
-//		loadingProgressBar.getDisplay().asyncExec(new Runnable() {
-//			public void run() {
-//				if (loadingProgressBar.isDisposed())
-//					return;
-//				loadingProgressBar.setSelection(iPercentage);
-//			}
-//		});
+		// loadingProgressBar.getDisplay().asyncExec(new Runnable() {
+		// public void run() {
+		// if (loadingProgressBar.isDisposed())
+		// return;
+		// loadingProgressBar.setSelection(iPercentage);
+		// }
+		// });
 	}
 
-	@Override
 	public void setProgressBarText(String sText) {
 
 		if (loadingProgressBarLabel.isDisposed())
@@ -234,25 +230,22 @@ public class SWTGUIManager
 		loadingProgressBarLabel.update();
 	}
 
-	@Override
 	public void setProgressBarTextFromExternalThread(final String sText) {
-//		if (loadingProgressBar.isDisposed())
-//			return;
+		// if (loadingProgressBar.isDisposed())
+		// return;
 
-//		loadingProgressBar.getDisplay().asyncExec(new Runnable() {
-//			public void run() {
-//				setProgressBarText(sText);
-//			}
-//		});
+		// loadingProgressBar.getDisplay().asyncExec(new Runnable() {
+		// public void run() {
+		// setProgressBarText(sText);
+		// }
+		// });
 	}
 
-	@Override
 	public void setExternalProgressBarAndLabel(ProgressBar progressBar, Label progressLabel) {
 		this.loadingProgressBar = progressBar;
 		this.loadingProgressBarLabel = progressLabel;
 	}
 
-	@Override
 	public void setExternalRCPStatusLine(IStatusLineManager statusLine, Display display) {
 		this.display = display;
 		this.externalRCPStatusLine = statusLine;

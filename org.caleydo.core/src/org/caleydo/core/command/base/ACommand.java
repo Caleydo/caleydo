@@ -3,9 +3,8 @@ package org.caleydo.core.command.base;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.data.AUniqueObject;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.command.CommandManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
@@ -21,9 +20,9 @@ public abstract class ACommand
 	/**
 	 * Reference to ICommandManager
 	 */
-	protected transient ICommandManager commandManager;
+	protected transient CommandManager commandManager;
 
-	protected transient IGeneralManager generalManager;
+	protected transient GeneralManager generalManager;
 
 	private ECommandType cmdType;
 

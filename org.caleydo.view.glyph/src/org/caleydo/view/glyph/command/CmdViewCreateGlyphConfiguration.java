@@ -2,7 +2,7 @@ package org.caleydo.view.glyph.command;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
-import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.ViewManager;
 import org.caleydo.view.glyph.GlyphMappingConfigurationViewRep;
 
 /**
@@ -24,7 +24,7 @@ public class CmdViewCreateGlyphConfiguration
 	@Override
 	public void doCommand() {
 
-		IViewManager viewManager = generalManager.getViewGLCanvasManager();
+		ViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		if (externalID != -1) {
 			parentContainerID = generalManager.getIDManager().getInternalFromExternalID(parentContainerID);

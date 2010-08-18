@@ -2,7 +2,7 @@ package org.caleydo.view.parcoords.preferences;
 
 import java.util.Collection;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.parcoords.GLParallelCoordinates;

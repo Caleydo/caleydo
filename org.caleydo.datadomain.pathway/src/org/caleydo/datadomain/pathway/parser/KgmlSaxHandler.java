@@ -6,8 +6,8 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
-import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
+import org.caleydo.core.parser.xml.AXmlParserHandler;
+import org.caleydo.core.parser.xml.IXmlParserHandler;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -114,7 +114,7 @@ public class KgmlSaxHandler
 		if (null != eName) {
 			if (eName.equals(sOpeningTag)) {
 				/**
-				 * section (xml block) finished, call callback function from IXmlParserManager
+				 * section (xml block) finished, call callback function from XmlParserManager
 				 */
 				xmlParserManager.sectionFinishedByHandler(this);
 			}
@@ -560,8 +560,8 @@ public class KgmlSaxHandler
 	}
 
 	/**
-	 * @see org.caleydo.core.parser.handler.IXmlParserHandler#destroyHandler()
-	 * @see org.caleydo.core.parser.handler.AXmlParserHandler#destroyHandler()
+	 * @see org.caleydo.core.parser.xml.handler.IXmlParserHandler#destroyHandler()
+	 * @see org.caleydo.core.parser.xml.handler.AXmlParserHandler#destroyHandler()
 	 */
 	@Override
 	public void destroyHandler() {

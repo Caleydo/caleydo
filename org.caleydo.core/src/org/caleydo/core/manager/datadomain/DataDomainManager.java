@@ -3,7 +3,6 @@ package org.caleydo.core.manager.datadomain;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.caleydo.core.manager.IDataDomain;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;

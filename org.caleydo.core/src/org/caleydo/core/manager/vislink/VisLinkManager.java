@@ -16,19 +16,19 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.execution.ADisplayLoopEventHandler;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.view.CanvasConnectionMap;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.SelectionPoint2D;
 import org.caleydo.core.manager.view.SelectionPoint2DList;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -61,7 +61,7 @@ public class VisLinkManager
 	private SelectionRetriever selectionRetriever = null;
 	private Thread selectionRetrieverThread = null;
 
-	private IEventPublisher eventPublisher;
+	private EventPublisher eventPublisher;
 	private VisLinkSelectionListener visLinkSelectionListener;
 	private SelectionUpdateListener selectionUpdateListener;
 	private ClearSelectionsListener clearSelectionsListener;
@@ -134,7 +134,7 @@ public class VisLinkManager
 
 		caleydoSelectionId = null;
 
-		IIDMappingManager idmm = GeneralManager.get().getIDMappingManager();
+		IDMappingManager idmm = GeneralManager.get().getIDMappingManager();
 		int destId = 0;
 
 		try {
@@ -177,7 +177,7 @@ public class VisLinkManager
 
 			// caleydoSelectionId = deltaItem.getPrimaryID();
 
-			IIDMappingManager idmm = GeneralManager.get().getIDMappingManager();
+			IDMappingManager idmm = GeneralManager.get().getIDMappingManager();
 			//
 			caleydoSelectionId =
 				idmm.getID(selectionDelta.getIDType(), IDType.getIDType("UNSPECIFIED"),
@@ -280,7 +280,7 @@ public class VisLinkManager
 	private SelectionPoint2DList canvasPointsToDisplay(SelectionPoint2DList canvasPoints) {
 		SelectionPoint2DList displayPoints = new SelectionPoint2DList();
 		for (SelectionPoint2D p : canvasPoints) {
-			IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+			ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
 			AGLView view = vm.getGLView(p.getViewID());
 			Composite composite = view.getParentGLCanvas().getParentComposite();
 			Point dp = composite.toDisplay(p.getPoint());

@@ -6,9 +6,8 @@ import java.util.StringTokenizer;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.mapping.MappingType;
 import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.parser.ascii.LookupTableLoader;
@@ -125,7 +124,7 @@ public class CmdLoadFileLookupTable
 	private void extractParameters() {
 
 		StringTokenizer tokenizer =
-			new StringTokenizer(sLookupTableInfo, IGeneralManager.sDelimiter_Parser_DataItems);
+			new StringTokenizer(sLookupTableInfo, GeneralManager.sDelimiter_Parser_DataItems);
 
 		String mappingTypeString = tokenizer.nextToken();
 		fromIDType = IDType.getIDType(mappingTypeString.substring(0, mappingTypeString.indexOf("_2_")));
@@ -141,7 +140,7 @@ public class CmdLoadFileLookupTable
 			}
 			else if (sLookupTableOptions.equals("LUT")) {
 				tokenizer =
-					new StringTokenizer(sCodeResolvingLUTTypes, IGeneralManager.sDelimiter_Parser_DataItems);
+					new StringTokenizer(sCodeResolvingLUTTypes, GeneralManager.sDelimiter_Parser_DataItems);
 
 				sCodeResolvingLUTMappingType = tokenizer.nextToken();
 
@@ -163,7 +162,7 @@ public class CmdLoadFileLookupTable
 			this.fileName = fileName.replace("ORGANISM", eOrganism.toString());
 		}
 
-		IIDMappingManager genomeIdManager = generalManager.getIDMappingManager();
+		IDMappingManager genomeIdManager = generalManager.getIDMappingManager();
 
 		// Remove old lookuptable if it already exists
 		// genomeIdManager.removeMapByType(EMappingType.valueOf(sLookupTableType));

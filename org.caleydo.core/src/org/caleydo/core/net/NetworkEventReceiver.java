@@ -9,10 +9,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.core.runtime.ILog;
 
 /**
@@ -21,7 +20,7 @@ import org.eclipse.core.runtime.ILog;
  * </p>
  * <p>
  * Instances of this class should be run as thread. This threads are responsible for receiving events from the
- * network, deserializing them and sending them to the connected {@link IEventPublisher}.
+ * network, deserializing them and sending them to the connected {@link EventPublisher}.
  * </p>
  * 
  * @author Werner Puff

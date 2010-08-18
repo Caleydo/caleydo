@@ -18,13 +18,12 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
-import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.core.view.IView;
@@ -41,11 +40,11 @@ import org.eclipse.core.runtime.Status;
 public class ProjectSaver {
 
 	/** full path to directory to temporarily store the projects file before zipping */
-	public static final String TEMP_PROJECT_DIR_NAME = IGeneralManager.CALEYDO_HOME_PATH + "tempSave"
+	public static final String TEMP_PROJECT_DIR_NAME = GeneralManager.CALEYDO_HOME_PATH + "tempSave"
 		+ File.separator;
 
 	/** full path to directory of the recently open project */
-	public static final String RECENT_PROJECT_DIR_NAME = IGeneralManager.CALEYDO_HOME_PATH + "recent_project"
+	public static final String RECENT_PROJECT_DIR_NAME = GeneralManager.CALEYDO_HOME_PATH + "recent_project"
 		+ File.separator;
 
 	/** file name of the set-data-file in project-folders */
@@ -94,7 +93,7 @@ public class ProjectSaver {
 				.get()
 				.getLogger()
 				.log(
-					new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+					new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 						"no genetic useCase, cannot save project"));
 			return;
 		}
@@ -201,14 +200,14 @@ public class ProjectSaver {
 	}
 
 	/**
-	 * Creates a {@link ViewList} of all views registered in the central {@link IViewManager}.
+	 * Creates a {@link ViewList} of all views registered in the central {@link ViewManager}.
 	 * 
 	 * @return {@link ViewList} to storing the view's state.
 	 */
 	private ViewList createStoreViewList() {
 		ArrayList<String> storeViews = new ArrayList<String>();
 
-		IViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
+		ViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
 
 		Collection<AGLView> glViews = viewManager.getAllGLViews();
 		for (AGLView glView : glViews) {

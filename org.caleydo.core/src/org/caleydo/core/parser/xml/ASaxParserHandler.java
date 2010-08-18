@@ -1,4 +1,4 @@
-package org.caleydo.core.parser.xml.sax;
+package org.caleydo.core.parser.xml;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -155,7 +155,7 @@ public abstract class ASaxParserHandler
 	 * Important: all derived classes must call super.reset() inside their reset() call to not cause side
 	 * effects!
 	 * 
-	 * @see org.caleydo.core.parser.xml.sax.ISaxParserHandler#reset()
+	 * @see org.caleydo.core.parser.xml.ISaxParserHandler#reset()
 	 */
 	public void reset() {
 

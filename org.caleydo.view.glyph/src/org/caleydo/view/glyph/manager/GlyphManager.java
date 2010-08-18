@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.glyph.gridview.GLGlyph;
@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.Status;
  * @author Sauer Stefan
  */
 public class GlyphManager {
-	private IGeneralManager generalManager;
+	private GeneralManager generalManager;
 
 	private HashMap<EGlyphSettingIDs, String> settings;
 
@@ -52,7 +52,7 @@ public class GlyphManager {
 
 	public void loadGlyphDefinitaion(String xmlPath) {
 		generalManager.getLogger().log(
-			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "loadGlyphDefinitaion"));
+			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "loadGlyphDefinitaion"));
 		generalManager.getXmlParserManager().parseXmlFileByName(xmlPath);
 
 		bIsActive = true;
@@ -113,7 +113,7 @@ public class GlyphManager {
 		if (dataTypesExt.containsKey(index)) {
 			dataTypesExt.remove(index);
 			generalManager.getLogger().log(
-				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+				new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 					"GlyphManager::addColumnAttributeType() - double column definition, dropping first one"));
 		}
 		dataTypesExt.put(index, type);

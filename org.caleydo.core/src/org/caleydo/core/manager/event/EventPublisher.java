@@ -4,17 +4,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.caleydo.core.manager.IEventPublisher;
-
 /**
- * Implementation of {@link IEventPublisher}
+ * EventPublishers are the central event distributing entities. {@link IEventListener}s with their related
+ * {@link AEvent}s are registered to instances of this class. When an event is triggered, the handleEvent()
+ * method to registered listeners are invoked.
  * 
  * @author Marc Streit
  * @author Alexander Lex
  * @author Werner Puff
  */
-public class EventPublisher
-	implements IEventPublisher {
+public class EventPublisher {
 
 	/** map of events (=key) to the listeners (=value, a collection of listeners) registered to it */
 	private ListenerMap listenerMap;
@@ -26,7 +25,14 @@ public class EventPublisher
 		listenerMap = new ListenerMap();
 	}
 
-	@Override
+	/**
+	 * adds a receiver to the list of event handlers
+	 * 
+	 * @param eventClass
+	 *            event type to register the handler to
+	 * @param listener
+	 *            IMediatorReceiver to handle events
+	 */
 	public synchronized void addListener(Class<? extends AEvent> eventClass, AEventListener<?> listener) {
 		listener.checkIntegrity();
 		HashMap<String, Collection<AEventListener<?>>> allListeners = listenerMap.get(eventClass);
@@ -44,14 +50,26 @@ public class EventPublisher
 		domainSpecificListeners.add(listener);
 	}
 
-	@Override
+	/**
+	 * removes a contained receiver from the list of event handlers
+	 * 
+	 * @param eventClass
+	 *            event type to remove the handler from
+	 * @param listener
+	 *            IMediatorReceiver to handle events
+	 */
 	public synchronized void removeListener(Class<? extends AEvent> eventClass, AEventListener<?> listener) {
 		Collection<AEventListener<?>> listeners =
 			listenerMap.get(eventClass).get(listener.getDataDomainType());
 		listeners.remove(listener);
 	}
 
-	@Override
+	/**
+	 * removes a listener from all events in this event-publisher
+	 * 
+	 * @param listener
+	 *            listener to remove
+	 */
 	public synchronized void removeListener(AEventListener<?> listener) {
 		for (HashMap<String, Collection<AEventListener<?>>> allListeners : listenerMap.values()) {
 
@@ -62,7 +80,13 @@ public class EventPublisher
 		}
 	}
 
-	@Override
+	/**
+	 * Central event handling and distribution method. The prohibition of sending events back to its sender is
+	 * done within {@link AEventListener}. Furthermore an integrity check is performed.
+	 * 
+	 * @param event
+	 *            event to distribute to the listeners
+	 */
 	public synchronized void triggerEvent(AEvent event) {
 		if (!event.checkIntegrity()) {
 			throw new IllegalStateException("Event " + event + " has failed integrity check");

@@ -1,6 +1,6 @@
 package org.caleydo.rcp.startup;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Startup procedure for XML bootstrapping.

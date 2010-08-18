@@ -1,12 +1,11 @@
 /**
  * 
  */
-package org.caleydo.core.parser.parameter.data;
+package org.caleydo.core.parser.parameter;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import org.caleydo.core.parser.parameter.IParameterKeyValuePair;
 
 /**
  * @author Michael Kalkusch

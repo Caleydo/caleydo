@@ -4,9 +4,9 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
@@ -56,7 +56,7 @@ public class CmdDataCreateDataDomain
 		 */
 		StringTokenizer strToken_StorageBlock =
 			new StringTokenizer(parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey()),
-				IGeneralManager.sDelimiter_Paser_DataItemBlock);
+				GeneralManager.sDelimiter_Paser_DataItemBlock);
 
 		while (strToken_StorageBlock.hasMoreTokens()) {
 			/**
@@ -64,7 +64,7 @@ public class CmdDataCreateDataDomain
 			 */
 			StringTokenizer dataDomainToken =
 				new StringTokenizer(strToken_StorageBlock.nextToken(),
-					IGeneralManager.sDelimiter_Parser_DataItems);
+					GeneralManager.sDelimiter_Parser_DataItems);
 
 			while (dataDomainToken.hasMoreTokens()) {
 				dataDomainType = dataDomainToken.nextToken();

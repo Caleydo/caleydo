@@ -56,7 +56,7 @@ public abstract class ASerializedView {
 	public abstract ViewFrustum getViewFrustum();
 
 	/**
-	 * Gets the view-id as used by IViewManager implementations
+	 * Gets the view-id as used by ViewManager implementations
 	 * 
 	 * @return view-id of the serialized view
 	 */
@@ -65,7 +65,7 @@ public abstract class ASerializedView {
 	}
 
 	/**
-	 * Sets the view-id as used by IViewManager implementations
+	 * Sets the view-id as used by ViewManager implementations
 	 * 
 	 * @param view
 	 *            -id of the serialized view

@@ -1,7 +1,6 @@
 package org.caleydo.core.manager.data.set;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.data.ISetManager;
 

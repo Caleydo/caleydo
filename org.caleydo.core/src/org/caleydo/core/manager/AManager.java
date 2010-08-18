@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.manager.general.GeneralManager;
 
 /**
  * Base class for manager classes.
@@ -15,7 +14,7 @@ import org.caleydo.core.manager.general.GeneralManager;
  */
 public abstract class AManager<T extends IUniqueObject>
 	implements IManager<T> {
-	protected IGeneralManager generalManager;
+	protected GeneralManager generalManager;
 
 	protected HashMap<Integer, T> hashItems;
 

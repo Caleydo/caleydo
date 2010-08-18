@@ -10,9 +10,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.MultiHashMap;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
@@ -24,8 +22,7 @@ import org.jgrapht.graph.DefaultDirectedWeightedGraph;
  * @author Alexander Lex
  * @author Christian Partl
  */
-public class IDMappingManager
-	implements IIDMappingManager {
+public class IDMappingManager {
 
 	/**
 	 * HashMap that contains all mappings identified by their MappingType.
@@ -40,7 +37,7 @@ public class IDMappingManager
 	 */
 	private DefaultDirectedWeightedGraph<IDType, MappingType> mappingGraph;
 
-	private IGeneralManager generalManager = GeneralManager.get();
+	private GeneralManager generalManager = GeneralManager.get();
 
 	/**
 	 * Constructor.
@@ -51,7 +48,21 @@ public class IDMappingManager
 		mappingGraph = new DefaultDirectedWeightedGraph<IDType, MappingType>(MappingType.class);
 	}
 
-	@Override
+	/**
+	 * Adds a new map for the specified mapping type. To fill that map with elements, use the method
+	 * getMapping after calling this one.
+	 * 
+	 * @param <K>
+	 *            Type of Keys of the map
+	 * @param <V>
+	 *            Type of Values of the map
+	 * @param fromIDType
+	 *            Specifies the source ID type.
+	 * @param toIDType
+	 *            Specifies the target ID type.
+	 * @param isMultiMap
+	 *            Determines if a multi map will be created.
+	 */
 	public <K, V> MappingType createMap(IDType fromIDType, IDType toIDType, boolean isMultiMap) {
 
 		if (hashMappingTypeString2MappingType.containsKey(fromIDType.getTypeName() + "_2_"
@@ -79,7 +90,14 @@ public class IDMappingManager
 		return mappingType;
 	}
 
-	@Override
+	/**
+	 * Creates a reverse map to an already existent map.
+	 * 
+	 * @param <SrcType>
+	 * @param <DestType>
+	 * @param sourceMappingType
+	 *            Mapping type the reverse map shall be created for.
+	 */
 	@SuppressWarnings("unchecked")
 	public <SrcType, DestType> void createReverseMap(MappingType srcMappingType) {
 
@@ -133,7 +151,16 @@ public class IDMappingManager
 		}
 	}
 
-	@Override
+	/**
+	 * Method takes a map that contains identifier codes and creates a new resolved codes. Resolving means
+	 * mapping from code to internal ID.
+	 * 
+	 * @param <KeyType>
+	 * @param <ValueType>
+	 * @param mappingType
+	 *            Mapping type that specifies the already existent map which is used for creating the code
+	 *            resolved map.
+	 */
 	@SuppressWarnings("unchecked")
 	public <KeyType, ValueType> void createCodeResolvedMap(MappingType mappingType,
 		IDType codeResolvedFromType, IDType codeResolvedToType) {
@@ -332,13 +359,29 @@ public class IDMappingManager
 		}
 	}
 
-	@Override
+	/**
+	 * Gets the map of the specified mapping type for manipulation.
+	 * 
+	 * @param <KeyType>
+	 * @param <ValueType>
+	 * @param type
+	 *            Mapping type that identifies the map.
+	 * @return Map that corresponds to the specified mapping type. If no such map exists, null is returned.
+	 */
 	@SuppressWarnings("unchecked")
 	public <KeyType, ValueType> Map<KeyType, ValueType> getMap(MappingType type) {
 		return (Map<KeyType, ValueType>) hashMappingType2Map.get(type);
 	}
 
-	@Override
+	/**
+	 * Returns, whether a mapping is possible from the specified source IDType to the destination IDType.
+	 * 
+	 * @param source
+	 *            Source IDType of the mapping.
+	 * @param destination
+	 *            Destination IDType of the mapping.
+	 * @return True, if a mapping is possible, false otherwise.
+	 */
 	public final boolean hasMapping(IDType source, IDType destination) {
 
 		if (source.equals(destination))
@@ -351,7 +394,24 @@ public class IDMappingManager
 		}
 	}
 
-	@Override
+	/**
+	 * Tries to find the mapping from the source IDType to the destination IDType of the specified sourceID
+	 * along a path of IDTypes where mappings exist. If no such path is found, null is returned. If the path
+	 * includes multimappings, a Set of values is returned. Note that there will always be chosen a path that
+	 * does not include multimappings over paths that include multimappings if more than one path exists.
+	 * 
+	 * @param <K>
+	 *            Type of the sourceID
+	 * @param <V>
+	 *            Type of the expected result of the mapping
+	 * @param source
+	 *            IDType of the source data
+	 * @param destination
+	 *            IDType of the destination data
+	 * @param sourceID
+	 *            ID for which the mapping shall be found
+	 * @return If no mapping is found, null, otherwise the corresponding ID, or Set of IDs.
+	 */
 	@SuppressWarnings("unchecked")
 	public <K, V> V getID(IDType source, IDType destination, K sourceID) {
 
@@ -420,8 +480,24 @@ public class IDMappingManager
 		return (V) currentID;
 	}
 
+	/**
+	 * Tries to find the mapping from the source IDType to the destination IDType of the specified sourceID
+	 * along a path of IDTypes where mappings exist. If no such path is found, null is returned. The result
+	 * will always be a Set of the found mappings.
+	 * 
+	 * @param <K>
+	 *            Type of the sourceID
+	 * @param <V>
+	 *            Type of the expected result of the mapping
+	 * @param source
+	 *            IDType of the source data
+	 * @param destination
+	 *            IDType of the destination data
+	 * @param sourceID
+	 *            ID for which the mapping shall be found
+	 * @return If no mapping is found, null, otherwise the Set containing the corresponding ID(s).
+	 */
 	@SuppressWarnings("unchecked")
-	@Override
 	public <K, V> Set<V> getIDAsSet(IDType source, IDType destination, K sourceID) {
 
 		Set<V> setResult = new HashSet<V>();
@@ -508,7 +584,17 @@ public class IDMappingManager
 	// System.out.println(mappingGraph.toString());
 	// }
 
-	@Override
+	/**
+	 * Determines whether the IDMappingManager holds a map that contains the specified element of the
+	 * specified type.
+	 * 
+	 * @param <T>
+	 * @param idType
+	 *            IDType of the element.
+	 * @param element
+	 *            Element to be found.
+	 * @return True, if such an element is fund, false otherwise.
+	 */
 	public <T> boolean doesElementExist(IDType idType, T element) {
 		Set<MappingType> edges = mappingGraph.edgesOf(idType);
 
@@ -522,7 +608,11 @@ public class IDMappingManager
 		return false;
 	}
 
-	@Override
+	/**
+	 * Returns all id types registered in this ID Mapping Manager
+	 * 
+	 * @return
+	 */
 	public HashSet<IDType> getIDTypes() {
 		HashSet<IDType> idTypes = new HashSet<IDType>();
 		for (MappingType mappingType : hashMappingType2Map.keySet()) {
@@ -533,7 +623,11 @@ public class IDMappingManager
 		return idTypes;
 	}
 
-	@Override
+	/**
+	 * Returns all mapping types of currently loaded mappings.
+	 * 
+	 * @return
+	 */
 	public MappingType getMappingType(String mappingTypeString) {
 		return hashMappingTypeString2MappingType.get(mappingTypeString);
 	}

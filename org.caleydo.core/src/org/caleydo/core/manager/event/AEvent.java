@@ -5,12 +5,10 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.caleydo.core.manager.IEventPublisher;
-
 /**
  * Basic class for all types of caleydo events. Events are the communication transport objects between the
  * subsystems of the application. Events must be xml serializeable with JAXB for network transmission. Events
- * are distributed by an {@link IEventPublisher}
+ * are distributed by an {@link EventPublisher}
  * 
  * @author Werner Puff
  */

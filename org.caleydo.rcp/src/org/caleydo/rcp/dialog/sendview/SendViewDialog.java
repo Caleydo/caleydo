@@ -1,8 +1,8 @@
 package org.caleydo.rcp.dialog.sendview;
 
-import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.net.NetworkManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -35,8 +35,8 @@ public class SendViewDialog
 	/** central {@link NetworkManager} to retrieve network related information */
 	IGroupwareManager groupwareManager;
 
-	/** central {@link IViewManager} to retrieve view information */
-	IViewManager viewManager;
+	/** central {@link ViewManager} to retrieve view information */
+	ViewManager viewManager;
 
 	/**
 	 * Constructor.

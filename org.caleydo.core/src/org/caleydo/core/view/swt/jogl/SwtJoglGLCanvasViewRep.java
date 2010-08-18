@@ -1,9 +1,9 @@
 package org.caleydo.core.view.swt.jogl;
 
-import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -33,7 +33,7 @@ public class SwtJoglGLCanvasViewRep
 
 	@Override
 	public void initViewSWTComposite(Composite parentComposite) {
-		ISWTGUIManager iSWTGUIManager = generalManager.getSWTGUIManager();
+		SWTGUIManager iSWTGUIManager = generalManager.getSWTGUIManager();
 
 		SWTEmbeddedJoglWidget sWTEmbeddedJoglWidget =
 			(SWTEmbeddedJoglWidget) iSWTGUIManager.createWidget(
@@ -46,7 +46,7 @@ public class SwtJoglGLCanvasViewRep
 		gLCanvas = sWTEmbeddedJoglWidget.getGLCanvas();
 		iGLCanvasID = gLCanvas.getID();
 
-		IViewManager canvasManager = generalManager.getViewGLCanvasManager();
+		ViewManager canvasManager = generalManager.getViewGLCanvasManager();
 
 		// Register GL canvas to view manager
 		canvasManager.registerGLCanvas(gLCanvas);

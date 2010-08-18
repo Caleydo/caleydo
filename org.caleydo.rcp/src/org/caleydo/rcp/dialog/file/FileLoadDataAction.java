@@ -12,10 +12,10 @@ import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.rcp.dialog.LabelEditorDialog;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -834,7 +834,7 @@ public class FileLoadDataAction
 
 	private void determineFileIDType() {
 
-		IIDMappingManager idMappingManager = GeneralManager.get().getIDMappingManager();
+		IDMappingManager idMappingManager = GeneralManager.get().getIDMappingManager();
 
 		TableItem[] items = previewTable.getItems();
 		ArrayList<String> idList = new ArrayList<String>();

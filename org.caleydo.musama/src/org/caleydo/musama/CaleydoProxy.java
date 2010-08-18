@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeoutException;
 
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -17,9 +17,9 @@ import de.mmis.core.tuplespace.TuplespaceProxy;
 public class CaleydoProxy implements Observer<InformationProviderEvent> {
 
 	InformationProvider informationProvider;
-	IGeneralManager caleydo;
+	GeneralManager caleydo;
 
-	public CaleydoProxy(IGeneralManager caleydo, String host, int port) throws UnknownHostException, IOException,
+	public CaleydoProxy(GeneralManager caleydo, String host, int port) throws UnknownHostException, IOException,
 			TuplespaceException, TimeoutException {
 		informationProvider = TuplespaceProxy.createProxy(InformationProvider.class, new Atom("InformationProvider"), host, port);
 		this.caleydo = caleydo;

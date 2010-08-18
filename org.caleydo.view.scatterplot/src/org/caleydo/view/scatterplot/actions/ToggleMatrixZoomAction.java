@@ -1,7 +1,7 @@
 package org.caleydo.view.scatterplot.actions;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.storagebased.ToggleMatrixZoomEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.action.AToolBarAction;

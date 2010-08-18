@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.manager.view.creator.IViewCreator;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
@@ -169,7 +169,7 @@ public class ToolBarContentFactory {
 	 * determines if a view is attached to the caleydo's main window or not
 	 * 
 	 * @param interfaceType
-	 *            view as used by {@link IViewManager}
+	 *            view as used by {@link ViewManager}
 	 * @return true if the view is attached, false otherwise
 	 */
 	private boolean isViewAttached(IView view) {
@@ -237,7 +237,7 @@ public class ToolBarContentFactory {
 	 * it is, e.g. when activating a help view like histogramm
 	 * 
 	 * @param viewIDs
-	 *            list of view-ids as used by IViewManager
+	 *            list of view-ids as used by ViewManager
 	 * @return true if the views should be ignored by the toolbar, false otherwise
 	 */
 	public boolean isIgnored(List<IView> views) {

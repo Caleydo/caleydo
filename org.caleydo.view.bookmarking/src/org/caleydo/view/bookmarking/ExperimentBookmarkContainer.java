@@ -1,8 +1,8 @@
 package org.caleydo.view.bookmarking;
 
 import org.caleydo.core.data.selection.StorageSelectionManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.util.collection.UniqueList;
 

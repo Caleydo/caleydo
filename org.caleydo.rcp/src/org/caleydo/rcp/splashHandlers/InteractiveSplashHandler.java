@@ -1,6 +1,6 @@
 package org.caleydo.rcp.splashHandlers;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.rcp.Activator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;

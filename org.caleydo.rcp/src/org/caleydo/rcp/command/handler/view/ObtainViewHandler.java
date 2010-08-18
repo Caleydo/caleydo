@@ -1,7 +1,7 @@
 package org.caleydo.rcp.command.handler.view;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.rcp.dialog.sendview.SendViewDialog;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;

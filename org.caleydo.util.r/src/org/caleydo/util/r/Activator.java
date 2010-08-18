@@ -2,8 +2,8 @@ package org.caleydo.util.r;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.util.r.view.StatisticsView;
 import org.caleydo.util.r.view.ViewCreator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

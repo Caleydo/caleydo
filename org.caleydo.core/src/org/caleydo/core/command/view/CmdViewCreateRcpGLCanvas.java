@@ -1,10 +1,10 @@
-package org.caleydo.core.command.view.rcp;
+package org.caleydo.core.command.view;
 
 import javax.media.opengl.GLCapabilities;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 
 /**
@@ -34,7 +34,7 @@ public class CmdViewCreateRcpGLCanvas
 
 		createdObject = new GLCaleydoCanvas(glCapabilities);
 
-		IViewManager viewManager = generalManager.getViewGLCanvasManager();
+		ViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		// Register GL canvas to view manager
 		viewManager.registerGLCanvas(createdObject);
