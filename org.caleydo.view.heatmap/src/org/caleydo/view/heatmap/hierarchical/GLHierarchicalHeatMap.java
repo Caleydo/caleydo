@@ -2528,6 +2528,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		contextMenu.render(gl, this);
+		
 
 	}
 
@@ -2557,9 +2558,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		// glHeatMapView.getViewFrustum().setTop(ftop);
 		// glHeatMapView.getViewFrustum().setRight(fright);
-		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
-		// EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView
-		// .getID()));
+		 gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		 EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView
+		 .getID()));
 
 		heatMapRemoteElement.getTransform().getTranslation().set(fleftOffset, -0.2f, 0);
 		heatMapRemoteElement.getTransform().getScale()

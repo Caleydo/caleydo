@@ -151,7 +151,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 		if (pcs.getSet().isSetHomogeneous())
 			numberOfSpacings = 2.5f;
 
-		if (pcs.bShowSelectionHeatMap)
+		if (pcs.isShowBookmarks)
 			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * numberOfSpacings
 					* getScaling() - pcs.glBookmarks.getViewFrustum().getWidth();
 

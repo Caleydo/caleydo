@@ -393,6 +393,7 @@ public class GLHeatMap extends AStorageBasedView {
 				geneContextMenuItemContainer.setDataDomain(dataDomain);
 				geneContextMenuItemContainer.setID(contentIDType, iExternalID);
 				contextMenu.addItemContanier(geneContextMenuItemContainer);
+				break;
 			default:
 				return;
 
@@ -418,7 +419,7 @@ public class GLHeatMap extends AStorageBasedView {
 					contextMenu.setMasterGLView(this);
 				}
 				ExperimentContextMenuItemContainer experimentContextMenuItemContainer = new ExperimentContextMenuItemContainer();
-				experimentContextMenuItemContainer.setDataDomain(dataDomain);
+				// experimentContextMenuItemContainer.setDataDomain(dataDomain);
 				experimentContextMenuItemContainer.setID(storageIDType, iExternalID);
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 			default:

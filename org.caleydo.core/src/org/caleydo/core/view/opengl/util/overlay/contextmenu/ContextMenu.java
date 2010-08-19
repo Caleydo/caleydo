@@ -8,12 +8,9 @@ import java.util.HashMap;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.view.ISetBasedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -95,8 +92,6 @@ public class ContextMenu
 
 	private boolean isDisplayListDirty = true;
 
-	private ASetBasedDataDomain dataDomain;
-
 	/** The singleton instance */
 	private static ContextMenu instance;
 
@@ -145,17 +140,12 @@ public class ContextMenu
 	 * @param masterViewID
 	 *            the id of the view where the menu should be rendered
 	 */
-	@SuppressWarnings("unchecked")
 	public void setMasterGLView(AGLView masterGLView) {
 		this.masterGLView = masterGLView;
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
 		textRenderer.setSmoothing(true);
 		iconManager = new TextureManager();
-		if (masterGLView instanceof ISetBasedView)
-			dataDomain = ((IDataDomainBasedView<ASetBasedDataDomain>) masterGLView).getDataDomain();
-		else
-			dataDomain = null;
 	}
 
 	/**

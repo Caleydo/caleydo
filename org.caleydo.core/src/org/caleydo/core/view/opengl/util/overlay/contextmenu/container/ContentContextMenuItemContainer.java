@@ -22,10 +22,6 @@ public class ContentContextMenuItemContainer
 	}
 
 	public void setID(IDType idType, int id) {
-		// Integer davidID = GeneralManager.get().getIDMappingManager().getID(idType,
-		// GeneticDataDomain.centralIDType, id);
-		// if (davidID == null)
-		// return;
 		createMenuContent(idType, id);
 	}
 

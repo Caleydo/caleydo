@@ -126,19 +126,25 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 		tempDelta.setVAType(virtualArray.getVAType());
 		tempDelta.setIDType(iDType);
 		HashMap<Integer, Integer> tempHash;
-		for (SelectionType selectionType : selectionTypes) {
-			if (!selectionType.isVisible()) {
-				continue;
-			}
-			tempHash = hashSelectionTypes.get(selectionType);
-			for (Integer iElement : tempHash.keySet()) {
-				Integer iSelectionID = -1;
-
-				iSelectionID = iElement;
-				tempDelta.add(VADeltaItem.appendUnique(iSelectionID));
-
-			}
+		
+		for (Integer id : virtualArray)
+		{
+			tempDelta.add(VADeltaItem.appendUnique(id));
 		}
+		
+//		for (SelectionType selectionType : selectionTypes) {
+//			if (!selectionType.isVisible()) {
+//				continue;
+//			}
+//			tempHash = hashSelectionTypes.get(selectionType);
+//			for (Integer iElement : tempHash.keySet()) {
+//				Integer iSelectionID = -1;
+//
+//				iSelectionID = iElement;
+//				tempDelta.add(VADeltaItem.appendUnique(iSelectionID));
+//
+//			}
+//		}
 		return tempDelta;
 	}
 

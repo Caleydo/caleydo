@@ -1,5 +1,7 @@
 package org.caleydo.view.bookmarking;
 
+import java.util.Set;
+
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
@@ -28,6 +30,7 @@ class ContentBookmarkContainer extends ABookmarkContainer<ContentSelectionManage
 		super(manager, category, manager.getDataDomain().getPrimaryContentMappingType());
 		bookmarkItems = new UniqueList<ABookmark>();
 		this.idType = idType;
+		this.category = category;
 
 		colorMapping = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
@@ -41,19 +44,20 @@ class ContentBookmarkContainer extends ABookmarkContainer<ContentSelectionManage
 	@Override
 	<IDDataType> void handleNewBookmarkEvent(BookmarkEvent<IDDataType> event) {
 		// ArrayList<Integer> ids;
-		Integer convertedID;
+		Set<Integer> convertedIDs;
 
 		for (IDDataType id : event.getBookmarks()) {
 
 			if (event.getIDType().getIDCategory() == category) {
-				convertedID = GeneralManager.get().getIDMappingManager()
-						.getID(event.getIDType(), idType, id);
-				if (convertedID == null)
+				convertedIDs = GeneralManager.get().getIDMappingManager()
+						.getIDAsSet(event.getIDType(), idType, id);
+				if (convertedIDs == null || convertedIDs.size() == 0)
 					continue;
 			} else
-				throw new IllegalStateException("ID type unhandled");
-			ContentBookmark bookmark = new ContentBookmark(manager, idType, convertedID,
-					textRenderer);
+				throw new IllegalStateException("ID type: " + idType + " unhandled");
+
+			ContentBookmark bookmark = new ContentBookmark(manager, idType, convertedIDs
+					.iterator().next(), textRenderer);
 			bookmarkItems.add(bookmark);
 			// selectionManager.add(davidID);
 		}

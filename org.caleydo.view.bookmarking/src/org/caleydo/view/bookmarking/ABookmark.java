@@ -30,6 +30,7 @@ public abstract class ABookmark {
 	public ABookmark(GLBookmarkManager manager, IDType idType, TextRenderer textRenderer) {
 		this.textRenderer = textRenderer;
 		this.manager = manager;
+		this.idType = idType;
 		dimensions = new Dimensions();
 	}
 

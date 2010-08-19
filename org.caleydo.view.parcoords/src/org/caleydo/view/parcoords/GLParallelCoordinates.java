@@ -195,7 +195,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	int iChangeDropOnAxisNumber = -1;
 
 	GLBookmarkManager glBookmarks;
-	boolean bShowSelectionHeatMap = false;
+	boolean isShowBookmarks = false;
 
 	private GLInfoAreaManager infoAreaManager;
 
@@ -266,7 +266,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	public void initRemote(final GL gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
-		bShowSelectionHeatMap = false;
+		isShowBookmarks = false;
 		this.glMouseListener = glMouseListener;
 		this.infoAreaManager = infoAreaManager;
 
@@ -357,7 +357,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		gl.glEnable(GL.GL_BLEND);
 
-		if (bShowSelectionHeatMap) {
+		if (isShowBookmarks) {
 
 			gl.glTranslatef(viewFrustum.getRight()
 					- glBookmarks.getViewFrustum().getWidth(), 0, 0.002f);
@@ -514,7 +514,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		}
 
 		if (!isRenderedRemote()) {
-			bShowSelectionHeatMap = true;
+			isShowBookmarks = true;
 			BookmarkEvent<Integer> bookmarkEvent = new BookmarkEvent<Integer>(
 					contentIDType);
 			for (VADeltaItem item : delta.getAllItems()) {

@@ -403,6 +403,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	public AItemContainer getContentItemContainer(IDType idType, int id) {
 
 		GeneContextMenuItemContainer geneContainer = new GeneContextMenuItemContainer();
+		geneContainer.setDataDomain(this);
 		geneContainer.setID(idType, id);
 		return geneContainer;
 	}

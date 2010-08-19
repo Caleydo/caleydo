@@ -34,7 +34,7 @@ class ContentBookmark extends ABookmark {
 		// EIDType.GENE_SYMBOL, id);
 		//
 		float yOrigin = dimensions.getYOrigin() - 0.08f;
-		String sContent = manager.getDataDomain().getStorageLabel(idType, id);
+		String sContent = manager.getDataDomain().getContentLabel(idType, id);
 		RenderingHelpers.renderText(gl, textRenderer, sContent, dimensions.getXOrigin()
 				+ BookmarkRenderStyle.SIDE_SPACING, yOrigin,
 				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);

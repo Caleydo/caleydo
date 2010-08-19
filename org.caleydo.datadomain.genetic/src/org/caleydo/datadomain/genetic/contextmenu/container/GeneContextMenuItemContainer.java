@@ -1,5 +1,7 @@
 package org.caleydo.datadomain.genetic.contextmenu.container;
 
+import java.util.Set;
+
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -27,11 +29,14 @@ public class GeneContextMenuItemContainer extends AItemContainer {
 	}
 
 	public void setID(IDType idType, int id) {
-		Integer davidID = GeneralManager.get().getIDMappingManager()
+		Set<Integer> davids = GeneralManager.get().getIDMappingManager()
 				.getID(idType, dataDomain.getPrimaryContentMappingType(), id);
-		if (davidID == null)
+		if (davids == null)
 			return;
-		createMenuContent(davidID);
+		for (Integer david : davids) {
+			createMenuContent(david);
+//			return;
+		}
 	}
 
 	private void createMenuContent(int davidID) {
@@ -58,9 +63,9 @@ public class GeneContextMenuItemContainer extends AItemContainer {
 			addContextMenuItem(showPathwaysByGeneItem);
 		}
 
-		BookmarkItem addToListItem = new BookmarkItem(
-				dataDomain.getPrimaryContentMappingType(), davidID);
+//		BookmarkItem addToListItem = new BookmarkItem(
+//				dataDomain.getPrimaryContentMappingType(), davidID);
 
-		addContextMenuItem(addToListItem);
+//		addContextMenuItem(addToListItem);
 	}
 }
