@@ -44,7 +44,7 @@ public class SerializationStartupProcedure
 			if (loadRecentProject) {
 				data = loader.loadRecent();
 			}
-			else if (projectLocation != null) {
+			else if (projectLocation != null || projectLocation.isEmpty()) {
 				data = loader.load(projectLocation);
 			}
 			else {

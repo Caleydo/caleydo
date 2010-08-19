@@ -12,6 +12,7 @@ import org.caleydo.rcp.startup.ApplicationMode;
 import org.caleydo.rcp.startup.GUIStartupProcedure;
 import org.caleydo.rcp.startup.SerializationStartupProcedure;
 import org.caleydo.rcp.startup.StartupProcessor;
+import org.caleydo.rcp.wizard.project.ChooseProjectTypePage.EProjectLoadType;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -70,13 +71,19 @@ public class CaleydoProjectWizard
 				
 				SerializationStartupProcedure startupProcedure =
 					(SerializationStartupProcedure) StartupProcessor.get().createStartupProcedure(ApplicationMode.SERIALIZATION);
-				startupProcedure.setProjectLocation(page.getProjectFileName());
+				if (page.getProjectLoadType().equals(EProjectLoadType.RECENT)) {
+					startupProcedure.setLoadRecentProject(true);
+				}
+				else {
+					startupProcedure.setLoadRecentProject(false);
+					startupProcedure.setProjectLocation(page.getProjectFileName());
+				}
 			}
 			else if (projectMode == ProjectMode.SAMPLE_PROJECT) {
 				SerializationStartupProcedure startupProcedure =
 					(SerializationStartupProcedure) StartupProcessor.get().createStartupProcedure(ApplicationMode.SERIALIZATION);
 				startupProcedure.loadSampleProject(true);
-				
+
 			}
 			else if (projectMode == ProjectMode.GENE_EXPRESSION_SAMPLE_DATA) {
 

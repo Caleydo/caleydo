@@ -123,6 +123,7 @@ public class Set
 		rootNode.createMetaSets(this);
 	}
 
+	@XmlTransient
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;

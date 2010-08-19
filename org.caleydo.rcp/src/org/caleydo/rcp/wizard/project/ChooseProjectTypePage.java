@@ -176,6 +176,7 @@ public class ChooseProjectTypePage
 				}
 				else if (((TabItem) e.item) == loadProjectTab) {
 					projectMode = ProjectMode.LOAD_PROJECT;
+				
 				}
 				else if (((TabItem) e.item) == collaborationClientTab) {
 					projectMode = ProjectMode.COLLABORATION_CLIENT;
