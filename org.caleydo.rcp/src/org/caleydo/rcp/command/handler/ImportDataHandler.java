@@ -13,14 +13,8 @@ public class ImportDataHandler
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell shell = new Shell();
-		// shell.setMaximized(true);
 		LoadDataDialog dialog = new LoadDataDialog(shell);
 		dialog.open();
-
-		//
-		// org.eclipse.ui.internal.views.log.LogView log;
-		// log.
-		// log.P_USE_LIMIT
 
 		return null;
 	}

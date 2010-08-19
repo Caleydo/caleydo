@@ -1,7 +1,11 @@
 package org.caleydo.view.datawindows;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
+import org.caleydo.view.heatmap.hierarchical.SerializedHierarchicalHeatMapView;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLDataWindowsView extends ARcpGLViewPart {
@@ -11,6 +15,13 @@ public class RcpGLDataWindowsView extends ARcpGLViewPart {
 	 */
 	public RcpGLDataWindowsView() {
 		super();
+		
+		try {
+			viewContext = JAXBContext
+					.newInstance(SerializedDataWindowsView.class);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContext", ex);
+		}
 	}
 
 	@Override

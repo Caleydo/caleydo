@@ -19,13 +19,13 @@ public class ApplicationWorkbenchAdvisor
 
 	private AutoSaver autoSaver;
 
-	private IWorkbenchWindowConfigurer workbenchConfigurer;
+	// private IWorkbenchWindowConfigurer workbenchConfigurer;
 
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		PlatformUI.getPreferenceStore()
 			.setValue(IWorkbenchPreferenceConstants.SHOW_PROGRESS_ON_STARTUP, true);
-		workbenchConfigurer = configurer;
+		// workbenchConfigurer = configurer;
 
 		return new ApplicationWorkbenchWindowAdvisor(configurer);
 	}
@@ -87,15 +87,15 @@ public class ApplicationWorkbenchAdvisor
 		}
 	}
 
-	/**
-	 * Sets the views init-parameters. In case of a loaded project, the views are initialized from their
-	 * restored serialized-representation.
-	 */
-	private void initializeViews() {
-		// if (Application.applicationMode == ApplicationMode.LOAD_PROJECT) {
-		//
-		// }
-	}
+	// /**
+	// * Sets the views init-parameters. In case of a loaded project, the views are initialized from their
+	// * restored serialized-representation.
+	// */
+	// private void initializeViews() {
+	// // if (Application.applicationMode == ApplicationMode.LOAD_PROJECT) {
+	// //
+	// // }
+	// }
 
 	@Override
 	public boolean preShutdown() {

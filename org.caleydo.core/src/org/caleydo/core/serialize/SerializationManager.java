@@ -15,9 +15,6 @@ import org.caleydo.core.manager.event.AEvent;
  */
 public class SerializationManager {
 
-	/** {@link JAXBContext} for view (de-)serialization */
-	private JAXBContext viewContext;
-
 	/** {@link JAXBContext} for event (de-)serialization */
 	private JAXBContext eventContext;
 
@@ -26,8 +23,6 @@ public class SerializationManager {
 
 	public SerializationManager() {
 		try {
-			viewContext = JAXBContext.newInstance(ASerializedView.class);
-
 			Collection<Class<? extends AEvent>> eventTypes = getSerializeableEventTypes();
 			Class<?>[] classes = new Class<?>[eventTypes.size()];
 			classes = eventTypes.toArray(classes);
@@ -38,15 +33,6 @@ public class SerializationManager {
 		catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
-	}
-
-	/**
-	 * Gets the {@link JAXBContext} used to serialize views.
-	 * 
-	 * @return view-serialization {@link JAXBContext}.
-	 */
-	public JAXBContext getViewContext() {
-		return viewContext;
 	}
 
 	/**
@@ -149,5 +135,4 @@ public class SerializationManager {
 
 		return eventTypes;
 	}
-
 }

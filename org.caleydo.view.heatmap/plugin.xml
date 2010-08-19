@@ -12,6 +12,7 @@
             name="Heat Map">
       </view>
       <view
+            allowMultiple="true"
             class="org.caleydo.view.heatmap.hierarchical.RcpGLHierarchicalHeatMapView"
             icon="resources/icons/heatmap.png"
             id="org.caleydo.view.heatmap.hierarchical"

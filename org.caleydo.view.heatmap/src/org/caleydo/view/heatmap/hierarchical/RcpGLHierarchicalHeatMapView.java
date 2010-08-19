@@ -1,8 +1,14 @@
 package org.caleydo.view.heatmap.hierarchical;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.PartInitException;
 
 public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 
@@ -11,6 +17,13 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 	 */
 	public RcpGLHierarchicalHeatMapView() {
 		super();
+		
+		try {
+			viewContext = JAXBContext
+					.newInstance(SerializedHierarchicalHeatMapView.class);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContext", ex);
+		}
 	}
 
 	@Override

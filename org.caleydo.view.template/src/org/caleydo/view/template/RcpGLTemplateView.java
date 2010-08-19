@@ -1,5 +1,8 @@
 package org.caleydo.view.template;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
@@ -16,6 +19,13 @@ public class RcpGLTemplateView extends ARcpGLViewPart {
 	 */
 	public RcpGLTemplateView() {
 		super();
+		
+		try {
+			viewContext = JAXBContext
+					.newInstance(SerializedTemplateView.class);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContext", ex);
+		}
 	}
 
 	@Override

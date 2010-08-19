@@ -8,7 +8,7 @@
 <stringAttribute key="checked" value="[NONE]"/>
 <booleanAttribute key="clearConfig" value="false"/>
 <booleanAttribute key="clearws" value="true"/>
-<booleanAttribute key="clearwslog" value="false"/>
+<booleanAttribute key="clearwslog" value="true"/>
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Caleydo RCP - Clinical"/>
 <booleanAttribute key="default" value="true"/>
 <booleanAttribute key="includeOptional" value="false"/>
@@ -26,6 +26,7 @@
 <stringAttribute key="selected_workspace_plugins" value="org.caleydo.util.graph@default:default,org.caleydo.lib.core@default:default,org.caleydo.util.gleem@default:default,org.caleydo.lib.jogl@default:default,org.caleydo.core@default:default,org.caleydo.testing@default:default,org.caleydo.rcp@default:default,org.caleydo.data@default:default"/>
 <booleanAttribute key="show_selected_only" value="false"/>
 <booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfig" value="true"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>
 <booleanAttribute key="useProduct" value="true"/>

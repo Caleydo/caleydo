@@ -1,5 +1,8 @@
 package org.caleydo.view.parcoords;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
@@ -14,6 +17,13 @@ public class RcpGLParCoordsView extends ARcpGLViewPart {
 	 */
 	public RcpGLParCoordsView() {
 		super();
+		
+		try {
+			viewContext = JAXBContext
+					.newInstance(SerializedParallelCoordinatesView.class);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContext", ex);
+		}
 	}
 
 	@Override

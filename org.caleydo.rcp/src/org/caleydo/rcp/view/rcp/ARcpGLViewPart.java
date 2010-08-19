@@ -46,6 +46,9 @@ public abstract class ARcpGLViewPart
 	protected Frame frameGL;
 	protected GLCaleydoCanvas glCanvas;
 	protected MinimumSizeComposite minSizeComposite;
+	
+	/** {@link JAXBContext} for view (de-)serialization */
+	protected JAXBContext viewContext;
 
 	/**
 	 * Constructor.
@@ -143,8 +146,7 @@ public abstract class ARcpGLViewPart
 			viewXml = memento.getString("serialized");
 		}
 		if (viewXml != null) { // init view from memento
-			SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
-			JAXBContext jaxbContext = serializationManager.getViewContext();
+			JAXBContext jaxbContext = viewContext;
 			Unmarshaller unmarshaller;
 			try {
 				unmarshaller = jaxbContext.createUnmarshaller();
@@ -181,8 +183,7 @@ public abstract class ARcpGLViewPart
 	@Override
 	public void saveState(IMemento memento) {
 
-		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
-		JAXBContext jaxbContext = serializationManager.getViewContext();
+		JAXBContext jaxbContext = viewContext;
 		Marshaller marshaller = null;
 		try {
 			marshaller = jaxbContext.createMarshaller();
@@ -262,29 +263,6 @@ public abstract class ARcpGLViewPart
 	 * @return serialized form of the gl-view with default initialization
 	 */
 	public abstract ASerializedView createDefaultSerializedView();
-
-	/**
-	 * Determines the dataDomainType based on the association of views to datadomains established in
-	 * {@link Application#startViewWithDataDomain}, saves it to the member
-	 * {@link CaleydoRCPViewPart#dataDomainType}, removes it from the startViewWithDataDomain and returns it.
-	 * 
-	 * @return
-	 */
-	// protected String determineDataDomainType(String viewID) {
-	// for (Pair<String, String> startView : Application.startViewWithDataDomain) {
-	// if (startView.getFirst().equals(this.getViewGUIID())) {
-	// dataDomainType = startView.getSecond();
-	// Application.startViewWithDataDomain.remove(startView);
-	// break;
-	// }
-	// }
-	//
-	// if (dataDomainType == null) {
-	// ArrayList<IDataDomain> dataDomains = DataDomainManager.getInstance().getAssociationManager()
-	// .getAvailableDataDomainTypesForViewTypes(viewID);
-	// }
-	// return dataDomainType;
-	// }
 
 	/**
 	 * Returns the rcp-ID of the view

@@ -1,5 +1,8 @@
 package org.caleydo.view.dataflipper;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
@@ -14,6 +17,13 @@ public class RcpGLDataFlipperView extends ARcpGLViewPart {
 	public RcpGLDataFlipperView() {
 		super();
 
+		try {
+			viewContext = JAXBContext
+					.newInstance(SerializedDataFlipperView.class);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContext", ex);
+		}
+		
 		// iAlContainedViewIDs = new ArrayList<Integer>();
 	}
 

@@ -1,13 +1,17 @@
 package org.caleydo.rcp;
 
+import java.io.File;
+
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ApplicationInitData;
 import org.caleydo.rcp.startup.StartupProcessor;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.WorkbenchPlugin;
 
 /**
  * This class controls all aspects of the application's execution
@@ -30,6 +34,8 @@ public class Application
 
 		GeneralManager.get().getPreferenceStore();
 		GeneralManager.get().getViewGLCanvasManager().init();
+
+		removeStoredWorkbenchState();
 
 		StartupProcessor.get().initStartupProcudure(context.getArguments());
 
@@ -123,31 +129,31 @@ public class Application
 	// return true;
 	// }
 
-	// private void removeStoredWorkbenchState() {
-	//
-	// IPath path = WorkbenchPlugin.getDefault().getDataLocation();
-	// if (path == null) {
-	// return;
-	// }
-	//
-	// deleteDir(path.toFile());
-	// }
+	private void removeStoredWorkbenchState() {
 
-	// // Deletes all files and subdirectories under dir.
-	// // Returns true if all deletions were successful.
-	// // If a deletion fails, the method stops attempting to delete and returns
-	// // false.
-	// public static boolean deleteDir(File dir) {
-	// if (dir.isDirectory()) {
-	// String[] children = dir.list();
-	// for (String element : children) {
-	// boolean success = deleteDir(new File(dir, element));
-	// if (!success)
-	// return false;
-	// }
-	// }
-	//
-	// // The directory is now empty so delete it
-	// return dir.delete();
-	// }
+//		IPath path = WorkbenchPlugin.getDefault().getDataLocation();
+//		if (path == null) {
+//			return;
+//		}
+//
+//		deleteDir(path.toFile());
+	}
+
+	// Deletes all files and subdirectories under dir.
+	// Returns true if all deletions were successful.
+	// If a deletion fails, the method stops attempting to delete and returns
+	// false.
+	public static boolean deleteDir(File dir) {
+		if (dir.isDirectory()) {
+			String[] children = dir.list();
+			for (String element : children) {
+				boolean success = deleteDir(new File(dir, element));
+				if (!success)
+					return false;
+			}
+		}
+
+		// The directory is now empty so delete it
+		return dir.delete();
+	}
 }

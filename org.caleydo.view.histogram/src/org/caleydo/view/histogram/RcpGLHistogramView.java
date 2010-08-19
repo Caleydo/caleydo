@@ -2,6 +2,9 @@ package org.caleydo.view.histogram;
 
 import java.util.ArrayList;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -61,6 +64,13 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 	 */
 	public RcpGLHistogramView() {
 		super();
+		
+		try {
+			viewContext = JAXBContext
+					.newInstance(SerializedHistogramView.class);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContext", ex);
+		}
 	}
 
 	@Override

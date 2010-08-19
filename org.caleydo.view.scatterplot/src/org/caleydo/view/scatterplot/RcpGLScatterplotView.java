@@ -1,5 +1,8 @@
 package org.caleydo.view.scatterplot;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
@@ -11,6 +14,13 @@ public class RcpGLScatterplotView extends ARcpGLViewPart {
 	 */
 	public RcpGLScatterplotView() {
 		super();
+		
+		try {
+			viewContext = JAXBContext
+					.newInstance(SerializedScatterplotView.class);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContext", ex);
+		}
 	}
 
 	@Override

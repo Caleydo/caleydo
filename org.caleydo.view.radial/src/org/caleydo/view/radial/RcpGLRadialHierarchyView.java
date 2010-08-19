@@ -2,6 +2,9 @@ package org.caleydo.view.radial;
 
 import java.util.ArrayList;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
@@ -15,6 +18,13 @@ public class RcpGLRadialHierarchyView extends ARcpGLViewPart {
 	 */
 	public RcpGLRadialHierarchyView() {
 		super();
+		
+		try {
+			viewContext = JAXBContext
+					.newInstance(SerializedRadialHierarchyView.class);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContext", ex);
+		}
 	}
 
 	@Override

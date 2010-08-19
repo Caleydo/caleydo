@@ -1,5 +1,8 @@
 package org.caleydo.view.grouper;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
@@ -12,6 +15,13 @@ public class RcpGLGrouperView extends ARcpGLViewPart {
 	 */
 	public RcpGLGrouperView() {
 		super();
+		
+		try {
+			viewContext = JAXBContext
+					.newInstance(SerializedGrouperView.class);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContext", ex);
+		}
 	}
 
 	@Override

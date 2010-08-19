@@ -11,7 +11,7 @@ import org.eclipse.ui.PlatformUI;
 public class RestoreOriginalDataAction
 	extends AToolBarAction {
 	public static final String TEXT = "Restore original data";
-	public static final String ICON = "resources/icons/general/save.png";
+	public static final String ICON = "resources/icons/general/restore.png";
 
 	/**
 	 * Constructor.

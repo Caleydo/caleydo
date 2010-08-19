@@ -5,9 +5,10 @@
 <booleanAttribute key="automaticAdd" value="true"/>
 <booleanAttribute key="automaticValidate" value="true"/>
 <stringAttribute key="bootstrap" value=""/>
+<stringAttribute key="checked" value="[NONE]"/>
 <booleanAttribute key="clearConfig" value="false"/>
 <booleanAttribute key="clearws" value="true"/>
-<booleanAttribute key="clearwslog" value="false"/>
+<booleanAttribute key="clearwslog" value="true"/>
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Caleydo RCP - Radial"/>
 <booleanAttribute key="default" value="true"/>
 <booleanAttribute key="includeOptional" value="false"/>
@@ -34,6 +35,7 @@
 <stringAttribute key="selected_workspace_plugins" value="org.caleydo.util.graph,org.caleydo.lib.core,org.caleydo.util.gleem,org.caleydo.lib.jogl,org.caleydo.core,org.caleydo.testing,org.caleydo.rcp,org.caleydo.data"/>
 <booleanAttribute key="show_selected_only" value="false"/>
 <booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfig" value="true"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>
 <booleanAttribute key="useProduct" value="true"/>

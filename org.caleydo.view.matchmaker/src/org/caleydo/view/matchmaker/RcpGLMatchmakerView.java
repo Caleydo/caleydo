@@ -1,5 +1,8 @@
 package org.caleydo.view.matchmaker;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
@@ -12,6 +15,13 @@ public class RcpGLMatchmakerView extends ARcpGLViewPart {
 	 */
 	public RcpGLMatchmakerView() {
 		super();
+		
+		try {
+			viewContext = JAXBContext
+					.newInstance(SerializedCompareView.class);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContext", ex);
+		}
 	}
 
 	@Override

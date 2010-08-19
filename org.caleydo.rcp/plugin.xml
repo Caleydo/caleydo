@@ -195,6 +195,7 @@
             </separator>
             <command
                   commandId="org.eclipse.ui.window.preferences"
+                  label="Preferences"
                   mnemonic="P"
                   style="push">
             </command>
@@ -214,26 +215,11 @@
                label="Data"
                tooltip="Data">
             <command
-                  commandId="org.caleydo.rcp.command.openviews.search"
-                  icon="resources/icons/view/search.png"
-                  label="Search Gene/Pathway"
-                  style="push">
-            </command>
-            <command
                   commandId="org.caleydo.rcp.command.cluster"
                   icon="resources/icons/general/clustering.png"
                   label="Cluster Data"
                   style="push"
                   tooltip="Open Clustering Dialog">
-            </command>
-         </menu>
-         <menu
-               id="org.caleydo.menu.view"
-               label="View">
-            <command
-                  commandId="org.caleydo.rcp.command.openselectionbrowser"
-                  icon="resources/icons/view/info.png"
-                  style="push">
             </command>
          </menu>
          <menu
