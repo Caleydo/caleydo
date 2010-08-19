@@ -88,7 +88,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentCo
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.view.bookmarking.GLBookmarkManager;
+import org.caleydo.view.bookmark.GLBookmarkView;
 import org.caleydo.view.parcoords.PCRenderStyle.PolyLineState;
 import org.caleydo.view.parcoords.listener.AngularBrushingListener;
 import org.caleydo.view.parcoords.listener.ApplyCurrentSelectionToVirtualArrayListener;
@@ -194,7 +194,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	EIconTextures dropTexture = EIconTextures.DROP_NORMAL;
 	int iChangeDropOnAxisNumber = -1;
 
-	GLBookmarkManager glBookmarks;
+	GLBookmarkView glBookmarks;
 	boolean isShowBookmarks = false;
 
 	private GLInfoAreaManager infoAreaManager;
@@ -423,12 +423,12 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		// Create selection panel
 		CmdCreateView cmdCreateGLView = (CmdCreateView) generalManager
 				.getCommandManager().createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdCreateGLView.setViewID("org.caleydo.view.bookmarking");
+		cmdCreateGLView.setViewID("org.caleydo.view.bookmark");
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f,
 				viewFrustum.getBottom(), viewFrustum.getTop(), -20, 20, -1);
 		cmdCreateGLView.setDataDomainType(dataDomain.getDataDomainType());
 		cmdCreateGLView.doCommand();
-		glBookmarks = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
+		glBookmarks = (GLBookmarkView) cmdCreateGLView.getCreatedObject();
 		glBookmarks.setRemoteRenderingGLView(this);
 		glBookmarks.initData();
 

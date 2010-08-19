@@ -220,7 +220,11 @@ public class ToolBarContentFactory {
 			if (viewCreator == null)
 				return null;
 
-			content = (AToolBarContent) viewCreator.createToolBarContent();
+			Object toolBarContent = viewCreator.createToolBarContent();
+			if (toolBarContent == null)
+				return null;
+			
+			content = (AToolBarContent) toolBarContent;
 			content.setTargetViewData(view.getSerializableRepresentation());
 			if (view instanceof AGLView) {
 				if (((AGLView) view).rendersContextOnly()) {

@@ -1,4 +1,4 @@
-package org.caleydo.view.bookmarking;
+package org.caleydo.view.bookmark;
 
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
@@ -12,7 +12,7 @@ import org.caleydo.core.util.collection.UniqueList;
  */
 class ExperimentBookmarkContainer extends ABookmarkContainer<StorageSelectionManager> {
 
-	ExperimentBookmarkContainer(GLBookmarkManager manager) {
+	ExperimentBookmarkContainer(GLBookmarkView manager) {
 		super(manager, manager.getDataDomain().getStorageIDCategory(), manager
 				.getDataDomain().getPrimaryStorageMappingType());
 		bookmarkItems = new UniqueList<ABookmark>();
@@ -36,6 +36,5 @@ class ExperimentBookmarkContainer extends ABookmarkContainer<StorageSelectionMan
 			bookmarkItems.add(bookmark);
 			// selectionManager.add(id);
 		}
-
 	}
 }

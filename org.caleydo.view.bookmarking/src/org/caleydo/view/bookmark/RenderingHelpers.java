@@ -1,4 +1,4 @@
-package org.caleydo.view.bookmarking;
+package org.caleydo.view.bookmark;
 
 import javax.media.opengl.GL;
 

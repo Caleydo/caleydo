@@ -1,4 +1,4 @@
-package org.caleydo.view.bookmarking;
+package org.caleydo.view.bookmark;
 
 /**
  * The dimensions class holds the geometric properties of an object, such as

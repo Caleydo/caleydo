@@ -1,4 +1,4 @@
-package org.caleydo.view.bookmarking;
+package org.caleydo.view.bookmark;
 
 import javax.media.opengl.GL;
 
@@ -20,7 +20,7 @@ class StorageBookmark extends ABookmark {
 	 * @param textRenderer
 	 * @param davidID
 	 */
-	public StorageBookmark(GLBookmarkManager manager, IDType idType,
+	public StorageBookmark(GLBookmarkView manager, IDType idType,
 			Integer experimentIndex, TextRenderer textRenderer) {
 		super(manager, idType, textRenderer);
 		this.id = experimentIndex;

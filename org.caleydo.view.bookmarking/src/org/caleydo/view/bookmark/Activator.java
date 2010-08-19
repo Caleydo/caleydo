@@ -1,10 +1,10 @@
-package org.caleydo.view.bookmarking;
+package org.caleydo.view.bookmark;
 
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.view.bookmarking.creator.ViewCreator;
+import org.caleydo.view.bookmark.creator.ViewCreator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -14,7 +14,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.caleydo.view.bookmarking";
+	public static final String PLUGIN_ID = "org.caleydo.view.bookmark";
 
 	// The shared instance
 	private static Activator plugin;

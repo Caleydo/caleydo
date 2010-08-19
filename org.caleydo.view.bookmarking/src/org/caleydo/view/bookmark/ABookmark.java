@@ -1,4 +1,4 @@
-package org.caleydo.view.bookmarking;
+package org.caleydo.view.bookmark;
 
 import javax.media.opengl.GL;
 
@@ -20,14 +20,14 @@ public abstract class ABookmark {
 
 	TextRenderer textRenderer;
 
-	GLBookmarkManager manager;
+	GLBookmarkView manager;
 
 	/**
 	 * The constructor takes a TextRenderer which is used to render all text
 	 * 
 	 * @param textRenderer
 	 */
-	public ABookmark(GLBookmarkManager manager, IDType idType, TextRenderer textRenderer) {
+	public ABookmark(GLBookmarkView manager, IDType idType, TextRenderer textRenderer) {
 		this.textRenderer = textRenderer;
 		this.manager = manager;
 		this.idType = idType;

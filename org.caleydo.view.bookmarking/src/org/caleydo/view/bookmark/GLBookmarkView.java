@@ -1,4 +1,4 @@
-package org.caleydo.view.bookmarking;
+package org.caleydo.view.bookmark;
 
 import java.awt.Font;
 import java.util.ArrayList;
@@ -42,11 +42,11 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * 
  * @author Alexander Lex
  */
-public class GLBookmarkManager extends AGLView implements
+public class GLBookmarkView extends AGLView implements
 		IDataDomainBasedView<ASetBasedDataDomain>, ISelectionUpdateHandler,
 		ISelectionCommandHandler {
 
-	public final static String VIEW_ID = "org.caleydo.view.bookmarking";
+	public final static String VIEW_ID = "org.caleydo.view.bookmark";
 
 	// private ColorMapping colorMapper;
 
@@ -107,11 +107,11 @@ public class GLBookmarkManager extends AGLView implements
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLBookmarkManager(GLCaleydoCanvas glCanvas, String label,
+	public GLBookmarkView(GLCaleydoCanvas glCanvas, String label,
 			IViewFrustum viewFrustum) {
 
 		super(glCanvas, label, viewFrustum, false);
-		viewType = GLBookmarkManager.VIEW_ID;
+		viewType = GLBookmarkView.VIEW_ID;
 
 		renderStyle = new BookmarkRenderStyle(viewFrustum);
 

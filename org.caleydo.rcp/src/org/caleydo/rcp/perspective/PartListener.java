@@ -80,7 +80,7 @@ public class PartListener
 		if (toolBarView == null)
 			return;
 
-		toolBarView.removeViewSpecificToolBar(glView.getGLView().getID());
+//		toolBarView.removeViewSpecificToolBar(glView.getGLView().getID());
 	}
 
 	@Override
@@ -104,16 +104,16 @@ public class PartListener
 
 		}
 
-		if (!activePart.getSite().getShell().getText().equals("Caleydo")) {
-			// viewpart is detached from caleydo main window
-			drawInlineToolBar(viewPart);
-			removeViewSpecificToolBarItems();
-		}
-		else {
-			// viewpart is attached within caleydo main window
-			removeInlineToolBar(viewPart);
-			sendViewActivationEvent(viewPart);
-		}
+		// if (!activePart.getSite().getShell().getText().equals("Caleydo")) {
+		// viewpart is detached from caleydo main window
+		drawInlineToolBar(viewPart);
+		// removeViewSpecificToolBarItems();
+		// }
+		// else {
+		// viewpart is attached within caleydo main window
+		// removeInlineToolBar(viewPart);
+		// sendViewActivationEvent(viewPart);
+		// }
 	}
 
 	@Override
@@ -167,7 +167,8 @@ public class PartListener
 		if (viewPart.getSWTComposite() != null)
 			viewPart.getSWTComposite().forceFocus();
 
-		sendViewActivationEvent(viewPart);
+//		sendViewActivationEvent(viewPart);
+		drawInlineToolBar(viewPart);
 	}
 
 	private void sendViewActivationEvent(CaleydoRCPViewPart viewPart) {

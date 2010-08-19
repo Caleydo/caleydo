@@ -1,4 +1,4 @@
-package org.caleydo.view.bookmarking;
+package org.caleydo.view.bookmark;
 
 import java.util.Iterator;
 
@@ -24,7 +24,7 @@ import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.BookmarkContextMenuItemContainer;
-import org.caleydo.view.bookmarking.GLBookmarkManager.PickingIDManager;
+import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -37,7 +37,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * </p>
  * <p>
  * Bookmark containers are no independent views, but depend on
- * {@link GLBookmarkManager} for all the public interfaces to the rest of the
+ * {@link GLBookmarkView} for all the public interfaces to the rest of the
  * system.
  * </p>
  * <p>
@@ -71,11 +71,11 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 * The list of bookmarks - each bookmark is unique, the ordering is relevant
 	 */
 	UniqueList<ABookmark> bookmarkItems;
-	/** Reference to the text renderer created by {@link GLBookmarkManager} */
+	/** Reference to the text renderer created by {@link GLBookmarkView} */
 	TextRenderer textRenderer;
 	/**
 	 * Reference to the internal picking id manger created by
-	 * {@link GLBookmarkManager}
+	 * {@link GLBookmarkView}
 	 */
 	PickingIDManager pickingIDManager;
 
@@ -91,7 +91,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 * here, because it provides all the view-specific facilities such as
 	 * context menu etc.
 	 */
-	GLBookmarkManager manager;
+	GLBookmarkView manager;
 
 	/**
 	 * Constructor
@@ -107,7 +107,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 *            the id type the container uses to internally store the
 	 *            bookmarks
 	 */
-	ABookmarkContainer(GLBookmarkManager manager, IDCategory category,
+	ABookmarkContainer(GLBookmarkView manager, IDCategory category,
 			IDType internalIDType) {
 		this.internalIDType = internalIDType;
 		this.manager = manager;
@@ -119,7 +119,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	}
 
 	/**
-	 * Returns the dimensions {@link GLBookmarkManager} needs to place the
+	 * Returns the dimensions {@link GLBookmarkView} needs to place the
 	 * containers
 	 * 
 	 * @return

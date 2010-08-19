@@ -3,7 +3,7 @@
 <plugin>
    <extension
         id="org.caleydo.datadomain.generic"
-        name="GeneticDataDomain"
+        name="GenericDataDomain"
         point="org.caleydo.datadomain.DataDomain">
         <DataDomain
           id="org.caleydo.datadomain.DataDomain"

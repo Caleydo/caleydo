@@ -1,4 +1,4 @@
-package org.caleydo.view.bookmarking;
+package org.caleydo.view.bookmark;
 
 import java.util.Set;
 
@@ -24,7 +24,7 @@ class ContentBookmarkContainer extends ABookmarkContainer<ContentSelectionManage
 	IDCategory category;
 	IDType idType;
 
-	ContentBookmarkContainer(GLBookmarkManager manager, IDCategory category, IDType idType) {
+	ContentBookmarkContainer(GLBookmarkView manager, IDCategory category, IDType idType) {
 		super(manager, category, manager.getDataDomain().getPrimaryContentMappingType());
 		bookmarkItems = new UniqueList<ABookmark>();
 		this.idType = idType;

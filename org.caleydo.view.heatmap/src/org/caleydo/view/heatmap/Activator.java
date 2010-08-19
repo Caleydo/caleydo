@@ -69,7 +69,7 @@ public class Activator extends AbstractUIPlugin {
 
 		// Force bundle view plugin bookmarking to be loaded because it is not
 		// created via RCP
-		Platform.getBundle("org.caleydo.view.bookmarking").start();
+		Platform.getBundle("org.caleydo.view.bookmark").start();
 	}
 
 	/*

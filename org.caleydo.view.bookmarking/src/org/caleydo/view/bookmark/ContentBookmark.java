@@ -1,4 +1,4 @@
-package org.caleydo.view.bookmarking;
+package org.caleydo.view.bookmark;
 
 import javax.media.opengl.GL;
 
@@ -20,7 +20,7 @@ class ContentBookmark extends ABookmark {
 	 * @param textRenderer
 	 * @param id
 	 */
-	public ContentBookmark(GLBookmarkManager manager, IDType idType, Integer id,
+	public ContentBookmark(GLBookmarkView manager, IDType idType, Integer id,
 			TextRenderer textRenderer) {
 		super(manager, idType, textRenderer);
 		this.id = id;

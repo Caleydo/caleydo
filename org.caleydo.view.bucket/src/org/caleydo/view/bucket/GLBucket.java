@@ -93,7 +93,7 @@ import org.caleydo.rcp.view.listener.EnableTexturesListener;
 import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
 import org.caleydo.rcp.view.listener.ToggleNavigationModeListener;
 import org.caleydo.rcp.view.listener.ToggleZoomListener;
-import org.caleydo.view.bookmarking.GLBookmarkManager;
+import org.caleydo.view.bookmark.GLBookmarkView;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
 import org.eclipse.core.runtime.IStatus;
@@ -136,7 +136,7 @@ public class GLBucket extends AGLView implements
 
 	private ArrayList<SlerpAction> arSlerpActions;
 
-	private GLBookmarkManager glBookmarkContainer;
+	private GLBookmarkView glBookmarkContainer;
 
 	private Time time;
 
@@ -343,12 +343,12 @@ public class GLBucket extends AGLView implements
 		// Create selection panel
 		CmdCreateView cmdCreateGLView = (CmdCreateView) generalManager
 				.getCommandManager().createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdCreateGLView.setViewID("org.caleydo.view.bookmarking");
+		cmdCreateGLView.setViewID("org.caleydo.view.bookmark");
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0.1f, 4.1f,
 				-20, 20, -1);
 		cmdCreateGLView.setDataDomainType(dataDomain.getDataDomainType());
 		cmdCreateGLView.doCommand();
-		glBookmarkContainer = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
+		glBookmarkContainer = (GLBookmarkView) cmdCreateGLView.getCreatedObject();
 		glBookmarkContainer.setRemoteRenderingGLView(this);
 		glBookmarkContainer.initData();
 

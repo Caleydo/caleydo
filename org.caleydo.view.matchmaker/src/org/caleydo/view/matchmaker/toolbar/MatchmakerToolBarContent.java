@@ -14,7 +14,7 @@ import org.caleydo.view.matchmaker.GLMatchmaker;
  * 
  * @author Alexander Lex
  */
-public class CompareToolBarContent extends AToolBarContent {
+public class MatchmakerToolBarContent extends AToolBarContent {
 
 	public static final String IMAGE_PATH = "resources/icons/view/compare/compare.png";
 	public static final String VIEW_TITLE = "Compare";

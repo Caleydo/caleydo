@@ -71,18 +71,18 @@ public abstract class AToolBarContent {
 	}
 
 	/**
-	 * Delivers the content for the view-inline toolbar for special behaviour sub classes should override this
+	 * Delivers the content for the view-inline toolbar for special behavior sub classes should override this
 	 * method
 	 * 
 	 * @return list of actions for a toolbar
 	 */
 	public List<ToolBarContainer> getInlineToolBar() {
-		if (!attached) {
+//		if (!attached) {
 			return getToolBarContent();
-		}
-		else {
-			return new ArrayList<ToolBarContainer>();
-		}
+//		}
+//		else {
+//			return new ArrayList<ToolBarContainer>();
+//		}
 	}
 
 	/**

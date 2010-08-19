@@ -32,7 +32,6 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 
 		contentLabelSingular = "entity";
 		contentLabelPlural = "entities";
-
 	}
 
 	@Override
@@ -70,6 +69,5 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 	protected void assignIDCategories() {
 		contentIDCategory = IDCategory.getIDCategory("UNSPECIFIED_CONTENT");
 		storageIDCategory = IDCategory.getIDCategory("UNSPECIFIED_STORAGE");
-
 	}
 }

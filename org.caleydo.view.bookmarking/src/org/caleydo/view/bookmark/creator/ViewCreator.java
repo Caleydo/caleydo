@@ -1,11 +1,12 @@
-package org.caleydo.view.bookmarking.creator;
+package org.caleydo.view.bookmark.creator;
 
 import org.caleydo.core.manager.view.creator.AGLViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.view.bookmarking.GLBookmarkManager;
+import org.caleydo.view.bookmark.GLBookmarkView;
+import org.caleydo.view.bookmark.SerializedBookmarkView;
 
 public class ViewCreator extends AGLViewCreator {
 
@@ -17,12 +18,12 @@ public class ViewCreator extends AGLViewCreator {
 	public AGLView createGLView(GLCaleydoCanvas glCanvas, String label,
 			IViewFrustum viewFrustum) {
 
-		return new GLBookmarkManager(glCanvas, label, viewFrustum);
+		return new GLBookmarkView(glCanvas, label, viewFrustum);
 	}
 
 	@Override
 	public ASerializedView createSerializedView() {
 
-		throw new IllegalStateException("Not implemented yet!");
+		return new SerializedBookmarkView();
 	}
 }

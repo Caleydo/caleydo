@@ -7,18 +7,18 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
- * Serialized form of the compare view.
+ * Serialized form of the matchmaker view.
  * 
  * @author Marc Streit
  */
 @XmlRootElement
 @XmlType
-public class SerializedCompareView extends ASerializedView {
+public class SerializedMatchmakerView extends ASerializedView {
 
-	public SerializedCompareView() {
+	public SerializedMatchmakerView() {
 	}
 
-	public SerializedCompareView(String dataDomainType) {
+	public SerializedMatchmakerView(String dataDomainType) {
 		super(dataDomainType);
 	}
 

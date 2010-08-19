@@ -353,7 +353,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 
-		SerializedCompareView serializedForm = new SerializedCompareView(
+		SerializedMatchmakerView serializedForm = new SerializedMatchmakerView(
 				dataDomain.getDataDomainType());
 
 		serializedForm.setViewID(this.getID());
