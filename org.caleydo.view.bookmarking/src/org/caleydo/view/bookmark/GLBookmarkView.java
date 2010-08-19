@@ -110,7 +110,7 @@ public class GLBookmarkView extends AGLView implements
 	public GLBookmarkView(GLCaleydoCanvas glCanvas, String label,
 			IViewFrustum viewFrustum) {
 
-		super(glCanvas, label, viewFrustum, false);
+		super(glCanvas, label, viewFrustum, true);
 		viewType = GLBookmarkView.VIEW_ID;
 
 		renderStyle = new BookmarkRenderStyle(viewFrustum);

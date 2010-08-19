@@ -151,13 +151,8 @@ public class PCRenderStyle extends GeneralRenderStyle {
 		if (pcs.getSet().isSetHomogeneous())
 			numberOfSpacings = 2.5f;
 
-		if (pcs.isShowBookmarks)
-			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * numberOfSpacings
-					* getScaling() - pcs.glBookmarks.getViewFrustum().getWidth();
-
-		else
-			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * numberOfSpacings
-					* getScaling();
+		return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * numberOfSpacings
+				* getScaling();
 	}
 
 	public float getXAxisStart() {

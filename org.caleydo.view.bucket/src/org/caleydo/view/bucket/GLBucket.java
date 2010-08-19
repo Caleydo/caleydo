@@ -53,7 +53,6 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
@@ -93,7 +92,6 @@ import org.caleydo.rcp.view.listener.EnableTexturesListener;
 import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
 import org.caleydo.rcp.view.listener.ToggleNavigationModeListener;
 import org.caleydo.rcp.view.listener.ToggleZoomListener;
-import org.caleydo.view.bookmark.GLBookmarkView;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
 import org.eclipse.core.runtime.IStatus;
@@ -135,8 +133,6 @@ public class GLBucket extends AGLView implements
 	private RemoteLevel externalSelectionLevel;
 
 	private ArrayList<SlerpAction> arSlerpActions;
-
-	private GLBookmarkView glBookmarkContainer;
 
 	private Time time;
 
@@ -332,28 +328,8 @@ public class GLBucket extends AGLView implements
 		infoAreaManager = new GLInfoAreaManager();
 		infoAreaManager.initInfoInPlace(viewFrustum);
 
-		createSelectionHeatMap();
-		glBookmarkContainer.initRemote(gl, this, glMouseListener, null);
-
 		if (generalManager.getTrackDataProvider().isTrackModeActive())
 			glOffScreenRenderer.init(gl);
-	}
-
-	private void createSelectionHeatMap() {
-		// Create selection panel
-		CmdCreateView cmdCreateGLView = (CmdCreateView) generalManager
-				.getCommandManager().createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdCreateGLView.setViewID("org.caleydo.view.bookmark");
-		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0.1f, 4.1f,
-				-20, 20, -1);
-		cmdCreateGLView.setDataDomainType(dataDomain.getDataDomainType());
-		cmdCreateGLView.doCommand();
-		glBookmarkContainer = (GLBookmarkView) cmdCreateGLView.getCreatedObject();
-		glBookmarkContainer.setRemoteRenderingGLView(this);
-		glBookmarkContainer.initData();
-
-		externalSelectionLevel.getElementByPositionIndex(0)
-				.setGLView(glBookmarkContainer);
 	}
 
 	@Override
@@ -361,9 +337,6 @@ public class GLBucket extends AGLView implements
 
 		for (AGLView view : containedGLViews)
 			view.processEvents();
-
-		if (glBookmarkContainer != null)
-			glBookmarkContainer.processEvents();
 
 		// if (bIsDisplayListDirtyLocal)
 		// {

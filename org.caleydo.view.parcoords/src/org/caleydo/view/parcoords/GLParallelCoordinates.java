@@ -30,8 +30,6 @@ import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.CmdCreateView;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
@@ -73,7 +71,6 @@ import org.caleydo.core.manager.view.StandardTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
@@ -82,13 +79,11 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.view.bookmark.GLBookmarkView;
 import org.caleydo.view.parcoords.PCRenderStyle.PolyLineState;
 import org.caleydo.view.parcoords.listener.AngularBrushingListener;
 import org.caleydo.view.parcoords.listener.ApplyCurrentSelectionToVirtualArrayListener;
@@ -194,9 +189,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	EIconTextures dropTexture = EIconTextures.DROP_NORMAL;
 	int iChangeDropOnAxisNumber = -1;
 
-	GLBookmarkView glBookmarks;
-	boolean isShowBookmarks = false;
-
 	private GLInfoAreaManager infoAreaManager;
 
 	/** Utility object for coordinate transformation and projection */
@@ -253,8 +245,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		// glMouseListener,
 		// remoteRenderingGLCanvas);
 
-		createSelectionHeatMap(gl);
-
 		infoAreaManager = new GLInfoAreaManager();
 		infoAreaManager.initInfoInPlace(viewFrustum);
 
@@ -266,7 +256,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	public void initRemote(final GL gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
-		isShowBookmarks = false;
 		this.glMouseListener = glMouseListener;
 		this.infoAreaManager = infoAreaManager;
 
@@ -298,9 +287,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	@Override
 	public void displayLocal(final GL gl) {
-
-		if (glBookmarks != null)
-			glBookmarks.processEvents();
 
 		if (set == null)
 			return;
@@ -357,36 +343,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		gl.glEnable(GL.GL_BLEND);
 
-		if (isShowBookmarks) {
-
-			gl.glTranslatef(viewFrustum.getRight()
-					- glBookmarks.getViewFrustum().getWidth(), 0, 0.002f);
-
-			// Render memo pad background
-			IViewFrustum sHMFrustum = glBookmarks.getViewFrustum();
-			sHMFrustum.setTop(viewFrustum.getTop());
-			sHMFrustum.setBottom(viewFrustum.getBottom());
-
-			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
-			gl.glLineWidth(1);
-			gl.glBegin(GL.GL_POLYGON);
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(glBookmarks.getViewFrustum().getWidth(), 0, 0);
-			gl.glVertex3f(glBookmarks.getViewFrustum().getWidth(), glBookmarks
-					.getViewFrustum().getHeight(), 0);
-			gl.glVertex3f(0, glBookmarks.getViewFrustum().getHeight(), 0);
-			gl.glEnd();
-
-			int iPickingID = pickingManager.getPickingID(iUniqueID,
-					EPickingType.PCS_VIEW_SELECTION, glBookmarks.getID());
-			gl.glPushName(iPickingID);
-			glBookmarks.displayRemote(gl);
-
-			gl.glPopName();
-			gl.glTranslatef(-viewFrustum.getRight()
-					+ glBookmarks.getViewFrustum().getWidth(), 0, -0.002f);
-		}
-
 		if (generalManager.getTrackDataProvider().isTrackModeActive())
 			handleTrackInput(gl);
 
@@ -417,23 +373,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
 
-	}
-
-	private void createSelectionHeatMap(GL gl) {
-		// Create selection panel
-		CmdCreateView cmdCreateGLView = (CmdCreateView) generalManager
-				.getCommandManager().createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdCreateGLView.setViewID("org.caleydo.view.bookmark");
-		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f,
-				viewFrustum.getBottom(), viewFrustum.getTop(), -20, 20, -1);
-		cmdCreateGLView.setDataDomainType(dataDomain.getDataDomainType());
-		cmdCreateGLView.doCommand();
-		glBookmarks = (GLBookmarkView) cmdCreateGLView.getCreatedObject();
-		glBookmarks.setRemoteRenderingGLView(this);
-		glBookmarks.initData();
-
-		// FIXME: remoteRenderingGLCanvas is null, conceptual error
-		glBookmarks.initRemote(gl, this, glMouseListener, null);
 	}
 
 	public void triggerAngularBrushing() {
@@ -481,11 +420,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		}
 		setDisplayListDirty();
 		connectedElementRepresentationManager.clear(contentIDType);
-
-		if (glBookmarks != null) {
-			glBookmarks.clearAllSelections();
-		}
-
 	}
 
 	/**
@@ -514,7 +448,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		}
 
 		if (!isRenderedRemote()) {
-			isShowBookmarks = true;
 			BookmarkEvent<Integer> bookmarkEvent = new BookmarkEvent<Integer>(
 					contentIDType);
 			for (VADeltaItem item : delta.getAllItems()) {
