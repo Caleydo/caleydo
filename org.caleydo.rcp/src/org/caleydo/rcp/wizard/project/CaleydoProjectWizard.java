@@ -71,12 +71,14 @@ public class CaleydoProjectWizard
 				SerializationStartupProcedure startupProcedure =
 					(SerializationStartupProcedure) StartupProcessor.get().createStartupProcedure(
 						ApplicationMode.SERIALIZATION);
+				startupProcedure.setProjectLocation(page.getProjectFileName());
 			}
 			else if (projectMode == ProjectMode.SAMPLE_PROJECT) {
 				SerializationStartupProcedure startupProcedure =
 					(SerializationStartupProcedure) StartupProcessor.get().createStartupProcedure(
 						ApplicationMode.SERIALIZATION);
 				startupProcedure.loadSampleProject(true);
+				
 			}
 			else if (projectMode == ProjectMode.GENE_EXPRESSION_SAMPLE_DATA) {
 
@@ -105,8 +107,7 @@ public class CaleydoProjectWizard
 				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
 					sNewPathwayDataSources);
 
-				GUIStartupProcedure startupProcedure =
-					(GUIStartupProcedure) StartupProcessor.get().createStartupProcedure(ApplicationMode.GUI);
+				StartupProcessor.get().createStartupProcedure(ApplicationMode.GUI);
 				StartupProcessor.get().getAppInitData().setLoadPathways(loadPathways);
 			}
 			else if (projectMode == ProjectMode.UNSPECIFIED_NEW_DATA) {
@@ -120,7 +121,9 @@ public class CaleydoProjectWizard
 				groupwareManager.setNetworkName(page.getNetworkName());
 				groupwareManager.setServerAddress(page.getNetworkAddress());
 				groupwareManager.startClient();
-				Application.initData = groupwareManager.getInitData();
+
+				// TODO create groupwarestartupprocedure
+				// groupwareManager.getInitData();
 			}
 			else {
 				throw new IllegalStateException("Not implemented!");

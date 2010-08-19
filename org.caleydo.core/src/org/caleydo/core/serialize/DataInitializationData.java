@@ -13,14 +13,15 @@ import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 
 /**
- * Simple bean that holds the initialization data for new started caleydo application. Used to store and
+ * Bean that holds the initialization data for new started caleydo application. Used to store and
  * restore project or to sync remote clients.
  * 
  * @author Werner Puff
+ * @author Alexander Lex
  */
 @XmlType
 @XmlRootElement
-public class ApplicationInitData {
+public class DataInitializationData {
 
 	/** defines the type of usage of the application */
 	private ASetBasedDataDomain dataDomain;

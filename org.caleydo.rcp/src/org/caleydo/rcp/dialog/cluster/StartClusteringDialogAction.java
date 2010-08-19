@@ -3,8 +3,8 @@ package org.caleydo.rcp.dialog.cluster;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
@@ -44,7 +44,7 @@ import org.eclipse.ui.actions.ActionFactory;
  * 
  * @author Bernhard Schlegl
  */
-public class StartClusteringAction
+public class StartClusteringDialogAction
 	extends Action
 	implements ActionFactory.IWorkbenchAction {
 
@@ -81,7 +81,7 @@ public class StartClusteringAction
 	/**
 	 * Constructor.
 	 */
-	public StartClusteringAction(final Composite parentComposite) {
+	public StartClusteringDialogAction(final Composite parentComposite, ASetBasedDataDomain dataDomain) {
 		super(TEXT);
 		setId(ID);
 		setToolTipText(TEXT);
@@ -90,9 +90,7 @@ public class StartClusteringAction
 
 		this.parentComposite = parentComposite;
 
-		sArTypeOptions[0] =
-			((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
-				"org.caleydo.datadomain.genetic")).getContentName(true, false);
+		sArTypeOptions[0] = dataDomain.getContentName(true, false);
 	}
 
 	@Override

@@ -51,7 +51,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
@@ -418,7 +418,7 @@ public class GLHeatMap extends AStorageBasedView {
 							.getWidth(), getParentGLCanvas().getHeight());
 					contextMenu.setMasterGLView(this);
 				}
-				ExperimentContextMenuItemContainer experimentContextMenuItemContainer = new ExperimentContextMenuItemContainer();
+				StorageContextMenuItemContainer experimentContextMenuItemContainer = new StorageContextMenuItemContainer();
 				// experimentContextMenuItemContainer.setDataDomain(dataDomain);
 				experimentContextMenuItemContainer.setID(storageIDType, iExternalID);
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);

@@ -26,7 +26,6 @@ import org.caleydo.core.manager.datadomain.AssociationManager;
 import org.caleydo.core.manager.datadomain.DataDomainGraph;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
-import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.ClusterSetEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
@@ -1235,7 +1234,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (interfaceType.equals("org.caleydo.analytical.clustering")) {
 			ArrayList<ISet> sets = new ArrayList<ISet>();
-			sets.add(((ISetBasedDataDomain) DataDomainManager.getInstance()
+			sets.add(((ASetBasedDataDomain) DataDomainManager.getInstance()
 					.getDataDomain(dataDomainType)).getSet());
 
 			ClusterSetEvent event = new ClusterSetEvent(sets);

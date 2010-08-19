@@ -35,10 +35,10 @@ public class ProjectLoader {
 	 *            name of the file to load the project from
 	 * @return initialization data for the application from which it can restore itself
 	 */
-	public ApplicationInitData load(String fileName) {
+	public DataInitializationData load(String fileName) {
 		ZipUtils zipUtils = new ZipUtils();
 		zipUtils.unzipToDirectory(fileName, TEMP_PROJECT_DIR_NAME);
-		ApplicationInitData initData = loadDirectory(TEMP_PROJECT_DIR_NAME);
+		DataInitializationData initData = loadDirectory(TEMP_PROJECT_DIR_NAME);
 		return initData;
 	}
 
@@ -47,7 +47,7 @@ public class ProjectLoader {
 	 * 
 	 * @return initialization data for the application from which it can restore itself
 	 */
-	public ApplicationInitData loadRecent() {
+	public DataInitializationData loadRecent() {
 		return loadDirectory(ProjectSaver.RECENT_PROJECT_DIR_NAME);
 	}
 
@@ -58,8 +58,8 @@ public class ProjectLoader {
 	 *            name of the directory to load the project from
 	 * @return initialization data for the application from which it can restore itself
 	 */
-	public ApplicationInitData loadDirectory(String dirName) {
-		ApplicationInitData initData = null;
+	public DataInitializationData loadDirectory(String dirName) {
+		DataInitializationData initData = null;
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 		JAXBContext projectContext = serializationManager.getProjectContext();
@@ -115,7 +115,7 @@ public class ProjectLoader {
 				// do nothing - no view list available
 			}
 
-			initData = new ApplicationInitData();
+			initData = new DataInitializationData();
 			initData.setDataDomain((ASetBasedDataDomain) dataDomain);
 			initData.setContentVAMap(contentVAMap);
 			initData.setStorageVAMap(storageVAMap);

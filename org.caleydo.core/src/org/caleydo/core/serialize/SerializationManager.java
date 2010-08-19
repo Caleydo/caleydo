@@ -28,7 +28,7 @@ public class SerializationManager {
 			classes = eventTypes.toArray(classes);
 			eventContext = JAXBContext.newInstance(classes);
 
-			projectContext = JAXBContext.newInstance(ApplicationInitData.class, ViewList.class);
+			projectContext = JAXBContext.newInstance(DataInitializationData.class, ViewList.class);
 		}
 		catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);

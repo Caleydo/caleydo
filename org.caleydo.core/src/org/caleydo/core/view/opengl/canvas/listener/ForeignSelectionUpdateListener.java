@@ -1,20 +1,20 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
 
 /**
- * Listener for selection update events. This listener gets the payload from a SelectionUpdateEvent and calls
- * a related {@link ISelectionUpdateHandler}.
+ * Listener for selection update events, that do not belong to the dataDomain the events are specified for.
+ * This is used only in dataDomains, where this can be translated to another dataDomainType.
  * 
- * @author Werner Puff
+ * @author Alexander Lex
  */
 public class ForeignSelectionUpdateListener
-	extends AEventListener<ISetBasedDataDomain> {
+	extends AEventListener<ASetBasedDataDomain> {
 
 	/**
 	 * Handles {@link SelectionUdpateEvent}s by extracting the event's payload and calling the related handler

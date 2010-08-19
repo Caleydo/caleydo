@@ -17,7 +17,7 @@ import org.caleydo.core.net.event.ClientListEvent;
 import org.caleydo.core.net.event.ClientListListener;
 import org.caleydo.core.net.event.ConnectToServerEvent;
 import org.caleydo.core.net.event.ConnectToServerListener;
-import org.caleydo.core.serialize.ApplicationInitData;
+import org.caleydo.core.serialize.DataInitializationData;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.view.swt.collab.RedrawCollabViewEvent;
 import org.eclipse.core.runtime.ILog;
@@ -258,7 +258,7 @@ public class NetworkManager
 	 * @param address
 	 *            {@link String}-representation of the internet-address of the caleydo-server-application
 	 */
-	public ApplicationInitData createConnection(String address) {
+	public DataInitializationData createConnection(String address) {
 		InetAddress inetAddress;
 		try {
 			inetAddress = InetAddress.getByName(address);
@@ -275,9 +275,9 @@ public class NetworkManager
 	 * @param address
 	 *            {@link InetAddress} of the caleydo-server-application
 	 */
-	public ApplicationInitData createConnection(InetAddress inetAddress) {
+	public DataInitializationData createConnection(InetAddress inetAddress) {
 		Connection connection = new Connection(this);
-		ApplicationInitData initData;
+		DataInitializationData initData;
 		try {
 			clientListListener = new ClientListListener();
 			clientListListener.setHandler(this);

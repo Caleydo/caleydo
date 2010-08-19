@@ -22,7 +22,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
-import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.system.FileOperations;
@@ -243,14 +242,14 @@ public class ProjectSaver {
 	 * @param type
 	 *            type of the virtual array within the given {@link IDataDomain}.
 	 */
-	private void saveContentVA(Marshaller marshaller, String dir, ISetBasedDataDomain dataDomain,
+	private void saveContentVA(Marshaller marshaller, String dir, ASetBasedDataDomain dataDomain,
 		ContentVAType type) throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
 		ContentVirtualArray va = (ContentVirtualArray) dataDomain.getContentVA(type);
 		marshaller.marshal(va, new File(fileName));
 	}
 
-	private void saveStorageVA(Marshaller marshaller, String dir, ISetBasedDataDomain dataDomain,
+	private void saveStorageVA(Marshaller marshaller, String dir, ASetBasedDataDomain dataDomain,
 		StorageVAType type) throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
 		StorageVirtualArray va = (StorageVirtualArray) dataDomain.getStorageVA(type);

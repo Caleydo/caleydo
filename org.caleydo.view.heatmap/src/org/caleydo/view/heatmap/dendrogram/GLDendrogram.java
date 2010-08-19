@@ -53,7 +53,7 @@ import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -1611,7 +1611,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 					contextMenu.setMasterGLView(this);
 				}
 
-				ExperimentContextMenuItemContainer experimentContextMenuItemContainer = new ExperimentContextMenuItemContainer();
+				StorageContextMenuItemContainer experimentContextMenuItemContainer = new StorageContextMenuItemContainer();
 				experimentContextMenuItemContainer.setID(tree.getLeaveIDType(),
 						leafNode.getLeafID());
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);

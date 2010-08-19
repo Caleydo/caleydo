@@ -1,5 +1,7 @@
 package org.caleydo.view.selectionbrowser;
 
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -38,6 +40,9 @@ public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 		infoComposite.setLayout(layout);
 
 		selectionBrowser = new SelectionBrowser();
+		SerializedSelectionBrowserView serializedView = new SerializedSelectionBrowserView();
+		selectionBrowser.setDataDomain((ASetBasedDataDomain) DataDomainManager
+				.getInstance().getDataDomain(determineDataDomain(serializedView)));
 		selectionBrowser.registerEventListeners();
 		selectionBrowser.createControl(infoComposite);
 	}

@@ -7,8 +7,8 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -55,7 +55,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 
 	protected Composite histoComposite;
 
-	protected ISetBasedDataDomain dataDomain;
+	protected ASetBasedDataDomain dataDomain;
 
 	PreferenceStore store = GeneralManager.get().getPreferenceStore();
 
@@ -92,7 +92,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		dataDomainType = determineDataDomain(initSerializedView);
-		dataDomain = (ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+		dataDomain = (ASetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
 				dataDomainType);
 
 		// FIXME: How to determine data domain for histogram dynamically?
@@ -199,7 +199,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 					.getFloat(PreferenceConstants.GENE_EXPRESSION_PREFIX
 							+ PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
 
-			double correspondingValue = ((ISetBasedDataDomain) dataDomain).getSet()
+			double correspondingValue = ((ASetBasedDataDomain) dataDomain).getSet()
 					.getRawForNormalized(normalizedValue);
 
 			labels.get(iCount - 1).setText(Formatter.formatNumber(correspondingValue));

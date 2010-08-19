@@ -106,4 +106,13 @@ public class DataDomainManager {
 		return associationManager;
 	}
 
+	public <T extends IDataDomain> T guessDataDomain(Class<?> dataDomainClass) {
+
+		for (IDataDomain dataDomain : registeredDataDomains.values()) {
+			if (dataDomainClass.equals(dataDomain.getClass()))
+				return (T) dataDomain;
+		}
+		return null;
+	}
+
 }

@@ -1,9 +1,13 @@
 package org.caleydo.rcp.startup;
 
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.DataInitializationData;
 import org.caleydo.core.serialize.ProjectLoader;
+import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.Application;
+import org.caleydo.rcp.wizard.project.ChooseProjectTypePage;
+import org.caleydo.rcp.wizard.project.ProjectMode;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -12,42 +16,46 @@ public class SerializationStartupProcedure
 
 	public static final String SAMPLE_PROJECT_LOCATION = "data/sample_project/sample_project.cal";
 
+	private String projectLocation = null;
+
 	private boolean loadSampleProject = false;
+	private boolean loadRecentProject = false;
 
 	@Override
 	public void init(ApplicationInitData appInitData) {
 
-		super.init(appInitData);
+		// super.init(appInitData);
 
+		this.appInitData = appInitData;
+		DataInitializationData data;
 		GeneralManager.get().getLogger()
 			.log(new Status(IStatus.INFO, Activator.PLUGIN_ID, "Load sample project"));
 
 		ProjectLoader loader = new ProjectLoader();
 
 		if (loadSampleProject) {
-			Application.initData = loader.load(SAMPLE_PROJECT_LOCATION);
+			data = loader.load(SAMPLE_PROJECT_LOCATION);
 
 			// Application.initializedStartViews = Application.initData.getViewIDs();
 			// Application.ProjectMode = ProjectMode.SAMPLE_PROJECT;
 			Application.bDeleteRestoredWorkbenchState = true;
 		}
 		else {
-			//
-			// ProjectLoader loader = new ProjectLoader();
-			// if (page.getProjectLoadType() == ChooseProjectTypePage.EProjectLoadType.RECENT) {
-			// Application.initData = loader.loadRecent();
-			// }
-			// else if (page.getProjectLoadType() == ChooseProjectTypePage.EProjectLoadType.SPECIFIED) {
-			// Application.initData = loader.load(page.getProjectFileName());
-			// }
-			// else {
-			// throw new IllegalArgumentException("encoutnered unknown project-load-type");
-			// }
-			// //dataDomain = Application.initData.getDataDomain();
-			// // Application.startViewWithDataDomain.clear();
-			// Application.initializedStartViews = Application.initData.getViewIDs();
-			// Application.ProjectMode = ProjectMode.LOAD_PROJECT;
-			// Application.bDeleteRestoredWorkbenchState = true;
+			if (loadRecentProject) {
+				data = loader.loadRecent();
+			}
+			else if (projectLocation != null) {
+				data = loader.load(projectLocation);
+			}
+			else {
+				throw new IllegalArgumentException("encoutnered unknown project-load-type");
+			}
+			// dataDomain = Application.initData.getDataDomain();
+			// Application.startViewWithDataDomain.clear();
+//			Application.initializedStartViews = Application.initData.getViewIDs();
+//			Application.ProjectMode = ProjectMode.LOAD_PROJECT;
+//			SerializationManager.
+//			Application.bDeleteRestoredWorkbenchState = true;
 		}
 
 		// CODE FROM APPLICATION.JAVA
@@ -89,4 +97,13 @@ public class SerializationStartupProcedure
 
 		// no default views exist for serialization
 	}
+
+	public void setProjectLocation(String projectLocation) {
+		this.projectLocation = projectLocation;
+	}
+
+	public void setLoadRecentProject(boolean loadRecentProject) {
+		this.loadRecentProject = loadRecentProject;
+	}
+
 }

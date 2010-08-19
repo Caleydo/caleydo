@@ -1,7 +1,7 @@
 package org.caleydo.core.net;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ApplicationInitData;
+import org.caleydo.core.serialize.DataInitializationData;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -45,7 +45,7 @@ public class GroupwareUtils {
 	 *            TODO should better be obtained from deskotheque
 	 * @return intiialization data retrieved from the groupware server to complete application startup
 	 */
-	public static ApplicationInitData startPlexClient(String serverAddress) {
+	public static DataInitializationData startPlexClient(String serverAddress) {
 		IGroupwareManager groupwareManager = GroupwareUtils.createDeskothequeManager();
 		GeneralManager.get().setGroupwareManager(groupwareManager);
 		groupwareManager.setServerAddress(serverAddress);

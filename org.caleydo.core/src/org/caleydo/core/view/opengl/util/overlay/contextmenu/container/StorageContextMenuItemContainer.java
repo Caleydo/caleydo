@@ -1,8 +1,6 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
 
@@ -12,13 +10,13 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
  * 
  * @author Alexander Lex
  */
-public class ExperimentContextMenuItemContainer
+public class StorageContextMenuItemContainer
 	extends AItemContainer {
 
 	/**
 	 * Constructor.
 	 */
-	public ExperimentContextMenuItemContainer() {
+	public StorageContextMenuItemContainer() {
 		super();
 	}
 
@@ -30,9 +28,7 @@ public class ExperimentContextMenuItemContainer
 	}
 
 	private void createMenuContent(IDType idType, int experimentIndex) {
-		String sExperimentTitle =
-			((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
-				"org.caleydo.datadomain.genetic")).getSet().get(experimentIndex).getLabel();
+		String sExperimentTitle = dataDomain.getStorageLabel(idType, experimentIndex);
 
 		addHeading(sExperimentTitle);
 

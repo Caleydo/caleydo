@@ -18,7 +18,7 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
@@ -92,16 +92,16 @@ public class SetExporter {
 		ContentVirtualArray contentVA = null;
 		StorageVirtualArray storageVA = null;
 
-		ISetBasedDataDomain useCase = set.getDataDomain();
+		ASetBasedDataDomain dataDomain = set.getDataDomain();
 
 		if (eWhichViewToExport == EWhichViewToExport.BUCKET) {
 
-			contentVA = useCase.getContentVA(ContentVAType.CONTENT_CONTEXT);
-			storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
+			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT_CONTEXT);
+			storageVA = dataDomain.getStorageVA(StorageVAType.STORAGE);
 		}
 		else if (eWhichViewToExport == EWhichViewToExport.WHOLE_DATA) {
-			contentVA = useCase.getContentVA(ContentVAType.CONTENT);
-			storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
+			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT);
+			storageVA = dataDomain.getStorageVA(StorageVAType.STORAGE);
 		}
 
 		if (contentVA == null || storageVA == null)
@@ -130,7 +130,7 @@ public class SetExporter {
 			String identifier;
 			IDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer iContentIndex : contentVA) {
-				if (useCase.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
+				if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 
 					// FIXME: Due to new mapping system, a mapping involving expression index can return a Set
 					// of

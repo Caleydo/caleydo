@@ -18,7 +18,6 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.radial.ChangeColorModeEvent;
 import org.caleydo.core.manager.event.view.radial.DetailOutsideEvent;
@@ -859,21 +858,23 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 
-		//FIXME: this code has been moved to setDataDomain - is this ok?
-//		Tree<ClusterNode> tree = dataDomain.getSet().getStorageData(storageVAType)
-//				.getStorageTree();
-//		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
-//		if (tree != null) {
-//			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
-//			alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
-//			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
-//
-//			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
-//			// new GeneClusterDataEventManager(this), alColorModes);
-//			initHierarchy(tree, dataDomain.getSet().getStorageData(storageVAType)
-//					.getStorageTreeRoot(), new ExperimentClusterDataEventManager(this),
-//					alColorModes);
-//		}
+		// FIXME: this code has been moved to setDataDomain - is this ok?
+		// Tree<ClusterNode> tree =
+		// dataDomain.getSet().getStorageData(storageVAType)
+		// .getStorageTree();
+		// // Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		// if (tree != null) {
+		// ArrayList<EPDDrawingStrategyType> alColorModes = new
+		// ArrayList<EPDDrawingStrategyType>();
+		// alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
+		// alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
+		//
+		// // initHierarchy(tree, EIDType.CLUSTER_NUMBER,
+		// // new GeneClusterDataEventManager(this), alColorModes);
+		// initHierarchy(tree, dataDomain.getSet().getStorageData(storageVAType)
+		// .getStorageTreeRoot(), new ExperimentClusterDataEventManager(this),
+		// alColorModes);
+		// }
 
 		SerializedRadialHierarchyView serializedView = (SerializedRadialHierarchyView) ser;
 		setupDisplay(serializedView.getDrawingStateType(),
@@ -1055,7 +1056,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
 			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 			// new GeneClusterDataEventManager(this), alColorModes);
-			initHierarchy(tree, ((ISetBasedDataDomain) dataDomain).getSet()
+			initHierarchy(tree, ((ASetBasedDataDomain) dataDomain).getSet()
 					.getStorageData(storageVAType).getStorageTreeRoot(),
 					new ExperimentClusterDataEventManager(this), alColorModes);
 			// }

@@ -3,6 +3,8 @@ package org.caleydo.core.data.collection.set;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.Histogram;
@@ -70,17 +72,26 @@ public class Set
 
 	protected boolean isSetHomogeneous = false;
 
+	
 	private StatisticsResult statisticsResult;
 
 	private ASetBasedDataDomain dataDomain;
+
+	public Set() {
+		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.SET));
+	}
 
 	/**
 	 * Constructor for the set. Creates and initializes members and registers the set whit the set manager.
 	 * Also creates a new default tree. This should not be called by implementing sub-classes.
 	 */
 	public Set(ASetBasedDataDomain dataDomain) {
-		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.SET));
+		this();
 		this.dataDomain = dataDomain;
+		initWithDataDomain();
+	}
+
+	private void initWithDataDomain() {
 		SetManager.getInstance().registerItem(this);
 		init();
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
@@ -89,7 +100,6 @@ public class Set
 		tree.setRootNode(root);
 		defaultStorageData.setStorageTree(tree);
 		hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
-
 	}
 
 	/**
@@ -116,6 +126,7 @@ public class Set
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
+		initWithDataDomain();
 	}
 
 	@Override
@@ -477,6 +488,7 @@ public class Set
 		return getDataRepFromRaw(result, dataRepresentation);
 	}
 
+	@XmlTransient
 	@Override
 	public StatisticsResult getStatisticsResult() {
 		return statisticsResult;

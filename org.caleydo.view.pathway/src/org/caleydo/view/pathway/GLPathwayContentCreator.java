@@ -13,8 +13,8 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
@@ -75,7 +75,7 @@ public class GLPathwayContentCreator {
 
 	private PathwayItemManager pathwayItemManager;
 
-	private ISetBasedDataDomain geneticDataDomain;
+	private ASetBasedDataDomain geneticDataDomain;
 
 	/**
 	 * Constructor.
@@ -98,7 +98,7 @@ public class GLPathwayContentCreator {
 		idMappingManager = generalManager.getIDMappingManager();
 		pathwayItemManager = PathwayItemManager.get();
 
-		geneticDataDomain = (ISetBasedDataDomain) DataDomainManager.getInstance()
+		geneticDataDomain = (ASetBasedDataDomain) DataDomainManager.getInstance()
 				.getDataDomain("org.caleydo.datadomain.genetic");
 	}
 

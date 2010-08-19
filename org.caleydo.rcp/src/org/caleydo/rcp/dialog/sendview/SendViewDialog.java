@@ -57,7 +57,7 @@ public class SendViewDialog
 
 		newShell.setText("Send Client to View");
 		// newShell.setImage(GeneralManager.get().getResourceLoader().getImage(newShell.getDisplay(),
-		// StartClusteringAction.ICON));
+		// StartClusteringDialogAction.ICON));
 	}
 
 	@Override

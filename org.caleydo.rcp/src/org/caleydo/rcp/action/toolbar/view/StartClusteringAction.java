@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.data.loader.ResourceLoader;
@@ -40,8 +40,9 @@ public class StartClusteringAction
 	@Override
 	public void run() {
 		super.run();
-
-		StartClusteringDialog dialog = new StartClusteringDialog(new Shell());
+		ASetBasedDataDomain dataDomain =
+			DataDomainManager.getInstance().guessDataDomain(ASetBasedDataDomain.class);
+		StartClusteringDialog dialog = new StartClusteringDialog(new Shell(), dataDomain);
 		dialog.open();
 		ClusterState clusterState = dialog.getClusterState();
 
@@ -49,12 +50,12 @@ public class StartClusteringAction
 		// if (clusterState != null && set != null)
 		if (sets == null || sets.size() == 0) {
 			sets = new ArrayList<ISet>();
-			sets.add(((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
-				"org.caleydo.datadomain.genetic")).getSet());
+
+			sets.add(dataDomain.getSet());
 		}
 		for (ISet tmpSet : sets) {
 			event = new StartClusteringEvent(clusterState, tmpSet.getID());
-			event.setDataDomainType("org.caleydo.datadomain.genetic");
+			event.setDataDomainType(dataDomain.getDataDomainType());
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 		}
 	}

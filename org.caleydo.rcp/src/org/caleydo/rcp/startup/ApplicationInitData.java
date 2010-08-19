@@ -9,6 +9,7 @@ import org.caleydo.core.util.collection.Pair;
  * Data needed for startup process.
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class ApplicationInitData {
 
@@ -22,6 +23,7 @@ public class ApplicationInitData {
 	private ArrayList<String> initializedStartViews = new ArrayList<String>();
 
 	private boolean loadPathways = false;
+	
 
 	public List<Pair<String, String>> getAppArgumentStartViewWithDataDomain() {
 		return appArgumentStartViewWithDataDomain;
@@ -42,4 +44,6 @@ public class ApplicationInitData {
 	public boolean isLoadPathways() {
 		return loadPathways;
 	}
+	
+
 }

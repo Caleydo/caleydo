@@ -21,7 +21,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.serialize.ApplicationInitData;
+import org.caleydo.core.serialize.DataInitializationData;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -129,9 +129,9 @@ public class Connection {
 	 * @throws ConnectException
 	 *             if a error during handshaking occurs
 	 */
-	public ApplicationInitData connect(InetAddress address, int port) throws ConnectException {
+	public DataInitializationData connect(InetAddress address, int port) throws ConnectException {
 		log.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "connect(): address=" + address));
-		ApplicationInitData initData;
+		DataInitializationData initData;
 		try {
 			socket = new Socket(address, port);
 			inputStream = socket.getInputStream();
@@ -161,7 +161,7 @@ public class Connection {
 			clientHandshake.setRequestType(ClientHandshake.REQUEST_CONNECTION_ESTABLISHED);
 			networkUtils.writeHandshake(clientHandshake, outputStream);
 
-			initData = (ApplicationInitData) networkUtils.readHandshake(inputStream);
+			initData = (DataInitializationData) networkUtils.readHandshake(inputStream);
 
 			clientHandshake.setRequestType(ClientHandshake.CLIENT_SYNCHRONIZED);
 			networkUtils.writeHandshake(clientHandshake, outputStream);
@@ -280,7 +280,7 @@ public class Connection {
 	 *            {@link OutputStream} of the socket for sending to client
 	 */
 	private void sendServerInitializationData(OutputStream outputStream) {
-		ApplicationInitData initData = new ApplicationInitData();
+		DataInitializationData initData = new DataInitializationData();
 
 		// FIXME this should work for more than one use case now
 		ASetBasedDataDomain useCase =

@@ -1,7 +1,6 @@
 package org.caleydo.core.manager.datadomain;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.EStorageType;
@@ -39,6 +38,10 @@ import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
@@ -47,7 +50,8 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 @XmlRootElement
 public abstract class ASetBasedDataDomain
 	extends ADataDomain
-	implements ISetBasedDataDomain {
+	implements IContentVAUpdateHandler, IStorageVAUpdateHandler, ISelectionUpdateHandler,
+	ISelectionCommandHandler {
 
 	protected SelectionUpdateListener selectionUpdateListener;
 	protected SelectionCommandListener selectionCommandListener;
@@ -57,7 +61,7 @@ public abstract class ASetBasedDataDomain
 	private ContentVAUpdateListener virtualArrayUpdateListener;;
 
 	/** The set which is currently loaded and used inside the views for this use case. */
-	protected ISet set;
+	protected Set set;
 
 	protected IDType humanReadableContentIDType;
 	protected IDType humanReadableStorageIDType;
@@ -115,8 +119,13 @@ public abstract class ASetBasedDataDomain
 	 */
 	protected abstract void assignIDCategories();
 
-	@Override
-	public void setSet(ISet set) {
+	/**
+	 * Sets the set which is currently loaded and used inside the views for this use case.
+	 * 
+	 * @param set
+	 *            The new set which replaced the currenlty loaded one.
+	 */
+	public void setSet(Set set) {
 		assert (set != null);
 
 		// set.setDataDomain(this);
@@ -129,9 +138,12 @@ public abstract class ASetBasedDataDomain
 		}
 	}
 
-	@XmlTransient
-	@Override
-	public ISet getSet() {
+	/**
+	 * Returns the set which is currently loaded and used inside the views for this use case.
+	 * 
+	 * @return a data set
+	 */
+	public Set getSet() {
 		return set;
 	}
 
@@ -151,7 +163,9 @@ public abstract class ASetBasedDataDomain
 		return storageIDCategory;
 	}
 
-	@Override
+	/**
+	 * Update the data set in the view of this use case.
+	 */
 	public void updateSetInViews() {
 
 		initFullVA();
@@ -181,31 +195,60 @@ public abstract class ASetBasedDataDomain
 		storageSelectionManager = new StorageSelectionManager(storageIDType);
 	}
 
-	@Override
+	/**
+	 * Returns a clone of the content selection manager. You have to set your virtual array manually. This is
+	 * the preferred way to initialize SelectionManagers.
+	 * 
+	 * @return a clone of the content selection manager
+	 */
 	public ContentSelectionManager getContentSelectionManager() {
 		return contentSelectionManager.clone();
 	}
 
-	@Override
+	/**
+	 * Returns a clone of the storage selection manager. You have to set your virtual array manually. This is
+	 * the preferred way to initialize SelectionManagers.
+	 * 
+	 * @return a clone of the storage selection manager
+	 */
 	public StorageSelectionManager getStorageSelectionManager() {
 		return storageSelectionManager.clone();
 	}
 
-	@Override
+	/**
+	 * Returns the virtual array for the type
+	 * 
+	 * @param vaType
+	 *            the type of VA requested
+	 * @return
+	 */
 	public ContentVirtualArray getContentVA(ContentVAType vaType) {
 		ContentVirtualArray va = set.getContentData(vaType).getContentVA();
 		ContentVirtualArray vaCopy = va.clone();
 		return vaCopy;
 	}
 
-	@Override
+	/**
+	 * Returns the virtual array for the type
+	 * 
+	 * @param vaType
+	 *            the type of VA requested
+	 * @return
+	 */
 	public StorageVirtualArray getStorageVA(StorageVAType vaType) {
 		StorageVirtualArray va = set.getStorageData(vaType).getStorageVA();
 		StorageVirtualArray vaCopy = va.clone();
 		return vaCopy;
 	}
 
-	@Override
+	/**
+	 * Initiates clustering based on the parameters passed. Sends out an event to all affected views upon
+	 * positive completion to replace their VA.
+	 * 
+	 * @param setID
+	 *            ID of the set to cluster
+	 * @param clusterState
+	 */
 	public void startClustering(int setID, ClusterState clusterState) {
 
 		ISet set = null;
@@ -234,7 +277,9 @@ public abstract class ASetBasedDataDomain
 		}
 	}
 
-	@Override
+	/**
+	 * Resets the context VA to it's initial state
+	 */
 	public void resetContextVA() {
 
 		set.setContentVA(ContentVAType.CONTENT_CONTEXT,
@@ -254,7 +299,7 @@ public abstract class ASetBasedDataDomain
 	/**
 	 * Replace content VA for the default set.
 	 */
-	@Override
+
 	public void replaceContentVA(String dataDomainType, ContentVAType vaType, ContentVirtualArray virtualArray) {
 
 		replaceContentVA(set.getID(), dataDomainType, vaType, virtualArray);
@@ -304,12 +349,22 @@ public abstract class ASetBasedDataDomain
 		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, dataDomainType, vaType));
 	}
 
-	@Override
+	/**
+	 * Replaces the storage virtual array with the virtual array specified, if the dataDomain matches. If the
+	 * dataDomain doesn't match, the method
+	 * {@link #handleForeignContentVAUpdate(int, String, ContentVAType, ContentVirtualArray)} is called.
+	 * 
+	 * @param idCategory
+	 *            the type of id
+	 * @param the
+	 *            type of the virtual array
+	 * @param virtualArray
+	 *            the new virtual array
+	 */
 	public void replaceStorageVA(String dataDomainType, StorageVAType vaType) {
 		throw new IllegalStateException("UseCases shouldn't react to this");
 	}
 
-	@Override
 	public void replaceStorageVA(String dataDomainType, StorageVAType vaType, StorageVirtualArray virtualArray) {
 
 		set.setStorageVA(vaType, virtualArray);
@@ -330,12 +385,10 @@ public abstract class ASetBasedDataDomain
 
 	}
 
-	@Override
 	public void setContentVirtualArray(ContentVAType vaType, ContentVirtualArray virtualArray) {
 		set.setContentVA(vaType, virtualArray);
 	}
 
-	@Override
 	public void setStorageVirtualArray(StorageVAType vaType, StorageVirtualArray virtualArray) {
 		set.setStorageVA(vaType, virtualArray);
 	}
@@ -345,7 +398,9 @@ public abstract class ASetBasedDataDomain
 			set.restoreOriginalContentVA();
 	}
 
-	@Override
+	/**
+	 * Restore the original data. All applied filters are undone.
+	 */
 	public void restoreOriginalContentVA() {
 		initFullVA();
 
@@ -442,12 +497,15 @@ public abstract class ASetBasedDataDomain
 
 	}
 
-	// @Override
-	// public String getVATypeForIDCategory(IDCategory idCategory) {
-	// return possibleIDCategories.get(idCategory);
-	// }
-
-	@Override
+	/**
+	 * Returns the label for the content. E.g. gene for genome use case, entity for generic use case
+	 * 
+	 * @param bUpperCase
+	 *            TRUE makes the label upper case
+	 * @param bPlural
+	 *            TRUE label = plural, FALSE label = singular
+	 * @return label valid for the specific use case
+	 */
 	public String getContentName(boolean bCapitalized, boolean bPlural) {
 
 		String sContentLabel = "";
@@ -490,10 +548,16 @@ public abstract class ASetBasedDataDomain
 	}
 
 	/**
-	 * Interface used by {@link ForeignSelectionUpdateListener} to signal foreign selection updates. Can be
-	 * implemented in concrete classes, has no functionality in base class.
+	 * This method is called by the {@link ForeignSelectionUpdateListener}, signaling that a selection form
+	 * another dataDomain is available. If possible, it is converted to be compatible with the local
+	 * dataDomain and then sent out via a {@link SelectionUpdateEvent}.
+	 * 
+	 * @param dataDomainType
+	 *            the type of the dataDomain for which this selectionUpdate is intended
+	 * @param delta
+	 * @param scrollToSelection
+	 * @param info
 	 */
-	@Override
 	public void handleForeignSelectionUpdate(String dataDomainType, ISelectionDelta delta,
 		boolean scrollToSelection, String info) {
 		// may be interesting to implement in sub-class
@@ -504,11 +568,22 @@ public abstract class ASetBasedDataDomain
 	 * Interface used by {@link ForeignSelectionCommandListener} to signal foreign selection commands. Can be
 	 * implemented in concrete classes, has no functionality in base class.
 	 */
-	@Override
 	public void handleForeignSelectionCommand(String dataDomainType, IDCategory idCategory,
 		SelectionCommand selectionCommand) {
 		// may be interesting to implement in sub-class
 	}
+
+	/**
+	 * This method is called if a content VA Update was requested, but the dataDomainType specified was not
+	 * this dataDomains type. Concrete handling can only be done in concrete dataDomains.
+	 * 
+	 * @param setID
+	 * @param dataDomainType
+	 * @param vaType
+	 * @param virtualArray
+	 */
+	public abstract void handleForeignContentVAUpdate(int setID, String dataDomainType, ContentVAType vaType,
+		ContentVirtualArray virtualArray);
 
 	/**
 	 * Returns the id type that should be used if an entity of this data domain should be printed human
@@ -520,17 +595,41 @@ public abstract class ASetBasedDataDomain
 		return humanReadableContentIDType;
 	}
 
-	@Override
+	/**
+	 * Get the human readable content label for a specific id. The id has to be of the contentIDType of the
+	 * dataDomain.
+	 * 
+	 * @param id
+	 *            the id to convert to a human readable label
+	 * @return the readable label
+	 */
 	public String getContentLabel(Object id) {
 		return getContentLabel(contentIDType, id);
 	}
 
-	@Override
+	public abstract String getContentLabel(IDType idType, Object id);
+
+	/**
+	 * Get the human readable storage label for a specific id. The id has to be of the storageIDType of the
+	 * dataDomain.
+	 * 
+	 * @param id
+	 *            the id to convert to a human readable label
+	 * @return the readable label
+	 */
 	public String getStorageLabel(Object id) {
 		return getStorageLabel(storageIDType, id);
 	}
 
-	@Override
+	/**
+	 * Get the human readable storage label for a specific id.
+	 * 
+	 * @param idType
+	 *            specify of which id type the id is
+	 * @param id
+	 *            the id to convert to a human readable label
+	 * @return the readable label
+	 */
 	public String getStorageLabel(IDType idType, Object id) {
 		return set.get((Integer) id).getLabel();
 	}

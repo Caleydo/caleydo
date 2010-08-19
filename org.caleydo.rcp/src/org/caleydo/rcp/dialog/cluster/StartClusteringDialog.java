@@ -1,6 +1,7 @@
 package org.caleydo.rcp.dialog.cluster;
 
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.swt.widgets.Composite;
@@ -15,22 +16,25 @@ import org.eclipse.swt.widgets.Shell;
 public class StartClusteringDialog
 	extends TrayDialog {
 
-	private StartClusteringAction startClusteringAction;
+	private StartClusteringDialogAction startClusteringAction;
+
+	private ASetBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
 	 */
-	public StartClusteringDialog(Shell parentShell) {
+	public StartClusteringDialog(Shell parentShell, ASetBasedDataDomain dataDomain) {
 		super(parentShell);
+		this.dataDomain = dataDomain;
 	}
 
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 
-		newShell.setText(StartClusteringAction.TEXT);
+		newShell.setText(StartClusteringDialogAction.TEXT);
 		newShell.setImage(GeneralManager.get().getResourceLoader()
-			.getImage(newShell.getDisplay(), StartClusteringAction.ICON));
+			.getImage(newShell.getDisplay(), StartClusteringDialogAction.ICON));
 
 		TrayDialog trayDialog = (TrayDialog) newShell.getData();
 		trayDialog.setHelpAvailable(true);
@@ -38,7 +42,7 @@ public class StartClusteringDialog
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		startClusteringAction = new StartClusteringAction(parent);
+		startClusteringAction = new StartClusteringDialogAction(parent, dataDomain);
 		startClusteringAction.run();
 		return parent;
 	}
@@ -60,4 +64,5 @@ public class StartClusteringDialog
 	public ClusterState getClusterState() {
 		return startClusteringAction.getClusterState();
 	}
+
 }

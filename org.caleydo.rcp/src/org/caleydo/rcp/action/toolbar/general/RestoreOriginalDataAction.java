@@ -1,8 +1,8 @@
 package org.caleydo.rcp.action.toolbar.general;
 
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
-import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -30,8 +30,8 @@ public class RestoreOriginalDataAction
 		super.run();
 
 		for (IDataDomain dataDomain : DataDomainManager.getInstance().getDataDomains()) {
-			if (dataDomain instanceof ISetBasedDataDomain)
-				((ISetBasedDataDomain) dataDomain).restoreOriginalContentVA();
+			if (dataDomain instanceof ASetBasedDataDomain)
+				((ASetBasedDataDomain) dataDomain).restoreOriginalContentVA();
 		}
 	}
 }

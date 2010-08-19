@@ -3,7 +3,6 @@ package org.caleydo.rcp;
 import java.io.File;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ApplicationInitData;
 import org.caleydo.rcp.startup.StartupProcessor;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.equinox.app.IApplication;
@@ -22,7 +21,7 @@ public class Application
 	public static boolean bDeleteRestoredWorkbenchState = false;
 
 	/** initialization data received from a Caleydo-server-application during startup */
-	public static ApplicationInitData initData = null;
+//	public static DataInitializationData initData = null;
 
 	// TODO: server address for plex-client mode, should be obtained from deskotheque instead from command
 	// line param

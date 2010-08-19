@@ -1,13 +1,12 @@
 package org.caleydo.datadomain.genetic;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.INominalStorage;
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentVAType;
@@ -25,7 +24,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
-import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.ReplaceContentVAInUseCaseListener;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
@@ -88,7 +86,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	}
 
 	@Override
-	public void setSet(ISet set) {
+	public void setSet(Set set) {
 		super.setSet(set);
 
 	}
@@ -132,7 +130,8 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 				// values, depending on the IDType that has been specified when
 				// loading expression data.
 				// Possibly a different handling of the Set is required.
-				Set<Integer> setDavidIDs = GeneralManager.get().getIDMappingManager()
+				java.util.Set<Integer> setDavidIDs = GeneralManager.get()
+						.getIDMappingManager()
 						.getIDAsSet(contentIDType, primaryContentMappingType, iCount);
 
 				if ((setDavidIDs != null && !setDavidIDs.isEmpty())) {
@@ -325,7 +324,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 			Integer clinicalContentIndex) {
 
 		// FIXME - this is a hack for one special dataset (asslaber)
-		ISet clinicalSet = ((ISetBasedDataDomain) DataDomainManager.getInstance()
+		Set clinicalSet = ((ASetBasedDataDomain) DataDomainManager.getInstance()
 				.getDataDomain(CLINICAL_DATADOMAIN_TYPE)).getSet();
 		int storageID = clinicalSet.getStorageData(StorageVAType.STORAGE).getStorageVA()
 				.get(1);
@@ -366,7 +365,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		String geneSymbol = null;
 		String refSeq = null;
 
-		Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(idType,
+		java.util.Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(idType,
 				IDType.getIDType("REFSEQ_MRNA"), id);
 
 		if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
@@ -378,7 +377,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		// values, depending on the IDType that has been specified when
 		// loading expression data.
 		// Possibly a different handling of the Set is required.
-		Set<String> setGeneSymbols = idMappingManager.getIDAsSet(contentIDType,
+		java.util.Set<String> setGeneSymbols = idMappingManager.getIDAsSet(contentIDType,
 				humanReadableContentIDType, id);
 
 		if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {

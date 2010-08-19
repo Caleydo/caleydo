@@ -14,8 +14,8 @@ import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
@@ -54,8 +54,11 @@ import org.eclipse.ui.PlatformUI;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class SelectionBrowser implements ISelectionUpdateHandler,
-		IContentVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
+public class SelectionBrowser implements IDataDomainBasedView<ASetBasedDataDomain>,
+		ISelectionUpdateHandler, IContentVAUpdateHandler, ISelectionCommandHandler,
+		IViewCommandHandler {
+
+	ASetBasedDataDomain dataDomain;
 
 	GeneralManager generalManager = null;
 	EventPublisher eventPublisher = null;
@@ -90,8 +93,6 @@ public class SelectionBrowser implements ISelectionUpdateHandler,
 
 	private void initContent() {
 		ContentVAType contentVAType = ContentVAType.CONTENT;
-		ISetBasedDataDomain dataDomain = ((ISetBasedDataDomain) DataDomainManager
-				.getInstance().getDataDomain("org.caleydo.datadomain.genetic"));
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 
 		ContentVirtualArray contentVA = dataDomain.getContentVA(contentVAType);
@@ -410,6 +411,16 @@ public class SelectionBrowser implements ISelectionUpdateHandler,
 	@Override
 	public void replaceContentVA(int setID, String dataDomain, ContentVAType vaType) {
 		// nothing to do here
+	}
+
+	@Override
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+	}
+
+	@Override
+	public ASetBasedDataDomain getDataDomain() {
+		return dataDomain;
 	}
 
 }

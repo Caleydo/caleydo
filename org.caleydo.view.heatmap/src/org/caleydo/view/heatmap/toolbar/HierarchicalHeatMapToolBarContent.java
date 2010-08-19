@@ -38,7 +38,7 @@ public class HierarchicalHeatMapToolBarContent extends AToolBarContent {
 		// int targetViewID = getTargetViewData().getViewID();
 
 		// IToolBarItem startClustering = new
-		// StartClusteringAction(targetViewID);
+		// StartClusteringDialogAction(targetViewID);
 		// actionList.add(startClustering);
 
 		// IToolBarItem mergeGroup = new MergeClasses(targetViewID);

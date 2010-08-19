@@ -13,7 +13,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
@@ -125,7 +124,7 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 	@Override
 	public void initData() {
 		super.initData();
-		histogram = ((ISetBasedDataDomain) dataDomain).getSet().getHistogram();
+		histogram = dataDomain.getSet().getHistogram();
 	}
 
 	@Override
@@ -390,8 +389,8 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 		textRenderer.setColor(0, 0, 0, 1);
 		gl.glDisable(GL.GL_DEPTH_TEST);
 
-		double correspondingValue = ((ISetBasedDataDomain) dataDomain).getSet()
-				.getRawForNormalized(normalizedValue);
+		double correspondingValue = dataDomain.getSet().getRawForNormalized(
+				normalizedValue);
 
 		String text = Formatter.formatNumber(correspondingValue);
 

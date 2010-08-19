@@ -1,8 +1,6 @@
 package org.caleydo.view.bookmarking;
 
 import org.caleydo.core.data.selection.StorageSelectionManager;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.datadomain.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.util.collection.UniqueList;
 
@@ -19,9 +17,7 @@ class ExperimentBookmarkContainer extends ABookmarkContainer<StorageSelectionMan
 				.getDataDomain().getPrimaryStorageMappingType());
 		bookmarkItems = new UniqueList<ABookmark>();
 
-		selectionManager = ((ISetBasedDataDomain) DataDomainManager.getInstance()
-				.getDataDomain("org.caleydo.datadomain.genetic"))
-				.getStorageSelectionManager();
+		selectionManager = manager.getDataDomain().getStorageSelectionManager();
 
 	}
 
