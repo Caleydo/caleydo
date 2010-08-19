@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
+import org.caleydo.core.data.graph.tree.Tree;
 
 // TODO make a AHierarchyElement, rename to ATreeMapNode
 public abstract class ATreeMapNode extends AHierarchyElement<ATreeMapNode> {
@@ -13,14 +14,22 @@ public abstract class ATreeMapNode extends AHierarchyElement<ATreeMapNode> {
 	private float minX, minY, maxX, maxY;
 
 	public ATreeMapNode() {
+		node=this;
 	};
+	
+	
 
 	public ATreeMapNode(AbstractTree root) {
 		// TODO Auto-generated constructor stub
+		node=this;
 		this.root = root;
 	}
+	
+	public ATreeMapNode(Tree<ATreeMapNode> tree){
+		node=this;
+		this.tree=tree;
+	}
 
-	@Override
 	public float getSize() {
 		List<ATreeMapNode> list = getChildren();
 		if (list == null || list.size() == 0)
@@ -31,17 +40,17 @@ public abstract class ATreeMapNode extends AHierarchyElement<ATreeMapNode> {
 		}
 		return size;
 	}
-
+	
 	public abstract int getPickingID();
 
 	public abstract Color getColorAttribute();
 
 	public abstract float getSizeAttribute();
 
-	@Override
-	public abstract ArrayList<ATreeMapNode> getChildren();
+//	public ArrayList<ATreeMapNode> getChildren(){
+//		return tree.getChildren(this);
+//	}
 
-	@Override
 	public abstract String getLabel();
 
 	public AbstractTree getRoot() {

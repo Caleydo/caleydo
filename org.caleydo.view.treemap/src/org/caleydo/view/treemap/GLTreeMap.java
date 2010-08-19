@@ -1,9 +1,12 @@
 package org.caleydo.view.treemap;
 
+import java.util.ArrayList;
+
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -27,6 +30,9 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.treemap.layout.ATreeMapNode;
+import org.caleydo.view.treemap.layout.AbstractTree;
+import org.caleydo.view.treemap.layout.ClusterTreeMapNode;
+import org.caleydo.view.treemap.layout.DefaultTree;
 import org.caleydo.view.treemap.layout.DefaultTreeNode;
 import org.caleydo.view.treemap.layout.GlPainter;
 import org.caleydo.view.treemap.layout.SimpleLayoutAlgorithm;
@@ -36,7 +42,6 @@ import org.caleydo.view.treemap.renderstyle.TreeMapRenderStyle;
  * Rendering the Treemap
  * 
  * @author Alexander Lex
- * @author Michael Lafer
  */
 
 public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBasedView,
@@ -51,7 +56,7 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	private SelectionManager treeSelectionManager;
 
 	GlPainter painter;
-
+	
 	// private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 	// private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
 
@@ -64,6 +69,9 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	private ASetBasedDataDomain dataDomain;
 
 	private Tree<ClusterNode> tree;
+	private Tree<ATreeMapNode> treeMapModel;
+
+	//private EIDType primaryIDType = EIDType.CLUSTER_NUMBER;
 
 	/**
 	 * Constructor.
@@ -88,7 +96,9 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 
-		// treeSelectionManager = new SelectionManager(primaryIDType);
+		//treeSelectionManager = new SelectionManager(primaryIDType);
+		
+		
 
 	}
 
@@ -100,6 +110,8 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		super.renderStyle = renderStyle;
 		detailLevel = EDetailLevel.HIGH;
 
+		
+		
 	}
 
 	@Override
@@ -124,12 +136,14 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		// iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
+		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
 		init(gl);
 
 		gl.glNewList(iGLDisplayListIndexLocal, GL.GL_COMPILE);
 		gl.glEndList();
 
 		// ScatterPlotRenderStyle.setTextureNr(NR_TEXTURESX,NR_TEXTURESY);
+		
 
 	}
 
@@ -140,7 +154,6 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
-					@Override
 					public void run() {
 						glParentView.getParentGLCanvas().getParentComposite()
 								.addKeyListener(glKeyListener);
@@ -178,10 +191,11 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	@Override
 	public void display(GL gl) {
 
+	
 		// GLHelperFunctions.drawAxis(gl);
 		// GLHelperFunctions.drawPointAt(gl, 1, 1, 1);
-		// gl.glPushName(pickingManager.getPickingID(getID(),
-		// EPickingType.TREEMAP_ELEMENT_SELECTED, 1));
+//		gl.glPushName(pickingManager.getPickingID(getID(),
+//				EPickingType.TREEMAP_ELEMENT_SELECTED, 1));
 
 		// gl.glBegin(GL.GL_QUADS);
 		// gl.glColor3f(0, 1, 0);
@@ -192,45 +206,46 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		// gl.glEnd();
 		// gl.glPopName();
 
-		// GlPainter painter = new GlPainter(gl, viewFrustum);
+		//GlPainter painter = new GlPainter(gl, viewFrustum);
 
 		// painter.paintRectangle(0, 0,(float) 1.0/3, 1, Color.RED);
 		// painter.paintRectangle((float) 1.0/3, 0,(float) 2.0/3, 1,
 		// Color.GREEN);
 		// painter.paintRectangle((float) 2.0/3, 0, 1, 1, Color.BLUE);
 
-		// Tree<ClusterNode> contentTree = dataDomain.getSet()
-		// .getContentData(ContentVAType.CONTENT).getContentTree();
-
+//		Tree<ClusterNode> contentTree = dataDomain.getSet()
+//				.getContentData(ContentVAType.CONTENT).getContentTree();
+		
+		
 		// Tree<ClusterNode> storageTree = dataDomain.getSet()
 		// .getStorageData(StorageVAType.STORAGE).getStorageTree();
 
-		// AbstractTree tree = DefaultTree.createSampleTree();
-		// SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
-		//
-		// layouter.layout(tree, painter);
-		// painter.paintTreeMap(tree);
-		//
-		// painter.paintRectangle((float) 0.0, (float) 0.0, (float) 1 / 3,
-		// (float) 1,
-		// Color.YELLOW);
+//		AbstractTree tree = DefaultTree.createSampleTree();
+//		SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
+//
+//		layouter.layout(tree, painter);
+//		painter.paintTreeMap(tree);
+//
+//		painter.paintRectangle((float) 0.0, (float) 0.0, (float) 1 / 3, (float) 1,
+//				Color.YELLOW);
 
 		// SelectionManager contentSelectionManager = dataDomain
 		// .getContentSelectionManager();
-
-		if (bIsDisplayListDirtyLocal) {
-			painter = new GlPainter(gl, viewFrustum, pickingManager, getID(),
-					treeSelectionManager);
-			ATreeMapNode root = DefaultTreeNode.createSampleTree();
-			// ClusterTreeMapNode root =
-			// ClusterTreeMapNode.createFromClusterNodeTree(contentTree);
+		
+		if(bIsDisplayListDirtyLocal){
+			painter= new GlPainter(gl, viewFrustum, pickingManager, getID(), treeSelectionManager);
+			ATreeMapNode root= DefaultTreeNode.createSampleTree();
+			//ClusterTreeMapNode root = ClusterTreeMapNode.createFromClusterNodeTree(contentTree);
 			SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
 			layouter.layout(root, painter);
 			painter.paintTreeMap(root);
-			bIsDisplayListDirtyLocal = false;
+			treeMapModel=root.getTree();
+			painter.paintHighlighting(root.getTree(), treeSelectionManager);
+			bIsDisplayListDirtyLocal=false;
 		}
-
+			
 		painter.paintTreeMapFromCache();
+		
 
 	}
 
@@ -256,21 +271,33 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		SelectionType selectionType;
 		switch (ePickingType) {
 		case TREEMAP_ELEMENT_SELECTED:
-
+			ATreeMapNode node;
 			// iCurrentMouseOverElement = iExternalID;
 			switch (pickingMode) {
 
 			case CLICKED:
+			{
 				selectionType = SelectionType.SELECTION;
-				// selectionType = currentSelection;
-				treeSelectionManager.addToType(selectionType, iExternalID);
+				ArrayList<SelectionType> selections = treeSelectionManager.getSelectionTypes(iExternalID);
+				if(selections!=null&&selections.contains(SelectionType.SELECTION)){
+					treeSelectionManager.removeFromType(SelectionType.SELECTION, iExternalID);
+				}
+				else
+					treeSelectionManager.addToType(SelectionType.SELECTION, iExternalID);
+			}
 				break;
 			case MOUSE_OVER:
 				selectionType = SelectionType.MOUSE_OVER;
 				break;
-			case RIGHT_CLICKED:
+			case RIGHT_CLICKED:{
 				selectionType = SelectionType.DESELECTED;
-				treeSelectionManager.removeFromType(SelectionType.SELECTION, iExternalID);
+				node = treeMapModel.getParent(treeMapModel.getNodeByNumber(iExternalID));
+				ArrayList<SelectionType> selections = treeSelectionManager.getSelectionTypes(node.getID());
+				if(selections!=null&&selections.contains(SelectionType.SELECTION)){
+					treeSelectionManager.removeFromType(SelectionType.SELECTION, node.getID());
+				}else
+					treeSelectionManager.addToType(SelectionType.SELECTION, node.getID());
+			}
 				break;
 			case DRAGGED:
 				selectionType = SelectionType.SELECTION;
@@ -279,9 +306,9 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 				return;
 
 			}
-			// treeSelectionManager.addToType(selectionType, iExternalID);
-
-			// treeSelectionManager.getElements(SelectionType.SELECTION);
+//			treeSelectionManager.addToType(selectionType, iExternalID);
+			
+			//treeSelectionManager.getElements(SelectionType.SELECTION);
 			// treeSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
 			// iElementID);
 			//
@@ -371,12 +398,20 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		return dataDomain;
 	}
 
+//	@Override
+//	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+//		this.dataDomain = dataDomain;
+//
+//	}
+
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		// treeSelectionManager.setDelta(selectionDelta);
 		setDisplayListDirty();
 	}
+
+
 
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
@@ -385,4 +420,5 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
 		treeSelectionManager = new SelectionManager(tree.getNodeIDType());
 	}
+
 }
