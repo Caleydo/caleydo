@@ -1,6 +1,5 @@
 package org.caleydo.view.bookmark;
 
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -32,8 +31,7 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
-
-import com.sun.opengl.util.j2d.TextRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * The list heat map that shows elements on the right of a view that have been
@@ -60,8 +58,6 @@ public class GLBookmarkView extends AGLView implements
 	private BookmarkListener bookmarkListener;
 	private SelectionUpdateListener selectionUpdateListener;
 	private SelectionCommandListener selectionCommandListener;
-
-	private TextRenderer textRenderer;
 
 	private PickingIDManager pickingIDManager;
 
@@ -117,8 +113,6 @@ public class GLBookmarkView extends AGLView implements
 
 		bookmarkContainers = new ArrayList<ABookmarkContainer<?>>();
 		hashCategoryToBookmarkContainer = new HashMap<IDCategory, ABookmarkContainer<?>>();
-
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 
 		pickingIDManager = new PickingIDManager();
 	}
@@ -315,7 +309,7 @@ public class GLBookmarkView extends AGLView implements
 		return contextMenu;
 	}
 
-	TextRenderer getTextRenderer() {
+	CaleydoTextRenderer getTextRenderer() {
 		return textRenderer;
 	}
 

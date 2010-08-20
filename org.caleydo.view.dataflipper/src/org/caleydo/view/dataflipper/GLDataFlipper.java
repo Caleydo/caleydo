@@ -139,8 +139,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	private GLInfoAreaManager infoAreaManager;
 
-	private TextRenderer textRenderer;
-
 	private TextureManager textureManager;
 
 	private ArrayList<SlerpAction> arSlerpActions;
@@ -197,7 +195,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
 		parentGLCanvas.addMouseWheelListener(zoomMouseWheelListener);
 
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 		textureManager = new TextureManager();
 		arSlerpActions = new ArrayList<SlerpAction>();
 

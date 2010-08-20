@@ -24,9 +24,8 @@ import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.BookmarkContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
-
-import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * <p>
@@ -72,7 +71,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 */
 	UniqueList<ABookmark> bookmarkItems;
 	/** Reference to the text renderer created by {@link GLBookmarkView} */
-	TextRenderer textRenderer;
+	CaleydoTextRenderer textRenderer;
 	/**
 	 * Reference to the internal picking id manger created by
 	 * {@link GLBookmarkView}

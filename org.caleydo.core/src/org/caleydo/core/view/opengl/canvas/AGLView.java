@@ -47,10 +47,10 @@ import org.caleydo.core.view.opengl.util.GLMagnifyingGlass;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
-import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -165,7 +165,7 @@ public abstract class AGLView
 
 	private boolean isVisible = true;
 
-	private TextRenderer textRenderer;
+	protected CaleydoTextRenderer textRenderer;
 
 	/**
 	 * Constructor.
@@ -179,7 +179,7 @@ public abstract class AGLView
 
 		parentGLCanvas = glCanvas;
 
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 48), false);
+		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), true, true);
 
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
 			glMouseListener = parentGLCanvas.getGLMouseListener();

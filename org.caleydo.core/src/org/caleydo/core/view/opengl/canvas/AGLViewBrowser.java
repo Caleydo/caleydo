@@ -4,7 +4,6 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +53,6 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -99,8 +97,6 @@ public abstract class AGLViewBrowser
 	private int iSlerpFactor = 0;
 
 	protected AGLConnectionLineRenderer glConnectionLineRenderer;
-
-	private TextRenderer textRenderer;
 
 	private GLDragAndDrop dragAndDrop;
 
@@ -183,8 +179,6 @@ public abstract class AGLViewBrowser
 		newViews = new ArrayList<ASerializedView>();
 
 		dragAndDrop = new GLDragAndDrop();
-
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 
 		iPoolLevelCommonID = generalManager.getIDManager().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT);
 	}

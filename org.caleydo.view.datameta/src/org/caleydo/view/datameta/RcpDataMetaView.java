@@ -1,39 +1,43 @@
-package org.caleydo.view.selectionbrowser;
+package org.caleydo.view.datameta;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
+import org.caleydo.view.histogram.RcpGLHistogramView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * View showing selections.
+ * TODO: DOCUMENT ME!
  * 
- * @author Marc Streit
+ * @author <INSERT_YOUR_NAME>
  */
-public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
+public class RcpDataMetaView extends CaleydoRCPViewPart {
 
-	public static final String VIEW_ID = "org.caleydo.view.selectionbrowser";
-	private Composite parentComposite;
-
-	private SelectionBrowserView selectionBrowser;
-
-	public RcpSelectionBrowserView() {
+	public final static String VIEW_ID = "org.caleydo.view.datameta";
+	
+	private DataMetaView dataMetaView;
+	
+	/**
+	 * Constructor.
+	 */
+	public RcpDataMetaView() {
 		super();
 		
 		try {
 			viewContext = JAXBContext
-					.newInstance(SerializedSelectionBrowserView.class);
+					.newInstance(SerializedDataMetaView.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
 	}
-	
+
 	@Override
 	public void createPartControl(Composite parent) {
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
@@ -52,13 +56,19 @@ public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 		layout.marginHeight = layout.marginWidth = 0;
 
 		infoComposite.setLayout(layout);
-
-		selectionBrowser = new SelectionBrowserView();
-		SerializedSelectionBrowserView serializedView = new SerializedSelectionBrowserView();
-		selectionBrowser.setDataDomain((ASetBasedDataDomain) DataDomainManager
+		
+		dataMetaView = new DataMetaView();
+		SerializedDataMetaView serializedView = new SerializedDataMetaView();
+		dataMetaView.setDataDomain((ASetBasedDataDomain) DataDomainManager
 				.getInstance().getDataDomain(determineDataDomain(serializedView)));
-		selectionBrowser.registerEventListeners();
-		selectionBrowser.createControl(infoComposite);
+		dataMetaView.createControl(infoComposite);
+		
+		RcpGLHistogramView histogramView = new RcpGLHistogramView();
+		histogramView.setDataDomain(dataMetaView.getDataDomain());
+		histogramView.createPartControl(infoComposite);
+		// Usually the canvas is registered to the GL animator in the PartListener.
+		// Because the GL histogram is no usual RCP view we have to do it on our own
+		GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(histogramView.getGLCanvas());
 	}
 
 	@Override
@@ -69,7 +79,6 @@ public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 	@Override
 	public void dispose() {
 		super.dispose();
-
-		selectionBrowser.dispose();
 	}
+
 }

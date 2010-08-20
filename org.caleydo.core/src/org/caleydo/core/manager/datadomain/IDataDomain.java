@@ -48,9 +48,9 @@ public interface IDataDomain {
 	public void setLoadDataParameters(LoadDataParameters loadDataParameters);
 
 	/** Sets the name of the boots-trap xml-file this useCase was or should be loaded */
-	public String getBootstrapFileName();
+	public String getFileName();
 
 	/** Gets the name of the boots-trap xml-file this useCase was or should be loaded */
-	public void setBootstrapFileName(String bootstrapFileName);
+	public void setFileName(String bootstrapFileName);
 
 }

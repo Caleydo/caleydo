@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Data Meta View
+Bundle-SymbolicName: org.caleydo.view.datameta;singleton:=true
+Bundle-Version: 1.3
+Bundle-Activator: org.caleydo.view.datameta.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.caleydo.core;bundle-version="1.3.0",
+ org.caleydo.lib.jogl;bundle-version="1.2.0",
+ org.caleydo.rcp;bundle-version="1.3.0",
+ org.caleydo.datadomain.genetic;bundle-version="1.0.0",
+ org.caleydo.view.histogram;bundle-version="1.3.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: com.sun.opengl.util.texture,
+ gleem.linalg,
+ javax.media.opengl,
+ org.caleydo.data.loader
+Export-Package: org.caleydo.view.datameta
+Bundle-Vendor: Graz University of Technology
+Bundle-ActivationPolicy: lazy

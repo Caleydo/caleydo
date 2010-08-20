@@ -91,8 +91,6 @@ public abstract class AStorageBasedView
 	 */
 	protected boolean bRenderOnlyContext;
 
-	protected CaleydoTextRenderer textRenderer;
-
 	/**
 	 * Define what level of filtering on the data should be applied
 	 */
@@ -133,10 +131,7 @@ public abstract class AStorageBasedView
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		connectedElementRepresentationManager =
-			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
-
-		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
-
+		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 	}
 
 	@Override

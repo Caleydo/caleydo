@@ -1926,8 +1926,6 @@ public class GLScatterPlot extends AStorageBasedView {
 	 */
 	private void renderCoordinateSystem(GL gl) {
 
-		textRenderer.dispose();
-		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 		textRenderer.setColor(0, 0, 0, 1);
 		// Markers On Axis
 

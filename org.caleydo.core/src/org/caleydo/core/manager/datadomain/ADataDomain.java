@@ -37,7 +37,7 @@ public abstract class ADataDomain
 	protected LoadDataParameters loadDataParameters;
 
 	/** bootstrap filename this application was started with */
-	protected String bootsTrapFileName;
+	protected String fileName;
 
 	/**
 	 * Every use case needs to state all ID Categories it can handle. The string must specify which primary
@@ -93,16 +93,18 @@ public abstract class ADataDomain
 	@Override
 	public void setLoadDataParameters(LoadDataParameters loadDataParameters) {
 		this.loadDataParameters = loadDataParameters;
+		
+		fileName = loadDataParameters.getFileName();
 	}
 
 	@Override
-	public String getBootstrapFileName() {
-		return bootsTrapFileName;
+	public String getFileName() {
+		return fileName;
 	}
 
 	@Override
-	public void setBootstrapFileName(String bootsTrapFileName) {
-		this.bootsTrapFileName = bootsTrapFileName;
+	public void setFileName(String bootsTrapFileName) {
+		this.fileName = bootsTrapFileName;
 	}
 
 	@Override

@@ -295,22 +295,4 @@
          </menu>
       </menuContribution>
    </extension>
-   <extension
-         point="org.eclipse.ui.preferencePages">
-            <page
-            class="org.caleydo.rcp.preferences.ColorMappingPreferencePage"
-            id="org.caleydo.rcp.preferences.ColorMappingPreferencePage"
-            name="Color Mapping">
- 			</page>
-            <page
-                  class="org.caleydo.rcp.preferences.GeneralPreferencePage"
-                  id="org.caleydo.rcp.GeneralPreferencePage"
-                  name="General">
-            </page>
-            <page
-                  class="org.caleydo.rcp.preferences.VisualLinksPreferencePage"
-                  id="org.caleydo.rcp.VisualLinksPreferencePage"
-                  name="Visual Links">
-            </page>
-   </extension>
 </plugin>

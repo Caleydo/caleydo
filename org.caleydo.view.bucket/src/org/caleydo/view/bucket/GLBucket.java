@@ -151,8 +151,6 @@ public class GLBucket extends AGLView implements
 
 	private boolean bEnableNavigationOverlay = false;
 
-	private TextRenderer textRenderer;
-
 	private GLDragAndDrop dragAndDrop;
 
 	private ARemoteViewLayoutRenderStyle layoutRenderStyle;
@@ -285,8 +283,6 @@ public class GLBucket extends AGLView implements
 		newViews = new ArrayList<ASerializedView>();
 
 		dragAndDrop = new GLDragAndDrop();
-
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 
 		iPoolLevelCommonID = generalManager.getIDManager().createID(
 				EManagedObjectType.REMOTE_LEVEL_ELEMENT);

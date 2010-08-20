@@ -97,8 +97,6 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 	@Override
 	public void init(GL gl) {
 
-		// FIXME: should be called from data domain
-		initData();
 	}
 
 	@Override
@@ -655,11 +653,11 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
+		initData();
 	}
 
 	@Override
 	public void setSet(ISet set) {
-		// TODO Auto-generated method stub
-
+		initData();
 	}
 }

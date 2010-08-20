@@ -48,13 +48,12 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Info area that is located in the side-bar. It shows the current view and the
- * current selection (in a tree).
+ * Selection browser that is located in the side-bar. 
  * 
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class SelectionBrowser implements IDataDomainBasedView<ASetBasedDataDomain>,
+public class SelectionBrowserView implements IDataDomainBasedView<ASetBasedDataDomain>,
 		ISelectionUpdateHandler, IContentVAUpdateHandler, ISelectionCommandHandler,
 		IViewCommandHandler {
 
@@ -84,7 +83,7 @@ public class SelectionBrowser implements IDataDomainBasedView<ASetBasedDataDomai
 	/**
 	 * Constructor.
 	 */
-	public SelectionBrowser() {
+	public SelectionBrowserView() {
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 		initContent();

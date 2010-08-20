@@ -83,7 +83,6 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 	public final static String VIEW_ID = "org.caleydo.view.matchmaker";
 
-	private TextRenderer textRenderer;
 	private CompareViewStateController compareViewStateController;
 
 	private CompareGroupsEventListener compareGroupsEventListener;
@@ -127,7 +126,6 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 		glKeyListener = new GLMatchmakerKeyListener(this);
 		isControlPressed = false;
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32), true, true);
 		compareMouseWheelListener = new CompareMouseWheelListener(this);
 
 		// Unregister standard mouse wheel listener

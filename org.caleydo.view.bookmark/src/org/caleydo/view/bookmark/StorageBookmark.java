@@ -4,8 +4,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-
-import com.sun.opengl.util.j2d.TextRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * A bookmark for a gene. The id used here is DAVID
@@ -21,7 +20,7 @@ class StorageBookmark extends ABookmark {
 	 * @param davidID
 	 */
 	public StorageBookmark(GLBookmarkView manager, IDType idType,
-			Integer experimentIndex, TextRenderer textRenderer) {
+			Integer experimentIndex, CaleydoTextRenderer textRenderer) {
 		super(manager, idType, textRenderer);
 		this.id = experimentIndex;
 		dimensions.setHeight(0.1f);

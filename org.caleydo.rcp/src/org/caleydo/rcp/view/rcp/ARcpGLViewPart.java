@@ -46,9 +46,6 @@ public abstract class ARcpGLViewPart
 	protected Frame frameGL;
 	protected GLCaleydoCanvas glCanvas;
 	protected MinimumSizeComposite minSizeComposite;
-	
-	/** {@link JAXBContext} for view (de-)serialization */
-	protected JAXBContext viewContext;
 
 	/**
 	 * Constructor.

@@ -3,6 +3,8 @@ package org.caleydo.rcp.view.rcp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.JAXBContext;
+
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
@@ -29,6 +31,9 @@ public abstract class CaleydoRCPViewPart
 	protected ASerializedView initSerializedView;
 
 	protected String dataDomainType = null;
+
+	/** {@link JAXBContext} for view (de-)serialization */
+	protected JAXBContext viewContext;
 
 	protected static ArrayList<IAction> alToolbar;
 

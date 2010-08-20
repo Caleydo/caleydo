@@ -59,8 +59,6 @@ public class GLGlyphSliderView
 
 	private ArrayList<Vec2f> alGridPosition = null;
 
-	private TextRenderer textRenderer = null;
-
 	private float fSliderWidth = 1.0f;
 	private float fSliderHeight = 1.0f;
 	private int iMaxCols = 100000;
@@ -112,7 +110,6 @@ public class GLGlyphSliderView
 
 		// build slider
 
-		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
 		textRenderer.setColor(0, 0, 0, 1);
 
 		Collection<GlyphAttributeType> types = gman.getGlyphAttributes();

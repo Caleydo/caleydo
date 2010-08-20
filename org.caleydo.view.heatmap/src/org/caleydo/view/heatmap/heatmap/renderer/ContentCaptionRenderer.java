@@ -189,10 +189,8 @@ public class ContentCaptionRenderer extends AContentRenderer {
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glTranslatef(xOrigin, yOrigin + spacing, zOrigin);
 
-		textRenderer.begin3DRendering();
-		textRenderer.draw3D(gl, sLabel, 0, 0, 0, fontScaling,
+		textRenderer.renderText(gl, sLabel, 0, 0, 0, fontScaling,
 				HeatMapRenderStyle.LABEL_TEXT_MIN_SIZE);
-		textRenderer.end3DRendering();
 		gl.glTranslatef(-xOrigin, -yOrigin - spacing, -zOrigin);
 		// textRenderer.begin3DRendering();
 		gl.glPopAttrib();

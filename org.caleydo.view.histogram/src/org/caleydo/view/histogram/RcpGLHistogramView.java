@@ -9,6 +9,8 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -43,7 +45,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHandler,
-		IListenerOwner, INewSetHandler {
+		IListenerOwner, INewSetHandler, IDataDomainBasedView<IDataDomain> {
 
 	private CLabel colorMappingPreviewLabel;
 
@@ -55,7 +57,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 
 	protected Composite histoComposite;
 
-	protected ASetBasedDataDomain dataDomain;
+	protected IDataDomain dataDomain;
 
 	PreferenceStore store = GeneralManager.get().getPreferenceStore();
 
@@ -64,10 +66,9 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 	 */
 	public RcpGLHistogramView() {
 		super();
-		
+
 		try {
-			viewContext = JAXBContext
-					.newInstance(SerializedHistogramView.class);
+			viewContext = JAXBContext.newInstance(SerializedHistogramView.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
@@ -91,15 +92,17 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 		parentComposite = new Composite(histoComposite, SWT.EMBEDDED);
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		dataDomainType = determineDataDomain(initSerializedView);
-		dataDomain = (ASetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
-				dataDomainType);
-
-		// FIXME: How to determine data domain for histogram dynamically?
-
-		SerializedHistogramView serialized = new SerializedHistogramView(
-				dataDomain.getDataDomainType());
-		redrawView(serialized);
+		if (initSerializedView != null) {
+			dataDomainType = determineDataDomain(initSerializedView);
+			dataDomain = (ASetBasedDataDomain) DataDomainManager.getInstance()
+					.getDataDomain(dataDomainType);
+			redrawView((SerializedHistogramView) initSerializedView);
+		}
+		else {
+			SerializedHistogramView serialized = new SerializedHistogramView();
+			serialized.setDataDomainType(determineDataDomain(serialized));
+			redrawView(serialized);
+		}
 	}
 
 	/**
@@ -112,7 +115,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 	public void redrawView(SerializedHistogramView serialized) {
 
 		createGLCanvas();
-		createGLView(initSerializedView, glCanvas.getID());
+		createGLView(serialized, glCanvas.getID());
 
 		// Composite colorMappingComposite = new Composite(baseComposite,
 		// SWT.NULL);
@@ -303,9 +306,8 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 
-		// FIXME: How to determine data domain for histogram dynamically?
-		SerializedHistogramView serializedView = new SerializedHistogramView(
-				"org.caleydo.datadomain.genetic");
+		SerializedHistogramView serializedView = new SerializedHistogramView();
+		serializedView.setDataDomainType(determineDataDomain(serializedView));
 		return serializedView;
 	}
 
@@ -314,4 +316,13 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 		return GLHistogram.VIEW_ID;
 	}
 
+	@Override
+	public void setDataDomain(IDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+	}
+
+	@Override
+	public IDataDomain getDataDomain() {
+		return dataDomain;
+	}
 }

@@ -109,10 +109,8 @@ public class CaleydoTextRenderer
 		scaling = calculateScaling(gl, scaling, minSize);
 
 		begin3DRendering();
-
 		draw3D(text, x, y, z, scaling);
 		flush();
-
 		end3DRendering();
 	}
 

@@ -125,7 +125,6 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 	private DeleteGroupsListener deleteGroupsListener = null;
 	private RenameGroupListener renameGroupListener = null;
 
-	private TextRenderer textRenderer;
 	private SelectionManager selectionManager;
 
 	private SelectionType selectionTypeClicked;
@@ -155,7 +154,6 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 				1.0f, 0.0f }, 1, true, false, 1.0f);
 
 		renderStyle = new GrouperRenderStyle(viewFrustum);
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32), true, true);
 
 		glKeyListener = new GLGrouperKeyListener(this);
 

@@ -3,8 +3,7 @@ package org.caleydo.view.bookmark;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.IDType;
-
-import com.sun.opengl.util.j2d.TextRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * Abstract base class for a single bookmark
@@ -18,7 +17,7 @@ public abstract class ABookmark {
 	protected IDType idType;
 	protected int id;
 
-	TextRenderer textRenderer;
+	CaleydoTextRenderer textRenderer;
 
 	GLBookmarkView manager;
 
@@ -27,7 +26,7 @@ public abstract class ABookmark {
 	 * 
 	 * @param textRenderer
 	 */
-	public ABookmark(GLBookmarkView manager, IDType idType, TextRenderer textRenderer) {
+	public ABookmark(GLBookmarkView manager, IDType idType, CaleydoTextRenderer textRenderer) {
 		this.textRenderer = textRenderer;
 		this.manager = manager;
 		this.idType = idType;

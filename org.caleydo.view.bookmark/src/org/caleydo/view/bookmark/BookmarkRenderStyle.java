@@ -9,6 +9,8 @@ class BookmarkRenderStyle extends GeneralRenderStyle {
 
 	// public static final float LIST_SPACING = 0.05f;
 
+	public static final int TEXT_MIN_SIZE = 50;
+	
 	public static final float SIDE_SPACING = 0.05f;
 	public static final float TOP_SPACING = 0.1f;
 	public static final float CONTAINER_HEADING_SIZE = 0.08f;
