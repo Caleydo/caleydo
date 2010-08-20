@@ -5,7 +5,6 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
-import org.caleydo.view.heatmap.hierarchical.SerializedHierarchicalHeatMapView;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLDataWindowsView extends ARcpGLViewPart {

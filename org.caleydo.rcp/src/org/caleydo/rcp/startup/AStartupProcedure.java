@@ -6,9 +6,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.rcp.view.RCPViewManager;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.IFolderLayout;
-import org.osgi.framework.BundleException;
 
 /**
  * Abstract startup procedure. Handling of view initialization and application init data.

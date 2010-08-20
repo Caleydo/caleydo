@@ -2,7 +2,6 @@ package org.caleydo.view.grouper;
 
 import gleem.linalg.Vec3f;
 
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -79,8 +78,6 @@ import org.caleydo.view.grouper.listener.DeleteGroupsListener;
 import org.caleydo.view.grouper.listener.PasteGroupsListener;
 import org.caleydo.view.grouper.listener.RenameGroupListener;
 import org.eclipse.core.runtime.Platform;
-
-import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * The group assignment interface

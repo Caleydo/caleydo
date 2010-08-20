@@ -19,7 +19,6 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLView;

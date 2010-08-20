@@ -5,7 +5,6 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -98,7 +97,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.Point;
 
-import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 

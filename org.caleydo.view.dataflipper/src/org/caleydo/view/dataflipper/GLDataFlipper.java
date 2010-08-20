@@ -4,7 +4,6 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -80,7 +79,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Shell;
 
-import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 

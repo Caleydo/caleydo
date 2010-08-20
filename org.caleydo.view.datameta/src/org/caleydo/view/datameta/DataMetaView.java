@@ -1,17 +1,14 @@
 package org.caleydo.view.datameta;
 
 import org.caleydo.core.data.collection.set.Set;
-import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageSelectionManager;
-import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;

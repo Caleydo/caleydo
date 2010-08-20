@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas;
 
-import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.management.InvalidAttributeValueException;
@@ -51,7 +50,6 @@ import org.caleydo.core.view.opengl.canvas.listener.ReplaceStorageVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.StorageVAUpdateListener;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 

@@ -6,7 +6,6 @@ import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.genetic.contextmenu.item.LoadPathwaysByGeneItem;
 import org.caleydo.datadomain.genetic.contextmenu.item.ShowPathwaysByGeneItem;

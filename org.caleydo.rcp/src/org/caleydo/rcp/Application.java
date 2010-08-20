@@ -4,13 +4,11 @@ import java.io.File;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.rcp.startup.StartupProcessor;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.internal.WorkbenchPlugin;
 
 /**
  * This class controls all aspects of the application's execution

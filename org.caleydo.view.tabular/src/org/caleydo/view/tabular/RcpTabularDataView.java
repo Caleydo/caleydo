@@ -1,7 +1,6 @@
 package org.caleydo.view.tabular;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;

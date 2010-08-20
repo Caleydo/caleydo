@@ -3,11 +3,8 @@ package org.caleydo.rcp.startup;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.DataInitializationData;
 import org.caleydo.core.serialize.ProjectLoader;
-import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.Application;
-import org.caleydo.rcp.wizard.project.ChooseProjectTypePage;
-import org.caleydo.rcp.wizard.project.ProjectMode;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 

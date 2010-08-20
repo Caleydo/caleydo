@@ -1,6 +1,5 @@
 package org.caleydo.view.matchmaker;
 
-import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +66,6 @@ import org.caleydo.view.matchmaker.state.CompareViewStateController;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
-
-import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * The matchmaker view for comparing clustered data sets.
