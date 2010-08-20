@@ -1,5 +1,8 @@
 package org.caleydo.view.scatterplot.creator;
 
+import java.util.ArrayList;
+
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.view.creator.AGLViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -11,8 +14,8 @@ import org.caleydo.view.scatterplot.toolbar.ScatterplotToolBarContent;
 
 public class ViewCreator extends AGLViewCreator {
 
-	public ViewCreator(String viewType) {
-		super(viewType);
+	public ViewCreator() {
+		super(GLScatterPlot.VIEW_ID);
 	}
 
 	@Override
@@ -31,5 +34,16 @@ public class ViewCreator extends AGLViewCreator {
 	@Override
 	public Object createToolBarContent() {
 		return new ScatterplotToolBarContent();
+	}
+	
+	@Override
+	protected void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
+		dataDomainTypes.add("org.caleydo.datadomain.clinical");
+
+		DataDomainManager.getInstance().getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLScatterPlot.VIEW_ID);		
 	}
 }

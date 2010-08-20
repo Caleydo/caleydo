@@ -35,5 +35,13 @@
             name="Scatterplot">
       </command>
    </extension>
-
+   <extension
+         id="org.caleydo.view.scatterplot"
+         name="ScatterplotViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="ScatterplotViewCreator"
+          class="org.caleydo.view.scatterplot.creator.ViewCreator" />
+   </extension>
 </plugin>

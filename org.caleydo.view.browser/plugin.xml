@@ -35,5 +35,13 @@
             name="Browser">
       </command>
    </extension>
-
+   <extension
+         id="org.caleydo.view.browser"
+         name="BrowserViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="BrowserViewCreator"
+          class="org.caleydo.view.browser.creator.ViewCreator" />
+   </extension>
 </plugin>

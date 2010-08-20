@@ -35,5 +35,13 @@
             name="Treemap">
       </command>
    </extension>
-
+   <extension
+         id="org.caleydo.view.treemap"
+         name="TreeMapViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="TreeMapViewCreator"
+          class="org.caleydo.view.treemap.creator.ViewCreator" />
+   </extension>
 </plugin>

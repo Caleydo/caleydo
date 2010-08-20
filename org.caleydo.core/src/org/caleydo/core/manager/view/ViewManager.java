@@ -16,7 +16,6 @@ import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
 import org.caleydo.core.manager.execution.DisplayLoopExecution;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.view.creator.AGLViewCreator;
 import org.caleydo.core.manager.view.creator.ASWTViewCreator;
@@ -27,12 +26,14 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
-import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
-import org.osgi.framework.BundleException;
 
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
@@ -73,7 +74,7 @@ public class ViewManager
 	 */
 	private DisplayLoopExecution displayLoopExecution;
 
-	private ArrayList<IViewCreator> glViewCreators;
+	private HashMap<String, IViewCreator> viewIDToViewCreators;
 
 	/**
 	 * Constructor.
@@ -91,7 +92,7 @@ public class ViewManager
 
 		registerEventListeners();
 
-		glViewCreators = new ArrayList<IViewCreator>();
+		viewIDToViewCreators = new HashMap<String, IViewCreator>();
 	}
 
 	public void init() {
@@ -128,78 +129,40 @@ public class ViewManager
 	public IView createView(String viewType, int parentContainerID, String label) {
 		IView view = null;
 
-		for (IViewCreator viewCreator : glViewCreators) {
+		IViewCreator viewCreator = getViewCreator(viewType);
 
-			if (viewCreator instanceof ASWTViewCreator && viewCreator.getViewType().equals(viewType)) {
+		if (viewCreator instanceof ASWTViewCreator && viewCreator.getViewType().equals(viewType)) {
 
-				view = ((ASWTViewCreator) viewCreator).createView(parentContainerID, label);
-				break;
-			}
+			view = ((ASWTViewCreator) viewCreator).createView(parentContainerID, label);
+			registerItem(view);
 		}
-
-		registerItem(view);
-
-		return view;
-	}
-
-	public IView createGLView(final EManagedObjectType useViewType, final int iParentContainerID,
-		final String sLabel) {
-		IView view = null;
-
-		switch (useViewType) {
-			case VIEW_GL_CANVAS:
-				view = new SwtJoglGLCanvasViewRep(iParentContainerID, sLabel);
-				break;
-
-			default:
-				throw new RuntimeException("Unhandled view type [" + useViewType.toString() + "]");
-		}
-
-		registerItem(view);
+		else
+			throw new IllegalStateException("Cannot create SWT view from type " + viewType);
 
 		return view;
 	}
 
 	public AGLView createGLView(String viewID, GLCaleydoCanvas glCanvas, final String label,
 		final IViewFrustum viewFrustum) {
+
 		GeneralManager
 			.get()
 			.getLogger()
 			.log(
-				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Creating GL canvas view from type: ["
-					+ viewID + "] and label: [" + label + "]"));
+				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Creating GL canvas view from type "
+					+ viewID));
 
 		AGLView glView = null;
 
-		// Force plugins of start views to load
-		try {
-			if (viewID.contains("hierarchical") || viewID.contains("vertical")
-				|| viewID.contains("horizontal"))
-				Platform.getBundle("org.caleydo.view.heatmap").start();
-			else
-				Platform.getBundle(viewID).start();
-		}
-		catch (BundleException e) {
-			// this is ok if the view is a subview contained in an already loaded plugin
-		}
-		catch (NullPointerException e) {
-		}
+		IViewCreator viewCreator = getViewCreator(viewID);
 
-		for (IViewCreator glViewCreator : glViewCreators) {
+		if (viewCreator instanceof AGLViewCreator && viewCreator.getViewType().equals(viewID)) {
 
-			if (glViewCreator instanceof AGLViewCreator && glViewCreator.getViewType().equals(viewID)) {
-
-				glView = ((AGLViewCreator) glViewCreator).createGLView(glCanvas, label, viewFrustum);
-				break;
-			}
+			glView = ((AGLViewCreator) viewCreator).createGLView(glCanvas, label, viewFrustum);
+			registerGLEventListenerByGLCanvas(glCanvas, glView);
 		}
-
-		if (glView == null) {
-			throw new RuntimeException(
-				"Unable to create GL view because the requested view plugin is not available: " + viewID);
-		}
-
-		registerGLEventListenerByGLCanvas(glCanvas, glView);
+		else
+			throw new IllegalStateException("Cannot create GL view from type " + viewID);
 
 		return glView;
 	}
@@ -435,18 +398,24 @@ public class ViewManager
 		return displayLoopExecution;
 	}
 
-	public void addViewCreator(IViewCreator glViewCreator) {
-		glViewCreators.add(glViewCreator);
-	}
-
 	public IViewCreator getViewCreator(String viewType) {
 
-		for (IViewCreator glViewCreator : glViewCreators) {
-			if (glViewCreator.getViewType().equals(viewType)) {
-				return glViewCreator;
-			}
-		}
+		if (viewIDToViewCreators.containsKey(viewType))
+			return viewIDToViewCreators.get(viewType);
+		
+		IExtensionRegistry reg = Platform.getExtensionRegistry();
 
-		throw new IllegalStateException("Cannot find view creator for " + viewType);
+		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.view.ViewCreator");
+		IExtension ext = ep.getExtension(viewType);
+		IConfigurationElement[] ce = ext.getConfigurationElements();
+
+		try {
+			IViewCreator viewCreator = (IViewCreator) ce[0].createExecutableExtension("class");
+			viewIDToViewCreators.put(viewType, viewCreator);
+			return viewCreator;
+		}
+		catch (Exception ex) {
+			throw new IllegalStateException("Could not instantiate view creator", ex);
+		}
 	}
 }

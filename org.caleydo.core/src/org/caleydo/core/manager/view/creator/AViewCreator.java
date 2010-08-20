@@ -6,9 +6,10 @@ public abstract class AViewCreator
 	implements IViewCreator {
 
 	private String viewType;
-
+	
 	public AViewCreator(String viewType) {
 		this.viewType = viewType;
+		registerDataDomains();
 	}
 
 	@Override
@@ -29,4 +30,9 @@ public abstract class AViewCreator
 		// No toolbar available for this view
 		return null;
 	}
+	
+	/**
+	 * Register which data domains the view understands.
+	 */
+	protected abstract void registerDataDomains();	
 }

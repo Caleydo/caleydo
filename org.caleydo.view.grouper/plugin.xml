@@ -35,5 +35,13 @@
             name="Grouper">
       </command>
    </extension>
-
+   <extension
+         id="org.caleydo.view.grouper"
+         name="GrouperViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="GrouperViewCreator"
+          class="org.caleydo.view.grouper.creator.ViewCreator" />
+   </extension>
 </plugin>

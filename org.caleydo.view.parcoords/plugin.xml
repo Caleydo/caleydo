@@ -35,5 +35,13 @@
             name="Parallel Coordinates">
       </command>
    </extension>
-
+   <extension
+         id="org.caleydo.view.parcoords"
+         name="ParCoordsViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="ParCoordsViewCreator"
+          class="org.caleydo.view.parcoords.creator.ViewCreator" />
+   </extension>
 </plugin>

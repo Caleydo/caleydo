@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.pde.ui.RuntimeWorkbench">
 <booleanAttribute key="append.args" value="true"/>
-<booleanAttribute key="askclear" value="true"/>
+<booleanAttribute key="askclear" value="false"/>
 <booleanAttribute key="automaticAdd" value="true"/>
 <booleanAttribute key="automaticValidate" value="true"/>
 <stringAttribute key="bootstrap" value=""/>
 <stringAttribute key="checked" value="[NONE]"/>
 <booleanAttribute key="clearConfig" value="false"/>
 <booleanAttribute key="clearws" value="true"/>
-<booleanAttribute key="clearwslog" value="false"/>
+<booleanAttribute key="clearwslog" value="true"/>
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Caleydo RCP"/>
 <booleanAttribute key="default" value="true"/>
 <stringAttribute key="deselected_workspace_plugins" value="org.caleydo.view.glyph"/>

@@ -1,5 +1,8 @@
 package org.caleydo.view.browser.creator;
 
+import java.util.ArrayList;
+
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.view.creator.ASWTViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.AView;
@@ -8,8 +11,8 @@ import org.caleydo.view.browser.SerializedHTMLBrowserView;
 
 public class ViewCreator extends ASWTViewCreator {
 
-	public ViewCreator(String viewType) {
-		super(viewType);
+	public ViewCreator() {
+		super(GenomeHTMLBrowser.VIEW_ID);
 	}
 
 	@Override
@@ -23,4 +26,14 @@ public class ViewCreator extends ASWTViewCreator {
 
 		return new SerializedHTMLBrowserView();
 	}
+	
+	@Override
+	protected void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+
+		DataDomainManager.getInstance().getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GenomeHTMLBrowser.VIEW_ID);
+	}
+
 }

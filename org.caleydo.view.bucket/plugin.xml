@@ -35,5 +35,13 @@
             name="Bucket">
       </command>
    </extension>
-
+   <extension
+         id="org.caleydo.view.bucket"
+         name="BucketViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="BucketViewCreator"
+          class="org.caleydo.view.bucket.creator.ViewCreator" />
+   </extension>
 </plugin>

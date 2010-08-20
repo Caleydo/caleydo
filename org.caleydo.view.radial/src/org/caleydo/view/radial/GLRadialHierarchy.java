@@ -154,16 +154,6 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void init(GL gl) {
-		Tree<ClusterNode> tree = dataDomain.getSet().getContentData(contentVAType)
-				.getContentTree();
-		if (tree != null) {
-			// initHierarchy(tree);
-		} else {
-			// initTestHierarchy();
-		}
-		partialDiscTree.setLeafIDType(tree.getLeaveIDType());
-		partialDiscTree.setNodeIDType(tree.getNodeIDType());
-
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
@@ -1170,6 +1160,17 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 					.getStorageTreeRoot(), new ExperimentClusterDataEventManager(this),
 					alColorModes);
 		}
+
+		// Tree<ClusterNode> tree =
+		// dataDomain.getSet().getContentData(contentVAType)
+		// .getContentTree();
+		// if (tree != null) {
+		// // initHierarchy(tree);
+		// } else {
+		// // initTestHierarchy();
+		// }
+		partialDiscTree.setLeafIDType(tree.getLeaveIDType());
+		partialDiscTree.setNodeIDType(tree.getNodeIDType());
 
 	}
 

@@ -35,5 +35,13 @@
             name="Search for Genes">
       </command>
    </extension>
-
+   <extension
+         id="org.caleydo.view.genesearch"
+         name="GeneSearchViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="GeneSearchViewCreator"
+          class="org.caleydo.view.genesearch.creator.ViewCreator" />
+   </extension>
 </plugin>

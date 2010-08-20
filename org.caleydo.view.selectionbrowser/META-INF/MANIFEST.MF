@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Selection Browser View
 Bundle-SymbolicName: org.caleydo.view.selectionbrowser;singleton:=true
 Bundle-Version: 1.3
-Bundle-Activator: org.caleydo.view.selectionbrowser.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.caleydo.core;bundle-version="1.3.0",

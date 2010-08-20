@@ -1,5 +1,8 @@
 package org.caleydo.view.heatmap.creator;
 
+import java.util.ArrayList;
+
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.view.creator.AGLViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -11,8 +14,8 @@ import org.caleydo.view.heatmap.toolbar.HierarchicalHeatMapToolBarContent;
 
 public class ViewCreatorHierarchicalHeatMap extends AGLViewCreator {
 
-	public ViewCreatorHierarchicalHeatMap(String viewType) {
-		super(viewType);
+	public ViewCreatorHierarchicalHeatMap() {
+		super(GLHierarchicalHeatMap.VIEW_ID);
 	}
 
 	@Override
@@ -31,5 +34,19 @@ public class ViewCreatorHierarchicalHeatMap extends AGLViewCreator {
 	@Override
 	public Object createToolBarContent() {
 		return new HierarchicalHeatMapToolBarContent();
+	}
+
+	@Override
+	protected void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
+
+		DataDomainManager
+				.getInstance()
+				.getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
+						GLHierarchicalHeatMap.VIEW_ID);
 	}
 }

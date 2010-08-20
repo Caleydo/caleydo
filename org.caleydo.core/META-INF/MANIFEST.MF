@@ -279,11 +279,6 @@ Export-Package: org.caleydo.core.bridge.gui;uses:="org.eclipse.swt.widgets",
    org.caleydo.core.view,
    org.eclipse.swt.widgets,
    org.caleydo.core.view.serialize",
- org.caleydo.core.view.swt.jogl;
-  uses:="org.caleydo.core.view.swt,
-   org.caleydo.core.view.opengl.canvas,
-   org.eclipse.swt.widgets,
-   org.caleydo.core.view.serialize",
  org.caleydo.core.view.swt.widget;uses:="org.caleydo.core.view.swt,org.caleydo.core.view.opengl.canvas,org.eclipse.swt.widgets"
 Require-Bundle: org.eclipse.swt;bundle-version="3.4.0",
  org.eclipse.jface;bundle-version="3.4.0",

@@ -1,5 +1,8 @@
 package org.caleydo.view.parcoords.creator;
 
+import java.util.ArrayList;
+
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.view.creator.AGLViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -11,8 +14,8 @@ import org.caleydo.view.parcoords.toolbar.ParCoordsToolBarContent;
 
 public class ViewCreator extends AGLViewCreator {
 
-	public ViewCreator(String viewType) {
-		super(viewType);
+	public ViewCreator() {
+		super(GLParallelCoordinates.VIEW_ID);
 	}
 
 	@Override
@@ -32,4 +35,14 @@ public class ViewCreator extends AGLViewCreator {
 	public Object createToolBarContent() {
 		return new ParCoordsToolBarContent();
 	}
+	
+	@Override
+	protected void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
+		dataDomainTypes.add("org.caleydo.datadomain.clinical");
+
+		DataDomainManager.getInstance().getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLParallelCoordinates.VIEW_ID);	}
 }

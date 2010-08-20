@@ -35,5 +35,13 @@
             name="Info">
       </command>
    </extension>
-
+   <extension
+         id="org.caleydo.view.info"
+         name="InfoViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="InfoViewCreator"
+          class="org.caleydo.view.info.creator.ViewCreator" />
+   </extension>
 </plugin>

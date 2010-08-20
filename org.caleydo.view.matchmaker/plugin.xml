@@ -12,5 +12,13 @@
             name="Matchmaker">
       </view>
    </extension>
-
+   <extension
+         id="org.caleydo.view.matchmaker"
+         name="MatchmakerViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="MatchmakerViewCreator"
+          class="org.caleydo.view.matchmaker.creator.ViewCreator" />
+   </extension>
 </plugin>

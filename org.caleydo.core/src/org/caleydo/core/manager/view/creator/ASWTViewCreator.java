@@ -4,7 +4,7 @@ import org.caleydo.core.view.AView;
 
 public abstract class ASWTViewCreator
 	extends AViewCreator {
-
+	
 	public ASWTViewCreator(String viewType) {
 		super(viewType);
 	}

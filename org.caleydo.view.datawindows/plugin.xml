@@ -35,5 +35,22 @@
             name="Data Windows">
       </command>
    </extension>
-
+   <extension
+         id="org.caleydo.view.datawindows"
+         name="DataWindowsViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="DataWindowsViewCreator"
+          class="org.caleydo.view.creator.ViewCreator" />
+   </extension>
+      <extension
+         id="org.caleydo.view.hyperbolic"
+         name="HyperbolicViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="HyperbolicViewCreator"
+          class="org.caleydo.view.datawindows.creator.ViewCreator" />
+   </extension>
 </plugin>

@@ -30,6 +30,10 @@ public class RcpDataMetaView extends CaleydoRCPViewPart {
 	public RcpDataMetaView() {
 		super();
 		
+		// Make sure the plugin is loaded and the view creator initializes the data domains for the views.
+		// This is essential when the view is created by the workbench 
+		GeneralManager.get().getViewGLCanvasManager().getViewCreator(VIEW_ID);
+		
 		try {
 			viewContext = JAXBContext
 					.newInstance(SerializedDataMetaView.class);

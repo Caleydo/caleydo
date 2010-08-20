@@ -35,5 +35,13 @@
             name="Template">
       </command>
    </extension>
-
+   <extension
+         id="org.caleydo.view.template"
+         name="TemplateViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="TemplateViewCreator"
+          class="org.caleydo.view.template.creator.ViewCreator" />
+   </extension>
 </plugin>

@@ -35,5 +35,13 @@
             name="Data Meta">
       </command>
    </extension>
-
+   <extension
+         id="org.caleydo.view.datameta"
+         name="DataMetaViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="DataMetaViewCreator"
+          class="org.caleydo.view.datameta.creator.ViewCreator" />
+   </extension>
 </plugin>

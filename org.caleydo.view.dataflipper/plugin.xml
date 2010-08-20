@@ -35,5 +35,13 @@
             name="Stack&apos;n&apos;Flip">
       </command>
    </extension>
-
+   <extension
+         id="org.caleydo.view.dataflipper"
+         name="DataFlipperViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="DataFlipperViewCreator"
+          class="org.caleydo.view.dataflipper.creator.ViewCreator" />
+   </extension>
 </plugin>

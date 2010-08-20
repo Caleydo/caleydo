@@ -11,8 +11,8 @@ import org.caleydo.view.dataflipper.toolbar.DataFlipperToolBarContent;
 
 public class ViewCreator extends AGLViewCreator {
 
-	public ViewCreator(String viewType) {
-		super(viewType);
+	public ViewCreator() {
+		super(GLDataFlipper.VIEW_ID);
 	}
 
 	@Override
@@ -31,5 +31,10 @@ public class ViewCreator extends AGLViewCreator {
 	@Override
 	public Object createToolBarContent() {
 		return new DataFlipperToolBarContent();
+	}
+	
+	@Override
+	protected void registerDataDomains() {
+		throw new IllegalStateException("Not yet implemented!");
 	}
 }

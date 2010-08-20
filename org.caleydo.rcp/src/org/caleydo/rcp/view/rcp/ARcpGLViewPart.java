@@ -78,6 +78,10 @@ public abstract class ARcpGLViewPart
 
 		String viewType = serializedView.getViewType();
 
+		// Make sure the plugin is loaded and the view creator initializes the data domains for the views.
+		// This is essential when the view is created by the workbench 
+		GeneralManager.get().getViewGLCanvasManager().getViewCreator(viewType);
+		
 		GeneralManager generalManager = GeneralManager.get();
 
 		CmdCreateView cmdView =
@@ -93,11 +97,11 @@ public abstract class ARcpGLViewPart
 			// 2f, 3.82f, 100, set,
 
 		}
-		else if (viewType.equals("org.caleydo.view.glyph")) {
-
-			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100, iParentCanvasID,
-				0, 0, -8, 0, 0, 0, 0);
-		}
+		// else if (viewType.equals("org.caleydo.view.glyph")) {
+		//
+		// cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100, iParentCanvasID,
+		// 0, 0, -8, 0, 0, 0, 0);
+		// }
 		else {
 			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, iParentCanvasID);
 		}

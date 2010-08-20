@@ -7,7 +7,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
@@ -27,7 +26,6 @@ public class RcpGLBucketView extends ARcpGLViewPart {
 		super();
 
 		try {
-			
 			Collection<Class<? extends ASerializedView>> viewTypes = new ArrayList<Class<? extends ASerializedView>>();
 			viewTypes.add(SerializedBucketView.class);
 			viewTypes.add(SerializedHeatMapView.class);

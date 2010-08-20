@@ -35,5 +35,13 @@
             name="Tabular Data">
       </command>
    </extension>
-
+   <extension
+         id="org.caleydo.view.tabular"
+         name="TabularViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="TabularViewCreator"
+          class="org.caleydo.view.tabular.creator.ViewCreator" />
+   </extension>
 </plugin>

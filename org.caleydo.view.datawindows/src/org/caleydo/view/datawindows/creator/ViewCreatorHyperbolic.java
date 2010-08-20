@@ -1,5 +1,8 @@
 package org.caleydo.view.datawindows.creator;
 
+import java.util.ArrayList;
+
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.view.creator.AGLViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -10,8 +13,8 @@ import org.caleydo.view.datawindows.SerializedHyperbolicView;
 
 public class ViewCreatorHyperbolic extends AGLViewCreator {
 
-	public ViewCreatorHyperbolic(String viewType) {
-		super(viewType);
+	public ViewCreatorHyperbolic() {
+		super(GLHyperbolic.VIEW_ID);
 	}
 
 	@Override
@@ -30,5 +33,19 @@ public class ViewCreatorHyperbolic extends AGLViewCreator {
 	@Override
 	public Object createToolBarContent() {
 		return null;
+	}
+
+	@Override
+	protected void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
+
+		DataDomainManager
+				.getInstance()
+				.getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
+						GLHyperbolic.VIEW_ID);
 	}
 }

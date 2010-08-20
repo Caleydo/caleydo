@@ -1,5 +1,8 @@
 package org.caleydo.view.radial.creator;
 
+import java.util.ArrayList;
+
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.view.creator.AGLViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -11,8 +14,8 @@ import org.caleydo.view.radial.toolbar.RadialHierarchyToolBarContent;
 
 public class ViewCreator extends AGLViewCreator {
 
-	public ViewCreator(String viewType) {
-		super(viewType);
+	public ViewCreator() {
+		super(GLRadialHierarchy.VIEW_ID);
 	}
 
 	@Override
@@ -32,4 +35,18 @@ public class ViewCreator extends AGLViewCreator {
 	public Object createToolBarContent() {
 		return new RadialHierarchyToolBarContent();
 	}
+	
+	@Override
+	protected void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
+
+		DataDomainManager.getInstance().getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLRadialHierarchy.VIEW_ID);
+		DataDomainManager
+				.getInstance()
+				.getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
+						GLRadialHierarchy.VIEW_ID);	}
 }

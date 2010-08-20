@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Data Flipper View
 Bundle-SymbolicName: org.caleydo.view.dataflipper;singleton:=true
 Bundle-Version: 1.3
-Bundle-Activator: org.caleydo.view.dataflipper.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.caleydo.core;bundle-version="1.3.0",
