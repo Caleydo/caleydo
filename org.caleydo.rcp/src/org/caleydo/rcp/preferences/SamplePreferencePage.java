@@ -1,5 +1,6 @@
 package org.caleydo.rcp.preferences;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Activator;
 import org.eclipse.jface.preference.BooleanFieldEditor;
@@ -25,7 +26,7 @@ public class SamplePreferencePage
 
 	public SamplePreferencePage() {
 		super(GRID);
-		setPreferenceStore(Activator.getDefault().getPreferenceStore());
+		setPreferenceStore(GeneralManager.get().getPreferenceStore());
 		setDescription("A demonstration of a preference page implementation");
 	}
 

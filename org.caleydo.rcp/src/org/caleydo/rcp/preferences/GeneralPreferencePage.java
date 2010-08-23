@@ -27,7 +27,6 @@ public class GeneralPreferencePage
 
 	public GeneralPreferencePage() {
 		super(GRID);
-		// setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setPreferenceStore(GeneralManager.get().getPreferenceStore());
 		setDescription("General Preferences.");
 	}

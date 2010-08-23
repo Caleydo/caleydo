@@ -324,7 +324,7 @@ public abstract class AStorageBasedView
 		// delta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, delta);
 
 		reactOnContentVAChanges(delta);
-		contentSelectionManager.setVADelta(delta);
+		//contentSelectionManager.setVADelta(delta);
 
 		// reactOnExternalSelection();
 		setDisplayListDirty();

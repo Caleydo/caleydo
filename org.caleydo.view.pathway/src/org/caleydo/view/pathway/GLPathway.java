@@ -834,6 +834,7 @@ public class GLPathway extends AGLView implements
 
 		ContentVAUpdateEvent virtualArrayUpdateEvent = new ContentVAUpdateEvent();
 		virtualArrayUpdateEvent.setSender(this);
+		virtualArrayUpdateEvent.setDataDomainType(mappingDataDomain.getDataDomainType());
 		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
 		virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
