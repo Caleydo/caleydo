@@ -38,7 +38,7 @@ public class GlPainter {
 		gl.glNewList(highlightList, GL.GL_COMPILE);
 		for(int id:selection.getElements(SelectionType.SELECTION)){
 			ATreeMapNode node= tree.getNodeByNumber(id);
-			paintRectangle(node.getMinX(), node.getMinY(), node.getMaxX(), node.getMaxY(), Color.YELLOW);
+			paintRectangle(node.getMinX(), node.getMinY(), node.getMaxX(), node.getMaxY(), Color.YELLOW.getComponents(null));
 		}
 		gl.glEndList();
 		
@@ -59,9 +59,10 @@ public class GlPainter {
 	private void paintHelp(ATreeMapNode root){
 		List<ATreeMapNode> children = root.getChildren();
 		if(children==null||children.size()==0){
-			gl.glPushName(pickingManager.getPickingID(viewID, EPickingType.TREEMAP_ELEMENT_SELECTED, root.getPickingID()));
+			gl.glPushName(pickingManager.getPickingID(viewID, EPickingType.TREEMAP_ELEMENT_SELECTED, root.getID()));
+			//System.out.println("picking ID: "+root.getID());
 			fillRectangle(root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(), root.getColorAttribute());
-			
+			gl.glPopName();
 //			ArrayList<SelectionType> selections = selectionManager.getSelectionTypes(root.getPickingID());
 //			if(selections!=null&&selections.contains(SelectionType.SELECTION))
 //				paintRectangle(root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(), Color.YELLOW);
@@ -73,12 +74,11 @@ public class GlPainter {
 		}
 	}
 
-	public void paintRectangle(float x, float y, float xmax, float ymax, Color c) {
+	public void paintRectangle(float x, float y, float xmax, float ymax, float[] color) {
 		gl.glLineWidth(6);
 		
 		gl.glBegin(GL.GL_LINE_LOOP);
 
-		float color[] = c.getRGBColorComponents(null);
 		gl.glColor4f(color[0], color[1], color[2],1);
 
 		
@@ -97,10 +97,10 @@ public class GlPainter {
 	}
 	
 	
-	public void fillRectangle(float x, float y, float xmax, float ymax, Color c) {
+	public void fillRectangle(float x, float y, float xmax, float ymax, float[] color) {
 		gl.glBegin(GL.GL_QUADS);
 
-		float color[] = c.getRGBColorComponents(null);
+
 		gl.glColor3f(color[0], color[1], color[2]);
 
 		x = viewFrustum.getWidth() * x;
