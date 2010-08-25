@@ -42,7 +42,7 @@
          <ViewCreator
           id="org.caleydo.view.ViewCreator"
           name="DataWindowsViewCreator"
-          class="org.caleydo.view.creator.ViewCreator" />
+          class="org.caleydo.view.datawindows.creator.ViewCreatorDataWindows" />
    </extension>
       <extension
          id="org.caleydo.view.hyperbolic"
@@ -51,6 +51,6 @@
          <ViewCreator
           id="org.caleydo.view.ViewCreator"
           name="HyperbolicViewCreator"
-          class="org.caleydo.view.datawindows.creator.ViewCreator" />
+          class="org.caleydo.view.datawindows.creator.ViewCreatorHyperbolic" />
    </extension>
 </plugin>
