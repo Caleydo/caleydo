@@ -21,4 +21,13 @@
             name="Statistics View">
       </view>
    </extension>
+      <extension
+         id="org.caleydo.view.statistics"
+         name="StatisticsViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="StatisticsViewCreator"
+          class="org.caleydo.util.r.creator.ViewCreator" />
+   </extension>
 </plugin>

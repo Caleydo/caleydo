@@ -7,7 +7,7 @@ import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpStatisticsView extends CaleydoRCPViewPart {
-
+	
 	private StatisticsView statisticsView;
 
 	@Override
