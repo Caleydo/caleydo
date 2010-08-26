@@ -1,6 +1,5 @@
 package org.caleydo.view.browser;
 
-import org.caleydo.core.manager.event.view.browser.EBrowserQueryType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -22,18 +21,18 @@ public class SerializedHTMLBrowserView extends ASerializedView {
 	private String url;
 
 	/** pathway query type of the browser */
-	private EBrowserQueryType queryType;
+	private BrowserQueryType queryType;
 
 	@Override
 	public ViewFrustum getViewFrustum() {
 		return null;
 	}
 
-	public EBrowserQueryType getQueryType() {
+	public BrowserQueryType getQueryType() {
 		return queryType;
 	}
 
-	public void setQueryType(EBrowserQueryType queryType) {
+	public void setQueryType(BrowserQueryType queryType) {
 		this.queryType = queryType;
 	}
 

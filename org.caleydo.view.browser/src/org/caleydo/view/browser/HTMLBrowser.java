@@ -12,6 +12,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
 import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.view.browser.listener.ChangeURLListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
@@ -65,7 +66,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 
 	private ChangeURLListener changeURLListener;
 
-	private boolean makeRegularScreenshots = false;
+	//private boolean makeRegularScreenshots = false;
 
 	private Runnable timer = null;
 

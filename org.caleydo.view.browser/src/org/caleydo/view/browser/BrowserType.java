@@ -1,5 +1,5 @@
 package org.caleydo.view.browser;
 
-public enum EBrowserType {
+public enum BrowserType {
 	GENERAL, GENOME;
 }

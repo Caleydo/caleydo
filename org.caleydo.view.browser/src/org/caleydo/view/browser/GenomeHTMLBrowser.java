@@ -1,13 +1,13 @@
 package org.caleydo.view.browser;
 
-import java.util.ArrayList;
+import java.util.Set;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
-import org.caleydo.core.manager.event.view.browser.EBrowserQueryType;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.Organism;
@@ -32,14 +32,15 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 		IDataDomainBasedView<GeneticDataDomain>, ISelectionUpdateHandler {
 
 	private GeneticDataDomain dataDomain;
-	private URLGenerator urlGenerator;
 
-	private ArrayList<Integer> iAlDavidID;
+	private BrowserQueryType browserQueryType = BrowserQueryType.KEGG_HomoSapiens;
 
-	private EBrowserQueryType eBrowserQueryType = EBrowserQueryType.KEGG_HomoSapiens;
-
-	protected ChangeQueryTypeListener changeQueryTypeListener;
-	protected SelectionUpdateListener selectionUpdateListener;
+	private SelectionUpdateListener selectionUpdateListener;
+	
+	private Combo comboQueryIDType;
+	
+	private IDType sourceIDType;
+	private Integer sourceID;
 
 	/**
 	 * Constructor.
@@ -50,70 +51,68 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENOME));
 
 		registerEventListeners();
-		urlGenerator = new URLGenerator();
-		iAlDavidID = new ArrayList<Integer>();
 	}
 
 	@Override
 	public void initViewSWTComposite(Composite parentComposite) {
 		super.initViewSWTComposite(parentComposite);
 
-		final Combo queryTypeCombo = new Combo(subContributionComposite, SWT.READ_ONLY);
+		final Combo comboQueryDatabaseType = new Combo(subContributionComposite, SWT.READ_ONLY);
+		comboQueryIDType = new Combo(subContributionComposite, SWT.READ_ONLY);
 
 		String storedDatabase = generalManager.getPreferenceStore().getString(
 				PreferenceConstants.BROWSER_QUERY_DATABASE);
-		// if (storedDatabase == "")
-		// storedDatabase = "GeneCards";
-		eBrowserQueryType = EBrowserQueryType.valueOf(storedDatabase);
 
-		queryTypeCombo.add(EBrowserQueryType.EntrezGene.getTitle());
-		if (eBrowserQueryType == EBrowserQueryType.EntrezGene)
-			queryTypeCombo.select(0);
+		browserQueryType = BrowserQueryType.valueOf(storedDatabase);
 
-		queryTypeCombo.add(EBrowserQueryType.PubMed.getTitle());
-		if (eBrowserQueryType == EBrowserQueryType.PubMed)
-			queryTypeCombo.select(1);
+		comboQueryDatabaseType.add(BrowserQueryType.EntrezGene.getTitle());
+		if (browserQueryType == BrowserQueryType.EntrezGene)
+			comboQueryDatabaseType.select(0);
 
-		queryTypeCombo.add(EBrowserQueryType.GeneCards.getTitle());
-		if (eBrowserQueryType == EBrowserQueryType.GeneCards)
-			queryTypeCombo.select(2);
+		comboQueryDatabaseType.add(BrowserQueryType.PubMed.getTitle());
+		if (browserQueryType == BrowserQueryType.PubMed)
+			comboQueryDatabaseType.select(1);
+
+		comboQueryDatabaseType.add(BrowserQueryType.GeneCards.getTitle());
+		if (browserQueryType == BrowserQueryType.GeneCards)
+			comboQueryDatabaseType.select(2);
 
 		Organism organism = generalManager.getOrganism();
 		if (organism == Organism.HOMO_SAPIENS) {
-			queryTypeCombo.add(EBrowserQueryType.Ensembl_HomoSapiens.getTitle());
-			if (eBrowserQueryType == EBrowserQueryType.Ensembl_HomoSapiens)
-				queryTypeCombo.select(3);
+//			comboQueryDatabaseType.add(BrowserQueryType.Ensembl_HomoSapiens.getTitle());
+//			if (browserQueryType == BrowserQueryType.Ensembl_HomoSapiens)
+//				comboQueryDatabaseType.select(3);
 
-			queryTypeCombo.add(EBrowserQueryType.KEGG_HomoSapiens.getTitle());
-			if (eBrowserQueryType == EBrowserQueryType.KEGG_HomoSapiens)
-				queryTypeCombo.select(4);
+			comboQueryDatabaseType.add(BrowserQueryType.KEGG_HomoSapiens.getTitle());
+			if (browserQueryType == BrowserQueryType.KEGG_HomoSapiens)
+				comboQueryDatabaseType.select(4);
 
-			queryTypeCombo.add(EBrowserQueryType.BioCarta_HomoSapiens.getTitle());
-			if (eBrowserQueryType == EBrowserQueryType.BioCarta_HomoSapiens)
-				queryTypeCombo.select(5);
+			comboQueryDatabaseType.add(BrowserQueryType.BioCarta_HomoSapiens.getTitle());
+			if (browserQueryType == BrowserQueryType.BioCarta_HomoSapiens)
+				comboQueryDatabaseType.select(5);
 
 		} else if (organism == Organism.MUS_MUSCULUS) {
-			queryTypeCombo.add(EBrowserQueryType.Ensembl_MusMusculus.getTitle());
-			if (eBrowserQueryType == EBrowserQueryType.Ensembl_MusMusculus)
-				queryTypeCombo.select(3);
+//			comboQueryDatabaseType.add(BrowserQueryType.Ensembl_MusMusculus.getTitle());
+//			if (browserQueryType == BrowserQueryType.Ensembl_MusMusculus)
+//				comboQueryDatabaseType.select(3);
 
-			queryTypeCombo.add(EBrowserQueryType.KEGG_MusMusculus.getTitle());
-			if (eBrowserQueryType == EBrowserQueryType.KEGG_MusMusculus)
-				queryTypeCombo.select(4);
+			comboQueryDatabaseType.add(BrowserQueryType.KEGG_MusMusculus.getTitle());
+			if (browserQueryType == BrowserQueryType.KEGG_MusMusculus)
+				comboQueryDatabaseType.select(4);
 
-			queryTypeCombo.add(EBrowserQueryType.BioCarta_MusMusculus.getTitle());
-			if (eBrowserQueryType == EBrowserQueryType.BioCarta_MusMusculus)
-				queryTypeCombo.select(5);
+			comboQueryDatabaseType.add(BrowserQueryType.BioCarta_MusMusculus.getTitle());
+			if (browserQueryType == BrowserQueryType.BioCarta_MusMusculus)
+				comboQueryDatabaseType.select(5);
 		}
 
-		queryTypeCombo.addSelectionListener(new SelectionAdapter() {
+		comboQueryDatabaseType.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				String sQueryTypeTitle = queryTypeCombo.getItem(queryTypeCombo
+				String sQueryTypeTitle = comboQueryDatabaseType.getItem(comboQueryDatabaseType
 						.getSelectionIndex());
 
-				for (EBrowserQueryType eBrowserQueryType : EBrowserQueryType.values()) {
+				for (BrowserQueryType eBrowserQueryType : BrowserQueryType.values()) {
 					if (eBrowserQueryType.getTitle().equals(sQueryTypeTitle)) {
 						changeQueryType(eBrowserQueryType);
 						break;
@@ -121,7 +120,12 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 				}
 			}
 		});
-
+		
+		for (String idType : browserQueryType.getQueryIDTypes()) {
+			comboQueryIDType.add(idType);	
+			comboQueryIDType.select(0);
+		}
+		
 		subContributionComposite.layout();
 		subContributionComposite.getParent().layout();
 	}
@@ -139,95 +143,15 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 				if (!checkInternetConnection())
 					return;
 
-				int iItemsToLoad = 0;
-				// SelectionDeltaItem selectionItem;
-
 				for (SelectionDeltaItem selectionDeltaItem : selectionDelta) {
-					if (selectionDeltaItem.getSelectionType() == SelectionType.SELECTION) {
+					if (selectionDeltaItem.getSelectionType() == SelectionType.SELECTION && !selectionDeltaItem.isRemove()) {
+						
+						IDType targetIDType = IDType.getIDType(comboQueryIDType.getItem(comboQueryIDType.getSelectionIndex()));
 
-						// // Integer iRefSeqID =
-						// //
-						// generalManager.getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
-						// // EIDType.REFSEQ_MRNA_INT,
-						// // selectionDeltaItem.getPrimaryID());
-						//
-						// int expressionIndex =
-						// selectionDeltaItem.getPrimaryID();
-						//
-						// // FIXME: Due to new mapping system, a mapping
-						// involving
-						// // expression index can return a
-						// // Set of
-						// // values, depending on the IDType that has been
-						// // specified when loading expression
-						// // data.
-						// // Possibly a different handling of the Set is
-						// required.
-						// Set<String> setRefSeqIDs =
-						// generalManager.getIDMappingManager()
-						// .getIDAsSet(EIDType.EXPRESSION_INDEX,
-						// EIDType.REFSEQ_MRNA, expressionIndex);
-						//
-						// String sRefSeqID = null;
-						// if ((setRefSeqIDs != null &&
-						// !setRefSeqIDs.isEmpty())) {
-						// sRefSeqID = (String) setRefSeqIDs.toArray()[0];
-						// }
-						//
-						// // FIXME: Due to new mapping system, a mapping
-						// involving
-						// // expression index can return a
-						// // Set of
-						// // values, depending on the IDType that has been
-						// // specified when loading expression
-						// // data.
-						// // Possibly a different handling of the Set is
-						// required.
-						// Set<Integer> setDavidIDs =
-						// generalManager.getIDMappingManager()
-						// .getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.DAVID,
-						// expressionIndex);
-						//
-						// Integer iDavidID = null;
-						// if ((setDavidIDs != null && !setDavidIDs.isEmpty()))
-						// {
-						// iDavidID = (Integer) setDavidIDs.toArray()[0];
-						// }
-						//
-						// if (iDavidID == null)
-						// continue;
-						//
-						// if (iItemsToLoad == 0) {
-						// String sURL =
-						// urlGenerator.createURL(eBrowserQueryType,
-						// iDavidID);
-						//
-						// browser.setUrl(sURL);
-						// browser.update();
-						// textURL.setText(sURL);
-						//
-						// iAlDavidID.clear();
-						// // list.removeAll();
-						// }
-
-						// String sOutput = "";
-						// sOutput = sOutput
-						// + generalManager.getIDMappingManager().getID(
-						// EIDType.DAVID, EIDType.GENE_SYMBOL, iDavidID);
-						//
-						// sOutput = sOutput + "\n";
-						// sOutput = sOutput + sRefSeqID;
-						//
-						// if
-						// (iAlDavidID.contains(selectionDeltaItem.getPrimaryID()))
-						// {
-						// continue;
-						// }
-						//
-						// // list.add(sOutput);
-						// iAlDavidID.add(iDavidID);
-						//
-						// iItemsToLoad++;
+						sourceIDType = selectionDelta.getIDType();
+						sourceID = selectionDeltaItem.getPrimaryID();
+						
+						updateURL(targetIDType);
 					}
 				}
 
@@ -237,24 +161,49 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 		});
 	}
 
-	public void changeQueryType(EBrowserQueryType eBrowserQueryType) {
-		this.eBrowserQueryType = eBrowserQueryType;
+	public void changeQueryType(BrowserQueryType eBrowserQueryType) {
+		this.browserQueryType = eBrowserQueryType;
 		GeneralManager
 				.get()
 				.getPreferenceStore()
 				.setValue(PreferenceConstants.BROWSER_QUERY_DATABASE,
 						eBrowserQueryType.name());
-		if (!iAlDavidID.isEmpty()) {
-			String sURL = urlGenerator.createURL(eBrowserQueryType, iAlDavidID.get(0));
 
-			browser.setUrl(sURL);
-			browser.update();
-			textURL.setText(sURL);
+		comboQueryIDType.removeAll();
+		for (String idType : browserQueryType.getQueryIDTypes()) {
+			comboQueryIDType.add(idType);	
+			comboQueryIDType.select(0);
 		}
+		
+		updateURL(IDType.getIDType(comboQueryIDType.getItem(0)));
 	}
 
-	public EBrowserQueryType getCurrentBrowserQueryType() {
-		return eBrowserQueryType;
+	private void updateURL(IDType targetIDType) {
+		
+		Set<Object> queryIDs = generalManager.getIDMappingManager().getIDAsSet(sourceIDType,
+				targetIDType, sourceID);
+		
+		String sURL = "";
+		
+		if (queryIDs == null || queryIDs.size() == 0)
+		{
+			sURL = "Sorry, cannot resolve ID for selection!";
+			browser.setUrl("about:blank");
+		}
+		else
+		{
+			// FIXME: only first found ID is taken - multi mappings are ignored!
+			// How should we handle this?
+			sURL = browserQueryType.getBrowserQueryStringPrefix() + queryIDs.toArray()[0].toString();
+			browser.setUrl(sURL);
+		}
+		
+		textURL.setText(sURL);
+		browser.update();
+	}
+
+	public BrowserQueryType getBrowserQueryType() {
+		return browserQueryType;
 	}
 
 	@Override
@@ -266,12 +215,6 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 		selectionUpdateListener
 				.setExclusiveDataDomainType("org.caleydo.datadomain.genetic");
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
-
-		// changeQueryTypeListener = new ChangeQueryTypeListener();
-		// changeQueryTypeListener.setBrowserView(this);
-		// eventPublisher.addListener(ChangeQueryTypeEvent.class,
-		// changeQueryTypeListener);
-
 	}
 
 	@Override
@@ -282,18 +225,13 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
 		}
-		// if (changeQueryTypeListener != null) {
-		// eventPublisher.removeListener(ChangeQueryTypeEvent.class,
-		// changeQueryTypeListener);
-		// changeQueryTypeListener = null;
-		// }
 	}
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedHTMLBrowserView serializedForm = new SerializedHTMLBrowserView();
 		serializedForm.setViewID(getID());
-		serializedForm.setQueryType(getCurrentBrowserQueryType());
+		serializedForm.setQueryType(getBrowserQueryType());
 		serializedForm.setUrl(getUrl());
 		return serializedForm;
 	}

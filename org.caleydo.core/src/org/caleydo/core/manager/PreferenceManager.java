@@ -11,7 +11,6 @@ import static org.caleydo.core.util.preferences.PreferenceConstants.NUMBER_OF_CO
 import java.io.File;
 import java.io.IOException;
 
-import org.caleydo.core.manager.event.view.browser.EBrowserQueryType;
 import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.system.FileOperations;
@@ -128,7 +127,7 @@ public class PreferenceManager {
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES, "KEGG;BioCarta");
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE, "SAMPLE_PROJECT");
 		store.setDefault(PreferenceConstants.USE_PROXY, false);
-		store.setDefault(PreferenceConstants.BROWSER_QUERY_DATABASE, EBrowserQueryType.GeneCards.name());
+		store.setDefault(PreferenceConstants.BROWSER_QUERY_DATABASE, "GeneCards");
 
 		// visual links
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_STYLE, 2);
