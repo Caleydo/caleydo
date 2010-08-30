@@ -377,7 +377,7 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 * @param hierarchyLevel
 	 *            Specifies the level of the root node.
 	 */
-	void calculateHierarchyLevels(int hierarchyLevel) {
+	protected void calculateHierarchyLevels(int hierarchyLevel) {
 		this.hierarchyLevel = hierarchyLevel;
 		ArrayList<Node> alChildren = tree.getChildren(node);
 
