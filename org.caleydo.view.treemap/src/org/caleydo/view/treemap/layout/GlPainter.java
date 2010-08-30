@@ -38,7 +38,8 @@ public class GlPainter {
 		gl.glNewList(highlightList, GL.GL_COMPILE);
 		for(int id:selection.getElements(SelectionType.SELECTION)){
 			ATreeMapNode node= tree.getNodeByNumber(id);
-			paintRectangle(node.getMinX(), node.getMinY(), node.getMaxX(), node.getMaxY(), Color.YELLOW.getComponents(null));
+			if(node!=null)
+				paintRectangle(node.getMinX(), node.getMinY(), node.getMaxX(), node.getMaxY(), Color.YELLOW.getComponents(null));
 		}
 		gl.glEndList();
 		

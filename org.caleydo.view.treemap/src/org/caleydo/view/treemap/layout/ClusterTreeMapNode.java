@@ -33,6 +33,9 @@ public class ClusterTreeMapNode extends ATreeMapNode{
 		if(clusterNode.getChildren()==null){
 			referenz.sizeReferenzValue+=clusterNode.getSize();
 			
+			referenz.colorMin=Math.min(referenz.colorMin, clusterNode.getAverageExpressionValue());
+			referenz.colorMax=Math.max(referenz.colorMax, clusterNode.getAverageExpressionValue());
+			
 			return;
 	}
 		for(ClusterNode clusterChild : clusterNode.getChildren()){

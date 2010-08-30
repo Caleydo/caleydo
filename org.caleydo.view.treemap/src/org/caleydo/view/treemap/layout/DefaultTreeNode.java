@@ -15,7 +15,7 @@ public class DefaultTreeNode extends ATreeMapNode {
 		
 		Tree<ATreeMapNode> tree= new Tree<ATreeMapNode>();
 		
-		DefaultTreeNode node = new DefaultTreeNode(tree,0);
+		DefaultTreeNode node = new DefaultTreeNode(tree,1);
 		tree.setRootNode(node);
 		tree.addChild(node, new DefaultTreeNode(tree, 1.0/3, Color.CYAN.getColorComponents(null), new ArrayList<ATreeMapNode>(),"1.1",11));
 		
@@ -33,6 +33,9 @@ public class DefaultTreeNode extends ATreeMapNode {
 		tree.addChild(node4, new DefaultTreeNode(tree, 1.0/9, Color.RED.getColorComponents(null), new ArrayList<ATreeMapNode>(),"2.2",22));
 		tree.addChild(node4, new DefaultTreeNode(tree, 1.0/9, Color.GREEN.getColorComponents(null), new ArrayList<ATreeMapNode>(),"2.3",23));
 		tree.addChild(node4, new DefaultTreeNode(tree, 1.0/9, Color.BLUE.getColorComponents(null), new ArrayList<ATreeMapNode>(),"2.4",24));
+		
+		node.calculateHierarchyLevels(0);
+		
 //		ArrayList<ATreeMapNode> children1 = new ArrayList<ATreeMapNode>();
 //		children1.add(new DefaultTreeNode(tree, 1.0/12, Color.ORANGE, new ArrayList<ATreeMapNode>(),"3.1",31));
 //		children1.add(new DefaultTreeNode(tree, 1.0/12, Color.MAGENTA, new ArrayList<ATreeMapNode>(),"3.2",32));

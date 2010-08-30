@@ -12,6 +12,8 @@ public abstract class ATreeMapNode extends AHierarchyElement<ATreeMapNode> {
 	private AbstractTree root;
 	private float minX, minY, maxX, maxY;
 	
+	public int selectionLevel=0;
+	
 
 
 	public ATreeMapNode() {
