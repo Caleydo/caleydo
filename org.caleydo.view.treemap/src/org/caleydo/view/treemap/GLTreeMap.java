@@ -14,6 +14,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -29,6 +30,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.treemap.layout.ATreeMapNode;
@@ -75,6 +77,8 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 
 	// private EIDType primaryIDType = EIDType.CLUSTER_NUMBER;
 
+	private SelectionUpdateListener selectionUpdateListener;
+
 	/**
 	 * Constructor.
 	 * 
@@ -105,12 +109,11 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 				if (e.getWheelRotation() > 0) {
 					ATreeMapNode node = treeMapModel.getNodeByNumber(currentNode);
 					node.selectionLevel++;
-					System.out.println("selectionlevel: "+node.selectionLevel);
+					System.out.println("selectionlevel: " + node.selectionLevel);
 					ATreeMapNode parent = node.getParentWithLevel(node.getHierarchyLevel() - node.selectionLevel);
 					if (parent != null) {
 						treeSelectionManager.addToType(SelectionType.SELECTION, parent.getID());
-					}
-					else{
+					} else {
 						node.selectionLevel--;
 					}
 
@@ -269,13 +272,10 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		if (bIsDisplayListDirtyLocal) {
 			painter = new GlPainter(gl, viewFrustum, pickingManager, getID(), treeSelectionManager);
 
-//			ATreeMapNode root = DefaultTreeNode.createSampleTree();
+			// ATreeMapNode root = DefaultTreeNode.createSampleTree();
 
-			 Tree<ClusterNode> contentTree = dataDomain.getSet()
-			 .getContentData(ContentVAType.CONTENT).getContentTree();
-			 ClusterTreeMapNode root =
-			 ClusterTreeMapNode.createFromClusterNodeTree(contentTree,
-			 colorMapper);
+			Tree<ClusterNode> contentTree = dataDomain.getSet().getContentData(ContentVAType.CONTENT).getContentTree();
+			ClusterTreeMapNode root = ClusterTreeMapNode.createFromClusterNodeTree(contentTree, colorMapper);
 
 			SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
 			layouter.layout(root, painter);
@@ -287,7 +287,7 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 
 		if (bIsHighlightingListDirty) {
 			painter.paintHighlighting(treeMapModel, treeSelectionManager);
-			bIsHighlightingListDirty=false;
+			bIsHighlightingListDirty = false;
 		}
 
 		painter.paintTreeMapFromCache();
@@ -426,11 +426,21 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
+		selectionUpdateListener = new SelectionUpdateListener();
+//		selectionUpdateListener.setDataDomainType(dataDomain.getDataDomainType());
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
+
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
+		}
 
 	}
 
@@ -471,6 +481,9 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		// treeSelectionManager.setDelta(selectionDelta);
+		if (treeSelectionManager.getIDType() == selectionDelta.getIDType())
+			treeSelectionManager.setDelta(selectionDelta);
+
 		setDisplayListDirty();
 	}
 

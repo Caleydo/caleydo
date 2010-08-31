@@ -1146,8 +1146,25 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 
-		Tree<ClusterNode> tree = dataDomain.getSet().getStorageData(storageVAType)
-				.getStorageTree();
+		// Tree<ClusterNode> tree =
+		// dataDomain.getSet().getStorageData(storageVAType)
+		// .getStorageTree();
+		// // Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		// if (tree != null) {
+		// ArrayList<EPDDrawingStrategyType> alColorModes = new
+		// ArrayList<EPDDrawingStrategyType>();
+		// alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
+		// alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
+		//
+		// // initHierarchy(tree, EIDType.CLUSTER_NUMBER,
+		// // new GeneClusterDataEventManager(this), alColorModes);
+		// initHierarchy(tree, dataDomain.getSet().getStorageData(storageVAType)
+		// .getStorageTreeRoot(), new ExperimentClusterDataEventManager(this),
+		// alColorModes);
+		// }
+
+		Tree<ClusterNode> tree = dataDomain.getSet().getContentData(contentVAType)
+				.getContentTree();
 		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		if (tree != null) {
 			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
@@ -1156,8 +1173,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 
 			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 			// new GeneClusterDataEventManager(this), alColorModes);
-			initHierarchy(tree, dataDomain.getSet().getStorageData(storageVAType)
-					.getStorageTreeRoot(), new ExperimentClusterDataEventManager(this),
+			initHierarchy(tree, tree.getRoot(), new GeneClusterDataEventManager(this),
 					alColorModes);
 		}
 
@@ -1168,9 +1184,9 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		// // initHierarchy(tree);
 		// } else {
 		// // initTestHierarchy();
-		// }
-		partialDiscTree.setLeafIDType(tree.getLeaveIDType());
-		partialDiscTree.setNodeIDType(tree.getNodeIDType());
+		// // }
+		// partialDiscTree.setLeafIDType(tree.getLeaveIDType());
+		// partialDiscTree.setNodeIDType(tree.getNodeIDType());
 
 	}
 
