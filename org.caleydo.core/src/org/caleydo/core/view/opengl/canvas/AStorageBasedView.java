@@ -129,7 +129,7 @@ public abstract class AStorageBasedView
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		connectedElementRepresentationManager =
-		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
+			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 	}
 
 	@Override
@@ -313,18 +313,13 @@ public abstract class AStorageBasedView
 
 	@Override
 	public void handleContentVAUpdate(ContentVADelta delta, String info) {
-		// generalManager.getLogger().log(
-		// Level.INFO,
-		// "VA Update called by " + eventTrigger.getClass().getSimpleName()
-		// + ", received in: " + this.getClass().getSimpleName());
 
 		contentVA.setGroupList(null);
+		contentSelectionManager.setVADelta(delta);
 
-		// if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT)
-		// delta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, delta);
 
 		reactOnContentVAChanges(delta);
-		//contentSelectionManager.setVADelta(delta);
+	
 
 		// reactOnExternalSelection();
 		setDisplayListDirty();

@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -873,51 +874,30 @@ public class GLPathwayContentCreator {
 				.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) vertexRep
 						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0));
 
-		if (iDavidID == -1 || iDavidID == 0) {
-			// generalManager.getLogger().log(new Status(Status.WARNING,
-			// GeneralManager.PLUGIN_ID,
-			// "Invalid David Gene ID."));
-		} else {
-			// Set<Integer> iSetRefSeq = idMappingManager.getID(EIDType.DAVID,
-			// EIDType.REFSEQ_MRNA_INT, iDavidID);
-			//
-			// if (iSetRefSeq == null) {
-			// // generalManager.getLogger().log(new Status(Status.ERROR,
-			// // GeneralManager.PLUGIN_ID,
-			// // "No RefSeq IDs found for David: " + iDavidID));
-			// } else {
-			// // Check for multiple mapping
-			// if (iSetRefSeq.size() > 1)
-			// return new float[] { 0, 1, 1 };
-			//
-			// for (Object iRefSeqID : iSetRefSeq) {
-			//
-			// if (idMappingManager.getIDAsSet(EIDType.REFSEQ_MRNA_INT,
-			// EIDType.EXPRESSION_INDEX, ((Integer) iRefSeqID)) == null) {
-			// break;
-			// }
-			// FIXME: Due to new mapping system, a mapping involving
-			// expression index can return a Set
-			// of
-			// values, depending on the IDType that has been specified
-			// when loading expression data.
-			// Possibly a different handling of the Set is required.
-			for (Object iExpressionIndex : idMappingManager.<Integer, Object> getIDAsSet(
-					glPathwayView.getDataDomain().getDavidIDType(), glPathwayView
-							.getMappingDataDomain().getContentIDType(),
-					((Integer) iDavidID))) {
+		if (iDavidID == -1 || iDavidID == 0)
+			return null;
+		else {
 
-				return colorMapper.getColor(geneticDataDomain
-						.getSet()
-						.get(glPathwayView.iCurrentStorageIndex)
-						.getFloat(EDataRepresentation.NORMALIZED,
-								((Integer) iExpressionIndex).intValue()));
+			Set<Integer> ids = idMappingManager.<Integer, Integer> getIDAsSet(
+					glPathwayView.getDataDomain().getDavidIDType(), glPathwayView
+							.getMappingDataDomain().getContentIDType(), iDavidID);
+			if (ids == null)
+				return null;
+			for (Integer iExpressionIndex : ids) {
+
+				IStorage storage = geneticDataDomain.getSet().get(
+						glPathwayView.iCurrentStorageIndex);
+				if (storage == null)
+					throw new IllegalStateException("No storage in this set with id: "
+							+ glPathwayView.iCurrentStorageIndex);
+				float expressionValue = storage.getFloat(EDataRepresentation.NORMALIZED,
+						iExpressionIndex);
+
+				return colorMapper.getColor(expressionValue);
+
 			}
-			// }
-			// }
 		}
 
-		// No mapping found
 		return null;
 	}
 

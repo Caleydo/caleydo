@@ -116,8 +116,10 @@ public class ClusterManager {
 			tempResult.indices));
 		result.contentResult.setContentClusterSizes(tempResult.clusterSizes);
 		result.contentResult.setContentSampleElements(tempResult.sampleElements);
-		tempResult.tree.initializeIDTypes(clusterState.getContentIDType());
-		result.contentResult.setContentTree(tempResult.tree);
+		if (tempResult.tree != null) {
+			tempResult.tree.initializeIDTypes(clusterState.getContentIDType());
+			result.contentResult.setContentTree(tempResult.tree);
+		}
 
 	}
 

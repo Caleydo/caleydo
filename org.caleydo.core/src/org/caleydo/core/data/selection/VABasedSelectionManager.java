@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
+import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
@@ -126,25 +127,24 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 		tempDelta.setVAType(virtualArray.getVAType());
 		tempDelta.setIDType(iDType);
 		HashMap<Integer, Integer> tempHash;
-		
-		for (Integer id : virtualArray)
-		{
+
+		for (Integer id : virtualArray) {
 			tempDelta.add(VADeltaItem.appendUnique(id));
 		}
-		
-//		for (SelectionType selectionType : selectionTypes) {
-//			if (!selectionType.isVisible()) {
-//				continue;
-//			}
-//			tempHash = hashSelectionTypes.get(selectionType);
-//			for (Integer iElement : tempHash.keySet()) {
-//				Integer iSelectionID = -1;
-//
-//				iSelectionID = iElement;
-//				tempDelta.add(VADeltaItem.appendUnique(iSelectionID));
-//
-//			}
-//		}
+
+		// for (SelectionType selectionType : selectionTypes) {
+		// if (!selectionType.isVisible()) {
+		// continue;
+		// }
+		// tempHash = hashSelectionTypes.get(selectionType);
+		// for (Integer iElement : tempHash.keySet()) {
+		// Integer iSelectionID = -1;
+		//
+		// iSelectionID = iElement;
+		// tempDelta.add(VADeltaItem.appendUnique(iSelectionID));
+		//
+		// }
+		// }
 		return tempDelta;
 	}
 
@@ -159,29 +159,29 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 	public void setVADelta(VADelta delta) {
 		if (virtualArray == null)
 			return;
-		if (delta.getIDType() == iDType) {
+		VADelta localDelta;
+		if (delta.getIDType().getIDCategory() != iDType.getIDCategory())
+			throw new IllegalStateException("Not compatibel id types");
 
-			for (VADeltaItem item : delta) {
-				// TODO mapping stuff
-				switch (item.getType()) {
-					// case ADD:
-					// add(item.getPrimaryID());
-					// break;
-					// case APPEND:
-					// case APPEND_UNIQUE:
-					// add(item.getPrimaryID());
-					// break;
-					case REMOVE_ELEMENT:
-						remove(item.getPrimaryID(), false);
-						break;
-					case REMOVE:
-						remove(virtualArray.get(item.getIndex()), false);
-						break;
+		if (delta.getIDType() != iDType)
+			localDelta = DeltaConverter.convertDelta(iDType, delta);
+		else
+			localDelta = delta;
 
-				}
+		for (VADeltaItem item : localDelta) {
+			switch (item.getType()) {
+
+				case REMOVE_ELEMENT:
+					remove(item.getPrimaryID(), false);
+					break;
+				case REMOVE:
+					remove(virtualArray.get(item.getIndex()), false);
+					break;
+
 			}
-			virtualArray.setDelta(delta);
 		}
+		virtualArray.setDelta(localDelta);
+
 	}
 
 	@Override

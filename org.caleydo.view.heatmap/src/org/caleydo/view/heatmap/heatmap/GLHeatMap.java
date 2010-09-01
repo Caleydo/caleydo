@@ -742,8 +742,8 @@ public class GLHeatMap extends AStorageBasedView {
 
 		if (delta.getVAType() == ContentVAType.CONTENT_CONTEXT
 				&& contentVAType == ContentVAType.CONTENT_CONTEXT) {
-			if (contentVA.size() == 0)
-				return;
+//			if (contentVA.size() == 0)
+//				return;
 			// FIXME: this is only proof of concept - use the cluster manager
 			// instead of affinity directly
 			// long original = System.currentTimeMillis();
@@ -763,8 +763,7 @@ public class GLHeatMap extends AStorageBasedView {
 			contentVA = result.getContentResult().getContentVA();
 			contentSelectionManager.setVA(contentVA);
 			contentVA.setID(contentVAID);
-			// long result = System.currentTimeMillis() - original;
-			// System.out.println("Clustering took in ms: " + result);
+		
 
 		}
 	}

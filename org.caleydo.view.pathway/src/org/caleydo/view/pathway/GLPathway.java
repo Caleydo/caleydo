@@ -356,7 +356,7 @@ public class GLPathway extends AGLView implements
 		// "Update called by " + eventTrigger.getClass().getSimpleName()
 		// + ", received in: " + this.getClass().getSimpleName());
 
-		if (selectionDelta.getIDType() == mappingDataDomain.getContentIDType()) {
+		if (selectionDelta.getIDType() == mappingDataDomain.getStorageIDType()) {
 			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
 				if (item.getSelectionType() == SelectionType.MOUSE_OVER) {
 					iCurrentStorageIndex = item.getPrimaryID();
