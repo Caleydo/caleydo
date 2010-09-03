@@ -3,6 +3,7 @@ package org.caleydo.core.data.collection.set;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -25,7 +26,8 @@ public class LoadDataParameters {
 	private ArrayList<Integer> storageIds;
 
 	/** Specifies the IDType that is used in the main data file */
-	private IDType fileIDType;
+	@XmlElement
+	private String fileIDTypeName;
 
 	/** path to main data file */
 	private String fileName;
@@ -39,7 +41,7 @@ public class LoadDataParameters {
 	/** TODO doc */
 	private String inputPattern;
 
-	/** labels of the storages (similar to experiments) */
+	/** labels of the storages */
 	private List<String> storageLabels;
 
 	/** csv-delimiter between to values */
@@ -87,6 +89,7 @@ public class LoadDataParameters {
 		this.dataDomain = dataDomain;
 	}
 
+	@XmlTransient
 	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
@@ -212,11 +215,11 @@ public class LoadDataParameters {
 	}
 
 	public void setFileIDType(IDType fileIDType) {
-		this.fileIDType = fileIDType;
+		this.fileIDTypeName = fileIDType.getTypeName();
 	}
 
-	public IDType getFileIDType() {
-		return fileIDType;
+	public String getFileIDTypeName() {
+		return fileIDTypeName;
 	}
 
 	/**

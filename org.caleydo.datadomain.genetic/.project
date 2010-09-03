@@ -3,7 +3,6 @@
 	<name>org.caleydo.datadomain.genetic</name>
 	<comment></comment>
 	<projects>
-		<project>org.caleydo.datadomain.clinical</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

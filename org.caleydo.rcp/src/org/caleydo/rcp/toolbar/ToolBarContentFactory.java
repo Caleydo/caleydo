@@ -21,7 +21,10 @@ import org.eclipse.ui.PlatformUI;
  * Factory to create toolbar contents in dependency of views.
  * 
  * @author Werner Puff
+ * @author Alexander Lex
+ * @deprecated resolve plug-in dependencies
  */
+@Deprecated
 public class ToolBarContentFactory {
 
 	/** reference to singleton instance */
@@ -103,7 +106,7 @@ public class ToolBarContentFactory {
 		info.viewType = "org.caleydo.view.dataflipper";
 		info.ignored = false;
 		toolBarInfos.put(info.viewType, info);
-		
+
 		info = new ToolBarInfo();
 		info.viewType = "org.caleydo.view.treemap";
 		info.ignored = false;
@@ -228,7 +231,7 @@ public class ToolBarContentFactory {
 			Object toolBarContent = viewCreator.createToolBarContent();
 			if (toolBarContent == null)
 				return null;
-			
+
 			content = (AToolBarContent) toolBarContent;
 			content.setTargetViewData(view.getSerializableRepresentation());
 			if (view instanceof AGLView) {

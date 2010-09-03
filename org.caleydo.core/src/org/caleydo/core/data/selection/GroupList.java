@@ -3,6 +3,7 @@ package org.caleydo.core.data.selection;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ISet;
@@ -11,6 +12,7 @@ import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 
 @XmlType
+@XmlSeeAlso({ ContentGroupList.class, StorageGroupList.class })
 public abstract class GroupList<ConcreteType extends IGroupList<ConcreteType, VA, VADelta>, VA extends VirtualArray<?, ?, ?, ?>, VADelta extends VirtualArrayDelta<?, ?>>
 	implements IGroupList<ConcreteType, VA, VADelta> {
 

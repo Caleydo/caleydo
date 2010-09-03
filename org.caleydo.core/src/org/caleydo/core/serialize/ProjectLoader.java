@@ -2,12 +2,14 @@ package org.caleydo.core.serialize;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
@@ -16,6 +18,12 @@ import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.util.Logger;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleException;
 
 /**
  * Restores the state of the application from a given file.
@@ -59,9 +67,13 @@ public class ProjectLoader {
 	 * @return initialization data for the application from which it can restore itself
 	 */
 	public DataInitializationData loadDirectory(String dirName) {
+
+		loadPlugins(dirName);
+
 		DataInitializationData initData = null;
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
+
 		JAXBContext projectContext = serializationManager.getProjectContext();
 
 		try {
@@ -73,11 +85,14 @@ public class ProjectLoader {
 						.getResource(dirName + ProjectSaver.DATA_DOMAIN_FILE_NAME));
 			}
 			catch (FileNotFoundException e1) {
-				throw new IllegalStateException("Cannot load use case from project file");
+				throw new IllegalStateException("Cannot load dataDomain from project file");
 			}
 
 			String setFileName = dirName + ProjectSaver.SET_DATA_FILE_NAME;
-			dataDomain.getLoadDataParameters().setFileName(setFileName);
+
+			LoadDataParameters loadingParameters = dataDomain.getLoadDataParameters();
+			loadingParameters.setFileName(setFileName);
+			loadingParameters.setDataDomain((ASetBasedDataDomain) dataDomain);
 
 			HashMap<ContentVAType, ContentVirtualArray> contentVAMap =
 				new HashMap<ContentVAType, ContentVirtualArray>(6);
@@ -133,6 +148,40 @@ public class ProjectLoader {
 		}
 
 		return initData;
+	}
+
+	private void loadPlugins(String dirName) {
+		JAXBContext context;
+		PlugInList plugInList = null;
+		try {
+			context = JAXBContext.newInstance(PlugInList.class);
+
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+
+			plugInList =
+				(PlugInList) unmarshaller.unmarshal(new File(dirName + ProjectSaver.PLUG_IN_LIST_FILE_NAME));
+		}
+		catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		ArrayList<String> plugIns = plugInList.plugIns;
+		for (String plugIn : plugIns) {
+			Bundle bundle = Platform.getBundle(plugIn);
+			if (bundle == null) {
+				Logger.log(IStatus.WARNING, toString(), "Could not load bundle: " + bundle);
+				continue;
+			}
+			try {
+				bundle.start();
+			}
+			catch (BundleException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/**

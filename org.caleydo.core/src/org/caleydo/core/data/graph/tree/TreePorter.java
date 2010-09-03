@@ -45,8 +45,6 @@ public class TreePorter {
 	@XmlElementWrapper(name = "nodes")
 	@XmlElement(name = "node")
 	Set<ClusterNode> nodeSet;
-
-	@XmlElement
 	String leaveIDTypeString;
 
 	private ASetBasedDataDomain dataDomain;
@@ -68,11 +66,11 @@ public class TreePorter {
 	 * @throws JAXBException
 	 *             in case of a XML-serialization error
 	 */
-	public Tree<ClusterNode> importTree(String fileName, IDType idType) throws JAXBException,
+	public Tree<ClusterNode> importTree(String fileName, IDType leafIDType) throws JAXBException,
 		FileNotFoundException {
 
-		Tree<ClusterNode> tree = new Tree<ClusterNode>(idType);
-		tree.initializeIDTypes(IDType.getIDType(leaveIDTypeString));
+		Tree<ClusterNode> tree = new Tree<ClusterNode>(leafIDType);
+//		tree.initializeIDTypes(IDType.getIDType(leaveIDTypeString));
 		ClusterNode rootNode = null;
 
 		DirectedGraph<ClusterNode, DefaultEdge> graph =

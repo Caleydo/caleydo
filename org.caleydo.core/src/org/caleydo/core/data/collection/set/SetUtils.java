@@ -219,10 +219,9 @@ public class SetUtils {
 			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager()
 				.createCommandByType(ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
-		// FIXME use id type created by data domain.
-		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
+			if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 			String lookupTableInfo =
-				loadDataParameters.getFileIDType().getTypeName() + "_2_"
+				loadDataParameters.getFileIDTypeName() + "_2_"
 					+ dataDomain.getContentIDType().getTypeName() + " REVERSE";
 
 			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
@@ -336,7 +335,7 @@ public class SetUtils {
 
 		if (tree != null) {
 			StringWriter writer = new StringWriter();
-			TreePorter treePorter = new TreePorter();
+			TreePorter treePorter = new TreePorter();	
 			treePorter.exportTree(writer, tree);
 			xml = writer.getBuffer().toString();
 		}
@@ -406,6 +405,7 @@ public class SetUtils {
 							+ geneTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
+				treePorter.setDataDomain(set.getDataDomain());
 				Tree<ClusterNode> tree;
 				try {
 
@@ -434,6 +434,7 @@ public class SetUtils {
 							"Loading experiments tree from file " + experimentsTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
+				treePorter.setDataDomain(set.getDataDomain());
 				Tree<ClusterNode> tree;
 				try {
 					tree = treePorter.importStorageTree(experimentsTreeFileName);

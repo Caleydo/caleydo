@@ -14,8 +14,11 @@ import org.osgi.framework.Bundle;
  * Central access point for xml-serialization related tasks.
  * 
  * @author Werner Puff
+ * @author Alexander Lex
  */
 public class SerializationManager {
+
+	private static volatile SerializationManager instance = null;
 
 	/** {@link JAXBContext} for event (de-)serialization */
 	private JAXBContext eventContext;
@@ -23,17 +26,46 @@ public class SerializationManager {
 	/** {link JAXBContext} for project (de-)serialization */
 	private JAXBContext projectContext;
 
-	public SerializationManager() {
+	private ArrayList<Class<?>> projectTypes;
+	
+
+
+	private SerializationManager() {
 		try {
 			Collection<Class<? extends AEvent>> eventTypes = getSerializeableEventTypes();
+			projectTypes = new ArrayList<Class<?>>();
+			projectTypes.add(DataInitializationData.class);
+			projectTypes.add(ViewList.class);
 			Class<?>[] classes = new Class<?>[eventTypes.size()];
 			classes = eventTypes.toArray(classes);
 			eventContext = JAXBContext.newInstance(classes);
-			projectContext = JAXBContext.newInstance(DataInitializationData.class, ViewList.class);
+			createNewProjectContext();
 		}
 		catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
+	}
+
+
+	private void createNewProjectContext() {
+		try {
+			Class<?>[] projectClasses = new Class<?>[projectTypes.size()];
+			projectTypes.toArray(projectClasses);
+			projectContext = JAXBContext.newInstance(projectClasses);
+		}
+		catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContexts", ex);
+		}
+	}
+
+	public synchronized static SerializationManager get() {
+		if (instance == null) {
+			synchronized (SerializationManager.class) {
+				if (instance == null)
+					instance = new SerializationManager();
+			}
+		}
+		return instance;
 	}
 
 	/**
@@ -135,5 +167,10 @@ public class SerializationManager {
 		// eventTypes.add(NewSetEvent.class);
 
 		return eventTypes;
+	}
+
+	public void registerSerializableType(Class<?> serializableClass) {
+		projectTypes.add(serializableClass);
+		createNewProjectContext();
 	}
 }

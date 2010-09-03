@@ -1156,14 +1156,12 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glColor4f(1, 1, 1, 1);
 			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			Texture tempTexture = null;
-
-			if (storageVA.getGroupList().get(i).getSelectionType() == SelectionType.NORMAL) {
-				tempTexture = textureManager.getIconTexture(gl,
-						EIconTextures.HEAT_MAP_GROUP_NORMAL);
-			}
 			if (storageVA.getGroupList().get(i).getSelectionType() == SelectionType.SELECTION) {
 				tempTexture = textureManager.getIconTexture(gl,
 						EIconTextures.HEAT_MAP_GROUP_SELECTED);
+			} else {
+				tempTexture = textureManager.getIconTexture(gl,
+						EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
@@ -1239,14 +1237,14 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			Texture tempTexture = null;
 
-			if (storageVA.getGroupList().get(i).getSelectionType() == SelectionType.NORMAL) {
-				tempTexture = textureManager.getIconTexture(gl,
-						EIconTextures.HEAT_MAP_GROUP_NORMAL);
-			}
 			if (storageVA.getGroupList().get(i).getSelectionType() == SelectionType.SELECTION) {
 				tempTexture = textureManager.getIconTexture(gl,
 						EIconTextures.HEAT_MAP_GROUP_SELECTED);
+			}else {
+				tempTexture = textureManager.getIconTexture(gl,
+						EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
+			
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
@@ -1319,13 +1317,14 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			Texture tempTexture = null;
 
-			if (contentVA.getGroupList().get(i).getSelectionType() == SelectionType.NORMAL) {
-				tempTexture = textureManager.getIconTexture(gl,
-						EIconTextures.HEAT_MAP_GROUP_NORMAL);
-			}
 			if (contentVA.getGroupList().get(i).getSelectionType() == SelectionType.SELECTION) {
 				tempTexture = textureManager.getIconTexture(gl,
 						EIconTextures.HEAT_MAP_GROUP_SELECTED);
+			}
+
+			else {
+				tempTexture = textureManager.getIconTexture(gl,
+						EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
@@ -1409,15 +1408,13 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 				Texture tempTexture = null;
 
-				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.NORMAL) {
-					tempTexture = textureManager.getIconTexture(gl,
-							EIconTextures.HEAT_MAP_GROUP_NORMAL);
-				}
 				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
 					tempTexture = textureManager.getIconTexture(gl,
 							EIconTextures.HEAT_MAP_GROUP_SELECTED);
+				} else {
+					tempTexture = textureManager.getIconTexture(gl,
+							EIconTextures.HEAT_MAP_GROUP_NORMAL);
 				}
-
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
 						EPickingType.HIER_HEAT_MAP_GENES_GROUP, iIdxCluster));
 
@@ -1467,13 +1464,12 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 		Texture tempTexture = null;
 
-		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.NORMAL) {
-			tempTexture = textureManager.getIconTexture(gl,
-					EIconTextures.HEAT_MAP_GROUP_NORMAL);
-		}
 		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
 			tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.HEAT_MAP_GROUP_SELECTED);
+		} else {
+			tempTexture = textureManager.getIconTexture(gl,
+					EIconTextures.HEAT_MAP_GROUP_NORMAL);
 		}
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
@@ -1548,13 +1544,12 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 				Texture tempTexture = null;
 
-				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.NORMAL) {
-					tempTexture = textureManager.getIconTexture(gl,
-							EIconTextures.HEAT_MAP_GROUP_NORMAL);
-				}
 				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
 					tempTexture = textureManager.getIconTexture(gl,
 							EIconTextures.HEAT_MAP_GROUP_SELECTED);
+				} else {
+					tempTexture = textureManager.getIconTexture(gl,
+							EIconTextures.HEAT_MAP_GROUP_NORMAL);
 				}
 
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
@@ -1604,13 +1599,12 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 		Texture tempTexture = null;
 
-		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.NORMAL) {
-			tempTexture = textureManager.getIconTexture(gl,
-					EIconTextures.HEAT_MAP_GROUP_NORMAL);
-		}
 		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
 			tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.HEAT_MAP_GROUP_SELECTED);
+		} else {
+			tempTexture = textureManager.getIconTexture(gl,
+					EIconTextures.HEAT_MAP_GROUP_NORMAL);
 		}
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
@@ -2528,7 +2522,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		contextMenu.render(gl, this);
-		
 
 	}
 
@@ -2558,9 +2551,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		// glHeatMapView.getViewFrustum().setTop(ftop);
 		// glHeatMapView.getViewFrustum().setRight(fright);
-		 gl.glPushName(pickingManager.getPickingID(iUniqueID,
-		 EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView
-		 .getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
+				glHeatMapView.getID()));
 
 		heatMapRemoteElement.getTransform().getTranslation().set(fleftOffset, -0.2f, 0);
 		heatMapRemoteElement.getTransform().getScale()

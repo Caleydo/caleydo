@@ -1,5 +1,7 @@
 package org.caleydo.core.data.selection;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 public class Group {
@@ -126,6 +128,7 @@ public class Group {
 		this.selectionType = SelectionType;
 	}
 
+	@XmlTransient
 	public SelectionType getSelectionType() {
 		return selectionType;
 	}

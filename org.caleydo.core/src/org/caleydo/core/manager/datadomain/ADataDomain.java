@@ -33,7 +33,6 @@ public abstract class ADataDomain
 	protected EIconTextures icon = EIconTextures.NO_ICON_AVAILABLE;
 
 	/** parameters for loading the the data-{@link set} */
-	@XmlTransient
 	protected LoadDataParameters loadDataParameters;
 
 	/** bootstrap filename this application was started with */
@@ -84,7 +83,6 @@ public abstract class ADataDomain
 		this.dataFilterLevel = dataFilterLevel;
 	}
 
-	@XmlTransient
 	@Override
 	public LoadDataParameters getLoadDataParameters() {
 		return loadDataParameters;

@@ -112,7 +112,7 @@ public class GeneralManager {
 		xmlParserManager.initHandlers();
 
 		groupwareManager = null;
-		serializationManager = new SerializationManager();
+		serializationManager = SerializationManager.get();
 
 		resourceLoader = new ResourceLoader();
 

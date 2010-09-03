@@ -1,6 +1,19 @@
 package org.caleydo.rcp.startup;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.LoadDataParameters;
+import org.caleydo.core.data.collection.set.SetUtils;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.ADataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.serialize.DataInitializationData;
 import org.caleydo.core.serialize.ProjectLoader;
 import org.caleydo.rcp.Activator;
@@ -49,40 +62,37 @@ public class SerializationStartupProcedure
 			}
 			// dataDomain = Application.initData.getDataDomain();
 			// Application.startViewWithDataDomain.clear();
-//			Application.initializedStartViews = Application.initData.getViewIDs();
-//			Application.ProjectMode = ProjectMode.LOAD_PROJECT;
-//			SerializationManager.
-//			Application.bDeleteRestoredWorkbenchState = true;
+			// Application.initializedStartViews = Application.initData.getViewIDs();
+			// Application.ProjectMode = ProjectMode.LOAD_PROJECT;
+			// SerializationManager.
+			// Application.bDeleteRestoredWorkbenchState = true;
 		}
 
 		// CODE FROM APPLICATION.JAVA
 
-		// IDataDomain dataDomain = initData.getDataDomain();
-		// DataDomainManager.getInstance().register(dataDomain);
-		//
-		// if (!(dataDomain instanceof ISetBasedDataDomain))
-		// throw new IllegalStateException(
-		// "loading data is not supported for non-set-based data domains. Implement it!");
-		//
-		// ISetBasedDataDomain setBasedDataDomain = (ISetBasedDataDomain) dataDomain;
-		//
-		// LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
-		// SetUtils.createStorages(loadDataParameters);
-		// ISet set = SetUtils.createData(setBasedDataDomain);
-		//
-		// HashMap<ContentVAType, ContentVirtualArray> contentVAMap = initData.getContentVAMap();
-		// for (Entry<ContentVAType, ContentVirtualArray> entry : contentVAMap.entrySet()) {
-		// setBasedDataDomain.setContentVirtualArray(entry.getKey(), entry.getValue());
-		// }
-		//
-		// HashMap<StorageVAType, StorageVirtualArray> storageVAMap = initData.getStorageVAMap();
-		// for (Entry<StorageVAType, StorageVirtualArray> entry : storageVAMap.entrySet()) {
-		// setBasedDataDomain.setStorageVirtualArray(entry.getKey(), entry.getValue());
-		// }
-		// // we need the VAs to be available before the tree is initialized
-		// SetUtils.loadTrees(loadDataParameters, set);
-		//
-		// Application.initData = null;
+		ADataDomain dataDomain = data.getDataDomain();
+		DataDomainManager.getInstance().register(dataDomain);
+
+		if (dataDomain instanceof ASetBasedDataDomain) {
+			ASetBasedDataDomain setBasedDataDomain = (ASetBasedDataDomain) dataDomain;
+
+			LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
+			SetUtils.createStorages(loadDataParameters);
+			ISet set = SetUtils.createData(setBasedDataDomain);
+
+			HashMap<ContentVAType, ContentVirtualArray> contentVAMap = data.getContentVAMap();
+			for (Entry<ContentVAType, ContentVirtualArray> entry : contentVAMap.entrySet()) {
+				setBasedDataDomain.setContentVirtualArray(entry.getKey(), entry.getValue());
+			}
+
+			HashMap<StorageVAType, StorageVirtualArray> storageVAMap = data.getStorageVAMap();
+			for (Entry<StorageVAType, StorageVirtualArray> entry : storageVAMap.entrySet()) {
+				setBasedDataDomain.setStorageVirtualArray(entry.getKey(), entry.getValue());
+			}
+			// we need the VAs to be available before the tree is initialized
+			SetUtils.loadTrees(loadDataParameters, set);
+
+		}
 	}
 
 	public void loadSampleProject(boolean loadSampleProject) {

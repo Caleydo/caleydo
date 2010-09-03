@@ -20,8 +20,8 @@ public class IDType {
 	 * Constructor for de-serialization only. Use {@link #registerType(String, IDCategory, EStorageType)} to
 	 * create a new IDType.
 	 */
-	public IDType() {
-	}
+//	public IDType() {
+//	}
 
 	/**
 	 * Should be used for de-serialization only

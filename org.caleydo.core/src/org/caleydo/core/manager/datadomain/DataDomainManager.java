@@ -42,7 +42,7 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Create a new dataDomain
+	 * Create a new dataDomain. The created dataDomain is also registered with the manager.
 	 * 
 	 * @param dataDomainType
 	 *            the plug-in id of the data domain
