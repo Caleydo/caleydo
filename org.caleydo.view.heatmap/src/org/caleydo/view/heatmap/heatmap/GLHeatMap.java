@@ -369,11 +369,11 @@ public class GLHeatMap extends AStorageBasedView {
 				selectionType = SelectionType.SELECTION;
 				setActive(true);
 				break;
+		
 			case MOUSE_OVER:
-
 				selectionType = SelectionType.MOUSE_OVER;
-
 				break;
+				
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
@@ -394,6 +394,7 @@ public class GLHeatMap extends AStorageBasedView {
 				geneContextMenuItemContainer.setID(contentIDType, iExternalID);
 				contextMenu.addItemContanier(geneContextMenuItemContainer);
 				break;
+				
 			default:
 				return;
 
@@ -557,6 +558,32 @@ public class GLHeatMap extends AStorageBasedView {
 		createStorageSelection(SelectionType.MOUSE_OVER, selectedElement);
 	}
 
+
+	public void enterPressedSelect() {
+		StorageVirtualArray virtualArray = storageVA;
+		if (virtualArray == null)
+			throw new IllegalStateException(
+					"Virtual Array is required for enterPressed Operation");
+		
+		Set<Integer> elements = storageSelectionManager.getElements(SelectionType.MOUSE_OVER);
+		Integer selectedElement = -1;
+		if (elements.size() == 1) {
+			selectedElement = (Integer) elements.toArray()[0];
+			createStorageSelection(SelectionType.SELECTION, selectedElement);
+		}
+		
+		ContentVirtualArray contentVirtualArray = contentVA;
+		if (contentVirtualArray == null)
+			throw new IllegalStateException(
+					"Virtual Array is required for enterPressed Operation");
+		elements = contentSelectionManager.getElements(SelectionType.MOUSE_OVER);
+		selectedElement = -1;
+		if (elements.size() == 1) {
+			selectedElement = (Integer) elements.toArray()[0];
+			createContentSelection(SelectionType.SELECTION, selectedElement);
+		}
+	}
+	
 	private <VAType extends VirtualArray<?, ?, ?, ?>, SelectionManagerType extends SelectionManager> int cursorSelect(
 			VAType virtualArray, SelectionManagerType selectionManager, boolean isUp) {
 
@@ -958,5 +985,4 @@ public class GLHeatMap extends AStorageBasedView {
 	public ISet getSet() {
 		return set;
 	}
-
 }

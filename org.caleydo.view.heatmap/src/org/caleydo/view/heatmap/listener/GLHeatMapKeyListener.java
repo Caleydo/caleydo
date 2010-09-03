@@ -37,6 +37,9 @@ public class GLHeatMapKeyListener extends GLKeyListener<GLHeatMap> {
 		case SWT.ARROW_RIGHT:
 			glHeatMap.leftRightSelect(false);
 			break;
+		case SWT.CR:
+			glHeatMap.enterPressedSelect();
+			break;
 		}
 
 	}
