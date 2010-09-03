@@ -35,5 +35,4 @@ public class ViewCreator extends ASWTViewCreator {
 		DataDomainManager.getInstance().getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GenomeHTMLBrowser.VIEW_ID);
 	}
-
 }

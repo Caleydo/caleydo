@@ -14,7 +14,7 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 public class GrouperRenderStyle extends GeneralRenderStyle {
 
-	public static final float GUI_ELEMENT_MIN_SIZE = 100.0f;
+	public static final float GUI_ELEMENT_MIN_SIZE = 140.0f;
 	public static final float ELEMENT_LEFT_SPACING = 0.2f;
 	public static final float ELEMENT_TOP_SPACING = 0.02f;
 	public static final float ELEMENT_BOTTOM_SPACING = 0.02f;

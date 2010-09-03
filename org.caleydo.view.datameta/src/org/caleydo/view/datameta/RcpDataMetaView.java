@@ -9,8 +9,10 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.caleydo.view.histogram.RcpGLHistogramView;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -44,23 +46,24 @@ public class RcpDataMetaView extends CaleydoRCPViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		final Composite parentComposite = new Composite(parent, SWT.NULL);
-
-		parentComposite.setLayout(new GridLayout(1, false));
-
-		this.parentComposite = parentComposite;
-
-		Composite infoComposite = new Composite(this.parentComposite, SWT.NULL);
-		infoComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		GridLayout layout;
-		layout = new GridLayout(1, false);
-
-		layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
-		layout.marginHeight = layout.marginWidth = 0;
-
-		infoComposite.setLayout(layout);
 		
+		parentComposite = new Composite(parent, SWT.NULL);
+		parentComposite.setLayout(new GridLayout(1, false));
+		
+	    GridData gridData = new GridData();
+	    gridData.grabExcessHorizontalSpace = true;
+	    gridData.grabExcessVerticalSpace = true;
+	    gridData.horizontalAlignment = GridData.FILL;
+	    gridData.verticalAlignment = GridData.FILL;
+		
+		Composite infoComposite = new Composite(parentComposite, SWT.NULL);
+		infoComposite.setLayoutData(gridData);
+		infoComposite.setLayout(new FillLayout(SWT.VERTICAL));
+		
+		Composite histoComposite = new Composite(parentComposite, SWT.NULL);
+		histoComposite.setLayoutData(gridData);
+		histoComposite.setLayout(new FillLayout(SWT.VERTICAL));
+
 		dataMetaView = new DataMetaView();
 		SerializedDataMetaView serializedView = new SerializedDataMetaView();
 		dataMetaView.setDataDomain((ASetBasedDataDomain) DataDomainManager
@@ -69,7 +72,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart {
 		
 		RcpGLHistogramView histogramView = new RcpGLHistogramView();
 		histogramView.setDataDomain(dataMetaView.getDataDomain());
-		histogramView.createPartControl(infoComposite);
+		histogramView.createPartControl(histoComposite);
 		// Usually the canvas is registered to the GL animator in the PartListener.
 		// Because the GL histogram is no usual RCP view we have to do it on our own
 		GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(histogramView.getGLCanvas());

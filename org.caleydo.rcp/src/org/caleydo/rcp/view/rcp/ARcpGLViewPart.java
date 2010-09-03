@@ -114,12 +114,6 @@ public abstract class ARcpGLViewPart
 		setGLData(glCanvas, glView);
 		createPartControlGL();
 
-		if (glView instanceof IDataDomainBasedView<?>) {
-			dataDomainType = determineDataDomain(serializedView);
-
-			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager.getInstance()
-				.getDataDomain(dataDomainType));
-		}
 		// glView.setViewID(getViewGUIID());
 		glView.initFromSerializableRepresentation(serializedView);
 

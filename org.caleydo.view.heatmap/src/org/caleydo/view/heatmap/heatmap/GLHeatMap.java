@@ -419,7 +419,7 @@ public class GLHeatMap extends AStorageBasedView {
 					contextMenu.setMasterGLView(this);
 				}
 				StorageContextMenuItemContainer experimentContextMenuItemContainer = new StorageContextMenuItemContainer();
-				// experimentContextMenuItemContainer.setDataDomain(dataDomain);
+				experimentContextMenuItemContainer.setDataDomain(dataDomain);
 				experimentContextMenuItemContainer.setID(storageIDType, iExternalID);
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 			default:

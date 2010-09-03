@@ -7,6 +7,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.manager.event.AEvent;
+import org.eclipse.core.internal.runtime.InternalPlatform;
+import org.osgi.framework.Bundle;
 
 /**
  * Central access point for xml-serialization related tasks.
@@ -27,7 +29,6 @@ public class SerializationManager {
 			Class<?>[] classes = new Class<?>[eventTypes.size()];
 			classes = eventTypes.toArray(classes);
 			eventContext = JAXBContext.newInstance(classes);
-
 			projectContext = JAXBContext.newInstance(DataInitializationData.class, ViewList.class);
 		}
 		catch (JAXBException ex) {
