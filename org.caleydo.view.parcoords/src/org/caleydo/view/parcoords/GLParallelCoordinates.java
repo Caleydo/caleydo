@@ -1616,6 +1616,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 					contextMenu.setMasterGLView(this);
 				}
 				StorageContextMenuItemContainer experimentContextMenuItemContainer = new StorageContextMenuItemContainer();
+				experimentContextMenuItemContainer.setDataDomain(dataDomain);
 				experimentContextMenuItemContainer.setID(storageIDType, iExternalID);
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 

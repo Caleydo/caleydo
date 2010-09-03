@@ -503,6 +503,10 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		if (bHierarchyChanged) {
 			float fHierarchyHeight = rootGroup.getScaledHeight(parentGLCanvas.getWidth());
 			float fHierarchyWidth = rootGroup.getScaledWidth(parentGLCanvas.getWidth());
+			
+			System.out.println(fHierarchyHeight);
+			System.out.println(fHierarchyWidth);
+			
 			int minViewportHeight = (int) (parentGLCanvas.getHeight()
 					/ viewFrustum.getHeight() * fHierarchyHeight) + 10;
 			int minViewportWidth = (int) (parentGLCanvas.getWidth()

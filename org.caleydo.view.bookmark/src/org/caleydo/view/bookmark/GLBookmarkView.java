@@ -64,6 +64,8 @@ public class GLBookmarkView extends AGLView implements
 	private RemoveBookmarkListener removeBookmarkListener;
 
 	protected ASetBasedDataDomain dataDomain;
+	
+	private boolean contentChanged = true;
 
 	class PickingIDManager {
 		/**
@@ -103,8 +105,7 @@ public class GLBookmarkView extends AGLView implements
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLBookmarkView(GLCaleydoCanvas glCanvas, String label,
-			IViewFrustum viewFrustum) {
+	public GLBookmarkView(GLCaleydoCanvas glCanvas, String label, IViewFrustum viewFrustum) {
 
 		super(glCanvas, label, viewFrustum, true);
 		viewType = GLBookmarkView.VIEW_ID;
@@ -168,6 +169,52 @@ public class GLBookmarkView extends AGLView implements
 	@Override
 	public void display(GL gl) {
 
+		gl.glCallList(iGLDisplayListToCall);
+	}
+
+	@Override
+	protected void displayLocal(GL gl) {
+
+		pickingManager.handlePicking(this, gl);
+
+		if (bIsDisplayListDirtyLocal) {
+			bIsDisplayListDirtyLocal = false;
+			buildDisplayList(gl, iGLDisplayListIndexLocal);
+		}
+		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+
+		display(gl);
+		checkForHits(gl);
+		pickingIDManager.reset();
+	}
+
+	@Override
+	public void displayRemote(GL gl) {
+
+		if (bIsDisplayListDirtyRemote) {
+			bIsDisplayListDirtyRemote = false;
+			buildDisplayList(gl, iGLDisplayListIndexRemote);
+		}
+		iGLDisplayListToCall = iGLDisplayListIndexRemote;
+
+		display(gl);
+		checkForHits(gl);
+		pickingIDManager.reset();
+	}
+
+	/**
+	 * Builds a display list of graphical elements that do not have to be
+	 * updated in every frame.
+	 * 
+	 * @param gl
+	 *            GL context.
+	 * @param iGLDisplayListIndex
+	 *            Index of display list.
+	 */
+	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
+
+		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+
 		float currentHeight = viewFrustum.getHeight() - BookmarkRenderStyle.TOP_SPACING;
 		for (ABookmarkContainer<?> container : bookmarkContainers) {
 			container.getDimensions().setOrigins(0.0f, currentHeight);
@@ -176,22 +223,26 @@ public class GLBookmarkView extends AGLView implements
 			container.render(gl);
 		}
 
-	}
+		gl.glEndList();
 
-	@Override
-	protected void displayLocal(GL gl) {
-
-		pickingManager.handlePicking(this, gl);
-		display(gl);
-		checkForHits(gl);
-		pickingIDManager.reset();
-	}
-
-	@Override
-	public void displayRemote(GL gl) {
-		display(gl);
-		checkForHits(gl);
-		pickingIDManager.reset();
+		if (contentChanged) {
+			float height = 20; //TODO determine dynamically
+			float width = 8; // TODO determine dynamically
+			int minViewportHeight = (int) (parentGLCanvas.getHeight()
+					/ viewFrustum.getHeight() * height) + 10;
+			int minViewportWidth = (int) (parentGLCanvas.getWidth()
+					/ viewFrustum.getWidth() * width) + 10;
+			renderStyle.setMinViewDimensions(minViewportWidth, minViewportHeight, this);
+			if (parentGLCanvas.getHeight() <= 0) {
+				// Draw again in next frame where the viewport size is hopefully
+				// correct
+				setDisplayListDirty();
+			}
+			else {
+				// at the moment we do not consider a content change and make the size adaption only once
+				contentChanged = false;
+			}
+		}
 	}
 
 	@Override
@@ -245,28 +296,33 @@ public class GLBookmarkView extends AGLView implements
 
 	@Override
 	public void init(GL gl) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	protected void initLocal(GL gl) {
-		init(gl);
 
+		iGLDisplayListIndexLocal = gl.glGenLists(1);
+		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+
+		init(gl);
 	}
 
 	@Override
 	public void initRemote(GL gl, AGLView glParentView, GLMouseListener glMouseListener,
 			GLInfoAreaManager infoAreaManager) {
 
-		init(gl);
+		iGLDisplayListIndexRemote = gl.glGenLists(1);
+		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
+		init(gl);
 	}
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		// TODO Auto-generated method stub
-		return null;
+		SerializedBookmarkView serializedForm = new SerializedBookmarkView(
+				dataDomain.getDataDomainType());
+		serializedForm.setViewID(this.getID());
+		return serializedForm;
 	}
 
 	@Override

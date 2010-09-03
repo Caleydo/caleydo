@@ -152,5 +152,4 @@ public class GeneralRenderStyle {
 		event.setView(view);
 		eventPublisher.triggerEvent(event);
 	}
-
 }

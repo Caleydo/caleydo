@@ -43,9 +43,11 @@ public class DefaultToolBarRenderJob
 	@Override
 	public void run() {
 		toolBarView.removeAllViewSpecificToolBars();
-		for (AToolBarContent toolBarContent : toolBarContents) {
-			addToolBarContent(toolBarContent);
-		}
+
+		// UNCOMMENT THIS LINE TO DYNAMICALLY ADD TOOLBARS TO LEFT WORKBENCH FOLDER
+		// for (AToolBarContent toolBarContent : toolBarContents) {
+		// addToolBarContent(toolBarContent);
+		// }
 	}
 
 	/**
