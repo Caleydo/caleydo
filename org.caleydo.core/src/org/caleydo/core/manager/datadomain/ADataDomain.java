@@ -1,7 +1,6 @@
 package org.caleydo.core.manager.datadomain;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;

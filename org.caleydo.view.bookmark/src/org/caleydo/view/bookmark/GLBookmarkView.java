@@ -281,6 +281,8 @@ public class GLBookmarkView extends AGLView implements
 					+ event.getIDType().getIDCategory());
 
 		container.handleNewBookmarkEvent(event);
+		
+		setDisplayListDirty();
 	}
 
 	public <IDDataType> void handleRemoveBookmarkEvent(
@@ -292,6 +294,8 @@ public class GLBookmarkView extends AGLView implements
 					+ event.getIDType().getIDCategory());
 
 		container.handleRemoveBookmarkEvent(event);
+		
+		setDisplayListDirty();
 	}
 
 	@Override
@@ -351,6 +355,8 @@ public class GLBookmarkView extends AGLView implements
 				.get(selectionDelta.getIDType().getIDCategory());
 		if (container != null)
 			container.handleSelectionUpdate(selectionDelta);
+		
+		setDisplayListDirty();
 	}
 
 	@Override
@@ -359,6 +365,8 @@ public class GLBookmarkView extends AGLView implements
 		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(category);
 		if (container != null)
 			container.handleSelectionCommand(selectionCommand);
+		
+		setDisplayListDirty();
 	}
 
 	ContextMenu getContextMenu() {

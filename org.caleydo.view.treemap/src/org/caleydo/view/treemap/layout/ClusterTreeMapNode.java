@@ -1,9 +1,5 @@
 package org.caleydo.view.treemap.layout;
 
-import java.awt.Color;
-import java.beans.FeatureDescriptor;
-import java.util.ArrayList;
-
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;

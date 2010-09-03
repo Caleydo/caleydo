@@ -4,6 +4,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.view.OpenMatchmakerViewEvent;
 import org.caleydo.core.manager.event.view.OpenViewEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
@@ -53,6 +54,7 @@ public class RCPViewManager
 		GeneralManager.get().getEventPublisher().addListener(OpenViewEvent.class, activateViewListener);
 		GeneralManager.get().getEventPublisher()
 			.addListener(OpenMatchmakerViewEvent.class, activateViewListener);
+		GeneralManager.get().getEventPublisher().addListener(BookmarkEvent.class, activateViewListener);
 	}
 
 	@Override

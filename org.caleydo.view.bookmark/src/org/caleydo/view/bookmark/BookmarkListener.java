@@ -10,10 +10,9 @@ public class BookmarkListener extends AEventListener<GLBookmarkView> {
 	public void handleEvent(AEvent event) {
 
 		if (event instanceof BookmarkEvent<?>) {
+			
 			BookmarkEvent<?> bookmarkEvent = (BookmarkEvent<?>) event;
 			handler.handleNewBookmarkEvent(bookmarkEvent);
 		}
-
 	}
-
 }

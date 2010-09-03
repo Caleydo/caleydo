@@ -24,6 +24,7 @@ public class BookmarkItem
 		super();
 		setIconTexture(EIconTextures.CM_BOOKMARK);
 		setText("Bookmark");
+
 		BookmarkEvent<Integer> event = new BookmarkEvent<Integer>(idType);
 		event.addBookmark(id);
 		event.setSender(this);
@@ -39,7 +40,9 @@ public class BookmarkItem
 		super();
 		setIconTexture(EIconTextures.CM_BOOKMARK);
 		setText("Bookmark");
+		
 		BookmarkEvent<Integer> event = new BookmarkEvent<Integer>(idType);
+		event.setSender(this);
 
 		for (Integer id : ids)
 			event.addBookmark(id);

@@ -4,7 +4,6 @@ import org.caleydo.rcp.startup.StartupProcessor;
 import org.caleydo.rcp.toolbar.RcpToolBarView;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;

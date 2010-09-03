@@ -4,6 +4,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.view.OpenMatchmakerViewEvent;
 import org.caleydo.core.manager.event.view.OpenViewEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
@@ -18,6 +19,7 @@ import org.eclipse.ui.PlatformUI;
 public class ActivateViewListener
 	extends AEventListener<IListenerOwner> {
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void handleEvent(final AEvent event) {
 
@@ -58,9 +60,22 @@ public class ActivateViewListener
 				});
 
 			}
-			else if (event instanceof OpenViewEvent)
+			else if (event instanceof BookmarkEvent<?>) {
+			
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.showView("org.caleydo.view.bookmark");
+				
+				// TODO only re-trigger event if view is initially opened
+				
+				event.setSender(handler);
+				
+				// Re-trigger event so that view receives the initial bookmarks
+				GeneralManager.get().getEventPublisher().triggerEvent(event);
+			}
+			else if (event instanceof OpenViewEvent) {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.showView(((OpenViewEvent) event).getViewType());
+			}
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

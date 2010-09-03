@@ -9,7 +9,6 @@ import org.caleydo.view.bucket.SerializedBucketView;
 import org.caleydo.view.pathway.toolbar.PathwaySearchBox;
 import org.caleydo.view.pathway.toolbar.PathwayToolBarMediator;
 import org.caleydo.view.pathway.toolbar.actions.GeneMappingAction;
-import org.caleydo.view.pathway.toolbar.actions.TextureAction;
 
 /**
  * Widget based toolbar container to display pathway related toolbar content.

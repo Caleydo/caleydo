@@ -1,6 +1,5 @@
 package org.caleydo.view.treemap.layout;
 
-import java.awt.Color;
 import java.util.List;
 
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
