@@ -103,6 +103,11 @@ public class ToolBarContentFactory {
 		info.viewType = "org.caleydo.view.dataflipper";
 		info.ignored = false;
 		toolBarInfos.put(info.viewType, info);
+		
+		info = new ToolBarInfo();
+		info.viewType = "org.caleydo.view.treemap";
+		info.ignored = false;
+		toolBarInfos.put(info.viewType, info);
 	}
 
 	/**
