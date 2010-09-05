@@ -1,5 +1,10 @@
 package org.caleydo.view.treemap.layout;
 
+import java.awt.Color;
+import java.beans.FeatureDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
@@ -7,8 +12,13 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 public class ClusterTreeMapNode extends ATreeMapNode{
 
 	public static ClusterTreeMapNode createFromClusterNodeTree(Tree<ClusterNode> clusterTree, ColorMapping colorMapper){
+		return createFromClusterNodeTree(clusterTree.getRoot(), colorMapper);
+	}
+	
+	
+	public static ClusterTreeMapNode createFromClusterNodeTree(ClusterNode clusterNode, ColorMapping colorMapper){
 		
-		ClusterNode clusterNode = clusterTree.getRoot();
+//		ClusterNode clusterNode = clusterTree.getRoot();
 		if(clusterNode!=null){
 			Tree<ATreeMapNode> tree = new Tree<ATreeMapNode>();
 			ClusterTreeMapNode treemapNode = new ClusterTreeMapNode();
@@ -18,6 +28,17 @@ public class ClusterTreeMapNode extends ATreeMapNode{
 			treemapNode.setTree(tree);
 			treemapNode.data=clusterNode;
 			treemapNode.referenzData=referenz;
+			
+			try {
+				referenz.sizeGetMehtod = clusterNode.getClass().getMethod("getSize", new Class[0]);
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			createHelp(treemapNode, clusterNode,referenz);
 			
 			return treemapNode;
@@ -60,7 +81,21 @@ public class ClusterTreeMapNode extends ATreeMapNode{
 	@Override
 	public float getSizeAttribute() {
 		// TODO return right attribute
-		return data.getSize()/referenzData.sizeReferenzValue;
+		float value=0;
+		try {
+			value = (Float) referenzData.sizeGetMehtod.invoke(data, new Object[0]);
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		return data.getSize()/referenzData.sizeReferenzValue;
+		return value/referenzData.sizeReferenzValue;
 	}
 
 	@Override

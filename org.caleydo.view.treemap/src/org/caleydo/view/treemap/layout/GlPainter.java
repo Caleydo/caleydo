@@ -1,6 +1,5 @@
 package org.caleydo.view.treemap.layout;
 
-import java.awt.Color;
 import java.util.List;
 
 import javax.media.opengl.GL;
@@ -36,11 +35,20 @@ public class GlPainter {
 
 	public void paintHighlighting(Tree<ATreeMapNode> tree, SelectionManager selection){
 		gl.glNewList(highlightList, GL.GL_COMPILE);
+		
+		for(int id:selection.getElements(SelectionType.MOUSE_OVER)){
+			ATreeMapNode node= tree.getNodeByNumber(id);
+			if(node!=null)
+				paintRectangle(node.getMinX(), node.getMinY(), node.getMaxX(), node.getMaxY(), SelectionType.MOUSE_OVER.getColor());
+		}
+		
+		
 		for(int id:selection.getElements(SelectionType.SELECTION)){
 			ATreeMapNode node= tree.getNodeByNumber(id);
 			if(node!=null)
-				paintRectangle(node.getMinX(), node.getMinY(), node.getMaxX(), node.getMaxY(), Color.YELLOW.getComponents(null));
+				paintRectangle(node.getMinX(), node.getMinY(), node.getMaxX(), node.getMaxY(), SelectionType.SELECTION.getColor());
 		}
+		
 		gl.glEndList();
 		
 	}

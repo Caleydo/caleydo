@@ -121,6 +121,7 @@ Export-Package: org.caleydo.core.bridge.gui;uses:="org.eclipse.swt.widgets",
  org.caleydo.core.manager.event.view.remote;uses:="org.caleydo.core.data.mapping,org.caleydo.core.manager.event",
  org.caleydo.core.manager.event.view.selection,
  org.caleydo.core.manager.event.view.storagebased;uses:="org.caleydo.core.manager.event,org.caleydo.core.data.selection.delta",
+ org.caleydo.core.manager.event.view.treemap,
  org.caleydo.core.manager.execution,
  org.caleydo.core.manager.gui;
   uses:="org.eclipse.jface.action,
