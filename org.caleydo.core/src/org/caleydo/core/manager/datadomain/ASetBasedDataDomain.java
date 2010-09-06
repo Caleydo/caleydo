@@ -82,12 +82,14 @@ public abstract class ASetBasedDataDomain
 	protected EventPublisher eventPublisher;
 
 	public ASetBasedDataDomain() {
+		super();
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
 		init();
 	}
 
 	public ASetBasedDataDomain(String dataDomainType) {
+		super();
 		this.dataDomainType = dataDomainType;
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();

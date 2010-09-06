@@ -35,6 +35,11 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 	}
 
 	@Override
+	protected void initIDMappings() {
+		// nothing to do ATM
+	}
+	
+	@Override
 	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
 		// TODO Auto-generated method stub
 

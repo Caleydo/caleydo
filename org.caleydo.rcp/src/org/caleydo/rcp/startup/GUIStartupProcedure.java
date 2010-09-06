@@ -29,8 +29,6 @@ public class GUIStartupProcedure
 	@Override
 	public void init(ApplicationInitData appInitData) {
 
-		
-
 		// FIXME this needs to be done after the wizard is closed, and dynamically
 		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
 		cmd.setAttributes("org.caleydo.datadomain.genetic");

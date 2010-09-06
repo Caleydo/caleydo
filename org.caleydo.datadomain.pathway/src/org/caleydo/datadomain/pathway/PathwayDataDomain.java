@@ -39,6 +39,11 @@ public class PathwayDataDomain extends ADataDomain {
 		primaryIDType = IDType.getIDType("PATHWAY_VERTEX");
 	}
 
+	@Override
+	protected void initIDMappings() {
+		// nothing to do ATM
+	}
+	
 	public IDType getPrimaryIDType() {
 		return primaryIDType;
 	}

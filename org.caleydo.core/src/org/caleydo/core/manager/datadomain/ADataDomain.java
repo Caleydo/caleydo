@@ -43,6 +43,12 @@ public abstract class ADataDomain
 	 */
 	// protected HashMap<IDCategory, String> possibleIDCategories;
 
+	public ADataDomain() {
+		initIDMappings();
+	}
+	
+	protected abstract void initIDMappings();
+	
 	@Override
 	public String getDataDomainType() {
 		return dataDomainType;

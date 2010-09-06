@@ -36,10 +36,8 @@ public class Activator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		
 		SerializationManager.get().registerSerializableType(GeneticDataDomain.class);
-		// load ids needed in this datadomain
-		GeneralManager.get().getXmlParserManager()
-				.parseXmlFileByName("data/bootstrap/bootstrap.xml");
 	}
 
 	/*

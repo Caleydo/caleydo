@@ -30,6 +30,7 @@ import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.mapping.IDMappingManager;
+import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
@@ -82,9 +83,16 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		pathwayViewerMode = false;
 		contentLabelSingular = "gene";
 		contentLabelPlural = "genes";
-
 	}
-
+	
+	@Override
+	protected void initIDMappings() {
+		
+		// Load IDs needed in this datadomain
+		GeneralManager.get().getXmlParserManager()
+				.parseXmlFileByName("data/bootstrap/bootstrap.xml");		
+	}
+	
 	@Override
 	public void setSet(Set set) {
 		super.setSet(set);

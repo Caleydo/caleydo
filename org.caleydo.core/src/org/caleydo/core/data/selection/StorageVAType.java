@@ -16,10 +16,10 @@ public class StorageVAType
 	private static HashMap<StorageVAType, Boolean> registeredTypes;
 
 	StorageVAType() {
-		if (registeredTypes == null)
+		if (registeredTypes == null) {
 			registeredTypes = new HashMap<StorageVAType, Boolean>();
-		registeredTypes.put(this, null);
-
+			registeredTypes.put(this, null);
+		}
 	}
 
 	StorageVAType(String stringRep) {

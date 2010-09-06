@@ -33,6 +33,11 @@ public class ClinicalDataDomain extends ASetBasedDataDomain {
 		icon = EIconTextures.DATA_DOMAIN_CLINICAL;
 
 	}
+	
+	@Override
+	protected void initIDMappings() {
+		// nothing to do ATM
+	}
 
 	@Override
 	public void setSet(Set set) {
