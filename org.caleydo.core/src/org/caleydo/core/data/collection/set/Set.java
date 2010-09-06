@@ -30,6 +30,7 @@ import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.ClusterState;
+import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -72,7 +73,6 @@ public class Set
 
 	protected boolean isSetHomogeneous = false;
 
-	
 	private StatisticsResult statisticsResult;
 
 	private ASetBasedDataDomain dataDomain;
@@ -456,8 +456,7 @@ public class Set
 
 	@Override
 	public void finalize() {
-		GeneralManager.get().getLogger()
-			.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Set " + this + "destroyed"));
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Set " + this + "destroyed"));
 	}
 
 	@Override

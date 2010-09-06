@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -25,10 +24,12 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.osgi.framework.Bundle;
 
 /**
@@ -90,23 +91,7 @@ public class ProjectSaver {
 		zipUtils.deleteDirectory(RECENT_PROJECT_DIR_NAME);
 		prepareDirectory(RECENT_PROJECT_DIR_NAME);
 		savePluginData(RECENT_PROJECT_DIR_NAME);
-		// FIXME - this works only for genetic data now
-		// IDataDomain dataDomain =
-		// DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic");
-		// if (dataDomain != null) {
-		// if (!dataDomain.getLoadDataParameters().getFileName().startsWith(RECENT_PROJECT_DIR_NAME)) {
-		// zipUtils.deleteDirectory(RECENT_PROJECT_DIR_NAME);
-		// }
-		// }
-		// else {
-		// GeneralManager
-		// .get()
-		// .getLogger()
-		// .log(
-		// new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
-		// "no genetic useCase, cannot save project"));
-		// return;
-		// }
+
 		saveProjectData(RECENT_PROJECT_DIR_NAME);
 
 		// remove saveViewData() for LAZY_VIEW_LOADING
@@ -122,6 +107,11 @@ public class ProjectSaver {
 		tempDirFile.mkdir();
 	}
 
+	/**
+	 * Save which plug-ins were loaded
+	 * 
+	 * @param dirName
+	 */
 	private void savePluginData(String dirName) {
 		PlugInList plugInList = new PlugInList();
 
@@ -129,24 +119,17 @@ public class ProjectSaver {
 			if (bundle.getSymbolicName().contains("org.caleydo") && bundle.getState() == Bundle.ACTIVE)
 				plugInList.plugIns.add(bundle.getSymbolicName());
 		}
-		// for (String namespace : Platform.getExtensionRegistry().getNamespaces()) {
-		// if (namespace.contains("org.caleydo")) {
-		// plugInList.plugIns.add(namespace);
-		// }
-		// }
-		Collections.sort(plugInList.plugIns);
-		for (String plugin : plugInList.plugIns) {
-			System.out.println(plugin);
-		}
+
 		File pluginFile = new File(dirName + PLUG_IN_LIST_FILE_NAME);
 		try {
 			JAXBContext context = JAXBContext.newInstance(PlugInList.class);
 			Marshaller marshaller = context.createMarshaller();
 			marshaller.marshal(plugInList, pluginFile);
 		}
-		catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		catch (JAXBException ex) {
+			Logger.log(new Status(Status.ERROR, this.toString(), "Could not serialize plug-in names: "
+				+ plugInList.toString(), ex));
+			ex.printStackTrace();
 		}
 
 	}

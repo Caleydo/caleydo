@@ -18,6 +18,7 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -459,10 +460,9 @@ public class GLPathwayContentCreator {
 		EPathwayVertexShape shape = vertexRep.getShapeType();
 
 		if (vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).toArray().length == 0) {
-			generalManager.getLogger().log(
-					new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
-							"Cannot create pathway vertex. Pathway node representation "
-									+ vertexRep.getName() + " has not parent in graph!"));
+			Logger.log(new Status(IStatus.WARNING, this.toString(),
+					"Cannot create pathway vertex. Pathway node representation "
+							+ vertexRep.getName() + " has not parent in graph!"));
 			return;
 		}
 

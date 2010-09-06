@@ -1,6 +1,7 @@
 package org.caleydo.core.util.exception;
 
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -41,12 +42,8 @@ public class ExceptionHandler {
 	 */
 	public void handleViewException(RuntimeException exception, final AGLView glEventListener) {
 
-		GeneralManager
-			.get()
-			.getLogger()
-			.log(
-				new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, "Caught Exception: "
-					+ exception.getMessage(), exception));
+		Logger.log(new Status(IStatus.ERROR, this.toString(), "Caught Exception: " + exception.getMessage(),
+			exception));
 
 		glEventListener.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
 			@Override

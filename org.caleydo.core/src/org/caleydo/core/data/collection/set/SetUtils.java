@@ -34,6 +34,7 @@ import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.ascii.TabularAsciiDataReader;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -219,10 +220,10 @@ public class SetUtils {
 			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager()
 				.createCommandByType(ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
-			if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
+		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 			String lookupTableInfo =
-				loadDataParameters.getFileIDTypeName() + "_2_"
-					+ dataDomain.getContentIDType().getTypeName() + " REVERSE";
+				loadDataParameters.getFileIDTypeName() + "_2_" + dataDomain.getContentIDType().getTypeName()
+					+ " REVERSE";
 
 			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
 				loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
@@ -335,7 +336,7 @@ public class SetUtils {
 
 		if (tree != null) {
 			StringWriter writer = new StringWriter();
-			TreePorter treePorter = new TreePorter();	
+			TreePorter treePorter = new TreePorter();
 			treePorter.exportTree(writer, tree);
 			xml = writer.getBuffer().toString();
 		}
@@ -397,12 +398,8 @@ public class SetUtils {
 		String geneTreeFileName = loadDataParameters.getGeneTreeFileName();
 		if (geneTreeFileName != null) {
 			if (geneTreeFileName.equals("") == false) {
-				GeneralManager
-					.get()
-					.getLogger()
-					.log(
-						new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Loading gene tree from file "
-							+ geneTreeFileName));
+				Logger.log(new Status(IStatus.INFO, "SetUtils", "Loading gene tree from file "
+					+ geneTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(set.getDataDomain());
@@ -426,12 +423,8 @@ public class SetUtils {
 		String experimentsTreeFileName = loadDataParameters.getExperimentsFileName();
 		if (experimentsTreeFileName != null) {
 			if (experimentsTreeFileName.equals("") == false) {
-				GeneralManager
-					.get()
-					.getLogger()
-					.log(
-						new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
-							"Loading experiments tree from file " + experimentsTreeFileName));
+				Logger.log(new Status(IStatus.INFO, "SetUtils", "Loading experiments tree from file "
+					+ experimentsTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(set.getDataDomain());

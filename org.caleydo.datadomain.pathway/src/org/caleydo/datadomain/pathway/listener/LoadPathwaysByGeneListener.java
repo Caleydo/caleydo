@@ -3,9 +3,9 @@ package org.caleydo.datadomain.pathway.listener;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.IDCategory;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
 import org.eclipse.core.runtime.IStatus;
@@ -23,11 +23,8 @@ public class LoadPathwaysByGeneListener extends APathwayLoaderListener {
 						.getPathwayGraphsByGeneID(loadEvent.getIdType(),
 								loadEvent.getGeneID());
 				if (pathwayGraphs == null) {
-					GeneralManager
-							.get()
-							.getLogger()
-							.log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
-									"No mapping found for Gene ID to pathway graphs."));
+					Logger.log(new Status(IStatus.WARNING, this.toString(),
+							"No mapping found for Gene ID to pathway graphs."));
 					return;
 				}
 				handler.loadDependentPathways(pathwayGraphs);

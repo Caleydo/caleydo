@@ -2,10 +2,9 @@ package org.caleydo.core.serialize;
 
 import java.util.Date;
 
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.view.ViewManager;
-import org.eclipse.core.runtime.ILog;
+import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -17,8 +16,6 @@ import org.eclipse.core.runtime.Status;
  */
 public class AutoSaver
 	implements Runnable {
-
-	ILog log = GeneralManager.get().getLogger();
 
 	/** Default interval to wait between 2 auto-saves in milliseconds */
 	public static final long DEFAULT_INTERVAL = 100000;
@@ -45,7 +42,7 @@ public class AutoSaver
 			Date start = new Date();
 			projectSaver.saveRecentProject();
 			Date stop = new Date();
-			log.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "AutoSaver: auto save took "
+			Logger.log(new Status(IStatus.INFO, this.toString(), "AutoSaver: auto save took "
 				+ (stop.getTime() - start.getTime()) + " ms"));
 
 			lastSaveTimeStamp = new Date();

@@ -29,8 +29,6 @@ public class NetworkEventReceiver
 	extends EventPublisher
 	implements Runnable {
 
-	ILog log = GeneralManager.get().getLogger();
-
 	/** Related {@link NetworkManager} for this {@link NetworkEventReceiver} */
 	private NetworkManager networkManager;
 

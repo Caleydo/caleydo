@@ -49,6 +49,7 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.IView;
@@ -2498,11 +2499,8 @@ public class GLBucket extends AGLView implements
 		} else if (poolLevel.hasFreePosition()) {
 			destination = poolLevel.getNextFree();
 		} else {
-			GeneralManager
-					.get()
-					.getLogger()
-					.log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
-							"No empty space left to add new pathway!"));
+			Logger.log(new Status(IStatus.WARNING, this.toString(),
+					"No empty space left to add new pathway!"));
 			newViews.clear();
 			return false;
 		}

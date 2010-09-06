@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.caleydo.core.manager.AManager;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.parser.BioCartaPathwayImageMapSaxHandler;
 import org.caleydo.datadomain.pathway.parser.KgmlSaxHandler;
@@ -105,15 +105,12 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 		hashPathwayDatabase.put(type, tmpPathwayDatabase);
 
-		GeneralManager
-				.get()
-				.getLogger()
-				.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
-						"Setting pathway loading path: database-type:[" + type + "] "
-								+ "xml-path:[" + tmpPathwayDatabase.getXMLPath()
-								+ "] image-path:[" + tmpPathwayDatabase.getImagePath()
-								+ "] image-map-path:["
-								+ tmpPathwayDatabase.getImageMapPath() + "]"));
+		Logger.log(new Status(IStatus.INFO, this.toString(),
+				"Setting pathway loading path: database-type:[" + type + "] "
+						+ "xml-path:[" + tmpPathwayDatabase.getXMLPath()
+						+ "] image-path:[" + tmpPathwayDatabase.getImagePath()
+						+ "] image-map-path:[" + tmpPathwayDatabase.getImageMapPath()
+						+ "]"));
 	}
 
 	public void triggerParsingPathwayDatabases() {

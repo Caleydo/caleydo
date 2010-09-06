@@ -105,7 +105,6 @@ public class NetworkManager
 		networkName = DEFAULT_NETWORK_NAME;
 
 		generalManager = GeneralManager.get();
-		log = generalManager.getLogger();
 		centralEventPublisher = generalManager.getEventPublisher();
 
 		connections = new ArrayList<Connection>();

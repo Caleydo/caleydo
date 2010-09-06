@@ -99,8 +99,6 @@ public class GeneralManager {
 		PreferenceManager preferenceManager = PreferenceManager.get();
 		preferenceManager.initialize();
 
-		initLogger();
-
 		storageManager = new StorageManager();
 		commandManager = new CommandManager();
 		eventPublisher = new EventPublisher();
@@ -146,16 +144,7 @@ public class GeneralManager {
 		this.organism = organism;
 	}
 
-	/**
-	 * Initialize the Java internal logger
-	 */
-	private void initLogger() {
-		logger = Platform.getLog(Platform.getBundle("org.caleydo.rcp"));
-	}
 
-	public final ILog getLogger() {
-		return logger;
-	}
 
 	/**
 	 * Resource loader that is responsible for loading images, textures and data files in the Caleydo

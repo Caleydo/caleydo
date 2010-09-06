@@ -34,6 +34,7 @@ import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ISetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
@@ -493,8 +494,8 @@ public abstract class AStorageBasedView
 			}
 		}
 		catch (InvalidAttributeValueException e) {
-			generalManager.getLogger().log(
-				new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
+			Logger.log(
+				new Status(IStatus.WARNING, this.toString(),
 					"Can not handle data type of update in selectionDelta", e));
 		}
 	}

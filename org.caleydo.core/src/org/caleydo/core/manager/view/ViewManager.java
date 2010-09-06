@@ -21,6 +21,7 @@ import org.caleydo.core.manager.view.creator.AGLViewCreator;
 import org.caleydo.core.manager.view.creator.ASWTViewCreator;
 import org.caleydo.core.manager.view.creator.IViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -144,12 +145,8 @@ public class ViewManager
 
 	public AGLView createGLView(String viewID, GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
-		GeneralManager
-			.get()
-			.getLogger()
-			.log(
-				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Creating GL canvas view from type "
-					+ viewID));
+		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Creating GL canvas view from type "
+			+ viewID));
 
 		AGLView glView = null;
 
@@ -170,8 +167,8 @@ public class ViewManager
 		int iGLCanvasID = glCanvas.getID();
 
 		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasID)) {
-			generalManager.getLogger().log(
-				new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "GL Canvas with ID " + iGLCanvasID
+			Logger.log(
+				new Status(IStatus.WARNING, this.toString(), "GL Canvas with ID " + iGLCanvasID
 					+ " is already registered! Do nothing."));
 
 			return false;

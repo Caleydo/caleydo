@@ -10,6 +10,7 @@ import java.util.StringTokenizer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.manager.view.ViewManager;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -34,9 +35,8 @@ public class PathwayLoaderThread extends Thread {
 		this.generalManager = GeneralManager.get();
 		this.pathwayDatabases = pathwayDatabases;
 
-		generalManager.getLogger().log(
-				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
-						"Start pathway databases loader thread"));
+		Logger.log(new Status(IStatus.INFO, this.toString(),
+				"Start pathway databases loader thread"));
 
 		start();
 	}
@@ -65,9 +65,8 @@ public class PathwayLoaderThread extends Thread {
 
 		GeneralManager generalManager = GeneralManager.get();
 
-		generalManager.getLogger().log(
-				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start parsing "
-						+ pathwayDatabase.getName() + " pathways."));
+		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Start parsing "
+				+ pathwayDatabase.getName() + " pathways."));
 
 		BufferedReader file = null;
 		String sLine = null;
@@ -146,10 +145,9 @@ public class PathwayLoaderThread extends Thread {
 				int iImageHeight = tmpPathwayGraph.getHeight();
 
 				if (iImageWidth == -1 || iImageHeight == -1) {
-					generalManager.getLogger().log(
-							new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
-									"Pathway texture width=" + iImageWidth + " / height="
-											+ iImageHeight));
+					Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread",
+							"Pathway texture width=" + iImageWidth + " / height="
+									+ iImageHeight));
 				}
 
 				iPathwayIndex++;
@@ -168,8 +166,7 @@ public class PathwayLoaderThread extends Thread {
 		// tmpGLRemoteRendering3D.enableBusyMode(false);
 		// }
 
-		generalManager.getLogger().log(
-				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Finished parsing "
-						+ pathwayDatabase.getName() + " pathways."));
+		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Finished parsing "
+				+ pathwayDatabase.getName() + " pathways."));
 	}
 }

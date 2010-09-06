@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.net.IGroupwareManager;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.rcp.Activator;
@@ -158,8 +159,7 @@ public class StartupProcessor {
 		// Save preferences before shutdown
 		GeneralManager generalManager = GeneralManager.get();
 		try {
-			generalManager.getLogger().log(
-				new Status(IStatus.WARNING, Activator.PLUGIN_ID, "Save Caleydo preferences..."));
+			Logger.log(new Status(IStatus.WARNING, this.toString(), "Save Caleydo preferences..."));
 			generalManager.getPreferenceStore().save();
 		}
 		catch (IOException e) {
@@ -174,7 +174,7 @@ public class StartupProcessor {
 
 		generalManager.getViewGLCanvasManager().stopAnimator();
 
-		generalManager.getLogger().log(new Status(IStatus.INFO, Activator.PLUGIN_ID, "Bye bye!"));
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Bye bye!"));
 		// display.dispose();
 
 		System.exit(0);

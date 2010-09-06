@@ -11,6 +11,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -57,9 +58,8 @@ public class CmdDataCreateSet
 
 		fillSets(createdObject);
 
-		generalManager.getLogger().log(
-			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "New Set with internal ID "
-				+ createdObject.getID() + " and external ID " + externalID + " created."));
+		Logger.log(new Status(IStatus.INFO, this.toString(), "New Set with internal ID "
+			+ createdObject.getID() + " and external ID " + externalID + " created."));
 
 		dataDomain.setSet(createdObject);
 
@@ -94,12 +94,7 @@ public class CmdDataCreateSet
 		dataDomain = (ASetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(sAttrib3);
 		if (dataDomain == null) {
 			DataDomainManager.getInstance().createDataDomain(sAttrib3);
-			GeneralManager
-				.get()
-				.getLogger()
-				.log(
-					new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Lazy creation of data domain "
-						+ sAttrib3));
+			Logger.log(new Status(IStatus.INFO, this.toString(), "Lazy creation of data domain " + sAttrib3));
 		}
 	}
 

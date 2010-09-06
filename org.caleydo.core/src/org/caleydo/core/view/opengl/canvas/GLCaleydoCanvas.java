@@ -9,6 +9,7 @@ import javax.media.opengl.GLEventListener;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.FPSCounter;
 import org.eclipse.core.runtime.IStatus;
@@ -54,12 +55,8 @@ public class GLCaleydoCanvas
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
-		GeneralManager
-			.get()
-			.getLogger()
-			.log(
-				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Creating canvas with ID " + iGLCanvasID
-					+ "." + "\nOpenGL capabilities:" + drawable.getChosenGLCapabilities()));
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Creating canvas with ID " + iGLCanvasID + "."
+			+ "\nOpenGL capabilities:" + drawable.getChosenGLCapabilities()));
 
 		GL gl = drawable.getGL();
 

@@ -23,7 +23,6 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
@@ -46,6 +45,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -547,16 +547,12 @@ public class GLPathway extends AGLView implements
 		int iImageWidth = pathway.getWidth();
 		int iImageHeight = pathway.getHeight();
 
-		generalManager.getLogger().log(
-				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
-						"Pathway texture width=" + iImageWidth + " / height="
-								+ iImageHeight));
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Pathway texture width="
+				+ iImageWidth + " / height=" + iImageHeight));
 
 		if (iImageWidth == -1 || iImageHeight == -1) {
-			generalManager
-					.getLogger()
-					.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
-							"Problem because pathway texture width or height is invalid!"));
+			Logger.log(new Status(IStatus.ERROR, this.toString(),
+					"Problem because pathway texture width or height is invalid!"));
 		}
 
 		float fTmpPathwayWidth = iImageWidth * PathwayRenderStyle.SCALING_FACTOR_X

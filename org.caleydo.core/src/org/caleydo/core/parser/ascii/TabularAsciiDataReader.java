@@ -15,6 +15,7 @@ import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -106,12 +107,8 @@ public class TabularAsciiDataReader
 			else {
 				bAllTokensProper = false;
 
-				GeneralManager
-					.get()
-					.getLogger()
-					.log(
-						new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "Unknown column data type: "
-							+ tokenPattern));
+				Logger.log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "Unknown column data type: "
+					+ tokenPattern));
 			}
 		}
 
@@ -227,8 +224,8 @@ public class TabularAsciiDataReader
 										+ "\" cannot be converted to a number. Please change the data selection and try again.";
 								MessageDialog.openError(new Shell(), "Error during parsing", sErrorMessage);
 
-								GeneralManager.get().getLogger()
-									.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, sErrorMessage));
+								Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, sErrorMessage,
+									nfe));
 								throw nfe;
 							}
 

@@ -10,6 +10,7 @@ import org.caleydo.core.manager.event.view.OpenViewEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.rcp.action.toolbar.view.StartClusteringAction;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -61,14 +62,14 @@ public class ActivateViewListener
 
 			}
 			else if (event instanceof BookmarkEvent<?>) {
-			
+
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.showView("org.caleydo.view.bookmark");
-				
+
 				// TODO only re-trigger event if view is initially opened
-				
+
 				event.setSender(handler);
-				
+
 				// Re-trigger event so that view receives the initial bookmarks
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}
@@ -79,8 +80,7 @@ public class ActivateViewListener
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();
-			GeneralManager.get().getLogger()
-				.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Unable to open bucket view.", e));
+			Logger.log(new Status(IStatus.INFO, this.toString(), "Unable to open bucket view.", e));
 		}
 	}
 }

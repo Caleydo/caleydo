@@ -18,9 +18,10 @@ import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.util.Logger;
+import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 
@@ -169,7 +170,7 @@ public class ProjectLoader {
 		for (String plugIn : plugIns) {
 			Bundle bundle = Platform.getBundle(plugIn);
 			if (bundle == null) {
-				Logger.log(IStatus.WARNING, toString(), "Could not load bundle: " + bundle);
+				Logger.log(new Status(IStatus.WARNING, toString(), "Could not load bundle: " + bundle));
 				continue;
 			}
 			try {

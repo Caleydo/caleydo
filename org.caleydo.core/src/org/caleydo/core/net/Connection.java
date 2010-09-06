@@ -22,7 +22,7 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.serialize.DataInitializationData;
-import org.eclipse.core.runtime.ILog;
+import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -33,9 +33,6 @@ import org.eclipse.core.runtime.Status;
  * @author Werner Puff
  */
 public class Connection {
-
-	/** utility object for logging */
-	ILog log = GeneralManager.get().getLogger();
 
 	/** {@link NetworkManager} for managing this connection. */
 	private NetworkManager networkManager;
@@ -130,7 +127,7 @@ public class Connection {
 	 *             if a error during handshaking occurs
 	 */
 	public DataInitializationData connect(InetAddress address, int port) throws ConnectException {
-		log.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "connect(): address=" + address));
+		Logger.log(new Status(IStatus.INFO, this.toString(), "connect(): address=" + address));
 		DataInitializationData initData;
 		try {
 			socket = new Socket(address, port);
@@ -146,7 +143,7 @@ public class Connection {
 			networkUtils.writeHandshake(clientHandshake, outputStream);
 
 			ServerHandshake serverHandshake = (ServerHandshake) networkUtils.readHandshake(inputStream);
-			log.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "connect(): serverHandshake="
+			Logger.log(new Status(IStatus.INFO, this.toString(), "connect(): serverHandshake="
 				+ serverHandshake));
 
 			if (serverHandshake.getError() != null) {

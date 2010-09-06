@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.gui.SWTGUIManager;
+import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -181,12 +182,9 @@ public abstract class AbstractLoader {
 
 		try {
 
-			GeneralManager
-				.get()
-				.getLogger()
-				.log(
-					new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start loading file " + sFileName
-						+ "..."));
+			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start loading file " + sFileName
+				+ "..."));
+
 			BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
 			this.loadDataParseFile(brFile, computeNumberOfLinesInFile(sFileName));
@@ -196,15 +194,11 @@ public abstract class AbstractLoader {
 			}
 		}
 		catch (Exception e) {
+			Logger.log(new Status(IStatus.ERROR, this.toString(), "Could not read data file.", e));
 			throw new RuntimeException("Could not read data file '" + sFileName + "'", e);
 		}
 
-		GeneralManager
-			.get()
-			.getLogger()
-			.log(
-				new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "File " + sFileName
-					+ " successfully loaded."));
+		Logger.log(new Status(IStatus.WARNING, toString(), "File " + sFileName + " successfully loaded."));
 
 		setArraysToStorages();
 

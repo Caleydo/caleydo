@@ -16,6 +16,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.RemoveManagedSelectionTypesEvent;
+import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -490,12 +491,8 @@ public class SelectionManager
 			selectionID = item.getPrimaryID();
 
 			if (selectionID == -1) {
-				GeneralManager
-					.get()
-					.getLogger()
-					.log(
-						new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "No internal id for "
-							+ item.getPrimaryID()));
+				Logger.log(new Status(IStatus.WARNING, this.toString(), "No internal id for "
+					+ item.getPrimaryID()));
 
 				continue;
 			}

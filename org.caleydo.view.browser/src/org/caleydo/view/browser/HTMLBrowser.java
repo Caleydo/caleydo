@@ -8,6 +8,7 @@ import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializedDummyView;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
@@ -66,7 +67,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 
 	private ChangeURLListener changeURLListener;
 
-	//private boolean makeRegularScreenshots = false;
+	// private boolean makeRegularScreenshots = false;
 
 	private Runnable timer = null;
 
@@ -227,8 +228,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 
 	@Override
 	public void drawView() {
-		generalManager.getLogger().log(
-				new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Load " + url));
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Load " + url));
 
 		try {
 			parentComposite.getDisplay().asyncExec(new Runnable() {
@@ -244,9 +244,8 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 				}
 			});
 		} catch (SWTException swte) {
-			generalManager.getLogger().log(
-					new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
-							"Error while loading " + url, swte));
+			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
+					"Error while loading " + url, swte));
 		}
 	}
 

@@ -10,13 +10,12 @@ import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.serialize.DataInitializationData;
 import org.caleydo.core.serialize.ProjectLoader;
-import org.caleydo.rcp.Activator;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.rcp.Application;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -38,8 +37,7 @@ public class SerializationStartupProcedure
 
 		this.appInitData = appInitData;
 		DataInitializationData data;
-		GeneralManager.get().getLogger()
-			.log(new Status(IStatus.INFO, Activator.PLUGIN_ID, "Load sample project"));
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Load sample project"));
 
 		ProjectLoader loader = new ProjectLoader();
 
