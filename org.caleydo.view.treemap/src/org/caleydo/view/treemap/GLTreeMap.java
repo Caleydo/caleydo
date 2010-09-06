@@ -112,6 +112,7 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 					treeSelectionManager.clearSelection(SelectionType.SELECTION);
 					treeSelectionManager.addToType(SelectionType.SELECTION, mouseOverClusterId);
 					bIsMouseWheeleUsed = true;
+					mouseWheeleSelectionHeight=0;
 				}
 			}
 
@@ -127,11 +128,11 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				if (bIsMouseWheeleUsed) {
-					System.out.println("wheel used: " + e.getWheelRotation());
+//					System.out.println("wheel used: " + e.getWheelRotation());
 					if (e.getWheelRotation() > 0) {
 						ATreeMapNode node = treeMapModel.getNodeByNumber(mouseOverClusterId);
 						mouseWheeleSelectionHeight++;
-						System.out.println("selectionlevel: " + node.selectionLevel);
+//						System.out.println("selectionlevel: " + node.selectionLevel);
 						ATreeMapNode parent = node.getParentWithLevel(node.getHierarchyLevel() - mouseWheeleSelectionHeight);
 						if (parent != null) {
 							treeSelectionManager.clearSelection(SelectionType.SELECTION);
@@ -318,6 +319,7 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 
 		painter.paintTreeMapFromCache();
 
+		
 	}
 
 	public void zoomIn(){
@@ -344,6 +346,8 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		}
 		
 	};
+	
+
 	
 	
 	
@@ -385,7 +389,7 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 				break;
 			case MOUSE_OVER:
 				selectionType = SelectionType.MOUSE_OVER;
-				System.out.println("mouse over: " + iExternalID);
+//				System.out.println("mouse over: " + iExternalID);
 				mouseOverClusterId = iExternalID;
 				treeSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				treeSelectionManager.addToType(SelectionType.MOUSE_OVER, iExternalID);

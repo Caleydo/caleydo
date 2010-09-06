@@ -20,6 +20,7 @@ public class ClusterTreeMapNode extends ATreeMapNode{
 			Tree<ATreeMapNode> tree = new Tree<ATreeMapNode>();
 			ClusterTreeMapNode treemapNode = new ClusterTreeMapNode();
 			ClusterReferenzData referenz = new ClusterReferenzData();
+			referenz.sizeReferenzValue=0;
 			referenz.colorMapper=colorMapper;
 			tree.setRootNode(treemapNode);
 			treemapNode.setTree(tree);
