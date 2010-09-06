@@ -263,7 +263,7 @@ public abstract class AStorageBasedView
 			// ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
 			handleConnectedElementRep(selectionDelta);
-			reactOnExternalSelection(scrollToSelection);
+			reactOnExternalSelection(selectionDelta, scrollToSelection);
 			setDisplayListDirty();
 		}
 
@@ -273,7 +273,7 @@ public abstract class AStorageBasedView
 
 			storageSelectionManager.setDelta(selectionDelta);
 			handleConnectedElementRep(selectionDelta);
-			reactOnExternalSelection(scrollToSelection);
+			reactOnExternalSelection(selectionDelta, scrollToSelection);
 			setDisplayListDirty();
 		}
 
@@ -338,7 +338,7 @@ public abstract class AStorageBasedView
 	/**
 	 * Is called any time a update is triggered externally. Should be implemented by inheriting views.
 	 */
-	protected void reactOnExternalSelection(boolean scrollToSelection) {
+	protected void reactOnExternalSelection(ISelectionDelta selectionDelta, boolean scrollToSelection) {
 
 	}
 

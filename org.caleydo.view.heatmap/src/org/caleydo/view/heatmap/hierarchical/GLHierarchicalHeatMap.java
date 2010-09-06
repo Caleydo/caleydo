@@ -15,7 +15,6 @@ import gleem.linalg.open.Transform;
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,9 +37,8 @@ import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
-import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
@@ -785,83 +783,95 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	/**
-	 * Function called any time a update is triggered external
+	 * Jump to other areas of a heat map 
 	 * 
 	 * @param
 	 */
 	@Override
-	protected void reactOnExternalSelection(boolean scrollToSelection) {
+	protected void reactOnExternalSelection(ISelectionDelta delta,
+			boolean scrollToSelection) {
+
+		if (delta.getIDType() != contentIDType)
+			return;
 
 		if (scrollToSelection && bSkipLevel2 == false) {
-			Set<Integer> setMouseOverElements = new HashSet<Integer>();
+	
 
-			setMouseOverElements.addAll(contentSelectionManager
-					.getElements(SelectionType.MOUSE_OVER));
+			int mouseOverElement = 0;
+			SelectionType type = SelectionType.NORMAL;
 
-			setMouseOverElements.addAll(contentSelectionManager
-					.getElements(SelectionType.SELECTION));
-
-			for (Integer mouseOverElement : setMouseOverElements) {
-
-				int index = contentVA.indexOf(mouseOverElement.intValue());
-
-				// selected element is in level 3
-				if (index >= (iFirstSampleLevel1 + iFirstSampleLevel2)
-						&& index <= (iFirstSampleLevel1 + iLastSampleLevel2 + 1)) {
-					// System.out.println("in range of level 3 --> do nothing");
-					return;
+			for (SelectionDeltaItem item : delta) {
+				if (item.isRemove())
+					continue;
+				if (item.getSelectionType().getPriority() > type.getPriority()) {
+					mouseOverElement = item.getPrimaryID();
+					type = item.getSelectionType();
 				}
-				// selected element is in level 2
-				else if (index >= iFirstSampleLevel1 && index < iLastSampleLevel1) {
-					// System.out.println("in range of level 2 --> move level 3");
+
+			}
+
+			if (type == SelectionType.NORMAL)
+				return;
+			// for (Integer mouseOverElement : setMouseOverElements) {
+
+			int index = contentVA.indexOf(mouseOverElement);
+
+			// selected element is in level 3
+			if (index >= (iFirstSampleLevel1 + iFirstSampleLevel2)
+					&& index <= (iFirstSampleLevel1 + iLastSampleLevel2 + 1)) {
+				// System.out.println("in range of level 3 --> do nothing");
+				return;
+			}
+			// selected element is in level 2
+			else if (index >= iFirstSampleLevel1 && index < iLastSampleLevel1) {
+				// System.out.println("in range of level 2 --> move level 3");
+				iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
+				iLastSampleLevel2 = index + iSamplesPerHeatmap / 2 - iFirstSampleLevel1
+						- 1;
+				if (iFirstSampleLevel2 < 0) {
+					iFirstSampleLevel2 = 0;
+					iLastSampleLevel2 = iSamplesPerHeatmap - 1;
+				}
+				if (iLastSampleLevel2 > iSamplesLevel2) {
+					iFirstSampleLevel2 = iSamplesLevel2 - iSamplesPerHeatmap;
+					iLastSampleLevel2 = iSamplesLevel2 - 1;
+				}
+			} else {
+				// System.out.println("in range of level 1 --> move level 2 and 3");
+				iFirstSampleLevel1 = index - iSamplesLevel2 / 2;
+				iLastSampleLevel1 = index + iSamplesLevel2 / 2;
+
+				if (iFirstSampleLevel1 <= 0) {
+					iFirstSampleLevel1 = 0;
+					iLastSampleLevel1 = iSamplesLevel2;
+					iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2;
+					iLastSampleLevel2 = index + iSamplesPerHeatmap / 2;
+					if (iFirstSampleLevel2 < 0) {
+						iFirstSampleLevel2 = 0;
+						iLastSampleLevel2 = iSamplesPerHeatmap;
+					}
+				} else if (iLastSampleLevel1 > iNumberOfElements) {
+					iFirstSampleLevel1 = iNumberOfElements - iSamplesLevel2;
+					iLastSampleLevel1 = iNumberOfElements;
 					iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2
 							- iFirstSampleLevel1;
 					iLastSampleLevel2 = index + iSamplesPerHeatmap / 2
-							- iFirstSampleLevel1 - 1;
-					if (iFirstSampleLevel2 < 0) {
-						iFirstSampleLevel2 = 0;
-						iLastSampleLevel2 = iSamplesPerHeatmap - 1;
-					}
+							- iFirstSampleLevel1;
 					if (iLastSampleLevel2 > iSamplesLevel2) {
 						iFirstSampleLevel2 = iSamplesLevel2 - iSamplesPerHeatmap;
-						iLastSampleLevel2 = iSamplesLevel2 - 1;
+						iLastSampleLevel2 = iSamplesLevel2;
 					}
 				} else {
-					// System.out.println("in range of level 1 --> move level 2 and 3");
-					iFirstSampleLevel1 = index - iSamplesLevel2 / 2;
-					iLastSampleLevel1 = index + iSamplesLevel2 / 2;
-
-					if (iFirstSampleLevel1 <= 0) {
-						iFirstSampleLevel1 = 0;
-						iLastSampleLevel1 = iSamplesLevel2;
-						iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2;
-						iLastSampleLevel2 = index + iSamplesPerHeatmap / 2;
-						if (iFirstSampleLevel2 < 0) {
-							iFirstSampleLevel2 = 0;
-							iLastSampleLevel2 = iSamplesPerHeatmap;
-						}
-					} else if (iLastSampleLevel1 > iNumberOfElements) {
-						iFirstSampleLevel1 = iNumberOfElements - iSamplesLevel2;
-						iLastSampleLevel1 = iNumberOfElements;
-						iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2
-								- iFirstSampleLevel1;
-						iLastSampleLevel2 = index + iSamplesPerHeatmap / 2
-								- iFirstSampleLevel1;
-						if (iLastSampleLevel2 > iSamplesLevel2) {
-							iFirstSampleLevel2 = iSamplesLevel2 - iSamplesPerHeatmap;
-							iLastSampleLevel2 = iSamplesLevel2;
-						}
-					} else {
-						iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2
-								- iFirstSampleLevel1;
-						iLastSampleLevel2 = index + iSamplesPerHeatmap / 2
-								- iFirstSampleLevel1;
-					}
+					iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2
+							- iFirstSampleLevel1;
+					iLastSampleLevel2 = index + iSamplesPerHeatmap / 2
+							- iFirstSampleLevel1;
 				}
-				hasDataWindowChanged = true;
-				setDisplayListDirty();
 			}
+			hasDataWindowChanged = true;
+			setDisplayListDirty();
 		}
+		// }
 	}
 
 	@Override
@@ -3359,118 +3369,38 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	/**
-	 * Function responsible for handling SelectionDelta for embedded heatmap
+	 * Sets the data shown in the embedded heat map based on the selected area
+	 * in the first two levels
 	 */
 	private void setEmbeddedHeatMapData() {
 		hasDataWindowChanged = false;
-		int iCount = iFirstSampleLevel1 + iFirstSampleLevel2;
+		int offset = iFirstSampleLevel1 + iFirstSampleLevel2;
 
-		if (iCount < 0) {
+		if (offset < 0) {
 			throw new IllegalStateException("First Sample Level 1 (" + iFirstSampleLevel1
 					+ ") was smaller than First Sample Level 2 (" + iFirstSampleLevel2
 					+ ")");
 		}
 
-		glHeatMapView.resetView();
-		ContentVADelta embeddedDelta = new ContentVADelta(
-				ContentVAType.CONTENT_EMBEDDED_HM, contentIDType);
 		ContentVirtualArray hmContentVa = new ContentVirtualArray();
-		ISelectionDelta selectionDelta = new SelectionDelta(contentIDType);
-
-		int iIndex = 0;
-
-		int iContentIndex = 0;
-		int iStorageIndex = 0;
-
-		Set<Integer> setMouseOverElements = contentSelectionManager
-				.getElements(SelectionType.MOUSE_OVER);
-		Set<Integer> setSelectedElements = contentSelectionManager
-				.getElements(SelectionType.SELECTION);
-		Set<Integer> setDeselectedElements = contentSelectionManager
-				.getElements(SelectionType.DESELECTED);
 
 		// every time we change the window of the embedded heat map we need to
 		// remove the previously used ids
 		connectedElementRepresentationManager.clearByView(glHeatMapView.getID());
 		connectedElementRepresentationManager.clearByView(this.getID());
 
-		for (int index = 0; index < iSamplesPerHeatmap; index++) {
-			iIndex = iCount + index;
-			if (iIndex < contentVA.size()) {
-				iContentIndex = contentVA.get(iIndex);
-			}
-			hmContentVa.append(iContentIndex);
-			// embeddedDelta.add(VADeltaItem.append(iContentIndex));
+		int vaIndex = 0;
+		int contentID = 0;
 
-			// set elements mouse over in embedded heat Map
-			for (Integer iSelectedID : setMouseOverElements) {
-				if (iSelectedID == iContentIndex) {
-					selectionDelta.addSelection(iContentIndex, SelectionType.MOUSE_OVER);
-					Collection<Integer> conenctionIDs = contentSelectionManager
-							.getConnectionForElementID(iContentIndex);
-
-					selectionDelta.addConnectionIDs(iSelectedID, conenctionIDs);
-				}
-
+		for (int count = 0; count < iSamplesPerHeatmap; count++) {
+			vaIndex = offset + count;
+			if (vaIndex < contentVA.size()) {
+				contentID = contentVA.get(vaIndex);
+				hmContentVa.append(contentID);
 			}
 
-			// set elements selected in embedded heat Map
-			for (Integer iSelectedID : setSelectedElements) {
-				if (iSelectedID == iContentIndex) {
-					selectionDelta.addSelection(iContentIndex, SelectionType.SELECTION);
-					Collection<Integer> conenctionIDs = contentSelectionManager
-							.getConnectionForElementID(iContentIndex);
-
-					selectionDelta.addConnectionIDs(iSelectedID, conenctionIDs);
-				}
-			}
-
-			// set elements deselected in embedded heat Map
-			for (Integer iSelectedID : setDeselectedElements) {
-				if (iSelectedID == iContentIndex)
-					selectionDelta.addSelection(iContentIndex, SelectionType.DESELECTED);
-			}
 		}
-
-		// glHeatMapView.handleContentVAUpdate(embeddedDelta, getShortInfo());
 		glHeatMapView.setContentVA(hmContentVa);
-		if (selectionDelta.size() > 0) {
-			glHeatMapView.handleSelectionUpdate(selectionDelta, true, null);
-		}
-
-		// selected experiments
-
-		StorageVADelta deltaExp = new StorageVADelta(storageVAType, storageIDType);
-		ISelectionDelta selectionDeltaEx = new SelectionDelta(storageIDType);
-
-		setMouseOverElements = storageSelectionManager
-				.getElements(SelectionType.MOUSE_OVER);
-		setSelectedElements = storageSelectionManager
-				.getElements(SelectionType.SELECTION);
-
-		for (int index = 0; index < storageVA.size(); index++) {
-			iStorageIndex = storageVA.get(index);
-
-			deltaExp.add(VADeltaItem.append(iStorageIndex));
-
-			// set elements mouse over in embedded heat Map
-			for (Integer iSelectedID : setMouseOverElements) {
-				if (iSelectedID == iStorageIndex)
-					selectionDeltaEx
-							.addSelection(iStorageIndex, SelectionType.MOUSE_OVER);
-			}
-
-			// set elements selected in embedded heat Map
-			for (Integer iSelectedID : setSelectedElements) {
-				if (iSelectedID == iStorageIndex)
-					selectionDeltaEx.addSelection(iStorageIndex, SelectionType.SELECTION);
-			}
-		}
-
-		// glHeatMapView.handleVirtualArrayUpdate(deltaExp, getShortInfo());
-		if (selectionDeltaEx.size() > 0) {
-			glHeatMapView.handleSelectionUpdate(selectionDeltaEx, true, null);
-		}
 
 	}
 
@@ -3667,6 +3597,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		StorageGroupList groupList = storageVA.getGroupList();
 
+		if (groupList == null) {
+			System.out.println("No group assignment available!");
+			return;
+		}
+
 		int iNrElementsInGroup = groupList.get(iExpGroupToDrag).getNrElements();
 		float currentWidth = fWidthSample * iNrElementsInGroup;
 		float fHeight = viewFrustum.getHeight();
@@ -3688,11 +3623,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		int iElemOffset = 0;
 		int cnt = 0;
-
-		if (groupList == null) {
-			System.out.println("No group assignment available!");
-			return;
-		}
 
 		for (Group currentGroup : groupList) {
 			if (currentElement < (iElemOffset + currentGroup.getNrElements())) {
@@ -3752,6 +3682,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		ContentGroupList groupList = contentVA.getGroupList();
 
+		if (groupList == null) {
+			System.out.println("No group assignment available!");
+			return;
+		}
+
 		int iNrElementsInGroup = groupList.get(iGeneGroupToDrag).getNrElements();
 		float currentHeight = fHeightSample * iNrElementsInGroup;
 
@@ -3767,11 +3702,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		int iElemOffset = 0;
 		int cnt = 0;
-
-		if (groupList == null) {
-			System.out.println("No group assignment available!");
-			return;
-		}
 
 		for (Group currentGroup : groupList) {
 			if (currentElement < (iElemOffset + currentGroup.getNrElements())) {

@@ -1728,7 +1728,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	 * @param
 	 */
 	@Override
-	protected void reactOnExternalSelection(boolean scrollToSelection) {
+	protected void reactOnExternalSelection(ISelectionDelta delta,
+			boolean scrollToSelection) {
 
 		if (bRenderContentTree == true) {
 			if (tree != null) {

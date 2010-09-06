@@ -3263,7 +3263,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	@Override
-	protected void reactOnExternalSelection(boolean scrollToSelection) {
+	protected void reactOnExternalSelection(ISelectionDelta delta, boolean scrollToSelection) {
 		selectAxesfromExternal();
 		bUpdateSelection = true;
 		bUpdateSelectionTexures = true;

@@ -60,7 +60,7 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 	 *            the currently active virtual array
 	 */
 	public void setVA(VA virtualArray) {
-		clearSelections();
+//		clearSelections();
 		// resetSelectionManager();
 		// initialAdd(virtualArray.getIndexList());
 		this.virtualArray = virtualArray;

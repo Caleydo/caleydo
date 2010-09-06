@@ -1371,7 +1371,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	}
 
 	@Override
-	protected void reactOnExternalSelection(boolean scrollToSelection) {
+	protected void reactOnExternalSelection(ISelectionDelta delta, boolean scrollToSelection) {
 		handleUnselection();
 		resetAxisSpacing();
 	}
