@@ -7,13 +7,13 @@ import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpStatisticsView extends CaleydoRCPViewPart {
-	
+
 	private StatisticsView statisticsView;
 
 	@Override
 	public void createPartControl(Composite parent) {
 		statisticsView = (StatisticsView) GeneralManager.get().getViewGLCanvasManager()
-				.createView(StatisticsView.VIEW_ID, -1, "Statistics View");
+				.createView(StatisticsView.VIEW_ID, -1);
 
 		SerializedStatisticsView serializedView = new SerializedStatisticsView();
 		statisticsView.setDataDomain((ASetBasedDataDomain) DataDomainManager

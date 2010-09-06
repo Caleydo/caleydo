@@ -10,7 +10,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AGLViewBrowser;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -33,9 +33,8 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 	private LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
 	private AddPathwayListener addPathwayListener = null;
 
-	public GLPathwayViewBrowser(GLCaleydoCanvas glCanvas, String sLabel,
-			IViewFrustum viewFrustum) {
-		super(glCanvas, sLabel, viewFrustum);
+	public GLPathwayViewBrowser(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
+		super(glCanvas, viewFrustum);
 
 		viewType = VIEW_ID;
 		viewSymbol = EIconTextures.PATHWAY_SYMBOL;

@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
  * Class contains GL commands for rendering GL objects of common interest (like axis, etc.)
@@ -30,7 +30,7 @@ public class GLHelperFunctions {
 		gl.glEnd();
 	}
 
-	public static void drawViewFrustum(final GL gl, final IViewFrustum viewFrustum) {
+	public static void drawViewFrustum(final GL gl, final ViewFrustum viewFrustum) {
 
 		gl.glColor3f(1, 0, 0);
 		gl.glBegin(GL.GL_LINE_LOOP);

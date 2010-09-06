@@ -17,11 +17,6 @@ public abstract class ACmdExternalAttributes
 	 */
 	protected Integer externalID = -1;
 
-	/**
-	 * Label of the new object, that will be created.
-	 */
-	protected String label = "";
-
 	protected String attrib1;
 	protected String attrib2;
 	protected String attrib3;
@@ -42,7 +37,6 @@ public abstract class ACmdExternalAttributes
 		super.setParameterHandler(parameterHandler);
 
 		externalID = parameterHandler.getValueInt(ECommandType.TAG_UNIQUE_ID.getXmlKey());
-		label = parameterHandler.getValueString(ECommandType.TAG_LABEL.getXmlKey());
 		attrib1 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey());
 		attrib2 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE2.getXmlKey());
 		attrib3 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey());

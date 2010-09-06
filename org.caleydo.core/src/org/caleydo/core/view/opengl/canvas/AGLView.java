@@ -35,7 +35,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.exception.ExceptionHandler;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.opengl.camera.IViewCamera;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
 import org.caleydo.core.view.opengl.canvas.listener.ToggleMagnifyingGlassListener;
@@ -85,7 +85,7 @@ public abstract class AGLView
 
 	protected GLMouseListener glMouseListener;
 
-	protected IViewFrustum viewFrustum;
+	protected ViewFrustum viewFrustum;
 
 	protected IViewCamera viewCamera;
 
@@ -94,7 +94,7 @@ public abstract class AGLView
 	 */
 	protected float fAspectRatio = 1f;
 
-	protected EDetailLevel detailLevel = EDetailLevel.HIGH;
+	protected DetailLevel detailLevel = DetailLevel.HIGH;
 
 	/**
 	 * The remote level element in which the view is placed. This variable is only set when the view is
@@ -170,11 +170,11 @@ public abstract class AGLView
 	/**
 	 * Constructor.
 	 */
-	protected AGLView(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum,
+	protected AGLView(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum,
 		final boolean bRegisterToParentCanvasNow) {
 
 		// If the glCanvas object is null - then the view is rendered remote.
-		super(glCanvas != null ? glCanvas.getID() : -1, sLabel, GeneralManager.get().getIDManager()
+		super(glCanvas != null ? glCanvas.getID() : -1, GeneralManager.get().getIDManager()
 			.createID(EManagedObjectType.GL_VIEW));
 
 		parentGLCanvas = glCanvas;
@@ -441,11 +441,11 @@ public abstract class AGLView
 		return parentGLCanvas;
 	}
 
-	public final IViewFrustum getViewFrustum() {
+	public final ViewFrustum getViewFrustum() {
 		return viewFrustum;
 	}
 
-	public final void setFrustum(IViewFrustum viewFrustum) {
+	public final void setFrustum(ViewFrustum viewFrustum) {
 		this.viewFrustum = viewFrustum;
 	}
 
@@ -567,7 +567,7 @@ public abstract class AGLView
 	 * 
 	 * @param detailLevel
 	 */
-	public void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(DetailLevel detailLevel) {
 		this.detailLevel = detailLevel;
 		setDisplayListDirty();
 	}
@@ -725,7 +725,7 @@ public abstract class AGLView
 		return storageVA;
 	}
 
-	public final EDetailLevel getDetailLevel() {
+	public final DetailLevel getDetailLevel() {
 		return detailLevel;
 	}
 

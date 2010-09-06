@@ -71,8 +71,8 @@ public class CollabViewRep
 	 * @param iParentContainerId
 	 * @param sLabel
 	 */
-	public CollabViewRep(final int iParentContainerId, final String sLabel) {
-		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager()
+	public CollabViewRep(final int iParentContainerId) {
+		super(iParentContainerId, GeneralManager.get().getIDManager()
 			.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 	}
 

@@ -9,9 +9,9 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -39,9 +39,8 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLTemplate(GLCaleydoCanvas glCanvas, final String sLabel,
-			final IViewFrustum viewFrustum) {
-		super(glCanvas, sLabel, viewFrustum, true);
+	public GLTemplate(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+		super(glCanvas, viewFrustum, true);
 
 		viewType = GLTemplate.VIEW_ID;
 	}
@@ -52,7 +51,7 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 		renderStyle = new TemplateRenderStyle(viewFrustum);
 
 		super.renderStyle = renderStyle;
-		detailLevel = EDetailLevel.HIGH;
+		detailLevel = DetailLevel.HIGH;
 	}
 
 	@Override

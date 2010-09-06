@@ -14,7 +14,7 @@ public class RcpCollabView
 	public void createPartControl(Composite parent) {
 		testingView =
 			(CollabViewRep) GeneralManager.get().getViewGLCanvasManager()
-				.createView("org.caleydo.view.collab", -1, "Collaboration");
+				.createView("org.caleydo.view.collab", -1);
 
 		testingView.initViewRCP(parent);
 		testingView.drawView();

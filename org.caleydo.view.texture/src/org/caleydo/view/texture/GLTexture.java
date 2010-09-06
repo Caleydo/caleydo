@@ -13,7 +13,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializedDummyView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -42,9 +42,8 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	/**
 	 * Constructor.
 	 */
-	public GLTexture(GLCaleydoCanvas glCanvas, final String sLabel,
-			final IViewFrustum viewFrustum) {
-		super(glCanvas, sLabel, viewFrustum, false);
+	public GLTexture(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+		super(glCanvas, viewFrustum, false);
 
 		viewType = VIEW_ID;
 

@@ -6,7 +6,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 
@@ -36,7 +36,7 @@ public class GLOffScreenTextureRenderer {
 		AGLView glEventListener = GeneralManager.get().getViewGLCanvasManager()
 				.getGLView(iViewID);
 
-		IViewFrustum viewFrustum = glEventListener.getViewFrustum();
+		ViewFrustum viewFrustum = glEventListener.getViewFrustum();
 
 		gl.glColor3f(1, 1, 1);
 		gl.glBegin(GL.GL_POLYGON);

@@ -16,7 +16,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -118,7 +118,7 @@ public class OverviewState extends ACompareViewStateStatic {
 		if (isSetBarDisplayListDirty) {
 			isSetBarDisplayListDirty = false;
 			gl.glNewList(setBarDisplayListIndex, GL.GL_COMPILE);
-			IViewFrustum viewFrustum = view.getViewFrustum();
+			ViewFrustum viewFrustum = view.getViewFrustum();
 			setBar.setWidth(viewFrustum.getWidth());
 			setBar.render(gl);
 			gl.glEndList();
@@ -343,7 +343,7 @@ public class OverviewState extends ACompareViewStateStatic {
 	@Override
 	protected void setupLayouts() {
 
-		IViewFrustum viewFrustum = view.getViewFrustum();
+		ViewFrustum viewFrustum = view.getViewFrustum();
 		float setBarHeight = setBar.getHeight();
 		float heatMapWrapperPosY = setBar.getPosition().y() + setBarHeight;
 

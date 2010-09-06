@@ -12,7 +12,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 
@@ -328,7 +328,7 @@ public class PickingManager {
 
 		float fAspectRatio = (float) (viewport[3] - viewport[1]) / (float) (viewport[2] - viewport[0]);
 
-		IViewFrustum viewFrustum = glView.getViewFrustum();
+		ViewFrustum viewFrustum = glView.getViewFrustum();
 		viewFrustum.setProjectionMatrix(gl, fAspectRatio);
 
 		// gl.glMatrixMode(GL.GL_MODELVIEW);

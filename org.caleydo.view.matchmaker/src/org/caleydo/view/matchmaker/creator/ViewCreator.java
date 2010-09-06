@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.view.creator.AGLViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.view.matchmaker.GLMatchmaker;
@@ -19,10 +19,9 @@ public class ViewCreator extends AGLViewCreator {
 	}
 
 	@Override
-	public AGLView createGLView(GLCaleydoCanvas glCanvas, String label,
-			IViewFrustum viewFrustum) {
+	public AGLView createGLView(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		return new GLMatchmaker(glCanvas, label, viewFrustum);
+		return new GLMatchmaker(glCanvas, viewFrustum);
 	}
 
 	@Override
@@ -35,14 +34,17 @@ public class ViewCreator extends AGLViewCreator {
 	public Object createToolBarContent() {
 		return new MatchmakerToolBarContent();
 	}
-	
+
 	@Override
 	protected void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 
-		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLMatchmaker.VIEW_ID);
+		DataDomainManager
+				.getInstance()
+				.getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
+						GLMatchmaker.VIEW_ID);
 	}
 }

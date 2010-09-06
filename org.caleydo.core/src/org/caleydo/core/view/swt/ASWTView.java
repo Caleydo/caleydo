@@ -15,8 +15,8 @@ public abstract class ASWTView
 	/**
 	 * Constructor.
 	 */
-	public ASWTView(int iParentContainerID, String sLabel, int iViewID) {
-		super(iParentContainerID, sLabel, iViewID);
+	public ASWTView(int iParentContainerID, int iViewID) {
+		super(iParentContainerID, iViewID);
 	}
 
 	@Override

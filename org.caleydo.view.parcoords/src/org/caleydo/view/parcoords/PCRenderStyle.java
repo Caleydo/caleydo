@@ -3,7 +3,7 @@ package org.caleydo.view.parcoords;
 import java.util.HashMap;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
@@ -119,7 +119,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 	 * 
 	 * @param viewFrustum
 	 */
-	public PCRenderStyle(GLParallelCoordinates pcs, IViewFrustum viewFrustum) {
+	public PCRenderStyle(GLParallelCoordinates pcs, ViewFrustum viewFrustum) {
 		super(viewFrustum);
 		hashSelectionTypeToPolylineState = new HashMap<SelectionType, PolyLineState>();
 		hashSelectionTypeToPolylineState.put(SelectionType.NORMAL, normalState);

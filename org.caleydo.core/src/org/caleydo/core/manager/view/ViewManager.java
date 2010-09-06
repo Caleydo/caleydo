@@ -22,7 +22,7 @@ import org.caleydo.core.manager.view.creator.ASWTViewCreator;
 import org.caleydo.core.manager.view.creator.IViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -126,14 +126,14 @@ public class ViewManager
 		return hashGLViewID2GLView.get(iItemID);
 	}
 
-	public IView createView(String viewType, int parentContainerID, String label) {
+	public IView createView(String viewType, int parentContainerID) {
 		IView view = null;
 
 		IViewCreator viewCreator = getViewCreator(viewType);
 
 		if (viewCreator instanceof ASWTViewCreator && viewCreator.getViewType().equals(viewType)) {
 
-			view = ((ASWTViewCreator) viewCreator).createView(parentContainerID, label);
+			view = ((ASWTViewCreator) viewCreator).createView(parentContainerID);
 			registerItem(view);
 		}
 		else
@@ -142,8 +142,7 @@ public class ViewManager
 		return view;
 	}
 
-	public AGLView createGLView(String viewID, GLCaleydoCanvas glCanvas, final String label,
-		final IViewFrustum viewFrustum) {
+	public AGLView createGLView(String viewID, GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
 		GeneralManager
 			.get()
@@ -158,7 +157,7 @@ public class ViewManager
 
 		if (viewCreator instanceof AGLViewCreator && viewCreator.getViewType().equals(viewID)) {
 
-			glView = ((AGLViewCreator) viewCreator).createGLView(glCanvas, label, viewFrustum);
+			glView = ((AGLViewCreator) viewCreator).createGLView(glCanvas, viewFrustum);
 			registerGLEventListenerByGLCanvas(glCanvas, glView);
 		}
 		else
@@ -402,7 +401,7 @@ public class ViewManager
 
 		if (viewIDToViewCreators.containsKey(viewType))
 			return viewIDToViewCreators.get(viewType);
-		
+
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 
 		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.view.ViewCreator");

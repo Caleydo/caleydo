@@ -8,8 +8,8 @@ import java.awt.Rectangle;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.view.opengl.camera.EProjectionMode;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -48,7 +48,7 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 	/**
 	 * Constructor.
 	 */
-	public BucketLayoutRenderStyle(IViewFrustum viewFrustum) {
+	public BucketLayoutRenderStyle(ViewFrustum viewFrustum) {
 		super(viewFrustum);
 		initLayout();
 	}
@@ -56,14 +56,14 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 	/**
 	 * Constructor.
 	 */
-	public BucketLayoutRenderStyle(IViewFrustum viewFrustum,
+	public BucketLayoutRenderStyle(ViewFrustum viewFrustum,
 			final ARemoteViewLayoutRenderStyle previousLayoutStyle) {
 		super(viewFrustum, previousLayoutStyle);
 		initLayout();
 	}
 
 	private void initLayout() {
-		eProjectionMode = EProjectionMode.PERSPECTIVE;
+		eProjectionMode = CameraProjectionMode.PERSPECTIVE;
 
 		fScalingFactorFocusLevel = 0.5f;
 		fScalingFactorStackLevel = 0.5f;

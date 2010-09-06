@@ -1,6 +1,6 @@
 package org.caleydo.view.bookmark;
 
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 class BookmarkRenderStyle extends GeneralRenderStyle {
@@ -19,7 +19,7 @@ class BookmarkRenderStyle extends GeneralRenderStyle {
 
 	public static final int NUMBER_OF_LIST_ITEMS_PER_PAGE = 30;
 
-	public BookmarkRenderStyle(IViewFrustum viewFrustum) {
+	public BookmarkRenderStyle(ViewFrustum viewFrustum) {
 		super(viewFrustum);
 		// TODO Auto-generated constructor stub
 	}

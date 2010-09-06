@@ -65,10 +65,10 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -218,13 +218,11 @@ public class GLScatterPlot extends AStorageBasedView {
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLScatterPlot(GLCaleydoCanvas glCanvas, final String sLabel,
-			final IViewFrustum viewFrustum) {
+	public GLScatterPlot(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
-		super(glCanvas, sLabel, viewFrustum);
+		super(glCanvas, viewFrustum);
 		viewType = GLScatterPlot.VIEW_ID;
 
 		// ArrayList<SelectionType> alSelectionTypes = new
@@ -251,7 +249,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		renderStyle = new ScatterPlotRenderStyle(this, viewFrustum);
 
 		super.renderStyle = renderStyle;
-		detailLevel = EDetailLevel.HIGH;
+		detailLevel = DetailLevel.HIGH;
 		updateMaxAxis();
 		renderStyle.setTextureNr(MAX_AXES, MAX_AXES);
 		resetFullTextures();
@@ -343,7 +341,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	@Override
-	public void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(DetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 		}
@@ -361,7 +359,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		// textRenderer.setColor(0, 0, 0, 1);
 		// renderNumber(gl, "ScatterPlot View 1.0", 0, 0);
 
-		if (detailLevel == EDetailLevel.HIGH) {
+		if (detailLevel == DetailLevel.HIGH) {
 			GLMouseListener glMouseListener = getParentGLCanvas().getGLMouseListener();
 
 			if (bMainViewZoomDragged) {
@@ -511,7 +509,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		}
 
 		gl.glCallList(iGLDisplayListToCall);
-		if (detailLevel == EDetailLevel.HIGH) {
+		if (detailLevel == DetailLevel.HIGH) {
 			gl.glCallList(iGLDisplayListIndexCoord);
 			gl.glCallList(iGLDisplayListIndexMouseOver);
 		}
@@ -2150,7 +2148,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		if (iDisplayEveryNthPoint == 0)
 			iDisplayEveryNthPoint = 1;
 
-		if (detailLevel != EDetailLevel.HIGH) {
+		if (detailLevel != DetailLevel.HIGH) {
 			bRender2Axis = false;
 			POINTSTYLE = EScatterPointType.POINT;
 		}
@@ -3046,7 +3044,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
-		if (detailLevel == EDetailLevel.VERY_LOW) {
+		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
 
@@ -3697,10 +3695,10 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	public void toggleDetailLevel() {
-		if (detailLevel == EDetailLevel.HIGH) {
-			detailLevel = EDetailLevel.LOW;
+		if (detailLevel == DetailLevel.HIGH) {
+			detailLevel = DetailLevel.LOW;
 		} else
-			detailLevel = EDetailLevel.HIGH;
+			detailLevel = DetailLevel.HIGH;
 		bUpdateMainView = true;
 		setDisplayListDirty();
 	}

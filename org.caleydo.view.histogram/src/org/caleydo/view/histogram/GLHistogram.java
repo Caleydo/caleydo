@@ -26,9 +26,9 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.ISetBasedView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -80,9 +80,8 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHistogram(GLCaleydoCanvas glCanvas, final String sLabel,
-			final IViewFrustum viewFrustum) {
-		super(glCanvas, sLabel, viewFrustum, true);
+	public GLHistogram(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+		super(glCanvas, viewFrustum, true);
 
 		viewType = VIEW_ID;
 		colorMappingManager = ColorMappingManager.get();
@@ -126,7 +125,7 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 	}
 
 	@Override
-	public void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(DetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 			// renderStyle.setDetailLevel(detailLevel);
@@ -521,7 +520,7 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
-		if (detailLevel == EDetailLevel.VERY_LOW) {
+		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
 		switch (ePickingType) {

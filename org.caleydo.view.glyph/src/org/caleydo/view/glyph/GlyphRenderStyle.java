@@ -4,7 +4,7 @@ import gleem.linalg.Vec4f;
 
 import java.awt.Font;
 
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -23,7 +23,7 @@ public class GlyphRenderStyle
 	 * 
 	 * @param viewFrustum
 	 */
-	public GlyphRenderStyle(IViewFrustum viewFrustum) {
+	public GlyphRenderStyle(ViewFrustum viewFrustum) {
 
 		super(viewFrustum);
 	}

@@ -10,10 +10,10 @@ import org.xml.sax.helpers.LocatorImpl;
  * Base class for SAX Parser containing several useful methods.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  */
 public abstract class ASaxParserHandler
-	extends DefaultHandler
-	implements ISaxParserHandler {
+	extends DefaultHandler {
 
 	/**
 	 * Buffer for error messages. An error message always sets the flag
@@ -152,21 +152,43 @@ public abstract class ASaxParserHandler
 	}
 
 	/**
-	 * Important: all derived classes must call super.reset() inside their reset() call to not cause side
-	 * effects!
+	 * Resets all flags.
 	 * 
-	 * @see org.caleydo.core.parser.xml.ISaxParserHandler#reset()
+	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#reset()
 	 */
-	@Override
 	public void reset() {
 
 		sErrorMessage = "";
 		bErrorWhileParsing = false;
 	}
 
-	@Override
+	/**
+	 * startElement() for parser callbacks
+	 * 
+	 * @see org.xml.sax.helpers.DefaultHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
+	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#startElement(String, String, String, Attributes)
+	 * @param uri
+	 *            URI @see org.xml.sax.helpers.DefaultHandler
+	 * @param localName
+	 *            lacalName @see org.xml.sax.helpers.DefaultHandler
+	 * @param qName
+	 *            tag to parse for @see org.xml.sax.helpers.DefaultHandler
+	 * @param attributes
+	 *            attributes bound to qName
+	 */
 	public abstract void startElement(String uri, String localName, String qName, Attributes attributes);
 
-	@Override
+	/**
+	 * endElement for pareser callbacks
+	 * 
+	 * @see org.xml.sax.helpers.DefaultHandler#endElement(Stringt, Stringt, Stringt)
+	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#endElement(String, String, String)
+	 * @param uri
+	 *            URI @see org.xml.sax.helpers.DefaultHandler
+	 * @param localName
+	 *            lacalName @see org.xml.sax.helpers.DefaultHandler
+	 * @param qName
+	 *            tag to parse for @see org.xml.sax.helpers.DefaultHandler
+	 */
 	public abstract void endElement(String uri, String localName, String qName);
 }

@@ -2,7 +2,7 @@ package org.caleydo.view.treemap.renderstyle;
 
 //import java.util.HashMap;
 
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
@@ -13,7 +13,7 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 public class TreeMapRenderStyle extends GeneralRenderStyle {
 
-	public TreeMapRenderStyle(IViewFrustum viewFrustum) {
+	public TreeMapRenderStyle(ViewFrustum viewFrustum) {
 		super(viewFrustum);
 		// TODO Auto-generated constructor stub
 	}

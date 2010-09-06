@@ -34,7 +34,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AGLViewBrowser;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -82,9 +82,8 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 	private boolean poolLeft = false;
 
-	public GLTissueViewBrowser(GLCaleydoCanvas glCanvas, String sLabel,
-			IViewFrustum viewFrustum) {
-		super(glCanvas, sLabel, viewFrustum);
+	public GLTissueViewBrowser(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
+		super(glCanvas, viewFrustum);
 
 		viewType = VIEW_ID;
 		viewSymbol = EIconTextures.NO_ICON_AVAILABLE;
@@ -120,7 +119,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		for (int experimentIndex = 0; experimentIndex < MAX_VIEWS; experimentIndex++) {
 
 			generalManager.getViewGLCanvasManager().createGLView(
-					"org.caleydo.view.texture", parentGLCanvas, "", viewFrustum);
+					"org.caleydo.view.texture", parentGLCanvas, viewFrustum);
 
 			mapExperimentToTexturePath.put(experimentIndex, "data/tissue/breast_"
 					+ experimentIndex % 24 + ".jpg");
@@ -161,8 +160,6 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		GLTexture glView = (GLTexture) super.createView(gl, serView);
 
 		glView.setTexturePath(((SerializedTextureView) serView).getTexturePath());
-		glView.setLabel(((SerializedTextureView) serView).getLabel());
-
 		glView.setExperimentIndex(((SerializedTextureView) serView).getExperimentIndex());
 
 		setInfo(glView, glView.getExperimentIndex());

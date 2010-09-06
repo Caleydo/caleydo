@@ -62,11 +62,11 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.camera.EProjectionMode;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
@@ -251,13 +251,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHierarchicalHeatMap(GLCaleydoCanvas glCanvas, final String sLabel,
-			final IViewFrustum viewFrustum) {
+	public GLHierarchicalHeatMap(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
-		super(glCanvas, sLabel, viewFrustum);
+		super(glCanvas, viewFrustum);
 		viewType = GLHierarchicalHeatMap.VIEW_ID;
 
 		ArrayList<SelectionType> alSelectionTypes = new ArrayList<SelectionType>();
@@ -663,7 +661,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
 
-		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
+		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
 				fHeatMapWidth, -20, 20, -1);
 		cmdView.setDataDomainType(dataDomain.getDataDomainType());
 
@@ -698,7 +696,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
 
-		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
+		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
 				fHeatMapWidth, -20, 20, -1);
 		cmdView.setDataDomainType(dataDomain.getDataDomainType());
 		cmdView.doCommand();
@@ -711,7 +709,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		cmdView.setViewID(GLDendrogram.VIEW_ID + ".vertical");
 		cmdView.setDataDomainType(dataDomain.getDataDomainType());
 
-		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
+		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
 				fHeatMapWidth, -20, 20, -1);
 
 		cmdView.doCommand();
@@ -732,7 +730,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	public void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(DetailLevel detailLevel) {
 		super.setDetailLevel(detailLevel);
 	}
 
@@ -1240,11 +1238,10 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			if (storageVA.getGroupList().get(i).getSelectionType() == SelectionType.SELECTION) {
 				tempTexture = textureManager.getIconTexture(gl,
 						EIconTextures.HEAT_MAP_GROUP_SELECTED);
-			}else {
+			} else {
 				tempTexture = textureManager.getIconTexture(gl,
 						EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
-			
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
@@ -2573,7 +2570,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		// gl.glScalef(scale.x(), scale.y(), scale.z());
 		gl.glScalef(1, 1, 1);
 
-		IViewFrustum embeddedHeatMapFrustum = glHeatMapView.getViewFrustum();
+		ViewFrustum embeddedHeatMapFrustum = glHeatMapView.getViewFrustum();
 		embeddedHeatMapFrustum.setLeft(0);
 		embeddedHeatMapFrustum.setRight(viewFrustum.getRight() - translation.x());
 		embeddedHeatMapFrustum.setTop(ftop - translation.y());
@@ -4145,7 +4142,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
-		if (detailLevel == EDetailLevel.VERY_LOW) {
+		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
 

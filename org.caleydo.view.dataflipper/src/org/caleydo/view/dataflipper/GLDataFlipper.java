@@ -44,9 +44,9 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -182,10 +182,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	/**
 	 * Constructor.
 	 */
-	public GLDataFlipper(GLCaleydoCanvas glCanvas, final String sLabel,
-			final IViewFrustum viewFrustum) {
+	public GLDataFlipper(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
-		super(glCanvas, sLabel, viewFrustum, true);
+		super(glCanvas, viewFrustum, true);
 
 		viewType = GLDataFlipper.VIEW_ID;
 
@@ -1378,7 +1377,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// if (glView == null)
 		// return;
 
-		// IViewFrustum frustum = glView.getViewFrustum();
+		// ViewFrustum frustum = glView.getViewFrustum();
 		// frustum.setTop(8*fAspectRatio);
 		// glView.reshape(drawable, x, y, width, height);
 	}
@@ -2166,9 +2165,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		// Update detail level of moved view when slerp action is finished;
 		if (element == focusElement) {
-			glActiveSubView.setDetailLevel(EDetailLevel.HIGH);
+			glActiveSubView.setDetailLevel(DetailLevel.HIGH);
 		} else {
-			glActiveSubView.setDetailLevel(EDetailLevel.LOW);
+			glActiveSubView.setDetailLevel(DetailLevel.LOW);
 		}
 	}
 
@@ -2329,7 +2328,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		if (focusElement.isFree()) {
 			viewSpawnElement.setGLView(view);
 			view.setRemoteLevelElement(focusElement);
-			view.setDetailLevel(EDetailLevel.HIGH);
+			view.setDetailLevel(DetailLevel.HIGH);
 			destinationElement = focusElement;
 		} else {
 

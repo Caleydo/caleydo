@@ -39,9 +39,9 @@ import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.view.ISetBasedView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
@@ -136,12 +136,10 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLGrouper(GLCaleydoCanvas glCanvas, final String sLabel,
-			final IViewFrustum viewFrustum) {
-		super(glCanvas, sLabel, viewFrustum, true);
+	public GLGrouper(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+		super(glCanvas, viewFrustum, true);
 
 		viewType = VIEW_ID;
 		hashGroups = new HashMap<Integer, GroupRepresentation>();
@@ -398,7 +396,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 	}
 
 	@Override
-	public void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(DetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 		}
@@ -503,10 +501,10 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		if (bHierarchyChanged) {
 			float fHierarchyHeight = rootGroup.getScaledHeight(parentGLCanvas.getWidth());
 			float fHierarchyWidth = rootGroup.getScaledWidth(parentGLCanvas.getWidth());
-			
+
 			System.out.println(fHierarchyHeight);
 			System.out.println(fHierarchyWidth);
-			
+
 			int minViewportHeight = (int) (parentGLCanvas.getHeight()
 					/ viewFrustum.getHeight() * fHierarchyHeight) + 10;
 			int minViewportWidth = (int) (parentGLCanvas.getWidth()
@@ -533,7 +531,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
-		if (detailLevel == EDetailLevel.VERY_LOW) {
+		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
 

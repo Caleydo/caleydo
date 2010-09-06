@@ -44,10 +44,10 @@ import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
@@ -119,13 +119,11 @@ public class GLHeatMap extends AStorageBasedView {
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHeatMap(GLCaleydoCanvas glCanvas, final String sLabel,
-			final IViewFrustum viewFrustum) {
+	public GLHeatMap(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
-		super(glCanvas, sLabel, viewFrustum);
+		super(glCanvas, viewFrustum);
 		viewType = GLHeatMap.VIEW_ID;
 
 		glKeyListener = new GLHeatMapKeyListener(this);
@@ -189,7 +187,7 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	@Override
-	public void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(DetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 		}
@@ -355,7 +353,7 @@ public class GLHeatMap extends AStorageBasedView {
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
-		if (detailLevel == EDetailLevel.VERY_LOW) {
+		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
 
@@ -369,11 +367,11 @@ public class GLHeatMap extends AStorageBasedView {
 				selectionType = SelectionType.SELECTION;
 				setActive(true);
 				break;
-		
+
 			case MOUSE_OVER:
 				selectionType = SelectionType.MOUSE_OVER;
 				break;
-				
+
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
@@ -394,7 +392,7 @@ public class GLHeatMap extends AStorageBasedView {
 				geneContextMenuItemContainer.setID(contentIDType, iExternalID);
 				contextMenu.addItemContanier(geneContextMenuItemContainer);
 				break;
-				
+
 			default:
 				return;
 
@@ -558,20 +556,20 @@ public class GLHeatMap extends AStorageBasedView {
 		createStorageSelection(SelectionType.MOUSE_OVER, selectedElement);
 	}
 
-
 	public void enterPressedSelect() {
 		StorageVirtualArray virtualArray = storageVA;
 		if (virtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for enterPressed Operation");
-		
-		Set<Integer> elements = storageSelectionManager.getElements(SelectionType.MOUSE_OVER);
+
+		Set<Integer> elements = storageSelectionManager
+				.getElements(SelectionType.MOUSE_OVER);
 		Integer selectedElement = -1;
 		if (elements.size() == 1) {
 			selectedElement = (Integer) elements.toArray()[0];
 			createStorageSelection(SelectionType.SELECTION, selectedElement);
 		}
-		
+
 		ContentVirtualArray contentVirtualArray = contentVA;
 		if (contentVirtualArray == null)
 			throw new IllegalStateException(
@@ -583,7 +581,7 @@ public class GLHeatMap extends AStorageBasedView {
 			createContentSelection(SelectionType.SELECTION, selectedElement);
 		}
 	}
-	
+
 	private <VAType extends VirtualArray<?, ?, ?, ?>, SelectionManagerType extends SelectionManager> int cursorSelect(
 			VAType virtualArray, SelectionManagerType selectionManager, boolean isUp) {
 
@@ -769,8 +767,8 @@ public class GLHeatMap extends AStorageBasedView {
 
 		if (delta.getVAType() == ContentVAType.CONTENT_CONTEXT
 				&& contentVAType == ContentVAType.CONTENT_CONTEXT) {
-//			if (contentVA.size() == 0)
-//				return;
+			// if (contentVA.size() == 0)
+			// return;
 			// FIXME: this is only proof of concept - use the cluster manager
 			// instead of affinity directly
 			// long original = System.currentTimeMillis();
@@ -790,7 +788,6 @@ public class GLHeatMap extends AStorageBasedView {
 			contentVA = result.getContentResult().getContentVA();
 			contentSelectionManager.setVA(contentVA);
 			contentVA.setID(contentVAID);
-		
 
 		}
 	}

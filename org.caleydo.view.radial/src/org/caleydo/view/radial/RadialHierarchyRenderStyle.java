@@ -1,6 +1,6 @@
 package org.caleydo.view.radial;
 
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
@@ -32,7 +32,7 @@ public class RadialHierarchyRenderStyle extends GeneralRenderStyle {
 	public static final float[] LABEL_BACKGROUND_COLOR = { 1f, 1f, 1f, 0.6f };
 	public static final int LABEL_TEXT_MIN_SIZE = 60;
 
-	public RadialHierarchyRenderStyle(IViewFrustum viewFrustum) {
+	public RadialHierarchyRenderStyle(ViewFrustum viewFrustum) {
 		super(viewFrustum);
 	}
 

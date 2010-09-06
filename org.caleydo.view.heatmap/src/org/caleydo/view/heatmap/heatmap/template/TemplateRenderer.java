@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.ContentSelectionManager;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.AContentRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ARenderer;
@@ -22,7 +22,7 @@ public class TemplateRenderer {
 
 	private ATemplate template;
 
-	IViewFrustum viewFrustum;
+	ViewFrustum viewFrustum;
 	GLHeatMap heatMap;
 	float totalWidth;
 	float totalHeight;

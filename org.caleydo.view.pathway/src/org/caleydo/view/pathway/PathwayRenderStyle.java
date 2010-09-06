@@ -1,7 +1,7 @@
 package org.caleydo.view.pathway;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 public class PathwayRenderStyle extends GeneralRenderStyle {
@@ -59,7 +59,7 @@ public class PathwayRenderStyle extends GeneralRenderStyle {
 
 	protected EdgeArrowHeadStyle mapEdgeArrowHeadStyle;
 
-	public PathwayRenderStyle(IViewFrustum viewFrustum) {
+	public PathwayRenderStyle(ViewFrustum viewFrustum) {
 		super(viewFrustum);
 		init();
 	}

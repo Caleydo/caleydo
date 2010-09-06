@@ -29,7 +29,6 @@ public class CmdDataCreateStorage
 	public void doCommand() {
 		IStorageManager storageManager = generalManager.getStorageManager();
 		createdObject = storageManager.createStorage(storageType);
-		createdObject.setLabel(label);
 
 		generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), externalID);
 

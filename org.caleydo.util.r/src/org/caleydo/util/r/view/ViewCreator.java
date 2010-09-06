@@ -14,9 +14,9 @@ public class ViewCreator extends ASWTViewCreator {
 	}
 
 	@Override
-	public AView createView(int parentContainerID, String label) {
+	public AView createView(int parentContainerID) {
 
-		return new StatisticsView(parentContainerID, label);
+		return new StatisticsView(parentContainerID);
 	}
 
 	@Override

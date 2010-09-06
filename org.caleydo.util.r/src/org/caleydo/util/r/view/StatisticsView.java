@@ -55,8 +55,8 @@ public class StatisticsView extends ASWTView implements IView, ISWTView, ISetBas
 	/**
 	 * Constructor.
 	 */
-	public StatisticsView(final int iParentContainerId, final String sLabel) {
-		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager()
+	public StatisticsView(final int iParentContainerId) {
+		super(iParentContainerId, GeneralManager.get().getIDManager()
 				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 
 		this.viewType = VIEW_ID;

@@ -42,10 +42,10 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
@@ -130,15 +130,14 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
 	 * @param viewFrustum
 	 * @param bRenderGeneTree
 	 *            boolean to determine whether a gene(horizontal) or a
 	 *            experiment(vertical) dendrogram should be rendered
 	 */
-	public GLDendrogram(final GLCaleydoCanvas glCanvas, final String sLabel,
-			final IViewFrustum viewFrustum, final boolean bRenderGeneTree) {
-		super(glCanvas, sLabel, viewFrustum);
+	public GLDendrogram(final GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum,
+			final boolean bRenderGeneTree) {
+		super(glCanvas, viewFrustum);
 
 		viewType = GLDendrogram.VIEW_ID;
 
@@ -217,7 +216,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	}
 
 	@Override
-	public void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(DetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 		}
@@ -1467,7 +1466,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
-		if (detailLevel == EDetailLevel.VERY_LOW) {
+		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
 

@@ -11,7 +11,7 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
 import org.caleydo.core.view.opengl.renderstyle.InfoAreaRenderStyle;
 
@@ -52,7 +52,7 @@ public class GLInPlaceInfoRenderer {
 	/**
 	 * Constructor
 	 */
-	public GLInPlaceInfoRenderer(IViewFrustum viewFrustum) {
+	public GLInPlaceInfoRenderer(ViewFrustum viewFrustum) {
 		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
 		contentCreator = new InformationContentCreator();
 		renderStyle = new InfoAreaRenderStyle(viewFrustum);

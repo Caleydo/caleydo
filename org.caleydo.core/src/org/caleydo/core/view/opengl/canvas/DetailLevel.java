@@ -5,7 +5,7 @@ package org.caleydo.core.view.opengl.canvas;
  * 
  * @author Marc Streit
  */
-public enum EDetailLevel {
+public enum DetailLevel {
 
 	/**
 	 * bucket pool/memo

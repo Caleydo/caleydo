@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.view.creator.AGLViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.view.template.GLTemplate;
@@ -19,10 +19,9 @@ public class ViewCreator extends AGLViewCreator {
 	}
 
 	@Override
-	public AGLView createGLView(GLCaleydoCanvas glCanvas, String label,
-			IViewFrustum viewFrustum) {
+	public AGLView createGLView(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		return new GLTemplate(glCanvas, label, viewFrustum);
+		return new GLTemplate(glCanvas, viewFrustum);
 	}
 
 	@Override
@@ -43,7 +42,10 @@ public class ViewCreator extends AGLViewCreator {
 		// TODO: ADD THE POSSIBLE DATA DOMAINS FOR THIS VIEW
 		// dataDomainTypes.add("org.caleydo.datadomain.genetic");
 
-		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLTemplate.VIEW_ID);
+		DataDomainManager
+				.getInstance()
+				.getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
+						GLTemplate.VIEW_ID);
 	}
 }

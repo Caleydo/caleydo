@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.remote;
 
-import org.caleydo.core.view.opengl.camera.EProjectionMode;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
@@ -34,7 +34,7 @@ public abstract class ARemoteViewLayoutRenderStyle
 	protected RemoteLevel spawnLevel;
 	protected RemoteLevel selectionLevel;
 
-	protected EProjectionMode eProjectionMode;
+	protected CameraProjectionMode eProjectionMode;
 
 	protected float fScalingFactorFocusLevel;
 	protected float fScalingFactorStackLevel;
@@ -53,7 +53,7 @@ public abstract class ARemoteViewLayoutRenderStyle
 	 * 
 	 * @param generalManager
 	 */
-	public ARemoteViewLayoutRenderStyle(IViewFrustum viewFrustum) {
+	public ARemoteViewLayoutRenderStyle(ViewFrustum viewFrustum) {
 		super(viewFrustum);
 
 		focusLevel = new RemoteLevel(1, "Focus Level", null, stackLevel);
@@ -69,7 +69,7 @@ public abstract class ARemoteViewLayoutRenderStyle
 	/**
 	 * Constructor. Copies layers from previous layer. Used for toggle between layouts.
 	 */
-	public ARemoteViewLayoutRenderStyle(IViewFrustum viewFrustum,
+	public ARemoteViewLayoutRenderStyle(ViewFrustum viewFrustum,
 		final ARemoteViewLayoutRenderStyle previousLayoutStyle) {
 		super(viewFrustum);
 		focusLevel = previousLayoutStyle.getUnderInteractionLayer();
@@ -116,7 +116,7 @@ public abstract class ARemoteViewLayoutRenderStyle
 		return selectionLevel;
 	}
 
-	public EProjectionMode getProjectionMode() {
+	public CameraProjectionMode getProjectionMode() {
 		return eProjectionMode;
 	}
 

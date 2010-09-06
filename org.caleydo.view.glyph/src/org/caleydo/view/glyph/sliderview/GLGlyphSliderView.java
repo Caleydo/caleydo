@@ -25,7 +25,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.miniview.slider.GLDistributionMiniView;
@@ -74,7 +74,7 @@ public class GLGlyphSliderView
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLGlyphSliderView(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
+	public GLGlyphSliderView(GLCaleydoCanvas glCanvas, final String sLabel, final ViewFrustum viewFrustum) {
 
 		super(glCanvas, sLabel, viewFrustum, true);
 

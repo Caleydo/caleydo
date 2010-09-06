@@ -1,6 +1,6 @@
 package org.caleydo.view.heatmap.dendrogram;
 
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
@@ -24,7 +24,7 @@ public class DendrogramRenderStyle extends GeneralRenderStyle {
 
 	GLDendrogram<?> dendrogram;
 
-	public DendrogramRenderStyle(GLDendrogram<?> dendrogram, IViewFrustum viewFrustum) {
+	public DendrogramRenderStyle(GLDendrogram<?> dendrogram, ViewFrustum viewFrustum) {
 
 		super(viewFrustum);
 

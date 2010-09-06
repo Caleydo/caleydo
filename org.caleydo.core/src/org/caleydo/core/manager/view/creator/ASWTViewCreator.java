@@ -9,5 +9,5 @@ public abstract class ASWTViewCreator
 		super(viewType);
 	}
 
-	public abstract AView createView(int parentContainerID, String label);
+	public abstract AView createView(int parentContainerID);
 }

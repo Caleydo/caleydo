@@ -21,7 +21,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
@@ -64,7 +64,7 @@ public class GLBookmarkView extends AGLView implements
 	private RemoveBookmarkListener removeBookmarkListener;
 
 	protected ASetBasedDataDomain dataDomain;
-	
+
 	private boolean contentChanged = true;
 
 	class PickingIDManager {
@@ -100,14 +100,10 @@ public class GLBookmarkView extends AGLView implements
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param glCanvas
-	 * @param label
-	 * @param viewFrustum
 	 */
-	public GLBookmarkView(GLCaleydoCanvas glCanvas, String label, IViewFrustum viewFrustum) {
+	public GLBookmarkView(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, label, viewFrustum, true);
+		super(glCanvas, viewFrustum, true);
 		viewType = GLBookmarkView.VIEW_ID;
 
 		renderStyle = new BookmarkRenderStyle(viewFrustum);
@@ -226,7 +222,7 @@ public class GLBookmarkView extends AGLView implements
 		gl.glEndList();
 
 		if (contentChanged) {
-			float height = 20; //TODO determine dynamically
+			float height = 20; // TODO determine dynamically
 			float width = 8; // TODO determine dynamically
 			int minViewportHeight = (int) (parentGLCanvas.getHeight()
 					/ viewFrustum.getHeight() * height) + 10;
@@ -237,9 +233,9 @@ public class GLBookmarkView extends AGLView implements
 				// Draw again in next frame where the viewport size is hopefully
 				// correct
 				setDisplayListDirty();
-			}
-			else {
-				// at the moment we do not consider a content change and make the size adaption only once
+			} else {
+				// at the moment we do not consider a content change and make
+				// the size adaption only once
 				contentChanged = false;
 			}
 		}
@@ -281,7 +277,7 @@ public class GLBookmarkView extends AGLView implements
 					+ event.getIDType().getIDCategory());
 
 		container.handleNewBookmarkEvent(event);
-		
+
 		setDisplayListDirty();
 	}
 
@@ -294,7 +290,7 @@ public class GLBookmarkView extends AGLView implements
 					+ event.getIDType().getIDCategory());
 
 		container.handleRemoveBookmarkEvent(event);
-		
+
 		setDisplayListDirty();
 	}
 
@@ -355,7 +351,7 @@ public class GLBookmarkView extends AGLView implements
 				.get(selectionDelta.getIDType().getIDCategory());
 		if (container != null)
 			container.handleSelectionUpdate(selectionDelta);
-		
+
 		setDisplayListDirty();
 	}
 
@@ -365,7 +361,7 @@ public class GLBookmarkView extends AGLView implements
 		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(category);
 		if (container != null)
 			container.handleSelectionCommand(selectionCommand);
-		
+
 		setDisplayListDirty();
 	}
 

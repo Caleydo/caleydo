@@ -3,8 +3,8 @@ package org.caleydo.view.heatmap;
 import java.util.HashMap;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
@@ -66,7 +66,7 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 		this.useFishEye = useFishEye;
 	}
 
-	public HeatMapRenderStyle(GLHeatMap heatMap, IViewFrustum viewFrustum) {
+	public HeatMapRenderStyle(GLHeatMap heatMap, ViewFrustum viewFrustum) {
 
 		super(viewFrustum);
 
@@ -94,7 +94,7 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 	}
 
 	public HeatMapRenderStyle(GLHierarchicalHeatMap hierarchicalHeatMap,
-			IViewFrustum viewFrustum) {
+			ViewFrustum viewFrustum) {
 
 		super(viewFrustum);
 
@@ -194,13 +194,13 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 
 	private float getRenderWidth() {
 
-		if (heatMap.getDetailLevel() == EDetailLevel.HIGH)
+		if (heatMap.getDetailLevel() == DetailLevel.HIGH)
 			return viewFrustum.getWidth() - 2.4f * getXSpacing();
 		return viewFrustum.getWidth();
 	}
 
 	public float getRenderHeight() {
-		if (heatMap.getDetailLevel() == EDetailLevel.HIGH)
+		if (heatMap.getDetailLevel() == DetailLevel.HIGH)
 			return viewFrustum.getHeight() - 2 * getYSpacing();
 		return viewFrustum.getHeight();
 

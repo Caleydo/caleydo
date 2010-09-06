@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.view.creator.AGLViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.view.parcoords.GLParallelCoordinates;
@@ -19,10 +19,9 @@ public class ViewCreator extends AGLViewCreator {
 	}
 
 	@Override
-	public AGLView createGLView(GLCaleydoCanvas glCanvas, String label,
-			IViewFrustum viewFrustum) {
+	public AGLView createGLView(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		return new GLParallelCoordinates(glCanvas, label, viewFrustum);
+		return new GLParallelCoordinates(glCanvas, viewFrustum);
 	}
 
 	@Override
@@ -35,7 +34,7 @@ public class ViewCreator extends AGLViewCreator {
 	public Object createToolBarContent() {
 		return new ParCoordsToolBarContent();
 	}
-	
+
 	@Override
 	protected void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
@@ -43,6 +42,10 @@ public class ViewCreator extends AGLViewCreator {
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 		dataDomainTypes.add("org.caleydo.datadomain.clinical");
 
-		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLParallelCoordinates.VIEW_ID);	}
+		DataDomainManager
+				.getInstance()
+				.getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
+						GLParallelCoordinates.VIEW_ID);
+	}
 }

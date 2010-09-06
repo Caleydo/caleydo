@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.view.creator.AGLViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.view.datawindows.GLHyperbolic;
@@ -18,10 +18,9 @@ public class ViewCreatorHyperbolic extends AGLViewCreator {
 	}
 
 	@Override
-	public AGLView createGLView(GLCaleydoCanvas glCanvas, String label,
-			IViewFrustum viewFrustum) {
+	public AGLView createGLView(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		return new GLHyperbolic(glCanvas, label, viewFrustum);
+		return new GLHyperbolic(glCanvas, viewFrustum);
 	}
 
 	@Override

@@ -32,9 +32,9 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.view.opengl.camera.EProjectionMode;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.ColorUtil;
@@ -120,7 +120,7 @@ public class HeatMapWrapper {
 				.createCommandByType(ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(GLHeatMap.VIEW_ID);
 
-		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 50, 0, 50, -20, 20, -1);
+		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, 50, 0, 50, -20, 20, -1);
 
 		cmdView.doCommand();
 
@@ -137,7 +137,7 @@ public class HeatMapWrapper {
 			heatMap.setRenderTemplate(new ComparerDetailTemplate(true));
 
 		heatMap.initData();
-		heatMap.setDetailLevel(EDetailLevel.MEDIUM);
+		heatMap.setDetailLevel(DetailLevel.MEDIUM);
 		heatMap.initRemote(gl, glParentView, glMouseListener, infoAreaManager);
 		heatMap.setSendClearSelectionsEvent(true);
 		heatMap.useFishEye(false);
@@ -151,7 +151,7 @@ public class HeatMapWrapper {
 				.createCommandByType(ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(GLDendrogram.VIEW_ID + ".horizontal");
 
-		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 50, 0, 50, -20, 20, -1);
+		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, 50, 0, 50, -20, 20, -1);
 
 		cmdView.doCommand();
 

@@ -73,8 +73,8 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 	/**
 	 * Constructor.
 	 */
-	public HTMLBrowser(final int iParentContainerId, final String sLabel) {
-		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager()
+	public HTMLBrowser(final int iParentContainerId) {
+		super(iParentContainerId, GeneralManager.get().getIDManager()
 				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENERAL));
 		viewType = VIEW_ID;
 		init();
@@ -83,8 +83,8 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 	/**
 	 * Constructor.
 	 */
-	public HTMLBrowser(final int iParentContainerId, final String sLabel, int iViewID) {
-		super(iParentContainerId, sLabel, iViewID);
+	public HTMLBrowser(final int iParentContainerId, int iViewID) {
+		super(iParentContainerId, iViewID);
 		init();
 	}
 

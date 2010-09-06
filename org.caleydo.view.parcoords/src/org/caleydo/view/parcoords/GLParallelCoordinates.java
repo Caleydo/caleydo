@@ -71,10 +71,10 @@ import org.caleydo.core.manager.view.StandardTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -213,10 +213,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	/**
 	 * Constructor.
 	 */
-	public GLParallelCoordinates(GLCaleydoCanvas glCanvas, final String sLabel,
-			final IViewFrustum viewFrustum) {
+	public GLParallelCoordinates(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
-		super(glCanvas, sLabel, viewFrustum);
+		super(glCanvas, viewFrustum);
 		viewType = GLParallelCoordinates.VIEW_ID;
 
 		renderStyle = new PCRenderStyle(this, viewFrustum);
@@ -644,7 +643,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		gl.glColor4fv(renderState.color, 0);
 		gl.glLineWidth(renderState.lineWidth);
 		if ((selectionType == SelectionType.SELECTION || selectionType == SelectionType.MOUSE_OVER)
-				&& detailLevel == EDetailLevel.HIGH) {
+				&& detailLevel == DetailLevel.HIGH) {
 			bRenderingSelection = true;
 		} else
 			bRenderingSelection = false;
@@ -799,14 +798,14 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			gl.glEnd();
 			gl.glDisable(GL.GL_LINE_STIPPLE);
 
-			if (detailLevel != EDetailLevel.HIGH
+			if (detailLevel != DetailLevel.HIGH
 					|| !renderStyle.isEnoughSpaceForText(iNumberAxis)) {
 				// pop the picking id here when we don't want to include the
 				// axis label
 				gl.glPopName();
 			}
 
-			if (detailLevel == EDetailLevel.HIGH) {
+			if (detailLevel == DetailLevel.HIGH) {
 
 				// NaN Button
 				float fXButtonOrigin = alAxisSpacing.get(iCount);
@@ -1075,7 +1074,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	 */
 	private void renderGates(GL gl) {
 
-		if (detailLevel != EDetailLevel.HIGH)
+		if (detailLevel != DetailLevel.HIGH)
 			return;
 
 		for (Integer iGateID : hashGates.keySet()) {
@@ -1101,7 +1100,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	}
 
 	private void renderMasterGate(GL gl) {
-		if (detailLevel != EDetailLevel.HIGH)
+		if (detailLevel != DetailLevel.HIGH)
 			return;
 
 		gl.glColor4f(0, 0, 0, 1f);
@@ -1486,7 +1485,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	@Override
 	protected void handlePickingEvents(final EPickingType ePickingType,
 			final EPickingMode ePickingMode, final int iExternalID, final Pick pick) {
-		if (detailLevel == EDetailLevel.VERY_LOW || bIsDraggingActive || bWasAxisMoved) {
+		if (detailLevel == DetailLevel.VERY_LOW || bIsDraggingActive || bWasAxisMoved) {
 			return;
 		}
 

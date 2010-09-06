@@ -7,7 +7,7 @@ import java.awt.Point;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.InfoAreaRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -54,7 +54,7 @@ public class GLInfoAreaManager {
 
 	}
 
-	public void initInfoInPlace(final IViewFrustum viewFrustum) {
+	public void initInfoInPlace(final ViewFrustum viewFrustum) {
 
 		infoArea = new GLInPlaceInfoRenderer(viewFrustum);
 	}
@@ -102,7 +102,7 @@ public class GLInfoAreaManager {
 	 * @param isFirstTime
 	 *            this has to be true only the first time you render it and can never be true after that
 	 */
-	public void renderRemoteInPlaceInfo(GL gl, int iWindowWidth, int iWindowHeight, IViewFrustum frustum) {
+	public void renderRemoteInPlaceInfo(GL gl, int iWindowWidth, int iWindowHeight, ViewFrustum frustum) {
 		if (!bRenderInfoArea)
 			return;
 		if (bFirstTime) {

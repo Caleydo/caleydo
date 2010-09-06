@@ -21,8 +21,8 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeGraphItemRep;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeGraphItemRep;
@@ -81,7 +81,7 @@ public class GLPathwayContentCreator {
 	/**
 	 * Constructor.
 	 */
-	public GLPathwayContentCreator(IViewFrustum viewFrustum, GLPathway glPathwayView) {
+	public GLPathwayContentCreator(ViewFrustum viewFrustum, GLPathway glPathwayView) {
 
 		this.generalManager = GeneralManager.get();
 		this.glPathwayView = glPathwayView;
@@ -549,7 +549,7 @@ public class GLPathwayContentCreator {
 				if (tmpNodeColor != null) {
 					gl.glColor3fv(tmpNodeColor, 0);
 
-					if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
+					if (glPathwayView.getDetailLevel() == DetailLevel.HIGH) {
 
 						gl.glBegin(GL.GL_LINE_STRIP);
 						for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
@@ -682,7 +682,7 @@ public class GLPathwayContentCreator {
 				if (tmpNodeColor != null) {
 					gl.glColor3fv(tmpNodeColor, 0);
 
-					if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
+					if (glPathwayView.getDetailLevel() == DetailLevel.HIGH) {
 
 						gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
 

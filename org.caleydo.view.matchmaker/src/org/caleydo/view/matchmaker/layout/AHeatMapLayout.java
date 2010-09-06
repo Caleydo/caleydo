@@ -8,7 +8,7 @@ import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.view.matchmaker.HeatMapWrapper;
@@ -232,7 +232,7 @@ public abstract class AHeatMapLayout {
 
 	public float getOverviewClusterBorderSize() {
 		AGLView view = heatMapWrapper.getView();
-		IViewFrustum viewFrustum = view.getViewFrustum();
+		ViewFrustum viewFrustum = view.getViewFrustum();
 		GLCaleydoCanvas canvas = view.getParentGLCanvas();
 		// One pixel in height
 		return viewFrustum.getHeight() / (float) canvas.getHeight();

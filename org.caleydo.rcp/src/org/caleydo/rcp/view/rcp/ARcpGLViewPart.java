@@ -17,7 +17,7 @@ import org.caleydo.core.command.view.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.camera.EProjectionMode;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -86,7 +86,7 @@ public abstract class ARcpGLViewPart
 		cmdView.setViewID(viewType);
 		if (viewType.equals("org.caleydo.view.bucket") || viewType.equals("org.caleydo.view.dataflipper")) {
 
-			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100, iParentCanvasID,
+			cmdView.setAttributes(CameraProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100, iParentCanvasID,
 				0, 0, -8, 0, 0, 0, 0);
 
 			// cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -2f, 2f, -2f,
@@ -99,7 +99,7 @@ public abstract class ARcpGLViewPart
 		// 0, 0, -8, 0, 0, 0, 0);
 		// }
 		else {
-			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, iParentCanvasID);
+			cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, iParentCanvasID);
 		}
 
 		String dataDomainType = determineDataDomain(serializedView);

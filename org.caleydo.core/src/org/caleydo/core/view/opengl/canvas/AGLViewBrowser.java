@@ -34,7 +34,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
@@ -150,9 +150,9 @@ public abstract class AGLViewBrowser
 	/**
 	 * Constructor.
 	 */
-	public AGLViewBrowser(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
+	public AGLViewBrowser(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
-		super(glCanvas, sLabel, viewFrustum, true);
+		super(glCanvas, viewFrustum, true);
 
 		focusLevel = new RemoteLevel(1, "Focus Level", null, stackLevel);
 		stackLevel = new RemoteLevel(4, "Stack Level", focusLevel, poolLevel);
@@ -1084,13 +1084,13 @@ public abstract class AGLViewBrowser
 
 		// Update detail level of moved view when slerp action is finished;
 		if (destinationLevel == focusLevel) {
-			glActiveSubView.setDetailLevel(EDetailLevel.MEDIUM);
+			glActiveSubView.setDetailLevel(DetailLevel.MEDIUM);
 		}
 		else if (destinationLevel == stackLevel) {
-			glActiveSubView.setDetailLevel(EDetailLevel.LOW);
+			glActiveSubView.setDetailLevel(DetailLevel.LOW);
 		}
 		else if (destinationLevel == poolLevel || destinationLevel == externalSelectionLevel) {
-			glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
+			glActiveSubView.setDetailLevel(DetailLevel.VERY_LOW);
 		}
 
 		compactPoolLevel();
@@ -1643,7 +1643,7 @@ public abstract class AGLViewBrowser
 		arSlerpActions.add(slerpActionTransition);
 
 		view.initRemote(gl, this, glMouseListener, infoAreaManager);
-		view.setDetailLevel(EDetailLevel.MEDIUM);
+		view.setDetailLevel(DetailLevel.MEDIUM);
 
 		return true;
 	}

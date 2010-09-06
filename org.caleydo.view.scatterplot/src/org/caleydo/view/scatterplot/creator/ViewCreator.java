@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.view.creator.AGLViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.view.scatterplot.GLScatterPlot;
@@ -19,10 +19,9 @@ public class ViewCreator extends AGLViewCreator {
 	}
 
 	@Override
-	public AGLView createGLView(GLCaleydoCanvas glCanvas, String label,
-			IViewFrustum viewFrustum) {
+	public AGLView createGLView(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		return new GLScatterPlot(glCanvas, label, viewFrustum);
+		return new GLScatterPlot(glCanvas, viewFrustum);
 	}
 
 	@Override
@@ -35,7 +34,7 @@ public class ViewCreator extends AGLViewCreator {
 	public Object createToolBarContent() {
 		return new ScatterplotToolBarContent();
 	}
-	
+
 	@Override
 	protected void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
@@ -43,7 +42,10 @@ public class ViewCreator extends AGLViewCreator {
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 		dataDomainTypes.add("org.caleydo.datadomain.clinical");
 
-		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLScatterPlot.VIEW_ID);		
+		DataDomainManager
+				.getInstance()
+				.getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
+						GLScatterPlot.VIEW_ID);
 	}
 }

@@ -16,9 +16,9 @@ public class ViewCreator extends ASWTViewCreator {
 	}
 
 	@Override
-	public AView createView(int parentContainerID, String label) {
+	public AView createView(int parentContainerID) {
 
-		return new GenomeHTMLBrowser(parentContainerID, label);
+		return new GenomeHTMLBrowser(parentContainerID);
 	}
 
 	@Override
@@ -26,13 +26,16 @@ public class ViewCreator extends ASWTViewCreator {
 
 		return new SerializedHTMLBrowserView();
 	}
-	
+
 	@Override
 	protected void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 
-		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GenomeHTMLBrowser.VIEW_ID);
+		DataDomainManager
+				.getInstance()
+				.getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
+						GenomeHTMLBrowser.VIEW_ID);
 	}
 }

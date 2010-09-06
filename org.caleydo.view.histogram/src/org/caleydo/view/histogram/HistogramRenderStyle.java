@@ -1,6 +1,6 @@
 package org.caleydo.view.histogram;
 
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
@@ -17,7 +17,7 @@ public class HistogramRenderStyle extends GeneralRenderStyle {
 
 	public static final float CAPTION_SPACING = 0.01f;
 
-	public HistogramRenderStyle(GLHistogram histogram, IViewFrustum viewFrustum) {
+	public HistogramRenderStyle(GLHistogram histogram, ViewFrustum viewFrustum) {
 
 		super(viewFrustum);
 

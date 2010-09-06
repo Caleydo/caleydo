@@ -2,7 +2,7 @@ package org.caleydo.view.grouper;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
@@ -32,7 +32,7 @@ public class GrouperRenderStyle extends GeneralRenderStyle {
 	 * @param viewFrustum
 	 *            View frustum.
 	 */
-	public GrouperRenderStyle(IViewFrustum viewFrustum) {
+	public GrouperRenderStyle(ViewFrustum viewFrustum) {
 
 		super(viewFrustum);
 

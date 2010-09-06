@@ -16,8 +16,8 @@ import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.EProjectionMode;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -35,7 +35,7 @@ public class CmdCreateView
 	protected String viewID;
 	protected String dataDomainType;
 
-	protected IViewFrustum viewFrustum;
+	protected ViewFrustum viewFrustum;
 
 	protected Vec3f cameraOrigin;
 	protected Rotf cameraRotation;
@@ -94,8 +94,8 @@ public class CmdCreateView
 			sProjectionMode = frustumToken.nextToken();
 		}
 
-		if (!sProjectionMode.equals(EProjectionMode.ORTHOGRAPHIC.name())
-			&& !sProjectionMode.equals(EProjectionMode.PERSPECTIVE.name()))
+		if (!sProjectionMode.equals(CameraProjectionMode.ORTHOGRAPHIC.name())
+			&& !sProjectionMode.equals(CameraProjectionMode.PERSPECTIVE.name()))
 			return;
 
 		float fLeft = -1;
@@ -113,7 +113,7 @@ public class CmdCreateView
 		fFar = new Float(frustumToken.nextToken());
 
 		viewFrustum =
-			new ViewFrustum(EProjectionMode.valueOf(sProjectionMode), fLeft, fRight, fBottom, fTop, fNear,
+			new ViewFrustum(CameraProjectionMode.valueOf(sProjectionMode), fLeft, fRight, fBottom, fTop, fNear,
 				fFar);
 	}
 
@@ -129,7 +129,7 @@ public class CmdCreateView
 	 * @param fFar
 	 * @param iParentCanvasID
 	 */
-	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft, final float fRight,
+	public void setAttributes(final CameraProjectionMode eProjectionMode, final float fLeft, final float fRight,
 		final float fBottom, final float fTop, final float fNear, final float fFar, final int iParentCanvasID) {
 		viewFrustum = new ViewFrustum(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar);
 
@@ -155,7 +155,7 @@ public class CmdCreateView
 	 * @param fCamRotationZ
 	 * @param fCamRotationAngle
 	 */
-	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft, final float fRight,
+	public void setAttributes(final CameraProjectionMode eProjectionMode, final float fLeft, final float fRight,
 		final float fBottom, final float fTop, final float fNear, final float fFar, final int parentCanvasID,
 		final float fCamOriginX, final float fCamOriginY, final float fCamOriginZ, final float fCamRotationX,
 		final float fCamRotationY, final float fCamRotationZ, final float fCamRotationAngle) {
@@ -202,7 +202,7 @@ public class CmdCreateView
 
 		GLCaleydoCanvas glCanvas = generalManager.getViewGLCanvasManager().getCanvas(parentCanvasID);
 
-		createdObject = glCanvasManager.createGLView(viewID, glCanvas, label, viewFrustum);
+		createdObject = glCanvasManager.createGLView(viewID, glCanvas, viewFrustum);
 
 		if (externalID != -1) {
 			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), externalID);

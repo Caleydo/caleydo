@@ -41,7 +41,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.ISetBasedView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
@@ -144,7 +144,7 @@ public class GLGlyph
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLGlyph(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
+	public GLGlyph(GLCaleydoCanvas glCanvas, final String sLabel, final ViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, true);
 		viewType = VIEW_ID;
 

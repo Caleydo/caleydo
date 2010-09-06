@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.renderstyle;
 
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
  * Render styles for the info area
@@ -19,7 +19,7 @@ public class InfoAreaRenderStyle
 
 	private static final float SPACING = 0.005f;
 
-	public InfoAreaRenderStyle(IViewFrustum viewFrustum) {
+	public InfoAreaRenderStyle(ViewFrustum viewFrustum) {
 
 		super(viewFrustum);
 	}

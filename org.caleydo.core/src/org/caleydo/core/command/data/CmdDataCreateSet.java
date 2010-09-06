@@ -50,7 +50,6 @@ public class CmdDataCreateSet
 	public void doCommand() {
 
 		createdObject = new Set(dataDomain);
-		createdObject.setLabel(label);
 
 		if (externalID != -1) {
 			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), externalID);

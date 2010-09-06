@@ -22,7 +22,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.animation.MovementVector2;
 import org.caleydo.core.view.opengl.util.animation.MovementVector3;
@@ -98,7 +98,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 						glMouseListener, viewID);
 			}
 
-			IViewFrustum viewFrustum = view.getViewFrustum();
+			ViewFrustum viewFrustum = view.getViewFrustum();
 
 			setBar.setWidth(viewFrustum.getWidth());
 			setBar.render(gl);

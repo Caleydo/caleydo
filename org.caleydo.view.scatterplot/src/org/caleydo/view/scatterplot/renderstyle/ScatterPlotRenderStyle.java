@@ -2,7 +2,7 @@ package org.caleydo.view.scatterplot.renderstyle;
 
 //import java.util.HashMap;
 
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.scatterplot.GLScatterPlot;
 
@@ -65,7 +65,7 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 
 	private float fSizeHeatmapArrow = 0.17f;
 
-	public ScatterPlotRenderStyle(GLScatterPlot scatterPlot, IViewFrustum viewFrustum) {
+	public ScatterPlotRenderStyle(GLScatterPlot scatterPlot, ViewFrustum viewFrustum) {
 
 		super(viewFrustum);
 

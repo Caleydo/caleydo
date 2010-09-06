@@ -4,14 +4,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.ArrayList;
 import java.util.Set;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -28,9 +26,9 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.ISetBasedView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -94,8 +92,8 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLTreeMap(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
-		super(glCanvas, sLabel, viewFrustum, true);
+	public GLTreeMap(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+		super(glCanvas, viewFrustum, true);
 
 		// super(glCanvas, sLabel, viewFrustum, null);
 		viewType = GLTreeMap.VIEW_ID;
@@ -173,7 +171,7 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		renderStyle = new TreeMapRenderStyle(viewFrustum);
 
 		super.renderStyle = renderStyle;
-		detailLevel = EDetailLevel.HIGH;
+		detailLevel = DetailLevel.HIGH;
 
 	}
 
@@ -234,7 +232,7 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	}
 
 	@Override
-	public void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(DetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 		}
@@ -363,7 +361,7 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
-		if (detailLevel == EDetailLevel.VERY_LOW) {
+		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
 

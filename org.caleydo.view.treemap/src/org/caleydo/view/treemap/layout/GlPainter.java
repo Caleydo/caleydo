@@ -9,12 +9,12 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 public class GlPainter {
 
 	GL gl;
-	IViewFrustum viewFrustum;
+	ViewFrustum viewFrustum;
 	PickingManager pickingManager;
 	int viewID;
 	
@@ -22,7 +22,7 @@ public class GlPainter {
 	
 	SelectionManager selectionManager;
 	
-	public GlPainter(GL gl, IViewFrustum viewFrustum, PickingManager pickingManager, int viewID, SelectionManager selectionManager) {
+	public GlPainter(GL gl, ViewFrustum viewFrustum, PickingManager pickingManager, int viewID, SelectionManager selectionManager) {
 		this.pickingManager=pickingManager;
 		this.gl = gl;
 		this.viewFrustum = viewFrustum;

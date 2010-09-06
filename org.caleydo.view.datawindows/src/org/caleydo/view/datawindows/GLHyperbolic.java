@@ -26,9 +26,9 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.tracking.TrackDataProvider;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -92,13 +92,11 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHyperbolic(GLCaleydoCanvas glCanvas, final String sLabel,
-			final IViewFrustum viewFrustum) {
+	public GLHyperbolic(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
-		super(glCanvas, sLabel, viewFrustum, true);
+		super(glCanvas, viewFrustum, true);
 		viewType = GLHyperbolic.VIEW_ID;
 
 		// preparing the eyetracker
@@ -141,7 +139,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	}
 
 	@Override
-	public void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(DetailLevel detailLevel) {
 		super.setDetailLevel(detailLevel);
 	}
 
@@ -257,7 +255,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 			ASerializedView serView = newViews.remove(0);
 			AGLView view = createView(gl, serView);
 
-			ViewHyperbolicNode node = new ViewHyperbolicNode(tree, view.getLabel(), 1,
+			ViewHyperbolicNode node = new ViewHyperbolicNode(tree, "TODO: set me!", 1,
 					view);
 			disk.insertNode(node, disk.getCenteredNode());
 
@@ -316,7 +314,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
-		if (detailLevel == EDetailLevel.VERY_LOW) {
+		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
 

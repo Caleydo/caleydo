@@ -52,10 +52,10 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
@@ -216,11 +216,10 @@ public class GLBucket extends AGLView implements
 	/**
 	 * Constructor.
 	 */
-	public GLBucket(GLCaleydoCanvas glCanvas, final String sLabel,
-			final IViewFrustum viewFrustum,
+	public GLBucket(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum,
 			final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode) {
 
-		super(glCanvas, sLabel, viewFrustum, true);
+		super(glCanvas, viewFrustum, true);
 		viewType = GLBucket.VIEW_ID;
 
 		this.layoutMode = layoutMode;
@@ -1586,15 +1585,15 @@ public class GLBucket extends AGLView implements
 		if (destinationLevel == focusLevel) {
 			if (bucketMouseWheelListener.isZoomedIn()
 					|| layoutRenderStyle instanceof ListLayoutRenderStyle) {
-				glActiveSubView.setDetailLevel(EDetailLevel.HIGH);
+				glActiveSubView.setDetailLevel(DetailLevel.HIGH);
 			} else {
-				glActiveSubView.setDetailLevel(EDetailLevel.MEDIUM);
+				glActiveSubView.setDetailLevel(DetailLevel.MEDIUM);
 			}
 		} else if (destinationLevel == stackLevel) {
-			glActiveSubView.setDetailLevel(EDetailLevel.LOW);
+			glActiveSubView.setDetailLevel(DetailLevel.LOW);
 		} else if (destinationLevel == poolLevel
 				|| destinationLevel == externalSelectionLevel) {
-			glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
+			glActiveSubView.setDetailLevel(DetailLevel.VERY_LOW);
 		}
 
 		compactPoolLevel();
@@ -2513,7 +2512,7 @@ public class GLBucket extends AGLView implements
 		arSlerpActions.add(slerpActionTransition);
 
 		view.initRemote(gl, this, glMouseListener, infoAreaManager);
-		view.setDetailLevel(EDetailLevel.MEDIUM);
+		view.setDetailLevel(DetailLevel.MEDIUM);
 
 		return true;
 	}

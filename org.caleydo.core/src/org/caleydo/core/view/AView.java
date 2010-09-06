@@ -33,20 +33,16 @@ public abstract class AView
 
 	protected Composite parentComposite;
 
-	protected String sLabel = "Label not set";
-
 	/**
 	 * Constructor.
 	 */
-	public AView(final int iParentContainerId, final String sLabel, final int iViewID) {
+	public AView(final int iParentContainerId, final int iViewID) {
 		super(iViewID);
 
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 
 		this.parentContainerID = iParentContainerId;
-		this.sLabel = sLabel;
-
 	}
 
 	/**
@@ -66,20 +62,6 @@ public abstract class AView
 	@Override
 	public void setParentContainerId(int iParentContainerId) {
 		this.parentContainerID = iParentContainerId;
-	}
-
-	@Override
-	public final String getLabel() {
-		return sLabel;
-	}
-
-	@Override
-	public final void setLabel(String label) {
-		this.sLabel = label;
-
-		if (parentComposite != null) {
-			parentComposite.getShell().setText(label);
-		}
 	}
 
 	/**

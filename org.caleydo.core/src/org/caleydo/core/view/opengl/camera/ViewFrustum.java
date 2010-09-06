@@ -9,9 +9,8 @@ import javax.media.opengl.GL;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class ViewFrustum
-	implements IViewFrustum {
-	private EProjectionMode eProjectionMode;
+public class ViewFrustum {
+	private CameraProjectionMode eProjectionMode;
 
 	private float left;
 	private float right;
@@ -33,7 +32,7 @@ public class ViewFrustum
 	 * @param fNear
 	 * @param fFar
 	 */
-	public ViewFrustum(EProjectionMode eProjectionMode, float fLeft, float fRight, float fBottom, float fTop,
+	public ViewFrustum(CameraProjectionMode eProjectionMode, float fLeft, float fRight, float fBottom, float fTop,
 		float fNear, float fFar) {
 		this.eProjectionMode = eProjectionMode;
 
@@ -45,98 +44,98 @@ public class ViewFrustum
 		this.fFar = fFar;
 	}
 
-	@Override
-	public EProjectionMode getProjectionMode() {
+	public CameraProjectionMode getProjectionMode() {
 		return eProjectionMode;
 	}
 
-	@Override
-	public void setProjectionMode(final EProjectionMode eProjectionMode) {
+	public void setProjectionMode(final CameraProjectionMode eProjectionMode) {
 		this.eProjectionMode = eProjectionMode;
 	}
 
-	@Override
 	public float getLeft() {
 		return left;
 	}
 
-	@Override
 	public float getRight() {
 		return right;
 	}
 
-	@Override
 	public float getTop() {
 		return top;
 	}
 
-	@Override
 	public float getBottom() {
 		return bottom;
 	}
 
-	@Override
 	public float getNear() {
 		return fNear;
 	}
 
-	@Override
 	public float getFar() {
 		return fFar;
 	}
 
-	@Override
 	public float getWidth() {
 		return right - left;
 	}
 
-	@Override
 	public float getHeight() {
 		return top - bottom;
 	}
 
-	@Override
 	public void setLeft(final float fLeft) {
 
 		this.left = fLeft;
 	}
 
-	@Override
 	public void setRight(final float fRight) {
 
 		this.right = fRight;
 	}
 
-	@Override
 	public void setTop(final float fTop) {
 
 		this.top = fTop;
 	}
 
-	@Override
 	public void setBottom(final float fBottom) {
 
 		this.bottom = fBottom;
 	}
 
-	@Override
 	public void setNear(final float fNear) {
 
 		this.fNear = fNear;
 	}
 
-	@Override
 	public void setFar(final float fFar) {
 
 		this.fFar = fFar;
 	}
 
-	@Override
+	/**
+	 * Define whether to consider aspect ratios when setting the projection matrix. This guarantees
+	 * rectangular appearance of views
+	 * 
+	 * @param bConsiderAspectRatio
+	 * @deprecated Because fAspectRatio should not be used any more.
+	 */
+	@Deprecated
 	public void considerAspectRatio(boolean bConsiderAspectRatio) {
 		this.bConsiderAspectRatio = bConsiderAspectRatio;
 	}
 
-	@Override
+	/**
+	 * Sets the projection matrix, according to the projection mode defined in the frustum
+	 * 
+	 * @param gl
+	 *            the GL context
+	 * @param fAspectRatio
+	 *            the aspect ratio
+	 * @deprecated Because fAspectRatio should not be used any more.
+	 */
+	@Deprecated
 	public void setProjectionMatrix(GL gl, float fAspectRatio) {
 
 		// The member values must be copied to local values
@@ -161,7 +160,7 @@ public class ViewFrustum
 			// System.out.println(fLeft + "," +fRight + "," +fTop + "," +fBottom);
 		}
 
-		if (getProjectionMode().equals(EProjectionMode.ORTHOGRAPHIC)) {
+		if (getProjectionMode().equals(CameraProjectionMode.ORTHOGRAPHIC)) {
 			gl.glOrtho(left, right, bottom, top, getNear(), getFar());
 		}
 		else {

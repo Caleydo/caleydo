@@ -4,8 +4,8 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
-import org.caleydo.core.view.opengl.camera.EProjectionMode;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -20,7 +20,7 @@ public class JukeboxLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 	/**
 	 * Constructor.
 	 */
-	public JukeboxLayoutRenderStyle(IViewFrustum viewFrustum) {
+	public JukeboxLayoutRenderStyle(ViewFrustum viewFrustum) {
 		super(viewFrustum);
 		initLayout();
 	}
@@ -28,14 +28,14 @@ public class JukeboxLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 	/**
 	 * Constructor.
 	 */
-	public JukeboxLayoutRenderStyle(IViewFrustum viewFrustum,
+	public JukeboxLayoutRenderStyle(ViewFrustum viewFrustum,
 			final ARemoteViewLayoutRenderStyle previousLayoutStyle) {
 		super(viewFrustum, previousLayoutStyle);
 		initLayout();
 	}
 
 	private void initLayout() {
-		eProjectionMode = EProjectionMode.ORTHOGRAPHIC;
+		eProjectionMode = CameraProjectionMode.ORTHOGRAPHIC;
 
 		fScalingFactorFocusLevel = 0.28f;
 		fScalingFactorStackLevel = 0.13f;

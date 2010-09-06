@@ -36,18 +36,18 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 	private BrowserQueryType browserQueryType = BrowserQueryType.KEGG_HomoSapiens;
 
 	private SelectionUpdateListener selectionUpdateListener;
-	
+
 	private Combo comboQueryIDType;
-	
+
 	private IDType sourceIDType;
 	private Integer sourceID;
 
 	/**
 	 * Constructor.
 	 */
-	public GenomeHTMLBrowser(int iParentContainerID, String sLabel) {
+	public GenomeHTMLBrowser(int iParentContainerID) {
 
-		super(iParentContainerID, sLabel, GeneralManager.get().getIDManager()
+		super(iParentContainerID, GeneralManager.get().getIDManager()
 				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENOME));
 
 		registerEventListeners();
@@ -57,7 +57,8 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 	public void initViewSWTComposite(Composite parentComposite) {
 		super.initViewSWTComposite(parentComposite);
 
-		final Combo comboQueryDatabaseType = new Combo(subContributionComposite, SWT.READ_ONLY);
+		final Combo comboQueryDatabaseType = new Combo(subContributionComposite,
+				SWT.READ_ONLY);
 		comboQueryIDType = new Combo(subContributionComposite, SWT.READ_ONLY);
 
 		String storedDatabase = generalManager.getPreferenceStore().getString(
@@ -79,9 +80,9 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 
 		Organism organism = generalManager.getOrganism();
 		if (organism == Organism.HOMO_SAPIENS) {
-//			comboQueryDatabaseType.add(BrowserQueryType.Ensembl_HomoSapiens.getTitle());
-//			if (browserQueryType == BrowserQueryType.Ensembl_HomoSapiens)
-//				comboQueryDatabaseType.select(3);
+			// comboQueryDatabaseType.add(BrowserQueryType.Ensembl_HomoSapiens.getTitle());
+			// if (browserQueryType == BrowserQueryType.Ensembl_HomoSapiens)
+			// comboQueryDatabaseType.select(3);
 
 			comboQueryDatabaseType.add(BrowserQueryType.KEGG_HomoSapiens.getTitle());
 			if (browserQueryType == BrowserQueryType.KEGG_HomoSapiens)
@@ -92,9 +93,9 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 				comboQueryDatabaseType.select(5);
 
 		} else if (organism == Organism.MUS_MUSCULUS) {
-//			comboQueryDatabaseType.add(BrowserQueryType.Ensembl_MusMusculus.getTitle());
-//			if (browserQueryType == BrowserQueryType.Ensembl_MusMusculus)
-//				comboQueryDatabaseType.select(3);
+			// comboQueryDatabaseType.add(BrowserQueryType.Ensembl_MusMusculus.getTitle());
+			// if (browserQueryType == BrowserQueryType.Ensembl_MusMusculus)
+			// comboQueryDatabaseType.select(3);
 
 			comboQueryDatabaseType.add(BrowserQueryType.KEGG_MusMusculus.getTitle());
 			if (browserQueryType == BrowserQueryType.KEGG_MusMusculus)
@@ -109,8 +110,8 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				String sQueryTypeTitle = comboQueryDatabaseType.getItem(comboQueryDatabaseType
-						.getSelectionIndex());
+				String sQueryTypeTitle = comboQueryDatabaseType
+						.getItem(comboQueryDatabaseType.getSelectionIndex());
 
 				for (BrowserQueryType eBrowserQueryType : BrowserQueryType.values()) {
 					if (eBrowserQueryType.getTitle().equals(sQueryTypeTitle)) {
@@ -120,12 +121,12 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 				}
 			}
 		});
-		
+
 		for (String idType : browserQueryType.getQueryIDTypes()) {
-			comboQueryIDType.add(idType);	
+			comboQueryIDType.add(idType);
 			comboQueryIDType.select(0);
 		}
-		
+
 		subContributionComposite.layout();
 		subContributionComposite.getParent().layout();
 	}
@@ -144,13 +145,15 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 					return;
 
 				for (SelectionDeltaItem selectionDeltaItem : selectionDelta) {
-					if (selectionDeltaItem.getSelectionType() == SelectionType.SELECTION && !selectionDeltaItem.isRemove()) {
-						
-						IDType targetIDType = IDType.getIDType(comboQueryIDType.getItem(comboQueryIDType.getSelectionIndex()));
+					if (selectionDeltaItem.getSelectionType() == SelectionType.SELECTION
+							&& !selectionDeltaItem.isRemove()) {
+
+						IDType targetIDType = IDType.getIDType(comboQueryIDType
+								.getItem(comboQueryIDType.getSelectionIndex()));
 
 						sourceIDType = selectionDelta.getIDType();
 						sourceID = selectionDeltaItem.getPrimaryID();
-						
+
 						updateURL(targetIDType);
 					}
 				}
@@ -171,33 +174,31 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 
 		comboQueryIDType.removeAll();
 		for (String idType : browserQueryType.getQueryIDTypes()) {
-			comboQueryIDType.add(idType);	
+			comboQueryIDType.add(idType);
 			comboQueryIDType.select(0);
 		}
-		
+
 		updateURL(IDType.getIDType(comboQueryIDType.getItem(0)));
 	}
 
 	private void updateURL(IDType targetIDType) {
-		
-		Set<Object> queryIDs = generalManager.getIDMappingManager().getIDAsSet(sourceIDType,
-				targetIDType, sourceID);
-		
+
+		Set<Object> queryIDs = generalManager.getIDMappingManager().getIDAsSet(
+				sourceIDType, targetIDType, sourceID);
+
 		String sURL = "";
-		
-		if (queryIDs == null || queryIDs.size() == 0)
-		{
+
+		if (queryIDs == null || queryIDs.size() == 0) {
 			sURL = "Sorry, cannot resolve ID for selection!";
 			browser.setUrl("about:blank");
-		}
-		else
-		{
+		} else {
 			// FIXME: only first found ID is taken - multi mappings are ignored!
 			// How should we handle this?
-			sURL = browserQueryType.getBrowserQueryStringPrefix() + queryIDs.toArray()[0].toString();
+			sURL = browserQueryType.getBrowserQueryStringPrefix()
+					+ queryIDs.toArray()[0].toString();
 			browser.setUrl(sURL);
 		}
-		
+
 		textURL.setText(sURL);
 		browser.update();
 	}

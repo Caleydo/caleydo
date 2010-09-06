@@ -1,5 +1,8 @@
 package org.caleydo.core.parser.xml;
 
+import org.xml.sax.ContentHandler;
+import org.xml.sax.EntityResolver;
+
 /**
  * Interface for all XML Handler's registered to the org.caleydo.core.manager.XmlParserManager
  * 
@@ -7,7 +10,7 @@ package org.caleydo.core.parser.xml;
  * @author Michael Kalkusch
  */
 public interface IXmlParserHandler
-	extends IXmlBaseHandler {
+	extends ContentHandler, EntityResolver  {
 	/**
 	 * Initilization of handler. Called once by Manager before using the handler.
 	 * 

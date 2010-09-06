@@ -1,6 +1,6 @@
 package org.caleydo.view.template.renderstyle;
 
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
@@ -10,7 +10,7 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
  */
 public class TemplateRenderStyle extends GeneralRenderStyle {
 
-	public TemplateRenderStyle(IViewFrustum viewFrustum) {
+	public TemplateRenderStyle(ViewFrustum viewFrustum) {
 		super(viewFrustum);
 	}
 }
