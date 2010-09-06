@@ -666,6 +666,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 						// selectedSets.get(0), selectedSets
 						// .get(1));
 
+			
 						if (Platform.getBundle("org.caleydo.util.r") != null) {
 
 							contextMenu.addSeparator();

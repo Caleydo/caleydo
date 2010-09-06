@@ -17,7 +17,7 @@ Bundle-NativeCode:
  osname=MacOSX;
  osname=Mac OS X;
  processor=x86;
- processor=x86-64;
+ processor=x86_64;
  processor=ppc,
  lib/jogl/linux/x86/libgluegen-rt.so;
  lib/jogl/linux/x86/libjogl_cg.so;
@@ -25,24 +25,24 @@ Bundle-NativeCode:
  lib/jogl/linux/x86/libjogl.so;
  osname=linux;
  processor=x86,
- lib/jogl/linux/x86-64/libgluegen-rt.so;
- lib/jogl/linux/x86-64/libjogl_cg.so;
- lib/jogl/linux/x86-64/libjogl_awt.so;
- lib/jogl/linux/x86-64/libjogl.so;
+ lib/jogl/linux/x86_64/libgluegen-rt.so;
+ lib/jogl/linux/x86_64/libjogl_cg.so;
+ lib/jogl/linux/x86_64/libjogl_awt.so;
+ lib/jogl/linux/x86_64/libjogl.so;
  osname=linux;
- processor=x86-64,
+ processor=x86_64,
  lib/jogl/windows/x86/gluegen-rt.dll;
  lib/jogl/windows/x86/jogl_cg.dll;
  lib/jogl/windows/x86/jogl_awt.dll;
  lib/jogl/windows/x86/jogl.dll;
  osname=win32;
  processor=x86,
- lib/jogl/windows/x86-64/gluegen-rt.dll;
- lib/jogl/windows/x86-64/jogl_cg.dll;
- lib/jogl/windows/x86-64/jogl_awt.dll;
- lib/jogl/windows/x86-64/jogl.dll;
+ lib/jogl/windows/x86_64/gluegen-rt.dll;
+ lib/jogl/windows/x86_64/jogl_cg.dll;
+ lib/jogl/windows/x86_64/jogl_awt.dll;
+ lib/jogl/windows/x86_64/jogl.dll;
  osname=win32;
- processor=x86-64
+ processor=x86_64
 Export-Package: com.sun.gluegen.runtime,
  com.sun.opengl.cg,
  com.sun.opengl.impl,

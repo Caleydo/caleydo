@@ -7,9 +7,9 @@ Bundle-NativeCode:
  lib/linux/x86/libjri.so;
  osname=linux;
  processor=x86,
- lib/linux/x86-64/libjri.so;
+ lib/linux/x86_64/libjri.so;
  osname=linux;
- processor=x86-64
+ processor=x86_64
 Bundle-Vendor: Graz University of Technology
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,
