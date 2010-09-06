@@ -1,9 +1,6 @@
 package org.caleydo.view.treemap.layout;
 
-import java.awt.Color;
-import java.beans.FeatureDescriptor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.util.clusterer.ClusterNode;

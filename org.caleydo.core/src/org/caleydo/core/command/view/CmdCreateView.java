@@ -18,7 +18,6 @@ import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 
@@ -215,7 +214,7 @@ public class CmdCreateView
 			if (dataDomainType == null)
 				throw new IllegalStateException(
 					"No dataDomainType was set in CmdCreateView, while trying to create " + viewID);
-			IDataDomain dataDomain = DataDomainManager.getInstance().getDataDomain(dataDomainType);
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(dataDomainType);
 			@SuppressWarnings("unchecked")
 			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
 				(IDataDomainBasedView<IDataDomain>) createdObject;

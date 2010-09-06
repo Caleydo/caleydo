@@ -1954,9 +1954,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 					+ dataDomain.getContentName(false, true) + " / " + storageVA.size()
 					+ " experiments";
 		} else {
-			message = "Parallel Coordinates - a sample of " + iNumLines
+			message = "Parallel Coordinates showing a sample of " + iNumLines
 					/ displayEveryNthPolyline + " out of " + iNumLines + " "
-					+ dataDomain.getContentName(false, true) + " / \n "
+					+ dataDomain.getContentName(false, true) + " / "
 					+ storageVA.size() + " experiments";
 		}
 		return message;

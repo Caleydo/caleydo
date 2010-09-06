@@ -577,7 +577,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		AGLView glView = cmdView.getCreatedObject();
 		if (glView instanceof IDataDomainBasedView<?>)
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-					.getInstance().getDataDomain(serView.getDataDomainType()));
+					.get().getDataDomain(serView.getDataDomainType()));
 		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof GLPathway) {

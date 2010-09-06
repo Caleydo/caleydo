@@ -43,7 +43,7 @@ public class ViewCreatorHierarchicalHeatMap extends AGLViewCreator {
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 
 		DataDomainManager
-				.getInstance()
+				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLHierarchicalHeatMap.VIEW_ID);

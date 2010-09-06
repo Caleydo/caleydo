@@ -66,7 +66,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart {
 		dataMetaView = new DataMetaView();
 		SerializedDataMetaView serializedView = new SerializedDataMetaView();
 		dataMetaView.setDataDomain((ASetBasedDataDomain) DataDomainManager
-				.getInstance().getDataDomain(determineDataDomain(serializedView)));
+				.get().getDataDomain(determineDataDomain(serializedView)));
 		dataMetaView.createControl(infoComposite);
 		
 		RcpGLHistogramView histogramView = new RcpGLHistogramView();

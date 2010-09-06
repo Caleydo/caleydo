@@ -248,7 +248,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		glConnectionLineRenderer = new GLConnectionLineRendererDataFlipper(focusElement,
 				stackElementsLeft, stackElementsRight);
 
-		if (DataDomainManager.getInstance().getDataDomain(
+		if (DataDomainManager.get().getDataDomain(
 				"org.caleydo.datadomain.pathway") == null) {
 			CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(
 					ECommandType.CREATE_DATA_DOMAIN);
@@ -256,7 +256,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			cmd.doCommand();
 		}
 
-		if (DataDomainManager.getInstance()
+		if (DataDomainManager.get()
 				.getDataDomain("org.caleydo.datadomain.tissue") == null) {
 			CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(
 					ECommandType.CREATE_DATA_DOMAIN);
@@ -1099,7 +1099,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			case CLICKED:
 
-				for (IDataDomain tmpDataDomain : DataDomainManager.getInstance()
+				for (IDataDomain tmpDataDomain : DataDomainManager.get()
 						.getDataDomains()) {
 					String tmpDataDomainType = tmpDataDomain.getDataDomainType();
 					if (tmpDataDomainType.hashCode() == externalPickingID) {
@@ -1158,7 +1158,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	private String determineDataDomainByHash(int externalPickingID) {
-		for (IDataDomain tmpDataDomain : DataDomainManager.getInstance().getDataDomains()) {
+		for (IDataDomain tmpDataDomain : DataDomainManager.get().getDataDomains()) {
 			String tmpDataDomainType = tmpDataDomain.getDataDomainType();
 			if (tmpDataDomainType.hashCode() == externalPickingID) {
 				return tmpDataDomainType;
@@ -1228,7 +1228,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (interfaceType.equals("org.caleydo.analytical.clustering")) {
 			ArrayList<ISet> sets = new ArrayList<ISet>();
-			sets.add(((ASetBasedDataDomain) DataDomainManager.getInstance()
+			sets.add(((ASetBasedDataDomain) DataDomainManager.get()
 					.getDataDomain(dataDomainType)).getSet());
 
 			ClusterSetEvent event = new ClusterSetEvent(sets);
@@ -1385,7 +1385,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private void renderDataDomain(final GL gl, HistoryNode node, float x, float y) {
 
 		String dataDomainType = node.getDataDomainType();
-		IDataDomain dataDomain = DataDomainManager.getInstance().getDataDomain(
+		IDataDomain dataDomain = DataDomainManager.get().getDataDomain(
 				dataDomainType);
 		EIconTextures dataDomainIcon = dataDomain.getIcon();
 
@@ -1668,13 +1668,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// TODO move conditions to own class
 
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
-			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.getInstance()
+			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.get()
 					.getDataDomain(dataDomainType)).getSet()
 					.getStorageData(StorageVAType.STORAGE).getStorageVA().size();
 			if (numberOfPatients > 40)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
-			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.getInstance()
+			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.get()
 					.getDataDomain("org.caleydo.datadomain.genetic")).getSet()
 					.getStorageData(StorageVAType.STORAGE).getStorageVA().size();
 			if (numberOfPatients > 20)
@@ -1707,7 +1707,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// Check if data domain is organ because this datadomain does not exist
 		// as plugin.
 		if (!dataDomainType.equals("org.caleydo.datadomain.organ")) {
-			IDataDomain dataDomain = DataDomainManager.getInstance().getDataDomain(
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(
 					dataDomainType);
 			dataDomainIcon = dataDomain.getIcon();
 		} else

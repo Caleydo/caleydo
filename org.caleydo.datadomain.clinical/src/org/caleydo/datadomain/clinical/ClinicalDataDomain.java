@@ -31,7 +31,6 @@ public class ClinicalDataDomain extends ASetBasedDataDomain {
 	public ClinicalDataDomain() {
 		super(DATA_DOMAIN_TYPE);
 		icon = EIconTextures.DATA_DOMAIN_CLINICAL;
-
 	}
 	
 	@Override

@@ -32,7 +32,7 @@ public class ViewCreator extends ASWTViewCreator {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 
-		DataDomainManager.getInstance().getAssociationManager()
+		DataDomainManager.get().getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, StatisticsView.VIEW_ID);
 	}
 

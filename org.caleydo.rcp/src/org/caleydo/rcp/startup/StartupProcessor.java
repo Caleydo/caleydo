@@ -8,7 +8,6 @@ import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.ApplicationWorkbenchAdvisor;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.splashHandlers.InteractiveSplashHandler;

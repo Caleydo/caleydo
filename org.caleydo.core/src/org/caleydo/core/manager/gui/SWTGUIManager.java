@@ -9,7 +9,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.ISWTWidget;
 import org.caleydo.core.view.swt.widget.ASWTWidget;
-import org.caleydo.core.view.swt.widget.SWTEmbeddedGraphWidget;
 import org.caleydo.core.view.swt.widget.SWTEmbeddedJoglWidget;
 import org.caleydo.core.view.swt.widget.SWTNativeWidget;
 import org.eclipse.jface.action.IStatusLineManager;
@@ -137,10 +136,6 @@ public class SWTGUIManager {
 				return newSWTWidget;
 			case GUI_SWT_EMBEDDED_JOGL_WIDGET:
 				newSWTWidget = new SWTEmbeddedJoglWidget(externalParentComposite);
-				widgetMap.add(newSWTWidget);
-				return newSWTWidget;
-			case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
-				newSWTWidget = new SWTEmbeddedGraphWidget(externalParentComposite);
 				widgetMap.add(newSWTWidget);
 				return newSWTWidget;
 			default:

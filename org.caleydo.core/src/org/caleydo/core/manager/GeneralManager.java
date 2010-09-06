@@ -264,6 +264,6 @@ public class GeneralManager {
 	}
 
 	public static DataDomainManager getDataDomainManagerInstance() {
-		return DataDomainManager.getInstance();
+		return DataDomainManager.get();
 	}
 }

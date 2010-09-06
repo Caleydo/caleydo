@@ -8,7 +8,7 @@
             category="org.caleydo.rcp.views"
             class="org.caleydo.view.selectionbrowser.RcpSelectionBrowserView"
             id="org.caleydo.view.selectionbrowser"
-            name="Selectionbrowser">
+            name="Selection Browser">
       </view>
    </extension>
    <extension
@@ -30,7 +30,7 @@
       <command
             defaultHandler="org.caleydo.view.selectionbrowser.command.handler.OpenSelectionBrowserHandler"
             id="org.caleydo.view.selectionbrowser.command.openselectionbrowser"
-            name="Selectionbrowser">
+            name="Selection Browser">
       </command>
    </extension>
    <extension

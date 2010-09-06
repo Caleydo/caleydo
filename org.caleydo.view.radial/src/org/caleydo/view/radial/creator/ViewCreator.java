@@ -42,12 +42,12 @@ public class ViewCreator extends AGLViewCreator {
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 
 		DataDomainManager
-				.getInstance()
+				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLRadialHierarchy.VIEW_ID);
 		DataDomainManager
-				.getInstance()
+				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLRadialHierarchy.VIEW_ID);

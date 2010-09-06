@@ -29,8 +29,8 @@ import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.mapping.IDMappingLoader;
 import org.caleydo.core.manager.mapping.IDMappingManager;
-import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
@@ -89,8 +89,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	protected void initIDMappings() {
 		
 		// Load IDs needed in this datadomain
-		GeneralManager.get().getXmlParserManager()
-				.parseXmlFileByName("data/bootstrap/bootstrap.xml");		
+		IDMappingLoader.get().loadMappingFile(fileName);	
 	}
 	
 	@Override
@@ -332,7 +331,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 			Integer clinicalContentIndex) {
 
 		// FIXME - this is a hack for one special dataset (asslaber)
-		Set clinicalSet = ((ASetBasedDataDomain) DataDomainManager.getInstance()
+		Set clinicalSet = ((ASetBasedDataDomain) DataDomainManager.get()
 				.getDataDomain(CLINICAL_DATADOMAIN_TYPE)).getSet();
 		int storageID = clinicalSet.getStorageData(StorageVAType.STORAGE).getStorageVA()
 				.get(1);

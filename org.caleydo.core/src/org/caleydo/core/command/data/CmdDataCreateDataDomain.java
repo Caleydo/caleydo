@@ -37,7 +37,7 @@ public class CmdDataCreateDataDomain
 
 	private IDataDomain createDataDomain(String dataDomainType) {
 
-		return DataDomainManager.getInstance().createDataDomain(dataDomainType);
+		return DataDomainManager.get().createDataDomain(dataDomainType);
 	}
 
 	@Override

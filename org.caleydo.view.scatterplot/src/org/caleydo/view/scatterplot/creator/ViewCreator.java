@@ -43,7 +43,7 @@ public class ViewCreator extends AGLViewCreator {
 		dataDomainTypes.add("org.caleydo.datadomain.clinical");
 
 		DataDomainManager
-				.getInstance()
+				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLScatterPlot.VIEW_ID);

@@ -35,7 +35,7 @@ public class ViewCreator extends ASWTViewCreator {
 		dataDomainTypes.add("org.caleydo.datadomain.clinical");
 
 		DataDomainManager
-				.getInstance()
+				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						TabularDataView.VIEW_ID);

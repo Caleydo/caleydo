@@ -33,7 +33,7 @@ public class ViewCreator extends ASWTViewCreator {
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 
 		DataDomainManager
-				.getInstance()
+				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GenomeHTMLBrowser.VIEW_ID);

@@ -19,7 +19,6 @@ import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.IDataDomain;

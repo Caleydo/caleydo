@@ -35,7 +35,7 @@ public class ViewCreator extends AGLViewCreator {
 		dataDomainTypes.add("org.caleydo.datadomain.tissue");
 
 		DataDomainManager
-				.getInstance()
+				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLTissueViewBrowser.VIEW_ID);

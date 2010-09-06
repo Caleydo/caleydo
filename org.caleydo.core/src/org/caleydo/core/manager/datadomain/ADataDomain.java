@@ -43,7 +43,16 @@ public abstract class ADataDomain
 	 */
 	// protected HashMap<IDCategory, String> possibleIDCategories;
 
+	/**
+	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
+	 */
 	public ADataDomain() {
+		initIDMappings();
+	}
+	
+	public ADataDomain(String dataDomainType) {
+		this.dataDomainType = dataDomainType;
+		DataDomainManager.get().register(this);
 		initIDMappings();
 	}
 	

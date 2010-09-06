@@ -1,6 +1,5 @@
 package org.caleydo.datadomain.genetic;
 
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.SerializationManager;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;

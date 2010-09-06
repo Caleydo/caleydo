@@ -102,7 +102,7 @@ public class AssociationManager {
 		ArrayList<IDataDomain> availabelDataDomainTypes = new ArrayList<IDataDomain>();
 
 		for (String dataDomainType : dataDomainTypes) {
-			IDataDomain dataDomain = DataDomainManager.getInstance().getDataDomain(dataDomainType);
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(dataDomainType);
 			if (dataDomain != null)
 				availabelDataDomainTypes.add(dataDomain);
 		}

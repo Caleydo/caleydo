@@ -2539,7 +2539,7 @@ public class GLBucket extends AGLView implements
 
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView)
-					.setDataDomain((IDataDomain) DataDomainManager.getInstance()
+					.setDataDomain((IDataDomain) DataDomainManager.get()
 							.getDataDomain(serView.getDataDomainType()));
 		}
 

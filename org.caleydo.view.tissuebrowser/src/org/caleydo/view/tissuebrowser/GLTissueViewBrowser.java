@@ -94,7 +94,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 
-		this.foreignDataDomain = (ASetBasedDataDomain) DataDomainManager.getInstance()
+		this.foreignDataDomain = (ASetBasedDataDomain) DataDomainManager.get()
 				.getDataDomain(FOREIGN_DATADOMAIN_TYPE);
 
 		contentVA = foreignDataDomain.getContentVA(ContentVAType.CONTENT);

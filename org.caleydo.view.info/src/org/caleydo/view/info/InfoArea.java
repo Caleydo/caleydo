@@ -1,6 +1,5 @@
 package org.caleydo.view.info;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.IDCategory;
@@ -17,7 +16,6 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -70,8 +68,6 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 		ISelectionUpdateHandler, IContentVAUpdateHandler, IStorageVAUpdateHandler,
 		ISelectionCommandHandler, IViewCommandHandler {
 
-	private static String viewType = "org.caleydo.view.infoarea";
-
 	GeneralManager generalManager = null;
 	EventPublisher eventPublisher = null;
 
@@ -106,22 +102,9 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 	 */
 	public InfoArea() {
 
-		registerDataDomains();
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 
-	}
-
-	// FIXME this should go into the activator
-	@Deprecated
-	private void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.genetic");
-		dataDomainTypes.add("org.caleydo.datadomain.generic");
-		dataDomainTypes.add("org.caleydo.datadomain.clinical");
-
-		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	public Control createControl(final Composite parent) {
@@ -130,43 +113,14 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 		storageSelectionManager = dataDomain.getStorageSelectionManager();
 
 		parentComposite = parent;
-
+		
 		selectionTree = new Tree(parent, SWT.NULL);
-
-		lblViewInfoContent = new Label(parent, SWT.WRAP);
-		lblViewInfoContent.setAlignment(SWT.CENTER);
-		lblViewInfoContent.setText("");
-
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-
-		// FIXME: horizontal toolbar style support
-		// if (ToolBarView.bHorizontal) {
-		// gridData.minimumWidth = 150;
-		// gridData.widthHint = 150;
-		// gridData.minimumHeight = 72;
-		// gridData.heightHint = 72;
-		// } else {
-		gridData.minimumWidth = 100;
-		gridData.widthHint = 100;
-		gridData.minimumHeight = 82;
-		gridData.heightHint = 82;
-		// }
-
-		lblViewInfoContent.setLayoutData(gridData);
-
-		gridData = new GridData(GridData.FILL_BOTH);
-		gridData.minimumHeight = 62;
-		gridData.heightHint = 156;
-
-		if (System.getProperty("os.name").contains("Win")) {
-			// In windows the list needs more space because of no multi line
-			// support
-			gridData.widthHint = 145;
-			gridData.minimumWidth = 145;
-		}
-
+		
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.grabExcessVerticalSpace = true;
+		gridData.minimumHeight = 150;
 		selectionTree.setLayoutData(gridData);
-
+		
 		contentTree = new TreeItem(selectionTree, SWT.NONE);
 		contentTree.setExpanded(true);
 		contentTree.setData(-1);
@@ -182,6 +136,13 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 		// pathwayTree.setText("Pathways");
 		// pathwayTree.setExpanded(false);
 		// pathwayTree.setData(-1);
+
+		lblViewInfoContent = new Label(parent, SWT.WRAP);
+		lblViewInfoContent.setText("");
+		gridData = new GridData(GridData.FILL_BOTH);
+		gridData.grabExcessVerticalSpace = true;
+		gridData.minimumHeight = 100;
+		lblViewInfoContent.setLayoutData(gridData);
 
 		return parent;
 	}

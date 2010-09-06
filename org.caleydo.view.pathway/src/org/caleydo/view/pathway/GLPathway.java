@@ -156,7 +156,7 @@ public class GLPathway extends AGLView implements
 		pathwayManager = PathwayManager.get();
 		pathwayItemManager = PathwayItemManager.get();
 
-		mappingDataDomain = (ASetBasedDataDomain) DataDomainManager.getInstance()
+		mappingDataDomain = (ASetBasedDataDomain) DataDomainManager.get()
 				.getDataDomain("org.caleydo.datadomain.genetic");
 
 		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum, this);

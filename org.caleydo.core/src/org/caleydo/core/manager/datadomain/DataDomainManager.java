@@ -34,7 +34,7 @@ public class DataDomainManager {
 
 	}
 
-	public static DataDomainManager getInstance() {
+	public static DataDomainManager get() {
 		if (dataDomainManager == null)
 			dataDomainManager = new DataDomainManager();
 
@@ -58,8 +58,6 @@ public class DataDomainManager {
 
 		try {
 			IDataDomain dataDomain = (IDataDomain) ce[0].createExecutableExtension("class");
-
-			register(dataDomain);
 			return dataDomain;
 		}
 		catch (Exception ex) {

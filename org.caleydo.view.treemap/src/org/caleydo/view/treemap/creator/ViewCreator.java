@@ -41,6 +41,6 @@ public class ViewCreator extends AGLViewCreator {
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 		// dataDomainTypes.add("org.caleydo.datadomain.generic");
 
-		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLTreeMap.VIEW_ID);
+		DataDomainManager.get().getAssociationManager().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLTreeMap.VIEW_ID);
 	}
 }

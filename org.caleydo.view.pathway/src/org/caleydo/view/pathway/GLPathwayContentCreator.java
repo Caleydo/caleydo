@@ -100,7 +100,7 @@ public class GLPathwayContentCreator {
 		idMappingManager = generalManager.getIDMappingManager();
 		pathwayItemManager = PathwayItemManager.get();
 
-		geneticDataDomain = (ASetBasedDataDomain) DataDomainManager.getInstance()
+		geneticDataDomain = (ASetBasedDataDomain) DataDomainManager.get()
 				.getDataDomain("org.caleydo.datadomain.genetic");
 	}
 

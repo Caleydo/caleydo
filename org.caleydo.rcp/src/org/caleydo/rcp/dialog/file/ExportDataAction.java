@@ -179,7 +179,7 @@ public class ExportDataAction
 	}
 
 	public void execute() {
-		for (IDataDomain dataDomain : DataDomainManager.getInstance().getDataDomains()) {
+		for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
 			ASetBasedDataDomain setBasedDataDomain = null;
 			if (dataDomain instanceof ASetBasedDataDomain)
 				setBasedDataDomain = (ASetBasedDataDomain) dataDomain;

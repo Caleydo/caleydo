@@ -25,14 +25,13 @@ public class SerializationManager {
 	private JAXBContext projectContext;
 
 	private ArrayList<Class<?>> projectTypes;
-	
-
 
 	private SerializationManager() {
 		try {
 			Collection<Class<? extends AEvent>> eventTypes = getSerializeableEventTypes();
 			projectTypes = new ArrayList<Class<?>>();
 			projectTypes.add(DataInitializationData.class);
+			projectTypes.add(DataDomainList.class);
 			projectTypes.add(ViewList.class);
 			Class<?>[] classes = new Class<?>[eventTypes.size()];
 			classes = eventTypes.toArray(classes);

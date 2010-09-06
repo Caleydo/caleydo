@@ -12,7 +12,6 @@ import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.serialize.DataInitializationData;
 import org.caleydo.core.serialize.ProjectLoader;
 import org.caleydo.core.util.logging.Logger;
@@ -69,7 +68,6 @@ public class SerializationStartupProcedure
 		// CODE FROM APPLICATION.JAVA
 
 		ADataDomain dataDomain = data.getDataDomain();
-		DataDomainManager.getInstance().register(dataDomain);
 
 		if (dataDomain instanceof ASetBasedDataDomain) {
 			ASetBasedDataDomain setBasedDataDomain = (ASetBasedDataDomain) dataDomain;
@@ -89,7 +87,6 @@ public class SerializationStartupProcedure
 			}
 			// we need the VAs to be available before the tree is initialized
 			SetUtils.loadTrees(loadDataParameters, set);
-
 		}
 	}
 

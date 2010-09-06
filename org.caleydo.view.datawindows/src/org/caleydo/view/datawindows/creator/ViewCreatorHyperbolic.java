@@ -42,7 +42,7 @@ public class ViewCreatorHyperbolic extends AGLViewCreator {
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 
 		DataDomainManager
-				.getInstance()
+				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLHyperbolic.VIEW_ID);

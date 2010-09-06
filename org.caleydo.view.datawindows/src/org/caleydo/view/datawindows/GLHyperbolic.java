@@ -430,7 +430,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 		AGLView glView = cmdView.getCreatedObject();
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-					.getInstance().getDataDomain(serView.getDataDomainType()));
+					.get().getDataDomain(serView.getDataDomainType()));
 		}
 
 		if (glView instanceof GLPathway) {

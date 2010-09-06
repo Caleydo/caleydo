@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.datadomain.ADataDomain;
+import org.caleydo.core.manager.mapping.IDMappingLoader;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.datadomain.pathway.rcp.PathwayLoadingProgressIndicatorAction;
@@ -28,7 +29,8 @@ public class PathwayDataDomain extends ADataDomain {
 	 */
 	public PathwayDataDomain() {
 
-		dataDomainType = DATA_DOMAIN_TYPE;
+		super(DATA_DOMAIN_TYPE);
+		
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
 		PathwayManager.get().triggerParsingPathwayDatabases();
@@ -41,7 +43,8 @@ public class PathwayDataDomain extends ADataDomain {
 
 	@Override
 	protected void initIDMappings() {
-		// nothing to do ATM
+		// Load IDs needed in this datadomain
+		IDMappingLoader.get().loadMappingFile(fileName);
 	}
 	
 	public IDType getPrimaryIDType() {

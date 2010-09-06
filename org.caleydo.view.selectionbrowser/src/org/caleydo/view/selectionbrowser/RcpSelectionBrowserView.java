@@ -6,6 +6,7 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
+import org.caleydo.view.selectionbrowser.creator.ViewCreator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -25,6 +26,9 @@ public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 
 	public RcpSelectionBrowserView() {
 		super();
+		
+		// Create view creator for initializing possible data domains
+		new ViewCreator();
 		
 		try {
 			viewContext = JAXBContext
@@ -57,7 +61,7 @@ public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 
 		selectionBrowser = new SelectionBrowserView();
 		selectionBrowser.setDataDomain((ASetBasedDataDomain) DataDomainManager
-				.getInstance().getDataDomain(determineDataDomain(serializedView)));
+				.get().getDataDomain(determineDataDomain(serializedView)));
 		selectionBrowser.registerEventListeners();
 		selectionBrowser.createControl(infoComposite);
 

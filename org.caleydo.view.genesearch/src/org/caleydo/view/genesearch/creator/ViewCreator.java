@@ -39,7 +39,7 @@ public class ViewCreator extends ARCPViewCreator {
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 
 		DataDomainManager
-				.getInstance()
+				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						RcpGeneSearchView.VIEW_ID);

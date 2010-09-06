@@ -117,7 +117,7 @@ public abstract class CaleydoRCPViewPart
 			return dataDomainType;
 		else {
 			ArrayList<IDataDomain> availableDomains =
-				DataDomainManager.getInstance().getAssociationManager()
+				DataDomainManager.get().getAssociationManager()
 					.getAvailableDataDomainTypesForViewTypes(serializedView.getViewType());
 			if (availableDomains == null)
 				return null;

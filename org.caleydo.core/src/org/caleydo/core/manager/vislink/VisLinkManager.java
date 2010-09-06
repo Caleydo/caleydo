@@ -50,7 +50,7 @@ public class VisLinkManager
 
 	private static VisLinkManager visLinkManager = null;
 
-	ASetBasedDataDomain dataDomain = (ASetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+	ASetBasedDataDomain dataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
 		"org.caleydo.datadomain.genetic");
 	private Display display;
 

@@ -37,7 +37,7 @@ public class ViewCreatorDendrogramHorizontal extends AGLViewCreator {
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 
 		DataDomainManager
-				.getInstance()
+				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLDendrogram.VIEW_ID);

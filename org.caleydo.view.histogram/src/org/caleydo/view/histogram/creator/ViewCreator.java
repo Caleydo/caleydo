@@ -36,7 +36,7 @@ public class ViewCreator extends AGLViewCreator {
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 
 		DataDomainManager
-				.getInstance()
+				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLHistogram.VIEW_ID);

@@ -67,7 +67,7 @@ public class SerializedBucketView extends ASerializedView {
 
 		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
 
-		if (DataDomainManager.getInstance().getDataDomain(
+		if (DataDomainManager.get().getDataDomain(
 				"org.caleydo.datadomain.genetic") != null) {
 			SerializedHeatMapView heatMap = new SerializedHeatMapView(
 					"org.caleydo.datadomain.genetic");

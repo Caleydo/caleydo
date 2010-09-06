@@ -81,23 +81,24 @@ public abstract class ASetBasedDataDomain
 	/** central {@link EventPublisher} to receive and send events */
 	protected EventPublisher eventPublisher;
 
+	/**
+	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
+	 */
 	public ASetBasedDataDomain() {
 		super();
-		eventPublisher = GeneralManager.get().getEventPublisher();
-		registerEventListeners();
 		init();
 	}
 
 	public ASetBasedDataDomain(String dataDomainType) {
-		super();
-		this.dataDomainType = dataDomainType;
-		eventPublisher = GeneralManager.get().getEventPublisher();
-		registerEventListeners();
+		super(dataDomainType);
 		init();
 	}
 
 	private void init() {
 
+		eventPublisher = GeneralManager.get().getEventPublisher();
+		registerEventListeners();
+		
 		assignIDCategories();
 		if (contentIDCategory == null || storageIDCategory == null) {
 			throw new IllegalStateException("A ID category in " + toString()

@@ -24,6 +24,9 @@ public abstract class AStartupProcedure {
 
 	public void execute() {
 		loadPathways();
+		
+		// Create RCP view manager
+		RCPViewManager.get();
 	}
 
 	public abstract void addDefaultStartViews();
@@ -69,9 +72,6 @@ public abstract class AStartupProcedure {
 	}
 
 	public void openRCPViews(IFolderLayout layout) {
-
-		// Create RCP view manager
-		RCPViewManager.get();
 
 		for (String startViewID : appInitData.getInitializedStartViews()) {
 			layout.addView(startViewID);

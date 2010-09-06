@@ -78,48 +78,68 @@ public class ProjectLoader {
 
 		try {
 			Unmarshaller unmarshaller = projectContext.createUnmarshaller();
-			ADataDomain dataDomain;
+			DataDomainList dataDomainList;
 			try {
-				dataDomain =
-					(ADataDomain) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
+				dataDomainList =
+					(DataDomainList) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
 						.getResource(dirName + ProjectSaver.DATA_DOMAIN_FILE_NAME));
 			}
 			catch (FileNotFoundException e1) {
-				throw new IllegalStateException("Cannot load dataDomain from project file");
+				throw new IllegalStateException("Cannot load data domain list from project file");
 			}
 
-			String setFileName = dirName + ProjectSaver.SET_DATA_FILE_NAME;
+			initData = new DataInitializationData();
 
-			LoadDataParameters loadingParameters = dataDomain.getLoadDataParameters();
-			loadingParameters.setFileName(setFileName);
-			loadingParameters.setDataDomain((ASetBasedDataDomain) dataDomain);
+			for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
 
-			HashMap<ContentVAType, ContentVirtualArray> contentVAMap =
-				new HashMap<ContentVAType, ContentVirtualArray>(6);
-			ContentVAType tmpType = ContentVAType.CONTENT;
-			contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName, tmpType));
-			// tmpType = ContentVAType.CONTENT_CONTEXT;
-			// contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
-			// tmpType));
-			// tmpType = ContentVAType.CONTENT_EMBEDDED_HM;
-			// contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
-			// tmpType));
-			// FIXME: this should be done like this:
-			// for (ContentVAType type : ContentVAType.getRegisteredVATypes()) {
-			// contentVAMap.put(type, loadContentVirtualArray(unmarshaller, dirName, type));
-			// }
+				if (dataDomain instanceof ASetBasedDataDomain) {
 
-			HashMap<StorageVAType, StorageVirtualArray> storageVAMap =
-				new HashMap<StorageVAType, StorageVirtualArray>(2);
+					String setFileName = dirName + ProjectSaver.SET_DATA_FILE_NAME;
 
-			StorageVAType tempStorageType = StorageVAType.STORAGE;
-			storageVAMap
-				.put(tempStorageType, loadStorageVirtualArray(unmarshaller, dirName, tempStorageType));
+					LoadDataParameters loadingParameters = dataDomain.getLoadDataParameters();
+					loadingParameters.setFileName(setFileName);
+					loadingParameters.setDataDomain((ASetBasedDataDomain) dataDomain);
 
-			// FIXME: this should be done like this:
-			// for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
-			// storageVAMap.put(type, loadStorageVirtualArray(unmarshaller, dirName, type));
-			// }
+					HashMap<ContentVAType, ContentVirtualArray> contentVAMap =
+						new HashMap<ContentVAType, ContentVirtualArray>(6);
+					ContentVAType tmpType = ContentVAType.CONTENT;
+					contentVAMap.put(ContentVAType.CONTENT,
+						loadContentVirtualArray(unmarshaller, dirName, tmpType));
+					// tmpType = ContentVAType.CONTENT_CONTEXT;
+					// contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
+					// tmpType));
+					// tmpType = ContentVAType.CONTENT_EMBEDDED_HM;
+					// contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
+					// tmpType));
+					// FIXME: this should be done like this:
+					// for (ContentVAType type : ContentVAType.getRegisteredVATypes()) {
+					// contentVAMap.put(type, loadContentVirtualArray(unmarshaller, dirName, type));
+					// }
+
+					HashMap<StorageVAType, StorageVirtualArray> storageVAMap =
+						new HashMap<StorageVAType, StorageVirtualArray>(2);
+
+					StorageVAType tempStorageType = StorageVAType.STORAGE;
+					storageVAMap.put(tempStorageType,
+						loadStorageVirtualArray(unmarshaller, dirName, tempStorageType));
+
+					// FIXME: this should be done like this:
+					// for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
+					// storageVAMap.put(type, loadStorageVirtualArray(unmarshaller, dirName, type));
+					// }
+					
+					// TODO: now only the last set data domain is handled
+					initData.setDataDomain((ASetBasedDataDomain) dataDomain);
+					initData.setContentVAMap(contentVAMap);
+					initData.setStorageVAMap(storageVAMap);
+				
+					dataDomain.getLoadDataParameters().setGeneTreeFileName(
+						dirName + ProjectSaver.GENE_TREE_FILE_NAME);
+					dataDomain.getLoadDataParameters().setExperimentsFileName(
+						dirName + ProjectSaver.EXP_TREE_FILE_NAME);
+				}
+			}
+			
 			ViewList loadViews = null;
 			try {
 				loadViews =
@@ -130,18 +150,9 @@ public class ProjectLoader {
 				// do nothing - no view list available
 			}
 
-			initData = new DataInitializationData();
-			initData.setDataDomain((ASetBasedDataDomain) dataDomain);
-			initData.setContentVAMap(contentVAMap);
-			initData.setStorageVAMap(storageVAMap);
 			if (loadViews != null) {
 				initData.setViews(loadViews.getViews());
 			}
-
-			dataDomain.getLoadDataParameters()
-				.setGeneTreeFileName(dirName + ProjectSaver.GENE_TREE_FILE_NAME);
-			dataDomain.getLoadDataParameters().setExperimentsFileName(
-				dirName + ProjectSaver.EXP_TREE_FILE_NAME);
 		}
 		catch (JAXBException ex) {
 			throw new RuntimeException("Error while loading project", ex);

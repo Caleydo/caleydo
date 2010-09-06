@@ -12,7 +12,6 @@ import javax.xml.bind.Unmarshaller;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.eclipse.core.runtime.ILog;
 
 /**
  * <p>

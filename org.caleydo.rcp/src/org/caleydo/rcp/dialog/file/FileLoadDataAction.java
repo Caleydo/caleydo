@@ -123,7 +123,7 @@ public class FileLoadDataAction
 		int numGridCols = 5;
 
 		// FIXME: Determine data domain dynamically
-		DataDomainManager domainManager = DataDomainManager.getInstance();
+		DataDomainManager domainManager = DataDomainManager.get();
 		dataDomain = (ASetBasedDataDomain) domainManager.getDataDomain("org.caleydo.datadomain.genetic");
 
 		if (dataDomain == null) {

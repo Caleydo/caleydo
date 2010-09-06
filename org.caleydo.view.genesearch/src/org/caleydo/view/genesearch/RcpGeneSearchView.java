@@ -25,6 +25,7 @@ import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
+import org.caleydo.view.genesearch.creator.ViewCreator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -62,7 +63,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 		IDataDomainBasedView<GeneticDataDomain> {
 
 	private GeneticDataDomain dataDomain = (GeneticDataDomain) DataDomainManager
-			.getInstance().getDataDomain("org.caleydo.datadomain.genetic");
+			.get().getDataDomain("org.caleydo.datadomain.genetic");
 
 	public static final String VIEW_ID = "org.caleydo.view.genesearch";
 
@@ -108,15 +109,16 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 	private IDType entrez = IDType.getIDType("ENTREZ_GENE_ID");
 
 	public RcpGeneSearchView() {
+		// Create view creator for initializing possible data domains
+		new ViewCreator();
+		
 		searchViewMediator = new SearchViewMediator();
-
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
 
 		generalManager = GeneralManager.get();
-
 		idMappingManager = generalManager.getIDMappingManager();
 
 		composite = new Composite(parent, SWT.NULL);

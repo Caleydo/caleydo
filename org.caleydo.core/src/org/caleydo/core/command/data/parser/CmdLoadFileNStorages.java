@@ -85,7 +85,7 @@ public class CmdLoadFileNStorages
 		}
 
 		dataDomain =
-			(ASetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+			(ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
 				parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE4.getXmlKey()));
 		loadDataParameters.setDataDomain(dataDomain);
 

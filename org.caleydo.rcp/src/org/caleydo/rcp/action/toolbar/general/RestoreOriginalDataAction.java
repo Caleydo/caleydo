@@ -29,7 +29,7 @@ public class RestoreOriginalDataAction
 	public void run() {
 		super.run();
 
-		for (IDataDomain dataDomain : DataDomainManager.getInstance().getDataDomains()) {
+		for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
 			if (dataDomain instanceof ASetBasedDataDomain)
 				((ASetBasedDataDomain) dataDomain).restoreOriginalContentVA();
 		}

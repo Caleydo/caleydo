@@ -17,7 +17,7 @@ public class RcpStatisticsView extends CaleydoRCPViewPart {
 
 		SerializedStatisticsView serializedView = new SerializedStatisticsView();
 		statisticsView.setDataDomain((ASetBasedDataDomain) DataDomainManager
-				.getInstance().getDataDomain(determineDataDomain(serializedView)));
+				.get().getDataDomain(determineDataDomain(serializedView)));
 		statisticsView.registerEventListeners();
 		statisticsView.initViewRCP(parent);
 		statisticsView.drawView();

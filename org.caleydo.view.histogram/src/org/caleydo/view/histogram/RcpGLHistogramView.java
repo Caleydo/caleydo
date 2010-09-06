@@ -94,7 +94,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 
 		if (initSerializedView != null) {
 			dataDomainType = determineDataDomain(initSerializedView);
-			dataDomain = (ASetBasedDataDomain) DataDomainManager.getInstance()
+			dataDomain = (ASetBasedDataDomain) DataDomainManager.get()
 					.getDataDomain(dataDomainType);
 			redrawView((SerializedHistogramView) initSerializedView);
 		}

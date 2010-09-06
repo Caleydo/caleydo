@@ -25,7 +25,7 @@ public class RcpTabularDataView extends CaleydoRCPViewPart {
 			String dataDomainType = determineDataDomain(view
 					.getSerializableRepresentation());
 			((IDataDomainBasedView<IDataDomain>) view).setDataDomain(DataDomainManager
-					.getInstance().getDataDomain(dataDomainType));
+					.get().getDataDomain(dataDomainType));
 		}
 
 		tabularDataView.initViewRCP(parent);

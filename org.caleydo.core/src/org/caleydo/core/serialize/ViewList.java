@@ -26,5 +26,4 @@ public class ViewList {
 	public void setViews(List<String> views) {
 		this.views = views;
 	}
-
 }

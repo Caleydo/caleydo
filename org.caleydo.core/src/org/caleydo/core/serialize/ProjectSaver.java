@@ -19,6 +19,7 @@ import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
@@ -142,28 +143,10 @@ public class ProjectSaver {
 	 */
 	private void saveProjectData(String dirName) {
 
-		for (IDataDomain dataDomain : DataDomainManager.getInstance().getDataDomains()) {
-			saveIndividualDataDomain(dataDomain, dirName);
-		}
+		saveDataDomains(dirName);
 	}
 
-	private void saveIndividualDataDomain(IDataDomain dataDomain, String dirName) {
-		// FIXME - this works only for genetic data now
-		if (!dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
-			System.out.println("Can not save other data domains at the moment!");
-			return;
-		}
-
-		ASetBasedDataDomain setBasedDataDomain = (ASetBasedDataDomain) dataDomain;
-
-		LoadDataParameters parameters = setBasedDataDomain.getLoadDataParameters();
-		try {
-			FileOperations.writeInputStreamToFile(dirName + SET_DATA_FILE_NAME, GeneralManager.get()
-				.getResourceLoader().getResource(parameters.getFileName()));
-		}
-		catch (FileNotFoundException e) {
-			throw new IllegalStateException("Error saving project file", e);
-		}
+	private void saveDataDomains(String dirName) {
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 		JAXBContext projectContext = serializationManager.getProjectContext();
@@ -171,29 +154,54 @@ public class ProjectSaver {
 		try {
 			Marshaller marshaller = projectContext.createMarshaller();
 
-			for (ContentVAType type : ContentVAType.getRegisteredVATypes()) {
-				saveContentVA(marshaller, dirName, setBasedDataDomain, type);
-			}
-
-			for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
-				saveStorageVA(marshaller, dirName, setBasedDataDomain, type);
-			}
-			TreePorter treePorter = new TreePorter();
-			Tree<ClusterNode> geneTree =
-				setBasedDataDomain.getSet().getContentData(ContentVAType.CONTENT).getContentTree();
-			if (geneTree != null) {
-				treePorter.exportTree(dirName + GENE_TREE_FILE_NAME, geneTree);
-			}
-
-			treePorter = new TreePorter();
-			Tree<ClusterNode> expTree =
-				setBasedDataDomain.getSet().getStorageData(StorageVAType.STORAGE).getStorageTree();
-			if (expTree != null) {
-				treePorter.exportTree(dirName + EXP_TREE_FILE_NAME, expTree);
-			}
-
 			File dataDomainFile = new File(dirName + DATA_DOMAIN_FILE_NAME);
-			marshaller.marshal(dataDomain, dataDomainFile);
+
+			ArrayList<ADataDomain> dataDomains = new ArrayList<ADataDomain>();
+			for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
+				dataDomains.add((ADataDomain) dataDomain);
+			}
+			DataDomainList dataDomainList = new DataDomainList();
+			dataDomainList.setDataDomains(dataDomains);
+
+			marshaller.marshal(dataDomainList, dataDomainFile);
+
+			for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
+
+				if (dataDomain instanceof ASetBasedDataDomain) {
+
+					LoadDataParameters parameters = dataDomain.getLoadDataParameters();
+					try {
+						FileOperations.writeInputStreamToFile(dirName + SET_DATA_FILE_NAME, GeneralManager
+							.get().getResourceLoader().getResource(parameters.getFileName()));
+					}
+					catch (FileNotFoundException e) {
+						throw new IllegalStateException("Error saving project file", e);
+					}
+
+					ASetBasedDataDomain setBasedDataDomain = (ASetBasedDataDomain) dataDomain;
+
+					for (ContentVAType type : ContentVAType.getRegisteredVATypes()) {
+						saveContentVA(marshaller, dirName, setBasedDataDomain, type);
+					}
+
+					for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
+						saveStorageVA(marshaller, dirName, setBasedDataDomain, type);
+					}
+					TreePorter treePorter = new TreePorter();
+					Tree<ClusterNode> geneTree =
+						setBasedDataDomain.getSet().getContentData(ContentVAType.CONTENT).getContentTree();
+					if (geneTree != null) {
+						treePorter.exportTree(dirName + GENE_TREE_FILE_NAME, geneTree);
+					}
+
+					treePorter = new TreePorter();
+					Tree<ClusterNode> expTree =
+						setBasedDataDomain.getSet().getStorageData(StorageVAType.STORAGE).getStorageTree();
+					if (expTree != null) {
+						treePorter.exportTree(dirName + EXP_TREE_FILE_NAME, expTree);
+					}
+				}
+			}
 		}
 		catch (JAXBException ex) {
 			throw new RuntimeException("Error saving project files (xml serialization)", ex);

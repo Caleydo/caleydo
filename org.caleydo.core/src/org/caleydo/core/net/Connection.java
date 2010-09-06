@@ -17,7 +17,6 @@ import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
@@ -281,7 +280,7 @@ public class Connection {
 
 		// FIXME this should work for more than one use case now
 		ASetBasedDataDomain useCase =
-			(ASetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+			(ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
 				"org.caleydo.datadomain.genetic");
 		ISet set = useCase.getSet();
 

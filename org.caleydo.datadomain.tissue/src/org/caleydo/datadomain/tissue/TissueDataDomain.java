@@ -21,7 +21,9 @@ public class TissueDataDomain extends ADataDomain {
 	 * Constructor.
 	 */
 	public TissueDataDomain() {
-		dataDomainType = DATA_DOMAIN_TYPE;
+		
+		super(DATA_DOMAIN_TYPE);
+		
 		icon = EIconTextures.DATA_DOMAIN_TISSUE;
 
 		// possibleIDCategories.put(EIDCategory.GENE, null);
