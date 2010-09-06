@@ -7,7 +7,7 @@ import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings;
 import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.StatisticsResultFinishedEvent;
-import org.caleydo.rcp.Activator;
+import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
@@ -53,12 +53,8 @@ public class FoldChangeDialog extends Dialog {
 			GeneralManager.get().getRStatisticsPerformer().foldChange(set1, set2);
 		} catch (Exception e) {
 
-			GeneralManager
-					.get()
-					.getLogger()
-					.log(
-							new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-									"R Statistics plugin could not be loaded. The statistics reduction will be skipped."));
+			Logger.log(new Status(IStatus.WARNING, this.toString(),
+					"R Statistics plugin could not be loaded. The statistics reduction will be skipped."));
 			return;
 		}
 
@@ -73,8 +69,7 @@ public class FoldChangeDialog extends Dialog {
 		final Slider slider = new Slider(shell, SWT.HORIZONTAL);
 
 		final Label label = new Label(shell, SWT.NULL);
-		label
-				.setText("                                                                                                        ");
+		label.setText("                                                                                                        ");
 
 		int initialFoldchange = 2;
 		final Label foldChangeLabel = new Label(shell, SWT.NULL);
