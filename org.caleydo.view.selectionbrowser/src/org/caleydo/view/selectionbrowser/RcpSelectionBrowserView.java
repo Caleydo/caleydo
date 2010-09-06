@@ -53,12 +53,14 @@ public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 
 		infoComposite.setLayout(layout);
 
-		selectionBrowser = new SelectionBrowserView();
 		SerializedSelectionBrowserView serializedView = new SerializedSelectionBrowserView();
+
+		selectionBrowser = new SelectionBrowserView();
 		selectionBrowser.setDataDomain((ASetBasedDataDomain) DataDomainManager
 				.getInstance().getDataDomain(determineDataDomain(serializedView)));
 		selectionBrowser.registerEventListeners();
 		selectionBrowser.createControl(infoComposite);
+
 	}
 
 	@Override

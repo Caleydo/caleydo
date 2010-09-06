@@ -86,7 +86,6 @@ public class SelectionBrowserView implements IDataDomainBasedView<ASetBasedDataD
 	public SelectionBrowserView() {
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
-		initContent();
 		registerEventListeners();
 	}
 
@@ -415,6 +414,8 @@ public class SelectionBrowserView implements IDataDomainBasedView<ASetBasedDataD
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
+		
+		initContent();
 	}
 
 	@Override

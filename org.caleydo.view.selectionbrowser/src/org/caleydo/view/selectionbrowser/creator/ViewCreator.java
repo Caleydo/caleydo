@@ -36,8 +36,8 @@ public class ViewCreator extends ARCPViewCreator {
 	protected void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 
-		// TODO: ADD THE POSSIBLE DATA DOMAINS FOR THIS VIEW
-		// dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");		
 
 		DataDomainManager.getInstance().getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, RcpSelectionBrowserView.VIEW_ID);
