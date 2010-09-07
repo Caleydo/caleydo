@@ -88,8 +88,8 @@ public class ProjectSaver {
 	 * Saves the project to the directory for the recent project
 	 */
 	public void saveRecentProject() {
-		ZipUtils zipUtils = new ZipUtils();
-//		zipUtils.deleteDirectory(RECENT_PROJECT_DIR_NAME);
+		// ZipUtils zipUtils = new ZipUtils();
+		// zipUtils.deleteDirectory(RECENT_PROJECT_DIR_NAME);
 		prepareDirectory(RECENT_PROJECT_DIR_NAME);
 		savePluginData(RECENT_PROJECT_DIR_NAME);
 		saveProjectData(RECENT_PROJECT_DIR_NAME);

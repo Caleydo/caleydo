@@ -64,7 +64,5 @@ public class ContentSelectionRenderer extends AContentRenderer {
 	public void render(GL gl) {
 		renderSelection(gl, SelectionType.SELECTION);
 		renderSelection(gl, SelectionType.MOUSE_OVER);
-
 	}
-
 }

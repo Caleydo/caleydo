@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class StorageSelectionRenderer extends AContentRenderer {
@@ -47,11 +48,9 @@ public class StorageSelectionRenderer extends AContentRenderer {
 
 					xPosition = columnIndex * contentSpacing.getFieldWidth();
 
-					// gl.glPushName(heatMap.getPickingManager().getPickingID(
-					// heatMap.getID(),
-					// EPickingType.HEAT_MAP_STORAGE_SELECTION,
-					// selectedColumn));
-
+					gl.glPushName(heatMap.getPickingManager().getPickingID(
+							heatMap.getID(), EPickingType.HEAT_MAP_STORAGE_SELECTION,
+							selectedColumn));
 					gl.glBegin(GL.GL_LINE_LOOP);
 					gl.glVertex3f(xPosition, y, SELECTION_Z);
 					gl.glVertex3f(xPosition, 0, SELECTION_Z);
@@ -60,7 +59,7 @@ public class StorageSelectionRenderer extends AContentRenderer {
 					gl.glVertex3f(xPosition + contentSpacing.getFieldWidth(), y,
 							SELECTION_Z);
 					gl.glEnd();
-					// gl.glPopName();
+					gl.glPopName();
 				}
 			}
 			columnIndex++;
@@ -73,7 +72,5 @@ public class StorageSelectionRenderer extends AContentRenderer {
 	public void render(GL gl) {
 		renderSelection(gl, SelectionType.SELECTION);
 		renderSelection(gl, SelectionType.MOUSE_OVER);
-
 	}
-
 }
