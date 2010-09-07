@@ -40,7 +40,7 @@ public class DataInitializationData {
 	private HashMap<StorageVAType, StorageVirtualArray> storageVAMap;
 
 	/** list of views in use, not used to sync remote clients */
-	private List<String> viewIDs;
+	private List<? extends ASerializedView> views;
 
 	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
@@ -74,12 +74,12 @@ public class DataInitializationData {
 		this.storageVAMap = storageVAMap;
 	}
 
-	public List<String> getViewIDs() {
-		return viewIDs;
+	public List<? extends ASerializedView> getViewIDs() {
+		return views;
 	}
 
-	public void setViews(List<String> viewIDs) {
-		this.viewIDs = viewIDs;
+	public void setViews(List<? extends ASerializedView> viewIDs) {
+		this.views = viewIDs;
 	}
 
 	public String getGeneClusterTree() {

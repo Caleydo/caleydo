@@ -614,21 +614,30 @@ public class GLBucket extends AGLView implements
 				sRenderText = sRenderText.subSequence(0, iMaxChars - 3) + "...";
 			}
 
+			boolean leftSide = poolLevel.getPositionIndexByElementID(element) >= poolLevel
+					.getCapacity() / 2 ? false : true;
+
 			float fTextScalingFactor = 0.09f;
 			float fTextXPosition = 0f;
+			float textWidth = (float) textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23;
 
 			if (element.getID() == iMouseOverObjectID) {
-				renderPoolSelection(
-						gl,
-						translation.x() - 0.4f / fAspectRatio,
-						translation.y() * scale.y() + 5.2f,
 
-						(float) textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23,
-						6f, element);
+				if (leftSide) {
+					fTextXPosition = 12f;
+				} else {
+					fTextXPosition = -(float) (textRenderer.getBounds(sRenderText)
+							.getWidth() * 0.06f + 12f);
+					textWidth *= -1;
+				}
+
+				renderPoolSelection(gl, translation.x() - 0.4f / fAspectRatio,
+						translation.y() * scale.y() + 5.2f, textWidth, 6f, element,
+						leftSide);
 				gl.glTranslatef(0.8f, 1.3f, 0);
 
 				fTextScalingFactor = 0.075f;
-				fTextXPosition = 12f;
+
 			} else {
 				// Render view background frame
 				Texture tempTexture = textureManager.getIconTexture(gl,
@@ -1421,21 +1430,26 @@ public class GLBucket extends AGLView implements
 	}
 
 	private void renderPoolSelection(final GL gl, float fXOrigin, float fYOrigin,
-			float fWidth, float fHeight, RemoteLevelElement element) {
+			float fWidth, float fHeight, RemoteLevelElement element, boolean leftSide) {
+
 		float fPanelSideWidth = 11f;
+
+		float sideSwitchFactor = 1;
+		
+		if (!leftSide) {
+			sideSwitchFactor = -1;
+			fPanelSideWidth += 1f;
+		}
+		
+		float backgroudX = fXOrigin + 1.65f / fAspectRatio * sideSwitchFactor
+		+ fPanelSideWidth;
 
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL.GL_POLYGON);
-
-		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth, fYOrigin
-				- fHeight / 2f + fHeight, 0f);
-		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth + fWidth,
-				fYOrigin - fHeight / 2f + fHeight, 0f);
-		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth + fWidth,
-				fYOrigin - fHeight / 2f, 0f);
-		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth, fYOrigin
-				- fHeight / 2f, 0f);
-
+		gl.glVertex3f(backgroudX, fYOrigin - fHeight / 2f + fHeight, 0f);
+		gl.glVertex3f(backgroudX + fWidth, fYOrigin - fHeight / 2f + fHeight, 0f);
+		gl.glVertex3f(backgroudX + fWidth, fYOrigin - fHeight / 2f, 0f);
+		gl.glVertex3f(backgroudX, fYOrigin - fHeight / 2f, 0f);
 		gl.glEnd();
 
 		Texture tempTexture = textureManager.getIconTexture(gl,
@@ -1449,15 +1463,17 @@ public class GLBucket extends AGLView implements
 
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fXOrigin + 2 / fAspectRatio + fPanelSideWidth, fYOrigin - fHeight,
-				-0.01f);
+		gl.glVertex3f(fXOrigin + 2 / fAspectRatio * sideSwitchFactor + fPanelSideWidth,
+				fYOrigin - fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXOrigin + 2 / fAspectRatio + fPanelSideWidth, fYOrigin + fHeight,
-				-0.01f);
+		gl.glVertex3f(fXOrigin + 2 / fAspectRatio * sideSwitchFactor + fPanelSideWidth,
+				fYOrigin + fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fXOrigin + 2f / fAspectRatio, fYOrigin + fHeight, -0.01f);
+		gl.glVertex3f(fXOrigin + 2f / fAspectRatio * sideSwitchFactor,
+				fYOrigin + fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fXOrigin + 2f / fAspectRatio, fYOrigin - fHeight, -0.01f);
+		gl.glVertex3f(fXOrigin + 2f / fAspectRatio * sideSwitchFactor,
+				fYOrigin - fHeight, -0.01f);
 		gl.glEnd();
 
 		tempTexture.disable();
@@ -1466,8 +1482,8 @@ public class GLBucket extends AGLView implements
 		gl.glPopName();
 
 		int fHandleScaleFactor = 18;
-		gl.glTranslatef(fXOrigin + 2.5f / fAspectRatio, fYOrigin - fHeight / 2f + fHeight
-				- 1f, 1.8f);
+		gl.glTranslatef(fXOrigin + 2.5f / fAspectRatio * sideSwitchFactor, fYOrigin
+				- fHeight / 2f + fHeight - 1f, 1.8f);
 		gl.glScalef(fHandleScaleFactor, fHandleScaleFactor, fHandleScaleFactor);
 		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_DRAG,
 				EIconTextures.POOL_DRAG_VIEW, 0.1f, 0.1f);
@@ -1477,8 +1493,8 @@ public class GLBucket extends AGLView implements
 		gl.glTranslatef(0, 0.2f, 0);
 		gl.glScalef(1f / fHandleScaleFactor, 1f / fHandleScaleFactor,
 				1f / fHandleScaleFactor);
-		gl.glTranslatef(-fXOrigin - 2.5f / fAspectRatio, -fYOrigin + fHeight / 2f
-				- fHeight + 1f, -1.8f);
+		gl.glTranslatef(-fXOrigin - 2.5f / fAspectRatio * sideSwitchFactor, -fYOrigin
+				+ fHeight / 2f - fHeight + 1f, -1.8f);
 
 		// gl.glColor3f(0.25f, 0.25f, 0.25f);
 		// gl.glBegin(GL.GL_POLYGON);
@@ -2539,8 +2555,8 @@ public class GLBucket extends AGLView implements
 
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView)
-					.setDataDomain((IDataDomain) DataDomainManager.get()
-							.getDataDomain(serView.getDataDomainType()));
+					.setDataDomain((IDataDomain) DataDomainManager.get().getDataDomain(
+							serView.getDataDomainType()));
 		}
 
 		if (glView instanceof GLPathway) {

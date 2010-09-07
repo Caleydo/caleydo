@@ -58,7 +58,7 @@ public abstract class ARemoteViewLayoutRenderStyle
 
 		focusLevel = new RemoteLevel(1, "Focus Level", null, stackLevel);
 		stackLevel = new RemoteLevel(4, "Stack Level", focusLevel, poolLevel);
-		poolLevel = new RemoteLevel(14, "Pool Level", stackLevel, null);
+		poolLevel = new RemoteLevel(28, "Pool Level", stackLevel, null);
 		transitionLevel = new RemoteLevel(1, "Transition Level", null, null);
 		spawnLevel = new RemoteLevel(1, "Spawn Level", null, stackLevel);
 		selectionLevel = new RemoteLevel(1, "Selection Level", null, stackLevel);

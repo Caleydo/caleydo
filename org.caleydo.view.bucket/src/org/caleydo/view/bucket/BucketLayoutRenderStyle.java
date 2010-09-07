@@ -357,9 +357,20 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 		Transform transform;
 
 		float fSelectedScaling = 1;
-		float fYAdd = 1.9f;
+		float fYTop = 1.9f;
+		float fYAdd = fYTop;
 		float fZ = 0;
 
+		float fXScaling = 1;
+
+		if (fAspectRatio < 1) {
+			fXScaling = 1 / fAspectRatio;
+		} else {
+			fXScaling = 1;
+		}
+
+		float fX = -2f * fXScaling;
+		
 		if (bIsZoomedIn)
 			fZ = 0.1f;
 		else
@@ -367,6 +378,14 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 
 		int iRemoteLevelElementIndex = 0;
 		for (RemoteLevelElement element : poolLevel.getAllElements()) {
+			
+			// Handle right side of bucket pool
+			if (iRemoteLevelElementIndex == poolLevel.getCapacity() / 2)
+			{
+				fYAdd = fYTop;
+				fX = -fX - 0.715f;
+			}
+			
 			if (element.getID() == iSelectedRemoteLevelElementID) {
 				fSelectedScaling = 1.8f;
 				fYAdd -= 0.3f * fSelectedScaling;
@@ -376,7 +395,7 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 			}
 
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(-2f / fAspectRatio, fYAdd, fZ));
+			transform.setTranslation(new Vec3f(fX, fYAdd, fZ));
 
 			transform.setScale(new Vec3f(fScalingFactorPoolLevel * fSelectedScaling,
 					fScalingFactorPoolLevel * fSelectedScaling, fScalingFactorPoolLevel

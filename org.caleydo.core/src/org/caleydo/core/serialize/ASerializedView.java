@@ -26,7 +26,7 @@ public abstract class ASerializedView {
 
 	protected int viewID;
 
-	protected String viewGUIID;
+	protected String viewType;
 
 	protected String dataDomainType;
 
@@ -80,4 +80,8 @@ public abstract class ASerializedView {
 	 * @return GUI-related view-id.
 	 */
 	public abstract String getViewType();
+	
+	public void setViewType(String viewType) {
+		this.viewType = viewType;
+	}
 }
