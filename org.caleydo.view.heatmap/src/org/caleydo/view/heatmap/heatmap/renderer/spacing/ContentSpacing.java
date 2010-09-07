@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
+/**
+ * Spacing information / calculation for heat map
+ * 
+ * @author Alexander Lex
+ * 
+ */
 public class ContentSpacing {
 
 	private float fieldWidth;

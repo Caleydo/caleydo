@@ -90,6 +90,10 @@ public abstract class ATemplate {
 		}
 	}
 
+	/**
+	 * Add a vertical render element
+	 * @param element
+	 */
 	void add(RenderParameters element) {
 		verticalSpaceAllocations.add(element);
 	}

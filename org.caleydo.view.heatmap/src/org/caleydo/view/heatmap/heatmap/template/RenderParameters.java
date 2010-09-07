@@ -2,6 +2,12 @@ package org.caleydo.view.heatmap.heatmap.template;
 
 import org.caleydo.view.heatmap.heatmap.renderer.ARenderer;
 
+
+/**
+ * Size parameters for a single element
+ * @author Alexander Lex
+ *
+ */
 public class RenderParameters {
 
 	ARenderer renderer;

@@ -3,6 +3,7 @@ package org.caleydo.view.heatmap.heatmap.template;
 import org.caleydo.view.heatmap.heatmap.renderer.ContentCaptionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ContentSelectionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;
+import org.caleydo.view.heatmap.heatmap.renderer.StorageCaptionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.StorageSelectionRenderer;
 
 /**
@@ -69,10 +70,19 @@ public class HierarchicalHeatMapTemplate extends ATemplate {
 
 		add(row);
 
-		spacing = new RenderParameters();
-		spacing.sizeY = bottomSpacing;
-		spacing.scaleY = false;
-		add(spacing);
+		Row storageCaptionRow = new Row();
+		storageCaptionRow.sizeY = bottomSpacing;
+		storageCaptionRow.scaleY = false;
+
+		RenderParameters storageCaptionLayout = new RenderParameters();
+		storageCaptionLayout.sizeY = bottomSpacing;
+		storageCaptionLayout.setRenderer(new StorageCaptionRenderer(
+				templateRenderer.heatMap));
+		storageCaptionRow.appendElement(storageCaptionLayout);
+
+		templateRenderer.addRenderer(storageCaptionLayout);
+
+		add(storageCaptionRow);
 
 	}
 
