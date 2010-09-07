@@ -23,12 +23,6 @@
                   commandId="org.caleydo.view.treemap.command.opentreemap"
                   icon="resources/icons/treemap.png"
                   style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <reference
-                        definitionId="expression.releaseVersion">
-                  </reference>
-               </visibleWhen>
             </command>
          </menu>
       </menuContribution>
@@ -49,17 +43,5 @@
           id="org.caleydo.view.ViewCreator"
           name="TreeMapViewCreator"
           class="org.caleydo.view.treemap.creator.ViewCreator" />
-   </extension>
-   <extension
-         point="org.eclipse.core.expressions.definitions">
-      <definition
-            id="expression.releaseVersion">
-         <with
-               variable="isRelease">
-            <equals
-                  value="true">
-            </equals>
-         </with>
-      </definition>
    </extension>
 </plugin>
