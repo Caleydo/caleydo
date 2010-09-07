@@ -7,6 +7,7 @@ import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.media.opengl.GL;
 
@@ -92,6 +93,10 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	private SelectionUpdateListener selectionUpdateListener;
 	
 	private GLTreeMap glTreeMap;
+	
+	private Vector<GLTreeMap> treemapViews = new Vector<GLTreeMap>(4);
+	
+	
 
 	/**
 	 * Constructor.
@@ -112,7 +117,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		// alSelectionTypes.add(SelectionType.MOUSE_OVER);
 		// alSelectionTypes.add(SelectionType.SELECTION);
 
-		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+//		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		parentGLCanvas.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -213,20 +218,24 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		// iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
-		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
+//		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
 		init(gl);
 
-		gl.glNewList(iGLDisplayListIndexLocal, GL.GL_COMPILE);
-		gl.glEndList();
+//		gl.glNewList(iGLDisplayListIndexLocal, GL.GL_COMPILE);
+//		gl.glEndList();
 
 		// ScatterPlotRenderStyle.setTextureNr(NR_TEXTURESX,NR_TEXTURESY);
 
 		// TODO: check when to update data
-		ClusterTreeMapNode root = ClusterTreeMapNode.createFromClusterNodeTree(tree, colorMapper);
-		SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
-		layouter.layout(root, painter);
-		treeMapModel = root.getTree();
+		
 
+	}
+	
+	public void initData(){
+		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
+		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+		for(GLTreeMap view : treemapViews)
+			view.initData();
 	}
 
 	@Override
@@ -428,7 +437,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 			// treeSelectionManager.getSelectionTypes(elementID);
 			//
 			// setDisplayListDirty();
-			// TODO do something
+			
 			setHighLichtingListDirty();
 			break;
 
@@ -551,6 +560,11 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
 		treeSelectionManager = new SelectionManager(tree.getNodeIDType());
+		//TODO set selectionmanager
+		for(GLTreeMap view: treemapViews){
+			view.setDataDomain(dataDomain);
+			view.setSelectionManager(treeSelectionManager);
+		}
 	}
 
 	public void setHighLichtingListDirty() {
