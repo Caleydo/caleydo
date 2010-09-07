@@ -8,7 +8,7 @@
             category="org.caleydo.rcp.views"
             class="org.caleydo.view.treemap.RcpGLTreeMapView"
             icon="resources/icons/treemap.png"
-            id="org.caleydo.view.treemap"
+            id="org.caleydo.view.treemap.hierarchical"
             name="Treemap">
       </view>
    </extension>
@@ -36,12 +36,21 @@
       </command>
    </extension>
    <extension
+         id="org.caleydo.view.treemap.hierarchical"
+         name="HierarchicalTreeMapViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="HierarhicalTreeMapViewCreator"
+          class="org.caleydo.view.treemap.creator.ViewCreatorHierarchicalTreeMap" />
+   </extension>
+   <extension
          id="org.caleydo.view.treemap"
          name="TreeMapViewCreator"
          point="org.caleydo.view.ViewCreator">
          <ViewCreator
           id="org.caleydo.view.ViewCreator"
           name="TreeMapViewCreator"
-          class="org.caleydo.view.treemap.creator.ViewCreator" />
+          class="org.caleydo.view.treemap.creator.ViewCreatorTreeMap" />
    </extension>
 </plugin>

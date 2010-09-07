@@ -180,7 +180,7 @@ public abstract class AGLView
 		parentGLCanvas = glCanvas;
 
 		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), true, true);
-
+		
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
 			glMouseListener = parentGLCanvas.getGLMouseListener();
 		}

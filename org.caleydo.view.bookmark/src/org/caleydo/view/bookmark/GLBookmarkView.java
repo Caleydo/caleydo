@@ -181,7 +181,7 @@ public class GLBookmarkView extends AGLView implements
 
 		display(gl);
 		checkForHits(gl);
-		pickingIDManager.reset();
+		//pickingIDManager.reset();
 	}
 
 	@Override
@@ -195,7 +195,7 @@ public class GLBookmarkView extends AGLView implements
 
 		display(gl);
 		checkForHits(gl);
-		pickingIDManager.reset();
+		//pickingIDManager.reset();
 	}
 
 	/**

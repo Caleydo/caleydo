@@ -57,29 +57,11 @@ public class SearchViewMediator {
 		selectionUpdateEvent.setSender(this);
 
 		ISelectionDelta delta = new SelectionDelta(contentIDType);
-
+		
 		Set<Integer> setExpIndex = GeneralManager.get().getIDMappingManager()
 				.getIDAsSet(IDType.getIDType("DAVID"), contentIDType, davidID);
 
-		ArrayList<Integer> alExpressionIndex = null;
-
-		if (setExpIndex != null) {
-			alExpressionIndex = new ArrayList<Integer>();
-			alExpressionIndex.addAll(setExpIndex);
-		}
-
-		// ArrayList<Integer> alExpressionIndex =
-		// GeneticIDMappingHelper.get().getExpressionIndicesFromDavid(davidID);
-
-		if (alExpressionIndex == null) {
-			// FIXME: when view plugin reorganizatin is done
-			// GeneralManager.get().getLogger().log(
-			// new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-			// "Cannot load gene in heat map because no gene expression is associated."));
-			return;
-		}
-
-		for (Integer expressionIndex : alExpressionIndex) {
+		for (Integer expressionIndex : setExpIndex) {
 			delta.addSelection(expressionIndex, SelectionType.SELECTION);
 		}
 

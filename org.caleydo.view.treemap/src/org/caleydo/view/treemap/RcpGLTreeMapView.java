@@ -17,7 +17,7 @@ public class RcpGLTreeMapView extends ARcpGLViewPart {
 		
 		try {
 			viewContext = JAXBContext
-					.newInstance(SerializedTreeMapView.class);
+					.newInstance(SerializedHierarchicalTreeMapView.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
@@ -33,13 +33,13 @@ public class RcpGLTreeMapView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedTreeMapView serializedView = new SerializedTreeMapView(dataDomainType);
+		SerializedHierarchicalTreeMapView serializedView = new SerializedHierarchicalTreeMapView(dataDomainType);
 		return serializedView;
 	}
 
 	@Override
 	public String getViewGUIID() {
-		return GLTreeMap.VIEW_ID;
+		return GLHierarchicalTreeMap.VIEW_ID;
 	}
 
 }

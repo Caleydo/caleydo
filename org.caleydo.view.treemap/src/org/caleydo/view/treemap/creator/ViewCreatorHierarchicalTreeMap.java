@@ -8,20 +8,20 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.view.treemap.GLTreeMap;
+import org.caleydo.view.treemap.GLHierarchicalTreeMap;
 import org.caleydo.view.treemap.SerializedTreeMapView;
 import org.caleydo.view.treemap.toolbar.TreeMapToolBarContent;
 
-public class ViewCreator extends AGLViewCreator {
+public class ViewCreatorHierarchicalTreeMap extends AGLViewCreator {
 
-	public ViewCreator() {
-		super(GLTreeMap.VIEW_ID);
+	public ViewCreatorHierarchicalTreeMap() {
+		super(GLHierarchicalTreeMap.VIEW_ID);
 	}
 
 	@Override
 	public AGLView createGLView(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		return new GLTreeMap(glCanvas, viewFrustum);
+		return new GLHierarchicalTreeMap(glCanvas, viewFrustum);
 	}
 
 	@Override
@@ -41,6 +41,6 @@ public class ViewCreator extends AGLViewCreator {
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 		// dataDomainTypes.add("org.caleydo.datadomain.generic");
 
-		DataDomainManager.get().getAssociationManager().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLTreeMap.VIEW_ID);
+		DataDomainManager.get().getAssociationManager().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLHierarchicalTreeMap.VIEW_ID);
 	}
 }

@@ -7,7 +7,7 @@ import org.caleydo.rcp.view.toolbar.ActionToolBarContainer;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.ToolBarContainer;
 import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
-import org.caleydo.view.treemap.GLTreeMap;
+import org.caleydo.view.treemap.GLHierarchicalTreeMap;
 import org.caleydo.view.treemap.actions.ZoomAction;
 
 /**
@@ -29,7 +29,7 @@ public class TreeMapToolBarContent extends AToolBarContent {
 
 	@Override
 	public Class<?> getViewClass() {
-		return GLTreeMap.class;
+		return GLHierarchicalTreeMap.class;
 	}
 
 	@Override
