@@ -313,4 +313,14 @@
                   name="Visual Links">
             </page>
    </extension>
+      <extension
+            point="org.eclipse.ui.services">
+         <sourceProvider
+               provider="org.caleydo.rcp.AbstractSourceProvider">
+            <variable
+                  name="org.caleydo.rcp.isReleaseState"
+                  priorityLevel="workbench">
+            </variable>
+         </sourceProvider>
+      </extension>
 </plugin>

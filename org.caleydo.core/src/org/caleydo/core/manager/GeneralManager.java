@@ -36,6 +36,11 @@ import org.eclipse.jface.preference.PreferenceStore;
 public class GeneralManager {
 
 	/**
+	 * In release mode non-stable or student views are automatically removed from the workbench.
+	 */
+	public static final boolean RELEASE_MODE = false;
+	
+	/**
 	 * This is the current version of Caleydo. The value must be the same as specified in the plugin/bundle.
 	 * We need to access the version before the workbench is started. Therefore we have to set it hardcoded at
 	 * this point.
@@ -60,8 +65,6 @@ public class GeneralManager {
 	public static final String sDelimiter_Parser_DataItems = " ";
 	public static final String sDelimiter_Parser_DataType = ";";
 	public static final String sDelimiter_Parser_DataItems_Tab = "\t";
-
-	public static final boolean IS_IN_RELEASE_MODE = true;
 
 	/**
 	 * General manager as a singleton

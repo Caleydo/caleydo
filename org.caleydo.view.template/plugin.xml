@@ -23,6 +23,14 @@
                   commandId="org.caleydo.view.template.command.opentemplate"
                   icon="resources/icons/icon.png"
                   style="push">
+               <visibleWhen checkEnabled="false">
+                  <with
+                        variable="org.caleydo.rcp.isReleaseState">
+                     <equals
+                           value="releaseVersion">
+                     </equals>
+                  </with>
+               </visibleWhen>
             </command>
          </menu>
       </menuContribution>

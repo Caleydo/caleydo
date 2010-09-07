@@ -23,6 +23,15 @@
                   commandId="org.caleydo.view.treemap.command.opentreemap"
                   icon="resources/icons/treemap.png"
                   style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="org.caleydo.rcp.isReleaseState">
+                     <equals
+                           value="releaseVersion">
+                     </equals>
+                  </with>
+               </visibleWhen>
             </command>
          </menu>
       </menuContribution>

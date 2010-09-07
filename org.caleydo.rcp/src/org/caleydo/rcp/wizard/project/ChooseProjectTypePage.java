@@ -128,7 +128,7 @@ public class ChooseProjectTypePage
 		createGeneticUseCaseTab(tabFolder);
 		createGeneralDataUseCaseTab(tabFolder);
 		createLoadProjectTab(tabFolder);
-		if (!GeneralManager.IS_IN_RELEASE_MODE)
+		if (!GeneralManager.RELEASE_MODE)
 			createCollaborationClientTab(tabFolder);
 
 		// restore the previously selected tab
@@ -149,7 +149,7 @@ public class ChooseProjectTypePage
 		}
 		else if (projectMode.equals(ProjectMode.COLLABORATION_CLIENT)) {
 			// if we are in release mode we don't have the collab client
-			if (GeneralManager.IS_IN_RELEASE_MODE) {
+			if (GeneralManager.RELEASE_MODE) {
 				tabFolder.setSelection(0);
 				projectMode = ProjectMode.SAMPLE_PROJECT;
 			}
