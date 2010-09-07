@@ -51,5 +51,4 @@ public class BookmarkEvent<IDDataType>
 			return false;
 		return true;
 	}
-
 }

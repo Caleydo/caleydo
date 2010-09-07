@@ -77,6 +77,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GroupContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.rcp.dialog.file.ExportDataDialog;
@@ -4107,10 +4108,13 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				}
 
 				GroupContextMenuItemContainer groupContextMenuItemContainer = new GroupContextMenuItemContainer();
-				groupContextMenuItemContainer.setContextMenuFlags(true, bEnableMerge,
+				groupContextMenuItemContainer.initContextMenu(true, bEnableMerge,
 						bEnableInterchange, bEnableExport);
 				groupContextMenuItemContainer.setGenes(contentIDType,
 						contentVA.getGeneIdsOfGroup(iExternalID));
+
+				BookmarkItem bookmarkItem = new BookmarkItem(contentIDType, contentVA.getGeneIdsOfGroup(iExternalID));
+				groupContextMenuItemContainer.addContextMenuItem(bookmarkItem);
 
 				contextMenu.addItemContanier(groupContextMenuItemContainer);
 				contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
@@ -4207,7 +4211,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 						bEnableInterchange = true;
 				}
 				GroupContextMenuItemContainer groupContextMenuItemContainer = new GroupContextMenuItemContainer();
-				groupContextMenuItemContainer.setContextMenuFlags(false, bEnableMerge,
+				groupContextMenuItemContainer.initContextMenu(false, bEnableMerge,
 						bEnableInterchange, bEnableExport);
 
 				contextMenu.addItemContanier(groupContextMenuItemContainer);

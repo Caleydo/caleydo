@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.ExportClustersItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.InterchangeGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.MergeClustersItem;
@@ -42,7 +43,7 @@ public class GroupContextMenuItemContainer
 	 * @param bEnableInterchange
 	 *            if true interchange cluster item will be added
 	 */
-	public void setContextMenuFlags(boolean bGeneGroup, boolean bEnableMerge, boolean bEnableInterchange,
+	public void initContextMenu(boolean bGeneGroup, boolean bEnableMerge, boolean bEnableInterchange,
 		boolean bEnableExport) {
 
 		isGeneGroup = bGeneGroup;
