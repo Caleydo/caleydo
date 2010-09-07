@@ -3,13 +3,29 @@ package org.caleydo.core.data.collection.set;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
+/**
+ * <p>
+ * A MetaSet is a set containing a sub-set of storages of a root set. Therefore, every MetaSet is associated
+ * with a root set. The sub set is defined through the storageTree of a root set. The subset is defined by a
+ * storage tree and a ClusterNode (which is part of the tree). The metaSet manages all storages which are
+ * below or at the level of the ClusterNode.
+ * </p>
+ * <p>
+ * Other properties of the MetaSet, such as the contentData is shared with the original data.
+ * </p>
+ * 
+ * @author Alexander Lex
+ */
 public class MetaSet
 	extends Set
 	implements ISet {
@@ -22,8 +38,9 @@ public class MetaSet
 
 	@SuppressWarnings("unchecked")
 	public MetaSet(Set originalSet, Tree<ClusterNode> storageTree, ClusterNode storageTreeRoot) {
-		super(originalSet.getDataDomain());
-		init();
+		super();
+		this.dataDomain = originalSet.getDataDomain();
+		// init();
 
 		this.iUniqueID = GeneralManager.get().getIDManager().createID(EManagedObjectType.SET);
 		// this.setSetType(originalSet.getSetType());
@@ -31,21 +48,25 @@ public class MetaSet
 		// check yet whether it was homogeneous
 		this.isSetHomogeneous = true;
 		this.externalDataRep = originalSet.getExternalDataRep();
-		this.hashContentData = (HashMap<ContentVAType, ContentData>) originalSet.hashContentData.clone();
 
+		this.hashContentData = (HashMap<ContentVAType, ContentData>) originalSet.hashContentData.clone();
+		this.hashStorages = new HashMap<Integer, IStorage>();
+
+		defaultStorageData = new StorageData();
+		defaultStorageData.setStorageVA(new StorageVirtualArray(StorageVAType.STORAGE));
 		defaultStorageData.setStorageTree(storageTree);
 		defaultStorageData.setStorageTreeRoot(storageTreeRoot);
+
+		hashStorageData = new HashMap<StorageVAType, StorageData>();
 		hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
+
+		defaultStorageData.setStorageVA(new StorageVirtualArray(StorageVAType.STORAGE));
+		statisticsResult = new StatisticsResult(this);
+
 	}
 
 	public ISet getOriginalSet() {
 		return originalSet;
 	}
-
-	// @Override
-	// public ContentVirtualArray getContentVA(ContentVAType vaType) {
-	//
-	// return super.getContentVA(vaType);
-	// }
 
 }

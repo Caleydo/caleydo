@@ -43,7 +43,7 @@ public class Set
 	extends AUniqueObject
 	implements ISet {
 
-	private HashMap<Integer, IStorage> hashStorages;
+	protected HashMap<Integer, IStorage> hashStorages;
 
 	private String sLabel;
 
@@ -73,9 +73,9 @@ public class Set
 
 	protected boolean isSetHomogeneous = false;
 
-	private StatisticsResult statisticsResult;
+	protected StatisticsResult statisticsResult;
 
-	private ASetBasedDataDomain dataDomain;
+	ASetBasedDataDomain dataDomain;
 
 	public Set() {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.SET));
@@ -94,12 +94,11 @@ public class Set
 	private void initWithDataDomain() {
 		SetManager.getInstance().registerItem(this);
 		init();
-		Tree<ClusterNode> tree = new Tree<ClusterNode>();
-		tree.initializeIDTypes(dataDomain.getStorageIDType());
+		Tree<ClusterNode> tree = new Tree<ClusterNode>(dataDomain.getStorageIDType());
 		ClusterNode root = new ClusterNode(tree, "Root", 1, true, -1);
 		tree.setRootNode(root);
 		defaultStorageData.setStorageTree(tree);
-		hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
+		// hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
 	}
 
 	/**
@@ -553,8 +552,6 @@ public class Set
 	 */
 	void addStorage(IStorage storage) {
 		if (hashStorages.isEmpty()) {
-			// iColumnLength = storage.size();
-			// rawDataType = storage.getRawDataType();
 			if (storage instanceof INumericalStorage) {
 				bIsNumerical = true;
 			}
@@ -577,16 +574,22 @@ public class Set
 		hashStorages.put(storage.getID(), storage);
 		defaultStorageData.getStorageVA().append(storage.getID());
 
+	}
+
+	void finalizeAddedStorages() {
 		// this needs only be done by the root set
 		if ((this.getClass().equals(Set.class))) {
 			Tree<ClusterNode> tree = defaultStorageData.getStorageTree();
-			int id = defaultStorageData.getStorageVA().size();
-			ClusterNode node = new ClusterNode(tree, storage.getLabel(), id, false, storage.getID());
-			defaultStorageData.getStorageTree().addChild(tree.getRoot(), node);
-			node.createMetaSet(this);
-			tree.getRoot().createMetaSet(this);
-		}
+			int count = 1;
+			for (Integer storageID : defaultStorageData.getStorageVA()) {
+				ClusterNode node =
+					new ClusterNode(tree, get(storageID).getLabel(), count++, false, storageID);
+				tree.addChild(tree.getRoot(), node);
+			}
 
+			tree.getRoot().createMetaSets(this);
+
+		}
 		hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
 
 	}

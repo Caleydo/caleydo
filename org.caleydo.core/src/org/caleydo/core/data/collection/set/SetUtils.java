@@ -272,6 +272,9 @@ public class SetUtils {
 		for (int iStorageID : storageIDs) {
 			set.addStorage(iStorageID);
 		}
+		
+		set.finalizeAddedStorages();
+		
 	}
 
 	/**

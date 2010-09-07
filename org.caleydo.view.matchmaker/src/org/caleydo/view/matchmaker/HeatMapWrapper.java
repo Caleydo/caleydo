@@ -120,8 +120,9 @@ public class HeatMapWrapper {
 				.createCommandByType(ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(GLHeatMap.VIEW_ID);
 
-		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, 50, 0, 50, -20, 20, -1);
-
+		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, 50, 0, 50, -20, 20,
+				-1);
+		cmdView.setDataDomainType(dataDomain.getDataDomainType());
 		cmdView.doCommand();
 
 		GLHeatMap heatMap = (GLHeatMap) cmdView.getCreatedObject();
@@ -151,8 +152,9 @@ public class HeatMapWrapper {
 				.createCommandByType(ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(GLDendrogram.VIEW_ID + ".horizontal");
 
-		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, 50, 0, 50, -20, 20, -1);
-
+		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, 50, 0, 50, -20, 20,
+				-1);
+		cmdView.setDataDomainType(dataDomain.getDataDomainType());
 		cmdView.doCommand();
 
 		dendrogram = (GLDendrogram<ContentGroupList>) cmdView.getCreatedObject();

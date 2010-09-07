@@ -9,6 +9,9 @@ import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 // http://www.psi.toronto.edu/affinitypropagation/
 
@@ -397,6 +400,7 @@ public class AffinityClusterer
 			}
 			processEvents();
 			if (bClusteringCanceled) {
+				Logger.log(new Status(IStatus.INFO, toString(), "Affinity propagation clustering was canceled!"));				
 				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 				return null;
 			}
@@ -477,13 +481,14 @@ public class AffinityClusterer
 		}
 		else {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			Logger.log(new Status(IStatus.ERROR, toString(), "Affinity clustering could not identify any clusters.")); 
 			return null;
-			// throw new IllegalStateException("Did not identify any clusters!!");
+
 		}
 		if (bConverged == false) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			Logger.log(new Status(IStatus.ERROR, toString(), "Affinity propagation did not converge!"));
 			return null;
-			// throw new IllegalStateException("Algorithm did not converge!!");
 		}
 
 		ArrayList<Integer> idxExamples = new ArrayList<Integer>();
@@ -600,6 +605,7 @@ public class AffinityClusterer
 
 		if (iReturnValue < 0) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			Logger.log(new Status(IStatus.ERROR, toString(), "Could not determine similarities."));
 			return null;
 		}
 

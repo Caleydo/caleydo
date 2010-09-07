@@ -8,6 +8,9 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -111,6 +114,11 @@ public class ClusterManager {
 
 		clusterer.setClusterState(clusterState);
 		TempResult tempResult = clusterer.getSortedVA(set, clusterState, progressBarOffset, progressBarMulti);
+		if (tempResult == null) {
+			Logger.log(new Status(IStatus.ERROR, toString(), "Clustering result was null, clusterer was: "
+				+ clusterer.toString()));
+			return;
+		}
 		result.contentResult = new ContentData(set.getDataDomain().getContentIDType());
 		result.contentResult.setContentVA(new ContentVirtualArray(clusterState.getContentVAType(),
 			tempResult.indices));

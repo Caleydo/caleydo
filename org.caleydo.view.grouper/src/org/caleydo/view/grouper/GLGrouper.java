@@ -317,17 +317,19 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 				set);
 		tree.setDirty();
 		tree.getRoot().createMetaSets((org.caleydo.core.data.collection.set.Set) set);
-		set.getStorageData(storageVAType).setStorageTree(tree);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
 		storageVA = new StorageVirtualArray(StorageVAType.STORAGE, alIndices);
-		// set.replaceVA(useCase.getVA(EVAType.STORAGE).getID(), storageVA);
+
+		eventPublisher.triggerEvent(new ReplaceStorageVAInUseCaseEvent(set, dataDomain
+				.getDataDomainType(), storageVAType, storageVA));
+
+		// FIXME no one is notified that there is a new tree
+		set.getStorageData(storageVAType).setStorageTree(tree);
 
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
-		eventPublisher.triggerEvent(new ReplaceStorageVAInUseCaseEvent(set, dataDomain
-				.getDataDomainType(), StorageVAType.STORAGE, storageVA));
 
 		triggerSelectionEvents();
 	}
@@ -666,16 +668,9 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 						// selectedSets.get(0), selectedSets
 						// .get(1));
 
-			
 						if (Platform.getBundle("org.caleydo.util.r") != null) {
 
 							contextMenu.addSeparator();
-
-							OpenViewEvent openViewEvent = new OpenViewEvent();
-							openViewEvent.setViewType("org.caleydo.view.statistics");
-							openViewEvent.setSender(this);
-							GeneralManager.get().getEventPublisher()
-									.triggerEvent(openViewEvent);
 
 							// Lazy loading of R
 							GeneralManager.get().getRStatisticsPerformer();

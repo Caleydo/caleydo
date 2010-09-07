@@ -16,11 +16,15 @@ import org.caleydo.core.manager.event.data.StatisticsFoldChangeReductionEvent;
 import org.caleydo.core.manager.event.data.StatisticsPValueReductionEvent;
 import org.caleydo.core.manager.event.data.StatisticsResultFinishedEvent;
 import org.caleydo.core.manager.event.data.StatisticsTwoSidedTTestReductionEvent;
+import org.caleydo.core.manager.event.view.OpenViewEvent;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.util.r.dialog.FoldChangeDialog;
 import org.caleydo.util.r.listener.StatisticsFoldChangeReductionListener;
 import org.caleydo.util.r.listener.StatisticsPValueReductionListener;
 import org.caleydo.util.r.listener.StatisticsTwoSidedTTestReductionListener;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.rosuda.JRI.REXP;
@@ -144,9 +148,15 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			test = engine.eval("t.test(my_array,my_array_2)");
 			System.out.println("T-Test result: " + test);
 		} catch (Exception e) {
-			System.out.println("EX:" + e);
-			e.printStackTrace();
+			Logger.log(new Status(IStatus.ERROR, toString(), "Could not run R commands",
+					e));
 		}
+		
+		OpenViewEvent openViewEvent = new OpenViewEvent();
+		openViewEvent.setViewType("org.caleydo.view.statistics");
+		openViewEvent.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(openViewEvent);
+
 	}
 
 	public void foldChange(ISet set1, ISet set2) {
@@ -263,8 +273,10 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		for (int contentIndex = 0; contentIndex < set1.get(
 				set1.getStorageData(StorageVAType.STORAGE).getStorageVA().get(0)).size(); contentIndex++) {
 
-			StorageVirtualArray storageVA1 = set1.getStorageData(StorageVAType.STORAGE).getStorageVA();
-			StorageVirtualArray storageVA2 = set2.getStorageData(StorageVAType.STORAGE).getStorageVA();
+			StorageVirtualArray storageVA1 = set1.getStorageData(StorageVAType.STORAGE)
+					.getStorageVA();
+			StorageVirtualArray storageVA2 = set2.getStorageData(StorageVAType.STORAGE)
+					.getStorageVA();
 
 			double[] compareVec1 = new double[storageVA1.size()];
 			double[] compareVec2 = new double[storageVA2.size()];

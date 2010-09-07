@@ -566,7 +566,6 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20, 20, -1);
 		cmdView.setDataDomainType(dataDomain.getDataDomainType());
-
 		cmdView.doCommand();
 
 		glTreeMap = (GLTreeMap) cmdView.getCreatedObject();
