@@ -27,7 +27,6 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
-import org.caleydo.core.manager.event.view.OpenViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
@@ -38,7 +37,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EClustererType;
-import org.caleydo.core.view.ISetBasedView;
+import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -85,7 +84,7 @@ import org.eclipse.core.runtime.Platform;
  * @author Christian Partl
  * @author Alexander Lex
  */
-public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHandler,
+public class GLGrouper extends AGLView implements IDataDomainSetBasedView, IViewCommandHandler,
 		ISelectionUpdateHandler, IClusterNodeEventReceiver {
 
 	public final static String VIEW_ID = "org.caleydo.view.grouper";
@@ -1289,11 +1288,6 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 	}
 
 	@Override
-	public void setSet(ISet set) {
-		this.set = set;
-	}
-
-	@Override
 	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
@@ -1302,8 +1296,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 
 		this.dataDomain = dataDomain;
-
-		setSet(this.dataDomain.getSet());
+		set = this.dataDomain.getSet();
 
 		storageVA = set.getStorageData(StorageVAType.STORAGE).getStorageVA();
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager, iUniqueID,

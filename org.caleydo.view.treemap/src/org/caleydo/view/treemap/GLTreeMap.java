@@ -2,7 +2,6 @@ package org.caleydo.view.treemap;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -16,12 +15,11 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.ISetBasedView;
+import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.treemap.layout.ATreeMapNode;
 import org.caleydo.view.treemap.layout.ClusterTreeMapNode;
@@ -34,7 +32,7 @@ import org.caleydo.view.treemap.layout.SimpleLayoutAlgorithm;
  * @author TODO
  * 
  */
-public class GLTreeMap extends AGLView implements ISetBasedView {
+public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.treemap";
 
@@ -177,11 +175,6 @@ public class GLTreeMap extends AGLView implements ISetBasedView {
 	@Override
 	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
-	}
-
-	@Override
-	public void setSet(ISet set) {
-		throw new IllegalStateException("Should not be used");
 	}
 
 	public SelectionManager getSelectionManager() {

@@ -10,7 +10,6 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.IDType;
@@ -33,7 +32,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.view.ISetBasedView;
+import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -60,7 +59,7 @@ import org.caleydo.view.radial.listener.SetMaxDisplayedHierarchyDepthListener;
  * @author Christian Partl
  */
 public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
-		ISetBasedView {
+		IDataDomainSetBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.radial";
 
@@ -1188,10 +1187,4 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		// partialDiscTree.setNodeIDType(tree.getNodeIDType());
 
 	}
-
-	@Override
-	public void setSet(ISet set) {
-		throw new IllegalStateException("Should not be used");
-	}
-
 }

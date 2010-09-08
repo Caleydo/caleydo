@@ -26,7 +26,6 @@ import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
-import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
@@ -34,7 +33,7 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.ISetBasedView;
+import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
@@ -43,7 +42,6 @@ import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.NewSetListener;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceStorageVAListener;
@@ -61,7 +59,7 @@ import org.eclipse.core.runtime.Status;
  */
 public abstract class AStorageBasedView
 	extends AGLView
-	implements ISetBasedView, ISelectionUpdateHandler, IContentVAUpdateHandler, IStorageVAUpdateHandler,
+	implements IDataDomainSetBasedView, ISelectionUpdateHandler, IContentVAUpdateHandler, IStorageVAUpdateHandler,
 	ISelectionCommandHandler, IViewCommandHandler, IDataDomainBasedView<ASetBasedDataDomain> {
 
 	protected ISet set;
@@ -108,8 +106,6 @@ public abstract class AStorageBasedView
 	protected RedrawViewListener redrawViewListener;
 	protected ClearSelectionsListener clearSelectionsListener;
 
-	protected NewSetListener newSetListener = new NewSetListener();
-
 	protected ContentVAUpdateListener contentVAUpdateListener;
 	protected StorageVAUpdateListener storageVAUpdateListener;
 	protected ReplaceContentVAListener replaceContentVAListener;
@@ -142,7 +138,7 @@ public abstract class AStorageBasedView
 		contentIDType = dataDomain.getContentIDType();
 		storageIDType = dataDomain.getStorageIDType();
 
-		setSet(this.dataDomain.getSet());
+		initData();
 	}
 
 	@Override
@@ -550,11 +546,6 @@ public abstract class AStorageBasedView
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		newSetListener = new NewSetListener();
-		newSetListener.setHandler(this);
-		newSetListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
-		eventPublisher.addListener(NewSetEvent.class, newSetListener);
-
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		selectionUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
@@ -598,11 +589,6 @@ public abstract class AStorageBasedView
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
-
-		if (newSetListener != null) {
-			eventPublisher.removeListener(newSetListener);
-			newSetListener = null;
-		}
 
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
@@ -689,11 +675,4 @@ public abstract class AStorageBasedView
 	public void setStorageVAType(StorageVAType vaType) {
 		this.storageVAType = vaType;
 	}
-
-	@Override
-	public void setSet(ISet set) {
-		this.set = set;
-		initData();
-	}
-
 }

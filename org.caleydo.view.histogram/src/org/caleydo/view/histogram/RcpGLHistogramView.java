@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -15,16 +14,13 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
-import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.INewSetHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.NewSetListener;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.caleydo.rcp.view.rcp.MinimumSizeComposite;
@@ -45,7 +41,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHandler,
-		IListenerOwner, INewSetHandler, IDataDomainBasedView<IDataDomain> {
+		IListenerOwner, IDataDomainBasedView<IDataDomain> {
 
 	private CLabel colorMappingPreviewLabel;
 
@@ -53,7 +49,6 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 
 	protected RedrawViewListener redrawViewListener;
 	protected ClearSelectionsListener clearSelectionsListener;
-	protected NewSetListener newSetListener;
 
 	protected Composite histoComposite;
 
@@ -260,10 +255,6 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
-
-		newSetListener = new NewSetListener();
-		newSetListener.setHandler(this);
-		eventPublisher.addListener(NewSetEvent.class, newSetListener);
 	}
 
 	@Override
@@ -277,10 +268,6 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
 		}
-		if (newSetListener != null) {
-			eventPublisher.removeListener(newSetListener);
-			newSetListener = null;
-		}
 	}
 
 	@Override
@@ -293,14 +280,6 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 				listener.handleEvent(event);
 			}
 		});
-	}
-
-	@Override
-	public void setSet(ISet set) {
-
-		// We no not need a private set here (it is taken from the use case)
-		// we only react to the new set event
-		updateColorLabel();
 	}
 
 	@Override
@@ -319,6 +298,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 	@Override
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
+		//updateColorLabel();
 	}
 
 	@Override

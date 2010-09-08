@@ -15,7 +15,6 @@ import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentGroupList;
@@ -29,6 +28,7 @@ import org.caleydo.core.data.selection.VABasedSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.NewStorageGroupInfoEvent;
@@ -1902,10 +1902,9 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	}
 
 	@Override
-	public void setSet(ISet set) {
-		super.setSet(set);
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+		super.setDataDomain(dataDomain);
 		tree = null;
 		rootNode = null;
 	}
-
 }

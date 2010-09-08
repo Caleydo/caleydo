@@ -717,12 +717,10 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glExperimentDendrogramView.setDataDomain(dataDomain);
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
 
-		glGeneDendrogramView.setSet(set);
 		glGeneDendrogramView.setContentVAType(ContentVAType.CONTENT);
 		glGeneDendrogramView.initData();
 		glGeneDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 
-		glExperimentDendrogramView.setSet(set);
 		glExperimentDendrogramView.setContentVAType(ContentVAType.CONTENT);
 		glExperimentDendrogramView.initData();
 		glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);

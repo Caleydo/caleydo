@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -25,7 +24,7 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.ISetBasedView;
+import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -45,7 +44,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * 
  * @author Alexander Lex
  */
-public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandHandler {
+public class GLHistogram extends AGLView implements IDataDomainSetBasedView, IViewCommandHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.histogram";
 
@@ -652,11 +651,6 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		initData();
-	}
-
-	@Override
-	public void setSet(ISet set) {
 		initData();
 	}
 }

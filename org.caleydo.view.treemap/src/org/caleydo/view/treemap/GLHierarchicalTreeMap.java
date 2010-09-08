@@ -13,7 +13,6 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.CmdCreateView;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -30,7 +29,7 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.ISetBasedView;
+import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -55,7 +54,7 @@ import org.caleydo.view.treemap.renderstyle.TreeMapRenderStyle;
  * @author Alexander Lex
  */
 
-public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandler, ISetBasedView, ISelectionUpdateHandler, IGLRemoteRenderingView {
+public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandler, IDataDomainSetBasedView, ISelectionUpdateHandler, IGLRemoteRenderingView {
 
 	public final static String VIEW_ID = "org.caleydo.view.treemap.hierarchical";
 
@@ -533,11 +532,6 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	public void handleClearSelections() {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void setSet(ISet set) {
-		throw new IllegalStateException("Should not be used");
 	}
 
 	@Override

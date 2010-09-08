@@ -14,7 +14,7 @@ import org.caleydo.core.manager.event.data.StatisticsResultFinishedEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.ISetBasedView;
+import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Slider;
  * 
  * @author Marc Streit
  */
-public class StatisticsView extends ASWTView implements IView, ISWTView, ISetBasedView {
+public class StatisticsView extends ASWTView implements IView, ISWTView, IDataDomainSetBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.statistics";
 	private Composite composite;
@@ -70,8 +70,6 @@ public class StatisticsView extends ASWTView implements IView, ISWTView, ISetBas
 		GridLayout layout = new GridLayout(1, false);
 		layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
 		composite.setLayout(layout);
-
-		initData();
 		createGUI();
 	}
 
@@ -278,17 +276,11 @@ public class StatisticsView extends ASWTView implements IView, ISWTView, ISetBas
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
+		initData();
 	}
 
 	@Override
 	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
-
-	@Override
-	public void setSet(ISet set) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

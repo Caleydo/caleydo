@@ -128,8 +128,6 @@ public class HeatMapWrapper {
 		GLHeatMap heatMap = (GLHeatMap) cmdView.getCreatedObject();
 		heatMap.setRemoteRenderingGLView(parentView);
 		heatMap.setDataDomain(dataDomain);
-		heatMap.setSet(set);
-
 		heatMap.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
 
 		if (layout instanceof HeatMapLayoutDetailViewRight)
@@ -160,7 +158,6 @@ public class HeatMapWrapper {
 		dendrogram = (GLDendrogram<ContentGroupList>) cmdView.getCreatedObject();
 		dendrogram.setDataDomain(dataDomain);
 		dendrogram.setRemoteRenderingGLView(parentView);
-		dendrogram.setSet(set);
 		dendrogram.setContentVAType(ContentVAType.CONTENT);
 		dendrogram.initData();
 		dendrogram.setRenderUntilCut(false);
