@@ -15,7 +15,6 @@ import gleem.linalg.open.Transform;
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

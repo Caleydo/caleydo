@@ -1,6 +1,5 @@
 package org.caleydo.view.genesearch;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.IDType;

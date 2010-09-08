@@ -61,9 +61,7 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Marc Streit
  * @author Alexander Lex
- * @deprecated move to RCPInforAreaView
  */
-@Deprecated
 public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 		ISelectionUpdateHandler, IContentVAUpdateHandler, IStorageVAUpdateHandler,
 		ISelectionCommandHandler, IViewCommandHandler {

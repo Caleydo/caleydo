@@ -80,7 +80,7 @@ All Rights Reserved.
       <import plugin="org.caleydo.lib.jogl" version="1.2.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.util.gleem" version="1.0.1" match="greaterOrEqual"/>
       <import plugin="org.caleydo.data" version="1.3.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.view.bookmarking" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.view.bookmark" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.rcp" version="1.3.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.view.pathway" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.view.heatmap" version="1.0.0" match="greaterOrEqual"/>
@@ -311,7 +311,7 @@ All Rights Reserved.
          unpack="false"/>
 
    <plugin
-         id="org.caleydo.view.bookmarking"
+         id="org.caleydo.view.bookmark"
          download-size="0"
          install-size="0"
          version="0.0.0"
