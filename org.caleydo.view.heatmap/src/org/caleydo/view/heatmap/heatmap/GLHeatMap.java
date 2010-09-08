@@ -37,7 +37,6 @@ import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.StandardTransformer;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.clusterer.AffinityClusterer;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.ClusterState;
@@ -78,10 +77,6 @@ public class GLHeatMap extends AStorageBasedView {
 	// private EIDType eldDataType = EIDType.EXPRESSION_INDEX;
 	// private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
 
-	private float fAnimationTargetTranslation = 0;
-
-	private SelectedElementRep elementRep;
-
 	boolean bUseDetailLevel = true;
 
 	private boolean sendClearSelectionsEvent = false;
@@ -97,8 +92,6 @@ public class GLHeatMap extends AStorageBasedView {
 	private boolean hideElements = true;
 	/** try to show captions, if spacing allows it */
 	private boolean showCaptions = false;
-
-	private boolean captionsImpossible = false;
 
 	/**
 	 * Determines whether a bigger space between heat map and caption is needed
@@ -244,8 +237,6 @@ public class GLHeatMap extends AStorageBasedView {
 	@Override
 	public void display(GL gl) {
 
-		// GLHelperFunctions.drawPointAt(gl, 0, 0, 0);
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		gl.glCallList(iGLDisplayListToCall);
 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
@@ -375,22 +366,16 @@ public class GLHeatMap extends AStorageBasedView {
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
-				// TODO this is not nice : Prevent handling of non genetic data
-				// in context menu
-				if (!dataDomain.getDataDomainType().equals(
-						"org.caleydo.datadomain.genetic"))
-					break;
-
 				if (!isRenderedRemote()) {
 					contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
 							.getWidth(), getParentGLCanvas().getHeight());
 					contextMenu.setMasterGLView(this);
 				}
 
-				ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
-				geneContextMenuItemContainer.setDataDomain(dataDomain);
-				geneContextMenuItemContainer.setID(contentIDType, iExternalID);
-				contextMenu.addItemContanier(geneContextMenuItemContainer);
+				ContentContextMenuItemContainer contentContextMenuItemContainer = new ContentContextMenuItemContainer();
+				contentContextMenuItemContainer.setDataDomain(dataDomain);
+				contentContextMenuItemContainer.setID(contentIDType, iExternalID);
+				contextMenu.addItemContanier(contentContextMenuItemContainer);
 				break;
 
 			default:
@@ -472,32 +457,20 @@ public class GLHeatMap extends AStorageBasedView {
 				&& contentSelectionManager.getElements(SelectionType.MOUSE_OVER).size() == 0)
 			return;
 
-		connectedElementRepresentationManager.clear(contentIDType);
+		connectedElementRepresentationManager.clear(contentIDType, selectionType);
 
 		contentSelectionManager.clearSelection(selectionType);
 
 		// TODO: Integrate multi spotting support again
-		// // Resolve multiple spotting on chip and add all to the
-		// // selection manager.
-		// Integer iRefSeqID =
-		// idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-		// iExternalID);
-		//
+
 		Integer iMappingID = generalManager.getIDManager().createID(
 				EManagedObjectType.CONNECTION);
-		// for (Object iExpressionIndex : idMappingManager.getMultiID(
-		// EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
-		// contentSelectionManager.addToType(SelectionType, (Integer)
-		// iExpressionIndex);
-		// contentSelectionManager.addConnectionID(iMappingID, (Integer)
-		// iExpressionIndex);
-		// }
 		contentSelectionManager.addToType(selectionType, contentID);
 		contentSelectionManager.addConnectionID(iMappingID, contentID);
 
 		SelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
-		handleConnectedElementRep(selectionDelta);
+		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setDataDomainType(dataDomain.getDataDomainType());
@@ -612,75 +585,12 @@ public class GLHeatMap extends AStorageBasedView {
 		return -1;
 	}
 
-	// renderElement(gl, iStorageIndex, iContentIndex, fYPosition,
-	// fXPosition, fFieldHeight, fFieldWidth);
-
-	@Override
-	protected void handleConnectedElementRep(ISelectionDelta selectionDelta) {
-		// FIXME: re-design
-		// if (renderStyle == null)
-		// return;
-		//
-		// renderStyle.updateFieldSizes();
-		// yDistances.clear();
-		// float fDistance = 0;
-		//
-		// for (Integer iStorageIndex : contentVA) {
-		// yDistances.add(fDistance);
-		// if (contentSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
-		// iStorageIndex)
-		// || contentSelectionManager.checkStatus(
-		// SelectionType.SELECTION, iStorageIndex)) {
-		// fDistance += renderStyle.getSelectedFieldHeight();
-		// } else {
-		// fDistance += renderStyle.getNormalFielHeight();
-		// }
-		//
-		// }
-		super.handleConnectedElementRep(selectionDelta);
-	}
-
 	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
 			int iStorageIndex) throws InvalidAttributeValueException {
 
 		SelectedElementRep elementRep;
 		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
-		// FIXME: redesign
-		// for (int iContentIndex : contentVA.indicesOf(iStorageIndex)) {
-		// if (iContentIndex == -1) {
-		// // throw new
-		// // IllegalStateException("No such element in virtual array");
-		// // TODO this shouldn't happen here.
-		// continue;
-		// }
-		//
-		// float fXValue = yDistances.get(iContentIndex); // +
-		// // renderStyle.getSelectedFieldWidth()
-		// // / 2;
-		// // float fYValue = 0;
-		// float fYValue = renderStyle.getYCenter();
-		//
-		// // Set<Integer> mouseOver =
-		// // storageSelectionManager.getElements(SelectionType.MOUSE_OVER);
-		// // for (int iLineIndex : mouseOver)
-		// // {
-		// // fYValue = storageVA.indexOf(iLineIndex) *
-		// // renderStyle.getFieldHeight() +
-		// // renderStyle.getFieldHeight()/2;
-		// // break;
-		// // }
-		//
-		// Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
-		// Vec3f vecPoint = myRotf
-		// .rotateVector(new Vec3f(fXValue, fYValue, 0));
-		// vecPoint.setY(vecPoint.y() + vecTranslation.y());
-		// elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX,
-		// iUniqueID, vecPoint.x(), vecPoint.y()
-		// - fAnimationTranslation, 0);
-		//
-		// alElementReps.add(elementRep);
-		// }
 
 		for (int iContentIndex : contentVA.indicesOf(iStorageIndex)) {
 			if (iContentIndex == -1) {
@@ -767,13 +677,6 @@ public class GLHeatMap extends AStorageBasedView {
 
 		if (delta.getVAType() == ContentVAType.CONTENT_CONTEXT
 				&& contentVAType == ContentVAType.CONTENT_CONTEXT) {
-			// if (contentVA.size() == 0)
-			// return;
-			// FIXME: this is only proof of concept - use the cluster manager
-			// instead of affinity directly
-			// long original = System.currentTimeMillis();
-			// System.out.println("beginning clustering");
-			AffinityClusterer clusterer = new AffinityClusterer();
 			ClusterState state = new ClusterState(EClustererAlgo.AFFINITY_PROPAGATION,
 					EClustererType.CONTENT_CLUSTERING,
 					EDistanceMeasure.EUCLIDEAN_DISTANCE);

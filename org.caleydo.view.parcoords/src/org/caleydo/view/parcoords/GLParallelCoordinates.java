@@ -1541,7 +1541,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			}
 
 			connectedElementRepresentationManager.clear(contentSelectionManager
-					.getIDType());
+					.getIDType(), selectionType);
 
 			contentSelectionManager.clearSelection(selectionType);
 
@@ -1583,7 +1583,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 				ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
-				handleConnectedElementRep(selectionDelta);
+				handleConnectedElementReps(selectionDelta);
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
 				event.setDataDomainType(dataDomain.getDataDomainType());
@@ -1631,7 +1631,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 					.createID(EManagedObjectType.CONNECTION), iExternalID);
 
 			connectedElementRepresentationManager.clear(storageSelectionManager
-					.getIDType());
+					.getIDType(), selectionType);
 
 			// triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
 			// axisSelectionManager
@@ -1644,7 +1644,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
 			// if (storageSelectionManager.getIDType() ==
 			// EIDType.EXPERIMENT_INDEX) {
-			handleConnectedElementRep(selectionDelta);
+			handleConnectedElementReps(selectionDelta);
 			// }
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);

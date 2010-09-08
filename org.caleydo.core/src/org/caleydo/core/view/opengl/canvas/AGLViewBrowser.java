@@ -39,7 +39,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
-import org.caleydo.core.view.opengl.canvas.remote.GLConnectionLineRendererBucket;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.remote.list.ListLayoutRenderStyle;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -97,6 +96,7 @@ public abstract class AGLViewBrowser
 	 */
 	private int iSlerpFactor = 0;
 
+	/** Renderer for connection lines. A concrete instance has to be specified in sub-classes */
 	protected AGLConnectionLineRenderer glConnectionLineRenderer;
 
 	private GLDragAndDrop dragAndDrop;
@@ -169,7 +169,8 @@ public abstract class AGLViewBrowser
 		initSpawnLevel();
 		initExternalSelectionLevel();
 
-		glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel);
+		// this has to be done in implementing views
+		// glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel);
 
 		if (glMouseListener != null)
 			glMouseListener.addGLCanvas(this);

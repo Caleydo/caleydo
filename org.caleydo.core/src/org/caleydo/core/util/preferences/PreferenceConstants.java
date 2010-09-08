@@ -55,15 +55,14 @@ public class PreferenceConstants {
 	public static final String PC_NUM_RANDOM_SAMPLING_POINT = "pcNumRandomSamplinPoints";
 	public static final String PC_LIMIT_REMOTE_TO_CONTEXT = "pcLimitRemoteToContext";
 
-	// Visual Links FIXME
+	// Visual Links
 	public static final String VISUAL_LINKS_STYLE = "visualLinksStyle";
 	public static final String VISUAL_LINKS_ANIMATION = "visualLinksAnimation";
 	public static final String VISUAL_LINKS_WIDTH = "visualLinksWidth";
 	public static final String VISUAL_LINKS_COLOR = "visualLinksColor";
 	public static final String VISUAL_LINKS_ANIMATED_HALO = "visualLinksAnimatedHalo";
-
-	// @Deprecated
-	// public static final String XP_CLASSIC_STYLE_MODE = "enableXPClassicStyleMode";
+	public static final String VISUAL_LINKS_FOR_MOUSE_OVER = "visualLinksForMouseOver";
+	public static final String VISUAL_LINKS_FOR_SELECTIONS = "visualLinksForSelections";
 
 	public static final String USE_PROXY = "useProxy";
 	public static final String PROXY_SERVER = "proxyServer";

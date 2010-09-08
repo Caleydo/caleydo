@@ -46,11 +46,13 @@ public class ContentSelectionRenderer extends AContentRenderer {
 							heatMap.getID(), EPickingType.HEAT_MAP_LINE_SELECTION,
 							currentLine));
 
+					float z = SELECTION_Z * selectionType.getPriority();
+					
 					gl.glBegin(GL.GL_LINE_LOOP);
-					gl.glVertex3f(xPosition, yPosition, SELECTION_Z);
-					gl.glVertex3f(xPosition, yPosition + fieldHeight, SELECTION_Z);
-					gl.glVertex3f(xPosition + width, yPosition + fieldHeight, SELECTION_Z);
-					gl.glVertex3f(xPosition + width, yPosition, SELECTION_Z);
+					gl.glVertex3f(xPosition, yPosition, z);
+					gl.glVertex3f(xPosition, yPosition + fieldHeight, z);
+					gl.glVertex3f(xPosition + width, yPosition + fieldHeight,z);
+					gl.glVertex3f(xPosition + width, yPosition, z);
 					gl.glEnd();
 					gl.glPopName();
 				}
@@ -61,8 +63,8 @@ public class ContentSelectionRenderer extends AContentRenderer {
 	}
 
 	@Override
-	public void render(GL gl) {
-		renderSelection(gl, SelectionType.SELECTION);
+	public void render(GL gl) {	
 		renderSelection(gl, SelectionType.MOUSE_OVER);
+		renderSelection(gl, SelectionType.SELECTION);
 	}
 }

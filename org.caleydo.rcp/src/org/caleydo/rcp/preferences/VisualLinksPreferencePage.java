@@ -18,27 +18,38 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Slider;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
+/**
+ * Preference Page for Visual Links appearance and behavior.
+ * 
+ * @author Oliver Pimas
+ * @author Alexander Lex
+ */
 public class VisualLinksPreferencePage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage {
 
-	private EVisLinkStyleType style;
 	private boolean animation;
 	private float width;
 	private boolean animatedHalo;
+	private boolean visLinksForMouseOver;
+	private boolean visLinksForSelection;
 
 	private ArrayList<EVisLinkStyleType> styleTypes;
 
-	int iCurrentlyUsedStyle = 0;
+	private int iCurrentlyUsedStyle = 0;
+
+	private PreferenceStore preferenceStore;
 
 	public VisualLinksPreferencePage() {
 		super(GRID);
-		setPreferenceStore(GeneralManager.get().getPreferenceStore());
-		setDescription("Set visual link appearance");
+		preferenceStore = GeneralManager.get().getPreferenceStore();
+		setPreferenceStore(preferenceStore);
+		// setDescription("Set visual link appearance");
 
 		styleTypes = new ArrayList<EVisLinkStyleType>(3);
 		animation = false;
@@ -58,40 +69,36 @@ public class VisualLinksPreferencePage
 	@Override
 	public void createFieldEditors() {
 
-		iCurrentlyUsedStyle =
-			GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.VISUAL_LINKS_STYLE);
-		animation =
-			GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATION);
+		iCurrentlyUsedStyle = preferenceStore.getInt(PreferenceConstants.VISUAL_LINKS_STYLE);
+		animation = preferenceStore.getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATION);
 		width = GeneralManager.get().getPreferenceStore().getFloat(PreferenceConstants.VISUAL_LINKS_WIDTH);
-		animatedHalo =
-			GeneralManager.get().getPreferenceStore()
-				.getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO);
-
-		style = styleTypes.get(iCurrentlyUsedStyle);
+		animatedHalo = preferenceStore.getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO);
+		visLinksForSelection = preferenceStore.getBoolean(PreferenceConstants.VISUAL_LINKS_FOR_SELECTIONS);
+		visLinksForMouseOver = preferenceStore.getBoolean(PreferenceConstants.VISUAL_LINKS_FOR_MOUSE_OVER);
 
 		Composite baseComposite = new Composite(getFieldEditorParent(), SWT.NULL);
 		baseComposite.setLayout(new GridLayout(1, false));
 
-		Group group = new Group(baseComposite, SWT.SHADOW_IN);
-		group.setText("Choose the desired highlighting-mode of visual links");
-		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		group.setLayout(new GridLayout(2, true));
+		Group highlightGroup = new Group(baseComposite, SWT.SHADOW_IN);
+		highlightGroup.setText("Highlight modes for visual links");
+		highlightGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		highlightGroup.setLayout(new GridLayout(1, true));
 
-		final Button standard = new Button(group, SWT.RADIO);
-		standard.setText("No highlighting");
+		final Button noHighlighting = new Button(highlightGroup, SWT.RADIO);
+		noHighlighting.setText("No highlighting");
 		if (iCurrentlyUsedStyle == 0)
-			standard.setSelection(true);
+			noHighlighting.setSelection(true);
 
-		standard.addSelectionListener(new SelectionAdapter() {
+		noHighlighting.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				style = styleTypes.get(0);
+
 				iCurrentlyUsedStyle = 0;
 			}
 		});
 
-		final Button shadow = new Button(group, SWT.RADIO);
+		final Button shadow = new Button(highlightGroup, SWT.RADIO);
 		shadow.setText("Shadow");
 		if (iCurrentlyUsedStyle == 1)
 			shadow.setSelection(true);
@@ -100,12 +107,12 @@ public class VisualLinksPreferencePage
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				style = styleTypes.get(1);
+
 				iCurrentlyUsedStyle = 1;
 			}
 		});
 
-		final Button halo = new Button(group, SWT.RADIO);
+		final Button halo = new Button(highlightGroup, SWT.RADIO);
 		halo.setText("Halo");
 		if (iCurrentlyUsedStyle == 2)
 			halo.setSelection(true);
@@ -114,12 +121,16 @@ public class VisualLinksPreferencePage
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				style = styleTypes.get(2);
 				iCurrentlyUsedStyle = 2;
 			}
 		});
 
-		final Button animationBox = new Button(baseComposite, SWT.CHECK);
+		Group animationGroup = new Group(baseComposite, SWT.SHADOW_IN);
+		animationGroup.setText("Visual Links Animation");
+		animationGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		animationGroup.setLayout(new GridLayout(1, true));
+
+		final Button animationBox = new Button(animationGroup, SWT.CHECK);
 		animationBox.setText("Animation");
 		if (animation == true)
 			animationBox.setSelection(true);
@@ -132,31 +143,12 @@ public class VisualLinksPreferencePage
 			}
 		});
 
-		final Slider widthSlider = new Slider(baseComposite, SWT.HORIZONTAL);
-		widthSlider.setMinimum(10);
-		widthSlider.setMaximum(40);
-		widthSlider.setIncrement(5);
-		widthSlider.setPageIncrement(5);
-		int currentWidth =
-			(int) (GeneralManager.get().getPreferenceStore().getFloat(PreferenceConstants.VISUAL_LINKS_WIDTH) * 10);
-		widthSlider.setSelection(currentWidth);
-
-		widthSlider.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				width = (widthSlider.getSelection() / 10.0f);
-				if (width < 1.0f || width > 4.0f)
-					width = 2.0f;
-			}
-		});
-
-		final Button animatedHaloBox = new Button(baseComposite, SWT.CHECK);
-		animatedHaloBox.setText("Animated Halo (overwrites other selections)");
+		final Button animatedHaloBox = new Button(animationGroup, SWT.CHECK);
+		animatedHaloBox.setText("Animate Halo (overwrites other selections)");
 		if (animatedHalo == true) {
 			animatedHaloBox.setSelection(true);
 			animationBox.setEnabled(!animatedHalo);
-			standard.setEnabled(!animatedHalo);
+			noHighlighting.setEnabled(!animatedHalo);
 			shadow.setEnabled(!animatedHalo);
 			halo.setEnabled(!animatedHalo);
 		}
@@ -167,18 +159,77 @@ public class VisualLinksPreferencePage
 			public void widgetSelected(SelectionEvent e) {
 				animatedHalo = !animatedHalo;
 				if (animatedHalo) {
-					standard.setSelection(false);
+					noHighlighting.setSelection(false);
 					shadow.setSelection(false);
 					halo.setSelection(true);
-					style = styleTypes.get(2);
 					iCurrentlyUsedStyle = 2;
 					animationBox.setSelection(true);
 					animation = true;
 				}
 				animationBox.setEnabled(!animatedHalo);
-				standard.setEnabled(!animatedHalo);
+				noHighlighting.setEnabled(!animatedHalo);
 				shadow.setEnabled(!animatedHalo);
 				halo.setEnabled(!animatedHalo);
+			}
+		});
+
+		Group appearenceGroup = new Group(baseComposite, SWT.SHADOW_IN);
+		appearenceGroup.setText("Appearence");
+		appearenceGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		appearenceGroup.setLayout(new GridLayout(2, true));
+
+		final Label widthCaption = new Label(appearenceGroup, SWT.NONE);
+		widthCaption.setText("Width:");
+		widthCaption.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+
+		final Slider widthSlider = new Slider(appearenceGroup, SWT.HORIZONTAL);
+		widthSlider.setMinimum(10);
+		widthSlider.setMaximum(40);
+		widthSlider.setIncrement(5);
+		widthSlider.setPageIncrement(5);
+		int currentWidth =
+			(int) (GeneralManager.get().getPreferenceStore().getFloat(PreferenceConstants.VISUAL_LINKS_WIDTH) * 10);
+		widthSlider.setSelection(currentWidth);
+		widthSlider.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+		widthSlider.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				width = (widthSlider.getSelection() / 10.0f);
+				if (width < 1.0f || width > 4.0f)
+					width = 2.0f;
+			}
+		});
+
+		Group selectionGroup = new Group(baseComposite, SWT.SHADOW_IN);
+		selectionGroup.setText("Show visual links for");
+		selectionGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		selectionGroup.setLayout(new GridLayout(1, true));
+
+		final Button selectionBox = new Button(selectionGroup, SWT.RADIO);
+		selectionBox.setText("Selections");
+		if (visLinksForSelection == true)
+			selectionBox.setSelection(true);
+
+		selectionBox.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				visLinksForSelection = !visLinksForSelection;
+			}
+		});
+
+		final Button mouseOverBox = new Button(selectionGroup, SWT.RADIO);
+		mouseOverBox.setText("Mouse Hover");
+		if (visLinksForMouseOver == true) {
+			mouseOverBox.setSelection(true);
+		}
+
+		mouseOverBox.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				visLinksForMouseOver = !visLinksForMouseOver;
 			}
 		});
 
@@ -194,12 +245,12 @@ public class VisualLinksPreferencePage
 	public boolean performOk() {
 		boolean bReturn = super.performOk();
 
-		PreferenceStore store = GeneralManager.get().getPreferenceStore();
-
-		store.setValue(PreferenceConstants.VISUAL_LINKS_STYLE, iCurrentlyUsedStyle);
-		store.setValue(PreferenceConstants.VISUAL_LINKS_ANIMATION, animation);
-		store.setValue(PreferenceConstants.VISUAL_LINKS_WIDTH, width);
-		store.setValue(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO, animatedHalo);
+		preferenceStore.setValue(PreferenceConstants.VISUAL_LINKS_STYLE, iCurrentlyUsedStyle);
+		preferenceStore.setValue(PreferenceConstants.VISUAL_LINKS_ANIMATION, animation);
+		preferenceStore.setValue(PreferenceConstants.VISUAL_LINKS_WIDTH, width);
+		preferenceStore.setValue(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO, animatedHalo);
+		preferenceStore.setValue(PreferenceConstants.VISUAL_LINKS_FOR_SELECTIONS, visLinksForSelection);
+		preferenceStore.setValue(PreferenceConstants.VISUAL_LINKS_FOR_MOUSE_OVER, visLinksForMouseOver);
 
 		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		RedrawViewEvent redrawEvent = new RedrawViewEvent();

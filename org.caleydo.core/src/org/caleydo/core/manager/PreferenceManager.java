@@ -12,8 +12,10 @@ import java.io.File;
 import java.io.IOException;
 
 import org.caleydo.core.manager.specialized.Organism;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.core.util.system.FileOperations;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
@@ -64,12 +66,12 @@ public class PreferenceManager {
 
 				MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
 				messageBox.setText("Clean old data");
-				messageBox.setMessage("You have downloaded a new major version of Caleydo ("
-					+ GeneralManager.VERSION
-					+ "). \nYour old Caleydo settings and pathway data will be discarded and newly created.");
+				messageBox
+					.setMessage("You have downloaded a new major version of Caleydo ("
+						+ GeneralManager.VERSION
+						+ "). \nYour old Caleydo settings and pathway data will not be converted. \n Caleydo settings and logs are stored at "
+						+ GeneralManager.CALEYDO_HOME_PATH);
 				messageBox.open();
-
-				FileOperations.deleteDirectory(new File(GeneralManager.CALEYDO_HOME_PATH));
 
 				initCaleydoFolder();
 			}
@@ -135,26 +137,33 @@ public class PreferenceManager {
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_WIDTH, 2.0f);
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_COLOR, "255,255,0,255");
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO, false);
+		store.setDefault(PreferenceConstants.VISUAL_LINKS_FOR_MOUSE_OVER, false);
+		store.setDefault(PreferenceConstants.VISUAL_LINKS_FOR_SELECTIONS, true);
 	}
 
 	private void initCaleydoFolder() {
 
 		// Create .caleydo folder
 		if (!new File(GeneralManager.CALEYDO_HOME_PATH).exists()) {
-			if (!new File(GeneralManager.CALEYDO_HOME_PATH).mkdir())
-				throw new IllegalStateException(
-					"Unable to create home folder .caleydo. Check user permissions!");
+			if (!new File(GeneralManager.CALEYDO_HOME_PATH).mkdir()) {
+				String errorMessage =
+					"Unable to create home folder at" + GeneralManager.CALEYDO_HOME_PATH
+						+ ". Check user permissions!";
+				Logger.log(new Status(IStatus.ERROR, toString(), errorMessage));
+				throw new IllegalStateException(errorMessage);
+			}
 		}
 
 		// Create log folder in .caleydo
-		if (!new File(GeneralManager.CALEYDO_HOME_PATH + "logs").exists()) {
-			if (!new File(GeneralManager.CALEYDO_HOME_PATH + "logs").mkdir()) {
-				throw new IllegalStateException(
-					"Unable to create log folder .caleydo/log. Check user permissions!");
+		if (!new File(GeneralManager.CALEYDO_LOG_PATH).exists()) {
+			if (!new File(GeneralManager.CALEYDO_LOG_PATH).mkdir()) {
+				String errorMessage =
+					"Unable to create log folder at" + GeneralManager.CALEYDO_LOG_PATH
+						+ ". Check user permissions!";
+				Logger.log(new Status(IStatus.ERROR, toString(), errorMessage));
+				throw new IllegalStateException(errorMessage);
 			}
 		}
-		// logger.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Create new preference store at "
-		// + GeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME));
 
 	}
 }

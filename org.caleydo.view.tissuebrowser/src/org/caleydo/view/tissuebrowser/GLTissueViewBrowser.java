@@ -450,7 +450,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 			SelectionDelta delta = experiementSelectionManager.getDelta();
 
 			ConnectedElementRepresentationManager.get().clear(
-					experiementSelectionManager.getIDType());
+					experiementSelectionManager.getIDType(), selectionType);
 
 			for (SelectionDeltaItem item : delta) {
 				if (item.isRemove())
@@ -477,7 +477,8 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		;
 
 		for (Integer connectionID : connectionIDs) {
-			ConnectedElementRepresentationManager.get().addSelection(connectionID, rep);
+			ConnectedElementRepresentationManager.get().addSelection(connectionID, rep,
+					item.getSelectionType());
 		}
 	}
 

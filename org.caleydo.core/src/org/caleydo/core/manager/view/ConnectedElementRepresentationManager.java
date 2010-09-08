@@ -9,6 +9,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.selection.AddSelectionEvent;
@@ -21,6 +22,7 @@ import org.caleydo.core.manager.view.listener.AddSelectionListener;
 import org.caleydo.core.manager.view.listener.ClearConnectionsListener;
 import org.caleydo.core.manager.view.listener.ClearTransformedConnectionsListener;
 import org.caleydo.core.net.IGroupwareManager;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 
 /**
@@ -31,6 +33,14 @@ import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
  * The manager is able to identify identical selections in different views. Selections have selection
  * representations. Selection representations store their containing view and the x/y/z position in the view
  * area.
+ * </p>
+ * <p>
+ * Multiple connection trees, distinguished by their ID Type are possible. This allows to show relations
+ * between elements of different IDTypes at the same type.
+ * </p>
+ * <p>
+ * It is defined in the preference store whether Visual Links should be drawn on Mouse-Over or on Click. The
+ * selection manager checks this and only allows elements of the correct SelectionType to be added.
  * </p>
  * <p>
  * The manager manages also the transformed selections vertices of the selections for remote rendered views
@@ -53,7 +63,7 @@ import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 public class ConnectedElementRepresentationManager
 	extends ADisplayLoopEventHandler {
 
-	private static ConnectedElementRepresentationManager connectedElementRepresenationManager;
+	private volatile static ConnectedElementRepresentationManager instance;
 
 	/** Stored reference for common usage */
 	protected GeneralManager generalManager;
@@ -98,10 +108,15 @@ public class ConnectedElementRepresentationManager
 	}
 
 	public static ConnectedElementRepresentationManager get() {
-		if (connectedElementRepresenationManager == null) {
-			connectedElementRepresenationManager = new ConnectedElementRepresentationManager();
+		if (instance == null) {
+			synchronized (ConnectedElementRepresentationManager.class) {
+				// this is needed if two threads are waiting at the monitor at the
+				// time when singleton was getting instantiated
+				if (instance == null)
+					instance = new ConnectedElementRepresentationManager();
+			}
 		}
-		return connectedElementRepresenationManager;
+		return instance;
 	}
 
 	/**
@@ -112,12 +127,40 @@ public class ConnectedElementRepresentationManager
 	 *            the connection ID - one connection id per connection line tree
 	 * @param selectedElementRep
 	 *            the selected element rep associated with the tree specified
+	 * @param selectionType
+	 *            specify which selection type is associated with this selection. If the selectionType should
+	 *            not be rendered at the moment (due to user configuration) the call is ignored.
 	 */
-	public void addSelection(int connectionID, final SelectedElementRep selectedElementRep) {
+	public void addSelection(int connectionID, final SelectedElementRep selectedElementRep,
+		SelectionType selectionType) {
+
+		if (!isSelectionTypeRenderedWithVisuaLinks(selectionType))
+			return;
+
 		AddSelectionEvent event = new AddSelectionEvent();
 		event.setConnectionID(connectionID);
 		event.setSelectedElementRep(selectedElementRep);
 		eventPublisher.triggerEvent(event);
+	}
+
+	/**
+	 * Check, whether according to the preferences selections of this type should be shown as visual links.
+	 * 
+	 * @param selectionType
+	 *            the type you want to check.
+	 * @return true if visual links are rendered for this type, else false
+	 */
+	public boolean isSelectionTypeRenderedWithVisuaLinks(SelectionType selectionType) {
+		// check in preferences if we should draw connection lines for mouse over
+		if (!generalManager.getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_FOR_MOUSE_OVER)
+			&& selectionType == SelectionType.MOUSE_OVER)
+			return false;
+		// check for selections
+		if (!generalManager.getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_FOR_SELECTIONS)
+			&& selectionType == SelectionType.SELECTION)
+			return false;
+
+		return true;
 	}
 
 	/**
@@ -164,9 +207,15 @@ public class ConnectedElementRepresentationManager
 	 * 
 	 * @param iElementID
 	 * @param selectedElementRep
+	 * @param selectionType
+	 *            specify which selection type is associated with this selection. If the selectionType should
+	 *            not be rendered at the moment (due to user configuration) the call is ignored.
 	 */
-	public void replaceSelection(final int iElementID, SelectedElementRep selectedElementRep) {
-		clear(selectedElementRep.getIDType());
+	public void replaceSelection(final int iElementID, SelectedElementRep selectedElementRep,
+		SelectionType selectionType) {
+		if (!isSelectionTypeRenderedWithVisuaLinks(selectionType))
+			return;
+		clear(selectedElementRep.getIDType(), selectionType);
 		handleAddSelectionEvent(iElementID, selectedElementRep);
 	}
 
@@ -216,7 +265,22 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * Sends event to clear all selections of a given type
+	 * Clears all connections of the given idType irrespective of the selectionType
+	 * 
+	 * @param idType
+	 * @param selectionType
+	 *            specify which selection type is associated with this clear. If the selectionType should not
+	 *            be rendered at the moment (due to user configuration) the call is ignored.
+	 */
+	public void clear(IDType idType, SelectionType selectionType) {
+		if (!isSelectionTypeRenderedWithVisuaLinks(selectionType))
+			return;
+		clear(idType);
+	}
+
+	/**
+	 * Sends event to clear all selections of a given type, for a given selectionType. Should only be used for
+	 * situations such as re-setting all selections, not for a clear before a update.
 	 */
 	public void clear(IDType idType) {
 		ClearConnectionsEvent event = new ClearConnectionsEvent();
@@ -276,11 +340,11 @@ public class ConnectedElementRepresentationManager
 		canvasConnectionsByType.clear();
 	}
 
-	public void clearByConnectionID(IDType idType, int iConnectionID) {
-		sourceConnectionsByType.get(idType).remove(iConnectionID);
-		transformedConnectionsByType.clear();
-		canvasConnectionsByType.clear();
-	}
+	// public void clearByConnectionID(IDType idType, int iConnectionID) {
+	// sourceConnectionsByType.get(idType).remove(iConnectionID);
+	// transformedConnectionsByType.clear();
+	// canvasConnectionsByType.clear();
+	// }
 
 	public void clearTransformedConnections() {
 		ClearTransformedConnectionsEvent event = new ClearTransformedConnectionsEvent();
@@ -345,7 +409,6 @@ public class ConnectedElementRepresentationManager
 	}
 
 	@Override
-	@SuppressWarnings("unused")
 	public void unregisterEventListeners() {
 		if (clearConnectionsListener != null) {
 			eventPublisher.removeListener(clearConnectionsListener);

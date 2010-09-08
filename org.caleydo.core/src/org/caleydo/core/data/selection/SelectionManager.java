@@ -309,7 +309,7 @@ public class SelectionManager
 				"SelectionManager: cannot remove from normal or remove selection");
 
 		if (hashSelectionTypes.get(selectionType).containsKey(elementID)) {
-			Integer iNumTimesAdded = hashSelectionTypes.get(selectionType).remove(elementID);
+			// Integer iNumTimesAdded = hashSelectionTypes.get(selectionType).remove(elementID);
 			// hashSelectionTypes.get(normalType).put(iElementID, iNumTimesAdded);
 			if (!deltaBlackList.containsKey(selectionType))
 				selectionDelta.removeSelection(elementID, selectionType);

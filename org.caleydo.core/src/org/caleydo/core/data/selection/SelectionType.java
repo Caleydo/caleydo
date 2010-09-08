@@ -60,9 +60,9 @@ public class SelectionType {
 	public static final SelectionType NORMAL = new SelectionType("Normal", new float[] { 0, 0, 0, 1 }, 1,
 		true, false, 0);
 	public static final SelectionType MOUSE_OVER = new SelectionType("MouseOver",
-		new int[] { 116, 169, 207 }, 3, true, true, 1);
+		new int[] { 116, 169, 207 }, 3, true, true, 0.99f);
 	public static final SelectionType SELECTION = new SelectionType("Selected", new int[] { 5, 112, 176 }, 3,
-		true, false, 0.99f);
+		true, false, 1f);
 	public static final SelectionType DESELECTED = new SelectionType("Deselected",
 		new float[] { 0, 0, 0, 1 }, 1, false, false, 0);
 
@@ -88,9 +88,15 @@ public class SelectionType {
 	 * @param isConnected
 	 *            flag that determines whether connection lines should be drawn to this selection type or not
 	 * @param priority
+	 *            <p>
 	 *            a priority determining which selection type should be rendered on top in case of
 	 *            multi-selections. The valid range is 0-1 where {@link #NORMAL} has 0, {@link #MOUSE_OVER} 1
-	 *            and {@link #SELECTION} 0.99
+	 *            and {@link #SELECTION} 0.99.
+	 *            </p>
+	 *            <p>
+	 *            The best way to apply this to actual render hight is to specify a render height constant and
+	 *            multiply it by the priority, e.g.,
+	 *            <code>float z = SELECTION_Z * selectionType.getPriority();</code>
 	 */
 	public SelectionType(String type, float[] color, int lineWidth, boolean isVisible, boolean isConnected,
 		float priority) {

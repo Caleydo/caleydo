@@ -211,7 +211,7 @@ public interface IVirtualArray<ConcreteType extends IVirtualArray<ConcreteType, 
 	 * @param
 	 * @return the group list
 	 */
-	public GroupList getGroupList();
+	public GroupType getGroupList();
 
 	/**
 	 * Returns an ArrayList with indexes of one group (genes/experiments) determined by iGroupIdx.

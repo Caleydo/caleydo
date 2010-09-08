@@ -2467,7 +2467,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			}
 		}
 		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
-		handleConnectedElementRep(selectionDelta);
+		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -2883,7 +2883,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		// }
 
 		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
-		handleConnectedElementRep(selectionDelta);
+		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -2900,7 +2900,7 @@ public class GLScatterPlot extends AStorageBasedView {
 				storageVA.get(iMouseOverAxisIndexY));
 
 		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
-		handleConnectedElementRep(selectionDelta);
+		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -3198,7 +3198,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			contentSelectionManager.addToType(selectionType, contentID);
 
 		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
-		handleConnectedElementRep(selectionDelta);
+		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -3247,7 +3247,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		// AlSelectionTypes.add(SelectionType.SELECTION);
 		// addSelectionType();
 		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
-		handleConnectedElementRep(selectionDelta);
+		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event2 = new SelectionUpdateEvent();
 		event2.setSender(this);
 		event2.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -3295,7 +3295,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	@Override
-	protected void handleConnectedElementRep(ISelectionDelta selectionDelta) {
+	protected void handleConnectedElementReps(ISelectionDelta selectionDelta) {
 		// Not Used in this View..
 	}
 

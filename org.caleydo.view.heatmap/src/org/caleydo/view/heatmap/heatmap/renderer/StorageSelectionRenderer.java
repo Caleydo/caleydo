@@ -48,16 +48,16 @@ public class StorageSelectionRenderer extends AContentRenderer {
 
 					xPosition = columnIndex * contentSpacing.getFieldWidth();
 
+					float z = SELECTION_Z * selectionType.getPriority();
+
 					gl.glPushName(heatMap.getPickingManager().getPickingID(
 							heatMap.getID(), EPickingType.HEAT_MAP_STORAGE_SELECTION,
 							selectedColumn));
 					gl.glBegin(GL.GL_LINE_LOOP);
-					gl.glVertex3f(xPosition, y, SELECTION_Z);
-					gl.glVertex3f(xPosition, 0, SELECTION_Z);
-					gl.glVertex3f(xPosition + contentSpacing.getFieldWidth(), 0,
-							SELECTION_Z);
-					gl.glVertex3f(xPosition + contentSpacing.getFieldWidth(), y,
-							SELECTION_Z);
+					gl.glVertex3f(xPosition, y, z);
+					gl.glVertex3f(xPosition, 0, z);
+					gl.glVertex3f(xPosition + contentSpacing.getFieldWidth(), 0, z);
+					gl.glVertex3f(xPosition + contentSpacing.getFieldWidth(), y, z);
 					gl.glEnd();
 					gl.glPopName();
 				}

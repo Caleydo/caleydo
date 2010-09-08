@@ -11,7 +11,6 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
-import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
 
 /**
  * Serialized form of the remote-rendering view (bucket).
@@ -72,9 +71,9 @@ public class SerializedBucketView extends ASerializedView {
 			SerializedHeatMapView heatMap = new SerializedHeatMapView(
 					"org.caleydo.datadomain.genetic");
 			remoteViews.add(heatMap);
-			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView(
-					"org.caleydo.datadomain.genetic");
-			remoteViews.add(parCoords);
+//			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView(
+//					"org.caleydo.datadomain.genetic");
+//			remoteViews.add(parCoords);
 		}
 		// else if (dataDomainType.equals("org.caleydo.datadomain.clinical")) {
 		// SerializedGlyphView glyph1 = new SerializedGlyphView(

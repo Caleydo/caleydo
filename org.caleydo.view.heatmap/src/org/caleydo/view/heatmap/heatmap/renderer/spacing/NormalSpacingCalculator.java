@@ -4,7 +4,6 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class NormalSpacingCalculator extends ASpacingCalculator {
 
-	private float selectedFieldHeight;
 	private float normalFieldHeight;
 
 	public NormalSpacingCalculator(GLHeatMap heatMap, float y, float contentElements) {

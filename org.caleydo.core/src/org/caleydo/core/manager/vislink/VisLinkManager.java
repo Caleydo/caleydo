@@ -122,7 +122,6 @@ public class VisLinkManager
 		return bb.toString();
 	}
 
-	@SuppressWarnings("unchecked")
 	public void handleVisLinkSelection(String selectionId) {
 		System.out.println(this.getClass() + " got selectionId: " + selectionId);
 		ClearSelectionsEvent cse = new ClearSelectionsEvent();
@@ -141,7 +140,7 @@ public class VisLinkManager
 			destId = idmm.getID(IDType.getIDType("UNSPECIFIED"), dataDomain.getContentIDType(), selectionId);
 		}
 		catch (NullPointerException e) {
-			HashSet set =
+			HashSet<Integer> set =
 				idmm.getID(IDType.getIDType("GENE_SYMBOL"), dataDomain.getContentIDType(), selectionId);
 			destId = (Integer) set.iterator().next();
 		}

@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.remote;
+package org.caleydo.view.bucket;
 
 import gleem.linalg.Vec3f;
 
@@ -17,6 +17,7 @@ import org.caleydo.core.manager.view.ConnectionMap;
 import org.caleydo.core.manager.view.SelectedElementRepList;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;

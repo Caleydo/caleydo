@@ -12,7 +12,6 @@ public abstract class ATemplate {
 	protected TemplateRenderer templateRenderer;
 
 	private float yOverhead;
-	private float heatMapElementHeight;
 
 	protected boolean isActive;
 
@@ -34,7 +33,6 @@ public abstract class ATemplate {
 				totalHeight -= element.sizeY;
 		}
 
-		Row greedyRow = null;
 		// take care of greedy elements in x and y
 		RenderParameters greedyVerticalElement = null;
 		float usedSizeY = 0;
@@ -92,6 +90,7 @@ public abstract class ATemplate {
 
 	/**
 	 * Add a vertical render element
+	 * 
 	 * @param element
 	 */
 	void add(RenderParameters element) {

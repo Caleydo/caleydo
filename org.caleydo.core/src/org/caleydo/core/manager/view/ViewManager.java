@@ -374,7 +374,6 @@ public class ViewManager
 	}
 
 	@Override
-	@SuppressWarnings("unused")
 	public void unregisterEventListeners() {
 		GeneralManager generalManager = GeneralManager.get();
 		EventPublisher eventPublisher = generalManager.getEventPublisher();

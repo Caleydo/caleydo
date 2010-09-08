@@ -39,7 +39,7 @@ public class GeneralManager {
 	 * In release mode non-stable or student views are automatically removed from the workbench.
 	 */
 	public static final boolean RELEASE_MODE = false;
-	
+
 	/**
 	 * This is the current version of Caleydo. The value must be the same as specified in the plugin/bundle.
 	 * We need to access the version before the workbench is started. Therefore we have to set it hardcoded at
@@ -59,6 +59,7 @@ public class GeneralManager {
 	public static final String CALEYDO_FOLDER = ".caleydo_" + VERSION;
 	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME_TEMPLATE) + File.separator
 		+ CALEYDO_FOLDER + File.separator;
+	public static final String CALEYDO_LOG_PATH = CALEYDO_HOME_PATH + "logs" + File.separator;
 	public static final String USER_HOME = "user.home";
 
 	public static final String sDelimiter_Paser_DataItemBlock = "@";
@@ -79,7 +80,6 @@ public class GeneralManager {
 	private XmlParserManager xmlParserManager;
 	private IDMappingManager genomeIdManager;
 	private IDCreator IDManager;
-	private ILog logger;
 	private IGUIBridge guiBridge;
 	private ResourceLoader resourceLoader;
 	private WiiRemote wiiRemote;
@@ -146,8 +146,6 @@ public class GeneralManager {
 	public void setOrganism(Organism organism) {
 		this.organism = organism;
 	}
-
-
 
 	/**
 	 * Resource loader that is responsible for loading images, textures and data files in the Caleydo

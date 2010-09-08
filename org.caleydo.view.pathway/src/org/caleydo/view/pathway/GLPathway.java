@@ -46,6 +46,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -156,8 +157,8 @@ public class GLPathway extends AGLView implements
 		pathwayManager = PathwayManager.get();
 		pathwayItemManager = PathwayItemManager.get();
 
-		mappingDataDomain = (ASetBasedDataDomain) DataDomainManager.get()
-				.getDataDomain("org.caleydo.datadomain.genetic");
+		mappingDataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
+				"org.caleydo.datadomain.genetic");
 
 		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum, this);
 		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
@@ -399,7 +400,7 @@ public class GLPathway extends AGLView implements
 
 				for (Integer iConnectionID : item.getConnectionIDs()) {
 					connectedElementRepresentationManager.addSelection(iConnectionID,
-							elementRep);
+							elementRep, item.getSelectionType());
 				}
 			}
 		}
@@ -736,7 +737,7 @@ public class GLPathway extends AGLView implements
 			selectionManager
 					.addConnectionID(iConnectionID, tmpVertexGraphItemRep.getId());
 			connectedElementRepresentationManager.clear(mappingDataDomain
-					.getContentIDType());
+					.getContentIDType(), selectionType);
 			// gLPathwayContentCreator
 			// .performIdenticalNodeHighlighting(selectionType);
 
@@ -756,7 +757,18 @@ public class GLPathway extends AGLView implements
 		}
 	}
 
-	private void createConnectionLines(SelectionType SelectionType, int iConnectionID) {
+	private void createConnectionLines(SelectionType selectionType, int iConnectionID) {
+		// check in preferences if we should draw connection lines for mouse
+		// over
+		if (!connectedElementRepresentationManager
+				.isSelectionTypeRenderedWithVisuaLinks(selectionType))
+			return;
+		// check for selections
+		if (!generalManager.getPreferenceStore().getBoolean(
+				PreferenceConstants.VISUAL_LINKS_FOR_SELECTIONS)
+				&& selectionType == SelectionType.SELECTION)
+			return;
+
 		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep;
 		int iPathwayHeight = pathway.getHeight();
 
@@ -766,7 +778,7 @@ public class GLPathway extends AGLView implements
 		// AGLViewBrowser)
 		// iViewID = glRemoteRenderingView.getID();
 
-		for (int iVertexRepID : selectionManager.getElements(SelectionType)) {
+		for (int iVertexRepID : selectionManager.getElements(selectionType)) {
 			tmpPathwayVertexGraphItemRep = pathwayItemManager
 					.getPathwayVertexRep(iVertexRepID);
 
@@ -782,7 +794,8 @@ public class GLPathway extends AGLView implements
 			// for (Integer iConnectionID : selectionManager
 			// .getConnectionForElementID(iVertexRepID))
 			// {
-			connectedElementRepresentationManager.addSelection(iConnectionID, elementRep);
+			connectedElementRepresentationManager.addSelection(iConnectionID, elementRep,
+					selectionType);
 			// }
 		}
 		// }

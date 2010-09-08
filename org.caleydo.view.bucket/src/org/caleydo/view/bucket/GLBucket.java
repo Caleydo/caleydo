@@ -64,7 +64,6 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle.LayoutMode;
-import org.caleydo.core.view.opengl.canvas.remote.GLConnectionLineRendererBucket;
 import org.caleydo.core.view.opengl.canvas.remote.list.ListLayoutRenderStyle;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -102,8 +101,7 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
 /**
- * Class that is able to remotely rendering views. Subclasses implement the
- * positioning of the views (bucket, jukebox, etc.).
+ * Rendering the bucket with diverse views remotely.
  * 
  * @author Marc Streit
  * @author Alexander Lex
@@ -1435,14 +1433,14 @@ public class GLBucket extends AGLView implements
 		float fPanelSideWidth = 11f;
 
 		float sideSwitchFactor = 1;
-		
+
 		if (!leftSide) {
 			sideSwitchFactor = -1;
 			fPanelSideWidth += 1f;
 		}
-		
+
 		float backgroudX = fXOrigin + 1.65f / fAspectRatio * sideSwitchFactor
-		+ fPanelSideWidth;
+				+ fPanelSideWidth;
 
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL.GL_POLYGON);

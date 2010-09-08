@@ -121,7 +121,7 @@ public abstract class AStorageBasedView
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	protected AStorageBasedView(GLCaleydoCanvas glCanvas,  final ViewFrustum viewFrustum) {
+	protected AStorageBasedView(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
 		connectedElementRepresentationManager =
@@ -185,50 +185,6 @@ public abstract class AStorageBasedView
 	}
 
 	/**
-	 * Initializes a virtual array with all elements, according to the data filters, as defined in
-	 * {@link EDataFilterLevel}.
-	 */
-	// protected final void initCompleteList() {
-	// // initialize virtual array that contains all (filtered) information
-	// ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
-	//
-	// for (int iCount = 0; iCount < set.depth(); iCount++) {
-	// if (dataFilterLevel != EDataFilterLevel.COMPLETE
-	// && set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-	//
-	// // Here we get mapping data for all values
-	// int iDavidID =
-	// GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
-	//
-	// if (iDavidID == -1) {
-	// // generalManager.getLogger().log(new Status(Status.WARNING,
-	// GeneralManager.PLUGIN_ID,
-	// // "Cannot resolve gene to DAVID ID!"));
-	// continue;
-	// }
-	//
-	// if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
-	// // Here all values are contained within pathways as well
-	// PathwayVertexGraphItem tmpPathwayVertexGraphItem =
-	// generalManager.getPathwayItemManager().getPathwayVertexGraphItemByDavidId(iDavidID);
-	//
-	// if (tmpPathwayVertexGraphItem == null) {
-	// continue;
-	// }
-	// }
-	// }
-	//
-	// alTempList.add(iCount);
-	// }
-	//
-	//
-	// // TODO: remove possible old virtual array
-	// int iVAID = set.createStorageVA(alTempList);
-	// mapVAIDs.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
-	//
-	// setDisplayListDirty();
-	// }
-	/**
 	 * View specific data initialization
 	 */
 	protected abstract void initLists();
@@ -258,7 +214,7 @@ public abstract class AStorageBasedView
 			contentSelectionManager.setDelta(selectionDelta);
 			// ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
-			handleConnectedElementRep(selectionDelta);
+			handleConnectedElementReps(selectionDelta);
 			reactOnExternalSelection(selectionDelta, scrollToSelection);
 			setDisplayListDirty();
 		}
@@ -268,7 +224,7 @@ public abstract class AStorageBasedView
 			// key)(type)
 
 			storageSelectionManager.setDelta(selectionDelta);
-			handleConnectedElementRep(selectionDelta);
+			handleConnectedElementReps(selectionDelta);
 			reactOnExternalSelection(selectionDelta, scrollToSelection);
 			setDisplayListDirty();
 		}
@@ -313,9 +269,7 @@ public abstract class AStorageBasedView
 		contentVA.setGroupList(null);
 		contentSelectionManager.setVADelta(delta);
 
-
 		reactOnContentVAChanges(delta);
-	
 
 		// reactOnExternalSelection();
 		setDisplayListDirty();
@@ -425,7 +379,7 @@ public abstract class AStorageBasedView
 	 * @param selectionDelta
 	 *            the selection data that should be handled
 	 */
-	protected void handleConnectedElementRep(ISelectionDelta selectionDelta) {
+	protected void handleConnectedElementReps(ISelectionDelta selectionDelta) {
 		try {
 			int iStorageIndex = -1;
 
@@ -434,13 +388,9 @@ public abstract class AStorageBasedView
 
 			if (selectionDelta.size() > 0) {
 				for (SelectionDeltaItem item : selectionDelta) {
-					// if (!(item.getSelectionType() ==
-					// SelectionType.MOUSE_OVER
-					// || item.getSelectionType() == SelectionType.SELECTION))
-					if (!(item.getSelectionType() == SelectionType.MOUSE_OVER)) {
+					if (!connectedElementRepresentationManager.isSelectionTypeRenderedWithVisuaLinks(item
+						.getSelectionType()))
 						continue;
-					}
-
 					if (selectionDelta.getIDType() == contentIDType) {
 						iStorageIndex = item.getPrimaryID();
 
@@ -448,23 +398,11 @@ public abstract class AStorageBasedView
 						idType = contentIDType;
 
 					}
-					// else if (selectionDelta.getSecondaryIDType() == EIDType.EXPRESSION_INDEX) {
-					// iStorageIndex = item.getSecondaryID();
-					//
-					// iID = item.getPrimaryID();
-					// idType = EIDType.EXPRESSION_INDEX;
-					// }
 					else if (selectionDelta.getIDType() == storageIDType) {
 						iID = item.getPrimaryID();
 						iStorageIndex = iID;
 						idType = storageIDType;
 					}
-					// else if (selectionDelta.getIDType() == EIDType.UNSPECIFIED) {
-					// iStorageIndex = item.getPrimaryID();
-					//
-					// iID = item.getPrimaryID();
-					// idType = EIDType.UNSPECIFIED;
-					// }
 					else
 						throw new InvalidAttributeValueException("Can not handle data type: "
 							+ selectionDelta.getIDType());
@@ -482,16 +420,16 @@ public abstract class AStorageBasedView
 						}
 
 						for (Integer iConnectionID : item.getConnectionIDs()) {
-							connectedElementRepresentationManager.addSelection(iConnectionID, rep);
+							connectedElementRepresentationManager.addSelection(iConnectionID, rep,
+								item.getSelectionType());
 						}
 					}
 				}
 			}
 		}
 		catch (InvalidAttributeValueException e) {
-			Logger.log(
-				new Status(IStatus.WARNING, this.toString(),
-					"Can not handle data type of update in selectionDelta", e));
+			Logger.log(new Status(IStatus.WARNING, this.toString(),
+				"Can not handle data type of update in selectionDelta", e));
 		}
 	}
 

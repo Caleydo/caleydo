@@ -1545,7 +1545,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 						tree.getNodeByNumber(iExternalID).getLeafID());
 				selectionDelta = selectionManager.getDelta();
 
-				handleConnectedElementRep(selectionDelta);
+				handleConnectedElementReps(selectionDelta);
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
 				event.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -1635,7 +1635,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 						tree.getNodeByNumber(iExternalID).getLeafID());
 				selectionDelta = selectionManager.getDelta();
 
-				handleConnectedElementRep(selectionDelta);
+				handleConnectedElementReps(selectionDelta);
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
 				event.setSelectionDelta((SelectionDelta) selectionDelta);
