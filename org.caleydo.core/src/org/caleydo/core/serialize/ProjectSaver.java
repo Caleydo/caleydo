@@ -237,7 +237,7 @@ public class ProjectSaver {
 	 * @return {@link ViewList} to storing the view's state.
 	 */
 	private ViewList createStoreViewList() {
-		ArrayList<ASerializedView> storeViews = new ArrayList<ASerializedView>();
+		ArrayList<String> storeViews = new ArrayList<String>();
 
 		ViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
 
@@ -246,7 +246,7 @@ public class ProjectSaver {
 			if (!glView.isRenderedRemote()) {
 				ASerializedView serView = glView.getSerializableRepresentation();
 				if (!(serView instanceof SerializedDummyView)) {
-					storeViews.add(serView);
+					storeViews.add(serView.getViewType());
 				}
 			}
 		}
@@ -255,7 +255,7 @@ public class ProjectSaver {
 		for (IView swtView : swtViews) {
 			ASerializedView serView = swtView.getSerializableRepresentation();
 			if (!(serView instanceof SerializedDummyView)) {
-				storeViews.add(serView);
+				storeViews.add(serView.getViewType());
 			}
 		}
 

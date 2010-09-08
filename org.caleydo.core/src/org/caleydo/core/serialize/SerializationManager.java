@@ -33,6 +33,7 @@ public class SerializationManager {
 			projectTypes.add(DataInitializationData.class);
 			projectTypes.add(DataDomainList.class);
 			projectTypes.add(ViewList.class);
+			projectTypes.add(ASerializedView.class);
 			Class<?>[] classes = new Class<?>[eventTypes.size()];
 			classes = eventTypes.toArray(classes);
 			eventContext = JAXBContext.newInstance(classes);

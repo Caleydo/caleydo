@@ -17,14 +17,14 @@ import javax.xml.bind.annotation.XmlType;
 public class ViewList {
 
 	/** list of all views to (re-)store */
-	private List<? extends ASerializedView> views;
+	private List<String> views;
 
 	@XmlElementWrapper
-	public List<? extends ASerializedView> getViews() {
+	public List<String> getViews() {
 		return views;
 	}
 
-	public void setViews(List<? extends ASerializedView> views) {
+	public void setViews(List<String> views) {
 		this.views = views;
 	}
 }
