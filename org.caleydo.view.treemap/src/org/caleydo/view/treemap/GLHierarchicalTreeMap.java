@@ -91,9 +91,9 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	private SelectionUpdateListener selectionUpdateListener;
 	
-	private GLTreeMap glTreeMap;
+	private GLTreeMap mainTreeMapView;
 	
-	private Vector<GLTreeMap> treemapViews = new Vector<GLTreeMap>(4);
+	private Vector<GLTreeMap> thumbnailTreemapViews = new Vector<GLTreeMap>(4);
 	
 	
 
@@ -120,18 +120,22 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 		parentGLCanvas.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON1) {
-					treeSelectionManager.clearSelection(SelectionType.SELECTION);
-					treeSelectionManager.addToType(SelectionType.SELECTION, mouseOverClusterId);
-					bIsMouseWheeleUsed = true;
-					mouseWheeleSelectionHeight = 0;
-				}
+				mainTreeMapView.processMousePressed(e);
+//				System.out.println(e);
+//				if (e.getButton() == MouseEvent.BUTTON1) {
+//					treeSelectionManager.clearSelection(SelectionType.SELECTION);
+//					treeSelectionManager.addToType(SelectionType.SELECTION, mouseOverClusterId);
+//					bIsMouseWheeleUsed = true;
+//					mouseWheeleSelectionHeight = 0;
+//				}
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON1) {
-					bIsMouseWheeleUsed = false;
-				}
+				mainTreeMapView.processMouseReleased(e);
+//				System.out.println(e);
+//				if (e.getButton() == MouseEvent.BUTTON1) {
+//					bIsMouseWheeleUsed = false;
+//				}
 			}
 		});
 
@@ -139,38 +143,42 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				if (bIsMouseWheeleUsed) {
-					// System.out.println("wheel used: " +
-					// e.getWheelRotation());
-					if (e.getWheelRotation() > 0) {
-						ATreeMapNode node = treeMapModel.getNodeByNumber(mouseOverClusterId);
-						mouseWheeleSelectionHeight++;
-						// System.out.println("selectionlevel: " +
-						// node.selectionLevel);
-						ATreeMapNode parent = node.getParentWithLevel(node.getHierarchyLevel() - mouseWheeleSelectionHeight);
-						if (parent != null) {
-							treeSelectionManager.clearSelection(SelectionType.SELECTION);
-							treeSelectionManager.addToType(SelectionType.SELECTION, parent.getID());
-						} else {
-							mouseWheeleSelectionHeight--;
-						}
-
-					} else {
-						ATreeMapNode node = treeMapModel.getNodeByNumber(mouseOverClusterId);
-						if (mouseWheeleSelectionHeight > 0) {
-							mouseWheeleSelectionHeight--;
-							ATreeMapNode parent;
-							if (mouseWheeleSelectionHeight == 0)
-								parent = node;
-							else
-								parent = node.getParentWithLevel(node.getHierarchyLevel() - mouseWheeleSelectionHeight);
-							treeSelectionManager.clearSelection(SelectionType.SELECTION);
-							treeSelectionManager.addToType(SelectionType.SELECTION, parent.getID());
-						}
-
-					}
-					setHighLichtingListDirty();
-				}
+				
+				mainTreeMapView.processMouseWheeleEvent(e);
+				
+//				System.out.println(e);
+//				if (bIsMouseWheeleUsed) {
+//					// System.out.println("wheel used: " +
+//					// e.getWheelRotation());
+//					if (e.getWheelRotation() > 0) {
+//						ATreeMapNode node = treeMapModel.getNodeByNumber(mouseOverClusterId);
+//						mouseWheeleSelectionHeight++;
+//						// System.out.println("selectionlevel: " +
+//						// node.selectionLevel);
+//						ATreeMapNode parent = node.getParentWithLevel(node.getHierarchyLevel() - mouseWheeleSelectionHeight);
+//						if (parent != null) {
+//							treeSelectionManager.clearSelection(SelectionType.SELECTION);
+//							treeSelectionManager.addToType(SelectionType.SELECTION, parent.getID());
+//						} else {
+//							mouseWheeleSelectionHeight--;
+//						}
+//
+//					} else {
+//						ATreeMapNode node = treeMapModel.getNodeByNumber(mouseOverClusterId);
+//						if (mouseWheeleSelectionHeight > 0) {
+//							mouseWheeleSelectionHeight--;
+//							ATreeMapNode parent;
+//							if (mouseWheeleSelectionHeight == 0)
+//								parent = node;
+//							else
+//								parent = node.getParentWithLevel(node.getHierarchyLevel() - mouseWheeleSelectionHeight);
+//							treeSelectionManager.clearSelection(SelectionType.SELECTION);
+//							treeSelectionManager.addToType(SelectionType.SELECTION, parent.getID());
+//						}
+//
+//					}
+//					setHighLichtingListDirty();
+//				}
 			}
 		});
 		
@@ -188,15 +196,15 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		
 		createEmbeddedHeatMap();
 		
-		glTreeMap.initRemote(gl, this, glMouseListener, null);
+		mainTreeMapView.initRemote(gl, this, glMouseListener, null);
 
 	}
 
 	@Override
 	public void initLocal(GL gl) {
 
-		if (glTreeMap != null)
-			glTreeMap.processEvents();
+		if (mainTreeMapView != null)
+			mainTreeMapView.processEvents();
 		
 		// Register keyboard listener to GL canvas
 		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new
@@ -233,7 +241,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	public void initData(){
 		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
-		for(GLTreeMap view : treemapViews)
+		for(GLTreeMap view : thumbnailTreemapViews)
 			view.initData();
 	}
 
@@ -252,6 +260,8 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
+		
+		
 	}
 
 	@Override
@@ -278,7 +288,13 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	@Override
 	public void display(GL gl) {
 
-		glTreeMap.displayRemote(gl);
+//		ViewFrustum viewFrustum = mainTreeMapView.getViewFrustum();
+//		viewFrustum.setTop((float)6.0);
+//		viewFrustum.setLeft(viewFrustum.getLeft()-1);
+//		viewFrustum.setTop((float) (viewFrustum.getTop()-2.0));
+//		mainTreeMapView.setFrustum(viewFrustum);
+		mainTreeMapView.getViewFrustum().setTop(6);
+		mainTreeMapView.displayRemote(gl);
 		
 		// GLHelperFunctions.drawAxis(gl);
 		// GLHelperFunctions.drawPointAt(gl, 1, 1, 1);
@@ -382,67 +398,70 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
-		if (detailLevel == DetailLevel.VERY_LOW) {
-			return;
-		}
-
-		SelectionType selectionType;
-		switch (ePickingType) {
-		case TREEMAP_ELEMENT_SELECTED:
-			ATreeMapNode node;
-			// iCurrentMouseOverElement = iExternalID;
-			switch (pickingMode) {
-
-			case CLICKED:
-				// {
-				// System.out.println(iExternalID+" clicked");
-				// selectionType = SelectionType.SELECTION;
-				// ArrayList<SelectionType> selections =
-				// treeSelectionManager.getSelectionTypes(iExternalID);
-				// if (selections != null &&
-				// selections.contains(SelectionType.SELECTION)) {
-				// treeSelectionManager.removeFromType(SelectionType.SELECTION,
-				// iExternalID);
-				// } else
-				// treeSelectionManager.addToType(SelectionType.SELECTION,
-				// iExternalID);
-				// }
-				break;
-			case MOUSE_OVER:
-				selectionType = SelectionType.MOUSE_OVER;
-				// System.out.println("mouse over: " + iExternalID);
-				mouseOverClusterId = iExternalID;
-				treeSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				treeSelectionManager.addToType(SelectionType.MOUSE_OVER, iExternalID);
-				break;
-			case RIGHT_CLICKED:
-
-				break;
-			case DRAGGED:
-				selectionType = SelectionType.SELECTION;
-				// System.out.println(iExternalID+" dragged");
-				break;
-			default:
-				return;
-
-			}
-			// treeSelectionManager.addToType(selectionType, iExternalID);
-
-			// treeSelectionManager.getElements(SelectionType.SELECTION);
-			// treeSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
-			// iElementID);
-			//
-			// ArrayList<SelectionType> selectionTypes =
-			// treeSelectionManager.getSelectionTypes(elementID);
-			//
-			// setDisplayListDirty();
-			
-			setHighLichtingListDirty();
-			break;
-
-		default:
-			return;
-		}
+		
+		mainTreeMapView.handleRemotePickingEvents(ePickingType, pickingMode, iExternalID, pick);
+		
+//		if (detailLevel == DetailLevel.VERY_LOW) {
+//			return;
+//		}
+//
+//		SelectionType selectionType;
+//		switch (ePickingType) {
+//		case TREEMAP_ELEMENT_SELECTED:
+//			ATreeMapNode node;
+//			// iCurrentMouseOverElement = iExternalID;
+//			switch (pickingMode) {
+//
+//			case CLICKED:
+//				// {
+//				// System.out.println(iExternalID+" clicked");
+//				// selectionType = SelectionType.SELECTION;
+//				// ArrayList<SelectionType> selections =
+//				// treeSelectionManager.getSelectionTypes(iExternalID);
+//				// if (selections != null &&
+//				// selections.contains(SelectionType.SELECTION)) {
+//				// treeSelectionManager.removeFromType(SelectionType.SELECTION,
+//				// iExternalID);
+//				// } else
+//				// treeSelectionManager.addToType(SelectionType.SELECTION,
+//				// iExternalID);
+//				// }
+//				break;
+//			case MOUSE_OVER:
+//				selectionType = SelectionType.MOUSE_OVER;
+//				 System.out.println("mouse over: " + iExternalID);
+//				mouseOverClusterId = iExternalID;
+//				treeSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
+//				treeSelectionManager.addToType(SelectionType.MOUSE_OVER, iExternalID);
+//				break;
+//			case RIGHT_CLICKED:
+//
+//				break;
+//			case DRAGGED:
+//				selectionType = SelectionType.SELECTION;
+//				// System.out.println(iExternalID+" dragged");
+//				break;
+//			default:
+//				return;
+//
+//			}
+//			// treeSelectionManager.addToType(selectionType, iExternalID);
+//
+//			// treeSelectionManager.getElements(SelectionType.SELECTION);
+//			// treeSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
+//			// iElementID);
+//			//
+//			// ArrayList<SelectionType> selectionTypes =
+//			// treeSelectionManager.getSelectionTypes(elementID);
+//			//
+//			// setDisplayListDirty();
+//			
+//			setHighLichtingListDirty();
+//			break;
+//
+//		default:
+//			return;
+//		}
 
 	}
 
@@ -555,7 +574,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
 		treeSelectionManager = new SelectionManager(tree.getNodeIDType());
 		//TODO set selectionmanager
-		for(GLTreeMap view: treemapViews){
+		for(GLTreeMap view: thumbnailTreemapViews){
 			view.setDataDomain(dataDomain);
 			view.setSelectionManager(treeSelectionManager);
 		}
@@ -576,20 +595,21 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		cmdView.setDataDomainType(dataDomain.getDataDomainType());
 		cmdView.doCommand();
 
-		glTreeMap = (GLTreeMap) cmdView.getCreatedObject();
-		glTreeMap.setDataDomain(dataDomain);
-		glTreeMap.setRemoteRenderingGLView(this);
+		mainTreeMapView = (GLTreeMap) cmdView.getCreatedObject();
+		mainTreeMapView.setDataDomain(dataDomain);
+		mainTreeMapView.setRemoteRenderingGLView(this);
+		mainTreeMapView.setRemotePickingManager(pickingManager, getID());
 //		glTreeMap.setRemoteLevelElement(heatMapRemoteElement);
 //		heatMapRemoteElement.setGLView(glHeatMapView);
 
 		//glTreeMap.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
-		glTreeMap.initData();
+		mainTreeMapView.initData();
 	}
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
 		ArrayList<AGLView> remoteRenderedViews = new ArrayList<AGLView>();
-		remoteRenderedViews.add(glTreeMap);
+		remoteRenderedViews.add(mainTreeMapView);
 		return remoteRenderedViews;
 	}
 }
