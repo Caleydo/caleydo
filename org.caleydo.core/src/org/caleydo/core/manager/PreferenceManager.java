@@ -69,7 +69,7 @@ public class PreferenceManager {
 					+ "). \nYour old Caleydo settings and pathway data will be discarded and newly created.");
 				messageBox.open();
 
-				FileOperations.deleteDir(new File(GeneralManager.CALEYDO_HOME_PATH));
+				FileOperations.deleteDirectory(new File(GeneralManager.CALEYDO_HOME_PATH));
 
 				initCaleydoFolder();
 			}

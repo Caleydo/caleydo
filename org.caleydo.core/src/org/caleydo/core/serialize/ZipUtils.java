@@ -140,37 +140,4 @@ public class ZipUtils {
 			throw new RuntimeException("Error saving project files (zip)", ex);
 		}
 	}
-
-	/**
-	 * Deletes the directory with the given name
-	 * 
-	 * @param dirName
-	 *            directory name to delete
-	 * @return <code>true</code> if the directory was deleted, <code>false</code> otherwise
-	 */
-	public boolean deleteDirectory(String dirName) {
-		File directory = new File(dirName);
-		return deleteDirectory(directory);
-	}
-
-	/**
-	 * Deletes the given directory
-	 * 
-	 * @param directory
-	 *            directory to delete
-	 * @return <code>true</code> if the directory was deleted, <code>false</code> otherwise
-	 */
-	public boolean deleteDirectory(File directory) {
-		if (directory.isDirectory()) {
-			String[] children = directory.list();
-			for (int i = 0; i < children.length; i++) {
-				boolean success = deleteDirectory(new File(directory, children[i]));
-				if (!success) {
-					return false;
-				}
-			}
-		}
-		return directory.delete();
-	}
-
 }

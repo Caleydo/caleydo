@@ -48,6 +48,10 @@ public class ProjectSaver {
 	/** full path to directory of the recently open project */
 	public static final String RECENT_PROJECT_DIR_NAME = GeneralManager.CALEYDO_HOME_PATH + "recent_project"
 		+ File.separator;
+	
+	/** full path to directory of the tmp copy of the recently open project */
+	public static final String RECENT_PROJECT_DIR_NAME_TMP = GeneralManager.CALEYDO_HOME_PATH + "recent_project_tmp"
+		+ File.separator;
 
 	/** file name of the set-data-file in project-folders */
 	public static final String SET_DATA_FILE_NAME = "data.csv";
@@ -73,38 +77,35 @@ public class ProjectSaver {
 	 * @param fileName
 	 *            name of the file to save the project in.
 	 */
-	public void save(String fileName) {
-		ZipUtils zipUtils = new ZipUtils();
-		prepareDirectory(TEMP_PROJECT_DIR_NAME);
+	public void save(String fileName) {;
+		FileOperations.createDirectory(TEMP_PROJECT_DIR_NAME);
+		
 		savePluginData(TEMP_PROJECT_DIR_NAME);
 		saveProjectData(TEMP_PROJECT_DIR_NAME);
 		saveViewData(TEMP_PROJECT_DIR_NAME);
+		ZipUtils zipUtils = new ZipUtils();
 		zipUtils.zipDirectory(TEMP_PROJECT_DIR_NAME, fileName);
 
-		zipUtils.deleteDirectory(TEMP_PROJECT_DIR_NAME);
+		FileOperations.deleteDirectory(TEMP_PROJECT_DIR_NAME);
 	}
 
 	/**
 	 * Saves the project to the directory for the recent project
 	 */
 	public void saveRecentProject() {
-		// ZipUtils zipUtils = new ZipUtils();
-		// zipUtils.deleteDirectory(RECENT_PROJECT_DIR_NAME);
-		prepareDirectory(RECENT_PROJECT_DIR_NAME);
+		
+		if (new File(RECENT_PROJECT_DIR_NAME).exists())
+			FileOperations.renameDirectory(RECENT_PROJECT_DIR_NAME, RECENT_PROJECT_DIR_NAME_TMP);
+		
+		FileOperations.createDirectory(RECENT_PROJECT_DIR_NAME);
+		
 		savePluginData(RECENT_PROJECT_DIR_NAME);
 		saveProjectData(RECENT_PROJECT_DIR_NAME);
+		
+		FileOperations.deleteDirectory(RECENT_PROJECT_DIR_NAME_TMP);
 
 		// remove saveViewData() for LAZY_VIEW_LOADING
 		saveViewData(RECENT_PROJECT_DIR_NAME);
-	}
-
-	private void prepareDirectory(String dirName) {
-		if (dirName.charAt(dirName.length() - 1) != File.separatorChar) {
-			dirName += File.separator;
-		}
-
-		File tempDirFile = new File(dirName);
-		tempDirFile.mkdir();
 	}
 
 	/**
@@ -169,9 +170,14 @@ public class ProjectSaver {
 				if (dataDomain instanceof ASetBasedDataDomain) {
 
 					LoadDataParameters parameters = dataDomain.getLoadDataParameters();
+					String sourceFileName = parameters.getFileName();
+					
+					if (sourceFileName.contains(RECENT_PROJECT_DIR_NAME))
+						sourceFileName = sourceFileName.replace(RECENT_PROJECT_DIR_NAME, RECENT_PROJECT_DIR_NAME_TMP);
+					
 					try {
 						FileOperations.writeInputStreamToFile(dirName + SET_DATA_FILE_NAME, GeneralManager
-							.get().getResourceLoader().getResource(parameters.getFileName()));
+							.get().getResourceLoader().getResource(sourceFileName));
 					}
 					catch (FileNotFoundException e) {
 						throw new IllegalStateException("Error saving project file", e);
