@@ -402,12 +402,12 @@ public class SelectionBrowserView implements IDataDomainBasedView<ASetBasedDataD
 	}
 
 	@Override
-	public void handleContentVAUpdate(ContentVADelta vaDelta, final String info) {
+	public void handleVAUpdate(ContentVADelta vaDelta, final String info) {
 		initContent();
 	}
 
 	@Override
-	public void replaceContentVA(int setID, String dataDomain, ContentVAType vaType) {
+	public void replaceVA(int setID, String dataDomain, ContentVAType vaType) {
 		// nothing to do here
 	}
 

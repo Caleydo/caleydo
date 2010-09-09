@@ -29,7 +29,7 @@ public class StorageVAUpdateListener
 			StorageVAUpdateEvent virtualArrayUpdateEvent = (StorageVAUpdateEvent) event;
 			StorageVADelta delta = virtualArrayUpdateEvent.getVirtualArrayDelta();
 			String info = virtualArrayUpdateEvent.getInfo();
-			handler.handleStorageVAUpdate(delta, info);
+			handler.handleVAUpdate(delta, info);
 		}
 	}
 

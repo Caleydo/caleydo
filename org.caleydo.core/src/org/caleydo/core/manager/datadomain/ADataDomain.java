@@ -49,15 +49,15 @@ public abstract class ADataDomain
 	public ADataDomain() {
 		initIDMappings();
 	}
-	
+
 	public ADataDomain(String dataDomainType) {
 		this.dataDomainType = dataDomainType;
 		DataDomainManager.get().register(this);
 		initIDMappings();
 	}
-	
+
 	protected abstract void initIDMappings();
-	
+
 	@Override
 	public String getDataDomainType() {
 		return dataDomainType;
@@ -105,7 +105,7 @@ public abstract class ADataDomain
 	@Override
 	public void setLoadDataParameters(LoadDataParameters loadDataParameters) {
 		this.loadDataParameters = loadDataParameters;
-		
+
 		fileName = loadDataParameters.getFileName();
 	}
 

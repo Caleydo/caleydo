@@ -17,7 +17,7 @@ public interface IContentVAUpdateHandler
 	 * @param info
 	 *            info about the selection (e.g. the name of triggering view to display in the info-box)
 	 */
-	public void handleContentVAUpdate(ContentVADelta vaDelta, String info);
+	public void handleVAUpdate(ContentVADelta vaDelta, String info);
 
 	/**
 	 * Handler method to be called by the {@link ReplaceContentVAListener} when a {@link ReplaceVAEvent} was
@@ -28,5 +28,5 @@ public interface IContentVAUpdateHandler
 	 * @param vaType
 	 *            the type of the VA which is updated
 	 */
-	public void replaceContentVA(int setID, String dataDomainType, ContentVAType vaType);
+	public void replaceVA(int setID, String dataDomainType, ContentVAType vaType);
 }

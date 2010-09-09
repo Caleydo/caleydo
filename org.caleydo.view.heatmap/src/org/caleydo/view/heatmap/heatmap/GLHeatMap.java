@@ -671,9 +671,9 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	@Override
-	public void handleContentVAUpdate(ContentVADelta delta, String info) {
+	public void handleVAUpdate(ContentVADelta delta, String info) {
 
-		super.handleContentVAUpdate(delta, info);
+		super.handleVAUpdate(delta, info);
 
 		if (delta.getVAType() == ContentVAType.CONTENT_CONTEXT
 				&& contentVAType == ContentVAType.CONTENT_CONTEXT) {

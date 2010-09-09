@@ -532,12 +532,12 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
+	public void handleVAUpdate(ContentVADelta vaDelta, String info) {
 		System.out.println("COMPARER IGNORES CONTENT VA UPDATE");
 	}
 
 	@Override
-	public void replaceContentVA(int setID, String dataDomain, ContentVAType vaType) {
+	public void replaceVA(int setID, String dataDomain, ContentVAType vaType) {
 
 		clusteredSets.add(setID);
 

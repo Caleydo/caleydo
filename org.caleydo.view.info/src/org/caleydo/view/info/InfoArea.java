@@ -394,7 +394,7 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 	}
 
 	@Override
-	public void handleContentVAUpdate(ContentVADelta vaDelta, final String info) {
+	public void handleVAUpdate(ContentVADelta vaDelta, final String info) {
 		if (vaDelta.getIDType() != dataDomain.getContentIDType())
 			return;
 		if (parentComposite.isDisposed())
@@ -405,13 +405,13 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 	}
 
 	@Override
-	public void replaceContentVA(int setID, String dataDomain, ContentVAType vaType) {
+	public void replaceVA(int setID, String dataDomain, ContentVAType vaType) {
 		contentSelectionManager.setVA(this.dataDomain.getContentVA(vaType));
 		updateTree(true, contentSelectionManager, contentTree, "");
 	}
 
 	@Override
-	public void handleStorageVAUpdate(StorageVADelta vaDelta, String info) {
+	public void handleVAUpdate(StorageVADelta vaDelta, String info) {
 		if (vaDelta.getIDType() != dataDomain.getStorageIDType())
 			return;
 		if (parentComposite.isDisposed())
@@ -421,7 +421,7 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 	}
 
 	@Override
-	public void replaceStorageVA(String dataDomain, StorageVAType vaType) {
+	public void replaceVA(String dataDomain, StorageVAType vaType) {
 		if (parentComposite.isDisposed())
 			return;
 		storageSelectionManager.setVA(this.dataDomain.getStorageVA(vaType));

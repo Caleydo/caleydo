@@ -29,8 +29,7 @@ public class ContentVAUpdateListener
 			ContentVAUpdateEvent virtualArrayUpdateEvent = (ContentVAUpdateEvent) event;
 			ContentVADelta delta = virtualArrayUpdateEvent.getVirtualArrayDelta();
 			String info = virtualArrayUpdateEvent.getInfo();
-			handler.handleContentVAUpdate(delta, info);
+			handler.handleVAUpdate(delta, info);
 		}
 	}
-
 }

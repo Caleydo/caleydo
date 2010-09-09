@@ -70,7 +70,7 @@ public class GeneralManager {
 	/**
 	 * General manager as a singleton
 	 */
-	private static GeneralManager generalManager;
+	private volatile static GeneralManager instance;
 
 	private IStorageManager storageManager;
 	private CommandManager commandManager;
@@ -132,11 +132,15 @@ public class GeneralManager {
 	 * @return singleton GeneralManager instance
 	 */
 	public static GeneralManager get() {
-		if (generalManager == null) {
-			generalManager = new GeneralManager();
-			generalManager.init();
+		if (instance == null) {
+			synchronized (GeneralManager.class) {
+				if (instance == null) {
+					instance = new GeneralManager();
+					instance.init();
+				}
+			}
 		}
-		return generalManager;
+		return instance;
 	}
 
 	public Organism getOrganism() {

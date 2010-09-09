@@ -59,8 +59,9 @@ import org.eclipse.core.runtime.Status;
  */
 public abstract class AStorageBasedView
 	extends AGLView
-	implements IDataDomainSetBasedView, ISelectionUpdateHandler, IContentVAUpdateHandler, IStorageVAUpdateHandler,
-	ISelectionCommandHandler, IViewCommandHandler, IDataDomainBasedView<ASetBasedDataDomain> {
+	implements IDataDomainSetBasedView, ISelectionUpdateHandler, IContentVAUpdateHandler,
+	IStorageVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler,
+	IDataDomainBasedView<ASetBasedDataDomain> {
 
 	protected ISet set;
 
@@ -264,7 +265,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void handleContentVAUpdate(ContentVADelta delta, String info) {
+	public void handleVAUpdate(ContentVADelta delta, String info) {
 
 		contentVA.setGroupList(null);
 		contentSelectionManager.setVADelta(delta);
@@ -276,7 +277,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void handleStorageVAUpdate(StorageVADelta delta, String info) {
+	public void handleVAUpdate(StorageVADelta delta, String info) {
 		storageVA.setGroupList(null);
 		reactOnStorageVAChanges(delta);
 		storageSelectionManager.setVADelta(delta);
@@ -568,7 +569,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void replaceContentVA(int setID, String dataDomainType, ContentVAType vaType) {
+	public void replaceVA(int setID, String dataDomainType, ContentVAType vaType) {
 		// String primaryVAType = useCase.getVATypeForIDCategory(idCategory);
 		// if (primaryVAType == null)
 		// return;
@@ -585,7 +586,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void replaceStorageVA(String dataDomain, StorageVAType vaType) {
+	public void replaceVA(String dataDomain, StorageVAType vaType) {
 		if (vaType != storageVAType)
 			return;
 

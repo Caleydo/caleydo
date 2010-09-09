@@ -15,7 +15,7 @@ public class ReplaceContentVAListener
 		if (event instanceof ReplaceContentVAEvent) {
 			ReplaceContentVAEvent vaEvent = ((ReplaceContentVAEvent) event);
 
-			handler.replaceContentVA(vaEvent.getSetID(), vaEvent.getDataDomainType(), vaEvent.getVaType());
+			handler.replaceVA(vaEvent.getSetID(), vaEvent.getDataDomainType(), vaEvent.getVaType());
 		}
 	}
 }

@@ -40,13 +40,13 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 	}
 	
 	@Override
-	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
+	public void handleVAUpdate(ContentVADelta vaDelta, String info) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void handleStorageVAUpdate(StorageVADelta vaDelta, String info) {
+	public void handleVAUpdate(StorageVADelta vaDelta, String info) {
 		// TODO Auto-generated method stub
 
 	}

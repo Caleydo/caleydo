@@ -641,14 +641,14 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
+	public void handleVAUpdate(ContentVADelta vaDelta, String info) {
 		if (vaDelta.getIDType() != dataDomain.getContentIDType())
 			vaDelta = DeltaConverter.convertDelta(dataDomain.getContentIDType(), vaDelta);
 		contentSelectionManager.setVADelta(vaDelta);
 	}
 
 	@Override
-	public void replaceContentVA(int setID, String dataDomainType, ContentVAType vaType) {
+	public void replaceVA(int setID, String dataDomainType, ContentVAType vaType) {
 
 		contentVA = dataDomain.getContentVA(vaType);
 
@@ -658,7 +658,7 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void handleStorageVAUpdate(StorageVADelta vaDelta, String info) {
+	public void handleVAUpdate(StorageVADelta vaDelta, String info) {
 		if (vaDelta.getIDType() == dataDomain.getStorageIDType()) {
 			storageSelectionManager.setVADelta(vaDelta);
 
@@ -711,7 +711,7 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void replaceStorageVA(String dataDomainType, StorageVAType vaType) {
+	public void replaceVA(String dataDomainType, StorageVAType vaType) {
 		storageVA = dataDomain.getStorageVA(vaType);
 	}
 

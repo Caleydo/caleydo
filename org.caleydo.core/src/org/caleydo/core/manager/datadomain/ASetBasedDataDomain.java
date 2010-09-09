@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.filter.ContentFilterManager;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
@@ -59,7 +60,7 @@ public abstract class ASetBasedDataDomain
 	private StartClusteringListener startClusteringListener;
 	private ReplaceContentVAInUseCaseListener replaceContentVirtualArrayInUseCaseListener;
 	private ReplaceStorageVAInUseCaseListener replaceStorageVirtualArrayInUseCaseListener;
-	private ContentVAUpdateListener virtualArrayUpdateListener;;
+	private ContentVAUpdateListener virtualArrayUpdateListener;
 
 	/** The set which is currently loaded and used inside the views for this use case. */
 	protected Set set;
@@ -80,6 +81,8 @@ public abstract class ASetBasedDataDomain
 
 	/** central {@link EventPublisher} to receive and send events */
 	protected EventPublisher eventPublisher;
+	
+	protected ContentFilterManager contentFilterManager;
 
 	/**
 	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
@@ -111,9 +114,6 @@ public abstract class ASetBasedDataDomain
 		storageIDType =
 			IDType.registerType("storage_" + dataDomainType + "_" + hashCode(), storageIDCategory,
 				EStorageType.INT);
-
-		// MappingType mappingType = new MappingType(fromIDType, toIDType, isMultiMap);
-
 	}
 
 	/**
@@ -133,6 +133,7 @@ public abstract class ASetBasedDataDomain
 		assert (set != null);
 
 		// set.setDataDomain(this);
+		contentFilterManager = new ContentFilterManager(set);
 
 		ISet oldSet = this.set;
 		this.set = set;
@@ -296,7 +297,7 @@ public abstract class ASetBasedDataDomain
 	 * from this class. Therefore it should not be called any time!
 	 */
 	@Override
-	public void replaceContentVA(int setID, String dataDomainType, ContentVAType vaType) {
+	public void replaceVA(int setID, String dataDomainType, ContentVAType vaType) {
 		throw new IllegalStateException("UseCases shouldn't react to this");
 
 	}
@@ -366,7 +367,7 @@ public abstract class ASetBasedDataDomain
 	 * @param virtualArray
 	 *            the new virtual array
 	 */
-	public void replaceStorageVA(String dataDomainType, StorageVAType vaType) {
+	public void replaceVA(String dataDomainType, StorageVAType vaType) {
 		throw new IllegalStateException("UseCases shouldn't react to this");
 	}
 

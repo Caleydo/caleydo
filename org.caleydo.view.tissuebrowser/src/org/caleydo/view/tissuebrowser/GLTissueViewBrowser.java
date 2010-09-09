@@ -388,14 +388,14 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	}
 
 	@Override
-	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
+	public void handleVAUpdate(ContentVADelta vaDelta, String info) {
 		if (vaDelta.getIDType() == primaryIDType) {
 			experiementSelectionManager.setVADelta(vaDelta);
 		}
 	}
 
 	@Override
-	public void replaceContentVA(int setID, String dataDomainType, ContentVAType vaType) {
+	public void replaceVA(int setID, String dataDomainType, ContentVAType vaType) {
 		// if (idCategory != EIDCategory.EXPERIMENT)
 		// return;
 		// s

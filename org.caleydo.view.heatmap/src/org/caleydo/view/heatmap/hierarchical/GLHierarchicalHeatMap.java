@@ -897,16 +897,16 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	public void replaceContentVA(int setID, String dataDomain, ContentVAType vaType) {
-		super.replaceContentVA(setID, dataDomain, vaType);
+	public void replaceVA(int setID, String dataDomain, ContentVAType vaType) {
+		super.replaceVA(setID, dataDomain, vaType);
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
 		setDisplayListDirty();
 	}
 
 	@Override
-	public void replaceStorageVA(String dataDomain, StorageVAType vaType) {
-		super.replaceStorageVA(dataDomain, vaType);
+	public void replaceVA(String dataDomain, StorageVAType vaType) {
+		super.replaceVA(dataDomain, vaType);
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
 		setDisplayListDirty();

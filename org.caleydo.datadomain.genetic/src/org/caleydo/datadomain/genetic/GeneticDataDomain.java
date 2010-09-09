@@ -199,7 +199,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	}
 
 	@Override
-	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
+	public void handleVAUpdate(ContentVADelta vaDelta, String info) {
 		IDCategory targetCategory = vaDelta.getIDType().getIDCategory();
 		if (targetCategory != contentIDCategory)
 			return;
@@ -212,7 +212,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	}
 
 	@Override
-	public void handleStorageVAUpdate(StorageVADelta vaDelta, String info) {
+	public void handleVAUpdate(StorageVADelta vaDelta, String info) {
 		IDCategory targetCategory = vaDelta.getIDType().getIDCategory();
 		if (targetCategory != storageIDCategory)
 			return;

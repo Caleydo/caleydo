@@ -5,6 +5,11 @@ import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 
+/**
+ * Interface for ListenerOwners handling storage VA updates
+ * 
+ * @author Alexander Lex
+ */
 public interface IStorageVAUpdateHandler
 	extends IListenerOwner {
 
@@ -17,7 +22,7 @@ public interface IStorageVAUpdateHandler
 	 * @param info
 	 *            info about the selection (e.g. the name of triggering view to display in the info-box)
 	 */
-	public void handleStorageVAUpdate(StorageVADelta vaDelta, String info);
+	public void handleVAUpdate(StorageVADelta vaDelta, String info);
 
 	/**
 	 * Handler method to be called by the {@link ReplaceContentVAListener} when a {@link ReplaceVAEvent} was
@@ -26,6 +31,6 @@ public interface IStorageVAUpdateHandler
 	 * @param vaType
 	 *            the type of the VA which is updated
 	 */
-	public void replaceStorageVA(String dataDomain, StorageVAType vaType);
+	public void replaceVA(String dataDomain, StorageVAType vaType);
 
 }
