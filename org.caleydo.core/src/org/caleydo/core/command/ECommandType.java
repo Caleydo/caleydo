@@ -19,8 +19,6 @@ public enum ECommandType {
 	SET_DATA_REPRESENTATION("cmd", "type", "-1", "Set data representation (Raw, Log2, Log10)"),
 	DATA_FILTER_MIN_MAX("cmd", "type", "-1", "Evaluate min and max of an entity"),
 
-	CREATE_GL_VIEW("cmd", "type", "-1", "Create GL View"),
-
 	CREATE_DATA_DOMAIN("cmd", "type", "-1", "Create Data Domain"),
 	CREATE_SET_DATA("cmd", "type", "-1", "Create SET"),
 	CREATE_STORAGE("cmd", "type", "-1", "Create Storage"),

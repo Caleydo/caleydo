@@ -1,50 +1,28 @@
 package org.caleydo.core.view.swt;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.AView;
-import org.caleydo.core.view.swt.widget.SWTNativeWidget;
 import org.eclipse.swt.widgets.Composite;
 
 public abstract class ASWTView
 	extends AView
-	implements ISWTView, IListenerOwner {
+	implements IListenerOwner {
 
+	protected Composite parentComposite;
+	
 	/**
 	 * Constructor.
 	 */
-	public ASWTView(int iParentContainerID, int iViewID) {
-		super(iParentContainerID, iViewID);
-	}
-
-	@Override
-	public abstract void drawView();
-
-	@Override
-	public abstract void initViewSWTComposite(Composite parentComposite);
-
-	@Override
-	public final void initViewRCP(final Composite parentComposite) {
+	public ASWTView(int viewID, Composite parentComposite) {
+		super(viewID);
 		this.parentComposite = parentComposite;
-		initViewSWTComposite(parentComposite);
+		GeneralManager.get().getViewGLCanvasManager().registerItem(this);
 	}
-
-	@Override
-	public void initView() {
-		/**
-		 * Method uses the parent container ID to retrieve the GUI widget by calling the createWidget method
-		 * from the SWT GUI Manager. formally this was the method: retrieveGUIContainer()
-		 */
-		SWTNativeWidget sWTNativeWidget =
-			(SWTNativeWidget) generalManager.getSWTGUIManager().createWidget(
-				EManagedObjectType.GUI_SWT_NATIVE_WIDGET, parentContainerID);
-
-		parentComposite = sWTNativeWidget.getSWTWidget();
-
-		initViewSWTComposite(parentComposite);
-	}
+	
+	public abstract void draw();
 
 	@Override
 	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
@@ -56,12 +34,6 @@ public abstract class ASWTView
 			}
 		});
 	}
-
-	@Override
-	public Composite getComposite() {
-		return parentComposite;
-	}
-
 	@Override
 	public void registerEventListeners() {
 		// TODO Auto-generated method stub
@@ -72,5 +44,9 @@ public abstract class ASWTView
 	public void unregisterEventListeners() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public Composite getComposite() {
+		return parentComposite;
 	}
 }

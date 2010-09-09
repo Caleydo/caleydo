@@ -13,8 +13,7 @@ public class ZoomAction extends AToolBarAction implements IToolBarItem {
 	public static final String TEXT = "Zoom";
 	public static final String ICON = "resources/icons/general/search.png";
 	
-	public ZoomAction(int iViewID) {
-		super(iViewID);
+	public ZoomAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(

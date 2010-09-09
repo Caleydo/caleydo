@@ -26,11 +26,6 @@ public class SerializedGeneSearchView extends ASerializedView {
 	}
 
 	@Override
-	public ViewFrustum getViewFrustum() {
-		return null;
-	}
-
-	@Override
 	public String getViewType() {
 		return RcpGeneSearchView.VIEW_ID;
 	}

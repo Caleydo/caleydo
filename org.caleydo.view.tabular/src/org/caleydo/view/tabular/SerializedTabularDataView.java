@@ -18,11 +18,6 @@ public class SerializedTabularDataView extends ASerializedView {
 	}
 
 	@Override
-	public ViewFrustum getViewFrustum() {
-		return null;
-	}
-
-	@Override
 	public String getViewType() {
 		return TabularDataView.VIEW_ID;
 	}

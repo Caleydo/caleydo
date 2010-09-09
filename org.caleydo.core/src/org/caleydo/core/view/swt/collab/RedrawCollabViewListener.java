@@ -9,7 +9,7 @@ public class RedrawCollabViewListener
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof RedrawCollabViewEvent) {
-			handler.drawView();
+			handler.draw();
 		}
 	}
 

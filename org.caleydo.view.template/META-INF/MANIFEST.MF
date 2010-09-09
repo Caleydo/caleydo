@@ -18,3 +18,4 @@ Export-Package: org.caleydo.view.template,
  org.caleydo.view.template.toolbar
 Bundle-Vendor: Graz University of Technology
 Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.caleydo.view.template.Activator

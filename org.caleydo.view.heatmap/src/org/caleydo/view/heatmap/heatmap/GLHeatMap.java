@@ -114,7 +114,7 @@ public class GLHeatMap extends AStorageBasedView {
 	 * @param glCanvas
 	 * @param viewFrustum
 	 */
-	public GLHeatMap(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+	public GLHeatMap(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 
 		super(glCanvas, viewFrustum);
 		viewType = GLHeatMap.VIEW_ID;

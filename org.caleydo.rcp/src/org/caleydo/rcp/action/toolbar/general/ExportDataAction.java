@@ -16,8 +16,6 @@ public class ExportDataAction
 	 * Constructor.
 	 */
 	public ExportDataAction() {
-		super(-1);
-
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI

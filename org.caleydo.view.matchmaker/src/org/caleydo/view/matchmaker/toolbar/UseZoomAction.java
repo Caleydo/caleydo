@@ -21,9 +21,7 @@ public class UseZoomAction extends AToolBarAction implements IToolBarItem {
 	/**
 	 * Constructor.
 	 */
-	public UseZoomAction(int iViewID) {
-		super(iViewID);
-
+	public UseZoomAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(

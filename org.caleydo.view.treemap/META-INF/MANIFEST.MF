@@ -18,3 +18,4 @@ Export-Package: org.caleydo.view.treemap,
  org.caleydo.view.treemap.toolbar
 Bundle-Vendor: Graz University of Technology
 Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.caleydo.view.treemap.Activator

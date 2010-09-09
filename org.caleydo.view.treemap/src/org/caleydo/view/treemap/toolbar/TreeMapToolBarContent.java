@@ -41,8 +41,6 @@ public class TreeMapToolBarContent extends AToolBarContent {
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		int targetViewID = getTargetViewData().getViewID();
-
 		actionList.add(pointSizeSlider);
 
 		// if (xAxisSelector == null) {
@@ -55,7 +53,7 @@ public class TreeMapToolBarContent extends AToolBarContent {
 		// }
 		// actionList.add(yAxisSelector);
 		
-		actionList.add(new ZoomAction(targetViewID));
+		actionList.add(new ZoomAction());
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);

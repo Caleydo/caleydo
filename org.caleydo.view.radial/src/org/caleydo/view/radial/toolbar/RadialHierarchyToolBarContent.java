@@ -35,11 +35,10 @@ public class RadialHierarchyToolBarContent extends AToolBarContent {
 		container.setToolBarItems(actionList);
 
 		SerializedRadialHierarchyView serializedView = (SerializedRadialHierarchyView) getTargetViewData();
-		int targetViewID = serializedView.getViewID();
 
-		IToolBarItem goBackInHistory = new GoBackInHistoryAction(targetViewID);
-		IToolBarItem goForthInHistory = new GoForthInHistoryAction(targetViewID);
-		IToolBarItem changeColorMode = new ChangeColorModeAction(targetViewID);
+		IToolBarItem goBackInHistory = new GoBackInHistoryAction();
+		IToolBarItem goForthInHistory = new GoForthInHistoryAction();
+		IToolBarItem changeColorMode = new ChangeColorModeAction();
 		// IToolBarItem magnifyingGlass = new ToggleMagnifyingGlassAction();
 		if (depthSlider == null) {
 			depthSlider = new DepthSlider("",

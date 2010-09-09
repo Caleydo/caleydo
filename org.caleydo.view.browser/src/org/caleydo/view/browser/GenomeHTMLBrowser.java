@@ -45,18 +45,19 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 	/**
 	 * Constructor.
 	 */
-	public GenomeHTMLBrowser(int iParentContainerID) {
+	public GenomeHTMLBrowser(Composite parentComposite) {
 
-		super(iParentContainerID, GeneralManager.get().getIDManager()
-				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENOME));
+		super(GeneralManager.get().getIDManager()
+				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENOME), parentComposite);
 
 		registerEventListeners();
 	}
 
 	@Override
-	public void initViewSWTComposite(Composite parentComposite) {
-		super.initViewSWTComposite(parentComposite);
+	public void draw() {
 
+		super.draw();
+		
 		final Combo comboQueryDatabaseType = new Combo(subContributionComposite,
 				SWT.READ_ONLY);
 		comboQueryIDType = new Combo(subContributionComposite, SWT.READ_ONLY);

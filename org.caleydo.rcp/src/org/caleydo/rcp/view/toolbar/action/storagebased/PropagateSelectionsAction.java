@@ -17,9 +17,7 @@ public class PropagateSelectionsAction
 	/**
 	 * Constructor.
 	 */
-	public PropagateSelectionsAction(int iViewID) {
-		super(iViewID);
-
+	public PropagateSelectionsAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI

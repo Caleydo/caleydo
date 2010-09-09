@@ -50,11 +50,6 @@ public class SerializedRadialHierarchyView extends ASerializedView {
 		setNewSelection(true);
 	}
 
-	@Override
-	public ViewFrustum getViewFrustum() {
-		return null;
-	}
-
 	public int getMaxDisplayedHierarchyDepth() {
 		return maxDisplayedHierarchyDepth;
 	}

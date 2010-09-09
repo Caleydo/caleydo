@@ -13,8 +13,7 @@ public class ChangeColorModeAction extends AToolBarAction implements IToolBarIte
 	public static final String TEXT = "Change Color Mode";
 	public static final String ICON = "resources/icons/view/radial/radial_color_mapping.png";
 
-	public ChangeColorModeAction(int viewID) {
-		super(viewID);
+	public ChangeColorModeAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(

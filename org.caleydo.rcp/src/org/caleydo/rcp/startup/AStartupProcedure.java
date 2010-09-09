@@ -42,31 +42,11 @@ public abstract class AStartupProcedure {
 
 		for (Pair<String, String> viewWithDataDomain : appInitData.getAppArgumentStartViewWithDataDomain()) {
 
-//			// Force plugins of start views to load
-//			try {
-//				String viewType = viewWithDataDomain.getFirst();
+//			ASerializedView view =
+//				GeneralManager.get().getViewGLCanvasManager().getViewCreator(viewWithDataDomain.getFirst())
+//					.createSerializedView();
 //
-//				if (!viewType.contains("unspecified")) {
-//					if (viewType.contains("hierarchical"))
-//						viewType = viewType.replace(".hierarchical", "");
-//
-//					Platform.getBundle(viewType).start();
-//				}
-//			}
-//			catch (NullPointerException ex) {
-//				System.out.println("Cannot load view plugin " + viewWithDataDomain.getFirst());
-//				ex.printStackTrace();
-//			}
-//			catch (BundleException e) {
-//				System.out.println("Cannot load view plugin " + viewWithDataDomain.getFirst());
-//				e.printStackTrace();
-//			}
-
-			ASerializedView view =
-				GeneralManager.get().getViewGLCanvasManager().getViewCreator(viewWithDataDomain.getFirst())
-					.createSerializedView();
-
-			view.setDataDomainType(viewWithDataDomain.getSecond());
+//			view.setDataDomainType(viewWithDataDomain.getSecond());
 			appInitData.getInitializedStartViews().add(viewWithDataDomain.getFirst());
 		}
 	}

@@ -29,7 +29,6 @@ public class StartClusteringAction
 	 * Constructor.
 	 */
 	public StartClusteringAction() {
-		super(-1);
 
 		setText(TEXT);
 		setToolTipText(TEXT);

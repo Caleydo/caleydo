@@ -7,10 +7,14 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
+import org.caleydo.view.parcoords.GLParallelCoordinates;
 import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
 import org.caleydo.view.pathway.SerializedPathwayView;
 import org.eclipse.swt.widgets.Composite;
@@ -46,18 +50,27 @@ public class RcpGLBucketView extends ARcpGLViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-
+		
 		createGLCanvas();
-		createGLView(initSerializedView, glCanvas.getID());
+		
+		view = new GLBucket(glCanvas, serializedView.getViewFrustum());
+		if (view instanceof IDataDomainBasedView<?>) {
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(serializedView.getDataDomainType());
+			@SuppressWarnings("unchecked")
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
+				(IDataDomainBasedView<IDataDomain>) view;
+			dataDomainBasedView.setDataDomain(dataDomain);
+		}
+		view.initFromSerializableRepresentation(serializedView);
+		view.initialize();
+		createPartControlGL();
 	}
 
 	@Override
-	public ASerializedView createDefaultSerializedView() {
+	public void createDefaultSerializedView() {
 
-		SerializedBucketView serializedView = new SerializedBucketView();
-		dataDomainType = determineDataDomain(serializedView);
-		serializedView.setDataDomainType(dataDomainType);
-		return serializedView;
+		serializedView = new SerializedBucketView();
+		determineDataDomain(serializedView);
 	}
 
 	@Override

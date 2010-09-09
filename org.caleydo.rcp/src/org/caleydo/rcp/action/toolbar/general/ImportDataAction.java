@@ -16,8 +16,6 @@ public class ImportDataAction
 	 * Constructor.
 	 */
 	public ImportDataAction() {
-		super(-1);
-
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI

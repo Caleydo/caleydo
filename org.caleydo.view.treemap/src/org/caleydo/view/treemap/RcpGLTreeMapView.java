@@ -3,7 +3,9 @@ package org.caleydo.view.treemap;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -28,13 +30,25 @@ public class RcpGLTreeMapView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		createGLView(initSerializedView, glCanvas.getID());
+		view = new GLHierarchicalTreeMap(glCanvas, serializedView.getViewFrustum());
+		view.initFromSerializableRepresentation(serializedView);
+		
+		if (view instanceof IDataDomainBasedView<?>) {
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(serializedView.getDataDomainType());
+			@SuppressWarnings("unchecked")
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
+				(IDataDomainBasedView<IDataDomain>) view;
+			dataDomainBasedView.setDataDomain(dataDomain);
+		}
+		
+		view.initialize();
+		createPartControlGL();
 	}
 
 	@Override
-	public ASerializedView createDefaultSerializedView() {
-		SerializedHierarchicalTreeMapView serializedView = new SerializedHierarchicalTreeMapView(dataDomainType);
-		return serializedView;
+	public void createDefaultSerializedView() {
+		serializedView = new SerializedHierarchicalTreeMapView();
+		determineDataDomain(serializedView);
 	}
 
 	@Override

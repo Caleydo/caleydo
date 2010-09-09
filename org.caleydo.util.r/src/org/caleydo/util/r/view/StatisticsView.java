@@ -17,7 +17,6 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.swt.ASWTView;
-import org.caleydo.core.view.swt.ISWTView;
 import org.caleydo.util.r.listener.StatisticsResultFinishedEventListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -35,7 +34,7 @@ import org.eclipse.swt.widgets.Slider;
  * 
  * @author Marc Streit
  */
-public class StatisticsView extends ASWTView implements IView, ISWTView, IDataDomainSetBasedView {
+public class StatisticsView extends ASWTView implements IView, IDataDomainSetBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.statistics";
 	private Composite composite;
@@ -55,9 +54,9 @@ public class StatisticsView extends ASWTView implements IView, ISWTView, IDataDo
 	/**
 	 * Constructor.
 	 */
-	public StatisticsView(final int iParentContainerId) {
-		super(iParentContainerId, GeneralManager.get().getIDManager()
-				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
+	public StatisticsView(Composite parentComposite) {
+		super(GeneralManager.get().getIDManager()
+				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER), parentComposite);
 
 		this.viewType = VIEW_ID;
 
@@ -65,17 +64,12 @@ public class StatisticsView extends ASWTView implements IView, ISWTView, IDataDo
 	}
 
 	@Override
-	public void initViewSWTComposite(Composite parentComposite) {
+	public void draw() {
 		composite = new Composite(parentComposite, SWT.NULL);
 		GridLayout layout = new GridLayout(1, false);
 		layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
 		composite.setLayout(layout);
 		createGUI();
-	}
-
-	@Override
-	public void drawView() {
-
 	}
 
 	public void initData() {

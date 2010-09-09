@@ -16,9 +16,7 @@ public class UseRandomSamplingAction
 	public static final String TEXT = "Use random sampling";
 	public static final String ICON = "resources/icons/view/storagebased/random_sampling.png";
 
-	public UseRandomSamplingAction(int iViewID) {
-		super(iViewID);
-
+	public UseRandomSamplingAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI

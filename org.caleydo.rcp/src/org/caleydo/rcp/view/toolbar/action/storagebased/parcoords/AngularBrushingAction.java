@@ -17,9 +17,7 @@ public class AngularBrushingAction
 	/**
 	 * Constructor.
 	 */
-	public AngularBrushingAction(int iViewID) {
-		super(iViewID);
-
+	public AngularBrushingAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI

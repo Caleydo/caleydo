@@ -21,9 +21,7 @@ public class UseBandBundlingAction extends AToolBarAction implements IToolBarIte
 	/**
 	 * Constructor.
 	 */
-	public UseBandBundlingAction(int iViewID) {
-		super(iViewID);
-
+	public UseBandBundlingAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(

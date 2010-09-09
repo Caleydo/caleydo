@@ -3,10 +3,11 @@ package org.caleydo.view.selectionbrowser;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
+import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
-import org.caleydo.view.selectionbrowser.creator.ViewCreator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -20,15 +21,9 @@ import org.eclipse.swt.widgets.Composite;
 public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 
 	public static final String VIEW_ID = "org.caleydo.view.selectionbrowser";
-	private Composite parentComposite;
-
-	private SelectionBrowserView selectionBrowser;
 
 	public RcpSelectionBrowserView() {
 		super();
-		
-		// Create view creator for initializing possible data domains
-		new ViewCreator();
 		
 		try {
 			viewContext = JAXBContext
@@ -57,13 +52,14 @@ public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 
 		infoComposite.setLayout(layout);
 
-		SerializedSelectionBrowserView serializedView = new SerializedSelectionBrowserView();
+		view = new SelectionBrowserView(infoComposite);
 
-		selectionBrowser = new SelectionBrowserView();
-		selectionBrowser.setDataDomain((ASetBasedDataDomain) DataDomainManager
-				.get().getDataDomain(determineDataDomain(serializedView)));
-		selectionBrowser.registerEventListeners();
-		selectionBrowser.createControl(infoComposite);
+		if (view instanceof IDataDomainBasedView<?>) {
+				((IDataDomainBasedView<IDataDomain>) view).setDataDomain(DataDomainManager
+						.get().getDataDomain(serializedView.getDataDomainType()));
+		}
+		
+		((ASWTView)view).draw();
 
 	}
 
@@ -76,6 +72,12 @@ public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 	public void dispose() {
 		super.dispose();
 
-		selectionBrowser.dispose();
+//		selectionBrowser.dispose();
+	}
+
+	@Override
+	public void createDefaultSerializedView() {
+		serializedView = new SerializedSelectionBrowserView();
+		determineDataDomain(serializedView);
 	}
 }

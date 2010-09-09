@@ -3,8 +3,11 @@ package org.caleydo.view.dataflipper;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
+import org.caleydo.view.parcoords.GLParallelCoordinates;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLDataFlipperView extends ARcpGLViewPart {
@@ -30,16 +33,19 @@ public class RcpGLDataFlipperView extends ARcpGLViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-
+		
 		createGLCanvas();
-		createGLView(initSerializedView, glCanvas.getID());
+		view = new GLDataFlipper(glCanvas, serializedView.getViewFrustum());
+		view.initFromSerializableRepresentation(serializedView);
+		view.initialize();
+		createPartControlGL();
 	}
 
 	@Override
-	public ASerializedView createDefaultSerializedView() {
+	public void createDefaultSerializedView() {
 
-		SerializedDataFlipperView serializedView = new SerializedDataFlipperView();
-		return serializedView;
+		serializedView = new SerializedDataFlipperView();
+		determineDataDomain(serializedView);
 	}
 
 	@Override

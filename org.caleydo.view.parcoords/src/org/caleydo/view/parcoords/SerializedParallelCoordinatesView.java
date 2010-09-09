@@ -4,8 +4,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
  * Serialized form of a parallel-coordinates-view.
@@ -27,14 +25,12 @@ public class SerializedParallelCoordinatesView extends ASerializedView {
 	}
 
 	@Override
-	public ViewFrustum getViewFrustum() {
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 8, 0,
-				8, -20, 20);
-		return viewFrustum;
-	}
-
-	@Override
 	public String getViewType() {
 		return GLParallelCoordinates.VIEW_ID;
+	}
+	
+	@Override
+	public String getViewClassType() {
+		return GLParallelCoordinates.class.getName();
 	}
 }

@@ -46,24 +46,22 @@ public class ScatterplotToolBarContent extends AToolBarContent {
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		int targetViewID = getTargetViewData().getViewID();
-
-		IToolBarItem testAction = new TogglePointTypeAction(targetViewID);
+		IToolBarItem testAction = new TogglePointTypeAction();
 		actionList.add(testAction);
 
-		IToolBarItem toggleMatrix = new ToggleMatrixViewAction(targetViewID);
+		IToolBarItem toggleMatrix = new ToggleMatrixViewAction();
 		actionList.add(toggleMatrix);
 
-		IToolBarItem toggleColor = new ToggleColorModeAction(targetViewID);
+		IToolBarItem toggleColor = new ToggleColorModeAction();
 		actionList.add(toggleColor);
 
-		IToolBarItem toggleMatrixZoom = new ToggleMatrixZoomAction(targetViewID);
+		IToolBarItem toggleMatrixZoom = new ToggleMatrixZoomAction();
 		actionList.add(toggleMatrixZoom);
 
-		IToolBarItem toggleMainViewZoom = new ToggleMainViewZoomAction(targetViewID);
+		IToolBarItem toggleMainViewZoom = new ToggleMainViewZoomAction();
 		actionList.add(toggleMainViewZoom);
 
-		IToolBarItem toggle2AxisMode = new Toggle2AxisModeAction(targetViewID);
+		IToolBarItem toggle2AxisMode = new Toggle2AxisModeAction();
 		actionList.add(toggle2AxisMode);
 
 		if (pointSizeSlider == null) {

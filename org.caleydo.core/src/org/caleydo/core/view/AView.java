@@ -13,7 +13,6 @@ import org.eclipse.swt.widgets.Composite;
  * Abstract class that is the base of all view representations. It holds the the own view ID, the parent ID
  * and the attributes that needs to be processed.
  * 
- * @author Michael Kalkusch
  * @author Marc Streit
  */
 public abstract class AView
@@ -29,20 +28,14 @@ public abstract class AView
 
 	protected EventPublisher eventPublisher;
 
-	protected int parentContainerID;
-
-	protected Composite parentComposite;
-
 	/**
 	 * Constructor.
 	 */
-	public AView(final int iParentContainerId, final int iViewID) {
-		super(iViewID);
+	public AView(int viewID) {
+		super(viewID);
 
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
-
-		this.parentContainerID = iParentContainerId;
 	}
 
 	/**
@@ -51,17 +44,6 @@ public abstract class AView
 	@Override
 	public void initialize() {
 
-	}
-
-	/**
-	 * Sets the unique ID of the parent container. Normally it is already set in the constructor. Use this
-	 * method only if you want to change the parent during runtime.
-	 * 
-	 * @param iParentContainerId
-	 */
-	@Override
-	public void setParentContainerId(int iParentContainerId) {
-		this.parentContainerID = iParentContainerId;
 	}
 
 	/**

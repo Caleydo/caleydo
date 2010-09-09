@@ -11,7 +11,6 @@ import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.swt.ASWTView;
-import org.caleydo.core.view.swt.ISWTView;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.view.browser.listener.ChangeURLListener;
 import org.eclipse.core.runtime.IStatus;
@@ -40,7 +39,7 @@ import org.eclipse.swt.widgets.ToolItem;
  * 
  * @author Marc Streit
  */
-public class HTMLBrowser extends ASWTView implements ISWTView {
+public class HTMLBrowser extends ASWTView {
 
 	public final static String VIEW_ID = "org.caleydo.view.browser";
 
@@ -74,39 +73,23 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 	/**
 	 * Constructor.
 	 */
-	public HTMLBrowser(final int iParentContainerId) {
-		super(iParentContainerId, GeneralManager.get().getIDManager()
-				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENERAL));
+	public HTMLBrowser(Composite parentComposite) {
+		super(GeneralManager.get().getIDManager()
+				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENERAL), parentComposite);
 		viewType = VIEW_ID;
-		init();
 	}
 
 	/**
 	 * Constructor.
 	 */
-	public HTMLBrowser(final int iParentContainerId, int iViewID) {
-		super(iParentContainerId, iViewID);
-		init();
-	}
-
-	/**
-	 * Basic initialization, used only within constructors.
-	 * 
-	 * @param parentComposite
-	 */
-	private void init() {
-		generalManager = GeneralManager.get();
-		eventPublisher = generalManager.getEventPublisher();
+	public HTMLBrowser(int iViewID, Composite parentComposite) {
+		super(iViewID, parentComposite);
 	}
 
 	@Override
-	public void initViewSWTComposite(Composite parentComposite) {
-		Composite composite = new Composite(parentComposite, SWT.NONE);
-		GridLayout layout = new GridLayout(1, false);
-		composite.setLayout(layout);
-		composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+	public void draw() {
 
-		Composite browserBarComposite = new Composite(composite, SWT.NONE);
+		Composite browserBarComposite = new Composite(parentComposite, SWT.NONE);
 		browserBarComposite.setLayout(new GridLayout(3, false));
 
 		subContributionComposite = new Composite(browserBarComposite, SWT.NONE);
@@ -180,7 +163,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 			@Override
 			public void handleEvent(Event e) {
 				url = textURL.getText();
-				drawView();
+				draw();
 			}
 		});
 
@@ -194,7 +177,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 			}
 		});
 
-		browser = new Browser(composite, SWT.BORDER);
+		browser = new Browser(parentComposite, SWT.BORDER);
 
 		// Mechanism prevents the browser to steal the focus from other views
 		browser.addProgressListener(new ProgressListener() {
@@ -224,10 +207,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 
 		data = new GridData();
 		browser.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-	}
-
-	@Override
-	public void drawView() {
+		
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Load " + url));
 
 		try {
@@ -257,7 +237,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 		this.url = sUrl;
 
 		// idExtractionLocationListener.updateSkipNextChangeEvent(true);
-		drawView();
+		draw();
 	}
 
 	protected boolean checkInternetConnection() {

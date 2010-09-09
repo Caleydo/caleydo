@@ -24,11 +24,6 @@ public class SerializedGrouperView extends ASerializedView {
 	}
 
 	@Override
-	public ViewFrustum getViewFrustum() {
-		return null;
-	}
-
-	@Override
 	public String getViewType() {
 		return GLGrouper.VIEW_ID;
 	}

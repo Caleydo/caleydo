@@ -39,10 +39,9 @@ public class HeatMapToolBarContent extends AToolBarContent {
 		int targetViewID = getTargetViewData().getViewID();
 
 		if (renderType == STANDARD_RENDERING) {
-			IToolBarItem resetViewAction = new ResetViewAction(targetViewID);
+			IToolBarItem resetViewAction = new ResetViewAction();
 			actionList.add(resetViewAction);
-			IToolBarItem propagateSelectionAction = new PropagateSelectionsAction(
-					targetViewID);
+			IToolBarItem propagateSelectionAction = new PropagateSelectionsAction();
 			actionList.add(propagateSelectionAction);
 		}
 

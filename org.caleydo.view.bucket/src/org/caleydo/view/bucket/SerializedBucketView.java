@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
 
@@ -92,11 +93,6 @@ public class SerializedBucketView extends ASerializedView {
 		setStackViews(remoteViews);
 	}
 
-	@Override
-	public ViewFrustum getViewFrustum() {
-		return null;
-	}
-
 	public boolean isPathwayTexturesEnabled() {
 		return pathwayTexturesEnabled;
 	}
@@ -150,5 +146,10 @@ public class SerializedBucketView extends ASerializedView {
 	@Override
 	public String getViewType() {
 		return GLBucket.VIEW_ID;
+	}
+	
+	@Override
+	public ViewFrustum getViewFrustum() {
+		return new ViewFrustum(CameraProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100);
 	}
 }

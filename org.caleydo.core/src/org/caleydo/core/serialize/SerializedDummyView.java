@@ -19,11 +19,6 @@ public class SerializedDummyView
 	}
 
 	@Override
-	public ViewFrustum getViewFrustum() {
-		return null;
-	}
-
-	@Override
 	public String getViewType() {
 		return null;
 	}

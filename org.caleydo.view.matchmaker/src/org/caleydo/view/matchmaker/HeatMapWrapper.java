@@ -8,8 +8,6 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentGroupList;
@@ -33,6 +31,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -116,16 +115,10 @@ public class HeatMapWrapper {
 
 	private GLHeatMap createHeatMap(GL gl, GLMouseListener glMouseListener) {
 
-		CmdCreateView cmdView = (CmdCreateView) generalManager.getCommandManager()
-				.createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID(GLHeatMap.VIEW_ID);
-
-		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, 50, 0, 50, -20, 20,
-				-1);
-		cmdView.setDataDomainType(dataDomain.getDataDomainType());
-		cmdView.doCommand();
-
-		GLHeatMap heatMap = (GLHeatMap) cmdView.getCreatedObject();
+		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
+				50, 0, 50, -20, 20);
+		
+		GLHeatMap heatMap = new GLHeatMap(parentView.getParentGLCanvas(), viewFrustum);
 		heatMap.setRemoteRenderingGLView(parentView);
 		heatMap.setDataDomain(dataDomain);
 		heatMap.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
@@ -146,16 +139,10 @@ public class HeatMapWrapper {
 
 	private void createDendrogram(GL gl, GLMouseListener glMouseListener) {
 
-		CmdCreateView cmdView = (CmdCreateView) generalManager.getCommandManager()
-				.createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID(GLDendrogram.VIEW_ID + ".horizontal");
+		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
+				50, 0, 50, -20, 20);
 
-		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, 50, 0, 50, -20, 20,
-				-1);
-		cmdView.setDataDomainType(dataDomain.getDataDomainType());
-		cmdView.doCommand();
-
-		dendrogram = (GLDendrogram<ContentGroupList>) cmdView.getCreatedObject();
+		dendrogram = new GLDendrogram<ContentGroupList>(glParentView.getParentGLCanvas(), viewFrustum, true);
 		dendrogram.setDataDomain(dataDomain);
 		dendrogram.setRemoteRenderingGLView(parentView);
 		dendrogram.setContentVAType(ContentVAType.CONTENT);

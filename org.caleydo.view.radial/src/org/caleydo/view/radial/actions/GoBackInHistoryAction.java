@@ -13,8 +13,7 @@ public class GoBackInHistoryAction extends AToolBarAction implements IToolBarIte
 	public static final String TEXT = "Back";
 	public static final String ICON = "resources/icons/view/general/undo.png";
 
-	public GoBackInHistoryAction(int viewID) {
-		super(viewID);
+	public GoBackInHistoryAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(

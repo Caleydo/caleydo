@@ -22,7 +22,6 @@ import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.swt.ASWTView;
-import org.caleydo.core.view.swt.ISWTView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -40,7 +39,7 @@ import org.eclipse.swt.widgets.TreeItem;
  */
 public class CollabViewRep
 	extends ASWTView
-	implements IView, ISWTView, IListenerOwner {
+	implements IView, IListenerOwner {
 
 	/** data-name to store the related {@link EventFilterBridge} to a TreeItem */
 	public static final String ITEM_DATA_BRIDGE = "bridge";
@@ -68,26 +67,20 @@ public class CollabViewRep
 	/**
 	 * Constructor.
 	 * 
-	 * @param iParentContainerId
-	 * @param sLabel
 	 */
-	public CollabViewRep(final int iParentContainerId) {
-		super(iParentContainerId, GeneralManager.get().getIDManager()
-			.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
+	public CollabViewRep(Composite parentComposite) {
+		super(GeneralManager.get().getIDManager()
+			.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER), parentComposite);
 	}
 
 	@Override
-	public void initViewSWTComposite(Composite parentComposite) {
-		this.parentComposite = parentComposite;
+	public void draw() {
 		baseComposite = null;
 		IGroupwareManager groupwareManager = GeneralManager.get().getGroupwareManager();
 		if (groupwareManager != null) {
 			networkManager = groupwareManager.getNetworkManager();
 		}
-	}
-
-	@Override
-	public void drawView() {
+		
 		if (baseComposite != null) {
 			baseComposite.dispose();
 		}

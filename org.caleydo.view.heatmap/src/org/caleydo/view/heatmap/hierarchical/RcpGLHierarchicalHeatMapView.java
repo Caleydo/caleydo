@@ -3,8 +3,15 @@ package org.caleydo.view.heatmap.hierarchical;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
@@ -27,27 +34,29 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		// if (dataDomain != null && dataDomain instanceof GeneticDataDomain
-		// && ((GeneticDataDomain) dataDomain).isPathwayViewerMode()) {
-		// MessageBox alert = new MessageBox(new Shell(), SWT.OK);
-		// alert.setMessage("Cannot create heat map in pathway viewer mode!");
-		// alert.open();
-		//
-		// dispose();
-		// return;
-		// }
-
 		createGLCanvas();
-		createGLView(initSerializedView, glCanvas.getID());
+		
+		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20);
+		view = new GLHierarchicalHeatMap(glCanvas, viewFrustum);
+		view.initFromSerializableRepresentation(serializedView);
+
+		if (view instanceof IDataDomainBasedView<?>) {
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(serializedView.getDataDomainType());
+			@SuppressWarnings("unchecked")
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
+				(IDataDomainBasedView<IDataDomain>) view;
+			dataDomainBasedView.setDataDomain(dataDomain);
+		}
+
+		view.initialize();
+		createPartControlGL();
 	}
 
 	@Override
-	public ASerializedView createDefaultSerializedView() {
+	public void createDefaultSerializedView() {
 
-		SerializedHierarchicalHeatMapView serializedView = new SerializedHierarchicalHeatMapView();
-		serializedView.setDataDomainType(determineDataDomain(serializedView));
-
-		return serializedView;
+		serializedView = new SerializedHierarchicalHeatMapView();
+		determineDataDomain(serializedView);
 	}
 
 	@Override

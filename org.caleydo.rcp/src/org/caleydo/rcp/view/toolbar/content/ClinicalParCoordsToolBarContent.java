@@ -9,7 +9,6 @@ import org.caleydo.rcp.view.toolbar.ActionToolBarContainer;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.ToolBarContainer;
 import org.caleydo.rcp.view.toolbar.action.storagebased.PropagateSelectionsAction;
-import org.caleydo.rcp.view.toolbar.action.storagebased.RenderContextAction;
 import org.caleydo.rcp.view.toolbar.action.storagebased.ResetViewAction;
 import org.caleydo.rcp.view.toolbar.action.storagebased.UseRandomSamplingAction;
 import org.caleydo.rcp.view.toolbar.action.storagebased.parcoords.AngularBrushingAction;
@@ -43,14 +42,13 @@ public class ClinicalParCoordsToolBarContent
 		container.setToolBarItems(actionList);
 
 		// all pc views
-		int targetViewID = getTargetViewData().getViewID();
-		IToolBarItem angularBrushingAction = new AngularBrushingAction(targetViewID);
+		IToolBarItem angularBrushingAction = new AngularBrushingAction();
 		actionList.add(angularBrushingAction);
-		IToolBarItem saveSelectionsAction = new SaveSelectionsAction(targetViewID);
+		IToolBarItem saveSelectionsAction = new SaveSelectionsAction();
 		actionList.add(saveSelectionsAction);
-		IToolBarItem resetViewAction = new ResetViewAction(targetViewID);
+		IToolBarItem resetViewAction = new ResetViewAction();
 		actionList.add(resetViewAction);
-		IToolBarItem propagateSelectionAction = new PropagateSelectionsAction(targetViewID);
+		IToolBarItem propagateSelectionAction = new PropagateSelectionsAction();
 		actionList.add(propagateSelectionAction);
 
 		PreferenceStore ps = GeneralManager.get().getPreferenceStore();
@@ -58,9 +56,7 @@ public class ClinicalParCoordsToolBarContent
 
 		// only if standalone or explicitly requested
 		if (renderType == STANDARD_RENDERING && !limit) {
-			IToolBarItem toggleRenderContextAction = new RenderContextAction(targetViewID);
-			actionList.add(toggleRenderContextAction);
-			IToolBarItem useRandomSamplingAction = new UseRandomSamplingAction(targetViewID);
+			IToolBarItem useRandomSamplingAction = new UseRandomSamplingAction();
 			actionList.add(useRandomSamplingAction);
 		}
 

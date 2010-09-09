@@ -48,13 +48,6 @@ public class SerializedTissueViewBrowserView extends ASerializedView {
 		// initialContainedViews.add(pathway);
 	}
 
-	@Override
-	public ViewFrustum getViewFrustum() {
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 8, 0,
-				8, -20, 20);
-		return viewFrustum;
-	}
-
 	@XmlElementWrapper
 	public List<ASerializedView> getInitialContainedViews() {
 		return initialContainedViews;

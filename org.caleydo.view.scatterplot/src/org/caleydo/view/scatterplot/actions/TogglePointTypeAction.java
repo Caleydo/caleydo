@@ -15,9 +15,7 @@ public class TogglePointTypeAction extends AToolBarAction implements IToolBarIte
 	/**
 	 * Constructor.
 	 */
-	public TogglePointTypeAction(int iViewID) {
-		super(iViewID);
-
+	public TogglePointTypeAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(

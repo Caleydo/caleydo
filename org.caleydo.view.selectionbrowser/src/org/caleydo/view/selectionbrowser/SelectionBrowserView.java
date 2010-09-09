@@ -25,6 +25,7 @@ import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
@@ -34,6 +35,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.swt.ASWTView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -41,7 +43,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
@@ -53,7 +54,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class SelectionBrowserView implements IDataDomainBasedView<ASetBasedDataDomain>,
+public class SelectionBrowserView extends ASWTView implements IDataDomainBasedView<ASetBasedDataDomain>,
 		ISelectionUpdateHandler, IContentVAUpdateHandler, ISelectionCommandHandler,
 		IViewCommandHandler {
 
@@ -70,8 +71,7 @@ public class SelectionBrowserView implements IDataDomainBasedView<ASetBasedDataD
 
 	private Label lblTest;
 	private Button btnMerge;
-	private Button btnSub;;
-	private Composite parentComposite;
+	private Button btnSub;
 
 	private SelectionUpdateListener selectionUpdateListener;
 	private ContentVAUpdateListener virtualArrayUpdateListener;
@@ -83,7 +83,9 @@ public class SelectionBrowserView implements IDataDomainBasedView<ASetBasedDataD
 	/**
 	 * Constructor.
 	 */
-	public SelectionBrowserView() {
+	public SelectionBrowserView(Composite parentComposite) {
+		
+		super(-1, parentComposite);
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 		registerEventListeners();
@@ -97,19 +99,19 @@ public class SelectionBrowserView implements IDataDomainBasedView<ASetBasedDataD
 		contentSelectionManager.setVA(contentVA);
 	}
 
-	public Control createControl(final Composite parent) {
+	@Override
+	public void draw() {
 
-		parentComposite = parent;
-		selectionTree = new Tree(parent, SWT.NULL | SWT.MULTI);
+		selectionTree = new Tree(parentComposite, SWT.NULL | SWT.MULTI);
 
-		Label sepLabel = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+		Label sepLabel = new Label(parentComposite, SWT.SEPARATOR | SWT.HORIZONTAL);
 
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.minimumHeight = 8;
 		gridData.verticalAlignment = SWT.CENTER;
 		sepLabel.setLayoutData(gridData);
 
-		btnMerge = new Button(parent, SWT.WRAP);
+		btnMerge = new Button(parentComposite, SWT.WRAP);
 		btnMerge.setAlignment(SWT.CENTER);
 		btnMerge.setText("Merge Selection(s)");
 		gridData = new GridData(GridData.FILL_BOTH);
@@ -117,7 +119,7 @@ public class SelectionBrowserView implements IDataDomainBasedView<ASetBasedDataD
 		gridData.minimumWidth = 120;
 		btnMerge.setLayoutData(gridData);
 
-		btnSub = new Button(parent, SWT.WRAP);
+		btnSub = new Button(parentComposite, SWT.WRAP);
 		btnSub.setAlignment(SWT.CENTER);
 		btnSub.setText("Delete Selection(s)");
 		gridData = new GridData(GridData.FILL_BOTH);
@@ -125,7 +127,7 @@ public class SelectionBrowserView implements IDataDomainBasedView<ASetBasedDataD
 		gridData.minimumWidth = 120;
 		btnSub.setLayoutData(gridData);
 
-		sepLabel = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sepLabel = new Label(parentComposite, SWT.SEPARATOR | SWT.HORIZONTAL);
 
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.minimumHeight = 10;
@@ -159,7 +161,7 @@ public class SelectionBrowserView implements IDataDomainBasedView<ASetBasedDataD
 			}
 		});
 
-		lblTest = new Label(parent, SWT.WRAP);
+		lblTest = new Label(parentComposite, SWT.WRAP);
 		lblTest.setAlignment(SWT.CENTER);
 		lblTest.setText("");
 		gridData = new GridData(GridData.FILL_BOTH);
@@ -186,8 +188,6 @@ public class SelectionBrowserView implements IDataDomainBasedView<ASetBasedDataD
 		contentTree.setData(-1);
 		contentTree.setText("Content Selections");
 		updateContentTree();
-
-		return parent;
 	}
 
 	private void deleteSelections() {
@@ -423,4 +423,13 @@ public class SelectionBrowserView implements IDataDomainBasedView<ASetBasedDataD
 		return dataDomain;
 	}
 
+	@Override
+	public ASerializedView getSerializableRepresentation() {
+		return new SerializedSelectionBrowserView(dataDomain.getDataDomainType());
+	}
+
+	@Override
+	public void initFromSerializableRepresentation(ASerializedView serializedView) {
+	
+	}
 }

@@ -3,7 +3,6 @@ package org.caleydo.view.template;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -33,13 +32,16 @@ public class RcpGLTemplateView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		createGLView(initSerializedView, glCanvas.getID());
+		view = new GLTemplate(glCanvas, serializedView.getViewFrustum());
+		view.initFromSerializableRepresentation(serializedView);
+		view.initialize();
+		createPartControlGL();
 	}
 
 	@Override
-	public ASerializedView createDefaultSerializedView() {
-		SerializedTemplateView serializedView = new SerializedTemplateView(dataDomainType);
-		return serializedView;
+	public void createDefaultSerializedView() {
+		serializedView = new SerializedTemplateView();
+		determineDataDomain(serializedView);
 	}
 
 	@Override

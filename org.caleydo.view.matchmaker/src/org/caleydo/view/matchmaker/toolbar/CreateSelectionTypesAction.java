@@ -18,9 +18,7 @@ public class CreateSelectionTypesAction extends AToolBarAction implements IToolB
 	/**
 	 * Constructor.
 	 */
-	public CreateSelectionTypesAction(int iViewID) {
-		super(iViewID);
-
+	public CreateSelectionTypesAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(

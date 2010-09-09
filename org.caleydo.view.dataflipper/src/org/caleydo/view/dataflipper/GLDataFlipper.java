@@ -13,18 +13,17 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
-import org.caleydo.core.command.view.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.command.CommandManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.AssociationManager;
 import org.caleydo.core.manager.datadomain.DataDomainGraph;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.ClusterSetEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
@@ -248,16 +247,14 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		glConnectionLineRenderer = new GLConnectionLineRendererDataFlipper(focusElement,
 				stackElementsLeft, stackElementsRight);
 
-		if (DataDomainManager.get().getDataDomain(
-				"org.caleydo.datadomain.pathway") == null) {
+		if (DataDomainManager.get().getDataDomain("org.caleydo.datadomain.pathway") == null) {
 			CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(
 					ECommandType.CREATE_DATA_DOMAIN);
 			cmd.setAttributes("org.caleydo.datadomain.pathway");
 			cmd.doCommand();
 		}
 
-		if (DataDomainManager.get()
-				.getDataDomain("org.caleydo.datadomain.tissue") == null) {
+		if (DataDomainManager.get().getDataDomain("org.caleydo.datadomain.tissue") == null) {
 			CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(
 					ECommandType.CREATE_DATA_DOMAIN);
 			cmd.setAttributes("org.caleydo.datadomain.tissue");
@@ -694,24 +691,27 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	 *            serialized form of the view to create
 	 * @return the created view ready to be used within the application
 	 */
+	@SuppressWarnings("unchecked")
 	private AGLView createView(GL gl, ASerializedView serView) {
 
-		CommandManager commandManager = generalManager.getCommandManager();
-		CmdCreateView cmdView = (CmdCreateView) commandManager
-				.createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID(serView.getViewType());
-		cmdView.setAttributesFromSerializedForm(serView);
-		cmdView.doCommand();
-
-		AGLView glView = cmdView.getCreatedObject();
+		@SuppressWarnings("rawtypes")
+		Class viewClass;
+		try {
+			viewClass = Class.forName(serView.getViewClassType());
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException("Cannot find class for view "+serView.getViewType());
+		}
+		
+		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
+				.createGLView(viewClass, parentGLCanvas, viewFrustum);
 		glView.setRemoteRenderingGLView(this);
 
-		// if (glView instanceof IDataDomainBasedView<?>) {
-		// ((IDataDomainBasedView<IDataDomain>)
-		// glView).setDataDomain(DataDomainManager
-		// .getInstance().getDataDomain(serView.getDataDomainType()));
-		// }
-
+		if (glView instanceof IDataDomainBasedView<?>) {
+			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
+					.get().getDataDomain(serView.getDataDomainType()));
+		}
+		glView.initialize();
+		
 		return glView;
 	}
 
@@ -1099,8 +1099,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			case CLICKED:
 
-				for (IDataDomain tmpDataDomain : DataDomainManager.get()
-						.getDataDomains()) {
+				for (IDataDomain tmpDataDomain : DataDomainManager.get().getDataDomains()) {
 					String tmpDataDomainType = tmpDataDomain.getDataDomainType();
 					if (tmpDataDomainType.hashCode() == externalPickingID) {
 
@@ -1228,8 +1227,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (interfaceType.equals("org.caleydo.analytical.clustering")) {
 			ArrayList<ISet> sets = new ArrayList<ISet>();
-			sets.add(((ASetBasedDataDomain) DataDomainManager.get()
-					.getDataDomain(dataDomainType)).getSet());
+			sets.add(((ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
+					dataDomainType)).getSet());
 
 			ClusterSetEvent event = new ClusterSetEvent(sets);
 			event.setSender(this);
@@ -1385,8 +1384,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private void renderDataDomain(final GL gl, HistoryNode node, float x, float y) {
 
 		String dataDomainType = node.getDataDomainType();
-		IDataDomain dataDomain = DataDomainManager.get().getDataDomain(
-				dataDomainType);
+		IDataDomain dataDomain = DataDomainManager.get().getDataDomain(dataDomainType);
 		EIconTextures dataDomainIcon = dataDomain.getIcon();
 
 		float maxViewIcons = 4;
@@ -1707,8 +1705,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// Check if data domain is organ because this datadomain does not exist
 		// as plugin.
 		if (!dataDomainType.equals("org.caleydo.datadomain.organ")) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(
-					dataDomainType);
+			IDataDomain dataDomain = DataDomainManager.get()
+					.getDataDomain(dataDomainType);
 			dataDomainIcon = dataDomain.getIcon();
 		} else
 			dataDomainIcon = EIconTextures.DATA_DOMAIN_ORGAN;

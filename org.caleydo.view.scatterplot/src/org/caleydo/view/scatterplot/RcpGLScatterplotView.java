@@ -3,7 +3,9 @@ package org.caleydo.view.scatterplot;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -26,21 +28,31 @@ public class RcpGLScatterplotView extends ARcpGLViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-
+		
 		createGLCanvas();
-		createGLView(initSerializedView, glCanvas.getID());
+		
+		view = new GLScatterPlot(glCanvas, serializedView.getViewFrustum());
+		view.initFromSerializableRepresentation(serializedView);
+		if (view instanceof IDataDomainBasedView<?>) {
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(serializedView.getDataDomainType());
+			@SuppressWarnings("unchecked")
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
+				(IDataDomainBasedView<IDataDomain>) view;
+			dataDomainBasedView.setDataDomain(dataDomain);
+		}
+
+		view.initialize();
+		createPartControlGL();
 	}
 
 	@Override
-	public ASerializedView createDefaultSerializedView() {
-		SerializedScatterplotView serializedView = new SerializedScatterplotView(
-				dataDomainType);
-		return serializedView;
+	public void createDefaultSerializedView() {
+		serializedView = new SerializedScatterplotView();
+		determineDataDomain(serializedView);
 	}
 
 	@Override
 	public String getViewGUIID() {
 		return GLScatterPlot.VIEW_ID;
 	}
-
 }

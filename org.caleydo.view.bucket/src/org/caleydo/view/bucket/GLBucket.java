@@ -12,14 +12,11 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.CmdCreateView;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.command.CommandManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
@@ -215,13 +212,12 @@ public class GLBucket extends AGLView implements
 	/**
 	 * Constructor.
 	 */
-	public GLBucket(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum,
-			final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode) {
+	public GLBucket(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
 		super(glCanvas, viewFrustum, true);
 		viewType = GLBucket.VIEW_ID;
 
-		this.layoutMode = layoutMode;
+		layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET;
 
 		if (generalManager.getTrackDataProvider().isTrackModeActive()) {
 			glOffScreenRenderer = new GLOffScreenTextureRenderer();
@@ -2541,22 +2537,23 @@ public class GLBucket extends AGLView implements
 	@SuppressWarnings("unchecked")
 	private AGLView createView(GL gl, ASerializedView serView) {
 
-		CommandManager cm = generalManager.getCommandManager();
-		CmdCreateView cmdView = (CmdCreateView) cm
-				.createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID(serView.getViewType());
-		cmdView.setAttributesFromSerializedForm(serView);
-		cmdView.doCommand();
-
-		AGLView glView = cmdView.getCreatedObject();
+		@SuppressWarnings("rawtypes")
+		Class viewClass;
+		try {
+			viewClass = Class.forName(serView.getViewClassType());
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException("Cannot find class for view "+serView.getViewType());
+		}
+		
+		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
+				.createGLView(viewClass, parentGLCanvas, viewFrustum);
 		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof IDataDomainBasedView<?>) {
-			((IDataDomainBasedView<IDataDomain>) glView)
-					.setDataDomain((IDataDomain) DataDomainManager.get().getDataDomain(
-							serView.getDataDomainType()));
+			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
+					.get().getDataDomain(serView.getDataDomainType()));
 		}
-
+		
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
 
@@ -2566,8 +2563,9 @@ public class GLBucket extends AGLView implements
 			glPathway.enableGeneMapping(geneMappingEnabled);
 		}
 
+		glView.initialize();
 		triggerMostRecentDelta();
-
+		
 		return glView;
 	}
 

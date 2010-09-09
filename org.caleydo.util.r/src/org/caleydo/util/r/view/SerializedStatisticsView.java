@@ -18,11 +18,6 @@ public class SerializedStatisticsView extends ASerializedView {
 	}
 
 	@Override
-	public ViewFrustum getViewFrustum() {
-		return null;
-	}
-
-	@Override
 	public String getViewType() {
 		return StatisticsView.VIEW_ID;
 	}

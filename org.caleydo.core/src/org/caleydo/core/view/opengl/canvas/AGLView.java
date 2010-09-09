@@ -59,7 +59,6 @@ import com.sun.opengl.util.texture.TextureCoords;
  * 
  * @author Marc Streit
  * @author Alexander Lex
- * @author Michael Kalkusch
  */
 public abstract class AGLView
 	extends AView
@@ -174,11 +173,11 @@ public abstract class AGLView
 		final boolean bRegisterToParentCanvasNow) {
 
 		// If the glCanvas object is null - then the view is rendered remote.
-		super(glCanvas != null ? glCanvas.getID() : -1, GeneralManager.get().getIDManager()
+		super(GeneralManager.get().getIDManager()
 			.createID(EManagedObjectType.GL_VIEW));
-
+		
 		parentGLCanvas = glCanvas;
-
+		
 		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), true, true);
 
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
@@ -202,6 +201,9 @@ public abstract class AGLView
 	@Override
 	public void initialize() {
 		registerEventListeners();
+		
+//		if (glRemoteRenderingView == null)
+			GeneralManager.get().getViewGLCanvasManager().registerGLEventListenerByGLCanvas(parentGLCanvas, this);
 	}
 
 	@Override
@@ -754,7 +756,7 @@ public abstract class AGLView
 	// }
 
 	@Override
-	public void initFromSerializableRepresentation(ASerializedView ser) {
+	public void initFromSerializableRepresentation(ASerializedView serialzedView) {
 		// the default implementation does not initialize anything
 	}
 

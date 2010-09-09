@@ -61,4 +61,9 @@ public class SerializedPathwayView extends ASerializedView {
 	public String getViewType() {
 		return GLPathway.VIEW_ID;
 	}
+
+	@Override
+	public String getViewClassType() {
+		return GLPathway.class.getName();
+	}
 }

@@ -20,8 +20,6 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.CmdCreateView;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.IDType;
@@ -171,7 +169,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	private boolean bIsHeatmapInFocus = false;
 
 	/** embedded dendrogram */
-	private GLDendrogram<ContentGroupList> contentDendrogramView;
+	private GLDendrogram<ContentGroupList> glContentDendrogramView;
 	private boolean bGeneDendrogramActive = false;
 	private boolean bGeneDendrogramRenderCut = false;
 	private boolean bFirstStartGeneDendrogram = true;
@@ -285,15 +283,15 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	@Override
 	public void init(GL gl) {
 
-		// FIXME: Alex, is it save to call this here?
-		initData();
+//		// FIXME: Alex, is it save to call this here?
+//		initData();
 
 		createHeatMap();
 		createDendrogram();
 
 		glHeatMapView.initRemote(gl, this, glMouseListener, null);
 		glHeatMapView.useFishEye(false);
-		contentDendrogramView.initRemote(gl, this, glMouseListener, null);
+		glContentDendrogramView.initRemote(gl, this, glMouseListener, null);
 		glExperimentDendrogramView.initRemote(gl, this, glMouseListener, null);
 
 		initTextures(gl);
@@ -652,20 +650,13 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	 * @param
 	 */
 	private void createHeatMap() {
-		CmdCreateView cmdView = (CmdCreateView) generalManager.getCommandManager()
-				.createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID(GLHeatMap.VIEW_ID);
 
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
+		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
+				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
-		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
-				fHeatMapWidth, -20, 20, -1);
-		cmdView.setDataDomainType(dataDomain.getDataDomainType());
-
-		cmdView.doCommand();
-
-		glHeatMapView = (GLHeatMap) cmdView.getCreatedObject();
+		glHeatMapView = new GLHeatMap(this.getParentGLCanvas(), viewFrustum);
 		glHeatMapView.setDataDomain(dataDomain);
 		glHeatMapView.setRemoteRenderingGLView(this);
 		glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
@@ -673,12 +664,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glHeatMapView.setRenderTemplate(renderTemplate);
 		renderTemplate.setBottomSpacing(0.6f);
 		heatMapRemoteElement.setGLView(glHeatMapView);
-
-		// glHeatMapView.setDataDomain(dataDomain);
-		// glHeatMapView.setSet(set);
 		glHeatMapView.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
 		glHeatMapView.initData();
-
 	}
 
 	/**
@@ -687,39 +674,24 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	 * @param
 	 */
 	private void createDendrogram() {
-		CmdCreateView cmdView = (CmdCreateView) generalManager.getCommandManager()
-				.createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID(GLDendrogram.VIEW_ID + ".horizontal");
 
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
+		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
+				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
-		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
-				fHeatMapWidth, -20, 20, -1);
-		cmdView.setDataDomainType(dataDomain.getDataDomainType());
-		cmdView.doCommand();
+		glContentDendrogramView = new GLDendrogram<ContentGroupList>(this.getParentGLCanvas(), viewFrustum, true);
+		glContentDendrogramView.setRemoteRenderingGLView(this);
+		glContentDendrogramView.setDataDomain(dataDomain);
 
-		contentDendrogramView = (GLDendrogram<ContentGroupList>) cmdView
-				.getCreatedObject();
-		contentDendrogramView.setRemoteRenderingGLView(this);
-
-		cmdView = (CmdCreateView) generalManager.getCommandManager().createCommandByType(
-				ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID(GLDendrogram.VIEW_ID + ".vertical");
-		cmdView.setDataDomainType(dataDomain.getDataDomainType());
-
-		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
-				fHeatMapWidth, -20, 20, -1);
-
-		cmdView.doCommand();
-
-		glExperimentDendrogramView = (GLDendrogram) cmdView.getCreatedObject();
+		glExperimentDendrogramView = new GLDendrogram<StorageGroupList>(this.getParentGLCanvas(), viewFrustum, false);
+		glExperimentDendrogramView.setRemoteRenderingGLView(this);
 		glExperimentDendrogramView.setDataDomain(dataDomain);
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
 
-		contentDendrogramView.setContentVAType(ContentVAType.CONTENT);
-		contentDendrogramView.initData();
-		contentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
+		glContentDendrogramView.setContentVAType(ContentVAType.CONTENT);
+		glContentDendrogramView.initData();
+		glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 
 		glExperimentDendrogramView.setContentVAType(ContentVAType.CONTENT);
 		glExperimentDendrogramView.initData();
@@ -736,8 +708,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		if (glExperimentDendrogramView != null)
 			glExperimentDendrogramView.processEvents();
-		if (contentDendrogramView != null)
-			contentDendrogramView.processEvents();
+		if (glContentDendrogramView != null)
+			glContentDendrogramView.processEvents();
 		if (glHeatMapView != null)
 			glHeatMapView.processEvents();
 
@@ -2623,18 +2595,18 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glTranslatef(0f, 0.4f, 0f);
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION,
-					contentDendrogramView.getID()));
-			contentDendrogramView.getViewFrustum().setTop(viewFrustum.getTop() - 0.6f);
-			contentDendrogramView.getViewFrustum().setRight(1.7f);
-			contentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
+					glContentDendrogramView.getID()));
+			glContentDendrogramView.getViewFrustum().setTop(viewFrustum.getTop() - 0.6f);
+			glContentDendrogramView.getViewFrustum().setRight(1.7f);
+			glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 
 			if (bFirstStartGeneDendrogram) {
-				if (contentDendrogramView.setInitialPositionOfCut()) {
+				if (glContentDendrogramView.setInitialPositionOfCut()) {
 					bFirstStartGeneDendrogram = false;
 				}
 			}
 
-			contentDendrogramView.displayRemote(gl);
+			glContentDendrogramView.displayRemote(gl);
 			gl.glPopName();
 			gl.glTranslatef(0f, -0.4f, 0f);
 		}
@@ -2707,18 +2679,18 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glTranslatef(0f, 0.4f, 0f);
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION,
-					contentDendrogramView.getID()));
-			contentDendrogramView.getViewFrustum().setTop(viewFrustum.getTop() - 0.6f);
-			contentDendrogramView.getViewFrustum().setRight(1.7f);
-			contentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
+					glContentDendrogramView.getID()));
+			glContentDendrogramView.getViewFrustum().setTop(viewFrustum.getTop() - 0.6f);
+			glContentDendrogramView.getViewFrustum().setRight(1.7f);
+			glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 
 			if (bFirstStartGeneDendrogram) {
-				if (contentDendrogramView.setInitialPositionOfCut()) {
+				if (glContentDendrogramView.setInitialPositionOfCut()) {
 					bFirstStartGeneDendrogram = false;
 				}
 			}
 
-			contentDendrogramView.displayRemote(gl);
+			glContentDendrogramView.displayRemote(gl);
 			gl.glPopName();
 			gl.glTranslatef(0f, -0.4f, 0f);
 		}
@@ -2786,18 +2758,18 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glTranslatef(0f, 0.4f, 0f);
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION,
-					contentDendrogramView.getID()));
-			contentDendrogramView.getViewFrustum().setTop(ftop - 0.6f);
-			contentDendrogramView.getViewFrustum().setRight(1.7f);
-			contentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
+					glContentDendrogramView.getID()));
+			glContentDendrogramView.getViewFrustum().setTop(ftop - 0.6f);
+			glContentDendrogramView.getViewFrustum().setRight(1.7f);
+			glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 
 			if (bFirstStartGeneDendrogram) {
-				if (contentDendrogramView.setInitialPositionOfCut()) {
+				if (glContentDendrogramView.setInitialPositionOfCut()) {
 					bFirstStartGeneDendrogram = false;
 				}
 			}
 
-			contentDendrogramView.displayRemote(gl);
+			glContentDendrogramView.displayRemote(gl);
 			gl.glPopName();
 			gl.glTranslatef(0f, -0.4f, 0f);
 		}
@@ -2813,7 +2785,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		if (bHasFrustumChanged) {
 			glHeatMapView.setDisplayListDirty();
-			contentDendrogramView.setRedrawDendrogram();
+			glContentDendrogramView.setRedrawDendrogram();
 			glExperimentDendrogramView.setRedrawDendrogram();
 			bHasFrustumChanged = false;
 		}
@@ -2945,7 +2917,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				}
 			}
 
-			contentDendrogramView.renderSubTreeFromIndexToIndex(gl,
+			glContentDendrogramView.renderSubTreeFromIndexToIndex(gl,
 					contentVA.get(iFirstSampleLevel1), lastIndexOfSubTree,
 					iSamplesLevel2, GAP_BETWEEN_LEVELS / 2, fHeightSubTree);
 
@@ -3008,7 +2980,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				}
 			}
 
-			contentDendrogramView.renderSubTreeFromIndexToIndex(gl,
+			glContentDendrogramView.renderSubTreeFromIndexToIndex(gl,
 					contentVA.get(iFirstSampleLevel1 + iFirstSampleLevel2),
 					lastIndexOfSubTree, iSamplesPerHeatmap, GAP_BETWEEN_LEVELS / 2,
 					fHeightSubTree);
@@ -3086,7 +3058,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 							+ iLastSampleLevel2 - 1);
 				}
 			}
-			contentDendrogramView.renderSubTreeFromIndexToIndex(gl,
+			glContentDendrogramView.renderSubTreeFromIndexToIndex(gl,
 					contentVA.get(iFirstSampleLevel1 + iFirstSampleLevel2),
 					lastIndexOfSubTree, iSamplesPerHeatmap, GAP_BETWEEN_LEVELS / 2,
 					fHeightSubTree);
@@ -4279,7 +4251,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 				bIsHeatmapInFocus = bIsHeatmapInFocus == true ? false : true;
 				glHeatMapView.setDisplayListDirty();
-				contentDendrogramView.setDisplayListDirty();
+				glContentDendrogramView.setDisplayListDirty();
 				glExperimentDendrogramView.setRedrawDendrogram();
 				setDisplayListDirty();
 				break;
@@ -4314,7 +4286,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 				glExperimentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 				glExperimentDendrogramView.setDisplayListDirty();
-				contentDendrogramView.setRedrawDendrogram();
+				glContentDendrogramView.setRedrawDendrogram();
 				glHeatMapView.setDisplayListDirty();
 				setDisplayListDirty();
 				break;
@@ -4329,20 +4301,20 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				bGeneDendrogramActive = bGeneDendrogramActive == true ? false : true;
 
 				if (bGeneDendrogramActive == true) {
-					float widthDendro = contentDendrogramView.getViewFrustum().getWidth();
+					float widthDendro = glContentDendrogramView.getViewFrustum().getWidth();
 
 					if (widthDendro > 0.5 && widthDendro <= 1.7f)
 						renderStyle.setWidthGeneDendrogram(widthDendro - 0.1f);
 
 					bGeneDendrogramRenderCut = false;
 				} else {
-					float temp = contentDendrogramView.getPositionOfCut();
+					float temp = glContentDendrogramView.getPositionOfCut();
 					renderStyle.setWidthGeneDendrogram(temp);
 					bGeneDendrogramRenderCut = true;
 				}
 
-				contentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
-				contentDendrogramView.setDisplayListDirty();
+				glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
+				glContentDendrogramView.setDisplayListDirty();
 				glExperimentDendrogramView.setRedrawDendrogram();
 				glHeatMapView.setDisplayListDirty();
 				setDisplayListDirty();
@@ -4520,7 +4492,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		setDisplayListDirty();
 
 		glHeatMapView.setDisplayListDirty();
-		contentDendrogramView.setDisplayListDirty();
+		glContentDendrogramView.setDisplayListDirty();
 		glExperimentDendrogramView.setDisplayListDirty();
 
 		// group/cluster selections
@@ -4958,22 +4930,22 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			bGeneDendrogramActive = bGeneDendrogramActive == true ? false : true;
 
 			if (bGeneDendrogramActive == true) {
-				float widthDendro = contentDendrogramView.getViewFrustum().getWidth();
+				float widthDendro = glContentDendrogramView.getViewFrustum().getWidth();
 
 				if (widthDendro > 0.5f && widthDendro <= 1.7f)
 					renderStyle.setWidthGeneDendrogram(widthDendro - 0.1f);
 
 				bGeneDendrogramRenderCut = false;
 			} else {
-				float temp = contentDendrogramView.getPositionOfCut();
+				float temp = glContentDendrogramView.getPositionOfCut();
 				renderStyle.setWidthGeneDendrogram(temp);
 				bGeneDendrogramRenderCut = true;
 			}
 
 			glExperimentDendrogramView.setRedrawDendrogram();
 
-			contentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
-			contentDendrogramView.setRedrawDendrogram();
+			glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
+			glContentDendrogramView.setRedrawDendrogram();
 
 			glHeatMapView.setDisplayListDirty();
 
@@ -5001,7 +4973,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				bExperimentDendrogramRenderCut = true;
 			}
 
-			contentDendrogramView.setRedrawDendrogram();
+			glContentDendrogramView.setRedrawDendrogram();
 
 			glExperimentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 			glExperimentDendrogramView.setRedrawDendrogram();

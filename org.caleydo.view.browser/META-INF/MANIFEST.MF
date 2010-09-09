@@ -17,4 +17,5 @@ Export-Package: org.caleydo.view.browser,
  org.caleydo.view.browser.command.handler
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Graz University of Technology
+Bundle-Activator: org.caleydo.view.browser.Activator
  

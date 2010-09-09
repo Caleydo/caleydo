@@ -15,9 +15,9 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
-import org.caleydo.core.command.view.CmdCreateView;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.command.CommandManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
@@ -564,33 +564,37 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		setDisplayListDirty();
 	}
 
+	/**
+	 * Creates and initializes a new view based on its serialized form. The view
+	 * is already added to the list of event receivers and senders.
+	 * 
+	 * @param gl
+	 * @param serView
+	 *            serialized form of the view to create
+	 * @return the created view ready to be used within the application
+	 */
 	@SuppressWarnings("unchecked")
 	private AGLView createView(GL gl, ASerializedView serView) {
 
-		CommandManager cm = generalManager.getCommandManager();
-		CmdCreateView cmdView = (CmdCreateView) cm
-				.createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID(serView.getViewType());
-		cmdView.setAttributesFromSerializedForm(serView);
-		cmdView.doCommand();
-
-		AGLView glView = cmdView.getCreatedObject();
-		if (glView instanceof IDataDomainBasedView<?>)
-			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-					.get().getDataDomain(serView.getDataDomainType()));
+		@SuppressWarnings("rawtypes")
+		Class viewClass;
+		try {
+			viewClass = Class.forName(serView.getViewClassType());
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException("Cannot find class for view "+serView.getViewType());
+		}
+		
+		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
+				.createGLView(viewClass, parentGLCanvas, viewFrustum);
 		glView.setRemoteRenderingGLView(this);
 
-		if (glView instanceof GLPathway) {
-			GLPathway glPathway = (GLPathway) glView;
-
-			glPathway.setPathway(((SerializedPathwayView) serView).getPathwayID());
-			glPathway.enablePathwayTextures(true);
-			glPathway.enableNeighborhood(false);
-			glPathway.enableGeneMapping(false);
+		if (glView instanceof IDataDomainBasedView<?>) {
+			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
+					.get().getDataDomain(serView.getDataDomainType()));
 		}
-
+		glView.initialize();
 		glView.initRemote(gl, this, glMouseListener, null);
-
+		
 		return glView;
 	}
 

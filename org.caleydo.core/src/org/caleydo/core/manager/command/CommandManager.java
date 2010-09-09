@@ -13,7 +13,6 @@ import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
 import org.caleydo.core.command.system.CmdSystemExit;
-import org.caleydo.core.command.view.CmdCreateView;
 import org.caleydo.core.command.view.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
@@ -93,10 +92,6 @@ public class CommandManager {
 			}
 			case CREATE_VIEW_RCP_GLCANVAS: {
 				createdCommand = new CmdViewCreateRcpGLCanvas(cmdType);
-				break;
-			}
-			case CREATE_GL_VIEW: {
-				createdCommand = new CmdCreateView(cmdType);
 				break;
 			}
 			case SYSTEM_SHUT_DOWN: {

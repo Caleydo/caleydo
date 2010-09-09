@@ -15,8 +15,6 @@ public class ClearSelectionsAction
 	public static final String ICON = "resources/icons/view/storagebased/clear_selections.png";
 
 	public ClearSelectionsAction() {
-		super(-1);
-
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI

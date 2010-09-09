@@ -25,3 +25,5 @@ Export-Package: org.caleydo.view.dataflipper,
  org.caleydo.view.dataflipper.command.handler,
  org.caleydo.view.dataflipper.toolbar
 Bundle-Vendor: Graz University of Technology
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.caleydo.view.dataflipper.Activator

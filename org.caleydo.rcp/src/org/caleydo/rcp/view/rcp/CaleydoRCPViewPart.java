@@ -1,9 +1,14 @@
 package org.caleydo.rcp.view.rcp;
 
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -12,9 +17,13 @@ import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IView;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.rcp.startup.StartupProcessor;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
@@ -28,9 +37,7 @@ public abstract class CaleydoRCPViewPart
 	extends ViewPart {
 
 	/** serialized representation of the view to initialize the view itself */
-	protected ASerializedView initSerializedView;
-
-	protected String dataDomainType = null;
+	protected ASerializedView serializedView;
 
 	/** {@link JAXBContext} for view (de-)serialization */
 	protected JAXBContext viewContext;
@@ -54,6 +61,19 @@ public abstract class CaleydoRCPViewPart
 		eventPublisher = GeneralManager.get().getEventPublisher();
 	}
 
+	@Override
+	public void createPartControl(Composite parent) {
+		parentComposite = new Composite(parent, SWT.NONE);
+
+		GridData gridData = new GridData();
+
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessVerticalSpace = true;
+
+		parentComposite.setLayoutData(gridData);	}
+	
 	/**
 	 * Generates and returns a list of all views, caleydo-view-parts and gl-views, contained in this view.
 	 * 
@@ -96,39 +116,36 @@ public abstract class CaleydoRCPViewPart
 	 * <li>Else an exception is thrown</li>
 	 * <ul>
 	 * 
-	 * @param dataDomainBasedView
 	 * @param serializedView
 	 */
-	protected String determineDataDomain(ASerializedView serializedView) {
+	protected void determineDataDomain(ASerializedView serializedView) {
 
 		// first we check if the data domain was manually specified
 		for (Pair<String, String> startView : StartupProcessor.get().getAppInitData()
 			.getAppArgumentStartViewWithDataDomain()) {
 			if (startView.getFirst().equals(serializedView.getViewID())) {
-				dataDomainType = startView.getSecond();
+				String dataDomainType = startView.getSecond();
 				// StartupProcessor.get().getAppArgumentStartViewWithDataDomain().remove(startView);
-				return dataDomainType;
+				serializedView.setDataDomainType(dataDomainType);
 			}
 		}
 
 		// then we check whether the serialization has a datadomain already
 		String dataDomainType = serializedView.getDataDomainType();
-		if (dataDomainType != null)
-			return dataDomainType;
-		else {
+		if (dataDomainType == null) {
 			ArrayList<IDataDomain> availableDomains =
 				DataDomainManager.get().getAssociationManager()
 					.getAvailableDataDomainTypesForViewTypes(serializedView.getViewType());
 			if (availableDomains == null)
-				return null;
+				throw new IllegalStateException(
+				"Not able to determine which data domain to use");
 			else if (availableDomains.size() == 0)
 				throw new IllegalStateException("No datadomain for this view loaded");
 			else if (availableDomains.size() > 1)
 				throw new IllegalStateException(
 					"Not able to choose which data domain to use - not yet implemented");
 			else
-				return availableDomains.get(0).getDataDomainType();
-
+				serializedView.setDataDomainType(availableDomains.get(0).getDataDomainType());
 		}
 	}
 
@@ -139,4 +156,72 @@ public abstract class CaleydoRCPViewPart
 	// public void unregisterEventListeners() {
 	// // no registration to the event system in the default implementation
 	// }
+	
+
+	/**
+	 * Creates a default serialized form ({@link ASerializedView}) of the contained gl-view
+	 */
+	public abstract void createDefaultSerializedView();
+	
+	@Override
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		super.init(site, memento);
+
+		String viewXml = null;
+		if (memento != null) {
+			viewXml = memento.getString("serialized");
+		}
+		if (viewXml != null) { // init view from memento
+			JAXBContext jaxbContext = viewContext;
+			Unmarshaller unmarshaller;
+			try {
+				unmarshaller = jaxbContext.createUnmarshaller();
+			}
+			catch (JAXBException ex) {
+				throw new RuntimeException("could not create xml unmarshaller", ex);
+			}
+
+			StringReader xmlInputReader = new StringReader(viewXml);
+			try {
+				serializedView = (ASerializedView) unmarshaller.unmarshal(xmlInputReader);
+			}
+			catch (JAXBException ex) {
+				throw new RuntimeException("could not deserialize view-xml", ex);
+			}
+		}
+		else {
+			createDefaultSerializedView();
+		}
+	}
+
+	@Override
+	public void saveState(IMemento memento) {
+
+		if (viewContext == null)
+			return;
+		
+		JAXBContext jaxbContext = viewContext;
+		Marshaller marshaller = null;
+		try {
+			marshaller = jaxbContext.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		}
+		catch (JAXBException ex) {
+			throw new RuntimeException("could not create xml marshaller", ex);
+		}
+
+		StringWriter xmlOutputWriter = new StringWriter();
+		try {
+			
+			if (!(view instanceof AGLView))
+				return;
+			
+			marshaller.marshal(((AGLView) view).getSerializableRepresentation(), xmlOutputWriter);
+			String xmlOutput = xmlOutputWriter.getBuffer().toString();
+			memento.putString("serialized", xmlOutput);
+		}
+		catch (JAXBException ex) {
+			ex.printStackTrace();
+		}
+	}
 }

@@ -15,9 +15,7 @@ public class ResetViewAction
 	public static final String TEXT = "Reset View";
 	public static final String ICON = "resources/icons/view/general/reset_view.png";
 
-	public ResetViewAction(int iViewID) {
-		super(iViewID);
-
+	public ResetViewAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI

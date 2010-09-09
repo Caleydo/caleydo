@@ -12,7 +12,7 @@ import org.caleydo.view.selectionbrowser.RcpSelectionBrowserView;
 /**
  * Tool bar content.
  * 
- * @author <INSERT YOUR NAME>
+ * @author Marc Streit
  */
 public class SelectionbrowserToolBarContent extends AToolBarContent {
 

@@ -55,7 +55,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -114,7 +113,6 @@ public class TabularDataView extends ASWTView implements
 
 	private IDMappingManager idMappingManager;
 
-	private Composite composite;
 	private Table contentTable;
 
 	private TableCursor contentTableCursor;
@@ -134,28 +132,18 @@ public class TabularDataView extends ASWTView implements
 	/**
 	 * Constructor.
 	 */
-	public TabularDataView(final int iParentContainerId) {
-		super(iParentContainerId, GeneralManager.get().getIDManager()
-				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
+	public TabularDataView(Composite parentComposite) {
+		super(GeneralManager.get().getIDManager()
+				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER), parentComposite);
 
 		this.viewType = VIEW_ID;
-
 		idMappingManager = generalManager.getIDMappingManager();
 	}
-
+	
 	@Override
-	public void initViewSWTComposite(Composite parentComposite) {
-		composite = new Composite(parentComposite, SWT.NULL);
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
-		composite.setLayout(layout);
+	public void draw() {
 
 		createTable();
-	}
-
-	@Override
-	public void drawView() {
-
 	}
 
 	public void initData() {
@@ -202,7 +190,7 @@ public class TabularDataView extends ASWTView implements
 			contentTable.dispose();
 		}
 
-		contentTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION
+		contentTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION
 				| SWT.VIRTUAL);
 		contentTable.setLinesVisible(true);
 		contentTable.setHeaderVisible(true);
@@ -395,7 +383,7 @@ public class TabularDataView extends ASWTView implements
 			}
 		});
 
-		composite.layout();
+		parentComposite.layout();
 	}
 
 	@Override
@@ -438,7 +426,7 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	private void addColumn(final int index, final int storageNumber) {
-		composite.getDisplay().asyncExec(new Runnable() {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				TableColumn column = new TableColumn(contentTable, SWT.NONE, index);
@@ -463,7 +451,7 @@ public class TabularDataView extends ASWTView implements
 	 * taken, since we cannot handle multiple selections ATM.
 	 */
 	private void reactOnExternalSelection() {
-		composite.getDisplay().asyncExec(new Runnable() {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				if (contentTable.isDisposed())
@@ -667,7 +655,7 @@ public class TabularDataView extends ASWTView implements
 
 				switch (deltaItem.getType()) {
 				case REMOVE:
-					composite.getDisplay().asyncExec(new Runnable() {
+					parentComposite.getDisplay().asyncExec(new Runnable() {
 						@Override
 						public void run() {
 							contentTable.getColumn(iVAIndex + 3).dispose();

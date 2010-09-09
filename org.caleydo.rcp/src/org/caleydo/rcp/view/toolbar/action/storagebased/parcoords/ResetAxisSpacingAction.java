@@ -22,9 +22,7 @@ public class ResetAxisSpacingAction
 	/**
 	 * Constructor.
 	 */
-	public ResetAxisSpacingAction(int iViewID) {
-		super(iViewID);
-
+	public ResetAxisSpacingAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI

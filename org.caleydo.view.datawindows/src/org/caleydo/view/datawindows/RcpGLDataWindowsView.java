@@ -3,7 +3,6 @@ package org.caleydo.view.datawindows;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -14,10 +13,9 @@ public class RcpGLDataWindowsView extends ARcpGLViewPart {
 	 */
 	public RcpGLDataWindowsView() {
 		super();
-		
+
 		try {
-			viewContext = JAXBContext
-					.newInstance(SerializedDataWindowsView.class);
+			viewContext = JAXBContext.newInstance(SerializedDataWindowsView.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
@@ -28,17 +26,17 @@ public class RcpGLDataWindowsView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		createGLView(initSerializedView, glCanvas.getID());
+		
+		view = new GLDataWindows(glCanvas, serializedView.getViewFrustum());
+		view.initialize();
+		createPartControlGL();
 	}
 
 	@Override
-	public ASerializedView createDefaultSerializedView() {
+	public void createDefaultSerializedView() {
 
-		SerializedDataWindowsView serializedView = new SerializedDataWindowsView();
-
-		dataDomainType = determineDataDomain(serializedView);
-		serializedView.setDataDomainType(dataDomainType);
-		return serializedView;
+		serializedView = new SerializedDataWindowsView();
+		determineDataDomain(serializedView);
 	}
 
 	@Override

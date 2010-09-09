@@ -19,6 +19,8 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
@@ -86,42 +88,29 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 
 		parentComposite = new Composite(histoComposite, SWT.EMBEDDED);
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		
+		createGLCanvas();
+		
+		view = new GLHistogram(glCanvas, serializedView.getViewFrustum());
+		view.initFromSerializableRepresentation(serializedView);
 
-		if (initSerializedView != null) {
-			dataDomainType = determineDataDomain(initSerializedView);
-			dataDomain = (ASetBasedDataDomain) DataDomainManager.get()
-					.getDataDomain(dataDomainType);
-			redrawView((SerializedHistogramView) initSerializedView);
+		if (view instanceof IDataDomainBasedView<?>) {
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(serializedView.getDataDomainType());
+			@SuppressWarnings("unchecked")
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
+				(IDataDomainBasedView<IDataDomain>) view;
+			dataDomainBasedView.setDataDomain(dataDomain);
+			this.dataDomain = dataDomain;
 		}
-		else {
-			SerializedHistogramView serialized = new SerializedHistogramView();
-			serialized.setDataDomainType(determineDataDomain(serialized));
-			redrawView(serialized);
-		}
+
+		view.initialize();
+		createPartControlGL();
+		
+		redrawView();
 	}
 
-	/**
-	 * Redraws the view from scratch with new initialization data obtained by
-	 * its serialized form
-	 * 
-	 * @param serialized
-	 *            serialized form of this view for initialization
-	 */
-	public void redrawView(SerializedHistogramView serialized) {
+	public void redrawView() {
 
-		createGLCanvas();
-		createGLView(serialized, glCanvas.getID());
-
-		// Composite colorMappingComposite = new Composite(baseComposite,
-		// SWT.NULL);
-		// colorMappingComposite.setLayoutData(new
-		// GridData(GridData.FILL_HORIZONTAL));
-		// GridLayout layout = new GridLayout(1, false);
-		// layout.marginWidth = 0;
-		// layout.marginHeight = 0;
-		// layout.verticalSpacing = 0;
-		// colorMappingComposite.setLayout(layout);
-		// Button button = new Button(buttonComposite, SWT.PUSH);
 		colorMappingPreviewLabel = new CLabel(histoComposite, SWT.SHADOW_IN);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.heightHint = 10;
@@ -283,11 +272,14 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 	}
 
 	@Override
-	public ASerializedView createDefaultSerializedView() {
+	public void createDefaultSerializedView() {
 
-		SerializedHistogramView serializedView = new SerializedHistogramView();
-		serializedView.setDataDomainType(determineDataDomain(serializedView));
-		return serializedView;
+		serializedView = new SerializedHistogramView();
+		
+		if (dataDomain == null)
+			determineDataDomain(serializedView);
+		else
+			serializedView.setDataDomainType(dataDomain.getDataDomainType());
 	}
 
 	@Override

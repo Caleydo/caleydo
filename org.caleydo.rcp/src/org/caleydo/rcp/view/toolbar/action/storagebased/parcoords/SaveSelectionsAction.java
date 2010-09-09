@@ -11,15 +11,14 @@ import org.eclipse.ui.PlatformUI;
 public class SaveSelectionsAction
 	extends AToolBarAction
 	implements IToolBarItem {
+	
 	public static final String TEXT = "Save Selections";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/save_selections.png";
 
 	/**
 	 * Constructor.
 	 */
-	public SaveSelectionsAction(int iViewID) {
-		super(iViewID);
-
+	public SaveSelectionsAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI

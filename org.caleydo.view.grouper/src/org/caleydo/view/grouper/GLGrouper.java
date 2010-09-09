@@ -88,7 +88,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView, IView
 		ISelectionUpdateHandler, IClusterNodeEventReceiver {
 
 	public final static String VIEW_ID = "org.caleydo.view.grouper";
-
+	
 	boolean bUseDetailLevel = true;
 
 	private boolean bControlPressed = false;

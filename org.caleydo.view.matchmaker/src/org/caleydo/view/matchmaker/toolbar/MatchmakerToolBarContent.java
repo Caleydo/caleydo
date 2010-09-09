@@ -45,17 +45,15 @@ public class MatchmakerToolBarContent extends AToolBarContent {
 		// useFishEyeAction.setUseFishEye(true);
 		// actionList.add(useFishEyeAction);
 
-		UseZoomAction useZoomAction = new UseZoomAction(targetViewID);
+		UseZoomAction useZoomAction = new UseZoomAction();
 		useZoomAction.setUseZoom(false);
 		actionList.add(useZoomAction);
 
-		UseBandBundlingAction useBandBundlingAction = new UseBandBundlingAction(
-				targetViewID);
+		UseBandBundlingAction useBandBundlingAction = new UseBandBundlingAction();
 		useBandBundlingAction.setBandBundling(false);
 		actionList.add(useBandBundlingAction);
 
-		CreateSelectionTypesAction createSelectionTypesAction = new CreateSelectionTypesAction(
-				targetViewID);
+		CreateSelectionTypesAction createSelectionTypesAction = new CreateSelectionTypesAction();
 		createSelectionTypesAction.setCreateSelectionTypes(false);
 		actionList.add(createSelectionTypesAction);
 

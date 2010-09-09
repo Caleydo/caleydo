@@ -1,5 +1,6 @@
 package org.caleydo.core.manager.view;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,9 +18,6 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
 import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.manager.view.creator.AGLViewCreator;
-import org.caleydo.core.manager.view.creator.ASWTViewCreator;
-import org.caleydo.core.manager.view.creator.IViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IView;
@@ -27,12 +25,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
@@ -75,8 +68,6 @@ public class ViewManager
 	 */
 	private DisplayLoopExecution displayLoopExecution;
 
-	private HashMap<String, IViewCreator> viewIDToViewCreators;
-
 	/**
 	 * Constructor.
 	 */
@@ -92,8 +83,6 @@ public class ViewManager
 		busyRequests = new HashSet<Object>();
 
 		registerEventListeners();
-
-		viewIDToViewCreators = new HashMap<String, IViewCreator>();
 	}
 
 	public void init() {
@@ -127,49 +116,12 @@ public class ViewManager
 		return hashGLViewID2GLView.get(iItemID);
 	}
 
-	public IView createView(String viewType, int parentContainerID) {
-		IView view = null;
-
-		IViewCreator viewCreator = getViewCreator(viewType);
-
-		if (viewCreator instanceof ASWTViewCreator && viewCreator.getViewType().equals(viewType)) {
-
-			view = ((ASWTViewCreator) viewCreator).createView(parentContainerID);
-			registerItem(view);
-		}
-		else
-			throw new IllegalStateException("Cannot create SWT view from type " + viewType);
-
-		return view;
-	}
-
-	public AGLView createGLView(String viewID, GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
-
-		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Creating GL canvas view from type "
-			+ viewID));
-
-		AGLView glView = null;
-
-		IViewCreator viewCreator = getViewCreator(viewID);
-
-		if (viewCreator instanceof AGLViewCreator && viewCreator.getViewType().equals(viewID)) {
-
-			glView = ((AGLViewCreator) viewCreator).createGLView(glCanvas, viewFrustum);
-			registerGLEventListenerByGLCanvas(glCanvas, glView);
-		}
-		else
-			throw new IllegalStateException("Cannot create GL view from type " + viewID);
-
-		return glView;
-	}
-
 	public boolean registerGLCanvas(final GLCaleydoCanvas glCanvas) {
 		int iGLCanvasID = glCanvas.getID();
 
 		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasID)) {
-			Logger.log(
-				new Status(IStatus.WARNING, this.toString(), "GL Canvas with ID " + iGLCanvasID
-					+ " is already registered! Do nothing."));
+			Logger.log(new Status(IStatus.WARNING, this.toString(), "GL Canvas with ID " + iGLCanvasID
+				+ " is already registered! Do nothing."));
 
 			return false;
 		}
@@ -352,6 +304,22 @@ public class ViewManager
 		generalManager.getGUIBridge().createView(serializedView);
 	}
 
+	@SuppressWarnings("rawtypes")
+	public AGLView createGLView(Class<? extends AGLView> viewClass, GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
+	
+		AGLView view;
+		try {
+			Class[] argTypes = { GLCaleydoCanvas.class, ViewFrustum.class };
+			Constructor aConstructor = viewClass.getConstructor(argTypes);
+			view = (AGLView) aConstructor.newInstance(glCanvas, viewFrustum);
+		}
+		catch (Exception e) {
+			throw new IllegalStateException("Cannot create GL view " + viewClass);
+		}
+
+		return view;
+	}
+
 	@Override
 	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 		final AEvent event) {
@@ -391,26 +359,5 @@ public class ViewManager
 	 */
 	public DisplayLoopExecution getDisplayLoopExecution() {
 		return displayLoopExecution;
-	}
-
-	public IViewCreator getViewCreator(String viewType) {
-
-		if (viewIDToViewCreators.containsKey(viewType))
-			return viewIDToViewCreators.get(viewType);
-
-		IExtensionRegistry reg = Platform.getExtensionRegistry();
-
-		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.view.ViewCreator");
-		IExtension ext = ep.getExtension(viewType);
-		IConfigurationElement[] ce = ext.getConfigurationElements();
-
-		try {
-			IViewCreator viewCreator = (IViewCreator) ce[0].createExecutableExtension("class");
-			viewIDToViewCreators.put(viewType, viewCreator);
-			return viewCreator;
-		}
-		catch (Exception ex) {
-			throw new IllegalStateException("Could not instantiate view creator", ex);
-		}
 	}
 }

@@ -3,8 +3,6 @@ package org.caleydo.view.matchmaker;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -29,14 +27,15 @@ public class RcpGLMatchmakerView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		AGLView view = createGLView(initSerializedView, glCanvas.getID());
-		minSizeComposite.setView(view);
+		view = new GLMatchmaker(glCanvas, serializedView.getViewFrustum());
+		view.initialize();
+		createPartControlGL();
 	}
 
 	@Override
-	public ASerializedView createDefaultSerializedView() {
-		SerializedMatchmakerView serializedView = new SerializedMatchmakerView(dataDomainType);
-		return serializedView;
+	public void createDefaultSerializedView() {
+		serializedView = new SerializedMatchmakerView();
+		determineDataDomain(serializedView);
 	}
 
 	@Override

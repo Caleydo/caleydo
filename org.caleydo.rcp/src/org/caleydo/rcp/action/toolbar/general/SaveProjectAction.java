@@ -21,8 +21,6 @@ public class SaveProjectAction
 	 * Constructor.
 	 */
 	public SaveProjectAction() {
-		super(-1);
-
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI

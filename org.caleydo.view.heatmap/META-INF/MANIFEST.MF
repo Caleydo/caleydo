@@ -22,3 +22,4 @@ Export-Package: org.caleydo.view.heatmap,
  org.caleydo.view.heatmap.toolbar
 Bundle-Vendor: Graz University of Technology
 Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.caleydo.view.heatmap.Activator

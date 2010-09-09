@@ -118,8 +118,8 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 		for (int experimentIndex = 0; experimentIndex < MAX_VIEWS; experimentIndex++) {
 
-			generalManager.getViewGLCanvasManager().createGLView(
-					"org.caleydo.view.texture", parentGLCanvas, viewFrustum);
+//			generalManager.getViewGLCanvasManager().createGLView(
+//					"org.caleydo.view.texture", parentGLCanvas, viewFrustum);
 
 			mapExperimentToTexturePath.put(experimentIndex, "data/tissue/breast_"
 					+ experimentIndex % 24 + ".jpg");

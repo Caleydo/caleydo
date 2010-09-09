@@ -3,8 +3,9 @@ package org.caleydo.view.bookmark;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -27,16 +28,27 @@ public class RcpBookmarkView extends ARcpGLViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-
+		
 		createGLCanvas();
-		AGLView view = createGLView(initSerializedView, glCanvas.getID());
-		minSizeComposite.setView(view);
+		
+		view = new GLBookmarkView(glCanvas, serializedView.getViewFrustum());
+		view.initFromSerializableRepresentation(serializedView);
+		if (view instanceof IDataDomainBasedView<?>) {
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(serializedView.getDataDomainType());
+			@SuppressWarnings("unchecked")
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
+				(IDataDomainBasedView<IDataDomain>) view;
+			dataDomainBasedView.setDataDomain(dataDomain);
+		}
+
+		view.initialize();
+		createPartControlGL();
 	}
 
 	@Override
-	public ASerializedView createDefaultSerializedView() {
-		SerializedBookmarkView serializedView = new SerializedBookmarkView(dataDomainType);
-		return serializedView;
+	public void createDefaultSerializedView() {
+		serializedView = new SerializedBookmarkView();
+		determineDataDomain(serializedView);
 	}
 
 	@Override

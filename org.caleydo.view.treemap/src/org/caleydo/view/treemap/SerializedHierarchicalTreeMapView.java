@@ -25,14 +25,7 @@ public class SerializedHierarchicalTreeMapView extends ASerializedView {
 	public SerializedHierarchicalTreeMapView(String dataDomainType) {
 		super(dataDomainType);
 	}
-
-	@Override
-	public ViewFrustum getViewFrustum() {
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 8, 0,
-				8, -20, 20);
-		return viewFrustum;
-	}
-
+	
 	@Override
 	public String getViewType() {
 		return GLHierarchicalTreeMap.VIEW_ID;

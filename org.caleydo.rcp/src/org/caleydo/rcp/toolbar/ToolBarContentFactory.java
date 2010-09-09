@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.view.ViewManager;
-import org.caleydo.core.manager.view.creator.IViewCreator;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -60,7 +59,7 @@ public class ToolBarContentFactory {
 
 		ToolBarInfo info;
 
-		// TODO glyph, clinicalparcoords, dataflipper
+		// TODO dataflipper
 
 		info = new ToolBarInfo();
 		info.viewType = "org.caleydo.view.heatmap";
@@ -109,6 +108,11 @@ public class ToolBarContentFactory {
 
 		info = new ToolBarInfo();
 		info.viewType = "org.caleydo.view.treemap";
+		info.ignored = false;
+		toolBarInfos.put(info.viewType, info);
+		
+		info = new ToolBarInfo();
+		info.viewType = "org.caleydo.view.filter";
 		info.ignored = false;
 		toolBarInfos.put(info.viewType, info);
 	}
@@ -221,25 +225,25 @@ public class ToolBarContentFactory {
 
 	private AToolBarContent getContent(IView view) {
 		AToolBarContent content = null;
-		ToolBarInfo info = toolBarInfos.get(view.getViewType());
-		if (info != null) {
-			IViewCreator viewCreator =
-				GeneralManager.get().getViewGLCanvasManager().getViewCreator(info.viewType);
-			if (viewCreator == null)
-				return null;
-
-			Object toolBarContent = viewCreator.createToolBarContent();
-			if (toolBarContent == null)
-				return null;
-
-			content = (AToolBarContent) toolBarContent;
-			content.setTargetViewData(view.getSerializableRepresentation());
-			if (view instanceof AGLView) {
-				if (((AGLView) view).rendersContextOnly()) {
-					content.setRenderType(AToolBarContent.CONTEXT_ONLY_RENDERING);
-				}
-			}
-		}
+//		ToolBarInfo info = toolBarInfos.get(view.getViewType());
+//		if (info != null) {
+//			IViewCreator viewCreator =
+//				GeneralManager.get().getViewGLCanvasManager().getViewCreator(info.viewType);
+//			if (viewCreator == null)
+//				return null;
+//
+//			Object toolBarContent = viewCreator.createToolBarContent();
+//			if (toolBarContent == null)
+//				return null;
+//
+//			content = (AToolBarContent) toolBarContent;
+//			content.setTargetViewData(view.getSerializableRepresentation());
+//			if (view instanceof AGLView) {
+//				if (((AGLView) view).rendersContextOnly()) {
+//					content.setRenderType(AToolBarContent.CONTEXT_ONLY_RENDERING);
+//				}
+//			}
+//		}
 
 		return content;
 	}

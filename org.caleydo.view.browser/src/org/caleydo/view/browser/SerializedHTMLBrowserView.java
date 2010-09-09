@@ -1,7 +1,6 @@
 package org.caleydo.view.browser;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
  * Serialized form of a html-browser view.
@@ -22,11 +21,6 @@ public class SerializedHTMLBrowserView extends ASerializedView {
 
 	/** pathway query type of the browser */
 	private BrowserQueryType queryType;
-
-	@Override
-	public ViewFrustum getViewFrustum() {
-		return null;
-	}
 
 	public BrowserQueryType getQueryType() {
 		return queryType;

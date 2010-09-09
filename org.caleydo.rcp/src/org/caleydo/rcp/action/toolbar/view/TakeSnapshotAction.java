@@ -18,6 +18,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class TakeSnapshotAction
 	extends AToolBarAction {
+	
 	public static final String TEXT = "Take snapshot";
 	public static final String ICON = "resources/icons/general/snapshot.png";
 
@@ -25,7 +26,6 @@ public class TakeSnapshotAction
 	 * Constructor.
 	 */
 	public TakeSnapshotAction() {
-		super(-1);
 
 		setText(TEXT);
 		setToolTipText(TEXT);

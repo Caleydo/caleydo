@@ -42,22 +42,22 @@ public class ParCoordsToolBarContent extends AToolBarContent {
 		int targetViewID = getTargetViewData().getViewID();
 
 		// all pc views
-		IToolBarItem angularBrushingAction = new AngularBrushingAction(targetViewID);
+		IToolBarItem angularBrushingAction = new AngularBrushingAction();
 		actionList.add(angularBrushingAction);
 		// IAction occlusionPreventionAction = new
 		// OcclusionPreventionAction(iViewID);
 		// alToolbar.add(occlusionPreventionAction);
 
-		IToolBarItem resetAxisSpacing = new ResetAxisSpacingAction(targetViewID);
+		IToolBarItem resetAxisSpacing = new ResetAxisSpacingAction();
 		actionList.add(resetAxisSpacing);
 
 		if (renderType == STANDARD_RENDERING) {
-			IToolBarItem saveSelectionsAction = new SaveSelectionsAction(targetViewID);
+			IToolBarItem saveSelectionsAction = new SaveSelectionsAction();
 			actionList.add(saveSelectionsAction);
-			IToolBarItem resetViewAction = new ResetViewAction(targetViewID);
+			IToolBarItem resetViewAction = new ResetViewAction();
 			actionList.add(resetViewAction);
 			IToolBarItem propagateSelectionAction = new PropagateSelectionsAction(
-					targetViewID);
+		);
 			actionList.add(propagateSelectionAction);
 		}
 

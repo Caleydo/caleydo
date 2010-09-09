@@ -21,9 +21,7 @@ public class UseFishEyeAction extends AToolBarAction implements IToolBarItem {
 	/**
 	 * Constructor.
 	 */
-	public UseFishEyeAction(int iViewID) {
-		super(iViewID);
-
+	public UseFishEyeAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(

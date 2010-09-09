@@ -10,14 +10,12 @@ import java.util.List;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.CmdCreateView;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.command.CommandManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.EventPublisher;
@@ -1646,8 +1644,8 @@ public abstract class AGLViewBrowser
 	}
 
 	/**
-	 * Creates and initializes a new view based on its serialized form. The view is already added to the list
-	 * of event receivers and senders.
+	 * Creates and initializes a new view based on its serialized form. The view
+	 * is already added to the list of event receivers and senders.
 	 * 
 	 * @param gl
 	 * @param serView
@@ -1657,21 +1655,26 @@ public abstract class AGLViewBrowser
 	@SuppressWarnings("unchecked")
 	protected AGLView createView(GL gl, ASerializedView serView) {
 
-		CommandManager cm = generalManager.getCommandManager();
-		CmdCreateView cmdView = (CmdCreateView) cm.createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID(serView.getViewType());
-		cmdView.setAttributesFromSerializedForm(serView);
-		// cmdView.setSet(set);
-		cmdView.doCommand();
-
-		AGLView glView = cmdView.getCreatedObject();
-		if (glView instanceof IDataDomainBasedView<?>) {
-			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(dataDomain);
+		@SuppressWarnings("rawtypes")
+		Class viewClass;
+		try {
+			viewClass = Class.forName(serView.getViewClassType());
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException("Cannot find class for view "+serView.getViewType());
 		}
+		
+		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
+				.createGLView(viewClass, parentGLCanvas, viewFrustum);
 		glView.setRemoteRenderingGLView(this);
 
+		if (glView instanceof IDataDomainBasedView<?>) {
+			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
+					.get().getDataDomain(serView.getDataDomainType()));
+		}
+		
+		glView.initialize();
 		triggerMostRecentDelta();
-
+		
 		return glView;
 	}
 

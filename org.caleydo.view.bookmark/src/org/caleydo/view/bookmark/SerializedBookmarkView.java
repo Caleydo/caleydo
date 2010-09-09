@@ -27,13 +27,6 @@ public class SerializedBookmarkView extends ASerializedView {
 	}
 
 	@Override
-	public ViewFrustum getViewFrustum() {
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 8, 0,
-				8, -20, 20);
-		return viewFrustum;
-	}
-
-	@Override
 	public String getViewType() {
 		return GLBookmarkView.VIEW_ID;
 	}

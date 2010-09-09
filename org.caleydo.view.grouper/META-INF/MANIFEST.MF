@@ -14,3 +14,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.caleydo.view.grouper,
  org.caleydo.view.grouper.command.handler
 Bundle-Vendor: Graz University of Technology
+Bundle-Activator: org.caleydo.view.grouper.Activator
+Bundle-ActivationPolicy: lazy

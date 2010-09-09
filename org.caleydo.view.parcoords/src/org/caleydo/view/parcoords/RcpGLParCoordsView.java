@@ -3,12 +3,13 @@ package org.caleydo.view.parcoords;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IMemento;
-import org.eclipse.ui.IViewSite;
-import org.eclipse.ui.PartInitException;
 
 public class RcpGLParCoordsView extends ARcpGLViewPart {
 
@@ -27,30 +28,30 @@ public class RcpGLParCoordsView extends ARcpGLViewPart {
 	}
 
 	@Override
-	public void init(IViewSite site, IMemento memento) throws PartInitException {
-		super.init(site, memento);
-
-		if (memento == null) {
-			SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView(
-					dataDomainType);
-			initSerializedView = serializedView;
-		}
-	}
-
-	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-
+		
 		createGLCanvas();
-		createGLView(initSerializedView, glCanvas.getID());
+		
+		view = new GLParallelCoordinates(glCanvas, serializedView.getViewFrustum());
+		view.initFromSerializableRepresentation(serializedView);
+		if (view instanceof IDataDomainBasedView<?>) {
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(serializedView.getDataDomainType());
+			@SuppressWarnings("unchecked")
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
+				(IDataDomainBasedView<IDataDomain>) view;
+			dataDomainBasedView.setDataDomain(dataDomain);
+		}
+
+		view.initialize();
+		createPartControlGL();
 	}
 
 	@Override
-	public ASerializedView createDefaultSerializedView() {
+	public void createDefaultSerializedView() {
 
-		SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView();
-		serializedView.setDataDomainType(determineDataDomain(serializedView));
-		return serializedView;
+		serializedView = new SerializedParallelCoordinatesView();
+		determineDataDomain(serializedView);
 	}
 
 	@Override

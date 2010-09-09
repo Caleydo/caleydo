@@ -15,8 +15,7 @@ public class Toggle2AxisModeAction extends AToolBarAction implements IToolBarIte
 	/**
 	 * Constructor.
 	 */
-	public Toggle2AxisModeAction(int iViewID) {
-		super(iViewID);
+	public Toggle2AxisModeAction() {
 
 		setText(TEXT);
 		setToolTipText(TEXT);

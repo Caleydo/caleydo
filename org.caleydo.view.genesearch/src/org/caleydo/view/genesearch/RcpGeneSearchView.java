@@ -25,7 +25,6 @@ import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
-import org.caleydo.view.genesearch.creator.ViewCreator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -109,8 +108,6 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 	private IDType entrez = IDType.getIDType("ENTREZ_GENE_ID");
 
 	public RcpGeneSearchView() {
-		// Create view creator for initializing possible data domains
-		new ViewCreator();
 		
 		searchViewMediator = new SearchViewMediator();
 	}
@@ -829,5 +826,11 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 	@Override
 	public GeneticDataDomain getDataDomain() {
 		return dataDomain;
+	}
+
+	@Override
+	public void createDefaultSerializedView() {
+		serializedView = new SerializedGeneSearchView();
+		determineDataDomain(serializedView);
 	}
 }

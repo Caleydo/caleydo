@@ -20,3 +20,4 @@ Export-Package: org.caleydo.view.genesearch,
  org.caleydo.view.genesearch.toolbar
 Bundle-Vendor: Graz University of Technology
 Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.caleydo.view.genesearch.Activator

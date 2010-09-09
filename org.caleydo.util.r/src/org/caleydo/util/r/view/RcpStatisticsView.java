@@ -1,31 +1,28 @@
 package org.caleydo.util.r.view;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
+import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpStatisticsView extends CaleydoRCPViewPart {
 
-	private StatisticsView statisticsView;
-
 	@Override
 	public void createPartControl(Composite parent) {
-		statisticsView = (StatisticsView) GeneralManager.get().getViewGLCanvasManager()
-				.createView(StatisticsView.VIEW_ID, -1);
+		super.createPartControl(parent);
+		
+		view = new StatisticsView(parentComposite);
 
-		SerializedStatisticsView serializedView = new SerializedStatisticsView();
-		statisticsView.setDataDomain((ASetBasedDataDomain) DataDomainManager
-				.get().getDataDomain(determineDataDomain(serializedView)));
-		statisticsView.registerEventListeners();
-		statisticsView.initViewRCP(parent);
-		statisticsView.drawView();
+		if (view instanceof IDataDomainBasedView<?>) {
+				((IDataDomainBasedView<IDataDomain>) view).setDataDomain(DataDomainManager
+						.get().getDataDomain(serializedView.getDataDomainType()));
+		}
 
-		parentComposite = parent;
+		((ASWTView)view).draw();
 
-		GeneralManager.get().getViewGLCanvasManager().registerItem(statisticsView);
-		view = statisticsView;
 	}
 
 	@Override
@@ -36,12 +33,14 @@ public class RcpStatisticsView extends CaleydoRCPViewPart {
 	@Override
 	public void dispose() {
 		super.dispose();
-		statisticsView.unregisterEventListeners();
-		GeneralManager.get().getViewGLCanvasManager()
-				.unregisterItem(statisticsView.getID());
+		// view.unregisterEventListeners();
+		// GeneralManager.get().getViewGLCanvasManager()
+		// .unregisterItem(statisticsView.getID());
 	}
 
-	public StatisticsView getTabularDataView() {
-		return statisticsView;
+	@Override
+	public void createDefaultSerializedView() {
+		serializedView = new SerializedStatisticsView();
+		determineDataDomain(serializedView);
 	}
 }

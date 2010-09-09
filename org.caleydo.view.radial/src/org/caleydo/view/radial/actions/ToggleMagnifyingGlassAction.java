@@ -14,7 +14,6 @@ public class ToggleMagnifyingGlassAction extends AToolBarAction implements ITool
 	public static final String ICON = "resources/icons/general/search.png";
 
 	public ToggleMagnifyingGlassAction() {
-		super(-1);
 
 		setText(TEXT);
 		setToolTipText(TEXT);

@@ -2,21 +2,16 @@ package org.caleydo.core.view;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.serialize.ASerializedView;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Interface for the view representations.
  * 
  * @author Marc Streit
- * @author Michael Kalkusch
  * @author Alexander Lex
  */
 public interface IView
 	extends IUniqueObject {
-	/**
-	 * Sets the unique ID of the parent container. Normally it is already set in the constructor. Use this
-	 * method only if you want to change the parent during runtime.
-	 */
-	public void setParentContainerId(int iParentContainerId);
 
 	/**
 	 * Initializes the view after setting all required parameters.

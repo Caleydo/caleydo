@@ -21,9 +21,7 @@ public class UseSortingAction extends AToolBarAction implements IToolBarItem {
 	/**
 	 * Constructor.
 	 */
-	public UseSortingAction(int iViewID) {
-		super(iViewID);
-
+	public UseSortingAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(

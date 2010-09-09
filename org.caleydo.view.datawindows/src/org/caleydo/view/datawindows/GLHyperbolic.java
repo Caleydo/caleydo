@@ -10,12 +10,10 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.CmdCreateView;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.command.CommandManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
@@ -417,22 +415,35 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 		setDisplayListDirty();
 	}
 
+	/**
+	 * Creates and initializes a new view based on its serialized form. The view
+	 * is already added to the list of event receivers and senders.
+	 * 
+	 * @param gl
+	 * @param serView
+	 *            serialized form of the view to create
+	 * @return the created view ready to be used within the application
+	 */
 	@SuppressWarnings("unchecked")
 	private AGLView createView(GL gl, ASerializedView serView) {
 
-		CommandManager cm = generalManager.getCommandManager();
-		CmdCreateView cmdView = (CmdCreateView) cm
-				.createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID(serView.getViewType());
-		cmdView.setAttributesFromSerializedForm(serView);
-		cmdView.doCommand();
+		@SuppressWarnings("rawtypes")
+		Class viewClass;
+		try {
+			viewClass = Class.forName(serView.getViewClassType());
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException("Cannot find class for view "+serView.getViewType());
+		}
+		
+		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
+				.createGLView(viewClass, parentGLCanvas, viewFrustum);
+		//glView.setRemoteRenderingGLView(this);
 
-		AGLView glView = cmdView.getCreatedObject();
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
 					.get().getDataDomain(serView.getDataDomainType()));
 		}
-
+		
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
 
@@ -440,13 +451,10 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 			glPathway.enablePathwayTextures(true);
 			glPathway.enableNeighborhood(false);
 			glPathway.enableGeneMapping(false);
-
-			// glPathway.setDetailLevel(EDetailLevel.VERY_LOW);
-			// glPathway.broadcastbriElements(EVAOperation.APPEND_UNIQUE);
 		}
-
+		glView.initialize();
 		glView.initRemote(gl, this, glMouseListener, null);
-
+		
 		return glView;
 	}
 
