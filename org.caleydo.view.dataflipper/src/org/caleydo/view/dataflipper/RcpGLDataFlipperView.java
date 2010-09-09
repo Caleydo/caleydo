@@ -3,11 +3,7 @@ package org.caleydo.view.dataflipper;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.datadomain.IDataDomain;
-import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
-import org.caleydo.view.parcoords.GLParallelCoordinates;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLDataFlipperView extends ARcpGLViewPart {

@@ -7,7 +7,6 @@ import java.util.List;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;

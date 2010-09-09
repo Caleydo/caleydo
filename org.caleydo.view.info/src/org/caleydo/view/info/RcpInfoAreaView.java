@@ -1,7 +1,5 @@
 package org.caleydo.view.info;
 
-import java.util.ArrayList;
-
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;

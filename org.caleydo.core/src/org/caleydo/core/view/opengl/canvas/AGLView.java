@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas;
 
-import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.awt.Font;

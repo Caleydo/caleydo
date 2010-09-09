@@ -14,7 +14,6 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
-import org.caleydo.view.parcoords.GLParallelCoordinates;
 import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
 import org.caleydo.view.pathway.SerializedPathwayView;
 import org.eclipse.swt.widgets.Composite;

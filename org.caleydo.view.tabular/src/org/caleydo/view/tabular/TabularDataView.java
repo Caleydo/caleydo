@@ -33,7 +33,6 @@ import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
@@ -111,8 +110,6 @@ public class TabularDataView extends ASWTView implements
 	 */
 	protected EDataFilterLevel dataFilterLevel;
 
-	private IDMappingManager idMappingManager;
-
 	private Table contentTable;
 
 	private TableCursor contentTableCursor;
@@ -137,7 +134,6 @@ public class TabularDataView extends ASWTView implements
 				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER), parentComposite);
 
 		this.viewType = VIEW_ID;
-		idMappingManager = generalManager.getIDMappingManager();
 	}
 	
 	@Override

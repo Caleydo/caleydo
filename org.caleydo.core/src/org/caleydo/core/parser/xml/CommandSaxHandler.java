@@ -70,12 +70,6 @@ public class CommandSaxHandler
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE5.getXmlKey(),
 			ECommandType.TAG_ATTRIBUTE5.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_POS_GL_ORIGIN.getXmlKey(),
-			ECommandType.TAG_POS_GL_ORIGIN.getDefault(), ParameterHandlerType.VEC3F);
-
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_POS_GL_ROTATION.getXmlKey(),
-			ECommandType.TAG_POS_GL_ROTATION.getDefault(), ParameterHandlerType.VEC4F);
-
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_DETAIL.getXmlKey(),
 			ECommandType.TAG_DETAIL.getDefault(), ParameterHandlerType.STRING);
 

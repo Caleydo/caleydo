@@ -1,7 +1,6 @@
 package org.caleydo.util.r.view;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
  * Serialized form of a statistics view.

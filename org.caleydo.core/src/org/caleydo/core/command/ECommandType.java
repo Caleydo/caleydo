@@ -27,8 +27,6 @@ public enum ECommandType {
 	CREATE_ID_CATEGORY("cmd", "type", "Create ID Category"),
 	CREATE_ID_TYPE("cmd", "type", "-1", "Create ID Type"),
 
-	CREATE_SWT_WINDOW("cmd", "type", "-1", "Create SWT window"),
-	CREATE_SWT_CONTAINER("cmd", "type", "-1", "Create SWTContainer"),
 	CREATE_VIEW_RCP_GLCANVAS("cmd", "type", "-1", "Create RCP GL Canvas"),
 
 	SYSTEM_SHUT_DOWN("cmd", "type", "-1", "Caleydo system shut down"),
@@ -43,12 +41,7 @@ public enum ECommandType {
 	TAG_ATTRIBUTE4("cmd", "attrib4", ""),
 	TAG_ATTRIBUTE5("cmd", "attrib5", ""),
 	TAG_DETAIL("cmd", "detail", ""),
-	TAG_LABEL("cmd", "label", ""),
-	// TAG_PARENT("cmd", "label", ""),
-	TAG_POS_GL_ORIGIN("cmd", "gl_origin", "0 0 0"),
-
-	/** Values indicate axis: (X,Y,Z) and rotation-angle (ALPHA) in (radiant). */
-	TAG_POS_GL_ROTATION("cmd", "gl_rotation", "0 0 1 0.0");
+	TAG_LABEL("cmd", "label", "");
 
 	/**
 	 * * Tag: Example: <CmdQueue type="COMMAND_QUEUE_OPEN"> <br>

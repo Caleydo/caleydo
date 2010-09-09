@@ -1,6 +1,5 @@
 package org.caleydo.core.serialize;
 
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
  * This class is a serialized form reduced to hold only the view-id. It should only be used until all views

@@ -2,7 +2,6 @@ package org.caleydo.view.treemap;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.util.Collection;
 
 import javax.media.opengl.GL;
 

@@ -7,7 +7,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * Abstract class that is the base of all view representations. It holds the the own view ID, the parent ID

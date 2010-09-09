@@ -2,7 +2,6 @@ package org.caleydo.core.view;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.serialize.ASerializedView;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * Interface for the view representations.

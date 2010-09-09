@@ -8,8 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
  * Serialized form of the pathway browser view.

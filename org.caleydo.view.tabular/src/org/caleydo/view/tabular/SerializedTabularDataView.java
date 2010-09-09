@@ -1,7 +1,6 @@
 package org.caleydo.view.tabular;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
  * Serialized form of a tabular-browser view.
