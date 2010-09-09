@@ -8,6 +8,7 @@ import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.filter.ContentFilterManager;
+import org.caleydo.core.data.filter.StorageFilterManager;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
@@ -81,8 +82,9 @@ public abstract class ASetBasedDataDomain
 
 	/** central {@link EventPublisher} to receive and send events */
 	protected EventPublisher eventPublisher;
-	
+
 	protected ContentFilterManager contentFilterManager;
+	protected StorageFilterManager storageFilterManager;
 
 	/**
 	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
@@ -101,7 +103,7 @@ public abstract class ASetBasedDataDomain
 
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
-		
+
 		assignIDCategories();
 		if (contentIDCategory == null || storageIDCategory == null) {
 			throw new IllegalStateException("A ID category in " + toString()
@@ -127,13 +129,12 @@ public abstract class ASetBasedDataDomain
 	 * Sets the set which is currently loaded and used inside the views for this use case.
 	 * 
 	 * @param set
-	 *            The new set which replaced the currenlty loaded one.
+	 *            The new set which replaced the currently loaded one.
 	 */
 	public void setSet(Set set) {
 		assert (set != null);
 
 		// set.setDataDomain(this);
-		contentFilterManager = new ContentFilterManager(set);
 
 		ISet oldSet = this.set;
 		this.set = set;
@@ -141,6 +142,8 @@ public abstract class ASetBasedDataDomain
 			oldSet.destroy();
 			oldSet = null;
 		}
+
+	
 	}
 
 	/**
@@ -179,6 +182,9 @@ public abstract class ASetBasedDataDomain
 		NewSetEvent newSetEvent = new NewSetEvent();
 		newSetEvent.setSet((Set) set);
 		GeneralManager.get().getEventPublisher().triggerEvent(newSetEvent);
+		
+		contentFilterManager = new ContentFilterManager(this);
+		storageFilterManager = new StorageFilterManager(this);
 
 		// GLRemoteRendering glRemoteRenderingView = null;
 		//
