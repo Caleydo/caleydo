@@ -25,7 +25,6 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -40,7 +39,6 @@ import org.eclipse.swt.widgets.Slider;
 public class StatisticsView extends ASWTView implements IView, IDataDomainSetBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.statistics";
-	private Composite composite;
 
 	private ArrayList<ISet> setsWithPerformedStatistics;
 
@@ -69,26 +67,14 @@ public class StatisticsView extends ASWTView implements IView, IDataDomainSetBas
 
 	@Override
 	public void draw() {
-		composite = new Composite(parentComposite, SWT.NULL);
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
-		composite.setLayout(layout);
-		createGUI();
-	}
+//		parentComposite.layout();
 
-	public void initData() {
-	}
+		final Slider pValueSlider = new Slider(parentComposite, SWT.HORIZONTAL);
 
-	private void createGUI() {
-
-		composite.layout();
-
-		final Slider pValueSlider = new Slider(composite, SWT.HORIZONTAL);
-
-		final Label pValueLabel = new Label(composite, SWT.NULL);
+		final Label pValueLabel = new Label(parentComposite, SWT.NULL);
 		pValueLabel.setText("p-Value: " + pValueCutOff);
 
-		reducedNumberLabel = new Label(composite, SWT.NULL);
+		reducedNumberLabel = new Label(parentComposite, SWT.NULL);
 		reducedNumberLabel.setText("");
 
 		pValueSlider.setMinimum(0);
@@ -109,11 +95,11 @@ public class StatisticsView extends ASWTView implements IView, IDataDomainSetBas
 				// if (reducedVA != null)
 				// reducedNumberLabel.setText("# Genes: " + reducedVA.size());
 
-				composite.layout();
+				parentComposite.layout();
 			}
 		});
 
-		final Button button = new Button(composite, SWT.PUSH);
+		final Button button = new Button(parentComposite, SWT.PUSH);
 		button.setText("Perform Reduction");
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -122,7 +108,7 @@ public class StatisticsView extends ASWTView implements IView, IDataDomainSetBas
 			}
 		});
 
-		final Button buttonClear = new Button(composite, SWT.PUSH);
+		final Button buttonClear = new Button(parentComposite, SWT.PUSH);
 		buttonClear.setText("Clear Statistics Results");
 		buttonClear.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -132,6 +118,9 @@ public class StatisticsView extends ASWTView implements IView, IDataDomainSetBas
 				calulateReduction();
 			}
 		});
+	}
+
+	public void initData() {
 	}
 
 	@Override
@@ -241,7 +230,7 @@ public class StatisticsView extends ASWTView implements IView, IDataDomainSetBas
 
 		if (reducedVA != null) {
 			reducedNumberLabel.setText("# Genes: " + reducedVA.size());
-			composite.layout();
+			parentComposite.layout();
 		}
 	}
 

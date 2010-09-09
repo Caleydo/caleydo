@@ -21,7 +21,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.rcp.startup.StartupProcessor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
@@ -64,15 +64,8 @@ public abstract class CaleydoRCPViewPart
 	@Override
 	public void createPartControl(Composite parent) {
 		parentComposite = new Composite(parent, SWT.NONE);
-
-		GridData gridData = new GridData();
-
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessVerticalSpace = true;
-
-		parentComposite.setLayoutData(gridData);	}
+		parentComposite.setLayout(new GridLayout(1, false));
+	}
 	
 	/**
 	 * Generates and returns a list of all views, caleydo-view-parts and gl-views, contained in this view.

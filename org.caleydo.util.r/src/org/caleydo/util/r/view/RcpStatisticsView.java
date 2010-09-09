@@ -1,6 +1,5 @@
 package org.caleydo.util.r.view;
 
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
@@ -22,7 +21,6 @@ public class RcpStatisticsView extends CaleydoRCPViewPart {
 		}
 
 		((ASWTView)view).draw();
-
 	}
 
 	@Override
