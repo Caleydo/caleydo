@@ -187,6 +187,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		viewType = GLDataFlipper.VIEW_ID;
 
+		viewCamera.setCameraRotation(new Rotf());
+		viewCamera.setCameraPosition(new Vec3f(0, 0, -8));
+		
 		zoomMouseWheelListener = new ZoomMouseWheelListener(this);
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
 		parentGLCanvas.addMouseWheelListener(zoomMouseWheelListener);

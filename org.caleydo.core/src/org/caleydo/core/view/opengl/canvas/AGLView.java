@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas;
 
+import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.awt.Font;
@@ -173,11 +174,11 @@ public abstract class AGLView
 		final boolean bRegisterToParentCanvasNow) {
 
 		// If the glCanvas object is null - then the view is rendered remote.
-		super(GeneralManager.get().getIDManager()
-			.createID(EManagedObjectType.GL_VIEW));
-		
+		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.GL_VIEW));
+
+		GeneralManager.get().getViewGLCanvasManager().registerGLView(this);
 		parentGLCanvas = glCanvas;
-		
+
 		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), true, true);
 
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
@@ -201,9 +202,10 @@ public abstract class AGLView
 	@Override
 	public void initialize() {
 		registerEventListeners();
-		
-//		if (glRemoteRenderingView == null)
-			GeneralManager.get().getViewGLCanvasManager().registerGLEventListenerByGLCanvas(parentGLCanvas, this);
+
+		if (glRemoteRenderingView == null)
+			GeneralManager.get().getViewGLCanvasManager()
+				.registerGLEventListenerByGLCanvas(parentGLCanvas, this);
 	}
 
 	@Override

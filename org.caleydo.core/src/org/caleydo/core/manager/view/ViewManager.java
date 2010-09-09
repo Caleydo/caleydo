@@ -144,9 +144,12 @@ public class ViewManager
 		return true;
 	}
 
+	public void registerGLView(AGLView glView) {
+		hashGLViewID2GLView.put(glView.getID(), glView);
+	}
+	
 	public void registerGLEventListenerByGLCanvas(final GLCaleydoCanvas glCanvas,
-		final AGLView gLEventListener) {
-		hashGLViewID2GLView.put(gLEventListener.getID(), gLEventListener);
+		final AGLView glView) {
 
 		// This is the case when a view is rendered remote
 		if (glCanvas == null)
@@ -156,8 +159,8 @@ public class ViewManager
 			hashGLCanvas2GLView.put(glCanvas, new ArrayList<AGLView>());
 		}
 
-		hashGLCanvas2GLView.get(glCanvas).add(gLEventListener);
-		glCanvas.addGLEventListener(gLEventListener);
+		hashGLCanvas2GLView.get(glCanvas).add(glView);
+		glCanvas.addGLEventListener(glView);
 	}
 
 	/**

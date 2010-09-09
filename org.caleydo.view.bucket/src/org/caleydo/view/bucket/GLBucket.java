@@ -219,6 +219,9 @@ public class GLBucket extends AGLView implements
 
 		layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET;
 
+		viewCamera.setCameraRotation(new Rotf());
+		viewCamera.setCameraPosition(new Vec3f(0, 0, -8));
+		
 		if (generalManager.getTrackDataProvider().isTrackModeActive()) {
 			glOffScreenRenderer = new GLOffScreenTextureRenderer();
 		}
@@ -2546,7 +2549,7 @@ public class GLBucket extends AGLView implements
 		}
 		
 		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
-				.createGLView(viewClass, parentGLCanvas, viewFrustum);
+				.createGLView(viewClass, parentGLCanvas, serView.getViewFrustum());
 		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof IDataDomainBasedView<?>) {
