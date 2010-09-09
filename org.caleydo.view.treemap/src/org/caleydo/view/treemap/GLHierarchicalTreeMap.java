@@ -11,6 +11,7 @@ import java.util.Vector;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -93,6 +94,8 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	private Vector<GLTreeMap> thumbnailTreemapViews = new Vector<GLTreeMap>(4);
 
+	int displayListID;
+
 	/**
 	 * Constructor.
 	 * 
@@ -141,6 +144,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
+				
 
 				mainTreeMapView.processMouseWheeleEvent(e);
 
@@ -199,10 +203,14 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;
 
-		createEmbeddedTreeMap();
+		mainTreeMapView=createEmbeddedTreeMap();
+		mainTreeMapView.setRemotePickingManager(pickingManager, getID());
 
+		thumbnailTreemapViews.add(createEmbeddedTreeMap());
+		
 		mainTreeMapView.initRemote(gl, this, glMouseListener, null);
 
+		displayListID = gl.glGenLists(1);
 	}
 
 	@Override
@@ -292,81 +300,27 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	@Override
 	public void display(GL gl) {
 
-		// ViewFrustum viewFrustum = mainTreeMapView.getViewFrustum();
-		// viewFrustum.setTop((float)6.0);
-		// viewFrustum.setLeft(viewFrustum.getLeft()-1);
-		// viewFrustum.setTop((float) (viewFrustum.getTop()-2.0));
-		// mainTreeMapView.setFrustum(viewFrustum);
-		mainTreeMapView.getViewFrustum().setTop(6);
-		mainTreeMapView.displayRemote(gl);
+		if(thumbnailTreemapViews.size()>0){
+			
+			GLTreeMap treemap = thumbnailTreemapViews.get(0);
+			
+			treemap.getViewFrustum().setLeft((float) (viewFrustum.getLeft()+viewFrustum.getWidth()*0.01));
+			treemap.getViewFrustum().setRight((float) (viewFrustum.getLeft()+viewFrustum.getWidth()*0.33));
+			treemap.getViewFrustum().setBottom((float) (viewFrustum.getTop()-viewFrustum.getHeight()*0.19));
+			treemap.getViewFrustum().setTop((float) (viewFrustum.getTop()-viewFrustum.getHeight()*0.01));
+			gl.glPushMatrix();
+			gl.glTranslated(viewFrustum.getWidth()*0.01, viewFrustum.getHeight()*0.81, 0);
+			treemap.displayRemote(gl);
+			gl.glPopMatrix();
+			
+			
+			mainTreeMapView.getViewFrustum().setTop((float) (viewFrustum.getTop() - viewFrustum.getHeight() * 0.2));
 
-		// GLHelperFunctions.drawAxis(gl);
-		// GLHelperFunctions.drawPointAt(gl, 1, 1, 1);
-		// gl.glPushName(pickingManager.getPickingID(getID(),
-		// EPickingType.TREEMAP_ELEMENT_SELECTED, 1));
+			mainTreeMapView.displayRemote(gl);
+		}
 
-		// gl.glBegin(GL.GL_QUADS);
-		// gl.glColor3f(0, 1, 0);
-		// gl.glVertex3f(0, 0, 0);
-		// gl.glVertex3f(0, 1, 0);
-		// gl.glVertex3f(1, 1, 0);
-		// gl.glVertex3f(1, 0, 0);
-		// gl.glEnd();
-		// gl.glPopName();
-
-		// GlPainter painter = new GlPainter(gl, viewFrustum);
-
-		// painter.paintRectangle(0, 0,(float) 1.0/3, 1, Color.RED);
-		// painter.paintRectangle((float) 1.0/3, 0,(float) 2.0/3, 1,
-		// Color.GREEN);
-		// painter.paintRectangle((float) 2.0/3, 0, 1, 1, Color.BLUE);
-
-		// Tree<ClusterNode> storageTree = dataDomain.getSet()
-		// .getStorageData(StorageVAType.STORAGE).getStorageTree();
-
-		// AbstractTree tree = DefaultTree.createSampleTree();
-		// SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
-		//
-		// layouter.layout(tree, painter);
-		// painter.paintTreeMap(tree);
-		//
-		// painter.paintRectangle((float) 0.0, (float) 0.0, (float) 1 / 3,
-		// (float) 1,
-		// Color.YELLOW);
-
-		// SelectionManager contentSelectionManager = dataDomain
-		// .getContentSelectionManager();
-
-		// if (bIsDisplayListDirtyLocal) {
-		// painter = new GlPainter(gl, viewFrustum, pickingManager, getID(),
-		// treeSelectionManager);
-		//
-		// // ATreeMapNode root = DefaultTreeNode.createSampleTree();
-		//
-		// // Tree<ClusterNode> contentTree =
-		// //
-		// dataDomain.getSet().getContentData(ContentVAType.CONTENT).getContentTree();
-		// //
-		// //
-		// // ClusterTreeMapNode root =
-		// // ClusterTreeMapNode.createFromClusterNodeTree(tree, colorMapper);
-		// // SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
-		// // layouter.layout(root, painter);
-		// // treeMapModel = root.getTree();
-		//
-		// painter.paintTreeMap(treeMapModel.getRoot());
-		//
-		// bIsDisplayListDirtyLocal = false;
-		// setHighLichtingListDirty();
-		// }
-		//
-		// if (bIsHighlightingListDirty) {
-		// painter.paintHighlighting(treeMapModel, treeSelectionManager);
-		// bIsHighlightingListDirty = false;
-		// }
-		//
-		// painter.paintTreeMapFromCache();
-
+			
+	
 	}
 
 	public void zoomIn() {
@@ -406,7 +360,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	protected void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
 
 		mainTreeMapView.handleRemotePickingEvents(ePickingType, pickingMode, iExternalID, pick);
-
+		setDisplayListDirty();
 		// if (detailLevel == DetailLevel.VERY_LOW) {
 		// return;
 		// }
@@ -591,18 +545,42 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		bIsHighlightingListDirty = true;
 	}
 
-	private void createEmbeddedTreeMap() {
+
+	
+	private GLTreeMap createEmbeddedTreeMap() {
 
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
 		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, (int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
-		mainTreeMapView = new GLTreeMap(this.getParentGLCanvas(), viewFrustum);
-		mainTreeMapView.setDataDomain(dataDomain);
-		mainTreeMapView.setRemoteRenderingGLView(this);
-		mainTreeMapView.setRemotePickingManager(pickingManager, getID());
-		mainTreeMapView.initData();
+		GLTreeMap treemap = new GLTreeMap(this.getParentGLCanvas(), viewFrustum);
+		treemap.setDataDomain(dataDomain);
+		treemap.setRemoteRenderingGLView(this);
+		treemap.setRemotePickingManager(pickingManager, getID());
+		treemap.initData();
+		return treemap;
 	}
+	
+//	private GLTreeMap createEmbeddedTreeMap(){
+//		CmdCreateView cmdView = (CmdCreateView) generalManager.getCommandManager().createCommandByType(ECommandType.CREATE_GL_VIEW);
+//		cmdView.setViewID(GLTreeMap.VIEW_ID);
+//
+//		float fHeatMapHeight = viewFrustum.getHeight();
+//		float fHeatMapWidth = viewFrustum.getWidth();
+//
+//		cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20, 20, -1);
+//		cmdView.setDataDomainType(dataDomain.getDataDomainType());
+//		cmdView.doCommand();
+//
+//		GLTreeMap treeMap = (GLTreeMap) cmdView.getCreatedObject();
+//		treeMap.setDataDomain(dataDomain);
+//		treeMap.setRemoteRenderingGLView(this);
+//		//treeMap.setRemotePickingManager(pickingManager, getID());
+//		treeMap.initData();
+//		
+//		return treeMap;
+//		
+//	}
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
@@ -610,4 +588,6 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		remoteRenderedViews.add(mainTreeMapView);
 		return remoteRenderedViews;
 	}
+
+
 }
