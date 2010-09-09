@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
@@ -21,20 +20,24 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Werner Puff
  * @author Alexander Lex
- * @deprecated resolve plug-in dependencies
+ * @author Marc Streit
  */
-@Deprecated
 public class ToolBarContentFactory {
 
 	/** reference to singleton instance */
 	private static ToolBarContentFactory toolBarContentFactory = null;
 
-	/** Maps view IDs to its {@link ToolBarInfo} */
+	/** Maps view type to its {@link ToolBarInfo} */
 	private HashMap<String, ToolBarInfo> toolBarInfos;
+	
+	/** Maps view type to its {@link ToolBarInfo} */
+	private HashMap<String, AToolBarContent> toolBarContents;
+	
 
 	/** Hidden default constructor. */
 	public ToolBarContentFactory() {
-
+		toolBarContents = new HashMap<String, AToolBarContent>();
+		toolBarInfos = new HashMap<String, ToolBarInfo>();
 	}
 
 	/**
@@ -46,76 +49,76 @@ public class ToolBarContentFactory {
 	public static ToolBarContentFactory get() {
 		if (toolBarContentFactory == null) {
 			toolBarContentFactory = new ToolBarContentFactory();
-			toolBarContentFactory.init();
 		}
 		return toolBarContentFactory;
 	}
 
-	/**
-	 * Initializes an instance of this class. Must be called before the first usage.
-	 */
-	public void init() {
-		toolBarInfos = new HashMap<String, ToolBarInfo>();
-
-		ToolBarInfo info;
-
-		// TODO dataflipper
-
-		info = new ToolBarInfo();
-		info.viewType = "org.caleydo.view.heatmap";
-		info.ignored = false;
-		toolBarInfos.put(info.viewType, info);
-
-		info = new ToolBarInfo();
-		info.viewType = "org.caleydo.view.heatmap.hierarchical";
-		info.ignored = true;
-		toolBarInfos.put(info.viewType, info);
-
-		info = new ToolBarInfo();
-		info.viewType = "org.caleydo.view.histogram";
-		info.ignored = true;
-		toolBarInfos.put(info.viewType, info);
-
-		info = new ToolBarInfo();
-		info.viewType = "org.caleydo.view.parcoords";
-		info.ignored = false;
-		toolBarInfos.put(info.viewType, info);
-
-		info = new ToolBarInfo();
-		info.viewType = "org.caleydo.view.bucket";
-		info.ignored = false;
-		toolBarInfos.put(info.viewType, info);
-
-		info = new ToolBarInfo();
-		info.viewType = "org.caleydo.view.radial";
-		info.ignored = false;
-		toolBarInfos.put(info.viewType, info);
-
-		info = new ToolBarInfo();
-		info.viewType = "org.caleydo.view.scatterplot";
-		info.ignored = false;
-		toolBarInfos.put(info.viewType, info);
-
-		info = new ToolBarInfo();
-		info.viewType = "org.caleydo.view.matchmaker";
-		info.ignored = false;
-		toolBarInfos.put(info.viewType, info);
-
-		info = new ToolBarInfo();
-		info.viewType = "org.caleydo.view.dataflipper";
-		info.ignored = false;
-		toolBarInfos.put(info.viewType, info);
-
-		info = new ToolBarInfo();
-		info.viewType = "org.caleydo.view.treemap";
-		info.ignored = false;
-		toolBarInfos.put(info.viewType, info);
+	public void addToolBarContent(String viewType, boolean isIgnored, AToolBarContent toolBarContent) {
+		toolBarContents.put(viewType, toolBarContent);
 		
-		info = new ToolBarInfo();
-		info.viewType = "org.caleydo.view.filter";
-		info.ignored = false;
+		ToolBarInfo info = new ToolBarInfo();
+		info.viewType = viewType;
+		info.ignored = isIgnored;
 		toolBarInfos.put(info.viewType, info);
 	}
+	
+	public AToolBarContent getToolBarContent(String viewType) {
+		return toolBarContents.get(viewType);
+	}
+	
+//	/**
+//	 * Initializes an instance of this class. Must be called before the first usage.
+//	 */
+//	public void init() {
+	
+
+//		ToolBarInfo info;
+
+//		info = new ToolBarInfo();
+//		info.viewType = "org.caleydo.view.histogram";
+//		info.ignored = true;
+//		toolBarInfos.put(info.viewType, info);
+
+//		info = new ToolBarInfo();
+//		info.viewType = "org.caleydo.view.parcoords";
+//		info.ignored = false;
+//		toolBarInfos.put(info.viewType, info);
+
+//		info = new ToolBarInfo();
+//		info.viewType = "org.caleydo.view.bucket";
+//		info.ignored = false;
+//		toolBarInfos.put(info.viewType, info);
+
+//		info = new ToolBarInfo();
+//		info.viewType = "org.caleydo.view.radial";
+//		info.ignored = false;
+//		toolBarInfos.put(info.viewType, info);
+
+//		info = new ToolBarInfo();
+//		info.viewType = "org.caleydo.view.scatterplot";
+//		info.ignored = false;
+//		toolBarInfos.put(info.viewType, info);
+
+//		info = new ToolBarInfo();
+//		info.viewType = "org.caleydo.view.matchmaker";
+//		info.ignored = false;
+//		toolBarInfos.put(info.viewType, info);
+
+//		info = new ToolBarInfo();
+//		info.viewType = "org.caleydo.view.dataflipper";
+//		info.ignored = false;
+//		toolBarInfos.put(info.viewType, info);
+
+//		info = new ToolBarInfo();
+//		info.viewType = "org.caleydo.view.treemap";
+//		info.ignored = false;
+//		toolBarInfos.put(info.viewType, info);
+		
+//		info = new ToolBarInfo();
+//		info.viewType = "org.caleydo.view.filter";
+//		info.ignored = false;
+//		toolBarInfos.put(info.viewType, info);
+//	}
 
 	/**
 	 * Looks for toolbar content providers for a specified list of view types
@@ -224,26 +227,23 @@ public class ToolBarContentFactory {
 	}
 
 	private AToolBarContent getContent(IView view) {
+		
 		AToolBarContent content = null;
-//		ToolBarInfo info = toolBarInfos.get(view.getViewType());
-//		if (info != null) {
-//			IViewCreator viewCreator =
-//				GeneralManager.get().getViewGLCanvasManager().getViewCreator(info.viewType);
-//			if (viewCreator == null)
-//				return null;
-//
-//			Object toolBarContent = viewCreator.createToolBarContent();
-//			if (toolBarContent == null)
-//				return null;
-//
-//			content = (AToolBarContent) toolBarContent;
-//			content.setTargetViewData(view.getSerializableRepresentation());
-//			if (view instanceof AGLView) {
-//				if (((AGLView) view).rendersContextOnly()) {
-//					content.setRenderType(AToolBarContent.CONTEXT_ONLY_RENDERING);
-//				}
-//			}
-//		}
+		ToolBarInfo info = toolBarInfos.get(view.getViewType());
+		if (info != null) {
+
+			Object toolBarContent = toolBarContentFactory.getToolBarContent(view.getViewType());
+			if (toolBarContent == null)
+				return null;
+
+			content = (AToolBarContent) toolBarContent;
+			content.setTargetViewData(view.getSerializableRepresentation());
+			if (view instanceof AGLView) {
+				if (((AGLView) view).rendersContextOnly()) {
+					content.setRenderType(AToolBarContent.CONTEXT_ONLY_RENDERING);
+				}
+			}
+		}
 
 		return content;
 	}

@@ -3,9 +3,12 @@ package org.caleydo.view.heatmap;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.rcp.toolbar.ToolBarContentFactory;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
+import org.caleydo.view.heatmap.toolbar.HeatMapToolBarContent;
+import org.caleydo.view.heatmap.toolbar.HierarchicalHeatMapToolBarContent;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -29,6 +32,9 @@ public class Activator extends Plugin {
 		plugin = this;
 
 		registerDataDomains();
+		
+		ToolBarContentFactory.get().addToolBarContent(GLHeatMap.VIEW_ID, false, new HeatMapToolBarContent());
+		ToolBarContentFactory.get().addToolBarContent(GLHierarchicalHeatMap.VIEW_ID, true, new HierarchicalHeatMapToolBarContent());
 	}
 
 	/*

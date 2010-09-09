@@ -3,6 +3,8 @@ package org.caleydo.view.radial;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.rcp.toolbar.ToolBarContentFactory;
+import org.caleydo.view.radial.toolbar.RadialHierarchyToolBarContent;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -26,6 +28,8 @@ public class Activator extends Plugin {
 		plugin = this;
 		
 		registerDataDomains();
+		
+		ToolBarContentFactory.get().addToolBarContent(GLRadialHierarchy.VIEW_ID, false, new RadialHierarchyToolBarContent());
 	}
 
 	/*

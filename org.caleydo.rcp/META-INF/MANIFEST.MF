@@ -49,6 +49,7 @@ Export-Package: org.caleydo.rcp;
    org.eclipse.jface.viewers,
    org.caleydo.core.manager.event",
  org.caleydo.rcp.splashHandlers;uses:="org.eclipse.swt.widgets,org.eclipse.ui.splash",
+ org.caleydo.rcp.toolbar,
  org.caleydo.rcp.util.search,
  org.caleydo.rcp.view.listener,
  org.caleydo.rcp.view.rcp,

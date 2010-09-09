@@ -3,6 +3,8 @@ package org.caleydo.view.matchmaker;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.rcp.toolbar.ToolBarContentFactory;
+import org.caleydo.view.matchmaker.toolbar.MatchmakerToolBarContent;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -26,6 +28,8 @@ public class Activator extends Plugin {
 		plugin = this;
 		
 		registerDataDomains();
+		
+		ToolBarContentFactory.get().addToolBarContent(GLMatchmaker.VIEW_ID, false, new MatchmakerToolBarContent());
 	}
 
 	/*
