@@ -670,4 +670,19 @@ public abstract class ASetBasedDataDomain
 		return storageIDType;
 	}
 
+	/**
+	 * Filter manager holds all filter applied in the content dimension.
+	 * @return
+	 */
+	public ContentFilterManager getContentFilterManager() {
+		return contentFilterManager;
+	}
+	
+	/**
+	 * Filter manager holds all filter applied in the storage dimension.
+	 * @return
+	 */
+	public StorageFilterManager getStorageFilterManager() {
+		return storageFilterManager;
+	}
 }

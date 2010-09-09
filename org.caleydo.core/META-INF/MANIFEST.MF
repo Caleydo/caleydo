@@ -57,6 +57,7 @@ Export-Package: org.caleydo.core.bridge.gui;uses:="org.caleydo.core.serialize,or
    org.caleydo.core.manager.datadomain",
  org.caleydo.core.data.collection.set.statistics;uses:="org.caleydo.core.data.collection,org.caleydo.core.util.collection",
  org.caleydo.core.data.collection.storage;uses:="org.caleydo.core.data.collection,org.caleydo.core.data.collection.ccontainer,org.caleydo.core.data",
+ org.caleydo.core.data.filter,
  org.caleydo.core.data.graph;uses:="org.caleydo.util.graph,org.caleydo.core.data,org.caleydo.util.graph.item",
  org.caleydo.core.data.graph.tree;uses:="org.caleydo.core.data.mapping,org.jgrapht,org.caleydo.core.manager.datadomain",
  org.caleydo.core.data.group;

@@ -114,4 +114,12 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 	public void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
 		listener.handleEvent(event);
 	}
+	
+	/**
+	 * Returns all current filters.
+	 * @return a list of all filters
+	 */
+	public ArrayList<FilterType> getFilterPipe() {
+		return filterPipe;
+	}
 }
