@@ -446,7 +446,8 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	@Override
 	public void setSelectionTypeRec(SelectionType selectionType,
 			SelectionManager selectionManager) {
-		selectionManager.addToType(selectionType, getID());
+		if (selectionType != SelectionType.NORMAL)
+			selectionManager.addToType(selectionType, getID());
 		clusterNode.setSelectionType(selectionType);
 		for (ICompositeGraphic child : alChildren) {
 			child.setSelectionTypeRec(selectionType, selectionManager);

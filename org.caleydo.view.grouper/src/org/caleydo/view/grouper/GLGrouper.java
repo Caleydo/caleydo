@@ -84,11 +84,11 @@ import org.eclipse.core.runtime.Platform;
  * @author Christian Partl
  * @author Alexander Lex
  */
-public class GLGrouper extends AGLView implements IDataDomainSetBasedView, IViewCommandHandler,
-		ISelectionUpdateHandler, IClusterNodeEventReceiver {
+public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
+		IViewCommandHandler, ISelectionUpdateHandler, IClusterNodeEventReceiver {
 
 	public final static String VIEW_ID = "org.caleydo.view.grouper";
-	
+
 	boolean bUseDetailLevel = true;
 
 	private boolean bControlPressed = false;
@@ -562,7 +562,10 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView, IView
 					groupRep.setSelectionTypeRec(SelectionType.SELECTION,
 							selectionManager);
 					selectionManager.addToType(selectionTypeClicked, groupRep.getID());
-					rootGroup.updateSelections(selectionManager, drawingStrategyManager);
+
+					if (groupRep.isLeaf())
+						rootGroup.updateSelections(selectionManager,
+								drawingStrategyManager);
 					triggerSelectionEvents();
 					setDisplayListDirty();
 				}
@@ -789,21 +792,24 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView, IView
 		event.setSelectionDelta(clusterIDDelta);
 		eventPublisher.triggerEvent(event);
 
-		// SelectionDelta delta = new SelectionDelta(
-		// EIDType.EXPERIMENT_INDEX);
-		// for(SelectionDeltaItem item : clusterIDDelta.getAllItems()) {
-		// GroupRepresentation groupRep = hashGroups.get(item.getPrimaryID());
-		// if(groupRep != null && groupRep.isLeaf()) {
-		// ClusterNode clusterNode = groupRep.getClusterNode();
-		// delta.addSelection(clusterNode.getLeafID(), item.getSelectionType());
-		// }
-		// }
-		//
-		// SelectionUpdateEvent selectionUpdateEvent = new
-		// SelectionUpdateEvent();
-		// selectionUpdateEvent.setSender(this);
-		// selectionUpdateEvent.setSelectionDelta(delta);
-		// eventPublisher.triggerEvent(selectionUpdateEvent);
+		SelectionDelta delta = new SelectionDelta(dataDomain.getStorageIDType());
+		for (SelectionDeltaItem item : clusterIDDelta.getAllItems()) {
+			GroupRepresentation groupRep = hashGroups.get(item.getPrimaryID());
+			if (groupRep != null && groupRep.isLeaf()) {
+				ClusterNode clusterNode = groupRep.getClusterNode();
+				if (item.isRemove())
+					delta.removeSelection(clusterNode.getLeafID(),
+							item.getSelectionType());
+				else
+					delta.addSelection(clusterNode.getLeafID(), item.getSelectionType());
+			}
+		}
+
+		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
+		selectionUpdateEvent.setSender(this);
+		selectionUpdateEvent.setDataDomainType(dataDomain.getDataDomainType());
+		selectionUpdateEvent.setSelectionDelta(delta);
+		eventPublisher.triggerEvent(selectionUpdateEvent);
 	}
 
 	@Override
@@ -1221,13 +1227,14 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView, IView
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 
-		if (selectionDelta.getIDType() == dataDomain.getStorageIDType()) {
+		if (selectionDelta.getIDType() == selectionManager.getIDType()
+				|| selectionDelta.getIDType() == dataDomain.getStorageIDType()) {
 			Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
 			Tree<ClusterNode> experimentTree = set.getStorageData(storageVAType)
 					.getStorageTree();
 
 			if (experimentTree != null) {
-				selectionManager.clearSelections();
+				// selectionManager.clearSelections();
 				dragAndDropController.clearDraggables();
 
 				for (SelectionDeltaItem item : deltaItems) {
@@ -1236,11 +1243,23 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView, IView
 
 					for (Integer nodeID : alNodeIDs) {
 						GroupRepresentation groupRep = hashGroups.get(nodeID);
-						if (item.getSelectionType() == SelectionType.SELECTION) {
-							groupRep.addAsDraggable(dragAndDropController);
+
+						if (item.isRemove())
+						{
+							groupRep.setSelectionTypeRec(SelectionType.NORMAL,
+									selectionManager);
+							selectionManager.remove(nodeID, false);
 						}
-						groupRep.setSelectionTypeRec(item.getSelectionType(),
-								selectionManager);
+						else {
+							if (item.getSelectionType() == SelectionType.SELECTION) {
+								groupRep.addAsDraggable(dragAndDropController);
+							}
+
+							groupRep.setSelectionTypeRec(item.getSelectionType(),
+									selectionManager);
+
+						}
+
 					}
 					rootGroup.updateSelections(selectionManager, drawingStrategyManager);
 				}
@@ -1312,7 +1331,6 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView, IView
 		}
 
 		selectionManager = new SelectionManager(tree.getNodeIDType());
-		// selectionManager.addSelectionType(selectionTypeClicked);
 
 		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
 				selectionTypeClicked);

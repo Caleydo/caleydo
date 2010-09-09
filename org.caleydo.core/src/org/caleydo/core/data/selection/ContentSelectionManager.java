@@ -3,7 +3,6 @@ package org.caleydo.core.data.selection;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.VABasedSelectionManager;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 
 public class ContentSelectionManager
