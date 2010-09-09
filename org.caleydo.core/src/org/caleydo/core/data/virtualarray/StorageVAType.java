@@ -1,7 +1,8 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.data.virtualarray;
 
 import java.util.HashMap;
 import java.util.Set;
+
 
 public class StorageVAType
 	extends IVAType {

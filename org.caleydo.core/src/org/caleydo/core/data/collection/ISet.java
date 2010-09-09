@@ -10,11 +10,11 @@ import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.collection.set.StorageData;
 import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
-import org.caleydo.core.data.selection.ContentVAType;
-import org.caleydo.core.data.selection.ContentVirtualArray;
-import org.caleydo.core.data.selection.StorageVAType;
-import org.caleydo.core.data.selection.StorageVirtualArray;
-import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.data.virtualarray.ContentVAType;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.StorageVAType;
+import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.util.clusterer.ClusterState;
 

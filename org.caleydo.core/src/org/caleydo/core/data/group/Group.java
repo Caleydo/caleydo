@@ -1,7 +1,8 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.data.group;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 public class Group {

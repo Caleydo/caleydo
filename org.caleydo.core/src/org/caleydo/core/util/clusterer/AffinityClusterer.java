@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.selection.ContentVirtualArray;
-import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;

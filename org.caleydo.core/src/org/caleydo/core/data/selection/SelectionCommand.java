@@ -2,6 +2,8 @@ package org.caleydo.core.data.selection;
 
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.virtualarray.VABasedSelectionManager;
+
 /**
  * SelectionCommand stores a command and a data type on which it should be applied. It is used to pass
  * commands between two instances to remotely control the {@link VABasedSelectionManager} of the receiving

@@ -1,7 +1,7 @@
 package org.caleydo.core.data.collection.ccontainer;
 
-import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.data.selection.VAIterator;
+import org.caleydo.core.data.virtualarray.IVirtualArray;
+import org.caleydo.core.data.virtualarray.VAIterator;
 
 /**
  * Abstract container iterator for all ICContainers. Supports virtual arrays.

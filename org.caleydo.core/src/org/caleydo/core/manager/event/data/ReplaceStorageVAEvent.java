@@ -1,8 +1,8 @@
 package org.caleydo.core.manager.event.data;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.StorageVAType;
-import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.StorageVAType;
+import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 
 public class ReplaceStorageVAEvent
 	extends ReplaceVAEvent<StorageVirtualArray, StorageVAType> {

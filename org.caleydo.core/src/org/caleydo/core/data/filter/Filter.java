@@ -1,7 +1,7 @@
 package org.caleydo.core.data.filter;
 
-import org.caleydo.core.data.selection.IVAType;
-import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.data.virtualarray.IVAType;
+import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 
 /**
  * Generic base class for Filters. A Filter contains changes made to a virtual array. Sub-classes may

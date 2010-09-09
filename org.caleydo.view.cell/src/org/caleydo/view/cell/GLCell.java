@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;

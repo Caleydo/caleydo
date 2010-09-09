@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.selection.Group;
+import org.caleydo.core.data.group.Group;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.matchmaker.HeatMapWrapper;

@@ -1,6 +1,6 @@
 package org.caleydo.core.data.collection.ccontainer;
 
-import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.virtualarray.IVirtualArray;
 
 /**
  * CContainer implementation for int A container for ints. Initialized with an int array. The length can not

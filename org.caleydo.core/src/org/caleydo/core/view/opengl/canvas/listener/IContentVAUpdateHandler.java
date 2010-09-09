@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
-import org.caleydo.core.data.selection.ContentVAType;
-import org.caleydo.core.data.selection.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.ContentVAType;
+import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 

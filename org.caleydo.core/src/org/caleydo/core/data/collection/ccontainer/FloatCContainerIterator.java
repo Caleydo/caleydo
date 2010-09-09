@@ -2,7 +2,7 @@ package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.NoSuchElementException;
 
-import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.virtualarray.IVirtualArray;
 
 /**
  * Iterator for FloatCContainer Initialized by passing the container. Then provides the common iterator

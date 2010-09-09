@@ -3,8 +3,8 @@ package org.caleydo.core.data.collection.set;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.ContentVAType;
-import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.ContentVAType;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 
 public class SetComparer {
 

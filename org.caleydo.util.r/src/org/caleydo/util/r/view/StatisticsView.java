@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings;
 import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings.FoldChangeEvaluator;
-import org.caleydo.core.data.selection.ContentVAType;
-import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.ContentVAType;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.StatisticsResultFinishedEvent;
+import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
@@ -34,6 +36,7 @@ import org.eclipse.swt.widgets.Slider;
  * 
  * @author Marc Streit
  */
+
 public class StatisticsView extends ASWTView implements IView, IDataDomainSetBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.statistics";
@@ -45,7 +48,7 @@ public class StatisticsView extends ASWTView implements IView, IDataDomainSetBas
 
 	private float pValueCutOff = 0.05f;
 
-	private ContentVirtualArray reducedVA;
+	private ContentVADelta reducedVA;
 
 	private Label reducedNumberLabel;
 
@@ -56,7 +59,8 @@ public class StatisticsView extends ASWTView implements IView, IDataDomainSetBas
 	 */
 	public StatisticsView(Composite parentComposite) {
 		super(GeneralManager.get().getIDManager()
-				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER), parentComposite);
+				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER),
+				parentComposite);
 
 		this.viewType = VIEW_ID;
 
@@ -169,10 +173,11 @@ public class StatisticsView extends ASWTView implements IView, IDataDomainSetBas
 				|| setsWithPerformedStatistics.size() == 0)
 			return;
 
-		reducedVA = new ContentVirtualArray();
+		reducedVA = new ContentVADelta();
+		ContentVirtualArray contentVA = setsWithPerformedStatistics.get(0)
+				.getContentData(ContentVAType.CONTENT).getContentVA();
 
-		for (int contentIndex = 0; contentIndex < setsWithPerformedStatistics.get(0)
-				.getContentData(ContentVAType.CONTENT).getContentVA().size(); contentIndex++) {
+		for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 			boolean resultValid = true;
 
 			for (ISet set : setsWithPerformedStatistics) {
@@ -228,8 +233,10 @@ public class StatisticsView extends ASWTView implements IView, IDataDomainSetBas
 				// +set +" "+contentIndex);
 			}
 
-			if (resultValid)
-				reducedVA.appendUnique(contentIndex);
+			if (resultValid) {
+				reducedVA.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));
+
+			}
 		}
 
 		if (reducedVA != null) {
@@ -239,7 +246,6 @@ public class StatisticsView extends ASWTView implements IView, IDataDomainSetBas
 	}
 
 	private void performReduction() {
-
 		if (reducedVA != null)
 			triggerReplaceContentVAEvent(reducedVA);
 	}
@@ -253,10 +259,15 @@ public class StatisticsView extends ASWTView implements IView, IDataDomainSetBas
 		calulateReduction();
 	}
 
-	public void triggerReplaceContentVAEvent(ContentVirtualArray newVA) {
-		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent(
-				dataDomain.getDataDomainType(), ContentVAType.CONTENT, newVA);
+	private void triggerReplaceContentVAEvent(ContentVADelta vaDelta) {
+		ContentVAUpdateEvent event = new ContentVAUpdateEvent();
+		event.setDataDomainType(dataDomain.getDataDomainType());
 		event.setSender(this);
+		event.setVirtualArrayDelta(vaDelta);
+		// ReplaceContentVAInUseCaseEvent event = new
+		// ReplaceContentVAInUseCaseEvent(
+		// dataDomain.getDataDomainType(), ContentVAType.CONTENT, newVA);
+
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 

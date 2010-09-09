@@ -2,7 +2,7 @@ package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.virtualarray.IVirtualArray;
 
 /**
  * Base class for CContainer which can use Generics

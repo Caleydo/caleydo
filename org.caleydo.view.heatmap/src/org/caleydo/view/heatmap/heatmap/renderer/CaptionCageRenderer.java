@@ -2,7 +2,7 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class CaptionCageRenderer extends AContentRenderer {

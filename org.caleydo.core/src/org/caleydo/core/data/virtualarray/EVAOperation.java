@@ -1,6 +1,6 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.data.virtualarray;
 
-import org.caleydo.core.data.selection.delta.VADeltaItem;
+import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 
 /**
  * List of operations allowed in virtual array deltas ({@link VADeltaItem}

@@ -2,7 +2,7 @@ package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.ListIterator;
 
-import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.virtualarray.IVirtualArray;
 
 /**
  * Iterator for containers of the type ATypedCContainer. The iterator can handle virtual arrays (optionally),

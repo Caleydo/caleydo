@@ -37,17 +37,17 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.data.selection.ContentVAType;
-import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.StorageVAType;
-import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.delta.StorageVADelta;
-import org.caleydo.core.data.selection.delta.VADeltaItem;
+import org.caleydo.core.data.virtualarray.ContentVAType;
+import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.StorageVAType;
+import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
+import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
@@ -1295,13 +1295,13 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			int iAxisID = gate.getAxisID();
 			if (iAxisID == -1)
 				continue;
-			for (int iPolylineIndex : contentVA) {
+			for (int contentID : contentVA) {
 				EDataRepresentation usedDataRepresentation = EDataRepresentation.RAW;
 				if (!set.isSetHomogeneous())
 					usedDataRepresentation = EDataRepresentation.NORMALIZED;
 
 				fCurrentValue = set.get(iAxisID).getFloat(usedDataRepresentation,
-						iPolylineIndex);
+						contentID);
 
 				if (Float.isNaN(fCurrentValue)) {
 					continue;
@@ -1309,7 +1309,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 				if (fCurrentValue <= gate.getUpperValue()
 						&& fCurrentValue >= gate.getLowerValue()) {
-					alCurrentGateBlocks.add(iPolylineIndex);
+					alCurrentGateBlocks.add(contentID);
 				}
 			}
 		}

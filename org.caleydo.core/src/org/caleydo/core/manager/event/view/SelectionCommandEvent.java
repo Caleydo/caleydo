@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.VABasedSelectionManager;
+import org.caleydo.core.data.virtualarray.VABasedSelectionManager;
 import org.caleydo.core.manager.event.AEvent;
 
 /**

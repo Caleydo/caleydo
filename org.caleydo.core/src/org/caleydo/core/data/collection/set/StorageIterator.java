@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.ListIterator;
 
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.selection.StorageVirtualArray;
-import org.caleydo.core.data.selection.VAIterator;
+import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.VAIterator;
 
 /**
  * Implementation of the iterator for sets considering a virtual array.

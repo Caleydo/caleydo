@@ -13,15 +13,15 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
-import org.caleydo.core.data.selection.StorageVAType;
-import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.StorageVAType;
+import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;

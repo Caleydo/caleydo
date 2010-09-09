@@ -10,11 +10,11 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;
-import org.caleydo.core.data.selection.ContentVAType;
-import org.caleydo.core.data.selection.ContentVirtualArray;
-import org.caleydo.core.data.selection.StorageVAType;
-import org.caleydo.core.data.selection.StorageVirtualArray;
-import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.data.virtualarray.ContentVAType;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.StorageVAType;
+import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;

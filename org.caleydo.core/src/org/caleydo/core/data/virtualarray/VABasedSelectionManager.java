@@ -1,15 +1,17 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.data.virtualarray;
 
 import java.util.HashMap;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.data.selection.delta.ContentVADelta;
+import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.delta.StorageVADelta;
-import org.caleydo.core.data.selection.delta.VADeltaItem;
-import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
+import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
+import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.IListenerOwner;
 
 /**

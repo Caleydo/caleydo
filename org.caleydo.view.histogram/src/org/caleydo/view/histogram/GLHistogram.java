@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;

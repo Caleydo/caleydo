@@ -9,11 +9,11 @@ import java.util.HashMap;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.group.ContentGroupList;
 import org.caleydo.core.data.mapping.IDCategory;
-import org.caleydo.core.data.selection.ContentGroupList;
-import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;

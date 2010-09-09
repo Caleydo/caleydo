@@ -12,10 +12,10 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;

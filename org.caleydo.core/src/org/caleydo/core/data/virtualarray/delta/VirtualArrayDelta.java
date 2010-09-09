@@ -1,4 +1,4 @@
-package org.caleydo.core.data.selection.delta;
+package org.caleydo.core.data.virtualarray.delta;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -7,7 +7,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.data.selection.IVAType;
+import org.caleydo.core.data.selection.delta.IDelta;
+import org.caleydo.core.data.virtualarray.IVAType;
 import org.caleydo.core.util.collection.UniqueList;
 
 /**

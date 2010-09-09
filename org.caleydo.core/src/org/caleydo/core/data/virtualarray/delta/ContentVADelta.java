@@ -1,7 +1,7 @@
-package org.caleydo.core.data.selection.delta;
+package org.caleydo.core.data.virtualarray.delta;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.virtualarray.ContentVAType;
 
 public class ContentVADelta
 	extends VirtualArrayDelta<ContentVADelta, ContentVAType> {

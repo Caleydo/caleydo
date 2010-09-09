@@ -1,9 +1,10 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.data.virtualarray;
 
 import java.util.ArrayList;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.data.group.GroupList;
+import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 
 /**
  * A Virtual Array provides an association between a modifiable index in the virtual arrays and the static
@@ -132,8 +133,7 @@ public interface IVirtualArray<ConcreteType extends IVirtualArray<ConcreteType, 
 	 * (subtracts one from their indices).
 	 * </p>
 	 * <p>
-	 * Notice that this has a complexity of O(n) TODO: probably add a higher performance version, with an
-	 * additional hash map
+	 * The implementation if based on a hash-table, performance is in constant time.
 	 * </p>
 	 * 
 	 * @param iElement

@@ -15,10 +15,9 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
-import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.command.CommandManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
@@ -37,8 +36,6 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
 import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
-import org.caleydo.view.pathway.GLPathway;
-import org.caleydo.view.pathway.SerializedPathwayView;
 
 /**
  * Rendering the Datawindow

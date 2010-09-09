@@ -2,9 +2,9 @@ package org.caleydo.core.data.filter;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.selection.IVAType;
-import org.caleydo.core.data.selection.VirtualArray;
-import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.data.virtualarray.IVAType;
+import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.AEvent;

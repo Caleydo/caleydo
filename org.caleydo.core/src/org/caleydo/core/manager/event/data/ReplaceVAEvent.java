@@ -4,8 +4,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.IVAType;
-import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.data.virtualarray.IVAType;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.event.AEvent;
 
 /**

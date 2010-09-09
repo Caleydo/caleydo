@@ -6,10 +6,10 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.selection.ContentVAType;
-import org.caleydo.core.data.selection.ContentVirtualArray;
-import org.caleydo.core.data.selection.StorageVAType;
-import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.ContentVAType;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.StorageVAType;
+import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 
 /**

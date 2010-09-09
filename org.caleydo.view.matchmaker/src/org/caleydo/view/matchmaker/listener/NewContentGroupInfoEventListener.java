@@ -1,6 +1,6 @@
 package org.caleydo.view.matchmaker.listener;
 
-import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;

@@ -1,8 +1,8 @@
 package org.caleydo.core.data.filter;
 
-import org.caleydo.core.data.selection.StorageVAType;
-import org.caleydo.core.data.selection.StorageVirtualArray;
-import org.caleydo.core.data.selection.delta.StorageVADelta;
+import org.caleydo.core.data.virtualarray.StorageVAType;
+import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;

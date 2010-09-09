@@ -1,8 +1,8 @@
 package org.caleydo.core.manager.event.data;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.ContentVAType;
-import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.ContentVAType;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 
 public class ReplaceContentVAEvent
 	extends ReplaceVAEvent<ContentVirtualArray, ContentVAType> {

@@ -3,7 +3,7 @@ package org.caleydo.core.manager.event.view.storagebased;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.selection.delta.StorageVADelta;
+import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 
 /**
  * Event to signal that ??? FIXME description about the meaning of virtual array deltas Migration from

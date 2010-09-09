@@ -4,10 +4,10 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.selection.ContentGroupList;
-import org.caleydo.core.data.selection.ContentVirtualArray;
-import org.caleydo.core.data.selection.Group;
+import org.caleydo.core.data.group.ContentGroupList;
+import org.caleydo.core.data.group.Group;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;

@@ -1,8 +1,7 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.data.virtualarray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -10,8 +9,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.AUniqueObject;
-import org.caleydo.core.data.selection.delta.VADeltaItem;
-import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.data.group.Group;
+import org.caleydo.core.data.group.GroupList;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
+import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -158,15 +160,10 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	@Override
 	public void removeByElement(int iElement) {
 		isHashIDToIndexDirty = true;
-		// if(groupList != null){
-		// groupList.removeElementOfVA(virtualArray.indexOf(iElement));
-		// }
+		ArrayList<Integer> indices = indicesOf(iElement);
 
-		Iterator<Integer> iter = virtualArray.iterator();
-		while (iter.hasNext()) {
-			if (iter.next() == iElement) {
-				iter.remove();
-			}
+		for (int count = indices.size() - 1; count >= 0; count--) {
+			remove(indices.get(count));
 		}
 	}
 
@@ -190,7 +187,6 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	public int indexOf(int iElement) {
 		if (isHashIDToIndexDirty)
 			buildIDMap();
-		// System.out.println("Costly indexof operation on a va of size: " + size());
 		ArrayList<Integer> results = hashIDToIndex.get(iElement);
 		if (results != null) {
 			if (results.size() > 1)

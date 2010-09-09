@@ -2,7 +2,7 @@ package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.NoSuchElementException;
 
-import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.virtualarray.IVirtualArray;
 
 /**
  * Iterator for IntCContainer. Initialized by passing the container. Provides the common iterator accessors.

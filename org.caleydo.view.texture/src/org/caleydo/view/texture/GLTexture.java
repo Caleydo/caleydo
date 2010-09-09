@@ -4,8 +4,8 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.picking.EPickingMode;

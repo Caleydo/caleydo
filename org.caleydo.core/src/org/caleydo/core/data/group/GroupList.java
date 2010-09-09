@@ -1,4 +1,4 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.data.group;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,7 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 
 @XmlType

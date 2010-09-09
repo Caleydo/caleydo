@@ -3,10 +3,10 @@ package org.caleydo.core.util.clusterer;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.data.selection.ContentVAType;
-import org.caleydo.core.data.selection.ContentVirtualArray;
-import org.caleydo.core.data.selection.StorageVAType;
-import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.ContentVAType;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.StorageVAType;
+import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 
 /**
  * Stores the cluster state which is determined in the {@link StartClusteringAction}. Depending on the

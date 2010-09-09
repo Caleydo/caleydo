@@ -1,4 +1,4 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.data.group;
 
 import java.util.ListIterator;
 

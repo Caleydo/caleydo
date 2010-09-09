@@ -1,7 +1,7 @@
 package org.caleydo.rcp.dialog.cluster;
 
-import org.caleydo.core.data.selection.ContentVAType;
-import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.virtualarray.ContentVAType;
+import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;

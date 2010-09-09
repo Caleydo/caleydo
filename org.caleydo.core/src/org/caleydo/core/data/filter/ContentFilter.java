@@ -1,8 +1,8 @@
 package org.caleydo.core.data.filter;
 
-import org.caleydo.core.data.selection.ContentVAType;
-import org.caleydo.core.data.selection.ContentVirtualArray;
-import org.caleydo.core.data.selection.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.ContentVAType;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 
 /**
  * Static type for {@link Filter}s handling {@link ContentVirtualArray}s.

@@ -3,10 +3,10 @@ package org.caleydo.core.data.collection.set;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.Group;
+import org.caleydo.core.data.group.Group;
+import org.caleydo.core.data.group.StorageGroupList;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.StorageGroupList;
-import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**

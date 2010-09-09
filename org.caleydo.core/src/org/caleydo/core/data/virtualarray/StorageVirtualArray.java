@@ -1,4 +1,4 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.data.virtualarray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.selection.delta.StorageVADelta;
+import org.caleydo.core.data.group.StorageGroupList;
+import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 @XmlType

@@ -4,7 +4,7 @@ import java.awt.Font;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
