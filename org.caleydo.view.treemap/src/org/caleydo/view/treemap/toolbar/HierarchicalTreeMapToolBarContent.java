@@ -8,7 +8,8 @@ import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.ToolBarContainer;
 import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
 import org.caleydo.view.treemap.GLHierarchicalTreeMap;
-import org.caleydo.view.treemap.actions.ZoomAction;
+import org.caleydo.view.treemap.actions.ZoomInAction;
+import org.caleydo.view.treemap.actions.ZoomOutAction;
 
 /**
  * ToolBarContent implementation for scatterplot specific toolbar items.
@@ -53,7 +54,8 @@ public class HierarchicalTreeMapToolBarContent extends AToolBarContent {
 		// }
 		// actionList.add(yAxisSelector);
 		
-		actionList.add(new ZoomAction());
+		actionList.add(new ZoomInAction());
+		actionList.add(new ZoomOutAction());
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);
