@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.rcp.toolbar.ToolBarContentFactory;
-import org.caleydo.view.treemap.toolbar.TreeMapToolBarContent;
+import org.caleydo.view.treemap.toolbar.HierarchicalTreeMapToolBarContent;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -29,7 +29,7 @@ public class Activator extends Plugin {
 	
 		registerDataDomains();
 		
-		ToolBarContentFactory.get().addToolBarContent(GLTreeMap.VIEW_ID, false, new TreeMapToolBarContent());
+		ToolBarContentFactory.get().addToolBarContent(GLHierarchicalTreeMap.VIEW_ID, false, new HierarchicalTreeMapToolBarContent());
 	}
 
 	/*

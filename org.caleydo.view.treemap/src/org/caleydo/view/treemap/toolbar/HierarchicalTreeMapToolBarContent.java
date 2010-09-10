@@ -16,7 +16,7 @@ import org.caleydo.view.treemap.actions.ZoomAction;
  * @author Marc Streit
  * @author Juergen Pillhofer
  */
-public class TreeMapToolBarContent extends AToolBarContent {
+public class HierarchicalTreeMapToolBarContent extends AToolBarContent {
 
 	public static final String IMAGE_PATH = "resources/icons/view/storagebased/parcoords/parcoords.png";
 

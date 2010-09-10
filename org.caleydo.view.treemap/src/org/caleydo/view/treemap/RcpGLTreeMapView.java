@@ -16,10 +16,11 @@ public class RcpGLTreeMapView extends ARcpGLViewPart {
 	 */
 	public RcpGLTreeMapView() {
 		super();
-		
+
 		try {
-			viewContext = JAXBContext
-					.newInstance(SerializedHierarchicalTreeMapView.class);
+			viewContext = JAXBContext.newInstance(SerializedHierarchicalTreeMapView.class);
+			viewContext = JAXBContext.newInstance(SerializedTreeMapView.class);
+
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
@@ -32,15 +33,14 @@ public class RcpGLTreeMapView extends ARcpGLViewPart {
 		createGLCanvas();
 		view = new GLHierarchicalTreeMap(glCanvas, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
-		
+
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(serializedView.getDataDomainType());
 			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
-				(IDataDomainBasedView<IDataDomain>) view;
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
 		}
-		
+
 		view.initialize();
 		createPartControlGL();
 	}
