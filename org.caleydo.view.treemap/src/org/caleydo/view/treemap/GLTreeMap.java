@@ -85,7 +85,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	@Override
 	public void clearAllSelections() {
 		// TODO Auto-generated method stub
-
+		treeSelectionManager.clearSelections();
 	}
 
 	@Override
