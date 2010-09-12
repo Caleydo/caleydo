@@ -1,12 +1,14 @@
-package org.caleydo.view.treemap.layout;
+package org.caleydo.view.treemap.layout.algorithm;
+
+import org.caleydo.view.treemap.layout.ATreeMapNode;
 
 public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
 
 	@Override
-	public void layout(ATreeMapNode tree, GlPainter painter) {
+	public void layout(ATreeMapNode tree) {
 		// TODO Auto-generated method stub
 
-		paintHelp(tree, 0, 0, 1, 1, HORIZONTAL_ALIGNMENT, painter);
+		paintHelp(tree, 0, 0, 1, 1, HORIZONTAL_ALIGNMENT);
 
 	}
 
@@ -14,7 +16,7 @@ public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
 	private static final boolean VERTICAL_ALIGNMENT = false;
 
 	private void paintHelp(ATreeMapNode root, float xOffset, float yOffset, float xMax,
-			float yMax, boolean alignment, GlPainter painter) {
+			float yMax, boolean alignment) {
 		root.setMinX(xOffset);
 		root.setMinY(yOffset);
 		root.setMaxX(xMax);
@@ -27,7 +29,7 @@ public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
 				float size = 0;
 				for (ATreeMapNode node : root.getChildren()) {
 					size = (node.getSize() / area) * (xMax - xOffset);
-					paintHelp(node, x, yOffset, x + size, yMax, !alignment, painter);
+					paintHelp(node, x, yOffset, x + size, yMax, !alignment);
 					x += size;
 				}
 			} else {
@@ -35,7 +37,7 @@ public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
 				float size;
 				for (ATreeMapNode node : root.getChildren()) {
 					size = (node.getSize() / area) * (yMax - yOffset);
-					paintHelp(node, xOffset, y, xMax, y + size, !alignment, painter);
+					paintHelp(node, xOffset, y, xMax, y + size, !alignment);
 					y += size;
 				}
 			}

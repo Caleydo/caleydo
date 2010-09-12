@@ -10,6 +10,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 public class GlPainter {
 
@@ -22,12 +23,15 @@ public class GlPainter {
 	
 	SelectionManager selectionManager;
 	
-	public GlPainter(GL gl, ViewFrustum viewFrustum, PickingManager pickingManager, int viewID, SelectionManager selectionManager) {
+	CaleydoTextRenderer textRenderer;
+	
+	public GlPainter(GL gl, ViewFrustum viewFrustum, PickingManager pickingManager, int viewID, SelectionManager selectionManager, CaleydoTextRenderer textRenderer) {
 		this.pickingManager=pickingManager;
 		this.gl = gl;
 		this.viewFrustum = viewFrustum;
 		this.viewID=viewID;
 		this.selectionManager=selectionManager;
+		this.textRenderer=textRenderer;
 		
 		treemapList=gl.glGenLists(1);
 		highlightList=gl.glGenLists(1);
@@ -72,9 +76,9 @@ public class GlPainter {
 			//System.out.println("picking ID: "+root.getID());
 			fillRectangle(root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(), root.getColorAttribute());
 			gl.glPopName();
-//			ArrayList<SelectionType> selections = selectionManager.getSelectionTypes(root.getPickingID());
-//			if(selections!=null&&selections.contains(SelectionType.SELECTION))
-//				paintRectangle(root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(), Color.YELLOW);
+
+//			textRenderer.renderText(gl, "label", root.getMinX(), root.getMinY(), 0, 1, 20);
+
 		}
 		else{
 			for(ATreeMapNode node: children){

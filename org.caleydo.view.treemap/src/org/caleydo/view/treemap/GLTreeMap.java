@@ -29,7 +29,9 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.treemap.layout.ATreeMapNode;
 import org.caleydo.view.treemap.layout.ClusterTreeMapNode;
 import org.caleydo.view.treemap.layout.GlPainter;
-import org.caleydo.view.treemap.layout.SimpleLayoutAlgorithm;
+import org.caleydo.view.treemap.layout.algorithm.ILayoutAlgorithm;
+import org.caleydo.view.treemap.layout.algorithm.SimpleLayoutAlgorithm;
+import org.caleydo.view.treemap.layout.algorithm.SquarifiedLayoutAlgorithm;
 
 /**
  * TODO
@@ -68,7 +70,11 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	private int rootClusterID;
 
 	private boolean bIsZoomActive = false;
-
+	
+	private ILayoutAlgorithm layoutAlgorithm = new SimpleLayoutAlgorithm();
+//	private ILayoutAlgorithm layoutAlgorithm = new SquarifiedLayoutAlgorithm();
+	
+	
 	public GLTreeMap(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
@@ -121,8 +127,8 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 		} else
 			root = ClusterTreeMapNode.createFromClusterNodeTree(tree, colorMapper);
 		
-		SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
-		layouter.layout(root, painter);
+//		SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
+		layoutAlgorithm.layout(root);
 		treeMapModel = root.getTree();
 	}
 
@@ -130,7 +136,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	public void display(GL gl) {
 		// GLHelperFunctions.drawAxis(gl);
 		if (bIsDisplayListDirtyLocal) {
-			painter = new GlPainter(gl, viewFrustum, getActivePickingManager(), getPickingViewID(), treeSelectionManager);
+			painter = new GlPainter(gl, viewFrustum, getActivePickingManager(), getPickingViewID(), treeSelectionManager, textRenderer);
 			painter.paintTreeMap(treeMapModel.getRoot());
 			bIsDisplayListDirtyLocal = false;
 			setHighLichtingListDirty();
