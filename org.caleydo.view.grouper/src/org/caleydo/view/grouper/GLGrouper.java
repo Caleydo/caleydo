@@ -530,13 +530,13 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType ePickingType,
+	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
 
-		switch (ePickingType) {
+		switch (pickingType) {
 
 		case GROUPER_GROUP_SELECTION:
 			final GroupRepresentation groupRep = hashGroups.get(iExternalID);
@@ -1248,7 +1248,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 						{
 							groupRep.setSelectionTypeRec(SelectionType.NORMAL,
 									selectionManager);
-							selectionManager.remove(nodeID, false);
+							selectionManager.remove(nodeID);
 						}
 						else {
 							if (item.getSelectionType() == SelectionType.SELECTION) {

@@ -479,12 +479,12 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType ePickingType,
+	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
-		switch (ePickingType) {
+		switch (pickingType) {
 
 		case RAD_HIERARCHY_PDISC_SELECTION:
 
@@ -540,7 +540,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 			switch (pickingMode) {
 			case CLICKED:
 				if (iExternalID == iUpwardNavigationSliderID) {
-					if (upwardNavigationSlider.handleSliderSelection(ePickingType)) {
+					if (upwardNavigationSlider.handleSliderSelection(pickingType)) {
 						updateHierarchyAccordingToNavigationSlider();
 						setDisplayListDirty();
 					}
@@ -556,7 +556,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 			switch (pickingMode) {
 			case CLICKED:
 				if (iExternalID == iUpwardNavigationSliderButtonID) {
-					if (upwardNavigationSlider.handleSliderSelection(ePickingType)) {
+					if (upwardNavigationSlider.handleSliderSelection(pickingType)) {
 						updateHierarchyAccordingToNavigationSlider();
 						setDisplayListDirty();
 					}
@@ -572,7 +572,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 			switch (pickingMode) {
 			case CLICKED:
 				if (iExternalID == iUpwardNavigationSliderBodyID) {
-					if (upwardNavigationSlider.handleSliderSelection(ePickingType)) {
+					if (upwardNavigationSlider.handleSliderSelection(pickingType)) {
 						updateHierarchyAccordingToNavigationSlider();
 						setDisplayListDirty();
 					}

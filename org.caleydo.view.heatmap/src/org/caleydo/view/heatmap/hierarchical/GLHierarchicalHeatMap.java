@@ -283,8 +283,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	@Override
 	public void init(GL gl) {
 
-//		// FIXME: Alex, is it save to call this here?
-//		initData();
+		// // FIXME: Alex, is it save to call this here?
+		// initData();
 
 		createHeatMap();
 		createDendrogram();
@@ -680,11 +680,13 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
-		glContentDendrogramView = new GLDendrogram<ContentGroupList>(this.getParentGLCanvas(), viewFrustum, true);
+		glContentDendrogramView = new GLDendrogram<ContentGroupList>(
+				this.getParentGLCanvas(), viewFrustum, true);
 		glContentDendrogramView.setRemoteRenderingGLView(this);
 		glContentDendrogramView.setDataDomain(dataDomain);
 
-		glExperimentDendrogramView = new GLDendrogram<StorageGroupList>(this.getParentGLCanvas(), viewFrustum, false);
+		glExperimentDendrogramView = new GLDendrogram<StorageGroupList>(
+				this.getParentGLCanvas(), viewFrustum, false);
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
 		glExperimentDendrogramView.setDataDomain(dataDomain);
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
@@ -857,15 +859,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	protected void reactOnStorageVAChanges(StorageVADelta delta) {
-
-		if (delta.getVAType() == storageVAType)
-			storageVA.setGroupList(null);
-
-		// glHeatMapView.handleVirtualArrayUpdate(delta, getShortInfo());
+	public void handleVAUpdate(StorageVADelta delta, String info) {
+		super.handleVAUpdate(delta, info);
 		bRedrawTextures = true;
-
-		setDisplayListDirty();
 	}
 
 	@Override
@@ -4040,13 +4036,13 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType ePickingType,
+	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
 
-		switch (ePickingType) {
+		switch (pickingType) {
 
 		// handling the groups/clusters of genes
 		case HIER_HEAT_MAP_GENES_GROUP:
@@ -4301,7 +4297,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				bGeneDendrogramActive = bGeneDendrogramActive == true ? false : true;
 
 				if (bGeneDendrogramActive == true) {
-					float widthDendro = glContentDendrogramView.getViewFrustum().getWidth();
+					float widthDendro = glContentDendrogramView.getViewFrustum()
+							.getWidth();
 
 					if (widthDendro > 0.5 && widthDendro <= 1.7f)
 						renderStyle.setWidthGeneDendrogram(widthDendro - 0.1f);

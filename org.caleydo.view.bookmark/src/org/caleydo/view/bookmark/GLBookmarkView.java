@@ -254,13 +254,13 @@ public class GLBookmarkView extends AGLView implements
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType ePickingType,
-			EPickingMode ePickingMode, int iExternalID, Pick pick) {
-		switch (ePickingType) {
+	protected void handlePickingEvents(EPickingType pickingType,
+			EPickingMode pickingMode, int iExternalID, Pick pick) {
+		switch (pickingType) {
 		case BOOKMARK_ELEMENT:
 			Pair<IDCategory, Integer> pair = pickingIDManager.getPrivateID(iExternalID);
 			hashCategoryToBookmarkContainer.get(pair.getFirst()).handleEvents(
-					ePickingType, ePickingMode, pair.getSecond(), pick);
+					pickingType, pickingMode, pair.getSecond(), pick);
 		}
 	}
 

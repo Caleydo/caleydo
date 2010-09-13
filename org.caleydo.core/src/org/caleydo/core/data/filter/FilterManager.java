@@ -76,6 +76,7 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 		currentVA.setDelta(filter.getVADelta());
 
 		triggerVAUpdateEvent(filter.getVADelta());
+		triggerFilterUpdatedEvent();
 
 		return currentVA;
 	}
@@ -131,7 +132,7 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 		return filterPipe;
 	}
 
-	public void handleRemoveFilter(Filter filter) {
+	public void handleRemoveFilter(Filter<?, ?> filter) {
 
 		Iterator<FilterType> filterIterator = filterPipe.iterator();
 		while (filterIterator.hasNext()) {
@@ -141,11 +142,14 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 		}
 
 		recalculateFilters();
+		triggerFilterUpdatedEvent();
 
+	}
+
+	private void triggerFilterUpdatedEvent() {
 		FilterUpdatedEvent event = new FilterUpdatedEvent();
 		event.setDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.triggerEvent(event);
-
 	}
 
 	private void recalculateFilters() {

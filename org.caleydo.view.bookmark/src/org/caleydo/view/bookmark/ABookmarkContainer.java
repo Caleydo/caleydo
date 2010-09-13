@@ -106,8 +106,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 *            the id type the container uses to internally store the
 	 *            bookmarks
 	 */
-	ABookmarkContainer(GLBookmarkView manager, IDCategory category,
-			IDType internalIDType) {
+	ABookmarkContainer(GLBookmarkView manager, IDCategory category, IDType internalIDType) {
 		this.internalIDType = internalIDType;
 		this.manager = manager;
 		this.category = category;
@@ -299,7 +298,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 			while (iterator.hasNext()) {
 				if (iterator.next().getID() == id) {
 					iterator.remove();
-					selectionManager.remove(id, false);
+					selectionManager.remove(id);
 				}
 			}
 

@@ -376,7 +376,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	@Override
 	protected void removeSelection(int iElementID) {
 
-		experiementSelectionManager.remove(iElementID, false);
+		experiementSelectionManager.remove(iElementID);
 		ContentVADelta vaDelta = new ContentVADelta(ContentVAType.CONTENT, primaryIDType);
 		vaDelta.add(VADeltaItem.removeElement(iElementID));
 

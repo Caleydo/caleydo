@@ -342,14 +342,14 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType ePickingType,
+	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
 
 		SelectionType selectionType;
-		switch (ePickingType) {
+		switch (pickingType) {
 		case HEAT_MAP_LINE_SELECTION:
 			iCurrentMouseOverElement = iExternalID;
 			switch (pickingMode) {

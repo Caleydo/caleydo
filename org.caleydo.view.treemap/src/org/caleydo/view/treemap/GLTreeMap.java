@@ -176,25 +176,25 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType ePickingType, EPickingMode ePickingMode, int externalPickingID, Pick pick) {
+	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int pickingID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
 
-		switch (ePickingType) {
+		switch (pickingType) {
 		case TREEMAP_ELEMENT_SELECTED:
 
-			switch (ePickingMode) {
+			switch (pickingMode) {
 
 			case CLICKED:
 
 				break;
 			case MOUSE_OVER:
 
-				System.out.println("mouse over: " + externalPickingID);
-				mouseOverClusterId = externalPickingID;
+				System.out.println("mouse over: " + pickingID);
+				mouseOverClusterId = pickingID;
 				treeSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				treeSelectionManager.addToType(SelectionType.MOUSE_OVER, externalPickingID);
+				treeSelectionManager.addToType(SelectionType.MOUSE_OVER, pickingID);
 				break;
 			case RIGHT_CLICKED:
 

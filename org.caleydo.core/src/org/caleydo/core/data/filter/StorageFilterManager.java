@@ -1,6 +1,7 @@
 package org.caleydo.core.data.filter;
 
 import org.caleydo.core.data.filter.event.NewContentFilterEvent;
+import org.caleydo.core.data.filter.event.NewStorageFilterEvent;
 import org.caleydo.core.data.filter.event.NewStorageFilterListener;
 import org.caleydo.core.data.filter.event.RemoveStorageFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveStorageFilterListener;
@@ -53,7 +54,7 @@ public class StorageFilterManager
 		newStorageFilterListener = new NewStorageFilterListener();
 		newStorageFilterListener.setHandler(this);
 		newStorageFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
-		eventPublisher.addListener(NewContentFilterEvent.class, newStorageFilterListener);
+		eventPublisher.addListener(NewStorageFilterEvent.class, newStorageFilterListener);
 
 	}
 

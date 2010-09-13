@@ -497,18 +497,18 @@ public abstract class AGLView
 	 * This method is called every time a method occurs. It should take care of reacting appropriately to the
 	 * events.
 	 * 
-	 * @param ePickingType
+	 * @param pickingType
 	 *            the Picking type, held in EPickingType
-	 * @param ePickingMode
+	 * @param pickingMode
 	 *            the Picking mode (clicked, dragged etc.)
-	 * @param externalPickingID
+	 * @param pickingID
 	 *            the name specified for an element with glPushName
 	 * @param pick
 	 *            the pick object which can be useful to retrieve for example the mouse position when the pick
 	 *            occurred
 	 */
-	abstract protected void handlePickingEvents(final EPickingType ePickingType,
-		final EPickingMode ePickingMode, final int externalPickingID, final Pick pick);
+	abstract protected void handlePickingEvents(final EPickingType pickingType,
+		final EPickingMode pickingMode, final int pickingID, final Pick pick);
 
 	/**
 	 * Returns a short info string about the view. Typically this should mention the name of the view plus the

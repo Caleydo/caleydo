@@ -279,10 +279,8 @@ public abstract class AStorageBasedView
 	@Override
 	public void handleVAUpdate(StorageVADelta delta, String info) {
 		storageVA.setGroupList(null);
-		reactOnStorageVAChanges(delta);
+//		reactOnStorageVAChanges(delta);
 		storageSelectionManager.setVADelta(delta);
-
-		// reactOnExternalSelection();
 		setDisplayListDirty();
 	}
 
@@ -300,10 +298,6 @@ public abstract class AStorageBasedView
 	 * @param delta
 	 */
 	protected void reactOnContentVAChanges(ContentVADelta delta) {
-
-	}
-
-	protected void reactOnStorageVAChanges(StorageVADelta delta) {
 
 	}
 

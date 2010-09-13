@@ -7,9 +7,10 @@ import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event to signal that ??? FIXME description about the meaning of virtual array deltas Migration from
- * EEventType.VA_UPDATE
+ * Event to signal that the virtual array has changed. It carries a {@link VirtualArrayDelta} as payload which
+ * adapts the recipients virtual array for example by removing items.
  * 
+ * @author Alexander Lex
  * @author Werner Puff
  */
 @XmlRootElement

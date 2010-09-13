@@ -35,6 +35,8 @@ import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.filter.StorageFilter;
+import org.caleydo.core.data.filter.event.NewStorageFilterEvent;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -56,11 +58,9 @@ import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.AngularBrushingEvent;
 import org.caleydo.core.manager.event.view.storagebased.ApplyCurrentSelectionToVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.storagebased.BookmarkButtonEvent;
-import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetAxisSpacingEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetParallelCoordinatesEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -1371,7 +1371,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	}
 
 	@Override
-	protected void reactOnExternalSelection(ISelectionDelta delta, boolean scrollToSelection) {
+	protected void reactOnExternalSelection(ISelectionDelta delta,
+			boolean scrollToSelection) {
 		handleUnselection();
 		resetAxisSpacing();
 	}
@@ -1384,7 +1385,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	}
 
 	@Override
-	protected void reactOnStorageVAChanges(StorageVADelta delta) {
+	public void handleVAUpdate(StorageVADelta delta, String info) {
 		for (VADeltaItem item : delta) {
 			if (item.getType() == EVAOperation.REMOVE) {
 				int iElement = storageVA.get(item.getIndex());
@@ -1398,8 +1399,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				removeGate(item.getPrimaryID());
 			}
 		}
-
-		storageSelectionManager.setVADelta(delta);
+		super.handleVAUpdate(delta, info);
 		resetAxisSpacing();
 	}
 
@@ -1483,25 +1483,25 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	}
 
 	@Override
-	protected void handlePickingEvents(final EPickingType ePickingType,
-			final EPickingMode ePickingMode, final int iExternalID, final Pick pick) {
+	protected void handlePickingEvents(final EPickingType pickingType,
+			final EPickingMode pickingMode, final int pickingID, final Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW || bIsDraggingActive || bWasAxisMoved) {
 			return;
 		}
 
 		SelectionType selectionType;
-		switch (ePickingType) {
+		switch (pickingType) {
 		case PCS_VIEW_SELECTION:
 			break;
 		case POLYLINE_SELECTION:
-			switch (ePickingMode) {
+			switch (pickingMode) {
 
 			case CLICKED:
 				selectionType = SelectionType.SELECTION;
 				if (bAngularBrushingSelectPolyline) {
 					bAngularBrushingSelectPolyline = false;
 					bIsAngularBrushingActive = true;
-					iSelectedLineID = iExternalID;
+					iSelectedLineID = pickingID;
 					linePick = pick;
 					bIsAngularBrushingFirstTime = true;
 				}
@@ -1521,7 +1521,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 				ContentContextMenuItemContainer contentContextMenuItemContainer = new ContentContextMenuItemContainer();
 				contentContextMenuItemContainer.setDataDomain(dataDomain);
-				contentContextMenuItemContainer.setID(contentIDType, iExternalID);
+				contentContextMenuItemContainer.setID(contentIDType, pickingID);
 				contextMenu.addItemContanier(contentContextMenuItemContainer);
 
 				if (!isRenderedRemote()) {
@@ -1536,12 +1536,12 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 			}
 
-			if (contentSelectionManager.checkStatus(selectionType, iExternalID)) {
+			if (contentSelectionManager.checkStatus(selectionType, pickingID)) {
 				break;
 			}
 
-			connectedElementRepresentationManager.clear(contentSelectionManager
-					.getIDType(), selectionType);
+			connectedElementRepresentationManager.clear(
+					contentSelectionManager.getIDType(), selectionType);
 
 			contentSelectionManager.clearSelection(selectionType);
 
@@ -1568,9 +1568,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// }
 			// }
 			// else {
-			contentSelectionManager.addToType(selectionType, iExternalID);
+			contentSelectionManager.addToType(selectionType, pickingID);
 			contentSelectionManager.addConnectionID(generalManager.getIDManager()
-					.createID(EManagedObjectType.CONNECTION), iExternalID);
+					.createID(EManagedObjectType.CONNECTION), pickingID);
 
 			// }
 
@@ -1599,7 +1599,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			break;
 		case Y_AXIS_SELECTION:
 
-			switch (ePickingMode) {
+			switch (pickingMode) {
 			case CLICKED:
 				selectionType = SelectionType.SELECTION;
 				break;
@@ -1616,7 +1616,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				}
 				StorageContextMenuItemContainer experimentContextMenuItemContainer = new StorageContextMenuItemContainer();
 				experimentContextMenuItemContainer.setDataDomain(dataDomain);
-				experimentContextMenuItemContainer.setID(storageIDType, iExternalID);
+				experimentContextMenuItemContainer.setID(storageIDType, pickingID);
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 
 			default:
@@ -1625,13 +1625,13 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			}
 
 			storageSelectionManager.clearSelection(selectionType);
-			storageSelectionManager.addToType(selectionType, iExternalID);
+			storageSelectionManager.addToType(selectionType, pickingID);
 
 			storageSelectionManager.addConnectionID(generalManager.getIDManager()
-					.createID(EManagedObjectType.CONNECTION), iExternalID);
+					.createID(EManagedObjectType.CONNECTION), pickingID);
 
-			connectedElementRepresentationManager.clear(storageSelectionManager
-					.getIDType(), selectionType);
+			connectedElementRepresentationManager.clear(
+					storageSelectionManager.getIDType(), selectionType);
 
 			// triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
 			// axisSelectionManager
@@ -1655,16 +1655,16 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			setDisplayListDirty();
 			break;
 		case GATE_TIP_SELECTION:
-			switch (ePickingMode) {
+			switch (pickingMode) {
 			case MOUSE_OVER:
-				iDraggedGateNumber = iExternalID;
+				iDraggedGateNumber = pickingID;
 				draggedObject = EPickingType.GATE_TIP_SELECTION;
 				setDisplayListDirty();
 				break;
 			case CLICKED:
 				bIsDraggingActive = true;
 				draggedObject = EPickingType.GATE_TIP_SELECTION;
-				iDraggedGateNumber = iExternalID;
+				iDraggedGateNumber = pickingID;
 				break;
 			// case DRAGGED:
 			// bIsDraggingActive = true;
@@ -1675,24 +1675,24 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			}
 			break;
 		case GATE_BOTTOM_SELECTION:
-			switch (ePickingMode) {
+			switch (pickingMode) {
 			case MOUSE_OVER:
-				iDraggedGateNumber = iExternalID;
+				iDraggedGateNumber = pickingID;
 				draggedObject = EPickingType.GATE_BOTTOM_SELECTION;
 				setDisplayListDirty();
 				break;
 			case CLICKED:
 				bIsDraggingActive = true;
 				draggedObject = EPickingType.GATE_BOTTOM_SELECTION;
-				iDraggedGateNumber = iExternalID;
+				iDraggedGateNumber = pickingID;
 				break;
 			}
 			break;
 
 		case GATE_BODY_SELECTION:
-			switch (ePickingMode) {
+			switch (pickingMode) {
 			case MOUSE_OVER:
-				iDraggedGateNumber = iExternalID;
+				iDraggedGateNumber = pickingID;
 				draggedObject = EPickingType.GATE_BODY_SELECTION;
 				setDisplayListDirty();
 				break;
@@ -1700,33 +1700,37 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				bIsDraggingActive = true;
 				bIsGateDraggingFirstTime = true;
 				draggedObject = EPickingType.GATE_BODY_SELECTION;
-				iDraggedGateNumber = iExternalID;
+				iDraggedGateNumber = pickingID;
 				break;
 			}
 			break;
 		case PC_ICON_SELECTION:
-			switch (ePickingMode) {
+			switch (pickingMode) {
 			case CLICKED:
 
 				break;
 			}
 			break;
 		case REMOVE_AXIS:
-			switch (ePickingMode) {
+			switch (pickingMode) {
 			case MOUSE_OVER:
 				dropTexture = EIconTextures.DROP_DELETE;
-				iChangeDropOnAxisNumber = iExternalID;
+				iChangeDropOnAxisNumber = pickingID;
 				break;
 			case CLICKED:
-				if (storageVA.containsElement(storageVA.get(iExternalID)) == 1) {
-					removeGate(storageVA.get(iExternalID));
+				if (storageVA.containsElement(storageVA.get(pickingID)) == 1) {
+					removeGate(storageVA.get(pickingID));
 				}
-				storageVA.remove(iExternalID);
-				storageSelectionManager.remove(iExternalID, false);
+				// Integer storageID = storageVA.remove(pickingID);
+				Integer storageID = storageVA.get(pickingID);
+				storageSelectionManager.remove(pickingID);
 				StorageVADelta vaDelta = new StorageVADelta(StorageVAType.STORAGE,
 						storageIDType);
-				vaDelta.add(VADeltaItem.remove(iExternalID));
-				sendStorageVAUpdateEvent(vaDelta);
+				vaDelta.add(VADeltaItem.remove(pickingID));
+
+				sendStorageFilterEvent(vaDelta,
+						"Removed " + dataDomain.getStorageLabel(storageID));
+				// sendStorageVAUpdateEvent(vaDelta);
 				setDisplayListDirty();
 				resetAxisSpacing();
 				break;
@@ -1734,33 +1738,36 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			break;
 
 		case MOVE_AXIS:
-			switch (ePickingMode) {
+			switch (pickingMode) {
 			case CLICKED:
 				bWasAxisMoved = true;
 				bWasAxisDraggedFirstTime = true;
-				iMovedAxisPosition = iExternalID;
+				iMovedAxisPosition = pickingID;
 				setDisplayListDirty();
 			case MOUSE_OVER:
 				dropTexture = EIconTextures.DROP_MOVE;
-				iChangeDropOnAxisNumber = iExternalID;
+				iChangeDropOnAxisNumber = pickingID;
 				setDisplayListDirty();
 				break;
 			}
 			break;
 
 		case DUPLICATE_AXIS:
-			switch (ePickingMode) {
+			switch (pickingMode) {
 			case MOUSE_OVER:
 				dropTexture = EIconTextures.DROP_DUPLICATE;
-				iChangeDropOnAxisNumber = iExternalID;
+				iChangeDropOnAxisNumber = pickingID;
 				break;
 			case CLICKED:
-				if (iExternalID >= 0) {
-					storageVA.copy(iExternalID);
+				if (pickingID >= 0) {
+					// storageVA.copy(pickingID);
 					StorageVADelta vaDelta = new StorageVADelta(StorageVAType.STORAGE,
 							storageIDType);
-					vaDelta.add(VADeltaItem.copy(iExternalID));
-					sendStorageVAUpdateEvent(vaDelta);
+					vaDelta.add(VADeltaItem.copy(pickingID));
+					sendStorageFilterEvent(
+							vaDelta,
+							"Copied "
+									+ dataDomain.getStorageLabel(storageVA.get(pickingID)));
 
 					setDisplayListDirty();
 					// resetSelections();
@@ -1771,16 +1778,16 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			}
 			break;
 		case ADD_GATE:
-			switch (ePickingMode) {
+			switch (pickingMode) {
 			case CLICKED:
 				hasFilterChanged = true;
 				AGate gate;
 				if (set.isSetHomogeneous()) {
-					gate = new Gate(++iGateCounter, iExternalID,
+					gate = new Gate(++iGateCounter, pickingID,
 							(float) set.getRawForNormalized(0),
 							(float) set.getRawForNormalized(0.5f), set, renderStyle);
 				} else {
-					gate = new NominalGate(++iGateCounter, iExternalID, 0, 0.5f, set,
+					gate = new NominalGate(++iGateCounter, pickingID, 0, 0.5f, set,
 							renderStyle);
 				}
 				hashGates.put(this.iGateCounter, gate);
@@ -1793,7 +1800,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			}
 			break;
 		case ADD_MASTER_GATE:
-			switch (ePickingMode) {
+			switch (pickingMode) {
 			case CLICKED:
 				hasFilterChanged = true;
 				Gate gate = new Gate(++iGateCounter, -1,
@@ -1810,14 +1817,14 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			break;
 
 		case REMOVE_GATE:
-			switch (ePickingMode) {
+			switch (pickingMode) {
 			case CLICKED:
 				hasFilterChanged = true;
 				// either the gate belongs to the normal or to the master gates
-				if (hashGates.remove(iExternalID) == null)
-					hashMasterGates.remove(iExternalID);
+				if (hashGates.remove(pickingID) == null)
+					hashMasterGates.remove(pickingID);
 
-				hashIsGateBlocking.remove(iExternalID);
+				hashIsGateBlocking.remove(pickingID);
 
 				handleUnselection();
 				triggerSelectionUpdate();
@@ -1826,7 +1833,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			}
 			break;
 		case ANGULAR_UPPER:
-			switch (ePickingMode) {
+			switch (pickingMode) {
 			case CLICKED:
 				bIsAngularDraggingActive = true;
 			case DRAGGED:
@@ -1835,7 +1842,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			break;
 
 		case ANGULAR_LOWER:
-			switch (ePickingMode) {
+			switch (pickingMode) {
 			case CLICKED:
 				bIsAngularDraggingActive = true;
 			case DRAGGED:
@@ -1843,13 +1850,13 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			}
 			break;
 		case REMOVE_NAN:
-			switch (ePickingMode) {
+			switch (pickingMode) {
 			case CLICKED:
 				hasFilterChanged = true;
-				if (hashExcludeNAN.containsKey(iExternalID)) {
-					hashExcludeNAN.remove(iExternalID);
+				if (hashExcludeNAN.containsKey(pickingID)) {
+					hashExcludeNAN.remove(pickingID);
 				} else {
-					hashExcludeNAN.put(iExternalID, null);
+					hashExcludeNAN.put(pickingID, null);
 				}
 				setDisplayListDirty();
 				break;
@@ -1859,22 +1866,29 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		}
 	}
 
-	private void sendContentVAUpdateEvent(ContentVADelta delta) {
-		ContentVAUpdateEvent virtualArrayUpdateEvent = new ContentVAUpdateEvent();
-		virtualArrayUpdateEvent.setSender(this);
-		virtualArrayUpdateEvent.setDataDomainType(dataDomain.getDataDomainType());
-		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
-		virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
-		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
-	}
+	// private void sendContentVAUpdateEvent(ContentVADelta delta) {
+	// ContentVAUpdateEvent virtualArrayUpdateEvent = new
+	// ContentVAUpdateEvent();
+	// virtualArrayUpdateEvent.setSender(this);
+	// virtualArrayUpdateEvent.setDataDomainType(dataDomain.getDataDomainType());
+	// virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
+	// virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
+	// eventPublisher.triggerEvent(virtualArrayUpdateEvent);
+	// }
 
-	private void sendStorageVAUpdateEvent(StorageVADelta delta) {
-		StorageVAUpdateEvent virtualArrayUpdateEvent = new StorageVAUpdateEvent();
-		virtualArrayUpdateEvent.setSender(this);
-		virtualArrayUpdateEvent.setDataDomainType(dataDomain.getDataDomainType());
-		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
-		virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
-		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
+	private void sendStorageFilterEvent(StorageVADelta delta, String label) {
+
+		StorageFilter filter = new StorageFilter();
+		filter.setDelta(delta);
+		filter.setLabel(label);
+
+		NewStorageFilterEvent filterEvent = new NewStorageFilterEvent();
+		filterEvent.setFilter(filter);
+		filterEvent.setSender(this);
+		filterEvent.setDataDomainType(dataDomain.getDataDomainType());
+
+		// virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
+		eventPublisher.triggerEvent(filterEvent);
 	}
 
 	@Override
@@ -1956,8 +1970,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		} else {
 			message = "Parallel Coordinates showing a sample of " + iNumLines
 					/ displayEveryNthPolyline + " out of " + iNumLines + " "
-					+ dataDomain.getContentName(false, true) + " / "
-					+ storageVA.size() + " experiments";
+					+ dataDomain.getContentName(false, true) + " / " + storageVA.size()
+					+ " experiments";
 		}
 		return message;
 
@@ -2264,7 +2278,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 			StorageVADelta vaDelta = new StorageVADelta(storageVAType, storageIDType);
 			vaDelta.add(VADeltaItem.move(iMovedAxisPosition, iSwitchAxisWithThis));
-			sendStorageVAUpdateEvent(vaDelta);
+			sendStorageFilterEvent(
+					vaDelta,
+					"Moved "
+							+ dataDomain.getStorageLabel(storageVA
+									.get(iMovedAxisPosition)));
 			iMovedAxisPosition = iSwitchAxisWithThis;
 		}
 

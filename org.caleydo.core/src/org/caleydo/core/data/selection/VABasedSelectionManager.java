@@ -65,42 +65,13 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 	 *            the currently active virtual array
 	 */
 	public void setVA(VA virtualArray) {
-//		clearSelections();
+		// clearSelections();
 		// resetSelectionManager();
 		// initialAdd(virtualArray.getIndexList());
 		this.virtualArray = virtualArray;
 
 	}
 
-	/**
-	 * Removes a particular element from the selection manager, no matter what the type
-	 * 
-	 * @param iElementID
-	 *            the element to be removed
-	 */
-	@Override
-	public void remove(int iElementID, boolean bWriteVA) {
-
-		for (SelectionType selectionType : selectionTypes) {
-			if (checkStatus(selectionType, iElementID)) {
-
-				int iNumTimesAdded = hashSelectionTypes.get(selectionType).get(iElementID) - 1;
-				if (iNumTimesAdded == 0) {
-					hashSelectionTypes.get(selectionType).remove(iElementID);
-					if (bWriteVA) {
-						virtualArray.removeByElement(iElementID);
-						// for (Integer removedIndex : removedIndices) {
-						// vaDeltaItem = VADeltaItem.remove(removedIndex);
-						// vaDelta.add(vaDeltaItem);
-						// }
-					}
-				}
-				else {
-					hashSelectionTypes.get(selectionType).put(iElementID, iNumTimesAdded);
-				}
-			}
-		}
-	}
 
 	/**
 	 * Removes all elements and sets the element counter to 0 Removes all elements in selectionDelta. Clears
@@ -177,10 +148,10 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 			switch (item.getType()) {
 
 				case REMOVE_ELEMENT:
-					remove(item.getPrimaryID(), false);
+					remove(item.getPrimaryID());
 					break;
 				case REMOVE:
-					remove(virtualArray.get(item.getIndex()), false);
+					remove(virtualArray.get(item.getIndex()));
 					break;
 
 			}

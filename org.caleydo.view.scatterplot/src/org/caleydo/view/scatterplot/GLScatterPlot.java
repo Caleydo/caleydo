@@ -3042,7 +3042,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType ePickingType,
+	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
@@ -3052,7 +3052,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			return;
 
 		SelectionType selectionType;
-		switch (ePickingType) {
+		switch (pickingType) {
 		case SCATTER_POINT_SELECTION:
 			if (bMainViewZoomDragged)
 				return;
@@ -3263,7 +3263,8 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	@Override
-	protected void reactOnExternalSelection(ISelectionDelta delta, boolean scrollToSelection) {
+	protected void reactOnExternalSelection(ISelectionDelta delta,
+			boolean scrollToSelection) {
 		selectAxesfromExternal();
 		bUpdateSelection = true;
 		bUpdateSelectionTexures = true;
@@ -3282,9 +3283,8 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	@Override
-	protected void reactOnStorageVAChanges(StorageVADelta delta) {
-
-		storageSelectionManager.setVADelta(delta);
+	public void handleVAUpdate(StorageVADelta delta, String info) {
+		super.handleVAUpdate(delta, info);
 		updateMaxAxis();
 		renderStyle.setTextureNr(MAX_AXES, MAX_AXES);
 		resetFullTextures();

@@ -909,7 +909,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalPickingID, Pick pick) {
+			EPickingMode pickingMode, int pickingID, Pick pick) {
 
 		// if (pickingType != EPickingType.REMOTE_LEVEL_ELEMENT) {
 		mouseOverNextDataDomain = null;
@@ -957,7 +957,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 				arSlerpActions.clear();
 				lastPickedRemoteLevelElement = RemoteElementManager.get().getItem(
-						externalPickingID);
+						pickingID);
 				lastPickedView = lastPickedRemoteLevelElement.getGLView();
 
 				chainMove(lastPickedRemoteLevelElement);
@@ -966,7 +966,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			case MOUSE_OVER:
 
 				lastPickedRemoteLevelElement = RemoteElementManager.get().getItem(
-						externalPickingID);
+						pickingID);
 				// mouseOverInterface =
 				// lastPickedRemoteLevelElement.getGLView().getViewType();
 
@@ -981,7 +981,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			switch (pickingMode) {
 			case CLICKED:
 
-				handleDataDomainSelection(externalPickingID);
+				handleDataDomainSelection(pickingID);
 
 				break;
 			case MOUSE_OVER:
@@ -993,7 +993,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						// String dataDomainType =
 						// historyNode.getDataDomainType();
 						String interfaceType = historyNode
-								.getInterfaceType(externalPickingID);
+								.getInterfaceType(pickingID);
 
 						if (interfaceType == null) {
 							if (historyPath.getPrecedingNode(historyNode) != null
@@ -1064,7 +1064,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					for (int i = 0; i < MAX_HISTORY_DATA_DOMAINS; i++) {
 
 						String interfaceType = historyNode
-								.getInterfaceType(externalPickingID);
+								.getInterfaceType(pickingID);
 
 						if (interfaceType == null) {
 							if (historyPath.getPrecedingNode(historyNode) != null
@@ -1096,7 +1096,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			case MOUSE_OVER:
 
-				mouseOverNextDataDomain = determineDataDomainByHash(externalPickingID);
+				mouseOverNextDataDomain = determineDataDomainByHash(pickingID);
 
 				break;
 
@@ -1104,7 +1104,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 				for (IDataDomain tmpDataDomain : DataDomainManager.get().getDataDomains()) {
 					String tmpDataDomainType = tmpDataDomain.getDataDomainType();
-					if (tmpDataDomainType.hashCode() == externalPickingID) {
+					if (tmpDataDomainType.hashCode() == pickingID) {
 
 						HistoryNode dataDomainNode = null;
 						if ((!historyPath.getLastNode().getDataDomainType()
@@ -1152,7 +1152,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			switch (pickingMode) {
 			case CLICKED:
 
-				closeView(externalPickingID);
+				closeView(pickingID);
 				break;
 			}
 			break;

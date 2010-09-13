@@ -102,7 +102,7 @@ public class SelectionManager
 	 * @param iElementID
 	 *            the element to be removed
 	 */
-	public void remove(int iElementID, boolean bWriteVA) {
+	public void remove(int iElementID) {
 
 		for (SelectionType selectionType : selectionTypes) {
 			if (checkStatus(selectionType, iElementID)) {
@@ -132,7 +132,7 @@ public class SelectionManager
 		tempAr = elementMap.keySet().toArray(tempAr);
 
 		for (Integer element : tempAr) {
-			remove(element.intValue(), true);
+			remove(element.intValue());
 		}
 	}
 

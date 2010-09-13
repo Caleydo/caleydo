@@ -408,9 +408,9 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
+	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
 
-		mainTreeMapView.handleRemotePickingEvents(ePickingType, pickingMode, iExternalID, pick);
+		mainTreeMapView.handleRemotePickingEvents(pickingType, pickingMode, iExternalID, pick);
 		setDisplayListDirty();
 		// if (detailLevel == DetailLevel.VERY_LOW) {
 		// return;

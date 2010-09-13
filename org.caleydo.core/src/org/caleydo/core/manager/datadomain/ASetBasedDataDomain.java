@@ -143,7 +143,6 @@ public abstract class ASetBasedDataDomain
 			oldSet = null;
 		}
 
-	
 	}
 
 	/**
@@ -182,7 +181,7 @@ public abstract class ASetBasedDataDomain
 		NewSetEvent newSetEvent = new NewSetEvent();
 		newSetEvent.setSet((Set) set);
 		GeneralManager.get().getEventPublisher().triggerEvent(newSetEvent);
-		
+
 		contentFilterManager = new ContentFilterManager(this);
 		storageFilterManager = new StorageFilterManager(this);
 
@@ -643,7 +642,10 @@ public abstract class ASetBasedDataDomain
 	 * @return the readable label
 	 */
 	public String getStorageLabel(IDType idType, Object id) {
-		return set.get((Integer) id).getLabel();
+		String label = set.get((Integer) id).getLabel();
+		if (label == null)
+			label = "";
+		return label;
 	}
 
 	/**
@@ -672,14 +674,16 @@ public abstract class ASetBasedDataDomain
 
 	/**
 	 * Filter manager holds all filter applied in the content dimension.
+	 * 
 	 * @return
 	 */
 	public ContentFilterManager getContentFilterManager() {
 		return contentFilterManager;
 	}
-	
+
 	/**
 	 * Filter manager holds all filter applied in the storage dimension.
+	 * 
 	 * @return
 	 */
 	public StorageFilterManager getStorageFilterManager() {
