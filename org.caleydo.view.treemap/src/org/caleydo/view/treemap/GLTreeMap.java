@@ -137,7 +137,6 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 
 	@Override
 	public void display(GL gl) {
-		// GLHelperFunctions.drawAxis(gl);
 		if (bIsDisplayListDirtyLocal) {
 			renderer.initPainter(gl, viewFrustum, getActivePickingManager(), getPickingViewID(), treeSelectionManager, textRenderer);
 			renderer.paintTreeMap(gl, treeMapModel.getRoot());

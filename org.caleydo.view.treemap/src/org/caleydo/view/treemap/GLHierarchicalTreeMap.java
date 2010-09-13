@@ -107,6 +107,9 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	private ZoomInListener zoomInListener;
 	private ZoomOutListener zoomOutListener;
 
+	private float xMargin= 0.05f;
+	private float yMargin= 0.01f;
+
 	/**
 	 * Constructor.
 	 * 
@@ -339,30 +342,50 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	private void displayThumbnailTreemaps(GL gl) {
 		int maxThumbNailViews = 3;
-		double margin = 0.01;
-		double thumbNailWidth = 0.32;
+		
+		
+//		double thumbNailWidth = 0.26;
+		double thumbNailWidth = (1-xMargin*(maxThumbNailViews+1))/maxThumbNailViews;
 		double thumbNailHeight = 0.18;
 		double xOffset = 0;
-		double yOffset = 0;
+//		double yOffset = 0;
 		for (int i = 0; i < maxThumbNailViews && i < thumbnailTreemapViews.size(); i++) {
-			xOffset += margin;
+			xOffset += xMargin;
 
 			GLTreeMap treemap = thumbnailTreemapViews.get(i);
 
 			treemap.getViewFrustum().setLeft((float) (viewFrustum.getLeft() + viewFrustum.getWidth() * xOffset));
 			treemap.getViewFrustum().setRight((float) (viewFrustum.getLeft() + viewFrustum.getWidth() * (xOffset + thumbNailWidth)));
-			treemap.getViewFrustum().setBottom((float) (viewFrustum.getTop() - viewFrustum.getHeight() * (margin + thumbNailHeight)));
-			treemap.getViewFrustum().setTop((float) (viewFrustum.getTop() - viewFrustum.getHeight() * margin));
+			treemap.getViewFrustum().setBottom((float) (viewFrustum.getTop() - viewFrustum.getHeight() * (yMargin + thumbNailHeight)));
+			treemap.getViewFrustum().setTop((float) (viewFrustum.getTop() - viewFrustum.getHeight() * yMargin));
 
 			gl.glPushMatrix();
-			gl.glTranslated(viewFrustum.getWidth() * xOffset, viewFrustum.getHeight() * (1.0 - margin - thumbNailHeight), 0);
+			gl.glTranslated(viewFrustum.getWidth() * xOffset, viewFrustum.getHeight() * (1.0 - yMargin - thumbNailHeight), 0);
 			treemap.displayRemote(gl);
 			gl.glPopMatrix();
 
 			xOffset += thumbNailWidth;
+			
+			drawArrow(gl, (float)xOffset,(float) (1.0f - yMargin - thumbNailHeight),(float) (xOffset+xMargin), (float) (1-yMargin));
 		}
 	}
 
+	private void drawArrow(GL gl,float x, float y, float xmax, float ymax){
+		x=(x+0.01f)*viewFrustum.getWidth();
+		y=y*viewFrustum.getHeight();
+		xmax=(xmax-0.01f)*viewFrustum.getWidth();
+		ymax=ymax*viewFrustum.getHeight();
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(x, y, 0);
+		gl.glVertex3f(x, ymax, 0);
+		gl.glVertex3f(xmax, y+(ymax-y)/2, 0);
+		gl.glEnd();
+		
+				
+	}
+	
+	
+	// copied from radialhierarchy
 	protected void renderSymbol(GL gl, EIconTextures texture, float buttonSize) {
 
 		float xButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth() / 2 - buttonSize / 2;
