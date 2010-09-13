@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
 
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
@@ -35,7 +36,9 @@ import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.StorageFilter;
+import org.caleydo.core.data.filter.event.NewContentFilterEvent;
 import org.caleydo.core.data.filter.event.NewStorageFilterEvent;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
@@ -404,10 +407,19 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	@Override
 	public void clearAllSelections() {
 
-		initGates();
 		contentSelectionManager.clearSelections();
 		storageSelectionManager.clearSelections();
 
+		clearFilters();
+		setDisplayListDirty();
+		connectedElementRepresentationManager.clear(contentIDType);
+	}
+
+	/**
+	 * Clears gates and angluar filter
+	 */
+	private void clearFilters() {
+		initGates();
 		// isEnabled = false;
 		bIsAngularBrushingActive = false;
 
@@ -418,7 +430,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			alCurrent.clear();
 		}
 		setDisplayListDirty();
-		connectedElementRepresentationManager.clear(contentIDType);
 	}
 
 	/**
@@ -460,22 +471,17 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	public void saveSelection() {
 
-		// polylineSelectionManager.moveType(SelectionType.DESELECTED,
-		// SelectionType.REMOVE);
+		Set<Integer> removedElements = contentSelectionManager
+				.getElements(SelectionType.DESELECTED);
 
-		contentSelectionManager.removeElements(SelectionType.DESELECTED);
-		clearAllSelections();
-		setDisplayListDirty();
+		ContentVADelta delta = new ContentVADelta(ContentVAType.CONTENT, contentIDType);
+		for (Integer contentID : removedElements) {
+			delta.add(VADeltaItem.removeElement(contentID));
+		}
 
-		contentVA.setGroupList(null);
-
-		// todo this doesn't work for turned stuff
-		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent(
-				dataDomain.getDataDomainType(), contentVAType, contentVA);
-		event.setDataDomainType(dataDomain.getDataDomainType());
-
-		event.setSender(this);
-		eventPublisher.triggerEvent(event);
+		contentSelectionManager.clearSelection(SelectionType.DESELECTED);
+		clearFilters();
+		triggerContentFilterEvent(delta, "Removed via gates");
 
 	}
 
@@ -1424,50 +1430,31 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	private void handleUnselection() {
 		if (!hasFilterChanged)
 			return;
+		
+		hasFilterChanged = false;
 		handleGateUnselection();
 		handleNANUnselection();
 		if (set.isSetHomogeneous())
 			handleMasterGateUnselection();
 
-		// HashMap<Integer, Boolean> hashDeselectedPolylines = new
-		// HashMap<Integer, Boolean>();
-
 		contentSelectionManager.clearSelection(SelectionType.DESELECTED);
 
 		for (ArrayList<Integer> alCurrent : hashIsGateBlocking.values()) {
 			contentSelectionManager.addToType(SelectionType.DESELECTED, alCurrent);
-			// for (Integer iCurrent : alCurrent)
-			// {
-			// hashDeselectedPolylines.put(iCurrent, null);
-			// }
 		}
 
 		for (ArrayList<Integer> alCurrent : alIsAngleBlocking) {
 			contentSelectionManager.addToType(SelectionType.DESELECTED, alCurrent);
-			// for (Integer iCurrent : alCurrent)
-			// {
-			// hashDeselectedPolylines.put(iCurrent, null);
-			// }
 		}
 
 		for (ArrayList<Integer> alCurrent : hashIsNANBlocking.values()) {
 			contentSelectionManager.addToType(SelectionType.DESELECTED, alCurrent);
-			// for (Integer iCurrent : alCurrent)
-			// {
-			// hashDeselectedPolylines.put(iCurrent, null);
-			// }
-		}
-		if (bIsDraggingActive || bIsAngularBrushingActive) {
-			// triggerSelectionUpdate();
 		}
 
-		// for (int iCurrent : hashDeselectedPolylines.keySet())
-		// {
-		// polylineSelectionManager.addToType(SelectionType.DESELECTED,
-		// alCurrent);
-		// polylineSelectionManager.addToType(SelectionType.DESELECTED,
-		// iCurrent);
-		// }
+		if (bIsDraggingActive || bIsAngularBrushingActive) {
+			triggerSelectionUpdate();
+		}
+		System.out.println("");
 	}
 
 	private void triggerSelectionUpdate() {
@@ -1728,7 +1715,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 						storageIDType);
 				vaDelta.add(VADeltaItem.remove(pickingID));
 
-				sendStorageFilterEvent(vaDelta,
+				triggerStorageFilterEvent(vaDelta,
 						"Removed " + dataDomain.getStorageLabel(storageID));
 				// sendStorageVAUpdateEvent(vaDelta);
 				setDisplayListDirty();
@@ -1764,7 +1751,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 					StorageVADelta vaDelta = new StorageVADelta(StorageVAType.STORAGE,
 							storageIDType);
 					vaDelta.add(VADeltaItem.copy(pickingID));
-					sendStorageFilterEvent(
+					triggerStorageFilterEvent(
 							vaDelta,
 							"Copied "
 									+ dataDomain.getStorageLabel(storageVA.get(pickingID)));
@@ -1866,17 +1853,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		}
 	}
 
-	// private void sendContentVAUpdateEvent(ContentVADelta delta) {
-	// ContentVAUpdateEvent virtualArrayUpdateEvent = new
-	// ContentVAUpdateEvent();
-	// virtualArrayUpdateEvent.setSender(this);
-	// virtualArrayUpdateEvent.setDataDomainType(dataDomain.getDataDomainType());
-	// virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
-	// virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
-	// eventPublisher.triggerEvent(virtualArrayUpdateEvent);
-	// }
-
-	private void sendStorageFilterEvent(StorageVADelta delta, String label) {
+	private void triggerStorageFilterEvent(StorageVADelta delta, String label) {
 
 		StorageFilter filter = new StorageFilter();
 		filter.setDelta(delta);
@@ -1887,7 +1864,20 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		filterEvent.setSender(this);
 		filterEvent.setDataDomainType(dataDomain.getDataDomainType());
 
-		// virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
+		eventPublisher.triggerEvent(filterEvent);
+	}
+
+	private void triggerContentFilterEvent(ContentVADelta delta, String label) {
+
+		ContentFilter filter = new ContentFilter();
+		filter.setDelta(delta);
+		filter.setLabel(label);
+
+		NewContentFilterEvent filterEvent = new NewContentFilterEvent();
+		filterEvent.setFilter(filter);
+		filterEvent.setSender(this);
+		filterEvent.setDataDomainType(dataDomain.getDataDomainType());
+
 		eventPublisher.triggerEvent(filterEvent);
 	}
 
@@ -2278,7 +2268,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 			StorageVADelta vaDelta = new StorageVADelta(storageVAType, storageIDType);
 			vaDelta.add(VADeltaItem.move(iMovedAxisPosition, iSwitchAxisWithThis));
-			sendStorageFilterEvent(
+			triggerStorageFilterEvent(
 					vaDelta,
 					"Moved "
 							+ dataDomain.getStorageLabel(storageVA

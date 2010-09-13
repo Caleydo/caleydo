@@ -865,6 +865,16 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
+	public void handleVAUpdate(ContentVADelta delta, String info) {
+		super.handleVAUpdate(delta, info);
+		bRedrawTextures = true;
+		hasDataWindowChanged = true;
+		iPickedSampleLevel1 = 0;
+		setDisplayListDirty();
+		initData();
+	}
+
+	@Override
 	public void replaceVA(int setID, String dataDomain, ContentVAType vaType) {
 		super.replaceVA(setID, dataDomain, vaType);
 		hasDataWindowChanged = true;

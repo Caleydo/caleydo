@@ -15,11 +15,14 @@ import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -32,8 +35,9 @@ import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
+import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
@@ -47,6 +51,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.StorageVAUpdateListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 
 @XmlType
@@ -61,7 +66,8 @@ public abstract class ASetBasedDataDomain
 	private StartClusteringListener startClusteringListener;
 	private ReplaceContentVAInUseCaseListener replaceContentVirtualArrayInUseCaseListener;
 	private ReplaceStorageVAInUseCaseListener replaceStorageVirtualArrayInUseCaseListener;
-	private ContentVAUpdateListener virtualArrayUpdateListener;
+	private ContentVAUpdateListener contentVAUpdateListener;
+	private StorageVAUpdateListener storageVAUpdateListener;
 
 	/** The set which is currently loaded and used inside the views for this use case. */
 	protected Set set;
@@ -422,6 +428,31 @@ public abstract class ASetBasedDataDomain
 	}
 
 	@Override
+	public void handleVAUpdate(ContentVADelta vaDelta, String info) {
+		IDCategory targetCategory = vaDelta.getIDType().getIDCategory();
+		if (targetCategory != contentIDCategory)
+			return;
+
+		if (targetCategory == contentIDCategory && vaDelta.getIDType() != contentIDType)
+			vaDelta = DeltaConverter.convertDelta(contentIDType, vaDelta);
+		ContentVirtualArray va = set.getContentData(vaDelta.getVAType()).getContentVA();
+
+		va.setDelta(vaDelta);
+
+	}
+
+	@Override
+	public void handleVAUpdate(StorageVADelta vaDelta, String info) {
+		IDCategory targetCategory = vaDelta.getIDType().getIDCategory();
+		if (targetCategory != storageIDCategory)
+			return;
+
+		StorageVirtualArray va = set.getStorageData(vaDelta.getVAType()).getStorageVA();
+
+		va.setDelta(vaDelta);
+	}
+
+	@Override
 	public void registerEventListeners() {
 
 		// groupMergingActionListener = new GroupMergingActionListener();
@@ -459,10 +490,15 @@ public abstract class ASetBasedDataDomain
 		eventPublisher.addListener(ReplaceStorageVAInUseCaseEvent.class,
 			replaceStorageVirtualArrayInUseCaseListener);
 
-		virtualArrayUpdateListener = new ContentVAUpdateListener();
-		virtualArrayUpdateListener.setHandler(this);
-		virtualArrayUpdateListener.setDataDomainType(dataDomainType);
-		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
+		contentVAUpdateListener = new ContentVAUpdateListener();
+		contentVAUpdateListener.setHandler(this);
+		contentVAUpdateListener.setDataDomainType(dataDomainType);
+		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
+
+		storageVAUpdateListener = new StorageVAUpdateListener();
+		storageVAUpdateListener.setHandler(this);
+		storageVAUpdateListener.setDataDomainType(dataDomainType);
+		eventPublisher.addListener(StorageVAUpdateEvent.class, storageVAUpdateListener);
 	}
 
 	// TODO this is never called!
@@ -494,9 +530,14 @@ public abstract class ASetBasedDataDomain
 			replaceStorageVirtualArrayInUseCaseListener = null;
 		}
 
-		if (virtualArrayUpdateListener != null) {
-			eventPublisher.removeListener(virtualArrayUpdateListener);
-			virtualArrayUpdateListener = null;
+		if (contentVAUpdateListener != null) {
+			eventPublisher.removeListener(contentVAUpdateListener);
+			contentVAUpdateListener = null;
+		}
+
+		if (storageVAUpdateListener != null) {
+			eventPublisher.removeListener(storageVAUpdateListener);
+			storageVAUpdateListener = null;
 		}
 	}
 
@@ -650,7 +691,7 @@ public abstract class ASetBasedDataDomain
 
 	/**
 	 * A dataDomain may contribute to the context menu. This function returns the contentItemContainer of the
-	 * context menue if one was specified. This should be overridden by subclasses if needed.
+	 * context menu if one was specified. This should be overridden by subclasses if needed.
 	 * 
 	 * @return a context menu item container related to content items
 	 */

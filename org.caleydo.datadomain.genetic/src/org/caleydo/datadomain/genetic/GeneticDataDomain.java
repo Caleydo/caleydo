@@ -198,29 +198,6 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		this.pathwayViewerMode = pathwayViewerMode;
 	}
 
-	@Override
-	public void handleVAUpdate(ContentVADelta vaDelta, String info) {
-		IDCategory targetCategory = vaDelta.getIDType().getIDCategory();
-		if (targetCategory != contentIDCategory)
-			return;
-
-		if (targetCategory == contentIDCategory && vaDelta.getIDType() != contentIDType)
-			vaDelta = DeltaConverter.convertDelta(contentIDType, vaDelta);
-		ContentVirtualArray va = set.getContentData(vaDelta.getVAType()).getContentVA();
-
-		va.setDelta(vaDelta);
-	}
-
-	@Override
-	public void handleVAUpdate(StorageVADelta vaDelta, String info) {
-		IDCategory targetCategory = vaDelta.getIDType().getIDCategory();
-		if (targetCategory != storageIDCategory)
-			return;
-
-		StorageVirtualArray va = set.getStorageData(vaDelta.getVAType()).getStorageVA();
-
-		va.setDelta(vaDelta);
-	}
 
 	@Override
 	public void registerEventListeners() {
