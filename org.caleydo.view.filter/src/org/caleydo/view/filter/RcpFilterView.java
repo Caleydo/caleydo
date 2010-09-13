@@ -76,13 +76,16 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		TreeItem storageFilterTreeItem = new TreeItem(tree, SWT.NONE, 0);
 		storageFilterTreeItem.setText("Experiment Filter");
 
+		// Create the pop-up menu
+		Menu menu = new Menu(parentComposite);
+		tree.setMenu(menu);
+
 		TreeItem child;
-		
+
 		for (StorageFilter filter : dataDomain.getStorageFilterManager().getFilterPipe()) {
 			child = new TreeItem(storageFilterTreeItem, SWT.NONE, 0);
 			child.setText(filter.toString());
 			child.setData(filter);
-
 		}
 
 		TreeItem contentFilterTreeItem = new TreeItem(tree, SWT.NONE, 0);
@@ -94,20 +97,27 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 			child.setData(filter);
 		}
 
-		// Create the pop-up menu
-		Menu menu = new Menu(parentComposite);
-		tree.setMenu(menu);
-
 		MenuItem removeItem = new MenuItem(menu, SWT.NONE);
 		removeItem.setText("Remove");
 		removeItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				RemoveFilterEvent<StorageFilter> filterEvent = new RemoveFilterEvent<StorageFilter>();
-				filterEvent.setDataDomainType(dataDomain.getDataDomainType());
-//				filterEvent.setFilter((StorageFilter) e.item.getData());
-				filterEvent.setFilter(dataDomain.getStorageFilterManager().getFilterPipe().get(0));
-				eventPublisher.triggerEvent(filterEvent);
+				TreeItem selectedTreeItem = tree.getSelection()[0];
+
+				if (selectedTreeItem.getData() instanceof StorageFilter) {
+					RemoveFilterEvent<StorageFilter> filterEvent = new RemoveFilterEvent<StorageFilter>();
+					filterEvent.setDataDomainType(dataDomain.getDataDomainType());
+					filterEvent.setFilter((StorageFilter) selectedTreeItem.getData());
+					selectedTreeItem.dispose();
+					eventPublisher.triggerEvent(filterEvent);
+				}
+				else if (selectedTreeItem.getData() instanceof ContentFilter) {
+					RemoveFilterEvent<ContentFilter> filterEvent = new RemoveFilterEvent<ContentFilter>();
+					filterEvent.setDataDomainType(dataDomain.getDataDomainType());
+					filterEvent.setFilter((ContentFilter) selectedTreeItem.getData());
+					selectedTreeItem.dispose();
+					eventPublisher.triggerEvent(filterEvent);
+				}
 			}
 		});
 	}
