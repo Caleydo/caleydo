@@ -6,7 +6,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings;
 import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.data.StatisticsResultFinishedEvent;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

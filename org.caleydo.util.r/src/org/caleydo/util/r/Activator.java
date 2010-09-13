@@ -1,9 +1,5 @@
 package org.caleydo.util.r;
 
-import java.util.ArrayList;
-
-import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.util.r.view.StatisticsView;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -25,8 +21,6 @@ public class Activator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		
-		registerDataDomains();
 	}
 
 	/*
@@ -48,19 +42,5 @@ public class Activator extends Plugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
-	}
-
-	private void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.genetic");
-		dataDomainTypes.add("org.caleydo.datadomain.generic");
-		dataDomainTypes.add("org.caleydo.datadomain.clinical");
-
-		DataDomainManager
-				.get()
-				.getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						StatisticsView.VIEW_ID);
-
 	}
 }

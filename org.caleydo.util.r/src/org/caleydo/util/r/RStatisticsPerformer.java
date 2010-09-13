@@ -5,27 +5,30 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.filter.ContentFilter;
+import org.caleydo.core.data.filter.event.NewContentFilterEvent;
 import org.caleydo.core.data.virtualarray.ContentVAType;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.StatisticsFoldChangeReductionEvent;
 import org.caleydo.core.manager.event.data.StatisticsPValueReductionEvent;
-import org.caleydo.core.manager.event.data.StatisticsResultFinishedEvent;
 import org.caleydo.core.manager.event.data.StatisticsTwoSidedTTestReductionEvent;
 import org.caleydo.core.manager.event.view.OpenViewEvent;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
-import org.caleydo.util.r.dialog.FoldChangeDialog;
 import org.caleydo.util.r.listener.StatisticsFoldChangeReductionListener;
 import org.caleydo.util.r.listener.StatisticsPValueReductionListener;
 import org.caleydo.util.r.listener.StatisticsTwoSidedTTestReductionListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
@@ -34,15 +37,16 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 	private Rengine engine;
 
-	// private CompareGroupsEventListener compareGroupsEventListener = null;
+	private EventPublisher eventPublisher;
+
 	private StatisticsPValueReductionListener statisticsPValueReductionListener = null;
 	private StatisticsFoldChangeReductionListener statisticsFoldChangeReductionListener = null;
 	private StatisticsTwoSidedTTestReductionListener statisticsTwoSidedTTestReductionListener = null;
 
 	public RStatisticsPerformer() {
 
+		eventPublisher = GeneralManager.get().getEventPublisher();
 		init();
-
 		registerEventListeners();
 	}
 
@@ -69,11 +73,6 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 	@Override
 	public void registerEventListeners() {
-
-		// compareGroupsEventListener = new CompareGroupsEventListener();
-		// compareGroupsEventListener.setHandler(this);
-		// GeneralManager.get().getEventPublisher().addListener(
-		// CompareGroupsEvent.class, compareGroupsEventListener);
 
 		statisticsPValueReductionListener = new StatisticsPValueReductionListener();
 		statisticsPValueReductionListener.setHandler(this);
@@ -103,12 +102,6 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 	// TODO: never called!
 	public void unregisterEventListeners() {
-
-		// if (compareGroupsEventListener != null) {
-		// GeneralManager.get().getEventPublisher().removeListener(
-		// compareGroupsEventListener);
-		// compareGroupsEventListener = null;
-		// }
 
 		if (statisticsPValueReductionListener != null) {
 			GeneralManager.get().getEventPublisher()
@@ -151,7 +144,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			Logger.log(new Status(IStatus.ERROR, toString(), "Could not run R commands",
 					e));
 		}
-		
+
 		OpenViewEvent openViewEvent = new OpenViewEvent();
 		openViewEvent.setViewType("org.caleydo.view.statistics");
 		openViewEvent.setSender(this);
@@ -183,7 +176,6 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 		engine.assign("set_1", meanStorage1);
 		engine.assign("set_2", meanStorage2);
-		//
 		engine.eval("library(\"gtools\")");
 		REXP foldChangeResult = engine.eval("foldchange(set_1,set_2)");
 		System.out.println("Fold change result: " + foldChangeResult);
@@ -192,32 +184,46 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 		set1.getStatisticsResult().setFoldChangeResult(set2, resultVec);
 		set2.getStatisticsResult().setFoldChangeResult(set1, resultVec);
+
+		// TODO Evaluate result
+		// create delta
+		// trigger filter event
+
+		// sendContentFilterEvent(contentVADelta, "p-Value Reduction for "
+		// + set.getStorageData(StorageVAType.STORAGE)
+		// .getStorageTreeRoot().getLabel(), set.getDataDomain()
+		// .getDataDomainType());
+		// }
 	}
 
 	public void oneSidedTTest(ArrayList<ISet> sets) {
 
-		// OpenViewEvent openViewEvent = new OpenViewEvent();
-		// openViewEvent.setViewType("org.caleydo.view.statistics");
-		// openViewEvent.setSender(this);
-		// GeneralManager.get().getEventPublisher().triggerEvent(openViewEvent);
+		// TODO take pvalue from filter GUI
+		float pValueCutOff = 0.05f;
 
-		boolean allCalculated = true;
+		// TODO: don't recalculate if pvalue array is already calculated
+		// however, the evaluation must be done using the new pvalue
+//		boolean allCalculated = true;
+//		for (ISet set : sets) {
+//			if (set.getStatisticsResult().getOneSidedTTestResult() == null)
+//				continue;
+//
+//			allCalculated = false;
+//		}
+//
+//		if (!allCalculated)
+//			return;
+
 		for (ISet set : sets) {
-			if (set.getStatisticsResult().getOneSidedTTestResult() == null)
-				continue;
 
-			allCalculated = false;
-		}
+			ContentVADelta contentVADelta = new ContentVADelta(ContentVAType.CONTENT, set.getDataDomain().getContentIDType());
+			ContentVirtualArray contentVA = set.getContentData(ContentVAType.CONTENT)
+					.getContentVA();
 
-		if (!allCalculated)
-			return;
-
-		for (ISet set : sets) {
 			double[] pValueVector = new double[set.getContentData(ContentVAType.CONTENT)
 					.getContentVA().size()];
 
-			for (int contentIndex = 0; contentIndex < set
-					.getContentData(ContentVAType.CONTENT).getContentVA().size(); contentIndex++) {
+			for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 
 				StorageVirtualArray storageVA1 = set
 						.getStorageData(StorageVAType.STORAGE).getStorageVA();
@@ -244,17 +250,24 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 					REXP pValue = (REXP) compareResult.asVector().get(2);
 					pValueVector[contentIndex] = pValue.asDouble();
 					// System.out.println(pValue.asDouble());
+
+					// Evaluate
+					if (pValueVector[contentIndex] > pValueCutOff) {
+						contentVADelta.add(VADeltaItem.removeElement(contentVA
+								.get(contentIndex)));
+					}
 				}
 			}
-
+			
 			set.getStatisticsResult().setOneSiddedTTestResult(pValueVector);
+
+			if (contentVADelta != null) {
+				sendContentFilterEvent(contentVADelta, "p-Value Reduction for "
+						+ set.getStorageData(StorageVAType.STORAGE)
+								.getStorageTreeRoot().getLabel(), set.getDataDomain()
+						.getDataDomainType());
+			}
 		}
-
-		StatisticsResultFinishedEvent event = new StatisticsResultFinishedEvent(sets);
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
-
-		System.out.println("One-sided t-test finished");
 	}
 
 	public void twoSidedTTest(ArrayList<ISet> sets) {
@@ -305,16 +318,18 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			// System.out.println(pValue.asDouble());
 		}
 
-		set1.getStatisticsResult().setTwoSiddedTTestResult(set2, pValueVector);
-		set2.getStatisticsResult().setTwoSiddedTTestResult(set1, pValueVector);
+		// set1.getStatisticsResult().setTwoSiddedTTestResult(set2,
+		// pValueVector);
+		// set2.getStatisticsResult().setTwoSiddedTTestResult(set1,
+		// pValueVector);
 		// }
 
 		// setsToCompare.get(0).getStatisticsResult().getVABasedOnCompareResult(setsToCompare.get(1),
 		// 0.9f);
 
-		StatisticsResultFinishedEvent event = new StatisticsResultFinishedEvent(sets);
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		// TODO Evaluate result
+		// create delta
+		// trigger filter event
 
 		System.out.println("Two-sided t-test finished");
 	}
@@ -337,8 +352,24 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 			@Override
 			public void run() {
-				new FoldChangeDialog(new Shell(), set1, set2).open();
+				// new FoldChangeDialog(new Shell(), set1, set2).open();
+				throw new IllegalStateException();
 			}
 		});
+	}
+
+	private void sendContentFilterEvent(ContentVADelta delta, String label,
+			String dataDomainType) {
+
+		ContentFilter filter = new ContentFilter();
+		filter.setDelta(delta);
+		filter.setLabel(label);
+
+		NewContentFilterEvent filterEvent = new NewContentFilterEvent();
+		filterEvent.setFilter(filter);
+		filterEvent.setSender(this);
+		filterEvent.setDataDomainType(dataDomainType);
+
+		eventPublisher.triggerEvent(filterEvent);
 	}
 }

@@ -11,10 +11,11 @@ import org.eclipse.swt.widgets.Shell;
 
 public class AFilterRepresentation {
 
-	public void create(){
-		
-		final Shell popupShell = new Shell();
+	private Shell popupShell;
 	
+	public AFilterRepresentation() {
+		popupShell = new Shell();
+		
 		popupShell.setLayout(new RowLayout());
 	    final Button ok = new Button(popupShell, SWT.PUSH);
 	    ok.setText("Apply");
@@ -36,10 +37,10 @@ public class AFilterRepresentation {
 		int x = bounds.x + (bounds.width - rect.width) / 2;
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		popupShell.setLocation (x, y);
+	}
+	
+	public void open(){
 		
-		
-		popupShell.open();
-		
-		
+		popupShell.open();	
 	}
 }

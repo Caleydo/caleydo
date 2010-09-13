@@ -21,9 +21,6 @@ public class Filter<VAType extends IVAType, DeltaType extends VirtualArrayDelta<
 
 	public void setDelta(DeltaType vaDelta) {
 		this.vaDelta = vaDelta;
-		
-		// FIXME: just for testing - todo: set after creation
-		filterRep = new AFilterRepresentation();
 	}
 
 	public DeltaType getVADelta() {
@@ -32,7 +29,7 @@ public class Filter<VAType extends IVAType, DeltaType extends VirtualArrayDelta<
 
 	public void createRepresentation() {
 		if (filterRep != null);
-			filterRep.create();
+			new AFilterRepresentation().open();
 	}
 	
 	public void setFilterRep(AFilterRepresentation filterRep) {

@@ -133,7 +133,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 				}
 			}
 		});
-		
+	
 		MenuItem detailsItem = new MenuItem(menu, SWT.NONE);
 		detailsItem.setText("Show details");
 		detailsItem.addSelectionListener(new SelectionAdapter() {
