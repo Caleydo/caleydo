@@ -7,8 +7,6 @@ public class FilterUpdatedEvent
 
 	@Override
 	public boolean checkIntegrity() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
-
 }

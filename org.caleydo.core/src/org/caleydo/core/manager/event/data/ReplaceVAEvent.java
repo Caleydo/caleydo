@@ -107,9 +107,6 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 		this.usesVADirectly = usesVADirectly;
 	}
 
-	public void setVaType(T vaType) {
-		this.vaType = vaType;
-	}
 
 	public void setVirtualArray(E virtualArray) {
 		this.virtualArray = virtualArray;

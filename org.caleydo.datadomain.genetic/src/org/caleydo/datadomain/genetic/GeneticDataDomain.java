@@ -84,14 +84,14 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		contentLabelSingular = "gene";
 		contentLabelPlural = "genes";
 	}
-	
+
 	@Override
 	protected void initIDMappings() {
-		
+
 		// Load IDs needed in this datadomain
-		IDMappingLoader.get().loadMappingFile(fileName);	
+		IDMappingLoader.get().loadMappingFile(fileName);
 	}
-	
+
 	@Override
 	public void setSet(Set set) {
 		super.setSet(set);
@@ -319,7 +319,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 			ReplaceStorageVAInUseCaseEvent event = new ReplaceStorageVAInUseCaseEvent();
 			event.setDataDomainType(this.dataDomainType);
-			event.setVaType(StorageVAType.STORAGE);
+			event.setVAType(StorageVAType.STORAGE);
 			event.setVirtualArray(newStorageVirtualArray);
 
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
@@ -331,8 +331,8 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 			Integer clinicalContentIndex) {
 
 		// FIXME - this is a hack for one special dataset (asslaber)
-		Set clinicalSet = ((ASetBasedDataDomain) DataDomainManager.get()
-				.getDataDomain(CLINICAL_DATADOMAIN_TYPE)).getSet();
+		Set clinicalSet = ((ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
+				CLINICAL_DATADOMAIN_TYPE)).getSet();
 		int storageID = clinicalSet.getStorageData(StorageVAType.STORAGE).getStorageVA()
 				.get(1);
 

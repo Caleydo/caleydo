@@ -2,8 +2,11 @@ package org.caleydo.core.data.filter;
 
 import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
+import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
@@ -53,6 +56,17 @@ public class ContentFilterManager
 		event.setSender(this);
 		event.setDataDomainType(dataDomain.getDataDomainType());
 		event.setVirtualArrayDelta(delta);
+		eventPublisher.triggerEvent(event);
+	}
+
+	@Override
+	protected void triggerReplaceVAEvent() {
+		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent();
+		event.setVAType(ContentVAType.CONTENT);
+		event.setVirtualArray(currentVA);
+		event.setSender(this);
+		event.setDataDomainType(dataDomain.getDataDomainType());
+		
 		eventPublisher.triggerEvent(event);
 	}
 

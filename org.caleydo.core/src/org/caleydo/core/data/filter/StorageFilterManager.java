@@ -4,6 +4,7 @@ import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.StorageVAUpdateListener;
@@ -61,4 +62,16 @@ public class StorageFilterManager
 		event.setVirtualArrayDelta(delta);
 		eventPublisher.triggerEvent(event);
 	}
+
+	@Override
+	protected void triggerReplaceVAEvent() {
+		ReplaceStorageVAInUseCaseEvent event = new ReplaceStorageVAInUseCaseEvent();
+		event.setVAType(StorageVAType.STORAGE);
+		event.setVirtualArray(currentVA);
+		event.setSender(this);
+		event.setDataDomainType(dataDomain.getDataDomainType());
+		
+		eventPublisher.triggerEvent(event);
+	}
+
 }

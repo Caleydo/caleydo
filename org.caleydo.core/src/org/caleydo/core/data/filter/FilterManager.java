@@ -3,6 +3,7 @@ package org.caleydo.core.data.filter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.filter.event.RemoveFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveFilterListener;
 import org.caleydo.core.data.virtualarray.IVAType;
@@ -118,6 +119,10 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 		filter.setDelta(vaDelta);
 		filterPipe.add(filter);
 		currentVA.setDelta(vaDelta);
+
+		FilterUpdatedEvent event = new FilterUpdatedEvent();
+		event.setDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.triggerEvent(event);
 	}
 
 	@Override
@@ -143,5 +148,21 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 			}
 		}
 
+		recalculateFilters();
+
+		FilterUpdatedEvent event = new FilterUpdatedEvent();
+		event.setDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.triggerEvent(event);
+
 	}
+
+	private void recalculateFilters() {
+		currentVA = (VA) baseVA.clone();
+		for (FilterType filter : filterPipe) {
+			currentVA.setDelta(filter.getVADelta());
+		}
+		triggerReplaceVAEvent();
+	}
+
+	protected abstract void triggerReplaceVAEvent();
 }
