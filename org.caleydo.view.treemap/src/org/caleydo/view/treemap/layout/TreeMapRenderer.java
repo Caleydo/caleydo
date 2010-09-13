@@ -13,9 +13,9 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
-public class GlPainter {
+public class TreeMapRenderer {
 
-	GL gl;
+//	GL gl;
 	ViewFrustum viewFrustum;
 	PickingManager pickingManager;
 	int viewID;
@@ -26,10 +26,12 @@ public class GlPainter {
 
 	CaleydoTextRenderer textRenderer;
 
-	public GlPainter(GL gl, ViewFrustum viewFrustum, PickingManager pickingManager, int viewID, SelectionManager selectionManager,
+	
+	
+	public void initPainter(GL gl, ViewFrustum viewFrustum, PickingManager pickingManager, int viewID, SelectionManager selectionManager,
 			CaleydoTextRenderer textRenderer) {
 		this.pickingManager = pickingManager;
-		this.gl = gl;
+		
 		this.viewFrustum = viewFrustum;
 		this.viewID = viewID;
 		this.selectionManager = selectionManager;
@@ -39,26 +41,26 @@ public class GlPainter {
 		highlightList = gl.glGenLists(1);
 	}
 
-	public void paintHighlighting(Tree<ATreeMapNode> tree, SelectionManager selection) {
+	public void paintHighlighting(GL gl, Tree<ATreeMapNode> tree, SelectionManager selection) {
 		gl.glNewList(highlightList, GL.GL_COMPILE);
 
 		for (int id : selection.getElements(SelectionType.MOUSE_OVER)) {
 			ATreeMapNode node = tree.getNodeByNumber(id);
 			if (node != null)
-				paintRectangle(node.getMinX(), node.getMinY(), node.getMaxX(), node.getMaxY(), SelectionType.MOUSE_OVER.getColor());
+				paintRectangle(gl,node.getMinX(), node.getMinY(), node.getMaxX(), node.getMaxY(), SelectionType.MOUSE_OVER.getColor());
 		}
 
 		for (int id : selection.getElements(SelectionType.SELECTION)) {
 			ATreeMapNode node = tree.getNodeByNumber(id);
 			if (node != null)
-				paintRectangle(node.getMinX(), node.getMinY(), node.getMaxX(), node.getMaxY(), SelectionType.SELECTION.getColor());
+				paintRectangle(gl,node.getMinX(), node.getMinY(), node.getMaxX(), node.getMaxY(), SelectionType.SELECTION.getColor());
 		}
 
 		gl.glEndList();
 
 	}
 
-	public void paintTreeMapFromCache() {
+	public void paintTreeMapFromCache(GL gl) {
 		gl.glCallList(treemapList);
 		gl.glCallList(highlightList);
 	}
@@ -75,11 +77,11 @@ public class GlPainter {
 		if (children == null || children.size() == 0) {
 			gl.glPushName(pickingManager.getPickingID(viewID, EPickingType.TREEMAP_ELEMENT_SELECTED, root.getID()));
 			// System.out.println("picking ID: "+root.getID());
-			fillRectangle(root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(), root.getColorAttribute());
+			fillRectangle(gl,root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(), root.getColorAttribute());
 			gl.glPopName();
 
-			textRenderer.renderText(gl, "label", root.getMinX(), root.getMinY(), 0, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR, 20);
-
+//			textRenderer.renderText(gl, "label", root.getMinX(), root.getMinY(), 0, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR, 20);
+//			displayText(gl,root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(),"label");
 			
 		} else {
 			for (ATreeMapNode node : children) {
@@ -88,7 +90,7 @@ public class GlPainter {
 		}
 	}
 
-	public void paintRectangle(float x, float y, float xmax, float ymax, float[] color) {
+	public void paintRectangle(GL gl,float x, float y, float xmax, float ymax, float[] color) {
 		gl.glLineWidth(6);
 
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -108,7 +110,7 @@ public class GlPainter {
 		gl.glEnd();
 	}
 
-	public void fillRectangle(float x, float y, float xmax, float ymax, float[] color) {
+	public void fillRectangle(GL gl, float x, float y, float xmax, float ymax, float[] color) {
 		gl.glBegin(GL.GL_QUADS);
 
 		gl.glColor3f(color[0], color[1], color[2]);
@@ -124,6 +126,10 @@ public class GlPainter {
 		gl.glVertex3f(xmax, y, 0);
 
 		gl.glEnd();
+	}
+	
+	public void displayText(GL gl, float x, float y, float xmax, float ymax, String text){
+		textRenderer.renderText(gl, "label", x*viewFrustum.getWidth(), y*viewFrustum.getHeight(), 0, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR, 20);
 	}
 
 }

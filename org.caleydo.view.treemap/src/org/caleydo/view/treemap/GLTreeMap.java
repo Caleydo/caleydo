@@ -28,7 +28,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.treemap.layout.ATreeMapNode;
 import org.caleydo.view.treemap.layout.ClusterTreeMapNode;
-import org.caleydo.view.treemap.layout.GlPainter;
+import org.caleydo.view.treemap.layout.TreeMapRenderer;
 import org.caleydo.view.treemap.layout.algorithm.ILayoutAlgorithm;
 import org.caleydo.view.treemap.layout.algorithm.SimpleLayoutAlgorithm;
 import org.caleydo.view.treemap.layout.algorithm.SquarifiedLayoutAlgorithm;
@@ -45,7 +45,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 
 	private ASetBasedDataDomain dataDomain;
 
-	private GlPainter painter;
+	private TreeMapRenderer renderer;
 
 	private boolean bIsHighlightingListDirty;
 
@@ -80,6 +80,8 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 		super(glCanvas, viewFrustum, true);
 
 		viewType = GLTreeMap.VIEW_ID;
+		
+		renderer= new TreeMapRenderer();
 
 	}
 
@@ -137,18 +139,18 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	public void display(GL gl) {
 		// GLHelperFunctions.drawAxis(gl);
 		if (bIsDisplayListDirtyLocal) {
-			painter = new GlPainter(gl, viewFrustum, getActivePickingManager(), getPickingViewID(), treeSelectionManager, textRenderer);
-			painter.paintTreeMap(gl, treeMapModel.getRoot());
+			renderer.initPainter(gl, viewFrustum, getActivePickingManager(), getPickingViewID(), treeSelectionManager, textRenderer);
+			renderer.paintTreeMap(gl, treeMapModel.getRoot());
 			bIsDisplayListDirtyLocal = false;
 			setHighLichtingListDirty();
 		}
 
 		if (bIsHighlightingListDirty) {
-			painter.paintHighlighting(treeMapModel, treeSelectionManager);
+			renderer.paintHighlighting(gl,treeMapModel, treeSelectionManager);
 			bIsHighlightingListDirty = false;
 		}
 
-		painter.paintTreeMapFromCache();
+		renderer.paintTreeMapFromCache(gl);
 	}
 
 	private void setHighLichtingListDirty() {
