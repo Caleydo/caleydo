@@ -278,8 +278,7 @@ public abstract class AGLView
 
 			viewFrustum.setRight(8);
 
-			bIsDisplayListDirtyLocal = true;
-			bIsDisplayListDirtyRemote = true;
+			setDisplayListDirty();
 			bHasFrustumChanged = true;
 		}
 

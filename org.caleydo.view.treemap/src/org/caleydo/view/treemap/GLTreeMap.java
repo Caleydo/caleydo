@@ -70,11 +70,12 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	private int rootClusterID;
 
 	private boolean bIsZoomActive = false;
-	
+
 	private ILayoutAlgorithm layoutAlgorithm = new SimpleLayoutAlgorithm();
-//	private ILayoutAlgorithm layoutAlgorithm = new SquarifiedLayoutAlgorithm();
-	
-	
+
+	// private ILayoutAlgorithm layoutAlgorithm = new
+	// SquarifiedLayoutAlgorithm();
+
 	public GLTreeMap(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
@@ -121,13 +122,13 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 		ClusterTreeMapNode root;
 		if (bIsZoomActive) {
 			ClusterNode dataRoot = tree.getNodeByNumber(rootClusterID);
-			if(dataRoot==null)
+			if (dataRoot == null)
 				throw new IllegalStateException("selected wrong cluster id for zooming");
 			root = ClusterTreeMapNode.createFromClusterNodeTree(dataRoot, colorMapper);
 		} else
 			root = ClusterTreeMapNode.createFromClusterNodeTree(tree, colorMapper);
-		
-//		SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
+
+		// SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
 		layoutAlgorithm.layout(root);
 		treeMapModel = root.getTree();
 	}
@@ -137,7 +138,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 		// GLHelperFunctions.drawAxis(gl);
 		if (bIsDisplayListDirtyLocal) {
 			painter = new GlPainter(gl, viewFrustum, getActivePickingManager(), getPickingViewID(), treeSelectionManager, textRenderer);
-			painter.paintTreeMap(treeMapModel.getRoot());
+			painter.paintTreeMap(gl, treeMapModel.getRoot());
 			bIsDisplayListDirtyLocal = false;
 			setHighLichtingListDirty();
 		}

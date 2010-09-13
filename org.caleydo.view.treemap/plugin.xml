@@ -62,4 +62,12 @@
           name="TreeMapViewCreator"
           class="org.caleydo.view.treemap.creator.ViewCreatorTreeMap" />
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.caleydo.view.treemap.preferences.TreemapPreferencePage"
+            id="org.caleydo.view.treemap.preferences.TreeMapPreferencePage"
+            name="TreeMap">
+      </page>
+   </extension>
 </plugin>
