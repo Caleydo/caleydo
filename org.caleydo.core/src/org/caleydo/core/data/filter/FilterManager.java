@@ -1,7 +1,10 @@
 package org.caleydo.core.data.filter;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import org.caleydo.core.data.filter.event.RemoveFilterEvent;
+import org.caleydo.core.data.filter.event.RemoveFilterListener;
 import org.caleydo.core.data.virtualarray.IVAType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
@@ -43,6 +46,8 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 	// private ReplaceStorageVAInUseCaseListener replaceStorageVirtualArrayInUseCaseListener;
 
 	EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+
+	RemoveFilterListener<FilterType> removeFilterListener;
 
 	/**
 	 * Pass the dataDomain, the initial VA, and a factory to create filters of the specified type.
@@ -88,6 +93,11 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 
 	@Override
 	public void registerEventListeners() {
+		removeFilterListener = new RemoveFilterListener<FilterType>();
+		removeFilterListener.setHandler(this);
+		removeFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(RemoveFilterEvent.class, removeFilterListener);
+
 	}
 
 	// TODO this is never called!
@@ -114,12 +124,24 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 	public void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
 		listener.handleEvent(event);
 	}
-	
+
 	/**
 	 * Returns all current filters.
+	 * 
 	 * @return a list of all filters
 	 */
 	public ArrayList<FilterType> getFilterPipe() {
 		return filterPipe;
+	}
+
+	public void handleRemoveFilter(Filter filter) {
+
+		Iterator<FilterType> filterIterator = filterPipe.iterator();
+		while (filterIterator.hasNext()) {
+			if (filterIterator.next() == filter) {
+				filterIterator.remove();
+			}
+		}
+
 	}
 }

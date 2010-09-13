@@ -6,6 +6,7 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.StorageFilter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
+import org.caleydo.core.data.filter.event.RemoveFilterEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -22,6 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 
@@ -37,9 +39,9 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 	private ASetBasedDataDomain dataDomain;
 
 	private Tree tree;
-	
+
 	private EventPublisher eventPublisher;
-	
+
 	private FilterUpdateListener filterUpdateListener;
 
 	/**
@@ -53,7 +55,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
-		
+
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
 	}
@@ -75,31 +77,39 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		storageFilterTreeItem.setText("Experiment Filter");
 
 		TreeItem child;
+		
 		for (StorageFilter filter : dataDomain.getStorageFilterManager().getFilterPipe()) {
 			child = new TreeItem(storageFilterTreeItem, SWT.NONE, 0);
 			child.setText(filter.toString());
+			child.setData(filter);
+
 		}
 
-		TreeItem contentFilterTreeItem  = new TreeItem(tree, SWT.NONE, 0);
+		TreeItem contentFilterTreeItem = new TreeItem(tree, SWT.NONE, 0);
 		contentFilterTreeItem.setText("Gene Filter");
 
 		for (ContentFilter filter : dataDomain.getContentFilterManager().getFilterPipe()) {
 			child = new TreeItem(contentFilterTreeItem, SWT.NONE, 0);
 			child.setText(filter.toString());
+			child.setData(filter);
 		}
-		
-	    // Create the pop-up menu
-	    Menu menu = new Menu(parentComposite);
-	    tree.setMenu(menu);
 
-	    MenuItem removeItem = new MenuItem(menu, SWT.NONE);
-	    removeItem.setText("Remove");
-	    removeItem.addSelectionListener(new SelectionAdapter() {
-	    	@Override
-	    	public void widgetSelected(SelectionEvent e) {
-	    		System.out.println("REMOVE!");
-	    	}
-	    });
+		// Create the pop-up menu
+		Menu menu = new Menu(parentComposite);
+		tree.setMenu(menu);
+
+		MenuItem removeItem = new MenuItem(menu, SWT.NONE);
+		removeItem.setText("Remove");
+		removeItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				RemoveFilterEvent<StorageFilter> filterEvent = new RemoveFilterEvent<StorageFilter>();
+				filterEvent.setDataDomainType(dataDomain.getDataDomainType());
+//				filterEvent.setFilter((StorageFilter) e.item.getData());
+				filterEvent.setFilter(dataDomain.getStorageFilterManager().getFilterPipe().get(0));
+				eventPublisher.triggerEvent(filterEvent);
+			}
+		});
 	}
 
 	@Override
@@ -114,7 +124,8 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 	}
 
 	@Override
-	public void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
+	public void queueEvent(final AEventListener<? extends IListenerOwner> listener,
+			final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -128,14 +139,14 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		super.dispose();
 		unregisterEventListeners();
 	}
-	
+
 	@Override
 	public void registerEventListeners() {
 		filterUpdateListener = new FilterUpdateListener();
 		filterUpdateListener.setHandler(this);
 		eventPublisher.addListener(FilterUpdatedEvent.class, filterUpdateListener);
 	}
-	
+
 	@Override
 	public void unregisterEventListeners() {
 		if (filterUpdateListener != null) {
@@ -143,7 +154,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 			filterUpdateListener = null;
 		}
 	}
-	
+
 	public void handleFilterUpdatedEvent() {
 		updateTree();
 	}
