@@ -5,28 +5,42 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.StorageFilter;
+import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.EventPublisher;
+import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
+import org.caleydo.view.filter.listener.FilterUpdateListener;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Filter view showing a pipeline of filters for a data set.
  * 
  * @author Marc Streit
  */
-public class RcpFilterView extends CaleydoRCPViewPart {
+public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner {
 
 	public static final String VIEW_ID = "org.caleydo.view.filter";
 
 	private ASetBasedDataDomain dataDomain;
 
 	private Tree tree;
+	
+	private EventPublisher eventPublisher;
+	
+	private FilterUpdateListener filterUpdateListener;
 
 	/**
 	 * Constructor.
@@ -39,6 +53,9 @@ public class RcpFilterView extends CaleydoRCPViewPart {
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
+		
+		eventPublisher = GeneralManager.get().getEventPublisher();
+		registerEventListeners();
 	}
 
 	@Override
@@ -77,6 +94,12 @@ public class RcpFilterView extends CaleydoRCPViewPart {
 
 	    MenuItem removeItem = new MenuItem(menu, SWT.NONE);
 	    removeItem.setText("Remove");
+	    removeItem.addSelectionListener(new SelectionAdapter() {
+	    	@Override
+	    	public void widgetSelected(SelectionEvent e) {
+	    		System.out.println("REMOVE!");
+	    	}
+	    });
 	}
 
 	@Override
@@ -88,5 +111,40 @@ public class RcpFilterView extends CaleydoRCPViewPart {
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedFilterView();
 		determineDataDomain(serializedView);
+	}
+
+	@Override
+	public void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				listener.handleEvent(event);
+			}
+		});
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		unregisterEventListeners();
+	}
+	
+	@Override
+	public void registerEventListeners() {
+		filterUpdateListener = new FilterUpdateListener();
+		filterUpdateListener.setHandler(this);
+		eventPublisher.addListener(FilterUpdatedEvent.class, filterUpdateListener);
+	}
+	
+	@Override
+	public void unregisterEventListeners() {
+		if (filterUpdateListener != null) {
+			eventPublisher.removeListener(filterUpdateListener);
+			filterUpdateListener = null;
+		}
+	}
+	
+	public void handleFilterUpdatedEvent() {
+		updateTree();
 	}
 }

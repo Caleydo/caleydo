@@ -30,8 +30,6 @@ public class OpenExternalXmlFileSaxHandler
 	/**
 	 * startElement() for pareser callbacks
 	 * 
-	 * @see org.xml.sax.helpers.DefaultHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
-	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#startElement(String, String, String, Attributes)
 	 * @param uri
 	 *            URI @see org.xml.sax.helpers.DefaultHandler
 	 * @param localName
