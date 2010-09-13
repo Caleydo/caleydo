@@ -681,6 +681,10 @@ public class GLHeatMap extends AStorageBasedView {
 					EClustererType.CONTENT_CLUSTERING,
 					EDistanceMeasure.EUCLIDEAN_DISTANCE);
 			int contentVAID = contentVA.getID();
+
+			if (contentVA.size() == 0 || storageVA.size() == 0)
+				return;
+
 			state.setContentVA(contentVA);
 			state.setStorageVA(storageVA);
 			state.setAffinityPropClusterFactorGenes(4.0f);
@@ -691,7 +695,6 @@ public class GLHeatMap extends AStorageBasedView {
 			contentVA = result.getContentResult().getContentVA();
 			contentSelectionManager.setVA(contentVA);
 			contentVA.setID(contentVAID);
-
 		}
 	}
 
