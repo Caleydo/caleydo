@@ -1,12 +1,14 @@
 package org.caleydo.core.data.filter;
 
+import org.caleydo.core.data.filter.event.NewContentFilterEvent;
+import org.caleydo.core.data.filter.event.NewContentFilterListener;
+import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
+import org.caleydo.core.data.filter.event.RemoveContentFilterListener;
 import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
-import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
@@ -21,6 +23,8 @@ public class ContentFilterManager
 	implements IContentVAUpdateHandler {
 
 	private ContentVAUpdateListener contentVAUpdateListener;
+	private RemoveContentFilterListener removeContentFilterListener;
+	private NewContentFilterListener newContentFilterListener;
 
 	public ContentFilterManager(ASetBasedDataDomain dataDomain) {
 		super(dataDomain, dataDomain.getContentVA(ContentVAType.CONTENT), new ContentFilterFactory());
@@ -39,6 +43,17 @@ public class ContentFilterManager
 		contentVAUpdateListener.setHandler(this);
 		contentVAUpdateListener.setDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
+
+		removeContentFilterListener = new RemoveContentFilterListener();
+		removeContentFilterListener.setHandler(this);
+		removeContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(RemoveContentFilterEvent.class, removeContentFilterListener);
+
+		newContentFilterListener = new NewContentFilterListener();
+		newContentFilterListener.setHandler(this);
+		newContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(NewContentFilterEvent.class, newContentFilterListener);
+
 	}
 
 	@Override
@@ -47,6 +62,16 @@ public class ContentFilterManager
 		if (contentVAUpdateListener != null) {
 			eventPublisher.removeListener(contentVAUpdateListener);
 			contentVAUpdateListener = null;
+		}
+
+		if (removeContentFilterListener != null) {
+			eventPublisher.removeListener(removeContentFilterListener);
+			removeContentFilterListener = null;
+		}
+
+		if (newContentFilterListener != null) {
+			eventPublisher.removeListener(newContentFilterListener);
+			newContentFilterListener = null;
 		}
 	}
 
@@ -66,7 +91,7 @@ public class ContentFilterManager
 		event.setVirtualArray(currentVA);
 		event.setSender(this);
 		event.setDataDomainType(dataDomain.getDataDomainType());
-		
+
 		eventPublisher.triggerEvent(event);
 	}
 

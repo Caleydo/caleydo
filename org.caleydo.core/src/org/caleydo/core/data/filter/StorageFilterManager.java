@@ -1,5 +1,9 @@
 package org.caleydo.core.data.filter;
 
+import org.caleydo.core.data.filter.event.NewContentFilterEvent;
+import org.caleydo.core.data.filter.event.NewStorageFilterListener;
+import org.caleydo.core.data.filter.event.RemoveStorageFilterEvent;
+import org.caleydo.core.data.filter.event.RemoveStorageFilterListener;
 import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
@@ -19,6 +23,8 @@ public class StorageFilterManager
 	implements IStorageVAUpdateHandler {
 
 	private StorageVAUpdateListener storageVAUpdateListener;
+	private RemoveStorageFilterListener removeStorageFilterListener;
+	private NewStorageFilterListener newStorageFilterListener;
 
 	public StorageFilterManager(ASetBasedDataDomain dataDomain) {
 		super(dataDomain, dataDomain.getStorageVA(StorageVAType.STORAGE), new StorageFilterFactory());
@@ -38,6 +44,17 @@ public class StorageFilterManager
 		storageVAUpdateListener.setHandler(this);
 		storageVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(StorageVAUpdateEvent.class, storageVAUpdateListener);
+
+		removeStorageFilterListener = new RemoveStorageFilterListener();
+		removeStorageFilterListener.setHandler(this);
+		removeStorageFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(RemoveStorageFilterEvent.class, removeStorageFilterListener);
+
+		newStorageFilterListener = new NewStorageFilterListener();
+		newStorageFilterListener.setHandler(this);
+		newStorageFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(NewContentFilterEvent.class, newStorageFilterListener);
+
 	}
 
 	@Override
@@ -46,6 +63,16 @@ public class StorageFilterManager
 		if (storageVAUpdateListener != null) {
 			eventPublisher.removeListener(storageVAUpdateListener);
 			storageVAUpdateListener = null;
+		}
+
+		if (removeStorageFilterListener != null) {
+			eventPublisher.removeListener(removeStorageFilterListener);
+			removeStorageFilterListener = null;
+		}
+
+		if (newStorageFilterListener != null) {
+			eventPublisher.removeListener(newStorageFilterListener);
+			newStorageFilterListener = null;
 		}
 	}
 
@@ -70,7 +97,7 @@ public class StorageFilterManager
 		event.setVirtualArray(currentVA);
 		event.setSender(this);
 		event.setDataDomainType(dataDomain.getDataDomainType());
-		
+
 		eventPublisher.triggerEvent(event);
 	}
 

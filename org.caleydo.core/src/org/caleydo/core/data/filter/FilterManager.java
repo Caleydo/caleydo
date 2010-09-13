@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
-import org.caleydo.core.data.filter.event.RemoveFilterEvent;
-import org.caleydo.core.data.filter.event.RemoveFilterListener;
 import org.caleydo.core.data.virtualarray.IVAType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
@@ -38,17 +36,15 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 	implements IListenerOwner {
 
 	private final IFilterFactory<FilterType> factory;
-	ArrayList<FilterType> filterPipe;
-	VA baseVA;
-	VA currentVA;
-	ASetBasedDataDomain dataDomain;
+	private ArrayList<FilterType> filterPipe;
+	private VA baseVA;
+	protected VA currentVA;
+	protected ASetBasedDataDomain dataDomain;
 
 	// private ReplaceContentVAInUseCaseListener replaceContentVirtualArrayInUseCaseListener;
 	// private ReplaceStorageVAInUseCaseListener replaceStorageVirtualArrayInUseCaseListener;
 
 	EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
-
-	RemoveFilterListener<FilterType> removeFilterListener;
 
 	/**
 	 * Pass the dataDomain, the initial VA, and a factory to create filters of the specified type.
@@ -94,10 +90,6 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 
 	@Override
 	public void registerEventListeners() {
-		removeFilterListener = new RemoveFilterListener<FilterType>();
-		removeFilterListener.setHandler(this);
-		removeFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
-		eventPublisher.addListener(RemoveFilterEvent.class, removeFilterListener);
 
 	}
 

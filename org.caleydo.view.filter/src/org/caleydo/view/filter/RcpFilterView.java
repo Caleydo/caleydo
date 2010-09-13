@@ -6,7 +6,8 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.StorageFilter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
-import org.caleydo.core.data.filter.event.RemoveFilterEvent;
+import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
+import org.caleydo.core.data.filter.event.RemoveStorageFilterEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -105,14 +106,14 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 				TreeItem selectedTreeItem = tree.getSelection()[0];
 
 				if (selectedTreeItem.getData() instanceof StorageFilter) {
-					RemoveFilterEvent<StorageFilter> filterEvent = new RemoveFilterEvent<StorageFilter>();
+					RemoveStorageFilterEvent filterEvent = new RemoveStorageFilterEvent();
 					filterEvent.setDataDomainType(dataDomain.getDataDomainType());
 					filterEvent.setFilter((StorageFilter) selectedTreeItem.getData());
 					selectedTreeItem.dispose();
 					eventPublisher.triggerEvent(filterEvent);
 				}
 				else if (selectedTreeItem.getData() instanceof ContentFilter) {
-					RemoveFilterEvent<ContentFilter> filterEvent = new RemoveFilterEvent<ContentFilter>();
+					RemoveContentFilterEvent filterEvent = new RemoveContentFilterEvent();
 					filterEvent.setDataDomainType(dataDomain.getDataDomainType());
 					filterEvent.setFilter((ContentFilter) selectedTreeItem.getData());
 					selectedTreeItem.dispose();

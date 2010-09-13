@@ -4,12 +4,15 @@ import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
+ * Base class for events signaling a new Filter
+ * 
  * @author Alexander Lex
+ * @param <FilterType>
  */
-public abstract class RemoveFilterEvent<FilterType extends Filter<?, ?>>
+public abstract class NewFilterEvent<FilterType extends Filter<?, ?>>
 	extends AEvent {
 
-	private FilterType filter = null;
+	FilterType filter = null;
 
 	public void setFilter(FilterType filter) {
 		this.filter = filter;

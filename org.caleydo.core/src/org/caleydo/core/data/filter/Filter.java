@@ -14,7 +14,7 @@ import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 public class Filter<VAType extends IVAType, DeltaType extends VirtualArrayDelta<?, VAType>> {
 
 	
-	DeltaType vaDelta;
+	private DeltaType vaDelta;
 
 	public void setDelta(DeltaType vaDelta) {
 		this.vaDelta = vaDelta;

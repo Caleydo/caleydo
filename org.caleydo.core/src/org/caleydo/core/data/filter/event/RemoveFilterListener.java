@@ -6,9 +6,11 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 
 /**
+ * Listener for {@link RemoveFilterEvent}s.
+ * 
  * @author Alexander Lex
  */
-public class RemoveFilterListener<FilterType extends Filter<?, ?>>
+public abstract class RemoveFilterListener<FilterType extends Filter<?, ?>>
 	extends AEventListener<FilterManager<?, ?, FilterType, ?>> {
 
 	@Override
