@@ -23,7 +23,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 
@@ -90,6 +89,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 
 		TreeItem contentFilterTreeItem = new TreeItem(tree, SWT.NONE, 0);
 		contentFilterTreeItem.setText("Gene Filter");
+		contentFilterTreeItem.setExpanded(true);
 
 		for (ContentFilter filter : dataDomain.getContentFilterManager().getFilterPipe()) {
 			child = new TreeItem(contentFilterTreeItem, SWT.NONE, 0);
@@ -120,6 +120,8 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 				}
 			}
 		});
+		
+		contentFilterTreeItem.setExpanded(true);
 	}
 
 	@Override
@@ -166,6 +168,8 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 	}
 
 	public void handleFilterUpdatedEvent() {
+		tree.dispose();
 		updateTree();
+		parentComposite.layout();
 	}
 }
