@@ -18,8 +18,6 @@ public abstract class RemoveFilterListener<FilterType extends Filter<?, ?>>
 		if (event instanceof RemoveFilterEvent<?>) {
 			RemoveFilterEvent<?> removeFilterEvent = (RemoveFilterEvent<?>) event;
 			handler.handleRemoveFilter(removeFilterEvent.getFilter());
-
 		}
-
 	}
 }

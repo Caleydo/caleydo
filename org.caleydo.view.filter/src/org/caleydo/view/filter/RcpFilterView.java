@@ -4,8 +4,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.filter.ContentFilter;
+import org.caleydo.core.data.filter.ContentMetaFilter;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.StorageFilter;
+import org.caleydo.core.data.filter.StorageMetaFilter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveStorageFilterEvent;
@@ -89,16 +91,31 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 				if (!(filter instanceof Filter<?, ?>))
 					return;
 
-				((Filter<?, ?>) filter).createRepresentation();
+				((Filter<?, ?>) filter).openRepresentation();
 			}
 		});
 
 		TreeItem child;
 
 		for (StorageFilter filter : dataDomain.getStorageFilterManager().getFilterPipe()) {
-			child = new TreeItem(storageFilterTreeItem, SWT.NONE, 0);
-			child.setText(filter.getLabel());
-			child.setData(filter);
+			if (filter instanceof StorageMetaFilter) {
+				
+				TreeItem metaStorageFilterTreeItem = new TreeItem(storageFilterTreeItem, SWT.NONE, 0);
+				metaStorageFilterTreeItem.setText(filter.getLabel());
+				metaStorageFilterTreeItem.setExpanded(true);
+				metaStorageFilterTreeItem.setData(filter);
+				
+				for (StorageFilter subFilter : ((StorageMetaFilter) filter).getFilterList()) {
+					child = new TreeItem(metaStorageFilterTreeItem, SWT.NONE, 0);
+					child.setText(subFilter.getLabel());
+					child.setData(subFilter);
+				}
+			}
+			else {
+				child = new TreeItem(storageFilterTreeItem, SWT.NONE, 0);
+				child.setText(filter.getLabel());
+				child.setData(filter);
+			}
 		}
 
 		TreeItem contentFilterTreeItem = new TreeItem(tree, SWT.NONE, 0);
@@ -106,9 +123,25 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		contentFilterTreeItem.setExpanded(true);
 
 		for (ContentFilter filter : dataDomain.getContentFilterManager().getFilterPipe()) {
-			child = new TreeItem(contentFilterTreeItem, SWT.NONE, 0);
-			child.setText(filter.getLabel());
-			child.setData(filter);
+			
+			if (filter instanceof ContentMetaFilter) {
+				
+				TreeItem metaContentFilterTreeItem = new TreeItem(contentFilterTreeItem, SWT.NONE, 0);
+				metaContentFilterTreeItem.setText(filter.getLabel());
+				metaContentFilterTreeItem.setExpanded(true);
+				metaContentFilterTreeItem.setData(filter);
+				
+				for (ContentFilter subFilter : ((ContentMetaFilter) filter).getFilterList()) {
+					child = new TreeItem(metaContentFilterTreeItem, SWT.NONE, 0);
+					child.setText(subFilter.getLabel());
+					child.setData(subFilter);
+				}
+			}
+			else {
+				child = new TreeItem(contentFilterTreeItem, SWT.NONE, 0);
+				child.setText(filter.getLabel());
+				child.setData(filter);
+			}
 		}
 
 		MenuItem removeItem = new MenuItem(menu, SWT.NONE);
@@ -144,7 +177,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 				if (!(filter instanceof Filter<?, ?>))
 					return;
 
-				((Filter<?, ?>) filter).createRepresentation();
+				((Filter<?, ?>) filter).openRepresentation();
 			}
 		});
 	}

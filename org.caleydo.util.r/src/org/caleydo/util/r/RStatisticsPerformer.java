@@ -6,13 +6,12 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.filter.ContentFilter;
-import org.caleydo.core.data.filter.event.NewContentFilterEvent;
+import org.caleydo.core.data.filter.ContentMetaFilter;
 import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
-import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -24,6 +23,7 @@ import org.caleydo.core.manager.event.data.StatisticsTwoSidedTTestReductionEvent
 import org.caleydo.core.manager.event.view.OpenViewEvent;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
+import org.caleydo.util.r.filter.FilterRepresentationPValue;
 import org.caleydo.util.r.listener.StatisticsFoldChangeReductionListener;
 import org.caleydo.util.r.listener.StatisticsPValueReductionListener;
 import org.caleydo.util.r.listener.StatisticsTwoSidedTTestReductionListener;
@@ -198,25 +198,33 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 	public void oneSidedTTest(ArrayList<ISet> sets) {
 
-		// TODO take pvalue from filter GUI
-		float pValueCutOff = 0.05f;
-
 		// TODO: don't recalculate if pvalue array is already calculated
 		// however, the evaluation must be done using the new pvalue
-//		boolean allCalculated = true;
-//		for (ISet set : sets) {
-//			if (set.getStatisticsResult().getOneSidedTTestResult() == null)
-//				continue;
-//
-//			allCalculated = false;
-//		}
-//
-//		if (!allCalculated)
-//			return;
+		// boolean allCalculated = true;
+		// for (ISet set : sets) {
+		// if (set.getStatisticsResult().getOneSidedTTestResult() == null)
+		// continue;
+		//
+		// allCalculated = false;
+		// }
+		//
+		// if (!allCalculated)
+		// return;
+
+		ContentMetaFilter metaFilter = null;
+		if (sets.size() > 1) {
+			metaFilter = new ContentMetaFilter();
+			metaFilter.setLabel("p-Value Reduction");
+			FilterRepresentationPValue filterRep = new FilterRepresentationPValue();
+			filterRep.setFilter(metaFilter);
+			filterRep.init();
+			metaFilter.setFilterRep(filterRep);
+		}
 
 		for (ISet set : sets) {
 
-			ContentVADelta contentVADelta = new ContentVADelta(ContentVAType.CONTENT, set.getDataDomain().getContentIDType());
+			ContentVADelta contentVADelta = new ContentVADelta(ContentVAType.CONTENT, set
+					.getDataDomain().getContentIDType());
 			ContentVirtualArray contentVA = set.getContentData(ContentVAType.CONTENT)
 					.getContentVA();
 
@@ -250,24 +258,31 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 					REXP pValue = (REXP) compareResult.asVector().get(2);
 					pValueVector[contentIndex] = pValue.asDouble();
 					// System.out.println(pValue.asDouble());
-
-					// Evaluate
-					if (pValueVector[contentIndex] > pValueCutOff) {
-						contentVADelta.add(VADeltaItem.removeElement(contentVA
-								.get(contentIndex)));
-					}
 				}
 			}
-			
+
 			set.getStatisticsResult().setOneSiddedTTestResult(pValueVector);
 
-			if (contentVADelta != null) {
-				sendContentFilterEvent(contentVADelta, "p-Value Reduction for "
-						+ set.getStorageData(StorageVAType.STORAGE)
-								.getStorageTreeRoot().getLabel(), set.getDataDomain()
-						.getDataDomainType());
+			ContentFilter contentFilter = new ContentFilter();
+			contentFilter.setSet(set);
+			contentFilter.setDataDomain(set.getDataDomain());
+			contentFilter.setLabel("p-Value Reduction of " +set.getLabel());
+			
+			if (metaFilter != null) {
+				metaFilter.getFilterList().add(contentFilter);
+				metaFilter.setDataDomain(set.getDataDomain());				
+			}
+			else {
+				FilterRepresentationPValue filterRep = new FilterRepresentationPValue();
+				filterRep.setFilter(contentFilter);
+				filterRep.init();
+				contentFilter.setFilterRep(filterRep);
+				contentFilter.openRepresentation();
 			}
 		}
+		
+		if (metaFilter != null)
+			metaFilter.openRepresentation();
 	}
 
 	public void twoSidedTTest(ArrayList<ISet> sets) {
@@ -318,18 +333,31 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			// System.out.println(pValue.asDouble());
 		}
 
-		// set1.getStatisticsResult().setTwoSiddedTTestResult(set2,
-		// pValueVector);
-		// set2.getStatisticsResult().setTwoSiddedTTestResult(set1,
-		// pValueVector);
-		// }
+		set1.getStatisticsResult().setTwoSiddedTTestResult(set2, pValueVector);
+		set2.getStatisticsResult().setTwoSiddedTTestResult(set1, pValueVector);
 
-		// setsToCompare.get(0).getStatisticsResult().getVABasedOnCompareResult(setsToCompare.get(1),
-		// 0.9f);
-
-		// TODO Evaluate result
-		// create delta
-		// trigger filter event
+		// ContentFilter contentFilter1 = new ContentFilter();
+		// ContentFilter contentFilter2 = new ContentFilter();
+		//
+		// ContentMetaFilter metaFilter = new ContentMetaFilter();
+		// metaFilter.getFilterList().add(contentFilter1);
+		// metaFilter.getFilterList().add(contentFilter2);
+		// metaFilter.setFilterRep(new FilterRepresentationPValue());
+		// metaFilter.openRepresentation();
+		//
+		// sendContentFilterEvent(contentFilter1.getVADelta(), set1.getLabel(),
+		// set1
+		// .getDataDomain().getDataDomainType());
+		// sendContentFilterEvent(contentFilter1.getVADelta(), set1.getLabel(),
+		// set1
+		// .getDataDomain().getDataDomainType());
+		//
+		// NewContentFilterEvent filterEvent = new NewContentFilterEvent();
+		// filterEvent.setFilter(metaFilter);
+		// filterEvent.setSender(this);
+		// filterEvent.setDataDomainType(set1.getDataDomain().getDataDomainType());
+		//
+		// eventPublisher.triggerEvent(filterEvent);
 
 		System.out.println("Two-sided t-test finished");
 	}
@@ -356,20 +384,5 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 				throw new IllegalStateException();
 			}
 		});
-	}
-
-	private void sendContentFilterEvent(ContentVADelta delta, String label,
-			String dataDomainType) {
-
-		ContentFilter filter = new ContentFilter();
-		filter.setDelta(delta);
-		filter.setLabel(label);
-
-		NewContentFilterEvent filterEvent = new NewContentFilterEvent();
-		filterEvent.setFilter(filter);
-		filterEvent.setSender(this);
-		filterEvent.setDataDomainType(dataDomainType);
-
-		eventPublisher.triggerEvent(filterEvent);
 	}
 }

@@ -71,11 +71,22 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 	 * @param filter
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public VA addFilter(FilterType filter) {
 		filterPipe.add(filter);
-		currentVA.setDelta(filter.getVADelta());
 
-		triggerVAUpdateEvent(filter.getVADelta());
+		if (!(filter instanceof MetaFilter)) {
+			currentVA.setDelta(filter.getVADelta());
+			triggerVAUpdateEvent(filter.getVADelta());
+		}
+		else {
+
+			for (FilterType subFilter : ((MetaFilter<FilterType>) filter).getFilterList()) {
+				currentVA.setDelta(subFilter.getVADelta());
+				triggerVAUpdateEvent(subFilter.getVADelta());
+			}
+		}
+
 		triggerFilterUpdatedEvent();
 
 		return currentVA;
@@ -137,6 +148,7 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 		Iterator<FilterType> filterIterator = filterPipe.iterator();
 		while (filterIterator.hasNext()) {
 			if (filterIterator.next() == filter) {
+
 				filterIterator.remove();
 			}
 		}
@@ -157,8 +169,7 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 		currentVA = (VA) baseVA.clone();
 		for (FilterType filter : filterPipe) {
 			if (filter instanceof MetaFilter) {
-				for (Filter<VAType, DeltaType> subFilter : ((MetaFilter<VAType, DeltaType>) filter)
-					.getFilterList()) {
+				for (Filter<VAType, DeltaType> subFilter : ((MetaFilter<FilterType>) filter).getFilterList()) {
 					currentVA.setDelta(subFilter.getVADelta());
 				}
 			}

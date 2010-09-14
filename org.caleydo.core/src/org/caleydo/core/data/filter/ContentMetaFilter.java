@@ -1,9 +1,15 @@
 package org.caleydo.core.data.filter;
 
-import org.caleydo.core.data.virtualarray.ContentVAType;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import java.util.ArrayList;
 
 public class ContentMetaFilter
-	extends MetaFilter<ContentVAType, ContentVADelta> {
+	extends ContentFilter implements MetaFilter<ContentFilter> {
+
+	ArrayList<ContentFilter> filterList = new ArrayList<ContentFilter>();
+	
+	@Override
+	public ArrayList<ContentFilter> getFilterList() {
+		return filterList;
+	}
 
 }

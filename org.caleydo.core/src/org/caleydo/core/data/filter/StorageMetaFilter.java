@@ -1,9 +1,15 @@
 package org.caleydo.core.data.filter;
 
-import org.caleydo.core.data.virtualarray.StorageVAType;
-import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
+import java.util.ArrayList;
 
 public class StorageMetaFilter
-	extends MetaFilter<StorageVAType, StorageVADelta> {
+	extends StorageFilter implements MetaFilter<StorageFilter> {
+
+	ArrayList<StorageFilter> filterList = new ArrayList<StorageFilter>();
+	
+	@Override
+	public ArrayList<StorageFilter> getFilterList() {
+		return filterList;
+	}
 
 }
