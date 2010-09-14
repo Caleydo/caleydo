@@ -1,6 +1,7 @@
 package org.caleydo.core.data.collection;
 
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.naming.OperationNotSupportedException;
 
@@ -34,7 +35,7 @@ import org.caleydo.core.util.clusterer.ClusterState;
  */
 public interface ISet
 	extends IUniqueObject, ICollection {
-	
+
 	public static final String STORAGE = "STORAGE";
 	public static final String CONTENT = "CONTENT";
 	public static final String CONTENT_CONTEXT = "CONTENT_CONTEXT";
@@ -245,13 +246,13 @@ public interface ISet
 	 * 
 	 * @return
 	 */
-	public java.util.Set<String> getRegisteredContentVATypes();
+	public Set<String> getRegisteredContentVATypes();
 
 	/**
 	 * Return a list of storage VA types that have registered {@link StorageData}
 	 * 
 	 * @return
 	 */
-	public java.util.Set<String> getRegisteredStorageVATypes();
+	public Set<String> getRegisteredStorageVATypes();
 
 }

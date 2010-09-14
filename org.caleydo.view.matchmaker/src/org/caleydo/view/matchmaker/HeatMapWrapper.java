@@ -62,6 +62,7 @@ public class HeatMapWrapper {
 	private ISet set;
 
 	private GeneralManager generalManager;
+	private String contentVAType = ISet.CONTENT;
 	private ContentVirtualArray contentVA;
 	private AHeatMapLayout layout;
 	private HashMap<Integer, GLHeatMap> hashHeatMaps;
@@ -110,6 +111,7 @@ public class HeatMapWrapper {
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 		// contentSelectionManager.addTypeToDeltaBlacklist(activeHeatMapSelectionType);
 		activeHeatMapID = -1;
+
 	}
 
 	private GLHeatMap createHeatMap(GL gl, GLMouseListener glMouseListener) {
@@ -145,7 +147,7 @@ public class HeatMapWrapper {
 				viewFrustum, true);
 		dendrogram.setDataDomain(dataDomain);
 		dendrogram.setRemoteRenderingGLView(parentView);
-		dendrogram.setContentVAType(ISet.CONTENT);
+		dendrogram.setContentVAType(contentVAType);
 		dendrogram.initData();
 		dendrogram.setRenderUntilCut(false);
 		dendrogram.initRemote(gl, glParentView, glMouseListener, infoAreaManager);

@@ -536,7 +536,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void replaceVA(int setID, String dataDomain, String vaType) {
+	public void replaceContentVA(int setID, String dataDomain, String vaType) {
 
 		clusteredSets.add(setID);
 
@@ -569,8 +569,11 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		compareViewStateController.setUseZoom(useZoom);
 	}
 
-	public void handleContentGroupListUpdate(int setID, ContentGroupList contentGroupList) {
-		compareViewStateController.handleContentGroupListUpdate(setID, contentGroupList);
+	public void handleContentGroupListUpdate(String contentVAType, int setID,
+			ContentGroupList contentGroupList) {
+		if (this.contentVAType.equals(contentVAType))
+			compareViewStateController.handleContentGroupListUpdate(setID,
+					contentGroupList);
 	}
 
 	public void setBandBundling(boolean bandBundlingActive) {

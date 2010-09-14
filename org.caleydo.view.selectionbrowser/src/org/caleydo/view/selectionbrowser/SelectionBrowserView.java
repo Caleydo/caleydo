@@ -407,7 +407,7 @@ public class SelectionBrowserView extends ASWTView implements IDataDomainBasedVi
 	}
 
 	@Override
-	public void replaceVA(int setID, String dataDomain, String vaType) {
+	public void replaceContentVA(int setID, String dataDomain, String vaType) {
 		// nothing to do here
 	}
 

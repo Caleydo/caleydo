@@ -30,6 +30,6 @@ public interface IStorageVAUpdateHandler
 	 * @param vaType
 	 *            the type of the VA which is updated
 	 */
-	public void replaceVA(String dataDomain, String vaType);
+	public void replaceStorageVA(String dataDomain, String vaType);
 
 }

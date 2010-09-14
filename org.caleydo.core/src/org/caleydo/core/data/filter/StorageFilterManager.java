@@ -91,7 +91,7 @@ public class StorageFilterManager
 	}
 
 	@Override
-	public void replaceVA(String dataDomain, String vaType) {
+	public void replaceStorageVA(String dataDomain, String vaType) {
 
 	}
 

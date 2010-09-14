@@ -11,7 +11,6 @@ import java.util.Vector;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -43,9 +42,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.treemap.layout.ATreeMapNode;
-import org.caleydo.view.treemap.layout.ClusterTreeMapNode;
 import org.caleydo.view.treemap.layout.TreeMapRenderer;
-import org.caleydo.view.treemap.layout.algorithm.SimpleLayoutAlgorithm;
 import org.caleydo.view.treemap.listener.ZoomInListener;
 import org.caleydo.view.treemap.listener.ZoomOutListener;
 import org.caleydo.view.treemap.renderstyle.TreeMapRenderStyle;

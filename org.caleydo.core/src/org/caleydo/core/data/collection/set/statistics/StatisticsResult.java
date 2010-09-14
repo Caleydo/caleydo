@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
-import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings.FoldChangeEvaluator;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.util.collection.Pair;
 
 public class StatisticsResult {

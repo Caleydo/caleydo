@@ -394,7 +394,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	}
 
 	@Override
-	public void replaceVA(int setID, String dataDomainType, String vaType) {
+	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
 		// if (idCategory != EIDCategory.EXPERIMENT)
 		// return;
 		// s

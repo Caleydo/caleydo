@@ -24,6 +24,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
+import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -41,6 +42,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
+import org.caleydo.core.view.opengl.canvas.listener.ReplaceStorageVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.swt.ASWTView;
@@ -118,7 +120,7 @@ public class TabularDataView extends ASWTView implements
 
 	protected RedrawViewListener redrawViewListener;
 	protected ClearSelectionsListener clearSelectionsListener;
-	protected ReplaceContentVAListener replaceVirtualArrayListener;
+	protected ReplaceContentVAListener replaceContentVAListener;
 
 	protected ASetBasedDataDomain dataDomain;
 
@@ -589,9 +591,9 @@ public class TabularDataView extends ASWTView implements
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
-		replaceVirtualArrayListener = new ReplaceContentVAListener();
-		replaceVirtualArrayListener.setHandler(this);
-		eventPublisher.addListener(ReplaceVAEvent.class, replaceVirtualArrayListener);
+		replaceContentVAListener = new ReplaceContentVAListener();
+		replaceContentVAListener.setHandler(this);
+		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
 	}
 
 	@Override
@@ -618,9 +620,9 @@ public class TabularDataView extends ASWTView implements
 			clearSelectionsListener = null;
 		}
 
-		if (replaceVirtualArrayListener != null) {
-			eventPublisher.removeListener(replaceVirtualArrayListener);
-			replaceVirtualArrayListener = null;
+		if (replaceContentVAListener != null) {
+			eventPublisher.removeListener(replaceContentVAListener);
+			replaceContentVAListener = null;
 		}
 	}
 
@@ -632,7 +634,7 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void replaceVA(int setID, String dataDomainType, String vaType) {
+	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
 
 		contentVA = dataDomain.getContentVA(vaType);
 
@@ -695,7 +697,7 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void replaceVA(String dataDomainType, String vaType) {
+	public void replaceStorageVA(String dataDomainType, String vaType) {
 		storageVA = dataDomain.getStorageVA(vaType);
 	}
 

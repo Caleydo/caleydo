@@ -317,14 +317,14 @@ public class TabularAsciiDataReader
 				case GROUP_NUMBER:
 
 					int[] iArGroupInfo = alGroupInfo.get(0);
-					SetUtils.setContentGroupList((Set) set, Set.CONTENT, iArGroupInfo);
+					SetUtils.setContentGroupList((Set) set, ISet.CONTENT, iArGroupInfo);
 
 					iIntArrayIndex++;
 					break;
 				case GROUP_REPRESENTATIVE:
 
 					int[] iArGroupRepr = alGroupInfo.get(1);
-					SetUtils.setContentGroupRepresentatives((Set) set, Set.CONTENT, iArGroupRepr);
+					SetUtils.setContentGroupRepresentatives((Set) set, ISet.CONTENT, iArGroupRepr);
 
 					iIntArrayIndex++;
 					break;

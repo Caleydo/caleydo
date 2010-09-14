@@ -221,12 +221,12 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 		for (ISet set : sets) {
 
-			ContentVADelta contentVADelta = new ContentVADelta(Set.CONTENT, set
+			ContentVADelta contentVADelta = new ContentVADelta(ISet.CONTENT, set
 					.getDataDomain().getContentIDType());
-			ContentVirtualArray contentVA = set.getContentData(Set.CONTENT)
+			ContentVirtualArray contentVA = set.getContentData(ISet.CONTENT)
 					.getContentVA();
 
-			double[] pValueVector = new double[set.getContentData(Set.CONTENT)
+			double[] pValueVector = new double[set.getContentData(ISet.CONTENT)
 					.getContentVA().size()];
 
 			for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {

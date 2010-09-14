@@ -131,7 +131,7 @@ public class ClusterHelper {
 		ISet set) {
 		// FIXME - direct references here - should be parameters
 		StorageVirtualArray storageVA = set.getStorageData(Set.STORAGE).getStorageVA();
-		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT).getContentVA();
+		ContentVirtualArray contentVA = set.getContentData(ISet.CONTENT).getContentVA();
 		determineExpressionValueRec(tree, tree.getRoot(), eClustererType, set, storageVA, contentVA);
 	}
 

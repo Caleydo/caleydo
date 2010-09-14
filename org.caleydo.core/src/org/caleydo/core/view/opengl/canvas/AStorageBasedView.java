@@ -264,7 +264,9 @@ public abstract class AStorageBasedView
 
 	@Override
 	public void handleVAUpdate(ContentVADelta delta, String info) {
-
+		if (!delta.getVAType().equals(contentVAType))
+			return;
+		
 		contentVA.setGroupList(null);
 		contentSelectionManager.setVADelta(delta);
 
@@ -561,7 +563,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void replaceVA(int setID, String dataDomainType, String vaType) {
+	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
 		// String primaryVAType = useCase.getVATypeForIDCategory(idCategory);
 		// if (primaryVAType == null)
 		// return;
@@ -578,7 +580,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void replaceVA(String dataDomain, String vaType) {
+	public void replaceStorageVA(String dataDomain, String vaType) {
 		if (vaType != storageVAType)
 			return;
 

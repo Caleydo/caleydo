@@ -11,7 +11,6 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -275,13 +274,13 @@ public class GLHeatMap extends AStorageBasedView {
 		// todo this is not nice here, we may need a more intelligent way to
 		// determine which to use
 
-		if (contentVAType == CONTENT_EMBEDDED_VA) {
+		if (contentVAType.equals(CONTENT_EMBEDDED_VA)) {
 			set.setContentVA(contentVAType, new ContentVirtualArray(contentVAType));
 		} else {
 			if (bRenderOnlyContext)
-				contentVAType = Set.CONTENT_CONTEXT;
+				contentVAType = ISet.CONTENT_CONTEXT;
 			else
-				contentVAType = Set.CONTENT;
+				contentVAType = ISet.CONTENT;
 		}
 
 		contentVA = set.getContentData(contentVAType).getContentVA();
@@ -661,9 +660,9 @@ public class GLHeatMap extends AStorageBasedView {
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (this.bRenderOnlyContext) {
-			contentVA = dataDomain.getContentVA(Set.CONTENT_CONTEXT);
+			contentVA = dataDomain.getContentVA(ISet.CONTENT_CONTEXT);
 		} else {
-			contentVA = dataDomain.getContentVA(Set.CONTENT);
+			contentVA = dataDomain.getContentVA(ISet.CONTENT);
 		}
 
 		contentSelectionManager.setVA(contentVA);
@@ -678,8 +677,8 @@ public class GLHeatMap extends AStorageBasedView {
 
 		super.handleVAUpdate(delta, info);
 
-		if (delta.getVAType() == Set.CONTENT_CONTEXT
-				&& contentVAType == Set.CONTENT_CONTEXT) {
+		if (delta.getVAType().equals(ISet.CONTENT_CONTEXT)
+				&& contentVAType.equals(ISet.CONTENT_CONTEXT)) {
 			ClusterState state = new ClusterState(EClustererAlgo.AFFINITY_PROPAGATION,
 					EClustererType.CONTENT_CLUSTERING,
 					EDistanceMeasure.EUCLIDEAN_DISTANCE);

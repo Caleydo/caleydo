@@ -53,6 +53,11 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 		init();
 	}
 
+	public void destroy() {
+		graph = null;
+		rootNode = null;
+	}
+
 	/**
 	 * Sets the id type of the leaves and creates a new node id type. This should only be used for
 	 * de-serialization or internally.

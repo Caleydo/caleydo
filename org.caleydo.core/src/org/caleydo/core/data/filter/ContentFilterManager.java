@@ -1,6 +1,6 @@
 package org.caleydo.core.data.filter;
 
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.filter.event.NewContentFilterEvent;
 import org.caleydo.core.data.filter.event.NewContentFilterListener;
 import org.caleydo.core.data.filter.event.ReEvaluateContentFilterListEvent;
@@ -30,11 +30,11 @@ public class ContentFilterManager
 	private ReEvaluateContentFilterListListener reEvaluateContentFilterListListener;
 
 	public ContentFilterManager(ASetBasedDataDomain dataDomain) {
-		super(dataDomain, dataDomain.getContentVA(Set.CONTENT), new ContentFilterFactory());
+		super(dataDomain, dataDomain.getContentVA(ISet.CONTENT), new ContentFilterFactory());
 	}
 
 	@Override
-	public void replaceVA(int setID, String dataDomainType, String vaType) {
+	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
 		// TODO Auto-generated method stub
 
 	}
@@ -101,7 +101,7 @@ public class ContentFilterManager
 	@Override
 	protected void triggerReplaceVAEvent() {
 		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent();
-		event.setVAType(Set.CONTENT);
+		event.setVAType(ISet.CONTENT);
 		event.setVirtualArray(currentVA);
 		event.setSender(this);
 		event.setDataDomainType(dataDomain.getDataDomainType());

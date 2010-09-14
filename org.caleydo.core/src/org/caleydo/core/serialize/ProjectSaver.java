@@ -10,6 +10,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -195,7 +196,7 @@ public class ProjectSaver {
 					}
 					TreePorter treePorter = new TreePorter();
 					Tree<ClusterNode> geneTree =
-						setBasedDataDomain.getSet().getContentData(Set.CONTENT).getContentTree();
+						setBasedDataDomain.getSet().getContentData(ISet.CONTENT).getContentTree();
 					if (geneTree != null) {
 						treePorter.exportTree(dirName + GENE_TREE_FILE_NAME, geneTree);
 					}

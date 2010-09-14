@@ -31,7 +31,6 @@ import org.caleydo.view.treemap.layout.ClusterTreeMapNode;
 import org.caleydo.view.treemap.layout.TreeMapRenderer;
 import org.caleydo.view.treemap.layout.algorithm.ILayoutAlgorithm;
 import org.caleydo.view.treemap.layout.algorithm.SimpleLayoutAlgorithm;
-import org.caleydo.view.treemap.layout.algorithm.SquarifiedLayoutAlgorithm;
 
 /**
  * TODO

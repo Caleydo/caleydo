@@ -1,5 +1,6 @@
 package org.caleydo.rcp.dialog.cluster;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -535,7 +536,7 @@ public class StartClusteringDialogAction
 		clusterState.setKMeansClusterCntExperiments(iClusterCntExperiments);
 
 		// by default we use the main VAs for clustering
-		clusterState.setContentVAType(Set.CONTENT);
+		clusterState.setContentVAType(ISet.CONTENT);
 		clusterState.setStorageVAType(Set.STORAGE);
 
 		ClusteringProgressBar progressBar =

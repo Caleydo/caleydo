@@ -15,7 +15,6 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.group.ContentGroupList;
 import org.caleydo.core.data.group.GroupList;

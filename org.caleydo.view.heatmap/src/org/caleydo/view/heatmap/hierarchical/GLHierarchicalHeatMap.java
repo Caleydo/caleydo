@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -689,11 +690,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glExperimentDendrogramView.setDataDomain(dataDomain);
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
 
-		glContentDendrogramView.setContentVAType(Set.CONTENT);
+		glContentDendrogramView.setContentVAType(ISet.CONTENT);
 		glContentDendrogramView.initData();
 		glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 
-		glExperimentDendrogramView.setContentVAType(Set.CONTENT);
+		glExperimentDendrogramView.setContentVAType(ISet.CONTENT);
 		glExperimentDendrogramView.initData();
 		glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
 	}
@@ -847,7 +848,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	@Override
 	protected void reactOnContentVAChanges(ContentVADelta delta) {
 
-		if (delta.getVAType() == contentVAType)
+		if (delta.getVAType().equals(contentVAType))
 			contentVA.setGroupList(null);
 
 		// glHeatMapView.handleVirtualArrayUpdate(delta, getShortInfo());
@@ -864,25 +865,31 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	@Override
 	public void handleVAUpdate(ContentVADelta delta, String info) {
-		super.handleVAUpdate(delta, info);
+		if (!delta.getVAType().equals(contentVAType))
+			return;
+		super.handleVAUpdate(delta, info);		
 		bRedrawTextures = true;
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
+		bGeneDendrogramActive = false;
 		setDisplayListDirty();
-		initData();
+		
+		initData();		
 	}
 
 	@Override
-	public void replaceVA(int setID, String dataDomain, String vaType) {
-		super.replaceVA(setID, dataDomain, vaType);
+	public void replaceContentVA(int setID, String dataDomain, String vaType) {
+		if (!vaType.equals(contentVAType))
+			return;
+		super.replaceContentVA(setID, dataDomain, vaType);
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
 		setDisplayListDirty();
 	}
 
 	@Override
-	public void replaceVA(String dataDomain, String vaType) {
-		super.replaceVA(dataDomain, vaType);
+	public void replaceStorageVA(String dataDomain, String vaType) {
+		super.replaceStorageVA(dataDomain, vaType);
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
 		setDisplayListDirty();
@@ -3382,9 +3389,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = Set.CONTENT_CONTEXT;
+			contentVAType = ISet.CONTENT_CONTEXT;
 		else
-			contentVAType = Set.CONTENT;
+			contentVAType = ISet.CONTENT;
 
 		contentVA = dataDomain.getContentVA(contentVAType);
 		storageVA = dataDomain.getStorageVA(storageVAType);

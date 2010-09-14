@@ -286,7 +286,7 @@ public class SetUtils {
 		String xml = null;
 
 		try {
-			xml = getTreeClusterXml(set.getContentData(Set.CONTENT).getContentTree());
+			xml = getTreeClusterXml(set.getContentData(ISet.CONTENT).getContentTree());
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
@@ -409,7 +409,7 @@ public class SetUtils {
 
 					tree = treePorter.importTree(geneTreeFileName, set.getDataDomain().getContentIDType());
 					tree.setUseDefaultComparator(false);
-					set.getContentData(Set.CONTENT).setContentTree(tree);
+					set.getContentData(ISet.CONTENT).setContentTree(tree);
 				}
 				catch (JAXBException e) {
 					e.printStackTrace();

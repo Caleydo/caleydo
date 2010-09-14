@@ -5,6 +5,7 @@ import gleem.linalg.Vec3f;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -12,7 +13,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -136,7 +137,7 @@ public abstract class AGLView
 	/**
 	 * The type of the content VA
 	 */
-	protected String contentVAType = Set.CONTENT;
+	protected String contentVAType = ISet.CONTENT;
 
 	/**
 	 * The id of the virtual array that manages the storage references in the set
@@ -145,7 +146,7 @@ public abstract class AGLView
 	/**
 	 * The type of the storage VA
 	 */
-	protected String storageVAType = Set.STORAGE;
+	protected String storageVAType = ISet.STORAGE;
 
 	/**
 	 * The context menu each view should implement. It has to be created in initLocal or is set via initRemote
@@ -457,7 +458,7 @@ public abstract class AGLView
 	 */
 	protected final void checkForHits(final GL gl) {
 
-		java.util.Set<EPickingType> hitTypes = pickingManager.getHitTypes(iUniqueID);
+		Set<EPickingType> hitTypes = pickingManager.getHitTypes(iUniqueID);
 		if (hitTypes == null)
 			return;
 		for (EPickingType pickingType : hitTypes) {
@@ -586,7 +587,7 @@ public abstract class AGLView
 	}
 
 	public final boolean rendersContextOnly() {
-		if (contentVAType == Set.CONTENT)
+		if (contentVAType.equals(ISet.CONTENT))
 			return false;
 		return true;
 	}

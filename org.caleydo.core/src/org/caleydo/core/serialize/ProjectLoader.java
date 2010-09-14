@@ -9,6 +9,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
@@ -102,8 +103,8 @@ public class ProjectLoader {
 
 					HashMap<String, ContentVirtualArray> contentVAMap =
 						new HashMap<String, ContentVirtualArray>(6);
-					String tmpType = Set.CONTENT;
-					contentVAMap.put(Set.CONTENT, loadContentVirtualArray(unmarshaller, dirName, tmpType));
+					String tmpType = ISet.CONTENT;
+					contentVAMap.put(ISet.CONTENT, loadContentVirtualArray(unmarshaller, dirName, tmpType));
 					// tmpType = ContentVAType.CONTENT_CONTEXT;
 					// contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
 					// tmpType));

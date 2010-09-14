@@ -3304,9 +3304,11 @@ public class GLScatterPlot extends AStorageBasedView {
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (this.bRenderOnlyContext) {
-			contentVA = dataDomain.getContentVA(ISet.CONTENT_CONTEXT);
+			contentVAType = ISet.CONTENT_CONTEXT;
+			contentVA = dataDomain.getContentVA(contentVAType);
 		} else {
-			contentVA = dataDomain.getContentVA(ISet.CONTENT);
+			contentVAType = ISet.CONTENT;
+			contentVA = dataDomain.getContentVA(contentVAType);
 		}
 
 		contentSelectionManager.setVA(contentVA);

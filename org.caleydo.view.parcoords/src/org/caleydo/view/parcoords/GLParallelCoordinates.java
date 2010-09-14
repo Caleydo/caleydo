@@ -383,10 +383,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (bRenderOnlyContext) {
-			contentVA = dataDomain.getContentVA(ISet.CONTENT_CONTEXT);
+			contentVAType = ISet.CONTENT_CONTEXT;
+			contentVA = dataDomain.getContentVA(contentVAType);
 		} else {
-
-			contentVA = dataDomain.getContentVA(ISet.CONTENT);
+			contentVAType = ISet.CONTENT;
+			contentVA = dataDomain.getContentVA(contentVAType);
 		}
 
 		contentSelectionManager.setVA(contentVA);
@@ -470,7 +471,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		Set<Integer> removedElements = contentSelectionManager
 				.getElements(SelectionType.DESELECTED);
 
-		ContentVADelta delta = new ContentVADelta(ISet.CONTENT, contentIDType);
+		ContentVADelta delta = new ContentVADelta(contentVAType, contentIDType);
 		for (Integer contentID : removedElements) {
 			delta.add(VADeltaItem.removeElement(contentID));
 		}

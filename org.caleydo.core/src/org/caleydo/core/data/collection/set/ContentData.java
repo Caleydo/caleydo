@@ -8,6 +8,7 @@ import org.caleydo.core.data.group.Group;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
@@ -74,7 +75,22 @@ public class ContentData {
 	public void reset() {
 		contentClusterSizes = null;
 		contentSampleElements = null;
+		if (contentTree != null)
+			contentTree.destroy();
 		contentTree = null;
+	}
+
+	/**
+	 * Sets the delta to the virtual array and resets other related data (groups, trees) accordingly.
+	 * 
+	 * @param delta
+	 */
+	public void setVADelta(ContentVADelta delta) {
+		contentVA.setDelta(delta);
+		if (contentTree != null)
+			contentTree.destroy();
+		contentTree = null;
+		contentVA.setGroupList(null);
 	}
 
 	public void finish() {

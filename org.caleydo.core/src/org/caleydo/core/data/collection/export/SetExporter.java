@@ -94,11 +94,11 @@ public class SetExporter {
 
 		if (eWhichViewToExport == EWhichViewToExport.BUCKET) {
 
-			contentVA = dataDomain.getContentVA(Set.CONTENT_CONTEXT);
+			contentVA = dataDomain.getContentVA(ISet.CONTENT_CONTEXT);
 			storageVA = dataDomain.getStorageVA(Set.STORAGE);
 		}
 		else if (eWhichViewToExport == EWhichViewToExport.WHOLE_DATA) {
-			contentVA = dataDomain.getContentVA(Set.CONTENT);
+			contentVA = dataDomain.getContentVA(ISet.CONTENT);
 			storageVA = dataDomain.getStorageVA(Set.STORAGE);
 		}
 
@@ -232,7 +232,7 @@ public class SetExporter {
 	public void exportTrees(ISet set, String directory) {
 		try {
 			// export gene cluster tree to own xml file
-			Tree<ClusterNode> tree = set.getContentData(Set.CONTENT).getContentTree();
+			Tree<ClusterNode> tree = set.getContentData(ISet.CONTENT).getContentTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(set.getDataDomain());

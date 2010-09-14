@@ -403,7 +403,7 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 	}
 
 	@Override
-	public void replaceVA(int setID, String dataDomain, String vaType) {
+	public void replaceContentVA(int setID, String dataDomain, String vaType) {
 		contentSelectionManager.setVA(this.dataDomain.getContentVA(vaType));
 		updateTree(true, contentSelectionManager, contentTree, "");
 	}
@@ -419,7 +419,7 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 	}
 
 	@Override
-	public void replaceVA(String dataDomain, String vaType) {
+	public void replaceStorageVA(String dataDomain, String vaType) {
 		if (parentComposite.isDisposed())
 			return;
 		storageSelectionManager.setVA(this.dataDomain.getStorageVA(vaType));

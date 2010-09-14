@@ -171,6 +171,8 @@ public class GLPathway extends AGLView implements
 		vecScaling = new Vec3f(1, 1, 1);
 		vecTranslation = new Vec3f(0, 0, 0);
 
+		contentVAType = ISet.CONTENT_CONTEXT;
+
 	}
 
 	public void setPathway(final PathwayGraph pathway) {
@@ -804,9 +806,9 @@ public class GLPathway extends AGLView implements
 	@Override
 	public void broadcastElements(EVAOperation type) {
 
-		ContentVADelta delta = new ContentVADelta(ISet.CONTENT_CONTEXT,
+		ContentVADelta delta = new ContentVADelta(contentVAType,
 				dataDomain.getDavidIDType());
-		
+
 		for (IGraphItem tmpPathwayVertexGraphItemRep : pathway
 				.getAllItemsByKind(EGraphItemKind.NODE)) {
 			for (IGraphItem tmpPathwayVertexGraphItem : tmpPathwayVertexGraphItemRep

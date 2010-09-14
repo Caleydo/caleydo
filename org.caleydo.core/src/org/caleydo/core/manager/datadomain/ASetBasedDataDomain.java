@@ -6,10 +6,10 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.ContentData;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.filter.ContentFilterManager;
 import org.caleydo.core.data.filter.StorageFilterManager;
-import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
@@ -37,7 +37,6 @@ import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
 import org.caleydo.core.manager.mapping.IDMappingManager;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
@@ -295,7 +294,7 @@ public abstract class ASetBasedDataDomain
 	 */
 	public void resetContextVA() {
 
-		set.setContentVA(Set.CONTENT_CONTEXT, new ContentVirtualArray(Set.CONTENT_CONTEXT));
+		set.setContentVA(ISet.CONTENT_CONTEXT, new ContentVirtualArray(ISet.CONTENT_CONTEXT));
 	}
 
 	/**
@@ -303,7 +302,7 @@ public abstract class ASetBasedDataDomain
 	 * from this class. Therefore it should not be called any time!
 	 */
 	@Override
-	public void replaceVA(int setID, String dataDomainType, String vaType) {
+	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
 		throw new IllegalStateException("UseCases shouldn't react to this");
 
 	}
@@ -316,17 +315,17 @@ public abstract class ASetBasedDataDomain
 
 		replaceContentVA(set.getID(), dataDomainType, vaType, virtualArray);
 
-		Tree<ClusterNode> storageTree = set.getStorageData(Set.STORAGE).getStorageTree();
-		if (storageTree == null)
-			return;
-		else {
-			// TODO check whether we need this for the meat sets, it fires a lot of unnecessar events in other
-			// cases
-			// for (ISet tmpSet : storageTree.getRoot().getAllMetaSetsFromSubTree()) {
-			// tmpSet.setContentVA(vaType, virtualArray.clone());
-			// eventPublisher.triggerEvent(new ReplaceContentVAEvent(tmpSet, dataDomainType, vaType));
-			// }
-		}
+		// Tree<ClusterNode> storageTree = set.getStorageData(Set.STORAGE).getStorageTree();
+		// if (storageTree == null)
+		// return;
+		// else {
+		// // TODO check whether we need this for the meat sets, it fires a lot of unnecessar events in other
+		// // cases
+		// // for (ISet tmpSet : storageTree.getRoot().getAllMetaSetsFromSubTree()) {
+		// // tmpSet.setContentVA(vaType, virtualArray.clone());
+		// // eventPublisher.triggerEvent(new ReplaceContentVAEvent(tmpSet, dataDomainType, vaType));
+		// // }
+		// }
 	}
 
 	/**
@@ -370,7 +369,7 @@ public abstract class ASetBasedDataDomain
 	 * @param virtualArray
 	 *            the new virtual array
 	 */
-	public void replaceVA(String dataDomainType, String vaType) {
+	public void replaceStorageVA(String dataDomainType, String vaType) {
 		throw new IllegalStateException("UseCases shouldn't react to this");
 	}
 
@@ -403,7 +402,7 @@ public abstract class ASetBasedDataDomain
 	}
 
 	protected void initFullVA() {
-		if (set.getContentData(Set.CONTENT) == null)
+		if (set.getContentData(ISet.CONTENT) == null)
 			set.restoreOriginalContentVA();
 	}
 
@@ -413,7 +412,7 @@ public abstract class ASetBasedDataDomain
 	public void restoreOriginalContentVA() {
 		initFullVA();
 
-		ReplaceContentVAEvent event = new ReplaceContentVAEvent(set, dataDomainType, Set.CONTENT);
+		ReplaceContentVAEvent event = new ReplaceContentVAEvent(set, dataDomainType, ISet.CONTENT);
 
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
@@ -427,9 +426,8 @@ public abstract class ASetBasedDataDomain
 
 		if (targetCategory == contentIDCategory && vaDelta.getIDType() != contentIDType)
 			vaDelta = DeltaConverter.convertDelta(contentIDType, vaDelta);
-		ContentVirtualArray va = set.getContentData(vaDelta.getVAType()).getContentVA();
-
-		va.setDelta(vaDelta);
+		ContentData contentData = set.getContentData(vaDelta.getVAType());
+		contentData.setVADelta(vaDelta);
 
 	}
 
