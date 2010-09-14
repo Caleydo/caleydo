@@ -180,4 +180,9 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 	}
 
 	protected abstract void triggerReplaceVAEvent();
+	
+	@SuppressWarnings("unchecked")
+	public VA getBaseVA() {
+		return (VA) baseVA.clone();
+	}
 }

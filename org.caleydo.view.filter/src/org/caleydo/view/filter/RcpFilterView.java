@@ -45,6 +45,8 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 	private ASetBasedDataDomain dataDomain;
 
 	private Tree tree;
+	
+	private Menu contextMenu;
 
 	private EventPublisher eventPublisher;
 
@@ -84,8 +86,8 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		storageFilterTreeItem.setText("Experiment Filter");
 
 		// Create the pop-up menu
-		Menu menu = new Menu(parentComposite);
-		tree.setMenu(menu);
+		contextMenu = new Menu(parentComposite);
+		tree.setMenu(contextMenu);
 		tree.addListener(SWT.MouseDoubleClick, new Listener() {
 			public void handleEvent(Event e) {
 
@@ -152,42 +154,8 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 			storageFilterTreeItem.getItem(itemIndex).setExpanded(true);
 		}
 
-		MenuItem removeItem = new MenuItem(menu, SWT.NONE);
-		removeItem.setText("Remove");
-		removeItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				TreeItem selectedTreeItem = tree.getSelection()[0];
-
-				if (selectedTreeItem.getData() instanceof StorageFilter) {
-					RemoveStorageFilterEvent filterEvent = new RemoveStorageFilterEvent();
-					filterEvent.setDataDomainType(dataDomain.getDataDomainType());
-					filterEvent.setFilter((StorageFilter) selectedTreeItem.getData());
-					selectedTreeItem.dispose();
-					eventPublisher.triggerEvent(filterEvent);
-				} else if (selectedTreeItem.getData() instanceof ContentFilter) {
-					RemoveContentFilterEvent filterEvent = new RemoveContentFilterEvent();
-					filterEvent.setDataDomainType(dataDomain.getDataDomainType());
-					filterEvent.setFilter((ContentFilter) selectedTreeItem.getData());
-					selectedTreeItem.dispose();
-					eventPublisher.triggerEvent(filterEvent);
-				}
-			}
-		});
-	
-		MenuItem detailsItem = new MenuItem(menu, SWT.NONE);
-		detailsItem.setText("Show details");
-		detailsItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				Object filter = tree.getSelection()[0].getData();
-				if (!(filter instanceof Filter<?, ?>))
-					return;
-
-				((Filter<?, ?>) filter).openRepresentation();
-			}
-		});
+		addShowDetailsContextMenuItem();
+		addRemoveContextMenuItem();
 	}
 
 	@Override
@@ -212,6 +180,47 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		});
 	}
 
+	private void addRemoveContextMenuItem() {
+		MenuItem removeItem = new MenuItem(contextMenu, SWT.NONE);
+		removeItem.setText("Remove");
+		removeItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				TreeItem selectedTreeItem = tree.getSelection()[0];
+
+				if (selectedTreeItem.getData() instanceof StorageFilter) {
+					RemoveStorageFilterEvent filterEvent = new RemoveStorageFilterEvent();
+					filterEvent.setDataDomainType(dataDomain.getDataDomainType());
+					filterEvent.setFilter((StorageFilter) selectedTreeItem.getData());
+					selectedTreeItem.dispose();
+					eventPublisher.triggerEvent(filterEvent);
+				} else if (selectedTreeItem.getData() instanceof ContentFilter) {
+					RemoveContentFilterEvent filterEvent = new RemoveContentFilterEvent();
+					filterEvent.setDataDomainType(dataDomain.getDataDomainType());
+					filterEvent.setFilter((ContentFilter) selectedTreeItem.getData());
+					selectedTreeItem.dispose();
+					eventPublisher.triggerEvent(filterEvent);
+				}
+			}
+		});
+	}
+	
+	private void addShowDetailsContextMenuItem() {
+		MenuItem detailsItem = new MenuItem(contextMenu, SWT.NONE);
+		detailsItem.setText("Show details");
+		detailsItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				Object filter = tree.getSelection()[0].getData();
+				if (!(filter instanceof Filter<?, ?>))
+					return;
+
+				((Filter<?, ?>) filter).openRepresentation();
+			}
+		});
+	}
+	
 	@Override
 	public void dispose() {
 		super.dispose();

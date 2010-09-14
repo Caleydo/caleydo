@@ -24,6 +24,8 @@ public class ContentFilter
 			filterEvent.setDataDomainType(dataDomain.getDataDomainType());
 
 			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
+			
+			isRegistered = true;
 		}
 		else {
 

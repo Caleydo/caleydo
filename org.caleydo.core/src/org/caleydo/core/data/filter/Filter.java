@@ -25,10 +25,10 @@ public abstract class Filter<VAType extends IVAType, DeltaType extends VirtualAr
 
 	private AFilterRepresentation filterRep;
 
-	private boolean isRegistered = false;
+	protected boolean isRegistered = false;
 
 	private ISet set;
-	
+
 	protected ASetBasedDataDomain dataDomain;
 
 	public void setDelta(DeltaType vaDelta) {
@@ -60,7 +60,9 @@ public abstract class Filter<VAType extends IVAType, DeltaType extends VirtualAr
 	}
 
 	public void openRepresentation() {
-		filterRep.open();
+
+		if (filterRep != null)
+			filterRep.create();
 	}
 
 	public boolean isRegistered() {
@@ -74,10 +76,10 @@ public abstract class Filter<VAType extends IVAType, DeltaType extends VirtualAr
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
-	
+
 	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
-	
+
 	public abstract void updateFilterManager();
 }

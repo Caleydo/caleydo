@@ -17,13 +17,14 @@ public class StorageFilter
 
 	public void updateFilterManager() {
 
-		if (!isRegistered()) {
+		if (!isRegistered) {
 			NewStorageFilterEvent filterEvent = new NewStorageFilterEvent();
 			filterEvent.setFilter(this);
 			filterEvent.setSender(this);
 			filterEvent.setDataDomainType(dataDomain.getDataDomainType());
 
 			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
+			isRegistered = true;
 		}
 		else {
 

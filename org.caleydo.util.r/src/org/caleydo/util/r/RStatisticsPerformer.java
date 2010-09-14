@@ -217,7 +217,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			metaFilter.setLabel("p-Value Reduction");
 			FilterRepresentationPValue filterRep = new FilterRepresentationPValue();
 			filterRep.setFilter(metaFilter);
-			filterRep.init();
+			filterRep.create();
 			metaFilter.setFilterRep(filterRep);
 		}
 
@@ -275,7 +275,6 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			else {
 				FilterRepresentationPValue filterRep = new FilterRepresentationPValue();
 				filterRep.setFilter(contentFilter);
-				filterRep.init();
 				contentFilter.setFilterRep(filterRep);
 				contentFilter.openRepresentation();
 			}
@@ -335,29 +334,6 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 		set1.getStatisticsResult().setTwoSiddedTTestResult(set2, pValueVector);
 		set2.getStatisticsResult().setTwoSiddedTTestResult(set1, pValueVector);
-
-		// ContentFilter contentFilter1 = new ContentFilter();
-		// ContentFilter contentFilter2 = new ContentFilter();
-		//
-		// ContentMetaFilter metaFilter = new ContentMetaFilter();
-		// metaFilter.getFilterList().add(contentFilter1);
-		// metaFilter.getFilterList().add(contentFilter2);
-		// metaFilter.setFilterRep(new FilterRepresentationPValue());
-		// metaFilter.openRepresentation();
-		//
-		// sendContentFilterEvent(contentFilter1.getVADelta(), set1.getLabel(),
-		// set1
-		// .getDataDomain().getDataDomainType());
-		// sendContentFilterEvent(contentFilter1.getVADelta(), set1.getLabel(),
-		// set1
-		// .getDataDomain().getDataDomainType());
-		//
-		// NewContentFilterEvent filterEvent = new NewContentFilterEvent();
-		// filterEvent.setFilter(metaFilter);
-		// filterEvent.setSender(this);
-		// filterEvent.setDataDomainType(set1.getDataDomain().getDataDomainType());
-		//
-		// eventPublisher.triggerEvent(filterEvent);
 
 		System.out.println("Two-sided t-test finished");
 	}

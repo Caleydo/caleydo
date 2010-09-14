@@ -362,7 +362,6 @@ public abstract class ASetBasedDataDomain
 		set.setContentVA(vaType, virtualArray.clone());
 
 		virtualArray.setGroupList(null);
-		System.out.println("Triggering event");
 		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, dataDomainType, vaType));
 	}
 

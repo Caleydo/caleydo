@@ -2,11 +2,13 @@ package org.caleydo.util.r.filter;
 
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.ContentMetaFilter;
+import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
 import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
+import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -19,10 +21,10 @@ import org.eclipse.swt.widgets.Slider;
 public class FilterRepresentationPValue
 	extends AFilterRepresentation<ContentVAType, ContentVADelta, ContentFilter> {
 
-	private float pValue;
+	private float pValue = 1f;
 
-	public void init() {
-		super.init();
+	public void create() {
+		super.create();
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
@@ -33,17 +35,17 @@ public class FilterRepresentationPValue
 				final Label pValueLabel = new Label(parentComposite, SWT.NULL);
 				pValueLabel.setText("p-Value: " + pValue);
 				pValueSlider.setMinimum(0);
-				pValueSlider.setMaximum(110);
-				pValueSlider.setIncrement(10);
-				pValueSlider.setPageIncrement(10);
+				pValueSlider.setMaximum(1000);
+				pValueSlider.setIncrement(5);
+				pValueSlider.setPageIncrement(1);
 				pValueSlider.setSelection((int) (pValue * 1000));
-
 				pValueSlider.addMouseListener(new MouseAdapter() {
 
 					@Override
 					public void mouseUp(MouseEvent e) {
-						pValue = pValueSlider.getSelection() / 1000f;
+						pValue = pValueSlider.getSelection() / 1000.00f;
 						pValueLabel.setText("p-Value: " + pValue);
+						parentComposite.pack();
 
 						createVADelta();
 						filter.updateFilterManager();
@@ -83,7 +85,8 @@ public class FilterRepresentationPValue
 
 		ContentVADelta contentVADelta =
 			new ContentVADelta(ContentVAType.CONTENT, subFilter.getDataDomain().getContentIDType());
-		ContentVirtualArray contentVA = subFilter.getSet().getContentData(ContentVAType.CONTENT).getContentVA();
+		ContentVirtualArray contentVA = subFilter.getDataDomain().getContentFilterManager().getBaseVA();
+			//subFilter.getSet().getContentData(ContentVAType.CONTENT).getContentVA();
 
 		double[] tTestResult = subFilter.getSet().getStatisticsResult().getOneSidedTTestResult();
 		for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
@@ -92,5 +95,13 @@ public class FilterRepresentationPValue
 				contentVADelta.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));
 		}
 		subFilter.setDelta(contentVADelta);
+	}
+
+	@Override
+	protected void triggerRemoveFilterEvent() {
+		RemoveContentFilterEvent filterEvent = new RemoveContentFilterEvent();
+		filterEvent.setDataDomainType(filter.getDataDomain().getDataDomainType());
+		filterEvent.setFilter(filter);
+		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 	}
 }
