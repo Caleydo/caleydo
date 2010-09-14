@@ -1,8 +1,9 @@
 package org.caleydo.core.data.filter;
 
-import org.caleydo.core.data.filter.event.NewContentFilterEvent;
 import org.caleydo.core.data.filter.event.NewStorageFilterEvent;
 import org.caleydo.core.data.filter.event.NewStorageFilterListener;
+import org.caleydo.core.data.filter.event.ReEvaluateStorageFilterListEvent;
+import org.caleydo.core.data.filter.event.ReEvaluateStorageFilterListListener;
 import org.caleydo.core.data.filter.event.RemoveStorageFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveStorageFilterListener;
 import org.caleydo.core.data.virtualarray.StorageVAType;
@@ -26,6 +27,7 @@ public class StorageFilterManager
 	private StorageVAUpdateListener storageVAUpdateListener;
 	private RemoveStorageFilterListener removeStorageFilterListener;
 	private NewStorageFilterListener newStorageFilterListener;
+	private ReEvaluateStorageFilterListListener reEvaluateStorageFilterListListener;
 
 	public StorageFilterManager(ASetBasedDataDomain dataDomain) {
 		super(dataDomain, dataDomain.getStorageVA(StorageVAType.STORAGE), new StorageFilterFactory());
@@ -56,6 +58,12 @@ public class StorageFilterManager
 		newStorageFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(NewStorageFilterEvent.class, newStorageFilterListener);
 
+		reEvaluateStorageFilterListListener = new ReEvaluateStorageFilterListListener();
+		reEvaluateStorageFilterListListener.setHandler(this);
+		reEvaluateStorageFilterListListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(ReEvaluateStorageFilterListEvent.class,
+			reEvaluateStorageFilterListListener);
+
 	}
 
 	@Override
@@ -74,6 +82,11 @@ public class StorageFilterManager
 		if (newStorageFilterListener != null) {
 			eventPublisher.removeListener(newStorageFilterListener);
 			newStorageFilterListener = null;
+		}
+
+		if (reEvaluateStorageFilterListListener != null) {
+			eventPublisher.removeListener(reEvaluateStorageFilterListListener);
+			reEvaluateStorageFilterListListener = null;
 		}
 	}
 

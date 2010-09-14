@@ -141,7 +141,7 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 			}
 		}
 
-		recalculateFilters();
+		reEvaluateFilters();
 		triggerFilterUpdatedEvent();
 
 	}
@@ -153,7 +153,7 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 	}
 
 	@SuppressWarnings("unchecked")
-	private void recalculateFilters() {
+	public void reEvaluateFilters() {
 		currentVA = (VA) baseVA.clone();
 		for (FilterType filter : filterPipe) {
 			if (filter instanceof MetaFilter) {
