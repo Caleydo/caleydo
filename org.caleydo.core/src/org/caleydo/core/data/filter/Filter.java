@@ -23,8 +23,6 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 
 	protected boolean isRegistered = false;
 
-	private ISet set;
-
 	protected ASetBasedDataDomain dataDomain;
 
 	public void setDelta(DeltaType vaDelta) {
@@ -39,20 +37,16 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 		this.filterRep = filterRep;
 	}
 
+	public AFilterRepresentation getFilterRep() {
+		return filterRep;
+	}
+	
 	public String getLabel() {
 		return label;
 	}
 
 	public void setLabel(String label) {
 		this.label = label;
-	}
-
-	public void setSet(ISet set) {
-		this.set = set;
-	}
-
-	public ISet getSet() {
-		return set;
 	}
 
 	public void openRepresentation() {

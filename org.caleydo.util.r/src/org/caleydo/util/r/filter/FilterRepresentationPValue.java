@@ -21,6 +21,8 @@ import org.eclipse.swt.widgets.Slider;
 public class FilterRepresentationPValue extends
 		AFilterRepresentation<ContentVADelta, ContentFilter> {
 
+	private ISet set;
+	
 	private float pValue = 1f;
 
 	public void create() {
@@ -83,14 +85,12 @@ public class FilterRepresentationPValue extends
 
 	private void createVADelta(ContentFilter subFilter) {
 
-		ContentVADelta contentVADelta = new ContentVADelta(ISet.CONTENT, subFilter
-				.getDataDomain().getContentIDType());
-		ContentVirtualArray contentVA = subFilter.getDataDomain()
-				.getContentFilterManager().getBaseVA();
-		// subFilter.getSet().getContentData(ContentVAType.CONTENT).getContentVA();
+		ContentVADelta contentVADelta =
+			new ContentVADelta(ISet.CONTENT, subFilter.getDataDomain().getContentIDType());
+		ContentVirtualArray contentVA = subFilter.getDataDomain().getContentFilterManager().getBaseVA();
+		
+		double[] tTestResult = ((FilterRepresentationPValue)subFilter.getFilterRep()).getSet().getStatisticsResult().getOneSidedTTestResult();
 
-		double[] tTestResult = subFilter.getSet().getStatisticsResult()
-				.getOneSidedTTestResult();
 		for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 
 			if (tTestResult != null && tTestResult[contentIndex] > pValue)
@@ -106,5 +106,13 @@ public class FilterRepresentationPValue extends
 		filterEvent.setDataDomainType(filter.getDataDomain().getDataDomainType());
 		filterEvent.setFilter(filter);
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
+	}
+	
+	public void setSet(ISet set) {
+		this.set = set;
+	}
+
+	public ISet getSet() {
+		return set;
 	}
 }

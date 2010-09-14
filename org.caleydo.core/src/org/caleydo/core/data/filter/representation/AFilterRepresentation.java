@@ -23,8 +23,7 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 			@Override
 			public void run() {
 				parentComposite = new Shell();
-
-				parentComposite.setLayout(new RowLayout());
+				parentComposite.setLayout(new RowLayout(SWT.VERTICAL));
 				final Button ok = new Button(parentComposite, SWT.PUSH);
 				ok.setText("Apply");
 				Button cancel = new Button(parentComposite, SWT.PUSH);

@@ -132,39 +132,40 @@ public class StatisticsResult {
 	// return filteredVA;
 	// }
 
-	public int getElementNumberOfFoldChangeReduction(ISet compareSet) {
+	// public int getElementNumberOfFoldChangeReduction(ISet compareSet) {
+	//
+	// int numberOfElements = 0;
+	// ContentVirtualArray origVA = compareSet.getContentData(ContentVAType.CONTENT).getContentVA();
+	//
+	// double[] resultVector = setToFoldChangeResult.get(compareSet).getFirst();
+	// FoldChangeSettings settings = setToFoldChangeResult.get(compareSet).getSecond();
+	//
+	// double foldChangeRatio = settings.getRatio();
+	// FoldChangeEvaluator foldChangeEvaluator = settings.getEvaluator();
+	//
+	// for (Integer contentIndex = 0; contentIndex < origVA.size(); contentIndex++) {
+	//
+	// switch (foldChangeEvaluator) {
+	// case LESS:
+	// if (resultVector[contentIndex] * -1 < foldChangeRatio)
+	// continue;
+	// break;
+	// case GREATER:
+	// if (resultVector[contentIndex] < foldChangeRatio)
+	// continue;
+	// break;
+	// case SAME:
+	// if (Math.abs(resultVector[contentIndex]) > foldChangeRatio)
+	// continue;
+	// break;
+	// }
+	//
+	// // System.out.println("Found valid gene fulfilling statistics criteria: " +compareSet
+	// // +" "+contentIndex);
+	// numberOfElements++;
+	// }
+	//
+	// return numberOfElements;
+	// }
 
-		int numberOfElements = 0;
-		ContentVirtualArray origVA = compareSet.getContentData(Set.CONTENT).getContentVA();
-
-		double[] resultVector = setToFoldChangeResult.get(compareSet).getFirst();
-		FoldChangeSettings settings = setToFoldChangeResult.get(compareSet).getSecond();
-
-		double foldChangeRatio = settings.getRatio();
-		FoldChangeEvaluator foldChangeEvaluator = settings.getEvaluator();
-
-		for (Integer contentIndex = 0; contentIndex < origVA.size(); contentIndex++) {
-
-			switch (foldChangeEvaluator) {
-				case LESS:
-					if (resultVector[contentIndex] * -1 < foldChangeRatio)
-						continue;
-					break;
-				case GREATER:
-					if (resultVector[contentIndex] < foldChangeRatio)
-						continue;
-					break;
-				case SAME:
-					if (Math.abs(resultVector[contentIndex]) > foldChangeRatio)
-						continue;
-					break;
-			}
-
-			// System.out.println("Found valid gene fulfilling statistics criteria: " +compareSet
-			// +" "+contentIndex);
-			numberOfElements++;
-		}
-
-		return numberOfElements;
-	}
 }
