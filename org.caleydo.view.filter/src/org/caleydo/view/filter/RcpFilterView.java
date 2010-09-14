@@ -23,6 +23,7 @@ import org.caleydo.view.filter.listener.FilterUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -77,6 +78,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 	}
 
 	private void updateTree() {
+		
 		tree = new Tree(parentComposite, SWT.SINGLE | SWT.BORDER);
 		TreeItem storageFilterTreeItem = new TreeItem(tree, SWT.NONE, 0);
 		storageFilterTreeItem.setText("Experiment Filter");
@@ -102,7 +104,6 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 				
 				TreeItem metaStorageFilterTreeItem = new TreeItem(storageFilterTreeItem, SWT.NONE, 0);
 				metaStorageFilterTreeItem.setText(filter.getLabel());
-				metaStorageFilterTreeItem.setExpanded(true);
 				metaStorageFilterTreeItem.setData(filter);
 				
 				for (StorageFilter subFilter : ((StorageMetaFilter) filter).getFilterList()) {
@@ -120,7 +121,6 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 
 		TreeItem contentFilterTreeItem = new TreeItem(tree, SWT.NONE, 0);
 		contentFilterTreeItem.setText("Gene Filter");
-		contentFilterTreeItem.setExpanded(true);
 
 		for (ContentFilter filter : dataDomain.getContentFilterManager().getFilterPipe()) {
 			
@@ -128,7 +128,6 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 				
 				TreeItem metaContentFilterTreeItem = new TreeItem(contentFilterTreeItem, SWT.NONE, 0);
 				metaContentFilterTreeItem.setText(filter.getLabel());
-				metaContentFilterTreeItem.setExpanded(true);
 				metaContentFilterTreeItem.setData(filter);
 				
 				for (ContentFilter subFilter : ((ContentMetaFilter) filter).getFilterList()) {
@@ -142,6 +141,15 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 				child.setText(filter.getLabel());
 				child.setData(filter);
 			}
+		}
+		
+		contentFilterTreeItem.setExpanded(true);
+		storageFilterTreeItem.setExpanded(true);
+		for (int itemIndex = 0; itemIndex < contentFilterTreeItem.getItems().length; itemIndex++) {
+			contentFilterTreeItem.getItem(itemIndex).setExpanded(true);
+		}
+		for (int itemIndex = 0; itemIndex < storageFilterTreeItem.getItems().length; itemIndex++) {
+			storageFilterTreeItem.getItem(itemIndex).setExpanded(true);
 		}
 
 		MenuItem removeItem = new MenuItem(menu, SWT.NONE);
