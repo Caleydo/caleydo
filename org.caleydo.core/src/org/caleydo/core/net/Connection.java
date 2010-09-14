@@ -13,9 +13,7 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.SetUtils;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -280,8 +278,7 @@ public class Connection {
 
 		// FIXME this should work for more than one use case now
 		ASetBasedDataDomain useCase =
-			(ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
-				"org.caleydo.datadomain.genetic");
+			(ASetBasedDataDomain) DataDomainManager.get().getDataDomain("org.caleydo.datadomain.genetic");
 		ISet set = useCase.getSet();
 
 		initData.setDataDomain(useCase);
@@ -289,16 +286,14 @@ public class Connection {
 		initData.setGeneClusterTree(SetUtils.getGeneClusterXml(set));
 		initData.setExperimentClusterTree(SetUtils.getExperimentClusterXml(set));
 
-		HashMap<ContentVAType, ContentVirtualArray> contentVAMap =
-			new HashMap<ContentVAType, ContentVirtualArray>();
-		for (ContentVAType type : ContentVAType.getRegisteredVATypes()) {
+		HashMap<String, ContentVirtualArray> contentVAMap = new HashMap<String, ContentVirtualArray>();
+		for (String type : set.getRegisteredContentVATypes()) {
 			contentVAMap.put(type, useCase.getContentVA(type));
 		}
 		initData.setContentVAMap(contentVAMap);
 
-		HashMap<StorageVAType, StorageVirtualArray> storageVAMap =
-			new HashMap<StorageVAType, StorageVirtualArray>();
-		for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
+		HashMap<String, StorageVirtualArray> storageVAMap = new HashMap<String, StorageVirtualArray>();
+		for (String type : set.getRegisteredStorageVATypes()) {
 			storageVAMap.put(type, useCase.getStorageVA(type));
 		}
 		initData.setStorageVAMap(storageVAMap);

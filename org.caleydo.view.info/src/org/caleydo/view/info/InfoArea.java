@@ -10,8 +10,6 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.virtualarray.ContentVAType;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.manager.GeneralManager;
@@ -111,14 +109,14 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 		storageSelectionManager = dataDomain.getStorageSelectionManager();
 
 		parentComposite = parent;
-		
+
 		selectionTree = new Tree(parent, SWT.NULL);
-		
+
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.grabExcessVerticalSpace = true;
 		gridData.minimumHeight = 150;
 		selectionTree.setLayoutData(gridData);
-		
+
 		contentTree = new TreeItem(selectionTree, SWT.NONE);
 		contentTree.setExpanded(true);
 		contentTree.setData(-1);
@@ -405,7 +403,7 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 	}
 
 	@Override
-	public void replaceVA(int setID, String dataDomain, ContentVAType vaType) {
+	public void replaceVA(int setID, String dataDomain, String vaType) {
 		contentSelectionManager.setVA(this.dataDomain.getContentVA(vaType));
 		updateTree(true, contentSelectionManager, contentTree, "");
 	}
@@ -421,7 +419,7 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 	}
 
 	@Override
-	public void replaceVA(String dataDomain, StorageVAType vaType) {
+	public void replaceVA(String dataDomain, String vaType) {
 		if (parentComposite.isDisposed())
 			return;
 		storageSelectionManager.setVA(this.dataDomain.getStorageVA(vaType));

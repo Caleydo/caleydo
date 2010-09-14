@@ -15,9 +15,7 @@ import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
@@ -98,12 +96,12 @@ public class TabularDataView extends ASWTView implements
 	/**
 	 * The type of the content VA
 	 */
-	protected ContentVAType contentVAType = ContentVAType.CONTENT;
+	protected String contentVAType = ISet.CONTENT;
 
 	/**
 	 * The type of the storage VA
 	 */
-	protected StorageVAType storageVAType = StorageVAType.STORAGE;
+	protected String storageVAType = ISet.STORAGE;
 
 	/**
 	 * Define what level of filtering on the data should be applied
@@ -131,11 +129,12 @@ public class TabularDataView extends ASWTView implements
 	 */
 	public TabularDataView(Composite parentComposite) {
 		super(GeneralManager.get().getIDManager()
-				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER), parentComposite);
+				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER),
+				parentComposite);
 
 		this.viewType = VIEW_ID;
 	}
-	
+
 	@Override
 	public void draw() {
 
@@ -148,7 +147,7 @@ public class TabularDataView extends ASWTView implements
 
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 		storageSelectionManager = dataDomain.getStorageSelectionManager();
-		
+
 		if (set == null) {
 			contentSelectionManager.resetSelectionManager();
 			storageSelectionManager.resetSelectionManager();
@@ -186,8 +185,8 @@ public class TabularDataView extends ASWTView implements
 			contentTable.dispose();
 		}
 
-		contentTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION
-				| SWT.VIRTUAL);
+		contentTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER
+				| SWT.FULL_SELECTION | SWT.VIRTUAL);
 		contentTable.setLinesVisible(true);
 		contentTable.setHeaderVisible(true);
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -299,7 +298,8 @@ public class TabularDataView extends ASWTView implements
 			column = new TableColumn(contentTable, SWT.NONE);
 			column.setText("Gene Symbol");
 			column.setWidth(110);
-		} else if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
+		} else if (dataDomain.getDataDomainType()
+				.equals("org.caleydo.datadomain.generic")) {
 
 			column = new TableColumn(contentTable, SWT.NONE);
 			column.setText("ID");
@@ -632,7 +632,7 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void replaceVA(int setID, String dataDomainType, ContentVAType vaType) {
+	public void replaceVA(int setID, String dataDomainType, String vaType) {
 
 		contentVA = dataDomain.getContentVA(vaType);
 
@@ -695,14 +695,14 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void replaceVA(String dataDomainType, StorageVAType vaType) {
+	public void replaceVA(String dataDomainType, String vaType) {
 		storageVA = dataDomain.getStorageVA(vaType);
 	}
 
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		
+
 		initData();
 	}
 

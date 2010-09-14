@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Timer;
 
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
@@ -47,15 +46,12 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
-import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.AngularBrushingEvent;
@@ -387,10 +383,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (bRenderOnlyContext) {
-			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT_CONTEXT);
+			contentVA = dataDomain.getContentVA(ISet.CONTENT_CONTEXT);
 		} else {
 
-			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT);
+			contentVA = dataDomain.getContentVA(ISet.CONTENT);
 		}
 
 		contentSelectionManager.setVA(contentVA);
@@ -474,7 +470,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		Set<Integer> removedElements = contentSelectionManager
 				.getElements(SelectionType.DESELECTED);
 
-		ContentVADelta delta = new ContentVADelta(ContentVAType.CONTENT, contentIDType);
+		ContentVADelta delta = new ContentVADelta(ISet.CONTENT, contentIDType);
 		for (Integer contentID : removedElements) {
 			delta.add(VADeltaItem.removeElement(contentID));
 		}
@@ -494,9 +490,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = ContentVAType.CONTENT_CONTEXT;
+			contentVAType = ISet.CONTENT_CONTEXT;
 		else
-			contentVAType = ContentVAType.CONTENT;
+			contentVAType = ISet.CONTENT;
 
 		contentVA = dataDomain.getContentVA(contentVAType);
 
@@ -1430,7 +1426,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	private void handleUnselection() {
 		if (!hasFilterChanged)
 			return;
-		
+
 		hasFilterChanged = false;
 		handleGateUnselection();
 		handleNANUnselection();
@@ -1454,7 +1450,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		if (bIsDraggingActive || bIsAngularBrushingActive) {
 			triggerSelectionUpdate();
 		}
-		System.out.println("");
 	}
 
 	private void triggerSelectionUpdate() {
@@ -1711,8 +1706,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				// Integer storageID = storageVA.remove(pickingID);
 				Integer storageID = storageVA.get(pickingID);
 				storageSelectionManager.remove(pickingID);
-				StorageVADelta vaDelta = new StorageVADelta(StorageVAType.STORAGE,
-						storageIDType);
+				StorageVADelta vaDelta = new StorageVADelta(ISet.STORAGE, storageIDType);
 				vaDelta.add(VADeltaItem.remove(pickingID));
 
 				triggerStorageFilterEvent(vaDelta,
@@ -1748,7 +1742,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			case CLICKED:
 				if (pickingID >= 0) {
 					// storageVA.copy(pickingID);
-					StorageVADelta vaDelta = new StorageVADelta(StorageVAType.STORAGE,
+					StorageVADelta vaDelta = new StorageVADelta(ISet.STORAGE,
 							storageIDType);
 					vaDelta.add(VADeltaItem.copy(pickingID));
 					triggerStorageFilterEvent(

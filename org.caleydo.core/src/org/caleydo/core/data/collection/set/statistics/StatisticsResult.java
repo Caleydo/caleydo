@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings.FoldChangeEvaluator;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.util.collection.Pair;
 
@@ -135,7 +135,7 @@ public class StatisticsResult {
 	public int getElementNumberOfFoldChangeReduction(ISet compareSet) {
 
 		int numberOfElements = 0;
-		ContentVirtualArray origVA = compareSet.getContentData(ContentVAType.CONTENT).getContentVA();
+		ContentVirtualArray origVA = compareSet.getContentData(Set.CONTENT).getContentVA();
 
 		double[] resultVector = setToFoldChangeResult.get(compareSet).getFirst();
 		FoldChangeSettings settings = setToFoldChangeResult.get(compareSet).getSecond();

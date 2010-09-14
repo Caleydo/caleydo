@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 
 /**
@@ -131,8 +130,8 @@ public class ClusterHelper {
 	public static void determineExpressionValue(Tree<ClusterNode> tree, EClustererType eClustererType,
 		ISet set) {
 		// FIXME - direct references here - should be parameters
-		StorageVirtualArray storageVA = set.getStorageData(StorageVAType.STORAGE).getStorageVA();
-		ContentVirtualArray contentVA = set.getContentData(ContentVAType.CONTENT).getContentVA();
+		StorageVirtualArray storageVA = set.getStorageData(Set.STORAGE).getStorageVA();
+		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT).getContentVA();
 		determineExpressionValueRec(tree, tree.getRoot(), eClustererType, set, storageVA, contentVA);
 	}
 

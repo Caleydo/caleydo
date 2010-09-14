@@ -13,10 +13,10 @@ import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
  * 
  * @author Alexander Lex
  */
-public interface IVirtualArray<ConcreteType extends IVirtualArray<ConcreteType, VAType, VADelta, GroupType>, VAType extends IVAType, VADelta extends VirtualArrayDelta<?, VAType>, GroupType extends GroupList<?, ?, ?>>
+public interface IVirtualArray<ConcreteType extends IVirtualArray<ConcreteType, VADelta, GroupType>, VADelta extends VirtualArrayDelta<?>, GroupType extends GroupList<?, ?, ?>>
 	extends Iterable<Integer>, IUniqueObject, Cloneable {
 
-	public VAType getVAType();
+	public String getVAType();
 
 	/**
 	 * Returns an Iterator<Integer> of type VAIterator, which allows to iterate over the virtual array

@@ -23,7 +23,6 @@ import org.caleydo.view.filter.listener.FilterUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -45,7 +44,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 	private ASetBasedDataDomain dataDomain;
 
 	private Tree tree;
-	
+
 	private Menu contextMenu;
 
 	private EventPublisher eventPublisher;
@@ -80,7 +79,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 	}
 
 	private void updateTree() {
-		
+
 		tree = new Tree(parentComposite, SWT.SINGLE | SWT.BORDER);
 		TreeItem storageFilterTreeItem = new TreeItem(tree, SWT.NONE, 0);
 		storageFilterTreeItem.setText("Experiment Filter");
@@ -92,10 +91,10 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 			public void handleEvent(Event e) {
 
 				Object filter = tree.getSelection()[0].getData();
-				if (!(filter instanceof Filter<?, ?>))
+				if (!(filter instanceof Filter<?>))
 					return;
 
-				((Filter<?, ?>) filter).openRepresentation();
+				((Filter<?>) filter).openRepresentation();
 			}
 		});
 
@@ -103,18 +102,19 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 
 		for (StorageFilter filter : dataDomain.getStorageFilterManager().getFilterPipe()) {
 			if (filter instanceof StorageMetaFilter) {
-				
-				TreeItem metaStorageFilterTreeItem = new TreeItem(storageFilterTreeItem, SWT.NONE, 0);
+
+				TreeItem metaStorageFilterTreeItem = new TreeItem(storageFilterTreeItem,
+						SWT.NONE, 0);
 				metaStorageFilterTreeItem.setText(filter.getLabel());
 				metaStorageFilterTreeItem.setData(filter);
-				
-				for (StorageFilter subFilter : ((StorageMetaFilter) filter).getFilterList()) {
+
+				for (StorageFilter subFilter : ((StorageMetaFilter) filter)
+						.getFilterList()) {
 					child = new TreeItem(metaStorageFilterTreeItem, SWT.NONE, 0);
 					child.setText(subFilter.getLabel());
 					child.setData(subFilter);
 				}
-			}
-			else {
+			} else {
 				child = new TreeItem(storageFilterTreeItem, SWT.NONE, 0);
 				child.setText(filter.getLabel());
 				child.setData(filter);
@@ -125,26 +125,27 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		contentFilterTreeItem.setText("Gene Filter");
 
 		for (ContentFilter filter : dataDomain.getContentFilterManager().getFilterPipe()) {
-			
+
 			if (filter instanceof ContentMetaFilter) {
-				
-				TreeItem metaContentFilterTreeItem = new TreeItem(contentFilterTreeItem, SWT.NONE, 0);
+
+				TreeItem metaContentFilterTreeItem = new TreeItem(contentFilterTreeItem,
+						SWT.NONE, 0);
 				metaContentFilterTreeItem.setText(filter.getLabel());
 				metaContentFilterTreeItem.setData(filter);
-				
-				for (ContentFilter subFilter : ((ContentMetaFilter) filter).getFilterList()) {
+
+				for (ContentFilter subFilter : ((ContentMetaFilter) filter)
+						.getFilterList()) {
 					child = new TreeItem(metaContentFilterTreeItem, SWT.NONE, 0);
 					child.setText(subFilter.getLabel());
 					child.setData(subFilter);
 				}
-			}
-			else {
+			} else {
 				child = new TreeItem(contentFilterTreeItem, SWT.NONE, 0);
 				child.setText(filter.getLabel());
 				child.setData(filter);
 			}
 		}
-		
+
 		contentFilterTreeItem.setExpanded(true);
 		storageFilterTreeItem.setExpanded(true);
 		for (int itemIndex = 0; itemIndex < contentFilterTreeItem.getItems().length; itemIndex++) {
@@ -203,8 +204,9 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 				}
 			}
 		});
+
 	}
-	
+
 	private void addShowDetailsContextMenuItem() {
 		MenuItem detailsItem = new MenuItem(contextMenu, SWT.NONE);
 		detailsItem.setText("Show details");
@@ -213,14 +215,14 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 			public void widgetSelected(SelectionEvent e) {
 
 				Object filter = tree.getSelection()[0].getData();
-				if (!(filter instanceof Filter<?, ?>))
+				if (!(filter instanceof Filter<?>))
 					return;
 
-				((Filter<?, ?>) filter).openRepresentation();
+				((Filter<?>) filter).openRepresentation();
 			}
 		});
 	}
-	
+
 	@Override
 	public void dispose() {
 		super.dispose();

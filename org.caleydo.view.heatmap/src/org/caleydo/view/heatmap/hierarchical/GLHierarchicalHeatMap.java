@@ -16,10 +16,10 @@ import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.group.ContentGroupList;
@@ -30,9 +30,7 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
@@ -664,7 +662,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glHeatMapView.setRenderTemplate(renderTemplate);
 		renderTemplate.setBottomSpacing(0.6f);
 		heatMapRemoteElement.setGLView(glHeatMapView);
-		glHeatMapView.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
+		glHeatMapView.setContentVAType(GLHeatMap.CONTENT_EMBEDDED_VA);
 		glHeatMapView.initData();
 	}
 
@@ -691,11 +689,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glExperimentDendrogramView.setDataDomain(dataDomain);
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
 
-		glContentDendrogramView.setContentVAType(ContentVAType.CONTENT);
+		glContentDendrogramView.setContentVAType(Set.CONTENT);
 		glContentDendrogramView.initData();
 		glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 
-		glExperimentDendrogramView.setContentVAType(ContentVAType.CONTENT);
+		glExperimentDendrogramView.setContentVAType(Set.CONTENT);
 		glExperimentDendrogramView.initData();
 		glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
 	}
@@ -875,7 +873,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	public void replaceVA(int setID, String dataDomain, ContentVAType vaType) {
+	public void replaceVA(int setID, String dataDomain, String vaType) {
 		super.replaceVA(setID, dataDomain, vaType);
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
@@ -883,7 +881,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	public void replaceVA(String dataDomain, StorageVAType vaType) {
+	public void replaceVA(String dataDomain, String vaType) {
 		super.replaceVA(dataDomain, vaType);
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
@@ -1741,9 +1739,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		float fHeightElem = fHeight / iNumberOfElements;
 
-		Set<Integer> setMouseOverElements = contentSelectionManager
+		java.util.Set<Integer> setMouseOverElements = contentSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
-		Set<Integer> setSelectedElements = contentSelectionManager
+		java.util.Set<Integer> setSelectedElements = contentSelectionManager
 				.getElements(SelectionType.SELECTION);
 
 		gl.glLineWidth(2f);
@@ -2148,7 +2146,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		gl.glLineStipple(2, (short) 0xAAAA);
 
 		gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
-		Set<Integer> selectedSet = storageSelectionManager
+		java.util.Set<Integer> selectedSet = storageSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
 		int iColumnIndex = 0;
 		for (int iTempLine : storageVA) {
@@ -2188,7 +2186,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		gl.glDisable(GL.GL_LINE_STIPPLE);
 
-		Set<Integer> setMouseOverElements = contentSelectionManager
+		java.util.Set<Integer> setMouseOverElements = contentSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
 		gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 
@@ -2218,7 +2216,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			}
 		}
 
-		Set<Integer> setSelectedElements = contentSelectionManager
+		java.util.Set<Integer> setSelectedElements = contentSelectionManager
 				.getElements(SelectionType.SELECTION);
 		gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 
@@ -3299,7 +3297,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glPopAttrib();
 		}
 
-		if (!set.getStorageData(StorageVAType.STORAGE).isDefaultTree()) {
+		if (!set.getStorageData(Set.STORAGE).isDefaultTree()) {
 
 			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -3384,9 +3382,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = ContentVAType.CONTENT_CONTEXT;
+			contentVAType = Set.CONTENT_CONTEXT;
 		else
-			contentVAType = ContentVAType.CONTENT;
+			contentVAType = Set.CONTENT;
 
 		contentVA = dataDomain.getContentVA(contentVAType);
 		storageVA = dataDomain.getStorageVA(storageVAType);
@@ -5081,12 +5079,12 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	public void handleNewContentGroupInfo(ContentVAType eVAType,
-			ContentGroupList groupList, boolean bDeleteTree) {
+	public void handleNewContentGroupInfo(String vaType, ContentGroupList groupList,
+			boolean bDeleteTree) {
 
 		Tree<ClusterNode> tree = null;
 
-		if (eVAType == contentVA.getVAType()) {
+		if (vaType.equals(contentVA.getVAType())) {
 			contentVA.setGroupList(groupList);
 			tree = set.getContentData(contentVAType).getContentTree();
 		} else {

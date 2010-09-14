@@ -10,9 +10,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;
-import org.caleydo.core.data.virtualarray.ContentVAType;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -29,6 +28,7 @@ import org.osgi.framework.BundleException;
  * Restores the state of the application from a given file.
  * 
  * @author Werner Puff
+ * @author Alexander Lex
  */
 public class ProjectLoader {
 
@@ -100,11 +100,10 @@ public class ProjectLoader {
 					loadingParameters.setFileName(setFileName);
 					loadingParameters.setDataDomain((ASetBasedDataDomain) dataDomain);
 
-					HashMap<ContentVAType, ContentVirtualArray> contentVAMap =
-						new HashMap<ContentVAType, ContentVirtualArray>(6);
-					ContentVAType tmpType = ContentVAType.CONTENT;
-					contentVAMap.put(ContentVAType.CONTENT,
-						loadContentVirtualArray(unmarshaller, dirName, tmpType));
+					HashMap<String, ContentVirtualArray> contentVAMap =
+						new HashMap<String, ContentVirtualArray>(6);
+					String tmpType = Set.CONTENT;
+					contentVAMap.put(Set.CONTENT, loadContentVirtualArray(unmarshaller, dirName, tmpType));
 					// tmpType = ContentVAType.CONTENT_CONTEXT;
 					// contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
 					// tmpType));
@@ -116,10 +115,10 @@ public class ProjectLoader {
 					// contentVAMap.put(type, loadContentVirtualArray(unmarshaller, dirName, type));
 					// }
 
-					HashMap<StorageVAType, StorageVirtualArray> storageVAMap =
-						new HashMap<StorageVAType, StorageVirtualArray>(2);
+					HashMap<String, StorageVirtualArray> storageVAMap =
+						new HashMap<String, StorageVirtualArray>(2);
 
-					StorageVAType tempStorageType = StorageVAType.STORAGE;
+					String tempStorageType = Set.STORAGE;
 					storageVAMap.put(tempStorageType,
 						loadStorageVirtualArray(unmarshaller, dirName, tempStorageType));
 
@@ -127,19 +126,19 @@ public class ProjectLoader {
 					// for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
 					// storageVAMap.put(type, loadStorageVirtualArray(unmarshaller, dirName, type));
 					// }
-					
+
 					// TODO: now only the last set data domain is handled
 					initData.setDataDomain((ASetBasedDataDomain) dataDomain);
 					initData.setContentVAMap(contentVAMap);
 					initData.setStorageVAMap(storageVAMap);
-				
+
 					dataDomain.getLoadDataParameters().setGeneTreeFileName(
 						dirName + ProjectSaver.GENE_TREE_FILE_NAME);
 					dataDomain.getLoadDataParameters().setExperimentsFileName(
 						dirName + ProjectSaver.EXP_TREE_FILE_NAME);
 				}
 			}
-			
+
 			ViewList loadViews = null;
 			try {
 				loadViews =
@@ -209,15 +208,15 @@ public class ProjectLoader {
 	 * @throws JAXBException
 	 *             in case of a {@link JAXBException} while unmarshalling the xml file
 	 */
-	private ContentVirtualArray loadContentVirtualArray(Unmarshaller unmarshaller, String dir,
-		ContentVAType type) throws JAXBException {
+	private ContentVirtualArray loadContentVirtualArray(Unmarshaller unmarshaller, String dir, String type)
+		throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
 		ContentVirtualArray va = (ContentVirtualArray) unmarshaller.unmarshal(new File(fileName));
 		return va;
 	}
 
-	private StorageVirtualArray loadStorageVirtualArray(Unmarshaller unmarshaller, String dir,
-		StorageVAType type) throws JAXBException {
+	private StorageVirtualArray loadStorageVirtualArray(Unmarshaller unmarshaller, String dir, String type)
+		throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
 		StorageVirtualArray va = (StorageVirtualArray) unmarshaller.unmarshal(new File(fileName));
 		return va;

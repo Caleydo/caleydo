@@ -6,9 +6,7 @@ import java.util.Map.Entry;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.SetUtils;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -76,13 +74,13 @@ public class SerializationStartupProcedure
 			SetUtils.createStorages(loadDataParameters);
 			ISet set = SetUtils.createData(setBasedDataDomain);
 
-			HashMap<ContentVAType, ContentVirtualArray> contentVAMap = data.getContentVAMap();
-			for (Entry<ContentVAType, ContentVirtualArray> entry : contentVAMap.entrySet()) {
+			HashMap<String, ContentVirtualArray> contentVAMap = data.getContentVAMap();
+			for (Entry<String, ContentVirtualArray> entry : contentVAMap.entrySet()) {
 				setBasedDataDomain.setContentVirtualArray(entry.getKey(), entry.getValue());
 			}
 
-			HashMap<StorageVAType, StorageVirtualArray> storageVAMap = data.getStorageVAMap();
-			for (Entry<StorageVAType, StorageVirtualArray> entry : storageVAMap.entrySet()) {
+			HashMap<String, StorageVirtualArray> storageVAMap = data.getStorageVAMap();
+			for (Entry<String, StorageVirtualArray> entry : storageVAMap.entrySet()) {
 				setBasedDataDomain.setStorageVirtualArray(entry.getKey(), entry.getValue());
 			}
 			// we need the VAs to be available before the tree is initialized

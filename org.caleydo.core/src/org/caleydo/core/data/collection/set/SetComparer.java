@@ -3,7 +3,6 @@ package org.caleydo.core.data.collection.set;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 
 public class SetComparer {
@@ -11,8 +10,8 @@ public class SetComparer {
 	public static SetRelations compareSets(ISet setLeft, ISet setRight) {
 		SetRelations setRelations = new SetRelations(setLeft, setRight);
 
-		ContentVirtualArray contentVALeft = setLeft.getContentData(ContentVAType.CONTENT).getContentVA();
-		ContentVirtualArray contentVARight = setRight.getContentData(ContentVAType.CONTENT).getContentVA();
+		ContentVirtualArray contentVALeft = setLeft.getContentData(Set.CONTENT).getContentVA();
+		ContentVirtualArray contentVARight = setRight.getContentData(Set.CONTENT).getContentVA();
 
 		/** hash ID to index for faster accessibility */
 		HashMap<Integer, Integer> hashRightIndices = new HashMap<Integer, Integer>();

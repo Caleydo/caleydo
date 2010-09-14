@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @param <VAType>
  * @param <DeltaType>
  */
-public interface MetaFilter<FilterType extends Filter<?,?>> {
+public interface MetaFilter<FilterType extends Filter<?>> {
 
 	public ArrayList<FilterType> getFilterList();
 }

@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.group.StorageGroupList;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
@@ -17,7 +16,7 @@ import org.caleydo.core.manager.event.AEvent;
 public class NewStorageGroupInfoEvent
 	extends AEvent {
 
-	private StorageVAType vaType = null;
+	private String vaType = null;
 	private StorageGroupList groupList = null;
 	private boolean bDeleteTree = false;
 
@@ -32,11 +31,11 @@ public class NewStorageGroupInfoEvent
 			return false;
 	}
 
-	public void setVAType(StorageVAType vaType) {
+	public void setVAType(String vaType) {
 		this.vaType = vaType;
 	}
 
-	public StorageVAType getVAType() {
+	public String getVAType() {
 		return vaType;
 	}
 

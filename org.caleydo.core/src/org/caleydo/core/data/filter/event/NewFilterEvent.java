@@ -9,7 +9,7 @@ import org.caleydo.core.manager.event.AEvent;
  * @author Alexander Lex
  * @param <FilterType>
  */
-public abstract class NewFilterEvent<FilterType extends Filter<?, ?>>
+public abstract class NewFilterEvent<FilterType extends Filter<?>>
 	extends AEvent {
 
 	FilterType filter = null;

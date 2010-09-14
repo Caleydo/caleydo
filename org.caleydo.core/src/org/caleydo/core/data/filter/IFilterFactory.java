@@ -6,7 +6,7 @@ package org.caleydo.core.data.filter;
  * @author Alexander Lex
  * @param <FilterType>
  */
-public interface IFilterFactory<FilterType extends Filter<?, ?>> {
+public interface IFilterFactory<FilterType extends Filter<?>> {
 
 	/**
 	 * Creates a new FilterType object.

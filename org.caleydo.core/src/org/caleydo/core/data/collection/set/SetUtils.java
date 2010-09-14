@@ -26,8 +26,6 @@ import org.caleydo.core.data.group.ContentGroupList;
 import org.caleydo.core.data.group.Group;
 import org.caleydo.core.data.group.StorageGroupList;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ContentVAType;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
@@ -272,9 +270,9 @@ public class SetUtils {
 		for (int iStorageID : storageIDs) {
 			set.addStorage(iStorageID);
 		}
-		
+
 		set.finalizeAddedStorages();
-		
+
 	}
 
 	/**
@@ -288,7 +286,7 @@ public class SetUtils {
 		String xml = null;
 
 		try {
-			xml = getTreeClusterXml(set.getContentData(ContentVAType.CONTENT).getContentTree());
+			xml = getTreeClusterXml(set.getContentData(Set.CONTENT).getContentTree());
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
@@ -311,7 +309,7 @@ public class SetUtils {
 		String xml = null;
 
 		try {
-			xml = getTreeClusterXml(set.getStorageData(StorageVAType.STORAGE).getStorageTree());
+			xml = getTreeClusterXml(set.getStorageData(Set.STORAGE).getStorageTree());
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
@@ -411,7 +409,7 @@ public class SetUtils {
 
 					tree = treePorter.importTree(geneTreeFileName, set.getDataDomain().getContentIDType());
 					tree.setUseDefaultComparator(false);
-					set.getContentData(ContentVAType.CONTENT).setContentTree(tree);
+					set.getContentData(Set.CONTENT).setContentTree(tree);
 				}
 				catch (JAXBException e) {
 					e.printStackTrace();
@@ -434,7 +432,7 @@ public class SetUtils {
 				Tree<ClusterNode> tree;
 				try {
 					tree = treePorter.importStorageTree(experimentsTreeFileName);
-					set.getStorageData(StorageVAType.STORAGE).setStorageTree(tree);
+					set.getStorageData(Set.STORAGE).setStorageTree(tree);
 				}
 				catch (JAXBException e) {
 					e.printStackTrace();
@@ -472,7 +470,7 @@ public class SetUtils {
 	 * @param groupInfo
 	 *            the array list extracted from the file
 	 */
-	public static void setContentGroupList(Set set, ContentVAType vaType, int[] groupInfo) {
+	public static void setContentGroupList(Set set, String vaType, int[] groupInfo) {
 
 		int cluster = 0, cnt = 0;
 
@@ -504,7 +502,7 @@ public class SetUtils {
 	 * @param groupInfo
 	 *            the array list extracted from the file
 	 */
-	public static void setStorageGroupList(Set set, StorageVAType vaType, int[] groupInfo) {
+	public static void setStorageGroupList(Set set, String vaType, int[] groupInfo) {
 		int cluster = 0, cnt = 0;
 
 		StorageGroupList storageGroupList = set.getStorageData(vaType).getStorageVA().getGroupList();
@@ -533,7 +531,7 @@ public class SetUtils {
 	 * @param vaType
 	 * @param groupReps
 	 */
-	public static void setContentGroupRepresentatives(Set set, ContentVAType vaType, int[] groupReps) {
+	public static void setContentGroupRepresentatives(Set set, String vaType, int[] groupReps) {
 
 		int group = 0;
 
@@ -557,7 +555,7 @@ public class SetUtils {
 	 * @param vaType
 	 * @param groupReps
 	 */
-	public static void setStorageGroupRepresentatives(Set set, StorageVAType vaType, int[] groupReps) {
+	public static void setStorageGroupRepresentatives(Set set, String vaType, int[] groupReps) {
 
 		int group = 0;
 

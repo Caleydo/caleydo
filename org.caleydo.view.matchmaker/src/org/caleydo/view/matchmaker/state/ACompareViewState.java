@@ -18,7 +18,6 @@ import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -785,7 +784,7 @@ public abstract class ACompareViewState {
 			ContentGroupList contentGroupList);
 
 	public abstract void handleReplaceContentVA(int setID, String dataDomain,
-			ContentVAType vaType);
+			String vaType);
 
 	public abstract void init(GL gl);
 

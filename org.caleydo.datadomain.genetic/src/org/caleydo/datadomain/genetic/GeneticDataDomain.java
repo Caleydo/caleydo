@@ -10,16 +10,11 @@ import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
-import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -198,7 +193,6 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		this.pathwayViewerMode = pathwayViewerMode;
 	}
 
-
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
@@ -282,7 +276,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 	@Override
 	public void handleForeignContentVAUpdate(int setID, String dataDomainType,
-			ContentVAType vaType, ContentVirtualArray virtualArray) {
+			String vaType, ContentVirtualArray virtualArray) {
 
 		if (dataDomainType.equals(CLINICAL_DATADOMAIN_TYPE)) {
 			StorageVirtualArray newStorageVirtualArray = new StorageVirtualArray();
@@ -296,7 +290,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 			ReplaceStorageVAInUseCaseEvent event = new ReplaceStorageVAInUseCaseEvent();
 			event.setDataDomainType(this.dataDomainType);
-			event.setVAType(StorageVAType.STORAGE);
+			event.setVAType(Set.STORAGE);
 			event.setVirtualArray(newStorageVirtualArray);
 
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
@@ -310,13 +304,12 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		// FIXME - this is a hack for one special dataset (asslaber)
 		Set clinicalSet = ((ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
 				CLINICAL_DATADOMAIN_TYPE)).getSet();
-		int storageID = clinicalSet.getStorageData(StorageVAType.STORAGE).getStorageVA()
-				.get(1);
+		int storageID = clinicalSet.getStorageData(Set.STORAGE).getStorageVA().get(1);
 
 		INominalStorage clinicalStorage = (INominalStorage<String>) clinicalSet
 				.get(storageID);
-		StorageVirtualArray origianlGeneticStorageVA = set.getStorageData(
-				StorageVAType.STORAGE).getStorageVA();
+		StorageVirtualArray origianlGeneticStorageVA = set.getStorageData(Set.STORAGE)
+				.getStorageVA();
 
 		String label = (String) clinicalStorage.getRaw(clinicalContentIndex);
 

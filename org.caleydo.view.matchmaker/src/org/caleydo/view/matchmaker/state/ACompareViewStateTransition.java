@@ -16,7 +16,6 @@ import org.caleydo.core.data.group.ContentGroupList;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -172,7 +171,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void handleReplaceContentVA(int setID, String dataDomain, ContentVAType vaType) {
+	public void handleReplaceContentVA(int setID, String dataDomain, String vaType) {
 	}
 
 	@Override

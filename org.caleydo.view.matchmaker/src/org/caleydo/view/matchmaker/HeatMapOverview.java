@@ -10,9 +10,7 @@ import org.caleydo.core.data.group.ContentGroupList;
 import org.caleydo.core.data.group.Group;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -238,8 +236,8 @@ public class HeatMapOverview {
 
 	public void setSet(ISet set) {
 		this.set = set;
-		contentVA = set.getContentData(ContentVAType.CONTENT).getContentVA();
-		storageVA = set.getStorageData(StorageVAType.STORAGE).getStorageVA();
+		contentVA = set.getContentData(ISet.CONTENT).getContentVA();
+		storageVA = set.getStorageData(ISet.STORAGE).getStorageVA();
 
 		updateHeatMapTextures(null);
 	}

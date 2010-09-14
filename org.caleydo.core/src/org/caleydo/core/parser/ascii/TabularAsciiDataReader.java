@@ -11,8 +11,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
-import org.caleydo.core.data.virtualarray.ContentVAType;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.util.logging.Logger;
@@ -319,24 +317,23 @@ public class TabularAsciiDataReader
 				case GROUP_NUMBER:
 
 					int[] iArGroupInfo = alGroupInfo.get(0);
-					SetUtils.setContentGroupList((Set) set, ContentVAType.CONTENT, iArGroupInfo);
+					SetUtils.setContentGroupList((Set) set, Set.CONTENT, iArGroupInfo);
 
 					iIntArrayIndex++;
 					break;
 				case GROUP_REPRESENTATIVE:
 
 					int[] iArGroupRepr = alGroupInfo.get(1);
-					SetUtils.setContentGroupRepresentatives((Set) set, ContentVAType.CONTENT, iArGroupRepr);
+					SetUtils.setContentGroupRepresentatives((Set) set, Set.CONTENT, iArGroupRepr);
 
 					iIntArrayIndex++;
 					break;
 				case ABORT:
 					if (bUseExperimentClusterInfo) {
 						iArGroupInfo = alGroupInfo.get(2);
-						SetUtils.setStorageGroupList((Set) set, StorageVAType.STORAGE, iArGroupInfo);
+						SetUtils.setStorageGroupList((Set) set, Set.STORAGE, iArGroupInfo);
 						iArGroupRepr = alGroupInfo.get(3);
-						SetUtils.setStorageGroupRepresentatives((Set) set, StorageVAType.STORAGE,
-							iArGroupRepr);
+						SetUtils.setStorageGroupRepresentatives((Set) set, Set.STORAGE, iArGroupRepr);
 					}
 					return;
 

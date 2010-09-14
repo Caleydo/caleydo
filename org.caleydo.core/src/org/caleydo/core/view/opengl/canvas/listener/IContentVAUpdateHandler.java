@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ReplaceVAEvent;
@@ -28,5 +27,5 @@ public interface IContentVAUpdateHandler
 	 * @param vaType
 	 *            the type of the VA which is updated
 	 */
-	public void replaceVA(int setID, String dataDomainType, ContentVAType vaType);
+	public void replaceVA(int setID, String dataDomainType, String vaType);
 }

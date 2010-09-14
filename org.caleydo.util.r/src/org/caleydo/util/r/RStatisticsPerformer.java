@@ -3,13 +3,12 @@ package org.caleydo.util.r;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.ContentMetaFilter;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.manager.GeneralManager;
@@ -223,18 +222,18 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 		for (ISet set : sets) {
 
-			ContentVADelta contentVADelta = new ContentVADelta(ContentVAType.CONTENT, set
+			ContentVADelta contentVADelta = new ContentVADelta(Set.CONTENT, set
 					.getDataDomain().getContentIDType());
-			ContentVirtualArray contentVA = set.getContentData(ContentVAType.CONTENT)
+			ContentVirtualArray contentVA = set.getContentData(Set.CONTENT)
 					.getContentVA();
 
-			double[] pValueVector = new double[set.getContentData(ContentVAType.CONTENT)
+			double[] pValueVector = new double[set.getContentData(Set.CONTENT)
 					.getContentVA().size()];
 
 			for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 
-				StorageVirtualArray storageVA1 = set
-						.getStorageData(StorageVAType.STORAGE).getStorageVA();
+				StorageVirtualArray storageVA1 = set.getStorageData(Set.STORAGE)
+						.getStorageVA();
 
 				double[] compareVec1 = new double[storageVA1.size()];
 
@@ -266,20 +265,19 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			ContentFilter contentFilter = new ContentFilter();
 			contentFilter.setSet(set);
 			contentFilter.setDataDomain(set.getDataDomain());
-			contentFilter.setLabel("p-Value Reduction of " +set.getLabel());
-			
+			contentFilter.setLabel("p-Value Reduction of " + set.getLabel());
+
 			if (metaFilter != null) {
 				metaFilter.getFilterList().add(contentFilter);
-				metaFilter.setDataDomain(set.getDataDomain());				
-			}
-			else {
+				metaFilter.setDataDomain(set.getDataDomain());
+			} else {
 				FilterRepresentationPValue filterRep = new FilterRepresentationPValue();
 				filterRep.setFilter(contentFilter);
 				contentFilter.setFilterRep(filterRep);
 				contentFilter.openRepresentation();
 			}
 		}
-		
+
 		if (metaFilter != null)
 			metaFilter.openRepresentation();
 	}
@@ -298,11 +296,11 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		ArrayList<Double> pValueVector = new ArrayList<Double>();
 
 		for (int contentIndex = 0; contentIndex < set1.get(
-				set1.getStorageData(StorageVAType.STORAGE).getStorageVA().get(0)).size(); contentIndex++) {
+				set1.getStorageData(Set.STORAGE).getStorageVA().get(0)).size(); contentIndex++) {
 
-			StorageVirtualArray storageVA1 = set1.getStorageData(StorageVAType.STORAGE)
+			StorageVirtualArray storageVA1 = set1.getStorageData(Set.STORAGE)
 					.getStorageVA();
-			StorageVirtualArray storageVA2 = set2.getStorageData(StorageVAType.STORAGE)
+			StorageVirtualArray storageVA2 = set2.getStorageData(Set.STORAGE)
 					.getStorageVA();
 
 			double[] compareVec1 = new double[storageVA1.size()];

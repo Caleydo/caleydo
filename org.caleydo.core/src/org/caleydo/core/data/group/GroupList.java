@@ -17,7 +17,7 @@ import org.caleydo.core.util.clusterer.ClusterHelper;
 
 @XmlType
 @XmlSeeAlso({ ContentGroupList.class, StorageGroupList.class })
-public abstract class GroupList<ConcreteType extends IGroupList<ConcreteType, VA, VADelta>, VA extends VirtualArray<?, ?, ?, ?>, VADelta extends VirtualArrayDelta<?, ?>>
+public abstract class GroupList<ConcreteType extends IGroupList<ConcreteType, VA, VADelta>, VA extends VirtualArray<?, ?, ?>, VADelta extends VirtualArrayDelta<?>>
 	implements IGroupList<ConcreteType, VA, VADelta> {
 
 	private ArrayList<Group> groups;

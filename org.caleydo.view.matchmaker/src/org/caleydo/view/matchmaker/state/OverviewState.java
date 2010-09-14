@@ -10,7 +10,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -356,7 +355,7 @@ public class OverviewState extends ACompareViewStateStatic {
 		int numTotalExperiments = 0;
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			numTotalExperiments += heatMapWrapper.getSet()
-					.getStorageData(StorageVAType.STORAGE).getStorageVA().size();
+					.getStorageData(ISet.STORAGE).getStorageVA().size();
 		}
 		float heatMapWrapperGapWidth = (1 - HEATMAP_WRAPPER_SPACE_PORTION)
 				* viewFrustum.getWidth() / (float) (heatMapWrappers.size() - 1);
@@ -365,7 +364,7 @@ public class OverviewState extends ACompareViewStateStatic {
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
 			AHeatMapLayout layout = layouts.get(i);
 			int numExperiments = heatMapWrapper.getSet()
-					.getStorageData(StorageVAType.STORAGE).getStorageVA().size();
+					.getStorageData(ISet.STORAGE).getStorageVA().size();
 			// TODO: Maybe get info in layout from heatmapwrapper
 			layout.setTotalSpaceForAllHeatMapWrappers(spaceForHeatMapWrapperOverviews);
 			layout.setNumExperiments(numExperiments);

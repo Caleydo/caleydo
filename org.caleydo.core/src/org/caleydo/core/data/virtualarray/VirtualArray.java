@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -25,9 +26,9 @@ import org.caleydo.core.util.clusterer.ClusterNode;
  */
 @XmlType
 @XmlRootElement
-public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteType, VAType, VADelta, GroupType>, VAType extends IVAType, VADelta extends VirtualArrayDelta<?, VAType>, GroupType extends GroupList<GroupType, ConcreteType, VADelta>>
+public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteType, VADelta, GroupType>, VADelta extends VirtualArrayDelta<?>, GroupType extends GroupList<GroupType, ConcreteType, VADelta>>
 	extends AUniqueObject
-	implements IVirtualArray<ConcreteType, VAType, VADelta, GroupType> {
+	implements IVirtualArray<ConcreteType, VADelta, GroupType> {
 
 	ArrayList<Integer> virtualArray;
 	HashMap<Integer, ArrayList<Integer>> hashIDToIndex;
@@ -37,8 +38,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	/** Used to check whether elements to be removed are in descending order */
 	int lastRemovedIndex = -1;
-
-	VAType vaType;
+	
+	private String vaType;
 
 	public VirtualArray() {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
@@ -48,7 +49,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	/**
 	 * Constructor, creates an empty Virtual Array
 	 */
-	public VirtualArray(VAType vaType) {
+	public VirtualArray(String vaType) {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
 		this.vaType = vaType;
 		this.virtualArray = new ArrayList<Integer>();
@@ -63,7 +64,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * 
 	 * @param initialList
 	 */
-	public VirtualArray(VAType vaType, List<Integer> initialList) {
+	public VirtualArray(String vaType, List<Integer> initialList) {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
 		this.vaType = vaType;
 		this.virtualArray = new ArrayList<Integer>();
@@ -71,7 +72,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	}
 
 	@Override
-	public VAType getVAType() {
+	public String getVAType() {
 		return vaType;
 	}
 
@@ -387,11 +388,11 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		this.lastRemovedIndex = lastRemovedIndex;
 	}
 
-	public VAType getVaType() {
+	public String getVaType() {
 		return vaType;
 	}
 
-	public void setVaType(VAType vaType) {
+	public void setVaType(String vaType) {
 		this.vaType = vaType;
 	}
 

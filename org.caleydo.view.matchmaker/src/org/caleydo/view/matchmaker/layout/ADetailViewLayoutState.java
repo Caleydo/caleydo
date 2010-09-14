@@ -5,8 +5,8 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.group.Group;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.matchmaker.HeatMapWrapper;
@@ -233,7 +233,7 @@ public abstract class ADetailViewLayoutState {
 		Vec3f detailPosition = layout.getDetailPosition();
 		float currentPositionY = detailPosition.y() + getDetailHeight();
 
-		for (Group group : heatMapWrapper.getSet().getContentData(ContentVAType.CONTENT)
+		for (Group group : heatMapWrapper.getSet().getContentData(ISet.CONTENT)
 				.getContentVA().getGroupList()) {
 
 			if (!selectedGroups.containsKey(group))

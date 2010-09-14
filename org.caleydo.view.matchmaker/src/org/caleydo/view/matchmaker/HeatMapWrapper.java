@@ -20,7 +20,6 @@ import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -117,11 +116,11 @@ public class HeatMapWrapper {
 
 		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 				50, 0, 50, -20, 20);
-		
+
 		GLHeatMap heatMap = new GLHeatMap(parentView.getParentGLCanvas(), viewFrustum);
 		heatMap.setRemoteRenderingGLView(parentView);
 		heatMap.setDataDomain(dataDomain);
-		heatMap.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
+		heatMap.setContentVAType(GLHeatMap.CONTENT_EMBEDDED_VA);
 
 		if (layout instanceof HeatMapLayoutDetailViewRight)
 			heatMap.setRenderTemplate(new ComparerDetailTemplate(false));
@@ -142,10 +141,11 @@ public class HeatMapWrapper {
 		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 				50, 0, 50, -20, 20);
 
-		dendrogram = new GLDendrogram<ContentGroupList>(glParentView.getParentGLCanvas(), viewFrustum, true);
+		dendrogram = new GLDendrogram<ContentGroupList>(glParentView.getParentGLCanvas(),
+				viewFrustum, true);
 		dendrogram.setDataDomain(dataDomain);
 		dendrogram.setRemoteRenderingGLView(parentView);
-		dendrogram.setContentVAType(ContentVAType.CONTENT);
+		dendrogram.setContentVAType(ISet.CONTENT);
 		dendrogram.initData();
 		dendrogram.setRenderUntilCut(false);
 		dendrogram.initRemote(gl, glParentView, glMouseListener, infoAreaManager);
@@ -157,7 +157,7 @@ public class HeatMapWrapper {
 
 	public void setSet(ISet set) {
 		this.set = set;
-		contentVA = set.getContentData(ContentVAType.CONTENT).getContentVA();
+		contentVA = set.getContentData(ISet.CONTENT).getContentVA();
 
 		// FIXME: Can we do this? Shall we do this in some other way? Do it also
 		// with dendrogram.
@@ -810,7 +810,7 @@ public class HeatMapWrapper {
 		}
 	}
 
-	public void handleReplaceContentVA(IDCategory idCategory, ContentVAType vaType) {
+	public void handleReplaceContentVA(IDCategory idCategory, String vaType) {
 
 		contentVA = set.getContentData(vaType).getContentVA();
 	}

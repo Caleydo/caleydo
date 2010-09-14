@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -19,7 +20,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
@@ -736,8 +736,8 @@ public class GLPathway extends AGLView implements
 					EManagedObjectType.CONNECTION);
 			selectionManager
 					.addConnectionID(iConnectionID, tmpVertexGraphItemRep.getId());
-			connectedElementRepresentationManager.clear(mappingDataDomain
-					.getContentIDType(), selectionType);
+			connectedElementRepresentationManager.clear(
+					mappingDataDomain.getContentIDType(), selectionType);
 			// gLPathwayContentCreator
 			// .performIdenticalNodeHighlighting(selectionType);
 
@@ -804,10 +804,9 @@ public class GLPathway extends AGLView implements
 	@Override
 	public void broadcastElements(EVAOperation type) {
 
-		ContentVADelta delta = new ContentVADelta(ContentVAType.CONTENT_CONTEXT,
+		ContentVADelta delta = new ContentVADelta(ISet.CONTENT_CONTEXT,
 				dataDomain.getDavidIDType());
-		IDMappingManager idMappingManager = generalManager.getIDMappingManager();
-
+		
 		for (IGraphItem tmpPathwayVertexGraphItemRep : pathway
 				.getAllItemsByKind(EGraphItemKind.NODE)) {
 			for (IGraphItem tmpPathwayVertexGraphItem : tmpPathwayVertexGraphItemRep

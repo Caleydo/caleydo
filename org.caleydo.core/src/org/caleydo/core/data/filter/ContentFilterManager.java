@@ -1,12 +1,12 @@
 package org.caleydo.core.data.filter;
 
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.filter.event.NewContentFilterEvent;
 import org.caleydo.core.data.filter.event.NewContentFilterListener;
 import org.caleydo.core.data.filter.event.ReEvaluateContentFilterListEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateContentFilterListListener;
 import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveContentFilterListener;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -21,7 +21,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
  * @author Alexander Lex
  */
 public class ContentFilterManager
-	extends FilterManager<ContentVAType, ContentVADelta, ContentFilter, ContentVirtualArray>
+	extends FilterManager<ContentVADelta, ContentFilter, ContentVirtualArray>
 	implements IContentVAUpdateHandler {
 
 	private ContentVAUpdateListener contentVAUpdateListener;
@@ -30,11 +30,11 @@ public class ContentFilterManager
 	private ReEvaluateContentFilterListListener reEvaluateContentFilterListListener;
 
 	public ContentFilterManager(ASetBasedDataDomain dataDomain) {
-		super(dataDomain, dataDomain.getContentVA(ContentVAType.CONTENT), new ContentFilterFactory());
+		super(dataDomain, dataDomain.getContentVA(Set.CONTENT), new ContentFilterFactory());
 	}
 
 	@Override
-	public void replaceVA(int setID, String dataDomainType, ContentVAType vaType) {
+	public void replaceVA(int setID, String dataDomainType, String vaType) {
 		// TODO Auto-generated method stub
 
 	}
@@ -101,7 +101,7 @@ public class ContentFilterManager
 	@Override
 	protected void triggerReplaceVAEvent() {
 		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent();
-		event.setVAType(ContentVAType.CONTENT);
+		event.setVAType(Set.CONTENT);
 		event.setVirtualArray(currentVA);
 		event.setSender(this);
 		event.setDataDomainType(dataDomain.getDataDomainType());

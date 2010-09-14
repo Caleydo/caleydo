@@ -5,17 +5,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Set;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -54,7 +52,7 @@ public class SetExporter {
 			IDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer iContentIndex : alGenes) {
 				if (set.getDataDomain().getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
-					Set<String> setRefSeqIDs =
+					java.util.Set<String> setRefSeqIDs =
 						iDMappingManager.getIDAsSet(set.getDataDomain().getContentIDType(), targetIDType,
 							iContentIndex);
 
@@ -96,12 +94,12 @@ public class SetExporter {
 
 		if (eWhichViewToExport == EWhichViewToExport.BUCKET) {
 
-			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT_CONTEXT);
-			storageVA = dataDomain.getStorageVA(StorageVAType.STORAGE);
+			contentVA = dataDomain.getContentVA(Set.CONTENT_CONTEXT);
+			storageVA = dataDomain.getStorageVA(Set.STORAGE);
 		}
 		else if (eWhichViewToExport == EWhichViewToExport.WHOLE_DATA) {
-			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT);
-			storageVA = dataDomain.getStorageVA(StorageVAType.STORAGE);
+			contentVA = dataDomain.getContentVA(Set.CONTENT);
+			storageVA = dataDomain.getStorageVA(Set.STORAGE);
 		}
 
 		if (contentVA == null || storageVA == null)
@@ -136,7 +134,7 @@ public class SetExporter {
 					// of
 					// values, depending on the IDType that has been specified when loading expression data.
 					// Possibly a different handling of the Set is required.
-					Set<String> setRefSeqIDs =
+					java.util.Set<String> setRefSeqIDs =
 						iDMappingManager.getIDAsSet(set.getDataDomain().getContentIDType(), targetIDType,
 							iContentIndex);
 
@@ -234,14 +232,14 @@ public class SetExporter {
 	public void exportTrees(ISet set, String directory) {
 		try {
 			// export gene cluster tree to own xml file
-			Tree<ClusterNode> tree = set.getContentData(ContentVAType.CONTENT).getContentTree();
+			Tree<ClusterNode> tree = set.getContentData(Set.CONTENT).getContentTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(set.getDataDomain());
 				treePorter.exportTree(directory + "/horizontal_gene.xml", tree);
 			}
 			// export experiment cluster tree to own xml file
-			tree = set.getStorageData(StorageVAType.STORAGE).getStorageTree();
+			tree = set.getStorageData(Set.STORAGE).getStorageTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(set.getDataDomain());

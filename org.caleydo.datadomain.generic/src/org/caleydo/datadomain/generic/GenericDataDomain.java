@@ -5,7 +5,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
@@ -53,7 +52,7 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 
 	@Override
 	public void handleForeignContentVAUpdate(int setID, String dataDomainType,
-			ContentVAType vaType, ContentVirtualArray virtualArray) {
+			String vaType, ContentVirtualArray virtualArray) {
 		// TODO Auto-generated method stub
 
 	}

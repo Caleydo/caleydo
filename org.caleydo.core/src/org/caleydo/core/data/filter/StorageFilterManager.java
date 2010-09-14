@@ -1,12 +1,12 @@
 package org.caleydo.core.data.filter;
 
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.filter.event.NewStorageFilterEvent;
 import org.caleydo.core.data.filter.event.NewStorageFilterListener;
 import org.caleydo.core.data.filter.event.ReEvaluateStorageFilterListEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateStorageFilterListListener;
 import org.caleydo.core.data.filter.event.RemoveStorageFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveStorageFilterListener;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -21,7 +21,7 @@ import org.caleydo.core.view.opengl.canvas.listener.StorageVAUpdateListener;
  * @author Alexander Lex
  */
 public class StorageFilterManager
-	extends FilterManager<StorageVAType, StorageVADelta, StorageFilter, StorageVirtualArray>
+	extends FilterManager<StorageVADelta, StorageFilter, StorageVirtualArray>
 	implements IStorageVAUpdateHandler {
 
 	private StorageVAUpdateListener storageVAUpdateListener;
@@ -30,7 +30,7 @@ public class StorageFilterManager
 	private ReEvaluateStorageFilterListListener reEvaluateStorageFilterListListener;
 
 	public StorageFilterManager(ASetBasedDataDomain dataDomain) {
-		super(dataDomain, dataDomain.getStorageVA(StorageVAType.STORAGE), new StorageFilterFactory());
+		super(dataDomain, dataDomain.getStorageVA("STORAGE"), new StorageFilterFactory());
 
 	}
 
@@ -91,7 +91,7 @@ public class StorageFilterManager
 	}
 
 	@Override
-	public void replaceVA(String dataDomain, StorageVAType vaType) {
+	public void replaceVA(String dataDomain, String vaType) {
 
 	}
 
@@ -107,7 +107,7 @@ public class StorageFilterManager
 	@Override
 	protected void triggerReplaceVAEvent() {
 		ReplaceStorageVAInUseCaseEvent event = new ReplaceStorageVAInUseCaseEvent();
-		event.setVAType(StorageVAType.STORAGE);
+		event.setVAType(Set.STORAGE);
 		event.setVirtualArray(currentVA);
 		event.setSender(this);
 		event.setDataDomainType(dataDomain.getDataDomainType());

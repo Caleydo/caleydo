@@ -6,15 +6,13 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 
 /**
- * Bean that holds the initialization data for new started caleydo application. Used to store and
- * restore project or to sync remote clients.
+ * Bean that holds the initialization data for new started caleydo application. Used to store and restore
+ * project or to sync remote clients.
  * 
  * @author Werner Puff
  * @author Alexander Lex
@@ -36,8 +34,8 @@ public class DataInitializationData {
 	private String experimentClusterTree;
 
 	/** virtual arrays of this application stored in relation with their their-key */
-	private HashMap<ContentVAType, ContentVirtualArray> contentVAMap;
-	private HashMap<StorageVAType, StorageVirtualArray> storageVAMap;
+	private HashMap<String, ContentVirtualArray> contentVAMap;
+	private HashMap<String, StorageVirtualArray> storageVAMap;
 
 	/** list of views in use, not used to sync remote clients */
 	private List<String> views;
@@ -58,19 +56,19 @@ public class DataInitializationData {
 		this.setFileContent = setFileContent;
 	}
 
-	public HashMap<ContentVAType, ContentVirtualArray> getContentVAMap() {
+	public HashMap<String, ContentVirtualArray> getContentVAMap() {
 		return contentVAMap;
 	}
 
-	public void setContentVAMap(HashMap<ContentVAType, ContentVirtualArray> contentVAMap) {
+	public void setContentVAMap(HashMap<String, ContentVirtualArray> contentVAMap) {
 		this.contentVAMap = contentVAMap;
 	}
 
-	public HashMap<StorageVAType, StorageVirtualArray> getStorageVAMap() {
+	public HashMap<String, StorageVirtualArray> getStorageVAMap() {
 		return storageVAMap;
 	}
 
-	public void setStorageVAMap(HashMap<StorageVAType, StorageVirtualArray> storageVAMap) {
+	public void setStorageVAMap(HashMap<String, StorageVirtualArray> storageVAMap) {
 		this.storageVAMap = storageVAMap;
 	}
 

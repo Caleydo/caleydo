@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.group.ContentGroupList;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
@@ -17,7 +16,7 @@ import org.caleydo.core.manager.event.AEvent;
 public class NewContentGroupInfoEvent
 	extends AEvent {
 
-	private ContentVAType vaType = null;
+	private String vaType = null;
 	private ContentGroupList groupList = null;
 	private boolean bDeleteTree = false;
 	private int setID;
@@ -36,11 +35,11 @@ public class NewContentGroupInfoEvent
 			return false;
 	}
 
-	public void setVAType(ContentVAType vaType) {
+	public void setVAType(String vaType) {
 		this.vaType = vaType;
 	}
 
-	public ContentVAType getVAType() {
+	public String getVAType() {
 		return vaType;
 	}
 

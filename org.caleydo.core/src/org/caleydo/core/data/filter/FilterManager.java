@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
-import org.caleydo.core.data.virtualarray.IVAType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.GeneralManager;
@@ -32,7 +31,7 @@ import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
  * @param <FilterType>
  * @param <VA>
  */
-public abstract class FilterManager<VAType extends IVAType, DeltaType extends VirtualArrayDelta<?, VAType>, FilterType extends Filter<VAType, DeltaType>, VA extends VirtualArray<?, VAType, DeltaType, ?>>
+public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, FilterType extends Filter<DeltaType>, VA extends VirtualArray<?, DeltaType, ?>>
 	implements IListenerOwner {
 
 	private final IFilterFactory<FilterType> factory;
@@ -143,7 +142,7 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 		return filterPipe;
 	}
 
-	public void handleRemoveFilter(Filter<?, ?> filter) {
+	public void handleRemoveFilter(Filter<?> filter) {
 
 		Iterator<FilterType> filterIterator = filterPipe.iterator();
 		while (filterIterator.hasNext()) {
@@ -169,7 +168,7 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 		currentVA = (VA) baseVA.clone();
 		for (FilterType filter : filterPipe) {
 			if (filter instanceof MetaFilter) {
-				for (Filter<VAType, DeltaType> subFilter : ((MetaFilter<FilterType>) filter).getFilterList()) {
+				for (Filter<DeltaType> subFilter : ((MetaFilter<FilterType>) filter).getFilterList()) {
 					currentVA.setDelta(subFilter.getVADelta());
 				}
 			}

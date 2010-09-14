@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 
@@ -29,12 +28,12 @@ public class ReplaceContentVAInUseCaseEvent
 		// nothing to initialize here
 	}
 
-	public ReplaceContentVAInUseCaseEvent(ISet set, String dataDomain, ContentVAType vaType,
+	public ReplaceContentVAInUseCaseEvent(ISet set, String dataDomain, String vaType,
 		ContentVirtualArray virtualArray) {
 		super(set, dataDomain, vaType, virtualArray);
 	}
 
-	public ReplaceContentVAInUseCaseEvent(String dataDomain, ContentVAType vaType,
+	public ReplaceContentVAInUseCaseEvent(String dataDomain, String vaType,
 		ContentVirtualArray virtualArray) {
 		super(dataDomain, vaType, virtualArray);
 	}

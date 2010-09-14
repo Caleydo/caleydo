@@ -1,6 +1,6 @@
 package org.caleydo.view.matchmaker.listener;
 
-import org.caleydo.core.data.virtualarray.ContentVAType;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;
@@ -12,7 +12,7 @@ public class NewContentGroupInfoEventListener extends AEventListener<GLMatchmake
 	public void handleEvent(AEvent event) {
 		if (event instanceof NewContentGroupInfoEvent) {
 			NewContentGroupInfoEvent newContentGroupInfoEvent = (NewContentGroupInfoEvent) event;
-			if (newContentGroupInfoEvent.getVAType() == ContentVAType.CONTENT) {
+			if (newContentGroupInfoEvent.getVAType() == ISet.CONTENT) {
 				handler.handleContentGroupListUpdate(newContentGroupInfoEvent.getSetID(),
 						newContentGroupInfoEvent.getGroupList());
 			}

@@ -10,9 +10,7 @@ import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.collection.set.StorageData;
 import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -36,6 +34,10 @@ import org.caleydo.core.util.clusterer.ClusterState;
  */
 public interface ISet
 	extends IUniqueObject, ICollection {
+	
+	public static final String STORAGE = "STORAGE";
+	public static final String CONTENT = "CONTENT";
+	public static final String CONTENT_CONTEXT = "CONTENT_CONTEXT";
 
 	/**
 	 * Set the data domain that is responsible for the set
@@ -154,7 +156,7 @@ public interface ISet
 	 * @param vaType
 	 * @return
 	 */
-	public StorageData getStorageData(StorageVAType vaType);
+	public StorageData getStorageData(String vaType);
 
 	/**
 	 * Returns a {@link ContentData} object for the specified ContentVAType. The ContentData provides access
@@ -163,7 +165,7 @@ public interface ISet
 	 * @param vaType
 	 * @return
 	 */
-	public ContentData getContentData(ContentVAType vaType);
+	public ContentData getContentData(String vaType);
 
 	/**
 	 * Iterate over the storages based on a virtual array
@@ -171,7 +173,7 @@ public interface ISet
 	 * @param type
 	 * @return
 	 */
-	public Iterator<IStorage> iterator(StorageVAType type);
+	public Iterator<IStorage> iterator(String type);
 
 	/**
 	 * Set a contentVA. The contentVA in the contentData object is replaced and the other elements in the
@@ -180,7 +182,7 @@ public interface ISet
 	 * @param vaType
 	 * @param virtualArray
 	 */
-	public void setContentVA(ContentVAType vaType, ContentVirtualArray virtualArray);
+	public void setContentVA(String vaType, ContentVirtualArray virtualArray);
 
 	/**
 	 * Sets a storageVA. The storageVA in the storageData object is replaced and the other elements in the
@@ -189,7 +191,7 @@ public interface ISet
 	 * @param vaType
 	 * @param virtualArray
 	 */
-	public void setStorageVA(StorageVAType vaType, StorageVirtualArray virtualArray);
+	public void setStorageVA(String vaType, StorageVirtualArray virtualArray);
 
 	/**
 	 * Clusters a Storage
@@ -237,5 +239,19 @@ public interface ISet
 	 * Restores the original virtual array using the whole set data.
 	 */
 	public void restoreOriginalContentVA();
+
+	/**
+	 * Return a list of content VA types that have registered {@link ContentData}.
+	 * 
+	 * @return
+	 */
+	public java.util.Set<String> getRegisteredContentVATypes();
+
+	/**
+	 * Return a list of storage VA types that have registered {@link StorageData}
+	 * 
+	 * @return
+	 */
+	public java.util.Set<String> getRegisteredStorageVATypes();
 
 }

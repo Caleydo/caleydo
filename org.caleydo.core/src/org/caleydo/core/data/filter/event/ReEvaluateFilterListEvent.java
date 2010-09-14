@@ -16,7 +16,7 @@ import org.caleydo.core.manager.event.AEvent;
  * 
  * @author Alexander Lex
  */
-public abstract class ReEvaluateFilterListEvent<FilterType extends Filter<?, ?>>
+public abstract class ReEvaluateFilterListEvent<FilterType extends Filter<?>>
 	extends AEvent {
 
 	ArrayList<FilterType> filterList = null;

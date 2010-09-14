@@ -20,7 +20,6 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -318,7 +317,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		tree.getRoot().createMetaSets((org.caleydo.core.data.collection.set.Set) set);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
-		storageVA = new StorageVirtualArray(StorageVAType.STORAGE, alIndices);
+		storageVA = new StorageVirtualArray(
+				org.caleydo.core.data.collection.set.Set.STORAGE, alIndices);
 
 		eventPublisher.triggerEvent(new ReplaceStorageVAInUseCaseEvent(set, dataDomain
 				.getDataDomainType(), storageVAType, storageVA));
@@ -1361,7 +1361,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		this.dataDomain = dataDomain;
 		set = this.dataDomain.getSet();
 
-		storageVA = set.getStorageData(StorageVAType.STORAGE).getStorageVA();
+		storageVA = set.getStorageData(org.caleydo.core.data.collection.set.Set.STORAGE)
+				.getStorageVA();
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager, iUniqueID,
 				renderStyle);
 		if (set.getStorageData(storageVAType).getStorageTree() != null) {

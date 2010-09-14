@@ -1,10 +1,10 @@
 package org.caleydo.util.r.filter;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.ContentMetaFilter;
 import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
@@ -18,8 +18,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Slider;
 
-public class FilterRepresentationPValue
-	extends AFilterRepresentation<ContentVAType, ContentVADelta, ContentFilter> {
+public class FilterRepresentationPValue extends
+		AFilterRepresentation<ContentVADelta, ContentFilter> {
 
 	private float pValue = 1f;
 
@@ -51,12 +51,13 @@ public class FilterRepresentationPValue
 						filter.updateFilterManager();
 
 						// if (reducedVA != null)
-						// reducedNumberLabel.setText("# Genes: " + reducedVA.size());
+						// reducedNumberLabel.setText("# Genes: " +
+						// reducedVA.size());
 
 						// parentComposite.layout();
 					}
 				});
-				
+
 				Monitor primary = parentComposite.getDisplay().getPrimaryMonitor();
 				Rectangle bounds = primary.getBounds();
 				Rectangle rect = parentComposite.getBounds();
@@ -73,26 +74,28 @@ public class FilterRepresentationPValue
 
 		if (filter instanceof ContentMetaFilter) {
 			for (ContentFilter subFilter : ((ContentMetaFilter) filter).getFilterList()) {
-				
+
 				createVADelta(subFilter);
 			}
-		}
-		else
+		} else
 			createVADelta(filter);
 	}
-	
+
 	private void createVADelta(ContentFilter subFilter) {
 
-		ContentVADelta contentVADelta =
-			new ContentVADelta(ContentVAType.CONTENT, subFilter.getDataDomain().getContentIDType());
-		ContentVirtualArray contentVA = subFilter.getDataDomain().getContentFilterManager().getBaseVA();
-			//subFilter.getSet().getContentData(ContentVAType.CONTENT).getContentVA();
+		ContentVADelta contentVADelta = new ContentVADelta(ISet.CONTENT, subFilter
+				.getDataDomain().getContentIDType());
+		ContentVirtualArray contentVA = subFilter.getDataDomain()
+				.getContentFilterManager().getBaseVA();
+		// subFilter.getSet().getContentData(ContentVAType.CONTENT).getContentVA();
 
-		double[] tTestResult = subFilter.getSet().getStatisticsResult().getOneSidedTTestResult();
+		double[] tTestResult = subFilter.getSet().getStatisticsResult()
+				.getOneSidedTTestResult();
 		for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 
 			if (tTestResult != null && tTestResult[contentIndex] > pValue)
-				contentVADelta.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));
+				contentVADelta
+						.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));
 		}
 		subFilter.setDelta(contentVADelta);
 	}

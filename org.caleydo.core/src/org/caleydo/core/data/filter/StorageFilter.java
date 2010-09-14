@@ -2,18 +2,17 @@ package org.caleydo.core.data.filter;
 
 import org.caleydo.core.data.filter.event.NewStorageFilterEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateStorageFilterListEvent;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Static type for {@link Filter}s handling {@link StorageVirtualArray}s
+ * 
  * @author Alexander Lex
- *
  */
 public class StorageFilter
-	extends Filter<StorageVAType, StorageVADelta> {
+	extends Filter<StorageVADelta> {
 
 	public void updateFilterManager() {
 

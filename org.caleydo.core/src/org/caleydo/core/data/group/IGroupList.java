@@ -9,7 +9,7 @@ import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
  * 
  * @author Bernhard Schlegl
  */
-public interface IGroupList<ConcreteType extends IGroupList<ConcreteType, VA, VADelta>, VA extends VirtualArray<?, ?, ?, ?>, VADelta extends VirtualArrayDelta<?, ?>>
+public interface IGroupList<ConcreteType extends IGroupList<ConcreteType, VA, VADelta>, VA extends VirtualArray<?, ?, ?>, VADelta extends VirtualArrayDelta<?>>
 	extends Iterable<Group>, Cloneable {
 
 	/**

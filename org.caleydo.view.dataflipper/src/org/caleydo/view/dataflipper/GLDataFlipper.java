@@ -6,7 +6,6 @@ import gleem.linalg.open.Transform;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -14,9 +13,9 @@ import javax.media.opengl.GLAutoDrawable;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.AssociationManager;
@@ -189,7 +188,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		viewCamera.setCameraRotation(new Rotf());
 		viewCamera.setCameraPosition(new Vec3f(0, 0, -8));
-		
+
 		zoomMouseWheelListener = new ZoomMouseWheelListener(this);
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
 		parentGLCanvas.addMouseWheelListener(zoomMouseWheelListener);
@@ -486,8 +485,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				- metaViewAnimation, y + DATA_DOMAIN_HEIGHT / 2f);
 		// gl.glScalef(10f/9, 10f/9, 10f/9);
 
-		Set<String> neighbors = dataDomainGraph.getNeighboursOf(historyPath.getLastNode()
-				.getDataDomainType());
+		java.util.Set<String> neighbors = dataDomainGraph.getNeighboursOf(historyPath
+				.getLastNode().getDataDomainType());
 		int numberOfVerticalDataDomains = neighbors.size() + 1;
 
 		// Render past data domains
@@ -702,9 +701,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		try {
 			viewClass = Class.forName(serView.getViewClassType());
 		} catch (ClassNotFoundException e) {
-			throw new IllegalStateException("Cannot find class for view "+serView.getViewType());
+			throw new IllegalStateException("Cannot find class for view "
+					+ serView.getViewType());
 		}
-		
+
 		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
 				.createGLView(viewClass, parentGLCanvas, viewFrustum);
 		glView.setRemoteRenderingGLView(this);
@@ -714,7 +714,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					.get().getDataDomain(serView.getDataDomainType()));
 		}
 		glView.initialize();
-		
+
 		return glView;
 	}
 
@@ -992,8 +992,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 						// String dataDomainType =
 						// historyNode.getDataDomainType();
-						String interfaceType = historyNode
-								.getInterfaceType(pickingID);
+						String interfaceType = historyNode.getInterfaceType(pickingID);
 
 						if (interfaceType == null) {
 							if (historyPath.getPrecedingNode(historyNode) != null
@@ -1063,8 +1062,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				if (historyNode != null) {
 					for (int i = 0; i < MAX_HISTORY_DATA_DOMAINS; i++) {
 
-						String interfaceType = historyNode
-								.getInterfaceType(pickingID);
+						String interfaceType = historyNode.getInterfaceType(pickingID);
 
 						if (interfaceType == null) {
 							if (historyPath.getPrecedingNode(historyNode) != null
@@ -1396,7 +1394,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		if (mouseOverDataDomainNode == node && node != historyPath.getLastNode()
 				&& metaViewAnimation >= DATA_DOMAIN_SPACING) {
 
-			Set<String> neighbors = dataDomainGraph.getNeighboursOf(dataDomainType);
+			java.util.Set<String> neighbors = dataDomainGraph
+					.getNeighboursOf(dataDomainType);
 			int numberOfVerticalDataDomains = neighbors.size();
 			float ySteps = DATA_DOMAIN_HEIGHT / (numberOfVerticalDataDomains) / 1.3f;
 			float yNeighbor = y + 0.4f;
@@ -1670,14 +1669,14 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.get()
-					.getDataDomain(dataDomainType)).getSet()
-					.getStorageData(StorageVAType.STORAGE).getStorageVA().size();
+					.getDataDomain(dataDomainType)).getSet().getStorageData(Set.STORAGE)
+					.getStorageVA().size();
 			if (numberOfPatients > 40)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
 			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.get()
 					.getDataDomain("org.caleydo.datadomain.genetic")).getSet()
-					.getStorageData(StorageVAType.STORAGE).getStorageVA().size();
+					.getStorageData(Set.STORAGE).getStorageVA().size();
 			if (numberOfPatients > 20)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.pathway")) {
@@ -2209,7 +2208,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	}
 
-	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
+	public void loadDependentPathways(java.util.Set<PathwayGraph> newPathwayGraphs) {
 		metaViewAnimation = 0;
 
 		if (!currentGuidanceNode.getDataDomainType().equals(

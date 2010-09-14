@@ -14,9 +14,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -279,7 +277,7 @@ public abstract class AStorageBasedView
 	@Override
 	public void handleVAUpdate(StorageVADelta delta, String info) {
 		storageVA.setGroupList(null);
-//		reactOnStorageVAChanges(delta);
+		// reactOnStorageVAChanges(delta);
 		storageSelectionManager.setVADelta(delta);
 		setDisplayListDirty();
 	}
@@ -563,7 +561,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void replaceVA(int setID, String dataDomainType, ContentVAType vaType) {
+	public void replaceVA(int setID, String dataDomainType, String vaType) {
 		// String primaryVAType = useCase.getVATypeForIDCategory(idCategory);
 		// if (primaryVAType == null)
 		// return;
@@ -580,7 +578,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void replaceVA(String dataDomain, StorageVAType vaType) {
+	public void replaceVA(String dataDomain, String vaType) {
 		if (vaType != storageVAType)
 			return;
 
@@ -595,7 +593,7 @@ public abstract class AStorageBasedView
 	 * 
 	 * @param vaType
 	 */
-	public void setContentVAType(ContentVAType vaType) {
+	public void setContentVAType(String vaType) {
 		this.contentVAType = vaType;
 	}
 
@@ -605,7 +603,7 @@ public abstract class AStorageBasedView
 	 * 
 	 * @param vaType
 	 */
-	public void setStorageVAType(StorageVAType vaType) {
+	public void setStorageVAType(String vaType) {
 		this.storageVAType = vaType;
 	}
 }

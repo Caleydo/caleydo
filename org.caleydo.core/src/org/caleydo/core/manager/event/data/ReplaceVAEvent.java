@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.virtualarray.IVAType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.event.AEvent;
 
@@ -16,10 +15,10 @@ import org.caleydo.core.manager.event.AEvent;
  */
 @XmlRootElement
 @XmlType
-public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T extends IVAType>
+public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?>>
 	extends AEvent {
 
-	T vaType = null;
+	String vaType = null;
 	E virtualArray;
 	boolean usesVADirectly = false;
 
@@ -37,13 +36,13 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 	 * 
 	 * @param vaType
 	 */
-	public ReplaceVAEvent(ISet set, String dataDomainType, T vaType) {
+	public ReplaceVAEvent(ISet set, String dataDomainType, String vaType) {
 		this.dataDomainType = dataDomainType;
 		this.vaType = vaType;
 		this.setID = set.getID();
 	}
 
-	public ReplaceVAEvent(ISet set, String dataDomainType, T vaType, E virtualArray) {
+	public ReplaceVAEvent(ISet set, String dataDomainType, String vaType, E virtualArray) {
 		this.dataDomainType = dataDomainType;
 		this.vaType = vaType;
 		this.virtualArray = virtualArray;
@@ -58,7 +57,7 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 	 * @param vaType
 	 * @param virtualArray
 	 */
-	protected ReplaceVAEvent(String dataDomainType, T vaType, E virtualArray) {
+	protected ReplaceVAEvent(String dataDomainType, String vaType, E virtualArray) {
 		this.dataDomainType = dataDomainType;
 		this.vaType = vaType;
 		this.virtualArray = virtualArray;
@@ -70,7 +69,7 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 	 * 
 	 * @return
 	 */
-	public T getVaType() {
+	public String getVaType() {
 		return vaType;
 	}
 
@@ -83,7 +82,7 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 	 * 
 	 * @param vaType
 	 */
-	public void setVAType(T vaType) {
+	public void setVAType(String vaType) {
 		this.vaType = vaType;
 	}
 
@@ -106,7 +105,6 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 	public void setUsesVADirectly(boolean usesVADirectly) {
 		this.usesVADirectly = usesVADirectly;
 	}
-
 
 	public void setVirtualArray(E virtualArray) {
 		this.virtualArray = virtualArray;

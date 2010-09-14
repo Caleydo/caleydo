@@ -2,7 +2,6 @@ package org.caleydo.core.data.filter;
 
 import org.caleydo.core.data.filter.event.NewContentFilterEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateContentFilterListEvent;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.manager.GeneralManager;
@@ -13,7 +12,7 @@ import org.caleydo.core.manager.GeneralManager;
  * @author Alexander Lex
  */
 public class ContentFilter
-	extends Filter<ContentVAType, ContentVADelta> {
+	extends Filter<ContentVADelta> {
 
 	public void updateFilterManager() {
 

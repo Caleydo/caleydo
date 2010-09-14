@@ -1,19 +1,18 @@
 package org.caleydo.core.data.virtualarray.delta;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 
 public class StorageVADelta
-	extends VirtualArrayDelta<StorageVADelta, StorageVAType> {
+	extends VirtualArrayDelta<StorageVADelta> {
 
 	public StorageVADelta() {
 	}
 
-	public StorageVADelta(StorageVAType vaType, IDType idType) {
+	public StorageVADelta(String vaType, IDType idType) {
 		super(vaType, idType);
 	}
 
-	public StorageVADelta(StorageVAType vaType, IDType idType, IDType secondaryIDType) {
+	public StorageVADelta(String vaType, IDType idType, IDType secondaryIDType) {
 		super(vaType, idType, secondaryIDType);
 	}
 

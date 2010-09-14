@@ -31,6 +31,7 @@ import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -40,7 +41,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.manager.GeneralManager;
@@ -2910,12 +2910,11 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	@Override
 	protected void initLists() {
-		if (contentVAType != ContentVAType.CONTENT_EMBEDDED_HM) {
-			if (bRenderOnlyContext)
-				contentVAType = ContentVAType.CONTENT_CONTEXT;
-			else
-				contentVAType = ContentVAType.CONTENT;
-		}
+
+		if (bRenderOnlyContext)
+			contentVAType = ISet.CONTENT_CONTEXT;
+		else
+			contentVAType = ISet.CONTENT;
 
 		contentVA = dataDomain.getContentVA(contentVAType);
 		storageVA = dataDomain.getStorageVA(storageVAType);
@@ -3305,9 +3304,9 @@ public class GLScatterPlot extends AStorageBasedView {
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (this.bRenderOnlyContext) {
-			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT_CONTEXT);
+			contentVA = dataDomain.getContentVA(ISet.CONTENT_CONTEXT);
 		} else {
-			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT);
+			contentVA = dataDomain.getContentVA(ISet.CONTENT);
 		}
 
 		contentSelectionManager.setVA(contentVA);

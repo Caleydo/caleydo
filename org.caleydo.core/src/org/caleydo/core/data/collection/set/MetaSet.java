@@ -6,8 +6,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.virtualarray.ContentVAType;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -49,18 +47,18 @@ public class MetaSet
 		this.isSetHomogeneous = true;
 		this.externalDataRep = originalSet.getExternalDataRep();
 
-		this.hashContentData = (HashMap<ContentVAType, ContentData>) originalSet.hashContentData.clone();
+		this.hashContentData = (HashMap<String, ContentData>) originalSet.hashContentData.clone();
 		this.hashStorages = new HashMap<Integer, IStorage>();
 
 		defaultStorageData = new StorageData();
-		defaultStorageData.setStorageVA(new StorageVirtualArray(StorageVAType.STORAGE));
+		defaultStorageData.setStorageVA(new StorageVirtualArray(STORAGE));
 		defaultStorageData.setStorageTree(storageTree);
 		defaultStorageData.setStorageTreeRoot(storageTreeRoot);
 
-		hashStorageData = new HashMap<StorageVAType, StorageData>();
-		hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
+		hashStorageData = new HashMap<String, StorageData>();
+		hashStorageData.put(STORAGE, defaultStorageData.clone());
 
-		defaultStorageData.setStorageVA(new StorageVirtualArray(StorageVAType.STORAGE));
+		defaultStorageData.setStorageVA(new StorageVirtualArray(STORAGE));
 		statisticsResult = new StatisticsResult(this);
 
 	}

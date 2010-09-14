@@ -11,11 +11,10 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -48,10 +47,10 @@ public class ProjectSaver {
 	/** full path to directory of the recently open project */
 	public static final String RECENT_PROJECT_DIR_NAME = GeneralManager.CALEYDO_HOME_PATH + "recent_project"
 		+ File.separator;
-	
+
 	/** full path to directory of the tmp copy of the recently open project */
-	public static final String RECENT_PROJECT_DIR_NAME_TMP = GeneralManager.CALEYDO_HOME_PATH + "recent_project_tmp"
-		+ File.separator;
+	public static final String RECENT_PROJECT_DIR_NAME_TMP = GeneralManager.CALEYDO_HOME_PATH
+		+ "recent_project_tmp" + File.separator;
 
 	/** file name of the set-data-file in project-folders */
 	public static final String SET_DATA_FILE_NAME = "data.csv";
@@ -77,9 +76,10 @@ public class ProjectSaver {
 	 * @param fileName
 	 *            name of the file to save the project in.
 	 */
-	public void save(String fileName) {;
+	public void save(String fileName) {
+		;
 		FileOperations.createDirectory(TEMP_PROJECT_DIR_NAME);
-		
+
 		savePluginData(TEMP_PROJECT_DIR_NAME);
 		saveProjectData(TEMP_PROJECT_DIR_NAME);
 		saveViewData(TEMP_PROJECT_DIR_NAME);
@@ -93,15 +93,15 @@ public class ProjectSaver {
 	 * Saves the project to the directory for the recent project
 	 */
 	public void saveRecentProject() {
-		
+
 		if (new File(RECENT_PROJECT_DIR_NAME).exists())
 			FileOperations.renameDirectory(RECENT_PROJECT_DIR_NAME, RECENT_PROJECT_DIR_NAME_TMP);
-		
+
 		FileOperations.createDirectory(RECENT_PROJECT_DIR_NAME);
-		
+
 		savePluginData(RECENT_PROJECT_DIR_NAME);
 		saveProjectData(RECENT_PROJECT_DIR_NAME);
-		
+
 		FileOperations.deleteDirectory(RECENT_PROJECT_DIR_NAME_TMP);
 
 		// remove saveViewData() for LAZY_VIEW_LOADING
@@ -171,10 +171,11 @@ public class ProjectSaver {
 
 					LoadDataParameters parameters = dataDomain.getLoadDataParameters();
 					String sourceFileName = parameters.getFileName();
-					
+
 					if (sourceFileName.contains(RECENT_PROJECT_DIR_NAME))
-						sourceFileName = sourceFileName.replace(RECENT_PROJECT_DIR_NAME, RECENT_PROJECT_DIR_NAME_TMP);
-					
+						sourceFileName =
+							sourceFileName.replace(RECENT_PROJECT_DIR_NAME, RECENT_PROJECT_DIR_NAME_TMP);
+
 					try {
 						FileOperations.writeInputStreamToFile(dirName + SET_DATA_FILE_NAME, GeneralManager
 							.get().getResourceLoader().getResource(sourceFileName));
@@ -185,23 +186,23 @@ public class ProjectSaver {
 
 					ASetBasedDataDomain setBasedDataDomain = (ASetBasedDataDomain) dataDomain;
 
-					for (ContentVAType type : ContentVAType.getRegisteredVATypes()) {
+					for (String type : setBasedDataDomain.getSet().getRegisteredContentVATypes()) {
 						saveContentVA(marshaller, dirName, setBasedDataDomain, type);
 					}
 
-					for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
+					for (String type : setBasedDataDomain.getSet().getRegisteredStorageVATypes()) {
 						saveStorageVA(marshaller, dirName, setBasedDataDomain, type);
 					}
 					TreePorter treePorter = new TreePorter();
 					Tree<ClusterNode> geneTree =
-						setBasedDataDomain.getSet().getContentData(ContentVAType.CONTENT).getContentTree();
+						setBasedDataDomain.getSet().getContentData(Set.CONTENT).getContentTree();
 					if (geneTree != null) {
 						treePorter.exportTree(dirName + GENE_TREE_FILE_NAME, geneTree);
 					}
 
 					treePorter = new TreePorter();
 					Tree<ClusterNode> expTree =
-						setBasedDataDomain.getSet().getStorageData(StorageVAType.STORAGE).getStorageTree();
+						setBasedDataDomain.getSet().getStorageData(Set.STORAGE).getStorageTree();
 					if (expTree != null) {
 						treePorter.exportTree(dirName + EXP_TREE_FILE_NAME, expTree);
 					}
@@ -282,14 +283,14 @@ public class ProjectSaver {
 	 *            type of the virtual array within the given {@link IDataDomain}.
 	 */
 	private void saveContentVA(Marshaller marshaller, String dir, ASetBasedDataDomain dataDomain,
-		ContentVAType type) throws JAXBException {
+		String type) throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
 		ContentVirtualArray va = (ContentVirtualArray) dataDomain.getContentVA(type);
 		marshaller.marshal(va, new File(fileName));
 	}
 
 	private void saveStorageVA(Marshaller marshaller, String dir, ASetBasedDataDomain dataDomain,
-		StorageVAType type) throws JAXBException {
+		String type) throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
 		StorageVirtualArray va = (StorageVirtualArray) dataDomain.getStorageVA(type);
 		marshaller.marshal(va, new File(fileName));

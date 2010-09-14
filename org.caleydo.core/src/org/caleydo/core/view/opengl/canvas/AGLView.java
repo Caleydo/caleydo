@@ -5,7 +5,6 @@ import gleem.linalg.Vec3f;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -13,11 +12,10 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
@@ -138,7 +136,7 @@ public abstract class AGLView
 	/**
 	 * The type of the content VA
 	 */
-	protected ContentVAType contentVAType = ContentVAType.CONTENT;
+	protected String contentVAType = Set.CONTENT;
 
 	/**
 	 * The id of the virtual array that manages the storage references in the set
@@ -147,7 +145,7 @@ public abstract class AGLView
 	/**
 	 * The type of the storage VA
 	 */
-	protected StorageVAType storageVAType = StorageVAType.STORAGE;
+	protected String storageVAType = Set.STORAGE;
 
 	/**
 	 * The context menu each view should implement. It has to be created in initLocal or is set via initRemote
@@ -459,7 +457,7 @@ public abstract class AGLView
 	 */
 	protected final void checkForHits(final GL gl) {
 
-		Set<EPickingType> hitTypes = pickingManager.getHitTypes(iUniqueID);
+		java.util.Set<EPickingType> hitTypes = pickingManager.getHitTypes(iUniqueID);
 		if (hitTypes == null)
 			return;
 		for (EPickingType pickingType : hitTypes) {
@@ -588,7 +586,7 @@ public abstract class AGLView
 	}
 
 	public final boolean rendersContextOnly() {
-		if (contentVAType == ContentVAType.CONTENT)
+		if (contentVAType == Set.CONTENT)
 			return false;
 		return true;
 	}

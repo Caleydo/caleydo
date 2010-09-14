@@ -10,11 +10,12 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.group.ContentGroupList;
 import org.caleydo.core.data.group.GroupList;
@@ -26,8 +27,6 @@ import org.caleydo.core.data.selection.VABasedSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.ContentVAType;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;
@@ -1389,7 +1388,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		if (bRenderContentTree) {
 			NewContentGroupInfoEvent newGroupInfoEvent = new NewContentGroupInfoEvent();
 			newGroupInfoEvent.setSender(this);
-			newGroupInfoEvent.setVAType(ContentVAType.CONTENT);
+			newGroupInfoEvent.setVAType(contentVAType);
 			newGroupInfoEvent.setGroupList((ContentGroupList) groupList);
 			newGroupInfoEvent.setDeleteTree(false);
 			newGroupInfoEvent.setSetID(set.getID());
@@ -1397,7 +1396,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		} else {
 			NewStorageGroupInfoEvent newGroupInfoEvent = new NewStorageGroupInfoEvent();
 			newGroupInfoEvent.setSender(this);
-			newGroupInfoEvent.setVAType(StorageVAType.STORAGE);
+			newGroupInfoEvent.setVAType(storageVAType);
 			newGroupInfoEvent.setGroupList((StorageGroupList) groupList);
 			newGroupInfoEvent.setDeleteTree(false);
 			eventPublisher.triggerEvent(newGroupInfoEvent);
@@ -1713,7 +1712,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		// if (bRenderOnlyContext)
 		// contentVAType = EVAType.CONTENT_CONTEXT;
 		// else
-		contentVAType = ContentVAType.CONTENT;
+		contentVAType = ISet.CONTENT;
 
 		contentVA = dataDomain.getContentVA(contentVAType);
 		storageVA = dataDomain.getStorageVA(storageVAType);
@@ -1737,7 +1736,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 				resetAllTreeSelections();
 
-				Set<Integer> setMouseOverElements = contentSelectionManager
+				java.util.Set<Integer> setMouseOverElements = contentSelectionManager
 						.getElements(SelectionType.MOUSE_OVER);
 				for (Integer iSelectedID : setMouseOverElements) {
 
@@ -1752,7 +1751,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 					}
 				}
 
-				Set<Integer> setSelectionElements = contentSelectionManager
+				java.util.Set<Integer> setSelectionElements = contentSelectionManager
 						.getElements(SelectionType.SELECTION);
 				for (Integer iSelectedID : setSelectionElements) {
 
@@ -1775,7 +1774,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 				resetAllTreeSelections();
 
-				Set<Integer> setMouseOverElements = storageSelectionManager
+				java.util.Set<Integer> setMouseOverElements = storageSelectionManager
 						.getElements(SelectionType.MOUSE_OVER);
 				for (Integer iSelectedID : setMouseOverElements) {
 
@@ -1791,7 +1790,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 				}
 
-				Set<Integer> setSelectionElements = storageSelectionManager
+				java.util.Set<Integer> setSelectionElements = storageSelectionManager
 						.getElements(SelectionType.SELECTION);
 				for (Integer iSelectedID : setSelectionElements) {
 					iIndex = iSelectedID;

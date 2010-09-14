@@ -17,9 +17,7 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.data.IStorageManager;
@@ -59,8 +57,8 @@ public class Set
 
 	private boolean bIsNumerical;
 
-	protected HashMap<ContentVAType, ContentData> hashContentData;
-	protected HashMap<StorageVAType, StorageData> hashStorageData;
+	protected HashMap<String, ContentData> hashContentData;
+	protected HashMap<String, StorageData> hashStorageData;
 
 	protected NumericalStorage meanStorage;
 
@@ -107,10 +105,10 @@ public class Set
 	protected void init() {
 
 		hashStorages = new HashMap<Integer, IStorage>();
-		hashContentData = new HashMap<ContentVAType, ContentData>();
-		hashStorageData = new HashMap<StorageVAType, StorageData>(3);
+		hashContentData = new HashMap<String, ContentData>(6);
+		hashStorageData = new HashMap<String, StorageData>(3);
 		defaultStorageData = new StorageData();
-		defaultStorageData.setStorageVA(new StorageVirtualArray(StorageVAType.STORAGE));
+		defaultStorageData.setStorageVA(new StorageVirtualArray(STORAGE));
 		statisticsResult = new StatisticsResult(this);
 	}
 
@@ -118,7 +116,7 @@ public class Set
 	 * Creates a {@link MetaSet} for every node in the storage tree.
 	 */
 	public void createMetaSets() {
-		ClusterNode rootNode = hashStorageData.get(StorageVAType.STORAGE).getStorageTreeRoot();
+		ClusterNode rootNode = hashStorageData.get(STORAGE).getStorageTreeRoot();
 		rootNode.createMetaSets(this);
 	}
 
@@ -171,7 +169,7 @@ public class Set
 	}
 
 	@Override
-	public Iterator<IStorage> iterator(StorageVAType type) {
+	public Iterator<IStorage> iterator(String type) {
 		return new StorageIterator(hashStorages, hashStorageData.get(type).getStorageVA());
 	}
 
@@ -275,8 +273,8 @@ public class Set
 
 	@Override
 	public void restoreOriginalContentVA() {
-		ContentData contentData = createContentData(ContentVAType.CONTENT);
-		hashContentData.put(ContentVAType.CONTENT, contentData);
+		ContentData contentData = createContentData(CONTENT);
+		hashContentData.put(CONTENT, contentData);
 	}
 
 	// private int createStorageVA(IVirtualArray virtualArray) {
@@ -360,7 +358,7 @@ public class Set
 	// throw new IllegalArgumentException("No Virtual Array for the unique id: " + iUniqueID);
 	// }
 	@Override
-	public void setContentVA(ContentVAType vaType, ContentVirtualArray virtualArray) {
+	public void setContentVA(String vaType, ContentVirtualArray virtualArray) {
 		ContentData contentData = hashContentData.get(vaType);
 		if (contentData == null)
 			contentData = createContentData(vaType);
@@ -371,7 +369,7 @@ public class Set
 	}
 
 	@Override
-	public void setStorageVA(StorageVAType vaType, StorageVirtualArray virtualArray) {
+	public void setStorageVA(String vaType, StorageVirtualArray virtualArray) {
 		StorageData storageData = hashStorageData.get(vaType);
 		if (storageData == null)
 			storageData = defaultStorageData.clone();
@@ -396,14 +394,14 @@ public class Set
 
 		if (bIsNumerical == true && isSetHomogeneous == true) {
 
-			ContentVAType contentVAType = clusterState.getContentVAType();
+			String contentVAType = clusterState.getContentVAType();
 			if (contentVAType != null) {
 				clusterState.setContentVA(getContentData(contentVAType).getContentVA());
 				clusterState.setContentIDType(dataDomain.getContentIDType());
 				// this.setContentGroupList(getContentVA(contentVAType).getGroupList());
 			}
 
-			StorageVAType storageVAType = clusterState.getStorageVAType();
+			String storageVAType = clusterState.getStorageVAType();
 			if (storageVAType != null) {
 				clusterState.setStorageVA(getStorageData(storageVAType).getStorageVA());
 				clusterState.setStorageIDType(dataDomain.getStorageIDType());
@@ -428,7 +426,7 @@ public class Set
 	}
 
 	@Override
-	public ContentData getContentData(ContentVAType vaType) {
+	public ContentData getContentData(String vaType) {
 		ContentData contentData = hashContentData.get(vaType);
 		if (contentData == null) {
 			contentData = createContentData(vaType);
@@ -438,7 +436,7 @@ public class Set
 	}
 
 	@Override
-	public StorageData getStorageData(StorageVAType vaType) {
+	public StorageData getStorageData(String vaType) {
 		return hashStorageData.get(vaType);
 	}
 
@@ -590,7 +588,7 @@ public class Set
 			tree.getRoot().createMetaSets(this);
 
 		}
-		hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
+		hashStorageData.put(STORAGE, defaultStorageData.clone());
 
 	}
 
@@ -737,11 +735,11 @@ public class Set
 
 	// ---------------------- helper functions ------------------------------
 
-	private ContentData createContentData(ContentVAType vaType) {
+	private ContentData createContentData(String vaType) {
 		ContentData contentData = new ContentData(dataDomain.getContentIDType());
 
 		ContentVirtualArray contentVA = new ContentVirtualArray(vaType);
-		if (!vaType.isEmptyByDefault()) {
+		if (vaType != CONTENT_CONTEXT) {
 			for (int count = 0; count < depth(); count++) {
 				contentVA.append(count);
 			}
@@ -814,6 +812,16 @@ public class Set
 		else if (hashStorages.get(0) instanceof INominalStorage<?>)
 			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
 				+ "on nominal data");
+	}
+
+	@Override
+	public java.util.Set<String> getRegisteredContentVATypes() {
+		return hashContentData.keySet();
+	}
+
+	@Override
+	public java.util.Set<String> getRegisteredStorageVATypes() {
+		return hashStorageData.keySet();
 	}
 
 }

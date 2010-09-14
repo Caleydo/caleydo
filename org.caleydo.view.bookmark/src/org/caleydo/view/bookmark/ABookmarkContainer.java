@@ -56,7 +56,7 @@ import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
  * 
  * @author Alexander Lex
  */
-abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionManager<?, ?, ?, ?>> {
+abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionManager<?, ?, ?>> {
 
 	/** The category of the container */
 	IDCategory category;

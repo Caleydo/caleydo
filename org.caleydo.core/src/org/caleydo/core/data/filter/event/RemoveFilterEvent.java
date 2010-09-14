@@ -6,7 +6,7 @@ import org.caleydo.core.manager.event.AEvent;
 /**
  * @author Alexander Lex
  */
-public abstract class RemoveFilterEvent<FilterType extends Filter<?, ?>>
+public abstract class RemoveFilterEvent<FilterType extends Filter<?>>
 	extends AEvent {
 
 	private FilterType filter = null;

@@ -15,7 +15,6 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -190,7 +189,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	}
 
 	@Override
-	public void handleReplaceContentVA(int setID, String dataDomain, ContentVAType vaType) {
+	public void handleReplaceContentVA(int setID, String dataDomain, String vaType) {
 
 		// FIXME: we should not destroy all the heat map wrappers when a
 		// contentVA is handled

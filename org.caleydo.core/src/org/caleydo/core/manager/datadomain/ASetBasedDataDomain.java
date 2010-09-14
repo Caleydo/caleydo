@@ -17,9 +17,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVAType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
@@ -239,7 +237,7 @@ public abstract class ASetBasedDataDomain
 	 *            the type of VA requested
 	 * @return
 	 */
-	public ContentVirtualArray getContentVA(ContentVAType vaType) {
+	public ContentVirtualArray getContentVA(String vaType) {
 		ContentVirtualArray va = set.getContentData(vaType).getContentVA();
 		ContentVirtualArray vaCopy = va.clone();
 		return vaCopy;
@@ -252,7 +250,7 @@ public abstract class ASetBasedDataDomain
 	 *            the type of VA requested
 	 * @return
 	 */
-	public StorageVirtualArray getStorageVA(StorageVAType vaType) {
+	public StorageVirtualArray getStorageVA(String vaType) {
 		StorageVirtualArray va = set.getStorageData(vaType).getStorageVA();
 		StorageVirtualArray vaCopy = va.clone();
 		return vaCopy;
@@ -272,9 +270,7 @@ public abstract class ASetBasedDataDomain
 		if (this.set.getID() == setID)
 			set = this.set;
 		else
-			set =
-				this.set.getStorageData(StorageVAType.STORAGE).getStorageTreeRoot()
-					.getMetaSetFromSubTree(setID);
+			set = this.set.getStorageData(Set.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
 
 		// TODO: warning
 		if (set == null)
@@ -286,7 +282,7 @@ public abstract class ASetBasedDataDomain
 
 		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, dataDomainType, clusterState
 			.getContentVAType()));
-		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, dataDomainType, StorageVAType.STORAGE));
+		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, dataDomainType, Set.STORAGE));
 
 		if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING
 			|| clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
@@ -299,8 +295,7 @@ public abstract class ASetBasedDataDomain
 	 */
 	public void resetContextVA() {
 
-		set.setContentVA(ContentVAType.CONTENT_CONTEXT,
-			new ContentVirtualArray(ContentVAType.CONTENT_CONTEXT));
+		set.setContentVA(Set.CONTENT_CONTEXT, new ContentVirtualArray(Set.CONTENT_CONTEXT));
 	}
 
 	/**
@@ -308,7 +303,7 @@ public abstract class ASetBasedDataDomain
 	 * from this class. Therefore it should not be called any time!
 	 */
 	@Override
-	public void replaceVA(int setID, String dataDomainType, ContentVAType vaType) {
+	public void replaceVA(int setID, String dataDomainType, String vaType) {
 		throw new IllegalStateException("UseCases shouldn't react to this");
 
 	}
@@ -317,11 +312,11 @@ public abstract class ASetBasedDataDomain
 	 * Replace content VA for the default set.
 	 */
 
-	public void replaceContentVA(String dataDomainType, ContentVAType vaType, ContentVirtualArray virtualArray) {
+	public void replaceContentVA(String dataDomainType, String vaType, ContentVirtualArray virtualArray) {
 
 		replaceContentVA(set.getID(), dataDomainType, vaType, virtualArray);
 
-		Tree<ClusterNode> storageTree = set.getStorageData(StorageVAType.STORAGE).getStorageTree();
+		Tree<ClusterNode> storageTree = set.getStorageData(Set.STORAGE).getStorageTree();
 		if (storageTree == null)
 			return;
 		else {
@@ -342,7 +337,7 @@ public abstract class ASetBasedDataDomain
 	 * @param vaType
 	 * @param virtualArray
 	 */
-	public void replaceContentVA(int setID, String dataDomainType, ContentVAType vaType,
+	public void replaceContentVA(int setID, String dataDomainType, String vaType,
 		ContentVirtualArray virtualArray) {
 
 		if (dataDomainType != this.dataDomainType) {
@@ -354,9 +349,7 @@ public abstract class ASetBasedDataDomain
 			set = this.set;
 		}
 		else {
-			set =
-				this.set.getStorageData(StorageVAType.STORAGE).getStorageTreeRoot()
-					.getMetaSetFromSubTree(setID);
+			set = this.set.getStorageData(Set.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
 		}
 
 		set.setContentVA(vaType, virtualArray.clone());
@@ -377,11 +370,11 @@ public abstract class ASetBasedDataDomain
 	 * @param virtualArray
 	 *            the new virtual array
 	 */
-	public void replaceVA(String dataDomainType, StorageVAType vaType) {
+	public void replaceVA(String dataDomainType, String vaType) {
 		throw new IllegalStateException("UseCases shouldn't react to this");
 	}
 
-	public void replaceStorageVA(String dataDomainType, StorageVAType vaType, StorageVirtualArray virtualArray) {
+	public void replaceStorageVA(String dataDomainType, String vaType, StorageVirtualArray virtualArray) {
 
 		set.setStorageVA(vaType, virtualArray);
 
@@ -401,16 +394,16 @@ public abstract class ASetBasedDataDomain
 
 	}
 
-	public void setContentVirtualArray(ContentVAType vaType, ContentVirtualArray virtualArray) {
+	public void setContentVirtualArray(String vaType, ContentVirtualArray virtualArray) {
 		set.setContentVA(vaType, virtualArray);
 	}
 
-	public void setStorageVirtualArray(StorageVAType vaType, StorageVirtualArray virtualArray) {
+	public void setStorageVirtualArray(String vaType, StorageVirtualArray virtualArray) {
 		set.setStorageVA(vaType, virtualArray);
 	}
 
 	protected void initFullVA() {
-		if (set.getContentData(ContentVAType.CONTENT) == null)
+		if (set.getContentData(Set.CONTENT) == null)
 			set.restoreOriginalContentVA();
 	}
 
@@ -420,7 +413,7 @@ public abstract class ASetBasedDataDomain
 	public void restoreOriginalContentVA() {
 		initFullVA();
 
-		ReplaceContentVAEvent event = new ReplaceContentVAEvent(set, dataDomainType, ContentVAType.CONTENT);
+		ReplaceContentVAEvent event = new ReplaceContentVAEvent(set, dataDomainType, Set.CONTENT);
 
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
@@ -633,7 +626,7 @@ public abstract class ASetBasedDataDomain
 	 * @param vaType
 	 * @param virtualArray
 	 */
-	public abstract void handleForeignContentVAUpdate(int setID, String dataDomainType, ContentVAType vaType,
+	public abstract void handleForeignContentVAUpdate(int setID, String dataDomainType, String vaType,
 		ContentVirtualArray virtualArray);
 
 	/**

@@ -6,12 +6,12 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -20,7 +20,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -107,6 +106,9 @@ public class GLHeatMap extends AStorageBasedView {
 
 	/** Signals that the heat map is currently active */
 	private boolean isActive = false;
+
+	/** ID for va used when heat map is embedded */
+	public static final String CONTENT_EMBEDDED_VA = "CONTENT_EMBEDDED";
 
 	/**
 	 * Constructor.
@@ -273,13 +275,13 @@ public class GLHeatMap extends AStorageBasedView {
 		// todo this is not nice here, we may need a more intelligent way to
 		// determine which to use
 
-		if (contentVAType == ContentVAType.CONTENT_EMBEDDED_HM) {
+		if (contentVAType == CONTENT_EMBEDDED_VA) {
 			set.setContentVA(contentVAType, new ContentVirtualArray(contentVAType));
 		} else {
 			if (bRenderOnlyContext)
-				contentVAType = ContentVAType.CONTENT_CONTEXT;
+				contentVAType = Set.CONTENT_CONTEXT;
 			else
-				contentVAType = ContentVAType.CONTENT;
+				contentVAType = Set.CONTENT;
 		}
 
 		contentVA = set.getContentData(contentVAType).getContentVA();
@@ -535,7 +537,7 @@ public class GLHeatMap extends AStorageBasedView {
 			throw new IllegalStateException(
 					"Virtual Array is required for enterPressed Operation");
 
-		Set<Integer> elements = storageSelectionManager
+		java.util.Set<Integer> elements = storageSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
 		Integer selectedElement = -1;
 		if (elements.size() == 1) {
@@ -555,10 +557,11 @@ public class GLHeatMap extends AStorageBasedView {
 		}
 	}
 
-	private <VAType extends VirtualArray<?, ?, ?, ?>, SelectionManagerType extends SelectionManager> int cursorSelect(
+	private <VAType extends VirtualArray<?, ?, ?>, SelectionManagerType extends SelectionManager> int cursorSelect(
 			VAType virtualArray, SelectionManagerType selectionManager, boolean isUp) {
 
-		Set<Integer> elements = selectionManager.getElements(SelectionType.MOUSE_OVER);
+		java.util.Set<Integer> elements = selectionManager
+				.getElements(SelectionType.MOUSE_OVER);
 		if (elements.size() == 0) {
 			elements = selectionManager.getElements(SelectionType.SELECTION);
 			if (elements.size() == 0)
@@ -658,9 +661,9 @@ public class GLHeatMap extends AStorageBasedView {
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (this.bRenderOnlyContext) {
-			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT_CONTEXT);
+			contentVA = dataDomain.getContentVA(Set.CONTENT_CONTEXT);
 		} else {
-			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT);
+			contentVA = dataDomain.getContentVA(Set.CONTENT);
 		}
 
 		contentSelectionManager.setVA(contentVA);
@@ -675,8 +678,8 @@ public class GLHeatMap extends AStorageBasedView {
 
 		super.handleVAUpdate(delta, info);
 
-		if (delta.getVAType() == ContentVAType.CONTENT_CONTEXT
-				&& contentVAType == ContentVAType.CONTENT_CONTEXT) {
+		if (delta.getVAType() == Set.CONTENT_CONTEXT
+				&& contentVAType == Set.CONTENT_CONTEXT) {
 			ClusterState state = new ClusterState(EClustererAlgo.AFFINITY_PROPAGATION,
 					EClustererType.CONTENT_CLUSTERING,
 					EDistanceMeasure.EUCLIDEAN_DISTANCE);
@@ -869,8 +872,8 @@ public class GLHeatMap extends AStorageBasedView {
 			this.setActive(false);
 	}
 
-	public Set<Integer> getZoomedElements() {
-		Set<Integer> zoomedElements = new HashSet<Integer>(
+	public java.util.Set<Integer> getZoomedElements() {
+		java.util.Set<Integer> zoomedElements = new HashSet<Integer>(
 				contentSelectionManager.getElements(SelectionType.SELECTION));
 		// zoomedElements.addAll(contentSelectionManager
 		// .getElements(SelectionType.MOUSE_OVER));

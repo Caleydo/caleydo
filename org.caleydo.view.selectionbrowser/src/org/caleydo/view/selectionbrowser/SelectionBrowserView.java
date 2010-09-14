@@ -2,6 +2,7 @@ package org.caleydo.view.selectionbrowser;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -10,7 +11,6 @@ import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.ContentVAType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.manager.GeneralManager;
@@ -92,7 +92,7 @@ public class SelectionBrowserView extends ASWTView implements IDataDomainBasedVi
 	}
 
 	private void initContent() {
-		ContentVAType contentVAType = ContentVAType.CONTENT;
+		String contentVAType = ISet.CONTENT;
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 
 		ContentVirtualArray contentVA = dataDomain.getContentVA(contentVAType);
@@ -407,7 +407,7 @@ public class SelectionBrowserView extends ASWTView implements IDataDomainBasedVi
 	}
 
 	@Override
-	public void replaceVA(int setID, String dataDomain, ContentVAType vaType) {
+	public void replaceVA(int setID, String dataDomain, String vaType) {
 		// nothing to do here
 	}
 

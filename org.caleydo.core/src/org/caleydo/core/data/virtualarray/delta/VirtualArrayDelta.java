@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.delta.IDelta;
-import org.caleydo.core.data.virtualarray.IVAType;
 import org.caleydo.core.util.collection.UniqueList;
 
 /**
@@ -17,7 +16,7 @@ import org.caleydo.core.util.collection.UniqueList;
  * @author Alexander Lex
  */
 @XmlType
-public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<ConcreteType, VAType>, VAType extends IVAType>
+public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<ConcreteType>>
 	implements IDelta<VADeltaItem> {
 
 	@XmlElement
@@ -30,19 +29,19 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 	private IDType secondaryIDType;
 
 	@XmlElement
-	private VAType vaType;
+	private String vaType;
 
 	public VirtualArrayDelta() {
 		deltaItems = new UniqueList<VADeltaItem>();
 	}
 
-	public VirtualArrayDelta(VAType vaType, IDType idType) {
+	public VirtualArrayDelta(String vaType, IDType idType) {
 		this.vaType = vaType;
 		this.idType = idType;
 		deltaItems = new UniqueList<VADeltaItem>();
 	}
 
-	public VirtualArrayDelta(VAType vaType, IDType idType, IDType secondaryIDType) {
+	public VirtualArrayDelta(String vaType, IDType idType, IDType secondaryIDType) {
 		this(vaType, idType);
 		this.secondaryIDType = secondaryIDType;
 	}
@@ -54,7 +53,7 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 	 * 
 	 * @return
 	 */
-	public VAType getVAType() {
+	public String getVAType() {
 		return vaType;
 	}
 
@@ -63,7 +62,7 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 	 * 
 	 * @param vaType
 	 */
-	public void setVAType(VAType vaType) {
+	public void setVAType(String vaType) {
 		this.vaType = vaType;
 	}
 

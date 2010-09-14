@@ -8,7 +8,6 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.IVAType;
 import org.caleydo.core.data.virtualarray.IVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
@@ -42,7 +41,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManager<ConcreteType, VA, VAType, VADelta>, VA extends VirtualArray<VA, VAType, VADelta, ?>, VAType extends IVAType, VADelta extends VirtualArrayDelta<VADelta, VAType>>
+public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManager<ConcreteType, VA,  VADelta>, VA extends VirtualArray<VA,  VADelta, ?>,  VADelta extends VirtualArrayDelta<VADelta>>
 	extends SelectionManager
 	implements IListenerOwner, Cloneable {
 

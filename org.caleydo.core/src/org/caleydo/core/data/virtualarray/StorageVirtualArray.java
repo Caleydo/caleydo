@@ -13,16 +13,16 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 @XmlType
 @XmlRootElement
 public class StorageVirtualArray
-	extends VirtualArray<StorageVirtualArray, StorageVAType, StorageVADelta, StorageGroupList> {
+	extends VirtualArray<StorageVirtualArray, StorageVADelta, StorageGroupList> {
 
 	public StorageVirtualArray() {
-		super(StorageVAType.getPrimaryVAType());
+		super("STORAGE");
 	}
 
 	/**
 	 * Constructor, creates an empty Virtual Array
 	 */
-	public StorageVirtualArray(StorageVAType vaType) {
+	public StorageVirtualArray(String vaType) {
 		super(vaType);
 	}
 
@@ -32,7 +32,7 @@ public class StorageVirtualArray
 	 * 
 	 * @param initialList
 	 */
-	public StorageVirtualArray(StorageVAType vaType, List<Integer> initialList) {
+	public StorageVirtualArray(String vaType, List<Integer> initialList) {
 		super(vaType, initialList);
 	}
 

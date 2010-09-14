@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -13,16 +14,16 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 @XmlType
 @XmlRootElement
 public class ContentVirtualArray
-	extends VirtualArray<ContentVirtualArray, ContentVAType, ContentVADelta, ContentGroupList> {
+	extends VirtualArray<ContentVirtualArray,  ContentVADelta, ContentGroupList> {
 
 	public ContentVirtualArray() {
-		super(ContentVAType.getPrimaryVAType());
+		super(Set.CONTENT);
 	}
 
 	/**
 	 * Constructor, creates an empty Virtual Array
 	 */
-	public ContentVirtualArray(ContentVAType vaType) {
+	public ContentVirtualArray(String vaType) {
 		super(vaType);
 
 	}
@@ -33,7 +34,7 @@ public class ContentVirtualArray
 	 * 
 	 * @param initialList
 	 */
-	public ContentVirtualArray(ContentVAType vaType, List<Integer> initialList) {
+	public ContentVirtualArray(String vaType, List<Integer> initialList) {
 		super(vaType, initialList);
 	}
 

@@ -1,7 +1,6 @@
 package org.caleydo.rcp.dialog.cluster;
 
-import org.caleydo.core.data.virtualarray.ContentVAType;
-import org.caleydo.core.data.virtualarray.StorageVAType;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
@@ -536,8 +535,8 @@ public class StartClusteringDialogAction
 		clusterState.setKMeansClusterCntExperiments(iClusterCntExperiments);
 
 		// by default we use the main VAs for clustering
-		clusterState.setContentVAType(ContentVAType.getPrimaryVAType());
-		clusterState.setStorageVAType(StorageVAType.getPrimaryVAType());
+		clusterState.setContentVAType(Set.CONTENT);
+		clusterState.setStorageVAType(Set.STORAGE);
 
 		ClusteringProgressBar progressBar =
 			new ClusteringProgressBar(clusterState.getClustererAlgo(), clusterState.getClustererType());

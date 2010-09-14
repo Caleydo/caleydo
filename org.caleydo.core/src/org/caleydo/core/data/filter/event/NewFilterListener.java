@@ -8,7 +8,7 @@ import org.caleydo.core.manager.event.AEventListener;
 /**
  * @author Alexander Lex
  */
-public class NewFilterListener<FilterType extends Filter<?, ?>, FilterManagerType extends FilterManager<?, ?, FilterType, ?>>
+public class NewFilterListener<FilterType extends Filter<?>, FilterManagerType extends FilterManager<?, FilterType, ?>>
 	extends AEventListener<FilterManagerType> {
 
 	@SuppressWarnings("unchecked")
