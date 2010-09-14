@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * dealing with the hierarchy.
  * 
  * @author Christian Partl
+ * @author Alexander Lex
  * @param <Node>
  *            Concrete type that is stored in the hierarchy.
  */

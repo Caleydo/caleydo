@@ -58,7 +58,7 @@ public interface ISet
 	 *            a unique storage ID
 	 * @return
 	 */
-	public IStorage get(int storageID);
+	public IStorage get(Integer storageID);
 
 	/**
 	 * Get the number of storages in a set

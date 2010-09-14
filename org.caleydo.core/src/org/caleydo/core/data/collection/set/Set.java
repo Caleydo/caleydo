@@ -135,8 +135,8 @@ public class Set
 	}
 
 	@Override
-	public IStorage get(int iIndex) {
-		return hashStorages.get(iIndex);
+	public IStorage get(Integer storageID) {
+		return hashStorages.get(storageID);
 	}
 
 	@Override

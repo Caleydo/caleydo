@@ -186,8 +186,8 @@ public class TreePorter {
 
 		for (DefaultEdge edge : edgeSet) {
 			String temp[] = new String[2];
-			temp[0] = tree.graph.getEdgeSource(edge).getNodeName();
-			temp[1] = tree.graph.getEdgeTarget(edge).getNodeName();
+			temp[0] = tree.graph.getEdgeSource(edge).getLabel();
+			temp[1] = tree.graph.getEdgeTarget(edge).getLabel();
 			edges.add(temp);
 		}
 

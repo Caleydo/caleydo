@@ -153,7 +153,7 @@ public class PDDrawingStrategyLabelDecorator extends APDDrawingStrategyDecorator
 			labelInfo.addLine(hierarchyDepthLine);
 		} else {
 
-			TextItem nameItem = new TextItem(clusterNode.getNodeName());
+			TextItem nameItem = new TextItem(clusterNode.getLabel());
 			LabelLine nameLine = new LabelLine();
 			nameLine.addLabelItem(nameItem);
 

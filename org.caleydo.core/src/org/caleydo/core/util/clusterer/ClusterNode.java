@@ -33,8 +33,8 @@ public class ClusterNode
 	extends AHierarchyElement<ClusterNode>
 	implements IHierarchyData<ClusterNode>, Comparable<ClusterNode> {
 
-	@XmlAttribute
-	private String nodeName;
+	// @XmlAttribute
+	// private String nodeName;
 
 	// @XmlElement
 	// private int iNrElements;
@@ -74,10 +74,10 @@ public class ClusterNode
 	 * @param leafID
 	 *            the id of the leaf, or -1 if this is not a leaf
 	 */
-	public ClusterNode(Tree<ClusterNode> tree, String nodeName, int clusterNr, boolean isRootNode, int leafID) {
+	public ClusterNode(Tree<ClusterNode> tree, String label, int clusterNr, boolean isRootNode, int leafID) {
 
 		super(tree);
-		this.nodeName = nodeName;
+		this.label = label;
 		this.id = clusterNr;
 		super.setLeafID(leafID);
 		this.isRootNode = isRootNode;
@@ -94,9 +94,7 @@ public class ClusterNode
 	 */
 	public <SetType extends Set> void createMetaSet(SetType set) {
 		metaSet = new MetaSet(set, tree, this);
-
-		metaSet.setLabel(nodeName);
-
+		metaSet.setLabel(label);
 		// metaSet.setContentTree(set.getContentTree());
 		// Tree<ClusterNode> subTree = tree.getSubTree();
 
@@ -159,17 +157,9 @@ public class ClusterNode
 		return allMetaSets;
 	}
 
-	public void setNodeName(String nodeName) {
-		this.nodeName = nodeName;
-	}
-
-	public String getNodeName() {
-		return nodeName;
-	}
-
 	@Override
 	public String toString() {
-		return nodeName;
+		return label;
 	}
 
 	// public void setNrElements(int iNrElements) {

@@ -1066,6 +1066,10 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedCompositeList(
 				setContainedGroups, true);
 
+		String groupName = determineNodeLabel(alOrderedTopLevelComposites);
+		if (groupName != "")
+			newGroup.getClusterNode().setLabel(groupName);
+
 		ICompositeGraphic commonParent = findCommonParent(alOrderedTopLevelComposites);
 
 		if (commonParent == null)
@@ -1108,6 +1112,48 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 		updateClusterTreeAccordingToGroupHierarchy();
 		setDisplayListDirty();
+	}
+
+	/**
+	 * Determine a node label for the new node
+	 * 
+	 * @param storageIDs
+	 * @return
+	 */
+	private String determineNodeLabel(ArrayList<ICompositeGraphic> storageIDs) {
+
+		String baseLabel = null;
+		for (ICompositeGraphic storageID : storageIDs) {
+			String currentLabel = storageID.getName();
+			if (baseLabel == null)
+				baseLabel = currentLabel;
+			else {
+				baseLabel = getCommonBeginning(baseLabel, currentLabel);
+				if (baseLabel == "") {
+
+					break;
+				}
+			}
+		}
+		return baseLabel;
+	}
+
+	private String getCommonBeginning(String baseLabel, String newString) {
+		String result = "";
+
+		char[] baseLabelAR = baseLabel.toCharArray();
+		char[] newStringAR = newString.toCharArray();
+		for (int index = 0; index < baseLabelAR.length; index++) {
+			if (index == newStringAR.length)
+				return result;
+
+			if (baseLabelAR[index] == newStringAR[index]) {
+				result += baseLabelAR[index];
+			} else
+				return result;
+
+		}
+		return result;
 	}
 
 	/**
@@ -1244,13 +1290,11 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 					for (Integer nodeID : alNodeIDs) {
 						GroupRepresentation groupRep = hashGroups.get(nodeID);
 
-						if (item.isRemove())
-						{
+						if (item.isRemove()) {
 							groupRep.setSelectionTypeRec(SelectionType.NORMAL,
 									selectionManager);
 							selectionManager.remove(nodeID);
-						}
-						else {
+						} else {
 							if (item.getSelectionType() == SelectionType.SELECTION) {
 								groupRep.addAsDraggable(dragAndDropController);
 							}
@@ -1298,7 +1342,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 				ChangeGroupNameDialog.run(GeneralManager.get().getGUIBridge()
 						.getDisplay(), groupRep);
 				groupRep.getClusterNode().getMetaSet()
-						.setLabel(groupRep.getClusterNode().getNodeName());
+						.setLabel(groupRep.getClusterNode().getLabel());
 				setDisplayListDirty();
 			}
 		});

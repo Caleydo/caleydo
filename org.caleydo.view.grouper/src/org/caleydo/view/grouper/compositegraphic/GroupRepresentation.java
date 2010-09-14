@@ -473,7 +473,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 
 	@Override
 	public String getName() {
-		return clusterNode.getNodeName();
+		return clusterNode.getLabel();
 	}
 
 	@Override
@@ -598,10 +598,10 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 
 		ClusterNode copiedNode = null;
 		if (isLeaf()) {
-			copiedNode = new ClusterNode(tree, clusterNode.getNodeName(),
+			copiedNode = new ClusterNode(tree, clusterNode.getLabel(),
 					iConsecutiveID[0], false, clusterNode.getLeafID());
 		} else {
-			copiedNode = new ClusterNode(tree, clusterNode.getNodeName() + "_copy",
+			copiedNode = new ClusterNode(tree, clusterNode.getLabel() + "_copy",
 					iConsecutiveID[0], false, clusterNode.getLeafID());
 		}
 		GroupRepresentation copy = new GroupRepresentation(copiedNode, renderStyle,
