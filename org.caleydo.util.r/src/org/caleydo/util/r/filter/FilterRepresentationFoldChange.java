@@ -51,10 +51,10 @@ public class FilterRepresentationFoldChange
 
 				evaluatorCheckBox[0] = new Button(parentComposite, SWT.CHECK);
 				evaluatorCheckBox[0].setSelection(true);
-				evaluatorCheckBox[0].setText("Greater (up regulated)");
+				evaluatorCheckBox[0].setText("Less (down regulated)");
 
 				evaluatorCheckBox[1] = new Button(parentComposite, SWT.CHECK);
-				evaluatorCheckBox[1].setText("Less (down regulated)");
+				evaluatorCheckBox[1].setText("Greater (up regulated)");
 
 				evaluatorCheckBox[2] = new Button(parentComposite, SWT.CHECK);
 				evaluatorCheckBox[2].setText("Equal");
@@ -196,15 +196,15 @@ public class FilterRepresentationFoldChange
 
 			switch (foldChangeEvaluator) {
 				case LESS:
-					if (resultVector[contentIndex] * -1 < foldChangeRatio)
+					if (resultVector[contentIndex] * -1 > foldChangeRatio)
 						continue;
 					break;
 				case GREATER:
-					if (resultVector[contentIndex] < foldChangeRatio)
+					if (resultVector[contentIndex] > foldChangeRatio)
 						continue;
 					break;
 				case SAME:
-					if (Math.abs(resultVector[contentIndex]) > foldChangeRatio)
+					if (Math.abs(resultVector[contentIndex]) < foldChangeRatio)
 						continue;
 					break;
 			}
