@@ -152,10 +152,18 @@ public abstract class FilterManager<VAType extends IVAType, DeltaType extends Vi
 		eventPublisher.triggerEvent(event);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void recalculateFilters() {
 		currentVA = (VA) baseVA.clone();
 		for (FilterType filter : filterPipe) {
-			currentVA.setDelta(filter.getVADelta());
+			if (filter instanceof MetaFilter) {
+				for (Filter<VAType, DeltaType> subFilter : ((MetaFilter<VAType, DeltaType>) filter)
+					.getFilterList()) {
+					currentVA.setDelta(subFilter.getVADelta());
+				}
+			}
+			else
+				currentVA.setDelta(filter.getVADelta());
 		}
 		triggerReplaceVAEvent();
 	}
