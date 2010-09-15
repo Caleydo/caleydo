@@ -23,6 +23,7 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.util.r.filter.FilterRepresentationFoldChange;
 import org.caleydo.util.r.filter.FilterRepresentationPValue;
+import org.caleydo.util.r.filter.FilterRepresentationTwoSidedTTest;
 import org.caleydo.util.r.listener.StatisticsFoldChangeReductionListener;
 import org.caleydo.util.r.listener.StatisticsPValueReductionListener;
 import org.caleydo.util.r.listener.StatisticsTwoSidedTTestReductionListener;
@@ -332,16 +333,17 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		set1.getStatisticsResult().setTwoSiddedTTestResult(set2, pValueVector);
 		set2.getStatisticsResult().setTwoSiddedTTestResult(set1, pValueVector);
 
-		// ContentFilter contentFilter = new ContentFilter();
-		// contentFilter.setSet(set);
-		// contentFilter.setDataDomain(set.getDataDomain());
-		// contentFilter.setLabel("p-Value Reduction of " +set.getLabel());
+		ContentFilter contentFilter = new ContentFilter();
+		contentFilter.setDataDomain(set1.getDataDomain());
+		contentFilter.setLabel("Two sided t-test of " + set1.getLabel() + " and "
+				+ set2.getLabel());
 
-		// FilterRepresentationPValue filterRep = new
-		// FilterRepresentationPValue();
-		// filterRep.setFilter(contentFilter);
-		// contentFilter.setFilterRep(filterRep);
-		// contentFilter.openRepresentation();
+		FilterRepresentationTwoSidedTTest filterRep = new FilterRepresentationTwoSidedTTest();
+		filterRep.setFilter(contentFilter);
+		filterRep.setSet1(set1);
+		filterRep.setSet2(set2);
+		contentFilter.setFilterRep(filterRep);
+		contentFilter.openRepresentation();
 	}
 
 	@Override
