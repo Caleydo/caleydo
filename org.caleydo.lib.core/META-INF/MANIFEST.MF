@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Caleydo Core Libraries Plug-in
 Bundle-SymbolicName: org.caleydo.lib.core
-Bundle-Version: 1.3
+Bundle-Version: 2.0
 Bundle-ClassPath: lib/tagsoup/tagsoup-1.1.3.jar,
  lib/weka/weka.jar,
  lib/wii/wiiusej.jar,

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Composite;
 
 import com.sun.opengl.util.Animator;
@@ -232,9 +233,9 @@ public class ViewManager
 			fpsAnimator.stop();
 	}
 
-	public void registerGLCanvasToAnimator(final GLCanvas glCanvas) {
+	public void registerGLCanvasToAnimator(final GLCaleydoCanvas glCaleydoCanvas) {
 
-		fpsAnimator.add(glCanvas);
+		fpsAnimator.add((GLAutoDrawable) glCaleydoCanvas);
 	}
 
 	public void unregisterGLCanvasFromAnimator(final GLCaleydoCanvas glCanvas) {
