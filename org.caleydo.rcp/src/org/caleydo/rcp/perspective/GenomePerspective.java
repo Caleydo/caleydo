@@ -44,6 +44,7 @@ public class GenomePerspective
 
 			IFolderLayout bottomLeft = layout.createFolder("bottomLeft", IPageLayout.BOTTOM, 0.4f, "middleLeft");
 			bottomLeft.addView("org.caleydo.view.datameta");
+			bottomLeft.addPlaceholder("org.caleydo.view.filter");
 
 			IFolderLayout mainLayout =
 				layout.createFolder("main", IPageLayout.RIGHT, 0.3f,

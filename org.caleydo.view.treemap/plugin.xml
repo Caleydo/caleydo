@@ -65,9 +65,10 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            category="org.caleydo.rcp.preferences.ViewPreferencePage"
             class="org.caleydo.view.treemap.preferences.TreemapPreferencePage"
             id="org.caleydo.view.treemap.preferences.TreeMapPreferencePage"
-            name="TreeMap">
+            name="Tree Map">
       </page>
    </extension>
 </plugin>

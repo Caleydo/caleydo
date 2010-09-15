@@ -304,13 +304,18 @@
  			</page>
             <page
                   class="org.caleydo.rcp.preferences.GeneralPreferencePage"
-                  id="org.caleydo.rcp.GeneralPreferencePage"
+                  id="org.caleydo.rcp.preferences.GeneralPreferencePage"
                   name="General">
             </page>
             <page
                   class="org.caleydo.rcp.preferences.VisualLinksPreferencePage"
-                  id="org.caleydo.rcp.VisualLinksPreferencePage"
+                  id="org.caleydo.rcp.preferences.VisualLinksPreferencePage"
                   name="Visual Links">
+            </page>
+            <page
+                  class="org.caleydo.rcp.preferences.ViewPreferencePage"
+                  id="org.caleydo.rcp.preferences.ViewPreferencePage"
+                  name="Views">
             </page>
    </extension>
       <extension
