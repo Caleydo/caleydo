@@ -19,6 +19,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -45,6 +46,9 @@ public class ProjectLoader {
 	 * @return initialization data for the application from which it can restore itself
 	 */
 	public DataInitializationData load(String fileName) {
+		
+		FileOperations.deleteDirectory(TEMP_PROJECT_DIR_NAME);
+		
 		ZipUtils zipUtils = new ZipUtils();
 		zipUtils.unzipToDirectory(fileName, TEMP_PROJECT_DIR_NAME);
 		DataInitializationData initData = loadDirectory(TEMP_PROJECT_DIR_NAME);
