@@ -1,5 +1,6 @@
 package org.caleydo.util.r.filter;
 
+import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.ContentMetaFilter;
@@ -9,10 +10,15 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.view.histogram.GLHistogram;
+import org.caleydo.view.histogram.RcpGLHistogramView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
@@ -22,7 +28,8 @@ public class FilterRepresentationPValue extends
 		AFilterRepresentation<ContentVADelta, ContentFilter> {
 
 	private ISet set;
-	
+
+	private Histogram histogram;
 	private float pValue = 1f;
 
 	public void create() {
@@ -35,7 +42,7 @@ public class FilterRepresentationPValue extends
 				final Slider pValueSlider = new Slider(parentComposite, SWT.HORIZONTAL);
 
 				final Label pValueLabel = new Label(parentComposite, SWT.NULL);
-				pValueLabel.setText("p-Value: " +Float.toString(pValue));
+				pValueLabel.setText("p-Value: " + Float.toString(pValue));
 				pValueSlider.setMinimum(0);
 				pValueSlider.setMaximum(10000);
 				pValueSlider.setIncrement(1);
@@ -45,12 +52,12 @@ public class FilterRepresentationPValue extends
 
 					@Override
 					public void mouseUp(MouseEvent e) {
-						pValue = (float)pValueSlider.getSelection() / 10000.00f;
+						pValue = (float) pValueSlider.getSelection() / 10000.00f;
 						System.out.println(pValue);
-						pValueLabel.setText("p-Value: " +Float.toString(pValue));
+						pValueLabel.setText("p-Value: " + Float.toString(pValue));
 						parentComposite.pack();
-						 parentComposite.layout();
-						 
+						parentComposite.layout();
+
 						createVADelta();
 						filter.updateFilterManager();
 
@@ -67,9 +74,33 @@ public class FilterRepresentationPValue extends
 				int x = bounds.x + (bounds.width - rect.width) / 2;
 				int y = bounds.y + (bounds.height - rect.height) / 2;
 				parentComposite.setLocation(x, y);
+
+				Composite histoComposite = new Composite(parentComposite, SWT.NULL);
+				// histoComposite.setLayoutData(gridData);
+				histoComposite.setLayout(new FillLayout(SWT.VERTICAL));
+
+				RcpGLHistogramView histogramView = new RcpGLHistogramView();
+				histogramView.setDataDomain(DataDomainManager.get().getDataDomain(
+						"org.caleydo.datadomain.genetic"));
+
+				histogramView.createDefaultSerializedView();
+				histogramView.createPartControl(histoComposite);
+				((GLHistogram) (histogramView.getGLView())).setHistogram(histogram);
+				// Usually the canvas is registered to the GL animator in the
+				// PartListener.
+				// Because the GL histogram is no usual RCP view we have to do
+				// it on our
+				// own
+				GeneralManager.get().getViewGLCanvasManager()
+						.registerGLCanvasToAnimator(histogramView.getGLCanvas());
+
 				parentComposite.pack();
 			}
 		});
+	}
+
+	public void setHistogram(Histogram histogram) {
+		this.histogram = histogram;
 	}
 
 	@Override
@@ -86,11 +117,13 @@ public class FilterRepresentationPValue extends
 
 	private void createVADelta(ContentFilter subFilter) {
 
-		ContentVADelta contentVADelta =
-			new ContentVADelta(ISet.CONTENT, subFilter.getDataDomain().getContentIDType());
-		ContentVirtualArray contentVA = subFilter.getDataDomain().getContentFilterManager().getBaseVA();
-		
-		double[] tTestResult = ((FilterRepresentationPValue)subFilter.getFilterRep()).getSet().getStatisticsResult().getOneSidedTTestResult();
+		ContentVADelta contentVADelta = new ContentVADelta(ISet.CONTENT, subFilter
+				.getDataDomain().getContentIDType());
+		ContentVirtualArray contentVA = subFilter.getDataDomain()
+				.getContentFilterManager().getBaseVA();
+
+		double[] tTestResult = ((FilterRepresentationPValue) subFilter.getFilterRep())
+				.getSet().getStatisticsResult().getOneSidedTTestResult();
 
 		for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 
@@ -108,7 +141,7 @@ public class FilterRepresentationPValue extends
 		filterEvent.setFilter(filter);
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 	}
-	
+
 	public void setSet(ISet set) {
 		this.set = set;
 	}

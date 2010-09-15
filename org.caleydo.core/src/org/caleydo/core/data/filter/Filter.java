@@ -18,7 +18,7 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 
 	private String label = "<unspecified>";
 
-	private AFilterRepresentation filterRep;
+	private AFilterRepresentation<DeltaType, ?> filterRep;
 
 	protected boolean isRegistered = false;
 
@@ -32,14 +32,14 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 		return vaDelta;
 	}
 
-	public void setFilterRep(AFilterRepresentation filterRep) {
+	public void setFilterRep(AFilterRepresentation<DeltaType, ?> filterRep) {
 		this.filterRep = filterRep;
 	}
 
-	public AFilterRepresentation getFilterRep() {
+	public AFilterRepresentation<DeltaType, ?> getFilterRep() {
 		return filterRep;
 	}
-	
+
 	public String getLabel() {
 		return label;
 	}

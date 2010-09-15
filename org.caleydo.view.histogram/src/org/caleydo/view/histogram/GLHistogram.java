@@ -44,7 +44,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * 
  * @author Alexander Lex
  */
-public class GLHistogram extends AGLView implements IDataDomainSetBasedView, IViewCommandHandler {
+public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
+		IViewCommandHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.histogram";
 
@@ -120,7 +121,13 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView, IVi
 	@Override
 	public void initData() {
 		super.initData();
-		histogram = dataDomain.getSet().getHistogram();
+		if (histogram == null) {
+			histogram = dataDomain.getSet().getHistogram();
+		}
+	}
+
+	public void setHistogram(Histogram histogram) {
+		this.histogram = histogram;
 	}
 
 	@Override
