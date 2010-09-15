@@ -242,6 +242,20 @@ public interface ISet
 	public void restoreOriginalContentVA();
 
 	/**
+	 * Get a copy of the original content VA (i.e., the one equal to the actual content of the storages)
+	 * 
+	 * @return
+	 */
+	public ContentVirtualArray getBaseContentVA();
+
+	/**
+	 * Get a copy of the original storage VA (i.e., the va containing all storages in the order loaded
+	 * 
+	 * @return
+	 */
+	public StorageVirtualArray getBaseStorageVA();
+
+	/**
 	 * Return a list of content VA types that have registered {@link ContentData}.
 	 * 
 	 * @return

@@ -179,7 +179,7 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 	}
 
 	protected abstract void triggerReplaceVAEvent();
-	
+
 	@SuppressWarnings("unchecked")
 	public VA getBaseVA() {
 		return (VA) baseVA.clone();

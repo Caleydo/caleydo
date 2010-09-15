@@ -29,7 +29,6 @@ import org.caleydo.util.r.listener.StatisticsPValueReductionListener;
 import org.caleydo.util.r.listener.StatisticsTwoSidedTTestReductionListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.PlatformUI;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 

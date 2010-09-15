@@ -30,7 +30,7 @@ public class ContentFilterManager
 	private ReEvaluateContentFilterListListener reEvaluateContentFilterListListener;
 
 	public ContentFilterManager(ASetBasedDataDomain dataDomain) {
-		super(dataDomain, dataDomain.getContentVA(ISet.CONTENT), new ContentFilterFactory());
+		super(dataDomain, dataDomain.getSet().getBaseContentVA(), new ContentFilterFactory());
 	}
 
 	@Override

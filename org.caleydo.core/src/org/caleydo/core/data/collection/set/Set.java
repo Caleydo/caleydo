@@ -63,6 +63,7 @@ public class Set
 	protected NumericalStorage meanStorage;
 
 	protected StorageData defaultStorageData;
+	protected ContentData defaultContentData;
 
 	// private boolean bGeneClusterInfo = false;
 	// private boolean bExperimentClusterInfo = false;
@@ -275,6 +276,18 @@ public class Set
 	public void restoreOriginalContentVA() {
 		ContentData contentData = createContentData(CONTENT);
 		hashContentData.put(CONTENT, contentData);
+	}
+
+	@Override
+	public StorageVirtualArray getBaseStorageVA() {
+		return defaultStorageData.getStorageVA().clone();
+	}
+
+	@Override
+	public ContentVirtualArray getBaseContentVA() {
+		if (defaultContentData == null)
+			defaultContentData = createContentData(CONTENT);
+		return defaultContentData.getContentVA().clone();
 	}
 
 	// private int createStorageVA(IVirtualArray virtualArray) {
@@ -738,15 +751,24 @@ public class Set
 	private ContentData createContentData(String vaType) {
 		ContentData contentData = new ContentData(dataDomain.getContentIDType());
 
-		ContentVirtualArray contentVA = new ContentVirtualArray(vaType);
+		ContentVirtualArray contentVA;
 		if (vaType != CONTENT_CONTEXT) {
-			for (int count = 0; count < depth(); count++) {
-				contentVA.append(count);
-			}
+			contentVA = createBaseContentVA(vaType);
+		}
+		else {
+			contentVA = new ContentVirtualArray(vaType);
 		}
 		contentData.setContentVA(contentVA);
 		return contentData;
 
+	}
+
+	private ContentVirtualArray createBaseContentVA(String vaType) {
+		ContentVirtualArray contentVA = new ContentVirtualArray(vaType);
+		for (int count = 0; count < depth(); count++) {
+			contentVA.append(count);
+		}
+		return contentVA;
 	}
 
 	/**

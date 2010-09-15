@@ -1,8 +1,5 @@
 package org.caleydo.view.heatmap.heatmap;
 
-import gleem.linalg.Rotf;
-import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;

@@ -1,7 +1,6 @@
 package org.caleydo.view.heatmap.heatmap.renderer.spacing;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class SelectedLargerSpacingCalculator extends ASpacingCalculator {
