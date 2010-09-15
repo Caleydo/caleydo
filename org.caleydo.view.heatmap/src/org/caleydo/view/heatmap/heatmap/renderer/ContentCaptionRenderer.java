@@ -9,12 +9,13 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.renderer.spacing.ContentSpacing;
 
 public class ContentCaptionRenderer extends AContentRenderer {
 
 	private CaleydoTextRenderer textRenderer;
 
-	float fFontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR / 1.2f;
+	float fontScaling = HeatMapRenderStyle.SMALL_FONT_SCALING_FACTOR;
 	int fontSize = 24;
 	float spacing = 0;
 
@@ -49,9 +50,13 @@ public class ContentCaptionRenderer extends AContentRenderer {
 
 			textRenderer.setColor(0, 0, 0, 1);
 
-			renderCaption(gl, contentID, 0, yPosition, 0, fFontScaling);
+			renderCaption(gl, contentID, 0, yPosition, 0, fontScaling);
 
 		}
+	}
+
+	public void setFontScaling(float fontScaling) {
+		this.fontScaling = fontScaling;
 	}
 
 	private String getID(Integer contentID, boolean beVerbose) {
@@ -87,4 +92,5 @@ public class ContentCaptionRenderer extends AContentRenderer {
 		// textRenderer.begin3DRendering();
 		gl.glPopAttrib();
 	}
+
 }

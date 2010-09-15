@@ -184,6 +184,13 @@ public class GLHeatMap extends AStorageBasedView {
 	public void setDetailLevel(DetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
+			if (detailLevel == DetailLevel.HIGH)
+				showCaptions = true;
+			else
+				showCaptions = false;
+
+			template.recalculateSpacings();
+
 		}
 	}
 
@@ -588,36 +595,24 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
-			int iStorageIndex) throws InvalidAttributeValueException {
-
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+			throws InvalidAttributeValueException {
 		SelectedElementRep elementRep;
 		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
 
-		for (int iContentIndex : contentVA.indicesOf(iStorageIndex)) {
-			if (iContentIndex == -1) {
-				// throw new
-				// IllegalStateException("No such element in virtual array");
-				// TODO this shouldn't happen here.
+		for (int contentIndex : contentVA.indicesOf(id)) {
+			if (contentIndex == -1) {
 				continue;
 			}
 
-			float fXValue = 0;
-			try {
-				fXValue = -viewFrustum.getHeight()
-						+ getYCoordinateByContentIndex(iContentIndex);
-			} catch (Exception e) {
-				// FIXME: why is the y position not initialized here?
-				// this should never happen :) please check.
-			}
+			float xValue = renderStyle.getXCenter();
 
-			float fYValue = renderStyle.getYCenter();
+			float yValue = 0;
 
-			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
-			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
-			vecPoint.setY(vecPoint.y());// + vecTranslation.y());
-			elementRep = new SelectedElementRep(contentIDType, iUniqueID, vecPoint.x(),
-					vecPoint.y(), 0);// - fAnimationTranslation,
+			yValue = getYCoordinateByContentIndex(contentIndex);
+			yValue = viewFrustum.getHeight() - yValue;
+			elementRep = new SelectedElementRep(contentIDType, iUniqueID, xValue, yValue,
+					0);// - fAnimationTranslation,
 			// 0);
 
 			alElementReps.add(elementRep);
@@ -851,9 +846,9 @@ public class GLHeatMap extends AStorageBasedView {
 	 * 
 	 * @return
 	 */
-	public float getMinSpacing() {
-		return HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT;
-	}
+	// public float getMinSpacing() {
+	// return HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT;
+	// }
 
 	public void recalculateLayout() {
 		processEvents();

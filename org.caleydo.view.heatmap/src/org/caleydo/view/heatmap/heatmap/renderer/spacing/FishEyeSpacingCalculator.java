@@ -12,18 +12,19 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 	float level1Size = 0;
 	int spread = 3;
 
-	public FishEyeSpacingCalculator(GLHeatMap heatMap, float y, float contentElements) {
+	public FishEyeSpacingCalculator(GLHeatMap heatMap, float y, float contentElements,
+			float minSelectedFieldHeight) {
 		super(heatMap, y, contentElements);
-
+		setMinSelectedFieldHeight(minSelectedFieldHeight);
 	}
 
 	@Override
 	public void calculateFieldHeights() {
 
-		spread = (int) (y / (HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT * 3));
+		spread = (int) (y / (minSelectedFieldHeight * 3));
 
 		Set<Integer> zoomedElements = heatMap.getZoomedElements();
-		float baseSize = (y - (zoomedElements.size() * HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT));
+		float baseSize = (y - (zoomedElements.size() * minSelectedFieldHeight));
 
 		ContentVirtualArray contentVA = heatMap.getContentVA();
 
@@ -60,18 +61,17 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 		float nrRemainingElements = contentElements - zoomedElements.size()
 				- level1Elements;
 
-		finalSize = (2 * baseSize - level1Elements
-				* HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT)
+		finalSize = (2 * baseSize - level1Elements * minSelectedFieldHeight)
 				/ (level1Elements + 2 * nrRemainingElements);
 
-		level1Size = (finalSize + HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT) / 2;
+		level1Size = (finalSize + minSelectedFieldHeight) / 2;
 
 	}
 
 	@Override
 	public float getFieldHeight(int contentID) {
 		if (heatMap.getZoomedElements().contains(contentID))
-			return HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT;
+			return minSelectedFieldHeight;
 		else {
 			ContentVirtualArray contentVA = heatMap.getContentVA();
 			for (int selectedContentID : heatMap.getZoomedElements()) {

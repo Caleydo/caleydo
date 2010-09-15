@@ -88,6 +88,9 @@ import org.caleydo.rcp.view.listener.EnableTexturesListener;
 import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
 import org.caleydo.rcp.view.listener.ToggleNavigationModeListener;
 import org.caleydo.rcp.view.listener.ToggleZoomListener;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.template.BucketTemplate;
+import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
 import org.eclipse.core.runtime.IStatus;
@@ -221,7 +224,7 @@ public class GLBucket extends AGLView implements
 
 		viewCamera.setCameraRotation(new Rotf());
 		viewCamera.setCameraPosition(new Vec3f(0, 0, -8));
-		
+
 		if (generalManager.getTrackDataProvider().isTrackModeActive()) {
 			glOffScreenRenderer = new GLOffScreenTextureRenderer();
 		}
@@ -2382,7 +2385,7 @@ public class GLBucket extends AGLView implements
 
 			gl.glPopName();
 
-			// Render selection heat map list background
+			// Render right pool area background
 			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_POLYGON);
@@ -2545,9 +2548,10 @@ public class GLBucket extends AGLView implements
 		try {
 			viewClass = Class.forName(serView.getViewClassType());
 		} catch (ClassNotFoundException e) {
-			throw new IllegalStateException("Cannot find class for view "+serView.getViewType());
+			throw new IllegalStateException("Cannot find class for view "
+					+ serView.getViewType());
 		}
-		
+
 		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
 				.createGLView(viewClass, parentGLCanvas, serView.getViewFrustum());
 		glView.setRemoteRenderingGLView(this);
@@ -2556,7 +2560,11 @@ public class GLBucket extends AGLView implements
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
 					.get().getDataDomain(serView.getDataDomainType()));
 		}
-		
+
+		if (glView instanceof GLHeatMap) {
+			((GLHeatMap) glView).setRenderTemplate(new BucketTemplate());
+		}
+
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
 
@@ -2568,7 +2576,7 @@ public class GLBucket extends AGLView implements
 
 		glView.initialize();
 		triggerMostRecentDelta();
-		
+
 		return glView;
 	}
 

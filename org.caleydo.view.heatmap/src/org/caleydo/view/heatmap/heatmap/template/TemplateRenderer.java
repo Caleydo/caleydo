@@ -92,7 +92,7 @@ public class TemplateRenderer {
 
 					contentSpacing.calculateContentSpacing(contentElements, heatMap
 							.getStorageVA().size(), parameters.sizeScaledX,
-							parameters.sizeScaledY);
+							parameters.sizeScaledY, template.getMinSelectedFieldHeight());
 
 				}
 				((AContentRenderer) renderer).setContentSpacing(contentSpacing);

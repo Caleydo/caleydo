@@ -48,18 +48,7 @@ public class HeatMapRenderer extends AContentRenderer {
 				contentSpacing.getYDistances().add(yPosition);
 				continue;
 			}
-			// else if (heatMap.getContentSelectionManager().checkStatus(
-			// SelectionType.SELECTION, iContentIndex)
-			// || heatMap.getContentSelectionManager().checkStatus(
-			// SelectionType.MOUSE_OVER, iContentIndex)) {
-			// fieldHeight = selectedFieldHeight;
-			// // currentType = SelectionType.SELECTION;
-			//
-			// } else {
-			//
-			// fieldHeight = normalFieldHeight;
-			// // currentType = SelectionType.NORMAL;
-			// }
+
 			yPosition -= fieldHeight;
 			xPosition = 0;
 
@@ -72,8 +61,6 @@ public class HeatMapRenderer extends AContentRenderer {
 
 			}
 
-			// renderStyle.setXDistanceAt(contentVA.indexOf(iContentIndex),
-			// fXPosition);
 			contentSpacing.getYDistances().add(yPosition);
 
 		}
@@ -84,8 +71,7 @@ public class HeatMapRenderer extends AContentRenderer {
 			final float fFieldHeight, final float fFieldWidth) {
 
 		IStorage storage = heatMap.getSet().get(iStorageIndex);
-		float fLookupValue = storage.getFloat(EDataRepresentation.NORMALIZED,
-				iContentIndex);
+		float value = storage.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
 		float fOpacity = 0;
 		if (heatMap.getContentSelectionManager().checkStatus(SelectionType.DESELECTED,
@@ -95,7 +81,7 @@ public class HeatMapRenderer extends AContentRenderer {
 			fOpacity = 1.0f;
 		}
 
-		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+		float[] fArMappingColor = colorMapper.getColor(value);
 
 		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
@@ -115,10 +101,12 @@ public class HeatMapRenderer extends AContentRenderer {
 	}
 
 	public float getYCoordinateByContentIndex(int contentIndex) {
-
-		return y - contentSpacing.getYDistances().get(contentIndex)
-				- contentSpacing.getFieldHeight(heatMap.getContentVA().get(contentIndex))
-				/ 2;
+		if (contentSpacing != null)
+			return y
+					- contentSpacing.getYDistances().get(contentIndex)
+					- contentSpacing.getFieldHeight(heatMap.getContentVA().get(
+							contentIndex)) / 2;
+		return 0;
 	}
 
 	public float getXCoordinateByStorageIndex(int storageIndex) {

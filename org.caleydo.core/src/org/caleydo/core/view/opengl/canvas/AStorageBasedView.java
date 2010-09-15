@@ -198,7 +198,7 @@ public abstract class AStorageBasedView
 	 * @throws InvalidAttributeValueException
 	 *             when the selectionDelta does not contain a valid type for this view
 	 */
-	protected abstract ArrayList<SelectedElementRep> createElementRep(IDType idType, int iStorageIndex)
+	protected abstract ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
 		throws InvalidAttributeValueException;
 
 	@Override
@@ -376,7 +376,7 @@ public abstract class AStorageBasedView
 	 */
 	protected void handleConnectedElementReps(ISelectionDelta selectionDelta) {
 		try {
-			int iStorageIndex = -1;
+			int id = -1;
 
 			int iID = -1;
 			IDType idType;
@@ -384,10 +384,10 @@ public abstract class AStorageBasedView
 			if (selectionDelta.size() > 0) {
 				for (SelectionDeltaItem item : selectionDelta) {
 					if (!connectedElementRepresentationManager.isSelectionTypeRenderedWithVisuaLinks(item
-						.getSelectionType()))
+						.getSelectionType()) || item.isRemove())
 						continue;
 					if (selectionDelta.getIDType() == contentIDType) {
-						iStorageIndex = item.getPrimaryID();
+						id = item.getPrimaryID();
 
 						iID = item.getSecondaryID();
 						idType = contentIDType;
@@ -395,17 +395,17 @@ public abstract class AStorageBasedView
 					}
 					else if (selectionDelta.getIDType() == storageIDType) {
 						iID = item.getPrimaryID();
-						iStorageIndex = iID;
+						id = iID;
 						idType = storageIDType;
 					}
 					else
 						throw new InvalidAttributeValueException("Can not handle data type: "
 							+ selectionDelta.getIDType());
 
-					if (iStorageIndex == -1)
+					if (id == -1)
 						throw new IllegalArgumentException("No internal ID in selection delta");
 
-					ArrayList<SelectedElementRep> alRep = createElementRep(idType, iStorageIndex);
+					ArrayList<SelectedElementRep> alRep = createElementRep(idType, id);
 					if (alRep == null) {
 						continue;
 					}

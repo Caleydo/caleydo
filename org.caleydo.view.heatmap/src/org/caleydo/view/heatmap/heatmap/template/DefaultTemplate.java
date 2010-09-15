@@ -1,9 +1,5 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
-import org.caleydo.view.heatmap.heatmap.renderer.ContentCaptionRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.ContentSelectionRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.StorageSelectionRenderer;
 
 public class DefaultTemplate extends ATemplate {
 
@@ -19,23 +15,21 @@ public class DefaultTemplate extends ATemplate {
 		// heatMapLayout.sizeX = 0.715f;
 		heatMapLayout.sizeX = 0.806f;
 		heatMapLayout.sizeY = 0.883f;
-		heatMapLayout.renderer = new HeatMapRenderer(templateRenderer.heatMap);
+		heatMapLayout.renderer = heatMapRenderer;
 		templateRenderer.addRenderer(heatMapLayout);
 		templateRenderer.addHeatMapLayout(heatMapLayout);
 
 		RenderParameters contentSelectionLayout = new RenderParameters();
 		contentSelectionLayout.isBackground = true;
 		contentSelectionLayout.sizeX = heatMapLayout.sizeX;
-		contentSelectionLayout.renderer = new ContentSelectionRenderer(
-				templateRenderer.heatMap);
+		contentSelectionLayout.renderer = contentSelectionRenderer;
 		templateRenderer.addRenderer(contentSelectionLayout);
 
 		RenderParameters storageSelectionLayout = new RenderParameters();
 		storageSelectionLayout.isBackground = true;
 		// contentSelectionLayout.sizeX = 1;
 		storageSelectionLayout.sizeY = heatMapLayout.sizeY;
-		storageSelectionLayout.renderer = new StorageSelectionRenderer(
-				templateRenderer.heatMap);
+		storageSelectionLayout.renderer = storageSelectionRenderer;
 		templateRenderer.addRenderer(storageSelectionLayout);
 		row.appendElement(contentSelectionLayout);
 		row.appendElement(storageSelectionLayout);
@@ -51,8 +45,7 @@ public class DefaultTemplate extends ATemplate {
 		contentCaptionLayout.sizeY = heatMapLayout.sizeY;
 		// heatMapLayout.grabY = true;
 		contentCaptionLayout.transformX = 0.7f + templateRenderer.SPACING;
-		contentCaptionLayout.renderer = new ContentCaptionRenderer(
-				templateRenderer.heatMap);
+		contentCaptionLayout.renderer = contentCaptionRenderer;
 
 		templateRenderer.addRenderer(contentCaptionLayout);
 

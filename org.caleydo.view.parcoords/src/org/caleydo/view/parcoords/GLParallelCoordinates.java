@@ -1878,7 +1878,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
-			int iStorageIndex) throws InvalidAttributeValueException {
+			int id) throws InvalidAttributeValueException {
 
 		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>();
 
@@ -1889,7 +1889,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				&& dataDomain.getDataDomainType()
 						.equals("org.caleydo.datadomain.genetic")) {
 
-			int axisCount = storageVA.indexOf(iStorageIndex);
+			int axisCount = storageVA.indexOf(id);
 			// for (int iAxisID : storageVA) {
 			x = axisCount * renderStyle.getAxisSpacing(storageVA.size());
 			axisCount++;
@@ -1924,7 +1924,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// else
 			x = viewFrustum.getLeft() + renderStyle.getXSpacing();
 			y = set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
-					iStorageIndex);
+					id);
 			// }
 
 			// // get the value on the leftmost axis

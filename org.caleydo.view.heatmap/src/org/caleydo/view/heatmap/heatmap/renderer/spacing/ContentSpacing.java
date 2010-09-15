@@ -28,11 +28,12 @@ public class ContentSpacing {
 	}
 
 	public void calculateContentSpacing(int contentElements, int storageElements,
-			float x, float y) {
+			float x, float y, float minSelectedFieldHeight) {
 		fieldWidth = x / storageElements;
 
-		if (y / contentElements > HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT
+		if (y / contentElements > minSelectedFieldHeight
 				|| heatMap.getZoomedElements().size() == 0) {
+
 			spacingCalculator = new NormalSpacingCalculator(heatMap, y, contentElements);
 			useFishEye = false;
 
@@ -41,7 +42,7 @@ public class ContentSpacing {
 			// spacingCalculator = new SelectedLargerSpacingCalculator(heatMap,
 			// y,
 			// contentElements);
-			spacingCalculator = new FishEyeSpacingCalculator(heatMap, y, contentElements);
+			spacingCalculator = new FishEyeSpacingCalculator(heatMap, y, contentElements, minSelectedFieldHeight);
 
 		}
 		spacingCalculator.calculateFieldHeights();

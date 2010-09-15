@@ -20,6 +20,7 @@ public class SerializedHeatMapView extends ASerializedView {
 	 * Default constructor with default initialization
 	 */
 	public SerializedHeatMapView() {
+		
 	}
 
 	public SerializedHeatMapView(String dataDomainType) {
