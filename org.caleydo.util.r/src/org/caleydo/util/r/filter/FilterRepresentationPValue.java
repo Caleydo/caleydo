@@ -35,20 +35,22 @@ public class FilterRepresentationPValue extends
 				final Slider pValueSlider = new Slider(parentComposite, SWT.HORIZONTAL);
 
 				final Label pValueLabel = new Label(parentComposite, SWT.NULL);
-				pValueLabel.setText("p-Value: " + pValue);
+				pValueLabel.setText("p-Value: " +Float.toString(pValue));
 				pValueSlider.setMinimum(0);
-				pValueSlider.setMaximum(1000);
-				pValueSlider.setIncrement(5);
-				pValueSlider.setPageIncrement(1);
-				pValueSlider.setSelection((int) (pValue * 1000));
+				pValueSlider.setMaximum(10000);
+				pValueSlider.setIncrement(1);
+				pValueSlider.setPageIncrement(5);
+				pValueSlider.setSelection((int) (pValue * 10000));
 				pValueSlider.addMouseListener(new MouseAdapter() {
 
 					@Override
 					public void mouseUp(MouseEvent e) {
-						pValue = pValueSlider.getSelection() / 1000.00f;
-						pValueLabel.setText("p-Value: " + pValue);
+						pValue = (float)pValueSlider.getSelection() / 10000.00f;
+						System.out.println(pValue);
+						pValueLabel.setText("p-Value: " +Float.toString(pValue));
 						parentComposite.pack();
-
+						 parentComposite.layout();
+						 
 						createVADelta();
 						filter.updateFilterManager();
 
@@ -56,7 +58,6 @@ public class FilterRepresentationPValue extends
 						// reducedNumberLabel.setText("# Genes: " +
 						// reducedVA.size());
 
-						// parentComposite.layout();
 					}
 				});
 

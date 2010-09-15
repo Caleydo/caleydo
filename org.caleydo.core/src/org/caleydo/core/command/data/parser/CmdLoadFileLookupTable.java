@@ -163,6 +163,10 @@ public class CmdLoadFileLookupTable
 			this.fileName = fileName.replace("ORGANISM", eOrganism.toString());
 		}
 
+		// FIXME: Currently we do not have the ensembl mapping table for home sapiens
+		if (fileName.contains("HOMO_SAPIENS") && fileName.contains("ENSEMBL"))
+			return;
+		
 		IDMappingManager genomeIdManager = generalManager.getIDMappingManager();
 
 		// Remove old lookuptable if it already exists

@@ -29,22 +29,21 @@ public class GUIStartupProcedure
 	@Override
 	public void init(ApplicationInitData appInitData) {
 
-		// FIXME this needs to be done after the wizard is closed, and dynamically
-		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
-		cmd.setAttributes("org.caleydo.datadomain.genetic");
-		cmd.doCommand();
-
-		GeneralManager.get().setOrganism(Organism.HOMO_SAPIENS);
-
+		GeneralManager.get().setOrganism(appInitData.getOrganism());
+		
 		if (loadSampleData) {
 			appInitData.setLoadPathways(true);
 
 			GeneralManager.get().getPreferenceStore()
 				.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES, "KEGG;BioCarta");
 
-			GeneralManager.get().getPreferenceStore()
-				.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, Organism.HOMO_SAPIENS.name());
+			GeneralManager.get().setOrganism(Organism.HOMO_SAPIENS);
 		}
+		
+		// FIXME this needs to be done after the wizard is closed, and dynamically
+		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+		cmd.setAttributes("org.caleydo.datadomain.genetic");
+		cmd.doCommand();
 
 		super.init(appInitData);
 	}

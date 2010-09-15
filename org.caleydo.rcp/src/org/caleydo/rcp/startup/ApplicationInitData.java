@@ -3,6 +3,7 @@ package org.caleydo.rcp.startup;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.util.collection.Pair;
 
 /**
@@ -24,6 +25,7 @@ public class ApplicationInitData {
 
 	private boolean loadPathways = false;
 	
+	private Organism organism;
 
 	public List<Pair<String, String>> getAppArgumentStartViewWithDataDomain() {
 		return appArgumentStartViewWithDataDomain;
@@ -45,5 +47,11 @@ public class ApplicationInitData {
 		return loadPathways;
 	}
 	
-
+	public void setOrganism(Organism organism) {
+		this.organism = organism;
+	}
+	
+	public Organism getOrganism() {
+		return organism;
+	}
 }
