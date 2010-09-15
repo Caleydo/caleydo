@@ -21,6 +21,8 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.caleydo.view.filter.listener.FilterUpdateListener;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MenuAdapter;
+import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
@@ -86,6 +88,22 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 
 		// Create the pop-up menu
 		contextMenu = new Menu(parentComposite);
+		contextMenu.addMenuListener(new MenuAdapter() {
+			@Override
+			public void menuShown(MenuEvent e) {
+	
+				MenuItem[] menuItems = contextMenu.getItems();
+				for (int menuIndex = contextMenu.getItemCount()-1; menuIndex >= 0 ; menuIndex--) {
+					contextMenu.getItem(menuIndex).dispose();
+				}
+				
+				if (tree.getSelection()[0] != null && tree.getSelection()[0].getData() instanceof Filter) {
+					addShowDetailsContextMenuItem();
+					addRemoveContextMenuItem();					
+				}
+			}
+		});
+		
 		tree.setMenu(contextMenu);
 		tree.addListener(SWT.MouseDoubleClick, new Listener() {
 			public void handleEvent(Event e) {
@@ -154,9 +172,6 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		for (int itemIndex = 0; itemIndex < storageFilterTreeItem.getItems().length; itemIndex++) {
 			storageFilterTreeItem.getItem(itemIndex).setExpanded(true);
 		}
-
-		addShowDetailsContextMenuItem();
-		addRemoveContextMenuItem();
 	}
 
 	@Override
