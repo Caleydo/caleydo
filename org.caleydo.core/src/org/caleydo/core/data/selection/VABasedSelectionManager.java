@@ -99,7 +99,7 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 		else
 			tempDelta = (VADelta) new StorageVADelta();
 
-		tempDelta.setVAType(virtualArray.getVAType());
+		tempDelta.setVAType(virtualArray.getVaType());
 		tempDelta.setIDType(iDType);
 		HashMap<Integer, Integer> tempHash;
 

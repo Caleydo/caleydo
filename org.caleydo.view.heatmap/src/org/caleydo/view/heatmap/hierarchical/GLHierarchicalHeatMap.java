@@ -5091,7 +5091,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		Tree<ClusterNode> tree = null;
 
-		if (vaType.equals(contentVA.getVAType())) {
+		if (vaType.equals(contentVA.getVaType())) {
 			contentVA.setGroupList(groupList);
 			tree = set.getContentData(contentVAType).getContentTree();
 		} else {

@@ -118,6 +118,8 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 	 * @param info
 	 */
 	public void handleVAUpdate(DeltaType vaDelta, String info) {
+		if (!(vaDelta.getVAType().equals(baseVA.getVaType())))
+			return;
 		FilterType filter = factory.create();
 		filter.setDelta(vaDelta);
 		filterPipe.add(filter);

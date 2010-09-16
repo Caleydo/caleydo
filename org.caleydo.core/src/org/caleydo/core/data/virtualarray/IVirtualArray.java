@@ -16,7 +16,7 @@ import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 public interface IVirtualArray<ConcreteType extends IVirtualArray<ConcreteType, VADelta, GroupType>, VADelta extends VirtualArrayDelta<?>, GroupType extends GroupList<?, ?, ?>>
 	extends Iterable<Integer>, IUniqueObject, Cloneable {
 
-	public String getVAType();
+	public String getVaType();
 
 	/**
 	 * Returns an Iterator<Integer> of type VAIterator, which allows to iterate over the virtual array

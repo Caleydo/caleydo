@@ -72,7 +72,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	}
 
 	@Override
-	public String getVAType() {
+	public String getVaType() {
 		return vaType;
 	}
 
@@ -222,7 +222,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 				indexList = new ArrayList<Integer>(3);
 			else {
 				for (Integer index : indexList) {
-					System.out.println("Found index list for id " + id + "other ids in va are: " + virtualArray.get(index));
+					System.out.println("Found index list for id " + id + "other ids in va are: "
+						+ virtualArray.get(index));
 					badIndex = index;
 				}
 
@@ -234,7 +235,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 				for (Integer tempId : virtualArray) {
 
 					if (tempId == virtualArray.get(badIndex))
-						System.out.println("Found " + tempId + " at index " + badCount + " bad index was: " + badIndex);
+						System.out.println("Found " + tempId + " at index " + badCount + " bad index was: "
+							+ badIndex);
 
 					badCount++;
 				}
@@ -414,10 +416,6 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	public void setLastRemovedIndex(int lastRemovedIndex) {
 		this.lastRemovedIndex = lastRemovedIndex;
-	}
-
-	public String getVaType() {
-		return vaType;
 	}
 
 	public void setVaType(String vaType) {
