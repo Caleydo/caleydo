@@ -30,7 +30,7 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 				parentComposite.setLayout(new GridLayout(1, false));
 				
 				final Button ok = new Button(parentComposite, SWT.PUSH);
-				ok.setText("Apply");
+				ok.setText("OK");
 				Button cancel = new Button(parentComposite, SWT.PUSH);
 				cancel.setText("Cancel");
 				Listener listener = new Listener() {

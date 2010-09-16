@@ -16,9 +16,12 @@ import org.caleydo.view.histogram.RcpGLHistogramView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -52,6 +55,16 @@ public class FilterRepresentationPValue extends
 				infoComposite.setLayoutData(gridData);
 				infoComposite.setLayout(new FillLayout(SWT.VERTICAL));
 				
+				final Button applyFilterButton = new Button(infoComposite, SWT.PUSH);
+				applyFilterButton.setText("Apply filter");
+				applyFilterButton.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						createVADelta();
+						filter.updateFilterManager();
+					}
+				});
+				
 				final Slider pValueSlider = new Slider(infoComposite, SWT.HORIZONTAL);
 
 				final Label pValueLabel = new Label(infoComposite, SWT.NULL);
@@ -73,8 +86,8 @@ public class FilterRepresentationPValue extends
 						parentComposite.pack();
 						parentComposite.layout();
 
-						createVADelta();
-						filter.updateFilterManager();
+//						createVADelta();
+//						filter.updateFilterManager();
 
 						// if (reducedVA != null)
 						// reducedNumberLabel.setText("# Genes: " +
