@@ -175,7 +175,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		engine.assign("set_2", meanStorage2);
 		engine.eval("library(\"gtools\")");
 		REXP foldChangeResult = engine.eval("foldchange(set_1,set_2)");
-		System.out.println("Fold change result: " + foldChangeResult);
+//		System.out.println("Fold change result: " + foldChangeResult);
 
 		double[] resultVec = foldChangeResult.asDoubleArray();
 
@@ -210,7 +210,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		// if (!allCalculated)
 		// return;
 
-		ContentMetaFilter metaFilter = null;
+//		ContentMetaFilter metaFilter = null;
 //		if (sets.size() > 1) {
 //			metaFilter = new ContentMetaFilter();
 //			metaFilter.setLabel("p-Value Reduction");
@@ -279,8 +279,8 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 //			}
 		}
 
-		if (metaFilter != null)
-			metaFilter.openRepresentation();
+//		if (metaFilter != null)
+//			metaFilter.openRepresentation();
 	}
 
 	public void twoSidedTTest(ArrayList<ISet> sets) {

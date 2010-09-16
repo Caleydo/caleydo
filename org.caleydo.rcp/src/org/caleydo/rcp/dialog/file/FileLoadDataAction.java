@@ -81,7 +81,7 @@ public class FileLoadDataAction
 
 	private LoadDataParameters loadDataParameters;
 
-	private String mathFilterMode = "Normal";
+	private String mathFilterMode = "Log2";
 
 	private boolean useGeneClusterInfo = false;
 	private boolean useExperimentClusterInfo = false;

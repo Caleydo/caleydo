@@ -75,7 +75,7 @@ public class FilterRepresentationPValue extends
 				
 				final Text pValueInputField = new Text(infoComposite, SWT.SINGLE);
 				pValueInputField.setEditable(true);
-				pValue = 0.3f;// histogram.getMax();
+				pValue = histogram.getMax();
 				pValueInputField.setText(Float.toString(pValue));
 				pValueInputField.addKeyListener(new KeyAdapter() {
 					@Override
@@ -117,9 +117,11 @@ public class FilterRepresentationPValue extends
 
 				Composite histoComposite = new Composite(parentComposite, SWT.NULL);
 				histoComposite.setLayout(new FillLayout(SWT.VERTICAL));
-				gridData.heightHint = 300;
+				
+				GridData gridData2 = new GridData();
+				gridData2.heightHint = 300;
 				// gridData.verticalAlignment = GridData.FILL;
-				gridData.grabExcessVerticalSpace = true;
+				gridData2.grabExcessVerticalSpace = true;
 				histoComposite.setLayoutData(gridData);
 
 				RcpGLHistogramView histogramView = new RcpGLHistogramView();

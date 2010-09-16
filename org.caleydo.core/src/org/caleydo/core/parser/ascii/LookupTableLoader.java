@@ -109,7 +109,7 @@ public class LookupTableLoader
 							// Special case for creating indexing of storages
 							if (mappingType.getToIDType().getTypeName().contains("content_")) {
 
-								if (mappingType.getFromIDType().getTypeName().equals("REF_SEQ")) {
+								if (mappingType.getFromIDType().getTypeName().contains("REFSEQ")) {
 									// Remove multiple RefSeqs because all point to
 									// the same gene DAVID ID
 									if (buffer.contains(";")) {
