@@ -111,6 +111,7 @@ public class NumericalStorage
 		FloatCContainerIterator iterator =
 			((FloatCContainer) hashCContainers.get(EDataRepresentation.NORMALIZED)).iterator();
 		while (iterator.hasNext()) {
+			// this works because the values in the container are already noramlized
 			int iIndex = (int) (iterator.next() * iNumberOfBuckets);
 			if (iIndex == iNumberOfBuckets)
 				iIndex--;

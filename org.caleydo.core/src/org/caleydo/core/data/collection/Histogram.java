@@ -14,6 +14,9 @@ public class Histogram
 	private ArrayList<Integer> histogram;
 	int iLargestValue = -1;
 
+	float min;
+	float max;
+
 	/**
 	 * Default Constructor
 	 */
@@ -93,6 +96,14 @@ public class Histogram
 	 */
 	public Integer getLargestValue() {
 		return iLargestValue;
+	}
+
+	public void setMin(float min) {
+		this.min = min;
+	}
+
+	public void setMax(float max) {
+		this.max = max;
 	}
 
 }

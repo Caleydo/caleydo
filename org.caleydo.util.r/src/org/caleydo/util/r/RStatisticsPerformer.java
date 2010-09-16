@@ -1,12 +1,10 @@
 package org.caleydo.util.r;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.caleydo.core.data.collection.Histogram;
+import org.caleydo.core.data.collection.HistogramCreator;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
-import org.caleydo.core.data.collection.ccontainer.FloatCContainerIterator;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
@@ -268,24 +266,8 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			ContentFilter contentFilter = new ContentFilter();
 			contentFilter.setDataDomain(set.getDataDomain());
 			contentFilter.setLabel("p-Value Reduction of " + set.getLabel());
-			
-			
-			int iNumberOfBuckets = (int) Math.sqrt(pValueVector.length);
-			Histogram histogram = new Histogram(iNumberOfBuckets);
-			for (int iCount = 0; iCount < iNumberOfBuckets; iCount++) {
-				histogram.add(0);
-			}
 
-			for(double pValue : pValueVector)
-			{
-				int iIndex = (int) (pValue * iNumberOfBuckets);
-				if (iIndex == iNumberOfBuckets)
-					iIndex--;
-				Integer iNumOccurences = histogram.get(iIndex);
-				histogram.set(iIndex, ++iNumOccurences);
-			}
-
-		
+			Histogram histogram = HistogramCreator.createHistogram(pValueVector);
 
 			if (metaFilter != null) {
 				metaFilter.getFilterList().add(contentFilter);
