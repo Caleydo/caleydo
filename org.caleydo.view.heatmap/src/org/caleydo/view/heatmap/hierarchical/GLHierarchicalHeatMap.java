@@ -657,6 +657,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		glHeatMapView = new GLHeatMap(this.getParentGLCanvas(), viewFrustum);
 		glHeatMapView.setDataDomain(dataDomain);
+	
 		glHeatMapView.setRemoteRenderingGLView(this);
 		glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
 		renderTemplate = new HierarchicalHeatMapTemplate();
@@ -664,6 +665,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		renderTemplate.setBottomSpacing(0.6f);
 		heatMapRemoteElement.setGLView(glHeatMapView);
 		glHeatMapView.setContentVAType(GLHeatMap.CONTENT_EMBEDDED_VA);
+		glHeatMapView.initialize();
 		glHeatMapView.initData();
 	}
 
