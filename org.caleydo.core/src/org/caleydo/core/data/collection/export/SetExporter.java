@@ -99,7 +99,7 @@ public class SetExporter {
 		}
 		else if (eWhichViewToExport == EWhichViewToExport.WHOLE_DATA) {
 			contentVA = dataDomain.getContentVA(ISet.CONTENT);
-			storageVA = dataDomain.getStorageVA(Set.STORAGE);
+			storageVA = dataDomain.getStorageVA(ISet.STORAGE);
 		}
 
 		if (contentVA == null || storageVA == null)
@@ -127,16 +127,20 @@ public class SetExporter {
 			int offset = 0;
 			String identifier;
 			IDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
-			for (Integer iContentIndex : contentVA) {
+			for (Integer contentID : contentVA) {
 				if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 
 					// FIXME: Due to new mapping system, a mapping involving expression index can return a Set
 					// of
 					// values, depending on the IDType that has been specified when loading expression data.
 					// Possibly a different handling of the Set is required.
+//					java.util.Set<String> setRefSeqIDs =
+//						iDMappingManager.getIDAsSet(set.getDataDomain().getContentIDType(), targetIDType,
+//							contentID);
+	
 					java.util.Set<String> setRefSeqIDs =
-						iDMappingManager.getIDAsSet(set.getDataDomain().getContentIDType(), targetIDType,
-							iContentIndex);
+						iDMappingManager.getIDAsSet(set.getDataDomain().getContentIDType(), IDType.getIDType("REFSEQ_MRNA"),
+							contentID);
 
 					if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
 						identifier = (String) setRefSeqIDs.toArray()[0];
@@ -157,12 +161,12 @@ public class SetExporter {
 				else {
 					identifier =
 						iDMappingManager.getID(set.getDataDomain().getContentIDType(), targetIDType,
-							iContentIndex);
+							contentID);
 				}
 				out.print(identifier + "\t");
 				for (Integer iStorageIndex : storageVA) {
 					IStorage storage = set.get(iStorageIndex);
-					out.print(storage.getFloat(EDataRepresentation.RAW, iContentIndex));
+					out.print(storage.getFloat(EDataRepresentation.RAW, contentID));
 					out.print("\t");
 				}
 

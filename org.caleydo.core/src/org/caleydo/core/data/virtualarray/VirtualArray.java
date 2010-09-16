@@ -1,6 +1,7 @@
 package org.caleydo.core.data.virtualarray;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	/** Used to check whether elements to be removed are in descending order */
 	int lastRemovedIndex = -1;
-	
+
 	private String vaType;
 
 	public VirtualArray() {
@@ -149,19 +150,28 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	@Override
 	public Integer remove(int iIndex) {
-		isHashIDToIndexDirty = true;
+
 		// if(groupList != null){
 		// groupList.removeElementOfVA(iIndex);
 		// }
-
-		return virtualArray.remove(iIndex);
+		Integer id = virtualArray.remove(iIndex);
+		isHashIDToIndexDirty = true;
+		return id;
 	}
 
 	@Override
 	public void removeByElement(int iElement) {
-		isHashIDToIndexDirty = true;
 		ArrayList<Integer> indices = indicesOf(iElement);
-
+		isHashIDToIndexDirty = true;
+		if (indices.size() > 1) {
+			System.out.println(indices);
+			Collections.sort(indices);
+			// for(Integer index : indices)
+			// {
+			// System.out.println("in va: " + virtualArray.get(index));
+			// }
+			// System.out.println(indices);
+		}
 		for (int count = indices.size() - 1; count >= 0; count--) {
 			remove(indices.get(count));
 		}
@@ -207,9 +217,28 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		int indexCount = 0;
 		for (Integer id : virtualArray) {
 			ArrayList<Integer> indexList = hashIDToIndex.get(id);
+			Integer badIndex = null;
 			if (indexList == null)
 				indexList = new ArrayList<Integer>(3);
+			else {
+				for (Integer index : indexList) {
+					System.out.println("Found index list for id " + id + "other ids in va are: " + virtualArray.get(index));
+					badIndex = index;
+				}
+
+				System.out.println("new " + id);
+			}
 			indexList.add(indexCount++);
+			int badCount = 0;
+			if (badIndex != null) {
+				for (Integer tempId : virtualArray) {
+
+					if (tempId == virtualArray.get(badIndex))
+						System.out.println("Found " + tempId + " at index " + badCount + " bad index was: " + badIndex);
+
+					badCount++;
+				}
+			}
 
 			hashIDToIndex.put(id, indexList);
 		}

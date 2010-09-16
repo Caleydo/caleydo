@@ -29,13 +29,13 @@ public class GeneContextMenuItemContainer extends AItemContainer {
 
 	public void setID(IDType idType, int id) {
 		Set<Integer> davids = GeneralManager.get().getIDMappingManager()
-				.getID(idType, dataDomain.getPrimaryContentMappingType(), id);
+				.getIDAsSet(idType, dataDomain.getPrimaryContentMappingType(), id);
 		if (davids == null)
 			return;
 		for (Integer david : davids) {
 			createMenuContent(david);
-//			return;
 		}
+
 	}
 
 	private void createMenuContent(int davidID) {
@@ -43,9 +43,8 @@ public class GeneContextMenuItemContainer extends AItemContainer {
 
 		String sGeneSymbol = generalManager.getIDMappingManager().getID(
 				dataDomain.getPrimaryContentMappingType(),
-				((GeneticDataDomain) (DataDomainManager.get()
-						.getDataDomain(dataDomain.getDataDomainType())))
-						.getHumanReadableContentIDType(), davidID);
+				((GeneticDataDomain) (DataDomainManager.get().getDataDomain(dataDomain
+						.getDataDomainType()))).getHumanReadableContentIDType(), davidID);
 		if (sGeneSymbol == "" || sGeneSymbol == null)
 			sGeneSymbol = "Unkonwn Gene";
 		addHeading(sGeneSymbol);
@@ -62,9 +61,9 @@ public class GeneContextMenuItemContainer extends AItemContainer {
 			addContextMenuItem(showPathwaysByGeneItem);
 		}
 
-//		BookmarkItem addToListItem = new BookmarkItem(
-//				dataDomain.getPrimaryContentMappingType(), davidID);
+		// BookmarkItem addToListItem = new BookmarkItem(
+		// dataDomain.getPrimaryContentMappingType(), davidID);
 
-//		addContextMenuItem(addToListItem);
+		// addContextMenuItem(addToListItem);
 	}
 }

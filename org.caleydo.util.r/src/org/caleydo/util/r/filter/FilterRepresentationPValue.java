@@ -75,7 +75,7 @@ public class FilterRepresentationPValue extends
 				
 				final Text pValueInputField = new Text(infoComposite, SWT.SINGLE);
 				pValueInputField.setEditable(true);
-				pValue = histogram.getMax();
+				pValue = 0.3f;// histogram.getMax();
 				pValueInputField.setText(Float.toString(pValue));
 				pValueInputField.addKeyListener(new KeyAdapter() {
 					@Override
@@ -90,7 +90,7 @@ public class FilterRepresentationPValue extends
 				});
 
 				pValueSlider.setMinimum(0);
-				pValueSlider.setMaximum((int) (histogram.getMax() * 10000));
+				pValueSlider.setMaximum((int) (pValue * 10000));
 				pValueSlider.setIncrement(1);
 				pValueSlider.setPageIncrement(5);
 				pValueSlider.setSelection((int) (pValue * 10000));
@@ -144,7 +144,9 @@ public class FilterRepresentationPValue extends
 				int y = bounds.y + (bounds.height - rect.height) / 2;
 				parentComposite.setLocation(x, y);
 
+
 				parentComposite.pack();
+
 				((Shell) parentComposite).open();
 			}
 		});

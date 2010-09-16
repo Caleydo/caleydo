@@ -12,6 +12,9 @@ import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.MultiHashMap;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 
@@ -511,7 +514,8 @@ public class IDMappingManager {
 			path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
 		}
 		catch (IllegalArgumentException e) {
-			// data type is not in the mapping
+			Logger.log(new Status(IStatus.WARNING, toString(), "No mapping found between " + source + " and "
+				+ destination + " for: " + sourceID));
 			return null;
 		}
 		Object currentID = sourceID;
