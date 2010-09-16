@@ -55,10 +55,10 @@ public class FilterRepresentationPValue extends
 				final Slider pValueSlider = new Slider(infoComposite, SWT.HORIZONTAL);
 
 				final Label pValueLabel = new Label(infoComposite, SWT.NULL);
+				pValue = histogram.getMax();
 				pValueLabel.setText("p-Value: " + Float.toString(pValue));
 				pValueSlider.setMinimum(0);
 				pValueSlider.setMaximum((int) (histogram.getMax() * 10000));
-				System.out.println("Largest: " +histogram.getMax());
 				pValueSlider.setIncrement(1);
 				pValueSlider.setPageIncrement(5);
 				pValueSlider.setSelection((int) (pValue * 10000));
