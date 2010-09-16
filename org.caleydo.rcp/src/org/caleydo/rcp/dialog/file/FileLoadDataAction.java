@@ -459,7 +459,7 @@ public class FileLoadDataAction
 		String[] filterOptions = { "Normal", "Log10", "Log2" };
 		mathFilterCombo.setItems(filterOptions);
 		mathFilterCombo.setEnabled(true);
-		mathFilterCombo.select(0);
+		mathFilterCombo.select(2);
 		mathFilterCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

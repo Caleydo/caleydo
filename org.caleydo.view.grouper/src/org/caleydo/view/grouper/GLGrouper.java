@@ -681,7 +681,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 							// Lazy loading of R
 							GeneralManager.get().getRStatisticsPerformer();
 
-							if (!isLeafContained) {
+							// Do not allow p-value stats for multiple groups or leaf meta sets
+							if (!isLeafContained && orderedComposites.size() < 2) {
 								StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
 										selectedSets);
 								contextMenu.addContextMenueItem(pValueReductionItem);

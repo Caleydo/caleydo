@@ -212,19 +212,17 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		// return;
 
 		ContentMetaFilter metaFilter = null;
-		if (sets.size() > 1) {
-			metaFilter = new ContentMetaFilter();
-			metaFilter.setLabel("p-Value Reduction");
-			FilterRepresentationPValue filterRep = new FilterRepresentationPValue();
-			filterRep.setFilter(metaFilter);
-			filterRep.create();
-			metaFilter.setFilterRep(filterRep);
-		}
+//		if (sets.size() > 1) {
+//			metaFilter = new ContentMetaFilter();
+//			metaFilter.setLabel("p-Value Reduction");
+//			FilterRepresentationPValue filterRep = new FilterRepresentationPValue();
+//			filterRep.setFilter(metaFilter);
+//			filterRep.create();
+//			metaFilter.setFilterRep(filterRep);
+//		}
 
 		for (ISet set : sets) {
 
-//			ContentVADelta contentVADelta = new ContentVADelta(ISet.CONTENT, set
-//					.getDataDomain().getContentIDType());
 			ContentVirtualArray contentVA = set.getBaseContentVA();
 			//getContentData(ISet.CONTENT).getContentVA();
 
@@ -269,17 +267,17 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 			Histogram histogram = HistogramCreator.createHistogram(pValueVector);
 
-			if (metaFilter != null) {
-				metaFilter.getFilterList().add(contentFilter);
-				metaFilter.setDataDomain(set.getDataDomain());
-			} else {
+//			if (metaFilter != null) {
+//				metaFilter.getFilterList().add(contentFilter);
+//				metaFilter.setDataDomain(set.getDataDomain());
+//			} else {
 				FilterRepresentationPValue filterRep = new FilterRepresentationPValue();
 				filterRep.setFilter(contentFilter);
 				filterRep.setSet(set);
 				filterRep.setHistogram(histogram);
 				contentFilter.setFilterRep(filterRep);
 				contentFilter.openRepresentation();
-			}
+//			}
 		}
 
 		if (metaFilter != null)

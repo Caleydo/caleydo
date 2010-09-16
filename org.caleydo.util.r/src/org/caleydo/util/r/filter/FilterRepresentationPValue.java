@@ -14,6 +14,8 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.histogram.RcpGLHistogramView;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -28,6 +30,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Slider;
+import org.eclipse.swt.widgets.Text;
 
 public class FilterRepresentationPValue extends
 		AFilterRepresentation<ContentVADelta, ContentFilter> {
@@ -46,15 +49,15 @@ public class FilterRepresentationPValue extends
 
 				GridData gridData = new GridData();
 				gridData.grabExcessHorizontalSpace = true;
-//				gridData.horizontalAlignment = GridData.FILL;
+				// gridData.horizontalAlignment = GridData.FILL;
 
 				gridData.widthHint = 400;
 				gridData.heightHint = 50;
-				
+
 				Composite infoComposite = new Composite(parentComposite, SWT.NULL);
 				infoComposite.setLayoutData(gridData);
 				infoComposite.setLayout(new FillLayout(SWT.VERTICAL));
-				
+
 				final Button applyFilterButton = new Button(infoComposite, SWT.PUSH);
 				applyFilterButton.setText("Apply filter");
 				applyFilterButton.addSelectionListener(new SelectionAdapter() {
@@ -64,30 +67,46 @@ public class FilterRepresentationPValue extends
 						filter.updateFilterManager();
 					}
 				});
-				
+
 				final Slider pValueSlider = new Slider(infoComposite, SWT.HORIZONTAL);
 
-				final Label pValueLabel = new Label(infoComposite, SWT.NULL);
+				Label pValueLabel = new Label(infoComposite, SWT.NONE);
+				pValueLabel.setText("p-Value:");
+				
+				final Text pValueInputField = new Text(infoComposite, SWT.SINGLE);
+				pValueInputField.setEditable(true);
 				pValue = histogram.getMax();
-				pValueLabel.setText("p-Value: " + Float.toString(pValue));
+				pValueInputField.setText(Float.toString(pValue));
+				pValueInputField.addKeyListener(new KeyAdapter() {
+					@Override
+					public void keyPressed(KeyEvent e) {
+
+						if (e.character == SWT.CR) {
+							String enteredValue = pValueInputField.getText();
+							pValue = new Float(enteredValue);
+							pValueSlider.setSelection((int) (pValue * 10000));
+						}
+					}
+				});
+
 				pValueSlider.setMinimum(0);
 				pValueSlider.setMaximum((int) (histogram.getMax() * 10000));
 				pValueSlider.setIncrement(1);
 				pValueSlider.setPageIncrement(5);
 				pValueSlider.setSelection((int) (pValue * 10000));
-				
+
 				pValueSlider.addMouseListener(new MouseAdapter() {
 
 					@Override
 					public void mouseUp(MouseEvent e) {
 						pValue = (float) pValueSlider.getSelection() / 10000.00f;
 						System.out.println(pValue);
-						pValueLabel.setText("p-Value: " + Float.toString(pValue));
+						pValueInputField.setText(Float.toString(pValue));
 						parentComposite.pack();
 						parentComposite.layout();
 
-//						createVADelta();
-//						filter.updateFilterManager();
+						// createVADelta();
+						// filter.updateFilterManager();
 
 						// if (reducedVA != null)
 						// reducedNumberLabel.setText("# Genes: " +
@@ -95,14 +114,14 @@ public class FilterRepresentationPValue extends
 
 					}
 				});
-				
+
 				Composite histoComposite = new Composite(parentComposite, SWT.NULL);
 				histoComposite.setLayout(new FillLayout(SWT.VERTICAL));
 				gridData.heightHint = 300;
-//				gridData.verticalAlignment = GridData.FILL;
+				// gridData.verticalAlignment = GridData.FILL;
 				gridData.grabExcessVerticalSpace = true;
 				histoComposite.setLayoutData(gridData);
-				
+
 				RcpGLHistogramView histogramView = new RcpGLHistogramView();
 				histogramView.setDataDomain(DataDomainManager.get().getDataDomain(
 						"org.caleydo.datadomain.genetic"));
@@ -124,7 +143,8 @@ public class FilterRepresentationPValue extends
 				int x = bounds.x + (bounds.width - rect.width) / 2;
 				int y = bounds.y + (bounds.height - rect.height) / 2;
 				parentComposite.setLocation(x, y);
-				
+
+				parentComposite.pack();
 				((Shell) parentComposite).open();
 			}
 		});
