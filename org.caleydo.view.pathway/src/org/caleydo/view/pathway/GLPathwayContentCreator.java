@@ -100,8 +100,8 @@ public class GLPathwayContentCreator {
 		idMappingManager = generalManager.getIDMappingManager();
 		pathwayItemManager = PathwayItemManager.get();
 
-		geneticDataDomain = (ASetBasedDataDomain) DataDomainManager.get()
-				.getDataDomain("org.caleydo.datadomain.genetic");
+		geneticDataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
+				"org.caleydo.datadomain.genetic");
 	}
 
 	public void init(final GL gl, final SelectionManager internalSelectionManager) {
@@ -492,14 +492,15 @@ public class GLPathwayContentCreator {
 			fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);
 
 			// Handle selection highlighting of element
-			if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
-					vertexRep.getId())) {
-				tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
-				gl.glColor4fv(tmpNodeColor, 0);
-				fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
-			} else if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
+
+			if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
 					vertexRep.getId())) {
 				tmpNodeColor = SelectionType.SELECTION.getColor();
+				gl.glColor4fv(tmpNodeColor, 0);
+				fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
+			} else if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
+					vertexRep.getId())) {
+				tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 				gl.glColor4fv(tmpNodeColor, 0);
 				fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
 			}
@@ -516,15 +517,15 @@ public class GLPathwayContentCreator {
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
 			// Handle selection highlighting of element
-			if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
+			if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
 					vertexRep.getId())) {
-				tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
+				tmpNodeColor = SelectionType.SELECTION.getColor();
 
 				gl.glColor4fv(tmpNodeColor, 0);
 				gl.glCallList(iHighlightedCompoundNodeDisplayListId);
-			} else if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
+			} else if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
 					vertexRep.getId())) {
-				tmpNodeColor = SelectionType.SELECTION.getColor();
+				tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 
 				gl.glColor4fv(tmpNodeColor, 0);
 				gl.glCallList(iHighlightedCompoundNodeDisplayListId);
@@ -584,9 +585,9 @@ public class GLPathwayContentCreator {
 						gl.glEnd();
 
 						// Handle selection highlighting of element
-						if (internalSelectionManager.checkStatus(
-								SelectionType.MOUSE_OVER, vertexRep.getId())) {
-							tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
+						if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
+								vertexRep.getId())) {
+							tmpNodeColor = SelectionType.SELECTION.getColor();
 							gl.glLineWidth(3);
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glBegin(GL.GL_LINE_STRIP);
@@ -599,8 +600,8 @@ public class GLPathwayContentCreator {
 							}
 							gl.glEnd();
 						} else if (internalSelectionManager.checkStatus(
-								SelectionType.SELECTION, vertexRep.getId())) {
-							tmpNodeColor = SelectionType.SELECTION.getColor();
+								SelectionType.MOUSE_OVER, vertexRep.getId())) {
+							tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 							gl.glLineWidth(3);
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glBegin(GL.GL_LINE_STRIP);
@@ -617,12 +618,12 @@ public class GLPathwayContentCreator {
 				}
 			} else {
 				// Handle selection highlighting of element
-				if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
-						vertexRep.getId())) {
-					tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
-				} else if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
+				if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
 						vertexRep.getId())) {
 					tmpNodeColor = SelectionType.SELECTION.getColor();
+				} else if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
+						vertexRep.getId())) {
+					tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 				}
 				// else if (internalSelectionManager.checkStatus(
 				// SelectionType.NORMAL, vertexRep.getId())) {
@@ -693,14 +694,14 @@ public class GLPathwayContentCreator {
 						gl.glCallList(iEnzymeNodeDisplayListId);
 
 						// Handle selection highlighting of element
-						if (internalSelectionManager.checkStatus(
-								SelectionType.MOUSE_OVER, vertexRep.getId())) {
-							tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
+						if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
+								vertexRep.getId())) {
+							tmpNodeColor = SelectionType.SELECTION.getColor();
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
 						} else if (internalSelectionManager.checkStatus(
-								SelectionType.SELECTION, vertexRep.getId())) {
-							tmpNodeColor = SelectionType.SELECTION.getColor();
+								SelectionType.MOUSE_OVER, vertexRep.getId())) {
+							tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
 						}
@@ -708,12 +709,12 @@ public class GLPathwayContentCreator {
 				}
 			} else {
 				// Handle selection highlighting of element
-				if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
-						vertexRep.getId())) {
-					tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
-				} else if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
+				if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
 						vertexRep.getId())) {
 					tmpNodeColor = SelectionType.SELECTION.getColor();
+				} else if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
+						vertexRep.getId())) {
+					tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 				} else if (internalSelectionManager.checkStatus(SelectionType.NORMAL,
 						vertexRep.getId())) {
 					tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
