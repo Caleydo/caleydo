@@ -5,7 +5,7 @@ public class FoldChangeSettings {
 	public enum FoldChangeEvaluator {
 		GREATER,
 		LESS,
-		SAME
+		BOTH
 	}
 
 	double ratio = -1;

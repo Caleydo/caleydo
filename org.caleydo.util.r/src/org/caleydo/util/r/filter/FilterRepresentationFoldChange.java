@@ -12,17 +12,20 @@ import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Monitor;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Slider;
+import org.eclipse.swt.widgets.Text;
 
 public class FilterRepresentationFoldChange
 	extends AFilterRepresentation<ContentVADelta, ContentFilter> {
@@ -39,14 +42,43 @@ public class FilterRepresentationFoldChange
 			@Override
 			public void run() {
 
-				final Slider slider = new Slider(parentComposite, SWT.HORIZONTAL);
+				Composite infoComposite = new Composite(parentComposite, SWT.NULL);
+				GridData gridData = new GridData();
+				infoComposite.setLayoutData(gridData);
+				infoComposite.setLayout(new GridLayout(4, false));
+				
+				final Label foldChangeLabel = new Label(infoComposite, SWT.NULL);
+				foldChangeLabel.setText("Fold change:");
+				
+				final Text foldChangeInputField = new Text(infoComposite, SWT.SINGLE);
+				final Slider foldChangeSlider = new Slider(infoComposite, SWT.HORIZONTAL);
 
-				final Label label = new Label(parentComposite, SWT.NULL);
-				label.setText("                                                                                                        ");
+//				gridData.grabExcessHorizontalSpace = true;
+//				gridData.horizontalAlignment = GridData.FILL;
+//				pValueSlider.setLayoutData(gridData);
 
-				final Label foldChangeLabel = new Label(parentComposite, SWT.NULL);
-				foldChangeLabel.setText("" + foldChange);
+				foldChangeInputField.setEditable(true);
+				foldChangeInputField.setText(Float.toString(foldChange));
+				foldChangeInputField.addKeyListener(new KeyAdapter() {
+					@Override
+					public void keyPressed(KeyEvent e) {
 
+						String enteredValue = foldChangeInputField.getText();
+						foldChange = new Float(enteredValue);
+						foldChangeSlider.setSelection((int) (foldChange * 10));
+					}
+				});
+
+				final Button applyFilterButton = new Button(infoComposite, SWT.PUSH);
+				applyFilterButton.setText("Apply");
+				applyFilterButton.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						createVADelta();
+						filter.updateFilterManager();
+					}
+				});
+				
 				final Button[] evaluatorCheckBox = new Button[3];
 
 				evaluatorCheckBox[0] = new Button(parentComposite, SWT.CHECK);
@@ -81,18 +113,18 @@ public class FilterRepresentationFoldChange
 					}
 				});
 
-				slider.setMinimum(0);
-				slider.setMaximum(100);
-				slider.setIncrement(1);
-				slider.setPageIncrement(10);
-				slider.setSelection((int) (foldChange * 10));
+				foldChangeSlider.setMinimum(0);
+				foldChangeSlider.setMaximum(100);
+				foldChangeSlider.setIncrement(1);
+				foldChangeSlider.setPageIncrement(10);
+				foldChangeSlider.setSelection((int) (foldChange * 10));
 
-				slider.addMouseListener(new MouseListener() {
+				foldChangeSlider.addMouseListener(new MouseAdapter() {
 
 					@Override
 					public void mouseUp(MouseEvent e) {
-						Double foldChangeRatio = slider.getSelection() / 10d;
-						foldChangeLabel.setText("" + foldChangeRatio);
+						Double foldChangeRatio = foldChangeSlider.getSelection() / 10d;
+						foldChangeInputField.setText("" + foldChangeRatio);
 
 						if (evaluatorCheckBox[0].getSelection() == true) {
 							FoldChangeSettings foldChangeSettings = new FoldChangeSettings(
@@ -130,21 +162,6 @@ public class FilterRepresentationFoldChange
 //						label.setText("The fold change reduced results in a dataset of the size "
 //								+ reducedNumberOfElements);
 //						parentComposite.layout();
-						
-						createVADelta();
-						filter.updateFilterManager();
-					}
-
-					@Override
-					public void mouseDown(MouseEvent e) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void mouseDoubleClick(MouseEvent e) {
-						// TODO Auto-generated method stub
-
 					}
 				});
 			}
@@ -197,8 +214,8 @@ public class FilterRepresentationFoldChange
 					if (resultVector[contentIndex] > foldChangeRatio)
 						continue;
 					break;
-				case SAME:
-					if (Math.abs(resultVector[contentIndex]) < foldChangeRatio)
+				case BOTH:
+					if (Math.abs(resultVector[contentIndex]) > foldChangeRatio)
 						continue;
 					break;
 			}
