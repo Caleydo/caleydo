@@ -649,9 +649,13 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 								setClickedGroups, false);
 
 						ArrayList<ISet> selectedSets = new ArrayList<ISet>();
+						boolean isLeafContained = false;
 						for (ICompositeGraphic composite : orderedComposites) {
 							selectedSets.add(((GroupRepresentation) composite)
 									.getClusterNode().getMetaSet());
+
+							if (isLeafContained == false)
+								isLeafContained = composite.isLeaf();
 						}
 
 						// Lazy loading of R
@@ -677,9 +681,11 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 							// Lazy loading of R
 							GeneralManager.get().getRStatisticsPerformer();
 
-							StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
-									selectedSets);
-							contextMenu.addContextMenueItem(pValueReductionItem);
+							if (!isLeafContained) {
+								StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
+										selectedSets);
+								contextMenu.addContextMenueItem(pValueReductionItem);
+							}
 
 							if (orderedComposites.size() == 2) {
 								StatisticsFoldChangeReductionItem foldChangeReductionItem = new StatisticsFoldChangeReductionItem(

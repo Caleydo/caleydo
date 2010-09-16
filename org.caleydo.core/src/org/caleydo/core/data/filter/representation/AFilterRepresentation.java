@@ -3,6 +3,8 @@ package org.caleydo.core.data.filter.representation;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -23,7 +25,10 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 			@Override
 			public void run() {
 				parentComposite = new Shell();
-				parentComposite.setLayout(new RowLayout(SWT.VERTICAL));
+//				parentComposite.setLayout(new RowLayout(SWT.VERTICAL));
+				
+				parentComposite.setLayout(new GridLayout(1, false));
+				
 				final Button ok = new Button(parentComposite, SWT.PUSH);
 				ok.setText("Apply");
 				Button cancel = new Button(parentComposite, SWT.PUSH);
@@ -38,7 +43,6 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 				};
 				ok.addListener(SWT.Selection, listener);
 				cancel.addListener(SWT.Selection, listener);
-				((Shell) parentComposite).open();
 			}
 		});
 	}

@@ -18,10 +18,12 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Slider;
 
 public class FilterRepresentationPValue extends
@@ -39,15 +41,28 @@ public class FilterRepresentationPValue extends
 			@Override
 			public void run() {
 
-				final Slider pValueSlider = new Slider(parentComposite, SWT.HORIZONTAL);
+				GridData gridData = new GridData();
+				gridData.grabExcessHorizontalSpace = true;
+//				gridData.horizontalAlignment = GridData.FILL;
 
-				final Label pValueLabel = new Label(parentComposite, SWT.NULL);
+				gridData.widthHint = 400;
+				gridData.heightHint = 50;
+				
+				Composite infoComposite = new Composite(parentComposite, SWT.NULL);
+				infoComposite.setLayoutData(gridData);
+				infoComposite.setLayout(new FillLayout(SWT.VERTICAL));
+				
+				final Slider pValueSlider = new Slider(infoComposite, SWT.HORIZONTAL);
+
+				final Label pValueLabel = new Label(infoComposite, SWT.NULL);
 				pValueLabel.setText("p-Value: " + Float.toString(pValue));
 				pValueSlider.setMinimum(0);
-				pValueSlider.setMaximum(10000);
+				pValueSlider.setMaximum((int) (histogram.getMax() * 10000));
+				System.out.println("Largest: " +histogram.getMax());
 				pValueSlider.setIncrement(1);
 				pValueSlider.setPageIncrement(5);
 				pValueSlider.setSelection((int) (pValue * 10000));
+				
 				pValueSlider.addMouseListener(new MouseAdapter() {
 
 					@Override
@@ -67,18 +82,14 @@ public class FilterRepresentationPValue extends
 
 					}
 				});
-
-				Monitor primary = parentComposite.getDisplay().getPrimaryMonitor();
-				Rectangle bounds = primary.getBounds();
-				Rectangle rect = parentComposite.getBounds();
-				int x = bounds.x + (bounds.width - rect.width) / 2;
-				int y = bounds.y + (bounds.height - rect.height) / 2;
-				parentComposite.setLocation(x, y);
-
+				
 				Composite histoComposite = new Composite(parentComposite, SWT.NULL);
-				// histoComposite.setLayoutData(gridData);
 				histoComposite.setLayout(new FillLayout(SWT.VERTICAL));
-
+				gridData.heightHint = 300;
+//				gridData.verticalAlignment = GridData.FILL;
+				gridData.grabExcessVerticalSpace = true;
+				histoComposite.setLayoutData(gridData);
+				
 				RcpGLHistogramView histogramView = new RcpGLHistogramView();
 				histogramView.setDataDomain(DataDomainManager.get().getDataDomain(
 						"org.caleydo.datadomain.genetic"));
@@ -94,7 +105,14 @@ public class FilterRepresentationPValue extends
 				GeneralManager.get().getViewGLCanvasManager()
 						.registerGLCanvasToAnimator(histogramView.getGLCanvas());
 
-				parentComposite.pack();
+				Monitor primary = parentComposite.getDisplay().getPrimaryMonitor();
+				Rectangle bounds = primary.getBounds();
+				Rectangle rect = parentComposite.getBounds();
+				int x = bounds.x + (bounds.width - rect.width) / 2;
+				int y = bounds.y + (bounds.height - rect.height) / 2;
+				parentComposite.setLocation(x, y);
+				
+				((Shell) parentComposite).open();
 			}
 		});
 	}

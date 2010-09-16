@@ -18,6 +18,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Slider;
 
 public class FilterRepresentationTwoSidedTTest extends
@@ -70,6 +71,8 @@ public class FilterRepresentationTwoSidedTTest extends
 				int y = bounds.y + (bounds.height - rect.height) / 2;
 				parentComposite.setLocation(x, y);
 				parentComposite.pack();
+				
+				((Shell) parentComposite).open();
 			}
 		});
 	}

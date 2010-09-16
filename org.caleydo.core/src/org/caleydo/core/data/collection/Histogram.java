@@ -106,4 +106,11 @@ public class Histogram
 		this.max = max;
 	}
 
+	public float getMax() {
+		return max;
+	}
+	
+	public float getMin() {
+		return min;
+	}
 }
