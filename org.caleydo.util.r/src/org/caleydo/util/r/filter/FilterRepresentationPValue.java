@@ -14,6 +14,8 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.histogram.RcpGLHistogramView;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
@@ -23,6 +25,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -49,31 +52,23 @@ public class FilterRepresentationPValue extends
 
 				GridData gridData = new GridData();
 				gridData.grabExcessHorizontalSpace = true;
-				// gridData.horizontalAlignment = GridData.FILL;
-
-				gridData.widthHint = 400;
-				gridData.heightHint = 50;
+				gridData.horizontalAlignment = GridData.FILL;
 
 				Composite infoComposite = new Composite(parentComposite, SWT.NULL);
 				infoComposite.setLayoutData(gridData);
-				infoComposite.setLayout(new FillLayout(SWT.VERTICAL));
-
-				final Button applyFilterButton = new Button(infoComposite, SWT.PUSH);
-				applyFilterButton.setText("Apply filter");
-				applyFilterButton.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						createVADelta();
-						filter.updateFilterManager();
-					}
-				});
-
-				final Slider pValueSlider = new Slider(infoComposite, SWT.HORIZONTAL);
+				infoComposite.setLayout(new GridLayout(4, false));
 
 				Label pValueLabel = new Label(infoComposite, SWT.NONE);
 				pValueLabel.setText("p-Value:");
-				
+
 				final Text pValueInputField = new Text(infoComposite, SWT.SINGLE);
+				final Slider pValueSlider = new Slider(infoComposite, SWT.HORIZONTAL);
+
+				gridData = new GridData();
+				gridData.grabExcessHorizontalSpace = true;
+				gridData.horizontalAlignment = GridData.FILL;
+				pValueSlider.setLayoutData(gridData);
+
 				pValueInputField.setEditable(true);
 				pValue = histogram.getMax();
 				pValueInputField.setText(Float.toString(pValue));
@@ -81,11 +76,9 @@ public class FilterRepresentationPValue extends
 					@Override
 					public void keyPressed(KeyEvent e) {
 
-						if (e.character == SWT.CR) {
-							String enteredValue = pValueInputField.getText();
-							pValue = new Float(enteredValue);
-							pValueSlider.setSelection((int) (pValue * 10000));
-						}
+						String enteredValue = pValueInputField.getText();
+						pValue = new Float(enteredValue);
+						pValueSlider.setSelection((int) (pValue * 10000));
 					}
 				});
 
@@ -115,13 +108,24 @@ public class FilterRepresentationPValue extends
 					}
 				});
 
+				final Button applyFilterButton = new Button(infoComposite, SWT.PUSH);
+				applyFilterButton.setText("Apply");
+				applyFilterButton.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						createVADelta();
+						filter.updateFilterManager();
+					}
+				});
+
 				Composite histoComposite = new Composite(parentComposite, SWT.NULL);
 				histoComposite.setLayout(new FillLayout(SWT.VERTICAL));
-				
-				GridData gridData2 = new GridData();
-				gridData2.heightHint = 300;
+
+				gridData = new GridData();
+				gridData.heightHint = 300;
+				gridData.widthHint = 500;
 				// gridData.verticalAlignment = GridData.FILL;
-				gridData2.grabExcessVerticalSpace = true;
+				// gridData2.grabExcessVerticalSpace = true;
 				histoComposite.setLayoutData(gridData);
 
 				RcpGLHistogramView histogramView = new RcpGLHistogramView();
@@ -138,20 +142,10 @@ public class FilterRepresentationPValue extends
 				// own
 				GeneralManager.get().getViewGLCanvasManager()
 						.registerGLCanvasToAnimator(histogramView.getGLCanvas());
-
-				Monitor primary = parentComposite.getDisplay().getPrimaryMonitor();
-				Rectangle bounds = primary.getBounds();
-				Rectangle rect = parentComposite.getBounds();
-				int x = bounds.x + (bounds.width - rect.width) / 2;
-				int y = bounds.y + (bounds.height - rect.height) / 2;
-				parentComposite.setLocation(x, y);
-
-
-				parentComposite.pack();
-
-				((Shell) parentComposite).open();
 			}
 		});
+		
+		addOKCancel();
 	}
 
 	public void setHistogram(Histogram histogram) {

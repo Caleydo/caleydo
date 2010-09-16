@@ -63,18 +63,10 @@ public class FilterRepresentationTwoSidedTTest extends
 						// parentComposite.layout();
 					}
 				});
-
-				Monitor primary = parentComposite.getDisplay().getPrimaryMonitor();
-				Rectangle bounds = primary.getBounds();
-				Rectangle rect = parentComposite.getBounds();
-				int x = bounds.x + (bounds.width - rect.width) / 2;
-				int y = bounds.y + (bounds.height - rect.height) / 2;
-				parentComposite.setLocation(x, y);
-				parentComposite.pack();
-				
-				((Shell) parentComposite).open();
 			}
 		});
+		
+		addOKCancel();
 	}
 
 	@Override
