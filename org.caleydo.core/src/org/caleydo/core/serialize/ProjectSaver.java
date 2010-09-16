@@ -70,6 +70,9 @@ public class ProjectSaver {
 
 	/** file name of the experiment-cluster-file in project-folders */
 	public static final String EXP_TREE_FILE_NAME = "experiment_cluster.xml";
+	
+	/** file name of the datadomain-file in project-folders */
+	public static final String BASIC_INFORMATION_FILE_NAME = "basic_information.xml";
 
 	/**
 	 * Saves the project into a specified zip-archive.
@@ -78,7 +81,6 @@ public class ProjectSaver {
 	 *            name of the file to save the project in.
 	 */
 	public void save(String fileName) {
-		;
 		FileOperations.createDirectory(TEMP_PROJECT_DIR_NAME);
 
 		savePluginData(TEMP_PROJECT_DIR_NAME);
@@ -165,7 +167,7 @@ public class ProjectSaver {
 			dataDomainList.setDataDomains(dataDomains);
 
 			marshaller.marshal(dataDomainList, dataDomainFile);
-
+		
 			for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
 
 				if (dataDomain instanceof ASetBasedDataDomain) {
@@ -208,6 +210,9 @@ public class ProjectSaver {
 						treePorter.exportTree(dirName + EXP_TREE_FILE_NAME, expTree);
 					}
 				}
+				
+				String fileName = dirName + BASIC_INFORMATION_FILE_NAME;
+				marshaller.marshal(GeneralManager.get().getBasicInfo(), new File(fileName));
 			}
 		}
 		catch (JAXBException ex) {
@@ -296,7 +301,6 @@ public class ProjectSaver {
 		StorageVirtualArray va = (StorageVirtualArray) dataDomain.getStorageVA(type);
 		marshaller.marshal(va, new File(fileName));
 	}
-
 }
 
 // String geneTreePath = tempDirectory + "/bgene_tree.xml";

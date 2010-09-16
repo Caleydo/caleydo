@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.caleydo.core.manager.BasicInformation;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
@@ -33,6 +34,7 @@ public class SerializationManager {
 			projectTypes.add(DataInitializationData.class);
 			projectTypes.add(DataDomainList.class);
 			projectTypes.add(ViewList.class);
+			projectTypes.add(BasicInformation.class);
 			Class<?>[] classes = new Class<?>[eventTypes.size()];
 			classes = eventTypes.toArray(classes);
 			eventContext = JAXBContext.newInstance(classes);

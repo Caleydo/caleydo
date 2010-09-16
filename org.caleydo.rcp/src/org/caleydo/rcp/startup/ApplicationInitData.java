@@ -24,8 +24,6 @@ public class ApplicationInitData {
 	private ArrayList<String> initializedStartViews = new ArrayList<String>();
 
 	private boolean loadPathways = false;
-	
-	private Organism organism;
 
 	public List<Pair<String, String>> getAppArgumentStartViewWithDataDomain() {
 		return appArgumentStartViewWithDataDomain;
@@ -45,13 +43,5 @@ public class ApplicationInitData {
 
 	public boolean isLoadPathways() {
 		return loadPathways;
-	}
-	
-	public void setOrganism(Organism organism) {
-		this.organism = organism;
-	}
-	
-	public Organism getOrganism() {
-		return organism;
 	}
 }

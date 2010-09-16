@@ -73,7 +73,7 @@ public class PathwayLoaderThread extends Thread {
 		String sFileName = "";
 		String sPathwayPath = pathwayDatabase.getXMLPath();
 		IPathwayResourceLoader pathwayResourceLoader = null;
-		Organism eOrganism = GeneralManager.get().getOrganism();
+		Organism eOrganism = GeneralManager.get().getBasicInfo().getOrganism();
 
 		if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG) {
 

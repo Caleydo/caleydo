@@ -50,6 +50,7 @@ public class GeneralManager {
 
 	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
 	public static final String USER_HOME_TEMPLATE = "user.home";
+	
 	/**
 	 * The template for the concrete caleydo folder, ie CALEYDO_FOLDER. This is used for example in XML files
 	 * and is then replaced with the concrete folder
@@ -70,6 +71,8 @@ public class GeneralManager {
 	 * General manager as a singleton
 	 */
 	private volatile static GeneralManager instance;
+	
+	private BasicInformation basicInfo;
 
 	private IStorageManager storageManager;
 	private CommandManager commandManager;
@@ -87,8 +90,6 @@ public class GeneralManager {
 	private SerializationManager serializationManager;
 	private IStatisticsPerformer rStatisticsPerformer;
 
-	private Organism organism = Organism.HOMO_SAPIENS;
-
 	private boolean bIsWiiMode = false;
 
 	public void init(IGUIBridge externalGUIBridge) {
@@ -101,6 +102,8 @@ public class GeneralManager {
 		PreferenceManager preferenceManager = PreferenceManager.get();
 		preferenceManager.initialize();
 
+		basicInfo = new BasicInformation();
+		
 		storageManager = new StorageManager();
 		commandManager = new CommandManager();
 		eventPublisher = new EventPublisher();
@@ -141,13 +144,13 @@ public class GeneralManager {
 		}
 		return instance;
 	}
-
-	public Organism getOrganism() {
-		return organism;
+	
+	public BasicInformation getBasicInfo() {
+		return basicInfo;
 	}
-
-	public void setOrganism(Organism organism) {
-		this.organism = organism;
+	
+	public void setBasicInfo(BasicInformation basicInfo) {
+		this.basicInfo = basicInfo;
 	}
 
 	/**

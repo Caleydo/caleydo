@@ -114,7 +114,8 @@ public class CaleydoProjectWizard
 				
 				StartupProcessor.get().createStartupProcedure(ApplicationMode.GUI);
 				StartupProcessor.get().getAppInitData().setLoadPathways(loadPathways);
-				StartupProcessor.get().getAppInitData().setOrganism(page.getOrganism());
+				
+				GeneralManager.get().getBasicInfo().setOrganism(page.getOrganism());
 			}
 			else if (projectMode == ProjectMode.UNSPECIFIED_NEW_DATA) {
 				CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);

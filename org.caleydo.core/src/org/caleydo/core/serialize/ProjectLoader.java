@@ -15,6 +15,7 @@ import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.manager.BasicInformation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -46,9 +47,9 @@ public class ProjectLoader {
 	 * @return initialization data for the application from which it can restore itself
 	 */
 	public DataInitializationData load(String fileName) {
-		
+
 		FileOperations.deleteDirectory(TEMP_PROJECT_DIR_NAME);
-		
+
 		ZipUtils zipUtils = new ZipUtils();
 		zipUtils.unzipToDirectory(fileName, TEMP_PROJECT_DIR_NAME);
 		DataInitializationData initData = loadDirectory(TEMP_PROJECT_DIR_NAME);
@@ -83,6 +84,15 @@ public class ProjectLoader {
 
 		try {
 			Unmarshaller unmarshaller = projectContext.createUnmarshaller();
+			
+			try {
+				GeneralManager.get().setBasicInfo((BasicInformation) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
+						.getResource(dirName + ProjectSaver.BASIC_INFORMATION_FILE_NAME)));
+			}
+			catch (FileNotFoundException e) {
+				throw new IllegalStateException("Cannot load data domain list from project file");
+			}
+			
 			DataDomainList dataDomainList;
 			try {
 				dataDomainList =
@@ -92,9 +102,9 @@ public class ProjectLoader {
 			catch (FileNotFoundException e1) {
 				throw new IllegalStateException("Cannot load data domain list from project file");
 			}
-
+			
 			initData = new DataInitializationData();
-
+			
 			for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
 
 				if (dataDomain instanceof ASetBasedDataDomain) {
@@ -143,7 +153,7 @@ public class ProjectLoader {
 						dirName + ProjectSaver.EXP_TREE_FILE_NAME);
 				}
 			}
-
+			
 			ViewList loadViews = null;
 			try {
 				loadViews =
@@ -222,6 +232,12 @@ public class ProjectLoader {
 
 	private StorageVirtualArray loadStorageVirtualArray(Unmarshaller unmarshaller, String dir, String type)
 		throws JAXBException {
+		String fileName = dir + "va_" + type.toString() + ".xml";
+		StorageVirtualArray va = (StorageVirtualArray) unmarshaller.unmarshal(new File(fileName));
+		return va;
+	}
+
+	private StorageVirtualArray load(Unmarshaller unmarshaller, String dir, String type) throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
 		StorageVirtualArray va = (StorageVirtualArray) unmarshaller.unmarshal(new File(fileName));
 		return va;

@@ -79,7 +79,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 		if (browserQueryType == BrowserQueryType.GeneCards)
 			comboQueryDatabaseType.select(2);
 
-		Organism organism = generalManager.getOrganism();
+		Organism organism = generalManager.getBasicInfo().getOrganism();
 		if (organism == Organism.HOMO_SAPIENS) {
 			// comboQueryDatabaseType.add(BrowserQueryType.Ensembl_HomoSapiens.getTitle());
 			// if (browserQueryType == BrowserQueryType.Ensembl_HomoSapiens)

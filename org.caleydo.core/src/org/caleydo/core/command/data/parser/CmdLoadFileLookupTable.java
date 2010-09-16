@@ -159,7 +159,7 @@ public class CmdLoadFileLookupTable
 		LookupTableLoader loader = null;
 
 		if (fileName.contains("ORGANISM")) {
-			Organism eOrganism = GeneralManager.get().getOrganism();
+			Organism eOrganism = GeneralManager.get().getBasicInfo().getOrganism();
 			this.fileName = fileName.replace("ORGANISM", eOrganism.toString());
 		}
 

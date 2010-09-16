@@ -50,7 +50,7 @@ public class PathwayDatabase implements Serializable {
 				GeneralManager.CALEYDO_FOLDER_TEMPLATE, GeneralManager.CALEYDO_FOLDER);
 
 		if (type == EPathwayDatabaseType.KEGG) {
-			Organism eOrganism = GeneralManager.get().getOrganism();
+			Organism eOrganism = GeneralManager.get().getBasicInfo().getOrganism();
 
 			if (eOrganism == Organism.HOMO_SAPIENS) {
 				this.sImagePath += "hsa/";

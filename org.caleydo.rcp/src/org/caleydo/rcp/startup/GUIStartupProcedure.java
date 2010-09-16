@@ -28,16 +28,14 @@ public class GUIStartupProcedure
 
 	@Override
 	public void init(ApplicationInitData appInitData) {
-
-		GeneralManager.get().setOrganism(appInitData.getOrganism());
-		
+	
 		if (loadSampleData) {
 			appInitData.setLoadPathways(true);
 
 			GeneralManager.get().getPreferenceStore()
 				.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES, "KEGG;BioCarta");
 
-			GeneralManager.get().setOrganism(Organism.HOMO_SAPIENS);
+			GeneralManager.get().getBasicInfo().setOrganism(Organism.HOMO_SAPIENS);
 		}
 		
 		// FIXME this needs to be done after the wizard is closed, and dynamically
