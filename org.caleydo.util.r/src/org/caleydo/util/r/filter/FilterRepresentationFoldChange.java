@@ -1,5 +1,6 @@
 package org.caleydo.util.r.filter;
 
+import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings;
 import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings.FoldChangeEvaluator;
@@ -11,6 +12,9 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.view.histogram.GLHistogram;
+import org.caleydo.view.histogram.RcpBasicGLHistogramView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -18,6 +22,7 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -39,6 +44,8 @@ public class FilterRepresentationFoldChange extends
 	private float foldChange = 2;
 
 	Button[] evaluatorCheckBox;
+	
+	private Histogram histogram;
 
 	public void create() {
 		super.create();
@@ -176,10 +183,48 @@ public class FilterRepresentationFoldChange extends
 						// parentComposite.layout();
 					}
 				});
+				
+				
+				set1.getStatisticsResult().getFoldChangeResult(set2)
+				.getFirst();
+				
+				Composite histoComposite = new Composite(parentComposite, SWT.NULL);
+				histoComposite.setLayout(new FillLayout(SWT.VERTICAL));
+
+				gridData = new GridData();
+				gridData.heightHint = 300;
+				gridData.widthHint = 500;
+				// gridData.verticalAlignment = GridData.FILL;
+				// gridData2.grabExcessVerticalSpace = true;
+				histoComposite.setLayoutData(gridData);
+
+				
+				RcpBasicGLHistogramView histogramView = new RcpBasicGLHistogramView();
+				histogramView.setDataDomain(DataDomainManager.get().getDataDomain(
+						"org.caleydo.datadomain.genetic"));
+
+				histogramView.createDefaultSerializedView();
+				histogramView.createPartControl(histoComposite);
+				((GLHistogram) (histogramView.getGLView())).setHistogram(histogram);
+				// Usually the canvas is registered to the GL animator in the
+				// PartListener.
+				// Because the GL histogram is no usual RCP view we have to do
+				// it on our
+				// own
+				GeneralManager.get().getViewGLCanvasManager()
+						.registerGLCanvasToAnimator(histogramView.getGLCanvas());
+				
 			}
 		});
+		
+		
+
 
 		addOKCancel();
+	}
+	
+	public void setHistogram(Histogram histogram) {
+		this.histogram = histogram;
 	}
 
 	public void setSet1(ISet set1) {

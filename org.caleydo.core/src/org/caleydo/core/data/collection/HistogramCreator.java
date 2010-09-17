@@ -9,6 +9,7 @@ package org.caleydo.core.data.collection;
 public class HistogramCreator {
 
 	public static Histogram createHistogram(double[] vector) {
+
 		int iNumberOfBuckets = (int) Math.sqrt(vector.length);
 		Histogram histogram = new Histogram(iNumberOfBuckets);
 
@@ -39,6 +40,23 @@ public class HistogramCreator {
 			histogram.set(iIndex, ++iNumOccurences);
 		}
 		return histogram;
+	}
+
+	public static Histogram createLogHistogram(double vec[]) {
+		return createHistogram(runLog(vec));
+	}
+
+	private  static double[] runLog(double vec[]) {
+		double[] logVec = new double[vec.length];
+
+		for (int count = 0; count < vec.length; count++) {
+			double value = Math.log(Math.abs(vec[count]));
+			if(vec[count] < 0)
+				value *= -1;
+			logVec[count] = value;
+		}
+
+		return logVec;
 	}
 
 	public static double normalize(double min, double max, double value) {

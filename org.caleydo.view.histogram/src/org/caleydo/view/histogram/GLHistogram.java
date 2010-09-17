@@ -73,6 +73,8 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 
 	private ASetBasedDataDomain dataDomain;
 
+	private boolean useColorMapping = true;
+
 	/**
 	 * Constructor.
 	 * 
@@ -91,6 +93,10 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
 		// registerEventListeners();
+	}
+
+	public void setUseColorMapping(boolean useColorMapping) {
+		this.useColorMapping = useColorMapping;
 	}
 
 	@Override
@@ -188,7 +194,8 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 		renderHistogram(gl);
-		renderColorBars(gl);
+		if (useColorMapping)
+			renderColorBars(gl);
 		gl.glEndList();
 	}
 

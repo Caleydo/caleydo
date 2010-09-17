@@ -12,7 +12,8 @@ import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.view.histogram.GLHistogram;
-import org.caleydo.view.histogram.RcpGLHistogramView;
+import org.caleydo.view.histogram.RcpBasicGLHistogramView;
+import org.caleydo.view.histogram.RcpGLColorMapperHistogramView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -128,7 +129,7 @@ public class FilterRepresentationPValue extends
 				// gridData2.grabExcessVerticalSpace = true;
 				histoComposite.setLayoutData(gridData);
 
-				RcpGLHistogramView histogramView = new RcpGLHistogramView();
+				RcpBasicGLHistogramView histogramView = new RcpBasicGLHistogramView();
 				histogramView.setDataDomain(DataDomainManager.get().getDataDomain(
 						"org.caleydo.datadomain.genetic"));
 

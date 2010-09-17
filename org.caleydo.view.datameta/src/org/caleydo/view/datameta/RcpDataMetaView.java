@@ -9,7 +9,7 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
-import org.caleydo.view.histogram.RcpGLHistogramView;
+import org.caleydo.view.histogram.RcpGLColorMapperHistogramView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -108,7 +108,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		histoComposite.setLayoutData(gridData);
 		histoComposite.setLayout(new FillLayout(SWT.VERTICAL));
 
-		RcpGLHistogramView histogramView = new RcpGLHistogramView();
+		RcpGLColorMapperHistogramView histogramView = new RcpGLColorMapperHistogramView();
 		histogramView.setDataDomain(dataDomain);
 		histogramView.createDefaultSerializedView();
 		histogramView.createPartControl(histoComposite);

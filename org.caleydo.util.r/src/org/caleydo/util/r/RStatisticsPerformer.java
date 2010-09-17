@@ -186,11 +186,16 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		contentFilter.setDataDomain(set1.getDataDomain());
 		contentFilter.setLabel("Fold change " + set1.getLabel() + " and "
 				+ set2.getLabel());
+		
+		
+		Histogram histogram = HistogramCreator.createLogHistogram(resultVec);
+//		Histogram histogram = HistogramCreator.createHistogram(resultVec);
 
 		FilterRepresentationFoldChange filterRep = new FilterRepresentationFoldChange();
 		filterRep.setFilter(contentFilter);
 		filterRep.setSet1(set1);
 		filterRep.setSet2(set2);
+		filterRep.setHistogram(histogram);
 		contentFilter.setFilterRep(filterRep);
 		contentFilter.openRepresentation();
 	}

@@ -6,7 +6,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.view.histogram.RcpGLHistogramView"
+            class="org.caleydo.view.histogram.RcpGLColorMapperHistogramView"
             icon="resources/icons/histogram.png"
             id="org.caleydo.view.histogram"
             name="Histogram">

@@ -195,8 +195,10 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	@Override
 	public int indexOf(int iElement) {
-		if (isHashIDToIndexDirty)
-			buildIDMap();
+		// FIXME this needs to be re-enabled and debugged
+		// if (isHashIDToIndexDirty)
+
+		buildIDMap();
 		ArrayList<Integer> results = hashIDToIndex.get(iElement);
 		if (results != null) {
 			if (results.size() > 1)

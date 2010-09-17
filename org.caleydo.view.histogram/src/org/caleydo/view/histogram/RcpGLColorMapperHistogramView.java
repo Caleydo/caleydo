@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
-public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHandler,
+public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements IViewCommandHandler,
 		IListenerOwner, IDataDomainBasedView<IDataDomain> {
 
 	private CLabel colorMappingPreviewLabel;
@@ -58,7 +58,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 	/**
 	 * Constructor.
 	 */
-	public RcpGLHistogramView() {
+	public RcpGLColorMapperHistogramView() {
 		super();
 
 		try {
