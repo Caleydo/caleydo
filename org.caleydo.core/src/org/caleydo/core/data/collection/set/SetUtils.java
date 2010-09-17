@@ -201,18 +201,8 @@ public class SetUtils {
 		cmdCreateSet.setAttributes(iAlStorageId, dataDomain);
 		cmdCreateSet.doCommand();
 
-		// Trigger file loading command
-		CmdLoadFileNStorages cmdLoadCsv =
-			(CmdLoadFileNStorages) GeneralManager.get().getCommandManager()
-				.createCommandByType(ECommandType.LOAD_DATA_FILE);
-
-		cmdLoadCsv.setAttributes(iAlStorageId, loadDataParameters);
-		cmdLoadCsv.doCommand();
-
-		if (!cmdLoadCsv.isParsingOK()) {
-			// TODO: Clear created set and storages which are empty
-			return null;
-		}
+	
+		// ----------------- load dynamic mapping ---------------------
 
 		CmdLoadFileLookupTable cmdLoadLookupTableFile =
 			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager()
@@ -237,6 +227,24 @@ public class SetUtils {
 		}
 
 		cmdLoadLookupTableFile.doCommand();
+		
+		// --------- data loading ---------------
+		
+		// Trigger file loading command
+		CmdLoadFileNStorages cmdLoadCsv =
+			(CmdLoadFileNStorages) GeneralManager.get().getCommandManager()
+				.createCommandByType(ECommandType.LOAD_DATA_FILE);
+
+		cmdLoadCsv.setAttributes(iAlStorageId, loadDataParameters);
+		cmdLoadCsv.doCommand();
+
+		if (!cmdLoadCsv.isParsingOK()) {
+			// TODO: Clear created set and storages which are empty
+			return null;
+		}
+		
+		
+		// ----------------------------------------
 
 		Set set = (Set) dataDomain.getSet();
 

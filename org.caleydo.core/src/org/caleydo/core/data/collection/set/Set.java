@@ -378,6 +378,9 @@ public class Set
 		else
 			contentData.reset();
 		contentData.setContentVA(virtualArray);
+		// FIXME - this happens when we filter genes based on pathway occurrences. However, we should consider this as a filter instead of the new default
+		if (vaType == CONTENT)
+			defaultContentData = contentData;
 		hashContentData.put(vaType, contentData);
 	}
 

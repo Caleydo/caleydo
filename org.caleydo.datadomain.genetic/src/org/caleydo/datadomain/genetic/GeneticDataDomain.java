@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.INominalStorage;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
@@ -162,29 +163,27 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 			alTempList.add(iCount);
 		}
-		// ContentVirtualArray contentVA = new
-		// ContentVirtualArray(ContentVAType.CONTENT,
-		// alTempList);
-		// // removeDuplicates(contentVA);
-		// set.setContentVA(ContentVAType.CONTENT, contentVA);
+		ContentVirtualArray contentVA = new ContentVirtualArray(ISet.CONTENT, alTempList);
+		// removeDuplicates(contentVA);
+		// FIXME make this a filter?
+		set.setContentVA(ISet.CONTENT, contentVA);
 	}
 
-	// public ContentVirtualArray removeDuplicates(ContentVirtualArray
-	// contentVirtualArray) {
-	// Map<Object, Object> idMap =
-	// GeneralManager.get().getIDMappingManager().getMap(EMappingType.REFSEQ_MRNA_INT_2_DAVID);
-	// for (Object idObject : idMap.keySet()) {
-	// Integer id = (Integer) idObject;
-	// ArrayList<Integer> indices = contentVirtualArray.indicesOf(id);
-	// if (indices.size() > 1) {
-	// for (int count = 1; count < indices.size(); count++) {
-	// contentVirtualArray.remove(indices.get(count));
-	// }
-	// }
-	//
-	// }
-	// return contentVirtualArray;
-	// }
+//	public ContentVirtualArray removeDuplicates(ContentVirtualArray contentVirtualArray) {
+//		Map<Object, Object> idMap = GeneralManager.get().getIDMappingManager()
+//				.getMap(EMappingType.REFSEQ_MRNA_INT_2_DAVID);
+//		for (Object idObject : idMap.keySet()) {
+//			Integer id = (Integer) idObject;
+//			ArrayList<Integer> indices = contentVirtualArray.indicesOf(id);
+//			if (indices.size() > 1) {
+//				for (int count = 1; count < indices.size(); count++) {
+//					contentVirtualArray.remove(indices.get(count));
+//				}
+//			}
+//
+//		}
+//		return contentVirtualArray;
+//	}
 
 	public boolean isPathwayViewerMode() {
 		return pathwayViewerMode;
