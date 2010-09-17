@@ -44,7 +44,7 @@ public class FilterRepresentationFoldChange extends
 	private float foldChange = 2;
 
 	Button[] evaluatorCheckBox;
-	
+
 	private Histogram histogram;
 
 	public void create() {
@@ -106,6 +106,20 @@ public class FilterRepresentationFoldChange extends
 				evaluatorCheckBox[1] = new Button(parentComposite, SWT.CHECK);
 				evaluatorCheckBox[1].setText("Greater (up regulated)");
 
+				evaluatorCheckBox[0].addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						isDirty = true;
+					}
+				});
+
+				evaluatorCheckBox[1].addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						isDirty = true;
+					}
+				});
+
 				foldChangeSlider.setMinimum(0);
 				foldChangeSlider.setMaximum(100);
 				foldChangeSlider.setIncrement(1);
@@ -127,12 +141,11 @@ public class FilterRepresentationFoldChange extends
 						// + reducedNumberOfElements);
 						// parentComposite.layout();
 					}
-				});;
-				
-				
-				set1.getStatisticsResult().getFoldChangeResult(set2)
-				.getFirst();
-				
+				});
+				;
+
+				set1.getStatisticsResult().getFoldChangeResult(set2).getFirst();
+
 				Composite histoComposite = new Composite(parentComposite, SWT.NULL);
 				histoComposite.setLayout(new FillLayout(SWT.VERTICAL));
 
@@ -143,7 +156,6 @@ public class FilterRepresentationFoldChange extends
 				// gridData2.grabExcessVerticalSpace = true;
 				histoComposite.setLayoutData(gridData);
 
-				
 				RcpBasicGLHistogramView histogramView = new RcpBasicGLHistogramView();
 				histogramView.setDataDomain(DataDomainManager.get().getDataDomain(
 						"org.caleydo.datadomain.genetic"));
@@ -158,16 +170,13 @@ public class FilterRepresentationFoldChange extends
 				// own
 				GeneralManager.get().getViewGLCanvasManager()
 						.registerGLCanvasToAnimator(histogramView.getGLCanvas());
-				
+
 			}
 		});
-		
-		
-
 
 		addOKCancel();
 	}
-	
+
 	public void setHistogram(Histogram histogram) {
 		this.histogram = histogram;
 	}
@@ -179,7 +188,7 @@ public class FilterRepresentationFoldChange extends
 	public void setSet2(ISet set2) {
 		this.set2 = set2;
 	}
-	
+
 	@Override
 	protected void createVADelta() {
 
@@ -240,8 +249,7 @@ public class FilterRepresentationFoldChange extends
 
 	@Override
 	protected void applyFilter() {
-		if (isDirty)
-		{
+		if (isDirty) {
 			FoldChangeEvaluator foldChangeEvaluator = null;
 
 			if (evaluatorCheckBox[0].getSelection() == true
@@ -253,14 +261,12 @@ public class FilterRepresentationFoldChange extends
 				foldChangeEvaluator = FoldChangeEvaluator.GREATER;
 			}
 
-			FoldChangeSettings foldChangeSettings = new FoldChangeSettings(
-					foldChange, foldChangeEvaluator);
+			FoldChangeSettings foldChangeSettings = new FoldChangeSettings(foldChange,
+					foldChangeEvaluator);
 
-			set1.getStatisticsResult().setFoldChangeSettings(set2,
-					foldChangeSettings);
-			set2.getStatisticsResult().setFoldChangeSettings(set1,
-					foldChangeSettings);
-			
+			set1.getStatisticsResult().setFoldChangeSettings(set2, foldChangeSettings);
+			set2.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
+
 			createVADelta();
 			filter.updateFilterManager();
 		}
