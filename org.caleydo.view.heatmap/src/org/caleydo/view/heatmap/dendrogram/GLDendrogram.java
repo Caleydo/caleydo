@@ -300,7 +300,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		else
 			fPosCut = viewFrustum.getHeight() - viewFrustum.getHeight() / 4f;
 
-		if (tree != null) {
+		if (tree != null  && tree.getRoot() != null) {
 			determineSelectedNodes();
 			return true;
 		}
@@ -568,7 +568,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	public void renderSubTreeFromIndexToIndex(GL gl, int fromIndex, int toIndex,
 			int iNrLeafs, float fWidth, float fHeight) {
 
-		if (tree == null)
+		if (tree == null || tree.getRoot() == null)
 			return;
 
 		determineNodesToRender(rootNode, fromIndex, toIndex, false);
@@ -1246,7 +1246,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			gl.glScalef(-1.0f, 1.0f, 1.0f);
 		}
 
-		if (tree == null) {
+		if (tree == null || tree.getRoot() == null) {
 
 			iAlClusterNodes.clear();
 
@@ -1268,7 +1268,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			}
 		}
 
-		if (tree != null) {
+		if (tree != null && tree.getRoot() != null) {
 			if (bHasFrustumChanged || bRedrawDendrogram) {
 				if (bRenderContentTree) {
 					xGlobalMax = viewFrustum.getWidth();
@@ -1311,7 +1311,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		// display list for cut off value
 		gl.glNewList(iGLDisplayListCutOffValue, GL.GL_COMPILE);
 
-		if (tree != null && bRenderUntilCut == false)
+		if (tree != null && tree.getRoot() != null && bRenderUntilCut == false)
 			renderCut(gl);
 
 		gl.glPopMatrix();
@@ -1730,7 +1730,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			boolean scrollToSelection) {
 
 		if (bRenderContentTree == true) {
-			if (tree != null) {
+			if (tree != null && tree.getRoot() != null) {
 				int iIndex;
 
 				resetAllTreeSelections();
@@ -1767,7 +1767,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 				// setDisplayListDirty();
 			}
 		} else {
-			if (tree != null) {
+			if (tree != null && tree.getRoot() != null) {
 
 				int iIndex;
 
@@ -1830,7 +1830,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	 * all nodes in the dendrogram to {@link SelectionType.NORMAL}
 	 */
 	private void resetAllTreeSelections() {
-		if (tree != null)
+		if (tree != null && tree.getRoot() != null)
 			resetAllTreeSelectionsRec(rootNode);
 	}
 
@@ -1856,9 +1856,9 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 		SelectionDelta selectionDelta = event.getSelectionDelta();
 
-		if (tree != null && selectionDelta.getIDType() == tree.getNodeIDType()) {
+		if (tree != null && tree.getRoot() != null && selectionDelta.getIDType() == tree.getNodeIDType()) {
 			// cluster mouse over events only used for gene trees
-			if (tree != null) { // && bRenderGeneTree
+			if (tree != null && tree.getRoot() != null) { // && bRenderGeneTree
 				resetAllTreeSelections();
 
 				Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();

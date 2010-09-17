@@ -429,6 +429,7 @@ public abstract class ASetBasedDataDomain
 		if (targetCategory == contentIDCategory && vaDelta.getIDType() != contentIDType)
 			vaDelta = DeltaConverter.convertDelta(contentIDType, vaDelta);
 		ContentData contentData = set.getContentData(vaDelta.getVAType());
+		contentData.reset();
 		contentData.setVADelta(vaDelta);
 
 	}
