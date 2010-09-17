@@ -1,5 +1,7 @@
 package org.caleydo.core.manager.datadomain;
 
+import java.util.ArrayList;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -686,6 +688,17 @@ public abstract class ASetBasedDataDomain
 	 * @return a context menu item container related to content items
 	 */
 	public AItemContainer getContentItemContainer(IDType idType, int id) {
+		return null;
+	}
+
+	/**
+	 * A dataDomain may contribute to the context menu. This function returns dataDomain specific
+	 * implementations of a context menu for content groups. * @param idType
+	 * 
+	 * @param ids
+	 * @return
+	 */
+	public AItemContainer getContentGroupItemContainer(IDType idType, ArrayList<Integer> ids) {
 		return null;
 	}
 

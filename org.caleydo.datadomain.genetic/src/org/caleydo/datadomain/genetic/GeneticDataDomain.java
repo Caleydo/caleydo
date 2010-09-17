@@ -31,6 +31,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListe
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.genetic.contextmenu.container.GeneContentGroupMenuItemContainer;
 import org.caleydo.datadomain.genetic.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
@@ -382,6 +383,15 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		geneContainer.setDataDomain(this);
 		geneContainer.setID(idType, id);
 		return geneContainer;
+	}
+
+	@Override
+	public AItemContainer getContentGroupItemContainer(IDType idType,
+			ArrayList<Integer> ids) {
+		GeneContentGroupMenuItemContainer geneContentGroupContainer = new GeneContentGroupMenuItemContainer();
+		geneContentGroupContainer.setDataDomain(this);
+		geneContentGroupContainer.setGeneIDs(contentIDType, ids);
+		return geneContentGroupContainer;
 	}
 
 	@Override

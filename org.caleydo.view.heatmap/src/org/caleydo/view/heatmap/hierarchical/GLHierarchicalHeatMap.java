@@ -657,7 +657,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		glHeatMapView = new GLHeatMap(this.getParentGLCanvas(), viewFrustum);
 		glHeatMapView.setDataDomain(dataDomain);
-	
+
 		glHeatMapView.setRemoteRenderingGLView(this);
 		glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
 		renderTemplate = new HierarchicalHeatMapTemplate();
@@ -869,14 +869,14 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	public void handleVAUpdate(ContentVADelta delta, String info) {
 		if (!delta.getVAType().equals(contentVAType))
 			return;
-		super.handleVAUpdate(delta, info);		
+		super.handleVAUpdate(delta, info);
 		bRedrawTextures = true;
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
 		bGeneDendrogramActive = false;
 		setDisplayListDirty();
-		
-		initData();		
+
+		initData();
 	}
 
 	@Override
@@ -4092,7 +4092,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				GroupContextMenuItemContainer groupContextMenuItemContainer = new GroupContextMenuItemContainer();
 				groupContextMenuItemContainer.initContextMenu(true, bEnableMerge,
 						bEnableInterchange, bEnableExport);
-				groupContextMenuItemContainer.setGenes(contentIDType,
+				groupContextMenuItemContainer.setDataDomain(dataDomain);
+				groupContextMenuItemContainer.setContentIDs(contentIDType,
 						contentVA.getGeneIdsOfGroup(iExternalID));
 
 				BookmarkItem bookmarkItem = new BookmarkItem(contentIDType,

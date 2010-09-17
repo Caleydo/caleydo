@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
+package org.caleydo.view.bookmark.contextmenu;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;

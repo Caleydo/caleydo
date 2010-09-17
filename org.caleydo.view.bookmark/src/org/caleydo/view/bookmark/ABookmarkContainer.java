@@ -23,9 +23,9 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.BookmarkContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
+import org.caleydo.view.bookmark.contextmenu.BookmarkContextMenuItemContainer;
 
 /**
  * <p>

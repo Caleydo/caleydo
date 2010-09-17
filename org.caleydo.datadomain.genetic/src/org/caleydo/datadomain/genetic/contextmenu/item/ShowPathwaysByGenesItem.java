@@ -1,7 +1,20 @@
 package org.caleydo.datadomain.genetic.contextmenu.item;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Set;
+
+import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
 
 /**
  * <p>
@@ -35,55 +48,54 @@ public class ShowPathwaysByGenesItem extends AContextMenuItem {
 	 * @param david
 	 *            the int code associated with a refseq
 	 */
-	// public void setIDs(IDType idType, ArrayList<Integer> genes) {
-	//
-	// HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new
-	// HashMap<PathwayGraph, Integer>();
-	// for (int gene : genes) {
-	// int david = GeneralManager.get().getIDMappingManager().getID(idType,
-	// GeneticDataDomain.centralIDType, gene);
-	//
-	// Set<PathwayGraph> pathwayGraphs =
-	// GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(GeneticDataDomain.centralIDType,
-	// david);
-	//
-	// // int iPathwayCount = 0;
-	//
-	// if (pathwayGraphs != null) {
-	//
-	// // iPathwayCount = pathwayGraphs.size();
-	//
-	// for (PathwayGraph pathwayGraph : pathwayGraphs) {
-	//
-	// if (!hashPathwaysToOccurences.containsKey(pathwayGraph))
-	// hashPathwaysToOccurences.put(pathwayGraph, 1);
-	// else {
-	// int occurences = hashPathwaysToOccurences.get(pathwayGraph);
-	// occurences++;
-	// hashPathwaysToOccurences.put(pathwayGraph, occurences);
-	// }
-	//
-	// }
-	// }
-	// }
-	//
-	// ArrayList<Pair<Integer, PathwayGraph>> pathways = new
-	// ArrayList<Pair<Integer, PathwayGraph>>();
-	// for (PathwayGraph pathway : hashPathwaysToOccurences.keySet()) {
-	// pathways.add(new Pair<Integer,
-	// PathwayGraph>(hashPathwaysToOccurences.get(pathway), pathway));
-	// }
-	// Collections.sort(pathways);
-	// for (int count = pathways.size() - 1; count >= 0; count--) {
-	// Pair<Integer, PathwayGraph> pair = pathways.get(count);
-	// if (pair.getFirst() > 1) {
-	// LoadPathwaysByPathwayIDItem item =
-	// new LoadPathwaysByPathwayIDItem(pair.getSecond().getID(),
-	// pair.getFirst());
-	// addSubItem(item);
-	// }
-	// }
-	// // setText("Pathways (" + iPathwayCount + ")");
-	// }
+	public void setIDs(ASetBasedDataDomain dataDomain, IDType idType,
+			ArrayList<Integer> genes) {
+
+		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
+		for (Integer gene : genes) {
+			Set<Integer> davids = GeneralManager.get().getIDMappingManager()
+					.getIDAsSet(idType, dataDomain.getPrimaryContentMappingType(), gene);
+			if (davids == null || davids.size() == 0)
+				continue;
+			for (Integer david : davids) {
+				Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper.get()
+						.getPathwayGraphsByGeneID(
+								dataDomain.getPrimaryContentMappingType(), david);
+
+				// int iPathwayCount = 0;
+				if (pathwayGraphs != null) {
+					// iPathwayCount = pathwayGraphs.size();
+
+					for (PathwayGraph pathwayGraph : pathwayGraphs) {
+
+						if (!hashPathwaysToOccurences.containsKey(pathwayGraph))
+							hashPathwaysToOccurences.put(pathwayGraph, 1);
+						else {
+							int occurences = hashPathwaysToOccurences.get(pathwayGraph);
+							occurences++;
+							hashPathwaysToOccurences.put(pathwayGraph, occurences);
+						}
+
+					}
+				}
+			}
+		}
+
+		ArrayList<Pair<Integer, PathwayGraph>> pathways = new ArrayList<Pair<Integer, PathwayGraph>>();
+		for (PathwayGraph pathway : hashPathwaysToOccurences.keySet()) {
+			pathways.add(new Pair<Integer, PathwayGraph>(hashPathwaysToOccurences
+					.get(pathway), pathway));
+		}
+		Collections.sort(pathways);
+		for (int count = pathways.size() - 1; count >= 0; count--) {
+			Pair<Integer, PathwayGraph> pair = pathways.get(count);
+			if (pair.getFirst() > 1) {
+				LoadPathwaysByPathwayIDItem item = new LoadPathwaysByPathwayIDItem(pair
+						.getSecond().getID(), pair.getFirst());
+				addSubItem(item);
+			}
+		}
+		// setText("Pathways (" + iPathwayCount + ")");
+	}
 
 }

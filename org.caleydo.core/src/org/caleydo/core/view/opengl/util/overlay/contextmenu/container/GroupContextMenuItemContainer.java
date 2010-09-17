@@ -64,12 +64,14 @@ public class GroupContextMenuItemContainer
 		}
 	}
 
-	public void setGenes(IDType idType, ArrayList<Integer> genes) {
+	public void setContentIDs(IDType idType, ArrayList<Integer> contentIDs) {
 		if (isGeneGroup) {
-			// ShowPathwaysByGenesItem pathwaysItem = new ShowPathwaysByGenesItem();
-			// pathwaysItem.setIDs(idType, genes);
-			// addContextMenuItem(pathwaysItem);
-			System.out.println("Add implementation");
+			AItemContainer domainSpecificContainer =
+				dataDomain.getContentGroupItemContainer(idType, contentIDs);
+			if (domainSpecificContainer != null)
+				addItemContainer(domainSpecificContainer);
+
+			// System.out.println("Add implementation");
 		}
 	}
 }
