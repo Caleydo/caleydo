@@ -150,12 +150,12 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	@Override
 	public Integer remove(int iIndex) {
-
+		isHashIDToIndexDirty = true;
 		// if(groupList != null){
 		// groupList.removeElementOfVA(iIndex);
 		// }
 		Integer id = virtualArray.remove(iIndex);
-		isHashIDToIndexDirty = true;
+
 		return id;
 	}
 
@@ -194,12 +194,12 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	}
 
 	@Override
-	public int indexOf(int iElement) {
+	public int indexOf(Integer id) {
 		// FIXME this needs to be re-enabled and debugged
-		// if (isHashIDToIndexDirty)
+		 if (isHashIDToIndexDirty)
 
 		buildIDMap();
-		ArrayList<Integer> results = hashIDToIndex.get(iElement);
+		ArrayList<Integer> results = hashIDToIndex.get(id);
 		if (results != null) {
 			if (results.size() > 1)
 				System.out.println("Ignored multi-mapping");
@@ -211,10 +211,10 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	private void buildIDMap() {
 		isHashIDToIndexDirty = false;
-		if (hashIDToIndex == null)
+//		if (hashIDToIndex == null)
 			hashIDToIndex = new HashMap<Integer, ArrayList<Integer>>((int) (virtualArray.size() * 1.5));
-		else
-			hashIDToIndex.clear();
+//		else
+//			hashIDToIndex.clear();
 
 		int indexCount = 0;
 		for (Integer id : virtualArray) {
@@ -249,10 +249,10 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	}
 
 	@Override
-	public ArrayList<Integer> indicesOf(int iElement) {
+	public ArrayList<Integer> indicesOf(Integer id) {
 		if (isHashIDToIndexDirty)
 			buildIDMap();
-		ArrayList<Integer> list = hashIDToIndex.get(iElement);
+		ArrayList<Integer> list = hashIDToIndex.get(id);
 		if (list != null)
 			return list;
 		else
@@ -395,6 +395,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		if (groupList != null)
 			va.setGroupList(groupList.clone());
 		va.lastRemovedIndex = lastRemovedIndex;
+		va.isHashIDToIndexDirty = true;
 		return va;
 	}
 
@@ -410,15 +411,16 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	public void setVirtualArray(ArrayList<Integer> virtualArray) {
 		this.virtualArray = virtualArray;
+		isHashIDToIndexDirty = true;
 	}
 
 	public int getLastRemovedIndex() {
 		return lastRemovedIndex;
 	}
 
-	public void setLastRemovedIndex(int lastRemovedIndex) {
-		this.lastRemovedIndex = lastRemovedIndex;
-	}
+//	public void setLastRemovedIndex(int lastRemovedIndex) {
+//		this.lastRemovedIndex = lastRemovedIndex;
+//	}
 
 	public void setVaType(String vaType) {
 		this.vaType = vaType;

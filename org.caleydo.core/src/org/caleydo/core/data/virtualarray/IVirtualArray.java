@@ -168,7 +168,7 @@ public interface IVirtualArray<ConcreteType extends IVirtualArray<ConcreteType, 
 	 * @return the index of the first occurrence of the specified element in this list, or -1 if this list
 	 *         does not contain the element
 	 */
-	public int indexOf(int iElement);
+	public int indexOf(Integer id);
 
 	/**
 	 * Returns the indices of all occurrences of the specified element in this list, or an empty list if the
@@ -179,7 +179,7 @@ public interface IVirtualArray<ConcreteType extends IVirtualArray<ConcreteType, 
 	 * @return a list of all the indices of all occurrences of the element or an empty list if no such
 	 *         elements exist
 	 */
-	public ArrayList<Integer> indicesOf(int iElement);
+	public ArrayList<Integer> indicesOf(Integer id);
 
 	/**
 	 * Returns the array list which contains the list of storage indices. DO NOT EDIT THIS LIST
