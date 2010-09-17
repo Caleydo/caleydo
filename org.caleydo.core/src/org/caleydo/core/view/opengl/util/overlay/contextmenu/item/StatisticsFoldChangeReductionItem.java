@@ -9,7 +9,7 @@ public class StatisticsFoldChangeReductionItem
 
 	public StatisticsFoldChangeReductionItem(ISet set1, ISet set2) {
 		super();
-		setText("Fold Change Reduction");
+		setText("Fold Change Filter");
 		StatisticsFoldChangeReductionEvent event = new StatisticsFoldChangeReductionEvent(set1, set2);
 		event.setSender(this);
 		registerEvent(event);

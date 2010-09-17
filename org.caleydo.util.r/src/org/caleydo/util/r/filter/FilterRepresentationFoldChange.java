@@ -24,16 +24,21 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Text;
 
-public class FilterRepresentationFoldChange
-	extends AFilterRepresentation<ContentVADelta, ContentFilter> {
+public class FilterRepresentationFoldChange extends
+		AFilterRepresentation<ContentVADelta, ContentFilter> {
+
+	private final static String TITLE = "Fold Change Filter";
 
 	private ISet set1;
 	private ISet set2;
-	
+
 	private float foldChange = 2;
+
+	Button[] evaluatorCheckBox;
 
 	public void create() {
 		super.create();
@@ -42,20 +47,22 @@ public class FilterRepresentationFoldChange
 			@Override
 			public void run() {
 
+				((Shell) parentComposite).setText(TITLE);
+
 				Composite infoComposite = new Composite(parentComposite, SWT.NULL);
 				GridData gridData = new GridData();
 				infoComposite.setLayoutData(gridData);
 				infoComposite.setLayout(new GridLayout(4, false));
-				
+
 				final Label foldChangeLabel = new Label(infoComposite, SWT.NULL);
 				foldChangeLabel.setText("Fold change:");
-				
+
 				final Text foldChangeInputField = new Text(infoComposite, SWT.SINGLE);
 				final Slider foldChangeSlider = new Slider(infoComposite, SWT.HORIZONTAL);
 
-//				gridData.grabExcessHorizontalSpace = true;
-//				gridData.horizontalAlignment = GridData.FILL;
-//				pValueSlider.setLayoutData(gridData);
+				// gridData.grabExcessHorizontalSpace = true;
+				// gridData.horizontalAlignment = GridData.FILL;
+				// pValueSlider.setLayoutData(gridData);
 
 				foldChangeInputField.setEditable(true);
 				foldChangeInputField.setText(Float.toString(foldChange));
@@ -64,8 +71,11 @@ public class FilterRepresentationFoldChange
 					public void keyPressed(KeyEvent e) {
 
 						String enteredValue = foldChangeInputField.getText();
-						foldChange = new Float(enteredValue);
-						foldChangeSlider.setSelection((int) (foldChange * 10));
+
+						if (enteredValue != null && !enteredValue.isEmpty()) {
+							foldChange = new Float(enteredValue);
+							foldChangeSlider.setSelection((int) (foldChange * 10));
+						}
 					}
 				});
 
@@ -74,12 +84,32 @@ public class FilterRepresentationFoldChange
 				applyFilterButton.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
+
+						FoldChangeEvaluator foldChangeEvaluator = null;
+
+						if (evaluatorCheckBox[0].getSelection() == true
+								&& evaluatorCheckBox[1].getSelection() == true) {
+							foldChangeEvaluator = FoldChangeEvaluator.BOTH;
+						} else if (evaluatorCheckBox[0].getSelection() == true) {
+							foldChangeEvaluator = FoldChangeEvaluator.LESS;
+						} else if (evaluatorCheckBox[1].getSelection() == true) {
+							foldChangeEvaluator = FoldChangeEvaluator.GREATER;
+						}
+
+						FoldChangeSettings foldChangeSettings = new FoldChangeSettings(
+								foldChange, foldChangeEvaluator);
+
+						set1.getStatisticsResult().setFoldChangeSettings(set2,
+								foldChangeSettings);
+						set2.getStatisticsResult().setFoldChangeSettings(set1,
+								foldChangeSettings);
+
 						createVADelta();
 						filter.updateFilterManager();
 					}
 				});
-				
-				final Button[] evaluatorCheckBox = new Button[3];
+
+				evaluatorCheckBox = new Button[3];
 
 				evaluatorCheckBox[0] = new Button(parentComposite, SWT.CHECK);
 				evaluatorCheckBox[0].setSelection(true);
@@ -88,30 +118,41 @@ public class FilterRepresentationFoldChange
 				evaluatorCheckBox[1] = new Button(parentComposite, SWT.CHECK);
 				evaluatorCheckBox[1].setText("Greater (up regulated)");
 
-				evaluatorCheckBox[2] = new Button(parentComposite, SWT.CHECK);
-				evaluatorCheckBox[2].setText("Equal");
+				// evaluatorCheckBox[0].addSelectionListener(new
+				// SelectionAdapter() {
+				// @Override
+				// public void widgetSelected(SelectionEvent e) {
+				// // evaluatorCheckBox[2].setSelection(false);
+				//
+				// FoldChangeSettings foldChangeSettings = new
+				// FoldChangeSettings(
+				// foldChangeSlider.getSelection() / 10d,
+				// FoldChangeEvaluator.LESS);
+				//
+				// set1.getStatisticsResult().setFoldChangeSettings(set2,
+				// foldChangeSettings);
+				// set2.getStatisticsResult().setFoldChangeSettings(set1,
+				// foldChangeSettings);
+				// }
+				// });
 
-				evaluatorCheckBox[0].addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						evaluatorCheckBox[2].setSelection(false);
-					}
-				});
-
-				evaluatorCheckBox[1].addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						evaluatorCheckBox[2].setSelection(false);
-					}
-				});
-
-				evaluatorCheckBox[2].addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						evaluatorCheckBox[1].setSelection(false);
-						evaluatorCheckBox[0].setSelection(false);
-					}
-				});
+				// evaluatorCheckBox[1].addSelectionListener(new
+				// SelectionAdapter() {
+				// @Override
+				// public void widgetSelected(SelectionEvent e) {
+				// // evaluatorCheckBox[2].setSelection(false);
+				//
+				// FoldChangeSettings foldChangeSettings = new
+				// FoldChangeSettings(
+				// foldChangeSlider.getSelection() / 10d,
+				// FoldChangeEvaluator.GREATER);
+				//
+				// set1.getStatisticsResult().setFoldChangeSettings(set2,
+				// foldChangeSettings);
+				// set2.getStatisticsResult().setFoldChangeSettings(set1,
+				// foldChangeSettings);
+				// }
+				// });
 
 				foldChangeSlider.setMinimum(0);
 				foldChangeSlider.setMaximum(100);
@@ -123,57 +164,28 @@ public class FilterRepresentationFoldChange
 
 					@Override
 					public void mouseUp(MouseEvent e) {
-						Double foldChangeRatio = foldChangeSlider.getSelection() / 10d;
-						foldChangeInputField.setText("" + foldChangeRatio);
+						foldChange = foldChangeSlider.getSelection() / 10f;
+						foldChangeInputField.setText("" + foldChange);
 
-						if (evaluatorCheckBox[0].getSelection() == true) {
-							FoldChangeSettings foldChangeSettings = new FoldChangeSettings(
-									foldChangeRatio, FoldChangeEvaluator.GREATER);
-
-							set1.getStatisticsResult().setFoldChangeSettings(set2,
-									foldChangeSettings);
-							set2.getStatisticsResult().setFoldChangeSettings(set1,
-									foldChangeSettings);
-						}
-
-						if (evaluatorCheckBox[1].getSelection() == true) {
-							FoldChangeSettings foldChangeSettings = new FoldChangeSettings(
-									foldChangeRatio, FoldChangeEvaluator.LESS);
-
-							set1.getStatisticsResult().setFoldChangeSettings(set2,
-									foldChangeSettings);
-							set2.getStatisticsResult().setFoldChangeSettings(set1,
-									foldChangeSettings);
-						}
-
-						if (evaluatorCheckBox[2].getSelection() == true) {
-							FoldChangeSettings foldChangeSettings = new FoldChangeSettings(
-									foldChangeRatio, FoldChangeEvaluator.GREATER);
-
-							set1.getStatisticsResult().setFoldChangeSettings(set2,
-									foldChangeSettings);
-							set2.getStatisticsResult().setFoldChangeSettings(set1,
-									foldChangeSettings);
-						}
-
-//						int reducedNumberOfElements = set1.getStatisticsResult()
-//								.getElementNumberOfFoldChangeReduction(set2);
-//
-//						label.setText("The fold change reduced results in a dataset of the size "
-//								+ reducedNumberOfElements);
-//						parentComposite.layout();
+						// int reducedNumberOfElements =
+						// set1.getStatisticsResult()
+						// .getElementNumberOfFoldChangeReduction(set2);
+						//
+						// label.setText("The fold change reduced results in a dataset of the size "
+						// + reducedNumberOfElements);
+						// parentComposite.layout();
 					}
 				});
 			}
 		});
-		
+
 		addOKCancel();
 	}
-	
+
 	public void setSet1(ISet set1) {
 		this.set1 = set1;
 	}
-	
+
 	public void setSet2(ISet set2) {
 		this.set2 = set2;
 	}
@@ -183,22 +195,24 @@ public class FilterRepresentationFoldChange
 
 		if (filter instanceof ContentMetaFilter) {
 			for (ContentFilter subFilter : ((ContentMetaFilter) filter).getFilterList()) {
-				
+
 				createVADelta(subFilter);
 			}
-		}
-		else
+		} else
 			createVADelta(filter);
 	}
-	
+
 	private void createVADelta(ContentFilter subFilter) {
 
-		ContentVADelta contentVADelta =
-			new ContentVADelta(ISet.CONTENT, subFilter.getDataDomain().getContentIDType());
-		ContentVirtualArray contentVA = subFilter.getDataDomain().getContentFilterManager().getBaseVA();
-		
-		double[] resultVector = set1.getStatisticsResult().getFoldChangeResult(set2).getFirst();
-		FoldChangeSettings settings = set1.getStatisticsResult().getFoldChangeResult(set2).getSecond();
+		ContentVADelta contentVADelta = new ContentVADelta(ISet.CONTENT, subFilter
+				.getDataDomain().getContentIDType());
+		ContentVirtualArray contentVA = subFilter.getDataDomain()
+				.getContentFilterManager().getBaseVA();
+
+		double[] resultVector = set1.getStatisticsResult().getFoldChangeResult(set2)
+				.getFirst();
+		FoldChangeSettings settings = set1.getStatisticsResult()
+				.getFoldChangeResult(set2).getSecond();
 
 		double foldChangeRatio = settings.getRatio();
 		FoldChangeEvaluator foldChangeEvaluator = settings.getEvaluator();
@@ -206,18 +220,18 @@ public class FilterRepresentationFoldChange
 		for (Integer contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 
 			switch (foldChangeEvaluator) {
-				case LESS:
-					if (resultVector[contentIndex] * -1 > foldChangeRatio)
-						continue;
-					break;
-				case GREATER:
-					if (resultVector[contentIndex] > foldChangeRatio)
-						continue;
-					break;
-				case BOTH:
-					if (Math.abs(resultVector[contentIndex]) > foldChangeRatio)
-						continue;
-					break;
+			case LESS:
+				if (resultVector[contentIndex] * -1 > foldChangeRatio)
+					continue;
+				break;
+			case GREATER:
+				if (resultVector[contentIndex] > foldChangeRatio)
+					continue;
+				break;
+			case BOTH:
+				if (Math.abs(resultVector[contentIndex]) > foldChangeRatio)
+					continue;
+				break;
 			}
 
 			contentVADelta.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));

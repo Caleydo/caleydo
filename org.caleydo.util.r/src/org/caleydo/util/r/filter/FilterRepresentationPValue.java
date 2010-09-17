@@ -14,15 +14,12 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.histogram.RcpGLHistogramView;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -30,7 +27,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Text;
@@ -38,6 +34,8 @@ import org.eclipse.swt.widgets.Text;
 public class FilterRepresentationPValue extends
 		AFilterRepresentation<ContentVADelta, ContentFilter> {
 
+	private final static String TITLE = "Variance Filter";
+	
 	private ISet set;
 
 	private Histogram histogram;
@@ -50,6 +48,8 @@ public class FilterRepresentationPValue extends
 			@Override
 			public void run() {
 
+				((Shell)parentComposite).setText(TITLE);
+				
 				GridData gridData = new GridData();
 				gridData.grabExcessHorizontalSpace = true;
 				gridData.horizontalAlignment = GridData.FILL;

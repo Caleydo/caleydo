@@ -11,7 +11,7 @@ public class StatisticsPValueReductionItem
 
 	public StatisticsPValueReductionItem(ArrayList<ISet> sets) {
 		super();
-		setText("P-Value Reduction");
+		setText("Variance Filter");
 		StatisticsPValueReductionEvent event = new StatisticsPValueReductionEvent(sets);
 		event.setSender(this);
 		registerEvent(event);

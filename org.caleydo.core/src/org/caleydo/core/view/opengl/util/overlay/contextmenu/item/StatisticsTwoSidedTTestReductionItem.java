@@ -11,7 +11,7 @@ public class StatisticsTwoSidedTTestReductionItem
 
 	public StatisticsTwoSidedTTestReductionItem(ArrayList<ISet> sets) {
 		super();
-		setText("Two-Sided T-Test Reduction");
+		setText("Two-Sided T-Test Filter");
 		StatisticsTwoSidedTTestReductionEvent event = new StatisticsTwoSidedTTestReductionEvent(sets);
 		event.setSender(this);
 		registerEvent(event);

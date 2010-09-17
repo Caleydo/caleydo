@@ -14,16 +14,16 @@ import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Slider;
 
 public class FilterRepresentationTwoSidedTTest extends
 		AFilterRepresentation<ContentVADelta, ContentFilter> {
 
+	private final static String TITLE = "Two-sided T-Test Filter";
+	
 	private ISet set1;
 	private ISet set2;
 
@@ -36,6 +36,8 @@ public class FilterRepresentationTwoSidedTTest extends
 			@Override
 			public void run() {
 
+				((Shell)parentComposite).setText(TITLE);
+				
 				final Slider pValueSlider = new Slider(parentComposite, SWT.HORIZONTAL);
 
 				final Label pValueLabel = new Label(parentComposite, SWT.NULL);
