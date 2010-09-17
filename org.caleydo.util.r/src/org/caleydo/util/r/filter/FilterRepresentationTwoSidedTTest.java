@@ -14,6 +14,9 @@ import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -55,14 +58,23 @@ public class FilterRepresentationTwoSidedTTest extends
 						pValueLabel.setText("p-Value: " + pValue);
 						parentComposite.pack();
 
-						createVADelta();
-						filter.updateFilterManager();
+						isDirty = true;
 
 						// if (reducedVA != null)
 						// reducedNumberLabel.setText("# Genes: " +
 						// reducedVA.size());
 
 						// parentComposite.layout();
+					}
+				});
+				
+				final Button applyFilterButton = new Button(parentComposite, SWT.PUSH);
+				applyFilterButton.setText("Apply");
+				applyFilterButton.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+
+						applyFilter();
 					}
 				});
 			}
@@ -129,5 +141,15 @@ public class FilterRepresentationTwoSidedTTest extends
 
 	public ISet getSet2() {
 		return set2;
+	}
+	
+	@Override
+	protected void applyFilter() {
+		if (isDirty)
+		{
+			createVADelta();
+			filter.updateFilterManager();
+		}
+		isDirty = false;
 	}
 }

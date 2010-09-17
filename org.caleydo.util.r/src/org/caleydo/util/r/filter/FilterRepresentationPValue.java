@@ -40,8 +40,9 @@ public class FilterRepresentationPValue extends
 	private ISet set;
 
 	private Histogram histogram;
-	private float pValue = 1f;
-
+	private float pValue = -1;
+	private float pValueMax = -1;
+	
 	public void create() {
 		super.create();
 
@@ -62,16 +63,22 @@ public class FilterRepresentationPValue extends
 				Label pValueLabel = new Label(infoComposite, SWT.NONE);
 				pValueLabel.setText("p-Value:");
 
+
 				final Text pValueInputField = new Text(infoComposite, SWT.SINGLE);
 				final Slider pValueSlider = new Slider(infoComposite, SWT.HORIZONTAL);
+				
+				if (pValue == -1) {
+					pValueMax = histogram.getMax();
+					pValue = pValueMax;
+				}
 
 				gridData = new GridData();
 				gridData.grabExcessHorizontalSpace = true;
 				gridData.horizontalAlignment = GridData.FILL;
 				pValueSlider.setLayoutData(gridData);
+				pValueSlider.setSelection((int) (pValue * 10000));
 
 				pValueInputField.setEditable(true);
-				pValue = histogram.getMax();
 				pValueInputField.setText(Float.toString(pValue));
 				pValueInputField.addKeyListener(new KeyAdapter() {
 					@Override
@@ -80,11 +87,12 @@ public class FilterRepresentationPValue extends
 						String enteredValue = pValueInputField.getText();
 						pValue = new Float(enteredValue);
 						pValueSlider.setSelection((int) (pValue * 10000));
+						isDirty = true;
 					}
 				});
 
 				pValueSlider.setMinimum(0);
-				pValueSlider.setMaximum((int) (pValue * 10000));
+				pValueSlider.setMaximum((int) (pValueMax * 10000));
 				pValueSlider.setIncrement(1);
 				pValueSlider.setPageIncrement(5);
 				pValueSlider.setSelection((int) (pValue * 10000));
@@ -94,13 +102,10 @@ public class FilterRepresentationPValue extends
 					@Override
 					public void mouseUp(MouseEvent e) {
 						pValue = (float) pValueSlider.getSelection() / 10000.00f;
-						System.out.println(pValue);
 						pValueInputField.setText(Float.toString(pValue));
+						isDirty = true;
 						parentComposite.pack();
 						parentComposite.layout();
-
-						// createVADelta();
-						// filter.updateFilterManager();
 
 						// if (reducedVA != null)
 						// reducedNumberLabel.setText("# Genes: " +
@@ -114,8 +119,7 @@ public class FilterRepresentationPValue extends
 				applyFilterButton.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						createVADelta();
-						filter.updateFilterManager();
+						applyFilter();
 					}
 				});
 
@@ -198,5 +202,15 @@ public class FilterRepresentationPValue extends
 
 	public ISet getSet() {
 		return set;
+	}
+	
+	@Override
+	protected void applyFilter() {
+		if (isDirty)
+		{
+			createVADelta();
+			filter.updateFilterManager();
+		}
+		isDirty = false;
 	}
 }

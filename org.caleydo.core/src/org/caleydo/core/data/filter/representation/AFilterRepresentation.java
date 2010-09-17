@@ -20,6 +20,10 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 	protected Composite parentComposite;
 
 	protected FilterType filter;
+	
+	protected Button okButton;
+
+	protected boolean isDirty = true;
 
 	public void create() {
 
@@ -46,7 +50,7 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 				Label dummy = new Label(composite, SWT.NONE);
 				dummy.setLayoutData(gridData);
 				
-				final Button okButton = new Button(composite, SWT.PUSH);
+				okButton = new Button(composite, SWT.PUSH);
 				okButton.setText("  OK  ");
 				Button cancelButton = new Button(composite, SWT.PUSH);
 				cancelButton.setText("Cancel");
@@ -54,6 +58,9 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 					public void handleEvent(Event event) {
 						if (event.widget != okButton) {
 							triggerRemoveFilterEvent();
+						}
+						else {
+							applyFilter();
 						}
 						((Shell) parentComposite).close();
 					}
@@ -82,4 +89,6 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 	protected abstract void createVADelta();
 
 	protected abstract void triggerRemoveFilterEvent();
+	
+	protected abstract void applyFilter();
 }

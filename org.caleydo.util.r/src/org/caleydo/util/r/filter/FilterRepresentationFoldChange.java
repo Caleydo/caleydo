@@ -82,6 +82,7 @@ public class FilterRepresentationFoldChange extends
 						if (enteredValue != null && !enteredValue.isEmpty()) {
 							foldChange = new Float(enteredValue);
 							foldChangeSlider.setSelection((int) (foldChange * 10));
+							isDirty = true;
 						}
 					}
 				});
@@ -92,27 +93,7 @@ public class FilterRepresentationFoldChange extends
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 
-						FoldChangeEvaluator foldChangeEvaluator = null;
-
-						if (evaluatorCheckBox[0].getSelection() == true
-								&& evaluatorCheckBox[1].getSelection() == true) {
-							foldChangeEvaluator = FoldChangeEvaluator.BOTH;
-						} else if (evaluatorCheckBox[0].getSelection() == true) {
-							foldChangeEvaluator = FoldChangeEvaluator.LESS;
-						} else if (evaluatorCheckBox[1].getSelection() == true) {
-							foldChangeEvaluator = FoldChangeEvaluator.GREATER;
-						}
-
-						FoldChangeSettings foldChangeSettings = new FoldChangeSettings(
-								foldChange, foldChangeEvaluator);
-
-						set1.getStatisticsResult().setFoldChangeSettings(set2,
-								foldChangeSettings);
-						set2.getStatisticsResult().setFoldChangeSettings(set1,
-								foldChangeSettings);
-
-						createVADelta();
-						filter.updateFilterManager();
+						applyFilter();
 					}
 				});
 
@@ -124,42 +105,6 @@ public class FilterRepresentationFoldChange extends
 
 				evaluatorCheckBox[1] = new Button(parentComposite, SWT.CHECK);
 				evaluatorCheckBox[1].setText("Greater (up regulated)");
-
-				// evaluatorCheckBox[0].addSelectionListener(new
-				// SelectionAdapter() {
-				// @Override
-				// public void widgetSelected(SelectionEvent e) {
-				// // evaluatorCheckBox[2].setSelection(false);
-				//
-				// FoldChangeSettings foldChangeSettings = new
-				// FoldChangeSettings(
-				// foldChangeSlider.getSelection() / 10d,
-				// FoldChangeEvaluator.LESS);
-				//
-				// set1.getStatisticsResult().setFoldChangeSettings(set2,
-				// foldChangeSettings);
-				// set2.getStatisticsResult().setFoldChangeSettings(set1,
-				// foldChangeSettings);
-				// }
-				// });
-
-				// evaluatorCheckBox[1].addSelectionListener(new
-				// SelectionAdapter() {
-				// @Override
-				// public void widgetSelected(SelectionEvent e) {
-				// // evaluatorCheckBox[2].setSelection(false);
-				//
-				// FoldChangeSettings foldChangeSettings = new
-				// FoldChangeSettings(
-				// foldChangeSlider.getSelection() / 10d,
-				// FoldChangeEvaluator.GREATER);
-				//
-				// set1.getStatisticsResult().setFoldChangeSettings(set2,
-				// foldChangeSettings);
-				// set2.getStatisticsResult().setFoldChangeSettings(set1,
-				// foldChangeSettings);
-				// }
-				// });
 
 				foldChangeSlider.setMinimum(0);
 				foldChangeSlider.setMaximum(100);
@@ -173,7 +118,7 @@ public class FilterRepresentationFoldChange extends
 					public void mouseUp(MouseEvent e) {
 						foldChange = foldChangeSlider.getSelection() / 10f;
 						foldChangeInputField.setText("" + foldChange);
-
+						isDirty = true;
 						// int reducedNumberOfElements =
 						// set1.getStatisticsResult()
 						// .getElementNumberOfFoldChangeReduction(set2);
@@ -182,7 +127,7 @@ public class FilterRepresentationFoldChange extends
 						// + reducedNumberOfElements);
 						// parentComposite.layout();
 					}
-				});
+				});;
 				
 				
 				set1.getStatisticsResult().getFoldChangeResult(set2)
@@ -234,7 +179,7 @@ public class FilterRepresentationFoldChange extends
 	public void setSet2(ISet set2) {
 		this.set2 = set2;
 	}
-
+	
 	@Override
 	protected void createVADelta() {
 
@@ -291,5 +236,34 @@ public class FilterRepresentationFoldChange extends
 		filterEvent.setDataDomainType(filter.getDataDomain().getDataDomainType());
 		filterEvent.setFilter(filter);
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
+	}
+
+	@Override
+	protected void applyFilter() {
+		if (isDirty)
+		{
+			FoldChangeEvaluator foldChangeEvaluator = null;
+
+			if (evaluatorCheckBox[0].getSelection() == true
+					&& evaluatorCheckBox[1].getSelection() == true) {
+				foldChangeEvaluator = FoldChangeEvaluator.BOTH;
+			} else if (evaluatorCheckBox[0].getSelection() == true) {
+				foldChangeEvaluator = FoldChangeEvaluator.LESS;
+			} else if (evaluatorCheckBox[1].getSelection() == true) {
+				foldChangeEvaluator = FoldChangeEvaluator.GREATER;
+			}
+
+			FoldChangeSettings foldChangeSettings = new FoldChangeSettings(
+					foldChange, foldChangeEvaluator);
+
+			set1.getStatisticsResult().setFoldChangeSettings(set2,
+					foldChangeSettings);
+			set2.getStatisticsResult().setFoldChangeSettings(set1,
+					foldChangeSettings);
+			
+			createVADelta();
+			filter.updateFilterManager();
+		}
+		isDirty = false;
 	}
 }
