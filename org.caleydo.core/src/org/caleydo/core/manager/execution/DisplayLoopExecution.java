@@ -68,6 +68,9 @@ public class DisplayLoopExecution
 
 			displayLoopExecution.displayLoopShell =
 				new Shell(Display.getDefault(), SWT.EMBEDDED | SWT.NO_TRIM | SWT.ON_TOP);
+			displayLoopExecution.displayLoopShell.setSize(1,1);
+			displayLoopExecution.displayLoopShell.open();
+
 			Region region = new Region();
 			displayLoopExecution.displayLoopShell.setRegion(region);
 			Frame frame = SWT_AWT.new_Frame(displayLoopExecution.displayLoopShell);
