@@ -127,8 +127,7 @@ public class DefaultTreeNode extends ATreeMapNode {
 	}
 
 	@Override
-	public int getPickingID() {
-		// TODO Auto-generated method stub
+	public Integer getID() {
 		return id;
 	}
 	

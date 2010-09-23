@@ -358,6 +358,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 			gl.glPushMatrix();
 			gl.glTranslated(viewFrustum.getWidth() * xOffset, viewFrustum.getHeight() * (1.0 - yMargin - thumbNailHeight), 0);
+			gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.TREEMAP_ELEMENT_SELECTED, i));
 			treemap.displayRemote(gl);
 			gl.glPopMatrix();
 
@@ -468,6 +469,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
 
+		System.out.println(pickingMode+": "+iExternalID);
 		mainTreeMapView.handleRemotePickingEvents(pickingType, pickingMode, iExternalID, pick);
 		setDisplayListDirty();
 		// if (detailLevel == DetailLevel.VERY_LOW) {

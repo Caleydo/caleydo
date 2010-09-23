@@ -102,11 +102,7 @@ public class ClusterTreeMapNode extends ATreeMapNode{
 	}
 
 	@Override
-	public int getPickingID() {
-		return data.getID();
-	}
-	
-	public Integer getID(){
+	public Integer getID() {
 		return data.getID();
 	}
 	

@@ -1,5 +1,6 @@
 package org.caleydo.view.treemap.layout;
 
+import java.awt.Color;
 import java.util.List;
 
 import javax.media.opengl.GL;
@@ -125,6 +126,15 @@ public class TreeMapRenderer {
 		gl.glVertex3f(xmax, ymax, 0);
 		gl.glVertex3f(xmax, y, 0);
 
+		gl.glEnd();
+		
+		gl.glColor3f(Color.white.getColorComponents(null)[0], Color.white.getColorComponents(null)[1],Color.white.getColorComponents(null)[2]);
+		gl.glLineWidth(2);
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(x, y, 0);
+		gl.glVertex3f(x, ymax, 0);
+		gl.glVertex3f(xmax, ymax, 0);
+		gl.glVertex3f(xmax, y, 0);
 		gl.glEnd();
 	}
 	

@@ -43,7 +43,7 @@ public abstract class ATreeMapNode extends AHierarchyElement<ATreeMapNode> {
 		return size;
 	}
 	
-	public abstract int getPickingID();
+	public abstract Integer getID();
 
 	public abstract float[] getColorAttribute();
 

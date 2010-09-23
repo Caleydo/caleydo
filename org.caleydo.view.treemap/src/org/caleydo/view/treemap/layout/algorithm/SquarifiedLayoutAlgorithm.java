@@ -1,31 +1,98 @@
 package org.caleydo.view.treemap.layout.algorithm;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.view.treemap.layout.ATreeMapNode;
 
 public class SquarifiedLayoutAlgorithm implements ILayoutAlgorithm {
 
 	@Override
-	public void layout(ATreeMapNode tree) {
-		// TODO Auto-generated method stub
+	public void layout(ATreeMapNode root) {
+		root.setMinX(0);
+		root.setMinY(0);
+		root.setMaxX(1);
+		root.setMaxY(1);
+		
+		layoutHelp(root);
+		
+		
+	}
+
+	private void layoutHelp(ATreeMapNode node) {
+		ArrayList<ATreeMapNode> children = node.getChildren();
+
+		if (children == null || children.size() == 0)
+			return;
+
+		
+		Vector<Integer> cv = new Vector<Integer>();
+		for (ATreeMapNode n : children) {
+			cv.add(node.getID());
+		}
+
+		rect = new Rectangle(node.getMinX(), node.getMaxX(), node.getMinY(), node.getMaxY());
+		squarify(cv, new Vector<Integer>(), rect.width());
+
+		for (ATreeMapNode n : children) {
+			layout(n);
+		}
+	}
+
+	private Rectangle rect;
+	private Tree<ATreeMapNode> tree;
+
+	private void squarify(Vector<Integer> children, Vector<Integer> row, float w) {
+		int c = head(children);
+		if (worst(row, w) <= worst(concat(row, c), w)) {
+			squarify(tail(children), concat(row, c), w);
+		} else {
+			rect.layoutRow(row);
+			squarify(children, new Vector<Integer>(), rect.width());
+		}
 
 	}
 
-	private void squarify(Vector<Integer> children, Vector<Integer> row, int w) {
-		int c = children.firstElement();
-		Vector<Integer> clone = (Vector<Integer>) row.clone();
-		clone.add(c);
-		// if(worst(row, w) <= worst(clone, w))
-		// squarify()
+	private float worst(Vector<Integer> row, float w) {
+		if (row.size() == 0)
+			return 0f;
+
+		float rmin = Float.MAX_VALUE;
+		float rmax = Float.MIN_VALUE;
+		float s = 0;
+
+		for (int id : row) {
+			if (getNode(id).getSize() < rmin)
+				rmin = getNode(id).getSize();
+			if (getNode(id).getSize() > rmax)
+				rmax = getNode(id).getSize();
+			s += getNode(id).getSize();
+		}
+
+		return (float) Math.max((Math.pow(w, 2) * rmax) / Math.pow(s, 2), Math.pow(s, 2) / (Math.pow(w, 2) * rmin));
 	}
 
-	private float worst(Vector<Integer> row, int w) {
-		return 0f;
+	@SuppressWarnings("unchecked")
+	private Vector<Integer> tail(Vector<Integer> v) {
+		Vector<Integer> tail = (Vector<Integer>) v.clone();
+		tail.remove(0);
+		return tail;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Vector<Integer> concat(Vector<Integer> v, int e) {
+		Vector<Integer> clone = (Vector<Integer>) v.clone();
+		clone.add(e);
+		return clone;
+	}
+
+	private int head(Vector<Integer> v) {
+		return v.firstElement();
 	}
 
 	private ATreeMapNode getNode(int id) {
-		return null;
+		return tree.getNodeByNumber(id);
 	}
 
 	public class Rectangle {
@@ -35,13 +102,13 @@ public class SquarifiedLayoutAlgorithm implements ILayoutAlgorithm {
 		float ymin;
 		float ymax;
 
-		public Rectangle(float xmin, float xmax, float ymin, float ymax){
-			this.xmin=xmin;
-			this.xmax=xmax;
-			this.ymin=ymin;
-			this.ymax=ymax;
+		public Rectangle(float xmin, float xmax, float ymin, float ymax) {
+			this.xmin = xmin;
+			this.xmax = xmax;
+			this.ymin = ymin;
+			this.ymax = ymax;
 		}
-		
+
 		public float width() {
 			return xmax - xmin < ymax - ymin ? xmax - xmin : ymax - ymin;
 		}
@@ -77,6 +144,10 @@ public class SquarifiedLayoutAlgorithm implements ILayoutAlgorithm {
 				}
 				ymin += ysize;
 			}
+		}
+
+		public boolean getDirection() {
+			return xmax - xmin < ymax - ymin;
 		}
 	}
 

@@ -9,6 +9,7 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -31,6 +32,7 @@ import org.caleydo.view.treemap.layout.ClusterTreeMapNode;
 import org.caleydo.view.treemap.layout.TreeMapRenderer;
 import org.caleydo.view.treemap.layout.algorithm.ILayoutAlgorithm;
 import org.caleydo.view.treemap.layout.algorithm.SimpleLayoutAlgorithm;
+import org.caleydo.view.treemap.layout.algorithm.SquarifiedLayoutAlgorithm;
 
 /**
  * TODO
@@ -70,18 +72,28 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 
 	private boolean bIsZoomActive = false;
 
-	private ILayoutAlgorithm layoutAlgorithm = new SimpleLayoutAlgorithm();
+	// private ILayoutAlgorithm layoutAlgorithm = new SimpleLayoutAlgorithm();
 
-	// private ILayoutAlgorithm layoutAlgorithm = new
-	// SquarifiedLayoutAlgorithm();
+	private ILayoutAlgorithm layoutAlgorithm = new SquarifiedLayoutAlgorithm();
 
 	public GLTreeMap(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
 		viewType = GLTreeMap.VIEW_ID;
-		
-		renderer= new TreeMapRenderer();
 
+		renderer = new TreeMapRenderer();
+
+		loadLayoutAlgorithmClass();
+	}
+
+	private void loadLayoutAlgorithmClass() {
+		String name = GeneralManager.get().getPreferenceStore().getString("LAYOUT_ALGORITHM");
+		name="simple";
+		if (name.equals("squarify")) {
+			layoutAlgorithm = new SquarifiedLayoutAlgorithm();
+			return;
+		}
+		layoutAlgorithm = new SimpleLayoutAlgorithm();
 	}
 
 	@Override
@@ -144,7 +156,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 		}
 
 		if (bIsHighlightingListDirty) {
-			renderer.paintHighlighting(gl,treeMapModel, treeSelectionManager);
+			renderer.paintHighlighting(gl, treeMapModel, treeSelectionManager);
 			bIsHighlightingListDirty = false;
 		}
 
@@ -191,7 +203,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 				break;
 			case MOUSE_OVER:
 
-				System.out.println("mouse over: " + pickingID);
+//				System.out.println("mouse over: " + pickingID);
 				mouseOverClusterId = pickingID;
 				treeSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				treeSelectionManager.addToType(SelectionType.MOUSE_OVER, pickingID);
@@ -303,9 +315,12 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-
-		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
-		treeSelectionManager = new SelectionManager(tree.getNodeIDType());
+		if (dataDomain != null) {
+			tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
+			if (tree != null) {
+				treeSelectionManager = new SelectionManager(tree.getNodeIDType());
+			}
+		}
 	}
 
 	@Override
