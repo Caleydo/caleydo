@@ -71,4 +71,9 @@ public class PreferenceConstants {
 	public static final String DATA_FILTER_LEVEL = "dataFilterLevel";
 
 	public static final String PERFORMANCE_LEVEL = "performanceLevel";
+	
+	// TreeMapView
+	
+	public static final String TREEMAP_LAYOUT_ALGORITHM = "treemaoLayoutAlgorithm";
+	public static final String TREEMAP_DRAW_CLUSTER_FRAME= "treemapDrawClusterFrame";
 }
