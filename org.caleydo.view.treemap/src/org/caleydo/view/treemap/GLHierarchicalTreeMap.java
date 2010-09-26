@@ -216,11 +216,8 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		mainTreeMapView = createEmbeddedTreeMap();
 		mainTreeMapView.setRemotePickingManager(pickingManager, getID());
 
-		// thumbnailTreemapViews.add(createEmbeddedTreeMap());
-		// thumbnailTreemapViews.add(createEmbeddedTreeMap());
-		// thumbnailTreemapViews.add(createEmbeddedTreeMap());
-
 		mainTreeMapView.initRemote(gl, this, glMouseListener, null);
+		mainTreeMapView.setDrawLabel(true);
 
 		thumbnailDisplayList = gl.glGenLists(1);
 	}
@@ -346,7 +343,9 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		double thumbNailHeight = 0.18;
 		double xOffset = 0;
 //		double yOffset = 0;
-		for (int i = 0; i < maxThumbNailViews && i < thumbnailTreemapViews.size(); i++) {
+		if(thumbnailTreemapViews.size()>3)
+			drawArrow(gl, (float)xOffset,(float) (1.0f - yMargin - thumbNailHeight),(float) (xOffset+xMargin), (float) (1-yMargin));
+		for (int i = Math.max(0, thumbnailTreemapViews.size()-maxThumbNailViews); /*i < maxThumbNailViews &&*/ i < thumbnailTreemapViews.size(); i++) {
 			xOffset += xMargin;
 
 			GLTreeMap treemap = thumbnailTreemapViews.get(i);
@@ -358,8 +357,9 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 			gl.glPushMatrix();
 			gl.glTranslated(viewFrustum.getWidth() * xOffset, viewFrustum.getHeight() * (1.0 - yMargin - thumbNailHeight), 0);
-			gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.TREEMAP_ELEMENT_SELECTED, i));
+			gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.TREEMAP_THUMBNAILVIEW_SELECTED, i));
 			treemap.displayRemote(gl);
+			gl.glPopName();
 			gl.glPopMatrix();
 
 			xOffset += thumbNailWidth;
@@ -373,7 +373,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		y=y*viewFrustum.getHeight();
 		xmax=(xmax-0.01f)*viewFrustum.getWidth();
 		ymax=ymax*viewFrustum.getHeight();
-		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(x, y, 0);
 		gl.glVertex3f(x, ymax, 0);
 		gl.glVertex3f(xmax, y+(ymax-y)/2, 0);
@@ -414,17 +414,19 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	public void zoomIn() {
 		System.out.println("zooming!!!!!");
 		Set<Integer> elements = mainTreeMapView.getSelectionManager().getElements(SelectionType.SELECTION);
-		if (elements.size() == 1 && thumbnailTreemapViews.size() < 3) {
+		if (elements.size() == 1 /*&& thumbnailTreemapViews.size() < 3*/) {
 
 			ClusterNode dataRoot = tree.getNodeByNumber(elements.iterator().next());
 
 			mainTreeMapView.setRemotePickingManager(null, 0);
 			mainTreeMapView.clearAllSelections();
 			mainTreeMapView.getSelectionManager().addToType(SelectionType.SELECTION, dataRoot.getID());
+			mainTreeMapView.setDrawLabel(false);
 
 			thumbnailTreemapViews.add(mainTreeMapView);
 
 			mainTreeMapView = createEmbeddedTreeMap();
+			mainTreeMapView.setDrawLabel(true);
 
 			mainTreeMapView.setRootClusterID(dataRoot.getID());
 			mainTreeMapView.setZoomActive(true);
@@ -437,13 +439,22 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	};
 
 	public void zoomOut() {
+		zoomOut(thumbnailTreemapViews.size()-1);
+	}
+	
+	private void zoomOut(int index){
 		if (thumbnailTreemapViews.size() > 0) {
-			mainTreeMapView = thumbnailTreemapViews.lastElement();
-			thumbnailTreemapViews.remove(mainTreeMapView);
+			mainTreeMapView = thumbnailTreemapViews.get(index);
+			for(int i=thumbnailTreemapViews.size()-1; i>=index;i--)
+				thumbnailTreemapViews.remove(i);
+				
+			mainTreeMapView.setDrawLabel(true);
 			mainTreeMapView.setRemotePickingManager(pickingManager, getID());
 			setDisplayListDirty();
 		}
 	}
+	
+
 
 	public void setDisplayListDirty() {
 		super.setDisplayListDirty();
@@ -469,75 +480,18 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
 
-		System.out.println(pickingMode+": "+iExternalID);
-		mainTreeMapView.handleRemotePickingEvents(pickingType, pickingMode, iExternalID, pick);
-		setDisplayListDirty();
-		// if (detailLevel == DetailLevel.VERY_LOW) {
-		// return;
-		// }
-		//
-		// SelectionType selectionType;
-		// switch (ePickingType) {
-		// case TREEMAP_ELEMENT_SELECTED:
-		// ATreeMapNode node;
-		// // iCurrentMouseOverElement = iExternalID;
-		// switch (pickingMode) {
-		//
-		// case CLICKED:
-		// // {
-		// // System.out.println(iExternalID+" clicked");
-		// // selectionType = SelectionType.SELECTION;
-		// // ArrayList<SelectionType> selections =
-		// // treeSelectionManager.getSelectionTypes(iExternalID);
-		// // if (selections != null &&
-		// // selections.contains(SelectionType.SELECTION)) {
-		// // treeSelectionManager.removeFromType(SelectionType.SELECTION,
-		// // iExternalID);
-		// // } else
-		// // treeSelectionManager.addToType(SelectionType.SELECTION,
-		// // iExternalID);
-		// // }
-		// break;
-		// case MOUSE_OVER:
-		// selectionType = SelectionType.MOUSE_OVER;
-		// System.out.println("mouse over: " + iExternalID);
-		// mouseOverClusterId = iExternalID;
-		// treeSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
-		// treeSelectionManager.addToType(SelectionType.MOUSE_OVER,
-		// iExternalID);
-		// break;
-		// case RIGHT_CLICKED:
-		//
-		// break;
-		// case DRAGGED:
-		// selectionType = SelectionType.SELECTION;
-		// // System.out.println(iExternalID+" dragged");
-		// break;
-		// default:
-		// return;
-		//
-		// }
-		// // treeSelectionManager.addToType(selectionType, iExternalID);
-		//
-		// // treeSelectionManager.getElements(SelectionType.SELECTION);
-		// // treeSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
-		// // iElementID);
-		// //
-		// // ArrayList<SelectionType> selectionTypes =
-		// // treeSelectionManager.getSelectionTypes(elementID);
-		// //
-		// // setDisplayListDirty();
-		//
-		// setHighLichtingListDirty();
-		// break;
-		//
-		// default:
-		// return;
-		// }
+		System.out.println(pickingType+" "+pickingMode+": "+iExternalID);
+		
+		if(pickingType==EPickingType.TREEMAP_THUMBNAILVIEW_SELECTED && pickingMode==EPickingMode.DOUBLE_CLICKED){
+			zoomOut(iExternalID);
+		}
+		else
+			mainTreeMapView.handleRemotePickingEvents(pickingType, pickingMode, iExternalID, pick);
+
 
 	}
 
-	// int currentNode;
+	
 
 	private void selectNode(int id, boolean selected) {
 		if (selected)

@@ -1,5 +1,6 @@
 package org.caleydo.view.treemap;
 
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
@@ -20,6 +21,7 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -82,6 +84,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 		viewType = GLTreeMap.VIEW_ID;
 
 		renderer = new TreeMapRenderer();
+		renderer.setNodeFrame(GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.TREEMAP_DRAW_CLUSTER_FRAME), Color.WHITE);
 
 		loadLayoutAlgorithmClass();
 	}
@@ -373,6 +376,10 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 
 	public void setZoomActive(boolean bIsZoomActive) {
 		this.bIsZoomActive = bIsZoomActive;
+	}
+	
+	public void setDrawLabel(boolean flag){
+		renderer.setDrawLabel(flag);
 	}
 
 }
