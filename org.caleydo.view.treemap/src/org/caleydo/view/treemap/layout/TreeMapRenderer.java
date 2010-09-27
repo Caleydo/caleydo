@@ -93,7 +93,7 @@ public class TreeMapRenderer {
 			fillRectangle(gl, root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(), root.getColorAttribute());
 			gl.glPopName();
 
-			if(bDrawLabel)
+			if(bDrawLabel&&bDrawNodeFrame)
 			 displayText(gl,root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(),root.getLabel());	
 
 		} else {

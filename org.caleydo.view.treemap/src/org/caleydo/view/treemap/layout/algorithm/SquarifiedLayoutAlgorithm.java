@@ -15,6 +15,7 @@ public class SquarifiedLayoutAlgorithm implements ILayoutAlgorithm {
 		root.setMaxX(1);
 		root.setMaxY(1);
 		
+		tree=root.getTree();
 		layoutHelp(root);
 		
 		
@@ -22,21 +23,21 @@ public class SquarifiedLayoutAlgorithm implements ILayoutAlgorithm {
 
 	private void layoutHelp(ATreeMapNode node) {
 		ArrayList<ATreeMapNode> children = node.getChildren();
-
+		System.out.println(node.getID()+": minx:"+node.getMinX()+", maxx:"+ node.getMaxX()+", miny:"+ node.getMinY()+", maxy:"+ node.getMaxY());
 		if (children == null || children.size() == 0)
 			return;
 
 		
-		Vector<Integer> cv = new Vector<Integer>();
+		Vector<Integer> iChildren = new Vector<Integer>();
 		for (ATreeMapNode n : children) {
-			cv.add(node.getID());
+			iChildren.add(n.getID());
 		}
 
 		rect = new Rectangle(node.getMinX(), node.getMaxX(), node.getMinY(), node.getMaxY());
-		squarify(cv, new Vector<Integer>(), rect.width());
+		squarify(iChildren, new Vector<Integer>(), rect.width());
 
 		for (ATreeMapNode n : children) {
-			layout(n);
+			layoutHelp(n);
 		}
 	}
 
@@ -44,6 +45,13 @@ public class SquarifiedLayoutAlgorithm implements ILayoutAlgorithm {
 	private Tree<ATreeMapNode> tree;
 
 	private void squarify(Vector<Integer> children, Vector<Integer> row, float w) {
+		// added check for termination
+		if(children.size()==0){
+			rect.layoutRow(row);
+			return;
+		}
+			
+		
 		int c = head(children);
 		if (worst(row, w) <= worst(concat(row, c), w)) {
 			squarify(tail(children), concat(row, c), w);
@@ -56,7 +64,7 @@ public class SquarifiedLayoutAlgorithm implements ILayoutAlgorithm {
 
 	private float worst(Vector<Integer> row, float w) {
 		if (row.size() == 0)
-			return 0f;
+			return Float.MIN_VALUE;
 
 		float rmin = Float.MAX_VALUE;
 		float rmax = Float.MIN_VALUE;
@@ -71,6 +79,7 @@ public class SquarifiedLayoutAlgorithm implements ILayoutAlgorithm {
 		}
 
 		return (float) Math.max((Math.pow(w, 2) * rmax) / Math.pow(s, 2), Math.pow(s, 2) / (Math.pow(w, 2) * rmin));
+		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -87,12 +96,15 @@ public class SquarifiedLayoutAlgorithm implements ILayoutAlgorithm {
 		return clone;
 	}
 
-	private int head(Vector<Integer> v) {
-		return v.firstElement();
+	private int head(Vector<Integer> v) { 
+		return v.size()>0?v.firstElement():-1;
 	}
 
 	private ATreeMapNode getNode(int id) {
-		return tree.getNodeByNumber(id);
+		if(tree.getRoot().getID()==id)
+			return tree.getRoot();
+		ATreeMapNode node = tree.getNodeByNumber(id); 
+		return node;
 	}
 
 	public class Rectangle {
@@ -110,26 +122,28 @@ public class SquarifiedLayoutAlgorithm implements ILayoutAlgorithm {
 		}
 
 		public float width() {
-			return xmax - xmin < ymax - ymin ? xmax - xmin : ymax - ymin;
+			return Math.min(xmax - xmin , ymax - ymin);
 		}
 
+		boolean direction=true;
 		public void layoutRow(Vector<Integer> row) {
 			float sizeSum = 0;
 			for (int id : row) {
 				sizeSum += getNode(id).getSize();
 			}
 			if (xmax - xmin < ymax - ymin) {
+			//if(direction){
 				float ysize = ymax - ymin;
 				float xsize = sizeSum / ysize;
 				float yoffset = 0;
 				for (int id : row) {
-					getNode(id).setMaxY(yoffset + ymin);
+					getNode(id).setMinY(yoffset + ymin);
 					yoffset += ysize * (getNode(id).getSize() / sizeSum);
 					getNode(id).setMaxY(yoffset + ymin);
 					getNode(id).setMinX(xmin);
-					getNode(id).setMaxX(xmax + xsize);
+					getNode(id).setMaxX(xmin + xsize);
 				}
-				xmax += xsize;
+				xmin += xsize;
 			} else {
 				float xsize = xmax - xmin;
 				float ysize = sizeSum / xsize;
@@ -144,6 +158,7 @@ public class SquarifiedLayoutAlgorithm implements ILayoutAlgorithm {
 				}
 				ymin += ysize;
 			}
+			direction=!direction;
 		}
 
 		public boolean getDirection() {

@@ -31,6 +31,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.treemap.layout.ATreeMapNode;
 import org.caleydo.view.treemap.layout.ClusterTreeMapNode;
+import org.caleydo.view.treemap.layout.DefaultTreeNode;
 import org.caleydo.view.treemap.layout.TreeMapRenderer;
 import org.caleydo.view.treemap.layout.algorithm.ILayoutAlgorithm;
 import org.caleydo.view.treemap.layout.algorithm.SimpleLayoutAlgorithm;
@@ -90,13 +91,15 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	}
 
 	private void loadLayoutAlgorithmClass() {
-		String name = GeneralManager.get().getPreferenceStore().getString("LAYOUT_ALGORITHM");
-		name="simple";
-		if (name.equals("squarify")) {
+		int algoID = GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.TREEMAP_LAYOUT_ALGORITHM);
+		switch (algoID) {
+		case ILayoutAlgorithm.SQUARIFIED_LAYOUT_ALGORITHM:
 			layoutAlgorithm = new SquarifiedLayoutAlgorithm();
-			return;
+			break;
+		default:
+			layoutAlgorithm = new SimpleLayoutAlgorithm();
+			break;
 		}
-		layoutAlgorithm = new SimpleLayoutAlgorithm();
 	}
 
 	@Override
@@ -144,9 +147,13 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 		} else
 			root = ClusterTreeMapNode.createFromClusterNodeTree(tree, colorMapper);
 
-		// SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
+		
 		layoutAlgorithm.layout(root);
 		treeMapModel = root.getTree();
+		
+//		ATreeMapNode node = DefaultTreeNode.createSampleTree();
+//		layoutAlgorithm.layout(node);
+//		treeMapModel=node.getTree();
 	}
 
 	@Override
@@ -206,7 +213,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 				break;
 			case MOUSE_OVER:
 
-//				System.out.println("mouse over: " + pickingID);
+				// System.out.println("mouse over: " + pickingID);
 				mouseOverClusterId = pickingID;
 				treeSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				treeSelectionManager.addToType(SelectionType.MOUSE_OVER, pickingID);
@@ -377,8 +384,8 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	public void setZoomActive(boolean bIsZoomActive) {
 		this.bIsZoomActive = bIsZoomActive;
 	}
-	
-	public void setDrawLabel(boolean flag){
+
+	public void setDrawLabel(boolean flag) {
 		renderer.setDrawLabel(flag);
 	}
 
