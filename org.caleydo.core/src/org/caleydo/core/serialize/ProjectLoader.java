@@ -84,15 +84,16 @@ public class ProjectLoader {
 
 		try {
 			Unmarshaller unmarshaller = projectContext.createUnmarshaller();
-			
+
 			try {
-				GeneralManager.get().setBasicInfo((BasicInformation) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
+				GeneralManager.get().setBasicInfo(
+					(BasicInformation) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
 						.getResource(dirName + ProjectSaver.BASIC_INFORMATION_FILE_NAME)));
 			}
 			catch (FileNotFoundException e) {
 				throw new IllegalStateException("Cannot load data domain list from project file");
 			}
-			
+
 			DataDomainList dataDomainList;
 			try {
 				dataDomainList =
@@ -102,9 +103,9 @@ public class ProjectLoader {
 			catch (FileNotFoundException e1) {
 				throw new IllegalStateException("Cannot load data domain list from project file");
 			}
-			
+
 			initData = new DataInitializationData();
-			
+
 			for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
 
 				if (dataDomain instanceof ASetBasedDataDomain) {
@@ -153,7 +154,7 @@ public class ProjectLoader {
 						dirName + ProjectSaver.EXP_TREE_FILE_NAME);
 				}
 			}
-			
+
 			ViewList loadViews = null;
 			try {
 				loadViews =
@@ -202,8 +203,7 @@ public class ProjectLoader {
 				bundle.start();
 			}
 			catch (BundleException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Logger.log(new Status(IStatus.ERROR, this.toString(), "Problem starting bundle " + plugIn +" at deserialization.", e));
 			}
 		}
 

@@ -28,7 +28,7 @@ public class Activator extends Plugin {
 	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	/**
-	 * Creates the plug-in, registeres all the types needed for serialization,
+	 * Creates the plug-in, registers all the types needed for serialization,
 	 * and loads the id mapping.
 	 */
 	@Override

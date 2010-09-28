@@ -77,8 +77,8 @@ All Rights Reserved.
       <import plugin="org.eclipse.swt" version="3.6.0" match="compatible"/>
       <import plugin="org.eclipse.core.commands" version="3.4.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.common" version="3.3.0" match="compatible"/>
-      <import plugin="org.eclipse.swt" version="3.6.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.rcp" version="3.6.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.swt" version="3.6.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui" version="3.3.0" match="compatible"/>
       <import plugin="org.caleydo.view.bookmark" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.datadomain.genetic" version="2.0.0" match="greaterOrEqual"/>
@@ -87,6 +87,7 @@ All Rights Reserved.
       <import plugin="org.caleydo.view.parcoords" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.datadomain.pathway" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.view.pathway" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.view.histogram" version="2.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -355,6 +356,48 @@ All Rights Reserved.
 
    <plugin
          id="org.caleydo.view.tabular"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.datadomain.clinical"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.datadomain.generic"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.datadomain.genetic"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.datadomain.pathway"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.filter"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.datameta"
          download-size="0"
          install-size="0"
          version="0.0.0"
