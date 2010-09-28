@@ -135,6 +135,8 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	}
 
 	public void initData() {
+		if(dataDomain==null)
+			return;
 		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
@@ -147,6 +149,8 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 		} else
 			root = ClusterTreeMapNode.createFromClusterNodeTree(tree, colorMapper);
 
+		root.setColorData(true, dataDomain);
+		
 		layoutAlgorithm.layout(root);
 		treeMapModel = root.getTree();
 
@@ -158,6 +162,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	@Override
 	public void display(GL gl) {
 		if (bIsDisplayListDirtyLocal) {
+			
 			renderer.initPainter(gl, viewFrustum, getActivePickingManager(), getPickingViewID(), treeSelectionManager, textRenderer);
 			renderer.paintTreeMap(gl, treeMapModel.getRoot());
 			bIsDisplayListDirtyLocal = false;

@@ -641,18 +641,18 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 			treeSelectionManager.setDelta(selectionDelta);
 
 		if (selectionDelta.getIDType() == dataDomain.getStorageIDType()) {
-			StorageSelectionManager storageSelectionManager = dataDomain.getStorageSelectionManager();
+//			StorageSelectionManager storageSelectionManager = dataDomain.getStorageSelectionManager();
 			// storageSelectionManager.setDelta()
 
 			// // todo: colors for storages, this should be done somewhere else
-			// Set<Integer> storageIDs =
-			// storageSelectionManager.getElements(SelectionType.SELECTION);
-			//
-			// for (Integer storageID : storageIDs) {
-			// int expressionValue =
-			// dataDomain.getSet().get(storageID).get(EDataRepresentation.NORMALIZED,
-			// leafID);
-			// }
+//			 Set<Integer> storageIDs =
+//			 storageSelectionManager.getElements(SelectionType.SELECTION);
+//			
+//			 for (Integer storageID : storageIDs) {
+//			 int expressionValue =
+//			 dataDomain.getSet().get(storageID).get(EDataRepresentation.NORMALIZED,
+//			 leafID);
+//			 }
 
 		}
 

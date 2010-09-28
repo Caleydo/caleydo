@@ -2,6 +2,7 @@ package org.caleydo.view.treemap.layout;
 
 import java.lang.reflect.Method;
 
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 
 public class ClusterReferenzData{
@@ -11,6 +12,6 @@ public class ClusterReferenzData{
 	float colorMax;
 	ColorMapping colorMapper;
 	
-	Method sizeGetMehtod;
-	Method colorGetMethod;
+	boolean bUseExpressionValues = false;
+	ASetBasedDataDomain dataDomain;
 }
