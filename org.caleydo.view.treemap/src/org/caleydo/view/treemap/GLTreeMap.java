@@ -105,7 +105,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 
-		throw new IllegalStateException();
+		return new SerializedTreeMapView();
 	}
 
 	@Override
@@ -147,13 +147,12 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 		} else
 			root = ClusterTreeMapNode.createFromClusterNodeTree(tree, colorMapper);
 
-		
 		layoutAlgorithm.layout(root);
 		treeMapModel = root.getTree();
-		
-//		ATreeMapNode node = DefaultTreeNode.createSampleTree();
-//		layoutAlgorithm.layout(node);
-//		treeMapModel=node.getTree();
+
+		// ATreeMapNode node = DefaultTreeNode.createSampleTree();
+		// layoutAlgorithm.layout(node);
+		// treeMapModel=node.getTree();
 	}
 
 	@Override
