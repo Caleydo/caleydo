@@ -81,8 +81,8 @@ public class PreferenceManager {
 			initCaleydoFolder();
 		}
 
-		System.setProperty("network.proxy_host", "proxy.kages.at");
-		System.setProperty("network.proxy_port", "8080");
+//		System.setProperty("network.proxy_host", "proxy.kages.at");
+//		System.setProperty("network.proxy_port", "8080");
 
 		// if (preferenceStore.getBoolean(PreferenceConstants.USE_PROXY)) {
 		// System.setProperty("network.proxy_host",

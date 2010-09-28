@@ -11,7 +11,7 @@
       arch="x86,x86_64">
 
    <description url="http://www.caleydo.org">
-      Caleydo is a visualization framework for biomedical data.
+      Caleydo is a visual analysis framework for biomolecular data.
    </description>
 
    <copyright url="http://www.caleydo.org">
@@ -122,13 +122,15 @@ All Rights Reserved.
          id="org.caleydo.lib.jogl"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.caleydo.lib.core"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.ui.workbench"
@@ -398,6 +400,27 @@ All Rights Reserved.
 
    <plugin
          id="org.caleydo.view.datameta"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.grouper"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.util.r"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.matchmaker"
          download-size="0"
          install-size="0"
          version="0.0.0"

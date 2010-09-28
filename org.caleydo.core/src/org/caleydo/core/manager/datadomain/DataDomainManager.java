@@ -55,17 +55,6 @@ public class DataDomainManager {
 	 */
 	public IDataDomain createDataDomain(String dataDomainType) {
 
-		Bundle bundle = Platform.getBundle(dataDomainType);
-		if (bundle == null) {
-			throw new RuntimeException("Could load data domain bundle " + dataDomainType);
-		}
-		try {
-			bundle.start();
-		}
-		catch (BundleException e) {
-			throw new RuntimeException("Problem starting data domain bundle " + dataDomainType, e);
-		}
-
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 
 		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.datadomain.DataDomain");
