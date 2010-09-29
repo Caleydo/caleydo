@@ -148,15 +148,26 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	private ArrayList<Texture> AlTextures = new ArrayList<Texture>();
 	private ArrayList<Integer> iAlNumberSamples = new ArrayList<Integer>();
 
-	private Point pickingPointLevel2 = null;
-	private int iPickedSampleLevel2 = 0;
-	private int iFirstSampleLevel2 = 0;
-	private int iLastSampleLevel2 = 0;
-
 	private Point pickingPointLevel1 = null;
 	private int iPickedSampleLevel1 = 0;
+	/** the first content entry that is shown in level 2 */
 	private int iFirstSampleLevel1 = 0;
+	/** the last content entry that is shown in level 2 */
 	private int iLastSampleLevel1 = 0;
+
+	private Point pickingPointLevel2 = null;
+	private int iPickedSampleLevel2 = 0;
+	/**
+	 * the first content entry shown in level 3 relative to level 2, i.e. n for
+	 * this would be iFirstSampleLevel1 + n in absolutes
+	 */
+	private int iFirstSampleLevel2 = 0;
+
+	/**
+	 * the last content entry shown in level 3 relative to level 2, i.e. n for
+	 * this would be iLastSampleLevel1 + n in absolutes
+	 */
+	private int iLastSampleLevel2 = 0;
 
 	private boolean bRenderCaption = false;
 
@@ -2804,7 +2815,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-
 		// background color
 		gl.glColor4fv(BACKGROUND_COLOR, 0);
 		gl.glBegin(GL.GL_QUADS);
@@ -2914,7 +2924,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				gl.glTranslatef(renderStyle.getWidthClusterVisualization(), 0, 0);
 
 			float fHeightSubTree = viewFrustum.getHeight();
-
 
 			glContentDendrogramView.renderSubTreeFromIndexToIndex(gl, iFirstSampleLevel1,
 					iLastSampleLevel1, iSamplesLevel2, GAP_BETWEEN_LEVELS / 2,

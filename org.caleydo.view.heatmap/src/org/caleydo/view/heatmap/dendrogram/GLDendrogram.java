@@ -50,7 +50,6 @@ import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -123,8 +122,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	private boolean bUseBlackColoring = false;
 
 	private ClusterNode rootNode = null;
-
-	private int subTreeDepth = 0;
 
 	/**
 	 * Constructor.
@@ -569,9 +566,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	 */
 	public void renderSubTreeFromIndexToIndex(GL gl, int fromIndex, int toIndex,
 			int iNrLeafs, float fWidth, float fHeight) {
-
-		System.out.println("first: " + fromIndex + " last: " + toIndex + " samples: "
-				+ iNrLeafs);
 
 		if (tree == null || tree.getRoot() == null)
 			return;
