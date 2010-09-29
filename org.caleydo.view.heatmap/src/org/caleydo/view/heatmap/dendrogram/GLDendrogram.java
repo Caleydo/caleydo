@@ -1226,6 +1226,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		}
 
 		if (tree == null || tree.getRoot() == null) {
+	
 
 			iAlClusterNodes.clear();
 

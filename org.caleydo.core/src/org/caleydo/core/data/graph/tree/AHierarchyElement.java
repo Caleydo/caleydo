@@ -2,7 +2,11 @@ package org.caleydo.core.data.graph.tree;
 
 import java.util.ArrayList;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
  * Abstract base class for hierarchy elements that shall be stored in a tree. It provides several methods
@@ -13,6 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @param <Node>
  *            Concrete type that is stored in the hierarchy.
  */
+//@XmlSeeAlso({ ClusterNode.class })
 public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	implements Comparable<Node> {
 
@@ -46,7 +51,8 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 
 	private ArrayList<Integer> leaveIDs;
 
-	protected boolean useDefaultComparator = true;
+//	@XmlElement
+//	protected boolean useDefaultComparator = true;
 
 	public AHierarchyElement() {
 	}
@@ -398,8 +404,8 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 * @param compareAverageExpressionValues
 	 *            if true expression values are used, else IDs
 	 */
-	public void setUseDefaultComparator(boolean useDefaultComparator) {
-		this.useDefaultComparator = useDefaultComparator;
-	}
+//	public void setUseDefaultComparator(boolean useDefaultComparator) {
+//		this.useDefaultComparator = useDefaultComparator;
+//	}
 
 }

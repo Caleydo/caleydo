@@ -254,7 +254,7 @@ public class ClusterNode
 
 	@Override
 	public int compareTo(ClusterNode node) {
-		if (useDefaultComparator)
+		if (tree.isUseDefaultComparator())
 			return super.compareTo(node);
 
 		if (fAverageExpressionValue < node.fAverageExpressionValue)

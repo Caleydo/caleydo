@@ -48,6 +48,9 @@ public class TreePorter {
 	String leaveIDTypeString;
 
 	private ASetBasedDataDomain dataDomain;
+	
+	@XmlElement
+	private boolean useDefaultComparator = true;
 
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
@@ -85,6 +88,8 @@ public class TreePorter {
 		treePorter =
 			(TreePorter) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
 				.getResource(fileName));
+		
+		tree.setUseDefaultComparator(treePorter.useDefaultComparator);
 
 		int size = (int) (treePorter.nodeSet.size() * 1.5);
 		HashMap<Integer, ClusterNode> hashClusterNr = new HashMap<Integer, ClusterNode>(size);
@@ -193,6 +198,7 @@ public class TreePorter {
 
 		nodeSet = tree.graph.vertexSet();
 		leaveIDTypeString = tree.getLeaveIDType().getTypeName();
+		useDefaultComparator = tree.useDefaultComparator;
 
 		JAXBContext jaxbContext = JAXBContext.newInstance(TreePorter.class, DefaultEdge.class);
 		Marshaller marshaller = jaxbContext.createMarshaller();

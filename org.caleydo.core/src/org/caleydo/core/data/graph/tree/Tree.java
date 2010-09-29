@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlElement;
-
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -42,8 +40,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	private HashMap<Integer, Integer> mLayerMap;
 
-	@XmlElement
-	private boolean useDefaultComparator = true;
+	boolean useDefaultComparator = true;
 
 	/**
 	 * Constructor that should only be used for de-serialization or for trees synchronized with a previously
@@ -206,7 +203,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 			}
 		}
 
-		childNode.setUseDefaultComparator(useDefaultComparator);
+		// childNode.setUseDefaultComparator(useDefaultComparator);
 	}
 
 	/**
@@ -453,8 +450,24 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	//
 	// }
 
+	/**
+	 * Signal whether to sort the tree using the default sorting (based on the cluster ID, which is generated
+	 * on the fly) or some more intelligent version provided by possible nodes. If this is fals, the nodes in
+	 * the tree should implement the {@link Comparable#compareTo(Object)} method with an option for the
+	 * default as well as the advanced sorting.
+	 */
 	public void setUseDefaultComparator(boolean useDefaultComparator) {
 		this.useDefaultComparator = useDefaultComparator;
+	}
+
+	/**
+	 * Check whether the default comparator should be used, or a possibly advanced comparison funktion added
+	 * by nodes. See {@link #setUseDefaultComparator(boolean)} for details.
+	 * 
+	 * @return
+	 */
+	public boolean isUseDefaultComparator() {
+		return useDefaultComparator;
 	}
 
 }
