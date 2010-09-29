@@ -1,4 +1,4 @@
-package org.caleydo.rcp.wizard.firststart;
+package org.caleydo.rcp.preferences;
 
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
@@ -6,7 +6,14 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
 
-import org.eclipse.jface.resource.ImageDescriptor;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.DirectoryFieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.PreferenceStore;
+import org.eclipse.jface.preference.RadioGroupFieldEditor;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -14,7 +21,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -23,56 +29,39 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 
-/**
- * Wizard page for configuring and checking internet connection.
- * 
- * @author Marc Streit
- */
-public final class ProxyConfigurationPage
-	extends WizardPage {
+public class ProxyPreferencePage
+	extends FieldEditorPreferencePage
+	implements IWorkbenchPreferencePage {
+
 	public static final String PAGE_NAME = "Proxy Configuration Page";
 
 	public static final String TEST_URL = "www.google.com";
-
-	public final WizardPage thisPage;
 
 	private Text txtProxyServer;
 	private Text txtProxyPort;
 	private boolean bUseProxy;
 
 	private Label connectionOKLabel;
+	
+	public ProxyPreferencePage() {
+		super(GRID);
+		setPreferenceStore(GeneralManager.get().getPreferenceStore());
+		setDescription("Proxy settings");
+	}
 
 	/**
-	 * Constructor.
+	 * Creates the field editors. Field editors are abstractions of the common GUI blocks needed to manipulate
+	 * various types of preferences. Each field editor knows how to save and restore itself.
 	 */
-	public ProxyConfigurationPage() {
-		super(PAGE_NAME, PAGE_NAME, null);
-
-		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
-			.getResource("resources/wizard/wizard.png")));
-
-		thisPage = this;
-
-		setPageComplete(false);
-	}
-
 	@Override
-	public void createControl(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NULL);
-		RowLayout layout = new RowLayout(SWT.VERTICAL);
-		layout.wrap = true;
-		layout.fill = true;
-		layout.justify = true;
-		layout.center = true;
-		layout.spacing = 15;
-		composite.setLayout(layout);
-		createContent(composite);
+	public void createFieldEditors() {
 
-		setControl(composite);
-	}
-
-	public Composite createContent(final Composite composite) {
+		Composite composite = new Composite(getFieldEditorParent(), SWT.NULL);
+		composite.setLayout(new GridLayout(1, false));
+		
 		connectionOKLabel = new Label(composite, SWT.CENTER | SWT.BORDER);
 		connectionOKLabel.setText("OK");
 		connectionOKLabel.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
@@ -82,30 +71,29 @@ public final class ProxyConfigurationPage
 		createProxySettingsContent(composite);
 
 		Button checkConnectionButton = new Button(composite, SWT.PUSH);
-		checkConnectionButton.setText("Test");
+		checkConnectionButton.setText("Test internet connection");
 		checkConnectionButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// updateInternetStatusLabel();
-				//
-				// PreferenceStore prefStore =
-				// Application.caleydoCoreBootloader.getGeneralManager().getPreferenceStore();
-				// prefStore.setValue(PreferenceConstants.USE_PROXY, bUseProxy);
-				//
-				// if (bUseProxy) {
-				// prefStore.setValue(PreferenceConstants.PROXY_SERVER, txtProxyServer.getText());
-				// prefStore.setValue(PreferenceConstants.PROXY_PORT, txtProxyPort.getText());
-				//
-				// System.setProperty("network.proxy_host", prefStore
-				// .getString(PreferenceConstants.PROXY_SERVER));
-				// System.setProperty("network.proxy_port", prefStore
-				// .getString(PreferenceConstants.PROXY_PORT));
-				// }
+				updateInternetStatusLabel();
+
+				PreferenceStore prefStore = GeneralManager.get().getPreferenceStore();
+				prefStore.setValue(PreferenceConstants.USE_PROXY, bUseProxy);
+
+				if (bUseProxy) {
+					prefStore.setValue(PreferenceConstants.PROXY_SERVER, txtProxyServer.getText());
+					prefStore.setValue(PreferenceConstants.PROXY_PORT, txtProxyPort.getText());
+
+					System.setProperty("network.proxy_host",
+						prefStore.getString(PreferenceConstants.PROXY_SERVER));
+					System.setProperty("network.proxy_port",
+						prefStore.getString(PreferenceConstants.PROXY_PORT));
+				}
 			}
 		});
-
-		return composite;
+		
+		composite.pack();
 	}
 
 	private void updateInternetStatusLabel() {
@@ -217,13 +205,20 @@ public final class ProxyConfigurationPage
 			}
 		}
 		catch (Exception e) {
-			// Application.bIsInterentConnectionOK = false;
-			setPageComplete(false);
+//			setPageComplete(false);
 			return false;
 		}
 
-		// Application.bIsInterentConnectionOK = true;
-		setPageComplete(true);
+//		setPageComplete(true);
 		return true;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
+	 */
+	@Override
+	public void init(IWorkbench workbench) {
+	}
+
 }

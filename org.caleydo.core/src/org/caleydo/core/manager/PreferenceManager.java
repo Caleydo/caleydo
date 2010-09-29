@@ -84,12 +84,12 @@ public class PreferenceManager {
 //		System.setProperty("network.proxy_host", "proxy.kages.at");
 //		System.setProperty("network.proxy_port", "8080");
 
-		// if (preferenceStore.getBoolean(PreferenceConstants.USE_PROXY)) {
-		// System.setProperty("network.proxy_host",
-		// preferenceStore.getString(PreferenceConstants.PROXY_SERVER));
-		// System.setProperty("network.proxy_port",
-		// preferenceStore.getString(PreferenceConstants.PROXY_PORT));
-		// }
+		if (preferenceStore.getBoolean(PreferenceConstants.USE_PROXY)) {
+			System.setProperty("network.proxy_host",
+				preferenceStore.getString(PreferenceConstants.PROXY_SERVER));
+			System.setProperty("network.proxy_port",
+				preferenceStore.getString(PreferenceConstants.PROXY_PORT));
+		}
 	}
 
 	private void initializeDefaultPreferences() {
