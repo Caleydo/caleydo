@@ -50,6 +50,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -94,7 +95,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	private float xGlobalMaxSubTree = 0;
 	private float fSampleHeightSubTree = 0;
 	private float fLevelWidthSubTree = 0;
-	private int iMaxDepthSubTree = 0;
 
 	// variables needed for gene tree dendrogram
 	private float yPosInit = 0;
@@ -123,6 +123,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	private boolean bUseBlackColoring = false;
 
 	private ClusterNode rootNode = null;
+
+	private int subTreeDepth = 0;
 
 	/**
 	 * Constructor.
@@ -300,7 +302,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		else
 			fPosCut = viewFrustum.getHeight() - viewFrustum.getHeight() / 4f;
 
-		if (tree != null  && tree.getRoot() != null) {
+		if (tree != null && tree.getRoot() != null) {
 			determineSelectedNodes();
 			return true;
 		}
@@ -568,16 +570,18 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	public void renderSubTreeFromIndexToIndex(GL gl, int fromIndex, int toIndex,
 			int iNrLeafs, float fWidth, float fHeight) {
 
+		System.out.println("first: " + fromIndex + " last: " + toIndex + " samples: "
+				+ iNrLeafs);
+
 		if (tree == null || tree.getRoot() == null)
 			return;
 
-		determineNodesToRender(rootNode, fromIndex, toIndex, false);
-		removeWronglySelectedNodes(rootNode);
-		iMaxDepthSubTree = 0;
+		determineNodesToRender(rootNode, fromIndex, toIndex);
+
 		yPosInitSubTree = fHeight;
 		xGlobalMaxSubTree = fWidth;
 
-		// determineMaxDepthSubTree( rootNode);
+		int iMaxDepthSubTree = determineMaxDepthSubTree(rootNode);
 
 		fLevelWidthSubTree = fWidth / (iMaxDepthSubTree + 1);
 		fSampleHeightSubTree = fHeight / iNrLeafs;
@@ -587,8 +591,10 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		gl.glTranslatef(0, -fSampleHeightSubTree / 2, 0);
 		gl.glLineWidth(renderStyle.getDendrogramLineWidth());
 		renderSubTreeRec(gl, rootNode);
+
 		gl.glTranslatef(0, +fSampleHeightSubTree / 2, 0);
 	}
+
 
 	/**
 	 * Recursive function responsible for determine sub dendrogram.
@@ -602,57 +608,33 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	 *            boolean which identifies nodes in sub dendrogram
 	 * @return true if node is part of sub dendrogram, false otherwise
 	 */
-	private boolean determineNodesToRender(ClusterNode currentNode, int from, int to,
-			boolean inBlock) {
+	private boolean determineNodesToRender(ClusterNode currentNode, int from, int to) {
 
-		boolean boolVar = inBlock;
-
-		if (tree.hasChildren(currentNode)) {
-
-			for (ClusterNode current : tree.getChildren(currentNode)) {
-				if (determineNodesToRender(current, from, to, boolVar)) {
-					current.setIsPartOfSubTree(true);
-					boolVar = true;
-				} else {
-					current.setIsPartOfSubTree(false);
-					boolVar = false;
+		if (currentNode.hasChildren()) {
+			boolean isPartOfSubTree = true;
+			for (ClusterNode child : currentNode.getChildren()) {
+				if (!determineNodesToRender(child, from, to)) {
+					isPartOfSubTree = false;
 				}
 			}
+			currentNode.setIsPartOfSubTree(isPartOfSubTree);
+			return isPartOfSubTree;
 		} else {
-			if (currentNode.getID() == from)
+
+			int index = contentVA.indexOf(currentNode.getLeafID());
+			if (contentVA.indicesOf(currentNode.getLeafID()).size() > 1) {
+				throw new IllegalStateException("duplicate element");
+			}
+			if (index >= from && index <= to) {
+				currentNode.setIsPartOfSubTree(true);
 				return true;
-
-			if (currentNode.getID() == to)
-				return false;
-		}
-		return boolVar;
-	}
-
-	/**
-	 * Helper function which removes wrongly added nodes from sub dendrogram.
-	 * Only useful in combination with determineNodesToRender()
-	 * 
-	 * @param currentNode
-	 */
-	private void removeWronglySelectedNodes(ClusterNode currentNode) {
-
-		if (tree.hasChildren(currentNode)) {
-
-			boolean bAllChildsPartOfSubTree = true;
-
-			for (ClusterNode current : tree.getChildren(currentNode)) {
-				removeWronglySelectedNodes(current);
-			}
-
-			for (ClusterNode current : tree.getChildren(currentNode)) {
-				if (current.isPartOfSubTree() == false) {
-					bAllChildsPartOfSubTree = false;
-				}
-			}
-
-			if (bAllChildsPartOfSubTree == false)
+			} else {
 				currentNode.setIsPartOfSubTree(false);
+				return false;
+			}
+
 		}
+
 	}
 
 	/**
@@ -661,20 +643,23 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	 * 
 	 * @param currentNode
 	 */
-	// private void determineMaxDepthSubTree(ClusterNode currentNode) {
-	//
-	// int temp = 0;
-	// if (currentNode.isPartOfSubTree() == true) {
-	// temp = currentNode.getDepth();
-	// iMaxDepthSubTree = Math.max(iMaxDepthSubTree, temp);
-	// }
-	//
-	// if (tree.hasChildren(currentNode)) {
-	// for (ClusterNode current : tree.getChildren(currentNode)) {
-	// determineMaxDepthSubTree(current);
-	// }
-	// }
-	// }
+	private int determineMaxDepthSubTree(ClusterNode currentNode) {
+
+		int temp = 0;
+		if (currentNode.isPartOfSubTree() == true) {
+			temp = currentNode.getDepth();
+		}
+		int maxSubDepth = 0;
+		if (currentNode.hasChildren()) {
+			for (ClusterNode child : tree.getChildren(currentNode)) {
+				int subDepth = determineMaxDepthSubTree(child);
+				maxSubDepth = Math.max(subDepth, maxSubDepth);
+			}
+		}
+
+		return Math.max(temp, maxSubDepth);
+
+	}
 
 	/**
 	 * Function calculates for each node (gene or entity) in the sub dendrogram
@@ -748,8 +733,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		else
 			gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], 1);
 
-		if (currentNode.isPartOfSubTree())
-			currentNode.getPosSubTree().x();
+		// if (currentNode.isPartOfSubTree())
+		// currentNode.getPosSubTree().x();
 
 		List<ClusterNode> listGraph = null;
 
@@ -1856,7 +1841,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 		SelectionDelta selectionDelta = event.getSelectionDelta();
 
-		if (tree != null && tree.getRoot() != null && selectionDelta.getIDType() == tree.getNodeIDType()) {
+		if (tree != null && tree.getRoot() != null
+				&& selectionDelta.getIDType() == tree.getNodeIDType()) {
 			// cluster mouse over events only used for gene trees
 			if (tree != null && tree.getRoot() != null) { // && bRenderGeneTree
 				resetAllTreeSelections();
