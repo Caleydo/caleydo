@@ -2032,6 +2032,53 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	}
 
+	private void renderSubTreeLevel2(GL gl) {
+		if (set.getContentData(contentVAType).getContentTree() != null) {
+			gl.glTranslatef(renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS / 2, 0, 0);
+
+			if (contentVA.getGroupList() != null)
+				gl.glTranslatef(renderStyle.getWidthClusterVisualization(), 0, 0);
+
+			float fHeightSubTree = viewFrustum.getHeight();
+
+			glContentDendrogramView.renderSubTreeFromIndexToIndex(gl, iFirstSampleLevel1,
+					iLastSampleLevel1, iSamplesLevel2, GAP_BETWEEN_LEVELS / 2,
+					fHeightSubTree);
+
+			if (contentVA.getGroupList() != null)
+				gl.glTranslatef(-renderStyle.getWidthClusterVisualization(), 0, 0);
+
+			gl.glTranslatef(-(renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS / 2), 0,
+					0);
+		}
+	}
+
+	private void renderSubTreeLevel3(GL gl) {
+		// render sub tree for level 3
+		if (set.getContentData(contentVAType).getContentTree() != null) {
+
+			if (contentVA.getGroupList() != null)
+				gl.glTranslatef(2 * renderStyle.getWidthClusterVisualization(), 0, 0);
+
+			float fHeightSubTree = 0;
+			if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
+				fHeightSubTree = viewFrustum.getHeight()
+						- renderStyle.getHeightExperimentDendrogram();
+			else
+				fHeightSubTree = viewFrustum.getHeight();
+
+			int from = iFirstSampleLevel1 + iFirstSampleLevel2;
+			int to = iFirstSampleLevel1 + iLastSampleLevel2;
+
+			glContentDendrogramView.renderSubTreeFromIndexToIndex(gl, from, to,
+					iSamplesPerHeatmap, GAP_BETWEEN_LEVELS / 2, fHeightSubTree);
+
+			if (contentVA.getGroupList() != null)
+				gl.glTranslatef(-2 * renderStyle.getWidthClusterVisualization(), 0, 0);
+
+		}
+	}
+
 	/**
 	 * Render marker in Texture for visualization of the currently (in stage 3)
 	 * rendered part
@@ -2550,8 +2597,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
 			ftop -= renderStyle.getHeightExperimentDendrogram();
 
-		// glHeatMapView.getViewFrustum().setTop(ftop);
-		// glHeatMapView.getViewFrustum().setRight(fright);
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
 				glHeatMapView.getID()));
@@ -2917,24 +2962,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		renderGeneDendrogramBackground(gl);
 
 		// render sub tree for level 2
-		if (set.getContentData(contentVAType).getContentTree() != null) {
-			gl.glTranslatef(renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS / 2, 0, 0);
-
-			if (contentVA.getGroupList() != null)
-				gl.glTranslatef(renderStyle.getWidthClusterVisualization(), 0, 0);
-
-			float fHeightSubTree = viewFrustum.getHeight();
-
-			glContentDendrogramView.renderSubTreeFromIndexToIndex(gl, iFirstSampleLevel1,
-					iLastSampleLevel1, iSamplesLevel2, GAP_BETWEEN_LEVELS / 2,
-					fHeightSubTree);
-
-			if (contentVA.getGroupList() != null)
-				gl.glTranslatef(-renderStyle.getWidthClusterVisualization(), 0, 0);
-
-			gl.glTranslatef(-(renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS / 2), 0,
-					0);
-		}
+		renderSubTreeLevel2(gl);
 
 		gl.glColor4f(1f, 1f, 1f, 1f);
 
@@ -2957,35 +2985,13 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		if (contentVA.getGroupList() != null)
 			gl.glTranslatef(-renderStyle.getWidthClusterVisualization(), 0, 0);
 
-		// render sub tree for level 3
-		if (set.getContentData(contentVAType).getContentTree() != null) {
-			gl.glTranslatef(
-					0.3f + renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2()
-							* fScalingLevel2 + GAP_BETWEEN_LEVELS, 0, 0);
-
-			if (contentVA.getGroupList() != null)
-				gl.glTranslatef(2 * renderStyle.getWidthClusterVisualization(), 0, 0);
-
-			float fHeightSubTree = 0;
-			if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
-				fHeightSubTree = viewFrustum.getHeight()
-						- renderStyle.getHeightExperimentDendrogram();
-			else
-				fHeightSubTree = viewFrustum.getHeight();
-
-			int from = iFirstSampleLevel1 + iFirstSampleLevel2;
-			int to = iFirstSampleLevel1 + iLastSampleLevel2;
-
-			glContentDendrogramView.renderSubTreeFromIndexToIndex(gl, from, to,
-					iSamplesPerHeatmap, GAP_BETWEEN_LEVELS / 2, fHeightSubTree);
-
-			if (contentVA.getGroupList() != null)
-				gl.glTranslatef(-2 * renderStyle.getWidthClusterVisualization(), 0, 0);
-
-			gl.glTranslatef(
-					-(0.3f + renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2()
-							* fScalingLevel2 + GAP_BETWEEN_LEVELS), 0, 0);
-		}
+		gl.glTranslatef(
+				0.3f + renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2()
+						* fScalingLevel2 + GAP_BETWEEN_LEVELS, 0, 0);
+		renderSubTreeLevel3(gl);
+		gl.glTranslatef(
+				-(0.3f + renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2()
+						* fScalingLevel2 + GAP_BETWEEN_LEVELS), 0, 0);
 
 		if (contentVA.getGroupList() != null)
 			gl.glTranslatef(2 * renderStyle.getWidthClusterVisualization(), 0, 0);
@@ -3022,49 +3028,13 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		renderGeneDendrogramBackground(gl);
 
 		renderClassAssignmentsExperimentsLevel2(gl);
-
-		// render sub tree for level 3
-		if (set.getContentData(contentVAType).getContentTree() != null) {
-			gl.glTranslatef(renderStyle.getWidthLevel2() * fScalingLevel2
-					+ GAP_BETWEEN_LEVELS / 2, 0, 0);
-
-			if (contentVA.getGroupList() != null)
-				gl.glTranslatef(renderStyle.getWidthClusterVisualization(), 0, 0);
-
-			float fHeightSubTree = 0;
-			if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
-				fHeightSubTree = viewFrustum.getHeight()
-						- renderStyle.getHeightExperimentDendrogram();
-			else
-				fHeightSubTree = viewFrustum.getHeight();
-
-			// FIXME: bad hack!!!
-			int lastIndexOfSubTree = 0;
-			try {
-				lastIndexOfSubTree = contentVA.get(iFirstSampleLevel1 + iLastSampleLevel2
-						+ 1);
-			} catch (IndexOutOfBoundsException e) {
-				try {
-					lastIndexOfSubTree = contentVA.get(iFirstSampleLevel1
-							+ iLastSampleLevel2);
-				} catch (IndexOutOfBoundsException e1) {
-					lastIndexOfSubTree = contentVA.get(iFirstSampleLevel1
-							+ iLastSampleLevel2 - 1);
-				}
-			}
-			glContentDendrogramView.renderSubTreeFromIndexToIndex(gl,
-					contentVA.get(iFirstSampleLevel1 + iFirstSampleLevel2),
-					lastIndexOfSubTree, iSamplesPerHeatmap, GAP_BETWEEN_LEVELS / 2,
-					fHeightSubTree);
-
-			if (contentVA.getGroupList() != null)
-				gl.glTranslatef(-renderStyle.getWidthClusterVisualization(), 0, 0);
-
-			gl.glTranslatef(
-					-(renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS / 2),
-					0, 0);
-		}
-
+		gl.glTranslatef(renderStyle.getWidthLevel2() * fScalingLevel2
+				+ GAP_BETWEEN_LEVELS / 3, 0, 0);
+		renderSubTreeLevel3(gl);
+		gl.glTranslatef(
+				-(renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS / 3),
+				0, 0);
+	
 		if (contentVA.getGroupList() != null)
 			gl.glTranslatef(renderStyle.getWidthClusterVisualization(), 0, 0);
 		gl.glTranslatef(renderStyle.getWidthLevel2() * fScalingLevel2, 0, 0);
