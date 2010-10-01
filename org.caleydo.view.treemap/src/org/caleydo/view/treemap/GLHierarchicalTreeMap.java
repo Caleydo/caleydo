@@ -244,9 +244,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	@Override
 	public void initLocal(GL gl) {
 
-		if (mainTreeMapView != null)
-			mainTreeMapView.processEvents();
-
+		
 		// Register keyboard listener to GL canvas
 		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new
 		// Runnable() {
@@ -315,6 +313,9 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	@Override
 	public void displayLocal(GL gl) {
 
+		if (mainTreeMapView != null)
+			mainTreeMapView.processEvents();
+		
 		pickingManager.handlePicking(this, gl);
 		display(gl);
 		checkForHits(gl);
