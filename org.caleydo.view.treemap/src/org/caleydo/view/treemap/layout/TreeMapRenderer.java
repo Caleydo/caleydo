@@ -32,7 +32,7 @@ public class TreeMapRenderer {
 
 	private boolean bDrawLabel = true;
 
-	public void initRenderer(GL gl, ViewFrustum viewFrustum, PickingManager pickingManager, int viewID, SelectionManager selectionManager,
+	public void initRenderer(ViewFrustum viewFrustum, PickingManager pickingManager, int viewID, SelectionManager selectionManager,
 			CaleydoTextRenderer textRenderer) {
 		this.pickingManager = pickingManager;
 
@@ -41,6 +41,10 @@ public class TreeMapRenderer {
 		this.selectionManager = selectionManager;
 		this.textRenderer = textRenderer;
 
+		
+	}
+	
+	public void initCache(GL gl){
 		treemapList = gl.glGenLists(1);
 		highlightList = gl.glGenLists(1);
 	}

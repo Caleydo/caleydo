@@ -17,6 +17,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -316,6 +317,9 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		if (mainTreeMapView != null)
 			mainTreeMapView.processEvents();
 		
+		for(GLTreeMap view : thumbnailTreemapViews)
+			view.processEvents();
+		
 		pickingManager.handlePicking(this, gl);
 		display(gl);
 		checkForHits(gl);
@@ -364,12 +368,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		// double yOffset = 0;
 		if (thumbnailTreemapViews.size() > 3)
 			drawArrow(gl, (float) xOffset, (float) (1.0f - yMargin - thumbNailHeight), (float) (xOffset + xMargin), (float) (1 - yMargin));
-		for (int i = Math.max(0, thumbnailTreemapViews.size() - maxThumbNailViews); /*
-																					 * i
-																					 * <
-																					 * maxThumbNailViews
-																					 * &&
-																					 */i < thumbnailTreemapViews.size(); i++) {
+		for (int i = Math.max(0, thumbnailTreemapViews.size() - maxThumbNailViews); i < thumbnailTreemapViews.size(); i++) {
 			xOffset += xMargin;
 
 			GLTreeMap treemap = thumbnailTreemapViews.get(i);
@@ -434,7 +433,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	}
 
 	public void zoomIn() {
-		System.out.println("zooming!!!!!");
+//		System.out.println("zooming!!!!!");
 		Set<Integer> elements = mainTreeMapView.getSelectionManager().getElements(SelectionType.SELECTION);
 		if (elements.size() == 1 /* && thumbnailTreemapViews.size() < 3 */) {
 
@@ -469,11 +468,13 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		if (thumbnailTreemapViews.size() > 0) {
 			// mainTreeMapView = thumbnailTreemapViews.get(index);
 			setMainTreeMapView(thumbnailTreemapViews.get(index));
-			for (int i = thumbnailTreemapViews.size() - 1; i >= index; i--){
+			for (int i = thumbnailTreemapViews.size() - 1; i > index; i--){
 				thumbnailTreemapViews.get(i).unregisterEventListeners();
-				thumbnailTreemapViews.remove(i);
+				
+					thumbnailTreemapViews.remove(i);
 			}
-
+			thumbnailTreemapViews.remove(index);
+			
 			mainTreeMapView.setDrawLabel(true);
 			mainTreeMapView.setRemotePickingManager(pickingManager, getID());
 			setDisplayListDirty();
@@ -546,10 +547,10 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		selectionUpdateListener = new SelectionUpdateListener();
-		selectionUpdateListener.setDataDomainType(dataDomain.getDataDomainType());
-		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+//		selectionUpdateListener = new SelectionUpdateListener();
+//		selectionUpdateListener.setDataDomainType(dataDomain.getDataDomainType());
+//		selectionUpdateListener.setHandler(this);
+//		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		zoomInListener = new ZoomInListener();
 		zoomInListener.setHandler(this);
@@ -598,12 +599,20 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
-		if (selectionUpdateListener != null) {
-			eventPublisher.removeListener(selectionUpdateListener);
-			selectionUpdateListener = null;
+//		if (selectionUpdateListener != null) {
+//			eventPublisher.removeListener(selectionUpdateListener);
+//			selectionUpdateListener = null;
+//		}
+		
+		if(zoomInListener!=null){
+			eventPublisher.removeListener(zoomInListener);
+			zoomInListener=null;
 		}
-		eventPublisher.removeListener(zoomInListener);
-		eventPublisher.removeListener(zoomOutListener);
+		
+		if(zoomOutListener!=null){
+			eventPublisher.removeListener(zoomOutListener);
+			zoomOutListener=null;
+		}
 		
 		if(mainTreeMapView!=null)
 			mainTreeMapView.unregisterEventListeners();
@@ -643,38 +652,37 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 		// TODO move to glTreeMap, listeners as well
 
-		if (dataDomain.getContentIDType() == selectionDelta.getIDType()) {
-			for (SelectionDeltaItem item : selectionDelta) {
-				//
-
-				ArrayList<Integer> nodeIDs = tree.getNodeIDsFromLeafID(item.getPrimaryID());
-			}
-
-			// treeSelectionManager.setDelta(newDelta)
-
-		}
-
-		if (treeSelectionManager.getIDType() == selectionDelta.getIDType())
-			treeSelectionManager.setDelta(selectionDelta);
-
-		if (selectionDelta.getIDType() == dataDomain.getStorageIDType()) {
-			// StorageSelectionManager storageSelectionManager =
-			// dataDomain.getStorageSelectionManager();
-			// storageSelectionManager.setDelta()
-
-			// // todo: colors for storages, this should be done somewhere else
-			// Set<Integer> storageIDs =
-			// storageSelectionManager.getElements(SelectionType.SELECTION);
-			//
-			// for (Integer storageID : storageIDs) {
-			// int expressionValue =
-			// dataDomain.getSet().get(storageID).get(EDataRepresentation.NORMALIZED,
-			// leafID);
-			// }
-
-		}
-
-		setDisplayListDirty();
+//		if (dataDomain.getContentIDType() == selectionDelta.getIDType()) {
+//			SelectionDelta newDelta = new SelectionDelta();
+//			for (SelectionDeltaItem item : selectionDelta) {
+//				ArrayList<Integer> nodeIDs = tree.getNodeIDsFromLeafID(item.getPrimaryID());
+//				if(nodeIDs!=null&&nodeIDs.size()>0)
+//					newDelta.addSelection(nodeIDs.get(0), item.getSelectionType());
+//			}
+//			treeSelectionManager.setDelta(newDelta);
+//		}
+//
+//		if (treeSelectionManager.getIDType() == selectionDelta.getIDType())
+//			treeSelectionManager.setDelta(selectionDelta);
+//
+//		if (selectionDelta.getIDType() == dataDomain.getStorageIDType()) {
+//			// StorageSelectionManager storageSelectionManager =
+//			// dataDomain.getStorageSelectionManager();
+//			// storageSelectionManager.setDelta()
+//
+//			// // todo: colors for storages, this should be done somewhere else
+//			// Set<Integer> storageIDs =
+//			// storageSelectionManager.getElements(SelectionType.SELECTION);
+//			//
+//			// for (Integer storageID : storageIDs) {
+//			// int expressionValue =
+//			// dataDomain.getSet().get(storageID).get(EDataRepresentation.NORMALIZED,
+//			// leafID);
+//			// }
+//
+//		}
+//
+//		setDisplayListDirty();
 	}
 
 	@Override
