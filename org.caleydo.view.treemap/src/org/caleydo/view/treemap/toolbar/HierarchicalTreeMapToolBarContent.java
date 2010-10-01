@@ -8,6 +8,8 @@ import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.ToolBarContainer;
 import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
 import org.caleydo.view.treemap.GLHierarchicalTreeMap;
+import org.caleydo.view.treemap.actions.ToggleColoringModeAction;
+import org.caleydo.view.treemap.actions.ToggleLabelAction;
 import org.caleydo.view.treemap.actions.ZoomInAction;
 import org.caleydo.view.treemap.actions.ZoomOutAction;
 
@@ -23,10 +25,7 @@ public class HierarchicalTreeMapToolBarContent extends AToolBarContent {
 
 	public static final String VIEW_TITLE = "Scatterplot";
 
-	private IToolBarItem pointSizeSlider;
 
-	// private IToolBarItem xAxisSelector;
-	// private IToolBarItem yAxisSelector;
 
 	@Override
 	public Class<?> getViewClass() {
@@ -42,18 +41,8 @@ public class HierarchicalTreeMapToolBarContent extends AToolBarContent {
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		actionList.add(pointSizeSlider);
-
-		// if (xAxisSelector == null) {
-		// xAxisSelector = new XAxisSelector("", 0);
-		// }
-		// actionList.add(xAxisSelector);
-		//
-		// if (yAxisSelector == null) {
-		// yAxisSelector = new YAxisSelector("", 0);
-		// }
-		// actionList.add(yAxisSelector);
-		
+		actionList.add(new ToggleColoringModeAction());
+		actionList.add(new ToggleLabelAction());		
 		actionList.add(new ZoomInAction());
 		actionList.add(new ZoomOutAction());
 

@@ -29,10 +29,10 @@ public class TreeMapRenderer {
 
 	private boolean bDrawNodeFrame = false;
 	private Color frameColor = Color.WHITE;
-	
-	private boolean bDrawLabel = false;
 
-	public void initPainter(GL gl, ViewFrustum viewFrustum, PickingManager pickingManager, int viewID, SelectionManager selectionManager,
+	private boolean bDrawLabel = true;
+
+	public void initRenderer(GL gl, ViewFrustum viewFrustum, PickingManager pickingManager, int viewID, SelectionManager selectionManager,
 			CaleydoTextRenderer textRenderer) {
 		this.pickingManager = pickingManager;
 
@@ -43,6 +43,15 @@ public class TreeMapRenderer {
 
 		treemapList = gl.glGenLists(1);
 		highlightList = gl.glGenLists(1);
+	}
+
+	public void setNodeFrame(boolean flag, Color color) {
+		bDrawNodeFrame = flag;
+		frameColor = color;
+	}
+
+	public void setDrawLabel(boolean flag) {
+		bDrawLabel = flag;
 	}
 
 	public void paintHighlighting(GL gl, Tree<ATreeMapNode> tree, SelectionManager selection) {
@@ -61,44 +70,34 @@ public class TreeMapRenderer {
 		}
 
 		gl.glEndList();
-
 	}
 
-	public void paintTreeMapFromCache(GL gl) {
+	public void renderTreeMapFromCache(GL gl) {
 		gl.glCallList(treemapList);
 		gl.glCallList(highlightList);
 	}
 
-	public void paintTreeMap(GL gl, ATreeMapNode tree) {
+	public void renderTreeMap(GL gl, ATreeMapNode tree) {
 		gl.glNewList(treemapList, GL.GL_COMPILE);
-		paintHelp(gl, tree);
+		renderHelp(gl, tree);
 		gl.glEndList();
 
 	}
 
-	public void setNodeFrame(boolean flag, Color color){
-		bDrawNodeFrame=flag;
-		frameColor=color;
-	}
-	
-	public void setDrawLabel(boolean flag){
-		bDrawLabel=flag;
-	}
-	
-	private void paintHelp(GL gl, ATreeMapNode root) {
+	private void renderHelp(GL gl, ATreeMapNode root) {
 		List<ATreeMapNode> children = root.getChildren();
 		if (children == null || children.size() == 0) {
 			gl.glPushName(pickingManager.getPickingID(viewID, EPickingType.TREEMAP_ELEMENT_SELECTED, root.getID()));
-			
+
 			fillRectangle(gl, root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(), root.getColorAttribute());
 			gl.glPopName();
 
-			if(bDrawLabel&&bDrawNodeFrame)
-			 displayText(gl,root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(),root.getLabel());	
+			if (bDrawLabel && bDrawNodeFrame)
+				displayText(gl, root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(), root.getLabel());
 
 		} else {
 			for (ATreeMapNode node : children) {
-				paintHelp(gl, node);
+				renderHelp(gl, node);
 			}
 		}
 	}
@@ -141,7 +140,7 @@ public class TreeMapRenderer {
 		gl.glEnd();
 
 		if (bDrawNodeFrame) {
-			gl.glColor3f(Color.white.getColorComponents(null)[0], Color.white.getColorComponents(null)[1], Color.white.getColorComponents(null)[2]);
+			gl.glColor3f(frameColor.getColorComponents(null)[0], frameColor.getColorComponents(null)[1], frameColor.getColorComponents(null)[2]);
 			gl.glLineWidth(2);
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(x, y, 0);
@@ -152,10 +151,31 @@ public class TreeMapRenderer {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void displayText(GL gl, float x, float y, float xmax, float ymax, String text) {
-//		Rectangle2D bbox= textRenderer.getBounds(text);
+		float minScaling=1.0f;
+		float maxScaling=3.0f;
+		float border=0.03f;
 		
-		textRenderer.renderText(gl, text, x * viewFrustum.getWidth()+0.03f, y * viewFrustum.getHeight()+0.03f, 0, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR*2, 20);
+		float scaling=1.0f;
+		
+		
+		 Rectangle2D bbox= textRenderer.getScaledBounds(gl, text, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR*scaling, 20);
+		 
+		 float width=(float) (bbox.getWidth() / viewFrustum.getWidth()) +border;
+		 float height= (float) (bbox.getHeight()/viewFrustum.getHeight())+ border;
+		 
+		 scaling=Math.min((xmax-x)/width, (ymax-y)/height);
+		
+		 if(scaling<minScaling)
+			 return;
+		 scaling=Math.min(scaling,maxScaling);
+		 
+//		if(width>xmax-x||height>ymax-y)
+//			return;
+		
+		 textRenderer.renderText(gl, text, x * viewFrustum.getWidth() + 0.03f, y * viewFrustum.getHeight() + 0.03f, 0,
+				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR * scaling, 20);
 	}
 
 }

@@ -12,6 +12,8 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.event.view.treemap.ToggleColoringModeEvent;
+import org.caleydo.core.manager.event.view.treemap.ToggleLabelEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -27,6 +29,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.treemap.layout.ATreeMapNode;
@@ -36,6 +39,10 @@ import org.caleydo.view.treemap.layout.TreeMapRenderer;
 import org.caleydo.view.treemap.layout.algorithm.ILayoutAlgorithm;
 import org.caleydo.view.treemap.layout.algorithm.SimpleLayoutAlgorithm;
 import org.caleydo.view.treemap.layout.algorithm.SquarifiedLayoutAlgorithm;
+import org.caleydo.view.treemap.listener.ToggleColoringModeListener;
+import org.caleydo.view.treemap.listener.ToggleLabelListener;
+
+import weka.experiment.AveragingResultProducer;
 
 /**
  * TODO
@@ -74,10 +81,14 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	private int rootClusterID;
 
 	private boolean bIsZoomActive = false;
+	
+	private boolean bIsThumbNailView = false;
 
-	// private ILayoutAlgorithm layoutAlgorithm = new SimpleLayoutAlgorithm();
+	private ILayoutAlgorithm layoutAlgorithm;
 
-	private ILayoutAlgorithm layoutAlgorithm = new SquarifiedLayoutAlgorithm();
+	private SelectionUpdateListener selectionUpdateListener;
+	private ToggleColoringModeListener coloringModeListener;
+	private ToggleLabelListener labelListener;
 
 	public GLTreeMap(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
@@ -163,8 +174,8 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	public void display(GL gl) {
 		if (bIsDisplayListDirtyLocal) {
 			
-			renderer.initPainter(gl, viewFrustum, getActivePickingManager(), getPickingViewID(), treeSelectionManager, textRenderer);
-			renderer.paintTreeMap(gl, treeMapModel.getRoot());
+			renderer.initRenderer(gl, viewFrustum, getActivePickingManager(), getPickingViewID(), treeSelectionManager, textRenderer);
+			renderer.renderTreeMap(gl, treeMapModel.getRoot());
 			bIsDisplayListDirtyLocal = false;
 			setHighLichtingListDirty();
 		}
@@ -174,7 +185,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 			bIsHighlightingListDirty = false;
 		}
 
-		renderer.paintTreeMapFromCache(gl);
+		renderer.renderTreeMapFromCache(gl);
 	}
 
 	private void setHighLichtingListDirty() {
@@ -216,8 +227,6 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 
 				break;
 			case MOUSE_OVER:
-
-				// System.out.println("mouse over: " + pickingID);
 				mouseOverClusterId = pickingID;
 				treeSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				treeSelectionManager.addToType(SelectionType.MOUSE_OVER, pickingID);
@@ -232,16 +241,6 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 				return;
 
 			}
-			// treeSelectionManager.addToType(selectionType, iExternalID);
-
-			// treeSelectionManager.getElements(SelectionType.SELECTION);
-			// treeSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
-			// iElementID);
-			//
-			// ArrayList<SelectionType> selectionTypes =
-			// treeSelectionManager.getSelectionTypes(elementID);
-			//
-			// setDisplayListDirty();
 
 			setHighLichtingListDirty();
 			break;
@@ -390,7 +389,50 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	}
 
 	public void setDrawLabel(boolean flag) {
-		renderer.setDrawLabel(flag);
+		renderer.setDrawLabel(flag&&!bIsThumbNailView);
+		setDisplayListDirty();
 	}
+	
+	public void setCalculateColor(boolean flag){
+		if(treeMapModel.getRoot() instanceof ClusterTreeMapNode){
+			ClusterTreeMapNode clusternode = (ClusterTreeMapNode) treeMapModel.getRoot();
+			clusternode.setColorData(flag, dataDomain);
+		}
+	}
+	
+	public void registerEventListeners() {
+		super.registerEventListeners();
+		
+		labelListener = new ToggleLabelListener();
+		labelListener.setHandler(this);
+		eventPublisher.addListener(ToggleLabelEvent.class, labelListener);
+		
+		coloringModeListener = new ToggleColoringModeListener();
+		coloringModeListener.setHandler(this);
+		eventPublisher.addListener(ToggleColoringModeEvent.class, coloringModeListener);
+
+		
+	}
+	
+	@Override
+	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
+
+		/*if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
+		}*/
+		
+		if(labelListener!=null){
+			eventPublisher.removeListener(labelListener);
+			labelListener=null;
+		}
+		
+		if(coloringModeListener!=null){
+			eventPublisher.removeListener(coloringModeListener);
+			coloringModeListener=null;
+		}
+	}
+
 
 }

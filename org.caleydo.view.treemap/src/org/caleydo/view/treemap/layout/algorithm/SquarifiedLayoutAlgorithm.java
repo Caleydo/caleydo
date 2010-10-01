@@ -23,7 +23,7 @@ public class SquarifiedLayoutAlgorithm implements ILayoutAlgorithm {
 
 	private void layoutHelp(ATreeMapNode node) {
 		ArrayList<ATreeMapNode> children = node.getChildren();
-		System.out.println(node.getID()+": minx:"+node.getMinX()+", maxx:"+ node.getMaxX()+", miny:"+ node.getMinY()+", maxy:"+ node.getMaxY());
+		//System.out.println(node.getID()+": minx:"+node.getMinX()+", maxx:"+ node.getMaxX()+", miny:"+ node.getMinY()+", maxy:"+ node.getMaxY());
 		if (children == null || children.size() == 0)
 			return;
 
