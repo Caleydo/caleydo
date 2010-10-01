@@ -559,7 +559,9 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		eventPublisher.addListener(ZoomOutEvent.class, zoomOutListener);
 
 
-		
+//		ToggleLabelListener labelListener = new ToggleLabelListener();
+//		labelListener.setHandler(this);
+//		eventPublisher.addListener(ToggleLabelEvent.class, labelListener);
 			
 			
 	
@@ -745,5 +747,11 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	private void setMainTreeMapView(GLTreeMap treemap) {
 		mainTreeMapView = treemap;
 	}
+	
+	public void toogleLabel(){
+		System.out.println("toggle label");
+	}
+
+	
 
 }

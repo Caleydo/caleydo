@@ -8,7 +8,6 @@ public class ZoomInListener extends AEventListener<GLHierarchicalTreeMap> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		// TODO Auto-generated method stub
 		handler.zoomIn();
 	}
 

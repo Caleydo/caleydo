@@ -403,9 +403,9 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 	public void registerEventListeners() {
 		super.registerEventListeners();
 		
-		labelListener = new ToggleLabelListener();
-		labelListener.setHandler(this);
-		eventPublisher.addListener(ToggleLabelEvent.class, labelListener);
+//		labelListener = new ToggleLabelListener();
+//		labelListener.setHandler(this);
+//		eventPublisher.addListener(ToggleLabelEvent.class, labelListener);
 		
 		coloringModeListener = new ToggleColoringModeListener();
 		coloringModeListener.setHandler(this);
@@ -433,6 +433,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView {
 			coloringModeListener=null;
 		}
 	}
+	
 
 
 }

@@ -151,7 +151,7 @@ public class TreeMapRenderer {
 		}
 	}
 
-	@SuppressWarnings("unused")
+	
 	private void displayText(GL gl, float x, float y, float xmax, float ymax, String text) {
 		float minScaling=1.0f;
 		float maxScaling=3.0f;
@@ -170,10 +170,7 @@ public class TreeMapRenderer {
 		 if(scaling<minScaling)
 			 return;
 		 scaling=Math.min(scaling,maxScaling);
-		 
-//		if(width>xmax-x||height>ymax-y)
-//			return;
-		
+	
 		 textRenderer.renderText(gl, text, x * viewFrustum.getWidth() + 0.03f, y * viewFrustum.getHeight() + 0.03f, 0,
 				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR * scaling, 20);
 	}
