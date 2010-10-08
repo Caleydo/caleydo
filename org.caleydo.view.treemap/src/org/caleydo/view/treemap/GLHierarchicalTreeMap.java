@@ -70,7 +70,11 @@ import com.sun.opengl.util.texture.TextureCoords;
  * Rendering the Treemap
  * 
  * @author Alexander Lex
+ * @author Michael Lafer
  */
+
+// TODO implement animation
+// TODO implement tree depth selection
 
 public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandler, IDataDomainSetBasedView, ISelectionUpdateHandler, IGLRemoteRenderingView {
 
