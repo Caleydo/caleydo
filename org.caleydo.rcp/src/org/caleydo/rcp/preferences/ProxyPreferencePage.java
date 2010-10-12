@@ -8,13 +8,8 @@ import java.net.URL;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.eclipse.jface.preference.BooleanFieldEditor;
-import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.jface.preference.RadioGroupFieldEditor;
-import org.eclipse.jface.preference.StringFieldEditor;
-import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -42,14 +37,16 @@ public class ProxyPreferencePage
 
 	private Text txtProxyServer;
 	private Text txtProxyPort;
-	private boolean bUseProxy;
+	private boolean useProxy;
 
 	private Label connectionOKLabel;
-	
+
 	public ProxyPreferencePage() {
 		super(GRID);
 		setPreferenceStore(GeneralManager.get().getPreferenceStore());
 		setDescription("Proxy settings");
+
+		useProxy = getPreferenceStore().getBoolean(PreferenceConstants.USE_PROXY);
 	}
 
 	/**
@@ -61,7 +58,7 @@ public class ProxyPreferencePage
 
 		Composite composite = new Composite(getFieldEditorParent(), SWT.NULL);
 		composite.setLayout(new GridLayout(1, false));
-		
+
 		connectionOKLabel = new Label(composite, SWT.CENTER | SWT.BORDER);
 		connectionOKLabel.setText("OK");
 		connectionOKLabel.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
@@ -78,21 +75,10 @@ public class ProxyPreferencePage
 			public void widgetSelected(SelectionEvent e) {
 				updateInternetStatusLabel();
 
-				PreferenceStore prefStore = GeneralManager.get().getPreferenceStore();
-				prefStore.setValue(PreferenceConstants.USE_PROXY, bUseProxy);
-
-				if (bUseProxy) {
-					prefStore.setValue(PreferenceConstants.PROXY_SERVER, txtProxyServer.getText());
-					prefStore.setValue(PreferenceConstants.PROXY_PORT, txtProxyPort.getText());
-
-					System.setProperty("network.proxy_host",
-						prefStore.getString(PreferenceConstants.PROXY_SERVER));
-					System.setProperty("network.proxy_port",
-						prefStore.getString(PreferenceConstants.PROXY_PORT));
-				}
+				applySettings();
 			}
 		});
-		
+
 		composite.pack();
 	}
 
@@ -126,8 +112,6 @@ public class ProxyPreferencePage
 		btnNoProxy.setBounds(10, 20, 75, 15);
 		btnNoProxy.setText("No proxy");
 		btnNoProxy.setLayoutData(data);
-		btnNoProxy.setSelection(true);
-		btnNoProxy.setEnabled(true);
 
 		final Button btnUseProxy = new Button(groupProxySettings, SWT.RADIO);
 		btnUseProxy.setBounds(10, 35, 75, 15);
@@ -136,18 +120,16 @@ public class ProxyPreferencePage
 
 		final Label lblProxyServer = new Label(groupProxySettings, SWT.NONE);
 		lblProxyServer.setText("Proxy Server:");
-		lblProxyServer.setEnabled(false);
 		txtProxyServer = new Text(groupProxySettings, SWT.BORDER);
-		txtProxyServer.setEnabled(false);
 		data = new GridData();
 		data.widthHint = 200;
 		txtProxyServer.setLayoutData(data);
 
 		final Label lblProxyPort = new Label(groupProxySettings, SWT.NONE);
 		lblProxyPort.setText("Proxy Port:");
-		lblProxyPort.setEnabled(false);
+
 		txtProxyPort = new Text(groupProxySettings, SWT.BORDER);
-		txtProxyPort.setEnabled(false);
+
 		txtProxyPort.addListener(SWT.Verify, new Listener() {
 			@Override
 			public void handleEvent(Event e) {
@@ -163,21 +145,35 @@ public class ProxyPreferencePage
 			}
 		});
 
+		if (useProxy) {
+			btnUseProxy.setSelection(true);
+			txtProxyServer.setText(getPreferenceStore().getString(PreferenceConstants.PROXY_SERVER));
+			txtProxyPort.setText(getPreferenceStore().getString(PreferenceConstants.PROXY_PORT));
+		}
+		else {
+			btnNoProxy.setSelection(true);
+		}
+
+		lblProxyServer.setEnabled(useProxy);
+		lblProxyPort.setEnabled(useProxy);
+		txtProxyServer.setEnabled(useProxy);
+		txtProxyPort.setEnabled(useProxy);
+
 		SelectionListener selectionListener = new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (e.widget == btnNoProxy) {
-					bUseProxy = false;
+					useProxy = false;
 				}
 				else {
-					bUseProxy = true;
+					useProxy = true;
 				}
 
-				lblProxyServer.setEnabled(bUseProxy);
-				lblProxyPort.setEnabled(bUseProxy);
-				txtProxyServer.setEnabled(bUseProxy);
-				txtProxyPort.setEnabled(bUseProxy);
+				lblProxyServer.setEnabled(useProxy);
+				lblProxyPort.setEnabled(useProxy);
+				txtProxyServer.setEnabled(useProxy);
+				txtProxyPort.setEnabled(useProxy);
 			}
 		};
 
@@ -188,7 +184,7 @@ public class ProxyPreferencePage
 	private boolean isInternetConnectionOK() {
 		// Check internet connection
 		try {
-			if (bUseProxy) {
+			if (useProxy) {
 				InetAddress proxyAddr;
 				proxyAddr = InetAddress.getByName(txtProxyServer.getText());
 				InetSocketAddress iSockAddr;
@@ -205,14 +201,14 @@ public class ProxyPreferencePage
 			}
 		}
 		catch (Exception e) {
-//			setPageComplete(false);
+			// setPageComplete(false);
 			return false;
 		}
 
-//		setPageComplete(true);
+		// setPageComplete(true);
 		return true;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
@@ -221,4 +217,28 @@ public class ProxyPreferencePage
 	public void init(IWorkbench workbench) {
 	}
 
+	private void applySettings() {
+		IPreferenceStore prefStore = getPreferenceStore();
+		prefStore.setValue(PreferenceConstants.USE_PROXY, useProxy);
+
+		if (useProxy) {
+			prefStore.setValue(PreferenceConstants.PROXY_SERVER, txtProxyServer.getText());
+			prefStore.setValue(PreferenceConstants.PROXY_PORT, txtProxyPort.getText());
+
+			System.setProperty("network.proxy_host",
+				prefStore.getString(PreferenceConstants.PROXY_SERVER));
+			System.setProperty("network.proxy_port",
+				prefStore.getString(PreferenceConstants.PROXY_PORT));
+		}
+		else {
+			System.setProperty("network.proxy_host", "");
+			System.setProperty("network.proxy_port", "");
+		}
+	}
+	
+	@Override
+	public boolean performOk() {
+		applySettings();
+		return super.performOk();
+	}
 }
