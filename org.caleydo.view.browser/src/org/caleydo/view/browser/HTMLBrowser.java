@@ -163,7 +163,7 @@ public class HTMLBrowser extends ASWTView {
 			@Override
 			public void handleEvent(Event e) {
 				url = textURL.getText();
-				draw();
+				browser.setUrl(url);
 			}
 		});
 
