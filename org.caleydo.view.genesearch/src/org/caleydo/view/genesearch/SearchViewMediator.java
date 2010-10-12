@@ -57,12 +57,12 @@ public class SearchViewMediator {
 
 		ISelectionDelta delta = new SelectionDelta(contentIDType);
 		
-		Set<Integer> setExpIndex = GeneralManager.get().getIDMappingManager()
-				.getIDAsSet(IDType.getIDType("DAVID"), contentIDType, davidID);
+//		Set<Integer> setExpIndex = GeneralManager.get().getIDMappingManager()
+//				.getIDAsSet(IDType.getIDType("DAVID"), contentIDType, davidID);
 
-		for (Integer expressionIndex : setExpIndex) {
-			delta.addSelection(expressionIndex, SelectionType.SELECTION);
-		}
+//		for (Integer expressionIndex : setExpIndex) {
+			delta.addSelection(davidID, SelectionType.SELECTION);
+//		}
 
 		selectionUpdateEvent.setSelectionDelta((SelectionDelta) delta);
 		eventPublisher.triggerEvent(selectionUpdateEvent);

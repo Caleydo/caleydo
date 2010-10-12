@@ -590,7 +590,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 									public void widgetSelected(SelectionEvent e) {
 
 										searchViewMediator.selectGeneSystemWide(
-												dataDomain.getContentIDType(),
+												dataDomain.getPrimaryContentMappingType(),
 												(Integer) tableItem.getData());
 
 										// Switch to browser view
@@ -637,7 +637,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 									public void widgetSelected(SelectionEvent e) {
 
 										searchViewMediator.selectGeneSystemWide(
-												dataDomain.getContentIDType(),
+												dataDomain.getPrimaryContentMappingType(),
 												(Integer) tableItem.getData());
 
 										// Switch to browser view
@@ -669,7 +669,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 									public void widgetSelected(SelectionEvent e) {
 
 										searchViewMediator.selectGeneSystemWide(
-												dataDomain.getContentIDType(),
+												dataDomain.getPrimaryContentMappingType(),
 												(Integer) tableItem.getData());
 
 										// Switch to browser view
