@@ -3,12 +3,14 @@ package org.caleydo.view.info;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.IDCategory;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
@@ -144,11 +146,22 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 	}
 
 	@Override
-	public void handleSelectionUpdate(final ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			final boolean scrollToSelection, final String info) {
-		if (selectionDelta.getIDType() == contentSelectionManager.getIDType()) {
+		
+		IDType contentIDType = dataDomain.getContentIDType();
+		if (selectionDelta.getIDType().getIDCategory().equals(contentIDType.getIDCategory())) {
+			// Check for type that can be handled
+			if (selectionDelta.getIDType() != contentIDType) {
+				selectionDelta = DeltaConverter.convertDelta(contentIDType, selectionDelta);
+			}
+			
 			contentSelectionManager.setDelta(selectionDelta);
 			updateTree(true, contentSelectionManager, contentTree, info);
+		}
+		
+		if (selectionDelta.getIDType() == contentSelectionManager.getIDType()) {
+
 		} else if (selectionDelta.getIDType() == storageSelectionManager.getIDType()) {
 			storageSelectionManager.setDelta(selectionDelta);
 			updateTree(false, storageSelectionManager, storageTree, info);

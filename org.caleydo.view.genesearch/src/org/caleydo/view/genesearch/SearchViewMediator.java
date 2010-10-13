@@ -1,12 +1,11 @@
 package org.caleydo.view.genesearch;
 
-import java.util.Set;
-
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
@@ -44,8 +43,10 @@ public class SearchViewMediator {
 		eventPublisher.triggerEvent(loadPathwaysByGeneEvent);
 	}
 
-	public void selectGeneSystemWide(IDType contentIDType, int davidID) {
+	public void selectGeneSystemWide(ASetBasedDataDomain dataDomain, int davidID) {
 
+		IDType contentIDType = dataDomain.getPrimaryContentMappingType();
+		
 		// First the current selections need to be cleared
 		ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
 		clearSelectionsEvent.setSender(this);
@@ -54,9 +55,8 @@ public class SearchViewMediator {
 		// Create new selection with the selected david ID
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 		selectionUpdateEvent.setSender(this);
-
+		selectionUpdateEvent.setDataDomainType(dataDomain.getDataDomainType());
 		ISelectionDelta delta = new SelectionDelta(contentIDType);
-		
 //		Set<Integer> setExpIndex = GeneralManager.get().getIDMappingManager()
 //				.getIDAsSet(IDType.getIDType("DAVID"), contentIDType, davidID);
 

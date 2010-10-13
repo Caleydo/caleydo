@@ -12,6 +12,7 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -203,13 +204,13 @@ public abstract class AStorageBasedView
 
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
-		// generalManager.getLogger().log(
-		// Level.INFO,
-		// "Update called by " + eventTrigger.getClass().getSimpleName()
-		// + ", received in: " + this.getClass().getSimpleName());
 
-		// Check for type that can be handled
-		if (selectionDelta.getIDType() == contentIDType) {
+		if (selectionDelta.getIDType().getIDCategory().equals(contentIDType.getIDCategory())) {
+			// Check for type that can be handled
+			if (selectionDelta.getIDType() != contentIDType) {
+				selectionDelta = DeltaConverter.convertDelta(contentIDType, selectionDelta);
+			}
+			
 			contentSelectionManager.setDelta(selectionDelta);
 			// ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
@@ -217,10 +218,7 @@ public abstract class AStorageBasedView
 			reactOnExternalSelection(selectionDelta, scrollToSelection);
 			setDisplayListDirty();
 		}
-
 		else if (selectionDelta.getIDType() == storageIDType) {
-			// generalManager.getIDMappingManager().getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX,
-			// key)(type)
 
 			storageSelectionManager.setDelta(selectionDelta);
 			handleConnectedElementReps(selectionDelta);
