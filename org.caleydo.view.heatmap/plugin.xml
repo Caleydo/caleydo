@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            allowMultiple="false"
+            allowMultiple="true"
             category="org.caleydo.rcp.views"
             class="org.caleydo.view.heatmap.heatmap.RcpGLHeatMapView"
             icon="resources/icons/heatmap.png"
@@ -13,7 +13,7 @@
             restorable="true">
       </view>
       <view
-            allowMultiple="false"
+            allowMultiple="true"
             class="org.caleydo.view.heatmap.hierarchical.RcpGLHierarchicalHeatMapView"
             icon="resources/icons/heatmap.png"
             id="org.caleydo.view.heatmap.hierarchical"
