@@ -1,8 +1,6 @@
 package org.caleydo.view.treemap.layout;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
-
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionType;
@@ -11,13 +9,27 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 
+/**
+ * This class represents a the treemap model filled with a tree of ClusterNode
+ * 
+ * @author Michael Lafer
+ *
+ */
+
 public class ClusterTreeMapNode extends ATreeMapNode {
 
-	public static ClusterTreeMapNode createFromClusterNodeTree(Tree<ClusterNode> clusterTree, ColorMapping colorMapper) {
-		return createFromClusterNodeTree(clusterTree.getRoot(), colorMapper);
+	public static ClusterTreeMapNode createFromClusterNodeTree(Tree<ClusterNode> clusterTree, ColorMapping colorMapper, int maxDepth) {
+		return createFromClusterNodeTree(clusterTree.getRoot(), colorMapper, maxDepth);
 	}
 
-	public static ClusterTreeMapNode createFromClusterNodeTree(ClusterNode clusterNode, ColorMapping colorMapper) {
+	/**
+	 * Creates a treemap model form a tree of ClusterNodes
+	 * @param clusterNode root of ClusterNode tree
+	 * @param colorMapper colomapper for mapping color attribute
+	 * @param maxDepth maximal depth of the treemap model
+	 * @return root of the treemap model
+	 */
+	public static ClusterTreeMapNode createFromClusterNodeTree(ClusterNode clusterNode, ColorMapping colorMapper, int maxDepth) {
 
 		// ClusterNode clusterNode = clusterTree.getRoot();
 		if (clusterNode != null) {
@@ -31,25 +43,18 @@ public class ClusterTreeMapNode extends ATreeMapNode {
 			treemapNode.data = clusterNode;
 			treemapNode.referenzData = referenz;
 
-//			try {
-//				referenz.sizeGetMehtod = clusterNode.getClass().getMethod("getSize", new Class[0]);
-//			} catch (SecurityException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (NoSuchMethodException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-
-			createHelp(treemapNode, clusterNode, referenz);
+			createHelp(treemapNode, clusterNode, referenz, maxDepth-1);
 
 			return treemapNode;
 		}
 		return null;
 	}
 
-	private static void createHelp(ClusterTreeMapNode treemapNode, ClusterNode clusterNode, ClusterReferenzData referenz) {
-		if (clusterNode.getChildren() == null) {
+	private static void createHelp(ClusterTreeMapNode treemapNode, ClusterNode clusterNode, ClusterReferenzData referenz, int maxDepth) {
+		if (clusterNode.getChildren() == null||maxDepth==0) {
+			if(clusterNode.getChildren()!=null&&clusterNode.getChildren().size()>0)
+				treemapNode.bIsAbstraction=true;
+			
 			referenz.sizeReferenzValue += clusterNode.getSize();
 
 			referenz.colorMin = Math.min(referenz.colorMin, clusterNode.getAverageExpressionValue());
@@ -63,12 +68,13 @@ public class ClusterTreeMapNode extends ATreeMapNode {
 			treemapChild.tree = treemapNode.tree;
 			treemapChild.referenzData = referenz;
 			treemapNode.tree.addChild(treemapNode, treemapChild);
-			createHelp(treemapChild, clusterChild, referenz);
+			createHelp(treemapChild, clusterChild, referenz, maxDepth-1);
 		}
 	}
 
 	ClusterReferenzData referenzData;
 	ClusterNode data;
+	boolean bIsAbstraction=false;
 
 
 	public void setColorData(boolean bUseStorage, ASetBasedDataDomain dataDomain){
@@ -78,23 +84,20 @@ public class ClusterTreeMapNode extends ATreeMapNode {
 	
 	@Override
 	public float[] getColorAttribute() {
+		// TODO check how to handle when node is not leave
 		if (referenzData.bUseExpressionValues) {
 			StorageSelectionManager storageSelectionManager = referenzData.dataDomain.getStorageSelectionManager();
-			// storageSelectionManager.setDelta()
-
-			// // todo: colors for storages, this should be done somewhere else
 			Set<Integer> storageIDs = storageSelectionManager.getElements(SelectionType.SELECTION);
-
 			if (storageIDs != null && storageIDs.size() > 0) {
 				float expressionValue = 0;
 				for (Integer storageID : storageIDs) {
-//					expressionValue += referenzData.dataDomain.getSet().get(storageID).get(EDataRepresentation.NORMALIZED, getLeafID()).floatValue();
 					expressionValue += referenzData.dataDomain.getSet().get(storageID).getFloat(EDataRepresentation.NORMALIZED, data.getLeafID());
 				}
 				expressionValue /= storageIDs.size();
 				return referenzData.colorMapper.getColor(expressionValue);
 			}
 		}
+		
 		return referenzData.colorMapper.getColor(data.getAverageExpressionValue() / referenzData.colorReferenzSpace);
 
 	}
@@ -106,6 +109,8 @@ public class ClusterTreeMapNode extends ATreeMapNode {
 
 	@Override
 	public String getLabel() {
+		if(bIsAbstraction)
+			return data.getLabel()+"+";
 		return data.getLabel();
 	}
 

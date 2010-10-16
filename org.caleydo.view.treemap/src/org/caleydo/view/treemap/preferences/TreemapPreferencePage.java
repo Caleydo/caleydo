@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Slider;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -42,6 +43,7 @@ public class TreemapPreferencePage
 
 	private Combo layoutAlgorithmCB;
 	private Button frameButton;
+	private Spinner maxDepthSp;
 	
 	private ArrayList<EVisLinkStyleType> styleTypes;
 
@@ -97,6 +99,16 @@ public class TreemapPreferencePage
 		boolean frameSelection=preferenceStore.getBoolean(PreferenceConstants.TREEMAP_DRAW_CLUSTER_FRAME);
 		frameButton.setSelection(frameSelection);
 		frameButton.setText("Draw frame for Clusters");
+		
+		int maxDepth=preferenceStore.getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
+		if(maxDepth<1)
+			maxDepth=10;
+		maxDepthSp= new Spinner(baseComposite, SWT.BORDER);
+		maxDepthSp.setDigits(0);
+		maxDepthSp.setMaximum(999);
+		maxDepthSp.setMinimum(1);
+		maxDepthSp.setIncrement(1);
+		maxDepthSp.setSelection(maxDepth);
 
 		baseComposite.pack();
 		
@@ -114,12 +126,11 @@ public class TreemapPreferencePage
 
 
 		int selectedLayout = layoutAlgorithmCB.getSelectionIndex();
-		System.out.println("selected layout algorithm: "+LAYOUT_ALGORITHM_DISPLAYNAME[selectedLayout]);
 		preferenceStore.setValue(PreferenceConstants.TREEMAP_LAYOUT_ALGORITHM, selectedLayout);
 		
 		preferenceStore.setValue(PreferenceConstants.TREEMAP_DRAW_CLUSTER_FRAME, frameButton.getSelection());
 		
-		
+		preferenceStore.setValue(PreferenceConstants.TREEMAP_MAX_DEPTH, maxDepthSp.getSelection());
 		
 		return bReturn;
 	}

@@ -67,24 +67,19 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
 /**
- * Rendering the Treemap
+ * Extended Treemap for displaying multiple treemaps and zoom function.
  * 
  * @author Alexander Lex
  * @author Michael Lafer
  */
 
-// TODO implement animation
-// TODO implement tree depth selection
 
-public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandler, IDataDomainSetBasedView, ISelectionUpdateHandler, IGLRemoteRenderingView {
+
+public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandler, IDataDomainSetBasedView, IGLRemoteRenderingView {
 
 	public final static String VIEW_ID = "org.caleydo.view.treemap.hierarchical";
 
 	private TreeMapRenderStyle renderStyle;
-
-	private ColorMapping colorMapper;
-
-	private SelectionManager treeSelectionManager;
 
 	TreeMapRenderer painter;
 
@@ -95,25 +90,11 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	boolean bUseDetailLevel = true;
 
-	private boolean bUpdateMainView = false;
 
 	private ASetBasedDataDomain dataDomain;
 
-	private Tree<ClusterNode> tree;
-	private Tree<ATreeMapNode> treeMapModel;
-
-	private boolean bIsHighlightingListDirty = false;
-
-	private boolean bIsMouseWheeleUsed = false;
 
 	private boolean bDisplayData = false;
-
-	int mouseOverClusterId;
-	int mouseWheeleSelectionHeight = 0;
-
-	// private EIDType primaryIDType = EIDType.CLUSTER_NUMBER;
-
-	private SelectionUpdateListener selectionUpdateListener;
 
 	private GLTreeMap mainTreeMapView;
 
@@ -138,94 +119,14 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	public GLHierarchicalTreeMap(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
-		// super(glCanvas, sLabel, viewFrustum, null);
 		viewType = GLHierarchicalTreeMap.VIEW_ID;
 
-		// ArrayList<SelectionType> alSelectionTypes = new
-		// ArrayList<SelectionType>();
-		// alSelectionTypes.add(SelectionType.NORMAL);
-		// alSelectionTypes.add(SelectionType.MOUSE_OVER);
-		// alSelectionTypes.add(SelectionType.SELECTION);
-
-		// colorMapper =
-		// ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
-
-		parentGLCanvas.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				mainTreeMapView.processMousePressed(e);
-				// System.out.println(e);
-				// if (e.getButton() == MouseEvent.BUTTON1) {
-				// treeSelectionManager.clearSelection(SelectionType.SELECTION);
-				// treeSelectionManager.addToType(SelectionType.SELECTION,
-				// mouseOverClusterId);
-				// bIsMouseWheeleUsed = true;
-				// mouseWheeleSelectionHeight = 0;
-				// }
-			}
-
-			public void mouseReleased(MouseEvent e) {
-				mainTreeMapView.processMouseReleased(e);
-				// System.out.println(e);
-				// if (e.getButton() == MouseEvent.BUTTON1) {
-				// bIsMouseWheeleUsed = false;
-				// }
-			}
-		});
-
 		parentGLCanvas.addMouseWheelListener(new MouseWheelListener() {
-
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
-
 				mainTreeMapView.processMouseWheeleEvent(e);
-
-				// System.out.println(e);
-				// if (bIsMouseWheeleUsed) {
-				// // System.out.println("wheel used: " +
-				// // e.getWheelRotation());
-				// if (e.getWheelRotation() > 0) {
-				// ATreeMapNode node =
-				// treeMapModel.getNodeByNumber(mouseOverClusterId);
-				// mouseWheeleSelectionHeight++;
-				// // System.out.println("selectionlevel: " +
-				// // node.selectionLevel);
-				// ATreeMapNode parent =
-				// node.getParentWithLevel(node.getHierarchyLevel() -
-				// mouseWheeleSelectionHeight);
-				// if (parent != null) {
-				// treeSelectionManager.clearSelection(SelectionType.SELECTION);
-				// treeSelectionManager.addToType(SelectionType.SELECTION,
-				// parent.getID());
-				// } else {
-				// mouseWheeleSelectionHeight--;
-				// }
-				//
-				// } else {
-				// ATreeMapNode node =
-				// treeMapModel.getNodeByNumber(mouseOverClusterId);
-				// if (mouseWheeleSelectionHeight > 0) {
-				// mouseWheeleSelectionHeight--;
-				// ATreeMapNode parent;
-				// if (mouseWheeleSelectionHeight == 0)
-				// parent = node;
-				// else
-				// parent = node.getParentWithLevel(node.getHierarchyLevel() -
-				// mouseWheeleSelectionHeight);
-				// treeSelectionManager.clearSelection(SelectionType.SELECTION);
-				// treeSelectionManager.addToType(SelectionType.SELECTION,
-				// parent.getID());
-				// }
-				//
-				// }
-				// setHighLichtingListDirty();
-				// }
 			}
 		});
-
-		// treeSelectionManager = new SelectionManager(primaryIDType);
-//		setMainTreeMapView(createEmbeddedTreeMap());
-//		mainTreeMapView.setRemotePickingManager(pickingManager, getID());
-
 	}
 
 	@Override
@@ -248,44 +149,12 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	@Override
 	public void initLocal(GL gl) {
-
-		
-		// Register keyboard listener to GL canvas
-		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new
-		// Runnable() {
-		// public void run() {
-		// parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
-		// }
-		// });
-
-		// iGLDisplayListIndexLocal = gl.glGenLists(2);
-		// iGLDisplayListToCall = iGLDisplayListIndexLocal;
-		// iGLDisplayListIndexCoord = iGLDisplayListIndexLocal + 1;
-		// iGLDisplayListIndexMouseOver = iGLDisplayListIndexLocal + 2;
-		// iGLDisplayListIndexSelection = iGLDisplayListIndexLocal + 3;
-		// iGLDisplayListIndexMatrixFull = iGLDisplayListIndexLocal + 4;
-		// iGLDisplayListIndexMatrixSelection = iGLDisplayListIndexLocal + 5;
-
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
-		// iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
-		// tree =
-		// dataDomain.getSet().getContentData(contentVAType).getContentTree();
 		init(gl);
-
-		// gl.glNewList(iGLDisplayListIndexLocal, GL.GL_COMPILE);
-		// gl.glEndList();
-
-		// ScatterPlotRenderStyle.setTextureNr(NR_TEXTURESX,NR_TEXTURESY);
-
-		// TODO: check when to update data
-
 	}
 
 	public void initData() {
-		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
-		bDisplayData = tree != null;
-		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+		bDisplayData = dataDomain.getSet().getContentData(contentVAType).getContentTree() != null;
 		for (GLTreeMap view : thumbnailTreemapViews)
 			view.initData();
 	}
@@ -395,6 +264,14 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		}
 	}
 
+	/**
+	 * Draws an arrow between the thumbnail treemaps.
+	 * @param gl
+	 * @param x
+	 * @param y
+	 * @param xmax
+	 * @param ymax
+	 */
 	private void drawArrow(GL gl, float x, float y, float xmax, float ymax) {
 		x = (x + 0.01f) * viewFrustum.getWidth();
 		y = y * viewFrustum.getHeight();
@@ -408,7 +285,10 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	}
 
-	// copied from radialhierarchy
+	/**
+	 * Displays a symbol when no data is available.
+	 * Code from GLRadialHierarchy.
+	 */
 	protected void renderSymbol(GL gl, EIconTextures texture, float buttonSize) {
 
 		float xButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth() / 2 - buttonSize / 2;
@@ -441,7 +321,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		Set<Integer> elements = mainTreeMapView.getSelectionManager().getElements(SelectionType.SELECTION);
 		if (elements.size() == 1 /* && thumbnailTreemapViews.size() < 3 */) {
 
-			ClusterNode dataRoot = tree.getNodeByNumber(elements.iterator().next());
+			ClusterNode dataRoot =  dataDomain.getSet().getContentData(contentVAType).getContentTree().getNodeByNumber(elements.iterator().next());
 
 			mainTreeMapView.setRemotePickingManager(null, 0);
 			mainTreeMapView.clearAllSelections();
@@ -506,11 +386,12 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	}
 
+	/**
+	 * Invokes the zoom out function when a thumbnail treemap is clicked or delegates events to the embedded treemap.
+	 */
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
-
-		System.out.println(pickingType + " " + pickingMode + ": " + iExternalID);
-
+//		System.out.println(pickingType + " " + pickingMode + ": " + iExternalID);
 		if (pickingType == EPickingType.TREEMAP_THUMBNAILVIEW_SELECTED && pickingMode == EPickingMode.DOUBLE_CLICKED) {
 			zoomOut(iExternalID);
 		} else
@@ -551,11 +432,6 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-//		selectionUpdateListener = new SelectionUpdateListener();
-//		selectionUpdateListener.setDataDomainType(dataDomain.getDataDomainType());
-//		selectionUpdateListener.setHandler(this);
-//		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
-
 		zoomInListener = new ZoomInListener();
 		zoomInListener.setHandler(this);
 		eventPublisher.addListener(ZoomInEvent.class, zoomInListener);
@@ -563,50 +439,11 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		zoomOutListener = new ZoomOutListener();
 		zoomOutListener.setHandler(this);
 		eventPublisher.addListener(ZoomOutEvent.class, zoomOutListener);
-
-
-//		ToggleLabelListener labelListener = new ToggleLabelListener();
-//		labelListener.setHandler(this);
-//		eventPublisher.addListener(ToggleLabelEvent.class, labelListener);
-			
-			
-	
-		
-		// replaceContentVAListener = new ReplaceContentVAListener();
-		// replaceContentVAListener.setHandler(this);
-		// replaceContentVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
-		// eventPublisher.addListener(ReplaceContentVAEvent.class,
-		// replaceContentVAListener);
-		//
-		// replaceStorageVAListener = new ReplaceStorageVAListener();
-		// replaceStorageVAListener.setHandler(this);
-		// replaceStorageVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
-		// eventPublisher.addListener(ReplaceStorageVAEvent.class,
-		// replaceStorageVAListener);
-		//
-		//
-		// contentVAUpdateListener = new ContentVAUpdateListener();
-		// contentVAUpdateListener.setHandler(this);
-		// contentVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
-		// eventPublisher.addListener(ContentVAUpdateEvent.class,
-		// contentVAUpdateListener);
-		//
-		// storageVAUpdateListener = new StorageVAUpdateListener();
-		// storageVAUpdateListener.setHandler(this);
-		// storageVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
-		// eventPublisher.addListener(StorageVAUpdateEvent.class,
-		// storageVAUpdateListener);
-
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
-
-//		if (selectionUpdateListener != null) {
-//			eventPublisher.removeListener(selectionUpdateListener);
-//			selectionUpdateListener = null;
-//		}
 		
 		if(zoomInListener!=null){
 			eventPublisher.removeListener(zoomInListener);
@@ -650,67 +487,22 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		return dataDomain;
 	}
 
-	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
-		// treeSelectionManager.setDelta(selectionDelta);
-
-		// TODO move to glTreeMap, listeners as well
-
-//		if (dataDomain.getContentIDType() == selectionDelta.getIDType()) {
-//			SelectionDelta newDelta = new SelectionDelta();
-//			for (SelectionDeltaItem item : selectionDelta) {
-//				ArrayList<Integer> nodeIDs = tree.getNodeIDsFromLeafID(item.getPrimaryID());
-//				if(nodeIDs!=null&&nodeIDs.size()>0)
-//					newDelta.addSelection(nodeIDs.get(0), item.getSelectionType());
-//			}
-//			treeSelectionManager.setDelta(newDelta);
-//		}
-//
-//		if (treeSelectionManager.getIDType() == selectionDelta.getIDType())
-//			treeSelectionManager.setDelta(selectionDelta);
-//
-//		if (selectionDelta.getIDType() == dataDomain.getStorageIDType()) {
-//			// StorageSelectionManager storageSelectionManager =
-//			// dataDomain.getStorageSelectionManager();
-//			// storageSelectionManager.setDelta()
-//
-//			// // todo: colors for storages, this should be done somewhere else
-//			// Set<Integer> storageIDs =
-//			// storageSelectionManager.getElements(SelectionType.SELECTION);
-//			//
-//			// for (Integer storageID : storageIDs) {
-//			// int expressionValue =
-//			// dataDomain.getSet().get(storageID).get(EDataRepresentation.NORMALIZED,
-//			// leafID);
-//			// }
-//
-//		}
-//
-//		setDisplayListDirty();
-	}
 
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		if (dataDomain != null) {
-			tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
-			if (tree != null) {
-				treeSelectionManager = new SelectionManager(tree.getNodeIDType());
-				// TODO set selectionmanager
+			if (dataDomain.getSet().getContentData(contentVAType).getContentTree() != null) {
 				for (GLTreeMap view : thumbnailTreemapViews) {
 					view.setDataDomain(dataDomain);
-					// view.setSelectionManager(treeSelectionManager);
 				}
 				bDisplayData = true;
-				;
+				
 			}
 		} else
 			bDisplayData = false;
 	}
 
-	public void setHighLichtingListDirty() {
-		bIsHighlightingListDirty = true;
-	}
 
 	private GLTreeMap createEmbeddedTreeMap() {
 
@@ -727,28 +519,6 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		return treemap;
 	}
 
-	// private GLTreeMap createEmbeddedTreeMap(){
-	// CmdCreateView cmdView = (CmdCreateView)
-	// generalManager.getCommandManager().createCommandByType(ECommandType.CREATE_GL_VIEW);
-	// cmdView.setViewID(GLTreeMap.VIEW_ID);
-	//
-	// float fHeatMapHeight = viewFrustum.getHeight();
-	// float fHeatMapWidth = viewFrustum.getWidth();
-	//
-	// cmdView.setAttributes(CameraProjectionMode.ORTHOGRAPHIC, 0,
-	// fHeatMapHeight, 0, fHeatMapWidth, -20, 20, -1);
-	// cmdView.setDataDomainType(dataDomain.getDataDomainType());
-	// cmdView.doCommand();
-	//
-	// GLTreeMap treeMap = (GLTreeMap) cmdView.getCreatedObject();
-	// treeMap.setDataDomain(dataDomain);
-	// treeMap.setRemoteRenderingGLView(this);
-	// //treeMap.setRemotePickingManager(pickingManager, getID());
-	// treeMap.initData();
-	//
-	// return treeMap;
-	//
-	// }
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
@@ -760,11 +530,5 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	private void setMainTreeMapView(GLTreeMap treemap) {
 		mainTreeMapView = treemap;
 	}
-	
-	public void toogleLabel(){
-		System.out.println("toggle label");
-	}
-
-	
 
 }
