@@ -5,6 +5,11 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.manager.event.AEvent;
 
+/**
+ * Event for zoom in.
+ * @author Michael Lafer
+ *
+ */
 
 @XmlRootElement
 @XmlType

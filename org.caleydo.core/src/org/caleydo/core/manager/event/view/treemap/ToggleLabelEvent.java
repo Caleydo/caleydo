@@ -5,6 +5,12 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.manager.event.AEvent;
 
+/**
+ * Event for switching labels on/off.
+ * @author Michael Lafer
+ *
+ */
+
 @XmlRootElement
 @XmlType
 public class ToggleLabelEvent
