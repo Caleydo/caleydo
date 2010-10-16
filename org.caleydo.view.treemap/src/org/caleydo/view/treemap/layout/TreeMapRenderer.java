@@ -15,6 +15,12 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
+/**
+ * Class to render the treemap via jogl.
+ * @author Michael Lafer
+ *
+ */
+
 public class TreeMapRenderer {
 
 	ViewFrustum viewFrustum;
@@ -44,20 +50,39 @@ public class TreeMapRenderer {
 		
 	}
 	
+	/**
+	 * Generates new Cache for treemap.
+	 * @param gl
+	 */
 	public void initCache(GL gl){
 		treemapList = gl.glGenLists(1);
 		highlightList = gl.glGenLists(1);
 	}
 
+	/**
+	 * Sets a frame for each node.
+	 * @param flag true when frames should be drawn
+	 * @param color color of the frame
+	 */
 	public void setNodeFrame(boolean flag, Color color) {
 		bDrawNodeFrame = flag;
 		frameColor = color;
 	}
 
+	/**
+	 * Switch label on/off
+	 * @param flag true when labels should be drawn.
+	 */
 	public void setDrawLabel(boolean flag) {
 		bDrawLabel = flag;
 	}
 
+	/**
+	 * Renders only the highlighting to cache (not display).
+	 * @param gl
+	 * @param tree Treemap model.
+	 * @param selection Selectionmanager
+	 */
 	public void paintHighlighting(GL gl, Tree<ATreeMapNode> tree, SelectionManager selection) {
 		gl.glNewList(highlightList, GL.GL_COMPILE);
 
@@ -76,11 +101,20 @@ public class TreeMapRenderer {
 		gl.glEndList();
 	}
 
+	/**
+	 * Draws treemap data and highlighting from cache.
+	 * @param gl
+	 */
 	public void renderTreeMapFromCache(GL gl) {
 		gl.glCallList(treemapList);
 		gl.glCallList(highlightList);
 	}
 
+	/**
+	 * Renders only treemap data to cache.
+	 * @param gl
+	 * @param tree Treemap model
+	 */
 	public void renderTreeMap(GL gl, ATreeMapNode tree) {
 		gl.glNewList(treemapList, GL.GL_COMPILE);
 		renderHelp(gl, tree);

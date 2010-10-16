@@ -6,6 +6,12 @@ import java.util.Vector;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.view.treemap.layout.ATreeMapNode;
 
+/**
+ * Implementation of the layout algorithm from paper 'Squarified Treemaps' by Mark Bruls, Kees Huizing, and Jarke J. vanWijk.
+ * @author Michael Lafer
+ *
+ */
+
 public class SquarifiedLayoutAlgorithm implements ILayoutAlgorithm {
 
 	@Override

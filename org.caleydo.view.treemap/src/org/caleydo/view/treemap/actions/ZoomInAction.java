@@ -8,6 +8,12 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
+/**
+ * Action for zoom in function.
+ * @author Michael Lafer
+ *
+ */
+
 public class ZoomInAction extends AToolBarAction implements IToolBarItem {
 
 	public static final String TEXT = "Zoom";

@@ -5,6 +5,12 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.treemap.ToggleLabelEvent;
 import org.caleydo.view.treemap.GLTreeMap;
 
+/**
+ * Listener for switch label on/off.
+ * @author Michael Lafer
+ *
+ */
+
 public class ToggleLabelListener extends AEventListener<GLTreeMap> {
 
 	@Override

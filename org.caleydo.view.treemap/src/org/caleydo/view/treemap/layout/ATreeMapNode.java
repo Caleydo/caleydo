@@ -5,10 +5,13 @@ import java.util.List;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.Tree;
 
-// TODO make a AHierarchyElement, rename to ATreeMapNode
+/**
+ * Model for a treemap, provides some basic functionalitiy and abstract methods mapping attributes.
+ * @author Michael Lafer
+ */
+
 public abstract class ATreeMapNode extends AHierarchyElement<ATreeMapNode> {
 
-	private AbstractTree root;
 	private float minX, minY, maxX, maxY;
 	
 	public int selectionLevel=0;
@@ -19,19 +22,14 @@ public abstract class ATreeMapNode extends AHierarchyElement<ATreeMapNode> {
 		node=this;
 	};
 	
-	
-
-	public ATreeMapNode(AbstractTree root) {
-		// TODO Auto-generated constructor stub
-		node=this;
-		this.root = root;
-	}
-	
 	public ATreeMapNode(Tree<ATreeMapNode> tree){
 		node=this;
 		this.tree=tree;
 	}
 
+	/**
+	 * Returns accumulated size for non-leave nodes.
+	 */
 	public float getSize() {
 		List<ATreeMapNode> list = getChildren();
 		if (list == null || list.size() == 0)
@@ -49,16 +47,8 @@ public abstract class ATreeMapNode extends AHierarchyElement<ATreeMapNode> {
 
 	public abstract float getSizeAttribute();
 
-//	public ArrayList<ATreeMapNode> getChildren(){
-//		return tree.getChildren(this);
-//	}
-
 	public abstract String getLabel();
-
-	public AbstractTree getRoot() {
-		return root;
-	}
-
+	
 	public float getMinX() {
 		return minX;
 	}

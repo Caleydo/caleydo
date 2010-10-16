@@ -10,6 +10,12 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
+/**
+ * Action for switching labels on/off.
+ * @author Michael Lafer
+ *
+ */
+
 public class ToggleLabelAction extends AToolBarAction implements IToolBarItem {
 
 	public static final String TEXT = "Toggle Labels";

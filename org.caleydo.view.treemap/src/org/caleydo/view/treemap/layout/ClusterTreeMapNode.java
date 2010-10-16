@@ -77,11 +77,19 @@ public class ClusterTreeMapNode extends ATreeMapNode {
 	boolean bIsAbstraction=false;
 
 
+	/**
+	 * Switch between coloring average value or only from selected experiments.
+	 * @param bUseStorage true when using only selected experiments.
+	 * @param dataDomain Data for experiments.
+	 */
 	public void setColorData(boolean bUseStorage, ASetBasedDataDomain dataDomain){
 		referenzData.bUseExpressionValues=bUseStorage;
 		referenzData.dataDomain=dataDomain;
 	}
 	
+	/**
+	 * Returns different color depending how <code>setColorData</code> is used.
+	 */
 	@Override
 	public float[] getColorAttribute() {
 		// TODO check how to handle when node is not leave

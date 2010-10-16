@@ -9,6 +9,12 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
+/**
+ * Action for toggling coloring mode.
+ * @author Michael Lafer
+ *
+ */
+
 public class ToggleColoringModeAction extends AToolBarAction implements IToolBarItem {
 
 	public static final String TEXT = "Toggle ColorMode Average/Selected";

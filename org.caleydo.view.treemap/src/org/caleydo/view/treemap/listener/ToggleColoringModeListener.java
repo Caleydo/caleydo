@@ -5,6 +5,12 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.treemap.ToggleColoringModeEvent;
 import org.caleydo.view.treemap.GLTreeMap;
 
+/**
+ * Listener for toggling coloring mode.
+ * @author Michael Lafer
+ *
+ */
+
 public class ToggleColoringModeListener extends AEventListener<GLTreeMap> {
 
 	@Override

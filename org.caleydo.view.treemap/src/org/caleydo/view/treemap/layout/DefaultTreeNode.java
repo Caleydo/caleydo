@@ -5,6 +5,12 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.graph.tree.Tree;
 
+/**
+ * Static treemap model. For testing purpose only.
+ * @author Michael Lafer
+ *
+ */
+
 public class DefaultTreeNode extends ATreeMapNode {
 	
 	public static ATreeMapNode createSampleTree(){

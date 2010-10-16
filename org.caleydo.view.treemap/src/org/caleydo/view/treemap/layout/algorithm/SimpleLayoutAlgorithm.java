@@ -2,17 +2,23 @@ package org.caleydo.view.treemap.layout.algorithm;
 
 import org.caleydo.view.treemap.layout.ATreeMapNode;
 
+/**
+ * Simple and fast layout algorithm which doesn't cares about ration of displayed nodes.
+ * @author Michael Lafer
+ *
+ */
+
 public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
 
 	@Override
 	public void layout(ATreeMapNode tree) {
-		// TODO Auto-generated method stub
 
 		paintHelp(tree, 0, 0, 1, 1, HORIZONTAL_ALIGNMENT);
 
 	}
 
 	private static final boolean HORIZONTAL_ALIGNMENT = true;
+	@SuppressWarnings("unused")
 	private static final boolean VERTICAL_ALIGNMENT = false;
 
 	private void paintHelp(ATreeMapNode root, float xOffset, float yOffset, float xMax,

@@ -1,7 +1,6 @@
 package org.caleydo.view.treemap;
 
 import java.awt.Color;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 
@@ -46,15 +45,12 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.treemap.layout.ATreeMapNode;
 import org.caleydo.view.treemap.layout.ClusterTreeMapNode;
-import org.caleydo.view.treemap.layout.DefaultTreeNode;
 import org.caleydo.view.treemap.layout.TreeMapRenderer;
 import org.caleydo.view.treemap.layout.algorithm.ILayoutAlgorithm;
 import org.caleydo.view.treemap.layout.algorithm.SimpleLayoutAlgorithm;
 import org.caleydo.view.treemap.layout.algorithm.SquarifiedLayoutAlgorithm;
 import org.caleydo.view.treemap.listener.ToggleColoringModeListener;
 import org.caleydo.view.treemap.listener.ToggleLabelListener;
-
-import weka.experiment.AveragingResultProducer;
 
 /**
  * Control Class for a single treemap. Handles interaction and events. Calls

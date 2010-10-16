@@ -14,8 +14,9 @@ import org.caleydo.view.treemap.actions.ZoomInAction;
 import org.caleydo.view.treemap.actions.ZoomOutAction;
 
 /**
- * ToolBarContent implementation for scatterplot specific toolbar items.
+ * ToolBarContent implementation for treemap specific toolbar items.
  * 
+ * @author Michael Lafer
  * @author Marc Streit
  * @author Juergen Pillhofer
  */
@@ -23,7 +24,7 @@ public class HierarchicalTreeMapToolBarContent extends AToolBarContent {
 
 	public static final String IMAGE_PATH = "resources/icons/view/storagebased/parcoords/parcoords.png";
 
-	public static final String VIEW_TITLE = "Scatterplot";
+	public static final String VIEW_TITLE = "Treemap";
 
 
 
