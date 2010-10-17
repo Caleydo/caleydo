@@ -338,16 +338,25 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	private void zoomOut(int index) {
 		if (thumbnailTreemapViews.size() > 0) {
 			// mainTreeMapView = thumbnailTreemapViews.get(index);
+			GLTreeMap beginMainView=mainTreeMapView;
+			
 			setMainTreeMapView(thumbnailTreemapViews.get(index));
 			for (int i = thumbnailTreemapViews.size() - 1; i > index; i--) {
 				thumbnailTreemapViews.get(i).unregisterEventListeners();
 
 				thumbnailTreemapViews.remove(i);
 			}
+			
+			Vector<GLTreeMap> beginThumbnails = (Vector<GLTreeMap>) thumbnailTreemapViews.clone();
+			
 			thumbnailTreemapViews.remove(index);
 
 			mainTreeMapView.setDrawLabel(true);
 			mainTreeMapView.setRemotePickingManager(pickingManager, getID());
+			
+			animationControle.initAnimation(this, beginMainView, mainTreeMapView, beginThumbnails, thumbnailTreemapViews, AnimationControle.ZOOM_OUT_ANIMATION);
+			animationControle.setActive(true);
+			
 			setDisplayListDirty();
 		}
 	}

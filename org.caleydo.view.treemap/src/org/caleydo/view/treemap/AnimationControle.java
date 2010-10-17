@@ -5,6 +5,15 @@ import java.util.Vector;
 
 import javax.media.opengl.GL;
 
+/**
+ * 
+ * Class which provides animation for the zoom function of
+ * {@link GLHierarchicalTreeMap}.
+ * 
+ * @author Michael Lafer
+ * 
+ */
+
 public class AnimationControle {
 
 	GLHierarchicalTreeMap parentView;
@@ -23,24 +32,27 @@ public class AnimationControle {
 	long animationTime = 500;
 	long startTime;
 
-	void initAnimation(GLHierarchicalTreeMap parentView, GLTreeMap beginMainView, GLTreeMap endMainView, Vector<GLTreeMap> beginThumbnails, Vector<GLTreeMap> endThumbnails, int direction) {
+	void initAnimation(GLHierarchicalTreeMap parentView, GLTreeMap beginMainView, GLTreeMap endMainView, Vector<GLTreeMap> beginThumbnails,
+			Vector<GLTreeMap> endThumbnails, int direction) {
 		this.beginMainView = beginMainView;
 		this.endMainView = endMainView;
 		this.beginThumbnails = beginThumbnails;
 		this.endThumbnails = endThumbnails;
 		this.direcetion = direction;
-		this.parentView=parentView;
+		this.parentView = parentView;
 
 		startTime = Calendar.getInstance().getTimeInMillis();
 
 		parentView.thumbnailTreemapViews = beginThumbnails;
 
 		calcData();
+		
+		System.out.println("\nDirection: "+direction);
 	}
 
 	private void calcData() {
+		float thumbNailWidth = (1 - parentView.xMargin * (GLHierarchicalTreeMap.MAX_THUMBNAILS + 1)) / GLHierarchicalTreeMap.MAX_THUMBNAILS;
 		if (direcetion == ZOOM_IN_ANIMATION) {
-			float thumbNailWidth = (1 - parentView.xMargin * (GLHierarchicalTreeMap.MAX_THUMBNAILS + 1)) / GLHierarchicalTreeMap.MAX_THUMBNAILS;
 			if (beginThumbnails == null || beginThumbnails.size() == 0) {
 				beginX = 0;
 				beginY = 0;
@@ -64,61 +76,79 @@ public class AnimationControle {
 				endHeight = GLHierarchicalTreeMap.THUMBNAIL_HEIGHT;
 			}
 
+		} else {
+			beginX= thumbNailWidth * (beginThumbnails.size()-1) + parentView.xMargin * (beginThumbnails.size() );
+			beginY=0.8f+parentView.yMargin;
+			beginWidth=thumbNailWidth;
+			beginHeight=GLHierarchicalTreeMap.THUMBNAIL_HEIGHT;
+			
+			endX=0;
+			endY=0;
+			endWidth=1;
+			
+			if(endThumbnails==null||endThumbnails.size()==0){
+				
+				endHeight=1;
+			}
+			else{
+				endHeight=0.8f;
+			}
 		}
 	}
 
-	
-	
 	void display(GL gl) {
 		float x, y, width, height;
 
 		long time = Calendar.getInstance().getTimeInMillis();
-		float progress = ((float)(time - startTime)  ) / animationTime;
+		float progress = ((float) (time - startTime)) / animationTime;
 
-		if(progress>=1){
+		if (progress >= 1) {
 			endAnimation();
 			return;
 		}
-		
+
 		x = (endX - beginX) * progress + beginX;
 		y = (endY - beginY) * progress + beginY;
 		width = (endWidth - beginWidth) * progress + beginWidth;
 		height = (endHeight - beginHeight) * progress + beginHeight;
 
+		parentView.displayThumbnailTreemaps(gl);
+		
 		if (direcetion == ZOOM_IN_ANIMATION) {
 
-			parentView.displayThumbnailTreemaps(gl);
+			
 			parentView.displayMainTreeMap(gl, true);
-
-			beginMainView.getViewFrustum().setTop(parentView.getViewFrustum().getHeight()*(y+height));
-			beginMainView.getViewFrustum().setBottom(parentView.getViewFrustum().getHeight()*y);
-			beginMainView.getViewFrustum().setLeft(parentView.getViewFrustum().getWidth()*x);
-			beginMainView.getViewFrustum().setRight(parentView.getViewFrustum().getWidth()*(x+width));
-			beginMainView.setDisplayListDirty();
-			
-//			gl.glPushMatrix();
-//			gl.glTranslatef(x, y, 0);
-//			gl.glScalef(width, height, 1);
-			
-			beginMainView.display(gl);
-			
-//			gl.glPopMatrix();
 		}
-		
-		System.out.println(progress+" "+x+" "+y+" "+width+" "+height+" "+beginMainView.getViewFrustum());
-//		System.out.println(progress+" "+beginMainView.getViewFrustum());
+			beginMainView.getViewFrustum().setTop(parentView.getViewFrustum().getHeight() * (y + height));
+			beginMainView.getViewFrustum().setBottom(parentView.getViewFrustum().getHeight() * y);
+			beginMainView.getViewFrustum().setLeft(parentView.getViewFrustum().getWidth() * x);
+			beginMainView.getViewFrustum().setRight(parentView.getViewFrustum().getWidth() * (x + width));
+			beginMainView.setDisplayListDirty();
+
+			// gl.glPushMatrix();
+			// gl.glTranslatef(x, y, 0);
+			// gl.glScalef(width, height, 1);
+
+			beginMainView.display(gl);
+
+			// gl.glPopMatrix();
+//		}
+
+		System.out.println(progress + " " + x + " " + y + " " + width + " " + height + " " + beginMainView.getViewFrustum());
+		// System.out.println(progress+" "+beginMainView.getViewFrustum());
 
 	}
 
-	private void endAnimation(){
-		bIsActive=false;
-		
-		for(GLTreeMap view:endThumbnails)
+	private void endAnimation() {
+		bIsActive = false;
+
+		for (GLTreeMap view : endThumbnails)
 			view.setDisplayListDirty();
-		
-		parentView.thumbnailTreemapViews=endThumbnails;
+		endMainView.setDisplayListDirty();
+
+		parentView.thumbnailTreemapViews = endThumbnails;
 	}
-	
+
 	boolean isActive() {
 		return bIsActive;
 	}
