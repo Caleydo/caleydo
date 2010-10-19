@@ -129,6 +129,7 @@ public class HeatMapWrapper {
 		else
 			heatMap.setRenderTemplate(new ComparerDetailTemplate(true));
 
+		heatMap.setSet(set);
 		heatMap.initData();
 		heatMap.setDetailLevel(DetailLevel.MEDIUM);
 		heatMap.initRemote(gl, glParentView, glMouseListener, infoAreaManager);

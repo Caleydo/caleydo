@@ -164,8 +164,8 @@ public abstract class AStorageBasedView
 
 	@Override
 	public void initData() {
-
-		set = dataDomain.getSet();
+		if (set == null)
+			set = dataDomain.getSet();
 
 		super.initData();
 
@@ -210,7 +210,7 @@ public abstract class AStorageBasedView
 			if (selectionDelta.getIDType() != contentIDType) {
 				selectionDelta = DeltaConverter.convertDelta(contentIDType, selectionDelta);
 			}
-			
+
 			contentSelectionManager.setDelta(selectionDelta);
 			// ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
@@ -264,7 +264,7 @@ public abstract class AStorageBasedView
 	public void handleVAUpdate(ContentVADelta delta, String info) {
 		if (!delta.getVAType().equals(contentVAType))
 			return;
-		
+
 		contentVA.setGroupList(null);
 		contentSelectionManager.setVADelta(delta);
 

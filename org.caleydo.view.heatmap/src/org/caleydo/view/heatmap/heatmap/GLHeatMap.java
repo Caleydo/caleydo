@@ -746,6 +746,10 @@ public class GLHeatMap extends AStorageBasedView {
 		this.sendClearSelectionsEvent = sendClearSelectionsEvent;
 	}
 
+	public void setSet(ISet set) {
+		this.set = set;
+	}
+
 	public PickingManager getPickingManager() {
 		return pickingManager;
 	}
