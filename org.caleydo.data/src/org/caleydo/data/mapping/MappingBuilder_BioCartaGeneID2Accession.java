@@ -13,7 +13,7 @@ import java.nio.channels.FileChannel;
 public class MappingBuilder_BioCartaGeneID2Accession {
 
 	private static String BIOCARTA_INPUT_FOLDER_PATH = System.getProperty("user.home")
-			+ File.separator + ".caleydo_1.3" + File.separator + "cgap.nci.nih.gov/Genes";
+			+ File.separator + ".caleydo_2.0" + File.separator + "cgap.nci.nih.gov/Genes";
 
 	// private static String OUTPUT_FILE_PATH =
 	// "data/genome/mapping/HOMO_SAPIENS_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt";
