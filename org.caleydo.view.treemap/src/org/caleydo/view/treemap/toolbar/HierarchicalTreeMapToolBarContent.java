@@ -8,6 +8,7 @@ import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.ToolBarContainer;
 import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
 import org.caleydo.view.treemap.GLHierarchicalTreeMap;
+import org.caleydo.view.treemap.actions.LevelHighlightingAction;
 import org.caleydo.view.treemap.actions.ToggleColoringModeAction;
 import org.caleydo.view.treemap.actions.ToggleLabelAction;
 import org.caleydo.view.treemap.actions.ZoomInAction;
@@ -42,6 +43,8 @@ public class HierarchicalTreeMapToolBarContent extends AToolBarContent {
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
+		
+		actionList.add(new LevelHighlightingAction());
 		actionList.add(new ToggleColoringModeAction());
 		actionList.add(new ToggleLabelAction());		
 		actionList.add(new ZoomInAction());

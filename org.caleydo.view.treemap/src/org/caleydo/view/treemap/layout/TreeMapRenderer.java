@@ -17,14 +17,15 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * Class to render the treemap via jogl.
+ * 
  * @author Michael Lafer
- *
+ * 
  */
 
 public class TreeMapRenderer {
 
-	public static final float SELECTION_LINE_WIDTH=6.0f;
-	
+	public static final float SELECTION_LINE_WIDTH = 6.0f;
+
 	ViewFrustum viewFrustum;
 	PickingManager pickingManager;
 	int viewID;
@@ -38,10 +39,10 @@ public class TreeMapRenderer {
 	private boolean bDrawNodeFrame = false;
 	private Color frameColor = Color.WHITE;
 
-	private List<Integer> extendedFrameList=null;
+	private List<Integer> extendedFrameList = null;
 	private Color extendedFrameColor;
 	private float extendedFrameLineWidth;
-	
+
 	private boolean bDrawLabel = true;
 
 	public void initRenderer(ViewFrustum viewFrustum, PickingManager pickingManager, int viewID, SelectionManager selectionManager,
@@ -53,37 +54,42 @@ public class TreeMapRenderer {
 		this.selectionManager = selectionManager;
 		this.textRenderer = textRenderer;
 
-		
 	}
-	
+
 	/**
 	 * Generates new Cache for treemap.
+	 * 
 	 * @param gl
 	 */
-	public void initCache(GL gl){
+	public void initCache(GL gl) {
 		treemapList = gl.glGenLists(1);
 		highlightList = gl.glGenLists(1);
 	}
 
 	/**
 	 * Sets a frame for each node.
-	 * @param flag true when frames should be drawn
-	 * @param color color of the frame
+	 * 
+	 * @param flag
+	 *            true when frames should be drawn
+	 * @param color
+	 *            color of the frame
 	 */
 	public void setNodeFrame(boolean flag, Color color) {
 		bDrawNodeFrame = flag;
 		frameColor = color;
 	}
-	
-	public void setExtendedNodeFrame(List<Integer> clusterIDs, Color color, float lineWidth){
-		extendedFrameList=clusterIDs;
-		extendedFrameColor=color;
-		extendedFrameLineWidth=lineWidth;
+
+	public void setExtendedNodeFrame(List<Integer> clusterIDs, Color color, float lineWidth) {
+		extendedFrameList = clusterIDs;
+		extendedFrameColor = color;
+		extendedFrameLineWidth = lineWidth;
 	}
 
 	/**
 	 * Switch label on/off
-	 * @param flag true when labels should be drawn.
+	 * 
+	 * @param flag
+	 *            true when labels should be drawn.
 	 */
 	public void setDrawLabel(boolean flag) {
 		bDrawLabel = flag;
@@ -91,23 +97,40 @@ public class TreeMapRenderer {
 
 	/**
 	 * Renders only the highlighting to cache (not display).
+	 * 
 	 * @param gl
-	 * @param tree Treemap model.
-	 * @param selection Selectionmanager
+	 * @param tree
+	 *            Treemap model.
+	 * @param selection
+	 *            Selectionmanager
 	 */
 	public void paintHighlighting(GL gl, Tree<ATreeMapNode> tree, SelectionManager selection) {
 		gl.glNewList(highlightList, GL.GL_COMPILE);
 
-		for (int id : selection.getElements(SelectionType.MOUSE_OVER)) {
-			ATreeMapNode node = tree.getNodeByNumber(id);
-			if (node != null)
-				paintRectangle(gl, node.getMinX(), node.getMinY(), node.getMaxX(), node.getMaxY(), SelectionType.MOUSE_OVER.getColor(),SELECTION_LINE_WIDTH);
-		}
+		// for (int id : selection.getElements(SelectionType.MOUSE_OVER)) {
+		// ATreeMapNode node = tree.getNodeByNumber(id);
+		// if (node != null)
+		// paintRectangle(gl, node.getMinX(), node.getMinY(), node.getMaxX(),
+		// node.getMaxY(),
+		// SelectionType.MOUSE_OVER.getColor(),SELECTION_LINE_WIDTH);
+		// }
+		//
+		// for (int id : selection.getElements(SelectionType.SELECTION)) {
+		// ATreeMapNode node = tree.getNodeByNumber(id);
+		// if (node != null)
+		// paintRectangle(gl, node.getMinX(), node.getMinY(), node.getMaxX(),
+		// node.getMaxY(),
+		// SelectionType.SELECTION.getColor(),SELECTION_LINE_WIDTH);
+		// }
 
-		for (int id : selection.getElements(SelectionType.SELECTION)) {
-			ATreeMapNode node = tree.getNodeByNumber(id);
-			if (node != null)
-				paintRectangle(gl, node.getMinX(), node.getMinY(), node.getMaxX(), node.getMaxY(), SelectionType.SELECTION.getColor(),SELECTION_LINE_WIDTH);
+		for (SelectionType type : selection.getSelectionTypes()) {
+			if(type!=SelectionType.NORMAL)
+			for (int id : selection.getElements(type)) {
+				ATreeMapNode node = tree.getNodeByNumber(id);
+				if (node != null)
+					paintRectangle(gl, node.getMinX(), node.getMinY(), node.getMaxX(), node.getMaxY(), type.getColor(), type.getLineWidth());
+
+			}
 		}
 
 		gl.glEndList();
@@ -115,6 +138,7 @@ public class TreeMapRenderer {
 
 	/**
 	 * Draws treemap data and highlighting from cache.
+	 * 
 	 * @param gl
 	 */
 	public void renderTreeMapFromCache(GL gl) {
@@ -124,8 +148,10 @@ public class TreeMapRenderer {
 
 	/**
 	 * Renders only treemap data to cache.
+	 * 
 	 * @param gl
-	 * @param tree Treemap model
+	 * @param tree
+	 *            Treemap model
 	 */
 	public void renderTreeMap(GL gl, ATreeMapNode tree) {
 		gl.glNewList(treemapList, GL.GL_COMPILE);
@@ -159,10 +185,10 @@ public class TreeMapRenderer {
 
 		gl.glColor4f(color[0], color[1], color[2], 1);
 
-		x = viewFrustum.getWidth() * x+viewFrustum.getLeft();
-		y = viewFrustum.getHeight() * y+viewFrustum.getBottom();
-		xmax = viewFrustum.getWidth() * xmax+viewFrustum.getLeft();
-		ymax = viewFrustum.getHeight() * ymax+viewFrustum.getBottom();
+		x = viewFrustum.getWidth() * x + viewFrustum.getLeft();
+		y = viewFrustum.getHeight() * y + viewFrustum.getBottom();
+		xmax = viewFrustum.getWidth() * xmax + viewFrustum.getLeft();
+		ymax = viewFrustum.getHeight() * ymax + viewFrustum.getBottom();
 
 		gl.glVertex3f(x, y, 0);
 		gl.glVertex3f(x, ymax, 0);
@@ -177,15 +203,15 @@ public class TreeMapRenderer {
 
 		gl.glColor3f(color[0], color[1], color[2]);
 
-		x = viewFrustum.getWidth() * x+viewFrustum.getLeft();
-		y = viewFrustum.getHeight() * y+viewFrustum.getBottom();
-		xmax = viewFrustum.getWidth() * xmax+viewFrustum.getLeft();
-		ymax = viewFrustum.getHeight() * ymax+viewFrustum.getBottom();
-		
-//		x = viewFrustum.getWidth() * x;
-//		y = viewFrustum.getHeight() * y;
-//		xmax = viewFrustum.getWidth() * xmax;
-//		ymax = viewFrustum.getHeight() * ymax;
+		x = viewFrustum.getWidth() * x + viewFrustum.getLeft();
+		y = viewFrustum.getHeight() * y + viewFrustum.getBottom();
+		xmax = viewFrustum.getWidth() * xmax + viewFrustum.getLeft();
+		ymax = viewFrustum.getHeight() * ymax + viewFrustum.getBottom();
+
+		// x = viewFrustum.getWidth() * x;
+		// y = viewFrustum.getHeight() * y;
+		// xmax = viewFrustum.getWidth() * xmax;
+		// ymax = viewFrustum.getHeight() * ymax;
 
 		gl.glVertex3f(x, y, 0);
 		gl.glVertex3f(x, ymax, 0);
@@ -206,27 +232,25 @@ public class TreeMapRenderer {
 		}
 	}
 
-	
 	private void displayText(GL gl, float x, float y, float xmax, float ymax, String text) {
-		float minScaling=1.0f;
-		float maxScaling=3.0f;
-		float border=0.03f;
-		
-		float scaling=1.0f;
-		
-		
-		 Rectangle2D bbox= textRenderer.getScaledBounds(gl, text, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR*scaling, 20);
-		 
-		 float width=(float) (bbox.getWidth() / viewFrustum.getWidth()) +border;
-		 float height= (float) (bbox.getHeight()/viewFrustum.getHeight())+ border;
-		 
-		 scaling=Math.min((xmax-x)/width, (ymax-y)/height);
-		
-		 if(scaling<minScaling)
-			 return;
-		 scaling=Math.min(scaling,maxScaling);
-	
-		 textRenderer.renderText(gl, text, x * viewFrustum.getWidth() + 0.03f, y * viewFrustum.getHeight() + 0.03f, 0,
+		float minScaling = 1.0f;
+		float maxScaling = 3.0f;
+		float border = 0.03f;
+
+		float scaling = 1.0f;
+
+		Rectangle2D bbox = textRenderer.getScaledBounds(gl, text, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR * scaling, 20);
+
+		float width = (float) (bbox.getWidth() / viewFrustum.getWidth()) + border;
+		float height = (float) (bbox.getHeight() / viewFrustum.getHeight()) + border;
+
+		scaling = Math.min((xmax - x) / width, (ymax - y) / height);
+
+		if (scaling < minScaling)
+			return;
+		scaling = Math.min(scaling, maxScaling);
+
+		textRenderer.renderText(gl, text, x * viewFrustum.getWidth() + 0.03f, y * viewFrustum.getHeight() + 0.03f, 0,
 				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR * scaling, 20);
 	}
 

@@ -93,7 +93,7 @@ public class ClusterTreeMapNode extends ATreeMapNode {
 	@Override
 	public float[] getColorAttribute() {
 		// TODO check how to handle when node is not leave
-		if (referenzData.bUseExpressionValues) {
+		if (referenzData.bUseExpressionValues&& data.getLeafID()>=0) {
 			StorageSelectionManager storageSelectionManager = referenzData.dataDomain.getStorageSelectionManager();
 			Set<Integer> storageIDs = storageSelectionManager.getElements(SelectionType.SELECTION);
 			if (storageIDs != null && storageIDs.size() > 0) {

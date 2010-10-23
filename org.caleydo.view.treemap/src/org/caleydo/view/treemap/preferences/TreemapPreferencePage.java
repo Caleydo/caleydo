@@ -5,6 +5,8 @@ import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -28,6 +30,7 @@ public class TreemapPreferencePage
 	private Combo layoutAlgorithmCB;
 	private Button frameButton;
 	private Spinner maxDepthSp;
+	private Button maxDepthButton;
 	
 	private PreferenceStore preferenceStore;
 
@@ -63,9 +66,25 @@ public class TreemapPreferencePage
 		frameButton.setText("Draw frame for Clusters");
 		
 		int maxDepth=preferenceStore.getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
-		if(maxDepth<1)
-			maxDepth=10;
+		maxDepthButton= new Button(baseComposite, SWT.CHECK);
+		maxDepthButton.setSelection(maxDepth>0);
+		maxDepthButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				maxDepthSp.setEnabled(maxDepthButton.getSelection());
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		maxDepthSp= new Spinner(baseComposite, SWT.BORDER);
+		maxDepthSp.setEnabled(maxDepth>0);
 		maxDepthSp.setDigits(0);
 		maxDepthSp.setMaximum(999);
 		maxDepthSp.setMinimum(1);
