@@ -65,6 +65,9 @@ public class SelectionType {
 		true, false, 1f);
 	public static final SelectionType DESELECTED = new SelectionType("Deselected",
 		new float[] { 0, 0, 0, 1 }, 1, false, false, 0);
+	
+	public static final SelectionType LEVEL_HIGHLIGHTING = new SelectionType("LevelHighlighting", new int[] { 255, 255, 0 }, 3,
+		true, false, 1f);
 
 	private static ArrayList<SelectionType> defaultTypes = new ArrayList<SelectionType>();
 
@@ -305,6 +308,7 @@ public class SelectionType {
 			defaultTypes.add(MOUSE_OVER);
 			defaultTypes.add(SELECTION);
 			defaultTypes.add(DESELECTED);
+			defaultTypes.add(LEVEL_HIGHLIGHTING);
 		}
 		return defaultTypes;
 	}
