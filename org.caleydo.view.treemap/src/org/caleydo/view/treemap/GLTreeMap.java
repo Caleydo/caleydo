@@ -97,12 +97,16 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	private boolean bCalculateColor = false;
 
 	private boolean bIsThumbNailView = false;
+	private boolean bIsInteractive = true;
 
 	private ILayoutAlgorithm layoutAlgorithm;
 
 	private SelectionUpdateListener selectionUpdateListener;
 	private ToggleColoringModeListener coloringModeListener;
 	private ToggleLabelListener labelListener;
+	UpdateViewListener updateViewListener;
+	UpdateColorMappingListener updateColorMappingListener;
+	LevelHighlightingListener levelHighlightingListener;
 
 	public GLTreeMap(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
@@ -164,9 +168,9 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 		int maxDepth = Integer.MAX_VALUE;
-		maxDepth=GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
-		if(maxDepth==0)
-			maxDepth=Integer.MAX_VALUE;
+		maxDepth = GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
+		if (maxDepth == 0)
+			maxDepth = Integer.MAX_VALUE;
 		// maxDepth=10;
 
 		if (tree == null)
@@ -230,7 +234,8 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	}
 
 	public void handleRemotePickingEvents(EPickingType ePickingType, EPickingMode ePickingMode, int externalPickingID, Pick pick) {
-		handlePickingEvents(ePickingType, ePickingMode, externalPickingID, pick);
+		if (bIsInteractive)
+			handlePickingEvents(ePickingType, ePickingMode, externalPickingID, pick);
 	}
 
 	@Override
@@ -277,35 +282,35 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 		}
 
 	}
-	
-	private void publishSelectionEvent(){
-		SelectionDelta delta = treeSelectionManager.getDelta(); 
-		
+
+	private void publishSelectionEvent() {
+		SelectionDelta delta = treeSelectionManager.getDelta();
+
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setDataDomainType(dataDomain.getDataDomainType());
 		event.setSelectionDelta(delta);
 		event.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(event);
-		
+
 		SelectionDelta newDelta = new SelectionDelta(treeSelectionManager.getIDType());
-		for(SelectionDeltaItem item : delta){
+		newDelta.setIDType(dataDomain.getContentIDType());
+		for (SelectionDeltaItem item : delta) {
 			ClusterNode node = tree.getNodeByNumber(item.getPrimaryID());
-			if(node.getLeafID()>=0){
-			SelectionDeltaItem newItem = new SelectionDeltaItem(node.getLeafID(),item.getSelectionType());
-			newItem.setRemove(item.isRemove());
-			newDelta.add(newItem);
+			if (node.getLeafID() >= 0) {
+				SelectionDeltaItem newItem = new SelectionDeltaItem(node.getLeafID(), item.getSelectionType());
+				newItem.setRemove(item.isRemove());
+				newDelta.add(newItem);
 			}
 		}
 		SelectionUpdateEvent leafEvent = new SelectionUpdateEvent();
 		leafEvent.setSender(this);
 		leafEvent.setDataDomainType(dataDomain.getDataDomainType());
+
 		leafEvent.setSelectionDelta(newDelta);
 		leafEvent.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(leafEvent);
-		
-		
-		
+
 	}
 
 	public void processMouseWheeleEvent(MouseWheelEvent e) {
@@ -445,35 +450,29 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 		bCalculateColor = flag;
 		initData();
 	}
-	
-	public void setHighLightingLevel(int level){
+
+	public void setHighLightingLevel(int level) {
 		treeSelectionManager.clearSelection(SelectionType.LEVEL_HIGHLIGHTING);
-		if(level>0){
-		ArrayList<ClusterNode> nodes, newNodes;
-		nodes=tree.getRoot().getChildren();
-		for(int i=0;i<level;i++){
-			newNodes= new ArrayList<ClusterNode>();
-			for(ClusterNode node: nodes){
-				ArrayList<ClusterNode> children = node.getChildren();
-				if(children!=null)
-					newNodes.addAll(children);
+		if (level > 0) {
+			ArrayList<ClusterNode> nodes, newNodes;
+			nodes = tree.getRoot().getChildren();
+			for (int i = 0; i < level; i++) {
+				newNodes = new ArrayList<ClusterNode>();
+				for (ClusterNode node : nodes) {
+					ArrayList<ClusterNode> children = node.getChildren();
+					if (children != null)
+						newNodes.addAll(children);
+				}
+				nodes = newNodes;
 			}
-			nodes=newNodes;
+
+			for (ClusterNode node : nodes) {
+				treeSelectionManager.addToType(SelectionType.LEVEL_HIGHLIGHTING, node.getID());
+			}
 		}
-		
-		for(ClusterNode node: nodes){
-			treeSelectionManager.addToType(SelectionType.LEVEL_HIGHLIGHTING, node.getID());
-		}
-		}
-		
+
 		setHighLichtingListDirty();
 	}
-	
-	
-
-	UpdateViewListener updateViewListener;
-	UpdateColorMappingListener updateColorMappingListener;
-	LevelHighlightingListener levelHighlightingListener;
 
 	@Override
 	public void registerEventListeners() {
@@ -487,8 +486,8 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 		coloringModeListener = new ToggleColoringModeListener();
 		coloringModeListener.setHandler(this);
 		eventPublisher.addListener(ToggleColoringModeEvent.class, coloringModeListener);
-		
-		levelHighlightingListener= new LevelHighlightingListener();
+
+		levelHighlightingListener = new LevelHighlightingListener();
 		levelHighlightingListener.setHandler(this);
 		eventPublisher.addListener(LevelHighlightingEvent.class, levelHighlightingListener);
 
@@ -498,12 +497,12 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		updateColorMappingListener = new UpdateColorMappingListener();
-//		updateColorMappingListener.setDataDomainType(dataDomain.getDataDomainType());
+		// updateColorMappingListener.setDataDomainType(dataDomain.getDataDomainType());
 		updateColorMappingListener.setHandler(this);
 		eventPublisher.addListener(UpdateColorMappingEvent.class, updateColorMappingListener);
 
 		updateViewListener = new UpdateViewListener();
-//		updateViewListener.setDataDomainType(dataDomain.getDataDomainType());
+		// updateViewListener.setDataDomainType(dataDomain.getDataDomainType());
 		updateViewListener.setHandler(this);
 		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
 
@@ -527,10 +526,10 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 			eventPublisher.removeListener(coloringModeListener);
 			coloringModeListener = null;
 		}
-		
-		if(levelHighlightingListener!=null){
+
+		if (levelHighlightingListener != null) {
 			eventPublisher.removeListener(levelHighlightingListener);
-			levelHighlightingListener=null;
+			levelHighlightingListener = null;
 		}
 
 		if (updateColorMappingListener != null) {
@@ -548,25 +547,26 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		// treeSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 		// treeSelectionManager.clearSelection(SelectionType.SELECTION);
+		if (bIsInteractive) {
+			if (dataDomain.getContentIDType() == selectionDelta.getIDType()) {
+				SelectionDelta newDelta = new SelectionDelta(treeSelectionManager.getIDType());
+				for (SelectionDeltaItem item : selectionDelta) {
+					ArrayList<Integer> nodeIDs = tree.getNodeIDsFromLeafID(item.getPrimaryID());
+					if (nodeIDs != null && nodeIDs.size() > 0) {
+						SelectionDeltaItem newItem = new SelectionDeltaItem(nodeIDs.get(0), item.getSelectionType());
+						newItem.setRemove(item.isRemove());
+						newDelta.add(newItem);
+					}
 
-		if (dataDomain.getContentIDType() == selectionDelta.getIDType()) {
-			SelectionDelta newDelta = new SelectionDelta(treeSelectionManager.getIDType());
-			for (SelectionDeltaItem item : selectionDelta) {
-				ArrayList<Integer> nodeIDs = tree.getNodeIDsFromLeafID(item.getPrimaryID());
-				if (nodeIDs != null && nodeIDs.size() > 0) {
-					SelectionDeltaItem newItem = new SelectionDeltaItem(nodeIDs.get(0),item.getSelectionType());
-					newItem.setRemove(item.isRemove());
-					newDelta.add(newItem);
 				}
-
+				treeSelectionManager.setDelta(newDelta);
 			}
-			treeSelectionManager.setDelta(newDelta);
+
+			if (treeSelectionManager.getIDType() == selectionDelta.getIDType())
+				treeSelectionManager.setDelta(selectionDelta);
+
+			setDisplayListDirty();
 		}
-
-		if (treeSelectionManager.getIDType() == selectionDelta.getIDType())
-			treeSelectionManager.setDelta(selectionDelta);
-
-		setDisplayListDirty();
 	}
 
 	@Override
@@ -590,6 +590,24 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	public void distributeColorMapping(ColorMapping colorMapping) {
 		colorMapper = colorMapping;
 
+	}
+
+	public void setInteractive(boolean flag) {
+		bIsInteractive=flag;
+	}
+	
+	public float[] getSelectedArea(){
+		float[] rect= new float[4];
+		
+		int id=treeSelectionManager.getElements(SelectionType.SELECTION).iterator().next();
+		ATreeMapNode node=treeMapModel.getNodeByNumber(id);
+		
+		rect[0]=node.getMinX();
+		rect[1]=node.getMinY();
+		rect[2]=node.getMaxX();
+		rect[3]=node.getMaxY();
+		
+		return rect;
 	}
 
 }

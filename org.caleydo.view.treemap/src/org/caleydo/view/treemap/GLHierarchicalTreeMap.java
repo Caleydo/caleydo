@@ -309,7 +309,10 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 			mainTreeMapView.getSelectionManager().addToType(SelectionType.SELECTION, dataRoot.getID());
 			mainTreeMapView.setDrawLabel(false);
 
+			@SuppressWarnings("unchecked")
 			Vector<GLTreeMap> beginThumbnails = (Vector<GLTreeMap>) thumbnailTreemapViews.clone();
+			
+			mainTreeMapView.setInteractive(false);
 			thumbnailTreemapViews.add(mainTreeMapView);
 			
 			GLTreeMap beginMainView = mainTreeMapView;
@@ -373,12 +376,12 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	@Override
 	public String getShortInfo() {
 
-		return "Hierarchical Tree Map ("+dataDomain.getSet().getContentData(contentVAType).getContentTree().getNumberOfNodes()+" nodes displayed)";
+		return "Hierarchical Tree Map ("+dataDomain.getSet().getBaseStorageVA().size()+" nodes displayed)";
 	}
 
 	@Override
 	public String getDetailedInfo() {
-		return "Hierarchical Tree Map ("+dataDomain.getSet().getContentData(contentVAType).getContentTree().getNumberOfNodes()+" displayed, zoom stage "+thumbnailTreemapViews.size()+")";
+		return getShortInfo();
 
 	}
 
@@ -524,6 +527,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	private void setMainTreeMapView(GLTreeMap treemap) {
 		mainTreeMapView = treemap;
+		mainTreeMapView.setInteractive(true);
 	}
 
 }

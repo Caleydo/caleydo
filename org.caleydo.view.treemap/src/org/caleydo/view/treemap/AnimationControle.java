@@ -5,6 +5,8 @@ import java.util.Vector;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
+
 /**
  * 
  * Class which provides animation for the zoom function of
@@ -28,8 +30,10 @@ public class AnimationControle {
 	int direcetion;
 	public final static int ZOOM_IN_ANIMATION = 1;
 	public final static int ZOOM_OUT_ANIMATION = 2;
+	
+	int zoomStage;
 
-	long animationTime = 500;
+	long animationTime = 5000;
 	long startTime;
 
 	void initAnimation(GLHierarchicalTreeMap parentView, GLTreeMap beginMainView, GLTreeMap endMainView, Vector<GLTreeMap> beginThumbnails,
@@ -46,8 +50,11 @@ public class AnimationControle {
 		parentView.thumbnailTreemapViews = beginThumbnails;
 
 		calcData();
+
+//		if(direction==ZOOM_IN_ANIMATION)
+			zoomStage=0;
 		
-		System.out.println("\nDirection: "+direction);
+//		System.out.println("\nDirection: " + direction);
 	}
 
 	private void calcData() {
@@ -77,64 +84,94 @@ public class AnimationControle {
 			}
 
 		} else {
-			beginX= thumbNailWidth * (beginThumbnails.size()-1) + parentView.xMargin * (beginThumbnails.size() );
-			beginY=0.8f+parentView.yMargin;
-			beginWidth=thumbNailWidth;
-			beginHeight=GLHierarchicalTreeMap.THUMBNAIL_HEIGHT;
-			
-			endX=0;
-			endY=0;
-			endWidth=1;
-			
-			if(endThumbnails==null||endThumbnails.size()==0){
-				
-				endHeight=1;
-			}
-			else{
-				endHeight=0.8f;
+			beginX = thumbNailWidth * (beginThumbnails.size() - 1) + parentView.xMargin * (beginThumbnails.size());
+			beginY = 0.8f + parentView.yMargin;
+			beginWidth = thumbNailWidth;
+			beginHeight = GLHierarchicalTreeMap.THUMBNAIL_HEIGHT;
+
+			endX = 0;
+			endY = 0;
+			endWidth = 1;
+
+			if (endThumbnails == null || endThumbnails.size() == 0) {
+
+				endHeight = 1;
+			} else {
+				endHeight = 0.8f;
 			}
 		}
+	}
+	
+	private void calcSecondZoomStage(){
+		float thumbNailWidth = (1 - parentView.xMargin * (GLHierarchicalTreeMap.MAX_THUMBNAILS + 1)) / GLHierarchicalTreeMap.MAX_THUMBNAILS;
+		
+		beginX = thumbNailWidth * (beginThumbnails.size() - 1) + parentView.xMargin * (beginThumbnails.size());
+		beginY = 0.8f + parentView.yMargin;
+		
+		float rec[]=beginMainView.getSelectedArea();
+		
+		
+		
+		beginX = thumbNailWidth * (endThumbnails.size() - 1) + parentView.xMargin * (endThumbnails.size())+thumbNailWidth*rec[0];
+		beginY = 0.8f + parentView.yMargin+GLHierarchicalTreeMap.THUMBNAIL_HEIGHT*rec[1];
+		beginWidth = thumbNailWidth*(rec[2]-rec[0]);
+		beginHeight = GLHierarchicalTreeMap.THUMBNAIL_HEIGHT*(rec[3]-rec[1]);
+		
+		endX = 0;
+		endY = 0;
+		endWidth = 1;
+		endHeight = 0.8f;
+		
 	}
 
 	void display(GL gl) {
 		float x, y, width, height;
 
 		long time = Calendar.getInstance().getTimeInMillis();
-		float progress = ((float) (time - startTime)) / animationTime;
-
-		if (progress >= 1) {
-			endAnimation();
-			return;
-		}
+		float progress = Math.min(((float) (time - startTime)) / animationTime,1);
 
 		x = (endX - beginX) * progress + beginX;
 		y = (endY - beginY) * progress + beginY;
 		width = (endWidth - beginWidth) * progress + beginWidth;
 		height = (endHeight - beginHeight) * progress + beginHeight;
 
+		
+//		if (direcetion == ZOOM_IN_ANIMATION) {
+//			parentView.displayMainTreeMap(gl, true);
+//			
+//		}
+		
+		
 		parentView.displayThumbnailTreemaps(gl);
 		
-		if (direcetion == ZOOM_IN_ANIMATION) {
+		beginMainView.getViewFrustum().setTop(parentView.getViewFrustum().getHeight() * (y + height));
+		beginMainView.getViewFrustum().setBottom(parentView.getViewFrustum().getHeight() * y);
+		beginMainView.getViewFrustum().setLeft(parentView.getViewFrustum().getWidth() * x);
+		beginMainView.getViewFrustum().setRight(parentView.getViewFrustum().getWidth() * (x + width));
+		beginMainView.setDisplayListDirty();
 
+		beginMainView.display(gl);
+
+		
+
+		if(direcetion == ZOOM_IN_ANIMATION&&progress>=1&&zoomStage==0){
+			zoomStage=1;
+			parentView.thumbnailTreemapViews = endThumbnails;
+			for(GLTreeMap view: endThumbnails)
+				view.setDisplayListDirty();
 			
-			parentView.displayMainTreeMap(gl, true);
+			calcSecondZoomStage();
+			progress=0;
+			startTime=Calendar.getInstance().getTimeInMillis();
 		}
-			beginMainView.getViewFrustum().setTop(parentView.getViewFrustum().getHeight() * (y + height));
-			beginMainView.getViewFrustum().setBottom(parentView.getViewFrustum().getHeight() * y);
-			beginMainView.getViewFrustum().setLeft(parentView.getViewFrustum().getWidth() * x);
-			beginMainView.getViewFrustum().setRight(parentView.getViewFrustum().getWidth() * (x + width));
-			beginMainView.setDisplayListDirty();
+		
+		if (progress >= 1) {
+			endAnimation();
+			return;
+		}
+		
 
-			// gl.glPushMatrix();
-			// gl.glTranslatef(x, y, 0);
-			// gl.glScalef(width, height, 1);
-
-			beginMainView.display(gl);
-
-			// gl.glPopMatrix();
-//		}
-
-		System.out.println(progress + " " + x + " " + y + " " + width + " " + height + " " + beginMainView.getViewFrustum());
+//		System.out.println(progress + " " + x + " " + y + " " + width + " " + height + " " + beginMainView.getViewFrustum());
 		// System.out.println(progress+" "+beginMainView.getViewFrustum());
 
 	}

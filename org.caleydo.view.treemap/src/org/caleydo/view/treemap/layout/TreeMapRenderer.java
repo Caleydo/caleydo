@@ -126,7 +126,12 @@ public class TreeMapRenderer {
 		for (SelectionType type : selection.getSelectionTypes()) {
 			if(type!=SelectionType.NORMAL)
 			for (int id : selection.getElements(type)) {
-				ATreeMapNode node = tree.getNodeByNumber(id);
+				ATreeMapNode node;
+				// TODO remove work around for tree bug when fixed
+				if(tree.getRoot().getID()==id)
+					node=tree.getRoot();
+				else
+					node = tree.getNodeByNumber(id);
 				if (node != null)
 					paintRectangle(gl, node.getMinX(), node.getMinY(), node.getMaxX(), node.getMaxY(), type.getColor(), type.getLineWidth());
 
@@ -250,7 +255,7 @@ public class TreeMapRenderer {
 			return;
 		scaling = Math.min(scaling, maxScaling);
 
-		textRenderer.renderText(gl, text, x * viewFrustum.getWidth() + 0.03f, y * viewFrustum.getHeight() + 0.03f, 0,
+		textRenderer.renderText(gl, text, x * viewFrustum.getWidth() + 0.03f+viewFrustum.getLeft(), y * viewFrustum.getHeight() + 0.03f+viewFrustum.getBottom(), 0,
 				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR * scaling, 20);
 	}
 
