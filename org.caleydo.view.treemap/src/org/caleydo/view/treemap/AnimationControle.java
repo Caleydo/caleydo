@@ -33,7 +33,7 @@ public class AnimationControle {
 	
 	int zoomStage;
 
-	long animationTime = 5000;
+	long animationTime = 1000;
 	long startTime;
 
 	void initAnimation(GLHierarchicalTreeMap parentView, GLTreeMap beginMainView, GLTreeMap endMainView, Vector<GLTreeMap> beginThumbnails,
@@ -135,22 +135,25 @@ public class AnimationControle {
 		width = (endWidth - beginWidth) * progress + beginWidth;
 		height = (endHeight - beginHeight) * progress + beginHeight;
 
-		
-//		if (direcetion == ZOOM_IN_ANIMATION) {
-//			parentView.displayMainTreeMap(gl, true);
-//			
-//		}
-		
-		
 		parentView.displayThumbnailTreemaps(gl);
 		
+		if(direcetion==ZOOM_IN_ANIMATION&&zoomStage==1){
+			endMainView.getViewFrustum().setTop(parentView.getViewFrustum().getHeight() * (y + height));
+			endMainView.getViewFrustum().setBottom(parentView.getViewFrustum().getHeight() * y);
+			endMainView.getViewFrustum().setLeft(parentView.getViewFrustum().getWidth() * x);
+			endMainView.getViewFrustum().setRight(parentView.getViewFrustum().getWidth() * (x + width));
+			endMainView.setDisplayListDirty();
+
+			endMainView.display(gl);			
+		}
+		else{
 		beginMainView.getViewFrustum().setTop(parentView.getViewFrustum().getHeight() * (y + height));
 		beginMainView.getViewFrustum().setBottom(parentView.getViewFrustum().getHeight() * y);
 		beginMainView.getViewFrustum().setLeft(parentView.getViewFrustum().getWidth() * x);
 		beginMainView.getViewFrustum().setRight(parentView.getViewFrustum().getWidth() * (x + width));
 		beginMainView.setDisplayListDirty();
 
-		beginMainView.display(gl);
+		beginMainView.display(gl);}
 
 		
 

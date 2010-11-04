@@ -361,6 +361,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 			animationControle.setActive(true);
 			
 			setDisplayListDirty();
+			System.out.println("remaining thumbnails: "+thumbnailTreemapViews.size());
 		}
 	}
 
