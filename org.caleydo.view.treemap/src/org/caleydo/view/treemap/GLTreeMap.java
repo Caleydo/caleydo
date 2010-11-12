@@ -202,7 +202,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 			renderer.initRenderer(viewFrustum, getActivePickingManager(), getPickingViewID(), treeSelectionManager, textRenderer);
 			renderer.renderTreeMap(gl, treeMapModel.getRoot());
 			bIsDisplayListDirtyLocal = false;
-			setHighLichtingListDirty();
+			setHighLightingListDirty();
 		}
 
 		if (bIsHighlightingListDirty) {
@@ -213,7 +213,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 		renderer.renderTreeMapFromCache(gl);
 	}
 
-	private void setHighLichtingListDirty() {
+	private void setHighLightingListDirty() {
 		bIsHighlightingListDirty = true;
 
 	}
@@ -274,7 +274,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 
 			publishSelectionEvent();
 
-			setHighLichtingListDirty();
+			setHighLightingListDirty();
 			break;
 
 		default:
@@ -344,7 +344,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 				}
 
 			}
-			setHighLichtingListDirty();
+			setHighLightingListDirty();
 		}
 	}
 
@@ -471,7 +471,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 			}
 		}
 
-		setHighLichtingListDirty();
+		setHighLightingListDirty();
 	}
 
 	@Override

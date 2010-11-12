@@ -5,8 +5,6 @@ import java.util.Vector;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
-
 /**
  * 
  * Class which provides animation for the zoom function of
@@ -47,10 +45,13 @@ public class AnimationControle {
 
 		startTime = Calendar.getInstance().getTimeInMillis();
 
-		parentView.thumbnailTreemapViews = beginThumbnails;
+		
+//		if(direction==ZOOM_OUT_ANIMATION)
+			parentView.thumbnailTreemapViews = beginThumbnails;
 
 		calcData();
-
+		
+		
 //		if(direction==ZOOM_IN_ANIMATION)
 			zoomStage=0;
 		

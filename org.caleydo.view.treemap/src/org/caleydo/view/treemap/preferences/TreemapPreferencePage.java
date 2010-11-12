@@ -68,6 +68,7 @@ public class TreemapPreferencePage
 		int maxDepth=preferenceStore.getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
 		maxDepthButton= new Button(baseComposite, SWT.CHECK);
 		maxDepthButton.setSelection(maxDepth>0);
+		maxDepthButton.setText("Enable node abstraction");
 		maxDepthButton.addSelectionListener(new SelectionListener() {
 			
 			@Override
@@ -90,6 +91,7 @@ public class TreemapPreferencePage
 		maxDepthSp.setMinimum(1);
 		maxDepthSp.setIncrement(1);
 		maxDepthSp.setSelection(maxDepth);
+		
 
 		baseComposite.pack();	
 	}
