@@ -74,6 +74,6 @@ public class PreferenceConstants {
 	
 	// TreeMapView
 	public static final String TREEMAP_MAX_DEPTH = "treemapMaxDepth";
-	public static final String TREEMAP_LAYOUT_ALGORITHM = "treemaoLayoutAlgorithm";
+	public static final String TREEMAP_LAYOUT_ALGORITHM = "treemapLayoutAlgorithm";
 	public static final String TREEMAP_DRAW_CLUSTER_FRAME= "treemapDrawClusterFrame";
 }

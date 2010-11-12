@@ -142,6 +142,11 @@ public class PreferenceManager {
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO, false);
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_FOR_MOUSE_OVER, false);
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_FOR_SELECTIONS, true);
+		
+		// treemap
+		store.setDefault(PreferenceConstants.TREEMAP_DRAW_CLUSTER_FRAME, true);
+		store.setDefault(PreferenceConstants.TREEMAP_LAYOUT_ALGORITHM, 1);
+		store.setDefault(PreferenceConstants.TREEMAP_MAX_DEPTH, 0);
 	}
 
 	private void initCaleydoFolder() {
