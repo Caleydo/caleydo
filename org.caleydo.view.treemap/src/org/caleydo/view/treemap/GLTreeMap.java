@@ -350,13 +350,11 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 
 	@Override
 	public String getShortInfo() {
-		// TODO Auto-generated method stub
 		return "TreeMap";
 	}
 
 	@Override
 	public String getDetailedInfo() {
-		// TODO Auto-generated method stub
 		return "TreeMap";
 	}
 
@@ -545,8 +543,6 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
-		// treeSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
-		// treeSelectionManager.clearSelection(SelectionType.SELECTION);
 		if (bIsInteractive) {
 			if (dataDomain.getContentIDType() == selectionDelta.getIDType()) {
 				SelectionDelta newDelta = new SelectionDelta(treeSelectionManager.getIDType());
