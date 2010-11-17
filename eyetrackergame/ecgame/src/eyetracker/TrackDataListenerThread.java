@@ -31,7 +31,6 @@ public class TrackDataListenerThread
 		bKeepRunning = false;
 	}
 
-	@Override
 	public void run() {
 
 		try {
@@ -65,11 +64,12 @@ public class TrackDataListenerThread
 
 				// added 9.2.2010
 				tokenizer.nextToken();
-				tokenizer.nextToken();
-				tokenizer.nextToken();
-				tokenizer.nextToken();
+				//tokenizer.nextToken();
+				//tokenizer.nextToken();
+				//tokenizer.nextToken();
 				
 				int x = new Integer(tokenizer.nextToken());
+				//System.out.println("x: "+x);
 				int y = 0;
 				int diameter = 0;
 
@@ -80,22 +80,19 @@ public class TrackDataListenerThread
 					//tokenizer.nextToken();
 
 					y = new Integer(tokenizer.nextToken());
+					//System.out.println("y: "+y);
 					// tokenizer.nextToken();
 					// diameter = new Integer(tokenizer.nextToken());
 				}
 				else if (TrackDataProvider.eTrackerMode == TrackDataProvider.ETrackerMode.SIMULATED_BY_MOUSE_MOVEMENT) {
 
 					y = new Integer(tokenizer.nextToken());
-					// String tmp = tokenizer.nextToken();
-					// tmp = tmp.substring(0, tmp.indexOf('\n'));
-					// y = new Integer(tmp);
 				}
 				else if (TrackDataProvider.eTrackerMode == TrackDataProvider.ETrackerMode.HED) {
 
 					throw new IllegalStateException("Not implemented yet.");
 				}
 				
-				//System.out.println(x +" "+y);
 
 				if (x == 0 || y == 0)
 					continue;
@@ -131,7 +128,6 @@ public class TrackDataListenerThread
 			serverSocket.close();
 		}
 		catch (IOException e) {
-			// TODO Auto-generated catch block
 			// e.printStackTrace();
 		}
 

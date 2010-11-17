@@ -1,7 +1,12 @@
+//----------------------------------------------------------------------
+/// Filename: ECgame.java
+/// Description: Eye-Controlled Game
+/// Author: Michael Kerber 0731395
+/// Date of Creation: 01.03.2010
+/// Last Changes: 17.11.2010
+//----------------------------------------------------------------------
+
 package game;
-
-
-
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -50,43 +55,56 @@ import com.jmex.audio.MusicTrackQueue.RepeatType;
 import com.jmex.effects.particles.ParticleMesh;
 import com.jmex.physics.DynamicPhysicsNode;
 import com.jmex.physics.StaticPhysicsNode;
-
 import com.jmex.physics.util.SimplePhysicsGame;
-
 import eyetracker.TrackDataProvider;
 
+/**
+ * This class initializes the game world and runs the game loop of an eye-controlled game
+ */
 public class ECgame extends SimplePhysicsGame
-{
+{	
+	//----------------------------------------------------------------------
+	// USE THIS TO SWITCH MOUSE/EYE INPUT -> (false/true)
+	//----------------------------------------------------------------------
+	private boolean eyeinput_ = true;
+	//----------------------------------------------------------------------
 	
-	private Skybox skybox_;
+	private Node explosions_;
+	private Node highscoreNode_ = null;
+	private Node hud_;
 	
 	private StaticPhysicsNode staticNode_;
-	
 	private StaticPhysicsNode ghostNode_;
 	private StaticPhysicsNode playerNode_;
-	
 	private StaticPhysicsNode redNode_;
 	private StaticPhysicsNode greenNode_;
 	private StaticPhysicsNode blueNode_;
-	private Node explosions_;
-	private Node highscoreNode_ = null;
 	
 	private DynamicPhysicsNode[] ballNode_;
-	private Sphere[] ball_;
+	
+	private Skybox skybox_;
 
-	
-	private Node hud_;
-	
-	MaterialState ms_;
+	private Sphere pointer_;
+	private Sphere[] ball_;
 	
 	private Box entranceRed_;
 	private Box entranceGreen_;
 	private Box entranceBlue_;
+	private Box player_;
 	
-	private Sphere pointer_;
+	private Capsule ghost_;
+	
+	private Quaternion tmp_quat_ = new Quaternion();
+	
 	private Vector2f tmp_screen_pos_ = new Vector2f();
+	private Vector2f[] mouse_over_;
 	private Vector3f tmp_world_coord_ = new Vector3f();
-	private float[] eye_pos_ = new float[] { 0f, 0f };
+	
+	private TrackDataProvider eyeTracker_;
+	
+	MaterialState ms_;
+	
+	private Random generator_;
 	
 	private AudioSystem audio_;
 	private AudioTrack explosion_sound_;
@@ -109,25 +127,15 @@ public class ECgame extends SimplePhysicsGame
 	private Text insert_name1_;
 	private Text insert_name2_;
 	private Text insert_name3_;
-	private int lives_ = 3;
-	private int score_ = 0;
+
+	private String name_input_;
 	private String score_string_;
 	private String speed_ball_string_;
-	private String[] difficulty_strings_ = {"[<<] EASY [>>]","[<<] NORMAL [>>]","[<<] HARD [>>]"};
-	private String[] alphabet_ = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","_"," "};
-	private int difficulty_index_ = 1;
-	private String name_input_;
-	
-	private Vector2f[] mouse_over_;
-	
-	private Box player_;
-	private Capsule ghost_;
-	
-	private Quaternion tmp_quat_ = new Quaternion();
-	
-	private TrackDataProvider eyeTracker_;
+	private String[] difficulty_strings_ = {"[<<] EASY [>>]","[<<] NORMAL [>>]","[<<] HARD [>>]","[<<] INSANE [>>]"};
+	private String[] alphabet_ = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","_"};
 	
 	private enum Color {RED, GREEN, BLUE}
+	private Color spawn_color_ = null;
 	
 	private boolean red_opened_ = false;
 	private boolean green_opened_ = false;
@@ -141,6 +149,9 @@ public class ECgame extends SimplePhysicsGame
 	private boolean display_highscore_ = false;
 	private boolean inserting_ = false;
 
+	private int difficulty_index_ = 1;
+	private int lives_ = 3;
+	private int score_ = 0;
 	private int ball_counter_ = 0;
 	private int balls_in_game_ = 1;
 	private int max_ball_count_ = 5;
@@ -151,25 +162,35 @@ public class ECgame extends SimplePhysicsGame
 	private int step_offset_ = 0;
 	private int insert_count_ = 0;
 	private int alphabet_select_index_ = 0;
-	
-	private Random generator_;	
-	private Color spawn_color_ = null;
-	private float speed_;
-	
 	private ArrayList<Integer> spawn_list_;
-	//private Vector3f applied_force_;
 	
+	private float speed_;
+	private float[] eye_pos_ = new float[] { 0f, 0f };
+	
+	//---------------------------------------------------------------------------------
+    /**
+     * Initializes the game world
+     */
 	protected void simpleInitGame() 
 	{			
 		display.setTitle("Eye-Controlled Game");
+		
+		//Removes predefined controls
 		input.removeAllFromAttachedHandlers();
+		
+		//Removes the f4 label 
 		graphNode.detachChildNamed("f4");
+		
 		rootNode.setCullHint(CullHint.Never);
+		
 		generator_ = new Random();
+		
 		initMouseOverPos();
 		initCamera();
+		
 	    explosions_ = new Node();
 	    rootNode.attachChild(explosions_);
+	    
 		buildSkyBox();
 	
 		staticNode_ = getPhysicsSpace().createStaticNode();
@@ -179,6 +200,7 @@ public class ECgame extends SimplePhysicsGame
         ms_ = display.getRenderer().createMaterialState();
         ms_.setColorMaterial(ColorMaterial.AmbientAndDiffuse);
         rootNode.setRenderState(ms_);
+        
 		ExplosionFactory.warmup();
 		
 		spawn_list_ = new ArrayList<Integer>(); 
@@ -189,25 +211,24 @@ public class ECgame extends SimplePhysicsGame
 	
 		ballNode_ = new DynamicPhysicsNode[5];
 		ball_ = new Sphere[5];
+		
+		//Initialize ball_ and ballNode_
 		for(int i = 0; i < 5; i++)
 		{
 			ballNode_[i] = null;
 			ball_[i] = null;
 		}
 		
-		//applied_force_ = new Vector3f(80,390,0);
-		
-		//max = 2.3f
+		//Ball movement speed
 		speed_ = 1.3f;
 		
 		initHUD();
 		initGhost();
 		initPlayer();
-			
-		
 		initTestMouse();
 		initSound();
 		
+		//key bindings
 		KeyBindingManager.getKeyBindingManager().set("PLAYER_MOVE", KeyInput.KEY_LCONTROL);
 		KeyBindingManager.getKeyBindingManager().set("DETONATE", KeyInput.KEY_SPACE);
 		KeyBindingManager.getKeyBindingManager().set("MUTE", KeyInput.KEY_M);
@@ -217,24 +238,25 @@ public class ECgame extends SimplePhysicsGame
 		KeyBindingManager.getKeyBindingManager().set("HIGHSCORE", KeyInput.KEY_TAB);
 		KeyBindingManager.getKeyBindingManager().set("UP", KeyInput.KEY_UP);
 		KeyBindingManager.getKeyBindingManager().set("DOWN", KeyInput.KEY_DOWN);
-		KeyBindingManager.getKeyBindingManager().set("TEST1", KeyInput.KEY_Q);
-		KeyBindingManager.getKeyBindingManager().set("TEST2", KeyInput.KEY_W);
-		KeyBindingManager.getKeyBindingManager().set("TEST3", KeyInput.KEY_E);
-		KeyBindingManager.getKeyBindingManager().set("TEST4", KeyInput.KEY_R);
 		KeyBindingManager.getKeyBindingManager().set("RESTART", KeyInput.KEY_BACK);
-		
+		//KeyBindingManager.getKeyBindingManager().set("TEST1", KeyInput.KEY_Q);
+		//KeyBindingManager.getKeyBindingManager().set("TEST2", KeyInput.KEY_W);
+		//KeyBindingManager.getKeyBindingManager().set("TEST3", KeyInput.KEY_E);
+		//KeyBindingManager.getKeyBindingManager().set("TEST4", KeyInput.KEY_R);
 		
         //init eye tracking
-		//eyeTracker_ = new TrackDataProvider();
-		//eyeTracker_.startTracking();
+		eyeTracker_ = new TrackDataProvider();
+		eyeTracker_.startTracking();
 		
-		//rootNode.setRenderState(ms_);
-		//rootNode.updateRenderState();
-		
-		//showPhysics = true;
-			    		
+		//showPhysics = true;		    		
 	}
+	//---------------------------------------------------------------------------------
 	
+	//---------------------------------------------------------------------------------
+    /**
+     * Adds a ball to the scene
+     * @param color : Color of the ball
+     */
 	private void createBall(Color color)
 	{	
 		if(ball_counter_ == max_ball_count_)
@@ -260,42 +282,43 @@ public class ECgame extends SimplePhysicsGame
 		
 		switch(color)
 		{
-		case RED:
-			start_pos = new Vector3f(-11,5.5f,0);
-			break;
-		case GREEN:
-			start_pos = new Vector3f(-11,0.5f,0);
-			break;
-		case BLUE:
-			start_pos = new Vector3f(-11,-4.5f,0);
-			break;
-		default:
-			return;
+			case RED:
+				start_pos = new Vector3f(-11,5.5f,0);
+				break;
+			case GREEN:
+				start_pos = new Vector3f(-11,0.5f,0);
+				break;
+			case BLUE:
+				start_pos = new Vector3f(-11,-4.5f,0);
+				break;
+			default:
+				return;
 		}
 		
 		Color new_color = getRandomColor();	
 		
 		switch(new_color)
 		{
-		case RED:
-			temp_color = ColorRGBA.red;
-			break;
-		case GREEN:
-			temp_color = ColorRGBA.green;
-			break;
-		case BLUE:
-			temp_color = ColorRGBA.blue;
-			break;
-		default:
-			return;
+			case RED:
+				temp_color = ColorRGBA.red;
+				break;
+			case GREEN:
+				temp_color = ColorRGBA.green;
+				break;
+			case BLUE:
+				temp_color = ColorRGBA.blue;
+				break;
+			default:
+				return;
 		}
 				
 		String name = "ball"+index;
+		
 		ball_[index] = new Sphere(name,new Vector3f(0,0,0),10,10,0.4f);
 		ball_[index].setModelBound(new BoundingSphere());
 		ball_[index].updateModelBound();
 		ball_[index].setDefaultColor(temp_color);
-		//ballNode_[index].setMaterial(Material.OSMIUM);
+	
 		ballNode_[index].attachChild(ball_[index]);
 		
 		ballNode_[index].getLocalTranslation().set(start_pos);
@@ -305,7 +328,13 @@ public class ECgame extends SimplePhysicsGame
 		
         ball_counter_++;
 	}
+	//---------------------------------------------------------------------------------
 	
+	//---------------------------------------------------------------------------------
+    /**
+     * Removes a Ball from the game
+     * @param index : index in ball_ and ballNode_
+     */
 	private void removeBall(int index)
 	{
 		ball_[index] = null;
@@ -314,7 +343,12 @@ public class ECgame extends SimplePhysicsGame
 		
 		ball_counter_--;
 	}
+	//---------------------------------------------------------------------------------
 	
+	//---------------------------------------------------------------------------------
+    /**
+     * Initializes the Head Up Display
+     */
 	private void initHUD()
 	{
 		hud_ = new Node();
@@ -337,7 +371,6 @@ public class ECgame extends SimplePhysicsGame
 		temp.y += tempoffset.y;
 		temp.z = 0;
 		
-		//System.out.println(temp.x + "  "+temp.y);
 		Sphere life1 = new Sphere("life1", temp,10, 10, 0.25f);
 		life1.setDefaultColor(ColorRGBA.red);
 		
@@ -481,14 +514,24 @@ public class ECgame extends SimplePhysicsGame
 		hud_.attachChild(life3);
         hud_.setRenderState(ms_);
         hud_.updateRenderState();
-	
 	}
+	//---------------------------------------------------------------------------------
 	
+	//---------------------------------------------------------------------------------
+    /**
+     * Redraws the HUD Speedlevel and Ballcount
+     */
 	private void updateHUDSpeedAndBalls()
 	{
 		speed_ball_string_ = "BALLS/SPEED: "+balls_in_game_+"/"+speed_level_;
 		show_speed_ball_lvl_.print(speed_ball_string_);
 	}
+	//---------------------------------------------------------------------------------
+	
+	//---------------------------------------------------------------------------------
+    /**
+     * Redraws the HUD Score and Lives
+     */
 	private void updateHUDScoreAndLives()
 	{
 		score_string_ = "SCORE: " + score_;
@@ -497,49 +540,51 @@ public class ECgame extends SimplePhysicsGame
 		ParticleMesh explosion;
 		int temp = hud_.getChildren().size()-15;
 		
-		
 		if(temp != lives_)
 		{
 			switch(lives_)
 			{
-			case 0:
-				explosion = createExplosion(ColorRGBA.red);
-				explosion.getLocalScale().set(new Vector3f(0.03f,0.03f,0.03f));
-				Vector3f temp_vec = ((Sphere)hud_.getChild("life1")).center;
-				explosion.getLocalTranslation().set(temp_vec.x-1.2f,temp_vec.y,temp_vec.z);
-				explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
-				explosion_sound_.play();
-				hud_.detachChild(hud_.getChild("life1"));
-				return;
-			case 1:
-				explosion = createExplosion(ColorRGBA.green);
-				explosion.getLocalScale().set(new Vector3f(0.03f,0.03f,0.03f));
-				Vector3f temp_vec1 = ((Sphere)hud_.getChild("life2")).center;
-				explosion.getLocalTranslation().set(temp_vec1.x-0.6f,temp_vec1.y,temp_vec1.z);
-				explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
-				explosion_sound_.play();
-				hud_.detachChild(hud_.getChild("life2"));
-				return;
-			case 2:
-				explosion = createExplosion(ColorRGBA.blue);
-				explosion.getLocalScale().set(new Vector3f(0.03f,0.03f,0.03f));
-				explosion.getLocalTranslation().set(((Sphere)hud_.getChild("life3")).center);
-				explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
-				explosion_sound_.play();
-				hud_.detachChild(hud_.getChild("life3"));
-				return;
-			case 3:
-				return;
-			default:
-				game_over_ = true;
+				case 0:
+					explosion = createExplosion(ColorRGBA.red);
+					explosion.getLocalScale().set(new Vector3f(0.03f,0.03f,0.03f));
+					Vector3f temp_vec = ((Sphere)hud_.getChild("life1")).center;
+					explosion.getLocalTranslation().set(temp_vec.x-1.2f,temp_vec.y,temp_vec.z);
+					explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
+					explosion_sound_.play();
+					hud_.detachChild(hud_.getChild("life1"));
+					return;
+				case 1:
+					explosion = createExplosion(ColorRGBA.green);
+					explosion.getLocalScale().set(new Vector3f(0.03f,0.03f,0.03f));
+					Vector3f temp_vec1 = ((Sphere)hud_.getChild("life2")).center;
+					explosion.getLocalTranslation().set(temp_vec1.x-0.6f,temp_vec1.y,temp_vec1.z);
+					explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
+					explosion_sound_.play();
+					hud_.detachChild(hud_.getChild("life2"));
+					return;
+				case 2:
+					explosion = createExplosion(ColorRGBA.blue);
+					explosion.getLocalScale().set(new Vector3f(0.03f,0.03f,0.03f));
+					explosion.getLocalTranslation().set(((Sphere)hud_.getChild("life3")).center);
+					explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
+					explosion_sound_.play();
+					hud_.detachChild(hud_.getChild("life3"));
+					return;
+				case 3:
+					return;
+				default:
+					game_over_ = true;
 			}
-		}
-			
+		}	
 	}
+	//---------------------------------------------------------------------------------	
 	
+	//---------------------------------------------------------------------------------
+    /**
+     * Initializes the ghost preview
+     */
 	private void initGhost()
 	{
-		
 		ghostNode_ = getPhysicsSpace().createStaticNode();
 		rootNode.attachChild(ghostNode_);
 		
@@ -555,11 +600,14 @@ public class ECgame extends SimplePhysicsGame
 		ghostNode_.attachChild(ghost_);	
 		
         ghostNode_.setRenderState(ms_);
-        ghostNode_.updateRenderState();
-		
-		
+        ghostNode_.updateRenderState();		
 	}
+	//---------------------------------------------------------------------------------
 	
+	//---------------------------------------------------------------------------------
+    /**
+     * Defines the mouse/eye positions to move the ghost preview (6 squares)
+     */
 	private void initMouseOverPos()
 	{
 		mouse_over_ = new Vector2f[24];
@@ -589,37 +637,21 @@ public class ECgame extends SimplePhysicsGame
 		mouse_over_[22] = new Vector2f(-0.8f,-7.2f);
 		mouse_over_[23] = new Vector2f(2.5f,-7.2f);
 	}
+	//---------------------------------------------------------------------------------
 	
+	//---------------------------------------------------------------------------------
+    /**
+     * Initialize the player bridge
+     */
 	private void initPlayer()
 	{
-		playerNode_ = getPhysicsSpace().createStaticNode();
-		
+		playerNode_ = getPhysicsSpace().createStaticNode();	
 		rootNode.attachChild(playerNode_);
-
-		/*player_ = playerNode_.createBox("player");
-		player_.getLocalScale().set( 0.75f, 0.3f, 10 );
-		player_.getLocalTranslation().x = 12.5f;
-		player_.getLocalTranslation().y = 4.8f;
-		player_.getLocalTranslation().z = 0;
-		
-		TextureState textStateBricks = display.getRenderer().createTextureState();
-		Texture textbricks = TextureManager.loadTexture(ECgame.class.getResource("/data/bricks.jpg"),
-				Texture.MinificationFilter.Trilinear, 
-				Texture.MagnificationFilter.Bilinear);
-		
-		textbricks.setWrap(Texture.WrapMode.Repeat);
-		textStateBricks.setTexture(textbricks);
-		player_.setRenderState(textStateBricks);*/
-		
-		//player_ = new Box("player",new Vector3f(-2.5f,4.8f,0),0.75f,0.3f,10);
 		
 		player_ = new Box("player",new Vector3f(0,0,0),0.75f,0.3f,10);
-		
-		
+			
 		player_.setModelBound(new BoundingBox());
 		player_.updateModelBound();
-		//player_.setModelBound(new BoundingBox());
-		//player_.updateModelBound();
 		player_.setDefaultColor(ColorRGBA.lightGray);
 		
 		TextureState textStateBricks = display.getRenderer().createTextureState();
@@ -631,27 +663,39 @@ public class ECgame extends SimplePhysicsGame
 		textStateBricks.setTexture(textbricks);
 		player_.setRenderState(textStateBricks);
 		
-		playerNode_.attachChild(player_);
-		
+		playerNode_.attachChild(player_);	
 		playerNode_.getLocalTranslation().set(new Vector3f(-2.5f,4.8f,0));
-		
-		playerNode_.generatePhysicsGeometry();
-		
+		playerNode_.generatePhysicsGeometry();	
 	}
+	//---------------------------------------------------------------------------------
 	
+	//---------------------------------------------------------------------------------
+    /**
+     * Initialize the pointer
+     */
 	private void initTestMouse()
 	{
 		pointer_ = new Sphere("pointer", new Vector3f(0,0,10.01f),10, 10, 0.1f);
 		rootNode.attachChild(pointer_);
 	}
+	//---------------------------------------------------------------------------------
 	
+	//---------------------------------------------------------------------------------
+    /**
+     * Main function to start the game
+     */
     public static void main(String[] args) 
     {
         ECgame game = new ECgame();
         game.setConfigShowMode(ConfigShowMode.AlwaysShow, ECgame.class.getResource("/data/icg.png"));
         game.start();
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Creates the Doors and Walls on the left and right side of the screen
+     */
 	private void initWalls()
 	{		
 		redNode_ = getPhysicsSpace().createStaticNode();
@@ -768,13 +812,15 @@ public class ECgame extends SimplePhysicsGame
 		greenNode_.generatePhysicsGeometry();
 		blueNode_.generatePhysicsGeometry();
 		staticNode_.generatePhysicsGeometry();
-		
-		
 	}
+	//---------------------------------------------------------------------------------
 	
+	//---------------------------------------------------------------------------------
+    /**
+     * Creates the three platform floors
+     */
 	private void initPlatforms()
 	{
-		
 		Box topFirst = new Box("topFirst",new Vector3f(-8.125f,4.8f,0),4.875f,0.3f,10);
 		topFirst.setModelBound(new BoundingBox());
 		topFirst.updateModelBound();
@@ -833,13 +879,16 @@ public class ECgame extends SimplePhysicsGame
 		
 		staticNode_.generatePhysicsGeometry();
 	}
+	//---------------------------------------------------------------------------------
     
+	//---------------------------------------------------------------------------------
+    /**
+     * Initializes the static camera for 2D View
+     */
     private void initCamera()
     {
 		float zoom = 10f;
-		// setupCamProperties
 	    cam.setParallelProjection(true);
-	    //float aspect = (float) display.getWidth() / display.getHeight();
 	    cam.setFrustum(0f, 100.0f, zoom, -zoom, -zoom, zoom);
 	    cam.update();
 
@@ -849,12 +898,17 @@ public class ECgame extends SimplePhysicsGame
 	    cam.setLocation(new Vector3f(0, 0, 100));
 	    cam.setDirection(new Vector3f(0, 0, -1));
 	    cam.update();
-    	
     }
-    private void buildSkyBox() {
+    //---------------------------------------------------------------------------------
+    
+    //---------------------------------------------------------------------------------
+    /**
+     * Creates a box around the gaming field to simulate background in every direction
+     */
+    private void buildSkyBox() 
+    {
 		skybox_ = new Skybox("skybox", 10, 10, 10);	
-		
-		
+			
 		Texture north = TextureManager.loadTexture(ECgame.class.getResource("/data/sky1.jpg"),
 				Texture.MinificationFilter.BilinearNearestMipMap,
 				Texture.MagnificationFilter.Bilinear);
@@ -905,13 +959,19 @@ public class ECgame extends SimplePhysicsGame
 
 		rootNode.attachChild(skybox_);
 	}
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * The game loop - this is executed with 30 FPS
+     */
     protected void simpleUpdate()
     {  	 
+    	//check Restart Button
 		if (KeyBindingManager.getKeyBindingManager().isValidCommand("RESTART", false))
 			restart();
 
-
+		//Check toggle mute
 		if(audio_.isMuted())
 			showMuted();
 		
@@ -932,24 +992,30 @@ public class ECgame extends SimplePhysicsGame
 		if(restarted_)
 			showRestarted();
 		
+		//Game over ?
     	if(game_over_)
     		gameOver();
     	else
     	{
     		if(!spawning_)
         		spawn_color_ = null;
+    		
 	    	ExplosionFactory.cleanExplosions();
-	    	handleMouse();
-	    	//handleEyeInput();
+	    	
+	    	//change mouse simulation or eye tracking
+	    	if(eyeinput_)
+	    		handleEyeInput();
+	    	else
+	    		handleMouse();
 			
+	    	//move key pressed?
 			if (KeyBindingManager.getKeyBindingManager().isValidCommand("PLAYER_MOVE", false))
 			{
 				playerNode_.getLocalTranslation().x = ghost_.getLocalTranslation().x;
 				playerNode_.getLocalTranslation().y = ghost_.getLocalTranslation().y;
-				
-	
 			}
 			
+			//explosion key pressed?
 			if(KeyBindingManager.getKeyBindingManager().isValidCommand("DETONATE", false))
 			{
 				ParticleMesh explosion = ExplosionFactory.getExplosion();
@@ -960,71 +1026,79 @@ public class ECgame extends SimplePhysicsGame
 				explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
 				explosion_sound_.play();
 				
+				//check if a ball was on the bridge
 		    	for(int i = 0; i < 5; i++)
 		    	{
 		    		if(ballNode_[i] != null)
 		    		{
-		    				if(ball_[i].hasCollision(player_,false))
-		    				{
-		    					//explosions_.detachAllChildren();
-		    					//System.out.println("treffer");
-		    					ballNode_[i].getLocalTranslation().set(new Vector3f(ballNode_[i].getLocalTranslation().x+3f,ballNode_[i].getLocalTranslation().y+7f,0));
-		    					ParticleMesh explosion1 = ExplosionFactory.getExplosion();
-		    					explosion1.getLocalScale().set(new Vector3f(0.08f,0.08f,0.08f));
-		    					explosion1.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
-		    					explosion1.forceRespawn();
-		    					explosions_.attachChild(explosion1);
-		    					explosion_sound_.setWorldPosition(explosion1.getWorldTranslation());
-		    					explosion_sound_.play();
-		    				}
+		    			if(ball_[i].hasCollision(player_,false))
+		    			{
+		    				ballNode_[i].getLocalTranslation().set(new Vector3f(ballNode_[i].getLocalTranslation().x+3f,ballNode_[i].getLocalTranslation().y+7f,0));
+		    				ParticleMesh explosion1 = ExplosionFactory.getExplosion();
+		    				explosion1.getLocalScale().set(new Vector3f(0.08f,0.08f,0.08f));
+		    				explosion1.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
+		    				explosion1.forceRespawn();
+		    				explosions_.attachChild(explosion1);
+		    				explosion_sound_.setWorldPosition(explosion1.getWorldTranslation());
+		    				explosion_sound_.play();
+		    			}
 		    		}
 		    	}			
 			}
-				
+			
+			//check ball collision for bounce sound
 	    	for(int i = 0; i < 5; i++)
 	    	{
 	    		if(ballNode_[i] != null)
 	    		{
-	    				Vector3f temp_vec = ballNode_[i].getLinearVelocity(null);
-	    				//System.out.println(temp_vec.y);
-	    				if((ball_[i].hasCollision(playerNode_,false) || ball_[i].hasCollision(staticNode_,false)) && temp_vec.y < -3f)
-	    				{
-	    					bounce_sound_.setWorldPosition(ballNode_[i].getWorldTranslation());
-	    					bounce_sound_.play();
-	    				}   				
+	    			Vector3f temp_vec = ballNode_[i].getLinearVelocity(null);
+
+	    			if((ball_[i].hasCollision(playerNode_,false) || ball_[i].hasCollision(staticNode_,false)) && temp_vec.y < -3f)
+	    			{
+	    				bounce_sound_.setWorldPosition(ballNode_[i].getWorldTranslation());
+	    				bounce_sound_.play();
+	    			}   				
 	    		}
 	    	}
 			
+	    	//while playing change difficulty dynamically
 	    	if(!start_screen_)
 	    		dynamicDifficulty();
 	    	else
 	    	{
+	    		//handle difficulty selection
 				if (KeyBindingManager.getKeyBindingManager().isValidCommand("BACKWARD", false))
 				{
-					difficulty_index_ = (difficulty_index_ + 2) % 3;
+					difficulty_index_ = (difficulty_index_ + 3) % 4;
 					difficulty_.print(difficulty_strings_[difficulty_index_]);
 					bounce_sound_.setWorldPosition(difficulty_.getWorldTranslation());
 					bounce_sound_.play();
 				}
+				
 				if (KeyBindingManager.getKeyBindingManager().isValidCommand("FORWARD", false))
 				{
-					difficulty_index_ = (difficulty_index_ + 1) % 3;
+					difficulty_index_ = (difficulty_index_ + 1) % 4;
 					difficulty_.print(difficulty_strings_[difficulty_index_]);
 					bounce_sound_.setWorldPosition(difficulty_.getWorldTranslation());
 					bounce_sound_.play();
 				}
+				
 	    		showDifficultySelect();
-				if (KeyBindingManager.getKeyBindingManager().isValidCommand("COMMIT", false))
-				{
-					changeDifficulty();
-				}
 	    		
+				if (KeyBindingManager.getKeyBindingManager().isValidCommand("COMMIT", false))
+					changeDifficulty();	
 	    	}
+	    	
+	    	//update score and lives
 			handleScoreAndLives();
+			
+			//handle ball movement from bottom to top floor
 			handleBallFallingDown();
+			
+			//keep track of the spawning procedure
 			handleList();
 	
-			
+			/* Debug Key bindings
 			if (KeyBindingManager.getKeyBindingManager().isValidCommand("TEST1", false))
 			{
 				//if(!spawning_)
@@ -1039,22 +1113,21 @@ public class ECgame extends SimplePhysicsGame
 			}
 			if (KeyBindingManager.getKeyBindingManager().isValidCommand("TEST3", false))
 			{
-
 				speed_level_ = (speed_level_+ 1) % 6;
 				speed_ = 1.3f + 0.1f*speed_level_;
-				this.updateHUDSpeedAndBalls();
-				
+				this.updateHUDSpeedAndBalls();	
 			}
 			if (KeyBindingManager.getKeyBindingManager().isValidCommand("TEST4", false))
 			{
-
 				balls_in_game_ = (balls_in_game_+ 1) % 6;
 				this.updateHUDSpeedAndBalls();
-				
 			}
+			*/
 			
+			//update ghost Position
 			moveGhost();	
 			
+			//open close entrances and spawn balls
 			if(spawn_color_ != null)
 			{
 				if(opening_)
@@ -1062,18 +1135,24 @@ public class ECgame extends SimplePhysicsGame
 				else if(closing_)
 					closeEntrance(spawn_color_);
 				else if(entranceOpened(spawn_color_))
-				{
 					spawnBall();
-				}
 			}
-		
     	}
+    	
+    	//update audio system
     	audio_.update();
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Checks if the player managed to get a high score position
+     * @return true, false
+     */
     private boolean checkInHighscore()
     {
     	ArrayList<String> from_file = readHighscore();
+    	
     	if(from_file == null)
     		return true;
     	
@@ -1082,21 +1161,25 @@ public class ECgame extends SimplePhysicsGame
     	else
     		return false;
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Checks if the player managed to get a high score position
+     */
     private void writeHighscore()
     {
 		// Stream to write file	
-    	ArrayList<String> from_file = readHighscore();
+    	ArrayList<String> from_file = readHighscore();  	
     	
     	if(from_file != null)
     	{
 	    	if(from_file.size() >= 30)
-	    	{
+	    	{		
 		    	String[] sorted_ = new String[from_file.size()/3];
+		    	
 		    	for(int i = 0; i < from_file.size()-3; i+=3)
-		    	{
 		    		sorted_[i/3] = from_file.get(i) + " " + from_file.get(i+1) + " " + from_file.get(i+2);
-		    	}
 		    	
 				try
 				{
@@ -1105,13 +1188,18 @@ public class ECgame extends SimplePhysicsGame
 				    PrintStream ps = new PrintStream(fout);
 				    // Print a line of text
 				    ps.println(sorted_[0]);
+				    
+				    ps.close();
 				    fout.close();
+				    
 				    fout = new FileOutputStream ("bin/data/highscore.kerby",true);
 				    ps = new PrintStream(fout);
+				    
 				    for(int i = 1; i < sorted_.length-1; i++)
 				    	ps.println(sorted_[i]);
 				    
 				    // Close our output stream
+				    ps.close();
 				    fout.close();		
 				}		
 				
@@ -1123,23 +1211,26 @@ public class ECgame extends SimplePhysicsGame
 				}
 	    	}
     	}
+    	
     	name_input_ = insert_name1_.getText().toString() + insert_name2_.getText().toString() + insert_name3_.getText().toString();
     	String temp = "N/A";
     	
     	switch(difficulty_index_)
     	{
-    	case 0:
-    		temp = "EASY";
-    		break;
-    	case 1:
-    		temp = "NORMAL";
-    		break;
-    	case 2:
-    		temp = "HARD";
-    		break;
-    	default:
-    		break;
-    		
+	    	case 0:
+	    		temp = "EASY";
+	    		break;
+	    	case 1:
+	    		temp = "NORMAL";
+	    		break;
+	    	case 2:
+	    		temp = "HARD";
+	    		break;
+	    	case 3:
+	    		temp = "INSANE";
+	    		break;
+	    	default:
+	    		break;	
     	}
     	
     	String highscore_output = score_ + " " + name_input_ + " " + temp; 
@@ -1163,11 +1254,14 @@ public class ECgame extends SimplePhysicsGame
 			System.exit(-1);
 		}
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Reads the high score file
+     */
     private ArrayList<String> readHighscore()
     {
-		// Stream to read file
-    	//System.out.println(return_string[i]);
 		boolean end = false;
 		ArrayList<String> temp_list = new ArrayList<String>();
 		
@@ -1180,6 +1274,7 @@ public class ECgame extends SimplePhysicsGame
 			FileInputStream fin = new FileInputStream("bin/data/highscore.kerby");
 			InputStreamReader isr = new InputStreamReader(fin);
 		    BufferedReader bis = new BufferedReader(isr);
+		    
 		    // Read a line of text
 		    while(!end)
 		    {
@@ -1191,27 +1286,22 @@ public class ECgame extends SimplePhysicsGame
 		    }
 		        
 		    if(temp_list.size() < 1)
-		    {
 		    	return null;
-		    }
+		    
 		    // Close our input stream
 		    bis.close();
 		    isr.close();
 		    fin.close();
 		    
-		    //Collections.sort(temp_list, Collator.getInstance());
 		    StringTokenizer tokenizer;
-		    //Collections.sort(new String[5], Collator.getInstance());
 		    
 		    ArrayList<String> return_string = new ArrayList<String>();
-		    
+
 		    for(int i = 0; i < temp_list.size(); i++)
 		    {
 		    	tokenizer = new StringTokenizer(temp_list.get(i), " ");
 		    	for(int j = 0; j < 3; j++)
-		    	{
 		    		return_string.add(tokenizer.nextToken());
-		    	}
 		    }
 		    
 		    for(int i = 0; i < return_string.size()-3; i +=3)
@@ -1230,18 +1320,11 @@ public class ECgame extends SimplePhysicsGame
 		    			return_string.set(j+3, temp1);
 		    			return_string.set(j+4, temp2);
 		    			return_string.set(j+5, temp3);
-		    		}
-		    			
+		    		}	    			
 		    	}
 		    }
-		    
-		   /* for(int i = 0; i < return_string.size(); i++)
-		    {
-		    	System.out.println(return_string.get(i));
-		    }*/
-		    
-		    return return_string;
-		    
+		   
+		    return return_string;    
 		}
 		// Catches any error conditions
 		catch (IOException e)
@@ -1250,9 +1333,13 @@ public class ECgame extends SimplePhysicsGame
 			System.exit(-1);
 			return null;
 		}
-	
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Display high score Screen
+     */
     private void showHighscore()
     {
     	show_game_over_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
@@ -1294,15 +1381,11 @@ public class ECgame extends SimplePhysicsGame
 		temp.setLocalTranslation(new Vector3f(150 + 500, highscoreNode_.getChild("HS").getWorldTranslation().y-50, 0));
 		temp.setLocalScale(new Vector3f(2.5f,2.5f,2.5f));
 		highscoreNode_.attachChild(temp);
-    	
-    	
+    	  	
     	ArrayList<String> from_file = readHighscore();
-    	
-    	
-    	for(int i = 0; i < from_file.size(); i++)
-    	{
-    		//temp = Text.createDefaultTextLabel("HS"+i,from_file.get(i)+"     "+from_file.get(i+1)+"     "+from_file.get(i+2));
     		
+    	for(int i = 0; i < from_file.size(); i++)
+    	{		
     		temp = Text.createDefaultTextLabel("HS"+i,from_file.get(i));
     		temp.setRenderQueueMode(Renderer.QUEUE_ORTHO);
     		temp.setLightCombineMode(Spatial.LightCombineMode.Off);
@@ -1310,52 +1393,55 @@ public class ECgame extends SimplePhysicsGame
     		
     		switch(i%3)
     		{
-    		case 0:
-    			temp.setLocalTranslation(new Vector3f(150,  highscoreNode_.getChild("HSS").getWorldTranslation().y - 40 - ((i/3)*30), 0));
-    			break;
-    		case 1:
-    			temp.setLocalTranslation(new Vector3f(150 + 250,  highscoreNode_.getChild("HSS").getWorldTranslation().y - 40 - ((i/3)*30), 0));
-    			break;
-    		case 2:
-    			temp.setLocalTranslation(new Vector3f(150 + 500,  highscoreNode_.getChild("HSS").getWorldTranslation().y - 40 - ((i/3)*30), 0));
-    			break;
-    		default:
-    			break;
+	    		case 0:
+	    			temp.setLocalTranslation(new Vector3f(150,  highscoreNode_.getChild("HSS").getWorldTranslation().y - 40 - ((i/3)*30), 0));
+	    			break;
+	    		case 1:
+	    			temp.setLocalTranslation(new Vector3f(150 + 250,  highscoreNode_.getChild("HSS").getWorldTranslation().y - 40 - ((i/3)*30), 0));
+	    			break;
+	    		case 2:
+	    			temp.setLocalTranslation(new Vector3f(150 + 500,  highscoreNode_.getChild("HSS").getWorldTranslation().y - 40 - ((i/3)*30), 0));
+	    			break;
+	    		default:
+	    			break;
     		}
     		
     		temp.setLocalScale(new Vector3f(2f,2f,2f));
-    		highscoreNode_.attachChild(temp);
-    		
+    		highscoreNode_.attachChild(temp);		
     	} 
     	
     	show_game_over_restart_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_restart_.getWidth()/2, temp.getWorldTranslation().y - 150, 0));
     	show_game_over_score_.print("YOUR SCORE: "+score_);
-    	show_game_over_score_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_score_.getWidth()/2,temp.getWorldTranslation().y - 100, 0));
-    	
+    	show_game_over_score_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_score_.getWidth()/2,temp.getWorldTranslation().y - 100, 0)); 	
     }
+    //--------------------------------------------------------------------------------- 
     
-    
+    //---------------------------------------------------------------------------------
+    /**
+     * Handles the game over procedure and shows the game over screen
+     */
     private void gameOver()
     {
+    	//delete current balls
     	for(int i = 0; i < 5; i++)
     	{
     		if(ballNode_[i] != null)
-    		{
     			ballNode_[i].delete();
-    		}
     	}
     	
+    	//already displaying high scores?
     	if(!display_highscore_)
     	{
 	    	if(show_game_over_.getLocalTranslation().x == display.getWidth()+1000)
 	    	{
 	    		if(checkInHighscore())
 	    			inserting_ = true;
+	    		
+	    		//change music
 	    		audio_.getMusicQueue().clearTracks();
 	    		audio_.getMusicQueue().addTrack(music_game_over_);
 	    		audio_.getMusicQueue().play();
 	    	}
-	    	
 	    	
 	    	show_game_over_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_.getWidth()/2, display.getHeight()/2-show_game_over_.getHeight()/2, 0));
 	 
@@ -1364,8 +1450,8 @@ public class ECgame extends SimplePhysicsGame
 	    	else
 	    	{ 	
 	    		if(inserting_)
-	    		{
-	    			
+	    		{ 		
+	    			//player is entering his name
 	    			show_game_over_score_.setLocalScale(new Vector3f(3,3,3));
 		    		show_game_over_score_.setTextColor(ColorRGBA.red);
 		    		show_game_over_score_.print("SCORE: "+score_);
@@ -1387,10 +1473,10 @@ public class ECgame extends SimplePhysicsGame
 	    				show_insert_name_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
 	    				inserting_ = false;
 	    			}
-	    			
 	    		}
 	    		else
 	    		{
+	    			//player finished entering his name
 		    		show_game_over_restart_.setLocalScale(new Vector3f(3,3,3));
 		    		show_game_over_restart_.setTextColor(ColorRGBA.red);
 		    		show_game_over_restart_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_restart_.getWidth()/2, show_game_over_.getLocalTranslation().y+show_game_over_.getHeight()/2+100, 0));  		
@@ -1403,8 +1489,7 @@ public class ECgame extends SimplePhysicsGame
 		    		show_highscore_.setLocalScale(new Vector3f(3,3,3));
 		    		show_highscore_.setTextColor(ColorRGBA.red);
 		    		show_highscore_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_highscore_.getWidth()/2, show_game_over_restart_.getLocalTranslation().y+100, 0));
-		    		
-		    		
+		    		  		
 					if (KeyBindingManager.getKeyBindingManager().isValidCommand("HIGHSCORE", false))
 					{
 						display_highscore_ = true;
@@ -1414,95 +1499,135 @@ public class ECgame extends SimplePhysicsGame
 	    	}	
     	}
     }
+    //---------------------------------------------------------------------------------
+    
+    //---------------------------------------------------------------------------------
+    /**
+     * Handles the name insert procedure
+     */
     private void handleInsert()
-    {
-    	
+    {  	
+    	//up key pressed?
 		if (KeyBindingManager.getKeyBindingManager().isValidCommand("UP", false))
 		{
-			alphabet_select_index_ = (alphabet_select_index_ + 1) % 27;		
+			alphabet_select_index_ = (alphabet_select_index_ + 1) % 26;	
+			
 			switch(insert_count_)
 			{
-			case 0:
-				insert_name1_.print(alphabet_[alphabet_select_index_]);
-				return;
-			case 1:
-				insert_name2_.print(alphabet_[alphabet_select_index_]);
-				return;
-			case 2:
-				insert_name3_.print(alphabet_[alphabet_select_index_]);
-				return;
-			default:
-				return;
-			}
-			
+				case 0:
+					insert_name1_.print(alphabet_[alphabet_select_index_]);
+					return;
+				case 1:
+					insert_name2_.print(alphabet_[alphabet_select_index_]);
+					return;
+				case 2:
+					insert_name3_.print(alphabet_[alphabet_select_index_]);
+					return;
+				default:
+					return;
+			}		
 		}
+		
+		//down key pressed?
 		if (KeyBindingManager.getKeyBindingManager().isValidCommand("DOWN", false))
 		{
-			alphabet_select_index_ = (alphabet_select_index_ + 26) % 27;
+			alphabet_select_index_ = (alphabet_select_index_ + 25) % 26;
+			
 			switch(insert_count_)
 			{
-			case 0:
-				insert_name1_.print(alphabet_[alphabet_select_index_]);
-				return;
-			case 1:
-				insert_name2_.print(alphabet_[alphabet_select_index_]);
-				return;
-			case 2:
-				insert_name3_.print(alphabet_[alphabet_select_index_]);
-				return;
-			default:
-				return;
+				case 0:
+					insert_name1_.print(alphabet_[alphabet_select_index_]);
+					return;
+				case 1:
+					insert_name2_.print(alphabet_[alphabet_select_index_]);
+					return;
+				case 2:
+					insert_name3_.print(alphabet_[alphabet_select_index_]);
+					return;
+				default:
+					return;
 			}
 		}
+		
+		//commit key pressed?
 		if (KeyBindingManager.getKeyBindingManager().isValidCommand("COMMIT", false))
-		{
 			insert_count_++;
-		}
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Change difficulty according to players selection
+     */
     private void changeDifficulty()
     {
     	switch(difficulty_index_)
     	{
-    	case 0: //easy
-    		ball_in_game_step_ = 2500;
-    		speed_level_step_ = 500;
-    		break;
-    	case 1: //normal //slower on higher level
-    		ball_in_game_step_ = 1000;
-    		speed_level_step_ = 200;
-    		break;
-    	case 2:	//hard
-    		ball_in_game_step_ = 1000;
-    		speed_level_step_ = 100;
-    		break;
-    	default:
-    		break;
+	    	case 0: //easy
+	    		ball_in_game_step_ = 2500;
+	    		speed_level_step_ = 500;
+	    		break;
+	    	case 1: //normal //slower on higher level
+	    		ball_in_game_step_ = 1000;
+	    		speed_level_step_ = 200;
+	    		break;
+	    	case 2:	//hard
+	    		ball_in_game_step_ = 1000;
+	    		speed_level_step_ = 100;
+	    		break;
+	    	case 3: //insane
+	    		ball_in_game_step_ = 500;
+	    		speed_level_step_ = 100;
+	    		break;
+	    	default:
+	    		break;
     	}
+    	
     	start_screen_ = false;
     	difficulty_select_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
     	difficulty_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
     }
+ 	//---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Shows the difficulty selection screen
+     */
     private void showDifficultySelect()
     {
     	difficulty_.setLocalTranslation(new Vector3f(display.getWidth()/2 - difficulty_.getWidth()/2, display.getHeight()/2-difficulty_.getHeight()/2 -100, 0));
     	difficulty_select_.getLocalTranslation().set(display.getWidth()/2 - difficulty_select_.getWidth()/2, difficulty_.getLocalTranslation().y+difficulty_select_.getHeight()/2+200, 0);
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Shows the "muted" Text label
+     */
     private void showMuted()
     {
     	muted_.getLocalTranslation().addLocal(new Vector3f(200,0,0).mult(timer.getTimePerFrame()));
     	if(muted_.getLocalTranslation().x >= display.getWidth())
     		muted_.getLocalTranslation().set(0 - muted_.getWidth(), 30, 0);
-    }
-      
+    } 
+    //---------------------------------------------------------------------------------
+    
+    //---------------------------------------------------------------------------------
+    /**
+     * Shows the "restarted" Text label
+     */
     private void showRestarted()
     {
     	game_restarted_.getLocalTranslation().addLocal(new Vector3f(200,0,0).mult(timer.getTimePerFrame()));
     	if(game_restarted_.getLocalTranslation().x >= display.getWidth())
     		restarted_ = false;
-    }
+    }   
+    //---------------------------------------------------------------------------------
+    
+    //---------------------------------------------------------------------------------
+    /**
+     * Resets game information and restarts the game
+     */
     private void restart()
     {
     	for(int i = 0; i < 5; i++)
@@ -1552,9 +1677,7 @@ public class ECgame extends SimplePhysicsGame
     	redNode_.getLocalTranslation().x = -9.75f;
     	greenNode_.getLocalTranslation().x = -9.75f;
     	blueNode_.getLocalTranslation().x = -9.75f;
-    	
-    	
-    	
+    		  	
     	hud_.detachAllChildren();
     	
     	initHUD();
@@ -1570,9 +1693,13 @@ public class ECgame extends SimplePhysicsGame
 		playerNode_.getLocalTranslation().set(new Vector3f(-2.5f,4.8f,0));
 		restarted_ = true;
 		game_restarted_.getLocalTranslation().set(0 - game_restarted_.getWidth(), 50, 0);
-
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Changes difficulty during the game according to the player score
+     */
     private void dynamicDifficulty()
     {	 	
     	if(ball_counter_ < balls_in_game_)
@@ -1580,11 +1707,13 @@ public class ECgame extends SimplePhysicsGame
     		if(!spawning_)
     			spawn_list_.add(0);
     	}
+    	
     	if(score_ == (balls_in_game_ * ball_in_game_step_ + step_offset_))
     	{
     		if(balls_in_game_ < 5)
     		{
     			balls_in_game_++;
+    			
     			if(difficulty_index_ == 1)
     			{
 	        		ball_in_game_step_ = 2500;
@@ -1604,17 +1733,20 @@ public class ECgame extends SimplePhysicsGame
     	if(score_ == ((speed_level_ * speed_level_step_ + step_offset_)+((balls_in_game_-1)*ball_in_game_step_)))
     	{
     		speed_level_++;	
+    		
     		if(speed_level_ <= max_speed_level_)
     		{
     			updateHUDSpeedAndBalls();
     			speed_ += 0.2f;
-    		}
-    		
+    		}		
     	}
-    	
-    	
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Handles the ball spawn buffer list
+     */   
     private void handleList()
     {
     	if(!spawn_list_.isEmpty())
@@ -1626,22 +1758,35 @@ public class ECgame extends SimplePhysicsGame
     		}
     	}
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Spawns a new ball
+     */
     private void spawnBall()
     {
-			createBall(spawn_color_);
-			closing_ = true;
-    }
+		createBall(spawn_color_);
+		closing_ = true;
+    }   
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Changes logic flags so a door can open and a ball can spawn
+     */
     private void initSpawnBall()
     {
     	spawning_ = true;
     	spawn_color_ = getRandomColor();
     	opening_ = true;
-
     }
+    //---------------------------------------------------------------------------------
     
-    
+    //---------------------------------------------------------------------------------
+    /**
+     * Makes a ball able to "fall" from the bottom floor to the top floor
+     */
     private void handleBallFallingDown()
     {
     	for(int i = 0; i < 5; i++)
@@ -1653,15 +1798,19 @@ public class ECgame extends SimplePhysicsGame
     				ballNode_[i].getLocalTranslation().setY(10);
     				ballNode_[i].getLocalTranslation().setX(ballNode_[i].getLocalTranslation().x-1.8f);
     			}
-    			
     		}
-    	}
-    	
+    	}	
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Creates an explosion of a specific color
+     * @param color : Color of the explosion
+     * @return ParticleMesh of the explosion
+     */
     private ParticleMesh createExplosion(ColorRGBA color)
     {
-    	//explosions_.detachAllChildren();
 		ParticleMesh explosion = ExplosionFactory.getExplosion();
 		explosion.getLocalScale().set(new Vector3f(0.08f,0.08f,0.08f));
 		explosion.setStartColor(color);
@@ -1671,14 +1820,20 @@ public class ECgame extends SimplePhysicsGame
 		
 		return explosion;
     }
+    //---------------------------------------------------------------------------------
+    
+    //---------------------------------------------------------------------------------
+    /**
+     * Checks collision of balls and walls and adapts score and lives
+     */
     private void handleScoreAndLives()
     {
     	ColorRGBA temp_color;
+    	
     	for(int i = 0; i < 5; i++)
     	{
     		if(ballNode_[i] != null)
-    		{
-    			
+    		{	
     			temp_color = ball_[i].getDefaultColor();
     
     			if(ball_[i].hasCollision(staticNode_.getChild("topRightWall"),false))
@@ -1756,50 +1911,58 @@ public class ECgame extends SimplePhysicsGame
     		}
     	}
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Opens the entrance with a specific color
+     * @param color : Color of the entrance
+     */ 
     private void openEntrance(Color color)
     {
     	Vector3f movement = new Vector3f(-1.5f,0,0);
     	
     	switch(color)
     	{
-    	case RED:
-    		if(redNode_.getLocalTranslation().x > -12)
-    		{
-    			//System.out.println("jep");
-    			redNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
-    		}
-    		else
-    		{
-    			opening_ = false;
-    			red_opened_ = true;
-    		}
-    		return;	
-    	case GREEN:
-    		if(greenNode_.getLocalTranslation().x > -12)
-    			greenNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
-    		else
-    		{
-    			opening_ = false;
-    			green_opened_ = true;
-    		}
-    		return;
-    	case BLUE:
-    		if(blueNode_.getLocalTranslation().x > -12)
-    			blueNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
-    		else
-    		{
-    			opening_ = false;
-    			blue_opened_ = true;
-    		}
-    		return;
-    	default:
-    		return;
-    	}
-    	
-    	
+	    	case RED:
+	    		if(redNode_.getLocalTranslation().x > -12)
+	    			redNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
+	    		else
+	    		{
+	    			opening_ = false;
+	    			red_opened_ = true;
+	    		}
+	    		return;	
+	    	case GREEN:
+	    		if(greenNode_.getLocalTranslation().x > -12)
+	    			greenNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
+	    		else
+	    		{
+	    			opening_ = false;
+	    			green_opened_ = true;
+	    		}
+	    		return;
+	    	case BLUE:
+	    		if(blueNode_.getLocalTranslation().x > -12)
+	    			blueNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
+	    		else
+	    		{
+	    			opening_ = false;
+	    			blue_opened_ = true;
+	    		}
+	    		return;
+	    	default:
+	    		return;
+    	}	
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Checks if the entrance with a specific color is already open
+     * @param color : Color of the entrance
+     * @return status flag of the entrance
+     */  
     private boolean entranceOpened(Color color)
     {
     	switch(color)
@@ -1813,8 +1976,14 @@ public class ECgame extends SimplePhysicsGame
     	default: //will not happen
     			return false;
     	}
-    }
+    }   
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Returns a random color
+     * @return Green, Red, Blue
+     */
     private Color getRandomColor()
     {
     	switch(generator_.nextInt(3))
@@ -1829,79 +1998,92 @@ public class ECgame extends SimplePhysicsGame
     			return null;
     	}
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Closes the entrance with a specific color
+     * @param color : Color of the entrance
+     */
     private void closeEntrance(Color color)
     {
     	Vector3f movement = new Vector3f(speed_,0,0);
     	
     	switch(color)
     	{
-    	case RED:
-    		if(redNode_.getLocalTranslation().x < -9.75f)
-    			redNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
-    		else
-    		{
-    			closing_ = false;
-    			red_opened_ = false;
-    			spawning_ = false;
-    		}
-    			
-    		return;	
-    	case GREEN:
-    		if(greenNode_.getLocalTranslation().x < -9.75f)
-    			greenNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
-    		else
-        	{
-        		closing_ = false;
-        		green_opened_ = false;
-        		spawning_ = false;
-        	}
-    		return;
-    	case BLUE:
-    		if(blueNode_.getLocalTranslation().x < -9.75f)
-    			blueNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
-    		else
-    		{
-    			closing_ = false;
-    			blue_opened_ = false;
-    			spawning_ = false;
-    		}
-    		return;
-    	default:
-    		return;
-    	}
-    	
+	    	case RED:
+	    		if(redNode_.getLocalTranslation().x < -9.75f)
+	    			redNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
+	    		else
+	    		{
+	    			closing_ = false;
+	    			red_opened_ = false;
+	    			spawning_ = false;
+	    		}
+	    			
+	    		return;	
+	    	case GREEN:
+	    		if(greenNode_.getLocalTranslation().x < -9.75f)
+	    			greenNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
+	    		else
+	        	{
+	        		closing_ = false;
+	        		green_opened_ = false;
+	        		spawning_ = false;
+	        	}
+	    		return;
+	    	case BLUE:
+	    		if(blueNode_.getLocalTranslation().x < -9.75f)
+	    			blueNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
+	    		else
+	    		{
+	    			closing_ = false;
+	    			blue_opened_ = false;
+	    			spawning_ = false;
+	    		}
+	    		return;
+	    	default:
+	    		return;
+    	}   	
     }
+    //---------------------------------------------------------------------------------
     
-    
+    //---------------------------------------------------------------------------------
+    /**
+     * Move the pointer according to the mouse position
+     */
     private void handleMouse()
     {
 		//Handle Mouse
 		tmp_screen_pos_.set(MouseInput.get().getXAbsolute(),MouseInput.get().getYAbsolute());	
 		tmp_world_coord_ = display.getWorldCoordinates(tmp_screen_pos_, 0);
-		//System.out.println("eyePos x: "+ tmp_screen_pos_.x + "       eyePos y: "+ tmp_screen_pos_.y);
-		//System.out.println("eyePos x: "+ tmp_world_coord_.x + "       eyePos y: "+ tmp_world_coord_.y);
 		pointer_.getLocalTranslation().x = tmp_world_coord_.x;
 		pointer_.getLocalTranslation().y = tmp_world_coord_.y;
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Moves the pointer according to the players gaze position
+     */
     private void handleEyeInput()
     {
 		//Handle Eye Input
 		eye_pos_ = eyeTracker_.getEyeTrackData();
 		tmp_screen_pos_.set(eye_pos_[0], eye_pos_[1]);
-		//System.out.println("eyePos x: "+ eye_pos_[0] + "       eyePos y: "+ eye_pos_[1]);	
+		
 		//invert
 		tmp_screen_pos_.y = display.getHeight()-tmp_screen_pos_.y;
 		tmp_world_coord_ = display.getWorldCoordinates(tmp_screen_pos_, 0);
 		pointer_.getLocalTranslation().x = tmp_world_coord_.x;
 		pointer_.getLocalTranslation().y = tmp_world_coord_.y;
-		
-		if(eye_pos_[0] != 0.0f || eye_pos_[1] != 0.0f)
-			System.out.println("eyePos x: "+ eye_pos_[0] + "       eyePos y: "+ eye_pos_[1]);
-		//System.out.println("coord x: "+ tmp_world_coord_.x + "       coord y: "+ tmp_world_coord_.y);
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Moves the ghost according to the pointer position
+     */
     private void moveGhost()
     {
     	for(int i = 0; i <= 20; i+=4)
@@ -1910,35 +2092,45 @@ public class ECgame extends SimplePhysicsGame
     		{
     			switch(i/4)
     			{
-    			case 0:
-    				ghost_.getLocalTranslation().x = -2.5f;
-    				ghost_.getLocalTranslation().y = 4.8f;
-    				return;
-    			case 1:
-    				ghost_.getLocalTranslation().x = 4;
-    				ghost_.getLocalTranslation().y = 4.8f;
-    				return;
-    			case 2:
-    				ghost_.getLocalTranslation().x = -4;
-    				ghost_.getLocalTranslation().y = -0.2f;
-    				return;
-    			case 3:
-    				ghost_.getLocalTranslation().x = 2.5f;
-    				ghost_.getLocalTranslation().y = -0.2f;
-    				return;
-    			case 4:
-    				ghost_.getLocalTranslation().x = -5.5f;
-    				ghost_.getLocalTranslation().y = -5.2f;
-    				return;
-    			case 5:
-    				ghost_.getLocalTranslation().x = 1;
-    				ghost_.getLocalTranslation().y = -5.2f;
-    				return;
+	    			case 0:
+	    				ghost_.getLocalTranslation().x = -2.5f;
+	    				ghost_.getLocalTranslation().y = 4.8f;
+	    				return;
+	    			case 1:
+	    				ghost_.getLocalTranslation().x = 4;
+	    				ghost_.getLocalTranslation().y = 4.8f;
+	    				return;
+	    			case 2:
+	    				ghost_.getLocalTranslation().x = -4;
+	    				ghost_.getLocalTranslation().y = -0.2f;
+	    				return;
+	    			case 3:
+	    				ghost_.getLocalTranslation().x = 2.5f;
+	    				ghost_.getLocalTranslation().y = -0.2f;
+	    				return;
+	    			case 4:
+	    				ghost_.getLocalTranslation().x = -5.5f;
+	    				ghost_.getLocalTranslation().y = -5.2f;
+	    				return;
+	    			case 5:
+	    				ghost_.getLocalTranslation().x = 1;
+	    				ghost_.getLocalTranslation().y = -5.2f;
+	    				return;
     			}
     		}
     	}
     }
+    //---------------------------------------------------------------------------------
     
+    //---------------------------------------------------------------------------------
+    /**
+     * Checks if the mouse/gaze position is inside a specific area (rectangle)
+     * @param pos1 : top left corner of the rectangle
+     * @param pos2 : top right corner of the rectangle
+     * @param pos3 : bottom left corner of the rectangle
+     * @param pos4 : bottom right corner of the rectangle
+     * @return true, false
+     */
     private boolean checkInsideArea(Vector2f pos1, Vector2f pos2, Vector2f pos3, Vector2f pos4)
     {
     	if(tmp_world_coord_.x >= pos1.x && tmp_world_coord_.x <= pos2.x &&
@@ -1947,16 +2139,22 @@ public class ECgame extends SimplePhysicsGame
     	else
     		return false;
     }
+    //---------------------------------------------------------------------------------
     
-    private void initSound() {
+    //---------------------------------------------------------------------------------
+    /**
+     * Initializes the audio system
+     */
+    private void initSound() 
+    {
 		// grab a handle to our audio system.
 		audio_ = AudioSystem.getSystem();
 
-		// setup our ear tracker to track the camera's position and orientation.
+		// setup ear tracker to track the camera's position and orientation.
 		audio_.getEar().trackOrientation(cam);
 		audio_.getEar().trackPosition(cam);
 
-		// setup a music score for our demo
+		// setup a music score
 		music_normal_ = getMusic(ECgame.class.getResource("/data/theartofgardens.ogg"));
 		music_game_over_ = getMusic(ECgame.class.getResource("/data/threedrops.ogg"));
 		audio_.getMusicQueue().setRepeatType(RepeatType.ALL);
@@ -1965,8 +2163,6 @@ public class ECgame extends SimplePhysicsGame
 		audio_.getMusicQueue().addTrack(music_normal_);
 		audio_.getMusicQueue().play();
 		
-		
-
 		explosion_sound_ = audio_.createAudioTrack("/data/explosion.ogg", false);
 		explosion_sound_.setRelative(true);
 		explosion_sound_.setMaxAudibleDistance(100000);
@@ -1979,7 +2175,14 @@ public class ECgame extends SimplePhysicsGame
 		bounce_sound_.setVolume(0.4f);
 		bounce_sound_.setTargetVolume(0.4f);
 	}
- 
+    //---------------------------------------------------------------------------------
+    
+    //---------------------------------------------------------------------------------
+    /**
+     * Loads a sound file
+     * @param resource : URL of the sound file
+     * @return AudioTrack of the sound file
+     */
 	private AudioTrack getMusic(URL resource) {
 		// Create a non-streaming, non-looping, relative sound clip.
 		AudioTrack sound = AudioSystem.getSystem().createAudioTrack(resource, true);

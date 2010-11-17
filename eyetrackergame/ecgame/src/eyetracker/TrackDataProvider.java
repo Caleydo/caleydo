@@ -124,6 +124,9 @@ public class TrackDataProvider {
 			}
 
 			fArTmpPoint = ((LinkedList<float[]>) eyePosInputQueue).get(i);
+			
+			if(fArTmpPoint.length == 0)
+				continue;
 			fArSmoothedPoint[0] += fArTmpPoint[0];
 			fArSmoothedPoint[1] += fArTmpPoint[1];
 		}
