@@ -12,7 +12,7 @@ import org.caleydo.view.filterpipeline.GLFilterPipeline;
 /**
  * Tool bar content.
  * 
- * @author <INSERT YOUR NAME>
+ * @author Thomas Geymayer
  */
 public class FilterPipelineToolBarContent extends AToolBarContent {
 
