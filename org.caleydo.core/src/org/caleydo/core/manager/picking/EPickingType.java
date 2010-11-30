@@ -146,6 +146,9 @@ public enum EPickingType {
 	CONTEXT_MENU_SCROLL_UP,
 
 	// datawindows
-	DATAW_NODE;
-
+	DATAW_NODE,
+	
+	// filterpipeline
+	FILTERPIPE_BACKGROUND,
+	FILTERPIPE_FILTER;
 }
