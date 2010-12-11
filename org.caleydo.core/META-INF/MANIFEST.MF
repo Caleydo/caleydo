@@ -137,6 +137,7 @@ Export-Package: org.caleydo.core.bridge.gui;uses:="org.caleydo.core.serialize,or
    org.caleydo.core.data.collection.set,
    org.caleydo.core.data.selection",
  org.caleydo.core.manager.event.view.browser;uses:="org.caleydo.core.manager.event",
+ org.caleydo.core.manager.event.view.filterpipeline,
  org.caleydo.core.manager.event.view.group;uses:="org.caleydo.core.manager.event",
  org.caleydo.core.manager.event.view.grouper;uses:="org.caleydo.core.manager.event",
  org.caleydo.core.manager.event.view.histogram;uses:="org.caleydo.core.util.mapping.color,org.caleydo.core.manager.event",

@@ -41,7 +41,7 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 			@Override
 			public void run() {
 				Composite composite = new Composite(parentComposite, SWT.NONE);
-				composite.setLayout(new GridLayout(3, false));
+				composite.setLayout(new GridLayout(4, false));
 				GridData gridData = new GridData();
 				gridData.grabExcessHorizontalSpace = true;
 				gridData.horizontalAlignment = GridData.FILL;
@@ -52,20 +52,24 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 				
 				okButton = new Button(composite, SWT.PUSH);
 				okButton.setText("  OK  ");
+				final Button deleteButton = new Button(composite, SWT.PUSH);
+				deleteButton.setText("Delete");
 				Button cancelButton = new Button(composite, SWT.PUSH);
 				cancelButton.setText("Cancel");
-				Listener listener = new Listener() {
-					public void handleEvent(Event event) {
-						if (event.widget != okButton) {
+				Listener listener = new Listener()
+				{
+					public void handleEvent(Event event)
+					{
+						if( event.widget == deleteButton )
 							triggerRemoveFilterEvent();
-						}
-						else {
+						else if( event.widget == okButton )
 							applyFilter();
-						}
+
 						((Shell) parentComposite).close();
 					}
 				};
 				okButton.addListener(SWT.Selection, listener);
+				deleteButton.addListener(SWT.Selection, listener);
 				cancelButton.addListener(SWT.Selection, listener);
 				
 				Monitor primary = parentComposite.getDisplay().getPrimaryMonitor();
