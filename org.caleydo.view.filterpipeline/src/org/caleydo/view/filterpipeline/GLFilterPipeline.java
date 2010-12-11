@@ -1,23 +1,29 @@
 package org.caleydo.view.filterpipeline;
 
-import java.awt.Color;
 import java.awt.Font;
-import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.data.filter.Filter;
+import org.caleydo.core.data.filter.MetaFilter;
+import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.event.view.filterpipeline.SetFilterTypeEvent;
+import org.caleydo.core.manager.event.view.filterpipeline.SetFilterTypeEvent.FilterType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -27,7 +33,11 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.view.filterpipeline.listener.FilterUpdateListener;
+import org.caleydo.view.filterpipeline.listener.SetFilterTypeListener;
 import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 
 /**
@@ -45,9 +55,14 @@ public class GLFilterPipeline
 
 	private FilterPipelineRenderStyle renderStyle;
 	private SelectionManager selectionManager;	
-	private List<Filter> filterList;
-
-	private int totalGenes;
+	private List<FilterItem> filterList = new LinkedList<FilterItem>();
+	
+	private FilterUpdateListener filterUpdateListener;
+	private SetFilterTypeListener setFilterTypeListener;
+	
+	private ASetBasedDataDomain dataDomain;
+	private FilterType filterType = FilterType.CONTENT;
+	private int numTotalElements;
 
 	/**
 	 * Constructor.
@@ -61,6 +76,11 @@ public class GLFilterPipeline
 		super(glCanvas, viewFrustum, true);
 
 		viewType = GLFilterPipeline.VIEW_ID;
+		dataDomain =
+			(ASetBasedDataDomain) DataDomainManager.get().getDataDomain
+			(
+				"org.caleydo.datadomain.genetic"
+			);
 	}
 
 	@Override
@@ -137,14 +157,15 @@ public class GLFilterPipeline
 		displayBackground(gl);
 		
 		// filter
-		if( filterList != null )
+		if( !filterList.isEmpty() )
 		{
-			float left = 0.2f;
-			
-			for (Filter filter : filterList)
+			float filterWidth  = viewFrustum.getWidth() / filterList.size();
+			float left = 0;
+				
+			for (FilterItem filter : filterList)
 			{
-				displayFilter(gl, filter, left, 0.8f);
-				left += 1;
+				displayFilter(gl, filter, left, filterWidth);
+				left += filterWidth;
 			}
 		}
 	}
@@ -177,7 +198,7 @@ public class GLFilterPipeline
 		gl.glPopName();		
 	}
 	
-	private void displayFilter(GL gl, Filter filter, float left, float width)
+	private void displayFilter(GL gl, FilterItem filter, float left, float width)
 	{
 		textRenderer.dispose();
 		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), true);
@@ -203,7 +224,8 @@ public class GLFilterPipeline
 
 		gl.glVertex3f(left, 0, 0.001f);
 		gl.glVertex3f(left, 1, 0.001f);
-		gl.glVertex3f(left + width, 1-(float)filter.getCountFilteredItems()/totalGenes, 0.001f);
+
+		gl.glVertex3f(left + width, 1-(float)filter.getCountFilteredItems()/numTotalElements , 0.001f);
 		gl.glVertex3f(left + width, 0, 0.001f);
 	
 		gl.glEnd();
@@ -223,10 +245,10 @@ public class GLFilterPipeline
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 			
-			gl.glVertex3f(left, 0, 0);
-			gl.glVertex3f(left, 1, 0);
-			gl.glVertex3f(left + width, 1-(float)filter.getCountFilteredItems()/totalGenes, 0);
-			gl.glVertex3f(left + width, 0, 0);
+			gl.glVertex3f(left, 0, 0.9f);
+			gl.glVertex3f(left, 1, 0.9f);
+			gl.glVertex3f(left + width, 1-(float)filter.getCountFilteredItems()/numTotalElements, 0.9f);
+			gl.glVertex3f(left + width, 0, 0.9f);
 		
 			gl.glEnd();
 		}		
@@ -259,7 +281,14 @@ public class GLFilterPipeline
 				selectionManager.addToType(SelectionType.MOUSE_OVER, iExternalID);
 				break;
 			case CLICKED:
-				filterList.get(iExternalID).showDetailsDialog();
+				try
+				{
+					filterList.get(iExternalID).showDetailsDialog();
+				}
+				catch (Exception e)
+				{
+					System.out.println("Failed to show details diaolg: "+e);
+				}
 				break;
 		}
 	}
@@ -275,21 +304,97 @@ public class GLFilterPipeline
 	@Override
 	public String toString()
 	{
-		return "TODO: ADD INFO THAT APPEARS IN THE LOG";
+		return getClass().getCanonicalName();
 	}
 
 	@Override
 	public void registerEventListeners()
 	{
-		super.registerEventListeners();
-
+		filterUpdateListener = new FilterUpdateListener();
+		filterUpdateListener.setHandler(this);
+		eventPublisher.addListener(FilterUpdatedEvent.class, filterUpdateListener);
+		
+		setFilterTypeListener = new SetFilterTypeListener();
+		setFilterTypeListener.setHandler(this);
+		eventPublisher.addListener(SetFilterTypeEvent.class, setFilterTypeListener);
 	}
 
 	@Override
 	public void unregisterEventListeners()
 	{
-		super.unregisterEventListeners();
+		if (filterUpdateListener != null)
+		{
+			eventPublisher.removeListener(filterUpdateListener);
+			filterUpdateListener = null;
+		}
+		
+		if( setFilterTypeListener != null )
+		{
+			eventPublisher.removeListener(setFilterTypeListener);
+			setFilterTypeListener = null;
+		}
+	}
 
+	public void updateFilterPipeline()
+	{
+		Logger.log
+		(
+			new Status(IStatus.INFO, this.toString(),
+			"Filterupdate: filterType="+filterType)
+		);
+		
+		filterList.clear();
+		int filterID = 0;
+		
+		for( Filter<?> filter :
+				 filterType == FilterType.CONTENT
+				   ? dataDomain.getContentFilterManager().getFilterPipe()
+				   : dataDomain.getStorageFilterManager().getFilterPipe()
+		   )
+		{
+			int num_removed_items = 0;
+			
+			if (filter instanceof MetaFilter<?>)
+			{
+				System.out.println("MetaFilter");
+
+//				for (StorageFilter subFilter : ((StorageMetaFilter) filter).getFilterList())
+//				{
+//					// TODO
+//				}
+			}
+			else
+			{
+				for (VADeltaItem deltaItem : filter.getVADelta().getAllItems())
+				{
+					if( deltaItem.getType() == EVAOperation.REMOVE_ELEMENT )
+					{
+						++num_removed_items;
+					}
+					else
+						System.out.println(deltaItem);
+					
+					//deltaItem.getIndex()
+				}
+			}
+			
+			System.out.println(filter.getLabel()+" (filtered "+num_removed_items+" items)");
+			
+			filterList.add(new FilterItem(filterID++, filter.getLabel(), num_removed_items, filter.getFilterRep()));
+		}
+
+		numTotalElements =
+			filterType == FilterType.CONTENT ? dataDomain.getSet().depth()
+					                         : dataDomain.getSet().size();
+	}
+
+	public void handleSetFilterTypeEvent(FilterType type)
+	{
+		if( filterType == type )
+			return;
+		
+		filterType = type;
+		updateFilterPipeline();
 	}
 
 	@Override
@@ -340,11 +445,5 @@ public class GLFilterPipeline
 	{
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	public void handleFilterUpdated(List<Filter> filterList, int total)
-	{
-		this.filterList = filterList;
-		this.totalGenes = total;
 	}
 }

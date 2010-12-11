@@ -2,10 +2,7 @@ package org.caleydo.view.filterpipeline.listener;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.util.logging.Logger;
-import org.caleydo.view.filterpipeline.RcpGLFilterPipelineView;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
+import org.caleydo.view.filterpipeline.GLFilterPipeline;
 
 /**
  * Listener reacting on filter updates.
@@ -13,10 +10,10 @@ import org.eclipse.core.runtime.Status;
  * @author Marc Streit
  */
 public class FilterUpdateListener
-	extends AEventListener<RcpGLFilterPipelineView> {
+	extends AEventListener<GLFilterPipeline> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		handler.handleFilterUpdatedEvent();
+		handler.updateFilterPipeline();
 	}
 }

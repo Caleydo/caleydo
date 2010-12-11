@@ -9,7 +9,7 @@ import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
  * @author Thomas Geymayer
  *
  */
-public class Filter
+public class FilterItem
 {
 	private int id;
 	private String label;
@@ -23,7 +23,7 @@ public class Filter
 	 * @param countFilteredItems
 	 * @param aFilterRepresentation 
 	 */
-	public Filter(int id, String label, int countFilteredItems, AFilterRepresentation<?, ?> filterRepresentation)
+	public FilterItem(int id, String label, int countFilteredItems, AFilterRepresentation<?, ?> filterRepresentation)
 	{
 		this.id = id;
 		this.label = label;

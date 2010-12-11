@@ -6,6 +6,7 @@ import java.util.List;
 import org.caleydo.rcp.view.toolbar.ActionToolBarContainer;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.ToolBarContainer;
+import org.caleydo.rcp.view.toolbar.action.storagebased.ResetViewAction;
 import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
 import org.caleydo.view.filterpipeline.GLFilterPipeline;
 
@@ -34,8 +35,7 @@ public class FilterPipelineToolBarContent extends AToolBarContent {
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		// ADD YOUR TOOLBAR CONTENT HERE
-		// actionList.add();
+		actionList.add(new SelectFilterTypeWidget());
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);
