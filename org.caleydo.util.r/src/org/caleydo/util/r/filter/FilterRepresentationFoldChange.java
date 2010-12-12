@@ -100,11 +100,32 @@ public class FilterRepresentationFoldChange extends
 				evaluatorCheckBox = new Button[3];
 
 				evaluatorCheckBox[0] = new Button(parentComposite, SWT.CHECK);
-				evaluatorCheckBox[0].setSelection(true);
 				evaluatorCheckBox[0].setText("Less (down regulated)");
 
 				evaluatorCheckBox[1] = new Button(parentComposite, SWT.CHECK);
 				evaluatorCheckBox[1].setText("Greater (up regulated)");
+				
+				try
+				{
+					FoldChangeSettings settings = set1.getStatisticsResult()
+													  .getFoldChangeResult(set2)
+													  .getSecond();
+					switch( settings.getEvaluator() )
+		            {
+						case GREATER:
+							evaluatorCheckBox[1].setSelection(true);
+							break;
+						case BOTH:
+							evaluatorCheckBox[1].setSelection(true);
+						case LESS:
+							evaluatorCheckBox[0].setSelection(true);
+		            }
+				}
+				catch (Exception e) // fails on filter creation
+				{
+					evaluatorCheckBox[0].setSelection(true);
+				}
+				
 
 				evaluatorCheckBox[0].addSelectionListener(new SelectionAdapter() {
 					@Override
