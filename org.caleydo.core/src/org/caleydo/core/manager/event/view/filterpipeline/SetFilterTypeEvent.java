@@ -19,16 +19,23 @@ public class SetFilterTypeEvent
 	}
 
 	/**
+	 * @param targetViewId 
 	 * 
 	 */
-	public SetFilterTypeEvent(FilterType type)
+	public SetFilterTypeEvent(FilterType type, int targetViewId)
 	{
 		this.type = type;
+		this.targetViewId = targetViewId;
 	}
 	
 	public FilterType getType()
 	{
 		return type;
+	}
+	
+	public int getTargetViewId()
+	{
+		return targetViewId;
 	}
 
 	/* (non-Javadoc)
@@ -41,5 +48,6 @@ public class SetFilterTypeEvent
 	}
 	
 	private FilterType type;
+	private int targetViewId;
 
 }

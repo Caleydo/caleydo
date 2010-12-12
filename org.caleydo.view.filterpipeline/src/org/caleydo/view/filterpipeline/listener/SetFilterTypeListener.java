@@ -17,13 +17,17 @@ public class SetFilterTypeListener
 {
 
 	@Override
-	public void handleEvent(AEvent event)
+	public void handleEvent(AEvent rawEvent)
 	{
-		if( event instanceof SetFilterTypeEvent )
-			handler.handleSetFilterTypeEvent
-			(
-				((SetFilterTypeEvent)event).getType()
-			);
+		if( !(rawEvent instanceof SetFilterTypeEvent) )
+			return;
+		
+		SetFilterTypeEvent event = ((SetFilterTypeEvent)rawEvent);
+		
+		if( handler.getID() != event.getTargetViewId() )
+			return;
+
+		handler.handleSetFilterTypeEvent( event.getType() );
 	}
 
 }

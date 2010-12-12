@@ -17,12 +17,15 @@ public class SelectFilterTypeWidget
   implements IToolBarItem
 {
 
+	private int targetViewId;
+	
 	/**
 	 * 
 	 */
-	protected SelectFilterTypeWidget()
+	protected SelectFilterTypeWidget(int targetViewId)
 	{
-		super("");
+		super("SelectFilterTypeWidget"+targetViewId);
+		this.targetViewId = targetViewId;
 	}
 
 
@@ -51,7 +54,7 @@ public class SelectFilterTypeWidget
 
 				GeneralManager.get().getEventPublisher().triggerEvent
 				(
-					new SetFilterTypeEvent(filterType)
+					new SetFilterTypeEvent(filterType, targetViewId)
 				);
 			}
 		});

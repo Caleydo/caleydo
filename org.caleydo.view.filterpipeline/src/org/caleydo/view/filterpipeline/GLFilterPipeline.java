@@ -8,6 +8,8 @@ import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.MetaFilter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
+import org.caleydo.core.data.filter.event.ReEvaluateContentFilterListEvent;
+import org.caleydo.core.data.filter.event.ReEvaluateStorageFilterListEvent;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -34,6 +36,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.filterpipeline.listener.FilterUpdateListener;
+import org.caleydo.view.filterpipeline.listener.ReEvaluateFilterListener;
 import org.caleydo.view.filterpipeline.listener.SetFilterTypeListener;
 import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 import org.eclipse.core.runtime.IStatus;
@@ -59,6 +62,7 @@ public class GLFilterPipeline
 	
 	private FilterUpdateListener filterUpdateListener;
 	private SetFilterTypeListener setFilterTypeListener;
+	private ReEvaluateFilterListener reEvaluateFilterListener;
 	
 	private ASetBasedDataDomain dataDomain;
 	private FilterType filterType = FilterType.CONTENT;
@@ -147,7 +151,6 @@ public class GLFilterPipeline
 	@Override
 	public void displayRemote(GL gl)
 	{
-
 		display(gl);
 	}
 
@@ -314,6 +317,11 @@ public class GLFilterPipeline
 		filterUpdateListener.setHandler(this);
 		eventPublisher.addListener(FilterUpdatedEvent.class, filterUpdateListener);
 		
+		reEvaluateFilterListener = new ReEvaluateFilterListener();
+		reEvaluateFilterListener.setHandler(this);
+		eventPublisher.addListener(ReEvaluateContentFilterListEvent.class, reEvaluateFilterListener);
+		eventPublisher.addListener(ReEvaluateStorageFilterListEvent.class, reEvaluateFilterListener);
+		
 		setFilterTypeListener = new SetFilterTypeListener();
 		setFilterTypeListener.setHandler(this);
 		eventPublisher.addListener(SetFilterTypeEvent.class, setFilterTypeListener);
@@ -322,10 +330,16 @@ public class GLFilterPipeline
 	@Override
 	public void unregisterEventListeners()
 	{
-		if (filterUpdateListener != null)
+		if( filterUpdateListener != null )
 		{
 			eventPublisher.removeListener(filterUpdateListener);
 			filterUpdateListener = null;
+		}
+		
+		if( reEvaluateFilterListener != null )
+		{
+			eventPublisher.removeListener(reEvaluateFilterListener);
+			reEvaluateFilterListener = null;
 		}
 		
 		if( setFilterTypeListener != null )
@@ -396,6 +410,12 @@ public class GLFilterPipeline
 		filterType = type;
 		updateFilterPipeline();
 	}
+	
+	public void handleReEvaluateFilter(FilterType type)
+	{
+		if( filterType == type )
+			updateFilterPipeline();
+	}
 
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
@@ -446,4 +466,5 @@ public class GLFilterPipeline
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 }
