@@ -47,8 +47,10 @@ public class FilterRepresentationFoldChange extends
 
 	private Histogram histogram;
 
-	public void create() {
-		super.create();
+	public boolean create() {
+		
+		if( !super.create() )
+			return false;
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
@@ -196,6 +198,8 @@ public class FilterRepresentationFoldChange extends
 		});
 
 		addOKCancel();
+		
+		return true;
 	}
 
 	public void setHistogram(Histogram histogram) {

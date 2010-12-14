@@ -150,5 +150,6 @@ public enum EPickingType {
 	
 	// filterpipeline
 	FILTERPIPE_BACKGROUND,
-	FILTERPIPE_FILTER;
+	FILTERPIPE_FILTER,
+	FILTERPIPE_START_ARROW;
 }

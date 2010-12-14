@@ -42,8 +42,10 @@ public class FilterRepresentationPValue extends
 	private float pValue = -1;
 	private float pValueMax = -1;
 	
-	public void create() {
-		super.create();
+	public boolean create() {
+		
+		if( !super.create() )
+			return false;
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
@@ -150,6 +152,8 @@ public class FilterRepresentationPValue extends
 		});
 		
 		addOKCancel();
+		
+		return true;
 	}
 
 	public void setHistogram(Histogram histogram) {

@@ -27,6 +27,10 @@ public enum EIconTextures {
 	GATE_BODY("resources/icons/view/storagebased/parcoords/gate_body.png"),
 
 	REMOVE("resources/icons/general/remove.png"),
+	
+	FILTER_PIPELINE_MENU_ITEM("resources/icons/view/filterpipeline/item_background.png"),
+	FILTER_PIPELINE_EDIT("resources/icons/view/filterpipeline/edit.png"),
+	FILTER_PIPELINE_DELETE("resources/icons/view/filterpipeline/delete.png"),
 
 	// POLYLINE_TO_AXIS("resources/icons/general/no_icon_available.png"),
 	// PREVENT_OCCLUSION("resources/icons/general/no_icon_available.png"),

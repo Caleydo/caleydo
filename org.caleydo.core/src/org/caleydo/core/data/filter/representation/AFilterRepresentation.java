@@ -24,16 +24,41 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 	protected Button okButton;
 
 	protected boolean isDirty = true;
+	
+	/**
+	 * Whether currently the filter representation is displayed. Used to prevent
+	 * multiple open filter representations of the same filter.
+	 */
+	protected boolean isDisplayed = false;
 
-	public void create() {
-
+	/**
+	 * 
+	 * @return true if a new window was opened,
+	 *         false if a window was already opened
+	 */
+	public synchronized boolean create()
+	{
+		// get focus instead of creating new dialog if a dialog is
+		// already opened
+		final boolean requestFocus = isDisplayed;
+		
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				parentComposite = new Shell();
-				parentComposite.setLayout(new GridLayout(1, false));
+				if( requestFocus )
+				{
+					parentComposite.setFocus();
+				}
+				else
+				{
+					parentComposite = new Shell();
+					parentComposite.setLayout(new GridLayout(1, false));
+				}
 			}
 		});
+
+		isDisplayed = true;
+		return !requestFocus;
 	}
 
 	protected void addOKCancel() {
@@ -66,6 +91,7 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 							applyFilter();
 
 						((Shell) parentComposite).close();
+						isDisplayed = false;
 					}
 				};
 				okButton.addListener(SWT.Selection, listener);

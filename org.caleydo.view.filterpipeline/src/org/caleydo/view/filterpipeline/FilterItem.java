@@ -1,7 +1,11 @@
 package org.caleydo.view.filterpipeline;
 
-import org.caleydo.core.data.filter.representation.AFilterRepresentation;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import java.util.Vector;
+import org.caleydo.core.data.filter.ContentFilter;
+import org.caleydo.core.data.filter.Filter;
+import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
+import org.caleydo.core.data.filter.event.RemoveFilterEvent;
+import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Represents a filter
@@ -12,23 +16,22 @@ import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 public class FilterItem
 {
 	private int id;
-	private String label;
-	private int countFilteredItems;
-	private AFilterRepresentation<?, ?> filterRepresentation;	
+	private Filter<?> filter;
+	private Vector<Integer> filteredItems;
 
 	/**
 	 * 
 	 * @param id
-	 * @param label
-	 * @param countFilteredItems
+	 * @param filteredItems
 	 * @param aFilterRepresentation 
 	 */
-	public FilterItem(int id, String label, int countFilteredItems, AFilterRepresentation<?, ?> filterRepresentation)
+	public FilterItem( int id,
+			           Vector<Integer> filteredItems,
+			           Filter<?> filter )
 	{
 		this.id = id;
-		this.label = label;
-		this.countFilteredItems = countFilteredItems;
-		this.filterRepresentation = filterRepresentation;
+		this.filteredItems = filteredItems;
+		this.filter = filter;
 	}
 	
 	/**
@@ -46,20 +49,40 @@ public class FilterItem
 	 */
 	public String getLabel()
 	{
-		return label;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public int getCountFilteredItems()
-	{
-		return countFilteredItems;
+		return filter.getLabel();
 	}
 	
+	/**
+	 * @return the filteredItems
+	 */
+	public Vector<Integer> getFilteredItems()
+	{
+		return filteredItems;
+	}
+
 	public void showDetailsDialog()
 	{
-		filterRepresentation.create();
+		filter.getFilterRep().create();
+	}
+	
+	public void triggerRemove()
+	{
+		RemoveFilterEvent<?> filterEvent = null;
+		
+		if( filter instanceof ContentFilter )
+		{
+			filterEvent = new RemoveContentFilterEvent();
+			((RemoveContentFilterEvent)filterEvent).setFilter((ContentFilter)filter);
+		}
+		else
+		{
+			System.err.println(getClass()+"::triggerRemove(): Unimplemented...");
+		}
+		
+		if( filterEvent != null )
+		{
+			filterEvent.setDataDomainType(filter.getDataDomain().getDataDomainType());			
+			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
+		}
 	}
 }

@@ -1,8 +1,12 @@
 package org.caleydo.view.filterpipeline;
 
+import gleem.linalg.Vec2f;
 import java.awt.Font;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.filter.Filter;
@@ -33,14 +37,18 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.filterpipeline.listener.FilterUpdateListener;
 import org.caleydo.view.filterpipeline.listener.ReEvaluateFilterListener;
 import org.caleydo.view.filterpipeline.listener.SetFilterTypeListener;
 import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureCoords;
 
 
 /**
@@ -51,7 +59,7 @@ import org.eclipse.core.runtime.Status;
 
 public class GLFilterPipeline
 	extends AGLView
-	implements IViewCommandHandler, ISelectionUpdateHandler
+	implements IViewCommandHandler, ISelectionUpdateHandler, IRadialMenuListener
 {
 
 	public final static String VIEW_ID = "org.caleydo.view.filterpipeline";
@@ -67,6 +75,33 @@ public class GLFilterPipeline
 	private ASetBasedDataDomain dataDomain;
 	private FilterType filterType = FilterType.CONTENT;
 	private int numTotalElements;
+	
+	/**
+	 * First filter to be displayed. All filters before are hidden and the
+	 * height of the first filter shall fill the whole view.
+	 */
+	private int firstFilter = 0;
+	
+	/**
+	 * The filtered items of this filter will be ignored, so that we can
+	 * see what the filter pipeline would look like without this filter.
+	 * 
+	 * Set to -1 if no filter should be ignored.
+	 */
+	private int ignoredFilter = -1;
+	
+	/**
+	 * The filter which should be showed in full size, which showing all
+	 * filtered items, even those which don't arrive as input because they
+	 * have been filtered before.
+	 * 
+	 * Set to -1 if no filter should be showed full sized.
+	 */
+	private int fullSizedFilter = -1;
+	
+	private boolean pipelineNeedsUpdate = true;
+	private Vec2f mousePosition = new Vec2f();
+	private RadialMenu filterMenu = null;
 
 	/**
 	 * Constructor.
@@ -105,6 +140,21 @@ public class GLFilterPipeline
 
 		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;
+		
+		filterMenu = new RadialMenu
+		(
+			this,
+			textureManager.getIconTexture(gl, EIconTextures.FILTER_PIPELINE_MENU_ITEM)
+		);
+		filterMenu.addEntry( null );
+		filterMenu.addEntry( null );
+		filterMenu.addEntry( textureManager.getIconTexture(gl, EIconTextures.FILTER_PIPELINE_DELETE) );
+		filterMenu.addEntry( textureManager.getIconTexture(gl, EIconTextures.FILTER_PIPELINE_EDIT) );
+		
+		if( textRenderer != null )
+			textRenderer.dispose();
+		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 20), true);
+		textRenderer.setColor(0, 0, 0, 1);
 	}
 
 	@Override
@@ -141,7 +191,7 @@ public class GLFilterPipeline
 	public void displayLocal(GL gl)
 	{
 		pickingManager.handlePicking(this, gl);
-		glMouseListener = getParentGLCanvas().getGLMouseListener();
+		//glMouseListener = getParentGLCanvas().getGLMouseListener();
 
 		display(gl);
 
@@ -157,20 +207,245 @@ public class GLFilterPipeline
 	@Override
 	public void display(GL gl)
 	{
+		// ---------------------------------------------------------------------
+		// move...
+		// ---------------------------------------------------------------------
+		
+		if( pipelineNeedsUpdate )
+			updateFilterPipeline();
+		
+		if( glMouseListener.wasMouseReleased() )
+			filterMenu.handleMouseReleased();
+		
+		updateMousePosition(gl);
+		
+		filterMenu.handleDragging(mousePosition);
+		
+		// ---------------------------------------------------------------------
+		// render...
+		// ---------------------------------------------------------------------		
+		
 		displayBackground(gl);
 		
 		// filter
 		if( !filterList.isEmpty() )
 		{
-			float filterWidth  = viewFrustum.getWidth() / filterList.size();
-			float left = 0;
+			// ensure at least on filter is shown
+			if( firstFilter >= filterList.size() )
+				firstFilter = filterList.size() - 1;
+			
+			int numFilters = filterList.size() - firstFilter;
+			
+			float filterWidth  = (viewFrustum.getWidth() - 0.2f) / numFilters;
+			float filterHeight = viewFrustum.getHeight() - 0.5f;
+			float left = 0.1f;
+			
+			// display an arrow to show hidden filters
+			if( firstFilter > 0 )
+				displayCollapseArrow(gl, firstFilter - 1, left);
+
+			// The usage of a Set ensures that multiple filtered items
+			// just count once
+			Set<Integer> filteredItems = new HashSet<Integer>();
 				
 			for (FilterItem filter : filterList)
 			{
-				displayFilter(gl, filter, left, filterWidth);
+				int numItemsIn = numTotalElements - filteredItems.size();
+				
+				if( filter.getId() != ignoredFilter )
+					filteredItems.addAll(filter.getFilteredItems());
+
+				int numItemsOut = numTotalElements - filteredItems.size();
+				int numItemsFiltered = numItemsIn - numItemsOut;
+
+				if( filter.getId() < firstFilter )
+					// skip hidden filters
+					continue;
+				
+				if( filter.getId() == firstFilter )
+					filterHeight *= (float)numTotalElements/numItemsIn;
+				else
+					displayCollapseArrow(gl, filter.getId(), left - 0.2f);
+				
+				if( filter.getId() == fullSizedFilter )
+					numItemsIn = numItemsOut + filter.getFilteredItems().size(); 
+
+				displayFilter
+				(
+					gl,
+					filter.getId(),
+					numItemsFiltered,
+					filter.getFilteredItems().size(),
+					numItemsOut,
+					left,
+					filterWidth,
+					(float)numItemsIn/numTotalElements * filterHeight,
+					(float)numItemsOut/numTotalElements * filterHeight
+				);
 				left += filterWidth;
 			}
+			
+			filterMenu.render(gl);
 		}
+	}
+	
+	/**
+	 * 
+	 * @param gl
+	 * @param id
+	 * @param left
+	 * @param width
+	 * @param heightLeft
+	 * @param heightRight
+	 */
+	private void displayFilter( GL gl,
+								int id,
+								int numFilteredNew,
+								int numFilteredTotal,
+								int numPassedNew,
+			                    float left,
+			                    float width,
+			                    float heightLeft,
+			                    float heightRight )
+	{
+		float bottom = 0.3f;
+		int iPickingID =
+			pickingManager.getPickingID
+			(
+				iUniqueID,
+				EPickingType.FILTERPIPE_FILTER,
+				id
+			);
+		
+		// filter
+		gl.glPushName(iPickingID);
+		
+		gl.glBegin(GL.GL_QUADS);
+		{		
+			if( id % 2 == 0 )
+				gl.glColor3f(1.f,0.6f,0.5f);
+			else
+				gl.glColor3f(0.8f,0.6f,1.f);
+	
+			gl.glVertex3f(left, bottom, 0.001f);
+			gl.glVertex3f(left, bottom + heightLeft, 0.001f);
+	
+			gl.glVertex3f(left + width, bottom + heightRight, 0.001f);
+			gl.glVertex3f(left + width, bottom, 0.001f);
+		}
+		gl.glEnd();
+		gl.glPopName();
+		
+		// label
+		textRenderer.renderText
+		(
+			gl,
+			"-"+numFilteredNew+" (-"+numFilteredTotal+")",
+			left   + 0.05f,
+			bottom + 0.05f,
+			0.007f,
+			0.007f,
+			20
+		);
+		
+		// currently not filtered elements
+		textRenderer.renderText
+		(
+			gl,
+			""+numPassedNew,
+			left   + width - 0.4f,
+			bottom + heightRight + 0.05f,
+			0.007f,
+			0.007f,
+			20
+		);
+		
+		// show input for first filter
+		if( id == firstFilter )
+			textRenderer.renderText
+			(
+				gl,
+				""+(numPassedNew + numFilteredNew),
+				left,
+				bottom + heightLeft + 0.05f,
+				0.007f,
+				0.007f,
+				20
+			);
+		
+		
+		if( selectionManager.getElements(SelectionType.MOUSE_OVER)
+				            .contains(id) )
+		{
+			gl.glLineWidth(SelectionType.MOUSE_OVER.getLineWidth());
+			
+			gl.glBegin(GL.GL_LINE_LOOP);
+			{
+				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
+				
+				gl.glVertex3f(left, bottom, 0.9f);
+				gl.glVertex3f(left, bottom + heightLeft, 0.9f);
+				gl.glVertex3f(left + width, bottom + heightRight, 0.9f);
+				gl.glVertex3f(left + width, bottom, 0.9f);
+			}
+			gl.glEnd();
+		}		
+	}
+	
+	private void displayCollapseArrow(GL gl, int id, float left)
+	{
+		int iPickingID =
+			pickingManager.getPickingID
+			(
+				iUniqueID,
+				EPickingType.FILTERPIPE_START_ARROW,
+				id
+			);
+		float bottom = 0.025f;
+		float halfSize = 0.1f;
+
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+		
+		Texture arrowTexture =
+			textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_ARROW);
+		arrowTexture.enable();
+		arrowTexture.bind();
+		TextureCoords texCoords = arrowTexture.getImageTexCoords();
+		
+		gl.glPushName(iPickingID);
+		
+		gl.glMatrixMode(GL.GL_MODELVIEW_MATRIX);
+		gl.glPushMatrix();
+		gl.glLoadIdentity();
+		
+		gl.glTranslatef(left + halfSize, bottom + halfSize, 0.001f);
+		gl.glRotatef(id <= firstFilter ? -90 : 90, 0, 0, 1);
+		
+		gl.glBegin(GL.GL_QUADS);
+		{
+			gl.glColor3f(0.9f,1f,0.9f);
+	
+			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+			gl.glVertex2f(-halfSize, -halfSize);
+			
+			gl.glTexCoord2f(texCoords.left(), texCoords.top());
+			gl.glVertex2f(-halfSize, halfSize);
+	
+			gl.glTexCoord2f(texCoords.right(), texCoords.top());
+			gl.glVertex2f(halfSize, halfSize);
+			
+			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+			gl.glVertex2f(halfSize, -halfSize);
+		}
+		gl.glEnd();
+		
+		gl.glPopMatrix();
+		gl.glPopName();
+
+		arrowTexture.disable();
+		
+		gl.glPopAttrib();
 	}
 	
 	private void displayBackground(GL gl)
@@ -179,7 +454,7 @@ public class GLFilterPipeline
 			pickingManager.getPickingID
 			(
 				iUniqueID,
-				EPickingType.FILTERPIPE_FILTER,
+				EPickingType.FILTERPIPE_BACKGROUND,
 				100
 			);
 		
@@ -200,73 +475,17 @@ public class GLFilterPipeline
 		
 		gl.glPopName();		
 	}
-	
-	private void displayFilter(GL gl, FilterItem filter, float left, float width)
-	{
-		textRenderer.dispose();
-		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), true);
-		textRenderer.setColor(0, 0, 0, 1);
-		
-		int iPickingID =
-			pickingManager.getPickingID
-			(
-				iUniqueID,
-				EPickingType.FILTERPIPE_FILTER,
-				filter.getId()
-			);
-		
-		// filter
-		gl.glPushName(iPickingID);
-		
-		gl.glBegin(GL.GL_QUADS);
-		
-		if( filter.getId() % 2 == 0 )
-			gl.glColor3f(1.f,0.6f,0.5f);
-		else
-			gl.glColor3f(0.8f,0.6f,1.f);
-
-		gl.glVertex3f(left, 0, 0.001f);
-		gl.glVertex3f(left, 1, 0.001f);
-
-		gl.glVertex3f(left + width, 1-(float)filter.getCountFilteredItems()/numTotalElements , 0.001f);
-		gl.glVertex3f(left + width, 0, 0.001f);
-	
-		gl.glEnd();
-		gl.glPopName();
-		
-		// label
-		textRenderer.renderText(gl,"-"+filter.getCountFilteredItems(),left+0.05f,0.05f,0.007f,0.007f,40);
-		
-		
-		if( selectionManager.getElements(SelectionType.MOUSE_OVER)
-				            .contains(filter.getId()) )
-		{
-			//textRenderer.renderText(gl,"Test",left+0.01f,0.1f,0.007f,0.008f,40);
-			
-			gl.glLineWidth(SelectionType.MOUSE_OVER.getLineWidth());
-			
-			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
-			
-			gl.glVertex3f(left, 0, 0.9f);
-			gl.glVertex3f(left, 1, 0.9f);
-			gl.glVertex3f(left + width, 1-(float)filter.getCountFilteredItems()/numTotalElements, 0.9f);
-			gl.glVertex3f(left + width, 0, 0.9f);
-		
-			gl.glEnd();
-		}		
-	}
 
 	@Override
 	public String getShortInfo()
 	{
-		return "Template Caleydo View";
+		return "Filterpipeline "+filterType;
 	}
 
 	@Override
 	public String getDetailedInfo()
 	{
-		return "Template Caleydo View";
+		return "Filterpipeline "+filterType;
 	}
 
 	@Override
@@ -278,21 +497,91 @@ public class GLFilterPipeline
 			case MOUSE_OVER:
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				
-				if(pickingType == EPickingType.FILTERPIPE_BACKGROUND)
-					return;
-				
-				selectionManager.addToType(SelectionType.MOUSE_OVER, iExternalID);
+				if( pickingType == EPickingType.FILTERPIPE_FILTER )
+				{
+					selectionManager.addToType
+					(
+						SelectionType.MOUSE_OVER, iExternalID
+					);
+				}
 				break;
 			case CLICKED:
+				switch(pickingType)
+				{
+					case FILTERPIPE_FILTER:
+						filterMenu.show(iExternalID, mousePosition);
+						break;
+					case FILTERPIPE_START_ARROW:
+						firstFilter = iExternalID;
+						break;
+				}
+				break;
+		}
+	}
+	
+	@Override
+	public void handleRadialMenuSelection(int externalId, int selection)
+	{
+		fullSizedFilter = -1;
+		ignoredFilter = -1;
+
+		if( externalId >= filterList.size() || externalId < 0 )
+			return;
+		
+		FilterItem filter = filterList.get(externalId);
+		
+		switch(selection)
+		{
+			case 2: // left
+				filter.triggerRemove();
+				break;
+			case 3: // down
 				try
 				{
-					filterList.get(iExternalID).showDetailsDialog();
+					filter.showDetailsDialog();
 				}
 				catch (Exception e)
 				{
-					System.out.println("Failed to show details diaolg: "+e);
+					System.out.println("Failed to show details dialog: "+e);
 				}
 				break;
+		}
+	}
+	
+	@Override
+	public void handleRadialMenuHover(int externalId, int selection)
+	{
+		ignoredFilter = -1;
+		fullSizedFilter = -1;
+
+		switch(selection)
+		{
+			case 0:
+				fullSizedFilter = externalId;
+				break;
+			case 2: // remove
+				ignoredFilter = externalId;
+				break;
+		}
+	}
+	
+	private void updateMousePosition(GL gl)
+	{
+		try
+		{
+			float windowCoords[] =
+				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates
+				(
+					gl,
+					glMouseListener.getPickedPoint().x,
+					glMouseListener.getPickedPoint().y
+				);
+
+			mousePosition.set(windowCoords[0], windowCoords[1]);
+		}
+		catch(Exception e)
+		{
+			//System.out.println("Failed to get mouse position: "+e);
 		}
 	}
 
@@ -351,6 +640,8 @@ public class GLFilterPipeline
 
 	public void updateFilterPipeline()
 	{
+		pipelineNeedsUpdate = false;
+
 		Logger.log
 		(
 			new Status(IStatus.INFO, this.toString(),
@@ -366,7 +657,8 @@ public class GLFilterPipeline
 				   : dataDomain.getStorageFilterManager().getFilterPipe()
 		   )
 		{
-			int num_removed_items = 0;
+			Vector<Integer> filteredIds = new Vector<Integer>();
+			
 			
 			if (filter instanceof MetaFilter<?>)
 			{
@@ -382,21 +674,25 @@ public class GLFilterPipeline
 				for (VADeltaItem deltaItem : filter.getVADelta().getAllItems())
 				{
 					if( deltaItem.getType() == EVAOperation.REMOVE_ELEMENT )
-					{
-						++num_removed_items;
-					}
+						filteredIds.add(deltaItem.getPrimaryID());
 					else
 						System.out.println(deltaItem);
-					
-					//deltaItem.getIndex()
 				}
 			}
 			
-			System.out.println(filter.getLabel()+" (filtered "+num_removed_items+" items)");
+			System.out.println(filter.getLabel()+" (filtered "+filteredIds.size()+" items)");
 			
-			filterList.add(new FilterItem(filterID++, filter.getLabel(), num_removed_items, filter.getFilterRep()));
+			filterList.add
+			(
+				new FilterItem
+				(
+					filterID++,
+					filteredIds,
+					filter
+				)
+			);
 		}
-
+		
 		numTotalElements =
 			filterType == FilterType.CONTENT ? dataDomain.getSet().depth()
 					                         : dataDomain.getSet().size();
@@ -457,7 +753,6 @@ public class GLFilterPipeline
 	public void broadcastElements(EVAOperation type)
 	{
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
