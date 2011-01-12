@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.mapping.IDType;
@@ -70,15 +70,15 @@ public class StandardTransformer
 	}
 
 	@Override
-	public void project(GL gl, String deskoXID, HashMap<IDType, ConnectionMap> source,
+	public void project(GL2 gl, String deskoXID, HashMap<IDType, ConnectionMap> source,
 		HashMap<IDType, CanvasConnectionMap> target) {
 		final double mvmatrix[] = new double[16];
 		final double projmatrix[] = new double[16];
 		final int viewport[] = new int[4];
 
-		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-		gl.glGetDoublev(GL.GL_MODELVIEW_MATRIX, mvmatrix, 0);
-		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, projmatrix, 0);
+		gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
+		gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, mvmatrix, 0);
+		gl.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projmatrix, 0);
 
 		final double[] wc = new double[4];
 		final GLU glu = new GLU();

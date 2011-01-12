@@ -2,7 +2,7 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 
 import java.awt.Font;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -31,7 +31,7 @@ public class StorageCaptionRenderer extends AContentRenderer {
 	}
 
 	@Override
-	public void render(GL gl) {
+	public void render(GL2 gl) {
 
 		StorageVirtualArray storageVA = heatMap.getStorageVA();
 		textRenderer.setColor(0, 0, 0, 1);

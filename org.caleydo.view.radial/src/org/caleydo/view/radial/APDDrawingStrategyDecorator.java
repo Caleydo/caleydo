@@ -1,6 +1,6 @@
 package org.caleydo.view.radial;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.manager.picking.PickingManager;
@@ -32,10 +32,10 @@ public abstract class APDDrawingStrategyDecorator extends APDDrawingStrategy {
 	}
 
 	@Override
-	public abstract void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw);
+	public abstract void drawFullCircle(GL2 gl, GLU glu, PartialDisc pdDiscToDraw);
 
 	@Override
-	public abstract void drawPartialDisc(GL gl, GLU glu, PartialDisc pdDiscToDraw);
+	public abstract void drawPartialDisc(GL2 gl, GLU glu, PartialDisc pdDiscToDraw);
 
 	/**
 	 * Gets the decorated drawing strategy.

@@ -3,7 +3,7 @@ package org.caleydo.view.bookmark;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -163,13 +163,13 @@ public class GLBookmarkView extends AGLView implements
 	}
 
 	@Override
-	public void display(GL gl) {
+	public void display(GL2 gl) {
 
 		gl.glCallList(iGLDisplayListToCall);
 	}
 
 	@Override
-	protected void displayLocal(GL gl) {
+	protected void displayLocal(GL2 gl) {
 
 		pickingManager.handlePicking(this, gl);
 
@@ -185,7 +185,7 @@ public class GLBookmarkView extends AGLView implements
 	}
 
 	@Override
-	public void displayRemote(GL gl) {
+	public void displayRemote(GL2 gl) {
 
 		if (bIsDisplayListDirtyRemote) {
 			bIsDisplayListDirtyRemote = false;
@@ -203,13 +203,13 @@ public class GLBookmarkView extends AGLView implements
 	 * updated in every frame.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 * @param iGLDisplayListIndex
 	 *            Index of display list.
 	 */
-	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
+	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
 		float currentHeight = viewFrustum.getHeight() - BookmarkRenderStyle.TOP_SPACING;
 		for (ABookmarkContainer<?> container : bookmarkContainers) {
@@ -295,11 +295,11 @@ public class GLBookmarkView extends AGLView implements
 	}
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 	}
 
 	@Override
-	protected void initLocal(GL gl) {
+	protected void initLocal(GL2 gl) {
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
@@ -308,7 +308,7 @@ public class GLBookmarkView extends AGLView implements
 	}
 
 	@Override
-	public void initRemote(GL gl, AGLView glParentView, GLMouseListener glMouseListener,
+	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener,
 			GLInfoAreaManager infoAreaManager) {
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);

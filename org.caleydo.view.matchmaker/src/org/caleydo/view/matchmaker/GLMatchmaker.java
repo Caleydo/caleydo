@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.group.ContentGroupList;
@@ -141,7 +141,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 		// contentVA = useCase.getContentVA(ContentVAType.CONTENT);
 		// storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
 
@@ -170,12 +170,12 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void initLocal(GL gl) {
+	public void initLocal(GL2 gl) {
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
-		// Register keyboard listener to GL canvas
+		// Register keyboard listener to GL2 canvas
 		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -187,10 +187,10 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
+	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
-		// Register keyboard listener to GL canvas
+		// Register keyboard listener to GL2 canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
 					@Override
@@ -218,7 +218,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void displayLocal(GL gl) {
+	public void displayLocal(GL2 gl) {
 
 		if (wasMouseWheeled) {
 			wasMouseWheeled = false;
@@ -242,7 +242,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void displayRemote(GL gl) {
+	public void displayRemote(GL2 gl) {
 		// if (bIsDisplayListDirtyRemote) {
 		// bIsDisplayListDirtyRemote = false;
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
@@ -255,7 +255,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void display(GL gl) {
+	public void display(GL2 gl) {
 		// processEvents();
 
 		compareViewStateController.drawActiveElements(gl);
@@ -276,8 +276,8 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		checkForHits(gl);
 	}
 
-	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
-		// gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
+		// gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
 		compareViewStateController.drawDisplayListElements(gl);
 

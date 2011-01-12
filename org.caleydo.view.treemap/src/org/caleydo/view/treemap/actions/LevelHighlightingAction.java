@@ -2,21 +2,15 @@ package org.caleydo.view.treemap.actions;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.treemap.LevelHighlightingEvent;
-import org.caleydo.core.manager.event.view.treemap.ToggleColoringModeEvent;
-import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
-import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.action.ControlContribution;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Scale;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Scale for highlighting different hierarchylevel in the treemap 

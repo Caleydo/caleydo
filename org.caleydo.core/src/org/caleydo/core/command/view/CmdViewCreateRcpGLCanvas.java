@@ -1,6 +1,7 @@
 package org.caleydo.core.command.view;
 
 import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
@@ -29,14 +30,14 @@ public class CmdViewCreateRcpGLCanvas
 
 	@Override
 	public void doCommand() {
-		GLCapabilities glCapabilities = new GLCapabilities();
+		GLCapabilities glCapabilities = new GLCapabilities(GLProfile.getDefault());
 		glCapabilities.setStencilBits(1);
 
 		createdObject = new GLCaleydoCanvas(glCapabilities);
 
 		ViewManager viewManager = generalManager.getViewGLCanvasManager();
 
-		// Register GL canvas to view manager
+		// Register GL2 canvas to view manager
 		viewManager.registerGLCanvas(createdObject);
 
 		if (externalID != -1) {

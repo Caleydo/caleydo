@@ -1,6 +1,6 @@
 package org.caleydo.view.bookmark;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -33,7 +33,7 @@ public abstract class ABookmark {
 		dimensions = new Dimensions();
 	}
 
-	public abstract void render(GL gl);
+	public abstract void render(GL2 gl);
 
 	public Dimensions getDimensions() {
 		return dimensions;

@@ -2,7 +2,7 @@ package org.caleydo.view.parcoords;
 
 import static org.caleydo.view.parcoords.PCRenderStyle.GATE_TIP_HEIGHT;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -24,7 +24,7 @@ public abstract class AGate extends AGLGUIElement {
 	protected float top;
 	protected float bottom;
 
-	public abstract void draw(GL gl, PickingManager pickingManager,
+	public abstract void draw(GL2 gl, PickingManager pickingManager,
 			TextureManager textureManager, CaleydoTextRenderer textRenderer, int iViewID);
 
 	/**
@@ -48,7 +48,7 @@ public abstract class AGate extends AGLGUIElement {
 	 * Handles the dragging of the current gate.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 * @param mousePositionX
 	 *            X coordinate of the mouse position.
 	 * @param mousePositionY
@@ -58,7 +58,7 @@ public abstract class AGate extends AGLGUIElement {
 	 * @param isGateDraggingFirstTime
 	 *            Specifies whether the gate is dragged the first time or not.
 	 */
-	public void handleDragging(GL gl, float mousePositionX, float mousePositionY,
+	public void handleDragging(GL2 gl, float mousePositionX, float mousePositionY,
 			EPickingType draggedObject, boolean isGateDraggingFirstTime) {
 
 		if (isGateDraggingFirstTime) {

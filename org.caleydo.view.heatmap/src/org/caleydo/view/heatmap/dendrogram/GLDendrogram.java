@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -55,8 +55,8 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageCo
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
 
 /**
  * Rendering the dendrogram.
@@ -186,12 +186,12 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	}
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 
 	}
 
 	@Override
-	public void initLocal(GL gl) {
+	public void initLocal(GL2 gl) {
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
@@ -200,7 +200,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
+	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
@@ -220,7 +220,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	}
 
 	@Override
-	public void displayLocal(GL gl) {
+	public void displayLocal(GL2 gl) {
 
 		if (set == null)
 			return;
@@ -242,7 +242,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	}
 
 	@Override
-	public void displayRemote(GL gl) {
+	public void displayRemote(GL2 gl) {
 		if (set == null)
 			return;
 
@@ -257,7 +257,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	}
 
 	@Override
-	public void display(GL gl) {
+	public void display(GL2 gl) {
 		// processEvents();
 
 		if (bIsDraggingActive) {
@@ -321,7 +321,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	 * 
 	 * @param gl
 	 */
-	private void renderCut(final GL gl) {
+	private void renderCut(final GL2 gl) {
 
 		float fHeight = viewFrustum.getHeight();
 		float fWidth = viewFrustum.getWidth();
@@ -332,7 +332,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		if (bRenderContentTree) {
 
 			gl.glTranslatef(+fLevelWidth, 0, 0);
-			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
 			Texture tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.SLIDER_ENDING);
@@ -341,7 +341,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-			gl.glBegin(GL.GL_QUADS);
+			gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(fPosCut - fWidthCutOf / 2, fHeight, CUT_OFF_Z);
 			gl.glTexCoord2f(texCoords.left(), texCoords.top());
@@ -357,7 +357,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			tempTexture.enable();
 			tempTexture.bind();
 
-			gl.glBegin(GL.GL_QUADS);
+			gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(fPosCut - fWidthCutOf / 2, 0, CUT_OFF_Z);
 			gl.glTexCoord2f(texCoords.left(), texCoords.top());
@@ -380,7 +380,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.DENDROGRAM_CUT_SELECTION, 1));
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fPosCut, -fSizeDendrogramArrow, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.top());
@@ -391,7 +391,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			gl.glVertex3f(fPosCut, 0, BUTTON_Z);
 			gl.glEnd();
 
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fPosCut, -fSizeDendrogramArrow, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.top());
@@ -405,12 +405,12 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 			textureArrow.disable();
 
-			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
 			gl.glTranslatef(-fLevelWidth, 0, 0);
 		} else {
 
-			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			if (fPosCut > fLevelHeight)
 				gl.glTranslatef(0, -fLevelHeight, 0);
 
@@ -420,7 +420,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			tempTexture.bind();
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-			gl.glBegin(GL.GL_QUADS);
+			gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2f(texCoords.left(), texCoords.top());
 			gl.glVertex3f(-0.1f, fPosCut - fWidthCutOf / 2, CUT_OFF_Z);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
@@ -437,7 +437,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			tempTexture.bind();
 			texCoords = tempTexture.getImageTexCoords();
 
-			gl.glBegin(GL.GL_QUADS);
+			gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 			gl.glVertex3f(0, fPosCut - fWidthCutOf / 2, CUT_OFF_Z);
 			gl.glTexCoord2f(texCoords.right(), texCoords.top());
@@ -460,7 +460,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.DENDROGRAM_CUT_SELECTION, 1));
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fWidth + fSizeDendrogramArrow, fPosCut, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.top());
@@ -472,7 +472,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			gl.glVertex3f(fWidth, fPosCut, BUTTON_Z);
 			gl.glEnd();
 
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fWidth + fSizeDendrogramArrow, fPosCut, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.top());
@@ -489,7 +489,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 			if (fPosCut > fLevelHeight)
 				gl.glTranslatef(0, +fLevelHeight, 0);
-			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		}
 
 	}
@@ -500,7 +500,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	 * 
 	 * @param gl
 	 */
-	private void renderSymbol(GL gl) {
+	private void renderSymbol(GL2 gl) {
 		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
 		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
 		Texture tempTexture = null;
@@ -517,9 +517,9 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		gl.glColor4f(1f, 1, 1, 1f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
@@ -564,7 +564,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	 * @param fHeight
 	 *            height of area for sub dendrogram
 	 */
-	public void renderSubTreeFromIndexToIndex(GL gl, int fromIndex, int toIndex,
+	public void renderSubTreeFromIndexToIndex(GL2 gl, int fromIndex, int toIndex,
 			int iNrLeafs, float fWidth, float fHeight) {
 
 		if (tree == null || tree.getRoot() == null)
@@ -717,7 +717,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	 * @param gl
 	 * @param currentNode
 	 */
-	private void renderSubTreeRec(GL gl, ClusterNode currentNode) {
+	private void renderSubTreeRec(GL2 gl, ClusterNode currentNode) {
 
 		float fLookupValue = currentNode.getAverageExpressionValue();
 		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
@@ -766,14 +766,14 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 						EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode.getID()));
 
 				// vertical line connecting all child nodes
-				gl.glBegin(GL.GL_LINES);
+				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex3f(xmin, ymin, currentNode.getPosSubTree().z());
 				gl.glVertex3f(xmin, ymax, currentNode.getPosSubTree().z());
 				gl.glEnd();
 
 				// horizontal lines connecting all children with their parent
 				for (int i = 0; i < iNrChildsNode; i++) {
-					gl.glBegin(GL.GL_LINES);
+					gl.glBegin(GL2.GL_LINES);
 					gl.glVertex3f(xmin, tempPositions[i].y(), tempPositions[i].z());
 					gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(),
 							tempPositions[i].z());
@@ -785,7 +785,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		} else {
 			// horizontal line visualizing leaf nodes
 			if (currentNode.isPartOfSubTree()) {
-				gl.glBegin(GL.GL_LINES);
+				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex3f(currentNode.getPosSubTree().x(), currentNode
 						.getPosSubTree().y(), currentNode.getPosSubTree().z());
 				gl.glVertex3f(xGlobalMaxSubTree, currentNode.getPosSubTree().y(),
@@ -797,7 +797,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		if (currentNode.isPartOfSubTree()) {
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode.getID()));
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(currentNode.getPosSubTree().x() + fLevelWidthSubTree,
 					currentNode.getPosSubTree().y(), currentNode.getPosSubTree().z());
 			gl.glVertex3f(currentNode.getPosSubTree().x(), currentNode.getPosSubTree()
@@ -929,12 +929,12 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	 * @param gl
 	 * @param currentNode
 	 */
-	private void renderSelections(final GL gl, ClusterNode currentNode) {
+	private void renderSelections(final GL2 gl, ClusterNode currentNode) {
 
 		if (currentNode.getSelectionType() == SelectionType.MOUSE_OVER) {
 			gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 
-			gl.glBegin(GL.GL_QUADS);
+			gl.glBegin(GL2.GL_QUADS);
 			gl.glVertex3f(currentNode.getPos().x() - 0.025f,
 					currentNode.getPos().y() - 0.025f, SELECTION_Z);
 			gl.glVertex3f(currentNode.getPos().x() + 0.025f,
@@ -948,7 +948,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		} else if (currentNode.getSelectionType() == SelectionType.SELECTION) {
 			gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 
-			gl.glBegin(GL.GL_QUADS);
+			gl.glBegin(GL2.GL_QUADS);
 			gl.glVertex3f(currentNode.getPos().x() - 0.025f,
 					currentNode.getPos().y() - 0.025f, SELECTION_Z);
 			gl.glVertex3f(currentNode.getPos().x() + 0.025f,
@@ -977,7 +977,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	 *            Opacity value of the current node. In case of determine
 	 *            clusters with the cut off value.
 	 */
-	private void renderDendrogramGenes(final GL gl, ClusterNode currentNode,
+	private void renderDendrogramGenes(final GL2 gl, ClusterNode currentNode,
 			float fOpacity) {
 
 		float fLookupValue = currentNode.getAverageExpressionValue();
@@ -1045,14 +1045,14 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 					EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode.getID()));
 
 			// vertical line connecting all child nodes
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(xmin, ymin, currentNode.getPos().z());
 			gl.glVertex3f(xmin, ymax, currentNode.getPos().z());
 			gl.glEnd();
 
 			// horizontal lines connecting all children with their parent
 			for (int i = 0; i < iNrChildsNode; i++) {
-				gl.glBegin(GL.GL_LINES);
+				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex3f(xmin, tempPositions[i].y(), tempPositions[i].z());
 				if (bCutOffActive[i] && bRenderUntilCut == false)
 					gl.glVertex3f(xGlobalMax, tempPositions[i].y(), tempPositions[i].z());
@@ -1072,7 +1072,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode.getID()));
 
 			// horizontal line visualizing leaf nodes
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode
 					.getPos().z());
 			gl.glVertex3f(xGlobalMax, currentNode.getPos().y(), currentNode.getPos().z());
@@ -1081,7 +1081,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			gl.glPopName();
 		}
 
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(currentNode.getPos().x() - fDiff, currentNode.getPos().y(),
 				currentNode.getPos().z());
 		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode
@@ -1099,7 +1099,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	 *            Opacity value of the current node. In case of determine
 	 *            clusters with the cut off value.
 	 */
-	private void renderDendrogramExperiments(final GL gl, ClusterNode currentNode,
+	private void renderDendrogramExperiments(final GL2 gl, ClusterNode currentNode,
 			float fOpacity) {
 
 		float fLookupValue = currentNode.getAverageExpressionValue();
@@ -1169,7 +1169,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 					currentNode.getID()));
 
 			// horizontal line connecting all child nodes
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(xmin, ymax, currentNode.getPos().z());
 			gl.glVertex3f(xmax, ymax, currentNode.getPos().z());
 			gl.glEnd();
@@ -1177,7 +1177,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			for (int i = 0; i < iNrChildsNode; i++) {
 
 				// vertical lines connecting all children with their parent
-				gl.glBegin(GL.GL_LINES);
+				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex3f(tempPositions[i].x(), ymax, tempPositions[i].z());
 				if (bCutOffActive[i] && bRenderUntilCut == false)
 					gl.glVertex3f(tempPositions[i].x(), yGlobalMin, tempPositions[i].z());
@@ -1198,7 +1198,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 					currentNode.getID()));
 
 			// vertical line visualizing leaf nodes
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode
 					.getPos().z());
 			gl.glVertex3f(currentNode.getPos().x(), yGlobalMin, currentNode.getPos().z());
@@ -1207,7 +1207,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			gl.glPopName();
 		}
 
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y() - fDiff,
 				currentNode.getPos().z());
 		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode
@@ -1215,9 +1215,9 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		gl.glEnd();
 	}
 
-	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
+	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
 		gl.glPushMatrix();
 		if (isMirrored) {
@@ -1289,7 +1289,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		gl.glEndList();
 
 		// display list for cut off value
-		gl.glNewList(iGLDisplayListCutOffValue, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListCutOffValue, GL2.GL_COMPILE);
 
 		if (tree != null && tree.getRoot() != null && bRenderUntilCut == false)
 			renderCut(gl);
@@ -1304,7 +1304,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	 * 
 	 * @param gl
 	 */
-	private void handleDragging(final GL gl) {
+	private void handleDragging(final GL2 gl) {
 		Point currentPoint = glMouseListener.getPickedPoint();
 		float[] fArTargetWorldCoordinates = new float[3];
 

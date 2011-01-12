@@ -2,7 +2,7 @@ package org.caleydo.view.cell;
 
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -19,11 +19,11 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
 
 /**
- * Single OpenGL cell view
+ * Single OpenGL2 cell view
  * 
  * @author Marc Streit
  */
@@ -57,23 +57,23 @@ public class GLCell extends AGLView {
 	}
 
 	@Override
-	public void initLocal(final GL gl) {
+	public void initLocal(final GL2 gl) {
 		init(gl);
 	}
 
 	@Override
-	public void initRemote(GL gl, AGLView glParentView, GLMouseListener glMouseListener,
+	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener,
 			GLInfoAreaManager infoAreaManager) {
 		this.glMouseListener = glMouseListener;
 		init(gl);
 	}
 
 	@Override
-	public void init(final GL gl) {
+	public void init(final GL2 gl) {
 	}
 
 	@Override
-	public void displayLocal(final GL gl) {
+	public void displayLocal(final GL2 gl) {
 
 		if (bIsDisplayListDirtyLocal) {
 			// rebuildPathwayDisplayList(gl);
@@ -83,7 +83,7 @@ public class GLCell extends AGLView {
 	}
 
 	@Override
-	public void displayRemote(final GL gl) {
+	public void displayRemote(final GL2 gl) {
 
 		if (bIsDisplayListDirtyRemote) {
 			// rebuildPathwayDisplayList(gl);
@@ -94,13 +94,13 @@ public class GLCell extends AGLView {
 	}
 
 	@Override
-	public void display(final GL gl) {
+	public void display(final GL2 gl) {
 		// processEvents();
 		checkForHits(gl);
 		renderScene(gl);
 	}
 
-	private void renderScene(final GL gl) {
+	private void renderScene(final GL2 gl) {
 
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
@@ -110,7 +110,7 @@ public class GLCell extends AGLView {
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 		gl.glColor3f(1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.025f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());

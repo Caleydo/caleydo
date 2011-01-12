@@ -5,7 +5,7 @@ import static org.caleydo.view.parcoords.PCRenderStyle.GATE_WIDTH;
 import static org.caleydo.view.parcoords.PCRenderStyle.GATE_Z;
 import gleem.linalg.Vec3f;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.ISet;
@@ -67,7 +67,7 @@ public class Gate extends AGate {
 	 * top and bottom of the gate.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 * @param pickingManager
 	 *            PickingManager that shall be used.
 	 * @param textureManager
@@ -78,7 +78,7 @@ public class Gate extends AGate {
 	 *            Unique ID of the view.
 	 */
 	@Override
-	public void draw(GL gl, PickingManager pickingManager, TextureManager textureManager,
+	public void draw(GL2 gl, PickingManager pickingManager, TextureManager textureManager,
 			CaleydoTextRenderer textRenderer, int iViewID) {
 
 		top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
@@ -98,7 +98,7 @@ public class Gate extends AGate {
 		int PickingID = pickingManager.getPickingID(iViewID, EPickingType.REMOVE_GATE,
 				gateID);
 		gl.glPushName(PickingID);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(currentPosition + GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT, GATE_Z);
 		gl.glVertex3f(currentPosition + 0.1828f - GATE_WIDTH, unscaledTop
 				- GATE_TIP_HEIGHT, GATE_Z);

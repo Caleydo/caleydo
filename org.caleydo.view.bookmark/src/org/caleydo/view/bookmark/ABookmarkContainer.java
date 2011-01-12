@@ -2,7 +2,7 @@ package org.caleydo.view.bookmark;
 
 import java.util.Iterator;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
@@ -140,7 +140,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 * 
 	 * @param gl
 	 */
-	void render(GL gl) {
+	void render(GL2 gl) {
 
 		float yOrigin = dimensions.getYOrigin();
 		dimensions.setHeight(0);
@@ -183,7 +183,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 						- BookmarkRenderStyle.FRAME_SPACING;
 
 				gl.glColor3fv(highlightColor, 0);
-				gl.glBegin(GL.GL_LINE_LOOP);
+				gl.glBegin(GL2.GL_LINE_LOOP);
 				gl.glVertex3f(xOrigin, yOrigin, 0);
 				gl.glVertex3f(xOrigin + width, yOrigin, 0);
 				gl.glVertex3f(xOrigin + width, yOrigin + height, 0);

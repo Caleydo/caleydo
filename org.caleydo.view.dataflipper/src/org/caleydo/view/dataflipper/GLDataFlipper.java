@@ -7,7 +7,7 @@ import gleem.linalg.open.Transform;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.ECommandType;
@@ -77,8 +77,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Shell;
 
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
 
 public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		IRemoteRenderingHandler, IPathwayLoader {
@@ -265,7 +265,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public void initLocal(final GL gl) {
+	public void initLocal(final GL2 gl) {
 		// iGLDisplayList = gl.glGenLists(1);
 
 		ArrayList<RemoteLevelElement> remoteLevelElementWhiteList = new ArrayList<RemoteLevelElement>();
@@ -279,14 +279,14 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
+	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");
 	}
 
 	@Override
-	public void init(final GL gl) {
+	public void init(final GL2 gl) {
 		gl.glClearColor(0.5f, 0.5f, 0.5f, 1f);
 
 		time = new SystemTime();
@@ -401,7 +401,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public void displayLocal(final GL gl) {
+	public void displayLocal(final GL2 gl) {
 
 		for (AGLView view : containedGLViews)
 			view.processEvents();
@@ -424,12 +424,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public void displayRemote(final GL gl) {
+	public void displayRemote(final GL2 gl) {
 		display(gl);
 	}
 
 	@Override
-	public void display(final GL gl) {
+	public void display(final GL2 gl) {
 
 		time.update();
 
@@ -475,7 +475,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glTranslatef(0, 0, -fZTranslation);
 	}
 
-	private void renderDataDomains(GL gl, String dataDomainType, float x, float y) {
+	private void renderDataDomains(GL2 gl, String dataDomainType, float x, float y) {
 
 		if (metaViewAnimation < DATA_DOMAIN_SPACING)
 			metaViewAnimation += 0.02f;
@@ -508,7 +508,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 				gl.glLineWidth(5);
 				gl.glColor3fv(GUIDANCE_COLOR, 0);
-				gl.glBegin(GL.GL_LINES);
+				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex3f(x - metaViewAnimation + 0.5f * DATA_DOMAIN_SCALING_FACTOR,
 						y + DATA_DOMAIN_HEIGHT / 2f + 0.15f, DATA_DOMAIN_Z);
 				gl.glVertex3f(x - metaViewAnimation + 0.5f - DATA_DOMAIN_SPACING
@@ -558,7 +558,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		}
 	}
 
-	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element) {
+	private void renderRemoteLevelElement(final GL2 gl, RemoteLevelElement element) {
 
 		AGLView glView = element.getGLView();
 		if (glView == null) {
@@ -608,7 +608,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	 * 
 	 * @param GL
 	 */
-	private void initNewView(GL gl) {
+	private void initNewView(GL2 gl) {
 
 		// if (!arSlerpActions.isEmpty())
 		// return;
@@ -694,7 +694,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	 * @return the created view ready to be used within the application
 	 */
 	@SuppressWarnings("unchecked")
-	private AGLView createView(GL gl, ASerializedView serView) {
+	private AGLView createView(GL2 gl, ASerializedView serView) {
 
 		@SuppressWarnings("rawtypes")
 		Class viewClass;
@@ -736,7 +736,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		canvasManager.releaseBusyMode(this);
 	}
 
-	private void doSlerpActions(final GL gl) {
+	private void doSlerpActions(final GL2 gl) {
 		if (arSlerpActions.isEmpty())
 			return;
 
@@ -823,7 +823,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		}
 	}
 
-	private void slerpView(final GL gl, SlerpAction slerpAction) {
+	private void slerpView(final GL2 gl, SlerpAction slerpAction) {
 		int iViewID = slerpAction.getElementId();
 
 		if (iViewID == -1)
@@ -1382,7 +1382,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// glView.reshape(drawable, x, y, width, height);
 	}
 
-	private void renderDataDomain(final GL gl, HistoryNode node, float x, float y) {
+	private void renderDataDomain(final GL2 gl, HistoryNode node, float x, float y) {
 
 		String dataDomainType = node.getDataDomainType();
 		IDataDomain dataDomain = DataDomainManager.get().getDataDomain(dataDomainType);
@@ -1618,7 +1618,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				// INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 1f, 1f, 1f };
 				// gl.glColor3fv(INTERFACE_ICON_BACKGROUND_COLOR, 0);
 				// gl.glLineWidth(2);
-				// gl.glBegin(GL.GL_LINES);
+				// gl.glBegin(GL2.GL_LINES);
 				// gl.glVertex3f(INTERFACE_WIDTH / 2f, INTERFACE_WIDTH, 0);
 				// gl.glVertex3f(transform.getTranslation().x() - x - viewIndex
 				// * (INTERFACE_WIDTH + 0.01f) - 1.5f + xCorrectionRight,
@@ -1696,7 +1696,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		return true;
 	}
 
-	private void renderNextDataDomain(final GL gl, HistoryNode historyNode,
+	private void renderNextDataDomain(final GL2 gl, HistoryNode historyNode,
 			String dataDomainType, float x, float y, boolean highlight,
 			boolean mouseOver, float splineAchorX1, float splineAnchorX2,
 			float splineAnchorY1, float splineAnchorY2) {
@@ -1837,11 +1837,11 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	}
 
-	private void renderViewIconToViewRelation(GL gl, RemoteLevelElement element,
+	private void renderViewIconToViewRelation(GL2 gl, RemoteLevelElement element,
 			float[] viewIconPos, float[] viewPos) {
 
 		gl.glLineWidth(5);
-		// gl.glBegin(GL.GL_LINES);
+		// gl.glBegin(GL2.GL_LINES);
 		// gl.glVertex3fv(viewIconPos, 0);
 		// gl.glVertex3fv(viewPos, 0);
 		// gl.glEnd();
@@ -1867,12 +1867,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		renderSingleCurve(gl, points, 20);
 	}
 
-	public void renderSingleCurve(GL gl, ArrayList<Vec3f> points, int curvePoints) {
+	public void renderSingleCurve(GL2 gl, ArrayList<Vec3f> points, int curvePoints) {
 
 		NURBSCurve curve = new NURBSCurve(points, curvePoints);
 		points = curve.getCurvePoints();
 
-		gl.glBegin(GL.GL_LINE_STRIP);
+		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < points.size(); i++) {
 			Vec3f point = points.get(i);
 			gl.glVertex3f(point.x(), point.y(), point.z());
@@ -1906,7 +1906,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		return "resources/icons/view/" + subfolder + viewName + "/" + viewName + ".png";
 	}
 
-	private void renderHandles(final GL gl) {
+	private void renderHandles(final GL2 gl) {
 
 		// Bucket center (focus)
 		RemoteLevelElement element = focusElement;
@@ -1994,7 +1994,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		}
 	}
 
-	// private void renderViewConnectionPipes(final GL gl, RemoteLevelElement
+	// private void renderViewConnectionPipes(final GL2 gl, RemoteLevelElement
 	// element) {
 	//
 	// textureManager.renderTexture(gl,
@@ -2009,7 +2009,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	//
 	// }
 
-	private void renderNavigationHandleBar(final GL gl, RemoteLevelElement element,
+	private void renderNavigationHandleBar(final GL2 gl, RemoteLevelElement element,
 			float fHandleWidth, float fHandleHeight, boolean bUpsideDown,
 			float fScalingFactor) {
 
@@ -2037,7 +2037,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_VIEW_DRAG, element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);
 		gl.glVertex3f(fHandleWidth - 2 * fHandleHeight, 2 + fHandleHeight, 0);
 		gl.glVertex3f(fHandleWidth - 2 * fHandleHeight, 2, 0);
@@ -2075,7 +2075,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	// FIXME: method copied from bucket
-	private void renderSingleHandle(final GL gl, int iRemoteLevelElementID,
+	private void renderSingleHandle(final GL2 gl, int iRemoteLevelElementID,
 			EPickingType ePickingType, EIconTextures eIconTexture, float fWidth,
 			float fHeight) {
 
@@ -2088,7 +2088,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 		gl.glColor3f(1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 
 		// if (eOrientation == EOrientation.TOP) {
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
@@ -2118,7 +2118,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glPopName();
 	}
 
-	public void renderBucketWall(final GL gl, boolean bRenderBorder) {
+	public void renderBucketWall(final GL2 gl, boolean bRenderBorder) {
 
 		gl.glLineWidth(2);
 
@@ -2133,7 +2133,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			gl.glColor4f(1f, 1f, 1f, 0.3f);
 		}
 
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0, 0, -0.01f);
 		gl.glVertex3f(0, 8, -0.01f);
 		gl.glVertex3f(8, 8, -0.01f);
@@ -2146,7 +2146,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glColor4f(0.15f, 0.15f, 0.15f, 1f);
 		gl.glLineWidth(4f);
 
-		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glBegin(GL2.GL_LINE_LOOP);
 		gl.glVertex3f(0, 0, -0.01f);
 		gl.glVertex3f(0, 8, -0.01f);
 		gl.glVertex3f(8, 8, -0.01f);

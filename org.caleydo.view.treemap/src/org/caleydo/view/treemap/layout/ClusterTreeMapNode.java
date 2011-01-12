@@ -1,6 +1,7 @@
 package org.caleydo.view.treemap.layout;
 
 import java.util.Set;
+
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionType;

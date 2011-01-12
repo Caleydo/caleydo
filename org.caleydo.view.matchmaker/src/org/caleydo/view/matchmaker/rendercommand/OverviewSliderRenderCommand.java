@@ -1,6 +1,6 @@
 package org.caleydo.view.matchmaker.rendercommand;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -21,7 +21,7 @@ public class OverviewSliderRenderCommand implements IHeatMapRenderCommand {
 	}
 
 	@Override
-	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
+	public void render(GL2 gl, HeatMapWrapper heatMapWrapper) {
 
 		VerticalSlider slider = heatMapWrapper.getOverview().getOverviewSlider();
 

@@ -2,6 +2,7 @@ package org.caleydo.view.filterpipeline;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;

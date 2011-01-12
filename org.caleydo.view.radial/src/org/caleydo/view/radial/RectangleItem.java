@@ -1,6 +1,6 @@
 package org.caleydo.view.radial;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * Represents a rectangle that can be drawn in a label using a specific color.
@@ -41,13 +41,13 @@ public class RectangleItem extends ALabelItem {
 	}
 
 	@Override
-	public void draw(GL gl) {
+	public void draw(GL2 gl) {
 
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 
 		gl.glColor3fv(fArColor, 0);
 
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(vecPosition.x(), vecPosition.y() - 0.01f, 0);
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - 0.01f, 0);
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() + fHeight - 0.01f, 0);

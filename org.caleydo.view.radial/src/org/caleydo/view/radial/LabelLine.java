@@ -4,7 +4,7 @@ import gleem.linalg.Vec2f;
 
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
@@ -59,7 +59,7 @@ public class LabelLine {
 	 *            be taken into consideration when determining the line's
 	 *            height.
 	 */
-	public void calculateSize(GL gl, CaleydoTextRenderer textRenderer,
+	public void calculateSize(GL2 gl, CaleydoTextRenderer textRenderer,
 			float fTextScaling, int iConsideredLabelTypes) {
 
 		fHeight = 0;
@@ -93,9 +93,9 @@ public class LabelLine {
 	 * Draws all items of this line.
 	 * 
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 */
-	public void draw(GL gl) {
+	public void draw(GL2 gl) {
 
 		for (ALabelItem currentItem : alLabelItems) {
 			currentItem.draw(gl);

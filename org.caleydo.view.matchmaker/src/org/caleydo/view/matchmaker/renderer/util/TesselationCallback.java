@@ -1,6 +1,6 @@
 package org.caleydo.view.matchmaker.renderer.util;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUtessellatorCallback;
 
@@ -9,10 +9,10 @@ import javax.media.opengl.glu.GLUtessellatorCallback;
  * could use GLUtesselatorCallBackAdapter instead. But
  */
 public class TesselationCallback implements GLUtessellatorCallback {
-	private GL gl;
+	private GL2 gl;
 	private GLU glu;
 
-	public TesselationCallback(GL gl, GLU glu) {
+	public TesselationCallback(GL2 gl, GLU glu) {
 		this.gl = gl;
 		this.glu = glu;
 	}
@@ -32,8 +32,8 @@ public class TesselationCallback implements GLUtessellatorCallback {
 		double[] pointer;
 		if (vertexData instanceof double[]) {
 			pointer = (double[]) vertexData;
-			// gl.glEnable(GL.GL_BLEND);
-			// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+			// gl.glEnable(GL2.GL_BLEND);
+			// gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			// gl.glColor4f(0f,0f,0f, 0.5f);
 			// gl.glColor3dv(pointer, 3);
 			gl.glVertex3dv(pointer, 0);

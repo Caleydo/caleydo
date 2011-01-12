@@ -2,11 +2,7 @@ package org.caleydo.core.data.graph.tree;
 
 import java.util.ArrayList;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
-
-import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
  * Abstract base class for hierarchy elements that shall be stored in a tree. It provides several methods

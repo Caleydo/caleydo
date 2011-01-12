@@ -1,6 +1,7 @@
 package org.caleydo.view.filterpipeline;
 
 import java.util.Vector;
+
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;

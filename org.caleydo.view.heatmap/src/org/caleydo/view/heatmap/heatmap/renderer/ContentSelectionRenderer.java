@@ -5,7 +5,7 @@ import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -17,7 +17,7 @@ public class ContentSelectionRenderer extends AContentRenderer {
 		super(heatMap);
 	}
 
-	public void renderSelection(final GL gl, SelectionType selectionType) {
+	public void renderSelection(final GL2 gl, SelectionType selectionType) {
 
 		// content selection
 		Set<Integer> selectedSet = heatMap.getContentSelectionManager().getElements(
@@ -48,7 +48,7 @@ public class ContentSelectionRenderer extends AContentRenderer {
 
 					float z = SELECTION_Z * selectionType.getPriority();
 					
-					gl.glBegin(GL.GL_LINE_LOOP);
+					gl.glBegin(GL2.GL_LINE_LOOP);
 					gl.glVertex3f(xPosition, yPosition, z);
 					gl.glVertex3f(xPosition, yPosition + fieldHeight, z);
 					gl.glVertex3f(xPosition + width, yPosition + fieldHeight,z);
@@ -63,7 +63,7 @@ public class ContentSelectionRenderer extends AContentRenderer {
 	}
 
 	@Override
-	public void render(GL gl) {	
+	public void render(GL2 gl) {	
 		renderSelection(gl, SelectionType.MOUSE_OVER);
 		renderSelection(gl, SelectionType.SELECTION);
 	}

@@ -5,7 +5,7 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.GeneralManager;
@@ -44,22 +44,22 @@ public abstract class AGLConnectionLineRenderer {
 		this.bEnableRendering = bEnableRendering;
 	}
 
-	public void init(final GL gl) {
-		gl.glShadeModel(GL.GL_SMOOTH);
-		gl.glEnable(GL.GL_MAP1_VERTEX_3);
+	public void init(final GL2 gl) {
+		gl.glShadeModel(GL2.GL_SMOOTH);
+		gl.glEnable(GL2.GL_MAP1_VERTEX_3);
 	}
 
-	public void render(final GL gl) {
+	public void render(final GL2 gl) {
 
 		if (connectedElementRepManager.getOccuringIDTypes().size() == 0 || bEnableRendering == false)
 			return;
 
-		gl.glDisable(GL.GL_DEPTH_TEST);
+		gl.glDisable(GL2.GL_DEPTH_TEST);
 		renderConnectionLines(gl);
-		gl.glEnable(GL.GL_DEPTH_TEST);
+		gl.glEnable(GL2.GL_DEPTH_TEST);
 	}
 
-	protected abstract void renderConnectionLines(final GL gl);
+	protected abstract void renderConnectionLines(final GL2 gl);
 
 	/**
 	 * Render straight connection lines.
@@ -70,13 +70,13 @@ public abstract class AGLConnectionLineRenderer {
 	 * @param iNumberOfLines
 	 * @param fArColor
 	 */
-	protected void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
+	protected void renderLine(final GL2 gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
 		final int iNumberOfLines, float[] fArColor) {
 
 		// Line shadow
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 1.5f);
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z() - 0.001f);
 		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z() - 0.001f);
 		gl.glEnd();
@@ -84,7 +84,7 @@ public abstract class AGLConnectionLineRenderer {
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
 
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z());
 		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z());
 		gl.glEnd();

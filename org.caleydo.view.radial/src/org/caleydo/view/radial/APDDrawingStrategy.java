@@ -1,6 +1,6 @@
 package org.caleydo.view.radial;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.manager.picking.PickingManager;
@@ -45,26 +45,26 @@ public abstract class APDDrawingStrategy {
 	 * class.
 	 * 
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 * @param glu
 	 *            GLU object that shall be used for drawing.
 	 * @param pdDiscToDraw
 	 *            Partial disc that shall be drawn.
 	 */
-	public abstract void drawPartialDisc(GL gl, GLU glu, PartialDisc pdDiscToDraw);
+	public abstract void drawPartialDisc(GL2 gl, GLU glu, PartialDisc pdDiscToDraw);
 
 	/**
 	 * Draws a full circle in a way determined by the concrete drawing strategy
 	 * class.
 	 * 
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 * @param glu
 	 *            GLU object that shall be used for drawing.
 	 * @param pdDiscToDraw
 	 *            Partial disc that shall be drawn.
 	 */
-	public abstract void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw);
+	public abstract void drawFullCircle(GL2 gl, GLU glu, PartialDisc pdDiscToDraw);
 
 	/**
 	 * Gets the drawing strategy type of the current instance.

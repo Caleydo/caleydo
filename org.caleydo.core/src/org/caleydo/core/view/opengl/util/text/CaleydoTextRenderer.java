@@ -4,10 +4,9 @@ import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.nio.IntBuffer;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
-import com.sun.opengl.util.BufferUtil;
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
  * Wrapper for TextRenderer that provides methods to draw text with a specified minimum size (no matter what's
@@ -89,7 +88,7 @@ public class CaleydoTextRenderer
 	 * and end3DRendering.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 * @param text
 	 *            Text to render
 	 * @param x
@@ -104,7 +103,7 @@ public class CaleydoTextRenderer
 	 *            Minimum size of the text. Note that the minimum size is scaled with the specified scaling
 	 *            vector.
 	 */
-	public void renderText(GL gl, String text, float x, float y, float z, float scaling, int minSize) {
+	public void renderText(GL2 gl, String text, float x, float y, float z, float scaling, int minSize) {
 
 		scaling = calculateScaling(gl, scaling, minSize);
 
@@ -118,7 +117,7 @@ public class CaleydoTextRenderer
 	 * Renders text with a specified minimum size.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 * @param text
 	 *            Text to render
 	 * @param x
@@ -133,7 +132,7 @@ public class CaleydoTextRenderer
 	 *            Minimum size of the text. Note that the minimum size is scaled with the specified scaling
 	 *            vector.
 	 */
-	public void draw3D(GL gl, String text, float x, float y, float z, float scaling, int minSize) {
+	public void draw3D(GL2 gl, String text, float x, float y, float z, float scaling, int minSize) {
 
 		scaling = calculateScaling(gl, scaling, minSize);
 
@@ -144,7 +143,7 @@ public class CaleydoTextRenderer
 	 * Gets scaled bounds of the specified text according to the specified parameters.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 * @param text
 	 *            Text to calculate the bounds for.
 	 * @param scaling
@@ -154,7 +153,7 @@ public class CaleydoTextRenderer
 	 *            the current viewport.
 	 * @return Scaled bounds of the specified text.
 	 */
-	public Rectangle2D getScaledBounds(GL gl, String text, float scaling, int minSize) {
+	public Rectangle2D getScaledBounds(GL2 gl, String text, float scaling, int minSize) {
 
 		scaling = calculateScaling(gl, scaling, minSize);
 
@@ -168,16 +167,16 @@ public class CaleydoTextRenderer
 	 * Calculates the scaling factor taking the minimum text size into consideration.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 * @param scaling
 	 *            Normal scaling of the text.
 	 * @param minSize
 	 *            Minimum text size.
 	 * @return Scaling considering the minimum text size.
 	 */
-	private float calculateScaling(GL gl, float scaling, int minSize) {
-		IntBuffer buffer = BufferUtil.newIntBuffer(4);
-		gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
+	private float calculateScaling(GL2 gl, float scaling, int minSize) {
+		IntBuffer buffer = IntBuffer.allocate(4);
+		gl.glGetIntegerv(GL2.GL_VIEWPORT, buffer);
 		int currentWidth = buffer.get(2);
 
 		float referenceWidth = minSize / (float) referenceBounds.getHeight() * 500.0f;

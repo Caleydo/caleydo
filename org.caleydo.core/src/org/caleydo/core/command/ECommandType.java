@@ -27,7 +27,7 @@ public enum ECommandType {
 	CREATE_ID_CATEGORY("cmd", "type", "Create ID Category"),
 	CREATE_ID_TYPE("cmd", "type", "-1", "Create ID Type"),
 
-	CREATE_VIEW_RCP_GLCANVAS("cmd", "type", "-1", "Create RCP GL Canvas"),
+	CREATE_VIEW_RCP_GLCANVAS("cmd", "type", "-1", "Create RCP GL2 Canvas"),
 
 	SYSTEM_SHUT_DOWN("cmd", "type", "-1", "Caleydo system shut down"),
 

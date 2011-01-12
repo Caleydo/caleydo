@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionType;
@@ -115,7 +115,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	}
 
 	@Override
-	public void initLocal(GL gl) {
+	public void initLocal(GL2 gl) {
 
 		iGLDisplayListIndexLocal = gl.glGenLists(5);
 
@@ -125,7 +125,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
+	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
@@ -142,7 +142,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	}
 
 	@Override
-	public void displayLocal(GL gl) {
+	public void displayLocal(GL2 gl) {
 
 		if (bIsDisplayListDirtyLocal) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -161,14 +161,14 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	}
 
 	@Override
-	public void displayRemote(GL gl) {
+	public void displayRemote(GL2 gl) {
 
 		display(gl);
 		checkForHits(gl);
 	}
 
 	@Override
-	public void display(GL gl) {
+	public void display(GL2 gl) {
 
 		doSlerpActions();
 		initNewView(gl);
@@ -192,12 +192,12 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 		// if (!isRenderedRemote())
 		// contextMenu.render(gl, this);
 
-		// Render invisible background for detecting clicks using GL selection
+		// Render invisible background for detecting clicks using GL2 selection
 		// mechanism
 		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
 		// EPickingType.BACKGROUND_HYPERBOLIC, 0));
 		// gl.glColor4f(1, 0, 0, 0);
-		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glBegin(GL2.GL_POLYGON);
 		// gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 10);
 		// gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(),
 		// viewFrustum
@@ -229,13 +229,13 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 		}
 	}
 
-	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
+	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 
 		if (bHasFrustumChanged) {
 			bHasFrustumChanged = false;
 		}
 
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 		gl.glEndList();
 	}
 
@@ -246,7 +246,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	 * 
 	 * @param GL
 	 */
-	private void initNewView(GL gl) {
+	private void initNewView(GL2 gl) {
 		if (!newViews.isEmpty() && PathwayManager.get().isPathwayLoadingFinished()
 				&& arSlerpActions.isEmpty()) {
 
@@ -260,7 +260,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 		}
 	}
 
-	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element) {
+	private void renderRemoteLevelElement(final GL2 gl, RemoteLevelElement element) {
 
 		AGLView glView = element.getGLView();
 
@@ -392,7 +392,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	}
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 
 		// initNewView(gl);
 
@@ -425,7 +425,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	 * @return the created view ready to be used within the application
 	 */
 	@SuppressWarnings("unchecked")
-	private AGLView createView(GL gl, ASerializedView serView) {
+	private AGLView createView(GL2 gl, ASerializedView serView) {
 
 		@SuppressWarnings("rawtypes")
 		Class viewClass;
@@ -502,7 +502,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	}
 
 	// displays a node using a remote view
-	public void drawRemoteView(GL gl, PoincareNode node, float[] position, float size) {
+	public void drawRemoteView(GL2 gl, PoincareNode node, float[] position, float size) {
 
 		Transform transform = new Transform();
 		remoteNodeElement.setGLView(((ViewHyperbolicNode) node).getGlView());
@@ -525,7 +525,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 
 	}
 
-	private void createPathwayTree(GL gl) {
+	private void createPathwayTree(GL2 gl) {
 
 		// creating a sample tree for testing
 		tree = new Tree<PoincareNode>();
@@ -554,7 +554,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	}
 
 	@Deprecated
-	public GLPathway createPathwayView(GL gl) {
+	public GLPathway createPathwayView(GL2 gl) {
 
 		SerializedPathwayView serPathway = new SerializedPathwayView(
 				"org.caleydo.datadomain.pathway");

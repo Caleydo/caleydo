@@ -3,7 +3,7 @@ package gleem.linalg.open;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * Slerp implementation that can handle rotation, scaling and transformation.
@@ -43,7 +43,7 @@ public class Slerp {
 		return resultTransform;
 	}
 
-	public void applySlerp(final GL gl, final Transform transform,
+	public void applySlerp(final GL2 gl, final Transform transform,
 			boolean bIgnoreZRotation, boolean bCenterPivotalPoint) {
 
 		Vec3f translation = transform.getTranslation();

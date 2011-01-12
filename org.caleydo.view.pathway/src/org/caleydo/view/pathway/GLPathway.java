@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.IDCategory;
@@ -85,7 +86,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Single OpenGL pathway view
+ * Single OpenGL2 pathway view
  * 
  * @author Marc Streit
  * @author Alexander Lex
@@ -112,8 +113,8 @@ public class GLPathway extends AGLView implements
 	private SelectionManager selectionManager;
 
 	/**
-	 * Own texture manager is needed for each GL context, because textures
-	 * cannot be bound to multiple GL contexts.
+	 * Own texture manager is needed for each GL2 context, because textures
+	 * cannot be bound to multiple GL2 contexts.
 	 */
 	private HashMap<GL, GLPathwayTextureManager> hashGLcontext2TextureManager;
 
@@ -195,7 +196,7 @@ public class GLPathway extends AGLView implements
 	}
 
 	@Override
-	public void initLocal(final GL gl) {
+	public void initLocal(final GL2 gl) {
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
@@ -203,7 +204,7 @@ public class GLPathway extends AGLView implements
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
+	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
@@ -214,7 +215,7 @@ public class GLPathway extends AGLView implements
 	}
 
 	@Override
-	public void init(final GL gl) {
+	public void init(final GL2 gl) {
 		// Check if pathway exists or if it's already loaded
 		if (!pathwayManager.hasItem(pathway.getID()))
 			return;
@@ -223,7 +224,7 @@ public class GLPathway extends AGLView implements
 	}
 
 	@Override
-	public void displayLocal(final GL gl) {
+	public void displayLocal(final GL2 gl) {
 
 		// Check if pathway exists or if it's already loaded
 		// FIXME: not good because check in every rendered frame
@@ -240,7 +241,7 @@ public class GLPathway extends AGLView implements
 	}
 
 	@Override
-	public void displayRemote(final GL gl) {
+	public void displayRemote(final GL2 gl) {
 		// // Check if pathway exists or if it is already loaded
 		// // FIXME: not good because check in every rendered frame
 		// if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
@@ -255,7 +256,7 @@ public class GLPathway extends AGLView implements
 	}
 
 	@Override
-	public void display(final GL gl) {
+	public void display(final GL2 gl) {
 		// processEvents();
 		checkForHits(gl);
 
@@ -267,7 +268,7 @@ public class GLPathway extends AGLView implements
 		gl.glCallList(iGLDisplayListToCall);
 	}
 
-	protected void initPathwayData(final GL gl) {
+	protected void initPathwayData(final GL2 gl) {
 		// Initialize all elements in selection manager
 		Iterator<IGraphItem> iterPathwayVertexGraphItem = pathway.getAllItemsByKind(
 				EGraphItemKind.NODE).iterator();
@@ -281,7 +282,7 @@ public class GLPathway extends AGLView implements
 
 		gLPathwayContentCreator.init(gl, selectionManager);
 
-		// Create new pathway manager for GL context
+		// Create new pathway manager for GL2 context
 		if (!hashGLcontext2TextureManager.containsKey(gl)) {
 			hashGLcontext2TextureManager.put(gl, new GLPathwayTextureManager());
 		}
@@ -293,7 +294,7 @@ public class GLPathway extends AGLView implements
 		// iPathwayID);
 	}
 
-	private void renderPathway(final GL gl, final PathwayGraph pathway) {
+	private void renderPathway(final GL2 gl, final PathwayGraph pathway) {
 		gl.glPushMatrix();
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(0,0,0));
 		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
@@ -342,10 +343,10 @@ public class GLPathway extends AGLView implements
 		gl.glPopMatrix();
 	}
 
-	private void rebuildPathwayDisplayList(final GL gl, int iGLDisplayListIndex) {
+	private void rebuildPathwayDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gLPathwayContentCreator.buildPathwayDisplayList(gl, this, pathway);
 
-		// gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		// gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 		// renderPathwayName(gl);
 		// gl.glEndList();
 	}
@@ -521,12 +522,12 @@ public class GLPathway extends AGLView implements
 		return newSelectionDelta;
 	}
 
-	private void calculatePathwayScaling(final GL gl, final PathwayGraph pathway) {
+	private void calculatePathwayScaling(final GL2 gl, final PathwayGraph pathway) {
 
 		if (hashGLcontext2TextureManager.get(gl) == null)
 			return;
 
-		// // Missing power of two texture GL extension workaround
+		// // Missing power of two texture GL2 extension workaround
 		// PathwayGraph tmpPathwayGraph =
 		// (PathwayGraph)generalManager.getPathwayManager().getItem(iPathwayId);
 		// ImageIcon img = new ImageIcon(generalManager.getPathwayManager()

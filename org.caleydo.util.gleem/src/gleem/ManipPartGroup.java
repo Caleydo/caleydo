@@ -1,5 +1,5 @@
 /*
- * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
+ * gleem -- OpenGL2 Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
  * (kbrussel@alum.mit.edu) Copying, distribution and use of this software in source and binary forms, with or
  * without modification, is permitted provided that the following conditions are met: Distributions of source
  * code must reproduce the copyright notice, this list of conditions and the following disclaimer in the
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * This class groups a set of ManipParts. Makes a set of ManipParts look like
@@ -112,7 +112,7 @@ public class ManipPartGroup extends ManipPart {
 		return visible;
 	}
 
-	public void render(GL gl) {
+	public void render(GL2 gl) {
 		for (Iterator iter = children.iterator(); iter.hasNext();) {
 			((ManipPart) iter.next()).render(gl);
 		}

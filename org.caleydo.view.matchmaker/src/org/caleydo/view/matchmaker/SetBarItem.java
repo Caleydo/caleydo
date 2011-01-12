@@ -6,7 +6,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.SelectionType;
@@ -16,7 +16,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 public class SetBarItem implements IDraggable, IDropArea {
 
@@ -60,7 +60,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 				mouseOverColor[0], mouseOverColor[1], mouseOverColor[2], 0.5f });
 	}
 
-	public void render(GL gl) {
+	public void render(GL2 gl) {
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
 				EPickingType.COMPARE_SET_BAR_ITEM_SELECTION, id));
@@ -81,7 +81,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 		textRenderer.flush();
 	}
 
-	private void renderItemBody(GL gl, int selectionStatus, float positionX,
+	private void renderItemBody(GL2 gl, int selectionStatus, float positionX,
 			float positionY, float positionZ) {
 
 		float horizontalspacingWidth = width * HORIZONTAL_SPACING;
@@ -89,10 +89,10 @@ public class SetBarItem implements IDraggable, IDropArea {
 		float verticalSpacingWidth = height * VERTICAL_SPACING;
 		float bodyHeight = height - (2.0f * verticalSpacingWidth);
 
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 
 		gl.glColor4fv(hashSelectionColors.get(selectionStatus), 0);
-		gl.glBegin(GL.GL_QUADS);
+		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(positionX + horizontalspacingWidth, positionY
 				+ verticalSpacingWidth, positionZ);
 		gl.glVertex3f(positionX + horizontalspacingWidth + bodyWidth, positionY
@@ -107,13 +107,13 @@ public class SetBarItem implements IDraggable, IDropArea {
 
 	}
 
-	private void renderDropPositionMarker(GL gl, float positionX) {
-		gl.glPushAttrib(GL.GL_LINE_BIT | GL.GL_COLOR_BUFFER_BIT);
+	private void renderDropPositionMarker(GL2 gl, float positionX) {
+		gl.glPushAttrib(GL2.GL_LINE_BIT | GL2.GL_COLOR_BUFFER_BIT);
 
 		gl.glLineWidth(2.0f);
 
 		gl.glColor3f(0.0f, 0.0f, 0.0f);
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(positionX, position.y(), position.z() + 0.1f);
 		gl.glVertex3f(positionX, position.y() + height, position.z() + 0.1f);
 		gl.glEnd();
@@ -191,13 +191,13 @@ public class SetBarItem implements IDraggable, IDropArea {
 	}
 
 	@Override
-	public void handleDragging(GL gl, float mouseCoordinateX, float mouseCoordinateY) {
+	public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 
 		float draggedPositionX = mouseCoordinateX + draggingSpacingX;
 		float draggedPositionY = mouseCoordinateY + draggingSpacingY;
 
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
-		// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
+		// gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		renderItemBody(gl, SELECTION_STATUS_DRAGGED, draggedPositionX, draggedPositionY,
 				1.0f);
 		gl.glEnd();
@@ -212,7 +212,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 	}
 
 	@Override
-	public void handleDragOver(GL gl, Set<IDraggable> draggables, float mouseCoordinateX,
+	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
 			float mouseCoordinateY) {
 		if (draggables.size() != 1)
 			return;
@@ -240,7 +240,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 	}
 
 	@Override
-	public void handleDrop(GL gl, Set<IDraggable> draggables, float mouseCoordinateX,
+	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
 			float mouseCoordinateY, DragAndDropController dragAndDropController) {
 
 		if (draggables.size() != 1)
@@ -282,7 +282,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 	}
 
 	@Override
-	public void handleDrop(GL gl, float mouseCoordinateX, float mouseCoordinateY) {
+	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 	}
 
 }

@@ -1,5 +1,5 @@
 /*
- * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
+ * gleem -- OpenGL2 Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
  * (kbrussel@alum.mit.edu) Copying, distribution and use of this software in source and binary forms, with or
  * without modification, is permitted provided that the following conditions are met: Distributions of source
  * code must reproduce the copyright notice, this list of conditions and the following disclaimer in the
@@ -30,7 +30,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * A Translate1Manip is a Manip which translates in only one dimension and whose
@@ -156,7 +156,7 @@ public class Translate1Manip extends Manip {
 		parts.clearHighlight();
 	}
 
-	public void render(GL gl) {
+	public void render(GL2 gl) {
 		parts.render(gl);
 	}
 

@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.util;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 /**
@@ -24,20 +25,20 @@ public class GLCoordinateUtils {
 	 *            the z value, normalized to 0 and 1, where 0 is the near and 1 is the far clipping plane.
 	 * @return a float array of length 3 with the world coordinates
 	 */
-	public static float[] convertWindowCoordinatesToWorldCoordinates(final GL gl,
+	public static float[] convertWindowCoordinatesToWorldCoordinates(final GL2 gl,
 		final int iWindowCoordinatePositionX, final int iWindowCoordinatePositionY, final float fZValue) {
 		float[] fArWorldCoordinatePosition = new float[3];
 
 		double mvmatrix[] = new double[16];
 		double projmatrix[] = new double[16];
-		int realy = 0;// GL y coord pos
+		int realy = 0;// GL2 y coord pos
 		double[] wcoord = new double[4];// wx, wy, wz;// returned xyz coords
 		int viewport[] = new int[4];
-		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+		gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
 		//
-		// gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-		gl.glGetDoublev(GL.GL_MODELVIEW_MATRIX, mvmatrix, 0);
-		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, projmatrix, 0);
+		// gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
+		gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, mvmatrix, 0);
+		gl.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projmatrix, 0);
 
 		/* note viewport[3] is height of window in pixels */
 		realy = viewport[3] - iWindowCoordinatePositionY - 1;
@@ -76,7 +77,7 @@ public class GLCoordinateUtils {
 	 * @param iWindowCoordinatePositionY
 	 * @return
 	 */
-	public static float[] convertWindowCoordinatesToWorldCoordinates(final GL gl,
+	public static float[] convertWindowCoordinatesToWorldCoordinates(final GL2 gl,
 		final int iWindowCoordinatePositionX, final int iWindowCoordinatePositionY) {
 		return convertWindowCoordinatesToWorldCoordinates(gl, iWindowCoordinatePositionX,
 			iWindowCoordinatePositionY, 0.55f); // 0.055 works for bucket

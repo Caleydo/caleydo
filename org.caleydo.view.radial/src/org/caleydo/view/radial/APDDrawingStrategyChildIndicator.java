@@ -2,7 +2,7 @@ package org.caleydo.view.radial;
 
 import gleem.linalg.Vec2f;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.manager.picking.PickingManager;
@@ -39,17 +39,17 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 	}
 
 	@Override
-	public abstract void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw);
+	public abstract void drawFullCircle(GL2 gl, GLU glu, PartialDisc pdDiscToDraw);
 
 	@Override
-	public abstract void drawPartialDisc(GL gl, GLU glu, PartialDisc pdDiscToDraw);
+	public abstract void drawPartialDisc(GL2 gl, GLU glu, PartialDisc pdDiscToDraw);
 
 	/**
 	 * Draws a child indicator (triangle) according to the parameters of a
 	 * partial disc.
 	 * 
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 * @param fInnerRadius
 	 *            Inner radius of the partial disc.
 	 * @param fWidth
@@ -59,7 +59,7 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 	 * @param fAngle
 	 *            Angle of the partial disc.
 	 */
-	protected void drawChildIndicator(GL gl, float fInnerRadius, float fWidth,
+	protected void drawChildIndicator(GL2 gl, float fInnerRadius, float fWidth,
 			float fStartAngle, float fAngle) {
 
 		float fMidAngle = fStartAngle + (fAngle / 2.0f);
@@ -113,7 +113,7 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 	 * Draws an isosceles triangle.
 	 * 
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 * @param fHeight
 	 *            Height of the triangle. Distance from the baseline to the top.
 	 * @param fHalfWidth
@@ -123,23 +123,23 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 	 * @param fRotationAngle
 	 *            Rotation of the triangle.
 	 */
-	private void drawIsoscelesTriangle(GL gl, float fHeight, float fHalfWidth,
+	private void drawIsoscelesTriangle(GL2 gl, float fHeight, float fHalfWidth,
 			Vec2f vecTriangleTop, float fRotationAngle) {
 
 		gl.glPushMatrix();
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 
 		gl.glTranslatef(vecTriangleTop.x(), vecTriangleTop.y(), -0.1f);
 		gl.glRotatef(fRotationAngle, 0, 0, 1);
 		gl.glColor4fv(fArChildIndicatorColor, 0);
 
-		gl.glBegin(GL.GL_TRIANGLES);
+		gl.glBegin(GL2.GL_TRIANGLES);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(fHalfWidth, -fHeight, 0);
 		gl.glVertex3f(-fHalfWidth, -fHeight, 0);
 		gl.glEnd();
 
-		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glBegin(GL2.GL_LINE_LOOP);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(fHalfWidth, -fHeight, 0);
 		gl.glVertex3f(-fHalfWidth, -fHeight, 0);

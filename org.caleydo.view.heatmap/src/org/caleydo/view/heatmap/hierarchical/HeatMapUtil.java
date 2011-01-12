@@ -5,7 +5,8 @@ import gleem.linalg.Vec3f;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
+import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
@@ -24,11 +25,10 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
-import com.sun.opengl.util.BufferUtil;
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
-import com.sun.opengl.util.texture.TextureData;
-import com.sun.opengl.util.texture.TextureIO;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.texture.TextureData;
+import com.jogamp.opengl.util.texture.TextureIO;
 
 public class HeatMapUtil {
 
@@ -55,8 +55,8 @@ public class HeatMapUtil {
 			if (isNewTexture) {
 				numSamplesInTexture = Math.min(MAX_SAMPLES_PER_TEXTURE, numSamples
 						- numSamplesProcessed);
-				textureBuffer = BufferUtil.newFloatBuffer(numSamplesInTexture
-						* numStorages * 4);
+				textureBuffer = FloatBuffer.allocate(numSamplesInTexture * numStorages
+						* 4);
 				isNewTexture = false;
 			}
 
@@ -82,12 +82,12 @@ public class HeatMapUtil {
 				if (!textureBuffer.hasRemaining()) {
 					textureBuffer.rewind();
 
-					TextureData texData = new TextureData(GL.GL_RGBA /* internalFormat */,
-							numStorages /* height */, numSamplesInTexture /* width */,
-							0 /* border */, GL.GL_RGBA /* pixelFormat */,
-							GL.GL_FLOAT /* pixelType */, false /* mipmap */,
-							false /* dataIsCompressed */, false /* mustFlipVertically */,
-							textureBuffer, null);
+					TextureData texData = new TextureData(GLProfile.getDefault(),
+							GL2.GL_RGBA /* internalFormat */, numStorages /* height */,
+							numSamplesInTexture /* width */, 0 /* border */,
+							GL2.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
+							false /* mipmap */, false /* dataIsCompressed */,
+							false /* mustFlipVertically */, textureBuffer, null);
 
 					Texture texture = TextureIO.newTexture(0);
 					texture.updateImage(texData);
@@ -102,7 +102,7 @@ public class HeatMapUtil {
 		return textures;
 	}
 
-	public static void renderHeatmapTextures(GL gl, ArrayList<Texture> textures,
+	public static void renderHeatmapTextures(GL2 gl, ArrayList<Texture> textures,
 			float height, float width) {
 
 		int numElements = 0;
@@ -124,12 +124,14 @@ public class HeatMapUtil {
 			textureDrawingHeight = elementHeight * texture.getHeight();
 			texture.enable();
 			texture.bind();
-			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP);
-			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP);
-			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
-			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
+			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
+			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
+					GL2.GL_NEAREST);
+			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
+					GL2.GL_NEAREST);
 			TextureCoords texCoords = texture.getImageTexCoords();
-			gl.glBegin(GL.GL_QUADS);
+			gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2d(texCoords.left(), texCoords.top());
 			gl.glVertex3f(0, yOffset, 0);
 			gl.glTexCoord2d(texCoords.left(), texCoords.bottom());
@@ -144,7 +146,7 @@ public class HeatMapUtil {
 		}
 	}
 
-	public static void renderGroupBar(GL gl, ContentVirtualArray contentVA,
+	public static void renderGroupBar(GL2 gl, ContentVirtualArray contentVA,
 			float totalHeight, float groupWidth, PickingManager pickingManager,
 			int viewID, EPickingType pickingType, TextureManager textureManager) {
 
@@ -155,7 +157,7 @@ public class HeatMapUtil {
 			float groupPositionY = totalHeight;
 
 			gl.glColor4f(1, 1, 1, 1);
-			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			int groupIndex = 0;
 			for (Group group : contentGroupList) {
 				int numSamplesGroup = group.getNrElements();
@@ -178,7 +180,7 @@ public class HeatMapUtil {
 
 				gl.glPopName();
 				if (groupIndex < contentGroupList.size() - 1) {
-					gl.glBegin(GL.GL_LINES);
+					gl.glBegin(GL2.GL_LINES);
 					gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), 1.0f);
 					gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(), 1.0f);
 					gl.glEnd();

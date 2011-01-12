@@ -2,7 +2,7 @@ package org.caleydo.view.texture;
 
 import gleem.linalg.Vec3f;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -20,7 +20,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
 /**
- * Single OpenGL tissue view
+ * Single OpenGL2 tissue view
  * 
  * @author Marc Streit
  */
@@ -50,12 +50,12 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	}
 
 	@Override
-	public void initLocal(final GL gl) {
+	public void initLocal(final GL2 gl) {
 		init(gl);
 	}
 
 	@Override
-	public void initRemote(GL gl, AGLView glParentView, GLMouseListener glMouseListener,
+	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener,
 			GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
@@ -63,11 +63,11 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	}
 
 	@Override
-	public void init(final GL gl) {
+	public void init(final GL2 gl) {
 	}
 
 	@Override
-	public void displayLocal(final GL gl) {
+	public void displayLocal(final GL2 gl) {
 
 		pickingManager.handlePicking(this, gl);
 		if (bIsDisplayListDirtyLocal) {
@@ -78,7 +78,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	}
 
 	@Override
-	public void displayRemote(final GL gl) {
+	public void displayRemote(final GL2 gl) {
 		if (bIsDisplayListDirtyRemote) {
 			// rebuildPathwayDisplayList(gl);
 			bIsDisplayListDirtyRemote = false;
@@ -88,14 +88,14 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	}
 
 	@Override
-	public void display(final GL gl) {
+	public void display(final GL2 gl) {
 		// processEvents();
 
 		checkForHits(gl);
 		renderScene(gl);
 	}
 
-	private void renderScene(final GL gl) {
+	private void renderScene(final GL2 gl) {
 
 		if (updateTexture)
 			renewTextureInCache();
@@ -122,7 +122,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 		if (currentSelectionType != SelectionType.NORMAL) {
 			gl.glColor3fv(currentSelectionType.getColor(), 0);
 			gl.glLineWidth(4);
-			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glBegin(GL2.GL_LINE_LOOP);
 			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
 			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(),
 					viewFrustum.getBottom(), 0);

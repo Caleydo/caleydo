@@ -3,7 +3,7 @@ package org.caleydo.view.radial;
 import java.awt.Font;
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -64,7 +64,7 @@ public class LabelManager {
 	 * drawn due to overlapping of the labels.
 	 * 
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 * @param glu
 	 *            GLU object that shall be used for drawing.
 	 * @param fScreenWidth
@@ -74,7 +74,7 @@ public class LabelManager {
 	 * @param fHierarchyOuterRadius
 	 *            Radius of the whole radial hierarchy.
 	 */
-	public void drawAllLabels(GL gl, GLU glu, float fScreenWidth, float fScreenHeight,
+	public void drawAllLabels(GL2 gl, GLU glu, float fScreenWidth, float fScreenHeight,
 			float fHierarchyOuterRadius) {
 
 		textRenderer = new CaleydoTextRenderer(new Font(LABEL_FONT_NAME,
@@ -139,7 +139,7 @@ public class LabelManager {
 	 * label.
 	 * 
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 * @param glu
 	 *            GLU object that shall be used for drawing.
 	 * @param fXCenter
@@ -157,14 +157,14 @@ public class LabelManager {
 	 * @param labelContainer
 	 *            Label container the link shall be drawn to.
 	 */
-	private void drawLink(GL gl, GLU glu, float fXCenter, float fYCenter,
+	private void drawLink(GL2 gl, GLU glu, float fXCenter, float fYCenter,
 			float fSegmentXCenter, float fSegmentYCenter, float fBendPointX,
 			float fBendPointY, LabelContainer labelContainer) {
 
 		gl.glLoadIdentity();
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.LABEL_TEXT_COLOR, 0);
-		gl.glBegin(GL.GL_LINE_STRIP);
+		gl.glBegin(GL2.GL_LINE_STRIP);
 		gl.glVertex3f(fXCenter + fSegmentXCenter, fYCenter + fSegmentYCenter, 0);
 		gl.glVertex3f(fXCenter + fBendPointX, fYCenter + fBendPointY, 0);
 		if (fSegmentXCenter <= 0) {
@@ -181,7 +181,7 @@ public class LabelManager {
 	 * Draws a marker (small circle) at the specified position.
 	 * 
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 * @param glu
 	 *            GLU object that shall be used for drawing.
 	 * @param fXPosition
@@ -189,7 +189,7 @@ public class LabelManager {
 	 * @param fYPosition
 	 *            Y coordinate of the marker.
 	 */
-	private void drawSegmentMarker(GL gl, GLU glu, float fXPosition, float fYPosition) {
+	private void drawSegmentMarker(GL2 gl, GLU glu, float fXPosition, float fYPosition) {
 		gl.glColor4fv(RadialHierarchyRenderStyle.LABEL_TEXT_COLOR, 0);
 		gl.glPushMatrix();
 		gl.glTranslatef(fXPosition, fYPosition, 0);
@@ -212,7 +212,7 @@ public class LabelManager {
 	 * @return Label container that has been created using the specified
 	 *         parameters.
 	 */
-	private LabelContainer createLabelContainer(GL gl, LabelInfo label,
+	private LabelContainer createLabelContainer(GL2 gl, LabelInfo label,
 			float fXContainerLeft, float fYContainerCenter, float fScreenHeight) {
 
 		float fLabelScaling;

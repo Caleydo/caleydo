@@ -9,7 +9,6 @@ import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.filter.ContentFilter;
-import org.caleydo.core.data.filter.ContentMetaFilter;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;

@@ -59,7 +59,7 @@ public class ExceptionHandler {
 			}
 		});
 
-		// Unregister view from GL event queue
+		// Unregister view from GL2 event queue
 		GeneralManager.get().getGUIBridge().closeView(glEventListener.getViewType());
 		GeneralManager.get().getViewGLCanvasManager().unregisterGLCanvas(glEventListener.getParentGLCanvas());
 		GeneralManager.get().getViewGLCanvasManager().unregisterGLView(glEventListener);

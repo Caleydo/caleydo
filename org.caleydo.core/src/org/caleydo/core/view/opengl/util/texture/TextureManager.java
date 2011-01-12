@@ -5,17 +5,16 @@ import gleem.linalg.Vec3f;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.GeneralManager;
 
-import com.sun.opengl.util.BufferUtil;
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
 
 /**
- * Manager handles OpenGL icons as textures. The manager must be created for each GL view because it needs a
- * current GL context!
+ * Manager handles OpenGL2 icons as textures. The manager must be created for each GL2 view because it needs a
+ * current GL2 context!
  * 
  * @author Alexander Lex
  * @author Marc Streit
@@ -33,7 +32,7 @@ public class TextureManager {
 		mapPathToTexture = new HashMap<String, Texture>();
 	}
 
-	// public Texture getIconTexture(GL gl, final EIconTextures eIconTextures) {
+	// public Texture getIconTexture(GL2 gl, final EIconTextures eIconTextures) {
 	// if (!mapIconTextures.containsKey(eIconTextures)) {
 	// Texture tmpTexture =
 	// GeneralManager.get().getResourceLoader().getTexture(eIconTextures.getFileName());
@@ -42,7 +41,7 @@ public class TextureManager {
 	// return mapIconTextures.get(eIconTextures);
 	// }
 
-	public Texture getIconTexture(GL gl, final String texturePath) {
+	public Texture getIconTexture(GL2 gl, final String texturePath) {
 		if (!mapPathToTexture.containsKey(texturePath)) {
 			Texture tmpTexture = GeneralManager.get().getResourceLoader().getTexture(texturePath);
 			mapPathToTexture.put(texturePath, tmpTexture);
@@ -55,7 +54,7 @@ public class TextureManager {
 		mapPathToTexture.put(texturePath, tmpTexture);
 	}
 
-	public Texture getIconTexture(GL gl, final EIconTextures eIconTexture) {
+	public Texture getIconTexture(GL2 gl, final EIconTextures eIconTexture) {
 
 		String texturePath = eIconTexture.getFileName();
 		if (!mapPathToTexture.containsKey(texturePath)) {
@@ -69,7 +68,7 @@ public class TextureManager {
 	 * Convenience method for rendering textures on a rectangle.
 	 * 
 	 * @param gl
-	 *            GL Context.
+	 *            GL2 Context.
 	 * @param eIconTextures
 	 *            Texture that should be rendered.
 	 * @param lowerLeftCorner
@@ -89,7 +88,7 @@ public class TextureManager {
 	 * @param alpha
 	 *            Alpha value the Polygon should have where the texture is drawn on.
 	 */
-	public void renderTexture(GL gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner,
+	public void renderTexture(GL2 gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner,
 		Vec3f lowerRightCorner, Vec3f upperRightCorner, Vec3f upperLeftCorner, float colorR, float colorG,
 		float colorB, float alpha) {
 
@@ -103,7 +102,7 @@ public class TextureManager {
 		// TextureCoords texCoords = tempTexture.getImageTexCoords();
 		//
 		// gl.glColor4f(colorR, colorG, colorB, alpha);
-		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glBegin(GL2.GL_POLYGON);
 		// gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		// gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), lowerLeftCorner.z());
 		// gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -118,7 +117,7 @@ public class TextureManager {
 		// tempTexture.disable();
 	}
 
-	public void renderTexture(GL gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner,
+	public void renderTexture(GL2 gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner,
 		Vec3f lowerRightCorner, Vec3f upperRightCorner, Vec3f upperLeftCorner, float[] color) {
 		renderTexture(gl, eIconTextures, lowerLeftCorner, lowerRightCorner, upperRightCorner,
 			upperLeftCorner, color[0], color[1], color[2], color[3]);
@@ -128,7 +127,7 @@ public class TextureManager {
 	 * Renders a texture on a rectangle with the specified minimum size.
 	 * 
 	 * @param gl
-	 *            GL Context.
+	 *            GL2 Context.
 	 * @param eIconTextures
 	 *            Texture that should be rendered.
 	 * @param lowerLeftCorner
@@ -152,12 +151,12 @@ public class TextureManager {
 	 * @param minSize
 	 *            Minimum size the texture should have.
 	 */
-	public void renderGUITexture(GL gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner,
+	public void renderGUITexture(GL2 gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner,
 		Vec3f lowerRightCorner, Vec3f upperRightCorner, Vec3f upperLeftCorner, Vec3f scalingPivot,
 		float colorR, float colorG, float colorB, float alpha, int minSize) {
 
-		IntBuffer buffer = BufferUtil.newIntBuffer(4);
-		gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
+		IntBuffer buffer = IntBuffer.allocate(4);
+		gl.glGetIntegerv(GL2.GL_VIEWPORT, buffer);
 		int currentWidth = buffer.get(2);
 
 		float referenceWidth = minSize * 10.0f;
@@ -178,7 +177,7 @@ public class TextureManager {
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
 		gl.glColor4f(colorR, colorG, colorB, alpha);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), lowerLeftCorner.z());
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -199,7 +198,7 @@ public class TextureManager {
 	 * Convenience method for rendering textures on a rectangle.
 	 * 
 	 * @param gl
-	 *            GL Context.
+	 *            GL2 Context.
 	 * @param texturePath
 	 *            Path to the image.
 	 * @param lowerLeftCorner
@@ -219,7 +218,7 @@ public class TextureManager {
 	 * @param alpha
 	 *            Alpha value the Polygon should have where the texture is drawn on.
 	 */
-	public void renderTexture(GL gl, final String texturePath, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
+	public void renderTexture(GL2 gl, final String texturePath, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
 		Vec3f upperRightCorner, Vec3f upperLeftCorner, float colorR, float colorG, float colorB, float alpha) {
 
 		Texture tempTexture = getIconTexture(gl, texturePath);
@@ -229,7 +228,7 @@ public class TextureManager {
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
 		gl.glColor4f(colorR, colorG, colorB, alpha);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), lowerLeftCorner.z());
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());

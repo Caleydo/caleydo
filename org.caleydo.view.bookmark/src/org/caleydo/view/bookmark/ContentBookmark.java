@@ -1,6 +1,6 @@
 package org.caleydo.view.bookmark;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -27,7 +27,7 @@ class ContentBookmark extends ABookmark {
 	}
 
 	@Override
-	public void render(GL gl) {
+	public void render(GL2 gl) {
 		// String sContent = GeneralManager.get().getIDMappingManager().getID(
 		// manager.getDataDomain().getPrimaryContentMappingType(),
 		// EIDType.GENE_SYMBOL, id);
@@ -150,7 +150,7 @@ class ContentBookmark extends ABookmark {
 	// // fFieldWidth, fSlectionFieldHeight);
 	//
 	// gl.glColor3f(0.25f, 0.25f, 0.25f);
-	// gl.glBegin(GL.GL_POLYGON);
+	// gl.glBegin(GL2.GL_POLYGON);
 	//
 	// gl.glVertex3f(fXPosition + 0.03f, fYSelectionOrigin, 0.0005f);
 	// gl.glVertex3f(fXPosition + fFieldWidth, fYSelectionOrigin, 0.0005f);
@@ -164,7 +164,7 @@ class ContentBookmark extends ABookmark {
 	// gl.glEnd();
 	//
 	// textRenderer.setColor(1, 1, 1, 1);
-	// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+	// gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 	// gl.glTranslatef(fXPosition + fFieldWidth / 1.5f, fYSelectionOrigin +
 	// fTextSpacing, 0);
 	// gl.glRotatef(+fLineDegrees, 0, 0, 1);
@@ -187,7 +187,7 @@ class ContentBookmark extends ABookmark {
 	// // fFieldWidth, fSlectionFieldHeight);
 	//
 	// gl.glColor3f(0.25f, 0.25f, 0.25f);
-	// gl.glBegin(GL.GL_POLYGON);
+	// gl.glBegin(GL2.GL_POLYGON);
 	//
 	// gl.glVertex3f(fXPosition + 0.03f, fYSelectionOrigin, 0.0005f);
 	// gl.glVertex3f(fXPosition + fFieldWidth, fYSelectionOrigin, 0.0005f);
@@ -201,8 +201,8 @@ class ContentBookmark extends ABookmark {
 	// gl.glEnd();
 	//
 	// // textRenderer.setColor(1, 1, 1, 1);
-	// // gl.glPushAttrib(GL.GL_CURRENT_BIT |
-	// // GL.GL_LINE_BIT);
+	// // gl.glPushAttrib(GL2.GL_CURRENT_BIT |
+	// // GL2.GL_LINE_BIT);
 	// // gl.glTranslatef(fXPosition + fFieldWidth /
 	// // 1.5f,
 	// // fYSelectionOrigin + fTextSpacing, 0);
@@ -234,7 +234,7 @@ class ContentBookmark extends ABookmark {
 	// fXPosition);
 	// fAlXDistances.add(fXPosition);
 
-	// private void renderElement(final GL gl, final int iStorageIndex, final
+	// private void renderElement(final GL2 gl, final int iStorageIndex, final
 	// int iContentIndex,
 	// final float fXPosition, final float fYPosition, final float fFieldWidth,
 	// final float fFieldHeight) {
@@ -263,7 +263,7 @@ class ContentBookmark extends ABookmark {
 	// gl.glPushName(pickingManager.getPickingID(iUniqueID,
 	// EPickingType.HEAT_MAP_LINE_SELECTION,
 	// iContentIndex));
-	// gl.glBegin(GL.GL_POLYGON);
+	// gl.glBegin(GL2.GL_POLYGON);
 	// gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 	// gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);
 	// gl.glVertex3f(fXPosition + fFieldWidth, fYPosition + fFieldHeight,
@@ -275,7 +275,7 @@ class ContentBookmark extends ABookmark {
 	// gl.glPopName();
 	// }
 	//
-	// private void renderCaption(GL gl, String sLabel, float fXOrigin, float
+	// private void renderCaption(GL2 gl, String sLabel, float fXOrigin, float
 	// fYOrigin, float fZOrigin,
 	// float fRotation, float fFontScaling) {
 	//
@@ -284,7 +284,7 @@ class ContentBookmark extends ABookmark {
 	// sLabel = sLabel + "..";
 	// }
 	//
-	// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+	// gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 	// textRenderer.begin3DRendering();
 	// textRenderer.draw3D(sLabel, fXOrigin, fYOrigin, 0, fFontScaling);
 	// textRenderer.end3DRendering();

@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
@@ -13,7 +13,7 @@ import org.caleydo.view.heatmap.hierarchical.HeatMapUtil;
 import org.caleydo.view.matchmaker.HeatMapWrapper;
 import org.caleydo.view.matchmaker.layout.AHeatMapLayout;
 
-import com.sun.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.Texture;
 
 public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 
@@ -26,7 +26,7 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 	}
 
 	@Override
-	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
+	public void render(GL2 gl, HeatMapWrapper heatMapWrapper) {
 
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
 

@@ -2,7 +2,7 @@ package org.caleydo.view.matchmaker.rendercommand;
 
 import gleem.linalg.Vec3f;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.group.ContentGroupList;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
@@ -18,7 +18,7 @@ public class DendrogramRenderCommand implements IHeatMapRenderCommand {
 	}
 
 	@Override
-	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
+	public void render(GL2 gl, HeatMapWrapper heatMapWrapper) {
 
 		GLDendrogram<ContentGroupList> dendrogram = heatMapWrapper.getDendrogram();
 		AHeatMapLayout layout = heatMapWrapper.getLayout();

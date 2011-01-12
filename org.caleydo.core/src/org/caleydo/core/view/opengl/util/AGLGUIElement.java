@@ -4,9 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.nio.IntBuffer;
 
-import javax.media.opengl.GL;
-
-import com.sun.opengl.util.BufferUtil;
+import javax.media.opengl.GL2;
 
 /**
  * Abstract base class for all GUI elements that require a minimum size.
@@ -28,11 +26,11 @@ public abstract class AGLGUIElement {
 	 * recommended. Call these methods beforehand.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 * @param scalingPivot
 	 *            Position that is used as scaling pivot.
 	 */
-	public void beginGUIElement(GL gl, Vec3f scalingPivot) {
+	public void beginGUIElement(GL2 gl, Vec3f scalingPivot) {
 
 		float scaling = getScaling(gl, true);
 
@@ -50,9 +48,9 @@ public abstract class AGLGUIElement {
 	 * recommended. Call these methods beforehand.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 */
-	public void endGUIElement(GL gl) {
+	public void endGUIElement(GL2 gl) {
 		gl.glPopMatrix();
 	}
 
@@ -78,12 +76,12 @@ public abstract class AGLGUIElement {
 	 * current window size and the minimum size of the gui element.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 * @param value
 	 *            Value for which the scaled size shall be calculated.
 	 * @return Scaled value.
 	 */
-	public float getScaledSizeOf(GL gl, float value) {
+	public float getScaledSizeOf(GL2 gl, float value) {
 		return value * getScaling(gl, true);
 	}
 
@@ -92,7 +90,7 @@ public abstract class AGLGUIElement {
 	 * current window size and the minimum size of the gui element.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 * @param value
 	 *            Value for which the scaled size shall be calculated.
 	 * @param useWidthAsReference
@@ -100,7 +98,7 @@ public abstract class AGLGUIElement {
 	 *            viewport.
 	 * @return Scaled value.
 	 */
-	public float getScaledSizeOf(GL gl, float value, boolean useWidthAsReference) {
+	public float getScaledSizeOf(GL2 gl, float value, boolean useWidthAsReference) {
 		return value * getScaling(gl, false);
 	}
 
@@ -133,12 +131,12 @@ public abstract class AGLGUIElement {
 	 * dependent on the current window size and the minimum size of the gui element.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 * @param value
 	 *            Value for which the scaled size shall be calculated.
 	 * @return Scaled value.
 	 */
-	public float getUnscaledSizeOf(GL gl, float value) {
+	public float getUnscaledSizeOf(GL2 gl, float value) {
 		return value / getScaling(gl, true);
 	}
 
@@ -147,15 +145,15 @@ public abstract class AGLGUIElement {
 	 * element.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 * @param useWidthAsReference
 	 *            Determines whether the scaling us calculated relative to the width of height of the
 	 *            viewport.
 	 * @return Current scaling.
 	 */
-	private float getScaling(GL gl, boolean useWidthAsReference) {
-		IntBuffer buffer = BufferUtil.newIntBuffer(4);
-		gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
+	private float getScaling(GL2 gl, boolean useWidthAsReference) {
+		IntBuffer buffer = IntBuffer.allocate(4);
+		gl.glGetIntegerv(GL2.GL_VIEWPORT, buffer);
 		int currentSize = 0;
 		if (useWidthAsReference) {
 			currentSize = buffer.get(2);
@@ -178,14 +176,14 @@ public abstract class AGLGUIElement {
 	 * position.
 	 * 
 	 * @param gl
-	 *            GL Context.
+	 *            GL2 Context.
 	 * @param position
 	 *            Position the scaled position shall be calculated for.
 	 * @param scalingPivot
 	 *            Position that is used as scaling pivot.
 	 * @return Scaled position.
 	 */
-	public Vec3f getScaledPosition(GL gl, Vec3f position, Vec3f scalingPivot) {
+	public Vec3f getScaledPosition(GL2 gl, Vec3f position, Vec3f scalingPivot) {
 
 		float scaling = getScaling(gl, true);
 
@@ -198,14 +196,14 @@ public abstract class AGLGUIElement {
 	 * Does the same as getScaledPosition, just for a single coordinate instead of three.
 	 * 
 	 * @param gl
-	 *            GL Context.
+	 *            GL2 Context.
 	 * @param coordinate
 	 *            Coordinate the scaled coordinate shall be calculated for.
 	 * @param scalingPivotCoordinate
 	 *            Coordinate that is used as scaling pivot.
 	 * @return Scaled coordinate.
 	 */
-	public float getScaledCoordinate(GL gl, float coordinate, float scalingPivotCoordinate) {
+	public float getScaledCoordinate(GL2 gl, float coordinate, float scalingPivotCoordinate) {
 
 		float scaling = getScaling(gl, true);
 
@@ -217,14 +215,14 @@ public abstract class AGLGUIElement {
 	 * position, i.e. the inverse scaled position is calculated.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 * @param scaledPosition
 	 *            Position the inverse scaled position shall be calculated for.
 	 * @param scalingPivot
 	 *            Position that is used as scaling pivot.
 	 * @return Inverse scaled position.
 	 */
-	public Vec3f getRealPositionFromScaledPosition(GL gl, Vec3f scaledPosition, Vec3f scalingPivot) {
+	public Vec3f getRealPositionFromScaledPosition(GL2 gl, Vec3f scaledPosition, Vec3f scalingPivot) {
 
 		float scaling = getScaling(gl, true);
 
@@ -237,14 +235,14 @@ public abstract class AGLGUIElement {
 	 * Does the same as getRealPositionFromScaledPosition, just for a single coordinate instead of three.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 * @param scaledCoordinate
 	 *            Coordinate the inverse scaled coordinate shall be calculated for.
 	 * @param scalingPivotCoordinate
 	 *            Coordinate that is used as scaling pivot.
 	 * @return Inverse scaled coordinate.
 	 */
-	public float getRealCoordinateFromScaledCoordinate(GL gl, float scaledCoordinate,
+	public float getRealCoordinateFromScaledCoordinate(GL2 gl, float scaledCoordinate,
 		float scalingPivotCoordinate) {
 
 		float scaling = getScaling(gl, true);

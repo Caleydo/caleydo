@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.renderstyle.border;
 
 import gleem.linalg.Vec4f;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 public interface IBorderRenderStyle {
 
@@ -29,12 +29,12 @@ public interface IBorderRenderStyle {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.view.opengl.miniview.slider.iBorderRenderStyle#init( javax.media.opengl.GL)
 	 */
-	public abstract void init(GL gl);
+	public abstract void init(GL2 gl);
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.view.opengl.miniview.slider.iBorderRenderStyle#display (javax.media.opengl.GL)
 	 */
-	public abstract void display(GL gl);
+	public abstract void display(GL2 gl);
 
 }

@@ -1,5 +1,5 @@
 /*
- * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
+ * gleem -- OpenGL2 Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
  * (kbrussel@alum.mit.edu) Copying, distribution and use of this software in source and binary forms, with or
  * without modification, is permitted provided that the following conditions are met: Distributions of source
  * code must reproduce the copyright notice, this list of conditions and the following disclaimer in the
@@ -30,10 +30,10 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
+import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
 /** Tests the Translate1 Manip. */
@@ -47,19 +47,19 @@ public class TestTranslate1 {
 		private CameraParameters params = new CameraParameters();
 
 		public void init(GLAutoDrawable drawable) {
-			GL gl = drawable.getGL();
+			GL2 gl = drawable.getGL();
 
 			gl.glClearColor(0, 0, 0, 0);
 			float[] lightPosition = new float[]{1, 1, 1, 0};
 			float[] ambient = new float[]{0.0f, 0.0f, 0.0f, 1.0f};
 			float[] diffuse = new float[]{1.0f, 1.0f, 1.0f, 1.0f};
-			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, ambient, 0);
-			gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, diffuse, 0);
-			gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0);
+			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, ambient, 0);
+			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, diffuse, 0);
+			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, lightPosition, 0);
 
-			gl.glEnable(GL.GL_LIGHTING);
-			gl.glEnable(GL.GL_LIGHT0);
-			gl.glEnable(GL.GL_DEPTH_TEST);
+			gl.glEnable(GL2.GL_LIGHTING);
+			gl.glEnable(GL2.GL_LIGHT0);
+			gl.glEnable(GL2.GL_DEPTH_TEST);
 
 			params.setPosition(new Vec3f(0, 0, 0));
 			params.setForwardDirection(new Vec3f(0, 0, -1));
@@ -69,10 +69,10 @@ public class TestTranslate1 {
 			params.xSize = X_SIZE;
 			params.ySize = Y_SIZE;
 
-			gl.glMatrixMode(GL.GL_PROJECTION);
+			gl.glMatrixMode(GL2.GL_PROJECTION);
 			gl.glLoadIdentity();
 			glu.gluPerspective(45, 1, 1, 100);
-			gl.glMatrixMode(GL.GL_MODELVIEW);
+			gl.glMatrixMode(GL2.GL_MODELVIEW);
 			gl.glLoadIdentity();
 
 			// Register the window with the ManipManager
@@ -87,15 +87,15 @@ public class TestTranslate1 {
 		}
 
 		public void display(GLAutoDrawable drawable) {
-			GL gl = drawable.getGL();
-			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+			GL2 gl = drawable.getGL();
+			gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 			ManipManager.getManipManager().updateCameraParameters(drawable,
 					params);
 			ManipManager.getManipManager().render(drawable, gl);
 		}
 
 		public void reshape(GLAutoDrawable drawable, int x, int y, int w, int h) {
-			GL gl = drawable.getGL();
+			GL2 gl = drawable.getGL();
 			float aspect, theta;
 			aspect = (float) w / (float) h;
 			if (w >= h) {
@@ -107,10 +107,10 @@ public class TestTranslate1 {
 			params.setImagePlaneAspectRatio(aspect);
 			params.setXSize(w);
 			params.setYSize(h);
-			gl.glMatrixMode(GL.GL_PROJECTION);
+			gl.glMatrixMode(GL2.GL_PROJECTION);
 			gl.glLoadIdentity();
 			glu.gluPerspective(theta, aspect, 1, 100);
-			gl.glMatrixMode(GL.GL_MODELVIEW);
+			gl.glMatrixMode(GL2.GL_MODELVIEW);
 			gl.glLoadIdentity();
 		}
 

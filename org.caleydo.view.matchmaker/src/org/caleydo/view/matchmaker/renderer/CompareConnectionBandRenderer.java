@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUtessellator;
 
@@ -18,7 +18,7 @@ public class CompareConnectionBandRenderer implements ICompareConnectionRenderer
 	private GLUtessellator tobj;
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 		glu = new GLU();
 
 		TesselationCallback tessCallback = new TesselationCallback(gl, glu);
@@ -31,11 +31,11 @@ public class CompareConnectionBandRenderer implements ICompareConnectionRenderer
 		glu.gluTessCallback(tobj, GLU.GLU_TESS_ERROR, tessCallback);// errorCallback);
 		glu.gluTessCallback(tobj, GLU.GLU_TESS_COMBINE, tessCallback);// combineCallback);
 
-		gl.glShadeModel(GL.GL_SMOOTH);
+		gl.glShadeModel(GL2.GL_SMOOTH);
 	}
 
 	@Override
-	public void display(GL gl) {
+	public void display(GL2 gl) {
 
 		// gl.glCallList(displayListID);
 		// gl.glFlush();
@@ -57,7 +57,7 @@ public class CompareConnectionBandRenderer implements ICompareConnectionRenderer
 		glu.gluTessCallback(tobj, GLU.GLU_TESS_COMBINE, tessCallback);// combineCallback);
 
 		/* smooth shaded, self-intersecting star */
-		gl.glShadeModel(GL.GL_SMOOTH);
+		gl.glShadeModel(GL2.GL_SMOOTH);
 		glu.gluTessProperty(tobj, //
 				GLU.GLU_TESS_WINDING_RULE, //
 				GLU.GLU_TESS_WINDING_POSITIVE);
@@ -74,7 +74,7 @@ public class CompareConnectionBandRenderer implements ICompareConnectionRenderer
 	}
 
 	@Override
-	public void render(GL gl, ArrayList<Vec3f> points) {
+	public void render(GL2 gl, ArrayList<Vec3f> points) {
 
 		double inputPoints[][] = new double[points.size()][3];
 
@@ -83,9 +83,9 @@ public class CompareConnectionBandRenderer implements ICompareConnectionRenderer
 			inputPoints[pointIndex][1] = points.get(pointIndex).y();
 			inputPoints[pointIndex][2] = points.get(pointIndex).z();
 		}
-		gl.glShadeModel(GL.GL_SMOOTH);
-		gl.glEnable(GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glShadeModel(GL2.GL_SMOOTH);
+		gl.glEnable(GL2.GL_BLEND);
+		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		// glu.gluTessProperty(tobj, //
 		// GLU.GLU_TESS_WINDING_RULE, //
 		// GLU.GLU_TESS_WINDING_POSITIVE);

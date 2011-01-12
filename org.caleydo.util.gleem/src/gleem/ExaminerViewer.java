@@ -1,5 +1,5 @@
 /*
- * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
+ * gleem -- OpenGL2 Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
  * (kbrussel@alum.mit.edu) Copying, distribution and use of this software in source and binary forms, with or
  * without modification, is permitted provided that the following conditions are met: Distributions of source
  * code must reproduce the copyright notice, this list of conditions and the following disclaimer in the
@@ -31,7 +31,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
@@ -184,23 +184,23 @@ public class ExaminerViewer {
 	 * Call this at the end of your display() method to cause the Modelview
 	 * matrix to be recomputed for the next frame.
 	 */
-	public void update(GL gl) {
+	public void update(GL2 gl) {
 		recalc(gl);
 	}
 
 	/**
 	 * Call this to apply the inverse rotation matrix of the camera to the
 	 * current matrix. This is useful for drawing a skybox. Does not update
-	 * which OpenGL matrix is currently being modified or the ExaminerViewer's
+	 * which OpenGL2 matrix is currently being modified or the ExaminerViewer's
 	 * camera parameters.
 	 */
-	public void updateInverseRotation(GL gl) {
+	public void updateInverseRotation(GL2 gl) {
 		recalcInverseRotation(gl);
 	}
 
 	/**
 	 * Call this to force the ExaminerViewer to update its CameraParameters
-	 * without touching the OpenGL state.
+	 * without touching the OpenGL2 state.
 	 */
 	public void update() {
 		recalc();
@@ -211,7 +211,7 @@ public class ExaminerViewer {
 	 * to recompute its position based on the visible geometry. A
 	 * BSphereProvider must have already been set or this method has no effect.
 	 */
-	public void viewAll(GL gl) {
+	public void viewAll(GL2 gl) {
 		if (provider == null)
 			return;
 		// Figure out how far to move
@@ -602,20 +602,20 @@ public class ExaminerViewer {
 		 **********************/
 	}
 
-	private void recalc(GL gl) {
+	private void recalc(GL2 gl) {
 		recalc();
 
-		gl.glMatrixMode(GL.GL_MODELVIEW);
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		float[] data = new float[16];
 		params.getModelviewMatrix().getColumnMajorData(data);
 		gl.glLoadMatrixf(data, 0);
 
-		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glMatrixMode(GL2.GL_PROJECTION);
 		params.getProjectionMatrix().getColumnMajorData(data);
 		gl.glLoadMatrixf(data, 0);
 	}
 
-	private void recalcInverseRotation(GL gl) {
+	private void recalcInverseRotation(GL2 gl) {
 		Rotf oriInv = orientation.inverse();
 		Vec3f tmp = new Vec3f();
 		float ang = orientation.get(tmp);

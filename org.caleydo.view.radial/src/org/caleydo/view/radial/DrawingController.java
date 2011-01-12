@@ -2,7 +2,7 @@ package org.caleydo.view.radial;
 
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.clusterer.EDrawingStateType;
@@ -59,11 +59,11 @@ public class DrawingController {
 	 * @param fYCenter
 	 *            Y coordinate of the hierarchy's center.
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 * @param glu
 	 *            GLU object that shall be used for drawing.
 	 */
-	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu) {
+	public void draw(float fXCenter, float fYCenter, GL2 gl, GLU glu) {
 		currentDrawingState.draw(fXCenter, fYCenter, gl, glu);
 	}
 

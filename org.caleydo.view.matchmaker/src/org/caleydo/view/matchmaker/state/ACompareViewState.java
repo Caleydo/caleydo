@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -40,7 +40,7 @@ import org.caleydo.view.matchmaker.rendercommand.RenderCommandFactory;
 import org.caleydo.view.matchmaker.renderer.CompareConnectionBandRenderer;
 import org.caleydo.view.matchmaker.renderer.ICompareConnectionRenderer;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 public abstract class ACompareViewState {
 
@@ -153,7 +153,7 @@ public abstract class ACompareViewState {
 		isHeatMapWrapperSelectionDisplayListDirty = true;
 	}
 
-	public void executeDrawingPreprocessing(GL gl, boolean isDisplayListDirty) {
+	public void executeDrawingPreprocessing(GL2 gl, boolean isDisplayListDirty) {
 
 		// handleDragging(gl);
 
@@ -180,7 +180,7 @@ public abstract class ACompareViewState {
 		setsChanged = false;
 	}
 
-	protected void renderSingleDetailBand(GL gl, DetailBand detailBand, boolean highlight) {
+	protected void renderSingleDetailBand(GL2 gl, DetailBand detailBand, boolean highlight) {
 
 		boolean isOverview = this instanceof OverviewState
 				|| heatMapWrappers.get(0).getSelectedGroups().size() == 0;
@@ -259,7 +259,7 @@ public abstract class ACompareViewState {
 				highlight, xOffset, detailBand.getBandID(), true);
 	}
 
-	protected void renderSingleBand(GL gl, float[] leftTopPos, float[] leftBottomPos,
+	protected void renderSingleBand(GL2 gl, float[] leftTopPos, float[] leftBottomPos,
 			float[] rightTopPos, float[] rightBottomPos, boolean highlight,
 			float xOffset, int bandID, boolean bandDetailAdaption) {
 
@@ -289,7 +289,7 @@ public abstract class ACompareViewState {
 		// Band border
 		gl.glLineWidth(1);
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
-		gl.glBegin(GL.GL_LINE_STRIP);
+		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < outputPoints.size(); i++) {
 			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), 0f);
 		}
@@ -313,7 +313,7 @@ public abstract class ACompareViewState {
 
 		// Band border
 		gl.glLineWidth(1);
-		gl.glBegin(GL.GL_LINE_STRIP);
+		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < points.size(); i++) {
 			gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0f);
 		}
@@ -390,7 +390,7 @@ public abstract class ACompareViewState {
 		// }
 	}
 
-	public void renderIndiviudalLineRelations(GL gl, HeatMapWrapper leftHeatMapWrapper,
+	public void renderIndiviudalLineRelations(GL2 gl, HeatMapWrapper leftHeatMapWrapper,
 			HeatMapWrapper rightHeatMapWrapper) {
 
 		contentIDToLeftDetailPoints.clear();
@@ -558,7 +558,7 @@ public abstract class ACompareViewState {
 		}
 	}
 
-	protected void renderDetailBandRelations(GL gl, HeatMapWrapper leftHeatMapWrapper,
+	protected void renderDetailBandRelations(GL2 gl, HeatMapWrapper leftHeatMapWrapper,
 			HeatMapWrapper rightHeatMapWrapper) {
 
 		// Find detail bands for heatmapwrapper
@@ -594,7 +594,7 @@ public abstract class ACompareViewState {
 		}
 	}
 
-	protected void renderSingleDetailRelation(GL gl, int contentID, float[] leftPos,
+	protected void renderSingleDetailRelation(GL2 gl, int contentID, float[] leftPos,
 			float[] rightPos) {
 
 		if (leftPos == null || rightPos == null)
@@ -611,7 +611,7 @@ public abstract class ACompareViewState {
 		renderSingleCurve(gl, points, contentID, 25 + (int) (20 * Math.random()));
 	}
 
-	protected void renderOverviewToDetailBandRelations(GL gl,
+	protected void renderOverviewToDetailBandRelations(GL2 gl,
 			HeatMapWrapper heatMapWrapper, boolean isLeft) {
 
 		float overviewX = 0;
@@ -661,7 +661,7 @@ public abstract class ACompareViewState {
 		}
 	}
 
-	public void renderSingleCurve(GL gl, ArrayList<Vec3f> points, Integer contentID,
+	public void renderSingleCurve(GL2 gl, ArrayList<Vec3f> points, Integer contentID,
 			int curvePoints) {
 
 		NURBSCurve curve = new NURBSCurve(points, curvePoints);
@@ -670,7 +670,7 @@ public abstract class ACompareViewState {
 		gl.glPushName(pickingManager.getPickingID(viewID,
 				EPickingType.POLYLINE_SELECTION, contentID));
 
-		gl.glBegin(GL.GL_LINE_STRIP);
+		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < points.size(); i++) {
 			Vec3f point = points.get(i);
 			gl.glVertex3f(point.x(), point.y(), point.z());
@@ -680,13 +680,13 @@ public abstract class ACompareViewState {
 		gl.glPopName();
 	}
 
-	// public void renderSingleCurve(GL gl, ArrayList<Vec3f> points, int
+	// public void renderSingleCurve(GL2 gl, ArrayList<Vec3f> points, int
 	// curvePoints) {
 	//
 	// NURBSCurve curve = new NURBSCurve(points, curvePoints);
 	// points = curve.getCurvePoints();
 	//
-	// gl.glBegin(GL.GL_LINE_STRIP);
+	// gl.glBegin(GL2.GL_LINE_STRIP);
 	// for (int i = 0; i < points.size(); i++) {
 	// Vec3f point = points.get(i);
 	// gl.glVertex3f(point.x(), point.y(), point.z());
@@ -694,7 +694,7 @@ public abstract class ACompareViewState {
 	// gl.glEnd();
 	// }
 
-	protected float setRelationColor(GL gl, HeatMapWrapper heatMapWrapper, int contentID,
+	protected float setRelationColor(GL2 gl, HeatMapWrapper heatMapWrapper, int contentID,
 			boolean considerSelection) {
 		// FIXME: The code and the function as a whole is ugly!
 		ArrayList<SelectionType> selectionTypes = heatMapWrapper
@@ -786,11 +786,11 @@ public abstract class ACompareViewState {
 	public abstract void handleReplaceContentVA(int setID, String dataDomain,
 			String vaType);
 
-	public abstract void init(GL gl);
+	public abstract void init(GL2 gl);
 
-	public abstract void buildDisplayList(GL gl);
+	public abstract void buildDisplayList(GL2 gl);
 
-	public abstract void drawActiveElements(GL gl);
+	public abstract void drawActiveElements(GL2 gl);
 
 	public abstract ECompareViewStateType getStateType();
 
@@ -810,7 +810,7 @@ public abstract class ACompareViewState {
 
 	public abstract int getMinSetsInFocus();
 
-	public abstract void handleMouseWheel(GL gl, int amount, Point wheelPoint);
+	public abstract void handleMouseWheel(GL2 gl, int amount, Point wheelPoint);
 
 	protected abstract void setupLayouts();
 
@@ -837,9 +837,9 @@ public abstract class ACompareViewState {
 	 * of the state has finished.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 */
-	public void handleDragging(GL gl) {
+	public void handleDragging(GL2 gl) {
 		dragAndDropController.handleDragging(gl, glMouseListener);
 	}
 
@@ -864,7 +864,7 @@ public abstract class ACompareViewState {
 		this.createSelectionTypes = createSelectionTypes;
 	}
 
-	// private void renderStraightLineRelation(GL gl, HeatMapWrapper
+	// private void renderStraightLineRelation(GL2 gl, HeatMapWrapper
 	// leftHeatMapWrapper,
 	// HeatMapWrapper rightHeatMapWrapper, int contentID) {
 	//
@@ -892,7 +892,7 @@ public abstract class ACompareViewState {
 	// gl.glPushName(pickingManager.getPickingID(viewID,
 	// EPickingType.POLYLINE_SELECTION, contentID));
 	//
-	// gl.glBegin(GL.GL_LINE_STRIP);
+	// gl.glBegin(GL2.GL_LINE_STRIP);
 	// for (int i = 0; i < points.size(); i++)
 	// gl.glVertex3f(points.get(i).x(), points.get(i).y(), positionZ);
 	// gl.glEnd();
@@ -901,7 +901,7 @@ public abstract class ACompareViewState {
 	//
 	// }
 
-	protected void renderStraightLineRelation(GL gl, HeatMapWrapper leftHeatMapWrapper,
+	protected void renderStraightLineRelation(GL2 gl, HeatMapWrapper leftHeatMapWrapper,
 			HeatMapWrapper rightHeatMapWrapper) {
 
 		for (Integer contentID : leftHeatMapWrapper.getContentVA()) {
@@ -930,7 +930,7 @@ public abstract class ACompareViewState {
 			gl.glPushName(pickingManager.getPickingID(viewID,
 					EPickingType.POLYLINE_SELECTION, contentID));
 
-			gl.glBegin(GL.GL_LINE_STRIP);
+			gl.glBegin(GL2.GL_LINE_STRIP);
 			for (int i = 0; i < points.size(); i++)
 				gl.glVertex3f(points.get(i).x(), points.get(i).y(), positionZ);
 			gl.glEnd();
@@ -958,7 +958,7 @@ public abstract class ACompareViewState {
 		isHeatMapWrapperSelectionDisplayListDirty = true;
 	}
 
-	protected void renderHeatMapOverviewSelections(GL gl) {
+	protected void renderHeatMapOverviewSelections(GL2 gl) {
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			ContentSelectionManager contentSelectionManager = heatMapWrapper
@@ -978,7 +978,7 @@ public abstract class ACompareViewState {
 
 	}
 
-	protected void drawHeatMapOverviewSelectionsOfType(GL gl, AHeatMapLayout layout,
+	protected void drawHeatMapOverviewSelectionsOfType(GL2 gl, AHeatMapLayout layout,
 			ContentVirtualArray contentVA, Set<Integer> selectedElements,
 			SelectionType selectionType) {
 
@@ -992,7 +992,7 @@ public abstract class ACompareViewState {
 				float positionY = layout.getOverviewHeatMapSamplePositionY(contentIndex);
 				Vec3f overviewHeatMapPosition = layout.getOverviewHeatMapPosition();
 				gl.glColor4fv(selectionType.getColor(), 0);
-				gl.glBegin(GL.GL_LINE_LOOP);
+				gl.glBegin(GL2.GL_LINE_LOOP);
 				gl.glVertex3f(overviewHeatMapPosition.x(), positionY,
 						overviewHeatMapPosition.z());
 				gl.glVertex3f(overviewHeatMapPosition.x() + overviewHeatMapWidth,
@@ -1007,7 +1007,7 @@ public abstract class ACompareViewState {
 		}
 	}
 
-	// private void renderDendrogram(final GL gl, ClusterNode currentNode, float
+	// private void renderDendrogram(final GL2 gl, ClusterNode currentNode, float
 	// fOpacity,
 	// Tree<ClusterNode> tree, float xPosInit, boolean isLeft) {
 	//
@@ -1071,14 +1071,14 @@ public abstract class ACompareViewState {
 	// EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode.getID()));
 	//
 	// // vertical line connecting all child nodes
-	// gl.glBegin(GL.GL_LINES);
+	// gl.glBegin(GL2.GL_LINES);
 	// gl.glVertex3f(x, ymin, currentNode.getPos().z());
 	// gl.glVertex3f(x, ymax, currentNode.getPos().z());
 	// gl.glEnd();
 	//
 	// // horizontal lines connecting all children with their parent
 	// for (int i = 0; i < iNrChildsNode; i++) {
-	// gl.glBegin(GL.GL_LINES);
+	// gl.glBegin(GL2.GL_LINES);
 	// gl.glVertex3f(x, tempPositions[i].y(), tempPositions[i].z());
 	// gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(),
 	// tempPositions[i].z());
@@ -1092,7 +1092,7 @@ public abstract class ACompareViewState {
 	// EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode.getID()));
 	//
 	// // horizontal line visualizing leaf nodes
-	// gl.glBegin(GL.GL_LINES);
+	// gl.glBegin(GL2.GL_LINES);
 	// gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(),
 	// currentNode
 	// .getPos().z());
@@ -1103,7 +1103,7 @@ public abstract class ACompareViewState {
 	// gl.glPopName();
 	// }
 	//
-	// gl.glBegin(GL.GL_LINES);
+	// gl.glBegin(GL2.GL_LINES);
 	// gl.glVertex3f(currentNode.getPos().x() - fDiff, currentNode.getPos().y(),
 	// currentNode.getPos().z());
 	// gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(),
@@ -1113,7 +1113,7 @@ public abstract class ACompareViewState {
 	//
 	// }
 
-	// private void renderSingleHierarchyRelation(GL gl, HeatMapWrapper
+	// private void renderSingleHierarchyRelation(GL2 gl, HeatMapWrapper
 	// leftHeatMapWrapper,
 	// HeatMapWrapper rightHeatMapWrapper, int contentID) {
 	//
@@ -1206,7 +1206,7 @@ public abstract class ACompareViewState {
 	// gl.glPushName(pickingManager.getPickingID(viewID,
 	// EPickingType.POLYLINE_SELECTION, contentID));
 	//
-	// gl.glBegin(GL.GL_LINE_STRIP);
+	// gl.glBegin(GL2.GL_LINE_STRIP);
 	// for (int i = 0; i < points.size(); i++)
 	// gl.glVertex3f(points.get(i).x(), points.get(i).y(), positionZ);
 	// gl.glEnd();
@@ -1215,7 +1215,7 @@ public abstract class ACompareViewState {
 	//
 	// }
 
-	// protected void renderTree(GL gl, HeatMapWrapper heatMapWrapperLeft,
+	// protected void renderTree(GL2 gl, HeatMapWrapper heatMapWrapperLeft,
 	// HeatMapWrapper heatMapWrapperRight) {
 	//
 	// renderPseudoHierarchy = false;

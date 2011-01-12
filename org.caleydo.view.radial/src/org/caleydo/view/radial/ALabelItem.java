@@ -2,7 +2,7 @@ package org.caleydo.view.radial;
 
 import gleem.linalg.Vec2f;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * Abstract base class for all label items. Label items hold the actual content
@@ -36,9 +36,9 @@ public abstract class ALabelItem {
 	 * Draws the label item in a certain way determined by the concrete class.
 	 * 
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 */
-	public abstract void draw(GL gl);
+	public abstract void draw(GL2 gl);
 
 	/**
 	 * @return Type of the label item.

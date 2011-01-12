@@ -2,7 +2,7 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 
 import java.awt.Font;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -11,9 +11,9 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
-import com.sun.opengl.util.j2d.TextRenderer;
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.awt.TextRenderer;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
 
 public class DetailToolBar extends ARenderer {
 
@@ -31,11 +31,11 @@ public class DetailToolBar extends ARenderer {
 	}
 
 	@Override
-	public void render(GL gl) {
+	public void render(GL2 gl) {
 		pickingManager = heatMap.getPickingManager();
 		gl.glColor4f(0.0f, 0.0f, 0.0f, 0.4f);
 
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(x, 0, 0);
 		gl.glVertex3f(x, y, 0);
@@ -53,7 +53,7 @@ public class DetailToolBar extends ARenderer {
 		// // Band border
 		// gl.glLineWidth(2);
 		// gl.glColor4f(0, 0, 0, 0.6f);
-		// gl.glBegin(GL.GL_LINE_STRIP);
+		// gl.glBegin(GL2.GL_LINE_STRIP);
 		// for (int i = 0; i < points.size(); i++)
 		// gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0f);
 		// gl.glEnd();
@@ -80,7 +80,7 @@ public class DetailToolBar extends ARenderer {
 			gl.glTranslatef(sideSpacing, spacing, 0);
 			gl.glPushName(pickingManager.getPickingID(heatMap.getID(),
 					EPickingType.HEAT_MAP_HIDE_HIDDEN_ELEMENTS, 1));
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(0, 0, buttonZ);
 			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -123,7 +123,7 @@ public class DetailToolBar extends ARenderer {
 		// gl.glColor4f(1, 1, 1, 1);
 		// gl.glPushName(pickingManager.getPickingID(heatMap.getID(),
 		// EPickingType.HEAT_MAP_SHOW_CAPTIONS, 1));
-		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glBegin(GL2.GL_POLYGON);
 		// gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		// gl.glVertex3f(0, 0, buttonZ);
 		// gl.glTexCoord2f(texCoords.right(), texCoords.bottom());

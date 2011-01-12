@@ -1,6 +1,6 @@
 package org.caleydo.view.bucket;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
@@ -24,7 +24,7 @@ public class GLConnectionLineRendererJukebox extends AGLConnectionLineRenderer {
 	}
 
 	@Override
-	protected void renderConnectionLines(final GL gl) {
+	protected void renderConnectionLines(final GL2 gl) {
 
 		// Vec3f vecTranslation;
 		// Vec3f vecScale;

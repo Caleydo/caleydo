@@ -1,5 +1,5 @@
 /*
- * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
+ * gleem -- OpenGL2 Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
  * (kbrussel@alum.mit.edu) Copying, distribution and use of this software in source and binary forms, with or
  * without modification, is permitted provided that the following conditions are met: Distributions of source
  * code must reproduce the copyright notice, this list of conditions and the following disclaimer in the
@@ -276,7 +276,7 @@ public class Mat4f {
 	}
 
 	/**
-	 * Copies data in column-major (OpenGL format) order into passed float
+	 * Copies data in column-major (OpenGL2 format) order into passed float
 	 * array, which must have length 16 or greater.
 	 */
 	public void getColumnMajorData(float[] out) {

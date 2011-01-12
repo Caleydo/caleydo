@@ -2,12 +2,12 @@ package org.caleydo.view.grouper.drawingstrategies.group;
 
 import gleem.linalg.Vec3f;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.view.grouper.GrouperRenderStyle;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 public class GroupDrawingStrategyDragged extends AGroupDrawingStrategyRectangular {
 
@@ -18,13 +18,13 @@ public class GroupDrawingStrategyDragged extends AGroupDrawingStrategyRectangula
 	}
 
 	@Override
-	public void draw(GL gl, GroupRepresentation groupRepresentation,
+	public void draw(GL2 gl, GroupRepresentation groupRepresentation,
 			TextRenderer textRenderer) {
 		// Use drawDraggedGroup Method
 
 	}
 
-	public void drawDraggedGroup(GL gl, GroupRepresentation groupRepresentation,
+	public void drawDraggedGroup(GL2 gl, GroupRepresentation groupRepresentation,
 			float fMouseCoordinateX, float fMouseCoordinateY,
 			float fDraggingStartMouseCoordinateX, float fDraggingStartMouseCoordinateY) {
 
@@ -36,7 +36,7 @@ public class GroupDrawingStrategyDragged extends AGroupDrawingStrategyRectangula
 
 	}
 
-	public void drawDraggedLeaf(GL gl, GroupRepresentation groupRepresentation,
+	public void drawDraggedLeaf(GL2 gl, GroupRepresentation groupRepresentation,
 			float fMouseCoordinateX, float fMouseCoordinateY,
 			float fDraggingStartMouseCoordinateX, float fDraggingStartMouseCoordinateY) {
 
@@ -48,7 +48,7 @@ public class GroupDrawingStrategyDragged extends AGroupDrawingStrategyRectangula
 
 	}
 
-	private void drawDragged(GL gl, GroupRepresentation groupRepresentation,
+	private void drawDragged(GL2 gl, GroupRepresentation groupRepresentation,
 			float fMouseCoordinateX, float fMouseCoordinateY,
 			float fDraggingStartMouseCoordinateX, float fDraggingStartMouseCoordinateY,
 			float fColor[]) {
@@ -67,13 +67,13 @@ public class GroupDrawingStrategyDragged extends AGroupDrawingStrategyRectangula
 
 		Vec3f vecPosition = new Vec3f(fMouseCoordinateX + fRealRelDraggingPosX,
 				fMouseCoordinateY + fRealRelDraggingPosY, 0.2f);
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 
 		gl.glColor4fv(fColor, 0);
 
 		beginGUIElement(gl, vecPosition);
 
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(vecPosition.x(), vecPosition.y(), vecPosition.z());
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition.z());
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight,
@@ -87,7 +87,7 @@ public class GroupDrawingStrategyDragged extends AGroupDrawingStrategyRectangula
 	}
 
 	@Override
-	public void drawAsLeaf(GL gl, GroupRepresentation groupRepresentation,
+	public void drawAsLeaf(GL2 gl, GroupRepresentation groupRepresentation,
 			TextRenderer textRenderer) {
 		// Use drawDraggedLeaf Method
 

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.selection.SelectionType;
@@ -96,8 +96,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.Point;
 
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
 
 /**
  * Rendering the bucket with diverse views remotely.
@@ -286,7 +286,7 @@ public class GLBucket extends AGLView implements
 	}
 
 	@Override
-	public void initLocal(final GL gl) {
+	public void initLocal(final GL2 gl) {
 		// iGLDisplayList = gl.glGenLists(1);
 
 		ArrayList<RemoteLevelElement> remoteLevelElementWhiteList = new ArrayList<RemoteLevelElement>();
@@ -299,14 +299,14 @@ public class GLBucket extends AGLView implements
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
+	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");
 	}
 
 	@Override
-	public void init(final GL gl) {
+	public void init(final GL2 gl) {
 		gl.glClearColor(0.5f, 0.5f, 0.5f, 1f);
 
 		if (glConnectionLineRenderer != null) {
@@ -326,7 +326,7 @@ public class GLBucket extends AGLView implements
 	}
 
 	@Override
-	public void displayLocal(final GL gl) {
+	public void displayLocal(final GL2 gl) {
 
 		for (AGLView view : containedGLViews)
 			view.processEvents();
@@ -429,12 +429,12 @@ public class GLBucket extends AGLView implements
 	}
 
 	@Override
-	public void displayRemote(final GL gl) {
+	public void displayRemote(final GL2 gl) {
 		display(gl);
 	}
 
 	@Override
-	public void display(final GL gl) {
+	public void display(final GL2 gl) {
 		time.update();
 		// processEvents();
 
@@ -520,13 +520,13 @@ public class GLBucket extends AGLView implements
 		gl.glTranslatef(0, 0, -fZTranslation);
 	}
 
-	public void renderBucketWall(final GL gl, boolean bRenderBorder,
+	public void renderBucketWall(final GL2 gl, boolean bRenderBorder,
 			RemoteLevelElement element) {
 		// Highlight potential view drop destination
 		if (dragAndDrop.isDragActionRunning() && element.getID() == iMouseOverObjectID) {
 			gl.glLineWidth(5);
 			gl.glColor4f(0.2f, 0.2f, 0.2f, 1);
-			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glBegin(GL2.GL_LINE_LOOP);
 			gl.glVertex3f(0, 0, 0.01f);
 			gl.glVertex3f(0, 8, 0.01f);
 			gl.glVertex3f(8, 8, 0.01f);
@@ -544,7 +544,7 @@ public class GLBucket extends AGLView implements
 			gl.glColor4f(1f, 1f, 1f, 0.3f);
 		}
 
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0, 0, -0.03f);
 		gl.glVertex3f(0, 8, -0.03f);
 		gl.glVertex3f(8, 8, -0.03f);
@@ -558,7 +558,7 @@ public class GLBucket extends AGLView implements
 		gl.glLineWidth(1f);
 	}
 
-	private void renderRemoteLevel(final GL gl, final RemoteLevel level) {
+	private void renderRemoteLevel(final GL2 gl, final RemoteLevel level) {
 		for (RemoteLevelElement element : level.getAllElements()) {
 			renderRemoteLevelElement(gl, element, level);
 
@@ -568,7 +568,7 @@ public class GLBucket extends AGLView implements
 		}
 	}
 
-	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element,
+	private void renderRemoteLevelElement(final GL2 gl, RemoteLevelElement element,
 			RemoteLevel level) {
 		// // Check if view is visible
 		// if (!level.getElementVisibilityById(iViewID))
@@ -649,7 +649,7 @@ public class GLBucket extends AGLView implements
 
 				gl.glColor4f(1, 1, 1, 0.75f);
 
-				gl.glBegin(GL.GL_POLYGON);
+				gl.glBegin(GL2.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 				gl.glVertex3f(-0.7f, -0.6f + fFrameWidth, -0.01f);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
@@ -709,7 +709,7 @@ public class GLBucket extends AGLView implements
 				}
 
 				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
-				gl.glBegin(GL.GL_LINES);
+				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex3f(10, 2.7f, 0f);
 				gl.glVertex3f(18, 2.7f, 0f);
 				gl.glVertex3f(20, 2.7f, 0f);
@@ -736,7 +736,7 @@ public class GLBucket extends AGLView implements
 				}
 
 				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
-				gl.glBegin(GL.GL_LINES);
+				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex3f(10, 2.9f, 0f);
 				gl.glVertex3f(18, 2.9f, 0f);
 				gl.glVertex3f(20, 2.9f, 0f);
@@ -781,7 +781,7 @@ public class GLBucket extends AGLView implements
 		gl.glPopName();
 	}
 
-	private void renderEmptyBucketWall(final GL gl, RemoteLevelElement element,
+	private void renderEmptyBucketWall(final GL2 gl, RemoteLevelElement element,
 			RemoteLevel level) {
 		gl.glPushMatrix();
 
@@ -809,7 +809,7 @@ public class GLBucket extends AGLView implements
 		gl.glPopMatrix();
 	}
 
-	private void renderHandles(final GL gl) {
+	private void renderHandles(final GL2 gl) {
 
 		// Bucket stack top
 		RemoteLevelElement element = stackLevel.getElementByPositionIndex(0);
@@ -897,7 +897,7 @@ public class GLBucket extends AGLView implements
 		}
 	}
 
-	private void renderStackViewHandleBarZoomedIn(final GL gl, RemoteLevelElement element) {
+	private void renderStackViewHandleBarZoomedIn(final GL2 gl, RemoteLevelElement element) {
 		Transform transform = element.getTransform();
 		Vec3f translation = transform.getTranslation();
 		Vec3f scale = transform.getScale();
@@ -918,7 +918,7 @@ public class GLBucket extends AGLView implements
 				-translation.z() - 0.001f);
 	}
 
-	private void renderNavigationHandleBar(final GL gl, RemoteLevelElement element,
+	private void renderNavigationHandleBar(final GL2 gl, RemoteLevelElement element,
 			float fHandleWidth, float fHandleHeight, boolean bUpsideDown,
 			float fScalingFactor) {
 
@@ -946,7 +946,7 @@ public class GLBucket extends AGLView implements
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_VIEW_DRAG, element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);
 		gl.glVertex3f(fHandleWidth - 2 * fHandleHeight, 2 + fHandleHeight, 0);
 		gl.glVertex3f(fHandleWidth - 2 * fHandleHeight, 2, 0);
@@ -983,7 +983,7 @@ public class GLBucket extends AGLView implements
 		}
 	}
 
-	private void renderSingleHandle(final GL gl, int iRemoteLevelElementID,
+	private void renderSingleHandle(final GL2 gl, int iRemoteLevelElementID,
 			EPickingType ePickingType, EIconTextures eIconTexture, float fWidth,
 			float fHeight) {
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, ePickingType,
@@ -995,7 +995,7 @@ public class GLBucket extends AGLView implements
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 		gl.glColor3f(1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(0, -fHeight, 0f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
@@ -1011,7 +1011,7 @@ public class GLBucket extends AGLView implements
 		gl.glPopName();
 	}
 
-	private void renderNavigationOverlay(final GL gl, final int iRemoteLevelElementID) {
+	private void renderNavigationOverlay(final GL2 gl, final int iRemoteLevelElementID) {
 		if (glConnectionLineRenderer != null) {
 			glConnectionLineRenderer.enableRendering(false);
 		}
@@ -1263,7 +1263,7 @@ public class GLBucket extends AGLView implements
 		// EPickingType.BUCKET_LOCK_ICON_SELECTION, iViewID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
-		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glBegin(GL2.GL_LINE_LOOP);
 		gl.glVertex3f(2.66f, 2.66f, fNavigationZValue);
 		gl.glVertex3f(2.66f, 5.33f, fNavigationZValue);
 		gl.glVertex3f(5.33f, 5.33f, fNavigationZValue);
@@ -1276,7 +1276,7 @@ public class GLBucket extends AGLView implements
 		textureViewSymbol.enable();
 		textureViewSymbol.bind();
 
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(2.66f, 2.66f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
@@ -1296,7 +1296,7 @@ public class GLBucket extends AGLView implements
 				iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
-		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glBegin(GL2.GL_LINE_LOOP);
 		gl.glVertex3f(0, 0, fNavigationZValue);
 		gl.glVertex3f(2.66f, 2.66f, fNavigationZValue);
 		gl.glVertex3f(5.33f, 2.66f, fNavigationZValue);
@@ -1310,7 +1310,7 @@ public class GLBucket extends AGLView implements
 		textureMoveIn.bind();
 		// texCoords = textureMoveIn.getImageTexCoords();
 		// gl.glColor4f(1,0.3f,0.3f,0.9f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(2.66f, 0.05f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -1330,7 +1330,7 @@ public class GLBucket extends AGLView implements
 				iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
-		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glBegin(GL2.GL_LINE_LOOP);
 		gl.glVertex3f(8, 0, fNavigationZValue);
 		gl.glVertex3f(5.33f, 2.66f, fNavigationZValue);
 		gl.glVertex3f(5.33f, 5.33f, fNavigationZValue);
@@ -1344,7 +1344,7 @@ public class GLBucket extends AGLView implements
 		textureMoveRight.bind();
 
 		// gl.glColor4f(0,1,0,1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(7.95f, 2.66f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -1364,7 +1364,7 @@ public class GLBucket extends AGLView implements
 				iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
-		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glBegin(GL2.GL_LINE_LOOP);
 		gl.glVertex3f(0, 0, fNavigationZValue);
 		gl.glVertex3f(0, 8, fNavigationZValue);
 		gl.glVertex3f(2.66f, 5.33f, fNavigationZValue);
@@ -1378,7 +1378,7 @@ public class GLBucket extends AGLView implements
 		textureMoveLeft.bind();
 
 		// gl.glColor4f(0,1,0,1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(0.05f, 2.66f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -1398,7 +1398,7 @@ public class GLBucket extends AGLView implements
 				iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
-		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glBegin(GL2.GL_LINE_LOOP);
 		gl.glVertex3f(0, 8, fNavigationZValue);
 		gl.glVertex3f(8, 8, fNavigationZValue);
 		gl.glVertex3f(5.33f, 5.33f, fNavigationZValue);
@@ -1412,7 +1412,7 @@ public class GLBucket extends AGLView implements
 		textureMoveOut.bind();
 
 		// gl.glColor4f(0,1,0,1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(2.66f, 7.95f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -1428,7 +1428,7 @@ public class GLBucket extends AGLView implements
 		gl.glPopName();
 	}
 
-	private void renderPoolSelection(final GL gl, float fXOrigin, float fYOrigin,
+	private void renderPoolSelection(final GL2 gl, float fXOrigin, float fYOrigin,
 			float fWidth, float fHeight, RemoteLevelElement element, boolean leftSide) {
 
 		float fPanelSideWidth = 11f;
@@ -1444,7 +1444,7 @@ public class GLBucket extends AGLView implements
 				+ fPanelSideWidth;
 
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(backgroudX, fYOrigin - fHeight / 2f + fHeight, 0f);
 		gl.glVertex3f(backgroudX + fWidth, fYOrigin - fHeight / 2f + fHeight, 0f);
 		gl.glVertex3f(backgroudX + fWidth, fYOrigin - fHeight / 2f, 0f);
@@ -1460,7 +1460,7 @@ public class GLBucket extends AGLView implements
 
 		gl.glColor4f(1, 1, 1, 0.75f);
 
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fXOrigin + 2 / fAspectRatio * sideSwitchFactor + fPanelSideWidth,
 				fYOrigin - fHeight, -0.01f);
@@ -1496,7 +1496,7 @@ public class GLBucket extends AGLView implements
 				+ fHeight / 2f - fHeight + 1f, -1.8f);
 
 		// gl.glColor3f(0.25f, 0.25f, 0.25f);
-		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glBegin(GL2.GL_POLYGON);
 		// gl.glVertex3f(fXOrigin + 3f, fYOrigin - fHeight / 2f + fHeight -
 		// 2.5f, 0f);
 		// gl.glVertex3f(fXOrigin + 5.1f, fYOrigin - fHeight / 2f + fHeight -
@@ -1511,7 +1511,7 @@ public class GLBucket extends AGLView implements
 				EPickingType.REMOTE_VIEW_SELECTION, element.getID()));
 	}
 
-	private void doSlerpActions(final GL gl) {
+	private void doSlerpActions(final GL2 gl) {
 		if (arSlerpActions.isEmpty())
 			return;
 
@@ -1535,7 +1535,7 @@ public class GLBucket extends AGLView implements
 		slerpView(gl, tmpSlerpAction);
 	}
 
-	private void slerpView(final GL gl, SlerpAction slerpAction) {
+	private void slerpView(final GL2 gl, SlerpAction slerpAction) {
 		int iViewID = slerpAction.getElementId();
 
 		SlerpMod slerpMod = new SlerpMod();
@@ -2189,7 +2189,7 @@ public class GLBucket extends AGLView implements
 	}
 
 	/**
-	 * Unregister view from event system. Remove view from GL render loop.
+	 * Unregister view from event system. Remove view from GL2 render loop.
 	 */
 	public void removeView(AGLView glEventListener) {
 		if (glEventListener != null) {
@@ -2324,7 +2324,7 @@ public class GLBucket extends AGLView implements
 		layoutRenderStyle.initMemoLevel();
 	}
 
-	protected void renderPoolAndMemoLayerBackground(final GL gl) {
+	protected void renderPoolAndMemoLayerBackground(final GL2 gl) {
 
 		float fXCorrection = 0.07f; // Detach pool level from stack
 
@@ -2355,7 +2355,7 @@ public class GLBucket extends AGLView implements
 			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 			gl.glLineWidth(1);
 
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 			gl.glVertex3f(fLeftSceneBorder, fBottomSceneBorder, fZ);
 			gl.glVertex3f(fLeftSceneBorder, -fBottomSceneBorder, fZ);
 			gl.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH,
@@ -2373,7 +2373,7 @@ public class GLBucket extends AGLView implements
 				gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
 			}
 
-			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glBegin(GL2.GL_LINE_LOOP);
 			gl.glVertex3f(fLeftSceneBorder, fBottomSceneBorder, fZ);
 			gl.glVertex3f(fLeftSceneBorder, -fBottomSceneBorder, fZ);
 			gl.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH,
@@ -2387,7 +2387,7 @@ public class GLBucket extends AGLView implements
 			// Render right pool area background
 			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 			gl.glLineWidth(1);
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 			gl.glVertex3f(-fLeftSceneBorder, fBottomSceneBorder, fZ);
 			gl.glVertex3f(-fLeftSceneBorder, -fBottomSceneBorder, fZ);
 			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH,
@@ -2398,7 +2398,7 @@ public class GLBucket extends AGLView implements
 
 			gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
 			gl.glLineWidth(1);
-			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glBegin(GL2.GL_LINE_LOOP);
 			gl.glVertex3f(-fLeftSceneBorder, fBottomSceneBorder, fZ);
 			gl.glVertex3f(-fLeftSceneBorder, -fBottomSceneBorder, fZ);
 			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH,
@@ -2432,7 +2432,7 @@ public class GLBucket extends AGLView implements
 	 * 
 	 * @param GL
 	 */
-	private void initNewView(GL gl) {
+	private void initNewView(GL2 gl) {
 		if (!newViews.isEmpty() && PathwayManager.get().isPathwayLoadingFinished()
 				&& arSlerpActions.isEmpty()) {
 
@@ -2499,7 +2499,7 @@ public class GLBucket extends AGLView implements
 	 * @return <code>true</code> if adding the slerp action was successfull,
 	 *         <code>false</code> otherwise
 	 */
-	private boolean addSlerpActionForView(GL gl, AGLView view) {
+	private boolean addSlerpActionForView(GL2 gl, AGLView view) {
 
 		RemoteLevelElement origin = spawnLevel.getElementByPositionIndex(0);
 		RemoteLevelElement destination = null;
@@ -2540,7 +2540,7 @@ public class GLBucket extends AGLView implements
 	 * @return the created view ready to be used within the application
 	 */
 	@SuppressWarnings("unchecked")
-	private AGLView createView(GL gl, ASerializedView serView) {
+	private AGLView createView(GL2 gl, ASerializedView serView) {
 
 		@SuppressWarnings("rawtypes")
 		Class viewClass;
@@ -2676,7 +2676,7 @@ public class GLBucket extends AGLView implements
 		return containedGLViews;
 	}
 
-	private void updateOffScreenTextures(final GL gl) {
+	private void updateOffScreenTextures(final GL2 gl) {
 
 		if (glOffScreenRenderer == null)
 			return;

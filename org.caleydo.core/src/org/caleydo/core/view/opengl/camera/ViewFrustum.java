@@ -1,9 +1,9 @@
 package org.caleydo.core.view.opengl.camera;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
- * Defines viewing volume of a OpenGL view.
+ * Defines viewing volume of a OpenGL2 view.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -130,13 +130,13 @@ public class ViewFrustum {
 	 * Sets the projection matrix, according to the projection mode defined in the frustum
 	 * 
 	 * @param gl
-	 *            the GL context
+	 *            the GL2 context
 	 * @param fAspectRatio
 	 *            the aspect ratio
 	 * @deprecated Because fAspectRatio should not be used any more.
 	 */
 	@Deprecated
-	public void setProjectionMatrix(GL gl, float fAspectRatio) {
+	public void setProjectionMatrix(GL2 gl, float fAspectRatio) {
 
 		// The member values must be copied to local values
 		// Only the local values are allowed to be written - otherwise we would mess up the frustum with the
@@ -167,7 +167,7 @@ public class ViewFrustum {
 			gl.glFrustum(left, right, bottom, top, getNear(), getFar());
 		}
 
-		gl.glMatrixMode(GL.GL_MODELVIEW);
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
 	}
 
 	@Override

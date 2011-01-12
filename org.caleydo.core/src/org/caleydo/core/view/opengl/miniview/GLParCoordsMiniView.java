@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.miniview;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
@@ -14,11 +14,11 @@ public class GLParCoordsMiniView
 	}
 
 	@Override
-	public void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin) {
+	public void render(GL2 gl, float fXOrigin, float fYOrigin, float fZOrigin) {
 
-		gl.glPushAttrib(GL.GL_CURRENT_BIT);
+		gl.glPushAttrib(GL2.GL_CURRENT_BIT);
 		gl.glColor3f(1, 0, 0);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(fXOrigin, fYOrigin, GeneralRenderStyle.MINIVEW_Z);
 		gl.glVertex3f(fXOrigin, fYOrigin + fHeight, GeneralRenderStyle.MINIVEW_Z);
 		gl.glVertex3f(fXOrigin + fWidth, fYOrigin + fHeight, GeneralRenderStyle.MINIVEW_Z);

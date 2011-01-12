@@ -3,7 +3,7 @@ package org.caleydo.view.radial;
 import java.util.HashMap;
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.selection.SelectionManager;
@@ -205,7 +205,7 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 	}
 
 	@Override
-	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu) {
+	public void draw(float fXCenter, float fYCenter, GL2 gl, GLU glu) {
 
 		HashMap<PartialDisc, PDDrawingStrategySelected> mapSelectedDrawingStrategies = new HashMap<PartialDisc, PDDrawingStrategySelected>();
 		parentIndicatorType = SelectionType.NORMAL;
@@ -236,7 +236,7 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 		}
 
 		if (parentIndicatorType != SelectionType.NORMAL) {
-			gl.glPushClientAttrib(GL.GL_COLOR_BUFFER_BIT);
+			gl.glPushClientAttrib(GL2.GL_COLOR_BUFFER_BIT);
 			if (parentIndicatorType == SelectionType.SELECTION)
 				gl.glColor3fv(SelectionType.SELECTION.getColor(), 0);
 			else

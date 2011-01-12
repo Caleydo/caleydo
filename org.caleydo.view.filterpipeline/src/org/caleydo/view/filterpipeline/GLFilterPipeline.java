@@ -1,13 +1,16 @@
 package org.caleydo.view.filterpipeline;
 
 import gleem.linalg.Vec2f;
+
 import java.awt.Font;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
-import javax.media.opengl.GL;
+
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.MetaFilter;
@@ -47,8 +50,9 @@ import org.caleydo.view.filterpipeline.listener.SetFilterTypeListener;
 import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
 
 
 /**
@@ -123,7 +127,7 @@ public class GLFilterPipeline
 	}
 
 	@Override
-	public void init(GL gl)
+	public void init(GL2 gl)
 	{
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new FilterPipelineRenderStyle(viewFrustum);
@@ -158,17 +162,17 @@ public class GLFilterPipeline
 	}
 
 	@Override
-	public void initLocal(GL gl)
+	public void initLocal(GL2 gl)
 	{
 		init(gl);
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
+	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager)
 	{
 
-		// Register keyboard listener to GL canvas
+		// Register keyboard listener to GL2 canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
 				.asyncExec(new Runnable()
 				{
@@ -188,7 +192,7 @@ public class GLFilterPipeline
 	}
 
 	@Override
-	public void displayLocal(GL gl)
+	public void displayLocal(GL2 gl)
 	{
 		pickingManager.handlePicking(this, gl);
 		//glMouseListener = getParentGLCanvas().getGLMouseListener();
@@ -199,13 +203,13 @@ public class GLFilterPipeline
 	}
 
 	@Override
-	public void displayRemote(GL gl)
+	public void displayRemote(GL2 gl)
 	{
 		display(gl);
 	}
 
 	@Override
-	public void display(GL gl)
+	public void display(GL2 gl)
 	{
 		// ---------------------------------------------------------------------
 		// move...
@@ -298,7 +302,7 @@ public class GLFilterPipeline
 	 * @param heightLeft
 	 * @param heightRight
 	 */
-	private void displayFilter( GL gl,
+	private void displayFilter( GL2 gl,
 								int id,
 								int numFilteredNew,
 								int numFilteredTotal,
@@ -320,7 +324,7 @@ public class GLFilterPipeline
 		// filter
 		gl.glPushName(iPickingID);
 		
-		gl.glBegin(GL.GL_QUADS);
+		gl.glBegin(GL2.GL_QUADS);
 		{		
 			if( id % 2 == 0 )
 				gl.glColor3f(1.f,0.6f,0.5f);
@@ -379,7 +383,7 @@ public class GLFilterPipeline
 		{
 			gl.glLineWidth(SelectionType.MOUSE_OVER.getLineWidth());
 			
-			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glBegin(GL2.GL_LINE_LOOP);
 			{
 				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 				
@@ -392,7 +396,7 @@ public class GLFilterPipeline
 		}		
 	}
 	
-	private void displayCollapseArrow(GL gl, int id, float left)
+	private void displayCollapseArrow(GL2 gl, int id, float left)
 	{
 		int iPickingID =
 			pickingManager.getPickingID
@@ -404,8 +408,8 @@ public class GLFilterPipeline
 		float bottom = 0.025f;
 		float halfSize = 0.1f;
 
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
-		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
+		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		
 		Texture arrowTexture =
 			textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_ARROW);
@@ -415,14 +419,14 @@ public class GLFilterPipeline
 		
 		gl.glPushName(iPickingID);
 		
-		gl.glMatrixMode(GL.GL_MODELVIEW_MATRIX);
+		gl.glMatrixMode(GL2.GL_MODELVIEW_MATRIX);
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
 		
 		gl.glTranslatef(left + halfSize, bottom + halfSize, 0.001f);
 		gl.glRotatef(id <= firstFilter ? -90 : 90, 0, 0, 1);
 		
-		gl.glBegin(GL.GL_QUADS);
+		gl.glBegin(GL2.GL_QUADS);
 		{
 			gl.glColor3f(0.9f,1f,0.9f);
 	
@@ -448,7 +452,7 @@ public class GLFilterPipeline
 		gl.glPopAttrib();
 	}
 	
-	private void displayBackground(GL gl)
+	private void displayBackground(GL2 gl)
 	{
 		int iPickingID =
 			pickingManager.getPickingID
@@ -463,7 +467,7 @@ public class GLFilterPipeline
 	
 		gl.glPushName(iPickingID);
 		
-		gl.glBegin(GL.GL_QUADS);
+		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor3d(0.9, 0.8, 0.7);
 
 		gl.glVertex3f(0, 0, 0);
@@ -565,7 +569,7 @@ public class GLFilterPipeline
 		}
 	}
 	
-	private void updateMousePosition(GL gl)
+	private void updateMousePosition(GL2 gl)
 	{
 		try
 		{

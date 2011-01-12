@@ -2,13 +2,13 @@ package org.caleydo.core.view.opengl.util.draganddrop;
 
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 public interface IDropArea {
 
-	public void handleDragOver(GL gl, Set<IDraggable> draggables, float mouseCoordinateX,
+	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
 		float mouseCoordinateY);
 
-	public void handleDrop(GL gl, Set<IDraggable> draggables, float mouseCoordinateX, float mouseCoordinateY,
+	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX, float mouseCoordinateY,
 		DragAndDropController dragAndDropController);
 }

@@ -1,5 +1,5 @@
 /*
- * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
+ * gleem -- OpenGL2 Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
  * (kbrussel@alum.mit.edu) Copying, distribution and use of this software in source and binary forms, with or
  * without modification, is permitted provided that the following conditions are met: Distributions of source
  * code must reproduce the copyright notice, this list of conditions and the following disclaimer in the
@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 /**
@@ -208,10 +208,10 @@ public class ManipManager {
 
 	/**
 	 * Cause the manipulators for a given window to be drawn. The drawing occurs
-	 * immediately; this routine must be called when an OpenGL context is valid,
+	 * immediately; this routine must be called when an OpenGL2 context is valid,
 	 * i.e., from within the display() method of a GLEventListener.
 	 */
-	public synchronized void render(GLAutoDrawable window, GL gl) {
+	public synchronized void render(GLAutoDrawable window, GL2 gl) {
 		WindowInfo info = (WindowInfo) windowToInfoMap.get(window);
 		if (info == null)
 			throw new RuntimeException("Window not registered");

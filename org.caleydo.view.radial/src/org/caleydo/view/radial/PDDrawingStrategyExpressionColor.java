@@ -1,6 +1,6 @@
 package org.caleydo.view.radial;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
@@ -36,7 +36,7 @@ public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildInd
 	}
 
 	@Override
-	public void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw) {
+	public void drawFullCircle(GL2 gl, GLU glu, PartialDisc pdDiscToDraw) {
 
 		if (pdDiscToDraw == null)
 			return;
@@ -45,7 +45,7 @@ public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildInd
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
 				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
 			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(), fRadius,
@@ -65,7 +65,7 @@ public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildInd
 	}
 
 	@Override
-	public void drawPartialDisc(GL gl, GLU glu, PartialDisc pdDiscToDraw) {
+	public void drawPartialDisc(GL2 gl, GLU glu, PartialDisc pdDiscToDraw) {
 
 		if (pdDiscToDraw == null)
 			return;
@@ -77,7 +77,7 @@ public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildInd
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
 				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
 			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);

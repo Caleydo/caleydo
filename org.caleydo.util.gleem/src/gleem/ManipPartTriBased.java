@@ -1,5 +1,5 @@
 /*
- * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
+ * gleem -- OpenGL2 Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
  * (kbrussel@alum.mit.edu) Copying, distribution and use of this software in source and binary forms, with or
  * without modification, is permitted provided that the following conditions are met: Distributions of source
  * code must reproduce the copyright notice, this list of conditions and the following disclaimer in the
@@ -29,7 +29,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * Triangle-based manipulator part. This is the base class for most of the
@@ -147,19 +147,19 @@ public class ManipPartTriBased extends ManipPart {
 		return visible;
 	}
 
-	public void render(GL gl) {
+	public void render(GL2 gl) {
 		if (!visible)
 			return;
 		boolean lightingOn = true;
 		// FIXME: this is too expensive; figure out another way
-		// if (glIsEnabled(GL.GL_LIGHTING))
+		// if (glIsEnabled(GL2.GL_LIGHTING))
 		// lightingOn = true;
 
 		if (lightingOn) {
-			gl.glEnable(GL.GL_COLOR_MATERIAL);
-			gl.glColorMaterial(GL.GL_FRONT_AND_BACK, GL.GL_AMBIENT_AND_DIFFUSE);
+			gl.glEnable(GL2.GL_COLOR_MATERIAL);
+			gl.glColorMaterial(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE);
 		}
-		gl.glBegin(GL.GL_TRIANGLES);
+		gl.glBegin(GL2.GL_TRIANGLES);
 		if (highlighted) {
 			gl.glColor3f(highlightColor.x(), highlightColor.y(), highlightColor
 					.z());
@@ -188,7 +188,7 @@ public class ManipPartTriBased extends ManipPart {
 		}
 		gl.glEnd();
 		if (lightingOn) {
-			gl.glDisable(GL.GL_COLOR_MATERIAL);
+			gl.glDisable(GL2.GL_COLOR_MATERIAL);
 		}
 	}
 

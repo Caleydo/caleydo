@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 
 import org.xml.sax.InputSource;
 
-import com.sun.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.Texture;
 
 public interface IPathwayResourceLoader {
 

@@ -5,7 +5,7 @@ import gleem.linalg.Vec3f;
 import java.awt.Font;
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -18,9 +18,9 @@ import org.caleydo.core.view.opengl.util.overlay.AOverlayManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
-import com.sun.opengl.util.j2d.TextRenderer;
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.awt.TextRenderer;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
 
 /**
  * <p>
@@ -133,7 +133,7 @@ public class ContextMenu
 	}
 
 	/**
-	 * Set the GL view which is currently rendering the context menu. Only in this view will the context menu
+	 * Set the GL2 view which is currently rendering the context menu. Only in this view will the context menu
 	 * be rendered. For remote rendering the remote rendering view is required, while the rest of the data
 	 * probably needs to be set in the embedded view.
 	 * 
@@ -201,7 +201,7 @@ public class ContextMenu
 	 * @param gl
 	 * @param masterGLView
 	 */
-	public void render(GL gl, AGLView masterGLView) {
+	public void render(GL2 gl, AGLView masterGLView) {
 
 		if (this.masterGLView != masterGLView)
 			return;
@@ -262,8 +262,8 @@ public class ContextMenu
 		}
 
 		if (isDisplayListDirty) {
-			gl.glNewList(displayListIndex, GL.GL_COMPILE);
-			gl.glDisable(GL.GL_DEPTH_TEST);
+			gl.glNewList(displayListIndex, GL2.GL_COMPILE);
+			gl.glDisable(GL2.GL_DEPTH_TEST);
 
 			Vec3f scalingPivot = new Vec3f(baseMenu.xOrigin, baseMenu.yOrigin, BASIC_Z);
 
@@ -271,7 +271,7 @@ public class ContextMenu
 			drawMenu(gl, baseMenu, true);
 			endGUIElement(gl);
 
-			gl.glEnable(GL.GL_DEPTH_TEST);
+			gl.glEnable(GL2.GL_DEPTH_TEST);
 			gl.glEndList();
 			isDisplayListDirty = false;
 		}
@@ -298,7 +298,7 @@ public class ContextMenu
 	 * @throws IllegalStateException
 	 *             if xOrigin and yOrigin in metaData have not been initialized.
 	 */
-	private void initializeSubMenus(GL gl, SubMenu metaData) {
+	private void initializeSubMenus(GL2 gl, SubMenu metaData) {
 
 		metaData.contextMenuID = contextMenuCounter++;
 		hashContextMenuIDToSubMenu.put(metaData.contextMenuID, metaData);
@@ -352,7 +352,7 @@ public class ContextMenu
 	 * 
 	 * @param gl
 	 */
-	private void drawMenu(GL gl, SubMenu metaData, boolean isBaseMenu) {
+	private void drawMenu(GL2 gl, SubMenu metaData, boolean isBaseMenu) {
 
 		// This is necessary because of the problems
 		// with the frustum and picking in the Bucket view.
@@ -395,7 +395,7 @@ public class ContextMenu
 		// gl.glTranslatef(0, 0, -2);
 	}
 
-	private void renderEntry(GL gl, SubMenu subMenu, int elementIndex, float xPosition, float yPosition) {
+	private void renderEntry(GL2 gl, SubMenu subMenu, int elementIndex, float xPosition, float yPosition) {
 
 		IContextMenuEntry entry = subMenu.contextMenuEntries.get(elementIndex);
 		if (entry instanceof AContextMenuItem) {
@@ -403,11 +403,11 @@ public class ContextMenu
 		}
 		else if (entry instanceof Separator) {
 
-			gl.glPushAttrib(GL.GL_LINE_BIT);
+			gl.glPushAttrib(GL2.GL_LINE_BIT);
 			gl.glColor3f(1, 1, 1);
 			gl.glLineStipple(2, (short) 0xAAAA);
-			gl.glEnable(GL.GL_LINE_STIPPLE);
-			gl.glBegin(GL.GL_LINES);
+			gl.glEnable(GL2.GL_LINE_STIPPLE);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(subMenu.xOrigin + 2 * SPACING, yPosition + ITEM_HEIGHT / 2, BUTTON_Z);
 			gl.glVertex3f(subMenu.xOrigin + subMenu.width - 2 * SPACING, yPosition + ITEM_HEIGHT / 2,
 				BUTTON_Z);
@@ -420,7 +420,7 @@ public class ContextMenu
 
 			textRenderer.begin3DRendering();
 			textRenderer.setColor(1, 1, 1, 1);
-			gl.glDisable(GL.GL_DEPTH_TEST);
+			gl.glDisable(GL2.GL_DEPTH_TEST);
 			textRenderer.draw3D(heading.getText(), xPosition, yPosition + SPACING, TEXT_Z, FONT_SCALING);
 			// textRenderer.flush();
 			textRenderer.end3DRendering();
@@ -465,7 +465,7 @@ public class ContextMenu
 			gl.glPushName(iPickingID);
 
 			gl.glColor4f(1, 1, 1, 0f);
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 			gl.glVertex3f(subMenu.xOrigin + 2 * SPACING, yPosition, BUTTON_Z);
 			gl.glVertex3f(subMenu.xOrigin + subMenu.width - 2 * SPACING, yPosition, BUTTON_Z);
 			gl.glVertex3f(subMenu.xOrigin + subMenu.width - 2 * SPACING, yPosition + ITEM_HEIGHT, BUTTON_Z);
@@ -478,7 +478,7 @@ public class ContextMenu
 			tempTexture.bind();
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 			gl.glColor4f(1, 1, 1, 1f);
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(center - ITEM_HEIGHT / 2, bottom, BUTTON_Z);
 			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -503,7 +503,7 @@ public class ContextMenu
 	 * @param xPosition
 	 * @param yPosition
 	 */
-	private void renderItem(GL gl, SubMenu subMenu, IContextMenuEntry entry, float xPosition, float yPosition) {
+	private void renderItem(GL2 gl, SubMenu subMenu, IContextMenuEntry entry, float xPosition, float yPosition) {
 		AContextMenuItem item = (AContextMenuItem) entry;
 
 		Integer itemID = hashContextMenuItemToUniqueID.get(entry);
@@ -516,7 +516,7 @@ public class ContextMenu
 		int iPickingID =
 			pickingManager.getPickingID(masterGLView.getID(), EPickingType.CONTEXT_MENU_SELECTION, itemID);
 		gl.glPushName(iPickingID);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(xPosition, yPosition - SPACING / 2, BUTTON_Z * 2);
 		gl.glVertex3f(xPosition, yPosition + ITEM_HEIGHT - SPACING / 2, BUTTON_Z * 2);
 		gl.glVertex3f(xPosition + subMenu.width - 2 * SPACING, yPosition + ITEM_HEIGHT - SPACING,
@@ -536,7 +536,7 @@ public class ContextMenu
 
 			gl.glColor4f(1, 1, 1, 1);
 			gl.glPushName(iPickingID);
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(xPosition, yPosition, TEXT_Z);
 			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -553,7 +553,7 @@ public class ContextMenu
 
 		textRenderer.begin3DRendering();
 		textRenderer.setColor(1, 1, 1, 1);
-		gl.glDisable(GL.GL_DEPTH_TEST);
+		gl.glDisable(GL2.GL_DEPTH_TEST);
 
 		textRenderer.draw3D(item.getText(), xPosition, yPosition + SPACING / 2, TEXT_Z, FONT_SCALING);
 		// textRenderer.flush();
@@ -570,7 +570,7 @@ public class ContextMenu
 
 			gl.glColor4f(1, 1, 1, 1);
 			gl.glPushName(iPickingID);
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoords.left(), texCoords.top());
 			gl.glVertex3f(xPosition, yPosition, TEXT_Z);
 			gl.glTexCoord2f(texCoords.right(), texCoords.top());
@@ -719,14 +719,14 @@ public class ContextMenu
 		masterGLView = null;
 	}
 
-	private void drawBackground(GL gl, SubMenu metaData) {
+	private void drawBackground(GL2 gl, SubMenu metaData) {
 		// the body
-		// gl.glBlendFunc(GL.GL_DST_ALPHA, GL.GL_ONE_MINUS_DST_ALPHA);
+		// gl.glBlendFunc(GL2.GL_DST_ALPHA, GL2.GL_ONE_MINUS_DST_ALPHA);
 
 		gl.glPushName(pickingManager.getPickingID(masterGLView.getID(), EPickingType.CONTEXT_MENU_SELECTION,
 			Integer.MAX_VALUE));
 		gl.glColor4f(0f, 0f, 0f, 0.9f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 
 		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - TEXTURE_SIZE, BASIC_Z);
 		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - metaData.height + TEXTURE_SIZE,
@@ -743,7 +743,7 @@ public class ContextMenu
 
 	}
 
-	private void drawCorners(GL gl, SubMenu metaData) {
+	private void drawCorners(GL2 gl, SubMenu metaData) {
 		Texture tempTexture = iconManager.getIconTexture(gl, EIconTextures.CM_CORNER_BLACK);
 		tempTexture.enable();
 		tempTexture.bind();
@@ -751,7 +751,7 @@ public class ContextMenu
 
 		// top left corner
 		gl.glColor4f(1, 1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(metaData.xOrigin, metaData.yOrigin, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
@@ -763,7 +763,7 @@ public class ContextMenu
 		gl.glEnd();
 
 		// top right corner
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(metaData.xOrigin + metaData.width, metaData.yOrigin, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
@@ -778,7 +778,7 @@ public class ContextMenu
 		// bottom left corner
 
 		gl.glColor4f(1, 1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(metaData.xOrigin, metaData.yOrigin - metaData.height, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
@@ -792,7 +792,7 @@ public class ContextMenu
 
 		// bottom right corner
 		gl.glColor4f(1, 1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(metaData.xOrigin + metaData.width, metaData.yOrigin - metaData.height, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
@@ -809,7 +809,7 @@ public class ContextMenu
 		tempTexture.disable();
 	}
 
-	private void drawEdges(GL gl, SubMenu metaData) {
+	private void drawEdges(GL2 gl, SubMenu metaData) {
 		Texture tempTexture = iconManager.getIconTexture(gl, EIconTextures.CM_EDGE_BLACK);
 		tempTexture.enable();
 		tempTexture.bind();
@@ -817,7 +817,7 @@ public class ContextMenu
 
 		// top
 		gl.glColor4f(1, 1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
@@ -831,7 +831,7 @@ public class ContextMenu
 
 		// bottom
 		gl.glColor4f(1, 1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - metaData.height, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
@@ -847,7 +847,7 @@ public class ContextMenu
 
 		// left
 		gl.glColor4f(1, 1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(metaData.xOrigin, metaData.yOrigin - metaData.height + TEXTURE_SIZE, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
@@ -861,7 +861,7 @@ public class ContextMenu
 
 		// right
 		gl.glColor4f(1, 1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(metaData.xOrigin + metaData.width, metaData.yOrigin - TEXTURE_SIZE, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
@@ -878,7 +878,7 @@ public class ContextMenu
 		tempTexture.disable();
 	}
 
-	private void renderHighlighting(GL gl, SubMenu metaData, float yPosition) {
+	private void renderHighlighting(GL2 gl, SubMenu metaData, float yPosition) {
 		Texture tempTexture = iconManager.getIconTexture(gl, EIconTextures.CM_SELECTION_SIDE_BLACK);
 		tempTexture.enable();
 		tempTexture.bind();
@@ -889,7 +889,7 @@ public class ContextMenu
 		yPosition -= SPACING / 2;
 		float width = 0.06f;
 		gl.glColor4f(1, 1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(metaData.xOrigin + SPACING / 2, yPosition + TEXTURE_SIZE, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
@@ -900,7 +900,7 @@ public class ContextMenu
 		gl.glVertex3f(metaData.xOrigin + SPACING / 2, yPosition, BUTTON_Z);
 		gl.glEnd();
 
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(metaData.xOrigin + metaData.width - SPACING / 2, yPosition + TEXTURE_SIZE, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
@@ -918,7 +918,7 @@ public class ContextMenu
 		texCoords = tempTexture.getImageTexCoords();
 
 		gl.glColor4f(1, 1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(metaData.xOrigin + SPACING / 2 + width, yPosition + TEXTURE_SIZE, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());

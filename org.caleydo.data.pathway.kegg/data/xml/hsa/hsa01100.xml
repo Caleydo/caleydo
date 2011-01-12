@@ -10537,7 +10537,7 @@
     </entry>
     <entry id="1669" name="hsa:178 hsa:2548 hsa:2595 hsa:8972" type="gene" reaction="rn:R00028 rn:R05196"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:178+hsa:2548+hsa:2595+hsa:8972">
-        <graphics name="AGL..." fgcolor="#B3B3E6" bgcolor="#FFFFFF"
+        <graphics name="AGL2..." fgcolor="#B3B3E6" bgcolor="#FFFFFF"
              type="line" coords="1586,439,1626,439,1626,439,1629,439,1633,438,1636,436,1638,434,1641,431,1643,429,1645,426,1646,422,1646,419,1646,419,1646,231,1646,231,1646,228,1645,224,1643,221,1641,219,1638,216,1636,214,1633,212,1629,211,1626,211,1626,211,1549,211"/>
     </entry>
     <entry id="1670" name="hsa:276 hsa:277 hsa:278 hsa:279 hsa:280" type="gene" reaction="rn:R02108"

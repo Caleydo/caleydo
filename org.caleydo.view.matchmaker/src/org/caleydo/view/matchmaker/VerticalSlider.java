@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.awt.Point;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -38,7 +38,7 @@ public class VerticalSlider {
 		this.layout = layout;
 	}
 
-	public void draw(final GL gl, PickingManager pickingManager,
+	public void draw(final GL2 gl, PickingManager pickingManager,
 			TextureManager textureManager, int viewID, int pickingID) {
 
 		// sliderHeight = relativeSliderHeight * layout.getOverviewHeight();
@@ -73,7 +73,7 @@ public class VerticalSlider {
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
 		gl.glPushName(pickingManager.getPickingID(viewID,
 				EPickingType.COMPARE_OVERVIEW_SLIDER_BODY_SELECTION, pickingID));
-		gl.glBegin(GL.GL_QUADS);
+		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), 0.0f);
 		gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(), 0.0f);
 		gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y() + bodyHeight, 0.0f);
@@ -99,7 +99,7 @@ public class VerticalSlider {
 
 	}
 
-	public boolean handleDragging(GL gl, GLMouseListener glMouseListener) {
+	public boolean handleDragging(GL2 gl, GLMouseListener glMouseListener) {
 
 		if (!isArrowDownDragging && !isArrowUpDragging && !isBodyDragging)
 			return false;

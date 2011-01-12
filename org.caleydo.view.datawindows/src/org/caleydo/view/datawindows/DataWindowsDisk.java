@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -17,7 +17,7 @@ public class DataWindowsDisk extends PoincareDisk {
 	private float canvasHeight;
 	private TextureManager textureManager;
 	PickingManager pickingManager;
-	private GL gl;
+	private GL2 gl;
 	int iUniqueID;
 	private float[] levelOfDetailLimits;
 	private float displayScaleFactorX = 10;
@@ -71,7 +71,7 @@ public class DataWindowsDisk extends PoincareDisk {
 		return 0;
 	}
 
-	public void renderTree(GL gl, TextureManager texManager, PickingManager pickManager,
+	public void renderTree(GL2 gl, TextureManager texManager, PickingManager pickManager,
 			int iViewID, float viewingWidth, float viewingHeight) {
 
 		this.gl = gl;
@@ -201,7 +201,7 @@ public class DataWindowsDisk extends PoincareDisk {
 
 			// draw rectangle around the view for debuging reasons
 			// gl.glLineWidth((float) lineWidth);
-			// gl.glBegin(GL.GL_LINE_STRIP);
+			// gl.glBegin(GL2.GL_LINE_STRIP);
 			// gl.glColor3i(0, 0, 0);
 			//
 			// gl.glVertex3f(position[0], position[1], 0);
@@ -284,7 +284,7 @@ public class DataWindowsDisk extends PoincareDisk {
 			float length = this.distancePoints(startPoint, endPoint);
 
 			gl.glLineWidth((float) lineWidth);
-			gl.glBegin(GL.GL_LINE_STRIP);
+			gl.glBegin(GL2.GL_LINE_STRIP);
 			gl.glColor3i(0, 0, 0);
 			gl.glVertex3d(node1.getZoomedPosition()[0] * displayScaleFactorX
 					+ (canvasWidth / 2), node1.getZoomedPosition()[1]
@@ -308,7 +308,7 @@ public class DataWindowsDisk extends PoincareDisk {
 				actProjectedPosition = this.projectPoint(actPosition, true);
 
 				gl.glLineWidth((float) lineWidth);
-				gl.glBegin(GL.GL_LINE_STRIP);
+				gl.glBegin(GL2.GL_LINE_STRIP);
 				gl.glColor3i(0, 0, 0);
 				gl.glVertex3d(actProjectedPosition[0] * displayScaleFactorX
 						+ (canvasWidth / 2), actProjectedPosition[1]
@@ -322,7 +322,7 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		} else {
 			gl.glLineWidth((float) lineWidth);
-			gl.glBegin(GL.GL_LINE_STRIP);
+			gl.glBegin(GL2.GL_LINE_STRIP);
 			gl.glColor3i(0, 0, 0);
 			gl.glVertex3d(node1.getZoomedPosition()[0] * displayScaleFactorX
 					+ (canvasWidth / 2), node1.getZoomedPosition()[1]
@@ -347,7 +347,7 @@ public class DataWindowsDisk extends PoincareDisk {
 		float circleY = 0;
 		float i = 0;
 
-		gl.glBegin(GL.GL_LINE_STRIP);
+		gl.glBegin(GL2.GL_LINE_STRIP);
 		gl.glColor3f(0, 0, 0);
 		for (float counter = 0; counter < 360; counter++) {
 			i = counter * (float) Math.PI / 180;

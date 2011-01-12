@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -51,7 +51,7 @@ public class GLConnectionLineRendererBucket
 	}
 
 	@Override
-	protected void renderConnectionLines(final GL gl) {
+	protected void renderConnectionLines(final GL2 gl) {
 		ViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
 
 		for (Entry<IDType, ConnectionMap> typeConnections : connectedElementRepManager
@@ -111,7 +111,7 @@ public class GLConnectionLineRendererBucket
 		}
 	}
 
-	protected void renderLineBundling(final GL gl, IDType idType, float[] fArColor) {
+	protected void renderLineBundling(final GL2 gl, IDType idType, float[] fArColor) {
 		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
 
@@ -195,11 +195,11 @@ public class GLConnectionLineRendererBucket
 		return vecViewBundlingPoint;
 	}
 
-	private void renderPlanes(final GL gl, final Vec3f vecPoint, final ArrayList<Vec3f> alPoints) {
+	private void renderPlanes(final GL2 gl, final Vec3f vecPoint, final ArrayList<Vec3f> alPoints) {
 
 		gl.glColor4f(0.3f, 0.3f, 0.3f, 1f);// 0.6f);
 		gl.glLineWidth(2 + 4);
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 		for (Vec3f vecCurrent : alPoints) {
 			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z() - 0.001f);
 			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z() - 0.001f);
@@ -218,7 +218,7 @@ public class GLConnectionLineRendererBucket
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
 
 		gl.glLineWidth(2);
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 		for (Vec3f vecCurrent : alPoints) {
 			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
 			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z());
@@ -234,7 +234,7 @@ public class GLConnectionLineRendererBucket
 		gl.glEnd();
 
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_COLOR, 0);
-		gl.glBegin(GL.GL_TRIANGLE_FAN);
+		gl.glBegin(GL2.GL_TRIANGLE_FAN);
 		gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
 		for (Vec3f vecCurrent : alPoints) {
 
@@ -253,7 +253,7 @@ public class GLConnectionLineRendererBucket
 	// * @param vecViewCenterPoint
 	// * @param fArColor
 	// */
-	// private void renderLine(final GL gl, final Vec3f vecSrcPoint,
+	// private void renderLine(final GL2 gl, final Vec3f vecSrcPoint,
 	// final Vec3f vecDestPoint, final int iNumberOfLines,
 	// Vec3f vecViewCenterPoint, float[] fArColor) {
 	// Vec3f[] arSplinePoints = new Vec3f[3];
@@ -274,7 +274,7 @@ public class GLConnectionLineRendererBucket
 	// splinePoints.put(fArPoints);
 	// splinePoints.rewind();
 	//
-	// gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, splinePoints);
+	// gl.glMap1f(GL2.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, splinePoints);
 	//
 	// // Line shadow
 	// gl
@@ -283,7 +283,7 @@ public class GLConnectionLineRendererBucket
 	// 0);
 	// // gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
 	// gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2);
-	// gl.glBegin(GL.GL_LINE_STRIP);
+	// gl.glBegin(GL2.GL_LINE_STRIP);
 	// for (int i = 0; i <= 10; i++) {
 	// gl.glEvalCoord1f((float) i / 10);
 	// }
@@ -295,7 +295,7 @@ public class GLConnectionLineRendererBucket
 	// // gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
 	//
 	// gl.glPointSize(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH - 0.5f);
-	// gl.glBegin(GL.GL_POINTS);
+	// gl.glBegin(GL2.GL_POINTS);
 	// for (int i = 0; i <= 10; i++) {
 	// gl.glEvalCoord1f((float) i / 10);
 	// }
@@ -304,14 +304,14 @@ public class GLConnectionLineRendererBucket
 	// // The spline
 	// gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
 	//
-	// gl.glBegin(GL.GL_LINE_STRIP);
+	// gl.glBegin(GL2.GL_LINE_STRIP);
 	// for (int i = 0; i <= 10; i++) {
 	// gl.glEvalCoord1f((float) i / 10);
 	// }
 	// gl.glEnd();
 	// }
 
-	// private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f
+	// private void renderLine(final GL2 gl, final Vec3f vecSrcPoint, final Vec3f
 	// vecDestPoint,
 	// final int iNumberOfLines, Vec3f vecViewCenterPoint)
 	// {
@@ -341,7 +341,7 @@ public class GLConnectionLineRendererBucket
 	// // gl.glColor4f(0.3f, 0.3f, 0.3f, 1);// , 0.6f);
 	// // gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH +
 	// iNumberOfLines + 4);
-	// // gl.glBegin(GL.GL_LINES);
+	// // gl.glBegin(GL2.GL_LINES);
 	// // gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z() -
 	// 0.001f);
 	// // gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z() -
@@ -351,7 +351,7 @@ public class GLConnectionLineRendererBucket
 	// gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
 	// gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH +
 	// iNumberOfLines);
-	// gl.glBegin(GL.GL_LINES);
+	// gl.glBegin(GL2.GL_LINES);
 	//
 	// for (int i=0; i<(arSplinePoints.length-1)*10; i++)
 	// {

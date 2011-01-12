@@ -3,7 +3,7 @@ package org.caleydo.core.view.opengl.renderstyle.infoarea;
 import java.awt.Color;
 
 /**
- * Render style for info overlay panel in OpenGL views.
+ * Render style for info overlay panel in OpenGL2 views.
  * 
  * @author Marc Streit
  */

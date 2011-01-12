@@ -2,7 +2,7 @@ package org.caleydo.view.heatmap.heatmap.template;
 
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -101,7 +101,7 @@ public class TemplateRenderer {
 
 	}
 
-	public void render(GL gl) {
+	public void render(GL2 gl) {
 		// FIXME: this should be called externally
 		frustumChanged();
 		for (RenderParameters parameters : renderers) {

@@ -2,7 +2,7 @@ package org.caleydo.view.radial;
 
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
@@ -80,7 +80,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 * element as root node. The root node will be drawn as circle.
 	 * 
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 * @param glu
 	 *            GLU object that shall be used for drawing.
 	 * @param fWidth
@@ -89,7 +89,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 * @param iDepth
 	 *            Specifies the number of hierarchy levels that should be drawn.
 	 */
-	public void drawHierarchyFull(GL gl, GLU glu, float fWidth, int iDepth) {
+	public void drawHierarchyFull(GL2 gl, GLU glu, float fWidth, int iDepth) {
 
 		setCurrentDisplayParameters(fWidth, fCurrentStartAngle, 360, 0, iDepth);
 
@@ -141,7 +141,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 * current element as root node.
 	 * 
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 * @param glu
 	 *            GLU object that shall be used for drawing.
 	 * @param fWidth
@@ -157,7 +157,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 * @param fInnerRadius
 	 *            Specifies the inner radius of the root partial disc.
 	 */
-	public void drawHierarchyAngular(GL gl, GLU glu, float fWidth, int iDepth,
+	public void drawHierarchyAngular(GL2 gl, GLU glu, float fWidth, int iDepth,
 			float fStartAngle, float fAngle, float fInnerRadius) {
 
 		fStartAngle = getValidAngle(fStartAngle);
@@ -213,7 +213,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	/**
 	 * Draws the current partial disc according to the parameters and calls the
 	 * method for drawing its children if the specified depth for drawing the
-	 * hierarchy is not reached yet. * @param gl GL object that shall be used
+	 * hierarchy is not reached yet. * @param gl GL2 object that shall be used
 	 * for drawing.
 	 * 
 	 * @param glu
@@ -235,7 +235,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 *            drawing should just be simulated.
 	 * @return The angle with which the current partial disc was drawn.
 	 */
-	private float drawHierarchy(GL gl, GLU glu, float fWidth, float fStartAngle,
+	private float drawHierarchy(GL2 gl, GLU glu, float fWidth, float fStartAngle,
 			float fInnerRadius, float fAnglePerSizeUnit, int iDepth, boolean bSimulation) {
 
 		float fAngle = fSize * fAnglePerSizeUnit;
@@ -277,7 +277,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 *            Specifies whether the partial disc should be really drwan or
 	 *            drawing should just be simulated.
 	 */
-	private void drawAllChildren(GL gl, GLU glu, float fWidth, float fStartAngle,
+	private void drawAllChildren(GL2 gl, GLU glu, float fWidth, float fStartAngle,
 			float fInnerRadius, float fAnglePerSizeUnit, int iDepth, boolean bSimulation) {
 
 		float fChildStartAngle = fStartAngle;

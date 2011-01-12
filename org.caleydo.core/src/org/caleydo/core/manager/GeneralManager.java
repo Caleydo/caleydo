@@ -12,7 +12,6 @@ import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.manager.id.IDCreator;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.parser.XmlParserManager;
-import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;

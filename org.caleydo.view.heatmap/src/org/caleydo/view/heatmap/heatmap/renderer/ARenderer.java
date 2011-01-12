@@ -1,6 +1,6 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * Every ARenderer renders from (0, 0) to (x, y). An ARenderer does not take
@@ -18,6 +18,6 @@ public abstract class ARenderer {
 		this.y = y;
 	}
 
-	public abstract void render(GL gl);
+	public abstract void render(GL2 gl);
 
 }

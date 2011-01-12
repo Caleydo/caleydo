@@ -5,7 +5,7 @@ import gleem.linalg.open.Transform;
 
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
@@ -56,7 +56,7 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 	}
 
 	@Override
-	protected AGLView createView(GL gl, ASerializedView serView) {
+	protected AGLView createView(GL2 gl, ASerializedView serView) {
 
 		AGLView glView = super.createView(gl, serView);
 

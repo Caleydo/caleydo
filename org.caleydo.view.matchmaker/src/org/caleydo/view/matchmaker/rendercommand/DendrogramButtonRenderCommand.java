@@ -2,7 +2,7 @@ package org.caleydo.view.matchmaker.rendercommand;
 
 import gleem.linalg.Vec3f;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -32,7 +32,7 @@ public class DendrogramButtonRenderCommand implements IHeatMapRenderCommand {
 	}
 
 	@Override
-	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
+	public void render(GL2 gl, HeatMapWrapper heatMapWrapper) {
 
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
 		Vec3f position = layout.getDendrogramButtonPosition();
@@ -40,8 +40,8 @@ public class DendrogramButtonRenderCommand implements IHeatMapRenderCommand {
 		float width = layout.getDendrogramButtonWidth();
 		Vec3f linePosition = layout.getDendrogramLinePosition();
 
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_LINE_BIT);
-		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
+		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
 				EPickingType.COMPARE_DENDROGRAM_BUTTON_SELECTION, heatMapWrapper.getID()));
@@ -73,7 +73,7 @@ public class DendrogramButtonRenderCommand implements IHeatMapRenderCommand {
 
 		// gl.glLineWidth(1f);
 		// gl.glColor4f(1, 0, 0, 1);
-		// gl.glBegin(GL.GL_LINES);
+		// gl.glBegin(GL2.GL_LINES);
 		// gl.glVertex3f(linePosition.x(), linePosition.y(), linePosition.z());
 		// gl.glVertex3f(linePosition.x(), linePosition.y()
 		// + layout.getDendrogramLineHeight(), linePosition.z());

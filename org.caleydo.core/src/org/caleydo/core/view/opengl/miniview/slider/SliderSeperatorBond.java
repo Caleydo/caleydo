@@ -2,10 +2,10 @@ package org.caleydo.core.view.opengl.miniview.slider;
 
 import gleem.linalg.Vec4f;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
- * OpenGL Slider Seperator
+ * OpenGL2 Slider Seperator
  * 
  * @author Stefan Sauer
  */
@@ -24,7 +24,7 @@ public class SliderSeperatorBond {
 		return iID;
 	}
 
-	public void render(GL gl, float sizeX, float sizeY, Vec4f color) {
+	public void render(GL2 gl, float sizeX, float sizeY, Vec4f color) {
 		float bottom = getBottom();
 		float top = getTop();
 		float height = top - bottom;
@@ -35,7 +35,7 @@ public class SliderSeperatorBond {
 		gl.glTranslatef(0, bottom, -0.02f);
 		// gl.glTranslatef(0, bottom, -0.5f);
 
-		gl.glBegin(GL.GL_QUADS);
+		gl.glBegin(GL2.GL_QUADS);
 		gl.glNormal3i(0, 1, 0);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(0, height, 0);

@@ -6,7 +6,7 @@ import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.selection.SelectionType;
@@ -37,7 +37,7 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
  * Rendering the histogram.
@@ -100,12 +100,12 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 
 	}
 
 	@Override
-	public void initLocal(GL gl) {
+	public void initLocal(GL2 gl) {
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
@@ -113,7 +113,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
+	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
@@ -146,7 +146,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void displayLocal(GL gl) {
+	public void displayLocal(GL2 gl) {
 
 		pickingManager.handlePicking(this, gl);
 
@@ -167,7 +167,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void displayRemote(GL gl) {
+	public void displayRemote(GL2 gl) {
 		if (bIsDisplayListDirtyRemote) {
 			colorMapping = ColorMappingManager.get().getColorMapping(
 					EColorMappingType.GENE_EXPRESSION);
@@ -181,7 +181,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void display(GL gl) {
+	public void display(GL2 gl) {
 		// processEvents();
 		if (bUpdateColorPointPosition || bUpdateLeftSpread || bUpdateRightSpread)
 			updateColorPointPosition(gl);
@@ -191,8 +191,8 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
 
-	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
+		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 		renderHistogram(gl);
 		if (useColorMapping)
 			renderColorBars(gl);
@@ -204,7 +204,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	 * 
 	 * @param gl
 	 */
-	private void renderHistogram(GL gl) {
+	private void renderHistogram(GL2 gl) {
 
 		float fSpacing = (viewFrustum.getWidth() - 2 * SIDE_SPACING) / histogram.size();
 		float fContinuousColorRegion = 1.0f / histogram.size();
@@ -217,7 +217,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 		for (Integer iValue : histogram) {
 			gl.glColor3fv(colorMapping.getColor(fContinuousColorRegion * iCount), 0);
 			gl.glLineWidth(3.0f);
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 
 			gl.glVertex3f(fSpacing * iCount + SIDE_SPACING, SIDE_SPACING, 0);
 			gl.glVertex3f(fSpacing * iCount + SIDE_SPACING, SIDE_SPACING + iValue
@@ -228,7 +228,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 			gl.glVertex3f(fSpacing * (iCount + 1) + SIDE_SPACING, SIDE_SPACING, 0);
 			gl.glEnd();
 
-			gl.glBegin(GL.GL_LINE);
+			gl.glBegin(GL2.GL_LINE);
 			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(2, 2, 2);
 			gl.glEnd();
@@ -243,7 +243,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	 * 
 	 * @param gl
 	 */
-	private void renderColorBars(GL gl) {
+	private void renderColorBars(GL2 gl) {
 
 		fRenderWidth = (viewFrustum.getWidth() - 2 * SIDE_SPACING);
 		ArrayList<ColorMarkerPoint> markerPoints = colorMapping.getMarkerPoints();
@@ -276,7 +276,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 				// the right part which picks the central line
 				if (!bIsFirstOrLast)
 					gl.glPushName(iColorLinePickingID);
-				gl.glBegin(GL.GL_POLYGON);
+				gl.glBegin(GL2.GL_POLYGON);
 				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight), SIDE_SPACING,
 						-0.1f);
 				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight),
@@ -289,7 +289,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 
 				// the left part which picks the spread
 				gl.glPushName(iLeftSpreadPickingID);
-				gl.glBegin(GL.GL_POLYGON);
+				gl.glBegin(GL2.GL_POLYGON);
 				gl.glVertex3f(fLeft, SIDE_SPACING, -0.1f);
 				gl.glVertex3f(fLeft, viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
 				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight),
@@ -302,7 +302,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 				// the left spread line
 				gl.glColor3f(0, 0, 1);
 				gl.glPushName(iLeftSpreadPickingID);
-				gl.glBegin(GL.GL_LINES);
+				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex3f(SIDE_SPACING + (markerPoint.getValue() - fLeftSpread)
 						* fRenderWidth, 0, 0);
 				gl.glVertex3f(SIDE_SPACING + (markerPoint.getValue() - fLeftSpread)
@@ -330,7 +330,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 						markerPoint.getColor()[2], 0.3f);
 				if (!bIsFirstOrLast)
 					gl.glPushName(iColorLinePickingID);
-				gl.glBegin(GL.GL_POLYGON);
+				gl.glBegin(GL2.GL_POLYGON);
 				gl.glVertex3f(fLeft, SIDE_SPACING, -0.011f);
 				gl.glVertex3f(fLeft, viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
 				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft),
@@ -343,7 +343,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 
 				// the second part which picks the spread
 				gl.glPushName(iRightSpreadPickingID);
-				gl.glBegin(GL.GL_POLYGON);
+				gl.glBegin(GL2.GL_POLYGON);
 				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft), SIDE_SPACING,
 						-0.011f);
 				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft),
@@ -356,7 +356,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 				// the right spread line
 				gl.glColor3f(0, 0, 1);
 				gl.glPushName(iRightSpreadPickingID);
-				gl.glBegin(GL.GL_LINES);
+				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex3f(SIDE_SPACING + (markerPoint.getValue() + fRightSpread)
 						* fRenderWidth, 0, 0);
 				gl.glVertex3f(SIDE_SPACING + (markerPoint.getValue() + fRightSpread)
@@ -372,7 +372,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 			// gl.glColor3f(0, 0, 1);
 			// if (!bIsFirstOrLast)
 			// gl.glPushName(iColorLinePickingID);
-			// gl.glBegin(GL.GL_LINES);
+			// gl.glBegin(GL2.GL_LINES);
 			// gl.glVertex3f(SIDE_SPACING + markerPoint.getValue() *
 			// fRenderWidth,
 			// 0, 0);
@@ -390,14 +390,14 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 
 	}
 
-	private void renderCaption(GL gl, float normalizedValue) {
+	private void renderCaption(GL2 gl, float normalizedValue) {
 
 		if (getParentGLCanvas().getSize().getWidth() < 500)
 			return;
 
 		textRenderer.begin3DRendering();
 		textRenderer.setColor(0, 0, 0, 1);
-		gl.glDisable(GL.GL_DEPTH_TEST);
+		gl.glDisable(GL2.GL_DEPTH_TEST);
 
 		double correspondingValue = dataDomain.getSet().getRawForNormalized(
 				normalizedValue);
@@ -417,7 +417,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	 * 
 	 * @param gl
 	 */
-	private void updateColorPointPosition(GL gl) {
+	private void updateColorPointPosition(GL2 gl) {
 		if (glMouseListener.wasMouseReleased()) {
 			// send out a major update which tells the hhm to update its
 			// textures

@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.manager.specialized.Organism;
 
 /**
  * Bean that holds the initialization data for new started caleydo application. Used to store and restore

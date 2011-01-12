@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
@@ -52,7 +52,7 @@ public class VisLinkScene {
 	 * @param gl
 	 *            The GL-object
 	 */
-	public void renderLines(final GL gl) {
+	public void renderLines(final GL2 gl) {
 
 		ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH =
 			GeneralManager.get().getPreferenceStore().getFloat(PreferenceConstants.VISUAL_LINKS_WIDTH);
@@ -88,7 +88,7 @@ public class VisLinkScene {
 	 * @param gl
 	 *            The GL-object
 	 */
-	protected void callRenderLine(final GL gl) {
+	protected void callRenderLine(final GL2 gl) {
 		for (VisLinkAnimationStage currentStage : animationStages)
 			for (ArrayList<Vec3f> currentLine : currentStage.connectionLines())
 				VisLink.renderLine(gl, currentLine, 0, 10, true);
@@ -100,7 +100,7 @@ public class VisLinkScene {
 	 * @param gl
 	 *            The GL-object
 	 */
-	protected void callRenderPolygonLine(final GL gl) {
+	protected void callRenderPolygonLine(final GL2 gl) {
 
 		float width = 0.0f;
 		float color[] = new float[4];
@@ -110,7 +110,7 @@ public class VisLinkScene {
 		if ((style == EVisLinkStyleType.SHADOW_VISLINK) || (style == EVisLinkStyleType.HALO_VISLINK)) {
 
 			// clear stencil buffer
-			gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+			gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
 			int hlAAQuality = 1;
 			boolean halo = false;
 
@@ -159,7 +159,7 @@ public class VisLinkScene {
 		}
 
 		// background (halo or shadow) done, render frontline
-		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+		gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
 
 		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
 		color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
@@ -183,10 +183,10 @@ public class VisLinkScene {
 	 * @param gl
 	 *            The GL-object
 	 */
-	protected void enableStencilBuffer(GL gl) {
-		gl.glStencilFunc(GL.GL_NOTEQUAL, 0x1, 0x1);
-		gl.glStencilOp(GL.GL_KEEP, GL.GL_REPLACE, GL.GL_REPLACE);
-		gl.glEnable(GL.GL_STENCIL_TEST);
+	protected void enableStencilBuffer(GL2 gl) {
+		gl.glStencilFunc(GL2.GL_NOTEQUAL, 0x1, 0x1);
+		gl.glStencilOp(GL2.GL_KEEP, GL2.GL_REPLACE, GL2.GL_REPLACE);
+		gl.glEnable(GL2.GL_STENCIL_TEST);
 	}
 
 	/**
@@ -195,8 +195,8 @@ public class VisLinkScene {
 	 * @param gl
 	 *            The GL-object
 	 */
-	protected void disableStencilBuffer(GL gl) {
-		gl.glDisable(GL.GL_STENCIL_TEST);
+	protected void disableStencilBuffer(GL2 gl) {
+		gl.glDisable(GL2.GL_STENCIL_TEST);
 	}
 
 	/**
@@ -232,7 +232,7 @@ public class VisLinkScene {
 	 * @param gl
 	 *            The GL-object
 	 */
-	protected void callRenderAnimatedPolygonLine(final GL gl) {
+	protected void callRenderAnimatedPolygonLine(final GL2 gl) {
 
 		float percentageOfSegmentsToDraw = percentageOfSegmentsToDraw();
 		int localStage = 0;
@@ -253,7 +253,7 @@ public class VisLinkScene {
 		if ((style == EVisLinkStyleType.SHADOW_VISLINK) || (style == EVisLinkStyleType.HALO_VISLINK)) {
 
 			// clear stencil buffer
-			gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+			gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
 			int hlAAQuality = 1;
 			boolean halo = false;
 
@@ -313,7 +313,7 @@ public class VisLinkScene {
 		}
 
 		// background (halo or shadow) done, render frontline
-		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+		gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
 		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
 		color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
 

@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.IDCategory;
@@ -29,7 +29,7 @@ import org.caleydo.view.matchmaker.layout.HeatMapLayoutOverviewMid;
 import org.caleydo.view.matchmaker.layout.HeatMapLayoutOverviewRight;
 import org.caleydo.view.matchmaker.rendercommand.RenderCommandFactory;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 public class OverviewState extends ACompareViewStateStatic {
 
@@ -50,7 +50,7 @@ public class OverviewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void drawActiveElements(GL gl) {
+	public void drawActiveElements(GL2 gl) {
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.drawRemoteItems(gl, glMouseListener, pickingManager);
@@ -58,7 +58,7 @@ public class OverviewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void buildDisplayList(GL gl) {
+	public void buildDisplayList(GL2 gl) {
 
 		if (heatMapWrappers.size() < 2)
 			return;
@@ -67,10 +67,10 @@ public class OverviewState extends ACompareViewStateStatic {
 			isHeatMapWrapperDisplayListDirty = false;
 			// isHeatMapWrapperSelectionDisplayListDirty = false;
 
-			gl.glNewList(heatMapWrapperDisplayListIndex, GL.GL_COMPILE);
+			gl.glNewList(heatMapWrapperDisplayListIndex, GL2.GL_COMPILE);
 
-			gl.glEnable(GL.GL_BLEND);
-			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glEnable(GL2.GL_BLEND);
+			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
 			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 				heatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
@@ -109,14 +109,14 @@ public class OverviewState extends ACompareViewStateStatic {
 
 		if (isHeatMapWrapperSelectionDisplayListDirty) {
 			isHeatMapWrapperSelectionDisplayListDirty = false;
-			gl.glNewList(heatMapWrapperSelectionDisplayListIndex, GL.GL_COMPILE);
+			gl.glNewList(heatMapWrapperSelectionDisplayListIndex, GL2.GL_COMPILE);
 			renderSelections(gl);
 			gl.glEndList();
 		}
 
 		if (isSetBarDisplayListDirty) {
 			isSetBarDisplayListDirty = false;
-			gl.glNewList(setBarDisplayListIndex, GL.GL_COMPILE);
+			gl.glNewList(setBarDisplayListIndex, GL2.GL_COMPILE);
 			ViewFrustum viewFrustum = view.getViewFrustum();
 			setBar.setWidth(viewFrustum.getWidth());
 			setBar.render(gl);
@@ -129,13 +129,13 @@ public class OverviewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	protected void renderSelections(GL gl) {
+	protected void renderSelections(GL2 gl) {
 		renderOverviewLineSelections(gl);
 		renderHeatMapOverviewSelections(gl);
 	}
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 
 		setBarDisplayListIndex = gl.glGenLists(1);
 		heatMapWrapperDisplayListIndex = gl.glGenLists(1);
@@ -298,7 +298,7 @@ public class OverviewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
+	public void handleMouseWheel(GL2 gl, int amount, Point wheelPoint) {
 		if (amount < 0) {
 
 			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {

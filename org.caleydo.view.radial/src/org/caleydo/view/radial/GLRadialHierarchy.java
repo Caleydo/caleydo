@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
@@ -151,19 +151,19 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void init(GL gl) {
-		gl.glEnable(GL.GL_LINE_SMOOTH);
-		gl.glEnable(GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+	public void init(GL2 gl) {
+		gl.glEnable(GL2.GL_LINE_SMOOTH);
+		gl.glEnable(GL2.GL_BLEND);
+		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	@Override
-	public void initLocal(GL gl) {
+	public void initLocal(GL2 gl) {
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
-		// Register keyboard listener to GL canvas
+		// Register keyboard listener to GL2 canvas
 		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -175,10 +175,10 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
+	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
-		// Register keyboard listener to GL canvas
+		// Register keyboard listener to GL2 canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
 					@Override
@@ -340,7 +340,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void displayLocal(GL gl) {
+	public void displayLocal(GL2 gl) {
 
 		pickingManager.handlePicking(this, gl);
 		// setDisplayListDirty();
@@ -359,7 +359,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void displayRemote(GL gl) {
+	public void displayRemote(GL2 gl) {
 
 		if (bIsDisplayListDirtyRemote && !bIsAnimationActive) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
@@ -374,7 +374,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void display(GL gl) {
+	public void display(GL2 gl) {
 
 		if (pdRealRootElement != null && pdCurrentRootElement != null) {
 
@@ -413,14 +413,14 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	 * Builds the display list for a given display list index.
 	 * 
 	 * @param gl
-	 *            Instance of GL.
+	 *            Instance of GL2.
 	 * @param iGLDisplayListIndex
 	 *            Index of the display list.
 	 */
-	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
+	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		if (pdRealRootElement != null && pdCurrentRootElement != null) {
 
-			gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+			gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
 			float fXCenter = viewFrustum.getWidth() / 2;
 			float fYCenter = viewFrustum.getHeight() / 2;

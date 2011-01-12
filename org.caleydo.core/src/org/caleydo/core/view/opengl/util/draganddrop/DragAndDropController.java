@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -49,7 +49,7 @@ public class DragAndDropController {
 		draggables.clear();
 	}
 
-	public void handleDragging(GL gl, GLMouseListener glMouseListener) {
+	public void handleDragging(GL2 gl, GLMouseListener glMouseListener) {
 
 		if (isDragging) {
 			Point mouseWinCoords = glMouseListener.getPickedPoint();

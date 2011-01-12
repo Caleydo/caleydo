@@ -29,8 +29,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
-import com.sun.opengl.util.Animator;
-import com.sun.opengl.util.FPSAnimator;
+import com.jogamp.opengl.util.Animator;
+import com.jogamp.opengl.util.FPSAnimator;
 
 /**
  * Manage all canvas, view and canvas objects.
@@ -48,7 +48,7 @@ public class ViewManager
 
 	protected HashMap<Integer, AGLView> hashGLViewID2GLView;
 
-	private Animator fpsAnimator;
+	private FPSAnimator fpsAnimator;
 
 	private PickingManager pickingManager;
 
@@ -120,7 +120,7 @@ public class ViewManager
 		int iGLCanvasID = glCanvas.getID();
 
 		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasID)) {
-			Logger.log(new Status(IStatus.WARNING, this.toString(), "GL Canvas with ID " + iGLCanvasID
+			Logger.log(new Status(IStatus.WARNING, this.toString(), "GL2 Canvas with ID " + iGLCanvasID
 				+ " is already registered! Do nothing."));
 
 			return false;
@@ -147,9 +147,8 @@ public class ViewManager
 	public void registerGLView(AGLView glView) {
 		hashGLViewID2GLView.put(glView.getID(), glView);
 	}
-	
-	public void registerGLEventListenerByGLCanvas(final GLCaleydoCanvas glCanvas,
-		final AGLView glView) {
+
+	public void registerGLEventListenerByGLCanvas(final GLCaleydoCanvas glCanvas, final AGLView glView) {
 
 		// This is the case when a view is rendered remote
 		if (glCanvas == null)
@@ -164,7 +163,7 @@ public class ViewManager
 	}
 
 	/**
-	 * Removes all views, canvas and GL event listeners
+	 * Removes all views, canvas and GL2 event listeners
 	 */
 	public void cleanup() {
 
@@ -308,8 +307,9 @@ public class ViewManager
 	}
 
 	@SuppressWarnings("rawtypes")
-	public AGLView createGLView(Class<? extends AGLView> viewClass, GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
-	
+	public AGLView createGLView(Class<? extends AGLView> viewClass, GLCaleydoCanvas glCanvas,
+		ViewFrustum viewFrustum) {
+
 		AGLView view;
 		try {
 			Class[] argTypes = { GLCaleydoCanvas.class, ViewFrustum.class };
@@ -317,7 +317,7 @@ public class ViewManager
 			view = (AGLView) aConstructor.newInstance(glCanvas, viewFrustum);
 		}
 		catch (Exception e) {
-			throw new IllegalStateException("Cannot create GL view " + viewClass);
+			throw new IllegalStateException("Cannot create GL2 view " + viewClass);
 		}
 
 		return view;

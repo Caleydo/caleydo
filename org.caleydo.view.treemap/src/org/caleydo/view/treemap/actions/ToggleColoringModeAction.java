@@ -2,7 +2,6 @@ package org.caleydo.view.treemap.actions;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.treemap.ToggleColoringModeEvent;
-import org.caleydo.core.manager.event.view.treemap.ToggleLabelEvent;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.action.AToolBarAction;

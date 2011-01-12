@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.util.drag;
 
 import java.awt.Point;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -42,17 +42,17 @@ public class GLDragAndDrop {
 		return bDragActionRunning;
 	}
 
-	public void setCurrentMousePos(final GL gl, final Point currentMousePos) {
+	public void setCurrentMousePos(final GL2 gl, final Point currentMousePos) {
 		double mvmatrix[] = new double[16];
 		double projmatrix[] = new double[16];
-		int realy = 0;// GL y coord pos
+		int realy = 0;// GL2 y coord pos
 		double[] wcoord = new double[4];// wx, wy, wz;// returned xyz coords
 		int viewport[] = new int[4];
-		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+		gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
 
-		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-		gl.glGetDoublev(GL.GL_MODELVIEW_MATRIX, mvmatrix, 0);
-		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, projmatrix, 0);
+		gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
+		gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, mvmatrix, 0);
+		gl.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projmatrix, 0);
 		/* note viewport[3] is height of window in pixels */
 		realy = viewport[3] - currentMousePos.y - 1;
 
@@ -64,7 +64,7 @@ public class GLDragAndDrop {
 		fArCurrentMousePos[1] = (float) wcoord[1];
 	}
 
-	public void renderDragThumbnailTexture(final GL gl, boolean bIsZoomedIn) {
+	public void renderDragThumbnailTexture(final GL2 gl, boolean bIsZoomedIn) {
 		float fOffset = 0.02f;
 
 		float fZ = 6;

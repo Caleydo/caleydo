@@ -5,7 +5,7 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.group.ContentGroupList;
@@ -30,7 +30,7 @@ import org.caleydo.view.matchmaker.HeatMapWrapper;
 import org.caleydo.view.matchmaker.SetBar;
 import org.caleydo.view.matchmaker.rendercommand.RenderCommandFactory;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 public abstract class ACompareViewStateStatic extends ACompareViewState {
 
@@ -196,7 +196,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		setSetsInFocus(setBar.getSetsInFocus());
 	}
 
-	protected void renderOverviewLineSelections(GL gl) {
+	protected void renderOverviewLineSelections(GL2 gl) {
 		ContentSelectionManager contentSelectionManager = heatMapWrappers.get(0)
 				.getContentSelectionManager();
 
@@ -224,7 +224,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 				for (Integer contentID : contentSelectionManager
 						.getElements(selectionType)) {
 
-					gl.glPushAttrib(GL.GL_LINE_BIT);
+					gl.glPushAttrib(GL2.GL_LINE_BIT);
 
 					gl.glPushName(pickingManager.getPickingID(viewID,
 							EPickingType.POLYLINE_SELECTION, contentID));
@@ -270,7 +270,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		//
 		// for (Integer contentID : contentSelectionManager
 		// .getElements(selectionType)) {
-		// gl.glPushAttrib(GL.GL_LINE_BIT);
+		// gl.glPushAttrib(GL2.GL_LINE_BIT);
 		// setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
 		// HashMap<Integer, ArrayList<Vec3f>> map = contentIDToIndividualLines
 		// .get(heatMapWrapper);
@@ -285,7 +285,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		// }
 	}
 
-	protected abstract void renderSelections(GL gl);
+	protected abstract void renderSelections(GL2 gl);
 
 	public abstract void handleStateSpecificPickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick, boolean isControlPressed);

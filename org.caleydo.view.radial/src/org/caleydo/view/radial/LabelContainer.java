@@ -2,7 +2,7 @@ package org.caleydo.view.radial;
 
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
@@ -58,7 +58,7 @@ public class LabelContainer {
 	 * @param alLines
 	 *            List of label lines that shall be added.
 	 */
-	public void addLabelLines(GL gl, ArrayList<LabelLine> alLines) {
+	public void addLabelLines(GL2 gl, ArrayList<LabelLine> alLines) {
 
 		for (LabelLine currentLine : alLines) {
 			currentLine.calculateSize(gl, textRenderer, fLabelScaling,
@@ -161,20 +161,20 @@ public class LabelContainer {
 	 * Draws all label lines contained.
 	 * 
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 * @param bDrawLabelBackground
 	 *            Determines, whether a background rectangle with the size of
 	 *            the label container shall be drawn or not.
 	 */
-	public void draw(GL gl, boolean bDrawLabelBackground) {
+	public void draw(GL2 gl, boolean bDrawLabelBackground) {
 
 		gl.glLoadIdentity();
 
 		if (bDrawLabelBackground) {
-			gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 			gl.glColor4fv(RadialHierarchyRenderStyle.LABEL_BACKGROUND_COLOR, 0);
 
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 			gl.glVertex3f(fXContainerLeft, getTop(), 0);
 			gl.glVertex3f(getRight(), getTop(), 0);
 			gl.glVertex3f(getRight(), getBottom(), 0);

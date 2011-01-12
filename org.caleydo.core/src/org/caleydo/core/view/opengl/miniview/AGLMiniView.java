@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.miniview;
 
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.IStorage;
 
@@ -25,7 +25,7 @@ public abstract class AGLMiniView
 	}
 
 	@Override
-	public abstract void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin);
+	public abstract void render(GL2 gl, float fXOrigin, float fYOrigin, float fZOrigin);
 
 	@Override
 	public final float getWidth() {

@@ -22,6 +22,7 @@ import gleem.linalg.Vec3f;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +30,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
+import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
@@ -90,11 +92,10 @@ import org.caleydo.view.scatterplot.listener.YAxisSelectorListener;
 import org.caleydo.view.scatterplot.renderstyle.EScatterPointType;
 import org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle;
 
-import com.sun.opengl.util.BufferUtil;
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
-import com.sun.opengl.util.texture.TextureData;
-import com.sun.opengl.util.texture.TextureIO;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.texture.TextureData;
+import com.jogamp.opengl.util.texture.TextureIO;
 
 /**
  * Rendering the GLScatterplott
@@ -244,7 +245,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new ScatterPlotRenderStyle(this, viewFrustum);
 
@@ -270,9 +271,9 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	@Override
-	public void initLocal(GL gl) {
+	public void initLocal(GL2 gl) {
 
-		// Register keyboard listener to GL canvas
+		// Register keyboard listener to GL2 canvas
 		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -298,17 +299,17 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		init(gl);
 
-		gl.glNewList(iGLDisplayListIndexLocal, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListIndexLocal, GL2.GL_COMPILE);
 		gl.glEndList();
-		gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListIndexCoord, GL2.GL_COMPILE);
 		gl.glEndList();
-		gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListIndexMouseOver, GL2.GL_COMPILE);
 		gl.glEndList();
-		gl.glNewList(iGLDisplayListIndexSelection, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListIndexSelection, GL2.GL_COMPILE);
 		gl.glEndList();
-		gl.glNewList(iGLDisplayListIndexMatrixFull, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListIndexMatrixFull, GL2.GL_COMPILE);
 		gl.glEndList();
-		gl.glNewList(iGLDisplayListIndexMatrixSelection, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListIndexMatrixSelection, GL2.GL_COMPILE);
 		gl.glEndList();
 
 		bRenderMatrix = true;
@@ -320,10 +321,10 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
+	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
-		// Register keyboard listener to GL canvas
+		// Register keyboard listener to GL2 canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
 					@Override
@@ -348,7 +349,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	@Override
-	public void displayLocal(GL gl) {
+	public void displayLocal(GL2 gl) {
 
 		if (set == null)
 			return;
@@ -365,13 +366,13 @@ public class GLScatterPlot extends AStorageBasedView {
 			if (bMainViewZoomDragged) {
 
 				if (bClearSomeDisplayLists) {
-					gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
+					gl.glNewList(iGLDisplayListIndexCoord, GL2.GL_COMPILE);
 					gl.glEndList();
-					gl.glNewList(iGLDisplayListIndexLocal, GL.GL_COMPILE);
+					gl.glNewList(iGLDisplayListIndexLocal, GL2.GL_COMPILE);
 					gl.glEndList();
-					gl.glNewList(iGLDisplayListIndexSelection, GL.GL_COMPILE);
+					gl.glNewList(iGLDisplayListIndexSelection, GL2.GL_COMPILE);
 					gl.glEndList();
-					gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
+					gl.glNewList(iGLDisplayListIndexMouseOver, GL2.GL_COMPILE);
 					gl.glEndList();
 					bClearSomeDisplayLists = false;
 				}
@@ -466,7 +467,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	@Override
-	public void displayRemote(GL gl) {
+	public void displayRemote(GL2 gl) {
 
 		// if (set == null)
 		// return;
@@ -491,9 +492,9 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	@Override
-	public void display(GL gl) {
+	public void display(GL2 gl) {
 
-		// gl.glEnable(GL.GL_DEPTH_TEST);
+		// gl.glEnable(GL2.GL_DEPTH_TEST);
 		// clipToFrustum(gl);
 
 		if (bRenderMatrix) {
@@ -545,16 +546,16 @@ public class GLScatterPlot extends AStorageBasedView {
 		// contextMenu.render(gl, this);
 	}
 
-	private void buildDisplayListSelection(final GL gl, int iGLDisplayListIndex) {
+	private void buildDisplayListSelection(final GL2 gl, int iGLDisplayListIndex) {
 
 		if (bRenderMatrix) {
-			gl.glNewList(iGLDisplayListIndexMatrixSelection, GL.GL_COMPILE);
+			gl.glNewList(iGLDisplayListIndexMatrixSelection, GL2.GL_COMPILE);
 			renderTextures(gl, true, ScatterPlotRenderStyle.MATRIX_SELECTIONTEXTURES_Z); // Selection
 																							// textures
 			gl.glEndList();
 
 		}
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
 
 		if (bRenderMatrix)
@@ -570,7 +571,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		gl.glEndList();
 	}
 
-	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
+	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 
 		if (bHasFrustumChanged) {
 			// renderStyle.setCenterOffsets();
@@ -588,10 +589,10 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		if (this.bRedrawTextures) {
 			this.bRedrawTextures = false;
-			gl.glNewList(this.iGLDisplayListIndexMatrixFull, GL.GL_COMPILE);
+			gl.glNewList(this.iGLDisplayListIndexMatrixFull, GL2.GL_COMPILE);
 			renderTextures(gl, false, ScatterPlotRenderStyle.MATRIX_FULLTEXTURES_Z);
 			gl.glEndList();
-			gl.glNewList(this.iGLDisplayListIndexMatrixSelection, GL.GL_COMPILE);
+			gl.glNewList(this.iGLDisplayListIndexMatrixSelection, GL2.GL_COMPILE);
 			renderTextures(gl, true, ScatterPlotRenderStyle.MATRIX_SELECTIONTEXTURES_Z);
 			gl.glEndList();
 		}
@@ -608,12 +609,12 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		if (bUpdateMainView) {
 
-			gl.glNewList(iGLDisplayListIndexMatrixFull, GL.GL_COMPILE);
+			gl.glNewList(iGLDisplayListIndexMatrixFull, GL2.GL_COMPILE);
 			renderTextures(gl, false, ScatterPlotRenderStyle.MATRIX_FULLTEXTURES_Z); // All
 																						// textures
 			gl.glEndList();
 
-			gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
+			gl.glNewList(iGLDisplayListIndexCoord, GL2.GL_COMPILE);
 			if (bRenderMatrix)
 
 				gl.glTranslatef(renderStyle.getCenterXOffset(),
@@ -624,7 +625,7 @@ public class GLScatterPlot extends AStorageBasedView {
 						-renderStyle.getCenterYOffset(), 0);
 			gl.glEndList();
 
-			gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+			gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 			gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
 			if (bRenderMatrix)
 				gl.glTranslatef(renderStyle.getCenterXOffset(),
@@ -639,7 +640,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			bUpdateMainView = false;
 		}
 
-		gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListIndexMouseOver, GL2.GL_COMPILE);
 		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
 		if (bRenderMatrix)
 			// gl.glTranslatef(renderStyle.getXCenter(),
@@ -663,7 +664,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	 * 
 	 * @param gl
 	 */
-	private void renderMainViewZoomSelectionX(GL gl) {
+	private void renderMainViewZoomSelectionX(GL2 gl) {
 
 		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 		//
@@ -675,7 +676,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		float y = XYAXISDISTANCE - fIconwith * 3f;
 		float alpha = 1f;
 		gl.glColor4fv(Y_AXIS_COLOR, 0);
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 
 		gl.glVertex3f(x, y, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 		gl.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
@@ -727,7 +728,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		x = renderStyle.transformNorm2GlobalX(fTransformNewMaxX);
 
 		gl.glColor4fv(Y_AXIS_COLOR, 0);
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 
 		gl.glVertex3f(x, y, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 		gl.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
@@ -781,7 +782,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			// fIconwith = 0.15f;
 			y = XYAXISDISTANCE - fIconwith * 2.2f;
 			gl.glColor4fv(Y_AXIS_COLOR, 0);
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 
 			gl.glVertex3f(x, y, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 			gl.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
@@ -837,7 +838,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			y = XYAXISDISTANCE - fIconwith * 2.2f;
 
 			gl.glColor4fv(Y_AXIS_COLOR, 0);
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 
 			gl.glVertex3f(x, y, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 			gl.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
@@ -894,7 +895,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	 * 
 	 * @param gl
 	 */
-	private void renderMainViewZoomSelectionY(GL gl) {
+	private void renderMainViewZoomSelectionY(GL2 gl) {
 		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 
 		//
@@ -907,7 +908,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		float alpha = 1f;
 
 		gl.glColor4fv(Y_AXIS_COLOR, 0);
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(x, y, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 		gl.glVertex3f(renderStyle.getRenderWidth() - XYAXISDISTANCE, y,
 				ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
@@ -958,7 +959,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		y = renderStyle.transformNorm2GlobalY(fTransformNewMaxY);
 
 		gl.glColor4fv(Y_AXIS_COLOR, 0);
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(x, y, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 		gl.glVertex3f(renderStyle.getRenderWidth() - XYAXISDISTANCE, y,
 				ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
@@ -1013,7 +1014,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			y = renderStyle.transformNorm2GlobalY(fTransformOldMinY);
 
 			gl.glColor4fv(Y_AXIS_COLOR, 0);
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(x, y, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 			gl.glVertex3f(renderStyle.getRenderWidth() - XYAXISDISTANCE, y,
 					ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
@@ -1069,7 +1070,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			y = renderStyle.transformNorm2GlobalY(fTransformOldMaxY);
 
 			gl.glColor4fv(Y_AXIS_COLOR, 0);
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(x, y, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 			gl.glVertex3f(renderStyle.getRenderWidth() - XYAXISDISTANCE, y,
 					ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
@@ -1124,7 +1125,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	 * 
 	 * @param gl
 	 */
-	private void renderMainViewZoomSelectionBoxes(GL gl) {
+	private void renderMainViewZoomSelectionBoxes(GL2 gl) {
 		// Show Selection Boxes
 
 		if (!bMainViewZoomDragged)
@@ -1136,7 +1137,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		float y2 = renderStyle.getRenderHeight() - XYAXISDISTANCE;
 
 		gl.glColor4f(0, 1, 0, 0.1f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(x1, y1, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 		gl.glVertex3f(x2, y1, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 		gl.glVertex3f(x2, y2, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
@@ -1147,7 +1148,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		x2 = renderStyle.transformNorm2GlobalX(fTransformOldMaxX);
 
 		gl.glColor4f(1, 0, 0, 0.1f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(x1, y1, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 		gl.glVertex3f(x2, y1, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 		gl.glVertex3f(x2, y2, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
@@ -1160,7 +1161,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		y2 = renderStyle.transformNorm2GlobalY(fTransformNewMaxY);
 
 		gl.glColor4f(0, 1, 0, 0.1f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(x1, y1, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 		gl.glVertex3f(x2, y1, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 		gl.glVertex3f(x2, y2, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
@@ -1171,7 +1172,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		y2 = renderStyle.transformNorm2GlobalY(fTransformOldMaxY);
 
 		gl.glColor4f(1, 0, 0, 0.1f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(x1, y1, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 		gl.glVertex3f(x2, y1, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 		gl.glVertex3f(x2, y2, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
@@ -1251,7 +1252,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		int TextureSize = iTextureWidth * iTextureHeight;
 		int itmp = TextureSize * 4 - 4;
 
-		FloatBuffer FbTemp = BufferUtil.newFloatBuffer(TextureSize * 4);
+		FloatBuffer FbTemp = FloatBuffer.allocate(TextureSize * 4);
 
 		Texture tempTextur;
 
@@ -1342,10 +1343,10 @@ public class GLScatterPlot extends AStorageBasedView {
 
 					FbTemp.rewind();
 				}
-				TextureData texData = new TextureData(GL.GL_RGBA /* internalFormat */,
+				TextureData texData = new TextureData(GLProfile.getDefault(), GL2.GL_RGBA /* internalFormat */,
 						iTextureWidth /* height */, iTextureHeight /* width */,
-						0 /* border */, GL.GL_RGBA /* pixelFormat */,
-						GL.GL_FLOAT /* pixelType */, false /* mipmap */,
+						0 /* border */, GL2.GL_RGBA /* pixelFormat */,
+						GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
 						false /* dataIsCompressed */, true /* mustFlipVertically */, FbTemp,
 						null);
 
@@ -1405,7 +1406,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		int TextureSize = iTextureWidth * iTextureHeight;
 		int itmp = TextureSize * 4 - 4;
 
-		FloatBuffer FbTemp = BufferUtil.newFloatBuffer(TextureSize * 4);
+		FloatBuffer FbTemp = FloatBuffer.allocate(TextureSize * 4);
 
 		Texture tempTextur;
 
@@ -1483,10 +1484,10 @@ public class GLScatterPlot extends AStorageBasedView {
 					}
 					FbTemp.rewind();
 				}
-				TextureData texData = new TextureData(GL.GL_RGBA /* internalFormat */,
+				TextureData texData = new TextureData(GLProfile.getDefault(), GL2.GL_RGBA /* internalFormat */,
 						iTextureWidth /* height */, iTextureHeight /* width */,
-						0 /* border */, GL.GL_RGBA /* pixelFormat */,
-						GL.GL_FLOAT /* pixelType */, false /* mipmap */,
+						0 /* border */, GL2.GL_RGBA /* pixelFormat */,
+						GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
 						false /* dataIsCompressed */, true /* mustFlipVertically */, FbTemp,
 						null);
 
@@ -1506,7 +1507,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	 * @param icurrent_Y_AXIS
 	 * @param bIsSecondAxis
 	 */
-	private void renderMatrixSelection(GL gl, int icurrent_X_AXIS, int icurrent_Y_AXIS,
+	private void renderMatrixSelection(GL2 gl, int icurrent_X_AXIS, int icurrent_Y_AXIS,
 			boolean bIsSecondAxis) {
 		float fHeight = this.viewFrustum.getHeight();
 		float fWidth = this.viewFrustum.getWidth();
@@ -1646,7 +1647,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	 * @param bIsSelection
 	 * @param z
 	 */
-	private void renderTextures(GL gl, boolean bIsSelection, float z) {
+	private void renderTextures(GL2 gl, boolean bIsSelection, float z) {
 		float fHeight = this.viewFrustum.getHeight();
 		float fWidth = this.viewFrustum.getWidth();
 		if (fWidth > fHeight) {
@@ -1854,7 +1855,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	 * @param height
 	 * @param selected_Axis
 	 */
-	private void renderHistogram(GL gl, float x, float y, float width, float height,
+	private void renderHistogram(GL2 gl, float x, float y, float width, float height,
 			int selected_Axis) {
 
 		float[] fArMappingColor = new float[] { 0.0f, 0.0f, 0.0f }; // black
@@ -1876,7 +1877,7 @@ public class GLScatterPlot extends AStorageBasedView {
 				ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
 
 		float fRotation = 45;
-		// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		// gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		float tmpx = x + width + width / 4;
 		float tmpy = y + height / 6;
 		gl.glTranslatef(tmpx, tmpy, 0);
@@ -1898,14 +1899,14 @@ public class GLScatterPlot extends AStorageBasedView {
 		tmpy = y + (height / 6);// +(float)bounds.getHeight()/2f;
 
 		if (selected_Axis > 0) {
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(x + width, tmpy, ScatterPlotRenderStyle.MATRIX_HISTOGRAMM_Z);
 			gl.glVertex3f(tmpx, tmpy, ScatterPlotRenderStyle.MATRIX_HISTOGRAMM_Z);
 			gl.glEnd();
 		}
 
 		if (selected_Axis < MAX_AXES - 1) {
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(x + width, y - (height / 10f),
 					ScatterPlotRenderStyle.MATRIX_HISTOGRAMM_Z);
 			gl.glVertex3f(tmpx, tmpy, ScatterPlotRenderStyle.MATRIX_HISTOGRAMM_Z);
@@ -1922,7 +1923,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	 *            the gl context
 	 * 
 	 */
-	private void renderCoordinateSystem(GL gl) {
+	private void renderCoordinateSystem(GL2 gl) {
 
 		textRenderer.setColor(0, 0, 0, 1);
 		// Markers On Axis
@@ -1963,7 +1964,7 @@ public class GLScatterPlot extends AStorageBasedView {
 				// - fWidth - AXIS_MARKER_WIDTH, fCurrentHeight
 				// - fHeightHalf + XYAXISDISTANCE);
 
-				gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+				gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 				float fRoationAngle = -45;
 				// float x = fCurrentWidth- fWidthHalf + XYAXISDISTANCE;
 				// x=transformOnZoom(x,renderStyle.getAxisWidth(),XYAXISDISTANCE);
@@ -1980,7 +1981,7 @@ public class GLScatterPlot extends AStorageBasedView {
 				gl.glTranslatef(-x, -y, 0);
 				gl.glPopAttrib();
 
-				// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+				// gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 				// float fRoationAngle= -45;
 				// gl.glRotatef(fRoationAngle, 0, 0, 1);
 				// renderNumber(gl, Formatter.formatNumber(fNumber),
@@ -1994,7 +1995,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			gl.glColor4fv(X_AXIS_COLOR, 0);
 			float tmpx = fCurrentWidth + XYAXISDISTANCE;
 			tmpx = transformOnXZoom(tmpx, renderStyle.getAxisWidth(), XYAXISDISTANCE);
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(tmpx, fYPosition - AXIS_MARKER_WIDTH, AXIS_Z);
 			gl.glVertex3f(tmpx, fYPosition + AXIS_MARKER_WIDTH, AXIS_Z);
 			gl.glEnd();
@@ -2002,7 +2003,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			gl.glColor4fv(Y_AXIS_COLOR, 0);
 			float tmpy = fCurrentHeight + XYAXISDISTANCE;
 			tmpy = transformOnYZoom(tmpy, renderStyle.getAxisHeight(), XYAXISDISTANCE);
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(fXPosition - AXIS_MARKER_WIDTH, tmpy, AXIS_Z);
 			gl.glVertex3f(fXPosition + AXIS_MARKER_WIDTH, tmpy, AXIS_Z);
 			gl.glEnd();
@@ -2014,7 +2015,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
 		// EPickingType.X_AXIS_SELECTION, 1));
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 
 		gl.glVertex3f(XYAXISDISTANCE, XYAXISDISTANCE, 0.0f);
 		gl.glVertex3f((renderStyle.getRenderWidth() - XYAXISDISTANCE), XYAXISDISTANCE,
@@ -2031,7 +2032,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
 		// EPickingType.X_AXIS_SELECTION, 1));
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 
 		// float fXAxisOverlap = 0.1f;
 
@@ -2044,7 +2045,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		// // LABEL X
 
-		// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		// gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
 		// if(bRenderMatrix)
 		// gl.glTranslatef(renderStyle.getLAbelWidth(), -5*XLABELDISTANCE, 0);
@@ -2076,7 +2077,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		// LABEL Y
 
-		// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		// gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		// if(bRenderMatrix)
 		// gl.glTranslatef(-YLABELDISTANCE, renderStyle.getLabelHeight(), 0);
 		// else
@@ -2111,7 +2112,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	}
 
-	private void renderNumber(GL gl, String sRawValue, float fXOrigin, float fYOrigin) {
+	private void renderNumber(GL2 gl, String sRawValue, float fXOrigin, float fYOrigin) {
 
 		textRenderer.begin3DRendering();
 
@@ -2130,7 +2131,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	 * 
 	 * @param gl
 	 */
-	private void renderScatterPoints(GL gl) {
+	private void renderScatterPoints(GL2 gl) {
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 		float x = 0.0f;
@@ -2216,7 +2217,7 @@ public class GLScatterPlot extends AStorageBasedView {
 				gl.glPushName(iPickingID);
 				gl.glColor4f(0.0f, 0.0f, 1.0f, 0.3f);
 				gl.glLineWidth(0.5f);
-				gl.glBegin(GL.GL_LINES);
+				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex3f(x, y, ScatterPlotRenderStyle.TWOAXISLINE_Z);
 				gl.glVertex3f(x_2, y_2, ScatterPlotRenderStyle.TWOAXISLINE_Z);
 				gl.glEnd();
@@ -2232,7 +2233,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	 * 
 	 * @param gl
 	 */
-	private void renderMouseOver(GL gl) {
+	private void renderMouseOver(GL2 gl) {
 
 		if (contentSelectionManager.getNumberOfElements(SelectionType.MOUSE_OVER) == 0)
 			return;
@@ -2271,7 +2272,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		float angle;
 		float PI = (float) Math.PI;
 
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		for (int i = 0; i < 20; i++) {
 			angle = (i * 2 * PI) / 10;
 			gl.glVertex3f(x + (float) (Math.cos(angle) * fullPoint),
@@ -2288,7 +2289,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		gl.glColor3f(0.0f, 0.0f, 0.0f);
 		gl.glPointSize(POINTSIZE * 50.0f);
-		gl.glBegin(GL.GL_POINTS);
+		gl.glBegin(GL2.GL_POINTS);
 		gl.glVertex3f(x, y, ScatterPlotRenderStyle.HIGHLIGHTED_SCATTERPOINT_Z);
 		gl.glEnd();
 
@@ -2308,7 +2309,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	 * @param fOpacity
 	 * @param contentIndex
 	 */
-	private void renderMouseOverLabel(GL gl, float x, float y, float[] fMoueseOverColor,
+	private void renderMouseOverLabel(GL2 gl, float x, float y, float[] fMoueseOverColor,
 			float fOpacity, int contentIndex) {
 
 		textRenderer.dispose();
@@ -2366,7 +2367,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		float boxHight = (float) bounds.getHeight();
 
 		gl.glColor3f(fMoueseOverColor[0], fMoueseOverColor[1], fMoueseOverColor[2]);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 
 		gl.glVertex3f(0.0f, -0.02f, ScatterPlotRenderStyle.LABEL_Z);
 		gl.glVertex3f(0.0f, boxHight, ScatterPlotRenderStyle.LABEL_Z);
@@ -2375,14 +2376,14 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		gl.glEnd();
 
-		gl.glBegin(GL.GL_TRIANGLES);
+		gl.glBegin(GL2.GL_TRIANGLES);
 		gl.glVertex3f(0.0f - fXtranslation, 0.0f - fYtranslation,
 				ScatterPlotRenderStyle.LABEL_Z);
 		gl.glVertex3f(0.0f, -0.02f, ScatterPlotRenderStyle.LABEL_Z);
 		gl.glVertex3f(0.0f, boxHight, ScatterPlotRenderStyle.LABEL_Z);
 		gl.glEnd();
 
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		textRenderer.begin3DRendering();
 		textRenderer.draw3D(gl, sLabel, 0, 0, ScatterPlotRenderStyle.TEXT_ON_LABEL_Z,
 				fScaling, ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
@@ -2480,7 +2481,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	 * 
 	 * @param gl
 	 */
-	private void renderSelectionPoints(GL gl) {
+	private void renderSelectionPoints(GL2 gl) {
 
 		// for (SelectionType tmpSelectionType : AlSelectionTypes) {
 		ArrayList<SelectionType> sTypes = contentSelectionManager.getSelectionTypes();
@@ -2529,7 +2530,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		}
 	}
 
-	private void renderPointPrimitive(GL gl, float x, float y, float z,
+	private void renderPointPrimitive(GL2 gl, float x, float y, float z,
 			float[] fArMappingColor, float fOpacity, int iContentIndex, float scale) {
 
 		EScatterPointType type = POINTSTYLE;
@@ -2543,7 +2544,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		gl.glPushName(iPickingID);
 		switch (type) {
 		case BOX: {
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 			gl.glVertex3f(x - halfPoint, y - halfPoint, z);
 			gl.glVertex3f(x - halfPoint, y + halfPoint, z);
 			gl.glVertex3f(x + halfPoint, y + halfPoint, z);
@@ -2553,14 +2554,14 @@ public class GLScatterPlot extends AStorageBasedView {
 		}
 		case POINT: {
 			gl.glPointSize(fullPoint * 50.0f);
-			gl.glBegin(GL.GL_POINTS);
+			gl.glBegin(GL2.GL_POINTS);
 			gl.glVertex3f(x, y, z);
 			gl.glEnd();
 			break;
 		}
 		case CROSS: {
 			gl.glLineWidth(1.0f);
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(x - halfPoint, y - halfPoint, z);
 			gl.glVertex3f(x + halfPoint, y + halfPoint, z);
 			gl.glVertex3f(x - halfPoint, y + halfPoint, z);
@@ -2573,7 +2574,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			float PI = (float) Math.PI;
 
 			gl.glLineWidth(1.0f);
-			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glBegin(GL2.GL_LINE_LOOP);
 			for (int i = 0; i < 10; i++) {
 				angle = (i * 2 * PI) / 10;
 				gl.glVertex3f(x + (float) (Math.cos(angle) * fullPoint), y
@@ -2586,7 +2587,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			float angle;
 			float PI = (float) Math.PI;
 
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 			for (int i = 0; i < 10; i++) {
 				angle = (i * 2 * PI) / 10;
 				gl.glVertex3f(x + (float) (Math.cos(angle) * fullPoint), y
@@ -2601,12 +2602,12 @@ public class GLScatterPlot extends AStorageBasedView {
 		gl.glPopName();
 	}
 
-	private void renderRectangularSelection(GL gl, float x, float y, float z,
+	private void renderRectangularSelection(GL2 gl, float x, float y, float z,
 			float length, float height, float[] fArMappingColor) {
 
 		gl.glColor3f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2]);
 		gl.glLineWidth(2.0f);
-		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glBegin(GL2.GL_LINE_LOOP);
 		gl.glVertex3f(x, y, z);
 		gl.glVertex3f(x, y + height, z);
 		gl.glVertex3f(x + length, y + height, z);

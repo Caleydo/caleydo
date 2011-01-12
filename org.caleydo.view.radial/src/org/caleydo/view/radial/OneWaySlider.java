@@ -7,7 +7,7 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -17,7 +17,7 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
  * Represents a slider that can be dragged in one direction only. Moving the
@@ -105,7 +105,7 @@ public class OneWaySlider extends AGLGUIElement {
 	 * Draws the slider using the specified parameters.
 	 * 
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 * @param pickingManager
 	 *            Picking manager that shall be used.
 	 * @param textureManager
@@ -119,7 +119,7 @@ public class OneWaySlider extends AGLGUIElement {
 	 * @param iSliderBodyID
 	 *            Picking ID for the slider body.
 	 */
-	public void draw(GL gl, PickingManager pickingManager, TextureManager textureManager,
+	public void draw(GL2 gl, PickingManager pickingManager, TextureManager textureManager,
 			int iViewID, int iSliderID, int iSliderButtonID, int iSliderBodyID) {
 
 		gl.glPushMatrix();
@@ -131,10 +131,10 @@ public class OneWaySlider extends AGLGUIElement {
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
 				EPickingType.RAD_HIERARCHY_SLIDER_BODY_SELECTION, iSliderBodyID));
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
 		gl.glColor3f(0.6f, 0.6f, 0.6f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0, fDownButtonHeight, 0);
 		gl.glVertex3f(fWidth, fDownButtonHeight, 0);
 		gl.glVertex3f(fWidth, fHeight, 0);
@@ -147,7 +147,7 @@ public class OneWaySlider extends AGLGUIElement {
 				EPickingType.RAD_HIERARCHY_SLIDER_SELECTION, iSliderID));
 
 		gl.glColor4f(0.3f, 0.3f, 0.3f, 0.5f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0, fSlidingElementDrawingPosition, 0.1f);
 		gl.glVertex3f(fWidth, fSlidingElementDrawingPosition, 0.1f);
 		gl.glVertex3f(fWidth, fSlidingElementDrawingPosition + fSlidingElementHeight,
@@ -204,7 +204,7 @@ public class OneWaySlider extends AGLGUIElement {
 	 *            Text the scaling shall be calculated for.
 	 * @return Scaling factor for the specified text.
 	 */
-	private float determineFontScaling(GL gl, String sText) {
+	private float determineFontScaling(GL2 gl, String sText) {
 		// float fScaledWidth = getScaledSizeOf(gl, fWidth);
 		// float fScaledSlidingElementHeight = getScaledSizeOf(gl,
 		// fSlidingElementHeight);
@@ -227,7 +227,7 @@ public class OneWaySlider extends AGLGUIElement {
 	 *            position.
 	 * @return True, if the slider has been dragged, false otherwise.
 	 */
-	public boolean handleDragging(GL gl, GLMouseListener glMouseListener) {
+	public boolean handleDragging(GL2 gl, GLMouseListener glMouseListener) {
 
 		if (!bIsDragging && !bIsBodySelected) {
 			return false;
@@ -385,11 +385,11 @@ public class OneWaySlider extends AGLGUIElement {
 				* fDrawingStep;
 	}
 
-	public float getScaledHeight(GL gl) {
+	public float getScaledHeight(GL2 gl) {
 		return getScaledSizeOf(gl, fHeight);
 	}
 
-	public float getScaledWidth(GL gl) {
+	public float getScaledWidth(GL2 gl) {
 		return getScaledSizeOf(gl, fWidth);
 	}
 }

@@ -3,9 +3,8 @@ package org.caleydo.view.treemap;
 import java.awt.Color;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
-import java.util.Vector;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -143,18 +142,18 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	}
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 		renderer.initCache(gl);
 
 	}
 
 	@Override
-	protected void initLocal(GL gl) {
+	protected void initLocal(GL2 gl) {
 		throw new IllegalStateException();
 	}
 
 	@Override
-	public void initRemote(GL gl, AGLView glParentView, GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 		this.glMouseListener = glMouseListener;
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
@@ -196,7 +195,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	}
 
 	@Override
-	public void display(GL gl) {
+	public void display(GL2 gl) {
 		if (bIsDisplayListDirtyLocal) {
 			renderer.initCache(gl);
 			renderer.initRenderer(viewFrustum, getActivePickingManager(), getPickingViewID(), treeSelectionManager, textRenderer);
@@ -219,12 +218,12 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	}
 
 	@Override
-	protected void displayLocal(GL gl) {
+	protected void displayLocal(GL2 gl) {
 		throw new IllegalStateException();
 	}
 
 	@Override
-	public void displayRemote(GL gl) {
+	public void displayRemote(GL2 gl) {
 		// if (bIsDisplayListDirtyRemote) {
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 		// bIsDisplayListDirtyRemote = false;

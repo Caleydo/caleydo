@@ -17,7 +17,7 @@ import java.util.Iterator;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
 /**
- * Mouse picking listener for JOGL views
+ * Mouse picking listener for JOGL2 views
  * 
  * @author Michael Kalkusch
  * @author Marc Streit

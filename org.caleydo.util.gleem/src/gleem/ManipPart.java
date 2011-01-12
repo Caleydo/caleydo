@@ -1,5 +1,5 @@
 /*
- * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
+ * gleem -- OpenGL2 Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
  * (kbrussel@alum.mit.edu) Copying, distribution and use of this software in source and binary forms, with or
  * without modification, is permitted provided that the following conditions are met: Distributions of source
  * code must reproduce the copyright notice, this list of conditions and the following disclaimer in the
@@ -28,7 +28,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * A ManipPart is a visible or invisible sub-part of a manipulator. ManipParts
@@ -85,8 +85,8 @@ public abstract class ManipPart {
 	public abstract boolean getVisible();
 
 	/**
-	 * Render this ManipPart now using the given OpenGL routines and assuming an
-	 * OpenGL context is current.
+	 * Render this ManipPart now using the given OpenGL2 routines and assuming an
+	 * OpenGL2 context is current.
 	 */
-	public abstract void render(GL gl);
+	public abstract void render(GL2 gl);
 }

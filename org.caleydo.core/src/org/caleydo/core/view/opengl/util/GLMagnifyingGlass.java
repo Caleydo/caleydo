@@ -3,11 +3,9 @@ package org.caleydo.core.view.opengl.util;
 import java.awt.Point;
 import java.nio.IntBuffer;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-
-import com.sun.opengl.util.BufferUtil;
 
 /**
  * Magnifying glass that zooms an area around the mouse position. FIXME: The performance and look of the
@@ -41,23 +39,23 @@ public class GLMagnifyingGlass {
 	 * Draws the magnifying glass. Note, that the color buffer bit has to be cleared in every frame.
 	 * 
 	 * @param gl
-	 *            GL Context.
+	 *            GL2 Context.
 	 * @param mouseListener
 	 *            Mouse listener for determining the current position of the mouse.
 	 */
-	public void draw(GL gl, GLMouseListener mouseListener) {
+	public void draw(GL2 gl, GLMouseListener mouseListener) {
 
-		gl.glDisable(GL.GL_DEPTH_TEST);
-		gl.glPixelTransferi(GL.GL_MAP_COLOR, GL.GL_FALSE);
+		gl.glDisable(GL2.GL_DEPTH_TEST);
+		gl.glPixelTransferi(GL2.GL_MAP_COLOR, GL2.GL_FALSE);
 
-		gl.glPixelTransferf(GL.GL_RED_SCALE, 1.0f);
-		gl.glPixelTransferi(GL.GL_RED_BIAS, 0);
-		gl.glPixelTransferf(GL.GL_GREEN_SCALE, 1.0f);
-		gl.glPixelTransferi(GL.GL_GREEN_BIAS, 0);
-		gl.glPixelTransferf(GL.GL_BLUE_SCALE, 1.0f);
-		gl.glPixelTransferi(GL.GL_BLUE_BIAS, 0);
-		gl.glPixelTransferi(GL.GL_ALPHA_SCALE, 1);
-		gl.glPixelTransferi(GL.GL_ALPHA_BIAS, 0);
+		gl.glPixelTransferf(GL2.GL_RED_SCALE, 1.0f);
+		gl.glPixelTransferi(GL2.GL_RED_BIAS, 0);
+		gl.glPixelTransferf(GL2.GL_GREEN_SCALE, 1.0f);
+		gl.glPixelTransferi(GL2.GL_GREEN_BIAS, 0);
+		gl.glPixelTransferf(GL2.GL_BLUE_SCALE, 1.0f);
+		gl.glPixelTransferi(GL2.GL_BLUE_BIAS, 0);
+		gl.glPixelTransferi(GL2.GL_ALPHA_SCALE, 1);
+		gl.glPixelTransferi(GL2.GL_ALPHA_BIAS, 0);
 
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
@@ -66,8 +64,8 @@ public class GLMagnifyingGlass {
 
 		if (currentPoint != null) {
 
-			IntBuffer buffer = BufferUtil.newIntBuffer(4);
-			gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
+			IntBuffer buffer = IntBuffer.allocate(4);
+			gl.glGetIntegerv(GL2.GL_VIEWPORT, buffer);
 			// int xOrigin = buffer.get(0);
 			int yOrigin = buffer.get(1);
 			// int currentWidth = buffer.get(2);
@@ -75,7 +73,7 @@ public class GLMagnifyingGlass {
 
 			gl.glLoadIdentity();
 
-			gl.glReadBuffer(GL.GL_BACK);
+			gl.glReadBuffer(GL2.GL_BACK);
 
 			float[] fArTargetWorldCoordinates =
 				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x
@@ -87,10 +85,10 @@ public class GLMagnifyingGlass {
 				Math.max(currentPoint.x - (int) (capturedRegionWidth / zoomFactorX), 0),
 				Math.max((yOrigin + currentHeight) - currentPoint.y
 					- (int) (capturedRegionHeight / zoomFactorY), 0), capturedRegionWidth,
-				capturedRegionHeight, GL.GL_COLOR);
+				capturedRegionHeight, GL2.GL_COLOR);
 			gl.glPixelZoom(1.0f, 1.0f);
 		}
-		gl.glEnable(GL.GL_DEPTH_TEST);
+		gl.glEnable(GL2.GL_DEPTH_TEST);
 
 		gl.glPopMatrix();
 	}

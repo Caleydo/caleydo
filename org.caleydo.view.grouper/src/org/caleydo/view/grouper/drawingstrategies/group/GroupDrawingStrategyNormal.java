@@ -1,13 +1,13 @@
 package org.caleydo.view.grouper.drawingstrategies.group;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.view.grouper.GrouperRenderStyle;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular {
 
@@ -23,12 +23,12 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 	}
 
 	@Override
-	public void draw(GL gl, GroupRepresentation groupRepresentation,
+	public void draw(GL2 gl, GroupRepresentation groupRepresentation,
 			TextRenderer textRenderer) {
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
 				EPickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
 		gl.glColor4fv(renderStyle.getGroupColorForLevel(groupRepresentation
 				.getHierarchyLevel()), 0);
@@ -54,12 +54,12 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 	}
 
 	@Override
-	public void drawAsLeaf(GL gl, GroupRepresentation groupRepresentation,
+	public void drawAsLeaf(GL2 gl, GroupRepresentation groupRepresentation,
 			TextRenderer textRenderer) {
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
 				EPickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
 		// gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
 		gl.glColor4f(0.6f, 0.6f, 0.6f, 1f);

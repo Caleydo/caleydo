@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -46,7 +46,7 @@ public class GLConnectionLineRendererDataFlipper extends AGLConnectionLineRender
 	}
 
 	@Override
-	protected void renderConnectionLines(final GL gl) {
+	protected void renderConnectionLines(final GL2 gl) {
 
 		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>(
 				1);

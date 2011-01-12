@@ -2,6 +2,7 @@ package org.caleydo.view.filterpipeline.toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.caleydo.rcp.view.toolbar.ActionToolBarContainer;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.ToolBarContainer;

@@ -2,7 +2,7 @@ package org.caleydo.view.radial;
 
 import java.awt.geom.Rectangle2D;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
@@ -33,7 +33,7 @@ public class TextItem extends ALabelItem {
 	}
 
 	@Override
-	public void draw(GL gl) {
+	public void draw(GL2 gl) {
 		float[] text_color = RadialHierarchyRenderStyle.LABEL_TEXT_COLOR;
 		textRenderer.setColor(text_color[0], text_color[1], text_color[2], text_color[3]);
 
@@ -51,7 +51,7 @@ public class TextItem extends ALabelItem {
 	 * @param fTextScaling
 	 *            Scaling factor of the text.
 	 */
-	public void setRenderingProperties(GL gl, CaleydoTextRenderer textRenderer,
+	public void setRenderingProperties(GL2 gl, CaleydoTextRenderer textRenderer,
 			float fTextScaling) {
 		this.textRenderer = textRenderer;
 		this.fTextScaling = fTextScaling;

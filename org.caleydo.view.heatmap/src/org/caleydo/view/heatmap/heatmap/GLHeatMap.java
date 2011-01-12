@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.management.InvalidAttributeValueException;
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.IDType;
@@ -122,7 +122,7 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 		super.renderStyle = renderStyle;
 
 		templateRenderer = new TemplateRenderer(this);
@@ -133,8 +133,8 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	@Override
-	public void initLocal(GL gl) {
-		// Register keyboard listener to GL canvas
+	public void initLocal(GL2 gl) {
+		// Register keyboard listener to GL2 canvas
 		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -150,14 +150,14 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
+	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		if (glRemoteRenderingView != null
 				&& glRemoteRenderingView.getViewType().equals("org.caleydo.view.bucket"))
 			renderStyle.setUseFishEye(false);
 
-		// Register keyboard listener to GL canvas
+		// Register keyboard listener to GL2 canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
 					@Override
@@ -192,7 +192,7 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	@Override
-	public void displayLocal(GL gl) {
+	public void displayLocal(GL2 gl) {
 
 		if (set == null)
 			return;
@@ -219,7 +219,7 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	@Override
-	public void displayRemote(GL gl) {
+	public void displayRemote(GL2 gl) {
 		if (set == null)
 			return;
 
@@ -240,7 +240,7 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	@Override
-	public void display(GL gl) {
+	public void display(GL2 gl) {
 
 		gl.glCallList(iGLDisplayListToCall);
 
@@ -250,12 +250,12 @@ public class GLHeatMap extends AStorageBasedView {
 			contextMenu.render(gl, this);
 	}
 
-	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
+	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 
 		if (bHasFrustumChanged) {
 			bHasFrustumChanged = false;
 		}
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
 		if (contentVA.size() == 0) {
 			renderSymbol(gl, EIconTextures.HEAT_MAP_SYMBOL, 2);

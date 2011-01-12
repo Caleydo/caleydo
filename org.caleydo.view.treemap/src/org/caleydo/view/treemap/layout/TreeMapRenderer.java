@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -61,7 +61,7 @@ public class TreeMapRenderer {
 	 * 
 	 * @param gl
 	 */
-	public void initCache(GL gl) {
+	public void initCache(GL2 gl) {
 		treemapList = gl.glGenLists(1);
 		highlightList = gl.glGenLists(1);
 	}
@@ -104,8 +104,8 @@ public class TreeMapRenderer {
 	 * @param selection
 	 *            Selectionmanager
 	 */
-	public void paintHighlighting(GL gl, Tree<ATreeMapNode> tree, SelectionManager selection) {
-		gl.glNewList(highlightList, GL.GL_COMPILE);
+	public void paintHighlighting(GL2 gl, Tree<ATreeMapNode> tree, SelectionManager selection) {
+		gl.glNewList(highlightList, GL2.GL_COMPILE);
 
 		// for (int id : selection.getElements(SelectionType.MOUSE_OVER)) {
 		// ATreeMapNode node = tree.getNodeByNumber(id);
@@ -146,7 +146,7 @@ public class TreeMapRenderer {
 	 * 
 	 * @param gl
 	 */
-	public void renderTreeMapFromCache(GL gl) {
+	public void renderTreeMapFromCache(GL2 gl) {
 		gl.glCallList(treemapList);
 		gl.glCallList(highlightList);
 	}
@@ -158,14 +158,14 @@ public class TreeMapRenderer {
 	 * @param tree
 	 *            Treemap model
 	 */
-	public void renderTreeMap(GL gl, ATreeMapNode tree) {
-		gl.glNewList(treemapList, GL.GL_COMPILE);
+	public void renderTreeMap(GL2 gl, ATreeMapNode tree) {
+		gl.glNewList(treemapList, GL2.GL_COMPILE);
 		renderHelp(gl, tree);
 		gl.glEndList();
 
 	}
 
-	private void renderHelp(GL gl, ATreeMapNode root) {
+	private void renderHelp(GL2 gl, ATreeMapNode root) {
 		List<ATreeMapNode> children = root.getChildren();
 		if (children == null || children.size() == 0) {
 			gl.glPushName(pickingManager.getPickingID(viewID, EPickingType.TREEMAP_ELEMENT_SELECTED, root.getID()));
@@ -183,10 +183,10 @@ public class TreeMapRenderer {
 		}
 	}
 
-	private void paintRectangle(GL gl, float x, float y, float xmax, float ymax, float[] color, float lineWdith) {
+	private void paintRectangle(GL2 gl, float x, float y, float xmax, float ymax, float[] color, float lineWdith) {
 		gl.glLineWidth(lineWdith);
 
-		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glBegin(GL2.GL_LINE_LOOP);
 
 		gl.glColor4f(color[0], color[1], color[2], 1);
 
@@ -203,8 +203,8 @@ public class TreeMapRenderer {
 		gl.glEnd();
 	}
 
-	private void fillRectangle(GL gl, float x, float y, float xmax, float ymax, float[] color) {
-		gl.glBegin(GL.GL_QUADS);
+	private void fillRectangle(GL2 gl, float x, float y, float xmax, float ymax, float[] color) {
+		gl.glBegin(GL2.GL_QUADS);
 
 		gl.glColor3f(color[0], color[1], color[2]);
 
@@ -228,7 +228,7 @@ public class TreeMapRenderer {
 		if (bDrawNodeFrame) {
 			gl.glColor3f(frameColor.getColorComponents(null)[0], frameColor.getColorComponents(null)[1], frameColor.getColorComponents(null)[2]);
 			gl.glLineWidth(2);
-			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glBegin(GL2.GL_LINE_LOOP);
 			gl.glVertex3f(x, y, 0);
 			gl.glVertex3f(x, ymax, 0);
 			gl.glVertex3f(xmax, ymax, 0);
@@ -237,7 +237,7 @@ public class TreeMapRenderer {
 		}
 	}
 
-	private void displayText(GL gl, float x, float y, float xmax, float ymax, String text) {
+	private void displayText(GL2 gl, float x, float y, float xmax, float ymax, String text) {
 		float minScaling = 1.0f;
 		float maxScaling = 3.0f;
 		float border = 0.03f;

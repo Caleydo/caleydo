@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.IStorage;
@@ -41,7 +41,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * OpenGL pathway manager.
+ * OpenGL2 pathway manager.
  * 
  * @author Marc Streit
  */
@@ -104,7 +104,7 @@ public class GLPathwayContentCreator {
 				"org.caleydo.datadomain.genetic");
 	}
 
-	public void init(final GL gl, final SelectionManager internalSelectionManager) {
+	public void init(final GL2 gl, final SelectionManager internalSelectionManager) {
 
 		buildEnzymeNodeDisplayList(gl);
 		buildCompoundNodeDisplayList(gl);
@@ -122,7 +122,7 @@ public class GLPathwayContentCreator {
 		// }
 	}
 
-	public void buildPathwayDisplayList(final GL gl, final IUniqueObject containingView,
+	public void buildPathwayDisplayList(final GL2 gl, final IUniqueObject containingView,
 			final PathwayGraph pathway) {
 
 		if (pathway == null)
@@ -142,7 +142,7 @@ public class GLPathwayContentCreator {
 
 		// performIdenticalNodeHighlighting();
 
-		gl.glNewList(iVerticesDisplayListId, GL.GL_COMPILE);
+		gl.glNewList(iVerticesDisplayListId, GL2.GL_COMPILE);
 		extractVertices(gl, containingView, pathway);
 		gl.glEndList();
 
@@ -155,7 +155,7 @@ public class GLPathwayContentCreator {
 			hashPathway2EdgesDisplayListId.put(pathway, iEdgesDisplayListId);
 		}
 
-		gl.glNewList(iEdgesDisplayListId, GL.GL_COMPILE);
+		gl.glNewList(iEdgesDisplayListId, GL2.GL_COMPILE);
 		extractEdges(gl, pathway);
 		gl.glEndList();
 	}
@@ -276,58 +276,58 @@ public class GLPathwayContentCreator {
 		}
 	}
 
-	private void buildEnzymeNodeDisplayList(final GL gl) {
+	private void buildEnzymeNodeDisplayList(final GL2 gl) {
 		// Creating display list for node cube objects
 		iEnzymeNodeDisplayListId = gl.glGenLists(1);
 
 		float fNodeWidth = PathwayRenderStyle.ENZYME_NODE_WIDTH;
 		float fNodeHeight = PathwayRenderStyle.ENZYME_NODE_HEIGHT;
 
-		gl.glNewList(iEnzymeNodeDisplayListId, GL.GL_COMPILE);
+		gl.glNewList(iEnzymeNodeDisplayListId, GL2.GL_COMPILE);
 		fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);
 		gl.glEndList();
 	}
 
-	protected void buildHighlightedEnzymeNodeDisplayList(final GL gl) {
+	protected void buildHighlightedEnzymeNodeDisplayList(final GL2 gl) {
 		// Creating display list for node cube objects
 		iHighlightedEnzymeNodeDisplayListId = gl.glGenLists(1);
 
 		float fNodeWidth = PathwayRenderStyle.ENZYME_NODE_WIDTH;
 		float fNodeHeight = PathwayRenderStyle.ENZYME_NODE_HEIGHT;
 
-		gl.glNewList(iHighlightedEnzymeNodeDisplayListId, GL.GL_COMPILE);
+		gl.glNewList(iHighlightedEnzymeNodeDisplayListId, GL2.GL_COMPILE);
 		fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
 		gl.glEndList();
 	}
 
-	protected void buildCompoundNodeDisplayList(final GL gl) {
+	protected void buildCompoundNodeDisplayList(final GL2 gl) {
 		// Creating display list for node cube objects
 		iCompoundNodeDisplayListId = gl.glGenLists(1);
 
 		float fNodeWidth = PathwayRenderStyle.COMPOUND_NODE_WIDTH;
 		float fNodeHeight = PathwayRenderStyle.COMPOUND_NODE_HEIGHT;
 
-		gl.glNewList(iCompoundNodeDisplayListId, GL.GL_COMPILE);
+		gl.glNewList(iCompoundNodeDisplayListId, GL2.GL_COMPILE);
 		fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);
 		gl.glEndList();
 	}
 
-	protected void buildHighlightedCompoundNodeDisplayList(final GL gl) {
+	protected void buildHighlightedCompoundNodeDisplayList(final GL2 gl) {
 		// Creating display list for node cube objects
 		iHighlightedCompoundNodeDisplayListId = gl.glGenLists(1);
 
 		float fNodeWidth = PathwayRenderStyle.COMPOUND_NODE_WIDTH;
 		float fNodeHeight = PathwayRenderStyle.COMPOUND_NODE_HEIGHT;
 
-		gl.glNewList(iHighlightedCompoundNodeDisplayListId, GL.GL_COMPILE);
+		gl.glNewList(iHighlightedCompoundNodeDisplayListId, GL2.GL_COMPILE);
 		fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
 		gl.glEndList();
 	}
 
-	private void fillNodeDisplayList(final GL gl, final float fNodeWidth,
+	private void fillNodeDisplayList(final GL2 gl, final float fNodeWidth,
 			final float fNodeHeight) {
 
-		gl.glBegin(GL.GL_QUADS);
+		gl.glBegin(GL2.GL_QUADS);
 
 		// FRONT FACE
 		gl.glNormal3f(0.0f, 0.0f, 1.0f);
@@ -398,11 +398,11 @@ public class GLPathwayContentCreator {
 		gl.glEnd();
 	}
 
-	protected void fillNodeDisplayListFrame(final GL gl, final float fNodeWidth,
+	protected void fillNodeDisplayListFrame(final GL2 gl, final float fNodeWidth,
 			final float fNodeHeight) {
 		gl.glLineWidth(3);
 
-		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glBegin(GL2.GL_LINE_LOOP);
 		gl.glVertex3f(-fNodeWidth, fNodeHeight, 0.02f);
 		gl.glVertex3f(fNodeWidth, fNodeHeight, 0.02f);
 		gl.glVertex3f(fNodeWidth, -fNodeHeight, 0.02f);
@@ -410,7 +410,7 @@ public class GLPathwayContentCreator {
 		gl.glEnd();
 	}
 
-	private void extractVertices(final GL gl, final IUniqueObject containingView,
+	private void extractVertices(final GL2 gl, final IUniqueObject containingView,
 			PathwayGraph pathwayToExtract) {
 		for (IGraphItem vertexRep : pathwayToExtract
 				.getAllItemsByKind(EGraphItemKind.NODE)) {
@@ -423,7 +423,7 @@ public class GLPathwayContentCreator {
 		}
 	}
 
-	private void extractEdges(final GL gl, PathwayGraph pathwayToExtract) {
+	private void extractEdges(final GL2 gl, PathwayGraph pathwayToExtract) {
 
 		Iterator<IGraphItem> edgeIterator = pathwayToExtract.getAllItemsByKind(
 				EGraphItemKind.EDGE).iterator();
@@ -446,7 +446,7 @@ public class GLPathwayContentCreator {
 		}
 	}
 
-	private void createVertex(final GL gl, final IUniqueObject containingView,
+	private void createVertex(final GL2 gl, final IUniqueObject containingView,
 			PathwayVertexGraphItemRep vertexRep, PathwayGraph containingPathway) {
 
 		float[] tmpNodeColor = null;
@@ -552,7 +552,7 @@ public class GLPathwayContentCreator {
 
 					if (glPathwayView.getDetailLevel() == DetailLevel.HIGH) {
 
-						gl.glBegin(GL.GL_LINE_STRIP);
+						gl.glBegin(GL2.GL_LINE_STRIP);
 						for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
 							gl.glVertex3f(shArCoords[iPointIndex][0]
 									* PathwayRenderStyle.SCALING_FACTOR_X,
@@ -564,7 +564,7 @@ public class GLPathwayContentCreator {
 
 						// Transparent node for picking
 						gl.glColor4f(0, 0, 0, 0);
-						gl.glBegin(GL.GL_POLYGON);
+						gl.glBegin(GL2.GL_POLYGON);
 						for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
 							gl.glVertex3f(shArCoords[iPointIndex][0]
 									* PathwayRenderStyle.SCALING_FACTOR_X,
@@ -574,7 +574,7 @@ public class GLPathwayContentCreator {
 						}
 						gl.glEnd();
 					} else {
-						gl.glBegin(GL.GL_POLYGON);
+						gl.glBegin(GL2.GL_POLYGON);
 						for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
 							gl.glVertex3f(shArCoords[iPointIndex][0]
 									* PathwayRenderStyle.SCALING_FACTOR_X,
@@ -590,7 +590,7 @@ public class GLPathwayContentCreator {
 							tmpNodeColor = SelectionType.SELECTION.getColor();
 							gl.glLineWidth(3);
 							gl.glColor4fv(tmpNodeColor, 0);
-							gl.glBegin(GL.GL_LINE_STRIP);
+							gl.glBegin(GL2.GL_LINE_STRIP);
 							for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
 								gl.glVertex3f(shArCoords[iPointIndex][0]
 										* PathwayRenderStyle.SCALING_FACTOR_X,
@@ -604,7 +604,7 @@ public class GLPathwayContentCreator {
 							tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 							gl.glLineWidth(3);
 							gl.glColor4fv(tmpNodeColor, 0);
-							gl.glBegin(GL.GL_LINE_STRIP);
+							gl.glBegin(GL2.GL_LINE_STRIP);
 							for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
 								gl.glVertex3f(shArCoords[iPointIndex][0]
 										* PathwayRenderStyle.SCALING_FACTOR_X,
@@ -636,7 +636,7 @@ public class GLPathwayContentCreator {
 
 				gl.glColor4fv(tmpNodeColor, 0);
 				gl.glLineWidth(3);
-				gl.glBegin(GL.GL_LINE_STRIP);
+				gl.glBegin(GL2.GL_LINE_STRIP);
 				for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
 					gl.glVertex3f(shArCoords[iPointIndex][0]
 							* PathwayRenderStyle.SCALING_FACTOR_X,
@@ -650,7 +650,7 @@ public class GLPathwayContentCreator {
 
 					// Transparent node for picking
 					gl.glColor4f(0, 0, 0, 0);
-					gl.glBegin(GL.GL_POLYGON);
+					gl.glBegin(GL2.GL_POLYGON);
 					for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
 						gl.glVertex3f(shArCoords[iPointIndex][0]
 								* PathwayRenderStyle.SCALING_FACTOR_X,
@@ -762,28 +762,28 @@ public class GLPathwayContentCreator {
 			// else if
 			// (internalSelectionManager.checkStatus(SelectionType.NEIGHBORHOOD_1,
 			// iVertexRepID)) {
-			// gl.glEnable(GL.GL_LINE_STIPPLE);
+			// gl.glEnable(GL2.GL_LINE_STIPPLE);
 			// gl.glLineStipple(4, (short) 0xAAAA);
 			// tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(1);
 			// }
 			// else if
 			// (internalSelectionManager.checkStatus(SelectionType.NEIGHBORHOOD_2,
 			// iVertexRepID)) {
-			// gl.glEnable(GL.GL_LINE_STIPPLE);
+			// gl.glEnable(GL2.GL_LINE_STIPPLE);
 			// gl.glLineStipple(2, (short) 0xAAAA);
 			// tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(2);
 			// }
 			// else if
 			// (internalSelectionManager.checkStatus(SelectionType.NEIGHBORHOOD_3,
 			// iVertexRepID)) {
-			// gl.glEnable(GL.GL_LINE_STIPPLE);
+			// gl.glEnable(GL2.GL_LINE_STIPPLE);
 			// gl.glLineStipple(1, (short) 0xAAAA);
 			// tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(3);
 			// }
 			//
 			// gl.glColor4fv(tmpNodeColor, 0);
 			// gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
-			// gl.glDisable(GL.GL_LINE_STIPPLE);
+			// gl.glDisable(GL2.GL_LINE_STIPPLE);
 			// }
 
 			gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
@@ -792,7 +792,7 @@ public class GLPathwayContentCreator {
 		gl.glPopName();
 	}
 
-	private void createEdge(final GL gl, IGraphItem edgeRep,
+	private void createEdge(final GL2 gl, IGraphItem edgeRep,
 			PathwayGraph containingPathway) {
 
 		List<IGraphItem> listGraphItemsIn = edgeRep
@@ -820,7 +820,7 @@ public class GLPathwayContentCreator {
 
 		gl.glLineWidth(4);
 		gl.glColor4fv(tmpColor, 0);
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 
 		Iterator<IGraphItem> iterSourceGraphItem = listGraphItemsIn.iterator();
 		Iterator<IGraphItem> iterTargetGraphItem = listGraphItemsOut.iterator();
@@ -851,7 +851,7 @@ public class GLPathwayContentCreator {
 		gl.glEnd();
 	}
 
-	public void renderPathway(final GL gl, final PathwayGraph pathway,
+	public void renderPathway(final GL2 gl, final PathwayGraph pathway,
 			boolean bRenderLabels) {
 		if (bEnableEdgeRendering || !iArSelectedEdgeRepId.isEmpty()) {
 			int iTmpEdgesDisplayListID = hashPathway2EdgesDisplayListId.get(pathway);

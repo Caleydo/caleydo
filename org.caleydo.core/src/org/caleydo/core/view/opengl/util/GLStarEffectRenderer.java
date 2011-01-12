@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.util;
 
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * @author Marc Streit
@@ -45,7 +45,7 @@ public class GLStarEffectRenderer {
 		return fAlStarPoints;
 	}
 
-	public static void drawStar(final GL gl, final ArrayList<float[]> alStarPoints) {
+	public static void drawStar(final GL2 gl, final ArrayList<float[]> alStarPoints) {
 
 		float[] fArPoint = new float[2];
 
@@ -54,7 +54,7 @@ public class GLStarEffectRenderer {
 
 		float[] fArCenterPoint = alStarPoints.get(0);
 
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 		for (int iVertexIndex = 1; iVertexIndex < alStarPoints.size(); iVertexIndex++) {
 			fArPoint = alStarPoints.get(iVertexIndex);
 

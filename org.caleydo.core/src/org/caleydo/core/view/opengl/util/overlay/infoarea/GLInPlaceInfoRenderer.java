@@ -8,14 +8,14 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
 import org.caleydo.core.view.opengl.renderstyle.InfoAreaRenderStyle;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
  * Info Area Renderer. Renders an info area. It needs only an id, a data type and a gl context, and renders
@@ -84,7 +84,7 @@ public class GLInPlaceInfoRenderer {
 	 * @param bFirstTime
 	 *            this has to be true only the first time you render it and can never be true after that
 	 */
-	public void renderInfoArea(GL gl, Vec3f vecLowerLeft, boolean bFirstTime, float fZValue) {
+	public void renderInfoArea(GL2 gl, Vec3f vecLowerLeft, boolean bFirstTime, float fZValue) {
 
 		String sCurrent;
 		float fXLowerLeft = vecLowerLeft.x();
@@ -95,12 +95,12 @@ public class GLInPlaceInfoRenderer {
 			if (iCount == 0) {
 				gl.glColor4fv(InfoAreaRenderStyle.INFO_AREA_COLOR, 0);
 
-				gl.glBegin(GL.GL_POLYGON);
+				gl.glBegin(GL2.GL_POLYGON);
 			}
 			else {
 				gl.glColor4fv(InfoAreaRenderStyle.INFO_AREA_BORDER_COLOR, 0);
 				gl.glLineWidth(InfoAreaRenderStyle.INFO_AREA_BORDER_WIDTH);
-				gl.glBegin(GL.GL_LINE_STRIP);
+				gl.glBegin(GL2.GL_LINE_STRIP);
 			}
 			gl.glVertex3f(fXLowerLeft, fYLowerLeft, fZValue);
 			gl.glVertex3f(fXLowerLeft + fWidth, fYLowerLeft, fZValue);

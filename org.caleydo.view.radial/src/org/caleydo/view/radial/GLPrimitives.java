@@ -1,6 +1,6 @@
 package org.caleydo.view.radial;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
@@ -48,7 +48,7 @@ public class GLPrimitives {
 	 * Renders the border of a partial disc using the specified parameters.
 	 * 
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 * @param glu
 	 *            GLU object that shall be used for drawing the partial disc.
 	 * @param fInnerRadius
@@ -66,7 +66,7 @@ public class GLPrimitives {
 	 * @param fBorderWidth
 	 *            Width of the drawn border.
 	 */
-	public static void renderPartialDiscBorder(GL gl, GLU glu, float fInnerRadius,
+	public static void renderPartialDiscBorder(GL2 gl, GLU glu, float fInnerRadius,
 			float fOuterRadius, float fStartAngle, float fAngle,
 			int iNumSlicesPerFullDisc, float fBorderWidth) {
 
@@ -108,7 +108,7 @@ public class GLPrimitives {
 	 * Renders the border of a circle.
 	 * 
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 * @param glu
 	 *            GLU object that shall be used for drawing the circle.
 	 * @param fRadius
@@ -120,7 +120,7 @@ public class GLPrimitives {
 	 * @param fBorderWidth
 	 *            Width of the drawn border.
 	 */
-	public static void renderCircleBorder(GL gl, GLU glu, float fRadius,
+	public static void renderCircleBorder(GL2 gl, GLU glu, float fRadius,
 			int iNumSlicesPerFullDisc, float fBorderWidth) {
 		GLUquadric quadric = glu.gluNewQuadric();
 

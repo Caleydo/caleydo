@@ -4,12 +4,12 @@ import gleem.linalg.Vec3f;
 
 import java.awt.geom.Rectangle2D;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.view.matchmaker.HeatMapWrapper;
 import org.caleydo.view.matchmaker.layout.AHeatMapLayout;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 public class CaptionLabelRenderCommand implements IHeatMapRenderCommand {
 
@@ -28,7 +28,7 @@ public class CaptionLabelRenderCommand implements IHeatMapRenderCommand {
 	}
 
 	@Override
-	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
+	public void render(GL2 gl, HeatMapWrapper heatMapWrapper) {
 
 		String textToRender = heatMapWrapper.getCaption();
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
@@ -64,7 +64,7 @@ public class CaptionLabelRenderCommand implements IHeatMapRenderCommand {
 	 *            Text the scaling shall be calculated for.
 	 * @return Scaling factor for the specified text.
 	 */
-	private float determineFontScaling(GL gl, String text, AHeatMapLayout layout) {
+	private float determineFontScaling(GL2 gl, String text, AHeatMapLayout layout) {
 
 		float captionLabelHeight = layout.getCaptionLabelHeight();
 		float captionLabelWidth = layout.getCaptionLabelWidth();

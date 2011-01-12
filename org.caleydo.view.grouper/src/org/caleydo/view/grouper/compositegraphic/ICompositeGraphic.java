@@ -5,7 +5,7 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -15,7 +15,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.view.grouper.drawingstrategies.DrawingStrategyManager;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
  * Interface for graphic representations that are arranged hierarchically.
@@ -45,21 +45,21 @@ public interface ICompositeGraphic extends IDraggable {
 	 * Draws the current composite and its children.
 	 * 
 	 * @param gl
-	 *            GL Context.
+	 *            GL2 Context.
 	 * @param textRenderer
 	 *            TextRenderer.
 	 */
-	public void draw(GL gl, TextRenderer textRenderer);
+	public void draw(GL2 gl, TextRenderer textRenderer);
 
 	/**
 	 * Calculates the dimensions of the composite and its children.
 	 * 
 	 * @param gl
-	 *            GL Context.
+	 *            GL2 Context.
 	 * @param textRenderer
 	 *            TextRenderer.
 	 */
-	public void calculateDimensions(GL gl, TextRenderer textRenderer);
+	public void calculateDimensions(GL2 gl, TextRenderer textRenderer);
 
 	/**
 	 * Calculates the hierarchy level of the current composite and its children.

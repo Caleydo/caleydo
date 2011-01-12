@@ -2,7 +2,7 @@ package org.caleydo.view.matchmaker.rendercommand;
 
 import gleem.linalg.Vec3f;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.group.ContentGroupList;
 import org.caleydo.core.data.group.Group;
@@ -28,7 +28,7 @@ public class OverviewGroupBarRenderCommand implements IHeatMapRenderCommand {
 	}
 
 	@Override
-	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
+	public void render(GL2 gl, HeatMapWrapper heatMapWrapper) {
 
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
 		ContentVirtualArray contentVA = heatMapWrapper.getOverview().getContentVA();
@@ -40,7 +40,7 @@ public class OverviewGroupBarRenderCommand implements IHeatMapRenderCommand {
 		if (contentGroupList != null) {
 
 			gl.glColor4f(1, 1, 1, 1);
-			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			for (Group group : contentGroupList) {
 
 				float groupHeight = layout.getOverviewHeatMapGroupHeight(group

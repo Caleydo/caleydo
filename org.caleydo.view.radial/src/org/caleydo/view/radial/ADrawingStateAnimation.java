@@ -3,7 +3,7 @@ package org.caleydo.view.radial;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
@@ -60,7 +60,7 @@ public abstract class ADrawingStateAnimation extends ADrawingState {
 	}
 
 	@Override
-	public final void draw(float fXCenter, float fYCenter, GL gl, GLU glu) {
+	public final void draw(float fXCenter, float fYCenter, GL2 gl, GLU glu) {
 
 		double fCurrentTimeStamp = Calendar.getInstance().getTimeInMillis();
 
@@ -97,13 +97,13 @@ public abstract class ADrawingStateAnimation extends ADrawingState {
 	 * @param fYCenter
 	 *            Y coordinate of the hierarchy's center.
 	 * @param gl
-	 *            GL object that shall be used for drawing.
+	 *            GL2 object that shall be used for drawing.
 	 * @param glu
 	 *            GLU object that shall be used for drawing.
 	 * @param fTimePassed
 	 *            Time difference between the current frame and the last one.
 	 */
-	public abstract void draw(float fXCenter, float fYCenter, GL gl, GLU glu,
+	public abstract void draw(float fXCenter, float fYCenter, GL2 gl, GLU glu,
 			double fTimePassed);
 
 	/**

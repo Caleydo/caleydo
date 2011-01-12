@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -20,7 +20,7 @@ import org.caleydo.view.matchmaker.layout.AHeatMapLayout;
 import org.caleydo.view.matchmaker.layout.HeatMapLayoutConfigurable;
 import org.caleydo.view.matchmaker.rendercommand.RenderCommandFactory;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 public class DetailToOverviewTransition extends ACompareViewStateTransition {
 
@@ -58,7 +58,7 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 	}
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 		isInitialized = true;
 		compareConnectionRenderer.init(gl);
 
@@ -159,7 +159,7 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 		setAllDisplayListsDirty();
 	}
 
-	protected void createMovementValuesSourceOffset(GL gl, int id,
+	protected void createMovementValuesSourceOffset(GL2 gl, int id,
 			AHeatMapLayout destLayout, boolean isLowerOffset) {
 
 		int index = isLowerOffset ? 0 : 1;

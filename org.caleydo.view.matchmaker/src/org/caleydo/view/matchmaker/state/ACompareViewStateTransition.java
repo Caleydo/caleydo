@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.group.ContentGroupList;
@@ -34,7 +34,7 @@ import org.caleydo.view.matchmaker.layout.AHeatMapLayout;
 import org.caleydo.view.matchmaker.layout.HeatMapLayoutConfigurable;
 import org.caleydo.view.matchmaker.rendercommand.RenderCommandFactory;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 public abstract class ACompareViewStateTransition extends ACompareViewState {
 
@@ -81,7 +81,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void drawActiveElements(GL gl) {
+	public void drawActiveElements(GL2 gl) {
 		if (animationStarted) {
 			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 				heatMapWrapper.drawRemoteItems(gl, glMouseListener, pickingManager);
@@ -90,7 +90,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void buildDisplayList(GL gl) {
+	public void buildDisplayList(GL2 gl) {
 		if (animationStarted) {
 			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 				heatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
@@ -162,7 +162,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
+	public void handleMouseWheel(GL2 gl, int amount, Point wheelPoint) {
 	}
 
 	@Override
@@ -185,7 +185,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public abstract void init(GL gl);
+	public abstract void init(GL2 gl);
 
 	@Override
 	public boolean isInitialized() {
@@ -217,7 +217,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void handleDragging(GL gl) {
+	public void handleDragging(GL2 gl) {
 
 	}
 
@@ -229,7 +229,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	 *            Text the scaling shall be calculated for.
 	 * @return Scaling factor for the specified text.
 	 */
-	protected float getCaptionLabelTextWidth(GL gl, String text, AHeatMapLayout layout) {
+	protected float getCaptionLabelTextWidth(GL2 gl, String text, AHeatMapLayout layout) {
 
 		float captionLabelHeight = layout.getCaptionLabelHeight();
 		float captionLabelWidth = layout.getCaptionLabelWidth();
@@ -251,7 +251,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 		heatMapPositionOffset[index] = heatMapPositions.get(id).getRemainingVec3f();
 	}
 
-	protected void createMovementValues(GL gl, int id, AHeatMapLayout srcLayout,
+	protected void createMovementValues(GL2 gl, int id, AHeatMapLayout srcLayout,
 			AHeatMapLayout destLayout) {
 
 		HeatMapWrapper heatMapWrapper = heatMapWrappers.get(id);
@@ -348,9 +348,9 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 
 	protected abstract void finish();
 
-	// protected abstract void drawActiveElements(GL gl, double timePassed);
+	// protected abstract void drawActiveElements(GL2 gl, double timePassed);
 	//
-	// protected abstract void drawDisplayListElements(GL gl, double
+	// protected abstract void drawDisplayListElements(GL2 gl, double
 	// timePassed);
 
 }

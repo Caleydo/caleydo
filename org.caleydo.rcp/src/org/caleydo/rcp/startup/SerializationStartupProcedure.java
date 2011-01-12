@@ -8,7 +8,6 @@ import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.serialize.DataInitializationData;

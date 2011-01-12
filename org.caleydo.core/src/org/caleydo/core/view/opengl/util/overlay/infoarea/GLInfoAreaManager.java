@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.awt.Point;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -66,7 +66,7 @@ public class GLInfoAreaManager {
 	 * @param isFirstTime
 	 *            this has to be true only the first time you render it and can never be true after that
 	 */
-	public void renderInPlaceInfo(GL gl) {
+	public void renderInPlaceInfo(GL2 gl) {
 		if (!bRenderInfoArea)
 			return;
 		if (bFirstTime) {
@@ -84,7 +84,7 @@ public class GLInfoAreaManager {
 		}
 
 		gl.glColor3fv(InfoAreaRenderStyle.INFO_AREA_COLOR, 0);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(fXOrigin, fYOrigin, GeneralRenderStyle.INFO_AREA_CONNECTION_Z);
 		gl.glVertex3f(fXElementOrigin, fYElementOrigin, GeneralRenderStyle.INFO_AREA_CONNECTION_Z);
 		gl.glVertex3f(fXElementOrigin, fYElementOrigin + infoArea.getHeight(),
@@ -102,7 +102,7 @@ public class GLInfoAreaManager {
 	 * @param isFirstTime
 	 *            this has to be true only the first time you render it and can never be true after that
 	 */
-	public void renderRemoteInPlaceInfo(GL gl, int iWindowWidth, int iWindowHeight, ViewFrustum frustum) {
+	public void renderRemoteInPlaceInfo(GL2 gl, int iWindowWidth, int iWindowHeight, ViewFrustum frustum) {
 		if (!bRenderInfoArea)
 			return;
 		if (bFirstTime) {
@@ -124,7 +124,7 @@ public class GLInfoAreaManager {
 		}
 
 		gl.glColor3fv(InfoAreaRenderStyle.INFO_AREA_COLOR, 0);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(fXOrigin, fYOrigin, 4);
 		gl.glVertex3f(fXElementOrigin, fYElementOrigin, 4);
 		gl.glVertex3f(fXElementOrigin, fYElementOrigin + infoArea.getHeight(), 4);

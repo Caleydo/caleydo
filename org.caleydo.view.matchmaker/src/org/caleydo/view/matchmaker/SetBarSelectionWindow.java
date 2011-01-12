@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -60,11 +60,11 @@ public class SetBarSelectionWindow implements IDraggable {
 		dragged = false;
 	}
 
-	public void render(GL gl) {
+	public void render(GL2 gl) {
 		renderWindow(gl, numSelectedItems, lowestItemIndex, 1, true, -0.002f);
 	}
 
-	private void renderWindow(GL gl, int numSelectedItems, int lowestItemIndex,
+	private void renderWindow(GL2 gl, int numSelectedItems, int lowestItemIndex,
 			float alpha, boolean isPickable, float zOffset) {
 		if (numSelectedItems <= 0)
 			return;
@@ -111,7 +111,7 @@ public class SetBarSelectionWindow implements IDraggable {
 		}
 	}
 
-	private void renderArrow(GL gl, Vec3f position, float arrowWidth, float alpha,
+	private void renderArrow(GL2 gl, Vec3f position, float arrowWidth, float alpha,
 			boolean isLeft, float zOffset) {
 
 		Vec3f lowerLeftCorner = new Vec3f(position.x(), positionY, position.z() + zOffset);
@@ -134,16 +134,16 @@ public class SetBarSelectionWindow implements IDraggable {
 
 	}
 
-	private void renderBody(GL gl, Vec3f lowestItemPosition, float arrowWidth,
+	private void renderBody(GL2 gl, Vec3f lowestItemPosition, float arrowWidth,
 			float width, float alpha, float zOffset) {
-		gl.glPushAttrib(GL.GL_LINE_BIT | GL.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL2.GL_LINE_BIT | GL2.GL_COLOR_BUFFER_BIT);
 
 		// gl.glLineWidth(6.0f);
 
 		float[] selectionColor = SelectionType.SELECTION.getColor();
 
 		gl.glColor4f(selectionColor[0], selectionColor[1], selectionColor[2], alpha);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(lowestItemPosition.x() + arrowWidth, positionY,
 				lowestItemPosition.z() + zOffset);
 		gl.glVertex3f(lowestItemPosition.x() + arrowWidth + width, positionY,
@@ -190,7 +190,7 @@ public class SetBarSelectionWindow implements IDraggable {
 	}
 
 	@Override
-	public void handleDragging(GL gl, float mouseCoordinateX, float mouseCoordinateY) {
+	public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 
 		switch (draggingSelection) {
 		case COMPARE_SELECTION_WINDOW_SELECTION:
@@ -210,7 +210,7 @@ public class SetBarSelectionWindow implements IDraggable {
 		}
 	}
 
-	private void handleArrowLeftDragging(GL gl, float mouseCoordinateX,
+	private void handleArrowLeftDragging(GL2 gl, float mouseCoordinateX,
 			float mouseCoordinateY) {
 
 		SetBarItem currentItem = getItemFromXCoordinate(mouseCoordinateX);
@@ -228,7 +228,7 @@ public class SetBarSelectionWindow implements IDraggable {
 		}
 	}
 
-	private void handleArrowRightDragging(GL gl, float mouseCoordinateX,
+	private void handleArrowRightDragging(GL2 gl, float mouseCoordinateX,
 			float mouseCoordinateY) {
 
 		SetBarItem currentItem = getItemFromXCoordinate(mouseCoordinateX);
@@ -246,7 +246,7 @@ public class SetBarSelectionWindow implements IDraggable {
 		}
 	}
 
-	private void handleWindowDragging(GL gl, float mouseCoordinateX,
+	private void handleWindowDragging(GL2 gl, float mouseCoordinateX,
 			float mouseCoordinateY) {
 		SetBarItem currentItem = getItemFromXCoordinate(mouseCoordinateX);
 		if (currentItem == null)
@@ -352,7 +352,7 @@ public class SetBarSelectionWindow implements IDraggable {
 	}
 
 	@Override
-	public void handleDrop(GL gl, float mouseCoordinateX, float mouseCoordinateY) {
+	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 		if (dragged) {
 			if (lowestItemIndex != lowestItemIndexDragging
 					|| numSelectedItems != numSelectedItemsDragging) {

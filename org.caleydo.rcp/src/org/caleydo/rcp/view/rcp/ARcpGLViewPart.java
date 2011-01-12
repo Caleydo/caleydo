@@ -16,7 +16,7 @@ import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Shared object for all Caleydo RCP OpenGL views.
+ * Shared object for all Caleydo RCP OpenGL2 views.
  * 
  * @author Marc Streit
  * @author Werner Puff

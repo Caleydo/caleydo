@@ -3,7 +3,7 @@ package org.caleydo.view.pathway;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -14,11 +14,11 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
 
 /**
- * OpenGL pathway texture manager
+ * OpenGL2 pathway texture manager
  * 
  * @author Marc Streit
  */
@@ -71,7 +71,7 @@ public class GLPathwayTextureManager {
 		return pathwayTexture;
 	}
 
-	public void renderPathway(final GL gl, final AGLView containingView,
+	public void renderPathway(final GL2 gl, final AGLView containingView,
 			final PathwayGraph pathway, final float fTextureTransparency,
 			final boolean bHighlight) {
 
@@ -96,7 +96,7 @@ public class GLPathwayTextureManager {
 		// .getPickingID(containingView.getId(),
 		// EPickingType.PATHWAY_TEXTURE_SELECTION, iPathwayId));
 
-		gl.glBegin(GL.GL_QUADS);
+		gl.glBegin(GL2.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(0.0f, 0.0f, 0.0f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -117,7 +117,7 @@ public class GLPathwayTextureManager {
 			gl.glLineWidth(1);
 		}
 
-		gl.glBegin(GL.GL_LINE_STRIP);
+		gl.glBegin(GL2.GL_LINE_STRIP);
 		gl.glVertex3f(0.0f, 0.0f, 0.0f);
 		;
 		gl.glVertex3f(fTextureWidth, 0.0f, 0.0f);

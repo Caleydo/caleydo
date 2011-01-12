@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry exported="true" kind="lib" path="lib/jogl/gluegen-rt.jar" sourcepath="org.caleydo.lib.joglsrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/jogl/jogl.jar" sourcepath="org.caleydo.lib.joglsrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/jogl/nativewindow.jar" sourcepath="org.caleydo.lib.joglsrc.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

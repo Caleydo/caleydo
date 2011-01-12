@@ -10,6 +10,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
@@ -50,11 +51,11 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
 
 /**
- * Abstract class for OpenGL views.
+ * Abstract class for OpenGL2 views.
  * 
  * @author Marc Streit
  * @author Alexander Lex
@@ -88,7 +89,7 @@ public abstract class AGLView
 	protected IViewCamera viewCamera;
 
 	/**
-	 * The views current aspect ratio. Value gets updated when reshape is called by the JOGL animator.
+	 * The views current aspect ratio. Value gets updated when reshape is called by the JOGL2 animator.
 	 */
 	protected float fAspectRatio = 1f;
 
@@ -213,7 +214,7 @@ public abstract class AGLView
 
 		((GLEventListener) parentGLCanvas).init(drawable);
 
-		initLocal(drawable.getGL());
+		initLocal(drawable.getGL().getGL2());
 	}
 
 	@Override
@@ -228,7 +229,7 @@ public abstract class AGLView
 			final Vec3f rot_Vec3f = new Vec3f();
 			final Vec3f position = viewCamera.getCameraPosition();
 
-			GL gl = drawable.getGL();
+			GL2 gl = drawable.getGL().getGL2();
 
 			gl.glTranslatef(position.x(), position.y(), position.z());
 			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(),
@@ -248,11 +249,13 @@ public abstract class AGLView
 		}
 	}
 
-	@Override
-	public final void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
-
-		((GLEventListener) parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
-	}
+	
+	
+//	@Override
+//	public final void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
+//
+//		((GLEventListener) parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
+//	}
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -281,12 +284,12 @@ public abstract class AGLView
 			bHasFrustumChanged = true;
 		}
 
-		GL gl = drawable.getGL();
+		GL2 gl = drawable.getGL().getGL2();
 
 		fAspectRatio = (float) height / (float) width;
 
 		gl.glViewport(x, y, width, height);
-		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 
 		viewFrustum.setProjectionMatrix(gl, fAspectRatio);
@@ -330,33 +333,33 @@ public abstract class AGLView
 	/**
 	 * This method clips everything outside the frustum
 	 */
-	protected void clipToFrustum(GL gl) {
+	protected void clipToFrustum(GL2 gl) {
 		// if (this instanceof GLHeatMap && ((GLHeatMap) this).isInListMode())
 		// return;
 		//
-		// gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+		// gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
 		// gl.glColorMask(false, false, false, false);
 		// gl.glClearStencil(0); // Clear The Stencil Buffer To 0
-		// gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
-		// gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
-		// gl.glEnable(GL.GL_STENCIL_TEST);
-		// gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
-		// gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
-		// gl.glDisable(GL.GL_DEPTH_TEST);
+		// gl.glEnable(GL2.GL_DEPTH_TEST); // Enables Depth Testing
+		// gl.glDepthFunc(GL2.GL_LEQUAL); // The Type Of Depth Testing To Do
+		// gl.glEnable(GL2.GL_STENCIL_TEST);
+		// gl.glStencilFunc(GL2.GL_ALWAYS, 1, 1);
+		// gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+		// gl.glDisable(GL2.GL_DEPTH_TEST);
 		//
 		// // Clip region that renders in stencil buffer (in this case the
 		// // frustum)
-		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glBegin(GL2.GL_POLYGON);
 		// gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
 		// gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), -0.01f);
 		// gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
 		// gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
 		// gl.glEnd();
 		//
-		// gl.glEnable(GL.GL_DEPTH_TEST);
+		// gl.glEnable(GL2.GL_DEPTH_TEST);
 		// gl.glColorMask(true, true, true, true);
-		// gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
-		// gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
+		// gl.glStencilFunc(GL2.GL_EQUAL, 1, 1);
+		// gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
 	}
 
 	/**
@@ -364,14 +367,14 @@ public abstract class AGLView
 	 * 
 	 * @param gl
 	 */
-	public abstract void init(final GL gl);
+	public abstract void init(final GL2 gl);
 
 	/**
 	 * Initialization for gl called by the local instance Has to call init internally!
 	 * 
 	 * @param gl
 	 */
-	protected abstract void initLocal(final GL gl);
+	protected abstract void initLocal(final GL2 gl);
 
 	/**
 	 * Initialization for gl called by a managing view has to call init internally!
@@ -380,17 +383,17 @@ public abstract class AGLView
 	 * @param infoAreaManager
 	 *            TODO
 	 */
-	public abstract void initRemote(final GL gl, final AGLView glParentView,
+	public abstract void initRemote(final GL2 gl, final AGLView glParentView,
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager);
 
 	/**
-	 * GL display method that has to be called in all cases manually, either by {@link #displayLocal(GL)} or
+	 * GL2 display method that has to be called in all cases manually, either by {@link #displayLocal(GL)} or
 	 * {@link #displayRemote(GL)}. It must be responsible for rendering the scene. It is also called by the
 	 * picking manager.
 	 * 
 	 * @param gl
 	 */
-	public abstract void display(final GL gl);
+	public abstract void display(final GL2 gl);
 
 	/**
 	 * This method should be called every display cycle when it is save to change the state of the object. It
@@ -424,7 +427,7 @@ public abstract class AGLView
 	 * 
 	 * @param gl
 	 */
-	protected abstract void displayLocal(final GL gl);
+	protected abstract void displayLocal(final GL2 gl);
 
 	/**
 	 * Intended for external use when another instance of a view manages the scene. This is specially designed
@@ -433,7 +436,7 @@ public abstract class AGLView
 	 * 
 	 * @param gl
 	 */
-	public abstract void displayRemote(final GL gl);
+	public abstract void displayRemote(final GL2 gl);
 
 	public final GLCaleydoCanvas getParentGLCanvas() {
 		if (this.isRenderedRemote())
@@ -456,7 +459,7 @@ public abstract class AGLView
 	 * 
 	 * @param gl
 	 */
-	protected final void checkForHits(final GL gl) {
+	protected final void checkForHits(final GL2 gl) {
 
 		Set<EPickingType> hitTypes = pickingManager.getHitTypes(iUniqueID);
 		if (hitTypes == null)
@@ -600,7 +603,7 @@ public abstract class AGLView
 		return glRemoteRenderingView;
 	}
 
-	protected void renderBusyMode(final GL gl) {
+	protected void renderBusyMode(final GL2 gl) {
 		float fTransparency = 0.3f * iFrameCounter / NUMBER_OF_FRAMES;
 		float fLoadingTransparency = 0.8f * iFrameCounter / NUMBER_OF_FRAMES;
 
@@ -612,7 +615,7 @@ public abstract class AGLView
 		}
 
 		gl.glColor4f(1, 1, 1, fTransparency);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(-9, -9, 4.2f);
 		gl.glVertex3f(-9, 9, 4.2f);
 		gl.glVertex3f(9, 9, 4.2f);
@@ -637,10 +640,10 @@ public abstract class AGLView
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		gl.glColor4f(1.0f, 1.0f, 1.0f, fLoadingTransparency);
 
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fXCenter - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
@@ -668,7 +671,7 @@ public abstract class AGLView
 		gl.glTranslatef(fXCenter - 0.6f, fYCenter, 0);
 		gl.glRotatef(-iRotationFrameCounter, 0, 0, 1);
 
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(-0.1f, -0.1f, 4.22f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
@@ -803,9 +806,9 @@ public abstract class AGLView
 	 * Renders the symbol of a view. (Called when there's nothing to display.)
 	 * 
 	 * @param gl
-	 *            GL Object that shall be used for rendering.
+	 *            GL2 Object that shall be used for rendering.
 	 */
-	protected void renderSymbol(GL gl, EIconTextures texture, float buttonSize) {
+	protected void renderSymbol(GL2 gl, EIconTextures texture, float buttonSize) {
 
 		float xButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth() / 2 - buttonSize / 2;
 		float yButtonOrigin = viewFrustum.getBottom() + viewFrustum.getHeight() / 2 - buttonSize / 2;
@@ -815,9 +818,9 @@ public abstract class AGLView
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		gl.glColor4f(1f, 1, 1, 1f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(xButtonOrigin, yButtonOrigin, 0.01f);
@@ -832,10 +835,16 @@ public abstract class AGLView
 		tempTexture.disable();
 	}
 
-	public void renderText(GL gl, String text, float size, float x, float y, float z) {
+	public void renderText(GL2 gl, String text, float size, float x, float y, float z) {
 		textRenderer.setColor(0.3f, 0.3f, 0.3f, 1);
 		textRenderer.begin3DRendering();
 		textRenderer.draw3D(text, x, y, z, size);
 		textRenderer.end3DRendering();
+	}
+	
+	@Override
+	public void dispose(GLAutoDrawable arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

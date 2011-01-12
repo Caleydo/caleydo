@@ -2,7 +2,7 @@ package org.caleydo.core.manager.view;
 
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -32,7 +32,7 @@ public interface ISelectionTransformer
 	 * @param target
 	 *            is filled with connection points in the view's canvas coordinate system.
 	 */
-	public void project(GL gl, String deskoXID, HashMap<IDType, ConnectionMap> source,
+	public void project(GL2 gl, String deskoXID, HashMap<IDType, ConnectionMap> source,
 		HashMap<IDType, CanvasConnectionMap> target);
 
 	/**

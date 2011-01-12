@@ -1,6 +1,6 @@
 package org.caleydo.view.radial;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.xml.bind.annotation.XmlType;
 
@@ -54,7 +54,7 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	}
 
 	// @Override
-	// public void draw(float fXCenter, float fYCenter, GL gl, GLU glu, double
+	// public void draw(float fXCenter, float fYCenter, GL2 gl, GLU glu, double
 	// dTimePassed) {
 	//
 	// PartialDisc pdCurrentSelectedElement =
@@ -205,7 +205,7 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	// ========================================
 
 	@Override
-	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu, double dTimePassed) {
+	public void draw(float fXCenter, float fYCenter, GL2 gl, GLU glu, double dTimePassed) {
 
 		PartialDisc pdCurrentSelectedElement = radialHierarchy
 				.getCurrentSelectedElement();
@@ -349,7 +349,7 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	// ========================================
 
 	// @Override
-	// public void draw(float fXCenter, float fYCenter, GL gl, GLU glu, double
+	// public void draw(float fXCenter, float fYCenter, GL2 gl, GLU glu, double
 	// dTimePassed) {
 	//
 	// PartialDisc pdCurrentSelectedElement =
@@ -558,7 +558,7 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	// =============================
 
 	// @Override
-	// public void draw(float fXCenter, float fYCenter, GL gl, GLU glu, double
+	// public void draw(float fXCenter, float fYCenter, GL2 gl, GLU glu, double
 	// dTimePassed) {
 	//
 	// PartialDisc pdCurrentSelectedElement =

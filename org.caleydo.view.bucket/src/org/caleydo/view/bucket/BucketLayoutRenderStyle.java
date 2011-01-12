@@ -6,7 +6,7 @@ import gleem.linalg.open.Transform;
 
 import java.awt.Rectangle;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -454,7 +454,7 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 		return spawnLevel;
 	}
 
-	public RemoteLevel initFocusLevelTrack(GL gl, Rectangle viewRectScreenCoords,
+	public RemoteLevel initFocusLevelTrack(GL2 gl, Rectangle viewRectScreenCoords,
 			Point upperLeftScreenPos) {
 		//
 		// fArHeadPosition =

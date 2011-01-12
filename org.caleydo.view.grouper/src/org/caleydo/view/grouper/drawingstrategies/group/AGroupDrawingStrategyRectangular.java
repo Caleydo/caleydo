@@ -6,7 +6,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
@@ -16,9 +16,9 @@ import org.caleydo.view.grouper.GrouperRenderStyle;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 import org.caleydo.view.grouper.compositegraphic.ICompositeGraphic;
 
-import com.sun.opengl.util.j2d.TextRenderer;
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.awt.TextRenderer;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
 
 public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement implements
 		IGroupDrawingStrategy {
@@ -33,11 +33,11 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 	}
 
 	@Override
-	public abstract void draw(GL gl, GroupRepresentation groupRepresentation,
+	public abstract void draw(GL2 gl, GroupRepresentation groupRepresentation,
 			TextRenderer textRenderer);
 
 	@Override
-	public void calculateDrawingParameters(GL gl, TextRenderer textRenderer,
+	public void calculateDrawingParameters(GL2 gl, TextRenderer textRenderer,
 			GroupRepresentation groupRepresentation) {
 
 		ArrayList<ICompositeGraphic> alChildren = groupRepresentation.getChildren();
@@ -55,7 +55,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 	}
 
 	@Override
-	public void calculateDimensions(GL gl, TextRenderer textRenderer,
+	public void calculateDimensions(GL2 gl, TextRenderer textRenderer,
 			GroupRepresentation groupRepresentation) {
 
 		float fMaxChildWidth = 0.0f;
@@ -111,7 +111,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 	}
 
 	@Override
-	public void calculateDimensionsOfLeaf(GL gl, TextRenderer textRenderer,
+	public void calculateDimensionsOfLeaf(GL2 gl, TextRenderer textRenderer,
 			GroupRepresentation groupRepresentation) {
 		float fHeight = 0.0f;
 		float fWidth = 0.0f;
@@ -127,7 +127,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 		groupRepresentation.setWidth(fWidth);
 	}
 
-	protected void drawGroupRectangular(GL gl, GroupRepresentation groupRepresentation,
+	protected void drawGroupRectangular(GL2 gl, GroupRepresentation groupRepresentation,
 			TextRenderer textRenderer) {
 
 		Vec3f vecPosition = groupRepresentation.getPosition();
@@ -157,13 +157,13 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 		endGUIElement(gl);
 	}
 
-	protected void drawCollapseButton(GL gl, GroupRepresentation groupRepresentation,
+	protected void drawCollapseButton(GL2 gl, GroupRepresentation groupRepresentation,
 			TextRenderer textRenderer) {
 
 		float fTextHeight = getTextHeight(textRenderer);
 		Vec3f vecPosition = groupRepresentation.getPosition();
 
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 
 		beginGUIElement(gl, groupRepresentation.getHierarchyPosition());
 
@@ -186,7 +186,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
 		gl.glColor4f(1, 1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fCollapseButtonPositionX, fCollapseButtonPositionY,
 				vecPosition.z() + 0.01f);
@@ -207,7 +207,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 
 	}
 
-	protected void drawRectangularBorder(GL gl, GroupRepresentation groupRepresentation,
+	protected void drawRectangularBorder(GL2 gl, GroupRepresentation groupRepresentation,
 			TextRenderer textRenderer) {
 
 		Vec3f vecPosition = groupRepresentation.getPosition();
@@ -216,7 +216,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 
 		beginGUIElement(gl, groupRepresentation.getHierarchyPosition());
 
-		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glBegin(GL2.GL_LINE_LOOP);
 		gl.glVertex3f(vecPosition.x(), vecPosition.y(), vecPosition.z());
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition.z());
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight,
@@ -227,7 +227,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 		endGUIElement(gl);
 	}
 
-	protected void drawBackgroudRectangle(GL gl, GroupRepresentation groupRepresentation,
+	protected void drawBackgroudRectangle(GL2 gl, GroupRepresentation groupRepresentation,
 			Vec3f vecPosition) {
 
 		float fHeight = groupRepresentation.getHeight();
@@ -235,7 +235,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 
 		beginGUIElement(gl, groupRepresentation.getHierarchyPosition());
 
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(vecPosition.x(), vecPosition.y(), vecPosition.z());
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition.z());
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight,
@@ -247,7 +247,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 
 	}
 
-	protected void drawChildren(GL gl, GroupRepresentation groupRepresentation,
+	protected void drawChildren(GL2 gl, GroupRepresentation groupRepresentation,
 			TextRenderer textRenderer) {
 
 		if (groupRepresentation.isCollapsed())
@@ -275,7 +275,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 		}
 	}
 
-	public int getClosestDropPositionIndex(GL gl,
+	public int getClosestDropPositionIndex(GL2 gl,
 			GroupRepresentation groupRepresentation, Set<IDraggable> setDraggables,
 			float fMouseCoordinateY) {
 
@@ -329,7 +329,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 		return iDropPositionIndex;
 	}
 
-	public void drawDropPositionMarker(GL gl, GroupRepresentation groupRepresentation,
+	public void drawDropPositionMarker(GL2 gl, GroupRepresentation groupRepresentation,
 			int iDropPositionIndex) {
 
 		Vec3f vecPosition = groupRepresentation.getPosition();
@@ -337,12 +337,12 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 
 		beginGUIElement(gl, groupRepresentation.getHierarchyPosition());
 
-		gl.glPushAttrib(GL.GL_LINE_BIT);
+		gl.glPushAttrib(GL2.GL_LINE_BIT);
 
 		gl.glLineWidth(2.0f);
 
 		gl.glColor3f(0.0f, 0.0f, 0.0f);
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(vecPosition.x(),
 				vecPosition.y() - alDropPositions.get(iDropPositionIndex),
 				groupRepresentation.getPosition().z());
@@ -362,7 +362,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 				* GrouperRenderStyle.TEXT_SPACING;
 	}
 
-	protected void drawLeafRectangular(GL gl, GroupRepresentation groupRepresentation,
+	protected void drawLeafRectangular(GL2 gl, GroupRepresentation groupRepresentation,
 			TextRenderer textRenderer) {
 
 		Vec3f vecPosition = groupRepresentation.getPosition();
@@ -371,7 +371,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 
 		beginGUIElement(gl, groupRepresentation.getHierarchyPosition());
 
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(vecPosition.x(), vecPosition.y(), vecPosition.z());
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition.z());
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight,

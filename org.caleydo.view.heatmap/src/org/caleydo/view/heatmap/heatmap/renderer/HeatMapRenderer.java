@@ -2,7 +2,7 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
@@ -24,7 +24,7 @@ public class HeatMapRenderer extends AContentRenderer {
 	}
 
 	@Override
-	public void render(final GL gl) {
+	public void render(final GL2 gl) {
 
 		contentSpacing.getYDistances().clear();
 		// renderStyle.updateFieldSizes();
@@ -66,7 +66,7 @@ public class HeatMapRenderer extends AContentRenderer {
 		}
 	}
 
-	private void renderElement(final GL gl, final int iStorageIndex,
+	private void renderElement(final GL2 gl, final int iStorageIndex,
 			final int iContentIndex, final float fYPosition, final float fXPosition,
 			final float fFieldHeight, final float fFieldWidth) {
 
@@ -89,7 +89,7 @@ public class HeatMapRenderer extends AContentRenderer {
 				EPickingType.HEAT_MAP_STORAGE_SELECTION, iStorageIndex));
 		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
 				EPickingType.HEAT_MAP_LINE_SELECTION, iContentIndex));
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition + fFieldHeight, FIELD_Z);

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -35,8 +35,8 @@ import org.caleydo.view.treemap.listener.ZoomInListener;
 import org.caleydo.view.treemap.listener.ZoomOutListener;
 import org.caleydo.view.treemap.renderstyle.TreeMapRenderStyle;
 
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
 
 /**
  * Extended Treemap for displaying multiple treemaps and zoom function.
@@ -99,7 +99,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	}
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new TreeMapRenderStyle(viewFrustum);
 
@@ -117,7 +117,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	}
 
 	@Override
-	public void initLocal(GL gl) {
+	public void initLocal(GL2 gl) {
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		init(gl);
 	}
@@ -129,9 +129,9 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView, final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
-		// Register keyboard listener to GL canvas
+		// Register keyboard listener to GL2 canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				glParentView.getParentGLCanvas().getParentComposite().addKeyListener(glKeyListener);
@@ -154,7 +154,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	}
 
 	@Override
-	public void displayLocal(GL gl) {
+	public void displayLocal(GL2 gl) {
 
 		if (mainTreeMapView != null)
 			mainTreeMapView.processEvents();
@@ -169,12 +169,12 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	}
 
 	@Override
-	public void displayRemote(GL gl) {
+	public void displayRemote(GL2 gl) {
 
 	}
 
 	@Override
-	public void display(GL gl) {
+	public void display(GL2 gl) {
 		if (bDisplayData) {
 			if (animationControle.isActive()) {
 				animationControle.display(gl);
@@ -190,7 +190,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	public static final int MAX_THUMBNAILS=3;
 	public static final float THUMBNAIL_HEIGHT=0.18f;
 	
-	void displayMainTreeMap(GL gl, boolean resized){
+	void displayMainTreeMap(GL2 gl, boolean resized){
 //		if (thumbnailTreemapViews.size() > 0) {
 		if(resized){
 
@@ -212,7 +212,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		}
 	}
 	
-	void displayThumbnailTreemaps(GL gl) {
+	void displayThumbnailTreemaps(GL2 gl) {
 		int maxThumbNailViews = MAX_THUMBNAILS;
 
 		// double thumbNailWidth = 0.26;
@@ -254,12 +254,12 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	 * @param xmax
 	 * @param ymax
 	 */
-	private void drawArrow(GL gl, float x, float y, float xmax, float ymax) {
+	private void drawArrow(GL2 gl, float x, float y, float xmax, float ymax) {
 		x = (x + 0.01f) * viewFrustum.getWidth();
 		y = y * viewFrustum.getHeight();
 		xmax = (xmax - 0.01f) * viewFrustum.getWidth();
 		ymax = ymax * viewFrustum.getHeight();
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(x, y, 0);
 		gl.glVertex3f(x, ymax, 0);
 		gl.glVertex3f(xmax, y + (ymax - y) / 2, 0);
@@ -270,7 +270,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	/**
 	 * Displays a symbol when no data is available. Code from GLRadialHierarchy.
 	 */
-	protected void renderSymbol(GL gl, EIconTextures texture, float buttonSize) {
+	protected void renderSymbol(GL2 gl, EIconTextures texture, float buttonSize) {
 
 		float xButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth() / 2 - buttonSize / 2;
 		float yButtonOrigin = viewFrustum.getBottom() + viewFrustum.getHeight() / 2 - buttonSize / 2;
@@ -280,9 +280,9 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		gl.glColor4f(1f, 1, 1, 1f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(xButtonOrigin, yButtonOrigin, 0.01f);

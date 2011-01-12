@@ -1,6 +1,6 @@
 package org.caleydo.view.radial;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
@@ -33,7 +33,7 @@ public class PDDrawingStrategyLabelDecorator extends APDDrawingStrategyDecorator
 	}
 
 	@Override
-	public void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw) {
+	public void drawFullCircle(GL2 gl, GLU glu, PartialDisc pdDiscToDraw) {
 		if (drawingStrategy != null) {
 			drawingStrategy.drawFullCircle(gl, glu, pdDiscToDraw);
 		}
@@ -54,7 +54,7 @@ public class PDDrawingStrategyLabelDecorator extends APDDrawingStrategyDecorator
 	}
 
 	@Override
-	public void drawPartialDisc(GL gl, GLU glu, PartialDisc pdDiscToDraw) {
+	public void drawPartialDisc(GL2 gl, GLU glu, PartialDisc pdDiscToDraw) {
 		if (drawingStrategy != null) {
 			drawingStrategy.drawPartialDisc(gl, glu, pdDiscToDraw);
 		}

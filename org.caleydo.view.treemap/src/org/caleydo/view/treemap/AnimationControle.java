@@ -3,7 +3,7 @@ package org.caleydo.view.treemap;
 import java.util.Calendar;
 import java.util.Vector;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * 
@@ -125,7 +125,7 @@ public class AnimationControle {
 		
 	}
 
-	void display(GL gl) {
+	void display(GL2 gl) {
 		float x, y, width, height;
 
 		long time = Calendar.getInstance().getTimeInMillis();

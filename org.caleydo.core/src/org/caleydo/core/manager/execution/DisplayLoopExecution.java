@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
+import javax.media.opengl.GLProfile;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
@@ -15,7 +16,7 @@ import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import com.sun.opengl.util.FPSAnimator;
+import com.jogamp.opengl.util.FPSAnimator;
 
 /**
  * Provides execution of {@link Runnable}'s within the openGL's display loop. During creation of the singleton
@@ -60,15 +61,18 @@ public class DisplayLoopExecution
 	public static DisplayLoopExecution get() {
 		if (displayLoopExecution == null) {
 			displayLoopExecution = new DisplayLoopExecution();
+			
+			if(GLProfile.isGL2Available())
+				System.out.println("Rendering with GL2");
 
-			GLCapabilities glCapabilities = new GLCapabilities();
+			GLCapabilities glCapabilities = new GLCapabilities(GLProfile.get(GLProfile.GL2));
 			glCapabilities.setStencilBits(1);
-			displayLoopExecution.displayLoopCanvas = new GLCanvas(new GLCapabilities());
+			displayLoopExecution.displayLoopCanvas = new GLCanvas(new GLCapabilities(GLProfile.getDefault()));
 			displayLoopExecution.displayLoopCanvas.addGLEventListener(displayLoopExecution);
 
 			displayLoopExecution.displayLoopShell =
 				new Shell(Display.getDefault(), SWT.EMBEDDED | SWT.NO_TRIM | SWT.ON_TOP);
-			displayLoopExecution.displayLoopShell.setSize(1,1);
+			displayLoopExecution.displayLoopShell.setSize(1, 1);
 			displayLoopExecution.displayLoopShell.open();
 
 			Region region = new Region();
@@ -92,10 +96,10 @@ public class DisplayLoopExecution
 		}
 	}
 
-	@Override
-	public void displayChanged(GLAutoDrawable arg0, boolean arg1, boolean arg2) {
-		// nothing to do as there is no related drawing object
-	}
+//	@Override
+//	public void displayChanged(GLAutoDrawable arg0, boolean arg1, boolean arg2) {
+//		// nothing to do as there is no related drawing object
+//	}
 
 	@Override
 	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3, int arg4) {
@@ -148,6 +152,12 @@ public class DisplayLoopExecution
 	 */
 	public void stopMultipleExecution(Runnable runnable) {
 		multiple.remove(runnable);
+	}
+
+	@Override
+	public void dispose(GLAutoDrawable arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

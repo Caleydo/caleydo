@@ -5,16 +5,16 @@ import gleem.linalg.Vec4f;
 import java.awt.Font;
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.border.IBorderRenderStyle;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
- * OpenGL Slider Distribution Mini View
+ * OpenGL2 Slider Distribution Mini View
  * 
  * @author Stefan Sauer
  */
@@ -95,7 +95,7 @@ public class GLDistributionMiniView
 	}
 
 	@Override
-	public void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin) {
+	public void render(GL2 gl, float fXOrigin, float fYOrigin, float fZOrigin) {
 		gl.glPushMatrix();
 		// draw helplines
 		// GLHelperFunctions.drawAxis(gl);
@@ -106,7 +106,7 @@ public class GLDistributionMiniView
 		gl.glPopMatrix();
 	}
 
-	private void drawBorder(GL gl) {
+	private void drawBorder(GL2 gl) {
 		if (borderStyle == null)
 			return;
 		gl.glScalef(fWidth, fHeight, 1.0f);
@@ -115,7 +115,7 @@ public class GLDistributionMiniView
 
 	}
 
-	private void drawDistribution(GL gl) {
+	private void drawDistribution(GL2 gl) {
 		if (alNormalicedDistribution != null) {
 
 			float increment = fHeight / alNormalicedDistribution.size();
@@ -136,7 +136,7 @@ public class GLDistributionMiniView
 					posx = fWidth / 2.0f - width / 2.0f;
 				}
 
-				gl.glBegin(GL.GL_QUADS);
+				gl.glBegin(GL2.GL_QUADS);
 				gl.glNormal3i(0, 1, 0);
 				gl.glVertex3f(posx, 0, 0);
 				gl.glVertex3f(posx, increment, 0);
@@ -169,7 +169,7 @@ public class GLDistributionMiniView
 					posx = fWidth / 2.0f - width / 2.0f;
 				}
 
-				gl.glBegin(GL.GL_QUADS);
+				gl.glBegin(GL2.GL_QUADS);
 				gl.glNormal3i(0, 1, 0);
 				gl.glVertex3f(posx, 0, 0);
 				gl.glVertex3f(posx, increment, 0);

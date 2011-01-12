@@ -51,7 +51,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Base class for OpenGL views that heavily use storages.
+ * Base class for OpenGL2 views that heavily use storages.
  * 
  * @author Alexander Lex
  * @author Marc Streit

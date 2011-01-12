@@ -1,6 +1,6 @@
 package org.caleydo.view.template;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -20,7 +20,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.template.renderstyle.TemplateRenderStyle;
 
 /**
- * Sample GL view.
+ * Sample GL2 view.
  * 
  * @author Marc Streit
  */
@@ -46,7 +46,7 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new TemplateRenderStyle(viewFrustum);
 
@@ -55,15 +55,15 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void initLocal(GL gl) {
+	public void initLocal(GL2 gl) {
 
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
+	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
-		// Register keyboard listener to GL canvas
+		// Register keyboard listener to GL2 canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
 					@Override
@@ -81,7 +81,7 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void displayLocal(GL gl) {
+	public void displayLocal(GL2 gl) {
 
 		pickingManager.handlePicking(this, gl);
 		display(gl);
@@ -89,16 +89,16 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void displayRemote(GL gl) {
+	public void displayRemote(GL2 gl) {
 
 	}
 
 	@Override
-	public void display(GL gl) {
+	public void display(GL2 gl) {
 
-		// TODO: IMPLEMENT GL STUFF
+		// TODO: IMPLEMENT GL2 STUFF
 
-		gl.glBegin(GL.GL_QUADS);
+		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor3f(0, 1, 0);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(0, 1, 0);

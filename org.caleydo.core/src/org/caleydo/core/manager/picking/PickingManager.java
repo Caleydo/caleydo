@@ -9,14 +9,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-
-import com.sun.opengl.util.BufferUtil;
 
 /**
  * <p>
@@ -252,9 +251,9 @@ public class PickingManager {
 	 * @param glView
 	 *            a reference to the calling view
 	 * @param gl
-	 *            the GL context
+	 *            the GL2 context
 	 */
-	public void handlePicking(final AGLView glView, final GL gl) {
+	public void handlePicking(final AGLView glView, final GL2 gl) {
 
 		if (bEnablePicking == false)
 			return;
@@ -304,17 +303,17 @@ public class PickingManager {
 		int PICKING_BUFSIZE = 1024;
 
 		int iArPickingBuffer[] = new int[PICKING_BUFSIZE];
-		IntBuffer pickingBuffer = BufferUtil.newIntBuffer(PICKING_BUFSIZE);
+		IntBuffer pickingBuffer = IntBuffer.allocate(PICKING_BUFSIZE);
 		int iHitCount = -1;
 		int viewport[] = new int[4];
-		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+		gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
 
 		gl.glSelectBuffer(PICKING_BUFSIZE, pickingBuffer);
-		gl.glRenderMode(GL.GL_SELECT);
+		gl.glRenderMode(GL2.GL_SELECT);
 
 		gl.glInitNames();
 
-		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
 
@@ -331,7 +330,7 @@ public class PickingManager {
 		ViewFrustum viewFrustum = glView.getViewFrustum();
 		viewFrustum.setProjectionMatrix(gl, fAspectRatio);
 
-		// gl.glMatrixMode(GL.GL_MODELVIEW);
+		// gl.glMatrixMode(GL2.GL_MODELVIEW);
 
 		// Store picked point
 		Point tmpPickPoint = (Point) pickPoint.clone();
@@ -340,11 +339,11 @@ public class PickingManager {
 
 		glView.display(gl);
 
-		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glPopMatrix();
-		gl.glMatrixMode(GL.GL_MODELVIEW);
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
 
-		iHitCount = gl.glRenderMode(GL.GL_RENDER);
+		iHitCount = gl.glRenderMode(GL2.GL_RENDER);
 		pickingBuffer.get(iArPickingBuffer);
 		// System.out.println("Picking Buffer: " + iArPickingBuffer[0]);
 		// processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint,

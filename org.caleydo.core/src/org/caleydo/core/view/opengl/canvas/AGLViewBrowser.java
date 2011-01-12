@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.selection.SelectionType;
@@ -51,8 +52,8 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
 
 /**
  * Base class for view browsers such as tissue and pathway browser view
@@ -230,17 +231,17 @@ public abstract class AGLViewBrowser
 	}
 
 	@Override
-	public void initLocal(final GL gl) {
+	public void initLocal(final GL2 gl) {
 		// iGLDisplayList = gl.glGenLists(1);
 
 		init(gl);
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView, final GLMouseListener glMouseListener,
+	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener,
 		GLInfoAreaManager infoAreaManager) {
 
-		// Register keyboard listener to GL canvas
+		// Register keyboard listener to GL2 canvas
 		// glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new
 		// Runnable() {
 		// public void run() {
@@ -256,7 +257,7 @@ public abstract class AGLViewBrowser
 	}
 
 	@Override
-	public void init(final GL gl) {
+	public void init(final GL2 gl) {
 
 		ArrayList<RemoteLevelElement> remoteLevelElementWhiteList = new ArrayList<RemoteLevelElement>();
 		remoteLevelElementWhiteList.addAll(focusLevel.getAllElements());
@@ -281,7 +282,7 @@ public abstract class AGLViewBrowser
 	protected abstract void addInitialViews();
 
 	@Override
-	public void displayLocal(final GL gl) {
+	public void displayLocal(final GL2 gl) {
 
 		for (AGLView view : containedGLViews)
 			view.processEvents();
@@ -304,7 +305,7 @@ public abstract class AGLViewBrowser
 	}
 
 	@Override
-	public void displayRemote(final GL gl) {
+	public void displayRemote(final GL2 gl) {
 		for (AGLView view : containedGLViews)
 			view.processEvents();
 
@@ -317,7 +318,7 @@ public abstract class AGLViewBrowser
 	}
 
 	@Override
-	public void display(final GL gl) {
+	public void display(final GL2 gl) {
 		time.update();
 
 		if (focusLevel.getElementByPositionIndex(0).isFree() && arSlerpActions.isEmpty()) {
@@ -439,12 +440,12 @@ public abstract class AGLViewBrowser
 		}
 	}
 
-	public void renderBucketWall(final GL gl, boolean bRenderBorder, RemoteLevelElement element) {
+	public void renderBucketWall(final GL2 gl, boolean bRenderBorder, RemoteLevelElement element) {
 		// Highlight potential view drop destination
 		if (dragAndDrop.isDragActionRunning() && element.getID() == iMouseOverObjectID) {
 			gl.glLineWidth(5);
 			gl.glColor4f(0.2f, 0.2f, 0.2f, 1);
-			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glBegin(GL2.GL_LINE_LOOP);
 			gl.glVertex3f(0, 0, 0.01f);
 			gl.glVertex3f(0, 8, 0.01f);
 			gl.glVertex3f(8, 8, 0.01f);
@@ -463,7 +464,7 @@ public abstract class AGLViewBrowser
 			gl.glColor4f(1f, 1f, 1f, 0.3f);
 		}
 
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0, 0, -0.03f);
 		gl.glVertex3f(0, 8, -0.03f);
 		gl.glVertex3f(8, 8, -0.03f);
@@ -477,7 +478,7 @@ public abstract class AGLViewBrowser
 		gl.glLineWidth(1f);
 	}
 
-	private void renderRemoteLevel(final GL gl, final RemoteLevel level) {
+	private void renderRemoteLevel(final GL2 gl, final RemoteLevel level) {
 		for (RemoteLevelElement element : level.getAllElements()) {
 			renderRemoteLevelElement(gl, element, level);
 
@@ -487,7 +488,7 @@ public abstract class AGLViewBrowser
 		}
 	}
 
-	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element, RemoteLevel level) {
+	private void renderRemoteLevelElement(final GL2 gl, RemoteLevelElement element, RemoteLevel level) {
 		// // Check if view is visible
 		// if (!level.getElementVisibilityById(iViewID))
 		// return;
@@ -519,7 +520,7 @@ public abstract class AGLViewBrowser
 
 			gl.glLineWidth(2);
 			gl.glColor4f(0.2f, 0.2f, 0.2f, 1);
-			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glBegin(GL2.GL_LINE_LOOP);
 			gl.glVertex3f(0, 0, 0.f);
 			gl.glVertex3f(0, 8, 0.f);
 			gl.glVertex3f(8, 8, 0.f);
@@ -528,7 +529,7 @@ public abstract class AGLViewBrowser
 
 			gl.glColor4f(0.9f, 0.9f, 0.9f, 1);
 
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 			gl.glVertex3f(0, 0, -0.001f);
 			gl.glVertex3f(0, 8, -0.001f);
 			gl.glVertex3f(8, 8, -0.001f);
@@ -579,7 +580,7 @@ public abstract class AGLViewBrowser
 
 				gl.glColor4f(1, 1, 1, 0.75f);
 
-				gl.glBegin(GL.GL_POLYGON);
+				gl.glBegin(GL2.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 				gl.glVertex3f(-0.7f, -0.6f + fFrameWidth, -0.01f);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
@@ -637,7 +638,7 @@ public abstract class AGLViewBrowser
 				}
 
 				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
-				gl.glBegin(GL.GL_LINES);
+				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex3f(10, 2.7f, 0f);
 				gl.glVertex3f(18, 2.7f, 0f);
 				gl.glVertex3f(20, 2.7f, 0f);
@@ -664,7 +665,7 @@ public abstract class AGLViewBrowser
 				}
 
 				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
-				gl.glBegin(GL.GL_LINES);
+				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex3f(10, 2.9f, 0f);
 				gl.glVertex3f(18, 2.9f, 0f);
 				gl.glVertex3f(20, 2.9f, 0f);
@@ -706,7 +707,7 @@ public abstract class AGLViewBrowser
 		gl.glPopName();
 	}
 
-	private void renderEmptyBucketWall(final GL gl, RemoteLevelElement element, RemoteLevel level) {
+	private void renderEmptyBucketWall(final GL2 gl, RemoteLevelElement element, RemoteLevel level) {
 		gl.glPushMatrix();
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
@@ -733,7 +734,7 @@ public abstract class AGLViewBrowser
 		gl.glPopMatrix();
 	}
 
-	private void renderHandles(final GL gl) {
+	private void renderHandles(final GL2 gl) {
 
 		// // Bucket stack top
 		// RemoteLevelElement element = stackLevel.getElementByPositionIndex(0);
@@ -826,7 +827,7 @@ public abstract class AGLViewBrowser
 		}
 	}
 
-	// private void renderStackViewHandleBarZoomedIn(final GL gl,
+	// private void renderStackViewHandleBarZoomedIn(final GL2 gl,
 	// RemoteLevelElement element) {
 	// Transform transform = element.getTransform();
 	// Vec3f translation = transform.getTranslation();
@@ -851,7 +852,7 @@ public abstract class AGLViewBrowser
 	// -translation.z() - 0.001f);
 	// }
 
-	private void renderNavigationHandleBar(final GL gl, RemoteLevelElement element, float fHandleWidth,
+	private void renderNavigationHandleBar(final GL2 gl, RemoteLevelElement element, float fHandleWidth,
 		float fHandleHeight, boolean bUpsideDown, float fScalingFactor) {
 
 		// Render icons
@@ -877,7 +878,7 @@ public abstract class AGLViewBrowser
 		// Render background (also draggable)
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_DRAG, element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);
 		gl.glVertex3f(fHandleWidth - 2 * fHandleHeight, 2 + fHandleHeight, 0);
 		gl.glVertex3f(fHandleWidth - 2 * fHandleHeight, 2, 0);
@@ -914,7 +915,7 @@ public abstract class AGLViewBrowser
 		}
 	}
 
-	private void renderSingleHandle(final GL gl, int iRemoteLevelElementID, EPickingType ePickingType,
+	private void renderSingleHandle(final GL2 gl, int iRemoteLevelElementID, EPickingType ePickingType,
 		EIconTextures eIconTexture, float fWidth, float fHeight) {
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, ePickingType, iRemoteLevelElementID));
 
@@ -924,7 +925,7 @@ public abstract class AGLViewBrowser
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 		gl.glColor3f(1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(0, -fHeight, 0f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
@@ -940,14 +941,14 @@ public abstract class AGLViewBrowser
 		gl.glPopName();
 	}
 
-	private void renderPoolSelection(final GL gl, float fXOrigin, float fYOrigin, float fWidth,
+	private void renderPoolSelection(final GL2 gl, float fXOrigin, float fYOrigin, float fWidth,
 		float fHeight, RemoteLevelElement element) {
 		float fPanelSideWidth = 11f;
 
 		float z = 0.06f;
 
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(fXOrigin + 10.2f, fYOrigin - fHeight / 2f + fHeight, z);
 		gl.glVertex3f(fXOrigin + 10.2f + fWidth, fYOrigin - fHeight / 2f + fHeight, z);
 		gl.glVertex3f(fXOrigin + 10.2f + fWidth, fYOrigin - fHeight / 2f, z);
@@ -962,7 +963,7 @@ public abstract class AGLViewBrowser
 
 		gl.glColor4f(1, 1, 1, 0.75f);
 
-		gl.glBegin(GL.GL_POLYGON);
+		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fXOrigin + fPanelSideWidth, fYOrigin - fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
@@ -991,7 +992,7 @@ public abstract class AGLViewBrowser
 		gl.glTranslatef(-fXOrigin + 1.2f, -fYOrigin + fHeight / 2f - fHeight + 1f, -1.8f);
 
 		// gl.glColor3f(0.25f, 0.25f, 0.25f);
-		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glBegin(GL2.GL_POLYGON);
 		// gl.glVertex3f(fXOrigin + 3f, fYOrigin - fHeight / 2f + fHeight -
 		// 2.5f, 0f);
 		// gl.glVertex3f(fXOrigin + 5.1f, fYOrigin - fHeight / 2f + fHeight -
@@ -1006,7 +1007,7 @@ public abstract class AGLViewBrowser
 			element.getID()));
 	}
 
-	private void doSlerpActions(final GL gl) {
+	private void doSlerpActions(final GL2 gl) {
 		if (arSlerpActions.isEmpty())
 			return;
 
@@ -1030,7 +1031,7 @@ public abstract class AGLViewBrowser
 		slerpView(gl, tmpSlerpAction);
 	}
 
-	private void slerpView(final GL gl, SlerpAction slerpAction) {
+	private void slerpView(final GL2 gl, SlerpAction slerpAction) {
 		int iViewID = slerpAction.getElementId();
 
 		SlerpMod slerpMod = new SlerpMod();
@@ -1266,7 +1267,7 @@ public abstract class AGLViewBrowser
 	}
 
 	/**
-	 * Unregister view from event system. Remove view from GL render loop.
+	 * Unregister view from event system. Remove view from GL2 render loop.
 	 */
 	public void removeView(AGLView glEventListener) {
 		// FIXME: check why this caused a null pointer ex
@@ -1399,7 +1400,7 @@ public abstract class AGLViewBrowser
 		layoutRenderStyle.initMemoLevel();
 	}
 
-	// protected void renderPoolAndMemoLayerBackground(final GL gl) {
+	// protected void renderPoolAndMemoLayerBackground(final GL2 gl) {
 	//
 	// float fXCorrection = 0.07f; // Detach pool level from stack
 	//
@@ -1432,7 +1433,7 @@ public abstract class AGLViewBrowser
 	// gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 	// gl.glLineWidth(1);
 	//
-	// gl.glBegin(GL.GL_POLYGON);
+	// gl.glBegin(GL2.GL_POLYGON);
 	// gl.glVertex3f(fLeftSceneBorder, fBottomSceneBorder, fZ);
 	// gl.glVertex3f(fLeftSceneBorder, -fBottomSceneBorder, fZ);
 	// gl.glVertex3f(fLeftSceneBorder +
@@ -1454,7 +1455,7 @@ public abstract class AGLViewBrowser
 	// gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
 	// }
 	//
-	// gl.glBegin(GL.GL_LINE_LOOP);
+	// gl.glBegin(GL2.GL_LINE_LOOP);
 	// gl.glVertex3f(fLeftSceneBorder, fBottomSceneBorder, fZ);
 	// gl.glVertex3f(fLeftSceneBorder, -fBottomSceneBorder, fZ);
 	// gl.glVertex3f(fLeftSceneBorder +
@@ -1471,7 +1472,7 @@ public abstract class AGLViewBrowser
 	// // Render selection heat map list background
 	// gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 	// gl.glLineWidth(1);
-	// gl.glBegin(GL.GL_POLYGON);
+	// gl.glBegin(GL2.GL_POLYGON);
 	// gl.glVertex3f(-fLeftSceneBorder, fBottomSceneBorder, fZ);
 	// gl.glVertex3f(-fLeftSceneBorder, -fBottomSceneBorder, fZ);
 	// gl.glVertex3f(-fLeftSceneBorder -
@@ -1484,7 +1485,7 @@ public abstract class AGLViewBrowser
 	//
 	// gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
 	// gl.glLineWidth(1);
-	// gl.glBegin(GL.GL_LINE_LOOP);
+	// gl.glBegin(GL2.GL_LINE_LOOP);
 	// gl.glVertex3f(-fLeftSceneBorder, fBottomSceneBorder, fZ);
 	// gl.glVertex3f(-fLeftSceneBorder, -fBottomSceneBorder, fZ);
 	// gl.glVertex3f(-fLeftSceneBorder -
@@ -1519,7 +1520,7 @@ public abstract class AGLViewBrowser
 	 * 
 	 * @param GL
 	 */
-	private void initNewView(GL gl) {
+	private void initNewView(GL2 gl) {
 
 		// Views should not be loaded until the browser is finished to be
 		// slerped
@@ -1610,7 +1611,7 @@ public abstract class AGLViewBrowser
 	 *            the view for which the slerp transition should be added
 	 * @return <code>true</code> if adding the slerp action was successfull, <code>false</code> otherwise
 	 */
-	private boolean addSlerpActionForView(GL gl, AGLView view) {
+	private boolean addSlerpActionForView(GL2 gl, AGLView view) {
 
 		RemoteLevelElement origin = spawnLevel.getElementByPositionIndex(0);
 		RemoteLevelElement destination = null;
@@ -1653,7 +1654,7 @@ public abstract class AGLViewBrowser
 	 * @return the created view ready to be used within the application
 	 */
 	@SuppressWarnings("unchecked")
-	protected AGLView createView(GL gl, ASerializedView serView) {
+	protected AGLView createView(GL2 gl, ASerializedView serView) {
 
 		@SuppressWarnings("rawtypes")
 		Class viewClass;

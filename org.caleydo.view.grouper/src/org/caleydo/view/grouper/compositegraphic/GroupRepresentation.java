@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -25,7 +25,7 @@ import org.caleydo.view.grouper.drawingstrategies.group.EGroupDrawingStrategyTyp
 import org.caleydo.view.grouper.drawingstrategies.group.GroupDrawingStrategyDragged;
 import org.caleydo.view.grouper.drawingstrategies.group.IGroupDrawingStrategy;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 
@@ -81,7 +81,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	}
 
 	@Override
-	public void draw(GL gl, TextRenderer textRenderer) {
+	public void draw(GL2 gl, TextRenderer textRenderer) {
 		if (bLeaf) {
 			drawingStrategy.drawAsLeaf(gl, this, textRenderer);
 		} else {
@@ -90,7 +90,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	}
 
 	@Override
-	public void handleDragging(GL gl, float fMouseCoordinateX, float fMouseCoordinateY) {
+	public void handleDragging(GL2 gl, float fMouseCoordinateX, float fMouseCoordinateY) {
 
 		GroupDrawingStrategyDragged drawingStrategyDragged = (GroupDrawingStrategyDragged) drawingStrategyManager
 				.getGroupDrawingStrategy(EGroupDrawingStrategyType.DRAGGED);
@@ -114,7 +114,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	}
 
 	@Override
-	public void handleDragOver(GL gl, Set<IDraggable> setDraggables,
+	public void handleDragOver(GL2 gl, Set<IDraggable> setDraggables,
 			float fMouseCoordinateX, float fMouseCoordinateY) {
 
 		AGroupDrawingStrategyRectangular drawingStrategyRectangular = null;
@@ -134,7 +134,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	}
 
 	@Override
-	public void handleDrop(GL gl, Set<IDraggable> setDraggables, float fMouseCoordinateX,
+	public void handleDrop(GL2 gl, Set<IDraggable> setDraggables, float fMouseCoordinateX,
 			float fMouseCoordinateY, DragAndDropController dragAndDropController) {
 
 		int iDropPositionIndex = getDropPositionIndex(gl, setDraggables,
@@ -191,7 +191,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	 * the specified coordinates for the set of draggables.
 	 * 
 	 * @param gl
-	 *            GL context.
+	 *            GL2 context.
 	 * @param setDraggables
 	 *            Draggables that should be droppable at the drop position with
 	 *            the index returned by this method.
@@ -202,7 +202,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	 * @return Drop position index for the draggables, -1 if no drop position
 	 *         was found or is suitable.
 	 */
-	public int getDropPositionIndex(GL gl, Set<IDraggable> setDraggables,
+	public int getDropPositionIndex(GL2 gl, Set<IDraggable> setDraggables,
 			float fMouseCoordinateX, float fMouseCoordinateY) {
 
 		AGroupDrawingStrategyRectangular drawingStrategyRectangular;
@@ -278,16 +278,16 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	 * Calculates parameters that are necessary for drawing.
 	 * 
 	 * @param gl
-	 *            GL Context.
+	 *            GL2 Context.
 	 * @param textRenderer
 	 *            TextRenderer.
 	 */
-	public void calculateDrawingParameters(GL gl, TextRenderer textRenderer) {
+	public void calculateDrawingParameters(GL2 gl, TextRenderer textRenderer) {
 		drawingStrategy.calculateDrawingParameters(gl, textRenderer, this);
 	}
 
 	@Override
-	public void calculateDimensions(GL gl, TextRenderer textRenderer) {
+	public void calculateDimensions(GL2 gl, TextRenderer textRenderer) {
 		if (bLeaf) {
 			drawingStrategy.calculateDimensionsOfLeaf(gl, textRenderer, this);
 		} else {
@@ -700,6 +700,6 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	}
 
 	@Override
-	public void handleDrop(GL gl, float mouseCoordinateX, float mouseCoordinateY) {
+	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 	}
 }

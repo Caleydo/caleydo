@@ -1,5 +1,5 @@
 /*
- * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
+ * gleem -- OpenGL2 Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
  * (kbrussel@alum.mit.edu) Copying, distribution and use of this software in source and binary forms, with or
  * without modification, is permitted provided that the following conditions are met: Distributions of source
  * code must reproduce the copyright notice, this list of conditions and the following disclaimer in the
@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * Patterned after Inventor's HandleBoxManip (by Paul Isaacs and David Mott) and
@@ -280,7 +280,7 @@ public class HandleBoxManip extends Manip {
 		dest.mul(tmp1, tmp2);
 	}
 
-	public void render(GL gl) {
+	public void render(GL2 gl) {
 		int i;
 		for (i = 0; i < 12; i++) {
 			lineSegs[i].render(gl);

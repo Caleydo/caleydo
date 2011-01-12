@@ -10,12 +10,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import javax.media.opengl.GLProfile;
+
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.xml.sax.InputSource;
 
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureIO;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureIO;
 
 /**
  * Utility classes to load resources within the Caleydo project.
@@ -80,10 +82,12 @@ public class ResourceLoader {
 		try {
 			if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
 				texture = TextureIO.newTexture(TextureIO.newTextureData(
-						loadResourceAsInputStream(sFileName), true, "GIF"));
+						GLProfile.getDefault(), loadResourceAsInputStream(sFileName),
+						true, "GIF"));
 			} else {
-				texture = TextureIO.newTexture(TextureIO.newTextureData(new File(
-						sFileName), true, "GIF"));
+
+				texture = TextureIO.newTexture(TextureIO.newTextureData(
+						GLProfile.getDefault(), new File(sFileName), true, "GIF"));
 			}
 		} catch (Exception e) {
 			throw new IllegalStateException("Cannot load texture: " + sFileName);

@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.renderstyle.border;
 
 import gleem.linalg.Vec4f;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 public class BorderRenderStyle
 	implements IBorderRenderStyle {
@@ -56,12 +56,12 @@ public class BorderRenderStyle
 	}
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 
 	}
 
 	@Override
-	public void display(GL gl) {
+	public void display(GL2 gl) {
 		if (glList < 0)
 			return;
 

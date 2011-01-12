@@ -112,9 +112,9 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		histogramView.setDataDomain(dataDomain);
 		histogramView.createDefaultSerializedView();
 		histogramView.createPartControl(histoComposite);
-		// Usually the canvas is registered to the GL animator in the
+		// Usually the canvas is registered to the GL2 animator in the
 		// PartListener.
-		// Because the GL histogram is no usual RCP view we have to do it on our
+		// Because the GL2 histogram is no usual RCP view we have to do it on our
 		// own
 		GeneralManager.get().getViewGLCanvasManager()
 				.registerGLCanvasToAnimator(histogramView.getGLCanvas());

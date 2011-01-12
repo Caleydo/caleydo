@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 public class RenderCommandFactory {
 	private HashMap<ERenderCommandType, IHeatMapRenderCommand> hashRenderCommands;

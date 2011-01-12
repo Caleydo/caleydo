@@ -1,5 +1,5 @@
 /*
- * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
+ * gleem -- OpenGL2 Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
  * (kbrussel@alum.mit.edu) Copying, distribution and use of this software in source and binary forms, with or
  * without modification, is permitted provided that the following conditions are met: Distributions of source
  * code must reproduce the copyright notice, this list of conditions and the following disclaimer in the
@@ -28,7 +28,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /** A line segment from (-1, 0, 0) to (1, 0, 0). */
 @SuppressWarnings("all")
@@ -105,13 +105,13 @@ public class ManipPartLineSeg extends ManipPart {
 		return visible;
 	}
 
-	public void render(GL gl) {
+	public void render(GL2 gl) {
 		if (!visible)
 			return;
 		// FIXME: probably too slow
-		boolean reenable = gl.glIsEnabled(GL.GL_LIGHTING);
-		gl.glDisable(GL.GL_LIGHTING);
-		gl.glBegin(GL.GL_LINES);
+		boolean reenable = gl.glIsEnabled(GL2.GL_LIGHTING);
+		gl.glDisable(GL2.GL_LIGHTING);
+		gl.glBegin(GL2.GL_LINES);
 		if (highlighted) {
 			gl.glColor3f(highlightColor.x(), highlightColor.y(), highlightColor
 					.z());
@@ -123,7 +123,7 @@ public class ManipPartLineSeg extends ManipPart {
 		}
 		gl.glEnd();
 		if (reenable) {
-			gl.glEnable(GL.GL_LIGHTING);
+			gl.glEnable(GL2.GL_LIGHTING);
 		}
 	}
 

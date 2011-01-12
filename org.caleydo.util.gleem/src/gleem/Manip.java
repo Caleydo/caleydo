@@ -1,5 +1,5 @@
 /*
- * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
+ * gleem -- OpenGL2 Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
  * (kbrussel@alum.mit.edu) Copying, distribution and use of this software in source and binary forms, with or
  * without modification, is permitted provided that the following conditions are met: Distributions of source
  * code must reproduce the copyright notice, this list of conditions and the following disclaimer in the
@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * The base class for all manipulators. Fundamentally a manipulator must support
@@ -110,8 +110,8 @@ public abstract class Manip {
 	public abstract void makeInactive();
 
 	/**
-	 * Render this Manipulator now using the given OpenGL routines and assuming
-	 * an OpenGL context is current.
+	 * Render this Manipulator now using the given OpenGL2 routines and assuming
+	 * an OpenGL2 context is current.
 	 */
-	public abstract void render(GL gl);
+	public abstract void render(GL2 gl);
 }

@@ -12,7 +12,6 @@ import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
 

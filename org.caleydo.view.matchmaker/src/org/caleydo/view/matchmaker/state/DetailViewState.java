@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.group.Group;
@@ -33,7 +33,7 @@ import org.caleydo.view.matchmaker.layout.HeatMapLayoutDetailViewMid;
 import org.caleydo.view.matchmaker.layout.HeatMapLayoutDetailViewRight;
 import org.caleydo.view.matchmaker.rendercommand.RenderCommandFactory;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 public class DetailViewState extends ACompareViewStateStatic {
 
@@ -54,7 +54,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 
 		setBarDisplayListIndex = gl.glGenLists(1);
 		heatMapWrapperDisplayListIndex = gl.glGenLists(1);
@@ -65,7 +65,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void drawActiveElements(GL gl) {
+	public void drawActiveElements(GL2 gl) {
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			if (heatMapWrapper.handleDragging(gl, glMouseListener)) {
@@ -94,7 +94,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void buildDisplayList(GL gl) {
+	public void buildDisplayList(GL2 gl) {
 
 		// The bands need to be created only once in the detail
 		// if (detailBands == null)
@@ -108,7 +108,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 			if (heatMapWrappers.size() < 2)
 				return;
 
-			gl.glNewList(heatMapWrapperDisplayListIndex, GL.GL_COMPILE);
+			gl.glNewList(heatMapWrapperDisplayListIndex, GL2.GL_COMPILE);
 
 			leftHeatMapWrapperToDetailBands = new HashMap<HeatMapWrapper, ArrayList<DetailBand>>();
 			detailBandID = 0;
@@ -119,8 +119,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 						glMouseListener, viewID);
 			}
 
-			gl.glEnable(GL.GL_BLEND);
-			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glEnable(GL2.GL_BLEND);
+			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
 			if (heatMapWrappers.get(0).getSelectedGroups().isEmpty()) {
 
@@ -149,14 +149,14 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 		if (isHeatMapWrapperSelectionDisplayListDirty) {
 			isHeatMapWrapperSelectionDisplayListDirty = false;
-			gl.glNewList(heatMapWrapperSelectionDisplayListIndex, GL.GL_COMPILE);
+			gl.glNewList(heatMapWrapperSelectionDisplayListIndex, GL2.GL_COMPILE);
 			renderSelections(gl);
 			gl.glEndList();
 		}
 
 		if (isSetBarDisplayListDirty) {
 			isSetBarDisplayListDirty = false;
-			gl.glNewList(setBarDisplayListIndex, GL.GL_COMPILE);
+			gl.glNewList(setBarDisplayListIndex, GL2.GL_COMPILE);
 			ViewFrustum viewFrustum = view.getViewFrustum();
 
 			setBar.setWidth(viewFrustum.getWidth());
@@ -170,14 +170,14 @@ public class DetailViewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	protected void renderSelections(GL gl) {
+	protected void renderSelections(GL2 gl) {
 		if (heatMapWrappers.get(0).getSelectedGroups().isEmpty()) {
 			renderOverviewLineSelections(gl);
 		}
 		renderHeatMapOverviewSelections(gl);
 	}
 
-	private void renderOverviewToDetailRelations(GL gl) {
+	private void renderOverviewToDetailRelations(GL2 gl) {
 		HeatMapWrapper leftHeatMapWrapper = heatMapWrappers.get(0);
 		HeatMapWrapper rightHeatMapWrapper = heatMapWrappers.get(1);
 
@@ -185,7 +185,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 		renderOverviewToDetailRelations(gl, rightHeatMapWrapper);
 	}
 
-	private void renderOverviewToDetailRelations(GL gl, HeatMapWrapper heatMapWrapper) {
+	private void renderOverviewToDetailRelations(GL2 gl, HeatMapWrapper heatMapWrapper) {
 
 		for (GLHeatMap heatMap : heatMapWrapper.getHeatMaps(true)) {
 
@@ -215,7 +215,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 		}
 	}
 
-	private void renderOverviewToDetailBand(GL gl, GLHeatMap heatMap,
+	private void renderOverviewToDetailBand(GL2 gl, GLHeatMap heatMap,
 			HeatMapWrapper heatMapWrapper, boolean highlight) {
 
 		ContentVirtualArray va = heatMap.getContentVA();
@@ -294,7 +294,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 	}
 
-	private void renderSingleOverviewToDetailRelation(GL gl, GLHeatMap heatMap,
+	private void renderSingleOverviewToDetailRelation(GL2 gl, GLHeatMap heatMap,
 			HeatMapWrapper heatMapWrapper) {
 
 		ContentVirtualArray va = heatMap.getContentVA();
@@ -341,7 +341,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 		return (Math.abs(overviewContentIndex - detailContentIndex)) < 10 ? false : true;
 	}
 
-	private void renderDetailRelations(GL gl) {
+	private void renderDetailRelations(GL2 gl) {
 
 		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
@@ -382,7 +382,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 			renderSingleDetailToDetailRelation(gl, selectionConentID);
 	}
 
-	protected void renderSingleDetailToDetailRelation(GL gl, Integer contentID) {
+	protected void renderSingleDetailToDetailRelation(GL2 gl, Integer contentID) {
 
 		float positionZ = setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
 
@@ -677,7 +677,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
+	public void handleMouseWheel(GL2 gl, int amount, Point wheelPoint) {
 		if (amount > 0) {
 
 			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {

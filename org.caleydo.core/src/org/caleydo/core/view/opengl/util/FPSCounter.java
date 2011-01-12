@@ -28,8 +28,8 @@ import java.text.DecimalFormat;
 import javax.media.opengl.GLDrawable;
 import javax.media.opengl.GLException;
 
-import com.sun.opengl.util.j2d.TextRenderer;
-import com.sun.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.awt.TextRenderer;
+import com.jogamp.opengl.util.texture.Texture;
 
 /**
  * A simple class which uses the TextRenderer to provide an FPS counter overlaid on top of the scene.
@@ -69,7 +69,7 @@ public class FPSCounter {
 	private int fpsOffset;
 
 	/**
-	 * Creates a new FPSCounter with the given font size. An OpenGL context must be current at the time the
+	 * Creates a new FPSCounter with the given font size. An OpenGL2 context must be current at the time the
 	 * constructor is called.
 	 * 
 	 * @param drawable
@@ -77,7 +77,7 @@ public class FPSCounter {
 	 * @param textSize
 	 *            the point size of the font to use
 	 * @throws GLException
-	 *             if an OpenGL context is not current when the constructor is called
+	 *             if an OpenGL2 context is not current when the constructor is called
 	 */
 	public FPSCounter(GLDrawable drawable, int textSize)
 		throws GLException {
@@ -86,7 +86,7 @@ public class FPSCounter {
 	}
 
 	/**
-	 * Creates a new FPSCounter with the given font. An OpenGL context must be current at the time the
+	 * Creates a new FPSCounter with the given font. An OpenGL2 context must be current at the time the
 	 * constructor is called.
 	 * 
 	 * @param drawable
@@ -94,7 +94,7 @@ public class FPSCounter {
 	 * @param font
 	 *            the font to use
 	 * @throws GLException
-	 *             if an OpenGL context is not current when the constructor is called
+	 *             if an OpenGL2 context is not current when the constructor is called
 	 */
 	public FPSCounter(GLDrawable drawable, Font font)
 		throws GLException {
@@ -103,7 +103,7 @@ public class FPSCounter {
 	}
 
 	/**
-	 * Creates a new FPSCounter with the given font and rendering attributes. An OpenGL context must be
+	 * Creates a new FPSCounter with the given font and rendering attributes. An OpenGL2 context must be
 	 * current at the time the constructor is called.
 	 * 
 	 * @param drawable
@@ -115,7 +115,7 @@ public class FPSCounter {
 	 * @param useFractionalMetrics
 	 *            whether to use fractional font
 	 * @throws GLException
-	 *             if an OpenGL context is not current when the constructor is called
+	 *             if an OpenGL2 context is not current when the constructor is called
 	 */
 	public FPSCounter(GLDrawable drawable, Font font, boolean antialiased, boolean useFractionalMetrics)
 		throws GLException {
@@ -160,7 +160,7 @@ public class FPSCounter {
 	 *            the alpha component of the new color, 0.0f = completely transparent, 1.0f = completely
 	 *            opaque
 	 * @throws GLException
-	 *             If an OpenGL context is not current when this method is called
+	 *             If an OpenGL2 context is not current when this method is called
 	 */
 	public void setColor(float r, float g, float b, float a) throws GLException {
 

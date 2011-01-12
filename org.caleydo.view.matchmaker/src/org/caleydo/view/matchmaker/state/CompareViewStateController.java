@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.group.ContentGroupList;
@@ -26,7 +26,7 @@ import org.caleydo.view.matchmaker.GLMatchmaker;
 import org.caleydo.view.matchmaker.SetBar;
 import org.caleydo.view.matchmaker.rendercommand.RenderCommandFactory;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 public class CompareViewStateController {
 
@@ -74,19 +74,19 @@ public class CompareViewStateController {
 		currentState = hashStates.get(stateType);
 	}
 
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 		currentState.init(gl);
 	}
 
-	public void executeDrawingPreprocessing(GL gl, boolean isDisplayListDirty) {
+	public void executeDrawingPreprocessing(GL2 gl, boolean isDisplayListDirty) {
 		currentState.executeDrawingPreprocessing(gl, isDisplayListDirty);
 	}
 
-	public void drawDisplayListElements(GL gl) {
+	public void drawDisplayListElements(GL2 gl) {
 		currentState.buildDisplayList(gl);
 	}
 
-	public void drawActiveElements(GL gl) {
+	public void drawActiveElements(GL2 gl) {
 		currentState.drawActiveElements(gl);
 	}
 
@@ -119,7 +119,7 @@ public class CompareViewStateController {
 		currentState.adjustPValue();
 	}
 
-	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
+	public void handleMouseWheel(GL2 gl, int amount, Point wheelPoint) {
 		currentState.handleMouseWheel(gl, amount, wheelPoint);
 	}
 
@@ -151,7 +151,7 @@ public class CompareViewStateController {
 		currentState.handleContentGroupListUpdate(setID, contentGroupList);
 	}
 
-	public void handleDragging(GL gl) {
+	public void handleDragging(GL2 gl) {
 		currentState.handleDragging(gl);
 	}
 

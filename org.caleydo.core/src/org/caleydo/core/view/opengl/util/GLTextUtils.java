@@ -1,8 +1,8 @@
 package org.caleydo.core.view.opengl.util;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
-import com.sun.opengl.util.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
 
 /**
  * Util methods for rendering text.
@@ -12,7 +12,7 @@ import com.sun.opengl.util.GLUT;
  */
 public class GLTextUtils {
 
-	public static void renderText(final GL gl, final String showText, final int iSize, final float fx,
+	public static void renderText(final GL2 gl, final String showText, final int iSize, final float fx,
 		final float fy, final float fz) {
 
 		GLUT glut = new GLUT();
@@ -33,7 +33,7 @@ public class GLTextUtils {
 		}
 	}
 
-	public static void renderStaticText(final GL gl, final String showText, final int iWindowPosX,
+	public static void renderStaticText(final GL2 gl, final String showText, final int iWindowPosX,
 		final int iWindowPosY) {
 
 		GLUT glut = new GLUT();
@@ -51,7 +51,7 @@ public class GLTextUtils {
 
 	}
 
-	public static void renderTextInRegion(final GL gl, String showText, final int iSize, final float fx,
+	public static void renderTextInRegion(final GL2 gl, String showText, final int iSize, final float fx,
 		final float fy, final float fz, final float fWidth, final float fHeight) {
 
 		int iMaxLineChars = (int) (fWidth / 0.006f);

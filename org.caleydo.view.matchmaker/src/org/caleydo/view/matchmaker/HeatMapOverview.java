@@ -3,7 +3,7 @@ package org.caleydo.view.matchmaker;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.group.ContentGroupList;
@@ -21,7 +21,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.heatmap.hierarchical.HeatMapUtil;
 import org.caleydo.view.matchmaker.layout.AHeatMapLayout;
 
-import com.sun.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.Texture;
 
 public class HeatMapOverview {
 
@@ -40,7 +40,7 @@ public class HeatMapOverview {
 		overviewTextures = new ArrayList<ArrayList<Texture>>();
 	}
 
-	public void draw(GL gl, TextureManager textureManager, PickingManager pickingManager,
+	public void draw(GL2 gl, TextureManager textureManager, PickingManager pickingManager,
 			ContentSelectionManager contentSelectionManager, int viewID,
 			int sliderPickingID) {
 
@@ -88,13 +88,13 @@ public class HeatMapOverview {
 		// float groupPositionY = layout.getOverviewHeight();
 		//
 		// gl.glColor4f(1, 1, 1, 1);
-		// gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+		// gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		// int groupIndex = 0;
 		// for (Group group : contentGroupList) {
 		// int numSamplesGroup = group.getNrElements();
 		// float groupHeight = numSamplesGroup * sampleHeight;
 		// // gl.glLineWidth(1);
-		// gl.glBegin(GL.GL_LINE_LOOP);
+		// gl.glBegin(GL2.GL_LINE_LOOP);
 		// gl.glVertex3f(0, groupPositionY, 0.0f);
 		// if (isLeft)
 		// gl.glVertex3f(0-layout.getOverviewHeatmapWidth(), groupPositionY,
@@ -116,7 +116,7 @@ public class HeatMapOverview {
 
 	}
 
-	// private void drawSelections(GL gl,
+	// private void drawSelections(GL2 gl,
 	// ContentSelectionManager contentSelectionManager) {
 	//
 	// float overviewHeight = layout.getOverviewHeight();
@@ -132,7 +132,7 @@ public class HeatMapOverview {
 	//
 	// if (elementIndex != -1) {
 	// gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
-	// gl.glBegin(GL.GL_LINE_LOOP);
+	// gl.glBegin(GL2.GL_LINE_LOOP);
 	// gl.glVertex3f(0,
 	// overviewHeight - (elementIndex * sampleHeight), 0);
 	// gl.glVertex3f(layout.getOverviewHeatmapWidth(), overviewHeight
@@ -152,7 +152,7 @@ public class HeatMapOverview {
 	//
 	// if (elementIndex != -1) {
 	// gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
-	// gl.glBegin(GL.GL_LINE_LOOP);
+	// gl.glBegin(GL2.GL_LINE_LOOP);
 	// gl.glVertex3f(0,
 	// overviewHeight - (elementIndex * sampleHeight), 0);
 	// gl.glVertex3f(layout.getOverviewHeatmapWidth(), overviewHeight
@@ -166,7 +166,7 @@ public class HeatMapOverview {
 	// }
 	// }
 
-	public boolean handleDragging(GL gl, GLMouseListener glMouseListener) {
+	public boolean handleDragging(GL2 gl, GLMouseListener glMouseListener) {
 
 		if (slider.handleDragging(gl, glMouseListener)) {
 			Pair<Integer, Integer> bounds = getBoundaryIndicesOfElementsInFocus();

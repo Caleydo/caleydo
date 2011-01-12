@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.miniview.slider;
 
 /**
- * OpenGL Slider Seperator
+ * OpenGL2 Slider Seperator
  * 
  * @author Stefan Sauer
  */

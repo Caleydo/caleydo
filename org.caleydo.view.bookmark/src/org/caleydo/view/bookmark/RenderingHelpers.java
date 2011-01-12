@@ -1,13 +1,13 @@
 package org.caleydo.view.bookmark;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 class RenderingHelpers {
 	
-	static void renderText(GL gl, CaleydoTextRenderer textRenderer, String sLabel,
+	static void renderText(GL2 gl, CaleydoTextRenderer textRenderer, String sLabel,
 			float fXOrigin, float fYOrigin, float fFontScaling) {
 
 		textRenderer.setColor(0, 0, 0, 1);
@@ -17,7 +17,7 @@ class RenderingHelpers {
 			sLabel = sLabel + "..";
 		}
 
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		textRenderer.renderText(gl, sLabel, fXOrigin, fYOrigin, 0, fFontScaling, BookmarkRenderStyle.TEXT_MIN_SIZE);
 		gl.glPopAttrib();
 	}

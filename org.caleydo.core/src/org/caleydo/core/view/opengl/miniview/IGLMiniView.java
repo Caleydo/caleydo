@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.miniview;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * Interface for all kinds of mini views.
@@ -9,7 +9,7 @@ import javax.media.opengl.GL;
  */
 public interface IGLMiniView {
 
-	public abstract void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin);
+	public abstract void render(GL2 gl, float fXOrigin, float fYOrigin, float fZOrigin);
 
 	public float getWidth();
 

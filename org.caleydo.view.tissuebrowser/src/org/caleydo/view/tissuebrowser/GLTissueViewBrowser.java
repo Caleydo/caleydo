@@ -6,7 +6,7 @@ import gleem.linalg.open.Transform;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.NominalStorage;
@@ -154,7 +154,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	}
 
 	@Override
-	protected AGLView createView(GL gl, ASerializedView serView) {
+	protected AGLView createView(GL2 gl, ASerializedView serView) {
 
 		GLTexture glView = (GLTexture) super.createView(gl, serView);
 

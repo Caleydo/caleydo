@@ -2,7 +2,7 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 
 import java.awt.Font;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -26,7 +26,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 	}
 
 	@Override
-	public void render(GL gl) {
+	public void render(GL2 gl) {
 
 		float yPosition = y;
 		float fieldHeight = 0;
@@ -62,7 +62,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 		return heatMap.getDataDomain().getContentLabel(contentID);
 	}
 
-	private void renderCaption(GL gl, int contentIndex, float xOrigin, float yOrigin,
+	private void renderCaption(GL2 gl, int contentIndex, float xOrigin, float yOrigin,
 			float zOrigin, float fontScaling) {
 
 		String sLabel = getID(contentIndex, false);
@@ -82,7 +82,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 			spacing = 0;
 
 		// textRenderer.setColor(0, 0, 0, 1);
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		gl.glTranslatef(xOrigin, yOrigin + spacing, zOrigin);
 
 		textRenderer.renderText(gl, sLabel, 0, 0, 0, fontScaling,

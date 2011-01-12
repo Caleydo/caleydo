@@ -11,7 +11,7 @@ import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
@@ -169,7 +169,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public void initLocal(GL gl) {
+	public void initLocal(GL2 gl) {
 
 		iGLDisplayListIndexLocal = gl.glGenLists(5);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
@@ -178,7 +178,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
+	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
@@ -195,7 +195,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public void displayLocal(GL gl) {
+	public void displayLocal(GL2 gl) {
 		processEvents();
 
 		remoteElementHeatMap.getGLView().processEvents();
@@ -221,19 +221,19 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public void displayRemote(GL gl) {
+	public void displayRemote(GL2 gl) {
 		display(gl);
 		checkForHits(gl);
 	}
 
 	@Override
-	public void display(GL gl) {
+	public void display(GL2 gl) {
 		doSlerpActions();
 
 		canvasWidth = viewFrustum.getWidth();
 		canvasHeight = viewFrustum.getHeight();
 
-		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+		gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
 		pixelDimensions[0] = viewport[2];
 		pixelDimensions[1] = viewport[3];
 
@@ -333,17 +333,17 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		contextMenu.render(gl, this);
 	}
 
-	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
+	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 
 		if (bHasFrustumChanged) {
 			bHasFrustumChanged = false;
 		}
 
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 		gl.glEndList();
 	}
 
-	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element) {
+	private void renderRemoteLevelElement(final GL2 gl, RemoteLevelElement element) {
 
 		AGLView glView = element.getGLView();
 		if (glView == null) {
@@ -511,7 +511,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 
 		// Heat map
 		ASerializedView serView = new SerializedHeatMapView();// SerializedHierarchicalHeatMapView();//
@@ -571,7 +571,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	 * @return the created view ready to be used within the application
 	 */
 	@SuppressWarnings("unchecked")
-	private AGLView createView(GL gl, ASerializedView serView) {
+	private AGLView createView(GL2 gl, ASerializedView serView) {
 
 		@SuppressWarnings("rawtypes")
 		Class viewClass;

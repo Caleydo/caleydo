@@ -7,12 +7,12 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.view.opengl.renderstyle.infoarea.AInfoOverlayRenderStyle;
 
-import com.sun.opengl.util.j2d.Overlay;
+import com.jogamp.opengl.util.awt.Overlay;
 
 /**
  * Class implements the overlay info area.
@@ -56,12 +56,12 @@ public class GLOverlayInfoRenderer {
 
 	public void render(final GLAutoDrawable drawable) {
 
-		GL gl = drawable.getGL();
+		GL2 gl = drawable.getGL().getGL2();
 
 		int iLineCount = 0;
 
 		int viewport[] = new int[4];
-		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+		gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
 
 		int panelHeight = 0;
 		if (sAlContent.isEmpty()) {

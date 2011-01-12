@@ -6,7 +6,7 @@ package org.caleydo.core.util.mapping.color;
  * red at 0 to green at 1 the points 0 and 1 and their associated colors would be a ColorMarkerPoint
  * </p>
  * <p>
- * Works with float[] because this allows the values to be plugged directly into OpenGL calls, without
+ * Works with float[] because this allows the values to be plugged directly into OpenGL2 calls, without
  * accessing each point separately.
  * </p>
  * <p>

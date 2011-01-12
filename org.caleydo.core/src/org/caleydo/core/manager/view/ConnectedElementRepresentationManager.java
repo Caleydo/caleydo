@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -361,7 +361,7 @@ public class ConnectedElementRepresentationManager
 		canvasConnectionsByType.clear();
 	}
 
-	public void doViewRelatedTransformation(GL gl, ISelectionTransformer transformer) {
+	public void doViewRelatedTransformation(GL2 gl, ISelectionTransformer transformer) {
 		boolean newTransformedPoints = false;
 		newTransformedPoints = transformer.transform(sourceConnectionsByType, transformedConnectionsByType);
 

@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -22,7 +22,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DuplicateSetBa
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.matchmaker.state.ACompareViewState;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 public class SetBar extends AGLGUIElement {
 
@@ -64,7 +64,7 @@ public class SetBar extends AGLGUIElement {
 		setMinSize(60);
 	}
 
-	public void render(GL gl) {
+	public void render(GL2 gl) {
 		selectionWindow.render(gl);
 		for (SetBarItem item : items) {
 			item.render(gl);
@@ -86,7 +86,7 @@ public class SetBar extends AGLGUIElement {
 		return height;
 	}
 
-	public void setHeight(GL gl, float height) {
+	public void setHeight(GL2 gl, float height) {
 		this.height = getScaledSizeOf(gl, height, false);
 		updateItemProperties();
 		selectionWindow.setHeight(this.height * SELECTION_WINDOW_HEIGHT_PROTION);

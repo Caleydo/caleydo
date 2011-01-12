@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.group.Group;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -23,7 +23,7 @@ public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 	}
 
 	@Override
-	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
+	public void render(GL2 gl, HeatMapWrapper heatMapWrapper) {
 		// int numTotalSamples = 0;
 		HashMap<Group, Boolean> selectedGroups = heatMapWrapper.getSelectedGroups();
 		AHeatMapLayout layout = heatMapWrapper.getLayout();

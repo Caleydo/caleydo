@@ -1,11 +1,14 @@
 package org.caleydo.view.filterpipeline;
 
 import gleem.linalg.Vec2f;
+
 import java.util.LinkedList;
 import java.util.List;
-import javax.media.opengl.GL;
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+
+import javax.media.opengl.GL2;
+
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
 
 public class RadialMenu
 {
@@ -38,20 +41,20 @@ public class RadialMenu
 	 * 
 	 * @param gl
 	 */
-	public void render(GL gl)
+	public void render(GL2 gl)
 	{
 		if( !visible )
 			return;
 		
 		float angle = (float)((2 * Math.PI)/entries.size());
 		
-		gl.glMatrixMode(GL.GL_MODELVIEW_MATRIX);
+		gl.glMatrixMode(GL2.GL_MODELVIEW_MATRIX);
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
 		
 		gl.glTranslatef(position.x(), position.y(), 0.95f);
 		
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 		{
 			for( int i = 0; i < entries.size(); ++i )
 			{
@@ -70,7 +73,7 @@ public class RadialMenu
 		}
 		gl.glEnd();
 		
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 		
 		for( int i = 0; i < entries.size(); ++i )
 		{
@@ -88,9 +91,9 @@ public class RadialMenu
 				entryBackground.bind();
 				TextureCoords texCoords = entryBackground.getImageTexCoords();
 				
-				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 				
-				gl.glBegin(GL.GL_QUADS);
+				gl.glBegin(GL2.GL_QUADS);
 				{
 					if( i == activeEntry )
 						gl.glColor4f(1.0f, 0.6f, 0.6f, 0.7f);
@@ -123,10 +126,10 @@ public class RadialMenu
 				texture.bind();
 				texCoords = texture.getImageTexCoords();
 				
-				gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+				gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			}
 			
-			gl.glBegin(GL.GL_QUADS);
+			gl.glBegin(GL2.GL_QUADS);
 			{
 				if( texture == null )
 				{

@@ -3,7 +3,6 @@ package org.caleydo.rcp.startup;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.util.collection.Pair;
 
 /**

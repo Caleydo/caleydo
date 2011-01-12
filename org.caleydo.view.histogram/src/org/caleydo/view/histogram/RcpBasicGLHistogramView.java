@@ -24,20 +24,14 @@ import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.caleydo.rcp.view.rcp.MinimumSizeComposite;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.dialogs.PreferencesUtil;
 
 public class RcpBasicGLHistogramView extends ARcpGLViewPart implements
 		IViewCommandHandler, IListenerOwner, IDataDomainBasedView<IDataDomain> {

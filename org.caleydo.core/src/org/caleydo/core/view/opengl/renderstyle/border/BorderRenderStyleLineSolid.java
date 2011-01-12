@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.renderstyle.border;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 public class BorderRenderStyleLineSolid
 	extends BorderRenderStyle {
@@ -8,19 +8,19 @@ public class BorderRenderStyleLineSolid
 	private float fWidth = 1.0f;
 
 	@Override
-	public void init(GL gl) {
+	public void init(GL2 gl) {
 		if (glList >= 0) {
 			gl.glDeleteLists(glList, 1);
 		}
 
 		glList = gl.glGenLists(1);
-		gl.glNewList(glList, GL.GL_COMPILE);
+		gl.glNewList(glList, GL2.GL_COMPILE);
 		draw(gl);
 		gl.glEndList();
 	}
 
 	@Override
-	public void display(GL gl) {
+	public void display(GL2 gl) {
 		if (glList < 0) {
 			draw(gl);
 		}
@@ -29,12 +29,12 @@ public class BorderRenderStyleLineSolid
 		}
 	}
 
-	private void draw(GL gl) {
+	private void draw(GL2 gl) {
 		gl.glPushMatrix();
 		gl.glLineWidth(iBorderWidth);
 
 		if (bBorderLeft) {
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2), vBorderColor.get(3));
 			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(0, fHeight, 0);
@@ -44,7 +44,7 @@ public class BorderRenderStyleLineSolid
 		gl.glTranslatef(0f, fHeight, 0f);
 
 		if (bBorderTop) {
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2), vBorderColor.get(3));
 			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(fWidth, 0, 0);
@@ -54,7 +54,7 @@ public class BorderRenderStyleLineSolid
 		gl.glTranslatef(fWidth, 0f, 0f);
 
 		if (bBorderRight) {
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2), vBorderColor.get(3));
 			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(0, -fHeight, 0);
@@ -64,7 +64,7 @@ public class BorderRenderStyleLineSolid
 		gl.glTranslatef(0f, -fHeight, 0f);
 
 		if (bBorderBottom) {
-			gl.glBegin(GL.GL_LINES);
+			gl.glBegin(GL2.GL_LINES);
 			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2), vBorderColor.get(3));
 			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(-fWidth, 0, 0);

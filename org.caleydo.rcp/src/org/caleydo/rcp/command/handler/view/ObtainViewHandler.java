@@ -52,7 +52,7 @@ public class ObtainViewHandler
 				}
 			}
 			else {
-				// TODO send non-GL views
+				// TODO send non-GL2 views
 				throw new RuntimeException("sending of non gl-views not supported yet");
 			}
 		}

@@ -1,6 +1,7 @@
 package org.caleydo.view.filterpipeline;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.rcp.toolbar.ToolBarContentFactory;
 import org.caleydo.view.filterpipeline.toolbar.FilterPipelineToolBarContent;

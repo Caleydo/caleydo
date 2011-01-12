@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.group.ContentGroupList;
@@ -114,7 +114,7 @@ public class HeatMapWrapper {
 
 	}
 
-	private GLHeatMap createHeatMap(GL gl, GLMouseListener glMouseListener) {
+	private GLHeatMap createHeatMap(GL2 gl, GLMouseListener glMouseListener) {
 
 		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 				50, 0, 50, -20, 20);
@@ -139,7 +139,7 @@ public class HeatMapWrapper {
 		return heatMap;
 	}
 
-	private void createDendrogram(GL gl, GLMouseListener glMouseListener) {
+	private void createDendrogram(GL2 gl, GLMouseListener glMouseListener) {
 
 		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 				50, 0, 50, -20, 20);
@@ -195,7 +195,7 @@ public class HeatMapWrapper {
 		activeHeatMapID = -1;
 	}
 
-	public void init(GL gl, GLMouseListener glMouseListener,
+	public void init(GL2 gl, GLMouseListener glMouseListener,
 			GLInfoAreaManager infoAreaManager) {
 
 		if (set == null)
@@ -273,7 +273,7 @@ public class HeatMapWrapper {
 		}
 	}
 
-	public void drawLocalItems(GL gl, TextureManager textureManager,
+	public void drawLocalItems(GL2 gl, TextureManager textureManager,
 			PickingManager pickingManager, GLMouseListener glMouseListener, int viewID) {
 
 		ArrayList<IHeatMapRenderCommand> renderCommands = layout
@@ -290,7 +290,7 @@ public class HeatMapWrapper {
 		// drawVisLinksBetweenOverviewAndDetail(gl);
 	}
 
-	public void drawRemoteItems(GL gl, GLMouseListener glMouseListener,
+	public void drawRemoteItems(GL2 gl, GLMouseListener glMouseListener,
 			PickingManager pickingManager) {
 
 		ArrayList<IHeatMapRenderCommand> renderCommands = layout
@@ -310,7 +310,7 @@ public class HeatMapWrapper {
 
 	}
 
-	public boolean handleDragging(GL gl, GLMouseListener glMouseListener) {
+	public boolean handleDragging(GL2 gl, GLMouseListener glMouseListener) {
 		if (overview.handleDragging(gl, glMouseListener)) {
 
 			HashMap<Group, Boolean> newGroups = overview.getSelectedGroups();

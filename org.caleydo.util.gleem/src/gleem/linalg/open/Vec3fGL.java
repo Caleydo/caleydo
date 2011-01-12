@@ -3,7 +3,7 @@ package gleem.linalg.open;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * @author Michael Kalkusch
@@ -35,19 +35,19 @@ public final class Vec3fGL extends Vec3f {
 		super(arg);
 	}
 
-	public static final void setGlVertex(final GL gl, final Vec3f vertex) {
+	public static final void setGlVertex(final GL2 gl, final Vec3f vertex) {
 		gl.glVertex3f(vertex.x(), vertex.y(), vertex.z());
 	}
 
-	public static final void setGlColor(final GL gl, final Vec3f vertex) {
+	public static final void setGlColor(final GL2 gl, final Vec3f vertex) {
 		gl.glColor3f(vertex.x(), vertex.y(), vertex.z());
 	}
 
-	public final void glColor3f(final GL gl) {
+	public final void glColor3f(final GL2 gl) {
 		gl.glColor3f(x(), y(), z());
 	}
 
-	public final void glVertex3f(final GL gl) {
+	public final void glVertex3f(final GL2 gl) {
 		gl.glVertex3f(x(), y(), z());
 	}
 

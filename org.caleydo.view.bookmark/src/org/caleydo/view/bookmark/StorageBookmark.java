@@ -1,6 +1,6 @@
 package org.caleydo.view.bookmark;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -27,7 +27,7 @@ class StorageBookmark extends ABookmark {
 	}
 
 	@Override
-	public void render(GL gl) {
+	public void render(GL2 gl) {
 		String sContent = manager.getDataDomain().getStorageLabel(id);
 
 		// ((ISetBasedDataDomain) DataDomainManager.getInstance()
