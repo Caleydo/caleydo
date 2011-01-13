@@ -30,7 +30,7 @@ public class CmdViewCreateRcpGLCanvas
 
 	@Override
 	public void doCommand() {
-		GLCapabilities glCapabilities = new GLCapabilities(GLProfile.getDefault());
+		GLCapabilities glCapabilities = new GLCapabilities(GLProfile.get(GLProfile.GL2));
 		glCapabilities.setStencilBits(1);
 
 		createdObject = new GLCaleydoCanvas(glCapabilities);

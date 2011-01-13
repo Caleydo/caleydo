@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
-import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.FPSAnimator;
 
 /**
@@ -88,10 +87,10 @@ public class ViewManager
 	public void init() {
 		fpsAnimator = new FPSAnimator(60);
 
-		displayLoopExecution = DisplayLoopExecution.get();
-		fpsAnimator.add(displayLoopExecution.getDisplayLoopCanvas());
-
-		displayLoopExecution.executeMultiple(connectedElementRepManager);
+//		displayLoopExecution = DisplayLoopExecution.get();
+//		fpsAnimator.add(displayLoopExecution.getDisplayLoopCanvas());
+//
+//		displayLoopExecution.executeMultiple(connectedElementRepManager);
 	}
 
 	@Override

@@ -178,8 +178,6 @@ public abstract class AGLView
 		GeneralManager.get().getViewGLCanvasManager().registerGLView(this);
 		parentGLCanvas = glCanvas;
 
-		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), true, true);
-
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
 			glMouseListener = parentGLCanvas.getGLMouseListener();
 		}
@@ -209,6 +207,8 @@ public abstract class AGLView
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
+
+		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), true, true);
 
 		glMouseListener.addGLCanvas(this);
 

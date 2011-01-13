@@ -17,6 +17,8 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 
+import com.jogamp.common.nio.Buffers;
+
 /**
  * <p>
  * Handles picking for instances of {@link AGLView}. When drawing objects which should later be picked, use
@@ -303,7 +305,7 @@ public class PickingManager {
 		int PICKING_BUFSIZE = 1024;
 
 		int iArPickingBuffer[] = new int[PICKING_BUFSIZE];
-		IntBuffer pickingBuffer = IntBuffer.allocate(PICKING_BUFSIZE);
+		IntBuffer pickingBuffer = Buffers.newDirectIntBuffer(PICKING_BUFSIZE);
 		int iHitCount = -1;
 		int viewport[] = new int[4];
 		gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
