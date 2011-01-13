@@ -2,7 +2,11 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry exported="true" kind="lib" path="lib/jogl/gluegen-rt.jar" sourcepath="org.caleydo.lib.joglsrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/jogl/gluegen-rt.jar" sourcepath="org.caleydo.lib.joglsrc.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib.jogl/doc/gluegen-javadoc.zip!/gluegen/javadoc"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="lib/jogl/jogl.jar" sourcepath="org.caleydo.lib.joglsrc.zip">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib.jogl/doc/jogl-javadoc.zip!/jogl/javadoc"/>
