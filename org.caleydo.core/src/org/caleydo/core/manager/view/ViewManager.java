@@ -87,10 +87,10 @@ public class ViewManager
 	public void init() {
 		fpsAnimator = new FPSAnimator(60);
 
-//		displayLoopExecution = DisplayLoopExecution.get();
-//		fpsAnimator.add(displayLoopExecution.getDisplayLoopCanvas());
-//
-//		displayLoopExecution.executeMultiple(connectedElementRepManager);
+		displayLoopExecution = DisplayLoopExecution.get();
+		fpsAnimator.add(displayLoopExecution.getDisplayLoopCanvas());
+
+		displayLoopExecution.executeMultiple(connectedElementRepManager);
 	}
 
 	@Override

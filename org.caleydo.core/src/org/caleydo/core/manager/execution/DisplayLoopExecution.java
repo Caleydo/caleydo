@@ -67,7 +67,7 @@ public class DisplayLoopExecution
 
 			GLCapabilities glCapabilities = new GLCapabilities(GLProfile.get(GLProfile.GL2));
 			glCapabilities.setStencilBits(1);
-			displayLoopExecution.displayLoopCanvas = new GLCanvas(new GLCapabilities(GLProfile.getDefault()));
+			displayLoopExecution.displayLoopCanvas = new GLCanvas(glCapabilities);
 			displayLoopExecution.displayLoopCanvas.addGLEventListener(displayLoopExecution);
 
 			displayLoopExecution.displayLoopShell =
