@@ -1,39 +1,42 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.layout.RenderParameters;
 import org.caleydo.view.heatmap.heatmap.layout.Row;
+import org.caleydo.view.heatmap.heatmap.renderer.DetailToolBar;
 
 /**
- * Render Template for HeatMap in GLBucketView
+ * Render Template for the detail view of the Matchmaker.
  * 
  * @author Alexander Lex
  * 
  */
-public class BucketTemplate extends AHeatMapTemplate {
+public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 
-	public BucketTemplate(GLHeatMap heatMap) {
+	private boolean isLeft = true;
+
+	public MatchmakerDetailTemplate(GLHeatMap heatMap, boolean isLeft) {
 		super(heatMap);
-		minSelectedFieldHeight = 0.5f;
-		fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR * 1.8f;
+		this.isLeft = isLeft;
+		fontScaling = 0.03f / 1.2f;
 
 	}
 
 	@Override
 	public void setParameters() {
 		contentCaptionRenderer.setFontScaling(fontScaling);
+		minSelectedFieldHeight = HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT;
 		rendererParameters.clear();
 		verticalSpaceAllocations.clear();
 		Row hmRow = new Row();
 		// hmRow.grabY = true;
 		// heat map
-		RenderParameters hm = new RenderParameters();
-		hm.setGrabX(true);
-		hm.setSizeY(1f);
-		hm.setRenderer(heatMapRenderer);
-		rendererParameters.add(hm);
-		heatMapLayout = hm;
+		heatMapLayout = new RenderParameters();
+		heatMapLayout.setGrabX(true);
+		heatMapLayout.setSizeY(1f);
+		heatMapLayout.setRenderer(heatMapRenderer);
+		rendererParameters.add(heatMapLayout);
 
 		RenderParameters contentSelectionLayout = new RenderParameters();
 		contentSelectionLayout.setIsBackground(true);
@@ -50,7 +53,8 @@ public class BucketTemplate extends AHeatMapTemplate {
 		rendererParameters.add(storageSelectionLayout);
 
 		boolean renderCaptions = false;
-		if (heatMap.isShowCaptions())
+		if (heatMap.isShowCaptions()
+				|| heatMap.isActive())
 			renderCaptions = true;
 		RenderParameters caption = null;
 		RenderParameters spacing = null;
@@ -59,7 +63,7 @@ public class BucketTemplate extends AHeatMapTemplate {
 			// content cage
 
 			cage = new RenderParameters();
-			cage.setSizeX(0.1f);
+			cage.setSizeX(0.3f);
 			cage.setSizeY(1f);
 			cage.setIsBackground(true);
 
@@ -71,25 +75,51 @@ public class BucketTemplate extends AHeatMapTemplate {
 
 			// content captions
 			caption = new RenderParameters();
-			caption.setSizeX(0.09f);
+			caption.setSizeX(0.29f);
 			caption.setSizeY(1f);
+
 			caption.setRenderer(contentCaptionRenderer);
 
 			rendererParameters.add(caption);
 		}
 
 		hmRow.appendElement(contentSelectionLayout);
+		if (isLeft) {
+			if (renderCaptions) {
+				hmRow.appendElement(cage);
+				hmRow.appendElement(spacing);
+				hmRow.appendElement(caption);
+			}
+			hmRow.appendElement(storageSelectionLayout);
+			hmRow.appendElement(heatMapLayout);
 
-		hmRow.appendElement(storageSelectionLayout);
-		hmRow.appendElement(hm);
+		} else {
+			hmRow.appendElement(storageSelectionLayout);
+			hmRow.appendElement(heatMapLayout);
 
-		if (renderCaptions) {
-			hmRow.appendElement(cage);
-			hmRow.appendElement(spacing);
-			hmRow.appendElement(caption);
+			if (renderCaptions) {
+				hmRow.appendElement(cage);
+				hmRow.appendElement(spacing);
+				hmRow.appendElement(caption);
+			}
 		}
 
-		addRenderElement(hmRow);
+		if (isActive) {
+			RenderParameters toolBar;
+
+			toolBar = new RenderParameters();
+			toolBar.setSizeX(1f);
+			toolBar.setSizeY(0.1f);
+
+			toolBar.setScaleY(false);
+
+			toolBar.setRenderer(new DetailToolBar(heatMap));
+
+			rendererParameters.add(toolBar);
+			addRenderElement(hmRow);
+			addRenderElement(toolBar);
+		} else
+			addRenderElement(hmRow);
 
 	}
 

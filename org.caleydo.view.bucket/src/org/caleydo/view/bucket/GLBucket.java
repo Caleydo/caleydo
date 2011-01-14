@@ -2561,7 +2561,8 @@ public class GLBucket extends AGLView implements
 		}
 
 		if (glView instanceof GLHeatMap) {
-			((GLHeatMap) glView).setRenderTemplate(new BucketTemplate());
+			GLHeatMap heatMap = ((GLHeatMap) glView);
+			heatMap.setRenderTemplate(new BucketTemplate(heatMap));
 		}
 
 		if (glView instanceof GLPathway) {

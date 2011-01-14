@@ -1,58 +1,46 @@
-package org.caleydo.view.heatmap.heatmap.template;
+package org.caleydo.view.heatmap.heatmap.layout;
 
 import java.util.ArrayList;
 
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
-import org.caleydo.view.heatmap.heatmap.renderer.CaptionCageRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.ContentCaptionRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.ContentSelectionRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.StorageCaptionRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.StorageSelectionRenderer;
 
 public abstract class ATemplate {
 
 	// super(heatMap);
 	// initRenderers();
 
-	ArrayList<RenderParameters> verticalSpaceAllocations;
+	public static final float SPACING = 0.01f;
+	protected ArrayList<RenderParameters> rendererParameters;
 
-	protected TemplateRenderer templateRenderer;
+	protected ArrayList<RenderParameters> verticalSpaceAllocations;
+
+	// protected TemplateRenderer templateRenderer;
 
 	private float yOverhead;
 
-	protected float minSelectedFieldHeight = 0.1f;
 	protected float fontScaling = HeatMapRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
 	protected boolean isActive;
 
-	protected HeatMapRenderer heatMapRenderer;
-	protected ContentCaptionRenderer contentCaptionRenderer;
-	protected StorageCaptionRenderer storageCaptionRenderer;
-	protected ContentSelectionRenderer contentSelectionRenderer;
-	protected StorageSelectionRenderer storageSelectionRenderer;
-	protected CaptionCageRenderer captionCageRenderer;
-
 	public ATemplate() {
-		verticalSpaceAllocations = new ArrayList<RenderParameters>();
+		rendererParameters = new ArrayList<RenderParameters>(15);
+		verticalSpaceAllocations = new ArrayList<RenderParameters>(15);
 		// horizontalElements = new ArrayList<RenderParameters>();
+		// this.templateRenderer = templateRenderer;
 	}
 
-	void setTemplateRenderer(TemplateRenderer templateRenderer) {
-		this.templateRenderer = templateRenderer;
-		heatMapRenderer = new HeatMapRenderer(templateRenderer.heatMap);
-		contentCaptionRenderer = new ContentCaptionRenderer(templateRenderer.heatMap);
-		storageCaptionRenderer = new StorageCaptionRenderer(templateRenderer.heatMap);
-		contentSelectionRenderer = new ContentSelectionRenderer(templateRenderer.heatMap);
-		storageSelectionRenderer = new StorageSelectionRenderer(templateRenderer.heatMap);
-		captionCageRenderer = new CaptionCageRenderer(
-				templateRenderer.heatMap);
-		
+	public ArrayList<RenderParameters> getRenderParameters() {
+		return rendererParameters;
 	}
 
-	abstract void setParameters();
+	// public void setTemplateRenderer(TemplateRenderer templateRenderer) {
+	// this.templateRenderer = templateRenderer;
+	//
+	// }
 
-	void calculateScales(float totalWidth, float totalHeight) {
+	abstract public void setParameters();
+
+	public void calculateScales(float totalWidth, float totalHeight) {
 
 		for (RenderParameters element : verticalSpaceAllocations) {
 			if (!element.scaleY)
@@ -119,14 +107,13 @@ public abstract class ATemplate {
 	 * 
 	 * @param element
 	 */
-	void add(RenderParameters element) {
+	public void addRenderElement(RenderParameters element) {
 		verticalSpaceAllocations.add(element);
 	}
 
 	public void recalculateSpacings() {
 		verticalSpaceAllocations.clear();
-		if (templateRenderer != null)
-			setParameters();
+		setParameters();
 	}
 
 	public float getYOverhead() {
@@ -140,11 +127,7 @@ public abstract class ATemplate {
 		}
 	}
 
-	public float getMinSelectedFieldHeight() {
-		return minSelectedFieldHeight;
-	}
-	
-	public float getFontScalingFactor(){
+	public float getFontScalingFactor() {
 		return fontScaling;
 	}
 }

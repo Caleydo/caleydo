@@ -23,9 +23,14 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
 import org.caleydo.view.bookmark.contextmenu.BookmarkContextMenuItemContainer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * <p>
@@ -62,16 +67,18 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	IDCategory category;
 	/** The type the container uses to internally store the data */
 	IDType internalIDType;
-	/** The dimensions (height, width, position, etc.) of the whole container */
-	Dimensions dimensions;
+	/**
+	 * The containerDimensions (height, width, position, etc.) of the whole
+	 * container
+	 */
+	Dimensions containerDimensions;
 	/** The name displayed as the heading in the sidebar */
 	String categoryName;
 	/**
 	 * The list of bookmarks - each bookmark is unique, the ordering is relevant
 	 */
 	UniqueList<ABookmark> bookmarkItems;
-	/** Reference to the text renderer created by {@link GLBookmarkView} */
-	CaleydoTextRenderer textRenderer;
+
 	/**
 	 * Reference to the internal picking id manger created by
 	 * {@link GLBookmarkView}
@@ -112,18 +119,17 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 		this.category = category;
 		this.categoryName = category.getCategoryName();
 		this.pickingIDManager = manager.getPickingIDManager();
-		this.textRenderer = manager.getTextRenderer();
-		dimensions = new Dimensions();
+		containerDimensions = new Dimensions();
 	}
 
 	/**
-	 * Returns the dimensions {@link GLBookmarkView} needs to place the
+	 * Returns the containerDimensions {@link GLBookmarkView} needs to place the
 	 * containers
 	 * 
 	 * @return
 	 */
 	Dimensions getDimensions() {
-		return dimensions;
+		return containerDimensions;
 	}
 
 	/**
@@ -142,23 +148,23 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 */
 	void render(GL2 gl) {
 
-		float yOrigin = dimensions.getYOrigin();
-		dimensions.setHeight(0);
+		float yOrigin = containerDimensions.getYOrigin();
 
-		dimensions.increaseHeight(BookmarkRenderStyle.CONTAINER_HEADING_SIZE);
 		yOrigin -= BookmarkRenderStyle.CONTAINER_HEADING_SIZE;
 
 		// render heading
 
-		RenderingHelpers.renderText(gl, textRenderer, categoryName,
-				dimensions.getXOrigin() + BookmarkRenderStyle.SIDE_SPACING, yOrigin,
-				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
+		RenderingHelpers.renderText(gl, manager.getTextRenderer(), categoryName,
+				containerDimensions.getXOrigin() + BookmarkRenderStyle.SIDE_SPACING,
+				yOrigin, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
 		for (ABookmark item : bookmarkItems) {
 
 			item.getDimensions().setOrigins(BookmarkRenderStyle.SIDE_SPACING, yOrigin);
-			item.getDimensions().setWidth(
-					dimensions.getWidth() - 2 * BookmarkRenderStyle.SIDE_SPACING);
+			item.getDimensions()
+					.setWidth(
+							containerDimensions.getWidth() - 2
+									* BookmarkRenderStyle.SIDE_SPACING);
 			yOrigin -= item.getDimensions().getHeight();
 
 			float[] highlightColor = null;
@@ -191,10 +197,11 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 				gl.glEnd();
 			}
 			gl.glPopName();
-			dimensions.increaseHeight(item.getDimensions().getHeight());
+			containerDimensions.increaseHeight(item.getDimensions().getHeight());
 		}
 
-		// GLHelperFunctions.drawPointAt(gl, 0, dimensions.getHeight(), 0);
+		// GLHelperFunctions.drawPointAt(gl, 0, containerDimensions.getHeight(),
+		// 0);
 	}
 
 	/**
@@ -208,7 +215,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 *            Internal to the specific BookmarkContainer
 	 */
 	void handleEvents(EPickingType ePickingType, EPickingMode pickingMode,
-			Integer iExternalID, Pick pick) {
+			Integer iExternalID, final Pick pick) {
 		SelectionType selectionType;
 		switch (ePickingType) {
 
@@ -217,9 +224,40 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 			switch (pickingMode) {
 			case CLICKED:
 				selectionType = SelectionType.SELECTION;
+
+				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						manager.getParentGLCanvas().getParentComposite()
+								.notifyListeners(SWT.MouseDown, new Event());
+
+						Menu menu = new Menu(manager.getParentGLCanvas()
+								.getParentComposite().getShell(), SWT.POP_UP);
+						Point point = manager.getParentGLCanvas().getParentComposite()
+								.toDisplay(0, 0);
+						System.out.println(point);
+						menu.setLocation(point.x + pick.getPickedPoint().x, point.y
+								+ pick.getPickedPoint().y);
+						MenuItem item = new MenuItem(menu, SWT.PUSH);
+						item.setText("Popup");
+						item = new MenuItem(menu, SWT.PUSH);
+						item.setText("Popup1");
+						item = new MenuItem(menu, SWT.PUSH);
+						item.setText("Popup2");
+						item = new MenuItem(menu, SWT.PUSH);
+						item.setText("Popup3");
+						item = new MenuItem(menu, SWT.PUSH);
+						item.setText("Popup4");
+						item = new MenuItem(menu, SWT.PUSH);
+						item.setText("Popup5");
+						// manager.getParentGLCanvas().getParentComposite().setMenu(menu);
+						menu.setVisible(true);
+					}
+				});
 				break;
 			case MOUSE_OVER:
 				selectionType = SelectionType.MOUSE_OVER;
+
 				break;
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
@@ -239,6 +277,10 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 
 			default:
 				return;
+			}
+
+			if (selectionType == SelectionType.SELECTION) {
+
 			}
 			selectionManager.clearSelection(selectionType);
 			selectionManager.addToType(selectionType, iExternalID);
@@ -303,6 +345,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 			}
 
 		}
+		updateContainerSize();
 	}
 
 	/**
@@ -323,5 +366,16 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 */
 	void handleSelectionCommand(SelectionCommand selectionCommand) {
 		selectionManager.executeSelectionCommand(selectionCommand);
+	}
+
+	void updateContainerSize() {
+		// containerDimensions.setHeight(0.5f);
+		containerDimensions.setHeight(0);
+		containerDimensions.increaseHeight(BookmarkRenderStyle.CONTAINER_HEADING_SIZE);
+
+		for (ABookmark bookmark : bookmarkItems) {
+			containerDimensions.increaseHeight(bookmark.getDimensions().getHeight()*2);
+		}
+
 	}
 }

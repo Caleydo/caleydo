@@ -49,7 +49,8 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageCo
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
-import org.caleydo.view.heatmap.heatmap.template.ATemplate;
+import org.caleydo.view.heatmap.heatmap.layout.ATemplate;
+import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 import org.caleydo.view.heatmap.heatmap.template.DefaultTemplate;
 import org.caleydo.view.heatmap.heatmap.template.TemplateRenderer;
 import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
@@ -81,8 +82,7 @@ public class GLHeatMap extends AStorageBasedView {
 	int numSentClearSelectionEvents = 0;
 
 	private TemplateRenderer templateRenderer;
-	private ATemplate template;
-
+	private AHeatMapTemplate template;
 	/** hide elements with the state {@link #SELECTION_HIDDEN} if this is true */
 	private boolean hideElements = true;
 	/** try to show captions, if spacing allows it */
@@ -125,9 +125,9 @@ public class GLHeatMap extends AStorageBasedView {
 	public void init(GL2 gl) {
 		super.renderStyle = renderStyle;
 
-		templateRenderer = new TemplateRenderer(this);
+		templateRenderer = new TemplateRenderer(this.viewFrustum);
 		if (template == null)
-			template = new DefaultTemplate();
+			template = new DefaultTemplate(this);
 
 		templateRenderer.setTemplate(template);
 	}
@@ -632,7 +632,7 @@ public class GLHeatMap extends AStorageBasedView {
 			if (contentSelectionManager.checkStatus(SELECTION_HIDDEN, contentID))
 				return null;
 		}
-		return templateRenderer.getYCoordinateByContentIndex(contentIndex);
+		return template.getYCoordinateByContentIndex(contentIndex);
 
 	}
 
@@ -643,7 +643,7 @@ public class GLHeatMap extends AStorageBasedView {
 	 * @return
 	 */
 	public Float getXCoordinateByStorageIndex(int storageIndex) {
-		return templateRenderer.getXCoordinateByStorageIndex(storageIndex);
+		return template.getXCoordinateByStorageIndex(storageIndex);
 	}
 
 	@Override
@@ -754,7 +754,7 @@ public class GLHeatMap extends AStorageBasedView {
 		return pickingManager;
 	}
 
-	public void setRenderTemplate(ATemplate template) {
+	public void setRenderTemplate(AHeatMapTemplate template) {
 		this.template = template;
 	}
 
@@ -834,11 +834,11 @@ public class GLHeatMap extends AStorageBasedView {
 	 * @return the height of the element
 	 */
 	public float getFieldHeight(int contentID) {
-		return templateRenderer.getElementHeight(contentID);
+		return template.getElementHeight(contentID);
 	}
 
 	public float getFieldWidth(int storageID) {
-		return templateRenderer.getElementWidth(storageID);
+		return template.getElementWidth(storageID);
 	}
 
 	/**

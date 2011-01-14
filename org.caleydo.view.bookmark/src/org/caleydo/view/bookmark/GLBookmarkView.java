@@ -32,6 +32,12 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 
 /**
  * The list heat map that shows elements on the right of a view that have been
@@ -222,7 +228,7 @@ public class GLBookmarkView extends AGLView implements
 		gl.glEndList();
 
 		if (contentChanged) {
-			float height = 20; // TODO determine dynamically
+			float height = 40; // TODO determine dynamically
 			float width = 8; // TODO determine dynamically
 			int minViewportHeight = (int) (parentGLCanvas.getHeight()
 					/ viewFrustum.getHeight() * height) + 10;
@@ -398,5 +404,25 @@ public class GLBookmarkView extends AGLView implements
 		hashCategoryToBookmarkContainer.put(dataDomain.getStorageIDCategory(),
 				experimentContainer);
 		bookmarkContainers.add(experimentContainer);
+	}
+	
+	public Menu createEditPopup()
+	{
+		Composite comp = getParentGLCanvas().getParentComposite();
+		
+		MenuManager menu = new MenuManager();
+		Menu quickMenu = menu.createContextMenu(comp);
+		Point location = new Point(100, 100);
+		final MenuItem item = new MenuItem(quickMenu, SWT.PUSH);
+		quickMenu.setLocation(location);
+		quickMenu.setVisible(true);
+		return quickMenu;
+
+
+//		final Menu contextMenu  = new Menu(getParentGLCanvas().getParentComposite());
+		
+//		item.setText("Text");
+//		return contextMenu;
+		
 	}
 }

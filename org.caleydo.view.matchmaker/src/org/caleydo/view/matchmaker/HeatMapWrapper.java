@@ -40,7 +40,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
+import org.caleydo.view.heatmap.heatmap.template.MatchmakerDetailTemplate;
 import org.caleydo.view.matchmaker.layout.AHeatMapLayout;
 import org.caleydo.view.matchmaker.layout.HeatMapLayoutDetailViewRight;
 import org.caleydo.view.matchmaker.rendercommand.IHeatMapRenderCommand;
@@ -125,9 +125,9 @@ public class HeatMapWrapper {
 		heatMap.setContentVAType(GLHeatMap.CONTENT_EMBEDDED_VA);
 
 		if (layout instanceof HeatMapLayoutDetailViewRight)
-			heatMap.setRenderTemplate(new ComparerDetailTemplate(false));
+			heatMap.setRenderTemplate(new MatchmakerDetailTemplate(heatMap, false));
 		else
-			heatMap.setRenderTemplate(new ComparerDetailTemplate(true));
+			heatMap.setRenderTemplate(new MatchmakerDetailTemplate(heatMap, true));
 
 		heatMap.setSet(set);
 		heatMap.initData();

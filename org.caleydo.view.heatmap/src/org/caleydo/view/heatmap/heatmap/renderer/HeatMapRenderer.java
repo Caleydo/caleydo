@@ -6,12 +6,17 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.layout.ATemplate;
+import org.caleydo.view.heatmap.heatmap.layout.RenderParameters;
+import org.caleydo.view.heatmap.heatmap.renderer.spacing.ContentSpacing;
+import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 
 public class HeatMapRenderer extends AContentRenderer {
 
@@ -21,6 +26,29 @@ public class HeatMapRenderer extends AContentRenderer {
 		super(heatMap);
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
+	}
+
+	@Override
+	public void updateSpacing(ATemplate template, RenderParameters parameters) {
+		
+		
+			AHeatMapTemplate heatMapTemplate = (AHeatMapTemplate) template;
+			int contentElements = heatMap.getContentVA().size();
+
+			ContentSelectionManager selectionManager = heatMap
+					.getContentSelectionManager();
+			if (heatMap.isHideElements()) {
+
+				contentElements -= selectionManager
+						.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
+			}
+
+			contentSpacing.calculateContentSpacing(contentElements, heatMap
+					.getStorageVA().size(), parameters.getSizeScaledX(), parameters
+					.getSizeScaledY(), heatMapTemplate.getMinSelectedFieldHeight());
+			heatMapTemplate.setContentSpacing(contentSpacing);
+		
+		// ((AContentRenderer) renderer).setContentSpacing(contentSpacing);
 	}
 
 	@Override

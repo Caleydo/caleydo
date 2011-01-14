@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
+import org.caleydo.view.heatmap.heatmap.template.MatchmakerDetailTemplate;
 import org.caleydo.view.matchmaker.rendercommand.ERenderCommandType;
 import org.caleydo.view.matchmaker.rendercommand.RenderCommandFactory;
 
@@ -146,7 +146,7 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 	public void createDetailHeatMapTemplate(GLHeatMap heatMap) {
 	}
 
-	public ComparerDetailTemplate getHeatMapTemplate() {
+	public MatchmakerDetailTemplate getHeatMapTemplate() {
 		return null;
 	}
 

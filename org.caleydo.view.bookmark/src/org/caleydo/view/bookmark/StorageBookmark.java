@@ -23,7 +23,7 @@ class StorageBookmark extends ABookmark {
 			Integer experimentIndex, CaleydoTextRenderer textRenderer) {
 		super(manager, idType, textRenderer);
 		this.id = experimentIndex;
-		dimensions.setHeight(0.1f);
+		bookmarkDimensions.setHeight(0.1f);
 	}
 
 	@Override
@@ -36,8 +36,8 @@ class StorageBookmark extends ABookmark {
 		// GeneralManager.get().getIDMappingManager().getID(EIDType.DAVID,
 		// EIDType.GENE_SYMBOL, id);
 		//
-		float yOrigin = dimensions.getYOrigin() - 0.08f;
-		RenderingHelpers.renderText(gl, textRenderer, sContent, dimensions.getXOrigin()
+		float yOrigin = bookmarkDimensions.getYOrigin() - 0.08f;
+		RenderingHelpers.renderText(gl, textRenderer, sContent, bookmarkDimensions.getXOrigin()
 				+ BookmarkRenderStyle.SIDE_SPACING * 2, yOrigin,
 				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 

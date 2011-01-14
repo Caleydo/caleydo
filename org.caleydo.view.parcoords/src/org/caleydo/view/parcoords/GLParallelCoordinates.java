@@ -405,7 +405,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		gl.glColor3f(0, 0, 1);
 //		int[] indices = { 0, 1, 1, 2, 2, 3, 3};
-		int size = 10000;
+		int size = 100000;
 		int[] indices = new int[size];
 		for(int count = 0; count < size-1;)
 		{

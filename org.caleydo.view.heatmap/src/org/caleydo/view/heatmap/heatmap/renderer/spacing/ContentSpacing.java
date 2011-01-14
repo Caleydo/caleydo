@@ -18,6 +18,7 @@ public class ContentSpacing {
 
 	private boolean useFishEye = false;
 
+	/** yDistances of heat map elements are initialized during the first rendering step of the heat map */
 	private ArrayList<Float> yDistances;
 	private GLHeatMap heatMap;
 

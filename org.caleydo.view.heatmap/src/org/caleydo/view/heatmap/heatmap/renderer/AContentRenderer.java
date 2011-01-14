@@ -27,7 +27,7 @@ public abstract class AContentRenderer extends ARenderer {
 	public void setContentSpacing(ContentSpacing contentSpacing) {
 		this.contentSpacing = contentSpacing;
 		// fieldWidth = contentSpacing.getFieldWidth();
-		// selectedFieldHeight = contentSpacing.getSelectedFieldHeight();
+		// selectedFieldHeight = scontentSpacing.getSelectedFieldHeight();
 		// normalFieldHeight = contentSpacing.getNormalFieldHeight();
 	}
 

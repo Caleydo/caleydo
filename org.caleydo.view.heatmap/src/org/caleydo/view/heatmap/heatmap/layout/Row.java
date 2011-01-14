@@ -1,4 +1,4 @@
-package org.caleydo.view.heatmap.heatmap.template;
+package org.caleydo.view.heatmap.heatmap.layout;
 
 import java.util.ArrayList;
 import java.util.Iterator;

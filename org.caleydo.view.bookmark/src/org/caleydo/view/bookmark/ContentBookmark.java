@@ -23,7 +23,7 @@ class ContentBookmark extends ABookmark {
 			CaleydoTextRenderer textRenderer) {
 		super(manager, idType, textRenderer);
 		this.id = id;
-		dimensions.setHeight(0.1f);
+		
 	}
 
 	@Override
@@ -32,11 +32,11 @@ class ContentBookmark extends ABookmark {
 		// manager.getDataDomain().getPrimaryContentMappingType(),
 		// EIDType.GENE_SYMBOL, id);
 		//
-		float yOrigin = dimensions.getYOrigin() - 0.08f;
+		float yOrigin = bookmarkDimensions.getYOrigin() - 0.08f;
 		String sContent = manager.getDataDomain().getContentLabel(idType, id);
-		RenderingHelpers.renderText(gl, textRenderer, sContent, dimensions.getXOrigin()
-				+ BookmarkRenderStyle.SIDE_SPACING, yOrigin,
-				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
+		RenderingHelpers.renderText(gl, textRenderer, sContent,
+				bookmarkDimensions.getXOrigin() + BookmarkRenderStyle.SIDE_SPACING,
+				yOrigin, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
 	}
 	// fAlXDistances.clear();

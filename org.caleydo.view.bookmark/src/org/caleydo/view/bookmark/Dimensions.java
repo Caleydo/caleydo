@@ -1,7 +1,7 @@
 package org.caleydo.view.bookmark;
 
 /**
- * The dimensions class holds the geometric properties of an object, such as
+ * The containerDimensions class holds the geometric properties of an object, such as
  * point of origin and widht and heigt. xOrigin and yOrigin are considered to be
  * in the top left corner, since elements using this are typically rendered from
  * top to bottom.

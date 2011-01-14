@@ -563,8 +563,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			}
 			FbTemp.rewind();
 
-			TextureData texData = new TextureData(GLProfile.getDefault(), GL2.GL_RGBA /* internalFormat */,
-					iTextureWidth /* height */, iTextureHeight /* width */, 0 /* border */,
+			TextureData texData = new TextureData(GLProfile.getDefault(),
+					GL2.GL_RGBA /* internalFormat */, iTextureWidth /* height */,
+					iTextureHeight /* width */, 0 /* border */,
 					GL2.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
 					false /* mipmap */, false /* dataIsCompressed */,
 					false /* mustFlipVertically */, FbTemp, null);
@@ -632,8 +633,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				if (iCount >= iAlNumberSamples.get(iTextureCounter)) {
 					FbTemp[iTextureCounter].rewind();
 
-					TextureData texData = new TextureData(GLProfile.getDefault(), GL2.GL_RGBA /* internalFormat */,
-							iTextureWidth /* height */,
+					TextureData texData = new TextureData(GLProfile.getDefault(),
+							GL2.GL_RGBA /* internalFormat */, iTextureWidth /* height */,
 							iAlNumberSamples.get(iTextureCounter) /* width */,
 							0 /* border */, GL2.GL_RGBA /* pixelFormat */,
 							GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
@@ -669,7 +670,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		glHeatMapView.setRemoteRenderingGLView(this);
 		glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
-		renderTemplate = new HierarchicalHeatMapTemplate();
+
+		renderTemplate = new HierarchicalHeatMapTemplate(glHeatMapView);
 		glHeatMapView.setRenderTemplate(renderTemplate);
 		renderTemplate.setBottomSpacing(0.6f);
 		heatMapRemoteElement.setGLView(glHeatMapView);

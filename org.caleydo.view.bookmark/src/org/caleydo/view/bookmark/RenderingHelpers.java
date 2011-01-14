@@ -20,6 +20,7 @@ class RenderingHelpers {
 		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		textRenderer.renderText(gl, sLabel, fXOrigin, fYOrigin, 0, fFontScaling, BookmarkRenderStyle.TEXT_MIN_SIZE);
 		gl.glPopAttrib();
+			
 	}
 
 }
