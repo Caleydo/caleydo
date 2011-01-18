@@ -3,6 +3,7 @@ package org.caleydo.view.bookmark;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.util.collection.UniqueList;
+import org.caleydo.core.view.opengl.layout.Row;
 
 /**
  * A concrete implementation of ABookmarkContainer for the category
@@ -34,6 +35,7 @@ class ExperimentBookmarkContainer extends ABookmarkContainer<StorageSelectionMan
 			StorageBookmark bookmark = new StorageBookmark(manager, internalIDType, id,
 					manager.getTextRenderer());
 			bookmarkItems.add(bookmark);
+			layoutRow.appendElement(bookmark.getElementLayout());
 			// selectionManager.add(id);
 		}
 		updateContainerSize();

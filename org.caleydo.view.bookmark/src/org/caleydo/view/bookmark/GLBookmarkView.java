@@ -28,6 +28,8 @@ import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.TemplateRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -72,6 +74,12 @@ public class GLBookmarkView extends AGLView implements
 	protected ASetBasedDataDomain dataDomain;
 
 	private boolean contentChanged = true;
+
+	/** The class responsible for rendering the template */
+	private TemplateRenderer templateRenderer;
+
+	/** The render template */
+	BookmarkTemplate bookmarkTemplate;
 
 	class PickingIDManager {
 		/**
@@ -118,6 +126,10 @@ public class GLBookmarkView extends AGLView implements
 		hashCategoryToBookmarkContainer = new HashMap<IDCategory, ABookmarkContainer<?>>();
 
 		pickingIDManager = new PickingIDManager();
+
+		templateRenderer = new TemplateRenderer(viewFrustum);
+		bookmarkTemplate = new BookmarkTemplate();
+		templateRenderer.setTemplate(bookmarkTemplate);
 	}
 
 	@Override
@@ -187,7 +199,7 @@ public class GLBookmarkView extends AGLView implements
 
 		display(gl);
 		checkForHits(gl);
-		//pickingIDManager.reset();
+		// pickingIDManager.reset();
 	}
 
 	@Override
@@ -201,7 +213,7 @@ public class GLBookmarkView extends AGLView implements
 
 		display(gl);
 		checkForHits(gl);
-		//pickingIDManager.reset();
+		// pickingIDManager.reset();
 	}
 
 	/**
@@ -216,35 +228,39 @@ public class GLBookmarkView extends AGLView implements
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
-
-		float currentHeight = viewFrustum.getHeight() - BookmarkRenderStyle.TOP_SPACING;
-		for (ABookmarkContainer<?> container : bookmarkContainers) {
-			container.getDimensions().setOrigins(0.0f, currentHeight);
-			container.getDimensions().setWidth(viewFrustum.getWidth());
-			currentHeight -= container.getDimensions().getHeight();
-			container.render(gl);
-		}
-
+		templateRenderer.render(gl);
 		gl.glEndList();
 
-		if (contentChanged) {
-			float height = 40; // TODO determine dynamically
-			float width = 8; // TODO determine dynamically
-			int minViewportHeight = (int) (parentGLCanvas.getHeight()
-					/ viewFrustum.getHeight() * height) + 10;
-			int minViewportWidth = (int) (parentGLCanvas.getWidth()
-					/ viewFrustum.getWidth() * width) + 10;
-			renderStyle.setMinViewDimensions(minViewportWidth, minViewportHeight, this);
-			if (parentGLCanvas.getHeight() <= 0) {
-				// Draw again in next frame where the viewport size is hopefully
-				// correct
-				setDisplayListDirty();
-			} else {
-				// at the moment we do not consider a content change and make
-				// the size adaption only once
-				contentChanged = false;
-			}
-		}
+		// float currentHeight = viewFrustum.getHeight() -
+		// BookmarkRenderStyle.TOP_SPACING;
+		// for (ABookmarkContainer<?> container : bookmarkContainers) {
+		// container.getDimensions().setOrigins(0.0f, currentHeight);
+		// container.getDimensions().setWidth(viewFrustum.getWidth());
+		// currentHeight -= container.getDimensions().getHeight();
+		// container.render(gl);
+		// }
+		//
+		// gl.glEndList();
+		//
+		// if (contentChanged) {
+		// float height = 40; // TODO determine dynamically
+		// float width = 8; // TODO determine dynamically
+		// int minViewportHeight = (int) (parentGLCanvas.getHeight()
+		// / viewFrustum.getHeight() * height) + 10;
+		// int minViewportWidth = (int) (parentGLCanvas.getWidth()
+		// / viewFrustum.getWidth() * width) + 10;
+		// renderStyle.setMinViewDimensions(minViewportWidth, minViewportHeight,
+		// this);
+		// if (parentGLCanvas.getHeight() <= 0) {
+		// // Draw again in next frame where the viewport size is hopefully
+		// // correct
+		// setDisplayListDirty();
+		// } else {
+		// // at the moment we do not consider a content change and make
+		// // the size adaption only once
+		// contentChanged = false;
+		// }
+		// }
 	}
 
 	@Override
@@ -395,21 +411,23 @@ public class GLBookmarkView extends AGLView implements
 		ContentBookmarkContainer geneContainer = new ContentBookmarkContainer(this,
 				dataDomain.getContentIDCategory(),
 				dataDomain.getPrimaryContentMappingType());
+		bookmarkTemplate.addRenderElement(geneContainer.getElementLayout());
+
 		hashCategoryToBookmarkContainer.put(dataDomain.getContentIDCategory(),
 				geneContainer);
 		bookmarkContainers.add(geneContainer);
 
 		ExperimentBookmarkContainer experimentContainer = new ExperimentBookmarkContainer(
 				this);
+		bookmarkTemplate.addRenderElement(experimentContainer.getElementLayout());
 		hashCategoryToBookmarkContainer.put(dataDomain.getStorageIDCategory(),
 				experimentContainer);
 		bookmarkContainers.add(experimentContainer);
 	}
-	
-	public Menu createEditPopup()
-	{
+
+	public Menu createEditPopup() {
 		Composite comp = getParentGLCanvas().getParentComposite();
-		
+
 		MenuManager menu = new MenuManager();
 		Menu quickMenu = menu.createContextMenu(comp);
 		Point location = new Point(100, 100);
@@ -418,11 +436,11 @@ public class GLBookmarkView extends AGLView implements
 		quickMenu.setVisible(true);
 		return quickMenu;
 
+		// final Menu contextMenu = new
+		// Menu(getParentGLCanvas().getParentComposite());
 
-//		final Menu contextMenu  = new Menu(getParentGLCanvas().getParentComposite());
-		
-//		item.setText("Text");
-//		return contextMenu;
-		
+		// item.setText("Text");
+		// return contextMenu;
+
 	}
 }

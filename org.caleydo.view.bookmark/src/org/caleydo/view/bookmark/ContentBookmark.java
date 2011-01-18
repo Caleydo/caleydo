@@ -3,6 +3,7 @@ package org.caleydo.view.bookmark;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.view.opengl.layout.LayoutParameters;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
@@ -12,6 +13,8 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * @author Alexander Lex
  */
 class ContentBookmark extends ABookmark {
+
+	private LayoutParameters layoutParameters;
 
 	/**
 	 * Constructor taking a textRenderer
@@ -23,7 +26,19 @@ class ContentBookmark extends ABookmark {
 			CaleydoTextRenderer textRenderer) {
 		super(manager, idType, textRenderer);
 		this.id = id;
-		
+		// float height = (float) (textRenderer.getBounds("Text").getHeight())
+		// * GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
+
+		layoutParameters = new LayoutParameters();
+		layoutParameters.setSizeX(1);
+		layoutParameters.setSizeY(0.2f);
+		layoutParameters.setRenderer(this);
+
+	}
+
+	@Override
+	public LayoutParameters getElementLayout() {
+		return layoutParameters;
 	}
 
 	@Override
@@ -32,11 +47,15 @@ class ContentBookmark extends ABookmark {
 		// manager.getDataDomain().getPrimaryContentMappingType(),
 		// EIDType.GENE_SYMBOL, id);
 		//
-		float yOrigin = bookmarkDimensions.getYOrigin() - 0.08f;
+		// float yOrigin = bookmarkDimensions.getYOrigin() - 0.08f;
 		String sContent = manager.getDataDomain().getContentLabel(idType, id);
+		// RenderingHelpers.renderText(gl, textRenderer, sContent,
+		// bookmarkDimensions.getXOrigin() + BookmarkRenderStyle.SIDE_SPACING,
+		// yOrigin, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
+
 		RenderingHelpers.renderText(gl, textRenderer, sContent,
-				bookmarkDimensions.getXOrigin() + BookmarkRenderStyle.SIDE_SPACING,
-				yOrigin, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
+				0 + BookmarkRenderStyle.SIDE_SPACING, 0,
+				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
 	}
 	// fAlXDistances.clear();

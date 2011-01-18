@@ -21,6 +21,9 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.collection.UniqueList;
+import org.caleydo.core.view.opengl.layout.ILayoutedElement;
+import org.caleydo.core.view.opengl.layout.LayoutParameters;
+import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
@@ -50,7 +53,7 @@ import org.eclipse.ui.PlatformUI;
  * simple visualizations.
  * </p>
  * <p>
- * Every bookmark container holds ist own selection manager which it has to use
+ * Every bookmark container holds its own selection manager which it has to use
  * to manage the selections of its items. The selections are synchronized with
  * the rest of the system.
  * </p>
@@ -61,7 +64,8 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Alexander Lex
  */
-abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionManager<?, ?, ?>> {
+abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionManager<?, ?, ?>>
+		implements ILayoutedElement {
 
 	/** The category of the container */
 	IDCategory category;
@@ -71,7 +75,9 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 * The containerDimensions (height, width, position, etc.) of the whole
 	 * container
 	 */
-	Dimensions containerDimensions;
+//	Dimensions containerDimensions;
+
+	Row layoutRow;
 	/** The name displayed as the heading in the sidebar */
 	String categoryName;
 	/**
@@ -119,8 +125,13 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 		this.category = category;
 		this.categoryName = category.getCategoryName();
 		this.pickingIDManager = manager.getPickingIDManager();
-		containerDimensions = new Dimensions();
+		this.layoutRow = new Row();
+//		containerDimensions = new Dimensions();
 	}
+
+	public LayoutParameters getElementLayout() {
+		return layoutRow;
+	};
 
 	/**
 	 * Returns the containerDimensions {@link GLBookmarkView} needs to place the
@@ -128,9 +139,9 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 * 
 	 * @return
 	 */
-	Dimensions getDimensions() {
-		return containerDimensions;
-	}
+//	Dimensions getDimensions() {
+//		return containerDimensions;
+//	}
 
 	/**
 	 * Returns the category of the container
@@ -148,24 +159,25 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 */
 	void render(GL2 gl) {
 
-		float yOrigin = containerDimensions.getYOrigin();
+//		float yOrigin = containerDimensions.getYOrigin();
 
-		yOrigin -= BookmarkRenderStyle.CONTAINER_HEADING_SIZE;
+//		yOrigin -= BookmarkRenderStyle.CONTAINER_HEADING_SIZE;
 
 		// render heading
 
-		RenderingHelpers.renderText(gl, manager.getTextRenderer(), categoryName,
-				containerDimensions.getXOrigin() + BookmarkRenderStyle.SIDE_SPACING,
-				yOrigin, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
+//		RenderingHelpers.renderText(gl, manager.getTextRenderer(), categoryName,
+//				containerDimensions.getXOrigin() + BookmarkRenderStyle.SIDE_SPACING,
+//				yOrigin, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
 		for (ABookmark item : bookmarkItems) {
+		
 
-			item.getDimensions().setOrigins(BookmarkRenderStyle.SIDE_SPACING, yOrigin);
-			item.getDimensions()
-					.setWidth(
-							containerDimensions.getWidth() - 2
-									* BookmarkRenderStyle.SIDE_SPACING);
-			yOrigin -= item.getDimensions().getHeight();
+//			item.getDimensions().setOrigins(BookmarkRenderStyle.SIDE_SPACING, yOrigin);
+//			item.getDimensions()
+//					.setWidth(
+//							containerDimensions.getWidth() - 2
+//									* BookmarkRenderStyle.SIDE_SPACING);
+//			yOrigin -= item.getDimensions().getHeight();
 
 			float[] highlightColor = null;
 
@@ -183,21 +195,21 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 
 			if (highlightColor != null) {
 
-				float xOrigin = item.getDimensions().getXOrigin();
-				float width = item.getDimensions().getWidth();
-				float height = item.getDimensions().getHeight()
-						- BookmarkRenderStyle.FRAME_SPACING;
-
-				gl.glColor3fv(highlightColor, 0);
-				gl.glBegin(GL2.GL_LINE_LOOP);
-				gl.glVertex3f(xOrigin, yOrigin, 0);
-				gl.glVertex3f(xOrigin + width, yOrigin, 0);
-				gl.glVertex3f(xOrigin + width, yOrigin + height, 0);
-				gl.glVertex3f(xOrigin, yOrigin + height, 0);
-				gl.glEnd();
+//				float xOrigin = item.getDimensions().getXOrigin();
+//				float width = item.getDimensions().getWidth();
+//				float height = item.getDimensions().getHeight()
+//						- BookmarkRenderStyle.FRAME_SPACING;
+//
+//				gl.glColor3fv(highlightColor, 0);
+//				gl.glBegin(GL2.GL_LINE_LOOP);
+//				gl.glVertex3f(xOrigin, yOrigin, 0);
+//				gl.glVertex3f(xOrigin + width, yOrigin, 0);
+//				gl.glVertex3f(xOrigin + width, yOrigin + height, 0);
+//				gl.glVertex3f(xOrigin, yOrigin + height, 0);
+//				gl.glEnd();
 			}
 			gl.glPopName();
-			containerDimensions.increaseHeight(item.getDimensions().getHeight());
+//			containerDimensions.increaseHeight(item.getDimensions().getHeight());
 		}
 
 		// GLHelperFunctions.drawPointAt(gl, 0, containerDimensions.getHeight(),
@@ -370,12 +382,12 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 
 	void updateContainerSize() {
 		// containerDimensions.setHeight(0.5f);
-		containerDimensions.setHeight(0);
-		containerDimensions.increaseHeight(BookmarkRenderStyle.CONTAINER_HEADING_SIZE);
-
-		for (ABookmark bookmark : bookmarkItems) {
-			containerDimensions.increaseHeight(bookmark.getDimensions().getHeight()*2);
-		}
+//		containerDimensions.setHeight(0);
+//		containerDimensions.increaseHeight(BookmarkRenderStyle.CONTAINER_HEADING_SIZE);
+//
+//		for (ABookmark bookmark : bookmarkItems) {
+//			containerDimensions.increaseHeight(bookmark.getDimensions().getHeight() * 2);
+//		}
 
 	}
 }

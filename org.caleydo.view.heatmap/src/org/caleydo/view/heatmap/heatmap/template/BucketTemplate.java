@@ -1,6 +1,6 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
-import org.caleydo.core.view.opengl.layout.RenderParameters;
+import org.caleydo.core.view.opengl.layout.LayoutParameters;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -28,21 +28,21 @@ public class BucketTemplate extends AHeatMapTemplate {
 		Row hmRow = new Row();
 		// hmRow.grabY = true;
 		// heat map
-		RenderParameters hm = new RenderParameters();
+		LayoutParameters hm = new LayoutParameters();
 		hm.setGrabX(true);
 		hm.setSizeY(1f);
 		hm.setRenderer(heatMapRenderer);
 		rendererParameters.add(hm);
 		heatMapLayout = hm;
 
-		RenderParameters contentSelectionLayout = new RenderParameters();
+		LayoutParameters contentSelectionLayout = new LayoutParameters();
 		contentSelectionLayout.setIsBackground(true);
 		contentSelectionLayout.setSizeX(1);
 		contentSelectionLayout.setSizeY(1);
 		contentSelectionLayout.setRenderer(contentSelectionRenderer);
 		rendererParameters.add(contentSelectionLayout);
 
-		RenderParameters storageSelectionLayout = new RenderParameters();
+		LayoutParameters storageSelectionLayout = new LayoutParameters();
 		storageSelectionLayout.setIsBackground(true);
 		// contentSelectionLayout.sizeX = 1;
 		storageSelectionLayout.setSizeY(1);
@@ -52,13 +52,13 @@ public class BucketTemplate extends AHeatMapTemplate {
 		boolean renderCaptions = false;
 		if (heatMap.isShowCaptions())
 			renderCaptions = true;
-		RenderParameters caption = null;
-		RenderParameters spacing = null;
-		RenderParameters cage = null;
+		LayoutParameters caption = null;
+		LayoutParameters spacing = null;
+		LayoutParameters cage = null;
 		if (renderCaptions) {
 			// content cage
 
-			cage = new RenderParameters();
+			cage = new LayoutParameters();
 			cage.setSizeX(0.1f);
 			cage.setSizeY(1f);
 			cage.setIsBackground(true);
@@ -66,11 +66,11 @@ public class BucketTemplate extends AHeatMapTemplate {
 			cage.setRenderer(captionCageRenderer);
 			rendererParameters.add(cage);
 
-			spacing = new RenderParameters();
+			spacing = new LayoutParameters();
 			spacing.setSizeX(0.01f);
 
 			// content captions
-			caption = new RenderParameters();
+			caption = new LayoutParameters();
 			caption.setSizeX(0.09f);
 			caption.setSizeY(1f);
 			caption.setRenderer(contentCaptionRenderer);

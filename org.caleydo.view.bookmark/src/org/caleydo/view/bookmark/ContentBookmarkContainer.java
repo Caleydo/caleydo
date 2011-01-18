@@ -11,6 +11,7 @@ import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.view.opengl.layout.Row;
 
 /**
  * A concrete implementation of ABookmarkContainer for the category
@@ -55,6 +56,7 @@ class ContentBookmarkContainer extends ABookmarkContainer<ContentSelectionManage
 			ContentBookmark bookmark = new ContentBookmark(manager, idType, convertedIDs
 					.iterator().next(), manager.getTextRenderer());
 			bookmarkItems.add(bookmark);
+			layoutRow.appendElement(bookmark.getElementLayout());
 			// selectionManager.add(davidID);
 		}
 		updateContainerSize();

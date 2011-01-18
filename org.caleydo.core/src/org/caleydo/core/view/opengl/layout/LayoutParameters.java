@@ -7,7 +7,7 @@ package org.caleydo.core.view.opengl.layout;
  * @author Alexander Lex
  * 
  */
-public class RenderParameters {
+public class LayoutParameters {
 
 	ARenderer renderer;
 

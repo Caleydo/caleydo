@@ -1,6 +1,6 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
-import org.caleydo.core.view.opengl.layout.RenderParameters;
+import org.caleydo.core.view.opengl.layout.LayoutParameters;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -32,20 +32,20 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 		Row hmRow = new Row();
 		// hmRow.grabY = true;
 		// heat map
-		heatMapLayout = new RenderParameters();
+		heatMapLayout = new LayoutParameters();
 		heatMapLayout.setGrabX(true);
 		heatMapLayout.setSizeY(1f);
 		heatMapLayout.setRenderer(heatMapRenderer);
 		rendererParameters.add(heatMapLayout);
 
-		RenderParameters contentSelectionLayout = new RenderParameters();
+		LayoutParameters contentSelectionLayout = new LayoutParameters();
 		contentSelectionLayout.setIsBackground(true);
 		contentSelectionLayout.setSizeX(1);
 		contentSelectionLayout.setSizeY(1);
 		contentSelectionLayout.setRenderer(contentSelectionRenderer);
 		rendererParameters.add(contentSelectionLayout);
 
-		RenderParameters storageSelectionLayout = new RenderParameters();
+		LayoutParameters storageSelectionLayout = new LayoutParameters();
 		storageSelectionLayout.setIsBackground(true);
 		// contentSelectionLayout.sizeX = 1;
 		storageSelectionLayout.setSizeY(1);
@@ -56,13 +56,13 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 		if (heatMap.isShowCaptions()
 				|| heatMap.isActive())
 			renderCaptions = true;
-		RenderParameters caption = null;
-		RenderParameters spacing = null;
-		RenderParameters cage = null;
+		LayoutParameters caption = null;
+		LayoutParameters spacing = null;
+		LayoutParameters cage = null;
 		if (renderCaptions) {
 			// content cage
 
-			cage = new RenderParameters();
+			cage = new LayoutParameters();
 			cage.setSizeX(0.3f);
 			cage.setSizeY(1f);
 			cage.setIsBackground(true);
@@ -70,11 +70,11 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 			cage.setRenderer(captionCageRenderer);
 			rendererParameters.add(cage);
 
-			spacing = new RenderParameters();
+			spacing = new LayoutParameters();
 			spacing.setSizeX(0.01f);
 
 			// content captions
-			caption = new RenderParameters();
+			caption = new LayoutParameters();
 			caption.setSizeX(0.29f);
 			caption.setSizeY(1f);
 
@@ -105,9 +105,9 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 		}
 
 		if (isActive) {
-			RenderParameters toolBar;
+			LayoutParameters toolBar;
 
-			toolBar = new RenderParameters();
+			toolBar = new LayoutParameters();
 			toolBar.setSizeX(1f);
 			toolBar.setSizeY(0.1f);
 

@@ -1,6 +1,6 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
-import org.caleydo.core.view.opengl.layout.RenderParameters;
+import org.caleydo.core.view.opengl.layout.LayoutParameters;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
@@ -27,7 +27,7 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		Row row = new Row();
 		row.setSizeY(1);
 		// heat map
-		heatMapLayout = new RenderParameters();
+		heatMapLayout = new LayoutParameters();
 		// heatMapLayout.sizeX = 0.715f;
 		heatMapLayout.setSizeX(0.806f);
 		heatMapLayout.setSizeY(1f);
@@ -35,13 +35,13 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		rendererParameters.add(heatMapLayout);
 		
 
-		RenderParameters contentSelectionLayout = new RenderParameters();
+		LayoutParameters contentSelectionLayout = new LayoutParameters();
 		contentSelectionLayout.setIsBackground(true);
 		contentSelectionLayout.setSizeX(heatMapLayout.getSizeX());
 		contentSelectionLayout.setRenderer(contentSelectionRenderer);
 		rendererParameters.add(contentSelectionLayout);
 
-		RenderParameters storageSelectionLayout = new RenderParameters();
+		LayoutParameters storageSelectionLayout = new LayoutParameters();
 		storageSelectionLayout.setIsBackground(true);
 		// contentSelectionLayout.sizeX = 1;
 		storageSelectionLayout.setSizeY(heatMapLayout.getSizeY());
@@ -51,12 +51,12 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		row.appendElement(storageSelectionLayout);
 		row.appendElement(heatMapLayout);
 
-		RenderParameters spacing = new RenderParameters();
+		LayoutParameters spacing = new LayoutParameters();
 		spacing.setSizeX(0.01f);
 		row.appendElement(spacing);
 
 		// content captions
-		RenderParameters contentCaptionLayout = new RenderParameters();
+		LayoutParameters contentCaptionLayout = new LayoutParameters();
 		contentCaptionLayout.setSizeX(1 - heatMapLayout.getSizeX());
 		contentCaptionLayout.setSizeY(heatMapLayout.getSizeY());
 		// heatMapLayout.grabY = true;
@@ -73,7 +73,7 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		storageCaptionRow.setSizeY(bottomSpacing);
 		storageCaptionRow.setScaleY(false);
 
-		RenderParameters storageCaptionLayout = new RenderParameters();
+		LayoutParameters storageCaptionLayout = new LayoutParameters();
 		storageCaptionLayout.setSizeY(bottomSpacing);
 		storageCaptionLayout.setRenderer(storageCaptionRenderer);
 		storageCaptionRow.appendElement(storageCaptionLayout);

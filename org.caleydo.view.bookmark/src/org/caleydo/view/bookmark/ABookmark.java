@@ -3,6 +3,8 @@ package org.caleydo.view.bookmark;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.view.opengl.layout.ARenderer;
+import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
@@ -11,10 +13,8 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * 
  * @author Alexander Lex
  */
-public abstract class ABookmark {
+public abstract class ABookmark extends ARenderer implements ILayoutedElement{
 
-	/** The bookmarkDimensions of an individual bookmark */
-	protected Dimensions bookmarkDimensions;
 
 	protected IDType idType;
 	protected int id;
@@ -33,17 +33,13 @@ public abstract class ABookmark {
 		this.textRenderer = textRenderer;
 		this.manager = manager;
 		this.idType = idType;
-		bookmarkDimensions = new Dimensions();
-		float height = (float) (textRenderer.getBounds("Text").getHeight())
-				* GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
-		bookmarkDimensions.setHeight(height * 2);
+		
+	
 	}
 
 	public abstract void render(GL2 gl);
 
-	public Dimensions getDimensions() {
-		return bookmarkDimensions;
-	}
+
 
 	public int getID() {
 		return id;

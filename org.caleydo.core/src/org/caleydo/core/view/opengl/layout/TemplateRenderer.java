@@ -41,7 +41,7 @@ public class TemplateRenderer {
 		template.recalculateSpacings();
 		template.calculateScales(totalWidth, totalHeight);
 
-		for (RenderParameters parameters : template.getRenderParameters()) {
+		for (LayoutParameters parameters : template.getRenderParameters()) {
 
 			ARenderer renderer = parameters.getRenderer();
 
@@ -54,7 +54,7 @@ public class TemplateRenderer {
 	public void render(GL2 gl) {
 		// FIXME: this should be called externally
 		frustumChanged();
-		for (RenderParameters parameters : template.getRenderParameters()) {
+		for (LayoutParameters parameters : template.getRenderParameters()) {
 			ARenderer renderer = parameters.getRenderer();
 			gl.glTranslatef(parameters.getTransformScaledX(),
 					parameters.getTransformScaledY(), 0);

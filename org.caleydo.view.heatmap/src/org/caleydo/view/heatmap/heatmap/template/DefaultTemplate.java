@@ -1,7 +1,7 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
 import org.caleydo.core.view.opengl.layout.ATemplate;
-import org.caleydo.core.view.opengl.layout.RenderParameters;
+import org.caleydo.core.view.opengl.layout.LayoutParameters;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
@@ -24,20 +24,20 @@ public class DefaultTemplate extends AHeatMapTemplate {
 		Row row = new Row();
 		row.setSizeY(1);
 		// heat map
-		RenderParameters heatMapLayout = new RenderParameters();
+		LayoutParameters heatMapLayout = new LayoutParameters();
 		// heatMapLayout.sizeX = 0.715f;
 		heatMapLayout.setSizeX(0.806f);
 		heatMapLayout.setSizeY(0.883f);
 		heatMapLayout.setRenderer(heatMapRenderer);
 		rendererParameters.add(heatMapLayout);
 		
-		RenderParameters contentSelectionLayout = new RenderParameters();
+		LayoutParameters contentSelectionLayout = new LayoutParameters();
 		contentSelectionLayout.setIsBackground(true);
 		contentSelectionLayout.setSizeX(heatMapLayout.getSizeX());
 		contentSelectionLayout.setRenderer(contentSelectionRenderer);
 		rendererParameters.add(contentSelectionLayout);
 
-		RenderParameters storageSelectionLayout = new RenderParameters();
+		LayoutParameters storageSelectionLayout = new LayoutParameters();
 		storageSelectionLayout.setIsBackground(true);
 		// contentSelectionLayout.sizeX = 1;
 		storageSelectionLayout.setSizeY(heatMapLayout.getSizeY());
@@ -47,12 +47,12 @@ public class DefaultTemplate extends AHeatMapTemplate {
 		row.appendElement(storageSelectionLayout);
 		row.appendElement(heatMapLayout);
 
-		RenderParameters spacing = new RenderParameters();
+		LayoutParameters spacing = new LayoutParameters();
 		spacing.setSizeX(0.01f);
 		row.appendElement(spacing);
 
 		// content captions
-		RenderParameters contentCaptionLayout = new RenderParameters();
+		LayoutParameters contentCaptionLayout = new LayoutParameters();
 		contentCaptionLayout.setSizeX(1 - heatMapLayout.getSizeX());
 		contentCaptionLayout.setSizeY(heatMapLayout.getSizeY());
 		// heatMapLayout.grabY = true;
@@ -65,7 +65,7 @@ public class DefaultTemplate extends AHeatMapTemplate {
 
 		addRenderElement(row);
 
-		spacing = new RenderParameters();
+		spacing = new LayoutParameters();
 		spacing.setSizeY(1 - heatMapLayout.getSizeY());
 		addRenderElement(spacing);
 
