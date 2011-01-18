@@ -10,7 +10,7 @@ public abstract class ATemplate {
 	// initRenderers();
 
 	public static final float SPACING = 0.01f;
-	protected ArrayList<LayoutParameters> rendererParameters;
+	// protected ArrayList<LayoutParameters> rendererParameters;
 
 	protected ArrayList<LayoutParameters> verticalSpaceAllocations;
 
@@ -23,14 +23,14 @@ public abstract class ATemplate {
 	protected boolean isActive;
 
 	public ATemplate() {
-		rendererParameters = new ArrayList<LayoutParameters>(15);
+		// rendererParameters = new ArrayList<LayoutParameters>(15);
 		verticalSpaceAllocations = new ArrayList<LayoutParameters>(15);
 		// horizontalElements = new ArrayList<LayoutParameters>();
 		// this.templateRenderer = templateRenderer;
 	}
 
 	public ArrayList<LayoutParameters> getRenderParameters() {
-		return rendererParameters;
+		return verticalSpaceAllocations;
 	}
 
 	// public void setTemplateRenderer(TemplateRenderer templateRenderer) {

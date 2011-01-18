@@ -27,7 +27,7 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 	public void setParameters() {
 		contentCaptionRenderer.setFontScaling(fontScaling);
 		minSelectedFieldHeight = HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT;
-		rendererParameters.clear();
+//		rendererParameters.clear();
 		verticalSpaceAllocations.clear();
 		Row hmRow = new Row();
 		// hmRow.grabY = true;
@@ -36,21 +36,21 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 		heatMapLayout.setGrabX(true);
 		heatMapLayout.setSizeY(1f);
 		heatMapLayout.setRenderer(heatMapRenderer);
-		rendererParameters.add(heatMapLayout);
+//		rendererParameters.add(heatMapLayout);
 
 		LayoutParameters contentSelectionLayout = new LayoutParameters();
 		contentSelectionLayout.setIsBackground(true);
 		contentSelectionLayout.setSizeX(1);
 		contentSelectionLayout.setSizeY(1);
 		contentSelectionLayout.setRenderer(contentSelectionRenderer);
-		rendererParameters.add(contentSelectionLayout);
+//		rendererParameters.add(contentSelectionLayout);
 
 		LayoutParameters storageSelectionLayout = new LayoutParameters();
 		storageSelectionLayout.setIsBackground(true);
 		// contentSelectionLayout.sizeX = 1;
 		storageSelectionLayout.setSizeY(1);
 		storageSelectionLayout.setRenderer(storageSelectionRenderer);
-		rendererParameters.add(storageSelectionLayout);
+//		rendererParameters.add(storageSelectionLayout);
 
 		boolean renderCaptions = false;
 		if (heatMap.isShowCaptions()
@@ -68,7 +68,7 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 			cage.setIsBackground(true);
 
 			cage.setRenderer(captionCageRenderer);
-			rendererParameters.add(cage);
+//			rendererParameters.add(cage);
 
 			spacing = new LayoutParameters();
 			spacing.setSizeX(0.01f);
@@ -80,7 +80,7 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 
 			caption.setRenderer(contentCaptionRenderer);
 
-			rendererParameters.add(caption);
+//			rendererParameters.add(caption);
 		}
 
 		hmRow.appendElement(contentSelectionLayout);
@@ -115,7 +115,7 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 
 			toolBar.setRenderer(new DetailToolBar(heatMap));
 
-			rendererParameters.add(toolBar);
+//			rendererParameters.add(toolBar);
 			addRenderElement(hmRow);
 			addRenderElement(toolBar);
 		} else

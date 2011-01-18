@@ -43,10 +43,24 @@ public class TemplateRenderer {
 
 		for (LayoutParameters parameters : template.getRenderParameters()) {
 
-			ARenderer renderer = parameters.getRenderer();
+			updateSpacings(parameters);
+		}
 
-			renderer.setLimits(parameters.getSizeScaledX(), parameters.getSizeScaledY());
-			renderer.updateSpacing(template, parameters);
+	}
+
+	private void updateSpacings(LayoutParameters layout) {
+
+		if (layout instanceof Row) {
+			for (LayoutParameters nestedLayout : (Row) layout) {
+				updateSpacings(nestedLayout);
+			}
+		}
+		else {
+			ARenderer renderer = layout.getRenderer();
+			if (renderer == null)
+				return;
+			renderer.setLimits(layout.getSizeScaledX(), layout.getSizeScaledY());
+			renderer.updateSpacing(template, layout);
 		}
 
 	}
@@ -54,14 +68,25 @@ public class TemplateRenderer {
 	public void render(GL2 gl) {
 		// FIXME: this should be called externally
 		frustumChanged();
-		for (LayoutParameters parameters : template.getRenderParameters()) {
-			ARenderer renderer = parameters.getRenderer();
-			gl.glTranslatef(parameters.getTransformScaledX(),
-					parameters.getTransformScaledY(), 0);
-			renderer.render(gl);
-			gl.glTranslatef(-parameters.getTransformScaledX(),
-					-parameters.getTransformScaledY(), 0);
+		for (LayoutParameters layout : template.getRenderParameters()) {
+			recursiveRender(gl, layout);
+
 		}
 	}
 
+	private void recursiveRender(GL2 gl, LayoutParameters layout) {
+		if (layout instanceof Row) {
+			for (LayoutParameters nestedLayout : (Row) layout) {
+				recursiveRender(gl, nestedLayout);
+			}
+		}
+		else {
+			ARenderer renderer = layout.getRenderer();
+			if (renderer == null)
+				return;
+			gl.glTranslatef(layout.getTransformScaledX(), layout.getTransformScaledY(), 0);
+			renderer.render(gl);
+			gl.glTranslatef(-layout.getTransformScaledX(), -layout.getTransformScaledY(), 0);
+		}
+	}
 }

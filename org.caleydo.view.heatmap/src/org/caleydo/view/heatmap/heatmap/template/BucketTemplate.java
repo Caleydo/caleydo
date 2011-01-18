@@ -23,7 +23,7 @@ public class BucketTemplate extends AHeatMapTemplate {
 	@Override
 	public void setParameters() {
 		contentCaptionRenderer.setFontScaling(fontScaling);
-		rendererParameters.clear();
+//		rendererParameters.clear();
 		verticalSpaceAllocations.clear();
 		Row hmRow = new Row();
 		// hmRow.grabY = true;
@@ -32,7 +32,7 @@ public class BucketTemplate extends AHeatMapTemplate {
 		hm.setGrabX(true);
 		hm.setSizeY(1f);
 		hm.setRenderer(heatMapRenderer);
-		rendererParameters.add(hm);
+//		rendererParameters.add(hm);
 		heatMapLayout = hm;
 
 		LayoutParameters contentSelectionLayout = new LayoutParameters();
@@ -40,14 +40,14 @@ public class BucketTemplate extends AHeatMapTemplate {
 		contentSelectionLayout.setSizeX(1);
 		contentSelectionLayout.setSizeY(1);
 		contentSelectionLayout.setRenderer(contentSelectionRenderer);
-		rendererParameters.add(contentSelectionLayout);
+//		rendererParameters.add(contentSelectionLayout);
 
 		LayoutParameters storageSelectionLayout = new LayoutParameters();
 		storageSelectionLayout.setIsBackground(true);
 		// contentSelectionLayout.sizeX = 1;
 		storageSelectionLayout.setSizeY(1);
 		storageSelectionLayout.setRenderer(storageSelectionRenderer);
-		rendererParameters.add(storageSelectionLayout);
+//		rendererParameters.add(storageSelectionLayout);
 
 		boolean renderCaptions = false;
 		if (heatMap.isShowCaptions())
@@ -64,7 +64,7 @@ public class BucketTemplate extends AHeatMapTemplate {
 			cage.setIsBackground(true);
 
 			cage.setRenderer(captionCageRenderer);
-			rendererParameters.add(cage);
+//			rendererParameters.add(cage);
 
 			spacing = new LayoutParameters();
 			spacing.setSizeX(0.01f);
@@ -75,7 +75,7 @@ public class BucketTemplate extends AHeatMapTemplate {
 			caption.setSizeY(1f);
 			caption.setRenderer(contentCaptionRenderer);
 
-			rendererParameters.add(caption);
+//			rendererParameters.add(caption);
 		}
 
 		hmRow.appendElement(contentSelectionLayout);

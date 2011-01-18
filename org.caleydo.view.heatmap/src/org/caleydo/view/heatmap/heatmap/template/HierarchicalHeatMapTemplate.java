@@ -22,7 +22,7 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 	@Override
 	public void setParameters() {
 
-		rendererParameters.clear();
+//		rendererParameters.clear();
 
 		Row row = new Row();
 		row.setSizeY(1);
@@ -32,21 +32,21 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		heatMapLayout.setSizeX(0.806f);
 		heatMapLayout.setSizeY(1f);
 		heatMapLayout.setRenderer(heatMapRenderer);
-		rendererParameters.add(heatMapLayout);
+//		rendererParameters.add(heatMapLayout);
 		
 
 		LayoutParameters contentSelectionLayout = new LayoutParameters();
 		contentSelectionLayout.setIsBackground(true);
 		contentSelectionLayout.setSizeX(heatMapLayout.getSizeX());
 		contentSelectionLayout.setRenderer(contentSelectionRenderer);
-		rendererParameters.add(contentSelectionLayout);
+//		rendererParameters.add(contentSelectionLayout);
 
 		LayoutParameters storageSelectionLayout = new LayoutParameters();
 		storageSelectionLayout.setIsBackground(true);
 		// contentSelectionLayout.sizeX = 1;
 		storageSelectionLayout.setSizeY(heatMapLayout.getSizeY());
 		storageSelectionLayout.setRenderer(storageSelectionRenderer);
-		rendererParameters.add(storageSelectionLayout);
+//		rendererParameters.add(storageSelectionLayout);
 		row.appendElement(contentSelectionLayout);
 		row.appendElement(storageSelectionLayout);
 		row.appendElement(heatMapLayout);
@@ -63,7 +63,7 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		contentCaptionLayout.setTransformX(0.7f + SPACING);
 		contentCaptionLayout.setRenderer(contentCaptionRenderer);
 
-		rendererParameters.add(contentCaptionLayout);
+//		rendererParameters.add(contentCaptionLayout);
 
 		row.appendElement(contentCaptionLayout);
 
@@ -78,7 +78,7 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		storageCaptionLayout.setRenderer(storageCaptionRenderer);
 		storageCaptionRow.appendElement(storageCaptionLayout);
 
-		rendererParameters.add(storageCaptionLayout);
+//		rendererParameters.add(storageCaptionLayout);
 
 		addRenderElement(storageCaptionRow);
 
