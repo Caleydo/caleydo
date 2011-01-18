@@ -1,9 +1,8 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
+import org.caleydo.core.view.opengl.layout.RenderParameters;
+import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.layout.ATemplate;
-import org.caleydo.view.heatmap.heatmap.layout.RenderParameters;
-import org.caleydo.view.heatmap.heatmap.layout.Row;
 
 /**
  * Render template for the embedded heat map of the hierarchical heat map.

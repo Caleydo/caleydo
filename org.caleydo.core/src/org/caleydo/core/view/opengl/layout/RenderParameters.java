@@ -1,6 +1,5 @@
-package org.caleydo.view.heatmap.heatmap.layout;
+package org.caleydo.core.view.opengl.layout;
 
-import org.caleydo.view.heatmap.heatmap.renderer.ARenderer;
 
 /**
  * Size parameters for a single element

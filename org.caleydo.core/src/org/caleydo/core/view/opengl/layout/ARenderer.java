@@ -1,9 +1,7 @@
-package org.caleydo.view.heatmap.heatmap.renderer;
+package org.caleydo.core.view.opengl.layout;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.view.heatmap.heatmap.layout.ATemplate;
-import org.caleydo.view.heatmap.heatmap.layout.RenderParameters;
 
 /**
  * Every ARenderer renders from (0, 0) to (x, y). An ARenderer does not take

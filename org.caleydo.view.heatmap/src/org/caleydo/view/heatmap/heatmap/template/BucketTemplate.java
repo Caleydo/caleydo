@@ -1,9 +1,9 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
+import org.caleydo.core.view.opengl.layout.RenderParameters;
+import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.layout.RenderParameters;
-import org.caleydo.view.heatmap.heatmap.layout.Row;
 
 /**
  * Render Template for HeatMap in GLBucketView

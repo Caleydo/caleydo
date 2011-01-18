@@ -1,18 +1,8 @@
-package org.caleydo.view.heatmap.heatmap.template;
-
-import java.util.ArrayList;
+package org.caleydo.core.view.opengl.layout;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.layout.ATemplate;
-import org.caleydo.view.heatmap.heatmap.layout.RenderParameters;
-import org.caleydo.view.heatmap.heatmap.renderer.AContentRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.ARenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.spacing.ContentSpacing;
 
 public class TemplateRenderer {
 

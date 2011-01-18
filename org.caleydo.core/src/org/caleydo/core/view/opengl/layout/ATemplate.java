@@ -1,8 +1,8 @@
-package org.caleydo.view.heatmap.heatmap.layout;
+package org.caleydo.core.view.opengl.layout;
 
 import java.util.ArrayList;
 
-import org.caleydo.view.heatmap.HeatMapRenderStyle;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 public abstract class ATemplate {
 
@@ -18,7 +18,7 @@ public abstract class ATemplate {
 
 	private float yOverhead;
 
-	protected float fontScaling = HeatMapRenderStyle.SMALL_FONT_SCALING_FACTOR;
+	protected float fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
 	protected boolean isActive;
 

@@ -12,10 +12,9 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.view.opengl.layout.ATemplate;
+import org.caleydo.core.view.opengl.layout.RenderParameters;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.layout.ATemplate;
-import org.caleydo.view.heatmap.heatmap.layout.RenderParameters;
-import org.caleydo.view.heatmap.heatmap.renderer.spacing.ContentSpacing;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 
 public class HeatMapRenderer extends AContentRenderer {
