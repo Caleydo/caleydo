@@ -3,7 +3,8 @@ package org.caleydo.view.bookmark;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.view.opengl.layout.LayoutParameters;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.RenderableLayoutElement;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
@@ -14,7 +15,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  */
 class StorageBookmark extends ABookmark {
 
-	LayoutParameters layoutParameters;
+	RenderableLayoutElement layoutParameters;
 
 	/**
 	 * Constructor taking a textRenderer
@@ -30,7 +31,7 @@ class StorageBookmark extends ABookmark {
 		// float height = (float) (textRenderer.getBounds("Text").getHeight())
 		// * GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
-		layoutParameters = new LayoutParameters();
+		layoutParameters = new RenderableLayoutElement();
 		layoutParameters.setSizeX(1);
 		layoutParameters.setSizeY(0.2f);
 		layoutParameters.setRenderer(this);
@@ -38,7 +39,7 @@ class StorageBookmark extends ABookmark {
 	}
 
 	@Override
-	public LayoutParameters getElementLayout() {
+	public ElementLayout getElementLayout() {
 		return layoutParameters;
 	}
 

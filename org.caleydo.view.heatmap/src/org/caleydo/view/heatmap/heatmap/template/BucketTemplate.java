@@ -1,6 +1,7 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
-import org.caleydo.core.view.opengl.layout.LayoutParameters;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.RenderableLayoutElement;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -23,59 +24,59 @@ public class BucketTemplate extends AHeatMapTemplate {
 	@Override
 	public void setParameters() {
 		contentCaptionRenderer.setFontScaling(fontScaling);
-//		rendererParameters.clear();
-		verticalSpaceAllocations.clear();
+		// rendererParameters.clear();
+		verticalLayoutElements.clear();
 		Row hmRow = new Row();
 		// hmRow.grabY = true;
 		// heat map
-		LayoutParameters hm = new LayoutParameters();
+		RenderableLayoutElement hm = new RenderableLayoutElement();
 		hm.setGrabX(true);
 		hm.setSizeY(1f);
 		hm.setRenderer(heatMapRenderer);
-//		rendererParameters.add(hm);
+		// rendererParameters.add(hm);
 		heatMapLayout = hm;
 
-		LayoutParameters contentSelectionLayout = new LayoutParameters();
+		RenderableLayoutElement contentSelectionLayout = new RenderableLayoutElement();
 		contentSelectionLayout.setIsBackground(true);
 		contentSelectionLayout.setSizeX(1);
 		contentSelectionLayout.setSizeY(1);
 		contentSelectionLayout.setRenderer(contentSelectionRenderer);
-//		rendererParameters.add(contentSelectionLayout);
+		// rendererParameters.add(contentSelectionLayout);
 
-		LayoutParameters storageSelectionLayout = new LayoutParameters();
+		RenderableLayoutElement storageSelectionLayout = new RenderableLayoutElement();
 		storageSelectionLayout.setIsBackground(true);
 		// contentSelectionLayout.sizeX = 1;
 		storageSelectionLayout.setSizeY(1);
 		storageSelectionLayout.setRenderer(storageSelectionRenderer);
-//		rendererParameters.add(storageSelectionLayout);
+		// rendererParameters.add(storageSelectionLayout);
 
 		boolean renderCaptions = false;
 		if (heatMap.isShowCaptions())
 			renderCaptions = true;
-		LayoutParameters caption = null;
-		LayoutParameters spacing = null;
-		LayoutParameters cage = null;
+		RenderableLayoutElement caption = null;
+		ElementLayout spacing = null;
+		RenderableLayoutElement cage = null;
 		if (renderCaptions) {
 			// content cage
 
-			cage = new LayoutParameters();
+			cage = new RenderableLayoutElement();
 			cage.setSizeX(0.1f);
 			cage.setSizeY(1f);
 			cage.setIsBackground(true);
 
 			cage.setRenderer(captionCageRenderer);
-//			rendererParameters.add(cage);
+			// rendererParameters.add(cage);
 
-			spacing = new LayoutParameters();
+			spacing = new ElementLayout();
 			spacing.setSizeX(0.01f);
 
 			// content captions
-			caption = new LayoutParameters();
+			caption = new RenderableLayoutElement();
 			caption.setSizeX(0.09f);
 			caption.setSizeY(1f);
 			caption.setRenderer(contentCaptionRenderer);
 
-//			rendererParameters.add(caption);
+			// rendererParameters.add(caption);
 		}
 
 		hmRow.appendElement(contentSelectionLayout);

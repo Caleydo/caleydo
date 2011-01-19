@@ -1,22 +1,21 @@
 package org.caleydo.core.view.opengl.layout;
 
-
 /**
  * Size parameters for a single element
  * 
  * @author Alexander Lex
- * 
  */
-public class LayoutParameters {
+public class ElementLayout
+ {
 
-	ARenderer renderer;
+	
 
 	boolean scaleX = true;
 	boolean scaleY = true;
 
 	/**
-	 * if true the element is rendered as background, i.e. that the size of it
-	 * is not included in the transform
+	 * if true the element is rendered as background, i.e. that the size of it is not included in the
+	 * transform
 	 */
 	boolean isBackground = false;
 
@@ -35,17 +34,10 @@ public class LayoutParameters {
 	float sizeScaledX = 0;
 	float sizeScaledY = 0;
 
-	public void setRenderer(ARenderer renderer) {
-		this.renderer = renderer;
-	}
-
-	public ARenderer getRenderer() {
-		return renderer;
-	}
 
 	/**
-	 * Set the x size of the element. The size has to be normalized between 0
-	 * and 1, where 1 is the whole space available for the rendered elements
+	 * Set the x size of the element. The size has to be normalized between 0 and 1, where 1 is the whole
+	 * space available for the rendered elements
 	 * 
 	 * @param sizeX
 	 */
@@ -58,8 +50,8 @@ public class LayoutParameters {
 	}
 
 	/**
-	 * Set the y size of the element. The size has to be normalized between 0
-	 * and 1, where 1 is the whole space available for the rendered elements
+	 * Set the y size of the element. The size has to be normalized between 0 and 1, where 1 is the whole
+	 * space available for the rendered elements
 	 * 
 	 * @param sizeY
 	 */
@@ -104,9 +96,8 @@ public class LayoutParameters {
 	}
 
 	/**
-	 * Set whether the element should be rendered in the background. If true,
-	 * it's size is not taken into account when calculating layouts. Default is
-	 * false.
+	 * Set whether the element should be rendered in the background. If true, it's size is not taken into
+	 * account when calculating layouts. Default is false.
 	 * 
 	 * @param isBackground
 	 */
@@ -139,8 +130,8 @@ public class LayoutParameters {
 	}
 
 	/**
-	 * Set whether the values set should be scaled according to the available
-	 * window, or whether they should be of static size. Default is true.
+	 * Set whether the values set should be scaled according to the available window, or whether they should
+	 * be of static size. Default is true.
 	 * 
 	 * @param scaleX
 	 */
@@ -149,8 +140,8 @@ public class LayoutParameters {
 	}
 
 	/**
-	 * Set whether the values set should be scaled according to the available
-	 * window, or whether they should be of static size. Default is true.
+	 * Set whether the values set should be scaled according to the available window, or whether they should
+	 * be of static size. Default is true.
 	 * 
 	 * @param scaleY
 	 */
@@ -165,7 +156,8 @@ public class LayoutParameters {
 
 			// transformScaledX = transformX * totalWidth;
 			// transformScaledY = transformY * totalHeight;
-		} else {
+		}
+		else {
 			sizeScaledX = sizeX;
 
 			// transformScaledX = transformX * totalWidth;

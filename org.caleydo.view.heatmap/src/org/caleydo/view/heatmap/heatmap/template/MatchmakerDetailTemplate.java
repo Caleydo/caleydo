@@ -1,6 +1,7 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
-import org.caleydo.core.view.opengl.layout.LayoutParameters;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.RenderableLayoutElement;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -27,60 +28,59 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 	public void setParameters() {
 		contentCaptionRenderer.setFontScaling(fontScaling);
 		minSelectedFieldHeight = HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT;
-//		rendererParameters.clear();
-		verticalSpaceAllocations.clear();
+		// rendererParameters.clear();
+		verticalLayoutElements.clear();
 		Row hmRow = new Row();
 		// hmRow.grabY = true;
 		// heat map
-		heatMapLayout = new LayoutParameters();
+		heatMapLayout = new RenderableLayoutElement();
 		heatMapLayout.setGrabX(true);
 		heatMapLayout.setSizeY(1f);
 		heatMapLayout.setRenderer(heatMapRenderer);
-//		rendererParameters.add(heatMapLayout);
+		// rendererParameters.add(heatMapLayout);
 
-		LayoutParameters contentSelectionLayout = new LayoutParameters();
+		RenderableLayoutElement contentSelectionLayout = new RenderableLayoutElement();
 		contentSelectionLayout.setIsBackground(true);
 		contentSelectionLayout.setSizeX(1);
 		contentSelectionLayout.setSizeY(1);
 		contentSelectionLayout.setRenderer(contentSelectionRenderer);
-//		rendererParameters.add(contentSelectionLayout);
+		// rendererParameters.add(contentSelectionLayout);
 
-		LayoutParameters storageSelectionLayout = new LayoutParameters();
+		RenderableLayoutElement storageSelectionLayout = new RenderableLayoutElement();
 		storageSelectionLayout.setIsBackground(true);
 		// contentSelectionLayout.sizeX = 1;
 		storageSelectionLayout.setSizeY(1);
 		storageSelectionLayout.setRenderer(storageSelectionRenderer);
-//		rendererParameters.add(storageSelectionLayout);
+		// rendererParameters.add(storageSelectionLayout);
 
 		boolean renderCaptions = false;
-		if (heatMap.isShowCaptions()
-				|| heatMap.isActive())
+		if (heatMap.isShowCaptions() || heatMap.isActive())
 			renderCaptions = true;
-		LayoutParameters caption = null;
-		LayoutParameters spacing = null;
-		LayoutParameters cage = null;
+		RenderableLayoutElement caption = null;
+		ElementLayout spacing = null;
+		RenderableLayoutElement cage = null;
 		if (renderCaptions) {
 			// content cage
 
-			cage = new LayoutParameters();
+			cage = new RenderableLayoutElement();
 			cage.setSizeX(0.3f);
 			cage.setSizeY(1f);
 			cage.setIsBackground(true);
 
 			cage.setRenderer(captionCageRenderer);
-//			rendererParameters.add(cage);
+			// rendererParameters.add(cage);
 
-			spacing = new LayoutParameters();
+			spacing = new ElementLayout();
 			spacing.setSizeX(0.01f);
 
 			// content captions
-			caption = new LayoutParameters();
+			caption = new RenderableLayoutElement();
 			caption.setSizeX(0.29f);
 			caption.setSizeY(1f);
 
 			caption.setRenderer(contentCaptionRenderer);
 
-//			rendererParameters.add(caption);
+			// rendererParameters.add(caption);
 		}
 
 		hmRow.appendElement(contentSelectionLayout);
@@ -105,9 +105,9 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 		}
 
 		if (isActive) {
-			LayoutParameters toolBar;
+			RenderableLayoutElement toolBar;
 
-			toolBar = new LayoutParameters();
+			toolBar = new RenderableLayoutElement();
 			toolBar.setSizeX(1f);
 			toolBar.setSizeY(0.1f);
 
@@ -115,7 +115,7 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 
 			toolBar.setRenderer(new DetailToolBar(heatMap));
 
-//			rendererParameters.add(toolBar);
+			// rendererParameters.add(toolBar);
 			addRenderElement(hmRow);
 			addRenderElement(toolBar);
 		} else

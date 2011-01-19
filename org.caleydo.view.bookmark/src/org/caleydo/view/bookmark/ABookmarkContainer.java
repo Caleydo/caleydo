@@ -21,10 +21,10 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.collection.UniqueList;
+import org.caleydo.core.view.opengl.layout.Column;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
-import org.caleydo.core.view.opengl.layout.LayoutParameters;
 import org.caleydo.core.view.opengl.layout.Row;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
 import org.caleydo.view.bookmark.contextmenu.BookmarkContextMenuItemContainer;
@@ -77,7 +77,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 */
 //	Dimensions containerDimensions;
 
-	Row layoutRow;
+	Column layoutRow;
 	/** The name displayed as the heading in the sidebar */
 	String categoryName;
 	/**
@@ -125,11 +125,11 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 		this.category = category;
 		this.categoryName = category.getCategoryName();
 		this.pickingIDManager = manager.getPickingIDManager();
-		this.layoutRow = new Row();
+		this.layoutRow = new Column();
 //		containerDimensions = new Dimensions();
 	}
 
-	public LayoutParameters getElementLayout() {
+	public ElementLayout getElementLayout() {
 		return layoutRow;
 	};
 

@@ -20,7 +20,7 @@ public abstract class ARenderer {
 	}
 
 	/** Calculate spacing if required */
-	public void updateSpacing(ATemplate template, LayoutParameters parameters) {
+	public void updateSpacing(ATemplate template, ElementLayout parameters) {
 
 	}
 

@@ -1,7 +1,7 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
 import org.caleydo.core.view.opengl.layout.ATemplate;
-import org.caleydo.core.view.opengl.layout.LayoutParameters;
+import org.caleydo.core.view.opengl.layout.RenderableLayoutElement;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.CaptionCageRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ContentCaptionRenderer;
@@ -22,7 +22,7 @@ public abstract class AHeatMapTemplate extends ATemplate {
 
 	protected GLHeatMap heatMap;
 
-	protected LayoutParameters heatMapLayout;
+	protected RenderableLayoutElement heatMapLayout;
 
 	public float minSelectedFieldHeight = 0.1f;
 	// private float xOverheadToHeatMap;

@@ -10,9 +10,9 @@ public abstract class ATemplate {
 	// initRenderers();
 
 	public static final float SPACING = 0.01f;
-	// protected ArrayList<LayoutParameters> rendererParameters;
+	// protected ArrayList<ElementLayout> rendererParameters;
 
-	protected ArrayList<LayoutParameters> verticalSpaceAllocations;
+	protected ArrayList<ElementLayout> verticalLayoutElements;
 
 	// protected TemplateRenderer templateRenderer;
 
@@ -23,14 +23,14 @@ public abstract class ATemplate {
 	protected boolean isActive;
 
 	public ATemplate() {
-		// rendererParameters = new ArrayList<LayoutParameters>(15);
-		verticalSpaceAllocations = new ArrayList<LayoutParameters>(15);
-		// horizontalElements = new ArrayList<LayoutParameters>();
+		// rendererParameters = new ArrayList<ElementLayout>(15);
+		verticalLayoutElements = new ArrayList<ElementLayout>(15);
+		// horizontalElements = new ArrayList<ElementLayout>();
 		// this.templateRenderer = templateRenderer;
 	}
 
-	public ArrayList<LayoutParameters> getRenderParameters() {
-		return verticalSpaceAllocations;
+	public ArrayList<ElementLayout> getVerticalLayoutElements() {
+		return verticalLayoutElements;
 	}
 
 	// public void setTemplateRenderer(TemplateRenderer templateRenderer) {
@@ -42,15 +42,15 @@ public abstract class ATemplate {
 
 	public void calculateScales(float totalWidth, float totalHeight) {
 
-		for (LayoutParameters element : verticalSpaceAllocations) {
+		for (ElementLayout element : verticalLayoutElements) {
 			if (!element.scaleY)
 				totalHeight -= element.sizeY;
 		}
 
 		// take care of greedy elements in x and y
-		LayoutParameters greedyVerticalElement = null;
+		ElementLayout greedyVerticalElement = null;
 		float usedSizeY = 0;
-		for (LayoutParameters parameter : verticalSpaceAllocations) {
+		for (ElementLayout parameter : verticalLayoutElements) {
 			if (parameter.grabY)
 				greedyVerticalElement = parameter;
 			else if (!parameter.isBackground)
@@ -59,9 +59,9 @@ public abstract class ATemplate {
 			if (parameter instanceof Row) {
 				Row row = (Row) parameter;
 				float usedSizeX = 0;
-				LayoutParameters greedyHorizontalElement = null;
+				ElementLayout greedyHorizontalElement = null;
 
-				for (LayoutParameters rowElement : row) {
+				for (ElementLayout rowElement : row) {
 					if (rowElement.grabX)
 						greedyHorizontalElement = rowElement;
 					else if (!rowElement.isBackground)
@@ -80,13 +80,13 @@ public abstract class ATemplate {
 		// here we assume that the greedy element is also the "central" one
 		yOverhead = usedSizeY;
 
-		for (int count = verticalSpaceAllocations.size() - 1; count >= 0; count--) {
-			LayoutParameters element = verticalSpaceAllocations.get(count);
+		for (int count = verticalLayoutElements.size() - 1; count >= 0; count--) {
+			ElementLayout element = verticalLayoutElements.get(count);
 			element.transformScaledY = yOffset;
 			if (element instanceof Row) {
 				float xOffset = 0;
 				Row row = (Row) element;
-				for (LayoutParameters rowElement : row) {
+				for (ElementLayout rowElement : row) {
 					row.sizeY = rowElement.sizeY;
 					// rowElement.sizeY = row.sizeY;
 					rowElement.transformScaledX = xOffset;
@@ -107,12 +107,11 @@ public abstract class ATemplate {
 	 * 
 	 * @param element
 	 */
-	public void addRenderElement(LayoutParameters element) {
-		verticalSpaceAllocations.add(element);
+	public void addRenderElement(ElementLayout element) {
+		verticalLayoutElements.add(element);
 	}
 
 	public void recalculateSpacings() {
-		verticalSpaceAllocations.clear();
 		setParameters();
 	}
 

@@ -41,26 +41,30 @@ public class TemplateRenderer {
 		template.recalculateSpacings();
 		template.calculateScales(totalWidth, totalHeight);
 
-		for (LayoutParameters parameters : template.getRenderParameters()) {
+		for (ElementLayout elementLayout : template.getVerticalLayoutElements()) {
 
-			updateSpacings(parameters);
+			updateSpacings(elementLayout);
 		}
 
 	}
 
-	private void updateSpacings(LayoutParameters layout) {
+	private void updateSpacings(ElementLayout layout) {
 
 		if (layout instanceof Row) {
-			for (LayoutParameters nestedLayout : (Row) layout) {
+			for (ElementLayout nestedLayout : (Row) layout) {
 				updateSpacings(nestedLayout);
 			}
 		}
-		else {
-			ARenderer renderer = layout.getRenderer();
+		else if (layout instanceof RenderableLayoutElement) {
+			ARenderer renderer = ((RenderableLayoutElement) layout).getRenderer();
 			if (renderer == null)
 				return;
 			renderer.setLimits(layout.getSizeScaledX(), layout.getSizeScaledY());
 			renderer.updateSpacing(template, layout);
+		}
+		else 
+		{
+//			throw new IllegalStateException("unknown layout type" + layout);
 		}
 
 	}
@@ -68,25 +72,25 @@ public class TemplateRenderer {
 	public void render(GL2 gl) {
 		// FIXME: this should be called externally
 		frustumChanged();
-		for (LayoutParameters layout : template.getRenderParameters()) {
+		for (ElementLayout layout : template.getVerticalLayoutElements()) {
 			recursiveRender(gl, layout);
 
 		}
 	}
 
-	private void recursiveRender(GL2 gl, LayoutParameters layout) {
-		if (layout instanceof Row) {
-			for (LayoutParameters nestedLayout : (Row) layout) {
+	private void recursiveRender(GL2 gl, ElementLayout element) {
+		if (element instanceof Row) {
+			for (ElementLayout nestedLayout : (Row) element) {
 				recursiveRender(gl, nestedLayout);
 			}
 		}
-		else {
-			ARenderer renderer = layout.getRenderer();
+		else if (element instanceof RenderableLayoutElement) {
+			ARenderer renderer = ((RenderableLayoutElement)element).getRenderer();
 			if (renderer == null)
 				return;
-			gl.glTranslatef(layout.getTransformScaledX(), layout.getTransformScaledY(), 0);
+			gl.glTranslatef(element.getTransformScaledX(), element.getTransformScaledY(), 0);
 			renderer.render(gl);
-			gl.glTranslatef(-layout.getTransformScaledX(), -layout.getTransformScaledY(), 0);
+			gl.glTranslatef(-element.getTransformScaledX(), -element.getTransformScaledY(), 0);
 		}
 	}
 }
