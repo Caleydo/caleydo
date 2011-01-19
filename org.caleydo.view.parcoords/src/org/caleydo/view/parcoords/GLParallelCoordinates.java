@@ -341,41 +341,39 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	@Override
 	public void display(final GL2 gl) {
 
-		displayVBO(gl);
+//		displayVBO(gl);
 
-		// gl.glEnable(GL2.GL_BLEND);
-		//
-		// if (generalManager.getTrackDataProvider().isTrackModeActive())
-		// handleTrackInput(gl);
-		//
-		// // TODO another display list
-		// // clipToFrustum(gl);
-		//
-		// gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation,
-		// 0.0f);
-		//
-		// if (bIsDraggingActive) {
-		// handleGateDragging(gl);
-		// }
-		//
-		// if (bWasAxisMoved) {
-		// adjustAxisSpacing(gl);
-		// if (glMouseListener.wasMouseReleased()) {
-		// bWasAxisMoved = false;
-		// }
-		// }
-		//
-		// gl.glCallList(iGLDisplayListToCall);
-		//
-		// if (bIsAngularBrushingActive && iSelectedLineID != -1) {
-		// handleAngularBrushing(gl);
-		// }
-		//
-		// gl.glTranslatef(-fXDefaultTranslation - fXTranslation,
-		// -fYTranslation, 0.0f);
-		//
-		// if (!isRenderedRemote())
-		// contextMenu.render(gl, this);
+		gl.glEnable(GL2.GL_BLEND);
+
+		if (generalManager.getTrackDataProvider().isTrackModeActive())
+			handleTrackInput(gl);
+
+		// TODO another display list
+		// clipToFrustum(gl);
+
+		gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
+
+		if (bIsDraggingActive) {
+			handleGateDragging(gl);
+		}
+
+		if (bWasAxisMoved) {
+			adjustAxisSpacing(gl);
+			if (glMouseListener.wasMouseReleased()) {
+				bWasAxisMoved = false;
+			}
+		}
+
+		gl.glCallList(iGLDisplayListToCall);
+
+		if (bIsAngularBrushingActive && iSelectedLineID != -1) {
+			handleAngularBrushing(gl);
+		}
+
+		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
+
+		if (!isRenderedRemote())
+			contextMenu.render(gl, this);
 
 	}
 
