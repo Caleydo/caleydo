@@ -126,7 +126,7 @@ public class RadialMenu
 				texture.bind();
 				texCoords = texture.getImageTexCoords();
 				
-				gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			}
 			
 			gl.glBegin(GL2.GL_QUADS);

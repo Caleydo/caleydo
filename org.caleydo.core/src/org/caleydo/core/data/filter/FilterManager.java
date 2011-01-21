@@ -156,7 +156,32 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 
 		reEvaluateFilters();
 		triggerFilterUpdatedEvent();
+	}
+	
+	public void handleMoveFilter(Filter<?> filter, int offset)
+	{
+		int index = filterPipe.indexOf(filter);
+		
+		if( index < 0 )
+			throw new RuntimeException("handleMoveFilter: filter not found.");
 
+		// move filters before/after
+		if( offset < 0 )
+		{
+			for(int i = index; i > index + offset; --i)
+				filterPipe.set(i, filterPipe.get(i - 1));
+		}
+		else
+		{
+			for(int i = index; i < index + offset; ++i)
+				filterPipe.set(i, filterPipe.get(i + 1));
+		}
+		
+		// place filter on new position
+		filterPipe.set(index + offset, (FilterType)filter);
+
+		reEvaluateFilters();
+		triggerFilterUpdatedEvent();
 	}
 
 	private void triggerFilterUpdatedEvent() {

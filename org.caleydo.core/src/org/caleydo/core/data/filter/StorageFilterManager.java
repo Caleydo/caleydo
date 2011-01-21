@@ -1,6 +1,8 @@
 package org.caleydo.core.data.filter;
 
 import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.filter.event.MoveStorageFilterEvent;
+import org.caleydo.core.data.filter.event.MoveStorageFilterListener;
 import org.caleydo.core.data.filter.event.NewStorageFilterEvent;
 import org.caleydo.core.data.filter.event.NewStorageFilterListener;
 import org.caleydo.core.data.filter.event.ReEvaluateStorageFilterListEvent;
@@ -26,6 +28,7 @@ public class StorageFilterManager
 
 	private StorageVAUpdateListener storageVAUpdateListener;
 	private RemoveStorageFilterListener removeStorageFilterListener;
+	private MoveStorageFilterListener moveStorageFilterListener;
 	private NewStorageFilterListener newStorageFilterListener;
 	private ReEvaluateStorageFilterListListener reEvaluateStorageFilterListListener;
 
@@ -52,6 +55,11 @@ public class StorageFilterManager
 		removeStorageFilterListener.setHandler(this);
 		removeStorageFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(RemoveStorageFilterEvent.class, removeStorageFilterListener);
+		
+		moveStorageFilterListener = new MoveStorageFilterListener();
+		moveStorageFilterListener.setHandler(this);
+		moveStorageFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(MoveStorageFilterEvent.class, moveStorageFilterListener);
 
 		newStorageFilterListener = new NewStorageFilterListener();
 		newStorageFilterListener.setHandler(this);

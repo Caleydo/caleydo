@@ -1,6 +1,8 @@
 package org.caleydo.core.data.filter;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.filter.event.MoveContentFilterEvent;
+import org.caleydo.core.data.filter.event.MoveContentFilterListener;
 import org.caleydo.core.data.filter.event.NewContentFilterEvent;
 import org.caleydo.core.data.filter.event.NewContentFilterListener;
 import org.caleydo.core.data.filter.event.ReEvaluateContentFilterListEvent;
@@ -26,6 +28,7 @@ public class ContentFilterManager
 
 	private ContentVAUpdateListener contentVAUpdateListener;
 	private RemoveContentFilterListener removeContentFilterListener;
+	private MoveContentFilterListener moveContentFilterListener;
 	private NewContentFilterListener newContentFilterListener;
 	private ReEvaluateContentFilterListListener reEvaluateContentFilterListListener;
 
@@ -51,6 +54,11 @@ public class ContentFilterManager
 		removeContentFilterListener.setHandler(this);
 		removeContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(RemoveContentFilterEvent.class, removeContentFilterListener);
+		
+		moveContentFilterListener = new MoveContentFilterListener();
+		moveContentFilterListener.setHandler(this);
+		moveContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(MoveContentFilterEvent.class, moveContentFilterListener);
 
 		newContentFilterListener = new NewContentFilterListener();
 		newContentFilterListener.setHandler(this);
@@ -76,6 +84,11 @@ public class ContentFilterManager
 		if (removeContentFilterListener != null) {
 			eventPublisher.removeListener(removeContentFilterListener);
 			removeContentFilterListener = null;
+		}
+		
+		if (moveContentFilterListener != null) {
+			eventPublisher.removeListener(moveContentFilterListener);
+			moveContentFilterListener = null;
 		}
 
 		if (newContentFilterListener != null) {
