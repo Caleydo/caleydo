@@ -3,8 +3,11 @@ package org.caleydo.view.filterpipeline;
 import java.util.Set;
 import javax.media.opengl.GL2;
 import org.caleydo.core.data.filter.ContentFilter;
+import org.caleydo.core.data.filter.ContentMetaOrFilter;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.StorageFilter;
+import org.caleydo.core.data.filter.event.CombineContentFilterEvent;
+import org.caleydo.core.data.filter.event.CombineFilterEvent;
 import org.caleydo.core.data.filter.event.MoveContentFilterEvent;
 import org.caleydo.core.data.filter.event.MoveFilterEvent;
 import org.caleydo.core.data.filter.event.MoveStorageFilterEvent;
@@ -63,6 +66,11 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>>
 			id
 		);
 		this.filter = filter;
+	}
+	
+	public Filter<DeltaType> getFilter()
+	{
+		return filter;
 	}
 	
 	@Override
@@ -205,18 +213,75 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>>
 	{
 		return pickingId;
 	}
+	
+	private FilterRepresentation getFilterRepresentation(Set<IDraggable> draggables)
+	{
+		if( draggables.size() > 1 )
+		{
+			System.err.println("getFilterRepresentation: More than one draggable?");
+			return null;
+		}
+
+		IDraggable draggable = draggables.iterator().next();
+		if( !(draggable instanceof FilterRepresentation) )
+			return null;
+		
+		return (FilterRepresentation) draggable;
+	}
 
 	@Override
 	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
 			float mouseCoordinateY)
 	{
-		// TODO Auto-generated method stub
+		if( getFilterRepresentation(draggables) == representation )
+			return;
+
+		representation.handleDragOver(gl, draggables, mouseCoordinateX, mouseCoordinateY);
 	}
 
 	@Override
 	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
 			float mouseCoordinateY, DragAndDropController dragAndDropController)
 	{
-		// TODO Auto-generated method stub
+		if( getFilterRepresentation(draggables) == representation )
+			return;
+		
+		representation.handleDrop(gl, draggables, mouseCoordinateX, mouseCoordinateY, dragAndDropController);
+		
+		CombineFilterEvent<?> filterEvent = null;
+		
+		if( filter instanceof ContentFilter )
+		{
+			filterEvent = new CombineContentFilterEvent();
+			((CombineContentFilterEvent)filterEvent).setFilter((ContentFilter)filter);
+			((CombineContentFilterEvent)filterEvent).addCombineFilter
+			(
+				(ContentFilter)getFilterRepresentation(draggables).getFilter().filter
+			);
+		}
+//		else if( filter instanceof StorageFilter )
+//		{
+//			
+//		}
+		else
+		{
+			System.err.println(getClass()+"::triggerMove(): Unimplemented...");
+		}
+		
+		if( filterEvent != null )
+		{
+			filterEvent.setDataDomainType(filter.getDataDomain().getDataDomainType());
+			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
+		}
+	}
+
+	public void handleIconMouseOver(int iExternalID)
+	{
+		representation.handleIconMouseOver(iExternalID);
+	}
+
+	public void handleClearMouseOver()
+	{
+		representation.handleClearMouseOver();
 	}
 }

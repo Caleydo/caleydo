@@ -8,6 +8,7 @@ import gleem.linalg.Vec2f;
 import javax.media.opengl.GL2;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
@@ -24,27 +25,36 @@ import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 public class FilterRepresentation
 	implements IDraggable, IRenderable, IDropArea
 {
-	private FilterPipelineRenderStyle renderStyle;
+	protected FilterPipelineRenderStyle renderStyle;
+	protected PickingManager pickingManager;
+	protected int viewId;
 	
-	private static final float Z_POS_BODY = 0.1f;
-	private static final float Z_POS_MARK = 0.7f;
-	private static final float Z_POS_TEXT = 0.8f;
-	private static final float Z_POS_DRAG = 0.9f;
+	protected static final float Z_POS_BODY = 0.1f;
+	protected static final float Z_POS_MARK = 0.6f;
+	protected static final float Z_POS_TEXT = 0.7f;
+	protected static final float Z_POS_DRAG = 0.8f;
+	protected static final float Z_POS_DRAG_OVER = 0.9f;
 
-	private FilterItem<?> filter;
-	private int iPickingID = -1;
-	private SelectionType selectionType = SelectionType.NORMAL;
+	protected FilterItem<?> filter;
+	protected int iPickingID = -1;
+	protected SelectionType selectionType = SelectionType.NORMAL;
 	
-	private Vec2f vPos = new Vec2f();
-	private Vec2f vSize = new Vec2f();
-	private Vec2f vDragStart = null;
+	protected Vec2f vPos = new Vec2f();
+	protected Vec2f vSize = new Vec2f();
+	protected Vec2f vDragStart = null;
+	
+	protected int mouseOverItem = -1;
 	
 	float heightLeft = 0;
 	float heightRight = 0;
 	
-	public FilterRepresentation(FilterPipelineRenderStyle renderStyle)
+	public FilterRepresentation( FilterPipelineRenderStyle renderStyle,
+								 PickingManager pickingManager,
+								 int viewId )
 	{
 		this.renderStyle = renderStyle;
+		this.pickingManager = pickingManager;
+		this.viewId = viewId;
 	}
 	
 	public void setFilter(FilterItem<?> filter)
@@ -147,7 +157,11 @@ public class FilterRepresentation
 		);
 	}
 	
-	private void renderShape(GL2 gl, int renderMode, float[] color, float z)
+	protected void renderShape( GL2 gl,
+			                    int renderMode,
+			                    float[] color,
+			                    float z,
+			                    float offsetRight )
 	{
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 		gl.glBegin(renderMode);
@@ -156,11 +170,16 @@ public class FilterRepresentation
 	
 			gl.glVertex3f(vPos.x(), vPos.y(), z);
 			gl.glVertex3f(vPos.x(), vPos.y() + heightLeft, z);
-			gl.glVertex3f(vPos.x() + vSize.x(), vPos.y() + heightRight, z);
+			gl.glVertex3f(vPos.x() + vSize.x(), vPos.y() + offsetRight + heightRight, z);
 			gl.glVertex3f(vPos.x() + vSize.x(), vPos.y(), z);			
 		}
 		gl.glEnd();
 		gl.glPopAttrib();
+	}
+	
+	protected void renderShape(GL2 gl, int renderMode, float[] color, float z)
+	{
+		renderShape(gl, renderMode, color, z, 0);
 	}
 	
 	/**
@@ -219,7 +238,14 @@ public class FilterRepresentation
 	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
 			float mouseCoordinateY)
 	{
-		// TODO Auto-generated method stub
+		gl.glLineWidth(5);
+		renderShape
+		(
+			gl,
+			GL2.GL_LINE_LOOP,
+			renderStyle.DRAG_OVER_COLOR,
+			Z_POS_DRAG_OVER
+		);
 	}
 
 	@Override
@@ -227,5 +253,15 @@ public class FilterRepresentation
 			float mouseCoordinateY, DragAndDropController dragAndDropController)
 	{
 		// TODO Auto-generated method stub
+	}
+
+	public void handleIconMouseOver(int iExternalID)
+	{
+		mouseOverItem = iExternalID;
+	}
+
+	public void handleClearMouseOver()
+	{
+		mouseOverItem = -1;
 	}
 }

@@ -1,6 +1,7 @@
 package org.caleydo.core.data.filter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
@@ -180,6 +181,36 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 		// place filter on new position
 		filterPipe.set(index + offset, (FilterType)filter);
 
+		reEvaluateFilters();
+		triggerFilterUpdatedEvent();
+	}
+	
+	public void handleCombineFilter(Filter<?> filter, Collection<? extends ContentFilter> combineFilters)
+	{
+		int index = filterPipe.indexOf(filter);
+		
+		if( index < 0 )
+			throw new RuntimeException("handleCombineFilter: filter not found.");
+		
+		ContentMetaOrFilter metaFilter = null;
+		
+		if( filter instanceof ContentMetaOrFilter )
+		{
+			metaFilter = (ContentMetaOrFilter) filter;
+		}
+		else
+		{
+			metaFilter = new ContentMetaOrFilter();
+			metaFilter.setDataDomain(filter.getDataDomain());
+			metaFilter.getFilterList().add((ContentFilter) filter);
+		}
+		
+		metaFilter.getFilterList().addAll(combineFilters);
+		metaFilter.updateDelta();
+		
+		filterPipe.set(index, (FilterType) metaFilter);
+		filterPipe.removeAll(combineFilters);
+		
 		reEvaluateFilters();
 		triggerFilterUpdatedEvent();
 	}

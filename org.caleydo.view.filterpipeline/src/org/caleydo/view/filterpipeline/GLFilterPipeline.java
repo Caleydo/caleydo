@@ -7,6 +7,7 @@ import java.util.List;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.data.filter.ContentMetaOrFilter;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateContentFilterListEvent;
@@ -46,6 +47,7 @@ import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 import org.caleydo.view.filterpipeline.representation.Background;
 import org.caleydo.view.filterpipeline.representation.FilterMenu;
 import org.caleydo.view.filterpipeline.representation.FilterRepresentation;
+import org.caleydo.view.filterpipeline.representation.FilterRepresentationMetaOr;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import com.jogamp.opengl.util.texture.Texture;
@@ -167,7 +169,7 @@ public class GLFilterPipeline
 		radialMenu.addEntry( textureManager.getIconTexture(gl, EIconTextures.FILTER_PIPELINE_DELETE) );
 		radialMenu.addEntry( textureManager.getIconTexture(gl, EIconTextures.FILTER_PIPELINE_EDIT) );
 		
-		filterMenu = new FilterMenu();
+		filterMenu = new FilterMenu(renderStyle, pickingManager, iUniqueID);
 		
 		if( textRenderer != null )
 			textRenderer.dispose();
@@ -384,16 +386,14 @@ public class GLFilterPipeline
 	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode,
 			int iExternalID, Pick pick)
 	{
-		// reset all mouse over actions
-		selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-		filterMenu.setFilter(null);
-		
-		if( pickingMode == EPickingMode.CLICKED )
+		switch(pickingMode)
 		{
-			if( !bControlPressed )
-				selectionManager.clearSelection(SelectionType.SELECTION);
-			
-			dragAndDropController.clearDraggables();
+			case CLICKED:
+				dragAndDropController.clearDraggables();
+				break;
+			case MOUSE_OVER:
+				filterMenu.handleClearMouseOver();
+				break;
 		}
 
 		switch(pickingType)
@@ -403,6 +403,8 @@ public class GLFilterPipeline
 				switch(pickingMode)
 				{
 					case MOUSE_OVER:
+						// remove old mouse over
+						selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 						selectionManager.addToType
 						(
 							SelectionType.MOUSE_OVER, iExternalID
@@ -410,6 +412,9 @@ public class GLFilterPipeline
 						filterMenu.setFilter(filterList.get(iExternalID));
 						break;
 					case CLICKED:
+						if( !bControlPressed )
+							selectionManager.clearSelection(SelectionType.SELECTION);
+
 						// Toggle add/remove element to selection
 						if( selectionManager.checkStatus(SelectionType.SELECTION, iExternalID) )
 						{
@@ -443,19 +448,44 @@ public class GLFilterPipeline
 						dragAndDropController.setDropArea(filterList.get(iExternalID));
 						break;
 				}
-				break;				
+				break;
+			// -----------------------------------------------------------------
+			case FILTERPIPE_SUB_FILTER:
+				switch(pickingMode)
+				{
+					case MOUSE_OVER:
+						filterMenu.handleIconMouseOver(iExternalID);
+						break;
+				}
+				break;
 			// -----------------------------------------------------------------
 			case FILTERPIPE_START_ARROW:
-				if( pickingMode == EPickingMode.CLICKED )
+				switch(pickingMode)
 				{
-					firstFilter = iExternalID;
-					updateFilterSize();
+					case CLICKED:
+						firstFilter = iExternalID;
+						updateFilterSize();
+						// break; Fall through...
+					case MOUSE_OVER:
+						// reset all mouse over actions
+						selectionManager.clearSelection(SelectionType.MOUSE_OVER);
+						filterMenu.setFilter(null);
+						break;
 				}
 				break;				
 			// -----------------------------------------------------------------
 			case FILTERPIPE_BACKGROUND:
 				switch(pickingMode)
 				{
+					case CLICKED:
+						if( !bControlPressed )
+							selectionManager.clearSelection(SelectionType.SELECTION);
+						// break; Fall through...
+					case MOUSE_OVER:
+						// reset all mouse over actions
+						selectionManager.clearSelection(SelectionType.MOUSE_OVER);
+						filterMenu.setFilter(null);
+						break;
 					case DRAGGED:
 						dragAndDropController.setDropArea(background);
 						break;
@@ -650,7 +680,17 @@ public class GLFilterPipeline
 		{
 			FilterItem<?> filterItem =
 				new FilterItem(filterID++, filter, pickingManager, iUniqueID);
-			filterItem.setRepresentation(new FilterRepresentation(renderStyle));
+			
+			if( filter instanceof ContentMetaOrFilter )
+				filterItem.setRepresentation
+				(
+					new FilterRepresentationMetaOr(renderStyle, pickingManager, iUniqueID)
+				);
+			else
+				filterItem.setRepresentation
+				(
+					new FilterRepresentation(renderStyle, pickingManager, iUniqueID)
+				);
 			
 			filterList.add(filterItem);
 		}
