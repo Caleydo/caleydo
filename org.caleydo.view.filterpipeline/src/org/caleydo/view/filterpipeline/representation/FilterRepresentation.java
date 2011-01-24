@@ -3,8 +3,10 @@
  */
 package org.caleydo.view.filterpipeline.representation;
 
-import java.util.Set;
 import gleem.linalg.Vec2f;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.media.opengl.GL2;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -92,12 +94,17 @@ public class FilterRepresentation
 	{
 		return vSize.y() * (filter.getInput().size()/100.f);
 	}
+	
+	public float getHeightRight()
+	{
+		return vSize.y() * (filter.getOutput().size()/100.f);
+	}
 
 	@Override
 	public void render(GL2 gl, CaleydoTextRenderer textRenderer)
 	{
 		heightLeft = getHeightLeft();
-		heightRight = vSize.y() * (filter.getOutput().size()/100.f);
+		heightRight = getHeightRight();
 
 		// render filter
 		gl.glPushName(iPickingID);
@@ -159,27 +166,46 @@ public class FilterRepresentation
 	
 	protected void renderShape( GL2 gl,
 			                    int renderMode,
+			                    final Vec2f pos,
+			                    float width,
+			                    float heightLeft,
+			                    float heightRight,
+			                    float offsetRight,
 			                    float[] color,
-			                    float z,
-			                    float offsetRight )
+			                    float z )
 	{
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 		gl.glBegin(renderMode);
 		{
 			gl.glColor4fv(color, 0);
 	
-			gl.glVertex3f(vPos.x(), vPos.y(), z);
-			gl.glVertex3f(vPos.x(), vPos.y() + heightLeft, z);
-			gl.glVertex3f(vPos.x() + vSize.x(), vPos.y() + offsetRight + heightRight, z);
-			gl.glVertex3f(vPos.x() + vSize.x(), vPos.y(), z);			
+			gl.glVertex3f(pos.x(), pos.y(), z);
+			gl.glVertex3f(pos.x(), pos.y() + heightLeft, z);
+			gl.glVertex3f(pos.x() + width, pos.y() + offsetRight + heightRight, z);
+			gl.glVertex3f(pos.x() + width, pos.y() + offsetRight, z);			
 		}
 		gl.glEnd();
 		gl.glPopAttrib();
 	}
 	
-	protected void renderShape(GL2 gl, int renderMode, float[] color, float z)
+	protected void renderShape( GL2 gl,
+            int renderMode,
+            final Vec2f pos,
+            float width,
+            float heightLeft,
+            float heightRight,
+            float[] color,
+            float z )
 	{
-		renderShape(gl, renderMode, color, z, 0);
+		renderShape(gl, renderMode, pos, width, heightLeft, heightRight, 0, color, z);
+	}
+	
+	protected void renderShape( GL2 gl,
+            int renderMode,
+            float[] color,
+            float z )
+	{
+		renderShape(gl, renderMode, vPos, vSize.x(), heightLeft, heightRight, color, z);
 	}
 	
 	/**

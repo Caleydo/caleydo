@@ -1,5 +1,8 @@
 package org.caleydo.view.filterpipeline.representation;
 
+import java.util.ArrayList;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.media.opengl.GL2;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.ContentMetaOrFilter;
@@ -8,6 +11,7 @@ import org.caleydo.core.data.virtualarray.IVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 
@@ -20,9 +24,12 @@ public class FilterRepresentationMetaOr
 {
 	public static boolean renderPassedAll = false;
 	
-	private int numElementsPassedAll = 0;
-	private int[] subFilterSizes = new int[0];
-	private boolean sizesDirty = true;
+	protected SortedSet<Integer> elementsPassed = new TreeSet<Integer>();
+	protected SortedSet<Integer> elementsPassedAll = new TreeSet<Integer>();
+	protected int[] subFilterSizes = new int[0];
+	protected ArrayList<SortedSet<Integer>> subFiltersPassedElements = null;
+	
+	protected boolean sizesDirty = true;
 
 	public FilterRepresentationMetaOr( FilterPipelineRenderStyle renderStyle,
 									   PickingManager pickingManager,
@@ -67,7 +74,7 @@ public class FilterRepresentationMetaOr
 		if( renderPassedAll )
 		{
 			// render elements passed all filters
-			heightRight = vSize.y() * (numElementsPassedAll/100.f);
+			heightRight = vSize.y() * (elementsPassedAll.size()/100.f);
 			renderShape
 			(
 				gl,
@@ -142,27 +149,54 @@ public class FilterRepresentationMetaOr
 		);
 	}
 	
-	private void calculateSizes()
+	protected void calculateSizes()
 	{
 		sizesDirty  = false;
 		
 		// TODO also handle storage filter
-		IVirtualArray<?,ContentVADelta,?> input =
-			(IVirtualArray<?, ContentVADelta, ?>) filter.getInput().clone();
+		IVirtualArray<?,ContentVADelta,?> input = (IVirtualArray<?, ContentVADelta, ?>) filter.getInput().clone();
+		ArrayList<ContentFilter> filterList = ((ContentMetaOrFilter)filter.getFilter()).getFilterList();
 		
-		for(ContentFilter subFilter : ((ContentMetaOrFilter)filter.getFilter()).getFilterList() )
-			input.setDelta(subFilter.getVADelta());
+		subFilterSizes = new int[filterList.size()];
+		subFiltersPassedElements = new ArrayList<SortedSet<Integer>>(filterList.size());
 		
-		numElementsPassedAll = input.size();
-		
-		subFilterSizes = new int[((ContentMetaOrFilter)filter.getFilter()).getFilterList().size()];
 		int i = 0;
-		for(ContentFilter subFilter : ((ContentMetaOrFilter)filter.getFilter()).getFilterList() )
+		for(ContentFilter subFilter : filterList )
 		{
-			input =	(IVirtualArray<?, ContentVADelta, ?>) filter.getInput().clone();
-			input.setDelta(subFilter.getVADelta());
-			subFilterSizes[i++] = input.size();
+			IVirtualArray<?,ContentVADelta,?> tempInput = input.clone();
+			tempInput.setDelta(subFilter.getVADelta());
+			
+			SortedSet<Integer> passedElements = new TreeSet<Integer>();			
+			for (Integer element : tempInput)
+				passedElements.add(element);
+			
+			subFilterSizes[i++] = passedElements.size();
+			subFiltersPassedElements.add(passedElements);
+
+			System.out.println("Out="+passedElements.size());
 		}
+
+		elementsPassedAll.clear();
+		for( Integer value : filter.getOutput() )
+		{
+			boolean passedAll = true;
+			
+			for( SortedSet<Integer> passedElements : subFiltersPassedElements )
+			{
+				if( !passedElements.contains(value) )
+					passedAll = false;
+			}
+			
+			if( passedAll )
+				elementsPassedAll.add(value);
+		}
+		System.out.println("CommonOut="+elementsPassedAll.size());
+		
+		// cache output
+		elementsPassed.clear();
+		for(Integer element : filter.getOutput())
+			elementsPassed.add(element);
+		System.out.println("TotalOut="+elementsPassed.size());
 	}
 
 }

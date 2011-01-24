@@ -48,6 +48,7 @@ import org.caleydo.view.filterpipeline.representation.Background;
 import org.caleydo.view.filterpipeline.representation.FilterMenu;
 import org.caleydo.view.filterpipeline.representation.FilterRepresentation;
 import org.caleydo.view.filterpipeline.representation.FilterRepresentationMetaOr;
+import org.caleydo.view.filterpipeline.representation.FilterRepresentationMetaOrAdvanced;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import com.jogamp.opengl.util.texture.Texture;
@@ -684,7 +685,7 @@ public class GLFilterPipeline
 			if( filter instanceof ContentMetaOrFilter )
 				filterItem.setRepresentation
 				(
-					new FilterRepresentationMetaOr(renderStyle, pickingManager, iUniqueID)
+					new FilterRepresentationMetaOrAdvanced(renderStyle, pickingManager, iUniqueID)
 				);
 			else
 				filterItem.setRepresentation
