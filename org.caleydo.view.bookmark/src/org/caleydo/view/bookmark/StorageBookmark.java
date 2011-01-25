@@ -4,7 +4,6 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.RenderableLayoutElement;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
@@ -15,7 +14,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  */
 class StorageBookmark extends ABookmark {
 
-	RenderableLayoutElement layoutParameters;
+	ElementLayout layoutParameters;
 
 	/**
 	 * Constructor taking a textRenderer
@@ -31,8 +30,9 @@ class StorageBookmark extends ABookmark {
 		// float height = (float) (textRenderer.getBounds("Text").getHeight())
 		// * GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
-		layoutParameters = new RenderableLayoutElement();
+		layoutParameters = new ElementLayout();
 		layoutParameters.setSizeX(1);
+		layoutParameters.setScaleY(false);
 		layoutParameters.setSizeY(0.2f);
 		layoutParameters.setRenderer(this);
 
@@ -45,6 +45,7 @@ class StorageBookmark extends ABookmark {
 
 	@Override
 	public void render(GL2 gl) {
+		super.render(gl);
 		String sContent = manager.getDataDomain().getStorageLabel(id);
 
 		// ((ISetBasedDataDomain) DataDomainManager.getInstance()

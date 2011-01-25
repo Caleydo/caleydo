@@ -28,6 +28,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.TemplateRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -408,10 +409,16 @@ public class GLBookmarkView extends AGLView implements
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 
+		Column mainColumn = new Column();
+		mainColumn.setYDynamic(true);
+		mainColumn.setXDynamic(true);
+		mainColumn.setBottomUp(false);
+		bookmarkTemplate.setBaseElementLayout(mainColumn);
+
 		ContentBookmarkContainer geneContainer = new ContentBookmarkContainer(this,
 				dataDomain.getContentIDCategory(),
 				dataDomain.getPrimaryContentMappingType());
-		bookmarkTemplate.addRenderElement(geneContainer.getElementLayout());
+		mainColumn.appendElement(geneContainer.getElementLayout());
 
 		hashCategoryToBookmarkContainer.put(dataDomain.getContentIDCategory(),
 				geneContainer);
@@ -419,7 +426,7 @@ public class GLBookmarkView extends AGLView implements
 
 		ExperimentBookmarkContainer experimentContainer = new ExperimentBookmarkContainer(
 				this);
-		bookmarkTemplate.addRenderElement(experimentContainer.getElementLayout());
+		mainColumn.appendElement(experimentContainer.getElementLayout());
 		hashCategoryToBookmarkContainer.put(dataDomain.getStorageIDCategory(),
 				experimentContainer);
 		bookmarkContainers.add(experimentContainer);

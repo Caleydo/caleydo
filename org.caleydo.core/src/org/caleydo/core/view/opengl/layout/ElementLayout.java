@@ -1,28 +1,28 @@
 package org.caleydo.core.view.opengl.layout;
 
+import java.util.ArrayList;
+
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
+
 /**
  * Size parameters for a single element
  * 
  * @author Alexander Lex
  */
-public class ElementLayout
- {
+public class ElementLayout {
 
-	
+	ARenderer renderer;
+	ArrayList<ARenderer> backgroundRenderers;
+	ArrayList<ARenderer> foregroundRenderers;
 
 	boolean scaleX = true;
 	boolean scaleY = true;
 
-	/**
-	 * if true the element is rendered as background, i.e. that the size of it is not included in the
-	 * transform
-	 */
-	boolean isBackground = false;
-
 	float transformX = 0;
 	float transformY = 0;
-	float transformScaledX = 0;
-	float transformScaledY = 0;
+	// float transformScaledX = 0;
+	// float transformScaledY = 0;
 
 	/** use the remaining space in X, invalidates sizeX */
 	boolean grabX = false;
@@ -34,6 +34,45 @@ public class ElementLayout
 	float sizeScaledX = 0;
 	float sizeScaledY = 0;
 
+	public ElementLayout() {
+		renderer = new ARenderer();
+	}
+
+	public ARenderer getRenderer() {
+		return renderer;
+	}
+
+	@SuppressWarnings("unused")
+	public void render(GL2 gl) {
+		if ((this instanceof LayoutContainer && TemplateRenderer.DEBUG_CONTAINERS)
+			|| (!(this instanceof LayoutContainer) && TemplateRenderer.DEBUG_ELEMENTS)) {
+			if (this instanceof LayoutContainer) {
+				gl.glColor3f(1, 1, 0);
+				gl.glLineWidth(4);
+			}
+			else {
+				gl.glColor3f(0, 0, 1);
+				gl.glLineWidth(2);
+			}
+			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glVertex3f(0, 0, 0.2f);
+			gl.glVertex3f(getSizeScaledX(), 0, 0.2f);
+			gl.glVertex3f(getSizeScaledX(), getSizeScaledY(), 0.2f);
+			gl.glVertex3f(0, getSizeScaledY(), 0.2f);
+			gl.glEnd();
+		}
+		if (backgroundRenderers != null) {
+			for (ARenderer backgroundRenderer : backgroundRenderers) {
+				backgroundRenderer.render(gl);
+			}
+		}
+		renderer.render(gl);
+		if (foregroundRenderers != null) {
+			for (ARenderer foregroundRenderer : foregroundRenderers) {
+				foregroundRenderer.render(gl);
+			}
+		}
+	}
 
 	/**
 	 * Set the x size of the element. The size has to be normalized between 0 and 1, where 1 is the whole
@@ -43,6 +82,7 @@ public class ElementLayout
 	 */
 	public void setSizeX(float sizeX) {
 		this.sizeX = sizeX;
+
 	}
 
 	public float getSizeX() {
@@ -96,40 +136,6 @@ public class ElementLayout
 	}
 
 	/**
-	 * Set whether the element should be rendered in the background. If true, it's size is not taken into
-	 * account when calculating layouts. Default is false.
-	 * 
-	 * @param isBackground
-	 */
-	public void setIsBackground(boolean isBackground) {
-		this.isBackground = isBackground;
-	}
-
-	public void setTransformX(float transformX) {
-		this.transformX = transformX;
-	}
-
-	public void setTransformY(float transformY) {
-		this.transformY = transformY;
-	}
-
-	public float getTransformScaledX() {
-		return transformScaledX;
-	}
-
-	public float getTransformScaledY() {
-		return transformScaledY;
-	}
-
-	public float getTransformX() {
-		return transformX;
-	}
-
-	public float getTransformY() {
-		return transformY;
-	}
-
-	/**
 	 * Set whether the values set should be scaled according to the available window, or whether they should
 	 * be of static size. Default is true.
 	 * 
@@ -170,4 +176,87 @@ public class ElementLayout
 			sizeScaledY = sizeY;
 	}
 
+	// void setTransforms(float transformX, float transform)
+
+	void setTransformX(float transformX) {
+		this.transformX = transformX;
+	}
+
+	void setTransformY(float transformY) {
+		this.transformY = transformY;
+	}
+
+	public float getTransformX() {
+		return transformX;
+
+	}
+
+	public float getTransformY() {
+		return transformY;
+
+	}
+
+	protected void updateSpacings(ATemplate template) {
+		// ARenderer renderer = ((RenderableLayoutElement) layout).getRenderer();
+		if (renderer == null)
+			return;
+		renderer.setLimits(getSizeScaledX(), getSizeScaledY());
+		renderer.updateSpacing(template, this);
+		if (backgroundRenderers != null) {
+			for (ARenderer renderer : backgroundRenderers) {
+				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
+			}
+		}
+		if (foregroundRenderers != null)
+
+		{
+			for (ARenderer renderer : foregroundRenderers) {
+				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
+			}
+		}
+
+	}
+
+	public void setRenderer(ARenderer renderer) {
+		this.renderer = renderer;
+	}
+
+	public void addBackgroundRenderer(ARenderer renderer) {
+		if (backgroundRenderers == null)
+			backgroundRenderers = new ArrayList<ARenderer>(3);
+		backgroundRenderers.add(renderer);
+	}
+
+	public void addForeGroundRenderer(ARenderer renderer) {
+		if (foregroundRenderers == null)
+			foregroundRenderers = new ArrayList<ARenderer>(3);
+		foregroundRenderers.add(renderer);
+	}
+
+	/**
+	 * Get the unscalable height part of this layout
+	 * 
+	 * @return
+	 */
+	public float getUnscalableElementHeight() {
+
+		if (scaleY)
+			return 0;
+		else
+			return sizeY;
+
+	}
+
+	/**
+	 * Get the unscalable height part of this layout
+	 * 
+	 * @return
+	 */
+	public float getUnscalableElementWidth() {
+
+		if (scaleX)
+			return 0;
+		else
+			return sizeX;
+	}
 }

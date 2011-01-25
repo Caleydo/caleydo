@@ -4,7 +4,6 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.RenderableLayoutElement;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -16,7 +15,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  */
 class ContentBookmark extends ABookmark {
 
-	private RenderableLayoutElement layoutParameters;
+	private ElementLayout layoutParameters;
 
 	/**
 	 * Constructor taking a textRenderer
@@ -31,9 +30,10 @@ class ContentBookmark extends ABookmark {
 		// float height = (float) (textRenderer.getBounds("Text").getHeight())
 		// * GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
-		layoutParameters = new RenderableLayoutElement();
+		layoutParameters = new ElementLayout();
 		layoutParameters.setSizeX(1);
-		layoutParameters.setSizeY(0.2f);
+		layoutParameters.setScaleY(false);
+		layoutParameters.setSizeY(0.3f);
 		layoutParameters.setRenderer(this);
 
 	}
@@ -45,6 +45,7 @@ class ContentBookmark extends ABookmark {
 
 	@Override
 	public void render(GL2 gl) {
+		super.render(gl);
 		GLHelperFunctions.drawAxis(gl);
 		// String sContent = GeneralManager.get().getIDMappingManager().getID(
 		// manager.getDataDomain().getPrimaryContentMappingType(),

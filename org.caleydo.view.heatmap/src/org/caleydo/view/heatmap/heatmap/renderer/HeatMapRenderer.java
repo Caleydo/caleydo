@@ -14,6 +14,7 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.layout.ATemplate;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 
@@ -138,6 +139,11 @@ public class HeatMapRenderer extends AContentRenderer {
 
 	public float getXCoordinateByStorageIndex(int storageIndex) {
 		return contentSpacing.getFieldWidth() * storageIndex;
+	}
+	
+	@Override
+	public String toString() {
+		return "HeatMapRenderer";
 	}
 
 }

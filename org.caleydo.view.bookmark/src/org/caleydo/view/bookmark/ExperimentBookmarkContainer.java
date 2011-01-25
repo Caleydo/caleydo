@@ -35,7 +35,7 @@ class ExperimentBookmarkContainer extends ABookmarkContainer<StorageSelectionMan
 			StorageBookmark bookmark = new StorageBookmark(manager, internalIDType, id,
 					manager.getTextRenderer());
 			bookmarkItems.add(bookmark);
-			layoutRow.appendElement(bookmark.getElementLayout());
+			containerLayout.appendElement(bookmark.getElementLayout());
 			// selectionManager.add(id);
 		}
 		updateContainerSize();

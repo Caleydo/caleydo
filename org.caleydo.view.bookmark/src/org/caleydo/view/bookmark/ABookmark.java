@@ -37,7 +37,10 @@ public abstract class ABookmark extends ARenderer implements ILayoutedElement{
 	
 	}
 
-	public abstract void render(GL2 gl);
+	public void render(GL2 gl)
+	{
+		super.render(gl);
+	}
 
 
 

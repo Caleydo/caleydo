@@ -1,7 +1,5 @@
 package org.caleydo.core.view.opengl.layout;
 
-import java.util.ArrayList;
-
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 public abstract class ATemplate {
@@ -12,7 +10,7 @@ public abstract class ATemplate {
 	public static final float SPACING = 0.01f;
 	// protected ArrayList<ElementLayout> rendererParameters;
 
-	protected ArrayList<ElementLayout> verticalLayoutElements;
+	protected ElementLayout baseElementLayout;
 
 	// protected TemplateRenderer templateRenderer;
 
@@ -22,95 +20,41 @@ public abstract class ATemplate {
 
 	protected boolean isActive;
 
-	public ATemplate() {
-		// rendererParameters = new ArrayList<ElementLayout>(15);
-		verticalLayoutElements = new ArrayList<ElementLayout>(15);
-		// horizontalElements = new ArrayList<ElementLayout>();
-		// this.templateRenderer = templateRenderer;
-	}
-
-	public ArrayList<ElementLayout> getVerticalLayoutElements() {
-		return verticalLayoutElements;
-	}
-
-	// public void setTemplateRenderer(TemplateRenderer templateRenderer) {
-	// this.templateRenderer = templateRenderer;
-	//
-	// }
-
-	abstract public void setParameters();
-
-	public void calculateScales(float totalWidth, float totalHeight) {
-
-		for (ElementLayout element : verticalLayoutElements) {
-			if (!element.scaleY)
-				totalHeight -= element.sizeY;
-		}
-
-		// take care of greedy elements in x and y
-		ElementLayout greedyVerticalElement = null;
-		float usedSizeY = 0;
-		for (ElementLayout parameter : verticalLayoutElements) {
-			if (parameter.grabY)
-				greedyVerticalElement = parameter;
-			else if (!parameter.isBackground)
-				usedSizeY += parameter.sizeY;
-
-			if (parameter instanceof Row) {
-				Row row = (Row) parameter;
-				float usedSizeX = 0;
-				ElementLayout greedyHorizontalElement = null;
-
-				for (ElementLayout rowElement : row) {
-					if (rowElement.grabX)
-						greedyHorizontalElement = rowElement;
-					else if (!rowElement.isBackground)
-						usedSizeX += rowElement.sizeX;
-				}
-				if (greedyHorizontalElement != null)
-					greedyHorizontalElement.sizeX = 1 - usedSizeX;
-			}
-		}
-
-		// calculate the actual spacings and offsets
-		float yOffset = 0;
-		if (greedyVerticalElement != null)
-			greedyVerticalElement.sizeY = 1 - usedSizeY;
-
-		// here we assume that the greedy element is also the "central" one
-		yOverhead = usedSizeY;
-
-		for (int count = verticalLayoutElements.size() - 1; count >= 0; count--) {
-			ElementLayout element = verticalLayoutElements.get(count);
-			element.transformScaledY = yOffset;
-			if (element instanceof Row) {
-				float xOffset = 0;
-				Row row = (Row) element;
-				for (ElementLayout rowElement : row) {
-					row.sizeY = rowElement.sizeY;
-					// rowElement.sizeY = row.sizeY;
-					rowElement.transformScaledX = xOffset;
-					rowElement.calculateScales(totalWidth, totalHeight);
-					rowElement.transformScaledY = row.transformScaledY;
-					if (!rowElement.isBackground)
-						xOffset += rowElement.sizeScaledX;
-				}
-			}
-			element.calculateScales(totalWidth, totalHeight);
-			if (!element.isBackground)
-				yOffset += element.sizeScaledY;
-		}
+	public ElementLayout getBaseLayoutElement() {
+		return baseElementLayout;
 	}
 
 	/**
-	 * Add a vertical render element
-	 * 
-	 * @param element
+	 * For static layouts (for example for a particular view) the layouting should be done in a sub-class of
+	 * ATemplate in this method. If the layout is generated dynamically, this typically should be empty.
 	 */
-	public void addRenderElement(ElementLayout element) {
-		verticalLayoutElements.add(element);
+	abstract public void setParameters();
+
+	/**
+	 * Calculate the size and positions of the layout elements in the template
+	 * 
+	 * @param totalWidth
+	 * @param totalHeight
+	 */
+	public void calculateScales(float totalWidth, float totalHeight) {
+
+		baseElementLayout.calculateScales(totalWidth, totalHeight);
+		if (baseElementLayout instanceof LayoutContainer)
+			((LayoutContainer) baseElementLayout).calculateTransforms(0, 0, totalHeight, totalWidth);
 	}
 
+	/**
+	 * Set the base element layout - which is the topmost layout containing all other element layouts
+	 * 
+	 * @param baseElementLayout
+	 */
+	public void setBaseElementLayout(ElementLayout baseElementLayout) {
+		this.baseElementLayout = baseElementLayout;
+	}
+
+	/**
+	 * 
+	 */
 	public void recalculateSpacings() {
 		setParameters();
 	}

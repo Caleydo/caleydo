@@ -1,7 +1,7 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
+import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.RenderableLayoutElement;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -23,74 +23,61 @@ public class BucketTemplate extends AHeatMapTemplate {
 
 	@Override
 	public void setParameters() {
+		Column mainColumn = new Column();
+		setBaseElementLayout(mainColumn);
+		mainColumn.setSizeX(1);
+		mainColumn.setSizeY(1);
+//		mainColumn.setBottomUp(false);
+
 		contentCaptionRenderer.setFontScaling(fontScaling);
-		// rendererParameters.clear();
-		verticalLayoutElements.clear();
+
 		Row hmRow = new Row();
 		// hmRow.grabY = true;
 		// heat map
-		RenderableLayoutElement hm = new RenderableLayoutElement();
-		hm.setGrabX(true);
-		hm.setSizeY(1f);
-		hm.setRenderer(heatMapRenderer);
-		// rendererParameters.add(hm);
-		heatMapLayout = hm;
-
-		RenderableLayoutElement contentSelectionLayout = new RenderableLayoutElement();
-		contentSelectionLayout.setIsBackground(true);
-		contentSelectionLayout.setSizeX(1);
-		contentSelectionLayout.setSizeY(1);
-		contentSelectionLayout.setRenderer(contentSelectionRenderer);
-		// rendererParameters.add(contentSelectionLayout);
-
-		RenderableLayoutElement storageSelectionLayout = new RenderableLayoutElement();
-		storageSelectionLayout.setIsBackground(true);
-		// contentSelectionLayout.sizeX = 1;
-		storageSelectionLayout.setSizeY(1);
-		storageSelectionLayout.setRenderer(storageSelectionRenderer);
-		// rendererParameters.add(storageSelectionLayout);
+		heatMapLayout = new ElementLayout();
+		heatMapLayout.setGrabX(true);
+		heatMapLayout.setSizeY(1f);
+		heatMapLayout.setRenderer(heatMapRenderer);
+		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
+		heatMapLayout.addForeGroundRenderer(storageSelectionRenderer);
 
 		boolean renderCaptions = false;
 		if (heatMap.isShowCaptions())
 			renderCaptions = true;
-		RenderableLayoutElement caption = null;
+		ElementLayout caption = null;
 		ElementLayout spacing = null;
-		RenderableLayoutElement cage = null;
 		if (renderCaptions) {
 			// content cage
 
-			cage = new RenderableLayoutElement();
-			cage.setSizeX(0.1f);
-			cage.setSizeY(1f);
-			cage.setIsBackground(true);
+			// cage = new ElementLayout();
+			// cage.setSizeX(0.1f);
+			// cage.setSizeY(1f);
+			// cage.setIsBackground(true);
 
-			cage.setRenderer(captionCageRenderer);
+			// cage.setRenderer();
 			// rendererParameters.add(cage);
 
 			spacing = new ElementLayout();
 			spacing.setSizeX(0.01f);
 
 			// content captions
-			caption = new RenderableLayoutElement();
+			caption = new ElementLayout();
 			caption.setSizeX(0.09f);
 			caption.setSizeY(1f);
 			caption.setRenderer(contentCaptionRenderer);
+			caption.addBackgroundRenderer(captionCageRenderer);
 
 			// rendererParameters.add(caption);
 		}
 
-		hmRow.appendElement(contentSelectionLayout);
-
-		hmRow.appendElement(storageSelectionLayout);
-		hmRow.appendElement(hm);
+		hmRow.appendElement(heatMapLayout);
 
 		if (renderCaptions) {
-			hmRow.appendElement(cage);
 			hmRow.appendElement(spacing);
 			hmRow.appendElement(caption);
 		}
 
-		addRenderElement(hmRow);
+		mainColumn.appendElement(hmRow);
 
 	}
 

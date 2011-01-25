@@ -56,7 +56,7 @@ class ContentBookmarkContainer extends ABookmarkContainer<ContentSelectionManage
 			ContentBookmark bookmark = new ContentBookmark(manager, idType, convertedIDs
 					.iterator().next(), manager.getTextRenderer());
 			bookmarkItems.add(bookmark);
-			layoutRow.appendElement(bookmark.getElementLayout());
+			containerLayout.appendElement(bookmark.getElementLayout());
 			// selectionManager.add(davidID);
 		}
 		updateContainerSize();

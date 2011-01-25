@@ -77,7 +77,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 */
 //	Dimensions containerDimensions;
 
-	Column layoutRow;
+	Column containerLayout;
 	/** The name displayed as the heading in the sidebar */
 	String categoryName;
 	/**
@@ -125,12 +125,18 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 		this.category = category;
 		this.categoryName = category.getCategoryName();
 		this.pickingIDManager = manager.getPickingIDManager();
-		this.layoutRow = new Column();
+		this.containerLayout = new Column();
+		containerLayout.setYDynamic(true);
+		containerLayout.setXDynamic(true);
+		containerLayout.setBottomUp(false);
+		ContainerHeading heading = new ContainerHeading(manager);
+		containerLayout.appendElement(heading.getElementLayout());
+		
 //		containerDimensions = new Dimensions();
 	}
 
 	public ElementLayout getElementLayout() {
-		return layoutRow;
+		return containerLayout;
 	};
 
 	/**
@@ -169,48 +175,48 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 //				containerDimensions.getXOrigin() + BookmarkRenderStyle.SIDE_SPACING,
 //				yOrigin, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
-		for (ABookmark item : bookmarkItems) {
-		
-
-//			item.getDimensions().setOrigins(BookmarkRenderStyle.SIDE_SPACING, yOrigin);
-//			item.getDimensions()
-//					.setWidth(
-//							containerDimensions.getWidth() - 2
-//									* BookmarkRenderStyle.SIDE_SPACING);
-//			yOrigin -= item.getDimensions().getHeight();
-
-			float[] highlightColor = null;
-
-			if (selectionManager.checkStatus(SelectionType.MOUSE_OVER, item.getID())) {
-				highlightColor = SelectionType.MOUSE_OVER.getColor();
-			} else if (selectionManager
-					.checkStatus(SelectionType.SELECTION, item.getID())) {
-				highlightColor = SelectionType.SELECTION.getColor();
-
-			}
-			int pickingID = pickingIDManager.getPickingID(this, item.getID());
-			gl.glPushName(pickingID);
-
-			item.render(gl);
-
-			if (highlightColor != null) {
-
-//				float xOrigin = item.getDimensions().getXOrigin();
-//				float width = item.getDimensions().getWidth();
-//				float height = item.getDimensions().getHeight()
-//						- BookmarkRenderStyle.FRAME_SPACING;
+//		for (ABookmark item : bookmarkItems) {
+//		
 //
-//				gl.glColor3fv(highlightColor, 0);
-//				gl.glBegin(GL2.GL_LINE_LOOP);
-//				gl.glVertex3f(xOrigin, yOrigin, 0);
-//				gl.glVertex3f(xOrigin + width, yOrigin, 0);
-//				gl.glVertex3f(xOrigin + width, yOrigin + height, 0);
-//				gl.glVertex3f(xOrigin, yOrigin + height, 0);
-//				gl.glEnd();
-			}
-			gl.glPopName();
-//			containerDimensions.increaseHeight(item.getDimensions().getHeight());
-		}
+////			item.getDimensions().setOrigins(BookmarkRenderStyle.SIDE_SPACING, yOrigin);
+////			item.getDimensions()
+////					.setWidth(
+////							containerDimensions.getWidth() - 2
+////									* BookmarkRenderStyle.SIDE_SPACING);
+////			yOrigin -= item.getDimensions().getHeight();
+//
+//			float[] highlightColor = null;
+//
+//			if (selectionManager.checkStatus(SelectionType.MOUSE_OVER, item.getID())) {
+//				highlightColor = SelectionType.MOUSE_OVER.getColor();
+//			} else if (selectionManager
+//					.checkStatus(SelectionType.SELECTION, item.getID())) {
+//				highlightColor = SelectionType.SELECTION.getColor();
+//
+//			}
+//			int pickingID = pickingIDManager.getPickingID(this, item.getID());
+//			gl.glPushName(pickingID);
+//
+//			item.render(gl);
+//
+//			if (highlightColor != null) {
+//
+////				float xOrigin = item.getDimensions().getXOrigin();
+////				float width = item.getDimensions().getWidth();
+////				float height = item.getDimensions().getHeight()
+////						- BookmarkRenderStyle.FRAME_SPACING;
+////
+////				gl.glColor3fv(highlightColor, 0);
+////				gl.glBegin(GL2.GL_LINE_LOOP);
+////				gl.glVertex3f(xOrigin, yOrigin, 0);
+////				gl.glVertex3f(xOrigin + width, yOrigin, 0);
+////				gl.glVertex3f(xOrigin + width, yOrigin + height, 0);
+////				gl.glVertex3f(xOrigin, yOrigin + height, 0);
+////				gl.glEnd();
+//			}
+//			gl.glPopName();
+////			containerDimensions.increaseHeight(item.getDimensions().getHeight());
+//		}
 
 		// GLHelperFunctions.drawPointAt(gl, 0, containerDimensions.getHeight(),
 		// 0);
