@@ -2014,6 +2014,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		ContentFilter filter = new ContentFilter();
 		filter.setDelta(delta);
 		filter.setLabel(label);
+		filter.setDataDomain(dataDomain);
 
 		NewContentFilterEvent filterEvent = new NewContentFilterEvent();
 		filterEvent.setFilter(filter);
