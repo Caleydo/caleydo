@@ -48,7 +48,7 @@ public class Column
 		float actualWidth = 0;
 		float actualHeight = 0;
 		for (ElementLayout element : elements) {
-			element.calculateScales(availableWidth - actualWidth, availableHeight - actualHeight);
+			element.calculateScales(availableWidth, availableHeight - actualHeight);
 			actualHeight += element.getSizeScaledY();
 			if (actualWidth < element.getSizeScaledX())
 				actualWidth = element.getSizeScaledX();

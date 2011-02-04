@@ -1343,12 +1343,12 @@ public class GLScatterPlot extends AStorageBasedView {
 
 					FbTemp.rewind();
 				}
-				TextureData texData = new TextureData(GLProfile.getDefault(), GL2.GL_RGBA /* internalFormat */,
-						iTextureWidth /* height */, iTextureHeight /* width */,
-						0 /* border */, GL2.GL_RGBA /* pixelFormat */,
-						GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
-						false /* dataIsCompressed */, true /* mustFlipVertically */, FbTemp,
-						null);
+				TextureData texData = new TextureData(GLProfile.getDefault(),
+						GL2.GL_RGBA /* internalFormat */, iTextureWidth /* height */,
+						iTextureHeight /* width */, 0 /* border */,
+						GL2.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
+						false /* mipmap */, false /* dataIsCompressed */,
+						true /* mustFlipVertically */, FbTemp, null);
 
 				tempTextur = TextureIO.newTexture(0);
 				tempTextur.updateImage(texData);
@@ -1484,12 +1484,12 @@ public class GLScatterPlot extends AStorageBasedView {
 					}
 					FbTemp.rewind();
 				}
-				TextureData texData = new TextureData(GLProfile.getDefault(), GL2.GL_RGBA /* internalFormat */,
-						iTextureWidth /* height */, iTextureHeight /* width */,
-						0 /* border */, GL2.GL_RGBA /* pixelFormat */,
-						GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
-						false /* dataIsCompressed */, true /* mustFlipVertically */, FbTemp,
-						null);
+				TextureData texData = new TextureData(GLProfile.getDefault(),
+						GL2.GL_RGBA /* internalFormat */, iTextureWidth /* height */,
+						iTextureHeight /* width */, 0 /* border */,
+						GL2.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
+						false /* mipmap */, false /* dataIsCompressed */,
+						true /* mustFlipVertically */, FbTemp, null);
 
 				tempTextur = TextureIO.newTexture(0);
 				tempTextur.updateImage(texData);
@@ -1883,12 +1883,12 @@ public class GLScatterPlot extends AStorageBasedView {
 		gl.glTranslatef(tmpx, tmpy, 0);
 		gl.glRotatef(fRotation, 0, 0, 1);
 		textRenderer.setColor(0, 0, 0, 1);
-		textRenderer.begin3DRendering();
-		textRenderer.draw3D(gl, sLabel, 0,
+
+		textRenderer.renderText(gl, sLabel, 0,
 				0,// + (1 * height / 3),
 				ScatterPlotRenderStyle.MATRIX_HISTOGRAMM_Z, fScaling,
 				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
-		textRenderer.end3DRendering();
+
 		gl.glRotatef(-fRotation, 0, 0, 1);
 		gl.glTranslatef(-tmpx, -tmpy, 0);
 		// gl.glPopAttrib();
@@ -2054,7 +2054,7 @@ public class GLScatterPlot extends AStorageBasedView {
 				renderStyle.getAxisHeight() + 1.3f * XYAXISDISTANCE, 0);
 
 		gl.glRotatef(XLABELROTATIONNAGLE, 0, 0, 1);
-		textRenderer.begin3DRendering();
+
 		float fScaling = renderStyle.getSmallFontScalingFactor();
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
@@ -2064,9 +2064,9 @@ public class GLScatterPlot extends AStorageBasedView {
 		if (bRender2Axis)
 			sAxisLabel += " / " + set.get(storageVA.get(iSelectedAxisIndexX2)).getLabel();
 
-		textRenderer.draw3D(gl, sAxisLabel, 0, 0, 0, fScaling,
+		textRenderer.renderText(gl, sAxisLabel, 0, 0, 0, fScaling,
 				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
-		textRenderer.end3DRendering();
+
 		gl.glRotatef(-XLABELROTATIONNAGLE, 0, 0, 1);
 		// if(bRenderMatrix)
 		// gl.glTranslatef(-renderStyle.getLAbelWidth(), +5*XLABELDISTANCE, 0);
@@ -2114,15 +2114,12 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	private void renderNumber(GL2 gl, String sRawValue, float fXOrigin, float fYOrigin) {
 
-		textRenderer.begin3DRendering();
-
 		float fScaling = renderStyle.getSmallFontScalingFactor();
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
-		textRenderer.draw3D(gl, sRawValue, fXOrigin, fYOrigin,
+		textRenderer.renderText(gl, sRawValue, fXOrigin, fYOrigin,
 				ScatterPlotRenderStyle.TEXT_ON_LABEL_Z, fScaling,
 				ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
-		textRenderer.end3DRendering();
 
 	}
 
@@ -2384,10 +2381,10 @@ public class GLScatterPlot extends AStorageBasedView {
 		gl.glEnd();
 
 		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
-		textRenderer.begin3DRendering();
-		textRenderer.draw3D(gl, sLabel, 0, 0, ScatterPlotRenderStyle.TEXT_ON_LABEL_Z,
+
+		textRenderer.renderText(gl, sLabel, 0, 0, ScatterPlotRenderStyle.TEXT_ON_LABEL_Z,
 				fScaling, ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
-		textRenderer.end3DRendering();
+
 		gl.glPopAttrib();
 
 		gl.glTranslatef(-x, -y, 0);

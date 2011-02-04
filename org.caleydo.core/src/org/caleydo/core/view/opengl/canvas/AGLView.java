@@ -166,6 +166,8 @@ public abstract class AGLView
 
 	protected CaleydoTextRenderer textRenderer;
 
+	protected PixelGLConverter pixelGLConverter;
+
 	/**
 	 * Constructor.
 	 */
@@ -194,6 +196,7 @@ public abstract class AGLView
 		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 
 		bShowMagnifyingGlass = false;
+		pixelGLConverter = new PixelGLConverter(viewFrustum, getParentGLCanvas());
 	}
 
 	@Override
@@ -249,13 +252,11 @@ public abstract class AGLView
 		}
 	}
 
-	
-	
-//	@Override
-//	public final void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
-//
-//		((GLEventListener) parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
-//	}
+	// @Override
+	// public final void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
+	//
+	// ((GLEventListener) parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
+	// }
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -841,10 +842,28 @@ public abstract class AGLView
 		textRenderer.draw3D(text, x, y, z, size);
 		textRenderer.end3DRendering();
 	}
-	
+
 	@Override
 	public void dispose(GLAutoDrawable arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
+	public PixelGLConverter getPixelGLConverter() {
+		return pixelGLConverter;
+	}
+
+	// public float getGLWidthForPixelWidth(int pixelWidth) {
+	// float totalWidthGL = viewFrustum.getWidth();
+	// int totalWidthPixel = (int) parentGLCanvas.getBounds().getWidth();
+	// float width = totalWidthGL / totalWidthPixel * pixelWidth;
+	// return width;
+	// }
+	//
+	// public float getGLHeightForPixelHeight(int pixelHeight) {
+	// float totalHeightGL = viewFrustum.getHeight();
+	// int totalHeightPixel = (int) parentGLCanvas.getBounds().getHeight();
+	// float width = totalHeightGL / totalHeightPixel * pixelHeight;
+	// return width;
+	// }
 }

@@ -3,7 +3,6 @@ package org.caleydo.view.bookmark;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.util.collection.UniqueList;
-import org.caleydo.core.view.opengl.layout.Row;
 
 /**
  * A concrete implementation of ABookmarkContainer for the category
@@ -11,9 +10,9 @@ import org.caleydo.core.view.opengl.layout.Row;
  * 
  * @author Alexander Lex
  */
-class ExperimentBookmarkContainer extends ABookmarkContainer<StorageSelectionManager> {
+class StorageBookmarkContainer extends ABookmarkContainer<StorageSelectionManager> {
 
-	ExperimentBookmarkContainer(GLBookmarkView manager) {
+	StorageBookmarkContainer(GLBookmarkView manager) {
 		super(manager, manager.getDataDomain().getStorageIDCategory(), manager
 				.getDataDomain().getPrimaryStorageMappingType());
 		bookmarkItems = new UniqueList<ABookmark>();
@@ -32,10 +31,10 @@ class ExperimentBookmarkContainer extends ABookmarkContainer<StorageSelectionMan
 			} else
 				throw new IllegalStateException("Can not handle strings for experiments");
 
-			StorageBookmark bookmark = new StorageBookmark(manager, internalIDType, id,
-					manager.getTextRenderer());
-			bookmarkItems.add(bookmark);
-			containerLayout.appendElement(bookmark.getElementLayout());
+			StorageBookmark bookmark = new StorageBookmark(manager, this, internalIDType,
+					id, manager.getTextRenderer());
+			if (bookmarkItems.add(bookmark))
+				containerLayout.appendElement(bookmark.getElementLayout());
 			// selectionManager.add(id);
 		}
 		updateContainerSize();

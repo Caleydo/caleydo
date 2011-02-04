@@ -15,6 +15,8 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
  */
 public class GeneralRenderStyle {
 
+	public static final int TEXT_MIN_SIZE = 50;
+	
 	public static final float VERY_SMALL_FONT_SCALING_FACTOR = 0.002f;
 
 	public static final float SMALL_FONT_SCALING_FACTOR = 0.003f;
@@ -41,7 +43,7 @@ public class GeneralRenderStyle {
 
 	public static final float MOUSE_OVER_LINE_WIDTH = 2;
 
-	public static final int NUM_CHAR_LIMIT = 8;
+	public static final int NUM_CHAR_LIMIT = 12;
 
 	protected static final float BUTTONS_SPACING = 0.005f;
 

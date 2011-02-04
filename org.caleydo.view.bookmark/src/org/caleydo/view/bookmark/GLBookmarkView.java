@@ -1,9 +1,11 @@
 package org.caleydo.view.bookmark;
 
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -29,12 +31,11 @@ import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.layout.Column;
-import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.TemplateRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -80,7 +81,9 @@ public class GLBookmarkView extends AGLView implements
 	private TemplateRenderer templateRenderer;
 
 	/** The render template */
-	BookmarkTemplate bookmarkTemplate;
+	private BookmarkTemplate bookmarkTemplate;
+
+	private MinSizeTextRenderer textRenderer;
 
 	class PickingIDManager {
 		/**
@@ -131,6 +134,15 @@ public class GLBookmarkView extends AGLView implements
 		templateRenderer = new TemplateRenderer(viewFrustum);
 		bookmarkTemplate = new BookmarkTemplate();
 		templateRenderer.setTemplate(bookmarkTemplate);
+
+	}
+
+	@Override
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+		super.reshape(drawable, x, y, width, height);
+		Rectangle2D bounds = parentGLCanvas.getBounds();
+		textRenderer.setWindowSize(bounds.getWidth(), bounds.getHeight());
+		
 	}
 
 	@Override
@@ -231,37 +243,6 @@ public class GLBookmarkView extends AGLView implements
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 		templateRenderer.render(gl);
 		gl.glEndList();
-
-		// float currentHeight = viewFrustum.getHeight() -
-		// BookmarkRenderStyle.TOP_SPACING;
-		// for (ABookmarkContainer<?> container : bookmarkContainers) {
-		// container.getDimensions().setOrigins(0.0f, currentHeight);
-		// container.getDimensions().setWidth(viewFrustum.getWidth());
-		// currentHeight -= container.getDimensions().getHeight();
-		// container.render(gl);
-		// }
-		//
-		// gl.glEndList();
-		//
-		// if (contentChanged) {
-		// float height = 40; // TODO determine dynamically
-		// float width = 8; // TODO determine dynamically
-		// int minViewportHeight = (int) (parentGLCanvas.getHeight()
-		// / viewFrustum.getHeight() * height) + 10;
-		// int minViewportWidth = (int) (parentGLCanvas.getWidth()
-		// / viewFrustum.getWidth() * width) + 10;
-		// renderStyle.setMinViewDimensions(minViewportWidth, minViewportHeight,
-		// this);
-		// if (parentGLCanvas.getHeight() <= 0) {
-		// // Draw again in next frame where the viewport size is hopefully
-		// // correct
-		// setDisplayListDirty();
-		// } else {
-		// // at the moment we do not consider a content change and make
-		// // the size adaption only once
-		// contentChanged = false;
-		// }
-		// }
 	}
 
 	@Override
@@ -319,6 +300,9 @@ public class GLBookmarkView extends AGLView implements
 
 	@Override
 	public void init(GL2 gl) {
+		Rectangle2D bounds = parentGLCanvas.getBounds();
+		textRenderer = new MinSizeTextRenderer();
+		textRenderer.setWindowSize(bounds.getWidth(), bounds.getHeight());
 	}
 
 	@Override
@@ -392,7 +376,7 @@ public class GLBookmarkView extends AGLView implements
 		return contextMenu;
 	}
 
-	CaleydoTextRenderer getTextRenderer() {
+	MinSizeTextRenderer getTextRenderer() {
 		return textRenderer;
 	}
 
@@ -413,6 +397,7 @@ public class GLBookmarkView extends AGLView implements
 		mainColumn.setYDynamic(true);
 		mainColumn.setXDynamic(true);
 		mainColumn.setBottomUp(false);
+		mainColumn.setPixelGLConverter(pixelGLConverter);
 		bookmarkTemplate.setBaseElementLayout(mainColumn);
 
 		ContentBookmarkContainer geneContainer = new ContentBookmarkContainer(this,
@@ -424,8 +409,7 @@ public class GLBookmarkView extends AGLView implements
 				geneContainer);
 		bookmarkContainers.add(geneContainer);
 
-		ExperimentBookmarkContainer experimentContainer = new ExperimentBookmarkContainer(
-				this);
+		StorageBookmarkContainer experimentContainer = new StorageBookmarkContainer(this);
 		mainColumn.appendElement(experimentContainer.getElementLayout());
 		hashCategoryToBookmarkContainer.put(dataDomain.getStorageIDCategory(),
 				experimentContainer);

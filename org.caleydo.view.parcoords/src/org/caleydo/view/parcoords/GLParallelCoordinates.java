@@ -341,7 +341,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	@Override
 	public void display(final GL2 gl) {
 
-//		displayVBO(gl);
+		// displayVBO(gl);
 
 		gl.glEnable(GL2.GL_BLEND);
 
@@ -402,37 +402,33 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		// GLHelperFunctions.drawPointAt(gl, 0.5f, 0.5f, 0f);
 
 		gl.glColor3f(0, 0, 1);
-//		int[] indices = { 0, 1, 1, 2, 2, 3, 3};
+		// int[] indices = { 0, 1, 1, 2, 2, 3, 3};
 		int size = 100000;
 		int[] indices = new int[size];
-		for(int count = 0; count < size-1;)
-		{
-			if(count -1 >= 0)
-			{
-			indices[count] = indices[count-1];
-			indices[count+1] = count;
-			}
-			else
-			{
+		for (int count = 0; count < size - 1;) {
+			if (count - 1 >= 0) {
+				indices[count] = indices[count - 1];
+				indices[count + 1] = count;
+			} else {
 				indices[count] = 0;
-				indices[count+1] = 1;
+				indices[count + 1] = 1;
 			}
-			count +=2;
-			
+			count += 2;
+
 		}
 		IntBuffer indexBuffer = Buffers.newDirectIntBuffer(indices);
 		indexBuffer.rewind();
 
 		if (vertexBufferIndices[0] == -1) {
-//			 float vertices[] = new float[] { 0.0f, 0.0f, 0.5f, 0.5f, 2, 1, 4,
-//			 2, 5, 6};
+			// float vertices[] = new float[] { 0.0f, 0.0f, 0.5f, 0.5f, 2, 1, 4,
+			// 2, 5, 6};
 
 			float vertices[] = generateVertexBuffer();
 
 			FloatBuffer vertexBuffer = Buffers.newDirectFloatBuffer(vertices);
 
 			vertexBuffer.rewind();
-			
+
 			if (!gl.isFunctionAvailable("glGenBuffers")
 					|| !gl.isFunctionAvailable("glBindBuffer")
 					|| !gl.isFunctionAvailable("glBufferData")
@@ -444,13 +440,15 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			gl.glBufferData(GL.GL_ARRAY_BUFFER, vertices.length * Buffers.SIZEOF_FLOAT,
 					vertexBuffer, GL2.GL_DYNAMIC_DRAW);
 			gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
-//			ByteBuffer bytebuffer = gl.glMapBuffer(GL.GL_ARRAY_BUFFER, GL2.GL_WRITE_ONLY);
-//			FloatBuffer floatBuffer = bytebuffer.order(ByteOrder.nativeOrder())
-//					.asFloatBuffer();
+			// ByteBuffer bytebuffer = gl.glMapBuffer(GL.GL_ARRAY_BUFFER,
+			// GL2.GL_WRITE_ONLY);
+			// FloatBuffer floatBuffer =
+			// bytebuffer.order(ByteOrder.nativeOrder())
+			// .asFloatBuffer();
 
-//			for (float vertex : vertices) {
-//				floatBuffer.put(vertex);
-//			}
+			// for (float vertex : vertices) {
+			// floatBuffer.put(vertex);
+			// }
 			gl.glUnmapBuffer(GL.GL_ARRAY_BUFFER);
 
 		}
@@ -460,8 +458,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		// gl.glEnableClientState( GL2.GL_COLOR_ARRAY )
 		gl.glVertexPointer(2, GL2.GL_FLOAT, 0, 0);
 		gl.glDrawArrays(GL.GL_LINE_STRIP, 0, vertexBufferIndices[0]);
-		gl.glDrawElements(GL2.GL_LINES, indices.length, GL2.GL_UNSIGNED_INT,
-		 indexBuffer);
+		gl.glDrawElements(GL2.GL_LINES, indices.length, GL2.GL_UNSIGNED_INT, indexBuffer);
 		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
 		gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
 		// gl.glDisableClientState(GL2.GL_COLOR_ARRAY);
@@ -1052,13 +1049,13 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 						renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(),
 						0);
 				gl.glRotatef(25, 0, 0, 1);
-				textRenderer.begin3DRendering();
+
 				float fScaling = renderStyle.getSmallFontScalingFactor();
 				if (isRenderedRemote())
 					fScaling *= 1.5f;
-				textRenderer.draw3D(gl, sAxisLabel, 0, 0, 0, fScaling,
+				textRenderer.renderText(gl, sAxisLabel, 0, 0, 0, fScaling,
 						PCRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
-				textRenderer.end3DRendering();
+
 				gl.glRotatef(-25, 0, 0, 1);
 				gl.glTranslatef(-fXPosition, -(renderStyle.getAxisHeight() + renderStyle
 						.getAxisCaptionSpacing()), 0);
@@ -1364,7 +1361,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	}
 
 	private void renderNumber(GL2 gl, String sRawValue, float fXOrigin, float fYOrigin) {
-		textRenderer.begin3DRendering();
 
 		// String text = "";
 		// if (Float.isNaN(fRawValue))
@@ -1376,10 +1372,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 
-		textRenderer.draw3D(gl, sRawValue, fXOrigin, fYOrigin,
+		textRenderer.renderText(gl, sRawValue, fXOrigin, fYOrigin,
 				PCRenderStyle.TEXT_ON_LABEL_Z, fScaling,
 				PCRenderStyle.MIN_NUMBER_TEXT_SIZE);
-		textRenderer.end3DRendering();
 	}
 
 	/**

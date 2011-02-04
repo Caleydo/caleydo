@@ -49,7 +49,7 @@ public class UniqueList<E>
 	}
 
 	/**
-	 * Attempts to add the element to the collection.
+	 * Attempts to add the element to the collection. Adds nothing if the element is already contained.
 	 * 
 	 * @return true, if element was added, false if element was already in the collection
 	 */

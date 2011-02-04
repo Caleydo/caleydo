@@ -114,7 +114,9 @@ public class CaleydoTextRenderer
 	}
 
 	/**
-	 * Renders text with a specified minimum size.
+	 * Renders text with a specified minimum size. Use this only if you want to render several instances at a
+	 * time. If you have only one string, use
+	 * {@link #renderText(GL2, String, float, float, float, float, int)} instead.
 	 * 
 	 * @param gl
 	 *            GL2 context.
@@ -185,6 +187,10 @@ public class CaleydoTextRenderer
 			scaling = scaling * referenceWidth / currentWidth;
 
 		return scaling;
+	}
+
+	Rectangle2D getReferenceBounds() {
+		return referenceBounds;
 	}
 
 }

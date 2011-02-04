@@ -5,8 +5,6 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
-
 public abstract class LayoutContainer
 	extends ElementLayout
 	implements Iterable<ElementLayout> {

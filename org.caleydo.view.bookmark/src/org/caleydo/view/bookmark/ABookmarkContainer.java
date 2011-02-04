@@ -24,7 +24,6 @@ import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
-import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
 import org.caleydo.view.bookmark.contextmenu.BookmarkContextMenuItemContainer;
@@ -75,7 +74,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 * The containerDimensions (height, width, position, etc.) of the whole
 	 * container
 	 */
-//	Dimensions containerDimensions;
+	// Dimensions containerDimensions;
 
 	Column containerLayout;
 	/** The name displayed as the heading in the sidebar */
@@ -127,12 +126,14 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 		this.pickingIDManager = manager.getPickingIDManager();
 		this.containerLayout = new Column();
 		containerLayout.setYDynamic(true);
-		containerLayout.setXDynamic(true);
+		containerLayout.setXDynamic(false);
+		containerLayout.setSizeX(1);
 		containerLayout.setBottomUp(false);
 		ContainerHeading heading = new ContainerHeading(manager);
+		heading.setCaption(category.getCategoryName());
 		containerLayout.appendElement(heading.getElementLayout());
-		
-//		containerDimensions = new Dimensions();
+
+		// containerDimensions = new Dimensions();
 	}
 
 	public ElementLayout getElementLayout() {
@@ -145,9 +146,9 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 * 
 	 * @return
 	 */
-//	Dimensions getDimensions() {
-//		return containerDimensions;
-//	}
+	// Dimensions getDimensions() {
+	// return containerDimensions;
+	// }
 
 	/**
 	 * Returns the category of the container
@@ -165,58 +166,32 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 */
 	void render(GL2 gl) {
 
-//		float yOrigin = containerDimensions.getYOrigin();
+		// float yOrigin = containerDimensions.getYOrigin();
 
-//		yOrigin -= BookmarkRenderStyle.CONTAINER_HEADING_SIZE;
+		// yOrigin -= BookmarkRenderStyle.CONTAINER_HEADING_SIZE;
 
 		// render heading
 
-//		RenderingHelpers.renderText(gl, manager.getTextRenderer(), categoryName,
-//				containerDimensions.getXOrigin() + BookmarkRenderStyle.SIDE_SPACING,
-//				yOrigin, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
+		// RenderingHelpers.renderText(gl, manager.getTextRenderer(),
+		// categoryName,
+		// containerDimensions.getXOrigin() + BookmarkRenderStyle.SIDE_SPACING,
+		// yOrigin, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
-//		for (ABookmark item : bookmarkItems) {
-//		
-//
-////			item.getDimensions().setOrigins(BookmarkRenderStyle.SIDE_SPACING, yOrigin);
-////			item.getDimensions()
-////					.setWidth(
-////							containerDimensions.getWidth() - 2
-////									* BookmarkRenderStyle.SIDE_SPACING);
-////			yOrigin -= item.getDimensions().getHeight();
-//
-//			float[] highlightColor = null;
-//
-//			if (selectionManager.checkStatus(SelectionType.MOUSE_OVER, item.getID())) {
-//				highlightColor = SelectionType.MOUSE_OVER.getColor();
-//			} else if (selectionManager
-//					.checkStatus(SelectionType.SELECTION, item.getID())) {
-//				highlightColor = SelectionType.SELECTION.getColor();
-//
-//			}
-//			int pickingID = pickingIDManager.getPickingID(this, item.getID());
-//			gl.glPushName(pickingID);
-//
-//			item.render(gl);
-//
-//			if (highlightColor != null) {
-//
-////				float xOrigin = item.getDimensions().getXOrigin();
-////				float width = item.getDimensions().getWidth();
-////				float height = item.getDimensions().getHeight()
-////						- BookmarkRenderStyle.FRAME_SPACING;
-////
-////				gl.glColor3fv(highlightColor, 0);
-////				gl.glBegin(GL2.GL_LINE_LOOP);
-////				gl.glVertex3f(xOrigin, yOrigin, 0);
-////				gl.glVertex3f(xOrigin + width, yOrigin, 0);
-////				gl.glVertex3f(xOrigin + width, yOrigin + height, 0);
-////				gl.glVertex3f(xOrigin, yOrigin + height, 0);
-////				gl.glEnd();
-//			}
-//			gl.glPopName();
-////			containerDimensions.increaseHeight(item.getDimensions().getHeight());
-//		}
+		// for (ABookmark item : bookmarkItems) {
+		//
+		//
+		// // item.getDimensions().setOrigins(BookmarkRenderStyle.SIDE_SPACING,
+		// yOrigin);
+		// // item.getDimensions()
+		// // .setWidth(
+		// // containerDimensions.getWidth() - 2
+		// // * BookmarkRenderStyle.SIDE_SPACING);
+		// // yOrigin -= item.getDimensions().getHeight();
+		//
+
+		// //
+		// containerDimensions.increaseHeight(item.getDimensions().getHeight());
+		// }
 
 		// GLHelperFunctions.drawPointAt(gl, 0, containerDimensions.getHeight(),
 		// 0);
@@ -388,12 +363,13 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 
 	void updateContainerSize() {
 		// containerDimensions.setHeight(0.5f);
-//		containerDimensions.setHeight(0);
-//		containerDimensions.increaseHeight(BookmarkRenderStyle.CONTAINER_HEADING_SIZE);
-//
-//		for (ABookmark bookmark : bookmarkItems) {
-//			containerDimensions.increaseHeight(bookmark.getDimensions().getHeight() * 2);
-//		}
+		// containerDimensions.setHeight(0);
+		// containerDimensions.increaseHeight(BookmarkRenderStyle.CONTAINER_HEADING_SIZE);
+		//
+		// for (ABookmark bookmark : bookmarkItems) {
+		// containerDimensions.increaseHeight(bookmark.getDimensions().getHeight()
+		// * 2);
+		// }
 
 	}
 }

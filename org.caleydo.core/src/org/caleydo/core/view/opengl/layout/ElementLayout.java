@@ -5,8 +5,18 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+
 /**
- * Size parameters for a single element
+ * Size parameters for a single element. There is three ways to specify the dimensions of an element. It can
+ * be specified by
+ * <ul>
+ * <li>specifying a ratio - where 1 takes up the whole space granted by the parent</li>
+ * <li>specifying a static value in gl coordinate space</li>
+ * <li>specifying a static value in pixel space</li>
+ * </ul>
+ * 
+ * This can be done independently for X and Y
  * 
  * @author Alexander Lex
  */
@@ -31,8 +41,13 @@ public class ElementLayout {
 	float sizeX = 0;
 	float sizeY = 0;
 
+	int pixelSizeX = Integer.MIN_VALUE;
+	int pixelSizeY = Integer.MIN_VALUE;
+
 	float sizeScaledX = 0;
 	float sizeScaledY = 0;
+
+	PixelGLConverter pixelGLConverter;
 
 	public ElementLayout() {
 		renderer = new ARenderer();
@@ -40,6 +55,10 @@ public class ElementLayout {
 
 	public ARenderer getRenderer() {
 		return renderer;
+	}
+
+	public void setPixelGLConverter(PixelGLConverter pixelGLConverter) {
+		this.pixelGLConverter = pixelGLConverter;
 	}
 
 	@SuppressWarnings("unused")
@@ -82,7 +101,6 @@ public class ElementLayout {
 	 */
 	public void setSizeX(float sizeX) {
 		this.sizeX = sizeX;
-
 	}
 
 	public float getSizeX() {
@@ -121,6 +139,14 @@ public class ElementLayout {
 		return sizeScaledY;
 	}
 
+	public void setPixelSizeX(int pixelSizeX) {
+		this.pixelSizeX = pixelSizeX;
+	}
+
+	public void setPixelSizeY(int pixelSizeY) {
+		this.pixelSizeY = pixelSizeY;
+	}
+
 	/**
 	 * Instruct the element to grab the remaining space in the x direction
 	 */
@@ -157,7 +183,10 @@ public class ElementLayout {
 	}
 
 	void calculateScales(float totalWidth, float totalHeight) {
-		if (scaleX) {
+		if (pixelSizeX != Integer.MIN_VALUE) {
+			sizeScaledX = pixelGLConverter.getGLWidthForPixelWidth(pixelSizeX);
+		}
+		else if (scaleX) {
 			sizeScaledX = sizeX * totalWidth;
 
 			// transformScaledX = transformX * totalWidth;
@@ -170,7 +199,11 @@ public class ElementLayout {
 			// transformScaledY = transformY * totalHeight;
 
 		}
-		if (scaleY)
+
+		if (pixelSizeY != Integer.MIN_VALUE) {
+			sizeScaledY = pixelGLConverter.getGLHeightForPixelHeight(pixelSizeY);
+		}
+		else if (scaleY)
 			sizeScaledY = sizeY * totalHeight;
 		else
 			sizeScaledY = sizeY;
@@ -239,7 +272,8 @@ public class ElementLayout {
 	 * @return
 	 */
 	public float getUnscalableElementHeight() {
-
+		if (pixelSizeY != Integer.MIN_VALUE)
+			return pixelGLConverter.getGLHeightForPixelHeight(pixelSizeY);
 		if (scaleY)
 			return 0;
 		else
@@ -253,8 +287,9 @@ public class ElementLayout {
 	 * @return
 	 */
 	public float getUnscalableElementWidth() {
-
-		if (scaleX)
+		if (pixelSizeX != Integer.MIN_VALUE)
+			return pixelGLConverter.getGLHeightForPixelHeight(pixelSizeX);
+		else if (scaleX)
 			return 0;
 		else
 			return sizeX;
