@@ -101,8 +101,8 @@ public class ApplicationWorkbenchAdvisor
 	public boolean preShutdown() {
 		super.preShutdown();
 
-		ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
-		vm.getDisplayLoopExecution().stopMultipleExecution(autoSaver);
+//		ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+//		vm.getDisplayLoopExecution().stopMultipleExecution(autoSaver);
 		autoSaver = null;
 
 		ProjectSaver saver = new ProjectSaver();
