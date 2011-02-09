@@ -127,16 +127,16 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 		this.containerLayout = new Column();
 		containerLayout.setYDynamic(true);
 		containerLayout.setXDynamic(false);
-		containerLayout.setSizeX(1);
+		containerLayout.setRatioSizeX(1);
 		containerLayout.setBottomUp(false);
 		ContainerHeading heading = new ContainerHeading(manager);
 		heading.setCaption(category.getCategoryName());
-		containerLayout.appendElement(heading.getElementLayout());
+		containerLayout.appendElement(heading.getLayout());
 
 		// containerDimensions = new Dimensions();
 	}
 
-	public ElementLayout getElementLayout() {
+	public ElementLayout getLayout() {
 		return containerLayout;
 	};
 

@@ -25,9 +25,8 @@ public class BucketTemplate extends AHeatMapTemplate {
 	public void setParameters() {
 		Column mainColumn = new Column();
 		setBaseElementLayout(mainColumn);
-		mainColumn.setSizeX(1);
-		mainColumn.setSizeY(1);
-//		mainColumn.setBottomUp(false);
+		mainColumn.setRatioSizeX(1);
+		mainColumn.setRatioSizeY(1);
 
 		contentCaptionRenderer.setFontScaling(fontScaling);
 
@@ -35,8 +34,8 @@ public class BucketTemplate extends AHeatMapTemplate {
 		// hmRow.grabY = true;
 		// heat map
 		heatMapLayout = new ElementLayout();
-		heatMapLayout.setGrabX(true);
-		heatMapLayout.setSizeY(1f);
+		heatMapLayout.grabX();
+		heatMapLayout.setRatioSizeY(1f);
 		heatMapLayout.setRenderer(heatMapRenderer);
 		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
 		heatMapLayout.addForeGroundRenderer(storageSelectionRenderer);
@@ -47,23 +46,14 @@ public class BucketTemplate extends AHeatMapTemplate {
 		ElementLayout caption = null;
 		ElementLayout spacing = null;
 		if (renderCaptions) {
-			// content cage
-
-			// cage = new ElementLayout();
-			// cage.setSizeX(0.1f);
-			// cage.setSizeY(1f);
-			// cage.setIsBackground(true);
-
-			// cage.setRenderer();
-			// rendererParameters.add(cage);
 
 			spacing = new ElementLayout();
-			spacing.setSizeX(0.01f);
+			spacing.setAbsoluteSizeX(0.01f);
 
 			// content captions
 			caption = new ElementLayout();
-			caption.setSizeX(0.09f);
-			caption.setSizeY(1f);
+			caption.setAbsoluteSizeX(1f);
+			caption.setRatioSizeY(1f);
 			caption.setRenderer(contentCaptionRenderer);
 			caption.addBackgroundRenderer(captionCageRenderer);
 
@@ -78,6 +68,13 @@ public class BucketTemplate extends AHeatMapTemplate {
 		}
 
 		mainColumn.appendElement(hmRow);
+		ElementLayout headingSpacing = new ElementLayout();
+		if (renderCaptions)
+			headingSpacing.setAbsoluteSizeY(0f);
+		else
+			headingSpacing.setAbsoluteSizeY(0.3f);
+		
+		mainColumn.appendElement(headingSpacing);
 
 	}
 

@@ -20,16 +20,19 @@ public class DefaultTemplate extends AHeatMapTemplate {
 	public void setParameters() {
 		Column mainColumn = new Column();
 		setBaseElementLayout(mainColumn);
-		mainColumn.setSizeX(1);
-		mainColumn.setSizeY(1);
+		mainColumn.setRatioSizeX(1);
+		mainColumn.setRatioSizeY(1);
 
+		float heatMapSizeX = 0.806f;
+		float heatMapSizeY = 0.883f;
+		
 		Row heatMapRow = new Row();
-		heatMapRow.setSizeY(1);
+		heatMapRow.setRatioSizeY(1);
 		// heat map
 		heatMapLayout = new ElementLayout();
 		// heatMapLayout.sizeX = 0.715f;
-		heatMapLayout.setSizeX(0.806f);
-		heatMapLayout.setSizeY(0.883f);
+		heatMapLayout.setRatioSizeX(heatMapSizeX);
+		heatMapLayout.setRatioSizeY(heatMapSizeY);
 		heatMapLayout.setRenderer(heatMapRenderer);
 		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
 		heatMapLayout.addForeGroundRenderer(storageSelectionRenderer);
@@ -39,13 +42,13 @@ public class DefaultTemplate extends AHeatMapTemplate {
 		heatMapRow.appendElement(heatMapLayout);
 
 		ElementLayout spacing = new ElementLayout();
-		spacing.setSizeX(0.01f);
+		spacing.setAbsoluteSizeX(0.01f);
 		heatMapRow.appendElement(spacing);
 
 		// content captions
 		ElementLayout contentCaptionLayout = new ElementLayout();
-		contentCaptionLayout.setSizeX(1 - heatMapLayout.getSizeX());
-		contentCaptionLayout.setSizeY(heatMapLayout.getSizeY());
+		contentCaptionLayout.setRatioSizeX(heatMapSizeX);
+		contentCaptionLayout.setRatioSizeY(heatMapSizeY);
 		contentCaptionLayout.setRenderer(contentCaptionRenderer);
 
 //		rendererParameters.add(contentCaptionLayout);

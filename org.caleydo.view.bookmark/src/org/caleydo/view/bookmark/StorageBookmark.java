@@ -14,7 +14,7 @@ import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
  */
 class StorageBookmark extends ABookmark {
 
-	ElementLayout layoutParameters;
+	ElementLayout layout;
 
 	/**
 	 * Constructor taking a textRenderer
@@ -28,24 +28,18 @@ class StorageBookmark extends ABookmark {
 		super(manager, partentContainer, idType, textRenderer);
 		this.id = experimentIndex;
 
-		// float height = (float) (textRenderer.getBounds("Text").getHeight())
-		// * GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
-
-		layoutParameters = new ElementLayout();
-		layoutParameters.setSizeX(1);
-		layoutParameters.setScaleY(false);
-		layoutParameters.setRenderer(this);
-		layoutParameters.setPixelGLConverter(manager.getPixelGLConverter());
-
-//		float height = (float) (textRenderer.getBounds("Text").getHeight());
-
-		layoutParameters.setPixelSizeY(20);
+	
+		layout = new ElementLayout();
+		layout.setRatioSizeX(1);
+		layout.setRenderer(this);
+		layout.setPixelGLConverter(manager.getPixelGLConverter());
+		layout.setPixelSizeY(20);
 
 	}
 
 	@Override
-	public ElementLayout getElementLayout() {
-		return layoutParameters;
+	public ElementLayout getLayout() {
+		return layout;
 	}
 
 	@Override
@@ -61,7 +55,7 @@ class StorageBookmark extends ABookmark {
 		// EIDType.GENE_SYMBOL, id);
 		//
 		// float yOrigin = bookmarkDimensions.getYOrigin() - 0.08f;
-		float height = (layoutParameters.getSizeScaledY() - (float)textRenderer.getBounds("Bla").getHeight())/2;
+		float height = (layout.getSizeScaledY() - (float)textRenderer.getBounds("Bla").getHeight())/2;
 		
 		
 		

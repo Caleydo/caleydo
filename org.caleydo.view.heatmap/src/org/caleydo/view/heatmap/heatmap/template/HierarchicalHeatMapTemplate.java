@@ -22,19 +22,21 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 
 	@Override
 	public void setParameters() {
-		Column mainColumn = new Column();
+		Column mainColumn = new Column("mainColumn");		
 		setBaseElementLayout(mainColumn);
-		mainColumn.setSizeX(1);
-		mainColumn.setSizeY(1);
+		mainColumn.setRatioSizeX(1);
+		mainColumn.setRatioSizeY(1);
 		mainColumn.setBottomUp(false);
 		// rendererParameters.clear();
+		
+		float heatMapSizeX = 0.806f;
 
-		Row mainRow = new Row();
-		mainRow.setSizeY(1f);
-		mainRow.setSizeX(1);
-		heatMapLayout = new ElementLayout();
-		heatMapLayout.setSizeX(0.806f);
-		heatMapLayout.setSizeY(1f);
+		Row mainRow = new Row("heatMapRow");
+		mainRow.grabY();
+		mainRow.setRatioSizeX(1);
+		
+		heatMapLayout = new ElementLayout("hmlayout");
+		heatMapLayout.grabX();
 		heatMapLayout.setRenderer(heatMapRenderer);
 		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
 		heatMapLayout.addForeGroundRenderer(storageSelectionRenderer);
@@ -42,27 +44,38 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		mainRow.appendElement(heatMapLayout);
 
 		ElementLayout spacing = new ElementLayout();
-		spacing.setSizeX(0.01f);
+		spacing.setAbsoluteSizeX(0.12f);
 		mainRow.appendElement(spacing);
 
 		// content captions
-		ElementLayout contentCaptionLayout = new ElementLayout();
-		contentCaptionLayout.setSizeX(1 - heatMapLayout.getSizeX());
-		contentCaptionLayout.setSizeY(heatMapLayout.getSizeY());
+		ElementLayout contentCaptionLayout = new ElementLayout("contentCaption");
+//		contentCaptionLayout.setRatioSizeX(heatMapSizeX);
+		contentCaptionLayout.setRatioSizeY(1);
+		contentCaptionLayout.setAbsoluteSizeX(0.6f);
 		contentCaptionLayout.setRenderer(contentCaptionRenderer);
 
 		mainRow.appendElement(contentCaptionLayout);
 
 		mainColumn.appendElement(mainRow);
+		
+		ElementLayout ySpacing = new ElementLayout();
+		ySpacing.setAbsoluteSizeY(0.05f);
+		mainColumn.appendElement(ySpacing);
+		
 
-		Row storageCaptionRow = new Row();
-		storageCaptionRow.setSizeY(bottomSpacing);
-		storageCaptionRow.setScaleY(false);
+		Row storageCaptionRow = new Row("storageCaptionRow");
+		storageCaptionRow.setAbsoluteSizeY(0.35f);
 
-		ElementLayout storageCaptionLayout = new ElementLayout();
-		storageCaptionLayout.setSizeY(bottomSpacing);
+		ElementLayout storageCaptionLayout = new ElementLayout("storageCaption");
+		storageCaptionLayout.setRatioSizeY(1);
+		storageCaptionLayout.grabX();
 		storageCaptionLayout.setRenderer(storageCaptionRenderer);
 		storageCaptionRow.appendElement(storageCaptionLayout);
+		
+		ElementLayout spacingLayout = new ElementLayout();
+		spacingLayout.setAbsoluteSizeX(0.65f);
+		
+		storageCaptionRow.appendElement(spacingLayout);
 
 		mainColumn.appendElement(storageCaptionRow);
 

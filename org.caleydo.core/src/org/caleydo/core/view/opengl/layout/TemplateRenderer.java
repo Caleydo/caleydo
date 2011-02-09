@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.layout;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 
 /**
  * The TemplateRenderer is responsible for rendering all the elements specified in its set {@link #template}.
@@ -18,7 +19,7 @@ public class TemplateRenderer {
 	/** Flag for showing debug frames for actual layout elements */
 	public static final boolean DEBUG_ELEMENTS = false;
 
-//	protected float spacing;
+	// protected float spacing;
 
 	private ATemplate template;
 
@@ -42,10 +43,10 @@ public class TemplateRenderer {
 		totalWidth = viewFrustum.getRight() - viewFrustum.getLeft();
 		totalHeight = viewFrustum.getTop() - viewFrustum.getBottom();
 
-//		spacing = totalHeight * ATemplate.SPACING;
+		// spacing = totalHeight * ATemplate.SPACING;
 
 		template.recalculateSpacings();
-		template.calculateScales(totalWidth, totalHeight);
+		template.calculateScales(0, 0, totalWidth, totalHeight);
 
 		updateSpacings();
 

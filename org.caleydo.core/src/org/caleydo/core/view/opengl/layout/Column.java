@@ -3,6 +3,14 @@ package org.caleydo.core.view.opengl.layout;
 public class Column
 	extends LayoutContainer {
 
+	public Column() {
+		super();
+	}
+
+	public Column(String layoutName) {
+		super(layoutName);
+	}
+
 	@Override
 	protected void calculateTransforms(float bottom, float left, float top, float right) {
 
@@ -13,14 +21,11 @@ public class Column
 			x = right;
 
 		for (ElementLayout element : elements) {
-			//
-			// else {
 			if (isBottomUp) {
 
 				if (element instanceof LayoutContainer) {
 					((LayoutContainer) element).calculateTransforms(bottom, left, top, right);
 				}
-
 				element.setTransformX(x);
 				element.setTransformY(bottom);
 
@@ -28,7 +33,6 @@ public class Column
 
 			}
 			else {
-
 				bottom = top - element.getSizeScaledY();
 				if (element instanceof LayoutContainer) {
 					((LayoutContainer) element).calculateTransforms(bottom, left, top, right);
@@ -43,21 +47,32 @@ public class Column
 
 	@Override
 	protected void calculateSubElementScales(float availableWidth, float availableHeight) {
-		// TODO Auto-generated method stub
-
 		float actualWidth = 0;
 		float actualHeight = 0;
+		ElementLayout greedyElement = null;
 		for (ElementLayout element : elements) {
+			if (element.grabY) {
+				if (greedyElement != null)
+					throw new IllegalStateException("Specified more than one greedy element for " + this);
+				greedyElement = element;
+				continue;
+			}
 			element.calculateScales(availableWidth, availableHeight - actualHeight);
-			actualHeight += element.getSizeScaledY();
+			// if an element is set in absolute size, the available size is already reduced by that value 
+			if (Float.isNaN(element.absoluteSizeY))
+				actualHeight += element.getSizeScaledY();
 			if (actualWidth < element.getSizeScaledX())
 				actualWidth = element.getSizeScaledX();
-
 		}
+		if (greedyElement != null) {
+			greedyElement.setAbsoluteSizeY(availableHeight - actualHeight);
+			greedyElement.calculateScales(availableWidth, availableHeight - actualHeight);
+			actualHeight = availableHeight;
+		}
+
 		if (isXDynamic)
 			sizeScaledX = actualWidth;
 		if (isYDynamic)
 			sizeScaledY = actualHeight;
 	}
-
 }

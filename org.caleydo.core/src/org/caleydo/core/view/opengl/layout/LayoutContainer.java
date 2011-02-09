@@ -27,18 +27,23 @@ public abstract class LayoutContainer
 	ArrayList<ElementLayout> elements;
 
 	public LayoutContainer() {
+		super();
+		elements = new ArrayList<ElementLayout>();
+	}
+
+	public LayoutContainer(String layoutName) {
+		super(layoutName);
 		elements = new ArrayList<ElementLayout>();
 	}
 
 	@Override
 	public void render(GL2 gl) {
+		gl.glTranslatef(getTransformX(), getTransformY(), 0);
+		super.render(gl);
+		gl.glTranslatef(-getTransformX(), -getTransformY(), 0);
 		for (ElementLayout element : elements) {
 
 			if (element instanceof LayoutContainer) {
-				// render the frame around the container
-				gl.glTranslatef(element.getTransformX(), element.getTransformY(), 0);
-				super.render(gl);
-				gl.glTranslatef(-element.getTransformX(), -element.getTransformY(), 0);
 				element.render(gl);
 			}
 			else {
@@ -99,7 +104,7 @@ public abstract class LayoutContainer
 
 	@Override
 	void calculateScales(float totalWidth, float totalHeight) {
-
+		super.calculateScales(totalWidth, totalHeight);
 		for (ElementLayout element : elements) {
 			totalHeight -= element.getUnscalableElementHeight();
 			totalWidth -= element.getUnscalableElementWidth();
@@ -109,27 +114,33 @@ public abstract class LayoutContainer
 
 		if (isXDynamic)
 			availableWidth = totalWidth;
-		else if (scaleX)
-			availableWidth = totalWidth * sizeX;
+
+		else if (pixelSizeX != Integer.MIN_VALUE)
+			availableWidth = pixelGLConverter.getGLWidthForPixelWidth(pixelSizeX);
+		else if (!Float.isNaN(absoluteSizeX))
+			availableWidth = absoluteSizeX;
 		else
-			availableWidth = sizeX;
+			availableWidth = totalWidth * ratioSizeX;
 
 		if (isYDynamic)
 			availableHeight = totalHeight;
-		else if (scaleY)
-			availableHeight = totalHeight * sizeY;
-		else
-			availableHeight = sizeY;
 
-		super.calculateScales(totalWidth, totalHeight);
+		else if (pixelSizeY != Integer.MIN_VALUE)
+			availableHeight = pixelGLConverter.getGLHeightForPixelHeight(pixelSizeY);
+		else if (!Float.isNaN(absoluteSizeY))
+			availableHeight = absoluteSizeY;
+		else
+			availableHeight = totalHeight * ratioSizeY;
+
+		
 		calculateSubElementScales(availableWidth, availableHeight);
 
 	}
 
 	@Override
 	public float getUnscalableElementHeight() {
-		if (!scaleY)
-			return sizeY;
+		if (!isYDynamic)
+			return super.getUnscalableElementHeight();
 		else {
 			float unscalableHeight = 0;
 			for (ElementLayout element : elements) {
@@ -141,8 +152,8 @@ public abstract class LayoutContainer
 
 	@Override
 	public float getUnscalableElementWidth() {
-		if (!scaleX)
-			return sizeX;
+		if (!isXDynamic)
+			return super.getUnscalableElementWidth();
 		else {
 			float unscalableWidth = 0;
 			for (ElementLayout element : elements) {
@@ -158,7 +169,14 @@ public abstract class LayoutContainer
 
 	@Override
 	public String toString() {
-		return ("Container with " + elements.size() + " elements. height: " + sizeScaledY + ", widht: " + sizeScaledX);
+		String name;
+		if (layoutName == null)
+			name = layoutName;
+		else
+			name = super.toString();
+
+		return ("Container " + name + " with " + elements.size() + " elements. height: " + sizeScaledY
+			+ ", widht: " + sizeScaledX);
 	}
 
 	@Override

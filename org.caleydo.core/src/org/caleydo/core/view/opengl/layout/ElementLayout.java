@@ -1,56 +1,82 @@
 package org.caleydo.core.view.opengl.layout;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
+import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
 
 /**
- * Size parameters for a single element. There is three ways to specify the dimensions of an element. It can
+ * Size parameters for a single element. There are four ways to specify the dimensions of an element. It can
  * be specified by
  * <ul>
- * <li>specifying a ratio - where 1 takes up the whole space granted by the parent</li>
- * <li>specifying a static value in gl coordinate space</li>
- * <li>specifying a static value in pixel space</li>
+ * <li>specifying a ratio - where 1 takes up the whole space granted by the parent (see
+ * {@link #setRatioSizeX(float)} and {@link #setRatioSizeY(float)}</li>
+ * <li>specifying an absolute value in gl coordinate space (see {@link #setAbsoluteSizeY(float)} and
+ * {@link #setAbsoluteSizeY(float)}</li>
+ * <li>specifying an absolute value in pixel space (see {@link #setPixelSizeX(int)} and
+ * {@link #setPixelSizeY(int)}. Notice that using pixel sizes requires the {@link PixelGLConverter} for this
+ * layout to be set (see {@link #setPixelGLConverter(PixelGLConverter)}.</li>
+ * <li>setting the element to grab the remaining available space in the container (see
+ * {@link #setGrabX(boolean)} and {@link #grabY(boolean)}</li>
  * </ul>
- * 
+ * <p>
  * This can be done independently for X and Y
+ * </p>
+ * <p>
+ * If no size is specified, a ratio value of 1 is assumed.
+ * </p>
+ * <p>
+ * The values set are then converted to the coordinates actually used for rendering, which can be retrieved
+ * using {@link #getSizeScaledX()} and {@link #getSizeScaledY()}
+ * </p>
  * 
  * @author Alexander Lex
  */
 public class ElementLayout {
 
-	ARenderer renderer;
-	ArrayList<ARenderer> backgroundRenderers;
-	ArrayList<ARenderer> foregroundRenderers;
+	protected ARenderer renderer;
+	protected ArrayList<ARenderer> backgroundRenderers;
+	protected ArrayList<ARenderer> foregroundRenderers;
 
-	boolean scaleX = true;
-	boolean scaleY = true;
-
-	float transformX = 0;
-	float transformY = 0;
+	protected float transformX = 0;
+	protected float transformY = 0;
 	// float transformScaledX = 0;
 	// float transformScaledY = 0;
 
-	/** use the remaining space in X, invalidates sizeX */
-	boolean grabX = false;
+	/** use the remaining space in X, invalidates absoluteSizeX */
+	protected boolean grabX = false;
 	/** use the remaining space in Y */
-	boolean grabY = false;
-	float sizeX = 0;
-	float sizeY = 0;
+	protected boolean grabY = false;
 
-	int pixelSizeX = Integer.MIN_VALUE;
-	int pixelSizeY = Integer.MIN_VALUE;
+	protected float absoluteSizeX = Float.NaN;
+	protected float absoluteSizeY = Float.NaN;
 
-	float sizeScaledX = 0;
-	float sizeScaledY = 0;
+	protected float ratioSizeX = 1;
+	protected float ratioSizeY = 1;
 
-	PixelGLConverter pixelGLConverter;
+	protected int pixelSizeX = Integer.MIN_VALUE;
+	protected int pixelSizeY = Integer.MIN_VALUE;
+
+	protected float sizeScaledX = 0;
+	protected float sizeScaledY = 0;
+
+	protected PixelGLConverter pixelGLConverter;
+
+	protected String layoutName;
 
 	public ElementLayout() {
 		renderer = new ARenderer();
+		layoutName = "";
+	}
+
+	public ElementLayout(String layoutName) {
+		renderer = new ARenderer();
+		this.layoutName = layoutName;
 	}
 
 	public ARenderer getRenderer() {
@@ -61,13 +87,142 @@ public class ElementLayout {
 		this.pixelGLConverter = pixelGLConverter;
 	}
 
+	/**
+	 * Set the absolute size in GL coordinates of the element in x direction.
+	 * 
+	 * @param absoluteSizeX
+	 */
+	public void setAbsoluteSizeX(float absoluteSizeX) {
+		this.absoluteSizeX = absoluteSizeX;
+	}
+
+	// public float getAbsoluteSizeX() {
+	// return absoluteSizeX;
+	// }
+
+	/**
+	 * Set the absolute size in GL coordinates of the element in y direction.
+	 * 
+	 * @param absoluteSizeX
+	 */
+	public void setAbsoluteSizeY(float absoluteSizeY) {
+		this.absoluteSizeY = absoluteSizeY;
+	}
+
+	//
+	// public float getAbsoluteSizeY() {
+	// return absoluteSizeY;
+	// }
+
+	/**
+	 * Set a ratio size in x direction. The ration indicates how much of the containing element this element
+	 * occupies. The size has to be normalized between 0 and 1, where 1 is the whole space available for the
+	 * rendered elements
+	 * 
+	 * @param ratioSizeX
+	 *            the size of the element in relation to other elements in the same container on a scale of 0
+	 *            to 1
+	 */
+	public void setRatioSizeX(float ratioSizeX) {
+		if (ratioSizeX > 1 || ratioSizeX < 0)
+			throw new IllegalArgumentException("Ratio sizes must be between 0 and 1");
+		this.ratioSizeX = ratioSizeX;
+	}
+
+	/**
+	 * Set a ratio size in y direction. The ration indicates how much of the containing element this element
+	 * occupies. The size has to be normalized between 0 and 1, where 1 is the whole space available for the
+	 * rendered elements
+	 * 
+	 * @param ratioSizeY
+	 *            the size of the element in relation to other elements in the same container on a scale of 0
+	 *            to 1
+	 */
+	public void setRatioSizeY(float ratioSizeY) {
+		if (ratioSizeY > 1 || ratioSizeY < 0)
+			throw new IllegalArgumentException("Ratio sizes must be between 0 and 1");
+		this.ratioSizeY = ratioSizeY;
+	}
+
+	/**
+	 * Set the size of the element in x direction in pixels. As a consequence, the size remains static even if
+	 * the window size changes. This requires the PixelGLConverte to be set (see
+	 * {@link #setPixelGLConverter(PixelGLConverter)}).
+	 * 
+	 * @param pixelSizeX
+	 */
+	public void setPixelSizeX(int pixelSizeX) {
+		if (pixelGLConverter == null)
+			throw new IllegalStateException("Tried to set a pixel size, but no pixelGLConverter is set.");
+		this.pixelSizeX = pixelSizeX;
+	}
+
+	/**
+	 * Set the size of the element in y direction in pixels. As a consequence, the size remains static even if
+	 * the window size changes. This requires the PixelGLConverte to be set (see
+	 * {@link #setPixelGLConverter(PixelGLConverter)}).
+	 * 
+	 * @param pixelSizeY
+	 */
+	public void setPixelSizeY(int pixelSizeY) {
+		if (pixelGLConverter == null)
+			throw new IllegalStateException("Tried to set a pixel size, but no pixelGLConverter is set.");
+		this.pixelSizeY = pixelSizeY;
+	}
+
+	/**
+	 * Get the scaled size of X. This is the absolute size actually used for rendering. It is calculated from
+	 * the size set via one of the set methods.
+	 * 
+	 * @return
+	 */
+	public float getSizeScaledX() {
+		return sizeScaledX;
+	}
+
+	/**
+	 * Get the scaled size of Z. This is the absolute size actually used for rendering. It is calculated from
+	 * the size set via one of the set methods.
+	 * 
+	 * @return
+	 */
+	public float getSizeScaledY() {
+		return sizeScaledY;
+	}
+
+	/**
+	 * Instruct the element to grab the remaining space in the x direction.
+	 */
+	public void grabX() {
+		this.grabX = true;
+
+	}
+
+	/**
+	 * Instruct the element to grab the remaining space in the y direction
+	 */
+	public void grabY() {
+		this.grabY = true;
+	}
+
+	// ---------------------------- END OF PUBLIC INTERFACE -----------------------------------
+
 	@SuppressWarnings("unused")
-	public void render(GL2 gl) {
+	void render(GL2 gl) {
 		if ((this instanceof LayoutContainer && TemplateRenderer.DEBUG_CONTAINERS)
 			|| (!(this instanceof LayoutContainer) && TemplateRenderer.DEBUG_ELEMENTS)) {
+
+			// if (!this.layoutName.equals("mainColumn"))
+			// return;
+
+			float yPositionDebugText = 0;
+			Random rand = new Random();
+
+			float[] color = new float[] { rand.nextFloat(), rand.nextFloat(), rand.nextFloat() };
 			if (this instanceof LayoutContainer) {
-				gl.glColor3f(1, 1, 0);
-				gl.glLineWidth(4);
+				gl.glColor3fv(color, 0);
+				gl.glLineWidth(6);
+				yPositionDebugText = getSizeScaledY() / 2;
 			}
 			else {
 				gl.glColor3f(0, 0, 1);
@@ -79,6 +234,12 @@ public class ElementLayout {
 			gl.glVertex3f(getSizeScaledX(), getSizeScaledY(), 0.2f);
 			gl.glVertex3f(0, getSizeScaledY(), 0.2f);
 			gl.glEnd();
+
+			MinSizeTextRenderer textRenderer = new MinSizeTextRenderer();
+
+			textRenderer.setColor(color[0], color[1], color[2], 1);
+			textRenderer.renderText(gl, layoutName, 0, yPositionDebugText, 0.4f);
+
 		}
 		if (backgroundRenderers != null) {
 			for (ARenderer backgroundRenderer : backgroundRenderers) {
@@ -93,123 +254,22 @@ public class ElementLayout {
 		}
 	}
 
-	/**
-	 * Set the x size of the element. The size has to be normalized between 0 and 1, where 1 is the whole
-	 * space available for the rendered elements
-	 * 
-	 * @param sizeX
-	 */
-	public void setSizeX(float sizeX) {
-		this.sizeX = sizeX;
-	}
-
-	public float getSizeX() {
-		return sizeX;
-	}
-
-	/**
-	 * Set the y size of the element. The size has to be normalized between 0 and 1, where 1 is the whole
-	 * space available for the rendered elements
-	 * 
-	 * @param sizeY
-	 */
-	public void setSizeY(float sizeY) {
-		this.sizeY = sizeY;
-	}
-
-	public float getSizeY() {
-		return sizeY;
-	}
-
-	/**
-	 * Get the scaled size of X (i.e. not normalized to 0-1)
-	 * 
-	 * @return
-	 */
-	public float getSizeScaledX() {
-		return sizeScaledX;
-	}
-
-	/**
-	 * Get the scaled size of Y (i.e. not normalized to 0-1)
-	 * 
-	 * @return
-	 */
-	public float getSizeScaledY() {
-		return sizeScaledY;
-	}
-
-	public void setPixelSizeX(int pixelSizeX) {
-		this.pixelSizeX = pixelSizeX;
-	}
-
-	public void setPixelSizeY(int pixelSizeY) {
-		this.pixelSizeY = pixelSizeY;
-	}
-
-	/**
-	 * Instruct the element to grab the remaining space in the x direction
-	 */
-	public void setGrabX(boolean grabX) {
-		this.grabX = grabX;
-	}
-
-	/**
-	 * Instruct the element to grab the remaining space in the y direction
-	 */
-	public void setGrabY(boolean grabY) {
-		this.grabY = grabY;
-	}
-
-	/**
-	 * Set whether the values set should be scaled according to the available window, or whether they should
-	 * be of static size. Default is true.
-	 * 
-	 * @param scaleX
-	 */
-	public void setScaleX(boolean scaleX) {
-		this.scaleX = scaleX;
-	}
-
-	/**
-	 * Set whether the values set should be scaled according to the available window, or whether they should
-	 * be of static size. Default is true.
-	 * 
-	 * @param scaleY
-	 */
-
-	public void setScaleY(boolean scaleY) {
-		this.scaleY = scaleY;
-	}
-
 	void calculateScales(float totalWidth, float totalHeight) {
-		if (pixelSizeX != Integer.MIN_VALUE) {
+		if (pixelSizeX != Integer.MIN_VALUE)
 			sizeScaledX = pixelGLConverter.getGLWidthForPixelWidth(pixelSizeX);
-		}
-		else if (scaleX) {
-			sizeScaledX = sizeX * totalWidth;
 
-			// transformScaledX = transformX * totalWidth;
-			// transformScaledY = transformY * totalHeight;
-		}
-		else {
-			sizeScaledX = sizeX;
-
-			// transformScaledX = transformX * totalWidth;
-			// transformScaledY = transformY * totalHeight;
-
-		}
-
-		if (pixelSizeY != Integer.MIN_VALUE) {
-			sizeScaledY = pixelGLConverter.getGLHeightForPixelHeight(pixelSizeY);
-		}
-		else if (scaleY)
-			sizeScaledY = sizeY * totalHeight;
+		else if (!Float.isNaN(absoluteSizeX))
+			sizeScaledX = absoluteSizeX;
 		else
-			sizeScaledY = sizeY;
-	}
+			sizeScaledX = ratioSizeX * totalWidth;
 
-	// void setTransforms(float transformX, float transform)
+		if (pixelSizeY != Integer.MIN_VALUE)
+			sizeScaledY = pixelGLConverter.getGLHeightForPixelHeight(pixelSizeY);
+		else if (!Float.isNaN(absoluteSizeY))
+			sizeScaledY = absoluteSizeY;
+		else
+			sizeScaledY = ratioSizeY * totalHeight;
+	}
 
 	void setTransformX(float transformX) {
 		this.transformX = transformX;
@@ -271,13 +331,13 @@ public class ElementLayout {
 	 * 
 	 * @return
 	 */
-	public float getUnscalableElementHeight() {
+	float getUnscalableElementHeight() {
 		if (pixelSizeY != Integer.MIN_VALUE)
 			return pixelGLConverter.getGLHeightForPixelHeight(pixelSizeY);
-		if (scaleY)
-			return 0;
+		else if (!Float.isNaN(absoluteSizeY))
+			return absoluteSizeY;
 		else
-			return sizeY;
+			return 0;
 
 	}
 
@@ -286,12 +346,20 @@ public class ElementLayout {
 	 * 
 	 * @return
 	 */
-	public float getUnscalableElementWidth() {
+	float getUnscalableElementWidth() {
 		if (pixelSizeX != Integer.MIN_VALUE)
 			return pixelGLConverter.getGLHeightForPixelHeight(pixelSizeX);
-		else if (scaleX)
-			return 0;
+		else if (!Float.isNaN(absoluteSizeX))
+			return absoluteSizeX;
 		else
-			return sizeX;
+			return 0;
 	}
+
+	@Override
+	public String toString() {
+		if (!layoutName.isEmpty())
+			return layoutName;
+		return super.toString();
+	}
+
 }

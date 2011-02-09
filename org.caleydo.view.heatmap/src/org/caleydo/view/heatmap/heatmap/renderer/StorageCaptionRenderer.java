@@ -50,7 +50,7 @@ public class StorageCaptionRenderer extends AContentRenderer {
 			String label = heatMap.getDataDomain().getStorageLabel(storageID);
 
 			float fRotation = -90;
-			float yOffset = 0.57f;
+			float yOffset = elementLayout.getSizeScaledY();
 
 			gl.glTranslatef(xPosition + xOffset, yOffset, 0);
 			gl.glRotatef(fRotation, 0, 0, 1);

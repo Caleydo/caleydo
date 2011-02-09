@@ -74,7 +74,7 @@ public abstract class ABookmark extends ARenderer implements ILayoutedElement {
 		//
 		// item.render(gl);
 		//
-		ElementLayout layout = getElementLayout();
+		ElementLayout layout = getLayout();
 		if (highlightColor != null) {
 
 			float xOrigin = 0;

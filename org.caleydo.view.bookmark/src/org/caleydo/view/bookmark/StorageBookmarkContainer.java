@@ -34,7 +34,7 @@ class StorageBookmarkContainer extends ABookmarkContainer<StorageSelectionManage
 			StorageBookmark bookmark = new StorageBookmark(manager, this, internalIDType,
 					id, manager.getTextRenderer());
 			if (bookmarkItems.add(bookmark))
-				containerLayout.appendElement(bookmark.getElementLayout());
+				containerLayout.appendElement(bookmark.getLayout());
 			// selectionManager.add(id);
 		}
 		updateContainerSize();

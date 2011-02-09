@@ -36,11 +36,13 @@ public abstract class ATemplate {
 	 * @param totalWidth
 	 * @param totalHeight
 	 */
-	public void calculateScales(float totalWidth, float totalHeight) {
+	public void calculateScales(float bottom, float left, float totalWidth, float totalHeight) {
 
+//		baseElementLayout.setTransformX(left);
+//		baseElementLayout.setTransformY(bottom);
 		baseElementLayout.calculateScales(totalWidth, totalHeight);
 		if (baseElementLayout instanceof LayoutContainer)
-			((LayoutContainer) baseElementLayout).calculateTransforms(0, 0, totalHeight, totalWidth);
+			((LayoutContainer) baseElementLayout).calculateTransforms(bottom, left, totalHeight, totalWidth);
 	}
 
 	/**

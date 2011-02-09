@@ -193,7 +193,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	public void displayLocal(GL2 gl) {
-
+	
 		if (set == null)
 			return;
 
@@ -251,8 +251,6 @@ public class GLHeatMap extends AStorageBasedView {
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 
-
-	
 		if (bHasFrustumChanged) {
 			bHasFrustumChanged = false;
 		}

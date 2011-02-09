@@ -28,8 +28,8 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 	public void setParameters() {
 		Column mainColumn = new Column();
 		setBaseElementLayout(mainColumn);
-		mainColumn.setSizeX(1);
-		mainColumn.setSizeY(1);
+		mainColumn.setRatioSizeX(1);
+		mainColumn.setRatioSizeY(1);
 
 		contentCaptionRenderer.setFontScaling(fontScaling);
 		minSelectedFieldHeight = HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT;
@@ -38,8 +38,8 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 		// hmRow.grabY = true;
 		// heat map
 		heatMapLayout = new ElementLayout();
-		heatMapLayout.setGrabX(true);
-		heatMapLayout.setSizeY(1f);
+		heatMapLayout.grabX();
+		heatMapLayout.setRatioSizeY(1f);
 		heatMapLayout.setRenderer(heatMapRenderer);
 		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
 		heatMapLayout.addForeGroundRenderer(storageSelectionRenderer);
@@ -53,12 +53,12 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 			// content cage
 
 			spacing = new ElementLayout();
-			spacing.setSizeX(0.01f);
+			spacing.setAbsoluteSizeX(0.01f);
 
 			// content captions
 			caption = new ElementLayout();
-			caption.setSizeX(0.29f);
-			caption.setSizeY(1f);
+			caption.setRatioSizeX(0.29f);
+			caption.setRatioSizeY(1);
 
 			caption.setRenderer(contentCaptionRenderer);
 			caption.addBackgroundRenderer(captionCageRenderer);
@@ -91,10 +91,8 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 			ElementLayout toolBar;
 
 			toolBar = new ElementLayout();
-			toolBar.setSizeX(1f);
-			toolBar.setSizeY(0.1f);
-
-			toolBar.setScaleY(false);
+			toolBar.setRatioSizeX(1);
+			toolBar.setAbsoluteSizeY(0.1f);
 
 			toolBar.setRenderer(new DetailToolBar(heatMap));
 

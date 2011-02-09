@@ -2603,7 +2603,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
 				glHeatMapView.getID()));
 
-		heatMapRemoteElement.getTransform().getTranslation().set(fleftOffset, -0.2f, 0);
+		heatMapRemoteElement.getTransform().getTranslation().set(fleftOffset, 0, 0);
 		heatMapRemoteElement.getTransform().getScale()
 				.set(fright / 8, 1 * fAspectRatio, 1);
 		// heatMapRemoteElement.getTransform().getTranslation().set(0, 0, 0);
@@ -2624,25 +2624,25 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		ViewFrustum embeddedHeatMapFrustum = glHeatMapView.getViewFrustum();
 		embeddedHeatMapFrustum.setLeft(0);
 		embeddedHeatMapFrustum.setRight(viewFrustum.getRight() - translation.x());
-		embeddedHeatMapFrustum.setTop(ftop - translation.y());
-		embeddedHeatMapFrustum.setBottom(-translation.y());
+		embeddedHeatMapFrustum.setTop(ftop - 0.2f);
+		embeddedHeatMapFrustum.setBottom(0);
 
 		glHeatMapView.setFrustum(embeddedHeatMapFrustum);
 		glHeatMapView.displayRemote(gl);
 
 		gl.glPopName();
-		renderStyle.setWidthLevel3(glHeatMapView.getViewFrustum().getWidth() - 0.95f);
+		renderStyle.setWidthLevel3(glHeatMapView.getViewFrustum().getWidth() - 0.72f);
 
 		// render embedded experiment dendrogram
 		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut) {
 
-			float fOffsety = viewFrustum.getTop() - 1.45f;// renderStyle.getHeightExperimentDendrogram();
+			float fOffsety = viewFrustum.getTop() - 1.65f;// renderStyle.getHeightExperimentDendrogram();
 
 			gl.glTranslatef(0f, fOffsety, 0f);
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION,
 					glExperimentDendrogramView.getID()));
-			glExperimentDendrogramView.getViewFrustum().setTop(1.45f);
+			glExperimentDendrogramView.getViewFrustum().setTop(1.65f);
 			glExperimentDendrogramView.getViewFrustum().setRight(
 					renderStyle.getWidthLevel3());
 			glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
@@ -2658,7 +2658,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glTranslatef(0f, -fOffsety, 0f);
 		}
 
-		gl.glTranslatef(-fleftOffset, +0.2f, 0);
+		gl.glTranslatef(-translation.x(), -translation.y(), 0);
 
 		// render embedded gene dendrogram
 		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
@@ -2686,7 +2686,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	private void renderRemoteViewsLevel_2_3_Active(GL2 gl) {
 		float fright = 0.0f;
-		float ftop = viewFrustum.getTop();
+		float ftop = viewFrustum.getTop() - 0.2f;
 
 		float fleftOffset = 0.1f + renderStyle.getWidthLevel2() * fScalingLevel2
 				+ GAP_BETWEEN_LEVELS;
@@ -2702,7 +2702,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		fright = viewFrustum.getWidth() - fleftOffset;
 
-		gl.glTranslatef(fleftOffset, -0.2f, 0);
+		gl.glTranslatef(fleftOffset, 0, 0);
 
 		// render embedded heat map
 		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
@@ -2716,17 +2716,17 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glHeatMapView.displayRemote(gl);
 		gl.glPopName();
 
-		renderStyle.setWidthLevel3(glHeatMapView.getViewFrustum().getWidth() - 0.95f);
+		renderStyle.setWidthLevel3(glHeatMapView.getViewFrustum().getWidth() - 0.72f);
 
 		// render embedded experiment dendrogram
 		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut) {
-			float fOffsety = viewFrustum.getTop() - 1.45f;
+			float fOffsety = viewFrustum.getTop() - 1.65f;
 
 			gl.glTranslatef(0f, fOffsety, 0f);
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION,
 					glExperimentDendrogramView.getID()));
-			glExperimentDendrogramView.getViewFrustum().setTop(1.45f);
+			glExperimentDendrogramView.getViewFrustum().setTop(1.65f);
 			glExperimentDendrogramView.getViewFrustum().setRight(
 					renderStyle.getWidthLevel3());
 			glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
@@ -2742,7 +2742,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glTranslatef(0f, -fOffsety, 0f);
 		}
 
-		gl.glTranslatef(-fleftOffset, +0.2f, 0);
+		gl.glTranslatef(-fleftOffset, 0, 0);
 
 		// render embedded gene dendrogram
 		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
@@ -2770,7 +2770,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	private void renderRemoteViewsLevel_3_Active(GL2 gl) {
 		float fright = 0;
-		float ftop = viewFrustum.getTop();
+		float ftop = viewFrustum.getTop() - 0.2f;
 
 		float fleftOffset = 0.1f;
 
@@ -2780,7 +2780,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		fright = viewFrustum.getWidth() - fleftOffset;
 
-		gl.glTranslatef(fleftOffset, -0.2f, 0);
+		gl.glTranslatef(fleftOffset, 0f, 0);
 
 		// render embedded heat map
 		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
@@ -2821,7 +2821,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glTranslatef(0f, -fOffsety, 0f);
 		}
 
-		gl.glTranslatef(-fleftOffset, +0.2f, 0);
+		gl.glTranslatef(-fleftOffset, 0, 0);
 
 		// render embedded gene dendrogram
 		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
@@ -2944,9 +2944,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				&& bSkipLevel2 == false)
 			fleftOffset += renderStyle.getWidthClusterVisualization();
 
-		float fWidthLevel3 = viewFrustum.getWidth() - fleftOffset - 0.95f;
+//		float fWidthLevel3 = viewFrustum.getWidth() - fleftOffset - 0.95f;
 
-		renderStyle.setWidthLevel3(fWidthLevel3);
+//		renderStyle.setWidthLevel3(fWidthLevel3);
 	}
 
 	private void renderViewsLevel_1_2_3_Active(GL2 gl) {

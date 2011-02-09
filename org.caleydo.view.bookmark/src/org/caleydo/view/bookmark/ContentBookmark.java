@@ -29,7 +29,7 @@ class ContentBookmark extends ABookmark {
 		this.id = id;
 
 		layoutParameters = new ElementLayout();
-		layoutParameters.setSizeX(1);
+		layoutParameters.setRatioSizeX(1);
 	
 
 		layoutParameters.setRenderer(this);
@@ -41,7 +41,7 @@ class ContentBookmark extends ABookmark {
 	}
 
 	@Override
-	public ElementLayout getElementLayout() {
+	public ElementLayout getLayout() {
 		return layoutParameters;
 	}
 

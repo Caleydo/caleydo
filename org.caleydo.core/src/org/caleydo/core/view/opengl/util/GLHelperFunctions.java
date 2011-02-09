@@ -34,11 +34,11 @@ public class GLHelperFunctions {
 
 		gl.glColor3f(1, 0, 0);
 		gl.glBegin(GL2.GL_LINE_LOOP);
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
-		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 1);
+		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getBottom(), 1);
 		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(),
-			viewFrustum.getTop() - viewFrustum.getBottom(), 0);
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop() - viewFrustum.getBottom(), 0);
+			viewFrustum.getTop() - viewFrustum.getBottom(), 1);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop() - viewFrustum.getBottom(), 1);
 
 		gl.glEnd();
 	}

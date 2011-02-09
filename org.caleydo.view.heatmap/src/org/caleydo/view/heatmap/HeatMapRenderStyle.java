@@ -169,7 +169,6 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 
 	// function called by HHM to set width of embedded HM
 	public void setWidthLevel3(float fWidthLevel3) {
-
 		this.fWidthLevel3 = fWidthLevel3;
 	}
 
