@@ -33,7 +33,7 @@ class ContentBookmarkContainer extends ABookmarkContainer<ContentSelectionManage
 		colorMapping = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 
-		selectionManager = manager.getDataDomain().getContentSelectionManager();
+		selectionManager = 	new ContentSelectionManager(idType);
 
 	}
 

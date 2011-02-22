@@ -12,10 +12,10 @@ class RenderingHelpers {
 
 		textRenderer.setColor(0, 0, 0, 1);
 
-		if (sLabel.length() > GeneralRenderStyle.NUM_CHAR_LIMIT + 1) {
-			sLabel = sLabel.substring(0, GeneralRenderStyle.NUM_CHAR_LIMIT - 2);
-			sLabel = sLabel + "..";
-		}
+//		if (sLabel.length() > GeneralRenderStyle.NUM_CHAR_LIMIT + 1) {
+//			sLabel = sLabel.substring(0, GeneralRenderStyle.NUM_CHAR_LIMIT - 2);
+//			sLabel = sLabel + "..";
+//		}
 
 		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		textRenderer.renderText(gl, sLabel, fXOrigin, fYOrigin, 0);

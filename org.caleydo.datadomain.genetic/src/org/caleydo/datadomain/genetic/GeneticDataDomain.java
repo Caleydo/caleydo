@@ -354,7 +354,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		// values, depending on the IDType that has been specified when
 		// loading expression data.
 		// Possibly a different handling of the Set is required.
-		java.util.Set<String> setGeneSymbols = idMappingManager.getIDAsSet(contentIDType,
+		java.util.Set<String> setGeneSymbols = idMappingManager.getIDAsSet(idType,
 				humanReadableContentIDType, id);
 
 		if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {

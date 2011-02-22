@@ -28,7 +28,6 @@ class StorageBookmark extends ABookmark {
 		super(manager, partentContainer, idType, textRenderer);
 		this.id = experimentIndex;
 
-	
 		layout = new ElementLayout();
 		layout.setRatioSizeX(1);
 		layout.setRenderer(this);
@@ -55,10 +54,10 @@ class StorageBookmark extends ABookmark {
 		// EIDType.GENE_SYMBOL, id);
 		//
 		// float yOrigin = bookmarkDimensions.getYOrigin() - 0.08f;
-		float height = (layout.getSizeScaledY() - (float)textRenderer.getBounds("Bla").getHeight())/2;
-		
-		
-		
+		float height = (layout.getSizeScaledY() - (float) textRenderer.getBounds("Bla")
+				.getHeight()) / 2;
+
+//		gl.glPushName(manager.getPickingIDManager().getPickingID());
 		RenderingHelpers.renderText(gl, textRenderer, sContent,
 				BookmarkRenderStyle.SIDE_SPACING * 2, height,
 				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);

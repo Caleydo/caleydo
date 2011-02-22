@@ -1,11 +1,13 @@
 package org.caleydo.view.bookmark;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.layout.ARenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
@@ -45,8 +47,11 @@ public abstract class ABookmark extends ARenderer implements ILayoutedElement {
 		super.render(gl);
 
 		float[] highlightColor = null;
+
 		ArrayList<SelectionType> selectionTypes = parentContainer.selectionManager
-				.getSelectionTypes(id);
+				.getSelectionTypes(this.id);
+		
+		
 		if (selectionTypes == null)
 			return;
 
@@ -63,17 +68,9 @@ public abstract class ABookmark extends ARenderer implements ILayoutedElement {
 		}
 		if (topLevelType == null)
 			return;
-		// highlightColor = new float[] { 1, 0, 1 };// topLevelType.getColor();
 
-		// item.getID())) {
 		highlightColor = topLevelType.getColor();
-		//
-		// }
-		// int pickingID = pickingIDManager.getPickingID(this, item.getID());
-		// gl.glPushName(pickingID);
-		//
-		// item.render(gl);
-		//
+
 		ElementLayout layout = getLayout();
 		if (highlightColor != null) {
 
