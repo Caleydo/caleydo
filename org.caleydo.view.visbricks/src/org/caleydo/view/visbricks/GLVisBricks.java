@@ -20,9 +20,10 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.visbricks.renderstyle.VisBricksRenderStyle;
 
 /**
- * Sample GL2 view.
+ *  VisBricks main view
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
 
 public class GLVisBricks extends AGLView implements IViewCommandHandler,
@@ -31,6 +32,8 @@ public class GLVisBricks extends AGLView implements IViewCommandHandler,
 	public final static String VIEW_ID = "org.caleydo.view.visbricks";
 
 	private VisBricksRenderStyle renderStyle;
+
+	GLBrick brick;
 
 	/**
 	 * Constructor.
@@ -43,6 +46,8 @@ public class GLVisBricks extends AGLView implements IViewCommandHandler,
 		super(glCanvas, viewFrustum, true);
 
 		viewType = GLVisBricks.VIEW_ID;
+
+		brick = new GLBrick(parentGLCanvas, viewFrustum);
 	}
 
 	@Override
@@ -52,6 +57,7 @@ public class GLVisBricks extends AGLView implements IViewCommandHandler,
 
 		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;
+
 	}
 
 	@Override
@@ -82,7 +88,10 @@ public class GLVisBricks extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void displayLocal(GL2 gl) {
-
+		ViewFrustum viewFrustum = new ViewFrustum(this.viewFrustum.getProjectionMode(),
+				0, 1, 0, 1, -4, 4);
+		brick.setFrustum(viewFrustum);
+		brick.display(gl);
 		pickingManager.handlePicking(this, gl);
 		display(gl);
 		checkForHits(gl);
