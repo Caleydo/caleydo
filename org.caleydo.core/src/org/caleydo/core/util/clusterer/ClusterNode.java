@@ -15,6 +15,7 @@ import org.caleydo.core.data.collection.set.MetaSet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
+import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionType;
 
@@ -52,6 +53,8 @@ public class ClusterNode
 	private Vec3f vPosSubTree;
 	@XmlTransient
 	private MetaSet metaSet;
+//	@XmlTransient
+//	private ClusterTree tree;
 
 	// @XmlElement
 	// private float[] fArRepresentativeElement;
@@ -73,7 +76,7 @@ public class ClusterNode
 	 * @param leafID
 	 *            the id of the leaf, or -1 if this is not a leaf
 	 */
-	public ClusterNode(Tree<ClusterNode> tree, String label, int clusterNr, boolean isRootNode, int leafID) {
+	public ClusterNode(ClusterTree tree, String label, int clusterNr, boolean isRootNode, int leafID) {
 
 		super(tree);
 		this.label = label;
@@ -92,7 +95,7 @@ public class ClusterNode
 	 * @param set
 	 */
 	public <SetType extends Set> void createMetaSet(SetType set) {
-		metaSet = new MetaSet(set, tree, this);
+		metaSet = new MetaSet(set, (ClusterTree) tree, this);
 		metaSet.setLabel(label);
 		// metaSet.setContentTree(set.getContentTree());
 		// Tree<ClusterNode> subTree = tree.getSubTree();

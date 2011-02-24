@@ -60,8 +60,8 @@ public class StorageData
 		return storageTree;
 	}
 
-	public void setStorageTree(Tree<ClusterNode> storageTree) {
-		this.storageTree = (ClusterTree) storageTree;
+	public void setStorageTree(ClusterTree storageTree) {
+		this.storageTree = storageTree;
 	}
 
 	public void setDefaultTree(boolean isDefaultTree) {

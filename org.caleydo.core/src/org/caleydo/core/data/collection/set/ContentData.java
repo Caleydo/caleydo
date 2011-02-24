@@ -2,6 +2,7 @@ package org.caleydo.core.data.collection.set;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.group.ContentGroupList;
 import org.caleydo.core.data.group.Group;
@@ -23,7 +24,7 @@ public class ContentData {
 	/** number of elements per cluster */
 	ArrayList<Integer> contentClusterSizes;
 
-	Tree<ClusterNode> contentTree;
+	ClusterTree contentTree;
 
 	boolean isPartitionallyClustered = false;
 
@@ -68,7 +69,7 @@ public class ContentData {
 		return contentTree;
 	}
 
-	public void setContentTree(Tree<ClusterNode> contentTree) {
+	public void setContentTree(ClusterTree contentTree) {
 		this.contentTree = contentTree;
 	}
 
@@ -101,7 +102,7 @@ public class ContentData {
 
 			int cnt = 0;
 			// int iOffset = 0;
-			contentTree = new Tree<ClusterNode>(contentIDIdType);
+			contentTree = new ClusterTree(contentIDIdType);
 			contentTree.setUseDefaultComparator(false);
 			int clusterNr = 0;
 			ClusterNode root = new ClusterNode(contentTree, "Root", clusterNr++, true, -1);

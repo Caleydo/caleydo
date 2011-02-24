@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
@@ -45,7 +46,7 @@ public class TreeClusterer
 
 	private int iNrSamples = 0;
 
-	private Tree<ClusterNode> tree;
+	private ClusterTree tree;
 
 	private EDistanceMeasure eDistanceMeasure;
 
@@ -64,12 +65,12 @@ public class TreeClusterer
 		try {
 
 			if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
-				tree = new Tree<ClusterNode>();
+				tree = new ClusterTree();
 				tree.setUseDefaultComparator(false);
 				this.iNrSamples = clusterState.getContentVA().size();
 			}
 			else if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING) {
-				tree = new Tree<ClusterNode>();
+				tree = new ClusterTree();
 				this.iNrSamples = clusterState.getStorageVA().size();
 			}
 			else

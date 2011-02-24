@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
@@ -21,7 +22,7 @@ public class HierarchicalClusterer
 
 	private Cobweb clusterer;
 
-	private Tree<ClusterNode> tree;
+	private ClusterTree tree;
 
 	public HierarchicalClusterer() {
 		clusterer = new Cobweb();
@@ -40,7 +41,7 @@ public class HierarchicalClusterer
 
 		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
 
-			tree = new Tree<ClusterNode>(set.getDataDomain().getContentIDType());
+			tree = new ClusterTree(set.getDataDomain().getContentIDType());
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
 
@@ -79,7 +80,7 @@ public class HierarchicalClusterer
 			}
 		}
 		else {
-			tree = new Tree<ClusterNode>(set.getDataDomain().getStorageIDType());
+			tree = new ClusterTree(set.getDataDomain().getStorageIDType());
 
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for experiment clustering"));

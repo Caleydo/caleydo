@@ -16,6 +16,7 @@ import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
@@ -31,7 +32,6 @@ import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.custom.ST;
 
 /**
  * Implementation of the ISet interface
@@ -94,7 +94,7 @@ public class Set
 	private void initWithDataDomain() {
 		SetManager.getInstance().registerItem(this);
 		init();
-		Tree<ClusterNode> tree = new Tree<ClusterNode>(dataDomain.getStorageIDType());
+		ClusterTree tree = new ClusterTree(dataDomain.getStorageIDType());
 		ClusterNode root = new ClusterNode(tree, "Root", 1, true, -1);
 		tree.setRootNode(root);
 		defaultStorageData.setStorageTree(tree);
@@ -120,7 +120,7 @@ public class Set
 	public void createMetaSets() {
 		// ClusterNode rootNode = hashStorageData.get(STORAGE).getStorageTreeRoot();
 		// rootNode.createMetaSets(this);
-		hashStorageData.get(STORAGE).getStorageTree().createMetaSets(this);
+		defaultStorageData.getStorageTree().createMetaSets(this);
 	}
 
 	@XmlTransient
@@ -596,7 +596,7 @@ public class Set
 	void finalizeAddedStorages() {
 		// this needs only be done by the root set
 		if ((this.getClass().equals(Set.class))) {
-			Tree<ClusterNode> tree = defaultStorageData.getStorageTree();
+			ClusterTree tree = defaultStorageData.getStorageTree();
 			int count = 1;
 			for (Integer storageID : defaultStorageData.getStorageVA()) {
 				ClusterNode node =

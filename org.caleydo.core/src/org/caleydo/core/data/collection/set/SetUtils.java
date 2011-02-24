@@ -20,6 +20,7 @@ import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.group.ContentGroupList;
@@ -412,7 +413,7 @@ public class SetUtils {
 
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(set.getDataDomain());
-				Tree<ClusterNode> tree;
+				ClusterTree tree;
 				try {
 
 					tree = treePorter.importTree(geneTreeFileName, set.getDataDomain().getContentIDType());
@@ -437,7 +438,7 @@ public class SetUtils {
 
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(set.getDataDomain());
-				Tree<ClusterNode> tree;
+				ClusterTree tree;
 				try {
 					tree = treePorter.importStorageTree(experimentsTreeFileName);
 					set.getStorageData(Set.STORAGE).setStorageTree(tree);

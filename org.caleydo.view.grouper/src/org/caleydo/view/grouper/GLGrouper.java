@@ -184,7 +184,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	 * Creates a new shallow tree for cluster nodes and GroupRepresentations.
 	 */
 	private void createNewHierarchy() {
-		Tree<ClusterNode> tree = new Tree<ClusterNode>(dataDomain.getStorageIDType());
+		ClusterTree tree = new ClusterTree(dataDomain.getStorageIDType());
 		IGroupDrawingStrategy groupDrawingStrategy = drawingStrategyManager
 				.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
 		iLastUsedGroupID = 0;

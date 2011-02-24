@@ -77,7 +77,7 @@ public class GLBrick extends AGLView {
 	@Override
 	public void display(GL2 gl) {
 
-		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		if (isBaseDisplayListDirty)
 			buildBaseDisplayList(gl);
@@ -87,7 +87,7 @@ public class GLBrick extends AGLView {
 
 	@Override
 	protected void displayLocal(GL2 gl) {
-		display(gl);
+//		display(gl);
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
-import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -35,7 +35,7 @@ public class MetaSet
 	// }
 
 	@SuppressWarnings("unchecked")
-	public MetaSet(Set originalSet, Tree<ClusterNode> storageTree, ClusterNode storageTreeRoot) {
+	public MetaSet(Set originalSet, ClusterTree storageTree, ClusterNode storageTreeRoot) {
 		super();
 		this.dataDomain = originalSet.getDataDomain();
 		// init();

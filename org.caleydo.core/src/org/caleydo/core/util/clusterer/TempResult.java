@@ -2,7 +2,7 @@ package org.caleydo.core.util.clusterer;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.graph.tree.ClusterTree;
 
 public class TempResult {
 	ArrayList<Integer> indices;
@@ -11,5 +11,5 @@ public class TempResult {
 	/** number of elements per cluster */
 	ArrayList<Integer> clusterSizes;
 
-	Tree<ClusterNode> tree;
+	ClusterTree tree;
 }

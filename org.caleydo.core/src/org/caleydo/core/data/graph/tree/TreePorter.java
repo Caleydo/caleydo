@@ -72,7 +72,7 @@ public class TreePorter {
 	public ClusterTree importTree(String fileName, IDType leafIDType) throws JAXBException,
 		FileNotFoundException {
 
-		Tree<ClusterNode> tree = new Tree<ClusterNode>(leafIDType);
+		ClusterTree tree = new ClusterTree(leafIDType);
 		// tree.initializeIDTypes(IDType.getIDType(leaveIDTypeString));
 		ClusterNode rootNode = null;
 
@@ -130,10 +130,10 @@ public class TreePorter {
 		tree.setGraph(graph);
 		tree.hashLeafIDToNodeIDs = hashLeafIDToNodeIDs;
 
-		return (ClusterTree) tree;
+		return tree;
 	}
 
-	public Tree<ClusterNode> importStorageTree(String fileName) throws JAXBException, FileNotFoundException {
+	public ClusterTree importStorageTree(String fileName) throws JAXBException, FileNotFoundException {
 		ClusterTree tree = importTree(fileName, dataDomain.getStorageIDType());
 
 		org.caleydo.core.data.collection.set.Set set =
