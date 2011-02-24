@@ -48,7 +48,7 @@ public class TreePorter {
 	String leaveIDTypeString;
 
 	private ASetBasedDataDomain dataDomain;
-	
+
 	@XmlElement
 	private boolean useDefaultComparator = true;
 
@@ -69,11 +69,11 @@ public class TreePorter {
 	 * @throws JAXBException
 	 *             in case of a XML-serialization error
 	 */
-	public Tree<ClusterNode> importTree(String fileName, IDType leafIDType) throws JAXBException,
+	public ClusterTree importTree(String fileName, IDType leafIDType) throws JAXBException,
 		FileNotFoundException {
 
 		Tree<ClusterNode> tree = new Tree<ClusterNode>(leafIDType);
-//		tree.initializeIDTypes(IDType.getIDType(leaveIDTypeString));
+		// tree.initializeIDTypes(IDType.getIDType(leaveIDTypeString));
 		ClusterNode rootNode = null;
 
 		DirectedGraph<ClusterNode, DefaultEdge> graph =
@@ -88,7 +88,7 @@ public class TreePorter {
 		treePorter =
 			(TreePorter) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
 				.getResource(fileName));
-		
+
 		tree.setUseDefaultComparator(treePorter.useDefaultComparator);
 
 		int size = (int) (treePorter.nodeSet.size() * 1.5);
@@ -130,15 +130,15 @@ public class TreePorter {
 		tree.setGraph(graph);
 		tree.hashLeafIDToNodeIDs = hashLeafIDToNodeIDs;
 
-		return tree;
+		return (ClusterTree) tree;
 	}
 
 	public Tree<ClusterNode> importStorageTree(String fileName) throws JAXBException, FileNotFoundException {
-		Tree<ClusterNode> tree = importTree(fileName, dataDomain.getStorageIDType());
+		ClusterTree tree = importTree(fileName, dataDomain.getStorageIDType());
 
 		org.caleydo.core.data.collection.set.Set set =
 			(org.caleydo.core.data.collection.set.Set) dataDomain.getSet();
-		tree.getRoot().createMetaSets(set);
+		tree.createMetaSets(set);
 		return tree;
 	}
 

@@ -31,6 +31,7 @@ import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.custom.ST;
 
 /**
  * Implementation of the ISet interface
@@ -117,8 +118,9 @@ public class Set
 	 * Creates a {@link MetaSet} for every node in the storage tree.
 	 */
 	public void createMetaSets() {
-		ClusterNode rootNode = hashStorageData.get(STORAGE).getStorageTreeRoot();
-		rootNode.createMetaSets(this);
+		// ClusterNode rootNode = hashStorageData.get(STORAGE).getStorageTreeRoot();
+		// rootNode.createMetaSets(this);
+		hashStorageData.get(STORAGE).getStorageTree().createMetaSets(this);
 	}
 
 	@XmlTransient
@@ -378,7 +380,8 @@ public class Set
 		else
 			contentData.reset();
 		contentData.setContentVA(virtualArray);
-		// FIXME - this happens when we filter genes based on pathway occurrences. However, we should consider this as a filter instead of the new default
+		// FIXME - this happens when we filter genes based on pathway occurrences. However, we should consider
+		// this as a filter instead of the new default
 		// if (vaType == CONTENT)
 		// defaultContentData = contentData;
 		hashContentData.put(vaType, contentData);
@@ -601,7 +604,7 @@ public class Set
 				tree.addChild(tree.getRoot(), node);
 			}
 
-			tree.getRoot().createMetaSets(this);
+			createMetaSets();
 
 		}
 		hashStorageData.put(STORAGE, defaultStorageData.clone());

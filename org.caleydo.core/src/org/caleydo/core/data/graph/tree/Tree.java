@@ -50,6 +50,17 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 		init();
 	}
 
+	/**
+	 * Constructor for the tree, specifying the ID type, which should be used whenever creating a new,
+	 * independent tree.
+	 * 
+	 * @param leaveIDType
+	 */
+	public Tree(IDType leaveIDType) {
+		init();
+		initializeIDTypes(leaveIDType);
+	}
+
 	public void destroy() {
 		graph = null;
 		rootNode = null;
@@ -87,11 +98,6 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	 */
 	public void setLeafIDType(IDType leafIDType) {
 		this.leafIDType = leafIDType;
-	}
-
-	public Tree(IDType leaveIDType) {
-		init();
-		initializeIDTypes(leaveIDType);
 	}
 
 	private void init() {

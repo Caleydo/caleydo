@@ -9,10 +9,12 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -33,8 +35,9 @@ import org.caleydo.view.visbricks.renderstyle.VisBricksRenderStyle;
  */
 
 public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
-		IViewCommandHandler, ISelectionUpdateHandler {
+		IViewCommandHandler, ISelectionUpdateHandler, IDataDomainSetBasedView {
 
+	ASetBasedDataDomain dataDomain;
 	public final static String VIEW_ID = "org.caleydo.view.visbricks";
 
 	private VisBricksRenderStyle renderStyle;
@@ -217,5 +220,16 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
 		return brickList;
+	}
+
+	@Override
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+	}
+
+	@Override
+	public ASetBasedDataDomain getDataDomain() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

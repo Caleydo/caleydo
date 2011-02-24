@@ -50,16 +50,17 @@ public class Activator extends Plugin {
 	}
 
 	private void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 
-		// TODO: ADD THE POSSIBLE DATA DOMAINS FOR THIS VIEW
-		// For example:
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
+		dataDomainTypes.add("org.caleydo.datadomain.clinical");
 
 		DataDomainManager
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLVisBricks.VIEW_ID);
+
 	}
 }

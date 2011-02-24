@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -124,7 +125,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 	private SelectionType selectionTypeClicked;
 
-	private Tree<ClusterNode> tree;
+	private ClusterTree tree;
 
 	private ASetBasedDataDomain dataDomain;
 
@@ -288,7 +289,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	 * according to the structure of the composite GroupRepresentation tree.
 	 */
 	public void updateClusterTreeAccordingToGroupHierarchy() {
-		tree = new Tree<ClusterNode>(dataDomain.getStorageIDType());
+		tree = new ClusterTree(dataDomain.getStorageIDType());
 		ClusterNode rootNode = rootGroup.getClusterNode();
 		rootNode.setTree(tree);
 		tree.setRootNode(rootNode);
@@ -314,7 +315,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		ClusterHelper.determineExpressionValue(tree, EClustererType.STORAGE_CLUSTERING,
 				set);
 		tree.setDirty();
-		tree.getRoot().createMetaSets((org.caleydo.core.data.collection.set.Set) set);
+		tree.createMetaSets((org.caleydo.core.data.collection.set.Set) set);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
 		storageVA = new StorageVirtualArray(
@@ -681,7 +682,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 							// Lazy loading of R
 							GeneralManager.get().getRStatisticsPerformer();
 
-							// Do not allow p-value stats for multiple groups or leaf meta sets
+							// Do not allow p-value stats for multiple groups or
+							// leaf meta sets
 							if (!isLeafContained && orderedComposites.size() < 2) {
 								StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
 										selectedSets);
@@ -1063,7 +1065,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public void createNewGroup(Set<Integer> setContainedGroups) {
 
-		tree = new Tree<ClusterNode>(dataDomain.getStorageIDType());
+		tree = new ClusterTree(dataDomain.getStorageIDType());
 		GroupRepresentation newGroup = new GroupRepresentation(new ClusterNode(tree,
 				"group" + iLastUsedGroupID, iLastUsedGroupID++, false, -1), renderStyle,
 				drawingStrategyManager
@@ -1228,7 +1230,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	 *            ID of the group where the copied groups should be pasted in.
 	 */
 	public void pasteGroups(int iParentGroupID) {
-		tree = new Tree<ClusterNode>(dataDomain.getStorageIDType());
+		tree = new ClusterTree(dataDomain.getStorageIDType());
 		GroupRepresentation parent = hashGroups.get(iParentGroupID);
 
 		if (parent == null || setCopiedGroups == null || parent.isLeaf())

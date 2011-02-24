@@ -2,6 +2,7 @@ package org.caleydo.core.data.collection.set;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.group.Group;
 import org.caleydo.core.data.group.StorageGroupList;
@@ -24,7 +25,7 @@ public class StorageData
 	/** number of elements per cluster */
 	ArrayList<Integer> storageClusterSizes;
 
-	Tree<ClusterNode> storageTree;
+	ClusterTree storageTree;
 
 	boolean isDefaultTree = true;
 
@@ -55,12 +56,12 @@ public class StorageData
 		this.storageSampleElements = storageSampleElements;
 	}
 
-	public Tree<ClusterNode> getStorageTree() {
+	public ClusterTree getStorageTree() {
 		return storageTree;
 	}
 
 	public void setStorageTree(Tree<ClusterNode> storageTree) {
-		this.storageTree = storageTree;
+		this.storageTree = (ClusterTree) storageTree;
 	}
 
 	public void setDefaultTree(boolean isDefaultTree) {
