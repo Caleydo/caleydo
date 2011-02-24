@@ -30,6 +30,8 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
+import org.caleydo.core.view.opengl.util.spline.IConnectionRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.matchmaker.GLMatchmaker;
@@ -37,8 +39,6 @@ import org.caleydo.view.matchmaker.HeatMapWrapper;
 import org.caleydo.view.matchmaker.SetBar;
 import org.caleydo.view.matchmaker.layout.AHeatMapLayout;
 import org.caleydo.view.matchmaker.rendercommand.RenderCommandFactory;
-import org.caleydo.view.matchmaker.renderer.CompareConnectionBandRenderer;
-import org.caleydo.view.matchmaker.renderer.ICompareConnectionRenderer;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
 
@@ -102,7 +102,7 @@ public abstract class ACompareViewState {
 
 	boolean renderPseudoHierarchy = false;
 
-	protected ICompareConnectionRenderer compareConnectionRenderer;
+	protected IConnectionRenderer compareConnectionRenderer;
 
 	HashMap<Integer, float[]> contentIDToLeftDetailPoints;
 	HashMap<Integer, float[]> contentIDToRightDetailPoints;
@@ -141,7 +141,7 @@ public abstract class ACompareViewState {
 
 		eventPublisher = GeneralManager.get().getEventPublisher();
 
-		compareConnectionRenderer = new CompareConnectionBandRenderer();
+		compareConnectionRenderer = new ConnectionBandRenderer();
 
 		contentIDToLeftDetailPoints = new HashMap<Integer, float[]>();
 		contentIDToRightDetailPoints = new HashMap<Integer, float[]>();

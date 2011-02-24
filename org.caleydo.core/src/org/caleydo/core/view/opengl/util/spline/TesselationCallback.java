@@ -1,4 +1,4 @@
-package org.caleydo.view.matchmaker.renderer.util;
+package org.caleydo.core.view.opengl.util.spline;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;

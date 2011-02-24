@@ -3,7 +3,7 @@ package org.caleydo.core.view.opengl.layout;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
-public abstract class ATemplate {
+public class Template {
 
 	// super(heatMap);
 	// initRenderers();
@@ -35,7 +35,7 @@ public abstract class ATemplate {
 	 * For static layouts (for example for a particular view) the layouting should be done in a sub-class of
 	 * ATemplate in this method. If the layout is generated dynamically, this typically should be empty.
 	 */
-	abstract public void setParameters();
+	public void setParameters() {}
 
 	/**
 	 * Calculate the size and positions of the layout elements in the template

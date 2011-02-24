@@ -180,7 +180,7 @@ public abstract class LayoutContainer
 	}
 
 	@Override
-	protected void updateSpacings(ATemplate template) {
+	protected void updateSpacings(Template template) {
 		for (ElementLayout element : elements) {
 			element.updateSpacings(template);
 		}

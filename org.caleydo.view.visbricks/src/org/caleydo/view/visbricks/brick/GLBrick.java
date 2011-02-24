@@ -26,7 +26,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 public class GLBrick extends AGLView {
 
 	TemplateRenderer templateRenderer;
-	BrickLayout brickLayout;
+	BrickLayoutTemplate brickLayout;
 
 	private int baseDisplayListIndex = 1;
 	private boolean isBaseDisplayListDirty = true;
@@ -34,7 +34,7 @@ public class GLBrick extends AGLView {
 	public GLBrick(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 		templateRenderer = new TemplateRenderer(viewFrustum);
-		brickLayout = new BrickLayout();
+		brickLayout = new BrickLayoutTemplate();
 
 		brickLayout.setPixelGLConverter(pixelGLConverter);
 

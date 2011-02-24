@@ -1,4 +1,4 @@
-package org.caleydo.view.matchmaker.renderer;
+package org.caleydo.core.view.opengl.util.spline;
 
 import gleem.linalg.Vec3f;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-public interface ICompareConnectionRenderer {
+public interface IConnectionRenderer {
 
 	public void init(GL2 gl);
 

@@ -12,7 +12,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.layout.ATemplate;
+import org.caleydo.core.view.opengl.layout.Template;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -29,7 +29,7 @@ public class HeatMapRenderer extends AContentRenderer {
 	}
 
 	@Override
-	public void updateSpacing(ATemplate template, ElementLayout parameters) {
+	public void updateSpacing(Template template, ElementLayout parameters) {
 		
 		
 			AHeatMapTemplate heatMapTemplate = (AHeatMapTemplate) template;

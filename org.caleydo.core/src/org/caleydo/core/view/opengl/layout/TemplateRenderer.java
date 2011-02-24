@@ -20,7 +20,7 @@ public class TemplateRenderer {
 
 	// protected float spacing;
 
-	private ATemplate template;
+	private Template template;
 
 	ViewFrustum viewFrustum;
 	float totalWidth;
@@ -31,7 +31,7 @@ public class TemplateRenderer {
 		this.viewFrustum = viewFrustum;
 	}
 
-	public void setTemplate(ATemplate template) {
+	public void setTemplate(Template template) {
 
 		this.template = template;
 		template.setParameters();

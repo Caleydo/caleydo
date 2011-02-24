@@ -56,7 +56,7 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void initLocal(GL2 gl) {
-
+		init(gl);
 	}
 
 	@Override

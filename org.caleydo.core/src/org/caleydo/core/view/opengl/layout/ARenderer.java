@@ -21,7 +21,7 @@ public class ARenderer {
 	}
 
 	/** Calculate spacing if required */
-	public void updateSpacing(ATemplate template, ElementLayout elementLayout) {
+	public void updateSpacing(Template template, ElementLayout elementLayout) {
 		this.elementLayout = elementLayout;
 	}
 

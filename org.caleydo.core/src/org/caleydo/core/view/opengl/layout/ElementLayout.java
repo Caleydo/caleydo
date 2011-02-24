@@ -298,7 +298,7 @@ public class ElementLayout {
 
 	}
 
-	protected void updateSpacings(ATemplate template) {
+	protected void updateSpacings(Template template) {
 		// ARenderer renderer = ((RenderableLayoutElement) layout).getRenderer();
 		if (renderer == null)
 			return;
