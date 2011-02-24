@@ -77,6 +77,9 @@ public abstract class AGLView
 
 	protected PickingManager pickingManager;
 
+	/** Allows to convert pixel values to gl coordinates. May only be not-null in locally rendered views. */
+	protected PixelGLConverter pixelGLConverter = null;
+
 	/**
 	 * Key listener which is created and registered in specific view.
 	 */
@@ -166,15 +169,12 @@ public abstract class AGLView
 
 	protected CaleydoTextRenderer textRenderer;
 
-	protected PixelGLConverter pixelGLConverter;
-
 	/**
-	 * Constructor.
+	 * Constructor. If the glCanvas object is null - then the view is rendered remote.
 	 */
 	protected AGLView(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum,
 		final boolean bRegisterToParentCanvasNow) {
 
-		// If the glCanvas object is null - then the view is rendered remote.
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.GL_VIEW));
 
 		GeneralManager.get().getViewGLCanvasManager().registerGLView(this);
@@ -196,7 +196,10 @@ public abstract class AGLView
 		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 
 		bShowMagnifyingGlass = false;
-		pixelGLConverter = new PixelGLConverter(viewFrustum, getParentGLCanvas());
+		
+		if (!isRenderedRemote())
+			pixelGLConverter = new PixelGLConverter(viewFrustum, parentGLCanvas);
+
 	}
 
 	@Override
@@ -450,7 +453,7 @@ public abstract class AGLView
 		return viewFrustum;
 	}
 
-	public final void setFrustum(ViewFrustum viewFrustum) {
+	public void setFrustum(ViewFrustum viewFrustum) {
 		this.viewFrustum = viewFrustum;
 	}
 

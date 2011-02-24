@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.layout;
 
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 public abstract class ATemplate {
@@ -19,6 +20,12 @@ public abstract class ATemplate {
 	protected float fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
 	protected boolean isActive;
+	
+	protected PixelGLConverter pixelGLConverter;
+	
+	public void setPixelGLConverter(PixelGLConverter pixelGLConverter) {
+		this.pixelGLConverter = pixelGLConverter;
+	}
 
 	public ElementLayout getBaseLayoutElement() {
 		return baseElementLayout;

@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.layout;
 
-import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 /**

@@ -311,7 +311,7 @@ public class ViewManager
 
 		AGLView view;
 		try {
-			Class[] argTypes = { GLCaleydoCanvas.class, ViewFrustum.class };
+			Class[] argTypes = {GLCaleydoCanvas.class, ViewFrustum.class };
 			Constructor aConstructor = viewClass.getConstructor(argTypes);
 			view = (AGLView) aConstructor.newInstance(glCanvas, viewFrustum);
 		}

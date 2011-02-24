@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.IDType;
@@ -130,6 +131,7 @@ public class GLHeatMap extends AStorageBasedView {
 			template = new DefaultTemplate(this);
 
 		templateRenderer.setTemplate(template);
+		templateRenderer.updateLayout();
 	}
 
 	@Override
@@ -178,6 +180,12 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	@Override
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+		super.reshape(drawable, x, y, width, height);
+		templateRenderer.updateLayout();
+	}
+
+	@Override
 	public void setDetailLevel(DetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
@@ -193,7 +201,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	public void displayLocal(GL2 gl) {
-	
+
 		if (set == null)
 			return;
 
@@ -224,6 +232,7 @@ public class GLHeatMap extends AStorageBasedView {
 			return;
 
 		if (bIsDisplayListDirtyRemote) {
+			templateRenderer.updateLayout();
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
 			generalManager.getViewGLCanvasManager()
@@ -241,6 +250,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	public void display(GL2 gl) {
+//		templateRenderer.frustumChanged();
 		gl.glCallList(iGLDisplayListToCall);
 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);

@@ -2,6 +2,7 @@ package org.caleydo.core.view;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 
 /**
  * Interface for the view representations.
@@ -32,5 +33,10 @@ public interface IView
 	 */
 	public void initFromSerializableRepresentation(ASerializedView serializedView);
 
+	/**
+	 * Get the name of the type of the view.
+	 * 
+	 * @return
+	 */
 	public String getViewType();
 }

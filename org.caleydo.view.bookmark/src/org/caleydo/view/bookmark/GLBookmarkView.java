@@ -142,7 +142,8 @@ public class GLBookmarkView extends AGLView implements
 		super.reshape(drawable, x, y, width, height);
 		Rectangle2D bounds = parentGLCanvas.getBounds();
 		textRenderer.setWindowSize(bounds.getWidth(), bounds.getHeight());
-		
+		templateRenderer.updateLayout();
+
 	}
 
 	@Override
@@ -281,7 +282,7 @@ public class GLBookmarkView extends AGLView implements
 					+ event.getIDType().getIDCategory());
 
 		container.handleNewBookmarkEvent(event);
-
+		templateRenderer.updateLayout();
 		setDisplayListDirty();
 	}
 
@@ -294,7 +295,7 @@ public class GLBookmarkView extends AGLView implements
 					+ event.getIDType().getIDCategory());
 
 		container.handleRemoveBookmarkEvent(event);
-
+		templateRenderer.updateLayout();
 		setDisplayListDirty();
 	}
 
@@ -303,6 +304,7 @@ public class GLBookmarkView extends AGLView implements
 		Rectangle2D bounds = parentGLCanvas.getBounds();
 		textRenderer = new MinSizeTextRenderer();
 		textRenderer.setWindowSize(bounds.getWidth(), bounds.getHeight());
+		bookmarkTemplate.setPixelGLConverter(pixelGLConverter);
 	}
 
 	@Override
@@ -397,7 +399,7 @@ public class GLBookmarkView extends AGLView implements
 		mainColumn.setYDynamic(true);
 		mainColumn.setXDynamic(true);
 		mainColumn.setBottomUp(false);
-		mainColumn.setPixelGLConverter(pixelGLConverter);
+		// mainColumn.setPixelGLConverter(pixelGLConverter);
 		bookmarkTemplate.setBaseElementLayout(mainColumn);
 
 		ContentBookmarkContainer geneContainer = new ContentBookmarkContainer(this,

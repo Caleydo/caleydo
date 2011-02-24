@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks;
+package org.caleydo.view.visbricks.brick;
 
 import javax.media.opengl.GL2;
 
@@ -11,6 +11,8 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout.TemplateRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -23,8 +25,21 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
  */
 public class GLBrick extends AGLView {
 
+	TemplateRenderer templateRenderer;
+	BrickLayout brickLayout;
+
+	private int baseDisplayListIndex = 1;
+	private boolean isBaseDisplayListDirty = true;
+
 	public GLBrick(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
+		templateRenderer = new TemplateRenderer(viewFrustum);
+		brickLayout = new BrickLayout();
+
+		brickLayout.setPixelGLConverter(pixelGLConverter);
+
+		templateRenderer.setTemplate(brickLayout);
+
 	}
 
 	@Override
@@ -41,38 +56,51 @@ public class GLBrick extends AGLView {
 
 	@Override
 	public void init(GL2 gl) {
+		pixelGLConverter = ((AGLView) getRemoteRenderingGLCanvas()).getPixelGLConverter();
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	protected void initLocal(GL2 gl) {
-		// TODO Auto-generated method stub
+		init(gl);
 
 	}
 
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener,
 			GLInfoAreaManager infoAreaManager) {
-		// TODO Auto-generated method stub
+		init(gl);
 
 	}
 
 	@Override
 	public void display(GL2 gl) {
+
 		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+
+		if (isBaseDisplayListDirty)
+			buildBaseDisplayList(gl);
+
+		gl.glCallList(baseDisplayListIndex);
 	}
 
 	@Override
 	protected void displayLocal(GL2 gl) {
-		// TODO Auto-generated method stub
-
+		display(gl);
 	}
 
 	@Override
 	public void displayRemote(GL2 gl) {
-		// TODO Auto-generated method stub
+		display(gl);
+	}
 
+	private void buildBaseDisplayList(GL2 gl) {
+		gl.glNewList(baseDisplayListIndex, GL2.GL_COMPILE);
+		templateRenderer.updateLayout();
+		templateRenderer.render(gl);
+		gl.glEndList();
+		isBaseDisplayListDirty = false;
 	}
 
 	@Override

@@ -1,5 +1,11 @@
 package org.caleydo.core.view.opengl.layout;
 
+/**
+ * Container for layouts that are stacked on top of each other. The column is a {@link ElementLayout} and
+ * contains other ElementLayouts. It can be nested into other containers
+ * 
+ * @author Alexander Lex
+ */
 public class Column
 	extends LayoutContainer {
 
@@ -49,6 +55,7 @@ public class Column
 	protected void calculateSubElementScales(float availableWidth, float availableHeight) {
 		float actualWidth = 0;
 		float actualHeight = 0;
+		float totalHeight = 0;
 		ElementLayout greedyElement = null;
 		for (ElementLayout element : elements) {
 			if (element.grabY) {
@@ -58,8 +65,9 @@ public class Column
 				continue;
 			}
 			element.calculateScales(availableWidth, availableHeight - actualHeight);
-			// if an element is set in absolute size, the available size is already reduced by that value 
-			if (Float.isNaN(element.absoluteSizeY))
+			// if an element is set in absolute size, the available size is already reduced by that value
+			totalHeight += element.getSizeScaledY();
+			if (!(!Float.isNaN(element.absoluteSizeY) || Integer.MIN_VALUE != element.pixelSizeY))
 				actualHeight += element.getSizeScaledY();
 			if (actualWidth < element.getSizeScaledX())
 				actualWidth = element.getSizeScaledX();
@@ -73,6 +81,6 @@ public class Column
 		if (isXDynamic)
 			sizeScaledX = actualWidth;
 		if (isYDynamic)
-			sizeScaledY = actualHeight;
+			sizeScaledY = totalHeight;
 	}
 }

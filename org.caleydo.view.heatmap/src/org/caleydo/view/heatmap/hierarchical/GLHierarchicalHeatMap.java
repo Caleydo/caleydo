@@ -292,10 +292,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	@Override
 	public void init(GL2 gl) {
-
-		// // FIXME: Alex, is it save to call this here?
-		// initData();
-
 		createHeatMap();
 		createDendrogram();
 
@@ -307,6 +303,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		initTextures(gl);
 		// activateGroupHandling();
 	}
+
 
 	/**
 	 * Function responsible for initialization of hierarchy levels. Depending on
@@ -678,6 +675,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glHeatMapView.setContentVAType(GLHeatMap.CONTENT_EMBEDDED_VA);
 		glHeatMapView.initialize();
 		glHeatMapView.initData();
+		
 	}
 
 	/**

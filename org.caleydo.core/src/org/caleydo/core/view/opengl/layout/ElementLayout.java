@@ -7,7 +7,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
 
 /**
@@ -68,6 +67,8 @@ public class ElementLayout {
 	protected PixelGLConverter pixelGLConverter;
 
 	protected String layoutName;
+
+	protected float[] frameColor = null;
 
 	public ElementLayout() {
 		renderer = new ARenderer();
@@ -195,7 +196,6 @@ public class ElementLayout {
 	 */
 	public void grabX() {
 		this.grabX = true;
-
 	}
 
 	/**
@@ -203,6 +203,10 @@ public class ElementLayout {
 	 */
 	public void grabY() {
 		this.grabY = true;
+	}
+
+	public void setFrameColor(float red, float green, float blue, float alpha) {
+		frameColor = new float[] { red, green, blue, alpha };
 	}
 
 	// ---------------------------- END OF PUBLIC INTERFACE -----------------------------------
@@ -218,14 +222,19 @@ public class ElementLayout {
 			float yPositionDebugText = 0;
 			Random rand = new Random();
 
-			float[] color = new float[] { rand.nextFloat(), rand.nextFloat(), rand.nextFloat() };
+			float[] color;
+			if (frameColor == null)
+				color = new float[] { rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1 };
+			else {
+				color = frameColor;
+			}
 			if (this instanceof LayoutContainer) {
-				gl.glColor3fv(color, 0);
+				gl.glColor4fv(color, 0);
 				gl.glLineWidth(6);
 				yPositionDebugText = getSizeScaledY() / 2;
 			}
 			else {
-				gl.glColor3f(0, 0, 1);
+				gl.glColor4fv(color, 0);
 				gl.glLineWidth(2);
 			}
 			gl.glBegin(GL.GL_LINE_LOOP);
@@ -237,7 +246,7 @@ public class ElementLayout {
 
 			MinSizeTextRenderer textRenderer = new MinSizeTextRenderer();
 
-			textRenderer.setColor(color[0], color[1], color[2], 1);
+			textRenderer.setColor(color[0], color[1], color[2], color[3]);
 			textRenderer.renderText(gl, layoutName, 0, yPositionDebugText, 0.4f);
 
 		}
@@ -348,7 +357,7 @@ public class ElementLayout {
 	 */
 	float getUnscalableElementWidth() {
 		if (pixelSizeX != Integer.MIN_VALUE)
-			return pixelGLConverter.getGLHeightForPixelHeight(pixelSizeX);
+			return pixelGLConverter.getGLWidthForPixelWidth(pixelSizeX);
 		else if (!Float.isNaN(absoluteSizeX))
 			return absoluteSizeX;
 		else

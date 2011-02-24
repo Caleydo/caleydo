@@ -1,10 +1,14 @@
 package org.caleydo.view.visbricks;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -15,25 +19,28 @@ import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.renderstyle.VisBricksRenderStyle;
 
 /**
- *  VisBricks main view
+ * VisBricks main view
  * 
  * @author Marc Streit
  * @author Alexander Lex
  */
 
-public class GLVisBricks extends AGLView implements IViewCommandHandler,
-		ISelectionUpdateHandler {
+public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
+		IViewCommandHandler, ISelectionUpdateHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.visbricks";
 
 	private VisBricksRenderStyle renderStyle;
 
 	GLBrick brick;
+	ArrayList<AGLView> brickList;
 
 	/**
 	 * Constructor.
@@ -44,10 +51,16 @@ public class GLVisBricks extends AGLView implements IViewCommandHandler,
 	 */
 	public GLVisBricks(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
-
+		brickList = new ArrayList<AGLView>(20);
 		viewType = GLVisBricks.VIEW_ID;
+		ViewFrustum brickFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0, 3,
+				0, 3, -4, 4);
+		brick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
+				.createGLView(GLBrick.class, glCanvas, brickFrustum);
+		brickList.add(brick);
 
-		brick = new GLBrick(parentGLCanvas, viewFrustum);
+		brick.setRemoteRenderingGLView(this);
+		brick.setFrustum(brickFrustum);
 	}
 
 	@Override
@@ -88,9 +101,7 @@ public class GLVisBricks extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void displayLocal(GL2 gl) {
-		ViewFrustum viewFrustum = new ViewFrustum(this.viewFrustum.getProjectionMode(),
-				0, 1, 0, 1, -4, 4);
-		brick.setFrustum(viewFrustum);
+
 		brick.display(gl);
 		pickingManager.handlePicking(this, gl);
 		display(gl);
@@ -201,5 +212,10 @@ public class GLVisBricks extends AGLView implements IViewCommandHandler,
 	public int getNumberOfSelections(SelectionType SelectionType) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public List<AGLView> getRemoteRenderedViews() {
+		return brickList;
 	}
 }
