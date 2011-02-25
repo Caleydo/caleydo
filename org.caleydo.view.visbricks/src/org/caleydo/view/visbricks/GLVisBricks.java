@@ -128,7 +128,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		connectionRenderer.init(gl);
 
-		initLayout();
+//		initLayout();
 	}
 
 	private void initLayout() {
@@ -305,7 +305,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		 gl.glEnd();
 		
 		gl.glTranslatef(archInnerWidth, 0, 0);
-		centerLayoutRenderer.render(gl);
+		 centerLayoutRenderer.render(gl);
 		gl.glTranslatef(-archInnerWidth, 0, 0);
 
 		// // Band border
@@ -429,9 +429,26 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	public void metaSetsUpdated() {
 
-		ArrayList<ISet> meatSets = dataDomain.getSet().getStorageData(storageVAType)
+		ArrayList<ISet> allMetaSets = dataDomain.getSet().getStorageData(storageVAType)
 				.getStorageTree().getRoot().getAllMetaSetsFromSubTree();
+
+		ArrayList<ISet> filteredMetaSets = new ArrayList<ISet>(allMetaSets.size() / 2);
+
+		for (ISet metaSet : allMetaSets) {
+			if (metaSet.size() > 1 && metaSet.size() != dataDomain.getSet().size())
+				filteredMetaSets.add(metaSet);
+		}
+		initializeBricks(filteredMetaSets);
 		System.out.println("MetaSets update");
+
+	}
+
+	private void initializeBricks(ArrayList<ISet> metaSets) {
+//		for(GLBrick brick : centerBrickList)
+//		{
+//			
+//		}
+
 	}
 
 	@Override

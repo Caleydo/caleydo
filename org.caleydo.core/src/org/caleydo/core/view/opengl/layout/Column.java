@@ -64,7 +64,7 @@ public class Column
 				greedyElement = element;
 				continue;
 			}
-			element.calculateScales(availableWidth, availableHeight - actualHeight);
+			element.calculateScales(availableWidth, availableHeight);
 			// if an element is set in absolute size, the available size is already reduced by that value
 			totalHeight += element.getSizeScaledY();
 			if (!(!Float.isNaN(element.absoluteSizeY) || Integer.MIN_VALUE != element.pixelSizeY))
