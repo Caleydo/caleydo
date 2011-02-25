@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.SelectionType;
@@ -148,7 +149,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		for (int i = 0; i < dimensionGroupCount; i++) {
 			Column dimensionGroupColumnLayout = new Column("dimensionGroupColumn");
-			dimensionGroupColumnLayout.setRatioSizeX(dimensionGroupLayoutRatio);			
+			dimensionGroupColumnLayout.setRatioSizeX(dimensionGroupLayoutRatio);
 			rowLayout.appendElement(dimensionGroupColumnLayout);
 
 			Column dimensionGroupColumnLayoutBottom = new Column("dimensionGroupColumnBottom");
@@ -453,5 +454,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public String getDetailedInfo() {
 		return "Template Caleydo View";
 
+	}
+	
+	@Override
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+
+		super.reshape(drawable, x, y, width, height);
+		initLayout();
 	}
 }
