@@ -70,6 +70,8 @@ public class ElementLayout {
 
 	protected float[] frameColor = null;
 
+	private MinSizeTextRenderer textRenderer;
+
 	public ElementLayout() {
 		renderer = new ARenderer();
 		layoutName = "";
@@ -244,7 +246,9 @@ public class ElementLayout {
 			gl.glVertex3f(0, getSizeScaledY(), 0.2f);
 			gl.glEnd();
 
-			MinSizeTextRenderer textRenderer = new MinSizeTextRenderer();
+			if (textRenderer == null) {
+				textRenderer = new MinSizeTextRenderer();
+			}
 
 			textRenderer.setColor(color[0], color[1], color[2], color[3]);
 			textRenderer.renderText(gl, layoutName, 0, yPositionDebugText, 0.4f);

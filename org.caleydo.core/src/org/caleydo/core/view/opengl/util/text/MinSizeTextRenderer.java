@@ -18,7 +18,6 @@ public class MinSizeTextRenderer {
 
 	public MinSizeTextRenderer() {
 		caleydoTextRenderer = new CaleydoTextRenderer(new Font("SansSerif", Font.PLAIN, 25));
-
 	}
 
 	public void setWindowSize(double windowWidth, double windowHeight) {
