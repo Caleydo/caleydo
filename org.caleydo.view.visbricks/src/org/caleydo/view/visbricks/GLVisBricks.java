@@ -1,17 +1,17 @@
 package org.caleydo.view.visbricks;
 
-import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.event.data.NewMetaSetsEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -30,13 +30,12 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.Template;
 import org.caleydo.core.view.opengl.layout.TemplateRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.spline.IConnectionRenderer;
-import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.visbricks.brick.BrickLayout;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.listener.NewMetaSetsListener;
 import org.caleydo.view.visbricks.renderstyle.VisBricksRenderStyle;
 
 /**
@@ -49,12 +48,15 @@ import org.caleydo.view.visbricks.renderstyle.VisBricksRenderStyle;
 public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		IViewCommandHandler, ISelectionUpdateHandler, IDataDomainSetBasedView {
 
-	ASetBasedDataDomain dataDomain;
 	public final static String VIEW_ID = "org.caleydo.view.visbricks";
 
 	private final static float ARCH_TOP_PERCENT = 0.6f;
 	private final static float ARCH_BOTTOM_PERCENT = 0.4f;
 	private final static float ARCH_STAND_WIDTH_PERCENT = 0.1f;
+
+	private NewMetaSetsListener metaSetsListener;
+
+	private ASetBasedDataDomain dataDomain;
 
 	private VisBricksRenderStyle renderStyle;
 
@@ -74,7 +76,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private Template centerLayout;
 	private Template leftLayout;
 	private Template rightLayout;
-	
+
 	private float archWidth = 0;
 	private float archInnerWidth = 0;
 	private float archTopY = 0;
@@ -120,53 +122,56 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		detailLevel = DetailLevel.HIGH;
 
 		connectionRenderer.init(gl);
-		
+
 		initLayout();
 	}
-	
+
 	private void initLayout() {
-		
+
 		archWidth = viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT;
 		archInnerWidth = viewFrustum.getWidth() * (ARCH_STAND_WIDTH_PERCENT + 0.1f);
 		archTopY = viewFrustum.getHeight() * ARCH_TOP_PERCENT;
 		archBottomY = viewFrustum.getHeight() * ARCH_BOTTOM_PERCENT;
 		archHeight = (ARCH_TOP_PERCENT - ARCH_BOTTOM_PERCENT) * viewFrustum.getHeight();
-		
+
 		int brickCountCenter = 3;
-		float centerLayoutWidth = viewFrustum.getWidth() - 3*archInnerWidth;
+		float centerLayoutWidth = viewFrustum.getWidth() - 3 * archInnerWidth;
 		float brickSize = archHeight;
 		float brickLayoutRatio = 1f / brickCountCenter;
-		
+
 		Row rowLayout = new Row("centerArchRow");
 		rowLayout.setFrameColor(1, 1, 0, 1);
-		
+
 		int dimensionGroupCount = 5;
-		for (int i=0; i<dimensionGroupCount; i++) {
+		for (int i = 0; i < dimensionGroupCount; i++) {
 			Column dimensionGroupColumnLayout = new Column("dimensionGroupColumn");
 			rowLayout.appendElement(dimensionGroupColumnLayout);
 
 			Column dimensionGroupColumnLayoutTop = new Column("dimensionGroupColumnTop");
 			dimensionGroupColumnLayoutTop.setRatioSizeY(ARCH_BOTTOM_PERCENT);
 			dimensionGroupColumnLayout.appendElement(dimensionGroupColumnLayoutTop);
-			
+
 			BrickLayout brickLayout = new BrickLayout((GLBrick) centerBrickList.get(0));
 			brickLayout.setFrameColor(1, 0, 0, 1);
 			brickLayout.setRatioSizeX(brickLayoutRatio);
 			dimensionGroupColumnLayout.appendElement(brickLayout);
-			
-			Column dimensionGroupColumnLayoutBottom = new Column("dimensionGroupColumnTop");
-			dimensionGroupColumnLayoutBottom.setRatioSizeY(1-ARCH_TOP_PERCENT);
+
+			Column dimensionGroupColumnLayoutBottom = new Column(
+					"dimensionGroupColumnTop");
+			dimensionGroupColumnLayoutBottom.setRatioSizeY(1 - ARCH_TOP_PERCENT);
 			dimensionGroupColumnLayout.appendElement(dimensionGroupColumnLayoutBottom);
 		}
-		
+
 		centerLayout = new Template();
 		centerLayout.setPixelGLConverter(pixelGLConverter);
 		centerLayout.setBaseElementLayout(rowLayout);
 
 		ViewFrustum centerArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(),
-				0, centerLayoutWidth, 0, brickSize, 0, 1); //TODO adapt brick size to be quadratic
+				0, centerLayoutWidth, 0, brickSize, 0, 1); // TODO adapt brick
+															// size to be
+															// quadratic
 		centerLayoutRenderer = new TemplateRenderer(centerArchFrustum);
-		
+
 		centerLayoutRenderer.setTemplate(centerLayout);
 		centerLayoutRenderer.updateLayout();
 	}
@@ -215,85 +220,92 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public void display(GL2 gl) {
 
 		// gl.glColor3f(1,0,0);
-//		gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
-//
-//		// Left arch
-//
-//		gl.glBegin(GL2.GL_POLYGON);
-//		gl.glVertex3f(0, 0, 0f);
-//		gl.glVertex3f(0, archBottomY, 0f);
-//		gl.glVertex3f(archWidth, archBottomY, 0f);
-//		gl.glVertex3f(archWidth, 0, 0f);
-//		gl.glEnd();
-//
-//		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
-//		inputPoints.add(new Vec3f(0, archBottomY, 0));
-//		inputPoints.add(new Vec3f(0, archTopY, 0));
-//		inputPoints.add(new Vec3f(archInnerWidth * 0.9f, archTopY, 0));
-//
-//		NURBSCurve curve = new NURBSCurve(inputPoints, 10);
-//		ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
-//
-//		outputPoints.add(new Vec3f(archInnerWidth, archTopY, 0));
-//		outputPoints.add(new Vec3f(archInnerWidth, archBottomY, 0));
-//
-//		inputPoints.clear();
-//		inputPoints.add(new Vec3f(archInnerWidth, archBottomY, 0));
-//		inputPoints.add(new Vec3f(archWidth, archBottomY, 0));
-//		inputPoints.add(new Vec3f(archWidth, archBottomY * 0.8f, 0));
-//
-//		curve = new NURBSCurve(inputPoints, 10);
-//		outputPoints.addAll(curve.getCurvePoints());
-//
-//		connectionRenderer.render(gl, outputPoints);
-//
-//		// Right arch
-//
-//		gl.glBegin(GL2.GL_POLYGON);
-//		gl.glVertex3f(viewFrustum.getWidth(), 0, 0f);
-//		gl.glVertex3f(viewFrustum.getWidth(), archBottomY, 0f);
-//		gl.glVertex3f(viewFrustum.getWidth() - archWidth, archBottomY, 0f);
-//		gl.glVertex3f(viewFrustum.getWidth() - archWidth, 0, 0f);
-//		gl.glEnd();
-//
-//		inputPoints.clear();
-//		inputPoints.add(new Vec3f(viewFrustum.getWidth(), archBottomY, 0));
-//		inputPoints.add(new Vec3f(viewFrustum.getWidth(), archTopY, 0));
-//		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth * 0.9f,
-//				archTopY, 0));
-//
-//		curve = new NURBSCurve(inputPoints, 10);
-//		outputPoints.clear();
-//		outputPoints.addAll(curve.getCurvePoints());
-//
-//		outputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archTopY, 0));
-//		outputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archBottomY,
-//				0));
-//
-//		inputPoints.clear();
-//		inputPoints
-//				.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archBottomY, 0));
-//		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archWidth, archBottomY, 0));
-//		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archWidth, archBottomY * 0.8f,
-//				0));
-//
-//		curve = new NURBSCurve(inputPoints, 10);
-//		outputPoints.addAll(curve.getCurvePoints());
-//
-//		connectionRenderer.render(gl, outputPoints);
-//
-//		// Arch top bar
-//		gl.glBegin(GL2.GL_POLYGON);
-//		gl.glVertex3f(archInnerWidth, archTopY, 0f);
-//		gl.glVertex3f(archInnerWidth, archBottomY, 0f);
-//		gl.glVertex3f(viewFrustum.getWidth() - archInnerWidth, archBottomY, 0f);
-//		gl.glVertex3f(viewFrustum.getWidth() - archInnerWidth, archTopY, 0f);
-//		gl.glEnd();
-//		
+		// gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
+		//
+		// // Left arch
+		//
+		// gl.glBegin(GL2.GL_POLYGON);
+		// gl.glVertex3f(0, 0, 0f);
+		// gl.glVertex3f(0, archBottomY, 0f);
+		// gl.glVertex3f(archWidth, archBottomY, 0f);
+		// gl.glVertex3f(archWidth, 0, 0f);
+		// gl.glEnd();
+		//
+		// ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
+		// inputPoints.add(new Vec3f(0, archBottomY, 0));
+		// inputPoints.add(new Vec3f(0, archTopY, 0));
+		// inputPoints.add(new Vec3f(archInnerWidth * 0.9f, archTopY, 0));
+		//
+		// NURBSCurve curve = new NURBSCurve(inputPoints, 10);
+		// ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
+		//
+		// outputPoints.add(new Vec3f(archInnerWidth, archTopY, 0));
+		// outputPoints.add(new Vec3f(archInnerWidth, archBottomY, 0));
+		//
+		// inputPoints.clear();
+		// inputPoints.add(new Vec3f(archInnerWidth, archBottomY, 0));
+		// inputPoints.add(new Vec3f(archWidth, archBottomY, 0));
+		// inputPoints.add(new Vec3f(archWidth, archBottomY * 0.8f, 0));
+		//
+		// curve = new NURBSCurve(inputPoints, 10);
+		// outputPoints.addAll(curve.getCurvePoints());
+		//
+		// connectionRenderer.render(gl, outputPoints);
+		//
+		// // Right arch
+		//
+		// gl.glBegin(GL2.GL_POLYGON);
+		// gl.glVertex3f(viewFrustum.getWidth(), 0, 0f);
+		// gl.glVertex3f(viewFrustum.getWidth(), archBottomY, 0f);
+		// gl.glVertex3f(viewFrustum.getWidth() - archWidth, archBottomY, 0f);
+		// gl.glVertex3f(viewFrustum.getWidth() - archWidth, 0, 0f);
+		// gl.glEnd();
+		//
+		// inputPoints.clear();
+		// inputPoints.add(new Vec3f(viewFrustum.getWidth(), archBottomY, 0));
+		// inputPoints.add(new Vec3f(viewFrustum.getWidth(), archTopY, 0));
+		// inputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth *
+		// 0.9f,
+		// archTopY, 0));
+		//
+		// curve = new NURBSCurve(inputPoints, 10);
+		// outputPoints.clear();
+		// outputPoints.addAll(curve.getCurvePoints());
+		//
+		// outputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth,
+		// archTopY, 0));
+		// outputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth,
+		// archBottomY,
+		// 0));
+		//
+		// inputPoints.clear();
+		// inputPoints
+		// .add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archBottomY,
+		// 0));
+		// inputPoints.add(new Vec3f(viewFrustum.getWidth() - archWidth,
+		// archBottomY, 0));
+		// inputPoints.add(new Vec3f(viewFrustum.getWidth() - archWidth,
+		// archBottomY * 0.8f,
+		// 0));
+		//
+		// curve = new NURBSCurve(inputPoints, 10);
+		// outputPoints.addAll(curve.getCurvePoints());
+		//
+		// connectionRenderer.render(gl, outputPoints);
+		//
+		// // Arch top bar
+		// gl.glBegin(GL2.GL_POLYGON);
+		// gl.glVertex3f(archInnerWidth, archTopY, 0f);
+		// gl.glVertex3f(archInnerWidth, archBottomY, 0f);
+		// gl.glVertex3f(viewFrustum.getWidth() - archInnerWidth, archBottomY,
+		// 0f);
+		// gl.glVertex3f(viewFrustum.getWidth() - archInnerWidth, archTopY, 0f);
+		// gl.glEnd();
+		//
 		gl.glTranslatef(archInnerWidth, 0, 0);
 		centerLayoutRenderer.render(gl);
 		gl.glTranslatef(-archInnerWidth, 0, 0);
-		
+
 		// // Band border
 		// // gl.glLineWidth(1);
 		// gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
@@ -327,18 +339,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public String getShortInfo() {
-
-		return "Template Caleydo View";
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		return "Template Caleydo View";
-
-	}
-
-	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
 
@@ -361,12 +361,20 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
+		metaSetsListener = new NewMetaSetsListener();
+		metaSetsListener.setHandler(this);
+		eventPublisher.addListener(NewMetaSetsEvent.class, metaSetsListener);
+
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
+		if (metaSetsListener != null) {
+			eventPublisher.removeListener(metaSetsListener);
+			metaSetsListener = null;
+		}
 	}
 
 	@Override
@@ -417,6 +425,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		return centerBrickList;
 	}
 
+	public void metaSetsUpdated() {
+
+		ArrayList<ISet> meatSets = dataDomain.getSet().getStorageData(storageVAType)
+				.getStorageTree().getRoot().getAllMetaSetsFromSubTree();
+		System.out.println("MetaSets update");
+	}
+
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
@@ -424,7 +439,18 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public ASetBasedDataDomain getDataDomain() {
-		// TODO Auto-generated method stub
-		return null;
+		return dataDomain;
+	}
+
+	@Override
+	public String getShortInfo() {
+
+		return "Template Caleydo View";
+	}
+
+	@Override
+	public String getDetailedInfo() {
+		return "Template Caleydo View";
+
 	}
 }
