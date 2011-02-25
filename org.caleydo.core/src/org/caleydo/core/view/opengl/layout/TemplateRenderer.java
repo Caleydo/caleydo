@@ -14,7 +14,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 public class TemplateRenderer {
 
 	/** Flag for showing debug frames for container layout elements */
-	public static final boolean DEBUG_CONTAINERS = false;
+	public static final boolean DEBUG_CONTAINERS = true;
 	/** Flag for showing debug frames for actual layout elements */
 	public static final boolean DEBUG_ELEMENTS = true;
 
