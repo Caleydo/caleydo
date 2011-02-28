@@ -11,10 +11,9 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.TemplateRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
 /**
@@ -25,8 +24,10 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
  */
 public class GLBrick extends AGLView {
 
-	TemplateRenderer templateRenderer;
-	BrickLayoutTemplate brickLayout;
+	private TemplateRenderer templateRenderer;
+	private BrickLayoutTemplate brickLayout;
+	
+	private ElementLayout wrappingLayout;
 
 	private int baseDisplayListIndex = 1;
 	private boolean isBaseDisplayListDirty = true;
@@ -40,6 +41,14 @@ public class GLBrick extends AGLView {
 
 		templateRenderer.setTemplate(brickLayout);
 
+	}
+	
+	public void setWrappingLayout(ElementLayout wrappingLayout) {
+		this.wrappingLayout = wrappingLayout;
+	}
+	
+	public ElementLayout getWrappingLayout() {
+		return wrappingLayout;
 	}
 
 	@Override

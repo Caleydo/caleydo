@@ -2,7 +2,6 @@ package org.caleydo.view.visbricks.brick;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.layout.ARenderer;
 
 public class BrickRenderer extends ARenderer {
