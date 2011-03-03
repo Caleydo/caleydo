@@ -12,6 +12,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.NewMetaSetsEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -19,6 +20,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IDataDomainSetBasedView;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -27,6 +29,8 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
+import org.caleydo.core.view.opengl.layout.Column;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.Template;
 import org.caleydo.core.view.opengl.layout.TemplateRenderer;
@@ -35,6 +39,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.spline.IConnectionRenderer;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
+import org.caleydo.view.visbricks.brick.BrickRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.listener.NewMetaSetsListener;
@@ -129,7 +134,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// initLayout();
 	}
 
-	private void initLayout() {
+	private void initLayoutCenter() {
 
 		archWidth = viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT;
 		archInnerWidth = viewFrustum.getWidth() * (ARCH_STAND_WIDTH_PERCENT + 0.1f);
@@ -138,8 +143,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		archHeight = (ARCH_TOP_PERCENT - ARCH_BOTTOM_PERCENT) * viewFrustum.getHeight();
 
 		float centerLayoutWidth = viewFrustum.getWidth() - 2 * archInnerWidth;
-		float brickSize = archHeight;
-		int dimensionGroupCount = 4;
+		int dimensionGroupCount = 4; //TODO: replace with dynamically calculated number of groups
 		float dimensionGroupLayoutRatio = 1f / dimensionGroupCount;
 
 		Row rowLayout = new Row("centerArchRow");
@@ -162,6 +166,77 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		centerLayoutRenderer = new TemplateRenderer(centerArchFrustum);
 		centerLayoutRenderer.setTemplate(centerLayout);
 		centerLayoutRenderer.updateLayout();
+	}
+
+	private void initLayoutLeft() {
+		
+		int dimensionGroupCount = 2;
+		float dimensionGroupLayoutRatio = 1f / dimensionGroupCount;
+
+		Column columnLayout = new Column("leftArchColumn");
+		columnLayout.setFrameColor(1, 1, 0, 1);
+
+		for (int i = 0; i < dimensionGroupCount; i++) {
+			
+			ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4,
+					4);
+
+			GLBrick leftBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
+					.createGLView(GLBrick.class, this.getParentGLCanvas(), brickFrustum);
+			leftBrick.setRemoteRenderingGLView(this);
+			ElementLayout brickLayout = new ElementLayout("brick");
+			BrickRenderer brickRenderer = new BrickRenderer(leftBrick);
+			brickLayout.setRenderer(brickRenderer);
+			brickLayout.setFrameColor(1, 0, 0, 1);
+			brickLayout.setRatioSizeY(dimensionGroupLayoutRatio);
+			
+			columnLayout.appendElement(brickLayout);
+		}
+
+		leftLayout = new Template();
+		leftLayout.setPixelGLConverter(pixelGLConverter);
+		leftLayout.setBaseElementLayout(columnLayout);
+
+		ViewFrustum leftArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(),
+				0, ARCH_STAND_WIDTH_PERCENT*viewFrustum.getWidth(), 0, viewFrustum.getHeight()*ARCH_BOTTOM_PERCENT, 0, 1);
+		leftLayoutRenderer = new TemplateRenderer(leftArchFrustum);
+		leftLayoutRenderer.setTemplate(leftLayout);
+		leftLayoutRenderer.updateLayout();
+	}
+
+	private void initLayoutRight() {
+		int dimensionGroupCount = 4;
+		float dimensionGroupLayoutRatio = 1f / dimensionGroupCount;
+
+		Column columnLayout = new Column("leftArchColumn");
+		columnLayout.setFrameColor(1, 1, 0, 1);
+
+		for (int i = 0; i < dimensionGroupCount; i++) {
+			
+			ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4,
+					4);
+
+			GLBrick rightBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
+					.createGLView(GLBrick.class, this.getParentGLCanvas(), brickFrustum);
+			rightBrick.setRemoteRenderingGLView(this);
+			ElementLayout brickLayout = new ElementLayout("brick");
+			BrickRenderer brickRenderer = new BrickRenderer(rightBrick);
+			brickLayout.setRenderer(brickRenderer);
+			brickLayout.setFrameColor(1, 0, 0, 1);
+			brickLayout.setRatioSizeY(dimensionGroupLayoutRatio);
+			
+			columnLayout.appendElement(brickLayout);
+		}
+
+		rightLayout = new Template();
+		rightLayout.setPixelGLConverter(pixelGLConverter);
+		rightLayout.setBaseElementLayout(columnLayout);
+
+		ViewFrustum leftArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(),
+				0, ARCH_STAND_WIDTH_PERCENT*viewFrustum.getWidth(), 0, viewFrustum.getHeight()*ARCH_BOTTOM_PERCENT, 0, 1);
+		rightLayoutRenderer = new TemplateRenderer(leftArchFrustum);
+		rightLayoutRenderer.setTemplate(rightLayout);
+		rightLayoutRenderer.updateLayout();
 	}
 
 	@Override
@@ -209,10 +284,17 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		renderArch(gl);
 
+		leftLayoutRenderer.render(gl);
+		
 		gl.glTranslatef(archInnerWidth, 0, 0);
 		centerLayoutRenderer.render(gl);
 		gl.glTranslatef(-archInnerWidth, 0, 0);
 
+		float rightArchStand = (1-ARCH_STAND_WIDTH_PERCENT)*viewFrustum.getWidth();
+		gl.glTranslatef(rightArchStand, 0, 0);
+		rightLayoutRenderer.render(gl);
+		gl.glTranslatef(-rightArchStand, 0, 0);
+		
 		// // Band border
 		// // gl.glLineWidth(1);
 		// gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
@@ -460,6 +542,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
 		super.reshape(drawable, x, y, width, height);
-		initLayout();
+		initLayoutCenter();
+		initLayoutLeft();
+		initLayoutRight();
 	}
 }
