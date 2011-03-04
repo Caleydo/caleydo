@@ -59,8 +59,7 @@ import org.eclipse.core.runtime.Status;
 public abstract class AStorageBasedView
 	extends AGLView
 	implements IDataDomainSetBasedView, ISelectionUpdateHandler, IContentVAUpdateHandler,
-	IStorageVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler,
-	IDataDomainBasedView<ASetBasedDataDomain> {
+	IStorageVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	protected ISet set;
 

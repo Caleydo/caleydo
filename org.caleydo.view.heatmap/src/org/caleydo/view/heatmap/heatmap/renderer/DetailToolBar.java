@@ -6,7 +6,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.view.opengl.layout.ARenderer;
+import org.caleydo.core.view.opengl.layout.Renderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -16,7 +16,7 @@ import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 
-public class DetailToolBar extends ARenderer {
+public class DetailToolBar extends Renderer {
 
 	GLHeatMap heatMap;
 	PickingManager pickingManager;

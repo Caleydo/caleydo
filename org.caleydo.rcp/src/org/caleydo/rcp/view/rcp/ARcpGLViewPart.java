@@ -90,8 +90,11 @@ public abstract class ARcpGLViewPart
 		List<IView> views = new ArrayList<IView>();
 		views.add(getGLView());
 		if (getGLView() instanceof IGLRemoteRenderingView) {
-			for (AGLView view : ((IGLRemoteRenderingView) getGLView()).getRemoteRenderedViews()) {
-				views.add(view);
+			List<AGLView> renderedViews = ((IGLRemoteRenderingView) getGLView()).getRemoteRenderedViews();
+			if (renderedViews != null) {
+				for (AGLView view : renderedViews) {
+					views.add(view);
+				}
 			}
 		}
 

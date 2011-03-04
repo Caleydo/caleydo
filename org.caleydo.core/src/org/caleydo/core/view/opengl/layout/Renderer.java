@@ -3,12 +3,12 @@ package org.caleydo.core.view.opengl.layout;
 import javax.media.opengl.GL2;
 
 /**
- * Every ARenderer renders from (0, 0) to (x, y). An ARenderer does not take care of any spacings on the
+ * Every Renderer renders from (0, 0) to (x, y). An Renderer does not take care of any spacings on the
  * sides.
  * 
  * @author Alexander Lex
  */
-public class ARenderer {
+public class Renderer {
 	protected float x;
 	protected float y;
 	protected boolean debugMode = true;

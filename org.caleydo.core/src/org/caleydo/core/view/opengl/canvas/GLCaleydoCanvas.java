@@ -10,17 +10,12 @@ import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.FPSCounter;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 
 /**
  * Class implements a GL2 canvas. The canvas is registered in the ViewGLCanvasManager and automatically
@@ -41,6 +36,11 @@ public class GLCaleydoCanvas
 	private GLMouseListener glMouseListener;
 
 	private Composite parentComposite;
+
+	/** The view frustum of the base view (the only not-remote rendered view) of the canvas */
+	private ViewFrustum viewFrustum;
+
+	PixelGLConverter pixelGLConverter = null;
 
 	/**
 	 * Constructor.
@@ -139,53 +139,53 @@ public class GLCaleydoCanvas
 
 	public void setParentComposite(final Composite composite) {
 		parentComposite = composite;
-//
-//		parentComposite.addMouseListener(new MouseListener() {
-//
-//			@Override
-//			public void mouseUp(MouseEvent e) {
-//				System.out.println("WAAA");
-//				
-//			
-//
-//				
-//				
-//			}
-//
-//			@Override
-//			public void mouseDown(MouseEvent e) {
-//				System.out.println("WAAA");
-////				Menu menu = new Menu(composite.getShell(), SWT.POP_UP);
-////				// int x =
-////				Point point = composite
-////						.toDisplay(0, 0);
-////				System.out.println(point);
-//////				menu.setLocation(point.x + pick.getPickedPoint().x, point.y
-//////						+ pick.getPickedPoint().y);
-////				MenuItem item = new MenuItem(menu, SWT.PUSH);
-////				item.setText("Popup");
-////				item = new MenuItem(menu, SWT.PUSH);
-////				item.setText("Popup1");
-////				item = new MenuItem(menu, SWT.PUSH);
-////				item.setText("Popup2");
-////				item = new MenuItem(menu, SWT.PUSH);
-////				item.setText("Popup3");
-////				item = new MenuItem(menu, SWT.PUSH);
-////				item.setText("Popup4");
-////				item = new MenuItem(menu, SWT.PUSH);
-////				item.setText("Popup5");
-////				// manager.getParentGLCanvas().getParentComposite().setMenu(menu);
-////				menu.setVisible(true);
-////				System.out.println("fu");
-//
-//			}
-//
-//			@Override
-//			public void mouseDoubleClick(MouseEvent e) {
-//				System.out.println("WAAA");
-//
-//			}
-//		});
+		//
+		// parentComposite.addMouseListener(new MouseListener() {
+		//
+		// @Override
+		// public void mouseUp(MouseEvent e) {
+		// System.out.println("WAAA");
+		//
+		//
+		//
+		//
+		//
+		// }
+		//
+		// @Override
+		// public void mouseDown(MouseEvent e) {
+		// System.out.println("WAAA");
+		// // Menu menu = new Menu(composite.getShell(), SWT.POP_UP);
+		// // // int x =
+		// // Point point = composite
+		// // .toDisplay(0, 0);
+		// // System.out.println(point);
+		// //// menu.setLocation(point.x + pick.getPickedPoint().x, point.y
+		// //// + pick.getPickedPoint().y);
+		// // MenuItem item = new MenuItem(menu, SWT.PUSH);
+		// // item.setText("Popup");
+		// // item = new MenuItem(menu, SWT.PUSH);
+		// // item.setText("Popup1");
+		// // item = new MenuItem(menu, SWT.PUSH);
+		// // item.setText("Popup2");
+		// // item = new MenuItem(menu, SWT.PUSH);
+		// // item.setText("Popup3");
+		// // item = new MenuItem(menu, SWT.PUSH);
+		// // item.setText("Popup4");
+		// // item = new MenuItem(menu, SWT.PUSH);
+		// // item.setText("Popup5");
+		// // // manager.getParentGLCanvas().getParentComposite().setMenu(menu);
+		// // menu.setVisible(true);
+		// // System.out.println("fu");
+		//
+		// }
+		//
+		// @Override
+		// public void mouseDoubleClick(MouseEvent e) {
+		// System.out.println("WAAA");
+		//
+		// }
+		// });
 	}
 
 	public Composite getParentComposite() {
@@ -221,6 +221,24 @@ public class GLCaleydoCanvas
 	public void dispose(GLAutoDrawable arg0) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * Initialize the pixelGLConverter. This must initially only be done for not-remotely rendered view of
+	 * this canvas. Can be set only once. Re-setting has no effect.
+	 * 
+	 * @param viewFrustum
+	 */
+	public PixelGLConverter initPixelGLConverter(ViewFrustum viewFrustum) {
+		if (this.viewFrustum == null) {
+			this.viewFrustum = viewFrustum;
+			pixelGLConverter = new PixelGLConverter(viewFrustum, this);
+		}
+		return pixelGLConverter;
+	}
+
+	public PixelGLConverter getPixelGLConverter() {
+		return pixelGLConverter;
 	}
 
 }

@@ -38,9 +38,9 @@ import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
  */
 public class ElementLayout {
 
-	protected ARenderer renderer;
-	protected ArrayList<ARenderer> backgroundRenderers;
-	protected ArrayList<ARenderer> foregroundRenderers;
+	protected Renderer renderer;
+	protected ArrayList<Renderer> backgroundRenderers;
+	protected ArrayList<Renderer> foregroundRenderers;
 
 	protected float transformX = 0;
 	protected float transformY = 0;
@@ -73,16 +73,16 @@ public class ElementLayout {
 	private MinSizeTextRenderer textRenderer;
 
 	public ElementLayout() {
-		renderer = new ARenderer();
+		renderer = new Renderer();
 		layoutName = "";
 	}
 
 	public ElementLayout(String layoutName) {
-		renderer = new ARenderer();
+		renderer = new Renderer();
 		this.layoutName = layoutName;
 	}
 
-	public ARenderer getRenderer() {
+	public Renderer getRenderer() {
 		return renderer;
 	}
 
@@ -218,15 +218,11 @@ public class ElementLayout {
 		if ((this instanceof LayoutContainer && TemplateRenderer.DEBUG_CONTAINERS)
 			|| (!(this instanceof LayoutContainer) && TemplateRenderer.DEBUG_ELEMENTS)) {
 
-			// if (!this.layoutName.equals("mainColumn"))
-			// return;
-
 			float yPositionDebugText = 0;
-			Random rand = new Random();
 
 			float[] color;
 			if (frameColor == null)
-				color = new float[] { rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1 };
+				color = new float[] {0,0,0, 0 };
 			else {
 				color = frameColor;
 			}
@@ -255,13 +251,13 @@ public class ElementLayout {
 
 		}
 		if (backgroundRenderers != null) {
-			for (ARenderer backgroundRenderer : backgroundRenderers) {
+			for (Renderer backgroundRenderer : backgroundRenderers) {
 				backgroundRenderer.render(gl);
 			}
 		}
 		renderer.render(gl);
 		if (foregroundRenderers != null) {
-			for (ARenderer foregroundRenderer : foregroundRenderers) {
+			for (Renderer foregroundRenderer : foregroundRenderers) {
 				foregroundRenderer.render(gl);
 			}
 		}
@@ -303,39 +299,39 @@ public class ElementLayout {
 	}
 
 	protected void updateSpacings(Template template) {
-		// ARenderer renderer = ((RenderableLayoutElement) layout).getRenderer();
+		// Renderer renderer = ((RenderableLayoutElement) layout).getRenderer();
 		if (renderer == null)
 			return;
 		renderer.setLimits(getSizeScaledX(), getSizeScaledY());
 		renderer.updateSpacing(template, this);
 		if (backgroundRenderers != null) {
-			for (ARenderer renderer : backgroundRenderers) {
+			for (Renderer renderer : backgroundRenderers) {
 				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
 			}
 		}
 		if (foregroundRenderers != null)
 
 		{
-			for (ARenderer renderer : foregroundRenderers) {
+			for (Renderer renderer : foregroundRenderers) {
 				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
 			}
 		}
 
 	}
 
-	public void setRenderer(ARenderer renderer) {
+	public void setRenderer(Renderer renderer) {
 		this.renderer = renderer;
 	}
 
-	public void addBackgroundRenderer(ARenderer renderer) {
+	public void addBackgroundRenderer(Renderer renderer) {
 		if (backgroundRenderers == null)
-			backgroundRenderers = new ArrayList<ARenderer>(3);
+			backgroundRenderers = new ArrayList<Renderer>(3);
 		backgroundRenderers.add(renderer);
 	}
 
-	public void addForeGroundRenderer(ARenderer renderer) {
+	public void addForeGroundRenderer(Renderer renderer) {
 		if (foregroundRenderers == null)
-			foregroundRenderers = new ArrayList<ARenderer>(3);
+			foregroundRenderers = new ArrayList<Renderer>(3);
 		foregroundRenderers.add(renderer);
 	}
 

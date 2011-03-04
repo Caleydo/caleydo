@@ -12,7 +12,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.NewMetaSetsEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -20,7 +19,6 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IDataDomainSetBasedView;
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -29,8 +27,6 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
-import org.caleydo.core.view.opengl.layout.Column;
-import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.Template;
 import org.caleydo.core.view.opengl.layout.TemplateRenderer;
@@ -39,7 +35,6 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.spline.IConnectionRenderer;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
-import org.caleydo.view.visbricks.brick.BrickRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.listener.NewMetaSetsListener;
@@ -72,7 +67,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private PixelGLConverter pixelGLConverter;
 
 	private GLBrick brick;
-	private ArrayList<AGLView> centerBrickList;
+	private ArrayList<DimensionGroup> centerGroups;
 	private ArrayList<AGLView> leftBrickList;
 	private ArrayList<AGLView> rightBrickList;
 
@@ -100,7 +95,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public GLVisBricks(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
-		centerBrickList = new ArrayList<AGLView>(20);
+		centerGroups = new ArrayList<DimensionGroup>(20);
 		leftBrickList = new ArrayList<AGLView>(10);
 		rightBrickList = new ArrayList<AGLView>(10);
 
@@ -117,8 +112,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// brick.setFrustum(brickFrustum);
 
 		connectionRenderer = new ConnectionBandRenderer();
-		pixelGLConverter = new PixelGLConverter(viewFrustum, this.getParentGLCanvas());
-
 	}
 
 	@Override
@@ -128,7 +121,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;
-
+		metaSetsUpdated();
 		connectionRenderer.init(gl);
 
 		// initLayout();
@@ -143,18 +136,17 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		archHeight = (ARCH_TOP_PERCENT - ARCH_BOTTOM_PERCENT) * viewFrustum.getHeight();
 
 		float centerLayoutWidth = viewFrustum.getWidth() - 2 * archInnerWidth;
-		int dimensionGroupCount = 4; //TODO: replace with dynamically calculated number of groups
-		float dimensionGroupLayoutRatio = 1f / dimensionGroupCount;
+
+		float dimensionGroupLayoutRatio = 1f / centerGroups.size();
 
 		Row rowLayout = new Row("centerArchRow");
 		rowLayout.setFrameColor(1, 1, 0, 1);
 
-		for (int i = 0; i < dimensionGroupCount; i++) {
-			DimensionGroup dimensionGroup = new DimensionGroup(getParentGLCanvas(), this);
-			dimensionGroup.setRatioSizeX(dimensionGroupLayoutRatio);
-			dimensionGroup.setArchBounds(archHeight, ARCH_BOTTOM_PERCENT,
-					ARCH_TOP_PERCENT - ARCH_BOTTOM_PERCENT, ARCH_BOTTOM_PERCENT);
-			rowLayout.appendElement(dimensionGroup);
+		for (DimensionGroup group : centerGroups) {
+			group.setRatioSizeX(dimensionGroupLayoutRatio);
+			group.setArchBounds(archHeight, ARCH_BOTTOM_PERCENT, ARCH_TOP_PERCENT
+					- ARCH_BOTTOM_PERCENT, ARCH_BOTTOM_PERCENT);
+			rowLayout.appendElement(group);
 		}
 
 		centerLayout = new Template();
@@ -169,74 +161,76 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	private void initLayoutLeft() {
-		
-		int dimensionGroupCount = 2;
-		float dimensionGroupLayoutRatio = 1f / dimensionGroupCount;
 
-		Column columnLayout = new Column("leftArchColumn");
-		columnLayout.setFrameColor(1, 1, 0, 1);
-
-		for (int i = 0; i < dimensionGroupCount; i++) {
-			
-			ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4,
-					4);
-
-			GLBrick leftBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
-					.createGLView(GLBrick.class, this.getParentGLCanvas(), brickFrustum);
-			leftBrick.setRemoteRenderingGLView(this);
-			ElementLayout brickLayout = new ElementLayout("brick");
-			BrickRenderer brickRenderer = new BrickRenderer(leftBrick);
-			brickLayout.setRenderer(brickRenderer);
-			brickLayout.setFrameColor(1, 0, 0, 1);
-			brickLayout.setRatioSizeY(dimensionGroupLayoutRatio);
-			
-			columnLayout.appendElement(brickLayout);
-		}
-
-		leftLayout = new Template();
-		leftLayout.setPixelGLConverter(pixelGLConverter);
-		leftLayout.setBaseElementLayout(columnLayout);
-
-		ViewFrustum leftArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(),
-				0, ARCH_STAND_WIDTH_PERCENT*viewFrustum.getWidth(), 0, viewFrustum.getHeight()*ARCH_BOTTOM_PERCENT, 0, 1);
-		leftLayoutRenderer = new TemplateRenderer(leftArchFrustum);
-		leftLayoutRenderer.setTemplate(leftLayout);
-		leftLayoutRenderer.updateLayout();
+//		int dimensionGroupCount = 2;
+//		float dimensionGroupLayoutRatio = 1f / dimensionGroupCount;
+//
+//		Column columnLayout = new Column("leftArchColumn");
+//		columnLayout.setFrameColor(1, 1, 0, 1);
+//
+//		for (int i = 0; i < dimensionGroupCount; i++) {
+//
+//			ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC,
+//					0, 0, 0, 0, -4, 4);
+//
+//			GLBrick leftBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
+//					.createGLView(GLBrick.class, this.getParentGLCanvas(), brickFrustum);
+//			leftBrick.setRemoteRenderingGLView(this);
+//			ElementLayout brickLayout = new ElementLayout("brick");
+//			BrickRenderer brickRenderer = new BrickRenderer(leftBrick);
+//			brickLayout.setRenderer(brickRenderer);
+//			brickLayout.setFrameColor(1, 0, 0, 1);
+//			brickLayout.setRatioSizeY(dimensionGroupLayoutRatio);
+//
+//			columnLayout.appendElement(brickLayout);
+//		}
+//
+//		leftLayout = new Template();
+//		leftLayout.setPixelGLConverter(pixelGLConverter);
+//		leftLayout.setBaseElementLayout(columnLayout);
+//
+//		ViewFrustum leftArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0,
+//				ARCH_STAND_WIDTH_PERCENT * viewFrustum.getWidth(), 0,
+//				viewFrustum.getHeight() * ARCH_BOTTOM_PERCENT, 0, 1);
+//		leftLayoutRenderer = new TemplateRenderer(leftArchFrustum);
+//		leftLayoutRenderer.setTemplate(leftLayout);
+//		leftLayoutRenderer.updateLayout();
 	}
 
 	private void initLayoutRight() {
-		int dimensionGroupCount = 4;
-		float dimensionGroupLayoutRatio = 1f / dimensionGroupCount;
-
-		Column columnLayout = new Column("leftArchColumn");
-		columnLayout.setFrameColor(1, 1, 0, 1);
-
-		for (int i = 0; i < dimensionGroupCount; i++) {
-			
-			ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4,
-					4);
-
-			GLBrick rightBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
-					.createGLView(GLBrick.class, this.getParentGLCanvas(), brickFrustum);
-			rightBrick.setRemoteRenderingGLView(this);
-			ElementLayout brickLayout = new ElementLayout("brick");
-			BrickRenderer brickRenderer = new BrickRenderer(rightBrick);
-			brickLayout.setRenderer(brickRenderer);
-			brickLayout.setFrameColor(1, 0, 0, 1);
-			brickLayout.setRatioSizeY(dimensionGroupLayoutRatio);
-			
-			columnLayout.appendElement(brickLayout);
-		}
-
-		rightLayout = new Template();
-		rightLayout.setPixelGLConverter(pixelGLConverter);
-		rightLayout.setBaseElementLayout(columnLayout);
-
-		ViewFrustum leftArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(),
-				0, ARCH_STAND_WIDTH_PERCENT*viewFrustum.getWidth(), 0, viewFrustum.getHeight()*ARCH_BOTTOM_PERCENT, 0, 1);
-		rightLayoutRenderer = new TemplateRenderer(leftArchFrustum);
-		rightLayoutRenderer.setTemplate(rightLayout);
-		rightLayoutRenderer.updateLayout();
+//		int dimensionGroupCount = 4;
+//		float dimensionGroupLayoutRatio = 1f / dimensionGroupCount;
+//
+//		Column columnLayout = new Column("leftArchColumn");
+//		columnLayout.setFrameColor(1, 1, 0, 1);
+//
+//		for (int i = 0; i < dimensionGroupCount; i++) {
+//
+//			ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC,
+//					0, 0, 0, 0, -4, 4);
+//
+//			GLBrick rightBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
+//					.createGLView(GLBrick.class, this.getParentGLCanvas(), brickFrustum);
+//			rightBrick.setRemoteRenderingGLView(this);
+//			ElementLayout brickLayout = new ElementLayout("brick");
+//			BrickRenderer brickRenderer = new BrickRenderer(rightBrick);
+//			brickLayout.setRenderer(brickRenderer);
+//			brickLayout.setFrameColor(1, 0, 0, 1);
+//			brickLayout.setRatioSizeY(dimensionGroupLayoutRatio);
+//
+//			columnLayout.appendElement(brickLayout);
+//		}
+//
+//		rightLayout = new Template();
+//		rightLayout.setPixelGLConverter(pixelGLConverter);
+//		rightLayout.setBaseElementLayout(columnLayout);
+//
+//		ViewFrustum leftArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0,
+//				ARCH_STAND_WIDTH_PERCENT * viewFrustum.getWidth(), 0,
+//				viewFrustum.getHeight() * ARCH_BOTTOM_PERCENT, 0, 1);
+//		rightLayoutRenderer = new TemplateRenderer(leftArchFrustum);
+//		rightLayoutRenderer.setTemplate(rightLayout);
+//		rightLayoutRenderer.updateLayout();
 	}
 
 	@Override
@@ -284,17 +278,17 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		renderArch(gl);
 
-		leftLayoutRenderer.render(gl);
-		
+//		leftLayoutRenderer.render(gl);
+
 		gl.glTranslatef(archInnerWidth, 0, 0);
 		centerLayoutRenderer.render(gl);
 		gl.glTranslatef(-archInnerWidth, 0, 0);
 
-		float rightArchStand = (1-ARCH_STAND_WIDTH_PERCENT)*viewFrustum.getWidth();
-		gl.glTranslatef(rightArchStand, 0, 0);
-		rightLayoutRenderer.render(gl);
-		gl.glTranslatef(-rightArchStand, 0, 0);
-		
+//		float rightArchStand = (1 - ARCH_STAND_WIDTH_PERCENT) * viewFrustum.getWidth();
+//		gl.glTranslatef(rightArchStand, 0, 0);
+//		rightLayoutRenderer.render(gl);
+//		gl.glTranslatef(-rightArchStand, 0, 0);
+
 		// // Band border
 		// // gl.glLineWidth(1);
 		// gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
@@ -414,7 +408,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedVisBricksView serializedForm = new SerializedVisBricksView();
+		SerializedVisBricksView serializedForm = new SerializedVisBricksView(dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -489,7 +483,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
-		return centerBrickList;
+		return null;
 	}
 
 	public void metaSetsUpdated() {
@@ -504,11 +498,19 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				filteredMetaSets.add(metaSet);
 		}
 		initializeBricks(filteredMetaSets);
+		initLayoutCenter();
 		System.out.println("MetaSets update");
 
 	}
 
 	private void initializeBricks(ArrayList<ISet> metaSets) {
+		centerGroups.clear();
+		for (ISet set : metaSets) {
+			DimensionGroup group = new DimensionGroup(getParentGLCanvas(), this,
+					dataDomain, set);
+			centerGroups.add(group);
+		}
+
 		// for(GLBrick brick : centerBrickList)
 		// {
 		//

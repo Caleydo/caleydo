@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks;
+package org.caleydo.view.visbricks.brick;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -12,25 +12,25 @@ import org.caleydo.core.serialize.ASerializedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedVisBricksView extends ASerializedView {
+public class SerializedBrickView extends ASerializedView {
 
 	/**
 	 * Default constructor with default initialization
 	 */
-	public SerializedVisBricksView() {
+	public SerializedBrickView() {
 	}
 
-	public SerializedVisBricksView(String dataDomainType) {
+	public SerializedBrickView(String dataDomainType) {
 		super(dataDomainType);
 	}
 
 	@Override
 	public String getViewType() {
-		return GLVisBricks.VIEW_ID;
+		return GLBrick.VIEW_ID;
 	}
 
 	@Override
 	public String getViewClassType() {
-		return GLVisBricks.class.getName();
+		return GLBrick.class.getName();
 	}
 }

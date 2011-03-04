@@ -8,7 +8,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.view.opengl.layout.ARenderer;
+import org.caleydo.core.view.opengl.layout.Renderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
@@ -18,7 +18,7 @@ import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
  * 
  * @author Alexander Lex
  */
-public abstract class ABookmark extends ARenderer implements ILayoutedElement {
+public abstract class ABookmark extends Renderer implements ILayoutedElement {
 
 	protected IDType idType;
 	protected int id;

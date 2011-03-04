@@ -196,9 +196,8 @@ public abstract class AGLView
 		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 
 		bShowMagnifyingGlass = false;
-		
-		if (!isRenderedRemote())
-			pixelGLConverter = new PixelGLConverter(viewFrustum, parentGLCanvas);
+
+		pixelGLConverter = glCanvas.initPixelGLConverter(viewFrustum);
 
 	}
 
@@ -853,6 +852,9 @@ public abstract class AGLView
 	}
 
 	public PixelGLConverter getPixelGLConverter() {
+		if (this.isRenderedRemote()) {
+			return ((AGLView) getRemoteRenderingGLCanvas()).getPixelGLConverter();
+		}
 		return pixelGLConverter;
 	}
 

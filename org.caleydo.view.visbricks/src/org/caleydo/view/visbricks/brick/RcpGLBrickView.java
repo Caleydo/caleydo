@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks;
+package org.caleydo.view.visbricks.brick;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -14,17 +14,17 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author <INSERT_YOUR_NAME>
  */
-public class RcpGLVisBricksView extends ARcpGLViewPart {
+public class RcpGLBrickView extends ARcpGLViewPart {
 
 	/**
 	 * Constructor.
 	 */
-	public RcpGLVisBricksView() {
+	public RcpGLBrickView() {
 		super();
 		
 		try {
 			viewContext = JAXBContext
-					.newInstance(SerializedVisBricksView.class);
+					.newInstance(SerializedBrickView.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
@@ -35,7 +35,7 @@ public class RcpGLVisBricksView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		view = new GLVisBricks(glCanvas, serializedView.getViewFrustum());
+		view = new GLBrick(glCanvas, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(serializedView.getDataDomainType());
@@ -52,13 +52,13 @@ public class RcpGLVisBricksView extends ARcpGLViewPart {
 
 	@Override
 	public void createDefaultSerializedView() {
-		serializedView = new SerializedVisBricksView();
+		serializedView = new SerializedBrickView();
 		determineDataDomain(serializedView);
 	}
 
 	@Override
 	public String getViewGUIID() {
-		return GLVisBricks.VIEW_ID;
+		return GLBrick.VIEW_ID;
 	}
 
 }

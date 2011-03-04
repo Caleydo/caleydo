@@ -3,6 +3,7 @@ package org.caleydo.view.visbricks;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.view.visbricks.brick.GLBrick;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -61,6 +62,12 @@ public class Activator extends Plugin {
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLVisBricks.VIEW_ID);
+		
+		DataDomainManager
+		.get()
+		.getAssociationManager()
+		.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
+				GLBrick.VIEW_ID);
 
 	}
 }

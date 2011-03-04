@@ -19,7 +19,7 @@ public class PixelGLConverter {
 	 * @param viewFrustum
 	 * @param canvas
 	 */
-	public PixelGLConverter(ViewFrustum viewFrustum, GLCaleydoCanvas canvas) {
+	PixelGLConverter(ViewFrustum viewFrustum, GLCaleydoCanvas canvas) {
 		this.viewFrustum = viewFrustum;
 		this.canvas = canvas;
 	}

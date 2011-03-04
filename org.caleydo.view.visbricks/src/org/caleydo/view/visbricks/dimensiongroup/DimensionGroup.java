@@ -1,13 +1,15 @@
 package org.caleydo.view.visbricks.dimensiongroup;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.view.visbricks.brick.BrickRenderer;
+import org.caleydo.core.view.opengl.layout.ViewRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**
@@ -22,10 +24,15 @@ public class DimensionGroup extends Column {
 	private GLBrick centerBrick;
 	private Column topCol;
 	private ViewFrustum brickFrustum;
+	private ISet set;
+	private ASetBasedDataDomain dataDomain;
 
 	public DimensionGroup(GLCaleydoCanvas canvas,
-			IGLRemoteRenderingView remoteRenderingView) {
+			IGLRemoteRenderingView remoteRenderingView, ASetBasedDataDomain dataDomain,
+			ISet set) {
 		super("dimensionGroup");
+		this.dataDomain = dataDomain;
+		this.set = set;
 
 		bottomCol = new Column("dimensionGroupColumnBottom");
 		appendElement(bottomCol);
@@ -35,8 +42,10 @@ public class DimensionGroup extends Column {
 		centerBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
 				.createGLView(GLBrick.class, canvas, brickFrustum);
 		centerBrick.setRemoteRenderingGLView(remoteRenderingView);
+		centerBrick.setDataDomain(dataDomain);
+		centerBrick.setSet(set);
 		ElementLayout brickLayout = new ElementLayout("brick");
-		BrickRenderer brickRenderer = new BrickRenderer(centerBrick);
+		ViewRenderer brickRenderer = new ViewRenderer(centerBrick);
 		brickLayout.setRenderer(brickRenderer);
 		brickLayout.setFrameColor(1, 0, 0, 1);
 
@@ -73,4 +82,12 @@ public class DimensionGroup extends Column {
 				4);
 		centerBrick.setFrustum(brickFrustum);
 	}
+
+	// public void setSet(ISet set) {
+	// this.set = set;
+	// }
+	//
+	// public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	// this.dataDomain = dataDomain;
+	// }
 }

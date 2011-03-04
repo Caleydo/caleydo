@@ -46,7 +46,6 @@ import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.layout.TemplateRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -250,10 +249,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	public void display(GL2 gl) {
-//		templateRenderer.frustumChanged();
 		gl.glCallList(iGLDisplayListToCall);
-
-		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);

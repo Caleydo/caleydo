@@ -30,24 +30,22 @@ public class HeatMapRenderer extends AContentRenderer {
 
 	@Override
 	public void updateSpacing(Template template, ElementLayout parameters) {
-		
-		
-			AHeatMapTemplate heatMapTemplate = (AHeatMapTemplate) template;
-			int contentElements = heatMap.getContentVA().size();
 
-			ContentSelectionManager selectionManager = heatMap
-					.getContentSelectionManager();
-			if (heatMap.isHideElements()) {
+		AHeatMapTemplate heatMapTemplate = (AHeatMapTemplate) template;
+		int contentElements = heatMap.getContentVA().size();
 
-				contentElements -= selectionManager
-						.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
-			}
+		ContentSelectionManager selectionManager = heatMap.getContentSelectionManager();
+		if (heatMap.isHideElements()) {
 
-			contentSpacing.calculateContentSpacing(contentElements, heatMap
-					.getStorageVA().size(), parameters.getSizeScaledX(), parameters
-					.getSizeScaledY(), heatMapTemplate.getMinSelectedFieldHeight());
-			heatMapTemplate.setContentSpacing(contentSpacing);
-		
+			contentElements -= selectionManager
+					.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
+		}
+
+		contentSpacing.calculateContentSpacing(contentElements, heatMap.getStorageVA()
+				.size(), parameters.getSizeScaledX(), parameters.getSizeScaledY(),
+				heatMapTemplate.getMinSelectedFieldHeight());
+		heatMapTemplate.setContentSpacing(contentSpacing);
+
 		// ((AContentRenderer) renderer).setContentSpacing(contentSpacing);
 	}
 
@@ -63,7 +61,7 @@ public class HeatMapRenderer extends AContentRenderer {
 
 		// renderStyle.clearFieldWidths();
 		int iCount = 0;
-
+		
 		for (Integer contentID : heatMap.getContentVA()) {
 			iCount++;
 			fieldHeight = contentSpacing.getFieldHeight(contentID);
@@ -98,7 +96,10 @@ public class HeatMapRenderer extends AContentRenderer {
 			final int iContentIndex, final float fYPosition, final float fXPosition,
 			final float fFieldHeight, final float fFieldWidth) {
 
+//		GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
 		IStorage storage = heatMap.getSet().get(iStorageIndex);
+		if (storage == null)
+			return;
 		float value = storage.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
 		float fOpacity = 0;
@@ -140,7 +141,7 @@ public class HeatMapRenderer extends AContentRenderer {
 	public float getXCoordinateByStorageIndex(int storageIndex) {
 		return contentSpacing.getFieldWidth() * storageIndex;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "HeatMapRenderer";

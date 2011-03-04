@@ -2,13 +2,13 @@ package org.caleydo.view.bookmark;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.layout.ARenderer;
+import org.caleydo.core.view.opengl.layout.Renderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 
-public class ContainerHeading extends ARenderer implements ILayoutedElement {
+public class ContainerHeading extends Renderer implements ILayoutedElement {
 
 	private ElementLayout layoutElement;
 	private GLBookmarkView manager;
