@@ -84,7 +84,6 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
-import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.parcoords.PCRenderStyle.PolyLineState;
 import org.caleydo.view.parcoords.listener.AngularBrushingListener;
@@ -150,7 +149,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	private float fYTranslation = 0;
 
-	private float fXTargetTranslation = 0;
+
 
 	private boolean bAngularBrushingSelectPolyline = false;
 	private boolean bIsAngularBrushingActive = false;
@@ -190,8 +189,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	EIconTextures dropTexture = EIconTextures.DROP_NORMAL;
 	int iChangeDropOnAxisNumber = -1;
-
-	private GLInfoAreaManager infoAreaManager;
 
 	/** Utility object for coordinate transformation and projection */
 	protected StandardTransformer selectionTransformer;
@@ -248,19 +245,16 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		// glMouseListener,
 		// remoteRenderingGLCanvas);
 
-		infoAreaManager = new GLInfoAreaManager();
-		infoAreaManager.initInfoInPlace(viewFrustum);
-
 		selectionTransformer = new StandardTransformer(iUniqueID);
 		init(gl);
 	}
 
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener) {
 
 		this.glMouseListener = glMouseListener;
-		this.infoAreaManager = infoAreaManager;
+	
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;

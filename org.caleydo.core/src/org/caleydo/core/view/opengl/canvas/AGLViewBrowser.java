@@ -238,8 +238,7 @@ public abstract class AGLViewBrowser
 	}
 
 	@Override
-	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener,
-		GLInfoAreaManager infoAreaManager) {
+	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
 		// glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new
@@ -1638,7 +1637,7 @@ public abstract class AGLViewBrowser
 		SlerpAction slerpActionTransition = new SlerpAction(origin, destination);
 		arSlerpActions.add(slerpActionTransition);
 
-		view.initRemote(gl, this, glMouseListener, infoAreaManager);
+		view.initRemote(gl, this, glMouseListener);
 		view.setDetailLevel(DetailLevel.MEDIUM);
 
 		return true;

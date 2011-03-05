@@ -75,7 +75,6 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GroupContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
-import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.rcp.dialog.file.ExportDataDialog;
 import org.caleydo.rcp.view.listener.ContentGroupExportingListener;
@@ -295,10 +294,10 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		createHeatMap();
 		createDendrogram();
 
-		glHeatMapView.initRemote(gl, this, glMouseListener, null);
+		glHeatMapView.initRemote(gl, this, glMouseListener);
 		glHeatMapView.useFishEye(false);
-		glContentDendrogramView.initRemote(gl, this, glMouseListener, null);
-		glExperimentDendrogramView.initRemote(gl, this, glMouseListener, null);
+		glContentDendrogramView.initRemote(gl, this, glMouseListener);
+		glExperimentDendrogramView.initRemote(gl, this, glMouseListener);
 
 		initTextures(gl);
 		// activateGroupHandling();
@@ -381,7 +380,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	@Override
 	public void initRemote(GL2 gl, final AGLView glParentView,
-			GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+			GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()

@@ -17,7 +17,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
 /**
  * Single OpenGL2 tissue view
@@ -55,8 +54,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	}
 
 	@Override
-	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager) {
+	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
 
 		this.glMouseListener = glMouseListener;
 		init(gl);

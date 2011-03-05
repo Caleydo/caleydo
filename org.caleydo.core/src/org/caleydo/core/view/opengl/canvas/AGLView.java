@@ -46,7 +46,6 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLMagnifyingGlass;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
-import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -382,11 +381,9 @@ public abstract class AGLView
 	 * Initialization for gl called by a managing view has to call init internally!
 	 * 
 	 * @param gl
-	 * @param infoAreaManager
-	 *            TODO
 	 */
 	public abstract void initRemote(final GL2 gl, final AGLView glParentView,
-		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager);
+		final GLMouseListener glMouseListener);
 
 	/**
 	 * GL2 display method that has to be called in all cases manually, either by {@link #displayLocal(GL)} or

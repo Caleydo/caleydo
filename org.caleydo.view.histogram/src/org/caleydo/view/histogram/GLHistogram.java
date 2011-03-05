@@ -35,7 +35,6 @@ import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
 
@@ -114,7 +113,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener) {
 
 		this.glMouseListener = glMouseListener;
 

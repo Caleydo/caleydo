@@ -33,7 +33,6 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
-import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
 import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
 
@@ -179,7 +178,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener) {
 
 		this.glMouseListener = glMouseListener;
 
@@ -590,7 +589,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 					.get().getDataDomain(serView.getDataDomainType()));
 		}
 		glView.initialize();
-		glView.initRemote(gl, this, glMouseListener, null);
+		glView.initRemote(gl, this, glMouseListener);
 		
 		return glView;
 	}

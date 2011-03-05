@@ -24,7 +24,6 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.TemplateRenderer;
 import org.caleydo.core.view.opengl.layout.ViewRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.BrickHeatMapTemplate;
 
@@ -99,7 +98,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			heatMap.setDataDomain(dataDomain);
 			heatMap.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 			heatMap.initialize();
-			heatMap.initRemote(gl, this, glMouseListener, null);
+			heatMap.initRemote(gl, this, glMouseListener);
 			brickLayout.setViewRenderer(new ViewRenderer(heatMap));
 			templateRenderer.setTemplate(brickLayout);
 			templateRenderer.updateLayout();
@@ -114,8 +113,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager) {
+	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
 		init(gl);
 
 	}

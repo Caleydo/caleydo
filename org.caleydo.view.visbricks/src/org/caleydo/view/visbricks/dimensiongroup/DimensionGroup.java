@@ -96,7 +96,7 @@ public class DimensionGroup extends Column {
 
 	public void init(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
-		centerBrick.initRemote(gl, glParentView, glMouseListener, infoAreaManager);
+		centerBrick.initRemote(gl, glParentView, glMouseListener);
 	}
 
 }

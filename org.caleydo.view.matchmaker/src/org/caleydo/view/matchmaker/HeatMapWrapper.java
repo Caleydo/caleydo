@@ -132,7 +132,7 @@ public class HeatMapWrapper {
 		heatMap.setSet(set);
 		heatMap.initData();
 		heatMap.setDetailLevel(DetailLevel.MEDIUM);
-		heatMap.initRemote(gl, glParentView, glMouseListener, infoAreaManager);
+		heatMap.initRemote(gl, glParentView, glMouseListener);
 		heatMap.setSendClearSelectionsEvent(true);
 		heatMap.useFishEye(false);
 
@@ -151,7 +151,7 @@ public class HeatMapWrapper {
 		dendrogram.setContentVAType(contentVAType);
 		dendrogram.initData();
 		dendrogram.setRenderUntilCut(false);
-		dendrogram.initRemote(gl, glParentView, glMouseListener, infoAreaManager);
+		dendrogram.initRemote(gl, glParentView, glMouseListener);
 	}
 
 	public ISet getSet() {

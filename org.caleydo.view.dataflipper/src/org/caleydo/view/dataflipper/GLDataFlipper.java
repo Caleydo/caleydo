@@ -280,7 +280,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");
 	}
@@ -305,7 +305,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		ASerializedView serView = addView("org.caleydo.datadomain.pathway",
 				"org.caleydo.view.pathwaybrowser");
 		pathwayBrowserView = createView(gl, serView);
-		pathwayBrowserView.initRemote(gl, this, glMouseListener, infoAreaManager);
+		pathwayBrowserView.initRemote(gl, this, glMouseListener);
 		containedGLViews.add(pathwayBrowserView);
 	}
 
@@ -624,7 +624,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			}
 
 			// TODO: remove when activating slerp
-			view.initRemote(gl, this, glMouseListener, infoAreaManager);
+			view.initRemote(gl, this, glMouseListener);
 			// view.getViewFrustum().considerAspectRatio(true);
 
 			containedGLViews.add(view);

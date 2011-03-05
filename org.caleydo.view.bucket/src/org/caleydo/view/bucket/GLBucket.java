@@ -300,7 +300,7 @@ public class GLBucket extends AGLView implements
 
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");
 	}
@@ -2524,7 +2524,7 @@ public class GLBucket extends AGLView implements
 		SlerpAction slerpActionTransition = new SlerpAction(origin, destination);
 		arSlerpActions.add(slerpActionTransition);
 
-		view.initRemote(gl, this, glMouseListener, infoAreaManager);
+		view.initRemote(gl, this, glMouseListener);
 		view.setDetailLevel(DetailLevel.MEDIUM);
 
 		return true;

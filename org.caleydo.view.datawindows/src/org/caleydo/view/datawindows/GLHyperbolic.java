@@ -30,7 +30,6 @@ import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
-import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.datadomain.pathway.IPathwayLoader;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneListener;
@@ -126,7 +125,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener) {
 
 		this.glMouseListener = glMouseListener;
 
@@ -453,7 +452,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 			glPathway.enableGeneMapping(false);
 		}
 		glView.initialize();
-		glView.initRemote(gl, this, glMouseListener, null);
+		glView.initRemote(gl, this, glMouseListener);
 		
 		return glView;
 	}
