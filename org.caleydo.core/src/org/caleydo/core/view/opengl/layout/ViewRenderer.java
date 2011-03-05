@@ -28,7 +28,8 @@ public class ViewRenderer
 		viewFrustum.setBottom(0);
 		viewFrustum.setRight(x);
 		viewFrustum.setTop(y);
-//		view.setFrustum(viewFrustum);
+		view.setFrustum(viewFrustum);
+		view.setDisplayListDirty();
 	}
 
 }

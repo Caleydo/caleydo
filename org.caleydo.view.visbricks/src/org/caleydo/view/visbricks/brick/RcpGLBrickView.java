@@ -10,9 +10,9 @@ import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * TODO: DOCUMENT ME!
+ * RCP View for a single Brick. Mainly intended for development purposes.
  * 
- * @author <INSERT_YOUR_NAME>
+ * @author Alexander Lex
  */
 public class RcpGLBrickView extends ARcpGLViewPart {
 

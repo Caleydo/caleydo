@@ -304,7 +304,7 @@ public class GLBookmarkView extends AGLView implements
 		Rectangle2D bounds = parentGLCanvas.getBounds();
 		textRenderer = new MinSizeTextRenderer();
 		textRenderer.setWindowSize(bounds.getWidth(), bounds.getHeight());
-		bookmarkTemplate.setPixelGLConverter(pixelGLConverter);
+		bookmarkTemplate.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 	}
 
 	@Override

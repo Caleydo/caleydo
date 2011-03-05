@@ -6,10 +6,16 @@ import org.caleydo.core.view.opengl.layout.Renderer;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.Template;
 
+/**
+ * Layout Template for a Brick
+ * 
+ * @author Alexander Lex
+ * 
+ */
 public class BrickLayoutTemplate extends Template {
 
 	Renderer viewRenderer;
-	
+
 	@Override
 	public void setParameters() {
 		Row baseRow = new Row("baseRow");
@@ -18,13 +24,12 @@ public class BrickLayoutTemplate extends Template {
 		setBaseElementLayout(baseRow);
 
 		Column baseColumn = new Column("baseColumn");
-//		setBaseElementLayout(baseColumn);
-//		baseColumn.grabX();
+		// setBaseElementLayout(baseColumn);
+		// baseColumn.grabX();
 		baseColumn.setFrameColor(0, 1, 0, 0);
 
 		ElementLayout fuelBarLayout = new ElementLayout("fuelBarLayout");
 		fuelBarLayout.setFrameColor(0, 1, 0, 0);
-		
 
 		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
 		fuelBarLayout.setPixelSizeX(20);
@@ -32,7 +37,6 @@ public class BrickLayoutTemplate extends Template {
 
 		baseRow.appendElement(baseColumn);
 		baseRow.appendElement(fuelBarLayout);
-
 
 		ElementLayout dimensionBarLayout = new ElementLayout("dimensionBar");
 		dimensionBarLayout.setFrameColor(1, 0, 1, 0);
@@ -44,7 +48,7 @@ public class BrickLayoutTemplate extends Template {
 		viewLayout.setRenderer(viewRenderer);
 
 		ElementLayout viewToolBarLayout = new ElementLayout("viewToolBarLayout");
-		viewToolBarLayout.setFrameColor(0.5f, 0.5f, 0, 0);
+		viewToolBarLayout.setFrameColor(0.5f, 0.5f, 0, 1);
 		viewToolBarLayout.setPixelGLConverter(pixelGLConverter);
 		viewToolBarLayout.setPixelSizeY(20);
 
@@ -53,9 +57,8 @@ public class BrickLayoutTemplate extends Template {
 		baseColumn.appendElement(viewToolBarLayout);
 
 	}
-	
-	void setViewRenderer(Renderer viewRenderer)
-	{
+
+	void setViewRenderer(Renderer viewRenderer) {
 		this.viewRenderer = viewRenderer;
 	}
 

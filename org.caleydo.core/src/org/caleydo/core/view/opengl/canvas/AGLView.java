@@ -55,7 +55,7 @@ import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 
 /**
- * Abstract class for OpenGL2 views.
+ * Abstract base class for all OpenGL2 views.
  * 
  * @author Marc Streit
  * @author Alexander Lex
@@ -72,13 +72,12 @@ public abstract class AGLView
 		OFF
 	}
 
-	// TODO: should be a list of parent canvas object to be generic
+	/**
+	 * The canvas rendering the view. The canvas also holds the {@link PixelGLConverter}
+	 */
 	protected GLCaleydoCanvas parentGLCanvas;
 
 	protected PickingManager pickingManager;
-
-	/** Allows to convert pixel values to gl coordinates. May only be not-null in locally rendered views. */
-	protected PixelGLConverter pixelGLConverter = null;
 
 	/**
 	 * Key listener which is created and registered in specific view.
@@ -197,7 +196,7 @@ public abstract class AGLView
 
 		bShowMagnifyingGlass = false;
 
-		pixelGLConverter = glCanvas.initPixelGLConverter(viewFrustum);
+		glCanvas.initPixelGLConverter(viewFrustum);
 
 	}
 
@@ -454,6 +453,7 @@ public abstract class AGLView
 
 	public void setFrustum(ViewFrustum viewFrustum) {
 		this.viewFrustum = viewFrustum;
+//		parentGLCanvas.initPixelGLConverter(viewFrustum);
 	}
 
 	/**
@@ -851,24 +851,4 @@ public abstract class AGLView
 
 	}
 
-	public PixelGLConverter getPixelGLConverter() {
-		if (this.isRenderedRemote()) {
-			return ((AGLView) getRemoteRenderingGLCanvas()).getPixelGLConverter();
-		}
-		return pixelGLConverter;
-	}
-
-	// public float getGLWidthForPixelWidth(int pixelWidth) {
-	// float totalWidthGL = viewFrustum.getWidth();
-	// int totalWidthPixel = (int) parentGLCanvas.getBounds().getWidth();
-	// float width = totalWidthGL / totalWidthPixel * pixelWidth;
-	// return width;
-	// }
-	//
-	// public float getGLHeightForPixelHeight(int pixelHeight) {
-	// float totalHeightGL = viewFrustum.getHeight();
-	// int totalHeightPixel = (int) parentGLCanvas.getBounds().getHeight();
-	// float width = totalHeightGL / totalHeightPixel * pixelHeight;
-	// return width;
-	// }
 }

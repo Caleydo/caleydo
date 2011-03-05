@@ -26,9 +26,7 @@ import org.caleydo.core.view.opengl.layout.ViewRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.template.BucketTemplate;
-import org.caleydo.view.heatmap.heatmap.template.DefaultTemplate;
-import org.caleydo.view.parcoords.GLParallelCoordinates;
+import org.caleydo.view.heatmap.heatmap.template.BrickHeatMapTemplate;
 
 /**
  * Individual Brick for VisBricks
@@ -81,30 +79,12 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public void init(GL2 gl) {
 		baseDisplayListIndex = gl.glGenLists(1);
-	}
 
-	@Override
-	protected void initLocal(GL2 gl) {
-		init(gl);
-
-	}
-
-	@Override
-	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager) {
-
-		pixelGLConverter = getPixelGLConverter();
-		init(gl);
-
-	}
-
-	@Override
-	public void display(GL2 gl) {
 		if (heatMap == null) {
 			templateRenderer = new TemplateRenderer(viewFrustum);
 			brickLayout = new BrickLayoutTemplate();
 
-			brickLayout.setPixelGLConverter(pixelGLConverter);
+			brickLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 
 			heatMap = (GLHeatMap) GeneralManager
 					.get()
@@ -117,15 +97,35 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			heatMap.setRemoteRenderingGLView(this);
 			heatMap.setSet(set);
 			heatMap.setDataDomain(dataDomain);
-			heatMap.setRenderTemplate(new BucketTemplate(heatMap));
+			heatMap.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
+			heatMap.initialize();
 			heatMap.initRemote(gl, this, glMouseListener, null);
 			brickLayout.setViewRenderer(new ViewRenderer(heatMap));
 			templateRenderer.setTemplate(brickLayout);
 			templateRenderer.updateLayout();
 		}
+
+	}
+
+	@Override
+	protected void initLocal(GL2 gl) {
+		init(gl);
+
+	}
+
+	@Override
+	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener,
+			GLInfoAreaManager infoAreaManager) {
+		init(gl);
+
+	}
+
+	@Override
+	public void display(GL2 gl) {
+		heatMap.processEvents();
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
-		if (true)
+		if (isBaseDisplayListDirty)
 			buildBaseDisplayList(gl);
 
 		templateRenderer.render(gl);
@@ -152,12 +152,13 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		gl.glEndList();
 		isBaseDisplayListDirty = false;
 	}
+
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
 		super.reshape(drawable, x, y, width, height);
-	if(templateRenderer != null)
-		templateRenderer.updateLayout();
+		if (templateRenderer != null)
+			templateRenderer.updateLayout();
 	}
 
 	@Override
@@ -210,5 +211,12 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	public List<AGLView> getRemoteRenderedViews() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void setFrustum(ViewFrustum viewFrustum) {
+		super.setFrustum(viewFrustum);
+		if (templateRenderer != null)
+		templateRenderer.updateLayout();
 	}
 }

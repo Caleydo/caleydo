@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Template Demo View
+Bundle-Name: VisBricks View
 Bundle-SymbolicName: org.caleydo.view.visbricks;singleton:=true
 Bundle-Version: 2.0
 Require-Bundle: org.caleydo.core;bundle-version="2.0.0",

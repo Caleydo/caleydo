@@ -10,9 +10,9 @@ import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * TODO: DOCUMENT ME!
+ * RCP view container for {@link GLVisBricks}
  * 
- * @author <INSERT_YOUR_NAME>
+ * @author <Alexander Lex
  */
 public class RcpGLVisBricksView extends ARcpGLViewPart {
 
@@ -21,10 +21,9 @@ public class RcpGLVisBricksView extends ARcpGLViewPart {
 	 */
 	public RcpGLVisBricksView() {
 		super();
-		
+
 		try {
-			viewContext = JAXBContext
-					.newInstance(SerializedVisBricksView.class);
+			viewContext = JAXBContext.newInstance(SerializedVisBricksView.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
@@ -38,12 +37,12 @@ public class RcpGLVisBricksView extends ARcpGLViewPart {
 		view = new GLVisBricks(glCanvas, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(serializedView.getDataDomainType());
-			if(dataDomain == null)
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(
+					serializedView.getDataDomainType());
+			if (dataDomain == null)
 				throw new IllegalStateException("DataDomain null");
 			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
-				(IDataDomainBasedView<IDataDomain>) view;
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
 		}
 		view.initialize();

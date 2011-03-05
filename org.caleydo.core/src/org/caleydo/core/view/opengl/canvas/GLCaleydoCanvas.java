@@ -20,9 +20,14 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * Class implements a GL2 canvas. The canvas is registered in the ViewGLCanvasManager and automatically
  * rendered in the animator loop.
+ * <p>
+ * Every canvas also holds a {@link PixelGLConverter} which allows it's rendered views to specify a size in
+ * pixel space instead of gl space.
+ * </p>
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class GLCaleydoCanvas
 	extends GLCanvas
@@ -225,18 +230,26 @@ public class GLCaleydoCanvas
 
 	/**
 	 * Initialize the pixelGLConverter. This must initially only be done for not-remotely rendered view of
-	 * this canvas. Can be set only once. Re-setting has no effect.
+	 * this canvas.
 	 * 
 	 * @param viewFrustum
 	 */
-	public PixelGLConverter initPixelGLConverter(ViewFrustum viewFrustum) {
+	void initPixelGLConverter(ViewFrustum viewFrustum) {
 		if (this.viewFrustum == null) {
 			this.viewFrustum = viewFrustum;
 			pixelGLConverter = new PixelGLConverter(viewFrustum, this);
 		}
-		return pixelGLConverter;
+		// if (pixelGLConverter == null)
+	
+		// else
+		// pixelGLConverter.viewFrustum = viewFrustum;
 	}
 
+	/**
+	 * Returns the pixelGLConverter associated with this canvas.
+	 * 
+	 * @return
+	 */
 	public PixelGLConverter getPixelGLConverter() {
 		return pixelGLConverter;
 	}

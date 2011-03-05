@@ -33,7 +33,7 @@ class ContentBookmark extends ABookmark {
 	
 
 		layoutParameters.setRenderer(this);
-		layoutParameters.setPixelGLConverter(manager.getPixelGLConverter());
+		layoutParameters.setPixelGLConverter(manager.getParentGLCanvas().getPixelGLConverter());
 //		float height = (float) textRenderer.getBounds("Text").getHeight();
 
 		layoutParameters.setPixelSizeY(20);

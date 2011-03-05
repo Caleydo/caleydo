@@ -17,11 +17,11 @@ public class ContainerHeading extends Renderer implements ILayoutedElement {
 	public ContainerHeading(GLBookmarkView manager) {
 		this.manager = manager;
 		layoutElement = new ElementLayout();
-		layoutElement.setPixelGLConverter(manager.getPixelGLConverter());
+		layoutElement.setPixelGLConverter(manager.getParentGLCanvas()
+				.getPixelGLConverter());
 		layoutElement.setRatioSizeX(1);
 		layoutElement.setPixelSizeY(20);
 		layoutElement.setRenderer(this);
-	
 
 	}
 

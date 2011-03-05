@@ -1,19 +1,25 @@
 package org.caleydo.view.visbricks.dimensiongroup;
 
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ViewRenderer;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**
- * Container for a group of dimensions. Manages layouts as well
+ * Container for a group of dimensions. Manages layouts as well as brick views
+ * for the whole dimension group.
  * 
  * @author Alexander Lex
  * 
@@ -77,17 +83,20 @@ public class DimensionGroup extends Column {
 		bottomCol.setRatioSizeY(below);
 		topCol.setRatioSizeY(above);
 		centerBrick.getWrappingLayout().setRatioSizeY(archThickness);
-		brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
-				totalArchHeight * archThickness, 0, totalArchHeight * archThickness, -4,
-				4);
-		centerBrick.setFrustum(brickFrustum);
+		// brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
+		// totalArchHeight * archThickness, 0, totalArchHeight * archThickness,
+		// -4,
+		// 4);
+		// centerBrick.setFrustum(brickFrustum);
 	}
 
-	// public void setSet(ISet set) {
-	// this.set = set;
-	// }
-	//
-	// public void setDataDomain(ASetBasedDataDomain dataDomain) {
-	// this.dataDomain = dataDomain;
-	// }
+	public void processEvents() {
+		centerBrick.processEvents();
+	}
+
+	public void init(final GL2 gl, final AGLView glParentView,
+			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+		centerBrick.initRemote(gl, glParentView, glMouseListener, infoAreaManager);
+	}
+
 }
