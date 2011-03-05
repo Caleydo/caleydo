@@ -26,15 +26,6 @@ public class Renderer {
 	}
 
 	public void render(GL2 gl) {
-
-//		if (debugMode && elementLayout != null) {
-//			gl.glBegin(GL.GL_LINE_LOOP);
-//			gl.glVertex3f(0, 0, 0);
-//			gl.glVertex3f(elementLayout.getSizeScaledX(), 0, 0);
-//			gl.glVertex3f(elementLayout.getSizeScaledX(), elementLayout.getSizeScaledY(), 0);
-//			gl.glVertex3f(0, elementLayout.getSizeScaledY(), 0);
-//			gl.glEnd();
-//		}
 	}
 
 }

@@ -11,7 +11,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ClusterSetEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.rcp.action.toolbar.view.StartClusteringAction;
+import org.caleydo.rcp.action.toolbar.general.StartClusteringAction;
 import org.caleydo.rcp.command.handler.ExitHandler;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.core.commands.ExecutionException;

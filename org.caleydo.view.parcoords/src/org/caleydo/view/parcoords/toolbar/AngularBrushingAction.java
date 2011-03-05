@@ -1,28 +1,23 @@
-package org.caleydo.rcp.view.toolbar.action.storagebased.parcoords;
+package org.caleydo.view.parcoords.toolbar;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.storagebased.ResetAxisSpacingEvent;
+import org.caleydo.core.manager.event.view.storagebased.AngularBrushingEvent;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-/**
- * Action that resets the spacing of the axis in the PCs
- * 
- * @author Alexander
- */
-public class ResetAxisSpacingAction
+public class AngularBrushingAction
 	extends AToolBarAction
 	implements IToolBarItem {
-	public static final String TEXT = "Reset Axis Spacing";
-	public static final String ICON = "resources/icons/view/storagebased/parcoords/reset_axis_spacing.png";
+	public static final String TEXT = "Set angular brush";
+	public static final String ICON = "resources/icons/view/storagebased/parcoords/angular_brush.png";
 
 	/**
 	 * Constructor.
 	 */
-	public ResetAxisSpacingAction() {
+	public AngularBrushingAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
@@ -32,7 +27,6 @@ public class ResetAxisSpacingAction
 	@Override
 	public void run() {
 		super.run();
-
-		GeneralManager.get().getEventPublisher().triggerEvent(new ResetAxisSpacingEvent());
+		GeneralManager.get().getEventPublisher().triggerEvent(new AngularBrushingEvent());
 	};
 }

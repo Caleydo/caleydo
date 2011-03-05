@@ -49,7 +49,6 @@ Export-Package: org.caleydo.rcp;
  org.caleydo.rcp.view.toolbar,
  org.caleydo.rcp.view.toolbar.action,
  org.caleydo.rcp.view.toolbar.action.storagebased,
- org.caleydo.rcp.view.toolbar.action.storagebased.parcoords,
  org.caleydo.rcp.view.toolbar.content,
  org.caleydo.rcp.wizard.project;
   uses:="org.eclipse.jface.wizard,

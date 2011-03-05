@@ -14,7 +14,12 @@ import org.caleydo.core.view.opengl.layout.Template;
  */
 public class BrickLayoutTemplate extends Template {
 
-	Renderer viewRenderer;
+	private GLBrick brick;
+	private Renderer viewRenderer;
+
+	public BrickLayoutTemplate(GLBrick brick) {
+		this.brick = brick;
+	}
 
 	@Override
 	public void setParameters() {
@@ -51,6 +56,7 @@ public class BrickLayoutTemplate extends Template {
 		viewToolBarLayout.setFrameColor(0.5f, 0.5f, 0, 1);
 		viewToolBarLayout.setPixelGLConverter(pixelGLConverter);
 		viewToolBarLayout.setPixelSizeY(20);
+		viewToolBarLayout.setRenderer(new ViewToolBarRenderer(brick));
 
 		baseColumn.appendElement(dimensionBarLayout);
 		baseColumn.appendElement(viewLayout);

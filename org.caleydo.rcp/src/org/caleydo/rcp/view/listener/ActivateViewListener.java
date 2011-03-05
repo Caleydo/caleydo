@@ -11,7 +11,7 @@ import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.rcp.action.toolbar.view.StartClusteringAction;
+import org.caleydo.rcp.action.toolbar.general.StartClusteringAction;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.PartInitException;

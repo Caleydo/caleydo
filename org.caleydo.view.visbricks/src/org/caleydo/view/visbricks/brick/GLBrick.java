@@ -1,5 +1,6 @@
 package org.caleydo.view.visbricks.brick;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -10,10 +11,13 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -24,8 +28,11 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.TemplateRenderer;
 import org.caleydo.core.view.opengl.layout.ViewRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.rcp.dialog.cluster.StartClusteringDialog;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.BrickHeatMapTemplate;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * Individual Brick for VisBricks
@@ -81,7 +88,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		if (heatMap == null) {
 			templateRenderer = new TemplateRenderer(viewFrustum);
-			brickLayout = new BrickLayoutTemplate();
+			brickLayout = new BrickLayoutTemplate(this);
 
 			brickLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 
@@ -141,6 +148,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public void displayRemote(GL2 gl) {
 		display(gl);
+		checkForHits(gl);
 	}
 
 	private void buildBaseDisplayList(GL2 gl) {
@@ -162,7 +170,36 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int pickingID, Pick pick) {
-		// TODO Auto-generated method stub
+
+		switch (pickingType) {
+		case BRICK_CLUSTER:
+			switch (pickingMode) {
+			case CLICKED:
+				// set.cluster(clusterState);
+				System.out.println("cluster");
+
+				getParentGLCanvas().getParentComposite().getDisplay()
+						.asyncExec(new Runnable() {
+							@Override
+							public void run() {
+								StartClusteringDialog dialog = new StartClusteringDialog(
+										new Shell(), dataDomain);
+								dialog.open();
+								ClusterState clusterState = dialog.getClusterState();
+
+								StartClusteringEvent event = null;
+								// if (clusterState != null && set != null)
+
+								event = new StartClusteringEvent(clusterState, set
+										.getID());
+								event.setDataDomainType(dataDomain.getDataDomainType());
+								GeneralManager.get().getEventPublisher()
+										.triggerEvent(event);
+							}
+						});
+
+			}
+		}
 
 	}
 
@@ -215,6 +252,10 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	public void setFrustum(ViewFrustum viewFrustum) {
 		super.setFrustum(viewFrustum);
 		if (templateRenderer != null)
-		templateRenderer.updateLayout();
+			templateRenderer.updateLayout();
+	}
+
+	PickingManager getPickingManager() {
+		return pickingManager;
 	}
 }

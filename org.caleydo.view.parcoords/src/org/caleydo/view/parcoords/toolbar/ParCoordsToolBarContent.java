@@ -8,9 +8,6 @@ import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.ToolBarContainer;
 import org.caleydo.rcp.view.toolbar.action.storagebased.PropagateSelectionsAction;
 import org.caleydo.rcp.view.toolbar.action.storagebased.ResetViewAction;
-import org.caleydo.rcp.view.toolbar.action.storagebased.parcoords.AngularBrushingAction;
-import org.caleydo.rcp.view.toolbar.action.storagebased.parcoords.ResetAxisSpacingAction;
-import org.caleydo.rcp.view.toolbar.action.storagebased.parcoords.SaveSelectionsAction;
 import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
 import org.caleydo.view.parcoords.GLParallelCoordinates;
 
