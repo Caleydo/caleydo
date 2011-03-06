@@ -20,6 +20,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -30,6 +31,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.exception.ExceptionHandler;
@@ -55,6 +57,22 @@ import com.jogamp.opengl.util.texture.TextureCoords;
 
 /**
  * Abstract base class for all OpenGL2 views.
+ * <p>
+ * Every view has to specify its {@link #VIEW_ID}.
+ * </p>
+ * <h2>Creating a View</h2>
+ * <p>
+ * Views may only be instantiated using the
+ * {@link ViewManager#createGLView(Class, GLCaleydoCanvas, ViewFrustum)}. As a consequence, the constructor of
+ * the view may have only those two arguments (GLCaleydoCanvas, ViewFrustum). Otherwise, the creation will
+ * fail.
+ * </p>
+ * <p>
+ * After the object is created, set the dataDomain (if your view is a {@link IDataDomainBasedView}). If your
+ * view is rendered remotely (i.e. embedded in anothre view) you MUST call
+ * {@link #setRemoteRenderingGLView(IGLRemoteRenderingView)} now! Then you MUST call {@link #initialize()}.
+ * This method initializes the event listeners and other things.
+ * </p>
  * 
  * @author Marc Streit
  * @author Alexander Lex
@@ -158,7 +176,8 @@ public abstract class AGLView
 	/**
 	 * The queue which holds the events
 	 */
-	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue;
+	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue =
+		new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 
 	// /** id of the related view in the gui (e.g. RCP) */
 	// private String viewGUIID;
@@ -190,8 +209,6 @@ public abstract class AGLView
 		idMappingManager = generalManager.getIDMappingManager();
 		textureManager = new TextureManager();
 		contextMenu = ContextMenu.get();
-
-		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 
 		bShowMagnifyingGlass = false;
 
@@ -450,7 +467,7 @@ public abstract class AGLView
 
 	public void setFrustum(ViewFrustum viewFrustum) {
 		this.viewFrustum = viewFrustum;
-//		parentGLCanvas.initPixelGLConverter(viewFrustum);
+		// parentGLCanvas.initPixelGLConverter(viewFrustum);
 	}
 
 	/**
@@ -748,7 +765,7 @@ public abstract class AGLView
 	}
 
 	@Override
-	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
+	public final synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
 		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener, event));
 	}
 

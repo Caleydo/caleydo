@@ -316,6 +316,7 @@ public class ViewManager
 			view = (AGLView) aConstructor.newInstance(glCanvas, viewFrustum);
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			throw new IllegalStateException("Cannot create GL2 view " + viewClass);
 		}
 

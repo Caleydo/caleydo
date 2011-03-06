@@ -485,11 +485,21 @@ public abstract class AStorageBasedView
 		contentVAUpdateListener.setHandler(this);
 		contentVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
+		
+		replaceContentVAListener = new ReplaceContentVAListener();
+		replaceContentVAListener.setHandler(this);
+		replaceContentVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
 
 		storageVAUpdateListener = new StorageVAUpdateListener();
 		storageVAUpdateListener.setHandler(this);
 		storageVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(StorageVAUpdateEvent.class, storageVAUpdateListener);
+		
+		replaceStorageVAListener = new ReplaceStorageVAListener();
+		replaceStorageVAListener.setHandler(this);
+		replaceStorageVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(ReplaceStorageVAEvent.class, replaceStorageVAListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
@@ -505,15 +515,9 @@ public abstract class AStorageBasedView
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
-		replaceContentVAListener = new ReplaceContentVAListener();
-		replaceContentVAListener.setHandler(this);
-		replaceContentVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
-		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
+	
 
-		replaceStorageVAListener = new ReplaceStorageVAListener();
-		replaceStorageVAListener.setHandler(this);
-		replaceStorageVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
-		eventPublisher.addListener(ReplaceStorageVAEvent.class, replaceStorageVAListener);
+
 	}
 
 	@Override

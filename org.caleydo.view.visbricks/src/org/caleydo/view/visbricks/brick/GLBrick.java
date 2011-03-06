@@ -1,6 +1,5 @@
 package org.caleydo.view.visbricks.brick;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -31,7 +30,6 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.rcp.dialog.cluster.StartClusteringDialog;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.BrickHeatMapTemplate;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**

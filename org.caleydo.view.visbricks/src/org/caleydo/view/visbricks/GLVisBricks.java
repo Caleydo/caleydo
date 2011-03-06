@@ -3,7 +3,9 @@ package org.caleydo.view.visbricks;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -12,6 +14,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.NewMetaSetsEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -19,6 +22,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IDataDomainSetBasedView;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -80,7 +84,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private float archBottomY = 0;
 	private float archHeight = 0;
 
-	private boolean centerGroupsUpdated = false;
+	private Queue<DimensionGroup> uninitializedDimensionGroups = new LinkedList<DimensionGroup>();
 
 	/**
 	 * Constructor.
@@ -130,10 +134,10 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		rowLayout.setFrameColor(1, 1, 0, 1);
 
 		for (DimensionGroup group : centerGroups) {
-			group.setRatioSizeX(dimensionGroupLayoutRatio);
+			group.getLayout().setRatioSizeX(dimensionGroupLayoutRatio);
 			group.setArchBounds(archHeight, ARCH_BOTTOM_PERCENT, ARCH_TOP_PERCENT
 					- ARCH_BOTTOM_PERCENT, ARCH_BOTTOM_PERCENT);
-			rowLayout.appendElement(group);
+			rowLayout.appendElement(group.getLayout());
 		}
 
 		centerLayout = new Template();
@@ -144,7 +148,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				0, centerLayoutWidth, 0, viewFrustum.getHeight(), 0, 1);
 		centerLayoutRenderer = new TemplateRenderer(centerArchFrustum);
 		centerLayoutRenderer.setTemplate(centerLayout);
-		centerLayoutRenderer.updateLayout();
+		if (uninitializedDimensionGroups.size() == 0)
+			centerLayoutRenderer.updateLayout();
 	}
 
 	private void initLayoutLeft() {
@@ -254,11 +259,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public void displayLocal(GL2 gl) {
-		if (centerGroupsUpdated) {
-			for (DimensionGroup group : centerGroups) {
-				group.init(gl, this, glMouseListener, null);
+		if (!uninitializedDimensionGroups.isEmpty()) {
+			while (uninitializedDimensionGroups.peek() != null) {
+				uninitializedDimensionGroups.poll().initRemote(gl, this, glMouseListener);
+
 			}
-			centerGroupsUpdated = false;
+			initLayoutCenter();
+
 		}
 		for (DimensionGroup group : centerGroups) {
 			group.processEvents();
@@ -278,6 +285,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public void display(GL2 gl) {
 
 		renderArch(gl);
+		
+		for(DimensionGroup group : centerGroups)
+		{
+			group.display(gl);
+		}
 
 		// leftLayoutRenderer.render(gl);
 
@@ -501,19 +513,34 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				filteredMetaSets.add(metaSet);
 		}
 		initializeBricks(filteredMetaSets);
-		initLayoutCenter();
+
 		System.out.println("MetaSets update");
 
 	}
 
 	private void initializeBricks(ArrayList<ISet> metaSets) {
-		centerGroupsUpdated = true;
 		centerGroups.clear();
 		for (ISet set : metaSets) {
-			DimensionGroup group = new DimensionGroup(getParentGLCanvas(), this,
-					dataDomain, set);
 
-			centerGroups.add(group);
+			// TODO here we need to check which metaSets have already been
+			// assigned to a dimensiongroup and not re-create them
+			DimensionGroup dimensionGroup = (DimensionGroup) GeneralManager
+					.get()
+					.getViewGLCanvasManager()
+					.createGLView(
+							DimensionGroup.class,
+							getParentGLCanvas(),
+							new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
+									1, -1, 1));
+
+			dimensionGroup.setDataDomain(dataDomain);
+			dimensionGroup.setSet(set);
+			dimensionGroup.setRemoteRenderingGLView(this);
+			dimensionGroup.initialize();
+			//
+			centerGroups.add(dimensionGroup);
+
+			uninitializedDimensionGroups.add(dimensionGroup);
 
 		}
 
