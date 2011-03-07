@@ -1,6 +1,7 @@
 package org.caleydo.view.treemap;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 
@@ -43,6 +44,7 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateColorMappingListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.treemap.layout.ATreeMapNode;
 import org.caleydo.view.treemap.layout.ClusterTreeMapNode;
 import org.caleydo.view.treemap.layout.TreeMapRenderer;
@@ -142,6 +144,8 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 
 	@Override
 	public void init(GL2 gl) {
+		if (textRenderer == null)
+			textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), true, true);
 		renderer.initCache(gl);
 
 	}
@@ -587,20 +591,20 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	}
 
 	public void setInteractive(boolean flag) {
-		bIsInteractive=flag;
+		bIsInteractive = flag;
 	}
-	
-	public float[] getSelectedArea(){
-		float[] rect= new float[4];
-		
-		int id=treeSelectionManager.getElements(SelectionType.SELECTION).iterator().next();
-		ATreeMapNode node=treeMapModel.getNodeByNumber(id);
-		
-		rect[0]=node.getMinX();
-		rect[1]=node.getMinY();
-		rect[2]=node.getMaxX();
-		rect[3]=node.getMaxY();
-		
+
+	public float[] getSelectedArea() {
+		float[] rect = new float[4];
+
+		int id = treeSelectionManager.getElements(SelectionType.SELECTION).iterator().next();
+		ATreeMapNode node = treeMapModel.getNodeByNumber(id);
+
+		rect[0] = node.getMinX();
+		rect[1] = node.getMinY();
+		rect[2] = node.getMaxX();
+		rect[3] = node.getMaxY();
+
 		return rect;
 	}
 

@@ -3,7 +3,9 @@ package org.caleydo.view.treemap;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Vector;
 
@@ -76,6 +78,8 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	float xMargin = 0.05f;
 	float yMargin = 0.01f;
+
+	Queue<GLTreeMap> uninitializedTreeMap = new LinkedList<GLTreeMap>();
 
 	/**
 	 * Constructor.
@@ -155,6 +159,10 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	@Override
 	public void displayLocal(GL2 gl) {
 
+		while (!uninitializedTreeMap.isEmpty()) {
+			uninitializedTreeMap.poll().initRemote(gl, this, glMouseListener);
+
+		}
 		if (mainTreeMapView != null)
 			mainTreeMapView.processEvents();
 
@@ -178,7 +186,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 			if (animationControle.isActive()) {
 				animationControle.display(gl);
 			} else {
-				displayMainTreeMap(gl,thumbnailTreemapViews.size() > 0);
+				displayMainTreeMap(gl, thumbnailTreemapViews.size() > 0);
 			}
 		} else {
 			renderSymbol(gl, EIconTextures.RADIAL_SYMBOL, 0.5f);
@@ -186,12 +194,12 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	}
 
-	public static final int MAX_THUMBNAILS=3;
-	public static final float THUMBNAIL_HEIGHT=0.18f;
-	
-	void displayMainTreeMap(GL2 gl, boolean resized){
-//		if (thumbnailTreemapViews.size() > 0) {
-		if(resized){
+	public static final int MAX_THUMBNAILS = 3;
+	public static final float THUMBNAIL_HEIGHT = 0.18f;
+
+	void displayMainTreeMap(GL2 gl, boolean resized) {
+		// if (thumbnailTreemapViews.size() > 0) {
+		if (resized) {
 
 			displayThumbnailTreemaps(gl);
 
@@ -210,7 +218,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 			mainTreeMapView.displayRemote(gl);
 		}
 	}
-	
+
 	void displayThumbnailTreemaps(GL2 gl) {
 		int maxThumbNailViews = MAX_THUMBNAILS;
 
@@ -231,12 +239,13 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 			treemap.getViewFrustum().setBottom((float) (viewFrustum.getTop() - viewFrustum.getHeight() * (yMargin + thumbNailHeight)));
 			treemap.getViewFrustum().setTop((float) (viewFrustum.getTop() - viewFrustum.getHeight() * yMargin));
 
-//			gl.glPushMatrix();
-//			gl.glTranslated(viewFrustum.getWidth() * xOffset, viewFrustum.getHeight() * (1.0 - yMargin - thumbNailHeight), 0);
+			// gl.glPushMatrix();
+			// gl.glTranslated(viewFrustum.getWidth() * xOffset,
+			// viewFrustum.getHeight() * (1.0 - yMargin - thumbNailHeight), 0);
 			gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.TREEMAP_THUMBNAILVIEW_SELECTED, i));
 			treemap.displayRemote(gl);
 			gl.glPopName();
-//			gl.glPopMatrix();
+			// gl.glPopMatrix();
 
 			xOffset += thumbNailWidth;
 
@@ -310,14 +319,17 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 			@SuppressWarnings("unchecked")
 			Vector<GLTreeMap> beginThumbnails = (Vector<GLTreeMap>) thumbnailTreemapViews.clone();
-			
+
 			mainTreeMapView.setInteractive(false);
 			thumbnailTreemapViews.add(mainTreeMapView);
-			
+
 			GLTreeMap beginMainView = mainTreeMapView;
 
 			// mainTreeMapView = createEmbeddedTreeMap();
-			setMainTreeMapView(createEmbeddedTreeMap());
+			GLTreeMap treeMap = createEmbeddedTreeMap();
+			setMainTreeMapView(treeMap);
+			uninitializedTreeMap.add(treeMap);
+
 			mainTreeMapView.setDrawLabel(true);
 
 			mainTreeMapView.setRootClusterID(dataRoot.getID());
@@ -326,7 +338,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 			animationControle.initAnimation(this, beginMainView, mainTreeMapView, beginThumbnails, thumbnailTreemapViews, AnimationControle.ZOOM_IN_ANIMATION);
 			animationControle.setActive(true);
-			
+
 			setDisplayListDirty();
 
 		}
@@ -340,27 +352,27 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	private void zoomOut(int index) {
 		if (thumbnailTreemapViews.size() > 0) {
 			// mainTreeMapView = thumbnailTreemapViews.get(index);
-			GLTreeMap beginMainView=mainTreeMapView;
-			
+			GLTreeMap beginMainView = mainTreeMapView;
+
 			setMainTreeMapView(thumbnailTreemapViews.get(index));
 			for (int i = thumbnailTreemapViews.size() - 1; i > index; i--) {
 				thumbnailTreemapViews.get(i).unregisterEventListeners();
 
 				thumbnailTreemapViews.remove(i);
 			}
-			
+
 			Vector<GLTreeMap> beginThumbnails = (Vector<GLTreeMap>) thumbnailTreemapViews.clone();
-			
+
 			thumbnailTreemapViews.remove(index);
 
 			mainTreeMapView.setDrawLabel(true);
 			mainTreeMapView.setRemotePickingManager(pickingManager, getID());
-			
+
 			animationControle.initAnimation(this, beginMainView, mainTreeMapView, beginThumbnails, thumbnailTreemapViews, AnimationControle.ZOOM_OUT_ANIMATION);
 			animationControle.setActive(true);
-			
+
 			setDisplayListDirty();
-			System.out.println("remaining thumbnails: "+thumbnailTreemapViews.size());
+			System.out.println("remaining thumbnails: " + thumbnailTreemapViews.size());
 		}
 	}
 
@@ -376,7 +388,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	@Override
 	public String getShortInfo() {
 
-		return "Hierarchical Tree Map ("+dataDomain.getSet().getBaseStorageVA().size()+" nodes displayed)";
+		return "Hierarchical Tree Map (" + dataDomain.getSet().getBaseStorageVA().size() + " nodes displayed)";
 	}
 
 	@Override
@@ -515,6 +527,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		treemap.registerEventListeners();
 		treemap.setRemotePickingManager(pickingManager, getID());
 		treemap.initData();
+
 		return treemap;
 	}
 

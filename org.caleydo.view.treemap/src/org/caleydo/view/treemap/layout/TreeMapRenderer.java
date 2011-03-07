@@ -47,6 +47,9 @@ public class TreeMapRenderer {
 
 	public void initRenderer(ViewFrustum viewFrustum, PickingManager pickingManager, int viewID, SelectionManager selectionManager,
 			CaleydoTextRenderer textRenderer) {
+		
+		if(textRenderer == null)
+			throw new IllegalArgumentException("Text Renderer may never be null");
 		this.pickingManager = pickingManager;
 
 		this.viewFrustum = viewFrustum;
