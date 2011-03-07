@@ -37,7 +37,7 @@ public class BrickLayoutTemplate extends Template {
 		fuelBarLayout.setFrameColor(0, 1, 0, 0);
 
 		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
-		fuelBarLayout.setPixelSizeX(20);
+		fuelBarLayout.setPixelSizeX(15);
 		// fuelBarLayout.setRenderer(new FuelBarRenderer());
 
 		baseRow.appendElement(baseColumn);
@@ -46,7 +46,7 @@ public class BrickLayoutTemplate extends Template {
 		ElementLayout dimensionBarLayout = new ElementLayout("dimensionBar");
 		dimensionBarLayout.setFrameColor(1, 0, 1, 0);
 		dimensionBarLayout.setPixelGLConverter(pixelGLConverter);
-		dimensionBarLayout.setPixelSizeY(20);
+		dimensionBarLayout.setPixelSizeY(15);
 
 		ElementLayout viewLayout = new ElementLayout("viewLayout");
 		viewLayout.setFrameColor(1, 0, 0, 1);
@@ -55,7 +55,7 @@ public class BrickLayoutTemplate extends Template {
 		ElementLayout viewToolBarLayout = new ElementLayout("viewToolBarLayout");
 		viewToolBarLayout.setFrameColor(0.5f, 0.5f, 0, 1);
 		viewToolBarLayout.setPixelGLConverter(pixelGLConverter);
-		viewToolBarLayout.setPixelSizeY(20);
+		viewToolBarLayout.setPixelSizeY(15);
 		viewToolBarLayout.setRenderer(new ViewToolBarRenderer(brick));
 
 		baseColumn.appendElement(dimensionBarLayout);

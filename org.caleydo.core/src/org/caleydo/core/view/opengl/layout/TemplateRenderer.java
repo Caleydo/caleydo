@@ -16,7 +16,7 @@ public class TemplateRenderer {
 	/** Flag for showing debug frames for container layout elements */
 	public static final boolean DEBUG_CONTAINERS = false;
 	/** Flag for showing debug frames for actual layout elements */
-	public static final boolean DEBUG_ELEMENTS = true;
+	public static final boolean DEBUG_ELEMENTS = false;
 
 	// protected float spacing;
 

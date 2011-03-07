@@ -21,9 +21,9 @@ public class ViewToolBarRenderer extends Renderer {
 		gl.glColor3f(1f, 0, 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, 0);
-		gl.glVertex3f(0.2f, 0, 0);
-		gl.glVertex3f(0.2f, 0.2f, 0);
-		gl.glVertex3f(0, 0.2f, 0);
+		gl.glVertex3f(y, 0, 0);
+		gl.glVertex3f(y, y, 0);
+		gl.glVertex3f(0, y, 0);
 		gl.glEnd();
 		gl.glPopName();
 	}

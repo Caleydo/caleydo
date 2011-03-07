@@ -52,6 +52,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private Column groupColumn;
 
 	private ArrayList<GLBrick> bottomBricks;
+	private ArrayList<GLBrick> topBricks;
+
 	private Column bottomCol;
 	private GLBrick centerBrick;
 	private ElementLayout centerLayout;
@@ -73,12 +75,13 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		bottomCol = new Column("dimensionGroupColumnBottom");
 		bottomBricks = new ArrayList<GLBrick>(20);
-
 		groupColumn.appendElement(bottomCol);
+
 		centerLayout = new ElementLayout("centralBrick");
 		groupColumn.appendElement(centerLayout);
 
 		topCol = new Column("dimensionGroupColumnTop");
+		topBricks = new ArrayList<GLBrick>(20);
 		groupColumn.appendElement(topCol);
 
 	}
@@ -99,10 +102,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		centerLayout.setRenderer(brickRenderer);
 		centerLayout.setFrameColor(1, 0, 0, 1);
 
-		centerBrick.setWrappingLayout(centerLayout);
-
 		createSubBricks();
-
 	}
 
 	private void createSubBricks() {
@@ -112,11 +112,12 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			return;
 
 		ContentGroupList groupList = contentVA.getGroupList();
-
+		int count = 0;
+		groupList.updateGroupInfo();
 		for (Group group : groupList) {
 			GLBrick subBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
 					.createGLView(GLBrick.class, getParentGLCanvas(), brickFrustum);
-			bottomBricks.add(subBrick);
+
 			subBrick.setRemoteRenderingGLView(getRemoteRenderingGLCanvas());
 			subBrick.setDataDomain(dataDomain);
 			subBrick.setSet(set);
@@ -124,14 +125,36 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			ViewRenderer brickRenderer = new ViewRenderer(subBrick);
 			brickLayout.setRenderer(brickRenderer);
 			brickLayout.setFrameColor(1, 0, 0, 1);
-			brickLayout.setRatioSizeY(1.0f / groupList.size());
+			// brickLayout.setRatioSizeY(1.0f / groupList.size());
 
-			subBrick.setWrappingLayout(brickLayout);
-			bottomCol.appendElement(brickLayout);
 			uninitializedBricks.add(subBrick);
 
+			ContentVirtualArray subVA = new ContentVirtualArray("CONTENT", contentVA
+					.getVirtualArray()
+					.subList(group.getStartIndex(), group.getEndIndex()));
+			System.out.println("From: " + group.getStartIndex() + ", to : "
+					+ group.getEndIndex());
+
+			subBrick.setContentVA(subVA);
+
+			float[] rep = group.getRepresentativeElement();
+
+			if (count < groupList.size() / 2) {
+				bottomBricks.add(subBrick);
+				bottomCol.appendElement(brickLayout);
+			} else {
+				topBricks.add(subBrick);
+				topCol.appendElement(brickLayout);
+			}
+			count++;
+
 		}
-		
+		for (ElementLayout layout : topCol) {
+			layout.setRatioSizeY(1.0f / topCol.size());
+		}
+		for (ElementLayout layout : bottomCol) {
+			layout.setRatioSizeY(1.0f / bottomCol.size());
+		}
 
 	}
 
@@ -216,7 +239,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		if (set.getID() == setID)
 			createSubBricks();
-		System.out.println("Clustered!");
+		((AGLView) getRemoteRenderingGLCanvas()).setDisplayListDirty();
 	}
 
 	@Override

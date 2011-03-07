@@ -132,7 +132,6 @@ public abstract class LayoutContainer
 		else
 			availableHeight = totalHeight * ratioSizeY;
 
-		
 		calculateSubElementScales(availableWidth, availableHeight);
 
 	}
@@ -184,5 +183,9 @@ public abstract class LayoutContainer
 		for (ElementLayout element : elements) {
 			element.updateSpacings(template);
 		}
+	}
+
+	public int size() {
+		return elements.size();
 	}
 }

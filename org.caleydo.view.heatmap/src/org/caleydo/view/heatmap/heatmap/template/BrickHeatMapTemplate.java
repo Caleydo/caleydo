@@ -16,7 +16,7 @@ public class BrickHeatMapTemplate extends AHeatMapTemplate {
 
 	public BrickHeatMapTemplate(GLHeatMap heatMap) {
 		super(heatMap);
-		minSelectedFieldHeight = 0.5f;
+		minSelectedFieldHeight = 0.1f;
 		fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR * 1.8f;
 
 	}

@@ -67,8 +67,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private IConnectionRenderer connectionRenderer;
 
 	private ArrayList<DimensionGroup> centerGroups;
-	private ArrayList<AGLView> leftBrickList;
-	private ArrayList<AGLView> rightBrickList;
+	private ArrayList<DimensionGroup> leftBrickList;
+	private ArrayList<DimensionGroup> rightBrickList;
 
 	private TemplateRenderer centerLayoutRenderer;
 	private TemplateRenderer leftLayoutRenderer;
@@ -97,8 +97,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		super(glCanvas, viewFrustum, true);
 
 		centerGroups = new ArrayList<DimensionGroup>(20);
-		leftBrickList = new ArrayList<AGLView>(10);
-		rightBrickList = new ArrayList<AGLView>(10);
+		leftBrickList = new ArrayList<DimensionGroup>(10);
+		rightBrickList = new ArrayList<DimensionGroup>(10);
 
 		viewType = GLVisBricks.VIEW_ID;
 
@@ -267,6 +267,10 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			initLayoutCenter();
 
 		}
+		if (bIsDisplayListDirtyRemote == true) {
+			initLayoutCenter();
+			bIsDisplayListDirtyRemote = false;
+		}
 		for (DimensionGroup group : centerGroups) {
 			group.processEvents();
 		}
@@ -285,9 +289,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public void display(GL2 gl) {
 
 		renderArch(gl);
-		
-		for(DimensionGroup group : centerGroups)
-		{
+
+		for (DimensionGroup group : centerGroups) {
 			group.display(gl);
 		}
 
@@ -580,5 +583,10 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		initLayoutCenter();
 		initLayoutLeft();
 		initLayoutRight();
+	}
+
+	@Override
+	public void setDisplayListDirty() {
+		super.setDisplayListDirty();
 	}
 }

@@ -7,6 +7,7 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -60,14 +61,6 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	}
 
-	public void setWrappingLayout(ElementLayout wrappingLayout) {
-		this.wrappingLayout = wrappingLayout;
-	}
-
-	public ElementLayout getWrappingLayout() {
-		return wrappingLayout;
-	}
-
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		// TODO Auto-generated method stub
@@ -104,6 +97,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			heatMap.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 			heatMap.initialize();
 			heatMap.initRemote(gl, this, glMouseListener);
+			if (this.contentVA != null)
+				heatMap.setContentVA(contentVA);
 			brickLayout.setViewRenderer(new ViewRenderer(heatMap));
 			templateRenderer.setTemplate(brickLayout);
 			templateRenderer.updateLayout();
@@ -238,6 +233,10 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	public void setSet(ISet set) {
 		this.set = set;
+	}
+
+	public void setContentVA(ContentVirtualArray contentVA) {
+		this.contentVA = contentVA;
 	}
 
 	@Override
