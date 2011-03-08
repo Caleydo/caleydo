@@ -78,6 +78,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private boolean isCollapsed = false;
 
 	private Queue<GLBrick> uninitializedBricks = new LinkedList<GLBrick>();
+	
+	private boolean dropAfterDimensionGroup;
 
 	public DimensionGroup(GLCaleydoCanvas canvas, ViewFrustum viewFrustum) {
 		super(canvas, viewFrustum, true);
@@ -116,7 +118,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public void setCollapsed(boolean isCollapsed) {
 		this.isCollapsed = isCollapsed;
 		initGroupColumn();
-//		groupColumn.updateSubLayout();
+		// groupColumn.updateSubLayout();
 	}
 
 	private void createBricks() {
@@ -421,14 +423,16 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public void handleDragOver(GL2 gl, java.util.Set<IDraggable> draggables,
 			float mouseCoordinateX, float mouseCoordinateY) {
 
-		for (IDraggable draggable : draggables) {
-
-			
-			((GLVisBricks) glRemoteRenderingView).moveGroupDimension(this,
-					(DimensionGroup) draggable, true);
-		}
-
-		draggables.clear();
+//		System.out.println("Transform X " +this.getLayout().getTransformX());
+//		System.out.println("Total " +(this.getLayout().getTransformX() + this.getLayout().getSizeScaledX() / 2));
+//		System.out.println("Current "+mouseCoordinateX);
+		
+		if ((this.getLayout().getTransformX() + this.getLayout().getSizeScaledX()) < mouseCoordinateX)
+			dropAfterDimensionGroup = true;
+		else
+			dropAfterDimensionGroup = false;
+		
+		((GLVisBricks) glRemoteRenderingView).highlightDimensionGroupSpacer(this, dropAfterDimensionGroup);
 	}
 
 	@Override
@@ -439,7 +443,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		for (IDraggable draggable : draggables) {
 
 			((GLVisBricks) glRemoteRenderingView).moveGroupDimension(this,
-					(DimensionGroup) draggable, true);
+					(DimensionGroup) draggable, dropAfterDimensionGroup);
 		}
 
 		draggables.clear();

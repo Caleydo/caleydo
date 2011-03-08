@@ -224,5 +224,8 @@ public abstract class LayoutContainer
 			element.updateSpacings();
 		}
 	}
-
+	
+	public ArrayList<ElementLayout> getElements() {
+		return elements;
+	}
 }

@@ -84,6 +84,10 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private LayoutTemplate leftLayout;
 	private LayoutTemplate rightLayout;
 
+	private Row centerRowLayout;
+	private Column leftColumnLayout;
+	private Column rightColumnLayout;
+
 	private float archWidth = 0;
 	private float archInnerWidth = 0;
 	private float archTopY = 0;
@@ -138,16 +142,16 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		float dimensionGroupLayoutRatio = 1f / (centerGroupEndIndex - centerGroupStartIndex);
 
-		Row rowLayout = new Row("centerArchRow");
-		rowLayout.setFrameColor(1, 1, 0, 1);
-		rowLayout.setDebug(false);
+		centerRowLayout = new Row("centerArchRow");
+		centerRowLayout.setFrameColor(1, 1, 0, 1);
+		centerRowLayout.setDebug(false);
 
 		ElementLayout dimensionGroupSpacing = new ElementLayout("dimensionGroupSpacing");
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer();
 		dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 		dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		dimensionGroupSpacing.setPixelSizeX(5);
-		rowLayout.appendElement(dimensionGroupSpacing);
+		centerRowLayout.appendElement(dimensionGroupSpacing);
 
 		for (int dimensionGroupIndex = centerGroupStartIndex; dimensionGroupIndex < centerGroupEndIndex; dimensionGroupIndex++) {
 
@@ -157,7 +161,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			group.setArchBounds(archHeight, ARCH_BOTTOM_PERCENT, ARCH_TOP_PERCENT
 					- ARCH_BOTTOM_PERCENT, ARCH_BOTTOM_PERCENT);
 			group.setCollapsed(false);
-			rowLayout.appendElement(group.getLayout());
+			centerRowLayout.appendElement(group.getLayout());
 
 			dimensionGroupSpacing = new ElementLayout("dimensionGroupSpacing");
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer();
@@ -165,12 +169,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas
 					.getPixelGLConverter());
 			dimensionGroupSpacing.setPixelSizeX(DIMENSION_GROUP_SPACING);
-			rowLayout.appendElement(dimensionGroupSpacing);
+			centerRowLayout.appendElement(dimensionGroupSpacing);
 		}
 
 		centerLayout = new LayoutTemplate();
 		centerLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		centerLayout.setBaseElementLayout(rowLayout);
+		centerLayout.setBaseElementLayout(centerRowLayout);
 
 		ViewFrustum centerArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(),
 				0, centerLayoutWidth, 0, viewFrustum.getHeight(), 0, 1);
@@ -184,16 +188,16 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		float dimensionGroupLayoutRatio = 1f / centerGroupStartIndex;
 
-		Column columnLayout = new Column("leftArchColumn");
-		columnLayout.setFrameColor(1, 1, 0, 1);
-		columnLayout.setDebug(false);
-			
+		leftColumnLayout = new Column("leftArchColumn");
+		leftColumnLayout.setFrameColor(1, 1, 0, 1);
+		leftColumnLayout.setDebug(false);
+
 		ElementLayout dimensionGroupSpacing = new ElementLayout("dimensionGroupSpacing");
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer();
 		dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 		dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		dimensionGroupSpacing.setPixelSizeY(5);
-		columnLayout.appendElement(dimensionGroupSpacing);
+		leftColumnLayout.appendElement(dimensionGroupSpacing);
 
 		for (int dimensionGroupIndex = 0; dimensionGroupIndex < centerGroupStartIndex; dimensionGroupIndex++) {
 
@@ -204,7 +208,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			group.getLayout().setDebug(false);
 			group.setArchBounds(viewFrustum.getHeight(), ARCH_BOTTOM_PERCENT,
 					ARCH_TOP_PERCENT - ARCH_BOTTOM_PERCENT, ARCH_BOTTOM_PERCENT);
-			columnLayout.appendElement(group.getLayout());
+			leftColumnLayout.appendElement(group.getLayout());
 
 			group.setCollapsed(true);
 
@@ -214,13 +218,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas
 					.getPixelGLConverter());
 			dimensionGroupSpacing.setPixelSizeY(DIMENSION_GROUP_SPACING);
-			columnLayout.appendElement(dimensionGroupSpacing);
+			leftColumnLayout.appendElement(dimensionGroupSpacing);
 		}
 
 		leftLayout = new LayoutTemplate();
 		leftLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		leftLayout.setBaseElementLayout(columnLayout);
-		
+		leftLayout.setBaseElementLayout(leftColumnLayout);
+
 		ViewFrustum leftArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0,
 				archWidth, 0, archBottomY, 0, 1);
 		leftLayoutManager = new LayoutManager(leftArchFrustum);
@@ -233,24 +237,25 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		float dimensionGroupLayoutRatio = 1f / (dimensionGroups.size() - centerGroupEndIndex);
 
-		Column columnLayout = new Column("rightArchColumn");
-		columnLayout.setFrameColor(1, 1, 0, 1);
+		rightColumnLayout = new Column("rightArchColumn");
+		rightColumnLayout.setFrameColor(1, 1, 0, 1);
 
 		ElementLayout dimensionGroupSpacing = new ElementLayout("dimensionGroupSpacing");
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer();
 		dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 		dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		dimensionGroupSpacing.setPixelSizeY(5);
-		columnLayout.appendElement(dimensionGroupSpacing);
+		rightColumnLayout.appendElement(dimensionGroupSpacing);
 
-		for (int dimensionGroupIndex = centerGroupEndIndex; dimensionGroupIndex < dimensionGroups.size(); dimensionGroupIndex++) {
+		for (int dimensionGroupIndex = centerGroupEndIndex; dimensionGroupIndex < dimensionGroups
+				.size(); dimensionGroupIndex++) {
 
 			DimensionGroup group = dimensionGroups.get(dimensionGroupIndex);
 			group.getLayout().setRatioSizeX(1);
 			group.getLayout().setRatioSizeY(dimensionGroupLayoutRatio);
 			group.setArchBounds(viewFrustum.getHeight(), ARCH_BOTTOM_PERCENT,
 					ARCH_TOP_PERCENT - ARCH_BOTTOM_PERCENT, ARCH_BOTTOM_PERCENT);
-			columnLayout.appendElement(group.getLayout());
+			rightColumnLayout.appendElement(group.getLayout());
 
 			group.setCollapsed(true);
 
@@ -260,12 +265,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas
 					.getPixelGLConverter());
 			dimensionGroupSpacing.setPixelSizeY(DIMENSION_GROUP_SPACING);
-			columnLayout.appendElement(dimensionGroupSpacing);
+			rightColumnLayout.appendElement(dimensionGroupSpacing);
 		}
 
 		rightLayout = new LayoutTemplate();
 		rightLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		rightLayout.setBaseElementLayout(columnLayout);
+		rightLayout.setBaseElementLayout(rightColumnLayout);
 
 		ViewFrustum leftArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0,
 				archWidth, 0, archBottomY, 0, 1);
@@ -647,31 +652,53 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public void moveGroupDimension(DimensionGroup referenceDimGroup,
 			DimensionGroup movedDimGroup, boolean hightlightAfter) {
 
+		int hightlightOffset = 0;
+		if (hightlightAfter)
+			hightlightOffset = +1;
+		
 		int movedDimGroupIndex = dimensionGroups.indexOf(movedDimGroup);
 		int refDimGroupIndex = dimensionGroups.indexOf(referenceDimGroup);
-		
+
 		if (refDimGroupIndex < centerGroupStartIndex)
 			centerGroupStartIndex++;
-		else if (refDimGroupIndex > centerGroupStartIndex && refDimGroupIndex < centerGroupEndIndex)
-		{
+		else if (refDimGroupIndex > centerGroupStartIndex
+				&& refDimGroupIndex < centerGroupEndIndex) {
 			if (movedDimGroupIndex > centerGroupEndIndex)
 				centerGroupEndIndex++;
 			else if (movedDimGroupIndex < centerGroupStartIndex)
 				centerGroupStartIndex--;
-		}
-		else if (refDimGroupIndex > centerGroupEndIndex)
+		} else if (refDimGroupIndex > centerGroupEndIndex)
 			centerGroupEndIndex--;
-			
+
 		dimensionGroups.remove(movedDimGroup);
 		dimensionGroups
-				.add(dimensionGroups.indexOf(referenceDimGroup) + 1, movedDimGroup);
+				.add(dimensionGroups.indexOf(referenceDimGroup) + hightlightOffset, movedDimGroup);
 
 		initLayoutCenter();
 		initLayoutLeft();
 		initLayoutRight();
 	}
-	
-	public void highlightDimensionGroupSpacer(boolean hightlightAfter) {
 
+	public void highlightDimensionGroupSpacer(DimensionGroup dragOverDimensionGroup,
+			boolean hightlightAfter) {
+
+		int hightlightOffset = -1;
+		if (hightlightAfter)
+			hightlightOffset = +1;
+		
+		for (ElementLayout element : centerRowLayout.getElements()) {
+			if (element.getRenderer() instanceof DimensionGroupSpacingRenderer)
+				((DimensionGroupSpacingRenderer)element.getRenderer()).setRenderSpacer(false);
+		}
+		
+		if (centerRowLayout.getElements().contains(dragOverDimensionGroup.getLayout())) {
+			
+			ElementLayout spacingElement = centerRowLayout.getElements().get(
+					centerRowLayout.getElements().indexOf(
+							dragOverDimensionGroup.getLayout()) + hightlightOffset);
+		
+			((DimensionGroupSpacingRenderer) spacingElement.getRenderer())
+					.setRenderSpacer(true);
+		}
 	}
 }
