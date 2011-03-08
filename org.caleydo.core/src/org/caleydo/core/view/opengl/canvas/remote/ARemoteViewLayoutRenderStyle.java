@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.remote;
 
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
@@ -34,7 +34,7 @@ public abstract class ARemoteViewLayoutRenderStyle
 	protected RemoteLevel spawnLevel;
 	protected RemoteLevel selectionLevel;
 
-	protected CameraProjectionMode eProjectionMode;
+	protected ECameraProjectionMode eProjectionMode;
 
 	protected float fScalingFactorFocusLevel;
 	protected float fScalingFactorStackLevel;
@@ -116,7 +116,7 @@ public abstract class ARemoteViewLayoutRenderStyle
 		return selectionLevel;
 	}
 
-	public CameraProjectionMode getProjectionMode() {
+	public ECameraProjectionMode getProjectionMode() {
 		return eProjectionMode;
 	}
 

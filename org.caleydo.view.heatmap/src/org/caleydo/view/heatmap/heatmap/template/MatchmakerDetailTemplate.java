@@ -8,7 +8,7 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.DetailToolBar;
 
 /**
- * Render Template for the detail view of the Matchmaker.
+ * Render LayoutTemplate for the detail view of the Matchmaker.
  * 
  * @author Alexander Lex
  * 
@@ -25,7 +25,7 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 	}
 
 	@Override
-	public void setParameters() {
+	public void setStaticLayouts() {
 		Column mainColumn = new Column();
 		setBaseElementLayout(mainColumn);
 		mainColumn.setRatioSizeX(1);

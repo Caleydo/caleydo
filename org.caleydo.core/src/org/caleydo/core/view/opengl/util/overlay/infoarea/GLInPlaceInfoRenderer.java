@@ -18,7 +18,7 @@ import org.caleydo.core.view.opengl.renderstyle.InfoAreaRenderStyle;
 import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
- * Info Area Renderer. Renders an info area. It needs only an id, a data type and a gl context, and renders
+ * Info Area LayoutRenderer. Renders an info area. It needs only an id, a data type and a gl context, and renders
  * the information.
  * 
  * @author Alexander Lex

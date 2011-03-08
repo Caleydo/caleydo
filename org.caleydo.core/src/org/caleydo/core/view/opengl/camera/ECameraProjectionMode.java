@@ -5,7 +5,7 @@ package org.caleydo.core.view.opengl.camera;
  * 
  * @author Alexander Lex
  */
-public enum CameraProjectionMode {
+public enum ECameraProjectionMode {
 	ORTHOGRAPHIC,
 	PERSPECTIVE
 };

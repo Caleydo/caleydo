@@ -10,46 +10,54 @@ import javax.media.opengl.GL2;
  * @author Alexander Lex
  */
 public class ViewFrustum {
-	private CameraProjectionMode eProjectionMode;
+	private ECameraProjectionMode projectionMode;
 
-	private float left;
-	private float right;
-	private float top;
-	private float bottom;
-	private float fNear;
-	private float fFar;
+	private float left = 0;
+	private float right = 0;
+	private float top = 0;
+	private float bottom = 0;
+	private float near = 0;
+	private float far = 0;
 
 	private boolean bConsiderAspectRatio = false;
 
 	/**
+	 * Constructor setting a default frustum with {@link ECameraProjectionMode#ORTHOGRAPHIC} and all other
+	 * values to 0
+	 */
+	public ViewFrustum() {
+		projectionMode = ECameraProjectionMode.ORTHOGRAPHIC;
+	}
+
+	/**
 	 * Constructor
 	 * 
-	 * @param eProjectionMode
-	 * @param fLeft
-	 * @param fRight
-	 * @param fBottom
-	 * @param fTop
-	 * @param fNear
-	 * @param fFar
+	 * @param projectionMode
+	 * @param left
+	 * @param right
+	 * @param bottom
+	 * @param top
+	 * @param near
+	 * @param far
 	 */
-	public ViewFrustum(CameraProjectionMode eProjectionMode, float fLeft, float fRight, float fBottom, float fTop,
-		float fNear, float fFar) {
-		this.eProjectionMode = eProjectionMode;
+	public ViewFrustum(ECameraProjectionMode eProjectionMode, float left, float right, float bottom,
+		float top, float near, float far) {
+		this.projectionMode = eProjectionMode;
 
-		this.left = fLeft;
-		this.right = fRight;
-		this.bottom = fBottom;
-		this.top = fTop;
-		this.fNear = fNear;
-		this.fFar = fFar;
+		this.left = left;
+		this.right = right;
+		this.bottom = bottom;
+		this.top = top;
+		this.near = near;
+		this.far = far;
 	}
 
-	public CameraProjectionMode getProjectionMode() {
-		return eProjectionMode;
+	public ECameraProjectionMode getProjectionMode() {
+		return projectionMode;
 	}
 
-	public void setProjectionMode(final CameraProjectionMode eProjectionMode) {
-		this.eProjectionMode = eProjectionMode;
+	public void setProjectionMode(final ECameraProjectionMode eProjectionMode) {
+		this.projectionMode = eProjectionMode;
 	}
 
 	public float getLeft() {
@@ -69,11 +77,11 @@ public class ViewFrustum {
 	}
 
 	public float getNear() {
-		return fNear;
+		return near;
 	}
 
 	public float getFar() {
-		return fFar;
+		return far;
 	}
 
 	public float getWidth() {
@@ -84,34 +92,28 @@ public class ViewFrustum {
 		return top - bottom;
 	}
 
-	public void setLeft(final float fLeft) {
-
-		this.left = fLeft;
+	public void setLeft(final float left) {
+		this.left = left;
 	}
 
-	public void setRight(final float fRight) {
-
-		this.right = fRight;
+	public void setRight(final float right) {
+		this.right = right;
 	}
 
-	public void setTop(final float fTop) {
-
-		this.top = fTop;
+	public void setTop(final float top) {
+		this.top = top;
 	}
 
-	public void setBottom(final float fBottom) {
-
-		this.bottom = fBottom;
+	public void setBottom(final float bottom) {
+		this.bottom = bottom;
 	}
 
 	public void setNear(final float fNear) {
-
-		this.fNear = fNear;
+		this.near = fNear;
 	}
 
 	public void setFar(final float fFar) {
-
-		this.fFar = fFar;
+		this.far = fFar;
 	}
 
 	/**
@@ -160,7 +162,7 @@ public class ViewFrustum {
 			// System.out.println(fLeft + "," +fRight + "," +fTop + "," +fBottom);
 		}
 
-		if (getProjectionMode().equals(CameraProjectionMode.ORTHOGRAPHIC)) {
+		if (getProjectionMode().equals(ECameraProjectionMode.ORTHOGRAPHIC)) {
 			gl.glOrtho(left, right, bottom, top, getNear(), getFar());
 		}
 		else {

@@ -5,6 +5,11 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL2;
 
+/**
+ * BaseClass for layouts which contain nested {@link ElementLayout}s.
+ * 
+ * @author Alexander Lex
+ */
 public abstract class LayoutContainer
 	extends ElementLayout
 	implements Iterable<ElementLayout> {
@@ -24,33 +29,46 @@ public abstract class LayoutContainer
 	protected boolean isBottomUp = true;
 	protected boolean isLeftToRight = true;
 
-	ArrayList<ElementLayout> elements;
+	protected ArrayList<ElementLayout> elements;
+
+	/**
+	 * The currently available bottom distance for the layout. Use if only this sub-part of the layout is
+	 * updated
+	 */
+	protected float bottom;
+	/**
+	 * The currently available top distance for the layout. Use if only this sub-part of the layout is updated
+	 */
+	protected float top;
+	/**
+	 * The currently available left distance for the layout. Use if only this sub-part of the layout is
+	 * updated
+	 */
+	protected float left;
+	/**
+	 * The currently available right distance for the layout. Use if only this sub-part of the layout is
+	 * updated
+	 */
+	protected float right;
 
 	public LayoutContainer() {
 		super();
-		elements = new ArrayList<ElementLayout>();
+		// elements = new ArrayList<ElementLayout>();
 	}
 
 	public LayoutContainer(String layoutName) {
 		super(layoutName);
+	}
+
+	{
 		elements = new ArrayList<ElementLayout>();
 	}
 
 	@Override
 	public void render(GL2 gl) {
-		gl.glTranslatef(getTransformX(), getTransformY(), 0);
 		super.render(gl);
-		gl.glTranslatef(-getTransformX(), -getTransformY(), 0);
 		for (ElementLayout element : elements) {
-
-			if (element instanceof LayoutContainer) {
-				element.render(gl);
-			}
-			else {
-				gl.glTranslatef(element.getTransformX(), element.getTransformY(), 0);
-				element.render(gl);
-				gl.glTranslatef(-element.getTransformX(), -element.getTransformY(), 0);
-			}
+			element.render(gl);
 		}
 	}
 
@@ -103,6 +121,61 @@ public abstract class LayoutContainer
 	}
 
 	@Override
+	public float getUnscalableElementHeight() {
+		if (!isYDynamic)
+			return super.getUnscalableElementHeight();
+		else {
+			float unscalableHeight = 0;
+			for (ElementLayout element : elements) {
+				unscalableHeight += element.getUnscalableElementHeight();
+			}
+			return unscalableHeight;
+		}
+	}
+
+	@Override
+	public float getUnscalableElementWidth() {
+		if (!isXDynamic)
+			return super.getUnscalableElementWidth();
+		else {
+			float unscalableWidth = 0;
+			for (ElementLayout element : elements) {
+				unscalableWidth += element.getUnscalableElementWidth();
+			}
+			return unscalableWidth;
+		}
+	}
+
+	@Override
+	public void updateSubLayout() {
+		calculateScales(totalWidth, totalHeight);
+		updateSpacings();
+		calculateTransforms(bottom, left, top, right);
+	}
+
+	@Override
+	public String toString() {
+		String name;
+		if (layoutName == null)
+			name = layoutName;
+		else
+			name = super.toString();
+
+		return ("Container " + name + " with " + elements.size() + " elements. height: " + sizeScaledY
+			+ ", widht: " + sizeScaledX);
+	}
+
+	public int size() {
+		return elements.size();
+	}
+
+	public void clear() {
+		elements.clear();
+	}
+
+	// --------------------- End of Public Interface ---------------------
+
+	@Override
 	void calculateScales(float totalWidth, float totalHeight) {
 		super.calculateScales(totalWidth, totalHeight);
 		for (ElementLayout element : elements) {
@@ -136,56 +209,20 @@ public abstract class LayoutContainer
 
 	}
 
-	@Override
-	public float getUnscalableElementHeight() {
-		if (!isYDynamic)
-			return super.getUnscalableElementHeight();
-		else {
-			float unscalableHeight = 0;
-			for (ElementLayout element : elements) {
-				unscalableHeight += element.getUnscalableElementHeight();
-			}
-			return unscalableHeight;
-		}
-	}
-
-	@Override
-	public float getUnscalableElementWidth() {
-		if (!isXDynamic)
-			return super.getUnscalableElementWidth();
-		else {
-			float unscalableWidth = 0;
-			for (ElementLayout element : elements) {
-				unscalableWidth += element.getUnscalableElementWidth();
-			}
-			return unscalableWidth;
-		}
-	}
-
 	protected abstract void calculateSubElementScales(float availableWidth, float availableHeight);
 
-	protected abstract void calculateTransforms(float bottom, float left, float top, float right);
-
-	@Override
-	public String toString() {
-		String name;
-		if (layoutName == null)
-			name = layoutName;
-		else
-			name = super.toString();
-
-		return ("Container " + name + " with " + elements.size() + " elements. height: " + sizeScaledY
-			+ ", widht: " + sizeScaledX);
+	protected void calculateTransforms(float bottom, float left, float top, float right) {
+		this.bottom = bottom;
+		this.left = left;
+		this.top = top;
+		this.right = right;
 	}
 
 	@Override
-	protected void updateSpacings(Template template) {
+	protected void updateSpacings() {
 		for (ElementLayout element : elements) {
-			element.updateSpacings(template);
+			element.updateSpacings();
 		}
 	}
 
-	public int size() {
-		return elements.size();
-	}
 }

@@ -12,7 +12,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.layout.Template;
+import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -29,9 +29,10 @@ public class HeatMapRenderer extends AContentRenderer {
 	}
 
 	@Override
-	public void updateSpacing(Template template, ElementLayout parameters) {
+	public void updateSpacing(ElementLayout parameters) {
 
-		AHeatMapTemplate heatMapTemplate = (AHeatMapTemplate) template;
+		AHeatMapTemplate heatMapTemplate = heatMap.getTemplate();
+			
 		int contentElements = heatMap.getContentVA().size();
 
 		ContentSelectionManager selectionManager = heatMap.getContentSelectionManager();

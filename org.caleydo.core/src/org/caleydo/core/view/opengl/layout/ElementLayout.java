@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.collection.set.SetRelations;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
 
@@ -37,9 +38,9 @@ import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
  */
 public class ElementLayout {
 
-	protected Renderer renderer;
-	protected ArrayList<Renderer> backgroundRenderers;
-	protected ArrayList<Renderer> foregroundRenderers;
+	protected LayoutRenderer renderer;
+	protected ArrayList<LayoutRenderer> backgroundRenderers;
+	protected ArrayList<LayoutRenderer> foregroundRenderers;
 
 	protected float transformX = 0;
 	protected float transformY = 0;
@@ -71,17 +72,39 @@ public class ElementLayout {
 
 	private MinSizeTextRenderer textRenderer;
 
+	/** The currently available width for the layout. Use if only this sub-part of the layout is updated */
+	protected float totalWidth = 0;
+	/** The currently available height for the layout. Use if only this sub-part of the layout is updated */
+	protected float totalHeight = 0;
+
+	protected boolean renderDebugFrame = false;
+
 	public ElementLayout() {
-		renderer = new Renderer();
+		renderer = new LayoutRenderer();
 		layoutName = "";
 	}
 
 	public ElementLayout(String layoutName) {
-		renderer = new Renderer();
+		renderer = new LayoutRenderer();
 		this.layoutName = layoutName;
 	}
 
-	public Renderer getRenderer() {
+	/**
+	 * Set a flag specifying whether a frame, showing the extend of this layout should be drawn. This is a
+	 * debug option.
+	 * 
+	 * @param renderDebugFrame
+	 */
+	public void setRenderDebugFrame(boolean renderDebugFrame) {
+		this.renderDebugFrame = renderDebugFrame;
+	}
+
+	/**
+	 * Get the renderer for this layout
+	 * 
+	 * @return
+	 */
+	public LayoutRenderer getRenderer() {
 		return renderer;
 	}
 
@@ -206,34 +229,53 @@ public class ElementLayout {
 		this.grabY = true;
 	}
 
+	/**
+	 * Set the color for the debug frame.
+	 * 
+	 * @param red
+	 * @param green
+	 * @param blue
+	 * @param alpha
+	 */
 	public void setFrameColor(float red, float green, float blue, float alpha) {
 		frameColor = new float[] { red, green, blue, alpha };
 	}
 
+	/**
+	 * Update the layout recursively for all elements below this layout. Requires a previous call to
+	 * {@link LayoutManager#updateLayout()}. The values calculated through the LayoutManager in this
+	 * step are used for this layout. The sub-layouts are calculated from scratch.
+	 */
+	public void updateSubLayout() {
+		calculateScales(totalWidth, totalHeight);
+		updateSpacings();
+	}
+
 	// ---------------------------- END OF PUBLIC INTERFACE -----------------------------------
 
-	@SuppressWarnings("unused")
 	void render(GL2 gl) {
-		if ((this instanceof LayoutContainer && TemplateRenderer.DEBUG_CONTAINERS)
-			|| (!(this instanceof LayoutContainer) && TemplateRenderer.DEBUG_ELEMENTS)) {
 
+		gl.glTranslatef(getTransformX(), getTransformY(), 0);
+
+		if (renderDebugFrame) {
 			float yPositionDebugText = 0;
 
 			float[] color;
 			if (frameColor == null)
-				color = new float[] {0,0,0, 0 };
+				color = new float[] { 0, 0, 0, 0 };
 			else {
 				color = frameColor;
 			}
+			gl.glColor4fv(color, 0);
 			if (this instanceof LayoutContainer) {
-				gl.glColor4fv(color, 0);
+				
 				gl.glLineWidth(6);
 				yPositionDebugText = getSizeScaledY() / 2;
 			}
 			else {
-				gl.glColor4fv(color, 0);
 				gl.glLineWidth(2);
 			}
+			
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(0, 0, 0.2f);
 			gl.glVertex3f(getSizeScaledX(), 0, 0.2f);
@@ -249,20 +291,25 @@ public class ElementLayout {
 			textRenderer.renderText(gl, layoutName, 0, yPositionDebugText, 0.4f);
 
 		}
+		
 		if (backgroundRenderers != null) {
-			for (Renderer backgroundRenderer : backgroundRenderers) {
+			for (LayoutRenderer backgroundRenderer : backgroundRenderers) {
 				backgroundRenderer.render(gl);
 			}
 		}
 		renderer.render(gl);
 		if (foregroundRenderers != null) {
-			for (Renderer foregroundRenderer : foregroundRenderers) {
+			for (LayoutRenderer foregroundRenderer : foregroundRenderers) {
 				foregroundRenderer.render(gl);
 			}
 		}
+		gl.glTranslatef(-getTransformX(), -getTransformY(), 0);
 	}
 
 	void calculateScales(float totalWidth, float totalHeight) {
+		this.totalWidth = totalWidth;
+		this.totalHeight = totalHeight;
+
 		if (pixelSizeX != Integer.MIN_VALUE)
 			sizeScaledX = pixelGLConverter.getGLWidthForPixelWidth(pixelSizeX);
 
@@ -297,40 +344,40 @@ public class ElementLayout {
 
 	}
 
-	protected void updateSpacings(Template template) {
-		// Renderer renderer = ((RenderableLayoutElement) layout).getRenderer();
+	protected void updateSpacings() {
+		// LayoutRenderer renderer = ((RenderableLayoutElement) layout).getRenderer();
 		if (renderer == null)
 			return;
 		renderer.setLimits(getSizeScaledX(), getSizeScaledY());
-		renderer.updateSpacing(template, this);
+		renderer.updateSpacing(this);
 		if (backgroundRenderers != null) {
-			for (Renderer renderer : backgroundRenderers) {
+			for (LayoutRenderer renderer : backgroundRenderers) {
 				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
 			}
 		}
 		if (foregroundRenderers != null)
 
 		{
-			for (Renderer renderer : foregroundRenderers) {
+			for (LayoutRenderer renderer : foregroundRenderers) {
 				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
 			}
 		}
 
 	}
 
-	public void setRenderer(Renderer renderer) {
+	public void setRenderer(LayoutRenderer renderer) {
 		this.renderer = renderer;
 	}
 
-	public void addBackgroundRenderer(Renderer renderer) {
+	public void addBackgroundRenderer(LayoutRenderer renderer) {
 		if (backgroundRenderers == null)
-			backgroundRenderers = new ArrayList<Renderer>(3);
+			backgroundRenderers = new ArrayList<LayoutRenderer>(3);
 		backgroundRenderers.add(renderer);
 	}
 
-	public void addForeGroundRenderer(Renderer renderer) {
+	public void addForeGroundRenderer(LayoutRenderer renderer) {
 		if (foregroundRenderers == null)
-			foregroundRenderers = new ArrayList<Renderer>(3);
+			foregroundRenderers = new ArrayList<LayoutRenderer>(3);
 		foregroundRenderers.add(renderer);
 	}
 

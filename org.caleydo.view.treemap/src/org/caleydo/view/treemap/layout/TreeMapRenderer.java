@@ -49,7 +49,7 @@ public class TreeMapRenderer {
 			CaleydoTextRenderer textRenderer) {
 		
 		if(textRenderer == null)
-			throw new IllegalArgumentException("Text Renderer may never be null");
+			throw new IllegalArgumentException("Text LayoutRenderer may never be null");
 		this.pickingManager = pickingManager;
 
 		this.viewFrustum = viewFrustum;

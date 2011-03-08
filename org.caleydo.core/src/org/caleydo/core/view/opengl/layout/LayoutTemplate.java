@@ -3,26 +3,23 @@ package org.caleydo.core.view.opengl.layout;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
-public class Template {
+/**
+ * Class managing the entry point into the recursively specified layouts. Also this class is intended to be
+ * sub-classed and the {@link #setStaticLayouts()} to be overridden, specifying static layouts if desired.
+ * 
+ * @author Alexander Lex
+ */
+public class LayoutTemplate {
 
-	// super(heatMap);
-	// initRenderers();
-
-	public static final float SPACING = 0.01f;
-	// protected ArrayList<ElementLayout> rendererParameters;
-
+	/** The entry point to the recursively defined layout */
 	protected ElementLayout baseElementLayout;
-
-	// protected TemplateRenderer templateRenderer;
-
-	private float yOverhead;
 
 	protected float fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
 	protected boolean isActive;
-	
+
 	protected PixelGLConverter pixelGLConverter;
-	
+
 	public void setPixelGLConverter(PixelGLConverter pixelGLConverter) {
 		this.pixelGLConverter = pixelGLConverter;
 	}
@@ -32,10 +29,16 @@ public class Template {
 	}
 
 	/**
+	 * <p>
+	 * Sets the static layouts that can be specified in a sub-class.
+	 * </p>
+	 * <p>
 	 * For static layouts (for example for a particular view) the layouting should be done in a sub-class of
 	 * ATemplate in this method. If the layout is generated dynamically, this typically should be empty.
+	 * </p>
 	 */
-	public void setParameters() {}
+	public void setStaticLayouts() {
+	}
 
 	/**
 	 * Calculate the size and positions of the layout elements in the template
@@ -43,10 +46,10 @@ public class Template {
 	 * @param totalWidth
 	 * @param totalHeight
 	 */
-	public void calculateScales(float bottom, float left, float totalWidth, float totalHeight) {
+	void calculateScales(float bottom, float left, float totalWidth, float totalHeight) {
 
-//		baseElementLayout.setTransformX(left);
-//		baseElementLayout.setTransformY(bottom);
+		// baseElementLayout.setTransformX(left);
+		// baseElementLayout.setTransformY(bottom);
 		baseElementLayout.calculateScales(totalWidth, totalHeight);
 		if (baseElementLayout instanceof LayoutContainer)
 			((LayoutContainer) baseElementLayout).calculateTransforms(bottom, left, totalHeight, totalWidth);
@@ -61,25 +64,10 @@ public class Template {
 		this.baseElementLayout = baseElementLayout;
 	}
 
-	/**
-	 * 
-	 */
-	public void recalculateSpacings() {
-		setParameters();
-	}
-
-	public float getYOverhead() {
-		return yOverhead;
-	}
-
 	public void setActive(boolean isActive) {
 		if (this.isActive != isActive) {
 			this.isActive = isActive;
-			recalculateSpacings();
+			setStaticLayouts();
 		}
-	}
-
-	public float getFontScalingFactor() {
-		return fontScaling;
 	}
 }

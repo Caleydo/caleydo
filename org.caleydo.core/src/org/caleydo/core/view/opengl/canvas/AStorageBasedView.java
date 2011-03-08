@@ -485,7 +485,7 @@ public abstract class AStorageBasedView
 		contentVAUpdateListener.setHandler(this);
 		contentVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
-		
+
 		replaceContentVAListener = new ReplaceContentVAListener();
 		replaceContentVAListener.setHandler(this);
 		replaceContentVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
@@ -495,7 +495,7 @@ public abstract class AStorageBasedView
 		storageVAUpdateListener.setHandler(this);
 		storageVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(StorageVAUpdateEvent.class, storageVAUpdateListener);
-		
+
 		replaceStorageVAListener = new ReplaceStorageVAListener();
 		replaceStorageVAListener.setHandler(this);
 		replaceStorageVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
@@ -514,9 +514,6 @@ public abstract class AStorageBasedView
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
-
-	
-
 
 	}
 
@@ -565,13 +562,8 @@ public abstract class AStorageBasedView
 
 	@Override
 	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
-		// String primaryVAType = useCase.getVATypeForIDCategory(idCategory);
-		// if (primaryVAType == null)
-		// return;
-
-		// ContentVAType suggestedVAType = ContentVAType.getVATypeForPrimaryVAType(primaryVAType);
-
-		if (this.contentVAType != vaType)
+		
+		if (set.getID() != setID || this.contentVAType != vaType)
 			return;
 
 		contentVA = set.getContentData(vaType).getContentVA();

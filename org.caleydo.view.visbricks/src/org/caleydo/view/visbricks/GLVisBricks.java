@@ -22,7 +22,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IDataDomainSetBasedView;
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -31,8 +31,8 @@ import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Row;
-import org.caleydo.core.view.opengl.layout.Template;
-import org.caleydo.core.view.opengl.layout.TemplateRenderer;
+import org.caleydo.core.view.opengl.layout.LayoutTemplate;
+import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.spline.IConnectionRenderer;
@@ -70,13 +70,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private ArrayList<DimensionGroup> leftBrickList;
 	private ArrayList<DimensionGroup> rightBrickList;
 
-	private TemplateRenderer centerLayoutRenderer;
-	private TemplateRenderer leftLayoutRenderer;
-	private TemplateRenderer rightLayoutRenderer;
+	private LayoutManager centerLayoutRenderer;
+	private LayoutManager leftLayoutRenderer;
+	private LayoutManager rightLayoutRenderer;
 
-	private Template centerLayout;
-	private Template leftLayout;
-	private Template rightLayout;
+	private LayoutTemplate centerLayout;
+	private LayoutTemplate leftLayout;
+	private LayoutTemplate rightLayout;
 
 	private float archWidth = 0;
 	private float archInnerWidth = 0;
@@ -140,13 +140,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			rowLayout.appendElement(group.getLayout());
 		}
 
-		centerLayout = new Template();
+		centerLayout = new LayoutTemplate();
 		centerLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		centerLayout.setBaseElementLayout(rowLayout);
 
 		ViewFrustum centerArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(),
 				0, centerLayoutWidth, 0, viewFrustum.getHeight(), 0, 1);
-		centerLayoutRenderer = new TemplateRenderer(centerArchFrustum);
+		centerLayoutRenderer = new LayoutManager(centerArchFrustum);
 		centerLayoutRenderer.setTemplate(centerLayout);
 		if (uninitializedDimensionGroups.size() == 0)
 			centerLayoutRenderer.updateLayout();
@@ -163,7 +163,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// for (int i = 0; i < dimensionGroupCount; i++) {
 		//
 		// ViewFrustum brickFrustum = new
-		// ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC,
+		// ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC,
 		// 0, 0, 0, 0, -4, 4);
 		//
 		// GLBrick leftBrick = (GLBrick)
@@ -179,7 +179,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// columnLayout.appendElement(brickLayout);
 		// }
 		//
-		// leftLayout = new Template();
+		// leftLayout = new LayoutTemplate();
 		// leftLayout.setPixelGLConverter(pixelGLConverter);
 		// leftLayout.setBaseElementLayout(columnLayout);
 		//
@@ -187,7 +187,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// ViewFrustum(viewFrustum.getProjectionMode(), 0,
 		// ARCH_STAND_WIDTH_PERCENT * viewFrustum.getWidth(), 0,
 		// viewFrustum.getHeight() * ARCH_BOTTOM_PERCENT, 0, 1);
-		// leftLayoutRenderer = new TemplateRenderer(leftArchFrustum);
+		// leftLayoutRenderer = new LayoutManager(leftArchFrustum);
 		// leftLayoutRenderer.setTemplate(leftLayout);
 		// leftLayoutRenderer.updateLayout();
 	}
@@ -202,7 +202,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// for (int i = 0; i < dimensionGroupCount; i++) {
 		//
 		// ViewFrustum brickFrustum = new
-		// ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC,
+		// ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC,
 		// 0, 0, 0, 0, -4, 4);
 		//
 		// GLBrick rightBrick = (GLBrick)
@@ -218,7 +218,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// columnLayout.appendElement(brickLayout);
 		// }
 		//
-		// rightLayout = new Template();
+		// rightLayout = new LayoutTemplate();
 		// rightLayout.setPixelGLConverter(pixelGLConverter);
 		// rightLayout.setBaseElementLayout(columnLayout);
 		//
@@ -226,7 +226,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// ViewFrustum(viewFrustum.getProjectionMode(), 0,
 		// ARCH_STAND_WIDTH_PERCENT * viewFrustum.getWidth(), 0,
 		// viewFrustum.getHeight() * ARCH_BOTTOM_PERCENT, 0, 1);
-		// rightLayoutRenderer = new TemplateRenderer(leftArchFrustum);
+		// rightLayoutRenderer = new LayoutManager(leftArchFrustum);
 		// rightLayoutRenderer.setTemplate(rightLayout);
 		// rightLayoutRenderer.updateLayout();
 	}
@@ -517,8 +517,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		}
 		initializeBricks(filteredMetaSets);
 
-		System.out.println("MetaSets update");
-
 	}
 
 	private void initializeBricks(ArrayList<ISet> metaSets) {
@@ -533,7 +531,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 					.createGLView(
 							DimensionGroup.class,
 							getParentGLCanvas(),
-							new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
+							new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
 									1, -1, 1));
 
 			dimensionGroup.setDataDomain(dataDomain);
@@ -567,12 +565,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	@Override
 	public String getShortInfo() {
 
-		return "Template Caleydo View";
+		return "LayoutTemplate Caleydo View";
 	}
 
 	@Override
 	public String getDetailedInfo() {
-		return "Template Caleydo View";
+		return "LayoutTemplate Caleydo View";
 
 	}
 

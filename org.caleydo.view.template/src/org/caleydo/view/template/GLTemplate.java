@@ -110,12 +110,12 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 	@Override
 	public String getShortInfo() {
 
-		return "Template Caleydo View";
+		return "LayoutTemplate Caleydo View";
 	}
 
 	@Override
 	public String getDetailedInfo() {
-		return "Template Caleydo View";
+		return "LayoutTemplate Caleydo View";
 
 	}
 

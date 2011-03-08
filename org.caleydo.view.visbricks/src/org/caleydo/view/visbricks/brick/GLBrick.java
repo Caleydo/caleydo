@@ -19,14 +19,14 @@ import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.view.IDataDomainSetBasedView;
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.TemplateRenderer;
-import org.caleydo.core.view.opengl.layout.ViewRenderer;
+import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.rcp.dialog.cluster.StartClusteringDialog;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -44,7 +44,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	public final static String VIEW_ID = "org.caleydo.view.brick";
 
-	private TemplateRenderer templateRenderer;
+	private LayoutManager templateRenderer;
 	private BrickLayoutTemplate brickLayout;
 
 	private ElementLayout wrappingLayout;
@@ -78,7 +78,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		baseDisplayListIndex = gl.glGenLists(1);
 
 		if (heatMap == null) {
-			templateRenderer = new TemplateRenderer(viewFrustum);
+			templateRenderer = new LayoutManager(viewFrustum);
 			brickLayout = new BrickLayoutTemplate(this);
 
 			brickLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
@@ -89,7 +89,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 					.createGLView(
 							GLHeatMap.class,
 							getParentGLCanvas(),
-							new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
+							new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
 									1, -1, 1));
 			heatMap.setRemoteRenderingGLView(this);
 			heatMap.setSet(set);
@@ -99,7 +99,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			heatMap.initRemote(gl, this, glMouseListener);
 			if (this.contentVA != null)
 				heatMap.setContentVA(contentVA);
-			brickLayout.setViewRenderer(new ViewRenderer(heatMap));
+			brickLayout.setViewRenderer(new ViewLayoutRenderer(heatMap));
 			templateRenderer.setTemplate(brickLayout);
 			templateRenderer.updateLayout();
 		}

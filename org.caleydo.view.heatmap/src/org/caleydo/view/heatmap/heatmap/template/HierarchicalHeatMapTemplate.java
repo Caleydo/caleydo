@@ -21,7 +21,7 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 	public float bottomSpacing = 0;
 
 	@Override
-	public void setParameters() {
+	public void setStaticLayouts() {
 		Column mainColumn = new Column("mainColumn");		
 		setBaseElementLayout(mainColumn);
 		mainColumn.setRatioSizeX(1);

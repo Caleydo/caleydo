@@ -7,7 +7,7 @@ import org.caleydo.core.command.ECommandType;
  * 
  * @author Marc Streit
  * @param <T>
- *            Template type holding the created object.
+ *            LayoutTemplate type holding the created object.
  */
 public abstract class ACmdCreational<T>
 	extends ACmdExternalAttributes {

@@ -22,7 +22,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.IDataDomainSetBasedView;
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -519,7 +519,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, (int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
+		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, (int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
 		GLTreeMap treemap = new GLTreeMap(this.getParentGLCanvas(), viewFrustum);
 		treemap.setDataDomain(dataDomain);

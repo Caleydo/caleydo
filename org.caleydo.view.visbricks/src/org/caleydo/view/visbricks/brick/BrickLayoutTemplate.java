@@ -2,27 +2,27 @@ package org.caleydo.view.visbricks.brick;
 
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.Renderer;
+import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
-import org.caleydo.core.view.opengl.layout.Template;
+import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 
 /**
- * Layout Template for a Brick
+ * Layout LayoutTemplate for a Brick
  * 
  * @author Alexander Lex
  * 
  */
-public class BrickLayoutTemplate extends Template {
+public class BrickLayoutTemplate extends LayoutTemplate {
 
 	private GLBrick brick;
-	private Renderer viewRenderer;
+	private LayoutRenderer viewRenderer;
 
 	public BrickLayoutTemplate(GLBrick brick) {
 		this.brick = brick;
 	}
 
 	@Override
-	public void setParameters() {
+	public void setStaticLayouts() {
 		Row baseRow = new Row("baseRow");
 
 		baseRow.setFrameColor(0, 0, 1, 0);
@@ -64,7 +64,7 @@ public class BrickLayoutTemplate extends Template {
 
 	}
 
-	void setViewRenderer(Renderer viewRenderer) {
+	void setViewRenderer(LayoutRenderer viewRenderer) {
 		this.viewRenderer = viewRenderer;
 	}
 

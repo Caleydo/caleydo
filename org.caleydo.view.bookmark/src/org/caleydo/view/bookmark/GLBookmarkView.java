@@ -31,7 +31,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.layout.Column;
-import org.caleydo.core.view.opengl.layout.TemplateRenderer;
+import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
@@ -77,7 +77,7 @@ public class GLBookmarkView extends AGLView implements
 	private boolean contentChanged = true;
 
 	/** The class responsible for rendering the template */
-	private TemplateRenderer templateRenderer;
+	private LayoutManager templateRenderer;
 
 	/** The render template */
 	private BookmarkTemplate bookmarkTemplate;
@@ -130,7 +130,7 @@ public class GLBookmarkView extends AGLView implements
 
 		pickingIDManager = new PickingIDManager();
 
-		templateRenderer = new TemplateRenderer(viewFrustum);
+		templateRenderer = new LayoutManager(viewFrustum);
 		bookmarkTemplate = new BookmarkTemplate();
 		templateRenderer.setTemplate(bookmarkTemplate);
 

@@ -1,6 +1,6 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
-import org.caleydo.core.view.opengl.layout.Template;
+import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.CaptionCageRenderer;
@@ -11,7 +11,7 @@ import org.caleydo.view.heatmap.heatmap.renderer.StorageCaptionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.StorageSelectionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.spacing.ContentSpacing;
 
-public abstract class AHeatMapTemplate extends Template {
+public abstract class AHeatMapTemplate extends LayoutTemplate {
 
 	protected HeatMapRenderer heatMapRenderer;
 	protected ContentCaptionRenderer contentCaptionRenderer;

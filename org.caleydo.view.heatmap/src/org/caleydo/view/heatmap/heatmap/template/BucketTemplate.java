@@ -7,7 +7,7 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 /**
- * Render Template for HeatMap in GLBucketView
+ * Render LayoutTemplate for HeatMap in GLBucketView
  * 
  * @author Alexander Lex
  * 
@@ -22,7 +22,7 @@ public class BucketTemplate extends AHeatMapTemplate {
 	}
 
 	@Override
-	public void setParameters() {
+	public void setStaticLayouts() {
 		Column mainColumn = new Column();
 		setBaseElementLayout(mainColumn);
 		mainColumn.setRatioSizeX(1);

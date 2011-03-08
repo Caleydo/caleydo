@@ -18,7 +18,7 @@ public class GeneSearchToolBarContent extends AToolBarContent {
 
 	public static final String IMAGE_PATH = "resources/icons/search.png";
 
-	public static final String VIEW_TITLE = "Template";
+	public static final String VIEW_TITLE = "LayoutTemplate";
 
 	@Override
 	public Class<?> getViewClass() {

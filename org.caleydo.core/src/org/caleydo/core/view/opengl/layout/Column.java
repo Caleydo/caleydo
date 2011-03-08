@@ -19,7 +19,8 @@ public class Column
 
 	@Override
 	protected void calculateTransforms(float bottom, float left, float top, float right) {
-
+		super.calculateTransforms(bottom, left, top, right);
+		
 		float x;
 		if (isLeftToRight)
 			x = left;
@@ -82,5 +83,7 @@ public class Column
 			sizeScaledX = actualWidth;
 		if (isYDynamic)
 			sizeScaledY = totalHeight;
+		
+		
 	}
 }

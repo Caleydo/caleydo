@@ -95,7 +95,7 @@ public abstract class AGLViewBrowser
 	 */
 	private int iSlerpFactor = 0;
 
-	/** Renderer for connection lines. A concrete instance has to be specified in sub-classes */
+	/** LayoutRenderer for connection lines. A concrete instance has to be specified in sub-classes */
 	protected AGLConnectionLineRenderer glConnectionLineRenderer;
 
 	private GLDragAndDrop dragAndDrop;

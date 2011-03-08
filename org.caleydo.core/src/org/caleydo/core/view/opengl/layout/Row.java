@@ -19,6 +19,7 @@ public class Row
 
 	@Override
 	protected void calculateTransforms(float bottom, float left, float top, float right) {
+		super.calculateTransforms(bottom, left, top, right);
 
 		float y;
 		if (isBottomUp)

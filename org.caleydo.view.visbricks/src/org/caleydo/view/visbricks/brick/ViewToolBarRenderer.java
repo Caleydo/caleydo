@@ -3,9 +3,9 @@ package org.caleydo.view.visbricks.brick;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.view.opengl.layout.Renderer;
+import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
-public class ViewToolBarRenderer extends Renderer {
+public class ViewToolBarRenderer extends LayoutRenderer {
 
 	GLBrick brick;
 

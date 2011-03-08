@@ -24,7 +24,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IDataDomainSetBasedView;
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -33,7 +33,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.ViewRenderer;
+import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
@@ -89,8 +89,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private void createBricks() {
 		// create basic layouts
 
-		brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4,
-				4);
+		brickFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0,
+				-4, 4);
 
 		centerBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
 				.createGLView(GLBrick.class, getParentGLCanvas(), brickFrustum);
@@ -98,7 +98,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		centerBrick.setDataDomain(dataDomain);
 		centerBrick.setSet(set);
 
-		ViewRenderer brickRenderer = new ViewRenderer(centerBrick);
+		ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(centerBrick);
 		centerLayout.setRenderer(brickRenderer);
 		centerLayout.setFrameColor(1, 0, 0, 1);
 
@@ -116,13 +116,13 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		groupList.updateGroupInfo();
 		for (Group group : groupList) {
 			GLBrick subBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
-					.createGLView(GLBrick.class, getParentGLCanvas(), brickFrustum);
+					.createGLView(GLBrick.class, getParentGLCanvas(), new ViewFrustum());
 
 			subBrick.setRemoteRenderingGLView(getRemoteRenderingGLCanvas());
 			subBrick.setDataDomain(dataDomain);
 			subBrick.setSet(set);
 			ElementLayout brickLayout = new ElementLayout("subbrick");
-			ViewRenderer brickRenderer = new ViewRenderer(subBrick);
+			ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(subBrick);
 			brickLayout.setRenderer(brickRenderer);
 			brickLayout.setFrameColor(1, 0, 0, 1);
 			// brickLayout.setRatioSizeY(1.0f / groupList.size());
@@ -132,8 +132,6 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			ContentVirtualArray subVA = new ContentVirtualArray("CONTENT", contentVA
 					.getVirtualArray()
 					.subList(group.getStartIndex(), group.getEndIndex()));
-			System.out.println("From: " + group.getStartIndex() + ", to : "
-					+ group.getEndIndex());
 
 			subBrick.setContentVA(subVA);
 
@@ -145,11 +143,14 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			} else {
 				topBricks.add(subBrick);
 				topCol.appendElement(brickLayout);
+
 			}
 			count++;
 
 		}
+
 		for (ElementLayout layout : topCol) {
+
 			layout.setRatioSizeY(1.0f / topCol.size());
 		}
 		for (ElementLayout layout : bottomCol) {
@@ -183,7 +184,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		bottomCol.setRatioSizeY(below);
 		topCol.setRatioSizeY(above);
 		centerLayout.setRatioSizeY(archThickness);
-		// brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
+		// brickFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
 		// totalArchHeight * archThickness, 0, totalArchHeight * archThickness,
 		// -4,
 		// 4);
@@ -237,9 +238,14 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
 
-		if (set.getID() == setID)
+		if (set.getID() == setID) {
+			topCol.clear();
+			bottomCol.clear();
 			createSubBricks();
-		((AGLView) getRemoteRenderingGLCanvas()).setDisplayListDirty();
+			topCol.updateSubLayout();
+			bottomCol.updateSubLayout();
+		}
+
 	}
 
 	@Override

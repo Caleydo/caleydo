@@ -44,7 +44,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.layout.TemplateRenderer;
+import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
@@ -80,7 +80,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	int numSentClearSelectionEvents = 0;
 
-	private TemplateRenderer templateRenderer;
+	private LayoutManager templateRenderer;
 	private AHeatMapTemplate template;
 	/** hide elements with the state {@link #SELECTION_HIDDEN} if this is true */
 	private boolean hideElements = true;
@@ -124,7 +124,7 @@ public class GLHeatMap extends AStorageBasedView {
 	public void init(GL2 gl) {
 		super.renderStyle = renderStyle;
 
-		templateRenderer = new TemplateRenderer(this.viewFrustum);
+		templateRenderer = new LayoutManager(this.viewFrustum);
 		if (template == null)
 			template = new DefaultTemplate(this);
 
@@ -192,7 +192,7 @@ public class GLHeatMap extends AStorageBasedView {
 			else
 				showCaptions = false;
 
-			template.recalculateSpacings();
+			template.setStaticLayouts();
 
 		}
 	}
@@ -291,8 +291,10 @@ public class GLHeatMap extends AStorageBasedView {
 				contentVAType = ISet.CONTENT;
 		}
 
-		contentVA = set.getContentData(contentVAType).getContentVA();
-		storageVA = set.getStorageData(storageVAType).getStorageVA();
+		if (contentVA == null)
+			contentVA = set.getContentData(contentVAType).getContentVA();
+		if (storageVA == null)
+			storageVA = set.getStorageData(storageVAType).getStorageVA();
 
 		contentSelectionManager.setVA(contentVA);
 		storageSelectionManager.setVA(storageVA);
@@ -447,7 +449,7 @@ public class GLHeatMap extends AStorageBasedView {
 					showCaptions = true;
 				}
 
-			template.recalculateSpacings();
+			template.setStaticLayouts();
 			setDisplayListDirty();
 			break;
 		}
@@ -857,7 +859,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	public void recalculateLayout() {
 		processEvents();
-		template.recalculateSpacings();
+		template.setStaticLayouts();
 	}
 
 	@Override
@@ -889,5 +891,9 @@ public class GLHeatMap extends AStorageBasedView {
 
 	public ISet getSet() {
 		return set;
+	}
+
+	public AHeatMapTemplate getTemplate() {
+		return template;
 	}
 }

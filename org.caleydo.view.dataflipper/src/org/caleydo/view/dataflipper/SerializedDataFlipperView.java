@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
@@ -78,6 +78,6 @@ public class SerializedDataFlipperView extends ASerializedView {
 	
 	@Override
 	public ViewFrustum getViewFrustum() {
-		return new ViewFrustum(CameraProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100);
+		return new ViewFrustum(ECameraProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100);
 	}
 }

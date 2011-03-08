@@ -18,7 +18,7 @@ public class TemplateToolBarContent extends AToolBarContent {
 
 	public static final String IMAGE_PATH = "resources/icons/icon.png";
 
-	public static final String VIEW_TITLE = "Template";
+	public static final String VIEW_TITLE = "LayoutTemplate";
 
 	@Override
 	public Class<?> getViewClass() {

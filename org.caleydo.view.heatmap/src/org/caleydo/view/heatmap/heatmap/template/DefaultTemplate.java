@@ -7,7 +7,7 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 /**
  * 
- * @author Template rendering a standalone heat map
+ * @author LayoutTemplate rendering a standalone heat map
  * 
  */
 public class DefaultTemplate extends AHeatMapTemplate {
@@ -17,7 +17,7 @@ public class DefaultTemplate extends AHeatMapTemplate {
 	}
 
 	@Override
-	public void setParameters() {
+	public void setStaticLayouts() {
 		Column mainColumn = new Column();
 		setBaseElementLayout(mainColumn);
 		mainColumn.setRatioSizeX(1);

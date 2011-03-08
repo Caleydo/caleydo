@@ -6,7 +6,7 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
@@ -33,7 +33,7 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 
 		createGLCanvas();
 		
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20);
+		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20);
 		view = new GLHierarchicalHeatMap(glCanvas, viewFrustum);
 		view.initFromSerializableRepresentation(serializedView);
 

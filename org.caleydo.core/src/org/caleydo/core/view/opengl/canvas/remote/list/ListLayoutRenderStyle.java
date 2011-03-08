@@ -4,7 +4,7 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
@@ -36,7 +36,7 @@ public class ListLayoutRenderStyle
 	}
 
 	private void initLayout() {
-		eProjectionMode = CameraProjectionMode.ORTHOGRAPHIC;
+		eProjectionMode = ECameraProjectionMode.ORTHOGRAPHIC;
 
 		fScalingFactorFocusLevel = 0.32f;
 		fScalingFactorStackLevel = 0.13f;

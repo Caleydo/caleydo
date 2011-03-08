@@ -29,7 +29,7 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -116,7 +116,7 @@ public class HeatMapWrapper {
 
 	private GLHeatMap createHeatMap(GL2 gl, GLMouseListener glMouseListener) {
 
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
+		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
 				50, 0, 50, -20, 20);
 
 		GLHeatMap heatMap = new GLHeatMap(parentView.getParentGLCanvas(), viewFrustum);
@@ -141,7 +141,7 @@ public class HeatMapWrapper {
 
 	private void createDendrogram(GL2 gl, GLMouseListener glMouseListener) {
 
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
+		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
 				50, 0, 50, -20, 20);
 
 		dendrogram = new GLDendrogram<ContentGroupList>(glParentView.getParentGLCanvas(),

@@ -57,7 +57,7 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
@@ -658,7 +658,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
+		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
 				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
 		glHeatMapView = new GLHeatMap(this.getParentGLCanvas(), viewFrustum);
@@ -686,7 +686,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
+		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
 				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
 		glContentDendrogramView = new GLDendrogram<ContentGroupList>(
