@@ -1,5 +1,6 @@
 package org.caleydo.view.visbricks.brick;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -55,10 +56,13 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	private GLHeatMap heatMap;
 	private ASetBasedDataDomain dataDomain;
 
+	private HashMap<EPickingType, HashMap<Integer, IPickingListener>> pickingListeners;
+
 	public GLBrick(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 		viewType = GLBrick.VIEW_ID;
 
+		pickingListeners = new HashMap<EPickingType, HashMap<Integer, IPickingListener>>();
 	}
 
 	@Override
@@ -81,7 +85,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			templateRenderer = new LayoutManager(viewFrustum);
 			brickLayout = new BrickLayoutTemplate(this);
 
-			brickLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+			brickLayout.setPixelGLConverter(parentGLCanvas
+					.getPixelGLConverter());
 
 			heatMap = (GLHeatMap) GeneralManager
 					.get()
@@ -89,8 +94,10 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 					.createGLView(
 							GLHeatMap.class,
 							getParentGLCanvas(),
-							new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
-									1, -1, 1));
+
+							new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC,
+									0, 1, 0, 1, -1, 1));
+
 			heatMap.setRemoteRenderingGLView(this);
 			heatMap.setSet(set);
 			heatMap.setDataDomain(dataDomain);
@@ -113,7 +120,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
+	public void initRemote(GL2 gl, AGLView glParentView,
+			GLMouseListener glMouseListener) {
 		init(gl);
 
 	}
@@ -153,7 +161,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
 
 		super.reshape(drawable, x, y, width, height);
 		if (templateRenderer != null)
@@ -164,35 +173,65 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int pickingID, Pick pick) {
 
-		switch (pickingType) {
-		case BRICK_CLUSTER:
-			switch (pickingMode) {
-			case CLICKED:
-				// set.cluster(clusterState);
-				System.out.println("cluster");
+		HashMap<Integer, IPickingListener> map = pickingListeners
+				.get(pickingType);
+		if (map == null)
+			return;
 
-				getParentGLCanvas().getParentComposite().getDisplay()
-						.asyncExec(new Runnable() {
-							@Override
-							public void run() {
-								StartClusteringDialog dialog = new StartClusteringDialog(
-										new Shell(), dataDomain);
-								dialog.open();
-								ClusterState clusterState = dialog.getClusterState();
+		IPickingListener pickingListener = map.get(pickingID);
 
-								StartClusteringEvent event = null;
-								// if (clusterState != null && set != null)
+		if (pickingListener == null)
+			return;
 
-								event = new StartClusteringEvent(clusterState, set
-										.getID());
-								event.setDataDomainType(dataDomain.getDataDomainType());
-								GeneralManager.get().getEventPublisher()
-										.triggerEvent(event);
-							}
-						});
-
-			}
+		switch (pickingMode) {
+		case CLICKED:
+			pickingListener.clicked(pick);
+			break;
+		case DOUBLE_CLICKED:
+			pickingListener.doubleClicked(pick);
+			break;
+		case RIGHT_CLICKED:
+			pickingListener.rightClicked(pick);
+			break;
+		case MOUSE_OVER:
+			pickingListener.mouseOver(pick);
+			break;
+		case DRAGGED:
+			pickingListener.dragged(pick);
+			break;
 		}
+
+		// switch (pickingType) {
+		// case BRICK_CLUSTER:
+		// switch (pickingMode) {
+		// case CLICKED:
+		// // set.cluster(clusterState);
+		// System.out.println("cluster");
+		//
+		// getParentGLCanvas().getParentComposite().getDisplay()
+		// .asyncExec(new Runnable() {
+		// @Override
+		// public void run() {
+		// StartClusteringDialog dialog = new StartClusteringDialog(
+		// new Shell(), dataDomain);
+		// dialog.open();
+		// ClusterState clusterState = dialog
+		// .getClusterState();
+		//
+		// StartClusteringEvent event = null;
+		// // if (clusterState != null && set != null)
+		//
+		// event = new StartClusteringEvent(clusterState,
+		// set.getID());
+		// event.setDataDomainType(dataDomain
+		// .getDataDomainType());
+		// GeneralManager.get().getEventPublisher()
+		// .triggerEvent(event);
+		// }
+		// });
+		//
+		// }
+		// }
 
 	}
 
@@ -228,7 +267,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public ASetBasedDataDomain getDataDomain() {
 		// TODO Auto-generated method stub
-		return null;
+		return dataDomain;
 	}
 
 	public void setSet(ISet set) {
@@ -250,5 +289,22 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		super.setFrustum(viewFrustum);
 		if (templateRenderer != null)
 			templateRenderer.updateLayout();
+	}
+
+	public void addPickingListener(IPickingListener pickingListener,
+			EPickingType pickingType, int externalID) {
+		HashMap<Integer, IPickingListener> map = pickingListeners
+				.get(pickingType);
+		if (map == null) {
+			map = new HashMap<Integer, IPickingListener>();
+			pickingListeners.put(pickingType, map);
+		}
+
+		map.put(externalID, pickingListener);
+
+	}
+
+	public ISet getSet() {
+		return set;
 	}
 }

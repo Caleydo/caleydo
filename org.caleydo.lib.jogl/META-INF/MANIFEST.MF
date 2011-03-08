@@ -39,9 +39,9 @@ Bundle-NativeCode:
  osname=win32;
  processor=x86,
  lib/jogl/windows/x86_64/gluegen-rt.dll;
- lib/jogl/windows/x86_64/jogl_cg.dll;
- lib/jogl/windows/x86_64/jogl_awt.dll;
- lib/jogl/windows/x86_64/jogl.dll;
+ lib/jogl/windows/x86_64/jogl_desktop.dll;
+ lib/jogl/windows/x86_64/nativewindow_win32.dll;
+ lib/jogl/windows/x86_64/nativewindow_awt.dll;
  osname=win32;
  processor=x86_64
 Export-Package: com.jogamp.common,
