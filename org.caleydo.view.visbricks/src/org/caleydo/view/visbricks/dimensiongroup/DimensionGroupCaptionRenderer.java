@@ -30,7 +30,7 @@ public class DimensionGroupCaptionRenderer extends LayoutRenderer {
 		gl.glEnd();
 		gl.glPopName();
 
-		dimensionGroup.getTextRenderer().renderText(gl, dimensionGroup.getShortInfo(), 0,
+		dimensionGroup.getTextRenderer().renderText(gl, dimensionGroup.getSet().getLabel(), 0,
 				0f, 0, 0.005f, 1);
 
 	}

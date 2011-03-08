@@ -409,10 +409,13 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		
 		for (IDraggable draggable : draggables) {
 			
-			System.out.println("Draggable: " +draggable);
+			System.out.println("Reference dim group: " +((DimensionGroup)this).getSet().getLabel());
+			System.out.println("Moved dim group: " +((DimensionGroup)draggable).getSet().getLabel());
+			
 			((GLVisBricks)glRemoteRenderingView).moveGroupDimension(this, (DimensionGroup)draggable, true);
 		}
-
+		
+		draggables.clear();
 	}
 
 	/**
@@ -431,5 +434,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public int getVisBricksViewID() {
 		return visBricksViewID;
+	}
+	
+	ISet getSet() {
+		return set;
 	}
 }
