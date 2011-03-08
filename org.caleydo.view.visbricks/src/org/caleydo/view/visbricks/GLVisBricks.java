@@ -155,6 +155,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			group.getLayout().setRatioSizeX(dimensionGroupLayoutRatio);
 			group.setArchBounds(archHeight, ARCH_BOTTOM_PERCENT, ARCH_TOP_PERCENT
 					- ARCH_BOTTOM_PERCENT, ARCH_BOTTOM_PERCENT);
+			group.setCollapsed(false);
 			rowLayout.appendElement(group.getLayout());
 
 			dimensionGroupSpacing = new ElementLayout("dimensionGroupSpacing");
@@ -195,11 +196,14 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		for (int dimensionGroupIndex = 0; dimensionGroupIndex < centerGroupStartIndex; dimensionGroupIndex++) {
 
 			DimensionGroup group = dimensionGroups.get(dimensionGroupIndex);
+			
 
 			group.getLayout().setRatioSizeY(dimensionGroupLayoutRatio);
 			group.setArchBounds(viewFrustum.getHeight(), ARCH_BOTTOM_PERCENT,
 					ARCH_TOP_PERCENT - ARCH_BOTTOM_PERCENT, ARCH_BOTTOM_PERCENT);
 			columnLayout.appendElement(group.getLayout());
+			
+			group.setCollapsed(true);
 
 			dimensionGroupSpacing = new ElementLayout("dimensionGroupSpacing");
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer();

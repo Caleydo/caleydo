@@ -33,6 +33,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
@@ -50,7 +51,7 @@ import org.caleydo.view.visbricks.brick.GLBrick;
  * 
  */
 public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
-		IContentVAUpdateHandler, IDraggable, IDropArea {
+		IContentVAUpdateHandler, ILayoutedElement, IDraggable, IDropArea {
 
 	public final static String VIEW_ID = "org.caleydo.view.dimensiongroup";
 
@@ -74,6 +75,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private ContentVAUpdateListener contentVAUpdateListener;
 	private ReplaceContentVAListener replaceContentVAListener;
 
+	private boolean isCollapsed = false;
+
 	private Queue<GLBrick> uninitializedBricks = new LinkedList<GLBrick>();
 
 	public DimensionGroup(GLCaleydoCanvas canvas, ViewFrustum viewFrustum) {
@@ -84,16 +87,36 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		bottomCol = new Column("dimensionGroupColumnBottom");
 		bottomCol.setFrameColor(1, 0, 1, 1);
 		bottomBricks = new ArrayList<GLBrick>(20);
-		groupColumn.appendElement(bottomCol);
 
 		centerLayout = new Column("centralBrick");
-		groupColumn.appendElement(centerLayout);
 
 		topCol = new Column("dimensionGroupColumnTop");
 		topCol.setFrameColor(1, 0, 1, 1);
 		topBricks = new ArrayList<GLBrick>(20);
-		groupColumn.appendElement(topCol);
 
+		initGroupColumn();
+	}
+
+	private void initGroupColumn() {
+		if (isCollapsed) {
+			groupColumn.clear();
+			groupColumn.appendElement(centerLayout);
+		} else {
+			groupColumn.clear();
+			groupColumn.appendElement(bottomCol);
+			groupColumn.appendElement(centerLayout);
+			groupColumn.appendElement(topCol);
+		}
+	}
+
+	/**
+	 * Set this dimension group collapsed, i.e. only it's overview and caption
+	 * is rendered and no other bricks
+	 */
+	public void setCollapsed(boolean isCollapsed) {
+		this.isCollapsed = isCollapsed;
+		initGroupColumn();
+//		groupColumn.updateSubLayout();
 	}
 
 	private void createBricks() {
@@ -113,16 +136,16 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		centerBrickLayout.setRenderer(brickRenderer);
 		centerBrickLayout.setFrameColor(1, 0, 0, 1);
 		centerLayout.appendElement(centerBrickLayout);
-		
+
 		captionLayout = new ElementLayout("caption");
 		captionLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		captionLayout.setPixelSizeY(100);
 		captionLayout.setFrameColor(0, 0, 1, 1);
-		
+
 		DimensionGroupCaptionRenderer captionRenderer = new DimensionGroupCaptionRenderer(
 				this);
 		captionLayout.setRenderer(captionRenderer);
-		
+
 		centerLayout.appendElement(captionLayout);
 
 		createSubBricks();
@@ -382,8 +405,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void handleDragging(GL2 gl, final float mouseCoordinateX, final float mouseCoordinateY) {
-		
+	public void handleDragging(GL2 gl, final float mouseCoordinateX,
+			final float mouseCoordinateY) {
+
 		GLHelperFunctions.drawPointAt(gl, mouseCoordinateX, mouseCoordinateY, 0);
 	}
 
@@ -397,7 +421,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public void handleDragOver(GL2 gl, java.util.Set<IDraggable> draggables,
 			float mouseCoordinateX, float mouseCoordinateY) {
 
-		System.out.println("handle drag over of drop area" +draggables);
+		System.out.println("handle drag over of drop area" + draggables);
 	}
 
 	@Override
@@ -405,37 +429,40 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			float mouseCoordinateX, float mouseCoordinateY,
 			DragAndDropController dragAndDropController) {
 
-		System.out.println("handle drop of drop area" +draggables);
-		
+		System.out.println("handle drop of drop area" + draggables);
+
 		for (IDraggable draggable : draggables) {
-			
-			System.out.println("Reference dim group: " +((DimensionGroup)this).getSet().getLabel());
-			System.out.println("Moved dim group: " +((DimensionGroup)draggable).getSet().getLabel());
-			
-			((GLVisBricks)glRemoteRenderingView).moveGroupDimension(this, (DimensionGroup)draggable, true);
+
+			System.out.println("Reference dim group: "
+					+ ((DimensionGroup) this).getSet().getLabel());
+			System.out.println("Moved dim group: "
+					+ ((DimensionGroup) draggable).getSet().getLabel());
+
+			((GLVisBricks) glRemoteRenderingView).moveGroupDimension(this,
+					(DimensionGroup) draggable, true);
 		}
-		
+
 		draggables.clear();
 	}
 
 	/**
-	 * Note: The ID of the vis bricks view is needed for pushing the picking names, so
-	 * that the GLVisBricks view can gets the events
+	 * Note: The ID of the vis bricks view is needed for pushing the picking
+	 * names, so that the GLVisBricks view can gets the events
 	 * 
 	 */
 	public void setVisBricksViewID(int visBricksViewID) {
 		this.visBricksViewID = visBricksViewID;
 	}
-	
+
 	/**
-	 * Note: The ID of the vis bricks view is needed for pushing the picking names, so
-	 * that the GLVisBricks view can gets the events
+	 * Note: The ID of the vis bricks view is needed for pushing the picking
+	 * names, so that the GLVisBricks view can gets the events
 	 * 
 	 */
 	public int getVisBricksViewID() {
 		return visBricksViewID;
 	}
-	
+
 	ISet getSet() {
 		return set;
 	}
