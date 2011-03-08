@@ -53,7 +53,7 @@ class ContentBookmarkContainer extends ABookmarkContainer<ContentSelectionManage
 				throw new IllegalStateException("ID type: " + idType + " unhandled");
 
 			ContentBookmark bookmark = new ContentBookmark(manager, this, idType,
-					convertedIDs.iterator().next(), manager.getTextRenderer());
+					convertedIDs.iterator().next(), manager.getMinSizeTextRenderer());
 			if (bookmarkItems.add(bookmark))
 				containerLayout.appendElement(bookmark.getLayout());
 			// selectionManager.add(davidID);

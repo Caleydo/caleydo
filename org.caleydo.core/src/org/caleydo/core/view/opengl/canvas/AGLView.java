@@ -196,6 +196,7 @@ public abstract class AGLView
 
 		GeneralManager.get().getViewGLCanvasManager().registerGLView(this);
 		parentGLCanvas = glCanvas;
+		textRenderer = glCanvas.getTextRenderer();
 
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
 			glMouseListener = parentGLCanvas.getGLMouseListener();
@@ -228,12 +229,11 @@ public abstract class AGLView
 	@Override
 	public void init(GLAutoDrawable drawable) {
 
-		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), true, true);
-
 		glMouseListener.addGLCanvas(this);
-
+		
 		((GLEventListener) parentGLCanvas).init(drawable);
-
+		textRenderer = parentGLCanvas.getTextRenderer();
+		
 		initLocal(drawable.getGL().getGL2());
 	}
 
@@ -852,17 +852,20 @@ public abstract class AGLView
 		tempTexture.disable();
 	}
 
-	public void renderText(GL2 gl, String text, float size, float x, float y, float z) {
-		textRenderer.setColor(0.3f, 0.3f, 0.3f, 1);
-		textRenderer.begin3DRendering();
-		textRenderer.draw3D(text, x, y, z, size);
-		textRenderer.end3DRendering();
-	}
-
 	@Override
 	public void dispose(GLAutoDrawable arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * Returns the text renderer valid for the gl context of this view.
+	 */
+	public CaleydoTextRenderer getTextRenderer() {
+		return textRenderer;
+	}
+
+	public PickingManager getPickingManager() {
+		return pickingManager;
+	}
 }

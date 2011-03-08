@@ -35,6 +35,11 @@ import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
+import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
+import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
+import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**
@@ -45,9 +50,11 @@ import org.caleydo.view.visbricks.brick.GLBrick;
  * 
  */
 public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
-		IContentVAUpdateHandler {
+		IContentVAUpdateHandler, IDraggable, IDropArea {
 
 	public final static String VIEW_ID = "org.caleydo.view.dimensiongroup";
+
+	private int visBricksViewID;
 
 	private Column groupColumn;
 
@@ -56,7 +63,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	private Column bottomCol;
 	private GLBrick centerBrick;
-	private ElementLayout centerLayout;
+	private Column centerLayout;
+	private ElementLayout captionLayout;
 	private Column topCol;
 	private ViewFrustum brickFrustum;
 	private ISet set;
@@ -74,13 +82,15 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		groupColumn = new Column("dimensionGroup");
 
 		bottomCol = new Column("dimensionGroupColumnBottom");
+		bottomCol.setFrameColor(1, 0, 1, 1);
 		bottomBricks = new ArrayList<GLBrick>(20);
 		groupColumn.appendElement(bottomCol);
 
-		centerLayout = new ElementLayout("centralBrick");
+		centerLayout = new Column("centralBrick");
 		groupColumn.appendElement(centerLayout);
 
 		topCol = new Column("dimensionGroupColumnTop");
+		topCol.setFrameColor(1, 0, 1, 1);
 		topBricks = new ArrayList<GLBrick>(20);
 		groupColumn.appendElement(topCol);
 
@@ -99,8 +109,21 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		centerBrick.setSet(set);
 
 		ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(centerBrick);
-		centerLayout.setRenderer(brickRenderer);
-		centerLayout.setFrameColor(1, 0, 0, 1);
+		ElementLayout centerBrickLayout = new ElementLayout();
+		centerBrickLayout.setRenderer(brickRenderer);
+		centerBrickLayout.setFrameColor(1, 0, 0, 1);
+		centerLayout.appendElement(centerBrickLayout);
+		
+		captionLayout = new ElementLayout("caption");
+		captionLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		captionLayout.setPixelSizeY(100);
+		captionLayout.setFrameColor(0, 0, 1, 1);
+		
+		DimensionGroupCaptionRenderer captionRenderer = new DimensionGroupCaptionRenderer(
+				this);
+		captionLayout.setRenderer(captionRenderer);
+		
+		centerLayout.appendElement(captionLayout);
 
 		createSubBricks();
 	}
@@ -135,7 +158,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 			subBrick.setContentVA(subVA);
 
-			float[] rep = group.getRepresentativeElement();
+			// float[] rep = group.getRepresentativeElement();
 
 			if (count < groupList.size() / 2) {
 				bottomBricks.add(subBrick);
@@ -262,7 +285,6 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	public void init(GL2 gl) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -313,8 +335,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	public String getShortInfo() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return "Dimension Group";
 	}
 
 	@Override
@@ -353,4 +375,61 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		this.set = set;
 	}
 
+	@Override
+	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void handleDragging(GL2 gl, final float mouseCoordinateX, final float mouseCoordinateY) {
+		
+		GLHelperFunctions.drawPointAt(gl, mouseCoordinateX, mouseCoordinateY, 0);
+	}
+
+	@Override
+	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
+
+		System.out.println("handle drop");
+	}
+
+	@Override
+	public void handleDragOver(GL2 gl, java.util.Set<IDraggable> draggables,
+			float mouseCoordinateX, float mouseCoordinateY) {
+
+		System.out.println("handle drag over of drop area" +draggables);
+	}
+
+	@Override
+	public void handleDrop(GL2 gl, java.util.Set<IDraggable> draggables,
+			float mouseCoordinateX, float mouseCoordinateY,
+			DragAndDropController dragAndDropController) {
+
+		System.out.println("handle drop of drop area" +draggables);
+		
+		for (IDraggable draggable : draggables) {
+			
+			System.out.println("Draggable: " +draggable);
+			((GLVisBricks)glRemoteRenderingView).moveGroupDimension(this, (DimensionGroup)draggable, true);
+		}
+
+	}
+
+	/**
+	 * Note: The ID of the vis bricks view is needed for pushing the picking names, so
+	 * that the GLVisBricks view can gets the events
+	 * 
+	 */
+	public void setVisBricksViewID(int visBricksViewID) {
+		this.visBricksViewID = visBricksViewID;
+	}
+	
+	/**
+	 * Note: The ID of the vis bricks view is needed for pushing the picking names, so
+	 * that the GLVisBricks view can gets the events
+	 * 
+	 */
+	public int getVisBricksViewID() {
+		return visBricksViewID;
+	}
 }

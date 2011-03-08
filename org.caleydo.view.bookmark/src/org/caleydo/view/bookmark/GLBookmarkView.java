@@ -376,7 +376,7 @@ public class GLBookmarkView extends AGLView implements
 		return contextMenu;
 	}
 
-	MinSizeTextRenderer getTextRenderer() {
+	MinSizeTextRenderer getMinSizeTextRenderer() {
 		return textRenderer;
 	}
 

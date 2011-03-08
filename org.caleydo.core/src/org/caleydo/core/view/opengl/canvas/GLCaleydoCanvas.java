@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.canvas;
 
+import java.awt.Font;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
@@ -13,6 +15,7 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.FPSCounter;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
@@ -46,6 +49,8 @@ public class GLCaleydoCanvas
 	private ViewFrustum viewFrustum;
 
 	PixelGLConverter pixelGLConverter = null;
+
+	protected CaleydoTextRenderer textRenderer;
 
 	/**
 	 * Constructor.
@@ -101,6 +106,8 @@ public class GLCaleydoCanvas
 
 		gl.glEnable(GL2.GL_COLOR_MATERIAL);
 		gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_DIFFUSE);
+		
+		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), true, true);
 	}
 
 	@Override
@@ -254,4 +261,11 @@ public class GLCaleydoCanvas
 		return pixelGLConverter;
 	}
 
+	
+	/**
+	 * Returns the text renderer valid for the gl context of this view.
+	 */
+	public CaleydoTextRenderer getTextRenderer() {
+		return textRenderer;
+	}
 }

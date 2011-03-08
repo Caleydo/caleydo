@@ -27,7 +27,6 @@ public class MinSizeTextRenderer {
 
 	public void renderText(GL2 gl, String text, float x, float y, float z) {
 		caleydoTextRenderer.renderText(gl, text, x, y, z, fontScaling, minSize);
-
 	}
 
 	public Rectangle2D getBounds(String text) {

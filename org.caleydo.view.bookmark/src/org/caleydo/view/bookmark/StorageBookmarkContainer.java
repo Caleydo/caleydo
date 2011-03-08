@@ -32,7 +32,7 @@ class StorageBookmarkContainer extends ABookmarkContainer<StorageSelectionManage
 				throw new IllegalStateException("Can not handle strings for experiments");
 
 			StorageBookmark bookmark = new StorageBookmark(manager, this, internalIDType,
-					id, manager.getTextRenderer());
+					id, manager.getMinSizeTextRenderer());
 			if (bookmarkItems.add(bookmark))
 				containerLayout.appendElement(bookmark.getLayout());
 			// selectionManager.add(id);

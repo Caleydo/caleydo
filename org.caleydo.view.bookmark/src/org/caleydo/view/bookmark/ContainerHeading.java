@@ -39,7 +39,7 @@ public class ContainerHeading extends LayoutRenderer implements ILayoutedElement
 		super.render(gl);
 		float height = (layoutElement.getSizeScaledY() - (float) manager
 				.getTextRenderer().getBounds("Bla").getHeight()) / 2;
-		RenderingHelpers.renderText(gl, manager.getTextRenderer(), caption,
+		RenderingHelpers.renderText(gl, manager.getMinSizeTextRenderer(), caption,
 				0 + BookmarkRenderStyle.SIDE_SPACING, height,
 				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 		// GLHelperFunctions.drawPointAt(gl, layoutElement.getSizeScaledX(),

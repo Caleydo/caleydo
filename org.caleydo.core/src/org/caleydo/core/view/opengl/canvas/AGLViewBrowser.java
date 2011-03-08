@@ -1914,4 +1914,11 @@ public abstract class AGLViewBrowser
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
+	
+	public void renderText(GL2 gl, String text, float size, float x, float y, float z) {
+		textRenderer.setColor(0.3f, 0.3f, 0.3f, 1);
+		textRenderer.begin3DRendering();
+		textRenderer.draw3D(text, x, y, z, size);
+		textRenderer.end3DRendering();
+	}
 }

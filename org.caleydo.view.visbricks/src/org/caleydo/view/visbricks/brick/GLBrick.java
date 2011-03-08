@@ -251,8 +251,4 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		if (templateRenderer != null)
 			templateRenderer.updateLayout();
 	}
-
-	PickingManager getPickingManager() {
-		return pickingManager;
-	}
 }

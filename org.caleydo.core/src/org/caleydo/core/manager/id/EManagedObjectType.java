@@ -50,6 +50,8 @@ public enum EManagedObjectType {
 
 	GRAPH(67),
 	GRAPH_ITEM(68),
+	
+	DIMENSION_GROUP(69),
 
 	/**
 	 * Type for ids used to connect different elements that have different ids.
