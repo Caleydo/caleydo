@@ -62,7 +62,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private final static float ARCH_STAND_WIDTH_PERCENT = 0.1f;
 
 	private final static int DIMENSION_GROUP_SPACING = 10;
-	private final static int MAX_CENTER_DIMENSION_GROUPS = 6;
+	private final static int MAX_CENTER_DIMENSION_GROUPS = 4;
 
 	private NewMetaSetsListener metaSetsListener;
 
@@ -140,7 +140,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		Row rowLayout = new Row("centerArchRow");
 		rowLayout.setFrameColor(1, 1, 0, 1);
-		rowLayout.setDebug(true);
+		rowLayout.setDebug(false);
 
 		ElementLayout dimensionGroupSpacing = new ElementLayout("dimensionGroupSpacing");
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer();
@@ -186,7 +186,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		Column columnLayout = new Column("leftArchColumn");
 		columnLayout.setFrameColor(1, 1, 0, 1);
-		columnLayout.setDebug(true);
+		columnLayout.setDebug(false);
 			
 		ElementLayout dimensionGroupSpacing = new ElementLayout("dimensionGroupSpacing");
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer();
@@ -201,7 +201,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 			group.getLayout().setRatioSizeX(1);
 			group.getLayout().setRatioSizeY(dimensionGroupLayoutRatio);
-			group.getLayout().setDebug(true);
+			group.getLayout().setDebug(false);
 			group.setArchBounds(viewFrustum.getHeight(), ARCH_BOTTOM_PERCENT,
 					ARCH_TOP_PERCENT - ARCH_BOTTOM_PERCENT, ARCH_BOTTOM_PERCENT);
 			columnLayout.appendElement(group.getLayout());
@@ -348,37 +348,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		gl.glTranslatef(rightArchStand, 0, 0);
 		rightLayoutManager.render(gl);
 		gl.glTranslatef(-rightArchStand, 0, 0);
-
-		// // Band border
-		// // gl.glLineWidth(1);
-		// gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
-		// // gl.glBegin(GL2.GL_LINE_STRIP);
-		// // for (int i = 0; i < outputPoints.size(); i++) {
-		// // gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(),
-		// 0f);
-		// // }
-		// // gl.glEnd();
-		//
-		// // inputPoints = new ArrayList<Vec3f>();
-		// // inputPoints.add(new Vec3f(leftBottomPos[0], leftBottomPos[1], 0));
-		// // inputPoints.add(new Vec3f(rightBottomPos[0], rightBottomPos[1],
-		// 0));
-		// //
-		// // curve = new NURBSCurve(inputPoints, 10);
-		// // ArrayList<Vec3f> points = curve.getCurvePoints();
-		//
-		// // Reverse point order
-		// // for (int i = points.size() - 1; i >= 0; i--) {
-		// // outputPoints.add(points.get(i));
-		// // }
-		//
-		// // Band border
-		// // gl.glLineWidth(1);
-		// // gl.glBegin(GL2.GL_LINE_STRIP);
-		// // for (int i = 0; i < points.size(); i++) {
-		// // gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0f);
-		// // }
-		// // gl.glEnd();
 
 		// call after all other rendering because it calls the onDrag methods
 		// which need alpha blending...
@@ -676,7 +645,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	public void moveGroupDimension(DimensionGroup referenceDimGroup,
-			DimensionGroup movedDimGroup, boolean beforeOrAfter) {
+			DimensionGroup movedDimGroup, boolean hightlightAfter) {
 
 		int movedDimGroupIndex = dimensionGroups.indexOf(movedDimGroup);
 		int refDimGroupIndex = dimensionGroups.indexOf(referenceDimGroup);
@@ -700,5 +669,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		initLayoutCenter();
 		initLayoutLeft();
 		initLayoutRight();
+	}
+	
+	public void highlightDimensionGroupSpacer(boolean hightlightAfter) {
+
 	}
 }
