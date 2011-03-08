@@ -1,16 +1,14 @@
 package org.caleydo.view.bookmark;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
+import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
 
 /**

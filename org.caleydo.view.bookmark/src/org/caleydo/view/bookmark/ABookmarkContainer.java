@@ -125,6 +125,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 		this.categoryName = category.getCategoryName();
 		this.pickingIDManager = manager.getPickingIDManager();
 		this.containerLayout = new Column();
+		
 		containerLayout.setYDynamic(true);
 		containerLayout.setXDynamic(false);
 		containerLayout.setRatioSizeX(1);
@@ -132,8 +133,6 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 		ContainerHeading heading = new ContainerHeading(manager);
 		heading.setCaption(category.getCategoryName());
 		containerLayout.appendElement(heading.getLayout());
-
-		// containerDimensions = new Dimensions();
 	}
 
 	public ElementLayout getLayout() {
@@ -166,35 +165,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 */
 	void render(GL2 gl) {
 
-		// float yOrigin = containerDimensions.getYOrigin();
-
-		// yOrigin -= BookmarkRenderStyle.CONTAINER_HEADING_SIZE;
-
-		// render heading
-
-		// RenderingHelpers.renderText(gl, manager.getTextRenderer(),
-		// categoryName,
-		// containerDimensions.getXOrigin() + BookmarkRenderStyle.SIDE_SPACING,
-		// yOrigin, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
-
-		// for (ABookmark item : bookmarkItems) {
-		//
-		//
-		// // item.getDimensions().setOrigins(BookmarkRenderStyle.SIDE_SPACING,
-		// yOrigin);
-		// // item.getDimensions()
-		// // .setWidth(
-		// // containerDimensions.getWidth() - 2
-		// // * BookmarkRenderStyle.SIDE_SPACING);
-		// // yOrigin -= item.getDimensions().getHeight();
-		//
-
-		// //
-		// containerDimensions.increaseHeight(item.getDimensions().getHeight());
-		// }
-
-		// GLHelperFunctions.drawPointAt(gl, 0, containerDimensions.getHeight(),
-		// 0);
+		
 	}
 
 	/**

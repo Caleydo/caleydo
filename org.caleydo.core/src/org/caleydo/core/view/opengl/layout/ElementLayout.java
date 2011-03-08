@@ -77,7 +77,7 @@ public class ElementLayout {
 	/** The currently available height for the layout. Use if only this sub-part of the layout is updated */
 	protected float totalHeight = 0;
 
-	protected boolean renderDebugFrame = false;
+	protected boolean debug = false;
 
 	public ElementLayout() {
 		renderer = new LayoutRenderer();
@@ -93,10 +93,10 @@ public class ElementLayout {
 	 * Set a flag specifying whether a frame, showing the extend of this layout should be drawn. This is a
 	 * debug option.
 	 * 
-	 * @param renderDebugFrame
+	 * @param debug
 	 */
-	public void setRenderDebugFrame(boolean renderDebugFrame) {
-		this.renderDebugFrame = renderDebugFrame;
+	public void setDebug(boolean debug) {
+		this.debug = debug;
 	}
 
 	/**
@@ -243,8 +243,8 @@ public class ElementLayout {
 
 	/**
 	 * Update the layout recursively for all elements below this layout. Requires a previous call to
-	 * {@link LayoutManager#updateLayout()}. The values calculated through the LayoutManager in this
-	 * step are used for this layout. The sub-layouts are calculated from scratch.
+	 * {@link LayoutManager#updateLayout()}. The values calculated through the LayoutManager in this step are
+	 * used for this layout. The sub-layouts are calculated from scratch.
 	 */
 	public void updateSubLayout() {
 		calculateScales(totalWidth, totalHeight);
@@ -257,25 +257,25 @@ public class ElementLayout {
 
 		gl.glTranslatef(getTransformX(), getTransformY(), 0);
 
-		if (renderDebugFrame) {
+		if (debug) {
 			float yPositionDebugText = 0;
 
 			float[] color;
 			if (frameColor == null)
-				color = new float[] { 0, 0, 0, 0 };
+				color = new float[] { 0, 0.5f, 0.5f, 1 };
 			else {
 				color = frameColor;
 			}
 			gl.glColor4fv(color, 0);
 			if (this instanceof LayoutContainer) {
-				
+
 				gl.glLineWidth(6);
 				yPositionDebugText = getSizeScaledY() / 2;
 			}
 			else {
 				gl.glLineWidth(2);
 			}
-			
+
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(0, 0, 0.2f);
 			gl.glVertex3f(getSizeScaledX(), 0, 0.2f);
@@ -291,7 +291,7 @@ public class ElementLayout {
 			textRenderer.renderText(gl, layoutName, 0, yPositionDebugText, 0.4f);
 
 		}
-		
+
 		if (backgroundRenderers != null) {
 			for (LayoutRenderer backgroundRenderer : backgroundRenderers) {
 				backgroundRenderer.render(gl);

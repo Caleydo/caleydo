@@ -2,7 +2,6 @@ package org.caleydo.view.bookmark;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
 
 class RenderingHelpers {
