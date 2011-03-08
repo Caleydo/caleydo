@@ -195,10 +195,9 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	@Override
 	public int indexOf(Integer id) {
-		// FIXME this needs to be re-enabled and debugged
-		 if (isHashIDToIndexDirty)
+		if (isHashIDToIndexDirty)
+			buildIDMap();
 
-		buildIDMap();
 		ArrayList<Integer> results = hashIDToIndex.get(id);
 		if (results != null) {
 			if (results.size() > 1)
@@ -210,42 +209,20 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	}
 
 	private void buildIDMap() {
-		isHashIDToIndexDirty = false;
-//		if (hashIDToIndex == null)
-			hashIDToIndex = new HashMap<Integer, ArrayList<Integer>>((int) (virtualArray.size() * 1.5));
-//		else
-//			hashIDToIndex.clear();
+		if (hashIDToIndex == null)
+			hashIDToIndex = new HashMap<Integer, ArrayList<Integer>>((int) (virtualArray.size() * 1.6));
+		else
+			hashIDToIndex.clear();
 
-		int indexCount = 0;
-		for (Integer id : virtualArray) {
+		for (int index = 0; index < virtualArray.size(); index++) {
+			Integer id = virtualArray.get(index);
 			ArrayList<Integer> indexList = hashIDToIndex.get(id);
-			Integer badIndex = null;
 			if (indexList == null)
-				indexList = new ArrayList<Integer>(3);
-			else {
-				for (Integer index : indexList) {
-					System.out.println("Found index list for id " + id + "other ids in va are: "
-						+ virtualArray.get(index));
-					badIndex = index;
-				}
-
-				System.out.println("new " + id);
-			}
-			indexList.add(indexCount++);
-			int badCount = 0;
-			if (badIndex != null) {
-				for (Integer tempId : virtualArray) {
-
-					if (tempId == virtualArray.get(badIndex))
-						System.out.println("Found " + tempId + " at index " + badCount + " bad index was: "
-							+ badIndex);
-
-					badCount++;
-				}
-			}
-
+				indexList = new ArrayList<Integer>(5);
+			indexList.add(index);
 			hashIDToIndex.put(id, indexList);
 		}
+		isHashIDToIndexDirty = false;
 	}
 
 	@Override
@@ -418,9 +395,9 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		return lastRemovedIndex;
 	}
 
-//	public void setLastRemovedIndex(int lastRemovedIndex) {
-//		this.lastRemovedIndex = lastRemovedIndex;
-//	}
+	// public void setLastRemovedIndex(int lastRemovedIndex) {
+	// this.lastRemovedIndex = lastRemovedIndex;
+	// }
 
 	public void setVaType(String vaType) {
 		this.vaType = vaType;
