@@ -423,16 +423,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public void handleDragOver(GL2 gl, java.util.Set<IDraggable> draggables,
 			float mouseCoordinateX, float mouseCoordinateY) {
 
-//		System.out.println("Transform X " +this.getLayout().getTransformX());
-//		System.out.println("Total " +(this.getLayout().getTransformX() + this.getLayout().getSizeScaledX() / 2));
-//		System.out.println("Current "+mouseCoordinateX);
-		
-		if ((this.getLayout().getTransformX() + this.getLayout().getSizeScaledX()) < mouseCoordinateX)
-			dropAfterDimensionGroup = true;
-		else
-			dropAfterDimensionGroup = false;
-		
-		((GLVisBricks) glRemoteRenderingView).highlightDimensionGroupSpacer(this, dropAfterDimensionGroup);
+		((GLVisBricks) glRemoteRenderingView).highlightDimensionGroupSpacer(this, mouseCoordinateX, mouseCoordinateY);
 	}
 
 	@Override

@@ -655,7 +655,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		int hightlightOffset = 0;
 		if (hightlightAfter)
 			hightlightOffset = +1;
-		
+
 		int movedDimGroupIndex = dimensionGroups.indexOf(movedDimGroup);
 		int refDimGroupIndex = dimensionGroups.indexOf(referenceDimGroup);
 
@@ -671,8 +671,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			centerGroupEndIndex--;
 
 		dimensionGroups.remove(movedDimGroup);
-		dimensionGroups
-				.add(dimensionGroups.indexOf(referenceDimGroup) + hightlightOffset, movedDimGroup);
+		dimensionGroups.add(
+				dimensionGroups.indexOf(referenceDimGroup) + hightlightOffset,
+				movedDimGroup);
 
 		initLayoutCenter();
 		initLayoutLeft();
@@ -680,23 +681,80 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	public void highlightDimensionGroupSpacer(DimensionGroup dragOverDimensionGroup,
-			boolean hightlightAfter) {
+			float mouseX, float mouseY) {
 
-		int hightlightOffset = -1;
-		if (hightlightAfter)
-			hightlightOffset = +1;
-		
+		// Clear previous spacer highlights
 		for (ElementLayout element : centerRowLayout.getElements()) {
 			if (element.getRenderer() instanceof DimensionGroupSpacingRenderer)
-				((DimensionGroupSpacingRenderer)element.getRenderer()).setRenderSpacer(false);
+				((DimensionGroupSpacingRenderer) element.getRenderer())
+						.setRenderSpacer(false);
+		}
+
+		for (ElementLayout element : leftColumnLayout.getElements()) {
+			if (element.getRenderer() instanceof DimensionGroupSpacingRenderer)
+				((DimensionGroupSpacingRenderer) element.getRenderer())
+						.setRenderSpacer(false);
 		}
 		
+		for (ElementLayout element : rightColumnLayout.getElements()) {
+			if (element.getRenderer() instanceof DimensionGroupSpacingRenderer)
+				((DimensionGroupSpacingRenderer) element.getRenderer())
+						.setRenderSpacer(false);
+		}
+
+		boolean highlightAfter = false;
+		;
+		int hightlightOffset = -1;
+
+		if ((dragOverDimensionGroup.getLayout().getTransformX() + dragOverDimensionGroup
+				.getLayout().getSizeScaledX()) < mouseX)
+			highlightAfter = true;
+		else
+			highlightAfter = false;
+
+		if (highlightAfter)
+			hightlightOffset = +1;
+
+		ElementLayout spacingElement;
+
 		if (centerRowLayout.getElements().contains(dragOverDimensionGroup.getLayout())) {
-			
-			ElementLayout spacingElement = centerRowLayout.getElements().get(
+
+			spacingElement = centerRowLayout.getElements().get(
 					centerRowLayout.getElements().indexOf(
-							dragOverDimensionGroup.getLayout()) + hightlightOffset);
+							dragOverDimensionGroup.getLayout())
+							+ hightlightOffset);
+
+			((DimensionGroupSpacingRenderer) spacingElement.getRenderer())
+					.setRenderSpacer(true);
+		}
+
+		if ((dragOverDimensionGroup.getLayout().getTransformY() + dragOverDimensionGroup
+				.getLayout().getSizeScaledY()) < mouseY)
+			highlightAfter = true;
+		else
+			highlightAfter = false;
+
+		if (highlightAfter)
+			hightlightOffset = +1;
+
+		if (leftColumnLayout.getElements().contains(dragOverDimensionGroup.getLayout())) {
+
+			spacingElement = leftColumnLayout.getElements().get(
+					leftColumnLayout.getElements().indexOf(
+							dragOverDimensionGroup.getLayout())
+							+ hightlightOffset);
+
+			((DimensionGroupSpacingRenderer) spacingElement.getRenderer())
+					.setRenderSpacer(true);
+		}
 		
+		if (rightColumnLayout.getElements().contains(dragOverDimensionGroup.getLayout())) {
+
+			spacingElement = rightColumnLayout.getElements().get(
+					rightColumnLayout.getElements().indexOf(
+							dragOverDimensionGroup.getLayout())
+							+ hightlightOffset);
+
 			((DimensionGroupSpacingRenderer) spacingElement.getRenderer())
 					.setRenderSpacer(true);
 		}
