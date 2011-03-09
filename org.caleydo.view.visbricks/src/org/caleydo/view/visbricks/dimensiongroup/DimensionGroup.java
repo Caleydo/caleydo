@@ -214,12 +214,15 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	/**
-	 * Set the spacing of the arch: the total height in absolute gl values, the
-	 * rest in ratio (i.e. the sum of the values has to be 1
+	 * <p>
+	 * Set the spacing of the arch in ratio (i.e. the sum of the values has to
+	 * be 1
+	 * </p>
+	 * <p>
+	 * This is only used if the group is not collapsed. If it is collapsed, the
+	 * values are irrelevant.
+	 * </p>
 	 * 
-	 * @param totalArchHeight
-	 *            the height of the arch from top to bottom, in abolute gl
-	 *            coordinates
 	 * @param below
 	 *            the ratio size of the space below the arch
 	 * @param archThickness
@@ -227,8 +230,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	 * @param above
 	 *            the ratio size of the space above the arch
 	 */
-	public void setArchBounds(float totalArchHeight, float below, float archThickness,
-			float above) {
+	public void setArchBounds(float below, float archThickness, float above) {
 
 		if (isCollapsed) {
 			centerLayout.setRatioSizeY(1);
@@ -238,22 +240,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			topCol.setRatioSizeY(above);
 			centerLayout.setRatioSizeY(archThickness);
 		}
-		// brickFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
-		// totalArchHeight * archThickness, 0, totalArchHeight * archThickness,
-		// -4,
-		// 4);
-		// centerBrick.setFrustum(brickFrustum);
-	}
 
-	// public void init(final GL2 gl, final AGLView glParentView,
-	// final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager)
-	// {
-	// centerBrick.initRemote(gl, glParentView, glMouseListener);
-	//
-	// for (GLBrick brick : bottomBricks) {
-	// brick.initRemote(gl, glParentView, glMouseListener);
-	// }
-	// }
+	}
 
 	@Override
 	public void registerEventListeners() {

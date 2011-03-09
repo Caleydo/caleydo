@@ -118,6 +118,7 @@ public class ElementLayout {
 	 * @param absoluteSizeX
 	 */
 	public void setAbsoluteSizeX(float absoluteSizeX) {
+		resetX();
 		this.absoluteSizeX = absoluteSizeX;
 	}
 
@@ -131,6 +132,7 @@ public class ElementLayout {
 	 * @param absoluteSizeX
 	 */
 	public void setAbsoluteSizeY(float absoluteSizeY) {
+		resetY();
 		this.absoluteSizeY = absoluteSizeY;
 	}
 
@@ -151,6 +153,7 @@ public class ElementLayout {
 	public void setRatioSizeX(float ratioSizeX) {
 		if (ratioSizeX > 1 || ratioSizeX < 0)
 			throw new IllegalArgumentException("Ratio sizes must be between 0 and 1");
+		resetX();
 		this.ratioSizeX = ratioSizeX;
 	}
 
@@ -166,6 +169,7 @@ public class ElementLayout {
 	public void setRatioSizeY(float ratioSizeY) {
 		if (ratioSizeY > 1 || ratioSizeY < 0)
 			throw new IllegalArgumentException("Ratio sizes must be between 0 and 1");
+		resetY();
 		this.ratioSizeY = ratioSizeY;
 	}
 
@@ -179,6 +183,7 @@ public class ElementLayout {
 	public void setPixelSizeX(int pixelSizeX) {
 		if (pixelGLConverter == null)
 			throw new IllegalStateException("Tried to set a pixel size, but no pixelGLConverter is set.");
+		resetX();
 		this.pixelSizeX = pixelSizeX;
 	}
 
@@ -192,6 +197,7 @@ public class ElementLayout {
 	public void setPixelSizeY(int pixelSizeY) {
 		if (pixelGLConverter == null)
 			throw new IllegalStateException("Tried to set a pixel size, but no pixelGLConverter is set.");
+		resetY();
 		this.pixelSizeY = pixelSizeY;
 	}
 
@@ -219,6 +225,7 @@ public class ElementLayout {
 	 * Instruct the element to grab the remaining space in the x direction.
 	 */
 	public void grabX() {
+		resetX();
 		this.grabX = true;
 	}
 
@@ -226,6 +233,7 @@ public class ElementLayout {
 	 * Instruct the element to grab the remaining space in the y direction
 	 */
 	public void grabY() {
+		resetY();
 		this.grabY = true;
 	}
 
@@ -252,6 +260,18 @@ public class ElementLayout {
 	}
 
 	// ---------------------------- END OF PUBLIC INTERFACE -----------------------------------
+
+	private void resetX() {
+		absoluteSizeX = Float.NaN;
+		ratioSizeX = 1;
+		pixelSizeX = Integer.MIN_VALUE;
+	}
+
+	private void resetY() {
+		absoluteSizeY = Float.NaN;
+		ratioSizeY = 1;
+		pixelSizeY = Integer.MIN_VALUE;
+	}
 
 	void render(GL2 gl) {
 
