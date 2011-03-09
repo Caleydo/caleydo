@@ -179,7 +179,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 			ContentVirtualArray subVA = new ContentVirtualArray("CONTENT", contentVA
 					.getVirtualArray()
-					.subList(group.getStartIndex(), group.getEndIndex()));
+					.subList(group.getStartIndex(), group.getEndIndex() + 1));
 
 			subBrick.setContentVA(subVA);
 
