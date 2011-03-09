@@ -78,7 +78,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private boolean isCollapsed = false;
 
 	private Queue<GLBrick> uninitializedBricks = new LinkedList<GLBrick>();
-	
+
 	private boolean dropAfterDimensionGroup;
 
 	public DimensionGroup(GLCaleydoCanvas canvas, ViewFrustum viewFrustum) {
@@ -141,7 +141,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		captionLayout = new ElementLayout("caption");
 		captionLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		captionLayout.setPixelSizeY(100);
+		captionLayout.setPixelSizeY(20);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		DimensionGroupCaptionRenderer captionRenderer = new DimensionGroupCaptionRenderer(
@@ -229,9 +229,15 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public void setArchBounds(float totalArchHeight, float below, float archThickness,
 			float above) {
-		bottomCol.setRatioSizeY(below);
-		topCol.setRatioSizeY(above);
-		centerLayout.setRatioSizeY(archThickness);
+
+		if (isCollapsed) {
+			centerLayout.setRatioSizeY(1);
+			centerLayout.setDebug(true);
+		} else {
+			bottomCol.setRatioSizeY(below);
+			topCol.setRatioSizeY(above);
+			centerLayout.setRatioSizeY(archThickness);
+		}
 		// brickFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
 		// totalArchHeight * archThickness, 0, totalArchHeight * archThickness,
 		// -4,
@@ -423,7 +429,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public void handleDragOver(GL2 gl, java.util.Set<IDraggable> draggables,
 			float mouseCoordinateX, float mouseCoordinateY) {
 
-		((GLVisBricks) glRemoteRenderingView).highlightDimensionGroupSpacer(this, mouseCoordinateX, mouseCoordinateY);
+		((GLVisBricks) glRemoteRenderingView).highlightDimensionGroupSpacer(this,
+				mouseCoordinateX, mouseCoordinateY);
 	}
 
 	@Override
