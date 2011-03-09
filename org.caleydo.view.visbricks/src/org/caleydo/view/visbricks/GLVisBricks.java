@@ -128,7 +128,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	@Override
 	public void init(GL2 gl) {
 		relationAnalyzer = new RelationAnalyzer(dataDomain);
-		relationAnalyzer.start();
+	
+		Thread thread = new Thread(relationAnalyzer, "Relation Analyzer");
+		thread.start();
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new VisBricksRenderStyle(viewFrustum);
 
