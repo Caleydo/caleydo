@@ -2,37 +2,31 @@ package org.caleydo.view.visbricks.brick;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.view.IDataDomainSetBasedView;
-import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.rcp.dialog.cluster.StartClusteringDialog;
-import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.template.BrickHeatMapTemplate;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Individual Brick for VisBricks
@@ -44,16 +38,24 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		IGLRemoteRenderingView {
 
 	public final static String VIEW_ID = "org.caleydo.view.brick";
+	
+	public static final int HEATMAP_VIEW = 0;
+	public static final int PARCOORDS_VIEW = 1;
 
 	private LayoutManager templateRenderer;
 	private BrickLayoutTemplate brickLayout;
 
+	private AGLView currentRemoteView;
+
 	private ElementLayout wrappingLayout;
+	
+	private Map<Integer, AGLView> views;
+	private Map<Integer, LayoutRenderer> viewLayoutRenderers;
 
 	private int baseDisplayListIndex;
 	private boolean isBaseDisplayListDirty = true;
 	private ISet set;
-	private GLHeatMap heatMap;
+	// private GLHeatMap heatMap;
 	private ASetBasedDataDomain dataDomain;
 
 	private HashMap<EPickingType, HashMap<Integer, IPickingListener>> pickingListeners;
@@ -61,6 +63,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	public GLBrick(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 		viewType = GLBrick.VIEW_ID;
+		
+		views = new HashMap<Integer, AGLView>();
+		viewLayoutRenderers = new HashMap<Integer, LayoutRenderer>();
 
 		pickingListeners = new HashMap<EPickingType, HashMap<Integer, IPickingListener>>();
 	}
@@ -80,36 +85,64 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public void init(GL2 gl) {
 		baseDisplayListIndex = gl.glGenLists(1);
+		
+		if(contentVA == null)
+			contentVA = dataDomain.getContentVA(Set.CONTENT);
 
-		if (heatMap == null) {
-			templateRenderer = new LayoutManager(viewFrustum);
-			brickLayout = new BrickLayoutTemplate(this);
+		templateRenderer = new LayoutManager(viewFrustum);
+		brickLayout = new BrickLayoutTemplate(this);
 
-			brickLayout.setPixelGLConverter(parentGLCanvas
-					.getPixelGLConverter());
+		brickLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 
-			heatMap = (GLHeatMap) GeneralManager
-					.get()
-					.getViewGLCanvasManager()
-					.createGLView(
-							GLHeatMap.class,
-							getParentGLCanvas(),
+		HeatMapCreator heatMapCreator = new HeatMapCreator();
+		AGLView heatMap = heatMapCreator.createRemoteView(this,
+				gl, glMouseListener);
+		LayoutRenderer heatMapLayoutRenderer = new ViewLayoutRenderer(heatMap);
+		views.put(HEATMAP_VIEW, heatMap);
+		viewLayoutRenderers.put(HEATMAP_VIEW, heatMapLayoutRenderer);
+		
+		ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
+		AGLView parCoords = parCoordsCreator.createRemoteView(this,
+				gl, glMouseListener);
+		LayoutRenderer parCoordsLayoutRenderer = new ViewLayoutRenderer(parCoords);
+		views.put(PARCOORDS_VIEW, parCoords);
+		viewLayoutRenderers.put(PARCOORDS_VIEW, parCoordsLayoutRenderer);
+		
+		currentRemoteView = parCoords;
+		
+		brickLayout.setViewRenderer(parCoordsLayoutRenderer);
+		templateRenderer.setTemplate(brickLayout);
+		templateRenderer.updateLayout();
 
-							new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC,
-									0, 1, 0, 1, -1, 1));
-
-			heatMap.setRemoteRenderingGLView(this);
-			heatMap.setSet(set);
-			heatMap.setDataDomain(dataDomain);
-			heatMap.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
-			heatMap.initialize();
-			heatMap.initRemote(gl, this, glMouseListener);
-			if (this.contentVA != null)
-				heatMap.setContentVA(contentVA);
-			brickLayout.setViewRenderer(new ViewLayoutRenderer(heatMap));
-			templateRenderer.setTemplate(brickLayout);
-			templateRenderer.updateLayout();
-		}
+		// if (heatMap == null) {
+		// templateRenderer = new LayoutManager(viewFrustum);
+		// brickLayout = new BrickLayoutTemplate(this);
+		//
+		// brickLayout.setPixelGLConverter(parentGLCanvas
+		// .getPixelGLConverter());
+		//
+		// heatMap = (GLHeatMap) GeneralManager
+		// .get()
+		// .getViewGLCanvasManager()
+		// .createGLView(
+		// GLHeatMap.class,
+		// getParentGLCanvas(),
+		//
+		// new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC,
+		// 0, 1, 0, 1, -1, 1));
+		//
+		// heatMap.setRemoteRenderingGLView(this);
+		// heatMap.setSet(set);
+		// heatMap.setDataDomain(dataDomain);
+		// heatMap.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
+		// heatMap.initialize();
+		// heatMap.initRemote(gl, this, glMouseListener);
+		// if (this.contentVA != null)
+		// heatMap.setContentVA(contentVA);
+		// brickLayout.setViewRenderer(new ViewLayoutRenderer(heatMap));
+		// templateRenderer.setTemplate(brickLayout);
+		// templateRenderer.updateLayout();
+		// }
 
 	}
 
@@ -128,7 +161,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	public void display(GL2 gl) {
-		heatMap.processEvents();
+		currentRemoteView.processEvents();
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		if (isBaseDisplayListDirty)
@@ -306,5 +339,16 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	public ISet getSet() {
 		return set;
+	}
+	
+	public void setRemoteView(int viewType) {
+		AGLView view = views.get(viewType);
+		if(view == null)
+			return;
+		
+		currentRemoteView = view;
+		LayoutRenderer viewRenderer = viewLayoutRenderers.get(viewType);
+		brickLayout.setViewRenderer(viewRenderer);
+		templateRenderer.updateLayout();
 	}
 }

@@ -13,17 +13,30 @@ import org.eclipse.swt.widgets.Shell;
 
 public class ViewToolBarRenderer extends LayoutRenderer {
 
+	private static final int CLUSTER_BUTTON_ID = 1;
+	private static final int HEATMAP_BUTTON_ID = 2;
+	private static final int PARCOORDS_BUTTON_ID = 3;
+
 	GLBrick brick;
+
+	private boolean pickingListenersRegistered;
 
 	public ViewToolBarRenderer(GLBrick brick) {
 		this.brick = brick;
+		pickingListenersRegistered = false;
 
 	}
 
 	@Override
 	public void render(GL2 gl) {
+
+		if (!pickingListenersRegistered)
+			registerPickingListeners();
+
+		float buttonSpacing = 0.05f * x;
+
 		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-				EPickingType.BRICK_CLUSTER, 1));
+				EPickingType.BRICK_TOOLBAR_BUTTONS, CLUSTER_BUTTON_ID));
 		gl.glColor3f(1f, 0, 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, 0);
@@ -33,31 +46,31 @@ public class ViewToolBarRenderer extends LayoutRenderer {
 		gl.glEnd();
 		gl.glPopName();
 
-		brick.addPickingListener(new IPickingListener() {
+		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+				EPickingType.BRICK_TOOLBAR_BUTTONS, HEATMAP_BUTTON_ID));
+		gl.glColor3f(0, 1, 0);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(y + buttonSpacing, 0, 0);
+		gl.glVertex3f(2 * y + buttonSpacing, 0, 0);
+		gl.glVertex3f(2 * y + buttonSpacing, y, 0);
+		gl.glVertex3f(y + buttonSpacing, y, 0);
+		gl.glEnd();
+		gl.glPopName();
 
-			@Override
-			public void rightClicked(Pick pick) {
-				// TODO Auto-generated method stub
+		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+				EPickingType.BRICK_TOOLBAR_BUTTONS, PARCOORDS_BUTTON_ID));
+		gl.glColor3f(0, 0, 1);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(2 * y + 2 * buttonSpacing, 0, 0);
+		gl.glVertex3f(3 * y + 2 * buttonSpacing, 0, 0);
+		gl.glVertex3f(3 * y + 2 * buttonSpacing, y, 0);
+		gl.glVertex3f(2 * y + 2 * buttonSpacing, y, 0);
+		gl.glEnd();
+		gl.glPopName();
+	}
 
-			}
-
-			@Override
-			public void mouseOver(Pick pick) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void dragged(Pick pick) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void doubleClicked(Pick pick) {
-				// TODO Auto-generated method stub
-
-			}
+	private void registerPickingListeners() {
+		brick.addPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -87,6 +100,24 @@ public class ViewToolBarRenderer extends LayoutRenderer {
 						});
 
 			}
-		}, EPickingType.BRICK_CLUSTER, 1);
+		}, EPickingType.BRICK_TOOLBAR_BUTTONS, CLUSTER_BUTTON_ID);
+
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				brick.setRemoteView(GLBrick.HEATMAP_VIEW);
+			}
+		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HEATMAP_BUTTON_ID);
+
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				brick.setRemoteView(GLBrick.PARCOORDS_VIEW);
+			}
+		}, EPickingType.BRICK_TOOLBAR_BUTTONS, PARCOORDS_BUTTON_ID);
+
+		pickingListenersRegistered = true;
 	}
 }

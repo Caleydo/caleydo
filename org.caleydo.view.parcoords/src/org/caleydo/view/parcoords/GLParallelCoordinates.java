@@ -49,6 +49,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
@@ -82,6 +83,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -332,7 +334,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	public void display(final GL2 gl) {
 
 		// displayVBO(gl);
+		
+//		setDetailLevel(DetailLevel.HIGH);
 
+		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		
 		gl.glEnable(GL2.GL_BLEND);
 
 		if (generalManager.getTrackDataProvider().isTrackModeActive())
@@ -628,9 +634,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		else
 			contentVAType = ISet.CONTENT;
 
-		contentVA = dataDomain.getContentVA(contentVAType);
+//		contentVA = dataDomain.getContentVA(contentVAType);
+		contentVA = set.getContentData(contentVAType).getContentVA();
 
-		storageVA = dataDomain.getStorageVA(storageVAType);
+		storageVA = set.getStorageData(storageVAType).getStorageVA();
+//		storageVA = dataDomain.getStorageVA(storageVAType);
 
 		initContentVariables();
 
@@ -2642,5 +2650,13 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	public ISet getSet() {
 		return set;
+	}
+	
+	public void setSet(ISet set) {
+		this.set = set;
+	}
+	
+	public void setContentVA(ContentVirtualArray contentVA) {
+		this.contentVA = contentVA;
 	}
 }

@@ -46,5 +46,9 @@ public class ViewLayoutRenderer
 		view.setFrustum(viewFrustum);
 		view.setDisplayListDirty();
 	}
+	
+	public void setView(AGLView view) {
+		this.view = view;
+	}
 
 }

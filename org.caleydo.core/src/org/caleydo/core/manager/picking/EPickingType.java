@@ -155,6 +155,6 @@ public enum EPickingType {
 	FILTERPIPE_START_ARROW,
 	
 	// bricks
-	BRICK_CLUSTER,
+	BRICK_TOOLBAR_BUTTONS,
 	DIMENSION_GROUP;
 }
