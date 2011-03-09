@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;
+import org.caleydo.core.manager.event.AEventHandler;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
@@ -15,6 +16,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 @XmlType
 @XmlRootElement
 public abstract class ADataDomain
+	extends AEventHandler
 	implements IDataDomain {
 
 	protected String contentLabelSingular = "<not specified>";

@@ -33,4 +33,16 @@ public class TissueDataDomain extends ADataDomain {
 	protected void initIDMappings() {
 		// nothing to do ATM
 	}
+
+	@Override
+	public void registerEventListeners() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		// TODO Auto-generated method stub
+		
+	}
 }

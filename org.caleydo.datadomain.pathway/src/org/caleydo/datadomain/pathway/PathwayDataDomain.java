@@ -54,4 +54,14 @@ public class PathwayDataDomain extends ADataDomain {
 	public IDType getDavidIDType() {
 		return IDType.getIDType("DAVID");
 	}
+
+	@Override
+	public void registerEventListeners() {
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		// TODO Auto-generated method stub		
+	}
 }

@@ -392,8 +392,8 @@ public class Set
 		StorageData storageData = hashStorageData.get(vaType);
 		if (storageData == null)
 			storageData = defaultStorageData.clone();
-		else
-			storageData.reset();
+//		else
+//			storageData.reset();
 		storageData.setStorageVA(virtualArray);
 		hashStorageData.put(vaType, storageData);
 	}

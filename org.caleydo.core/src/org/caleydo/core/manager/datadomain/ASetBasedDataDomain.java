@@ -24,10 +24,7 @@ import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAEvent;
@@ -86,7 +83,7 @@ public abstract class ASetBasedDataDomain
 	protected StorageSelectionManager storageSelectionManager;
 
 	/** central {@link EventPublisher} to receive and send events */
-	protected EventPublisher eventPublisher;
+	protected EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
 	protected ContentFilterManager contentFilterManager;
 	protected StorageFilterManager storageFilterManager;
@@ -105,10 +102,7 @@ public abstract class ASetBasedDataDomain
 	}
 
 	private void init() {
-
-		eventPublisher = GeneralManager.get().getEventPublisher();
-		registerEventListeners();
-
+		
 		assignIDCategories();
 		if (contentIDCategory == null || storageIDCategory == null) {
 			throw new IllegalStateException("A ID category in " + toString()
@@ -391,7 +385,9 @@ public abstract class ASetBasedDataDomain
 		// }
 		// });
 		// }
-		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, dataDomainType, vaType));
+		ReplaceStorageVAEvent event = new ReplaceStorageVAEvent(set, dataDomainType, vaType);
+		event.setSender(this);
+		eventPublisher.triggerEvent(event);
 
 	}
 
@@ -532,14 +528,6 @@ public abstract class ASetBasedDataDomain
 			eventPublisher.removeListener(storageVAUpdateListener);
 			storageVAUpdateListener = null;
 		}
-	}
-
-	@Override
-	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
-
-		// FIXME: concurrency issues?
-		listener.handleEvent(event);
-
 	}
 
 	/**

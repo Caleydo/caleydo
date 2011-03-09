@@ -11,9 +11,11 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.NewMetaSetsEvent;
@@ -101,6 +103,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	private boolean dropDimensionGroupAfter = true;
 
+	RelationAnalyzer relationAnalyzer;
+
 	/**
 	 * Constructor.
 	 * 
@@ -118,10 +122,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		connectionRenderer = new ConnectionBandRenderer();
 
 		dragAndDropController = new DragAndDropController(this);
+
 	}
 
 	@Override
 	public void init(GL2 gl) {
+		relationAnalyzer = new RelationAnalyzer(dataDomain);
+		relationAnalyzer.start();
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new VisBricksRenderStyle(viewFrustum);
 
@@ -583,8 +590,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	public void metaSetsUpdated() {
 
-		ArrayList<ISet> allMetaSets = dataDomain.getSet().getStorageData(storageVAType)
-				.getStorageTree().getRoot().getAllMetaSetsFromSubTree();
+		ClusterTree storageTree = dataDomain.getSet().getStorageData(storageVAType)
+		.getStorageTree();
+		if(storageTree == null)
+			return;
+		
+		ArrayList<ISet> allMetaSets = storageTree.getRoot().getAllMetaSetsFromSubTree();
 
 		ArrayList<ISet> filteredMetaSets = new ArrayList<ISet>(allMetaSets.size() / 2);
 
@@ -694,10 +705,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				&& movedDimGroupIndex < rightGroupStartIndex) {
 			rightGroupStartIndex--;
 		}
-		
-//		if (refDimGroupIndex < centerGroupStartIndex || refDimGroupIndex >= rightGroupStartIndex)
-//			hightlightOffset *= -1;			
-		
+
+		// if (refDimGroupIndex < centerGroupStartIndex || refDimGroupIndex >=
+		// rightGroupStartIndex)
+		// hightlightOffset *= -1;
+
 		dimensionGroups.remove(movedDimGroup);
 		dimensionGroups.add(
 				dimensionGroups.indexOf(referenceDimGroup) + hightlightOffset,

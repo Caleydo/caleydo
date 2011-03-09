@@ -108,6 +108,8 @@ public class ProjectLoader {
 
 			for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
 
+				Thread thread = new Thread(dataDomain, dataDomain.getDataDomainType());
+				thread.start();
 				if (dataDomain instanceof ASetBasedDataDomain) {
 
 					String setFileName = dirName + ProjectSaver.SET_DATA_FILE_NAME;

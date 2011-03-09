@@ -1,6 +1,7 @@
 package org.caleydo.core.manager.event;
 
 import org.caleydo.core.view.AView;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 
 /**
  * Interface for all instances that have listeners. Used for thread-safe event queuing.
@@ -27,9 +28,10 @@ public interface IListenerOwner {
 	 * should be called to be registered to the listeners defined by other classes in the hierarchy.
 	 * </p>
 	 * <p>
-	 * This method is called by the Constructor of {@link AView}, therefore there is no need to call it
-	 * yourself.
+	 * In GL Views this is calles in  {@link AGLView#initialize()}, therefore there is no need to call it
+	 * yourself. You must call the initialize of the View though.
 	 * </p>
+	 * <p>If part of {@link AEventHandler}, it is called on thread creation</p>
 	 */
 	public void registerEventListeners();
 

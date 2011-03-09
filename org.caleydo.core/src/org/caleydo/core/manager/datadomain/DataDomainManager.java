@@ -57,7 +57,9 @@ public class DataDomainManager {
 		IConfigurationElement[] ce = ext.getConfigurationElements();
 
 		try {
-			IDataDomain dataDomain = (IDataDomain) ce[0].createExecutableExtension("class");
+			ADataDomain dataDomain = (ADataDomain) ce[0].createExecutableExtension("class");
+			Thread thread = new Thread(dataDomain, dataDomainType);
+			thread.start();
 			return dataDomain;
 		}
 		catch (Exception ex) {
