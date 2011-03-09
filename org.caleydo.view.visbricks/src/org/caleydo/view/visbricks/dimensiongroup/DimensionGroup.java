@@ -36,7 +36,6 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
@@ -78,8 +77,6 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private boolean isCollapsed = false;
 
 	private Queue<GLBrick> uninitializedBricks = new LinkedList<GLBrick>();
-
-	private boolean dropAfterDimensionGroup;
 
 	public DimensionGroup(GLCaleydoCanvas canvas, ViewFrustum viewFrustum) {
 		super(canvas, viewFrustum, true);
@@ -404,7 +401,14 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public void handleDragging(GL2 gl, final float mouseCoordinateX,
 			final float mouseCoordinateY) {
 
-		GLHelperFunctions.drawPointAt(gl, mouseCoordinateX, mouseCoordinateY, 0);
+//		GLHelperFunctions.drawPointAt(gl, mouseCoordinateX, mouseCoordinateY, 0);
+		gl.glColor4f(0,0,0, 0.5f);
+		gl.glBegin(GL2.GL_POLYGON);
+		gl.glVertex2f(mouseCoordinateX, mouseCoordinateY);
+		gl.glVertex2f(mouseCoordinateX+1, mouseCoordinateY);
+		gl.glVertex2f(mouseCoordinateX+1, mouseCoordinateY+1);
+		gl.glVertex2f(mouseCoordinateX, mouseCoordinateY+1);
+		gl.glEnd();
 	}
 
 	@Override
@@ -428,8 +432,11 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		for (IDraggable draggable : draggables) {
 
+			if (draggable == this)
+				break; 
+			
 			((GLVisBricks) glRemoteRenderingView).moveGroupDimension(this,
-					(DimensionGroup) draggable, dropAfterDimensionGroup);
+					(DimensionGroup) draggable);
 		}
 
 		draggables.clear();
