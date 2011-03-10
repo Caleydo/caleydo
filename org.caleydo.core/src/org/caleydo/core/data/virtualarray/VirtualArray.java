@@ -325,7 +325,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		int iOffset = 0;
 
 		for (int i = 0; i < iGroupIdx; i++) {
-			iOffset += groupList.get(i).getNrElements();
+			iOffset += groupList.get(i).getSize();
 		}
 
 		for (int i = iOffset; i < iNrElements; i++) {
@@ -334,7 +334,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 			iCounter++;
 
-			if (groupList.get(iGroupIdx).getNrElements() == iCounter)
+			if (groupList.get(iGroupIdx).getSize() == iCounter)
 				break;
 		}
 
@@ -430,7 +430,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * the clusters assignments in {@link GLHierarchicalHeatMap}.
 	 */
 	protected GroupList<GroupType, ConcreteType, VADelta> buildNewGroupList(
-		GroupList<GroupType, ConcreteType, VADelta> groupList, ArrayList<ClusterNode> iAlClusterNodes) {
+		GroupList<GroupType, ConcreteType, VADelta> groupList, ArrayList<ClusterNode> clusterNodes) {
 
 		// if (iAlClusterNodes.size() < 1) {
 		//
@@ -461,15 +461,15 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		// currentVA = storageVA;
 		// }
 
-		for (ClusterNode iter : iAlClusterNodes) {
+		for (ClusterNode node : clusterNodes) {
 			// Group temp = new Group(iter.getNrElements(), false,
 			// currentVA.get(iExample),
 			// iter.getRepresentativeElement(), SelectionType.NORMAL, iter);
 			Group temp =
-				new Group(iter.getNrLeaves(), false, this.indexOf(iExample), SelectionType.NORMAL, iter);
+				new Group(node.getNrLeaves(), this.indexOf(iExample),  node);
 			groupList.append(temp);
 			cnt++;
-			iExample += iter.getNrLeaves();
+			iExample += node.getNrLeaves();
 		}
 		return groupList;
 		// triggerGroupListEvent();

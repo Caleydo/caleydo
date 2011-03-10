@@ -178,32 +178,20 @@ public abstract class LayoutContainer
 	@Override
 	void calculateScales(float totalWidth, float totalHeight) {
 		super.calculateScales(totalWidth, totalHeight);
-		for (ElementLayout element : elements) {
-			totalHeight -= element.getUnscalableElementHeight();
-			totalWidth -= element.getUnscalableElementWidth();
-		}
-
-		float availableWidth, availableHeight;
+	
+		float availableWidth = getSizeScaledX();
+		float availableHeight = getSizeScaledY();
 
 		if (isXDynamic)
 			availableWidth = totalWidth;
 
-		else if (pixelSizeX != Integer.MIN_VALUE)
-			availableWidth = pixelGLConverter.getGLWidthForPixelWidth(pixelSizeX);
-		else if (!Float.isNaN(absoluteSizeX))
-			availableWidth = absoluteSizeX;
-		else
-			availableWidth = totalWidth * ratioSizeX;
-
 		if (isYDynamic)
 			availableHeight = totalHeight;
-
-		else if (pixelSizeY != Integer.MIN_VALUE)
-			availableHeight = pixelGLConverter.getGLHeightForPixelHeight(pixelSizeY);
-		else if (!Float.isNaN(absoluteSizeY))
-			availableHeight = absoluteSizeY;
-		else
-			availableHeight = totalHeight * ratioSizeY;
+		
+		for (ElementLayout element : elements) {
+			availableHeight -= element.getUnscalableElementHeight();
+			availableWidth -= element.getUnscalableElementWidth();
+		}
 
 		calculateSubElementScales(availableWidth, availableHeight);
 

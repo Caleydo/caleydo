@@ -186,7 +186,7 @@ public class HeatMapOverview {
 		int groupIndex = 0;
 		selectedGroups.clear();
 		for (Group group : contentGroupList) {
-			groupSampleEndIndex = groupSampleStartIndex + group.getNrElements() - 1;
+			groupSampleEndIndex = groupSampleStartIndex + group.getSize() - 1;
 			if (groupSampleStartIndex >= lowerBoundIndex
 					&& groupSampleEndIndex <= upperBoundIndex) {
 				group.setSelectionType(SelectionType.SELECTION);
@@ -195,7 +195,7 @@ public class HeatMapOverview {
 				group.setSelectionType(SelectionType.NORMAL);
 			}
 
-			groupSampleStartIndex += group.getNrElements();
+			groupSampleStartIndex += group.getSize();
 			groupIndex++;
 		}
 	}

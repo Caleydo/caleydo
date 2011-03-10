@@ -44,15 +44,15 @@ public class OverviewGroupBarRenderCommand implements IHeatMapRenderCommand {
 			for (Group group : contentGroupList) {
 
 				float groupHeight = layout.getOverviewHeatMapGroupHeight(group
-						.getGroupIndex());
+						.getGroupID());
 
 				Vec3f groupPosition = layout.getOverviewGroupPosition(group
-						.getGroupIndex());
+						.getGroupID());
 				EIconTextures iconTextures = (group.getSelectionType() == SelectionType.SELECTION) ? EIconTextures.HEAT_MAP_GROUP_SELECTED
 						: EIconTextures.HEAT_MAP_GROUP_NORMAL;
 
 				gl.glPushName(pickingManager.getPickingID(viewID,
-						layout.getGroupPickingType(), group.getGroupIndex()));
+						layout.getGroupPickingType(), group.getGroupID()));
 				Vec3f lowerLeftCorner = new Vec3f(groupPosition.x(), groupPosition.y(),
 						groupPosition.z());
 				Vec3f lowerRightCorner = new Vec3f(groupPosition.x() + groupWidth,

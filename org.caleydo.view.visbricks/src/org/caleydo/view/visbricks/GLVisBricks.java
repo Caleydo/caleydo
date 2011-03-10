@@ -158,7 +158,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		centerRowLayout = new Row("centerArchRow");
 		centerRowLayout.setFrameColor(1, 1, 0, 1);
-		centerRowLayout.setDebug(false);
+//		centerRowLayout.setDebug(false);
 
 		ElementLayout dimensionGroupSpacing = new ElementLayout("dimensionGroupSpacing");
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer();
@@ -168,7 +168,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 																// ARCH_BOTTOM_PERCENT));
 		dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		dimensionGroupSpacing.setAbsoluteSizeX(spacerWidth);
-		dimensionGroupSpacing.setDebug(false);
+//		dimensionGroupSpacing.setDebug(false);
 		centerRowLayout.appendElement(dimensionGroupSpacing);
 
 		for (int dimensionGroupIndex = centerGroupStartIndex; dimensionGroupIndex < rightGroupStartIndex; dimensionGroupIndex++) {

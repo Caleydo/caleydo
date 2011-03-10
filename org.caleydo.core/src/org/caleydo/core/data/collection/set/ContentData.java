@@ -7,7 +7,6 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.group.ContentGroupList;
 import org.caleydo.core.data.group.Group;
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -113,8 +112,7 @@ public class ContentData {
 			for (Integer clusterSize : contentClusterSizes) {
 
 				node = new ClusterNode(contentTree, "Group: " + clusterNr, clusterNr++, true, -1);
-				Group temp =
-					new Group(clusterSize, false, contentSampleElements.get(cnt), SelectionType.NORMAL, node);
+				Group temp = new Group(clusterSize, contentSampleElements.get(cnt), node);
 				contentTree.addChild(root, node);
 				contentGroupList.append(temp);
 				cnt++;

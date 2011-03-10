@@ -88,8 +88,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		bottomCol.setFrameColor(1, 0, 1, 1);
 		bottomBricks = new ArrayList<GLBrick>(20);
 
-		centerLayout = new Column("centralBrick");
-		centerLayout.setFrameColor(1, 1, 0, 1);
+		centerLayout = new Column("centerLayout");
+//		centerLayout.setFrameColor(1, 1, 0, 1);
 //		centerLayout.setDebug(true);
 
 		topCol = new Column("dimensionGroupColumnTop");
@@ -134,24 +134,28 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		centerBrick.setSet(set);
 
 		ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(centerBrick);
-		ElementLayout centerBrickLayout = new ElementLayout();
+		ElementLayout centerBrickLayout = new ElementLayout("CenterBrickLayout");
 		centerBrickLayout.setRenderer(brickRenderer);
-		centerBrickLayout.setFrameColor(1, 0, 0, 1);
+//		centerBrickLayout.setDebug(true);
+//		centerBrickLayout.setFrameColor(1, 0, 0, 1);
+		centerBrickLayout.setRatioSizeY(1f);
 		centerLayout.appendElement(centerBrickLayout);
 
-		captionLayout = new ElementLayout("caption");
+		captionLayout = new ElementLayout("caption1");
+//		captionLayout.setDebug(true);
+//		captionLayout.setFrameColor(0, 0, 1, 1);
 		captionLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		captionLayout.setPixelSizeY(20);
+//		captionLayout.setRatioSizeY(0.2f);
 		captionLayout.setFrameColor(0, 0, 1, 1);
-//		captionLayout.setDebug(true);
+		// captionLayout.setDebug(true);
 
 		DimensionGroupCaptionRenderer captionRenderer = new DimensionGroupCaptionRenderer(
 				this);
 		captionLayout.setRenderer(captionRenderer);
-		
 
 		centerLayout.appendElement(captionLayout);
-//		centerLayout.appendElement(spacingLayoutY);
+		// centerLayout.appendElement(spacingLayoutY);
 
 		createSubBricks();
 	}
@@ -181,8 +185,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			uninitializedBricks.add(subBrick);
 
 			ContentVirtualArray subVA = new ContentVirtualArray("CONTENT", contentVA
-					.getVirtualArray()
-					.subList(group.getStartIndex(), group.getEndIndex() + 1));
+					.getVirtualArray().subList(group.getStartIndex(),
+							group.getEndIndex() + 1));
 
 			subBrick.setContentVA(subVA);
 
@@ -237,7 +241,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		if (isCollapsed) {
 			centerLayout.setRatioSizeY(1);
-			centerLayout.setDebug(true);
+			// centerLayout.setDebug(true);
 		} else {
 			bottomCol.setRatioSizeY(below);
 			topCol.setRatioSizeY(above);
@@ -330,7 +334,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public void display(GL2 gl) {
 		centerBrick.processEvents();
-//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		while (!uninitializedBricks.isEmpty()) {
 			uninitializedBricks.poll().initRemote(gl, this, glMouseListener);
 		}
@@ -408,13 +412,14 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public void handleDragging(GL2 gl, final float mouseCoordinateX,
 			final float mouseCoordinateY) {
 
-//		GLHelperFunctions.drawPointAt(gl, mouseCoordinateX, mouseCoordinateY, 0);
-		gl.glColor4f(0,0,0, 0.5f);
+		// GLHelperFunctions.drawPointAt(gl, mouseCoordinateX, mouseCoordinateY,
+		// 0);
+		gl.glColor4f(0, 0, 0, 0.5f);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex2f(mouseCoordinateX, mouseCoordinateY);
-		gl.glVertex2f(mouseCoordinateX+1, mouseCoordinateY);
-		gl.glVertex2f(mouseCoordinateX+1, mouseCoordinateY+1);
-		gl.glVertex2f(mouseCoordinateX, mouseCoordinateY+1);
+		gl.glVertex2f(mouseCoordinateX + 1, mouseCoordinateY);
+		gl.glVertex2f(mouseCoordinateX + 1, mouseCoordinateY + 1);
+		gl.glVertex2f(mouseCoordinateX, mouseCoordinateY + 1);
 		gl.glEnd();
 	}
 
@@ -440,8 +445,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		for (IDraggable draggable : draggables) {
 
 			if (draggable == this)
-				break; 
-			
+				break;
+
 			((GLVisBricks) glRemoteRenderingView).moveGroupDimension(this,
 					(DimensionGroup) draggable);
 		}

@@ -1,5 +1,10 @@
 package org.caleydo.core.data.virtualarray;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -23,15 +28,18 @@ public class RelationAnalyzer
 	/**
 	 * The queue which holds the events
 	 */
-	
+
 	private ContentVAUpdateListener contentVAUpdateListener;
 	private ReplaceContentVAListener replaceContentVAListener;
 	private EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
 	private ASetBasedDataDomain dataDomain;
 
+	private HashMap<Integer, SimilarityMap> hashSimilarityMaps;
+
 	public RelationAnalyzer(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
+		hashSimilarityMaps = new HashMap<Integer, SimilarityMap>(20);
 	}
 
 	@Override
@@ -70,8 +78,19 @@ public class RelationAnalyzer
 
 	@Override
 	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
-		// TODO Auto-generated method stub
+		ISet set = dataDomain.getSet(setID);
+		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT).getContentVA();
 
+		// if this thing does not exist yet, we create it here, else we replace the pre-existing one
+		SimilarityMap currentMap = new SimilarityMap(setID, contentVA);
+
+		for (Entry<Integer, SimilarityMap> entry : hashSimilarityMaps.entrySet()) {
+			if (entry.getKey() == setID)
+				continue;
+			VASimilarity<ContentVirtualArray> similarity =
+				entry.getValue().calculateVASimilarity(setID, contentVA);
+			currentMap.setVaSimilarity(similarity);
+		}
+		hashSimilarityMaps.put(setID, currentMap);
 	}
-
 }

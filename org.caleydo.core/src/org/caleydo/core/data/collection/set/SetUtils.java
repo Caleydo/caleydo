@@ -202,7 +202,6 @@ public class SetUtils {
 		cmdCreateSet.setAttributes(iAlStorageId, dataDomain);
 		cmdCreateSet.doCommand();
 
-	
 		// ----------------- load dynamic mapping ---------------------
 
 		CmdLoadFileLookupTable cmdLoadLookupTableFile =
@@ -228,9 +227,9 @@ public class SetUtils {
 		}
 
 		cmdLoadLookupTableFile.doCommand();
-		
+
 		// --------- data loading ---------------
-		
+
 		// Trigger file loading command
 		CmdLoadFileNStorages cmdLoadCsv =
 			(CmdLoadFileNStorages) GeneralManager.get().getCommandManager()
@@ -243,8 +242,7 @@ public class SetUtils {
 			// TODO: Clear created set and storages which are empty
 			return null;
 		}
-		
-		
+
 		// ----------------------------------------
 
 		Set set = (Set) dataDomain.getSet();
@@ -489,14 +487,14 @@ public class SetUtils {
 		for (int i = 0; i < groupInfo.length; i++) {
 			Group group = null;
 			if (cluster != groupInfo[i]) {
-				group = new Group(cnt, false, 0, SelectionType.NORMAL);
+				group = new Group(cnt);
 				contentGroupList.append(group);
 				cluster++;
 				cnt = 0;
 			}
 			cnt++;
 			if (i == groupInfo.length - 1) {
-				group = new Group(cnt, false, 0, SelectionType.NORMAL);
+				group = new Group(cnt);
 				contentGroupList.append(group);
 			}
 		}
@@ -520,14 +518,14 @@ public class SetUtils {
 		for (int i = 0; i < groupInfo.length; i++) {
 			Group group = null;
 			if (cluster != groupInfo[i]) {
-				group = new Group(cnt, false, 0, SelectionType.NORMAL);
+				group = new Group(cnt, 0);
 				storageGroupList.append(group);
 				cluster++;
 				cnt = 0;
 			}
 			cnt++;
 			if (i == groupInfo.length - 1) {
-				group = new Group(cnt, false, 0, SelectionType.NORMAL);
+				group = new Group(cnt, 0);
 				storageGroupList.append(group);
 			}
 		}
@@ -546,12 +544,12 @@ public class SetUtils {
 
 		ContentGroupList contentGroupList = set.getContentData(vaType).getContentVA().getGroupList();
 
-		contentGroupList.get(group).setIdxExample(0);
+		contentGroupList.get(group).setRepresentativeElementIndex(0);
 		group++;
 
 		for (int i = 1; i < groupReps.length; i++) {
 			if (groupReps[i] != groupReps[i - 1]) {
-				contentGroupList.get(group).setIdxExample(i);
+				contentGroupList.get(group).setRepresentativeElementIndex(i);
 				group++;
 			}
 		}
@@ -570,12 +568,12 @@ public class SetUtils {
 
 		StorageGroupList storageGroupList = set.getStorageData(vaType).getStorageVA().getGroupList();
 
-		storageGroupList.get(group).setIdxExample(0);
+		storageGroupList.get(group).setRepresentativeElementIndex(0);
 		group++;
 
 		for (int i = 1; i < groupReps.length; i++) {
 			if (groupReps[i] != groupReps[i - 1]) {
-				storageGroupList.get(group).setIdxExample(i);
+				storageGroupList.get(group).setRepresentativeElementIndex(i);
 				group++;
 			}
 		}

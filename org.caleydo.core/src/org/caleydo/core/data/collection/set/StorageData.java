@@ -89,12 +89,12 @@ public class StorageData
 
 			int cnt = 0;
 			int iOffset = 0;
-			for (Integer iter : storageClusterSizes) {
+			for (Integer size : storageClusterSizes) {
 
-				Group temp = new Group(iter, false, storageSampleElements.get(cnt), SelectionType.NORMAL);
+				Group temp = new Group(size, storageSampleElements.get(cnt));
 				storageGroupList.append(temp);
 				cnt++;
-				iOffset += iter;
+				iOffset += size;
 			}
 			storageVA.setGroupList(storageGroupList);
 		}

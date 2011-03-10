@@ -49,10 +49,13 @@ public class Row
 	@Override
 	protected void calculateSubElementScales(float availableWidth, float availableHeight) {
 
-		float actualWidth = 0;
+		float dynamicWidth = 0;
 		float totalWidth = 0;
-		float actuahHeight = 0;
+		// the largest height of any element in the row (only relevant if isZDynamic is true)
+		float largestHeight = 0;
+		
 		ElementLayout greedyElement = null;
+		
 		for (ElementLayout element : elements) {
 			if (element.grabX) {
 				if (greedyElement != null)
@@ -63,21 +66,22 @@ public class Row
 			element.calculateScales(availableWidth, availableHeight);
 			totalWidth += element.getSizeScaledX();
 			// if an element is set in absolute size, the available size is already reduced by that value
-			if (!(!Float.isNaN(element.absoluteSizeX) || Integer.MIN_VALUE != element.pixelSizeX))
-				actualWidth += element.getSizeScaledX();
-			if (actuahHeight < element.getSizeScaledY())
-				actuahHeight = element.getSizeScaledY();
+			if (!element.isHeightStatic())
+				dynamicWidth += element.getSizeScaledX();
+			if (largestHeight < element.getSizeScaledY())
+				largestHeight = element.getSizeScaledY();
 
 		}
 		if (greedyElement != null) {
-			greedyElement.setAbsoluteSizeX(availableWidth - actualWidth);
-			greedyElement.calculateScales(availableWidth - actualWidth, availableHeight);
-			actualWidth = availableWidth;
+			greedyElement.setAbsoluteSizeX(availableWidth - dynamicWidth);
+			// the first argument is irrelevant, since this is set static
+			greedyElement.calculateScales(availableWidth - dynamicWidth, availableHeight);
+			dynamicWidth = availableWidth;
 		}
 		if (isXDynamic)
 			sizeScaledX = totalWidth;
 		if (isYDynamic)
-			sizeScaledY = actuahHeight;
+			sizeScaledY = largestHeight;
 	}
 
 }

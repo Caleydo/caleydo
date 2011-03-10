@@ -160,7 +160,7 @@ public class HeatMapUtil {
 			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			int groupIndex = 0;
 			for (Group group : contentGroupList) {
-				int numSamplesGroup = group.getNrElements();
+				int numSamplesGroup = group.getSize();
 				float groupHeight = numSamplesGroup * sampleHeight;
 				EIconTextures iconTextures = (group.getSelectionType() == SelectionType.SELECTION) ? EIconTextures.HEAT_MAP_GROUP_SELECTED
 						: EIconTextures.HEAT_MAP_GROUP_NORMAL;

@@ -5,31 +5,29 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
+/**
+ * 
+ * @author Bernhard Schlegl
+ * @author Alexander Lex
+ */
 public class Group {
 
-	/**
-	 * number of elements in the group/cluster
-	 */
-	private int nrElements;
+	/** number of elements in the group/cluster */
+	private int size = 0;
 
-	/**
-	 * The virtual array index of the first element of the group
-	 */
-	private int startIndex;
+	/** The virtual array index of the first element of the group */
+	private int startIndex = 0;
 
-	/**
-	 * The index of the group in the group lst
-	 */
-	private int groupIndex;
+	/** The id of the group, also the index of the group in the group list */
+	private Integer groupID = -1;
 
-	private boolean collapsed;
+	/** Flag specifying whether this group is considered collapsed (i.e. the elements are not shown) */
+	private boolean isCollapsed = false;
 
-	/**
-	 * index of the representative element in the VA
-	 */
-	private int idxExample;
+	/** index of the representative element in the VA */
+	private int representativeElementIndex = -1;
 
-	private SelectionType selectionType;
+	private SelectionType selectionType = SelectionType.NORMAL;
 
 	/**
 	 * In case of groups determined in dendrogram view the corresponding node in the tree must be stored for
@@ -40,61 +38,65 @@ public class Group {
 	/**
 	 * array with mean expression values --> representative element
 	 */
-	private float[] fArRepresentativeElement;
+	private float[] meanValuesRepresentativeElement;
 
 	private int visibleNrGenes = 0;
 
+	/**
+	 * Default Constructor
+	 */
 	public Group() {
+	}
+
+	public Group(int size) {
+		this.setSize(size);
 	}
 
 	/**
 	 * Constructor
 	 * 
-	 * @param iNrElements
-	 * @param bCollapsed
-	 * @param iIdxExample
-	 * @param SelectionType
+	 * @param size
+	 *            the size of the group
+	 * @param representativeElementIndex
+	 *            the index of an element considered to be representative of this group (i.e. the most typical
+	 *            element)
 	 */
-	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, SelectionType SelectionType) {
-		this.setNrElements(iNrElements);
-		this.setCollapsed(bCollapsed);
-		this.setIdxExample(iIdxExample);
-		this.setRepresentativeElement(fArRepresentativeElement);
-		this.setSelectionType(SelectionType);
+	public Group(int size, int representativeElementIndex) {
+		this.setSize(size);
+		this.setRepresentativeElementIndex(representativeElementIndex);
 	}
 
 	/**
-	 * Constructor with cluster node included
+	 * Constructor
 	 * 
-	 * @param iNrElements
-	 * @param bCollapsed
-	 * @param iIdxExample
-	 * @param SelectionType
+	 * @param size
+	 *            the size of the group
+	 * @param representativeElementIndex
+	 *            the index of an element considered to be representative of this group (i.e. the most typical
+	 *            element)
 	 * @param clusterNode
+	 *            a cluster node from which the pre-order of the leaves is this group
 	 */
-	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, SelectionType SelectionType,
-		ClusterNode clusterNode) {
-		this.setNrElements(iNrElements);
-		this.setCollapsed(bCollapsed);
-		this.setIdxExample(iIdxExample);
-		this.setSelectionType(SelectionType);
+	public Group(int size, int representativeElementIndex, ClusterNode clusterNode) {
+		this.setSize(size);
+		this.setRepresentativeElementIndex(representativeElementIndex);
 		this.setClusterNode(clusterNode);
 	}
 
-	public void setNrElements(int iNrElements) {
-		this.nrElements = iNrElements;
+	public void setSize(int size) {
+		this.size = size;
 	}
 
-	public int getNrElements() {
-		return nrElements;
+	public int getSize() {
+		return size;
 	}
 
-	public int getGroupIndex() {
-		return groupIndex;
+	public int getGroupID() {
+		return groupID;
 	}
 
-	public void setGroupIndex(int groupIndex) {
-		this.groupIndex = groupIndex;
+	public void setGroupID(Integer groupID) {
+		this.groupID = groupID;
 	}
 
 	public int getStartIndex() {
@@ -106,23 +108,23 @@ public class Group {
 	}
 
 	public int getEndIndex() {
-		return startIndex + nrElements - 1;
+		return startIndex + size - 1;
 	}
 
 	public void setCollapsed(boolean bCollapsed) {
-		this.collapsed = bCollapsed;
+		this.isCollapsed = bCollapsed;
 	}
 
 	public boolean isCollapsed() {
-		return collapsed;
+		return isCollapsed;
 	}
 
-	public void setIdxExample(int iIdxExample) {
-		this.idxExample = iIdxExample;
+	public void setRepresentativeElementIndex(int representativeElementIndex) {
+		this.representativeElementIndex = representativeElementIndex;
 	}
 
-	public int getIdxExample() {
-		return idxExample;
+	public int getRepresentativeElementIndex() {
+		return representativeElementIndex;
 	}
 
 	public void setSelectionType(SelectionType SelectionType) {
@@ -148,16 +150,16 @@ public class Group {
 	}
 
 	public void setRepresentativeElement(float[] fArRepresentativeElement) {
-		this.fArRepresentativeElement = fArRepresentativeElement;
+		this.meanValuesRepresentativeElement = fArRepresentativeElement;
 	}
 
 	public float[] getRepresentativeElement() {
-		return fArRepresentativeElement;
+		return meanValuesRepresentativeElement;
 	}
 
 	@Override
 	public String toString() {
-		return "NrElem.: " + nrElements;
+		return "NrElem.: " + size;
 	}
 
 	public void increaseContainedNumberOfGenesByOne() {

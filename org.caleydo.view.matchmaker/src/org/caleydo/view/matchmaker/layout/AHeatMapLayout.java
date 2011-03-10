@@ -203,7 +203,7 @@ public abstract class AHeatMapLayout {
 		Group group = contentGroupList.get(groupID);
 		float sampleHeight = getOverviewHeatMapSampleHeight();
 
-		return group.getNrElements() * sampleHeight;
+		return group.getSize() * sampleHeight;
 	}
 
 	public Vec3f getOverviewHeatMapGroupPosition(int groupID) {
@@ -211,7 +211,7 @@ public abstract class AHeatMapLayout {
 		ContentGroupList contentGroupList = contentVA.getGroupList();
 		Group group = contentGroupList.get(groupID);
 		float positionY = getOverviewHeatMapSamplePositionY(group.getEndIndex(),
-				group.getGroupIndex());
+				group.getGroupID());
 
 		return new Vec3f(getOverviewHeatMapPosition().x(), positionY,
 				getOverviewHeatMapPosition().z());
@@ -249,7 +249,7 @@ public abstract class AHeatMapLayout {
 		for (Group group : contentVA.getGroupList()) {
 			if (contentIndex >= group.getStartIndex()
 					&& contentIndex <= group.getEndIndex()) {
-				return group.getGroupIndex();
+				return group.getGroupID();
 			}
 		}
 		return -1;

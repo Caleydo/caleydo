@@ -46,14 +46,14 @@ public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 
 		for (Group group : selectedGroups.keySet()) {
 
-			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupIndex());
+			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupID());
 			if (heatMap == null)
 				continue;
 			// int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
 
-			float heatMapHeight = layout.getDetailHeatMapHeight(group.getGroupIndex());
+			float heatMapHeight = layout.getDetailHeatMapHeight(group.getGroupID());
 			Vec3f heatMapPosition = heatMapWrapper.getHeatMapPosition(group
-					.getGroupIndex());
+					.getGroupID());
 
 			gl.glTranslatef(heatMapPosition.x(), heatMapPosition.y(), heatMapPosition.z());
 			heatMap.getViewFrustum().setLeft(heatMapPosition.x());
@@ -66,7 +66,7 @@ public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 				heatMap.setDisplayListDirty();
 			}
 			gl.glPushName(pickingManager.getPickingID(viewID,
-					layout.getHeatMapPickingType(), group.getGroupIndex()));
+					layout.getHeatMapPickingType(), group.getGroupID()));
 			heatMap.displayRemote(gl);
 			gl.glPopName();
 

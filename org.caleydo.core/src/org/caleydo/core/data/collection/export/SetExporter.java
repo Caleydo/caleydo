@@ -172,8 +172,8 @@ public class SetExporter {
 
 				// export partitional cluster info for genes/entities
 				if (contentVA.getGroupList() != null) {
-					if (cnt == contentVA.getGroupList().get(cluster).getNrElements() - 1) {
-						offset = offset + contentVA.getGroupList().get(cluster).getNrElements();
+					if (cnt == contentVA.getGroupList().get(cluster).getSize() - 1) {
+						offset = offset + contentVA.getGroupList().get(cluster).getSize();
 						cluster++;
 						cnt = 0;
 					}
@@ -181,7 +181,7 @@ public class SetExporter {
 						cnt++;
 					}
 
-					iExample = contentVA.getGroupList().get(cluster).getIdxExample();
+					iExample = contentVA.getGroupList().get(cluster).getRepresentativeElementIndex();
 
 					out.print(cluster + "\t" + iExample + "\t");
 
@@ -200,8 +200,8 @@ public class SetExporter {
 				cnt = -1;
 
 				for (Integer iStorageIndex : storageVA) {
-					if (cnt == storageVA.getGroupList().get(cluster).getNrElements() - 1) {
-						offset = offset + storageVA.getGroupList().get(cluster).getNrElements();
+					if (cnt == storageVA.getGroupList().get(cluster).getSize() - 1) {
+						offset = offset + storageVA.getGroupList().get(cluster).getSize();
 						cluster++;
 						cnt = 0;
 					}
@@ -209,7 +209,7 @@ public class SetExporter {
 						cnt++;
 					}
 
-					iExample = storageVA.getGroupList().get(cluster).getIdxExample();
+					iExample = storageVA.getGroupList().get(cluster).getRepresentativeElementIndex();
 
 					stClusterNr += cluster + "\t";
 					stClusterRep += iExample + "\t";

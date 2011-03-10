@@ -259,6 +259,24 @@ public class ElementLayout {
 		updateSpacings();
 	}
 
+	public boolean isHeightStatic() {
+		if (!Float.isNaN(absoluteSizeY))
+			return true;
+		if (pixelSizeY == Integer.MIN_VALUE)
+			return true;
+
+		return false;
+	}
+
+	public boolean isWidthStatic() {
+		if (!Float.isNaN(absoluteSizeX))
+			return true;
+		if (pixelSizeX == Integer.MIN_VALUE)
+			return true;
+
+		return false;
+	}
+
 	// ---------------------------- END OF PUBLIC INTERFACE -----------------------------------
 
 	private void resetX() {

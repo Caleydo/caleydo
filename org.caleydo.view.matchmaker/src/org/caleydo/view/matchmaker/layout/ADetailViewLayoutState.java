@@ -89,7 +89,7 @@ public abstract class ADetailViewLayoutState {
 		float totalHeatMapOverheadSize = 0;
 
 		for (Group group : selectedGroups.keySet()) {
-			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupIndex());
+			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupID());
 			int numElements = heatMap.getNumberOfVisibleElements();
 			totalNumberOfElements += numElements;
 			totalHeatMapOverheadSize += heatMap.getRequiredOverheadSpacing();
@@ -132,7 +132,7 @@ public abstract class ADetailViewLayoutState {
 		int selectedElementsInOverhead = 0;
 
 		for (Group group : selectedGroups.keySet()) {
-			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupIndex());
+			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupID());
 			int numElements = heatMap.getNumberOfVisibleElements();
 
 			if (numElements * defaultSpacing < hmMinSpacing) {
@@ -188,7 +188,7 @@ public abstract class ADetailViewLayoutState {
 		}
 
 		for (Group group : selectedGroups.keySet()) {
-			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupIndex());
+			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupID());
 			int numElements = heatMap.getNumberOfVisibleElements();
 			float currentHeatMapOverheadSize = heatMap.getRequiredOverheadSpacing();
 			float size = 0;
@@ -203,7 +203,7 @@ public abstract class ADetailViewLayoutState {
 			if (size - currentHeatMapOverheadSize < hmMinSpacing)
 				size = hmMinSpacing + currentHeatMapOverheadSize;
 
-			hashHeatMapHeights.put(group.getGroupIndex(), size);
+			hashHeatMapHeights.put(group.getGroupID(), size);
 		}
 
 	}
@@ -238,12 +238,12 @@ public abstract class ADetailViewLayoutState {
 
 			if (!selectedGroups.containsKey(group))
 				continue;
-			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupIndex());
+			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupID());
 			if (heatMap == null)
 				continue;
 
-			float heatMapHeight = getDetailHeatMapHeight(group.getGroupIndex());
-			hashHeatMapPositions.put(group.getGroupIndex(), new Vec3f(detailPosition.x(),
+			float heatMapHeight = getDetailHeatMapHeight(group.getGroupID());
+			hashHeatMapPositions.put(group.getGroupID(), new Vec3f(detailPosition.x(),
 					currentPositionY - heatMapHeight, detailPosition.z()));
 			currentPositionY -= (heatMapHeight + getDetailHeatMapGapHeight());
 		}

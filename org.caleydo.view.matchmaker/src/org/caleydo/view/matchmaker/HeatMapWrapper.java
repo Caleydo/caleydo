@@ -212,12 +212,12 @@ public class HeatMapWrapper {
 		int groupSampleEndIndex = 0;
 		int groupIndex = 0;
 		for (Group group : contentGroupList) {
-			groupSampleEndIndex = groupSampleStartIndex + group.getNrElements() - 1;
+			groupSampleEndIndex = groupSampleStartIndex + group.getSize() - 1;
 			GLHeatMap heatMap = createHeatMap(gl, glMouseListener);
 			setEmbeddedHeatMapData(heatMap, groupSampleStartIndex, groupSampleEndIndex);
 
 			hashHeatMaps.put(groupIndex, heatMap);
-			groupSampleStartIndex += group.getNrElements();
+			groupSampleStartIndex += group.getSize();
 			groupIndex++;
 		}
 
@@ -256,13 +256,13 @@ public class HeatMapWrapper {
 
 			if (!selectedGroups.containsKey(group))
 				continue;
-			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupID());
 			if (heatMap == null)
 				continue;
 
-			float heatMapHeight = layout.getDetailHeatMapHeight(group.getGroupIndex());
+			float heatMapHeight = layout.getDetailHeatMapHeight(group.getGroupID());
 			Vec3f heatMapPosition = layout
-					.getDetailHeatMapPosition(group.getGroupIndex());
+					.getDetailHeatMapPosition(group.getGroupID());
 
 			heatMap.getViewFrustum().setLeft(heatMapPosition.x());
 			heatMap.getViewFrustum().setBottom(heatMapPosition.y());
@@ -352,7 +352,7 @@ public class HeatMapWrapper {
 	public void setDisplayListDirty() {
 
 		for (Group group : selectedGroups.keySet()) {
-			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupID());
 
 			if (heatMap != null) {
 				heatMap.setDisplayListDirty();
@@ -427,7 +427,7 @@ public class HeatMapWrapper {
 		if (group == null)
 			return null;
 
-		int groupIndex = group.getGroupIndex();
+		int groupIndex = group.getGroupID();
 
 		GLHeatMap heatMap = hashHeatMaps.get(groupIndex);
 		if (heatMap == null)
@@ -439,13 +439,13 @@ public class HeatMapWrapper {
 
 		// calculateHeatMapPositions();
 
-		Vec3f heatMapPosition = layout.getDetailHeatMapPosition(group.getGroupIndex());
+		Vec3f heatMapPosition = layout.getDetailHeatMapPosition(group.getGroupID());
 		// hashHeatMapPositions.get(groupIndex);
 
 		int numTotalSamples = 0;
 		float totalHeatMapOverheadSpacing = 0;
 		for (Group tempGroup : selectedGroups.keySet()) {
-			GLHeatMap tempHeatMap = hashHeatMaps.get(tempGroup.getGroupIndex());
+			GLHeatMap tempHeatMap = hashHeatMaps.get(tempGroup.getGroupID());
 			numTotalSamples += tempHeatMap.getNumberOfVisibleElements();
 			totalHeatMapOverheadSpacing += tempHeatMap.getRequiredOverheadSpacing();
 		}
@@ -478,7 +478,7 @@ public class HeatMapWrapper {
 			Group group = groupList.get(groupIndex);
 
 			if (!considerSelectedGroups || selectedGroups.containsKey(group)) {
-				GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+				GLHeatMap heatMap = hashHeatMaps.get(group.getGroupID());
 				contentVAs.add(heatMap.getContentVA());
 			}
 		}
@@ -490,7 +490,7 @@ public class HeatMapWrapper {
 		if (considerSelections) {
 			ArrayList<GLHeatMap> heatMaps = new ArrayList<GLHeatMap>();
 			for (Group group : selectedGroups.keySet()) {
-				GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+				GLHeatMap heatMap = hashHeatMaps.get(group.getGroupID());
 				heatMaps.add(heatMap);
 			}
 			return heatMaps;
@@ -514,7 +514,7 @@ public class HeatMapWrapper {
 
 		ArrayList<ContentSelectionManager> contentSelectionManagers = new ArrayList<ContentSelectionManager>();
 		for (Group group : selectedGroups.keySet()) {
-			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupID());
 			contentSelectionManagers.add(heatMap.getContentSelectionManager());
 		}
 
@@ -576,7 +576,7 @@ public class HeatMapWrapper {
 					selectedGroup.resetVisualGenesCounter();
 				}
 
-				GLHeatMap heatMap = hashHeatMaps.get(selectedGroup.getGroupIndex());
+				GLHeatMap heatMap = hashHeatMaps.get(selectedGroup.getGroupID());
 				ContentVirtualArray heatMapVA = heatMap.getContentVA();
 				int index = heatMapVA.indexOf(contentID);
 				if (useSorting && index >= 0)
@@ -643,7 +643,7 @@ public class HeatMapWrapper {
 		// }
 		// }
 		for (Group group : selectedGroups.keySet()) {
-			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupID());
 
 			heatMap.recalculateLayout();
 		}
@@ -674,7 +674,7 @@ public class HeatMapWrapper {
 		for (int groupIndex = groupList.size() - 1; groupIndex >= 0; groupIndex--) {
 			Group group = groupList.get(groupIndex);
 			if (!considerSelectedGroups || selectedGroups.containsKey(group)) {
-				GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+				GLHeatMap heatMap = hashHeatMaps.get(group.getGroupID());
 
 				int nrGenes = group.getContainedNrGenes();
 
@@ -733,7 +733,7 @@ public class HeatMapWrapper {
 		clearDeselected();
 
 		for (Group group : selectedGroups.keySet()) {
-			if (group.getGroupIndex() == groupIndex && isControlPressed) {
+			if (group.getGroupID() == groupIndex && isControlPressed) {
 
 				group.setSelectionType(SelectionType.NORMAL);
 				selectedGroups.remove(group);

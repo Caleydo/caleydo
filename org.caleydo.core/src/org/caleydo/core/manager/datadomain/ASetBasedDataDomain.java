@@ -36,6 +36,7 @@ import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
 import org.caleydo.core.manager.mapping.IDMappingManager;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
@@ -102,7 +103,7 @@ public abstract class ASetBasedDataDomain
 	}
 
 	private void init() {
-		
+
 		assignIDCategories();
 		if (contentIDCategory == null || storageIDCategory == null) {
 			throw new IllegalStateException("A ID category in " + toString()
@@ -145,13 +146,23 @@ public abstract class ASetBasedDataDomain
 	}
 
 	/**
-	 * Returns the set which is currently loaded and used inside the views for this use case.
+	 * Returns the root set which is currently loaded and used inside the views for this use case.
 	 * 
 	 * @return a data set
 	 */
 	@XmlTransient
 	public Set getSet() {
 		return set;
+	}
+
+
+	public ISet getSet(int setID) {
+		if (set.getID() == setID)
+			return set;
+
+		ClusterNode root = set.getStorageData(Set.STORAGE).getStorageTreeRoot();
+		return root.getMetaSetFromSubTree(setID);
+
 	}
 
 	public IDType getContentIDType() {

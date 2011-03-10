@@ -303,7 +303,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		// activateGroupHandling();
 	}
 
-
 	/**
 	 * Function responsible for initialization of hierarchy levels. Depending on
 	 * the amount of samples in the data set 1, 2, or 3 levels are used.
@@ -674,7 +673,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glHeatMapView.setContentVAType(GLHeatMap.CONTENT_EMBEDDED_VA);
 		glHeatMapView.initialize();
 		glHeatMapView.initData();
-		
+
 	}
 
 	/**
@@ -1150,7 +1149,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		for (int i = 0; i < iNrClasses; i++) {
 
-			float classWidth = groupList.get(i).getNrElements() * fWidthSamples;
+			float classWidth = groupList.get(i).getSize() * fWidthSamples;
 
 			gl.glColor4f(1, 1, 1, 1);
 			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
@@ -1230,7 +1229,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		for (int i = 0; i < iNrClasses; i++) {
 
-			float classWidth = groupList.get(i).getNrElements() * fWidthSamples;
+			float classWidth = groupList.get(i).getSize() * fWidthSamples;
 
 			gl.glColor4f(1, 1, 1, 1);
 			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
@@ -1309,7 +1308,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		for (int i = 0; i < iNrClasses; i++) {
 
-			float classHeight = groupList.get(i).getNrElements() * fHeightSamples;
+			float classHeight = groupList.get(i).getSize() * fHeightSamples;
 
 			gl.glColor4f(1, 1, 1, 1);
 			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
@@ -1388,9 +1387,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		int iCounter = iFirstSampleLevel1;
 
 		Group group = contentVA.getGroupList().get(iIdxCluster);
-		while (group.getNrElements() < iCounter) {
+		while (group.getSize() < iCounter) {
 			iIdxCluster++;
-			iCounter -= group.getNrElements();
+			iCounter -= group.getSize();
 			group = contentVA.getGroupList().get(iIdxCluster);
 		}
 
@@ -1400,7 +1399,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		for (int i = 0; i < iSamplesLevel2; i++) {
 
-			if (iCounter == contentVA.getGroupList().get(iIdxCluster).getNrElements()) {
+			if (iCounter == contentVA.getGroupList().get(iIdxCluster).getSize()) {
 
 				gl.glColor4f(1, 1, 1, 1);
 				gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
@@ -1524,9 +1523,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		int iCounter = iFirstSampleLevel1 + iFirstSampleLevel2;
 
 		Group group = contentVA.getGroupList().get(iIdxCluster);
-		while (group.getNrElements() < iCounter) {
+		while (group.getSize() < iCounter) {
 			iIdxCluster++;
-			iCounter -= group.getNrElements();
+			iCounter -= group.getSize();
 			group = contentVA.getGroupList().get(iIdxCluster);
 		}
 
@@ -1536,7 +1535,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		for (int i = 0; i < iSamplesPerHeatmap; i++) {
 
-			if (iCounter == contentVA.getGroupList().get(iIdxCluster).getNrElements()) {
+			if (iCounter == contentVA.getGroupList().get(iIdxCluster).getSize()) {
 
 				gl.glColor4f(1, 1, 1, 1);
 				gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
@@ -2941,9 +2940,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				&& bSkipLevel2 == false)
 			fleftOffset += renderStyle.getWidthClusterVisualization();
 
-//		float fWidthLevel3 = viewFrustum.getWidth() - fleftOffset - 0.95f;
+		// float fWidthLevel3 = viewFrustum.getWidth() - fleftOffset - 0.95f;
 
-//		renderStyle.setWidthLevel3(fWidthLevel3);
+		// renderStyle.setWidthLevel3(fWidthLevel3);
 	}
 
 	private void renderViewsLevel_1_2_3_Active(GL2 gl) {
@@ -3535,7 +3534,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			return;
 		}
 
-		int iNrElementsInGroup = groupList.get(iExpGroupToDrag).getNrElements();
+		int iNrElementsInGroup = groupList.get(iExpGroupToDrag).getSize();
 		float currentWidth = fWidthSample * iNrElementsInGroup;
 		float fHeight = viewFrustum.getHeight();
 
@@ -3558,14 +3557,14 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		int cnt = 0;
 
 		for (Group currentGroup : groupList) {
-			if (currentElement < (iElemOffset + currentGroup.getNrElements())) {
+			if (currentElement < (iElemOffset + currentGroup.getSize())) {
 				iTargetIdx = cnt;
 				if (iExpGroupToDrag < iTargetIdx)
-					iElemOffset += currentGroup.getNrElements();
+					iElemOffset += currentGroup.getSize();
 				break;
 			}
 			cnt++;
-			iElemOffset += currentGroup.getNrElements();
+			iElemOffset += currentGroup.getSize();
 		}
 
 		float fPosDropMarker = fleftOffset + fWidthSample * iElemOffset;
@@ -3620,7 +3619,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			return;
 		}
 
-		int iNrElementsInGroup = groupList.get(iGeneGroupToDrag).getNrElements();
+		int iNrElementsInGroup = groupList.get(iGeneGroupToDrag).getSize();
 		float currentHeight = fHeightSample * iNrElementsInGroup;
 
 		gl.glBegin(GL2.GL_QUADS);
@@ -3637,14 +3636,14 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		int cnt = 0;
 
 		for (Group currentGroup : groupList) {
-			if (currentElement < (iElemOffset + currentGroup.getNrElements())) {
+			if (currentElement < (iElemOffset + currentGroup.getSize())) {
 				iTargetIdx = cnt;
 				if (iGeneGroupToDrag < iTargetIdx)
-					iElemOffset += currentGroup.getNrElements();
+					iElemOffset += currentGroup.getSize();
 				break;
 			}
 			cnt++;
-			iElemOffset += currentGroup.getNrElements();
+			iElemOffset += currentGroup.getSize();
 		}
 
 		float fPosDropMarker = fHeight - (fHeightSample * iElemOffset);
@@ -4480,14 +4479,14 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		if (contentVA.getGroupList() == null) {
 			ContentGroupList groupList = new ContentGroupList();
-			Group group = new Group(contentVA.size(), false, 0, SelectionType.NORMAL);
+			Group group = new Group(contentVA.size());
 			groupList.append(group);
 			contentVA.setGroupList(groupList);
 		}
 
 		if (storageVA.getGroupList() == null) {
 			StorageGroupList groupList = new StorageGroupList();
-			Group group = new Group(storageVA.size(), false, 0, SelectionType.NORMAL);
+			Group group = new Group(storageVA.size());
 			groupList.append(group);
 			storageVA.setGroupList(groupList);
 		}
