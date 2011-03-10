@@ -16,6 +16,7 @@ public class ViewToolBarRenderer extends LayoutRenderer {
 	private static final int CLUSTER_BUTTON_ID = 1;
 	private static final int HEATMAP_BUTTON_ID = 2;
 	private static final int PARCOORDS_BUTTON_ID = 3;
+	private static final int HISTOGRAM_BUTTON_ID = 4;
 
 	GLBrick brick;
 
@@ -65,6 +66,17 @@ public class ViewToolBarRenderer extends LayoutRenderer {
 		gl.glVertex3f(3 * y + 2 * buttonSpacing, 0, 0);
 		gl.glVertex3f(3 * y + 2 * buttonSpacing, y, 0);
 		gl.glVertex3f(2 * y + 2 * buttonSpacing, y, 0);
+		gl.glEnd();
+		gl.glPopName();
+		
+		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+				EPickingType.BRICK_TOOLBAR_BUTTONS, HISTOGRAM_BUTTON_ID));
+		gl.glColor3f(0, 1, 1);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(3 * y + 3 * buttonSpacing, 0, 0);
+		gl.glVertex3f(4 * y + 3 * buttonSpacing, 0, 0);
+		gl.glVertex3f(4 * y + 3 * buttonSpacing, y, 0);
+		gl.glVertex3f(3 * y + 3 * buttonSpacing, y, 0);
 		gl.glEnd();
 		gl.glPopName();
 	}
@@ -117,6 +129,14 @@ public class ViewToolBarRenderer extends LayoutRenderer {
 				brick.setRemoteView(GLBrick.PARCOORDS_VIEW);
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, PARCOORDS_BUTTON_ID);
+		
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				brick.setRemoteView(GLBrick.HISTOGRAM_VIEW);
+			}
+		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HISTOGRAM_BUTTON_ID);
 
 		pickingListenersRegistered = true;
 	}

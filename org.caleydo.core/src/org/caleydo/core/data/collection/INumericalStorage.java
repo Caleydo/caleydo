@@ -1,5 +1,7 @@
 package org.caleydo.core.data.collection;
 
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+
 /**
  * INumericalStorage is a specialization of IStorage. It is meant for numerical data of a continuous range,
  * equivalent to the set of real numbers. In terms of scales it can be interpreted as a data structure for an
@@ -83,5 +85,15 @@ public interface INumericalStorage
 	 * @return
 	 */
 	public Histogram getHistogram();
+
+	/**
+	 * Returns a histogram of the values in the storage for all values considering the specified VA. The
+	 * number of the bins is sqrt(VA size)
+	 * 
+	 * @param contentVA
+	 *            VA to consider for the histogram
+	 * @return
+	 */
+	public Histogram getHistogram(ContentVirtualArray contentVA);
 
 }

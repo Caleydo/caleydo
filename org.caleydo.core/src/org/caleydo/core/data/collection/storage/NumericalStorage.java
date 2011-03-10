@@ -6,6 +6,7 @@ import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 
@@ -110,6 +111,29 @@ public class NumericalStorage
 
 		FloatCContainerIterator iterator =
 			((FloatCContainer) hashCContainers.get(EDataRepresentation.NORMALIZED)).iterator();
+		while (iterator.hasNext()) {
+			// this works because the values in the container are already noramlized
+			int iIndex = (int) (iterator.next() * iNumberOfBuckets);
+			if (iIndex == iNumberOfBuckets)
+				iIndex--;
+			Integer iNumOccurences = histogram.get(iIndex);
+			histogram.set(iIndex, ++iNumOccurences);
+		}
+
+		return histogram;
+	}
+
+	@Override
+	public Histogram getHistogram(ContentVirtualArray contentVA) {
+
+		int iNumberOfBuckets = (int) Math.sqrt(contentVA.size());
+		Histogram histogram = new Histogram(iNumberOfBuckets);
+		for (int iCount = 0; iCount < iNumberOfBuckets; iCount++) {
+			histogram.add(0);
+		}
+
+		FloatCContainerIterator iterator =
+			((FloatCContainer) hashCContainers.get(EDataRepresentation.NORMALIZED)).iterator(contentVA);
 		while (iterator.hasNext()) {
 			// this works because the values in the container are already noramlized
 			int iIndex = (int) (iterator.next() * iNumberOfBuckets);

@@ -17,7 +17,6 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.graph.tree.ClusterTree;
-import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -275,6 +274,64 @@ public class Set
 	}
 
 	@Override
+	public Histogram getBaseHistogram() {
+		if (!isSetHomogeneous) {
+			throw new UnsupportedOperationException(
+				"Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use storage based histograms instead!");
+		}
+		Histogram histogram = new Histogram();
+
+		boolean bIsFirstLoop = true;
+		for (IStorage storage : hashStorages.values()) {
+			INumericalStorage nStorage = (INumericalStorage) storage;
+			Histogram storageHistogram = nStorage.getHistogram(defaultContentData.getContentVA());
+
+			if (bIsFirstLoop) {
+				bIsFirstLoop = false;
+				for (int iCount = 0; iCount < storageHistogram.size(); iCount++) {
+					histogram.add(0);
+				}
+			}
+			int iCount = 0;
+			for (Integer histoValue : histogram) {
+				histoValue += storageHistogram.get(iCount);
+				histogram.set(iCount++, histoValue);
+			}
+		}
+
+		return histogram;
+	}
+
+	@Override
+	public Histogram getHistogram(ContentVirtualArray contentVA) {
+		if (!isSetHomogeneous) {
+			throw new UnsupportedOperationException(
+				"Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use storage based histograms instead!");
+		}
+		Histogram histogram = new Histogram();
+
+		boolean bIsFirstLoop = true;
+		for (IStorage storage : hashStorages.values()) {
+			INumericalStorage nStorage = (INumericalStorage) storage;
+			Histogram storageHistogram = nStorage.getHistogram(contentVA);
+
+			if (bIsFirstLoop) {
+				bIsFirstLoop = false;
+				for (int iCount = 0; iCount < storageHistogram.size(); iCount++) {
+					histogram.add(0);
+				}
+			}
+			int iCount = 0;
+			for (Integer histoValue : histogram) {
+				histoValue += storageHistogram.get(iCount);
+				histogram.set(iCount++, histoValue);
+			}
+		}
+
+		return histogram;
+	}
+
+	@Override
 	public void restoreOriginalContentVA() {
 		ContentData contentData = createContentData(CONTENT);
 		hashContentData.put(CONTENT, contentData);
@@ -392,8 +449,8 @@ public class Set
 		StorageData storageData = hashStorageData.get(vaType);
 		if (storageData == null)
 			storageData = defaultStorageData.clone();
-//		else
-//			storageData.reset();
+		// else
+		// storageData.reset();
 		storageData.setStorageVA(virtualArray);
 		hashStorageData.put(vaType, storageData);
 	}

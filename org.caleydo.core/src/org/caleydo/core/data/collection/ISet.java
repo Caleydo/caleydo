@@ -214,6 +214,28 @@ public interface ISet
 	public Histogram getHistogram() throws UnsupportedOperationException;
 
 	/**
+	 * Returns a histogram of the values of all storages in the set considering the VA of the default content
+	 * data. The number of the bins is sqrt(VA size). This only works for homogeneous sets, if used
+	 * on other sets an exception is thrown.
+	 * 
+	 * @return the Histogram of the values in the set
+	 * @throws UnsupportedOperationException
+	 *             when used on non-homogeneous sets
+	 */
+	public Histogram getBaseHistogram() throws UnsupportedOperationException;
+
+	/**
+	 * Returns a histogram of the values of all storages in the set considering the specified VA. The number
+	 * of the bins is sqrt(VA size). This only works for homogeneous sets, if used on other sets an exception
+	 * is thrown.
+	 * 
+	 * @return the Histogram of the values in the set
+	 * @throws UnsupportedOperationException
+	 *             when used on non-homogeneous sets
+	 */
+	public Histogram getHistogram(ContentVirtualArray contentVA) throws UnsupportedOperationException;
+
+	/**
 	 * Removes all data related to the set (Storages, Virtual Arrays and Sets) from the managers so that the
 	 * garbage collector can handle it.
 	 */

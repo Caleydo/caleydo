@@ -41,6 +41,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	
 	public static final int HEATMAP_VIEW = 0;
 	public static final int PARCOORDS_VIEW = 1;
+	public static final int HISTOGRAM_VIEW = 2;
 
 	private LayoutManager templateRenderer;
 	private BrickLayoutTemplate brickLayout;
@@ -86,6 +87,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	public void init(GL2 gl) {
 		baseDisplayListIndex = gl.glGenLists(1);
 		
+		if(set == null)
+			set = dataDomain.getSet();
+		
 		if(contentVA == null)
 			contentVA = dataDomain.getContentVA(Set.CONTENT);
 
@@ -108,9 +112,16 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		views.put(PARCOORDS_VIEW, parCoords);
 		viewLayoutRenderers.put(PARCOORDS_VIEW, parCoordsLayoutRenderer);
 		
-		currentRemoteView = parCoords;
+		HistogramCreator histogramCreator = new HistogramCreator();
+		AGLView histogram = histogramCreator.createRemoteView(this,
+				gl, glMouseListener);
+		LayoutRenderer histogramLayoutRenderer = new ViewLayoutRenderer(histogram);
+		views.put(HISTOGRAM_VIEW, histogram);
+		viewLayoutRenderers.put(HISTOGRAM_VIEW, histogramLayoutRenderer);
 		
-		brickLayout.setViewRenderer(parCoordsLayoutRenderer);
+		currentRemoteView = histogram;
+		
+		brickLayout.setViewRenderer(histogramLayoutRenderer);
 		templateRenderer.setTemplate(brickLayout);
 		templateRenderer.updateLayout();
 
