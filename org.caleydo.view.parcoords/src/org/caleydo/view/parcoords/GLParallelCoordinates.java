@@ -337,7 +337,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		
 //		setDetailLevel(DetailLevel.HIGH);
 
-		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		
 		gl.glEnable(GL2.GL_BLEND);
 

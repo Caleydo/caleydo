@@ -35,6 +35,14 @@ public class ViewToolBarRenderer extends LayoutRenderer {
 			registerPickingListeners();
 
 		float buttonSpacing = 0.05f * x;
+		
+//		gl.glColor3f(0.5f, 0.5f, 0.5f);
+//		gl.glBegin(GL2.GL_QUADS);
+//		gl.glVertex3f(0, 0, 0);
+//		gl.glVertex3f(x, 0, 0);
+//		gl.glVertex3f(x, y, 0);
+//		gl.glVertex3f(0, y, 0);
+//		gl.glEnd();
 
 		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 				EPickingType.BRICK_TOOLBAR_BUTTONS, CLUSTER_BUTTON_ID));

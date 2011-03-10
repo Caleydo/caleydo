@@ -37,31 +37,30 @@ public class FuelBarRenderer extends LayoutRenderer {
 
 		int currentNumElements = contentVA.size();
 		
-		float sideSpacing = y * SIDE_SPACING_PORTION;
-		float fuelBarWidth = (float) x - 2 * sideSpacing;
-		float fuelWidth = (float) fuelBarWidth / totalNumElements * currentNumElements;
+		float fuelWidth = (float) x / totalNumElements * currentNumElements;
 		
 
-		gl.glColor3f(0.5f, 0.5f, 0.5f);
+//		gl.glColor3f(0.5f, 0.5f, 0.5f);
+//		gl.glBegin(GL2.GL_QUADS);
+//		gl.glVertex3f(0, 0, 0);
+//		gl.glVertex3f(x, 0, 0);
+//		gl.glVertex3f(x, y, 0);
+//		gl.glVertex3f(0, y, 0);
+		
 		gl.glBegin(GL2.GL_QUADS);
+		gl.glColor3f(0.1f, 0.1f, 0.1f);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(x, 0, 0);
+		gl.glColor3f(0.3f, 0.3f, 0.3f);
 		gl.glVertex3f(x, y, 0);
 		gl.glVertex3f(0, y, 0);
-		
-		gl.glColor3f(0.2f, 0.2f, 0.2f);
-		gl.glVertex3f(sideSpacing, sideSpacing, 0);
-		gl.glVertex3f(fuelBarWidth, sideSpacing, 0);
-		gl.glColor3f(0.4f, 0.4f, 0.4f);
-		gl.glVertex3f(fuelBarWidth, y - sideSpacing, 0);
-		gl.glVertex3f(sideSpacing, y - sideSpacing, 0);
 
 		gl.glColor3f(0, 0.3f, 0);
-		gl.glVertex3f(sideSpacing, sideSpacing, 0);
-		gl.glVertex3f(fuelWidth, sideSpacing, 0);
+		gl.glVertex3f(0, 0, 0);
+		gl.glVertex3f(fuelWidth, 0, 0);
 		gl.glColor3f(0, 1f, 0);
-		gl.glVertex3f(fuelWidth, y - sideSpacing, 0);
-		gl.glVertex3f(sideSpacing, y - sideSpacing, 0);
+		gl.glVertex3f(fuelWidth, y, 0);
+		gl.glVertex3f(0, y , 0);
 		gl.glEnd();
 	}
 

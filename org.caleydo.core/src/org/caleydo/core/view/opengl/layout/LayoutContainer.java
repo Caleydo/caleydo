@@ -220,6 +220,7 @@ public abstract class LayoutContainer
 
 	@Override
 	protected void updateSpacings() {
+		super.updateSpacings();
 		for (ElementLayout element : elements) {
 			element.updateSpacings();
 		}

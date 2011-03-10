@@ -36,6 +36,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
@@ -88,6 +89,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		bottomBricks = new ArrayList<GLBrick>(20);
 
 		centerLayout = new Column("centralBrick");
+		centerLayout.setFrameColor(1, 1, 0, 1);
+//		centerLayout.setDebug(true);
 
 		topCol = new Column("dimensionGroupColumnTop");
 		topCol.setFrameColor(1, 0, 1, 1);
@@ -140,12 +143,15 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		captionLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		captionLayout.setPixelSizeY(20);
 		captionLayout.setFrameColor(0, 0, 1, 1);
+//		captionLayout.setDebug(true);
 
 		DimensionGroupCaptionRenderer captionRenderer = new DimensionGroupCaptionRenderer(
 				this);
 		captionLayout.setRenderer(captionRenderer);
+		
 
 		centerLayout.appendElement(captionLayout);
+//		centerLayout.appendElement(spacingLayoutY);
 
 		createSubBricks();
 	}
@@ -324,6 +330,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public void display(GL2 gl) {
 		centerBrick.processEvents();
+//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		while (!uninitializedBricks.isEmpty()) {
 			uninitializedBricks.poll().initRemote(gl, this, glMouseListener);
 		}

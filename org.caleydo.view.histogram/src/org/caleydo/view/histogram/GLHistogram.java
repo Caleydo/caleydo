@@ -193,7 +193,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 		renderHistogram(gl);
-		if (useColorMapping)
+		if (useColorMapping && detailLevel != DetailLevel.LOW)
 			renderColorBars(gl);
 		gl.glEndList();
 	}
