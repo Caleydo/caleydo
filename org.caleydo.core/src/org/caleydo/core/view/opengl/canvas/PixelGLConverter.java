@@ -45,4 +45,26 @@ public class PixelGLConverter {
 		float height = totalHeightGL / totalHeightPixel.floatValue() * pixelHeight;
 		return height;
 	}
+	
+	public float getPixelWidthForGLWidth(float glWidth) {
+		float totalWidthGL = viewFrustum.getWidth();
+		Double totalWidthPixel = canvas.getBounds().getWidth();
+		if (totalWidthPixel == null || totalWidthPixel <= 0)
+			throw new IllegalStateException("Width of Canvas in pixel is " + totalWidthPixel
+				+ ". It's likely that the canvas is not initialized.");
+
+		float width = totalWidthPixel.floatValue() / totalWidthGL * glWidth;
+		return width;
+	}
+
+	public float getPixelHeightForGLHeight(int glHeight) {
+		float totalHeightGL = viewFrustum.getHeight();
+		Double totalHeightPixel = canvas.getBounds().getHeight();
+
+		if (totalHeightPixel == null || totalHeightPixel <= 0)
+			throw new IllegalStateException("Height of Canvas in pixel is " + totalHeightPixel
+				+ ". It's likely that the canvas is not initialized.");
+		float height = totalHeightPixel.floatValue() / totalHeightGL * glHeight;
+		return height;
+	}
 }

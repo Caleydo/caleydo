@@ -6,6 +6,8 @@ import java.nio.IntBuffer;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+
 import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
@@ -191,6 +193,44 @@ public class CaleydoTextRenderer
 
 	Rectangle2D getReferenceBounds() {
 		return referenceBounds;
+	}
+
+	/**
+	 * Renders a text with specified pixel height.
+	 * 
+	 * @param gl
+	 *            GL2 context.
+	 * @param text
+	 *            Text to render
+	 * @param x
+	 *            X coordinate of the text.
+	 * @param y
+	 *            Y coordinate of the text.
+	 * @param z
+	 *            Z coordinate of the text.
+	 * @param scaling
+	 *            Factor the text is scaled with.
+	 * @param minSize
+	 *            Minimum size of the text. Note that the minimum size is scaled with the specified scaling
+	 *            vector.
+	 * @param pixelHeight
+	 *            Height of the text in pixels.
+	 * @param pixelGLConverter
+	 *            
+	 */
+	public void renderText(GL2 gl, String text, float x, float y, float z, int pixelHeight,
+		PixelGLConverter pixelGLConverter) {
+		
+		int fontSize = getFont().getSize();
+
+		float glFontHeight = pixelGLConverter.getGLHeightForPixelHeight(fontSize);
+		
+		float scaling = (float)(glFontHeight*(float)((float)pixelHeight/(float)fontSize))/(float)fontSize;
+		
+		begin3DRendering();
+		draw3D(text, x, y, z, scaling);
+		flush();
+		end3DRendering();
 	}
 
 }

@@ -1,9 +1,13 @@
 package org.caleydo.view.visbricks.dimensiongroup;
 
+import java.awt.geom.Rectangle2D;
+
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 public class DimensionGroupCaptionRenderer extends LayoutRenderer {
 
@@ -17,11 +21,11 @@ public class DimensionGroupCaptionRenderer extends LayoutRenderer {
 	public void render(GL2 gl) {
 
 		int pickingID = dimensionGroup.getPickingManager().getPickingID(
-				dimensionGroup.getVisBricksViewID(), EPickingType.DIMENSION_GROUP,
-				dimensionGroup.getID());
+				dimensionGroup.getVisBricksViewID(),
+				EPickingType.DIMENSION_GROUP, dimensionGroup.getID());
 
 		gl.glPushName(pickingID);
-		gl.glColor4f(1,1,1,0);
+		gl.glColor4f(1, 1, 1, 0);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex2f(0, 0);
 		gl.glVertex2f(x, 0);
@@ -30,8 +34,13 @@ public class DimensionGroupCaptionRenderer extends LayoutRenderer {
 		gl.glEnd();
 		gl.glPopName();
 
-		dimensionGroup.getTextRenderer().renderText(gl, dimensionGroup.getSet().getLabel(), 0,
-				0f, 0, 0.0035f, 1);
+		CaleydoTextRenderer textRenderer = dimensionGroup.getTextRenderer();
+
+		textRenderer.setColor(0, 0, 0, 1);
+		textRenderer
+				.renderText(gl, dimensionGroup.getSet().getLabel(), 0, 0, 0,
+						20, dimensionGroup.getParentGLCanvas()
+								.getPixelGLConverter());
 
 	}
 }
