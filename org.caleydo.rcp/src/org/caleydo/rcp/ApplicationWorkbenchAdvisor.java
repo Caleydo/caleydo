@@ -1,7 +1,5 @@
 package org.caleydo.rcp;
 
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.serialize.AutoSaver;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.eclipse.jface.preference.IPreferenceNode;

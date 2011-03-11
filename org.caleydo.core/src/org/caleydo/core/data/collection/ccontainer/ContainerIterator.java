@@ -2,7 +2,7 @@ package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.ListIterator;
 
-import org.caleydo.core.data.virtualarray.IVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**
  * Iterator for containers of the type ATypedCContainer. The iterator can handle virtual arrays (optionally),
@@ -39,7 +39,7 @@ public class ContainerIterator<T>
 	 * @param virtualArray
 	 *            the virtual array
 	 */
-	public ContainerIterator(ATypedCContainer<T> container, IVirtualArray virtualArray) {
+	public ContainerIterator(ATypedCContainer<T> container, VirtualArray<?, ?, ?> virtualArray) {
 		this.container = container;
 		this.virtualArray = virtualArray;
 		this.vaIterator = virtualArray.iterator();

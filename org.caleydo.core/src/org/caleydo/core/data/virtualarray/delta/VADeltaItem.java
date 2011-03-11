@@ -2,7 +2,6 @@ package org.caleydo.core.data.virtualarray.delta;
 
 import org.caleydo.core.data.selection.delta.IDeltaItem;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.IVirtualArray;
 
 /**
  * A VADeltaItem contains all information for the modification of a single item in a virtual array. Typically
@@ -61,7 +60,7 @@ public class VADeltaItem
 	 * Static factory for a new delta item that adds an element at a specific position of a virtual array
 	 * 
 	 * @param iIndex
-	 *            the place where the element is added (see {@link IVirtualArray#add(int, Integer)})
+	 *            the place where the element is added (see {@link VirtualArray#add(int, Integer)})
 	 * @param iNewElement
 	 *            the new element
 	 * @return the created object

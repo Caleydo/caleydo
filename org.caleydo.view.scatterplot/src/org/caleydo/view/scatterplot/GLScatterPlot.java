@@ -22,7 +22,6 @@ import gleem.linalg.Vec3f;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
-import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,7 +1,6 @@
 package org.caleydo.core.data.filter.event;
 
 import org.caleydo.core.data.filter.Filter;
-import org.caleydo.core.manager.event.AEvent;
 
 /**
  * @author Thomas Geymayer

@@ -881,7 +881,7 @@ public class GLHeatMap extends AStorageBasedView {
 		Iterator<Integer> elementIterator = zoomedElements.iterator();
 		while (elementIterator.hasNext()) {
 			int contentID = elementIterator.next();
-			if (contentVA.containsElement(contentID) == 0)
+			if (!contentVA.contains(contentID))
 				elementIterator.remove();
 			else if (contentSelectionManager.checkStatus(SELECTION_HIDDEN, contentID))
 				elementIterator.remove();

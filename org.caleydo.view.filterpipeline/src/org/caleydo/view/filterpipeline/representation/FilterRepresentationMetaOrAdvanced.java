@@ -1,11 +1,12 @@
 package org.caleydo.view.filterpipeline.representation;
 
 import gleem.linalg.Vec2f;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 

@@ -11,7 +11,7 @@ import org.caleydo.core.util.clusterer.ClusterNode;
  * @author Bernhard Schlegl
  * @author Alexander Lex
  */
-public class Group {
+public class Group{
 
 	/** number of elements in the group/cluster */
 	private int size = 0;

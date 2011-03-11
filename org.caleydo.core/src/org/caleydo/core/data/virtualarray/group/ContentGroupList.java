@@ -8,5 +8,7 @@ import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 @XmlType
 public class ContentGroupList
 	extends GroupList<ContentGroupList, ContentVirtualArray, ContentVADelta> {
-
+	public ContentGroupList createInstance() {
+		return new ContentGroupList();
+	}
 }

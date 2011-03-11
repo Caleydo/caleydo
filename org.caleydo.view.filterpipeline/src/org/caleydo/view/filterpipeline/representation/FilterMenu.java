@@ -4,7 +4,9 @@
 package org.caleydo.view.filterpipeline.representation;
 
 import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.filter.ContentMetaOrFilter;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;

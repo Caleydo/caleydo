@@ -18,6 +18,35 @@ public class Row
 	}
 
 	@Override
+	public float getUnscalableElementWidth() {
+		if (!isXDynamic)
+			return super.getUnscalableElementWidth();
+		else {
+			float unscalableWidth = 0;
+			for (ElementLayout element : elements) {
+				unscalableWidth += element.getUnscalableElementWidth();
+			}
+			return unscalableWidth;
+		}
+	}
+
+	@Override
+	public float getUnscalableElementHeight() {
+		if (!isYDynamic)
+			return super.getUnscalableElementHeight();
+		else {
+			float maxHeight = 0;
+			for (ElementLayout element : elements) {
+				float elementHeight = element.getUnscalableElementHeight();
+				if (elementHeight > maxHeight)
+					maxHeight = elementHeight;
+
+			}
+			return maxHeight;
+		}
+	}
+
+	@Override
 	protected void calculateTransforms(float bottom, float left, float top, float right) {
 		super.calculateTransforms(bottom, left, top, right);
 
@@ -47,15 +76,40 @@ public class Row
 	}
 
 	@Override
+	void calculateScales(float totalWidth, float totalHeight) {
+		super.calculateScales(totalWidth, totalHeight);
+
+		float availableWidth = getSizeScaledX();
+		float availableHeight = getSizeScaledY();
+
+		if (isXDynamic)
+			availableWidth = totalWidth;
+
+		if (isYDynamic)
+			availableHeight = totalHeight;
+
+		float highestElement = 0;
+		for (ElementLayout element : elements) {
+			float tempHeight = element.getUnscalableElementHeight();
+			if (tempHeight > highestElement)
+				highestElement = tempHeight;
+
+			availableWidth -= element.getUnscalableElementWidth();
+		}
+		availableHeight -= highestElement;
+		calculateSubElementScales(availableWidth, availableHeight);
+	}
+
+	@Override
 	protected void calculateSubElementScales(float availableWidth, float availableHeight) {
 
 		float dynamicWidth = 0;
 		float totalWidth = 0;
 		// the largest height of any element in the row (only relevant if isZDynamic is true)
 		float largestHeight = 0;
-		
+
 		ElementLayout greedyElement = null;
-		
+
 		for (ElementLayout element : elements) {
 			if (element.grabX) {
 				if (greedyElement != null)
@@ -66,7 +120,7 @@ public class Row
 			element.calculateScales(availableWidth, availableHeight);
 			totalWidth += element.getSizeScaledX();
 			// if an element is set in absolute size, the available size is already reduced by that value
-			if (!element.isHeightStatic())
+			if (!element.isWidthStatic())
 				dynamicWidth += element.getSizeScaledX();
 			if (largestHeight < element.getSizeScaledY())
 				largestHeight = element.getSizeScaledY();

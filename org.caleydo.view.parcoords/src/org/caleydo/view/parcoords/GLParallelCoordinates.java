@@ -83,7 +83,6 @@ import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -150,8 +149,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	private float fXTranslation = 0;
 
 	private float fYTranslation = 0;
-
-
 
 	private boolean bAngularBrushingSelectPolyline = false;
 	private boolean bIsAngularBrushingActive = false;
@@ -256,7 +253,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			final GLMouseListener glMouseListener) {
 
 		this.glMouseListener = glMouseListener;
-	
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
@@ -334,11 +330,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	public void display(final GL2 gl) {
 
 		// displayVBO(gl);
-		
-//		setDetailLevel(DetailLevel.HIGH);
 
-//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-		
+		// setDetailLevel(DetailLevel.HIGH);
+
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+
 		gl.glEnable(GL2.GL_BLEND);
 
 		if (generalManager.getTrackDataProvider().isTrackModeActive())
@@ -634,11 +630,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		else
 			contentVAType = ISet.CONTENT;
 
-//		contentVA = dataDomain.getContentVA(contentVAType);
+		// contentVA = dataDomain.getContentVA(contentVAType);
 		contentVA = set.getContentData(contentVAType).getContentVA();
 
 		storageVA = set.getStorageData(storageVAType).getStorageVA();
-//		storageVA = dataDomain.getStorageVA(storageVAType);
+		// storageVA = dataDomain.getStorageVA(storageVAType);
 
 		initContentVariables();
 
@@ -1531,11 +1527,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	public void handleVAUpdate(StorageVADelta delta, String info) {
 		for (VADeltaItem item : delta) {
 			if (item.getType() == EVAOperation.REMOVE) {
-				int iElement = storageVA.get(item.getIndex());
+				Integer id = storageVA.get(item.getIndex());
 
 				// resetAxisSpacing();
-				if (storageVA.containsElement(iElement) == 1) {
-					removeGate(iElement);
+				if (storageVA.occurencesOf(id) == 1) {
+					removeGate(id);
 				}
 			} else if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
 
@@ -1841,7 +1837,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				iChangeDropOnAxisNumber = pickingID;
 				break;
 			case CLICKED:
-				if (storageVA.containsElement(storageVA.get(pickingID)) == 1) {
+				if (storageVA.occurencesOf(storageVA.get(pickingID)) == 1) {
 					removeGate(storageVA.get(pickingID));
 				}
 				// Integer storageID = storageVA.remove(pickingID);
@@ -2651,11 +2647,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	public ISet getSet() {
 		return set;
 	}
-	
+
 	public void setSet(ISet set) {
 		this.set = set;
 	}
-	
+
 	public void setContentVA(ContentVirtualArray contentVA) {
 		this.contentVA = contentVA;
 	}

@@ -36,13 +36,16 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 	}
 
 	protected Row createBrickToolBar(int pixelHeight) {
-		Row toolBar = new Row();
-		toolBar.setPixelGLConverter(pixelGLConverter);
-		toolBar.setPixelSizeY(pixelHeight);
+		Row toolBar = new Row("ToolBarRow");
+//		toolBar.setDebug(true);
+		// toolBar.setPixelGLConverter(pixelGLConverter);
+		// toolBar.setPixelSizeY(pixelHeight);
+		toolBar.setYDynamic(true);
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutX.setPixelSizeX(4);
+		spacingLayoutX.setPixelSizeY(0);
 
 		ElementLayout heatMapButtonLayout = new ElementLayout("heatMapButton");
 		heatMapButtonLayout.setPixelGLConverter(pixelGLConverter);
@@ -51,10 +54,10 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 		heatMapButtonLayout.setRenderer(new ButtonRenderer(brick,
 				EPickingType.BRICK_TOOLBAR_BUTTONS, HEATMAP_BUTTON_ID,
 				EIconTextures.HEAT_MAP_ICON, brick.getTextureManager()));
-		
+
 		toolBar.appendElement(heatMapButtonLayout);
 		toolBar.appendElement(spacingLayoutX);
-		
+
 		ElementLayout parCoordsButtonLayout = new ElementLayout("parCoords");
 		parCoordsButtonLayout.setPixelGLConverter(pixelGLConverter);
 		parCoordsButtonLayout.setPixelSizeX(pixelHeight);
@@ -62,12 +65,10 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 		parCoordsButtonLayout.setRenderer(new ButtonRenderer(brick,
 				EPickingType.BRICK_TOOLBAR_BUTTONS, PARCOORDS_BUTTON_ID,
 				EIconTextures.PAR_COORDS_ICON, brick.getTextureManager()));
-		
+
 		toolBar.appendElement(parCoordsButtonLayout);
 		toolBar.appendElement(spacingLayoutX);
-		
-		
-		
+
 		ElementLayout histogramButtonLayout = new ElementLayout("histogramButton");
 		histogramButtonLayout.setPixelGLConverter(pixelGLConverter);
 		histogramButtonLayout.setPixelSizeX(pixelHeight);
@@ -75,10 +76,10 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 		histogramButtonLayout.setRenderer(new ButtonRenderer(brick,
 				EPickingType.BRICK_TOOLBAR_BUTTONS, HISTOGRAM_BUTTON_ID,
 				EIconTextures.HISTOGRAM_ICON, brick.getTextureManager()));
-		
+
 		toolBar.appendElement(histogramButtonLayout);
 		toolBar.appendElement(spacingLayoutX);
-		
+
 		ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
 		clusterButtonLayout.setPixelGLConverter(pixelGLConverter);
 		clusterButtonLayout.setPixelSizeX(pixelHeight);
@@ -86,10 +87,9 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 		clusterButtonLayout.setRenderer(new ButtonRenderer(brick,
 				EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, 1,
 				EIconTextures.CLUSTER_ICON, brick.getTextureManager()));
-		
+
 		toolBar.appendElement(clusterButtonLayout);
-		
-		
+
 		registerPickingListeners();
 
 		return toolBar;
@@ -123,7 +123,7 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 				brick.setRemoteView(GLBrick.HISTOGRAM_VIEW);
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HISTOGRAM_BUTTON_ID);
-		
+
 		brick.addPickingListener(new APickingListener() {
 
 			@Override
@@ -138,16 +138,15 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 								StartClusteringDialog dialog = new StartClusteringDialog(
 										new Shell(), brick.getDataDomain());
 								dialog.open();
-								ClusterState clusterState = dialog
-										.getClusterState();
+								ClusterState clusterState = dialog.getClusterState();
 								if (clusterState == null)
 									return;
 
 								StartClusteringEvent event = null;
 								// if (clusterState != null && set != null)
 
-								event = new StartClusteringEvent(clusterState,
-										brick.getSet().getID());
+								event = new StartClusteringEvent(clusterState, brick
+										.getSet().getID());
 								event.setDataDomainType(brick.getDataDomain()
 										.getDataDomainType());
 								GeneralManager.get().getEventPublisher()
@@ -160,6 +159,5 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 
 		pickingListenersRegistered = true;
 	}
-
 
 }

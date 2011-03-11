@@ -23,12 +23,14 @@ public class CentralBrickLayoutTemplate extends BrickLayoutTemplate {
 		setBaseElementLayout(baseRow);
 
 		Column baseColumn = new Column("baseColumn");
+//		baseColumn.setDebug(true);
+		
 		// setBaseElementLayout(baseColumn);
 		// baseColumn.grabX();
-		baseColumn.setFrameColor(0, 1, 0, 0);
+		baseColumn.setFrameColor(0, 1, 0, 1);
 
 		ElementLayout fuelBarLayout = new ElementLayout("fuelBarLayout");
-		fuelBarLayout.setFrameColor(0, 1, 0, 0);
+		fuelBarLayout.setFrameColor(0, 1, 0, 1);
 		
 		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
 		fuelBarLayout.setPixelSizeY(12);
@@ -38,7 +40,7 @@ public class CentralBrickLayoutTemplate extends BrickLayoutTemplate {
 //		baseRow.appendElement(fuelBarLayout);
 
 		ElementLayout dimensionBarLayout = new ElementLayout("dimensionBar");
-		dimensionBarLayout.setFrameColor(1, 0, 1, 0);
+		dimensionBarLayout.setFrameColor(1, 0, 1, 1);
 		dimensionBarLayout.setPixelGLConverter(pixelGLConverter);
 		dimensionBarLayout.setPixelSizeY(12);
 
@@ -54,6 +56,7 @@ public class CentralBrickLayoutTemplate extends BrickLayoutTemplate {
 		viewToolBarLayout.setRenderer(new ViewToolBarRenderer(brick));
 		
 		Row toolBar = createBrickToolBar(16);
+		
 		
 //		toolBar.setYDynamic(true);
 		

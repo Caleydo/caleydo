@@ -960,7 +960,7 @@ public class HeatMapWrapper {
 
 	public GLHeatMap getHeatMapByContentID(int contentID) {
 		for (GLHeatMap tmpHeatMap : hashHeatMaps.values()) {
-			if (tmpHeatMap.getContentVA().containsElement(contentID) > 0) {
+			if (tmpHeatMap.getContentVA().contains(contentID)) {
 				return tmpHeatMap;
 			}
 		}

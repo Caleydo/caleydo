@@ -81,6 +81,7 @@ Export-Package: org.caleydo.core.bridge.gui;uses:="org.caleydo.core.serialize,or
    org.caleydo.core.util.clusterer,
    org.caleydo.core.data.virtualarray,
    org.caleydo.core.data.selection",
+ org.caleydo.core.data.virtualarray.similarity,
  org.caleydo.core.manager;
   uses:="org.caleydo.core.util.wii,
    org.caleydo.core.manager.id,

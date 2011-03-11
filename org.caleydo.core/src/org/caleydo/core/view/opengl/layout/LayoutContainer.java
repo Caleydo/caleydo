@@ -121,32 +121,6 @@ public abstract class LayoutContainer
 	}
 
 	@Override
-	public float getUnscalableElementHeight() {
-		if (!isYDynamic)
-			return super.getUnscalableElementHeight();
-		else {
-			float unscalableHeight = 0;
-			for (ElementLayout element : elements) {
-				unscalableHeight += element.getUnscalableElementHeight();
-			}
-			return unscalableHeight;
-		}
-	}
-
-	@Override
-	public float getUnscalableElementWidth() {
-		if (!isXDynamic)
-			return super.getUnscalableElementWidth();
-		else {
-			float unscalableWidth = 0;
-			for (ElementLayout element : elements) {
-				unscalableWidth += element.getUnscalableElementWidth();
-			}
-			return unscalableWidth;
-		}
-	}
-
-	@Override
 	public void updateSubLayout() {
 		calculateScales(totalWidth, totalHeight);
 		updateSpacings();
@@ -175,28 +149,6 @@ public abstract class LayoutContainer
 
 	// --------------------- End of Public Interface ---------------------
 
-	@Override
-	void calculateScales(float totalWidth, float totalHeight) {
-		super.calculateScales(totalWidth, totalHeight);
-	
-		float availableWidth = getSizeScaledX();
-		float availableHeight = getSizeScaledY();
-
-		if (isXDynamic)
-			availableWidth = totalWidth;
-
-		if (isYDynamic)
-			availableHeight = totalHeight;
-		
-		for (ElementLayout element : elements) {
-			availableHeight -= element.getUnscalableElementHeight();
-			availableWidth -= element.getUnscalableElementWidth();
-		}
-
-		calculateSubElementScales(availableWidth, availableHeight);
-
-	}
-
 	protected abstract void calculateSubElementScales(float availableWidth, float availableHeight);
 
 	protected void calculateTransforms(float bottom, float left, float top, float right) {
@@ -213,7 +165,7 @@ public abstract class LayoutContainer
 			element.updateSpacings();
 		}
 	}
-	
+
 	public ArrayList<ElementLayout> getElements() {
 		return elements;
 	}

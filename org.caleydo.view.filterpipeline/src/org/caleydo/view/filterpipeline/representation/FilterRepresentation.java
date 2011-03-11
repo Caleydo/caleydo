@@ -4,10 +4,11 @@
 package org.caleydo.view.filterpipeline.representation;
 
 import gleem.linalg.Vec2f;
+
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.PickingManager;

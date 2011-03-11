@@ -2,7 +2,7 @@ package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.NoSuchElementException;
 
-import org.caleydo.core.data.virtualarray.IVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**
  * Iterator for FloatCContainer Initialized by passing the container. Then provides the common iterator
@@ -25,7 +25,7 @@ public class FloatCContainerIterator
 		this.iSize = floatCContainer.size();
 	}
 
-	public FloatCContainerIterator(FloatCContainer floatCContainer, IVirtualArray virtualArray) {
+	public FloatCContainerIterator(FloatCContainer floatCContainer, VirtualArray<?, ?, ?> virtualArray) {
 		this(floatCContainer);
 		this.virtualArray = virtualArray;
 		this.vaIterator = virtualArray.iterator();

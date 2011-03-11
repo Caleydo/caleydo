@@ -2,7 +2,7 @@ package org.caleydo.core.data.collection.ccontainer;
 
 import javax.management.InvalidAttributeValueException;
 
-import org.caleydo.core.data.virtualarray.IVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**
  * A container for floats. Initialized with a float array. The length can not be modified after
@@ -63,7 +63,7 @@ public class FloatCContainer
 	 * 
 	 * @return the iterator for the container
 	 */
-	public FloatCContainerIterator iterator(IVirtualArray virtualArray) {
+	public FloatCContainerIterator iterator(VirtualArray<?, ?, ?> virtualArray) {
 		return new FloatCContainerIterator(this, virtualArray);
 	}
 

@@ -8,7 +8,6 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.IVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
@@ -41,7 +40,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManager<ConcreteType, VA,  VADelta>, VA extends VirtualArray<VA,  VADelta, ?>,  VADelta extends VirtualArrayDelta<VADelta>>
+public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManager<ConcreteType, VA, VADelta>, VA extends VirtualArray<VA, VADelta, ?>, VADelta extends VirtualArrayDelta<VADelta>>
 	extends SelectionManager
 	implements IListenerOwner, Cloneable {
 
@@ -70,7 +69,6 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 		this.virtualArray = virtualArray;
 
 	}
-
 
 	/**
 	 * Removes all elements and sets the element counter to 0 Removes all elements in selectionDelta. Clears
@@ -204,7 +202,7 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 		if (elements == null)
 			return 0;
 		for (Integer element : elements) {
-			if (virtualArray.containsElement(element) != 0)
+			if (virtualArray.contains(element))
 				size++;
 		}
 		return size;

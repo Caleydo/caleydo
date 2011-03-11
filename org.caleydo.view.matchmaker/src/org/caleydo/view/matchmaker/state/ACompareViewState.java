@@ -358,7 +358,7 @@ public abstract class ACompareViewState {
 							.size(); leftContentIndex++) {
 
 						int contentID = leftContentVA.get(leftContentIndex);
-						if (rightContentVA.containsElement(contentID) == 0)
+						if (!rightContentVA.contains(contentID))
 							continue;
 
 						bandContentIDs.add(contentID);
@@ -433,7 +433,7 @@ public abstract class ACompareViewState {
 
 			// Search first elment of groupVA in overview
 			for (Integer overviewContentID : overview) {
-				if (groupVA.containsElement(overviewContentID) == 0)
+				if (!groupVA.contains(overviewContentID))
 					continue;
 
 				groupPadding = leftGroupHeight * 0.2f;
@@ -476,14 +476,14 @@ public abstract class ACompareViewState {
 
 				for (ContentVirtualArray rightGroupVA : rightContentVAs) {
 
-					if (rightGroupVA.containsElement(contentID) == 0)
+					if (!rightGroupVA.contains(contentID))
 						continue;
 
 					float rightGroupHeight = rightGroupVA.size() * rightElementHeight;
 					float rightGroupTopY = 0;
 					for (Integer overviewRightContentID : overviewRight) {
 
-						if (rightGroupVA.containsElement(overviewRightContentID) == 0)
+						if (!rightGroupVA.contains(overviewRightContentID))
 							continue;
 
 						groupPadding = rightGroupHeight * 0.2f;
@@ -694,8 +694,8 @@ public abstract class ACompareViewState {
 	// gl.glEnd();
 	// }
 
-	protected float setRelationColor(GL2 gl, HeatMapWrapper heatMapWrapper, int contentID,
-			boolean considerSelection) {
+	protected float setRelationColor(GL2 gl, HeatMapWrapper heatMapWrapper,
+			int contentID, boolean considerSelection) {
 		// FIXME: The code and the function as a whole is ugly!
 		ArrayList<SelectionType> selectionTypes = heatMapWrapper
 				.getContentSelectionManager().getSelectionTypes(contentID);
@@ -1007,7 +1007,8 @@ public abstract class ACompareViewState {
 		}
 	}
 
-	// private void renderDendrogram(final GL2 gl, ClusterNode currentNode, float
+	// private void renderDendrogram(final GL2 gl, ClusterNode currentNode,
+	// float
 	// fOpacity,
 	// Tree<ClusterNode> tree, float xPosInit, boolean isLeft) {
 	//

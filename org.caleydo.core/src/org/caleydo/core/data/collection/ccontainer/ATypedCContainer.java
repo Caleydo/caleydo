@@ -2,7 +2,7 @@ package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.virtualarray.IVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**
  * Base class for CContainer which can use Generics
@@ -49,7 +49,7 @@ public abstract class ATypedCContainer<T>
 	 *            the virtual array which the iteration is based on
 	 * @return the iterator
 	 */
-	public ContainerIterator<T> iterator(IVirtualArray virtualArray) {
+	public ContainerIterator<T> iterator(VirtualArray<?, ?, ?> virtualArray) {
 		return new ContainerIterator<T>(this, virtualArray);
 	}
 

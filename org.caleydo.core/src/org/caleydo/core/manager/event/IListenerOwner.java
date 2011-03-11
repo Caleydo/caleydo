@@ -1,6 +1,5 @@
 package org.caleydo.core.manager.event;
 
-import org.caleydo.core.view.AView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
 /**

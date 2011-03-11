@@ -4043,10 +4043,10 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 						bEnableInterchange, bEnableExport);
 				groupContextMenuItemContainer.setDataDomain(dataDomain);
 				groupContextMenuItemContainer.setContentIDs(contentIDType,
-						contentVA.getGeneIdsOfGroup(iExternalID));
+						contentVA.getIDsOfGroup(iExternalID));
 
 				BookmarkItem bookmarkItem = new BookmarkItem(contentIDType,
-						contentVA.getGeneIdsOfGroup(iExternalID));
+						contentVA.getIDsOfGroup(iExternalID));
 				groupContextMenuItemContainer.addContextMenuItem(bookmarkItem);
 
 				contextMenu.addItemContanier(groupContextMenuItemContainer);
@@ -5083,7 +5083,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		for (Group iter : groupList) {
 			if (iter.getSelectionType() == SelectionType.SELECTION)
-				genesToExport.addAll(contentVA.getGeneIdsOfGroup(groupCnt));
+				genesToExport.addAll(contentVA.getIDsOfGroup(groupCnt));
 			groupCnt++;
 		}
 
@@ -5093,7 +5093,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			groupCnt = 0;
 			for (Group iter : storageGroupList) {
 				if (iter.getSelectionType() == SelectionType.SELECTION)
-					experimentsToExport.addAll(storageVA.getGeneIdsOfGroup(groupCnt));
+					experimentsToExport.addAll(storageVA.getIDsOfGroup(groupCnt));
 				groupCnt++;
 			}
 			if (experimentsToExport.size() == 0)
@@ -5118,7 +5118,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		for (Group iter : groupList) {
 			if (iter.getSelectionType() == SelectionType.SELECTION)
-				experimentsToExport.addAll(storageVA.getGeneIdsOfGroup(groupCnt));
+				experimentsToExport.addAll(storageVA.getIDsOfGroup(groupCnt));
 			groupCnt++;
 		}
 
@@ -5128,7 +5128,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			groupCnt = 0;
 			for (Group iter : contentGroupList) {
 				if (iter.getSelectionType() == SelectionType.SELECTION)
-					genesToExport.addAll(contentVA.getGeneIdsOfGroup(groupCnt));
+					genesToExport.addAll(contentVA.getIDsOfGroup(groupCnt));
 				groupCnt++;
 			}
 			if (genesToExport.size() == 0)

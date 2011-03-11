@@ -18,6 +18,36 @@ public class Column
 	}
 
 	@Override
+	public float getUnscalableElementHeight() {
+		if (!isYDynamic)
+			return super.getUnscalableElementHeight();
+		else {
+			float unscalableHeight = 0;
+			for (ElementLayout element : elements) {
+				unscalableHeight += element.getUnscalableElementHeight();
+			}
+			return unscalableHeight;
+		}
+	}
+
+	@Override
+	public float getUnscalableElementWidth() {
+		if (!isXDynamic)
+			return super.getUnscalableElementWidth();
+		else
+		{
+			float maxWidth = 0;
+			for (ElementLayout element : elements) {
+				float elementWidth = element.getUnscalableElementWidth(); 
+				if(elementWidth > maxWidth)
+					maxWidth = elementWidth;
+				
+			}
+			return maxWidth;
+		}
+	}
+
+	@Override
 	protected void calculateTransforms(float bottom, float left, float top, float right) {
 		super.calculateTransforms(bottom, left, top, right);
 
@@ -50,6 +80,31 @@ public class Column
 				element.setTransformY(top);
 			}
 		}
+	}
+
+	@Override
+	void calculateScales(float totalWidth, float totalHeight) {
+		super.calculateScales(totalWidth, totalHeight);
+
+		float availableWidth = getSizeScaledX();
+		float availableHeight = getSizeScaledY();
+
+		if (isXDynamic)
+			availableWidth = totalWidth;
+
+		if (isYDynamic)
+			availableHeight = totalHeight;
+
+		float widestElement = 0;
+		for (ElementLayout element : elements) {
+			float tempWidth = element.getUnscalableElementWidth();
+			if (tempWidth > widestElement)
+				widestElement = tempWidth;
+
+			availableHeight -= element.getUnscalableElementHeight();
+		}
+		availableWidth -= widestElement;
+		calculateSubElementScales(availableWidth, availableHeight);
 	}
 
 	@Override

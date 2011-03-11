@@ -4,7 +4,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.ContentData;
 import org.caleydo.core.data.collection.set.StorageData;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.IVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;

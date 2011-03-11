@@ -40,7 +40,6 @@ import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
@@ -184,7 +183,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		captionRow.setPixelSizeY(16);
 
 		captionLayout = new ElementLayout("caption1");
-		// captionLayout.setDebug(true);
+//		 captionLayout.setDebug(true);
 		// captionLayout.setFrameColor(0, 0, 1, 1);
 		captionLayout.setPixelGLConverter(pixelGLConverter);
 		captionLayout.setPixelSizeY(18);
@@ -401,6 +400,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		while (!uninitializedBricks.isEmpty()) {
 			uninitializedBricks.poll().initRemote(gl, this, glMouseListener);
 		}
+		checkForHits(gl);
 
 	}
 

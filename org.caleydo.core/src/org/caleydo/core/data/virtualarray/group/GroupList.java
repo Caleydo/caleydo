@@ -1,5 +1,6 @@
 package org.caleydo.core.data.virtualarray.group;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -37,6 +38,8 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 		this.groups = new ArrayList<Group>();
 	}
 
+	public abstract ConcreteType createInstance();
+
 	/**
 	 * Inserts the specified element at the specified position in this list. Shifts the element currently at
 	 * that position (if any) and any subsequent elements to the right (adds one to their indices).
@@ -57,6 +60,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	 *            the index to the collection
 	 */
 	public void append(Group newElement) {
+		newElement.setGroupID(groups.size());
 		groups.add(newElement);
 	}
 
@@ -93,14 +97,14 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	 *            the element to be checked
 	 * @return true or false
 	 */
-	 public boolean containsElement(Group element) {
-	 for (Group compareElement : groups) {
-	 if (compareElement == element) {
-	 return true;
-	 }
-	 }
-	 return false;
-	 }
+	public boolean containsElement(Group element) {
+		for (Group compareElement : groups) {
+			if (compareElement == element) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Copies the element at index iIndex to the next index. Shifts the element currently at that position (if
@@ -115,14 +119,14 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	}
 
 	/**
-	 * Returns the element at the specified index in the group list
+	 * Returns the group with the specified ID (also the index in the group list)
 	 * 
-	 * @param iIndex
-	 *            the index
-	 * @return the element at the index
+	 * @param groupID
+	 *            the id of the group the index
+	 * @return the group with the id, at that index
 	 */
-	public Group get(int index) {
-		return groups.get(index);
+	public Group get(int groupID) {
+		return groups.get(groupID);
 	}
 
 	/**
@@ -515,15 +519,15 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	}
 
 	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	public ConcreteType clone() {
-		GroupList groupList;
-		try {
-			groupList = (GroupList) super.clone();
-		}
-		catch (CloneNotSupportedException e) {
-			throw new IllegalStateException("Clone not supportet: " + e.getMessage());
-		}
+		ConcreteType groupList = this.createInstance();
+		// try {
+		// groupList = (GroupList) super.clone();
+		// }
+		// catch (CloneNotSupportedException e) {
+		// throw new IllegalStateException("Clone not supportet: " + e.getMessage());
+		// }
 		groupList.groups = (ArrayList<Group>) groups.clone();
 		return (ConcreteType) groupList;
 	}

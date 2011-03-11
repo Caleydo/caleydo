@@ -15,7 +15,7 @@ import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.RelationAnalyzer;
+import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.NewMetaSetsEvent;
@@ -189,7 +189,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 			dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas
 					.getPixelGLConverter());
-			dimensionGroupSpacing.setDebug(false);
+//			dimensionGroupSpacing.setDebug(false);
 			dimensionGroupSpacing.setAbsoluteSizeX(spacerWidth);
 			centerRowLayout.appendElement(dimensionGroupSpacing);
 		}
@@ -210,7 +210,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		leftColumnLayout = new Column("leftArchColumn");
 		leftColumnLayout.setFrameColor(1, 1, 0, 1);
-		leftColumnLayout.setDebug(false);
+//		leftColumnLayout.setDebug(false);
 		leftColumnLayout.setBottomUp(false);
 
 		ElementLayout dimensionGroupSpacing = new ElementLayout("dimensionGroupSpacing");
@@ -228,7 +228,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 			group.getLayout().setRatioSizeX(1);
 			group.getLayout().setAbsoluteSizeY(archSideThickness);
-			group.getLayout().setDebug(false);
+//			group.getLayout().setDebug(false);
 			group.setArchBounds(0, 0, 0);
 			leftColumnLayout.appendElement(group.getLayout());
 
@@ -262,7 +262,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		rightColumnLayout = new Column("rightArchColumn");
 		rightColumnLayout.setFrameColor(1, 1, 0, 1);
 		rightColumnLayout.setBottomUp(false);
-		rightColumnLayout.setDebug(false);
+//		rightColumnLayout.setDebug(false);
 
 		ElementLayout dimensionGroupSpacing = new ElementLayout("dimensionGroupSpacing");
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer();
@@ -282,7 +282,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			group.getLayout().setRatioSizeX(1);
 			// since this should be a square, we set the height as width here
 			group.getLayout().setAbsoluteSizeY(archSideThickness);
-			group.getLayout().setDebug(true);
+//			group.getLayout().setDebug(true);
 			group.setArchBounds(0, 0, 0);
 			rightColumnLayout.appendElement(group.getLayout());
 

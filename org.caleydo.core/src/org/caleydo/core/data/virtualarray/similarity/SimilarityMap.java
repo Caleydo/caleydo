@@ -1,25 +1,45 @@
-package org.caleydo.core.data.virtualarray;
+package org.caleydo.core.data.virtualarray.similarity;
 
 import java.util.HashMap;
 import java.util.Set;
 
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+
 /**
- * A map containing similarities from one specific setID / contentVA pair to (many) other pairs.
+ * A map containing similarities from one specific setID / contentVA pair to all other pairs.
  * 
  * @author Alexander Lex
  */
 public class SimilarityMap {
 
-	HashMap<Integer, VASimilarity<ContentVirtualArray>> similarityMap =
-		new HashMap<Integer, VASimilarity<ContentVirtualArray>>(20);
+	/**
+	 * Get the VASimilarity between this SimilarityMap's VA and the VA associated with the setID.
+	 * 
+	 * @param setID
+	 *            the setID associated with the VA that should be compared to the VA in this SimilarityMap
+	 * @return
+	 */
+	public VASimilarity<ContentVirtualArray, ContentGroupList> getVASimilarity(Integer setID) {
+		return similarityMap.get(setID);
+	}
+
+	// -------------------- END OF PUBLIC INTERFACE ----------------------------------
+	
+	
+
+	HashMap<Integer, VASimilarity<ContentVirtualArray, ContentGroupList>> similarityMap =
+		new HashMap<Integer, VASimilarity<ContentVirtualArray, ContentGroupList>>(20);
 
 	private Integer setID;
 	private ContentVirtualArray contentVA;
+	
+	
 
 	/**
 	 * Constructor with the key pair setID and contentVA
 	 */
-	public SimilarityMap(Integer setID, ContentVirtualArray contentVA) {
+	SimilarityMap(Integer setID, ContentVirtualArray contentVA) {
 		this.setID = setID;
 		this.contentVA = contentVA;
 	}
@@ -30,15 +50,15 @@ public class SimilarityMap {
 	 * @param comparedSetID
 	 * @param comparedContentVA
 	 */
-	public VASimilarity<ContentVirtualArray> calculateVASimilarity(Integer comparedSetID,
+	VASimilarity<ContentVirtualArray, ContentGroupList> calculateVASimilarity(Integer comparedSetID,
 		ContentVirtualArray comparedContentVA) {
-		VASimilarity<ContentVirtualArray> similarity;
+		VASimilarity<ContentVirtualArray, ContentGroupList> similarity;
 		if (similarityMap.containsKey(comparedSetID)) {
 			similarity = similarityMap.get(comparedSetID);
 
 		}
 		else {
-			similarity = new VASimilarity<ContentVirtualArray>();
+			similarity = new VASimilarity<ContentVirtualArray, ContentGroupList>();
 			similarity.addVA(setID, contentVA);
 		}
 
@@ -52,7 +72,7 @@ public class SimilarityMap {
 	 * 
 	 * @param vaSimilarity
 	 */
-	public void setVaSimilarity(VASimilarity<ContentVirtualArray> vaSimilarity) {
+	void setVaSimilarity(VASimilarity<ContentVirtualArray, ContentGroupList> vaSimilarity) {
 		Set<Integer> keys = vaSimilarity.getSetIDs();
 		boolean ownKeyContained = false;
 		Integer comparedSetID = null;
@@ -70,10 +90,6 @@ public class SimilarityMap {
 
 		similarityMap.put(comparedSetID, vaSimilarity);
 
-	}
-
-	public VASimilarity<ContentVirtualArray> getSmilarity(Integer setID) {
-		return similarityMap.get(setID);
 	}
 
 }

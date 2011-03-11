@@ -2,7 +2,6 @@ package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
 
-import java.awt.Font;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Set;

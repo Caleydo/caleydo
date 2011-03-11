@@ -1,6 +1,7 @@
 package org.caleydo.core.data.collection.ccontainer;
 
-import org.caleydo.core.data.virtualarray.IVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
+
 
 /**
  * CContainer implementation for int A container for ints. Initialized with an int array. The length can not
@@ -80,7 +81,7 @@ public class IntCContainer
 	 *            the virtual array
 	 * @return the iterator
 	 */
-	public IntCContainerIterator iterator(IVirtualArray virtualArray) {
+	public IntCContainerIterator iterator(VirtualArray<?,?,?> virtualArray) {
 		return new IntCContainerIterator(this, virtualArray);
 	}
 
