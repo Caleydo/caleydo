@@ -48,17 +48,18 @@ public class FuelBarRenderer extends LayoutRenderer {
 //		gl.glVertex3f(0, y, 0);
 		
 		gl.glBegin(GL2.GL_QUADS);
-		gl.glColor3f(0.1f, 0.1f, 0.1f);
+		gl.glColor3f(0.3f, 0.3f, 0.3f);
+		
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(x, 0, 0);
-		gl.glColor3f(0.3f, 0.3f, 0.3f);
+		gl.glColor3f(0.1f, 0.1f, 0.1f);
 		gl.glVertex3f(x, y, 0);
 		gl.glVertex3f(0, y, 0);
 
-		gl.glColor3f(0, 0.3f, 0);
+		gl.glColor3f(0, 0, 0);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(fuelWidth, 0, 0);
-		gl.glColor3f(0, 1f, 0);
+		gl.glColor3f(1, 1f, 1);
 		gl.glVertex3f(fuelWidth, y, 0);
 		gl.glVertex3f(0, y , 0);
 		gl.glEnd();

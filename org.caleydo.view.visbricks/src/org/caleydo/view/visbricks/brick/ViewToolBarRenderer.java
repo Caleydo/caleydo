@@ -1,5 +1,7 @@
 package org.caleydo.view.visbricks.brick;
 
+import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.GeneralManager;
@@ -8,6 +10,8 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.rcp.dialog.cluster.StartClusteringDialog;
 import org.eclipse.swt.widgets.Shell;
 
@@ -34,58 +38,95 @@ public class ViewToolBarRenderer extends LayoutRenderer {
 		if (!pickingListenersRegistered)
 			registerPickingListeners();
 
+		TextureManager textureManager = brick.getTextureManager();
+
 		float buttonSpacing = 0.05f * x;
-		
-//		gl.glColor3f(0.5f, 0.5f, 0.5f);
-//		gl.glBegin(GL2.GL_QUADS);
-//		gl.glVertex3f(0, 0, 0);
-//		gl.glVertex3f(x, 0, 0);
-//		gl.glVertex3f(x, y, 0);
-//		gl.glVertex3f(0, y, 0);
-//		gl.glEnd();
+
+		// gl.glColor3f(0.5f, 0.5f, 0.5f);
+		// gl.glBegin(GL2.GL_QUADS);
+		// gl.glVertex3f(0, 0, 0);
+		// gl.glVertex3f(x, 0, 0);
+		// gl.glVertex3f(x, y, 0);
+		// gl.glVertex3f(0, y, 0);
+		// gl.glEnd();
 
 		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 				EPickingType.BRICK_TOOLBAR_BUTTONS, CLUSTER_BUTTON_ID));
-		gl.glColor3f(1f, 0, 0);
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glVertex3f(0, 0, 0);
-		gl.glVertex3f(y, 0, 0);
-		gl.glVertex3f(y, y, 0);
-		gl.glVertex3f(0, y, 0);
+
+		Vec3f lowerLeftCorner = new Vec3f(0, 0, 0);
+		Vec3f lowerRightCorner = new Vec3f(y, 0, 0);
+		Vec3f upperRightCorner = new Vec3f(y, y, 0);
+		Vec3f upperLeftCorner = new Vec3f(0, y, 0);
+
+		textureManager.renderTexture(gl, EIconTextures.CLUSTER_ICON,
+				lowerLeftCorner, lowerRightCorner, upperRightCorner,
+				upperLeftCorner, 1, 1, 1, 1);
 		gl.glEnd();
 		gl.glPopName();
 
+		
+
 		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 				EPickingType.BRICK_TOOLBAR_BUTTONS, HEATMAP_BUTTON_ID));
-		gl.glColor3f(0, 1, 0);
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glVertex3f(y + buttonSpacing, 0, 0);
-		gl.glVertex3f(2 * y + buttonSpacing, 0, 0);
-		gl.glVertex3f(2 * y + buttonSpacing, y, 0);
-		gl.glVertex3f(y + buttonSpacing, y, 0);
-		gl.glEnd();
+		
+		lowerLeftCorner = new Vec3f(y + buttonSpacing, 0, 0);
+		lowerRightCorner = new Vec3f(2 * y + buttonSpacing, 0, 0);
+		upperRightCorner = new Vec3f(2 * y + buttonSpacing, y, 0);
+		upperLeftCorner = new Vec3f(y + buttonSpacing, y, 0);
+
+		textureManager.renderTexture(gl, EIconTextures.HEAT_MAP_ICON,
+				lowerLeftCorner, lowerRightCorner, upperRightCorner,
+				upperLeftCorner, 1, 1, 1, 1);
+		
+//		gl.glColor3f(0, 1, 0);
+//		gl.glBegin(GL2.GL_QUADS);
+//		gl.glVertex3f(y + buttonSpacing, 0, 0);
+//		gl.glVertex3f(2 * y + buttonSpacing, 0, 0);
+//		gl.glVertex3f(2 * y + buttonSpacing, y, 0);
+//		gl.glVertex3f(y + buttonSpacing, y, 0);
+//		gl.glEnd();
 		gl.glPopName();
 
 		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 				EPickingType.BRICK_TOOLBAR_BUTTONS, PARCOORDS_BUTTON_ID));
-		gl.glColor3f(0, 0, 1);
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glVertex3f(2 * y + 2 * buttonSpacing, 0, 0);
-		gl.glVertex3f(3 * y + 2 * buttonSpacing, 0, 0);
-		gl.glVertex3f(3 * y + 2 * buttonSpacing, y, 0);
-		gl.glVertex3f(2 * y + 2 * buttonSpacing, y, 0);
-		gl.glEnd();
-		gl.glPopName();
 		
+		lowerLeftCorner = new Vec3f(2 * y + 2 * buttonSpacing, 0, 0);
+		lowerRightCorner = new Vec3f(3 * y + 2 * buttonSpacing, 0, 0);
+		upperRightCorner = new Vec3f(3 * y + 2 * buttonSpacing, y, 0);
+		upperLeftCorner = new Vec3f(2 * y + 2 * buttonSpacing, y, 0);
+
+		textureManager.renderTexture(gl, EIconTextures.PAR_COORDS_ICON,
+				lowerLeftCorner, lowerRightCorner, upperRightCorner,
+				upperLeftCorner, 1, 1, 1, 1);
+		
+//		gl.glColor3f(0, 0, 1);
+//		gl.glBegin(GL2.GL_QUADS);
+//		gl.glVertex3f(2 * y + 2 * buttonSpacing, 0, 0);
+//		gl.glVertex3f(3 * y + 2 * buttonSpacing, 0, 0);
+//		gl.glVertex3f(3 * y + 2 * buttonSpacing, y, 0);
+//		gl.glVertex3f(2 * y + 2 * buttonSpacing, y, 0);
+//		gl.glEnd();
+		gl.glPopName();
+
 		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 				EPickingType.BRICK_TOOLBAR_BUTTONS, HISTOGRAM_BUTTON_ID));
-		gl.glColor3f(0, 1, 1);
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glVertex3f(3 * y + 3 * buttonSpacing, 0, 0);
-		gl.glVertex3f(4 * y + 3 * buttonSpacing, 0, 0);
-		gl.glVertex3f(4 * y + 3 * buttonSpacing, y, 0);
-		gl.glVertex3f(3 * y + 3 * buttonSpacing, y, 0);
-		gl.glEnd();
+		
+		lowerLeftCorner = new Vec3f(3 * y + 3 * buttonSpacing, 0, 0);
+		lowerRightCorner = new Vec3f(4 * y + 3 * buttonSpacing, 0, 0);
+		upperRightCorner = new Vec3f(4 * y + 3 * buttonSpacing, y, 0);
+		upperLeftCorner = new Vec3f(3 * y + 3 * buttonSpacing, y, 0);
+
+		textureManager.renderTexture(gl, EIconTextures.HISTOGRAM_ICON,
+				lowerLeftCorner, lowerRightCorner, upperRightCorner,
+				upperLeftCorner, 1, 1, 1, 1);
+		
+//		gl.glColor3f(0, 1, 1);
+//		gl.glBegin(GL2.GL_QUADS);
+//		gl.glVertex3f(3 * y + 3 * buttonSpacing, 0, 0);
+//		gl.glVertex3f(4 * y + 3 * buttonSpacing, 0, 0);
+//		gl.glVertex3f(4 * y + 3 * buttonSpacing, y, 0);
+//		gl.glVertex3f(3 * y + 3 * buttonSpacing, y, 0);
+//		gl.glEnd();
 		gl.glPopName();
 	}
 
@@ -106,7 +147,7 @@ public class ViewToolBarRenderer extends LayoutRenderer {
 								dialog.open();
 								ClusterState clusterState = dialog
 										.getClusterState();
-								if(clusterState == null)
+								if (clusterState == null)
 									return;
 
 								StartClusteringEvent event = null;
@@ -139,7 +180,7 @@ public class ViewToolBarRenderer extends LayoutRenderer {
 				brick.setRemoteView(GLBrick.PARCOORDS_VIEW);
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, PARCOORDS_BUTTON_ID);
-		
+
 		brick.addPickingListener(new APickingListener() {
 
 			@Override

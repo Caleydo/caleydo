@@ -1,11 +1,13 @@
-package org.caleydo.view.visbricks.brick;
+package org.caleydo.view.visbricks.brick.layout;
 
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutContainer;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.view.visbricks.brick.BackGroundRenderer;
+import org.caleydo.view.visbricks.brick.BorderedAreaRenderer;
+import org.caleydo.view.visbricks.brick.FuelBarRenderer;
+import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.ViewToolBarRenderer;
 
 /**
  * Layout LayoutTemplate for a Brick
@@ -13,13 +15,11 @@ import org.caleydo.core.view.opengl.layout.Row;
  * @author Alexander Lex
  * 
  */
-public class BrickLayoutTemplate extends LayoutTemplate {
+public class DefaultBrickLayoutTemplate extends BrickLayoutTemplate {
 
-	private GLBrick brick;
-	private LayoutRenderer viewRenderer;
 
-	public BrickLayoutTemplate(GLBrick brick) {
-		this.brick = brick;
+	public DefaultBrickLayoutTemplate(GLBrick brick) {
+		super(brick);
 	}
 
 	@Override
@@ -61,11 +61,13 @@ public class BrickLayoutTemplate extends LayoutTemplate {
 		viewLayout.addBackgroundRenderer(new BackGroundRenderer());
 		viewLayout.setRenderer(viewRenderer);
 
-		ElementLayout viewToolBarLayout = new ElementLayout("viewToolBarLayout");
-		viewToolBarLayout.setFrameColor(0.5f, 0.5f, 0, 1);
-		viewToolBarLayout.setPixelGLConverter(pixelGLConverter);
-		viewToolBarLayout.setPixelSizeY(15);
-		viewToolBarLayout.setRenderer(new ViewToolBarRenderer(brick));
+//		ElementLayout viewToolBarLayout = new ElementLayout("viewToolBarLayout");
+//		viewToolBarLayout.setFrameColor(0.5f, 0.5f, 0, 1);
+//		viewToolBarLayout.setPixelGLConverter(pixelGLConverter);
+//		viewToolBarLayout.setPixelSizeY(15);
+//		viewToolBarLayout.setRenderer(new ViewToolBarRenderer(brick));
+		
+		Row toolBar = createBrickToolBar(16);
 		
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
 		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
@@ -77,14 +79,8 @@ public class BrickLayoutTemplate extends LayoutTemplate {
 		baseColumn.appendElement(spacingLayoutY);
 		baseColumn.appendElement(viewLayout);
 		baseColumn.appendElement(spacingLayoutY);
-		baseColumn.appendElement(viewToolBarLayout);
+		baseColumn.appendElement(toolBar);
 		baseColumn.appendElement(spacingLayoutY);
-		
-
-	}
-
-	void setViewRenderer(LayoutRenderer viewRenderer) {
-		this.viewRenderer = viewRenderer;
 	}
 
 }

@@ -38,8 +38,8 @@ public class DimensionGroupCaptionRenderer extends LayoutRenderer {
 
 		textRenderer.setColor(0, 0, 0, 1);
 		textRenderer
-				.renderText(gl, dimensionGroup.getSet().getLabel(), 0, 0, 0,
-						20, dimensionGroup.getParentGLCanvas()
+				.renderText(gl, dimensionGroup.getSet().getLabel(), 0, y/8.0f, 0,
+						18, dimensionGroup.getParentGLCanvas()
 								.getPixelGLConverter());
 
 	}

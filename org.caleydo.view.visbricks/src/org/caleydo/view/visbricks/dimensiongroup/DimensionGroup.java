@@ -18,30 +18,40 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
+import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
+import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.rcp.dialog.cluster.StartClusteringDialog;
 import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.visbricks.brick.BorderedAreaRenderer;
+import org.caleydo.view.visbricks.brick.ButtonRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.layout.CentralBrickLayoutTemplate;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * Container for a group of dimensions. Manages layouts as well as brick views
@@ -71,7 +81,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private ISet set;
 	private ASetBasedDataDomain dataDomain;
 
-	private EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+	private EventPublisher eventPublisher = GeneralManager.get()
+			.getEventPublisher();
 	private ContentVAUpdateListener contentVAUpdateListener;
 	private ReplaceContentVAListener replaceContentVAListener;
 
@@ -89,8 +100,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		bottomBricks = new ArrayList<GLBrick>(20);
 
 		centerLayout = new Column("centerLayout");
-//		centerLayout.setFrameColor(1, 1, 0, 1);
-//		centerLayout.setDebug(true);
+		// centerLayout.setFrameColor(1, 1, 0, 1);
+		// centerLayout.setDebug(true);
 
 		topCol = new Column("dimensionGroupColumnTop");
 		topCol.setFrameColor(1, 0, 1, 1);
@@ -124,29 +135,60 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private void createBricks() {
 		// create basic layouts
 
-		brickFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0,
-				-4, 4);
+		brickFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
+				0, 0, 0, -4, 4);
 
 		centerBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
 				.createGLView(GLBrick.class, getParentGLCanvas(), brickFrustum);
 		centerBrick.setRemoteRenderingGLView(getRemoteRenderingGLCanvas());
 		centerBrick.setDataDomain(dataDomain);
 		centerBrick.setSet(set);
+		centerBrick.setBrickLayoutTemplate(new CentralBrickLayoutTemplate(
+				centerBrick));
 
 		ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(centerBrick);
 		ElementLayout centerBrickLayout = new ElementLayout("CenterBrickLayout");
 		centerBrickLayout.setRenderer(brickRenderer);
-//		centerBrickLayout.setDebug(true);
-//		centerBrickLayout.setFrameColor(1, 0, 0, 1);
+		// centerBrickLayout.setDebug(true);
+		// centerBrickLayout.setFrameColor(1, 0, 0, 1);
 		centerBrickLayout.setRatioSizeY(1f);
-		centerLayout.appendElement(centerBrickLayout);
+
+		centerLayout.setRenderer(new BorderedAreaRenderer());
+		Row centerRow = new Row("centerRow");
+
+		PixelGLConverter pixelGLConverter = parentGLCanvas
+				.getPixelGLConverter();
+
+		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
+		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
+		spacingLayoutY.setPixelSizeY(4);
+
+		centerLayout.appendElement(spacingLayoutY);
+		centerLayout.appendElement(centerRow);
+		centerLayout.appendElement(spacingLayoutY);
+
+		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
+		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
+		spacingLayoutX.setPixelSizeX(4);
+
+		Column centerColumn = new Column();
+
+		centerRow.appendElement(spacingLayoutX);
+		centerRow.appendElement(centerColumn);
+		centerRow.appendElement(spacingLayoutX);
+
+		centerColumn.appendElement(centerBrickLayout);
+
+		Row captionRow = new Row();
+		captionRow.setPixelGLConverter(pixelGLConverter);
+		captionRow.setPixelSizeY(16);
 
 		captionLayout = new ElementLayout("caption1");
-//		captionLayout.setDebug(true);
-//		captionLayout.setFrameColor(0, 0, 1, 1);
-		captionLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		captionLayout.setPixelSizeY(20);
-//		captionLayout.setRatioSizeY(0.2f);
+		// captionLayout.setDebug(true);
+		// captionLayout.setFrameColor(0, 0, 1, 1);
+		captionLayout.setPixelGLConverter(pixelGLConverter);
+		captionLayout.setPixelSizeY(18);
+		// captionLayout.setRatioSizeY(0.2f);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 		// captionLayout.setDebug(true);
 
@@ -154,14 +196,29 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				this);
 		captionLayout.setRenderer(captionRenderer);
 
-		centerLayout.appendElement(captionLayout);
+		captionRow.appendElement(captionLayout);
+		captionRow.appendElement(spacingLayoutX);
+
+		ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
+		clusterButtonLayout.setPixelGLConverter(pixelGLConverter);
+		clusterButtonLayout.setPixelSizeX(16);
+		clusterButtonLayout.setPixelSizeY(16);
+		clusterButtonLayout.setRenderer(new ButtonRenderer(this,
+				EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, 1,
+				EIconTextures.CLUSTER_ICON, textureManager));
+		
+		captionRow.appendElement(clusterButtonLayout);
+
+		centerColumn.appendElement(spacingLayoutY);
+		centerColumn.appendElement(captionRow);
 		// centerLayout.appendElement(spacingLayoutY);
 
 		createSubBricks();
 	}
 
 	private void createSubBricks() {
-		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT).getContentVA();
+		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT)
+				.getContentVA();
 
 		if (contentVA.getGroupList() == null)
 			return;
@@ -170,8 +227,11 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		int count = 0;
 		groupList.updateGroupInfo();
 		for (Group group : groupList) {
-			GLBrick subBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
-					.createGLView(GLBrick.class, getParentGLCanvas(), new ViewFrustum());
+			GLBrick subBrick = (GLBrick) GeneralManager
+					.get()
+					.getViewGLCanvasManager()
+					.createGLView(GLBrick.class, getParentGLCanvas(),
+							new ViewFrustum());
 
 			subBrick.setRemoteRenderingGLView(getRemoteRenderingGLCanvas());
 			subBrick.setDataDomain(dataDomain);
@@ -184,8 +244,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 			uninitializedBricks.add(subBrick);
 
-			ContentVirtualArray subVA = new ContentVirtualArray("CONTENT", contentVA
-					.getVirtualArray().subList(group.getStartIndex(),
+			ContentVirtualArray subVA = new ContentVirtualArray("CONTENT",
+					contentVA.getVirtualArray().subList(group.getStartIndex(),
 							group.getEndIndex() + 1));
 
 			subBrick.setContentVA(subVA);
@@ -255,15 +315,17 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		contentVAUpdateListener = new ContentVAUpdateListener();
 		contentVAUpdateListener.setHandler(this);
-		contentVAUpdateListener
-				.setExclusiveDataDomainType(dataDomain.getDataDomainType());
-		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
+		contentVAUpdateListener.setExclusiveDataDomainType(dataDomain
+				.getDataDomainType());
+		eventPublisher.addListener(ContentVAUpdateEvent.class,
+				contentVAUpdateListener);
 
 		replaceContentVAListener = new ReplaceContentVAListener();
 		replaceContentVAListener.setHandler(this);
 		replaceContentVAListener.setExclusiveDataDomainType(dataDomain
 				.getDataDomainType());
-		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
+		eventPublisher.addListener(ReplaceContentVAEvent.class,
+				replaceContentVAListener);
 
 	}
 
@@ -321,7 +383,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
+	public void initRemote(GL2 gl, AGLView glParentView,
+			GLMouseListener glMouseListener) {
 		createBricks();
 
 		centerBrick.initRemote(gl, glParentView, glMouseListener);
@@ -356,7 +419,36 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int pickingID, Pick pick) {
-		// TODO Auto-generated method stub
+		switch(pickingType) {
+		case DIMENSION_GROUP_CLUSTER_BUTTON:
+			if(pickingMode == EPickingMode.CLICKED) {
+				System.out.println("cluster");
+
+				getParentGLCanvas().getParentComposite().getDisplay()
+						.asyncExec(new Runnable() {
+							@Override
+							public void run() {
+								StartClusteringDialog dialog = new StartClusteringDialog(
+										new Shell(), getDataDomain());
+								dialog.open();
+								ClusterState clusterState = dialog
+										.getClusterState();
+								if (clusterState == null)
+									return;
+
+								StartClusteringEvent event = null;
+								// if (clusterState != null && set != null)
+
+								event = new StartClusteringEvent(clusterState,
+										getSet().getID());
+								event.setDataDomainType(getDataDomain()
+										.getDataDomainType());
+								GeneralManager.get().getEventPublisher()
+										.triggerEvent(event);
+							}
+						});
+			}
+		}
 
 	}
 
@@ -403,7 +495,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
+	public void setDraggingStartPoint(float mouseCoordinateX,
+			float mouseCoordinateY) {
 		// TODO Auto-generated method stub
 
 	}
@@ -424,7 +517,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
+	public void handleDrop(GL2 gl, float mouseCoordinateX,
+			float mouseCoordinateY) {
 
 		System.out.println("handle drop");
 	}
@@ -433,8 +527,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public void handleDragOver(GL2 gl, java.util.Set<IDraggable> draggables,
 			float mouseCoordinateX, float mouseCoordinateY) {
 
-		((GLVisBricks) glRemoteRenderingView).highlightDimensionGroupSpacer(this,
-				mouseCoordinateX, mouseCoordinateY);
+		((GLVisBricks) glRemoteRenderingView).highlightDimensionGroupSpacer(
+				this, mouseCoordinateX, mouseCoordinateY);
 	}
 
 	@Override

@@ -27,6 +27,9 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.view.visbricks.brick.layout.BrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 
 /**
  * Individual Brick for VisBricks
@@ -55,6 +58,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	private int baseDisplayListIndex;
 	private boolean isBaseDisplayListDirty = true;
+	
 	private ISet set;
 	// private GLHeatMap heatMap;
 	private ASetBasedDataDomain dataDomain;
@@ -94,7 +98,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			contentVA = dataDomain.getContentVA(Set.CONTENT);
 
 		templateRenderer = new LayoutManager(viewFrustum);
-		brickLayout = new BrickLayoutTemplate(this);
+		
+		if(brickLayout == null)
+			brickLayout = new DefaultBrickLayoutTemplate(this);
 
 		brickLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 
@@ -361,5 +367,13 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		LayoutRenderer viewRenderer = viewLayoutRenderers.get(viewType);
 		brickLayout.setViewRenderer(viewRenderer);
 		templateRenderer.updateLayout();
+	}
+	
+	public TextureManager getTextureManager() {
+		return textureManager;
+	}
+	
+	public void setBrickLayoutTemplate(BrickLayoutTemplate brickLayoutTemplate) {
+		this.brickLayout = brickLayoutTemplate;
 	}
 }

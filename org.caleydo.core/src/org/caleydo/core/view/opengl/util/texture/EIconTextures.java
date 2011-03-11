@@ -132,7 +132,11 @@ public enum EIconTextures {
 	COMPARER_SHOW_CAPTIONS("/resources/icons/view/compare/show_captions.png"),
 
 	GROUPER_COLLAPSE_PLUS("resources/icons/general/plus.png"),
-	GROUPER_COLLAPSE_MINUS("resources/icons/general/minus.png");
+	GROUPER_COLLAPSE_MINUS("resources/icons/general/minus.png"),
+	
+	CLUSTER_ICON("resources/icons/view/storagebased/clustering.png"),
+	
+	HISTOGRAM_ICON("resources/icons/view/histogram/histogram.png");
 
 	private String sFileName;
 

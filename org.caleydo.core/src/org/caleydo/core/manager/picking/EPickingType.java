@@ -156,5 +156,6 @@ public enum EPickingType {
 	
 	// bricks
 	BRICK_TOOLBAR_BUTTONS,
+	DIMENSION_GROUP_CLUSTER_BUTTON,
 	DIMENSION_GROUP;
 }
