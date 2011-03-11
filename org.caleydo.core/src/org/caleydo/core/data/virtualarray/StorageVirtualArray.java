@@ -6,8 +6,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.group.StorageGroupList;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
+import org.caleydo.core.data.virtualarray.group.StorageGroupList;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 @XmlType

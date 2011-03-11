@@ -11,14 +11,14 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.group.ContentGroupList;
-import org.caleydo.core.data.group.Group;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;

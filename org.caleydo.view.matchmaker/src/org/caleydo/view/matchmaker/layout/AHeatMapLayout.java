@@ -4,9 +4,9 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.group.ContentGroupList;
-import org.caleydo.core.data.group.Group;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;

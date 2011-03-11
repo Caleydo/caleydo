@@ -1,4 +1,4 @@
-package org.caleydo.core.data.group;
+package org.caleydo.core.data.virtualarray.group;
 
 import javax.xml.bind.annotation.XmlType;
 

@@ -1,4 +1,4 @@
-package org.caleydo.core.data.group;
+package org.caleydo.core.data.virtualarray.group;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -93,14 +93,14 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	 *            the element to be checked
 	 * @return true or false
 	 */
-	// public boolean containsElement(Group element) {
-	// for (Group compareElement : groups) {
-	// if (compareElement == element) {
-	// return true;
-	// }
-	// }
-	// return false;
-	// }
+	 public boolean containsElement(Group element) {
+	 for (Group compareElement : groups) {
+	 if (compareElement == element) {
+	 return true;
+	 }
+	 }
+	 return false;
+	 }
 
 	/**
 	 * Copies the element at index iIndex to the next index. Shifts the element currently at that position (if
@@ -109,10 +109,10 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	 * @param iIndex
 	 *            the index of the element to be copied
 	 */
-	// public void copy(int index) {
-	// groups.add(index + 1, groups.get(index));
-	//
-	// }
+	public void copy(int index) {
+		groups.add(index + 1, groups.get(index));
+
+	}
 
 	/**
 	 * Returns the element at the specified index in the group list

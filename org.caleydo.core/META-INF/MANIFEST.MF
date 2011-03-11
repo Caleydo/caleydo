@@ -62,11 +62,6 @@ Export-Package: org.caleydo.core.bridge.gui;uses:="org.caleydo.core.serialize,or
  org.caleydo.core.data.filter.representation,
  org.caleydo.core.data.graph;uses:="org.caleydo.util.graph,org.caleydo.core.data,org.caleydo.util.graph.item",
  org.caleydo.core.data.graph.tree;uses:="org.caleydo.core.data.mapping,org.jgrapht,org.caleydo.core.manager.datadomain",
- org.caleydo.core.data.group;
-  uses:="org.caleydo.core.data.collection,
-   org.caleydo.core.util.clusterer,
-   org.caleydo.core.data.virtualarray,
-   org.caleydo.core.data.selection",
  org.caleydo.core.data.mapping;uses:="org.caleydo.core.data.collection",
  org.caleydo.core.data.selection;
   uses:="org.caleydo.core.data.mapping,
@@ -81,6 +76,11 @@ Export-Package: org.caleydo.core.bridge.gui;uses:="org.caleydo.core.serialize,or
    org.caleydo.core.manager.event,
    org.caleydo.core.data.selection",
  org.caleydo.core.data.virtualarray.delta;uses:="org.caleydo.core.data.mapping,org.caleydo.core.data.selection.delta,org.caleydo.core.data.virtualarray",
+ org.caleydo.core.data.virtualarray.group;
+  uses:="org.caleydo.core.data.collection,
+   org.caleydo.core.util.clusterer,
+   org.caleydo.core.data.virtualarray,
+   org.caleydo.core.data.selection",
  org.caleydo.core.manager;
   uses:="org.caleydo.core.util.wii,
    org.caleydo.core.manager.id,

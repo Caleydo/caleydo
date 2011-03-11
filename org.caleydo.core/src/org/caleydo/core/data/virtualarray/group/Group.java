@@ -1,4 +1,4 @@
-package org.caleydo.core.data.group;
+package org.caleydo.core.data.virtualarray.group;
 
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -6,6 +6,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
+ * 
  * 
  * @author Bernhard Schlegl
  * @author Alexander Lex

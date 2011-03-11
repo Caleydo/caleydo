@@ -45,9 +45,13 @@ public class PreferenceManager {
 		return preferenceStore;
 	}
 
+	public static String getPreferencePath() {
+		return GeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME;
+	}
+
 	void initialize() {
 
-		preferenceStore = new PreferenceStore(GeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME);
+		preferenceStore = new PreferenceStore(getPreferencePath());
 		initializeDefaultPreferences();
 
 		try {
@@ -81,8 +85,8 @@ public class PreferenceManager {
 			initCaleydoFolder();
 		}
 
-//		System.setProperty("network.proxy_host", "proxy.kages.at");
-//		System.setProperty("network.proxy_port", "8080");
+		// System.setProperty("network.proxy_host", "proxy.kages.at");
+		// System.setProperty("network.proxy_port", "8080");
 
 		if (preferenceStore.getBoolean(PreferenceConstants.USE_PROXY)) {
 			System.setProperty("network.proxy_host",
@@ -142,7 +146,7 @@ public class PreferenceManager {
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO, false);
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_FOR_MOUSE_OVER, false);
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_FOR_SELECTIONS, true);
-		
+
 		// treemap
 		store.setDefault(PreferenceConstants.TREEMAP_DRAW_CLUSTER_FRAME, true);
 		store.setDefault(PreferenceConstants.TREEMAP_LAYOUT_ALGORITHM, 1);

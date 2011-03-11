@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.group.Group;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.matchmaker.HeatMapWrapper;

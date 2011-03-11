@@ -44,12 +44,13 @@ public class StartClusteringAction
 		// ASetBasedDataDomain dataDomain =
 		// DataDomainManager.getInstance().guessDataDomain(ASetBasedDataDomain.class);
 		ASetBasedDataDomain dataDomain =
-			(ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
-				"org.caleydo.datadomain.genetic");
+			(ASetBasedDataDomain) DataDomainManager.get().getDataDomain("org.caleydo.datadomain.genetic");
 
 		StartClusteringDialog dialog = new StartClusteringDialog(new Shell(), dataDomain);
 		dialog.open();
 		ClusterState clusterState = dialog.getClusterState();
+		if (clusterState == null)
+			return;
 
 		StartClusteringEvent event = null;
 		// if (clusterState != null && set != null)

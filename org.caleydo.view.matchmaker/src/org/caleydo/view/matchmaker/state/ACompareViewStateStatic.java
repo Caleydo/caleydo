@@ -8,13 +8,13 @@ import java.util.HashMap;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.group.ContentGroupList;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;

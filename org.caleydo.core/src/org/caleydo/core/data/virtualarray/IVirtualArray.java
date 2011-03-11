@@ -3,8 +3,8 @@ package org.caleydo.core.data.virtualarray;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.group.GroupList;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
+import org.caleydo.core.data.virtualarray.group.GroupList;
 
 /**
  * A Virtual Array provides an association between a modifiable index in the virtual arrays and the static

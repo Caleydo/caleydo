@@ -1,4 +1,4 @@
-package org.caleydo.core.data.group;
+package org.caleydo.core.data.virtualarray.group;
 
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;

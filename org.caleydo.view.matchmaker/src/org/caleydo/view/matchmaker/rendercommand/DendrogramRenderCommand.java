@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
 import org.caleydo.view.matchmaker.HeatMapWrapper;
 import org.caleydo.view.matchmaker.layout.AHeatMapLayout;

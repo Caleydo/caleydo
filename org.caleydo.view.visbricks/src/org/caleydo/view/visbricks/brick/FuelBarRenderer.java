@@ -4,8 +4,8 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
-import org.caleydo.core.data.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 public class FuelBarRenderer extends LayoutRenderer {

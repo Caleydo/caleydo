@@ -47,7 +47,7 @@ public class GeneralManager {
 
 	public static final String PLUGIN_ID = "org.caleydo.core";
 
-	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
+//	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
 	public static final String USER_HOME_TEMPLATE = "user.home";
 	
 	/**

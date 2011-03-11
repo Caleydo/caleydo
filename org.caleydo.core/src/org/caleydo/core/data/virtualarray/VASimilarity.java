@@ -3,7 +3,7 @@ package org.caleydo.core.data.virtualarray;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.caleydo.core.data.group.Group;
+import org.caleydo.core.data.virtualarray.group.Group;
 
 /**
  * Calculates the similarities of two virtual arrays on a {@link Group} basis.

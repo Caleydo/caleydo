@@ -7,8 +7,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 @XmlType

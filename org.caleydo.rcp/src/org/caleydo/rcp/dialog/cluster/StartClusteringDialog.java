@@ -61,6 +61,11 @@ public class StartClusteringDialog
 		super.cancelPressed();
 	}
 
+	/**
+	 * Returns the ClusterState as determined by the Cluster Dialog, or null if the dialog was canceled.
+	 * 
+	 * @return
+	 */
 	public ClusterState getClusterState() {
 		return startClusteringAction.getClusterState();
 	}

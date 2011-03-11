@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.PreferenceManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -161,8 +162,9 @@ public class StartupProcessor {
 			Logger.log(new Status(IStatus.WARNING, this.toString(), "Save Caleydo preferences..."));
 			generalManager.getPreferenceStore().save();
 		}
-		catch (IOException e) {
-			throw new IllegalStateException("Unable to save preference file.");
+		catch (IOException ioException) {
+			throw new IllegalStateException("Unable to save preference file at: "
+				+ PreferenceManager.getPreferencePath(), ioException);
 		}
 
 		IGroupwareManager groupwareManager = generalManager.getGroupwareManager();

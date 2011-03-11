@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.AUniqueObject;
-import org.caleydo.core.data.group.Group;
-import org.caleydo.core.data.group.GroupList;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterNode;

@@ -106,6 +106,8 @@ public class ViewToolBarRenderer extends LayoutRenderer {
 								dialog.open();
 								ClusterState clusterState = dialog
 										.getClusterState();
+								if(clusterState == null)
+									return;
 
 								StartClusteringEvent event = null;
 								// if (clusterState != null && set != null)
