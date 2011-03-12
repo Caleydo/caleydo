@@ -46,6 +46,22 @@ public class Row
 		}
 	}
 
+
+	/**
+	 * <p>
+	 * Set flag signaling whether the y-size of the container should be set to the largest size in y of its
+	 * sub-elements (true), or if some size indication (either scaled or not scaled) is given (false).
+	 * </p>
+	 * <p>
+	 * Notice that for if this is set to true, sub-elements must not have a ratioSize of 1 (which is the
+	 * default initialization). The reason for this is that it makes no sense, and catching it prevents
+	 * errors.
+	 */
+	@Override
+	public void setYDynamic(boolean isYDynamic) {
+		super.setYDynamic(isYDynamic);
+	}
+
 	@Override
 	protected void calculateTransforms(float bottom, float left, float top, float right) {
 		super.calculateTransforms(bottom, left, top, right);
@@ -117,6 +133,10 @@ public class Row
 				greedyElement = element;
 				continue;
 			}
+			if (isYDynamic && !element.isHeightStatic() && element.ratioSizeY == 1)
+				throw new IllegalStateException("Specified column " + this
+					+ " as dynamic in y, but the sub-element " + element
+					+ " has a ratioSize of 1, which is illegal.");
 			element.calculateScales(availableWidth, availableHeight);
 			totalWidth += element.getSizeScaledX();
 			// if an element is set in absolute size, the available size is already reduced by that value

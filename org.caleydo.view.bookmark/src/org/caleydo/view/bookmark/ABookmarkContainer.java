@@ -125,9 +125,8 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 		this.categoryName = category.getCategoryName();
 		this.pickingIDManager = manager.getPickingIDManager();
 		this.containerLayout = new Column();
-		
+
 		containerLayout.setYDynamic(true);
-		containerLayout.setXDynamic(false);
 		containerLayout.setRatioSizeX(1);
 		containerLayout.setBottomUp(false);
 		ContainerHeading heading = new ContainerHeading(manager);
@@ -165,7 +164,6 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 */
 	void render(GL2 gl) {
 
-		
 	}
 
 	/**

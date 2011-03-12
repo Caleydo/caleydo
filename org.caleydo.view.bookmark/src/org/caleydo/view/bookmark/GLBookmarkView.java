@@ -395,7 +395,6 @@ public class GLBookmarkView extends AGLView implements
 
 		Column mainColumn = new Column();
 		mainColumn.setYDynamic(true);
-		mainColumn.setXDynamic(true);
 		mainColumn.setBottomUp(false);
 		// mainColumn.setPixelGLConverter(pixelGLConverter);
 		bookmarkTemplate.setBaseElementLayout(mainColumn);

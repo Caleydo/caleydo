@@ -261,7 +261,7 @@ public class ElementLayout {
 	public boolean isHeightStatic() {
 		if (!Float.isNaN(absoluteSizeY))
 			return true;
-		if (pixelSizeY == Integer.MIN_VALUE)
+		if (pixelSizeY != Integer.MIN_VALUE)
 			return true;
 
 		return false;
@@ -270,7 +270,7 @@ public class ElementLayout {
 	public boolean isWidthStatic() {
 		if (!Float.isNaN(absoluteSizeX))
 			return true;
-		if (pixelSizeX == Integer.MIN_VALUE)
+		if (pixelSizeX != Integer.MIN_VALUE)
 			return true;
 
 		return false;

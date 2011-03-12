@@ -34,17 +34,31 @@ public class Column
 	public float getUnscalableElementWidth() {
 		if (!isXDynamic)
 			return super.getUnscalableElementWidth();
-		else
-		{
+		else {
 			float maxWidth = 0;
 			for (ElementLayout element : elements) {
-				float elementWidth = element.getUnscalableElementWidth(); 
-				if(elementWidth > maxWidth)
+				float elementWidth = element.getUnscalableElementWidth();
+				if (elementWidth > maxWidth)
 					maxWidth = elementWidth;
-				
+
 			}
 			return maxWidth;
 		}
+	}
+
+	/**
+	 * <p>
+	 * Set flag signaling whether the x-size of the container should be set to the largest size in y of its
+	 * sub-elements (true), or if some size indication (either scaled or not scaled) is given (false).
+	 * </p>
+	 * <p>
+	 * Notice that for if this is set to true, sub-elements must not have a ratioSize of 1 (which is the
+	 * default initialization). The reason for this is that it makes no sense, and catching it prevents
+	 * errors.
+	 */
+	@Override
+	public void setXDynamic(boolean isXDynamic) {
+		super.setXDynamic(isXDynamic);
 	}
 
 	@Override
@@ -124,6 +138,12 @@ public class Column
 				greedyElement = element;
 				continue;
 			}
+			// check if this is a dynamic column in x and no sub-element has a dynamic size of 1
+			if (isXDynamic && !element.isWidthStatic() && element.ratioSizeX == 1)
+				throw new IllegalStateException("Specified column " + this
+					+ " as dynamic in x, but the sub-element " + element
+					+ " has a ratioSize of 1, which is illegal.");
+
 			element.calculateScales(availableWidth, availableHeight);
 
 			totalHeight += element.getSizeScaledY();
