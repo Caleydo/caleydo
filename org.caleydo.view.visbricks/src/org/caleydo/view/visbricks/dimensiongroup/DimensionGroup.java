@@ -48,6 +48,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.rcp.dialog.cluster.StartClusteringDialog;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.BorderedAreaRenderer;
+import org.caleydo.view.visbricks.brick.Button;
 import org.caleydo.view.visbricks.brick.ButtonRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.layout.CentralBrickLayoutTemplate;
@@ -80,6 +81,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private ViewFrustum brickFrustum;
 	private ISet set;
 	private ASetBasedDataDomain dataDomain;
+	private Button clusterButton;
 
 	private EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 	private ContentVAUpdateListener contentVAUpdateListener;
@@ -107,6 +109,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		topCol = new Column("dimensionGroupColumnTop");
 		topCol.setFrameColor(1, 0, 1, 1);
 		topBricks = new ArrayList<GLBrick>(20);
+
+		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
+				1);
 
 		initGroupColumn();
 	}
@@ -207,12 +212,22 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		clusterButtonLayout.setPixelGLConverter(pixelGLConverter);
 		clusterButtonLayout.setPixelSizeX(16);
 		clusterButtonLayout.setPixelSizeY(16);
-		clusterButtonLayout.setRenderer(new ButtonRenderer(this,
-				EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, 1,
+		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton, this,
 				EIconTextures.CLUSTER_ICON, textureManager));
 
 		captionRow.appendElement(clusterButtonLayout);
 
+		centerColumn.appendElement(spacingLayoutY);
+		
+		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
+		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
+		lineSeparatorLayout.setPixelSizeY(3);
+		lineSeparatorLayout.setRatioSizeX(1);
+		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
+//		lineSeparatorLayout.setFrameColor(0, 0, 1, 1);
+//		lineSeparatorLayout.setDebug(true);
+		
+		centerColumn.appendElement(lineSeparatorLayout);
 		centerColumn.appendElement(spacingLayoutY);
 		centerColumn.appendElement(captionRow);
 		// centerLayout.appendElement(spacingLayoutY);
@@ -451,7 +466,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 										.triggerEvent(event);
 							}
 						});
-			}
+			} 
 		}
 
 	}

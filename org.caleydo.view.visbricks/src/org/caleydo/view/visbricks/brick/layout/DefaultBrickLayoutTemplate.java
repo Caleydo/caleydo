@@ -97,6 +97,7 @@ public class DefaultBrickLayoutTemplate extends BrickLayoutTemplate {
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
 		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutY.setPixelSizeY(4);
+		spacingLayoutY.setPixelSizeX(0);
 
 		// baseColumn.appendElement(dimensionBarLayout);
 		baseColumn.appendElement(spacingLayoutY);
