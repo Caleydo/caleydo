@@ -10,7 +10,7 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 
 /**
  * The similarities of two specific virtual arrays on a {@link Group} basis. Each VASimilarity object is
- * stored twice - once for each VA's Similarity Map.
+ * stored twice - once for each VA's SimilarityMap.
  * 
  * @author Alexander Lex
  * @param <VAType>
@@ -70,7 +70,7 @@ public class VASimilarity<VAType extends VirtualArray<?, ?, GroupListType>, Grou
 			keys.add(setID);
 		}
 		else {
-			if (vaMap.containsKey(setID))
+			if (!vaMap.containsKey(setID))
 				throw new IllegalStateException("VASimilarity has already two VAs set.");
 
 			vaMap.put(setID, va);
@@ -82,6 +82,7 @@ public class VASimilarity<VAType extends VirtualArray<?, ?, GroupListType>, Grou
 	 */
 	void calculateSimilarities() {
 		System.out.println("Calculating similarities");
+		groupListSimilarities.clear();
 
 		if (keys.size() != 2 || vaMap.size() != 2)
 			throw new IllegalStateException(
@@ -102,10 +103,10 @@ public class VASimilarity<VAType extends VirtualArray<?, ?, GroupListType>, Grou
 
 		for (Group group : groupList1) {
 			// the similarities of one individual group of groupList 1
-			GroupSimilarity<VAType, GroupListType> groupSimilarity1 =
+			GroupSimilarity<VAType, GroupListType> groupSimilarity =
 				new GroupSimilarity<VAType, GroupListType>(group, va1, va2);
-			groupSimilarity1.calculateSimilarity();
-			groupSimilarities1.add(groupSimilarity1);
+			groupSimilarity.calculateSimilarity();
+			groupSimilarities1.add(groupSimilarity);
 		}
 		groupListSimilarities.put(keys.get(0), groupSimilarities1);
 
@@ -115,17 +116,35 @@ public class VASimilarity<VAType extends VirtualArray<?, ?, GroupListType>, Grou
 		ArrayList<GroupSimilarity<VAType, GroupListType>> groupSimilarities2 =
 			new ArrayList<GroupSimilarity<VAType, GroupListType>>(groupList2.size());
 
-		for (int groupID = 0; groupID < groupList2.size(); groupID++) {
-			// the similarities of one individual group of groupList 2
-			GroupSimilarity<VAType, GroupListType> groupSimilarity2 =
-				new GroupSimilarity<VAType, GroupListType>(groupList2.get(groupID), va2, va1);
-
-			for (GroupSimilarity<VAType, GroupListType> groupSimilarity1 : groupSimilarities1) {
-				groupSimilarity2.setScore(groupSimilarity1.getGroupID(), groupSimilarity1.getScore(groupID));
+		for (Group group : groupList2) {
+			GroupSimilarity<VAType, GroupListType> groupSimilarity =
+				new GroupSimilarity<VAType, GroupListType>(group, va2, va1);
+			groupSimilarity.calculateSimilarity();
+			for (GroupSimilarity<VAType, GroupListType> similarity1 : groupSimilarities1) {
+				groupSimilarity.setScore(similarity1.getGroupID(), similarity1.getScore(group.getGroupID()));
 			}
-			groupSimilarities2.add(groupSimilarity2);
+
+			// groupSimilarity.setScore(0, groupSimilarities1.get(group.getGroupID()).getScore(groupID));
+			groupSimilarities2.add(groupSimilarity);
 		}
+
+		// for (int groupID = 0; groupID < groupList2.size(); groupID++) {
+		// // the similarities of one individual group of groupList 2
+		// GroupSimilarity<VAType, GroupListType> groupSimilarity2 =
+		// new GroupSimilarity<VAType, GroupListType>(groupList2.get(groupID), va2, va1);
+		//
+		// // for (GroupSimilarity<VAType, GroupListType> groupSimilarity1 : groupSimilarities1) {
+		// // groupSimilarity2.setScore(groupSimilarity1.getGroupID(), groupSimilarity1.getScore(groupID));
+		// // }
+		// groupSimilarity2.calculateSimilarity();
+		// groupSimilarities2.add(groupSimilarity2);
+		// }
 		groupListSimilarities.put(keys.get(1), groupSimilarities2);
 
+	}
+
+	@Override
+	public String toString() {
+		return "VASimilarity between " + keys;
 	}
 }

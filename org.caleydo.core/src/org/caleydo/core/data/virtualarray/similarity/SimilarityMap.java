@@ -16,25 +16,21 @@ public class SimilarityMap {
 	/**
 	 * Get the VASimilarity between this SimilarityMap's VA and the VA associated with the setID.
 	 * 
-	 * @param setID
+	 * @param foreignSetID
 	 *            the setID associated with the VA that should be compared to the VA in this SimilarityMap
 	 * @return
 	 */
-	public VASimilarity<ContentVirtualArray, ContentGroupList> getVASimilarity(Integer setID) {
-		return similarityMap.get(setID);
+	public VASimilarity<ContentVirtualArray, ContentGroupList> getVASimilarity(Integer foreignSetID) {
+		return similarityMap.get(foreignSetID);
 	}
 
 	// -------------------- END OF PUBLIC INTERFACE ----------------------------------
-	
-	
 
 	HashMap<Integer, VASimilarity<ContentVirtualArray, ContentGroupList>> similarityMap =
 		new HashMap<Integer, VASimilarity<ContentVirtualArray, ContentGroupList>>(20);
 
 	private Integer setID;
 	private ContentVirtualArray contentVA;
-	
-	
 
 	/**
 	 * Constructor with the key pair setID and contentVA
@@ -52,19 +48,15 @@ public class SimilarityMap {
 	 */
 	VASimilarity<ContentVirtualArray, ContentGroupList> calculateVASimilarity(Integer comparedSetID,
 		ContentVirtualArray comparedContentVA) {
-		VASimilarity<ContentVirtualArray, ContentGroupList> similarity;
-		if (similarityMap.containsKey(comparedSetID)) {
-			similarity = similarityMap.get(comparedSetID);
+		VASimilarity<ContentVirtualArray, ContentGroupList> vaSimilarity;
 
-		}
-		else {
-			similarity = new VASimilarity<ContentVirtualArray, ContentGroupList>();
-			similarity.addVA(setID, contentVA);
-		}
+			vaSimilarity = new VASimilarity<ContentVirtualArray, ContentGroupList>();
+			vaSimilarity.addVA(setID, contentVA);
 
-		similarity.addVA(comparedSetID, comparedContentVA);
-		similarity.calculateSimilarities();
-		return similarity;
+		vaSimilarity.addVA(comparedSetID, comparedContentVA);
+		vaSimilarity.calculateSimilarities();
+		similarityMap.put(comparedSetID, vaSimilarity);
+		return vaSimilarity;
 	}
 
 	/**
@@ -80,7 +72,7 @@ public class SimilarityMap {
 			if (key.equals(setID))
 				ownKeyContained = true;
 			else
-				comparedSetID = setID;
+				comparedSetID = key;
 		}
 		if (!ownKeyContained)
 			throw new IllegalStateException("Can not set this similarity (" + vaSimilarity
@@ -90,6 +82,11 @@ public class SimilarityMap {
 
 		similarityMap.put(comparedSetID, vaSimilarity);
 
+	}
+
+	@Override
+	public String toString() {
+		return "SimilarityMap for " + setID + " with relations to " + similarityMap.keySet();
 	}
 
 }

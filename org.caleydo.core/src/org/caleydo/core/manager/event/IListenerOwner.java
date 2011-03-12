@@ -27,10 +27,12 @@ public interface IListenerOwner {
 	 * should be called to be registered to the listeners defined by other classes in the hierarchy.
 	 * </p>
 	 * <p>
-	 * In GL Views this is calles in  {@link AGLView#initialize()}, therefore there is no need to call it
+	 * In GL Views this is called in {@link AGLView#initialize()}, therefore there is no need to call it
 	 * yourself. You must call the initialize of the View though.
 	 * </p>
-	 * <p>If part of {@link AEventHandler}, it is called on thread creation</p>
+	 * <p>
+	 * If part of {@link AEventHandler}, it is called on thread creation
+	 * </p>
 	 */
 	public void registerEventListeners();
 

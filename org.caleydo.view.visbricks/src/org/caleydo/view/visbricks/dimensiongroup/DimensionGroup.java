@@ -2,6 +2,7 @@ package org.caleydo.view.visbricks.dimensiongroup;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import javax.media.opengl.GL2;
@@ -80,14 +81,15 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private ISet set;
 	private ASetBasedDataDomain dataDomain;
 
-	private EventPublisher eventPublisher = GeneralManager.get()
-			.getEventPublisher();
+	private EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 	private ContentVAUpdateListener contentVAUpdateListener;
 	private ReplaceContentVAListener replaceContentVAListener;
 
 	private boolean isCollapsed = false;
 
 	private Queue<GLBrick> uninitializedBricks = new LinkedList<GLBrick>();
+
+	private GLVisBricks visBricks;
 
 	public DimensionGroup(GLCaleydoCanvas canvas, ViewFrustum viewFrustum) {
 		super(canvas, viewFrustum, true);
@@ -107,6 +109,10 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		topBricks = new ArrayList<GLBrick>(20);
 
 		initGroupColumn();
+	}
+
+	public void setVisBricks(GLVisBricks visBricks) {
+		this.visBricks = visBricks;
 	}
 
 	private void initGroupColumn() {
@@ -134,16 +140,16 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private void createBricks() {
 		// create basic layouts
 
-		brickFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
-				0, 0, 0, -4, 4);
+		brickFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0,
+				-4, 4);
 
 		centerBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
 				.createGLView(GLBrick.class, getParentGLCanvas(), brickFrustum);
 		centerBrick.setRemoteRenderingGLView(getRemoteRenderingGLCanvas());
 		centerBrick.setDataDomain(dataDomain);
 		centerBrick.setSet(set);
-		centerBrick.setBrickLayoutTemplate(new CentralBrickLayoutTemplate(
-				centerBrick));
+		centerBrick.setBrickLayoutTemplate(new CentralBrickLayoutTemplate(centerBrick));
+		centerBrick.initialize();
 
 		ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(centerBrick);
 		ElementLayout centerBrickLayout = new ElementLayout("CenterBrickLayout");
@@ -155,8 +161,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		centerLayout.setRenderer(new BorderedAreaRenderer());
 		Row centerRow = new Row("centerRow");
 
-		PixelGLConverter pixelGLConverter = parentGLCanvas
-				.getPixelGLConverter();
+		PixelGLConverter pixelGLConverter = parentGLCanvas.getPixelGLConverter();
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
 		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
@@ -183,7 +188,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		captionRow.setPixelSizeY(16);
 
 		captionLayout = new ElementLayout("caption1");
-//		 captionLayout.setDebug(true);
+		// captionLayout.setDebug(true);
 		// captionLayout.setFrameColor(0, 0, 1, 1);
 		captionLayout.setPixelGLConverter(pixelGLConverter);
 		captionLayout.setPixelSizeY(18);
@@ -205,7 +210,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		clusterButtonLayout.setRenderer(new ButtonRenderer(this,
 				EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, 1,
 				EIconTextures.CLUSTER_ICON, textureManager));
-		
+
 		captionRow.appendElement(clusterButtonLayout);
 
 		centerColumn.appendElement(spacingLayoutY);
@@ -216,8 +221,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	private void createSubBricks() {
-		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT)
-				.getContentVA();
+		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT).getContentVA();
 
 		if (contentVA.getGroupList() == null)
 			return;
@@ -226,30 +230,29 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		int count = 0;
 		groupList.updateGroupInfo();
 		for (Group group : groupList) {
-			GLBrick subBrick = (GLBrick) GeneralManager
-					.get()
-					.getViewGLCanvasManager()
-					.createGLView(GLBrick.class, getParentGLCanvas(),
-							new ViewFrustum());
+			GLBrick subBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
+					.createGLView(GLBrick.class, getParentGLCanvas(), new ViewFrustum());
 
 			subBrick.setRemoteRenderingGLView(getRemoteRenderingGLCanvas());
 			subBrick.setDataDomain(dataDomain);
 			subBrick.setSet(set);
+			subBrick.setVisBricks(visBricks);
 			ElementLayout brickLayout = new ElementLayout("subbrick");
 			ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(subBrick);
 			brickLayout.setRenderer(brickRenderer);
 			brickLayout.setFrameColor(1, 0, 0, 1);
 			// brickLayout.setRatioSizeY(1.0f / groupList.size());
 
-			uninitializedBricks.add(subBrick);
-
-			ContentVirtualArray subVA = new ContentVirtualArray("CONTENT",
-					contentVA.getVirtualArray().subList(group.getStartIndex(),
+			ContentVirtualArray subVA = new ContentVirtualArray("CONTENT", contentVA
+					.getVirtualArray().subList(group.getStartIndex(),
 							group.getEndIndex() + 1));
 
-			subBrick.setContentVA(subVA);
+			subBrick.setContentVA(group.getGroupID(), subVA);
+			subBrick.initialize();
 
 			// float[] rep = group.getRepresentativeElement();
+
+			uninitializedBricks.add(subBrick);
 
 			if (count < groupList.size() / 2) {
 				bottomBricks.add(subBrick);
@@ -314,17 +317,15 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		contentVAUpdateListener = new ContentVAUpdateListener();
 		contentVAUpdateListener.setHandler(this);
-		contentVAUpdateListener.setExclusiveDataDomainType(dataDomain
-				.getDataDomainType());
-		eventPublisher.addListener(ContentVAUpdateEvent.class,
-				contentVAUpdateListener);
+		contentVAUpdateListener
+				.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
 
 		replaceContentVAListener = new ReplaceContentVAListener();
 		replaceContentVAListener.setHandler(this);
 		replaceContentVAListener.setExclusiveDataDomainType(dataDomain
 				.getDataDomainType());
-		eventPublisher.addListener(ReplaceContentVAEvent.class,
-				replaceContentVAListener);
+		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
 
 	}
 
@@ -382,8 +383,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void initRemote(GL2 gl, AGLView glParentView,
-			GLMouseListener glMouseListener) {
+	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
 		createBricks();
 
 		centerBrick.initRemote(gl, glParentView, glMouseListener);
@@ -391,11 +391,16 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		for (GLBrick brick : bottomBricks) {
 			brick.initRemote(gl, glParentView, glMouseListener);
 		}
+
+		for (GLBrick brick : topBricks) {
+			brick.initRemote(gl, glParentView, glMouseListener);
+		}
+
 	}
 
 	@Override
 	public void display(GL2 gl) {
-		centerBrick.processEvents();
+//		centerBrick.processEvents();
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		while (!uninitializedBricks.isEmpty()) {
 			uninitializedBricks.poll().initRemote(gl, this, glMouseListener);
@@ -419,9 +424,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int pickingID, Pick pick) {
-		switch(pickingType) {
+		switch (pickingType) {
 		case DIMENSION_GROUP_CLUSTER_BUTTON:
-			if(pickingMode == EPickingMode.CLICKED) {
+			if (pickingMode == EPickingMode.CLICKED) {
 				System.out.println("cluster");
 
 				getParentGLCanvas().getParentComposite().getDisplay()
@@ -431,16 +436,15 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 								StartClusteringDialog dialog = new StartClusteringDialog(
 										new Shell(), getDataDomain());
 								dialog.open();
-								ClusterState clusterState = dialog
-										.getClusterState();
+								ClusterState clusterState = dialog.getClusterState();
 								if (clusterState == null)
 									return;
 
 								StartClusteringEvent event = null;
 								// if (clusterState != null && set != null)
 
-								event = new StartClusteringEvent(clusterState,
-										getSet().getID());
+								event = new StartClusteringEvent(clusterState, getSet()
+										.getID());
 								event.setDataDomainType(getDataDomain()
 										.getDataDomainType());
 								GeneralManager.get().getEventPublisher()
@@ -495,8 +499,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void setDraggingStartPoint(float mouseCoordinateX,
-			float mouseCoordinateY) {
+	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
 		// TODO Auto-generated method stub
 
 	}
@@ -517,8 +520,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void handleDrop(GL2 gl, float mouseCoordinateX,
-			float mouseCoordinateY) {
+	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 
 		System.out.println("handle drop");
 	}
@@ -527,8 +529,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public void handleDragOver(GL2 gl, java.util.Set<IDraggable> draggables,
 			float mouseCoordinateX, float mouseCoordinateY) {
 
-		((GLVisBricks) glRemoteRenderingView).highlightDimensionGroupSpacer(
-				this, mouseCoordinateX, mouseCoordinateY);
+		visBricks.highlightDimensionGroupSpacer(this, mouseCoordinateX, mouseCoordinateY);
 	}
 
 	@Override
@@ -541,8 +542,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			if (draggable == this)
 				break;
 
-			((GLVisBricks) glRemoteRenderingView).moveGroupDimension(this,
-					(DimensionGroup) draggable);
+			visBricks.moveGroupDimension(this, (DimensionGroup) draggable);
 		}
 
 		draggables.clear();
@@ -568,5 +568,25 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	ISet getSet() {
 		return set;
+	}
+
+	/**
+	 * Get the id of the set that this dimension group is showing
+	 * 
+	 * @return
+	 */
+	public int getSetID() {
+		return set.getID();
+	}
+
+	public List<Integer> getGroupOrder() {
+		ArrayList<Integer> groupOrder = new ArrayList<Integer>();
+		for (int count = topBricks.size() - 1; count >= 0; count--) {
+			groupOrder.add(topBricks.get(count).getGroupID());
+		}
+		for (GLBrick brick : bottomBricks) {
+			groupOrder.add(brick.getGroupID());
+		}
+		return groupOrder;
 	}
 }

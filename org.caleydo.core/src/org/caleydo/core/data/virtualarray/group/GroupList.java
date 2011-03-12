@@ -611,7 +611,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 
 	@Override
 	public String toString() {
-		return groups.toString();
+		return "GroupList: " + groups.toString();
 	}
 
 	/**

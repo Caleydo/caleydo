@@ -23,6 +23,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
+import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
@@ -89,6 +90,8 @@ public abstract class ASetBasedDataDomain
 	protected ContentFilterManager contentFilterManager;
 	protected StorageFilterManager storageFilterManager;
 
+	private RelationAnalyzer contentRelationAnalyzer;
+
 	/**
 	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
 	 */
@@ -154,7 +157,6 @@ public abstract class ASetBasedDataDomain
 	public Set getSet() {
 		return set;
 	}
-
 
 	public ISet getSet(int setID) {
 		if (set.getID() == setID)
@@ -732,5 +734,28 @@ public abstract class ASetBasedDataDomain
 	 */
 	public StorageFilterManager getStorageFilterManager() {
 		return storageFilterManager;
+	}
+
+	/**
+	 * Create a new {@link RelationAnalyzer} for contentVAs of this DataDomain. The contentRelationAnalyzer
+	 * runs in a separate thread and listens to {@link ReplaceContentVAEvent}s to do its business.
+	 */
+	public void createContentRelationAnalyzer() {
+		if (contentRelationAnalyzer != null)
+			return;
+		contentRelationAnalyzer = new RelationAnalyzer(this);
+
+		Thread thread = new Thread(contentRelationAnalyzer, "Relation Analyzer");
+		thread.start();
+	}
+
+	/**
+	 * Returns the {@link RelationAnalyzer} of this dataDomain, or null if it has not been created (via
+	 * {@link #createContentRelationAnalyzer()}).
+	 * 
+	 * @return
+	 */
+	public RelationAnalyzer getContentRelationAnalyzer() {
+		return contentRelationAnalyzer;
 	}
 }

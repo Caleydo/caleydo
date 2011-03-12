@@ -26,7 +26,31 @@ public class GroupSimilarity<VAType extends VirtualArray<?, ?, GroupListType>, G
 	 * @return
 	 */
 	public int getScore(int groupID) {
+		if (groupID >= scores.length)
+			throw new IllegalArgumentException();
 		return scores[groupID];
+	}
+
+	/**
+	 * Returns the similarity of this group to the group specified via the groupID in a rate normalized
+	 * between 0 and 1
+	 * 
+	 * @param groupID
+	 * @return
+	 */
+	public float getSimilarity(int groupID) {
+		if (groupID >= scores.length)
+			throw new IllegalArgumentException();
+		float similarity = ((float) scores[groupID]) / group.getSize();
+		return similarity;
+	}
+
+	public float[] getSimilarities() {
+		float[] similarities = new float[scores.length];
+		for (int count = 0; count < scores.length; count++) {
+			similarities[count] = ((float) scores[count]) / group.getSize();
+		}
+		return similarities;
 	}
 
 	// -------------------- END OF PUBLIC INTERFACE ----------------------------------
@@ -56,6 +80,11 @@ public class GroupSimilarity<VAType extends VirtualArray<?, ?, GroupListType>, G
 
 	void setScore(int groupID, int score) {
 		scores[groupID] = score;
+	}
+
+	@Override
+	public String toString() {
+		return "Gr. Sim.: src.: " + group + " to: " + scores.length + " groups";
 	}
 
 }

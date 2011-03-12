@@ -2,6 +2,7 @@ package org.caleydo.core.data.virtualarray.similarity;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.concurrent.locks.Lock;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
@@ -12,6 +13,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.AEventHandler;
 import org.caleydo.core.manager.event.EventPublisher;
+import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
@@ -20,8 +22,6 @@ import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 
 /**
  * Analyze the relations of groups (i.e. created through clustering) in multiple virtual arrays.
- * 
- * 
  * 
  * @author Alexander Lex
  */
@@ -44,6 +44,7 @@ public class RelationAnalyzer
 	public RelationAnalyzer(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		hashSimilarityMaps = new HashMap<Integer, SimilarityMap>(20);
+
 	}
 
 	@Override
@@ -81,7 +82,8 @@ public class RelationAnalyzer
 	}
 
 	@Override
-	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
+	public synchronized void replaceContentVA(int setID, String dataDomainType, String vaType) {
+
 		ISet set = dataDomain.getSet(setID);
 		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT).getContentVA();
 
@@ -96,6 +98,10 @@ public class RelationAnalyzer
 			currentMap.setVaSimilarity(similarity);
 		}
 		hashSimilarityMaps.put(setID, currentMap);
+		RelationsUpdatedEvent event = new RelationsUpdatedEvent();
+		event.setDataDomainType(dataDomain.getDataDomainType());
+		event.setSender(this);
+		eventPublisher.triggerEvent(event);
 	}
 
 	/**
@@ -105,7 +111,7 @@ public class RelationAnalyzer
 	 *            The id of the set
 	 * @return the similarity map with info on all relations to other registered meta sets
 	 */
-	public SimilarityMap getSimilarityMap(Integer setID) {
+	public synchronized SimilarityMap getSimilarityMap(Integer setID) {
 		return hashSimilarityMaps.get(setID);
 	}
 }

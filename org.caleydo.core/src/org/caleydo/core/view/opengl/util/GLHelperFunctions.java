@@ -64,4 +64,17 @@ public class GLHelperFunctions {
 	public static void drawPointAt(final GL2 gl, float x, float y, float z) {
 		drawPointAt(gl, new Vec3f(x, y, z));
 	}
+
+	public static void drawSmallPointAt(final GL2 gl, float x, float y, float z) {
+
+		gl.glColor4f(1, 0, 0, 1);
+		gl.glLineWidth(0.5f);
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3f(x - 0.5f, y, z);
+		gl.glVertex3f(x + 0.5f, y, z);
+		gl.glVertex3f(x, y - 0.5f, z);
+		gl.glVertex3f(x, y + 0.5f, z);
+		gl.glEnd();
+
+	}
 }
