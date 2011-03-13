@@ -171,7 +171,7 @@ public class CmdLoadFileLookupTable
 
 		// Remove old lookuptable if it already exists
 		// genomeIdManager.removeMapByType(EMappingType.valueOf(sLookupTableType));
-
+	
 		MappingType mappingType = genomeIdManager.createMap(fromIDType, toIDType, isMultiMap);
 
 		if (bResolveCodeMappingUsingCodeToId_LUT) {

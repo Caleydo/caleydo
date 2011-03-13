@@ -19,7 +19,7 @@ public abstract class AbstractLoader {
 	/**
 	 * File name
 	 */
-	private String sFileName = "";
+	private String fileName = "";
 
 	/**
 	 * Defines the number of lines to be read from a file. only useful, if loadData_TestLinesToBeRead() was
@@ -28,14 +28,15 @@ public abstract class AbstractLoader {
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#computeNumberOfLinesInFile(BufferedReader)
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
 	 */
-	private int iLinesInFileToBeRead = -1;
+	int nrLinesToRead = -1;
+	int nrLinesToReadWithClusterInfo = -1;
 
 	/**
 	 * Define numbers of lines to skip as assumed to be the header of a file. Defines how many lines are part
 	 * of the header file. By default these lines are skipped during parsing. Default is 32, because gpr files
 	 * have a header of that size!
 	 */
-	protected int iStartParsingAtLine = 0;
+	protected int parsingStartLine = 0;
 
 	/**
 	 * Define numbers of lines to skip as assumed to be the header of a file. Default is -1 which means until
@@ -48,7 +49,7 @@ public abstract class AbstractLoader {
 	 */
 	protected String sTokenSeperator = GeneralManager.sDelimiter_Parser_DataItems_Tab;
 
-	protected int iLineInFile = 0;
+	protected int lineInFile = 0;
 
 	protected SWTGUIManager swtGuiManager;
 
@@ -56,7 +57,7 @@ public abstract class AbstractLoader {
 	 * Constructor.
 	 */
 	public AbstractLoader(final String sFileName) {
-		this.sFileName = sFileName;
+		this.fileName = sFileName;
 		this.swtGuiManager = GeneralManager.get().getSWTGUIManager();
 	}
 
@@ -94,7 +95,7 @@ public abstract class AbstractLoader {
 	 */
 	public final void setFileName(String setFileName) {
 
-		this.sFileName = setFileName;
+		this.fileName = setFileName;
 	}
 
 	/**
@@ -104,13 +105,13 @@ public abstract class AbstractLoader {
 	 */
 	public final String getFileName() {
 
-		return this.sFileName;
+		return this.fileName;
 	}
 
 	public final void setStartParsingStopParsingAtLine(final int iStartParsingAtLine,
 		final int iStopParsingAtLine) {
 
-		this.iStartParsingAtLine = iStartParsingAtLine;
+		this.parsingStartLine = iStartParsingAtLine;
 
 		if (iStopParsingAtLine < 0) {
 			this.iStopParsingAtLine = Integer.MAX_VALUE;
@@ -122,6 +123,9 @@ public abstract class AbstractLoader {
 			return;
 		}
 		this.iStopParsingAtLine = iStopParsingAtLine;
+
+		nrLinesToRead = iStopParsingAtLine - parsingStartLine + 1;
+		nrLinesToReadWithClusterInfo = nrLinesToRead - 2;
 	}
 
 	/**
@@ -131,7 +135,7 @@ public abstract class AbstractLoader {
 	 */
 	public final int getStartParsingAtLine() {
 
-		return this.iStartParsingAtLine;
+		return this.parsingStartLine;
 	}
 
 	/**
@@ -156,7 +160,7 @@ public abstract class AbstractLoader {
 			BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
 			while (brFile.readLine() != null && iCountLines <= iStopParsingAtLine) {
-				if (iCountLines > this.iStartParsingAtLine) {
+				if (iCountLines > this.parsingStartLine) {
 					iCountLinesToBeRead++;
 				}
 
@@ -169,25 +173,26 @@ public abstract class AbstractLoader {
 			throw new RuntimeException();
 		}
 
-		iLinesInFileToBeRead = iCountLinesToBeRead + iStartParsingAtLine;
+		nrLinesToRead = iCountLinesToBeRead + parsingStartLine;
 
 		if (iStopParsingAtLine == Integer.MAX_VALUE) {
-			iStopParsingAtLine = iLinesInFileToBeRead;
+			iStopParsingAtLine = nrLinesToRead;
 		}
 
-		return iLinesInFileToBeRead;
+		nrLinesToReadWithClusterInfo = nrLinesToRead - 2;
+		return nrLinesToRead;
 	}
 
 	public boolean loadData() {
 
 		try {
 
-			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start loading file " + sFileName
+			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start loading file " + fileName
 				+ "..."));
 
-			BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
+			BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(fileName);
 
-			this.loadDataParseFile(brFile, computeNumberOfLinesInFile(sFileName));
+			this.loadDataParseFile(brFile, computeNumberOfLinesInFile(fileName));
 
 			if (brFile != null) {
 				brFile.close();
@@ -195,10 +200,10 @@ public abstract class AbstractLoader {
 		}
 		catch (Exception e) {
 			Logger.log(new Status(IStatus.ERROR, this.toString(), "Could not read data file.", e));
-			throw new RuntimeException("Could not read data file '" + sFileName + "'", e);
+			throw new RuntimeException("Could not read data file '" + fileName + "'", e);
 		}
 
-		Logger.log(new Status(IStatus.WARNING, toString(), "File " + sFileName + " successfully loaded."));
+		Logger.log(new Status(IStatus.INFO, toString(), "File " + fileName + " successfully loaded."));
 
 		setArraysToStorages();
 

@@ -31,13 +31,17 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 
 		contentLabelSingular = "entity";
 		contentLabelPlural = "entities";
+
+		primaryContentMappingType = IDType.getIDType("DAVID");
+		humanReadableContentIDType = IDType.getIDType("GENE_SYMBOL");
+		humanReadableStorageIDType = IDType.getIDType("STORAGE");
 	}
 
 	@Override
 	protected void initIDMappings() {
 		// nothing to do ATM
 	}
-	
+
 	@Override
 	public void handleVAUpdate(ContentVADelta vaDelta, String info) {
 		// TODO Auto-generated method stub
@@ -71,7 +75,8 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 
 	@Override
 	protected void assignIDCategories() {
-		contentIDCategory = IDCategory.getIDCategory("UNSPECIFIED_CONTENT");
-		storageIDCategory = IDCategory.getIDCategory("UNSPECIFIED_STORAGE");
+
+		contentIDCategory = IDCategory.registerCategory("UNSPECIFIED_CONTENT");
+		storageIDCategory = IDCategory.registerCategory("UNSPECIFIED_STORAGE");
 	}
 }

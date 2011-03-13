@@ -780,14 +780,32 @@ public class FileLoadDataAction
 
 		StringBuffer inputPattern = new StringBuffer("SKIP" + ";");
 
-		for (int iColIndex = 2; iColIndex < previewTable.getColumnCount(); iColIndex++) {
+		for (int columnIndex = 2; columnIndex < previewTable.getColumnCount(); columnIndex++) {
 
-			if (!arSkipColumn.get(iColIndex - 2).getSelection()) {
+			if (!arSkipColumn.get(columnIndex - 2).getSelection()) {
 				inputPattern.append("SKIP;");
 			}
 			else {
-				inputPattern.append("FLOAT;");
-				String labelText = previewTable.getColumn(iColIndex).getText();
+
+				// here we try to guess the datatype
+				// TODO: move this to the preview window where it can be modified by the user
+				String dataType = "FLOAT";
+				try {
+					int testSize =
+						previewTable.getItemCount() - loadDataParameters.getStartParseFileAtLine() - 1;
+					for (int rowCount = 1; rowCount < testSize; rowCount++) {
+						String testString = previewTable.getItem(rowCount).getText(columnIndex);
+
+						Float.parseFloat(testString);
+					}
+				}
+				catch (NumberFormatException nfe) {
+					dataType = "STRING";
+				}
+
+				inputPattern.append(dataType + ";");
+
+				String labelText = previewTable.getColumn(columnIndex).getText();
 				storageLabels.add(labelText);
 			}
 		}

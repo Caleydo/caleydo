@@ -18,6 +18,7 @@ import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.ClusterTree;
@@ -151,20 +152,34 @@ public class SetUtils {
 
 		boolean abort = false;
 		Iterator<String> storageLabelIterator = loadDataParameters.getStorageLabels().iterator();
+		CmdDataCreateStorage cmdCreateStorage;
+		String storageLabel;
 		for (EStorageType dataType : dataTypes) {
 			switch (dataType) {
 				case FLOAT:
-					CmdDataCreateStorage cmdCreateStorage =
+					cmdCreateStorage =
 						(CmdDataCreateStorage) GeneralManager.get().getCommandManager()
 							.createCommandByType(ECommandType.CREATE_STORAGE);
 					cmdCreateStorage.setAttributes(EManagedObjectType.STORAGE_NUMERICAL);
 					cmdCreateStorage.doCommand();
 
-					String storageLabel = storageLabelIterator.next();
+					storageLabel = storageLabelIterator.next();
 					INumericalStorage storage = (INumericalStorage) cmdCreateStorage.getCreatedObject();
 					storage.setLabel(storageLabel);
 					storageIds.add(storage.getID());
 					break;
+				case STRING:
+					cmdCreateStorage =
+						(CmdDataCreateStorage) GeneralManager.get().getCommandManager()
+							.createCommandByType(ECommandType.CREATE_STORAGE);
+					cmdCreateStorage.setAttributes(EManagedObjectType.STORAGE_NOMINAL);
+					cmdCreateStorage.doCommand();
+
+					storageLabel = storageLabelIterator.next();
+					INominalStorage<?> nominalStorage =
+						(INominalStorage<?>) cmdCreateStorage.getCreatedObject();
+					nominalStorage.setLabel(storageLabel);
+					storageIds.add(nominalStorage.getID());
 				case SKIP:
 					// nothing to do, just skip
 					break;
@@ -215,17 +230,21 @@ public class SetUtils {
 			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
 				loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
 				loadDataParameters.getDelimiter(), "");
-		}
-		else if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
-			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
-				loadDataParameters.getStartParseFileAtLine(), -1, "UNSPECIFIED_2_EXPRESSION_INDEX REVERSE",
-				loadDataParameters.getDelimiter(), "");
-		}
-		else {
-			throw new IllegalStateException("Not implemented for " + dataDomain);
-		}
 
-		cmdLoadLookupTableFile.doCommand();
+			cmdLoadLookupTableFile.doCommand();
+		}
+		// else if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
+		// String lookupTableInfo =
+		// loadDataParameters.getFileIDTypeName() + "_2_" + dataDomain.getContentIDType().getTypeName()
+		// + " REVERSE";
+		//
+		// cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
+		// loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
+		// loadDataParameters.getDelimiter(), "");
+		// }
+		// else {
+		// throw new IllegalStateException("Not implemented for " + dataDomain);
+		// }
 
 		// --------- data loading ---------------
 

@@ -397,6 +397,5 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	protected void assignIDCategories() {
 		contentIDCategory = IDCategory.getIDCategory("GENE");
 		storageIDCategory = IDCategory.getIDCategory("EXPERIMENT");
-
 	}
 }

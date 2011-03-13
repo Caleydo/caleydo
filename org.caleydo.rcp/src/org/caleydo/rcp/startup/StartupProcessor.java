@@ -137,7 +137,7 @@ public class StartupProcessor {
 	public AStartupProcedure createStartupProcedure(ApplicationMode appMode) {
 		switch (appMode) {
 			case GUI:
-				startupProcedure = new GUIStartupProcedure();
+				startupProcedure = new GeneGUIStartupProcedure();
 				break;
 			case SERIALIZATION:
 				startupProcedure = new SerializationStartupProcedure();
@@ -145,6 +145,8 @@ public class StartupProcessor {
 			case XML:
 				startupProcedure = new XMLStartupProcedure();
 				break;
+			case GENERIC:
+				startupProcedure = new GenericGUIStartupProcedure();
 		}
 
 		return startupProcedure;

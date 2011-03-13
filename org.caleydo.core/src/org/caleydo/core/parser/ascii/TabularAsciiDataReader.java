@@ -16,8 +16,6 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Loader for tabular data.
@@ -32,19 +30,19 @@ public class TabularAsciiDataReader
 	/**
 	 * Imports data from file to this set. uses first storage and overwrites first selection.
 	 */
-	protected ArrayList<IStorage> alTargetStorages;
+	protected ArrayList<IStorage> targetStorages;
 
-	protected ArrayList<EStorageType> alColumnDataTypes;
+	protected ArrayList<EStorageType> columnDataTypes;
 
-	private ArrayList<int[]> alIntBuffers;
+	private ArrayList<int[]> intArrays;
 
-	private ArrayList<int[]> alGroupInfo;
+	private ArrayList<int[]> groupInfo;
 
-	private ArrayList<float[]> alFloatBuffers;
+	private ArrayList<float[]> floatArrays;
 
-	private ArrayList<ArrayList<String>> alStringBuffers;
+	private ArrayList<ArrayList<String>> stringLists;
 
-	private boolean bUseExperimentClusterInfo;
+	private boolean useExperimentClusterInfo;
 
 	private ASetBasedDataDomain dataDomain;
 
@@ -55,14 +53,14 @@ public class TabularAsciiDataReader
 		super(sFileName);
 
 		this.dataDomain = dataDomain;
-		alTargetStorages = new ArrayList<IStorage>();
-		alColumnDataTypes = new ArrayList<EStorageType>();
+		targetStorages = new ArrayList<IStorage>();
+		columnDataTypes = new ArrayList<EStorageType>();
 
-		alIntBuffers = new ArrayList<int[]>();
-		alFloatBuffers = new ArrayList<float[]>();
-		alStringBuffers = new ArrayList<ArrayList<String>>();
+		intArrays = new ArrayList<int[]>();
+		floatArrays = new ArrayList<float[]>();
+		stringLists = new ArrayList<ArrayList<String>>();
 
-		alGroupInfo = new ArrayList<int[]>();
+		groupInfo = new ArrayList<int[]>();
 	}
 
 	/**
@@ -70,7 +68,7 @@ public class TabularAsciiDataReader
 	 */
 	public final boolean setTokenPattern(final String tokenPattern) {
 
-		boolean bAllTokensProper = true;
+		boolean areAllTokensProper = true;
 
 		StringTokenizer tokenizer = new StringTokenizer(tokenPattern);
 
@@ -80,46 +78,46 @@ public class TabularAsciiDataReader
 			String sBuffer = tokenizer.nextToken(sTokenPatternParserSeperator);
 
 			if (sBuffer.equalsIgnoreCase("abort")) {
-				alColumnDataTypes.add(EStorageType.ABORT);
+				columnDataTypes.add(EStorageType.ABORT);
 
-				return bAllTokensProper;
+				return areAllTokensProper;
 			}
 			else if (sBuffer.equalsIgnoreCase("skip")) {
-				alColumnDataTypes.add(EStorageType.SKIP);
+				columnDataTypes.add(EStorageType.SKIP);
 			}
 			else if (sBuffer.equalsIgnoreCase("int")) {
-				alColumnDataTypes.add(EStorageType.INT);
+				columnDataTypes.add(EStorageType.INT);
 			}
 			else if (sBuffer.equalsIgnoreCase("float")) {
-				alColumnDataTypes.add(EStorageType.FLOAT);
+				columnDataTypes.add(EStorageType.FLOAT);
 			}
 			else if (sBuffer.equalsIgnoreCase("string")) {
-				alColumnDataTypes.add(EStorageType.STRING);
+				columnDataTypes.add(EStorageType.STRING);
 			}
 			else if (sBuffer.equalsIgnoreCase("group_number")) {
-				alColumnDataTypes.add(EStorageType.GROUP_NUMBER);
+				columnDataTypes.add(EStorageType.GROUP_NUMBER);
 			}
 			else if (sBuffer.equalsIgnoreCase("group_representative")) {
-				alColumnDataTypes.add(EStorageType.GROUP_REPRESENTATIVE);
+				columnDataTypes.add(EStorageType.GROUP_REPRESENTATIVE);
 			}
 			else {
-				bAllTokensProper = false;
+				areAllTokensProper = false;
 
 				Logger.log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "Unknown column data type: "
 					+ tokenPattern));
 			}
 		}
 
-		return bAllTokensProper;
+		return areAllTokensProper;
 	}
 
 	public void enableExperimentClusterInfo() {
-		bUseExperimentClusterInfo = true;
+		useExperimentClusterInfo = true;
 	}
 
-	public void setTargetStorages(final ArrayList<Integer> iAlTargetStorageId) {
-		for (int iStorageId : iAlTargetStorageId) {
-			alTargetStorages.add(GeneralManager.get().getStorageManager().getItem(iStorageId));
+	public void setTargetStorages(final ArrayList<Integer> targetStorageIDs) {
+		for (int storageID : targetStorageIDs) {
+			targetStorages.add(GeneralManager.get().getStorageManager().getItem(storageID));
 		}
 	}
 
@@ -127,34 +125,35 @@ public class TabularAsciiDataReader
 
 		int lineCount = 0;
 
-		for (EStorageType storageType : alColumnDataTypes) {
+		for (EStorageType storageType : columnDataTypes) {
+
 			switch (storageType) {
 				case GROUP_NUMBER:
 				case GROUP_REPRESENTATIVE:
-					if (bUseExperimentClusterInfo)
-						alGroupInfo.add(new int[iStopParsingAtLine - iStartParsingAtLine + 1 - 2]);
+					if (useExperimentClusterInfo)
+						groupInfo.add(new int[nrLinesToReadWithClusterInfo]);
 					else
-						alGroupInfo.add(new int[iStopParsingAtLine - iStartParsingAtLine + 1]);
+						groupInfo.add(new int[nrLinesToRead]);
 					break;
 				case INT:
-					alIntBuffers.add(new int[iStopParsingAtLine - iStartParsingAtLine + 1]);
+					intArrays.add(new int[nrLinesToRead]);
 					break;
 				case FLOAT:
-					if (bUseExperimentClusterInfo)
-						alFloatBuffers.add(new float[iStopParsingAtLine - iStartParsingAtLine + 1 - 2]);
+					if (useExperimentClusterInfo)
+						floatArrays.add(new float[nrLinesToReadWithClusterInfo]);
 					else
-						alFloatBuffers.add(new float[iStopParsingAtLine - iStartParsingAtLine + 1]);
+						floatArrays.add(new float[nrLinesToRead]);
 					lineCount++;
 					break;
 				case STRING:
-					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine - iStartParsingAtLine + 1));
+					stringLists.add(new ArrayList<String>(nrLinesToRead));
 					break;
 				case SKIP:
 					break;
 				case ABORT:
-					if (bUseExperimentClusterInfo) {
-						alGroupInfo.add(new int[lineCount]);
-						alGroupInfo.add(new int[lineCount]);
+					if (useExperimentClusterInfo) {
+						groupInfo.add(new int[lineCount]);
+						groupInfo.add(new int[lineCount]);
 					}
 					return;
 
@@ -166,8 +165,7 @@ public class TabularAsciiDataReader
 	}
 
 	@Override
-	protected void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile)
-		throws IOException {
+	protected void loadDataParseFile(BufferedReader bufferReader, final int numberOfLines) throws IOException {
 
 		allocateStorageBufferForTokenPattern();
 
@@ -175,16 +173,16 @@ public class TabularAsciiDataReader
 		swtGuiManager.setProgressBarText("Load data file " + this.getFileName());
 
 		String sLine;
-		String sTmpToken;
-		int iColumnIndex = 0;
+		String tempToken;
+		int columnIndex = 0;
 		float fProgressBarFactor = 100f / iStopParsingAtLine;
 
-		int max = iStopParsingAtLine - iStartParsingAtLine + 1;
+		int max = iStopParsingAtLine - parsingStartLine + 1;
 
-		while ((sLine = brFile.readLine()) != null && iLineInFile <= iStopParsingAtLine) {
+		while ((sLine = bufferReader.readLine()) != null && lineInFile <= iStopParsingAtLine) {
 			// Check if line should be ignored
-			if (iLineInFile < this.iStartParsingAtLine) {
-				iLineInFile++;
+			if (lineInFile < this.parsingStartLine) {
+				lineInFile++;
 				continue;
 			}
 
@@ -198,65 +196,76 @@ public class TabularAsciiDataReader
 
 			StringTokenizer strTokenLine = new StringTokenizer(sLine, sTokenSeperator);
 
-			iColumnIndex = 0;
+			columnIndex = 0;
+			int intIndex = 0;
+			int floatIndex = 0;
+			int stringIndex = 0;
 
-			for (EStorageType columnDataType : alColumnDataTypes) {
+			for (EStorageType columnDataType : columnDataTypes) {
 				if (strTokenLine.hasMoreTokens()) {
 					switch (columnDataType) {
 						case INT:
-							alIntBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] =
+							intArrays.get(intIndex)[lineInFile - parsingStartLine] =
 								Integer.valueOf(strTokenLine.nextToken()).intValue();
-							iColumnIndex++;
+							columnIndex++;
+							intIndex++;
 							break;
 						case FLOAT:
-							Float fValue;
-							sTmpToken = strTokenLine.nextToken();
+							Float value;
+							tempToken = strTokenLine.nextToken();
 							try {
-								fValue = Float.valueOf(sTmpToken).floatValue();
+								value = Float.parseFloat(tempToken);
 							}
 							catch (NumberFormatException nfe) {
 
 								String sErrorMessage =
 									"Unable to parse the data file. \""
-										+ sTmpToken
-										+ "\" cannot be converted to a number. Please change the data selection and try again.";
-								MessageDialog.openError(new Shell(), "Error during parsing", sErrorMessage);
+										+ tempToken
+										+ "\" at ["
+										+ (columnIndex + 2)
+										+ ", "
+										+ (lineInFile - parsingStartLine)
+										+ "] cannot be converted to a number. Please change the data selection and try again.";
+								// MessageDialog.openError(new Shell(), "Error during parsing",
+								// sErrorMessage);
 
-								Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, sErrorMessage,
-									nfe));
-								throw nfe;
+								Logger
+									.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, sErrorMessage));
+								value = Float.NaN;
 							}
 
-							if (bUseExperimentClusterInfo) {
-								if (iLineInFile < max - 1)
-									alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] =
-										fValue;
-								else if (iLineInFile == max - 1)
-									alGroupInfo.get(2)[iColumnIndex] = Integer.valueOf(sTmpToken).intValue();
-								else if (iLineInFile == max)
-									alGroupInfo.get(3)[iColumnIndex] = Integer.valueOf(sTmpToken).intValue();
+							if (useExperimentClusterInfo) {
+								if (lineInFile < max - 1)
+									floatArrays.get(floatIndex)[lineInFile - parsingStartLine] = value;
+								// FIXME check indices here
+								else if (lineInFile == max - 1)
+									groupInfo.get(2)[columnIndex] = Integer.valueOf(tempToken).intValue();
+								else if (lineInFile == max)
+									groupInfo.get(3)[columnIndex] = Integer.valueOf(tempToken).intValue();
 							}
 							else
-								alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = fValue;
+								floatArrays.get(floatIndex)[lineInFile - parsingStartLine] = value;
 
-							iColumnIndex++;
+							floatIndex++;
+							columnIndex++;
 							break;
 						case STRING:
-							alStringBuffers.get(iColumnIndex).add(strTokenLine.nextToken());
-							iColumnIndex++;
+							stringLists.get(stringIndex).add(strTokenLine.nextToken());
+							stringIndex++;
+							columnIndex++;
 							break;
 						case SKIP: // do nothing
 							strTokenLine.nextToken();
 							break;
 						case ABORT:
-							iColumnIndex = alColumnDataTypes.size();
+							columnIndex = columnDataTypes.size();
 							break;
 						case GROUP_NUMBER:
-							alGroupInfo.get(0)[iLineInFile - iStartParsingAtLine] =
+							groupInfo.get(0)[lineInFile - parsingStartLine] =
 								Integer.valueOf(strTokenLine.nextToken()).intValue();
 							break;
 						case GROUP_REPRESENTATIVE:
-							alGroupInfo.get(1)[iLineInFile - iStartParsingAtLine] =
+							groupInfo.get(1)[lineInFile - parsingStartLine] =
 								Integer.valueOf(strTokenLine.nextToken()).intValue();
 							break;
 						default:
@@ -265,17 +274,17 @@ public class TabularAsciiDataReader
 					}
 
 					// Check if the line is finished or early aborted
-					if (iColumnIndex == alColumnDataTypes.size()) {
+					if (columnIndex == columnDataTypes.size()) {
 						continue;
 					}
 				}
 			}
 
-			iLineInFile++;
+			lineInFile++;
 
 			// Update progress bar only on each 100th line
-			if (iLineInFile % 1000 == 0) {
-				swtGuiManager.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
+			if (lineInFile % 1000 == 0) {
+				swtGuiManager.setProgressBarPercentage((int) (fProgressBarFactor * lineInFile));
 			}
 		}
 	}
@@ -287,52 +296,55 @@ public class TabularAsciiDataReader
 		int iIntArrayIndex = 0;
 		int iFloatArrayIndex = 0;
 		int iStringArrayIndex = 0;
-		int iStorageIndex = 0;
+		int storageIndex = 0;
 
 		ISet set = dataDomain.getSet();
 
-		for (EStorageType storageType : alColumnDataTypes) {
-			// if(iStorageIndex + 1 == alTargetStorages.size())
+		for (EStorageType storageType : columnDataTypes) {
+			// if(iStorageIndex + 1 == targetStorages.size())
 			// break;
 			switch (storageType) {
 				case INT:
-					alTargetStorages.get(iStorageIndex).setRawData(alIntBuffers.get(iIntArrayIndex));
+					targetStorages.get(storageIndex).setRawData(intArrays.get(iIntArrayIndex));
 					iIntArrayIndex++;
-					iStorageIndex++;
+					storageIndex++;
 					break;
 				case FLOAT:
-					alTargetStorages.get(iStorageIndex).setRawData(alFloatBuffers.get(iFloatArrayIndex));
+					targetStorages.get(storageIndex).setRawData(floatArrays.get(iFloatArrayIndex));
 					iFloatArrayIndex++;
-					iStorageIndex++;
+					storageIndex++;
 					break;
 				case STRING:
-					((INominalStorage<String>) alTargetStorages.get(iStorageIndex))
-						.setRawNominalData(alStringBuffers.get(iStringArrayIndex));
-					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine - iStartParsingAtLine));
+
+					ArrayList<String> rawStringData = stringLists.get(iStringArrayIndex);
+					rawStringData = fillUp(rawStringData);
+					((INominalStorage<String>) targetStorages.get(storageIndex))
+						.setRawNominalData(rawStringData);
+					// stringLists.add(new ArrayList<String>(iStopParsingAtLine - parsingStartLine));
 					iStringArrayIndex++;
-					iStorageIndex++;
+					storageIndex++;
 					break;
 				case SKIP: // do nothing
 					break;
 				case GROUP_NUMBER:
 
-					int[] iArGroupInfo = alGroupInfo.get(0);
+					int[] iArGroupInfo = groupInfo.get(0);
 					SetUtils.setContentGroupList((Set) set, ISet.CONTENT, iArGroupInfo);
 
 					iIntArrayIndex++;
 					break;
 				case GROUP_REPRESENTATIVE:
 
-					int[] iArGroupRepr = alGroupInfo.get(1);
+					int[] iArGroupRepr = groupInfo.get(1);
 					SetUtils.setContentGroupRepresentatives((Set) set, ISet.CONTENT, iArGroupRepr);
 
 					iIntArrayIndex++;
 					break;
 				case ABORT:
-					if (bUseExperimentClusterInfo) {
-						iArGroupInfo = alGroupInfo.get(2);
+					if (useExperimentClusterInfo) {
+						iArGroupInfo = groupInfo.get(2);
 						SetUtils.setStorageGroupList((Set) set, Set.STORAGE, iArGroupInfo);
-						iArGroupRepr = alGroupInfo.get(3);
+						iArGroupRepr = groupInfo.get(3);
 						SetUtils.setStorageGroupRepresentatives((Set) set, Set.STORAGE, iArGroupRepr);
 					}
 					return;
@@ -344,7 +356,15 @@ public class TabularAsciiDataReader
 		}
 	}
 
+	private ArrayList<String> fillUp(ArrayList<String> rawStringData) {
+		for (int count = rawStringData.size(); count < nrLinesToRead; count++)
+			rawStringData.add("ARTIFICIAL");
+
+		return rawStringData;
+
+	}
+
 	public ArrayList<EStorageType> getColumnDataTypes() {
-		return alColumnDataTypes;
+		return columnDataTypes;
 	}
 }

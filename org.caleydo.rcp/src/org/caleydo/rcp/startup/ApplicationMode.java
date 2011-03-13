@@ -10,4 +10,5 @@ public enum ApplicationMode {
 	XML,
 	SERIALIZATION,
 	GUI,
+	GENERIC
 }

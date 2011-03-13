@@ -154,4 +154,9 @@ public abstract class AStorage
 		return hashCContainers.get(EDataRepresentation.RAW).size();
 	}
 
+	@Override
+	public String toString() {
+		return "Storage for " + getRawDataType() + ", size: " + size();
+	}
+
 }

@@ -55,9 +55,9 @@ public class LookupTableLoader
 
 		while ((sLine = brFile.readLine()) != null && iLineInFile <= iStopParsingAtLine) {
 			/**
-			 * Start parsing if current line iLineInFile is larger than iStartParsingAtLine ..
+			 * Start parsing if current line lineInFile is larger than parsingStartLine ..
 			 */
-			if (iLineInFile >= iStartParsingAtLine) {
+			if (iLineInFile >= parsingStartLine) {
 
 				boolean bMaintainLoop = true;
 				StringTokenizer strTokenText = new StringTokenizer(sLine, sTokenSeperator);
@@ -85,14 +85,14 @@ public class LookupTableLoader
 								try {
 									Integer id = Integer.parseInt(sLine);
 									genomeIdManager.getMap(mappingType).put(id,
-										iLineInFile - iStartParsingAtLine);
+										iLineInFile - parsingStartLine);
 								}
 								catch (NumberFormatException e) {
 								}
 							}
 							else if (mappingType.getFromIDType().getStorageType() == EStorageType.STRING) {
 								genomeIdManager.getMap(mappingType).put(sLine,
-									iLineInFile - iStartParsingAtLine);
+									iLineInFile - parsingStartLine);
 							}
 							else
 								throw new IllegalStateException("Unsupported data type!");
@@ -129,18 +129,18 @@ public class LookupTableLoader
 									Float.valueOf(buffer);
 									if (mappingType.getFromIDType().getStorageType() == EStorageType.INT) {
 										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
-											iLineInFile - iStartParsingAtLine);
+											iLineInFile - parsingStartLine);
 									}
 									else if (mappingType.getFromIDType().getTypeName().equals("UNSPECIFIED")) {
 										genomeIdManager.getMap(mappingType).put(buffer,
-											iLineInFile - iStartParsingAtLine);
+											iLineInFile - parsingStartLine);
 									}
 								}
 								catch (NumberFormatException e) {
 									// System.out.println(buffer + " " +
-									// (iLineInFile - iStartParsingAtLine));
+									// (lineInFile - parsingStartLine));
 									genomeIdManager.getMap(mappingType).put(buffer,
-										iLineInFile - iStartParsingAtLine);
+										iLineInFile - parsingStartLine);
 								}
 
 								break;
