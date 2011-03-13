@@ -631,9 +631,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			contentVAType = ISet.CONTENT;
 
 		// contentVA = dataDomain.getContentVA(contentVAType);
-		contentVA = set.getContentData(contentVAType).getContentVA();
-
-		storageVA = set.getStorageData(storageVAType).getStorageVA();
+		if (contentVA == null)
+			contentVA = set.getContentData(contentVAType).getContentVA();
+		if (storageVA == null)
+			storageVA = set.getStorageData(storageVAType).getStorageVA();
 		// storageVA = dataDomain.getStorageVA(storageVAType);
 
 		initContentVariables();
@@ -737,7 +738,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	 * @param renderMode
 	 *            the type of selection in the selection manager to render
 	 */
-	@SuppressWarnings("unchecked")
 	private void renderNormalPolylines(GL2 gl, SelectionType selectionType) {
 
 		int nrVisibleLines;
@@ -770,7 +770,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		PolyLineState renderState = renderStyle.getPolyLineState(selectionType,
 				nrVisibleLines / displayEveryNthPolyline);
 		for (Integer contentID : lines) {
-			renderSingleLine(gl, contentID, selectionType, renderState, true);
+			if (contentVA.contains(contentID))
+				renderSingleLine(gl, contentID, selectionType, renderState, true);
 		}
 	}
 
@@ -2654,5 +2655,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	public void setContentVA(ContentVirtualArray contentVA) {
 		this.contentVA = contentVA;
+		contentSelectionManager.setVA(contentVA);
 	}
 }

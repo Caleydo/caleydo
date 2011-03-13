@@ -561,12 +561,12 @@ public abstract class AStorageBasedView
 
 	@Override
 	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
-		
+
 		if (set.getID() != setID || this.contentVAType != vaType)
 			return;
 
 		contentVA = set.getContentData(vaType).getContentVA();
-		// contentSelectionManager.setVA(contentVA);
+		contentSelectionManager.setVA(contentVA);
 
 		initData();
 	}

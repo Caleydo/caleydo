@@ -215,7 +215,9 @@ public abstract class ASetBasedDataDomain
 
 	protected void initSelectionManagers() {
 		contentSelectionManager = new ContentSelectionManager(contentIDType);
+		contentSelectionManager.setVA(set.getContentData(Set.CONTENT).getContentVA());
 		storageSelectionManager = new StorageSelectionManager(storageIDType);
+		storageSelectionManager.setVA(set.getStorageData(Set.STORAGE).getStorageVA());
 	}
 
 	/**
@@ -361,6 +363,7 @@ public abstract class ASetBasedDataDomain
 		}
 
 		set.setContentVA(vaType, virtualArray.clone());
+		contentSelectionManager.setVA(set.getContentData(Set.CONTENT).getContentVA());
 
 		virtualArray.setGroupList(null);
 		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, dataDomainType, vaType));
@@ -385,6 +388,7 @@ public abstract class ASetBasedDataDomain
 	public void replaceStorageVA(String dataDomainType, String vaType, StorageVirtualArray virtualArray) {
 
 		set.setStorageVA(vaType, virtualArray);
+		storageSelectionManager.setVA(virtualArray);
 
 		// if (set.getStorageData(StorageVAType.STORAGE).getStorageTree() != null) {
 		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {

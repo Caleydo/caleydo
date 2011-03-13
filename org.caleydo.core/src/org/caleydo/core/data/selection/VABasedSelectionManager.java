@@ -1,11 +1,14 @@
 package org.caleydo.core.data.selection;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -105,19 +108,6 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 			tempDelta.add(VADeltaItem.appendUnique(id));
 		}
 
-		// for (SelectionType selectionType : selectionTypes) {
-		// if (!selectionType.isVisible()) {
-		// continue;
-		// }
-		// tempHash = hashSelectionTypes.get(selectionType);
-		// for (Integer iElement : tempHash.keySet()) {
-		// Integer iSelectionID = -1;
-		//
-		// iSelectionID = iElement;
-		// tempDelta.add(VADeltaItem.appendUnique(iSelectionID));
-		//
-		// }
-		// }
 		return tempDelta;
 	}
 
@@ -177,9 +167,9 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 	@Override
 	@SuppressWarnings("unchecked")
 	public ConcreteType clone() {
-		VABasedSelectionManager clone;
+		VABasedSelectionManager<ConcreteType, VA, VADelta> clone;
 
-		clone = (VABasedSelectionManager) super.clone();
+		clone = (VABasedSelectionManager<ConcreteType, VA, VADelta>) super.clone();
 
 		// the virtual array needs to be set manually by the receiving instance
 		clone.virtualArray = null;

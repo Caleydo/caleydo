@@ -365,7 +365,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	public boolean contains(Integer id) {
 		if (isHashIDToIndexDirty)
 			buildIDMap();
-		return hashIDToIndex.get(id) == null ? true : false;
+		return hashIDToIndex.get(id) == null ? false : true;
 	}
 
 	/**
