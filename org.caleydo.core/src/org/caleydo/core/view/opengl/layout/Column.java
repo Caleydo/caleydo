@@ -77,8 +77,8 @@ public class Column
 				if (element instanceof LayoutContainer) {
 					((LayoutContainer) element).calculateTransforms(bottom, left, top, right);
 				}
-				element.setTransformX(x);
-				element.setTransformY(bottom);
+				element.setTranslateX(x);				
+				element.setTranslateY(bottom);		
 
 				bottom += element.getSizeScaledY();
 
@@ -90,9 +90,12 @@ public class Column
 				}
 
 				top -= element.getSizeScaledY();
-				element.setTransformX(x);
-				element.setTransformY(top);
+				element.setTranslateX(x);
+				element.setTranslateY(top);
 			}
+			
+			element.setAbsoluteTranslateX(element.getTranslateX() + absoluteTranslateX);
+			element.setAbsoluteTranslateY(element.getTranslateY() + absoluteTranslateY);
 		}
 	}
 

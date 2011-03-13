@@ -46,7 +46,6 @@ public class Row
 		}
 	}
 
-
 	/**
 	 * <p>
 	 * Set flag signaling whether the y-size of the container should be set to the largest size in y of its
@@ -78,15 +77,18 @@ public class Row
 			}
 			// else {
 			if (isLeftToRight) {
-				element.setTransformX(left);
-				element.setTransformY(y);
+				element.setTranslateX(left);
+
+				element.setTranslateY(y);
 				left += element.getSizeScaledX();
 			}
 			else {
-				element.setTransformX(right);
-				element.setTransformY(y);
+				element.setTranslateX(right);
+				element.setTranslateY(y);
 				right -= element.getSizeScaledX();
 			}
+			element.setAbsoluteTranslateX(element.getTranslateX() + absoluteTranslateX);
+			element.setAbsoluteTranslateY(element.getTranslateY() + absoluteTranslateY);
 			// }
 		}
 	}

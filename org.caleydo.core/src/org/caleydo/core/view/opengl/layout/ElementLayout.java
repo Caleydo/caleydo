@@ -41,10 +41,15 @@ public class ElementLayout {
 	protected ArrayList<LayoutRenderer> backgroundRenderers;
 	protected ArrayList<LayoutRenderer> foregroundRenderers;
 
-	protected float transformX = 0;
-	protected float transformY = 0;
-	// float transformScaledX = 0;
-	// float transformScaledY = 0;
+	/** specifies how much this element is translated in x relative to it's parent layout */
+	protected float translateX = 0;
+	/** specifies how much this element is translated in y relative to it's parent layout */
+	protected float translateY = 0;
+
+	/** specifies how much this element is translated in x relative to the root layout */
+	protected float absoluteTranslateX = 0;
+	/** specifies how much this element is translated in y relative to the root layout */
+	protected float absoluteTranslateY = 0;
 
 	/** use the remaining space in X, invalidates absoluteSizeX */
 	protected boolean grabX = false;
@@ -71,9 +76,15 @@ public class ElementLayout {
 
 	private MinSizeTextRenderer textRenderer;
 
-	/** The currently available width for the layout. Use if only this sub-part of the layout is updated */
+	/**
+	 * The currently available width for the layout. Used if only this sub-part of the layout is updated via
+	 * {@link #updateSubLayout()}
+	 */
 	protected float totalWidth = 0;
-	/** The currently available height for the layout. Use if only this sub-part of the layout is updated */
+	/**
+	 * The currently available height for the layout. Used if only this sub-part of the layout is updated via
+	 * {@link #updateSubLayout()}
+	 */
 	protected float totalHeight = 0;
 
 	protected boolean debug = false;
@@ -121,10 +132,6 @@ public class ElementLayout {
 		this.absoluteSizeX = absoluteSizeX;
 	}
 
-	// public float getAbsoluteSizeX() {
-	// return absoluteSizeX;
-	// }
-
 	/**
 	 * Set the absolute size in GL coordinates of the element in y direction.
 	 * 
@@ -134,11 +141,6 @@ public class ElementLayout {
 		resetY();
 		this.absoluteSizeY = absoluteSizeY;
 	}
-
-	//
-	// public float getAbsoluteSizeY() {
-	// return absoluteSizeY;
-	// }
 
 	/**
 	 * Set a ratio size in x direction. The ration indicates how much of the containing element this element
@@ -258,6 +260,12 @@ public class ElementLayout {
 		updateSpacings();
 	}
 
+	/**
+	 * Returns true if the height of this element has been set statically (either via
+	 * {@link #setAbsoluteSizeY(float)} or {@link #setPixelSizeY(int)})
+	 * 
+	 * @return true if this is a static layout in y, else false
+	 */
 	public boolean isHeightStatic() {
 		if (!Float.isNaN(absoluteSizeY))
 			return true;
@@ -267,6 +275,12 @@ public class ElementLayout {
 		return false;
 	}
 
+	/**
+	 * Returns true if the width of this element has been set statically (either via
+	 * {@link #setAbsoluteSizeX(float)} or {@link #setPixelSizeX(int)})
+	 * 
+	 * @return true if this is a static layout in x, else false
+	 */
 	public boolean isWidthStatic() {
 		if (!Float.isNaN(absoluteSizeX))
 			return true;
@@ -274,6 +288,40 @@ public class ElementLayout {
 			return true;
 
 		return false;
+	}
+
+	/**
+	 * Get the value specifying how much this element has to be transformed in X relative to its parent
+	 * layout.
+	 */
+	public float getTranslateX() {
+		return translateX;
+	}
+
+	/**
+	 * Get the value specifying how much this element has to be transformed in Y relative to its parent
+	 * layout.
+	 */
+	public float getTranslateY() {
+		return translateY;
+	}
+
+	/**
+	 * Returns value that specifies how much this element is translated in x relative to the root layout
+	 * 
+	 * @return
+	 */
+	public float getAbsoluteTranslateX() {
+		return absoluteTranslateX;
+	}
+
+	/**
+	 * Returns value that specifies how much this element is translated in y relative to the root layout
+	 * 
+	 * @return
+	 */
+	public float getAbsoluteTranslateY() {
+		return absoluteTranslateY;
 	}
 
 	// ---------------------------- END OF PUBLIC INTERFACE -----------------------------------
@@ -292,7 +340,7 @@ public class ElementLayout {
 
 	void render(GL2 gl) {
 
-		gl.glTranslatef(getTransformX(), getTransformY(), 0);
+		gl.glTranslatef(getTranslateX(), getTranslateY(), 0);
 
 		if (debug) {
 			float yPositionDebugText = 0;
@@ -340,7 +388,7 @@ public class ElementLayout {
 				foregroundRenderer.render(gl);
 			}
 		}
-		gl.glTranslatef(-getTransformX(), -getTransformY(), 0);
+		gl.glTranslatef(-getTranslateX(), -getTranslateY(), 0);
 	}
 
 	void calculateScales(float totalWidth, float totalHeight) {
@@ -363,22 +411,20 @@ public class ElementLayout {
 			sizeScaledY = ratioSizeY * totalHeight;
 	}
 
-	void setTransformX(float transformX) {
-		this.transformX = transformX;
+	void setTranslateX(float translateX) {
+		this.translateX = translateX;
 	}
 
-	void setTransformY(float transformY) {
-		this.transformY = transformY;
+	void setTranslateY(float translateY) {
+		this.translateY = translateY;
 	}
 
-	public float getTransformX() {
-		return transformX;
-
+	void setAbsoluteTranslateX(float absoluteTranslateX) {
+		this.absoluteTranslateX = absoluteTranslateX;
 	}
 
-	public float getTransformY() {
-		return transformY;
-
+	void setAbsoluteTranslateY(float absoluteTranslateY) {
+		this.absoluteTranslateY = absoluteTranslateY;
 	}
 
 	protected void updateSpacings() {

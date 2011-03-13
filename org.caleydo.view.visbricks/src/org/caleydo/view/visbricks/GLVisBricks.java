@@ -749,7 +749,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		if (centerRowLayout.getElements().contains(dragOverDimensionGroup.getLayout())) {
 
-			if ((dragOverDimensionGroup.getLayout().getTransformX() + dragOverDimensionGroup
+			if ((dragOverDimensionGroup.getLayout().getTranslateX() + dragOverDimensionGroup
 					.getLayout().getSizeScaledX()) < mouseX)
 				dropDimensionGroupAfter = true;
 			else
@@ -775,7 +775,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		if ((leftColumnLayout.getElements().contains(dragOverDimensionGroup.getLayout()) || rightColumnLayout
 				.getElements().contains(dragOverDimensionGroup.getLayout()))) {
 
-			if ((dragOverDimensionGroup.getLayout().getTransformY() + dragOverDimensionGroup
+			if ((dragOverDimensionGroup.getLayout().getTranslateY() + dragOverDimensionGroup
 					.getLayout().getSizeScaledY()) < mouseY)
 				dropDimensionGroupAfter = true;
 			else

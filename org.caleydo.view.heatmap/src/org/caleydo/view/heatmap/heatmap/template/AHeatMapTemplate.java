@@ -49,14 +49,14 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 	}
 
 	public Float getYCoordinateByContentIndex(int contentIndex) {
-		return heatMapLayout.getTransformY()
+		return heatMapLayout.getTranslateY()
 				+ ((HeatMapRenderer) heatMapLayout.getRenderer())
 						.getYCoordinateByContentIndex(contentIndex);
 	}
 
 	public Float getXCoordinateByStorageIndex(int storageIndex) {
 
-		return heatMapLayout.getTransformX()
+		return heatMapLayout.getTranslateX()
 				+ ((HeatMapRenderer) heatMapLayout.getRenderer())
 						.getXCoordinateByStorageIndex(storageIndex);
 	}
