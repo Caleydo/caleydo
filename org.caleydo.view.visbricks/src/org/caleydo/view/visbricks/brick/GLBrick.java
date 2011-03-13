@@ -62,6 +62,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	private int baseDisplayListIndex;
 	private boolean isBaseDisplayListDirty = true;
+	private int currentViewType;
 
 	private ISet set;
 	// private GLHeatMap heatMap;
@@ -87,6 +88,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		viewLayoutRenderers = new HashMap<Integer, LayoutRenderer>();
 
 		pickingListeners = new HashMap<EPickingType, HashMap<Integer, IPickingListener>>();
+		
+		currentViewType = HEATMAP_VIEW;
 	}
 
 	@Override
@@ -151,7 +154,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		currentRemoteView = histogram;
 
-		brickLayout.setViewRenderer(histogramLayoutRenderer);
+		brickLayout.setViewRenderer(heatMapLayoutRenderer);
 
 		templateRenderer.setTemplate(brickLayout);
 		templateRenderer.updateLayout();
@@ -416,6 +419,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		LayoutRenderer viewRenderer = viewLayoutRenderers.get(viewType);
 		brickLayout.setViewRenderer(viewRenderer);
 		templateRenderer.updateLayout();
+		
+		currentViewType = viewType;
 	}
 
 	public TextureManager getTextureManager() {
@@ -425,6 +430,11 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	public void setBrickLayoutTemplate(BrickLayoutTemplate brickLayoutTemplate) {
 		this.brickLayout = brickLayoutTemplate;
 	}
+
+	public int getCurrentViewType() {
+		return currentViewType;
+	}
+
 
 	@Override
 	public void registerEventListeners() {
