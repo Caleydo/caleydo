@@ -12,14 +12,27 @@ import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
 import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
+/**
+ * <p>
+ * Renders a small sequence of bars indicating the relations to other groups in
+ * neighboring DimensionGroups.
+ * </p>
+ * <p>
+ * A RelationIndicatorRenderer can be either on the left side or on the right
+ * side of a brick. Where it is has to be specified in the constructor. This
+ * affects which dimensionGroup it is compared to.
+ * 
+ * @author Alexander Lex
+ * 
+ */
 public class RelationIndicatorRenderer extends LayoutRenderer {
 
-	private GLBrick brick;
 	private ASetBasedDataDomain dataDomain;
 	private RelationAnalyzer relationAnalyzer;
 	Integer setID;
@@ -31,16 +44,21 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 	float[] similarities;
 
 	public RelationIndicatorRenderer(GLBrick brick, GLVisBricks visBricks, boolean isLeft) {
-		this.brick = brick;
 		this.dataDomain = brick.getDataDomain();
 		this.relationAnalyzer = dataDomain.getContentRelationAnalyzer();
 		setID = brick.getSet().getID();
 		groupID = brick.getGroupID();
 		this.visBricks = visBricks;
 		this.isLeft = isLeft;
-
 	}
 
+	/**
+	 * To be called if the relations in the {@link RelationAnalyzer} have been
+	 * updated. Should typically be triggered via a
+	 * {@link RelationsUpdatedEvent} in the managing view.
+	 * 
+	 * TODO: add parameters to check whether an update is actually necessary.
+	 */
 	public synchronized void updateRelations() {
 		ArrayList<DimensionGroup> dimensionGroups = visBricks.getDimensionGroups();
 
@@ -85,10 +103,6 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		if (neighborSetID == -1 || similarities == null)
 			return;
 
-//		float scale = 20;
-//		if(isLeft)
-//			scale = -20;
-		
 		float yOffset = 0;
 		for (float similarity : similarities) {
 			float height = similarity * y;
@@ -98,7 +112,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			gl.glVertex3f(x, yOffset, 0);
 			gl.glColor3f(1, 1, 1);
 			// gl.glColor3f(0.8f, 0.8f, 0f);
-			gl.glVertex3f(x , yOffset + height, 0);
+			gl.glVertex3f(x, yOffset + height, 0);
 			gl.glVertex3f(0, yOffset + height, 0);
 
 			gl.glEnd();

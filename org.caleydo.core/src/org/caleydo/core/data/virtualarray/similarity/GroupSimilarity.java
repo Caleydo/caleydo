@@ -7,7 +7,20 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 
 /**
- * The similarity of one group in source VA1 to all groups in target VA2
+ * The similarity of one group in source VA1 to all groups in target VA2. You can get two types of information
+ * from this class:
+ * <ol>
+ * <li>The <b>score</b> (accessible via {@link #getScore(int)}), which tells you how many elements this group
+ * shares with the group of the other VA in this GroupSimilarity.</li>
+ * <li>The <b>similarity</b> (accessible via {@link #getSimilarity(int)} and in bulk via
+ * {@link #getSimilarities()}) which tells you how similar this group is to the other group or groups. The
+ * contract here is that if all elements of this group are contained in the foreign group as well, the
+ * similarity will be 1, if none are contained 0.
+ * </ol>
+ * <p>
+ * Notice that the score of two groups for each other in two VAs will be identical, the similarities however
+ * not, since the similarities also consider the size of the group.
+ * </p>
  * 
  * @author Alexander Lex
  */
@@ -39,17 +52,16 @@ public class GroupSimilarity<VAType extends VirtualArray<?, ?, GroupListType>, G
 	 * @return
 	 */
 	public float getSimilarity(int groupID) {
-		if (groupID >= scores.length)
-			throw new IllegalArgumentException();
-		float similarity = ((float) scores[groupID]) / group.getSize();
-		return similarity;
+		return similarities[groupID];
 	}
 
+	/**
+	 * Returns the similarity of this group to all other groups, normalized between 0 and 1
+	 * 
+	 * @param groupID
+	 * @return
+	 */
 	public float[] getSimilarities() {
-		float[] similarities = new float[scores.length];
-		for (int count = 0; count < scores.length; count++) {
-			similarities[count] = ((float) scores[count]) / group.getSize();
-		}
 		return similarities;
 	}
 
@@ -59,6 +71,7 @@ public class GroupSimilarity<VAType extends VirtualArray<?, ?, GroupListType>, G
 	private Group group;
 	private VAType va1;
 	private VAType va2;
+	private float[] similarities;
 
 	GroupSimilarity(Group group, VAType va1, VAType va2) {
 		this.va1 = va1;
@@ -75,6 +88,10 @@ public class GroupSimilarity<VAType extends VirtualArray<?, ?, GroupListType>, G
 			for (Group group2 : groups2) {
 				scores[group2.getGroupID()] += 1;
 			}
+		}
+		similarities = new float[scores.length];
+		for (int count = 0; count < scores.length; count++) {
+			similarities[count] = ((float) scores[count]) / group.getSize();
 		}
 	}
 

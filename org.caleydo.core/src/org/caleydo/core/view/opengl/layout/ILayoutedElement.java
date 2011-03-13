@@ -9,7 +9,7 @@ package org.caleydo.core.view.opengl.layout;
 public interface ILayoutedElement {
 
 	/**
-	 * Get the single ElementLayout which is responsible for laying out the implementing class.
+	 * Get the single ElementLayout which is responsible for laying out this class.
 	 * 
 	 * @return
 	 */

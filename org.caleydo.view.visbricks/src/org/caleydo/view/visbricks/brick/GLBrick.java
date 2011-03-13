@@ -25,6 +25,8 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
@@ -42,7 +44,7 @@ import org.caleydo.view.visbricks.listener.RelationsUpdatedListener;
  * 
  */
 public class GLBrick extends AGLView implements IDataDomainSetBasedView,
-		IGLRemoteRenderingView, IListenerOwner {
+		IGLRemoteRenderingView, IListenerOwner, ILayoutedElement {
 
 	public final static String VIEW_ID = "org.caleydo.view.brick";
 
@@ -444,6 +446,12 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		}
 	}
 
+	/**
+	 * Only to be called via a {@link RelationsUpdatedListener} upon a
+	 * {@link RelationsUpdatedEvent}.
+	 * 
+	 * TODO: add parameters to check whether this brick needs to be updated
+	 */
 	public void relationsUpdated() {
 		if (rightRelationIndicatorRenderer != null
 				&& leftRelationIndicatorRenderer != null) {
@@ -451,11 +459,16 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			leftRelationIndicatorRenderer.updateRelations();
 		}
 	}
-	
+
 	@Override
 	public String toString() {
-	return "Brick: " + groupID + " in " + set.getLabel();
-			
+		return "Brick: " + groupID + " in " + set.getLabel();
+
+	}
+
+	@Override
+	public ElementLayout getLayout() {
+		return brickLayout.getBaseLayoutElement();
 	}
 
 }
