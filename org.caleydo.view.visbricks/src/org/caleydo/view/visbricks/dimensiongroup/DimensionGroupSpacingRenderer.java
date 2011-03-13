@@ -104,7 +104,6 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 								rightBrick.getGroupID());
 				float[] rightSimilarities = rightGroupSimilarity.getSimilarities();
 				
-
 				float rightSimilarityRatioY = rightSimilarities[leftBrick.getGroupID()];
 				rightSimilarityOffsetY += rightSimilarityRatioY;
 
@@ -118,16 +117,6 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 				gl.glVertex2f(0, leftBrickWrappingLayout.getAbsoluteTranslateY()
 						+ leftBrickElementLayout.getSizeScaledY()
 						* leftSimilarityOffsetY);
-
-//				gl.glVertex2f(0, leftBrickWrappingLayout.getAbsoluteTranslateY()
-//						+ leftBrickElementLayout.getSizeScaledY()
-//						* (leftSimilarityOffsetY + leftSimilarityRatioY));
-
-				// gl.glVertex2f(x,
-				// rightBrickWrappingLayout.getAbsoluteTranslateY()
-				// + rightBrickElementLayout.getSizeScaledY()
-				// - rightBrickElementLayout.getSizeScaledY()
-				// * (rightSimilarityOffsetY - rightSimilarityRatioY));
 
 				gl.glVertex2f(x, rightBrickWrappingLayout.getAbsoluteTranslateY()
 						+ rightBrickElementLayout.getSizeScaledY()
