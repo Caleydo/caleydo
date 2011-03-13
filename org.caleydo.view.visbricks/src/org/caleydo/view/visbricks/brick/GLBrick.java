@@ -54,6 +54,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	private LayoutManager templateRenderer;
 	private BrickLayoutTemplate brickLayout;
+	private ElementLayout wrappingLayout;
 
 	private AGLView currentRemoteView;
 
@@ -480,5 +481,12 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	public ElementLayout getLayout() {
 		return brickLayout.getBaseLayoutElement();
 	}
-
+	
+	public void setWrappingLayout(ElementLayout wrappingLayout) {
+		this.wrappingLayout = wrappingLayout;
+	}
+	
+	public ElementLayout getWrappingLayout() {
+		return wrappingLayout;
+	}
 }

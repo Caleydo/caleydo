@@ -163,6 +163,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		// centerBrickLayout.setFrameColor(1, 0, 0, 1);
 		centerBrickLayout.setRatioSizeY(1f);
 
+		centerBrick.setWrappingLayout(centerBrickLayout);
+
 		centerLayout.setRenderer(new BorderedAreaRenderer());
 		Row centerRow = new Row("centerRow");
 
@@ -272,10 +274,14 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			if (count < groupList.size() / 2) {
 				bottomBricks.add(subBrick);
 				bottomCol.appendElement(brickLayout);
+
+				subBrick.setWrappingLayout(bottomCol);
+				
 			} else {
 				topBricks.add(subBrick);
 				topCol.appendElement(brickLayout);
 
+				subBrick.setWrappingLayout(topCol);
 			}
 			count++;
 
@@ -603,5 +609,16 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			groupOrder.add(brick.getGroupID());
 		}
 		return groupOrder;
+	}
+	
+	public List<GLBrick> getBricks() {
+		ArrayList<GLBrick> bricks = new ArrayList<GLBrick>();
+		for (int count = topBricks.size() - 1; count >= 0; count--) {
+			bricks.add(topBricks.get(count));
+		}
+		for (GLBrick brick : bottomBricks) {
+			bricks.add(brick);
+		}
+		return bricks;
 	}
 }
