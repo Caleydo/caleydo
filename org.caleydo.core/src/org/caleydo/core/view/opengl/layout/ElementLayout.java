@@ -46,10 +46,6 @@ public class ElementLayout {
 	/** specifies how much this element is translated in y relative to it's parent layout */
 	protected float translateY = 0;
 
-	/** specifies how much this element is translated in x relative to the root layout */
-	protected float absoluteTranslateX = 0;
-	/** specifies how much this element is translated in y relative to the root layout */
-	protected float absoluteTranslateY = 0;
 
 	/** use the remaining space in X, invalidates absoluteSizeX */
 	protected boolean grabX = false;
@@ -305,24 +301,23 @@ public class ElementLayout {
 	public float getTranslateY() {
 		return translateY;
 	}
-
-	/**
-	 * Returns value that specifies how much this element is translated in x relative to the root layout
-	 * 
-	 * @return
-	 */
-	public float getAbsoluteTranslateX() {
-		return absoluteTranslateX;
+	
+	public void setRenderer(LayoutRenderer renderer) {
+		this.renderer = renderer;
 	}
 
-	/**
-	 * Returns value that specifies how much this element is translated in y relative to the root layout
-	 * 
-	 * @return
-	 */
-	public float getAbsoluteTranslateY() {
-		return absoluteTranslateY;
+	public void addBackgroundRenderer(LayoutRenderer renderer) {
+		if (backgroundRenderers == null)
+			backgroundRenderers = new ArrayList<LayoutRenderer>(3);
+		backgroundRenderers.add(renderer);
 	}
+
+	public void addForeGroundRenderer(LayoutRenderer renderer) {
+		if (foregroundRenderers == null)
+			foregroundRenderers = new ArrayList<LayoutRenderer>(3);
+		foregroundRenderers.add(renderer);
+	}
+	
 
 	// ---------------------------- END OF PUBLIC INTERFACE -----------------------------------
 
@@ -419,14 +414,6 @@ public class ElementLayout {
 		this.translateY = translateY;
 	}
 
-	void setAbsoluteTranslateX(float absoluteTranslateX) {
-		this.absoluteTranslateX = absoluteTranslateX;
-	}
-
-	void setAbsoluteTranslateY(float absoluteTranslateY) {
-		this.absoluteTranslateY = absoluteTranslateY;
-	}
-
 	protected void updateSpacings() {
 		// LayoutRenderer renderer = ((RenderableLayoutElement) layout).getRenderer();
 		if (renderer == null)
@@ -448,21 +435,7 @@ public class ElementLayout {
 
 	}
 
-	public void setRenderer(LayoutRenderer renderer) {
-		this.renderer = renderer;
-	}
 
-	public void addBackgroundRenderer(LayoutRenderer renderer) {
-		if (backgroundRenderers == null)
-			backgroundRenderers = new ArrayList<LayoutRenderer>(3);
-		backgroundRenderers.add(renderer);
-	}
-
-	public void addForeGroundRenderer(LayoutRenderer renderer) {
-		if (foregroundRenderers == null)
-			foregroundRenderers = new ArrayList<LayoutRenderer>(3);
-		foregroundRenderers.add(renderer);
-	}
 
 	/**
 	 * Get the unscalable height part of this layout

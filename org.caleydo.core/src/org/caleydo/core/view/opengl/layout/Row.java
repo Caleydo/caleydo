@@ -75,7 +75,7 @@ public class Row
 			if (element instanceof LayoutContainer) {
 				((LayoutContainer) element).calculateTransforms(bottom, left, top, right);
 			}
-			// else {
+
 			if (isLeftToRight) {
 				element.setTranslateX(left);
 
@@ -87,9 +87,6 @@ public class Row
 				element.setTranslateY(y);
 				right -= element.getSizeScaledX();
 			}
-			element.setAbsoluteTranslateX(element.getTranslateX() + absoluteTranslateX);
-			element.setAbsoluteTranslateY(element.getTranslateY() + absoluteTranslateY);
-			// }
 		}
 	}
 

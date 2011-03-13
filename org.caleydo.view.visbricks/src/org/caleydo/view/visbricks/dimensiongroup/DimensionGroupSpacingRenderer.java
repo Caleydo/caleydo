@@ -12,6 +12,7 @@ import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
 import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 public class DimensionGroupSpacingRenderer extends LayoutRenderer {
@@ -86,6 +87,10 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 		for (GLBrick leftBrick : leftBricks) {
 
+			ElementLayout leftBrickElementLayout = leftBrick.getWrappingLayout();
+//			GLHelperFunctions.drawPointAt(gl, 0, leftBrickElementLayout.getTranslateY(),
+//					0);
+
 			GroupSimilarity<ContentVirtualArray, ContentGroupList> leftGroupSimilarity = vaSimilarityMap
 					.getGroupSimilarity(leftDimGroup.getSetID(), leftBrick.getGroupID());
 
@@ -93,8 +98,10 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 			float leftSimilarityOffsetY = 0;
 			float rightSimilarityOffsetY = 0;
-			
+
 			for (GLBrick rightBrick : rightBricks) {
+				ElementLayout rightBrickElementLayout = rightBrick.getWrappingLayout();
+				
 
 				float leftSimilarityRatioY = leftSimilarities[rightBrick.getGroupID()];
 				leftSimilarityOffsetY += leftSimilarityRatioY;
@@ -103,22 +110,15 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 						.getGroupSimilarity(rightDimGroup.getSetID(),
 								rightBrick.getGroupID());
 				float[] rightSimilarities = rightGroupSimilarity.getSimilarities();
-				
 				float rightSimilarityRatioY = rightSimilarities[leftBrick.getGroupID()];
 				rightSimilarityOffsetY += rightSimilarityRatioY;
 
-				ElementLayout leftBrickElementLayout = leftBrick.getLayout();
-				ElementLayout leftBrickWrappingLayout = leftBrick.getWrappingLayout();
-
-				ElementLayout rightBrickElementLayout = rightBrick.getLayout();
-				ElementLayout rightBrickWrappingLayout = rightBrick.getWrappingLayout();
-
 				gl.glBegin(GL2.GL_LINES);
-				gl.glVertex2f(0, leftBrickWrappingLayout.getAbsoluteTranslateY()
-						+ leftBrickElementLayout.getSizeScaledY()
-						* leftSimilarityOffsetY);
+				gl.glVertex2f(0, leftBrickElementLayout.getTranslateY()
+						+ leftBrickElementLayout.getSizeScaledY() * leftSimilarityOffsetY);
 
-				gl.glVertex2f(x, rightBrickWrappingLayout.getAbsoluteTranslateY()
+
+				gl.glVertex2f(x, rightBrickElementLayout.getTranslateY()
 						+ rightBrickElementLayout.getSizeScaledY()
 						* rightSimilarityOffsetY);
 				gl.glEnd();
