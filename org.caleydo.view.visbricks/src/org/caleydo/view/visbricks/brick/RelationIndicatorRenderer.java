@@ -7,6 +7,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.similarity.GroupSimilarity;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
@@ -39,7 +40,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 	int groupID;
 	GLVisBricks visBricks;
 	int neighborSetID = -1;
-	List<Integer> neighborGroupOrder;
+	List<Group> neighborGroupOrder;
 	boolean isLeft;
 	float[] similarities;
 
@@ -72,12 +73,13 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			if (currentID == setID && isLeft) {
 				neighborSetID = previousID;
 				if (neighborSetID != -1)
-					neighborGroupOrder = dimensionGroups.get(count - 1).getGroupOrder();
+					neighborGroupOrder = dimensionGroups.get(count - 1)
+							.getOrderedGroups();
 				break;
 			}
 			if (previousID == setID && !isLeft) {
 				neighborSetID = currentID;
-				neighborGroupOrder = dimensionGroup.getGroupOrder();
+				neighborGroupOrder = dimensionGroup.getOrderedGroups();
 				break;
 			}
 
@@ -105,10 +107,9 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			return;
 
 		float yOffset = 0;
-		for (Integer groupID : neighborGroupOrder)
-
-		{
-			float similarity = similarities[groupID];
+		for (Group group : neighborGroupOrder) {
+			int foreignGroupID = group.getGroupID();
+			float similarity = similarities[foreignGroupID];
 			float height = similarity * y;
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glColor3f(0, 0, 0);
