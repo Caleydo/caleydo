@@ -266,6 +266,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		leftLayoutManager.setTemplate(leftLayout);
 
 		leftLayoutManager.updateLayout();
+
 	}
 
 	private void initLayoutRight() {
@@ -793,5 +794,15 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	public DimensionGroupManager getDimensionGroupManager() {
 		return dimensionGroupManager;
+	}
+
+	public void initiConnectionLinesBetweenDimensionGroups() {
+		if (centerRowLayout != null) {
+			for (ElementLayout elementLayout : centerRowLayout.getElements()) {
+				if (elementLayout.getRenderer() instanceof DimensionGroupSpacingRenderer) {
+					((DimensionGroupSpacingRenderer) elementLayout.getRenderer()).init();
+				}
+			}
+		}
 	}
 }

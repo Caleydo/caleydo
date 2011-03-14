@@ -372,8 +372,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			createSubBricks();
 			topCol.updateSubLayout();
 			bottomCol.updateSubLayout();
+			
+			visBricks.initiConnectionLinesBetweenDimensionGroups();
 		}
-
 	}
 
 	@Override

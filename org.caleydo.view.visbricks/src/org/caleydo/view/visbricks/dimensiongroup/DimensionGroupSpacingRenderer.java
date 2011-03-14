@@ -1,6 +1,5 @@
 package org.caleydo.view.visbricks.dimensiongroup;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,6 +34,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 	 * Default constructur needed if spacer does not need to render connections
 	 */
 	public DimensionGroupSpacingRenderer() {
+	
 	}
 
 	public DimensionGroupSpacingRenderer(RelationAnalyzer relationAnalyzer,
@@ -44,7 +44,96 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 		this.leftDimGroup = leftDimGroup;
 		this.rightDimGroup = rightDimGroup;
 	}
+	
+	
+	
+	public void init() {
+		
+		if (relationAnalyzer == null)
+			return;
+		
+		hashGroupID2GroupMatches.clear();
 
+		List<GLBrick> leftBricks = leftDimGroup.getBricks();
+		List<GLBrick> rightBricks = rightDimGroup.getBricks();
+
+		if (leftBricks.size() == 0 || rightBricks.size() == 0)
+			return;
+		
+		SimilarityMap similarityMap = relationAnalyzer.getSimilarityMap(leftDimGroup
+				.getSetID());
+
+		if (similarityMap == null)
+			return;
+
+		VASimilarity<ContentVirtualArray, ContentGroupList> vaSimilarityMap = similarityMap
+				.getVASimilarity(rightDimGroup.getSetID());
+		if (vaSimilarityMap == null)
+			return;
+
+		for (GLBrick leftBrick : leftBricks) {
+
+			GroupMatch groupMatch = new GroupMatch(leftBrick.getGroupID());
+			hashGroupID2GroupMatches.put(leftBrick.getGroupID(), groupMatch);
+
+			ElementLayout leftBrickElementLayout = leftBrick.getWrappingLayout();
+
+			GroupSimilarity<ContentVirtualArray, ContentGroupList> leftGroupSimilarity = vaSimilarityMap
+					.getGroupSimilarity(leftDimGroup.getSetID(), leftBrick.getGroupID());
+
+			float[] leftSimilarities = leftGroupSimilarity.getSimilarities();
+			float leftSimilarityOffsetY = 0;
+
+			for (GLBrick rightBrick : rightBricks) {
+
+				SubGroupMatch subGroupMatch = new SubGroupMatch(rightBrick.getGroupID());
+				groupMatch.addSubGroupMatch(rightBrick.getGroupID(), subGroupMatch);
+
+				float leftSimilarityRatioY = leftSimilarities[rightBrick.getGroupID()];
+				leftSimilarityOffsetY += leftSimilarityRatioY;
+
+				subGroupMatch
+						.setLeftAnchorYStart(leftBrickElementLayout.getTranslateY()
+								+ leftBrickElementLayout.getSizeScaledY()
+								* (leftSimilarityOffsetY));
+
+				subGroupMatch
+						.setLeftAnchorYEnd(leftBrickElementLayout.getTranslateY()
+								+ leftBrickElementLayout.getSizeScaledY()
+								* (leftSimilarityOffsetY-leftSimilarityRatioY));
+			}
+		}
+		
+		for (GLBrick rightBrick : rightBricks) {
+
+			ElementLayout rightBrickElementLayout = rightBrick.getWrappingLayout();
+
+			GroupSimilarity<ContentVirtualArray, ContentGroupList> rightGroupSimilarity = vaSimilarityMap
+					.getGroupSimilarity(rightDimGroup.getSetID(), rightBrick.getGroupID());
+
+			float[] rightSimilarities = rightGroupSimilarity.getSimilarities();
+			float rightSimilarityOffsetY = 0;
+
+			for (GLBrick leftBrick : leftBricks) {
+				
+				GroupMatch groupMatch = hashGroupID2GroupMatches.get(leftBrick.getGroupID());
+				SubGroupMatch subGroupMatch = groupMatch.getSubGroupMatch(rightBrick.getGroupID());
+
+				float rightSimilarityRatioY = rightSimilarities[leftBrick.getGroupID()];
+				rightSimilarityOffsetY += rightSimilarityRatioY;
+
+				subGroupMatch.setRightAnchorYStart(rightBrickElementLayout
+						.getTranslateY()
+						+ rightBrickElementLayout.getSizeScaledY()
+						* (rightSimilarityOffsetY));
+
+				subGroupMatch.setRightAnchorYEnd(rightBrickElementLayout.getTranslateY()
+						+ rightBrickElementLayout.getSizeScaledY()
+						* (rightSimilarityOffsetY-rightSimilarityRatioY));
+			}
+		}
+	}
+	
 	@Override
 	public void render(GL2 gl) {
 
@@ -70,104 +159,6 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 	}
 
 	private void renderDimensionGroupConnections(GL2 gl) {
-
-		gl.glColor4f(1, 1, 0, 1f);
-		gl.glLineWidth(4);
-		
-		hashGroupID2GroupMatches.clear();
-
-		List<GLBrick> leftBricks = leftDimGroup.getBricks();
-		List<GLBrick> rightBricks = rightDimGroup.getBricks();
-
-		SimilarityMap similarityMap = relationAnalyzer.getSimilarityMap(leftDimGroup
-				.getSetID());
-
-		if (similarityMap == null)
-			return;
-
-		VASimilarity<ContentVirtualArray, ContentGroupList> vaSimilarityMap = similarityMap
-				.getVASimilarity(rightDimGroup.getSetID());
-		if (vaSimilarityMap == null)
-			return;
-
-		for (GLBrick leftBrick : leftBricks) {
-
-			GroupMatch groupMatch = new GroupMatch(leftBrick.getGroupID());
-			hashGroupID2GroupMatches.put(leftBrick.getGroupID(), groupMatch);
-
-			ElementLayout leftBrickElementLayout = leftBrick.getWrappingLayout();
-
-			GroupSimilarity<ContentVirtualArray, ContentGroupList> leftGroupSimilarity = vaSimilarityMap
-					.getGroupSimilarity(leftDimGroup.getSetID(), leftBrick.getGroupID());
-
-			float[] leftSimilarities = leftGroupSimilarity.getSimilarities();
-			float leftSimilarityOffsetY = 0;
-//			float rightSimilarityOffsetY = 0;
-
-			for (GLBrick rightBrick : rightBricks) {
-
-				SubGroupMatch subGroupMatch = new SubGroupMatch(rightBrick.getGroupID());
-				groupMatch.addSubGroupMatch(rightBrick.getGroupID(), subGroupMatch);
-
-				float leftSimilarityRatioY = leftSimilarities[rightBrick.getGroupID()];
-				leftSimilarityOffsetY += leftSimilarityRatioY;
-
-//				GroupSimilarity<ContentVirtualArray, ContentGroupList> rightGroupSimilarity = vaSimilarityMap
-//						.getGroupSimilarity(rightDimGroup.getSetID(),
-//								rightBrick.getGroupID());
-//				float[] rightSimilarities = rightGroupSimilarity.getSimilarities();
-//				float rightSimilarityRatioY = rightSimilarities[leftBrick.getGroupID()];
-//				rightSimilarityOffsetY += rightSimilarityRatioY;
-
-				subGroupMatch
-						.setLeftAnchorYStart(leftBrickElementLayout.getTranslateY()
-								+ leftBrickElementLayout.getSizeScaledY()
-								* (leftSimilarityOffsetY));
-
-				subGroupMatch
-						.setLeftAnchorYEnd(leftBrickElementLayout.getTranslateY()
-								+ leftBrickElementLayout.getSizeScaledY()
-								* (leftSimilarityOffsetY-leftSimilarityRatioY));
-			}
-		}
-		
-		for (GLBrick rightBrick : rightBricks) {
-
-			ElementLayout rightBrickElementLayout = rightBrick.getWrappingLayout();
-
-			GroupSimilarity<ContentVirtualArray, ContentGroupList> rightGroupSimilarity = vaSimilarityMap
-					.getGroupSimilarity(rightDimGroup.getSetID(), rightBrick.getGroupID());
-
-			float[] rightSimilarities = rightGroupSimilarity.getSimilarities();
-
-			float leftSimilarityOffsetY = 0;
-			float rightSimilarityOffsetY = 0;
-
-			for (GLBrick leftBrick : leftBricks) {
-				
-				GroupMatch groupMatch = hashGroupID2GroupMatches.get(leftBrick.getGroupID());
-				SubGroupMatch subGroupMatch = groupMatch.getSubGroupMatch(rightBrick.getGroupID());
-
-				float rightSimilarityRatioY = rightSimilarities[leftBrick.getGroupID()];
-				rightSimilarityOffsetY += rightSimilarityRatioY;
-
-//				GroupSimilarity<ContentVirtualArray, ContentGroupList> leftGroupSimilarity = vaSimilarityMap
-//						.getGroupSimilarity(leftDimGroup.getSetID(),
-//								leftBrick.getGroupID());
-//				float[] leftSimilarities = leftGroupSimilarity.getSimilarities();
-//				float leftSimilarityRatioY = leftSimilarities[rightBrick.getGroupID()];
-//				leftSimilarityOffsetY += leftSimilarityRatioY;
-				
-				subGroupMatch.setRightAnchorYStart(rightBrickElementLayout
-						.getTranslateY()
-						+ rightBrickElementLayout.getSizeScaledY()
-						* (rightSimilarityOffsetY));
-
-				subGroupMatch.setRightAnchorYEnd(rightBrickElementLayout.getTranslateY()
-						+ rightBrickElementLayout.getSizeScaledY()
-						* (rightSimilarityOffsetY-rightSimilarityRatioY));
-			}
-		}
 
 		gl.glLineWidth(1);
 		for (GroupMatch groupMatch : hashGroupID2GroupMatches.values()) {
@@ -195,56 +186,6 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 				gl.glEnd();
 			}
 		}
-
-		// for (GLBrick leftBrick : leftBricks) {
-		//
-		// GroupMatch groupMatch = new GroupMatch(leftBrick.getGroupID());
-		// groupMatches.add(groupMatch);
-		//
-		// ElementLayout leftBrickElementLayout = leftBrick.getWrappingLayout();
-		// // GLHelperFunctions.drawPointAt(gl, 0,
-		// // leftBrickElementLayout.getTranslateY(),
-		// // 0);
-		//
-		// GroupSimilarity<ContentVirtualArray, ContentGroupList>
-		// leftGroupSimilarity = vaSimilarityMap
-		// .getGroupSimilarity(leftDimGroup.getSetID(), leftBrick.getGroupID());
-		//
-		// float[] leftSimilarities = leftGroupSimilarity.getSimilarities();
-		//
-		// float leftSimilarityOffsetY = 0;
-		// float rightSimilarityOffsetY = 0;
-		//
-		// for (GLBrick rightBrick : rightBricks) {
-		//
-		// groupMatch.addSubGroupMatch(rightBrick.getGroupID());
-		//
-		// ElementLayout rightBrickElementLayout =
-		// rightBrick.getWrappingLayout();
-		//
-		// float leftSimilarityRatioY =
-		// leftSimilarities[rightBrick.getGroupID()];
-		// leftSimilarityOffsetY += leftSimilarityRatioY;
-		//
-		// GroupSimilarity<ContentVirtualArray, ContentGroupList>
-		// rightGroupSimilarity = vaSimilarityMap
-		// .getGroupSimilarity(rightDimGroup.getSetID(),
-		// rightBrick.getGroupID());
-		// float[] rightSimilarities = rightGroupSimilarity.getSimilarities();
-		// float rightSimilarityRatioY =
-		// rightSimilarities[leftBrick.getGroupID()];
-		// rightSimilarityOffsetY += rightSimilarityRatioY;
-		//
-		// gl.glBegin(GL2.GL_LINES);
-		// gl.glVertex2f(0, leftBrickElementLayout.getTranslateY()
-		// + leftBrickElementLayout.getSizeScaledY() * leftSimilarityOffsetY);
-		//
-		// gl.glVertex2f(x, rightBrickElementLayout.getTranslateY()
-		// + rightBrickElementLayout.getSizeScaledY()
-		// * rightSimilarityOffsetY);
-		// gl.glEnd();
-		// }
-		// }
 	}
 
 	public void setRenderSpacer(boolean renderSpacer) {
