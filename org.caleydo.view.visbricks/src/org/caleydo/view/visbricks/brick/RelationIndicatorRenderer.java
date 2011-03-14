@@ -60,7 +60,8 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 	 * TODO: add parameters to check whether an update is actually necessary.
 	 */
 	public synchronized void updateRelations() {
-		ArrayList<DimensionGroup> dimensionGroups = visBricks.getDimensionGroupManager().getDimensionGroups();
+		ArrayList<DimensionGroup> dimensionGroups = visBricks.getDimensionGroupManager()
+				.getDimensionGroups();
 
 		int currentID;
 		int previousID = -1;
@@ -104,7 +105,10 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			return;
 
 		float yOffset = 0;
-		for (float similarity : similarities) {
+		for (Integer groupID : neighborGroupOrder)
+
+		{
+			float similarity = similarities[groupID];
 			float height = similarity * y;
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glColor3f(0, 0, 0);
