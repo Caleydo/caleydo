@@ -703,6 +703,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		initLayoutCenter();
 		initLayoutLeft();
 		initLayoutRight();
+		
+		initiConnectionLinesBetweenDimensionGroups();
 	}
 
 	public void highlightDimensionGroupSpacer(DimensionGroup dragOverDimensionGroup,
