@@ -66,7 +66,7 @@ public abstract class CaleydoRCPViewPart
 		parentComposite = new Composite(parent, SWT.NONE);
 		parentComposite.setLayout(new GridLayout(1, false));
 	}
-	
+
 	/**
 	 * Generates and returns a list of all views, caleydo-view-parts and gl-views, contained in this view.
 	 * 
@@ -130,8 +130,7 @@ public abstract class CaleydoRCPViewPart
 				DataDomainManager.get().getAssociationManager()
 					.getAvailableDataDomainTypesForViewTypes(serializedView.getViewType());
 			if (availableDomains == null)
-				throw new IllegalStateException(
-				"Not able to determine which data domain to use");
+				throw new IllegalStateException("Not able to determine which data domain to use");
 			else if (availableDomains.size() == 0)
 				throw new IllegalStateException("No datadomain for this view loaded");
 			else if (availableDomains.size() > 1)
@@ -149,13 +148,12 @@ public abstract class CaleydoRCPViewPart
 	// public void unregisterEventListeners() {
 	// // no registration to the event system in the default implementation
 	// }
-	
 
 	/**
 	 * Creates a default serialized form ({@link ASerializedView}) of the contained gl-view
 	 */
 	public abstract void createDefaultSerializedView();
-	
+
 	@Override
 	public void init(IViewSite site, IMemento memento) throws PartInitException {
 		super.init(site, memento);
@@ -164,7 +162,8 @@ public abstract class CaleydoRCPViewPart
 		if (memento != null) {
 			viewXml = memento.getString("serialized");
 		}
-		if (viewXml != null) { // init view from memento
+		if (viewXml != null) {
+			// init view from memento
 			JAXBContext jaxbContext = viewContext;
 			Unmarshaller unmarshaller;
 			try {
@@ -181,8 +180,12 @@ public abstract class CaleydoRCPViewPart
 			catch (JAXBException ex) {
 				throw new RuntimeException("could not deserialize view-xml", ex);
 			}
+			if (DataDomainManager.get().getDataDomain(serializedView.getDataDomainType()) == null)
+				serializedView = null;
 		}
-		else {
+		// this is the case if either the view has not been saved to a memento before, or the configuration
+		// has changed and the serialization is invalid (e.g. different DataDomain is set)
+		if (serializedView == null) {
 			createDefaultSerializedView();
 		}
 	}
@@ -192,7 +195,7 @@ public abstract class CaleydoRCPViewPart
 
 		if (viewContext == null)
 			return;
-		
+
 		JAXBContext jaxbContext = viewContext;
 		Marshaller marshaller = null;
 		try {
@@ -205,10 +208,10 @@ public abstract class CaleydoRCPViewPart
 
 		StringWriter xmlOutputWriter = new StringWriter();
 		try {
-			
+
 			if (!(view instanceof AGLView))
 				return;
-			
+
 			marshaller.marshal(((AGLView) view).getSerializableRepresentation(), xmlOutputWriter);
 			String xmlOutput = xmlOutputWriter.getBuffer().toString();
 			memento.putString("serialized", xmlOutput);
