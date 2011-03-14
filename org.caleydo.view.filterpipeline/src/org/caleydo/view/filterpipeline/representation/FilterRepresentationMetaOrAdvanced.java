@@ -1,13 +1,19 @@
 package org.caleydo.view.filterpipeline.representation;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import gleem.linalg.Vec2f;
+import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
+import org.caleydo.core.view.opengl.util.spline.IConnectionRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 
 /**
@@ -20,6 +26,18 @@ public class FilterRepresentationMetaOrAdvanced
 	private int displayListOutputLines = -1;
 	private boolean displayListDirty = true;
 	private float oldHeightRight = 0;
+	
+	private static final float spacingLeft = 0.15f;
+	private static final float spacingRight = 0.25f;
+	private static final float subfilterScalingX = 1.f - spacingLeft - spacingRight;
+	
+	private static final float spacingTop = 0.06f;
+	private static final float spacingBottom = 0.03f;
+	private static final float subfilterScalingY = 1.f - spacingTop - spacingBottom;
+	
+	private static int NUMBER_OF_SPLINE_POINTS = 40;
+	
+	private IConnectionRenderer inputRenderer = new ConnectionBandRenderer();
 
 	public FilterRepresentationMetaOrAdvanced( FilterPipelineRenderStyle renderStyle,
 											   PickingManager pickingManager,
@@ -43,72 +61,160 @@ public class FilterRepresentationMetaOrAdvanced
 			oldHeightRight = heightRight;
 		}
 
-		// render total filter
-		gl.glPushName(iPickingID);
-		renderShape
+		renderBasicShape(gl, textRenderer, renderStyle.FILTER_OR_COLOR);
+	
+		float scaleY = calculateFilterScalingY();
+		float offsetY = scaleY * heightLeft;
+		scaleY *= 0.9f;
+		
+		Vec2f curPos = new Vec2f
 		(
-			gl,
-			GL2.GL_QUADS,
-			renderStyle.FILTER_COMBINED_BACKGROUND_COLOR,
-			Z_POS_BODY
+			vPos.x() + spacingLeft * vSize.x(),
+			vPos.y() + spacingBottom * heightLeft
 		);
-		gl.glPopName();
-		
-		// we can only use the space to the height on the right size as
-		// otherwise filters can go outside the total filter
-		float totalRight = 0.94f * (heightLeft - 0.75f * (heightLeft - heightRight));
-		
-		// the last filter only uses the space it needs to allow the whole
-		// filters use more space upwards
-		int totalElements = (subFilterSizes.length - 1) * filter.getInput().size()
-		                  + subFilterSizes[subFilterSizes.length - 1];
-		
-		float totalLeft =
-			  ((float)(subFilterSizes.length * filter.getInput().size()) / totalElements)
-			* totalRight;
-		
-		float maxLeft = 0.94f * (heightLeft - 0.25f * (heightLeft - heightRight));
-		
-		if( totalLeft > maxLeft )
-			totalLeft = maxLeft;
+		float delta = heightLeft - heightRight;
+		float inputWidth = spacingLeft * vSize.x();
 
-		// smallSize = scale * fullSize
-		float scale = 0.93f * (totalLeft/subFilterSizes.length) / heightLeft;
-		
-		for( int i = 0; i < subFilterSizes.length; ++i )
+		for( int i = 0;
+			 i < subFilterSizes.length;
+			 ++i, curPos.setY(curPos.y() + offsetY) )
 		{
-			heightRight = 0.5f * vSize.y() * (subFilterSizes[i]/100.f);
-			Vec2f pos = vPos.copy();
-			pos.add(new Vec2f(vSize.x()/4.f,(0.06f + (float)i/subFilterSizes.length) * totalLeft));
-			
+			heightRight = vSize.y() * (subFilterSizes[i]/100.f);
+
 			gl.glPushName(pickingManager.getPickingID(viewId, EPickingType.FILTERPIPE_SUB_FILTER, i));
 			renderShape
 			(
 				gl,
 				GL2.GL_QUADS,
-				pos,
-				vSize.x() / 2.f,
-				scale * heightLeft,
-				scale * heightRight,
+				curPos,
+				subfilterScalingX * vSize.x(),
+				scaleY * heightLeft,
+				scaleY * heightRight,
 				renderStyle.getFilterColor(i),
 				Z_POS_BODY + 0.1f
+			);
+			gl.glLineWidth(1);
+			renderShape
+			(
+				gl,
+				GL2.GL_LINE_LOOP,
+				curPos,
+				subfilterScalingX * vSize.x(),
+				scaleY * heightLeft,
+				scaleY * heightRight,
+				renderStyle.FILTER_BORDER_COLOR,
+				Z_POS_BORDER + 0.1f
 			);
 			gl.glPopName();
 			
 			// render input
-			renderShape
+			ArrayList<Vec3f> topInputPoints = new ArrayList<Vec3f>();
+			float inputXScale = 0.7f - ((float)i/subFilterSizes.length) * 0.6f;
+			
+			// top curve
+			topInputPoints.add
 			(
-				gl,
-				GL2.GL_QUADS,
-				vPos,
-				vSize.x()/4.f,
-				heightLeft,
-				scale * heightLeft,
-				pos.y() - vPos.y(),
-				new float[]{.2f, .9f, .4f, .3f},
-				Z_POS_BODY
+				new Vec3f
+				(
+					vPos.x(),
+					vPos.y() + heightLeft,
+					Z_POS_BODY
+				)
+			);
+			topInputPoints.add
+			(
+				new Vec3f
+				(
+					vPos.x() + inputXScale * inputWidth,
+					vPos.y() + heightLeft - spacingLeft * delta,
+					Z_POS_BODY
+				)
+			);
+			topInputPoints.add
+			(
+				new Vec3f
+				(
+					vPos.x() + inputXScale * inputWidth,
+					curPos.y() + scaleY * heightLeft,
+					Z_POS_BODY
+				)
+			);
+			topInputPoints.add
+			(
+				new Vec3f
+				(
+					curPos.x(),
+					curPos.y() + scaleY * heightLeft,
+					Z_POS_BODY
+				)
 			);
 			
+			// bottom curve
+			ArrayList<Vec3f> bottomInputPoints = new ArrayList<Vec3f>();
+			bottomInputPoints.add
+			(
+				new Vec3f
+				(
+					curPos.x(),
+					curPos.y(),
+					Z_POS_BODY
+				)
+			);
+			bottomInputPoints.add
+			(
+				new Vec3f
+				(
+					vPos.x() + inputXScale * inputWidth,
+					curPos.y(),
+					Z_POS_BODY
+				)
+			);
+			bottomInputPoints.add
+			(
+				new Vec3f
+				(
+					vPos.x() + inputXScale * inputWidth,
+					vPos.y(),
+					Z_POS_BODY
+				)
+			);
+			bottomInputPoints.add
+			(
+				new Vec3f
+				(
+					vPos.x(),
+					vPos.y(),
+					Z_POS_BODY
+				)
+			);
+			
+			NURBSCurve topCurve = new NURBSCurve(topInputPoints, NUMBER_OF_SPLINE_POINTS);
+
+			// Band border
+			gl.glLineWidth(1);
+			gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
+			gl.glBegin(GL2.GL_LINE_STRIP);
+			{
+				for (Vec3f point : topCurve.getCurvePoints())
+					gl.glVertex3f(point.x(), point.y(), Z_POS_BODY);
+			}
+			gl.glEnd();
+			
+			// Band border
+			NURBSCurve bottomCurve = new NURBSCurve(bottomInputPoints, NUMBER_OF_SPLINE_POINTS);
+			gl.glBegin(GL2.GL_LINE_STRIP);
+			{
+				for (Vec3f point : bottomCurve.getCurvePoints())
+					gl.glVertex3f(point.x(), point.y(), Z_POS_BODY);
+			}
+			gl.glEnd();
+			
+			ArrayList<Vec3f> points = topCurve.getCurvePoints();
+			points.addAll(bottomCurve.getCurvePoints());
+			gl.glColor4fv(renderStyle.getFilterColorCombined(i), 0);
+			inputRenderer.init(gl); // TODO
+			inputRenderer.render(gl, points);
+
 			if( mouseOverItem == i )
 			{
 				// render mouse over
@@ -117,10 +223,10 @@ public class FilterRepresentationMetaOrAdvanced
 				(
 					gl,
 					GL2.GL_LINE_LOOP,
-					pos,
-					vSize.x() / 2.f,
-					scale * heightLeft,
-					scale * heightRight,
+					curPos,
+					subfilterScalingX * vSize.x(),
+					scaleY * heightLeft,
+					scaleY * heightRight,
 					SelectionType.MOUSE_OVER.getColor(),
 					Z_POS_MARK
 				);
@@ -129,16 +235,15 @@ public class FilterRepresentationMetaOrAdvanced
 			if( elementsPassedAll.size() > 0 )
 			{
 				// render common output
-				pos.setX(pos.x() + vSize.x()/2.f);
 				renderShape
 				(
 					gl,
 					GL2.GL_QUADS,
-					pos,
+					new Vec2f(curPos.x() + subfilterScalingX * vSize.x(), curPos.y()),
 					vSize.x()/4.f,
-					((float)elementsPassedAll.size()/subFilterSizes[i]) * scale * heightRight,
+					((float)elementsPassedAll.size()/subFilterSizes[i]) * scaleY * heightRight,
 					((float)elementsPassedAll.size()/filter.getOutput().size()) * getHeightRight(),
-					vPos.y() - pos.y(),
+					vPos.y() - curPos.y(),
 					new float[]{0.2f, 0.9f, 0.2f, 0.5f},
 					Z_POS_BODY
 				);
@@ -173,8 +278,8 @@ public class FilterRepresentationMetaOrAdvanced
 				if( !skip )
 					gl.glColor4f
 					(
-						0.4f + (0.5f * step)/numSteps,
-						1 - (0.8f * step)/numSteps,
+						0.9f - (0.5f * step)/numSteps,
+						0.2f + (0.8f * step)/numSteps,
 						0.1f,
 						0.2f
 					);
@@ -192,10 +297,11 @@ public class FilterRepresentationMetaOrAdvanced
 						{
 							gl.glVertex3f
 							(
-								vPos.x() + 0.75f * vSize.x(),
-								  vPos.y() + (0.06f + (float)i/subFilterSizes.length) * totalLeft
-								+ ((float)(elementsPassedAll.size() + currentSteps[i]++)/subFilterSizes[i]) * scale
-								  * 0.5f * vSize.y() * (subFilterSizes[i]/100.f), // equals heightRight of sub filter
+								vPos.x() + (1.f - spacingRight) * vSize.x(),
+								vPos.y() + spacingBottom * heightLeft
+										 + i * offsetY
+								+ ((float)(elementsPassedAll.size() + currentSteps[i]++)/subFilterSizes[i]) * scaleY
+								  * vSize.y() * (subFilterSizes[i]/100.f), // equals heightRight of sub filter
 								Z_POS_BODY + 0.1f
 							);
 							gl.glVertex3f
@@ -238,30 +344,30 @@ public class FilterRepresentationMetaOrAdvanced
 				Z_POS_MARK
 			);
 		}
+	}
+	
+	/**
+	 * Calculate the scaling factor for the subfilters
+	 * 
+	 * @return
+	 */
+	private float calculateFilterScalingY()
+	{
+		// calculate the available space for the subfilters		
+		float delta = heightLeft - heightRight;
+		float availableHeightLeft = subfilterScalingY * (heightLeft - spacingLeft * delta);
+		float availableHeightRight = subfilterScalingY * (heightRight + spacingRight * delta);		
 		
-		// currently not filtered elements
-		textRenderer.renderText
-		(
-			gl,
-			""+filter.getOutput().size(),
-			vPos.x() + vSize.x() - 0.4f,
-			vPos.y() + heightRight + 0.05f,
-			Z_POS_TEXT,
-			0.007f,
-			20
-		);
+		float scalingLeft = availableHeightLeft / (subFilterSizes.length * heightLeft);
 		
-		// label
-		textRenderer.renderText
-		(
-			gl,
-			(filter.getOutput().size() - filter.getInput().size())
-			+ " (-"+filter.getSizeVADelta()+")",
-			vPos.x() + 0.05f,
-			vPos.y() + 0.05f,
-			Z_POS_TEXT,
-			0.007f,
-			20
-		);
+		// the last filter only uses the space it needs to allow the whole
+		// filters use more space upwards
+		int totalElementsRight = (subFilterSizes.length - 1) * filter.getInput().size()
+		                       + subFilterSizes[subFilterSizes.length - 1];
+		float totalHeightRight = vSize.y() * (totalElementsRight/100.f); 
+
+		float scalingRight = availableHeightRight / totalHeightRight;
+		
+		return scalingLeft < scalingRight ? scalingLeft : scalingRight;
 	}
 }

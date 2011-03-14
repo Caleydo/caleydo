@@ -21,7 +21,7 @@ import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
  * 
  */
 public class FilterRepresentationMetaOr extends FilterRepresentation {
-	public static boolean renderPassedAll = false;
+	public static boolean renderPassedAll = true;
 
 	protected SortedSet<Integer> elementsPassed = new TreeSet<Integer>();
 	protected SortedSet<Integer> elementsPassedAll = new TreeSet<Integer>();
@@ -43,29 +43,32 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 		heightLeft = getHeightLeft();
 		heightRight = vSize.y() * (filter.getOutput().size() / 100.f);
 
-		// render filter
-		gl.glPushName(iPickingID);
-		renderShape(gl, GL2.GL_QUADS, renderStyle.FILTER_COMBINED_BACKGROUND_COLOR,
-				Z_POS_BODY);
-
-		for (int i = 0; i < subFilterSizes.length; ++i) {
-			gl.glPushName(pickingManager.getPickingID(viewId,
-					EPickingType.FILTERPIPE_SUB_FILTER, i));
-			heightRight = vSize.y() * (subFilterSizes[i] / 100.f);
-			renderShape(gl, GL2.GL_QUADS, renderStyle.getFilterColorCombined(i),
-					Z_POS_BODY);
+		renderBasicShape(gl, textRenderer, renderStyle.FILTER_OR_COLOR);
+		
+		for( int i = 0; i < subFilterSizes.length; ++i )
+		{
+			gl.glPushName(pickingManager.getPickingID(viewId, EPickingType.FILTERPIPE_SUB_FILTER, i));
+			heightRight = vSize.y() * (subFilterSizes[i]/100.f);
+			renderShape
+			(
+				gl,
+				GL2.GL_QUADS,
+				renderStyle.getFilterColorCombined(i),
+				Z_POS_BODY
+			);
 			gl.glPopName();
 		}
 
-		if (renderPassedAll) {
+		if (renderPassedAll)
+		{
 			// render elements passed all filters
 			heightRight = vSize.y() * (elementsPassedAll.size() / 100.f);
 			renderShape(gl, GL2.GL_QUADS, renderStyle.FILTER_PASSED_ALL_COLOR, Z_POS_BODY);
 		}
-		gl.glPopName();
 
-		if (mouseOverItem >= 0) {
-			heightRight = vSize.y() * (subFilterSizes[mouseOverItem] / 100.f);
+		if( mouseOverItem >= 0 )
+		{
+			heightRight = vSize.y() * (subFilterSizes[mouseOverItem]/100.f);
 			gl.glLineWidth(SelectionType.MOUSE_OVER.getLineWidth());
 
 			renderShape(gl, GL2.GL_LINE_LOOP, SelectionType.MOUSE_OVER.getColor(),
@@ -76,7 +79,8 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 		heightRight = vSize.y() * (filter.getOutput().size() / 100.f);
 
 		// render selection/mouseover if needed
-		if (selectionType != SelectionType.NORMAL && mouseOverItem < 0) {
+		if (selectionType != SelectionType.NORMAL && mouseOverItem < 0)
+		{
 			gl.glLineWidth((selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION
 					.getLineWidth() : SelectionType.MOUSE_OVER.getLineWidth());
 
@@ -86,17 +90,6 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 					(selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION
 							.getColor() : SelectionType.MOUSE_OVER.getColor(), Z_POS_MARK);
 		}
-
-		// currently not filtered elements
-		textRenderer.renderText(gl, "" + filter.getOutput().size(), vPos.x() + vSize.x()
-				- 0.4f, vPos.y() + heightRight + 0.05f, Z_POS_TEXT, 0.007f, 20);
-
-		// label
-		textRenderer.renderText(
-				gl,
-				(filter.getOutput().size() - filter.getInput().size()) + " (-"
-						+ filter.getSizeVADelta() + ")", vPos.x() + 0.05f,
-				vPos.y() + 0.05f, Z_POS_TEXT, 0.007f, 20);
 	}
 
 	protected void calculateSizes() {

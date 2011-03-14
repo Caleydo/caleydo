@@ -32,10 +32,11 @@ public class FilterRepresentation
 	protected PickingManager pickingManager;
 	protected int viewId;
 	
-	protected static final float Z_POS_BODY = 0.1f;
-	protected static final float Z_POS_MARK = 0.6f;
-	protected static final float Z_POS_TEXT = 0.7f;
-	protected static final float Z_POS_DRAG = 0.8f;
+	protected static final float Z_POS_BODY 	= 0.1f;
+	protected static final float Z_POS_BORDER 	= 0.15f;
+	protected static final float Z_POS_MARK 	= 0.6f;
+	protected static final float Z_POS_TEXT 	= 0.7f;
+	protected static final float Z_POS_DRAG 	= 0.8f;
 	protected static final float Z_POS_DRAG_OVER = 0.9f;
 
 	protected FilterItem<?> filter;
@@ -107,16 +108,7 @@ public class FilterRepresentation
 		heightLeft = getHeightLeft();
 		heightRight = getHeightRight();
 
-		// render filter
-		gl.glPushName(iPickingID);
-		renderShape
-		(
-			gl,
-			GL2.GL_QUADS,
-			renderStyle.getFilterColor(filter.getId()),
-			Z_POS_BODY
-		);
-		gl.glPopName();
+		renderBasicShape(gl, textRenderer, renderStyle.FILTER_COLOR);
 		
 		// render selection/mouseover if needed
 		if( selectionType != SelectionType.NORMAL )
@@ -137,32 +129,22 @@ public class FilterRepresentation
 					: SelectionType.MOUSE_OVER.getColor(),
 				Z_POS_MARK
 			);
+			
+//			if( selectionType == SelectionType.MOUSE_OVER )
+//			{
+//				// label
+//				textRenderer.renderText
+//				(
+//					gl,
+//					filter.getLabel(),
+//					vPos.x() + 0.05f,
+//					vPos.y() + 0.05f,
+//					Z_POS_TEXT,
+//					0.007f,
+//					20
+//				);
+//			}
 		}
-		
-		// currently not filtered elements
-		textRenderer.renderText
-		(
-			gl,
-			""+filter.getOutput().size(),
-			vPos.x() + vSize.x() - 0.4f,
-			vPos.y() + heightRight + 0.05f,
-			Z_POS_TEXT,
-			0.007f,
-			20
-		);
-		
-		// label
-		textRenderer.renderText
-		(
-			gl,
-			(filter.getOutput().size() - filter.getInput().size())
-			+ " (-"+filter.getSizeVADelta()+")",
-			vPos.x() + 0.05f,
-			vPos.y() + 0.05f,
-			Z_POS_TEXT,
-			0.007f,
-			20
-		);
 	}
 	
 	protected void renderShape( GL2 gl,
@@ -207,6 +189,58 @@ public class FilterRepresentation
             float z )
 	{
 		renderShape(gl, renderMode, vPos, vSize.x(), heightLeft, heightRight, color, z);
+	}
+	
+	/**
+	 * Render the basic filter (background and border)
+	 * 
+	 * @param gl
+	 * @param color
+	 */
+	protected void renderBasicShape( GL2 gl, CaleydoTextRenderer textRenderer, float[] color )
+	{
+		gl.glPushName(iPickingID);
+		renderShape
+		(
+			gl,
+			GL2.GL_QUADS,
+			color,
+			Z_POS_BODY
+		);
+		gl.glLineWidth(1);
+		renderShape
+		(
+			gl,
+			GL2.GL_LINE_LOOP,
+			renderStyle.FILTER_BORDER_COLOR,
+			Z_POS_BORDER
+		);
+		gl.glPopName();
+		
+		// currently not filtered elements
+		textRenderer.renderText
+		(
+			gl,
+			""+filter.getOutput().size(),
+			vPos.x() + vSize.x(),
+			vPos.y() + heightRight + 0.05f,
+			Z_POS_TEXT,
+			0.007f,
+			20
+		);
+		
+		// label
+		textRenderer.renderText
+		(
+			gl,
+			""+(filter.getOutput().size() - filter.getInput().size())
+			/*+ " (-"+filter.getSizeVADelta()+")"*/,
+			vPos.x() + 0.05f,
+			vPos.y() - 0.18f,
+			Z_POS_TEXT,
+			0.007f,
+			20
+		);
 	}
 	
 	/**

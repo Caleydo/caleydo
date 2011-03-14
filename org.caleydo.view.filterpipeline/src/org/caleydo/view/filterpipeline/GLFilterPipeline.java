@@ -3,6 +3,7 @@ package org.caleydo.view.filterpipeline;
 import gleem.linalg.Vec2f;
 
 import java.awt.Font;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,6 +50,7 @@ import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 import org.caleydo.view.filterpipeline.representation.Background;
 import org.caleydo.view.filterpipeline.representation.FilterMenu;
 import org.caleydo.view.filterpipeline.representation.FilterRepresentation;
+import org.caleydo.view.filterpipeline.representation.FilterRepresentationMetaOr;
 import org.caleydo.view.filterpipeline.representation.FilterRepresentationMetaOrAdvanced;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -113,9 +115,11 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 
 	private Background background = null;
 	private RadialMenu radialMenu = null;
-	private FilterMenu filterMenu = null;
+//	private FilterMenu filterMenu = null;
 
 	private boolean bControlPressed = false;
+	private long mouseOverTimeStamp = Long.MAX_VALUE;
+	
 
 	/**
 	 * Constructor.
@@ -145,22 +149,28 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;
 
-		background = new Background(uniqueID, pickingManager, renderStyle);
-		radialMenu = new RadialMenu(this, textureManager.getIconTexture(gl,
-				EIconTextures.FILTER_PIPELINE_MENU_ITEM));
-		radialMenu.addEntry(null);
-		radialMenu.addEntry(null);
-		radialMenu.addEntry(textureManager.getIconTexture(gl,
-				EIconTextures.FILTER_PIPELINE_DELETE));
-		radialMenu.addEntry(textureManager.getIconTexture(gl,
-				EIconTextures.FILTER_PIPELINE_EDIT));
+		background = new Background(iUniqueID, pickingManager, renderStyle);
 
-		filterMenu = new FilterMenu(renderStyle, pickingManager, uniqueID);
+		radialMenu = new RadialMenu
+		(
+			this,
+			textureManager.getIconTexture(gl, EIconTextures.FILTER_PIPELINE_MENU_ITEM)
+		);
+//		radialMenu.addEntry( null );
+//		radialMenu.addEntry( null );
+		radialMenu.addEntry( textureManager.getIconTexture(gl, EIconTextures.FILTER_PIPELINE_DELETE) );
+		radialMenu.addEntry( textureManager.getIconTexture(gl, EIconTextures.FILTER_PIPELINE_EDIT) );
+		
+//		filterMenu = new FilterMenu(renderStyle, pickingManager, iUniqueID);
 
 		if (textRenderer != null)
 			textRenderer.dispose();
 		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 20), true);
 		textRenderer.setColor(0, 0, 0, 1);
+		
+		gl.glEnable(GL2.GL_BLEND);
+		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glEnable(GL2.GL_LINE_SMOOTH);
 	}
 
 	@Override
@@ -244,30 +254,60 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		if (!filterList.isEmpty()) {
 			// display an arrow to show hidden filters
 			if (firstFilter > 0)
-				displayCollapseArrow(gl, firstFilter - 1, 0.4f);
+				displayCollapseArrow(gl, firstFilter - 1, 0.1f);
 
 			for (FilterItem<?> filter : filterList) {
 				if (filter.getId() < firstFilter)
 					// skip hidden filters
 					continue;
 
-				if (filter.getId() == firstFilter) {
+				if (filter.getId() == firstFilter)
+				{
 					// show input for first filter
-					textRenderer.renderText(gl, "" + filter.getInput().size(), filter
-							.getRepresentation().getPosition().x(), filter
-							.getRepresentation().getPosition().y()
-							+ filter.getRepresentation().getHeightLeft() + 0.05f, 0.9f,
-							0.007f, 20);
-				} else {
-					displayCollapseArrow(gl, filter.getId(), filter.getRepresentation()
-							.getPosition().x() - 0.15f);
+					textRenderer.renderText
+					(
+						gl,
+						""+filter.getInput().size(),
+						0.05f,
+						filter.getRepresentation().getPosition().y()
+						+ filter.getRepresentation().getHeightLeft()
+						+ 0.05f,
+						0.9f,
+						0.007f,
+						20
+					);
+				}
+				else
+				{
+					displayCollapseArrow
+					(
+						gl,
+						filter.getId(),
+						filter.getRepresentation().getPosition().x() - 0.1f * filterSize.x() - 0.15f
+					);
 				}
 
+				if(    filter.getId() == fullSizedFilter
+					&& Calendar.getInstance().getTimeInMillis() - mouseOverTimeStamp > 500 )
+				{
+					Vec2f pos = filter.getRepresentation().getPosition();
+					float fullHeightLeft  = (filterList.get(0).getInput().size() * filterSize.y())/100.f,
+					      fullHeightRight = ((filterList.get(0).getInput().size() - filter.getSizeVADelta()) * filterSize.y())/100.f;
+
+					gl.glBegin(GL2.GL_QUADS);
+					gl.glColor4f(153/255.f, 213/255.f, 148/255.f, 0.3f);
+					gl.glVertex2f(pos.x(), pos.y());
+					gl.glVertex2f(pos.x(), pos.y() + fullHeightLeft);
+					gl.glVertex2f(pos.x() + filterSize.x(), pos.y() + fullHeightRight);
+					gl.glVertex2f(pos.x() + filterSize.x(), pos.y());
+					gl.glEnd();
+				}
+				
 				filter.getRepresentation().updateSelections(selectionManager);
 				filter.render(gl, textRenderer);
 			}
 
-			filterMenu.render(gl, textRenderer);
+//			filterMenu.render(gl, textRenderer);
 			radialMenu.render(gl);
 		}
 
@@ -277,7 +317,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 	}
 
 	private void displayCollapseArrow(GL2 gl, int id, float left) {
-		int iPickingID = pickingManager.getPickingID(uniqueID,
+		int iPickingID = pickingManager.getPickingID(iUniqueID,
 				EPickingType.FILTERPIPE_START_ARROW, id);
 		float bottom = 0.025f;
 		float halfSize = 0.075f;
@@ -337,135 +377,164 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
-		switch (pickingMode) {
-		case CLICKED:
-			dragAndDropController.clearDraggables();
-			break;
-		case MOUSE_OVER:
-			filterMenu.handleClearMouseOver();
-			break;
+	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode,
+			int iExternalID, Pick pick)
+	{
+		int newFullSizedFilter = -1;
+
+		switch(pickingMode)
+		{
+			case CLICKED:
+				dragAndDropController.clearDraggables();
+			case MOUSE_OVER:
+//				filterMenu.handleClearMouseOver();
+				break;
 		}
 
-		switch (pickingType) {
-		// -----------------------------------------------------------------
-		case FILTERPIPE_FILTER:
-			switch (pickingMode) {
-			case MOUSE_OVER:
-				// remove old mouse over
-				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				selectionManager.addToType(SelectionType.MOUSE_OVER, iExternalID);
-				filterMenu.setFilter(filterList.get(iExternalID));
-				break;
-			case CLICKED:
-				if (!bControlPressed)
-					selectionManager.clearSelection(SelectionType.SELECTION);
+		switch(pickingType)
+		{
+			// -----------------------------------------------------------------
+			case FILTERPIPE_FILTER:
+				switch(pickingMode)
+				{
+					case MOUSE_OVER:
+						// remove old mouse over
+						selectionManager.clearSelection(SelectionType.MOUSE_OVER);
+						selectionManager.addToType
+						(
+							SelectionType.MOUSE_OVER, iExternalID
+						);
+//						try
+//						{
+//							filterMenu.setFilter(filterList.get(iExternalID));
+//						}
+//						catch (Exception e)
+//						{
+//							// maybe the filter has been destroyed in the meantime
+//							filterMenu.setFilter(null);
+//						}
+						if( fullSizedFilter != iExternalID )
+							mouseOverTimeStamp = Calendar.getInstance().getTimeInMillis();
+						
+						newFullSizedFilter = iExternalID;
+						break;
+					case CLICKED:
+						if( !bControlPressed )
+							selectionManager.clearSelection(SelectionType.SELECTION);
 
-				// Toggle add/remove element to selection
-				if (selectionManager.checkStatus(SelectionType.SELECTION, iExternalID)) {
-					selectionManager.removeFromType(SelectionType.SELECTION, iExternalID);
-				} else {
-					selectionManager.addToType(SelectionType.SELECTION, iExternalID);
+						// Toggle add/remove element to selection
+						if (selectionManager.checkStatus(SelectionType.SELECTION, iExternalID)) {
+							selectionManager.removeFromType(SelectionType.SELECTION, iExternalID);
+						} else {
+							selectionManager.addToType(SelectionType.SELECTION, iExternalID);
+						}
+		
+						dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
+						dragAndDropController.addDraggable(filterList.get(iExternalID)
+								.getRepresentation());
+						break;
+					case RIGHT_CLICKED:
+						radialMenu.show(iExternalID, mousePosition);
+						break;
+					case DRAGGED:
+						if (dragAndDropController.hasDraggables()) {
+							if (glMouseListener.wasRightMouseButtonPressed())
+								dragAndDropController.clearDraggables();
+							else if (!dragAndDropController.isDragging())
+								dragAndDropController.startDragging();
+						}
+						dragAndDropController.setDropArea(filterList.get(iExternalID));
+						break;
 				}
-
-				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
-				dragAndDropController.addDraggable(filterList.get(iExternalID)
-						.getRepresentation());
 				break;
-			case RIGHT_CLICKED:
-				radialMenu.show(iExternalID, mousePosition);
+			// -----------------------------------------------------------------
+			case FILTERPIPE_SUB_FILTER:
+//				switch (pickingMode) {
+//				case MOUSE_OVER:
+//					filterMenu.handleIconMouseOver(iExternalID);
+//					break;
+//				}
 				break;
-			case DRAGGED:
-				if (dragAndDropController.hasDraggables()) {
-					if (glMouseListener.wasRightMouseButtonPressed())
-						dragAndDropController.clearDraggables();
-					else if (!dragAndDropController.isDragging())
-						dragAndDropController.startDragging();
+			// -----------------------------------------------------------------
+			case FILTERPIPE_START_ARROW:
+				switch (pickingMode) {
+				case CLICKED:
+					firstFilter = iExternalID;
+					updateFilterSize();
+					// break; Fall through...
+				case MOUSE_OVER:
+					// reset all mouse over actions
+					selectionManager.clearSelection(SelectionType.MOUSE_OVER);
+//					filterMenu.setFilter(null);
+					break;
 				}
-				dragAndDropController.setDropArea(filterList.get(iExternalID));
 				break;
-			}
-			break;
-		// -----------------------------------------------------------------
-		case FILTERPIPE_SUB_FILTER:
-			switch (pickingMode) {
-			case MOUSE_OVER:
-				filterMenu.handleIconMouseOver(iExternalID);
+			// -----------------------------------------------------------------
+			case FILTERPIPE_BACKGROUND:
+				switch (pickingMode) {
+				case CLICKED:
+					if (!bControlPressed)
+						selectionManager.clearSelection(SelectionType.SELECTION);
+					// break; Fall through...
+				case MOUSE_OVER:
+					// reset all mouse over actions
+					selectionManager.clearSelection(SelectionType.MOUSE_OVER);
+//					filterMenu.setFilter(null);
+					break;
+				case DRAGGED:
+					dragAndDropController.setDropArea(background);
+					break;
+				}
 				break;
-			}
-			break;
-		// -----------------------------------------------------------------
-		case FILTERPIPE_START_ARROW:
-			switch (pickingMode) {
-			case CLICKED:
-				firstFilter = iExternalID;
-				updateFilterSize();
-				// break; Fall through...
-			case MOUSE_OVER:
-				// reset all mouse over actions
-				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				filterMenu.setFilter(null);
-				break;
-			}
-			break;
-		// -----------------------------------------------------------------
-		case FILTERPIPE_BACKGROUND:
-			switch (pickingMode) {
-			case CLICKED:
-				if (!bControlPressed)
-					selectionManager.clearSelection(SelectionType.SELECTION);
-				// break; Fall through...
-			case MOUSE_OVER:
-				// reset all mouse over actions
-				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				filterMenu.setFilter(null);
-				break;
-			case DRAGGED:
-				dragAndDropController.setDropArea(background);
-				break;
-			}
-			break;
 		}
+		
+		fullSizedFilter = newFullSizedFilter;
+		
+		if( fullSizedFilter == -1 )
+			mouseOverTimeStamp = Long.MAX_VALUE;
 	}
 
 	@Override
 	public void handleRadialMenuSelection(int externalId, int selection) {
-		fullSizedFilter = -1;
 		ignoredFilter = -1;
 
 		if (externalId >= filterList.size() || externalId < 0)
 			return;
 
 		FilterItem<?> filter = filterList.get(externalId);
-
-		switch (selection) {
-		case 2: // left
-			filter.triggerRemove();
-			selectionManager.removeFromType(SelectionType.SELECTION, externalId);
-			break;
-		case 3: // down
-			try {
-				filter.showDetailsDialog();
-			} catch (Exception e) {
-				System.out.println("Failed to show details dialog: " + e);
-			}
-			break;
+		
+		switch(selection)
+		{
+			case 0:
+				filter.triggerRemove();
+				selectionManager.removeFromType
+				(
+					SelectionType.SELECTION, externalId
+				);
+				break;
+			case 1:
+				try
+				{
+					filter.showDetailsDialog();
+				}
+				catch (Exception e)
+				{
+					System.out.println("Failed to show details dialog: "+e);
+				}
+				break;
 		}
 	}
 
 	@Override
-	public void handleRadialMenuHover(int externalId, int selection) {
+	public void handleRadialMenuHover(int externalId, int selection)
+	{
 		ignoredFilter = -1;
-		fullSizedFilter = -1;
 
-		switch (selection) {
-		case 0:
-			fullSizedFilter = externalId;
-			break;
-		case 2: // remove
-			ignoredFilter = externalId;
-			break;
+		switch(selection)
+		{
+			case 0: // remove
+				ignoredFilter = externalId;
+				break;
 		}
 	}
 
@@ -498,13 +567,17 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		// 100 elements will be high exactly 1 unit. So we need to scale
 		// it that the largest (== first) filter fits.
 				(viewFrustum.getHeight() - 0.4f)
-						/ (filterList.get(firstFilter).getInput().size() / 100.f));
-
-		Vec2f filterPosition = new Vec2f(0.4f, renderStyle.FILTER_SPACING_BOTTOM), width = new Vec2f(
-				filterSize.x(), 0);
-
-		for (FilterItem<?> filter : filterList) {
-			if (filter.getId() < firstFilter)
+			    / (filterList.get(firstFilter).getInput().size()/100.f)
+			);
+		
+		Vec2f filterPosition = new Vec2f(0.4f, renderStyle.FILTER_SPACING_BOTTOM),
+		      width = new Vec2f(filterSize.x(), 0);
+		
+		filterSize.setX(filterSize.x() * 0.9f);
+		
+		for (FilterItem<?> filter : filterList)
+		{
+			if( filter.getId() < firstFilter )
 				continue;
 
 			filter.getRepresentation().setPosition(filterPosition);
@@ -575,19 +648,24 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 
 		filterList.clear();
 		int filterID = 0;
-
-		for (Filter<?> filter : filterType == FilterType.CONTENT ? dataDomain
-				.getContentFilterManager().getFilterPipe() : dataDomain
-				.getStorageFilterManager().getFilterPipe()) {
-			FilterItem<?> filterItem = new FilterItem(filterID++, filter, pickingManager,
-					uniqueID);
-
-			if (filter instanceof ContentMetaOrFilter)
-				filterItem.setRepresentation(new FilterRepresentationMetaOrAdvanced(
-						renderStyle, pickingManager, uniqueID));
+		
+		for( Filter<?> filter :
+				 filterType == FilterType.CONTENT
+				   ? dataDomain.getContentFilterManager().getFilterPipe()
+				   : dataDomain.getStorageFilterManager().getFilterPipe()
+		   )
+		{
+			FilterItem<?> filterItem =
+				new FilterItem(filterID++, filter, pickingManager, iUniqueID);
+			
+			if( filter instanceof ContentMetaOrFilter )
+				filterItem.setRepresentation
+				(
+					new FilterRepresentationMetaOrAdvanced(renderStyle, pickingManager, iUniqueID)
+				);
 			else
 				filterItem.setRepresentation(new FilterRepresentation(renderStyle,
-						pickingManager, uniqueID));
+						pickingManager, iUniqueID));
 
 			filterList.add(filterItem);
 		}
