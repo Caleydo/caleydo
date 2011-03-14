@@ -149,7 +149,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;
 
-		background = new Background(iUniqueID, pickingManager, renderStyle);
+		background = new Background(uniqueID, pickingManager, renderStyle);
 
 		radialMenu = new RadialMenu
 		(
@@ -317,7 +317,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 	}
 
 	private void displayCollapseArrow(GL2 gl, int id, float left) {
-		int iPickingID = pickingManager.getPickingID(iUniqueID,
+		int iPickingID = pickingManager.getPickingID(uniqueID,
 				EPickingType.FILTERPIPE_START_ARROW, id);
 		float bottom = 0.025f;
 		float halfSize = 0.075f;
@@ -656,16 +656,16 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		   )
 		{
 			FilterItem<?> filterItem =
-				new FilterItem(filterID++, filter, pickingManager, iUniqueID);
+				new FilterItem(filterID++, filter, pickingManager, uniqueID);
 			
 			if( filter instanceof ContentMetaOrFilter )
 				filterItem.setRepresentation
 				(
-					new FilterRepresentationMetaOrAdvanced(renderStyle, pickingManager, iUniqueID)
+					new FilterRepresentationMetaOrAdvanced(renderStyle, pickingManager, uniqueID)
 				);
 			else
 				filterItem.setRepresentation(new FilterRepresentation(renderStyle,
-						pickingManager, iUniqueID));
+						pickingManager, uniqueID));
 
 			filterList.add(filterItem);
 		}
