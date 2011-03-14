@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.similarity.GroupSimilarity;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
@@ -40,11 +40,13 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 	int groupID;
 	GLVisBricks visBricks;
 	int neighborSetID = -1;
-	List<Group> neighborGroupOrder;
+	List<GLBrick> neighborBrickOrder;
 	boolean isLeft;
 	float[] similarities;
+	GLBrick brick;
 
 	public RelationIndicatorRenderer(GLBrick brick, GLVisBricks visBricks, boolean isLeft) {
+		this.brick = brick;
 		this.dataDomain = brick.getDataDomain();
 		this.relationAnalyzer = dataDomain.getContentRelationAnalyzer();
 		setID = brick.getSet().getID();
@@ -73,13 +75,12 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			if (currentID == setID && isLeft) {
 				neighborSetID = previousID;
 				if (neighborSetID != -1)
-					neighborGroupOrder = dimensionGroups.get(count - 1)
-							.getOrderedGroups();
+					neighborBrickOrder = dimensionGroups.get(count - 1).getBricks();
 				break;
 			}
 			if (previousID == setID && !isLeft) {
 				neighborSetID = currentID;
-				neighborGroupOrder = dimensionGroup.getOrderedGroups();
+				neighborBrickOrder = dimensionGroup.getBricks();
 				break;
 			}
 
@@ -107,15 +108,21 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			return;
 
 		float yOffset = 0;
-		for (Group group : neighborGroupOrder) {
-			int foreignGroupID = group.getGroupID();
+		for (GLBrick brick : neighborBrickOrder) {
+
+			int foreignGroupID = brick.getGroup().getGroupID();
 			float similarity = similarities[foreignGroupID];
 			float height = similarity * y;
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glColor3f(0, 0, 0);
 			gl.glVertex3f(0, yOffset, 0);
 			gl.glVertex3f(x, yOffset, 0);
-			gl.glColor3f(1, 1, 1);
+			if (brick.getContentGroupSelectionManager().checkStatus(
+					SelectionType.SELECTION, brick.getGroup().getID()))
+				gl.glColor3f(1, 0, 0);
+			else
+
+				gl.glColor3f(1, 1, 1);
 			// gl.glColor3f(0.8f, 0.8f, 0f);
 			gl.glVertex3f(x, yOffset + height, 0);
 			gl.glVertex3f(0, yOffset + height, 0);

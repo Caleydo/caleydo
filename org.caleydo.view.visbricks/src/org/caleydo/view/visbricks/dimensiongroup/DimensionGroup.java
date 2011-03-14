@@ -597,28 +597,17 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	/**
-	 * Returns the list of groups ordered from top to bottom as it is rendered
+	 * Returns the list of bricks ordered from bottom to top as it is rendered
 	 * in this dimension group
 	 * 
 	 * @return
 	 */
-	public List<Group> getOrderedGroups() {
-		ArrayList<Group> groupOrder = new ArrayList<Group>();
-		for (int count = topBricks.size() - 1; count >= 0; count--) {
-			groupOrder.add(topBricks.get(count).getGroup());
-		}
-		for (GLBrick brick : bottomBricks) {
-			groupOrder.add(brick.getGroup());
-		}
-		return groupOrder;
-	}
-
 	public List<GLBrick> getBricks() {
 		ArrayList<GLBrick> bricks = new ArrayList<GLBrick>();
-		for (int count = topBricks.size() - 1; count >= 0; count--) {
-			bricks.add(topBricks.get(count));
-		}
 		for (GLBrick brick : bottomBricks) {
+			bricks.add(brick);
+		}
+		for (GLBrick brick : topBricks) {
 			bricks.add(brick);
 		}
 		return bricks;

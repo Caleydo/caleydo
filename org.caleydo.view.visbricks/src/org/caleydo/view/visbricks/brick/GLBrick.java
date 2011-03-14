@@ -545,6 +545,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		return contentGroupSelectionManager;
 	}
 
+
+	
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
