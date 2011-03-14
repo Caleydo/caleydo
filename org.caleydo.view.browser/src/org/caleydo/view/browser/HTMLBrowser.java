@@ -74,7 +74,7 @@ public class HTMLBrowser extends ASWTView {
 	 * Constructor.
 	 */
 	public HTMLBrowser(Composite parentComposite) {
-		super(GeneralManager.get().getIDManager()
+		super(GeneralManager.get().getIDCreator()
 				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENERAL), parentComposite);
 		viewType = VIEW_ID;
 	}
@@ -202,7 +202,7 @@ public class HTMLBrowser extends ASWTView {
 		});
 
 		// idExtractionLocationListener = new
-		// IDExtractionLocationListener(browser, iUniqueID, -1);
+		// IDExtractionLocationListener(browser, uniqueID, -1);
 		// browser.addLocationListener(idExtractionLocationListener);
 
 		data = new GridData();

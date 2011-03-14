@@ -51,7 +51,7 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	 * @param id
 	 * @param filter
 	 * @param pickingManager
-	 * @param iUniqueID
+	 * @param uniqueID
 	 */
 	public FilterItem(int id, Filter<DeltaType> filter, PickingManager pickingManager,
 			int iUniqueID) {

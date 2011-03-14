@@ -681,7 +681,7 @@ public class GLScatterPlot extends AStorageBasedView {
 				ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 		gl.glEnd();
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.SCATTER_MAIN_ZOOM, 1));
 		x = x - fIconwith;
 
@@ -741,7 +741,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		upperLeftCorner = new Vec3f(x, y + fIconwith,
 				ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.SCATTER_MAIN_ZOOM, 2));
 
 		if (fTransformNewMaxX < 1) {
@@ -787,7 +787,7 @@ public class GLScatterPlot extends AStorageBasedView {
 					ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 			gl.glEnd();
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.SCATTER_MAIN_ZOOM, 3));
 			x = x - fIconwith;
 
@@ -851,7 +851,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			upperLeftCorner = new Vec3f(x, y + fIconwith,
 					ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.SCATTER_MAIN_ZOOM, 4));
 
 			if (fTransformOldMaxX < 1) {
@@ -912,7 +912,7 @@ public class GLScatterPlot extends AStorageBasedView {
 				ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 		gl.glEnd();
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.SCATTER_MAIN_ZOOM, 5));
 		y = y - fIconwith;
 
@@ -971,7 +971,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		upperLeftCorner = new Vec3f(x, y + fIconwith,
 				ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.SCATTER_MAIN_ZOOM, 6));
 
 		if (fTransformNewMaxY < 1) {
@@ -1018,7 +1018,7 @@ public class GLScatterPlot extends AStorageBasedView {
 					ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 			gl.glEnd();
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.SCATTER_MAIN_ZOOM, 7));
 			y = y - fIconwith;
 
@@ -1082,7 +1082,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			upperLeftCorner = new Vec3f(x, y + fIconwith,
 					ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.SCATTER_MAIN_ZOOM, 8));
 
 			if (fTransformOldMaxY < 1) {
@@ -1773,7 +1773,7 @@ public class GLScatterPlot extends AStorageBasedView {
 									.getImageTexCoords();
 						}
 
-						gl.glPushName(this.pickingManager.getPickingID(this.iUniqueID,
+						gl.glPushName(this.pickingManager.getPickingID(this.uniqueID,
 								EPickingType.SCATTER_MATRIX_SELECTION, icounter));
 
 						gl.glBegin(7);
@@ -2011,7 +2011,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		gl.glColor4fv(X_AXIS_COLOR, 0);
 		gl.glLineWidth(X_AXIS_LINE_WIDTH);
 
-		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		// gl.glPushName(pickingManager.getPickingID(uniqueID,
 		// EPickingType.X_AXIS_SELECTION, 1));
 		gl.glBegin(GL2.GL_LINES);
 
@@ -2028,7 +2028,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		gl.glColor4fv(Y_AXIS_COLOR, 0);
 		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 
-		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		// gl.glPushName(pickingManager.getPickingID(uniqueID,
 		// EPickingType.X_AXIS_SELECTION, 1));
 		gl.glBegin(GL2.GL_LINES);
 
@@ -2206,7 +2206,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 				POINTSTYLE = tmpPoint;
 
-				int iPickingID = pickingManager.getPickingID(iUniqueID,
+				int iPickingID = pickingManager.getPickingID(uniqueID,
 						EPickingType.SCATTER_POINT_SELECTION, iContentIndex);
 
 				gl.glPushName(iPickingID);
@@ -2532,7 +2532,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		float fullPoint = POINTSIZE * scale;
 		float halfPoint = (fullPoint / 2.0f);
 
-		int iPickingID = pickingManager.getPickingID(iUniqueID,
+		int iPickingID = pickingManager.getPickingID(uniqueID,
 				EPickingType.SCATTER_POINT_SELECTION, iContentIndex);
 		gl.glColor3f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2]);
 
@@ -3384,7 +3384,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			// break;
 			// }
 
-			int iViewID = iUniqueID;
+			int iViewID = uniqueID;
 			// If rendered remote (hierarchical heat map) - use the remote view
 			// ID
 			if (glRemoteRenderingView != null)

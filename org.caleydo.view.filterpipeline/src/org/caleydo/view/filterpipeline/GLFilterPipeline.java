@@ -145,7 +145,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;
 
-		background = new Background(iUniqueID, pickingManager, renderStyle);
+		background = new Background(uniqueID, pickingManager, renderStyle);
 		radialMenu = new RadialMenu(this, textureManager.getIconTexture(gl,
 				EIconTextures.FILTER_PIPELINE_MENU_ITEM));
 		radialMenu.addEntry(null);
@@ -155,7 +155,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		radialMenu.addEntry(textureManager.getIconTexture(gl,
 				EIconTextures.FILTER_PIPELINE_EDIT));
 
-		filterMenu = new FilterMenu(renderStyle, pickingManager, iUniqueID);
+		filterMenu = new FilterMenu(renderStyle, pickingManager, uniqueID);
 
 		if (textRenderer != null)
 			textRenderer.dispose();
@@ -277,7 +277,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 	}
 
 	private void displayCollapseArrow(GL2 gl, int id, float left) {
-		int iPickingID = pickingManager.getPickingID(iUniqueID,
+		int iPickingID = pickingManager.getPickingID(uniqueID,
 				EPickingType.FILTERPIPE_START_ARROW, id);
 		float bottom = 0.025f;
 		float halfSize = 0.075f;
@@ -580,14 +580,14 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 				.getContentFilterManager().getFilterPipe() : dataDomain
 				.getStorageFilterManager().getFilterPipe()) {
 			FilterItem<?> filterItem = new FilterItem(filterID++, filter, pickingManager,
-					iUniqueID);
+					uniqueID);
 
 			if (filter instanceof ContentMetaOrFilter)
 				filterItem.setRepresentation(new FilterRepresentationMetaOrAdvanced(
-						renderStyle, pickingManager, iUniqueID));
+						renderStyle, pickingManager, uniqueID));
 			else
 				filterItem.setRepresentation(new FilterRepresentation(renderStyle,
-						pickingManager, iUniqueID));
+						pickingManager, uniqueID));
 
 			filterList.add(filterItem);
 		}

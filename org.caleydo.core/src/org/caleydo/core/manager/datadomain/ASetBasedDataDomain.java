@@ -16,6 +16,7 @@ import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -23,6 +24,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
@@ -81,8 +83,12 @@ public abstract class ASetBasedDataDomain
 	protected IDType contentIDType;
 	protected IDType storageIDType;
 
+	/** IDType used for {@link Group}s in this dataDomain */
+	protected IDType contentGroupIDType;
+
 	protected ContentSelectionManager contentSelectionManager;
 	protected StorageSelectionManager storageSelectionManager;
+	protected SelectionManager contentGroupSelectionManager;
 
 	/** central {@link EventPublisher} to receive and send events */
 	protected EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
@@ -118,6 +124,10 @@ public abstract class ASetBasedDataDomain
 				EStorageType.INT);
 		storageIDType =
 			IDType.registerType("storage_" + dataDomainType + "_" + hashCode(), storageIDCategory,
+				EStorageType.INT);
+
+		contentGroupIDType =
+			IDType.registerType("group_content_" + dataDomainType + "_" + hashCode(), contentIDCategory,
 				EStorageType.INT);
 	}
 
@@ -175,6 +185,15 @@ public abstract class ASetBasedDataDomain
 		return storageIDType;
 	}
 
+	/**
+	 * Returns the ID type used for {@link Group}s in this dataDomain.
+	 * 
+	 * @return
+	 */
+	public IDType getContentGroupIDType() {
+		return contentGroupIDType;
+	}
+
 	public IDCategory getContentIDCategory() {
 		return contentIDCategory;
 	}
@@ -218,6 +237,7 @@ public abstract class ASetBasedDataDomain
 		contentSelectionManager.setVA(set.getContentData(Set.CONTENT).getContentVA());
 		storageSelectionManager = new StorageSelectionManager(storageIDType);
 		storageSelectionManager.setVA(set.getStorageData(Set.STORAGE).getStorageVA());
+		contentGroupSelectionManager = new SelectionManager(contentGroupIDType);
 	}
 
 	/**
@@ -238,6 +258,10 @@ public abstract class ASetBasedDataDomain
 	 */
 	public StorageSelectionManager getStorageSelectionManager() {
 		return storageSelectionManager.clone();
+	}
+
+	public SelectionManager getContentGroupSelectionManager() {
+		return contentGroupSelectionManager.clone();
 	}
 
 	/**
@@ -588,6 +612,10 @@ public abstract class ASetBasedDataDomain
 		}
 		else if (mappingManager.hasMapping(selectionDelta.getIDType(), storageSelectionManager.getIDType())) {
 			storageSelectionManager.setDelta(selectionDelta);
+		}
+
+		if (selectionDelta.getIDType() == contentGroupSelectionManager.getIDType()) {
+			contentGroupSelectionManager.setDelta(selectionDelta);
 		}
 	}
 

@@ -471,7 +471,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.GROUPER_BACKGROUND_SELECTION, 0));
 
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
@@ -1371,7 +1371,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 		storageVA = set.getStorageData(org.caleydo.core.data.collection.set.Set.STORAGE)
 				.getStorageVA();
-		drawingStrategyManager = new DrawingStrategyManager(pickingManager, iUniqueID,
+		drawingStrategyManager = new DrawingStrategyManager(pickingManager, uniqueID,
 				renderStyle);
 		if (set.getStorageData(storageVAType).getStorageTree() != null) {
 			// FIXME: do that differently.

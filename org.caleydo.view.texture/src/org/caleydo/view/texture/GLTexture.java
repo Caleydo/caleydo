@@ -100,7 +100,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 
 		float topMargin = 0.07f;
 
-		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		// gl.glPushName(pickingManager.getPickingID(uniqueID,
 		// EPickingType.TISSUE_SELECTION, experimentIndex));
 		if (texturePath != null && !texturePath.isEmpty()) {
 

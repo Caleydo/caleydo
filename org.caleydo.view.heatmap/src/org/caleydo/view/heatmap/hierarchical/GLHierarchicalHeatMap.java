@@ -284,7 +284,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		ArrayList<RemoteLevelElement> remoteLevelElementWhiteList = new ArrayList<RemoteLevelElement>();
 		remoteLevelElementWhiteList.add(heatMapRemoteElement);
-		selectionTransformer = new RemoteRenderingTransformer(iUniqueID,
+		selectionTransformer = new RemoteRenderingTransformer(uniqueID,
 				remoteLevelElementWhiteList);
 
 	}
@@ -1162,7 +1162,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 						EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
 
 			tempTexture.enable();
@@ -1243,7 +1243,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 						EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
 
 			tempTexture.enable();
@@ -1324,7 +1324,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 						EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.HIER_HEAT_MAP_GENES_GROUP, i));
 
 			tempTexture.enable();
@@ -1412,7 +1412,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 					tempTexture = textureManager.getIconTexture(gl,
 							EIconTextures.HEAT_MAP_GROUP_NORMAL);
 				}
-				gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				gl.glPushName(pickingManager.getPickingID(uniqueID,
 						EPickingType.HIER_HEAT_MAP_GENES_GROUP, iIdxCluster));
 
 				tempTexture.enable();
@@ -1469,7 +1469,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 					EIconTextures.HEAT_MAP_GROUP_NORMAL);
 		}
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.HIER_HEAT_MAP_GENES_GROUP, iIdxCluster));
 
 		tempTexture.enable();
@@ -1549,7 +1549,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 							EIconTextures.HEAT_MAP_GROUP_NORMAL);
 				}
 
-				gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				gl.glPushName(pickingManager.getPickingID(uniqueID,
 						EPickingType.HIER_HEAT_MAP_GENES_GROUP, iIdxCluster));
 
 				tempTexture.enable();
@@ -1604,7 +1604,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 					EIconTextures.HEAT_MAP_GROUP_NORMAL);
 		}
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.HIER_HEAT_MAP_GENES_GROUP, iIdxCluster));
 
 		tempTexture.enable();
@@ -1662,7 +1662,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			TextureCoords texCoords = AlTextures.get(iNrTextures - i - 1)
 					.getImageTexCoords();
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.HIER_HEAT_MAP_TEXTURE_SELECTION, iNrTextures - i));
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2d(texCoords.left(), texCoords.top());
@@ -1812,7 +1812,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.HIER_HEAT_MAP_FIELD_SELECTION, 1));
 
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
@@ -2155,7 +2155,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 			gl.glColor4f(1, 1, 1, 1);
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.HIER_HEAT_MAP_INFOCUS_SELECTION, 1));
 			if (bIsHeatmapInFocus) {
 				gl.glBegin(GL2.GL_POLYGON);
@@ -2339,7 +2339,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
 		// Polygon for iFirstElement-Cursor
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.HIER_HEAT_MAP_CURSOR_LEVEL1, 1));
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -2356,7 +2356,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		gl.glPopName();
 
 		// Polygon for iLastElement-Cursor
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.HIER_HEAT_MAP_CURSOR_LEVEL1, 2));
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -2377,7 +2377,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		// fill gap between cursor
 		gl.glColor4fv(DRAGGING_CURSOR_COLOR, 0);
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL1, 1));
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel1, BUTTON_Z);
@@ -2414,7 +2414,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
 		// Polygon for iFirstElement-Cursor
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.HIER_HEAT_MAP_CURSOR_LEVEL2, 1));
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -2430,7 +2430,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		gl.glPopName();
 
 		// Polygon for iLastElement-Cursor
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.HIER_HEAT_MAP_CURSOR_LEVEL2, 2));
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -2451,7 +2451,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		// fill gap between cursor
 		gl.glColor4fv(DRAGGING_CURSOR_COLOR, 0);
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL2, 1));
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel2, BUTTON_Z);
@@ -2595,7 +2595,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
 			ftop -= renderStyle.getHeightExperimentDendrogram();
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
 				glHeatMapView.getID()));
 
@@ -2635,7 +2635,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			float fOffsety = viewFrustum.getTop() - 1.65f;// renderStyle.getHeightExperimentDendrogram();
 
 			gl.glTranslatef(0f, fOffsety, 0f);
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION,
 					glExperimentDendrogramView.getID()));
 			glExperimentDendrogramView.getViewFrustum().setTop(1.65f);
@@ -2660,7 +2660,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
 
 			gl.glTranslatef(0f, 0.4f, 0f);
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION,
 					glContentDendrogramView.getID()));
 			glContentDendrogramView.getViewFrustum().setTop(viewFrustum.getTop() - 0.6f);
@@ -2706,7 +2706,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		glHeatMapView.getViewFrustum().setTop(ftop);
 		glHeatMapView.getViewFrustum().setRight(fright);
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
 				glHeatMapView.getID()));
 		glHeatMapView.displayRemote(gl);
@@ -2719,7 +2719,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			float fOffsety = viewFrustum.getTop() - 1.65f;
 
 			gl.glTranslatef(0f, fOffsety, 0f);
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION,
 					glExperimentDendrogramView.getID()));
 			glExperimentDendrogramView.getViewFrustum().setTop(1.65f);
@@ -2744,7 +2744,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
 
 			gl.glTranslatef(0f, 0.4f, 0f);
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION,
 					glContentDendrogramView.getID()));
 			glContentDendrogramView.getViewFrustum().setTop(viewFrustum.getTop() - 0.6f);
@@ -2784,7 +2784,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		glHeatMapView.getViewFrustum().setTop(ftop);
 		glHeatMapView.getViewFrustum().setRight(fright);
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
 				glHeatMapView.getID()));
 		glHeatMapView.displayRemote(gl);
@@ -2798,7 +2798,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			// renderStyle.getHeightExperimentDendrogram();
 
 			gl.glTranslatef(0f, fOffsety, 0f);
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION,
 					glExperimentDendrogramView.getID()));
 			glExperimentDendrogramView.getViewFrustum().setTop(1.45f);
@@ -2823,7 +2823,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
 
 			gl.glTranslatef(0f, 0.4f, 0f);
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION,
 					glContentDendrogramView.getID()));
 			glContentDendrogramView.getViewFrustum().setTop(ftop - 0.6f);
@@ -3149,7 +3149,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.HIER_HEAT_MAP_ACTIVATE_HORIZONTAL_DENDROGRAM, 1));
 			if (bGeneDendrogramActive) {
 				gl.glBegin(GL2.GL_POLYGON);
@@ -3266,7 +3266,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.HIER_HEAT_MAP_ACTIVATE_STORAGE_DENDROGRAM, 1));
 			if (bExperimentDendrogramActive) {
 				gl.glBegin(GL2.GL_POLYGON);

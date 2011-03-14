@@ -250,7 +250,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 		int iCount = 0;
 
 		for (ColorMarkerPoint markerPoint : markerPoints) {
-			int iColorLinePickingID = pickingManager.getPickingID(iUniqueID,
+			int iColorLinePickingID = pickingManager.getPickingID(uniqueID,
 					EPickingType.HISTOGRAM_COLOR_LINE, iCount);
 
 			boolean bIsFirstOrLast = false;
@@ -261,7 +261,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 			if (markerPoint.hasLeftSpread()) {
 
 				float fLeftSpread = markerPoint.getLeftSpread();
-				int iLeftSpreadPickingID = pickingManager.getPickingID(iUniqueID,
+				int iLeftSpreadPickingID = pickingManager.getPickingID(uniqueID,
 						EPickingType.HISTOGRAM_LEFT_SPREAD_COLOR_LINE, iCount);
 
 				// the left polygon between the central line and the spread
@@ -320,7 +320,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 				float fRight = SIDE_SPACING + (markerPoint.getValue() + fRightSpread)
 						* fRenderWidth;
 
-				int iRightSpreadPickingID = pickingManager.getPickingID(iUniqueID,
+				int iRightSpreadPickingID = pickingManager.getPickingID(uniqueID,
 						EPickingType.HISTOGRAM_RIGHT_SPREAD_COLOR_LINE, iCount);
 
 				// the polygon between the central line and the right spread

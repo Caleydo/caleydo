@@ -29,7 +29,7 @@ public class RemoteLevelElement
 	private IDataDomainBasedView<?> dataDomainBasedView = null;
 
 	public RemoteLevelElement(RemoteLevel remoteLevel) {
-		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT));
+		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT));
 
 		RemoteElementManager.get().registerItem(this);
 		this.remoteLevel = remoteLevel;

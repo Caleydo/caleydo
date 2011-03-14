@@ -98,7 +98,7 @@ public class GLBookmarkView extends AGLView implements
 
 		public int getPickingID(ABookmarkContainer<?> container, int privateID) {
 
-			int pickingID = pickingManager.getPickingID(iUniqueID,
+			int pickingID = pickingManager.getPickingID(uniqueID,
 					EPickingType.BOOKMARK_ELEMENT, idCount);
 			pickingIDToBookmarkContainer.put(idCount++, new Pair<IDCategory, Integer>(
 					container.getCategory(), privateID));

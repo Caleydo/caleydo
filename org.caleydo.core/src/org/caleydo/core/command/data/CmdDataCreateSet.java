@@ -53,7 +53,7 @@ public class CmdDataCreateSet
 		createdObject = new Set(dataDomain);
 
 		if (externalID != -1) {
-			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), externalID);
+			generalManager.getIDCreator().mapInternalToExternalID(createdObject.getID(), externalID);
 		}
 
 		fillSets(createdObject);
@@ -88,7 +88,7 @@ public class CmdDataCreateSet
 		}
 
 		// Convert external IDs from XML file to internal IDs
-		storageIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(storageIDs);
+		storageIDs = GeneralManager.get().getIDCreator().convertExternalToInternalIDs(storageIDs);
 
 		String sAttrib3 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey());
 		dataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomain(sAttrib3);

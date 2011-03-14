@@ -267,7 +267,7 @@ public class ViewCameraPitchRollYaw
 	@Override
 	public ViewCameraBase clone() {
 
-		ViewCameraBase exportClone = new ViewCameraBase(iUniqueID);
+		ViewCameraBase exportClone = new ViewCameraBase(uniqueID);
 
 		exportClone.setCameraAll(v3fCameraPosition, v3fCameraScale, rotfCameraRotation);
 

@@ -180,7 +180,7 @@ public abstract class AGLViewBrowser
 
 		dragAndDrop = new GLDragAndDrop();
 
-		iPoolLevelCommonID = generalManager.getIDManager().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT);
+		iPoolLevelCommonID = generalManager.getIDCreator().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT);
 	}
 
 	protected abstract void initFocusLevel();
@@ -261,7 +261,7 @@ public abstract class AGLViewBrowser
 		remoteLevelElementWhiteList.addAll(focusLevel.getAllElements());
 		remoteLevelElementWhiteList.addAll(stackLevel.getAllElements());
 		remoteLevelElementWhiteList.addAll(poolLevel.getAllElements());
-		selectionTransformer = new RemoteRenderingTransformer(iUniqueID, remoteLevelElementWhiteList);
+		selectionTransformer = new RemoteRenderingTransformer(uniqueID, remoteLevelElementWhiteList);
 
 		addInitialViews();
 
@@ -496,9 +496,9 @@ public abstract class AGLViewBrowser
 			return;
 		}
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
 			element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.REMOTE_VIEW_SELECTION,
 			glView.getID()));
 
 		gl.glPushMatrix();
@@ -708,7 +708,7 @@ public abstract class AGLViewBrowser
 	private void renderEmptyBucketWall(final GL2 gl, RemoteLevelElement element, RemoteLevel level) {
 		gl.glPushMatrix();
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
 			element.getID()));
 
 		Transform transform = element.getTransform();
@@ -874,7 +874,7 @@ public abstract class AGLViewBrowser
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_DRAG, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.REMOTE_VIEW_DRAG, element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);
@@ -915,7 +915,7 @@ public abstract class AGLViewBrowser
 
 	private void renderSingleHandle(final GL2 gl, int iRemoteLevelElementID, EPickingType ePickingType,
 		EIconTextures eIconTexture, float fWidth, float fHeight) {
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, ePickingType, iRemoteLevelElementID));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, ePickingType, iRemoteLevelElementID));
 
 		Texture tempTexture = textureManager.getIconTexture(gl, eIconTexture);
 		tempTexture.enable();
@@ -999,9 +999,9 @@ public abstract class AGLViewBrowser
 		// gl.glVertex3f(fXOrigin + 3f, fYOrigin- fHeight / 2f + 1.5f , 0f);
 		// gl.glEnd();
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
 			element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.REMOTE_VIEW_SELECTION,
 			element.getID()));
 	}
 
@@ -1424,7 +1424,7 @@ public abstract class AGLViewBrowser
 	// float fBottomSceneBorder = -2 * fYScaling;
 	//
 	// if (layoutMode.equals(LayoutMode.BUCKET)) {
-	// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+	// gl.glPushName(pickingManager.getPickingID(uniqueID,
 	// EPickingType.REMOTE_LEVEL_ELEMENT,
 	// iPoolLevelCommonID));
 	//

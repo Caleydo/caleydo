@@ -281,7 +281,7 @@ public class GLBucket extends AGLView implements
 
 		dragAndDrop = new GLDragAndDrop();
 
-		iPoolLevelCommonID = generalManager.getIDManager().createID(
+		iPoolLevelCommonID = generalManager.getIDCreator().createID(
 				EManagedObjectType.REMOTE_LEVEL_ELEMENT);
 	}
 
@@ -292,7 +292,7 @@ public class GLBucket extends AGLView implements
 		ArrayList<RemoteLevelElement> remoteLevelElementWhiteList = new ArrayList<RemoteLevelElement>();
 		remoteLevelElementWhiteList.addAll(focusLevel.getAllElements());
 		remoteLevelElementWhiteList.addAll(stackLevel.getAllElements());
-		selectionTransformer = new RemoteRenderingTransformer(iUniqueID,
+		selectionTransformer = new RemoteRenderingTransformer(uniqueID,
 				remoteLevelElementWhiteList);
 
 		init(gl);
@@ -580,9 +580,9 @@ public class GLBucket extends AGLView implements
 			return;
 		}
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.REMOTE_VIEW_SELECTION, glView.getID()));
 
 		gl.glPushMatrix();
@@ -785,7 +785,7 @@ public class GLBucket extends AGLView implements
 			RemoteLevel level) {
 		gl.glPushMatrix();
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 
 		Transform transform = element.getTransform();
@@ -943,7 +943,7 @@ public class GLBucket extends AGLView implements
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.REMOTE_VIEW_DRAG, element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL2.GL_POLYGON);
@@ -986,7 +986,7 @@ public class GLBucket extends AGLView implements
 	private void renderSingleHandle(final GL2 gl, int iRemoteLevelElementID,
 			EPickingType ePickingType, EIconTextures eIconTexture, float fWidth,
 			float fHeight) {
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, ePickingType,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, ePickingType,
 				iRemoteLevelElementID));
 
 		Texture tempTexture = textureManager.getIconTexture(gl, eIconTexture);
@@ -1259,7 +1259,7 @@ public class GLBucket extends AGLView implements
 		float fNavigationZValue = 0f;
 
 		// CENTER - NAVIGATION: VIEW IDENTIFICATION ICON
-		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		// gl.glPushName(pickingManager.getPickingID(uniqueID,
 		// EPickingType.BUCKET_LOCK_ICON_SELECTION, iViewID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
@@ -1292,7 +1292,7 @@ public class GLBucket extends AGLView implements
 		// gl.glPopName();
 
 		// BOTTOM - NAVIGATION: MOVE IN
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, bottomWallPickingType,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, bottomWallPickingType,
 				iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
@@ -1326,7 +1326,7 @@ public class GLBucket extends AGLView implements
 		gl.glPopName();
 
 		// RIGHT - NAVIGATION: MOVE RIGHT
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, rightWallPickingType,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, rightWallPickingType,
 				iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
@@ -1360,7 +1360,7 @@ public class GLBucket extends AGLView implements
 		gl.glPopName();
 
 		// LEFT - NAVIGATION: MOVE LEFT
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, leftWallPickingType,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, leftWallPickingType,
 				iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
@@ -1394,7 +1394,7 @@ public class GLBucket extends AGLView implements
 		gl.glPopName();
 
 		// TOP - NAVIGATION: MOVE OUT
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, topWallPickingType,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, topWallPickingType,
 				iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
@@ -1505,9 +1505,9 @@ public class GLBucket extends AGLView implements
 		// gl.glVertex3f(fXOrigin + 3f, fYOrigin- fHeight / 2f + 1.5f , 0f);
 		// gl.glEnd();
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.REMOTE_VIEW_SELECTION, element.getID()));
 	}
 
@@ -2349,7 +2349,7 @@ public class GLBucket extends AGLView implements
 		float fBottomSceneBorder = -2 * fYScaling;
 
 		if (layoutMode.equals(LayoutMode.BUCKET)) {
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.REMOTE_LEVEL_ELEMENT, iPoolLevelCommonID));
 
 			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);

@@ -77,7 +77,7 @@ public class Set
 	ASetBasedDataDomain dataDomain;
 
 	public Set() {
-		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.SET));
+		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.SET));
 	}
 
 	/**
@@ -350,9 +350,9 @@ public class Set
 	}
 
 	// private int createStorageVA(IVirtualArray virtualArray) {
-	// int iUniqueID = virtualArray.getID();
-	// hashStorageVAs.put(iUniqueID, virtualArray);
-	// return iUniqueID;
+	// int uniqueID = virtualArray.getID();
+	// hashStorageVAs.put(uniqueID, virtualArray);
+	// return uniqueID;
 	// }
 
 	// public IVirtualArray createCompleteStorageVA() {
@@ -398,36 +398,36 @@ public class Set
 	// @SuppressWarnings("unused")
 	// private int createStorageVA(VAType vaType, ArrayList<Integer> iAlSelections) {
 	// VirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
-	// int iUniqueID = virtualArray.getID();
+	// int uniqueID = virtualArray.getID();
 	//
-	// hashStorageVAs.put(iUniqueID, virtualArray);
+	// hashStorageVAs.put(uniqueID, virtualArray);
 	//
-	// return iUniqueID;
+	// return uniqueID;
 	// }
 	// @Override
-	// public void resetVirtualArray(int iUniqueID) {
-	// if (hashStorageVAs.containsKey(iUniqueID)) {
-	// hashStorageVAs.get(iUniqueID).reset();
+	// public void resetVirtualArray(int uniqueID) {
+	// if (hashStorageVAs.containsKey(uniqueID)) {
+	// hashStorageVAs.get(uniqueID).reset();
 	// return;
 	// }
 	//
-	// if (hashContentVAs.containsKey(iUniqueID)) {
-	// hashContentVAs.get(iUniqueID).reset();
+	// if (hashContentVAs.containsKey(uniqueID)) {
+	// hashContentVAs.get(uniqueID).reset();
 	// }
 	// }
 	// @Override
-	// public void removeVirtualArray(int iUniqueID) {
-	// hashStorageVAs.remove(iUniqueID);
-	// hashContentVAs.remove(iUniqueID);
+	// public void removeVirtualArray(int uniqueID) {
+	// hashStorageVAs.remove(uniqueID);
+	// hashContentVAs.remove(uniqueID);
 	// }
 	// @Override
-	// public IVirtualArray getVA(int iUniqueID) {
-	// if (hashStorageVAs.containsKey(iUniqueID))
-	// return hashStorageVAs.get(iUniqueID);
-	// else if (hashContentVAs.containsKey(iUniqueID))
-	// return hashContentVAs.get(iUniqueID);
+	// public IVirtualArray getVA(int uniqueID) {
+	// if (hashStorageVAs.containsKey(uniqueID))
+	// return hashStorageVAs.get(uniqueID);
+	// else if (hashContentVAs.containsKey(uniqueID))
+	// return hashContentVAs.get(uniqueID);
 	// else
-	// throw new IllegalArgumentException("No Virtual Array for the unique id: " + iUniqueID);
+	// throw new IllegalArgumentException("No Virtual Array for the unique id: " + uniqueID);
 	// }
 	@Override
 	public void setContentVA(String vaType, ContentVirtualArray virtualArray) {

@@ -33,7 +33,7 @@ public class PathwayGraph extends Graph implements IUniqueObject, Serializable,
 
 	public PathwayGraph(final EPathwayDatabaseType type, final String sName,
 			final String sTitle, final String sImageLink, final String sLink) {
-		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.PATHWAY));
+		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.PATHWAY));
 
 		this.type = type;
 		this.sName = sName;

@@ -144,7 +144,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		// contentVA = useCase.getContentVA(ContentVAType.CONTENT);
 		// storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
 
-		compareViewStateController = new CompareViewStateController(this, iUniqueID,
+		compareViewStateController = new CompareViewStateController(this, uniqueID,
 				textRenderer, textureManager, pickingManager, glMouseListener,
 				contextMenu, dataDomain);
 

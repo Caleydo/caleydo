@@ -128,7 +128,7 @@ public class TabularDataView extends ASWTView implements
 	 * Constructor.
 	 */
 	public TabularDataView(Composite parentComposite) {
-		super(GeneralManager.get().getIDManager()
+		super(GeneralManager.get().getIDCreator()
 				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER),
 				parentComposite);
 

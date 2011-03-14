@@ -30,7 +30,7 @@ public abstract class ACommand
 	 * Constructor.
 	 */
 	public ACommand(final ECommandType cmdType) {
-		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.COMMAND));
+		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.COMMAND));
 
 		this.generalManager = GeneralManager.get();
 		this.commandManager = generalManager.getCommandManager();

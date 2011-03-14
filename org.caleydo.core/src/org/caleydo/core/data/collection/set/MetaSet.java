@@ -40,7 +40,7 @@ public class MetaSet
 		this.dataDomain = originalSet.getDataDomain();
 		// init();
 
-		this.iUniqueID = GeneralManager.get().getIDManager().createID(EManagedObjectType.SET);
+		this.uniqueID = GeneralManager.get().getIDCreator().createID(EManagedObjectType.SET);
 		// this.setSetType(originalSet.getSetType());
 		// FIXME: this is not always true, but if we create the MetaSet from the serialization, we didn't
 		// check yet whether it was homogeneous

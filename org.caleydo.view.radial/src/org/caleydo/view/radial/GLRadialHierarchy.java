@@ -230,7 +230,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		navigationHistory.reset();
 		drawingController.setDrawingState(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY);
 		LabelManager.get().clearLabels();
-		drawingStrategyManager.init(pickingManager, iUniqueID, alColorModes);
+		drawingStrategyManager.init(pickingManager, uniqueID, alColorModes);
 
 		PartialDisc pdRoot = new PartialDisc(partialDiscTree, heRoot,
 				drawingStrategyManager.getDefaultDrawingStrategy());
@@ -388,7 +388,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 
 				gl.glLoadIdentity();
 				upwardNavigationSlider.draw(gl, pickingManager, textureManager,
-						iUniqueID, iUpwardNavigationSliderID,
+						uniqueID, iUpwardNavigationSliderID,
 						iUpwardNavigationSliderButtonID, iUpwardNavigationSliderBodyID);
 
 				float fCurrentSliderWidth = upwardNavigationSlider.getScaledWidth(gl);
@@ -426,7 +426,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 
 			gl.glLoadIdentity();
 
-			upwardNavigationSlider.draw(gl, pickingManager, textureManager, iUniqueID,
+			upwardNavigationSlider.draw(gl, pickingManager, textureManager, uniqueID,
 					iUpwardNavigationSliderID, iUpwardNavigationSliderButtonID,
 					iUpwardNavigationSliderBodyID);
 

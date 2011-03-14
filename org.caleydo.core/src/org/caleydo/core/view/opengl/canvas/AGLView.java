@@ -191,7 +191,7 @@ public abstract class AGLView
 	protected AGLView(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum,
 		final boolean bRegisterToParentCanvasNow) {
 
-		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.GL_VIEW));
+		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.GL_VIEW));
 
 		GeneralManager.get().getViewGLCanvasManager().registerGLView(this);
 		parentGLCanvas = glCanvas;
@@ -203,7 +203,7 @@ public abstract class AGLView
 
 		this.viewFrustum = viewFrustum;
 
-		viewCamera = new ViewCameraBase(iUniqueID);
+		viewCamera = new ViewCameraBase(uniqueID);
 
 		pickingManager = generalManager.getViewGLCanvasManager().getPickingManager();
 		idMappingManager = generalManager.getIDMappingManager();
@@ -477,14 +477,14 @@ public abstract class AGLView
 	 */
 	protected final void checkForHits(final GL2 gl) {
 
-		Set<EPickingType> hitTypes = pickingManager.getHitTypes(iUniqueID);
+		Set<EPickingType> hitTypes = pickingManager.getHitTypes(uniqueID);
 		if (hitTypes == null)
 			return;
 		for (EPickingType pickingType : hitTypes) {
 
 			ArrayList<Pick> alHits = null;
 
-			alHits = pickingManager.getHits(iUniqueID, pickingType);
+			alHits = pickingManager.getHits(uniqueID, pickingType);
 			if (alHits != null && alHits.size() != 0) {
 
 				for (int iCount = 0; iCount < alHits.size(); iCount++) {
@@ -505,7 +505,7 @@ public abstract class AGLView
 							contextMenu.flush();
 						handlePickingEvents(pickingType, ePickingMode, iExternalID, tempPick);
 					}
-					pickingManager.flushHits(iUniqueID, pickingType);
+					pickingManager.flushHits(uniqueID, pickingType);
 				}
 			}
 		}
@@ -753,10 +753,10 @@ public abstract class AGLView
 		// Propagate remove action of elements to other views
 		this.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 
-		pickingManager.removeViewSpecificData(iUniqueID);
+		pickingManager.removeViewSpecificData(uniqueID);
 
 		// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-		// .clearByView(EIDType.REFSEQ_MRNA_INT, iUniqueID);
+		// .clearByView(EIDType.REFSEQ_MRNA_INT, uniqueID);
 
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
 		generalManager.getViewGLCanvasManager().unregisterGLView(this);

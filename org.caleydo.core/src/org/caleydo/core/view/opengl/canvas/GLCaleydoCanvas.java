@@ -61,7 +61,7 @@ public class GLCaleydoCanvas
 
 		glMouseListener = new GLMouseListener();
 
-		this.iGLCanvasID = GeneralManager.get().getIDManager().createID(EManagedObjectType.VIEW_GL_CANVAS);
+		this.iGLCanvasID = GeneralManager.get().getIDCreator().createID(EManagedObjectType.VIEW_GL_CANVAS);
 
 		// Register mouse listener to GL2 canvas
 		this.addMouseListener(glMouseListener);

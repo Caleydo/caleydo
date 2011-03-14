@@ -272,7 +272,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		remoteLevelElementWhiteList.add(focusElement);
 		remoteLevelElementWhiteList.add(stackElementsLeft.get(0));
 		remoteLevelElementWhiteList.add(stackElementsRight.get(0));
-		selectionTransformer = new RemoteRenderingTransformer(iUniqueID,
+		selectionTransformer = new RemoteRenderingTransformer(uniqueID,
 				remoteLevelElementWhiteList);
 
 		init(gl);
@@ -565,9 +565,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			return;
 		}
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.REMOTE_VIEW_SELECTION, glView.getID()));
 
 		gl.glPushMatrix();
@@ -1426,7 +1426,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		gl.glTranslatef(x, y, DATA_DOMAIN_Z);
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.DATA_DOMAIN_SELECTION, node.getFirstInterfaceID()));
 
 		float[] bgColor = DATA_DOMAIN_BACKGROUND_COLOR;
@@ -1535,12 +1535,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				}
 
 				if (element != null)
-					gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					gl.glPushName(pickingManager.getPickingID(uniqueID,
 							EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-				gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				gl.glPushName(pickingManager.getPickingID(uniqueID,
 						EPickingType.INTERFACE_SELECTION,
 						node.getInterfaceID(interfaceType)));
-				gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				gl.glPushName(pickingManager.getPickingID(uniqueID,
 						EPickingType.DATA_DOMAIN_SELECTION, node.getFirstInterfaceID()));
 
 				// Render view icon
@@ -1715,7 +1715,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		gl.glTranslatef(x, y, DATA_DOMAIN_Z);
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.NEXT_DATA_DOMAIN_SELECTION, dataDomainType.hashCode()));
 
 		EIconTextures iconTextureBackgroundRound = EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND_ROUND;
@@ -2034,7 +2034,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.REMOTE_VIEW_DRAG, element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL2.GL_POLYGON);
@@ -2079,7 +2079,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			EPickingType ePickingType, EIconTextures eIconTexture, float fWidth,
 			float fHeight) {
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, ePickingType,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, ePickingType,
 				iRemoteLevelElementID));
 
 		Texture tempTexture = textureManager.getIconTexture(gl, eIconTexture);

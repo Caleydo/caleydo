@@ -41,7 +41,7 @@ public class CmdViewCreateRcpGLCanvas
 		viewManager.registerGLCanvas(createdObject);
 
 		if (externalID != -1) {
-			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), externalID);
+			generalManager.getIDCreator().mapInternalToExternalID(createdObject.getID(), externalID);
 		}
 
 		createdObject.setNavigationModes(bEnablePan, bEnableRotate, bEnableZoom);

@@ -318,7 +318,7 @@ public class GLPathway extends AGLView implements
 		// glRemoteRenderingView).getBucketMouseWheelListener() != null) {
 		// // if
 		// //
-		// (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(iUniqueID)
+		// (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(uniqueID)
 		// // .getLevel().equals(EHierarchyLevel.UNDER_INTERACTION)
 		// // &&
 		// //
@@ -385,7 +385,7 @@ public class GLPathway extends AGLView implements
 				PathwayVertexGraphItemRep vertexRep = (PathwayVertexGraphItemRep) pathwayItemManager
 						.getItem(item.getPrimaryID());
 
-				int iViewID = iUniqueID;
+				int iViewID = uniqueID;
 				// If rendered remote (hierarchical heat map) - use the remote
 				// view ID
 				// if (glRemoteRenderingView != null && glRemoteRenderingView
@@ -734,7 +734,7 @@ public class GLPathway extends AGLView implements
 			// Add new vertex to internal selection manager
 			selectionManager.addToType(selectionType, tmpVertexGraphItemRep.getId());
 
-			int iConnectionID = generalManager.getIDManager().createID(
+			int iConnectionID = generalManager.getIDCreator().createID(
 					EManagedObjectType.CONNECTION);
 			selectionManager
 					.addConnectionID(iConnectionID, tmpVertexGraphItemRep.getId());
@@ -774,7 +774,7 @@ public class GLPathway extends AGLView implements
 		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep;
 		int iPathwayHeight = pathway.getHeight();
 
-		int iViewID = iUniqueID;
+		int iViewID = uniqueID;
 		// If rendered remote (hierarchical heat map) - use the remote view ID
 		// if (glRemoteRenderingView != null && glRemoteRenderingView instanceof
 		// AGLViewBrowser)

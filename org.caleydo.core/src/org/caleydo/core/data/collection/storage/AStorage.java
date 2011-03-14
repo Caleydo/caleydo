@@ -63,7 +63,7 @@ public abstract class AStorage
 	public void setRawData(float[] fArRawData) {
 
 		if (bRawDataSet)
-			throw new IllegalStateException("Raw data was already set in Storage " + iUniqueID
+			throw new IllegalStateException("Raw data was already set in Storage " + uniqueID
 				+ " , tried to set again.");
 
 		rawDataType = ERawDataType.FLOAT;

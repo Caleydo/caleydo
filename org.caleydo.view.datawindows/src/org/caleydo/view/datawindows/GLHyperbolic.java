@@ -177,7 +177,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 		disk.zoomTree(diskZoomIntensity);
 
 		// renders the tree and all of it's nodes using the zoomed coordinates
-		disk.renderTree(gl, textureManager, pickingManager, iUniqueID,
+		disk.renderTree(gl, textureManager, pickingManager, uniqueID,
 				(float) viewFrustum.getWidth(), (float) viewFrustum.getHeight());
 
 		// if (!containedGLViews.isEmpty()) {
@@ -193,7 +193,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 
 		// Render invisible background for detecting clicks using GL2 selection
 		// mechanism
-		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		// gl.glPushName(pickingManager.getPickingID(uniqueID,
 		// EPickingType.BACKGROUND_HYPERBOLIC, 0));
 		// gl.glColor4f(1, 0, 0, 0);
 		// gl.glBegin(GL2.GL_POLYGON);
@@ -267,9 +267,9 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 			return;
 		}
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.REMOTE_VIEW_SELECTION, glView.getID()));
 		gl.glPushMatrix();
 

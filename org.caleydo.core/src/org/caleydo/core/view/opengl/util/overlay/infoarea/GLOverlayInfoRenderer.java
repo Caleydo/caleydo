@@ -45,7 +45,7 @@ public class GLOverlayInfoRenderer {
 	/**
 	 * Set the data to be rendered.
 	 * 
-	 * @param iUniqueID
+	 * @param uniqueID
 	 * @param eInputDataTypes
 	 * @param pickedPoint
 	 */

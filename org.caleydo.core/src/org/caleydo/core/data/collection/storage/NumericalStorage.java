@@ -23,7 +23,7 @@ public class NumericalStorage
 	 * Constructor
 	 */
 	public NumericalStorage() {
-		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.STORAGE_NUMERICAL));
+		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.STORAGE_NUMERICAL));
 	}
 
 	@Override

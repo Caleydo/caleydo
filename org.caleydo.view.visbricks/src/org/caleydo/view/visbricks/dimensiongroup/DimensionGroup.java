@@ -264,7 +264,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 					.getVirtualArray().subList(group.getStartIndex(),
 							group.getEndIndex() + 1));
 
-			subBrick.setContentVA(group.getGroupID(), subVA);
+			subBrick.setContentVA(group, subVA);
 			subBrick.initialize();
 
 			// float[] rep = group.getRepresentativeElement();

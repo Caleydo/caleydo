@@ -644,7 +644,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			dimensionGroup.setSet(set);
 			dimensionGroup.setRemoteRenderingGLView(this);
 			dimensionGroup.setVisBricks(this);
-			dimensionGroup.setVisBricksViewID(iUniqueID);
+			dimensionGroup.setVisBricksViewID(uniqueID);
 			dimensionGroup.initialize();
 
 			dimensionGroups.add(dimensionGroup);

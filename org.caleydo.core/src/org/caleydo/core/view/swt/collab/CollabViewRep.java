@@ -69,7 +69,7 @@ public class CollabViewRep
 	 * 
 	 */
 	public CollabViewRep(Composite parentComposite) {
-		super(GeneralManager.get().getIDManager()
+		super(GeneralManager.get().getIDCreator()
 			.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER), parentComposite);
 	}
 

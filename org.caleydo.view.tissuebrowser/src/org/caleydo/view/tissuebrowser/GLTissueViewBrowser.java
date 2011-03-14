@@ -443,7 +443,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 			experiementSelectionManager.clearSelection(selectionType);
 			experiementSelectionManager.addToType(selectionType, experimentIndex);
 
-			experiementSelectionManager.addConnectionID(generalManager.getIDManager()
+			experiementSelectionManager.addConnectionID(generalManager.getIDCreator()
 					.createID(EManagedObjectType.CONNECTION), experimentIndex);
 
 			SelectionDelta delta = experiementSelectionManager.getDelta();

@@ -24,7 +24,7 @@ public class NominalStorage<T>
 	 * Constructor
 	 */
 	public NominalStorage() {
-		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.STORAGE_NOMINAL));
+		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.STORAGE_NOMINAL));
 	}
 
 	@SuppressWarnings("unchecked")

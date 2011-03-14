@@ -13,8 +13,8 @@ public enum EManagedObjectType {
 
 	VIRTUAL_ARRAY(13),
 	SELECTION(14),
-
 	SET(15),
+	GROUP(16),
 
 	VIEW(20),
 	VIEW_GL_CANVAS(21),
@@ -50,7 +50,7 @@ public enum EManagedObjectType {
 
 	GRAPH(67),
 	GRAPH_ITEM(68),
-	
+
 	DIMENSION_GROUP(69),
 
 	/**

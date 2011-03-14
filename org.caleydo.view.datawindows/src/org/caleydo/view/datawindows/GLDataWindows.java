@@ -349,9 +349,9 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 			return;
 		}
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.REMOTE_VIEW_SELECTION, glView.getID()));
 		gl.glPushMatrix();
 

@@ -145,7 +145,7 @@ public class GLHeatMap extends AStorageBasedView {
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
-		selectionTransformer = new StandardTransformer(iUniqueID);
+		selectionTransformer = new StandardTransformer(uniqueID);
 		init(gl);
 	}
 
@@ -172,7 +172,7 @@ public class GLHeatMap extends AStorageBasedView {
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
-		selectionTransformer = new StandardTransformer(iUniqueID);
+		selectionTransformer = new StandardTransformer(uniqueID);
 
 		init(gl);
 	}
@@ -474,7 +474,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 		// TODO: Integrate multi spotting support again
 
-		Integer iMappingID = generalManager.getIDManager().createID(
+		Integer iMappingID = generalManager.getIDCreator().createID(
 				EManagedObjectType.CONNECTION);
 		contentSelectionManager.addToType(selectionType, contentID);
 		contentSelectionManager.addConnectionID(iMappingID, contentID);
@@ -614,7 +614,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 			yValue = getYCoordinateByContentIndex(contentIndex);
 			yValue = viewFrustum.getHeight() - yValue;
-			elementRep = new SelectedElementRep(contentIDType, iUniqueID, xValue, yValue,
+			elementRep = new SelectedElementRep(contentIDType, uniqueID, xValue, yValue,
 					0);// - fAnimationTranslation,
 			// 0);
 

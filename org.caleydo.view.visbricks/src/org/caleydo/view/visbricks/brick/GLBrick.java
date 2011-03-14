@@ -9,13 +9,15 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
-import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -24,6 +26,8 @@ import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
@@ -44,7 +48,7 @@ import org.caleydo.view.visbricks.listener.RelationsUpdatedListener;
  * 
  */
 public class GLBrick extends AGLView implements IDataDomainSetBasedView,
-		IGLRemoteRenderingView, IListenerOwner, ILayoutedElement {
+		IGLRemoteRenderingView, ISelectionUpdateHandler, ILayoutedElement {
 
 	public final static String VIEW_ID = "org.caleydo.view.brick";
 
@@ -72,14 +76,19 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	private RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	private RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
-	private RelationsUpdatedListener relationsUpdatedListener;
+	private RelationsUpdatedListener relationsUpdateListener;
+	private SelectionUpdateListener selectionUpdateListener;
 
 	/** The id of the group in the contentVA this brick is rendering. */
 	private int groupID = -1;
+	/** The group on which the contentVA of this brick is based on */
+	private Group group;
 
 	private HashMap<EPickingType, HashMap<Integer, IPickingListener>> pickingListeners;
 
 	private GLVisBricks visBricks;
+
+	private SelectionManager contentGroupSelectionManager;
 
 	public GLBrick(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
@@ -89,8 +98,14 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		viewLayoutRenderers = new HashMap<Integer, LayoutRenderer>();
 
 		pickingListeners = new HashMap<EPickingType, HashMap<Integer, IPickingListener>>();
-		
+
 		currentViewType = HEATMAP_VIEW;
+	}
+
+	@Override
+	public void initialize() {
+		super.initialize();
+		contentGroupSelectionManager = dataDomain.getContentGroupSelectionManager();
 	}
 
 	@Override
@@ -358,8 +373,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 * @param groupID
 	 * @param contentVA
 	 */
-	public void setContentVA(int groupID, ContentVirtualArray contentVA) {
-		this.groupID = groupID;
+	public void setContentVA(Group group, ContentVirtualArray contentVA) {
+		this.group = group;
+		this.groupID = group.getGroupID();
 		this.contentVA = contentVA;
 	}
 
@@ -380,6 +396,15 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public int getGroupID() {
 		return groupID;
+	}
+
+	/**
+	 * Returns the group on which the contentVA of this brick is based on.
+	 * 
+	 * @return
+	 */
+	public Group getGroup() {
+		return group;
 	}
 
 	@Override
@@ -420,7 +445,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		LayoutRenderer viewRenderer = viewLayoutRenderers.get(viewType);
 		brickLayout.setViewRenderer(viewRenderer);
 		templateRenderer.updateLayout();
-		
+
 		currentViewType = viewType;
 	}
 
@@ -436,24 +461,33 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		return currentViewType;
 	}
 
-
 	@Override
 	public void registerEventListeners() {
 
-		relationsUpdatedListener = new RelationsUpdatedListener();
-		relationsUpdatedListener.setHandler(this);
-		relationsUpdatedListener.setExclusiveDataDomainType(dataDomain
-				.getDataDomainType());
-		eventPublisher.addListener(RelationsUpdatedEvent.class, relationsUpdatedListener);
+		relationsUpdateListener = new RelationsUpdatedListener();
+		relationsUpdateListener.setHandler(this);
+		relationsUpdateListener
+				.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(RelationsUpdatedEvent.class, relationsUpdateListener);
 
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		selectionUpdateListener
+				.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 
-		if (relationsUpdatedListener != null) {
-			eventPublisher.removeListener(relationsUpdatedListener);
-			relationsUpdatedListener = null;
+		if (relationsUpdateListener != null) {
+			eventPublisher.removeListener(relationsUpdateListener);
+			relationsUpdateListener = null;
+		}
+
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(relationsUpdateListener);
+			selectionUpdateListener = null;
 		}
 	}
 
@@ -481,12 +515,41 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	public ElementLayout getLayout() {
 		return brickLayout.getBaseLayoutElement();
 	}
-	
+
+	/**
+	 * Set the layout that this view is embedded in
+	 * 
+	 * @param wrappingLayout
+	 */
 	public void setWrappingLayout(ElementLayout wrappingLayout) {
 		this.wrappingLayout = wrappingLayout;
 	}
-	
+
+	/**
+	 * Returns the layout that this view is wrapped in, which is created by the
+	 * same instance that creates the view.
+	 * 
+	 * @return
+	 */
 	public ElementLayout getWrappingLayout() {
 		return wrappingLayout;
 	}
+
+	/**
+	 * Returns the selection manager responsible for managing selections of
+	 * groups.
+	 * 
+	 * @return
+	 */
+	public SelectionManager getContentGroupSelectionManager() {
+		return contentGroupSelectionManager;
+	}
+
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
+			boolean scrollToSelection, String info) {
+		if (selectionDelta.getIDType() == contentGroupSelectionManager.getIDType())
+			contentGroupSelectionManager.setDelta(selectionDelta);
+	}
+
 }

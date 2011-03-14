@@ -12,7 +12,7 @@ public class ACaleydoGraphItem
 	 * Constructor
 	 */
 	public ACaleydoGraphItem(EGraphItemKind kind) {
-		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.GRAPH_ITEM), kind);
+		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.GRAPH_ITEM), kind);
 	}
 
 	@Override

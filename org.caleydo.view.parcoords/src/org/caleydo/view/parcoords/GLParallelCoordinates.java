@@ -244,7 +244,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		// glMouseListener,
 		// remoteRenderingGLCanvas);
 
-		selectionTransformer = new StandardTransformer(iUniqueID);
+		selectionTransformer = new StandardTransformer(uniqueID);
 		init(gl);
 	}
 
@@ -257,7 +257,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
-		selectionTransformer = new StandardTransformer(iUniqueID);
+		selectionTransformer = new StandardTransformer(uniqueID);
 		init(gl);
 		// toggleRenderContext();
 	}
@@ -800,7 +800,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		// }
 		// }
 		if (selectionType != SelectionType.DESELECTED) {
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.POLYLINE_SELECTION, polyLineID));
 		}
 
@@ -892,7 +892,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		gl.glColor4fv(X_AXIS_COLOR, 0);
 		gl.glLineWidth(X_AXIS_LINE_WIDTH);
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				EPickingType.X_AXIS_SELECTION, 1));
 		gl.glBegin(GL2.GL_LINES);
 
@@ -925,7 +925,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				gl.glColor4fv(Y_AXIS_COLOR, 0);
 				gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 			}
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.Y_AXIS_SELECTION, storageVA.get(iCount)));
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(fXPosition, Y_AXIS_LOW, AXIS_Z);
@@ -963,7 +963,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				Vec3f scalingPivot = new Vec3f(fXButtonOrigin,
 						PCRenderStyle.NAN_Y_OFFSET, PCRenderStyle.NAN_Z);
 
-				int iPickingID = pickingManager.getPickingID(iUniqueID,
+				int iPickingID = pickingManager.getPickingID(uniqueID,
 						EPickingType.REMOVE_NAN, storageVA.get(iCount));
 				gl.glPushName(iPickingID);
 
@@ -1088,7 +1088,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 				// the gate add button
 				float fYGateAddOrigin = renderStyle.getAxisHeight();
-				iPickingID = pickingManager.getPickingID(iUniqueID,
+				iPickingID = pickingManager.getPickingID(uniqueID,
 						EPickingType.ADD_GATE, storageVA.get(iCount));
 
 				lowerLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin, AXIS_Z);
@@ -1137,7 +1137,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 								upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
 					}
 
-					iPickingID = pickingManager.getPickingID(iUniqueID,
+					iPickingID = pickingManager.getPickingID(uniqueID,
 							EPickingType.MOVE_AXIS, iCount);
 					gl.glColor4f(0, 0, 0, 0f);
 					gl.glPushName(iPickingID);
@@ -1150,7 +1150,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 					gl.glEnd();
 					gl.glPopName();
 
-					iPickingID = pickingManager.getPickingID(iUniqueID,
+					iPickingID = pickingManager.getPickingID(uniqueID,
 							EPickingType.DUPLICATE_AXIS, iCount);
 					// gl.glColor4f(0, 1, 0, 0.5f);
 					gl.glPushName(iPickingID);
@@ -1163,7 +1163,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 					gl.glEnd();
 					gl.glPopName();
 
-					iPickingID = pickingManager.getPickingID(iUniqueID,
+					iPickingID = pickingManager.getPickingID(uniqueID,
 							EPickingType.REMOVE_AXIS, iCount);
 					// gl.glColor4f(0, 0, 1, 0.5f);
 					gl.glPushName(iPickingID);
@@ -1177,7 +1177,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 					gl.glPopName();
 
 				} else {
-					iPickingID = pickingManager.getPickingID(iUniqueID,
+					iPickingID = pickingManager.getPickingID(uniqueID,
 							EPickingType.MOVE_AXIS, iCount);
 
 					gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
@@ -1233,7 +1233,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				gate.setCurrentPosition(fCurrentPosition);
 				// String label = set.get(iAxisID).getLabel();
 
-				gate.draw(gl, pickingManager, textureManager, textRenderer, iUniqueID);
+				gate.draw(gl, pickingManager, textureManager, textRenderer, uniqueID);
 				// renderSingleGate(gl, gate, iAxisID, iGateID,
 				// fCurrentPosition);
 			}
@@ -1264,7 +1264,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		// the gate add button
 		float fYGateAddOrigin = renderStyle.getAxisHeight();
-		int iPickingID = pickingManager.getPickingID(iUniqueID,
+		int iPickingID = pickingManager.getPickingID(uniqueID,
 				EPickingType.ADD_MASTER_GATE, 1);
 		gl.glPushName(iPickingID);
 
@@ -1303,7 +1303,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			gl.glEnd();
 
 			gate.setCurrentPosition(fXOrigin);
-			gate.draw(gl, pickingManager, textureManager, textRenderer, iUniqueID);
+			gate.draw(gl, pickingManager, textureManager, textRenderer, uniqueID);
 			// renderSingleGate(gl, gate, -1, iGateID, fXOrigin);
 		}
 
@@ -1673,7 +1673,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
 			// iExternalID);
 			// if (iRefSeqID == null) {
-			// pickingManager.flushHits(iUniqueID, ePickingType);
+			// pickingManager.flushHits(uniqueID, ePickingType);
 			// return;
 			// }
 			// int iConnectionID =
@@ -1689,7 +1689,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// }
 			// else {
 			contentSelectionManager.addToType(selectionType, pickingID);
-			contentSelectionManager.addConnectionID(generalManager.getIDManager()
+			contentSelectionManager.addConnectionID(generalManager.getIDCreator()
 					.createID(EManagedObjectType.CONNECTION), pickingID);
 
 			// }
@@ -1747,7 +1747,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			storageSelectionManager.clearSelection(selectionType);
 			storageSelectionManager.addToType(selectionType, pickingID);
 
-			storageSelectionManager.addConnectionID(generalManager.getIDManager()
+			storageSelectionManager.addConnectionID(generalManager.getIDCreator()
 					.createID(EManagedObjectType.CONNECTION), pickingID);
 
 			connectedElementRepresentationManager.clear(
@@ -2035,14 +2035,14 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			y = renderStyle.getBottomSpacing();
 			// y =set.get(storageVA.get(storageVA.size() - 1)).getFloat(
 			// EDataRepresentation.NORMALIZED, iAxisID);
-			alElementReps.add(new SelectedElementRep(idType, iUniqueID, x, y, 0.0f));
+			alElementReps.add(new SelectedElementRep(idType, uniqueID, x, y, 0.0f));
 			// }
 			// }
 			// else if (idType == EIDType.EXPERIMENT_INDEX
 			// && dataDomain.getDataDomainType().equals(
 			// "org.caleydo.datadomain.clinical")) {
 			// System.out.println("wu");
-			// alElementReps.add(new SelectedElementRep(idType, iUniqueID, 0, 0,
+			// alElementReps.add(new SelectedElementRep(idType, uniqueID, 0, 0,
 			// 0.0f));
 
 		} else {
@@ -2075,7 +2075,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			} else {
 				y = y * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
 			}
-			alElementReps.add(new SelectedElementRep(idType, iUniqueID, x, y, 0.0f));
+			alElementReps.add(new SelectedElementRep(idType, uniqueID, x, y, 0.0f));
 		}
 
 		return alElementReps;
@@ -2221,7 +2221,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		gl.glColor4fv(ANGULAR_COLOR, 0);
 		gl.glLineWidth(ANGLUAR_LINE_WIDTH);
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.ANGULAR_UPPER,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.ANGULAR_UPPER,
 				iPosition));
 		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(vecTriangleOrigin.x(), vecTriangleOrigin.y(),
@@ -2230,7 +2230,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		gl.glEnd();
 		gl.glPopName();
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.ANGULAR_UPPER,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.ANGULAR_UPPER,
 				iPosition));
 		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(vecTriangleOrigin.x(), vecTriangleOrigin.y(),

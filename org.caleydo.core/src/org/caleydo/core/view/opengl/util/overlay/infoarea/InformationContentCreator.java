@@ -36,7 +36,7 @@ public class InformationContentCreator {
 	 * Returns an AL of Strings when you pass it an ID and a data type The list is in such order that the
 	 * first element is suitable for a title
 	 * 
-	 * @param iUniqueID
+	 * @param uniqueID
 	 * @param eInputDataTypes
 	 * @return
 	 */
@@ -53,15 +53,15 @@ public class InformationContentCreator {
 		// String sGeneName = "unknown";
 		// String sGeneSymbol = "unknown";
 		//
-		// if (iUniqueID != -1) {
+		// if (uniqueID != -1) {
 		// sRefSeq = "as";
 		// // generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_REFSEQ_MRNA,
-		// // iUniqueID);
+		// // uniqueID);
 		// sGeneName = "as";
-		// // generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_NAME, iUniqueID);
+		// // generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_NAME, uniqueID);
 		// sGeneSymbol = "aas";
 		// // generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_SYMBOL,
-		// // iUniqueID);
+		// // uniqueID);
 		// }
 		//
 		// // Cut too long gene names
@@ -78,7 +78,7 @@ public class InformationContentCreator {
 		//
 		// case PATHWAY:
 		//
-		// PathwayGraph pathway = generalManager.getPathwayManager().getItem(iUniqueID);
+		// PathwayGraph pathway = generalManager.getPathwayManager().getItem(uniqueID);
 		//
 		// if (pathway == null) {
 		// break;

@@ -377,7 +377,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 			TextureCoords texCoordsArrow = textureArrow.getImageTexCoords();
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.DENDROGRAM_CUT_SELECTION, 1));
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
@@ -457,7 +457,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 			TextureCoords texCoordsArrow = textureArrow.getImageTexCoords();
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.DENDROGRAM_CUT_SELECTION, 1));
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
@@ -761,7 +761,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 			if (currentNode.isPartOfSubTree()) {
 
-				gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				gl.glPushName(pickingManager.getPickingID(uniqueID,
 						EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode.getID()));
 
 				// vertical line connecting all child nodes
@@ -794,7 +794,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		}
 
 		if (currentNode.isPartOfSubTree()) {
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode.getID()));
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(currentNode.getPosSubTree().x() + fLevelWidthSubTree,
@@ -1040,7 +1040,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 			fDiff = fTemp - xmin;
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode.getID()));
 
 			// vertical line connecting all child nodes
@@ -1067,7 +1067,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			gl.glPopName();
 
 		} else {
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode.getID()));
 
 			// horizontal line visualizing leaf nodes
@@ -1163,7 +1163,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 			fDiff = fTemp - ymax;
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.DENDROGRAM_EXPERIMENT_NODE_SELECTION,
 					currentNode.getID()));
 
@@ -1192,7 +1192,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			gl.glPopName();
 
 		} else {
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.DENDROGRAM_EXPERIMENT_LEAF_SELECTION,
 					currentNode.getID()));
 

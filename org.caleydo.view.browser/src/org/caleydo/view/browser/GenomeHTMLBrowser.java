@@ -47,7 +47,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 	 */
 	public GenomeHTMLBrowser(Composite parentComposite) {
 
-		super(GeneralManager.get().getIDManager()
+		super(GeneralManager.get().getIDCreator()
 				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENOME), parentComposite);
 
 		registerEventListeners();

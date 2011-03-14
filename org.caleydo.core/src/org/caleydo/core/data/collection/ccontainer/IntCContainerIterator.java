@@ -30,7 +30,7 @@ public class IntCContainerIterator
 	 * Constructor
 	 * 
 	 * @param intCContainer
-	 * @param iUniqueID
+	 * @param uniqueID
 	 */
 	public IntCContainerIterator(IntCContainer intCContainer, VirtualArray<?,?,?> virtualArray) {
 		this(intCContainer);

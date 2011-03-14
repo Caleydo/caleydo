@@ -61,7 +61,7 @@ public class CmdLoadFileNStorages
 		}
 
 		// Convert external IDs from XML file to internal IDs
-		iAlStorageIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(iAlStorageIDs);
+		iAlStorageIDs = GeneralManager.get().getIDCreator().convertExternalToInternalIDs(iAlStorageIDs);
 
 		int[] iArrayStartStop =
 			StringConversionTool.convertStringToIntArray(

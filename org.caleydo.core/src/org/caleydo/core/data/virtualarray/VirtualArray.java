@@ -44,7 +44,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	private String vaType;
 
 	public VirtualArray() {
-		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
+		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.VIRTUAL_ARRAY));
 		this.virtualArray = new ArrayList<Integer>();
 	}
 
@@ -52,7 +52,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * Constructor, creates an empty Virtual Array
 	 */
 	public VirtualArray(String vaType) {
-		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
+		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.VIRTUAL_ARRAY));
 		this.vaType = vaType;
 		this.virtualArray = new ArrayList<Integer>();
 		// init();
@@ -67,7 +67,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * @param initialList
 	 */
 	public VirtualArray(String vaType, List<Integer> initialList) {
-		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
+		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.VIRTUAL_ARRAY));
 		this.vaType = vaType;
 		this.virtualArray = new ArrayList<Integer>();
 		virtualArray.addAll(initialList);
@@ -532,10 +532,10 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	/**
 	 * Replace the internally created ID with the specified. Used when this VA replaces another VA
 	 * 
-	 * @param iUniqueID
+	 * @param uniqueID
 	 */
 	public void setID(int iUniqueID) {
-		this.iUniqueID = iUniqueID;
+		this.uniqueID = iUniqueID;
 	}
 
 	@XmlElementWrapper

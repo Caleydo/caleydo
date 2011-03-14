@@ -30,7 +30,7 @@ public class CmdDataCreateStorage
 		IStorageManager storageManager = generalManager.getStorageManager();
 		createdObject = storageManager.createStorage(storageType);
 
-		generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), externalID);
+		generalManager.getIDCreator().mapInternalToExternalID(createdObject.getID(), externalID);
 
 		// generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
 		// "Created Storage with ID: " + createdObject.getID()));

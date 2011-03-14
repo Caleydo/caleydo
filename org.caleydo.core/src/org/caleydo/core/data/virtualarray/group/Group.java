@@ -2,16 +2,18 @@ package org.caleydo.core.data.virtualarray.group;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
- * 
- * 
  * @author Bernhard Schlegl
  * @author Alexander Lex
  */
-public class Group{
+public class Group
+	extends AUniqueObject {
 
 	/** number of elements in the group/cluster */
 	private int size = 0;
@@ -53,6 +55,10 @@ public class Group{
 		this.setSize(size);
 	}
 
+	{
+		uniqueID = GeneralManager.get().getIDCreator().createID(EManagedObjectType.GROUP);
+	}
+
 	/**
 	 * Constructor
 	 * 
@@ -92,6 +98,10 @@ public class Group{
 		return size;
 	}
 
+	/**
+	 * Returns the groupID of this group, which is equivalent to the index of this group in the
+	 * {@link GroupList}. For a unique ID of the group see the {@link #getID()} method.
+	 */
 	public int getGroupID() {
 		return groupID;
 	}

@@ -58,7 +58,7 @@ public class CmdSetDataRepresentation
 		}
 
 		// Convert external IDs from XML file to internal IDs
-		iAlIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(iAlIDs);
+		iAlIDs = GeneralManager.get().getIDCreator().convertExternalToInternalIDs(iAlIDs);
 
 		if (attrib3.equals("")) {
 			objectType = EManagedObjectType.STORAGE;

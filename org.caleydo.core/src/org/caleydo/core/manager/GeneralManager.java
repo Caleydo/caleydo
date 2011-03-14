@@ -47,9 +47,9 @@ public class GeneralManager {
 
 	public static final String PLUGIN_ID = "org.caleydo.core";
 
-//	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
+	// public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
 	public static final String USER_HOME_TEMPLATE = "user.home";
-	
+
 	/**
 	 * The template for the concrete caleydo folder, ie CALEYDO_FOLDER. This is used for example in XML files
 	 * and is then replaced with the concrete folder
@@ -70,7 +70,7 @@ public class GeneralManager {
 	 * General manager as a singleton
 	 */
 	private volatile static GeneralManager instance;
-	
+
 	private BasicInformation basicInfo;
 
 	private IStorageManager storageManager;
@@ -80,7 +80,7 @@ public class GeneralManager {
 	private EventPublisher eventPublisher;
 	private XmlParserManager xmlParserManager;
 	private IDMappingManager genomeIdManager;
-	private IDCreator IDManager;
+	private IDCreator idCreator;
 	private IGUIBridge guiBridge;
 	private ResourceLoader resourceLoader;
 	private WiiRemote wiiRemote;
@@ -102,7 +102,7 @@ public class GeneralManager {
 		preferenceManager.initialize();
 
 		basicInfo = new BasicInformation();
-		
+
 		storageManager = new StorageManager();
 		commandManager = new CommandManager();
 		eventPublisher = new EventPublisher();
@@ -110,7 +110,7 @@ public class GeneralManager {
 		sWTGUIManager = new SWTGUIManager();
 		genomeIdManager = new IDMappingManager();
 		xmlParserManager = new XmlParserManager();
-		IDManager = new IDCreator();
+		idCreator = new IDCreator();
 		xmlParserManager.initHandlers();
 
 		groupwareManager = null;
@@ -143,11 +143,11 @@ public class GeneralManager {
 		}
 		return instance;
 	}
-	
+
 	public BasicInformation getBasicInfo() {
 		return basicInfo;
 	}
-	
+
 	public void setBasicInfo(BasicInformation basicInfo) {
 		this.basicInfo = basicInfo;
 	}
@@ -198,8 +198,8 @@ public class GeneralManager {
 		return PreferenceManager.get().getPreferenceStore();
 	}
 
-	public IDCreator getIDManager() {
-		return IDManager;
+	public IDCreator getIDCreator() {
+		return idCreator;
 	}
 
 	public IGUIBridge getGUIBridge() {
