@@ -167,7 +167,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		dimensionGroupSpacing.setPixelSizeX(2);
 		// dimensionGroupSpacing.setDebug(false);
-		centerRowLayout.appendElement(dimensionGroupSpacing);
+		centerRowLayout.append(dimensionGroupSpacing);
 
 		for (int dimensionGroupIndex = dimensionGroupManager.getCenterGroupStartIndex(); dimensionGroupIndex < dimensionGroupManager
 				.getRightGroupStartIndex(); dimensionGroupIndex++) {
@@ -179,7 +179,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			group.getLayout().setRatioSizeY(1);
 			group.setArchBounds(ARCH_BOTTOM_PERCENT, ARCH_TOP_PERCENT
 					- ARCH_BOTTOM_PERCENT, ARCH_BOTTOM_PERCENT);
-			centerRowLayout.appendElement(group.getLayout());
+			centerRowLayout.append(group.getLayout());
 
 			dimensionGroupSpacing = new ElementLayout("dimensionGroupSpacing");
 
@@ -200,7 +200,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				dimensionGroupSpacing.setPixelSizeX(2);
 			else
 				dimensionGroupSpacing.setAbsoluteSizeX(spacerWidth);
-			centerRowLayout.appendElement(dimensionGroupSpacing);
+			centerRowLayout.append(dimensionGroupSpacing);
 		}
 
 		centerLayout = new LayoutTemplate();
@@ -229,7 +229,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 		dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		dimensionGroupSpacing.setPixelSizeY(DIMENSION_GROUP_SPACING);
-		leftColumnLayout.appendElement(dimensionGroupSpacing);
+		leftColumnLayout.append(dimensionGroupSpacing);
 
 		for (int dimensionGroupIndex = 0; dimensionGroupIndex < dimensionGroupManager
 				.getCenterGroupStartIndex(); dimensionGroupIndex++) {
@@ -241,7 +241,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			group.getLayout().setAbsoluteSizeY(archSideThickness);
 			// group.getLayout().setDebug(false);
 			group.setArchBounds(0, 0, 0);
-			leftColumnLayout.appendElement(group.getLayout());
+			leftColumnLayout.append(group.getLayout());
 
 			group.setCollapsed(true);
 
@@ -253,7 +253,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas
 					.getPixelGLConverter());
 			dimensionGroupSpacing.setPixelSizeY(DIMENSION_GROUP_SPACING);
-			leftColumnLayout.appendElement(dimensionGroupSpacing);
+			leftColumnLayout.append(dimensionGroupSpacing);
 		}
 
 		leftLayout = new LayoutTemplate();
@@ -283,7 +283,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 		dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		dimensionGroupSpacing.setPixelSizeY(5);
-		rightColumnLayout.appendElement(dimensionGroupSpacing);
+		rightColumnLayout.append(dimensionGroupSpacing);
 
 		for (int dimensionGroupIndex = dimensionGroupManager.getRightGroupStartIndex(); dimensionGroupIndex < dimensionGroupManager
 				.getDimensionGroups().size(); dimensionGroupIndex++) {
@@ -297,7 +297,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			group.getLayout().setAbsoluteSizeY(archSideThickness);
 			// group.getLayout().setDebug(true);
 			group.setArchBounds(0, 0, 0);
-			rightColumnLayout.appendElement(group.getLayout());
+			rightColumnLayout.append(group.getLayout());
 
 			dimensionGroupSpacing = new ElementLayout("dimensionGroupSpacing");
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer();
@@ -307,7 +307,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas
 					.getPixelGLConverter());
 			dimensionGroupSpacing.setPixelSizeY(DIMENSION_GROUP_SPACING);
-			rightColumnLayout.appendElement(dimensionGroupSpacing);
+			rightColumnLayout.append(dimensionGroupSpacing);
 		}
 
 		rightLayout = new LayoutTemplate();

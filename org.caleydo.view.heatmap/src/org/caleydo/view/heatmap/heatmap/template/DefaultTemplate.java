@@ -39,11 +39,11 @@ public class DefaultTemplate extends AHeatMapTemplate {
 //		rendererParameters.add(heatMapLayout);
 		
 		
-		heatMapRow.appendElement(heatMapLayout);
+		heatMapRow.append(heatMapLayout);
 
 		ElementLayout spacing = new ElementLayout();
 		spacing.setAbsoluteSizeX(0.01f);
-		heatMapRow.appendElement(spacing);
+		heatMapRow.append(spacing);
 
 		// content captions
 		ElementLayout contentCaptionLayout = new ElementLayout();
@@ -53,9 +53,9 @@ public class DefaultTemplate extends AHeatMapTemplate {
 
 //		rendererParameters.add(contentCaptionLayout);
 
-		heatMapRow.appendElement(contentCaptionLayout);
+		heatMapRow.append(contentCaptionLayout);
 
-		mainColumn.appendElement(heatMapRow);
+		mainColumn.append(heatMapRow);
 
 //		spacing = new ElementLayout();
 //		spacing.setSizeY(1 - heatMapLayout.getSizeY());

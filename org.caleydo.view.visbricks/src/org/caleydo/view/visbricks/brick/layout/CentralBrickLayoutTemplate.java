@@ -35,7 +35,7 @@ public class CentralBrickLayoutTemplate extends BrickLayoutTemplate {
 		fuelBarLayout.setPixelSizeY(12);
 		fuelBarLayout.setRenderer(new FuelBarRenderer(brick));
 
-		baseRow.appendElement(baseColumn);
+		baseRow.append(baseColumn);
 		// baseRow.appendElement(fuelBarLayout);
 
 		ElementLayout dimensionBarLayout = new ElementLayout("dimensionBar");
@@ -64,12 +64,12 @@ public class CentralBrickLayoutTemplate extends BrickLayoutTemplate {
 		spacingLayoutY.setPixelSizeX(0);
 
 		// baseColumn.appendElement(dimensionBarLayout);
-		baseColumn.appendElement(fuelBarLayout);
-		baseColumn.appendElement(spacingLayoutY);
-		baseColumn.appendElement(viewLayout);
-		baseColumn.appendElement(spacingLayoutY);
+		baseColumn.append(fuelBarLayout);
+		baseColumn.append(spacingLayoutY);
+		baseColumn.append(viewLayout);
+		baseColumn.append(spacingLayoutY);
 		// baseColumn.appendElement(viewToolBarLayout);
-		baseColumn.appendElement(toolBar);
+		baseColumn.append(toolBar);
 
 	}
 }

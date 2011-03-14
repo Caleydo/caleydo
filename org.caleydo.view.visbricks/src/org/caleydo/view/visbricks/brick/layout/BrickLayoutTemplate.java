@@ -69,8 +69,8 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 		heatMapButtonLayout.setRenderer(new ButtonRenderer(heatMapButton,
 				brick, EIconTextures.HEAT_MAP_ICON, brick.getTextureManager()));
 
-		toolBar.appendElement(heatMapButtonLayout);
-		toolBar.appendElement(spacingLayoutX);
+		toolBar.append(heatMapButtonLayout);
+		toolBar.append(spacingLayoutX);
 
 		ElementLayout parCoordsButtonLayout = new ElementLayout("parCoords");
 		parCoordsButtonLayout.setPixelGLConverter(pixelGLConverter);
@@ -81,8 +81,8 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 						EIconTextures.PAR_COORDS_ICON, brick
 								.getTextureManager()));
 
-		toolBar.appendElement(parCoordsButtonLayout);
-		toolBar.appendElement(spacingLayoutX);
+		toolBar.append(parCoordsButtonLayout);
+		toolBar.append(spacingLayoutX);
 
 		ElementLayout histogramButtonLayout = new ElementLayout(
 				"histogramButton");
@@ -93,7 +93,7 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 				.setRenderer(new ButtonRenderer(histogramButton, brick,
 						EIconTextures.HISTOGRAM_ICON, brick.getTextureManager()));
 
-		toolBar.appendElement(histogramButtonLayout);
+		toolBar.append(histogramButtonLayout);
 
 		registerPickingListeners();
 

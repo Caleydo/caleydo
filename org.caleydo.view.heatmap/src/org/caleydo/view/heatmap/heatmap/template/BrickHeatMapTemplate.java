@@ -59,14 +59,14 @@ public class BrickHeatMapTemplate extends AHeatMapTemplate {
 			// rendererParameters.add(caption);
 		}
 
-		hmRow.appendElement(heatMapLayout);
+		hmRow.append(heatMapLayout);
 
 		if (renderCaptions) {
-			hmRow.appendElement(spacing);
-			hmRow.appendElement(caption);
+			hmRow.append(spacing);
+			hmRow.append(caption);
 		}
 
-		mainColumn.appendElement(hmRow);
+		mainColumn.append(hmRow);
 
 	}
 

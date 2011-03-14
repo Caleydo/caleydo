@@ -9,11 +9,13 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
@@ -90,6 +92,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	private SelectionManager contentGroupSelectionManager;
 
+	/** The average value of the data of this brick */
+	private double averageValue = Double.NaN;
+
 	public GLBrick(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 		viewType = GLBrick.VIEW_ID;
@@ -141,7 +146,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 					visBricks, false);
 			tempLayout.setRightRelationIndicatorRenderer(rightRelationIndicatorRenderer);
 			tempLayout.setLeftRelationIndicatorRenderer(leftRelationIndicatorRenderer);
-
+			//
 			leftRelationIndicatorRenderer.updateRelations();
 			rightRelationIndicatorRenderer.updateRelations();
 
@@ -375,7 +380,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public void setContentVA(Group group, ContentVirtualArray contentVA) {
 		this.group = group;
-		this.groupID = group.getGroupID();
+		if (group != null)
+			this.groupID = group.getGroupID();
 		this.contentVA = contentVA;
 	}
 
@@ -411,6 +417,30 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	public List<AGLView> getRemoteRenderedViews() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	private void calculateAverageValueForBrick() {
+		averageValue = 0;
+		int count = 0;
+		if (contentVA == null)
+			throw new IllegalStateException("contentVA was null");
+		for (Integer contenID : contentVA) {
+			StorageVirtualArray storageVA = set.getStorageData(Set.STORAGE)
+					.getStorageVA();
+			for (Integer storageID : storageVA) {
+				averageValue += set.get(storageID).getFloat(
+						EDataRepresentation.NORMALIZED, contenID);
+				count++;
+			}
+		}
+		averageValue /= count;
+
+	}
+
+	public double getAverageValue() {
+		if (Double.isNaN(averageValue))
+			calculateAverageValueForBrick();
+		return averageValue;
 	}
 
 	@Override
@@ -486,7 +516,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		}
 
 		if (selectionUpdateListener != null) {
-			eventPublisher.removeListener(relationsUpdateListener);
+			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
 		}
 	}
@@ -545,8 +575,6 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		return contentGroupSelectionManager;
 	}
 
-
-	
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {

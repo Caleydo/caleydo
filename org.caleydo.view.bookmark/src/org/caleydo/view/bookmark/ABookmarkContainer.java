@@ -131,7 +131,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 		containerLayout.setBottomUp(false);
 		ContainerHeading heading = new ContainerHeading(manager);
 		heading.setCaption(category.getCategoryName());
-		containerLayout.appendElement(heading.getLayout());
+		containerLayout.append(heading.getLayout());
 	}
 
 	public ElementLayout getLayout() {

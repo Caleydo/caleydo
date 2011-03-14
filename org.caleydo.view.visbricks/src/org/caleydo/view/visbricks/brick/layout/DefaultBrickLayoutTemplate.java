@@ -50,7 +50,7 @@ public class DefaultBrickLayoutTemplate extends BrickLayoutTemplate {
 		leftRelationIndicatorLayout.setPixelGLConverter(pixelGLConverter);
 		leftRelationIndicatorLayout.setPixelSizeX(3);
 		leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
-		baseRow.appendElement(leftRelationIndicatorLayout);
+		baseRow.append(leftRelationIndicatorLayout);
 
 		Column baseColumn = new Column("baseColumn");
 		// setBaseElementLayout(baseColumn);
@@ -70,9 +70,9 @@ public class DefaultBrickLayoutTemplate extends BrickLayoutTemplate {
 		spacingLayoutX.setPixelSizeX(4);
 		spacingLayoutX.setRatioSizeY(0);
 
-		baseRow.appendElement(spacingLayoutX);
-		baseRow.appendElement(baseColumn);
-		baseRow.appendElement(spacingLayoutX);
+		baseRow.append(spacingLayoutX);
+		baseRow.append(baseColumn);
+		baseRow.append(spacingLayoutX);
 		// baseRow.appendElement(fuelBarLayout);
 
 		ElementLayout dimensionBarLayout = new ElementLayout("dimensionBar");
@@ -100,13 +100,13 @@ public class DefaultBrickLayoutTemplate extends BrickLayoutTemplate {
 		spacingLayoutY.setPixelSizeX(0);
 
 		// baseColumn.appendElement(dimensionBarLayout);
-		baseColumn.appendElement(spacingLayoutY);
-		baseColumn.appendElement(fuelBarLayout);
-		baseColumn.appendElement(spacingLayoutY);
-		baseColumn.appendElement(viewLayout);
-		baseColumn.appendElement(spacingLayoutY);
-		baseColumn.appendElement(toolBar);
-		baseColumn.appendElement(spacingLayoutY);
+		baseColumn.append(spacingLayoutY);
+		baseColumn.append(fuelBarLayout);
+		baseColumn.append(spacingLayoutY);
+		baseColumn.append(viewLayout);
+		baseColumn.append(spacingLayoutY);
+		baseColumn.append(toolBar);
+		baseColumn.append(spacingLayoutY);
 
 		ElementLayout rightRelationIndicatorLayout = new ElementLayout(
 				"RightRelationIndicatorLayout");
@@ -114,7 +114,7 @@ public class DefaultBrickLayoutTemplate extends BrickLayoutTemplate {
 		rightRelationIndicatorLayout.setPixelGLConverter(pixelGLConverter);
 		rightRelationIndicatorLayout.setPixelSizeX(3);
 		rightRelationIndicatorLayout.setRenderer(rightRelationIndicatorRenderer);
-		baseRow.appendElement(rightRelationIndicatorLayout);
+		baseRow.append(rightRelationIndicatorLayout);
 
 	}
 }

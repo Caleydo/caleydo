@@ -69,24 +69,24 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 		if (isLeft) {
 			if (renderCaptions) {
 
-				hmRow.appendElement(spacing);
-				hmRow.appendElement(caption);
+				hmRow.append(spacing);
+				hmRow.append(caption);
 			}
 
-			hmRow.appendElement(heatMapLayout);
+			hmRow.append(heatMapLayout);
 
 		} else {
 
-			hmRow.appendElement(heatMapLayout);
+			hmRow.append(heatMapLayout);
 
 			if (renderCaptions) {
 
-				hmRow.appendElement(spacing);
-				hmRow.appendElement(caption);
+				hmRow.append(spacing);
+				hmRow.append(caption);
 			}
 		}
 
-		mainColumn.appendElement(hmRow);
+		mainColumn.append(hmRow);
 		if (isActive) {
 			ElementLayout toolBar;
 
@@ -96,7 +96,7 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 
 			toolBar.setRenderer(new DetailToolBar(heatMap));
 
-			mainColumn.appendElement(toolBar);
+			mainColumn.append(toolBar);
 		}
 
 	}

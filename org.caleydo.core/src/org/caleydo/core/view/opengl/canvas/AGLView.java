@@ -229,10 +229,10 @@ public abstract class AGLView
 	public void init(GLAutoDrawable drawable) {
 
 		glMouseListener.addGLCanvas(this);
-		
+
 		((GLEventListener) parentGLCanvas).init(drawable);
 		textRenderer = parentGLCanvas.getTextRenderer();
-		
+
 		initLocal(drawable.getGL().getGL2());
 	}
 
@@ -866,5 +866,11 @@ public abstract class AGLView
 
 	public PickingManager getPickingManager() {
 		return pickingManager;
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		System.out.println("Finalizing " + VIEW_ID);
 	}
 }

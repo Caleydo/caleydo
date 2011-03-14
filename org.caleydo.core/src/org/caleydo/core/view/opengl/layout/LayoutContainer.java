@@ -107,12 +107,23 @@ public abstract class LayoutContainer
 	}
 
 	/**
-	 * Add an element to the container
+	 * Append an element to the container at the end
 	 * 
-	 * @param renderParameter
+	 * @param elementLayout
 	 */
-	public void appendElement(ElementLayout renderParameter) {
-		elements.add(renderParameter);
+	public void append(ElementLayout elementLayout) {
+		elements.add(elementLayout);
+	}
+
+	/**
+	 * Add an element to the container at the specified index. Subsequent layouts will be shifted to the
+	 * right.
+	 * 
+	 * @param index
+	 * @param elementLayout
+	 */
+	public void add(int index, ElementLayout elementLayout) {
+		elements.add(index, elementLayout);
 	}
 
 	@Override
