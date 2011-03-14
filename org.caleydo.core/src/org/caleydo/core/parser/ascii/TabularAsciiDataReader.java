@@ -356,9 +356,20 @@ public class TabularAsciiDataReader
 		}
 	}
 
+	/**
+	 * Method masking errors with import of categorical data FIXME: find the underlying error instead
+	 * 
+	 * @param rawStringData
+	 * @return
+	 */
+	@Deprecated
 	private ArrayList<String> fillUp(ArrayList<String> rawStringData) {
+		int missingValues = nrLinesToRead - rawStringData.size();
 		for (int count = rawStringData.size(); count < nrLinesToRead; count++)
 			rawStringData.add("ARTIFICIAL");
+
+		Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, "Had to fill up stroarge with "
+			+ missingValues + " artificial strings"));
 
 		return rawStringData;
 
