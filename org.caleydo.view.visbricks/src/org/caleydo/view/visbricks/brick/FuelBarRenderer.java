@@ -81,26 +81,26 @@ public class FuelBarRenderer extends LayoutRenderer {
 		gl.glEnd();
 		gl.glPopName();
 
-		brick.addPickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-				// set.cluster(clusterState);
-				System.out.println("picked brick");
-
-				selectionManager.clearSelection(SelectionType.SELECTION);
-				selectionManager.addToType(SelectionType.SELECTION, brick.getGroup()
-						.getID());
-
-				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setDataDomainType(brick.getDataDomain().getDataDomainType());
-				event.setSender(brick);
-				SelectionDelta delta = selectionManager.getDelta();
-				event.setSelectionDelta(delta);
-				GeneralManager.get().getEventPublisher().triggerEvent(event);
-
-			}
-		}, EPickingType.BRICK, brick.getID());
+//		brick.addPickingListener(new APickingListener() {
+//
+//			@Override
+//			public void clicked(Pick pick) {
+//				// set.cluster(clusterState);
+//				System.out.println("picked brick");
+//
+//				selectionManager.clearSelection(SelectionType.SELECTION);
+//				selectionManager.addToType(SelectionType.SELECTION, brick.getGroup()
+//						.getID());
+//
+//				SelectionUpdateEvent event = new SelectionUpdateEvent();
+//				event.setDataDomainType(brick.getDataDomain().getDataDomainType());
+//				event.setSender(brick);
+//				SelectionDelta delta = selectionManager.getDelta();
+//				event.setSelectionDelta(delta);
+//				GeneralManager.get().getEventPublisher().triggerEvent(event);
+//
+//			}
+//		}, EPickingType.BRICK, brick.getID());
 
 	}
 }

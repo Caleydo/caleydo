@@ -20,42 +20,31 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
-import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
-import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.rcp.dialog.cluster.StartClusteringDialog;
 import org.caleydo.view.visbricks.GLVisBricks;
-import org.caleydo.view.visbricks.brick.BorderedAreaRenderer;
-import org.caleydo.view.visbricks.brick.Button;
-import org.caleydo.view.visbricks.brick.ButtonRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
-import org.caleydo.view.visbricks.brick.HandleRenderer;
 import org.caleydo.view.visbricks.brick.layout.CentralBrickLayoutTemplate;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Container for a group of dimensions. Manages layouts as well as brick views
@@ -79,12 +68,11 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private Column bottomCol;
 	private GLBrick centerBrick;
 	private Column centerLayout;
-	private ElementLayout captionLayout;
 	private Column topCol;
 	private ViewFrustum brickFrustum;
 	private ISet set;
 	private ASetBasedDataDomain dataDomain;
-	private Button clusterButton;
+
 
 	private EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 	private ContentVAUpdateListener contentVAUpdateListener;
@@ -122,7 +110,6 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		topBricks = new ArrayList<GLBrick>(20);
 //		topCol.setDebug(true);
 
-		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, 1);
 
 		initGroupColumn();
 	}
@@ -164,92 +151,21 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		centerBrick.setRemoteRenderingGLView(getRemoteRenderingGLCanvas());
 		centerBrick.setDataDomain(dataDomain);
 		centerBrick.setSet(set);
-		centerBrick.setContentVA(null, set.getContentData(Set.CONTENT).getContentVA());
-		centerBrick.setBrickLayoutTemplate(new CentralBrickLayoutTemplate(centerBrick));
+		centerBrick.setContentVA(new Group(), set.getContentData(Set.CONTENT).getContentVA());
+		centerBrick.setBrickLayoutTemplate(new CentralBrickLayoutTemplate(centerBrick, this));
+		centerBrick.setDimensionGroup(this);
 		centerBrick.initialize();
 
 		ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(centerBrick);
-		ElementLayout centerBrickLayout = new ElementLayout("CenterBrickLayout");
-		centerBrickLayout.setRenderer(brickRenderer);
-		// centerBrickLayout.setDebug(true);
-		// centerBrickLayout.setFrameColor(1, 0, 0, 1);
-		centerBrickLayout.setRatioSizeY(1f);
+		centerLayout.setRenderer(brickRenderer);
+		centerLayout.setRatioSizeY(1f);
 
-		centerBrick.setWrappingLayout(centerBrickLayout);
+		centerBrick.setWrappingLayout(centerLayout);
 
-		centerLayout.setRenderer(new BorderedAreaRenderer());
-		centerLayout.addForeGroundRenderer(new HandleRenderer(this, parentGLCanvas
-				.getPixelGLConverter(), 10));
-		Row centerRow = new Row("centerRow");
-
-		PixelGLConverter pixelGLConverter = parentGLCanvas.getPixelGLConverter();
-
-		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
-		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
-		spacingLayoutY.setPixelSizeY(4);
-
-		centerLayout.append(spacingLayoutY);
-		centerLayout.append(centerRow);
-		centerLayout.append(spacingLayoutY);
-
-		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
-		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
-		spacingLayoutX.setPixelSizeX(4);
-
-		Column centerColumn = new Column();
-
-		centerRow.append(spacingLayoutX);
-		centerRow.append(centerColumn);
-		centerRow.append(spacingLayoutX);
-
-		centerColumn.append(centerBrickLayout);
-
-		Row captionRow = new Row();
-		captionRow.setPixelGLConverter(pixelGLConverter);
-		captionRow.setPixelSizeY(16);
-
-		captionLayout = new ElementLayout("caption1");
-		// captionLayout.setDebug(true);
-		// captionLayout.setFrameColor(0, 0, 1, 1);
-		captionLayout.setPixelGLConverter(pixelGLConverter);
-		captionLayout.setPixelSizeY(18);
-		// captionLayout.setRatioSizeY(0.2f);
-		captionLayout.setFrameColor(0, 0, 1, 1);
-		// captionLayout.setDebug(true);
-
-		DimensionGroupCaptionRenderer captionRenderer = new DimensionGroupCaptionRenderer(
-				this);
-		captionLayout.setRenderer(captionRenderer);
-
-		captionRow.append(captionLayout);
-		captionRow.append(spacingLayoutX);
-
-		ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
-		clusterButtonLayout.setPixelGLConverter(pixelGLConverter);
-		clusterButtonLayout.setPixelSizeX(16);
-		clusterButtonLayout.setPixelSizeY(16);
-		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton, this,
-				EIconTextures.CLUSTER_ICON, textureManager));
-
-		captionRow.append(clusterButtonLayout);
-
-		centerColumn.append(spacingLayoutY);
-
-		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
-		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
-		lineSeparatorLayout.setPixelSizeY(3);
-		lineSeparatorLayout.setRatioSizeX(1);
-		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
-		// lineSeparatorLayout.setFrameColor(0, 0, 1, 1);
-		// lineSeparatorLayout.setDebug(true);
-
-		centerColumn.append(lineSeparatorLayout);
-		centerColumn.append(spacingLayoutY);
-		centerColumn.append(captionRow);
-		// centerLayout.appendElement(spacingLayoutY);
 
 		createSubBricks();
 	}
+
 
 	private void createSubBricks() {
 
@@ -511,33 +427,6 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int pickingID, Pick pick) {
 		switch (pickingType) {
-		case DIMENSION_GROUP_CLUSTER_BUTTON:
-			if (pickingMode == EPickingMode.CLICKED) {
-				System.out.println("cluster");
-
-				getParentGLCanvas().getParentComposite().getDisplay()
-						.asyncExec(new Runnable() {
-							@Override
-							public void run() {
-								StartClusteringDialog dialog = new StartClusteringDialog(
-										new Shell(), getDataDomain());
-								dialog.open();
-								ClusterState clusterState = dialog.getClusterState();
-								if (clusterState == null)
-									return;
-
-								StartClusteringEvent event = null;
-								// if (clusterState != null && set != null)
-
-								event = new StartClusteringEvent(clusterState, getSet()
-										.getID());
-								event.setDataDomainType(getDataDomain()
-										.getDataDomainType());
-								GeneralManager.get().getEventPublisher()
-										.triggerEvent(event);
-							}
-						});
-			}
 		case DRAGGING_HANDLE:
 			if (pickingMode == EPickingMode.CLICKED) {
 				System.out.println("Fuu" + pickingID);

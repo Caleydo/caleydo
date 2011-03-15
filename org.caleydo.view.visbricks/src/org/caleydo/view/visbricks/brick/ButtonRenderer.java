@@ -65,8 +65,6 @@ public class ButtonRenderer extends LayoutRenderer {
 			
 		}
 
-		
-		gl.glEnd();
 		gl.glPopName();
 
 	}

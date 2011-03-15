@@ -1,6 +1,5 @@
 package org.caleydo.view.visbricks.brick.layout;
 
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -63,8 +62,12 @@ public class DefaultBrickLayoutTemplate extends BrickLayoutTemplate {
 		fuelBarLayout.setFrameColor(0, 1, 0, 0);
 
 		baseRow.setRenderer(new BorderedAreaRenderer());
-		baseRow.addForeGroundRenderer(new HandleRenderer(brick.getDimensionGroup(),
-				pixelGLConverter, 10));
+
+		if (showHandles) {
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick
+					.getDimensionGroup(), pixelGLConverter, 10));
+		}
+
 		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
 		fuelBarLayout.setPixelSizeY(12);
 		fuelBarLayout.setRenderer(new FuelBarRenderer(brick));
@@ -86,7 +89,7 @@ public class DefaultBrickLayoutTemplate extends BrickLayoutTemplate {
 
 		ElementLayout viewLayout = new ElementLayout("viewLayout");
 		viewLayout.setFrameColor(1, 0, 0, 1);
-		viewLayout.addBackgroundRenderer(new BackGroundRenderer());
+		viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
 		viewLayout.setRenderer(viewRenderer);
 
 		// ElementLayout viewToolBarLayout = new
@@ -117,7 +120,8 @@ public class DefaultBrickLayoutTemplate extends BrickLayoutTemplate {
 		// rightRelationIndicatorLayout.setDebug(true);
 		rightRelationIndicatorLayout.setPixelGLConverter(pixelGLConverter);
 		rightRelationIndicatorLayout.setPixelSizeX(3);
-		rightRelationIndicatorLayout.setRenderer(rightRelationIndicatorRenderer);
+		rightRelationIndicatorLayout
+				.setRenderer(rightRelationIndicatorRenderer);
 		baseRow.append(rightRelationIndicatorLayout);
 
 	}

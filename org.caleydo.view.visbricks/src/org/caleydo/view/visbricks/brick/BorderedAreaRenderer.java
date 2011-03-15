@@ -2,12 +2,15 @@ package org.caleydo.view.visbricks.brick;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 public class BorderedAreaRenderer extends LayoutRenderer {
 
 	@Override
 	public void render(GL2 gl) {
+		
 		gl.glColor3f(0.35f, 0.35f, 0.35f);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, 0);

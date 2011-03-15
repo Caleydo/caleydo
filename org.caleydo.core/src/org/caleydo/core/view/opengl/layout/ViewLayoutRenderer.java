@@ -15,7 +15,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 public class ViewLayoutRenderer
 	extends LayoutRenderer {
 
-	AGLView view;
+	protected AGLView view;
 
 	/**
 	 * Constructor taking an {@link AGLView} to be rendered by this renderer.

@@ -21,15 +21,15 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 
 	protected GLBrick brick;
 	protected LayoutRenderer viewRenderer;
-	protected boolean pickingListenersRegistered;
 	protected Button heatMapButton;
 	protected Button parCoordsButton;
 	protected Button histogramButton;
 	protected Button overviewHeatMapButton;
+	protected boolean showHandles;
 
 	public BrickLayoutTemplate(GLBrick brick) {
 		this.brick = brick;
-		pickingListenersRegistered = false;
+		showHandles = false;
 
 		heatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
 				HEATMAP_BUTTON_ID);
@@ -54,6 +54,8 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 			overviewHeatMapButton.setSelected(true);
 			break;
 		}
+		
+		registerPickingListeners();
 	}
 
 	public void setViewRenderer(LayoutRenderer viewRenderer) {
@@ -113,16 +115,11 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 						EIconTextures.HEAT_MAP_ICON, brick.getTextureManager()));
 
 		toolBar.append(overviewHeatMapButtonLayout);
-
-		registerPickingListeners();
-
+		
 		return toolBar;
 	}
 
 	protected void registerPickingListeners() {
-
-		if (pickingListenersRegistered)
-			return;
 
 		brick.addPickingListener(new APickingListener() {
 
@@ -171,8 +168,14 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 				overviewHeatMapButton.setSelected(true);
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, OVERVIEW_HEATMAP_BUTTON_ID);
+	}
 
-		pickingListenersRegistered = true;
+	public boolean isShowHandles() {
+		return showHandles;
+	}
+
+	public void setShowHandles(boolean showHandles) {
+		this.showHandles = showHandles;
 	}
 
 }

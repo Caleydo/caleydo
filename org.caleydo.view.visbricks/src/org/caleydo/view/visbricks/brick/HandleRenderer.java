@@ -81,8 +81,6 @@ public class HandleRenderer extends LayoutRenderer {
 		gl.glEnd();
 		gl.glPopName();
 
-		gl.glEnd();
-
 	}
 
 }
