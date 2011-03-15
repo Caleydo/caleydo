@@ -1,5 +1,6 @@
 package org.caleydo.view.visbricks.dimensiongroup;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,6 +42,7 @@ import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
@@ -94,24 +96,31 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	private GLVisBricks visBricks;
 
+	// Stuff for dragging up and down
+	private boolean isDraggingActive = false;
+	private float previousYCoordinate = Float.NaN;
+
 	public DimensionGroup(GLCaleydoCanvas canvas, ViewFrustum viewFrustum) {
 		super(canvas, viewFrustum, true);
 
 		groupColumn = new Column("dimensionGroup");
+//		groupColumn.setDebug(true);
 
 		bottomCol = new Column("dimensionGroupColumnBottom");
 		bottomCol.setFrameColor(1, 0, 1, 1);
 		bottomCol.setBottomUp(false);
+//		bottomCol.setDebug(true);
 
 		bottomBricks = new ArrayList<GLBrick>(20);
 
 		centerLayout = new Column("centerLayout");
-		// centerLayout.setFrameColor(1, 1, 0, 1);
-		// centerLayout.setDebug(true);
+		centerLayout.setFrameColor(1, 1, 0, 1);
+//		centerLayout.setDebug(true);
 
 		topCol = new Column("dimensionGroupColumnTop");
 		topCol.setFrameColor(1, 0, 1, 1);
 		topBricks = new ArrayList<GLBrick>(20);
+//		topCol.setDebug(true);
 
 		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, 1);
 
@@ -262,8 +271,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			subBrick.setDataDomain(dataDomain);
 			subBrick.setSet(set);
 			subBrick.setVisBricks(visBricks);
+			subBrick.setDimensionGroup(this);
 			ElementLayout brickLayout = new ElementLayout("subbrick");
-			// brickLayout.setDebug(true);
+//			 brickLayout.setDebug(true);
 			ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(subBrick);
 			brickLayout.setRenderer(brickRenderer);
 			brickLayout.setFrameColor(1, 0, 0, 1);
@@ -480,6 +490,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		while (!uninitializedBricks.isEmpty()) {
 			uninitializedBricks.poll().initRemote(gl, this, glMouseListener);
 		}
+		handleSizeDragging(gl);
 		checkForHits(gl);
 
 	}
@@ -526,6 +537,11 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 										.triggerEvent(event);
 							}
 						});
+			}
+		case DRAGGING_HANDLE:
+			if (pickingMode == EPickingMode.CLICKED) {
+				System.out.println("Fuu" + pickingID);
+				isDraggingActive = true;
 			}
 		}
 
@@ -592,12 +608,49 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		gl.glVertex2f(mouseCoordinateX + 1, mouseCoordinateY + 1);
 		gl.glVertex2f(mouseCoordinateX, mouseCoordinateY + 1);
 		gl.glEnd();
+
 	}
 
 	@Override
 	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 
 		System.out.println("handle drop");
+	}
+
+	private void handleSizeDragging(GL2 gl) {
+		if (!isDraggingActive)
+			return;
+		if (glMouseListener.wasMouseReleased()) {
+			isDraggingActive = false;
+			previousYCoordinate = Float.NaN;
+			return;
+		}
+
+		Point currentPoint = glMouseListener.getPickedPoint();
+
+		float[] pointCordinates = GLCoordinateUtils
+				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+						currentPoint.y);
+
+		if (Float.isNaN(previousYCoordinate)) {
+			previousYCoordinate = pointCordinates[1];
+			return;
+		}
+
+		float change = pointCordinates[1] - previousYCoordinate;
+		previousYCoordinate = pointCordinates[1];
+
+		float topSize = topCol.getSizeScaledY();
+		topCol.setAbsoluteSizeY(topSize - change);
+
+		float bottomSize = bottomCol.getSizeScaledY();
+		bottomCol.setAbsoluteSizeY(bottomSize + change);
+		float centerSize = centerLayout.getSizeScaledY();
+
+		centerLayout.setAbsoluteSizeY(centerSize);
+
+		groupColumn.updateSubLayout();
+
 	}
 
 	@Override

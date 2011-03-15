@@ -32,7 +32,7 @@ public class HandleRenderer extends LayoutRenderer {
 		gl.glColor3f(0, 0, 0);
 
 		gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-				EPickingType.RESIZE_HANDLE_LOWER_LEFT, 1));
+				EPickingType.RESIZE_HANDLE_LOWER_LEFT, view.getID()));
 		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(glHandleWidth, 0, 0);
@@ -42,7 +42,7 @@ public class HandleRenderer extends LayoutRenderer {
 		gl.glPopName();
 		
 		gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-				EPickingType.RESIZE_HANDLE_LOWER_RIGHT, 1));
+				EPickingType.RESIZE_HANDLE_LOWER_RIGHT, view.getID()));
 		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(x, 0, 0);
 		gl.glVertex3f(x - glHandleWidth, 0, 0);
@@ -52,7 +52,7 @@ public class HandleRenderer extends LayoutRenderer {
 		gl.glPopName();
 
 		gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-				EPickingType.RESIZE_HANDLE_UPPER_RIGHT, 1));
+				EPickingType.RESIZE_HANDLE_UPPER_RIGHT, view.getID()));
 		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(x, y, 0);
 		gl.glVertex3f(x - glHandleWidth, y, 0);
@@ -62,7 +62,7 @@ public class HandleRenderer extends LayoutRenderer {
 		gl.glPopName();
 
 		gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-				EPickingType.RESIZE_HANDLE_UPPER_LEFT, 1));
+				EPickingType.RESIZE_HANDLE_UPPER_LEFT, view.getID()));
 		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(0, y, 0);
 		gl.glVertex3f(glHandleWidth, y, 0);
@@ -72,7 +72,7 @@ public class HandleRenderer extends LayoutRenderer {
 		gl.glPopName();
 
 		gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-				EPickingType.DRAGGING_HANDLE, 1));
+				EPickingType.DRAGGING_HANDLE, view.getID()));
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(-glHandleWidth * 2.0f, y / 2.0f - glHandleHeight, 0);
 		gl.glVertex3f(-glHandleWidth * 2.0f, y / 2.0f + glHandleHeight, 0);

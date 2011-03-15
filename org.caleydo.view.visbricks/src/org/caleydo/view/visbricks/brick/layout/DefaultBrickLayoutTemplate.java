@@ -1,5 +1,6 @@
 package org.caleydo.view.visbricks.brick.layout;
 
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -62,7 +63,8 @@ public class DefaultBrickLayoutTemplate extends BrickLayoutTemplate {
 		fuelBarLayout.setFrameColor(0, 1, 0, 0);
 
 		baseRow.setRenderer(new BorderedAreaRenderer());
-		baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter, 10));
+		baseRow.addForeGroundRenderer(new HandleRenderer(brick.getDimensionGroup(),
+				pixelGLConverter, 10));
 		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
 		fuelBarLayout.setPixelSizeY(12);
 		fuelBarLayout.setRenderer(new FuelBarRenderer(brick));
