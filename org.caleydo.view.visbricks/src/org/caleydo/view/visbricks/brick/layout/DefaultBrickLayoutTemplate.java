@@ -8,6 +8,7 @@ import org.caleydo.view.visbricks.brick.BackGroundRenderer;
 import org.caleydo.view.visbricks.brick.BorderedAreaRenderer;
 import org.caleydo.view.visbricks.brick.FuelBarRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.HandleRenderer;
 import org.caleydo.view.visbricks.brick.RelationIndicatorRenderer;
 
 /**
@@ -61,6 +62,7 @@ public class DefaultBrickLayoutTemplate extends BrickLayoutTemplate {
 		fuelBarLayout.setFrameColor(0, 1, 0, 0);
 
 		baseRow.setRenderer(new BorderedAreaRenderer());
+		baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter, 10));
 		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
 		fuelBarLayout.setPixelSizeY(12);
 		fuelBarLayout.setRenderer(new FuelBarRenderer(brick));

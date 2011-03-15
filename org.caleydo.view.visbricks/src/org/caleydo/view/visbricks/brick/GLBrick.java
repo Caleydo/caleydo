@@ -278,6 +278,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int pickingID, Pick pick) {
+		
 
 		HashMap<Integer, IPickingListener> map = pickingListeners.get(pickingType);
 		if (map == null)
