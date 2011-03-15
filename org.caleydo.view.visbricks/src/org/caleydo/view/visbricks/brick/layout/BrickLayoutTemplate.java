@@ -17,6 +17,7 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 	protected static final int HEATMAP_BUTTON_ID = 1;
 	protected static final int PARCOORDS_BUTTON_ID = 2;
 	protected static final int HISTOGRAM_BUTTON_ID = 3;
+	protected static final int OVERVIEW_HEATMAP_BUTTON_ID = 4;
 
 	protected GLBrick brick;
 	protected LayoutRenderer viewRenderer;
@@ -24,6 +25,7 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 	protected Button heatMapButton;
 	protected Button parCoordsButton;
 	protected Button histogramButton;
+	protected Button overviewHeatMapButton;
 
 	public BrickLayoutTemplate(GLBrick brick) {
 		this.brick = brick;
@@ -35,6 +37,8 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 				PARCOORDS_BUTTON_ID);
 		histogramButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
 				HISTOGRAM_BUTTON_ID);
+		overviewHeatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
+				OVERVIEW_HEATMAP_BUTTON_ID);
 
 		switch (brick.getCurrentViewType()) {
 		case GLBrick.HEATMAP_VIEW:
@@ -45,6 +49,9 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 			break;
 		case GLBrick.HISTOGRAM_VIEW:
 			histogramButton.setSelected(true);
+			break;
+		case GLBrick.OVERVIEW_HEATMAP:
+			overviewHeatMapButton.setSelected(true);
 			break;
 		}
 	}
@@ -94,6 +101,18 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 						EIconTextures.HISTOGRAM_ICON, brick.getTextureManager()));
 
 		toolBar.append(histogramButtonLayout);
+		toolBar.append(spacingLayoutX);
+
+		ElementLayout overviewHeatMapButtonLayout = new ElementLayout(
+				"overviewHeatMapButton");
+		overviewHeatMapButtonLayout.setPixelGLConverter(pixelGLConverter);
+		overviewHeatMapButtonLayout.setPixelSizeX(pixelHeight);
+		overviewHeatMapButtonLayout.setPixelSizeY(pixelHeight);
+		overviewHeatMapButtonLayout
+				.setRenderer(new ButtonRenderer(overviewHeatMapButton, brick,
+						EIconTextures.HEAT_MAP_ICON, brick.getTextureManager()));
+
+		toolBar.append(overviewHeatMapButtonLayout);
 
 		registerPickingListeners();
 
@@ -113,6 +132,7 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 				heatMapButton.setSelected(true);
 				parCoordsButton.setSelected(false);
 				histogramButton.setSelected(false);
+				overviewHeatMapButton.setSelected(false);
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HEATMAP_BUTTON_ID);
 
@@ -124,6 +144,7 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 				heatMapButton.setSelected(false);
 				parCoordsButton.setSelected(true);
 				histogramButton.setSelected(false);
+				overviewHeatMapButton.setSelected(false);
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, PARCOORDS_BUTTON_ID);
 
@@ -135,8 +156,21 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 				heatMapButton.setSelected(false);
 				parCoordsButton.setSelected(false);
 				histogramButton.setSelected(true);
+				overviewHeatMapButton.setSelected(false);
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HISTOGRAM_BUTTON_ID);
+		
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				brick.setRemoteView(GLBrick.OVERVIEW_HEATMAP);
+				heatMapButton.setSelected(false);
+				parCoordsButton.setSelected(false);
+				histogramButton.setSelected(false);
+				overviewHeatMapButton.setSelected(true);
+			}
+		}, EPickingType.BRICK_TOOLBAR_BUTTONS, OVERVIEW_HEATMAP_BUTTON_ID);
 
 		pickingListenersRegistered = true;
 	}

@@ -57,6 +57,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	public static final int HEATMAP_VIEW = 0;
 	public static final int PARCOORDS_VIEW = 1;
 	public static final int HISTOGRAM_VIEW = 2;
+	public static final int OVERVIEW_HEATMAP = 3;
 
 	private LayoutManager templateRenderer;
 	private BrickLayoutTemplate brickLayout;
@@ -104,7 +105,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		pickingListeners = new HashMap<EPickingType, HashMap<Integer, IPickingListener>>();
 
-		currentViewType = HEATMAP_VIEW;
+		currentViewType = OVERVIEW_HEATMAP;
 	}
 
 	@Override
@@ -133,7 +134,10 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			set = dataDomain.getSet();
 
 		if (contentVA == null)
-			contentVA = dataDomain.getContentVA(Set.CONTENT);
+			contentVA = set.getContentData(Set.CONTENT).getContentVA();
+		
+		if(storageVA == null)
+			storageVA = set.getStorageData(Set.STORAGE).getStorageVA();
 
 		templateRenderer = new LayoutManager(viewFrustum);
 
@@ -172,10 +176,13 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		LayoutRenderer histogramLayoutRenderer = new ViewLayoutRenderer(histogram);
 		views.put(HISTOGRAM_VIEW, histogram);
 		viewLayoutRenderers.put(HISTOGRAM_VIEW, histogramLayoutRenderer);
+		
+		LayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(contentVA, storageVA, set);
+		viewLayoutRenderers.put(OVERVIEW_HEATMAP, overviewHeatMapRenderer);
 
-		currentRemoteView = histogram;
+		currentRemoteView = null;
 
-		brickLayout.setViewRenderer(heatMapLayoutRenderer);
+		brickLayout.setViewRenderer(overviewHeatMapRenderer);
 
 		templateRenderer.setTemplate(brickLayout);
 		templateRenderer.updateLayout();
@@ -226,7 +233,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	public void display(GL2 gl) {
-		currentRemoteView.processEvents();
+		if(currentRemoteView != null)
+			currentRemoteView.processEvents();
 		processEvents();
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
@@ -467,12 +475,13 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	public void setRemoteView(int viewType) {
-		AGLView view = views.get(viewType);
-		if (view == null)
+		
+		LayoutRenderer viewRenderer = viewLayoutRenderers.get(viewType);
+		
+		if (viewRenderer == null)
 			return;
 
-		currentRemoteView = view;
-		LayoutRenderer viewRenderer = viewLayoutRenderers.get(viewType);
+		currentRemoteView = views.get(viewType);
 		brickLayout.setViewRenderer(viewRenderer);
 		templateRenderer.updateLayout();
 
