@@ -153,8 +153,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		float spacerBeforeAndAfterWidth = parentGLCanvas.getPixelGLConverter()
 				.getGLWidthForPixelWidth(100);
-		float spacerWidth = ((centerLayoutWidth - spacerBeforeAndAfterWidth - centerDimGroupCount * archHeight))
-				/ (centerDimGroupCount-1);
+		float spacerWidth = ((centerLayoutWidth - spacerBeforeAndAfterWidth - centerDimGroupCount
+				* archHeight))
+				/ (centerDimGroupCount - 1);
 
 		centerRowLayout = new Row("centerArchRow");
 		centerRowLayout.setFrameColor(1, 1, 0, 1);
@@ -178,7 +179,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			DimensionGroup group = dimensionGroupManager.getDimensionGroups().get(
 					dimensionGroupIndex);
 			group.setCollapsed(false);
-			group.getLayout().setAbsoluteSizeX(archHeight);
+//			group.getLayout().setAbsoluteSizeX(archHeight);
+			group.getLayout().setXDynamic(true);
 			group.getLayout().setRatioSizeY(1);
 			group.setArchBounds(ARCH_BOTTOM_PERCENT, ARCH_TOP_PERCENT
 					- ARCH_BOTTOM_PERCENT, ARCH_BOTTOM_PERCENT);
@@ -850,6 +852,10 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				}
 			}
 		}
+	}
+
+	public void updateLayout() {
+		centerLayoutManager.updateLayout();
 	}
 
 	public float getArchTopY() {

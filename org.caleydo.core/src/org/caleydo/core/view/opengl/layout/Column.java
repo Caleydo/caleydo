@@ -116,10 +116,16 @@ public class Column
 			if (tempWidth > widestElement)
 				widestElement = tempWidth;
 
+
+
 			availableHeight -= element.getUnscalableElementHeight();
 		}
 		availableWidth -= widestElement;
 		calculateSubElementScales(availableWidth, availableHeight);
+		for(ElementLayout element: elements);
+		{
+			
+		}
 	}
 
 	@Override
@@ -140,7 +146,7 @@ public class Column
 				continue;
 			}
 			// check if this is a dynamic column in x and no sub-element has a dynamic size of 1
-			if (isXDynamic && !element.isWidthStatic() && element.ratioSizeX == 1)
+			if (isXDynamic && !(element instanceof LayoutContainer) && !element.isWidthStatic() && element.ratioSizeX == 1)
 				throw new IllegalStateException("Specified column " + this
 					+ " as dynamic in x, but the sub-element " + element
 					+ " has a ratioSize of 1, which is illegal.");

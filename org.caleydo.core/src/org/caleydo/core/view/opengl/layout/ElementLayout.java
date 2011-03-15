@@ -46,7 +46,6 @@ public class ElementLayout {
 	/** specifies how much this element is translated in y relative to it's parent layout */
 	protected float translateY = 0;
 
-
 	/** use the remaining space in X, invalidates absoluteSizeX */
 	protected boolean grabX = false;
 	/** use the remaining space in Y */
@@ -63,6 +62,11 @@ public class ElementLayout {
 
 	protected float sizeScaledX = 0;
 	protected float sizeScaledY = 0;
+
+	protected float minSizeX = Float.NaN;
+	protected float minSizeY = Float.NaN;
+
+	protected boolean useMinSize = false;
 
 	protected PixelGLConverter pixelGLConverter;
 
@@ -199,6 +203,42 @@ public class ElementLayout {
 	}
 
 	/**
+	 * Set a min size of an object, which is set when the current size can not be accommodated in the layout.
+	 * 
+	 * @param minSizeX
+	 */
+	public void setMinSizeX(float minSizeX) {
+		this.minSizeX = minSizeX;
+	}
+
+	/**
+	 * Set a min size of an object, which is set when the current size can not be accommodated in the layout.
+	 * 
+	 * @param minSizeX
+	 */
+	public void setMinSizeY(float minSizeY) {
+		this.minSizeY = minSizeY;
+	}
+
+	/**
+	 * Same as {@link #setMinSizeX(float)} for pixel space
+	 * 
+	 * @param minSizeX
+	 */
+	public void setPixelMinSizeX(int pixelMinSizeX) {
+		this.minSizeX = pixelGLConverter.getGLWidthForPixelWidth(pixelMinSizeX);
+	}
+
+	/**
+	 * Same as {@link #setMinSizeY(float)} for pixel space
+	 * 
+	 * @param minSizeX
+	 */
+	public void setPixelMinSizeY(int pixelMinSizeY) {
+		this.minSizeY = pixelGLConverter.getGLWidthForPixelWidth(pixelMinSizeY);
+	}
+
+	/**
 	 * Get the scaled size of X. This is the absolute size actually used for rendering. It is calculated from
 	 * the size set via one of the set methods.
 	 * 
@@ -301,7 +341,7 @@ public class ElementLayout {
 	public float getTranslateY() {
 		return translateY;
 	}
-	
+
 	public void setRenderer(LayoutRenderer renderer) {
 		this.renderer = renderer;
 	}
@@ -317,7 +357,6 @@ public class ElementLayout {
 			foregroundRenderers = new ArrayList<LayoutRenderer>(3);
 		foregroundRenderers.add(renderer);
 	}
-	
 
 	// ---------------------------- END OF PUBLIC INTERFACE -----------------------------------
 
@@ -331,6 +370,10 @@ public class ElementLayout {
 		absoluteSizeY = Float.NaN;
 		ratioSizeY = 1;
 		pixelSizeY = Integer.MIN_VALUE;
+	}
+
+	protected void useMinSize(boolean useMinSize) {
+		this.useMinSize = useMinSize;
 	}
 
 	void render(GL2 gl) {
@@ -397,8 +440,9 @@ public class ElementLayout {
 			sizeScaledX = absoluteSizeX;
 		else
 			sizeScaledX = ratioSizeX * totalWidth;
-
-		if (pixelSizeY != Integer.MIN_VALUE)
+		if (useMinSize)
+			sizeScaledY = minSizeY;
+		else if (pixelSizeY != Integer.MIN_VALUE)
 			sizeScaledY = pixelGLConverter.getGLHeightForPixelHeight(pixelSizeY);
 		else if (!Float.isNaN(absoluteSizeY))
 			sizeScaledY = absoluteSizeY;
@@ -435,15 +479,15 @@ public class ElementLayout {
 
 	}
 
-
-
 	/**
 	 * Get the unscalable height part of this layout
 	 * 
 	 * @return
 	 */
 	float getUnscalableElementHeight() {
-		if (pixelSizeY != Integer.MIN_VALUE)
+		if (useMinSize)
+			return minSizeY;
+		else if (pixelSizeY != Integer.MIN_VALUE)
 			return pixelGLConverter.getGLHeightForPixelHeight(pixelSizeY);
 		else if (!Float.isNaN(absoluteSizeY))
 			return absoluteSizeY;

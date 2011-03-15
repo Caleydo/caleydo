@@ -58,6 +58,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	public final static String VIEW_ID = "org.caleydo.view.dimensiongroup";
 
+	public final static int PIXEL_PER_DIMENSION = 30;
+	public final static int MIN_BRICK_WIDTH = 200;
+
 	private GLVisBricks glVisBricksView;
 
 	private Column groupColumn;
@@ -69,10 +72,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private GLBrick centerBrick;
 	private Column centerLayout;
 	private Column topCol;
-	private ViewFrustum brickFrustum;
+	// private ViewFrustum brickFrustum;
 	private ISet set;
 	private ASetBasedDataDomain dataDomain;
-
 
 	private EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 	private ContentVAUpdateListener contentVAUpdateListener;
@@ -86,30 +88,38 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	// Stuff for dragging up and down
 	private boolean isDraggingActive = false;
+	private float previousXCoordinate = Float.NaN;
 	private float previousYCoordinate = Float.NaN;
+
+	/** the minimal width of the brick */
+	private int minPixelWidth;
+	private float minWidth;
+
+	private boolean isBrickResizeActive = false;
 
 	public DimensionGroup(GLCaleydoCanvas canvas, ViewFrustum viewFrustum) {
 		super(canvas, viewFrustum, true);
-		
+
 		groupColumn = new Column("dimensionGroup");
-//		groupColumn.setDebug(true);
+		// groupColumn.setDebug(true);
 
 		bottomCol = new Column("dimensionGroupColumnBottom");
 		bottomCol.setFrameColor(1, 0, 1, 1);
 		bottomCol.setBottomUp(false);
-//		bottomCol.setDebug(true);
+		bottomCol.setXDynamic(true);
+		// bottomCol.setDebug(true);
 
 		bottomBricks = new ArrayList<GLBrick>(20);
 
 		centerLayout = new Column("centerLayout");
 		centerLayout.setFrameColor(1, 1, 0, 1);
-//		centerLayout.setDebug(true);
+		// centerLayout.setDebug(true);
 
 		topCol = new Column("dimensionGroupColumnTop");
 		topCol.setFrameColor(1, 0, 1, 1);
 		topBricks = new ArrayList<GLBrick>(20);
-//		topCol.setDebug(true);
-
+		topCol.setXDynamic(true);
+		// topCol.setDebug(true);
 
 		initGroupColumn();
 	}
@@ -143,29 +153,20 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private void createBricks() {
 		// create basic layouts
 
-		brickFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0,
-				-4, 4);
+		minPixelWidth = PIXEL_PER_DIMENSION * set.size();
+		if (minPixelWidth < MIN_BRICK_WIDTH)
+			minPixelWidth = MIN_BRICK_WIDTH;
+		minWidth = parentGLCanvas.getPixelGLConverter().getGLWidthForPixelWidth(
+				minPixelWidth);
 
-		centerBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
-				.createGLView(GLBrick.class, getParentGLCanvas(), brickFrustum);
-		centerBrick.setRemoteRenderingGLView(getRemoteRenderingGLCanvas());
-		centerBrick.setDataDomain(dataDomain);
-		centerBrick.setSet(set);
-		centerBrick.setContentVA(new Group(), set.getContentData(Set.CONTENT).getContentVA());
-		centerBrick.setBrickLayoutTemplate(new CentralBrickLayoutTemplate(centerBrick, this));
-		centerBrick.setDimensionGroup(this);
-		centerBrick.initialize();
-
-		ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(centerBrick);
-		centerLayout.setRenderer(brickRenderer);
-		centerLayout.setRatioSizeY(1f);
-
-		centerBrick.setWrappingLayout(centerLayout);
-
+		centerBrick = createBrick(centerLayout);
+		centerBrick.setContentVA(new Group(), set.getContentData(Set.CONTENT)
+				.getContentVA());
+		centerBrick.setBrickLayoutTemplate(new CentralBrickLayoutTemplate(centerBrick,
+				this));
 
 		createSubBricks();
 	}
-
 
 	private void createSubBricks() {
 
@@ -180,32 +181,13 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		// int count = 0;
 		groupList.updateGroupInfo();
 		for (Group group : groupList) {
-			GLBrick subBrick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
-					.createGLView(GLBrick.class, getParentGLCanvas(), new ViewFrustum());
-
-			subBrick.setRemoteRenderingGLView(getRemoteRenderingGLCanvas());
-			subBrick.setDataDomain(dataDomain);
-			subBrick.setSet(set);
-			subBrick.setVisBricks(visBricks);
-			subBrick.setDimensionGroup(this);
-			ElementLayout brickLayout = new ElementLayout("subbrick");
-//			 brickLayout.setDebug(true);
-			ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(subBrick);
-			brickLayout.setRenderer(brickRenderer);
-			brickLayout.setFrameColor(1, 0, 0, 1);
-			subBrick.setWrappingLayout(brickLayout);
-			// brickLayout.setRatioSizeY(1.0f / groupList.size());
+			GLBrick subBrick = createBrick(new ElementLayout("subbrick"));
 
 			ContentVirtualArray subVA = new ContentVirtualArray("CONTENT", contentVA
 					.getVirtualArray().subList(group.getStartIndex(),
 							group.getEndIndex() + 1));
 
 			subBrick.setContentVA(group, subVA);
-			subBrick.initialize();
-
-			// float[] rep = group.getRepresentativeElement();
-
-			uninitializedBricks.add(subBrick);
 
 			if (centerBrick.getAverageValue() < subBrick.getAverageValue()) {
 				insertBrick(subBrick, topBricks, topCol);
@@ -213,13 +195,36 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				insertBrick(subBrick, bottomBricks, bottomCol);
 			}
 
-			// count++;
-
 			// setOptimalLayoutSize();
 			setStaticLayoutSize();
 
 		}
 
+	}
+
+	GLBrick createBrick(ElementLayout wrappingLayout) {
+		ViewFrustum brickFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
+				0, 0, 0, -4, 4);
+		GLBrick brick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
+				.createGLView(GLBrick.class, getParentGLCanvas(), brickFrustum);
+
+		brick.setRemoteRenderingGLView(getRemoteRenderingGLCanvas());
+		brick.setDataDomain(dataDomain);
+		brick.setSet(set);
+		brick.setVisBricks(visBricks);
+		brick.setWrappingLayout(wrappingLayout);
+		brick.setDimensionGroup(this);
+		brick.initialize();
+		uninitializedBricks.add(brick);
+
+		ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(brick);
+		wrappingLayout.setRenderer(brickRenderer);
+		wrappingLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		wrappingLayout.setPixelSizeX(minPixelWidth);
+		// wrappingLayout.setPixelMinSizeY(30);
+		// wrappingLayout.setDebug(true);
+
+		return brick;
 	}
 
 	private void setOptimalLayoutSize() {
@@ -301,7 +306,6 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		if (isCollapsed) {
 			centerLayout.setRatioSizeY(1);
-			// centerLayout.setDebug(true);
 		} else {
 			bottomCol.setRatioSizeY(below);
 			topCol.setRatioSizeY(above);
@@ -362,51 +366,34 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void clearAllSelections() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void init(GL2 gl) {
-
 	}
 
 	@Override
 	protected void initLocal(GL2 gl) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
 		createBricks();
 
-		centerBrick.initRemote(gl, glParentView, glMouseListener);
-
-		for (GLBrick brick : bottomBricks) {
-			brick.initRemote(gl, glParentView, glMouseListener);
-		}
-
-		for (GLBrick brick : topBricks) {
-			brick.initRemote(gl, glParentView, glMouseListener);
-		}
-
 	}
 
 	@Override
 	public void display(GL2 gl) {
-		// centerBrick.processEvents();
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		while (!uninitializedBricks.isEmpty()) {
 			uninitializedBricks.poll().initRemote(gl, this, glMouseListener);
 		}
 		handleSizeDragging(gl);
+		handleBrickResize(gl);
 		checkForHits(gl);
 
 	}
@@ -429,53 +416,16 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		switch (pickingType) {
 		case DRAGGING_HANDLE:
 			if (pickingMode == EPickingMode.CLICKED) {
-				System.out.println("Fuu" + pickingID);
 				isDraggingActive = true;
 			}
+			break;
+		case RESIZE_HANDLE_LOWER_RIGHT:
+			if (pickingMode == EPickingMode.CLICKED) {
+				isBrickResizeActive = true;
+			}
+			break;
 		}
 
-	}
-
-	@Override
-	public String getShortInfo() {
-
-		return "Dimension Group";
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public Column getLayout() {
-		return groupColumn;
-	}
-
-	@Override
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
-	}
-
-	@Override
-	public ASetBasedDataDomain getDataDomain() {
-		return dataDomain;
-	}
-
-	public void setSet(ISet set) {
-		this.set = set;
 	}
 
 	@Override
@@ -538,7 +488,52 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		centerLayout.setAbsoluteSizeY(centerSize);
 
+		centerLayout.updateSubLayout();
 		groupColumn.updateSubLayout();
+		visBricks.initiConnectionLinesBetweenDimensionGroups();
+
+	}
+
+	private void handleBrickResize(GL2 gl) {
+		if (!isBrickResizeActive)
+			return;
+		if (glMouseListener.wasMouseReleased()) {
+			isBrickResizeActive = false;
+			previousXCoordinate = Float.NaN;
+			return;
+		}
+
+		Point currentPoint = glMouseListener.getPickedPoint();
+
+		float[] pointCordinates = GLCoordinateUtils
+				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+						currentPoint.y);
+
+		if (Float.isNaN(previousXCoordinate)) {
+			previousXCoordinate = pointCordinates[0];
+			return;
+		}
+
+		float changeX = pointCordinates[0] - previousXCoordinate;
+
+		float width = centerLayout.getSizeScaledX();
+		float changePercentage = changeX / width;
+
+		float newWidth = width + changeX;
+		if (newWidth < minWidth)
+			return;
+
+		previousXCoordinate = pointCordinates[0];
+
+		centerLayout.setAbsoluteSizeX(newWidth);
+		groupColumn.setAbsoluteSizeX(width + changeX);
+
+		float height = centerLayout.getSizeScaledY();
+		centerLayout.setAbsoluteSizeY(height * (1 + changePercentage));
+
+		centerBrick.getWrappingLayout().updateSubLayout();
+
+		visBricks.updateLayout();
 		visBricks.initiConnectionLinesBetweenDimensionGroups();
 
 	}
@@ -567,8 +562,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	/**
-	 * Note: The vis bricks view is needed for pushing the picking
-	 * names, so that the GLVisBricks view can gets the events
+	 * Note: The vis bricks view is needed for pushing the picking names, so
+	 * that the GLVisBricks view can gets the events
 	 * 
 	 */
 	public void setVisBricksView(GLVisBricks glVisBricksView) {
@@ -576,8 +571,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	/**
-	 * Note: The vis bricks view is needed for pushing the picking
-	 * names, so that the GLVisBricks view can gets the events
+	 * Note: The vis bricks view is needed for pushing the picking names, so
+	 * that the GLVisBricks view can gets the events
 	 * 
 	 */
 	public GLVisBricks getVisBricksView() {
@@ -613,13 +608,57 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		}
 		return bricks;
 	}
-	
+
 	/**
-	 * Returns the center brick that shows the summary of the dimension group data.
+	 * Returns the center brick that shows the summary of the dimension group
+	 * data.
 	 * 
 	 * @return
 	 */
 	public GLBrick getCenterBrick() {
 		return centerBrick;
 	}
+
+	@Override
+	public String getShortInfo() {
+
+		return "Dimension Group";
+	}
+
+	@Override
+	public String getDetailedInfo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void broadcastElements(EVAOperation type) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public int getNumberOfSelections(SelectionType SelectionType) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public Column getLayout() {
+		return groupColumn;
+	}
+
+	@Override
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+	}
+
+	@Override
+	public ASetBasedDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
+	public void setSet(ISet set) {
+		this.set = set;
+	}
+
 }
