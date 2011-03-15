@@ -71,6 +71,7 @@ public class Row
 		else
 			y = top;
 
+		// FIXME this is probably wrong for nestsed elements look at Column on how to do it correctly
 		for (ElementLayout element : elements) {
 			if (element instanceof LayoutContainer) {
 				((LayoutContainer) element).calculateTransforms(bottom, left, top, right);

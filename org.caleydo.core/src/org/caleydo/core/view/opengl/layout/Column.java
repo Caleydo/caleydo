@@ -75,12 +75,14 @@ public class Column
 			if (isBottomUp) {
 
 				if (element instanceof LayoutContainer) {
-					((LayoutContainer) element).calculateTransforms(bottom, left, top, right);
+					((LayoutContainer) element).calculateTransforms(bottom, left,
+						bottom + element.getSizeScaledY(), right);
 				}
 				element.setTranslateX(x);
 				element.setTranslateY(bottom);
 
 				bottom += element.getSizeScaledY();
+
 			}
 			else {
 				bottom = top - element.getSizeScaledY();
@@ -90,7 +92,7 @@ public class Column
 
 				top -= element.getSizeScaledY();
 				element.setTranslateX(x);
-				element.setTranslateY(top);
+				element.setTranslateY(bottom);
 			}
 		}
 	}
