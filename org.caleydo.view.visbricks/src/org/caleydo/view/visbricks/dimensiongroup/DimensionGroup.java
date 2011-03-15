@@ -650,6 +650,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		centerLayout.setAbsoluteSizeY(centerSize);
 
 		groupColumn.updateSubLayout();
+		visBricks.initiConnectionLinesBetweenDimensionGroups();
 
 	}
 
