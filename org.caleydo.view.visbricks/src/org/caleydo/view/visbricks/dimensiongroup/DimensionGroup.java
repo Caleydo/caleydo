@@ -69,7 +69,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	public final static String VIEW_ID = "org.caleydo.view.dimensiongroup";
 
-	private int visBricksViewID;
+	private GLVisBricks glVisBricksView;
 
 	private Column groupColumn;
 
@@ -102,7 +102,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	public DimensionGroup(GLCaleydoCanvas canvas, ViewFrustum viewFrustum) {
 		super(canvas, viewFrustum, true);
-
+		
 		groupColumn = new Column("dimensionGroup");
 //		groupColumn.setDebug(true);
 
@@ -678,21 +678,21 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	/**
-	 * Note: The ID of the vis bricks view is needed for pushing the picking
+	 * Note: The vis bricks view is needed for pushing the picking
 	 * names, so that the GLVisBricks view can gets the events
 	 * 
 	 */
-	public void setVisBricksViewID(int visBricksViewID) {
-		this.visBricksViewID = visBricksViewID;
+	public void setVisBricksView(GLVisBricks glVisBricksView) {
+		this.glVisBricksView = glVisBricksView;
 	}
 
 	/**
-	 * Note: The ID of the vis bricks view is needed for pushing the picking
+	 * Note: The vis bricks view is needed for pushing the picking
 	 * names, so that the GLVisBricks view can gets the events
 	 * 
 	 */
-	public int getVisBricksViewID() {
-		return visBricksViewID;
+	public GLVisBricks getVisBricksView() {
+		return glVisBricksView;
 	}
 
 	ISet getSet() {
@@ -723,5 +723,14 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			bricks.add(brick);
 		}
 		return bricks;
+	}
+	
+	/**
+	 * Returns the center brick that shows the summary of the dimension group data.
+	 * 
+	 * @return
+	 */
+	public GLBrick getCenterBrick() {
+		return centerBrick;
 	}
 }

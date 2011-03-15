@@ -1,11 +1,8 @@
 package org.caleydo.view.visbricks.dimensiongroup;
 
-import java.awt.geom.Rectangle2D;
-
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
@@ -21,7 +18,7 @@ public class DimensionGroupCaptionRenderer extends LayoutRenderer {
 	public void render(GL2 gl) {
 
 		int pickingID = dimensionGroup.getPickingManager().getPickingID(
-				dimensionGroup.getVisBricksViewID(),
+				dimensionGroup.getVisBricksView().getID(),
 				EPickingType.DIMENSION_GROUP, dimensionGroup.getID());
 
 		gl.glPushName(pickingID);

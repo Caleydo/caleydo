@@ -34,7 +34,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 	 * Default constructur needed if spacer does not need to render connections
 	 */
 	public DimensionGroupSpacingRenderer() {
-	
+
 	}
 
 	public DimensionGroupSpacingRenderer(RelationAnalyzer relationAnalyzer,
@@ -44,14 +44,12 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 		this.leftDimGroup = leftDimGroup;
 		this.rightDimGroup = rightDimGroup;
 	}
-	
-	
-	
+
 	public void init() {
-		
+
 		if (relationAnalyzer == null)
 			return;
-		
+
 		hashGroupID2GroupMatches.clear();
 
 		List<GLBrick> leftBricks = leftDimGroup.getBricks();
@@ -59,7 +57,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 		if (leftBricks.size() == 0 || rightBricks.size() == 0)
 			return;
-		
+
 		SimilarityMap similarityMap = relationAnalyzer.getSimilarityMap(leftDimGroup
 				.getSetID());
 
@@ -92,18 +90,16 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 				float leftSimilarityRatioY = leftSimilarities[rightBrick.getGroupID()];
 				leftSimilarityOffsetY += leftSimilarityRatioY;
 
-				subGroupMatch
-						.setLeftAnchorYStart(leftBrickElementLayout.getTranslateY()
-								+ leftBrickElementLayout.getSizeScaledY()
-								* (leftSimilarityOffsetY));
+				subGroupMatch.setLeftAnchorYStart(leftBrickElementLayout.getTranslateY()
+						+ leftBrickElementLayout.getSizeScaledY()
+						* (leftSimilarityOffsetY));
 
-				subGroupMatch
-						.setLeftAnchorYEnd(leftBrickElementLayout.getTranslateY()
-								+ leftBrickElementLayout.getSizeScaledY()
-								* (leftSimilarityOffsetY-leftSimilarityRatioY));
+				subGroupMatch.setLeftAnchorYEnd(leftBrickElementLayout.getTranslateY()
+						+ leftBrickElementLayout.getSizeScaledY()
+						* (leftSimilarityOffsetY - leftSimilarityRatioY));
 			}
 		}
-		
+
 		for (GLBrick rightBrick : rightBricks) {
 
 			ElementLayout rightBrickElementLayout = rightBrick.getWrappingLayout();
@@ -115,9 +111,11 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 			float rightSimilarityOffsetY = 0;
 
 			for (GLBrick leftBrick : leftBricks) {
-				
-				GroupMatch groupMatch = hashGroupID2GroupMatches.get(leftBrick.getGroupID());
-				SubGroupMatch subGroupMatch = groupMatch.getSubGroupMatch(rightBrick.getGroupID());
+
+				GroupMatch groupMatch = hashGroupID2GroupMatches.get(leftBrick
+						.getGroupID());
+				SubGroupMatch subGroupMatch = groupMatch.getSubGroupMatch(rightBrick
+						.getGroupID());
 
 				float rightSimilarityRatioY = rightSimilarities[leftBrick.getGroupID()];
 				rightSimilarityOffsetY += rightSimilarityRatioY;
@@ -129,20 +127,20 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 				subGroupMatch.setRightAnchorYEnd(rightBrickElementLayout.getTranslateY()
 						+ rightBrickElementLayout.getSizeScaledY()
-						* (rightSimilarityOffsetY-rightSimilarityRatioY));
+						* (rightSimilarityOffsetY - rightSimilarityRatioY));
 			}
 		}
 	}
-	
+
 	@Override
 	public void render(GL2 gl) {
 
+		// Render drag and drop marker
 		if (renderDragAndDropSpacer) {
 			gl.glColor3f(0, 0, 0);
 			gl.glLineWidth(3);
 
 			gl.glBegin(GL2.GL_LINES);
-
 			if (isVertical) {
 				gl.glVertex2f(x / 2f, 0);
 				gl.glVertex2f(x / 2f, y);
@@ -150,10 +148,52 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 				gl.glVertex2f(0, y / 2f);
 				gl.glVertex2f(x, y / 2f);
 			}
-
 			gl.glEnd();
 		}
 
+		// Render center brick band connection
+		float leftCenterBrickTop = 0;
+		float leftCenterBrickBottom = 0;
+		float rightCenterBrickTop = 0;
+		float rightCenterBrickBottom = 0;
+
+		if (leftDimGroup != null) {
+			GLBrick leftCenterBrick = leftDimGroup.getCenterBrick();
+
+			ElementLayout layout = leftCenterBrick.getWrappingLayout();
+			leftCenterBrickBottom = layout.getTranslateY();
+			leftCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledX();
+		} else {
+			if (rightDimGroup != null) {
+				leftCenterBrickBottom = rightDimGroup.getVisBricksView().getArchBottomY();
+				leftCenterBrickTop = rightDimGroup.getVisBricksView().getArchTopY();
+			}
+		}
+
+		if (rightDimGroup != null) {
+			GLBrick rightCenterBrick = rightDimGroup.getCenterBrick();
+
+			ElementLayout layout = rightCenterBrick.getWrappingLayout();
+			rightCenterBrickBottom = layout.getTranslateY();
+			rightCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledX();
+		} else {
+			if (leftDimGroup != null) {
+				rightCenterBrickBottom = leftDimGroup.getVisBricksView().getArchBottomY();
+				rightCenterBrickTop = leftDimGroup.getVisBricksView().getArchTopY();
+			}
+		}
+
+		if (leftCenterBrickBottom == 0 && rightCenterBrickBottom == 0)
+			return;
+
+		gl.glColor4f(0, 0, 0, 0.5f);
+		gl.glBegin(GL2.GL_POLYGON);
+		gl.glVertex3f(0, leftCenterBrickTop, -10);
+		gl.glVertex3f(x, rightCenterBrickTop, -10);
+		gl.glVertex3f(x, rightCenterBrickBottom, -10);
+		gl.glVertex3f(0, leftCenterBrickBottom, -10);
+		gl.glEnd();
+				
 		if (relationAnalyzer != null)
 			renderDimensionGroupConnections(gl);
 	}
@@ -164,25 +204,25 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 		for (GroupMatch groupMatch : hashGroupID2GroupMatches.values()) {
 
 			for (SubGroupMatch subGroupMatch : groupMatch.getSubGroupMatches()) {
-				gl.glColor4f(1,0,0, 1f);
+				gl.glColor4f(1, 0, 0, 1f);
 				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex2f(0, subGroupMatch.getLeftAnchorYTop());
 				gl.glVertex2f(x, subGroupMatch.getRightAnchorYTop());
 				gl.glEnd();
-				
-				gl.glColor4f(1,0,0, 1f);
+
+				gl.glColor4f(1, 0, 0, 1f);
 				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex2f(0, subGroupMatch.getLeftAnchorYBottom());
 				gl.glVertex2f(x, subGroupMatch.getRightAnchorYBottom());
 				gl.glEnd();
-				
-				gl.glColor4f(1,0,0, 0.5f);
+
+				gl.glColor4f(1, 0, 0, 0.5f);
 				gl.glBegin(GL2.GL_POLYGON);
 				gl.glVertex2f(0, subGroupMatch.getLeftAnchorYTop());
 				gl.glVertex2f(0, subGroupMatch.getLeftAnchorYBottom());
 				gl.glVertex2f(x, subGroupMatch.getRightAnchorYBottom());
 				gl.glVertex2f(x, subGroupMatch.getRightAnchorYTop());
-				
+
 				gl.glEnd();
 			}
 		}

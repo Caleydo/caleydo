@@ -9,6 +9,7 @@ import java.util.Queue;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLPipelineFactory;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.ClusterTree;
@@ -141,31 +142,33 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private void initLayoutCenter() {
 
 		archSideThickness = viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT;
-		archInnerWidth = viewFrustum.getWidth() * (ARCH_STAND_WIDTH_PERCENT + 0.05f);
+		archInnerWidth = viewFrustum.getWidth() * (ARCH_STAND_WIDTH_PERCENT + 0.024f);
 		archTopY = viewFrustum.getHeight() * ARCH_TOP_PERCENT;
 		archBottomY = viewFrustum.getHeight() * ARCH_BOTTOM_PERCENT;
 		archHeight = (ARCH_TOP_PERCENT - ARCH_BOTTOM_PERCENT) * viewFrustum.getHeight();
 
-		float centerLayoutWidth = viewFrustum.getWidth() - 2 * archInnerWidth;
+		float centerLayoutWidth = viewFrustum.getWidth() - 2 * (archInnerWidth);
+		int centerDimGroupCount = dimensionGroupManager.getRightGroupStartIndex()
+				- dimensionGroupManager.getCenterGroupStartIndex();
 
-		float spacerWidth = (centerLayoutWidth - (dimensionGroupManager
-				.getRightGroupStartIndex() - dimensionGroupManager
-				.getCenterGroupStartIndex())
-				* archHeight)
-				/ (dimensionGroupManager.getRightGroupStartIndex()
-						- dimensionGroupManager.getCenterGroupStartIndex() - 1);
+		float spacerBeforeAndAfterWidth = parentGLCanvas.getPixelGLConverter()
+				.getGLWidthForPixelWidth(100);
+		float spacerWidth = ((centerLayoutWidth - spacerBeforeAndAfterWidth - centerDimGroupCount * archHeight))
+				/ (centerDimGroupCount-1);
 
 		centerRowLayout = new Row("centerArchRow");
 		centerRowLayout.setFrameColor(1, 1, 0, 1);
 		// centerRowLayout.setDebug(false);
 
 		ElementLayout dimensionGroupSpacing = new ElementLayout("dimensionGroupSpacing");
-		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer();
+		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(
+				null, null, dimensionGroupManager.getDimensionGroups().get(
+						dimensionGroupManager.getCenterGroupStartIndex()));
 		dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 		dimensionGroupSpacingRenderer.setLineLength(archHeight);
 
 		dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		dimensionGroupSpacing.setPixelSizeX(2);
+		dimensionGroupSpacing.setPixelSizeX(50);
 		// dimensionGroupSpacing.setDebug(false);
 		centerRowLayout.append(dimensionGroupSpacing);
 
@@ -183,21 +186,21 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 			dimensionGroupSpacing = new ElementLayout("dimensionGroupSpacing");
 
-			if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1)
-			{	dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(
+			if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1) {
+				dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(
 						relationAnalyzer, group, dimensionGroupManager
 								.getDimensionGroups().get(dimensionGroupIndex + 1));
-			}
-			else 
-				dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer();
-			
+			} else
+				dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
+						group, null);
+
 			dimensionGroupSpacingRenderer.setLineLength(archHeight);
 			dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 			dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas
 					.getPixelGLConverter());
 			// dimensionGroupSpacing.setDebug(false);
 			if (dimensionGroupIndex == dimensionGroupManager.getRightGroupStartIndex() - 1)
-				dimensionGroupSpacing.setPixelSizeX(2);
+				dimensionGroupSpacing.setPixelSizeX(50);
 			else
 				dimensionGroupSpacing.setAbsoluteSizeX(spacerWidth);
 			centerRowLayout.append(dimensionGroupSpacing);
@@ -472,13 +475,54 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		connectionRenderer.render(gl, outputPoints);
 
 		// Arch top bar
-		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex3f(archInnerWidth, archTopY, 0f);
-		gl.glVertex3f(archInnerWidth, archBottomY, 0f);
-		gl.glVertex3f(viewFrustum.getWidth() - archInnerWidth, archBottomY, 0f);
-		gl.glVertex3f(viewFrustum.getWidth() - archInnerWidth, archTopY, 0f);
-		gl.glEnd();
+		// gl.glBegin(GL2.GL_POLYGON);
+		// gl.glVertex3f(archInnerWidth, archTopY, 0f);
+		// gl.glVertex3f(archInnerWidth, archBottomY, 0f);
+		// gl.glVertex3f(viewFrustum.getWidth() - archInnerWidth, archBottomY,
+		// 0f);
+		// gl.glVertex3f(viewFrustum.getWidth() - archInnerWidth, archTopY, 0f);
+		// gl.glEnd();
+
+		// renderCurvedArchCenter(gl);
 	}
+
+	// public void renderCurvedArchCenter(GL2 gl) {
+	//
+	// gl.glBegin(GL2.GL_POLYGON);
+	// gl.glVertex3f(archInnerWidth, archTopY, 0f);
+	// gl.glVertex3f(archInnerWidth, archBottomY, 0f);
+	// gl.glVertex3f(viewFrustum.getWidth() - archInnerWidth, archBottomY, 0f);
+	// gl.glVertex3f(viewFrustum.getWidth() - archInnerWidth, archTopY, 0f);
+	// gl.glEnd();
+	//
+	// for (int dimensionGroupIndex =
+	// dimensionGroupManager.getCenterGroupStartIndex(); dimensionGroupIndex <
+	// dimensionGroupManager
+	// .getRightGroupStartIndex(); dimensionGroupIndex++) {
+	//
+	// DimensionGroup dimensionGroup =
+	// dimensionGroupManager.getDimensionGroups().get(
+	// dimensionGroupIndex);
+	//
+	// dimensionGroup.getCenterBrick().getLayout().get
+	//
+	//
+	//
+	// }
+	// }
+
+	// public void renderSingleConnectionBand(GL2 gl, float leftBottomX, float
+	// leftBottomY,
+	// float leftTopX, float leftTopY, float rightBottomX, float rightBottomY,
+	// float rightTopX, float rightTopY) {
+	//
+	// gl.glBegin(GL2.GL_POLYGON);
+	// gl.glVertex3f(leftBottomX, leftBottomY, 0f);
+	// gl.glVertex3f(, archBottomY, 0f);
+	// gl.glVertex3f(viewFrustum.getWidth() - archInnerWidth, archBottomY, 0f);
+	// gl.glVertex3f(viewFrustum.getWidth() - archInnerWidth, archTopY, 0f);
+	// gl.glEnd();
+	// }
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
@@ -645,7 +689,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			dimensionGroup.setSet(set);
 			dimensionGroup.setRemoteRenderingGLView(this);
 			dimensionGroup.setVisBricks(this);
-			dimensionGroup.setVisBricksViewID(uniqueID);
+			dimensionGroup.setVisBricksView(this);
 			dimensionGroup.initialize();
 
 			dimensionGroups.add(dimensionGroup);
@@ -703,7 +747,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		initLayoutCenter();
 		initLayoutLeft();
 		initLayoutRight();
-		
+
 		initiConnectionLinesBetweenDimensionGroups();
 	}
 
@@ -806,5 +850,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				}
 			}
 		}
+	}
+
+	public float getArchTopY() {
+		return archTopY;
+	}
+
+	public float getArchBottomY() {
+		return archBottomY;
 	}
 }
