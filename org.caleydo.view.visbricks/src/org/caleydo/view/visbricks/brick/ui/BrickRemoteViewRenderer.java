@@ -1,11 +1,18 @@
-package org.caleydo.view.visbricks.brick;
+package org.caleydo.view.visbricks.brick.ui;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
+import org.caleydo.view.visbricks.brick.GLBrick;
 
+/**
+ * View renderer specifically for brick remote views.
+ * 
+ * @author Christian Partl
+ * 
+ */
 public class BrickRemoteViewRenderer extends ViewLayoutRenderer {
 
 	private GLBrick brick;

@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks.brick;
+package org.caleydo.view.visbricks.brick.ui;
 
 import javax.media.opengl.GL2;
 
@@ -13,10 +13,15 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.view.visbricks.brick.GLBrick;
 
+/**
+ * Renderer for a fuel bar. 
+ * 
+ * @author Christian Partl
+ *
+ */
 public class FuelBarRenderer extends LayoutRenderer {
-
-	private static final float SIDE_SPACING_PORTION = 0.2f;
 
 	private GLBrick brick;
 	private SelectionManager selectionManager;
@@ -50,12 +55,6 @@ public class FuelBarRenderer extends LayoutRenderer {
 
 		float fuelWidth = (float) x / totalNumElements * currentNumElements;
 
-		// gl.glColor3f(0.5f, 0.5f, 0.5f);
-		// gl.glBegin(GL2.GL_QUADS);
-		// gl.glVertex3f(0, 0, 0);
-		// gl.glVertex3f(x, 0, 0);
-		// gl.glVertex3f(x, y, 0);
-		// gl.glVertex3f(0, y, 0);
 		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 				EPickingType.BRICK, brick.getID()));
 
@@ -80,27 +79,6 @@ public class FuelBarRenderer extends LayoutRenderer {
 		gl.glVertex3f(0, y, 0);
 		gl.glEnd();
 		gl.glPopName();
-
-//		brick.addPickingListener(new APickingListener() {
-//
-//			@Override
-//			public void clicked(Pick pick) {
-//				// set.cluster(clusterState);
-//				System.out.println("picked brick");
-//
-//				selectionManager.clearSelection(SelectionType.SELECTION);
-//				selectionManager.addToType(SelectionType.SELECTION, brick.getGroup()
-//						.getID());
-//
-//				SelectionUpdateEvent event = new SelectionUpdateEvent();
-//				event.setDataDomainType(brick.getDataDomain().getDataDomainType());
-//				event.setSender(brick);
-//				SelectionDelta delta = selectionManager.getDelta();
-//				event.setSelectionDelta(delta);
-//				GeneralManager.get().getEventPublisher().triggerEvent(event);
-//
-//			}
-//		}, EPickingType.BRICK, brick.getID());
 
 	}
 }

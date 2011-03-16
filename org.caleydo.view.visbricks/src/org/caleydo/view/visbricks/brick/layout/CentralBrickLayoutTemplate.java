@@ -10,18 +10,24 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.rcp.dialog.cluster.StartClusteringDialog;
-import org.caleydo.view.visbricks.brick.APickingListener;
-import org.caleydo.view.visbricks.brick.BackGroundRenderer;
-import org.caleydo.view.visbricks.brick.BorderedAreaRenderer;
-import org.caleydo.view.visbricks.brick.Button;
-import org.caleydo.view.visbricks.brick.ButtonRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
-import org.caleydo.view.visbricks.brick.HandleRenderer;
+import org.caleydo.view.visbricks.brick.picking.APickingListener;
+import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
+import org.caleydo.view.visbricks.brick.ui.BorderedAreaRenderer;
+import org.caleydo.view.visbricks.brick.ui.Button;
+import org.caleydo.view.visbricks.brick.ui.ButtonRenderer;
+import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupCaptionRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.LineSeparatorRenderer;
 import org.eclipse.swt.widgets.Shell;
 
+/**
+ * Brick layout for central brick in {@link DimensionGroup} conaining a caption bar, toolbar and view.
+ * 
+ * @author Christian Partl
+ *
+ */
 public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 	private DimensionGroup dimensionGroup;

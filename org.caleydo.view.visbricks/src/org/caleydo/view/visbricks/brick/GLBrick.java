@@ -42,6 +42,14 @@ import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.picking.APickingListener;
+import org.caleydo.view.visbricks.brick.picking.IPickingListener;
+import org.caleydo.view.visbricks.brick.ui.BrickRemoteViewRenderer;
+import org.caleydo.view.visbricks.brick.ui.OverviewHeatMapRenderer;
+import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
+import org.caleydo.view.visbricks.brick.viewcreation.HeatMapCreator;
+import org.caleydo.view.visbricks.brick.viewcreation.HistogramCreator;
+import org.caleydo.view.visbricks.brick.viewcreation.ParCoordsCreator;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.listener.RelationsUpdatedListener;
 
@@ -460,6 +468,11 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		return dataDomain;
 	}
 
+	/**
+	 * Set the Set this brick's data corresponds to.
+	 * 
+	 * @param set
+	 */
 	public void setSet(ISet set) {
 		this.set = set;
 	}
@@ -571,6 +584,15 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			templateRenderer.updateLayout();
 	}
 
+	/**
+	 * Registers a {@link IPickingListener} for this view. When objects are
+	 * picked with the specified pickingType and ID the listener's methods are
+	 * called.
+	 * 
+	 * @param pickingListener
+	 * @param pickingType
+	 * @param externalID
+	 */
 	public void addPickingListener(IPickingListener pickingListener,
 			EPickingType pickingType, int externalID) {
 		HashMap<Integer, IPickingListener> map = pickingListeners
@@ -588,6 +610,13 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		return set;
 	}
 
+	/**
+	 * Sets the type of view that should be rendered in the brick.
+	 * 
+	 * @param viewType
+	 *            Valid values: HEATMAP_VIEW, PARCOORDS_VIEW, HISTOGRAM_VIEW,
+	 *            OVERVIEW_HEATMAP, OVERVIEW_HEATMAP_COMPACT
+	 */
 	public void setRemoteView(int viewType) {
 
 		LayoutRenderer viewRenderer = viewLayoutRenderers.get(viewType);
@@ -606,6 +635,12 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		return textureManager;
 	}
 
+	/**
+	 * Sets the {@link ABrickLayoutTemplate} for this brick, specifying its
+	 * appearance.
+	 * 
+	 * @param brickLayoutTemplate
+	 */
 	public void setBrickLayoutTemplate(ABrickLayoutTemplate brickLayoutTemplate) {
 		this.brickLayout = brickLayoutTemplate;
 		if (templateRenderer != null) {
@@ -614,6 +649,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		}
 	}
 
+	/**
+	 * @return Type of view that is currently displayed by the brick.
+	 */
 	public int getCurrentViewType() {
 		return currentViewType;
 	}
@@ -731,11 +769,12 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 * @return how much this has affected the height of the brick.
 	 */
 	public float setToOverviewMode() {
-		
-		CompactBrickLayoutTemplate layoutTemplate = new CompactBrickLayoutTemplate(this, visBricks);
+
+		CompactBrickLayoutTemplate layoutTemplate = new CompactBrickLayoutTemplate(
+				this, visBricks);
 		setBrickLayoutTemplate(layoutTemplate);
 		setRemoteView(GLBrick.OVERVIEW_HEATMAP_COMPACT);
-		
+
 		isInOverviewMode = true;
 		float minSize = getParentGLCanvas().getPixelGLConverter()
 				.getGLHeightForPixelHeight(layoutTemplate.getMinHeightPixels());

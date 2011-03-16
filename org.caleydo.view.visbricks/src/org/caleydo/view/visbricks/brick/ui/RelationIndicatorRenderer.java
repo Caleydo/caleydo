@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks.brick;
+package org.caleydo.view.visbricks.brick.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,7 @@ import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
 /**

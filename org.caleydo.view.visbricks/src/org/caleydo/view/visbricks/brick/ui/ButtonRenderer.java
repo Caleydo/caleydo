@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks.brick;
+package org.caleydo.view.visbricks.brick.ui;
 
 import gleem.linalg.Vec3f;
 
@@ -9,6 +9,12 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
+/**
+ * Renderer for a {@link Button}.
+ * 
+ * @author Christian Partl
+ * 
+ */
 public class ButtonRenderer extends LayoutRenderer {
 
 	public static final int TEXTURE_ROTATION_0 = 0;
@@ -22,6 +28,18 @@ public class ButtonRenderer extends LayoutRenderer {
 	private Button button;
 	private int textureRotation;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param button
+	 *            Button this renderer should be used for.
+	 * @param view
+	 *            View that calls this renderer.
+	 * @param iconTexture
+	 *            Texture for the button.
+	 * @param textureManager
+	 *            TextureManager.
+	 */
 	public ButtonRenderer(Button button, AGLView view,
 			EIconTextures iconTexture, TextureManager textureManager) {
 		this.view = view;
@@ -31,6 +49,23 @@ public class ButtonRenderer extends LayoutRenderer {
 		textureRotation = TEXTURE_ROTATION_0;
 	}
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param button
+	 *            Button this renderer should be used for.
+	 * @param view
+	 *            View that calls this renderer.
+	 * @param iconTexture
+	 *            Texture for the button.
+	 * @param textureManager
+	 *            TextureManager.
+	 * @param textureRotation
+	 *            Specifies the angle the texture of the button should be
+	 *            rotated. Possible values: TEXTURE_ROTATION_0,
+	 *            TEXTURE_ROTATION_90, TEXTURE_ROTATION_180,
+	 *            TEXTURE_ROTATION_270
+	 */
 	public ButtonRenderer(Button button, AGLView view,
 			EIconTextures iconTexture, TextureManager textureManager,
 			int textureRotation) {

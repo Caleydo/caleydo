@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks.brick;
+package org.caleydo.view.visbricks.brick.ui;
 
 import java.util.ArrayList;
 
@@ -14,13 +14,30 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
+/**
+ * Renderer for an overview heatmap of values specified by contentVA and
+ * storageVA. It shows the average values per storage and optionally the average
+ * values + and - the standard deviation per storage.
+ * 
+ * @author Christian Partl
+ * 
+ */
 public class OverviewHeatMapRenderer extends LayoutRenderer {
 
 	private ColorMapping colorMapper;
 	private ArrayList<float[]> heatMapValues;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param contentVA
+	 * @param storageVA
+	 * @param set
+	 * @param showStandardDeviation
+	 */
 	public OverviewHeatMapRenderer(ContentVirtualArray contentVA,
-			StorageVirtualArray storageVA, ISet set, boolean showStandardDeviation) {
+			StorageVirtualArray storageVA, ISet set,
+			boolean showStandardDeviation) {
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 		heatMapValues = new ArrayList<float[]>();
@@ -38,18 +55,18 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 
 			float arithmeticMean = ClusterHelper
 					.arithmeticMean(expressionValues);
-			
+
 			float[] currentValues;
-			
-			if(showStandardDeviation) {
+
+			if (showStandardDeviation) {
 				float standardDeviation = ClusterHelper.standardDeviation(
 						expressionValues, arithmeticMean);
-	
+
 				currentValues = new float[] {
 						arithmeticMean - standardDeviation, arithmeticMean,
 						arithmeticMean + standardDeviation };
 			} else {
-				currentValues = new float[] {arithmeticMean};
+				currentValues = new float[] { arithmeticMean };
 			}
 
 			heatMapValues.add(currentValues);
@@ -57,6 +74,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 
 	}
 
+	@Override
 	public void render(GL2 gl) {
 
 		if (heatMapValues.size() <= 0)
@@ -97,14 +115,14 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 			gl.glVertex3f(currentPositionX, y, 0);
 			currentPositionX += heatMapElementWidth;
 		}
-		
+
 		float currentPositionY = heatMapElementHeight;
 		for (int i = 0; i < heatMapValues.get(0).length - 1; i++) {
 			gl.glVertex3f(0, currentPositionY, 0);
 			gl.glVertex3f(x, currentPositionY, 0);
 			currentPositionY += heatMapElementHeight;
 		}
-		
+
 		gl.glEnd();
 
 	}

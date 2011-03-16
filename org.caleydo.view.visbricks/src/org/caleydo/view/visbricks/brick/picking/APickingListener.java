@@ -1,12 +1,13 @@
-package org.caleydo.view.visbricks.brick;
+package org.caleydo.view.visbricks.brick.picking;
 
 import org.caleydo.core.manager.picking.Pick;
 
 /**
- * @author Partl
+ * Convenience class that can be extended instead of implementing
+ * {@link IPickingListener} if not all methods need to be implemented.
  * 
- * Convenience class, if not all methods need to be implemented.
- *
+ * @author Christian Partl
+ * 
  */
 
 public abstract class APickingListener implements IPickingListener {

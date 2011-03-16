@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks.brick;
+package org.caleydo.view.visbricks.brick.ui;
 
 import gleem.linalg.Vec3f;
 
@@ -11,6 +11,12 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
+/**
+ * Renderer for handles used for resizing and moving a brick.
+ * 
+ * @author Christian Partl
+ * 
+ */
 public class HandleRenderer extends LayoutRenderer {
 
 	private AGLView view;
@@ -18,6 +24,15 @@ public class HandleRenderer extends LayoutRenderer {
 	private int handleSize;
 	private TextureManager textureManager;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param view
+	 * @param pixelGLConverter
+	 * @param handleSize
+	 *            Size in pixels of the handles.
+	 * @param textureManager
+	 */
 	public HandleRenderer(AGLView view, PixelGLConverter pixelGLConverter,
 			int handleSize, TextureManager textureManager) {
 		this.view = view;
@@ -79,18 +94,18 @@ public class HandleRenderer extends LayoutRenderer {
 
 		gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
 				EPickingType.DRAGGING_HANDLE, view.getID()));
-//
-//		Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth * 2.0f, y / 2.0f
-//				- glHandleHeight, 0);
-//		Vec3f lowerRightCorner = new Vec3f(-glHandleWidth * 2.0f,
-//				2.0f + glHandleHeight, 0);
-//		Vec3f upperRightCorner = new Vec3f(0, y / 2.0f + glHandleHeight, 0);
-//		Vec3f upperLeftCorner = new Vec3f(0, y / 2.0f - glHandleHeight, 0);
-//
-//		textureManager
-//				.renderTexture(gl, EIconTextures.MOVE_ICON, lowerLeftCorner,
-//						lowerRightCorner, upperRightCorner, upperLeftCorner, 1,
-//						1, 1, 1);
+		//
+		// Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth * 2.0f, y / 2.0f
+		// - glHandleHeight, 0);
+		// Vec3f lowerRightCorner = new Vec3f(-glHandleWidth * 2.0f,
+		// 2.0f + glHandleHeight, 0);
+		// Vec3f upperRightCorner = new Vec3f(0, y / 2.0f + glHandleHeight, 0);
+		// Vec3f upperLeftCorner = new Vec3f(0, y / 2.0f - glHandleHeight, 0);
+		//
+		// textureManager
+		// .renderTexture(gl, EIconTextures.MOVE_ICON, lowerLeftCorner,
+		// lowerRightCorner, upperRightCorner, upperLeftCorner, 1,
+		// 1, 1, 1);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(-glHandleWidth * 2.0f, y / 2.0f - glHandleHeight, 0);
 		gl.glVertex3f(-glHandleWidth * 2.0f, y / 2.0f + glHandleHeight, 0);

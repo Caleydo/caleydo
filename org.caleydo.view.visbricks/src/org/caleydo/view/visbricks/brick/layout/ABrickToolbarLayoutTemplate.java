@@ -5,11 +5,17 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.view.visbricks.brick.APickingListener;
-import org.caleydo.view.visbricks.brick.Button;
-import org.caleydo.view.visbricks.brick.ButtonRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.picking.APickingListener;
+import org.caleydo.view.visbricks.brick.ui.Button;
+import org.caleydo.view.visbricks.brick.ui.ButtonRenderer;
 
+/**
+ * Abstract base class for all brick layouts containing a toolbar.
+ * 
+ * @author Christian Partl
+ *
+ */
 public abstract class ABrickToolbarLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected static final int HEATMAP_BUTTON_ID = 1;
@@ -39,6 +45,9 @@ public abstract class ABrickToolbarLayoutTemplate extends ABrickLayoutTemplate {
 		updateToolBarButtons();
 	}
 	
+	/**
+	 * Selects the toolbar button that corresponds to the view currently shown in the brick.
+	 */
 	public void updateToolBarButtons() {
 		
 		heatMapButton.setSelected(false);
@@ -62,6 +71,12 @@ public abstract class ABrickToolbarLayoutTemplate extends ABrickLayoutTemplate {
 		}
 	}
 
+	/**
+	 * Creates the toolbar containing buttons for view switching.
+	 * 
+	 * @param pixelHeight
+	 * @return
+	 */
 	protected Row createBrickToolBar(int pixelHeight) {
 		Row toolBar = new Row("ToolBarRow");
 		toolBar.setYDynamic(true);

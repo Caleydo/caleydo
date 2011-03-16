@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks.brick;
+package org.caleydo.view.visbricks.brick.viewcreation;
 
 import javax.media.opengl.GL2;
 
@@ -10,7 +10,14 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.BrickHeatMapTemplate;
+import org.caleydo.view.visbricks.brick.GLBrick;
 
+/**
+ * Creator for a remote rendered {@link GLHeatMap}.
+ * 
+ * @author Christian Partl
+ * 
+ */
 public class HeatMapCreator implements IRemoteViewCreator {
 
 	@Override

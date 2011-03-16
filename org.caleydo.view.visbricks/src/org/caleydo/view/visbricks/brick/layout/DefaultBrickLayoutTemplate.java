@@ -7,20 +7,20 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.GLVisBricks;
-import org.caleydo.view.visbricks.brick.APickingListener;
-import org.caleydo.view.visbricks.brick.BackGroundRenderer;
-import org.caleydo.view.visbricks.brick.BorderedAreaRenderer;
-import org.caleydo.view.visbricks.brick.Button;
-import org.caleydo.view.visbricks.brick.ButtonRenderer;
-import org.caleydo.view.visbricks.brick.FuelBarRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
-import org.caleydo.view.visbricks.brick.HandleRenderer;
-import org.caleydo.view.visbricks.brick.RelationIndicatorRenderer;
+import org.caleydo.view.visbricks.brick.picking.APickingListener;
+import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
+import org.caleydo.view.visbricks.brick.ui.BorderedAreaRenderer;
+import org.caleydo.view.visbricks.brick.ui.Button;
+import org.caleydo.view.visbricks.brick.ui.ButtonRenderer;
+import org.caleydo.view.visbricks.brick.ui.FuelBarRenderer;
+import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
+import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
 
 /**
- * Layout LayoutTemplate for a Brick
+ * Default brick layout containing a toolbar, a view and a fuelbar.
  * 
- * @author Alexander Lex
+ * @author Christian Partl
  * 
  */
 public class DefaultBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
