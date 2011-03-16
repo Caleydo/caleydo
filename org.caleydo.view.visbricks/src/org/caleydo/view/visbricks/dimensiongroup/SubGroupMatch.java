@@ -1,9 +1,11 @@
 package org.caleydo.view.visbricks.dimensiongroup;
 
+import org.caleydo.view.visbricks.brick.GLBrick;
+
 
 public class SubGroupMatch {
-
-	private int subGroupID;
+	
+	private GLBrick glBrick;
 	
 	private float leftAnchorYStart;
 
@@ -13,8 +15,8 @@ public class SubGroupMatch {
 	
 	private float rightAnchorYEnd;
 	
-	public SubGroupMatch(int subGroupID) {
-		this.subGroupID = subGroupID;
+	public SubGroupMatch(GLBrick glBrick) {
+		this.glBrick = glBrick;
 	}
 
 	public void setLeftAnchorYStart(float leftAnchorYStart) {
@@ -47,5 +49,9 @@ public class SubGroupMatch {
 	
 	public float getRightAnchorYBottom() {
 		return rightAnchorYEnd;
+	}
+	
+	public GLBrick getBrick() {
+		return glBrick;
 	}
 }

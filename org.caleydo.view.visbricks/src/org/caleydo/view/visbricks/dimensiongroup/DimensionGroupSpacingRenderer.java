@@ -40,8 +40,9 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 	}
 
-	public DimensionGroupSpacingRenderer(RelationAnalyzer relationAnalyzer, ConnectionBandRenderer connectionRenderer,
-			DimensionGroup leftDimGroup, DimensionGroup rightDimGroup) {
+	public DimensionGroupSpacingRenderer(RelationAnalyzer relationAnalyzer,
+			ConnectionBandRenderer connectionRenderer, DimensionGroup leftDimGroup,
+			DimensionGroup rightDimGroup) {
 
 		this.relationAnalyzer = relationAnalyzer;
 		this.leftDimGroup = leftDimGroup;
@@ -75,7 +76,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 		for (GLBrick leftBrick : leftBricks) {
 
-			GroupMatch groupMatch = new GroupMatch(leftBrick.getGroupID());
+			GroupMatch groupMatch = new GroupMatch(leftBrick);
 			hashGroupID2GroupMatches.put(leftBrick.getGroupID(), groupMatch);
 
 			ElementLayout leftBrickElementLayout = leftBrick.getWrappingLayout();
@@ -88,7 +89,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 			for (GLBrick rightBrick : rightBricks) {
 
-				SubGroupMatch subGroupMatch = new SubGroupMatch(rightBrick.getGroupID());
+				SubGroupMatch subGroupMatch = new SubGroupMatch(rightBrick);
 				groupMatch.addSubGroupMatch(rightBrick.getGroupID(), subGroupMatch);
 
 				float leftSimilarityRatioY = leftSimilarities[rightBrick.getGroupID()];
@@ -145,9 +146,9 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 		if (relationAnalyzer != null)
 			renderDimensionGroupConnections(gl);
 	}
-	
+
 	private void renderDragAndDropMarker(GL2 gl) {
-		
+
 		// Render drag and drop marker
 		if (renderDragAndDropSpacer) {
 			gl.glColor3f(0, 0, 0);
@@ -166,7 +167,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 	}
 
 	private void renderFlexibleArch(GL2 gl) {
-		
+
 		float leftCenterBrickTop = 0;
 		float leftCenterBrickBottom = 0;
 		float rightCenterBrickTop = 0;
@@ -213,12 +214,13 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 		// gl.glVertex3f(0, leftCenterBrickBottom, -10);
 		// gl.glEnd();
 
-		connectionRenderer.renderSingleBand(gl, new float[] { 0, leftCenterBrickTop, 0 }, new float[] { 0,
-				leftCenterBrickBottom, 0 }, new float[] { x, rightCenterBrickTop, 0 },
-				new float[] { x, rightCenterBrickBottom, 0 }, true, curveOffset, 0,
-				false, new float[] { 0, 0, 0 }, 0.5f);
+		connectionRenderer.renderSingleBand(gl, new float[] { 0, leftCenterBrickTop, 0 },
+				new float[] { 0, leftCenterBrickBottom, 0 }, new float[] { x,
+						rightCenterBrickTop, 0 }, new float[] { x,
+						rightCenterBrickBottom, 0 }, false, curveOffset, 0, false,
+				new float[] { 0, 0, 0 }, 0.5f);
 	}
-	
+
 	private void renderDimensionGroupConnections(GL2 gl) {
 
 		gl.glLineWidth(1);
@@ -245,11 +247,14 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 				//
 				// gl.glEnd();
 
-				connectionRenderer.renderSingleBand(gl, new float[] { 0, subGroupMatch.getLeftAnchorYTop(),
-						0 }, new float[] { 0, subGroupMatch.getLeftAnchorYBottom(), 0 },
+				connectionRenderer.renderSingleBand(gl,
+						new float[] { 0, subGroupMatch.getLeftAnchorYTop(), 0 },
+						new float[] { 0, subGroupMatch.getLeftAnchorYBottom(), 0 },
 						new float[] { x, subGroupMatch.getRightAnchorYTop(), 0 },
 						new float[] { x, subGroupMatch.getRightAnchorYBottom(), 0 },
-						true, 0.3f, 0, false, new float[] { 0.0f, 0.0f, 1 }, 0.15f);
+						(groupMatch.getBrick().isActive() || subGroupMatch.getBrick()
+								.isActive()), 0.3f, 0, false,
+						new float[] { 0.0f, 0.0f, 1 }, 0.15f);
 			}
 		}
 	}

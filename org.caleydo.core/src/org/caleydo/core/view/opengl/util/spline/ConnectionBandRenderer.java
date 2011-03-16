@@ -123,7 +123,12 @@ public class ConnectionBandRenderer {
 
 		// Band border
 		gl.glLineWidth(1);
-		gl.glColor4f(color[0], color[1], color[2], opacity * 2f);
+		
+		if (highlight)
+			gl.glColor4f(color[0], color[1], color[2], 1);
+		else
+			gl.glColor4f(color[0], color[1], color[2], opacity*2);
+		
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < outputPoints.size(); i++) {
 			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), 0f);
@@ -152,8 +157,8 @@ public class ConnectionBandRenderer {
 		}
 		gl.glEnd();
 
-		if (!highlight)
-			gl.glColor4f(0f, 0f, 0f, 0.25f);
+		if (highlight)
+			gl.glColor4f(color[0], color[1], color[2], 0.8f);
 		else
 			gl.glColor4f(color[0], color[1], color[2], opacity);
 

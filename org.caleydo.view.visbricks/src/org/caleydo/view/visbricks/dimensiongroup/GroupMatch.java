@@ -3,16 +3,18 @@ package org.caleydo.view.visbricks.dimensiongroup;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class GroupMatch {
+import org.caleydo.view.visbricks.brick.GLBrick;
 
-	private int groupID;
+public class GroupMatch {
+	
+	private GLBrick glBrick;
 	
 	private HashMap<Integer, SubGroupMatch> hashSubGroupID2SubGroupMatch = new HashMap<Integer, SubGroupMatch>();
-	
-	public GroupMatch(int groupID) {
-		this.groupID = groupID;
-	}
 
+	public GroupMatch(GLBrick glBrick) {
+		this.glBrick = glBrick;
+	}
+	
 	public void addSubGroupMatch(Integer subGroupID, SubGroupMatch subGroupMatch) {
 	
 		hashSubGroupID2SubGroupMatch.put(subGroupID, subGroupMatch);
@@ -24,6 +26,10 @@ public class GroupMatch {
 	
 	public SubGroupMatch getSubGroupMatch(Integer groupID) {
 		return hashSubGroupID2SubGroupMatch.get(groupID);
+	}
+	
+	public GLBrick getBrick() {
+		return glBrick;
 	}
 }
  
