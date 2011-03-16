@@ -113,7 +113,8 @@ public class Row
 
 			availableWidth -= element.getUnscalableElementWidth();
 		}
-		availableHeight -= highestElement;
+		// TODO I don't think this should be here, it breaks the overviewLayout,
+		// availableHeight -= highestElement;
 		calculateSubElementScales(availableWidth, availableHeight);
 	}
 
