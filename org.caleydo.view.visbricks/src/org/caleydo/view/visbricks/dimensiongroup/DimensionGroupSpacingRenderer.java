@@ -180,7 +180,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 			ElementLayout layout = leftCenterBrick.getWrappingLayout();
 			leftCenterBrickBottom = layout.getTranslateY();
-			leftCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledX();
+			leftCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledY();
 		} else {
 			if (rightDimGroup != null) {
 				leftCenterBrickBottom = rightDimGroup.getVisBricksView().getArchBottomY();
@@ -194,7 +194,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 			ElementLayout layout = rightCenterBrick.getWrappingLayout();
 			rightCenterBrickBottom = layout.getTranslateY();
-			rightCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledX();
+			rightCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledY();
 		} else {
 			if (leftDimGroup != null) {
 				rightCenterBrickBottom = leftDimGroup.getVisBricksView().getArchBottomY();
