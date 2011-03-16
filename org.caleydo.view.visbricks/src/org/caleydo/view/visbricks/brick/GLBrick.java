@@ -708,5 +708,13 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			templateRenderer.updateLayout();
 		}
 	}
+	
+	/**
+	 * @return true, if the brick us currently selected, false otherwise
+	 */
+	public boolean isActive() {
+		return contentGroupSelectionManager.checkStatus(SelectionType.SELECTION, getGroup()
+				.getID());
+	}
 
 }
