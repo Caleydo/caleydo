@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.layout;
 
+import java.awt.Container;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
@@ -71,6 +72,11 @@ public class ElementLayout {
 
 	private MinSizeTextRenderer textRenderer;
 
+	/** The uniqueID of the managing class. Used for notifications on collisions via event. */
+	protected int managingClassID = -1;
+	/** An id to identify the layout. */
+	protected int layoutID = -1;
+
 	/**
 	 * The currently available width for the layout. Used if only this sub-part of the layout is updated via
 	 * {@link #updateSubLayout()}
@@ -92,6 +98,20 @@ public class ElementLayout {
 	public ElementLayout(String layoutName) {
 		renderer = new LayoutRenderer();
 		this.layoutName = layoutName;
+	}
+
+	/**
+	 * Set ids for the layout, which are used for events in case an element doesn't fit into a
+	 * {@link Container}
+	 * 
+	 * @param managingClassID
+	 *            the id of the class to be called-back by this layout
+	 * @param an
+	 *            arbitrary id to identify the layout
+	 */
+	public void setIDs(int managingClassID, int layoutID) {
+		this.managingClassID = managingClassID;
+		this.layoutID = layoutID;
 	}
 
 	/**

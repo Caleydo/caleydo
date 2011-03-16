@@ -37,6 +37,9 @@ import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
+import org.caleydo.core.view.opengl.layout.event.ILayoutSizeCollisionHandler;
+import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionEvent;
+import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -54,7 +57,8 @@ import org.caleydo.view.visbricks.brick.layout.CentralBrickLayoutTemplate;
  * 
  */
 public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
-		IContentVAUpdateHandler, ILayoutedElement, IDraggable, IDropArea {
+		IContentVAUpdateHandler, ILayoutSizeCollisionHandler, ILayoutedElement,
+		IDraggable, IDropArea {
 
 	public final static String VIEW_ID = "org.caleydo.view.dimensiongroup";
 
@@ -79,6 +83,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 	private ContentVAUpdateListener contentVAUpdateListener;
 	private ReplaceContentVAListener replaceContentVAListener;
+	private LayoutSizeCollisionListener layoutSizeCollisionListener;
 
 	private boolean isCollapsed = false;
 
@@ -97,6 +102,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	private boolean isBrickResizeActive = false;
 
+	public static int BOTTOM_COLUMN_ID = 0;
+	public static int TOP_COLUMN_ID = 1;
+
 	public DimensionGroup(GLCaleydoCanvas canvas, ViewFrustum viewFrustum) {
 		super(canvas, viewFrustum, true);
 
@@ -107,6 +115,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		bottomCol.setFrameColor(1, 0, 1, 1);
 		bottomCol.setBottomUp(false);
 		bottomCol.setXDynamic(true);
+		bottomCol.setIDs(uniqueID, BOTTOM_COLUMN_ID);
+
 		// bottomCol.setDebug(true);
 
 		bottomBricks = new ArrayList<GLBrick>(20);
@@ -119,6 +129,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		topCol.setFrameColor(1, 0, 1, 1);
 		topBricks = new ArrayList<GLBrick>(20);
 		topCol.setXDynamic(true);
+		topCol.setIDs(uniqueID, TOP_COLUMN_ID);
 		// topCol.setDebug(true);
 
 		initGroupColumn();
@@ -329,6 +340,10 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				.getDataDomainType());
 		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
 
+		layoutSizeCollisionListener = new LayoutSizeCollisionListener();
+		layoutSizeCollisionListener.setHandler(this);
+		eventPublisher.addListener(LayoutSizeCollisionEvent.class,
+				layoutSizeCollisionListener);
 	}
 
 	@Override
@@ -341,6 +356,11 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		if (replaceContentVAListener != null) {
 			eventPublisher.removeListener(replaceContentVAListener);
 			replaceContentVAListener = null;
+		}
+
+		if (layoutSizeCollisionListener != null) {
+			eventPublisher.removeListener(layoutSizeCollisionListener);
+			layoutSizeCollisionListener = null;
 		}
 	}
 
@@ -479,8 +499,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		float change = pointCordinates[1] - previousYCoordinate;
 		previousYCoordinate = pointCordinates[1];
 
-		float topSize = topCol.getSizeScaledY();
-		topCol.setAbsoluteSizeY(topSize - change);
+		float newSize = topCol.getSizeScaledY() - change;
+		topCol.setAbsoluteSizeY(newSize);
+		// updateBrickSizes(topCol, topBricks, newSize);
 
 		float bottomSize = bottomCol.getSizeScaledY();
 		bottomCol.setAbsoluteSizeY(bottomSize + change);
@@ -494,6 +515,12 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	}
 
+	private void updateBrickSizes(Column column, ArrayList<GLBrick> topBricks,
+			float newSize) {
+
+	}
+
+	/** resize of a brick */
 	private void handleBrickResize(GL2 gl) {
 		if (!isBrickResizeActive)
 			return;
@@ -663,4 +690,40 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		this.set = set;
 	}
 
+	@Override
+	public void handleLayoutSizeCollision(int managingClassID, int layoutID, float toBigBy) {
+		if (managingClassID != uniqueID)
+			return;
+
+		System.out.println("handling layout collision");
+		if (layoutID == TOP_COLUMN_ID) {
+			boolean changeMade = false;
+			for (int count = topBricks.size() - 1; count >= 0; count--) {
+				GLBrick brick = topBricks.get(count);
+				if (toBigBy < 0)
+					break;
+				if (!brick.isInOverviewMode()) {
+					toBigBy -= brick.setToOverviewMode();
+					changeMade = true;
+				}
+			}
+			if (changeMade)
+				topCol.updateSubLayout();
+		}
+		if (layoutID == BOTTOM_COLUMN_ID) {
+			boolean changeMade = false;
+
+			for (int count = bottomBricks.size() - 1; count >= 0; count--) {
+				GLBrick brick = bottomBricks.get(count);
+				if (toBigBy < 0)
+					break;
+				if (!brick.isInOverviewMode()) {
+					toBigBy -= brick.setToOverviewMode();
+					changeMade = true;
+				}
+			}
+			if (changeMade)
+				bottomCol.updateSubLayout();
+		}
+	}
 }

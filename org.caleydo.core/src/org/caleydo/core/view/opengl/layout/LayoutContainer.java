@@ -29,7 +29,7 @@ public abstract class LayoutContainer
 	protected boolean isBottomUp = true;
 	protected boolean isLeftToRight = true;
 
-	protected ArrayList<ElementLayout> elements;
+	protected ArrayList<ElementLayout> elements = new ArrayList<ElementLayout>();;
 
 	/**
 	 * The currently available bottom distance for the layout. Use if only this sub-part of the layout is
@@ -53,15 +53,10 @@ public abstract class LayoutContainer
 
 	public LayoutContainer() {
 		super();
-		// elements = new ArrayList<ElementLayout>();
 	}
 
 	public LayoutContainer(String layoutName) {
 		super(layoutName);
-	}
-
-	{
-		elements = new ArrayList<ElementLayout>();
 	}
 
 	@Override

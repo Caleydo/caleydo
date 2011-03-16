@@ -1,5 +1,10 @@
 package org.caleydo.core.view.opengl.layout;
 
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionEvent;
+import org.eclipse.core.runtime.Status;
+
 /**
  * Container for layouts that are stacked on top of each other. The column is a {@link ElementLayout} and
  * contains other ElementLayouts. It can be nested into other containers
@@ -111,15 +116,44 @@ public class Column
 			availableHeight = totalHeight;
 
 		float widestElement = 0;
+		// float sumUnscalabeElementHeights = 0;
 		for (ElementLayout element : elements) {
 			float tempWidth = element.getUnscalableElementWidth();
 			if (tempWidth > widestElement)
 				widestElement = tempWidth;
 
-			availableHeight -= element.getUnscalableElementHeight();
+			float unscalabelElementHeight = element.getUnscalableElementHeight();
+			availableHeight -= unscalabelElementHeight;
+			// sumUnscalabeElementHeights += unscalabelElementHeight;
 		}
 		availableWidth -= widestElement;
+
+		if (availableHeight < -0.0001) {
+//			Logger.log(new Status(Status.ERROR, "org.caleydo.core", "Layout elements in " + this
+//				+ "don't fit by " + availableHeight));
+			if (managingClassID != -1 && layoutID != -1) {
+				LayoutSizeCollisionEvent event = new LayoutSizeCollisionEvent();
+				event.setToBigBy(Math.abs(availableHeight));
+				event.setIDs(managingClassID, layoutID);
+				GeneralManager.get().getEventPublisher().triggerEvent(event);
+			}
+
+		}
+
 		calculateSubElementScales(availableWidth, availableHeight);
+
+		// if (element.getUnscalableElementHeight() > availableHeight + 0.01f) {
+		//
+		// if (!Float.isNaN(element.minSizeY))
+		// {
+		// System.out.println(element.toString() + element.minSizeY + " " + element.hashCode() + " "
+		// + (element.getUnscalableElementHeight() - availableHeight));
+		// element.useMinSize(true);
+		// }
+		// }
+		// else
+		// element.useMinSize(false);
+
 	}
 
 	@Override
@@ -154,6 +188,7 @@ public class Column
 			if (!element.isHeightStatic())
 				dynamicHeight += element.getSizeScaledY();
 
+			// determining the largest element in X
 			if (largestWidth < element.getSizeScaledX())
 				largestWidth = element.getSizeScaledX();
 
