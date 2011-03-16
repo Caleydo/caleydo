@@ -22,17 +22,18 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupCaptionRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.LineSeparatorRenderer;
 import org.eclipse.swt.widgets.Shell;
 
-public class CentralBrickLayoutTemplate extends BrickLayoutTemplate {
-	
+public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
+
 	private DimensionGroup dimensionGroup;
 	private Button clusterButton;
 
-	public CentralBrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup) {
+	public CentralBrickLayoutTemplate(GLBrick brick,
+			DimensionGroup dimensionGroup) {
 		super(brick);
 		this.dimensionGroup = dimensionGroup;
-		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, 1);
-		
-		
+		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
+				1);
+
 	}
 
 	@Override
@@ -45,19 +46,20 @@ public class CentralBrickLayoutTemplate extends BrickLayoutTemplate {
 		Column baseColumn = new Column("baseColumn");
 		baseColumn.setFrameColor(0, 1, 0, 0);
 
-//		ElementLayout fuelBarLayout = new ElementLayout("fuelBarLayout");
-//		fuelBarLayout.setFrameColor(0, 1, 0, 0);
+		// ElementLayout fuelBarLayout = new ElementLayout("fuelBarLayout");
+		// fuelBarLayout.setFrameColor(0, 1, 0, 0);
 
 		baseRow.setRenderer(new BorderedAreaRenderer());
 
 		if (showHandles) {
 			baseRow.addForeGroundRenderer(new HandleRenderer(brick
-					.getDimensionGroup(), pixelGLConverter, 10));
+					.getDimensionGroup(), pixelGLConverter, 10, brick
+					.getTextureManager()));
 		}
 
-//		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
-//		fuelBarLayout.setPixelSizeY(12);
-//		fuelBarLayout.setRenderer(new FuelBarRenderer(brick));
+		// fuelBarLayout.setPixelGLConverter(pixelGLConverter);
+		// fuelBarLayout.setPixelSizeY(12);
+		// fuelBarLayout.setRenderer(new FuelBarRenderer(brick));
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
@@ -84,7 +86,7 @@ public class CentralBrickLayoutTemplate extends BrickLayoutTemplate {
 		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutY.setPixelSizeY(4);
 		spacingLayoutY.setPixelSizeX(0);
-		
+
 		Row captionRow = new Row();
 		captionRow.setPixelGLConverter(pixelGLConverter);
 		captionRow.setPixelSizeY(16);
@@ -109,13 +111,11 @@ public class CentralBrickLayoutTemplate extends BrickLayoutTemplate {
 		clusterButtonLayout.setPixelGLConverter(pixelGLConverter);
 		clusterButtonLayout.setPixelSizeX(16);
 		clusterButtonLayout.setPixelSizeY(16);
-		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton, brick,
-				EIconTextures.CLUSTER_ICON, brick.getTextureManager()));
-		
-		
+		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton,
+				brick, EIconTextures.CLUSTER_ICON, brick.getTextureManager()));
 
 		captionRow.append(clusterButtonLayout);
-		
+
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
 		lineSeparatorLayout.setPixelSizeY(3);
@@ -133,11 +133,11 @@ public class CentralBrickLayoutTemplate extends BrickLayoutTemplate {
 		baseColumn.append(spacingLayoutY);
 
 	}
-	
+
 	@Override
 	protected void registerPickingListeners() {
 		super.registerPickingListeners();
-		
+
 		brick.addPickingListener(new APickingListener() {
 
 			@Override
@@ -151,15 +151,16 @@ public class CentralBrickLayoutTemplate extends BrickLayoutTemplate {
 								StartClusteringDialog dialog = new StartClusteringDialog(
 										new Shell(), brick.getDataDomain());
 								dialog.open();
-								ClusterState clusterState = dialog.getClusterState();
+								ClusterState clusterState = dialog
+										.getClusterState();
 								if (clusterState == null)
 									return;
 
 								StartClusteringEvent event = null;
 								// if (clusterState != null && set != null)
 
-								event = new StartClusteringEvent(clusterState, brick.getSet()
-										.getID());
+								event = new StartClusteringEvent(clusterState,
+										brick.getSet().getID());
 								event.setDataDomainType(brick.getDataDomain()
 										.getDataDomainType());
 								GeneralManager.get().getEventPublisher()

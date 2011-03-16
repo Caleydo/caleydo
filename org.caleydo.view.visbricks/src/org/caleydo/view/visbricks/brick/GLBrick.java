@@ -40,7 +40,8 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.visbricks.GLVisBricks;
-import org.caleydo.view.visbricks.brick.layout.BrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.listener.RelationsUpdatedListener;
@@ -62,7 +63,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	public static final int OVERVIEW_HEATMAP = 3;
 
 	private LayoutManager templateRenderer;
-	private BrickLayoutTemplate brickLayout;
+	private ABrickLayoutTemplate brickLayout;
 	private ElementLayout wrappingLayout;
 
 	private AGLView currentRemoteView;
@@ -596,7 +597,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		return textureManager;
 	}
 
-	public void setBrickLayoutTemplate(BrickLayoutTemplate brickLayoutTemplate) {
+	public void setBrickLayoutTemplate(ABrickLayoutTemplate brickLayoutTemplate) {
 		this.brickLayout = brickLayoutTemplate;
 	}
 

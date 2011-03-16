@@ -115,6 +115,14 @@ public class GeneralRenderStyle {
 		}
 		return fScaling;
 	}
+	
+	public float getXScaling() {
+		return viewFrustum.getWidth();
+	}
+	
+	public float getYScaling() {
+		return viewFrustum.getHeight();
+	}
 
 	public float[] getBackgroundColor() {
 		return BACKGROUND_COLOR;

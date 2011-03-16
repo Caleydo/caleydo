@@ -136,6 +136,8 @@ public enum EIconTextures {
 	
 	CLUSTER_ICON("resources/icons/view/storagebased/clustering.png"),
 	
+//	MOVE_ICON("resources/icons/view/histogram/move_icon.png"),
+	
 	HISTOGRAM_ICON("resources/icons/view/histogram/histogram.png");
 
 	private String sFileName;

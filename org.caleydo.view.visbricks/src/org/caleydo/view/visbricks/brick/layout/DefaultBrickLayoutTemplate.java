@@ -17,7 +17,7 @@ import org.caleydo.view.visbricks.brick.RelationIndicatorRenderer;
  * @author Alexander Lex
  * 
  */
-public class DefaultBrickLayoutTemplate extends BrickLayoutTemplate {
+public class DefaultBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 	private GLVisBricks visBricks;
 	private RelationIndicatorRenderer leftRelationIndicatorRenderer;
@@ -65,7 +65,8 @@ public class DefaultBrickLayoutTemplate extends BrickLayoutTemplate {
 
 		if (showHandles) {
 			baseRow.addForeGroundRenderer(new HandleRenderer(brick
-					.getDimensionGroup(), pixelGLConverter, 10));
+					.getDimensionGroup(), pixelGLConverter, 10, brick
+					.getTextureManager()));
 		}
 
 		fuelBarLayout.setPixelGLConverter(pixelGLConverter);

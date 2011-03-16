@@ -3,8 +3,6 @@ package org.caleydo.view.visbricks.brick.layout;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.brick.APickingListener;
@@ -12,24 +10,22 @@ import org.caleydo.view.visbricks.brick.Button;
 import org.caleydo.view.visbricks.brick.ButtonRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
-public abstract class BrickLayoutTemplate extends LayoutTemplate {
+public abstract class ABrickToolbarLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected static final int HEATMAP_BUTTON_ID = 1;
 	protected static final int PARCOORDS_BUTTON_ID = 2;
 	protected static final int HISTOGRAM_BUTTON_ID = 3;
 	protected static final int OVERVIEW_HEATMAP_BUTTON_ID = 4;
 
-	protected GLBrick brick;
-	protected LayoutRenderer viewRenderer;
+	
 	protected Button heatMapButton;
 	protected Button parCoordsButton;
 	protected Button histogramButton;
 	protected Button overviewHeatMapButton;
-	protected boolean showHandles;
+	
 
-	public BrickLayoutTemplate(GLBrick brick) {
-		this.brick = brick;
-		showHandles = false;
+	public ABrickToolbarLayoutTemplate(GLBrick brick) {
+		super(brick);
 
 		heatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
 				HEATMAP_BUTTON_ID);
@@ -56,10 +52,6 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 		}
 		
 		registerPickingListeners();
-	}
-
-	public void setViewRenderer(LayoutRenderer viewRenderer) {
-		this.viewRenderer = viewRenderer;
 	}
 
 	protected Row createBrickToolBar(int pixelHeight) {
@@ -168,14 +160,6 @@ public abstract class BrickLayoutTemplate extends LayoutTemplate {
 				overviewHeatMapButton.setSelected(true);
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, OVERVIEW_HEATMAP_BUTTON_ID);
-	}
-
-	public boolean isShowHandles() {
-		return showHandles;
-	}
-
-	public void setShowHandles(boolean showHandles) {
-		this.showHandles = showHandles;
 	}
 
 }
