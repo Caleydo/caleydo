@@ -124,7 +124,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		centerLayout = new Column("centerLayout");
 		centerLayout.setFrameColor(1, 1, 0, 1);
-		// centerLayout.setDebug(true);
+		centerLayout.setDebug(true);
 
 		topCol = new Column("dimensionGroupColumnTop");
 		topCol.setFrameColor(1, 0, 1, 1);
@@ -299,29 +299,25 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	/**
 	 * <p>
-	 * Set the spacing of the arch in ratio (i.e. the sum of the values has to
-	 * be 1
+	 * Set the spacing of the arch in pixel.
 	 * </p>
 	 * <p>
 	 * This is only used if the group is not collapsed. If it is collapsed, the
 	 * values are irrelevant.
 	 * </p>
 	 * 
-	 * @param below
-	 *            the ratio size of the space below the arch
-	 * @param archThickness
-	 *            the ratio thickness in y of the arch
-	 * @param above
-	 *            the ratio size of the space above the arch
+	 * @param archHeight
+	 *            the pixel height of the arch
 	 */
-	public void setArchBounds(float below, float archThickness, float above) {
+	public void setArchHeight(int archHeight) {
 
 		if (isCollapsed) {
 			centerLayout.setRatioSizeY(1);
 		} else {
-			bottomCol.setRatioSizeY(below);
-			topCol.setRatioSizeY(above);
-			centerLayout.setRatioSizeY(archThickness);
+			bottomCol.setRatioSizeY(0.5f);
+			topCol.setRatioSizeY(0.5f);
+			centerLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+			centerLayout.setPixelSizeY(archHeight);
 		}
 
 	}
