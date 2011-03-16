@@ -629,9 +629,16 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public List<GLBrick> getBricks() {
 		ArrayList<GLBrick> bricks = new ArrayList<GLBrick>();
-		for (GLBrick brick : bottomBricks) {
-			bricks.add(brick);
+		
+		for (int i = bottomBricks.size()-1; i >= 0; i--) {
+			bricks.add(bottomBricks.get(i));
+			
 		}
+		
+//		for (GLBrick brick : bottomBricks) {
+//			bricks.add(brick);
+//		}
+	
 		for (GLBrick brick : topBricks) {
 			bricks.add(brick);
 		}

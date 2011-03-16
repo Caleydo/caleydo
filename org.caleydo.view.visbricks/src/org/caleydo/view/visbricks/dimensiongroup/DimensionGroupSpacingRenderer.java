@@ -226,27 +226,14 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 		gl.glLineWidth(1);
 		for (GroupMatch groupMatch : hashGroupID2GroupMatches.values()) {
 
+			if (groupMatch.getBrick().isInOverviewMode())
+				continue;
+			
 			for (SubGroupMatch subGroupMatch : groupMatch.getSubGroupMatches()) {
-				// gl.glColor4f(0.3f, 0.3f, 1, 0.2f);
-				// gl.glBegin(GL2.GL_LINES);
-				// gl.glVertex2f(0, subGroupMatch.getLeftAnchorYTop());
-				// gl.glVertex2f(x, subGroupMatch.getRightAnchorYTop());
-				// gl.glEnd();
-				//
-				// gl.glBegin(GL2.GL_LINES);
-				// gl.glVertex2f(0, subGroupMatch.getLeftAnchorYBottom());
-				// gl.glVertex2f(x, subGroupMatch.getRightAnchorYBottom());
-				// gl.glEnd();
-				//
-				// gl.glColor4f(0.3f, 0.3f, 1, 0.1f);
-				// gl.glBegin(GL2.GL_POLYGON);
-				// gl.glVertex2f(0, subGroupMatch.getLeftAnchorYTop());
-				// gl.glVertex2f(0, subGroupMatch.getLeftAnchorYBottom());
-				// gl.glVertex2f(x, subGroupMatch.getRightAnchorYBottom());
-				// gl.glVertex2f(x, subGroupMatch.getRightAnchorYTop());
-				//
-				// gl.glEnd();
-
+				
+				if (subGroupMatch.getBrick().isInOverviewMode())
+					continue;
+				
 				connectionRenderer.renderSingleBand(gl,
 						new float[] { 0, subGroupMatch.getLeftAnchorYTop(), 0 },
 						new float[] { 0, subGroupMatch.getLeftAnchorYBottom(), 0 },
