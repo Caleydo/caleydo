@@ -19,6 +19,7 @@ import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.NewMetaSetsEvent;
+import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -133,8 +134,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		detailLevel = DetailLevel.HIGH;
 		metaSetsUpdated();
 		connectionRenderer.init(gl);
-
-		// initLayout();
 	}
 
 	private void initLayouts() {
@@ -650,16 +649,21 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public void moveGroupDimension(DimensionGroup referenceDimGroup,
 			DimensionGroup movedDimGroup) {
 
+		clearDimensionGroupSpacerHighlight();
+		
 		dimensionGroupManager.moveGroupDimension(referenceDimGroup, movedDimGroup,
 				dropDimensionGroupAfter);
 
 		initLayouts();
 		initiConnectionLinesBetweenDimensionGroups();
+		
+		RelationsUpdatedEvent event = new RelationsUpdatedEvent();
+		event.setDataDomainType(dataDomain.getDataDomainType());
+		event.setSender(this);
+		eventPublisher.triggerEvent(event);
 	}
 
-	public void highlightDimensionGroupSpacer(DimensionGroup dragOverDimensionGroup,
-			float mouseX, float mouseY) {
-
+	public void clearDimensionGroupSpacerHighlight() {
 		// Clear previous spacer highlights
 		for (ElementLayout element : centerRowLayout.getElements()) {
 			if (element.getRenderer() instanceof DimensionGroupSpacingRenderer)
@@ -678,7 +682,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				((DimensionGroupSpacingRenderer) element.getRenderer())
 						.setRenderSpacer(false);
 		}
+	}
+	
+	public void highlightDimensionGroupSpacer(DimensionGroup dragOverDimensionGroup,
+			float mouseX, float mouseY) {
 
+		clearDimensionGroupSpacerHighlight();
 		dropDimensionGroupAfter = false;
 
 		int hightlightOffset = -1;

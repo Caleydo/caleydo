@@ -139,9 +139,15 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 	@Override
 	public void render(GL2 gl) {
 
-		// FIXME: just for testing. this should be done only once!
+		renderDragAndDropMarker(gl);
+		renderFlexibleArch(gl);
 
-
+		if (relationAnalyzer != null)
+			renderDimensionGroupConnections(gl);
+	}
+	
+	private void renderDragAndDropMarker(GL2 gl) {
+		
 		// Render drag and drop marker
 		if (renderDragAndDropSpacer) {
 			gl.glColor3f(0, 0, 0);
@@ -157,8 +163,10 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 			}
 			gl.glEnd();
 		}
+	}
 
-		// Render center brick band connection
+	private void renderFlexibleArch(GL2 gl) {
+		
 		float leftCenterBrickTop = 0;
 		float leftCenterBrickBottom = 0;
 		float rightCenterBrickTop = 0;
@@ -209,11 +217,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 				leftCenterBrickBottom, 0 }, new float[] { x, rightCenterBrickTop, 0 },
 				new float[] { x, rightCenterBrickBottom, 0 }, true, curveOffset, 0,
 				false, new float[] { 0, 0, 0 }, 0.5f);
-
-		if (relationAnalyzer != null)
-			renderDimensionGroupConnections(gl);
 	}
-
+	
 	private void renderDimensionGroupConnections(GL2 gl) {
 
 		gl.glLineWidth(1);

@@ -550,8 +550,10 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			float mouseCoordinateX, float mouseCoordinateY,
 			DragAndDropController dragAndDropController) {
 
+		visBricks.clearDimensionGroupSpacerHighlight();
+		
 		for (IDraggable draggable : draggables) {
-
+			
 			if (draggable == this)
 				break;
 
