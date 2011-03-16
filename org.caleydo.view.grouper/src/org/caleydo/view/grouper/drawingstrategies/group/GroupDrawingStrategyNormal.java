@@ -2,6 +2,9 @@ package org.caleydo.view.grouper.drawingstrategies.group;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.collection.INominalStorage;
+import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.view.grouper.GrouperRenderStyle;
@@ -9,14 +12,15 @@ import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
 
-public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular {
+public class GroupDrawingStrategyNormal extends
+		AGroupDrawingStrategyRectangular {
 
 	private PickingManager pickingManager;
 	private GrouperRenderStyle renderStyle;
 	private int iViewID;
 
-	public GroupDrawingStrategyNormal(PickingManager pickingManager, int iViewID,
-			GrouperRenderStyle renderStyle) {
+	public GroupDrawingStrategyNormal(PickingManager pickingManager,
+			int iViewID, GrouperRenderStyle renderStyle) {
 		this.pickingManager = pickingManager;
 		this.iViewID = iViewID;
 		this.renderStyle = renderStyle;
@@ -27,8 +31,10 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 			TextRenderer textRenderer) {
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
+				EPickingType.GROUPER_GROUP_SELECTION,
+				groupRepresentation.getID()));
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT
+				| GL2.GL_LINE_BIT);
 
 		gl.glColor4fv(renderStyle.getGroupColorForLevel(groupRepresentation
 				.getHierarchyLevel()), 0);
@@ -58,11 +64,18 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 			TextRenderer textRenderer) {
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
+				EPickingType.GROUPER_GROUP_SELECTION,
+				groupRepresentation.getID()));
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT
+				| GL2.GL_LINE_BIT);
 
 		// gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
-		gl.glColor4f(0.6f, 0.6f, 0.6f, 1f);
+		if (groupRepresentation.getClusterNode().getMetaSet()
+				.getStorageData(Set.STORAGE) instanceof INominalStorage<?>) {
+			gl.glColor4f(116f / 255f, 196f / 255f, 118f / 255f, 1f);
+		} else {
+			gl.glColor4f(0.6f, 0.6f, 0.6f, 1f);
+		}
 
 		drawLeafRectangular(gl, groupRepresentation, textRenderer);
 
