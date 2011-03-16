@@ -170,4 +170,16 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 			}
 		}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, 1);
 	}
+
+	@Override
+	public int getMinHeightPixels() {
+		//TODO: implement
+		return 0;
+	}
+
+	@Override
+	public int getMinWidthPixels() {
+		//TODO: implement
+		return 0;
+	}
 }

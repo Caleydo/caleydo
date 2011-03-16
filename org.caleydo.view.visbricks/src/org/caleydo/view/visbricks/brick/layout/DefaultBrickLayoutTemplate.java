@@ -1,11 +1,17 @@
 package org.caleydo.view.visbricks.brick.layout;
 
+import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.visbricks.brick.APickingListener;
 import org.caleydo.view.visbricks.brick.BackGroundRenderer;
 import org.caleydo.view.visbricks.brick.BorderedAreaRenderer;
+import org.caleydo.view.visbricks.brick.Button;
+import org.caleydo.view.visbricks.brick.ButtonRenderer;
 import org.caleydo.view.visbricks.brick.FuelBarRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.HandleRenderer;
@@ -19,6 +25,8 @@ import org.caleydo.view.visbricks.brick.RelationIndicatorRenderer;
  */
 public class DefaultBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
+	private static final int COLLAPSE_BUTTON_ID = 0;
+
 	private GLVisBricks visBricks;
 	private RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	private RelationIndicatorRenderer rightRelationIndicatorRenderer;
@@ -26,6 +34,10 @@ public class DefaultBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 	public DefaultBrickLayoutTemplate(GLBrick brick, GLVisBricks visBricks) {
 		super(brick);
 		this.visBricks = visBricks;
+		leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
+				visBricks, true);
+		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
+				visBricks, false);
 	}
 
 	public void setLeftRelationIndicatorRenderer(
@@ -44,6 +56,9 @@ public class DefaultBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 		baseRow.setFrameColor(0, 0, 1, 0);
 		setBaseElementLayout(baseRow);
+
+		leftRelationIndicatorRenderer.updateRelations();
+		rightRelationIndicatorRenderer.updateRelations();
 
 		ElementLayout leftRelationIndicatorLayout = new ElementLayout(
 				"RightRelationIndicatorLayout");
@@ -93,14 +108,28 @@ public class DefaultBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 		viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
 		viewLayout.setRenderer(viewRenderer);
 
-		// ElementLayout viewToolBarLayout = new
-		// ElementLayout("viewToolBarLayout");
-		// viewToolBarLayout.setFrameColor(0.5f, 0.5f, 0, 1);
-		// viewToolBarLayout.setPixelGLConverter(pixelGLConverter);
-		// viewToolBarLayout.setPixelSizeY(15);
-		// viewToolBarLayout.setRenderer(new ViewToolBarRenderer(brick));
-
 		Row toolBar = createBrickToolBar(16);
+
+		ElementLayout ratioSpacingLayoutX = new ElementLayout(
+				"ratioSpacingLayoutX");
+		ratioSpacingLayoutX.setRatioSizeX(1);
+		ratioSpacingLayoutX.setRatioSizeY(0);
+
+		ElementLayout collapseButtonLayout = new ElementLayout(
+				"expandButtonLayout");
+		collapseButtonLayout.setFrameColor(1, 0, 0, 1);
+		// expandButtonLayout.setDebug(true);
+		collapseButtonLayout.setPixelGLConverter(pixelGLConverter);
+		collapseButtonLayout.setPixelSizeX(16);
+		collapseButtonLayout.setPixelSizeY(16);
+		collapseButtonLayout.setRenderer(new ButtonRenderer(new Button(
+				EPickingType.BRICK_COLLAPSE_BUTTON, COLLAPSE_BUTTON_ID), brick,
+				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, brick
+						.getTextureManager(),
+				ButtonRenderer.TEXTURE_ROTATION_90));
+		
+		toolBar.append(ratioSpacingLayoutX);
+		toolBar.append(collapseButtonLayout);
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
 		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
@@ -125,5 +154,28 @@ public class DefaultBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 				.setRenderer(rightRelationIndicatorRenderer);
 		baseRow.append(rightRelationIndicatorLayout);
 
+	}
+	
+	protected void registerPickingListeners() {
+		super.registerPickingListeners();
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				brick.setToOverviewMode();
+			}
+		}, EPickingType.BRICK_COLLAPSE_BUTTON, COLLAPSE_BUTTON_ID);
+	}
+	
+	@Override
+	public int getMinHeightPixels() {
+		//TODO: implement
+		return 0;
+	}
+
+	@Override
+	public int getMinWidthPixels() {
+		//TODO: implement
+		return 0;
 	}
 }

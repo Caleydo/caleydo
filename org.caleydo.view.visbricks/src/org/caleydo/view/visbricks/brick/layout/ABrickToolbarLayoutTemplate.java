@@ -36,6 +36,16 @@ public abstract class ABrickToolbarLayoutTemplate extends ABrickLayoutTemplate {
 		overviewHeatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
 				OVERVIEW_HEATMAP_BUTTON_ID);
 
+		updateToolBarButtons();
+	}
+	
+	public void updateToolBarButtons() {
+		
+		heatMapButton.setSelected(false);
+		parCoordsButton.setSelected(false);
+		histogramButton.setSelected(false);
+		overviewHeatMapButton.setSelected(false);
+		
 		switch (brick.getCurrentViewType()) {
 		case GLBrick.HEATMAP_VIEW:
 			heatMapButton.setSelected(true);
@@ -50,8 +60,6 @@ public abstract class ABrickToolbarLayoutTemplate extends ABrickLayoutTemplate {
 			overviewHeatMapButton.setSelected(true);
 			break;
 		}
-		
-		registerPickingListeners();
 	}
 
 	protected Row createBrickToolBar(int pixelHeight) {
@@ -111,6 +119,7 @@ public abstract class ABrickToolbarLayoutTemplate extends ABrickLayoutTemplate {
 		return toolBar;
 	}
 
+	@Override
 	protected void registerPickingListeners() {
 
 		brick.addPickingListener(new APickingListener() {

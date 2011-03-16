@@ -41,6 +41,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.listener.RelationsUpdatedListener;
 
@@ -154,25 +155,25 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		if (brickLayout == null) {
 
-			CompactBrickLayoutTemplate tempLayout = new CompactBrickLayoutTemplate(
-					this, visBricks);
+			brickLayout = new CompactBrickLayoutTemplate(this, visBricks);
 
-			leftRelationIndicatorRenderer = new RelationIndicatorRenderer(this,
-					visBricks, true);
-			rightRelationIndicatorRenderer = new RelationIndicatorRenderer(
-					this, visBricks, false);
-			tempLayout
-					.setRightRelationIndicatorRenderer(rightRelationIndicatorRenderer);
-			tempLayout
-					.setLeftRelationIndicatorRenderer(leftRelationIndicatorRenderer);
+			// leftRelationIndicatorRenderer = new
+			// RelationIndicatorRenderer(this,
+			// visBricks, true);
+			// rightRelationIndicatorRenderer = new RelationIndicatorRenderer(
+			// this, visBricks, false);
+			// tempLayout
+			// .setRightRelationIndicatorRenderer(rightRelationIndicatorRenderer);
+			// tempLayout
+			// .setLeftRelationIndicatorRenderer(leftRelationIndicatorRenderer);
+			// //
+			// leftRelationIndicatorRenderer.updateRelations();
+			// rightRelationIndicatorRenderer.updateRelations();
 			//
-			leftRelationIndicatorRenderer.updateRelations();
-			rightRelationIndicatorRenderer.updateRelations();
-
-			brickLayout = tempLayout;
+			// brickLayout = tempLayout;
 		}
 
-		brickLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		// brickLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 
 		HeatMapCreator heatMapCreator = new HeatMapCreator();
 		AGLView heatMap = heatMapCreator.createRemoteView(this, gl,
@@ -607,6 +608,10 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	public void setBrickLayoutTemplate(ABrickLayoutTemplate brickLayoutTemplate) {
 		this.brickLayout = brickLayoutTemplate;
+		if (templateRenderer != null) {
+			templateRenderer.setTemplate(brickLayout);
+			setRemoteView(currentViewType);
+		}
 	}
 
 	public int getCurrentViewType() {
@@ -726,9 +731,14 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 * @return how much this has affected the height of the brick.
 	 */
 	public float setToOverviewMode() {
+		
+		CompactBrickLayoutTemplate layoutTemplate = new CompactBrickLayoutTemplate(this, visBricks);
+		setBrickLayoutTemplate(layoutTemplate);
+		setRemoteView(GLBrick.OVERVIEW_HEATMAP_COMPACT);
+		
 		isInOverviewMode = true;
 		float minSize = getParentGLCanvas().getPixelGLConverter()
-				.getGLHeightForPixelHeight(30);
+				.getGLHeightForPixelHeight(layoutTemplate.getMinHeightPixels());
 		float currentSize = wrappingLayout.getSizeScaledY();
 		wrappingLayout.setAbsoluteSizeY(minSize);
 		return currentSize - minSize;

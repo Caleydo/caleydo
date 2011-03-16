@@ -5,20 +5,22 @@ import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 public abstract class ABrickLayoutTemplate extends LayoutTemplate {
-	
+
 	protected GLBrick brick;
 	protected LayoutRenderer viewRenderer;
 	protected boolean showHandles;
-	
+
 	public ABrickLayoutTemplate(GLBrick brick) {
 		this.brick = brick;
 		showHandles = false;
+		setPixelGLConverter(brick.getParentGLCanvas().getPixelGLConverter());
+		registerPickingListeners();
 	}
-	
+
 	public void setViewRenderer(LayoutRenderer viewRenderer) {
 		this.viewRenderer = viewRenderer;
 	}
-	
+
 	public boolean isShowHandles() {
 		return showHandles;
 	}
@@ -26,5 +28,11 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	public void setShowHandles(boolean showHandles) {
 		this.showHandles = showHandles;
 	}
+
+	protected abstract void registerPickingListeners();
+
+	public abstract int getMinHeightPixels();
+
+	public abstract int getMinWidthPixels();
 
 }
