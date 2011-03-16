@@ -63,11 +63,6 @@ public class ElementLayout {
 	protected float sizeScaledX = 0;
 	protected float sizeScaledY = 0;
 
-	protected float minSizeX = Float.NaN;
-	protected float minSizeY = Float.NaN;
-
-	protected boolean useMinSize = false;
-
 	protected PixelGLConverter pixelGLConverter;
 
 	protected String layoutName;
@@ -200,42 +195,6 @@ public class ElementLayout {
 			throw new IllegalStateException("Tried to set a pixel size, but no pixelGLConverter is set.");
 		resetY();
 		this.pixelSizeY = pixelSizeY;
-	}
-
-	/**
-	 * Set a min size of an object, which is set when the current size can not be accommodated in the layout.
-	 * 
-	 * @param minSizeX
-	 */
-	public void setMinSizeX(float minSizeX) {
-		this.minSizeX = minSizeX;
-	}
-
-	/**
-	 * Set a min size of an object, which is set when the current size can not be accommodated in the layout.
-	 * 
-	 * @param minSizeX
-	 */
-	public void setMinSizeY(float minSizeY) {
-		this.minSizeY = minSizeY;
-	}
-
-	/**
-	 * Same as {@link #setMinSizeX(float)} for pixel space
-	 * 
-	 * @param minSizeX
-	 */
-	public void setPixelMinSizeX(int pixelMinSizeX) {
-		this.minSizeX = pixelGLConverter.getGLWidthForPixelWidth(pixelMinSizeX);
-	}
-
-	/**
-	 * Same as {@link #setMinSizeY(float)} for pixel space
-	 * 
-	 * @param minSizeX
-	 */
-	public void setPixelMinSizeY(int pixelMinSizeY) {
-		this.minSizeY = pixelGLConverter.getGLWidthForPixelWidth(pixelMinSizeY);
 	}
 
 	/**
@@ -372,10 +331,6 @@ public class ElementLayout {
 		pixelSizeY = Integer.MIN_VALUE;
 	}
 
-	protected void useMinSize(boolean useMinSize) {
-		this.useMinSize = useMinSize;
-	}
-
 	void render(GL2 gl) {
 
 		gl.glTranslatef(getTranslateX(), getTranslateY(), 0);
@@ -440,9 +395,8 @@ public class ElementLayout {
 			sizeScaledX = absoluteSizeX;
 		else
 			sizeScaledX = ratioSizeX * totalWidth;
-		if (useMinSize)
-			sizeScaledY = minSizeY;
-		else if (pixelSizeY != Integer.MIN_VALUE)
+
+		if (pixelSizeY != Integer.MIN_VALUE)
 			sizeScaledY = pixelGLConverter.getGLHeightForPixelHeight(pixelSizeY);
 		else if (!Float.isNaN(absoluteSizeY))
 			sizeScaledY = absoluteSizeY;
@@ -485,9 +439,7 @@ public class ElementLayout {
 	 * @return
 	 */
 	float getUnscalableElementHeight() {
-		if (useMinSize)
-			return minSizeY;
-		else if (pixelSizeY != Integer.MIN_VALUE)
+		if (pixelSizeY != Integer.MIN_VALUE)
 			return pixelGLConverter.getGLHeightForPixelHeight(pixelSizeY);
 		else if (!Float.isNaN(absoluteSizeY))
 			return absoluteSizeY;
