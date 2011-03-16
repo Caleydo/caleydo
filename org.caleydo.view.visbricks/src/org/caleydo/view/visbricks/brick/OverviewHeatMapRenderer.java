@@ -20,7 +20,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 	private ArrayList<float[]> heatMapValues;
 
 	public OverviewHeatMapRenderer(ContentVirtualArray contentVA,
-			StorageVirtualArray storageVA, ISet set) {
+			StorageVirtualArray storageVA, ISet set, boolean showStandardDeviation) {
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 		heatMapValues = new ArrayList<float[]>();
@@ -38,12 +38,19 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 
 			float arithmeticMean = ClusterHelper
 					.arithmeticMean(expressionValues);
-			float standardDeviation = ClusterHelper.standardDeviation(
-					expressionValues, arithmeticMean);
-
-			float[] currentValues = new float[] {
-					arithmeticMean - standardDeviation, arithmeticMean,
-					arithmeticMean + standardDeviation };
+			
+			float[] currentValues;
+			
+			if(showStandardDeviation) {
+				float standardDeviation = ClusterHelper.standardDeviation(
+						expressionValues, arithmeticMean);
+	
+				currentValues = new float[] {
+						arithmeticMean - standardDeviation, arithmeticMean,
+						arithmeticMean + standardDeviation };
+			} else {
+				currentValues = new float[] {arithmeticMean};
+			}
 
 			heatMapValues.add(currentValues);
 		}
@@ -79,6 +86,25 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 			}
 			currentPositionX += heatMapElementWidth;
 		}
+		gl.glEnd();
+
+		gl.glLineWidth(1);
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glBegin(GL2.GL_LINES);
+		currentPositionX = heatMapElementWidth;
+		for (int i = 0; i < heatMapValues.size() - 1; i++) {
+			gl.glVertex3f(currentPositionX, 0, 0);
+			gl.glVertex3f(currentPositionX, y, 0);
+			currentPositionX += heatMapElementWidth;
+		}
+		
+		float currentPositionY = heatMapElementHeight;
+		for (int i = 0; i < heatMapValues.get(0).length - 1; i++) {
+			gl.glVertex3f(0, currentPositionY, 0);
+			gl.glVertex3f(x, currentPositionY, 0);
+			currentPositionY += heatMapElementHeight;
+		}
+		
 		gl.glEnd();
 
 	}
