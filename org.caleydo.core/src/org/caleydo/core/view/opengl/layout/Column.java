@@ -1,9 +1,9 @@
 package org.caleydo.core.view.opengl.layout;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionEvent;
-import org.eclipse.core.runtime.Status;
 
 /**
  * Container for layouts that are stacked on top of each other. The column is a {@link ElementLayout} and
@@ -129,8 +129,8 @@ public class Column
 		availableWidth -= widestElement;
 
 		if (availableHeight < -0.0001) {
-//			Logger.log(new Status(Status.ERROR, "org.caleydo.core", "Layout elements in " + this
-//				+ "don't fit by " + availableHeight));
+			// Logger.log(new Status(Status.ERROR, "org.caleydo.core", "Layout elements in " + this
+			// + "don't fit by " + availableHeight));
 			if (managingClassID != -1 && layoutID != -1) {
 				LayoutSizeCollisionEvent event = new LayoutSizeCollisionEvent();
 				event.setToBigBy(Math.abs(availableHeight));
@@ -141,19 +141,6 @@ public class Column
 		}
 
 		calculateSubElementScales(availableWidth, availableHeight);
-
-		// if (element.getUnscalableElementHeight() > availableHeight + 0.01f) {
-		//
-		// if (!Float.isNaN(element.minSizeY))
-		// {
-		// System.out.println(element.toString() + element.minSizeY + " " + element.hashCode() + " "
-		// + (element.getUnscalableElementHeight() - availableHeight));
-		// element.useMinSize(true);
-		// }
-		// }
-		// else
-		// element.useMinSize(false);
-
 	}
 
 	@Override
@@ -165,12 +152,10 @@ public class Column
 		// the height sum of only dynamic elements
 		float dynamicHeight = 0;
 
-		ElementLayout greedyElement = null;
+		ArrayList<ElementLayout> greedyElements = new ArrayList<ElementLayout>();
 		for (ElementLayout element : elements) {
 			if (element.grabY) {
-				if (greedyElement != null)
-					throw new IllegalStateException("Specified more than one greedy element for " + this);
-				greedyElement = element;
+				greedyElements.add(element);
 				continue;
 			}
 			// check if this is a dynamic column in x and no sub-element has a dynamic size of 1
@@ -186,17 +171,21 @@ public class Column
 
 			// if an element is set in absolute size, the available size is already reduced by that value
 			if (!element.isHeightStatic())
-				dynamicHeight += element.getSizeScaledY();
+				dynamicHeight += element.getSizeScaledY() - element.getUnscalableElementHeight();
 
 			// determining the largest element in X
 			if (largestWidth < element.getSizeScaledX())
 				largestWidth = element.getSizeScaledX();
 
 		}
-		if (greedyElement != null) {
-			greedyElement.setAbsoluteSizeY(availableHeight - dynamicHeight);
-			// the second argument is irrelevant since this is static
-			greedyElement.calculateScales(availableWidth, availableHeight - dynamicHeight);
+		if (greedyElements.size() != 0l) {
+			float remainingSpace = availableHeight - dynamicHeight;
+			float greedyHeight = remainingSpace / greedyElements.size();
+			for (ElementLayout element : greedyElements) {
+				element.setAbsoluteSizeY(greedyHeight);
+				// the second argument is irrelevant since this is static
+				element.calculateScales(availableWidth, greedyHeight);
+			}
 		}
 
 		if (isXDynamic)

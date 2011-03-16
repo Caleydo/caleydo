@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.layout;
 
+import java.util.ArrayList;
+
 /**
  * Container for layouts that are rendered side by side. The row is a {@link ElementLayout} and contains other
  * ElementLayouts. It can be nested into other containers
@@ -79,7 +81,6 @@ public class Row
 
 			if (isLeftToRight) {
 				element.setTranslateX(left);
-
 				element.setTranslateY(y);
 				left += element.getSizeScaledX();
 			}
@@ -124,13 +125,12 @@ public class Row
 		// the largest height of any element in the row (only relevant if isZDynamic is true)
 		float largestHeight = 0;
 
-		ElementLayout greedyElement = null;
+		ArrayList<ElementLayout> greedyElements = new ArrayList<ElementLayout>();
 
 		for (ElementLayout element : elements) {
 			if (element.grabX) {
-				if (greedyElement != null)
-					throw new IllegalStateException("Specified more than one greedy element for " + this);
-				greedyElement = element;
+				greedyElements.add(element);
+
 				continue;
 			}
 			if (isYDynamic && !element.isHeightStatic() && element.ratioSizeY == 1)
@@ -140,16 +140,21 @@ public class Row
 			element.calculateScales(availableWidth, availableHeight);
 			totalWidth += element.getSizeScaledX();
 			// if an element is set in absolute size, the available size is already reduced by that value
-			if (!element.isWidthStatic())
-				dynamicWidth += element.getSizeScaledX();
+
+			dynamicWidth += element.getSizeScaledX() - element.getUnscalableElementWidth();
 			if (largestHeight < element.getSizeScaledY())
 				largestHeight = element.getSizeScaledY();
 
 		}
-		if (greedyElement != null) {
-			greedyElement.setAbsoluteSizeX(availableWidth - dynamicWidth);
-			// the first argument is irrelevant, since this is set static
-			greedyElement.calculateScales(availableWidth - dynamicWidth, availableHeight);
+		if (greedyElements.size() > 0) {
+			float remainingSpace = availableWidth - dynamicWidth;
+			float greedyWidth = remainingSpace / greedyElements.size();
+			for (ElementLayout greedyElement : greedyElements) {
+
+				greedyElement.setAbsoluteSizeX(greedyWidth);
+				// the first argument is irrelevant, since this is set static
+				greedyElement.calculateScales(greedyWidth, availableHeight);
+			}
 			dynamicWidth = availableWidth;
 		}
 		if (isXDynamic)

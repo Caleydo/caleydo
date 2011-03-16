@@ -109,7 +109,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		super(canvas, viewFrustum, true);
 
 		groupColumn = new Column("dimensionGroup");
-		// groupColumn.setDebug(true);
+//		groupColumn.setDebug(true);
+		groupColumn.setXDynamic(true);
 
 		bottomCol = new Column("dimensionGroupColumnBottom");
 		bottomCol.setFrameColor(1, 0, 1, 1);
@@ -520,6 +521,10 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	}
 
+	public void updateLayout() {
+		groupColumn.updateSubLayout();
+	}
+
 	/** resize of a brick */
 	private void handleBrickResize(GL2 gl) {
 		if (!isBrickResizeActive)
@@ -553,7 +558,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		previousXCoordinate = pointCordinates[0];
 
 		centerLayout.setAbsoluteSizeX(newWidth);
-		groupColumn.setAbsoluteSizeX(width + changeX);
+//		groupColumn.setAbsoluteSizeX(width + changeX);
 
 		float height = centerLayout.getSizeScaledY();
 		centerLayout.setAbsoluteSizeY(height * (1 + changePercentage));
@@ -578,9 +583,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			DragAndDropController dragAndDropController) {
 
 		visBricks.clearDimensionGroupSpacerHighlight();
-		
+
 		for (IDraggable draggable : draggables) {
-			
+
 			if (draggable == this)
 				break;
 

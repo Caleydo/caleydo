@@ -110,19 +110,7 @@ public abstract class LayoutContainer
 		elements.add(elementLayout);
 	}
 
-	@Override
-	public boolean isHeightStatic() {
-		if (super.isHeightStatic())
-			return true;
-		return !isYDynamic;
-	}
 
-	@Override
-	public boolean isWidthStatic() {
-		if (super.isWidthStatic())
-			return true;
-		return !isXDynamic;
-	}
 
 	/**
 	 * Add an element to the container at the specified index. Subsequent layouts will be shifted to the
