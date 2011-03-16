@@ -109,7 +109,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		super(canvas, viewFrustum, true);
 
 		groupColumn = new Column("dimensionGroup");
-//		groupColumn.setDebug(true);
+		groupColumn.setDebug(true);
 		groupColumn.setXDynamic(true);
 
 		bottomCol = new Column("dimensionGroupColumnBottom");
@@ -124,7 +124,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		centerLayout = new Column("centerLayout");
 		centerLayout.setFrameColor(1, 1, 0, 1);
-		centerLayout.setDebug(true);
+		//	centerLayout.setDebug(true);
 
 		topCol = new Column("dimensionGroupColumnTop");
 		topCol.setFrameColor(1, 0, 1, 1);

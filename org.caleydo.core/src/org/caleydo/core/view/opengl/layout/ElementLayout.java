@@ -459,7 +459,9 @@ public class ElementLayout {
 	 * @return
 	 */
 	float getUnscalableElementHeight() {
-		if (pixelSizeY != Integer.MIN_VALUE)
+		if (grabY)
+			return 0;
+		else if (pixelSizeY != Integer.MIN_VALUE)
 			return pixelGLConverter.getGLHeightForPixelHeight(pixelSizeY);
 		else if (!Float.isNaN(absoluteSizeY))
 			return absoluteSizeY;
@@ -474,7 +476,9 @@ public class ElementLayout {
 	 * @return
 	 */
 	float getUnscalableElementWidth() {
-		if (pixelSizeX != Integer.MIN_VALUE)
+		if (grabX)
+			return 0;
+		else if (pixelSizeX != Integer.MIN_VALUE)
 			return pixelGLConverter.getGLWidthForPixelWidth(pixelSizeX);
 		else if (!Float.isNaN(absoluteSizeX))
 			return absoluteSizeX;

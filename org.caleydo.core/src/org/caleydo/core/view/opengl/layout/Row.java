@@ -73,7 +73,7 @@ public class Row
 		else
 			y = top;
 
-		// FIXME this is probably wrong for nestsed elements look at Column on how to do it correctly
+		// FIXME this is probably wrong for nested elements look at Column on how to do it correctly
 		for (ElementLayout element : elements) {
 			if (element instanceof LayoutContainer) {
 				((LayoutContainer) element).calculateTransforms(bottom, left, top, right);
@@ -113,7 +113,7 @@ public class Row
 
 			availableWidth -= element.getUnscalableElementWidth();
 		}
-		// TODO I don't think this should be here, it breaks the overviewLayout,
+		// TODO I don't think this should not be here, it breaks the overviewLayout,
 		// availableHeight -= highestElement;
 		calculateSubElementScales(availableWidth, availableHeight);
 	}
