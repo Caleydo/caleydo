@@ -1,8 +1,5 @@
 package org.caleydo.view.visbricks.dimensiongroup;
 
-import gleem.linalg.Vec3f;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,18 +11,12 @@ import org.caleydo.core.data.virtualarray.similarity.GroupSimilarity;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
 import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
-import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
-import org.caleydo.core.view.opengl.util.spline.IConnectionRenderer;
-import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 public class DimensionGroupSpacingRenderer extends LayoutRenderer {
-
-	private final static int NUMBER_OF_SPLINE_POINTS = 30;
-	private final static int NUMBER_OF_SPLINE_POINTS_SHORT = 10;
 
 	private boolean renderDragAndDropSpacer = false;
 
@@ -40,7 +31,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 	private HashMap<Integer, GroupMatch> hashGroupID2GroupMatches = new HashMap<Integer, GroupMatch>();
 
-	private IConnectionRenderer connectionRenderer = new ConnectionBandRenderer();;
+	private ConnectionBandRenderer connectionRenderer = new ConnectionBandRenderer();;
 
 	/**
 	 * Default constructur needed if spacer does not need to render connections
@@ -49,12 +40,13 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 	}
 
-	public DimensionGroupSpacingRenderer(RelationAnalyzer relationAnalyzer,
+	public DimensionGroupSpacingRenderer(RelationAnalyzer relationAnalyzer, ConnectionBandRenderer connectionRenderer,
 			DimensionGroup leftDimGroup, DimensionGroup rightDimGroup) {
 
 		this.relationAnalyzer = relationAnalyzer;
 		this.leftDimGroup = leftDimGroup;
 		this.rightDimGroup = rightDimGroup;
+		this.connectionRenderer = connectionRenderer;
 	}
 
 	public void init() {
@@ -148,7 +140,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 	public void render(GL2 gl) {
 
 		// FIXME: just for testing. this should be done only once!
-		connectionRenderer.init(gl);
+
 
 		// Render drag and drop marker
 		if (renderDragAndDropSpacer) {
@@ -213,7 +205,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 		// gl.glVertex3f(0, leftCenterBrickBottom, -10);
 		// gl.glEnd();
 
-		renderSingleBand(gl, new float[] { 0, leftCenterBrickTop, 0 }, new float[] { 0,
+		connectionRenderer.renderSingleBand(gl, new float[] { 0, leftCenterBrickTop, 0 }, new float[] { 0,
 				leftCenterBrickBottom, 0 }, new float[] { x, rightCenterBrickTop, 0 },
 				new float[] { x, rightCenterBrickBottom, 0 }, true, curveOffset, 0,
 				false, new float[] { 0, 0, 0 }, 0.5f);
@@ -248,83 +240,13 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 				//
 				// gl.glEnd();
 
-				renderSingleBand(gl, new float[] { 0, subGroupMatch.getLeftAnchorYTop(),
+				connectionRenderer.renderSingleBand(gl, new float[] { 0, subGroupMatch.getLeftAnchorYTop(),
 						0 }, new float[] { 0, subGroupMatch.getLeftAnchorYBottom(), 0 },
 						new float[] { x, subGroupMatch.getRightAnchorYTop(), 0 },
 						new float[] { x, subGroupMatch.getRightAnchorYBottom(), 0 },
 						true, 0.3f, 0, false, new float[] { 0.0f, 0.0f, 1 }, 0.15f);
 			}
 		}
-	}
-
-	protected void renderSingleBand(GL2 gl, float[] leftTopPos, float[] leftBottomPos,
-			float[] rightTopPos, float[] rightBottomPos, boolean highlight,
-			float xOffset, int bandID, boolean bandDetailAdaption, float[] color, float opacity) {
-
-		if (leftTopPos == null || leftBottomPos == null || rightTopPos == null
-				|| rightBottomPos == null)
-			return;
-
-		// gl.glPushName(pickingManager.getPickingID(viewID,
-		// EPickingType.COMPARE_RIBBON_SELECTION, bandID));
-
-		float yCorrection = 0;
-		if (bandDetailAdaption)
-			yCorrection = (leftTopPos[1] - rightTopPos[1]) * 0.5f;// *
-																	// Y_FAN_OUT_DETAIL_TO_DETAIL_FACTOR;
-
-		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
-		inputPoints.add(new Vec3f(leftTopPos[0], leftTopPos[1], 0));
-		inputPoints
-				.add(new Vec3f(leftTopPos[0] + xOffset, leftTopPos[1] - yCorrection, 0));
-		inputPoints.add(new Vec3f(rightTopPos[0] - xOffset, rightTopPos[1] + yCorrection,
-				0));
-		inputPoints.add(new Vec3f(rightTopPos[0], rightTopPos[1], rightTopPos[2]));
-
-		NURBSCurve curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
-		ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
-
-		// Band border
-		gl.glLineWidth(1);
-		gl.glColor4f(color[0], color[1], color[2], opacity*2f);
-		gl.glBegin(GL2.GL_LINE_STRIP);
-		for (int i = 0; i < outputPoints.size(); i++) {
-			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), 0f);
-		}
-		gl.glEnd();
-
-		inputPoints = new ArrayList<Vec3f>();
-		inputPoints.add(new Vec3f(leftBottomPos[0], leftBottomPos[1], 0));
-		inputPoints.add(new Vec3f(leftTopPos[0] + xOffset,
-				leftBottomPos[1] - yCorrection, 0));
-		inputPoints.add(new Vec3f(rightBottomPos[0] - xOffset, rightBottomPos[1]
-				+ yCorrection, 0));
-		inputPoints.add(new Vec3f(rightBottomPos[0], rightBottomPos[1], 0));
-
-		curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
-		ArrayList<Vec3f> points = curve.getCurvePoints();
-
-		// Reverse point order
-		for (int i = points.size() - 1; i >= 0; i--) {
-			outputPoints.add(points.get(i));
-		}
-
-		// Band border
-		// gl.glLineWidth(1);
-		gl.glBegin(GL2.GL_LINE_STRIP);
-		for (int i = 0; i < points.size(); i++) {
-			gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0f);
-		}
-		gl.glEnd();
-
-		if (!highlight)
-			gl.glColor4f(0f, 0f, 0f, 0.25f);
-		else
-			gl.glColor4f(color[0], color[1], color[2], opacity);
-
-		connectionRenderer.render(gl, outputPoints);
-
-		// gl.glPopName();
 	}
 
 	public void setRenderSpacer(boolean renderSpacer) {

@@ -1,9 +1,9 @@
 package org.caleydo.view.filterpipeline.representation;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
+
+import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
@@ -11,7 +11,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
-import org.caleydo.core.view.opengl.util.spline.IConnectionRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
@@ -37,7 +36,7 @@ public class FilterRepresentationMetaOrAdvanced
 	
 	private static int NUMBER_OF_SPLINE_POINTS = 40;
 	
-	private IConnectionRenderer inputRenderer = new ConnectionBandRenderer();
+	private ConnectionBandRenderer inputRenderer = new ConnectionBandRenderer();
 
 	public FilterRepresentationMetaOrAdvanced( FilterPipelineRenderStyle renderStyle,
 											   PickingManager pickingManager,

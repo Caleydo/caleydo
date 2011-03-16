@@ -31,7 +31,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
-import org.caleydo.core.view.opengl.util.spline.IConnectionRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.matchmaker.GLMatchmaker;
@@ -102,7 +101,7 @@ public abstract class ACompareViewState {
 
 	boolean renderPseudoHierarchy = false;
 
-	protected IConnectionRenderer compareConnectionRenderer;
+	protected ConnectionBandRenderer compareConnectionRenderer;
 
 	HashMap<Integer, float[]> contentIDToLeftDetailPoints;
 	HashMap<Integer, float[]> contentIDToRightDetailPoints;
