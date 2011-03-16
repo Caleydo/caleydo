@@ -14,8 +14,26 @@ import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionEvent;
 public class Column
 	extends LayoutContainer {
 
+	public enum VAlign {
+		LEFT,
+		RIGHT,
+		CENTER
+	}
+
+	private VAlign vAlign = VAlign.LEFT;
+
 	public Column() {
 		super();
+	}
+
+	/**
+	 * Set flag signaling whether the content should be rendered from bottom to top (default, true) or from
+	 * top to bottom (false)
+	 * 
+	 * @param isBottomUp
+	 */
+	public void setBottomUp(boolean isBottomUp) {
+		this.isBottomUp = isBottomUp;
 	}
 
 	public Column(String layoutName) {
@@ -51,6 +69,10 @@ public class Column
 		}
 	}
 
+	public void setVAlign(VAlign vAlign) {
+		this.vAlign = vAlign;
+	}
+
 	/**
 	 * <p>
 	 * Set flag signaling whether the x-size of the container should be set to the largest size in y of its
@@ -77,15 +99,27 @@ public class Column
 			x = right;
 
 		for (ElementLayout element : elements) {
+			float xTranslate = x;
+			switch (vAlign) {
+				case LEFT:
+					element.setTranslateX(xTranslate);
+					break;
+				case CENTER:
+					xTranslate += (getSizeScaledX() - element.getSizeScaledX()) / 2;
+					element.setTranslateX(xTranslate);
+					break;
+				case RIGHT:
+					break;
+			}
+
 			if (isBottomUp) {
 
 				if (element instanceof LayoutContainer) {
-					((LayoutContainer) element).calculateTransforms(bottom, left,
+					((LayoutContainer) element).calculateTransforms(bottom, xTranslate,
 						bottom + element.getSizeScaledY(), right);
 				}
-				element.setTranslateX(x);
-				element.setTranslateY(bottom);
 
+				element.setTranslateY(bottom);
 				bottom += element.getSizeScaledY();
 
 			}
@@ -96,9 +130,9 @@ public class Column
 				}
 
 				top -= element.getSizeScaledY();
-				element.setTranslateX(x);
 				element.setTranslateY(bottom);
 			}
+
 		}
 	}
 

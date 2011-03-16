@@ -37,6 +37,7 @@ import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout.event.ILayoutSizeCollisionHandler;
 import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionEvent;
 import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionListener;
@@ -109,8 +110,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		super(canvas, viewFrustum, true);
 
 		groupColumn = new Column("dimensionGroup");
-		groupColumn.setDebug(true);
+//		groupColumn.setDebug(true);
 		groupColumn.setXDynamic(true);
+		groupColumn.setVAlign(VAlign.CENTER);
 
 		bottomCol = new Column("dimensionGroupColumnBottom");
 		bottomCol.setFrameColor(1, 0, 1, 1);
@@ -118,20 +120,20 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		bottomCol.setXDynamic(true);
 		bottomCol.setIDs(uniqueID, BOTTOM_COLUMN_ID);
 
-		// bottomCol.setDebug(true);
+//		bottomCol.setDebug(true);
 
 		bottomBricks = new ArrayList<GLBrick>(20);
 
 		centerLayout = new Column("centerLayout");
 		centerLayout.setFrameColor(1, 1, 0, 1);
-		//	centerLayout.setDebug(true);
+		// centerLayout.setDebug(true);
 
 		topCol = new Column("dimensionGroupColumnTop");
 		topCol.setFrameColor(1, 0, 1, 1);
 		topBricks = new ArrayList<GLBrick>(20);
 		topCol.setXDynamic(true);
 		topCol.setIDs(uniqueID, TOP_COLUMN_ID);
-		// topCol.setDebug(true);
+//		topCol.setDebug(true);
 
 		initGroupColumn();
 	}
@@ -554,7 +556,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		previousXCoordinate = pointCordinates[0];
 
 		centerLayout.setAbsoluteSizeX(newWidth);
-//		groupColumn.setAbsoluteSizeX(width + changeX);
+		// groupColumn.setAbsoluteSizeX(width + changeX);
 
 		float height = centerLayout.getSizeScaledY();
 		centerLayout.setAbsoluteSizeY(height * (1 + changePercentage));
@@ -630,16 +632,16 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public List<GLBrick> getBricks() {
 		ArrayList<GLBrick> bricks = new ArrayList<GLBrick>();
-		
-		for (int i = bottomBricks.size()-1; i >= 0; i--) {
+
+		for (int i = bottomBricks.size() - 1; i >= 0; i--) {
 			bricks.add(bottomBricks.get(i));
-			
+
 		}
-		
-//		for (GLBrick brick : bottomBricks) {
-//			bricks.add(brick);
-//		}
-	
+
+		// for (GLBrick brick : bottomBricks) {
+		// bricks.add(brick);
+		// }
+
 		for (GLBrick brick : topBricks) {
 			bricks.add(brick);
 		}

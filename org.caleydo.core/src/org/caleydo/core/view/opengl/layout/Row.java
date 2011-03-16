@@ -18,6 +18,14 @@ public class Row
 	public Row(String layoutName) {
 		super(layoutName);
 	}
+	
+	/**
+	 * Set the flag signaling whether the content should be rendered from left to right (true, default) or
+	 * from right to left (false)
+	 */
+	public void setLeftToRight(boolean isLeftToRight) {
+		this.isLeftToRight = isLeftToRight;
+	}
 
 	@Override
 	public float getUnscalableElementWidth() {

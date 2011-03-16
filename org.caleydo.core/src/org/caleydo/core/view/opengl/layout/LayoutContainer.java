@@ -84,24 +84,6 @@ public abstract class LayoutContainer
 	}
 
 	/**
-	 * Set flag signaling whether the content should be rendered from bottom to top (default, true) or from
-	 * top to bottom (false)
-	 * 
-	 * @param isBottomUp
-	 */
-	public void setBottomUp(boolean isBottomUp) {
-		this.isBottomUp = isBottomUp;
-	}
-
-	/**
-	 * Set the flag signaling whether the content should be rendered from left to right (true, default) or
-	 * from right to left (false)
-	 */
-	public void setLeftToRight(boolean isLeftToRight) {
-		this.isLeftToRight = isLeftToRight;
-	}
-
-	/**
 	 * Append an element to the container at the end
 	 * 
 	 * @param elementLayout
@@ -109,8 +91,6 @@ public abstract class LayoutContainer
 	public void append(ElementLayout elementLayout) {
 		elements.add(elementLayout);
 	}
-
-
 
 	/**
 	 * Add an element to the container at the specified index. Subsequent layouts will be shifted to the

@@ -180,10 +180,10 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		centerRowLayout = new Row("centerArchRow");
 		centerRowLayout.setFrameColor(1, 1, 0, 1);
-		centerRowLayout.setDebug(false);
+		// centerRowLayout.setDebug(false);
 
 		ElementLayout dimensionGroupSpacing = new ElementLayout("firstCenterDimGrSpacing");
-		dimensionGroupSpacing.setDebug(true);
+		// dimensionGroupSpacing.setDebug(true);
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(
 				null, connectionRenderer, null, dimensionGroupManager
 						.getDimensionGroups().get(
@@ -204,7 +204,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			// group.getLayout().setAbsoluteSizeX(archHeight);
 			group.setArchHeight(ARCH_PIXEL_HEIGHT);
 			centerRowLayout.append(group.getLayout());
-			centerRowLayout.setDebug(true);
+			// centerRowLayout.setDebug(true);
 
 			if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1) {
 				dimensionGroupSpacing = new ElementLayout("dynamicDimGrSpacing");
@@ -221,7 +221,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 						.getPixelGLConverter());
 				dimensionGroupSpacing.setPixelSizeX(50);
 			}
-			dimensionGroupSpacing.setDebug(true);
+			// dimensionGroupSpacing.setDebug(true);
 
 			dimensionGroupSpacingRenderer.setLineLength(archHeight);
 			dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
