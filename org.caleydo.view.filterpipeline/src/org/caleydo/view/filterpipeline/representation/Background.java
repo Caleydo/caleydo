@@ -61,8 +61,14 @@ public class Background
 		this.filterList = filterList;
 		this.firstFilterId = firstFilterId;
 		
-		if( filterList.isEmpty() )
+		if( filterList.size() < 2 )
 			return;
+		
+		FilterRepresentation first 	= filterList.get(0).getRepresentation();
+		FilterRepresentation second = filterList.get(1).getRepresentation();
+		
+		float offset = ( second.getPosition().x() - first.getPosition().x()
+					     - first.getSize().x() ) / 2.f;
 		
 		dropPositions = new float[filterList.size() + 1];
 		
@@ -71,14 +77,14 @@ public class Background
 		for (FilterItem<?> filterItem : filterList)
 		{
 			dropPositions[index++] =
-				filterItem.getRepresentation().getPosition().x();
+				filterItem.getRepresentation().getPosition().x() - offset;
 		}
 		
 		// after last filter
 		FilterRepresentation lastFilter =
 			filterList.get(index - 1).getRepresentation();
 		dropPositions[index] = lastFilter.getPosition().x()
-							 + lastFilter.getSize().x();
+							 + lastFilter.getSize().x() + offset;
 	}
 
 	@Override

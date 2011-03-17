@@ -220,10 +220,10 @@ public class FilterRepresentation
 		(
 			gl,
 			""+filter.getOutput().size(),
-			vPos.x() + vSize.x(),
+			vPos.x() + vSize.x() - 0.03f,
 			vPos.y() + heightRight + 0.05f,
 			Z_POS_TEXT,
-			0.007f,
+			0.004f,
 			20
 		);
 		
@@ -233,10 +233,10 @@ public class FilterRepresentation
 			gl,
 			""+(filter.getOutput().size() - filter.getInput().size())
 			/*+ " (-"+filter.getSizeVADelta()+")"*/,
-			vPos.x() + 0.05f,
-			vPos.y() - 0.18f,
+			vPos.x() + 0.2f,
+			vPos.y() - 0.1f,
 			Z_POS_TEXT,
-			0.007f,
+			0.004f,
 			20
 		);
 	}

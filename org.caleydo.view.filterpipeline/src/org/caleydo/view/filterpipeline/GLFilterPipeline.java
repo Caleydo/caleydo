@@ -171,6 +171,8 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glEnable(GL2.GL_LINE_SMOOTH);
+		gl.glEnable(GL2.GL_POLYGON_SMOOTH);
+		gl.glHint(GL2.GL_POLYGON_SMOOTH_HINT, GL2.GL_NICEST);
 	}
 
 	@Override
@@ -254,7 +256,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		if (!filterList.isEmpty()) {
 			// display an arrow to show hidden filters
 			if (firstFilter > 0)
-				displayCollapseArrow(gl, firstFilter - 1, 0.1f);
+				displayCollapseArrow(gl, firstFilter - 1, 0.12f);
 
 			for (FilterItem<?> filter : filterList) {
 				if (filter.getId() < firstFilter)
@@ -273,7 +275,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 						+ filter.getRepresentation().getHeightLeft()
 						+ 0.05f,
 						0.9f,
-						0.007f,
+						0.004f,
 						20
 					);
 				}
@@ -283,7 +285,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 					(
 						gl,
 						filter.getId(),
-						filter.getRepresentation().getPosition().x() - 0.1f * filterSize.x() - 0.15f
+						filter.getRepresentation().getPosition().x() - 0.062f * filterSize.x() - 0.15f
 					);
 				}
 
@@ -561,19 +563,21 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		else if (firstFilter < 0)
 			firstFilter = 0;
 
-		filterSize = new Vec2f((viewFrustum.getWidth() - 0.5f)
-				/ (filterList.size() - firstFilter),
+		filterSize = new Vec2f
+		(
+			(viewFrustum.getWidth() - 0.1f)
+			/ (filterList.size() - firstFilter),
 
-		// 100 elements will be high exactly 1 unit. So we need to scale
-		// it that the largest (== first) filter fits.
-				(viewFrustum.getHeight() - 0.4f)
-			    / (filterList.get(firstFilter).getInput().size()/100.f)
-			);
+			// 100 elements will be high exactly 1 unit. So we need to scale
+			// it that the largest (== first) filter fits.
+			(viewFrustum.getHeight() - 0.4f)
+		    / (filterList.get(firstFilter).getInput().size()/100.f)
+		);
 		
-		Vec2f filterPosition = new Vec2f(0.4f, renderStyle.FILTER_SPACING_BOTTOM),
+		Vec2f filterPosition = new Vec2f(0.12f, renderStyle.FILTER_SPACING_BOTTOM),
 		      width = new Vec2f(filterSize.x(), 0);
 		
-		filterSize.setX(filterSize.x() * 0.9f);
+		filterSize.setX(filterSize.x() * 0.945f);
 		
 		for (FilterItem<?> filter : filterList)
 		{

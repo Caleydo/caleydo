@@ -1,15 +1,9 @@
 package org.caleydo.view.filterpipeline.representation;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.Vector;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -25,7 +19,7 @@ import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 public class FilterRepresentationMetaOrAdvanced
 	extends FilterRepresentationMetaOr
 {
-	private int displayListOutputLines = -1;
+	private int displayListOutput = -1;
 	private boolean displayListDirty = true;
 	private float oldHeightRight = 0;
 	
@@ -69,25 +63,16 @@ public class FilterRepresentationMetaOrAdvanced
 		float offsetY = scaleY * heightLeft;
 		scaleY *= 0.9f;
 		
+		float subFiltersBottom = vPos.y() + spacingBottom * heightLeft;
 		Vec2f curPos = new Vec2f
 		(
 			vPos.x() + spacingLeft * vSize.x(),
-			vPos.y() + spacingBottom * heightLeft
+			subFiltersBottom
 		);
 		float delta = heightLeft - heightRight;
 		float subFilterWidth = subfilterScalingX * vSize.x();
 		float subFilterRight = curPos.x() + subFilterWidth;
 		float filterRight = vPos.x() + vSize.x();
-		
-		// keep track of unhandled elements
-		SortedSet<Integer> remainingElements =
-			new TreeSet<Integer>( elementsPassed );
-		
-		if( displayListDirty )
-		{
-			displayListDirty = false;
-
-		}
 
 		for( int i = 0;
 			 i < subFilterSizes.length;
@@ -150,163 +135,83 @@ public class FilterRepresentationMetaOrAdvanced
 				);
 			}
 			
-//			if( elementsPassedAll.size() > 0 )
-//			{
-//				// render common output
-//				renderShape
-//				(
-//					gl,
-//					GL2.GL_QUADS,
-//					new Vec2f(curPos.x() + subfilterScalingX * vSize.x(), curPos.y()),
-//					vSize.x()/4.f,
-//					((float)elementsPassedAll.size()/subFilterSizes[i]) * scaleY * heightRight,
-//					((float)elementsPassedAll.size()/filter.getOutput().size()) * getHeightRight(),
-//					vPos.y() - curPos.y(),
-//					new float[]{0.2f, 0.9f, 0.2f, 0.5f},
-//					Z_POS_BODY
-//				);
-//			}
-
-			// get output of sub filter
-			SortedSet<Integer> subFilterPassed =
-				new TreeSet<Integer>( subFiltersPassedElements.get(i) );
-			
-			// calculate intersection with the not yet drawn elements
-			subFilterPassed.retainAll(remainingElements);
-			
-			// get elements only passed this filter
-			//for( int other = i + 1; other < subFilterSizes.length; ++other )
-			for( int other = 0; other < subFilterSizes.length; ++other )
-			{
-				if( other != i )
-					subFilterPassed.removeAll(subFiltersPassedElements.get(other));
-			}
-			
-			float curY = vPos.y() + ((float)(elementsPassed.size() - remainingElements.size())/filter.getInput().size()) * heightLeft;
-			remainingElements.removeAll(subFilterPassed);
-			
-			gl.glBegin(GL2.GL_QUADS);
-			{
-				gl.glColor4fv(new float[]{0.2f, 0.9f, 0.2f, 0.5f}, 0);
-		
-				gl.glVertex3f(subFilterRight, curPos.y(), Z_POS_BODY);
-				gl.glVertex3f(subFilterRight, curPos.y() + ((float)subFilterPassed.size()/subFilterSizes[i]) * scaleY * heightRight, Z_POS_BODY);
-				gl.glVertex3f(filterRight, curY + ((float)subFilterPassed.size()/filter.getInput().size()) * heightLeft, Z_POS_BODY);
-				gl.glVertex3f(filterRight, curY, Z_POS_BODY);			
-			}
-			gl.glEnd();
-			
-			// get elements passed this filter and a second one
-			for( int second = 0; second < subFilterSizes.length; ++second )
-			{
-				if( second == i )
-					continue;
-				
-				// get output of sub filter
-				subFilterPassed =
-					new TreeSet<Integer>( subFiltersPassedElements.get(i) );
-				
-				// calculate intersection with the not yet drawn elements and with second filter
-				subFilterPassed.retainAll(remainingElements);				
-				subFilterPassed.retainAll(subFiltersPassedElements.get(second));
-				
-				for( int other = 0; other < subFilterSizes.length; ++other )
-				{
-					if( other == i || other == second )
-						continue;
-
-					subFilterPassed.removeAll(subFiltersPassedElements.get(other));
-				}
-				
-				curY = vPos.y() + ((float)(elementsPassed.size() - remainingElements.size())/filter.getInput().size()) * heightLeft;
-				remainingElements.removeAll(subFilterPassed);
-				
-				gl.glBegin(GL2.GL_QUADS);
-				{
-					gl.glColor4fv(new float[]{0.2f, 0.9f, 0.2f, 0.5f}, 0);
-			
-					gl.glVertex3f(subFilterRight, curPos.y(), Z_POS_BODY);
-					gl.glVertex3f(subFilterRight, curPos.y() + ((float)subFilterPassed.size()/subFilterSizes[i]) * scaleY * heightRight, Z_POS_BODY);
-					gl.glVertex3f(filterRight, curY + ((float)subFilterPassed.size()/filter.getInput().size()) * heightLeft, Z_POS_BODY);
-					gl.glVertex3f(filterRight, curY, Z_POS_BODY);			
-				}
-				gl.glEnd();
-			}
 		}
 		
 		// reset height
 		heightRight = getHeightRight();
 		
-//		if( displayListDirty )
-//		{
-//			displayListDirty = false;
-//
-//			if( displayListOutputLines < 0 )
-//				displayListOutputLines = gl.glGenLists(1);
-//
-//			gl.glNewList(displayListOutputLines, GL2.GL_COMPILE);
-//		
-//			int[] currentPositions = new int[subFiltersPassedElements.size()];
-//			int[] currentSteps = new int[subFiltersPassedElements.size()];
-//			int numSteps = elementsPassed.size() - elementsPassedAll.size();
-//			int step = 0;
-//	
-//			gl.glLineWidth(0.5f);
-//			gl.glBegin(GL2.GL_LINES);
-//			
-//			// render not common elements
-//			for (Integer element : elementsPassed)
-//			{
-//				boolean skip = elementsPassedAll.contains(element);
-//				
-//				if( !skip )
-//					gl.glColor4f
-//					(
-//						0.9f - (0.5f * step)/numSteps,
-//						0.2f + (0.8f * step)/numSteps,
-//						0.1f,
-//						0.2f
-//					);
-//				
-//				for( int i = 0; i < subFiltersPassedElements.size(); ++i )
-//				{
-//					if( currentPositions[i] >= subFiltersPassedElements.get(i).size() )
-//						continue;
-//	
-//					if( (Integer)subFiltersPassedElements.get(i).toArray()[currentPositions[i]] == element )
-//					{
-//						++currentPositions[i];
-//						
-//						if( !skip )
-//						{
-//							gl.glVertex3f
-//							(
-//								vPos.x() + (1.f - spacingRight) * vSize.x(),
-//								vPos.y() + spacingBottom * heightLeft
-//										 + i * offsetY
-//								+ ((float)(elementsPassedAll.size() + currentSteps[i]++)/subFilterSizes[i]) * scaleY
-//								  * vSize.y() * (subFilterSizes[i]/100.f), // equals heightRight of sub filter
-//								Z_POS_BODY + 0.1f
-//							);
-//							gl.glVertex3f
-//							(
-//								vPos.x() + vSize.x(),
-//								vPos.y() + ((float)(elementsPassedAll.size() + step)/filter.getOutput().size()) * heightRight,
-//								Z_POS_BODY + 0.1f
-//							);
-//						}
-//					}
-//				}
-//				
-//				if( !skip )
-//					++step;
-//			}
-//			
-//			gl.glEnd();
-//			gl.glEndList();
-//		}
-//
-//		gl.glCallList(displayListOutputLines);
+		if( displayListDirty )
+		{
+			displayListDirty = false;
+
+			if( displayListOutput < 0 )
+				displayListOutput = gl.glGenLists(1);
+
+			gl.glNewList(displayListOutput, GL2.GL_COMPILE);
+		
+			// Steps of individual sub filters
+			int[] currentSteps = new int[subFilterSizes.length];
+			
+			// Steps of output of total meta filter
+			int outputSteps = 0;
+			
+			// use stencil buffer to prevent overlay of transparent pixels
+			gl.glEnable(GL2.GL_STENCIL_TEST);
+			gl.glClearStencil(0);
+			gl.glStencilFunc(GL2.GL_EQUAL, 0, 0xff);
+			gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_INCR);
+			
+			gl.glDisable(GL2.GL_DEPTH_TEST);
+			
+			for( Intersection intersection : intersections )
+			{
+				float[] color = new float[]{0,0,0,0.5f};
+				
+				for( int filterId : intersection.filterIds )
+				{
+					float[] filterColor =
+						renderStyle.getFilterColorCombined(filterId);
+					
+					for( int channel = 0; channel < 3; ++channel )
+						color[channel] += filterColor[channel]/intersection.filterIds.length;
+				}
+				
+				gl.glColor4fv(color, 0);
+				
+				gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
+				gl.glBegin(GL2.GL_QUADS);
+				
+				for( int filterId : intersection.filterIds )
+				{
+					float subFilterBottom =
+						subFiltersBottom
+						+ filterId * offsetY
+						+ scaleY * vSize.y() * (currentSteps[filterId]/100.f);
+					
+					float filterBottom =
+						vPos.y() + vSize.y() * (outputSteps/100.f);
+					
+					float height =
+						vSize.y() * (intersection.numElements/100.f);
+					
+					gl.glVertex3f(subFilterRight, subFilterBottom, Z_POS_BODY);
+					gl.glVertex3f(subFilterRight, subFilterBottom + scaleY * height, Z_POS_BODY);
+					gl.glVertex3f(filterRight, filterBottom + height, Z_POS_BODY);
+					gl.glVertex3f(filterRight, filterBottom, Z_POS_BODY);
+
+					currentSteps[filterId] += intersection.numElements;
+				}
+				
+				gl.glEnd();				
+				outputSteps += intersection.numElements;
+			}
+			
+			gl.glDisable(GL2.GL_STENCIL_TEST);
+			gl.glEnable(GL2.GL_DEPTH_TEST);
+			gl.glEndList();
+		}
+
+		gl.glCallList(displayListOutput);
 		
 		// render selection/mouseover if needed
 		if( selectionType != SelectionType.NORMAL && mouseOverItem < 0 )

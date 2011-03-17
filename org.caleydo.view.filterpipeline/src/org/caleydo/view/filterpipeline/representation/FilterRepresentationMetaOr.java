@@ -26,6 +26,7 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 	protected SortedSet<Integer> elementsPassed = new TreeSet<Integer>();
 	protected int[] subFilterSizes = new int[0];
 	protected ArrayList<SortedSet<Integer>> subFiltersPassedElements = null;
+	protected ArrayList<Intersection> intersections = new ArrayList<Intersection>();
 
 	protected boolean sizesDirty = true;
 
@@ -140,8 +141,13 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 		(
 			"Check intersections ("+elementsPassed.size()+" elements):"
 		);
-		
+	
+		intersections.clear();
 		int numSubFilters = subFilterSizes.length;
+		
+		// Use to store single contribution of last element to show it on top
+		// to reduce unneeded cluttering
+		Intersection lastIntersection = null;
 		
 		// get all intersections between each permutation of filters
 		for( int count = 1; count <= numSubFilters; ++count )
@@ -207,7 +213,16 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 				
 				if( !intersection.isEmpty() )
 				{
-					// TODO save intersection
+					Intersection curIntersection = new Intersection
+					(
+						currentFilters.clone(),
+						intersection.size()
+					);
+					
+					if( count == 1 && currentFilters[0] == numSubFilters - 1 )
+						lastIntersection = curIntersection;
+					else
+						intersections.add( curIntersection );
 				}
 				
 				// increment last filter
@@ -232,6 +247,21 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 					}
 				}
 			} while( doCheck );
+		}
+		
+		if( lastIntersection != null )
+			intersections.add( lastIntersection );
+	}
+	
+	protected class Intersection
+	{
+		public int[] filterIds;
+		public int numElements;
+		
+		public Intersection( int[] filterIds, int numElements )
+		{
+			this.filterIds = filterIds;
+			this.numElements = numElements;
 		}
 	}
 
