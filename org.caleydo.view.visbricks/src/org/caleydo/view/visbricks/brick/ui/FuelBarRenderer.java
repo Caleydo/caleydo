@@ -6,12 +6,8 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
@@ -33,10 +29,6 @@ public class FuelBarRenderer extends LayoutRenderer {
 
 	@Override
 	public void render(GL2 gl) {
-		// FIXME: this should not be necessary, since fuel bars are only for
-		// those view that actually contain a group
-		if (brick.getGroup() == null)
-			return;
 
 		ISet set = brick.getSet();
 		ContentVirtualArray contentVA = brick.getContentVA();

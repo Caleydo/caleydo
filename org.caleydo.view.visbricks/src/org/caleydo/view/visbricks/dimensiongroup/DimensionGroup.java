@@ -403,7 +403,6 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
 		createBricks();
-		updateLayout();
 	}
 
 	@Override

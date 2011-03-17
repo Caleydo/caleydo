@@ -17,6 +17,7 @@ import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
 import org.caleydo.view.visbricks.brick.ui.BorderedAreaRenderer;
 import org.caleydo.view.visbricks.brick.ui.Button;
 import org.caleydo.view.visbricks.brick.ui.ButtonRenderer;
+import org.caleydo.view.visbricks.brick.ui.DimensionBarRenderer;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupCaptionRenderer;
@@ -34,6 +35,7 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 	protected static final int TOOLBAR_HEIGHT_PIXELS = 16;
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;
+	protected static final int DIMENSION_BAR_HEIGHT_PIXELS = 12;
 	protected static final int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
 	protected static final int BUTTON_HEIGHT_PIXELS = 16;
 	protected static final int BUTTON_WIDTH_PIXELS = 16;
@@ -150,6 +152,14 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 		lineSeparatorLayout.setRatioSizeX(1);
 		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
 
+		ElementLayout dimensionBarLaylout = new ElementLayout("dimensionBar");
+		dimensionBarLaylout.setPixelGLConverter(pixelGLConverter);
+		dimensionBarLaylout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
+		dimensionBarLaylout.setRatioSizeX(1);
+		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick));
+
+		baseColumn.append(spacingLayoutY);
+		baseColumn.append(dimensionBarLaylout);
 		baseColumn.append(spacingLayoutY);
 		baseColumn.append(viewLayout);
 		baseColumn.append(spacingLayoutY);
@@ -284,8 +294,9 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 	@Override
 	public int getMinHeightPixels() {
-		return 5 * SPACING_PIXELS + TOOLBAR_HEIGHT_PIXELS
+		return 6 * SPACING_PIXELS + TOOLBAR_HEIGHT_PIXELS
 				+ LINE_SEPARATOR_HEIGHT_PIXELS + CAPTION_HEIGHT_PIXELS
+				+ DIMENSION_BAR_HEIGHT_PIXELS
 				+ viewRenderer.getMinHeightPixels();
 	}
 
