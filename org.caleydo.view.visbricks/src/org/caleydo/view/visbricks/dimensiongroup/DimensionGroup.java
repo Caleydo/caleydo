@@ -2,6 +2,7 @@ package org.caleydo.view.visbricks.dimensiongroup;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -73,7 +74,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	private ArrayList<GLBrick> bottomBricks;
 	private ArrayList<GLBrick> topBricks;
-	
+
 	private boolean isGlobalViewSwitching = false;
 
 	private Column bottomCol;
@@ -197,6 +198,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		ContentGroupList groupList = contentVA.getGroupList();
 		// int count = 0;
 		groupList.updateGroupInfo();
+
 		for (Group group : groupList) {
 			GLBrick subBrick = createBrick(new ElementLayout("subbrick"));
 
@@ -206,15 +208,39 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 			subBrick.setContentVA(group, subVA);
 
+			//
+
 			if (centerBrick.getAverageValue() < subBrick.getAverageValue()) {
 				insertBrick(subBrick, topBricks, topCol);
+
 			} else {
 				insertBrick(subBrick, bottomBricks, bottomCol);
+				// bottomCol.append(bricksSpacing);
 			}
 
 			// setOptimalLayoutSize();
 			setStaticLayoutSize();
 
+		}
+		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
+		brickSpacingLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		brickSpacingLayout.setPixelSizeY(10);
+		brickSpacingLayout.setRatioSizeX(0);
+//		brickSpacingLayout.setDebug(true);
+	
+
+		for (int count = 0; count < topCol.size();) {
+	
+			topCol.add(count, brickSpacingLayout);
+			count++;
+			count++;
+		}
+		
+		for (int count = 0; count < bottomCol.size();) {
+		
+			bottomCol.add(count, brickSpacingLayout);
+			count++;
+			count++;
 		}
 
 	}
@@ -531,7 +557,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		for (GLBrick brick : bottomBricks) {
 			brick.setRemoteView(viewType);
 		}
-//		centerBrick.setRemoteView(viewType);
+		// centerBrick.setRemoteView(viewType);
 		groupColumn.updateSubLayout();
 	}
 
@@ -751,10 +777,10 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
 		this.isGlobalViewSwitching = isGlobalViewSwitching;
-		for(GLBrick brick : topBricks) {
+		for (GLBrick brick : topBricks) {
 			brick.setGlobalViewSwitching(isGlobalViewSwitching);
 		}
-		for(GLBrick brick : bottomBricks) {
+		for (GLBrick brick : bottomBricks) {
 			brick.setGlobalViewSwitching(isGlobalViewSwitching);
 		}
 	}

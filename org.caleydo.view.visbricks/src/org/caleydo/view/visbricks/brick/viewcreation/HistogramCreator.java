@@ -10,7 +10,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.visbricks.brick.GLBrick;
 

@@ -3,7 +3,6 @@ package org.caleydo.view.visbricks.brick.ui;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.set.Set;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;

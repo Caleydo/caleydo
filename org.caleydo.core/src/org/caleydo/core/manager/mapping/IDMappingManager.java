@@ -514,8 +514,8 @@ public class IDMappingManager {
 			path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
 		}
 		catch (IllegalArgumentException e) {
-			Logger.log(new Status(IStatus.WARNING, toString(), "No mapping found between " + source + " and "
-				+ destination + " for: " + sourceID));
+//			Logger.log(new Status(IStatus.INFO, toString(), "No mapping found between " + source + " and "
+//				+ destination + " for: " + sourceID));
 			return null;
 		}
 		Object currentID = sourceID;
