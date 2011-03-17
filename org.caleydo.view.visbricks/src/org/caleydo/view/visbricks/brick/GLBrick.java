@@ -617,11 +617,19 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		if (viewRenderer == null)
 			return;
 
+		if (isInOverviewMode && !brickLayout.isViewTypeValid(viewType)) {
+			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks,
+					dimensionGroup);
+			templateRenderer.setTemplate(brickLayout);
+			isInOverviewMode = false;
+		}
+
 		if (!brickLayout.isViewTypeValid(viewType))
 			return;
 
 		currentRemoteView = views.get(viewType);
 		brickLayout.setViewRenderer(viewRenderer);
+		brickLayout.viewTypeChanged(viewType);
 		float minSize = getParentGLCanvas().getPixelGLConverter()
 				.getGLHeightForPixelHeight(brickLayout.getMinHeightPixels());
 		wrappingLayout.setAbsoluteSizeY(minSize);
@@ -789,6 +797,15 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	public boolean isInOverviewMode() {
 		return isInOverviewMode;
+	}
+	
+	/**
+	 * Sets, whether view switching by this brick should affect other bricks in the dimension group.
+	 * 
+	 * @param isGlobalViewSwitching
+	 */
+	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
+		brickLayout.setGlobalViewSwitching(isGlobalViewSwitching);
 	}
 
 }

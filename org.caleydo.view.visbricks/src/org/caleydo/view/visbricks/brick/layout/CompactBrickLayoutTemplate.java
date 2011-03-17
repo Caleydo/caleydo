@@ -167,7 +167,6 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 						brick, visBricks, dimensionGroup);
 				brick.setBrickLayoutTemplate(layoutTemplate);
 				brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
-				layoutTemplate.updateToolBarButtons(EContainedViewType.OVERVIEW_HEATMAP);
 				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_EXPAND_BUTTON, EXPAND_BUTTON_ID);
@@ -194,6 +193,11 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 	@Override
 	public EContainedViewType getDefaultViewType() {
 		return EContainedViewType.OVERVIEW_HEATMAP_COMPACT;
+	}
+
+	@Override
+	public void viewTypeChanged(EContainedViewType viewType) {
+
 	}
 
 }

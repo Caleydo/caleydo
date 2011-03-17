@@ -25,7 +25,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
  * @author Christian Partl
  * 
  */
-public class DefaultBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
+public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected static final int FUEL_BAR_HEIGHT_PIXELS = 4;
 	protected static final int TOOLBAR_HEIGHT_PIXELS = 16;
@@ -35,6 +35,17 @@ public class DefaultBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 	protected static final int HANDLE_SIZE_PIXELS = 10;
 
 	private static final int COLLAPSE_BUTTON_ID = 0;
+	protected static final int HEATMAP_BUTTON_ID = 1;
+	protected static final int PARCOORDS_BUTTON_ID = 2;
+	protected static final int HISTOGRAM_BUTTON_ID = 3;
+	protected static final int OVERVIEW_HEATMAP_BUTTON_ID = 4;
+	protected static final int VIEW_SWITCHING_MODE_BUTTON_ID = 5;
+
+	protected Button heatMapButton;
+	protected Button parCoordsButton;
+	protected Button histogramButton;
+	protected Button overviewHeatMapButton;
+	protected Button viewSwitchingModeButton;
 
 	private GLVisBricks visBricks;
 	private RelationIndicatorRenderer leftRelationIndicatorRenderer;
@@ -48,6 +59,22 @@ public class DefaultBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 				visBricks, true);
 		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
 				visBricks, false);
+
+		heatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
+				HEATMAP_BUTTON_ID);
+		parCoordsButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
+				PARCOORDS_BUTTON_ID);
+		histogramButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
+				HISTOGRAM_BUTTON_ID);
+		overviewHeatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
+				OVERVIEW_HEATMAP_BUTTON_ID);
+		viewSwitchingModeButton = new Button(
+				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
+				VIEW_SWITCHING_MODE_BUTTON_ID);
+		viewSwitchingModeButton.setSelected(dimensionGroup
+				.isGlobalViewSwitching());
+
+		viewTypeChanged(getDefaultViewType());
 	}
 
 	public void setLeftRelationIndicatorRenderer(
@@ -113,27 +140,6 @@ public class DefaultBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 		Row toolBar = createBrickToolBar(TOOLBAR_HEIGHT_PIXELS);
 
-		ElementLayout ratioSpacingLayoutX = new ElementLayout(
-				"ratioSpacingLayoutX");
-		ratioSpacingLayoutX.setRatioSizeX(1);
-		ratioSpacingLayoutX.setRatioSizeY(0);
-
-		ElementLayout collapseButtonLayout = new ElementLayout(
-				"expandButtonLayout");
-		collapseButtonLayout.setFrameColor(1, 0, 0, 1);
-		// expandButtonLayout.setDebug(true);
-		collapseButtonLayout.setPixelGLConverter(pixelGLConverter);
-		collapseButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-		collapseButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		collapseButtonLayout.setRenderer(new ButtonRenderer(new Button(
-				EPickingType.BRICK_COLLAPSE_BUTTON, COLLAPSE_BUTTON_ID), brick,
-				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, brick
-						.getTextureManager(),
-				ButtonRenderer.TEXTURE_ROTATION_90));
-
-		toolBar.append(ratioSpacingLayoutX);
-		toolBar.append(collapseButtonLayout);
-
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
 		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
@@ -160,8 +166,185 @@ public class DefaultBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 	}
 
+	/**
+	 * Creates the toolbar containing buttons for view switching.
+	 * 
+	 * @param pixelHeight
+	 * @return
+	 */
+	protected Row createBrickToolBar(int pixelHeight) {
+		Row toolBar = new Row("ToolBarRow");
+		toolBar.setYDynamic(true);
+
+		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
+		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
+		spacingLayoutX.setPixelSizeX(4);
+		spacingLayoutX.setPixelSizeY(0);
+
+		ElementLayout heatMapButtonLayout = new ElementLayout("heatMapButton");
+		heatMapButtonLayout.setPixelGLConverter(pixelGLConverter);
+		heatMapButtonLayout.setPixelSizeX(pixelHeight);
+		heatMapButtonLayout.setPixelSizeY(pixelHeight);
+		heatMapButtonLayout.setRenderer(new ButtonRenderer(heatMapButton,
+				brick, EIconTextures.HEAT_MAP_ICON, brick.getTextureManager()));
+
+		ElementLayout parCoordsButtonLayout = new ElementLayout("parCoords");
+		parCoordsButtonLayout.setPixelGLConverter(pixelGLConverter);
+		parCoordsButtonLayout.setPixelSizeX(pixelHeight);
+		parCoordsButtonLayout.setPixelSizeY(pixelHeight);
+		parCoordsButtonLayout
+				.setRenderer(new ButtonRenderer(parCoordsButton, brick,
+						EIconTextures.PAR_COORDS_ICON, brick
+								.getTextureManager()));
+
+		ElementLayout histogramButtonLayout = new ElementLayout(
+				"histogramButton");
+		histogramButtonLayout.setPixelGLConverter(pixelGLConverter);
+		histogramButtonLayout.setPixelSizeX(pixelHeight);
+		histogramButtonLayout.setPixelSizeY(pixelHeight);
+		histogramButtonLayout
+				.setRenderer(new ButtonRenderer(histogramButton, brick,
+						EIconTextures.HISTOGRAM_ICON, brick.getTextureManager()));
+
+		ElementLayout overviewHeatMapButtonLayout = new ElementLayout(
+				"overviewHeatMapButton");
+		overviewHeatMapButtonLayout.setPixelGLConverter(pixelGLConverter);
+		overviewHeatMapButtonLayout.setPixelSizeX(pixelHeight);
+		overviewHeatMapButtonLayout.setPixelSizeY(pixelHeight);
+		overviewHeatMapButtonLayout.setRenderer(new ButtonRenderer(
+				overviewHeatMapButton, brick, EIconTextures.HEAT_MAP_ICON,
+				brick.getTextureManager()));
+
+		ElementLayout ratioSpacingLayoutX = new ElementLayout(
+				"ratioSpacingLayoutX");
+		ratioSpacingLayoutX.setRatioSizeX(1);
+		ratioSpacingLayoutX.setRatioSizeY(0);
+
+		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout(
+				"clusterButton");
+		toggleViewSwitchingButtonLayout.setPixelGLConverter(pixelGLConverter);
+		toggleViewSwitchingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		toggleViewSwitchingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
+		toggleViewSwitchingButtonLayout.setRenderer(new ButtonRenderer(
+				viewSwitchingModeButton, brick, EIconTextures.LOCK, brick
+						.getTextureManager()));
+
+		ElementLayout collapseButtonLayout = new ElementLayout(
+				"expandButtonLayout");
+		collapseButtonLayout.setFrameColor(1, 0, 0, 1);
+		// expandButtonLayout.setDebug(true);
+		collapseButtonLayout.setPixelGLConverter(pixelGLConverter);
+		collapseButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		collapseButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
+		collapseButtonLayout.setRenderer(new ButtonRenderer(new Button(
+				EPickingType.BRICK_COLLAPSE_BUTTON, COLLAPSE_BUTTON_ID), brick,
+				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, brick
+						.getTextureManager(),
+				ButtonRenderer.TEXTURE_ROTATION_90));
+
+		toolBar.append(heatMapButtonLayout);
+		toolBar.append(spacingLayoutX);
+		toolBar.append(parCoordsButtonLayout);
+		toolBar.append(spacingLayoutX);
+		toolBar.append(histogramButtonLayout);
+		toolBar.append(spacingLayoutX);
+		toolBar.append(overviewHeatMapButtonLayout);
+		toolBar.append(ratioSpacingLayoutX);
+		toolBar.append(toggleViewSwitchingButtonLayout);
+		toolBar.append(spacingLayoutX);
+		toolBar.append(collapseButtonLayout);
+
+		return toolBar;
+	}
+
 	protected void registerPickingListeners() {
-		super.registerPickingListeners();
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				heatMapButton.setSelected(true);
+				parCoordsButton.setSelected(false);
+				histogramButton.setSelected(false);
+				overviewHeatMapButton.setSelected(false);
+				if (viewSwitchingModeButton.isSelected()) {
+					dimensionGroup
+							.switchBrickViews(EContainedViewType.HEATMAP_VIEW);
+				} else {
+					brick.setRemoteView(EContainedViewType.HEATMAP_VIEW);
+				}
+				dimensionGroup.updateLayout();
+			}
+		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HEATMAP_BUTTON_ID);
+
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				heatMapButton.setSelected(false);
+				parCoordsButton.setSelected(true);
+				histogramButton.setSelected(false);
+				overviewHeatMapButton.setSelected(false);
+				if (viewSwitchingModeButton.isSelected()) {
+					dimensionGroup
+							.switchBrickViews(EContainedViewType.PARCOORDS_VIEW);
+				} else {
+					brick.setRemoteView(EContainedViewType.PARCOORDS_VIEW);
+				}
+				dimensionGroup.updateLayout();
+			}
+		}, EPickingType.BRICK_TOOLBAR_BUTTONS, PARCOORDS_BUTTON_ID);
+
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				heatMapButton.setSelected(false);
+				parCoordsButton.setSelected(false);
+				histogramButton.setSelected(true);
+				overviewHeatMapButton.setSelected(false);
+				if (viewSwitchingModeButton.isSelected()) {
+					dimensionGroup
+							.switchBrickViews(EContainedViewType.HISTOGRAM_VIEW);
+				} else {
+					brick.setRemoteView(EContainedViewType.HISTOGRAM_VIEW);
+				}
+				dimensionGroup.updateLayout();
+			}
+		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HISTOGRAM_BUTTON_ID);
+
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				heatMapButton.setSelected(false);
+				parCoordsButton.setSelected(false);
+				histogramButton.setSelected(false);
+				overviewHeatMapButton.setSelected(true);
+				if (viewSwitchingModeButton.isSelected()) {
+					dimensionGroup
+							.switchBrickViews(EContainedViewType.OVERVIEW_HEATMAP);
+				} else {
+					brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
+				}
+				dimensionGroup.updateLayout();
+			}
+		}, EPickingType.BRICK_TOOLBAR_BUTTONS, OVERVIEW_HEATMAP_BUTTON_ID);
+
+		brick.addPickingListener(
+				new APickingListener() {
+
+					@Override
+					public void clicked(Pick pick) {
+						boolean isGlobalViewSwitching = !viewSwitchingModeButton
+								.isSelected();
+						dimensionGroup
+								.setGlobalViewSwitching(isGlobalViewSwitching);
+						viewSwitchingModeButton
+								.setSelected(isGlobalViewSwitching);
+					}
+				}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
+				VIEW_SWITCHING_MODE_BUTTON_ID);
+
 		brick.addPickingListener(new APickingListener() {
 
 			@Override
@@ -195,5 +378,34 @@ public class DefaultBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 	@Override
 	public EContainedViewType getDefaultViewType() {
 		return EContainedViewType.HEATMAP_VIEW;
+	}
+
+	@Override
+	public void viewTypeChanged(EContainedViewType viewType) {
+		heatMapButton.setSelected(false);
+		parCoordsButton.setSelected(false);
+		histogramButton.setSelected(false);
+		overviewHeatMapButton.setSelected(false);
+
+		switch (viewType) {
+		case HEATMAP_VIEW:
+			heatMapButton.setSelected(true);
+			break;
+		case PARCOORDS_VIEW:
+			parCoordsButton.setSelected(true);
+			break;
+		case HISTOGRAM_VIEW:
+			histogramButton.setSelected(true);
+			break;
+		case OVERVIEW_HEATMAP:
+			overviewHeatMapButton.setSelected(true);
+			break;
+		}
+
+	}
+
+	@Override
+	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
+		viewSwitchingModeButton.setSelected(isGlobalViewSwitching);
 	}
 }

@@ -73,6 +73,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	private ArrayList<GLBrick> bottomBricks;
 	private ArrayList<GLBrick> topBricks;
+	
+	private boolean isGlobalViewSwitching = false;
 
 	private Column bottomCol;
 	private GLBrick centerBrick;
@@ -528,7 +530,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		for (GLBrick brick : bottomBricks) {
 			brick.setRemoteView(viewType);
 		}
-		centerBrick.setRemoteView(viewType);
+//		centerBrick.setRemoteView(viewType);
 		groupColumn.updateSubLayout();
 	}
 
@@ -744,5 +746,19 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			if (changeMade)
 				bottomCol.updateSubLayout();
 		}
+	}
+
+	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
+		this.isGlobalViewSwitching = isGlobalViewSwitching;
+		for(GLBrick brick : topBricks) {
+			brick.setGlobalViewSwitching(isGlobalViewSwitching);
+		}
+		for(GLBrick brick : bottomBricks) {
+			brick.setGlobalViewSwitching(isGlobalViewSwitching);
+		}
+	}
+
+	public boolean isGlobalViewSwitching() {
+		return isGlobalViewSwitching;
 	}
 }

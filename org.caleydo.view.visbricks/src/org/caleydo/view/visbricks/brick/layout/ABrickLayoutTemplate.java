@@ -96,4 +96,15 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 		return validViewTypes.contains(viewType);
 	}
 
+	/**
+	 * This method should be called when the view type in the brick changed.
+	 */
+	public abstract void viewTypeChanged(EContainedViewType viewType);
+
+	/**
+	 * Sets, whether view switching by this brick should affect other bricks in the dimension group.
+	 * 
+	 * @param isGlobalViewSwitching
+	 */
+	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {}
 }

@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Christian Partl
  * 
  */
-public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
+public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected static final int TOOLBAR_HEIGHT_PIXELS = 16;
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;
@@ -40,17 +40,38 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 	protected static final int BUTTON_HEIGHT_PIXELS = 16;
 	protected static final int BUTTON_WIDTH_PIXELS = 16;
 	protected static final int HANDLE_SIZE_PIXELS = 10;
+	
+	protected static final int CLUSTER_BUTTON_ID = 0;
+	protected static final int PARCOORDS_BUTTON_ID = 2;
+	protected static final int HISTOGRAM_BUTTON_ID = 3;
+	protected static final int OVERVIEW_HEATMAP_BUTTON_ID = 4;
+
+	
+//	protected Button heatMapButton;
+	protected Button parCoordsButton;
+	protected Button histogramButton;
+	protected Button overviewHeatMapButton;
 
 	private Button clusterButton;
-	private Button viewSwitchingModeButton;
+	
 
 	public CentralBrickLayoutTemplate(GLBrick brick,
 			DimensionGroup dimensionGroup) {
 		super(brick, dimensionGroup);
 		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
-				1);
-		viewSwitchingModeButton = new Button(
-				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON, 1);
+				CLUSTER_BUTTON_ID);
+		
+		
+//		heatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
+//				HEATMAP_BUTTON_ID);
+		parCoordsButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
+				PARCOORDS_BUTTON_ID);
+		histogramButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
+				HISTOGRAM_BUTTON_ID);
+		overviewHeatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
+				OVERVIEW_HEATMAP_BUTTON_ID);
+
+		viewTypeChanged(getDefaultViewType());
 
 	}
 
@@ -64,9 +85,6 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 		Column baseColumn = new Column("baseColumn");
 		baseColumn.setFrameColor(0, 1, 0, 0);
 
-		// ElementLayout fuelBarLayout = new ElementLayout("fuelBarLayout");
-		// fuelBarLayout.setFrameColor(0, 1, 0, 0);
-
 		baseRow.setRenderer(new BorderedAreaRenderer());
 
 		if (showHandles) {
@@ -74,10 +92,6 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 					.getDimensionGroup(), pixelGLConverter, HANDLE_SIZE_PIXELS,
 					brick.getTextureManager()));
 		}
-
-		// fuelBarLayout.setPixelGLConverter(pixelGLConverter);
-		// fuelBarLayout.setPixelSizeY(12);
-		// fuelBarLayout.setRenderer(new FuelBarRenderer(brick));
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
@@ -135,17 +149,6 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 		captionRow.append(clusterButtonLayout);
 		captionRow.append(spacingLayoutX);
 
-		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout(
-				"clusterButton");
-		toggleViewSwitchingButtonLayout.setPixelGLConverter(pixelGLConverter);
-		toggleViewSwitchingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-		toggleViewSwitchingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		toggleViewSwitchingButtonLayout.setRenderer(new ButtonRenderer(
-				viewSwitchingModeButton, brick, EIconTextures.LOCK, brick
-						.getTextureManager()));
-
-		captionRow.append(toggleViewSwitchingButtonLayout);
-
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
 		lineSeparatorLayout.setPixelSizeY(LINE_SEPARATOR_HEIGHT_PIXELS);
@@ -171,43 +174,72 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 		baseColumn.append(spacingLayoutY);
 
 	}
+	
+	/**
+	 * Creates the toolbar containing buttons for view switching.
+	 * 
+	 * @param pixelHeight
+	 * @return
+	 */
+	protected Row createBrickToolBar(int pixelHeight) {
+		Row toolBar = new Row("ToolBarRow");
+		toolBar.setYDynamic(true);
+
+		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
+		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
+		spacingLayoutX.setPixelSizeX(4);
+		spacingLayoutX.setPixelSizeY(0);
+
+		ElementLayout parCoordsButtonLayout = new ElementLayout("parCoords");
+		parCoordsButtonLayout.setPixelGLConverter(pixelGLConverter);
+		parCoordsButtonLayout.setPixelSizeX(pixelHeight);
+		parCoordsButtonLayout.setPixelSizeY(pixelHeight);
+		parCoordsButtonLayout
+				.setRenderer(new ButtonRenderer(parCoordsButton, brick,
+						EIconTextures.PAR_COORDS_ICON, brick
+								.getTextureManager()));
+
+		toolBar.append(parCoordsButtonLayout);
+		toolBar.append(spacingLayoutX);
+
+		ElementLayout histogramButtonLayout = new ElementLayout(
+				"histogramButton");
+		histogramButtonLayout.setPixelGLConverter(pixelGLConverter);
+		histogramButtonLayout.setPixelSizeX(pixelHeight);
+		histogramButtonLayout.setPixelSizeY(pixelHeight);
+		histogramButtonLayout
+				.setRenderer(new ButtonRenderer(histogramButton, brick,
+						EIconTextures.HISTOGRAM_ICON, brick.getTextureManager()));
+
+		toolBar.append(histogramButtonLayout);
+		toolBar.append(spacingLayoutX);
+
+		ElementLayout overviewHeatMapButtonLayout = new ElementLayout(
+				"overviewHeatMapButton");
+		overviewHeatMapButtonLayout.setPixelGLConverter(pixelGLConverter);
+		overviewHeatMapButtonLayout.setPixelSizeX(pixelHeight);
+		overviewHeatMapButtonLayout.setPixelSizeY(pixelHeight);
+		overviewHeatMapButtonLayout
+				.setRenderer(new ButtonRenderer(overviewHeatMapButton, brick,
+						EIconTextures.HEAT_MAP_ICON, brick.getTextureManager()));
+
+		toolBar.append(overviewHeatMapButtonLayout);
+		
+		return toolBar;
+	}
 
 	@Override
 	protected void registerPickingListeners() {
-		brick.addPickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-				heatMapButton.setSelected(true);
-				parCoordsButton.setSelected(false);
-				histogramButton.setSelected(false);
-				overviewHeatMapButton.setSelected(false);
-
-				if (viewSwitchingModeButton.isSelected()) {
-					dimensionGroup
-							.switchBrickViews(EContainedViewType.HEATMAP_VIEW);
-				} else {
-					brick.setRemoteView(EContainedViewType.HEATMAP_VIEW);
-				}
-				dimensionGroup.updateLayout();
-			}
-		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HEATMAP_BUTTON_ID);
 
 		brick.addPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
-				heatMapButton.setSelected(false);
 				parCoordsButton.setSelected(true);
 				histogramButton.setSelected(false);
 				overviewHeatMapButton.setSelected(false);
-
-				if (viewSwitchingModeButton.isSelected()) {
-					dimensionGroup
-							.switchBrickViews(EContainedViewType.PARCOORDS_VIEW);
-				} else {
-					brick.setRemoteView(EContainedViewType.PARCOORDS_VIEW);
-				}
+				
+				brick.setRemoteView(EContainedViewType.PARCOORDS_VIEW);
 				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, PARCOORDS_BUTTON_ID);
@@ -216,17 +248,11 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 			@Override
 			public void clicked(Pick pick) {
-				heatMapButton.setSelected(false);
 				parCoordsButton.setSelected(false);
 				histogramButton.setSelected(true);
 				overviewHeatMapButton.setSelected(false);
 
-				if (viewSwitchingModeButton.isSelected()) {
-					dimensionGroup
-							.switchBrickViews(EContainedViewType.HISTOGRAM_VIEW);
-				} else {
-					brick.setRemoteView(EContainedViewType.HISTOGRAM_VIEW);
-				}
+				brick.setRemoteView(EContainedViewType.HISTOGRAM_VIEW);
 				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HISTOGRAM_BUTTON_ID);
@@ -235,17 +261,11 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 			@Override
 			public void clicked(Pick pick) {
-				heatMapButton.setSelected(false);
 				parCoordsButton.setSelected(false);
 				histogramButton.setSelected(false);
 				overviewHeatMapButton.setSelected(true);
 
-				if (viewSwitchingModeButton.isSelected()) {
-					dimensionGroup
-							.switchBrickViews(EContainedViewType.OVERVIEW_HEATMAP);
-				} else {
-					brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
-				}
+				brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
 				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, OVERVIEW_HEATMAP_BUTTON_ID);
@@ -280,16 +300,8 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 							}
 						});
 			}
-		}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, 1);
+		}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, CLUSTER_BUTTON_ID);
 
-		brick.addPickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-				viewSwitchingModeButton.setSelected(!viewSwitchingModeButton
-						.isSelected());
-			}
-		}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON, 1);
 	}
 
 	@Override
@@ -309,7 +321,6 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 	@Override
 	protected void setValidViewTypes() {
 		validViewTypes.add(EContainedViewType.HISTOGRAM_VIEW);
-		validViewTypes.add(EContainedViewType.HEATMAP_VIEW);
 		validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
 		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP);
 	}
@@ -317,5 +328,24 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 	@Override
 	public EContainedViewType getDefaultViewType() {
 		return EContainedViewType.HISTOGRAM_VIEW;
+	}
+
+	@Override
+	public void viewTypeChanged(EContainedViewType viewType) {
+		parCoordsButton.setSelected(false);
+		histogramButton.setSelected(false);
+		overviewHeatMapButton.setSelected(false);
+		
+		switch (viewType) {
+		case PARCOORDS_VIEW:
+			parCoordsButton.setSelected(true);
+			break;
+		case HISTOGRAM_VIEW:
+			histogramButton.setSelected(true);
+			break;
+		case OVERVIEW_HEATMAP:
+			overviewHeatMapButton.setSelected(true);
+			break;
+		}
 	}
 }
