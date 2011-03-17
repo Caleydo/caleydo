@@ -61,7 +61,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public final static String VIEW_ID = "org.caleydo.view.visbricks";
 
 	private final static int ARCH_PIXEL_HEIGHT = 150;
-	private final static float ARCH_BOTTOM_PERCENT = 0.4f;
+	private final static float ARCH_BOTTOM_PERCENT = 0.5f;
 	private final static float ARCH_STAND_WIDTH_PERCENT = 0.05f;
 
 	private final static int DIMENSION_GROUP_SPACING = 30;
@@ -160,9 +160,10 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		archSideThickness = viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT;
 		archInnerWidth = viewFrustum.getWidth() * (ARCH_STAND_WIDTH_PERCENT + 0.024f);
 
-		archBottomY = viewFrustum.getHeight() * ARCH_BOTTOM_PERCENT;
 		archHeight = parentGLCanvas.getPixelGLConverter().getGLHeightForPixelHeight(
 				ARCH_PIXEL_HEIGHT);
+		archBottomY = viewFrustum.getHeight() * ARCH_BOTTOM_PERCENT - archHeight/2f;
+
 		archTopY = archBottomY + archHeight;
 
 		float centerLayoutWidth = viewFrustum.getWidth() - 2 * (archInnerWidth);
