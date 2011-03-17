@@ -34,10 +34,10 @@ import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.layout.Column;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
-import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout.event.ILayoutSizeCollisionHandler;
 import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionEvent;
 import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionListener;
@@ -227,7 +227,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		brick.setDataDomain(dataDomain);
 		brick.setSet(set);
 		brick.setVisBricks(visBricks);
-		brick.setWrappingLayout(wrappingLayout);
+		brick.setLayout(wrappingLayout);
 		brick.setDimensionGroup(this);
 		brick.initialize();
 		uninitializedBricks.add(brick);
@@ -278,7 +278,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				break;
 		}
 		bricks.add(count, subBrick);
-		layout.add(count, subBrick.getWrappingLayout());
+		layout.add(count, subBrick.getLayout());
 	}
 
 	private void destroyOldBricks() {
@@ -378,7 +378,6 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			bottomBricks.clear();
 			createSubBricks();
 			groupColumn.updateSubLayout();
-
 			visBricks.initiConnectionLinesBetweenDimensionGroups();
 		}
 	}
@@ -571,7 +570,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		float height = centerLayout.getSizeScaledY();
 		centerLayout.setAbsoluteSizeY(height * (1 + changePercentage));
 
-		centerBrick.getWrappingLayout().updateSubLayout();
+		centerBrick.getLayout().updateSubLayout();
 
 		visBricks.updateLayout();
 		visBricks.initiConnectionLinesBetweenDimensionGroups();

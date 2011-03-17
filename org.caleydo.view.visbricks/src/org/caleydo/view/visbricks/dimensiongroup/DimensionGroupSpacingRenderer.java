@@ -79,7 +79,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 			GroupMatch groupMatch = new GroupMatch(leftBrick);
 			hashGroupID2GroupMatches.put(leftBrick.getGroupID(), groupMatch);
 
-			ElementLayout leftBrickElementLayout = leftBrick.getWrappingLayout();
+			ElementLayout leftBrickElementLayout = leftBrick.getLayout();
 
 			GroupSimilarity<ContentVirtualArray, ContentGroupList> leftGroupSimilarity = vaSimilarityMap
 					.getGroupSimilarity(leftDimGroup.getSetID(), leftBrick.getGroupID());
@@ -107,7 +107,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 		for (GLBrick rightBrick : rightBricks) {
 
-			ElementLayout rightBrickElementLayout = rightBrick.getWrappingLayout();
+			ElementLayout rightBrickElementLayout = rightBrick.getLayout();
 
 			GroupSimilarity<ContentVirtualArray, ContentGroupList> rightGroupSimilarity = vaSimilarityMap
 					.getGroupSimilarity(rightDimGroup.getSetID(), rightBrick.getGroupID());
@@ -178,7 +178,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 		if (leftDimGroup != null) {
 			GLBrick leftCenterBrick = leftDimGroup.getCenterBrick();
 
-			ElementLayout layout = leftCenterBrick.getWrappingLayout();
+			ElementLayout layout = leftCenterBrick.getLayout();
 			leftCenterBrickBottom = layout.getTranslateY();
 			leftCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledY();
 		} else {
@@ -192,7 +192,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 		if (rightDimGroup != null) {
 			GLBrick rightCenterBrick = rightDimGroup.getCenterBrick();
 
-			ElementLayout layout = rightCenterBrick.getWrappingLayout();
+			ElementLayout layout = rightCenterBrick.getLayout();
 			rightCenterBrickBottom = layout.getTranslateY();
 			rightCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledY();
 		} else {

@@ -34,6 +34,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -60,7 +61,7 @@ import org.caleydo.view.visbricks.listener.RelationsUpdatedListener;
  * 
  */
 public class GLBrick extends AGLView implements IDataDomainSetBasedView,
-		IGLRemoteRenderingView, ISelectionUpdateHandler {
+		IGLRemoteRenderingView, ISelectionUpdateHandler, ILayoutedElement {
 
 	public final static String VIEW_ID = "org.caleydo.view.brick";
 
@@ -122,8 +123,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public void initialize() {
 		super.initialize();
-		contentGroupSelectionManager = dataDomain
-				.getContentGroupSelectionManager();
+		contentGroupSelectionManager = dataDomain.getContentGroupSelectionManager();
 	}
 
 	@Override
@@ -155,8 +155,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		if (brickLayout == null) {
 
-			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks,
-					dimensionGroup);
+			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks, dimensionGroup);
 
 			// leftRelationIndicatorRenderer = new
 			// RelationIndicatorRenderer(this,
@@ -177,17 +176,15 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		// brickLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 
 		HeatMapCreator heatMapCreator = new HeatMapCreator();
-		AGLView heatMap = heatMapCreator.createRemoteView(this, gl,
-				glMouseListener);
+		AGLView heatMap = heatMapCreator.createRemoteView(this, gl, glMouseListener);
 		AContainedViewRenderer heatMapLayoutRenderer = new BrickRemoteViewRenderer(
 				heatMap, this);
 		views.put(EContainedViewType.HEATMAP_VIEW, heatMap);
-		containedViewRenderers.put(EContainedViewType.HEATMAP_VIEW,
-				heatMapLayoutRenderer);
+		containedViewRenderers
+				.put(EContainedViewType.HEATMAP_VIEW, heatMapLayoutRenderer);
 
 		ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
-		AGLView parCoords = parCoordsCreator.createRemoteView(this, gl,
-				glMouseListener);
+		AGLView parCoords = parCoordsCreator.createRemoteView(this, gl, glMouseListener);
 		AContainedViewRenderer parCoordsLayoutRenderer = new BrickRemoteViewRenderer(
 				parCoords, this);
 		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
@@ -195,8 +192,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 				parCoordsLayoutRenderer);
 
 		HistogramCreator histogramCreator = new HistogramCreator();
-		AGLView histogram = histogramCreator.createRemoteView(this, gl,
-				glMouseListener);
+		AGLView histogram = histogramCreator.createRemoteView(this, gl, glMouseListener);
 		AContainedViewRenderer histogramLayoutRenderer = new BrickRemoteViewRenderer(
 				histogram, this);
 		views.put(EContainedViewType.HISTOGRAM_VIEW, histogram);
@@ -300,8 +296,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void initRemote(GL2 gl, AGLView glParentView,
-			GLMouseListener glMouseListener) {
+	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
 		init(gl);
 
 	}
@@ -361,8 +356,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
-			int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
 		super.reshape(drawable, x, y, width, height);
 		if (templateRenderer != null)
@@ -373,8 +367,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int pickingID, Pick pick) {
 
-		HashMap<Integer, IPickingListener> map = pickingListeners
-				.get(pickingType);
+		HashMap<Integer, IPickingListener> map = pickingListeners.get(pickingType);
 		if (map == null)
 			return;
 
@@ -597,8 +590,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public void addPickingListener(IPickingListener pickingListener,
 			EPickingType pickingType, int externalID) {
-		HashMap<Integer, IPickingListener> map = pickingListeners
-				.get(pickingType);
+		HashMap<Integer, IPickingListener> map = pickingListeners.get(pickingType);
 		if (map == null) {
 			map = new HashMap<Integer, IPickingListener>();
 			pickingListeners.put(pickingType, map);
@@ -620,8 +612,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public void setRemoteView(EContainedViewType viewType) {
 
-		AContainedViewRenderer viewRenderer = containedViewRenderers
-				.get(viewType);
+		AContainedViewRenderer viewRenderer = containedViewRenderers.get(viewType);
 
 		if (viewRenderer == null)
 			return;
@@ -651,11 +642,11 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public void setBrickLayoutTemplate(ABrickLayoutTemplate brickLayoutTemplate) {
 		this.brickLayout = brickLayoutTemplate;
-		if(brickLayout instanceof CompactBrickLayoutTemplate)
+		if (brickLayout instanceof CompactBrickLayoutTemplate)
 			isInOverviewMode = true;
 		else
 			isInOverviewMode = false;
-		
+
 		if (templateRenderer != null) {
 			templateRenderer.setTemplate(brickLayout);
 			if (brickLayout.isViewTypeValid(currentViewType)) {
@@ -678,17 +669,15 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		relationsUpdateListener = new RelationsUpdatedListener();
 		relationsUpdateListener.setHandler(this);
-		relationsUpdateListener.setExclusiveDataDomainType(dataDomain
-				.getDataDomainType());
-		eventPublisher.addListener(RelationsUpdatedEvent.class,
-				relationsUpdateListener);
+		relationsUpdateListener
+				.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(RelationsUpdatedEvent.class, relationsUpdateListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setExclusiveDataDomainType(dataDomain
-				.getDataDomainType());
-		eventPublisher.addListener(SelectionUpdateEvent.class,
-				selectionUpdateListener);
+		selectionUpdateListener
+				.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 	}
 
 	@Override
@@ -730,7 +719,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 * 
 	 * @param wrappingLayout
 	 */
-	public void setWrappingLayout(ElementLayout wrappingLayout) {
+	public void setLayout(ElementLayout wrappingLayout) {
 		this.wrappingLayout = wrappingLayout;
 	}
 
@@ -740,7 +729,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 * 
 	 * @return
 	 */
-	public ElementLayout getWrappingLayout() {
+	@Override
+	public ElementLayout getLayout() {
 		return wrappingLayout;
 	}
 
@@ -757,13 +747,12 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
-		if (selectionDelta.getIDType() == contentGroupSelectionManager
-				.getIDType()) {
+		if (selectionDelta.getIDType() == contentGroupSelectionManager.getIDType()) {
 			contentGroupSelectionManager.setDelta(selectionDelta);
 			if (group == null)
 				return;
-			if (contentGroupSelectionManager.checkStatus(
-					SelectionType.SELECTION, getGroup().getID())) {
+			if (contentGroupSelectionManager.checkStatus(SelectionType.SELECTION,
+					getGroup().getID())) {
 				brickLayout.setShowHandles(true);
 			} else {
 				brickLayout.setShowHandles(false);
@@ -776,8 +765,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 * @return true, if the brick us currently selected, false otherwise
 	 */
 	public boolean isActive() {
-		return contentGroupSelectionManager.checkStatus(
-				SelectionType.SELECTION, getGroup().getID());
+		return contentGroupSelectionManager.checkStatus(SelectionType.SELECTION,
+				getGroup().getID());
 	}
 
 	/**
@@ -787,8 +776,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public float setToOverviewMode() {
 
-		CompactBrickLayoutTemplate layoutTemplate = new CompactBrickLayoutTemplate(
-				this, visBricks, dimensionGroup);
+		CompactBrickLayoutTemplate layoutTemplate = new CompactBrickLayoutTemplate(this,
+				visBricks, dimensionGroup);
 		setBrickLayoutTemplate(layoutTemplate);
 
 		float minSize = getParentGLCanvas().getPixelGLConverter()
