@@ -12,7 +12,6 @@ import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 /**
  * Renderer for an overview heatmap of values specified by contentVA and
@@ -22,7 +21,7 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
  * @author Christian Partl
  * 
  */
-public class OverviewHeatMapRenderer extends LayoutRenderer {
+public class OverviewHeatMapRenderer extends AContainedViewRenderer {
 
 	private ColorMapping colorMapper;
 	private ArrayList<float[]> heatMapValues;
@@ -125,5 +124,10 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 
 		gl.glEnd();
 
+	}
+
+	@Override
+	public int getMinHeightPixels() {
+		return heatMapValues.get(0).length * 16;
 	}
 }

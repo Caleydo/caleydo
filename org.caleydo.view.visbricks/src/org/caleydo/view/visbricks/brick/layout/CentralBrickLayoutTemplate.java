@@ -10,6 +10,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.rcp.dialog.cluster.StartClusteringDialog;
+import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.picking.APickingListener;
 import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
@@ -31,14 +32,19 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
-	private DimensionGroup dimensionGroup;
+	protected static final int TOOLBAR_HEIGHT_PIXELS = 16;
+	protected static final int CAPTION_HEIGHT_PIXELS = 16;
+	protected static final int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
+	protected static final int BUTTON_HEIGHT_PIXELS = 16;
+	protected static final int BUTTON_WIDTH_PIXELS = 16;
+	protected static final int HANDLE_SIZE_PIXELS = 10;
+
 	private Button clusterButton;
 	private Button viewSwitchingModeButton;
 
 	public CentralBrickLayoutTemplate(GLBrick brick,
 			DimensionGroup dimensionGroup) {
-		super(brick);
-		this.dimensionGroup = dimensionGroup;
+		super(brick, dimensionGroup);
 		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
 				1);
 		viewSwitchingModeButton = new Button(
@@ -63,8 +69,8 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 		if (showHandles) {
 			baseRow.addForeGroundRenderer(new HandleRenderer(brick
-					.getDimensionGroup(), pixelGLConverter, 10, brick
-					.getTextureManager()));
+					.getDimensionGroup(), pixelGLConverter, HANDLE_SIZE_PIXELS,
+					brick.getTextureManager()));
 		}
 
 		// fuelBarLayout.setPixelGLConverter(pixelGLConverter);
@@ -73,7 +79,7 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
-		spacingLayoutX.setPixelSizeX(4);
+		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
 		spacingLayoutX.setRatioSizeY(0);
 
 		baseRow.append(spacingLayoutX);
@@ -90,16 +96,16 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 		viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
 		viewLayout.setRenderer(viewRenderer);
 
-		Row toolBar = createBrickToolBar(16);
+		Row toolBar = createBrickToolBar(TOOLBAR_HEIGHT_PIXELS);
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
 		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
-		spacingLayoutY.setPixelSizeY(4);
+		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
 		spacingLayoutY.setPixelSizeX(0);
 
 		Row captionRow = new Row();
 		captionRow.setPixelGLConverter(pixelGLConverter);
-		captionRow.setPixelSizeY(16);
+		captionRow.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 
 		ElementLayout captionLayout = new ElementLayout("caption1");
 		// captionLayout.setDebug(true);
@@ -119,8 +125,8 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 		ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
 		clusterButtonLayout.setPixelGLConverter(pixelGLConverter);
-		clusterButtonLayout.setPixelSizeX(16);
-		clusterButtonLayout.setPixelSizeY(16);
+		clusterButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		clusterButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton,
 				brick, EIconTextures.CLUSTER_ICON, brick.getTextureManager()));
 
@@ -130,18 +136,17 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout(
 				"clusterButton");
 		toggleViewSwitchingButtonLayout.setPixelGLConverter(pixelGLConverter);
-		toggleViewSwitchingButtonLayout.setPixelSizeX(16);
-		toggleViewSwitchingButtonLayout.setPixelSizeY(16);
+		toggleViewSwitchingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		toggleViewSwitchingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		toggleViewSwitchingButtonLayout.setRenderer(new ButtonRenderer(
 				viewSwitchingModeButton, brick, EIconTextures.LOCK, brick
 						.getTextureManager()));
-		
-		
+
 		captionRow.append(toggleViewSwitchingButtonLayout);
 
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
-		lineSeparatorLayout.setPixelSizeY(3);
+		lineSeparatorLayout.setPixelSizeY(LINE_SEPARATOR_HEIGHT_PIXELS);
 		lineSeparatorLayout.setRatioSizeX(1);
 		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
 
@@ -167,12 +172,14 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 				parCoordsButton.setSelected(false);
 				histogramButton.setSelected(false);
 				overviewHeatMapButton.setSelected(false);
-				
-				if(viewSwitchingModeButton.isSelected()) {
-					dimensionGroup.switchBrickViews(GLBrick.HEATMAP_VIEW);
+
+				if (viewSwitchingModeButton.isSelected()) {
+					dimensionGroup
+							.switchBrickViews(EContainedViewType.HEATMAP_VIEW);
 				} else {
-					brick.setRemoteView(GLBrick.HEATMAP_VIEW);
+					brick.setRemoteView(EContainedViewType.HEATMAP_VIEW);
 				}
+				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HEATMAP_BUTTON_ID);
 
@@ -180,17 +187,18 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 			@Override
 			public void clicked(Pick pick) {
-				brick.setRemoteView(GLBrick.PARCOORDS_VIEW);
 				heatMapButton.setSelected(false);
 				parCoordsButton.setSelected(true);
 				histogramButton.setSelected(false);
 				overviewHeatMapButton.setSelected(false);
-				
-				if(viewSwitchingModeButton.isSelected()) {
-					dimensionGroup.switchBrickViews(GLBrick.PARCOORDS_VIEW);
+
+				if (viewSwitchingModeButton.isSelected()) {
+					dimensionGroup
+							.switchBrickViews(EContainedViewType.PARCOORDS_VIEW);
 				} else {
-					brick.setRemoteView(GLBrick.PARCOORDS_VIEW);
+					brick.setRemoteView(EContainedViewType.PARCOORDS_VIEW);
 				}
+				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, PARCOORDS_BUTTON_ID);
 
@@ -198,35 +206,37 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 			@Override
 			public void clicked(Pick pick) {
-				brick.setRemoteView(GLBrick.HISTOGRAM_VIEW);
 				heatMapButton.setSelected(false);
 				parCoordsButton.setSelected(false);
 				histogramButton.setSelected(true);
 				overviewHeatMapButton.setSelected(false);
-				
-				if(viewSwitchingModeButton.isSelected()) {
-					dimensionGroup.switchBrickViews(GLBrick.HISTOGRAM_VIEW);
+
+				if (viewSwitchingModeButton.isSelected()) {
+					dimensionGroup
+							.switchBrickViews(EContainedViewType.HISTOGRAM_VIEW);
 				} else {
-					brick.setRemoteView(GLBrick.HISTOGRAM_VIEW);
+					brick.setRemoteView(EContainedViewType.HISTOGRAM_VIEW);
 				}
+				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HISTOGRAM_BUTTON_ID);
-		
+
 		brick.addPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
-				brick.setRemoteView(GLBrick.OVERVIEW_HEATMAP);
 				heatMapButton.setSelected(false);
 				parCoordsButton.setSelected(false);
 				histogramButton.setSelected(false);
 				overviewHeatMapButton.setSelected(true);
-				
-				if(viewSwitchingModeButton.isSelected()) {
-					dimensionGroup.switchBrickViews(GLBrick.OVERVIEW_HEATMAP);
+
+				if (viewSwitchingModeButton.isSelected()) {
+					dimensionGroup
+							.switchBrickViews(EContainedViewType.OVERVIEW_HEATMAP);
 				} else {
-					brick.setRemoteView(GLBrick.OVERVIEW_HEATMAP);
+					brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
 				}
+				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, OVERVIEW_HEATMAP_BUTTON_ID);
 
@@ -261,25 +271,40 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 						});
 			}
 		}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, 1);
-		
+
 		brick.addPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
-				viewSwitchingModeButton.setSelected(!viewSwitchingModeButton.isSelected());
+				viewSwitchingModeButton.setSelected(!viewSwitchingModeButton
+						.isSelected());
 			}
 		}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON, 1);
 	}
 
 	@Override
 	public int getMinHeightPixels() {
-		// TODO: implement
-		return 0;
+		return 5 * SPACING_PIXELS + TOOLBAR_HEIGHT_PIXELS
+				+ LINE_SEPARATOR_HEIGHT_PIXELS + CAPTION_HEIGHT_PIXELS
+				+ viewRenderer.getMinHeightPixels();
 	}
 
 	@Override
 	public int getMinWidthPixels() {
 		// TODO: implement
 		return 0;
+	}
+
+	@Override
+	protected void setValidViewTypes() {
+		validViewTypes.add(EContainedViewType.HISTOGRAM_VIEW);
+		validViewTypes.add(EContainedViewType.HEATMAP_VIEW);
+		validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
+		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP);
+	}
+
+	@Override
+	public EContainedViewType getDefaultViewType() {
+		return EContainedViewType.HISTOGRAM_VIEW;
 	}
 }

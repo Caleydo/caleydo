@@ -35,7 +35,6 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.visbricks.GLVisBricks;
@@ -44,6 +43,7 @@ import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.picking.APickingListener;
 import org.caleydo.view.visbricks.brick.picking.IPickingListener;
+import org.caleydo.view.visbricks.brick.ui.AContainedViewRenderer;
 import org.caleydo.view.visbricks.brick.ui.BrickRemoteViewRenderer;
 import org.caleydo.view.visbricks.brick.ui.OverviewHeatMapRenderer;
 import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
@@ -64,11 +64,11 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	public final static String VIEW_ID = "org.caleydo.view.brick";
 
-	public static final int HEATMAP_VIEW = 0;
-	public static final int PARCOORDS_VIEW = 1;
-	public static final int HISTOGRAM_VIEW = 2;
-	public static final int OVERVIEW_HEATMAP = 3;
-	public static final int OVERVIEW_HEATMAP_COMPACT = 4;
+	// public static final int HEATMAP_VIEW = 0;
+	// public static final int PARCOORDS_VIEW = 1;
+	// public static final int HISTOGRAM_VIEW = 2;
+	// public static final int OVERVIEW_HEATMAP = 3;
+	// public static final int OVERVIEW_HEATMAP_COMPACT = 4;
 
 	private LayoutManager templateRenderer;
 	private ABrickLayoutTemplate brickLayout;
@@ -76,12 +76,12 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	private AGLView currentRemoteView;
 
-	private Map<Integer, AGLView> views;
-	private Map<Integer, LayoutRenderer> viewLayoutRenderers;
+	private Map<EContainedViewType, AGLView> views;
+	private Map<EContainedViewType, AContainedViewRenderer> containedViewRenderers;
 
 	private int baseDisplayListIndex;
 	private boolean isBaseDisplayListDirty = true;
-	private int currentViewType;
+	private EContainedViewType currentViewType;
 
 	// /**
 	// * Was the mouse over the brick area in the last frame.
@@ -119,12 +119,10 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		super(glCanvas, viewFrustum, true);
 		viewType = GLBrick.VIEW_ID;
 
-		views = new HashMap<Integer, AGLView>();
-		viewLayoutRenderers = new HashMap<Integer, LayoutRenderer>();
+		views = new HashMap<EContainedViewType, AGLView>();
+		containedViewRenderers = new HashMap<EContainedViewType, AContainedViewRenderer>();
 
 		pickingListeners = new HashMap<EPickingType, HashMap<Integer, IPickingListener>>();
-
-		currentViewType = HEATMAP_VIEW;
 	}
 
 	@Override
@@ -163,7 +161,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		if (brickLayout == null) {
 
-			brickLayout = new CompactBrickLayoutTemplate(this, visBricks);
+			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks,
+					dimensionGroup);
 
 			// leftRelationIndicatorRenderer = new
 			// RelationIndicatorRenderer(this,
@@ -186,43 +185,52 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		HeatMapCreator heatMapCreator = new HeatMapCreator();
 		AGLView heatMap = heatMapCreator.createRemoteView(this, gl,
 				glMouseListener);
-		LayoutRenderer heatMapLayoutRenderer = new BrickRemoteViewRenderer(
+		AContainedViewRenderer heatMapLayoutRenderer = new BrickRemoteViewRenderer(
 				heatMap, this);
-		views.put(HEATMAP_VIEW, heatMap);
-		viewLayoutRenderers.put(HEATMAP_VIEW, heatMapLayoutRenderer);
+		views.put(EContainedViewType.HEATMAP_VIEW, heatMap);
+		containedViewRenderers.put(EContainedViewType.HEATMAP_VIEW,
+				heatMapLayoutRenderer);
 
 		ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
 		AGLView parCoords = parCoordsCreator.createRemoteView(this, gl,
 				glMouseListener);
-		LayoutRenderer parCoordsLayoutRenderer = new BrickRemoteViewRenderer(
+		AContainedViewRenderer parCoordsLayoutRenderer = new BrickRemoteViewRenderer(
 				parCoords, this);
-		views.put(PARCOORDS_VIEW, parCoords);
-		viewLayoutRenderers.put(PARCOORDS_VIEW, parCoordsLayoutRenderer);
+		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
+		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
+				parCoordsLayoutRenderer);
 
 		HistogramCreator histogramCreator = new HistogramCreator();
 		AGLView histogram = histogramCreator.createRemoteView(this, gl,
 				glMouseListener);
-		LayoutRenderer histogramLayoutRenderer = new BrickRemoteViewRenderer(
+		AContainedViewRenderer histogramLayoutRenderer = new BrickRemoteViewRenderer(
 				histogram, this);
-		views.put(HISTOGRAM_VIEW, histogram);
-		viewLayoutRenderers.put(HISTOGRAM_VIEW, histogramLayoutRenderer);
+		views.put(EContainedViewType.HISTOGRAM_VIEW, histogram);
+		containedViewRenderers.put(EContainedViewType.HISTOGRAM_VIEW,
+				histogramLayoutRenderer);
 
-		LayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(
+		AContainedViewRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(
 				contentVA, storageVA, set, true);
 
-		viewLayoutRenderers.put(OVERVIEW_HEATMAP, overviewHeatMapRenderer);
+		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
+				overviewHeatMapRenderer);
 
-		LayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(
+		AContainedViewRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(
 				contentVA, storageVA, set, false);
 
-		viewLayoutRenderers.put(OVERVIEW_HEATMAP_COMPACT,
+		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
 				compactOverviewHeatMapRenderer);
 
 		currentRemoteView = heatMap;
 
-		brickLayout.setViewRenderer(heatMapLayoutRenderer);
+		currentViewType = brickLayout.getDefaultViewType();
+		brickLayout.setViewRenderer(containedViewRenderers.get(brickLayout
+				.getDefaultViewType()));
 
 		templateRenderer.setTemplate(brickLayout);
+		float minSize = getParentGLCanvas().getPixelGLConverter()
+				.getGLHeightForPixelHeight(brickLayout.getMinHeightPixels());
+		wrappingLayout.setAbsoluteSizeY(minSize);
 		templateRenderer.updateLayout();
 
 		addPickingListener(new APickingListener() {
@@ -611,21 +619,27 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	/**
-	 * Sets the type of view that should be rendered in the brick.
+	 * Sets the type of view that should be rendered in the brick. The view type
+	 * is not set, if it is not valid for the current brick layout.
 	 * 
 	 * @param viewType
-	 *            Valid values: HEATMAP_VIEW, PARCOORDS_VIEW, HISTOGRAM_VIEW,
-	 *            OVERVIEW_HEATMAP, OVERVIEW_HEATMAP_COMPACT
 	 */
-	public void setRemoteView(int viewType) {
+	public void setRemoteView(EContainedViewType viewType) {
 
-		LayoutRenderer viewRenderer = viewLayoutRenderers.get(viewType);
+		AContainedViewRenderer viewRenderer = containedViewRenderers
+				.get(viewType);
 
 		if (viewRenderer == null)
 			return;
 
+		if (!brickLayout.isViewTypeValid(viewType))
+			return;
+
 		currentRemoteView = views.get(viewType);
 		brickLayout.setViewRenderer(viewRenderer);
+		float minSize = getParentGLCanvas().getPixelGLConverter()
+				.getGLHeightForPixelHeight(brickLayout.getMinHeightPixels());
+		wrappingLayout.setAbsoluteSizeY(minSize);
 		templateRenderer.updateLayout();
 
 		currentViewType = viewType;
@@ -643,16 +657,25 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public void setBrickLayoutTemplate(ABrickLayoutTemplate brickLayoutTemplate) {
 		this.brickLayout = brickLayoutTemplate;
+		if(brickLayout instanceof CompactBrickLayoutTemplate)
+			isInOverviewMode = true;
+		else
+			isInOverviewMode = false;
+		
 		if (templateRenderer != null) {
 			templateRenderer.setTemplate(brickLayout);
-			setRemoteView(currentViewType);
+			if (brickLayout.isViewTypeValid(currentViewType)) {
+				setRemoteView(currentViewType);
+			} else {
+				setRemoteView(brickLayout.getDefaultViewType());
+			}
 		}
 	}
 
 	/**
 	 * @return Type of view that is currently displayed by the brick.
 	 */
-	public int getCurrentViewType() {
+	public EContainedViewType getCurrentViewType() {
 		return currentViewType;
 	}
 
@@ -771,11 +794,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	public float setToOverviewMode() {
 
 		CompactBrickLayoutTemplate layoutTemplate = new CompactBrickLayoutTemplate(
-				this, visBricks);
+				this, visBricks, dimensionGroup);
 		setBrickLayoutTemplate(layoutTemplate);
-		setRemoteView(GLBrick.OVERVIEW_HEATMAP_COMPACT);
 
-		isInOverviewMode = true;
 		float minSize = getParentGLCanvas().getPixelGLConverter()
 				.getGLHeightForPixelHeight(layoutTemplate.getMinHeightPixels());
 		float currentSize = wrappingLayout.getSizeScaledY();

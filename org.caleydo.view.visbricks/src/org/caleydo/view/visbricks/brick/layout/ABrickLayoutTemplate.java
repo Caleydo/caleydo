@@ -1,8 +1,12 @@
 package org.caleydo.view.visbricks.brick.layout;
 
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import java.util.HashSet;
+
 import org.caleydo.core.view.opengl.layout.LayoutTemplate;
+import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.ui.AContainedViewRenderer;
+import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
 /**
  * Subclasses of this class are intended to specify the elements and their
@@ -13,13 +17,20 @@ import org.caleydo.view.visbricks.brick.GLBrick;
  */
 public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 
-	protected GLBrick brick;
-	protected LayoutRenderer viewRenderer;
-	protected boolean showHandles;
+	protected static final int SPACING_PIXELS = 4;
 
-	public ABrickLayoutTemplate(GLBrick brick) {
+	protected GLBrick brick;
+	protected AContainedViewRenderer viewRenderer;
+	protected boolean showHandles;
+	protected DimensionGroup dimensionGroup;
+	protected HashSet<EContainedViewType> validViewTypes;
+
+	public ABrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup) {
 		this.brick = brick;
+		this.dimensionGroup = dimensionGroup;
 		showHandles = false;
+		validViewTypes = new HashSet<EContainedViewType>();
+		setValidViewTypes();
 		setPixelGLConverter(brick.getParentGLCanvas().getPixelGLConverter());
 		registerPickingListeners();
 	}
@@ -29,7 +40,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	 * 
 	 * @param viewRenderer
 	 */
-	public void setViewRenderer(LayoutRenderer viewRenderer) {
+	public void setViewRenderer(AContainedViewRenderer viewRenderer) {
 		this.viewRenderer = viewRenderer;
 	}
 
@@ -55,13 +66,34 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	protected abstract void registerPickingListeners();
 
 	/**
-	 * @return Minimum height in pixels required by the brick with the current layout and view
+	 * @return Minimum height in pixels required by the brick with the current
+	 *         layout and view
 	 */
 	public abstract int getMinHeightPixels();
 
 	/**
-	 * @return Minimum width in pixels required by the brick with the current layout and view
+	 * @return Minimum width in pixels required by the brick with the current
+	 *         layout and view
 	 */
 	public abstract int getMinWidthPixels();
+
+	/**
+	 * Sets the view types that are valid for the layout.
+	 */
+	protected abstract void setValidViewTypes();
+
+	/**
+	 * @return The default view type for this layout.
+	 */
+	public abstract EContainedViewType getDefaultViewType();
+
+	/**
+	 * @param viewType
+	 * @return True, if the specified viewType is valid for this layout, false
+	 *         otherwise.
+	 */
+	public boolean isViewTypeValid(EContainedViewType viewType) {
+		return validViewTypes.contains(viewType);
+	}
 
 }

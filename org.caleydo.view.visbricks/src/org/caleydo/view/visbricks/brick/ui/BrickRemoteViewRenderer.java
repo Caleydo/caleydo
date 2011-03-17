@@ -3,8 +3,8 @@ package org.caleydo.view.visbricks.brick.ui;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**
@@ -13,13 +13,21 @@ import org.caleydo.view.visbricks.brick.GLBrick;
  * @author Christian Partl
  * 
  */
-public class BrickRemoteViewRenderer extends ViewLayoutRenderer {
+public class BrickRemoteViewRenderer extends AContainedViewRenderer {
 
 	private GLBrick brick;
 
+	protected AGLView view;
+
+	/**
+	 * Constructor taking an {@link AGLView} to be rendered by this renderer.
+	 * 
+	 * @param view
+	 * @param brick
+	 */
 	public BrickRemoteViewRenderer(AGLView view, GLBrick brick) {
-		super(view);
 		this.brick = brick;
+		this.view = view;
 	}
 
 	/**
@@ -32,6 +40,23 @@ public class BrickRemoteViewRenderer extends ViewLayoutRenderer {
 				EPickingType.BRICK, brick.getID()));
 		view.displayRemote(gl);
 		gl.glPopName();
+	}
+
+	@Override
+	public void setLimits(float x, float y) {
+		super.setLimits(x, y);
+		ViewFrustum viewFrustum = view.getViewFrustum();
+		viewFrustum.setLeft(0);
+		viewFrustum.setBottom(0);
+		viewFrustum.setRight(x);
+		viewFrustum.setTop(y);
+		view.setFrustum(viewFrustum);
+		view.setDisplayListDirty();
+	}
+
+	@Override
+	public int getMinHeightPixels() {
+		return 32;
 	}
 
 }

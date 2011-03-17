@@ -50,7 +50,7 @@ public class LayoutRenderer {
 	 * @param x
 	 * @param y
 	 */
-	void setLimits(float x, float y) {
+	protected void setLimits(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}

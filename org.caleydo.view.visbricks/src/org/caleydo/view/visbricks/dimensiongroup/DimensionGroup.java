@@ -47,6 +47,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.layout.CentralBrickLayoutTemplate;
 
@@ -523,7 +524,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		groupColumn.updateSubLayout();
 	}
 	
-	public void switchBrickViews(int viewType) {
+	public void switchBrickViews(EContainedViewType viewType) {
 		for(GLBrick brick : topBricks) {
 			brick.setRemoteView(viewType);
 		}

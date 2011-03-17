@@ -5,10 +5,12 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.picking.APickingListener;
 import org.caleydo.view.visbricks.brick.ui.Button;
 import org.caleydo.view.visbricks.brick.ui.ButtonRenderer;
+import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
 /**
  * Abstract base class for all brick layouts containing a toolbar.
@@ -30,8 +32,8 @@ public abstract class ABrickToolbarLayoutTemplate extends ABrickLayoutTemplate {
 	protected Button overviewHeatMapButton;
 	
 
-	public ABrickToolbarLayoutTemplate(GLBrick brick) {
-		super(brick);
+	public ABrickToolbarLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup) {
+		super(brick, dimensionGroup);
 
 		heatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
 				HEATMAP_BUTTON_ID);
@@ -42,30 +44,30 @@ public abstract class ABrickToolbarLayoutTemplate extends ABrickLayoutTemplate {
 		overviewHeatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
 				OVERVIEW_HEATMAP_BUTTON_ID);
 
-		updateToolBarButtons();
+		updateToolBarButtons(getDefaultViewType());
 	}
 	
 	/**
 	 * Selects the toolbar button that corresponds to the view currently shown in the brick.
 	 */
-	public void updateToolBarButtons() {
+	public void updateToolBarButtons(EContainedViewType currentViewType) {
 		
 		heatMapButton.setSelected(false);
 		parCoordsButton.setSelected(false);
 		histogramButton.setSelected(false);
 		overviewHeatMapButton.setSelected(false);
 		
-		switch (brick.getCurrentViewType()) {
-		case GLBrick.HEATMAP_VIEW:
+		switch (currentViewType) {
+		case HEATMAP_VIEW:
 			heatMapButton.setSelected(true);
 			break;
-		case GLBrick.PARCOORDS_VIEW:
+		case PARCOORDS_VIEW:
 			parCoordsButton.setSelected(true);
 			break;
-		case GLBrick.HISTOGRAM_VIEW:
+		case HISTOGRAM_VIEW:
 			histogramButton.setSelected(true);
 			break;
-		case GLBrick.OVERVIEW_HEATMAP:
+		case OVERVIEW_HEATMAP:
 			overviewHeatMapButton.setSelected(true);
 			break;
 		}
@@ -141,11 +143,12 @@ public abstract class ABrickToolbarLayoutTemplate extends ABrickLayoutTemplate {
 
 			@Override
 			public void clicked(Pick pick) {
-				brick.setRemoteView(GLBrick.HEATMAP_VIEW);
+				brick.setRemoteView(EContainedViewType.HEATMAP_VIEW);
 				heatMapButton.setSelected(true);
 				parCoordsButton.setSelected(false);
 				histogramButton.setSelected(false);
 				overviewHeatMapButton.setSelected(false);
+				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HEATMAP_BUTTON_ID);
 
@@ -153,11 +156,12 @@ public abstract class ABrickToolbarLayoutTemplate extends ABrickLayoutTemplate {
 
 			@Override
 			public void clicked(Pick pick) {
-				brick.setRemoteView(GLBrick.PARCOORDS_VIEW);
+				brick.setRemoteView(EContainedViewType.PARCOORDS_VIEW);
 				heatMapButton.setSelected(false);
 				parCoordsButton.setSelected(true);
 				histogramButton.setSelected(false);
 				overviewHeatMapButton.setSelected(false);
+				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, PARCOORDS_BUTTON_ID);
 
@@ -165,11 +169,12 @@ public abstract class ABrickToolbarLayoutTemplate extends ABrickLayoutTemplate {
 
 			@Override
 			public void clicked(Pick pick) {
-				brick.setRemoteView(GLBrick.HISTOGRAM_VIEW);
+				brick.setRemoteView(EContainedViewType.HISTOGRAM_VIEW);
 				heatMapButton.setSelected(false);
 				parCoordsButton.setSelected(false);
 				histogramButton.setSelected(true);
 				overviewHeatMapButton.setSelected(false);
+				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HISTOGRAM_BUTTON_ID);
 		
@@ -177,11 +182,12 @@ public abstract class ABrickToolbarLayoutTemplate extends ABrickLayoutTemplate {
 
 			@Override
 			public void clicked(Pick pick) {
-				brick.setRemoteView(GLBrick.OVERVIEW_HEATMAP);
+				brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
 				heatMapButton.setSelected(false);
 				parCoordsButton.setSelected(false);
 				histogramButton.setSelected(false);
 				overviewHeatMapButton.setSelected(true);
+				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, OVERVIEW_HEATMAP_BUTTON_ID);
 	}
