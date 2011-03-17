@@ -380,7 +380,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			bottomBricks.clear();
 			createSubBricks();
 			groupColumn.updateSubLayout();
-			visBricks.initiConnectionLinesBetweenDimensionGroups();
+			visBricks.updateConnectionLinesBetweenDimensionGroups();
 		}
 	}
 
@@ -510,7 +510,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		centerLayout.updateSubLayout();
 		groupColumn.updateSubLayout();
-		visBricks.initiConnectionLinesBetweenDimensionGroups();
+		visBricks.updateConnectionLinesBetweenDimensionGroups();
 
 	}
 
@@ -521,6 +521,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	public void updateLayout() {
 		groupColumn.updateSubLayout();
+		visBricks.updateConnectionLinesBetweenDimensionGroups();
 	}
 
 	public void switchBrickViews(EContainedViewType viewType) {
@@ -575,7 +576,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		centerBrick.getLayout().updateSubLayout();
 
 		visBricks.updateLayout();
-		visBricks.initiConnectionLinesBetweenDimensionGroups();
+		visBricks.updateConnectionLinesBetweenDimensionGroups();
 
 	}
 

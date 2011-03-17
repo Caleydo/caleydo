@@ -639,7 +639,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		super.reshape(drawable, x, y, width, height);
 
 		initLayouts();
-		initiConnectionLinesBetweenDimensionGroups();
+		updateConnectionLinesBetweenDimensionGroups();
 	}
 
 	@Override
@@ -656,7 +656,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				dropDimensionGroupAfter);
 
 		initLayouts();
-		initiConnectionLinesBetweenDimensionGroups();
+		updateConnectionLinesBetweenDimensionGroups();
 
 		RelationsUpdatedEvent event = new RelationsUpdatedEvent();
 		event.setDataDomainType(dataDomain.getDataDomainType());
@@ -758,7 +758,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		return dimensionGroupManager;
 	}
 
-	public void initiConnectionLinesBetweenDimensionGroups() {
+	public void updateConnectionLinesBetweenDimensionGroups() {
 		if (centerRowLayout != null) {
 			for (ElementLayout elementLayout : centerRowLayout.getElements()) {
 				if (elementLayout.getRenderer() instanceof DimensionGroupSpacingRenderer) {
