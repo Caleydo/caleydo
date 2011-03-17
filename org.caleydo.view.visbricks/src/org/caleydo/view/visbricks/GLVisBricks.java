@@ -61,7 +61,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public final static String VIEW_ID = "org.caleydo.view.visbricks";
 
 	private final static int ARCH_PIXEL_HEIGHT = 150;
-	private final static float ARCH_BOTTOM_PERCENT = 0.5f;
+	private final static float ARCH_BOTTOM_PERCENT = 0.4f;
 	private final static float ARCH_STAND_WIDTH_PERCENT = 0.05f;
 
 	private final static int DIMENSION_GROUP_SPACING = 30;
@@ -166,17 +166,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		archTopY = archBottomY + archHeight;
 
 		float centerLayoutWidth = viewFrustum.getWidth() - 2 * (archInnerWidth);
-		// int centerDimGroupCount =
-		// dimensionGroupManager.getRightGroupStartIndex()
-		// - dimensionGroupManager.getCenterGroupStartIndex();
-
-		// float spacerBeforeAndAfterWidth =
-		// parentGLCanvas.getPixelGLConverter()
-		// .getGLWidthForPixelWidth(100);
-		// float spacerWidth = ((centerLayoutWidth - spacerBeforeAndAfterWidth -
-		// centerDimGroupCount
-		// * archHeight))
-		// / (centerDimGroupCount - 1);
 
 		centerRowLayout = new Row("centerArchRow");
 		centerRowLayout.setFrameColor(1, 1, 0, 1);
@@ -201,7 +190,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			DimensionGroup group = dimensionGroupManager.getDimensionGroups().get(
 					dimensionGroupIndex);
 			group.setCollapsed(false);
-			// group.getLayout().setAbsoluteSizeX(archHeight);
 			group.setArchHeight(ARCH_PIXEL_HEIGHT);
 			centerRowLayout.append(group.getLayout());
 			// centerRowLayout.setDebug(true);
@@ -650,6 +638,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		super.reshape(drawable, x, y, width, height);
 
 		initLayouts();
+		initiConnectionLinesBetweenDimensionGroups();
 	}
 
 	@Override

@@ -173,7 +173,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 		float rightCenterBrickTop = 0;
 		float rightCenterBrickBottom = 0;
 
-		float curveOffset = 0.4f;
+		float curveOffset = x*0.2f;
 
 		if (leftDimGroup != null) {
 			GLBrick leftCenterBrick = leftDimGroup.getCenterBrick();
@@ -223,6 +223,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 	private void renderDimensionGroupConnections(GL2 gl) {
 
+		float splineFactor = 0.2f*x;
+		
 		gl.glLineWidth(1);
 		for (GroupMatch groupMatch : hashGroupID2GroupMatches.values()) {
 
@@ -240,7 +242,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 						new float[] { x, subGroupMatch.getRightAnchorYTop(), 0 },
 						new float[] { x, subGroupMatch.getRightAnchorYBottom(), 0 },
 						(groupMatch.getBrick().isActive() || subGroupMatch.getBrick()
-								.isActive()), 0.3f, 0, false,
+								.isActive()), splineFactor, 0, false,
 						new float[] { 0.0f, 0.0f, 1 }, 0.15f);
 			}
 		}
