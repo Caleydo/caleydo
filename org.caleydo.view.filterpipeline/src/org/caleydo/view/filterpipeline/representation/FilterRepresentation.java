@@ -157,7 +157,6 @@ public class FilterRepresentation
 			                    float[] color,
 			                    float z )
 	{
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 		gl.glBegin(renderMode);
 		{
 			gl.glColor4fv(color, 0);
@@ -168,7 +167,6 @@ public class FilterRepresentation
 			gl.glVertex3f(pos.x() + width, pos.y() + offsetRight, z);			
 		}
 		gl.glEnd();
-		gl.glPopAttrib();
 	}
 	
 	protected void renderShape( GL2 gl,

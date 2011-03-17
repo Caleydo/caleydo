@@ -24,7 +24,6 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 	public static boolean renderPassedAll = true;
 
 	protected SortedSet<Integer> elementsPassed = new TreeSet<Integer>();
-	protected SortedSet<Integer> elementsPassedAll = new TreeSet<Integer>();
 	protected int[] subFilterSizes = new int[0];
 	protected ArrayList<SortedSet<Integer>> subFiltersPassedElements = null;
 
@@ -59,12 +58,12 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 			gl.glPopName();
 		}
 
-		if (renderPassedAll)
-		{
-			// render elements passed all filters
-			heightRight = vSize.y() * (elementsPassedAll.size() / 100.f);
-			renderShape(gl, GL2.GL_QUADS, renderStyle.FILTER_PASSED_ALL_COLOR, Z_POS_BODY);
-		}
+//		if (renderPassedAll)
+//		{
+//			// render elements passed all filters
+//			heightRight = vSize.y() * (elementsPassedAll.size() / 100.f);
+//			renderShape(gl, GL2.GL_QUADS, renderStyle.FILTER_PASSED_ALL_COLOR, Z_POS_BODY);
+//		}
 
 		if( mouseOverItem >= 0 )
 		{
@@ -92,20 +91,24 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 		}
 	}
 
-	protected void calculateSizes() {
+	protected void calculateSizes()
+	{
 		sizesDirty = false;
 
 		// TODO also handle storage filter
-		VirtualArray<?, ContentVADelta, ?> input = (VirtualArray<?, ContentVADelta, ?>) filter
-				.getInput().clone();
-		ArrayList<ContentFilter> filterList = ((ContentMetaOrFilter) filter.getFilter())
-				.getFilterList();
+		@SuppressWarnings("unchecked")
+		VirtualArray<?, ContentVADelta, ?> input =
+			(VirtualArray<?, ContentVADelta, ?>)filter.getInput().clone();
+		ArrayList<ContentFilter> filterList =
+			((ContentMetaOrFilter)filter.getFilter()).getFilterList();
 
 		subFilterSizes = new int[filterList.size()];
-		subFiltersPassedElements = new ArrayList<SortedSet<Integer>>(filterList.size());
+		subFiltersPassedElements =
+			new ArrayList<SortedSet<Integer>>( filterList.size() );
 
 		int i = 0;
-		for (ContentFilter subFilter : filterList) {
+		for (ContentFilter subFilter : filterList)
+		{
 			VirtualArray<?, ContentVADelta, ?> tempInput = input.clone();
 			tempInput.setDelta(subFilter.getVADelta());
 
@@ -116,28 +119,120 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 			subFilterSizes[i++] = passedElements.size();
 			subFiltersPassedElements.add(passedElements);
 
-			System.out.println("Out=" + passedElements.size());
+			System.out.println("SubfilterOut=" + passedElements.size());
 		}
-
-		elementsPassedAll.clear();
-		for (Integer value : filter.getOutput()) {
-			boolean passedAll = true;
-
-			for (SortedSet<Integer> passedElements : subFiltersPassedElements) {
-				if (!passedElements.contains(value))
-					passedAll = false;
-			}
-
-			if (passedAll)
-				elementsPassedAll.add(value);
-		}
-		System.out.println("CommonOut=" + elementsPassedAll.size());
 
 		// cache output
 		elementsPassed.clear();
 		for (Integer element : filter.getOutput())
 			elementsPassed.add(element);
 		System.out.println("TotalOut=" + elementsPassed.size());
+		
+		calculateIntersections();
+	}
+	
+	/**
+	 * Calculate all intersections between every combination of subfilters
+	 */
+	private void calculateIntersections()
+	{
+		System.out.println
+		(
+			"Check intersections ("+elementsPassed.size()+" elements):"
+		);
+		
+		int numSubFilters = subFilterSizes.length;
+		
+		// get all intersections between each permutation of filters
+		for( int count = 1; count <= numSubFilters; ++count )
+		{
+			System.out.println(" Count = "+count);
+			int[] currentFilters = new int[count];
+			
+			// start with count filters beginning at the first filter
+			for( int i = 0; i < count; ++i )
+				currentFilters[i] = i;
+			
+			boolean doCheck = true;
+
+			do
+			{
+				String s = new String("  [");
+				for( int i = 0; i < count; ++i )
+				{
+					if( s.length() > 3 )
+						s += ',';
+					s += currentFilters[i];
+				}
+				System.out.println(s+"]");
+				
+				// get output of first filter
+				SortedSet<Integer> intersection =
+					new TreeSet<Integer>
+					(
+						subFiltersPassedElements.get(currentFilters[0])
+					);
+				
+				// remove all elements passing another filter not contained
+				// in the intersection
+				for( int other = 0; other < numSubFilters; ++other )
+				{
+					boolean skipFilter = false;
+					for( int i = 0; i < count; ++i )
+					{
+						if( currentFilters[i] == other )
+						{
+							skipFilter = true;
+							break;
+						}
+					}
+					
+					if( !skipFilter )
+						intersection.removeAll
+						(
+							subFiltersPassedElements.get(other)
+						);
+				}
+				
+				// calculate intersection with remaining elements
+				for( int i = 1; i < count; ++i )
+				{
+					intersection.retainAll
+					(
+						subFiltersPassedElements.get(currentFilters[i])
+					);
+				}
+				
+				System.out.println("Got intersection containing "+intersection.size()+" elements.");
+				
+				if( !intersection.isEmpty() )
+				{
+					// TODO save intersection
+				}
+				
+				// increment last filter
+				currentFilters[count - 1] += 1;
+				
+				// and update all filters
+				for( int check = count - 1; check >= 0; --check )
+				{
+					if( currentFilters[check] > numSubFilters - count + check )
+					{
+						if( check > 0 )
+						{
+							++currentFilters[check - 1];
+							
+							// set all following filters directly after
+							// incremented filter
+							for( int f = check; f < count; ++f )
+								currentFilters[f] = currentFilters[f - 1] + 1;
+						}
+						else
+							doCheck = false;
+					}
+				}
+			} while( doCheck );
+		}
 	}
 
 }
