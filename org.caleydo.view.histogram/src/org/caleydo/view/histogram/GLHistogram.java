@@ -673,4 +673,10 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 		this.dataDomain = dataDomain;
 		initData();
 	}
+	
+	@Override
+	public int getMinPixelHeight() {
+		//TODO: Calculate depending on content
+		return 50;
+	}
 }

@@ -873,4 +873,46 @@ public abstract class AGLView
 		super.finalize();
 		System.out.println("Finalizing " + VIEW_ID);
 	}
+
+	/**
+	 * @return The minimum height in pixels the view currently requires to show its content properly.
+	 */
+	public int getMinPixelHeight() {
+		return 0;
+	}
+
+	/**
+	 * @return The minimum width in pixels the view currently requires to show its content properly.
+	 */
+	public int getMinPixelWidth() {
+		return 0;
+	}
+
+	/**
+	 * @return The minimum height in pixels the view requires to show its content properly with the specified
+	 *         detail level.
+	 */
+	public int getMinPixelHeight(DetailLevel detailLevel) {
+		return 0;
+	}
+
+	/**
+	 * @return The minimum width in pixels the view requires to show its content properly with the specified
+	 *         detail level.
+	 */
+	public int getMinPixelWidth(DetailLevel detailLevel) {
+		return 0;
+	}
+
+	/**
+	 * Gets the highest possible detail level the view is able to display its content with, using the
+	 * specified width and height.
+	 * 
+	 * @param pixelHeight
+	 * @param pixelWidth
+	 * @return
+	 */
+	public DetailLevel getHightestPossibleDetailLevel(int pixelHeight, int pixelWidth) {
+		return DetailLevel.LOW;
+	}
 }

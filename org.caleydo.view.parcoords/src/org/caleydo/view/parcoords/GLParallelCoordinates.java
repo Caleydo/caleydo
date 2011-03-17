@@ -2657,4 +2657,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		this.contentVA = contentVA;
 		contentSelectionManager.setVA(contentVA);
 	}
+	
+	@Override
+	public int getMinPixelHeight() {
+		//TODO: Calculate depending on content
+		return 100;
+	}
 }

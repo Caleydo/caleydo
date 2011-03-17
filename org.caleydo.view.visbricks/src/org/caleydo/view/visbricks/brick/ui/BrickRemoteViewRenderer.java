@@ -56,7 +56,7 @@ public class BrickRemoteViewRenderer extends AContainedViewRenderer {
 
 	@Override
 	public int getMinHeightPixels() {
-		return 32;
+		return view.getMinPixelHeight();
 	}
 
 }

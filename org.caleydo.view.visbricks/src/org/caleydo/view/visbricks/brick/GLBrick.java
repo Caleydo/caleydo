@@ -64,12 +64,6 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	public final static String VIEW_ID = "org.caleydo.view.brick";
 
-	// public static final int HEATMAP_VIEW = 0;
-	// public static final int PARCOORDS_VIEW = 1;
-	// public static final int HISTOGRAM_VIEW = 2;
-	// public static final int OVERVIEW_HEATMAP = 3;
-	// public static final int OVERVIEW_HEATMAP_COMPACT = 4;
-
 	private LayoutManager templateRenderer;
 	private ABrickLayoutTemplate brickLayout;
 	private ElementLayout wrappingLayout;
