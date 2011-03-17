@@ -522,6 +522,17 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public void updateLayout() {
 		groupColumn.updateSubLayout();
 	}
+	
+	public void switchBrickViews(int viewType) {
+		for(GLBrick brick : topBricks) {
+			brick.setRemoteView(viewType);
+		}
+		for(GLBrick brick : bottomBricks) {
+			brick.setRemoteView(viewType);
+		}
+		centerBrick.setRemoteView(viewType);
+		groupColumn.updateSubLayout();
+	}
 
 	/** resize of a brick */
 	private void handleBrickResize(GL2 gl) {

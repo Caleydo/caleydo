@@ -23,15 +23,17 @@ import org.caleydo.view.visbricks.dimensiongroup.LineSeparatorRenderer;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Brick layout for central brick in {@link DimensionGroup} conaining a caption bar, toolbar and view.
+ * Brick layout for central brick in {@link DimensionGroup} conaining a caption
+ * bar, toolbar and view.
  * 
  * @author Christian Partl
- *
+ * 
  */
 public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 	private DimensionGroup dimensionGroup;
 	private Button clusterButton;
+	private Button viewSwitchingModeButton;
 
 	public CentralBrickLayoutTemplate(GLBrick brick,
 			DimensionGroup dimensionGroup) {
@@ -39,6 +41,8 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 		this.dimensionGroup = dimensionGroup;
 		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
 				1);
+		viewSwitchingModeButton = new Button(
+				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON, 1);
 
 	}
 
@@ -121,6 +125,19 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 				brick, EIconTextures.CLUSTER_ICON, brick.getTextureManager()));
 
 		captionRow.append(clusterButtonLayout);
+		captionRow.append(spacingLayoutX);
+
+		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout(
+				"clusterButton");
+		toggleViewSwitchingButtonLayout.setPixelGLConverter(pixelGLConverter);
+		toggleViewSwitchingButtonLayout.setPixelSizeX(16);
+		toggleViewSwitchingButtonLayout.setPixelSizeY(16);
+		toggleViewSwitchingButtonLayout.setRenderer(new ButtonRenderer(
+				viewSwitchingModeButton, brick, EIconTextures.LOCK, brick
+						.getTextureManager()));
+		
+		
+		captionRow.append(toggleViewSwitchingButtonLayout);
 
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
@@ -142,7 +159,76 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 
 	@Override
 	protected void registerPickingListeners() {
-		super.registerPickingListeners();
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				heatMapButton.setSelected(true);
+				parCoordsButton.setSelected(false);
+				histogramButton.setSelected(false);
+				overviewHeatMapButton.setSelected(false);
+				
+				if(viewSwitchingModeButton.isSelected()) {
+					dimensionGroup.switchBrickViews(GLBrick.HEATMAP_VIEW);
+				} else {
+					brick.setRemoteView(GLBrick.HEATMAP_VIEW);
+				}
+			}
+		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HEATMAP_BUTTON_ID);
+
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				brick.setRemoteView(GLBrick.PARCOORDS_VIEW);
+				heatMapButton.setSelected(false);
+				parCoordsButton.setSelected(true);
+				histogramButton.setSelected(false);
+				overviewHeatMapButton.setSelected(false);
+				
+				if(viewSwitchingModeButton.isSelected()) {
+					dimensionGroup.switchBrickViews(GLBrick.PARCOORDS_VIEW);
+				} else {
+					brick.setRemoteView(GLBrick.PARCOORDS_VIEW);
+				}
+			}
+		}, EPickingType.BRICK_TOOLBAR_BUTTONS, PARCOORDS_BUTTON_ID);
+
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				brick.setRemoteView(GLBrick.HISTOGRAM_VIEW);
+				heatMapButton.setSelected(false);
+				parCoordsButton.setSelected(false);
+				histogramButton.setSelected(true);
+				overviewHeatMapButton.setSelected(false);
+				
+				if(viewSwitchingModeButton.isSelected()) {
+					dimensionGroup.switchBrickViews(GLBrick.HISTOGRAM_VIEW);
+				} else {
+					brick.setRemoteView(GLBrick.HISTOGRAM_VIEW);
+				}
+			}
+		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HISTOGRAM_BUTTON_ID);
+		
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				brick.setRemoteView(GLBrick.OVERVIEW_HEATMAP);
+				heatMapButton.setSelected(false);
+				parCoordsButton.setSelected(false);
+				histogramButton.setSelected(false);
+				overviewHeatMapButton.setSelected(true);
+				
+				if(viewSwitchingModeButton.isSelected()) {
+					dimensionGroup.switchBrickViews(GLBrick.OVERVIEW_HEATMAP);
+				} else {
+					brick.setRemoteView(GLBrick.OVERVIEW_HEATMAP);
+				}
+			}
+		}, EPickingType.BRICK_TOOLBAR_BUTTONS, OVERVIEW_HEATMAP_BUTTON_ID);
 
 		brick.addPickingListener(new APickingListener() {
 
@@ -175,17 +261,25 @@ public class CentralBrickLayoutTemplate extends ABrickToolbarLayoutTemplate {
 						});
 			}
 		}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, 1);
+		
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				viewSwitchingModeButton.setSelected(!viewSwitchingModeButton.isSelected());
+			}
+		}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON, 1);
 	}
 
 	@Override
 	public int getMinHeightPixels() {
-		//TODO: implement
+		// TODO: implement
 		return 0;
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		//TODO: implement
+		// TODO: implement
 		return 0;
 	}
 }
