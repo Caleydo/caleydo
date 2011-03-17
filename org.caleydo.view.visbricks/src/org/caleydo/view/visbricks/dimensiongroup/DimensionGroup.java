@@ -111,7 +111,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		super(canvas, viewFrustum, true);
 
 		groupColumn = new Column("dimensionGroup");
-//		groupColumn.setDebug(true);
+		// groupColumn.setDebug(true);
 		groupColumn.setXDynamic(true);
 		groupColumn.setVAlign(VAlign.CENTER);
 
@@ -121,7 +121,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		bottomCol.setXDynamic(true);
 		bottomCol.setIDs(uniqueID, BOTTOM_COLUMN_ID);
 
-//		bottomCol.setDebug(true);
+		// bottomCol.setDebug(true);
 
 		bottomBricks = new ArrayList<GLBrick>(20);
 
@@ -134,7 +134,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		topBricks = new ArrayList<GLBrick>(20);
 		topCol.setXDynamic(true);
 		topCol.setIDs(uniqueID, TOP_COLUMN_ID);
-//		topCol.setDebug(true);
+		// topCol.setDebug(true);
 
 		initGroupColumn();
 	}
@@ -377,8 +377,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			bottomCol.clear();
 			bottomBricks.clear();
 			createSubBricks();
-			topCol.updateSubLayout();
-			bottomCol.updateSubLayout();
+			groupColumn.updateSubLayout();
 
 			visBricks.initiConnectionLinesBetweenDimensionGroups();
 		}
@@ -523,12 +522,12 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public void updateLayout() {
 		groupColumn.updateSubLayout();
 	}
-	
+
 	public void switchBrickViews(EContainedViewType viewType) {
-		for(GLBrick brick : topBricks) {
+		for (GLBrick brick : topBricks) {
 			brick.setRemoteView(viewType);
 		}
-		for(GLBrick brick : bottomBricks) {
+		for (GLBrick brick : bottomBricks) {
 			brick.setRemoteView(viewType);
 		}
 		centerBrick.setRemoteView(viewType);
