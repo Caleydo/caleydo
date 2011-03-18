@@ -94,6 +94,8 @@ public class ClusterNode
 	 * @param set
 	 */
 	public <SetType extends Set> void createMetaSet(SetType set) {
+		if(metaSet != null)
+			return;
 		metaSet = new MetaSet(set, (ClusterTree) tree, this);
 		metaSet.setLabel(label);
 		// metaSet.setContentTree(set.getContentTree());

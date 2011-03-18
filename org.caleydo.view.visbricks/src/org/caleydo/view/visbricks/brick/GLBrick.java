@@ -40,6 +40,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.CentralBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.picking.APickingListener;
@@ -175,14 +176,16 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		// brickLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 
-		HeatMapCreator heatMapCreator = new HeatMapCreator();
-		AGLView heatMap = heatMapCreator.createRemoteView(this, gl, glMouseListener);
-		AContainedViewRenderer heatMapLayoutRenderer = new BrickRemoteViewRenderer(
-				heatMap, this);
-		views.put(EContainedViewType.HEATMAP_VIEW, heatMap);
-		containedViewRenderers
-				.put(EContainedViewType.HEATMAP_VIEW, heatMapLayoutRenderer);
-
+		// TODO: christian please check here
+		if (!(brickLayout instanceof CentralBrickLayoutTemplate)) {
+			HeatMapCreator heatMapCreator = new HeatMapCreator();
+			AGLView heatMap = heatMapCreator.createRemoteView(this, gl, glMouseListener);
+			AContainedViewRenderer heatMapLayoutRenderer = new BrickRemoteViewRenderer(
+					heatMap, this);
+			views.put(EContainedViewType.HEATMAP_VIEW, heatMap);
+			containedViewRenderers.put(EContainedViewType.HEATMAP_VIEW,
+					heatMapLayoutRenderer);
+		}
 		ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
 		AGLView parCoords = parCoordsCreator.createRemoteView(this, gl, glMouseListener);
 		AContainedViewRenderer parCoordsLayoutRenderer = new BrickRemoteViewRenderer(
@@ -211,7 +214,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
 				compactOverviewHeatMapRenderer);
 
-		currentRemoteView = heatMap;
+		// TODO: christian please check here
+		currentRemoteView = histogram;
 
 		currentViewType = brickLayout.getDefaultViewType();
 		brickLayout.setViewRenderer(containedViewRenderers.get(brickLayout
@@ -618,8 +622,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			return;
 
 		if (isInOverviewMode && !brickLayout.isViewTypeValid(viewType)) {
-			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks,
-					dimensionGroup);
+			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks, dimensionGroup);
 			templateRenderer.setTemplate(brickLayout);
 			isInOverviewMode = false;
 		}
@@ -798,9 +801,10 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	public boolean isInOverviewMode() {
 		return isInOverviewMode;
 	}
-	
+
 	/**
-	 * Sets, whether view switching by this brick should affect other bricks in the dimension group.
+	 * Sets, whether view switching by this brick should affect other bricks in
+	 * the dimension group.
 	 * 
 	 * @param isGlobalViewSwitching
 	 */

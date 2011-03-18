@@ -649,7 +649,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		return glVisBricksView;
 	}
 
-	ISet getSet() {
+	public ISet getSet() {
 		return set;
 	}
 

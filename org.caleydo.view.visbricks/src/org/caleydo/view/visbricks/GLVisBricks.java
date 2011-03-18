@@ -3,6 +3,7 @@ package org.caleydo.view.visbricks;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -153,6 +154,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		initLayoutSide(rightColumnLayout, rightLayout, rightLayoutManager,
 				dimensionGroupManager.getRightGroupStartIndex(), dimensionGroupManager
 						.getDimensionGroups().size());
+		
+		updateConnectionLinesBetweenDimensionGroups();
 	}
 
 	private void initLayoutCenter() {
@@ -162,7 +165,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		archHeight = parentGLCanvas.getPixelGLConverter().getGLHeightForPixelHeight(
 				ARCH_PIXEL_HEIGHT);
-		archBottomY = viewFrustum.getHeight() * ARCH_BOTTOM_PERCENT - archHeight/2f;
+		archBottomY = viewFrustum.getHeight() * ARCH_BOTTOM_PERCENT - archHeight / 2f;
 
 		archTopY = archBottomY + archHeight;
 
@@ -174,6 +177,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		ElementLayout dimensionGroupSpacing = new ElementLayout("firstCenterDimGrSpacing");
 		// dimensionGroupSpacing.setDebug(true);
+		// side spacing
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(
 				null, connectionRenderer, null, dimensionGroupManager
 						.getDimensionGroups().get(
@@ -580,8 +584,17 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
 				.getDimensionGroups();
-		dimensionGroups.clear();
-
+		Iterator<DimensionGroup> dimensionGroupIterator = dimensionGroups.iterator();
+		while (dimensionGroupIterator.hasNext()) {
+			DimensionGroup dimensionGroup = dimensionGroupIterator.next();
+			ISet metaSet = dimensionGroup.getSet();
+			if (!metaSets.contains(metaSet)) {
+				dimensionGroupIterator.remove();
+			} else {
+				metaSets.remove(metaSet);
+			}
+			
+		}
 		for (ISet set : metaSets) {
 
 			// TODO here we need to check which metaSets have already been
@@ -639,7 +652,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		super.reshape(drawable, x, y, width, height);
 
 		initLayouts();
-		updateConnectionLinesBetweenDimensionGroups();
+	
 	}
 
 	@Override
@@ -656,7 +669,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				dropDimensionGroupAfter);
 
 		initLayouts();
-		updateConnectionLinesBetweenDimensionGroups();
 
 		RelationsUpdatedEvent event = new RelationsUpdatedEvent();
 		event.setDataDomainType(dataDomain.getDataDomainType());
