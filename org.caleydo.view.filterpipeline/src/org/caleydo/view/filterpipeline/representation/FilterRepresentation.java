@@ -132,19 +132,20 @@ public class FilterRepresentation
 			
 //			if( selectionType == SelectionType.MOUSE_OVER )
 //			{
-//				// label
-//				textRenderer.renderText
-//				(
-//					gl,
-//					filter.getLabel(),
-//					vPos.x() + 0.05f,
-//					vPos.y() + 0.05f,
-//					Z_POS_TEXT,
-//					0.007f,
-//					20
-//				);
 //			}
 		}
+		
+		// label
+		textRenderer.renderText
+		(
+			gl,
+			filter.getLabel(),
+			vPos.x() + 0.05f,
+			vPos.y() + 0.05f,
+			Z_POS_TEXT,
+			0.004f,
+			20
+		);
 	}
 	
 	protected void renderShape( GL2 gl,

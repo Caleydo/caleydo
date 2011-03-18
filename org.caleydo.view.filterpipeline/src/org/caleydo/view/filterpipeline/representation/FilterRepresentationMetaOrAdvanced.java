@@ -4,6 +4,7 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import javax.media.opengl.GL2;
+import org.caleydo.core.data.filter.ContentMetaOrFilter;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -105,6 +106,17 @@ public class FilterRepresentationMetaOrAdvanced
 				Z_POS_BORDER + 0.1f
 			);
 			gl.glPopName();
+
+			textRenderer.renderText
+			(
+				gl,
+				((ContentMetaOrFilter)filter.getFilter()).getFilterList().get(i).getLabel(),
+				curPos.x() + 0.02f,
+				curPos.y() + 0.02f,
+				Z_POS_TEXT,
+				0.0035f,
+				18
+			);
 			
 			renderInputBand
 			(
@@ -178,8 +190,16 @@ public class FilterRepresentationMetaOrAdvanced
 				
 				gl.glColor4fv(color, 0);
 				
+				float filterBottom = vPos.y() + vSize.y() * (outputSteps/100.f);				
+				float height = vSize.y() * (intersection.numElements/100.f);
+				
 				gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
 				gl.glBegin(GL2.GL_QUADS);
+				
+				gl.glVertex3f(filterRight, filterBottom, Z_POS_BODY);
+				gl.glVertex3f(filterRight, filterBottom + height, Z_POS_BODY);
+				gl.glVertex3f(filterRight + 0.058f * vSize.x(), filterBottom + height, Z_POS_BODY);
+				gl.glVertex3f(filterRight + 0.058f * vSize.x(), filterBottom, Z_POS_BODY);
 				
 				for( int filterId : intersection.filterIds )
 				{
@@ -188,11 +208,7 @@ public class FilterRepresentationMetaOrAdvanced
 						+ filterId * offsetY
 						+ scaleY * vSize.y() * (currentSteps[filterId]/100.f);
 					
-					float filterBottom =
-						vPos.y() + vSize.y() * (outputSteps/100.f);
 					
-					float height =
-						vSize.y() * (intersection.numElements/100.f);
 					
 					gl.glVertex3f(subFilterRight, subFilterBottom, Z_POS_BODY);
 					gl.glVertex3f(subFilterRight, subFilterBottom + scaleY * height, Z_POS_BODY);

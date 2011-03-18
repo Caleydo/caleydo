@@ -17,6 +17,11 @@ public class ContentMetaOrFilter
 
 	ArrayList<ContentFilter> filterList = new ArrayList<ContentFilter>();
 	
+	public ContentMetaOrFilter()
+	{
+		setLabel("OR Compound");
+	}
+	
 	@Override
 	public ArrayList<ContentFilter> getFilterList() {
 		return filterList;
