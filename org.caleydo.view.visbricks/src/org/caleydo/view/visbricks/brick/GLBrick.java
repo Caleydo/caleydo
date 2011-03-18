@@ -466,6 +466,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		// centerBrick.getLayout().updateSubLayout();
 
+		visBricks.setLastResizeDirectionWasToLeft(false);
 		visBricks.updateLayout();
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
 

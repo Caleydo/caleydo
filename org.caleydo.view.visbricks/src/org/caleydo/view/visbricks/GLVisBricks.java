@@ -96,6 +96,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private float archBottomY = 0;
 	private float archHeight = 0;
 
+	/** Flag signalling if a group needs to be moved out of the center */
+	boolean resizeNecessary = false;
+	boolean lastResizeDirectionWasToLeft = true;
+
+	boolean isLayoutDirty = false;
+
 	private Queue<DimensionGroup> uninitializedDimensionGroups = new LinkedList<DimensionGroup>();
 
 	private DragAndDropController dragAndDropController;
@@ -154,7 +160,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		initLayoutSide(rightColumnLayout, rightLayout, rightLayoutManager,
 				dimensionGroupManager.getRightGroupStartIndex(), dimensionGroupManager
 						.getDimensionGroups().size());
-		
+
 		updateConnectionLinesBetweenDimensionGroups();
 	}
 
@@ -345,10 +351,38 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	@Override
 	public void display(GL2 gl) {
 
+		if (isLayoutDirty) {
+			isLayoutDirty = false;
+			centerLayoutManager.updateLayout();
+
+			for (ElementLayout layout : centerRowLayout) {
+				if (resizeNecessary)
+					break;
+				if (layout.getSizeScaledX() < parentGLCanvas.getPixelGLConverter()
+						.getGLWidthForPixelWidth(DIMENSION_GROUP_SPACING) + 0.001f) {
+					resizeNecessary = true;
+					break;
+				}
+			}
+		}
+
 		renderArch(gl);
 
 		for (DimensionGroup dimensionGroup : dimensionGroupManager.getDimensionGroups()) {
 			dimensionGroup.display(gl);
+		}
+
+		if (resizeNecessary) {
+			if (lastResizeDirectionWasToLeft) {
+				dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager
+						.getCenterGroupStartIndex() + 1);
+			} else {
+				dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
+						.getRightGroupStartIndex() - 1);
+			}
+			initLayouts();
+			updateLayout();
+			resizeNecessary = false;
 		}
 
 		leftLayoutManager.render(gl);
@@ -593,7 +627,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			} else {
 				metaSets.remove(metaSet);
 			}
-			
+
 		}
 		for (ISet set : metaSets) {
 
@@ -652,7 +686,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		super.reshape(drawable, x, y, width, height);
 
 		initLayouts();
-	
+
 	}
 
 	@Override
@@ -781,7 +815,17 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	public void updateLayout() {
-		centerLayoutManager.updateLayout();
+		isLayoutDirty = true;
+	}
+
+	/**
+	 * Set whether the last resize of any sub-brick was to the left(true) or to
+	 * the right. Important for determining, which dimensionGroup to kick next.
+	 * 
+	 * @param lastResizeDirectionWasToLeft
+	 */
+	public void setLastResizeDirectionWasToLeft(boolean lastResizeDirectionWasToLeft) {
+		this.lastResizeDirectionWasToLeft = lastResizeDirectionWasToLeft;
 	}
 
 	public float getArchTopY() {
