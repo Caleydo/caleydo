@@ -175,12 +175,31 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 		float curveOffset = x * 0.2f;
 
+		float xStart;
+		float xEnd;
+
 		if (leftDimGroup != null) {
 			GLBrick leftCenterBrick = leftDimGroup.getCenterBrick();
 
 			ElementLayout layout = leftCenterBrick.getLayout();
 			leftCenterBrickBottom = layout.getTranslateY();
 			leftCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledY();
+
+			xStart = leftDimGroup.getLayout().getTranslateX()
+					- leftCenterBrick.getLayout().getTranslateX();
+
+			// Render straight band connection from center brick to dimension
+			// group on
+			// the LEFT
+			if (xStart != 0) {
+
+				connectionRenderer.renderSingleBand(gl, new float[] { xStart,
+						leftCenterBrickTop, 0 }, new float[] { xStart,
+						leftCenterBrickBottom, 0 }, new float[] { 0, leftCenterBrickTop,
+						0 }, new float[] { 0, leftCenterBrickBottom, 0 }, false,
+						curveOffset, 0, false, new float[] { 0, 0, 0 }, 0.5f);
+			}
+
 		} else {
 			if (rightDimGroup != null) {
 				leftCenterBrickBottom = rightDimGroup.getVisBricksView().getArchBottomY();
@@ -195,6 +214,23 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 			ElementLayout layout = rightCenterBrick.getLayout();
 			rightCenterBrickBottom = layout.getTranslateY();
 			rightCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledY();
+
+			xEnd = x + rightCenterBrick.getLayout().getTranslateX()
+					- rightDimGroup.getLayout().getTranslateX();
+
+			// Render straight band connection from center brick to dimension
+			// group on
+			// the RIGHT
+			if (xEnd != 0) {
+
+				connectionRenderer.renderStraightBand(gl, new float[] { x,
+						rightCenterBrickTop, 0 }, new float[] { x,
+						rightCenterBrickBottom, 0 }, new float[] { xEnd,
+						rightCenterBrickTop, 0 }, new float[] { xEnd,
+						rightCenterBrickBottom, 0 }, false, curveOffset, 0, false,
+						new float[] { 0, 0, 0 }, 0.5f);
+			}
+
 		} else {
 			if (leftDimGroup != null) {
 				rightCenterBrickBottom = leftDimGroup.getVisBricksView().getArchBottomY();
@@ -205,14 +241,6 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 		if (leftCenterBrickBottom == 0 && rightCenterBrickBottom == 0)
 			return;
-
-		// gl.glColor4f(0, 0, 0, 0.5f);
-		// gl.glBegin(GL2.GL_POLYGON);
-		// gl.glVertex3f(0, leftCenterBrickTop, -10);
-		// gl.glVertex3f(x, rightCenterBrickTop, -10);
-		// gl.glVertex3f(x, rightCenterBrickBottom, -10);
-		// gl.glVertex3f(0, leftCenterBrickBottom, -10);
-		// gl.glEnd();
 
 		connectionRenderer.renderSingleBand(gl, new float[] { 0, leftCenterBrickTop, 0 },
 				new float[] { 0, leftCenterBrickBottom, 0 }, new float[] { x,
@@ -225,13 +253,6 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 		float splineFactor = 0.1f * x;
 
-		// Make spline factor dependent of distance between center bricks
-		// splineFactor = 0.15f
-		// * (rightDimGroup.getCenterBrick().getWrappingLayout().getTranslateX()
-		// - leftDimGroup.getCenterBrick().getWrappingLayout().getTranslateX()
-		// +
-		// leftDimGroup.getCenterBrick().getWrappingLayout().getSizeScaledX());
-
 		gl.glLineWidth(1);
 		for (GroupMatch groupMatch : hashGroupID2GroupMatches.values()) {
 
@@ -239,7 +260,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 			float xStart = leftDimGroup.getLayout().getTranslateX()
 					- brick.getLayout().getTranslateX();
-			
+
 			if (groupMatch.getBrick().isInOverviewMode())
 				continue;
 
@@ -253,35 +274,40 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 				float xEnd = x + subBrick.getLayout().getTranslateX()
 						- rightDimGroup.getLayout().getTranslateX();
 
-				// Render straight band connection from brick to dimension group on the LEFT
+				// Render straight band connection from brick to dimension group
+				// on the LEFT
 				if (xStart != 0) {
 					connectionRenderer.renderStraightBand(gl, new float[] { xStart,
 							subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { xStart,
 							subGroupMatch.getLeftAnchorYBottom(), 0 }, new float[] { 0,
 							subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { 0,
-							subGroupMatch.getLeftAnchorYBottom(), 0 }, (groupMatch
-							.getBrick().isActive() || subGroupMatch.getBrick().isActive()),
-							splineFactor, 0, false, new float[] { 0.0f, 0.0f, 1 }, 0.15f);
+							subGroupMatch.getLeftAnchorYBottom(), 0 },
+							(groupMatch.getBrick().isActive() || subGroupMatch.getBrick()
+									.isActive()), splineFactor, 0, false, new float[] {
+									0.0f, 0.0f, 1 }, 0.15f);
 				}
 
-				// Render straight band connection from brick to dimension group on the RIGHT
+				// Render straight band connection from brick to dimension group
+				// on the RIGHT
 				if (xEnd != 0) {
 					connectionRenderer.renderStraightBand(gl, new float[] { x,
 							subGroupMatch.getRightAnchorYTop(), 0 }, new float[] { x,
-							subGroupMatch.getRightAnchorYBottom(), 0 }, new float[] { xEnd,
-							subGroupMatch.getRightAnchorYTop(), 0 }, new float[] { xEnd,
-							subGroupMatch.getRightAnchorYBottom(), 0 }, (groupMatch
-							.getBrick().isActive() || subGroupMatch.getBrick().isActive()),
-							splineFactor, 0, false, new float[] { 0.0f, 0.0f, 1 }, 0.15f);
+							subGroupMatch.getRightAnchorYBottom(), 0 }, new float[] {
+							xEnd, subGroupMatch.getRightAnchorYTop(), 0 }, new float[] {
+							xEnd, subGroupMatch.getRightAnchorYBottom(), 0 },
+							(groupMatch.getBrick().isActive() || subGroupMatch.getBrick()
+									.isActive()), splineFactor, 0, false, new float[] {
+									0.0f, 0.0f, 1 }, 0.15f);
 				}
 
-				connectionRenderer.renderSingleBand(gl, new float[] { 0,
-						subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { 0,
-						subGroupMatch.getLeftAnchorYBottom(), 0 }, new float[] { x,
-						subGroupMatch.getRightAnchorYTop(), 0 }, new float[] { x,
-						subGroupMatch.getRightAnchorYBottom(), 0 }, (groupMatch
-						.getBrick().isActive() || subGroupMatch.getBrick().isActive()),
-						splineFactor, 0, false, new float[] { 0.0f, 0.0f, 1 }, 0.15f);
+				connectionRenderer.renderSingleBand(gl,
+						new float[] { 0, subGroupMatch.getLeftAnchorYTop(), 0 },
+						new float[] { 0, subGroupMatch.getLeftAnchorYBottom(), 0 },
+						new float[] { x, subGroupMatch.getRightAnchorYTop(), 0 },
+						new float[] { x, subGroupMatch.getRightAnchorYBottom(), 0 },
+						(groupMatch.getBrick().isActive() || subGroupMatch.getBrick()
+								.isActive()), splineFactor, 0, false, new float[] { 0.0f,
+								0.0f, 1 }, 0.15f);
 			}
 		}
 	}
