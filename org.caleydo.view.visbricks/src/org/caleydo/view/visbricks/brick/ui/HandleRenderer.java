@@ -3,20 +3,20 @@ package org.caleydo.view.visbricks.brick.ui;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**
  * Renderer for handles used for resizing and moving a brick.
  * 
  * @author Christian Partl
- * 
+ * @author Alexander Lex
  */
 public class HandleRenderer extends LayoutRenderer {
 
-	private AGLView view;
+	private GLBrick brick;
 	private PixelGLConverter pixelGLConverter;
 	private int handleSize;
 	private TextureManager textureManager;
@@ -30,9 +30,9 @@ public class HandleRenderer extends LayoutRenderer {
 	 *            Size in pixels of the handles.
 	 * @param textureManager
 	 */
-	public HandleRenderer(AGLView view, PixelGLConverter pixelGLConverter,
+	public HandleRenderer(GLBrick brick, PixelGLConverter pixelGLConverter,
 			int handleSize, TextureManager textureManager) {
-		this.view = view;
+		this.brick = brick;
 		this.pixelGLConverter = pixelGLConverter;
 		this.handleSize = handleSize;
 		this.textureManager = textureManager;
@@ -41,16 +41,14 @@ public class HandleRenderer extends LayoutRenderer {
 	@Override
 	public void render(GL2 gl) {
 
-		float glHandleHeight = pixelGLConverter
-				.getGLHeightForPixelHeight(handleSize);
-		float glHandleWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(handleSize);
+		float glHandleHeight = pixelGLConverter.getGLHeightForPixelHeight(handleSize);
+		float glHandleWidth = pixelGLConverter.getGLWidthForPixelWidth(handleSize);
 
 		gl.glLineWidth(3);
 		gl.glColor3f(0, 0, 0);
 
-		gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-				EPickingType.RESIZE_HANDLE_LOWER_LEFT, view.getID()));
+		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+				EPickingType.RESIZE_HANDLE_LOWER_LEFT, 1));
 		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(glHandleWidth, 0, 0);
@@ -59,8 +57,8 @@ public class HandleRenderer extends LayoutRenderer {
 		gl.glEnd();
 		gl.glPopName();
 
-		gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-				EPickingType.RESIZE_HANDLE_LOWER_RIGHT, view.getID()));
+		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+				EPickingType.RESIZE_HANDLE_LOWER_RIGHT, 1));
 		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(x, 0, 0);
 		gl.glVertex3f(x - glHandleWidth, 0, 0);
@@ -69,8 +67,8 @@ public class HandleRenderer extends LayoutRenderer {
 		gl.glEnd();
 		gl.glPopName();
 
-		gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-				EPickingType.RESIZE_HANDLE_UPPER_RIGHT, view.getID()));
+		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+				EPickingType.RESIZE_HANDLE_UPPER_RIGHT, 1));
 		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(x, y, 0);
 		gl.glVertex3f(x - glHandleWidth, y, 0);
@@ -79,8 +77,8 @@ public class HandleRenderer extends LayoutRenderer {
 		gl.glEnd();
 		gl.glPopName();
 
-		gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-				EPickingType.RESIZE_HANDLE_UPPER_LEFT, view.getID()));
+		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+				EPickingType.RESIZE_HANDLE_UPPER_LEFT, 1));
 		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(0, y, 0);
 		gl.glVertex3f(glHandleWidth, y, 0);
@@ -89,8 +87,9 @@ public class HandleRenderer extends LayoutRenderer {
 		gl.glEnd();
 		gl.glPopName();
 
-		gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-				EPickingType.DRAGGING_HANDLE, view.getID()));
+		gl.glPushName(brick.getPickingManager().getPickingID(
+				brick.getDimensionGroup().getID(), EPickingType.DRAGGING_HANDLE,
+				brick.getDimensionGroup().getID()));
 		//
 		// Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth * 2.0f, y / 2.0f
 		// - glHandleHeight, 0);

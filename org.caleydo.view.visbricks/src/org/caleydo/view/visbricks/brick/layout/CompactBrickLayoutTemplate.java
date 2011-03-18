@@ -90,8 +90,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseRow.setRenderer(new BorderedAreaRenderer());
 
 		if (showHandles) {
-			baseRow.addForeGroundRenderer(new HandleRenderer(brick
-					.getDimensionGroup(), pixelGLConverter, 10, brick
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter, 10, brick
 					.getTextureManager()));
 		}
 

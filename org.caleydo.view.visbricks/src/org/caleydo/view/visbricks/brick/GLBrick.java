@@ -1,5 +1,6 @@
 package org.caleydo.view.visbricks.brick;
 
+import java.awt.Point;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
@@ -111,6 +113,11 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	private boolean isInOverviewMode = false;
 
+	// private boolean isDraggingActive = false;
+	private float previousXCoordinate = Float.NaN;
+	private float previousYCoordinate = Float.NaN;
+	private boolean isBrickResizeActive = false;
+
 	public GLBrick(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 		viewType = GLBrick.VIEW_ID;
@@ -125,6 +132,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	public void initialize() {
 		super.initialize();
 		contentGroupSelectionManager = dataDomain.getContentGroupSelectionManager();
+		registerPickingListeners();
 	}
 
 	@Override
@@ -158,23 +166,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks, dimensionGroup);
 
-			// leftRelationIndicatorRenderer = new
-			// RelationIndicatorRenderer(this,
-			// visBricks, true);
-			// rightRelationIndicatorRenderer = new RelationIndicatorRenderer(
-			// this, visBricks, false);
-			// tempLayout
-			// .setRightRelationIndicatorRenderer(rightRelationIndicatorRenderer);
-			// tempLayout
-			// .setLeftRelationIndicatorRenderer(leftRelationIndicatorRenderer);
-			// //
-			// leftRelationIndicatorRenderer.updateRelations();
-			// rightRelationIndicatorRenderer.updateRelations();
-			//
-			// brickLayout = tempLayout;
 		}
-
-		// brickLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 
 		// TODO: christian please check here
 		if (!(brickLayout instanceof CentralBrickLayoutTemplate)) {
@@ -310,6 +302,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		if (currentRemoteView != null)
 			currentRemoteView.processEvents();
 		processEvents();
+		handleBrickResize(gl);
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		if (isBaseDisplayListDirty)
@@ -429,6 +422,52 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		//
 		// }
 		// }
+
+	}
+
+	/** resize of a brick */
+	private void handleBrickResize(GL2 gl) {
+
+		if (!isBrickResizeActive)
+			return;
+		if (glMouseListener.wasMouseReleased()) {
+			isBrickResizeActive = false;
+			previousXCoordinate = Float.NaN;
+			return;
+		}
+
+		Point currentPoint = glMouseListener.getPickedPoint();
+
+		float[] pointCordinates = GLCoordinateUtils
+				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+						currentPoint.y);
+
+		if (Float.isNaN(previousXCoordinate)) {
+			previousXCoordinate = pointCordinates[0];
+			return;
+		}
+
+		float changeX = pointCordinates[0] - previousXCoordinate;
+
+		float width = wrappingLayout.getSizeScaledX();
+		float changePercentage = changeX / width;
+
+		float newWidth = width + changeX;
+		if (newWidth < dimensionGroup.getMinWidth())
+			return;
+
+		previousXCoordinate = pointCordinates[0];
+
+		wrappingLayout.setAbsoluteSizeX(newWidth);
+		// groupColumn.setAbsoluteSizeX(width + changeX);
+
+		float height = wrappingLayout.getSizeScaledY();
+		wrappingLayout.setAbsoluteSizeY(height * (1 + changePercentage));
+
+		// centerBrick.getLayout().updateSubLayout();
+
+		visBricks.updateLayout();
+		visBricks.updateConnectionLinesBetweenDimensionGroups();
 
 	}
 
@@ -703,6 +742,17 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
 		}
+	}
+
+	private void registerPickingListeners() {
+		addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				isBrickResizeActive = true;
+
+			}
+		}, EPickingType.RESIZE_HANDLE_LOWER_RIGHT, 1);
 	}
 
 	/**

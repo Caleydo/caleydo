@@ -40,30 +40,26 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	protected static final int BUTTON_HEIGHT_PIXELS = 16;
 	protected static final int BUTTON_WIDTH_PIXELS = 16;
 	protected static final int HANDLE_SIZE_PIXELS = 10;
-	
+
 	protected static final int CLUSTER_BUTTON_ID = 0;
 	protected static final int PARCOORDS_BUTTON_ID = 2;
 	protected static final int HISTOGRAM_BUTTON_ID = 3;
 	protected static final int OVERVIEW_HEATMAP_BUTTON_ID = 4;
 
-	
-//	protected Button heatMapButton;
+	// protected Button heatMapButton;
 	protected Button parCoordsButton;
 	protected Button histogramButton;
 	protected Button overviewHeatMapButton;
 
 	private Button clusterButton;
-	
 
-	public CentralBrickLayoutTemplate(GLBrick brick,
-			DimensionGroup dimensionGroup) {
+	public CentralBrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup) {
 		super(brick, dimensionGroup);
 		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
 				CLUSTER_BUTTON_ID);
-		
-		
-//		heatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
-//				HEATMAP_BUTTON_ID);
+
+		// heatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
+		// HEATMAP_BUTTON_ID);
 		parCoordsButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
 				PARCOORDS_BUTTON_ID);
 		histogramButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
@@ -88,9 +84,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseRow.setRenderer(new BorderedAreaRenderer());
 
 		if (showHandles) {
-			baseRow.addForeGroundRenderer(new HandleRenderer(brick
-					.getDimensionGroup(), pixelGLConverter, HANDLE_SIZE_PIXELS,
-					brick.getTextureManager()));
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
+					pixelGLConverter, HANDLE_SIZE_PIXELS, brick.getTextureManager()));
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
@@ -143,8 +138,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		clusterButtonLayout.setPixelGLConverter(pixelGLConverter);
 		clusterButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		clusterButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton,
-				brick, EIconTextures.CLUSTER_ICON, brick.getTextureManager()));
+		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton, brick,
+				EIconTextures.CLUSTER_ICON, brick.getTextureManager()));
 
 		captionRow.append(clusterButtonLayout);
 		captionRow.append(spacingLayoutX);
@@ -174,7 +169,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseColumn.append(spacingLayoutY);
 
 	}
-	
+
 	/**
 	 * Creates the toolbar containing buttons for view switching.
 	 * 
@@ -194,22 +189,18 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		parCoordsButtonLayout.setPixelGLConverter(pixelGLConverter);
 		parCoordsButtonLayout.setPixelSizeX(pixelHeight);
 		parCoordsButtonLayout.setPixelSizeY(pixelHeight);
-		parCoordsButtonLayout
-				.setRenderer(new ButtonRenderer(parCoordsButton, brick,
-						EIconTextures.PAR_COORDS_ICON, brick
-								.getTextureManager()));
+		parCoordsButtonLayout.setRenderer(new ButtonRenderer(parCoordsButton, brick,
+				EIconTextures.PAR_COORDS_ICON, brick.getTextureManager()));
 
 		toolBar.append(parCoordsButtonLayout);
 		toolBar.append(spacingLayoutX);
 
-		ElementLayout histogramButtonLayout = new ElementLayout(
-				"histogramButton");
+		ElementLayout histogramButtonLayout = new ElementLayout("histogramButton");
 		histogramButtonLayout.setPixelGLConverter(pixelGLConverter);
 		histogramButtonLayout.setPixelSizeX(pixelHeight);
 		histogramButtonLayout.setPixelSizeY(pixelHeight);
-		histogramButtonLayout
-				.setRenderer(new ButtonRenderer(histogramButton, brick,
-						EIconTextures.HISTOGRAM_ICON, brick.getTextureManager()));
+		histogramButtonLayout.setRenderer(new ButtonRenderer(histogramButton, brick,
+				EIconTextures.HISTOGRAM_ICON, brick.getTextureManager()));
 
 		toolBar.append(histogramButtonLayout);
 		toolBar.append(spacingLayoutX);
@@ -219,12 +210,11 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		overviewHeatMapButtonLayout.setPixelGLConverter(pixelGLConverter);
 		overviewHeatMapButtonLayout.setPixelSizeX(pixelHeight);
 		overviewHeatMapButtonLayout.setPixelSizeY(pixelHeight);
-		overviewHeatMapButtonLayout
-				.setRenderer(new ButtonRenderer(overviewHeatMapButton, brick,
-						EIconTextures.HEAT_MAP_ICON, brick.getTextureManager()));
+		overviewHeatMapButtonLayout.setRenderer(new ButtonRenderer(overviewHeatMapButton,
+				brick, EIconTextures.HEAT_MAP_ICON, brick.getTextureManager()));
 
 		toolBar.append(overviewHeatMapButtonLayout);
-		
+
 		return toolBar;
 	}
 
@@ -238,7 +228,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 				parCoordsButton.setSelected(true);
 				histogramButton.setSelected(false);
 				overviewHeatMapButton.setSelected(false);
-				
+
 				brick.setRemoteView(EContainedViewType.PARCOORDS_VIEW);
 				dimensionGroup.updateLayout();
 			}
@@ -283,16 +273,15 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 								StartClusteringDialog dialog = new StartClusteringDialog(
 										new Shell(), brick.getDataDomain());
 								dialog.open();
-								ClusterState clusterState = dialog
-										.getClusterState();
+								ClusterState clusterState = dialog.getClusterState();
 								if (clusterState == null)
 									return;
 
 								StartClusteringEvent event = null;
 								// if (clusterState != null && set != null)
 
-								event = new StartClusteringEvent(clusterState,
-										brick.getSet().getID());
+								event = new StartClusteringEvent(clusterState, brick
+										.getSet().getID());
 								event.setDataDomainType(brick.getDataDomain()
 										.getDataDomainType());
 								GeneralManager.get().getEventPublisher()
@@ -306,9 +295,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinHeightPixels() {
-		return 6 * SPACING_PIXELS + TOOLBAR_HEIGHT_PIXELS
-				+ LINE_SEPARATOR_HEIGHT_PIXELS + CAPTION_HEIGHT_PIXELS
-				+ DIMENSION_BAR_HEIGHT_PIXELS
+		return 6 * SPACING_PIXELS + TOOLBAR_HEIGHT_PIXELS + LINE_SEPARATOR_HEIGHT_PIXELS
+				+ CAPTION_HEIGHT_PIXELS + DIMENSION_BAR_HEIGHT_PIXELS
 				+ viewRenderer.getMinHeightPixels();
 	}
 
@@ -335,7 +323,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		parCoordsButton.setSelected(false);
 		histogramButton.setSelected(false);
 		overviewHeatMapButton.setSelected(false);
-		
+
 		switch (viewType) {
 		case PARCOORDS_VIEW:
 			parCoordsButton.setSelected(true);

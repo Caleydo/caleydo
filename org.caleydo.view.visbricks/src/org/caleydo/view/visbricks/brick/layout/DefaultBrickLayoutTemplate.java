@@ -55,13 +55,12 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 			DimensionGroup dimensionGroup) {
 		super(brick, dimensionGroup);
 		this.visBricks = visBricks;
-		leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
-				visBricks, true);
-		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
-				visBricks, false);
+		leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, visBricks,
+				true);
+		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, visBricks,
+				false);
 
-		heatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
-				HEATMAP_BUTTON_ID);
+		heatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS, HEATMAP_BUTTON_ID);
 		parCoordsButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
 				PARCOORDS_BUTTON_ID);
 		histogramButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
@@ -71,8 +70,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		viewSwitchingModeButton = new Button(
 				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
 				VIEW_SWITCHING_MODE_BUTTON_ID);
-		viewSwitchingModeButton.setSelected(dimensionGroup
-				.isGlobalViewSwitching());
+		viewSwitchingModeButton.setSelected(dimensionGroup.isGlobalViewSwitching());
 
 		viewTypeChanged(getDefaultViewType());
 	}
@@ -101,8 +99,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				"RightRelationIndicatorLayout");
 		// rightRelationIndicatorLayout.setDebug(true);
 		leftRelationIndicatorLayout.setPixelGLConverter(pixelGLConverter);
-		leftRelationIndicatorLayout
-				.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
+		leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
 		leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
 		baseRow.append(leftRelationIndicatorLayout);
 
@@ -115,9 +112,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseRow.setRenderer(new BorderedAreaRenderer());
 
 		if (showHandles) {
-			baseRow.addForeGroundRenderer(new HandleRenderer(brick
-					.getDimensionGroup(), pixelGLConverter, HANDLE_SIZE_PIXELS,
-					brick.getTextureManager()));
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter,
+					HANDLE_SIZE_PIXELS, brick.getTextureManager()));
 		}
 
 		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
@@ -158,10 +154,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				"RightRelationIndicatorLayout");
 		// rightRelationIndicatorLayout.setDebug(true);
 		rightRelationIndicatorLayout.setPixelGLConverter(pixelGLConverter);
-		rightRelationIndicatorLayout
-				.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
-		rightRelationIndicatorLayout
-				.setRenderer(rightRelationIndicatorRenderer);
+		rightRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
+		rightRelationIndicatorLayout.setRenderer(rightRelationIndicatorRenderer);
 		baseRow.append(rightRelationIndicatorLayout);
 
 	}
@@ -185,43 +179,36 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		heatMapButtonLayout.setPixelGLConverter(pixelGLConverter);
 		heatMapButtonLayout.setPixelSizeX(pixelHeight);
 		heatMapButtonLayout.setPixelSizeY(pixelHeight);
-		heatMapButtonLayout.setRenderer(new ButtonRenderer(heatMapButton,
-				brick, EIconTextures.HEAT_MAP_ICON, brick.getTextureManager()));
+		heatMapButtonLayout.setRenderer(new ButtonRenderer(heatMapButton, brick,
+				EIconTextures.HEAT_MAP_ICON, brick.getTextureManager()));
 
 		ElementLayout parCoordsButtonLayout = new ElementLayout("parCoords");
 		parCoordsButtonLayout.setPixelGLConverter(pixelGLConverter);
 		parCoordsButtonLayout.setPixelSizeX(pixelHeight);
 		parCoordsButtonLayout.setPixelSizeY(pixelHeight);
-		parCoordsButtonLayout
-				.setRenderer(new ButtonRenderer(parCoordsButton, brick,
-						EIconTextures.PAR_COORDS_ICON, brick
-								.getTextureManager()));
+		parCoordsButtonLayout.setRenderer(new ButtonRenderer(parCoordsButton, brick,
+				EIconTextures.PAR_COORDS_ICON, brick.getTextureManager()));
 
-		ElementLayout histogramButtonLayout = new ElementLayout(
-				"histogramButton");
+		ElementLayout histogramButtonLayout = new ElementLayout("histogramButton");
 		histogramButtonLayout.setPixelGLConverter(pixelGLConverter);
 		histogramButtonLayout.setPixelSizeX(pixelHeight);
 		histogramButtonLayout.setPixelSizeY(pixelHeight);
-		histogramButtonLayout
-				.setRenderer(new ButtonRenderer(histogramButton, brick,
-						EIconTextures.HISTOGRAM_ICON, brick.getTextureManager()));
+		histogramButtonLayout.setRenderer(new ButtonRenderer(histogramButton, brick,
+				EIconTextures.HISTOGRAM_ICON, brick.getTextureManager()));
 
 		ElementLayout overviewHeatMapButtonLayout = new ElementLayout(
 				"overviewHeatMapButton");
 		overviewHeatMapButtonLayout.setPixelGLConverter(pixelGLConverter);
 		overviewHeatMapButtonLayout.setPixelSizeX(pixelHeight);
 		overviewHeatMapButtonLayout.setPixelSizeY(pixelHeight);
-		overviewHeatMapButtonLayout.setRenderer(new ButtonRenderer(
-				overviewHeatMapButton, brick, EIconTextures.HEAT_MAP_ICON,
-				brick.getTextureManager()));
+		overviewHeatMapButtonLayout.setRenderer(new ButtonRenderer(overviewHeatMapButton,
+				brick, EIconTextures.HEAT_MAP_ICON, brick.getTextureManager()));
 
-		ElementLayout ratioSpacingLayoutX = new ElementLayout(
-				"ratioSpacingLayoutX");
+		ElementLayout ratioSpacingLayoutX = new ElementLayout("ratioSpacingLayoutX");
 		ratioSpacingLayoutX.setRatioSizeX(1);
 		ratioSpacingLayoutX.setRatioSizeY(0);
 
-		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout(
-				"clusterButton");
+		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout("clusterButton");
 		toggleViewSwitchingButtonLayout.setPixelGLConverter(pixelGLConverter);
 		toggleViewSwitchingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		toggleViewSwitchingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
@@ -229,8 +216,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				viewSwitchingModeButton, brick, EIconTextures.LOCK, brick
 						.getTextureManager()));
 
-		ElementLayout collapseButtonLayout = new ElementLayout(
-				"expandButtonLayout");
+		ElementLayout collapseButtonLayout = new ElementLayout("expandButtonLayout");
 		collapseButtonLayout.setFrameColor(1, 0, 0, 1);
 		// expandButtonLayout.setDebug(true);
 		collapseButtonLayout.setPixelGLConverter(pixelGLConverter);
@@ -238,8 +224,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		collapseButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		collapseButtonLayout.setRenderer(new ButtonRenderer(new Button(
 				EPickingType.BRICK_COLLAPSE_BUTTON, COLLAPSE_BUTTON_ID), brick,
-				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, brick
-						.getTextureManager(),
+				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, brick.getTextureManager(),
 				ButtonRenderer.TEXTURE_ROTATION_90));
 
 		toolBar.append(heatMapButtonLayout);
@@ -267,8 +252,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				histogramButton.setSelected(false);
 				overviewHeatMapButton.setSelected(false);
 				if (viewSwitchingModeButton.isSelected()) {
-					dimensionGroup
-							.switchBrickViews(EContainedViewType.HEATMAP_VIEW);
+					dimensionGroup.switchBrickViews(EContainedViewType.HEATMAP_VIEW);
 				} else {
 					brick.setRemoteView(EContainedViewType.HEATMAP_VIEW);
 				}
@@ -285,8 +269,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				histogramButton.setSelected(false);
 				overviewHeatMapButton.setSelected(false);
 				if (viewSwitchingModeButton.isSelected()) {
-					dimensionGroup
-							.switchBrickViews(EContainedViewType.PARCOORDS_VIEW);
+					dimensionGroup.switchBrickViews(EContainedViewType.PARCOORDS_VIEW);
 				} else {
 					brick.setRemoteView(EContainedViewType.PARCOORDS_VIEW);
 				}
@@ -303,8 +286,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				histogramButton.setSelected(true);
 				overviewHeatMapButton.setSelected(false);
 				if (viewSwitchingModeButton.isSelected()) {
-					dimensionGroup
-							.switchBrickViews(EContainedViewType.HISTOGRAM_VIEW);
+					dimensionGroup.switchBrickViews(EContainedViewType.HISTOGRAM_VIEW);
 				} else {
 					brick.setRemoteView(EContainedViewType.HISTOGRAM_VIEW);
 				}
@@ -321,8 +303,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				histogramButton.setSelected(false);
 				overviewHeatMapButton.setSelected(true);
 				if (viewSwitchingModeButton.isSelected()) {
-					dimensionGroup
-							.switchBrickViews(EContainedViewType.OVERVIEW_HEATMAP);
+					dimensionGroup.switchBrickViews(EContainedViewType.OVERVIEW_HEATMAP);
 				} else {
 					brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
 				}
@@ -330,20 +311,15 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 			}
 		}, EPickingType.BRICK_TOOLBAR_BUTTONS, OVERVIEW_HEATMAP_BUTTON_ID);
 
-		brick.addPickingListener(
-				new APickingListener() {
+		brick.addPickingListener(new APickingListener() {
 
-					@Override
-					public void clicked(Pick pick) {
-						boolean isGlobalViewSwitching = !viewSwitchingModeButton
-								.isSelected();
-						dimensionGroup
-								.setGlobalViewSwitching(isGlobalViewSwitching);
-						viewSwitchingModeButton
-								.setSelected(isGlobalViewSwitching);
-					}
-				}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
-				VIEW_SWITCHING_MODE_BUTTON_ID);
+			@Override
+			public void clicked(Pick pick) {
+				boolean isGlobalViewSwitching = !viewSwitchingModeButton.isSelected();
+				dimensionGroup.setGlobalViewSwitching(isGlobalViewSwitching);
+				viewSwitchingModeButton.setSelected(isGlobalViewSwitching);
+			}
+		}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON, VIEW_SWITCHING_MODE_BUTTON_ID);
 
 		brick.addPickingListener(new APickingListener() {
 
@@ -357,8 +333,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinHeightPixels() {
-		return 4 * SPACING_PIXELS + FUEL_BAR_HEIGHT_PIXELS
-				+ TOOLBAR_HEIGHT_PIXELS + viewRenderer.getMinHeightPixels();
+		return 4 * SPACING_PIXELS + FUEL_BAR_HEIGHT_PIXELS + TOOLBAR_HEIGHT_PIXELS
+				+ viewRenderer.getMinHeightPixels();
 	}
 
 	@Override
