@@ -110,6 +110,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	private RelationAnalyzer relationAnalyzer;
 
+	private ElementLayout leftDimensionGroupSpacing;
+	private ElementLayout rightDimensionGroupSpacing;
+
 	/**
 	 * Constructor.
 	 * 
@@ -144,27 +147,31 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	private void initLayouts() {
-		initLayoutCenter();
+		initCenterLayout();
 
 		leftColumnLayout = new Column("leftArchColumn");
 		leftLayout = new LayoutTemplate();
 		ViewFrustum archFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0,
 				archSideThickness, 0, archBottomY, 0, 1);
 		leftLayoutManager = new LayoutManager(archFrustum);
-		initLayoutSide(leftColumnLayout, leftLayout, leftLayoutManager, 0,
+		initSideLayout(leftColumnLayout, leftLayout, leftLayoutManager, 0,
 				dimensionGroupManager.getCenterGroupStartIndex());
 
 		rightColumnLayout = new Column("rightArchColumn");
 		rightLayout = new LayoutTemplate();
 		rightLayoutManager = new LayoutManager(archFrustum);
-		initLayoutSide(rightColumnLayout, rightLayout, rightLayoutManager,
+		initSideLayout(rightColumnLayout, rightLayout, rightLayoutManager,
 				dimensionGroupManager.getRightGroupStartIndex(), dimensionGroupManager
 						.getDimensionGroups().size());
 
 		updateConnectionLinesBetweenDimensionGroups();
 	}
 
-	private void initLayoutCenter() {
+	/**
+	 * Init the layout for the center region, showing the horizontal bar of the
+	 * arch plus all sub-bricks above and below
+	 */
+	private void initCenterLayout() {
 
 		archSideThickness = viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT;
 		archInnerWidth = viewFrustum.getWidth() * (ARCH_STAND_WIDTH_PERCENT + 0.024f);
@@ -181,22 +188,25 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		centerRowLayout.setFrameColor(1, 1, 0, 1);
 		// centerRowLayout.setDebug(false);
 
-		ElementLayout dimensionGroupSpacing = new ElementLayout("firstCenterDimGrSpacing");
-		// dimensionGroupSpacing.setDebug(true);
-		// side spacing
+		leftDimensionGroupSpacing = new ElementLayout("firstCenterDimGrSpacing");
+		// leftDimensionGroupSpacing.setDebug(true);
+
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(
 				null, connectionRenderer, null, dimensionGroupManager
 						.getDimensionGroups().get(
 								dimensionGroupManager.getCenterGroupStartIndex()));
-		dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
+		leftDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 		dimensionGroupSpacingRenderer.setLineLength(archHeight);
 
-		dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		dimensionGroupSpacing.setPixelSizeX(70);
-		centerRowLayout.append(dimensionGroupSpacing);
+		leftDimensionGroupSpacing.setPixelGLConverter(parentGLCanvas
+				.getPixelGLConverter());
+		leftDimensionGroupSpacing.setPixelSizeX(70);
+		centerRowLayout.append(leftDimensionGroupSpacing);
 
 		for (int dimensionGroupIndex = dimensionGroupManager.getCenterGroupStartIndex(); dimensionGroupIndex < dimensionGroupManager
 				.getRightGroupStartIndex(); dimensionGroupIndex++) {
+
+			ElementLayout dynamicDimensionGroupSpacing;
 
 			DimensionGroup group = dimensionGroupManager.getDimensionGroups().get(
 					dimensionGroupIndex);
@@ -206,24 +216,29 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			// centerRowLayout.setDebug(true);
 
 			if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1) {
-				dimensionGroupSpacing = new ElementLayout("dynamicDimGrSpacing");
+				dynamicDimensionGroupSpacing = new ElementLayout("dynamicDimGrSpacing");
 				dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(
 						relationAnalyzer, connectionRenderer, group,
 						dimensionGroupManager.getDimensionGroups().get(
 								dimensionGroupIndex + 1));
-				dimensionGroupSpacing.grabX();
+				dynamicDimensionGroupSpacing.setGrabX(true);
+				dynamicDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
+				centerRowLayout.append(dynamicDimensionGroupSpacing);
+
 			} else {
-				dimensionGroupSpacing = new ElementLayout("lastDimGrSpacing");
+				rightDimensionGroupSpacing = new ElementLayout("lastDimGrSpacing");
 				dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
 						connectionRenderer, group, null);
-				dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas
+				rightDimensionGroupSpacing.setPixelGLConverter(parentGLCanvas
 						.getPixelGLConverter());
-				dimensionGroupSpacing.setPixelSizeX(50);
+				rightDimensionGroupSpacing.setPixelSizeX(50);
+				rightDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
+				centerRowLayout.append(rightDimensionGroupSpacing);
+
 			}
 			// dimensionGroupSpacing.setDebug(true);
 
 			dimensionGroupSpacingRenderer.setLineLength(archHeight);
-			dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 
 			// dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas
 			// .getPixelGLConverter());
@@ -233,7 +248,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			// dimensionGroupSpacing.setPixelSizeX(50);
 			// else
 			// dimensionGroupSpacing.setAbsoluteSizeX(spacerWidth);
-			centerRowLayout.append(dimensionGroupSpacing);
+
 		}
 
 		centerLayout = new LayoutTemplate();
@@ -248,7 +263,16 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		centerLayoutManager.updateLayout();
 	}
 
-	private void initLayoutSide(Column columnLayout, LayoutTemplate layout,
+	/**
+	 * Initialize the layout for the sides of the arch
+	 * 
+	 * @param columnLayout
+	 * @param layout
+	 * @param layoutManager
+	 * @param dimensinoGroupStartIndex
+	 * @param dimensinoGroupEndIndex
+	 */
+	private void initSideLayout(Column columnLayout, LayoutTemplate layout,
 			LayoutManager layoutManager, int dimensinoGroupStartIndex,
 			int dimensinoGroupEndIndex) {
 
@@ -376,11 +400,17 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			if (lastResizeDirectionWasToLeft) {
 				dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager
 						.getCenterGroupStartIndex() + 1);
+				if (centerRowLayout.size() == 3)
+					leftDimensionGroupSpacing.setGrabX(true);
+
 			} else {
 				dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
 						.getRightGroupStartIndex() - 1);
+				if (centerRowLayout.size() == 3)
+					rightDimensionGroupSpacing.setGrabX(true);
 			}
 			initLayouts();
+
 			updateLayout();
 			resizeNecessary = false;
 		}

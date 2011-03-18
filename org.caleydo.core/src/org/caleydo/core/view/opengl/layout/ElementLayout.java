@@ -238,19 +238,27 @@ public class ElementLayout {
 	}
 
 	/**
-	 * Instruct the element to grab the remaining space in the x direction.
+	 * Instruct the element to grab the remaining space in the x direction. If multiple elements are defined
+	 * to grab in one direction, the space is shared evenly.
+	 * 
+	 * @param grabX
+	 *            true if this element should grab remaining space, false if not
 	 */
-	public void grabX() {
+	public void setGrabX(boolean grabX) {
 		resetX();
-		this.grabX = true;
+		this.grabX = grabX;
 	}
 
 	/**
-	 * Instruct the element to grab the remaining space in the y direction
+	 * Instruct the element to grab the remaining space in the y direction. If multiple elements are defined
+	 * to grab in one direction, the space is shared evenly.
+	 * 
+	 * @param grabY
+	 *            true if this element should grab remaining space, false if not
 	 */
-	public void grabY() {
+	public void setGrabY(boolean grabY) {
 		resetY();
-		this.grabY = true;
+		this.grabY = grabY;
 	}
 
 	/**

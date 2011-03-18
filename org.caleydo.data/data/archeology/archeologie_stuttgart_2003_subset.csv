@@ -1,0 +1,626 @@
+ANALYSENR	LABORNR	RAUMSCHLUESSEL	LAND	FUNDORT	FUNDPLATZ	ORTNR	LAENGENGRAD	BREITENGRAD	MUSEUM	ZEITSTUFE	KULTUR	C14DATIERUNG	OBJEKTTYP	OBJEKT	VCU	CU	VSN	SN	VPB	PB	VAS	AS	VSB	SB	VAG	AG	VNI	NI	VBI	BI	VAU	AU	VZN	ZN	VCO	CO	VFE	FE	GEWICHT	DOPPELANALYSE
+1	00390	62	D	Adlerberg b. Worms	Grab 7	51	8.383	49.633	Worms 20, BE 4b	3			806	Pfriem mit Mittelschwellung		0		0		0		0.42		1.05		0.82		1.8		0		0		0		0		0.05		
+2	00387	62	D	Adlerberg b. Worms	Grab 7	51	8.383	49.633	Worms 20, BE 4a	3			610	Rollennadel mit säbelförmigen Schaft		0	1	0		0.07		2.6		0.05		0.42		0.14		0.011		0		0		0		0		*   2
+3	00388	62	D	Adlerberg b. Worms	Einzf.	51	8.383	49.633	Worms BE 13	3			212	Dolch mit 2 Nieten		0	1	0		0		0.92		1.6		0.92		2		0.005		0		0	1	0		0		*   4
+4	00389	62	D	Adlerberg b. Worms	Grab 21	51	8.383	49.633	Worms 20, BE 10a	3			212	Dolch mit 2 Nieten		0	1	0		0.05		0.56		1.85		1		1.17		0.001		0		0		0		0.04		
+5	00391	62	D	Albsheim Kr.Frankenthal-Pfalz	F.O.?	97	8.200	49.600	Worms 20	4			212	Dolch mit 2 Nieten und Seitenrillen		0		5.5		0		1.15		0.94		0.95		0.03		0.01	0	0		0	1	0		0.03		
+6	00392	62	D	Albsheim Kr.Frankenthal-Pfalz	F.O.?	97	8.200	49.600	Worms 20	4			212	Dolch mit 2 Nieten und Seitenrillen		0		5.3		0		0.18		0.68		0.62		0.04		0.001		0		0		0		0		
+7	00355	66	D	Altheim, Kr. Landshut	Siedl.	165	12.217	48.567	München, Stslg. 1919:599-604	3			806	Pfriem		0	9	12		0.7		0.36		0.2		0.07		0.81	1	0	0	0	1	0	1	0		0.15		
+8	00411	66	D	Altheim, Kr. Landshut	Siedl.	165	12.217	48.567	München, Stslg. 1919:599-604	22	ALT		104	Flachbeil		0		0		0.01		0.17		0.01		0.02		0.01		0.001		0		0		0		0		*   6
+9	00356	66	D	Altheim, Kr. Landshut	Siedl.	165	12.217	48.567	München, Stslg. 1919:599-604	22	ALT		504	Blechstück		0		0		0.06		1.15		0.02		0.05		0.05	9	0.002	0	0		0		0		0		
+10	00357	66	D	Altheim, Kr. Landshut	Siedl.	165	12.217	48.567	München, Stslg. 1919:599-604	22	ALT		711	Gußstück		0		0		0.08		1.95		0.05		0.1		0.07	9	0.009	0	0	1	0		0		0		
+11	00367	66	D	Hofschallern, Gem. Stammham, Kr. Altötting	F.O.?	171	12.900	48.250	München, Stslg. 3352	4			702	Ösenringbarren, Halsringkragen aus 6 Ringen		0		11		0		0.11		0.32		0.24		0.69		0.01		0		0		0		0.05		
+12	00257	66	D	Aschering, Kr. Starnberg	Depot	259	11.250	47.967	München, Stslg. 1921:8	3			702	Ösenringbarren		0		0	1	0	9	4	9	2		0.7	6	0.01	7	0.1	0	0		0		0	1	0		
+13	00258	66	D	Aschering, Kr. Starnberg	Depot	259	11.250	47.967	München, Stslg. 1921:8	3			702	Ösenringbarren		0		0.1		0		0.03		0.02	6	0.04		0.1	9	0.001	0	0		0		0	1	0		
+14	00259	66	D	Aschering, Kr. Starnberg	Depot	259	11.250	47.967	München, Stslg. 1921:8	3			702	Ösenringbarren		0		0	1	0	9	3.5	9	2		0.7		0.001		0.1	0	0		0		0		0.01		
+15	00260	66	D	Aschering, Kr. Starnberg	Depot	259	11.250	47.967	München, Stslg. 1921:8	3			702	Ösenringbarren		0		0		0	9	3.5	9	2		0.8		0.001	7	0.1	0	0		0		0	1	0		
+16	00261	66	D	Aschering, Kr. Starnberg	Depot	259	11.250	47.967	München, Stslg. 1921:8	3			702	Ösenringbarren		0		0	1	0	9	3.5	9	2		0.8		0.001	7	0.1	0	0		0		0		0.02		*   8
+17	00262	66	D	Aschering, Kr. Starnberg	Depot	259	11.250	47.967	München, Stslg. 1921:8	3			702	Ösenringbarren		0		0	1	0	9	3.5	9	2		0.5	6	0.01		0.03	0	0		0		0	1	0		
+18	00263	66	D	Aschering, Kr. Starnberg	Depot	259	11.250	47.967	München, Stslg. 1921:8	3			702	Ösenringbarren		0		0		0	9	3.5	9	2		0.7	6	0.01	7	0.1	0	0		0		0	1	0		
+19	00264	66	D	Aschering, Kr. Starnberg	Depot	259	11.250	47.967	München, Stslg. 1921:8	3			702	Ösenringbarren		0	1	0	1	0		0.52		0.35		0.1		0.45		0.002	0	0		0	3	0		0.06		
+20	00265	66	D	Aschering, Kr. Starnberg	Depot	259	11.250	47.967	München, Stslg. 1921:8	3			702	Ösenringbarren		0		0	1	0	9	3.5	9	2		0.7	6	0.01	7	0.1	0	0		0		0	1	0		
+21	00266	66	D	Aschering, Kr. Starnberg	Depot	259	11.250	47.967	München, Stslg. 1921:8	3			702	Ösenringbarren		0		0	1	0		3	9	2		0.7	6	0.01	7	0.1	0	0		0		0	1	0		
+22	00198	65	D	Aufhausen, Kr. Regensburg	Grab	287	12.367	48.883	Regensburg A 701	4			402	Ring, hohl gegossen mit Zinken		0		10		0.04		1.75		2.2		0.52		0.06	9	0.1		0		0		0	6	0.01		
+23	00199	65	D	Aufhausen, Kr. Regensburg	Grab	287	12.367	48.883	Regensburg A 701	4			402	Ring, hohl gegossen mit Zinken		0		10.5		0.1		2		2.4		0.53		0.05	9	0.1		0		0		0		0		
+24	00370	66	D	Augsburg	Einzf.	289	10.900	48.350	Augsburg 722	3			210	Stabdolch, Klinge		0	9	12		0		0.1		0.11		0.5		0.001		0.007		0		0		0		0		*  10
+25	00376	62	D	Baden-Württemberg	Ohne näheren Angaben "Vielleicht badisch"	337	9.000	48.500	Karlsruhe C 7077	3			702	Ösenringbarren		0		0		0		2.8		1.42		0.95		0.13		0.07		0		0		0		0		
+26	00377	62	D	Baden-Württemberg	Ohne näheren Angaben "Vielleicht badisch"	337	9.000	48.500	Karlsruhe C 7077	3			702	Ösenringbarren		0		0		0		2.3		1.2		0.85		0.12		0.06		0		0		0		0.12		
+27	00104	66	D	Barbing, Kr. Regensburg	Grab 3	435	12.200	49.000	Regensburg 366	25	GBK		215	Griffzungendolch		0		0.22		2.5		0.08		0.25		0.4		0.7		0.06		0	9	0.2		0		0.06		*  12
+28	00077	62	D	Beizkofen, Kr. Saulgau	Grab	494	9.333	48.050	Stuttgart, WLM A 721	3			603	Rollennadel, ellipt. Kopfpl. u. ger. Schaft		0		0.03		0.05		0.38		1.1		0.43		0.95		0.005	2	0		0	4	0	6	0.01		
+29	00083	62	D	Beizkofen, Kr. Saulgau	Grab	494	9.333	48.050	Stuttgart, WLM A 721	3			409	Spirale, nieder		0		0		0		0.87		0.95		0.43		0.001		0.09		0		0		0	1	0		
+30	00084	62	D	Beizkofen, Kr. Saulgau	Grab	494	9.333	48.050	Stuttgart, WLM A 721	3			409	Spirale, hoch		0		0		0.03		0.79		0.8		0.4		0.06		0.005		0		0		0	6	0.01		
+31	00380	62	D	Berghausen Kr. Karlsruhe	Vermutlich Grab	534	8.533	49.000	Karlsruhe	3			604	Scheibennadel, verziert		0		0.02		0.02		0.08		0.64		0.75		0.39		0.001		0		0		0		0.04		
+32	00381	62	D	Berghausen Kr. Karlsruhe	Vermutlich Grab	534	8.533	49.000	Karlsruhe	3			604	Scheibennadel, groß, verziert		0	1	0		0.11		1.25		1.46		0.85		2.6		0.001		0		0	3	0		0.04		
+33	00014	62	D	Berkach, Gem. Ehingen, Alb-Donau-Kreis	Dep.?	1498	9.750	48.300	Stuttgart, WLM 985	3			702	Ösenringbarren		0		0		0		1.2		1.7		0.4		0.001		0.1	0	0		0		0	1	0		*  15
+34	00075	62	D	Berkach, Gem. Ehingen, Alb-Donau-Kreis	Dep.?	1498	9.750	48.300	Stuttgart, WLM 985	3			702	Ösenringbarren		0		0	1	0		1.7		1.2		0.46	6	0.01		0.07		0		0		0	6	0.01		
+35	00076	62	D	Berkach, Gem. Ehingen, Alb-Donau-Kreis	Dep.?	1498	9.750	48.300	Stuttgart, WLM 985	3			702	Ösenringbarren		0	1	0		0.01		1.65		1.4		0.44	1	0.001		0.06		0	1	0		0	6	0.01		*  18
+36	00393	62	D	Bermersheim	Einzf.	540	8.200	49.867	Worms 27	4			212	Dolch m. 4 Nieten u. eingezogenen Seiten		0		3.8		0.7		0.62		1.45		1.1		0.18	9	0.1	0	0		0		0		0.15		
+37	00013	62	D	Bodensee F.O.?	Vermutlich Siedl.	621	9.167	47.650	Stuttgart, WLM A 31/128	4			616	Kugelkopfnadel		0	9	8		0.01		0.06		0.07		0.05		0.18	1	0	0	0		0		0		0.03		
+38	00028	62	D	Bodensee F.O.?	Vermutlich Siedl.	621	9.167	47.650	Stuttgart, WLM A 31/126	4			610	Rollennadel m. tordiertem Schaft		0		6.7		0.06		0.45		0.12		0.04		0.07		0.007		0		0		0		0.2		
+39	00029	62	D	Bodensee F.O.?	Vermutlich Siedl.	621	9.167	47.650	Stuttgart, WLM A 31/127	4			610	Rollennadel m. tordiertem Schaft		0		4.8		0.05		0.12		0.36		0.14		0.4		0.02		0		0		0		0.5		
+40	00345	62	D	Bodensee F.O.?	Vermutlich Siedl.	621	9.167	47.650	Stuttgart, WLM	4			615	Ösenkopfnadel m. durchbohrtem Kopf		0	9	15		0.06		0.44		0.24		0.07		0.69		0.02		0		0		0		0.2		
+41	00469	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			111	Randleistenbeil, Typ Bühl		0		7.2		0.38		1.4		0.1		0.2		1.7	6	0.01		0		0	2	0		0.06		
+42	00468	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			111	Randleistenbeil, Typ Bühl (Typ 3)		0		9.9		0.06		0.74		0.36		0.15		1.55	6	0.01		0		0	2	0		0.05		
+43	00467	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			302	Tülle einer Lanzenspitze		0		6.6		0.08		2		0.05		0.32		1.92	6	0.01		0		0	2	0		0.09		
+44	00466	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			710	Gußbrocken		0		4.8		0.07		1.4		0.3		0.25		1.25	6	0.01		0		0	2	0		0.08		
+45	00465	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			317	Sichel mit 2 Rippen		0		6.9		0.05		0.52		0.45		0.14		0.83	6	0.01		0		0	2	0		0.09		
+46	00211	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			522	Blechstreifen, punzverziert		0		9		0.07		1.05		0.4		0.01		1.4	1	0		0		0		0		0.08		
+47	00212	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			518	Näpfchen		0		8.8	1	0		0.74		0.12		0.02		0.65		0		0		0		0	1	0		
+48	00213	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			616	Kugelkopfnadel		0		5.6	1	0		0.74		0.12		0.01		0.85		0.001		0	1	0		0		0.3		
+49	00215	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			220	Schwertspitze		0		0.1	1	0		2.5		3.5		0.16	9	2		0.01		0		0	2	0		0.02		
+50	00216	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			212	Dolchklinge		0		5.6		0.01		1.05		0.18		0.08		2	1	0	0	0		0	2	0		0.01		
+51	00217	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			302	Lanzenspitze in Bruchstücken		0		8		0.04		0.52		0.07		0.01		0.95	6	0.001		0		0		0		0.01		
+52	00218	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			710	Gußbrocken		0	1	0		0.4		1.3		0.2		0.3	7	2.5		0.001		0	1	0	2	0		0.4		
+53	00219	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			111	Randleistenbeil, fragm.		0		5.9		0		0.68		0.3		0.01		1.75	1	0		0		0		0		0.25		
+54	00220	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			317	Sichelfragment		0		4.5	1	0		0.96		0.8		0.07		2	1	0		0		0		0		0.09		
+55	00458	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			409	Bronzespirale, groß		0	9	12		0		0.8		0.67		0.03		0.42	1	0		0		0		0		0.11		
+56	00459	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			518	Blechtutulus, groß		0		9.5		0.05		0.71		1.18		0.03		0.48	1	0		0		0		0		0.07		
+57	00460	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			518	Blechtutulus, groß		0	9	15		0.09		0.8		0.58		0.06		1.1	6	0.01		0		0		0		0.1		
+58	00461	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			518	Blechtutulus, klein		0		7.1		0		0.36		0.05	1	0		0.52	6	0.001		0		0		0		0.1		
+59	00462	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			307	Pfeilspitze		0	9	15		0.29		1.4		0.56		0.06		1.8		0		0		0	2	0		0.12		
+60	00463	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			518	Blechtutulus mit Loch		0	9	13		0		0.44		1.07	1	0		0.45		0		0		0		0		0.12		
+61	00464	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			522	Punziertes Blechband		0		4.8		0.12		0.29		2.1		0.05		1.05	6	0.01		0		0		0		0.45		
+62	00470	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			110	Randleistenbeil, Typ Bühl, mit leichter Rast		0		7.4		0.09		0.54		0.16		0.09		1.3	6	0.01		0		0		0		0.04		
+63	00471	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			110	Randleistenbeil, Typ Bühl (Typ 3)		0		7.7		0		0.01		0.04		0		0.1	6	0.01		0		0	2	0		0.26		
+64	00472	62	D	Bühl, Donau-Ries Kreis	Depot	802	10.650	48.833	Nördlingen	5			111	Randleistenbeil, fragm.		0		5.6		0.03		0.87		0.1		0.08		1.41	6	0.01		0		0	2	0		0.05		
+65	00105	66	D	Burgweinting, Kr. Regensburg	F.O.? Verm. nicht aus Burgweinting	825	12.167	49.000	Regensburg 376a	5			212	Dolch		0		8.1		0.05		0.83		1.1		0.5		0.1		0.03		0		0		0		0.06		*  20
+66	00008	62	D	Stuttgart-Bad Cannstatt	Einzf.	5100	9.200	48.817	Stuttgart, WLM A 234	3			702	Ösenringbarren		0		0		0		2.4		1.4		0.5		0.001		0.1	0	0		0		0		0.01		
+67	00017	62	D	Stuttgart-Bad Cannstatt	Grab 5	5100	9.200	48.817	Stuttgart, WLM	3			604	Rudernadel, verz.		0	1	0	1	0		0.66		0.82		0.43		1.55		0		0		0		0		0.05		*  22
+68	00052	62	D	Stuttgart-Bad Cannstatt	Grab 5	5100	9.200	48.817	Stuttgart, WLM	3			503	Blechröhrchen		0		0.05	1	0		0.67		1		0.5		1.3		0		0		0		0		0.05		*  24
+69	00025	62	D	Stuttgart-Bad Cannstatt	Grab 1	5100	9.200	48.817	Stuttgart, WLM	3			409	Armspirale		0		0		0		0.25		1.1		0.46		1.8		0		0		0	2	0		0.03		
+70	00026	62	D	Stuttgart-Bad Cannstatt	Grab 4	5100	9.200	48.817	Stuttgart, WLM	3			409	Armspirale		0		0.07		0		0.18		0.88		0.33		1.3		0		0		0		0		0.04		
+71	00027	62	D	Stuttgart-Bad Cannstatt	Grab 4	5100	9.200	48.817	Stuttgart, WLM	3			603	Scheibennadel, kl., ruderf., einger. Kopfplatte		0		0.05		0.07		0.45		1.1		0.39		2.8		0		0		0	3	0		0.05		
+72	00406	62	D	Dillingen a. d. Donau, Kr. Dillingen	Grab	1323	10.500	48.550	Dillingen	25	GBK		215	Griffzungendolch		0		0		0.11		0.08		0.45		0.08		0.001		0.01		0		0		0		0.2		
+73	00067	62	D	Döttingen, Kr. Schwäbisch-Hall	Unsicher, vielleicht Grab	1386	9.700	49.217	Stuttgart, WLM 12736	3			206	Vollgriffdolch: Blatt		0		9.1		0.01		0.27		0.56		0.42	6	0.01		0.02		0		0		0	6	0.01		+1386
+74	00068	62	D	Döttingen, Kr. Schwäbisch-Hall	Unsicher, vielleicht Grab	1386	9.700	49.217	Stuttgart, WLM 12736	3			204	Vollgriffdolch: Griff		0		0.01		0.01		1.4		2		0.43	1	0.001		0.15		0		0		0	6	0.01		+1386
+75	00069	62	D	Döttingen, Kr. Schwäbisch-Hall	Unsicher, vielleicht Grab	1386	9.700	49.217	Stuttgart, WLM 12736	3			205	Vollgriffdolch: Niet		0		9.8	1	0		0.12		0.49		0.38	1	0.001		0.01		0		0		0	6	0.01		+1386
+76	00441	67	CH	Dürnten, Kt.Zürich	Einzf.	1455	8.833	47.267	Zürich, SLM	25			104	Großes Beil		0		0.8		1.3	6	0.005		0		0.03		0.09	9	0.001		0	1	0		0		0		
+77	00383	62	D	Efringen-Kirchen	Gräber in Höhle, mind. 4 SK	1485	7.550	47.650	Karlsruhe C 8592	4			212	Dolch mit 4 Nieten und Seitenrillen		0		8.2		0		0.16		0.23		0.38		0.12		0.001		0		0	1	0		0		
+78	00071	62	D	Münsingen, Kr. Reutlingen	Einzf.	3517	9.500	48.417	Stuttgart, WLM A 32/164	3			212	Dolch mit 3 Nieten		0		0.05		0		0.31		1.1		0.35		0.85		0.004		0		0	2	0		0.01		
+79	00081	62	D	Ittenhausen, Gem. Ensmad, Kr. Riedlingen	Grab	1553	9.350	48.183	Stuttgart, WLM A 34/150	5			627	Nadel m. durchb. Hals u. gefl. gep. Schaft		0		3.2		0.02		0.24		0.4		0.06		0.74		0		0		0	1	0		0.2		
+80	00082	62	D	Ittenhausen, Gem. Ensmad, Kr. Riedlingen	Grab	1553	9.350	48.183	Stuttgart, WLM A 34/150	5			627	Nadel m. durchb. Hals u. gefl. gep. Schaft		0		3.1		0.04		0.34		0.33		0.05		0.74		0	2	0		0	1	0		0.1		
+81	00408	62	D	Eriskirch, Bodenseekreis	Einzelf.	1564	9.533	47.633	Stuttgart, WLM 12584	3			110	Randleistenbeil, Typ ?, Salez-Langquaid		0	1	0		0.06		0.75		1.6		0.34		2.4		0		0		0	1	0	1	0		*# 28
+82	00409	62	D	Eriskirch, Bodenseekreis	Einzelf.	1564	9.533	47.633	Stuttgart, WLM 12584	3			112	Randleistenbeil (3 An.) Typ unklar		0	1	0		0.05		0.95		1.4		0.45		2.7		0	2	0		0	2	0	6	0.01		#  28
+83	00410	62	D	Eriskirch, Bodenseekreis	Einzelf.	1564	9.533	47.633	Stuttgart, WLM 12584	3			112	Randleistenbeil (3 An.), Typ unklar		0	1	0		0.04		0.76		1.3		0.44		2.6		0	2	0		0	2	0	1	0		#  28
+84	00346	66	D	Friedberg	Depot	1755	10.983	48.333	Augsburg 570, 1-22	4			110	Randleistenbeil, Schneidenfrag., Typ Langquaid		0		9		0		0.24		0.54		0.001		0.42		0		0		0		0	6	0.01		
+85	00347	66	D	Friedberg	-	1755	10.983	48.333		4			710	Gußbrocken		0		0.01		0.02		1.4		0.25		0.01		0.35		0.03		0		0	1	0		0.5		
+86	00348	66	D	Friedberg	Depot	1755	10.983	48.333	Augsburg 570, 11	4			317	Sichel		0		3.8		0.03		1.15		0.04		0.13		1.1		0.004		0		0		0	6	0.01		
+87	00146	66	D	Galgweis-Gergweis Kr.Vilshofen	Einzf.	1793	12.933	48.617	München, Stslg. 1958, 715	3			604	Scheibennadel, verz.		0	9	0.02	1	0		0.75		1.5		0.51		1.9		0.005		0		0	2	0		0		
+88	00147	66	D	Galgweis-Gergweis Kr.Vilshofen	Einzf.	1793	12.933	48.617	München, Stslg. 1958, 716	3			604	Scheibennadel, verz.		0	6	0.01		0.01		0.8		1.6		0.32		1.05		0.004		0		0	2	0		0.08		
+89	00252	66	D	Gammersham, Kr. Wasserburg	Depot	1802	12.267	48.050	München, Stslg. 1909:9	3			702	Ösenringbarren		0		0	1	0	9	3.5	9	2		0.65	9	0.01	7	0.1	0	0		0		0		0.01		*  30
+90	00253	66	D	Gammersham, Kr. Wasserburg	Depot	1802	12.267	48.050	München, Stslg. 1909:82	3			702	Ösenringbarren		0		0		0	9	3	9	2		0.6	6	0.01	7	0.1	0	0		0		0	1	0		
+91	00254	66	D	Gammersham, Kr. Wasserburg	Depot	1802	12.267	48.050	München, Stslg. 1909:11	3			702	Ösenringbarren		0		0		0	9	3.5	9	2		0.7	6	0.01	7	0.1	0	0		0		0	6	0.01		
+92	00255	66	D	Gammersham, Kr. Wasserburg	Depot	1802	12.267	48.050	München, Stslg. 1909:8	3			702	Ösenringbarren		0		0		0	9	3.5	9	2		0.7	6	0.01	7	0.1	0	0		0		0	1	0		
+93	00256	66	D	Gammersham, Kr. Wasserburg	Depot	1802	12.267	48.050	München, Stslg. 1909:23	3			702	Ösenringbarren		0	1	0		0.02	6	0.01		0.3	6	0.04		0.1		0.03	0	0		0		0		0.12		*  32
+94	00145	66	D	Grünwald-Geiselgasteig, Kr. München	Grab 1	1833	11.550	48.050	München, Stslg. 1912:601	3			604	Scheibennadel, verziert		0	6	0.01	1	0		1.25		1.5		0.51	9	4		0.003		0		0	2	0		0		
+95	00349	66	D	Gessenhausen, Gem. Taching, Kr. Traunstein	Grab od. Dep.	1867	12.750	47.983	München, Stslg. H.V. 227	3			519	Spiraltutulus		0		0		0		1.55		1.85		0.5		0.05		0.3		0		0		0		0		
+96	00358	62	D	Göggingen, Kr. Augsburg	DoppelGrab, Grab 1	1929	10.883	48.333	Augsburg, Maxim.Mus.	3			513	Zierscheibe, groß		0		0	1	0		0.34		0.49		0.82		0.05		0	0	0		0		0		0.04		
+97	00360	62	D	Göggingen, Kr. Augsburg	Grab 2	1929	10.883	48.333	Augsburg	3			519	Spiraltutulus		0		0		0.06		1.45		1.9		0.9		0.001		0.07	0	0		0		0		0.03		
+98	00359	62	D	Göggingen, Kr. Augsburg	DoppelGrab, Grab 1	1929	10.883	48.333	Augsburg	3			518	Blechtutulus		0	1	0	1	0		0.83		0.25	9	1		0.05		0	0	0		0		0		0.03		
+99	00361	62	D	Göggingen, Kr. Augsburg	Grab 2	1929	10.883	48.333	Augsburg	3			416	Armspirale, 5,2 Windungen erh.		0	1	0	1	0		1.15		1.65		0.8		0.74	1	0		0		0	2	0		0		
+100	00362	62	D	Göggingen, Kr. Augsburg	Grab 2	1929	10.883	48.333	Augsburg	3			605	Schleifennadel, Horkheimer Nadel		0	1	0		0.07		0.4		1.12		0.75		0.38		0.02		0		0		0		0.03		
+101	00363	62	D	Göggingen, Kr. Augsburg	DoppelGrab, Grab 1	1929	10.883	48.333	Augsburg	3			607	Schleifennadel, zypr.		0		0.05		0.06		0.88		0.87		0.6		0.73	1	0		0		0		0		0		
+102	00373	62	D	Goldburghausen, Gem. Riesbürg, Ostalbkreis	Goldberg, Siedl.	1931	10.367	48.767	Stuttgart, WLM 223-1563	22			134	Meißel		0		0		0		0		0.03		0.07		0.07		0.007		0		0		0		0		*  34
+103	00375	62	D	Goldburghausen, Gem. Riesbürg, Ostalbkreis	Siedl.	1931	10.367	48.767	Stuttgart, WLM 227-494	4			134	Meißel		0		2.1		0.12		0.05		0.12		0.02		0.12		0		0		0		0		0.08		
+104	00372	62	D	Goldburghausen, Gem. Riesbürg, Ostalbkreis	Goldberg, Siedl.	1931	10.367	48.767	Stuttgart, WLM 545a	22			104	Flachbeil		0		0		0		0		0.03		0.06		0.05		0.011		0		0		0		0		*  36
+105	00371	62	D	Goldburghausen, Gem. Riesbürg, Ostalbkreis	Goldberg, Siedl.	1931	10.367	48.767	Stuttgart, WLM 214-28017	22			104	Flachbeil		0		0		0.06		2.8	1	0		0.02		0.05	6	0.001		0		0		0		0		*  38
+106	00374	62	D	Goldburghausen, Gem. Riesbürg, Ostalbkreis	Goldberg, Siedl.	1931	10.367	48.767	Stuttgart, WLM 221-28013	25			134	Meißel		0	1	0		0		0.34	1	0		0.01		0.001		0	0	0		0		0		0		*  40
+107	00232	62	D	Goldburghausen, Gem. Riesbürg, Ostalbkreis	Goldberg, Siedl.	1931	10.367	48.767	Stuttgart, WLM	4			111	Randleistenbeil, geschwung. Schneide, Langquaid II		0		3.9		0		0.77		1		0.2		0.62	1	0		0		0		0	1	0		
+108	00078	62	D	Goldburghausen, Gem. Riesbürg, Ostalbkreis	Goldberg, Siedl.	1931	10.367	48.767	Stuttgart, WLM A 1694	4			613	Ringkopfnadel		0	7	15		0.02	9	0.008	1	0	1	0		0.04	6	0.001		0	1	0	2	0		0.15		
+109	00379	62	D	Neudorf, Gem. Graben, Kr. Karlsruhe	Einzf.	1980	8.483	49.167	Karlsruhe C 2069	5			616	Kugelkopfnadel, durchbohrt, verziert, junge Form		0		5.1	1	0		0.48		0.12		0.03		1.1		0	0	0		0	1	0		0.07		*  42
+110	00481	62	D	Gr. Gerau	Einzf.	1969	8.483	49.917	Groß-Gerau	25			104	Flachbeil		0		0		0.07		0		0.09	9	1		0.06	6	0.01		0		0		0		0.03		
+111	00422	62	D	Güglingen, Kr. Heilbronn	Einzelf.	2038	9.000	49.067	Stuttgart, WLM A 3127	3			110	Randleistenbeil, Typ Salez (3 An.)		0		0		0		1.67		1.65		0.44		0.001		0.1		0		0		0	1	0		#  45
+112	00423	62	D	Güglingen, Kr. Heilbronn	Einzelf.	2038	9.000	49.067	Stuttgart, WLM A 3127	3			110	Randleistenbeil, Typ Salez (3 An.)		0		0		0		1.45		1.35		0.44		0.001		0.1		0		0		0		0		#  45
+113	00424	62	D	Güglingen, Kr. Heilbronn	Einzelf.	2038	9.000	49.067	Stuttgart, WLM A 3127	3			110	Randleistenbeil, Typ Salez (3 An.)		0		0		0		1.52		1.35		0.52		0.001		0.1	0	0		0		0		0		#  45
+114	00337	66	D	Haberskirch, Kr.Friedberg	Dep., Gewässerfund	2063	11.000	48.367	Sigmaringen 847	4			608	Lyranadel mit 3-teiliger Kopfplatte		0		7		0		0.16		0.15		0.04		0.001		0.001		0		0		0		0		
+115	00338	66	D	Haberskirch, Kr.Friedberg	Dep., Gewässerfund	2063	11.000	48.367	Sigmaringen 848	4			608	Lyranadel mit 3-teiliger Kopfplatte		0		8.4		0		0.17		0.16		0.04		0.001	6	0.001		0		0		0		0		
+116	00341	66	D	Haberskirch, Kr.Friedberg	Dep., Gewässerfund	2063	11.000	48.367	Sigmaringen 852	4			518	Blechtutulus		0		0		0		0.43		0.54		0.35		0.001		0.1		0		0		0		0		
+117	00342	66	D	Haberskirch, Kr.Friedberg	Dep., Gewässerfund	2063	11.000	48.367	Sigmaringen	4			409	Spirale, Frgm.		0		9.6		0		0.22		0.06		0.1		0.1		0.007		0		0		0	6	0.01		
+118	00343	66	D	Haberskirch, Kr.Friedberg	Dep., Gewässerfund	2063	11.000	48.367	Sigmaringen	4			612	Dreiarmnadel (Kleeblattnadel?)		0		8.7		0.44		0.22		0.15		0.3		0.09		0.014		0		0		0		0		
+119	00344	66	D	Haberskirch, Kr.Friedberg	Dep., Gewässerfund	2063	11.000	48.367	Sigmaringen	4			608	Kleeblattnadel		0		10.5		0		0.15		0.62		0.04		0.1		0		0		0		0	6	0.01		
+120	00339	66	D	Haberskirch, Kr.Friedberg	Dep., Gewässerfund	2063	11.000	48.367	Sigmaringen 849	4			608	Kleeblattnadel		0		9.3		0		0.06		0.02		0.02		0.13	6	0.001		0		0		0		0		
+121	00340	66	D	Haberskirch, Kr.Friedberg	Dep., Gewässerfund	2063	11.000	48.367	Sigmaringen 850	4			612	Dreiarmnadel (Kleeblattnadel?)		0		8		0		0.01		0.03		0.01		0.11	6	0.001		0		0		0	6	0.01		
+122	00247	65	D	Hagelstadt, Kr. Regensburg	Depot	2070	12.233	48.883	München, Stslg. IV 680	3			702	Ösenringbarren		0	1	0	1	0		0.13		0.4		0.04		0.2	9	0.001	0	0		0	0	0	6	0.01		
+123	00248	65	D	Hagelstadt, Kr. Regensburg	Depot	2070	12.233	48.883	München, Stslg. IV 680	3			702	Ösenringbarren		0		0	1	0	7	3	9	2		0.7	6	0.01	7	0.1	0	0		0		0	1	0		
+124	00249	65	D	Hagelstadt, Kr. Regensburg	Depot	2070	12.233	48.883	München, Stslg. IV 680	3			702	Ösenringbarren		0		0	1	0		0.55	9	2		0.35		0.1		0.015	0	0		0		0	1	0		
+125	00250	65	D	Hagelstadt, Kr. Regensburg	Depot	2070	12.233	48.883	München, Stslg. IV 680	3			702	Ösenringbarren		0		0		0	7	3.5	9	2		0.65	6	0.01	7	0.1	0	0		0		0	1	0		
+126	00251	65	D	Hagelstadt, Kr. Regensburg	Depot	2070	12.233	48.883	München, Stslg. IV 680	3			702	Ösenringbarren		0	1	0	1	0		0.06	9	0.008	6	0.04		0.1	9	0.001	0	0		0		0	6	0.01		
+127	00412	66	D	Hammel Kr.Augsburg	Einzf.	2112	10.783	48.400	Augsburg VF 124	3			206	Vollgriffdolch: Blatt		0		4.4		0.03	9	0.008		0.01		0.02		0.01		0		0		0		0		0		+2112
+128	00413	66	D	Hammel Kr.Augsburg	Einzf.	2112	10.783	48.400	Augsburg VF 124	3			204	Vollgriffdolch: Griff		0		5.8		1.2		0.03		0.12		0.02		0.01		0.001		0		0		0	6	0.01		+2112
+129	00414	66	D	Hammel Kr.Augsburg	Einzf.	2112	10.783	48.400	Augsburg VF 124	3			206	Vollgriffdolch: Niet und Blatt		0		4.8		0.95		0.01		0.02		0.04		0.02		0.001		0		0		0	6	0.01		+2112
+130	00421	62	D	Hammel Kr.Augsburg	Einzf.	2112	10.783	48.400	Augsburg VF 124	3			205	Vollgriffdolch: Niet		0		3.1		1.15		0.03		0.06		0.08		0.16		0.001		0		0		0	1	0		+2112
+131	00070	62	D	Hepsisau, Kr. Nürtingen	Einzf.	2161	9.550	48.583	Stuttgart, WLM A 1213	4			212	Dolchklinge, verz., 5 (?) Niete		0	7	15	1	0		0.39		0.95		0.31		0.49		0.004		0		0	2	0	6	0.01		*  47
+132	00144	62	D	Heroldingen, Donau-Ries Kreis	Grab	2167	10.683	48.783	München, Stslg. 1909, 1	3			604	Rudernadel, verziert		0	6	0.01	6	0.01		1.1		3		0.52	9	4		0.01	0	0		0.1	4	0		0.07		
+133	00020	62	D	Honau, Kr. Reutlingen	Grab in Höhle	2245	9.267	48.417	Stuttgart, WLM A 30/178e	4			407	Offener Armreif		0		7.1		0.93		0.13		0.07		0.06		0.17		0.015		0		0		0		0.2		
+134	00023	62	D	Honau, Kr. Reutlingen	Grab in Höhle	2245	9.267	48.417	Stuttgart, WLM A 30/178g	3			403	Ösenhalsring, klein		0		4.5		0.05		0.35		0.58		0.42		1.3		0		0		0	2	0		0.05		
+135	00024	62	D	Honau, Kr. Reutlingen	Grab in Höhle	2245	9.267	48.417	Stuttgart, WLM A 30/178h	3			503	Blechröhrchen		0	1	0		0.04		0.74		0.8		0.53		1.6		0		0		0	2	0		0.1		
+136	00222	62	D	Honau, Kr. Reutlingen	Grab in Höhle	2245	9.267	48.417	Slg. Tübingen	3			513	Zierscheibe, Frgm.		0	1	0		0		0.73		1.4		0.9		1.9		0		0		0	2	0	1	0		
+137	00223	62	D	Honau, Kr. Reutlingen	Grab in Höhle	2245	9.267	48.417	Slg. Tübingen	3			503	Blechröhrchen, verz.		0	1	0		0		0.68		1.15		0.85	7	2		0		0		0		0		0		
+138	00224	62	D	Honau, Kr. Reutlingen	Grab in Höhle	2245	9.267	48.417	Slg. Tübingen	3			403	Ösenring, klein, Bruchstück		0		3.9	1	0		0.77		1.8	7	1.5	7	2	1	0		0		0		0		0		
+139	00364	62	D	Honsolgen, Kr. Marktoberdorf	Dep., Schmuckdepot	2246	10.783	48.033	Augsburg 91	3			513	Zierscheibe		0		0.1		0.05		0.05		0.5		0.85		0.51	1	0	0	0		0		0		0		
+140	00365	62	D	Honsolgen, Kr. Marktoberdorf	Dep., Schmuckdepot	2246	10.783	48.033	Augsburg 91	3			806	Pfriem mit Mittelschwellung		0		0.01	1	0		0.66		1.22		0.8		1	1	0	0	0		0		0		0		
+141	00366	62	D	Honsolgen, Kr. Marktoberdorf	Dep., Schmuckdepot	2246	10.783	48.033	Augsburg 91	3			603	Rollennadel, ellipt. Kopfpl. u. ger. Schaft		0	1	0	1	0		0.13		0.7		0.66		0.6	1	0		0		0		0		0		
+142	00382	62	D	Hügelsheim, Kr. Rastatt	Einzf.	2291	8.117	48.800	Karlsruhe C 2023	3			212	Dolch, 5 Niete, verz.		0		8.2		0.04		0.13		0.15		0.2		0.16		0.001		0		0	1	0		0		
+143	00486	62	D	Indelhausen, Kr.Münsingen	Einzf. aus Gerberhöhle	2341	9.500	48.300	Stuttgart, WLM	22			707	Gußbarren		0		0		0		0		0.05		0.1	1	0.001	1	0		0		0		0		0.07		
+145	00824	66	D	Irlbach, Kr. Straubing	Einzf.	2359	12.750	48.850	Straubing 3781	4			111	Randleistenbeil, Typ Langquaid		0		5.9		0		0.33		0.26		0.18	1	0.001		0.012		0		0		0		0		
+146	00477	62	D	Kelsterbach, Kr. Gr. Gerau	Dep. in Grab	2499	8.533	50.067	Darmstadt	25	SKK		528	Spiralring, klein		0		0		0.15		0.08		1.15	9	1.2		0.07		0		0		0		0		0		
+147	00476	62	D	Kelsterbach, Kr. Gr. Gerau	Dep. in Grab	2499	8.533	50.067	Darmstadt	25	SKK		801	Kupferperle		0		0		0.56		0		0.69	9	1.2		0.05	6	0.01		0		0		0		0.03		
+148	00473	62	D	Kelsterbach, Kr. Gr. Gerau	Dep. in Grab	2499	8.533	50.067	Darmstadt	25	SKK		409	Spirale, hoch		0		0		0.43		0		0.15		0.06		0.04	6	0.01		0		0		0		0.02		
+149	00474	62	D	Kelsterbach, Kr. Gr. Gerau	Dep. in Grab	2499	8.533	50.067	Darmstadt	25	SKK		409	Spirale, niedrig		0		0		0.07		0		0.07		0.9		0.09	1	0		0	1	0		0		0		
+150	00475	62	D	Kelsterbach, Kr. Gr. Gerau	Dep. in Grab	2499	8.533	50.067	Darmstadt	25	SKK		801	Kupferperle		0		0		0		0.1		0.07		0.5		1.05	1	0		0		0	1	0		0		
+151	00480	62	D	Kirch-Brombach, Brombachtal, Odenwaldkreis	Im Eichels, Einzf.	2553	8.950	49.733	Michelstadt	3			110	Randleistenbeil, atypisch, trapezoid		0		0.01		0.15		0.98		1.2	9	1.2		0.05	6	0.1		0		0		0		0.06		
+152	00330	62	D	Kirchheim u.T., Kr. Esslingen	Grab 1	2555	9.467	48.650	Kirchheim, Heimatmus.	3			409	Armspirale mit 5 Wind. und eingerollten Enden		0		0.01		0		0.78		1.85		0.4		1.4		0		0		0	2	0		0		
+153	00331	62	D	Kirchheim u.T., Kr. Esslingen	Grab 1	2555	9.467	48.650	Kirchheim, Heimatmus.	3			212	Dolch, 4 Niete, verziert		0		0.03		0.02		0.88		1.8		0.4		1.85		0		0		0		0		0		
+154	00332	62	D	Kirchheim u.T., Kr. Esslingen	Grab 3	2555	9.467	48.650	Kirchheim, Heimatmus.	3			212	Dolch, 3 Niete		0		0		0		0.3		2.25		0.32		0.91		0		0		0		0		0		
+155	00099	65	D	Kollstein, Kr. Parsberg	Einzf., aus Hügelgrab?	2632	11.733	49.167	Regensburg A 646	4			616	Kugelkopfnadel mit verziertem Schaft		0		7.1	6	0.01		0.8		0.21		0.25		0.7		0.04		0		0	2	0		0.04		
+156	00065	62	D	Kornwestheim Kr. Ludwigsburg	Einzf.	2663	9.200	48.867	Stuttgart, WLM A 1078	22			104	Flachbeil, Typ?		0		0	1	0		0.55		0.02		0.07		0.001		0.001		0		0		0		0.03		*  49
+157	00102	65	D	Krappenhofen Kr.Parsberg	Grab?, wohl aus Grabhügeln	2702	11.700	49.167	München, Stslg.	4			616	Kugelkopfnadel, schräg durchbohrt, verz.		0		9	1	0		0.7		0.5		0.1		1.2	6	0.001		0		0		0	9	0.01		
+158	00306	62	D	Krumbach, Umgeb., Günzkreis	Depot	2723	10.367	48.233	München, Stslg. 522	4			704	Spangenbarren		0		0		0		0.27		0.26	6	0.01		0.19	1	0	0	0		0		0		0.07		
+159	00307	62	D	Krumbach, Umgeb., Günzkreis	Depot	2723	10.367	48.233	München, Stslg. 522	4			704	Spangenbarren		0		0.54		0.07		1.25		1.45		0.01		1.6		0	0	0		0		0	1	0		
+160	00308	62	D	Krumbach, Umgeb., Günzkreis	Depot	2723	10.367	48.233	München, Stslg. 522	4			704	Spangenbarren		0		0		0		1.1		2		0.4		0.5	9	0.1	0	0		0		0		0.14		
+161	00309	62	D	Krumbach, Umgeb., Günzkreis	Depot	2723	10.367	48.233	München, Stslg. 522	4			704	Spangenbarren		0		0.56	9	2.5		1.2		0.1		0.01		0.88	1	0	0	0		0		0	1	0		
+162	00310	62	D	Krumbach, Umgeb., Günzkreis	Depot	2723	10.367	48.233	München, Stslg. 522	4			704	Spangenbarren		0		0	1	0		0.15		0.08	6	0.01		0.21		0		0		0		0		0.15		
+163	00085	62	D	Langenau	Einzf.	2839	10.133	48.483	Langenau, Heimatmus.	5			616	Kugelkopfnadel m. durchb. Kopf u. verz. Schaft		0	9	15	6	0.01		0.16		0.04		0.02		0.31		0.003		0		0		0		0.1		*  51
+164	00200	66	D	Langquaid, Kr. Kelheim	Depot	2846	12.083	48.833	München, Stslg.	4			602	Nadel mit Plattenkopf		0		7.1		0.15		0.15	9	0.1		0.02		0.33		0.02		0	1	0		0	9	0.5		
+165	00201	66	D	Langquaid, Kr. Kelheim	Depot	2846	12.083	48.833	München, Stslg.	4			602	Nadel mit meißelförmigem Kopf		0		6.3	1	0	6	0.1	6	0.1		0.01		0.21		0.003		0		0		0		0.3		
+166	00202	66	D	Langquaid, Kr. Kelheim	Depot	2846	12.083	48.833	München, Stslg.	4			111	Randleistenbeil, Typ Langquaid		0		4.1	1	0		0.1		0.2		0.03		0.43		0.001		0		0		0	9	0.01		
+167	00203	66	D	Langquaid, Kr. Kelheim	Depot	2846	12.083	48.833	München, Stslg.	4			111	Randleistenbeil, Typ Langquaid		0		3.9		0.17		0.46		0.43		0.02		0.48	1	0		0		0		0	6	0.01		
+168	00204	66	D	Langquaid, Kr. Kelheim	Depot	2846	12.083	48.833	München, Stslg.	4			302	Lanzenspitze		0		12		0.88		0.1		0.17		0.01		0.45		0.002		0		0		0	9	0.3		
+169	00207	66	D	Langquaid, Kr. Kelheim	Depot	2846	12.083	48.833	München, Stslg.	4			616	Kugelkopfnadel mit tordiertem Schaft		0	1	0		0		0.44		0.8	6	0.01		0.85		0	0	0		0		0		0		
+170	00208	66	D	Langquaid, Kr. Kelheim	Depot	2846	12.083	48.833	München, Stslg.	4			616	Kugelkopfnadel mit tordiertem Schaft		0		4.7		0		1.2		0.52	6	0.01		1		0		0		0		0	1	0		
+171	00209	66	D	Langquaid, Kr. Kelheim	Depot	2846	12.083	48.833	München, Stslg.	4			616	Kugelkopfnadel mit tordiertem Schaft		0		2.5		0.04		1.2		0.11	6	0.01		0.27	6	0.001		0		0		0		0		
+172	00116	66	D	Langquaid, Kr. Kelheim	Depot	2846	12.083	48.833	München, Stslg.	4			616	Kugelkopfnadel mit tordiertem Schaft		0		0.12	1	0		0.35		0.95		0.07		0.85	6	0.001		0		0		0	6	0.01		
+173	00019	62	D	Lauffen a. N., Kr. Heilbronn	Grab	2871	9.150	49.067	Stuttgart, WLM A 35/20	3			605	Schleifennadel od. Horkheimer Nadel		0		0.2		0.05		0.87		1		0.48		3.3		0		0		0	3	0		0.07		
+174	00114	66	D	Luckenpaint, Kr. Regensburg	HockerGrab	3089	12.150	48.900	Regensburg A 1422	25	GBK		215	Griffzungendolch, klein		0		0.2		1.2		0.45		0.1		0.25		0.2		0.04		0		0.1	2	0		0.07		*  53
+175	00369	66	D	Ludwigsmoos Kr.Neuburg/Donau	Einzf.	3094	11.233	48.667	München, Stslg. 3675	4			212	Stabdolchklinge		0	9	12		0		1.3		0.07		0.03		0.73		0		0		0		0		0.05		
+176	00009	62	D	Tuttlingen-Ludwigstal, Kr.Tuttlingen	Grab	5443	8.733	48.000	Stuttgart, WLM A 720	4			403	Halsring		0		0		0		2.1		1.2		0.5		0.001		0.1	0	0		0		0	1	0		
+177	00010	62	D	Tuttlingen-Ludwigstal, Kr.Tuttlingen	Grab	5443	8.733	48.000	Stuttgart, WLM A 720	4			614	Dreiarmnadel		0	9	4		0		0.1		0.18		0.17		0.07		0.01	0	0		0		0		0.1		
+178	00384	62	D	Mainz	F.O.?	3160	8.267	50.000	Worms 124c	4			616	Kugelkopfnadel		0		8.2		0		0.18		0.03		0.01		0.4		0		0		0		0		0.06		
+179	00142	66	D	Manching, Kr. Ingolstadt	Grab 12	3186	11.517	48.717	München, Stslg. 1958, 708	3			604	Rudernadel, verziert		0		0	6	0.01		1.4		2.5		0.38	9	3.5		0.03	0	0		0	3	0		0.08		
+180	00143	66	D	Manching, Kr. Ingolstadt	Grab 11	3186	11.517	48.717	München, Stslg. 1958, 710	3			604	Scheibennadel, verziert		0		0	6	0.01		0.97		1.9		0.36	9	3.5		0.04		0		0	2	0		0.06		
+181	00206	66	D	Manching, Kr. Ingolstadt	Grab 7	3186	11.517	48.717	München, Stslg. 1937, 219	3			603	Rollennadel mit elliptischer Kopfplatte		0		0	1	0		0.35		0.55		0.48		0.001		0.001	0	0		0		0		0		
+182	00428	62	D	Mengen, Umgb., Kr. Sigmaringen	Dep. aus 12 Beilen	3296	9.333	48.050	Stuttgart, WLM A 216b	3			110	Randleistenbeil, Typ Salez (2 An.)		0	1	0		1.6		1.62		1.65		0.21		2.7		0.01	3	0	1	0	4	0	9	0.2		*# 55
+183	00429	62	D	Mengen, Umgb., Kr. Sigmaringen	Dep. aus 12 Beilen	3296	9.333	48.050	Stuttgart, WLM A 216b	3			110	Randleistenbeil, Typ Salez (2 An.)		0	1	0		1.6		1.71		1.65		0.2		2.6		0.001	3	0	1	0	4	0	6	0.01		*# 55
+184	00354	66	D	Mettenheim	Grab	3315	12.500	48.250	München, Stslg. 1939/35	25	GBK		806	Pfriem		0		0.03		0.28		0.58	9	0.009		0.16		0.05		0.013		0		0		0		0		
+185	00311	66	D	Piusheim, Gem. Baiern, Kr. Ebersberg	Dep. Menke Nr. 12	348	11.917	47.967	München, PStslg. 1916.1	4			704	Spangenbarren		0	1	0	6	0.05		0.5		0.12	6	0.01		0.42		0	2	0		0	1	0	9	0.5		
+186	00312	66	D	Piusheim, Gem. Baiern, Kr. Ebersberg	Depot	348	11.917	47.967	München, PStslg. 1916.1	4			704	Spangenbarren		0		0.22	0	0.5		2		2		0.6		0.19	7	0.1		0		0		0	1	0		
+187	00313	66	D	Piusheim, Gem. Baiern, Kr. Ebersberg	Depot	348	11.917	47.967	München, PStslg. 1916.1	4			704	Spangenbarren		0		0		0		2.1		2.8		0.6		0.09	7	0.1	0	0		0		0	1	0		
+188	00314	66	D	Piusheim, Gem. Baiern, Kr. Ebersberg	Depot	348	11.917	47.967	München, PStslg. 1916.1	4			704	Spangenbarren		0		0		0		2.5		2.1		0.7	1	0.001	7	0.1	0	0		0		0		0		
+189	00315	66	D	Piusheim, Gem. Baiern, Kr. Ebersberg	Depot	348	11.917	47.967	München, PStslg. 1916.1	4			704	Spangenbarren		0		1.2		0		0.15		0.08	6	0.01		0.07		0		0		0		0		0		
+190	00385	62	D	Monsheim	aus Steintumuli	3404	8.217	49.633	Worms 29	3			212	Dolch, 2 Niete		0		0.03		0.03		0.44		1.2		0.88		1.04		0.001	0	0		0	2	0		0		
+191	00386	62	D	Monsheim	aus Steintumuli	3404	8.217	49.633	Worms 29	3			610	Rollennadel mit geradem Schaft		0		1.1		0.09		0.65		1.3		0.92		1.23		0.005		0		0		0		0.04		
+192	00140	66	D	Moosinning, Kr. Erding	Einzf.	3447	11.850	48.283	München, Stslg. 1926/15	25	GBK?		215	Griffzungendolch, Spitze abgebr.		0	1	0		1.14		0.06		0.05		0.23		0.4		0.03		0		0.3	2	0		0.07		*  57
+193	00244	66	D	Mühlhausen Kr.Ebersberg	Depot	3495	12.000	48.150	München, Stslg. H.V. 32-34	3			702	Ösenringbarren		0		0		0		1.35		1.9	7	1.5		0.001	7	0.1	0	0		0		0		0		
+194	00245	66	D	Mühlhausen Kr.Ebersberg	Depot	3495	12.000	48.150	München, Stslg. H.V. 32-34	3			702	Ösenringbarren		0		0		0		1.3		1.6	7	1.5		0.001	7	0.1	0	0		0		0		0		
+195	00246	66	D	Mühlhausen Kr.Ebersberg	Depot	3495	12.000	48.150	München, Stslg. H.V. 32-34	3			702	Ösenringbarren		0		0		0	9	3.5		0.5		0.6	6	0.01	7	0.1	0	0		0		0	1	0		
+196	00281	66	D	München, 'Luitpoldpark'	Depot	3502	11.583	48.150	München, Stslg. 1928:33	4			704	Spangenbarren		0		0		0		1.55		1.9	9	0.6		0.001	9	0.1	0	0		0		0		0		
+197	00282	66	D	München, 'Luitpoldpark'	Depot	3502	11.583	48.150	München, Stslg. 1928:33	4			704	Spangenbarren		0		0		0		2		1.65		0.55		0.001	9	0.1	2	0		0		0		0		
+198	00283	66	D	München, 'Luitpoldpark'	Depot	3502	11.583	48.150	München, Stslg. 1928:33	4			704	Spangenbarren		0		0.01		0.1		2.9		0.55		0.25	9	3	9	0.01	0	0		0	2	0		0		
+199	00284	66	D	München, 'Luitpoldpark'	Depot	3502	11.583	48.150	München, Stslg. 1928:33	4			704	Spangenbarren		0		0		0		2.5		1.85		0.6	1	0.001	7	0.1	0	0		0		0		0		
+200	00285	66	D	München, 'Luitpoldpark'	Depot	3502	11.583	48.150	München, Stslg. 1928:33	4			704	Spangenbarren		0		0		0		1.95		2.7		0.6		0.001	7	0.1	0	0		0		0		0		
+201	00286	66	D	München, 'Luitpoldpark'	Depot	3502	11.583	48.150	München, Stslg. 1928:33	4			704	Spangenbarren		0		0.01	6	0.1		3		0.3		0.32		2.3	9	0.01	0	0		0	2	0		0.11		
+202	00287	66	D	München, 'Luitpoldpark'	Depot	3502	11.583	48.150	München, Stslg. 1928:33	4			704	Spangenbarren		0	1	0		0		1.4		2.25		0.55	6	0.01	9	0.1	0	0		0		0		0		
+203	00288	66	D	München, 'Luitpoldpark'	Depot	3502	11.583	48.150	München, Stslg. 1928:33	4			704	Spangenbarren		0	1	0		0		1.55		2.65		0.58		0.001	9	0.1	0	0		0		0	1	0		
+204	00289	66	D	München, 'Luitpoldpark'	Depot	3502	11.583	48.150	München, Stslg. 1928:33	4			704	Spangenbarren		0	1	0		0		2.35		2.65		0.57		0.001	9	0.1	0	0		0		0	1	0		
+205	00290	66	D	München, 'Luitpoldpark'	Depot	3502	11.583	48.150	München, Stslg. 1928:33	4			704	Spangenbarren		0	1	0		0		1.4		2.2		0.59		0.001	9	0.1	0	0		0		0	1	0		
+206	00096	66	D	München-Sendling	Offenb. Grab	3508	11.550	48.117	Regensburg A 803a	3			604	Scheibennadel, verz., ruderförm. Kopfplatte		0		0	6	0.01		0.6		0.82		0.43		3		0.001		0		0	3	0	1	0		
+207	00097	66	D	München-Sendling	Offenb. Grab	3508	11.550	48.117	Regensburg A 803b	3			604	Scheibennadel, verz., runde Kopfplatte		0	1	0	1	0		0.8		1.05		0.43		3		0.003		0		0	3	0		0.02		
+208	00210	66	D	München-Sendling	Offenb. Grab	3508	11.550	48.117	Regensburg A 803c	3			512	Halbmondförmige Zierscheibe		0	6	0.01	6	0.01		1.2		1.4		0.39		0.76		0.01	0	0		0	2	0		0.06		*  66
+209	00139	66	D	München, 'Valleyplatz'	Grab	3504	11.567	48.133	München, Stslg. 1919/67	3			212	Dolchklinge m. eingez. Griffplatte		0		0.03		0.02		1.5		1.9		0.6	7	2		0.002		0		0	3	0		0		
+210	00148	66	D	München, 'Wolfratshauser Str.'	Wolfratshauser Str., Grab	3505	11.567	48.117	München, Stslg. 1906/580 u. 641	25	GBK		215	Griffzungendolch		0		0		0.17		0.09		0.05		0.1		0.6		0.01	2	0		0		0	1	0		*  68
+211	00149	66	D	München, 'Wolfratshauser Str.'	Wolfratshauser Str., Grab	3505	11.567	48.117	München, Stslg. 1906/641	25	GBK		215	Griffzungendolch		0	1	0		0.11	9	0.006		0.1		0.13		0.3		0.02		0		0		0		0.04		*  70
+212	00404	62	D	Nähermemmingen, Donau-Ries Kreis	Grab 4/6	3543	10.483	48.833	Nördlingen 3018	3			503	Blechröhrchen		0		1.8		0.08		0.49		1.5		1.6		0.81		0		0		0		0		0.04		
+213	00405	62	D	Nähermemmingen, Donau-Ries Kreis	Grab 5/2	3543	10.483	48.833	Nördlingen	3			417	Spiralröllchen		0	1	0		0.04		1.31		1.9		0.96		1.77		0.001		0		0	3	0		0.2		
+214	00431	62	D	Nähermemmingen, Donau-Ries Kreis	Grab 22	3543	10.483	48.833	Nördlingen 5039	3			403	Armspirale, aus Ösenring gebogen		0		0.7		0.6		1.1		2.3		0.41		2.8		0.01		0		0	1	0	6	0.001		*  72
+215	00432	62	D	Nähermemmingen, Donau-Ries Kreis	Grab 16/2	3543	10.483	48.833	Nördlingen 5028a	3			407	Armspirale, 2 Windungen, kl.		0		0.25		0.03		0.66		1.45		0.57		2		0.001		0		0		0		0.01		
+216	00407	62	D	Nähermemmingen, Donau-Ries Kreis	Grab 22	3543	10.483	48.833	Nördlingen 5038	3			212	Dolch, 3 Niete, verz.		0		0.53		0.2		1.3		3.8	9	1		1.07		0.05		0		0	1	0		0.03		*  74
+217	00267	62	D	Neukirchen	Depot	3596	13.017	48.383	München, Stslg.	3			702	Ösenringbarren		0		0		0	9	3.5	9	2		0.6	6	0.01	9	0.1	0	0		0		0	1	0		
+218	00268	62	D	Neukirchen	Depot	3596	13.017	48.383	München, Stslg.	3			702	Ösenringbarren		0		0	1	0		2.5	9	2		0.55	6	0.01	7	0.1	0	0		0		0		0.01		
+219	00269	62	D	Neukirchen	Depot	3596	13.017	48.383	München, Stslg.	3			702	Ösenringbarren		0		0		0		3.5	9	2		0.7	6	0.01	7	0.1	0	0		0		0	1	0		
+220	00270	62	D	Neukirchen	Depot	3596	13.017	48.383	München, Stslg.	3			702	Ösenringbarren		0		0		0.2		2.5	9	2		0.55	6	0.01	7	0.1	0	0		0		0	1	0		
+221	00326	66	D	Niedernfels, Gem. Grassau, Kr. Traunstein	Depot	3632	12.467	47.750	München, Stslg. 1926.161	4			705	Zungenbarren		0	1	0	6	0.05		0.8		0.06	6	0.01		1.3		0.01	0	0		0		0		0.2		
+222	00327	66	D	Niedernfels, Gem. Grassau, Kr. Traunstein	Depot	3632	12.467	47.750	München, Stslg. 1926.161	4			705	Zungenbarren		0		0.01		0		0.57		0.15		0.01		1.08	6	0.001		0		0		0	6	0.01		
+223	00328	66	D	Niedernfels, Gem. Grassau, Kr. Traunstein	Depot	3632	12.467	47.750	München, Stslg. 1926.161	4			705	Zungenbarren		0		0		0		0.27		0.07		0.01		0.75		0		0		0		0	6	0.01		
+224	00329	66	D	Niedernfels, Gem. Grassau, Kr. Traunstein	Depot	3632	12.467	47.750	München, Stslg. 1926.161	4			705	Zungenbarren		0		0		0		1.5		0.19		0.01		0.2		0		0		0		0		0.01		
+225	00482	62	D	Nieder-Ramstadt, Kr.Darmstadt	Einzf., Siedlung?	3621	8.700	49.817	Niederramstadt, Slg.Politsch	25			104	Flachbeil, dicknackig, Form Nieder-Ramstadt (F7a)		0		0.01		0		0		0.1		0.2		0.001	9	0.1		0		0		0	1	0		
+226	00301	66	D	Niederscheyern, Kr.Pfaffenhofen	Depot	3636	11.500	48.500	München, Stslg. H.V. 50-69	4			704	Spangenbarren		0	1	0		0.05		1.2		0.1		0.02	9	3		0.01	0	0		0		0		0.2		
+227	00302	66	D	Niederscheyern, Kr.Pfaffenhofen	Depot	3636	11.500	48.500	München, Stslg. H.V. 50-69	4			704	Spangenbarren		0		0.01		0.12		1.3		1.05		0.8		0.15	7	0.1	2	0		0		0		0.4		*  76
+228	00303	66	D	Niederscheyern, Kr.Pfaffenhofen	Depot	3636	11.500	48.500	München, Stslg. H.V. 50-69	4			704	Spangenbarren		0		0.2	6	0.05		1.45		1.65		0.8		0.66	7	0.1	0	0		0		0		0.08		
+229	00304	66	D	Niederscheyern, Kr.Pfaffenhofen	Depot	3636	11.500	48.500	München, Stslg. H.V. 50-69	4			704	Spangenbarren		0		0.2	1	0		0.82		0.27		0.1		1.3	9	0.01	0	0		0		0		0.2		*  78
+230	00305	66	D	Niederscheyern, Kr.Pfaffenhofen	Depot	3636	11.500	48.500	München, Stslg. H.V. 50-69	4			704	Spangenbarren		0		0	1	0		1.1		0.22	6	0.01		0.16	1	0	2	0		0	2	0		0.06		*  80
+231	00415	62	D	Nürtingen-Hardt, Kr. Esslingen	Ulrichshöhle, Einzf.	3703	9.333	48.617	Stuttgart, WLM	4			110	Randleistenbeil, Typ Langquaid II, Var. M		0		6.9		0.08		0.51		0.25		0.06		0.48		0.001		0		0		0	1	0		#  83
+232	00416	62	D	Nürtingen-Hardt, Kr. Esslingen	Ulrichshöhle, Einzf.	3703	9.333	48.617	Stuttgart, WLM	4			110	Randleistenbeil, Typ Langquaid II, Var. M		0		6.5		0.05		0.4		0.12		0.05		0.41		0.001		0		0		0		0		#  83
+233	00417	62	D	Nürtingen-Hardt, Kr. Esslingen	Ulrichshöhle, Einzf.	3703	9.333	48.617	Stuttgart, WLM	4			110	Randleistenbeil, Typ Langquaid II, Var. M		0		6.3		0.05		0.4		0.14		0.05		0.51		0.001		0		0		0		0		#  83
+234	00368	66	D	Nussdorf, Kr.Rosenheim	?	3704	12.100	47.733	München, Stslg. 97/295	4			212	Dolch mit 4 Nieten		0		11		0.09		1.12		0.31		0.31		0.46		0.005	2	0		0	2	0		0.4		
+235	00007	62	D	Oberwilflingen, Ostalbkreis	Depot	7140	10.422	48.943	Stuttgart, WLM 50/5g	5			710	Gußbrocken		0		0	1	0	9	0.3		0.02		0.3		0.17		0.01	0	0		0.5		0.1		0.2		
+236	00001	62	D	Oberwilflingen, Ostalbkreis	Depot	7140	10.422	48.943	Stuttgart, WLM 50/5a	5			114	Absatzbeil		0	9	5		0		0.07	1	0		0		0.07	6	0.001	0	0	1	0		0		0.02		
+237	00002	62	D	Oberwilflingen, Ostalbkreis	Depot	7140	10.422	48.943	Stuttgart, WLM 50/5b	5			114	Absatzbeil		0	7	5		0.4	9	0.6		0.1		0.08		0.32	1	0	0	0		0		0.01		0.07		
+238	00003	62	D	Oberwilflingen, Ostalbkreis	Depot	7140	10.422	48.943	Stuttgart, WLM 50/5c	5			114	Absatzbeil		0	7	5		0.07		0.18		0.03		0.02		0.16	9	0.002	0	0		0.25		0.01		0.02		
+239	00004	62	D	Oberwilflingen, Ostalbkreis	Depot	7140	10.422	48.943	Stuttgart, WLM 50/5d	5			710	Gußbrocken		0		0		0		0.02	1	0		0		0.05	6	0.001	0	0		0		0.01		0.02		
+240	00005	62	D	Oberwilflingen, Ostalbkreis	Depot	7140	10.422	48.943	Stuttgart, WLM 50/5e	5			710	Gußbrocken		0		0	1	0		0.1		0		0		0.07	6	0.001	0	0		0	2	0	1	0		
+241	00006	62	D	Oberwilflingen, Ostalbkreis	Depot	7140	10.422	48.943	Stuttgart, WLM 50/5f	5			710	Gußbrocken		0		0	1	0		0.03	1	0		0.02		0.07	6	0.001	0	0		0		0		0.01		
+242	00095	94	D	Oldesloe, Kr.Stormarn	Einzf. bei Poggensee	3778	10.367	53.817	Privbes.	5			125	Knaufhammeraxt		0	7	15		0.02		0.21		0.13		0.01		0.5		0.001		0		0	3	0		0.14		
+243	00333	62	D	Ostrach, Kr. Sigmaringen	Angebl. aus Grabhügel	3859	9.400	47.950	Sigmaringen 1227	3			603	Rollennadel m. ellipt. Kopfplatte		0		2.35		0		0.28		0.65		0.32		0.51		0		0		0		0		0		
+244	00115	66	D	Wallersdorf, Gem. Otzing, Kr. Deggendorf	Grab oder aus Gräbern	3869	12.817	48.767	München, Stslg. 1905, 247	4			613	Ringkopfnadel		0		8.6	6	0.01	6	0.1		0.6		0.05		0.17		0.03		0		0		0		0.1		
+245	00138	66	D	Wallersdorf, Gem. Otzing, Kr. Deggendorf	Grab, Fdst. 1	3869	12.817	48.767	München, Stslg. 1905, 240	3			212	Dolch, 4 Niete, Seitenrillen		0		4.4		0	6	0.1		0.08		0.7		0.25		0.003		0		0		0	1	0		
+246	00205	66	D	Wallersdorf, Gem. Otzing, Kr. Deggendorf	Grab, Fdst. 1	3869	12.817	48.767	München, Stslg. 1905, 241	3			403	Ösenhalsring		0		0	1	0		1.6		1.75		0.42		0.001	9	0.1		0		0		0	6	0.01		
+247	00277	66	D	Pleitmannswang, Kr.Fürst.F.Br.	Depot	4029	11.100	48.100	München, Stslg. 1935 a+b;1936;1937	3			702	Ösenringbarren, groß		0	1	0	6	0.1		0.13		0.03		0.1	6	0.01		0.01	0	0		0		0		0.09		*  85
+248	00278	66	D	Pleitmannswang, Kr.Fürst.F.Br.	Depot	4029	11.100	48.100	München, Stslg. 1935 a+b;1936;1937	3			702	Ösenringbarren, groß		0		0	6	0.1		0.07		0.03		0.04		0.01	9	0.001	0	0		0	0	0		0.05		
+249	00279	66	D	Pleitmannswang, Kr.Fürst.F.Br.	Depot	4029	11.100	48.100	München, Stslg. 1935 a+b;1936;1937	3			702	Ösenringbarren, groß		0	1	0	6	0.1		0.32		0.03	6	0.04	6	0.01	9	0.01	0	0		0		0		0.06		
+250	00280	66	D	Pleitmannswang, Kr.Fürst.F.Br.	Depot	4029	11.100	48.100	München, Stslg. 1935 a+b;1936;1937	3			702	Ösenringbarren, groß		0	1	0	6	0.1		0.1		0.05	6	0.04	6	0.01	9	0.001	0	0		0		0		0.07		
+251	00018	62	D	Ravensburg	Depot	4265	9.617	47.783	Stuttgart, WLM 7274b	3			409	Spirale		0		0		0		0.7		0.46		0.43		0.001		0		0		0		0		0		
+252	00425	62	D	Ravensburg	Depot	4265	9.617	47.783	Stuttgart, WLM 7274b	3			110	Randleistenbeil, Typ Salez (3 An.)		0	1	0		0.52		1.66		2		0.28		3		0.001	2	0		0	3	0	6	0.01		#  88
+253	00426	62	D	Ravensburg	Depot	4265	9.617	47.783	Stuttgart, WLM 7274b	3			110	Randleistenbeil, Typ Salez (3 An.)		0	1	0		0.53		1.55		2.1		0.23		3.2		0.001	2	0		0	3	0	6	0.01		#  88
+254	00427	62	D	Ravensburg	Depot	4265	9.617	47.783	Stuttgart, WLM 7274b	3			110	Randleistenbeil, Typ Salez (3 An.)		0	1	0		0.62		1.6		2.3		0.21		3.6		0.001	2	0		0	3	0		0.01		#  88
+255	00231	62	D	Reusten, Kr.Tübingen	Siedl.	4308	8.900	48.533	Slg. Tübingen	5			806	Pfriem		0		8.8		0		0.9		0.11		0.04		0.75	6	0.001		0		0		0	1	0		
+256	00271	66	D	Reut, Kr.Laufen	Depot	4309	12.933	47.933	München, Stslg. H.V.43	3			702	Ösenringbarren		0		0.05	1	0		0.03		0.09	6	0.04		0.2	9	0.001	0	0		0	0	0		0.03		
+257	00272	66	D	Reut, Kr.Laufen	Depot	4309	12.933	47.933	München, Stslg. H.V.38	3			702	Ösenringbarren		0	1	0		0	1	0	1	0	6	0.04		0.1	9	0.001	0	0		0		0	1	0		
+258	00273	66	D	Reut, Kr.Laufen	Depot	4309	12.933	47.933	München, Stslg. H.V.44	3			702	Ösenringbarren		0	1	0	6	0.1		0.03		0.05		0.04	9	0.05		0.001	0	0		0		0		0.12		
+259	00274	66	D	Reut, Kr.Laufen	Depot	4309	12.933	47.933	München, Stslg. H.V.37	3			702	Ösenringbarren		0	1	0	6	0.1		0.04		0.07	6	0.04		0.05	9	0.001	2	0		0	2	0		0.25		
+260	00275	66	D	Reut, Kr.Laufen	Depot	4309	12.933	47.933	München, Stslg. H.V.42	3			702	Ösenringbarren		0	1	0	6	0.1	1	0	1	0	6	0.04	9	0.01	1	0	0	0		0		0		0.15		
+261	00378	62	CH	Rheinfelden-Nollingen, Kt. Aargau	Einzf. im Altrheinbett	4316	7.800	47.567	Karlsruhe C7498	6			111	Randleistenbeil, Typ Herbrechtingen, Var. B		0		7.8	1	0		0.3		0.61		0.02		0.54	1	0	2	0		0	1	0		0.5		
+262	00103	65	D	Ronsolden	Wohl aus Grabhügel	4382	11.717	49.200	Regensburg	3			607	Schleifennadel, cyprisch		0		6.2		2.1	6	0.1		0.25		0.02		0.65		0.001		0		0	2	0	9	0.01		
+263	00239	66	D	Roth, Kr.Laufen	Depot	4402	12.950	47.933	München, Stslg. 1904, 191	3			702	Ösenringbarren		0		0		0		0.6		1.1		0.8		0.001	1	0		0		0		0	6	0.01		
+264	00240	66	D	Roth, Kr.Laufen	Depot	4402	12.950	47.933	München, Stslg. 1904, 191	3			702	Ösenringbarren		0		0		0		1		1.8		1.2		0.001		0.03	0	0		0		0		0		
+265	00241	66	D	Roth, Kr.Laufen	Depot	4402	12.950	47.933	München, Stslg. 1904, 191	3			702	Ösenringbarren		0		0		0		1.15		1.9		1.2		0.001		0.03		0		0		0	6	0.01		
+266	00242	66	D	Roth, Kr.Laufen	Depot	4402	12.950	47.933	München, Stslg. 1904, 191	3			702	Ösenringbarren		0		0		0		0.6		1.5		0.8		0.001	9	0.001		0		0		0		0		
+267	00243	66	D	Roth, Kr.Laufen	Depot	4402	12.950	47.933	München, Stslg. 1904, 191	3			702	Ösenringbarren		0		0		0		0.95		1.3		0.9		0.001		0.001	0	0		0		0		0		
+268	00066	62	D	Rottenburg, Kr. Tübingen	Depot?	4404	8.917	48.467	Slg. Rottenburg	4			110	Randleistenbeil, fragm., Einzelform		0		5.9		0		0.55		0.81		0.02		0.001		0.012		0		0		0		0.03		
+269	00091	62	D	Rottenburg, Kr. Tübingen	Depot?	4404	8.917	48.467	Slg. Rottenburg	4			212	Dolchklinge, 6 Niete, Mittelrippe		0		6.2		0.06		0.03		0.3		0.02		0.05		0.002		0		0		0	1	0		+4404
+270	00092	62	D	Rottenburg, Kr. Tübingen	Depot?	4404	8.917	48.467	Slg. Rottenburg	4			213	Niet von Dolch 269		0		6.2		0.06		0.02		0.2		0.01		0.03		0.001		0		0		0	0	0		+4404
+271	00093	62	D	Rottenburg, Kr. Tübingen	Depot?	4404	8.917	48.467	Slg. Rottenburg	4			403	Ösenhalsring		0		0.28		0.01		1.6		1.5		0.6		0.45		0.06		0	2	0	4	0		0.02		
+272	00094	62	D	Rottenburg, Kr. Tübingen	Depot?	4404	8.917	48.467	Slg. Rottenburg	4			403	Ösenhalsring		0	1	0		0.01		0.92		1.3		0.58	1	0.001		0.08		0		0	2	0	1	0		
+273	00418	62	D	Rottweil	Einzf.	4406	8.633	48.167	Stuttgart, WLM A 33/88	3			110	Randleistenbeil, Typ Salez (3 An.)		0	1	0		0.04		0.76		0.7		0.35		0.23		0.001		0		0		0		0		#  91
+274	00419	62	D	Rottweil	Einzf.	4406	8.633	48.167	Stuttgart, WLM A 33/88	3			110	Randleistenbeil, Typ Salez (3 An.)		0	1	0		0.07		1.1		0.88		0.42		0.29		0.01		0		0	1	0		0		#  91
+275	00420	62	D	Rottweil	Einzf.	4406	8.633	48.167	Stuttgart, WLM A 33/88	3			110	Randleistenbeil, Typ Salez (3 An.)		0	1	0		0.05		1.18		0.87		0.4		0.55		0.01		0		0		0		0		#  91
+276	00141	66	D	Safferstetten, Kr. Grießbach	Grab 1	4482	13.333	48.367	München, Stslg. 1913/366	3	GBK		212	Dolch, 5 Niete, Glockenbecher?		0		0.02		0.18		0.14		0.06		0.2		0.2		0.03		0		0	1	0		0		*  93
+277	00316	66	D	Schabenberg, Gem. Sulzbach	Depot	4566	11.467	48.517	München, Stslg. 1938/5	4			704	Spangenbarren		0		0	1	0		2.5		3.1		0.6		0.03	7	0.1	0	0		0		0		0.4		
+278	00317	66	D	Schabenberg, Gem. Sulzbach	Depot	4566	11.467	48.517	München, Stslg. 1938/5	4			704	Spangenbarren		0		0		0		2.2		2.2		0.8		0.03	7	0.1		0		0		0		0.08		
+279	00318	66	D	Schabenberg, Gem. Sulzbach	Depot	4566	11.467	48.517	München, Stslg. 1938/5	4			704	Spangenbarren		0		1.2	1	0		0.66		0.2	6	0.01		0.9	1	0		0		0		0		0.24		
+280	00319	66	D	Schabenberg, Gem. Sulzbach	Depot	4566	11.467	48.517	München, Stslg. 1938/5	4			704	Spangenbarren		0	1	0		0		0.65		0.28	6	0.01		1.55		0		0		0	0	0	1	0		
+281	00320	66	D	Schabenberg, Gem. Sulzbach	Depot	4566	11.467	48.517	München, Stslg. 1938/5	4			704	Spangenbarren		0		0		0		0.54		0.08	6	0.01		0.41		0		0		0		0	1	0		
+282	00059	62	D	Scharnhausen, Kr. Esslingen	Einzf.	4571	9.267	48.700	Stuttgart, WLM A 251	4			118	Randleistenbeil, löffelförmig, Typ Lausanne I,B		0		8		0.04		0.32		0.26		0.1		0.2		0.02		0		0		0		0.45		
+283	00457	94	D	Schleswig-Holstein	?	4590	9.667	54.333	Kiel, Univ.Slg.	6			224	Schwertblatt		0	9	15		0.08		0.47		0.88		0.05		1.3	6	0.01		0		0	2	0		0.5		
+284	00012	62	D	Bad Schussenried, Kr. Biberach	Dep. Lissen II, Moorfund, urspr. 3 Ö`Ringe	331	9.667	48.000	Stuttgart, WLM A 3121	3			702	Ösenringbarren		0	1	0		0		2.2		1.3	7	0.4		0.04	7	0.1	0	0		0		0	1	0		*  95
+285	00072	62	D	Bad Schussenried, Kr. Biberach	Dep. Lissen I, Moorfund	331	9.667	48.000	Stuttgart, WLM A 3120	4			702	Ösenringbarren, Ring v. Halsringkragen		0		14		0	9	0.008	1	0	1	0		0.07	6	0.001		0		0		0	6	0.01		*! 99
+286	00073	62	D	Bad Schussenried, Kr. Biberach	Dep., Lissen I, Moorfund	331	9.667	48.000	Stuttgart, WLM A 3120	4			702	Ösenringbarren, Ring v. Halsringkragen		0		14	1	0		0.01	1	0	1	0		0.09	6	0.001		0		0		0	6	0.01		!  99
+287	00074	62	D	Bad Schussenried, Kr. Biberach	Dep. Lissen I, Moorfund	331	9.667	48.000	Stuttgart, WLM A 3120	4			702	Ösenringbarren, Ring v. Halsringkragen		0		9		0		0.01	1	0	1	0		0.05	1	0		0		0		0	1	0		!  99
+288	00454	94	D	Schwabstedt	Grab	4614	9.200	54.383	Privbes.	25			104	Flachbeil		0		0		0		0		0.03		0.16		0.001	9	0.003		0		0		0		0		
+289	00015	62	D	Schwörzkirch, Gem. Allmendingen, Alb-Donau-Kreis	aus Gräbern	4629	9.767	48.317	Stuttgart, WLM 10329	3			403	Ösenhalsring		0		0.07		0.05		0.58		0.82		0.38		1.35		0		0		0		0		0		
+290	00225	62	D	Schwörzkirch, Gem. Allmendingen, Alb-Donau-Kreis	Grab	4629	9.767	48.317	Tübingen	3			518	Blechtutulus		0		0.3		0		0.7		1.4		0.6	7	2		0		0		0		0		0		
+291	00226	62	D	Schwörzkirch, Gem. Allmendingen, Alb-Donau-Kreis	Grab	4629	9.767	48.317	Tübingen	3			518	Blechtutulus		0	1	0		0		0.71		1.8		1	7	2		0		0		0	2	0	6	0.01		
+292	00227	62	D	Schwörzkirch, Gem. Allmendingen, Alb-Donau-Kreis	Grab	4629	9.767	48.317	Tübingen	3			503	Röhrchen, verziert		0	1	0		0		0.3		0.75		1.1	7	2		0		0		0	2	0		0.01		* 101
+293	00228	62	D	Schwörzkirch, Gem. Allmendingen, Alb-Donau-Kreis	Grab	4629	9.767	48.317	Tübingen	3			603	Nadel m. ellipt. Kopfplatte u. ger. Schaft		0		0		0	6	0.1		1		0.9		0.001	1	0		0		0		0		0		* 103
+294	00235	62	D	Schwörzkirch, Gem. Allmendingen, Alb-Donau-Kreis	Grab	4629	9.767	48.317	Tübingen	3			403	Ösenhalsring		0	1	0	1	0		1.05		2		0.85	7	2		0		0		0	2	0		0		
+295	00021	62	D	Schwörzkirch, Gem. Allmendingen, Alb-Donau-Kreis	Grab	4629	9.767	48.317	Stuttgart, WLM A 33/162a	3			409	Spirale		0	1	0		0		0.25		0.78		0.42		1.35		0		0		0	2	0		0.07		
+296	00022	62	D	Schwörzkirch, Gem. Allmendingen, Alb-Donau-Kreis	Grab	4629	9.767	48.317	Stuttgart, WLM A 33/162b	3			409	Spirale		0		0		0.07		1.06		0.78		0.33		1.4		0		0		0	2	0		0		
+297	00086	62	D	Seefelden	Depot	4636	7.650	47.867	Freiburg i.Br. 211	3			409	Spirale		0		0	6	0.01		1.1		1.1		0.46		0.01		0.06		0		0		0		0.03		
+298	00087	62	D	Seefelden	Depot	4636	7.650	47.867	Freiburg i.Br. 209	3			409	Spirale		0		2.9		0.09		0.05		0.7		0.13		0.32		0.005		0		0		0		0.16		
+299	00088	62	D	Seefelden	Depot	4636	7.650	47.867	Freiburg i.Br. 210	3			409	Spirale		0		0	6	0.01		0.73		1.4		0.7	1	0.001		0.1		0		0		0		0.03		
+300	00089	62	D	Seefelden	Depot	4636	7.650	47.867	Freiburg i.Br. 212	3			409	Spirale		0	1	0	6	0.01		0.34		0.7		0.35		0.5		0.06		0		0	2	0		0.02		
+301	00090	62	D	Seefelden	Depot	4636	7.650	47.867	Freiburg i.Br. 208	3			702	Ösenringbarren		0		0	6	0.01		0.95		0.78		0.59		0.01		0		0		0		0		0.04		
+302	00196	66	D	Sengkofen, Kr. Regensburg	aus Gräbern	4656	12.300	48.917	Regensburg A 824	4			110	Randleistenbeil, löffelförmig, vgl. Typ Lausanne		0		8.1		0		0.27		0.48		0.37		0.09	1	0		0		0		0		0		
+303	00197	66	D	Sengkofen, Kr. Regensburg	aus Gräbern	4656	12.300	48.917	Regensburg A 827	4			407	Armring mit Spitzenden		0		3	1	0		1.3		0.33		0.18		1.6		0.001	0	0		0		0		0		
+304	00098	66	D	Sengkofen, Kr. Regensburg	aus Gräbern	4656	12.300	48.917	Regensburg A 829	4			616	Kugelkopfnadel m. verz. Kopf u. Hals		0		5.9	6	0.01		0.41		0.25		0.21		0.8		0.009		0		0	2	0		0.01		
+305	00195	66	D	Sengkofen, Kr. Regensburg	aus Gräbern	4656	12.300	48.917	Regensburg A 823	4			111	Randleistenbeil, löffelförmig, vgl. Typ Lausanne		0		11		0		0.09		0.06		0.08		0.08	9	0.003		0		0		0		0		
+306	00449	66	D	Sengkofen, Kr. Regensburg	aus Gräbern	4656	12.300	48.917	Regensburg	4			519	Spiraltutulus		0	9	12	1	0		0.4		0.5		0.09		0.3	9	0.01		0		0		0	1	0		
+307	00450	66	D	Sengkofen, Kr. Regensburg	aus Gräbern	4656	12.300	48.917	Regensburg	4			403	Ringhalskragen (3 Analysen versch. Ringe)		0	9	4		0.07		0.06		0.1		0.03		0.15	9	0.01		0		0	2	0		0.5		
+308	00451	66	D	Sengkofen, Kr. Regensburg	aus Gräbern	4656	12.300	48.917	Regensburg	4			403	Ringhalskragen (3 Analysen versch. Ringe)		0	9	9		0		0.19		0.1		0.04		0.2	9	0.001		0		0		0		0		
+309	00452	66	D	Sengkofen, Kr. Regensburg	aus Gräbern	4656	12.300	48.917	Regensburg	4			403	Ringhalskragen (3 Analysen versch. Ringe)		0	9	5		0		0.14		0.1		0.04		0.25	9	0.001		0		0	2	0		0.06		
+310	00453	66	D	Sengkofen, Kr. Regensburg	aus Gräbern	4656	12.300	48.917	Regensburg	4			519	Spiraltutulus mit abgebrochener Spitze		0	9	10		0		0.15		0.2		0.03		0.15		0		0		0		0		0.05		
+311	00030	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 95	4717	8.833	47.750	Singen	3			212	Dolch, 3 Niete		0		0.12		0.01		0.105		0.92		0.01		0.07	6	0.001		0		0		0		0.01		
+312	00031	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 98	4717	8.833	47.750	Singen	3			603	Scheibennadel m. ellipt. Kopfplatte		0	9	0.01		0.05		2.4		1.82		0.55		0.82	6	0.001		0		0	2	0	9	0.1		
+313	00032	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 92	4717	8.833	47.750	Singen	3			605	Schleifennadel, Horkheimer Nadel		0		0		0.01		0.88		2.15		0.72		1.3	6	0.001	0	0		0	4	0		0.02		
+314	00033	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 92	4717	8.833	47.750	Singen	3			409	Armspirale mit eingerollten Enden		0	9	0.01		0.02		0.55		2.4		0.55		0.68		0.002	1	0	1	0	2	0	9	0.5		
+315	00034	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 96	4717	8.833	47.750	Singen	3			403	Ösenhalsring		0		0.34		0.03		0.94		2.8		0.6		0.94	6	0.001	1	0		0	4	0		0.06		
+316	00035	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 96	4717	8.833	47.750	Singen	3			605	Schleifennadel, Horkheimer Nadel		0		0.04		0.13		0.72		1.55		0.58		1.35	6	0.001	1	0		0	4	0		0.03		
+317	00036	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 96	4717	8.833	47.750	Singen	3			512	Halbmondförmige Zierscheibe		0	1	0		0.04		1.9		5.6		0.6		2.5		0.1	2	0	1	0	4	0		0.25		
+318	00037	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 96	4717	8.833	47.750	Singen	3			409	Armspirale		0	1	0		0.02		0.4		2.05		0.58		0.97	6	0.001	1	0	1	0	4	0		0.08		
+319	00038	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 84	4717	8.833	47.750	Singen	3			212	Dolch, 4 Niete, atlant. Dolch		0		4.1		0.04		0.45		2.5	0	0		0.79	6	0.001	1	0	1	0	2	0		0.02		+Si84
+320	00039	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 84	4717	8.833	47.750	Singen	3			213	Niet der verz. Dolchklinge (SAMNR 319)		0		0.65		0.02		0.81		1.5		0.65		1.7	6	0.001	1	0		0	3	0		0.02		+Si84
+321	00041	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 79	4717	8.833	47.750	Singen	3			605	Schleifennadel, Horkheimer Nadel		0	6	0.01		0.02		1.2		1.64		0.67		1.7	6	0.001	1	0	1	0	3	0		0.02		
+322	00042	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 80	4717	8.833	47.750	Singen	3			403	Ösenhalsring		0		0		0.02		0.46		1.86		0.6		1.1	6	0.001		0		0	2	0		0.06		
+323	00043	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 80	4717	8.833	47.750	Singen	3			409	Fußspirale		0		0.22		0.007		0.3		1.2		0.45		0.87	6	0.001	0	0	0	0	2	0		0.02		
+324	00044	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 80	4717	8.833	47.750	Singen	3			409	Fußspirale		0		0.56		0.01		0.55		2.45		0.65		0.78		0.007	1	0	0	0	2	0		0.02		
+325	00045	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 80	4717	8.833	47.750	Singen	3			604	Rudernadel, verziert		0		0.3		0.01		0.68		1.05		0.58		1.42	6	0.001	1	0	0	0	4	0		0.02		
+326	00046	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 83	4717	8.833	47.750	Singen	3			403	Ösenhalsring		0		0.25	9	0.01		1.02		1.7		0.68		1.5	6	0.001	1	0	0	0	3	0		0.13		
+327	00047	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 83	4717	8.833	47.750	Singen	3			806	Pfriem mit Mittelschwellung		0		0		0.13		1.38		1.18		0.5		1.5	6	0.001	1	0	0	0	2	0		0.05		
+328	00048	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 83	4717	8.833	47.750	Singen	3			605	Schleifennadel, Horkheimer Nadel		0		0		0.03		0.32		2.1		0.55		0.81		0.009		0	0	0	2	0		0.04		
+329	00049	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 83	4717	8.833	47.750	Singen	3			409	Armspirale		0	1	0		0.02		0.92		0.81		0.48		1.45	9	0.002	0	0	1	0	3	0		0.07		
+330	00050	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 87	4717	8.833	47.750	Singen	3			409	Armspirale		0		0		0.05		0.7		1.3		0.35		1.6		0.025	2	0		0	4	0	0	0		
+331	00051	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 87	4717	8.833	47.750	Singen	3			603	Scheibennadel, kl., eingerollte, ruderf. Kopfplatt		0		0.02		0.02		0.73		1.7		0.65		1.85		0.003	2	0	1	0	4	0		0.09		
+332	00055	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 77	4717	8.833	47.750	Singen	3			212	Dolch, 3 Niete, eingez. Griffpl.		0		0.03		0.06		1.3		3.2		0.55		1.9		0.008		0		0	3	0		0.06		
+333	00056	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 77	4717	8.833	47.750	Singen	3			409	Armspirale		0		0.02		0.06		1		1.3		0.45		1.65		0		0		0	2	0		0.02		
+334	00053	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 82	4717	8.833	47.750	Singen	3			409	Spiralring mit eingerollten Enden		0		2		0.01		0.65		1.95		0.45		1.15	9	0.002		0	1	0	2	0		0.13		
+335	00054	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 82	4717	8.833	47.750	Singen	3			806	Pfriem mit Mittelschwellung		0		2.7		0.05		1.8		3.4		0.6		2.3		0.003		0		0	3	0		0.05		
+336	00057	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 85	4717	8.833	47.750	Singen	3			409	Spirale		0		0		0.13		0.86		1		0.29		0.9		0.002	2	0	1	0	2	0		0.12		
+337	00058	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 78	4717	8.833	47.750	Singen	3			403	Ösenhalsring		0	1	0		0		0.13		1.65		0.55		0.75		0		0		0		0		0.02		
+338	00236	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 51	4717	8.833	47.750	Singen	3			403	Ösenhalsring		0		0		0.25		1.15		2		0.4	7	2	1	0		0		0	2	0		0		
+339	00237	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 51	4717	8.833	47.750	Singen	3			605	Schleifennadel, Horkheimer Nadel		0		0.05	1	0		1.1		1.9		0.9	7	2		0		0		0	2	0		0		
+340	00238	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 51	4717	8.833	47.750	Singen	3			409	Spirale		0	1	0	1	0		2.2		2.4		0.9	7	2		0		0		0	2	0		0		
+341	00726	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 73	4717	8.833	47.750	Singen	3			215	Dolch, kl., 5 Niete		0		9.4		0.02		0.72		2.2		0.8		0.79		0.003		0		0		0.08		0.06		
+342	00727	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 73	4717	8.833	47.750	Singen	3			409	Armspirale		0		1.2		0		0.35		1.9		1.05		1.1	6	0.001		0		0		0.07		0.02		
+343	00732	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 63	4717	8.833	47.750	Singen	3			212	Dolch, 4 Niete, eingez., halbrunde Griffplatte		0		0.7		0.02		0.47		1.1		0.7		1		0.002		0		0		0.06		0.04		
+344	00733	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 63	4717	8.833	47.750	Singen	3			518	Blechtutulus		0		0.03		0.04		0.04		0.7		0.8		0.05		0		0		0	1	0		0.07		
+345	00734	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 74	4717	8.833	47.750	Singen	3			407	Ringbruchstück		0		0.02		0.01		1.15		2.3		0.76		2.3	1	0		0		0		0.25		0.03		
+346	00735	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 75	4717	8.833	47.750	Singen	3			212	Dolch, kl., 3 Niete		0		0.13		0		1.55		2.5		0.97	7	2.5	1	0		0		0		0.2		0.02		
+347	00736	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 69	4717	8.833	47.750	Singen	3			212	Dolch, groß, 5 Niete, verz.		0		2.6		0.05		1.25		3.1		0.92	9	2.5		0.003		0		0		0.1		0.06		
+348	00737	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 58	4717	8.833	47.750	Singen	3			603	Scheibennadel, kl., Platte korrodiert		0		0.01		0.04		0.15		0.8		0.96		0.06		0.002		0		0		0		0.01		
+349	00738	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 67	4717	8.833	47.750	Singen	3			212	Dolch mit Heftzunge, 6 Niete, atlant. Dolch		0		5.1		0		1.35		0.08		0.04		0.04	9	0.001		0		0		0		0.06		+Si67
+350	00739	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 67	4717	8.833	47.750	Singen	3			213	Niet von atlant. Dolch		0		0.05		0.02		0.7		1.7		0.75	9	2.5		0.007		0		0		0.13		0.04		+Si67
+351	00740	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 66	4717	8.833	47.750	Singen	3			603	Scheibennadel, kl., eingerollte Kopfplatte		0		0.01		0		0.85		1.9		1.1		0.32		0.001		0		0		0	1	0		
+352	00741	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 33	4717	8.833	47.750	Singen	3			212	Dolch, 5 Niete, verz.		0		0.3		0		0.3		3		0.84	9	2.5		0.006		0		0		0.2		0.02		
+353	00728	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 65	4717	8.833	47.750	Singen	3			806	Pfriem mit Mittelschwellung		0		1.4		0.12		1.4		2.7		1.05	9	3.5		0.003		0		0	9	0.5		0.04		
+354	00729	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 65	4717	8.833	47.750	Singen	3			212	Dolch, kl., 3 Niete		0		2.8		0.04		1.5		2.6		0.9		2.1		0.01		0		0		0.07		0.04		
+355	00730	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 65	4717	8.833	47.750	Singen	3			409	Spirale		0		0.16		0.02		1.05		2.5		0.95		2.1		0.002		0		0		0.17		0.03		
+356	00731	62	D	Singen a. Hohentwiel, Kr. Konstanz	Grab 65	4717	8.833	47.750	Singen	3			604	Rudernadel, groß, verziert		0		0.05		0.16		1.6		3.1		0.9		2		0.004		0		0		0.06		0.03		
+357	00321	66	D	Staudham	Depot	5004	12.167	48.050	München, Stslg. H.V.2230	4			705	Zungenbarren		0	1	0	1	0		2		0.1	6	0.01		1.1	1	0	0	0		0	2	0		0.2		
+358	00322	66	D	Staudham	Depot	5004	12.167	48.050	München, Stslg. H.V.2230	4			705	Zungenbarren		0		0		0.05		2		0.06	6	0.01		0.14	9	0.01	0	0		0	2	0		0.5		
+359	00323	66	D	Staudham	Depot	5004	12.167	48.050	München, Stslg. H.V.2230	4			705	Zungenbarren		0		0	1	0		1.9		0.09	6	0.01		0.5	1	0	0	0		0	0	0		0.1		
+360	00324	66	D	Staudham	Depot	5004	12.167	48.050	München, Stslg. H.V.2230	4			705	Zungenbarren		0		0	6	0.05		1.85		0.05	6	0.01		0.23	1	0	0	0		0	0	0		0.1		
+361	00325	66	D	Staudham	Depot	5004	12.167	48.050	München, Stslg. H.V.2230	4			705	Zungenbarren		0	1	0	6	0.05		1.3		0.5	6	0.01		0.24	9	0.01	0	0		0		0		0.3		
+362	00479	62	D	Steinfurth, Stadt Bad Nauheim, Wetteraukreis	Einzf.	5024	9.583	49.700	Darmstadt 1950:115	25			104	Flachbeil, dünnackig, trapezf., Form Erpolzheim		0		0		0.07	9	0.005		0.05		0.09		0.04	6	0.01		0		0		0		0		* 105
+363	00127	66	D	Straubing, 'Alburger Hochweg'	Depot	5075	12.567	48.867	Straubing 1229-1246	3			403	Ösenhalsring		0	1	0		0.01		1.05		0.83		0.45	1	0.001	7	0.1	0	0		0		0	6	0.01		
+364	00128	66	D	Straubing, 'Alburger Hochweg'	Depot	5075	12.567	48.867	Straubing 1229-1246	3			403	Ösenhalsring		0		0		0		1		1.2		0.4	1	0.001	7	0.1	0	0		0		0		0		
+365	00129	66	D	Straubing, 'Alburger Hochweg'	Depot	5075	12.567	48.867	Straubing 1229-1246	3			403	Ösenhalsring		0		0		0		0.94		1.3		0.5	1	0.001	7	0.1	0	0		0		0		0		
+366	00151	66	D	Straubing, 'Alburger Hochweg'	Depot	5075	12.567	48.867	Straubing 1229-1246	3			603	Rollennadel m. ellipt. Kopfplatte		0		0		0.35		0.63		0.4		0.5		0.3		0.02		0		0		0		0		
+367	00152	66	D	Straubing, 'Alburger Hochweg'	Depot	5075	12.567	48.867	Straubing 1229-1246	3			603	Rollennadel m. ellipt. Kopfplatte		0		0.06		0.31		0.95		0.64		0.4	1	0.001		0.01		0		0		0	6	0.01		
+368	00153	66	D	Straubing, 'Alburger Hochweg'	Depot	5075	12.567	48.867	Straubing 1229-1246	3			603	Rollennadel m. ellipt. Kopfplatte		0		0	6	0.01		0.5		0.84		0.4	1	0.001	9	0.1		0		0		0		0.01		
+369	00154	66	D	Straubing, 'Alburger Hochweg'	Depot	5075	12.567	48.867	Straubing 1229-1246	3			604	Rollennadel m. ellipt. Kopfplatte		0	1	0		0.01		0.25		0.4		0.38		0.5		0.03		0		0		0		0.03		
+370	00155	66	D	Straubing, 'Alburger Hochweg'	Depot	5075	12.567	48.867	Straubing 1229-1246	3			603	Rollennadel m. ellipt. Kopfplatte		0		0		0.04		0.23		0.45		0.2	6	0.1		0.001	0	0		0		0		0		
+371	00183	66	D	Straubing, 'Alburger Hochweg'	Depot	5075	12.567	48.867	Straubing 1229-1246	3			513	Schmuckscheibe		0	9	0.03	6	0.01		0.64		0.91		0.67		0.17		0.02		0		0		0		0.05		
+372	00184	66	D	Straubing, 'Alburger Hochweg'	Depot	5075	12.567	48.867	Straubing 1229-1246	3			416	Spiralring		0		0.03	1	0		0.88		0.9		0.7	9	0.01		0.01	0	0		0		0		0		
+373	00194	66	D	Straubing, 'Alburger Hochweg'	Depot	5075	12.567	48.867	Straubing 1229-1246	3			417	Spiralröhrchen		0		0		0.9		0.42		2		0.6		0.09	9	0.1		0		0		0		0		
+374	00117	66	D	Straubing, 'Jungmeier'	Depot	5077	12.583	48.850	Straubing 1799	3			702	Ösenringbarren		0		0	9	0.01		1.85		1.15		0.45	1	0.001	7	0.1	0	0		0		0	1	0		
+375	00119	66	D	Straubing, 'Jungmeier'	Depot	5077	12.583	48.850	Straubing 1799	3			702	Ösenringbarren		0		0		0		1.5		0.78		0.4	1	0.001	7	0.1	0	0		0		0		0.01		
+376	00124	66	D	Straubing, 'Jungmeier'	Depot	5077	12.583	48.850	Straubing 1799	3			702	Ösenringbarren		0		0.05	9	0.03		1.8		1.3		0.4	1	0.001	7	0.1	0	0		0		0		0		
+377	00126	66	D	Straubing, 'Jungmeier'	Depot	5077	12.583	48.850	Straubing 1799	3			702	Ösenringbarren		0	6	0.01		0		0.1		0		0.02		0.35		0.001		0		0		0		0.05		
+378	00125	66	D	Straubing, 'Jungmeier'	Depot	5077	12.583	48.850	Straubing 1799	3			702	Ösenringbarren		0	1	0	9	0.02		0.07		0.4		0.01		0.15	9	0.01	0	0		0		0		0.2		
+379	00123	66	D	Straubing, 'Jungmeier'	Depot	5077	12.583	48.850	Straubing 1799	3			702	Ösenringbarren		0	1	0		0		0.07		0		0.01		0.15		0	0	0		0		0	6	0.01		
+380	00122	66	D	Straubing, 'Jungmeier'	Depot	5077	12.583	48.850	Straubing 1799	3			702	Ösenringbarren		0		0		0		0.08		0.05	1	0		0.15		0		0		0		0		0.03		
+381	00121	66	D	Straubing, 'Jungmeier'	Depot	5077	12.583	48.850	Straubing 1799	3			702	Ösenringbarren		0	1	0	9	0.02		0.07		0.04		0.01		0.15		0.01	0	0		0		0		0.15		
+382	00120	66	D	Straubing, 'Jungmeier'	Depot	5077	12.583	48.850	Straubing 1799	3			702	Ösenringbarren		0	1	0	9	0.03	1	0		0.15		0.02		0.1	9	0.01	0	0		0		0		0.35		
+383	00118	66	D	Straubing, 'Jungmeier'	Depot	5077	12.583	48.850	Straubing 1799	3			702	Ösenringbarren		0	1	0	9	0.01		0.14		0.04		0.02		0.25	9	0.001	0	0		0	2	0		0.03		
+384	00181	66	D	Straubing, 'Jungmeier'	Grab 2	5077	12.583	48.850	Straubing 2101-2222	3			605	Schleifennadel mit ellipt. Kopfplatte		0	6	0.01		0		0.78		0.77		0.6		1.45		0.004	2	0		0	2	0		0.07		
+385	00175	66	D	Straubing, 'Jungmeier'	Grab 8	5077	12.583	48.850	Straubing 2101-2222	3			610	Rollennadel		0		0.25		0.09		0.83		1.2		0.45		2.5		0.002		0	1	0	2	0		0.08		
+386	00165	66	D	Straubing, 'Jungmeier'	Grab 8	5077	12.583	48.850	Straubing 2101-2222	3			212	Dolchklinge mit eingez. Griffplatte		0		0.23		0.03		0.4		0.4		0.5		1.7		0.002		0		0	2	0		0.07		
+387	00180	66	D	Straubing, 'Jungmeier'	Grab 10	5077	12.583	48.850	Straubing 2101-2222	3			605	Schleifennadel mit ellipt. Kopfplatte		0	1	0	1	0		1.2		1.1		0.66		0.05		0.09		0		0		0		0		
+388	00174	66	D	Straubing, 'Jungmeier'	Grab 17	5077	12.583	48.850	Straubing 2101-2222	3			607	Schleifennadel, cyprisch		0		0.1		0		0.4		0.62	7	1		0.08	7	0.1		0		0		0	9	0.01		
+389	00214	66	D	Straubing, 'Jungmeier'	Grab 17	5077	12.583	48.850	Straubing 2101-2222	3			410	Armstulpe		0		0.03		0		1.6		1.45	7	1	1	0.001	7	0.1		0		0		0	1	0		
+390	00178	66	D	Straubing, 'Jungmeier'	Grab 19	5077	12.583	48.850	Straubing 2101-2222	3			615	Ösenkopfnadel		0		8.6		0.72		0.3		0.88	9	1		0.1	7	0.1		0		0		0	1	0		
+391	00179	66	D	Straubing, 'Jungmeier'	Grab 20	5077	12.583	48.850	Straubing 2101-2222	3			605	Schleifennadel m. ellipt. Kopfplatte		0	6	0.01	1	0		0.87		0.35		0.4		0.03		0.002	0	0	9	0.1		0		0.11		
+392	00135	66	D	Straubing, 'Jungmeier'	Grab 20	5077	12.583	48.850	Straubing 2101-2222	3			403	Ösenhalsring		0		0.01	1	0		0.2		0.6	7	1		0.08	7	0.1		0		0		0	1	0		
+393	00192	66	D	Straubing, 'Jungmeier'	Grab 20	5077	12.583	48.850	Straubing 2101-2222	3			519	Spiraltutulus		0	1	0		0		0.2		0.65	7	1	1	0.001		0.009		0	1	0		0	1	0		
+394	00193	66	D	Straubing, 'Jungmeier'	Grab 22	5077	12.583	48.850	Straubing 2101-2222	3			413	Noppenring		0		0		0		0.35		1.3		0.5		0.001		0.001		0		0		0		0		
+395	00136	66	D	Straubing, 'Jungmeier'	Grab 23	5077	12.583	48.850	Straubing 2101-2222	3			403	Ösenhalsring		0		0.06		0		1.5		1.6		0.45	1	0.001	7	0.1	0	0		0		0	6	0.01		
+396	00156	66	D	Straubing, 'Jungmeier'	Grab 27	5077	12.583	48.850	Straubing 2101-2222	3			604	Scheibennadel, verz.		0		0	1	0		0.57		0.77		0.52		0.08		0.05		0		0		0		0		
+397	00167	66	D	Straubing, 'Jungmeier'	Grab 28	5077	12.583	48.850	Straubing 2101-2222	3			212	Dolch		0		3.8		0		0.25		0.54		0.42		0.08		0.05	0	0		0		0		0		
+398	00170	66	D	Straubing, 'Jungmeier'	Grab 29	5077	12.583	48.850	Straubing 2101-2222	3			212	Dolch		0		5		0.37		0.51		0.32		0.22		0.2		0.006		0		0		0		0.01		
+399	00176	66	D	Straubing, 'Heerstr.'	Grab oder Dep.	5076	12.617	48.883	Straubing	4			616	Kugelkopfnadel		0		3.3	6	0.01		0.07		0.07		0.01		0.6		0.003		0	1	0		0	9	0.5		
+400	00106	66	D	Mariaposching, Kr. Straubing-Bogen	Depot	5079	12.833	48.817	Straubing 1217	4			704	Spangenbarren		0		1.75	8	5		1.15	9	5	7	1		1.4		0.003		0		0		0	9	0.1		* 107
+401	00107	66	D	Mariaposching, Kr. Straubing-Bogen	Depot	5079	12.833	48.817	Straubing 1217	4			704	Spangenbarren		0		0	6	0.01		1.2		3.7	7	1		0.001	7	0.1		0		0		0	9	0.01		
+402	00108	66	D	Mariaposching, Kr. Straubing-Bogen	Depot	5079	12.833	48.817	Straubing 1217	4			704	Spangenbarren		0		0.15	8	5		1.1	7	6	7	1		0.15	7	0.1		0		0		0		0.01		* 109
+403	00160	66	D	Straubing, 'Ortler'	Grab 1	5078	12.600	48.867	Straubing 1181-1200	3			513	Zierscheibe		0	6	0.01		0.01		0.39		1.7		0.55		0.1		0.01	0	0		0		0	6	0.01		
+404	00161	66	D	Straubing, 'Ortler'	Grab 1	5078	12.600	48.867	Straubing 1181-1200	3			503	Blechröhrchen		0		0.3	1	0		0.25		0.724	9	1		0.001		0.003		0		0		0		0		
+405	00162	66	D	Straubing, 'Ortler'	Grab 1	5078	12.600	48.867	Straubing 1181-1200	3			519	Spiraltutulus		0		1.95		0.1		0.35		0.76		0.5		0.24	1	0		0		0		0		0		
+406	00163	66	D	Straubing, 'Ortler'	Grab 1	5078	12.600	48.867	Straubing 1181-1200	3			413	Noppenring		0		0		0		0.56		1.6		0.6		0.001	9	0.01		0		0		0		0		
+407	00164	66	D	Straubing, 'Ortler'	Grab 1	5078	12.600	48.867	Straubing 1181-1200	3			417	Spiralrolle		0		0		0		1.08		0.2		0.5		0.001		0	0	0	1	0		0		0		
+408	00177	66	D	Straubing, 'Ortler'	Grab 1	5078	12.600	48.867	Straubing 1181-1200	3			603	Scheibennadel m. ellipt. Kopfplatte		0	1	0	1	0	9	2	9	2.2		0.6		0.3		0.06		0	1	0		0		0.06		
+409	00130	66	D	Straubing, 'Ortler'	Grab 2	5078	12.600	48.867	Straubing 1181-1200	3			403	Ösenhalsring		0		0.04	9	0.01		1.35		0.6		0.4		0.35		0.01	0	0		0		0		0		
+410	00159	66	D	Straubing, 'Ortler'	Grab 2	5078	12.600	48.867	Straubing 1181-1200	3			503	Blechröhrchen		0	1	0		0.03		0.28		1.05		0.35		0.1		0.01	0	0		0		0	6	0.01		
+411	00131	66	D	Straubing, 'Ortler'	Grab 6	5078	12.600	48.867	Straubing 1181-1200	3			403	Ösenhalsring		0		0	1	0		1.2		1.15	9	1	1	0.001	7	0.1		0		0		0	6	0.01		
+412	00186	66	D	Straubing, 'Ortler'	Grab 6	5078	12.600	48.867	Straubing 1181-1200	3			519	Spiraltutulus		0		0.03	1	0		0.4		0.9	9	1		0.28	7	0.1		0		0		0		0		
+413	00187	66	D	Straubing, 'Ortler'	Grab 6	5078	12.600	48.867	Straubing 1181-1200	3			503	Blechröhrchen		0		0		0.02		1.75		2.6		0.8		0.05	7	0.1		0		0		0	6	0.01		
+414	00157	66	D	Straubing, 'Ortler'	Grab 12	5078	12.600	48.867	Straubing 1181-1200	3			403	Ösenhalsring, Fragment		0	6	0.01		0.6		0.55		1.4		0.3		0.15	9	0.01	0	0	1	0		0		0.1		
+415	00171	66	D	Straubing, 'Ortler'	Grab 12	5078	12.600	48.867	Straubing 1181-1200	3			603	Rollennadel m. ellipt. Kopfplatte		0	1	0		0.01		1.05		1.5		0.65		0.2		0.07		0		0		0		0.04		
+416	00185	66	D	Straubing, 'Ortler'	Grab 12	5078	12.600	48.867	Straubing 1181-1200	3			413	Noppenring		0		0		0.02		0.56		1.2		0.6	1	0.001		0.01		0		0		0		0		
+417	00188	66	D	Straubing, 'Ortler'	Grab 12	5078	12.600	48.867	Straubing 1181-1200	3			513	Zierscheibe		0	1	0	6	0.01		0.55		1.1		0.69	6	0.02		0.09	2	0		0		0		0.09		
+418	00189	66	D	Straubing, 'Ortler'	Grab 12	5078	12.600	48.867	Straubing 1181-1200	3			518	Blechtutulus		0	1	0		0	6	0.1	6	0.1	7	0.5	1	0.001	7	0.01		0		0		0	6	0.1		
+419	00132	66	D	Straubing, 'Ortler'	Grab 13	5078	12.600	48.867	Straubing 1181-1200	3			403	Ösenhalsring		0		0.03		0		1.8		1.15		0.8	1	0.001	7	0.1		0		0		0	6	0.01		
+420	00172	66	D	Straubing, 'Ortler'	Grab 13	5078	12.600	48.867	Straubing 1181-1200	3			610	Rollennadel		0		0.01	1	0		0.8		1.9		0.45		0.3		0.08		0		0		0		0.02		
+421	00173	66	D	Straubing, 'Ortler'	Grab 13	5078	12.600	48.867	Straubing 1181-1200	3			603	Rollennadel m. ellipt. Kopfplatte		0		0.29		0.03		0.41		0.7		0.55		1.2		0.006		0		0	2	0		0.04		
+422	00168	66	D	Straubing, 'Ortler'	Grab 14	5078	12.600	48.867	Straubing 1181-1200	3			212	Dolchklinge, klein, 2 Niete		0		0.01		0.2		2.4		0.83		0.43		1.15		0.07		0		0	2	0		0.12		
+423	00169	66	D	Straubing, 'Ortler'	Grab 14	5078	12.600	48.867	Straubing 1181-1200	3			806	Pfriem mit Mittelschwellung		0		0		0.02		3		2		0.65		0.2		0.1		0		0.15		0		0.05		
+424	00133	66	D	Straubing, 'Ortler'	Grab 16	5078	12.600	48.867	Straubing 1181-1200	3			403	Ösenhalsring mit umwickelten Enden		0		0		0		1.25		1.2		0.4	1	0.001	7	0.1		0		0		0		0		
+425	00190	66	D	Straubing, 'Ortler'	Grab 16	5078	12.600	48.867	Straubing 1181-1200	3			503	Bronzeröhrchen		0		0		0.14		1		1.1		0.6		0.001		0.01		0		0		0		0		
+426	00191	66	D	Straubing, 'Ortler'	Grab 16	5078	12.600	48.867	Straubing 1181-1200	3			519	Spiraltutulus		0		0.03		0		0.1		0.7	9	1		0.26	7	0.1		0		0		0		0		
+427	00134	66	D	Straubing, 'Ortler'	Grab 17	5078	12.600	48.867	Straubing 1181-1200	3			407	Armring mit Spitzenden		0	9	12		0		0.02		0.01	1	0		0.1		0	0	0		0		0		0		
+428	00182	66	D	Straubing, 'Ortler'	Grab 17	5078	12.600	48.867	Straubing 1181-1200	3			615	Ösenkopfnadel		0		11	6	0.01		0.65		1.6	9	1		0.18	7	0.1		0		0		0	9	0.01		* 111
+429	00166	66	D	Straubing, 'Ortler'	Grab 19	5078	12.600	48.867	Straubing 1181-1200	3			212	Dolchklinge		0		1.3		0.15		0.63		1.35	7	1		0.2	7	0.1		0		0		0		0		
+430	00109	66	D	Salching, Kr. Straubing-Bogen	Depot	5080	12.567	48.783	Straubing 1222	3			702	Ösenringbarren		0		0	1	0		1.25		1.2	7	1	1	0.001	7	0.1		0		0		0		0		
+431	00110	66	D	Salching, Kr. Straubing-Bogen	Depot	5080	12.567	48.783	Straubing 1222	3			702	Ösenringbarren		0		0		0		1.3		1.1	7	1		0.06	7	0.1		0		0		0	1	0		
+432	00111	66	D	Salching, Kr. Straubing-Bogen	Depot	5080	12.567	48.783	Straubing 1222	3			702	Ösenringbarren		0	1	0		0		2.3		1.45		0.45	1	0.001	7	0.1		0		0		0		0		
+433	00112	66	D	Salching, Kr. Straubing-Bogen	Depot	5080	12.567	48.783	Straubing 1222	3			702	Ösenringbarren		0		0		0		1.7		1.7		0.5		0.001	7	0.1	0	0		0		0		0		
+434	00113	66	D	Salching, Kr. Straubing-Bogen	Depot	5080	12.567	48.783	Straubing 1222	3			702	Ösenringbarren		0		0	1	0		1.5		1.4		0.4	1	0.001	7	0.1	0	0		0		0	6	0.01		
+435	00137	66	D	Schambach, Kr. Straubing	Grab	4569	12.700	48.850	Straubing 1223-28	3			403	Ösenhalsring		0		0		0		1.1		1.15	9	1	1	0.001	7	0.1		0		0		0	1	0		
+436	00496	66	D	Schambach, Kr. Straubing	Grab	4569	12.700	48.850	Straubing 1223-28	3			604	Scheibenkopfnadel, verz.		0	9	0.1		0		0.61		0.6		0.62	6	0.04		0.06		0		0		0		0		
+437	00150	66	D	Schambach, Kr. Straubing	Grab	4569	12.700	48.850	Straubing 1223-28	3			604	Scheibennadel, verz.		0		0	1	0		0.76		0.45		0.45		0.002		0.06		0		0		0		0.04		
+438	00158	66	D	Schambach, Kr. Straubing	Grab	4569	12.700	48.850	Straubing 1223-28	3			503	Blechröhrchen		0		0.01		0		0.1		0.55	7	1		0.3	9	0.1		0		0		0	1	0		
+439	00276	66	D	Unterwössen, Kr. Traunstein	Dep. II	5505	12.467	47.733	München, Stslg. H.V. 36	3			702	Ösenringbarren		0	1	0		0		0.03		0.02	6	0.04	9	0.01	1	0	0	0		0		0		0.07		* 113
+440	00060	62	D	Vaihingen, Kr. Ludwigsburg	Depot	5534	8.967	48.933	Stuttgart, WLM 2267a	4			111	Randleistenbeil, Typ Langquaid II, Var. D		0		7.3		0		0.6		0.05		0.02		0.43		0		0		0		0		0.07		
+441	00061	62	D	Vaihingen, Kr. Ludwigsburg	Depot	5534	8.967	48.933	Stuttgart, WLM 2267b	4			111	Randleistenbeil, Typ Langquaid, Var. D		0		5.5		0		0.81		0.05		0.08		0.53	1	0		0		0		0		0.02		
+442	00062	62	D	Vaihingen, Kr. Ludwigsburg	Depot	5534	8.967	48.933	Stuttgart, WLM 2267c	4			111	Randleistenbeil, Typ Langquaid, Var. D		0		6		0		0.81		0.06		0.09		0.53	1	0		0		0		0		0.03		
+443	00063	62	D	Vaihingen, Kr. Ludwigsburg	Depot	5534	8.967	48.933	Stuttgart, WLM 2267d	4			111	Randleistenbeil, Typ Langquaid, Var. D		0		9		0.02		0.6		0.03		0.02		0.45	6	0.001		0		0		0		0.04		
+444	00064	62	D	Vaihingen, Kr. Ludwigsburg	Depot	5534	8.967	48.933	Stuttgart, WLM 2267e	4			111	Randleistenbeil, Typ Langquaid, Var. D		0		7.6		0.02		0.5		0.06		0.03		0.17	9	0.002	1	0		0	1	0		0.1		
+445	00229	62	D	Veringenstadt, Kr. Sigmaringen	Grab 2	5624	9.233	48.167	Tübingen, LDA	3			518	Blechtutulus		0		0	1	0		0.72		1.3	7	1.5		0.001	9	0.02		0		0		0	6	0.01		
+446	00230	62	D	Veringenstadt, Kr. Sigmaringen	HockerGrab in Steinpackung	5624	9.233	48.167	Tübingen, LDA	3			409	Armspirale mit 4 Windungen		0		0		0.5		0.94		2.3	7	1.5		0.7	9	0.1		0	1	0	2	0	6	0.01		
+447	00291	66	D	Waging, Kr. Traunstein	Dep. 1902	5784	12.750	47.933	München, Stslg. 13/1	4			704	Spangenbarren		0		0		0		1.45		2.75		0.52	6	0.01	9	0.1	0	0		0		0		0		
+448	00292	66	D	Waging, Kr. Traunstein	Dep. 1902	5784	12.750	47.933	München, Stslg. 13/1	4			704	Spangenbarren		0		1.05		0		0.05		0.03	6	0.04		0.05		0	0	0		0		0		0		
+449	00293	66	D	Waging, Kr. Traunstein	Dep. 1902	5784	12.750	47.933	München, Stslg. 13/1	4			704	Spangenbarren		0		2.4	6	0.1		0.24		0.04	6	0.04		0.05		0.001	0	0		0	0	0		0.13		
+450	00294	66	D	Waging, Kr. Traunstein	Dep. 1902	5784	12.750	47.933	München, Stslg. 13/1	4			704	Spangenbarren		0	1	0		0		1.85		1.6		0.57		0.001	9	0.1	0	0		0		0		0		
+451	00295	66	D	Waging, Kr. Traunstein	Dep. 1902	5784	12.750	47.933	München, Stslg. 13/1	4			704	Spangenbarren		0	9	0.5	6	0.1		0.49		0.36	6	0.04	6	0.01	9	0.001	0	0		0	0	0		0.17		
+452	00296	66	D	Waging, Kr. Traunstein	Dep. 1902	5784	12.750	47.933	München, Stslg. 13/1	4			704	Spangenbarren		0		0		0		3.5		1.75		0.7		0.001	7	0.1	0	0		0		0		0		
+453	00297	66	D	Waging, Kr. Traunstein	Dep. 1902	5784	12.750	47.933	München, Stslg. 13/1	4			704	Spangenbarren		0		0		0		3.3		1.15		0.6		0.001	7	0.1	0	0		0		0	1	0		
+454	00298	66	D	Waging, Kr. Traunstein	Dep. 1902	5784	12.750	47.933	München, Stslg. 13/1	4			704	Spangenbarren		0		0		0		3		1.15		0.61		0.001	7	0.1	0	0		0		0	1	0		
+455	00299	66	D	Waging, Kr. Traunstein	Dep. 1902	5784	12.750	47.933	München, Stslg. 13/1	4			704	Spangenbarren		0		0		0		1.25		1.4		0.5		0.001	7	0.1		0		0		0		0		
+456	00300	66	D	Waging, Kr. Traunstein	Dep. 1902	5784	12.750	47.933	München, Stslg. 13/1	4			704	Spangenbarren		0	1	0		0.1		3.3		0.19		0.6	9	3		0.01	0	0		0	1	0		0.06		
+457	00814	62	D	Waldhölzbach (Saarland)	?	5788	6.767	49.550	Saarbrücken	4			704	Spangenbarren		0	9	0.03		1.18	9	0.009		0.12	1	0		0.001	9	0.001		0		0		0		0		
+458	00079	62	D	Weiler Haid, Kr. Reutlingen	Grabhügelfund	5809	9.217	48.500	Stuttgart, WLM A 1163	4			612	Dreiarmnadel mit durchbohrtem Hals		0	9	14		0.02		0.1		0.06		0.02		0.48	6	0.001	0	0		0		0		0.2		
+459	00080	62	D	Weiler Haid, Kr. Reutlingen	Grabhügelfund	5809	9.217	48.500	Stuttgart, WLM A 1163	4			612	Dreiarmnadel		0		5.9		0.01		0.11		0.04		0.03		0.48		0.004		0		0	1	0	6	0.01		
+460	00100	66	D	Weillohe, Gem. Thalmassing, Kr. Regensburg	aus verschleiftem Grabhügel?	5810	11.217	49.083	Regensburg A 730	4			616	Kugelkopfnadel, großer Kopf, Schaft gerieft		0		4.4	6	0.01		0.83		0.03		0.02		0.5		0.001		0		0	2	0		0.06		
+461	00101	66	D	Weillohe, Gem. Thalmassing, Kr. Regensburg	aus verschleiftem Grabhügel?	5810	11.217	49.083	Regensburg A 730	4			616	Kugelkopfnadel, kl. Kopf, Schaft leicht gewellt		0		8.8		0.002		0.3		0.11		0.02		0.7		0.001		0		0	2	0		0.17		
+462	00396	62	D	Worms, 'Weinsheimer Zollhaus'	Grabfund?	5812	7.767	49.833	Worms 28	3			212	Dolchklinge m. 2 Nieten u. eingez. Griffans.		0		0.9		0.04		0.8		1.95		1		1.4		0.005		0		0	1	0		0		
+463	00397	62	D	Worms, 'Weinsheimer Zollhaus'	Grabfund?	5812	7.767	49.833	Worms 557	3			610	Rollennadel mit säbelförmigem Schaft		0	1	0		0.1		0.52		2.15		0.96		1.31		0.001		0		0		0		0.08		
+464	00815	103	D	Welbsleben, Kr. Hettst.b.Halle	Depot	5818	11.417	51.733	Privbes.	3			207	Kopfstück		0		11.2		0.18		1.02		0.87		0.47		0.001		0.088		0		0	1	0		0		
+465	00816	103	D	Welbsleben, Kr. Hettst.b.Halle	Depot	5818	11.417	51.733	Privbes.	3			207	Schaft		0		11.21		0.52		1.5		1.55		1.26		0.047		0.27		0		0		0		0		
+466	00817	103	D	Welbsleben, Kr. Hettst.b.Halle	Depot	5818	11.417	51.733	Privbes.	3			207	Überfanggußmaterial Dolchstab (3 An.)		0		11.21		0.1		1.62		1.6		1.2	9	0.06		0.37		0		0		0		0		
+467	00818	103	D	Welbsleben, Kr. Hettst.b.Halle	Depot	5818	11.417	51.733	Privbes.	3			207	Knauf		0		8.7		0		0.68		0.64		0.64		0.07		0.062		0		0		0		0		
+468	00819	103	D	Welbsleben, Kr. Hettst.b.Halle	Depot	5818	11.417	51.733	Privbes.	3			207	Schaft		0		7.6		0		0.7		0.58		0.58	1	0.001		0.066		0		0		0		0		
+469	00820	103	D	Welbsleben, Kr. Hettst.b.Halle	Depot	5818	11.417	51.733	Privbes.	3			210	Klinge		0		11		0.2		0.86		1.18		0.93		0.05		0.088		0		0		0		0		
+470	00821	103	D	Welbsleben, Kr. Hettst.b.Halle	Depot	5818	11.417	51.733	Privbes.	3			226	Stabdolchklinge		0		9.35		0		0.6		0.1		0		0.001	9	0.001		0		0		0		0		
+471	00221	62	D	Welschingen, Kr.Konstanz	Einzelf.?	5819	8.750	47.817	Donaueschingen Do 608	3			615	Ösenkopfnadel		0		9.8		0		0.1		0.02		0		0.09	6	0.001		0		0		0	1	0		
+472	00394	62	D	Westhofen, Kr. Worms	Grab 4	5829	8.250	49.700	Worms 14a	3			610	Rollennadel mit trapezf. Kopfplatte		0		0.01		0.08		0.58		3.7		1.5		1.65		0.001		0		0	1	0		0.04		
+473	00395	62	D	Westhofen, Kr. Worms	Grab 20	5829	8.250	49.700	Worms 15c	3			806	Pfriem mit Mittelschwellung		0		1.1		0		0.52		0.02		0.01		0.03	9	0.003		0		0		0		0		
+474	00350	66	D	Wiechs, Gem. Götting, Kr. Bad Aibling	Grab	5838	12.017	47.750	München, Stslg. 1943, 3	4			616	Kugelkopfnadel		0	8	10		0		0.18		0.04		0.03		0.78	1	0		0		0		0	6	0.01		* 115
+475	00351	66	D	Wiechs, Gem. Götting, Kr. Bad Aibling	Grab	5838	12.017	47.750	München, Stslg. 1943, 3	4			616	Kugelkopfnadel		0		7.5		0		0.21		0.11		0.15		0.62	9	0.007		0		0		0		0		
+476	00352	66	D	Wiechs, Gem. Götting, Kr. Bad Aibling	Grab	5838	12.017	47.750	München, Stslg. 1943, 3	4			519	Kegelförmige Spirale		0		3.1		0.28		1.6		0.44		0.2		0.28	1	0		0		0		0		0		
+477	00353	66	D	Wiechs, Gem. Götting, Kr. Bad Aibling	Grab	5838	12.017	47.750	München, Stslg. 1943, 3	4			417	Spiralröhrchen		0		9.6	1	0		0.09		0.03		0.01		0.24		0		0		0		0		0.05		
+478	00448	62	D	Wiesloch, Rhein-Neckar-Kreis	aus Grab?	5967	8.700	47.283	Heidelberg	3			212	Dolch mit 9 Nietlöchern		0		0.4		0.06		0.4		3		0.45		0.8	9	0.001	0	0		0		0		0		
+479	00803	62	D	Zimmern unter Burg, Zollernalbkr.	Einzelfund	5939	8.583	48.167	Rottweil 9	25			127	Doppelaxt Typ Zabitz		0		0	9	0.02		0.68		0.39	6	0.01	1	0.001		0.004		0		0		0		0.25		*5939
+480	00478	62	D	Zipfen im Odenwald	?	5940	8.933	49.833	Darmstadt 1950:114	22			104	Flachbeil		0		0		0		0		0.05		0.23		0.001	6	0.01		0		0		0		0		* 117
+481	00601	28	F	Bouisset, Dolmen de, Dép.Herault	MegalithGrab	697	3.800	43.867	Tréviers, Slg.Arnal	25			801	Kupferperle, massiv		0	6	0.01		0.01		0.15		0.48		0.98		0.4		0		0		0		0		0.03		
+482	00638	28	F	Fontvieille, Dép.Bouches-du-Rhone	Grotte de Bounias Steinkiste unt.Bodenn.	1711	4.400	43.717	Arles	25	SKK		215	Griffzungendolch, sehr lang. m. Hohlkehlen		0		0.01	1	0		2.1		0		0.01	1	0.001		0.008		0		0		0		0.02		* 119
+483	00583	28	F	Boun Marcou, Dép.Aude	MegalithGrab m. 2 getr.Fundsch.	699	2.817	43.300	Narbonne	25			513	Schmuckscheibe, konkav, Innens. getreppt		0		0		0.05	9	0.005		0.35		0.88		0.03		0.005		0		0	1	0		0.04		
+484	00582	14	F	Corbières, Dép. Aude	Einzf.	1157	2.633	42.917	Narbonne	25			104	Flachbeil als Querbeil benutzt		0		5.2		0		1.4	9	0.008		0.04		0.001		0.001		0		0		0		0.02		
+485	00640	28	F	Eygalières, Dép. Bouches-du-Rhone	Tombe A.Menier	1612	4.950	43.767	Arles, Slg.Latour	25			501	Blech		0		0.03		0.55		0.2		0.16		0.13		0.02		0.01		0	8	5		0		0.1		
+486	00641	28	F	Eygalières, Dép. Bouches-du-Rhone	Tombe A.Menier	1612	4.950	43.767	Arles, Slg.Latour	4			616	.		0		12		1.65		0.05		0.14		0.07		0.06		0.01		0		0.32	1	0		0.07		
+490	00624	28	F	Fontbouisse, Dép. Gard	Siedl.	1708	4.000	44.000	Nîmes	25			711	Gußstück, kegelförmig		0		0		0.04		0.04		0.68		1.12		0.02		0		0		0		0	1	0		
+491	00625	28	F	Fontbouisse, Dép. Gard	Siedl.	1708	4.000	44.000	Nîmes	25			806	Pfriem, querschnitt quadratisch		0	1	0		0.06		0		0.44		1.6		0.02		0.004		0		0		0		0.03		
+492	00626	28	F	Fontbouisse, Dép. Gard	Siedl.	1708	4.000	44.000	Nîmes	25	SKK		215	Griffzungendolch, flach		0	1	0		0.03	9	0.006		0.86		1.7		0.01	9	0.001		0		0		0		0.03		
+493	00627	28	F	Fontbouisse, Dép. Gard	Siedl.	1708	4.000	44.000	Nîmes	25			215	Dolch, schmal, seitlich Kerben		0		0		0.03	1	0		0.36	9	2.5		0.02	6	0.001		0		0.2		0		0.09		
+494	00600	28	F	Fournes II, Dép.Hérault	"Allée couverte"	1725	2.650	43.317	Tréviers, Slg.Arnal	3			806	Pfriem mit rhombischer Mittelschwellung		0		11.4		0.81		0.04		0.05		0.1		0.03		0.006		0		0.12		0		0.05		
+495	00639	28	F	La Source,Grotte de, Dép.B-du-Rhone	Steinkiste unter Bodenniveau	2797	4.700	43.717	Arles	25			801	Kupferperle, doppeltkonisch		0	1	0		1.07	6	0.005	6	0.005		0.04	1	0.001	6	0.001		0		0		0		0.04		
+496	00604	28	F	Lamalou, Dolmen de, Dép.Hérault	MegalithGrab	2825	3.783	43.750	Tréviers, Slg.Arnal	25			801	Perle, doppeltkonisch		0		0.02		0	1	0	6	0.005		0.05	1	0.001	6	0.001		0		0	0	0		0.07		
+497	00603	28	F	Lamalou, Dolmen de, Dép.Hérault	MegalithGrab	2825	3.783	43.750	Tréviers, Slg.Arnal	3			806	Pfriem		0		3.7		0.06		0.08		0.29		0.1		0.02		0.02		0		0		0		0.05		
+498	00596	28	F	Lamalou, Dolmen de, Dép.Hérault	MegalithGrab	2825	3.783	43.750	Tréviers, Slg.Arnal	25			801	Perle, doppelkonisch		0		0.05		0.05		0.06		1.7		0.38		0.001		0.006		0		0		0		0.5		
+499	00520	21	F	Lannion, Dép.Finistère	Grabhügel	2850	3.450	48.733	Groningen, Arch.Biol.Inst. 1939/19	3			104	Flachbeil		0		5.2		0.44		0.09		0.04		0.01	6	0.05	9	0.003		0		0.5		0		0.07		
+500	00519	21	F	Lannion, Dép.Finistère	Grabhügel	2850	3.450	48.733	Groningen, Arch.Biol.Inst. 1939/16	3			212	Dolch mit Mittelrippe		0	7	15		0		0.03		0.07		0.2	6	0.05		0.001		0		0		0		0.05		
+501	00518	21	F	Lannion, Dép.Finistère	Grabhügel	2850	3.450	48.733	Groningen, Arch.Biol.Inst. 1939/17	3			212	Dolch ohne Griffzunge		0		7.1		0		3.9		0.03		0.02		0.1		0.01		0		0		0		0		
+502	00517	21	F	Lannion, Dép.Finistère	Grabhügel	2850	3.450	48.733	Groningen, Arch.Biol.Inst. 1939/12	3			212	Dolch m. rudimentärer Griffzunge verz.		0	9	14		0		0.03		0.24		0	9	0.05	6	0.001		0		0		0		0.11		
+503	00621	28	F	Macassargues, Dép.Gard	Höhle	3133	4.100	43.900	Nîmes	25			801	Kupferperle, geschweift, doppeltkonisch		0	1	0		0.16		0.1		1.75		0.33		0.02		0		0		0		0		0.02		
+504	00622	28	F	Macassargues, Dép.Gard	Höhle	3133	4.100	43.900	Nîmes	25			806	Pfriem		0		0		0.02		0		0.25		1.3		0.02		0.002		0		0		0		0.03		
+505	00623	28	F	Macassargues, Dép.Gard	Höhle	3133	4.100	43.900	Nîmes	25			602	Pfriem, sehr lang		0		0		0.18	1	0		0.57		1.4		0.01		0.01		0		0		0		0.03		
+507	00592	28	F	Mailhac, Dép. Aude	aus der unteren Schicht.Höhle,2 getrennte Fundsch.	3159	2.817	43.300	Mailhac, Slg.Taffanel	3			806	Pfriem m. Mittelschwellung		0		2.2		0.09	1	0		0.08		0.08		0.02		0		0		0		0		0.05		
+510	00586	14	F	Montou, Dép.Pyrénées-Orientales	Natürliche Höhle mit verschiedenen Schichten	3437	2.683	42.667	Perpignan-Corbières, Slg.P.Ponisch	3			110	Randleistenbeil		0		6.2		0		0.07		0.02		0.09		0.03		0.008		0		0.08		0		0.07		
+511	00587	14	F	Montou, Dép.Pyrénées-Orientales	Natürliche Höhle mit verschiedenen Schichten	3437	2.683	42.667	Perpignan-Corbières, Slg.P.Ponisch	25			806	Pfriem		0		0.01		0.02		0.08		0		0.09		0.02		0.029		0		0		0		0.25		
+515	00585	14	F	Narbonne, Umgeb.	Einzf.	3553	3.000	43.183	Narbonne	25			104	Flachbeil		0		0		0	1	0		1.1		0.86	1	0.001	6	0.001		0		0		0		0.03		
+516	00637	28	F	Pâques, Grotte de, Dép.Gard	Natürliche Höhle mit mehreren Schichten	3909	4.483	43.967	Nîmes	4			212	Dolch mit 4 Nieten, verziert		0		10	1	0		0.01	9	0.007		0.02		0.03	6	0.001		0	1	0	6	0.1		0.08		
+518	00633	28	F	En Quissé, La Grotte d' Dép. Gard	Höhle m. Grab	1543	3.800	43.950	Nîmes	25			104	Flachbeil als Querbeil benutzt		0	1	0		0.01		0.3		2.1		1.2		0.01	6	0.001		0		0		0		0.04		
+519	00634	28	F	En Quissé, La Grotte d' Dép. Gard	Höhle m. Grab	1543	3.800	43.950	Nîmes	25			801	Kupferperle, doppeltkonisch		0		0		1.02		0.09		1.3	9	2.5		0.01		0.004		0		0		0		0.02		
+520	00635	28	F	En Quissé, La Grotte d' Dép. Gard	Höhle m. Grab	1543	3.800	43.950	Nîmes	25			801	Kupferperle Doppeltkonisch		0		0		0.04		0.01		0.93		1		0.02		0.009		0		0		0		0.03		
+521	00636	28	F	En Quissé, La Grotte d' Dép. Gard	Höhle m. Grab	1543	3.800	43.950	Nîmes	25			801	Perle, dopp. kon., 2 anhäng. tropff. Perlen		0		0		0.04		0.02		0.67		0.83		0.03		0.004		0		0		0		0.04		
+522	00632	28	F	Rascassols, Dolmen de, Dép.Gard	MegalithGrab	4250	3.850	43.967	Nîmes	25			307	Blechstück, dolchförmig		0		0.02		0.24		0.03		0.08		0.08		0.15		0.006		0		0		0		0.04		
+523	00598	28	F	Torte, Rivière, Dép. Hérault	MegalithGrab	5362	3.817	43.717	Tréviers, Slg.Arnal	6			616	Kugelkopfnadel		0		11.6		0.18		0		0		0		0.001		0		0		0.1		0		0.08		
+524	00612	28	F	Rouquette, Grotte de la, Dép. Gard	Höhle	4414	4.117	44.083	Nîmes	25			806	Pfriem		0		0	1	0		0.05		1.05		1.15	6	0.01	6	0.001		0		0		0		0.01		
+525	00613	28	F	Rouquette, Grotte de la, Dép. Gard	Höhle	4414	4.117	44.083	Nîmes	25			806	Pfriem		0		0		0.06		0		0.52		1.2		0.02		0.002		0		0		0	1	0		
+526	00614	28	F	Rouquette, Grotte de la, Dép. Gard	Höhle	4414	4.117	44.083	Nîmes	25			801	Perle doppeltkonisch, facettiert		0	6	0.01		0	1	0		0.15		0.06		0.01		0.004		0	1	0		0		0.04		
+527	00615	28	F	Rouquette, Grotte de la, Dép. Gard	Höhle	4414	4.117	44.083	Nîmes	25			801	Perle, walzenförmig, m. Mittelschwellung		0	1	0	6	0.01		1.05		4		1.7		0.001	9	0.2		0		0		0		0.02		
+528	00616	28	F	Rouquette, Grotte de la, Dép. Gard	Höhle	4414	4.117	44.083	Nîmes	25			801	Perle, doppeltkonisch, facettiert		0		0		0.08		0.05		1.4		1		0.02		0.001		0		0		0	1	0		
+529	00617	28	F	Rouquette, Grotte de la, Dép. Gard	Höhle	4414	4.117	44.083	Nîmes	25			801	Perle, gestreckt doppk. und facettiert		0		0	8	5		0		0.14		1.3		0.02		0.01		0		0		0		0.04		
+530	00618	28	F	Rouquette, Grotte de la, Dép. Gard	Höhle	4414	4.117	44.083	Nîmes	25			104	Flachbeil		0		0		0	1	0		0.35		0.81	1	0.001		0.002		0		0		0		0.09		
+531	00619	28	F	Rouquette, Grotte de la, Dép. Gard	Höhle	4414	4.117	44.083	Nîmes	25			507	Scheibe, gegossen mit Mittelbohrung		0		0	9	5		0		0.02		0.06	1	0.001		0.005		0		0		0		0.04		
+532	00620	28	F	Rouquette, Grotte de la, Dép. Gard	Höhle	4414	4.117	44.083	Nîmes	25			801	Perle, tropfenförmig		0		0		2.8		0		0.05		0.17		0.01		0.01		0	1	0		0		0.03		
+533	00628	28	F	St-Gervais-les-Bagnols, Dép.Gard	MegalithGrab	4908	4.000	44.000	Nîmes	5			616	Kugelkopfnadel		0		9.5		0.39		0.06		0.12		0.1		0.05		0.02		0		0		0		0.06		
+534	00629	28	F	St-Gervais-les-Bagnols, Dép.Gard	MegalithGrab	4908	4.000	44.000	Nîmes	4			806	Pfriem mit Mittelschwellung		0		8.3		0.04		0	1	0		0.01		0.02	6	0.001		0		0		0		0.05		
+535	00630	28	F	St-Gervais-les-Bagnols, Dép.Gard	MegalithGrab	4908	4.000	44.000	Nîmes	3			806	Pfriem mit Mittelschwellung		0		9.5		0.09		0.03		0.03	6	0.01		0.05		0.01		0		0.39	1	0		0.34		
+536	00609	28	F	St-Hippolyte-du-Fort, Dép.Gard	Höhle?	4912	3.850	43.967	Nîmes	25			801	Perle, plump, doppeltkonisch		0		0		0		0.3		1.3		1.15		0.001		0		0		0		0		0.07		
+537	00610	28	F	St-Hippolyte-du-Fort, Dép.Gard	Höhle?	4912	3.850	43.967	Nîmes	25			801	Perle, doppeltkonisch		0		0.01		0.03		0.8		2.8		1.3		0.001		0.001		0		0		0		0.05		
+538	00611	28	F	St-Nicolas, Dép.Gard	Höhle	4945	4.367	43.950	Nîmes	25			801	Perle, diskusförmig		0		0		2.4		0		0.03		0.11		0.02	6	0.001		0		0		0		0.04		
+539	00605	28	F	La Cadière, Dép. Gard	Vesson, Abris sous Roche	2767	3.800	43.950	Nîmes	3			711	Gußstücke, Form unbestimmt, Metallstück		0		0.77		2.1		0.09		0.26		0.1		0.09		0.001		0	8	5		0		0.2		
+540	00606	28	F	Vesson, Dép.Gard	"Abri sous Roche"	5633	3.800	43.950	Nîmes	3			806	Pfriem		0		8.7		0.49		0.09		0.15		0.09		0.06		0.02		0		0.11		0	9	0.8		
+541	00607	28	F	Vesson, Dép.Gard	"Abri sous Roche"	5633	3.800	43.950	Nîmes	3			407	Spiralring		0		2.2		0		0.11		0.02		0.01		0.02	6	0.001		0		0		0		0.03		
+542	00584	14	F	Villemagne, Dép. Aude	Einzelfund	5691	2.000	43.000	Narbonne	25			104	Flachbeil		0		0.01		0.02		0.09		0.05		0.02		0.01		0.001		0		0		0		0.03		
+543	00745	141	GR	Robine Atike	Einzf.	4349	0.000	0.000	?	59			407	Armreif		0		0.02		0.03		0.8		0.05		0.28		0.11		0.2		0		0		0		0.03		
+544	00560	35	I	Abini, Sardinien	Depot	30	9.100	40.150	Cagliari	6			710	Gußkuchen		0		1.8		0.1	1	0		0.04		0.04	6	0.01		0.01		0	1	0		0		0.75		
+545	00561	35	I	Abini, Sardinien	Depot	30	9.100	40.150	Cagliari	6			710	Gußkuchen		0		0	1	0	6	0.005	1	0		0.02	1	0.001	1	0		0		0		0		0.07		
+546	00562	35	I	Abini, Sardinien	Depot	30	9.100	40.150	Cagliari	6			710	Gußkuchen		0		0.25		0.05	1	0	1	0		0.02		0.02	6	0.001		0	1	0		0		0.09		
+547	00566	35	I	Abini, Sardinien	Depot	30	9.100	40.150	Cagliari	6			710	Gußkuchen		0		0.06		0.02	1	0	1	0		0.05		0.03	9	0.001		0		0		0		0.03		
+548	00567	35	I	Abini, Sardinien	Depot	30	9.100	40.150	Cagliari	6			710	Gußkuchen		0		0.16	9	4	1	0		0.16		0.25		0.01	9	0.003		0		0.04		0		0.11		
+549	00568	35	I	Abini, Sardinien	Depot	30	9.100	40.150	Cagliari	6			710	Gußkuchen		0		0		0		0		0		0.01		0.001	1	0		0		0		0	1	0		
+550	00581	35	I	Abini, Sardinien	Depot	30	9.100	40.150	Cagliari	6			307	Pfeilspitze mit Stiel		0		0.55		0.09		0.09		0.09		0.01		0.02		0.002	2	0		0		0		0.23		
+551	00570	35	I	Abini, Sardinien	Depot	30	9.100	40.150	Cagliari	6			307	Pfeilspitze mit Stiel		0		0.01		0.02		1.1		0.02		0.41		0.03		0.019		0		0		0		0.01		
+552	00565	35	I	Abini, Sardinien	Depot	30	9.100	40.150	Cagliari	6			710	Gußkuchen		0		0.3		0.05		0.04		0.04		0.1		0.2		0.001		0		0.05		0		0.03		
+553	00564	35	I	Abini, Sardinien	Depot	30	9.100	40.150	Cagliari	6			710	Gußkuchen		0		0.7		0.06		0.05		0.01	6	0.01		0.25		0.001		0		0	1	0		0.06		
+554	00563	35	I	Abini, Sardinien	Depot	30	9.100	40.150	Cagliari	6			710	Gußkuchen		0		0.14		0.03	1	0	9	0.007		0.07		0.04		0.001		0		0		0		0.08		
+555	00559	35	I	Abini, Sardinien	Depot	30	9.100	40.150	Cagliari	6			710	Gußkuchen		0	6	0.01		0.1	1	0	1	0		0.02		0.04	6	0.001		0		0.01		0		0.04		
+556	00576	35	I	Anghelu Ruju, Sardinien	Depot	199	8.333	40.633	Cagliari	25	SKK		215	Griffzungendolch		0		0		0		0.11		0.17	6	0.01	1	0.001		0		0		0		0		0.04		
+557	00577	35	I	Anghelu Ruju, Sardinien	FelskammerGrab 1	199	8.333	40.633	Cagliari	25	SKK		806	Pfriem		0		0		0		0.07		0.2	6	0.01	1	0.001		0		0		0	1	0		0.05		
+558	00578	35	I	Anghelu Ruju, Sardinien	FelskammerGrab 1	199	8.333	40.633	Cagliari	25			806	Pfriem		0		0.01		0		0.09		1.1		1.4		0.01	6	0.001		0		0		0		0.02		
+559	00574	35	I	Anghelu Ruju, Sardinien	FelskammerGrab 1	199	8.333	40.633	Cagliari	25			806	Pfriem		0		0	6	0.01		0.3		0.4		0.09		0.01		0.003		0		0		0		0.01		
+560	00575	35	I	Anghelu Ruju, Sardinien	FelskammerGrab 13	199	8.333	40.633	Cagliari	25			806	Pfriem		0	1	0	1	0		0.11		0.14	6	0.01	1	0.001		0.01		0		0.41	6	0.1		0.6		
+561	00579	35	I	Anghelu Ruju, Sardinien	FelskammerGrab 13	199	8.333	40.633	Cagliari	25			407	Ring mit Spitzenden		0		0		0.34		0.05		0.04		0.01		0.02		0.003		0		0.09		0		0.5		
+562	00572	35	I	Anghelu Ruju, Sardinien	FelskammerGrab 18	199	8.333	40.633	Cagliari	25	SKK		806	Pfriem mit rhombischer Mittelschwellung		0		0.2		0.3		1.7		0.03		0.34	1	0.001		0.03		0	1	0		0		0.04		
+563	00573	35	I	Anghelu Ruju, Sardinien	FelskammerGrab 20	199	8.333	40.633	Cagliari	25	SKK		806	Pfriem		0		0.05		0.18		1.31		0.07		0.3		0.001		0.01		0		0		0		0.12		
+564	00569	35	I	Anghelu Ruju, Sardinien	FelskammerGrab 20	199	8.333	40.633	Cagliari	25			112	Flachbeil		0		0	1	0		0.78		1.55		0.12	1	0.001		0.025		0		0		0		0.03		
+565	00571	35	I	Anghelu Ruju, Sardinien	FelskammerGrab 30	199	8.333	40.633	Cagliari	25	SKK		215	Griffzungendolch		0		0		0.02		0.05		0.76		0.15		0.01		0.009		0		0	1	0		0.02		
+566	00704	32	I	Acqua Prateri, Prov.Pisa	FelskammerGrab 30	46	10.617	43.317	Florenz	25			212	Dolch mit beidseitiger Mittelrippe		0		0.05		0.01	9	5		3.1		0.29		0.04		0		0		0	1	0		0		
+567	00706	32	I	Acqua Prateri, Prov.Pisa	Grab	46	10.617	43.317	Florenz	25			112	Flachbeil, Ansatz zu Randleisten		0		0.01		0.15		0.05		0.03		0.02		0.001		0.01		0	1	0		0	1	0		
+568	00708	32	I	Acqua Prateri, Prov.Pisa	Grab	46	10.617	43.317	Florenz	25			212	Dolch		0		0	6	0.01	9	4		3.7		0.3		0.01		0		0		0		0	1	0		
+569	00709	32	I	Acqua Prateri, Prov.Pisa	Grab	46	10.617	43.317	Florenz	25			112	Flachbeil		0	1	0		0		2		1.1		0.13	6	0.01		0		0		0	1	0	1	0		
+570	00555	32	I	Arezzo, Prov.	Grab	4164	11.000	43.000	Arezzo 10891	25			212	Dolch mit verstärkter Mittelpartie		0	6	0.01		0.08		1		0.76		0.07		0.02	6	0.001		0		0		0		0.03		
+571	00556	32	I	Arezzo, Prov.	?	4164	11.000	43.000	Arezzo 10892	25			212	Dolch mit erhabener Mittelpartie		0		11.4		1.07		0.24	6	0.1		0.03		0.06		0.03		0		0.12		0.2		0.45		
+572	00558	32	I	Arezzo, Prov.	?	4164	11.000	43.000	Arezzo	25			112	Flachbeil, Ansatz zu Randleisten		0		0		0		0.17	1	0		0.06		0.001		0.01		0		0		0		0.08		
+573	00557	32	I	Battifolle, Prov. Arezzo	?	464	11.767	43.433	Arezzo 961	25			212	Dolch m. verstärkter Mittelp. 4-5 Nietl.		0		0.04		0.01		2.5		0.02	6	0.01	9	0.01		0.003		0		0		0		0.02		
+574	00711	32	I	Bibbona, Prov. Livorno	Grab	566	10.600	43.267	Florenz	22			104	Flachbeil		0		0		0	1	0	1	0		0.03		0.001	6	0.001		0		0		0		0		
+575	00671	31	I	Bor di Pacengo, Prov.Verona	Einzf.	666	10.717	45.467	Verona	4			111	Randleistenbeil		0		9		0		0.9		0.1		0.02		0.43	6	0.001		0		0		0.08		0.11		* 121
+576	00675	31	I	Borgo Panigale, Prov. Bologna	Pfahlbau am Gardasee	674	11.267	44.533	Bologna	25			110	Flachbeil, durch Hämmern hergestellte Randleisten		0		0		0		0.08		0.02		0.02		0.07		0.012		0		0		0		0.08		* 123
+577	00676	31	I	Borgo Rivola, Prov.Ravenna	Einzf.	675	11.683	44.250	Bologna	25			210	Dolch m. kurz. Griffz. u. beids. Mittelrippe		0	6	0.01		0.01		1.6	9	0.005		0.12		0.02	9	0.2		0		0.02		0		0.01		
+578	00677	31	I	Borgo Rivola, Prov.Ravenna	Grab?	675	11.683	44.250	Bologna	25			210	Dolch m. kurz. Griffz. u. eins. Mittelrippe		0	1	0		0		2.1	6	0.005		0.08		0.02		0.11		0		0		0		0.08		
+579	00678	31	I	Borgo Rivola, Prov.Ravenna	Grab?	675	11.683	44.250	Bologna	25			104	Flachbeil		0		0		0		0.1	1	0		0.05		0.001		0.016		0		0		0		0.1		
+580	00720	32	I	Brolio, Prov.Arezzo	Grab?	767	11.850	43.283	Florenz 4904	4			212	Dolch m. 4 Nietl. u. erhabener Mittelpartie		0		9.3		0.06		0.2		0.15		0.02		0.33		0		0		0.09		0		0.1		
+581	00666	31	I	Bussolengo, Prov. Verona	F.O.?	833	10.850	45.467	Verona	6			215	Dolch m. erhabener Mittelpartie u. 1 Nietl		0		7.9		0.42		0.27	6	0.1		0.04		0.64		0.05		0		0		0.11	7	1		
+582	00540	32	I	Castelluccio la Foce, Prov. Siena	Näheres unbekannt	934	11.767	43.033	Siena	25			111	Randleistenbeil		0		7.5		1		0.04		0.16		0.04		0.05		0.01		0		0		0		0.14		
+583	00541	32	I	Castelluccio la Foce, Prov. Siena	Zusammengehörig mit SAMNR 583, 584	934	11.767	43.033	Siena	25			210	Stabdolchklinge m. beids. Mittelr. u. 3 Nietl		0		0.01		0.03		1.55		2.3		0.26		0.07	6	0.001		0		0		0		0.03		
+584	00542	32	I	Castelluccio la Foce, Prov. Siena	Zusammengehörig mit SAMNR 582, 584	934	11.767	43.033	Siena	25			111	Randleistenbeil		0	1	0		0		0.07		0.04		0.06	1	0.001		0.01		0		0		0		0.23		
+585	00551	32	I	Castiglione/Lago, Prov.Perugia	Zusammengeh.m.SAMNR 582, 583=Castelluccio la Foce	942	12.050	43.117	Arezzo 956	25			212	Dolch mit 3 Nietlöchern		0		0		0.02		2.8		1.6		0.2		0.04	6	0.001		0		0		0		0.03		
+586	00552	32	I	Castiglione/Lago, Prov.Perugia	Grab	942	12.050	43.117	Arezzo 957	25			212	Dolch mit 3 Nietlöchern		0		0		0.05		3.6		1.6		0.64		0.09		0		0		0		0		0.04		
+587	00661	31	I	Cattaragna, Prov. Brescia	Grab	959	9.417	44.617	Verona	4			702	Ösenringbarren		0		8.8		0		0.3		0.8		0.14		2		0.003		0		0	1	0		0.02		
+588	00667	31	I	Cavriana, Prov. Mantua	Torbiera Bresciano. "Pfahlbau"	967	10.600	45.350	Verona	3			212	Dolch mit 1 erhaltenen Nietloch		0		0.07	6	0.01		0.25		2.15		1		0.5		0.02		0		0		0.04	9	1		
+589	00669	31	I	Cavriana, Prov. Mantua	Torbiera. "Pfahlbau"-Funde	967	10.600	45.350	Verona	3			210	Dolch m. 5 Nietl. u. beids. Mittelrippe		0		0.12	1	0		0.51		1.42		0.58		1.1		0.001		0		0	1	0		0.03		
+590	00714	32	I	Cecina, Prov.Livorno od.Pistoia	Torbiera. "Pfahlbau"-Funde	975	10.517	43.300	Florenz	25			112	Flachbeil, Ansatz zu Randleisten		0		0		0	6	0.005	9	0.009		0		0.001	6	0.001		0	1	0		0		0.1		
+591	00780	31	I	Colombare di Negrar, Prov. Verona	1804 zusammen m. einem Silexdolch geschenkt	1132	10.850	45.267	Verona	22			104	Flachbeil		0		0		0		0		0	6	0.01		0.08	1	0		0		0		0	1	0		
+592	00554	32	I	Cortona, Prov. Arezzo	F.O.?	1178	11.983	43.283	Arezzo 10893	25			212	Dolch mit 2 Nietlöchern		0	1	0		0.04		3.1		1.65		0.13		0.2	6	0.001		0		0		0		0.05		
+593	00679	31	I	Dozza, Prov. Bologna	F.O.?	1393	11.633	44.367	Bologna	4			212	Dolch, 5 Nietl. beids. verd. Mittelpartie		0		11.1		0.82		0.65		0.13		0.04		0.05		0.01		0		0.28		0		0.06		
+594	00712	32	I	Prov.Firenze	Vollbronzezeitliche Siedl.	4173	11.250	43.783	Florenz 1071	25			112	Flachbeil, Ansatz z Randleisten		0		0		0		0.01		0.25		0.06	1	0.001	6	0.001		0		0		0		0.09		
+596	00721	32	I	Florenz, Prov. oder Pistoia, Prov.	Einzf.	4175	11.000	43.000	Florenz 1030	25			112	Flachbeil, einseitig Ansatz zu Randleisten		0		0		0	6	0.005	9	0.007		0		0.001	1	0		0	1	0		0		0.06		
+597	00722	32	I	Florenz, Prov. oder Pistoia, Prov.	Einzf.	4175	11.000	43.000	Florenz 1069	25			110	Randleistenbeil		0		0		0		0.03		0.85		0.52	1	0.001		0		0		0		0		0.05		
+598	00723	32	I	Florenz, Prov. oder Pistoia, Prov.	Einzf.	4175	11.000	43.000	Florenz 1028	4			110	Randleistenbeil		0		3.4		0.14		0.02		0.1		0.02	1	0.001		0.005		0		0.06		0		0.05		
+599	00724	32	I	Florenz, Prov. oder Pistoia, Prov.	Einzf.	4175	11.000	43.000	Florenz	25			112	Flachbeil, einseitig Randleisten		0		0		0		0.92	1	0		0.1	1	0.001		0.01		0		0		0		0.03		
+600	00725	32	I	Florenz, Prov. oder Pistoia, Prov.	Einzf.	4175	11.000	43.000	Florenz	25			110	Flachbeil, Ansatz zu Randleisten		0		0.3		0		1.7	1	0		0.06		0.01		0.005		0		0		0		0.03		
+601	00553	32	I	Foiano, Prov.Arezzo	Einzf.	1695	11.817	43.250	Arezzo	25			212	Dolch m. beids. geschwollener Mittelpartie		0		0		0	1	0	1	0		0.01		0.001	1	0		0		0		0		0		
+602	00715	32	I	Fucecchio, Prov.Florenz	F.O.?	1764	10.800	43.733	Florenz	25			112	Flachbeil, Ansatz zu Randleisten		0		0		0		0		0		0.19		0.04	6	0.001		0		0		0	1	0		
+603	00705	32	I	Garfagnana, Prov.Florenz	Einzf. 1919	1812	10.500	44.083	Florenz	3			112	Flachbeil		0	7	12		0		0.2		0.01		0.02		0.05		0.001		0		0		0		0.35		
+604	00707	32	I	Garfagnana, Prov.Florenz	F.O.?	1812	10.500	44.083	Florenz	25			104	Flachbeil		0		0		0		0.36		0.22		0.55	1	0.001		0.01		0		0		0	1	0		
+605	00700	32	I	Germagnignano, Prov. Florenz (?)	F.O.?	1858	11.000	43.000	Florenz 84336	25			212	Dolch mit 1-3 Nietlöchern		0		0		0		2.5	1	0		0.22		0.001		0.04		0		0		0		0		
+606	00698	32	I	Grosseto, Prov.Grosseto	Wahrscheinlich Grab	2020	11.117	42.767	Florenz	25			112	Flachbeil, Ansatz zu Randleisten		0		0		0		1.7		2.7		0.44		0.04	9	0.4		0	1	0		0		0		
+607	00710	32	I	Livorno, Prov.	Siedl.? Zusammen m. Lagozza-Keramik	4180	10.000	43.000	Florenz	3			210	Stabdolch m. beidseitiger Mittelrippe		0		0.03		0.03	9	4		4.2		0.2		0.01		0		0		0.15		0	1	0		
+608	00697	32	I	Manciano, Prov. Grosseto	Einzf.	3187	11.517	42.583	Florenz 87277	25			104	Flachbeil		0		0		0	1	0		0.12		0.04		0.001	6	0.001		0		0		0		0		
+609	00693	32	I	Massa Marittima, Prov.Grosseto	F.O.?	3240	10.883	43.050	Florenz	25			212	Dolch mit 3 Nietlöchern		0	1	0		0.14		2.6		0.03		0.02	6	0.01		0.01		0		0.02		0	1	0.02		
+610	00696	32	I	Massa Marittima, Prov.Grosseto	Grab	3240	10.883	43.050	Florenz	25			212	Dolch mit 2 Nietlöchern		0		0		0		3.5		0.02		0.05		0.001		0.03		0		0		0		0		
+611	00694	32	I	Massa Marittima, Prov.Grosseto	Grab	3240	10.883	43.050	Florenz	3			210	Dolch m. 2 großen Nietlöchern		0		0		0.02		2.2		0.02		0.1	1	0.001		0.11		0		0		0	1	0		
+612	00692	32	I	Massa Marittima, Prov.Grosseto	Grab	3240	10.883	43.050	Florenz	3			210	Stabdolch mit 2 Nietlöchern		0		0		0.04		2.75		0.45		0.1		0.02		0.001		0		0		0		0		
+613	00695	32	I	Massa Marittima, Prov.Grosseto	Grab	3240	10.883	43.050	Florenz	3			212	Dolch mit 3 Nietlöchern		0		0		0.04	9	5		0.68		0.06	1	0.001		0.03		0		0		0		0		
+614	00544	32	I	Monte Maggio, Prov. Siena	Grab	3414	11.000	43.000	Siena	4			110	Randleistenbeil		0		2.7		0.09		0.03		0.02		0.01		0.03		0.002		0		0.07		0		0.2		
+615	00545	32	I	Monte Maggio, Prov. Siena	F.O.?	3414	11.000	43.000	Siena	4			110	Randleistenbeil		0		4.7		0.05		0.05		0.1	6	0.01	1	0.001		0.005		0		0.09		0		0.14		
+616	00701	32	I	Monte Merano, Prov.Grosseto	F.O.?	3415	11.483	42.617	Florenz	3			210	Stabdolch m. 3 beids. Mittelrippen 75365 T.		0		0		0		4.3		0.31		0.05		0.001		0		0		0		0		0		
+617	00699	32	I	Monte Merano, Prov.Grosseto	Depot	3415	11.483	42.617	Florenz	3			210	Stabdolch mit 2 großen Hutnieten		0		0		0.09	9	5		0.33		0.09	1	0.001		0.04		0		0		0		0		
+618	00702	32	I	Montespértoli, Prov. Florenz	Depot	3431	11.067	43.633	Florenz	25			112	Flachbeil, Ansatz zu Randleisten		0		0		0		0	1	0		0.06		0.001	6	0.001		0	1	0		0		0		
+619	00718	32	I	Montespértoli, Prov. Florenz	Grab	3431	11.067	43.633	Florenz	25			212	Dolch m. 3-5 Nietl. u. beids. Mittelrippe		0		0		0		0		0.02		0.06		0.03		0		0		0		0	1	0		
+620	00719	32	I	Montespértoli, Prov. Florenz	Grab	3431	11.067	43.633	Florenz	25			212	Dolchfragment m. 5 Nietl. u. Mittelgrat		0		0		0.24		1.5		1.3		0.3		0.02	1	0		0		0		0		0.02		
+621	00543	32	I	Pallazzone, Prov.Siena	Grab	3896	11.933	42.883	Siena	25			104	Flachbeil		0	6	0.01		0.05		1.45		1.15		0.06		0.04	6	0.001		0		0.01		0		0.16		
+622	00656	31	I	Pavia, Prov.	F.O.?	4185	9.000	45.000	Pavia 1636	25			201	Dolch m. 2 seitl. Kerben u. beids. Mittelgr.		0		0		0		0.95		0	6	0.01		0.01		0.011		0		0		0	6	0.01		
+623	00668	31	I	Peschiera, Prov. Verona	Einzf.	3963	10.683	45.433	Verona	6			614	Dreiringnadel		0		12.5		0.04		0.18		0.27		0.04		0.31		0.03		0		0		0.18	7	1		
+624	00670	31	I	Peschiera, Prov. Verona	Pfahlbau	3963	10.683	45.433	Verona	4			616	Kugelkopfnadel		0		5.9		0.12		0.18		0.01		0.01		0.03	9	0.2		0	1	0		0.15	7	1		
+625	00672	31	I	Peschiera, Prov. Verona	Pfahlbau	3963	10.683	45.433	Verona	6			626	Nadel m. horizontal durchb. Kugelkopf		0		10		0.57		0.2		0.09		0.04		0.03		0.02		0		0		0.15		0.03		
+626	00673	31	I	Peschiera, Prov. Verona	Pfahlbau	3963	10.683	45.433	Verona	6			614	Dreiringnadel		0		8.1		0.1	6	0.1		0.35		0.05		0.02		0.08		0		0.05		0	7	1		
+627	00534	32	I	Pienza, Prov.Siena	Pfahlbau	3989	11.667	43.067	Siena	25			104	Flachbeil		0		0.01		0.15		2.5		2.3		0.27	6	0.05		0		0		0		0		0.03		
+628	00535	32	I	Pienza, Prov.Siena	Siedl.? Im Gebiet des "Ospedaletto"	3989	11.667	43.067	Siena	25			104	Flachbeil		0	1	0		0.02		1.5		1.45		0.14	6	0.05		0		0		0		0		0.02		
+629	00536	32	I	Pienza, Prov.Siena	Siedl.? Im Gebiet des "Ospedaletto"	3989	11.667	43.067	Siena	25			110	Flachbeil, Ansatz zu Randleisten		0		0	1	0		0.34		0.39		0.02	1	0.001		0		0		0	1	0		0		
+630	00537	32	I	Pienza, Prov.Siena	Siedl.? Im Gebiet des "Ospedaletto"	3989	11.667	43.067	Siena	25			212	Dolch mit 3 Nietlöchern		0		0		0.12		3.3		0.48		0.05	6	0.05		0		0		0		0		0.08		
+631	00538	32	I	Pienza, Prov.Siena	Siedl.? Im Gebiet des "Ospedaletto"	3989	11.667	43.067	Siena	25			201	Dolch m. 2 Kerben a. Heft u. schw. Mittelgr.		0		0		0		1.5		0.65		0.26	6	0.05		0		0		0		0		0		
+632	00681	32	I	Poggio Aquilone, Prov. Perugia	Siedl.? Im Gebiet des "Ospedaletto"	4059	12.283	42.900	Bologna	25			210	Stabdolch m. 2 Reihen/3 Nietl. u. beids. Mittelr.		0		0	1	0		3.3		0		0.01		0.02		0.003		0		0		0		0.04		
+633	00682	32	I	Poggio Aquilone, Prov. Perugia	Grab	4059	12.283	42.900	Bologna	25			112	Flachbeil		0		0		0		0		0.16		0.01	1	0.001	6	0.001		0		0		0		0.1		
+634	00703	32	I	Pomarance?, Prov.Pisa	Grab	4075	10.867	43.300	Florenz	25			110	Flachbeil, Ansatz zu Randleisten		0		0		0		0.28		0.22		0.23		0.001		0		0		0		0		0		
+635	00657	31	I	Portalbere, Prov.Pavia	Siedl.	4092	9.317	45.100	Pavia 1645	25			104	Flachbeil		0		0.78		0		0.03	1	0		0		0.02	6	0.001		0		0		0		0.04		
+636	00550	32	I	Quercieto, Prov.Siena	F.O.?	4213	11.067	43.317	Siena	25			212	Dolch m. 2 Nietlöchern u. Mittelgrat		0	6	0.01		0.02		2.1		0.9		0.13		0.02	1	0		0		0		0		0.02		
+637	00658	31	I	Quinzano Doglio, Prov.Brescia	3 Steinbeilchen u.2 Silexspitzen Typ Remedello	4215	10.000	45.317	Verona	25			104	Flachbeil		0		0		0		0	1	0		0.04		0.02	6	0.001		0		0		0		0.01		

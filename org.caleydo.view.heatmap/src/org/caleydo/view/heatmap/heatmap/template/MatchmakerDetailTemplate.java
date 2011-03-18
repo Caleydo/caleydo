@@ -38,7 +38,7 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 		// hmRow.grabY = true;
 		// heat map
 		heatMapLayout = new ElementLayout();
-		heatMapLayout.grabX();
+		heatMapLayout.setGrabX(true);
 		heatMapLayout.setRatioSizeY(1f);
 		heatMapLayout.setRenderer(heatMapRenderer);
 		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);

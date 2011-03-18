@@ -50,6 +50,7 @@ import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.layout.CentralBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
 
 /**
  * Container for a group of dimensions. Manages layouts as well as brick views
@@ -163,6 +164,13 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public void setCollapsed(boolean isCollapsed) {
 		this.isCollapsed = isCollapsed;
+		// centerBrick.setBrickLayoutTemplate(new
+		// CompactBrickLayoutTemplate(centerBrick,
+		// glVisBricksView, this));
+
+		// FIXME: Christian, here you can change the layout of the brick to the
+		// respective state
+
 		initGroupColumn();
 		// groupColumn.updateSubLayout();
 	}

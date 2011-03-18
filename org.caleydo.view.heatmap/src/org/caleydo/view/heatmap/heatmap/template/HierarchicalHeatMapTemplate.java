@@ -32,11 +32,11 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		float heatMapSizeX = 0.806f;
 
 		Row mainRow = new Row("heatMapRow");
-		mainRow.grabY();
+		mainRow.setGrabY(true);
 		mainRow.setRatioSizeX(1);
 		
 		heatMapLayout = new ElementLayout("hmlayout");
-		heatMapLayout.grabX();
+		heatMapLayout.setGrabX(true);
 		heatMapLayout.setRenderer(heatMapRenderer);
 		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
 		heatMapLayout.addForeGroundRenderer(storageSelectionRenderer);
@@ -68,7 +68,7 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 
 		ElementLayout storageCaptionLayout = new ElementLayout("storageCaption");
 		storageCaptionLayout.setRatioSizeY(1);
-		storageCaptionLayout.grabX();
+		storageCaptionLayout.setGrabX(true);
 		storageCaptionLayout.setRenderer(storageCaptionRenderer);
 		storageCaptionRow.append(storageCaptionLayout);
 		

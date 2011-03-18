@@ -33,7 +33,7 @@ public class BrickHeatMapTemplate extends AHeatMapTemplate {
 		Row hmRow = new Row();
 		
 		heatMapLayout = new ElementLayout();
-		heatMapLayout.grabX();
+		heatMapLayout.setGrabX(true);
 		heatMapLayout.setRatioSizeY(1f);
 		heatMapLayout.setRenderer(heatMapRenderer);
 		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
