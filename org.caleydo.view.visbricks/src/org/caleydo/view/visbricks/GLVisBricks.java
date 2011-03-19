@@ -147,6 +147,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	private void initLayouts() {
+
+		dimensionGroupManager.getDimensionGroupSpacers().clear();
+
 		initCenterLayout();
 
 		leftColumnLayout = new Column("leftArchColumn");
@@ -255,7 +258,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 				rightDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 				centerRowLayout.append(rightDimensionGroupSpacing);
-
 			}
 			// dimensionGroupSpacing.setDebug(true);
 
@@ -288,16 +290,30 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			int dimensinoGroupEndIndex) {
 
 		columnLayout.setFrameColor(1, 1, 0, 1);
-		// leftColumnLayout.setDebug(false);
+		leftColumnLayout.setDebug(true);
 		columnLayout.setBottomUp(false);
 
 		ElementLayout dimensionGroupSpacing = new ElementLayout("firstSideDimGrSpacing");
-		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer();
+		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = null;
+		dimensionGroupSpacing.setDebug(true);
+		
+		// Handle special case where arch stand contains no groups
+		if (dimensinoGroupStartIndex == 0) {
+			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
+					connectionRenderer, null, null, this);
+		} else {
+			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
+					connectionRenderer, null, dimensionGroupManager.getDimensionGroups()
+							.get(dimensionGroupManager.getCenterGroupStartIndex()), this);
+		}
+
 		dimensionGroupSpacingRenderer.setVertical(false);
 		dimensionGroupSpacingRenderer.setLineLength(archSideThickness);
+
 		dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
-		dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		dimensionGroupSpacing.setPixelSizeY(DIMENSION_GROUP_SPACING);
+		dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());	
+		dimensionGroupSpacing.setGrabY(true);
+		
 		columnLayout.append(dimensionGroupSpacing);
 
 		for (int dimensionGroupIndex = dimensinoGroupStartIndex; dimensionGroupIndex < dimensinoGroupEndIndex; dimensionGroupIndex++) {
@@ -307,20 +323,22 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 			group.getLayout().setRatioSizeX(1);
 			group.getLayout().setAbsoluteSizeY(archSideThickness);
-			// group.getLayout().setDebug(false);
+			 group.getLayout().setDebug(true);
 			group.setArchHeight(0);
 			columnLayout.append(group.getLayout());
 
 			group.setCollapsed(true);
 
 			dimensionGroupSpacing = new ElementLayout("sideDimGrSpacing");
-			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer();
+			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null, null,
+					group, null, this);
 			dimensionGroupSpacingRenderer.setVertical(false);
 			dimensionGroupSpacingRenderer.setLineLength(archSideThickness);
 			dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 			dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas
 					.getPixelGLConverter());
-			dimensionGroupSpacing.setPixelSizeY(DIMENSION_GROUP_SPACING);
+			dimensionGroupSpacing.setDebug(true);
+			dimensionGroupSpacing.setGrabY(true);
 			columnLayout.append(dimensionGroupSpacing);
 		}
 
@@ -544,12 +562,18 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 					else if (!dragAndDropController.isDragging())
 						dragAndDropController.startDragging();
 				}
-
-				DimensionGroup currentDimGroup = (DimensionGroup) generalManager
-						.getViewGLCanvasManager().getGLView(externalID);
-				dragAndDropController.setDropArea(currentDimGroup);
 				break;
 
+			}
+
+		case DIMENSION_GROUP_SPACER:
+			switch (pickingMode) {
+			case DRAGGED:
+
+				dragAndDropController.setDropArea(dimensionGroupManager
+						.getDimensionGroupSpacers().get(externalID));
+
+				break;
 			}
 		}
 
@@ -744,6 +768,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				dropDimensionGroupAfter);
 
 		initLayouts();
+		// FIXME: check why the second layout is needed here. otherwise the
+		// moved views appear upside down
+		initLayouts();
 
 		RelationsUpdatedEvent event = new RelationsUpdatedEvent();
 		event.setDataDomainType(dataDomain.getDataDomainType());
@@ -772,74 +799,87 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		}
 	}
 
-	public void highlightDimensionGroupSpacer(DimensionGroup dragOverDimensionGroup,
-			float mouseX, float mouseY) {
-
-		clearDimensionGroupSpacerHighlight();
-		dropDimensionGroupAfter = false;
-
-		int hightlightOffset = -1;
-
-		if (centerRowLayout.getElements().contains(dragOverDimensionGroup.getLayout())) {
-
-			if ((dragOverDimensionGroup.getLayout().getTranslateX() + dragOverDimensionGroup
-					.getLayout().getSizeScaledX()) < mouseX)
-				dropDimensionGroupAfter = true;
-			else
-				dropDimensionGroupAfter = false;
-		}
-
-		if (dropDimensionGroupAfter)
-			hightlightOffset = +1;
-
-		ElementLayout spacingElement;
-
-		if (centerRowLayout.getElements().contains(dragOverDimensionGroup.getLayout())) {
-
-			spacingElement = centerRowLayout.getElements().get(
-					centerRowLayout.getElements().indexOf(
-							dragOverDimensionGroup.getLayout())
-							+ hightlightOffset);
-
-			((DimensionGroupSpacingRenderer) spacingElement.getRenderer())
-					.setRenderSpacer(true);
-		}
-
-		if ((leftColumnLayout.getElements().contains(dragOverDimensionGroup.getLayout()) || rightColumnLayout
-				.getElements().contains(dragOverDimensionGroup.getLayout()))) {
-
-			if ((dragOverDimensionGroup.getLayout().getTranslateY() + dragOverDimensionGroup
-					.getLayout().getSizeScaledY()) < mouseY)
-				dropDimensionGroupAfter = true;
-			else
-				dropDimensionGroupAfter = false;
-		}
-
-		if (dropDimensionGroupAfter)
-			hightlightOffset = +1;
-
-		if (leftColumnLayout.getElements().contains(dragOverDimensionGroup.getLayout())) {
-
-			spacingElement = leftColumnLayout.getElements().get(
-					leftColumnLayout.getElements().indexOf(
-							dragOverDimensionGroup.getLayout())
-							- hightlightOffset);
-
-			((DimensionGroupSpacingRenderer) spacingElement.getRenderer())
-					.setRenderSpacer(true);
-		}
-
-		if (rightColumnLayout.getElements().contains(dragOverDimensionGroup.getLayout())) {
-
-			spacingElement = rightColumnLayout.getElements().get(
-					rightColumnLayout.getElements().indexOf(
-							dragOverDimensionGroup.getLayout())
-							- hightlightOffset);
-
-			((DimensionGroupSpacingRenderer) spacingElement.getRenderer())
-					.setRenderSpacer(true);
-		}
-	}
+	// public void highlightDimensionGroupSpacer(DimensionGroup
+	// dragOverDimensionGroup,
+	// float mouseX, float mouseY) {
+	//
+	// clearDimensionGroupSpacerHighlight();
+	// dropDimensionGroupAfter = false;
+	//
+	// int hightlightOffset = -1;
+	//
+	// if
+	// (centerRowLayout.getElements().contains(dragOverDimensionGroup.getLayout()))
+	// {
+	//
+	// if ((dragOverDimensionGroup.getLayout().getTranslateX() +
+	// dragOverDimensionGroup
+	// .getLayout().getSizeScaledX()) < mouseX)
+	// dropDimensionGroupAfter = true;
+	// else
+	// dropDimensionGroupAfter = false;
+	// }
+	//
+	// if (dropDimensionGroupAfter)
+	// hightlightOffset = +1;
+	//
+	// ElementLayout spacingElement;
+	//
+	// if
+	// (centerRowLayout.getElements().contains(dragOverDimensionGroup.getLayout()))
+	// {
+	//
+	// spacingElement = centerRowLayout.getElements().get(
+	// centerRowLayout.getElements().indexOf(
+	// dragOverDimensionGroup.getLayout())
+	// + hightlightOffset);
+	//
+	// ((DimensionGroupSpacingRenderer) spacingElement.getRenderer())
+	// .setRenderSpacer(true);
+	// }
+	//
+	// if
+	// ((leftColumnLayout.getElements().contains(dragOverDimensionGroup.getLayout())
+	// || rightColumnLayout
+	// .getElements().contains(dragOverDimensionGroup.getLayout()))) {
+	//
+	// if ((dragOverDimensionGroup.getLayout().getTranslateY() +
+	// dragOverDimensionGroup
+	// .getLayout().getSizeScaledY()) < mouseY)
+	// dropDimensionGroupAfter = true;
+	// else
+	// dropDimensionGroupAfter = false;
+	// }
+	//
+	// if (dropDimensionGroupAfter)
+	// hightlightOffset = +1;
+	//
+	// if
+	// (leftColumnLayout.getElements().contains(dragOverDimensionGroup.getLayout()))
+	// {
+	//
+	// spacingElement = leftColumnLayout.getElements().get(
+	// leftColumnLayout.getElements().indexOf(
+	// dragOverDimensionGroup.getLayout())
+	// - hightlightOffset);
+	//
+	// ((DimensionGroupSpacingRenderer) spacingElement.getRenderer())
+	// .setRenderSpacer(true);
+	// }
+	//
+	// if
+	// (rightColumnLayout.getElements().contains(dragOverDimensionGroup.getLayout()))
+	// {
+	//
+	// spacingElement = rightColumnLayout.getElements().get(
+	// rightColumnLayout.getElements().indexOf(
+	// dragOverDimensionGroup.getLayout())
+	// - hightlightOffset);
+	//
+	// ((DimensionGroupSpacingRenderer) spacingElement.getRenderer())
+	// .setRenderSpacer(true);
+	// }
+	// }
 
 	public DimensionGroupManager getDimensionGroupManager() {
 		return dimensionGroupManager;

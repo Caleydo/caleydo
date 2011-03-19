@@ -11,13 +11,21 @@ import org.caleydo.core.data.virtualarray.similarity.GroupSimilarity;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
 import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
+import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
-public class DimensionGroupSpacingRenderer extends LayoutRenderer {
+public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDropArea {
+
+	private int ID;
 
 	private boolean renderDragAndDropSpacer = false;
 
@@ -33,15 +41,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 	private HashMap<Integer, GroupMatch> hashGroupID2GroupMatches = new HashMap<Integer, GroupMatch>();
 
 	private ConnectionBandRenderer connectionRenderer = new ConnectionBandRenderer();
-	
-	private GLVisBricks glVisBricksView;
 
-	/**
-	 * Default constructur needed if spacer does not need to render connections
-	 */
-	public DimensionGroupSpacingRenderer() {
-
-	}
+	private GLVisBricks glVisBricks;
 
 	public DimensionGroupSpacingRenderer(RelationAnalyzer relationAnalyzer,
 			ConnectionBandRenderer connectionRenderer, DimensionGroup leftDimGroup,
@@ -51,7 +52,14 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 		this.leftDimGroup = leftDimGroup;
 		this.rightDimGroup = rightDimGroup;
 		this.connectionRenderer = connectionRenderer;
-		this.glVisBricksView = glVisBricksView;
+		this.glVisBricks = glVisBricksView;
+
+		glVisBricks.getDimensionGroupManager().getDimensionGroupSpacers().put(ID, this);
+	}
+
+	{
+		ID = GeneralManager.get().getIDCreator()
+				.createID(EManagedObjectType.DIMENSION_GROUP_SPACER);
 	}
 
 	public void init() {
@@ -144,18 +152,35 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 	@Override
 	public void render(GL2 gl) {
 
+		renderBackground(gl);
 		renderDragAndDropMarker(gl);
+		
 		renderFlexibleArch(gl);
+		renderDimensionGroupConnections(gl);
+	}
 
-		if (relationAnalyzer != null)
-			renderDimensionGroupConnections(gl);
+	private void renderBackground(GL2 gl) {
+
+		int pickingID = glVisBricks.getPickingManager().getPickingID(glVisBricks.getID(),
+				EPickingType.DIMENSION_GROUP_SPACER, ID);
+
+		gl.glPushName(pickingID);
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glBegin(GL2.GL_POLYGON);
+		gl.glVertex2f(0, 0);
+		gl.glVertex2f(x, 0);
+		gl.glVertex2f(x, y);
+		gl.glVertex2f(0, y);
+		gl.glEnd();
+		gl.glPopName();
+
 	}
 
 	private void renderDragAndDropMarker(GL2 gl) {
 
 		// Render drag and drop marker
 		if (renderDragAndDropSpacer) {
-			gl.glColor3f(0, 0, 0);
+			gl.glColor4f(1, 0, 0, 1);
 			gl.glLineWidth(3);
 
 			gl.glBegin(GL2.GL_LINES);
@@ -167,11 +192,22 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 				gl.glVertex2f(x, y / 2f);
 			}
 			gl.glEnd();
+
+			System.out.println("spacer line");
+
+			renderDragAndDropSpacer = false;
 		}
 	}
 
 	private void renderFlexibleArch(GL2 gl) {
 
+		if (connectionRenderer == null)
+			return;
+
+		// Do not render the arch for group spacer in the arch sides
+		if (!isVertical)
+			return;
+		
 		float leftCenterBrickTop = 0;
 		float leftCenterBrickBottom = 0;
 		float rightCenterBrickTop = 0;
@@ -183,15 +219,15 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 		float xEnd;
 
 		// handle situation in center arch where to group is contained
-		if (leftDimGroup == null && rightDimGroup == null && glVisBricksView != null) {
-			
-			leftCenterBrickBottom = glVisBricksView.getArchBottomY();
-			leftCenterBrickTop = glVisBricksView.getArchTopY();
-			
-			rightCenterBrickBottom = glVisBricksView.getArchBottomY();
-			rightCenterBrickTop = glVisBricksView.getArchTopY();
+		if (leftDimGroup == null && rightDimGroup == null && glVisBricks != null) {
+
+			leftCenterBrickBottom = glVisBricks.getArchBottomY();
+			leftCenterBrickTop = glVisBricks.getArchTopY();
+
+			rightCenterBrickBottom = glVisBricks.getArchBottomY();
+			rightCenterBrickTop = glVisBricks.getArchTopY();
 		}
-		
+
 		if (leftDimGroup != null) {
 			GLBrick leftCenterBrick = leftDimGroup.getCenterBrick();
 
@@ -216,8 +252,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 		} else {
 			if (rightDimGroup != null) {
-				leftCenterBrickBottom = glVisBricksView.getArchBottomY();
-				leftCenterBrickTop = glVisBricksView.getArchTopY();
+				leftCenterBrickBottom = glVisBricks.getArchBottomY();
+				leftCenterBrickTop = glVisBricks.getArchTopY();
 				curveOffset = 0.1f;
 			}
 		}
@@ -247,8 +283,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 		} else {
 			if (leftDimGroup != null) {
-				rightCenterBrickBottom = glVisBricksView.getArchBottomY();
-				rightCenterBrickTop = glVisBricksView.getArchTopY();
+				rightCenterBrickBottom = glVisBricks.getArchBottomY();
+				rightCenterBrickTop = glVisBricks.getArchTopY();
 				curveOffset = 0.1f;
 			}
 		}
@@ -264,6 +300,9 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 	}
 
 	private void renderDimensionGroupConnections(GL2 gl) {
+
+		if (relationAnalyzer == null)
+			return;
 
 		float splineFactor = 0.1f * x;
 
@@ -336,5 +375,41 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 	public void setLineLength(float lineLength) {
 		this.lineLength = lineLength;
+	}
+
+	@Override
+	public void handleDragOver(GL2 gl, java.util.Set<IDraggable> draggables,
+			float mouseCoordinateX, float mouseCoordinateY) {
+
+		// if (leftDimGroup != null) {
+		// glVisBricks.highlightDimensionGroupSpacer(leftDimGroup,
+		// mouseCoordinateX,
+		// mouseCoordinateY);
+		setRenderSpacer(true);
+		// }
+	}
+
+	@Override
+	public void handleDrop(GL2 gl, java.util.Set<IDraggable> draggables,
+			float mouseCoordinateX, float mouseCoordinateY,
+			DragAndDropController dragAndDropController) {
+
+		glVisBricks.clearDimensionGroupSpacerHighlight();
+
+		for (IDraggable draggable : draggables) {
+
+			if (draggable == this)
+				break;
+
+			if (leftDimGroup != null) {
+				glVisBricks.moveGroupDimension(leftDimGroup, (DimensionGroup) draggable);
+			}
+		}
+
+		draggables.clear();
+	}
+
+	public int getID() {
+		return ID;
 	}
 }

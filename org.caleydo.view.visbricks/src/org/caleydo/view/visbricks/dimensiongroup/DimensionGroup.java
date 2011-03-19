@@ -61,7 +61,7 @@ import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
  */
 public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		IContentVAUpdateHandler, ILayoutSizeCollisionHandler, ILayoutedElement,
-		IDraggable, IDropArea {
+		IDraggable {
 
 	public final static String VIEW_ID = "org.caleydo.view.dimensiongroup";
 
@@ -556,31 +556,6 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		}
 		// centerBrick.setRemoteView(viewType);
 		groupColumn.updateSubLayout();
-	}
-
-	@Override
-	public void handleDragOver(GL2 gl, java.util.Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY) {
-
-		visBricks.highlightDimensionGroupSpacer(this, mouseCoordinateX, mouseCoordinateY);
-	}
-
-	@Override
-	public void handleDrop(GL2 gl, java.util.Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY,
-			DragAndDropController dragAndDropController) {
-
-		visBricks.clearDimensionGroupSpacerHighlight();
-
-		for (IDraggable draggable : draggables) {
-
-			if (draggable == this)
-				break;
-
-			visBricks.moveGroupDimension(this, (DimensionGroup) draggable);
-		}
-
-		draggables.clear();
 	}
 
 	public float getMinWidth() {

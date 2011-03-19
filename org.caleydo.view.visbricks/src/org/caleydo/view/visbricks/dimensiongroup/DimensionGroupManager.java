@@ -1,24 +1,26 @@
 package org.caleydo.view.visbricks.dimensiongroup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DimensionGroupManager {
 
 	private final static int MAX_CENTER_DIMENSION_GROUPS = 4;
 
-	private ArrayList<DimensionGroup> dimensionGroups;
+	private ArrayList<DimensionGroup> dimensionGroups = new ArrayList<DimensionGroup>(20);;
+
+	private HashMap<Integer, DimensionGroupSpacingRenderer> dimensionGroupSpacers = new HashMap<Integer, DimensionGroupSpacingRenderer>();
 
 	private int centerGroupStartIndex = 0;
 
 	private int rightGroupStartIndex = 0;
 
-	public DimensionGroupManager() {
-
-		dimensionGroups = new ArrayList<DimensionGroup>(20);
-	}
-
 	public ArrayList<DimensionGroup> getDimensionGroups() {
 		return dimensionGroups;
+	}
+	
+	public HashMap<Integer, DimensionGroupSpacingRenderer> getDimensionGroupSpacers() {
+		return dimensionGroupSpacers;
 	}
 
 	public int getRightGroupStartIndex() {
@@ -46,7 +48,7 @@ public class DimensionGroupManager {
 			rightGroupStartIndex = dimensionGroups.size();
 		}
 	}
-	
+
 	public void moveGroupDimension(DimensionGroup referenceDimGroup,
 			DimensionGroup movedDimGroup, boolean dropDimensionGroupAfter) {
 
