@@ -233,15 +233,15 @@ public class SetUtils {
 
 			cmdLoadLookupTableFile.doCommand();
 		}
-		// else if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
-		// String lookupTableInfo =
-		// loadDataParameters.getFileIDTypeName() + "_2_" + dataDomain.getContentIDType().getTypeName()
-		// + " REVERSE";
-		//
-		// cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
-		// loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
-		// loadDataParameters.getDelimiter(), "");
-		// }
+//		else if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
+//			String lookupTableInfo =
+//				loadDataParameters.getFileIDTypeName() + "_2_" + dataDomain.getContentIDType().getTypeName()
+//					+ " REVERSE";
+//
+//			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
+//				loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
+//				loadDataParameters.getDelimiter(), "");
+//		}
 		// else {
 		// throw new IllegalStateException("Not implemented for " + dataDomain);
 		// }
@@ -275,6 +275,7 @@ public class SetUtils {
 		}
 
 		boolean isSetHomogeneous = loadDataParameters.isDataHomogeneous();
+		
 
 		if (loadDataParameters.getMathFilterMode().equals("Normal")) {
 			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL, isSetHomogeneous);

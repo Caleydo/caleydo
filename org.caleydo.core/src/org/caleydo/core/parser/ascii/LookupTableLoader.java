@@ -60,7 +60,7 @@ public class LookupTableLoader
 			if (iLineInFile >= parsingStartLine) {
 
 				boolean bMaintainLoop = true;
-				StringTokenizer strTokenText = new StringTokenizer(sLine, sTokenSeperator);
+				StringTokenizer strTokenText = new StringTokenizer(sLine, tokenSeperator);
 
 				// Expect two Integer values in one row!
 				try {

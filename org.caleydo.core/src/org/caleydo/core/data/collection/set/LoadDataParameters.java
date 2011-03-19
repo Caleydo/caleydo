@@ -71,7 +71,8 @@ public class LoadDataParameters {
 	/** TODO doc */
 	private boolean useExperimentClusterInfo;
 
-	private boolean isDataHomogeneous = true;
+	@XmlElement
+	private boolean isDataHomogeneous = false;
 
 	public LoadDataParameters() {
 		this.fileName = null;

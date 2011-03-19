@@ -72,7 +72,7 @@ public class TabularAsciiDataReader
 		boolean areAllTokensProper = true;
 
 		StringTokenizer tokenizer = new StringTokenizer(tokenPattern);
-
+		
 		final String sTokenPatternParserSeperator = GeneralManager.sDelimiter_Parser_DataType;
 
 		while (tokenizer.hasMoreTokens()) {
@@ -188,14 +188,14 @@ public class TabularAsciiDataReader
 			}
 
 			// Replace empty cells with NaN
-			sLine =
-				sLine.replace(sTokenSeperator + sTokenSeperator, sTokenSeperator + "NaN" + sTokenSeperator);
+			sLine = sLine.replace(tokenSeperator + tokenSeperator, tokenSeperator + "NaN" + tokenSeperator);
+//			sLine = sLine.replace(tokenSeperator + System.getProperty("line.separator"), tokenSeperator + "NaN" + System.getProperty("line.separator"));
 			// Take care of empty cells in first column because they are not embedded between two token
 			// separators
-			if (sLine.substring(0, 1).equals(sTokenSeperator))
+			if (sLine.substring(0, 1).equals(tokenSeperator))
 				sLine = "NaN" + sLine;
 
-			StringTokenizer strTokenLine = new StringTokenizer(sLine, sTokenSeperator);
+			StringTokenizer strTokenLine = new StringTokenizer(sLine, tokenSeperator);
 
 			columnIndex = 0;
 			int intIndex = 0;
@@ -251,7 +251,8 @@ public class TabularAsciiDataReader
 							columnIndex++;
 							break;
 						case STRING:
-							stringLists.get(stringIndex).add(strTokenLine.nextToken());
+							String token = strTokenLine.nextToken();
+							stringLists.get(stringIndex).add(token);
 							stringIndex++;
 							columnIndex++;
 							break;
@@ -366,12 +367,14 @@ public class TabularAsciiDataReader
 	@Deprecated
 	private ArrayList<String> fillUp(ArrayList<String> rawStringData) {
 		int missingValues = nrLinesToRead - rawStringData.size();
-		for (int count = rawStringData.size(); count < nrLinesToRead; count++)
-			rawStringData.add("ARTIFICIAL");
+		if (missingValues > 0) {
+			for (int count = rawStringData.size(); count < nrLinesToRead; count++)
+				rawStringData.add("ARTIFICIAL");
 
-		Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, "Had to fill up stroarge with "
-			+ missingValues + " artificial strings"));
+			Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, "Had to fill up stroarge with "
+				+ missingValues + " artificial strings"));
 
+		}
 		return rawStringData;
 
 	}

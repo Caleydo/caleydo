@@ -47,7 +47,7 @@ public abstract class AbstractLoader {
 	/**
 	 * Define the separator TAB is the default token.
 	 */
-	protected String sTokenSeperator = GeneralManager.sDelimiter_Parser_DataItems_Tab;
+	protected String tokenSeperator = GeneralManager.sDelimiter_Parser_DataItems_Tab;
 
 	protected int lineInFile = 0;
 
@@ -70,10 +70,10 @@ public abstract class AbstractLoader {
 	public final void setTokenSeperator(final String sTokenSeparator) {
 
 		if (sTokenSeparator.equals("\\t")) {
-			sTokenSeperator = "\t";
+			tokenSeperator = "\t";
 		}
 		else {
-			sTokenSeperator = sTokenSeparator;
+			tokenSeperator = sTokenSeparator;
 		}
 	}
 
@@ -84,7 +84,7 @@ public abstract class AbstractLoader {
 	 */
 	public final String getTokenSeperator() {
 
-		return sTokenSeperator;
+		return tokenSeperator;
 	}
 
 	/**

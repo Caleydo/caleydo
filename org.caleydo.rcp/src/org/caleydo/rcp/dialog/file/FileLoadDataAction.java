@@ -795,8 +795,8 @@ public class FileLoadDataAction
 						previewTable.getItemCount() - loadDataParameters.getStartParseFileAtLine() - 1;
 					for (int rowCount = 1; rowCount < testSize; rowCount++) {
 						String testString = previewTable.getItem(rowCount).getText(columnIndex);
-
-						Float.parseFloat(testString);
+						if (!testString.isEmpty())
+							Float.parseFloat(testString);
 					}
 				}
 				catch (NumberFormatException nfe) {
