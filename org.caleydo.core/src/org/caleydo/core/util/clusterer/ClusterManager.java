@@ -7,6 +7,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
+import org.caleydo.core.util.clusterer.nominal.AlphabeticalPartitioner;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -56,6 +57,8 @@ public class ClusterManager {
 				break;
 			case KMEANS_CLUSTERER:
 				clusterResult = runClustering(new KMeansClusterer(), clusterState);
+			case ALPHABETICAL:
+				clusterResult = runClustering(new AlphabeticalPartitioner(), clusterState);
 
 		}
 

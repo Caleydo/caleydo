@@ -1,5 +1,7 @@
 package org.caleydo.rcp.dialog.cluster;
 
+import java.awt.geom.CubicCurve2D;
+
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.manager.GeneralManager;
@@ -12,8 +14,10 @@ import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.core.util.clusterer.ETreeClustererAlgo;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.progress.ClusteringProgressBar;
+import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.HelpEvent;
 import org.eclipse.swt.events.HelpListener;
@@ -73,6 +77,7 @@ public class StartClusteringDialogAction
 	private TabItem affinityPropagationTab;
 	private TabItem kMeansTab;
 	private TabItem cobwebTab;
+	private OtherClusterersTab othersTab;
 
 	private Text clusterFactorGenes = null;
 	private Text clusterFactorExperiments = null;
@@ -130,6 +135,7 @@ public class StartClusteringDialogAction
 		createAffinityPropagationTab(tabFolder);
 		createKMeansTab(tabFolder);
 		createCobwebTab(tabFolder);
+		othersTab = new OtherClusterersTab(tabFolder);
 
 		Button helpButton = new Button(composite, SWT.PUSH);
 		helpButton.setText("Help");
@@ -172,6 +178,9 @@ public class StartClusteringDialogAction
 				}
 				else if (((TabItem) e.item) == cobwebTab) {
 					clusterState.setClustererAlgo(EClustererAlgo.COBWEB_CLUSTERER);
+				}
+				else if (((TabItem) e.item) == othersTab.getTab()) {
+					clusterState.setClustererAlgo(EClustererAlgo.OTHER);
 				}
 				else
 					throw new IllegalStateException("Not implemented!");
@@ -535,6 +544,9 @@ public class StartClusteringDialogAction
 		clusterState.setKMeansClusterCntGenes(iClusterCntGenes);
 		clusterState.setKMeansClusterCntExperiments(iClusterCntExperiments);
 
+		if (clusterState.getClustererAlgo().equals(EClustererAlgo.OTHER))
+			clusterState = othersTab.getClusterState();
+
 		// by default we use the main VAs for clustering
 		clusterState.setContentVAType(ISet.CONTENT);
 		clusterState.setStorageVAType(Set.STORAGE);
@@ -552,4 +564,5 @@ public class StartClusteringDialogAction
 	public ClusterState getClusterState() {
 		return clusterState;
 	}
+
 }

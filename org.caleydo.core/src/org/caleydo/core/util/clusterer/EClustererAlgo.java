@@ -8,7 +8,11 @@ public enum EClustererAlgo {
 
 	// partitional clusterer
 	AFFINITY_PROPAGATION("Affinity Propagation Clusterer"),
-	KMEANS_CLUSTERER("K-Means Clusterer");
+	KMEANS_CLUSTERER("K-Means Clusterer"),
+
+	// custom clusterer
+	ALPHABETICAL("Alphabetical"),
+	OTHER("Other");
 
 	private String sName;
 
