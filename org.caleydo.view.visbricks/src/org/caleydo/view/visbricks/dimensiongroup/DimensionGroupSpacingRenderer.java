@@ -14,6 +14,7 @@ import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
+import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 public class DimensionGroupSpacingRenderer extends LayoutRenderer {
@@ -31,7 +32,9 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 	private HashMap<Integer, GroupMatch> hashGroupID2GroupMatches = new HashMap<Integer, GroupMatch>();
 
-	private ConnectionBandRenderer connectionRenderer = new ConnectionBandRenderer();;
+	private ConnectionBandRenderer connectionRenderer = new ConnectionBandRenderer();
+	
+	private GLVisBricks glVisBricksView;
 
 	/**
 	 * Default constructur needed if spacer does not need to render connections
@@ -42,12 +45,13 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 	public DimensionGroupSpacingRenderer(RelationAnalyzer relationAnalyzer,
 			ConnectionBandRenderer connectionRenderer, DimensionGroup leftDimGroup,
-			DimensionGroup rightDimGroup) {
+			DimensionGroup rightDimGroup, GLVisBricks glVisBricksView) {
 
 		this.relationAnalyzer = relationAnalyzer;
 		this.leftDimGroup = leftDimGroup;
 		this.rightDimGroup = rightDimGroup;
 		this.connectionRenderer = connectionRenderer;
+		this.glVisBricksView = glVisBricksView;
 	}
 
 	public void init() {
@@ -178,6 +182,16 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 		float xStart;
 		float xEnd;
 
+		// handle situation in center arch where to group is contained
+		if (leftDimGroup == null && rightDimGroup == null && glVisBricksView != null) {
+			
+			leftCenterBrickBottom = glVisBricksView.getArchBottomY();
+			leftCenterBrickTop = glVisBricksView.getArchTopY();
+			
+			rightCenterBrickBottom = glVisBricksView.getArchBottomY();
+			rightCenterBrickTop = glVisBricksView.getArchTopY();
+		}
+		
 		if (leftDimGroup != null) {
 			GLBrick leftCenterBrick = leftDimGroup.getCenterBrick();
 
@@ -202,8 +216,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 		} else {
 			if (rightDimGroup != null) {
-				leftCenterBrickBottom = rightDimGroup.getVisBricksView().getArchBottomY();
-				leftCenterBrickTop = rightDimGroup.getVisBricksView().getArchTopY();
+				leftCenterBrickBottom = glVisBricksView.getArchBottomY();
+				leftCenterBrickTop = glVisBricksView.getArchTopY();
 				curveOffset = 0.1f;
 			}
 		}
@@ -233,8 +247,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer {
 
 		} else {
 			if (leftDimGroup != null) {
-				rightCenterBrickBottom = leftDimGroup.getVisBricksView().getArchBottomY();
-				rightCenterBrickTop = leftDimGroup.getVisBricksView().getArchTopY();
+				rightCenterBrickBottom = glVisBricksView.getArchBottomY();
+				rightCenterBrickTop = glVisBricksView.getArchTopY();
 				curveOffset = 0.1f;
 			}
 		}
