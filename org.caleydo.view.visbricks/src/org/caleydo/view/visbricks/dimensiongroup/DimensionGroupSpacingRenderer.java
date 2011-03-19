@@ -161,18 +161,18 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 	private void renderBackground(GL2 gl) {
 
-		int pickingID = glVisBricks.getPickingManager().getPickingID(glVisBricks.getID(),
-				EPickingType.DIMENSION_GROUP_SPACER, ID);
-
-		gl.glPushName(pickingID);
-		gl.glColor4f(1, 1, 1, 1);
-		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex2f(0, 0);
-		gl.glVertex2f(x, 0);
-		gl.glVertex2f(x, y);
-		gl.glVertex2f(0, y);
-		gl.glEnd();
-		gl.glPopName();
+//		int pickingID = glVisBricks.getPickingManager().getPickingID(glVisBricks.getID(),
+//				EPickingType.DIMENSION_GROUP_SPACER, ID);
+//
+//		gl.glPushName(pickingID);
+//		gl.glColor4f(1, 1, 1, 1);
+//		gl.glBegin(GL2.GL_POLYGON);
+//		gl.glVertex2f(0, 0);
+//		gl.glVertex2f(x, 0);
+//		gl.glVertex2f(x, y);
+//		gl.glVertex2f(0, y);
+//		gl.glEnd();
+//		gl.glPopName();
 
 	}
 
