@@ -7,6 +7,7 @@ import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.set.ContentData;
+import org.caleydo.core.data.collection.set.ESetDataType;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.collection.set.StorageData;
 import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
@@ -149,6 +150,8 @@ public interface ISet
 	 * @return
 	 */
 	public boolean isSetHomogeneous();
+	
+	public ESetDataType getSetType();
 
 	/**
 	 * Returns a {@link StorageData} object for the specified StorageVAType. The StorageData provides access

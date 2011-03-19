@@ -18,9 +18,9 @@ import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
@@ -176,8 +176,8 @@ public class SetUtils {
 					cmdCreateStorage.doCommand();
 
 					storageLabel = storageLabelIterator.next();
-					INominalStorage<?> nominalStorage =
-						(INominalStorage<?>) cmdCreateStorage.getCreatedObject();
+					NominalStorage<?> nominalStorage =
+						(NominalStorage<?>) cmdCreateStorage.getCreatedObject();
 					nominalStorage.setLabel(storageLabel);
 					storageIds.add(nominalStorage.getID());
 				case SKIP:

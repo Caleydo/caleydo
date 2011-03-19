@@ -33,11 +33,11 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.StorageFilter;
 import org.caleydo.core.data.filter.event.NewContentFilterEvent;
@@ -850,8 +850,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 					sRawValue = Formatter.formatNumber(currentStorage.getFloat(
 							EDataRepresentation.RAW, iStorageIndex));
 
-				} else if (currentStorage instanceof INominalStorage) {
-					sRawValue = ((INominalStorage<String>) currentStorage)
+				} else if (currentStorage instanceof NominalStorage) {
+					sRawValue = ((NominalStorage<String>) currentStorage)
 							.getRaw(iStorageIndex);
 				} else
 					throw new IllegalStateException("Unknown Storage Type");
@@ -1088,8 +1088,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 				// the gate add button
 				float fYGateAddOrigin = renderStyle.getAxisHeight();
-				iPickingID = pickingManager.getPickingID(uniqueID,
-						EPickingType.ADD_GATE, storageVA.get(iCount));
+				iPickingID = pickingManager.getPickingID(uniqueID, EPickingType.ADD_GATE,
+						storageVA.get(iCount));
 
 				lowerLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin, AXIS_Z);
 				lowerRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
@@ -2657,10 +2657,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		this.contentVA = contentVA;
 		contentSelectionManager.setVA(contentVA);
 	}
-	
+
 	@Override
 	public int getMinPixelHeight() {
-		//TODO: Calculate depending on content
+		// TODO: Calculate depending on content
 		return 100;
 	}
 }

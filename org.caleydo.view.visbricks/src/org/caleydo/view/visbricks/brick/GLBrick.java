@@ -9,6 +9,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.ESetDataType;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -167,51 +168,18 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks, dimensionGroup);
 
 		}
-
-		// TODO: christian please check here
-		if (!(brickLayout instanceof CentralBrickLayoutTemplate)) {
-			HeatMapCreator heatMapCreator = new HeatMapCreator();
-			AGLView heatMap = heatMapCreator.createRemoteView(this, gl, glMouseListener);
-			AContainedViewRenderer heatMapLayoutRenderer = new BrickRemoteViewRenderer(
-					heatMap, this);
-			views.put(EContainedViewType.HEATMAP_VIEW, heatMap);
-			containedViewRenderers.put(EContainedViewType.HEATMAP_VIEW,
-					heatMapLayoutRenderer);
+		if (set.getSetType().equals(ESetDataType.NUMERIC))
+		{
+			createNumericalBrick(gl);
+			currentViewType = brickLayout.getDefaultViewType();
 		}
-		ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
-		AGLView parCoords = parCoordsCreator.createRemoteView(this, gl, glMouseListener);
-		AContainedViewRenderer parCoordsLayoutRenderer = new BrickRemoteViewRenderer(
-				parCoords, this);
-		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
-		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
-				parCoordsLayoutRenderer);
-
-		HistogramCreator histogramCreator = new HistogramCreator();
-		AGLView histogram = histogramCreator.createRemoteView(this, gl, glMouseListener);
-		AContainedViewRenderer histogramLayoutRenderer = new BrickRemoteViewRenderer(
-				histogram, this);
-		views.put(EContainedViewType.HISTOGRAM_VIEW, histogram);
-		containedViewRenderers.put(EContainedViewType.HISTOGRAM_VIEW,
-				histogramLayoutRenderer);
-
-		AContainedViewRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				contentVA, storageVA, set, true);
-
-		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
-				overviewHeatMapRenderer);
-
-		AContainedViewRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				contentVA, storageVA, set, false);
-
-		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
-				compactOverviewHeatMapRenderer);
-
-		// TODO: christian please check here
-		currentRemoteView = histogram;
-
-		currentViewType = brickLayout.getDefaultViewType();
-		brickLayout.setViewRenderer(containedViewRenderers.get(brickLayout
-				.getDefaultViewType()));
+		else
+		{
+			createNominalBrick(gl);
+			currentViewType = EContainedViewType.PARCOORDS_VIEW;
+		}
+	
+		brickLayout.setViewRenderer(containedViewRenderers.get(currentViewType));
 
 		templateRenderer.setTemplate(brickLayout);
 		float minSize = getParentGLCanvas().getPixelGLConverter()
@@ -283,6 +251,62 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		// templateRenderer.updateLayout();
 		// }
 
+	}
+
+	private void createNumericalBrick(GL2 gl) {
+		// TODO: christian please check here
+		if (!(brickLayout instanceof CentralBrickLayoutTemplate)) {
+			HeatMapCreator heatMapCreator = new HeatMapCreator();
+			AGLView heatMap = heatMapCreator.createRemoteView(this, gl, glMouseListener);
+			AContainedViewRenderer heatMapLayoutRenderer = new BrickRemoteViewRenderer(
+					heatMap, this);
+			views.put(EContainedViewType.HEATMAP_VIEW, heatMap);
+			containedViewRenderers.put(EContainedViewType.HEATMAP_VIEW,
+					heatMapLayoutRenderer);
+		}
+		ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
+		AGLView parCoords = parCoordsCreator.createRemoteView(this, gl, glMouseListener);
+		AContainedViewRenderer parCoordsLayoutRenderer = new BrickRemoteViewRenderer(
+				parCoords, this);
+		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
+		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
+				parCoordsLayoutRenderer);
+
+		HistogramCreator histogramCreator = new HistogramCreator();
+		AGLView histogram = histogramCreator.createRemoteView(this, gl, glMouseListener);
+		AContainedViewRenderer histogramLayoutRenderer = new BrickRemoteViewRenderer(
+				histogram, this);
+		views.put(EContainedViewType.HISTOGRAM_VIEW, histogram);
+		containedViewRenderers.put(EContainedViewType.HISTOGRAM_VIEW,
+				histogramLayoutRenderer);
+
+		AContainedViewRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(
+				contentVA, storageVA, set, true);
+
+		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
+				overviewHeatMapRenderer);
+
+		AContainedViewRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(
+				contentVA, storageVA, set, false);
+
+		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
+				compactOverviewHeatMapRenderer);
+
+		// TODO: christian please check here
+		currentRemoteView = histogram;
+	}
+
+	private void createNominalBrick(GL2 gl) {
+
+		ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
+		AGLView parCoords = parCoordsCreator.createRemoteView(this, gl, glMouseListener);
+		AContainedViewRenderer parCoordsLayoutRenderer = new BrickRemoteViewRenderer(
+				parCoords, this);
+		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
+		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
+				parCoordsLayoutRenderer);
+
+		currentRemoteView = parCoords;
 	}
 
 	@Override

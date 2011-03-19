@@ -2,6 +2,7 @@ package org.caleydo.view.info;
 
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -69,9 +70,11 @@ public class RcpInfoAreaView extends CaleydoRCPViewPart {
 		infoArea = new InfoArea();
 
 		// FIXME use determineDataDomain for this
-		infoArea.setDataDomain((ASetBasedDataDomain) DataDomainManager.get()
-				.getDataDomain("org.caleydo.datadomain.genetic"));
-		
+
+		IDataDomain dataDomain = DataDomainManager.get().getDataDomain(
+				serializedView.getDataDomainType());
+		infoArea.setDataDomain((ASetBasedDataDomain) dataDomain);
+
 		infoArea.registerEventListeners();
 		infoArea.createControl(infoComposite);
 	}
@@ -85,7 +88,8 @@ public class RcpInfoAreaView extends CaleydoRCPViewPart {
 
 	@Override
 	public void createDefaultSerializedView() {
-		return ;
+		serializedView = new SerializedInfoAreaView();
+		determineDataDomain(serializedView);
 	}
 
 	// @Override

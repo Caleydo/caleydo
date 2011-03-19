@@ -758,7 +758,7 @@ public class TreeClusterer
 		String nodeName = null;
 
 		if (eClustererType == EClustererType.CONTENT_CLUSTERING) {
-			// if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+			// if (set.getSetType() == ESetDataType.GENE_EXPRESSION_DATA) {
 
 			// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
 			// values, depending on the IDType that has been specified when loading expression data.
@@ -790,7 +790,7 @@ public class TreeClusterer
 			// nodeName += " | ";
 			// nodeName += (refSeq == null) ? ("Unknown") : (refSeq);
 			// }
-			// else if (set.getSetType() == ESetType.UNSPECIFIED) {
+			// else if (set.getSetType() == ESetDataType.UNSPECIFIED) {
 			// nodeName = generalManager.getIDMappingManager().getID( contentVA.get(index));
 			// }
 			// else {

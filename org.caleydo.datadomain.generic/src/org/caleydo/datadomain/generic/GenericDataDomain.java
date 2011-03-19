@@ -63,14 +63,15 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 
 	@Override
 	public String getContentLabel(IDType idType, Object id) {
-		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 	@Override
 	public String getStorageLabel(IDType idType, Object id) {
-		// TODO Auto-generated method stub
-		return null;
+		String label = set.get((Integer) id).getLabel();
+		if (label == null)
+			label = "";
+		return label;
 	}
 
 	@Override

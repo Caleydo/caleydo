@@ -8,13 +8,13 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.ERawDataType;
+import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
@@ -55,7 +55,7 @@ public class Set
 
 	private ERawDataType rawDataType;
 
-	private boolean bIsNumerical;
+	// private boolean bIsNumerical;
 
 	protected HashMap<String, ContentData> hashContentData;
 	protected HashMap<String, StorageData> hashStorageData;
@@ -73,6 +73,8 @@ public class Set
 	protected boolean isSetHomogeneous = false;
 
 	protected StatisticsResult statisticsResult;
+
+	protected ESetDataType setType;
 
 	ASetBasedDataDomain dataDomain;
 
@@ -111,6 +113,11 @@ public class Set
 		defaultStorageData = new StorageData();
 		defaultStorageData.setStorageVA(new StorageVirtualArray(STORAGE));
 		statisticsResult = new StatisticsResult(this);
+	}
+
+	@Override
+	public ESetDataType getSetType() {
+		return setType;
 	}
 
 	/**
@@ -468,7 +475,7 @@ public class Set
 	@Override
 	public void cluster(ClusterState clusterState) {
 
-		if (bIsNumerical == true && isSetHomogeneous == true) {
+		if (setType.equals(ESetDataType.NUMERIC) && isSetHomogeneous == true) {
 
 			String contentVAType = clusterState.getContentVAType();
 			if (contentVAType != null) {
@@ -569,9 +576,9 @@ public class Set
 
 	@Override
 	public NumericalStorage getMeanStorage() {
-		if (!bIsNumerical || !isSetHomogeneous)
+		if (!setType.equals(ESetDataType.NUMERIC) || !isSetHomogeneous)
 			throw new IllegalStateException(
-				"Can not provide a mean storage if set is not numerical (isNumerical: " + bIsNumerical
+				"Can not provide a mean storage if set is not numerical (Set type: " + setType
 					+ ") or not homgeneous (isHomogeneous: " + isSetHomogeneous + ")");
 		if (meanStorage == null) {
 			meanStorage = new NumericalStorage();
@@ -625,26 +632,32 @@ public class Set
 	 *            the storage
 	 */
 	void addStorage(IStorage storage) {
-		if (hashStorages.isEmpty()) {
-			if (storage instanceof INumericalStorage) {
-				bIsNumerical = true;
-			}
-			else {
-				bIsNumerical = false;
-			}
-
-			rawDataType = storage.getRawDataType();
-			// iDepth = storage.size();
+		// if (hashStorages.isEmpty()) {
+		if (storage instanceof INumericalStorage) {
+			if (setType == null)
+				setType = ESetDataType.NUMERIC;
+			else if (setType.equals(ESetDataType.NOMINAL))
+				setType = ESetDataType.HYBRID;
 		}
 		else {
-			if (!bIsNumerical && storage instanceof INumericalStorage)
-				throw new IllegalArgumentException(
-					"All storages in a set must be of the same basic type (nunmerical or nominal)");
-			if (rawDataType != storage.getRawDataType())
-				throw new IllegalArgumentException("All storages in a set must have the same raw data type");
-			// if (iDepth != storage.size())
-			// throw new IllegalArgumentException("All storages in a set must be of the same length");
+			if (setType == null)
+				setType = ESetDataType.NOMINAL;
+			else if (setType.equals(ESetDataType.NUMERIC))
+				setType = ESetDataType.HYBRID;
 		}
+
+		rawDataType = storage.getRawDataType();
+		// iDepth = storage.size();
+		// }
+		// else {
+		// if (!bIsNumerical && storage instanceof INumericalStorage)
+		// throw new IllegalArgumentException(
+		// "All storages in a set must be of the same basic type (nunmerical or nominal)");
+		// if (rawDataType != storage.getRawDataType())
+		// throw new IllegalArgumentException("All storages in a set must have the same raw data type");
+		// // if (iDepth != storage.size())
+		// // throw new IllegalArgumentException("All storages in a set must be of the same length");
+		// }
 		hashStorages.put(storage.getID(), storage);
 		defaultStorageData.getStorageVA().append(storage.getID());
 
@@ -881,7 +894,7 @@ public class Set
 	private void calculateGlobalExtrema() {
 		double dTemp = 1.0;
 
-		if (bIsNumerical) {
+		if (setType.equals(ESetDataType.NUMERIC)) {
 			for (IStorage storage : hashStorages.values()) {
 				INumericalStorage nStorage = (INumericalStorage) storage;
 				dTemp = nStorage.getMin();
@@ -894,7 +907,7 @@ public class Set
 				}
 			}
 		}
-		else if (hashStorages.get(0) instanceof INominalStorage<?>)
+		else if (hashStorages.get(0) instanceof NominalStorage<?>)
 			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
 				+ "on nominal data");
 	}

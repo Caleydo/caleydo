@@ -6,11 +6,12 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
+import org.caleydo.core.data.collection.storage.AStorage;
+import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.util.logging.Logger;
@@ -318,7 +319,7 @@ public class TabularAsciiDataReader
 
 					ArrayList<String> rawStringData = stringLists.get(iStringArrayIndex);
 					rawStringData = fillUp(rawStringData);
-					((INominalStorage<String>) targetStorages.get(storageIndex))
+					((NominalStorage<String>) targetStorages.get(storageIndex))
 						.setRawNominalData(rawStringData);
 					// stringLists.add(new ArrayList<String>(iStopParsingAtLine - parsingStartLine));
 					iStringArrayIndex++;

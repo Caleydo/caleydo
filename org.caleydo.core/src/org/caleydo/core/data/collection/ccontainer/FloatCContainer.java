@@ -132,17 +132,18 @@ public class FloatCContainer
 	/**
 	 * Does the actual normalization between 0 and 1 values that are NaN in the input are kept to be NaN
 	 * 
-	 * @param fMin
+	 * @param min
 	 *            the minimum considered in the normalization
-	 * @param fMax
+	 * @param max
 	 *            the maximum considered in the normalization
 	 * @return
 	 * @throws InvalidAttributeValueException
 	 *             when fMin is >= fMax
 	 */
-	private FloatCContainer normalize(final float fMin, final float fMax) {
-		if (fMin >= fMax)
-			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
+	private FloatCContainer normalize(final float min, final float max) {
+		if (min > max)
+			throw new IllegalArgumentException("Minimum (" + min + ") was bigger as maximum (" + max
+				+ ")");
 
 		float[] fArTmpTarget = new float[fArContainer.length];
 		if (fArContainer.length > 1) {
@@ -152,7 +153,7 @@ public class FloatCContainer
 					fArTmpTarget[iCount] = Float.NaN;
 				}
 
-				fArTmpTarget[iCount] = (fArContainer[iCount] - fMin) / (fMax - fMin);
+				fArTmpTarget[iCount] = (fArContainer[iCount] - min) / (max - min);
 				if (fArTmpTarget[iCount] > 1) {
 					fArTmpTarget[iCount] = 1;
 				}
