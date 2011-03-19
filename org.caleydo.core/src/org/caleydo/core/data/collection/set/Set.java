@@ -475,7 +475,7 @@ public class Set
 	@Override
 	public void cluster(ClusterState clusterState) {
 
-		if (setType.equals(ESetDataType.NUMERIC) && isSetHomogeneous == true) {
+//		if (setType.equals(ESetDataType.NUMERIC) && isSetHomogeneous == true) {
 
 			String contentVAType = clusterState.getContentVAType();
 			if (contentVAType != null) {
@@ -502,9 +502,9 @@ public class Set
 			if (storageResult != null) {
 				hashStorageData.put(clusterState.getStorageVAType(), storageResult);
 			}
-		}
-		else
-			throw new IllegalStateException("Cannot cluster a non-numerical or non-homogeneous Set");
+//		}
+//		else
+//			throw new IllegalStateException("Cannot cluster a non-numerical or non-homogeneous Set");
 
 	}
 

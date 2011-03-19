@@ -90,8 +90,8 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseRow.setRenderer(new BorderedAreaRenderer());
 
 		if (showHandles) {
-			baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter, 10, brick
-					.getTextureManager()));
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter, 10,
+					brick.getTextureManager()));
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
@@ -115,8 +115,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
 		viewLayout.setRenderer(viewRenderer);
 
-		ElementLayout expandButtonLayout = new ElementLayout(
-				"expandButtonLayout");
+		ElementLayout expandButtonLayout = new ElementLayout("expandButtonLayout");
 		expandButtonLayout.setFrameColor(1, 0, 0, 1);
 		// expandButtonLayout.setDebug(true);
 		expandButtonLayout.setPixelGLConverter(pixelGLConverter);
@@ -125,8 +124,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		expandButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		expandButtonLayout.setRenderer(new ButtonRenderer(new Button(
 				EPickingType.BRICK_EXPAND_BUTTON, EXPAND_BUTTON_ID), brick,
-				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, brick
-						.getTextureManager(),
+				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, brick.getTextureManager(),
 				ButtonRenderer.TEXTURE_ROTATION_180));
 
 		viewRow.append(viewLayout);
@@ -174,6 +172,8 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinHeightPixels() {
+		if (viewRenderer == null)
+			return 3 * SPACING_PIXELS + FUEL_BAR_HEIGHT_PIXELS;
 		return 3 * SPACING_PIXELS + FUEL_BAR_HEIGHT_PIXELS
 				+ viewRenderer.getMinHeightPixels();
 	}

@@ -41,7 +41,7 @@ public class AffinityClusterer
 
 	private int iNrClusters = 0;
 
-	private int iMaxIterations = 400;
+	private int maxIterations = 400;
 
 	private int iConvIterations = 30;
 
@@ -302,7 +302,7 @@ public class AffinityClusterer
 		while (bIterate) {
 			iNrIterations++;
 
-			int tempPercentage = (int) ((float) iNrIterations / iMaxIterations * 100);
+			int tempPercentage = (int) ((float) iNrIterations / maxIterations * 100);
 			if (iPercentage == tempPercentage) {
 				GeneralManager.get().getEventPublisher()
 					.triggerEvent(new ClusterProgressEvent(iPercentage, false));
@@ -386,7 +386,7 @@ public class AffinityClusterer
 			for (j = 0; j < iNrSamples; j++) {
 				decsum[j] = decsum[j] + dec[decit][j];
 			}
-			if ((iNrIterations >= iConvIterations) || (iNrIterations >= iMaxIterations)) {
+			if ((iNrIterations >= iConvIterations) || (iNrIterations >= maxIterations)) {
 				// Check convergence
 				bConverged = true;
 				for (j = 0; j < iNrSamples; j++)
@@ -394,7 +394,7 @@ public class AffinityClusterer
 						bConverged = false;
 					}
 				// Check to see if done
-				if ((bConverged && (iNrClusters > 0)) || (iNrIterations == iMaxIterations)) {
+				if ((bConverged && (iNrClusters > 0)) || (iNrIterations == maxIterations)) {
 					bIterate = false;
 				}
 			}

@@ -57,9 +57,10 @@ public class ClusterManager {
 				break;
 			case KMEANS_CLUSTERER:
 				clusterResult = runClustering(new KMeansClusterer(), clusterState);
+				break;
 			case ALPHABETICAL:
 				clusterResult = runClustering(new AlphabeticalPartitioner(), clusterState);
-
+				break;
 		}
 
 		if (clusterResult == null) {

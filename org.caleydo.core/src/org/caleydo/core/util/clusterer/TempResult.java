@@ -12,4 +12,28 @@ public class TempResult {
 	ArrayList<Integer> clusterSizes;
 
 	ClusterTree tree;
+
+	public void setIndices(ArrayList<Integer> indices) {
+		this.indices = indices;
+	}
+
+	public ArrayList<Integer> getIndices() {
+		return indices;
+	}
+	
+	public void setClusterSizes(ArrayList<Integer> clusterSizes) {
+		this.clusterSizes = clusterSizes;
+	}
+	
+	public ArrayList<Integer> getClusterSizes() {
+		return clusterSizes;
+	}
+	
+	public void setSampleElements(ArrayList<Integer> sampleElements) {
+		this.sampleElements = sampleElements;
+	}
+	
+	public ArrayList<Integer> getSampleElements() {
+		return sampleElements;
+	}
 }

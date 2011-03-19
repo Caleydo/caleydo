@@ -221,6 +221,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 							group.getEndIndex() + 1));
 
 			subBrick.setContentVA(group, subVA);
+			// FIXME temp solution
+			subBrick.getLayout().setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+			subBrick.getLayout().setPixelSizeY(80);
 
 			if (centerBrick.getAverageValue() < subBrick.getAverageValue()) {
 				insertBrick(subBrick, topBricks, topCol);
