@@ -291,12 +291,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		columnLayout.setFrameColor(1, 1, 0, 1);
 		leftColumnLayout.setDebug(true);
-		columnLayout.setBottomUp(false);
+		columnLayout.setBottomUp(true);
 
 		ElementLayout dimensionGroupSpacing = new ElementLayout("firstSideDimGrSpacing");
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = null;
 		dimensionGroupSpacing.setDebug(true);
-		
+
 		// Handle special case where arch stand contains no groups
 		if (dimensinoGroupStartIndex == 0) {
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
@@ -311,9 +311,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		dimensionGroupSpacingRenderer.setLineLength(archSideThickness);
 
 		dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
-		dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());	
+		dimensionGroupSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		dimensionGroupSpacing.setGrabY(true);
-		
+
 		columnLayout.append(dimensionGroupSpacing);
 
 		for (int dimensionGroupIndex = dimensinoGroupStartIndex; dimensionGroupIndex < dimensinoGroupEndIndex; dimensionGroupIndex++) {
@@ -323,7 +323,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 			group.getLayout().setRatioSizeX(1);
 			group.getLayout().setAbsoluteSizeY(archSideThickness);
-			 group.getLayout().setDebug(true);
+			group.getLayout().setDebug(true);
 			group.setArchHeight(0);
 			columnLayout.append(group.getLayout());
 
@@ -759,13 +759,75 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		super.setDisplayListDirty();
 	}
 
-	public void moveGroupDimension(DimensionGroup referenceDimGroup,
-			DimensionGroup movedDimGroup) {
+	public void moveGroupDimension(DimensionGroupSpacingRenderer spacer,
+			DimensionGroup movedDimGroup, DimensionGroup referenceDimGroup) {
 
 		clearDimensionGroupSpacerHighlight();
 
-		dimensionGroupManager.moveGroupDimension(referenceDimGroup, movedDimGroup,
-				dropDimensionGroupAfter);
+		boolean insertComplete = false;
+
+		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
+				.getDimensionGroups();
+		for (ElementLayout leftLayout : leftColumnLayout.getElements()) {
+			if (spacer == leftLayout.getRenderer()) {
+
+				dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager.getCenterGroupStartIndex()+1);
+
+				dimensionGroups.remove(movedDimGroup);
+				if (referenceDimGroup == null) {
+					dimensionGroups.add(0, movedDimGroup);
+				} else {
+					dimensionGroups.add(dimensionGroups.indexOf(referenceDimGroup),
+							movedDimGroup);
+				}
+
+				insertComplete = true;
+				break;
+			}
+		}
+
+		if (!insertComplete) {
+			for (ElementLayout rightLayout : rightColumnLayout.getElements()) {
+				if (spacer == rightLayout.getRenderer()) {
+
+					dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager.getRightGroupStartIndex()-1);
+
+					dimensionGroups.remove(movedDimGroup);
+					if (referenceDimGroup == null) {
+						dimensionGroups.add(dimensionGroups.size(), movedDimGroup);
+					} else {
+						dimensionGroups.add(dimensionGroups.indexOf(referenceDimGroup)+1,
+								movedDimGroup);
+					}
+					
+					insertComplete = true;
+					break;
+				}
+			}
+		}
+
+		if (!insertComplete) {
+			for (ElementLayout centerLayout : centerRowLayout.getElements()) {
+				if (spacer == centerLayout.getRenderer()) {
+
+					if (dimensionGroups.indexOf(movedDimGroup) < dimensionGroupManager.getCenterGroupStartIndex())
+						dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager.getCenterGroupStartIndex()-1);
+					else if (dimensionGroups.indexOf(movedDimGroup) >= dimensionGroupManager.getRightGroupStartIndex())						
+						dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager.getRightGroupStartIndex()+1);
+					
+					dimensionGroups.remove(movedDimGroup);
+					if (referenceDimGroup == null) {
+						dimensionGroups.add(dimensionGroupManager.getCenterGroupStartIndex(), movedDimGroup);
+					} else {
+						dimensionGroups.add(dimensionGroups.indexOf(referenceDimGroup)+1,
+								movedDimGroup);
+					}
+
+					insertComplete = true;
+					break;
+				}
+			}
+		}
 
 		initLayouts();
 		// FIXME: check why the second layout is needed here. otherwise the
@@ -798,88 +860,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 						.setRenderSpacer(false);
 		}
 	}
-
-	// public void highlightDimensionGroupSpacer(DimensionGroup
-	// dragOverDimensionGroup,
-	// float mouseX, float mouseY) {
-	//
-	// clearDimensionGroupSpacerHighlight();
-	// dropDimensionGroupAfter = false;
-	//
-	// int hightlightOffset = -1;
-	//
-	// if
-	// (centerRowLayout.getElements().contains(dragOverDimensionGroup.getLayout()))
-	// {
-	//
-	// if ((dragOverDimensionGroup.getLayout().getTranslateX() +
-	// dragOverDimensionGroup
-	// .getLayout().getSizeScaledX()) < mouseX)
-	// dropDimensionGroupAfter = true;
-	// else
-	// dropDimensionGroupAfter = false;
-	// }
-	//
-	// if (dropDimensionGroupAfter)
-	// hightlightOffset = +1;
-	//
-	// ElementLayout spacingElement;
-	//
-	// if
-	// (centerRowLayout.getElements().contains(dragOverDimensionGroup.getLayout()))
-	// {
-	//
-	// spacingElement = centerRowLayout.getElements().get(
-	// centerRowLayout.getElements().indexOf(
-	// dragOverDimensionGroup.getLayout())
-	// + hightlightOffset);
-	//
-	// ((DimensionGroupSpacingRenderer) spacingElement.getRenderer())
-	// .setRenderSpacer(true);
-	// }
-	//
-	// if
-	// ((leftColumnLayout.getElements().contains(dragOverDimensionGroup.getLayout())
-	// || rightColumnLayout
-	// .getElements().contains(dragOverDimensionGroup.getLayout()))) {
-	//
-	// if ((dragOverDimensionGroup.getLayout().getTranslateY() +
-	// dragOverDimensionGroup
-	// .getLayout().getSizeScaledY()) < mouseY)
-	// dropDimensionGroupAfter = true;
-	// else
-	// dropDimensionGroupAfter = false;
-	// }
-	//
-	// if (dropDimensionGroupAfter)
-	// hightlightOffset = +1;
-	//
-	// if
-	// (leftColumnLayout.getElements().contains(dragOverDimensionGroup.getLayout()))
-	// {
-	//
-	// spacingElement = leftColumnLayout.getElements().get(
-	// leftColumnLayout.getElements().indexOf(
-	// dragOverDimensionGroup.getLayout())
-	// - hightlightOffset);
-	//
-	// ((DimensionGroupSpacingRenderer) spacingElement.getRenderer())
-	// .setRenderSpacer(true);
-	// }
-	//
-	// if
-	// (rightColumnLayout.getElements().contains(dragOverDimensionGroup.getLayout()))
-	// {
-	//
-	// spacingElement = rightColumnLayout.getElements().get(
-	// rightColumnLayout.getElements().indexOf(
-	// dragOverDimensionGroup.getLayout())
-	// - hightlightOffset);
-	//
-	// ((DimensionGroupSpacingRenderer) spacingElement.getRenderer())
-	// .setRenderSpacer(true);
-	// }
-	// }
 
 	public DimensionGroupManager getDimensionGroupManager() {
 		return dimensionGroupManager;

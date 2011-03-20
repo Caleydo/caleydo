@@ -50,37 +50,33 @@ public class DimensionGroupManager {
 	}
 
 	public void moveGroupDimension(DimensionGroup referenceDimGroup,
-			DimensionGroup movedDimGroup, boolean dropDimensionGroupAfter) {
+			DimensionGroupSpacingRenderer spacer) {
 
-		int hightlightOffset = 0;
-		if (dropDimensionGroupAfter)
-			hightlightOffset = +1;
-
-		int movedDimGroupIndex = dimensionGroups.indexOf(movedDimGroup);
-		int refDimGroupIndex = dimensionGroups.indexOf(referenceDimGroup);
-
-		if (refDimGroupIndex < centerGroupStartIndex) {
-			centerGroupStartIndex++;
-		} else if (refDimGroupIndex > centerGroupStartIndex
-				&& refDimGroupIndex < rightGroupStartIndex) {
-
-			if (movedDimGroupIndex >= rightGroupStartIndex)
-				rightGroupStartIndex++;
-			else if (movedDimGroupIndex < centerGroupStartIndex)
-				centerGroupStartIndex--;
-
-		} else if (refDimGroupIndex >= rightGroupStartIndex
-				&& movedDimGroupIndex < rightGroupStartIndex) {
-			rightGroupStartIndex--;
-		}
+//		int movedDimGroupIndex = dimensionGroups.indexOf(movedDimGroup);
+//		int refDimGroupIndex = dimensionGroups.indexOf(referenceDimGroup);
+//
+//		if (refDimGroupIndex < centerGroupStartIndex) {
+//			centerGroupStartIndex++;
+//		} else if (refDimGroupIndex > centerGroupStartIndex
+//				&& refDimGroupIndex < rightGroupStartIndex) {
+//
+//			if (movedDimGroupIndex >= rightGroupStartIndex)
+//				rightGroupStartIndex++;
+//			else if (movedDimGroupIndex < centerGroupStartIndex)
+//				centerGroupStartIndex--;
+//
+//		} else if (refDimGroupIndex >= rightGroupStartIndex
+//				&& movedDimGroupIndex < rightGroupStartIndex) {
+//			rightGroupStartIndex--;
+//		}
 
 		// if (refDimGroupIndex < centerGroupStartIndex || refDimGroupIndex >=
 		// rightGroupStartIndex)
 		// hightlightOffset *= -1;
 
-		dimensionGroups.remove(movedDimGroup);
-		dimensionGroups.add(
-				dimensionGroups.indexOf(referenceDimGroup) + hightlightOffset,
-				movedDimGroup);
+//		dimensionGroups.remove(movedDimGroup);
+//		dimensionGroups.add(
+//				dimensionGroups.indexOf(referenceDimGroup) + hightlightOffset,
+//				movedDimGroup);
 	}
 }

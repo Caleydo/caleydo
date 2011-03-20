@@ -154,7 +154,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 		renderBackground(gl);
 		renderDragAndDropMarker(gl);
-		
+
 		renderFlexibleArch(gl);
 		renderDimensionGroupConnections(gl);
 	}
@@ -165,16 +165,17 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 				EPickingType.DIMENSION_GROUP_SPACER, ID);
 
 		float avoidDragHandle = 0;
-		
+
 		if (isVertical)
-			avoidDragHandle = glVisBricks.getParentGLCanvas().getPixelGLConverter().getGLWidthForPixelWidth(20);
-		
+			avoidDragHandle = glVisBricks.getParentGLCanvas().getPixelGLConverter()
+					.getGLWidthForPixelWidth(20);
+
 		gl.glPushName(pickingID);
 		gl.glColor4f(1, 1, 0, 0.3f);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex2f(0, 0);
-		gl.glVertex2f(x-avoidDragHandle, 0);
-		gl.glVertex2f(x-avoidDragHandle, y);
+		gl.glVertex2f(x - avoidDragHandle, 0);
+		gl.glVertex2f(x - avoidDragHandle, y);
 		gl.glVertex2f(0, y);
 		gl.glEnd();
 		gl.glPopName();
@@ -212,7 +213,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		// Do not render the arch for group spacer in the arch sides
 		if (!isVertical)
 			return;
-		
+
 		float leftCenterBrickTop = 0;
 		float leftCenterBrickBottom = 0;
 		float rightCenterBrickTop = 0;
@@ -406,9 +407,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			if (draggable == this)
 				break;
 
-			if (leftDimGroup != null) {
-				glVisBricks.moveGroupDimension(leftDimGroup, (DimensionGroup) draggable);
-			}
+			glVisBricks
+					.moveGroupDimension(this, (DimensionGroup) draggable, leftDimGroup);
 		}
 
 		draggables.clear();
