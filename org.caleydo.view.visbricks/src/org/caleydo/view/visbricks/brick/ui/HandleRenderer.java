@@ -88,8 +88,7 @@ public class HandleRenderer extends LayoutRenderer {
 		gl.glPopName();
 
 		gl.glPushName(brick.getPickingManager().getPickingID(
-				brick.getDimensionGroup().getID(), EPickingType.DRAGGING_HANDLE,
-				brick.getDimensionGroup().getID()));
+				brick.getDimensionGroup().getID(), EPickingType.DRAGGING_HANDLE, 0));
 		//
 		// Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth * 2.0f, y / 2.0f
 		// - glHandleHeight, 0);
