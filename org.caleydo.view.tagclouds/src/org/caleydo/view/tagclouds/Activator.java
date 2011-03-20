@@ -54,7 +54,7 @@ public class Activator extends Plugin {
 
 		// TODO: ADD THE POSSIBLE DATA DOMAINS FOR THIS VIEW
 		// For example:
-		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
 
 		DataDomainManager
 				.get()

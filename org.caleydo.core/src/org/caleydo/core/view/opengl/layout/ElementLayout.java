@@ -168,7 +168,7 @@ public class ElementLayout {
 	 */
 	public void setRatioSizeX(float ratioSizeX) {
 		if (ratioSizeX > 1 || ratioSizeX < 0)
-			throw new IllegalArgumentException("Ratio sizes must be between 0 and 1");
+			throw new IllegalArgumentException("Ratio sizes must be between 0 and 1, but was: "+ ratioSizeX);
 		resetX();
 		this.ratioSizeX = ratioSizeX;
 	}
@@ -184,7 +184,7 @@ public class ElementLayout {
 	 */
 	public void setRatioSizeY(float ratioSizeY) {
 		if (ratioSizeY > 1 || ratioSizeY < 0)
-			throw new IllegalArgumentException("Ratio sizes must be between 0 and 1");
+			throw new IllegalArgumentException("Ratio sizes must be between 0 and 1, but was: "+ ratioSizeY);
 		resetY();
 		this.ratioSizeY = ratioSizeY;
 	}
