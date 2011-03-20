@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.view.tagclouds.RcpGLTagCloudView"
+            icon="resources/icons/icon.png"
+            id="org.caleydo.view.tagclouds"
+            name="TagClouds">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.view"
+               label="View">
+            <command
+                  commandId="org.caleydo.view.tagclouds.command.opentagclouds"
+                  icon="resources/icons/icon.png"
+                  style="push">
+               <visibleWhen checkEnabled="false">
+                  <with
+                        variable="org.caleydo.rcp.isReleaseState">
+                     <equals
+                           value="releaseVersion">
+                     </equals>
+                  </with>
+               </visibleWhen>
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.tagclouds.command.handler.OpenTagCloudHandler"
+            id="org.caleydo.view.tagclouds.command.opentagclouds"
+            name="TagClouds">
+      </command>
+   </extension>
+   <extension
+         id="org.caleydo.view.tagclouds"
+         name="TagCloudViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="TagCloudViewCreator"
+          class="org.caleydo.view.tagclouds.creator.ViewCreator" />
+   </extension>
+</plugin>
