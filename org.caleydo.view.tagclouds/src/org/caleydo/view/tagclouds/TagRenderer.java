@@ -20,10 +20,14 @@ public class TagRenderer extends LayoutRenderer {
 
 	private float color[];
 
-	public TagRenderer(MinSizeTextRenderer textRenderer, String text) {
+	private boolean isEven = false;
+	private boolean allowTextScaling = false;
+
+	public TagRenderer(MinSizeTextRenderer textRenderer, String text, GLTagCloud tagCloud) {
 		this.textRenderer = textRenderer;
 		this.text = text;
-		color = new float[] { 0, 0, 0};
+		this.tagCloud = tagCloud;
+		color = new float[] { 0, 0, 0 };
 	}
 
 	public TagRenderer(MinSizeTextRenderer textRenderer, GLTagCloud tagCloud,
@@ -33,6 +37,14 @@ public class TagRenderer extends LayoutRenderer {
 		this.contentSelectionManager = tagCloud.getContentSelectionManager();
 		this.storageID = storageID;
 		color = SelectionType.MOUSE_OVER.getColor();
+	}
+
+	public void setEven(boolean isEven) {
+		this.isEven = isEven;
+	}
+
+	public void setAllowTextScaling(boolean allowTextScaling) {
+		this.allowTextScaling = allowTextScaling;
 	}
 
 	public void selectionUpdated() {
@@ -54,9 +66,33 @@ public class TagRenderer extends LayoutRenderer {
 
 	public void render(GL2 gl) {
 
+		float sideSpacing = 0.1f;
+		float topSpacing = 0.03f;
+
+		if (isEven) {
+			gl.glColor3f(0.9f, 0.9f, 0.9f);
+			gl.glBegin(GL2.GL_POLYGON);
+			gl.glVertex3f(0, 0, -.001f);
+			gl.glVertex3f(0, y, -.001f);
+			gl.glVertex3f(x, y, -.001f);
+			gl.glVertex3f(x, 0, -.001f);
+			gl.glEnd();
+		}
 		textRenderer.setWindowSize(x, y);
 		textRenderer.setColor(color);
-		textRenderer.renderTextInBounds(gl, text, 0, 0, 0, x, y);
+
+		float maxHeight = tagCloud.getParentGLCanvas().getPixelGLConverter()
+				.getGLHeightForPixelHeight(50);
+		if (allowTextScaling && y > maxHeight) {
+			float renderHeight = maxHeight;
+
+			topSpacing = (y - renderHeight) / 2;
+			textRenderer.renderTextInBounds(gl, text, sideSpacing, topSpacing, 0, x
+					- sideSpacing, renderHeight);
+		} else {
+			textRenderer.renderTextInBounds(gl, text, sideSpacing, topSpacing / 2, 0, x
+					- sideSpacing, y - topSpacing);
+		}
 	};
 
 }

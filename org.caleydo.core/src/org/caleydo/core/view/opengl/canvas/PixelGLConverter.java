@@ -45,8 +45,8 @@ public class PixelGLConverter {
 		float height = totalHeightGL / totalHeightPixel.floatValue() * pixelHeight;
 		return height;
 	}
-	
-	public float getPixelWidthForGLWidth(float glWidth) {
+
+	public int getPixelWidthForGLWidth(float glWidth) {
 		float totalWidthGL = viewFrustum.getWidth();
 		Double totalWidthPixel = canvas.getBounds().getWidth();
 		if (totalWidthPixel == null || totalWidthPixel <= 0)
@@ -54,10 +54,10 @@ public class PixelGLConverter {
 				+ ". It's likely that the canvas is not initialized.");
 
 		float width = totalWidthPixel.floatValue() / totalWidthGL * glWidth;
-		return width;
+		return (int) width;
 	}
 
-	public float getPixelHeightForGLHeight(int glHeight) {
+	public int getPixelHeightForGLHeight(float glHeight) {
 		float totalHeightGL = viewFrustum.getHeight();
 		Double totalHeightPixel = canvas.getBounds().getHeight();
 
@@ -65,6 +65,6 @@ public class PixelGLConverter {
 			throw new IllegalStateException("Height of Canvas in pixel is " + totalHeightPixel
 				+ ". It's likely that the canvas is not initialized.");
 		float height = totalHeightPixel.floatValue() / totalHeightGL * glHeight;
-		return height;
+		return (int) height;
 	}
 }

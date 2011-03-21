@@ -1,6 +1,7 @@
 package org.caleydo.view.tagclouds;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -22,6 +23,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -64,6 +66,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 	private Column baseColumn;
 	private Row tagCloudRow;
+	private Row captionRow;
 	private Row selectionRow;
 
 	private MinSizeTextRenderer textRenderer;
@@ -71,6 +74,10 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	private ContentSelectionManager contentSelectionManager;
 
 	private ArrayList<TagRenderer> selectedTagRenderers = new ArrayList<TagRenderer>();
+
+	/** list sorted based on number of occurences */
+	private ArrayList<Pair<Integer, String>> sortedContent;
+
 	// private StorageSelectionManager storageSelectionManager;
 
 	/**
@@ -94,30 +101,6 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		layoutManager = new LayoutManager(viewFrustum);
 		layoutTemplate = new LayoutTemplate();
 		layoutManager.setTemplate(layoutTemplate);
-		baseColumn = new Column("baseColumn");
-		// baseColumn.setDebug(true);
-
-		tagCloudRow = new Row("tagCloudRow");
-		// tagCloudRow.setDebug(true);
-
-		selectionRow = new Row("selectionRow");
-		selectionRow.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		selectionRow.setPixelSizeY(40);
-		// selectionRow.setDebug(true);
-
-		ElementLayout spacing = new ElementLayout("spacing");
-		spacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		spacing.setPixelSizeY(10);
-		spacing.setRatioSizeX(0);
-
-		baseColumn.append(spacing);
-		baseColumn.append(selectionRow);
-		baseColumn.append(spacing);
-		baseColumn.append(tagCloudRow);
-		baseColumn.append(spacing);
-
-		// tagCloudRow.setDebug(true);
-		layoutTemplate.setBaseElementLayout(baseColumn);
 
 	}
 
@@ -157,17 +140,59 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 	}
 
-	@Override
-	public void init(GL2 gl) {
-		// renderStyle = new GeneralRenderStyle(viewFrustum);
-		renderStyle = new TagCloudRenderStyle(viewFrustum);
+	private void initMapping() {
 
-		textRenderer = new MinSizeTextRenderer(80);
-		super.renderStyle = renderStyle;
-		detailLevel = DetailLevel.HIGH;
+		baseColumn = new Column("baseColumn");
+		// baseColumn.setDebug(true);
+
+		// baseColumn.setAbsoluteSizeY(3);
+		tagCloudRow = new Row("tagCloudRow");
+		// tagCloudRow.setDebug(true);
+
+		captionRow = new Row("captionRow");
+		captionRow.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		captionRow.setPixelSizeY(20);
+
+		selectionRow = new Row("selectionRow");
+		selectionRow.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		selectionRow.setPixelSizeY(20);
+		// selectionRow.setDebug(true);
+
+		ElementLayout spacing = new ElementLayout("spacing");
+		spacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		spacing.setPixelSizeY(3);
+		spacing.setRatioSizeX(0);
+		
+		ElementLayout largerSpacing = new ElementLayout("spacing");
+		largerSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		largerSpacing.setPixelSizeY(7);
+		largerSpacing.setRatioSizeX(0);
+
+		baseColumn.append(spacing);
+		baseColumn.append(selectionRow);
+
+		baseColumn.append(spacing);
+		baseColumn.append(captionRow);
+		baseColumn.append(largerSpacing);
+		baseColumn.append(tagCloudRow);
+		baseColumn.append(spacing);
+
+		// tagCloudRow.setDebug(true);
+		layoutTemplate.setBaseElementLayout(baseColumn);
 
 		for (Integer storageID : storageVA) {
 
+			ElementLayout storageCaptionLayout = new ElementLayout("storageCaptionLayout");
+			storageCaptionLayout.setGrabX(true);
+
+			StorageCaptionRenderer storageCaptionRenderer = new StorageCaptionRenderer(
+					textRenderer, set.get(storageID).getLabel());
+			storageCaptionLayout.setRenderer(storageCaptionRenderer);
+			// storageCaptionLayout.setDebug(true);
+
+			captionRow.append(storageCaptionLayout);
+
+			sortedContent = new ArrayList<Pair<Integer, String>>();
 			HashMap<String, Integer> stringOccurences = stringOccurencesPerStorage
 					.get(storageID);
 
@@ -175,29 +200,53 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 			storageColumn.setGrabX(true);
 			tagCloudRow.append(storageColumn);
 			float remainingRatio = 1;
-			float maxRatio = 0.02f;
+
 			for (Entry<String, Integer> entry : stringOccurences.entrySet()) {
 
-				if (entry.getValue() / contentVA.size() > maxRatio) {
-					remainingRatio -= maxRatio;
-				}
+				sortedContent.add(new Pair<Integer, String>(entry.getValue(), entry
+						.getKey()));
 
 			}
 
-			for (Entry<String, Integer> entry : stringOccurences.entrySet()) {
-				ElementLayout tagLayout = new ElementLayout();
-				// tagLayout.setDebug(true);
-				float ratio;
-				if ((float) entry.getValue() / contentVA.size() > maxRatio)
-					ratio = maxRatio;
-				else
-					ratio = (float) entry.getValue() / contentVA.size() * remainingRatio;
+			Collections.sort(sortedContent);
 
-				if (ratio > maxRatio)
-					ratio = maxRatio;
-				tagLayout.setRatioSizeY(ratio);
-				tagLayout.setRenderer(new TagRenderer(textRenderer, entry.getKey()));
+			int pixel = parentGLCanvas.getPixelGLConverter().getPixelHeightForGLHeight(
+					viewFrustum.getHeight());
+			int numberEntries = pixel / 27;
+
+			ArrayList<Pair<String, Integer>> shortenedAlpahbeticalList = new ArrayList<Pair<String, Integer>>(
+					numberEntries > sortedContent.size() ? sortedContent.size()
+							: numberEntries);
+
+			double totalOccurencesRendered = 0;
+
+			for (int count = sortedContent.size() - 1; (count >= sortedContent.size()
+					- numberEntries)
+					&& (count > 0); count--) {
+				Pair<Integer, String> sortedPair = sortedContent.get(count);
+				shortenedAlpahbeticalList.add(new Pair<String, Integer>(sortedPair
+						.getSecond(), sortedPair.getFirst()));
+				totalOccurencesRendered += Math.log(sortedPair.getFirst());
+			}
+
+			Collections.sort(shortenedAlpahbeticalList);
+
+			boolean isEven = true;
+			for (Pair<String, Integer> entry : shortenedAlpahbeticalList) {
+				ElementLayout tagLayout = new ElementLayout();
+				double ratio;
+				ratio = Math.log(entry.getSecond()) / totalOccurencesRendered
+						* remainingRatio;
+				tagLayout.setRatioSizeY((float) ratio);
+				TagRenderer tagRenderer = new TagRenderer(textRenderer, entry.getFirst(),
+						this);
+				tagRenderer.setEven(isEven);
+				if (shortenedAlpahbeticalList.size() < numberEntries)
+					tagRenderer.setAllowTextScaling(true);
+				isEven = !isEven;
+				tagLayout.setRenderer(tagRenderer);
 				storageColumn.append(tagLayout);
+
 			}
 
 			ElementLayout selectionTagLayout = new ElementLayout("selectionTagLayout");
@@ -211,6 +260,17 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 		}
 		layoutManager.updateLayout();
+	}
+
+	@Override
+	public void init(GL2 gl) {
+		// renderStyle = new GeneralRenderStyle(viewFrustum);
+		renderStyle = new TagCloudRenderStyle(viewFrustum);
+
+		textRenderer = new MinSizeTextRenderer(80);
+		super.renderStyle = renderStyle;
+		detailLevel = DetailLevel.HIGH;
+
 	}
 
 	@Override
@@ -250,6 +310,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
+		initMapping();
 		layoutManager.updateLayout();
 	}
 
