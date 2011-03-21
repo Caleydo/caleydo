@@ -1,5 +1,8 @@
 package org.caleydo.view.visbricks.dimensiongroup;
 
+import java.util.HashMap;
+
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 
@@ -14,11 +17,13 @@ public class SubGroupMatch {
 	private float rightAnchorYStart;
 	
 	private float rightAnchorYEnd;
+
+	private HashMap<SelectionType, Float> hashSelectionTypeToRatio = new HashMap<SelectionType, Float>();
 	
 	public SubGroupMatch(GLBrick glBrick) {
 		this.glBrick = glBrick;
 	}
-
+	
 	public void setLeftAnchorYStart(float leftAnchorYStart) {
 		this.leftAnchorYStart = leftAnchorYStart;
 	}
@@ -53,5 +58,13 @@ public class SubGroupMatch {
 	
 	public GLBrick getBrick() {
 		return glBrick;
+	}
+	
+	public void addSelectionTypeRatio(float ratio, SelectionType selectionType) {
+		hashSelectionTypeToRatio.put(selectionType, ratio);
+	}
+	
+	public HashMap<SelectionType, Float> getHashRatioToSelectionType() {
+		return hashSelectionTypeToRatio;
 	}
 }

@@ -15,7 +15,7 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
  * @author Alexander Lex
  * @param <VAType>
  */
-public class VASimilarity<VAType extends VirtualArray<?, ?, GroupListType>, GroupListType extends GroupList<GroupListType, ?, ?>> {
+public class VASimilarity<VAType extends VirtualArray<VAType, ?, GroupListType>, GroupListType extends GroupList<GroupListType, VAType, ?>> {
 
 	/**
 	 * Returns the VA associated with the provides setID
@@ -47,23 +47,13 @@ public class VASimilarity<VAType extends VirtualArray<?, ?, GroupListType>, Grou
 		return groupListSimilarities.get(setID).get(groupID);
 	}
 
-	// -------------------- END OF PUBLIC INTERFACE ----------------------------------
-
-	/** The two virtual arrays stored by their key */
-	HashMap<Integer, VAType> vaMap = new HashMap<Integer, VAType>(4);
-	/** The keys */
-	ArrayList<Integer> keys = new ArrayList<Integer>(4);
-	/** Contains one ArrayList for every VA, which in turn contains the GroupSimilarity for every group */
-	HashMap<Integer, ArrayList<GroupSimilarity<VAType, GroupListType>>> groupListSimilarities =
-		new HashMap<Integer, ArrayList<GroupSimilarity<VAType, GroupListType>>>(4);
-
 	/**
 	 * Add a new VA
 	 * 
 	 * @param setID
 	 * @param va
 	 */
-	void addVA(Integer setID, VAType va) {
+	public void addVA(Integer setID, VAType va) {
 
 		if (vaMap.size() <= 2 && !vaMap.containsKey(setID)) {
 			vaMap.put(setID, va);
@@ -76,6 +66,16 @@ public class VASimilarity<VAType extends VirtualArray<?, ?, GroupListType>, Grou
 			vaMap.put(setID, va);
 		}
 	}
+
+	// -------------------- END OF PUBLIC INTERFACE ----------------------------------
+
+	/** The two virtual arrays stored by their key */
+	HashMap<Integer, VAType> vaMap = new HashMap<Integer, VAType>(4);
+	/** The keys */
+	ArrayList<Integer> keys = new ArrayList<Integer>(4);
+	/** Contains one ArrayList for every VA, which in turn contains the GroupSimilarity for every group */
+	HashMap<Integer, ArrayList<GroupSimilarity<VAType, GroupListType>>> groupListSimilarities =
+		new HashMap<Integer, ArrayList<GroupSimilarity<VAType, GroupListType>>>(4);
 
 	/**
 	 * Calculates the similarities of the previously specified VAs

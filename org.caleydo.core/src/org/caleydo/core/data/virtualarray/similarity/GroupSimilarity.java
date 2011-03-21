@@ -1,5 +1,6 @@
 package org.caleydo.core.data.virtualarray.similarity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -24,7 +25,7 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
  * 
  * @author Alexander Lex
  */
-public class GroupSimilarity<VAType extends VirtualArray<?, ?, GroupListType>, GroupListType extends GroupList<GroupListType, ?, ?>> {
+public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListType>, GroupListType extends GroupList<GroupListType, VAType, ?>> {
 
 	/** Get the id of the group for which the similarities are contained */
 
@@ -65,6 +66,26 @@ public class GroupSimilarity<VAType extends VirtualArray<?, ?, GroupListType>, G
 		return similarities;
 	}
 
+	/**
+	 * Returns a new virtual array containing all elements which occur in the primary group of this group
+	 * similarity and an external group specified through the foreign group ID.
+	 * 
+	 * @param foreignGroupID Returns null if createSimilarity flag is false.
+	 * @return
+	 */
+	public VAType getSimilarityVAs(int foreignGroupID) {
+		
+		if (!createSimilarityVAs)
+			return null;
+		
+		return similarityVAs.get(foreignGroupID);
+	}
+
+	@Override
+	public String toString() {
+		return "Gr. Sim.: src.: " + group + " to: " + scores.length + " groups";
+	}
+
 	// -------------------- END OF PUBLIC INTERFACE ----------------------------------
 
 	private int[] scores;
@@ -72,12 +93,23 @@ public class GroupSimilarity<VAType extends VirtualArray<?, ?, GroupListType>, G
 	private VAType va1;
 	private VAType va2;
 	private float[] similarities;
+	private ArrayList<VAType> similarityVAs;
+	private boolean createSimilarityVAs = true;
 
 	GroupSimilarity(Group group, VAType va1, VAType va2) {
 		this.va1 = va1;
 		this.va2 = va2;
 		this.group = group;
 		scores = new int[va2.getGroupList().size()];
+
+		if (createSimilarityVAs) {
+			similarityVAs = new ArrayList<VAType>(va2.getGroupList().size());
+
+			for (int vaCount = 0; vaCount < va2.getGroupList().size(); vaCount++) {
+				// it does not matter which va we use as we only need the object
+				similarityVAs.add(va2.getNewInstance());
+			}
+		}
 	}
 
 	void calculateSimilarity() {
@@ -85,8 +117,13 @@ public class GroupSimilarity<VAType extends VirtualArray<?, ?, GroupListType>, G
 		for (int vaIndex = group.getStartIndex(); vaIndex < group.getStartIndex() + group.getSize(); vaIndex++) {
 			Integer id = va1.get(vaIndex);
 			List<Group> groups2 = va2.getGroupOf(id);
+
 			for (Group group2 : groups2) {
 				scores[group2.getGroupID()] += 1;
+
+				if (createSimilarityVAs) {
+					similarityVAs.get(group2.getGroupID()).append(id);
+				}
 			}
 		}
 		similarities = new float[scores.length];
@@ -98,10 +135,4 @@ public class GroupSimilarity<VAType extends VirtualArray<?, ?, GroupListType>, G
 	void setScore(int groupID, int score) {
 		scores[groupID] = score;
 	}
-
-	@Override
-	public String toString() {
-		return "Gr. Sim.: src.: " + group + " to: " + scores.length + " groups";
-	}
-
 }

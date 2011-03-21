@@ -12,6 +12,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.ESetDataType;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -168,17 +169,14 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks, dimensionGroup);
 
 		}
-		if (set.getSetType().equals(ESetDataType.NUMERIC))
-		{
+		if (set.getSetType().equals(ESetDataType.NUMERIC)) {
 			createNumericalBrick(gl);
 			currentViewType = brickLayout.getDefaultViewType();
-		}
-		else
-		{
+		} else {
 			createNominalBrick(gl);
 			currentViewType = EContainedViewType.PARCOORDS_VIEW;
 		}
-	
+
 		brickLayout.setViewRenderer(containedViewRenderers.get(currentViewType));
 
 		templateRenderer.setTemplate(brickLayout);
@@ -200,7 +198,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			}
 
 			public void updateSelection() {
-				System.out.println("picked brick");
+				// System.out.println("picked brick");
 
 				contentGroupSelectionManager.clearSelection(SelectionType.SELECTION);
 				contentGroupSelectionManager.addToType(SelectionType.SELECTION,
@@ -212,11 +210,13 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 				SelectionDelta delta = contentGroupSelectionManager.getDelta();
 				event.setSelectionDelta(delta);
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
-
+				
 				if (!brickLayout.isShowHandles()) {
 					brickLayout.setShowHandles(true);
 					templateRenderer.updateLayout();
 				}
+				
+				selectElementsByGroup();	
 			}
 
 		}, EPickingType.BRICK, getID());
@@ -252,6 +252,27 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		// }
 
 	}
+	
+	private void selectElementsByGroup() {
+		
+		// Select all elements in group with special type
+		ContentSelectionManager contentSelectionManager = visBricks.getContentSelectionManager();
+		SelectionType selectedByGroupSelectionType = visBricks.getSelectedByGroupSelectionType();
+		
+		contentSelectionManager.clearSelection(selectedByGroupSelectionType);
+		
+		for (Integer contentID : contentVA) {
+			contentSelectionManager.addToType(selectedByGroupSelectionType, contentID);
+		}
+		
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setDataDomainType(getDataDomain().getDataDomainType());
+		event.setSender(this);
+		SelectionDelta delta = contentSelectionManager.getDelta();
+		event.setSelectionDelta(delta);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
+	}
+	
 
 	private void createNumericalBrick(GL2 gl) {
 		// TODO: christian please check here
@@ -840,6 +861,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			if (contentGroupSelectionManager.checkStatus(SelectionType.SELECTION,
 					getGroup().getID())) {
 				brickLayout.setShowHandles(true);
+				visBricks.updateConnectionLinesBetweenDimensionGroups();
 			} else {
 				brickLayout.setShowHandles(false);
 			}

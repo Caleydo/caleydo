@@ -13,7 +13,10 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.ClusterTree;
+import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
@@ -113,6 +116,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private ElementLayout leftDimensionGroupSpacing;
 	private ElementLayout rightDimensionGroupSpacing;
 
+	private ContentSelectionManager contentSelectionManager;
+	
+	private SelectionType selectedByGroupSelectionType = new SelectionType("Selected by group",
+			new float[] { 0, 0, 1, 1}, 1, false, true, 1);
+
 	/**
 	 * Constructor.
 	 * 
@@ -137,6 +145,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		dataDomain.createContentRelationAnalyzer();
 		relationAnalyzer = dataDomain.getContentRelationAnalyzer();
 
+		contentSelectionManager = dataDomain.getContentSelectionManager();
+		
+		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
+				selectedByGroupSelectionType);
+		eventPublisher.triggerEvent(selectionTypeEvent);
+		
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new VisBricksRenderStyle(viewFrustum);
 
@@ -298,12 +312,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		layoutManager.setTemplate(layoutTemplate);
 
 		columnLayout.setFrameColor(1, 1, 0, 1);
-//		columnLayout.setDebug(true);
+		// columnLayout.setDebug(true);
 		columnLayout.setBottomUp(true);
 
 		ElementLayout dimensionGroupSpacing = new ElementLayout("firstSideDimGrSpacing");
 
-//		dimensionGroupSpacing.setDebug(true);
+		// dimensionGroupSpacing.setDebug(true);
 		dimensionGroupSpacing.setGrabY(true);
 
 		columnLayout.append(dimensionGroupSpacing);
@@ -331,14 +345,14 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 					dimensionGroupIndex);
 
 			group.getLayout().setAbsoluteSizeY(archSideThickness);
-//			group.getLayout().setDebug(true);
+			// group.getLayout().setDebug(true);
 			group.setArchHeight(-1);
 			columnLayout.append(group.getLayout());
 
 			group.setCollapsed(true);
 
 			dimensionGroupSpacing = new ElementLayout("sideDimGrSpacing");
-//			dimensionGroupSpacing.setDebug(true);
+			// dimensionGroupSpacing.setDebug(true);
 			dimensionGroupSpacing.setGrabY(true);
 
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null, null,
@@ -913,5 +927,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	public float getArchBottomY() {
 		return archBottomY;
+	}
+	
+	public SelectionType getSelectedByGroupSelectionType() {
+		return selectedByGroupSelectionType;
+	}
+	
+	public ContentSelectionManager getContentSelectionManager() {
+		return contentSelectionManager;
 	}
 }

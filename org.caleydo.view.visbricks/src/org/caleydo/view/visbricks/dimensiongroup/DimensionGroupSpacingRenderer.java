@@ -2,9 +2,12 @@ package org.caleydo.view.visbricks.dimensiongroup;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.similarity.GroupSimilarity;
@@ -104,6 +107,9 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 				SubGroupMatch subGroupMatch = new SubGroupMatch(rightBrick);
 				groupMatch.addSubGroupMatch(rightBrick.getGroupID(), subGroupMatch);
 
+				calculateSubMatchSelections(subGroupMatch,
+						leftGroupSimilarity.getSimilarityVAs(rightBrick.getGroupID()));
+
 				float leftSimilarityRatioY = leftSimilarities[rightBrick.getGroupID()];
 				leftSimilarityOffsetY += leftSimilarityRatioY;
 
@@ -125,6 +131,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 					.getGroupSimilarity(rightDimGroup.getSetID(), rightBrick.getGroupID());
 
 			float[] rightSimilarities = rightGroupSimilarity.getSimilarities();
+
 			float rightSimilarityOffsetY = 0;
 
 			for (GLBrick leftBrick : leftBricks) {
@@ -133,6 +140,10 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 						.getGroupID());
 				SubGroupMatch subGroupMatch = groupMatch.getSubGroupMatch(rightBrick
 						.getGroupID());
+
+				// if (rightBrick.isActive())
+				// calculateSubMatchSelections(subGroupMatch,
+				// rightBrick.getContentVA());
 
 				float rightSimilarityRatioY = rightSimilarities[leftBrick.getGroupID()];
 				rightSimilarityOffsetY += rightSimilarityRatioY;
@@ -145,8 +156,38 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 				subGroupMatch.setRightAnchorYEnd(rightBrickElementLayout.getTranslateY()
 						+ rightBrickElementLayout.getSizeScaledY()
 						* (rightSimilarityOffsetY - rightSimilarityRatioY));
+
 			}
 		}
+
+		// initPropagatedConnections(leftDimGroup);
+	}
+
+	private void calculateSubMatchSelections(SubGroupMatch subGroupMatch,
+			ContentVirtualArray contentVA) {
+
+		if (contentVA.size() == 0)
+			return;
+
+		ContentSelectionManager contentSelectionManager = glVisBricks
+				.getContentSelectionManager();
+		SelectionType selectedByGroupSelectionType = glVisBricks
+				.getSelectedByGroupSelectionType();
+		Set<Integer> selectedByGroupSelections = contentSelectionManager
+				.getElements(selectedByGroupSelectionType);
+
+		if (selectedByGroupSelections == null || selectedByGroupSelections.size() == 0)
+			return;
+
+		int intersectionCount = 0;
+		for (int contentID : contentVA) {
+			if (selectedByGroupSelections.contains(contentID))
+				intersectionCount++;
+		}
+
+		float ratio = (float) intersectionCount / contentVA.size();
+
+		subGroupMatch.addSelectionTypeRatio(ratio, selectedByGroupSelectionType);
 	}
 
 	@Override
@@ -164,19 +205,12 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		int pickingID = glVisBricks.getPickingManager().getPickingID(glVisBricks.getID(),
 				EPickingType.DIMENSION_GROUP_SPACER, ID);
 
-		float avoidDragHandle = 0;
-
-		// if (isVertical)
-		// avoidDragHandle =
-		// glVisBricks.getParentGLCanvas().getPixelGLConverter()
-		// .getGLWidthForPixelWidth(20);
-
 		gl.glPushName(pickingID);
 		gl.glColor4f(1, 1, 0, 0f);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex2f(0, 0);
-		gl.glVertex2f(x - avoidDragHandle, 0);
-		gl.glVertex2f(x - avoidDragHandle, y);
+		gl.glVertex2f(x, 0);
+		gl.glVertex2f(x, y);
 		gl.glVertex2f(0, y);
 		gl.glEnd();
 		gl.glPopName();
@@ -360,15 +394,43 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 									.isActive()), splineFactor, 0, false, new float[] {
 									0.0f, 0.0f, 1 }, 0.15f);
 				}
+				// Render selected portion
+				HashMap<SelectionType, Float> hashRatioToSelectionType = subGroupMatch
+						.getHashRatioToSelectionType();
 
 				connectionRenderer.renderSingleBand(gl,
 						new float[] { 0, subGroupMatch.getLeftAnchorYTop(), 0 },
 						new float[] { 0, subGroupMatch.getLeftAnchorYBottom(), 0 },
 						new float[] { x, subGroupMatch.getRightAnchorYTop(), 0 },
 						new float[] { x, subGroupMatch.getRightAnchorYBottom(), 0 },
-						(groupMatch.getBrick().isActive() || subGroupMatch.getBrick()
-								.isActive()), splineFactor, 0, false, new float[] { 0.0f,
-								0.0f, 1 }, 0.15f);
+						false, splineFactor, 0, false, new float[] { 0.0f, 0.0f, 1 },
+						0.15f);
+
+				for (SelectionType selectionType : hashRatioToSelectionType.keySet()) {
+
+					float ratio = hashRatioToSelectionType.get(selectionType);
+
+					if (ratio == 0)
+						continue;
+
+					float leftYDiff = subGroupMatch.getLeftAnchorYTop()
+							- subGroupMatch.getLeftAnchorYBottom();
+					float leftYDiffSelection = leftYDiff * ratio;
+
+					float rightYDiff = subGroupMatch.getRightAnchorYTop()
+							- subGroupMatch.getRightAnchorYBottom();
+					float rightYDiffSelection = rightYDiff * ratio;
+
+					connectionRenderer.renderSingleBand(gl, new float[] { 0,
+							subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { 0,
+							subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection, 0 },
+							new float[] { x, subGroupMatch.getRightAnchorYTop(), 0 },
+							new float[] {
+									x,
+									subGroupMatch.getRightAnchorYTop()
+											- rightYDiffSelection, 0 }, true,
+							splineFactor, 0, false, new float[] { 0.0f, 0.0f, 1 }, 0.15f);
+				}
 			}
 		}
 	}
@@ -389,12 +451,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 	public void handleDragOver(GL2 gl, java.util.Set<IDraggable> draggables,
 			float mouseCoordinateX, float mouseCoordinateY) {
 
-		// if (leftDimGroup != null) {
-		// glVisBricks.highlightDimensionGroupSpacer(leftDimGroup,
-		// mouseCoordinateX,
-		// mouseCoordinateY);
 		setRenderSpacer(true);
-		// }
 	}
 
 	@Override
