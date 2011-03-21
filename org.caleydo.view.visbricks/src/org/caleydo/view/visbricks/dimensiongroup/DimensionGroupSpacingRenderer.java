@@ -166,12 +166,13 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 		float avoidDragHandle = 0;
 
-//		if (isVertical)
-//			avoidDragHandle = glVisBricks.getParentGLCanvas().getPixelGLConverter()
-//					.getGLWidthForPixelWidth(20);
+		// if (isVertical)
+		// avoidDragHandle =
+		// glVisBricks.getParentGLCanvas().getPixelGLConverter()
+		// .getGLWidthForPixelWidth(20);
 
 		gl.glPushName(pickingID);
-		gl.glColor4f(1, 1, 0, 0.3f);
+		gl.glColor4f(1, 1, 0, 0f);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex2f(0, 0);
 		gl.glVertex2f(x - avoidDragHandle, 0);
@@ -349,7 +350,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 				// Render straight band connection from brick to dimension group
 				// on the RIGHT
 				if (xEnd != 0) {
-				
+
 					connectionRenderer.renderStraightBand(gl, new float[] { x,
 							subGroupMatch.getRightAnchorYTop(), 0 }, new float[] { x,
 							subGroupMatch.getRightAnchorYBottom(), 0 }, new float[] {
@@ -409,7 +410,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 				break;
 
 			glVisBricks
-					.moveGroupDimension(this, (DimensionGroup) draggable, leftDimGroup);
+					.moveDimensionGroup(this, (DimensionGroup) draggable, leftDimGroup);
 		}
 
 		draggables.clear();

@@ -160,7 +160,6 @@ public class Column
 			availableHeight -= unscalabelElementHeight;
 			// sumUnscalabeElementHeights += unscalabelElementHeight;
 		}
-		availableWidth -= widestElement;
 
 		if (availableHeight < -0.0001) {
 			// Logger.log(new Status(Status.ERROR, "org.caleydo.core", "Layout elements in " + this
