@@ -102,10 +102,10 @@ public class HandleRenderer extends LayoutRenderer {
 		// lowerRightCorner, upperRightCorner, upperLeftCorner, 1,
 		// 1, 1, 1);
 		gl.glBegin(GL2.GL_QUADS);
-		gl.glVertex3f(-glHandleWidth * 2.0f, y / 2.0f - glHandleHeight, 0);
-		gl.glVertex3f(-glHandleWidth * 2.0f, y / 2.0f + glHandleHeight, 0);
-		gl.glVertex3f(0, y / 2.0f + glHandleHeight, 0);
-		gl.glVertex3f(0, y / 2.0f - glHandleHeight, 0);
+		gl.glVertex3f(-glHandleWidth * 2.0f, y / 2.0f - glHandleHeight, 1);
+		gl.glVertex3f(-glHandleWidth * 2.0f, y / 2.0f + glHandleHeight, 1);
+		gl.glVertex3f(0, y / 2.0f + glHandleHeight, 1);
+		gl.glVertex3f(0, y / 2.0f - glHandleHeight, 1);
 		gl.glEnd();
 		gl.glPopName();
 
