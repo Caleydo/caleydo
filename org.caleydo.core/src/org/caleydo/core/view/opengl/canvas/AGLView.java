@@ -466,6 +466,15 @@ public abstract class AGLView
 
 	public void setFrustum(ViewFrustum viewFrustum) {
 		this.viewFrustum = viewFrustum;
+		PixelGLConverter pixelGLConverter = parentGLCanvas.getPixelGLConverter();
+
+		if (pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()) > 500) {
+			setDetailLevel(DetailLevel.HIGH);
+		} else if (pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()) > 300) {
+			setDetailLevel(DetailLevel.MEDIUM);
+		} else
+			setDetailLevel(DetailLevel.LOW);
+		setDisplayListDirty();
 		// parentGLCanvas.initPixelGLConverter(viewFrustum);
 	}
 

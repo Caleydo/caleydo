@@ -3,8 +3,11 @@ package org.caleydo.view.parcoords;
 import java.util.HashMap;
 
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.omg.IOP.ExceptionDetailMessage;
 
 /**
  * Render styles for the parallel coordinates
@@ -74,7 +77,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 	protected float fOcclusionPrevAlpha = 0.1f;
 
 	// how much room between the axis?
-	private float fAxisSpacing = 0.3f;
+	private float axisSpacing = 0.3f;
 
 	// --- constants to scale ---
 
@@ -136,31 +139,27 @@ public class PCRenderStyle extends GeneralRenderStyle {
 
 	public float getAxisSpacing(final int iNumberOfAxis) {
 
-		fAxisSpacing = getWidthOfCoordinateSystem() / (iNumberOfAxis - 1);
+		axisSpacing = getWidthOfCoordinateSystem() / (iNumberOfAxis - 1);
 
-		if (fAxisSpacing < fAxisSpacingLowerLimit * getScaling())
-			return fAxisSpacingLowerLimit * getScaling();
-
-		return fAxisSpacing;
+		return axisSpacing;
 	}
 
 	public float getWidthOfCoordinateSystem() {
 
 		// this checks whether we render a global brush or not
-		float numberOfSpacings = 2;
-		if (pcs.getSet().isSetHomogeneous())
-			numberOfSpacings = 2.5f;
+		// float numberOfSpacings = 2;
+		// if (pcs.getSet().isSetHomogeneous())
+		// numberOfSpacings = 2.5f;
 
-		return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * numberOfSpacings
-				* getScaling();
+		return viewFrustum.getWidth() - 2 * getXSpacing();
 	}
 
 	public float getXAxisStart() {
-		return -fXAxisOverlap;
+		return 0 - getXSpacing() / 4;
 	}
 
 	public float getXAxisEnd() {
-		return getWidthOfCoordinateSystem() + fXAxisOverlap;
+		return getWidthOfCoordinateSystem() + getXSpacing() / 4;
 	}
 
 	public float getAxisHeight() {
@@ -169,8 +168,12 @@ public class PCRenderStyle extends GeneralRenderStyle {
 	}
 
 	public float getXSpacing() {
-
-		return 1.5f * COORDINATE_SIDE_SPACING * getScaling();
+		if (pcs.getDetailLevel().equals(DetailLevel.HIGH))
+			return viewFrustum.getWidth() / 30;
+		else
+			return viewFrustum.getWidth() / 50;
+		// return pcs.getParentGLCanvas().getPixelGLConverter()
+		// .getGLWidthForPixelWidth(20);
 	}
 
 	public float getBottomSpacing() {

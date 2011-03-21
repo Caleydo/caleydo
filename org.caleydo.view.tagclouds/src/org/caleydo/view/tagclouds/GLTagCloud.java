@@ -103,8 +103,8 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		selectionRow = new Row("selectionRow");
 		selectionRow.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		selectionRow.setPixelSizeY(40);
-//		selectionRow.setDebug(true);
-		
+		// selectionRow.setDebug(true);
+
 		ElementLayout spacing = new ElementLayout("spacing");
 		spacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		spacing.setPixelSizeY(10);

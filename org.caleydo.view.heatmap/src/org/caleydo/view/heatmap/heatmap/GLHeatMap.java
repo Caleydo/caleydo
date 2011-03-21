@@ -189,6 +189,8 @@ public class GLHeatMap extends AStorageBasedView {
 			super.setDetailLevel(detailLevel);
 			if (detailLevel == DetailLevel.HIGH)
 				showCaptions = true;
+			else if(detailLevel == DetailLevel.MEDIUM)
+				showCaptions = true;
 			else
 				showCaptions = false;
 

@@ -79,10 +79,12 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -140,13 +142,12 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	private ArrayList<ArrayList<Integer>> alIsAngleBlocking;
 
-	private ArrayList<Float> alAxisSpacing;
+	private ArrayList<Float> axisSpacings;
 
 	private int iDraggedGateNumber = 0;
 
-	private float fXDefaultTranslation = 0;
-
-	private float fXTranslation = 0;
+	/** the spacing on the sides of the coordinates system */
+	private float xSideSpacing = 0;
 
 	private float fYTranslation = 0;
 
@@ -224,7 +225,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
 		alIsAngleBlocking.add(new ArrayList<Integer>());
 
-		alAxisSpacing = new ArrayList<Float>();
+		axisSpacings = new ArrayList<Float>();
 		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt(
 				PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
 
@@ -268,7 +269,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		// FIXME: Alex, is it save to call this here?
 		initData();
 
-		fXDefaultTranslation = renderStyle.getXSpacing();
+		updateSpacings();
+	}
+
+	private void updateSpacings() {
+		xSideSpacing = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
 	}
 
@@ -343,7 +348,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		// TODO another display list
 		// clipToFrustum(gl);
 
-		gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
+		gl.glTranslatef(xSideSpacing, fYTranslation, 0.0f);
 
 		if (bIsDraggingActive) {
 			handleGateDragging(gl);
@@ -362,150 +367,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			handleAngularBrushing(gl);
 		}
 
-		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
+		gl.glTranslatef(-xSideSpacing, -fYTranslation, 0.0f);
 
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
 
-	}
-
-	private float[] generateVertexBuffer() {
-		int numberOfVertices = set.depth() * set.size() * 2;
-
-		float vertices[] = new float[numberOfVertices];
-		int vertexCounter = 0;
-
-		for (int index = 0; index < set.depth(); index++) {
-			int storageCounter = 0;
-			for (Integer storageID : storageVA) {
-				float xValue = 0.2f * storageCounter++;
-				INumericalStorage storage = (INumericalStorage) set.get(storageID);
-
-				float yValue = storage.getFloat(EDataRepresentation.NORMALIZED, index);
-				vertices[vertexCounter++] = xValue;
-				vertices[vertexCounter++] = yValue;
-			}
-		}
-
-		return vertices;
-	}
-
-	private void displayVBO(GL2 gl) {
-		// GLHelperFunctions.drawPointAt(gl, 0.5f, 0.5f, 0f);
-
-		gl.glColor3f(0, 0, 1);
-		// int[] indices = { 0, 1, 1, 2, 2, 3, 3};
-		int size = 100000;
-		int[] indices = new int[size];
-		for (int count = 0; count < size - 1;) {
-			if (count - 1 >= 0) {
-				indices[count] = indices[count - 1];
-				indices[count + 1] = count;
-			} else {
-				indices[count] = 0;
-				indices[count + 1] = 1;
-			}
-			count += 2;
-
-		}
-		IntBuffer indexBuffer = Buffers.newDirectIntBuffer(indices);
-		indexBuffer.rewind();
-
-		if (vertexBufferIndices[0] == -1) {
-			// float vertices[] = new float[] { 0.0f, 0.0f, 0.5f, 0.5f, 2, 1, 4,
-			// 2, 5, 6};
-
-			float vertices[] = generateVertexBuffer();
-
-			FloatBuffer vertexBuffer = Buffers.newDirectFloatBuffer(vertices);
-
-			vertexBuffer.rewind();
-
-			if (!gl.isFunctionAvailable("glGenBuffers")
-					|| !gl.isFunctionAvailable("glBindBuffer")
-					|| !gl.isFunctionAvailable("glBufferData")
-					|| !gl.isFunctionAvailable("glDeleteBuffers")) {
-				throw new IllegalStateException("Vertex Buffer Objects not supported");
-			}
-			gl.glGenBuffers(1, vertexBufferIndices, 0);
-			gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
-			gl.glBufferData(GL.GL_ARRAY_BUFFER, vertices.length * Buffers.SIZEOF_FLOAT,
-					vertexBuffer, GL2.GL_DYNAMIC_DRAW);
-			gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
-			// ByteBuffer bytebuffer = gl.glMapBuffer(GL.GL_ARRAY_BUFFER,
-			// GL2.GL_WRITE_ONLY);
-			// FloatBuffer floatBuffer =
-			// bytebuffer.order(ByteOrder.nativeOrder())
-			// .asFloatBuffer();
-
-			// for (float vertex : vertices) {
-			// floatBuffer.put(vertex);
-			// }
-			gl.glUnmapBuffer(GL.GL_ARRAY_BUFFER);
-
-		}
-
-		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
-		gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
-		// gl.glEnableClientState( GL2.GL_COLOR_ARRAY )
-		gl.glVertexPointer(2, GL2.GL_FLOAT, 0, 0);
-		gl.glDrawArrays(GL.GL_LINE_STRIP, 0, vertexBufferIndices[0]);
-		gl.glDrawElements(GL2.GL_LINES, indices.length, GL2.GL_UNSIGNED_INT, indexBuffer);
-		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
-		gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
-		// gl.glDisableClientState(GL2.GL_COLOR_ARRAY);
-		// gl.glDisable(GL2.GL_COLOR_MATERIAL);
-
-		// glcanvas.swapBuffers();
-
-		// FloatBuffer colorBuffer = BufferUtil.newFloatBuffer(colors.length);
-		// colorBuffer.put(colors);
-		// colorBuffer.rewind();
-
-		// gl.glLineWidth(4);
-		// gl.glColor3f(0, 1, 1);
-		//
-		// // gl.glGenBuffersARB(vertices.length, )
-		// gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
-		//
-		// // gl.glColorPointer(3, GL2.GL_FLOAT, 0, colorBuffer);
-		// gl.glDrawElements(GL2.GL_LINE_STRIP, indices.length,
-		// GL2.GL_UNSIGNED_INT,
-		// indexBuffer);
-		// gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
-		// gl.glFlush();
-
-		// int vertices[] = new int[] { 1, 1, 3, 2, 5, 1, 3, 5, 5, 1, 1,
-		// 5 };
-		// float colors[] = new float[] { 1.0f, 0.2f, 0.2f, 0.2f, 0.2f, 1.0f,
-		// 0.8f, 1.0f,
-		// 0.2f, 0.75f, 0.75f, 0.75f, 0.35f, 0.35f, 0.35f, 0.5f, 0.5f, 0.5f };
-		// IntBuffer tmpVerticesBuf = BufferUtil.newIntBuffer(vertices.length);
-		// FloatBuffer tmpColorsBuf = BufferUtil.newFloatBuffer(colors.length);
-		// for (int i = 0; i < vertices.length; i++)
-		// tmpVerticesBuf.put(vertices[i]);
-		// for (int j = 0; j < colors.length; j++)
-		// tmpColorsBuf.put(colors[j]);
-		// tmpVerticesBuf.rewind();
-		// tmpColorsBuf.rewind();
-		// //
-		// gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
-		// gl.glEnableClientState(GL2.GL_COLOR_ARRAY);
-		// //
-		// gl.glVertexPointer(2, GL2.GL_INT, 0, tmpVerticesBuf);
-		// gl.glColorPointer(3, GL2.GL_FLOAT, 0, tmpColorsBuf);
-		// // this.verticesBuf = tmpVerticesBuf;
-		// // this.colorsBuf = tmpColorsBuf;
-		//
-		// int indices[] = new int[] { 0, 1, 3, 4 };
-		// IntBuffer indicesBuf = BufferUtil.newIntBuffer(indices.length);
-		// for (int i = 0; i < indices.length; i++)
-		// indicesBuf.put(indices[i]);
-		// indicesBuf.rewind();
-		// gl.glDrawElements(GL2.GL_LINE_STRIP, 4, GL2.GL_UNSIGNED_INT,
-		// indicesBuf);
-		//
-		// gl.glFlush();
 	}
 
 	public void triggerAngularBrushing() {
@@ -526,7 +392,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		}
 
 		contentSelectionManager.setVA(contentVA);
-		initContentVariables();
 		// initGates();
 		clearAllSelections();
 
@@ -637,38 +502,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			storageVA = set.getStorageData(storageVAType).getStorageVA();
 		// storageVA = dataDomain.getStorageVA(storageVAType);
 
-		initContentVariables();
-
 		contentSelectionManager.setVA(contentVA);
 		storageSelectionManager.setVA(storageVA);
 
 		initGates();
-	}
-
-	/**
-	 * Build mapping between polyline/axis and storage/content for virtual
-	 * arrays and selection managers
-	 */
-	private void initContentVariables() {
-		// EIDType contentDataType;
-		// EIDType storageDataType;
-		// if
-		// (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
-		// {
-		// contentDataType = EIDType.EXPRESSION_INDEX;
-		// storageDataType = EIDType.EXPERIMENT_INDEX;
-		// } else if (dataDomain.getDataDomainType().equals(
-		// "org.caleydo.datadomain.clinical")
-		// || dataDomain.getDataDomainType()
-		// .equals("org.caleydo.datadomain.generic")) {
-		// contentDataType = EIDType.EXPERIMENT;
-		// storageDataType = EIDType.EXPERIMENT_INDEX;
-		//
-		// } else {
-		// throw new IllegalStateException("Unsupported data domain (" +
-		// dataDomain
-		// + ") for parallel coordinates");
-		// }
 	}
 
 	/**
@@ -698,9 +535,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
 		if (contentVA.size() == 0) {
-			gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
+			gl.glTranslatef(-xSideSpacing, -fYTranslation, 0.0f);
 			renderSymbol(gl, EIconTextures.PAR_COORDS_SYMBOL, 2);
-			gl.glTranslatef(+fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
+			gl.glTranslatef(+xSideSpacing, fYTranslation, 0.0f);
 		} else {
 
 			if (set.isSetHomogeneous()) {
@@ -719,9 +556,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				}
 			}
 			renderGates(gl);
-
 		}
-
 		gl.glEndList();
 	}
 
@@ -785,7 +620,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		gl.glColor4fv(renderState.color, 0);
 		gl.glLineWidth(renderState.lineWidth);
 		if ((selectionType == SelectionType.SELECTION || selectionType == SelectionType.MOUSE_OVER)
-				&& detailLevel == DetailLevel.HIGH) {
+				&& (detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM)) {
 			bRenderingSelection = true;
 		} else
 			bRenderingSelection = false;
@@ -822,7 +657,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			currentStorage = set.get(storageVA.get(iVertexCount));
 			iStorageIndex = polyLineID;
 
-			fCurrentXValue = alAxisSpacing.get(iVertexCount);
+			fCurrentXValue = axisSpacings.get(iVertexCount);
 			fCurrentYValue = currentStorage.getFloat(EDataRepresentation.NORMALIZED,
 					iStorageIndex);
 			if (Float.isNaN(fCurrentYValue)) {
@@ -887,7 +722,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		textRenderer.setColor(0, 0, 0, 1);
 
-		int iNumberAxis = storageVA.size();
+		int numberOfAxis = storageVA.size();
 		// draw X-Axis
 		gl.glColor4fv(X_AXIS_COLOR, 0);
 		gl.glLineWidth(X_AXIS_LINE_WIDTH);
@@ -909,8 +744,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				.getElements(SelectionType.MOUSE_OVER);
 
 		int iCount = 0;
-		while (iCount < iNumberAxis) {
-			float fXPosition = alAxisSpacing.get(iCount);
+		while (iCount < numberOfAxis) {
+			float fXPosition = axisSpacings.get(iCount);
 			if (selectedSet.contains(storageVA.get(iCount))) {
 				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 				gl.glLineWidth(Y_AXIS_SELECTED_LINE_WIDTH);
@@ -928,7 +763,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.Y_AXIS_SELECTION, storageVA.get(iCount)));
 			gl.glBegin(GL2.GL_LINES);
-			gl.glVertex3f(fXPosition, Y_AXIS_LOW, AXIS_Z);
+			gl.glVertex3f(fXPosition, 0, AXIS_Z);
 			gl.glVertex3f(fXPosition, renderStyle.getAxisHeight(), AXIS_Z);
 
 			// Top marker
@@ -941,7 +776,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			gl.glDisable(GL2.GL_LINE_STIPPLE);
 
 			if (detailLevel != DetailLevel.HIGH
-					|| !renderStyle.isEnoughSpaceForText(iNumberAxis)) {
+					|| !renderStyle.isEnoughSpaceForText(numberOfAxis)) {
 				// pop the picking id here when we don't want to include the
 				// axis label
 				gl.glPopName();
@@ -950,28 +785,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			if (detailLevel == DetailLevel.HIGH) {
 
 				// NaN Button
-				float fXButtonOrigin = alAxisSpacing.get(iCount);
-
-				Vec3f lowerLeftCorner = new Vec3f(fXButtonOrigin - 0.03f,
-						PCRenderStyle.NAN_Y_OFFSET - 0.03f, PCRenderStyle.NAN_Z);
-				Vec3f lowerRightCorner = new Vec3f(fXButtonOrigin + 0.03f,
-						PCRenderStyle.NAN_Y_OFFSET - 0.03f, PCRenderStyle.NAN_Z);
-				Vec3f upperRightCorner = new Vec3f(fXButtonOrigin + 0.03f,
-						PCRenderStyle.NAN_Y_OFFSET + 0.03f, PCRenderStyle.NAN_Z);
-				Vec3f upperLeftCorner = new Vec3f(fXButtonOrigin - 0.03f,
-						PCRenderStyle.NAN_Y_OFFSET + 0.03f, PCRenderStyle.NAN_Z);
-				Vec3f scalingPivot = new Vec3f(fXButtonOrigin,
-						PCRenderStyle.NAN_Y_OFFSET, PCRenderStyle.NAN_Z);
-
-				int iPickingID = pickingManager.getPickingID(uniqueID,
-						EPickingType.REMOVE_NAN, storageVA.get(iCount));
-				gl.glPushName(iPickingID);
-
-				textureManager.renderGUITexture(gl, EIconTextures.NAN, lowerLeftCorner,
-						lowerRightCorner, upperRightCorner, upperLeftCorner,
-						scalingPivot, 1, 1, 1, 1, 100);
-
-				gl.glPopName();
+			
 
 				// markers on axis
 				float fMarkerSpacing = renderStyle.getAxisHeight()
@@ -1007,37 +821,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				}
 
 				String sAxisLabel = null;
-				// switch (eAxisDataType) {
-				// // TODO not very generic here
-				//
-				// case EXPRESSION_INDEX:
-				// // FIXME: Due to new mapping system, a mapping involving
-				// // expression index can return a
-				// // Set of
-				// // values, depending on the IDType that has been
-				// // specified when loading expression
-				// // data.
-				// // Possibly a different handling of the Set is required.
-				// Set<String> setGeneSymbols = idMappingManager.getIDAsSet(
-				// EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL,
-				// axisVA.get(iCount));
-				//
-				// if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
-				// sAxisLabel = (String) setGeneSymbols.toArray()[0];
-				// }
-				// if (sAxisLabel == null)
-				// sAxisLabel = "Unknown Gene";
-				// break;
-				//
-				// case EXPERIMENT:
-				// default:
-				// if (bRenderStorageHorizontally) {
-				// sAxisLabel = "TODO: gene labels for axis";
-				// } else
-				sAxisLabel = set.get(storageVA.get(iCount)).getLabel();
-				// break;
 
-				// }
+				sAxisLabel = set.get(storageVA.get(iCount)).getLabel();
+
 				gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 				gl.glTranslatef(
 						fXPosition,
@@ -1079,129 +865,157 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 				gl.glPopAttrib();
 
-				// render Buttons
+				if (!isRenderedRemote()) {
 
-				iPickingID = -1;
-				float fYDropOrigin = -PCRenderStyle.AXIS_BUTTONS_Y_OFFSET;
+					float fXButtonOrigin = axisSpacings.get(iCount);
 
-				gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+					Vec3f lowerLeftCorner = new Vec3f(fXButtonOrigin - 0.03f,
+							PCRenderStyle.NAN_Y_OFFSET - 0.03f, PCRenderStyle.NAN_Z);
+					Vec3f lowerRightCorner = new Vec3f(fXButtonOrigin + 0.03f,
+							PCRenderStyle.NAN_Y_OFFSET - 0.03f, PCRenderStyle.NAN_Z);
+					Vec3f upperRightCorner = new Vec3f(fXButtonOrigin + 0.03f,
+							PCRenderStyle.NAN_Y_OFFSET + 0.03f, PCRenderStyle.NAN_Z);
+					Vec3f upperLeftCorner = new Vec3f(fXButtonOrigin - 0.03f,
+							PCRenderStyle.NAN_Y_OFFSET + 0.03f, PCRenderStyle.NAN_Z);
+					Vec3f scalingPivot = new Vec3f(fXButtonOrigin,
+							PCRenderStyle.NAN_Y_OFFSET, PCRenderStyle.NAN_Z);
 
-				// the gate add button
-				float fYGateAddOrigin = renderStyle.getAxisHeight();
-				iPickingID = pickingManager.getPickingID(uniqueID, EPickingType.ADD_GATE,
-						storageVA.get(iCount));
+					int iPickingID = pickingManager.getPickingID(uniqueID,
+							EPickingType.REMOVE_NAN, storageVA.get(iCount));
+					gl.glPushName(iPickingID);
 
-				lowerLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin, AXIS_Z);
-				lowerRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
-				upperRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin + 0.12f,
-						AXIS_Z);
-				upperLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin + 0.12f,
-						AXIS_Z);
-				scalingPivot.set(fXButtonOrigin, fYGateAddOrigin, AXIS_Z);
+					textureManager.renderGUITexture(gl, EIconTextures.NAN, lowerLeftCorner,
+							lowerRightCorner, upperRightCorner, upperLeftCorner,
+							scalingPivot, 1, 1, 1, 1, 100);
 
-				gl.glPushName(iPickingID);
+					gl.glPopName();
+					
+					// render Buttons
 
-				textureManager.renderGUITexture(gl, EIconTextures.ADD_GATE,
-						lowerLeftCorner, lowerRightCorner, upperRightCorner,
-						upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
+					iPickingID = -1;
+					float fYDropOrigin = -PCRenderStyle.AXIS_BUTTONS_Y_OFFSET;
 
-				gl.glPopName();
+					gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
-				if (selectedSet.contains(storageVA.get(iCount))
-						|| mouseOverSet.contains(storageVA.get(iCount))) {
+					// the gate add button
+					float fYGateAddOrigin = renderStyle.getAxisHeight();
+					iPickingID = pickingManager.getPickingID(uniqueID,
+							EPickingType.ADD_GATE, storageVA.get(iCount));
 
-					lowerLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin - 0.3f,
-							AXIS_Z + 0.005f);
-					lowerRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin - 0.3f,
-							AXIS_Z + 0.005f);
-					upperRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin,
-							AXIS_Z + 0.005f);
-					upperLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin,
-							AXIS_Z + 0.005f);
-					scalingPivot.set(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.005f);
+					lowerLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin, AXIS_Z);
+					lowerRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
+					upperRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin + 0.12f,
+							AXIS_Z);
+					upperLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin + 0.12f,
+							AXIS_Z);
+					scalingPivot.set(fXButtonOrigin, fYGateAddOrigin, AXIS_Z);
 
-					// the mouse over drop
-					if (iChangeDropOnAxisNumber == iCount) {
-						// tempTexture = textureManager.getIconTexture(gl,
-						// dropTexture);
-						textureManager.renderGUITexture(gl, dropTexture, lowerLeftCorner,
-								lowerRightCorner, upperRightCorner, upperLeftCorner,
-								scalingPivot, 1, 1, 1, 1, 80);
+					gl.glPushName(iPickingID);
 
-						if (!bWasAxisMoved) {
-							dropTexture = EIconTextures.DROP_NORMAL;
+					textureManager.renderGUITexture(gl, EIconTextures.ADD_GATE,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
+
+					gl.glPopName();
+
+					if (selectedSet.contains(storageVA.get(iCount))
+							|| mouseOverSet.contains(storageVA.get(iCount))) {
+
+						lowerLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin - 0.3f,
+								AXIS_Z + 0.005f);
+						lowerRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin - 0.3f,
+								AXIS_Z + 0.005f);
+						upperRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin,
+								AXIS_Z + 0.005f);
+						upperLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin,
+								AXIS_Z + 0.005f);
+						scalingPivot.set(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.005f);
+
+						// the mouse over drop
+						if (iChangeDropOnAxisNumber == iCount) {
+							// tempTexture = textureManager.getIconTexture(gl,
+							// dropTexture);
+							textureManager.renderGUITexture(gl, dropTexture,
+									lowerLeftCorner, lowerRightCorner, upperRightCorner,
+									upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
+
+							if (!bWasAxisMoved) {
+								dropTexture = EIconTextures.DROP_NORMAL;
+							}
+						} else {
+							textureManager.renderGUITexture(gl,
+									EIconTextures.DROP_NORMAL, lowerLeftCorner,
+									lowerRightCorner, upperRightCorner, upperLeftCorner,
+									scalingPivot, 1, 1, 1, 1, 80);
 						}
+
+						iPickingID = pickingManager.getPickingID(uniqueID,
+								EPickingType.MOVE_AXIS, iCount);
+						gl.glColor4f(0, 0, 0, 0f);
+						gl.glPushName(iPickingID);
+						gl.glBegin(GL2.GL_TRIANGLES);
+						gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
+						gl.glVertex3f(fXButtonOrigin + 0.08f, fYDropOrigin - 0.3f,
+								AXIS_Z + 0.01f);
+						gl.glVertex3f(fXButtonOrigin - 0.08f, fYDropOrigin - 0.3f,
+								AXIS_Z + 0.01f);
+						gl.glEnd();
+						gl.glPopName();
+
+						iPickingID = pickingManager.getPickingID(uniqueID,
+								EPickingType.DUPLICATE_AXIS, iCount);
+						// gl.glColor4f(0, 1, 0, 0.5f);
+						gl.glPushName(iPickingID);
+						gl.glBegin(GL2.GL_TRIANGLES);
+						gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
+						gl.glVertex3f(fXButtonOrigin - 0.08f, fYDropOrigin - 0.21f,
+								AXIS_Z + 0.01f);
+						gl.glVertex3f(fXButtonOrigin - 0.23f, fYDropOrigin - 0.21f,
+								AXIS_Z + 0.01f);
+						gl.glEnd();
+						gl.glPopName();
+
+						iPickingID = pickingManager.getPickingID(uniqueID,
+								EPickingType.REMOVE_AXIS, iCount);
+						// gl.glColor4f(0, 0, 1, 0.5f);
+						gl.glPushName(iPickingID);
+						gl.glBegin(GL2.GL_TRIANGLES);
+						gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
+						gl.glVertex3f(fXButtonOrigin + 0.08f, fYDropOrigin - 0.21f,
+								AXIS_Z + 0.01f);
+						gl.glVertex3f(fXButtonOrigin + 0.23f, fYDropOrigin - 0.21f,
+								AXIS_Z + 0.01f);
+						gl.glEnd();
+						gl.glPopName();
+
 					} else {
-						textureManager.renderGUITexture(gl, EIconTextures.DROP_NORMAL,
+						iPickingID = pickingManager.getPickingID(uniqueID,
+								EPickingType.MOVE_AXIS, iCount);
+
+						gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
+						gl.glPushName(iPickingID);
+
+						lowerLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin - 0.2f,
+								AXIS_Z);
+						lowerRightCorner.set(fXButtonOrigin + 0.05f, fYDropOrigin - 0.2f,
+								AXIS_Z);
+						upperRightCorner
+								.set(fXButtonOrigin + 0.05f, fYDropOrigin, AXIS_Z);
+						upperLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin, AXIS_Z);
+						scalingPivot.set(fXButtonOrigin, fYDropOrigin, AXIS_Z);
+
+						textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP,
 								lowerLeftCorner, lowerRightCorner, upperRightCorner,
 								upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
+
+						gl.glPopName();
+						gl.glPopAttrib();
+
 					}
-
-					iPickingID = pickingManager.getPickingID(uniqueID,
-							EPickingType.MOVE_AXIS, iCount);
-					gl.glColor4f(0, 0, 0, 0f);
-					gl.glPushName(iPickingID);
-					gl.glBegin(GL2.GL_TRIANGLES);
-					gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
-					gl.glVertex3f(fXButtonOrigin + 0.08f, fYDropOrigin - 0.3f,
-							AXIS_Z + 0.01f);
-					gl.glVertex3f(fXButtonOrigin - 0.08f, fYDropOrigin - 0.3f,
-							AXIS_Z + 0.01f);
-					gl.glEnd();
-					gl.glPopName();
-
-					iPickingID = pickingManager.getPickingID(uniqueID,
-							EPickingType.DUPLICATE_AXIS, iCount);
-					// gl.glColor4f(0, 1, 0, 0.5f);
-					gl.glPushName(iPickingID);
-					gl.glBegin(GL2.GL_TRIANGLES);
-					gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
-					gl.glVertex3f(fXButtonOrigin - 0.08f, fYDropOrigin - 0.21f,
-							AXIS_Z + 0.01f);
-					gl.glVertex3f(fXButtonOrigin - 0.23f, fYDropOrigin - 0.21f,
-							AXIS_Z + 0.01f);
-					gl.glEnd();
-					gl.glPopName();
-
-					iPickingID = pickingManager.getPickingID(uniqueID,
-							EPickingType.REMOVE_AXIS, iCount);
-					// gl.glColor4f(0, 0, 1, 0.5f);
-					gl.glPushName(iPickingID);
-					gl.glBegin(GL2.GL_TRIANGLES);
-					gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
-					gl.glVertex3f(fXButtonOrigin + 0.08f, fYDropOrigin - 0.21f,
-							AXIS_Z + 0.01f);
-					gl.glVertex3f(fXButtonOrigin + 0.23f, fYDropOrigin - 0.21f,
-							AXIS_Z + 0.01f);
-					gl.glEnd();
-					gl.glPopName();
-
-				} else {
-					iPickingID = pickingManager.getPickingID(uniqueID,
-							EPickingType.MOVE_AXIS, iCount);
-
-					gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
-					gl.glPushName(iPickingID);
-
-					lowerLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin - 0.2f,
-							AXIS_Z);
-					lowerRightCorner.set(fXButtonOrigin + 0.05f, fYDropOrigin - 0.2f,
-							AXIS_Z);
-					upperRightCorner.set(fXButtonOrigin + 0.05f, fYDropOrigin, AXIS_Z);
-					upperLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin, AXIS_Z);
-					scalingPivot.set(fXButtonOrigin, fYDropOrigin, AXIS_Z);
-
-					textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP,
-							lowerLeftCorner, lowerRightCorner, upperRightCorner,
-							upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
+					gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
 					gl.glPopName();
-					gl.glPopAttrib();
-
 				}
-				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
-
-				gl.glPopName();
 			}
 			iCount++;
 		}
@@ -1229,7 +1043,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 			ArrayList<Integer> iAlAxisIndex = storageVA.indicesOf(iAxisID);
 			for (int iAxisIndex : iAlAxisIndex) {
-				float fCurrentPosition = alAxisSpacing.get(iAxisIndex);
+				float fCurrentPosition = axisSpacings.get(iAxisIndex);
 				gate.setCurrentPosition(fCurrentPosition);
 				// String label = set.get(iAxisID).getLabel();
 
@@ -1249,7 +1063,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		gl.glLineWidth(PCRenderStyle.Y_AXIS_LINE_WIDTH);
 		// gl.glPushName(iPickingID);
 
-		float fXOrigin = -0.25f;
+		float fXOrigin = parentGLCanvas.getPixelGLConverter().getGLWidthForPixelWidth(0);
 
 		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(fXOrigin, 0, AXIS_Z);
@@ -2132,13 +1946,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		return sInfoText.toString();
 	}
 
-	/**
-	 * Re-position a view centered on a element, specified by the element ID
-	 * 
-	 * @param iElementID
-	 *            the ID of the element that should be in the center
-	 */
-
 	// TODO
 	private void handleAngularBrushing(final GL2 gl) {
 		hasFilterChanged = true;
@@ -2156,9 +1963,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		int iPosition = 0;
 
-		for (int iCount = 0; iCount < alAxisSpacing.size() - 1; iCount++) {
-			if (vecAngularBrushingPoint.x() > alAxisSpacing.get(iCount)
-					&& vecAngularBrushingPoint.x() < alAxisSpacing.get(iCount + 1)) {
+		for (int iCount = 0; iCount < axisSpacings.size() - 1; iCount++) {
+			if (vecAngularBrushingPoint.x() > axisSpacings.get(iCount)
+					&& vecAngularBrushingPoint.x() < axisSpacings.get(iCount + 1)) {
 				iPosition = iCount;
 			}
 		}
@@ -2179,8 +1986,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				EDataRepresentation.NORMALIZED, iSelectedLineID)
 				* renderStyle.getAxisHeight());
 
-		vecLeftPoint.setX(alAxisSpacing.get(iPosition));
-		vecRightPoint.setX(alAxisSpacing.get(iPosition + 1));
+		vecLeftPoint.setX(axisSpacings.get(iPosition));
+		vecRightPoint.setX(axisSpacings.get(iPosition + 1));
 
 		Vec3f vecDirectional = vecRightPoint.minus(vecLeftPoint);
 		float fLength = vecDirectional.length();
@@ -2291,8 +2098,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 					EDataRepresentation.NORMALIZED, iCurrent)
 					* renderStyle.getAxisHeight());
 
-			vecLeftPoint.setX(alAxisSpacing.get(iPosition));
-			vecRightPoint.setX(alAxisSpacing.get(iPosition + 1));
+			vecLeftPoint.setX(axisSpacings.get(iPosition));
+			vecRightPoint.setX(axisSpacings.get(iPosition + 1));
 
 			// Vec3f vecCompareLine = vecLeftPoint.minus(vecRightPoint);
 			Vec3f vecCompareLine = vecRightPoint.minus(vecLeftPoint);
@@ -2339,12 +2146,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
 						currentPoint.y);
 
-		float fWidth = fArTargetWorldCoordinates[0] - fXTranslation
-				- fXDefaultTranslation;
+		float fWidth = fArTargetWorldCoordinates[0] - xSideSpacing;
 
 		if (bWasAxisDraggedFirstTime) {
 			// adjust from the actually clicked point to the center of the axis
-			fAxisDraggingOffset = fWidth - alAxisSpacing.get(iMovedAxisPosition);
+			fAxisDraggingOffset = fWidth - axisSpacings.get(iMovedAxisPosition);
 			bWasAxisDraggedFirstTime = false;
 		}
 
@@ -2358,20 +2164,20 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		}
 
 		int iSwitchAxisWithThis = -1;
-		for (int iCount = 0; iCount < alAxisSpacing.size(); iCount++) {
-			if (iMovedAxisPosition > iCount && fWidth < alAxisSpacing.get(iCount)) {
+		for (int iCount = 0; iCount < axisSpacings.size(); iCount++) {
+			if (iMovedAxisPosition > iCount && fWidth < axisSpacings.get(iCount)) {
 				iSwitchAxisWithThis = iCount;
 				break;
 			}
-			if (iMovedAxisPosition < iCount && fWidth > alAxisSpacing.get(iCount)) {
+			if (iMovedAxisPosition < iCount && fWidth > axisSpacings.get(iCount)) {
 				iSwitchAxisWithThis = iCount;
 			}
 		}
 
 		if (iSwitchAxisWithThis != -1) {
 			storageVA.move(iMovedAxisPosition, iSwitchAxisWithThis);
-			alAxisSpacing.remove(iMovedAxisPosition);
-			alAxisSpacing.add(iSwitchAxisWithThis, fWidth);
+			axisSpacings.remove(iMovedAxisPosition);
+			axisSpacings.add(iSwitchAxisWithThis, fWidth);
 
 			StorageVADelta vaDelta = new StorageVADelta(storageVAType, storageIDType);
 			vaDelta.add(VADeltaItem.move(iMovedAxisPosition, iSwitchAxisWithThis));
@@ -2384,7 +2190,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		}
 
 		else {
-			alAxisSpacing.set(iMovedAxisPosition, fWidth);
+			axisSpacings.set(iMovedAxisPosition, fWidth);
 		}
 		setDisplayListDirty();
 
@@ -2419,10 +2225,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		fTrackX *= renderStyle.getWidthOfCoordinateSystem();
 
 		int iAxisNumber = 0;
-		for (int iCount = 0; iCount < alAxisSpacing.size() - 1; iCount++) {
-			if (alAxisSpacing.get(iCount) < fTrackX
-					&& alAxisSpacing.get(iCount + 1) > fTrackX) {
-				if (fTrackX - alAxisSpacing.get(iCount) < alAxisSpacing.get(iCount)
+		for (int iCount = 0; iCount < axisSpacings.size() - 1; iCount++) {
+			if (axisSpacings.get(iCount) < fTrackX
+					&& axisSpacings.get(iCount + 1) > fTrackX) {
+				if (fTrackX - axisSpacings.get(iCount) < axisSpacings.get(iCount)
 						- fTrackX) {
 					iAxisNumber = iCount;
 				} else {
@@ -2443,9 +2249,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				/ (iNumberOfAxis - 3);
 
 		float fCurrentX = 0;
-		alAxisSpacing.clear();
+		axisSpacings.clear();
 		for (int iCount = 0; iCount < iNumberOfAxis; iCount++) {
-			alAxisSpacing.add(fCurrentX);
+			axisSpacings.add(fCurrentX);
 			if (iCount + 1 == iAxisNumber || iCount == iAxisNumber) {
 				fCurrentX += fFocusAxisSpacing;
 			} else {
@@ -2456,77 +2262,22 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		setDisplayListDirty();
 	}
 
-	// private void focusOnAreaWii() {
-	// if (!generalManager.isWiiModeActive())
-	// return;
-	//
-	// WiiRemote wii = generalManager.getWiiRemote();
-	//
-	// float fXWiiPosition = wii.getCurrentSmoothHeadPosition()[0] + 1f;
-	//
-	// // we assume that this is far right, and -fMax is far left
-	// float fMaxX = 2;
-	//
-	// if (fXWiiPosition > fMaxX) {
-	// fXWiiPosition = fMaxX;
-	// }
-	// else if (fXWiiPosition < -fMaxX) {
-	// fXWiiPosition = -fMaxX;
-	// }
-	//
-	// // now we normalize to 0 to 1
-	// fXWiiPosition = (fXWiiPosition + fMaxX) / (2 * fMaxX);
-	//
-	// fXWiiPosition *= renderStyle.getWidthOfCoordinateSystem();
-	// int iAxisNumber = 0;
-	// for (int iCount = 0; iCount < alAxisSpacing.size() - 1; iCount++) {
-	// if (alAxisSpacing.get(iCount) < fXWiiPosition && alAxisSpacing.get(iCount
-	// + 1) > fXWiiPosition) {
-	// if (fXWiiPosition - alAxisSpacing.get(iCount) < alAxisSpacing.get(iCount)
-	// - fXWiiPosition) {
-	// iAxisNumber = iCount;
-	// }
-	// else {
-	// iAxisNumber = iCount + 1;
-	// }
-	//
-	// break;
-	// }
-	// }
-	//
-	// int iNumberOfAxis = axisVA.size();
-	//
-	// float fOriginalAxisSpacing = renderStyle.getAxisSpacing(iNumberOfAxis);
-	//
-	// float fFocusAxisSpacing = 2 * fOriginalAxisSpacing;
-	//
-	// float fReducedSpacing =
-	// (renderStyle.getWidthOfCoordinateSystem() - 2 * fFocusAxisSpacing) /
-	// (iNumberOfAxis - 3);
-	//
-	// float fCurrentX = 0;
-	// alAxisSpacing.clear();
-	// for (int iCount = 0; iCount < iNumberOfAxis; iCount++) {
-	// alAxisSpacing.add(fCurrentX);
-	// if (iCount + 1 == iAxisNumber || iCount == iAxisNumber) {
-	// fCurrentX += fFocusAxisSpacing;
-	// }
-	// else {
-	// fCurrentX += fReducedSpacing;
-	// }
-	// }
-	//
-	// setDisplayListDirty();
-	// }
-
 	public void resetAxisSpacing() {
-		alAxisSpacing.clear();
-		int iNumAxis = storageVA.size();
-		float fInitAxisSpacing = renderStyle.getAxisSpacing(iNumAxis);
-		for (int iCount = 0; iCount < iNumAxis; iCount++) {
-			alAxisSpacing.add(fInitAxisSpacing * iCount);
+		axisSpacings.clear();
+		int numAxis = storageVA.size();
+		float initialAxisSpacing = renderStyle.getAxisSpacing(numAxis);
+		for (int count = 0; count < numAxis; count++) {
+			axisSpacings.add(initialAxisSpacing * count);
 		}
 		setDisplayListDirty();
+	}
+
+	@Override
+	public void setFrustum(ViewFrustum viewFrustum) {
+		super.setFrustum(viewFrustum);
+		updateSpacings();
+		resetAxisSpacing();
+
 	}
 
 	@Override
@@ -2663,4 +2414,144 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		// TODO: Calculate depending on content
 		return 100;
 	}
+
+	private float[] generateVertexBuffer() {
+		int numberOfVertices = set.depth() * set.size() * 2;
+
+		float vertices[] = new float[numberOfVertices];
+		int vertexCounter = 0;
+
+		for (int index = 0; index < set.depth(); index++) {
+			int storageCounter = 0;
+			for (Integer storageID : storageVA) {
+				float xValue = 0.2f * storageCounter++;
+				INumericalStorage storage = (INumericalStorage) set.get(storageID);
+
+				float yValue = storage.getFloat(EDataRepresentation.NORMALIZED, index);
+				vertices[vertexCounter++] = xValue;
+				vertices[vertexCounter++] = yValue;
+			}
+		}
+
+		return vertices;
+	}
+
+	private void displayVBO(GL2 gl) {
+		// GLHelperFunctions.drawPointAt(gl, 0.5f, 0.5f, 0f);
+
+		gl.glColor3f(0, 0, 1);
+		// int[] indices = { 0, 1, 1, 2, 2, 3, 3};
+		int size = 100000;
+		int[] indices = new int[size];
+		for (int count = 0; count < size - 1;) {
+			if (count - 1 >= 0) {
+				indices[count] = indices[count - 1];
+				indices[count + 1] = count;
+			} else {
+				indices[count] = 0;
+				indices[count + 1] = 1;
+			}
+			count += 2;
+
+		}
+		IntBuffer indexBuffer = Buffers.newDirectIntBuffer(indices);
+		indexBuffer.rewind();
+
+		if (vertexBufferIndices[0] == -1) {
+			// float vertices[] = new float[] { 0.0f, 0.0f, 0.5f, 0.5f, 2, 1, 4,
+			// 2, 5, 6};
+
+			float vertices[] = generateVertexBuffer();
+
+			FloatBuffer vertexBuffer = Buffers.newDirectFloatBuffer(vertices);
+
+			vertexBuffer.rewind();
+
+			if (!gl.isFunctionAvailable("glGenBuffers")
+					|| !gl.isFunctionAvailable("glBindBuffer")
+					|| !gl.isFunctionAvailable("glBufferData")
+					|| !gl.isFunctionAvailable("glDeleteBuffers")) {
+				throw new IllegalStateException("Vertex Buffer Objects not supported");
+			}
+			gl.glGenBuffers(1, vertexBufferIndices, 0);
+			gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
+			gl.glBufferData(GL.GL_ARRAY_BUFFER, vertices.length * Buffers.SIZEOF_FLOAT,
+					vertexBuffer, GL2.GL_DYNAMIC_DRAW);
+			gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
+			// ByteBuffer bytebuffer = gl.glMapBuffer(GL.GL_ARRAY_BUFFER,
+			// GL2.GL_WRITE_ONLY);
+			// FloatBuffer floatBuffer =
+			// bytebuffer.order(ByteOrder.nativeOrder())
+			// .asFloatBuffer();
+
+			// for (float vertex : vertices) {
+			// floatBuffer.put(vertex);
+			// }
+			gl.glUnmapBuffer(GL.GL_ARRAY_BUFFER);
+
+		}
+
+		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
+		gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
+		// gl.glEnableClientState( GL2.GL_COLOR_ARRAY )
+		gl.glVertexPointer(2, GL2.GL_FLOAT, 0, 0);
+		gl.glDrawArrays(GL.GL_LINE_STRIP, 0, vertexBufferIndices[0]);
+		gl.glDrawElements(GL2.GL_LINES, indices.length, GL2.GL_UNSIGNED_INT, indexBuffer);
+		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
+		gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
+		// gl.glDisableClientState(GL2.GL_COLOR_ARRAY);
+		// gl.glDisable(GL2.GL_COLOR_MATERIAL);
+
+		// glcanvas.swapBuffers();
+
+		// FloatBuffer colorBuffer = BufferUtil.newFloatBuffer(colors.length);
+		// colorBuffer.put(colors);
+		// colorBuffer.rewind();
+
+		// gl.glLineWidth(4);
+		// gl.glColor3f(0, 1, 1);
+		//
+		// // gl.glGenBuffersARB(vertices.length, )
+		// gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
+		//
+		// // gl.glColorPointer(3, GL2.GL_FLOAT, 0, colorBuffer);
+		// gl.glDrawElements(GL2.GL_LINE_STRIP, indices.length,
+		// GL2.GL_UNSIGNED_INT,
+		// indexBuffer);
+		// gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
+		// gl.glFlush();
+
+		// int vertices[] = new int[] { 1, 1, 3, 2, 5, 1, 3, 5, 5, 1, 1,
+		// 5 };
+		// float colors[] = new float[] { 1.0f, 0.2f, 0.2f, 0.2f, 0.2f, 1.0f,
+		// 0.8f, 1.0f,
+		// 0.2f, 0.75f, 0.75f, 0.75f, 0.35f, 0.35f, 0.35f, 0.5f, 0.5f, 0.5f };
+		// IntBuffer tmpVerticesBuf = BufferUtil.newIntBuffer(vertices.length);
+		// FloatBuffer tmpColorsBuf = BufferUtil.newFloatBuffer(colors.length);
+		// for (int i = 0; i < vertices.length; i++)
+		// tmpVerticesBuf.put(vertices[i]);
+		// for (int j = 0; j < colors.length; j++)
+		// tmpColorsBuf.put(colors[j]);
+		// tmpVerticesBuf.rewind();
+		// tmpColorsBuf.rewind();
+		// //
+		// gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
+		// gl.glEnableClientState(GL2.GL_COLOR_ARRAY);
+		// //
+		// gl.glVertexPointer(2, GL2.GL_INT, 0, tmpVerticesBuf);
+		// gl.glColorPointer(3, GL2.GL_FLOAT, 0, tmpColorsBuf);
+		// // this.verticesBuf = tmpVerticesBuf;
+		// // this.colorsBuf = tmpColorsBuf;
+		//
+		// int indices[] = new int[] { 0, 1, 3, 4 };
+		// IntBuffer indicesBuf = BufferUtil.newIntBuffer(indices.length);
+		// for (int i = 0; i < indices.length; i++)
+		// indicesBuf.put(indices[i]);
+		// indicesBuf.rewind();
+		// gl.glDrawElements(GL2.GL_LINE_STRIP, 4, GL2.GL_UNSIGNED_INT,
+		// indicesBuf);
+		//
+		// gl.glFlush();
+	}
+
 }
