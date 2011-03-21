@@ -52,6 +52,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 			oldHeightRight = heightRight;
 		}
 
+		gl.glPushName(iPickingID);
 		renderBasicShape(gl, textRenderer, renderStyle.FILTER_OR_COLOR);
 
 		float scaleY = calculateFilterScalingY();
@@ -98,6 +99,8 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 
 		}
 
+		gl.glPopName();
+		
 		// reset height
 		heightRight = getHeightRight();
 
@@ -115,57 +118,49 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 			// Steps of output of total meta filter
 			int outputSteps = 0;
 
-			// use stencil buffer to prevent overlay of transparent pixels
-			gl.glEnable(GL2.GL_STENCIL_TEST);
-			gl.glClearStencil(0);
-			gl.glStencilFunc(GL2.GL_EQUAL, 0, 0xff);
-			gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_INCR);
+			gl.glDisable(GL2.GL_DEPTH_TEST);			
+			gl.glLineWidth(1);
 
-			gl.glDisable(GL2.GL_DEPTH_TEST);
+			for( Intersection intersection : intersections )
+			{
+				float filterBottom = vPos.y() + vSize.y() * (outputSteps/100.f);				
+				float height = vSize.y() * (intersection.numElements/100.f);
+				
+				renderOutputBand
+				(
+					gl,
+					new float[]{filterRight, filterBottom, Z_POS_BODY},
+				    new float[]{filterRight, filterBottom + height, Z_POS_BODY},
+				    new float[]{filterRight + 0.058f * vSize.x(), filterBottom + height, Z_POS_BODY},
+				    new float[]{filterRight + 0.058f * vSize.x(), filterBottom, Z_POS_BODY},
+				    new float[]{0.8f,0.8f,0.8f,.5f},
+				    new float[]{0f,0f,0f,1f}
+				);
 
-			for (Intersection intersection : intersections) {
-				float[] color = new float[] { 0, 0, 0, 1f };
-
-				for (int filterId : intersection.filterIds) {
-					float[] filterColor = renderStyle.getFilterColorCombined(filterId);
-
-					for (int channel = 0; channel < 3; ++channel)
-						color[channel] += filterColor[channel]
-								/ intersection.filterIds.length;
-				}
-
-				gl.glColor4fv(color, 0);
-
-				float filterBottom = vPos.y() + vSize.y() * (outputSteps / 100.f);
-				float height = vSize.y() * (intersection.numElements / 100.f);
-
-				gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
-				gl.glBegin(GL2.GL_QUADS);
-
-				gl.glVertex3f(filterRight, filterBottom, Z_POS_BODY);
-				gl.glVertex3f(filterRight, filterBottom + height, Z_POS_BODY);
-				gl.glVertex3f(filterRight + 0.058f * vSize.x(), filterBottom + height,
-						Z_POS_BODY);
-				gl.glVertex3f(filterRight + 0.058f * vSize.x(), filterBottom, Z_POS_BODY);
-
-				for (int filterId : intersection.filterIds) {
-					float subFilterBottom = subFiltersBottom + filterId * offsetY
-							+ scaleY * vSize.y() * (currentSteps[filterId] / 100.f);
-
-					gl.glVertex3f(subFilterRight, subFilterBottom, Z_POS_BODY);
-					gl.glVertex3f(subFilterRight, subFilterBottom + scaleY * height,
-							Z_POS_BODY);
-					gl.glVertex3f(filterRight, filterBottom + height, Z_POS_BODY);
-					gl.glVertex3f(filterRight, filterBottom, Z_POS_BODY);
+				for( int filterId : intersection.filterIds )
+				{
+					float subFilterBottom =
+						subFiltersBottom
+						+ filterId * offsetY
+						+ scaleY * vSize.y() * (currentSteps[filterId]/100.f);
+					
+					renderOutputBand
+					(
+						gl,
+						new float[]{subFilterRight, subFilterBottom, Z_POS_BODY},
+					    new float[]{subFilterRight, subFilterBottom + scaleY * height, Z_POS_BODY},
+					    new float[]{filterRight, filterBottom + height, Z_POS_BODY},
+					    new float[]{filterRight, filterBottom, Z_POS_BODY},
+					    renderStyle.getColorSubfilterOutput(filterId),
+					    renderStyle.getColorSubfilterOutputBorder(filterId)
+					);
 
 					currentSteps[filterId] += intersection.numElements;
 				}
 
-				gl.glEnd();
 				outputSteps += intersection.numElements;
 			}
 
-			gl.glDisable(GL2.GL_STENCIL_TEST);
 			gl.glEnable(GL2.GL_DEPTH_TEST);
 			gl.glEndList();
 		}
@@ -266,4 +261,5 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 		inputRenderer.init(gl); // TODO
 		inputRenderer.render(gl, points);
 	}
+
 }

@@ -107,8 +107,10 @@ public class FilterRepresentation
 	{
 		heightLeft = getHeightLeft();
 		heightRight = getHeightRight();
-
+		
+		gl.glPushName(iPickingID);
 		renderBasicShape(gl, textRenderer, renderStyle.FILTER_COLOR);
+		gl.glPopName();
 		
 		// render selection/mouseover if needed
 		if( selectionType != SelectionType.NORMAL )
@@ -145,6 +147,17 @@ public class FilterRepresentation
 			Z_POS_TEXT,
 			0.004f,
 			20
+		);
+		
+		renderOutputBand
+		(
+			gl,
+			new float[]{vPos.x() + vSize.x(), vPos.y(), Z_POS_BODY},
+		    new float[]{vPos.x() + vSize.x(), vPos.y() + heightRight, Z_POS_BODY},
+		    new float[]{vPos.x() + vSize.x() + 0.058f * vSize.x(), vPos.y() + heightRight, Z_POS_BODY},
+		    new float[]{vPos.x() + vSize.x() + 0.058f * vSize.x(), vPos.y(), Z_POS_BODY},
+		    new float[]{0.8f,0.8f,0.8f,0.5f},
+		    new float[]{0f,0f,0f,1f}
 		);
 	}
 	
@@ -198,7 +211,6 @@ public class FilterRepresentation
 	 */
 	protected void renderBasicShape( GL2 gl, CaleydoTextRenderer textRenderer, float[] color )
 	{
-		gl.glPushName(iPickingID);
 		renderShape
 		(
 			gl,
@@ -214,7 +226,6 @@ public class FilterRepresentation
 			renderStyle.FILTER_BORDER_COLOR,
 			Z_POS_BORDER
 		);
-		gl.glPopName();
 		
 		// currently not filtered elements
 		textRenderer.renderText
@@ -240,6 +251,49 @@ public class FilterRepresentation
 			0.004f,
 			20
 		);
+	}
+	
+	/**
+	 * Render a band with a transparent body, bounded by lines at top and
+	 * bottom
+	 * 
+	 * @param gl
+	 * @param bottomLeft
+	 * @param topLeft
+	 * @param topRight
+	 * @param bottomRight
+	 * @param bodyColor
+	 * @param borderColor
+	 */
+	protected void renderOutputBand(	GL2 gl,
+										float[] bottomLeft,
+										float[] topLeft,
+										float[] topRight,
+										float[] bottomRight,
+										float[] bodyColor,
+										float[] borderColor )
+	{
+		gl.glColor4fv(bodyColor, 0);
+		gl.glBegin(GL2.GL_QUADS);
+		{
+			gl.glVertex3fv(topLeft, 0);
+			gl.glVertex3fv(topRight, 0);
+			gl.glVertex3fv(bottomRight, 0);
+			gl.glVertex3fv(bottomLeft, 0);
+		}
+		gl.glEnd();
+		
+		gl.glColor4fv(borderColor, 0);
+		gl.glLineWidth(1);
+		gl.glBegin(GL2.GL_LINES);
+		{
+			gl.glVertex3fv(topLeft, 0);
+			gl.glVertex3fv(topRight, 0);
+
+			gl.glVertex3fv(bottomRight, 0);
+			gl.glVertex3fv(bottomLeft, 0);
+		}
+		gl.glEnd();
 	}
 	
 	/**

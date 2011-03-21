@@ -60,4 +60,18 @@ public class FilterPipelineRenderStyle extends GeneralRenderStyle
 		color[3] = 0.4f;
 		return color;
 	}
+	
+	public float[] getColorSubfilterOutput(int filterId)
+	{
+		float[] color = filterColors.get(filterId % filterColors.size()).clone();
+		color[3] = 0.5f;
+		return color;
+	}
+	
+	public float[] getColorSubfilterOutputBorder(int filterId)
+	{
+		float[] color = getColorSubfilterOutput(filterId);
+		color[3] = 1f;
+		return color;
+	}
 }

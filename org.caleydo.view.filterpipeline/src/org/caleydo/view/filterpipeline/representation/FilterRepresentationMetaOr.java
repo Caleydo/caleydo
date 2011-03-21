@@ -43,6 +43,7 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 		heightLeft = getHeightLeft();
 		heightRight = vSize.y() * (filter.getOutput().size() / 100.f);
 
+		gl.glPushName(iPickingID);
 		renderBasicShape(gl, textRenderer, renderStyle.FILTER_OR_COLOR);
 		
 		for( int i = 0; i < subFilterSizes.length; ++i )
@@ -58,6 +59,7 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 			);
 			gl.glPopName();
 		}
+		gl.glPopName();
 
 //		if (renderPassedAll)
 //		{
