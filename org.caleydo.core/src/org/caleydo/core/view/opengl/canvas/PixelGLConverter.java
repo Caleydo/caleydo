@@ -57,6 +57,7 @@ public class PixelGLConverter {
 		return (int) width;
 	}
 
+
 	public int getPixelHeightForGLHeight(float glHeight) {
 		float totalHeightGL = viewFrustum.getHeight();
 		Double totalHeightPixel = canvas.getBounds().getHeight();
