@@ -308,12 +308,17 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 	
 	private void selectElementsByGroup() {
+
 		
 		// Select all elements in group with special type
 		ContentSelectionManager contentSelectionManager = visBricks.getContentSelectionManager();
 		SelectionType selectedByGroupSelectionType = visBricks.getSelectedByGroupSelectionType();
 		
 		contentSelectionManager.clearSelection(selectedByGroupSelectionType);
+
+		// Prevent selection for center brick as this would select all elements
+		if (dimensionGroup.getCenterBrick() == this)
+			return;		
 		
 		for (Integer contentID : contentVA) {
 			contentSelectionManager.addToType(selectedByGroupSelectionType, contentID);
