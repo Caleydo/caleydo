@@ -227,7 +227,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		if (set.getSetType().equals(ESetDataType.NUMERIC)) {
 			createNumericalBrick(gl);
-			currentViewType = brickLayout.getDefaultViewType();
+			currentViewType = EContainedViewType.PARCOORDS_VIEW;//brickLayout.getDefaultViewType();
 		} else {
 			createNominalBrick(gl);
 			currentViewType = EContainedViewType.PARCOORDS_VIEW;
@@ -373,11 +373,13 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
 				compactOverviewHeatMapRenderer);
+		
+		brickLayout.setViewRenderer(parCoordsLayoutRenderer);
 
-		brickLayout.setViewRenderer(containedViewRenderers.get(brickLayout
-				.getDefaultViewType()));
-
-		currentRemoteView = views.get(brickLayout.getDefaultViewType());
+//		brickLayout.setViewRenderer(containedViewRenderers.get(brickLayout
+//				.getDefaultViewType()));
+//
+//		currentRemoteView = views.get(brickLayout.getDefaultViewType());
 	}
 
 	private void createNominalBrick(GL2 gl) {

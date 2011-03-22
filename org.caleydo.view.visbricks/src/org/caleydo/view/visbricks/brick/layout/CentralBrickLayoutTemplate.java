@@ -315,7 +315,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public EContainedViewType getDefaultViewType() {
-		return EContainedViewType.HISTOGRAM_VIEW;
+		return EContainedViewType.PARCOORDS_VIEW;
 	}
 
 	@Override
