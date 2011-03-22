@@ -12,7 +12,6 @@ import static org.caleydo.view.parcoords.PCRenderStyle.X_AXIS_COLOR;
 import static org.caleydo.view.parcoords.PCRenderStyle.X_AXIS_LINE_WIDTH;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_COLOR;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_LINE_WIDTH;
-import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_LOW;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_MOUSE_OVER_LINE_WIDTH;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH;
 import gleem.linalg.Rotf;
@@ -79,12 +78,10 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -604,6 +601,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		PolyLineState renderState = renderStyle.getPolyLineState(selectionType,
 				nrVisibleLines / displayEveryNthPolyline);
+		renderState.updateOcclusionPrev(nrVisibleLines);
 		for (Integer contentID : lines) {
 			if (contentVA.contains(contentID))
 				renderSingleLine(gl, contentID, selectionType, renderState, true);

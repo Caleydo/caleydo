@@ -126,16 +126,16 @@ public class SelectionBrowserView extends ASWTView implements
 		ArrayList<SelectionType> selectedByGroupSelectionTypes = new ArrayList<SelectionType>();
 
 		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_1,
-				SELECTION_COLOR_1, 1, false, true, 1));
+				SELECTION_COLOR_1, 1, true, true, 1));
 		
 		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_2,
-				SELECTION_COLOR_2, 1, false, true, 1));
+				SELECTION_COLOR_2, 1, true, true, 1));
 		
 		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_3,
-				SELECTION_COLOR_3, 1, false, true, 1));
+				SELECTION_COLOR_3, 1, true, true, 1));
 		
 		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_4,
-				SELECTION_COLOR_4, 1, false, true, 1));
+				SELECTION_COLOR_4, 1, true, true, 1));
 
 		for (SelectionType selectionType : selectedByGroupSelectionTypes) {
 			
