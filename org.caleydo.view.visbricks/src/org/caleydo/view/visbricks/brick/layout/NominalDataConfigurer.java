@@ -51,10 +51,10 @@ public class NominalDataConfigurer implements IBrickConfigurer {
 	@Override
 	public void configure(CompactBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-		validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
+		validViewTypes.add(EContainedViewType.TAGCLOUD_VIEW);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.PARCOORDS_VIEW);
+		layoutTemplate.setDefaultViewType(EContainedViewType.TAGCLOUD_VIEW);
 	}
 
 	@Override

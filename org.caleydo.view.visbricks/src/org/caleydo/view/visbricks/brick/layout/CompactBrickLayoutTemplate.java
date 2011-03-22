@@ -108,8 +108,8 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		Row viewRow = new Row("compactViewRow");
 		viewRow.setFrameColor(0, 0, 1, 1);
 		// viewRow.setDebug(true);
-		viewRow.setPixelGLConverter(pixelGLConverter);
-		viewRow.setPixelSizeY(16);
+//		viewRow.setPixelGLConverter(pixelGLConverter);
+//		viewRow.setPixelSizeY(16);
 
 		ElementLayout viewLayout = new ElementLayout("compactViewLayout");
 		viewLayout.setFrameColor(1, 0, 0, 1);
@@ -167,7 +167,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 						brick, visBricks, dimensionGroup, brick
 								.getLayoutConfigurer());
 				brick.setBrickLayoutTemplate(layoutTemplate);
-				brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
+//				brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
 				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_EXPAND_BUTTON, EXPAND_BUTTON_ID);
