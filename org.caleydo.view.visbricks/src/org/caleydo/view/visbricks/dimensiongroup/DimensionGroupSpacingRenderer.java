@@ -170,9 +170,12 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		// Iterate over all selection types
 		for (SelectionType selectionType : contentSelectionManager.getSelectionTypes()) {
 
-			if (selectionType.isVisible())
+			if (selectionType == SelectionType.NORMAL
+					|| selectionType == SelectionType.MOUSE_OVER
+					|| selectionType == SelectionType.DESELECTED
+					|| selectionType == SelectionType.LEVEL_HIGHLIGHTING)
 				continue;
-			
+
 			Set<Integer> selectedByGroupSelections = contentSelectionManager
 					.getElements(selectionType);
 
@@ -426,7 +429,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 					float[] color = selectionType.getColor();
 					color[3] = 0.2f;
-					
+
 					connectionRenderer.renderSingleBand(gl, new float[] { 0,
 							subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { 0,
 							subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection, 0 },
