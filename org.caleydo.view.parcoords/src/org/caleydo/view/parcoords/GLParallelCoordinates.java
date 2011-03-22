@@ -574,9 +574,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	 */
 	private void renderNormalPolylines(GL2 gl, SelectionType selectionType) {
 
-		int nrVisibleLines;
-
-		nrVisibleLines = contentVA.size()
+		int nrVisibleLines = contentVA.size()
 				- contentSelectionManager.getNumberOfElements(SelectionType.DESELECTED);
 
 		displayEveryNthPolyline = (contentVA.size() - contentSelectionManager
@@ -600,99 +598,91 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	private void renderSelectedPolylines(GL2 gl, SelectionType selectionType) {
 		int nrVisibleLines = contentSelectionManager.getNumberOfElements(selectionType);
 		Set<Integer> lines = contentSelectionManager.getElements(selectionType);
-
+		boolean renderAsSelection = true;
+		if (lines.size() > 1)
+			renderAsSelection = false;
 		PolyLineState renderState = renderStyle.getPolyLineState(selectionType,
 				nrVisibleLines / displayEveryNthPolyline);
 		renderState.updateOcclusionPrev(nrVisibleLines);
 		for (Integer contentID : lines) {
-			boolean renderAsSelection = true;
-			if (lines.size() > 1)
-				renderAsSelection = false;
+
 			if (contentVA.contains(contentID))
 				renderSingleLine(gl, contentID, selectionType, renderState,
 						renderAsSelection);
 		}
 	}
 
-	private void renderSingleLine(GL2 gl, Integer polyLineID,
-			SelectionType selectionType, PolyLineState renderState,
-			boolean bRenderingSelection) {
+	private void renderSingleLine(GL2 gl, Integer contentID, SelectionType selectionType,
+			PolyLineState renderState, boolean renderCaption) {
 
 		gl.glColor4fv(renderState.color, 0);
 		gl.glLineWidth(renderState.lineWidth);
-		if ((selectionType == SelectionType.SELECTION || selectionType == SelectionType.MOUSE_OVER)
-				&& (detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM)) {
-			bRenderingSelection = true;
-		} else
-			bRenderingSelection = false;
-
-		if (selectionType != SelectionType.DESELECTED) {
-			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.POLYLINE_SELECTION, polyLineID));
-		}
-
-		if (!bRenderingSelection) {
-			gl.glBegin(GL2.GL_LINE_STRIP);
-		}
+		if (!(detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM))
+			renderCaption = false;
 
 		IStorage currentStorage = null;
 
-		float fPreviousXValue = 0;
-		float fPreviousYValue = 0;
-		float fCurrentXValue = 0;
-		float fCurrentYValue = 0;
+		float previousX = 0;
+		float previousY = 0;
+		float currentX = 0;
+		float currentY = 0;
+
+		if (selectionType != SelectionType.DESELECTED) {
+			gl.glPushName(pickingManager.getPickingID(uniqueID,
+					EPickingType.POLYLINE_SELECTION, contentID));
+		}
+
+		if (!renderCaption) {
+			gl.glBegin(GL2.GL_LINE_STRIP);
+		}
 
 		// this loop executes once per axis
-		for (int iVertexCount = 0; iVertexCount < storageVA.size(); iVertexCount++) {
-			int iStorageIndex = 0;
+		for (int storageCount = 0; storageCount < storageVA.size(); storageCount++) {
 
-			currentStorage = set.get(storageVA.get(iVertexCount));
-			iStorageIndex = polyLineID;
+			currentStorage = set.get(storageVA.get(storageCount));
 
-			fCurrentXValue = axisSpacings.get(iVertexCount);
-			fCurrentYValue = currentStorage.getFloat(EDataRepresentation.NORMALIZED,
-					iStorageIndex);
-			if (Float.isNaN(fCurrentYValue)) {
-				fCurrentYValue = NAN_Y_OFFSET / renderStyle.getAxisHeight();
+			currentX = axisSpacings.get(storageCount);
+			currentY = currentStorage.getFloat(EDataRepresentation.NORMALIZED, contentID);
+			if (Float.isNaN(currentY)) {
+				currentY = NAN_Y_OFFSET / renderStyle.getAxisHeight();
 			}
-			if (iVertexCount != 0) {
-				if (bRenderingSelection) {
+			if (storageCount != 0) {
+				if (renderCaption) {
 					gl.glBegin(GL2.GL_LINES);
 				}
 
-				gl.glVertex3f(fPreviousXValue,
-						fPreviousYValue * renderStyle.getAxisHeight(), renderState.zDepth);
-				gl.glVertex3f(fCurrentXValue,
-						fCurrentYValue * renderStyle.getAxisHeight(), renderState.zDepth);
+				gl.glVertex3f(previousX, previousY * renderStyle.getAxisHeight(),
+						renderState.zDepth);
+				gl.glVertex3f(currentX, currentY * renderStyle.getAxisHeight(),
+						renderState.zDepth);
 
-				if (bRenderingSelection) {
+				if (renderCaption) {
 					gl.glEnd();
 				}
 
 			}
 
-			if (bRenderingSelection) {
+			if (renderCaption) {
 				String sRawValue;
 				if (currentStorage instanceof INumericalStorage) {
 					sRawValue = Formatter.formatNumber(currentStorage.getFloat(
-							EDataRepresentation.RAW, iStorageIndex));
+							EDataRepresentation.RAW, contentID));
 
 				} else if (currentStorage instanceof NominalStorage) {
 					sRawValue = ((NominalStorage<String>) currentStorage)
-							.getRaw(iStorageIndex);
+							.getRaw(contentID);
 				} else
 					throw new IllegalStateException("Unknown Storage Type");
 
-				renderBoxedYValues(gl, fCurrentXValue,
-						fCurrentYValue * renderStyle.getAxisHeight(), sRawValue,
-						selectionType);
+				renderBoxedYValues(gl, currentX, currentY * renderStyle.getAxisHeight(),
+						sRawValue, selectionType);
 			}
 
-			fPreviousXValue = fCurrentXValue;
-			fPreviousYValue = fCurrentYValue;
+			previousX = currentX;
+			previousY = currentY;
 		}
 
-		if (!bRenderingSelection) {
+		if (!renderCaption) {
 			gl.glEnd();
 		}
 

@@ -134,7 +134,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		for (Integer storageID : storageVA) {
 			HashMap<String, Integer> stringOccurences = new HashMap<String, Integer>();
 			stringOccurencesPerStorage.put(storageID, stringOccurences);
-			IStorage genericStorage = (NominalStorage<String>) set
+			IStorage genericStorage = set
 					.get(storageID);
 			if (!(genericStorage instanceof NominalStorage<?>))
 				continue;
@@ -245,16 +245,16 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 		captionRow = new Row("captionRow");
 		captionRow.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		captionRow.setPixelSizeY(20);
+		captionRow.setPixelSizeY(15);
 
 		selectionRow = new Row("selectionRow");
 		selectionRow.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		selectionRow.setPixelSizeY(20);
+		selectionRow.setPixelSizeY(15);
 		// selectionRow.setDebug(true);
 
 		ElementLayout spacing = new ElementLayout("spacing");
 		spacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		spacing.setPixelSizeY(3);
+		spacing.setPixelSizeY(2);
 		spacing.setRatioSizeX(0);
 
 		ElementLayout largerSpacing = new ElementLayout("spacing");
@@ -416,7 +416,9 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	public void displayRemote(GL2 gl) {
+		checkForHits(gl);
 		display(gl);
+	
 	}
 
 	@Override
@@ -597,7 +599,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		case MEDIUM:
 			return 80;
 		case LOW:
-			return 50;
+			return 40;
 		default:
 			return 50;
 		}
