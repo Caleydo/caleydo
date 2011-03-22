@@ -52,13 +52,12 @@ public class HeatMapRenderer extends AContentRenderer {
 	public void render(final GL2 gl) {
 
 		contentSpacing.getYDistances().clear();
-		// renderStyle.updateFieldSizes();
 		float yPosition = y;
 		float xPosition = 0;
 		float fieldHeight = 0;
 		float fieldWidth = contentSpacing.getFieldWidth();
 
-		// renderStyle.clearFieldWidths();
+	
 		int iCount = 0;
 		
 		for (Integer contentID : heatMap.getContentVA()) {

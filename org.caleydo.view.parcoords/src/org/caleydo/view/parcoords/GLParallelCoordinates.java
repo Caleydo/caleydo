@@ -599,24 +599,25 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	private void renderSelectedPolylines(GL2 gl, SelectionType selectionType) {
 		int nrVisibleLines = contentSelectionManager.getNumberOfElements(selectionType);
-		Iterable<Integer> lines = contentSelectionManager.getElements(selectionType);
+		Set<Integer> lines = contentSelectionManager.getElements(selectionType);
 
 		PolyLineState renderState = renderStyle.getPolyLineState(selectionType,
 				nrVisibleLines / displayEveryNthPolyline);
 		renderState.updateOcclusionPrev(nrVisibleLines);
 		for (Integer contentID : lines) {
+			boolean renderAsSelection = true;
+			if (lines.size() > 1)
+				renderAsSelection = false;
 			if (contentVA.contains(contentID))
-				renderSingleLine(gl, contentID, selectionType, renderState, true);
+				renderSingleLine(gl, contentID, selectionType, renderState,
+						renderAsSelection);
 		}
 	}
 
 	private void renderSingleLine(GL2 gl, Integer polyLineID,
 			SelectionType selectionType, PolyLineState renderState,
 			boolean bRenderingSelection) {
-		// Integer polyLineID = lines.;
-		// if (contentSelectionManager.checkStatus(SelectionType.DESELECTED,
-		// polyLineID))
-		// continue;
+
 		gl.glColor4fv(renderState.color, 0);
 		gl.glLineWidth(renderState.lineWidth);
 		if ((selectionType == SelectionType.SELECTION || selectionType == SelectionType.MOUSE_OVER)
@@ -625,15 +626,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		} else
 			bRenderingSelection = false;
 
-		// if (bUseRandomSampling
-		// && (selectionType == SelectionType.DESELECTED || selectionType ==
-		// SelectionType.NORMAL)) {
-		// if (polyLineID % displayEveryNthPolyline != 0) {
-		// continue;
-		// // if(!alUseInRandomSampling.get(contentVA.indexOf(iPolyLineID)))
-		// // continue;
-		// }
-		// }
 		if (selectionType != SelectionType.DESELECTED) {
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					EPickingType.POLYLINE_SELECTION, polyLineID));
@@ -2552,7 +2544,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		//
 		// gl.glFlush();
 	}
-	
+
 	@Override
 	public int getMinPixelHeight(DetailLevel detailLevel) {
 		switch (detailLevel) {

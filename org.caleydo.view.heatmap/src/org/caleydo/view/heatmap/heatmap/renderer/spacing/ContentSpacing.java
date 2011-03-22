@@ -31,20 +31,20 @@ public class ContentSpacing {
 			float x, float y, float minSelectedFieldHeight) {
 		fieldWidth = x / storageElements;
 
-		if (y / contentElements > minSelectedFieldHeight
-				|| heatMap.getZoomedElements().size() == 0) {
+//		if (y / contentElements > minSelectedFieldHeight
+//				|| heatMap.getZoomedElements().size() == 0) {
 
 			spacingCalculator = new NormalSpacingCalculator(heatMap, y, contentElements);
 			useFishEye = false;
 
-		} else {
-			useFishEye = true;
-			// spacingCalculator = new SelectedLargerSpacingCalculator(heatMap,
-			// y,
-			// contentElements);
-			spacingCalculator = new FishEyeSpacingCalculator(heatMap, y, contentElements, minSelectedFieldHeight);
-
-		}
+//		} else {
+//			useFishEye = true;
+//			// spacingCalculator = new SelectedLargerSpacingCalculator(heatMap,
+//			// y,
+//			// contentElements);
+//			spacingCalculator = new FishEyeSpacingCalculator(heatMap, y, contentElements, minSelectedFieldHeight);
+//
+//		}
 		spacingCalculator.calculateFieldHeights();
 	}
 
