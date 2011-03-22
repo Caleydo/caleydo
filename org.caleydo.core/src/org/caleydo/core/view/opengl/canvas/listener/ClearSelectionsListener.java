@@ -6,7 +6,7 @@ import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 
 /**
- * Listener for clear selection events This listener calls a related {@link IViewCommandHandler}.
+ * Listener for clear selection events. This listener calls a related {@link IViewCommandHandler}.
  * 
  * @author Werner Puff
  */

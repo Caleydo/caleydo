@@ -1,5 +1,6 @@
 package org.caleydo.view.visbricks.dimensiongroup;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -141,10 +142,6 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 				SubGroupMatch subGroupMatch = groupMatch.getSubGroupMatch(rightBrick
 						.getGroupID());
 
-				// if (rightBrick.isActive())
-				// calculateSubMatchSelections(subGroupMatch,
-				// rightBrick.getContentVA());
-
 				float rightSimilarityRatioY = rightSimilarities[leftBrick.getGroupID()];
 				rightSimilarityOffsetY += rightSimilarityRatioY;
 
@@ -159,8 +156,6 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 			}
 		}
-
-		// initPropagatedConnections(leftDimGroup);
 	}
 
 	private void calculateSubMatchSelections(SubGroupMatch subGroupMatch,
@@ -171,23 +166,30 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 		ContentSelectionManager contentSelectionManager = glVisBricks
 				.getContentSelectionManager();
-		SelectionType selectedByGroupSelectionType = glVisBricks
-				.getSelectedByGroupSelectionType();
-		Set<Integer> selectedByGroupSelections = contentSelectionManager
-				.getElements(selectedByGroupSelectionType);
 
-		if (selectedByGroupSelections == null || selectedByGroupSelections.size() == 0)
-			return;
+		// Iterate over all selection types
+		for (SelectionType selectionType : contentSelectionManager.getSelectionTypes()) {
 
-		int intersectionCount = 0;
-		for (int contentID : contentVA) {
-			if (selectedByGroupSelections.contains(contentID))
-				intersectionCount++;
+			if (selectionType.isVisible())
+				continue;
+			
+			Set<Integer> selectedByGroupSelections = contentSelectionManager
+					.getElements(selectionType);
+
+			if (selectedByGroupSelections == null
+					|| selectedByGroupSelections.size() == 0)
+				continue;
+
+			int intersectionCount = 0;
+			for (int contentID : contentVA) {
+				if (selectedByGroupSelections.contains(contentID))
+					intersectionCount++;
+			}
+
+			float ratio = (float) intersectionCount / contentVA.size();
+
+			subGroupMatch.addSelectionTypeRatio(ratio, selectionType);
 		}
-
-		float ratio = (float) intersectionCount / contentVA.size();
-
-		subGroupMatch.addSelectionTypeRatio(ratio, selectedByGroupSelectionType);
 	}
 
 	@Override
@@ -394,6 +396,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 									.isActive()), splineFactor, 0, false, new float[] {
 									0.0f, 0.0f, 1 }, 0.15f);
 				}
+
 				// Render selected portion
 				HashMap<SelectionType, Float> hashRatioToSelectionType = subGroupMatch
 						.getHashRatioToSelectionType();
@@ -403,8 +406,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 						new float[] { 0, subGroupMatch.getLeftAnchorYBottom(), 0 },
 						new float[] { x, subGroupMatch.getRightAnchorYTop(), 0 },
 						new float[] { x, subGroupMatch.getRightAnchorYBottom(), 0 },
-						false, splineFactor, 0, false, new float[] { 0.0f, 0.0f, 1 },
-						0.15f);
+						false, splineFactor, 0, false, new float[] { 0.0f, 0.0f, 0.0f },
+						0.1f);
 
 				for (SelectionType selectionType : hashRatioToSelectionType.keySet()) {
 
@@ -421,6 +424,9 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 							- subGroupMatch.getRightAnchorYBottom();
 					float rightYDiffSelection = rightYDiff * ratio;
 
+					float[] color = selectionType.getColor();
+					color[3] = 0.2f;
+					
 					connectionRenderer.renderSingleBand(gl, new float[] { 0,
 							subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { 0,
 							subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection, 0 },
@@ -429,7 +435,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 									x,
 									subGroupMatch.getRightAnchorYTop()
 											- rightYDiffSelection, 0 }, true,
-							splineFactor, 0, false, new float[] { 0.0f, 0.0f, 1 }, 0.15f);
+							splineFactor, 0, false, color, 0.15f);
 				}
 			}
 		}

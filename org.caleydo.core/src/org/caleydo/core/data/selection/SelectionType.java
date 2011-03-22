@@ -53,7 +53,8 @@ public class SelectionType {
 
 	/**
 	 * flag that determines whether a particular selection type should be managed by the
-	 * {@link RcpSelectionBrowserView}
+	 * {@link RcpSelectionBrowserView}. only managed types will appear in the selection browser view. default
+	 * is false. can be changed on demand via the setter method.
 	 */
 	private boolean isManaged = false;
 
@@ -65,9 +66,9 @@ public class SelectionType {
 		true, false, 1f);
 	public static final SelectionType DESELECTED = new SelectionType("Deselected",
 		new float[] { 0, 0, 0, 1 }, 1, false, false, 0);
-	
-	public static final SelectionType LEVEL_HIGHLIGHTING = new SelectionType("LevelHighlighting", new int[] { 255, 255, 0 }, 3,
-		true, false, 1f);
+
+	public static final SelectionType LEVEL_HIGHLIGHTING = new SelectionType("LevelHighlighting", new int[] {
+			255, 255, 0 }, 3, true, false, 1f);
 
 	private static ArrayList<SelectionType> defaultTypes = new ArrayList<SelectionType>();
 

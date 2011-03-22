@@ -5,13 +5,14 @@ import org.caleydo.core.manager.event.AEvent;
 /**
  * Create or remove a selection type
  * 
- * @author alexsb
+ * @author Alexander Lex
  */
 public class SelectionTypeEvent
 	extends AEvent {
 
 	private SelectionType selectionType;
 	private boolean isRemove = false;
+	private boolean isCurrent = false;
 
 	public SelectionTypeEvent() {
 	}
@@ -36,6 +37,14 @@ public class SelectionTypeEvent
 		this.isRemove = isRemove;
 	}
 
+	public boolean isCurrent() {
+		return isCurrent;
+	}
+	
+	public void setCurrent(boolean isCurrent) {
+		this.isCurrent = isCurrent;
+	}
+	
 	@Override
 	public boolean checkIntegrity() {
 		if (selectionType == null)

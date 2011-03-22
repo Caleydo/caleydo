@@ -58,6 +58,9 @@ public class SelectionManager
 
 	protected ArrayList<SelectionType> selectionTypes;
 
+	/** The current type that is used for selections. By default this is the standard SELECTION type. */
+	protected SelectionType selectionType = SelectionType.SELECTION;
+
 	private SelectionDelta selectionDelta;
 
 	private boolean bIsDeltaWritingEnabled = true;
@@ -192,13 +195,10 @@ public class SelectionManager
 	 * Returns all elements that are in a specific selection type
 	 * 
 	 * @param sSelectionType
-	 * @return the elements in the type. Null if the type does not exist yet.
-	 * @throws IllegalArgumentException
-	 *             when called with {@link SelectionType#REMOVE} or {@link SelectionType#ADD}
+	 * @return the elements in the type. Null if the type does not exist yet or if no elements are contained
+	 *         for this type. Note that no normal types are contained at any time.
 	 */
 	public Set<Integer> getElements(SelectionType selectionType) {
-		if (selectionType == SelectionType.NORMAL)
-			throw new IllegalStateException("Normal types are not stored in the selection manager");
 		if (hashSelectionTypes.containsKey(selectionType))
 			return hashSelectionTypes.get(selectionType).keySet();
 
@@ -763,5 +763,24 @@ public class SelectionManager
 		clone.selectionDelta = new SelectionDelta(iDType);
 		// the virtual array needs to be set manually by the receiving instance
 		return clone;
+	}
+
+	/**
+	 * Returns the current selection type. By default this is SelectionType.SELECTION.
+	 * 
+	 * @return
+	 */
+	public SelectionType getSelectionType() {
+		return selectionType;
+	}
+
+	/**
+	 * Changes the current selection type. By default the selection type is set to SelectionType.SELECTION.
+	 * Should only be called via a {@link SelectionTypeEvent}.
+	 * 
+	 * @param selectionType
+	 */
+	public void setSelectionType(SelectionType selectionType) {
+		this.selectionType = selectionType;
 	}
 }

@@ -12,6 +12,8 @@ public class SelectionTypeListener
 			SelectionTypeEvent typeEvent = (SelectionTypeEvent) event;
 			if (typeEvent.isRemove())
 				handler.removeSelectionType(typeEvent.getSelectionType());
+			else if (typeEvent.isCurrent())
+				handler.setSelectionType(typeEvent.getSelectionType());
 			else
 				handler.addSelectionType(typeEvent.getSelectionType());
 		}

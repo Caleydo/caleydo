@@ -13,10 +13,8 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.ClusterTree;
-import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
@@ -24,6 +22,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.NewMetaSetsEvent;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
+import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -34,6 +33,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -49,6 +49,7 @@ import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupSpacingRenderer;
+import org.caleydo.view.visbricks.listener.GLVisBricksKeyListener;
 import org.caleydo.view.visbricks.listener.NewMetaSetsListener;
 import org.caleydo.view.visbricks.renderstyle.VisBricksRenderStyle;
 
@@ -71,6 +72,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private final static int DIMENSION_GROUP_SPACING = 30;
 
 	private NewMetaSetsListener metaSetsListener;
+	private ClearSelectionsListener clearSelectionsListener;
 
 	private ASetBasedDataDomain dataDomain;
 
@@ -117,9 +119,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private ElementLayout rightDimensionGroupSpacing;
 
 	private ContentSelectionManager contentSelectionManager;
-	
-	private SelectionType selectedByGroupSelectionType = new SelectionType("Selected by group",
-			new float[] { 0, 0, 1, 1}, 1, false, true, 1);
 
 	/**
 	 * Constructor.
@@ -138,6 +137,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		dragAndDropController = new DragAndDropController(this);
 
 		dimensionGroupManager = new DimensionGroupManager();
+		
+		glKeyListener = new GLVisBricksKeyListener();
 	}
 
 	@Override
@@ -146,11 +147,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		relationAnalyzer = dataDomain.getContentRelationAnalyzer();
 
 		contentSelectionManager = dataDomain.getContentSelectionManager();
-		
-		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
-				selectedByGroupSelectionType);
-		eventPublisher.triggerEvent(selectionTypeEvent);
-		
+
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new VisBricksRenderStyle(viewFrustum);
 
@@ -372,6 +369,15 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public void initLocal(GL2 gl) {
+		
+		// Register keyboard listener to GL2 canvas
+		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
+		
 		init(gl);
 	}
 
@@ -620,6 +626,10 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		metaSetsListener.setHandler(this);
 		eventPublisher.addListener(NewMetaSetsEvent.class, metaSetsListener);
 
+		clearSelectionsListener = new ClearSelectionsListener();
+		clearSelectionsListener.setHandler(this);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+
 	}
 
 	@Override
@@ -629,6 +639,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		if (metaSetsListener != null) {
 			eventPublisher.removeListener(metaSetsListener);
 			metaSetsListener = null;
+		}
+		
+		if (clearSelectionsListener != null) {
+			eventPublisher.removeListener(clearSelectionsListener);
+			clearSelectionsListener = null;
 		}
 	}
 
@@ -653,14 +668,14 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public void handleClearSelections() {
-		// TODO Auto-generated method stub
+		clearAllSelections();
 
 	}
 
 	@Override
 	public void clearAllSelections() {
-		// TODO Auto-generated method stub
-
+		contentSelectionManager.clearSelections();
+		updateConnectionLinesBetweenDimensionGroups();
 	}
 
 	@Override
@@ -928,12 +943,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public float getArchBottomY() {
 		return archBottomY;
 	}
-	
-	public SelectionType getSelectedByGroupSelectionType() {
-		return selectedByGroupSelectionType;
-	}
-	
+
 	public ContentSelectionManager getContentSelectionManager() {
 		return contentSelectionManager;
+	}
+
+	public GLVisBricksKeyListener getKeyListener() {
+		return (GLVisBricksKeyListener) glKeyListener;
 	}
 }

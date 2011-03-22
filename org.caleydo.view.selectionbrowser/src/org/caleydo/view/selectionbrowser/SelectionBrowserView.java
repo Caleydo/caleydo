@@ -43,21 +43,34 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Selection browser that is located in the side-bar. 
+ * Selection browser that is located in the side-bar.
  * 
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class SelectionBrowserView extends ASWTView implements IDataDomainBasedView<ASetBasedDataDomain>,
-		ISelectionUpdateHandler, IContentVAUpdateHandler, ISelectionCommandHandler,
-		IViewCommandHandler {
+public class SelectionBrowserView extends ASWTView implements
+		IDataDomainBasedView<ASetBasedDataDomain>, ISelectionUpdateHandler,
+		IContentVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
+	private final static String SELECTION_TYPE_NAME_1 = "Selected by group 1";
+	private final static String SELECTION_TYPE_NAME_2 = "Selected by group 2";
+	private final static String SELECTION_TYPE_NAME_3 = "Selected by group 3";
+	private final static String SELECTION_TYPE_NAME_4 = "Selected by group 4";
+	
+	/** Colors taken from color brewer qualitative "Set 1" with 7 colors */
+	private final static float[] SELECTION_COLOR_1 = new float[] { 152f/255, 78f/255, 163f/255, 1 };
+	private final static float[] SELECTION_COLOR_2 = new float[] { 1, 127f/255, 0, 1 };
+	private final static float[] SELECTION_COLOR_3 = new float[] { 1, 1, 51f/255, 1 };
+	private final static float[] SELECTION_COLOR_4 = new float[] { 166f/255, 86f/255, 40f/255, 1 };
+		
 	ASetBasedDataDomain dataDomain;
 
 	GeneralManager generalManager = null;
@@ -84,7 +97,7 @@ public class SelectionBrowserView extends ASWTView implements IDataDomainBasedVi
 	 * Constructor.
 	 */
 	public SelectionBrowserView(Composite parentComposite) {
-		
+
 		super(-1, parentComposite);
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
@@ -97,8 +110,41 @@ public class SelectionBrowserView extends ASWTView implements IDataDomainBasedVi
 
 		ContentVirtualArray contentVA = dataDomain.getContentVA(contentVAType);
 		contentSelectionManager.setVA(contentVA);
+
+		initSelectedByGroupSelectionTypes();
 	}
 
+
+	private void initSelectedByGroupSelectionTypes() {
+
+		// Check if types have already been added
+		for (SelectionType selectionType : contentSelectionManager.getSelectionTypes()) {
+			if (selectionType.getType().equals(SELECTION_TYPE_NAME_1))
+				return;
+		}
+		
+		ArrayList<SelectionType> selectedByGroupSelectionTypes = new ArrayList<SelectionType>();
+
+		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_1,
+				SELECTION_COLOR_1, 1, false, true, 1));
+		
+		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_2,
+				SELECTION_COLOR_2, 1, false, true, 1));
+		
+		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_3,
+				SELECTION_COLOR_3, 1, false, true, 1));
+		
+		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_4,
+				SELECTION_COLOR_4, 1, false, true, 1));
+
+		for (SelectionType selectionType : selectedByGroupSelectionTypes) {
+			
+			selectionType.setManaged(true);
+			SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(selectionType);
+			eventPublisher.triggerEvent(selectionTypeEvent);
+		}
+	}
+	
 	@Override
 	public void draw() {
 
@@ -182,11 +228,23 @@ public class SelectionBrowserView extends ASWTView implements IDataDomainBasedVi
 		}
 
 		selectionTree.setLayoutData(gridData);
+		
+		selectionTree.addListener(SWT.Selection, new Listener() {
+
+			public void handleEvent(Event event) {
+
+				SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
+						(SelectionType) event.item.getData());
+				selectionTypeEvent.setCurrent(true);
+				GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
+			}
+		});
 
 		contentTree = new TreeItem(selectionTree, SWT.NONE);
 		contentTree.setExpanded(true);
 		contentTree.setData(-1);
 		contentTree.setText("Content Selections");
+
 		updateContentTree();
 	}
 
@@ -276,6 +334,7 @@ public class SelectionBrowserView extends ASWTView implements IDataDomainBasedVi
 					+ contentSelectionManager.getNumberOfElements(tmpSelectionType) + ")");
 			item.setBackground(color);
 			item.setData(tmpSelectionType);
+
 			contentTree.setExpanded(true);
 		}
 	}
@@ -414,7 +473,7 @@ public class SelectionBrowserView extends ASWTView implements IDataDomainBasedVi
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		
+
 		initContent();
 	}
 
@@ -430,6 +489,6 @@ public class SelectionBrowserView extends ASWTView implements IDataDomainBasedVi
 
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView serializedView) {
-	
+
 	}
 }

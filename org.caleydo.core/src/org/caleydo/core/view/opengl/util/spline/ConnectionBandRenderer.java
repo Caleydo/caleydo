@@ -168,7 +168,7 @@ public class ConnectionBandRenderer {
 		gl.glLineWidth(1);
 		
 		if (highlight)
-			gl.glColor4f(color[0], color[1], color[2], 1);
+			gl.glColor4f(color[0], color[1], color[2], 0.8f);
 		else
 			gl.glColor4f(color[0], color[1], color[2], opacity*2);
 		
@@ -201,7 +201,7 @@ public class ConnectionBandRenderer {
 		gl.glEnd();
 
 		if (highlight)
-			gl.glColor4f(color[0], color[1], color[2], 0.8f);
+			gl.glColor4f(color[0], color[1], color[2], 0.5f);
 		else
 			gl.glColor4f(color[0], color[1], color[2], opacity);
 
