@@ -1869,8 +1869,6 @@ public class GLScatterPlot extends AStorageBasedView {
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 
-		textRenderer.dispose();
-		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 		Rectangle2D bounds = textRenderer.getScaledBounds(gl, sLabel, fScaling,
 				ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
 
@@ -2307,8 +2305,6 @@ public class GLScatterPlot extends AStorageBasedView {
 	private void renderMouseOverLabel(GL2 gl, float x, float y, float[] fMoueseOverColor,
 			float fOpacity, int contentIndex) {
 
-		textRenderer.dispose();
-		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 		textRenderer.setColor(0, 0, 0, 1);
 
 		float fXtranslation = 0.2f;

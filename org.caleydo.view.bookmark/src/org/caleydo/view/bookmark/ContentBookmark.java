@@ -5,7 +5,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * A bookmark for a gene. The id used here is DAVID
@@ -24,7 +24,7 @@ class ContentBookmark extends ABookmark {
 	 */
 	public ContentBookmark(GLBookmarkView manager,
 			ContentBookmarkContainer parentContainer, IDType idType, Integer id,
-			MinSizeTextRenderer textRenderer) {
+			CaleydoTextRenderer textRenderer) {
 		super(manager, parentContainer, idType, textRenderer);
 		this.id = id;
 

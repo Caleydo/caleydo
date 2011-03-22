@@ -22,8 +22,7 @@ public class DetailToolBar extends LayoutRenderer {
 	PickingManager pickingManager;
 
 	private TextureManager iconManager;
-	private TextRenderer textRender = new CaleydoTextRenderer(new Font("Arial",
-			Font.PLAIN, 24), false);
+	private TextRenderer textRender = heatMap.getTextRenderer();
 
 	public DetailToolBar(GLHeatMap heatMap) {
 		this.heatMap = heatMap;

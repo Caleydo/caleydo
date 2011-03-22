@@ -84,6 +84,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.parcoords.PCRenderStyle.PolyLineState;
 import org.caleydo.view.parcoords.listener.AngularBrushingListener;
@@ -234,6 +235,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	@Override
 	public void initLocal(final GL2 gl) {
+		textRenderer = new CaleydoTextRenderer(24);
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
@@ -783,7 +785,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			if (detailLevel == DetailLevel.HIGH) {
 
 				// NaN Button
-			
 
 				// markers on axis
 				float fMarkerSpacing = renderStyle.getAxisHeight()
@@ -882,12 +883,12 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 							EPickingType.REMOVE_NAN, storageVA.get(iCount));
 					gl.glPushName(iPickingID);
 
-					textureManager.renderGUITexture(gl, EIconTextures.NAN, lowerLeftCorner,
-							lowerRightCorner, upperRightCorner, upperLeftCorner,
-							scalingPivot, 1, 1, 1, 1, 100);
+					textureManager.renderGUITexture(gl, EIconTextures.NAN,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
 
 					gl.glPopName();
-					
+
 					// render Buttons
 
 					iPickingID = -1;

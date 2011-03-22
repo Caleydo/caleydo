@@ -78,7 +78,7 @@ public class LabelManager {
 			float fHierarchyOuterRadius) {
 
 		textRenderer = new CaleydoTextRenderer(new Font(LABEL_FONT_NAME,
-				LABEL_FONT_STYLE, LABEL_FONT_SIZE), false);
+				LABEL_FONT_STYLE, LABEL_FONT_SIZE));
 		textRenderer.setColor(0, 0, 0, 1);
 
 		float fXCenter = fScreenWidth / 2.0f;

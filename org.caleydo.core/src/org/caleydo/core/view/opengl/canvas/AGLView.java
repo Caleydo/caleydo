@@ -310,6 +310,7 @@ public abstract class AGLView
 		gl.glLoadIdentity();
 
 		viewFrustum.setProjectionMatrix(gl, fAspectRatio);
+		updateDetailMode();
 	}
 
 	/**
@@ -466,16 +467,27 @@ public abstract class AGLView
 
 	public void setFrustum(ViewFrustum viewFrustum) {
 		this.viewFrustum = viewFrustum;
-		PixelGLConverter pixelGLConverter = parentGLCanvas.getPixelGLConverter();
 
-		if (pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()) > 500) {
+		updateDetailMode();
+
+		// parentGLCanvas.initPixelGLConverter(viewFrustum);
+	}
+
+	private void updateDetailMode() {
+		PixelGLConverter pixelGLConverter = parentGLCanvas.getPixelGLConverter();
+		int pixelWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth());
+		int pixelHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());
+		if (pixelHeight > getMinPixelHeight(DetailLevel.HIGH)
+			&& pixelWidth > getMinPixelWidth(DetailLevel.HIGH)) {
 			setDetailLevel(DetailLevel.HIGH);
-		} else if (pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()) > 300) {
+		}
+		else if (pixelHeight > getMinPixelHeight(DetailLevel.MEDIUM)
+			&& pixelWidth > getMinPixelWidth(DetailLevel.MEDIUM)) {
 			setDetailLevel(DetailLevel.MEDIUM);
-		} else
+		}
+		else
 			setDetailLevel(DetailLevel.LOW);
 		setDisplayListDirty();
-		// parentGLCanvas.initPixelGLConverter(viewFrustum);
 	}
 
 	/**
@@ -884,17 +896,21 @@ public abstract class AGLView
 	}
 
 	/**
-	 * @return The minimum height in pixels the view currently requires to show its content properly.
+	 * @return The minimum height in pixels the view currently requires to show its content properly. The
+	 *         default implementation in the base class calls {@link #getMinPixelheight()} with
+	 *         {@link DetailLevel#LOW}
 	 */
 	public int getMinPixelHeight() {
-		return 0;
+		return getMinPixelHeight(DetailLevel.LOW);
 	}
 
 	/**
-	 * @return The minimum width in pixels the view currently requires to show its content properly.
+	 * @return The minimum width in pixels the view currently requires to show its content properly. The
+	 *         default implementation in the base class calls {@link #getMinPixelWidth()} with
+	 *         {@link DetailLevel#LOW}
 	 */
 	public int getMinPixelWidth() {
-		return 0;
+		return getMinPixelWidth(DetailLevel.LOW);
 	}
 
 	/**

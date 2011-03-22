@@ -2,11 +2,11 @@ package org.caleydo.view.bookmark;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 class RenderingHelpers {
 
-	static void renderText(GL2 gl, MinSizeTextRenderer textRenderer, String sLabel,
+	static void renderText(GL2 gl, CaleydoTextRenderer textRenderer, String sLabel,
 			float fXOrigin, float fYOrigin, float fFontScaling) {
 
 		textRenderer.setColor(0, 0, 0, 1);

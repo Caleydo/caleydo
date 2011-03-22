@@ -8,10 +8,11 @@ import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 public class TagRenderer extends LayoutRenderer {
-	private MinSizeTextRenderer textRenderer;
+	private CaleydoTextRenderer textRenderer;
 	private String text = "";
 
 	private GLTagCloud tagCloud;
@@ -23,14 +24,14 @@ public class TagRenderer extends LayoutRenderer {
 	private boolean isEven = false;
 	private boolean allowTextScaling = false;
 
-	public TagRenderer(MinSizeTextRenderer textRenderer, String text, GLTagCloud tagCloud) {
+	public TagRenderer(CaleydoTextRenderer textRenderer, String text, GLTagCloud tagCloud) {
 		this.textRenderer = textRenderer;
 		this.text = text;
 		this.tagCloud = tagCloud;
 		color = new float[] { 0, 0, 0 };
 	}
 
-	public TagRenderer(MinSizeTextRenderer textRenderer, GLTagCloud tagCloud,
+	public TagRenderer(CaleydoTextRenderer textRenderer, GLTagCloud tagCloud,
 			Integer storageID) {
 		this.textRenderer = textRenderer;
 		this.tagCloud = tagCloud;
@@ -87,11 +88,11 @@ public class TagRenderer extends LayoutRenderer {
 			float renderHeight = maxHeight;
 
 			topSpacing = (y - renderHeight) / 2;
-			textRenderer.renderTextInBounds(gl, text, sideSpacing, topSpacing, 0, x
-					- sideSpacing, renderHeight);
+			textRenderer.renderTextInBounds(gl, text, sideSpacing, topSpacing, 0, x - 3
+					* sideSpacing, renderHeight);
 		} else {
 			textRenderer.renderTextInBounds(gl, text, sideSpacing, topSpacing / 2, 0, x
-					- sideSpacing, y - topSpacing);
+					- 3 * sideSpacing, y - topSpacing);
 		}
 	};
 

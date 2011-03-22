@@ -7,7 +7,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * Size parameters for a single element. There are four ways to specify the dimensions of an element. It can
@@ -70,7 +70,7 @@ public class ElementLayout {
 
 	protected float[] frameColor = null;
 
-	private MinSizeTextRenderer textRenderer;
+	private CaleydoTextRenderer textRenderer;
 
 	/** The uniqueID of the managing class. Used for notifications on collisions via event. */
 	protected int managingClassID = -1;
@@ -398,7 +398,7 @@ public class ElementLayout {
 			gl.glEnd();
 
 			if (textRenderer == null) {
-				textRenderer = new MinSizeTextRenderer();
+				textRenderer = new CaleydoTextRenderer(24);
 			}
 
 			textRenderer.setColor(color[0], color[1], color[2], color[3]);

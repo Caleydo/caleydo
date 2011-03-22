@@ -21,8 +21,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 	public ContentCaptionRenderer(GLHeatMap heatMap) {
 		super(heatMap);
 
-		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, fontSize),
-				false);
+		textRenderer = heatMap.getTextRenderer();
 	}
 
 	@Override

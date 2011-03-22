@@ -106,8 +106,8 @@ public class GLCaleydoCanvas
 
 		gl.glEnable(GL2.GL_COLOR_MATERIAL);
 		gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_DIFFUSE);
-		
-		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), true, true);
+
+		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24));
 	}
 
 	@Override
@@ -247,7 +247,7 @@ public class GLCaleydoCanvas
 			pixelGLConverter = new PixelGLConverter(viewFrustum, this);
 		}
 		// if (pixelGLConverter == null)
-	
+
 		// else
 		// pixelGLConverter.viewFrustum = viewFrustum;
 	}
@@ -261,7 +261,6 @@ public class GLCaleydoCanvas
 		return pixelGLConverter;
 	}
 
-	
 	/**
 	 * Returns the text renderer valid for the gl context of this view.
 	 */

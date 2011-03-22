@@ -9,7 +9,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * Abstract base class for a single bookmark
@@ -21,7 +21,7 @@ public abstract class ABookmark extends LayoutRenderer implements ILayoutedEleme
 	protected IDType idType;
 	protected int id;
 
-	MinSizeTextRenderer textRenderer;
+	CaleydoTextRenderer textRenderer;
 
 	GLBookmarkView manager;
 
@@ -33,7 +33,7 @@ public abstract class ABookmark extends LayoutRenderer implements ILayoutedEleme
 	 * @param textRenderer
 	 */
 	public ABookmark(GLBookmarkView manager, ABookmarkContainer<?> parentContainer,
-			IDType idType, MinSizeTextRenderer textRenderer) {
+			IDType idType, CaleydoTextRenderer textRenderer) {
 		this.textRenderer = textRenderer;
 		this.manager = manager;
 		this.idType = idType;
@@ -48,8 +48,7 @@ public abstract class ABookmark extends LayoutRenderer implements ILayoutedEleme
 
 		ArrayList<SelectionType> selectionTypes = parentContainer.selectionManager
 				.getSelectionTypes(this.id);
-		
-		
+
 		if (selectionTypes == null)
 			return;
 

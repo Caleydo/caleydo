@@ -26,8 +26,7 @@ public class StorageCaptionRenderer extends AContentRenderer {
 	public StorageCaptionRenderer(GLHeatMap heatMap) {
 		super(heatMap);
 
-		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, fontSize),
-				false);
+		textRenderer = heatMap.getTextRenderer();
 	}
 
 	@Override

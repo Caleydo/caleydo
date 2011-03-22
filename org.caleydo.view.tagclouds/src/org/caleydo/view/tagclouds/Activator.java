@@ -52,9 +52,8 @@ public class Activator extends Plugin {
 	private void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 
-		// TODO: ADD THE POSSIBLE DATA DOMAINS FOR THIS VIEW
-		// For example:
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
+//		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 
 		DataDomainManager
 				.get()

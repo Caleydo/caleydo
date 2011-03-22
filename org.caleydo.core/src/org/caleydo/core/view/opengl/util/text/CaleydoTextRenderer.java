@@ -7,6 +7,7 @@ import java.nio.IntBuffer;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
 
@@ -15,74 +16,35 @@ import com.jogamp.opengl.util.awt.TextRenderer;
  * the current size of the view).
  * 
  * @author Christian Partl
+ * @author Alexander Lex
  */
 public class CaleydoTextRenderer
 	extends TextRenderer {
 
 	static private final String REFERENCE_TEXT = "Reference Text";
+	int minSize = GeneralRenderStyle.TEXT_MIN_SIZE;
+	float fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
 	private Rectangle2D referenceBounds;
 
+	double windowWidth = 0;
+	double windowHeight = 0;
+
 	/**
 	 * Constructor.
 	 * 
 	 * @param font
+	 * @param antialiased
+	 * @param useFractionalMetrics
 	 */
 	public CaleydoTextRenderer(Font font) {
-		super(font);
-		referenceBounds = getBounds(REFERENCE_TEXT);
+		super(font, true, true, new DefaultRenderDelegate(), true);
+		referenceBounds = super.getBounds(REFERENCE_TEXT);
 	}
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param font
-	 * @param mipmap
-	 */
-	public CaleydoTextRenderer(Font font, boolean mipmap) {
-		super(font, mipmap);
-		referenceBounds = getBounds(REFERENCE_TEXT);
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param font
-	 * @param antialiased
-	 * @param useFractionalMetrics
-	 */
-	public CaleydoTextRenderer(Font font, boolean antialiased, boolean useFractionalMetrics) {
-		super(font, antialiased, useFractionalMetrics);
-		referenceBounds = getBounds(REFERENCE_TEXT);
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param font
-	 * @param antialiased
-	 * @param useFractionalMetrics
-	 * @param renderDelegate
-	 */
-	public CaleydoTextRenderer(Font font, boolean antialiased, boolean useFractionalMetrics,
-		TextRenderer.RenderDelegate renderDelegate) {
-		super(font, antialiased, useFractionalMetrics, renderDelegate);
-		referenceBounds = getBounds(REFERENCE_TEXT);
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param font
-	 * @param antialiased
-	 * @param useFractionalMetrics
-	 * @param renderDelegate
-	 * @param mipmap
-	 */
-	public CaleydoTextRenderer(Font font, boolean antialiased, boolean useFractionalMetrics,
-		TextRenderer.RenderDelegate renderDelegate, boolean mipmap) {
-		super(font, antialiased, useFractionalMetrics, renderDelegate, mipmap);
-		referenceBounds = getBounds(REFERENCE_TEXT);
+	public CaleydoTextRenderer(int size) {
+		super(new Font("Arial", Font.PLAIN, size), true, true, new DefaultRenderDelegate(), true);
+		referenceBounds = super.getBounds(REFERENCE_TEXT);
 	}
 
 	/**
@@ -161,7 +123,7 @@ public class CaleydoTextRenderer
 
 		scaling = calculateScaling(gl, scaling, minSize);
 
-		Rectangle2D rect = getBounds(text);
+		Rectangle2D rect = super.getBounds(text);
 		rect.setRect(rect.getX(), rect.getY(), rect.getWidth() * scaling, rect.getHeight() * scaling);
 
 		return rect;
@@ -195,6 +157,10 @@ public class CaleydoTextRenderer
 		return referenceBounds;
 	}
 
+	public void renderText(GL2 gl, String text, float x, float y, float z) {
+		renderText(gl, text, x, y, z, fontScaling, minSize);
+	}
+
 	/**
 	 * Renders a text with specified pixel height.
 	 * 
@@ -216,21 +182,77 @@ public class CaleydoTextRenderer
 	 * @param pixelHeight
 	 *            Height of the text in pixels.
 	 * @param pixelGLConverter
-	 *            
 	 */
 	public void renderText(GL2 gl, String text, float x, float y, float z, int pixelHeight,
 		PixelGLConverter pixelGLConverter) {
-		
+
 		int fontSize = getFont().getSize();
 
 		float glFontHeight = pixelGLConverter.getGLHeightForPixelHeight(fontSize);
-		
-		float scaling = (float)(glFontHeight*(float)((float)pixelHeight/(float)fontSize))/(float)fontSize;
-		
+
+		float scaling =
+			(float) (glFontHeight * (float) ((float) pixelHeight / (float) fontSize)) / (float) fontSize;
+
 		begin3DRendering();
 		draw3D(text, x, y, z, scaling);
 		flush();
 		end3DRendering();
+	}
+
+	/**
+	 * Render the text at the position specified (lower left corner) within the bounding box The height is
+	 * scaled to fit, the string is truncated to fit the width
+	 * 
+	 * @param gl
+	 * @param text
+	 * @param xPosition
+	 *            x of lower left corner
+	 * @param yPosition
+	 *            y of lower left corner
+	 * @param zPositon
+	 * @param widht
+	 *            width fo the bounding box
+	 * @param height
+	 *            height of the bounding box
+	 */
+	public void renderTextInBounds(GL2 gl, String text, float xPosition, float yPosition, float zPositon,
+		float widht, float height) {
+
+		Rectangle2D bounds = super.getBounds(text);
+
+		double scaling = height / bounds.getHeight();
+
+		double requiredWidth = bounds.getWidth() * scaling;
+		if (requiredWidth > widht) {
+			double truncateFactor = widht / requiredWidth;
+			int length = (int) (text.length() * truncateFactor);
+			text = text.substring(0, length);
+		}
+
+		begin3DRendering();
+		draw3D(text, xPosition, yPosition, zPositon, (float) scaling);
+		flush();
+		end3DRendering();
+	}
+
+	public void setColor(float[] color) {
+		setColor(color[0], color[1], color[2], 1);
+	}
+
+	// private float calculateScaling() {
+	//
+	// float referenceWidth = minSize / (float) getReferenceBounds().getHeight() * 500.0f;
+	// float scaling = 1;
+	//
+	// if (referenceWidth > windowWidth)
+	// scaling = scaling * referenceWidth / (float) windowWidth;
+	//
+	// return scaling;
+	// }
+
+	public void setWindowSize(double windowWidth, double windowHeight) {
+		this.windowWidth = windowWidth;
+		this.windowHeight = windowHeight;
 	}
 
 }

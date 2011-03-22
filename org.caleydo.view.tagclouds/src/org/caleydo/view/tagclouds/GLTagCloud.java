@@ -17,6 +17,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -38,7 +39,10 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
+import org.caleydo.core.view.opengl.util.button.Button;
+import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.tagclouds.renderstyle.TagCloudRenderStyle;
 
 /**
@@ -52,6 +56,12 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 	public final static String VIEW_ID = "org.caleydo.view.tagclouds";
 
+	public final static int MIN_NUMBER_PIXELS_PER_DIMENSION = 100;
+
+	private StorageVirtualArray clippedStorageVA;
+	private int firstStorageIndex = -1;
+	private int lastStorageIndex = -1;
+
 	private TagCloudRenderStyle renderStyle;
 
 	private ISet set;
@@ -59,7 +69,6 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	private ASetBasedDataDomain dataDomain;
 
 	private LayoutManager layoutManager;
-
 	private LayoutTemplate layoutTemplate;
 
 	private SelectionUpdateListener selectionUpdateListener = new SelectionUpdateListener();
@@ -69,14 +78,20 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	private Row captionRow;
 	private Row selectionRow;
 
-	private MinSizeTextRenderer textRenderer;
+	private final static int BUTTON_PREVIOUS_ID = 0;
+	private final static int BUTTON_NEXT_ID = 1;
 
 	private ContentSelectionManager contentSelectionManager;
 
 	private ArrayList<TagRenderer> selectedTagRenderers = new ArrayList<TagRenderer>();
 
-	/** list sorted based on number of occurences */
+	/** list sorted based on number of occurrences */
 	private ArrayList<Pair<Integer, String>> sortedContent;
+
+	Button previousButton = new Button(EPickingType.TAG_DIMENSION_CHANGE,
+			BUTTON_PREVIOUS_ID, EIconTextures.HEAT_MAP_ARROW);
+	Button nextButton = new Button(EPickingType.TAG_DIMENSION_CHANGE, BUTTON_NEXT_ID,
+			EIconTextures.HEAT_MAP_ARROW);
 
 	// private StorageSelectionManager storageSelectionManager;
 
@@ -142,7 +157,78 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 	private void initMapping() {
 
+		Row baseRow = new Row("baseRow");
+		layoutTemplate.setBaseElementLayout(baseRow);
 		baseColumn = new Column("baseColumn");
+
+		StorageVirtualArray visibleStorageVA;
+
+		int numberOfVisibleDimensions = parentGLCanvas.getWidth()
+				/ MIN_NUMBER_PIXELS_PER_DIMENSION;
+
+		if (storageVA.size() > numberOfVisibleDimensions) {
+			if (clippedStorageVA == null) {
+				clippedStorageVA = new StorageVirtualArray();
+
+				firstStorageIndex = 0;
+				lastStorageIndex = numberOfVisibleDimensions - 1;
+				for (int count = 0; count < numberOfVisibleDimensions; count++) {
+					clippedStorageVA.append(storageVA.get(count));
+
+				}
+			} else if (clippedStorageVA.size() > numberOfVisibleDimensions) {
+				for (int count = clippedStorageVA.size() - 1; count > numberOfVisibleDimensions; count--) {
+					clippedStorageVA.remove(count);
+					lastStorageIndex--;
+				}
+			}
+
+			visibleStorageVA = clippedStorageVA;
+
+			Column previousDimensionColumn = new Column("previousDimensionColumn");
+			previousDimensionColumn.setPixelGLConverter(parentGLCanvas
+					.getPixelGLConverter());
+			previousDimensionColumn.setPixelSizeX(15);
+
+			ElementLayout previousButtonLayout = new ElementLayout("previousButtonLayout");
+			previousButtonLayout
+					.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+			previousButtonLayout.setPixelSizeY(20);
+			// previousButtonLayout.setDebug(true);
+
+			previousDimensionColumn.append(previousButtonLayout);
+
+			ButtonRenderer previousButtonRenderer = new ButtonRenderer(previousButton,
+					this, textureManager, ButtonRenderer.TEXTURE_ROTATION_90);
+
+			previousButtonLayout.setRenderer(previousButtonRenderer);
+
+			Column nextDimensionColumn = new Column("nextDimensionColumn");
+			nextDimensionColumn.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+			nextDimensionColumn.setPixelSizeX(15);
+
+			ElementLayout nextButtonLayout = new ElementLayout("nextButtonLayout");
+			nextButtonLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+			nextButtonLayout.setPixelSizeY(20);
+			// nextButtonLayout.setDebug(true);
+
+			ButtonRenderer nextButtonRenderer = new ButtonRenderer(nextButton, this,
+					textureManager, ButtonRenderer.TEXTURE_ROTATION_270);
+
+			nextButtonLayout.setRenderer(nextButtonRenderer);
+
+			nextDimensionColumn.append(nextButtonLayout);
+
+			baseRow.append(previousDimensionColumn);
+			baseRow.append(baseColumn);
+			baseRow.append(nextDimensionColumn);
+
+		} else {
+			visibleStorageVA = storageVA;
+			baseRow.append(baseColumn);
+			clippedStorageVA = null;
+		}
+
 		// baseColumn.setDebug(true);
 
 		// baseColumn.setAbsoluteSizeY(3);
@@ -162,7 +248,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		spacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		spacing.setPixelSizeY(3);
 		spacing.setRatioSizeX(0);
-		
+
 		ElementLayout largerSpacing = new ElementLayout("spacing");
 		largerSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		largerSpacing.setPixelSizeY(7);
@@ -173,14 +259,16 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 		baseColumn.append(spacing);
 		baseColumn.append(captionRow);
-		baseColumn.append(largerSpacing);
-		baseColumn.append(tagCloudRow);
-		baseColumn.append(spacing);
+
+		if (detailLevel != DetailLevel.LOW) {
+			baseColumn.append(largerSpacing);
+			baseColumn.append(tagCloudRow);
+			baseColumn.append(spacing);
+		}
 
 		// tagCloudRow.setDebug(true);
-		layoutTemplate.setBaseElementLayout(baseColumn);
 
-		for (Integer storageID : storageVA) {
+		for (Integer storageID : visibleStorageVA) {
 
 			ElementLayout storageCaptionLayout = new ElementLayout("storageCaptionLayout");
 			storageCaptionLayout.setGrabX(true);
@@ -267,7 +355,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new TagCloudRenderStyle(viewFrustum);
 
-		textRenderer = new MinSizeTextRenderer(80);
+		textRenderer = new CaleydoTextRenderer(80);
 		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;
 
@@ -316,7 +404,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	public void displayRemote(GL2 gl) {
-
+		display(gl);
 	}
 
 	@Override
@@ -341,7 +429,43 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
 
-		// TODO: Implement picking processing here!
+		switch (pickingType) {
+		case TAG_DIMENSION_CHANGE:
+			switch (pickingMode) {
+			case CLICKED:
+				if (iExternalID == BUTTON_NEXT_ID) {
+					if (lastStorageIndex != storageVA.size() - 1) {
+						firstStorageIndex++;
+						lastStorageIndex++;
+						updateClippedVA();
+					}
+				} else if (iExternalID == BUTTON_PREVIOUS_ID) {
+					if (firstStorageIndex != 0) {
+						firstStorageIndex--;
+						lastStorageIndex--;
+						updateClippedVA();
+					}
+				}
+				initMapping();
+
+				break;
+
+			default:
+				break;
+			}
+
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	private void updateClippedVA() {
+		clippedStorageVA = new StorageVirtualArray();
+		for (int count = firstStorageIndex; count <= lastStorageIndex; count++) {
+			clippedStorageVA.append(storageVA.get(count));
+		}
 	}
 
 	@Override
@@ -450,5 +574,33 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 	public ContentSelectionManager getContentSelectionManager() {
 		return contentSelectionManager;
+	}
+
+	@Override
+	public int getMinPixelHeight(DetailLevel detailLevel) {
+		switch (detailLevel) {
+		case HIGH:
+			return 120;
+		case MEDIUM:
+			return 80;
+		case LOW:
+			return 50;
+		default:
+			return 50;
+		}
+	}
+
+	@Override
+	public int getMinPixelWidth(DetailLevel detailLevel) {
+		switch (detailLevel) {
+		case HIGH:
+			return 100;
+		case MEDIUM:
+			return 100;
+		case LOW:
+			return 100;
+		default:
+			return 100;
+		}
 	}
 }

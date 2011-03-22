@@ -145,7 +145,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	@Override
 	public void init(GL2 gl) {
 		if (textRenderer == null)
-			textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), true, true);
+			textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24));
 		renderer.initCache(gl);
 
 	}

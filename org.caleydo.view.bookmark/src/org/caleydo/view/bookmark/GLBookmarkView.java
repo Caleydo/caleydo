@@ -34,7 +34,7 @@ import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
-import org.caleydo.core.view.opengl.util.text.MinSizeTextRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -81,8 +81,6 @@ public class GLBookmarkView extends AGLView implements
 
 	/** The render template */
 	private BookmarkTemplate bookmarkTemplate;
-
-	private MinSizeTextRenderer textRenderer;
 
 	class PickingIDManager {
 		/**
@@ -301,7 +299,7 @@ public class GLBookmarkView extends AGLView implements
 	@Override
 	public void init(GL2 gl) {
 		Rectangle2D bounds = parentGLCanvas.getBounds();
-		textRenderer = new MinSizeTextRenderer();
+		textRenderer = new CaleydoTextRenderer(24);
 		textRenderer.setWindowSize(bounds.getWidth(), bounds.getHeight());
 		bookmarkTemplate.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 	}
@@ -376,7 +374,7 @@ public class GLBookmarkView extends AGLView implements
 		return contextMenu;
 	}
 
-	MinSizeTextRenderer getMinSizeTextRenderer() {
+	CaleydoTextRenderer getMinSizeTextRenderer() {
 		return textRenderer;
 	}
 
