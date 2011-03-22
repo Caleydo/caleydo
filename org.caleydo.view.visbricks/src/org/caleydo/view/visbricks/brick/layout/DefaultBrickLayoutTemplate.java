@@ -1,10 +1,14 @@
 package org.caleydo.view.visbricks.brick.layout;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.util.button.Button;
+import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
@@ -12,8 +16,7 @@ import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.picking.APickingListener;
 import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
 import org.caleydo.view.visbricks.brick.ui.BorderedAreaRenderer;
-import org.caleydo.view.visbricks.brick.ui.Button;
-import org.caleydo.view.visbricks.brick.ui.ButtonRenderer;
+import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.visbricks.brick.ui.FuelBarRenderer;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
@@ -34,44 +37,50 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 	protected static final int RELATION_INDICATOR_WIDTH_PIXELS = 3;
 	protected static final int HANDLE_SIZE_PIXELS = 10;
 
-	private static final int COLLAPSE_BUTTON_ID = 0;
-	protected static final int HEATMAP_BUTTON_ID = 1;
-	protected static final int PARCOORDS_BUTTON_ID = 2;
-	protected static final int HISTOGRAM_BUTTON_ID = 3;
-	protected static final int OVERVIEW_HEATMAP_BUTTON_ID = 4;
+	protected static final int COLLAPSE_BUTTON_ID = 0;
+	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
 	protected static final int VIEW_SWITCHING_MODE_BUTTON_ID = 5;
 
-	protected Button heatMapButton;
-	protected Button parCoordsButton;
-	protected Button histogramButton;
-	protected Button overviewHeatMapButton;
+	protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
+
+	// protected Button heatMapButton;
+	// protected Button parCoordsButton;
+	// protected Button histogramButton;
+	// protected Button overviewHeatMapButton;
 	protected Button viewSwitchingModeButton;
+	protected Button lockResizingButton;
 
 	private GLVisBricks visBricks;
 	private RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	private RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
 	public DefaultBrickLayoutTemplate(GLBrick brick, GLVisBricks visBricks,
-			DimensionGroup dimensionGroup) {
+			DimensionGroup dimensionGroup, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		this.visBricks = visBricks;
-		leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, visBricks,
-				true);
-		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, visBricks,
-				false);
+		leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
+				visBricks, true);
+		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
+				visBricks, false);
 
-		heatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS, HEATMAP_BUTTON_ID);
-		parCoordsButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
-				PARCOORDS_BUTTON_ID);
-		histogramButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
-				HISTOGRAM_BUTTON_ID);
-		overviewHeatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
-				OVERVIEW_HEATMAP_BUTTON_ID);
+		// heatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
+		// HEATMAP_BUTTON_ID);
+		// parCoordsButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
+		// PARCOORDS_BUTTON_ID);
+		// histogramButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
+		// HISTOGRAM_BUTTON_ID);
+		// overviewHeatMapButton = new
+		// Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
+		// OVERVIEW_HEATMAP_BUTTON_ID);
+//		lockResizingButton = new Button(EPickingType.BRICK_LOCK_RESIZING_BUTTON, LOCK_RESIZING_BUTTON_ID, EIconTextures.)
 		viewSwitchingModeButton = new Button(
 				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
-				VIEW_SWITCHING_MODE_BUTTON_ID);
-		viewSwitchingModeButton.setSelected(dimensionGroup.isGlobalViewSwitching());
+				VIEW_SWITCHING_MODE_BUTTON_ID, EIconTextures.LOCK);
+		viewSwitchingModeButton.setSelected(dimensionGroup
+				.isGlobalViewSwitching());
 
+		configurer.configure(this);
+		registerPickingListeners();
 		viewTypeChanged(getDefaultViewType());
 	}
 
@@ -99,7 +108,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				"RightRelationIndicatorLayout");
 		// rightRelationIndicatorLayout.setDebug(true);
 		leftRelationIndicatorLayout.setPixelGLConverter(pixelGLConverter);
-		leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
+		leftRelationIndicatorLayout
+				.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
 		leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
 		baseRow.append(leftRelationIndicatorLayout);
 
@@ -112,8 +122,9 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseRow.setRenderer(new BorderedAreaRenderer());
 
 		if (showHandles) {
-			baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter,
-					HANDLE_SIZE_PIXELS, brick.getTextureManager()));
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
+					pixelGLConverter, HANDLE_SIZE_PIXELS, brick
+							.getTextureManager()));
 		}
 
 		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
@@ -154,8 +165,10 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				"RightRelationIndicatorLayout");
 		// rightRelationIndicatorLayout.setDebug(true);
 		rightRelationIndicatorLayout.setPixelGLConverter(pixelGLConverter);
-		rightRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
-		rightRelationIndicatorLayout.setRenderer(rightRelationIndicatorRenderer);
+		rightRelationIndicatorLayout
+				.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
+		rightRelationIndicatorLayout
+				.setRenderer(rightRelationIndicatorRenderer);
 		baseRow.append(rightRelationIndicatorLayout);
 
 	}
@@ -172,68 +185,56 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
-		spacingLayoutX.setPixelSizeX(4);
+		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
 		spacingLayoutX.setPixelSizeY(0);
 
-		ElementLayout heatMapButtonLayout = new ElementLayout("heatMapButton");
-		heatMapButtonLayout.setPixelGLConverter(pixelGLConverter);
-		heatMapButtonLayout.setPixelSizeX(pixelHeight);
-		heatMapButtonLayout.setPixelSizeY(pixelHeight);
-		heatMapButtonLayout.setRenderer(new ButtonRenderer(heatMapButton, brick,
-				EIconTextures.HEAT_MAP_ICON, brick.getTextureManager()));
+		for (int i = 0; i < viewSwitchingButtons.size(); i++) {
+			BrickViewSwitchingButton button = viewSwitchingButtons.get(i);
+			ElementLayout buttonLayout = new ElementLayout();
+			buttonLayout.setPixelGLConverter(pixelGLConverter);
+			buttonLayout.setPixelSizeX(pixelHeight);
+			buttonLayout.setPixelSizeY(pixelHeight);
+			buttonLayout.setRenderer(new ButtonRenderer(button, brick, brick
+					.getTextureManager()));
+			toolBar.append(buttonLayout);
+			if (i != viewSwitchingButtons.size() - 1) {
+				toolBar.append(spacingLayoutX);
+			}
+		}
 
-		ElementLayout parCoordsButtonLayout = new ElementLayout("parCoords");
-		parCoordsButtonLayout.setPixelGLConverter(pixelGLConverter);
-		parCoordsButtonLayout.setPixelSizeX(pixelHeight);
-		parCoordsButtonLayout.setPixelSizeY(pixelHeight);
-		parCoordsButtonLayout.setRenderer(new ButtonRenderer(parCoordsButton, brick,
-				EIconTextures.PAR_COORDS_ICON, brick.getTextureManager()));
-
-		ElementLayout histogramButtonLayout = new ElementLayout("histogramButton");
-		histogramButtonLayout.setPixelGLConverter(pixelGLConverter);
-		histogramButtonLayout.setPixelSizeX(pixelHeight);
-		histogramButtonLayout.setPixelSizeY(pixelHeight);
-		histogramButtonLayout.setRenderer(new ButtonRenderer(histogramButton, brick,
-				EIconTextures.HISTOGRAM_ICON, brick.getTextureManager()));
-
-		ElementLayout overviewHeatMapButtonLayout = new ElementLayout(
-				"overviewHeatMapButton");
-		overviewHeatMapButtonLayout.setPixelGLConverter(pixelGLConverter);
-		overviewHeatMapButtonLayout.setPixelSizeX(pixelHeight);
-		overviewHeatMapButtonLayout.setPixelSizeY(pixelHeight);
-		overviewHeatMapButtonLayout.setRenderer(new ButtonRenderer(overviewHeatMapButton,
-				brick, EIconTextures.HEAT_MAP_ICON, brick.getTextureManager()));
-
-		ElementLayout ratioSpacingLayoutX = new ElementLayout("ratioSpacingLayoutX");
+		ElementLayout ratioSpacingLayoutX = new ElementLayout(
+				"ratioSpacingLayoutX");
 		ratioSpacingLayoutX.setRatioSizeX(1);
 		ratioSpacingLayoutX.setRatioSizeY(0);
 
-		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout("clusterButton");
+		ElementLayout lockResizingButtonLayout = new ElementLayout(
+				"clusterButton");
+		lockResizingButtonLayout.setPixelGLConverter(pixelGLConverter);
+		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
+		lockResizingButtonLayout.setRenderer(new ButtonRenderer(
+				viewSwitchingModeButton, brick, brick.getTextureManager()));
+
+		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout(
+				"viewSwitchtingButtonLayout");
 		toggleViewSwitchingButtonLayout.setPixelGLConverter(pixelGLConverter);
 		toggleViewSwitchingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		toggleViewSwitchingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		toggleViewSwitchingButtonLayout.setRenderer(new ButtonRenderer(
-				viewSwitchingModeButton, brick, EIconTextures.LOCK, brick
-						.getTextureManager()));
+				viewSwitchingModeButton, brick, brick.getTextureManager()));
 
-		ElementLayout collapseButtonLayout = new ElementLayout("expandButtonLayout");
+		ElementLayout collapseButtonLayout = new ElementLayout(
+				"expandButtonLayout");
 		collapseButtonLayout.setFrameColor(1, 0, 0, 1);
 		// expandButtonLayout.setDebug(true);
 		collapseButtonLayout.setPixelGLConverter(pixelGLConverter);
 		collapseButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		collapseButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		collapseButtonLayout.setRenderer(new ButtonRenderer(new Button(
-				EPickingType.BRICK_COLLAPSE_BUTTON, COLLAPSE_BUTTON_ID), brick,
-				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, brick.getTextureManager(),
-				ButtonRenderer.TEXTURE_ROTATION_90));
+				EPickingType.BRICK_COLLAPSE_BUTTON, COLLAPSE_BUTTON_ID,
+				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE), brick, brick
+				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_90));
 
-		toolBar.append(heatMapButtonLayout);
-		toolBar.append(spacingLayoutX);
-		toolBar.append(parCoordsButtonLayout);
-		toolBar.append(spacingLayoutX);
-		toolBar.append(histogramButtonLayout);
-		toolBar.append(spacingLayoutX);
-		toolBar.append(overviewHeatMapButtonLayout);
 		toolBar.append(ratioSpacingLayoutX);
 		toolBar.append(toggleViewSwitchingButtonLayout);
 		toolBar.append(spacingLayoutX);
@@ -243,83 +244,41 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 	}
 
 	protected void registerPickingListeners() {
-		brick.addPickingListener(new APickingListener() {
 
-			@Override
-			public void clicked(Pick pick) {
-				heatMapButton.setSelected(true);
-				parCoordsButton.setSelected(false);
-				histogramButton.setSelected(false);
-				overviewHeatMapButton.setSelected(false);
-				if (viewSwitchingModeButton.isSelected()) {
-					dimensionGroup.switchBrickViews(EContainedViewType.HEATMAP_VIEW);
-				} else {
-					brick.setRemoteView(EContainedViewType.HEATMAP_VIEW);
+		for (final BrickViewSwitchingButton button : viewSwitchingButtons) {
+
+			brick.addPickingListener(new APickingListener() {
+
+				@Override
+				public void clicked(Pick pick) {
+					for (BrickViewSwitchingButton button : viewSwitchingButtons) {
+						button.setSelected(false);
+					}
+					button.setSelected(true);
+					if (viewSwitchingModeButton.isSelected()) {
+						dimensionGroup.switchBrickViews(button.getViewType());
+					} else {
+						brick.setRemoteView(button.getViewType());
+					}
+					dimensionGroup.updateLayout();
 				}
-				dimensionGroup.updateLayout();
-			}
-		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HEATMAP_BUTTON_ID);
+			}, button.getPickingType(), button.getButtonID());
+		}
 
-		brick.addPickingListener(new APickingListener() {
+		brick.addPickingListener(
+				new APickingListener() {
 
-			@Override
-			public void clicked(Pick pick) {
-				heatMapButton.setSelected(false);
-				parCoordsButton.setSelected(true);
-				histogramButton.setSelected(false);
-				overviewHeatMapButton.setSelected(false);
-				if (viewSwitchingModeButton.isSelected()) {
-					dimensionGroup.switchBrickViews(EContainedViewType.PARCOORDS_VIEW);
-				} else {
-					brick.setRemoteView(EContainedViewType.PARCOORDS_VIEW);
-				}
-				dimensionGroup.updateLayout();
-			}
-		}, EPickingType.BRICK_TOOLBAR_BUTTONS, PARCOORDS_BUTTON_ID);
-
-		brick.addPickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-				heatMapButton.setSelected(false);
-				parCoordsButton.setSelected(false);
-				histogramButton.setSelected(true);
-				overviewHeatMapButton.setSelected(false);
-				if (viewSwitchingModeButton.isSelected()) {
-					dimensionGroup.switchBrickViews(EContainedViewType.HISTOGRAM_VIEW);
-				} else {
-					brick.setRemoteView(EContainedViewType.HISTOGRAM_VIEW);
-				}
-				dimensionGroup.updateLayout();
-			}
-		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HISTOGRAM_BUTTON_ID);
-
-		brick.addPickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-				heatMapButton.setSelected(false);
-				parCoordsButton.setSelected(false);
-				histogramButton.setSelected(false);
-				overviewHeatMapButton.setSelected(true);
-				if (viewSwitchingModeButton.isSelected()) {
-					dimensionGroup.switchBrickViews(EContainedViewType.OVERVIEW_HEATMAP);
-				} else {
-					brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
-				}
-				dimensionGroup.updateLayout();
-			}
-		}, EPickingType.BRICK_TOOLBAR_BUTTONS, OVERVIEW_HEATMAP_BUTTON_ID);
-
-		brick.addPickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-				boolean isGlobalViewSwitching = !viewSwitchingModeButton.isSelected();
-				dimensionGroup.setGlobalViewSwitching(isGlobalViewSwitching);
-				viewSwitchingModeButton.setSelected(isGlobalViewSwitching);
-			}
-		}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON, VIEW_SWITCHING_MODE_BUTTON_ID);
+					@Override
+					public void clicked(Pick pick) {
+						boolean isGlobalViewSwitching = !viewSwitchingModeButton
+								.isSelected();
+						dimensionGroup
+								.setGlobalViewSwitching(isGlobalViewSwitching);
+						viewSwitchingModeButton
+								.setSelected(isGlobalViewSwitching);
+					}
+				}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
+				VIEW_SWITCHING_MODE_BUTTON_ID);
 
 		brick.addPickingListener(new APickingListener() {
 
@@ -333,8 +292,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinHeightPixels() {
-		return 4 * SPACING_PIXELS + FUEL_BAR_HEIGHT_PIXELS + TOOLBAR_HEIGHT_PIXELS
-				+ viewRenderer.getMinHeightPixels();
+		return 4 * SPACING_PIXELS + FUEL_BAR_HEIGHT_PIXELS
+				+ TOOLBAR_HEIGHT_PIXELS + viewRenderer.getMinHeightPixels();
 	}
 
 	@Override
@@ -343,45 +302,66 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		return 0;
 	}
 
-	@Override
-	protected void setValidViewTypes() {
-		validViewTypes.add(EContainedViewType.HISTOGRAM_VIEW);
-		validViewTypes.add(EContainedViewType.HEATMAP_VIEW);
-		validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
-		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP);
-	}
+	// @Override
+	// protected void setValidViewTypes() {
+	// validViewTypes.add(EContainedViewType.HISTOGRAM_VIEW);
+	// validViewTypes.add(EContainedViewType.HEATMAP_VIEW);
+	// validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
+	// validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP);
+	// }
 
-	@Override
-	public EContainedViewType getDefaultViewType() {
-		return EContainedViewType.HEATMAP_VIEW;
-	}
+	// @Override
+	// public EContainedViewType getDefaultViewType() {
+	// return EContainedViewType.HEATMAP_VIEW;
+	// }
 
 	@Override
 	public void viewTypeChanged(EContainedViewType viewType) {
-		heatMapButton.setSelected(false);
-		parCoordsButton.setSelected(false);
-		histogramButton.setSelected(false);
-		overviewHeatMapButton.setSelected(false);
 
-		switch (viewType) {
-		case HEATMAP_VIEW:
-			heatMapButton.setSelected(true);
-			break;
-		case PARCOORDS_VIEW:
-			parCoordsButton.setSelected(true);
-			break;
-		case HISTOGRAM_VIEW:
-			histogramButton.setSelected(true);
-			break;
-		case OVERVIEW_HEATMAP:
-			overviewHeatMapButton.setSelected(true);
-			break;
+		for (BrickViewSwitchingButton button : viewSwitchingButtons) {
+			if (viewType == button.getViewType()) {
+				button.setSelected(true);
+			} else {
+				button.setSelected(false);
+			}
 		}
+
+		// heatMapButton.setSelected(false);
+		// parCoordsButton.setSelected(false);
+		// histogramButton.setSelected(false);
+		// overviewHeatMapButton.setSelected(false);
+		//
+		// switch (viewType) {
+		// case HEATMAP_VIEW:
+		// heatMapButton.setSelected(true);
+		// break;
+		// case PARCOORDS_VIEW:
+		// parCoordsButton.setSelected(true);
+		// break;
+		// case HISTOGRAM_VIEW:
+		// histogramButton.setSelected(true);
+		// break;
+		// case OVERVIEW_HEATMAP:
+		// overviewHeatMapButton.setSelected(true);
+		// break;
+		// }
 
 	}
 
 	@Override
 	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
 		viewSwitchingModeButton.setSelected(isGlobalViewSwitching);
+	}
+
+	//
+	// @Override
+	// public void configure(IBrickLayoutConfigurer configurer) {
+	// configurer.configure(this);
+	// registerPickingListeners();
+	// }
+
+	public void setViewSwitchingButtons(
+			ArrayList<BrickViewSwitchingButton> buttons) {
+		viewSwitchingButtons = buttons;
 	}
 }

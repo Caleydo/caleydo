@@ -226,7 +226,8 @@ public class CaleydoTextRenderer
 		if (requiredWidth > widht) {
 			double truncateFactor = widht / requiredWidth;
 			int length = (int) (text.length() * truncateFactor);
-			text = text.substring(0, length);
+			if(length >= 0)
+				text = text.substring(0, length);
 		}
 
 		begin3DRendering();

@@ -5,6 +5,8 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.util.button.Button;
+import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
@@ -12,8 +14,6 @@ import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.picking.APickingListener;
 import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
 import org.caleydo.view.visbricks.brick.ui.BorderedAreaRenderer;
-import org.caleydo.view.visbricks.brick.ui.Button;
-import org.caleydo.view.visbricks.brick.ui.ButtonRenderer;
 import org.caleydo.view.visbricks.brick.ui.FuelBarRenderer;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
@@ -39,9 +39,11 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 	// private RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
 	public CompactBrickLayoutTemplate(GLBrick brick, GLVisBricks visBricks,
-			DimensionGroup dimensionGroup) {
+			DimensionGroup dimensionGroup, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		this.visBricks = visBricks;
+		configurer.configure(this);
+		registerPickingListeners();
 		// leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
 		// visBricks, true);
 		// rightRelationIndicatorRenderer = new RelationIndicatorRenderer(
@@ -90,8 +92,8 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseRow.setRenderer(new BorderedAreaRenderer());
 
 		if (showHandles) {
-			baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter, 10,
-					brick.getTextureManager()));
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
+					pixelGLConverter, 10, brick.getTextureManager()));
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
@@ -115,7 +117,8 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
 		viewLayout.setRenderer(viewRenderer);
 
-		ElementLayout expandButtonLayout = new ElementLayout("expandButtonLayout");
+		ElementLayout expandButtonLayout = new ElementLayout(
+				"expandButtonLayout");
 		expandButtonLayout.setFrameColor(1, 0, 0, 1);
 		// expandButtonLayout.setDebug(true);
 		expandButtonLayout.setPixelGLConverter(pixelGLConverter);
@@ -123,9 +126,9 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// expandButtonLayout.setRatioSizeX(0.2f);
 		expandButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		expandButtonLayout.setRenderer(new ButtonRenderer(new Button(
-				EPickingType.BRICK_EXPAND_BUTTON, EXPAND_BUTTON_ID), brick,
-				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, brick.getTextureManager(),
-				ButtonRenderer.TEXTURE_ROTATION_180));
+				EPickingType.BRICK_EXPAND_BUTTON, EXPAND_BUTTON_ID,
+				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE), brick, brick
+				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_180));
 
 		viewRow.append(viewLayout);
 		viewRow.append(spacingLayoutX);
@@ -161,7 +164,8 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 			@Override
 			public void clicked(Pick pick) {
 				DefaultBrickLayoutTemplate layoutTemplate = new DefaultBrickLayoutTemplate(
-						brick, visBricks, dimensionGroup);
+						brick, visBricks, dimensionGroup, brick
+								.getLayoutConfigurer());
 				brick.setBrickLayoutTemplate(layoutTemplate);
 				brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
 				dimensionGroup.updateLayout();
@@ -184,19 +188,24 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		return 0;
 	}
 
-	@Override
-	protected void setValidViewTypes() {
-		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
-	}
+	// @Override
+	// protected void setValidViewTypes() {
+	// validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
+	// }
 
-	@Override
-	public EContainedViewType getDefaultViewType() {
-		return EContainedViewType.OVERVIEW_HEATMAP_COMPACT;
-	}
+	// @Override
+	// public EContainedViewType getDefaultViewType() {
+	// return EContainedViewType.OVERVIEW_HEATMAP_COMPACT;
+	// }
 
 	@Override
 	public void viewTypeChanged(EContainedViewType viewType) {
 
 	}
+
+	// @Override
+	// public void configure(IBrickLayoutConfigurer configurer) {
+	// configurer.configure(this);
+	// }
 
 }

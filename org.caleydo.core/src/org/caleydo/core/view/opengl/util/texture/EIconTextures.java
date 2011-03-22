@@ -138,7 +138,9 @@ public enum EIconTextures {
 	
 //	MOVE_ICON("resources/icons/view/histogram/move_icon.png"),
 	
-	HISTOGRAM_ICON("resources/icons/view/histogram/histogram.png");
+	HISTOGRAM_ICON("resources/icons/view/histogram/histogram.png"),
+	
+	TAGCLOUD_ICON("resources/icons/view/tagclouds/icon.png");
 
 	private String sFileName;
 

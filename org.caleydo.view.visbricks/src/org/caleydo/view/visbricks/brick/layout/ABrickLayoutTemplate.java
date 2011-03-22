@@ -24,15 +24,16 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	protected boolean showHandles;
 	protected DimensionGroup dimensionGroup;
 	protected HashSet<EContainedViewType> validViewTypes;
+	protected EContainedViewType defaultViewType;
 
 	public ABrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup) {
 		this.brick = brick;
 		this.dimensionGroup = dimensionGroup;
 		showHandles = false;
 		validViewTypes = new HashSet<EContainedViewType>();
-		setValidViewTypes();
+		// setValidViewTypes();
 		setPixelGLConverter(brick.getParentGLCanvas().getPixelGLConverter());
-		registerPickingListeners();
+//		registerPickingListeners();
 	}
 
 	/**
@@ -61,7 +62,8 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	}
 
 	/**
-	 * Registers PickingListeners. Automatically called upon Object creation.
+	 * Registers PickingListeners. Should be called after the layout has been
+	 * configured by a {@link IBrickConfigurer}.
 	 */
 	protected abstract void registerPickingListeners();
 
@@ -79,13 +81,28 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 
 	/**
 	 * Sets the view types that are valid for the layout.
+	 * 
+	 * @param validViewTypes
 	 */
-	protected abstract void setValidViewTypes();
+	public void setValidViewTypes(HashSet<EContainedViewType> validViewTypes) {
+		this.validViewTypes = validViewTypes;
+	}
+
+	/**
+	 * Sets the default view type for the layout.
+	 * 
+	 * @param validViewTypes
+	 */
+	public void setDefaultViewType(EContainedViewType defaultViewType) {
+		this.defaultViewType = defaultViewType;
+	}
 
 	/**
 	 * @return The default view type for this layout.
 	 */
-	public abstract EContainedViewType getDefaultViewType();
+	public EContainedViewType getDefaultViewType() {
+		return defaultViewType;
+	}
 
 	/**
 	 * @param viewType
@@ -102,9 +119,14 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	public abstract void viewTypeChanged(EContainedViewType viewType);
 
 	/**
-	 * Sets, whether view switching by this brick should affect other bricks in the dimension group.
+	 * Sets, whether view switching by this brick should affect other bricks in
+	 * the dimension group.
 	 * 
 	 * @param isGlobalViewSwitching
 	 */
-	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {}
+	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
+	}
+
+//	public abstract void configure(IBrickLayoutConfigurer configurer);
+
 }

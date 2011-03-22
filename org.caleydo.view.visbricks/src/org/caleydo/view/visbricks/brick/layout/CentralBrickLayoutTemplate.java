@@ -1,5 +1,7 @@
 package org.caleydo.view.visbricks.brick.layout;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -8,6 +10,8 @@ import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.util.button.Button;
+import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.rcp.dialog.cluster.StartClusteringDialog;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
@@ -15,8 +19,7 @@ import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.picking.APickingListener;
 import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
 import org.caleydo.view.visbricks.brick.ui.BorderedAreaRenderer;
-import org.caleydo.view.visbricks.brick.ui.Button;
-import org.caleydo.view.visbricks.brick.ui.ButtonRenderer;
+import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.visbricks.brick.ui.DimensionBarRenderer;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
@@ -42,31 +45,35 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	protected static final int HANDLE_SIZE_PIXELS = 10;
 
 	protected static final int CLUSTER_BUTTON_ID = 0;
-	protected static final int PARCOORDS_BUTTON_ID = 2;
-	protected static final int HISTOGRAM_BUTTON_ID = 3;
-	protected static final int OVERVIEW_HEATMAP_BUTTON_ID = 4;
+
+	protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
 
 	// protected Button heatMapButton;
-	protected Button parCoordsButton;
-	protected Button histogramButton;
-	protected Button overviewHeatMapButton;
+	// protected Button parCoordsButton;
+	// protected Button histogramButton;
+	// protected Button overviewHeatMapButton;
 
 	private Button clusterButton;
 
-	public CentralBrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup) {
+	public CentralBrickLayoutTemplate(GLBrick brick,
+			DimensionGroup dimensionGroup, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
-				CLUSTER_BUTTON_ID);
+				CLUSTER_BUTTON_ID, EIconTextures.CLUSTER_ICON);
 
 		// heatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
 		// HEATMAP_BUTTON_ID);
-		parCoordsButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
-				PARCOORDS_BUTTON_ID);
-		histogramButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
-				HISTOGRAM_BUTTON_ID);
-		overviewHeatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
-				OVERVIEW_HEATMAP_BUTTON_ID);
-
+		// parCoordsButton = new
+		// Button(EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
+		// PARCOORDS_BUTTON_ID);
+		// histogramButton = new
+		// Button(EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
+		// HISTOGRAM_BUTTON_ID);
+		// overviewHeatMapButton = new
+		// Button(EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
+		// OVERVIEW_HEATMAP_BUTTON_ID);
+		configurer.configure(this);
+		registerPickingListeners();
 		viewTypeChanged(getDefaultViewType());
 
 	}
@@ -85,7 +92,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 		if (showHandles) {
 			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
-					pixelGLConverter, HANDLE_SIZE_PIXELS, brick.getTextureManager()));
+					pixelGLConverter, HANDLE_SIZE_PIXELS, brick
+							.getTextureManager()));
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
@@ -138,8 +146,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		clusterButtonLayout.setPixelGLConverter(pixelGLConverter);
 		clusterButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		clusterButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton, brick,
-				EIconTextures.CLUSTER_ICON, brick.getTextureManager()));
+		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton,
+				brick, brick.getTextureManager()));
 
 		captionRow.append(clusterButtonLayout);
 		captionRow.append(spacingLayoutX);
@@ -184,36 +192,20 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutX.setPixelSizeX(4);
 		spacingLayoutX.setPixelSizeY(0);
-
-		ElementLayout parCoordsButtonLayout = new ElementLayout("parCoords");
-		parCoordsButtonLayout.setPixelGLConverter(pixelGLConverter);
-		parCoordsButtonLayout.setPixelSizeX(pixelHeight);
-		parCoordsButtonLayout.setPixelSizeY(pixelHeight);
-		parCoordsButtonLayout.setRenderer(new ButtonRenderer(parCoordsButton, brick,
-				EIconTextures.PAR_COORDS_ICON, brick.getTextureManager()));
-
-		toolBar.append(parCoordsButtonLayout);
-		toolBar.append(spacingLayoutX);
-
-		ElementLayout histogramButtonLayout = new ElementLayout("histogramButton");
-		histogramButtonLayout.setPixelGLConverter(pixelGLConverter);
-		histogramButtonLayout.setPixelSizeX(pixelHeight);
-		histogramButtonLayout.setPixelSizeY(pixelHeight);
-		histogramButtonLayout.setRenderer(new ButtonRenderer(histogramButton, brick,
-				EIconTextures.HISTOGRAM_ICON, brick.getTextureManager()));
-
-		toolBar.append(histogramButtonLayout);
-		toolBar.append(spacingLayoutX);
-
-		ElementLayout overviewHeatMapButtonLayout = new ElementLayout(
-				"overviewHeatMapButton");
-		overviewHeatMapButtonLayout.setPixelGLConverter(pixelGLConverter);
-		overviewHeatMapButtonLayout.setPixelSizeX(pixelHeight);
-		overviewHeatMapButtonLayout.setPixelSizeY(pixelHeight);
-		overviewHeatMapButtonLayout.setRenderer(new ButtonRenderer(overviewHeatMapButton,
-				brick, EIconTextures.HEAT_MAP_ICON, brick.getTextureManager()));
-
-		toolBar.append(overviewHeatMapButtonLayout);
+		
+		for (int i = 0; i < viewSwitchingButtons.size(); i++) {
+			BrickViewSwitchingButton button = viewSwitchingButtons.get(i);
+			ElementLayout buttonLayout = new ElementLayout();
+			buttonLayout.setPixelGLConverter(pixelGLConverter);
+			buttonLayout.setPixelSizeX(pixelHeight);
+			buttonLayout.setPixelSizeY(pixelHeight);
+			buttonLayout.setRenderer(new ButtonRenderer(button, brick, brick
+					.getTextureManager()));
+			toolBar.append(buttonLayout);
+			if (i != viewSwitchingButtons.size() - 1) {
+				toolBar.append(spacingLayoutX);
+			}
+		}
 
 		return toolBar;
 	}
@@ -221,44 +213,22 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	@Override
 	protected void registerPickingListeners() {
 
-		brick.addPickingListener(new APickingListener() {
+		for (final BrickViewSwitchingButton button : viewSwitchingButtons) {
 
-			@Override
-			public void clicked(Pick pick) {
-				parCoordsButton.setSelected(true);
-				histogramButton.setSelected(false);
-				overviewHeatMapButton.setSelected(false);
+			brick.addPickingListener(new APickingListener() {
 
-				brick.setRemoteView(EContainedViewType.PARCOORDS_VIEW);
-				dimensionGroup.updateLayout();
-			}
-		}, EPickingType.BRICK_TOOLBAR_BUTTONS, PARCOORDS_BUTTON_ID);
+				@Override
+				public void clicked(Pick pick) {
+					for (BrickViewSwitchingButton button : viewSwitchingButtons) {
+						button.setSelected(false);
+					}
+					button.setSelected(true);
 
-		brick.addPickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-				parCoordsButton.setSelected(false);
-				histogramButton.setSelected(true);
-				overviewHeatMapButton.setSelected(false);
-
-				brick.setRemoteView(EContainedViewType.HISTOGRAM_VIEW);
-				dimensionGroup.updateLayout();
-			}
-		}, EPickingType.BRICK_TOOLBAR_BUTTONS, HISTOGRAM_BUTTON_ID);
-
-		brick.addPickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-				parCoordsButton.setSelected(false);
-				histogramButton.setSelected(false);
-				overviewHeatMapButton.setSelected(true);
-
-				brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
-				dimensionGroup.updateLayout();
-			}
-		}, EPickingType.BRICK_TOOLBAR_BUTTONS, OVERVIEW_HEATMAP_BUTTON_ID);
+					brick.setRemoteView(button.getViewType());
+					dimensionGroup.updateLayout();
+				}
+			}, button.getPickingType(), button.getButtonID());
+		}
 
 		brick.addPickingListener(new APickingListener() {
 
@@ -273,15 +243,16 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 								StartClusteringDialog dialog = new StartClusteringDialog(
 										new Shell(), brick.getDataDomain());
 								dialog.open();
-								ClusterState clusterState = dialog.getClusterState();
+								ClusterState clusterState = dialog
+										.getClusterState();
 								if (clusterState == null)
 									return;
 
 								StartClusteringEvent event = null;
 								// if (clusterState != null && set != null)
 
-								event = new StartClusteringEvent(clusterState, brick
-										.getSet().getID());
+								event = new StartClusteringEvent(clusterState,
+										brick.getSet().getID());
 								event.setDataDomainType(brick.getDataDomain()
 										.getDataDomainType());
 								GeneralManager.get().getEventPublisher()
@@ -295,8 +266,9 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinHeightPixels() {
-		return 6 * SPACING_PIXELS + TOOLBAR_HEIGHT_PIXELS + LINE_SEPARATOR_HEIGHT_PIXELS
-				+ CAPTION_HEIGHT_PIXELS + DIMENSION_BAR_HEIGHT_PIXELS
+		return 6 * SPACING_PIXELS + TOOLBAR_HEIGHT_PIXELS
+				+ LINE_SEPARATOR_HEIGHT_PIXELS + CAPTION_HEIGHT_PIXELS
+				+ DIMENSION_BAR_HEIGHT_PIXELS
 				+ viewRenderer.getMinHeightPixels();
 	}
 
@@ -306,34 +278,37 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		return 0;
 	}
 
-	@Override
-	protected void setValidViewTypes() {
-		validViewTypes.add(EContainedViewType.HISTOGRAM_VIEW);
-		validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
-		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP);
-	}
+	// @Override
+	// protected void setValidViewTypes() {
+	// validViewTypes.add(EContainedViewType.HISTOGRAM_VIEW);
+	// validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
+	// validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP);
+	// }
 
-	@Override
-	public EContainedViewType getDefaultViewType() {
-		return EContainedViewType.PARCOORDS_VIEW;
-	}
+	// @Override
+	// public EContainedViewType getDefaultViewType() {
+	// return EContainedViewType.PARCOORDS_VIEW;
+	// }
 
 	@Override
 	public void viewTypeChanged(EContainedViewType viewType) {
-		parCoordsButton.setSelected(false);
-		histogramButton.setSelected(false);
-		overviewHeatMapButton.setSelected(false);
-
-		switch (viewType) {
-		case PARCOORDS_VIEW:
-			parCoordsButton.setSelected(true);
-			break;
-		case HISTOGRAM_VIEW:
-			histogramButton.setSelected(true);
-			break;
-		case OVERVIEW_HEATMAP:
-			overviewHeatMapButton.setSelected(true);
-			break;
+		for (BrickViewSwitchingButton button : viewSwitchingButtons) {
+			if (viewType == button.getViewType()) {
+				button.setSelected(true);
+			} else {
+				button.setSelected(false);
+			}
 		}
 	}
+
+	// @Override
+	// public void configure(IBrickLayoutConfigurer configurer) {
+	// configurer.configure(this);
+	// }
+
+	public void setViewSwitchingButtons(
+			ArrayList<BrickViewSwitchingButton> buttons) {
+		viewSwitchingButtons = buttons;
+	}
+
 }

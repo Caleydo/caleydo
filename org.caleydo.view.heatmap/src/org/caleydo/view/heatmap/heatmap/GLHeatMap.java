@@ -939,4 +939,33 @@ public class GLHeatMap extends AStorageBasedView {
 
 		return pixelHeight;
 	}
+	
+	@Override
+	public int getMinPixelHeight(DetailLevel detailLevel) {
+		switch (detailLevel) {
+		case HIGH:
+			return getMinPixelHeight();
+		case MEDIUM:
+			return getMinPixelHeight();
+		case LOW:
+			return getMinPixelHeight();
+		default:
+			return 50;
+		}
+	}
+
+	@Override
+	public int getMinPixelWidth(DetailLevel detailLevel) {
+		switch (detailLevel) {
+		case HIGH:
+			return 100;
+		case MEDIUM:
+			return 100;
+		case LOW:
+			return 100;
+		default:
+			return 100;
+		}
+	}
+
 }

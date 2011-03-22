@@ -2552,5 +2552,33 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		//
 		// gl.glFlush();
 	}
+	
+	@Override
+	public int getMinPixelHeight(DetailLevel detailLevel) {
+		switch (detailLevel) {
+		case HIGH:
+			return 120;
+		case MEDIUM:
+			return 80;
+		case LOW:
+			return 50;
+		default:
+			return 50;
+		}
+	}
+
+	@Override
+	public int getMinPixelWidth(DetailLevel detailLevel) {
+		switch (detailLevel) {
+		case HIGH:
+			return 100;
+		case MEDIUM:
+			return 100;
+		case LOW:
+			return 100;
+		default:
+			return 100;
+		}
+	}
 
 }
