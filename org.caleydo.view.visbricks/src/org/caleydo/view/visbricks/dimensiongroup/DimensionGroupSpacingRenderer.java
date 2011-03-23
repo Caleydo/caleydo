@@ -381,9 +381,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 							subGroupMatch.getLeftAnchorYBottom(), 0 }, new float[] { 0,
 							subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { 0,
 							subGroupMatch.getLeftAnchorYBottom(), 0 },
-							(groupMatch.getBrick().isActive() || subGroupMatch.getBrick()
-									.isActive()), splineFactor, 0, false, new float[] {
-									0.0f, 0.0f, 1 }, 0.15f);
+							false, splineFactor, 0, false, new float[] {
+									0.0f, 0.0f, 0 }, 0.1f);
 				}
 
 				// Render straight band connection from brick to dimension group
@@ -395,9 +394,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 							subGroupMatch.getRightAnchorYBottom(), 0 }, new float[] {
 							xEnd, subGroupMatch.getRightAnchorYTop(), 0 }, new float[] {
 							xEnd, subGroupMatch.getRightAnchorYBottom(), 0 },
-							(groupMatch.getBrick().isActive() || subGroupMatch.getBrick()
-									.isActive()), splineFactor, 0, false, new float[] {
-									0.0f, 0.0f, 1 }, 0.15f);
+							false, splineFactor, 0, false, new float[] {
+									0.0f, 0.0f, 1 }, 0.1f);
 				}
 
 				// Render selected portion
@@ -439,6 +437,29 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 									subGroupMatch.getRightAnchorYTop()
 											- rightYDiffSelection, 0 }, true,
 							splineFactor, 0, false, color, 0.15f);
+					
+					// Render straight band connection from brick to dimension group
+					// on the LEFT
+					if (xStart != 0) {
+						connectionRenderer.renderStraightBand(gl, new float[] { xStart,
+								subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { xStart,
+								subGroupMatch.getLeftAnchorYBottom(), 0 }, new float[] { 0,
+								subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { 0,
+								subGroupMatch.getLeftAnchorYBottom(), 0 },
+								true, splineFactor, 0, false, color, 0.5f);
+					}
+//
+//					// Render straight band connection from brick to dimension group
+//					// on the RIGHT
+//					if (xEnd != 0) {
+//
+//						connectionRenderer.renderStraightBand(gl, new float[] { x,
+//								subGroupMatch.getRightAnchorYTop(), 0 }, new float[] { x,
+//								subGroupMatch.getRightAnchorYBottom(), 0 }, new float[] {
+//								xEnd, subGroupMatch.getRightAnchorYTop(), 0 }, new float[] {
+//								xEnd, subGroupMatch.getRightAnchorYBottom(), 0 },
+//								true, splineFactor, 0, false, color, 0.15f);
+//					}
 				}
 			}
 		}
