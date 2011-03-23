@@ -161,7 +161,7 @@ public class Column
 			// sumUnscalabeElementHeights += unscalabelElementHeight;
 		}
 
-		if (availableHeight < -0.0001) {
+		if (availableHeight < -0.5) {
 			// Logger.log(new Status(Status.ERROR, "org.caleydo.core", "Layout elements in " + this
 			// + "don't fit by " + availableHeight));
 			if (managingClassID != -1 && layoutID != -1) {
