@@ -105,7 +105,7 @@ public class NumericalDataConfigurer implements IBrickConfigurer {
 		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.HEATMAP_VIEW);
+		layoutTemplate.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP);
 
 	}
 
@@ -162,6 +162,16 @@ public class NumericalDataConfigurer implements IBrickConfigurer {
 		brick.setViews(views);
 		brick.setContainedViewRenderers(containedViewRenderers);
 
+	}
+
+	@Override
+	public void configure(CompactCentralBrickLayoutTemplate layoutTemplate) {
+		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
+		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
+
+		layoutTemplate.setValidViewTypes(validViewTypes);
+		layoutTemplate
+				.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
 	}
 
 }

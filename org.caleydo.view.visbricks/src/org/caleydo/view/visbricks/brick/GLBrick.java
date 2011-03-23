@@ -45,6 +45,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.layout.NominalDataConfigurer;
@@ -97,6 +98,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	private RelationsUpdatedListener relationsUpdateListener;
 	private SelectionUpdateListener selectionUpdateListener;
+
+	private BrickState expandedBrickState;
 
 	/** The id of the group in the contentVA this brick is rendering. */
 	private int groupID = -1;
@@ -201,7 +204,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 			@Override
 			public void mouseOver(Pick pick) {
-//				 updateSelection();
+				// updateSelection();
 			}
 
 			public void updateSelection() {
@@ -299,19 +302,18 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		// templateRenderer.updateLayout();
 		// }
 
-		
 		templateRenderer.render(gl);
-//		gl.glPushName(getPickingManager().getPickingID(getID(),
-//				EPickingType.BRICK, getID()));
-//		gl.glColor4f(1.0f, 0.0f, 0.0f, 0f);
-//		gl.glBegin(GL2.GL_QUADS);
-//		gl.glVertex3f(0, 0, 0);
-//		gl.glVertex3f(wrappingLayout.getSizeScaledX(), 0, 0);
-//		gl.glVertex3f(wrappingLayout.getSizeScaledX(),
-//				wrappingLayout.getSizeScaledY(), 0);
-//		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), 0);
-//		gl.glEnd();
-//		gl.glPopName();
+		// gl.glPushName(getPickingManager().getPickingID(getID(),
+		// EPickingType.BRICK, getID()));
+		// gl.glColor4f(1.0f, 0.0f, 0.0f, 0f);
+		// gl.glBegin(GL2.GL_QUADS);
+		// gl.glVertex3f(0, 0, 0);
+		// gl.glVertex3f(wrappingLayout.getSizeScaledX(), 0, 0);
+		// gl.glVertex3f(wrappingLayout.getSizeScaledX(),
+		// wrappingLayout.getSizeScaledY(), 0);
+		// gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), 0);
+		// gl.glEnd();
+		// gl.glPopName();
 
 		gl.glCallList(baseDisplayListIndex);
 
@@ -713,21 +715,13 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 * 
 	 * @param viewType
 	 */
-	public void setRemoteView(EContainedViewType viewType) {
+	public void setContainedView(EContainedViewType viewType) {
 
 		AContainedViewRenderer viewRenderer = containedViewRenderers
 				.get(viewType);
 
 		if (viewRenderer == null)
 			return;
-
-		if (isInOverviewMode && !brickLayout.isViewTypeValid(viewType)) {
-			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks,
-					dimensionGroup, brickConfigurer);
-
-			templateRenderer.setTemplate(brickLayout);
-			isInOverviewMode = false;
-		}
 
 		if (!brickLayout.isViewTypeValid(viewType))
 			return;
@@ -744,9 +738,10 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			float currentHeight = wrappingLayout.getSizeScaledY();
 
 			if (currentHeight < minHeight) {
-				float width = (wrappingLayout.getSizeScaledX() / currentHeight)
-						* minHeight;
-				wrappingLayout.setAbsoluteSizeX(width);
+				// float width = (wrappingLayout.getSizeScaledX() /
+				// currentHeight)
+				// * minHeight;
+				// wrappingLayout.setAbsoluteSizeX(width);
 				wrappingLayout.setAbsoluteSizeY(minHeight);
 			}
 		} else {
@@ -764,23 +759,28 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	/**
 	 * Sets the {@link ABrickLayoutTemplate} for this brick, specifying its
-	 * appearance.
+	 * appearance. If the specified view type is valid, it will be set,
+	 * otherwise the default view type will be set.
 	 * 
 	 * @param brickLayoutTemplate
+	 * @param viewType
 	 */
-	public void setBrickLayoutTemplate(ABrickLayoutTemplate brickLayoutTemplate) {
+	public void setBrickLayoutTemplate(
+			ABrickLayoutTemplate brickLayoutTemplate,
+			EContainedViewType viewType) {
 		this.brickLayout = brickLayoutTemplate;
-		if (brickLayout instanceof CompactBrickLayoutTemplate)
+		if ((brickLayout instanceof CompactBrickLayoutTemplate)
+				|| (brickLayout instanceof CompactCentralBrickLayoutTemplate))
 			isInOverviewMode = true;
 		else
 			isInOverviewMode = false;
 
 		if (templateRenderer != null) {
 			templateRenderer.setTemplate(brickLayout);
-			if (brickLayout.isViewTypeValid(currentViewType)) {
-				setRemoteView(currentViewType);
+			if (brickLayout.isViewTypeValid(viewType)) {
+				setContainedView(viewType);
 			} else {
-				setRemoteView(brickLayout.getDefaultViewType());
+				setContainedView(brickLayout.getDefaultViewType());
 			}
 		}
 	}
@@ -914,23 +914,49 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	/**
-	 * Set this view to overview mode
+	 * Sets this brick collapsed
 	 * 
 	 * @return how much this has affected the height of the brick.
 	 */
-	public float setToOverviewMode() {
+	public float collapse() {
 
-		CompactBrickLayoutTemplate layoutTemplate = new CompactBrickLayoutTemplate(
-				this, visBricks, dimensionGroup, brickConfigurer);
-		isSizeFixed = false;
+		expandedBrickState = new BrickState(currentViewType,
+				wrappingLayout.getSizeScaledY(),
+				wrappingLayout.getSizeScaledX());
 
-		setBrickLayoutTemplate(layoutTemplate);
+		ABrickLayoutTemplate layoutTemplate = brickLayout
+				.getCollapsedLayoutTemplate();
+		// isSizeFixed = false;
 
-		float minSize = getParentGLCanvas().getPixelGLConverter()
+		setBrickLayoutTemplate(layoutTemplate,
+				layoutTemplate.getDefaultViewType());
+
+		float minHeight = getParentGLCanvas().getPixelGLConverter()
 				.getGLHeightForPixelHeight(layoutTemplate.getMinHeightPixels());
 		float currentSize = wrappingLayout.getSizeScaledY();
-		wrappingLayout.setAbsoluteSizeY(minSize);
-		return currentSize - minSize;
+		wrappingLayout.setAbsoluteSizeY(minHeight);
+		return currentSize - minHeight;
+	}
+
+	public void expand() {
+		ABrickLayoutTemplate layoutTemplate = brickLayout
+				.getExpandedLayoutTemplate();
+
+		if (expandedBrickState != null) {
+			setBrickLayoutTemplate(layoutTemplate,
+					expandedBrickState.getViewType());
+			wrappingLayout.setAbsoluteSizeX(expandedBrickState.getWidth());
+			wrappingLayout.setAbsoluteSizeY(expandedBrickState.getHeight());
+		} else {
+			setBrickLayoutTemplate(brickLayout.getExpandedLayoutTemplate(),
+					currentViewType);
+			float minHeight = getParentGLCanvas().getPixelGLConverter()
+					.getGLHeightForPixelHeight(
+							layoutTemplate.getMinHeightPixels());
+			wrappingLayout.setAbsoluteSizeY(minHeight);
+		}
+		isInOverviewMode = false;
+
 	}
 
 	public boolean isInOverviewMode() {

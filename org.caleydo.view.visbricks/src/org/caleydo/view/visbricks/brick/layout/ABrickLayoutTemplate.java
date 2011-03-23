@@ -33,7 +33,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 		validViewTypes = new HashSet<EContainedViewType>();
 		// setValidViewTypes();
 		setPixelGLConverter(brick.getParentGLCanvas().getPixelGLConverter());
-//		registerPickingListeners();
+		// registerPickingListeners();
 	}
 
 	/**
@@ -126,9 +126,32 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	 */
 	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
 	}
-	
+
+	/**
+	 * Sets whether the brick resizing is currently locked.
+	 * 
+	 * @param lockResizing
+	 */
 	public abstract void setLockResizing(boolean lockResizing);
 
-//	public abstract void configure(IBrickLayoutConfigurer configurer);
+	/**
+	 * Gets the layout that represents the collapsed version of the current
+	 * layout. If no further collapsing is possible, the current layout is
+	 * returned.
+	 * 
+	 * @return
+	 */
+	public abstract ABrickLayoutTemplate getCollapsedLayoutTemplate();
+	
+	/**
+	 * Gets the layout that represents the expanded version of the current
+	 * layout. If no further expansion is possible, the current layout is
+	 * returned.
+	 * 
+	 * @return
+	 */
+	public abstract ABrickLayoutTemplate getExpandedLayoutTemplate();
+
+	// public abstract void configure(IBrickLayoutConfigurer configurer);
 
 }

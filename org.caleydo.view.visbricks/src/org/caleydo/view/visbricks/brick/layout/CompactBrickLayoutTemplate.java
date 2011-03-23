@@ -164,10 +164,11 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 			@Override
 			public void clicked(Pick pick) {
-				DefaultBrickLayoutTemplate layoutTemplate = new DefaultBrickLayoutTemplate(
-						brick, visBricks, dimensionGroup, brick
-								.getLayoutConfigurer());
-				brick.setBrickLayoutTemplate(layoutTemplate);
+//				DefaultBrickLayoutTemplate layoutTemplate = new DefaultBrickLayoutTemplate(
+//						brick, visBricks, dimensionGroup, brick
+//								.getLayoutConfigurer());
+//				brick.setBrickLayoutTemplate(layoutTemplate);
+				brick.expand();
 				// brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
 				dimensionGroup.updateLayout();
 			}
@@ -208,6 +209,17 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public void setLockResizing(boolean lockResizing) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public ABrickLayoutTemplate getCollapsedLayoutTemplate() {
+		return this;
+	}
+
+	@Override
+	public ABrickLayoutTemplate getExpandedLayoutTemplate() {
+		return new DefaultBrickLayoutTemplate(brick, visBricks, dimensionGroup,
+				brick.getLayoutConfigurer());
 	}
 
 	// @Override

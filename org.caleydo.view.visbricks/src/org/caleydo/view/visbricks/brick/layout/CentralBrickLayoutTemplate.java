@@ -117,7 +117,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		ElementLayout dimensionBarLayout = new ElementLayout("dimensionBar");
 		dimensionBarLayout.setFrameColor(1, 0, 1, 0);
 		dimensionBarLayout.setPixelGLConverter(pixelGLConverter);
-		dimensionBarLayout.setPixelSizeY(12);
+		dimensionBarLayout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
 
 		ElementLayout viewLayout = new ElementLayout("viewLayout");
 		viewLayout.setFrameColor(1, 0, 0, 1);
@@ -131,46 +131,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
 		spacingLayoutY.setPixelSizeX(0);
 
-		Row captionRow = new Row();
-		captionRow.setPixelGLConverter(pixelGLConverter);
-		captionRow.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-
-		ElementLayout captionLayout = new ElementLayout("caption1");
-		// captionLayout.setDebug(true);
-		// captionLayout.setFrameColor(0, 0, 1, 1);
-		captionLayout.setPixelGLConverter(pixelGLConverter);
-		captionLayout.setPixelSizeY(18);
-		// captionLayout.setRatioSizeY(0.2f);
-		captionLayout.setFrameColor(0, 0, 1, 1);
-		// captionLayout.setDebug(true);
-
-		DimensionGroupCaptionRenderer captionRenderer = new DimensionGroupCaptionRenderer(
-				dimensionGroup);
-		captionLayout.setRenderer(captionRenderer);
-
-		captionRow.append(captionLayout);
-		captionRow.append(spacingLayoutX);
-
-		ElementLayout lockResizingButtonLayout = new ElementLayout(
-				"lockResizingButton");
-		lockResizingButtonLayout.setPixelGLConverter(pixelGLConverter);
-		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		lockResizingButtonLayout.setRenderer(new ButtonRenderer(
-				lockResizingButton, brick, brick.getTextureManager()));
-		
-		captionRow.append(lockResizingButtonLayout);
-		captionRow.append(spacingLayoutX);
-
-		ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
-		clusterButtonLayout.setPixelGLConverter(pixelGLConverter);
-		clusterButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-		clusterButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton,
-				brick, brick.getTextureManager()));
-
-		captionRow.append(clusterButtonLayout);
-//		captionRow.append(spacingLayoutX);
+		Row captionRow = createCaptionRow();
+		// captionRow.append(spacingLayoutX);
 
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
@@ -196,6 +158,52 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseColumn.append(captionRow);
 		baseColumn.append(spacingLayoutY);
 
+	}
+
+	protected Row createCaptionRow() {
+		Row captionRow = new Row();
+		captionRow.setPixelGLConverter(pixelGLConverter);
+		captionRow.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
+
+		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
+		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
+		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
+		spacingLayoutX.setRatioSizeY(0);
+
+		ElementLayout captionLayout = new ElementLayout("caption1");
+
+		captionLayout.setPixelGLConverter(pixelGLConverter);
+		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
+		captionLayout.setFrameColor(0, 0, 1, 1);
+
+		DimensionGroupCaptionRenderer captionRenderer = new DimensionGroupCaptionRenderer(
+				dimensionGroup);
+		captionLayout.setRenderer(captionRenderer);
+
+		captionRow.append(captionLayout);
+		captionRow.append(spacingLayoutX);
+
+		ElementLayout lockResizingButtonLayout = new ElementLayout(
+				"lockResizingButton");
+		lockResizingButtonLayout.setPixelGLConverter(pixelGLConverter);
+		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
+		lockResizingButtonLayout.setRenderer(new ButtonRenderer(
+				lockResizingButton, brick, brick.getTextureManager()));
+
+		captionRow.append(lockResizingButtonLayout);
+		captionRow.append(spacingLayoutX);
+
+		ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
+		clusterButtonLayout.setPixelGLConverter(pixelGLConverter);
+		clusterButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		clusterButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
+		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton,
+				brick, brick.getTextureManager()));
+
+		captionRow.append(clusterButtonLayout);
+
+		return captionRow;
 	}
 
 	/**
@@ -244,7 +252,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 					}
 					button.setSelected(true);
 
-					brick.setRemoteView(button.getViewType());
+					brick.setContainedView(button.getViewType());
 					dimensionGroup.updateLayout();
 				}
 			}, button.getPickingType(), button.getButtonID());
@@ -339,6 +347,17 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public void setViewSwitchingButtons(
 			ArrayList<BrickViewSwitchingButton> buttons) {
 		viewSwitchingButtons = buttons;
+	}
+
+	@Override
+	public ABrickLayoutTemplate getCollapsedLayoutTemplate() {
+		return new CompactCentralBrickLayoutTemplate(brick, dimensionGroup,
+				brick.getLayoutConfigurer());
+	}
+
+	@Override
+	public ABrickLayoutTemplate getExpandedLayoutTemplate() {
+		return this;
 	}
 
 }

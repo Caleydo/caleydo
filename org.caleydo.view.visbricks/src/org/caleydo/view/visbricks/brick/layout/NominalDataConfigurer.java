@@ -114,5 +114,14 @@ public class NominalDataConfigurer implements IBrickConfigurer {
 		brick.setContainedViewRenderers(containedViewRenderers);
 	}
 
+	@Override
+	public void configure(CompactCentralBrickLayoutTemplate layoutTemplate) {
+		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
+		validViewTypes.add(EContainedViewType.TAGCLOUD_VIEW);
+
+		layoutTemplate.setValidViewTypes(validViewTypes);
+		layoutTemplate.setDefaultViewType(EContainedViewType.TAGCLOUD_VIEW);
+	}
+
 
 }

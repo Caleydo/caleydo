@@ -33,6 +33,13 @@ public interface IBrickConfigurer {
 	 * @param layoutTemplate
 	 */
 	public void configure(CompactBrickLayoutTemplate layoutTemplate);
+	
+	/**
+	 * Configures the specified layoutTemplate.
+	 * 
+	 * @param layoutTemplate
+	 */
+	public void configure(CompactCentralBrickLayoutTemplate layoutTemplate);
 
 	/**
 	 * Configures the specified layoutTemplate.

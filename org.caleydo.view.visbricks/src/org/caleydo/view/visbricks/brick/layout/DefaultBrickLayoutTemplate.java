@@ -85,7 +85,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		registerPickingListeners();
 		viewTypeChanged(getDefaultViewType());
 	}
-	
+
 	@Override
 	public void setLockResizing(boolean lockResizing) {
 		lockResizingButton.setSelected(lockResizing);
@@ -268,27 +268,22 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 					if (viewSwitchingModeButton.isSelected()) {
 						dimensionGroup.switchBrickViews(button.getViewType());
 					} else {
-						brick.setRemoteView(button.getViewType());
+						brick.setContainedView(button.getViewType());
 					}
 					dimensionGroup.updateLayout();
 				}
 			}, button.getPickingType(), button.getButtonID());
 		}
-		
-		brick.addPickingListener(
-				new APickingListener() {
 
-					@Override
-					public void clicked(Pick pick) {
-						boolean isResizingLocked = !lockResizingButton
-								.isSelected();
-						brick
-								.setSizeFixed(isResizingLocked);
-						lockResizingButton
-								.setSelected(isResizingLocked);
-					}
-				}, EPickingType.BRICK_LOCK_RESIZING_BUTTON,
-				LOCK_RESIZING_BUTTON_ID);
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				boolean isResizingLocked = !lockResizingButton.isSelected();
+				brick.setSizeFixed(isResizingLocked);
+				lockResizingButton.setSelected(isResizingLocked);
+			}
+		}, EPickingType.BRICK_LOCK_RESIZING_BUTTON, LOCK_RESIZING_BUTTON_ID);
 
 		brick.addPickingListener(
 				new APickingListener() {
@@ -309,7 +304,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 			@Override
 			public void clicked(Pick pick) {
-				brick.setToOverviewMode();
+				brick.collapse();
 				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_COLLAPSE_BUTTON, COLLAPSE_BUTTON_ID);
@@ -388,5 +383,16 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public void setViewSwitchingButtons(
 			ArrayList<BrickViewSwitchingButton> buttons) {
 		viewSwitchingButtons = buttons;
+	}
+
+	@Override
+	public ABrickLayoutTemplate getCollapsedLayoutTemplate() {
+		return new CompactBrickLayoutTemplate(brick, visBricks, dimensionGroup,
+				brick.getLayoutConfigurer());
+	}
+
+	@Override
+	public ABrickLayoutTemplate getExpandedLayoutTemplate() {
+		return this;
 	}
 }
