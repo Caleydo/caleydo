@@ -195,7 +195,7 @@ public abstract class AGLView
 
 		GeneralManager.get().getViewGLCanvasManager().registerGLView(this);
 		parentGLCanvas = glCanvas;
-		textRenderer = glCanvas.getTextRenderer();
+
 
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
 			glMouseListener = parentGLCanvas.getGLMouseListener();
@@ -231,7 +231,6 @@ public abstract class AGLView
 		glMouseListener.addGLCanvas(this);
 
 		((GLEventListener) parentGLCanvas).init(drawable);
-		textRenderer = parentGLCanvas.getTextRenderer();
 
 		initLocal(drawable.getGL().getGL2());
 	}

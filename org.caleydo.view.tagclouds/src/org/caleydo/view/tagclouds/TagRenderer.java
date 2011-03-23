@@ -60,6 +60,9 @@ public class TagRenderer extends LayoutRenderer {
 			break;
 		}
 
+		if (!tagCloud.getContentVA().contains(contentID))
+			return;
+
 		NominalStorage<String> storage = (NominalStorage<String>) tagCloud.getSet().get(
 				storageID);
 		text = storage.getRaw(contentID);

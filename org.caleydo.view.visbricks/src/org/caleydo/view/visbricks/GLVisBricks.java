@@ -45,6 +45,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
@@ -137,12 +138,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		dragAndDropController = new DragAndDropController(this);
 
 		dimensionGroupManager = new DimensionGroupManager();
-		
+
 		glKeyListener = new GLVisBricksKeyListener();
 	}
 
 	@Override
 	public void init(GL2 gl) {
+		textRenderer = new CaleydoTextRenderer(24);
 		dataDomain.createContentRelationAnalyzer();
 		relationAnalyzer = dataDomain.getContentRelationAnalyzer();
 
@@ -369,7 +371,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public void initLocal(GL2 gl) {
-		
+
 		// Register keyboard listener to GL2 canvas
 		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
 			@Override
@@ -377,7 +379,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
 			}
 		});
-		
+
 		init(gl);
 	}
 
@@ -640,7 +642,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			eventPublisher.removeListener(metaSetsListener);
 			metaSetsListener = null;
 		}
-		
+
 		if (clearSelectionsListener != null) {
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;

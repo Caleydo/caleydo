@@ -244,6 +244,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	@Override
 	public void init(GL2 gl) {
+		textRenderer = new CaleydoTextRenderer(24);
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new ScatterPlotRenderStyle(this, viewFrustum);
 

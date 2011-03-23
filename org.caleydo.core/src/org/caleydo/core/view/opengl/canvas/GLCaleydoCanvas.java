@@ -50,8 +50,6 @@ public class GLCaleydoCanvas
 
 	PixelGLConverter pixelGLConverter = null;
 
-	protected CaleydoTextRenderer textRenderer;
-
 	/**
 	 * Constructor.
 	 */
@@ -106,8 +104,6 @@ public class GLCaleydoCanvas
 
 		gl.glEnable(GL2.GL_COLOR_MATERIAL);
 		gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_DIFFUSE);
-
-		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24));
 	}
 
 	@Override
@@ -261,10 +257,5 @@ public class GLCaleydoCanvas
 		return pixelGLConverter;
 	}
 
-	/**
-	 * Returns the text renderer valid for the gl context of this view.
-	 */
-	public CaleydoTextRenderer getTextRenderer() {
-		return textRenderer;
-	}
+
 }

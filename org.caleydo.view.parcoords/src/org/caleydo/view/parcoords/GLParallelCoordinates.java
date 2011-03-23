@@ -264,8 +264,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	@Override
 	public void init(final GL2 gl) {
+		textRenderer = new CaleydoTextRenderer(24);
 
-		// FIXME: Alex, is it save to call this here?
 		initData();
 
 		updateSpacings();
@@ -333,6 +333,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	@Override
 	public void display(final GL2 gl) {
 
+		processEvents();
 		// displayVBO(gl);
 
 		// setDetailLevel(DetailLevel.HIGH);

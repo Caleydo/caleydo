@@ -42,6 +42,7 @@ import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
@@ -136,8 +137,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public void initialize() {
 		super.initialize();
-		contentGroupSelectionManager = dataDomain
-				.getContentGroupSelectionManager();
+		contentGroupSelectionManager = dataDomain.getContentGroupSelectionManager();
 		registerPickingListeners();
 	}
 
@@ -155,6 +155,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	public void init(GL2 gl) {
+		textRenderer = new CaleydoTextRenderer(24);
 		baseDisplayListIndex = gl.glGenLists(1);
 
 		if (set == null)
@@ -176,16 +177,15 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		if (brickLayout == null) {
 
-			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks,
-					dimensionGroup, brickConfigurer);
+			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks, dimensionGroup,
+					brickConfigurer);
 
 		}
 
 		brickConfigurer.setBrickViews(this, gl, glMouseListener, brickLayout);
 
 		currentViewType = brickLayout.getDefaultViewType();
-		brickLayout
-				.setViewRenderer(containedViewRenderers.get(currentViewType));
+		brickLayout.setViewRenderer(containedViewRenderers.get(currentViewType));
 		currentRemoteView = views.get(currentRemoteView);
 
 		templateRenderer.setTemplate(brickLayout);
@@ -198,9 +198,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 			@Override
 			public void clicked(Pick pick) {
+
 				SelectionType currentSelectionType = contentGroupSelectionManager.getSelectionType();
-				contentGroupSelectionManager
-						.clearSelection(currentSelectionType);
+				contentGroupSelectionManager.clearSelection(currentSelectionType);
 				contentGroupSelectionManager.addToType(currentSelectionType,
 						group.getID());
 
@@ -266,8 +266,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			return;
 
 		for (Integer contentID : contentVA) {
-			contentSelectionManager.addToType(selectedByGroupSelectionType,
-					contentID);
+			contentSelectionManager.addToType(selectedByGroupSelectionType, contentID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -285,8 +284,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void initRemote(GL2 gl, AGLView glParentView,
-			GLMouseListener glMouseListener) {
+	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
 		init(gl);
 
 	}
@@ -313,14 +311,14 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		// }
 
 		templateRenderer.render(gl);
-		gl.glPushName(getPickingManager().getPickingID(getID(),
-				EPickingType.BRICK, getID()));
+
+		gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BRICK,
+				getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0f);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(wrappingLayout.getSizeScaledX(), 0, 0);
-		gl.glVertex3f(wrappingLayout.getSizeScaledX(),
-				wrappingLayout.getSizeScaledY(), 0);
+		gl.glVertex3f(wrappingLayout.getSizeScaledX(), wrappingLayout.getSizeScaledY(), 0);
 		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), 0);
 		gl.glEnd();
 		gl.glPopName();
@@ -411,8 +409,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
-			int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
 		super.reshape(drawable, x, y, width, height);
 		if (templateRenderer != null)
@@ -423,8 +420,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int pickingID, Pick pick) {
 
-		HashMap<Integer, IPickingListener> map = pickingListeners
-				.get(pickingType);
+		HashMap<Integer, IPickingListener> map = pickingListeners.get(pickingType);
 		if (map == null)
 			return;
 
@@ -704,8 +700,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public void addPickingListener(IPickingListener pickingListener,
 			EPickingType pickingType, int externalID) {
-		HashMap<Integer, IPickingListener> map = pickingListeners
-				.get(pickingType);
+		HashMap<Integer, IPickingListener> map = pickingListeners.get(pickingType);
 		if (map == null) {
 			map = new HashMap<Integer, IPickingListener>();
 			pickingListeners.put(pickingType, map);
@@ -727,12 +722,22 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public void setContainedView(EContainedViewType viewType) {
 
-		AContainedViewRenderer viewRenderer = containedViewRenderers
-				.get(viewType);
+		AContainedViewRenderer viewRenderer = containedViewRenderers.get(viewType);
 
 		if (viewRenderer == null)
 			return;
 
+//<<<<<<< .mine
+//		if (isInOverviewMode && !brickLayout.isViewTypeValid(viewType)) {
+//			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks, dimensionGroup,
+//					brickConfigurer);
+//
+//			templateRenderer.setTemplate(brickLayout);
+//			isInOverviewMode = false;
+//		}
+//
+//=======
+//>>>>>>> .r3950
 		if (!brickLayout.isViewTypeValid(viewType))
 			return;
 
@@ -775,8 +780,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 * @param brickLayoutTemplate
 	 * @param viewType
 	 */
-	public void setBrickLayoutTemplate(
-			ABrickLayoutTemplate brickLayoutTemplate,
+	public void setBrickLayoutTemplate(ABrickLayoutTemplate brickLayoutTemplate,
 			EContainedViewType viewType) {
 		this.brickLayout = brickLayoutTemplate;
 		if ((brickLayout instanceof CompactBrickLayoutTemplate)
@@ -807,17 +811,15 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		relationsUpdateListener = new RelationsUpdatedListener();
 		relationsUpdateListener.setHandler(this);
-		relationsUpdateListener.setExclusiveDataDomainType(dataDomain
-				.getDataDomainType());
-		eventPublisher.addListener(RelationsUpdatedEvent.class,
-				relationsUpdateListener);
+		relationsUpdateListener
+				.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(RelationsUpdatedEvent.class, relationsUpdateListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setExclusiveDataDomainType(dataDomain
-				.getDataDomainType());
-		eventPublisher.addListener(SelectionUpdateEvent.class,
-				selectionUpdateListener);
+		selectionUpdateListener
+				.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 	}
 
 	@Override
@@ -898,14 +900,12 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
-		if (selectionDelta.getIDType() == contentGroupSelectionManager
-				.getIDType()) {
+		if (selectionDelta.getIDType() == contentGroupSelectionManager.getIDType()) {
 			contentGroupSelectionManager.setDelta(selectionDelta);
 			if (group == null)
 				return;
 			if (contentGroupSelectionManager.checkStatus(
-					contentGroupSelectionManager.getSelectionType(), getGroup()
-							.getID())) {
+					contentGroupSelectionManager.getSelectionType(), getGroup().getID())) {
 				brickLayout.setShowHandles(true);
 				visBricks.updateConnectionLinesBetweenDimensionGroups();
 			} else {
@@ -919,8 +919,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 * @return true, if the brick us currently selected, false otherwise
 	 */
 	public boolean isActive() {
-		return contentGroupSelectionManager.checkStatus(
-				SelectionType.SELECTION, getGroup().getID());
+		return contentGroupSelectionManager.checkStatus(SelectionType.SELECTION,
+				getGroup().getID());
 	}
 
 	/**
@@ -930,9 +930,15 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public float collapse() {
 
+//<<<<<<< .mine
+//		CompactBrickLayoutTemplate layoutTemplate = new CompactBrickLayoutTemplate(this,
+//				visBricks, dimensionGroup, brickConfigurer);
+//		isSizeFixed = false;
+//=======
 		expandedBrickState = new BrickState(currentViewType,
 				wrappingLayout.getSizeScaledY(),
 				wrappingLayout.getSizeScaledX());
+
 
 		ABrickLayoutTemplate layoutTemplate = brickLayout
 				.getCollapsedLayoutTemplate();
@@ -949,20 +955,17 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	public void expand() {
-		ABrickLayoutTemplate layoutTemplate = brickLayout
-				.getExpandedLayoutTemplate();
+		ABrickLayoutTemplate layoutTemplate = brickLayout.getExpandedLayoutTemplate();
 
 		if (expandedBrickState != null) {
-			setBrickLayoutTemplate(layoutTemplate,
-					expandedBrickState.getViewType());
+			setBrickLayoutTemplate(layoutTemplate, expandedBrickState.getViewType());
 			wrappingLayout.setAbsoluteSizeX(expandedBrickState.getWidth());
 			wrappingLayout.setAbsoluteSizeY(expandedBrickState.getHeight());
 		} else {
 			setBrickLayoutTemplate(brickLayout.getExpandedLayoutTemplate(),
 					currentViewType);
 			float minHeight = getParentGLCanvas().getPixelGLConverter()
-					.getGLHeightForPixelHeight(
-							layoutTemplate.getMinHeightPixels());
+					.getGLHeightForPixelHeight(layoutTemplate.getMinHeightPixels());
 			wrappingLayout.setAbsoluteSizeY(minHeight);
 		}
 		isInOverviewMode = false;

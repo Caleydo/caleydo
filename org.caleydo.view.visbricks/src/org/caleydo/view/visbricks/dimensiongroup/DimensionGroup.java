@@ -44,6 +44,7 @@ import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
@@ -434,6 +435,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	public void init(GL2 gl) {
+		textRenderer = new CaleydoTextRenderer(24);
 	}
 
 	@Override
@@ -444,6 +446,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public void initRemote(GL2 gl, AGLView glParentView,
 			GLMouseListener glMouseListener) {
 		createBricks();
+		init(gl);
 	}
 
 	@Override

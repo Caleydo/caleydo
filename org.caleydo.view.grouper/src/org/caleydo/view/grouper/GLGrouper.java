@@ -54,6 +54,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.StatisticsFoldChangeReductionItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.StatisticsPValueReductionItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.StatisticsTwoSidedTTestReductionItem;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 import org.caleydo.view.grouper.compositegraphic.ICompositeGraphic;
 import org.caleydo.view.grouper.contextmenu.CompareGroupsItem;
@@ -159,7 +160,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	public void init(GL2 gl) {
-
+		textRenderer = new CaleydoTextRenderer(24);
 	}
 
 	@Override
