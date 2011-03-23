@@ -506,7 +506,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		float changePercentage = changeX / width;
 
 		float newWidth = width + changeX;
-		if (newWidth < dimensionGroup.getMinWidth())
+		if (newWidth < dimensionGroup.getMinWidth() - 0.001f)
 			return;
 
 		previousXCoordinate = pointCordinates[0];
