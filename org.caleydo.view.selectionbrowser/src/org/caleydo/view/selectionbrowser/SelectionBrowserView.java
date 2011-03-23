@@ -143,6 +143,11 @@ public class SelectionBrowserView extends ASWTView implements
 			SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(selectionType);
 			eventPublisher.triggerEvent(selectionTypeEvent);
 		}
+		
+		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
+				selectedByGroupSelectionTypes.get(0));
+		selectionTypeEvent.setCurrent(true);
+		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
 	}
 	
 	@Override
