@@ -342,10 +342,12 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		if (isCollapsed) {
 			centerLayout.setRatioSizeY(1);
 		} else {
-			bottomCol.setRatioSizeY(0.5f);
-			topCol.setRatioSizeY(0.5f);
-			centerLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-			centerLayout.setPixelSizeY(archHeight);
+			if (!(centerLayout.getSizeScaledY() > 0)) {
+				bottomCol.setRatioSizeY(0.5f);
+				topCol.setRatioSizeY(0.5f);
+				centerLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+				centerLayout.setPixelSizeY(archHeight);
+			}
 		}
 
 	}
@@ -674,8 +676,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void handleLayoutSizeCollision(int managingClassID, int layoutID,
-			float toBigBy) {
+	public void handleLayoutSizeCollision(int managingClassID, int layoutID, float toBigBy) {
 		if (managingClassID != uniqueID)
 			return;
 
