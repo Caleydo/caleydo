@@ -16,5 +16,11 @@ public abstract class AContainedViewRenderer extends LayoutRenderer {
 	 *         render its data.
 	 */
 	public abstract int getMinHeightPixels();
+	
+	/**
+	 * @return The minimum width in pixels required by the view renderer to
+	 *         render its data.
+	 */
+	public abstract int getMinWidthPixels();
 
 }

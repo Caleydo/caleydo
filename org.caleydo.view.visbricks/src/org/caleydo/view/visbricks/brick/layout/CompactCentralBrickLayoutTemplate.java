@@ -124,8 +124,8 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinWidthPixels() {
-		// TODO Auto-generated method stub
-		return 0;
+		//TODO: maybe something different
+		return 2 * SPACING_PIXELS + 80;
 	}
 
 	@Override

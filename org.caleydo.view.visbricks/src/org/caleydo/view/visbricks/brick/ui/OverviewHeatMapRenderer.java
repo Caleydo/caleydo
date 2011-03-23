@@ -130,4 +130,10 @@ public class OverviewHeatMapRenderer extends AContainedViewRenderer {
 	public int getMinHeightPixels() {
 		return heatMapValues.get(0).length * 16;
 	}
+
+	@Override
+	public int getMinWidthPixels() {
+		//TODO: Maybe not static?
+		return 100;
+	}
 }

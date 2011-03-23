@@ -312,8 +312,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinWidthPixels() {
-		// TODO: implement
-		return 0;
+		return 2 * SPACING_PIXELS + viewRenderer.getMinWidthPixels();
 	}
 
 	// @Override
