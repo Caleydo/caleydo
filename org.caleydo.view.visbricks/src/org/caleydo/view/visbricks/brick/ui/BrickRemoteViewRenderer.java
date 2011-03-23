@@ -2,7 +2,6 @@ package org.caleydo.view.visbricks.brick.ui;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.visbricks.brick.GLBrick;
@@ -36,10 +35,10 @@ public class BrickRemoteViewRenderer extends AContainedViewRenderer {
 	 */
 	@Override
 	public void render(GL2 gl) {
-		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-				EPickingType.BRICK, brick.getID()));
+//		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+//				EPickingType.BRICK, brick.getID()));
 		view.displayRemote(gl);
-		gl.glPopName();
+//		gl.glPopName();
 	}
 
 	@Override

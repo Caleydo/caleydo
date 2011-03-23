@@ -23,8 +23,8 @@ public class BackGroundRenderer extends LayoutRenderer {
 	@Override
 	public void render(GL2 gl) {
 		
-		gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-				EPickingType.BRICK, view.getID()));
+//		gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+//				EPickingType.BRICK, view.getID()));
 		
 		gl.glColor3f(1, 1, 1);
 		gl.glBegin(GL2.GL_QUADS);
@@ -33,8 +33,8 @@ public class BackGroundRenderer extends LayoutRenderer {
 		gl.glVertex3f(x, y, 0);
 		gl.glVertex3f(0, y, 0);
 		gl.glEnd();
-		
-		gl.glPopName();
+//		
+//		gl.glPopName();
 
 	}
 }

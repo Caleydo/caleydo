@@ -1,6 +1,7 @@
 package org.caleydo.view.visbricks.brick;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,9 +54,7 @@ import org.caleydo.view.visbricks.brick.layout.NumericalDataConfigurer;
 import org.caleydo.view.visbricks.brick.picking.APickingListener;
 import org.caleydo.view.visbricks.brick.picking.IPickingListener;
 import org.caleydo.view.visbricks.brick.ui.AContainedViewRenderer;
-import org.caleydo.view.visbricks.brick.ui.BrickRemoteViewRenderer;
 import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
-import org.caleydo.view.visbricks.brick.viewcreation.ParCoordsCreator;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.listener.RelationsUpdatedListener;
 
@@ -199,17 +198,6 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 			@Override
 			public void clicked(Pick pick) {
-				updateSelection();
-			}
-
-			@Override
-			public void mouseOver(Pick pick) {
-				// updateSelection();
-			}
-
-			public void updateSelection() {
-				// System.out.println("picked brick");
-
 				SelectionType currentSelectionType = contentGroupSelectionManager.getSelectionType();
 				contentGroupSelectionManager
 						.clearSelection(currentSelectionType);
@@ -223,12 +211,34 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 				event.setSelectionDelta(delta);
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 
+				showHandles();
+
+				selectElementsByGroup();
+			}
+
+			@Override
+			public void mouseOver(Pick pick) {
+				showHandles();
+				// updateSelection();
+			}
+
+			public void showHandles() {
+				// System.out.println("picked brick");
+				if (brickLayout.isShowHandles())
+					return;
+
+				ArrayList<DimensionGroup> dimensionGroups = dimensionGroup
+						.getVisBricksView().getDimensionGroupManager()
+						.getDimensionGroups();
+
+				for (DimensionGroup dimensionGroup : dimensionGroups) {
+					dimensionGroup.hideHandles();
+				}
 				if (!brickLayout.isShowHandles()) {
 					brickLayout.setShowHandles(true);
 					templateRenderer.updateLayout();
 				}
 
-				selectElementsByGroup();
 			}
 
 		}, EPickingType.BRICK, getID());
@@ -303,17 +313,17 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		// }
 
 		templateRenderer.render(gl);
-		// gl.glPushName(getPickingManager().getPickingID(getID(),
-		// EPickingType.BRICK, getID()));
-		// gl.glColor4f(1.0f, 0.0f, 0.0f, 0f);
-		// gl.glBegin(GL2.GL_QUADS);
-		// gl.glVertex3f(0, 0, 0);
-		// gl.glVertex3f(wrappingLayout.getSizeScaledX(), 0, 0);
-		// gl.glVertex3f(wrappingLayout.getSizeScaledX(),
-		// wrappingLayout.getSizeScaledY(), 0);
-		// gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), 0);
-		// gl.glEnd();
-		// gl.glPopName();
+		gl.glPushName(getPickingManager().getPickingID(getID(),
+				EPickingType.BRICK, getID()));
+		gl.glColor4f(1.0f, 0.0f, 0.0f, 0f);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(0, 0, 0);
+		gl.glVertex3f(wrappingLayout.getSizeScaledX(), 0, 0);
+		gl.glVertex3f(wrappingLayout.getSizeScaledX(),
+				wrappingLayout.getSizeScaledY(), 0);
+		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), 0);
+		gl.glEnd();
+		gl.glPopName();
 
 		gl.glCallList(baseDisplayListIndex);
 
@@ -996,6 +1006,14 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	public void setSizeFixed(boolean isSizeFixed) {
 		this.isSizeFixed = isSizeFixed;
+	}
+
+	/**
+	 * Hides the handles of the brick.
+	 */
+	public void hideHandles() {
+		brickLayout.setShowHandles(false);
+		templateRenderer.updateLayout();
 	}
 
 }

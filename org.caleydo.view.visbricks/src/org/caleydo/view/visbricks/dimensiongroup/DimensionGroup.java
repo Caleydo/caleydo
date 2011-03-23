@@ -739,4 +739,17 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public boolean isGlobalViewSwitching() {
 		return isGlobalViewSwitching;
 	}
+	
+	/**
+	 * Called to hide the handles of all bricks of this dimension group.
+	 */
+	public void hideHandles() {
+		for(GLBrick brick : topBricks) {
+			brick.hideHandles();
+		}
+		centerBrick.hideHandles();
+		for(GLBrick brick : bottomBricks) {
+			brick.hideHandles();
+		}
+	}
 }
