@@ -470,7 +470,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int pickingID, Pick pick) {
 		switch (pickingType) {
-		case DRAGGING_HANDLE:
+		case MOVE_HANDLE:
 			if (pickingMode == EPickingMode.CLICKED) {
 				isVerticalMoveDraggingActive = true;
 			}

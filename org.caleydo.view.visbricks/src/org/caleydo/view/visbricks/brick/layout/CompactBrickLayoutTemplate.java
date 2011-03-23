@@ -93,7 +93,8 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 		if (showHandles) {
 			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
-					pixelGLConverter, 10, brick.getTextureManager()));
+					pixelGLConverter, 10, brick.getTextureManager(),
+					HandleRenderer.MOVE_HANDLE));
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
@@ -108,8 +109,8 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		Row viewRow = new Row("compactViewRow");
 		viewRow.setFrameColor(0, 0, 1, 1);
 		// viewRow.setDebug(true);
-//		viewRow.setPixelGLConverter(pixelGLConverter);
-//		viewRow.setPixelSizeY(16);
+		// viewRow.setPixelGLConverter(pixelGLConverter);
+		// viewRow.setPixelSizeY(16);
 
 		ElementLayout viewLayout = new ElementLayout("compactViewLayout");
 		viewLayout.setFrameColor(1, 0, 0, 1);
@@ -167,7 +168,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 						brick, visBricks, dimensionGroup, brick
 								.getLayoutConfigurer());
 				brick.setBrickLayoutTemplate(layoutTemplate);
-//				brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
+				// brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
 				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_EXPAND_BUTTON, EXPAND_BUTTON_ID);
@@ -206,7 +207,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 	@Override
 	public void setLockResizing(boolean lockResizing) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	// @Override

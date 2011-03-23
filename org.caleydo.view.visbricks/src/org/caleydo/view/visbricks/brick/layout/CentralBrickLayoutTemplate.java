@@ -102,7 +102,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		if (showHandles) {
 			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
 					pixelGLConverter, HANDLE_SIZE_PIXELS, brick
-							.getTextureManager()));
+							.getTextureManager(), HandleRenderer.ALL_HANDLES));
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");

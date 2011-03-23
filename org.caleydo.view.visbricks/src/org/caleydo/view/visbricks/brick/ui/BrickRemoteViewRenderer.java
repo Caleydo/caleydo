@@ -36,10 +36,10 @@ public class BrickRemoteViewRenderer extends AContainedViewRenderer {
 	 */
 	@Override
 	public void render(GL2 gl) {
-		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-				EPickingType.BRICK, brick.getID()));
+//		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+//				EPickingType.BRICK, brick.getID()));
 		view.displayRemote(gl);
-		gl.glPopName();
+//		gl.glPopName();
 	}
 
 	@Override

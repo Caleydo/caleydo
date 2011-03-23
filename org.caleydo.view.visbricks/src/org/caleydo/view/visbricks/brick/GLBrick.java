@@ -178,59 +178,6 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 					dimensionGroup, brickConfigurer);
 
 		}
-		//
-		// //
-		// brickLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		//
-		// HeatMapCreator heatMapCreator = new HeatMapCreator();
-		// AGLView heatMap = heatMapCreator.createRemoteView(this, gl,
-		// glMouseListener);
-		// AContainedViewRenderer heatMapLayoutRenderer = new
-		// BrickRemoteViewRenderer(
-		// heatMap, this);
-		// views.put(EContainedViewType.HEATMAP_VIEW, heatMap);
-		// containedViewRenderers.put(EContainedViewType.HEATMAP_VIEW,
-		// heatMapLayoutRenderer);
-		//
-		// ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
-		// AGLView parCoords = parCoordsCreator.createRemoteView(this, gl,
-		// glMouseListener);
-		// AContainedViewRenderer parCoordsLayoutRenderer = new
-		// BrickRemoteViewRenderer(
-		// parCoords, this);
-		// views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
-		// containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
-		// parCoordsLayoutRenderer);
-		//
-		// HistogramCreator histogramCreator = new HistogramCreator();
-		// AGLView histogram = histogramCreator.createRemoteView(this, gl,
-		// glMouseListener);
-		// AContainedViewRenderer histogramLayoutRenderer = new
-		// BrickRemoteViewRenderer(
-		// histogram, this);
-		// views.put(EContainedViewType.HISTOGRAM_VIEW, histogram);
-		// containedViewRenderers.put(EContainedViewType.HISTOGRAM_VIEW,
-		// histogramLayoutRenderer);
-		//
-		// AContainedViewRenderer overviewHeatMapRenderer = new
-		// OverviewHeatMapRenderer(
-		// contentVA, storageVA, set, true);
-		//
-		// containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
-		// overviewHeatMapRenderer);
-		//
-		// AContainedViewRenderer compactOverviewHeatMapRenderer = new
-		// OverviewHeatMapRenderer(
-		// contentVA, storageVA, set, false);
-		//
-		// containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
-		// compactOverviewHeatMapRenderer);
-		//
-		// currentRemoteView = heatMap;
-		//
-		// currentViewType = brickLayout.getDefaultViewType();
-		// brickLayout.setViewRenderer(containedViewRenderers.get(brickLayout
-		// .getDefaultViewType()));
 
 		brickConfigurer.setBrickViews(this, gl, glMouseListener, brickLayout);
 
@@ -238,26 +185,6 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		brickLayout
 				.setViewRenderer(containedViewRenderers.get(currentViewType));
 		currentRemoteView = views.get(currentRemoteView);
-		//
-		// if (set.getSetType().equals(ESetDataType.NUMERIC)) {
-		// createNumericalBrick(gl);
-		// currentViewType = EContainedViewType.PARCOORDS_VIEW;//
-		// brickLayout.getDefaultViewType();
-		// } else {
-		// createNominalBrick(gl);
-		// currentViewType = EContainedViewType.PARCOORDS_VIEW;
-		// }
-		// =======
-		//
-		// if (set.getSetType().equals(ESetDataType.NUMERIC)) {
-		// createNumericalBrick(gl);
-		// currentViewType = EContainedViewType.PARCOORDS_VIEW;//
-		// brickLayout.getDefaultViewType();
-		// } else {
-		// createNominalBrick(gl);
-		// currentViewType = EContainedViewType.PARCOORDS_VIEW;
-		// }
-		// >>>>>>> .r3935
 
 		templateRenderer.setTemplate(brickLayout);
 		float minSize = getParentGLCanvas().getPixelGLConverter()
@@ -274,7 +201,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 			@Override
 			public void mouseOver(Pick pick) {
-				// updateSelection();
+//				 updateSelection();
 			}
 
 			public void updateSelection() {
@@ -302,36 +229,6 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			}
 
 		}, EPickingType.BRICK, getID());
-
-		// if (heatMap == null) {
-		// templateRenderer = new LayoutManager(viewFrustum);
-		// brickLayout = new BrickLayoutTemplate(this);
-		//
-		// brickLayout.setPixelGLConverter(parentGLCanvas
-		// .getPixelGLConverter());
-		//
-		// heatMap = (GLHeatMap) GeneralManager
-		// .get()
-		// .getViewGLCanvasManager()
-		// .createGLView(
-		// GLHeatMap.class,
-		// getParentGLCanvas(),
-		//
-		// new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC,
-		// 0, 1, 0, 1, -1, 1));
-		//
-		// heatMap.setRemoteRenderingGLView(this);
-		// heatMap.setSet(set);
-		// heatMap.setDataDomain(dataDomain);
-		// heatMap.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
-		// heatMap.initialize();
-		// heatMap.initRemote(gl, this, glMouseListener);
-		// if (this.contentVA != null)
-		// heatMap.setContentVA(contentVA);
-		// brickLayout.setViewRenderer(new ViewLayoutRenderer(heatMap));
-		// templateRenderer.setTemplate(brickLayout);
-		// templateRenderer.updateLayout();
-		// }
 
 	}
 
@@ -368,129 +265,6 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
-	private void createNumericalBrick(GL2 gl) {
-
-		// if (!(brickLayout instanceof CentralBrickLayoutTemplate)) {
-		// HeatMapCreator heatMapCreator = new HeatMapCreator();
-		// AGLView heatMap = heatMapCreator.createRemoteView(this, gl,
-		// glMouseListener);
-		// AContainedViewRenderer heatMapLayoutRenderer = new
-		// BrickRemoteViewRenderer(
-		// heatMap, this);
-		// views.put(EContainedViewType.HEATMAP_VIEW, heatMap);
-		// containedViewRenderers.put(EContainedViewType.HEATMAP_VIEW,
-		// heatMapLayoutRenderer);
-		// }
-		// ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
-		// AGLView parCoords = parCoordsCreator.createRemoteView(this, gl,
-		// glMouseListener);
-		// AContainedViewRenderer parCoordsLayoutRenderer = new
-		// BrickRemoteViewRenderer(
-		// parCoords, this);
-		// views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
-		// containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
-		// parCoordsLayoutRenderer);
-		//
-		// HistogramCreator histogramCreator = new HistogramCreator();
-		// AGLView histogram = histogramCreator.createRemoteView(this, gl,
-		// glMouseListener);
-		// AContainedViewRenderer histogramLayoutRenderer = new
-		// BrickRemoteViewRenderer(
-		// histogram, this);
-		// views.put(EContainedViewType.HISTOGRAM_VIEW, histogram);
-		// containedViewRenderers.put(EContainedViewType.HISTOGRAM_VIEW,
-		// histogramLayoutRenderer);
-		//
-		// AContainedViewRenderer overviewHeatMapRenderer = new
-		// OverviewHeatMapRenderer(
-		// contentVA, storageVA, set, true);
-		//
-		// containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
-		// overviewHeatMapRenderer);
-		//
-		// AContainedViewRenderer compactOverviewHeatMapRenderer = new
-		// OverviewHeatMapRenderer(
-		// contentVA, storageVA, set, false);
-		//
-		// containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
-		// compactOverviewHeatMapRenderer);
-		//
-		// brickLayout.setViewRenderer(parCoordsLayoutRenderer);
-
-		// brickLayout.setViewRenderer(containedViewRenderers.get(brickLayout
-		// .getDefaultViewType()));
-		//
-		// currentRemoteView = views.get(brickLayout.getDefaultViewType());
-
-		// if (!(brickLayout instanceof CentralBrickLayoutTemplate)) {
-		// HeatMapCreator heatMapCreator = new HeatMapCreator();
-		// AGLView heatMap = heatMapCreator.createRemoteView(this, gl,
-		// glMouseListener);
-		// AContainedViewRenderer heatMapLayoutRenderer = new
-		// BrickRemoteViewRenderer(
-		// heatMap, this);
-		// views.put(EContainedViewType.HEATMAP_VIEW, heatMap);
-		// containedViewRenderers.put(EContainedViewType.HEATMAP_VIEW,
-		// heatMapLayoutRenderer);
-		// }
-		// ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
-		// AGLView parCoords = parCoordsCreator.createRemoteView(this, gl,
-		// glMouseListener);
-		// AContainedViewRenderer parCoordsLayoutRenderer = new
-		// BrickRemoteViewRenderer(
-		// parCoords, this);
-		// views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
-		// containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
-		// parCoordsLayoutRenderer);
-		//
-		// HistogramCreator histogramCreator = new HistogramCreator();
-		// AGLView histogram = histogramCreator.createRemoteView(this, gl,
-		// glMouseListener);
-		// AContainedViewRenderer histogramLayoutRenderer = new
-		// BrickRemoteViewRenderer(
-		// histogram, this);
-		// views.put(EContainedViewType.HISTOGRAM_VIEW, histogram);
-		// containedViewRenderers.put(EContainedViewType.HISTOGRAM_VIEW,
-		// histogramLayoutRenderer);
-		//
-		// AContainedViewRenderer overviewHeatMapRenderer = new
-		// OverviewHeatMapRenderer(
-		// contentVA, storageVA, set, true);
-		//
-		// containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
-		// overviewHeatMapRenderer);
-		//
-		// AContainedViewRenderer compactOverviewHeatMapRenderer = new
-		// OverviewHeatMapRenderer(
-		// contentVA, storageVA, set, false);
-		//
-		// containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
-		// compactOverviewHeatMapRenderer);
-		//
-		// brickLayout.setViewRenderer(parCoordsLayoutRenderer);
-
-		// brickLayout.setViewRenderer(containedViewRenderers.get(brickLayout
-		// .getDefaultViewType()));
-		//
-		// currentRemoteView = views.get(brickLayout.getDefaultViewType());
-		// >>>>>>> .r3935
-	}
-
-	private void createNominalBrick(GL2 gl) {
-
-		ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
-		AGLView parCoords = parCoordsCreator.createRemoteView(this, gl,
-				glMouseListener);
-		AContainedViewRenderer parCoordsLayoutRenderer = new BrickRemoteViewRenderer(
-				parCoords, this);
-		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
-		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
-				parCoordsLayoutRenderer);
-		brickLayout.setViewRenderer(parCoordsLayoutRenderer);
-
-		currentRemoteView = parCoords;
-	}
-
 	@Override
 	protected void initLocal(GL2 gl) {
 		init(gl);
@@ -525,10 +299,19 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		// templateRenderer.updateLayout();
 		// }
 
-		// gl.glPushName(getPickingManager().getPickingID(getID(),
-		// EPickingType.BRICK_AREA, 1));
+		
 		templateRenderer.render(gl);
-		// gl.glPopName();
+//		gl.glPushName(getPickingManager().getPickingID(getID(),
+//				EPickingType.BRICK, getID()));
+//		gl.glColor4f(1.0f, 0.0f, 0.0f, 0f);
+//		gl.glBegin(GL2.GL_QUADS);
+//		gl.glVertex3f(0, 0, 0);
+//		gl.glVertex3f(wrappingLayout.getSizeScaledX(), 0, 0);
+//		gl.glVertex3f(wrappingLayout.getSizeScaledX(),
+//				wrappingLayout.getSizeScaledY(), 0);
+//		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), 0);
+//		gl.glEnd();
+//		gl.glPopName();
 
 		gl.glCallList(baseDisplayListIndex);
 
@@ -1139,6 +922,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		CompactBrickLayoutTemplate layoutTemplate = new CompactBrickLayoutTemplate(
 				this, visBricks, dimensionGroup, brickConfigurer);
+		isSizeFixed = false;
 
 		setBrickLayoutTemplate(layoutTemplate);
 

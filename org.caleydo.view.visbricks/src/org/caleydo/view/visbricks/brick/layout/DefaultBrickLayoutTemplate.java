@@ -131,7 +131,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		if (showHandles) {
 			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
 					pixelGLConverter, HANDLE_SIZE_PIXELS, brick
-							.getTextureManager()));
+							.getTextureManager(), HandleRenderer.ALL_HANDLES));
 		}
 
 		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
