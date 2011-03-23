@@ -126,6 +126,8 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	 */
 	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
 	}
+	
+	public abstract void setLockResizing(boolean lockResizing);
 
 //	public abstract void configure(IBrickLayoutConfigurer configurer);
 

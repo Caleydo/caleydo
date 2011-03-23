@@ -72,7 +72,9 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// overviewHeatMapButton = new
 		// Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
 		// OVERVIEW_HEATMAP_BUTTON_ID);
-//		lockResizingButton = new Button(EPickingType.BRICK_LOCK_RESIZING_BUTTON, LOCK_RESIZING_BUTTON_ID, EIconTextures.)
+		lockResizingButton = new Button(
+				EPickingType.BRICK_LOCK_RESIZING_BUTTON,
+				LOCK_RESIZING_BUTTON_ID, EIconTextures.NAVIGATION_DRAG_VIEW);
 		viewSwitchingModeButton = new Button(
 				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
 				VIEW_SWITCHING_MODE_BUTTON_ID, EIconTextures.LOCK);
@@ -82,6 +84,11 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		configurer.configure(this);
 		registerPickingListeners();
 		viewTypeChanged(getDefaultViewType());
+	}
+	
+	@Override
+	public void setLockResizing(boolean lockResizing) {
+		lockResizingButton.setSelected(lockResizing);
 	}
 
 	public void setLeftRelationIndicatorRenderer(
@@ -208,12 +215,12 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		ratioSpacingLayoutX.setRatioSizeY(0);
 
 		ElementLayout lockResizingButtonLayout = new ElementLayout(
-				"clusterButton");
+				"lockResizingButton");
 		lockResizingButtonLayout.setPixelGLConverter(pixelGLConverter);
 		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		lockResizingButtonLayout.setRenderer(new ButtonRenderer(
-				viewSwitchingModeButton, brick, brick.getTextureManager()));
+				lockResizingButton, brick, brick.getTextureManager()));
 
 		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout(
 				"viewSwitchtingButtonLayout");
@@ -236,6 +243,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_90));
 
 		toolBar.append(ratioSpacingLayoutX);
+		toolBar.append(lockResizingButtonLayout);
+		toolBar.append(spacingLayoutX);
 		toolBar.append(toggleViewSwitchingButtonLayout);
 		toolBar.append(spacingLayoutX);
 		toolBar.append(collapseButtonLayout);
@@ -243,6 +252,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		return toolBar;
 	}
 
+	@Override
 	protected void registerPickingListeners() {
 
 		for (final BrickViewSwitchingButton button : viewSwitchingButtons) {
@@ -264,6 +274,21 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				}
 			}, button.getPickingType(), button.getButtonID());
 		}
+		
+		brick.addPickingListener(
+				new APickingListener() {
+
+					@Override
+					public void clicked(Pick pick) {
+						boolean isResizingLocked = !lockResizingButton
+								.isSelected();
+						brick
+								.setSizeFixed(isResizingLocked);
+						lockResizingButton
+								.setSelected(isResizingLocked);
+					}
+				}, EPickingType.BRICK_LOCK_RESIZING_BUTTON,
+				LOCK_RESIZING_BUTTON_ID);
 
 		brick.addPickingListener(
 				new APickingListener() {

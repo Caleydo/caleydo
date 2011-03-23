@@ -45,6 +45,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	protected static final int HANDLE_SIZE_PIXELS = 10;
 
 	protected static final int CLUSTER_BUTTON_ID = 0;
+	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
 
 	protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
 
@@ -54,6 +55,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	// protected Button overviewHeatMapButton;
 
 	private Button clusterButton;
+	protected Button lockResizingButton;
 
 	public CentralBrickLayoutTemplate(GLBrick brick,
 			DimensionGroup dimensionGroup, IBrickConfigurer configurer) {
@@ -72,10 +74,17 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// overviewHeatMapButton = new
 		// Button(EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
 		// OVERVIEW_HEATMAP_BUTTON_ID);
+		lockResizingButton = new Button(
+				EPickingType.BRICK_LOCK_RESIZING_BUTTON,
+				LOCK_RESIZING_BUTTON_ID, EIconTextures.NAVIGATION_DRAG_VIEW);
 		configurer.configure(this);
 		registerPickingListeners();
 		viewTypeChanged(getDefaultViewType());
 
+	}
+
+	public void setLockResizing(boolean lockResizing) {
+		lockResizingButton.setSelected(lockResizing);
 	}
 
 	@Override
@@ -142,6 +151,17 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		captionRow.append(captionLayout);
 		captionRow.append(spacingLayoutX);
 
+		ElementLayout lockResizingButtonLayout = new ElementLayout(
+				"lockResizingButton");
+		lockResizingButtonLayout.setPixelGLConverter(pixelGLConverter);
+		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
+		lockResizingButtonLayout.setRenderer(new ButtonRenderer(
+				lockResizingButton, brick, brick.getTextureManager()));
+		
+		captionRow.append(lockResizingButtonLayout);
+		captionRow.append(spacingLayoutX);
+
 		ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
 		clusterButtonLayout.setPixelGLConverter(pixelGLConverter);
 		clusterButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
@@ -150,7 +170,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 				brick, brick.getTextureManager()));
 
 		captionRow.append(clusterButtonLayout);
-		captionRow.append(spacingLayoutX);
+//		captionRow.append(spacingLayoutX);
 
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
@@ -192,7 +212,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutX.setPixelSizeX(4);
 		spacingLayoutX.setPixelSizeY(0);
-		
+
 		for (int i = 0; i < viewSwitchingButtons.size(); i++) {
 			BrickViewSwitchingButton button = viewSwitchingButtons.get(i);
 			ElementLayout buttonLayout = new ElementLayout();
@@ -229,6 +249,16 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 				}
 			}, button.getPickingType(), button.getButtonID());
 		}
+
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				boolean isResizingLocked = !lockResizingButton.isSelected();
+				brick.setSizeFixed(isResizingLocked);
+				lockResizingButton.setSelected(isResizingLocked);
+			}
+		}, EPickingType.BRICK_LOCK_RESIZING_BUTTON, LOCK_RESIZING_BUTTON_ID);
 
 		brick.addPickingListener(new APickingListener() {
 

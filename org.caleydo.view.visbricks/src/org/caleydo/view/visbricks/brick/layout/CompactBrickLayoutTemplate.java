@@ -203,6 +203,12 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	}
 
+	@Override
+	public void setLockResizing(boolean lockResizing) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	// @Override
 	// public void configure(IBrickLayoutConfigurer configurer) {
 	// configurer.configure(this);
