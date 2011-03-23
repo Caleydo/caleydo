@@ -540,7 +540,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			gl.glTranslatef(+xSideSpacing, fYTranslation, 0.0f);
 		} else {
 
-			if (set.isSetHomogeneous()) {
+			if (set.isSetHomogeneous() && !isRenderedRemote()) {
 				renderMasterGate(gl);
 			}
 
@@ -597,6 +597,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	}
 
 	private void renderSelectedPolylines(GL2 gl, SelectionType selectionType) {
+		if (!selectionType.isVisible())
+			return;
 		int nrVisibleLines = contentSelectionManager.getNumberOfElements(selectionType);
 		Set<Integer> lines = contentSelectionManager.getElements(selectionType);
 		boolean renderAsSelection = true;
@@ -767,8 +769,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 			if (detailLevel == DetailLevel.HIGH) {
 
-				// NaN Button
-
 				// markers on axis
 				float fMarkerSpacing = renderStyle.getAxisHeight()
 						/ (NUMBER_AXIS_MARKERS + 1);
@@ -806,20 +806,24 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 				sAxisLabel = set.get(storageVA.get(iCount)).getLabel();
 
-				gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
+				// gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 				gl.glTranslatef(
 						fXPosition,
 						renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(),
 						0);
-				gl.glRotatef(25, 0, 0, 1);
+				// gl.glRotatef(25, 0, 0, 1);
+				//
+				// float fScaling = renderStyle.getSmallFontScalingFactor();
+				//
+				// textRenderer.renderText(gl, sAxisLabel, 0, 0, 0, fScaling,
+				// PCRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
 
-				float fScaling = renderStyle.getSmallFontScalingFactor();
-				if (isRenderedRemote())
-					fScaling *= 1.5f;
-				textRenderer.renderText(gl, sAxisLabel, 0, 0, 0, fScaling,
-						PCRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
+				float width = renderStyle.getAxisSpacing(storageVA.size());
+				textRenderer.renderTextInBounds(gl, sAxisLabel, 0, 0, 0.02f, width,
+						parentGLCanvas.getPixelGLConverter()
+								.getGLHeightForPixelHeight(10));
 
-				gl.glRotatef(-25, 0, 0, 1);
+//				gl.glRotatef(-25, 0, 0, 1);
 				gl.glTranslatef(-fXPosition, -(renderStyle.getAxisHeight() + renderStyle
 						.getAxisCaptionSpacing()), 0);
 
@@ -1118,8 +1122,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			String sRawValue, SelectionType renderMode) {
 
 		float fScaling = renderStyle.getSmallFontScalingFactor();
-		if (isRenderedRemote())
-			fScaling *= 1.5f;
+
 		// don't render values that are below the y axis
 		if (fYOrigin < 0)
 			return;
@@ -1132,6 +1135,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				PCRenderStyle.MIN_NUMBER_TEXT_SIZE);
 		float fSmallSpacing = renderStyle.getVerySmallSpacing();
 		float fBackPlaneWidth = (float) tempRectangle.getWidth();
+		float maxWidth = renderStyle.getAxisSpacing(storageVA.size());
+		if (fBackPlaneWidth > maxWidth)
+			fBackPlaneWidth = maxWidth;
+
 		float fBackPlaneHeight = (float) tempRectangle.getHeight();
 		float fXTextOrigin = fXOrigin + 2 * AXIS_MARKER_WIDTH;
 		float fYTextOrigin = fYOrigin;
@@ -1147,21 +1154,15 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				LABEL_Z);
 		gl.glEnd();
 
-		renderNumber(gl, sRawValue, fXTextOrigin, fYTextOrigin);
+		textRenderer.renderTextInBounds(gl, sRawValue, fXTextOrigin, fYTextOrigin,
+				PCRenderStyle.TEXT_ON_LABEL_Z, fBackPlaneWidth, fBackPlaneHeight);
+		// renderNumber(gl, sRawValue, fXTextOrigin, fYTextOrigin);
 		gl.glPopAttrib();
 	}
 
 	private void renderNumber(GL2 gl, String sRawValue, float fXOrigin, float fYOrigin) {
 
-		// String text = "";
-		// if (Float.isNaN(fRawValue))
-		// text = "NaN";
-		// else
-		// text = getDecimalFormat().format(fRawValue);
-
 		float fScaling = renderStyle.getSmallFontScalingFactor();
-		if (isRenderedRemote())
-			fScaling *= 1.5f;
 
 		textRenderer.renderText(gl, sRawValue, fXOrigin, fYOrigin,
 				PCRenderStyle.TEXT_ON_LABEL_Z, fScaling,
@@ -2540,7 +2541,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	public int getMinPixelHeight(DetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
-			return 120;
+			return 100;
 		case MEDIUM:
 			return 80;
 		case LOW:
@@ -2556,11 +2557,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		case HIGH:
 			return 100;
 		case MEDIUM:
-			return 100;
+			return 80;
 		case LOW:
-			return 100;
+			return 80;
 		default:
-			return 100;
+			return 80;
 		}
 	}
 

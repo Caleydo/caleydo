@@ -88,6 +88,10 @@ public class OverviewHeatMapRenderer extends AContainedViewRenderer {
 			float currentPositionY = 0;
 
 			for (float value : currentValues) {
+				if(value >1 )
+					value = 1;
+				if(value < 0)
+					value = 0;
 				float[] mappingColor = colorMapper.getColor(value);
 
 				gl.glColor3f(mappingColor[0], mappingColor[1], mappingColor[2]);

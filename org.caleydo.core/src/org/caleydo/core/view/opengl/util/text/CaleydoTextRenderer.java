@@ -223,7 +223,7 @@ public class CaleydoTextRenderer
 		double scaling = height / bounds.getHeight();
 
 		double requiredWidth = bounds.getWidth() * scaling;
-		if (requiredWidth > widht) {
+		if (requiredWidth > widht + 0.001) {
 			double truncateFactor = widht / requiredWidth;
 			int length = (int) (text.length() * truncateFactor);
 			if(length >= 0)

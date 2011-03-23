@@ -667,9 +667,12 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			StorageVirtualArray storageVA = set.getStorageData(Set.STORAGE)
 					.getStorageVA();
 			for (Integer storageID : storageVA) {
-				averageValue += set.get(storageID).getFloat(
-						EDataRepresentation.NORMALIZED, contenID);
-				count++;
+				float value = set.get(storageID).getFloat(EDataRepresentation.NORMALIZED,
+						contenID);
+				if (!Float.isNaN(value)) {
+					averageValue += value;
+					count++;
+				}
 			}
 		}
 		averageValue /= count;
@@ -727,17 +730,18 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		if (viewRenderer == null)
 			return;
 
-//<<<<<<< .mine
-//		if (isInOverviewMode && !brickLayout.isViewTypeValid(viewType)) {
-//			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks, dimensionGroup,
-//					brickConfigurer);
-//
-//			templateRenderer.setTemplate(brickLayout);
-//			isInOverviewMode = false;
-//		}
-//
-//=======
-//>>>>>>> .r3950
+		// <<<<<<< .mine
+		// if (isInOverviewMode && !brickLayout.isViewTypeValid(viewType)) {
+		// brickLayout = new DefaultBrickLayoutTemplate(this, visBricks,
+		// dimensionGroup,
+		// brickConfigurer);
+		//
+		// templateRenderer.setTemplate(brickLayout);
+		// isInOverviewMode = false;
+		// }
+		//
+		// =======
+		// >>>>>>> .r3950
 		if (!brickLayout.isViewTypeValid(viewType))
 			return;
 
@@ -930,22 +934,19 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public float collapse() {
 
-//<<<<<<< .mine
-//		CompactBrickLayoutTemplate layoutTemplate = new CompactBrickLayoutTemplate(this,
-//				visBricks, dimensionGroup, brickConfigurer);
-//		isSizeFixed = false;
-//=======
+		// <<<<<<< .mine
+		// CompactBrickLayoutTemplate layoutTemplate = new
+		// CompactBrickLayoutTemplate(this,
+		// visBricks, dimensionGroup, brickConfigurer);
+		// isSizeFixed = false;
+		// =======
 		expandedBrickState = new BrickState(currentViewType,
-				wrappingLayout.getSizeScaledY(),
-				wrappingLayout.getSizeScaledX());
+				wrappingLayout.getSizeScaledY(), wrappingLayout.getSizeScaledX());
 
-
-		ABrickLayoutTemplate layoutTemplate = brickLayout
-				.getCollapsedLayoutTemplate();
+		ABrickLayoutTemplate layoutTemplate = brickLayout.getCollapsedLayoutTemplate();
 		// isSizeFixed = false;
 
-		setBrickLayoutTemplate(layoutTemplate,
-				layoutTemplate.getDefaultViewType());
+		setBrickLayoutTemplate(layoutTemplate, layoutTemplate.getDefaultViewType());
 
 		float minHeight = getParentGLCanvas().getPixelGLConverter()
 				.getGLHeightForPixelHeight(layoutTemplate.getMinHeightPixels());
