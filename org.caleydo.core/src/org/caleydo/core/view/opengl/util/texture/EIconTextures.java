@@ -140,7 +140,9 @@ public enum EIconTextures {
 	
 	HISTOGRAM_ICON("resources/icons/view/histogram/histogram.png"),
 	
-	TAGCLOUD_ICON("resources/icons/view/tagclouds/icon.png");
+	TAGCLOUD_ICON("resources/icons/view/tagclouds/icon.png"),
+	NAVIGATION_BACKGROUND("resources/icons/general/navigation.png"),
+	PIN("resources/icons/general/pin.png");
 
 	private String sFileName;
 

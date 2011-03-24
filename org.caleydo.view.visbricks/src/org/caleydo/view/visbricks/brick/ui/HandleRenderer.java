@@ -1,10 +1,13 @@
 package org.caleydo.view.visbricks.brick.ui;
 
+import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
@@ -59,7 +62,7 @@ public class HandleRenderer extends LayoutRenderer {
 		float glHandleWidth = pixelGLConverter.getGLWidthForPixelWidth(handleSize);
 
 		gl.glLineWidth(3);
-		gl.glColor3f(0.2f, 0.2f, 0.2f);
+		gl.glColor3f(0.6f, 0.6f, 0.6f);
 
 		if ((handles & RESIZE_HANDLE_LOWER_LEFT) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
@@ -113,26 +116,34 @@ public class HandleRenderer extends LayoutRenderer {
 			gl.glPushName(brick.getPickingManager().getPickingID(
 					brick.getDimensionGroup().getID(),
 					EPickingType.MOVE_VERTICALLY_HANDLE, 0));
-			//
-			// Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth * 2.0f, y / 2.0f
-			// - glHandleHeight, 0);
-			// Vec3f lowerRightCorner = new Vec3f(-glHandleWidth * 2.0f,
-			// 2.0f + glHandleHeight, 0);
-			// Vec3f upperRightCorner = new Vec3f(0, y / 2.0f + glHandleHeight,
-			// 0);
-			// Vec3f upperLeftCorner = new Vec3f(0, y / 2.0f - glHandleHeight,
-			// 0);
-			//
-			// textureManager
-			// .renderTexture(gl, EIconTextures.MOVE_ICON, lowerLeftCorner,
-			// lowerRightCorner, upperRightCorner, upperLeftCorner, 1,
-			// 1, 1, 1);
-			gl.glBegin(GL2.GL_QUADS);
-			gl.glVertex3f(-glHandleWidth * 2.0f, y / 2.0f - glHandleHeight, 1);
-			gl.glVertex3f(-glHandleWidth * 2.0f, y / 2.0f + glHandleHeight, 1);
-			gl.glVertex3f(0, y / 2.0f + glHandleHeight, 1);
-			gl.glVertex3f(0, y / 2.0f - glHandleHeight, 1);
-			gl.glEnd();
+			// gl.glColor4f(1f, 1f, 1f, 1);
+			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f - glHandleHeight,
+					1);
+			Vec3f lowerRightCorner = new Vec3f(0, y / 2.0f - glHandleHeight, 1);
+			Vec3f upperRightCorner = new Vec3f(0, y / 2.0f, 1);
+			Vec3f upperLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f, 1);
+
+			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_BACKGROUND,
+					upperRightCorner, upperLeftCorner, lowerLeftCorner, lowerRightCorner,
+					1, 1, 1, 1);
+
+			lowerLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f, 1);
+			lowerRightCorner = new Vec3f(0, y / 2.0f, 1);
+			upperRightCorner = new Vec3f(0, y / 2.0f + glHandleHeight, 1);
+			upperLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f + glHandleHeight, 1);
+
+			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_BACKGROUND,
+					lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
+					1, 1, 1, 1);
+
+			// gl.glBegin(GL2.GL_QUADS);
+			// gl.glVertex3f(-glHandleWidth * 2.0f, y / 2.0f - glHandleHeight,
+			// 1);
+			// gl.glVertex3f(-glHandleWidth * 2.0f, y / 2.0f + glHandleHeight,
+			// 1);
+			// gl.glVertex3f(0, y / 2.0f + glHandleHeight, 1);
+			// gl.glVertex3f(0, y / 2.0f - glHandleHeight, 1);
+			// gl.glEnd();
 			gl.glPopName();
 		}
 
@@ -155,15 +166,34 @@ public class HandleRenderer extends LayoutRenderer {
 			// .renderTexture(gl, EIconTextures.MOVE_ICON, lowerLeftCorner,
 			// lowerRightCorner, upperRightCorner, upperLeftCorner, 1,
 			// 1, 1, 1);
-			gl.glBegin(GL2.GL_QUADS);
-			gl.glVertex3f(x / 2f - glHandleWidth, y, 1);
-			gl.glVertex3f(x / 2f + glHandleWidth, y, 1);
-			gl.glVertex3f(x / 2f + glHandleWidth, y + 2 * glHandleHeight, 1);
-			gl.glVertex3f(x / 2f - glHandleWidth, y + 2 * glHandleHeight, 1);
-			gl.glEnd();
+//			gl.glBegin(GL2.GL_QUADS);
+//			gl.glVertex3f(x / 2f - glHandleWidth, y, 1);
+//			gl.glVertex3f(x / 2f + glHandleWidth, y, 1);
+//			gl.glVertex3f(x / 2f + glHandleWidth, y + 2 * glHandleHeight, 1);
+//			gl.glVertex3f(x / 2f - glHandleWidth, y + 2 * glHandleHeight, 1);
+//			gl.glEnd();
+			
+			Vec3f lowerLeftCorner = new Vec3f(x / 2f - glHandleWidth, y, 1);
+			Vec3f lowerRightCorner = new Vec3f(x / 2f , y, 1);
+			Vec3f upperLeftCorner = new Vec3f(x / 2f , y +  glHandleHeight, 1);
+			Vec3f upperRightCorner = new Vec3f(x / 2f- glHandleWidth , y +  glHandleHeight, 1);
+			
+			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_BACKGROUND,
+					lowerRightCorner,upperLeftCorner, 	upperRightCorner,lowerLeftCorner,  
+					1, 1, 1, 1);
+			
+
+			 lowerLeftCorner = new Vec3f(x / 2f + glHandleWidth, y, 1);
+			lowerRightCorner = new Vec3f(x / 2f , y, 1);
+			upperLeftCorner = new Vec3f(x / 2f , y +  glHandleHeight, 1);
+			upperRightCorner = new Vec3f(x / 2f+ glHandleWidth , y +  glHandleHeight, 1);
+			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_BACKGROUND,
+					upperLeftCorner,	lowerRightCorner,  lowerLeftCorner,upperRightCorner, 
+					1, 1, 1, 1);
+		
+
 			gl.glPopName();
 		}
 
 	}
-
 }

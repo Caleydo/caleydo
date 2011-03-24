@@ -43,7 +43,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	protected static final int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
 	protected static final int BUTTON_HEIGHT_PIXELS = 16;
 	protected static final int BUTTON_WIDTH_PIXELS = 16;
-	protected static final int HANDLE_SIZE_PIXELS = 10;
+	protected static final int HANDLE_SIZE_PIXELS = 8;
 
 	protected static final int CLUSTER_BUTTON_ID = 0;
 	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
@@ -80,7 +80,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// OVERVIEW_HEATMAP_BUTTON_ID);
 		lockResizingButton = new Button(
 				EPickingType.BRICK_LOCK_RESIZING_BUTTON,
-				LOCK_RESIZING_BUTTON_ID, EIconTextures.NAVIGATION_DRAG_VIEW);
+				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
 		configurer.configure(this);
 		registerPickingListeners();
 		viewTypeChanged(getDefaultViewType());

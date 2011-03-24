@@ -770,43 +770,41 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				gl.glPopName();
 			}
 
-			if (detailLevel == DetailLevel.HIGH) {
-				if (!isRenderedRemote()) {
-					// markers on axis
-					float fMarkerSpacing = renderStyle.getAxisHeight()
-							/ (NUMBER_AXIS_MARKERS + 1);
-					for (int iInnerCount = 1; iInnerCount <= NUMBER_AXIS_MARKERS; iInnerCount++) {
-						float fCurrentHeight = fMarkerSpacing * iInnerCount;
-						if (iCount == 0) {
-							if (set.isSetHomogeneous()) {
-								float fNumber = (float) set
-										.getRawForNormalized(fCurrentHeight
-												/ renderStyle.getAxisHeight());
+			// if (detailLevel == DetailLevel.LO) {
+			if (!isRenderedRemote()) {
+				// markers on axis
+				float fMarkerSpacing = renderStyle.getAxisHeight()
+						/ (NUMBER_AXIS_MARKERS + 1);
+				for (int iInnerCount = 1; iInnerCount <= NUMBER_AXIS_MARKERS; iInnerCount++) {
+					float fCurrentHeight = fMarkerSpacing * iInnerCount;
+					if (iCount == 0) {
+						if (set.isSetHomogeneous()) {
+							float fNumber = (float) set
+									.getRawForNormalized(fCurrentHeight
+											/ renderStyle.getAxisHeight());
 
-								Rectangle2D bounds = textRenderer.getScaledBounds(gl,
-										Formatter.formatNumber(fNumber),
-										renderStyle.getSmallFontScalingFactor(),
-										PCRenderStyle.MIN_NUMBER_TEXT_SIZE);
-								float fWidth = (float) bounds.getWidth();
-								float fHeightHalf = (float) bounds.getHeight() / 3.0f;
+							Rectangle2D bounds = textRenderer.getScaledBounds(gl,
+									Formatter.formatNumber(fNumber),
+									renderStyle.getSmallFontScalingFactor(),
+									PCRenderStyle.MIN_NUMBER_TEXT_SIZE);
+							float fWidth = (float) bounds.getWidth();
+							float fHeightHalf = (float) bounds.getHeight() / 3.0f;
 
-								renderNumber(gl, Formatter.formatNumber(fNumber),
-										fXPosition - fWidth - AXIS_MARKER_WIDTH,
-										fCurrentHeight - fHeightHalf);
-							} else {
-								// TODO: storage based access
-							}
+							renderNumber(gl, Formatter.formatNumber(fNumber), fXPosition
+									- fWidth - AXIS_MARKER_WIDTH, fCurrentHeight
+									- fHeightHalf);
+						} else {
+							// TODO: storage based access
 						}
-						gl.glColor3fv(Y_AXIS_COLOR, 0);
-						gl.glBegin(GL2.GL_LINES);
-						gl.glVertex3f(fXPosition - AXIS_MARKER_WIDTH, fCurrentHeight,
-								AXIS_Z);
-						gl.glVertex3f(fXPosition + AXIS_MARKER_WIDTH, fCurrentHeight,
-								AXIS_Z);
-						gl.glEnd();
-
 					}
+					gl.glColor3fv(Y_AXIS_COLOR, 0);
+					gl.glBegin(GL2.GL_LINES);
+					gl.glVertex3f(fXPosition - AXIS_MARKER_WIDTH, fCurrentHeight, AXIS_Z);
+					gl.glVertex3f(fXPosition + AXIS_MARKER_WIDTH, fCurrentHeight, AXIS_Z);
+					gl.glEnd();
+
 				}
+				// }
 
 				String sAxisLabel = null;
 

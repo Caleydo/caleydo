@@ -256,18 +256,17 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		largerSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		largerSpacing.setPixelSizeY(7);
 		largerSpacing.setRatioSizeX(0);
-
-		baseColumn.append(spacing);
-		baseColumn.append(selectionRow);
-
-		baseColumn.append(spacing);
-		baseColumn.append(captionRow);
-
 		if (detailLevel != DetailLevel.LOW) {
-			baseColumn.append(largerSpacing);
-			baseColumn.append(tagCloudRow);
 			baseColumn.append(spacing);
+			baseColumn.append(selectionRow);
+
+			baseColumn.append(spacing);
+			baseColumn.append(captionRow);
+
 		}
+		baseColumn.append(largerSpacing);
+		baseColumn.append(tagCloudRow);
+		baseColumn.append(spacing);
 
 		// tagCloudRow.setDebug(true);
 
