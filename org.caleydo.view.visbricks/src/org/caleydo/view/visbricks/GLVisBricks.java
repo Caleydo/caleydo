@@ -129,6 +129,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private boolean connectionsOn = true;
 	private boolean connectionsHighlightDynamic = false;
 	
+	private int selectedConnectionBandID = -1;
+	
 	/**
 	 * Determines the connection focus highlight dynamically in a range between 0 and 1
 	 */
@@ -881,8 +883,14 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			return;
 		}
 
+		selectedConnectionBandID = -1;
+		
 		switch (pickingType) {
 
+		case BRICK_CONNECTION_BAND:
+			selectedConnectionBandID = externalID;
+			break;
+		
 		case DIMENSION_GROUP:
 			switch (pickingMode) {
 			case MOUSE_OVER:
@@ -920,15 +928,14 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				break;
 			}
 			break;
+			
 		case MOVE_HORIZONTALLY_HANDLE:
 			if (pickingMode == EPickingMode.CLICKED) {
 				isHorizontalMoveDraggingActive = true;
 				movedDimensionGroup = externalID;
 			}
 			break;
-
 		}
-
 	}
 
 	@Override
@@ -1319,5 +1326,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	
 	public float getConnectionsFocusFactor() {
 		return connectionsFocusFactor;
+	}
+	
+	public int getSelectedConnectionBandID() {
+		return selectedConnectionBandID;
 	}
 }

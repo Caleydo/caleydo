@@ -151,12 +151,13 @@ public class ConnectionBandRenderer {
 		// EPickingType.COMPARE_RIBBON_SELECTION, bandID));
 
 		float yCorrection = 0;
+		float z = 0.1f;
 
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
-		inputPoints.add(new Vec3f(leftTopPos[0], leftTopPos[1], 0));
-		inputPoints.add(new Vec3f(leftTopPos[0] + xOffset, leftTopPos[1] - yCorrection, 0));
-		inputPoints.add(new Vec3f(rightTopPos[0] - xOffset, rightTopPos[1] + yCorrection, 0));
-		inputPoints.add(new Vec3f(rightTopPos[0], rightTopPos[1], rightTopPos[2]));
+		inputPoints.add(new Vec3f(leftTopPos[0], leftTopPos[1], z));
+		inputPoints.add(new Vec3f(leftTopPos[0] + xOffset, leftTopPos[1] - yCorrection, z));
+		inputPoints.add(new Vec3f(rightTopPos[0] - xOffset, rightTopPos[1] + yCorrection, z));
+		inputPoints.add(new Vec3f(rightTopPos[0], rightTopPos[1], z));
 
 		NURBSCurve curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
 		ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
@@ -171,15 +172,15 @@ public class ConnectionBandRenderer {
 		
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < outputPoints.size(); i++) {
-			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), 0f);
+			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(),  outputPoints.get(i).z());
 		}
 		gl.glEnd();
 
 		inputPoints = new ArrayList<Vec3f>();
-		inputPoints.add(new Vec3f(leftBottomPos[0], leftBottomPos[1], 0));
-		inputPoints.add(new Vec3f(leftTopPos[0] + xOffset, leftBottomPos[1] - yCorrection, 0));
-		inputPoints.add(new Vec3f(rightBottomPos[0] - xOffset, rightBottomPos[1] + yCorrection, 0));
-		inputPoints.add(new Vec3f(rightBottomPos[0], rightBottomPos[1], 0));
+		inputPoints.add(new Vec3f(leftBottomPos[0], leftBottomPos[1], z));
+		inputPoints.add(new Vec3f(leftTopPos[0] + xOffset, leftBottomPos[1] - yCorrection, z));
+		inputPoints.add(new Vec3f(rightBottomPos[0] - xOffset, rightBottomPos[1] + yCorrection, z));
+		inputPoints.add(new Vec3f(rightBottomPos[0], rightBottomPos[1], z));
 
 		curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
 		ArrayList<Vec3f> points = curve.getCurvePoints();
@@ -193,7 +194,7 @@ public class ConnectionBandRenderer {
 		// gl.glLineWidth(1);
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < points.size(); i++) {
-			gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0f);
+			gl.glVertex3f(points.get(i).x(), points.get(i).y(),  points.get(i).z());
 		}
 		gl.glEnd();
 
@@ -203,7 +204,6 @@ public class ConnectionBandRenderer {
 			gl.glColor4f(color[0], color[1], color[2], opacity);
 
 		render(gl, outputPoints);
-
 		// gl.glPopName();
 	}
 }

@@ -384,58 +384,9 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 				float xEnd = x + subBrick.getLayout().getTranslateX()
 						- rightDimGroup.getLayout().getTranslateX();
 
-				// if (glVisBricks.isConnectionsOn()) {
-				//
-				// float ratio = 0.1f;
-				// // if
-				// (hashRatioToSelectionType.containsKey(SelectionType.NORMAL))
-				// // ratio =
-				// hashRatioToSelectionType.get(SelectionType.NORMAL);
-				// // else
-				// // ratio = 0;
-				//
-				// // Render straight band connection from brick to dimension
-				// // group
-				// // on the LEFT
-				// if (xStart != 0) {
-				// connectionRenderer
-				// .renderStraightBand(
-				// gl,
-				// new float[] { xStart,
-				// subGroupMatch.getLeftAnchorYTop(), 0 },
-				// new float[] { xStart,
-				// subGroupMatch.getLeftAnchorYBottom(), 0 },
-				// new float[] { 0,
-				// subGroupMatch.getLeftAnchorYTop(), 0 },
-				// new float[] { 0,
-				// subGroupMatch.getLeftAnchorYBottom(), 0 },
-				// false, splineFactor, 0, false, new float[] {
-				// 0.0f, 0.0f, 0 }, ratio);
-				// }
-				//
-				// // Render straight band connection from brick to dimension
-				// // group
-				// // on the RIGHT
-				// if (xEnd != 0) {
-				//
-				// connectionRenderer.renderStraightBand(gl, new float[] { x,
-				// subGroupMatch.getRightAnchorYTop(), 0 }, new float[] { x,
-				// subGroupMatch.getRightAnchorYBottom(), 0 }, new float[] {
-				// xEnd, subGroupMatch.getRightAnchorYTop(), 0 },
-				// new float[] { xEnd,
-				// subGroupMatch.getRightAnchorYBottom(), 0 },
-				// false, splineFactor, 0, false, new float[] { 0.0f, 0.0f,
-				// 0 }, ratio);
-				// }
-				//
-				// connectionRenderer.renderSingleBand(gl, new float[] { 0,
-				// subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { 0,
-				// subGroupMatch.getLeftAnchorYBottom(), 0 }, new float[] { x,
-				// subGroupMatch.getRightAnchorYTop(), 0 }, new float[] { x,
-				// subGroupMatch.getRightAnchorYBottom(), 0 }, false,
-				// splineFactor, 0, false, new float[] { 0.0f, 0.0f, 0.0f },
-				// ratio);
-				// }
+				gl.glPushName(glVisBricks.getPickingManager().getPickingID(
+						glVisBricks.getID(), EPickingType.BRICK_CONNECTION_BAND,
+						subGroupMatch.getConnectionBandID()));
 
 				// Render selected portion
 				for (SelectionType selectionType : hashRatioToSelectionType.keySet()) {
@@ -454,10 +405,18 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 					if (glVisBricks.isConnectionsHighlightDynamic() == false) {
 
 						if (selectionType == SelectionType.NORMAL) {
-							trendRatio = 0.15f;
+
+							if (glVisBricks.getSelectedConnectionBandID() == subGroupMatch
+									.getConnectionBandID())
+								trendRatio = 0.5f;
+							else
+								trendRatio = 0.15f;
+
 							color = new float[] { 0, 0, 0 };
 						} else {
+
 							trendRatio = 0.5f;
+
 						}
 					} else {
 
@@ -468,9 +427,14 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 						else
 							trendRatio = 1 - (glVisBricks.getConnectionsFocusFactor() + (1 - maxRatio));
 
-						// it would be too opaque if we use the factor
-						// determined by the slider
-						trendRatio /= 2f;
+						if (glVisBricks.getSelectedConnectionBandID() == subGroupMatch
+								.getConnectionBandID())
+							trendRatio = 0.5f;
+						else {
+							// it would be too opaque if we use the factor
+							// determined by the slider
+							trendRatio /= 2f;
+						}
 					}
 
 					if (ratio == 0)
@@ -485,13 +449,16 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 					float rightYDiffSelection = rightYDiff * ratio;
 
 					connectionRenderer.renderSingleBand(gl, new float[] { 0,
-							subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { 0,
-							subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection, 0 },
-							new float[] { x, subGroupMatch.getRightAnchorYTop(), 0 },
+							subGroupMatch.getLeftAnchorYTop(), 0.0f },
+							new float[] {
+									0,
+									subGroupMatch.getLeftAnchorYTop()
+											- leftYDiffSelection, 0.0f }, new float[] {
+									x, subGroupMatch.getRightAnchorYTop(), 0.0f },
 							new float[] {
 									x,
 									subGroupMatch.getRightAnchorYTop()
-											- rightYDiffSelection, 0 }, true,
+											- rightYDiffSelection, 0.0f }, true,
 							splineFactor, 0, false, color, trendRatio);// 0.15f);
 
 					// Render straight band connection from brick to dimension
@@ -534,7 +501,10 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 														- rightYDiffSelection, 0 },
 										false, splineFactor, 0, false, color, trendRatio);// 0.5f);
 					}
+
 				}
+
+				gl.glPopName();
 			}
 		}
 	}

@@ -3,10 +3,14 @@ package org.caleydo.view.visbricks.dimensiongroup;
 import java.util.HashMap;
 
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 
 public class SubGroupMatch {
+	
+	private int connectionID = -1;
 	
 	private GLBrick glBrick;
 	
@@ -35,6 +39,8 @@ public class SubGroupMatch {
 	
 	public SubGroupMatch(GLBrick glBrick) {
 		this.glBrick = glBrick;
+		
+		connectionID = GeneralManager.get().getIDCreator().createID(EManagedObjectType.BRICK_CONNECTIONS);
 	}
 	
 	public void setLeftAnchorYStart(float leftAnchorYStart) {
@@ -95,5 +101,9 @@ public class SubGroupMatch {
 	
 	public float getRightSimilarityRatio() {
 		return rightSimilarityRatio;
+	}
+	
+	public int getConnectionBandID() {
+		return connectionID;
 	}
 }
