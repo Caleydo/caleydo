@@ -24,6 +24,7 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.NewMetaSetsEvent;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.storagebased.ConnectionsModeEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -54,6 +55,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupSpacingRenderer;
 import org.caleydo.view.visbricks.listener.GLVisBricksKeyListener;
 import org.caleydo.view.visbricks.listener.NewMetaSetsListener;
+import org.caleydo.view.visbricks.listener.ConnectionsModeListener;
 import org.caleydo.view.visbricks.renderstyle.VisBricksRenderStyle;
 
 /**
@@ -76,6 +78,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	private NewMetaSetsListener metaSetsListener;
 	private ClearSelectionsListener clearSelectionsListener;
+	private ConnectionsModeListener trendHighlightModeListener;
 
 	private ASetBasedDataDomain dataDomain;
 
@@ -122,6 +125,14 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private ElementLayout rightDimensionGroupSpacing;
 
 	private ContentSelectionManager contentSelectionManager;
+	
+	private boolean connectionsOn = true;
+	private boolean connectionsHighlightDynamic = false;
+	
+	/**
+	 * Determines the connection focus highlight dynamically in a range between 0 and 1
+	 */
+	private float connectionsFocusFactor;
 
 	private boolean isHorizontalMoveDraggingActive = false;
 	private int movedDimensionGroup = -1;
@@ -946,6 +957,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		eventPublisher.addListener(ClearSelectionsEvent.class,
 				clearSelectionsListener);
 
+		trendHighlightModeListener = new ConnectionsModeListener();
+		trendHighlightModeListener.setHandler(this);
+		eventPublisher
+				.addListener(ConnectionsModeEvent.class, trendHighlightModeListener);
+
 	}
 
 	@Override
@@ -960,6 +976,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		if (clearSelectionsListener != null) {
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
+		}
+
+		if (trendHighlightModeListener != null) {
+			eventPublisher.removeListener(trendHighlightModeListener);
+			trendHighlightModeListener = null;
 		}
 	}
 
@@ -1277,5 +1298,26 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public GLVisBricksKeyListener getKeyListener() {
 		return (GLVisBricksKeyListener) glKeyListener;
 	}
+	
+	public void handleTrendHighlightMode(boolean connectionsOn,
+			boolean connectionsHighlightDynamic, float focusFactor) {
+		
+		this.connectionsOn = connectionsOn;
+		this.connectionsHighlightDynamic = connectionsHighlightDynamic;
+		this.connectionsFocusFactor = focusFactor;	
 
+		updateConnectionLinesBetweenDimensionGroups();
+	}
+	
+	public boolean isConnectionsOn() {
+		return connectionsOn;
+	}
+	
+	public boolean isConnectionsHighlightDynamic() {
+		return connectionsHighlightDynamic;
+	}
+	
+	public float getConnectionsFocusFactor() {
+		return connectionsFocusFactor;
+	}
 }

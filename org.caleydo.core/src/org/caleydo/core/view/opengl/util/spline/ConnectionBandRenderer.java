@@ -151,9 +151,6 @@ public class ConnectionBandRenderer {
 		// EPickingType.COMPARE_RIBBON_SELECTION, bandID));
 
 		float yCorrection = 0;
-		// if (bandDetailAdaption)
-		// yCorrection = (leftTopPos[1] - rightTopPos[1]) * 0.5f;// *
-		// // Y_FAN_OUT_DETAIL_TO_DETAIL_FACTOR;
 
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
 		inputPoints.add(new Vec3f(leftTopPos[0], leftTopPos[1], 0));
@@ -168,7 +165,7 @@ public class ConnectionBandRenderer {
 		gl.glLineWidth(1);
 		
 		if (highlight)
-			gl.glColor4f(color[0], color[1], color[2], 0.8f);
+			gl.glColor4f(color[0], color[1], color[2], opacity);//0.8f);
 		else
 			gl.glColor4f(color[0], color[1], color[2], opacity*2);
 		
@@ -201,7 +198,7 @@ public class ConnectionBandRenderer {
 		gl.glEnd();
 
 		if (highlight)
-			gl.glColor4f(color[0], color[1], color[2], 0.5f);
+			gl.glColor4f(color[0], color[1], color[2], opacity);//0.5f);
 		else
 			gl.glColor4f(color[0], color[1], color[2], opacity);
 

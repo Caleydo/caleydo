@@ -8,7 +8,7 @@ import org.caleydo.core.manager.event.AEvent;
 /**
  * Event that Changes the mainview Color in the ScatterPlot.
  * 
- * @author Jürgen Pillhofer
+ * @author Jï¿½rgen Pillhofer
  */
 @XmlRootElement
 @XmlType

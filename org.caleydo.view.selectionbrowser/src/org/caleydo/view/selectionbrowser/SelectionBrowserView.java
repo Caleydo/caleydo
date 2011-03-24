@@ -65,10 +65,11 @@ public class SelectionBrowserView extends ASWTView implements
 	private final static String SELECTION_TYPE_NAME_3 = "Selected by group 3";
 	private final static String SELECTION_TYPE_NAME_4 = "Selected by group 4";
 	
-	/** Colors taken from color brewer qualitative "Set 1" with 7 colors */
+	/** Colors taken from color brewer qualitative "Set 1" with 8 colors */
 	private final static float[] SELECTION_COLOR_1 = new float[] { 152f/255, 78f/255, 163f/255, 1 };
-	private final static float[] SELECTION_COLOR_2 = new float[] { 1, 127f/255, 0, 1 };
-	private final static float[] SELECTION_COLOR_3 = new float[] { 1, 1, 51f/255, 1 };
+	private final static float[] SELECTION_COLOR_2 = new float[] { 1, 127f/255, 0, 1 }; // yellow	
+	private final static float[] SELECTION_COLOR_3 = new float[] { 247f/255, 129f/255, 191f/255, 1 };
+//	private final static float[] SELECTION_COLOR_3 = new float[] { 1, 1, 51f/255, 1 };
 	private final static float[] SELECTION_COLOR_4 = new float[] { 166f/255, 86f/255, 40f/255, 1 };
 		
 	ASetBasedDataDomain dataDomain;

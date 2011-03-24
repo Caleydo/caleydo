@@ -17,7 +17,20 @@ public class SubGroupMatch {
 	private float rightAnchorYStart;
 	
 	private float rightAnchorYEnd;
+	
+	/**
+	 * The ratio that is returned for the left side by the group similarity calculation.
+	 */
+	private float leftSimilarityRatio;
+	
+	/**
+	 * The ratio that is returned for the right side by the group similarity calculation.
+	 */
+	private float rightSimilarityRatio;
 
+	/**
+	 * Hash from the selection type to the ratio of the selection band with respect to the brick (which is 1).
+	 */
 	private HashMap<SelectionType, Float> hashSelectionTypeToRatio = new HashMap<SelectionType, Float>();
 	
 	public SubGroupMatch(GLBrick glBrick) {
@@ -66,5 +79,21 @@ public class SubGroupMatch {
 	
 	public HashMap<SelectionType, Float> getHashRatioToSelectionType() {
 		return hashSelectionTypeToRatio;
+	}
+	
+	public void setSimilarityRatioLeft(float leftSimilarityRatio) {
+		this.leftSimilarityRatio = leftSimilarityRatio;
+	}
+	
+	public void setSimilarityRatioRight(float rightSimilarityRatio) {
+		this.rightSimilarityRatio = rightSimilarityRatio;
+	}
+	
+	public float getLeftSimilarityRatio() {
+		return leftSimilarityRatio;
+	}
+	
+	public float getRightSimilarityRatio() {
+		return rightSimilarityRatio;
 	}
 }

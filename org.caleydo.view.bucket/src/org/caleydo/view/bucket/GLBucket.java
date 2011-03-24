@@ -71,6 +71,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.IPathwayLoader;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -309,6 +310,8 @@ public class GLBucket extends AGLView implements
 	public void init(final GL2 gl) {
 		gl.glClearColor(0.5f, 0.5f, 0.5f, 1f);
 
+		textRenderer = new CaleydoTextRenderer(24);
+		
 		if (glConnectionLineRenderer != null) {
 			glConnectionLineRenderer.init(gl);
 		}
