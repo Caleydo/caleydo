@@ -245,6 +245,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			}
 
 		}, EPickingType.BRICK, getID());
+		
+		dimensionGroup.updateLayout();
 
 	}
 
@@ -749,16 +751,16 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		brickLayout.setViewRenderer(viewRenderer);
 		brickLayout.viewTypeChanged(viewType);
 		int minHeightPixels = brickLayout.getMinHeightPixels();
-//		int minWidthPixels = brickLayout.getMinWidthPixels();
+		int minWidthPixels = brickLayout.getMinWidthPixels();
 		float minHeight = getParentGLCanvas().getPixelGLConverter()
 				.getGLHeightForPixelHeight(minHeightPixels);
-//		float minWidth = getParentGLCanvas().getPixelGLConverter()
-//				.getGLWidthForPixelWidth(minWidthPixels);
+		float minWidth = getParentGLCanvas().getPixelGLConverter()
+				.getGLWidthForPixelWidth(minWidthPixels);
 
 		if (isSizeFixed) {
 
 			float currentHeight = wrappingLayout.getSizeScaledY();
-//			float currentWidth = wrappingLayout.getSizeScaledX();
+			float currentWidth = wrappingLayout.getSizeScaledX();
 
 			if (currentHeight < minHeight) {
 				// float width = (wrappingLayout.getSizeScaledX() /
@@ -767,18 +769,18 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 				// wrappingLayout.setAbsoluteSizeX(width);
 				wrappingLayout.setAbsoluteSizeY(minHeight);
 			}
-//			if (currentWidth < minWidth) {
-//				wrappingLayout.setAbsoluteSizeX(minWidth);
-//			}
+			if (currentWidth < minWidth) {
+				wrappingLayout.setAbsoluteSizeX(minWidth);
+			}
 		} else {
 			wrappingLayout.setAbsoluteSizeY(minHeight);
-//			wrappingLayout.setAbsoluteSizeX(minWidth);
+			wrappingLayout.setAbsoluteSizeX(minWidth);
 		}
 
 		templateRenderer.updateLayout();
 		
-//		visBricks.updateLayout();
-//		visBricks.updateConnectionLinesBetweenDimensionGroups();
+		visBricks.updateLayout();
+		visBricks.updateConnectionLinesBetweenDimensionGroups();
 
 		currentViewType = viewType;
 	}

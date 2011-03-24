@@ -187,8 +187,9 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinWidthPixels() {
-		return pixelGLConverter.getPixelWidthForGLWidth(brick
-				.getWrappingLayout().getSizeScaledX());
+
+		return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
+				.getMinWidth());
 		// return 2 * SPACING_PIXELS + viewRenderer.getMinWidthPixels();
 	}
 

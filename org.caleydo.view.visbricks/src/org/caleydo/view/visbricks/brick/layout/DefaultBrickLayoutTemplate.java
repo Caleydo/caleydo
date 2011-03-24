@@ -129,7 +129,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 			baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter,
 					HANDLE_SIZE_PIXELS, brick.getTextureManager(),
 					HandleRenderer.ALL_RESIZE_HANDLES
-							& HandleRenderer.MOVE_VERTICALLY_HANDLE));
+							| HandleRenderer.MOVE_VERTICALLY_HANDLE));
 		}
 
 		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
@@ -306,7 +306,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinWidthPixels() {
-		return 2 * SPACING_PIXELS + viewRenderer.getMinWidthPixels();
+		return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
+				.getMinWidth());
 	}
 
 	// @Override
