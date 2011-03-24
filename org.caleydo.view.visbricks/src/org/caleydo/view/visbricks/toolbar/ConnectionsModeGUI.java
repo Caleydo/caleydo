@@ -29,16 +29,13 @@ public class ConnectionsModeGUI extends ControlContribution implements IToolBarI
 		// 0;
 		composite.setLayout(layout);
 
-		final Button[] radios = new Button[3];
-		radios[0] = new Button(composite, SWT.RADIO);
+		final Button[] radios = new Button[1];
+		radios[0] = new Button(composite, SWT.CHECK);
 		radios[0].setSelection(true);
-		radios[0].setText("Show All Connections");
+		radios[0].setText("Switch Connections ON/OFF");
 
-		radios[1] = new Button(composite, SWT.RADIO);
-		radios[1].setText("Turn Off Connections");
-
-		radios[2] = new Button(composite, SWT.RADIO);
-		radios[2].setText("Dynamic Connection Highlight Focus");
+		final Button dynamicTrendHighlightButton = new Button(composite, SWT.CHECK);
+		dynamicTrendHighlightButton.setText("Dynamic Connection Highlight Focus");
 
 		final Slider slider = new Slider(composite, SWT.HORIZONTAL);
 		slider.setValues(0, 0, 100, 1, 1, 1);
@@ -48,7 +45,7 @@ public class ConnectionsModeGUI extends ControlContribution implements IToolBarI
 			@Override
 			public void handleEvent(Event event) {
 
-				if (radios[2].getSelection() == false)
+				if (dynamicTrendHighlightButton.getSelection() == false)
 					slider.setEnabled(false);
 				else
 					slider.setEnabled(true);
@@ -57,16 +54,15 @@ public class ConnectionsModeGUI extends ControlContribution implements IToolBarI
 						.get()
 						.getEventPublisher()
 						.triggerEvent(
-								new ConnectionsModeEvent(!radios[1].getSelection(),
-										radios[2].getSelection(),
+								new ConnectionsModeEvent(radios[0].getSelection(),
+										dynamicTrendHighlightButton.getSelection(),
 										slider.getSelection() / 100f));
 			}
 
 		};
 		slider.addListener(SWT.Selection, listener);
-//		radios[0].addListener(SWT.Selection, listener);
-		radios[1].addListener(SWT.Selection, listener);
-		radios[2].addListener(SWT.Selection, listener);
+		dynamicTrendHighlightButton.addListener(SWT.Selection, listener);
+		radios[0].addListener(SWT.Selection, listener);
 
 		return composite;
 	};
