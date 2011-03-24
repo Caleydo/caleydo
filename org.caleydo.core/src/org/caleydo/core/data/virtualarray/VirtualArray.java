@@ -451,6 +451,9 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		ArrayList<Group> resultGroups = new ArrayList<Group>(1);
 		ArrayList<Integer> indices = indicesOf(id);
 
+		if(indices.size() >1)
+			System.out.println("wu");
+
 		for (Integer index : indices) {
 			Group group = groupList.getGroupOfVAIndex(index);
 			if (group != null)

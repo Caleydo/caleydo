@@ -117,6 +117,10 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 		for (int vaIndex = group.getStartIndex(); vaIndex < group.getStartIndex() + group.getSize(); vaIndex++) {
 			Integer id = va1.get(vaIndex);
 			List<Group> groups2 = va2.getGroupOf(id);
+			if(groups2.size()>1)
+			{
+				throw new IllegalArgumentException("wa");
+			}
 
 			for (Group group2 : groups2) {
 				scores[group2.getGroupID()] += 1;
@@ -126,9 +130,16 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 				}
 			}
 		}
+		int sum = 0;
 		similarities = new float[scores.length];
 		for (int count = 0; count < scores.length; count++) {
+			sum += scores[count];
 			similarities[count] = ((float) scores[count]) / group.getSize();
+		}
+		
+		if(sum != group.getSize())
+		{
+			System.out.println("qe");
 		}
 	}
 

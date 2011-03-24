@@ -715,8 +715,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				if (toBigBy < 0)
 					break;
 				if (!brick.isInOverviewMode() && !brick.isSizeFixed()) {
-					// toBigBy -= brick.collapse();
-					// changeMade = true;
+//					 toBigBy -= brick.collapse();
+//					 changeMade = true;
 				}
 			}
 			if (changeMade)
@@ -730,8 +730,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				if (toBigBy < 0)
 					break;
 				if (!brick.isInOverviewMode() && !brick.isSizeFixed()) {
-					// toBigBy -= brick.collapse();
-					// changeMade = true;
+//					 toBigBy -= brick.collapse();
+//					 changeMade = true;
 				}
 			}
 			if (changeMade)

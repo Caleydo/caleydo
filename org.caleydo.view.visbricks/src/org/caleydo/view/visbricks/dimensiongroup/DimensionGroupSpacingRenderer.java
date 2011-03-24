@@ -180,13 +180,13 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 				continue;
 
 			Set<Integer> selectedByGroupSelections = contentSelectionManager
-			.getElements(selectionType);
-			
+					.getElements(selectionType);
+
 			if (selectedByGroupSelections == null
 					|| selectedByGroupSelections.size() == 0) {
-				
-				ratio = 1;//(float) contentVA.size()
-//						/ subGroupMatch.getBrick().getContentVA().size();
+
+				ratio = 1;// (float) contentVA.size()
+				// / subGroupMatch.getBrick().getContentVA().size();
 
 				subGroupMatch.addSelectionTypeRatio(ratio, SelectionType.NORMAL);
 				continue;
@@ -355,7 +355,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 	private void renderDimensionGroupConnections(GL2 gl) {
 
-		if (relationAnalyzer == null)
+		if (relationAnalyzer == null || leftDimGroup == null || rightDimGroup == null)
 			return;
 
 		float splineFactor = 0.1f * x;
@@ -450,7 +450,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 					}
 
 					color = selectionType.getColor();
-					
+
 					if (glVisBricks.isConnectionsHighlightDynamic() == false) {
 
 						if (selectionType == SelectionType.NORMAL) {
@@ -467,8 +467,9 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 							trendRatio = (glVisBricks.getConnectionsFocusFactor() - maxRatio);
 						else
 							trendRatio = 1 - (glVisBricks.getConnectionsFocusFactor() + (1 - maxRatio));
-						
-						// it would be too opaque if we use the factor determined by the slider
+
+						// it would be too opaque if we use the factor
+						// determined by the slider
 						trendRatio /= 2f;
 					}
 
