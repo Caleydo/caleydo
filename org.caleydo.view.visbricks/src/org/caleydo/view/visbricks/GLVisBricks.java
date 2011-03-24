@@ -27,6 +27,8 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.mapping.color.ColorMappingManager;
+import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -380,6 +382,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			}
 		});
 
+		iGLDisplayListIndexLocal = gl.glGenLists(1);
+		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 	}
 
@@ -387,25 +391,14 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener) {
 
-		// Register keyboard listener to GL2 canvas
-		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
-				.asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						glParentView.getParentGLCanvas().getParentComposite()
-								.addKeyListener(glKeyListener);
-					}
-				});
 
-		this.glMouseListener = glMouseListener;
-
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-		init(gl);
 	}
 
 	@Override
 	public void displayLocal(GL2 gl) {
+		
+		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+		
 		if (!uninitializedDimensionGroups.isEmpty()) {
 			while (uninitializedDimensionGroups.peek() != null) {
 				uninitializedDimensionGroups.poll().initRemote(gl, this, glMouseListener);
@@ -415,6 +408,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			initLayouts();
 		}
 
+		if (bIsDisplayListDirtyLocal) {
+			buildDisplayList(gl, iGLDisplayListIndexLocal);
+			bIsDisplayListDirtyLocal = false;
+		}
+		
 		for (DimensionGroup group : dimensionGroupManager.getDimensionGroups()) {
 			group.processEvents();
 		}
@@ -426,12 +424,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public void displayRemote(GL2 gl) {
-
 	}
 
 	@Override
 	public void display(GL2 gl) {
 
+		gl.glCallList(iGLDisplayListToCall);
+		
 		if (isLayoutDirty) {
 			isLayoutDirty = false;
 			centerLayoutManager.updateLayout();
@@ -446,13 +445,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				}
 			}
 		}
-
-		renderArch(gl);
-
+		
 		for (DimensionGroup dimensionGroup : dimensionGroupManager.getDimensionGroups()) {
 			dimensionGroup.display(gl);
 		}
-
+		
 		if (resizeNecessary) {
 			if (lastResizeDirectionWasToLeft) {
 				dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager
@@ -471,7 +468,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			updateLayout();
 			resizeNecessary = false;
 		}
-
+		
 		leftLayoutManager.render(gl);
 
 		gl.glTranslatef(archInnerWidth, 0, 0);
@@ -486,6 +483,14 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// call after all other rendering because it calls the onDrag methods
 		// which need alpha blending...
 		dragAndDropController.handleDragging(gl, glMouseListener);
+	}
+	
+	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
+		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
+
+		renderArch(gl);
+		
+		gl.glEndList();
 	}
 
 	private void renderArch(GL2 gl) {
