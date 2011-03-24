@@ -407,7 +407,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public void displayLocal(GL2 gl) {
-		
+
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		if (!uninitializedDimensionGroups.isEmpty()) {
@@ -428,11 +428,10 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			group.processEvents();
 		}
 		// brick.display(gl);
-	
 
 		if (!lazyMode)
 			pickingManager.handlePicking(this, gl);
-		
+
 		display(gl);
 
 		if (!lazyMode)
@@ -867,6 +866,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 				break;
 			}
+			break;
 		case MOVE_HORIZONTALLY_HANDLE:
 			if (pickingMode == EPickingMode.CLICKED) {
 				isHorizontalMoveDraggingActive = true;
