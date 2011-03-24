@@ -14,6 +14,7 @@ import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.rcp.dialog.cluster.StartClusteringDialog;
+import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.picking.APickingListener;
@@ -48,18 +49,21 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
 
 	protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
+	
+	protected GLVisBricks visBricks;
 
 	// protected Button heatMapButton;
 	// protected Button parCoordsButton;
 	// protected Button histogramButton;
 	// protected Button overviewHeatMapButton;
 
-	private Button clusterButton;
+	protected Button clusterButton;
 	protected Button lockResizingButton;
 
 	public CentralBrickLayoutTemplate(GLBrick brick,
-			DimensionGroup dimensionGroup, IBrickConfigurer configurer) {
+			DimensionGroup dimensionGroup, GLVisBricks visBricks, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
+		this.visBricks = visBricks;
 		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
 				CLUSTER_BUTTON_ID, EIconTextures.CLUSTER_ICON);
 
@@ -350,7 +354,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public ABrickLayoutTemplate getCollapsedLayoutTemplate() {
-		return new CompactCentralBrickLayoutTemplate(brick, dimensionGroup,
+		return new CompactCentralBrickLayoutTemplate(brick, dimensionGroup, visBricks,
 				brick.getLayoutConfigurer());
 	}
 

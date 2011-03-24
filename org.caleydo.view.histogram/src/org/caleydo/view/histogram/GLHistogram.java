@@ -681,4 +681,10 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 		// TODO: Calculate depending on content
 		return 100;
 	}
+	
+	@Override
+	public int getMinPixelWidth() {
+		// TODO: Calculate depending on content
+		return 150;
+	}
 }

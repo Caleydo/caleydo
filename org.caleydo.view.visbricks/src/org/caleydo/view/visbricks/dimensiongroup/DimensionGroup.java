@@ -48,7 +48,9 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CentralBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
 
 /**
  * Container for a group of dimensions. Manages layouts as well as brick views
@@ -168,7 +170,14 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		// FIXME: Christian, here you can change the layout of the brick to the
 		// respective state
-
+		if(centerBrick == null || uninitializedBricks.contains(centerBrick))
+			return;
+		
+		if(isCollapsed) {
+			centerBrick.collapse();
+		} else {
+			centerBrick.expand();
+		}
 		initGroupColumn();
 		// groupColumn.updateSubLayout();
 	}
@@ -188,8 +197,16 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		centerBrick = createBrick(centerLayout);
 		centerBrick.setContentVA(new Group(), set.getContentData(Set.CONTENT)
 				.getContentVA());
-		CentralBrickLayoutTemplate layoutTemplate = new CentralBrickLayoutTemplate(
-				centerBrick, this, centerBrick.getLayoutConfigurer());
+		
+		ABrickLayoutTemplate layoutTemplate;
+		
+		if(isCollapsed) {
+			layoutTemplate = new CompactCentralBrickLayoutTemplate(
+					centerBrick, this, visBricks, centerBrick.getLayoutConfigurer());
+		} else {
+			layoutTemplate = new CentralBrickLayoutTemplate(
+					centerBrick, this, visBricks, centerBrick.getLayoutConfigurer());
+		}
 		centerBrick.setBrickLayoutTemplate(layoutTemplate,
 				layoutTemplate.getDefaultViewType());
 
@@ -279,7 +296,11 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(brick);
 		wrappingLayout.setRenderer(brickRenderer);
 		wrappingLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		wrappingLayout.setPixelSizeX(minPixelWidth);
+		if(isCollapsed) {
+			wrappingLayout.setPixelSizeX(visBricks.getSideArchWidthPixels());
+		} else {
+			wrappingLayout.setPixelSizeX(minPixelWidth);
+		}
 
 		return brick;
 	}

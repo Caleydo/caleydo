@@ -2562,7 +2562,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		case MEDIUM:
 			return 80;
 		case LOW:
-			return 80;
+			return Math.max(150, 30 * set.size());
 		default:
 			return 80;
 		}

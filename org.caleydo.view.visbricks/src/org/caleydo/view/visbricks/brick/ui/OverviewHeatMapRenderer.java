@@ -138,6 +138,6 @@ public class OverviewHeatMapRenderer extends AContainedViewRenderer {
 	@Override
 	public int getMinWidthPixels() {
 		//TODO: Maybe not static?
-		return 100;
+		return 150;
 	}
 }

@@ -3,6 +3,7 @@ package org.caleydo.view.visbricks.brick.layout;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
@@ -17,10 +18,13 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;
 	protected static final int DIMENSION_BAR_HEIGHT_PIXELS = 12;
 	protected static final int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
+	
+	private GLVisBricks visBricks;
 
 	public CompactCentralBrickLayoutTemplate(GLBrick brick,
-			DimensionGroup dimensionGroup, IBrickConfigurer configurer) {
+			DimensionGroup dimensionGroup, GLVisBricks visBricks, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
+		this.visBricks = visBricks;
 		configurer.configure(this);
 		registerPickingListeners();
 	}
@@ -125,7 +129,7 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	@Override
 	public int getMinWidthPixels() {
 		//TODO: maybe something different
-		return 2 * SPACING_PIXELS + 80;
+		return visBricks.getSideArchWidthPixels();
 	}
 
 	@Override
@@ -145,7 +149,7 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public ABrickLayoutTemplate getExpandedLayoutTemplate() {
-		return new CentralBrickLayoutTemplate(brick, dimensionGroup,
+		return new CentralBrickLayoutTemplate(brick, dimensionGroup, visBricks,
 				brick.getLayoutConfigurer());
 	}
 

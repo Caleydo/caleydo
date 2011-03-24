@@ -939,7 +939,7 @@ public class GLHeatMap extends AStorageBasedView {
 		case MEDIUM:
 			return 100;
 		case LOW:
-			return 100;
+			return Math.max(150, 30 * set.size());
 		default:
 			return 100;
 		}
