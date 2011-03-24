@@ -341,7 +341,9 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	@Override
 	public void displayLocal(GL2 gl) {
 
-		pickingManager.handlePicking(this, gl);
+		if (!lazyMode)
+			pickingManager.handlePicking(this, gl);
+
 		// setDisplayListDirty();
 		if (bIsDisplayListDirtyLocal && !bIsAnimationActive) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -350,7 +352,9 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		display(gl);
-		checkForHits(gl);
+
+		if (!lazyMode)
+			checkForHits(gl);
 
 		if (eBusyModeState != EBusyModeState.OFF) {
 			renderBusyMode(gl);
@@ -387,9 +391,9 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 				float fYCenter = viewFrustum.getHeight() / 2;
 
 				gl.glLoadIdentity();
-				upwardNavigationSlider.draw(gl, pickingManager, textureManager,
-						uniqueID, iUpwardNavigationSliderID,
-						iUpwardNavigationSliderButtonID, iUpwardNavigationSliderBodyID);
+				upwardNavigationSlider.draw(gl, pickingManager, textureManager, uniqueID,
+						iUpwardNavigationSliderID, iUpwardNavigationSliderButtonID,
+						iUpwardNavigationSliderBodyID);
 
 				float fCurrentSliderWidth = upwardNavigationSlider.getScaledWidth(gl);
 				float fCurrentSliderHeight = upwardNavigationSlider.getScaledHeight(gl);

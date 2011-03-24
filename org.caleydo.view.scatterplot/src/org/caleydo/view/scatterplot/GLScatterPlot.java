@@ -446,7 +446,8 @@ public class GLScatterPlot extends AStorageBasedView {
 				bUpdateSelectionTexures = true;
 			}
 
-			pickingManager.handlePicking(this, gl);
+			if (!lazyMode)
+				pickingManager.handlePicking(this, gl);
 		}
 
 		if (bIsDisplayListDirtyLocal) {
@@ -458,7 +459,9 @@ public class GLScatterPlot extends AStorageBasedView {
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		display(gl);
-		checkForHits(gl);
+
+		if (!lazyMode)
+			checkForHits(gl);
 
 		if (eBusyModeState != EBusyModeState.OFF)
 			renderBusyMode(gl);

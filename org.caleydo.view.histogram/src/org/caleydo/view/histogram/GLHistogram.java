@@ -71,7 +71,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	private ColorMappingManager colorMappingManager;
 
 	private ASetBasedDataDomain dataDomain;
-	
+
 	private float sideSpacing = SIDE_SPACING;
 
 	private boolean useColorMapping = true;
@@ -142,7 +142,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 			// renderStyle.setDetailLevel(detailLevel);
-			if(detailLevel == DetailLevel.LOW) {
+			if (detailLevel == DetailLevel.LOW) {
 				sideSpacing = 0;
 			} else {
 				sideSpacing = SIDE_SPACING;
@@ -154,7 +154,8 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public void displayLocal(GL2 gl) {
 
-		pickingManager.handlePicking(this, gl);
+		if (!lazyMode)
+			pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
 			colorMapping = ColorMappingManager.get().getColorMapping(
@@ -165,7 +166,9 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		display(gl);
-		checkForHits(gl);
+
+		if (!lazyMode)
+			checkForHits(gl);
 
 		// if (eBusyModeState != EBusyModeState.OFF) {
 		// renderBusyMode(gl);
@@ -451,8 +454,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 		if (bIsFirstTimeUpdateColor && bUpdateColorPointPosition) {
 			bIsFirstTimeUpdateColor = false;
 			fColorPointPositionOffset = fClickedPointX - sideSpacing
-					- markerPoint.getValue()
-					* (viewFrustum.getWidth() - 2 * sideSpacing);
+					- markerPoint.getValue() * (viewFrustum.getWidth() - 2 * sideSpacing);
 			fClickedPointX -= fColorPointPositionOffset;
 		} else if (bUpdateColorPointPosition) {
 			fClickedPointX -= fColorPointPositionOffset;
@@ -673,10 +675,10 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 		this.dataDomain = dataDomain;
 		initData();
 	}
-	
+
 	@Override
 	public int getMinPixelHeight() {
-		//TODO: Calculate depending on content
+		// TODO: Calculate depending on content
 		return 100;
 	}
 }

@@ -408,7 +408,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public void displayLocal(GL2 gl) {
 
-		pickingManager.handlePicking(this, gl);
+		if (!lazyMode)
+			pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
 			bIsDisplayListDirtyLocal = false;
@@ -417,7 +418,9 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		display(gl);
-		checkForHits(gl);
+
+		if (!lazyMode)
+			checkForHits(gl);
 	}
 
 	@Override

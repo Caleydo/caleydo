@@ -726,7 +726,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		if (set == null)
 			return;
 
-		pickingManager.handlePicking(this, gl);
+		if (!lazyMode)
+			pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -735,7 +736,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		display(gl);
-		checkForHits(gl);
+
+		if (!lazyMode)
+			checkForHits(gl);
 
 		if (eBusyModeState != EBusyModeState.OFF) {
 			renderBusyMode(gl);

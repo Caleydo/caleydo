@@ -290,7 +290,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		if (set == null)
 			return;
 
-		pickingManager.handlePicking(this, gl);
+		if (!lazyMode)
+			pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
 			handleUnselection();
@@ -299,9 +300,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
-		checkForHits(gl);
-
 		display(gl);
+		
+		if (!lazyMode)
+			checkForHits(gl);
+		
 		// ConnectedElementRepresentationManager cerm =
 		// GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
 		// cerm.doViewRelatedTransformation(gl, selectionTransformer);
@@ -823,7 +826,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 						parentGLCanvas.getPixelGLConverter()
 								.getGLHeightForPixelHeight(10));
 
-//				gl.glRotatef(-25, 0, 0, 1);
+				// gl.glRotatef(-25, 0, 0, 1);
 				gl.glTranslatef(-fXPosition, -(renderStyle.getAxisHeight() + renderStyle
 						.getAxisCaptionSpacing()), 0);
 

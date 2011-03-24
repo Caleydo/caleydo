@@ -186,6 +186,12 @@ public abstract class AGLView
 	protected CaleydoTextRenderer textRenderer;
 
 	/**
+	 * True if the mouse is currently over this view.
+	 * If lazyMode is true then the picking does not need to be rendered
+	 */
+	protected boolean lazyMode;
+
+	/**
 	 * Constructor. If the glCanvas object is null - then the view is rendered remote.
 	 */
 	protected AGLView(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum,
@@ -938,5 +944,15 @@ public abstract class AGLView
 	 */
 	public DetailLevel getHightestPossibleDetailLevel(int pixelHeight, int pixelWidth) {
 		return DetailLevel.LOW;
+	}
+
+	/**
+	 * Sets the boolean lazy mode which determines if the mouse is over the canvas.
+	 * 
+	 * @param lazyMode
+	 */
+	public void setLazyMode(boolean lazyMode) {
+		this.lazyMode = lazyMode;
+		
 	}
 }
