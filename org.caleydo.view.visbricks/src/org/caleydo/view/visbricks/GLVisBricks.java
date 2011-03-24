@@ -2,6 +2,7 @@ package org.caleydo.view.visbricks;
 
 import gleem.linalg.Vec3f;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -43,6 +44,7 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -70,7 +72,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private final static float ARCH_BOTTOM_PERCENT = 0.5f;
 	private final static float ARCH_STAND_WIDTH_PERCENT = 0.05f;
 
-	private final static int DIMENSION_GROUP_SPACING = 30;
+	private final static int DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH = 30;
 
 	private NewMetaSetsListener metaSetsListener;
 	private ClearSelectionsListener clearSelectionsListener;
@@ -121,6 +123,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	private ContentSelectionManager contentSelectionManager;
 
+	private boolean isHorizontalMoveDraggingActive = false;
+	private int movedDimensionGroup = -1;
+
+	private float previousXCoordinate = Float.NaN;
+
 	/**
 	 * Constructor.
 	 * 
@@ -165,6 +172,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		initCenterLayout();
 
+		initLeftLayout();
+		initRightLayout();
+
+		updateConnectionLinesBetweenDimensionGroups();
+	}
+
+	private void initLeftLayout() {
 		ViewFrustum leftArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0,
 				archSideThickness, 0, archBottomY, 0, 1);
 		leftLayoutManager = new LayoutManager(leftArchFrustum);
@@ -173,7 +187,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		initSideLayout(leftColumnLayout, leftLayoutTemplate, leftLayoutManager, 0,
 				dimensionGroupManager.getCenterGroupStartIndex());
+	}
 
+	private void initRightLayout() {
 		ViewFrustum rightArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(),
 				0, archSideThickness, 0, archBottomY, 0, 1);
 		rightColumnLayout = new Column("rightArchColumn");
@@ -182,8 +198,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		initSideLayout(rightColumnLayout, rightLayout, rightLayoutManager,
 				dimensionGroupManager.getRightGroupStartIndex(), dimensionGroupManager
 						.getDimensionGroups().size());
-
-		updateConnectionLinesBetweenDimensionGroups();
 	}
 
 	/**
@@ -431,6 +445,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public void display(GL2 gl) {
+		handleHorizontalMoveDragging(gl);
 
 		gl.glCallList(iGLDisplayListToCall);
 
@@ -441,35 +456,73 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			for (ElementLayout layout : centerRowLayout) {
 				if (resizeNecessary)
 					break;
-				if (layout.getSizeScaledX() < parentGLCanvas.getPixelGLConverter()
-						.getGLWidthForPixelWidth(DIMENSION_GROUP_SPACING) + 0.001f) {
+				float minWidth = parentGLCanvas.getPixelGLConverter()
+						.getGLWidthForPixelWidth(DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH);
+				if (leftDimensionGroupSpacing.getSizeScaledX() < minWidth + 0.01f
+						|| rightDimensionGroupSpacing.getSizeScaledX() < minWidth + 0.01f) {
 					resizeNecessary = true;
 					break;
 				}
-			}
-		}
 
-		for (DimensionGroup dimensionGroup : dimensionGroupManager.getDimensionGroups()) {
-			dimensionGroup.display(gl);
+			}
 		}
 
 		if (resizeNecessary) {
-			if (lastResizeDirectionWasToLeft) {
-				dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager
-						.getCenterGroupStartIndex() + 1);
-				if (centerRowLayout.size() == 3)
-					leftDimensionGroupSpacing.setGrabX(true);
 
-			} else {
-				dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
-						.getRightGroupStartIndex() - 1);
-				if (centerRowLayout.size() == 3)
+			int size = centerRowLayout.size();
+			if (size >= 3) {
+				if (lastResizeDirectionWasToLeft) {
+					dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager
+							.getCenterGroupStartIndex() + 1);
+
+					float width = centerRowLayout.getElements().get(0).getSizeScaledX()
+							+ centerRowLayout.getElements().get(1).getSizeScaledX()
+							+ centerRowLayout.getElements().get(2).getSizeScaledX();
+					centerRowLayout.remove(0);
+					centerRowLayout.remove(0);
+					leftDimensionGroupSpacing = centerRowLayout.getElements().get(0);
+
+					leftDimensionGroupSpacing.setAbsoluteSizeX(width);
+					((DimensionGroupSpacingRenderer) leftDimensionGroupSpacing
+							.getRenderer()).setLeftDimGroup(null);
+					initLeftLayout();
+
+					// if (size == 3)
+					// leftDimensionGroupSpacing.setGrabX(true);
+
+				} else {
+					dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
+							.getRightGroupStartIndex() - 1);
+
+					float width = centerRowLayout.getElements().get(size - 1)
+							.getSizeScaledX()
+							+ centerRowLayout.getElements().get(size - 2)
+									.getSizeScaledX()
+							+ centerRowLayout.getElements().get(size - 3)
+									.getSizeScaledX();
+					centerRowLayout.remove(centerRowLayout.size() - 1);
+					centerRowLayout.remove(centerRowLayout.size() - 1);
+					rightDimensionGroupSpacing = centerRowLayout.getElements().get(
+							centerRowLayout.size() - 1);
+					// rightDimensionGroupSpacing.setAbsoluteSizeX(width);
 					rightDimensionGroupSpacing.setGrabX(true);
-			}
-			initLayouts();
+					((DimensionGroupSpacingRenderer) rightDimensionGroupSpacing
+							.getRenderer()).setRightDimGroup(null);
+					initRightLayout();
 
-			updateLayout();
+					// if (size == 3)
+					// rightDimensionGroupSpacing.setGrabX(true);
+
+				}
+			}
+			centerLayoutManager.updateLayout();
 			resizeNecessary = false;
+		}
+
+		renderArch(gl);
+
+		for (DimensionGroup dimensionGroup : dimensionGroupManager.getDimensionGroups()) {
+			dimensionGroup.display(gl);
 		}
 
 		leftLayoutManager.render(gl);
@@ -630,6 +683,146 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		gl.glEnd();
 	}
 
+	/**
+	 * Handles the up-down dragging of the whole dimension group
+	 * 
+	 * @param gl
+	 */
+	private void handleHorizontalMoveDragging(GL2 gl) {
+		if (!isHorizontalMoveDraggingActive)
+			return;
+		if (glMouseListener.wasMouseReleased()) {
+			isHorizontalMoveDraggingActive = false;
+			previousXCoordinate = Float.NaN;
+			return;
+		}
+
+		Point currentPoint = glMouseListener.getPickedPoint();
+
+		float[] pointCordinates = GLCoordinateUtils
+				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+						currentPoint.y);
+
+		if (Float.isNaN(previousXCoordinate)) {
+			previousXCoordinate = pointCordinates[0];
+			return;
+		}
+
+		float change = pointCordinates[0] - previousXCoordinate;
+
+		// float change = -0.1f;
+		// isHorizontalMoveDraggingActive = false;
+		if (change > 0)
+			lastResizeDirectionWasToLeft = false;
+		else
+			lastResizeDirectionWasToLeft = true;
+		previousXCoordinate = pointCordinates[0];
+
+		ElementLayout leftSpacing = null;
+		int leftIndex = 0;
+		int rightIndex = 0;
+		ElementLayout rightSpacing = null;
+
+		DimensionGroupSpacingRenderer spacingRenderer;
+		int count = 0;
+		for (ElementLayout layout : centerRowLayout) {
+			if (layout.getRenderer() instanceof DimensionGroupSpacingRenderer) {
+				spacingRenderer = (DimensionGroupSpacingRenderer) layout.getRenderer();
+				if (spacingRenderer.getRightDimGroup() != null) {
+					if (spacingRenderer.getRightDimGroup().getID() == movedDimensionGroup) {
+						leftSpacing = layout;
+						leftIndex = count;
+
+					}
+				}
+				if (spacingRenderer.getLeftDimGroup() != null) {
+					if (spacingRenderer.getLeftDimGroup().getID() == movedDimensionGroup) {
+						rightSpacing = layout;
+						rightIndex = count;
+
+					}
+				}
+				if (count < centerRowLayout.size() - 1) {
+					layout.setGrabX(false);
+					layout.setAbsoluteSizeX(layout.getSizeScaledX());
+				} else
+					layout.setGrabX(true);
+			}
+			count++;
+		}
+
+		if (leftSpacing == null || rightSpacing == null)
+			return;
+
+		float leftSizeX = leftSpacing.getSizeScaledX();
+		float rightSizeX = rightSpacing.getSizeScaledX();
+		float minWidth = parentGLCanvas.getPixelGLConverter().getGLWidthForPixelWidth(
+				DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH);
+
+		if (change > 0) {
+			if (rightSizeX - change > minWidth) {
+				rightSpacing.setAbsoluteSizeX(rightSizeX - change);
+			} else {
+				rightSpacing.setAbsoluteSizeX(minWidth);
+				float savedSize = rightSizeX - minWidth;
+				float remainingChange = change - savedSize;
+
+				while (remainingChange > 0) {
+					if (centerRowLayout.size() < rightIndex + 2)
+						break;
+
+					rightIndex += 2;
+					ElementLayout spacing = centerRowLayout.getElements().get(rightIndex);
+					if (spacing.getSizeScaledX() - remainingChange > minWidth + 0.001f) {
+						spacing.setAbsoluteSizeX(spacing.getSizeScaledX()
+								- remainingChange);
+						remainingChange = -1;
+					} else {
+						savedSize = spacing.getSizeScaledX() - minWidth;
+						remainingChange -= savedSize;
+						if (rightIndex == centerRowLayout.size() - 1)
+							spacing.setAbsoluteSizeX(0f);
+						else
+							spacing.setAbsoluteSizeX(minWidth);
+					}
+				}
+			}
+			leftSpacing.setAbsoluteSizeX(leftSizeX + change);
+		} else {
+
+			if (leftSizeX + change > minWidth) {
+				leftSpacing.setAbsoluteSizeX(leftSizeX + change);
+			} else {
+				leftSpacing.setAbsoluteSizeX(minWidth);
+				float savedSize = leftSizeX - minWidth;
+				float remainingChange = change + savedSize;
+
+				while (remainingChange < 0) {
+					if (leftIndex < 2)
+						break;
+
+					leftIndex -= 2;
+					ElementLayout spacing = centerRowLayout.getElements().get(leftIndex);
+					if (spacing.getSizeScaledX() + remainingChange > minWidth + 0.001f) {
+						spacing.setAbsoluteSizeX(spacing.getSizeScaledX()
+								+ remainingChange);
+						remainingChange = 1;
+					} else {
+						savedSize = spacing.getSizeScaledX() + minWidth;
+						remainingChange += savedSize;
+						if (leftIndex == 0)
+							spacing.setAbsoluteSizeX(0);
+						else
+							spacing.setAbsoluteSizeX(minWidth);
+					}
+				}
+			}
+			rightSpacing.setAbsoluteSizeX(rightSizeX - change);
+		}
+
+		updateLayout();
+	}
+
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int externalID, Pick pick) {
@@ -674,6 +867,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 				break;
 			}
+		case MOVE_HORIZONTALLY_HANDLE:
+			if (pickingMode == EPickingMode.CLICKED) {
+				isHorizontalMoveDraggingActive = true;
+				movedDimensionGroup = externalID;
+			}
+			break;
+
 		}
 
 	}
@@ -1024,4 +1224,5 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public GLVisBricksKeyListener getKeyListener() {
 		return (GLVisBricksKeyListener) glKeyListener;
 	}
+
 }

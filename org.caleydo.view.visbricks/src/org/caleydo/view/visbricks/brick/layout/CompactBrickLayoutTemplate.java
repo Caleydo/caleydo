@@ -94,7 +94,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		if (showHandles) {
 			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
 					pixelGLConverter, 10, brick.getTextureManager(),
-					HandleRenderer.MOVE_HANDLE));
+					HandleRenderer.MOVE_VERTICALLY_HANDLE));
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");

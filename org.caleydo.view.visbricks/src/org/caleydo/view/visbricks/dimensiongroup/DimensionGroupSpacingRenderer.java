@@ -68,7 +68,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 	public void init() {
 
-		if (relationAnalyzer == null)
+		if (relationAnalyzer == null || leftDimGroup == null || rightDimGroup == null)
 			return;
 
 		hashGroupID2GroupMatches.clear();
@@ -436,27 +436,45 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 											- rightYDiffSelection, 0 }, true,
 							splineFactor, 0, false, color, 0.15f);
 
-					// Render straight band connection from brick to dimension group
+					// Render straight band connection from brick to dimension
+					// group
 					// on the LEFT
 					if (xStart != 0) {
 						connectionRenderer.renderStraightBand(gl, new float[] { xStart,
-								subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { xStart,
-								subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection, 0 }, new float[] { 0,
-								subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { 0,
-								subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection, 0 }, false,
+								subGroupMatch.getLeftAnchorYTop(), 0 },
+								new float[] {
+										xStart,
+										subGroupMatch.getLeftAnchorYTop()
+												- leftYDiffSelection, 0 }, new float[] {
+										0, subGroupMatch.getLeftAnchorYTop(), 0 },
+								new float[] {
+										0,
+										subGroupMatch.getLeftAnchorYTop()
+												- leftYDiffSelection, 0 }, false,
 								splineFactor, 0, false, color, 0.5f);
 					}
 
-					// Render straight band connection from brick to dimension group
+					// Render straight band connection from brick to dimension
+					// group
 					// on the RIGHT
 					if (xEnd != 0) {
 
-						connectionRenderer.renderStraightBand(gl, new float[] { x,
-								subGroupMatch.getRightAnchorYTop(), 0 }, new float[] { x,
-								subGroupMatch.getRightAnchorYTop()-rightYDiffSelection, 0 }, new float[] {
-								xEnd, subGroupMatch.getRightAnchorYTop(), 0 }, new float[] {
-								xEnd, subGroupMatch.getRightAnchorYTop()-rightYDiffSelection, 0 }, false,
-								splineFactor, 0, false, color, 0.5f);
+						connectionRenderer
+								.renderStraightBand(
+										gl,
+										new float[] { x,
+												subGroupMatch.getRightAnchorYTop(), 0 },
+										new float[] {
+												x,
+												subGroupMatch.getRightAnchorYTop()
+														- rightYDiffSelection, 0 },
+										new float[] { xEnd,
+												subGroupMatch.getRightAnchorYTop(), 0 },
+										new float[] {
+												xEnd,
+												subGroupMatch.getRightAnchorYTop()
+														- rightYDiffSelection, 0 },
+										false, splineFactor, 0, false, color, 0.5f);
 					}
 				}
 			}
@@ -503,5 +521,21 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 	public int getID() {
 		return ID;
+	}
+
+	public DimensionGroup getLeftDimGroup() {
+		return leftDimGroup;
+	}
+
+	public DimensionGroup getRightDimGroup() {
+		return rightDimGroup;
+	}
+
+	public void setLeftDimGroup(DimensionGroup leftDimGroup) {
+		this.leftDimGroup = leftDimGroup;
+	}
+
+	public void setRightDimGroup(DimensionGroup rightDimGroup) {
+		this.rightDimGroup = rightDimGroup;
 	}
 }

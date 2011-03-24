@@ -135,6 +135,16 @@ public abstract class LayoutContainer
 		elements.clear();
 	}
 
+	public void remove(int index)
+	{
+		elements.remove(index);	
+	}
+	
+//	public ElementLayout get(int index)
+//	{
+//		elements.get(index);
+//	}
+	
 	// --------------------- End of Public Interface ---------------------
 
 	protected abstract void calculateSubElementScales(float availableWidth, float availableHeight);

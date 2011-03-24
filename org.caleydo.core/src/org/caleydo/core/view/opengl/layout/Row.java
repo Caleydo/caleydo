@@ -18,7 +18,7 @@ public class Row
 	public Row(String layoutName) {
 		super(layoutName);
 	}
-	
+
 	/**
 	 * Set the flag signaling whether the content should be rendered from left to right (true, default) or
 	 * from right to left (false)
@@ -169,5 +169,4 @@ public class Row
 		if (isYDynamic)
 			sizeScaledY = largestHeight;
 	}
-
 }
