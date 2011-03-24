@@ -489,10 +489,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	private void renderArch(GL2 gl) {
-		gl.glColor3f(1, 0, 0);
-		gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
 
 		// Left arch
+
+		gl.glLineWidth(1);
+
+		gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
 
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0, 0, 0f);
@@ -507,10 +509,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		inputPoints.add(new Vec3f(archInnerWidth * 0.9f, archTopY, 0));
 
 		NURBSCurve curve = new NURBSCurve(inputPoints, 10);
-		ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
 
-		outputPoints.add(new Vec3f(archInnerWidth, archTopY, 0));
-		outputPoints.add(new Vec3f(archInnerWidth, archBottomY, 0));
+		ArrayList<Vec3f> outputPointsTop = curve.getCurvePoints();
+		outputPointsTop.add(new Vec3f(archInnerWidth, archTopY, 0));
 
 		inputPoints.clear();
 		inputPoints.add(new Vec3f(archInnerWidth, archBottomY, 0));
@@ -518,12 +519,44 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		inputPoints.add(new Vec3f(archSideThickness, archBottomY * 0.8f, 0));
 
 		curve = new NURBSCurve(inputPoints, 10);
-		outputPoints.addAll(curve.getCurvePoints());
+
+		ArrayList<Vec3f> outputPointsBottom = new ArrayList<Vec3f>();
+		outputPointsBottom.addAll(curve.getCurvePoints());
+
+		ArrayList<Vec3f> outputPoints = new ArrayList<Vec3f>();
+
+		outputPoints.addAll(outputPointsTop);
+		outputPoints.add(new Vec3f(archInnerWidth, archBottomY, 0));
+		outputPoints.addAll(outputPointsBottom);
 
 		connectionRenderer.render(gl, outputPoints);
 
+		gl.glColor4f(0, 0, 0, 0.8f);
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (Vec3f point : outputPointsTop)
+			gl.glVertex3f(point.x(), point.y(), point.z());
+		gl.glEnd();
+
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (Vec3f point : outputPointsBottom)
+			gl.glVertex3f(point.x(), point.y(), point.z());
+		gl.glEnd();
+
+		gl.glColor4f(0, 0, 0, 0.8f);
+
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3f(0, archBottomY, 0f);
+		gl.glVertex3f(0, 0, 0f);
+		gl.glEnd();
+
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3f(archSideThickness, archBottomY * 0.8f, 0f);
+		gl.glVertex3f(archSideThickness, 0, 0f);
+		gl.glEnd();
+
 		// Right arch
 
+		gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(viewFrustum.getWidth(), 0, 0f);
 		gl.glVertex3f(viewFrustum.getWidth(), archBottomY, 0f);
@@ -538,11 +571,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				archTopY, 0));
 
 		curve = new NURBSCurve(inputPoints, 10);
-		outputPoints.clear();
-		outputPoints.addAll(curve.getCurvePoints());
-
-		outputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archTopY, 0));
-		outputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archBottomY,
+		outputPointsTop.clear();
+		outputPointsTop = curve.getCurvePoints();
+		outputPointsTop.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archTopY,
 				0));
 
 		inputPoints.clear();
@@ -554,9 +585,41 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				archBottomY * 0.8f, 0));
 
 		curve = new NURBSCurve(inputPoints, 10);
-		outputPoints.addAll(curve.getCurvePoints());
+
+		outputPointsBottom.clear();
+		outputPointsBottom = new ArrayList<Vec3f>();
+		outputPointsBottom.addAll(curve.getCurvePoints());
+
+		outputPoints.clear();
+
+		outputPoints.addAll(outputPointsTop);
+		outputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archBottomY,
+				0));
+		outputPoints.addAll(outputPointsBottom);
 
 		connectionRenderer.render(gl, outputPoints);
+
+		gl.glColor4f(0, 0, 0, 0.8f);
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (Vec3f point : outputPointsTop)
+			gl.glVertex3f(point.x(), point.y(), point.z());
+		gl.glEnd();
+
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (Vec3f point : outputPointsBottom)
+			gl.glVertex3f(point.x(), point.y(), point.z());
+		gl.glEnd();
+
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3f(viewFrustum.getWidth(), 0, 0f);
+		gl.glVertex3f(viewFrustum.getWidth(), archBottomY, 0f);
+		gl.glEnd();
+
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3f(viewFrustum.getWidth() - archSideThickness, archBottomY * 0.8f,
+				0.01f);
+		gl.glVertex3f(viewFrustum.getWidth() - archSideThickness, 0, 0.1f);
+		gl.glEnd();
 	}
 
 	@Override
