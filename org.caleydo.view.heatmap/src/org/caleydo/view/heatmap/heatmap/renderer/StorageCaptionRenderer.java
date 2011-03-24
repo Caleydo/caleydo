@@ -18,29 +18,24 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
  */
 public class StorageCaptionRenderer extends AContentRenderer {
 
-	private CaleydoTextRenderer textRenderer;
-	private int fontSize = 24;
-
 	private float fFontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR / 1.2f;
 
 	public StorageCaptionRenderer(GLHeatMap heatMap) {
 		super(heatMap);
-
-		textRenderer = heatMap.getTextRenderer();
 	}
 
 	@Override
 	public void render(GL2 gl) {
 
 		StorageVirtualArray storageVA = heatMap.getStorageVA();
-		textRenderer.setColor(0, 0, 0, 1);
+		heatMap.getTextRenderer().setColor(0, 0, 0, 1);
 
 		float xPosition = 0;
 		float fieldWidth = contentSpacing.getFieldWidth();
 		// offset to center the caption
 		float xOffset = 0;
 
-		float height = (float) textRenderer.getScaledBounds(gl, "TEST", fFontScaling,
+		float height = (float) heatMap.getTextRenderer().getScaledBounds(gl, "TEST", fFontScaling,
 				HeatMapRenderStyle.LABEL_TEXT_MIN_SIZE).getHeight();
 
 		if (fieldWidth > height)
@@ -53,14 +48,12 @@ public class StorageCaptionRenderer extends AContentRenderer {
 
 			gl.glTranslatef(xPosition + xOffset, yOffset, 0);
 			gl.glRotatef(fRotation, 0, 0, 1);
-			textRenderer.renderText(gl, label, 0, 0f, 0, fFontScaling,
+			heatMap.getTextRenderer().renderText(gl, label, 0, 0f, 0, fFontScaling,
 					HeatMapRenderStyle.LABEL_TEXT_MIN_SIZE);
 			gl.glRotatef(-fRotation, 0, 0, 1);
 			gl.glTranslatef(-xPosition - xOffset, -yOffset, 0);
 			xPosition += fieldWidth;
 
 		}
-
 	}
-
 }

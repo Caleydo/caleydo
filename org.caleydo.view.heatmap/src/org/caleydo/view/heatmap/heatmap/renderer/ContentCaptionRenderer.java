@@ -12,16 +12,12 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class ContentCaptionRenderer extends AContentRenderer {
 
-	private CaleydoTextRenderer textRenderer;
-
 	float fontScaling = HeatMapRenderStyle.SMALL_FONT_SCALING_FACTOR;
 	int fontSize = 24;
 	float spacing = 0;
 
 	public ContentCaptionRenderer(GLHeatMap heatMap) {
 		super(heatMap);
-
-		textRenderer = heatMap.getTextRenderer();
 	}
 
 	@Override
@@ -46,7 +42,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 
 			yPosition = contentSpacing.getYDistances().get(contentVA.indexOf(contentID));
 
-			textRenderer.setColor(0, 0, 0, 1);
+			heatMap.getTextRenderer().setColor(0, 0, 0, 1);
 
 			renderCaption(gl, contentID, 0, yPosition, 0, fontScaling);
 
@@ -73,7 +69,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 			sLabel = sLabel + "..";
 		}
 
-		float requiredSize = (float) textRenderer.getScaledBounds(gl, sLabel,
+		float requiredSize = (float) heatMap.getTextRenderer().getScaledBounds(gl, sLabel,
 				fontScaling, fontSize).getHeight();
 
 		spacing = (contentSpacing.getFieldHeight(contentIndex) - requiredSize) / 2;
@@ -84,7 +80,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		gl.glTranslatef(xOrigin, yOrigin + spacing, zOrigin);
 
-		textRenderer.renderText(gl, sLabel, 0, 0, 0, fontScaling,
+		heatMap.getTextRenderer().renderText(gl, sLabel, 0, 0, 0, fontScaling,
 				HeatMapRenderStyle.LABEL_TEXT_MIN_SIZE);
 		gl.glTranslatef(-xOrigin, -yOrigin - spacing, -zOrigin);
 		// textRenderer.begin3DRendering();

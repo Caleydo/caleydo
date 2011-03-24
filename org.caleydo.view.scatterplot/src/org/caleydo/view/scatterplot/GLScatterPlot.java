@@ -103,10 +103,6 @@ import com.jogamp.opengl.util.texture.TextureIO;
  * @author Juergen Pillhofer
  */
 //@SuppressWarnings("unused")
-/**
- * @author Aldi
- * 
- */
 public class GLScatterPlot extends AStorageBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.scatterplot";
@@ -258,6 +254,8 @@ public class GLScatterPlot extends AStorageBasedView {
 		initSelectionTextures();
 		selectAxesfromExternal();
 		clearAllSelections();
+		
+		bUseRandomSampling = false;
 	}
 
 	/**
@@ -1884,10 +1882,12 @@ public class GLScatterPlot extends AStorageBasedView {
 		gl.glRotatef(fRotation, 0, 0, 1);
 		textRenderer.setColor(0, 0, 0, 1);
 
-		textRenderer.renderText(gl, sLabel, 0,
-				0,// + (1 * height / 3),
-				ScatterPlotRenderStyle.MATRIX_HISTOGRAMM_Z, fScaling,
-				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
+		// FIXME: this is the evil call where the text renderer is messed up.
+		// This might be a problem with a buggy texture state.
+//		textRenderer.renderText(gl, sLabel, 0,
+//				0,// + (1 * height / 3),
+//				ScatterPlotRenderStyle.MATRIX_HISTOGRAMM_Z, fScaling,
+//				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
 
 		gl.glRotatef(-fRotation, 0, 0, 1);
 		gl.glTranslatef(-tmpx, -tmpy, 0);

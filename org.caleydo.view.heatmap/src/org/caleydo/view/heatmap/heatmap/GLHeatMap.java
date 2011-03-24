@@ -48,6 +48,7 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
@@ -124,6 +125,8 @@ public class GLHeatMap extends AStorageBasedView {
 	public void init(GL2 gl) {
 		super.renderStyle = renderStyle;
 
+		textRenderer = new CaleydoTextRenderer(24);
+		
 		templateRenderer = new LayoutManager(this.viewFrustum);
 		if (template == null)
 			template = new DefaultTemplate(this);

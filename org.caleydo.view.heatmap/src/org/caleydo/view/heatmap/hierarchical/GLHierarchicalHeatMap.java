@@ -75,6 +75,7 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GroupContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.rcp.dialog.file.ExportDataDialog;
 import org.caleydo.rcp.view.listener.ContentGroupExportingListener;
@@ -291,6 +292,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	@Override
 	public void init(GL2 gl) {
+		
+		textRenderer = new CaleydoTextRenderer(24);
+		
 		createHeatMap();
 		createDendrogram();
 
