@@ -483,14 +483,15 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		if (isLayoutDirty) {
 			isLayoutDirty = false;
 			centerLayoutManager.updateLayout();
-
+			float minWidth = parentGLCanvas.getPixelGLConverter()
+			.getGLWidthForPixelWidth(DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH);
 			for (ElementLayout layout : centerRowLayout) {
+				if(!(layout.getRenderer() instanceof DimensionGroupSpacingRenderer))
+					continue;
 				if (resizeNecessary)
 					break;
-				float minWidth = parentGLCanvas.getPixelGLConverter()
-						.getGLWidthForPixelWidth(DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH);
-				if (leftDimensionGroupSpacing.getSizeScaledX() < minWidth + 0.01f
-						|| rightDimensionGroupSpacing.getSizeScaledX() < minWidth + 0.01f) {
+				
+				if (layout.getSizeScaledX() < minWidth - 0.01f) {
 					resizeNecessary = true;
 					break;
 				}
