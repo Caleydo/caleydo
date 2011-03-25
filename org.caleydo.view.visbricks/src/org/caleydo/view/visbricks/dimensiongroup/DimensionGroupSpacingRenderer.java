@@ -169,6 +169,10 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 		ContentSelectionManager contentSelectionManager = glVisBricks
 				.getContentSelectionManager();
+
+		glVisBricks.getHashConnectionBandIDToContentVA().put(
+				subGroupMatch.getConnectionBandID(), contentVA);
+
 		float ratio = 0;
 
 		// Iterate over all selection types

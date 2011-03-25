@@ -1,10 +1,10 @@
 package org.caleydo.view.visbricks;
 
-import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +17,10 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
@@ -26,6 +29,7 @@ import org.caleydo.core.manager.event.data.NewMetaSetsEvent;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.ConnectionsModeEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -47,7 +51,6 @@ import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -55,9 +58,9 @@ import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupSpacingRenderer;
+import org.caleydo.view.visbricks.listener.ConnectionsModeListener;
 import org.caleydo.view.visbricks.listener.GLVisBricksKeyListener;
 import org.caleydo.view.visbricks.listener.NewMetaSetsListener;
-import org.caleydo.view.visbricks.listener.ConnectionsModeListener;
 import org.caleydo.view.visbricks.renderstyle.VisBricksRenderStyle;
 
 /**
@@ -132,7 +135,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private boolean connectionsHighlightDynamic = false;
 
 	private int selectedConnectionBandID = -1;
-	
+
 	/**
 	 * Determines the connection focus highlight dynamically in a range between
 	 * 0 and 1
@@ -143,6 +146,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private int movedDimensionGroup = -1;
 
 	private float previousXCoordinate = Float.NaN;
+
+	/** Needed for selecting the elments when a connection band is picked **/
+	private HashMap<Integer, ContentVirtualArray> hashConnectionBandIDToContentVA = new HashMap<Integer, ContentVirtualArray>();
+
+	private SelectionType volatieBandSelectionType;
 
 	/**
 	 * Constructor.
@@ -180,10 +188,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		detailLevel = DetailLevel.HIGH;
 		metaSetsUpdated();
 		connectionRenderer.init(gl);
-//		viewFrustum.setProjectionMode(ECameraProjectionMode.PERSPECTIVE);
-//		viewCamera.setCameraRotation(new Rotf());
-		
-		
+		// viewFrustum.setProjectionMode(ECameraProjectionMode.PERSPECTIVE);
+		// viewCamera.setCameraRotation(new Rotf());
+
 	}
 
 	private void initLayouts() {
@@ -470,9 +477,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	@Override
 	public void display(GL2 gl) {
 		handleHorizontalMoveDragging(gl);
-//		viewFrustum.getFar();
-//		viewCamera.setCameraPosition(new Vec3f(-0.5f,-0.5f,-1.f));
-//		GLHelperFunctions.drawPointAt(gl, 0,0,0);
+		// viewFrustum.getFar();
+		// viewCamera.setCameraPosition(new Vec3f(-0.5f,-0.5f,-1.f));
+		// GLHelperFunctions.drawPointAt(gl, 0,0,0);
 		// gl.glCallList(iGLDisplayListToCall);
 
 		if (isLayoutDirty) {
@@ -544,11 +551,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			centerLayoutManager.updateLayout();
 			resizeNecessary = false;
 		}
-//		float angle = 70f;
-//		viewCamera.setCameraRotation(new Rotf());
-	
-//		gl.glRotatef(angle, 1, 0, 0);
-		
+		// float angle = 70f;
+		// viewCamera.setCameraRotation(new Rotf());
+
+		// gl.glRotatef(angle, 1, 0, 0);
+
 		renderArch(gl);
 
 		for (DimensionGroup dimensionGroup : dimensionGroupManager.getDimensionGroups()) {
@@ -565,8 +572,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		gl.glTranslatef(rightArchStand, 0, 0);
 		rightLayoutManager.render(gl);
 		gl.glTranslatef(-rightArchStand, 0, 0);
-		
-//		gl.glRotatef(-angle, 1, 0, 0);
+
+		// gl.glRotatef(-angle, 1, 0, 0);
 
 		// call after all other rendering because it calls the onDrag methods
 		// which need alpha blending...
@@ -864,13 +871,14 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		}
 
 		selectedConnectionBandID = -1;
-		
+
 		switch (pickingType) {
 
 		case BRICK_CONNECTION_BAND:
 			selectedConnectionBandID = externalID;
+			selectElementsByConnectionBandID(selectedConnectionBandID);
 			break;
-		
+
 		case DIMENSION_GROUP:
 			switch (pickingMode) {
 			case MOUSE_OVER:
@@ -906,7 +914,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				break;
 			}
 			break;
-			
+
 		case MOVE_HORIZONTALLY_HANDLE:
 			if (pickingMode == EPickingMode.CLICKED) {
 				isHorizontalMoveDraggingActive = true;
@@ -1294,8 +1302,40 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public float getConnectionsFocusFactor() {
 		return connectionsFocusFactor;
 	}
-	
+
 	public int getSelectedConnectionBandID() {
 		return selectedConnectionBandID;
+	}
+
+	public HashMap<Integer, ContentVirtualArray> getHashConnectionBandIDToContentVA() {
+		return hashConnectionBandIDToContentVA;
+	}
+
+	private void selectElementsByConnectionBandID(int connectionBandID) {
+
+		ClearSelectionsEvent cse = new ClearSelectionsEvent();
+		cse.setSender(this);
+		eventPublisher.triggerEvent(cse);
+
+		// Create volatile selection type
+		volatieBandSelectionType = new SelectionType("Volatile band selection type",
+				contentSelectionManager.getSelectionType().getColor(), 1, true, true, 1);
+
+		volatieBandSelectionType.setManaged(false);
+
+		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
+				volatieBandSelectionType);
+		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
+
+		for (Integer contentID : hashConnectionBandIDToContentVA.get(connectionBandID)) {
+			contentSelectionManager.addToType(volatieBandSelectionType, contentID);
+		}
+
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setDataDomainType(getDataDomain().getDataDomainType());
+		event.setSender(this);
+		SelectionDelta delta = contentSelectionManager.getDelta();
+		event.setSelectionDelta(delta);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 }

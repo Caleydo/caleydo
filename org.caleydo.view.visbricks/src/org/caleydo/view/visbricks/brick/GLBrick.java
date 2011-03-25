@@ -25,6 +25,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
+import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -264,7 +265,12 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 				.getSelectionType();
 
 		if (!visBricks.getKeyListener().isCtrlDown())
+		{
+//			ClearSelectionsEvent cse = new ClearSelectionsEvent();
+//			cse.setSender(this);
+//			eventPublisher.triggerEvent(cse);
 			contentSelectionManager.clearSelections();// (selectedByGroupSelectionType);
+		}
 
 		// Prevent selection for center brick as this would select all elements
 		if (dimensionGroup.getCenterBrick() == this)
