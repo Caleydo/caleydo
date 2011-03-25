@@ -9,6 +9,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -65,8 +66,8 @@ import org.caleydo.view.heatmap.listener.GLHeatMapKeyListener;
 public class GLHeatMap extends AStorageBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.heatmap";
-	public static final SelectionType SELECTION_HIDDEN = new SelectionType("Hidden",
-			new float[] { 0f, 0f, 0f, 1f }, 1, false, false, 0.2f);
+	public static final SelectionType SELECTION_HIDDEN = new SelectionType(
+			"Hidden", new float[] { 0f, 0f, 0f, 1f }, 1, false, false, 0.2f);
 
 	HeatMapRenderStyle renderStyle;
 
@@ -126,7 +127,7 @@ public class GLHeatMap extends AStorageBasedView {
 		super.renderStyle = renderStyle;
 
 		textRenderer = new CaleydoTextRenderer(24);
-		
+
 		templateRenderer = new LayoutManager(this.viewFrustum);
 		if (template == null)
 			template = new DefaultTemplate(this);
@@ -138,12 +139,14 @@ public class GLHeatMap extends AStorageBasedView {
 	@Override
 	public void initLocal(GL2 gl) {
 		// Register keyboard listener to GL2 canvas
-		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
-			}
-		});
+		GeneralManager.get().getGUIBridge().getDisplay()
+				.asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						parentGLCanvas.getParentComposite().addKeyListener(
+								glKeyListener);
+					}
+				});
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
@@ -157,7 +160,8 @@ public class GLHeatMap extends AStorageBasedView {
 			final GLMouseListener glMouseListener) {
 
 		if (glRemoteRenderingView != null
-				&& glRemoteRenderingView.getViewType().equals("org.caleydo.view.bucket"))
+				&& glRemoteRenderingView.getViewType().equals(
+						"org.caleydo.view.bucket"))
 			renderStyle.setUseFishEye(false);
 
 		// Register keyboard listener to GL2 canvas
@@ -181,7 +185,8 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
 		super.reshape(drawable, x, y, width, height);
 		templateRenderer.updateLayout();
 	}
@@ -224,7 +229,8 @@ public class GLHeatMap extends AStorageBasedView {
 			checkForHits(gl);
 
 		ConnectedElementRepresentationManager cerm = GeneralManager.get()
-				.getViewGLCanvasManager().getConnectedElementRepresentationManager();
+				.getViewGLCanvasManager()
+				.getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		if (eBusyModeState != EBusyModeState.OFF) {
@@ -291,7 +297,8 @@ public class GLHeatMap extends AStorageBasedView {
 		// determine which to use
 
 		if (contentVAType.equals(CONTENT_EMBEDDED_VA)) {
-			set.setContentVA(contentVAType, new ContentVirtualArray(contentVAType));
+			set.setContentVA(contentVAType, new ContentVirtualArray(
+					contentVAType));
 		} else {
 			if (bRenderOnlyContext)
 				contentVAType = ISet.CONTENT_CONTEXT;
@@ -321,8 +328,8 @@ public class GLHeatMap extends AStorageBasedView {
 					+ " / 0 experiments";
 
 		return "Heat Map - " + contentVA.size() + " "
-				+ dataDomain.getContentName(false, true) + " / " + storageVA.size()
-				+ " experiments";
+				+ dataDomain.getContentName(false, true) + " / "
+				+ storageVA.size() + " experiments";
 	}
 
 	@Override
@@ -331,8 +338,9 @@ public class GLHeatMap extends AStorageBasedView {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Heat Map\n");
 
-		sInfoText.append(contentVA.size() + " " + dataDomain.getContentName(true, true)
-				+ " in rows and " + storageVA.size() + " experiments in columns.\n");
+		sInfoText.append(contentVA.size() + " "
+				+ dataDomain.getContentName(true, true) + " in rows and "
+				+ storageVA.size() + " experiments in columns.\n");
 
 		if (bRenderOnlyContext) {
 			sInfoText.append("Showing only " + " "
@@ -386,14 +394,16 @@ public class GLHeatMap extends AStorageBasedView {
 				selectionType = SelectionType.SELECTION;
 
 				if (!isRenderedRemote()) {
-					contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-							.getWidth(), getParentGLCanvas().getHeight());
+					contextMenu.setLocation(pick.getPickedPoint(),
+							getParentGLCanvas().getWidth(), getParentGLCanvas()
+									.getHeight());
 					contextMenu.setMasterGLView(this);
 				}
 
 				ContentContextMenuItemContainer contentContextMenuItemContainer = new ContentContextMenuItemContainer();
 				contentContextMenuItemContainer.setDataDomain(dataDomain);
-				contentContextMenuItemContainer.setID(contentIDType, iExternalID);
+				contentContextMenuItemContainer.setID(contentIDType,
+						iExternalID);
 				contextMenu.addItemContanier(contentContextMenuItemContainer);
 				break;
 
@@ -417,14 +427,17 @@ public class GLHeatMap extends AStorageBasedView {
 				break;
 			case RIGHT_CLICKED:
 				if (!isRenderedRemote()) {
-					contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-							.getWidth(), getParentGLCanvas().getHeight());
+					contextMenu.setLocation(pick.getPickedPoint(),
+							getParentGLCanvas().getWidth(), getParentGLCanvas()
+									.getHeight());
 					contextMenu.setMasterGLView(this);
 				}
 				StorageContextMenuItemContainer experimentContextMenuItemContainer = new StorageContextMenuItemContainer();
 				experimentContextMenuItemContainer.setDataDomain(dataDomain);
-				experimentContextMenuItemContainer.setID(storageIDType, iExternalID);
-				contextMenu.addItemContanier(experimentContextMenuItemContainer);
+				experimentContextMenuItemContainer.setID(storageIDType,
+						iExternalID);
+				contextMenu
+						.addItemContanier(experimentContextMenuItemContainer);
 			default:
 				return;
 			}
@@ -440,7 +453,8 @@ public class GLHeatMap extends AStorageBasedView {
 				else
 					hideElements = true;
 
-			HideHeatMapElementsEvent event = new HideHeatMapElementsEvent(hideElements);
+			HideHeatMapElementsEvent event = new HideHeatMapElementsEvent(
+					hideElements);
 			event.setSender(this);
 			event.setDataDomainType(dataDomain.getDataDomainType());
 			eventPublisher.triggerEvent(event);
@@ -463,7 +477,8 @@ public class GLHeatMap extends AStorageBasedView {
 		}
 	}
 
-	private void createContentSelection(SelectionType selectionType, int contentID) {
+	private void createContentSelection(SelectionType selectionType,
+			int contentID) {
 		if (contentSelectionManager.checkStatus(selectionType, contentID))
 			return;
 
@@ -471,12 +486,14 @@ public class GLHeatMap extends AStorageBasedView {
 		// whether mouse over is clear.
 		// If that all is true we don't need to do anything
 		if (selectionType == SelectionType.MOUSE_OVER
+				&& contentSelectionManager.checkStatus(SelectionType.SELECTION,
+						contentID)
 				&& contentSelectionManager
-						.checkStatus(SelectionType.SELECTION, contentID)
-				&& contentSelectionManager.getElements(SelectionType.MOUSE_OVER).size() == 0)
+						.getElements(SelectionType.MOUSE_OVER).size() == 0)
 			return;
 
-		connectedElementRepresentationManager.clear(contentIDType, selectionType);
+		connectedElementRepresentationManager.clear(contentIDType,
+				selectionType);
 
 		contentSelectionManager.clearSelection(selectionType);
 
@@ -500,7 +517,8 @@ public class GLHeatMap extends AStorageBasedView {
 		setDisplayListDirty();
 	}
 
-	private void createStorageSelection(SelectionType selectionType, int storageID) {
+	private void createStorageSelection(SelectionType selectionType,
+			int storageID) {
 		if (storageSelectionManager.checkStatus(selectionType, storageID))
 			return;
 
@@ -508,9 +526,10 @@ public class GLHeatMap extends AStorageBasedView {
 		// whether mouse over is clear.
 		// If that all is true we don't need to do anything
 		if (selectionType == SelectionType.MOUSE_OVER
+				&& storageSelectionManager.checkStatus(SelectionType.SELECTION,
+						storageID)
 				&& storageSelectionManager
-						.checkStatus(SelectionType.SELECTION, storageID)
-				&& storageSelectionManager.getElements(SelectionType.MOUSE_OVER).size() == 0)
+						.getElements(SelectionType.MOUSE_OVER).size() == 0)
 			return;
 
 		storageSelectionManager.clearSelection(selectionType);
@@ -531,7 +550,8 @@ public class GLHeatMap extends AStorageBasedView {
 		if (virtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for selectNext Operation");
-		int selectedElement = cursorSelect(virtualArray, contentSelectionManager, isUp);
+		int selectedElement = cursorSelect(virtualArray,
+				contentSelectionManager, isUp);
 		if (selectedElement < 0)
 			return;
 		createContentSelection(SelectionType.MOUSE_OVER, selectedElement);
@@ -542,7 +562,8 @@ public class GLHeatMap extends AStorageBasedView {
 		if (virtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for selectNext Operation");
-		int selectedElement = cursorSelect(virtualArray, storageSelectionManager, isLeft);
+		int selectedElement = cursorSelect(virtualArray,
+				storageSelectionManager, isLeft);
 		if (selectedElement < 0)
 			return;
 		createStorageSelection(SelectionType.MOUSE_OVER, selectedElement);
@@ -566,7 +587,8 @@ public class GLHeatMap extends AStorageBasedView {
 		if (contentVirtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for enterPressed Operation");
-		elements = contentSelectionManager.getElements(SelectionType.MOUSE_OVER);
+		elements = contentSelectionManager
+				.getElements(SelectionType.MOUSE_OVER);
 		selectedElement = -1;
 		if (elements.size() == 1) {
 			selectedElement = (Integer) elements.toArray()[0];
@@ -575,7 +597,8 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	private <VAType extends VirtualArray<?, ?, ?>, SelectionManagerType extends SelectionManager> int cursorSelect(
-			VAType virtualArray, SelectionManagerType selectionManager, boolean isUp) {
+			VAType virtualArray, SelectionManagerType selectionManager,
+			boolean isUp) {
 
 		java.util.Set<Integer> elements = selectionManager
 				.getElements(SelectionType.MOUSE_OVER);
@@ -606,10 +629,11 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
-			throws InvalidAttributeValueException {
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
+			int id) throws InvalidAttributeValueException {
 		SelectedElementRep elementRep;
-		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
+		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(
+				4);
 
 		for (int contentIndex : contentVA.indicesOf(id)) {
 			if (contentIndex == -1) {
@@ -622,8 +646,8 @@ public class GLHeatMap extends AStorageBasedView {
 
 			yValue = getYCoordinateByContentIndex(contentIndex);
 			yValue = viewFrustum.getHeight() - yValue;
-			elementRep = new SelectedElementRep(contentIDType, uniqueID, xValue, yValue,
-					0);// - fAnimationTranslation,
+			elementRep = new SelectedElementRep(contentIDType, uniqueID,
+					xValue, yValue, 0);// - fAnimationTranslation,
 			// 0);
 
 			alElementReps.add(elementRep);
@@ -643,7 +667,8 @@ public class GLHeatMap extends AStorageBasedView {
 
 		if (isHideElements()) {
 			Integer contentID = contentVA.get(contentIndex);
-			if (contentSelectionManager.checkStatus(SELECTION_HIDDEN, contentID))
+			if (contentSelectionManager
+					.checkStatus(SELECTION_HIDDEN, contentID))
 				return null;
 		}
 		return template.getYCoordinateByContentIndex(contentIndex);
@@ -685,7 +710,8 @@ public class GLHeatMap extends AStorageBasedView {
 
 		if (delta.getVAType().equals(ISet.CONTENT_CONTEXT)
 				&& contentVAType.equals(ISet.CONTENT_CONTEXT)) {
-			ClusterState state = new ClusterState(EClustererAlgo.AFFINITY_PROPAGATION,
+			ClusterState state = new ClusterState(
+					EClustererAlgo.AFFINITY_PROPAGATION,
 					EClustererType.CONTENT_CLUSTERING,
 					EDistanceMeasure.EUCLIDEAN_DISTANCE);
 			int contentVAID = contentVA.getID();
@@ -719,7 +745,8 @@ public class GLHeatMap extends AStorageBasedView {
 		setDisplayListDirty();
 	}
 
-	public void setClusterVisualizationGenesActiveFlag(boolean bClusterVisualizationActive) {
+	public void setClusterVisualizationGenesActiveFlag(
+			boolean bClusterVisualizationActive) {
 		this.bClusterVisualizationGenesActive = bClusterVisualizationActive;
 	}
 
@@ -798,7 +825,8 @@ public class GLHeatMap extends AStorageBasedView {
 	public int getNumberOfVisibleElements() {
 		if (isHideElements())
 			return contentVA.size()
-					- contentSelectionManager.getNumberOfElements(SELECTION_HIDDEN);
+					- contentSelectionManager
+							.getNumberOfElements(SELECTION_HIDDEN);
 		else
 			return contentVA.size();
 	}
@@ -891,7 +919,8 @@ public class GLHeatMap extends AStorageBasedView {
 			int contentID = elementIterator.next();
 			if (!contentVA.contains(contentID))
 				elementIterator.remove();
-			else if (contentSelectionManager.checkStatus(SELECTION_HIDDEN, contentID))
+			else if (contentSelectionManager.checkStatus(SELECTION_HIDDEN,
+					contentID))
 				elementIterator.remove();
 		}
 		return zoomedElements;
@@ -908,13 +937,24 @@ public class GLHeatMap extends AStorageBasedView {
 	@Override
 	public int getMinPixelHeight() {
 		// TODO: Calculate depending on content
-		int pixelHeight = 10;
-		if (contentVA.size() > 1) {
+//		int pixelHeight = 10;
+//		if (contentVA.size() > 1) {
+//
+//			pixelHeight += (int) ((double) contentVA.size() / Math
+//					.log(contentVA.size()));
+//		}
 
-			pixelHeight += (int) ((double) contentVA.size() / Math.log(contentVA.size()));
+		ContentVirtualArray setContentVA = set.getContentData(Set.CONTENT)
+				.getContentVA();
+		int numBricks = 1;
+		if (setContentVA.getGroupList() != null) {
+			numBricks += setContentVA.getGroupList().size();
 		}
 
-		return pixelHeight;
+		int windowHeight = parentGLCanvas.getHeight();
+		int pixelHeight = (int) (((float)(windowHeight - numBricks * 80)
+				/ (float) setContentVA.size()) * contentVA.size());
+		return Math.max(16, pixelHeight);
 	}
 
 	@Override
