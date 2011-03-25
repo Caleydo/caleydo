@@ -127,7 +127,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		detailRow = new Row("detailRow");
 		detailRow.setXDynamic(true);
 		detailRow.setFrameColor(1, 0, 1, 1);
-//		detailRow.setDebug(true);
+		// detailRow.setDebug(true);
 
 		groupColumn = new Column("dimensionGroup");
 		// groupColumn.setDebug(true);
@@ -496,7 +496,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 					"brickSpacingLayout");
 			spacingLayoutX.setPixelGLConverter(parentGLCanvas
 					.getPixelGLConverter());
-			spacingLayoutX.setPixelSizeX(100);
+			spacingLayoutX.setPixelSizeX(50);
 			spacingLayoutX.setRatioSizeY(0);
 
 			detailRow.clear();
@@ -512,16 +512,15 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				detailRow.append(detailBrickLayout);
 				visBricks.switchToDetailModeLeft(this);
 			}
-			
 
 			detailRow.updateSubLayout();
-//			visBricks.setLastResizeDirectionWasToLeft(false);
+			// visBricks.setLastResizeDirectionWasToLeft(false);
 			visBricks.updateLayout();
 			visBricks.updateConnectionLinesBetweenDimensionGroups();
 			showDetailBrick = false;
 			isDetailBrickShown = true;
 		}
-		
+
 		if (hideDetailBrick || (isCollapsed && detailBrick != null)) {
 			detailRow.clear();
 			detailRow.append(groupColumn);
@@ -533,13 +532,12 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				detailBrick = null;
 			}
 			hideDetailBrick = false;
+			isDetailBrickShown = false;
 			detailRow.updateSubLayout();
-//			visBricks.setLastResizeDirectionWasToLeft(false);
+			// visBricks.setLastResizeDirectionWasToLeft(false);
 			visBricks.updateLayout();
 			visBricks.updateConnectionLinesBetweenDimensionGroups();
 		}
-		
-		
 
 		while (!uninitializedBricks.isEmpty()) {
 			uninitializedBricks.poll().initRemote(gl, this, glMouseListener);
@@ -732,6 +730,15 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			bricks.add(brick);
 		}
 		return bricks;
+	}
+
+	public List<GLBrick> getBricksForRelations() {
+		if (isDetailBrickShown) {
+			ArrayList<GLBrick> bricks = new ArrayList<GLBrick>();
+			bricks.add(detailBrick);
+			return bricks;
+		}
+		return getBricks();
 	}
 
 	/**

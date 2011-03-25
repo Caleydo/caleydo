@@ -76,12 +76,12 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			if (currentID == setID && isLeft) {
 				neighborSetID = previousID;
 				if (neighborSetID != -1)
-					neighborBrickOrder = dimensionGroups.get(count - 1).getBricks();
+					neighborBrickOrder = dimensionGroups.get(count - 1).getBricksForRelations();
 				break;
 			}
 			if (previousID == setID && !isLeft) {
 				neighborSetID = currentID;
-				neighborBrickOrder = dimensionGroup.getBricks();
+				neighborBrickOrder = dimensionGroup.getBricksForRelations();
 				break;
 			}
 

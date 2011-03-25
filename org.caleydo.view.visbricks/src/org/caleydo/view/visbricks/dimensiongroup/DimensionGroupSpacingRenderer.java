@@ -75,8 +75,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		hashGroupID2GroupMatches.clear();
 		connectionBandIDCounter = 0;
 
-		List<GLBrick> leftBricks = leftDimGroup.getBricks();
-		List<GLBrick> rightBricks = rightDimGroup.getBricks();
+		List<GLBrick> leftBricks = leftDimGroup.getBricksForRelations();
+		List<GLBrick> rightBricks = rightDimGroup.getBricksForRelations();
 
 		if (leftBricks.size() == 0 || rightBricks.size() == 0)
 			return;
