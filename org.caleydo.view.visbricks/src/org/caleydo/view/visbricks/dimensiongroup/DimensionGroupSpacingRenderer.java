@@ -410,13 +410,17 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 						if (selectionType == SelectionType.NORMAL) {
 
-							if (glVisBricks.getSelectedConnectionBandID() == subGroupMatch
-									.getConnectionBandID())
-								trendRatio = 0.5f;
-							else
+//							if (glVisBricks.getSelectedConnectionBandID() == subGroupMatch
+//									.getConnectionBandID())
+//							{
+//								trendRatio = 0.5f;
+//								color = new float[] { 0, 0, 0 };
+//
+//							}
+//							else
+//							{
 								trendRatio = 0.15f;
-
-							color = new float[] { 0, 0, 0 };
+//							}
 						} else {
 
 							trendRatio = 0.5f;
@@ -433,7 +437,9 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 						if (glVisBricks.getSelectedConnectionBandID() == subGroupMatch
 								.getConnectionBandID())
-							trendRatio = 0.5f;
+						{
+							trendRatio = 0.8f;
+						}
 						else {
 							// it would be too opaque if we use the factor
 							// determined by the slider

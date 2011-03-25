@@ -122,8 +122,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	private DragAndDropController dragAndDropController;
 
-	private boolean dropDimensionGroupAfter = true;
-
 	private RelationAnalyzer relationAnalyzer;
 
 	private ElementLayout leftDimensionGroupSpacing;
@@ -875,10 +873,18 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		switch (pickingType) {
 
 		case BRICK_CONNECTION_BAND:
-			selectedConnectionBandID = externalID;
-			selectElementsByConnectionBandID(selectedConnectionBandID);
-			break;
+			switch (pickingMode) {
 
+			case DOUBLE_CLICKED:
+				System.out.println("Switch to detail mode.");
+				break;
+
+			case CLICKED:
+				selectedConnectionBandID = externalID;
+				selectElementsByConnectionBandID(selectedConnectionBandID);
+				break;
+
+			}
 		case DIMENSION_GROUP:
 			switch (pickingMode) {
 			case MOUSE_OVER:
@@ -1313,9 +1319,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	private void selectElementsByConnectionBandID(int connectionBandID) {
 
-		ClearSelectionsEvent cse = new ClearSelectionsEvent();
-		cse.setSender(this);
-		eventPublisher.triggerEvent(cse);
+		// ClearSelectionsEvent cse = new ClearSelectionsEvent();
+		// cse.setSender(this);
+		// eventPublisher.triggerEvent(cse);
+
+		contentSelectionManager.clearSelections();
 
 		// Create volatile selection type
 		volatieBandSelectionType = new SelectionType("Volatile band selection type",
@@ -1337,5 +1345,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		SelectionDelta delta = contentSelectionManager.getDelta();
 		event.setSelectionDelta(delta);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+		updateConnectionLinesBetweenDimensionGroups();
 	}
 }
