@@ -484,18 +484,17 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			isLayoutDirty = false;
 			centerLayoutManager.updateLayout();
 			float minWidth = parentGLCanvas.getPixelGLConverter()
-			.getGLWidthForPixelWidth(DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH);
+					.getGLWidthForPixelWidth(DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH);
 			for (ElementLayout layout : centerRowLayout) {
-				if(!(layout.getRenderer() instanceof DimensionGroupSpacingRenderer))
+				if (!(layout.getRenderer() instanceof DimensionGroupSpacingRenderer))
 					continue;
 				if (resizeNecessary)
 					break;
-				
+
 				if (layout.getSizeScaledX() < minWidth - 0.01f) {
 					resizeNecessary = true;
 					break;
 				}
-
 			}
 		}
 
@@ -577,6 +576,28 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// call after all other rendering because it calls the onDrag methods
 		// which need alpha blending...
 		dragAndDropController.handleDragging(gl, glMouseListener);
+	}
+
+	public void switchToDetailMode(DimensionGroup leftDimGr, DimensionGroup rightDimGr) {
+
+		int leftIndex = dimensionGroupManager.indexOfDimensionGroup(leftDimGr);
+		int rightIndex = dimensionGroupManager.indexOfDimensionGroup(rightDimGr);
+
+		int centerGroupStartIndex = dimensionGroupManager.getCenterGroupStartIndex();
+		int rightGroupStartIndex = dimensionGroupManager.getRightGroupStartIndex();
+		
+		for(int index = leftIndex-centerGroupStartIndex; index < leftIndex; index++)
+		{
+			centerRowLayout.remove(0);
+			centerRowLayout.remove(0);			
+		}
+		leftDimensionGroupSpacing = centerRowLayout.getElements().get(0);
+		centerRowLayout.getElements().get(2).setGrabX(true);
+
+		((DimensionGroupSpacingRenderer) leftDimensionGroupSpacing.getRenderer())
+		.setLeftDimGroup(null);
+
+		initLeftLayout();
 	}
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
@@ -1320,13 +1341,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	private void selectElementsByConnectionBandID(int connectionBandID) {
 
-
 		contentSelectionManager.clearSelections();
-		
-		 ClearSelectionsEvent cse = new ClearSelectionsEvent();
-		 cse.setSender(this);
-		 eventPublisher.triggerEvent(cse);
 
+		ClearSelectionsEvent cse = new ClearSelectionsEvent();
+		cse.setSender(this);
+		eventPublisher.triggerEvent(cse);
 
 		// Create volatile selection type
 		volatieBandSelectionType = new SelectionType("Volatile band selection type",

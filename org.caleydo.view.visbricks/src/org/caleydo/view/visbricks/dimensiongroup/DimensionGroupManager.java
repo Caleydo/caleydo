@@ -18,7 +18,7 @@ public class DimensionGroupManager {
 	public ArrayList<DimensionGroup> getDimensionGroups() {
 		return dimensionGroups;
 	}
-	
+
 	public HashMap<Integer, DimensionGroupSpacingRenderer> getDimensionGroupSpacers() {
 		return dimensionGroupSpacers;
 	}
@@ -52,31 +52,35 @@ public class DimensionGroupManager {
 	public void moveGroupDimension(DimensionGroup referenceDimGroup,
 			DimensionGroupSpacingRenderer spacer) {
 
-//		int movedDimGroupIndex = dimensionGroups.indexOf(movedDimGroup);
-//		int refDimGroupIndex = dimensionGroups.indexOf(referenceDimGroup);
-//
-//		if (refDimGroupIndex < centerGroupStartIndex) {
-//			centerGroupStartIndex++;
-//		} else if (refDimGroupIndex > centerGroupStartIndex
-//				&& refDimGroupIndex < rightGroupStartIndex) {
-//
-//			if (movedDimGroupIndex >= rightGroupStartIndex)
-//				rightGroupStartIndex++;
-//			else if (movedDimGroupIndex < centerGroupStartIndex)
-//				centerGroupStartIndex--;
-//
-//		} else if (refDimGroupIndex >= rightGroupStartIndex
-//				&& movedDimGroupIndex < rightGroupStartIndex) {
-//			rightGroupStartIndex--;
-//		}
+		// int movedDimGroupIndex = dimensionGroups.indexOf(movedDimGroup);
+		// int refDimGroupIndex = dimensionGroups.indexOf(referenceDimGroup);
+		//
+		// if (refDimGroupIndex < centerGroupStartIndex) {
+		// centerGroupStartIndex++;
+		// } else if (refDimGroupIndex > centerGroupStartIndex
+		// && refDimGroupIndex < rightGroupStartIndex) {
+		//
+		// if (movedDimGroupIndex >= rightGroupStartIndex)
+		// rightGroupStartIndex++;
+		// else if (movedDimGroupIndex < centerGroupStartIndex)
+		// centerGroupStartIndex--;
+		//
+		// } else if (refDimGroupIndex >= rightGroupStartIndex
+		// && movedDimGroupIndex < rightGroupStartIndex) {
+		// rightGroupStartIndex--;
+		// }
 
 		// if (refDimGroupIndex < centerGroupStartIndex || refDimGroupIndex >=
 		// rightGroupStartIndex)
 		// hightlightOffset *= -1;
 
-//		dimensionGroups.remove(movedDimGroup);
-//		dimensionGroups.add(
-//				dimensionGroups.indexOf(referenceDimGroup) + hightlightOffset,
-//				movedDimGroup);
+		// dimensionGroups.remove(movedDimGroup);
+		// dimensionGroups.add(
+		// dimensionGroups.indexOf(referenceDimGroup) + hightlightOffset,
+		// movedDimGroup);
+	}
+
+	public int indexOfDimensionGroup(DimensionGroup dimensionGroup) {
+		return dimensionGroups.indexOf(dimensionGroup);
 	}
 }
