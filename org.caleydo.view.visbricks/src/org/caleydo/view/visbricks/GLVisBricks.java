@@ -1319,11 +1319,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	private void selectElementsByConnectionBandID(int connectionBandID) {
 
-		// ClearSelectionsEvent cse = new ClearSelectionsEvent();
-		// cse.setSender(this);
-		// eventPublisher.triggerEvent(cse);
 
 		contentSelectionManager.clearSelections();
+		
+		 ClearSelectionsEvent cse = new ClearSelectionsEvent();
+		 cse.setSender(this);
+		 eventPublisher.triggerEvent(cse);
+
 
 		// Create volatile selection type
 		volatieBandSelectionType = new SelectionType("Volatile band selection type",

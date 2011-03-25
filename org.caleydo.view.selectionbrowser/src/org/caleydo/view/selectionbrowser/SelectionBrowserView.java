@@ -124,19 +124,21 @@ public class SelectionBrowserView extends ASWTView implements
 				return;
 		}
 		
+		boolean isVisible = true;
+		
 		ArrayList<SelectionType> selectedByGroupSelectionTypes = new ArrayList<SelectionType>();
 
 		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_1,
-				SELECTION_COLOR_1, 1, false, true, 1));
+				SELECTION_COLOR_1, 1, isVisible, true, 1));
 		
 		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_2,
-				SELECTION_COLOR_2, 1, false, true, 1));
+				SELECTION_COLOR_2, 1, isVisible, true, 1));
 		
 		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_3,
-				SELECTION_COLOR_3, 1, false, true, 1));
+				SELECTION_COLOR_3, 1, isVisible, true, 1));
 		
 		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_4,
-				SELECTION_COLOR_4, 1, false, true, 1));
+				SELECTION_COLOR_4, 1, isVisible, true, 1));
 
 		for (SelectionType selectionType : selectedByGroupSelectionTypes) {
 			
@@ -145,10 +147,10 @@ public class SelectionBrowserView extends ASWTView implements
 			eventPublisher.triggerEvent(selectionTypeEvent);
 		}
 		
-		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
-				selectedByGroupSelectionTypes.get(0));
-		selectionTypeEvent.setCurrent(true);
-		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
+//		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
+//				selectedByGroupSelectionTypes.get(0));
+//		selectionTypeEvent.setCurrent(true);
+//		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
 	}
 	
 	@Override

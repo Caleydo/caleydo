@@ -266,10 +266,11 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		if (!visBricks.getKeyListener().isCtrlDown())
 		{
+			contentSelectionManager.clearSelection(selectedByGroupSelectionType);
+
 //			ClearSelectionsEvent cse = new ClearSelectionsEvent();
 //			cse.setSender(this);
 //			eventPublisher.triggerEvent(cse);
-			contentSelectionManager.clearSelections();// (selectedByGroupSelectionType);
 		}
 
 		// Prevent selection for center brick as this would select all elements
