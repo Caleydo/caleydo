@@ -246,7 +246,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			}
 
 		}, EPickingType.BRICK, getID());
-		
+
 		dimensionGroup.updateLayout();
 
 	}
@@ -263,6 +263,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 				.getContentSelectionManager();
 		SelectionType selectedByGroupSelectionType = contentSelectionManager
 				.getSelectionType();
+
 
 		if (!visBricks.getKeyListener().isCtrlDown())
 		{
@@ -430,6 +431,11 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		super.reshape(drawable, x, y, width, height);
 		if (templateRenderer != null)
 			templateRenderer.updateLayout();
+
+		if (!isSizeFixed) {
+			wrappingLayout.setAbsoluteSizeX(brickLayout.getMinWidthPixels());
+			wrappingLayout.setAbsoluteSizeY(brickLayout.getMinHeightPixels());
+		}
 	}
 
 	@Override
@@ -531,9 +537,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		float changePercentage = changeX / width;
 
 		float newWidth = width + changeX;
-//		float minWidth = parentGLCanvas.getPixelGLConverter()
-//				.getGLWidthForPixelWidth(brickLayout.getMinWidthPixels());
-		if (newWidth < dimensionGroup.getMinWidth() -0.001f)
+		// float minWidth = parentGLCanvas.getPixelGLConverter()
+		// .getGLWidthForPixelWidth(brickLayout.getMinWidthPixels());
+		if (newWidth < dimensionGroup.getMinWidth() - 0.001f)
 			return;
 
 		previousXCoordinate = pointCordinates[0];
@@ -785,7 +791,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		}
 
 		templateRenderer.updateLayout();
-		
+
 		visBricks.updateLayout();
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
 
@@ -958,8 +964,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 * @return how much this has affected the height of the brick.
 	 */
 	public float collapse() {
-//		if (isInOverviewMode)
-//			return 0;
+		// if (isInOverviewMode)
+		// return 0;
 
 		if (!isInOverviewMode) {
 			expandedBrickState = new BrickState(currentViewType,
@@ -985,8 +991,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	public void expand() {
-//		if (!isInOverviewMode)
-//			return;
+		// if (!isInOverviewMode)
+		// return;
 
 		ABrickLayoutTemplate layoutTemplate = brickLayout
 				.getExpandedLayoutTemplate();

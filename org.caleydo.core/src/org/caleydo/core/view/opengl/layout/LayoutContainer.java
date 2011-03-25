@@ -135,9 +135,9 @@ public abstract class LayoutContainer
 		elements.clear();
 	}
 
-	public void remove(int index)
+	public ElementLayout remove(int index)
 	{
-		elements.remove(index);	
+		return elements.remove(index);	
 	}
 	
 //	public ElementLayout get(int index)

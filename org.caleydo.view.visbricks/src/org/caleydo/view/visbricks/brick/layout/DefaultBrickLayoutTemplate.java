@@ -39,6 +39,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected static final int COLLAPSE_BUTTON_ID = 0;
 	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
+	protected static final int DETAIL_MODE_BUTTON_ID = 1;
 	protected static final int VIEW_SWITCHING_MODE_BUTTON_ID = 5;
 
 	protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
@@ -58,27 +59,19 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 			DimensionGroup dimensionGroup, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		this.visBricks = visBricks;
-		leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, visBricks,
-				true);
-		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, visBricks,
-				false);
+		leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
+				visBricks, true);
+		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
+				visBricks, false);
 
-		// heatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
-		// HEATMAP_BUTTON_ID);
-		// parCoordsButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
-		// PARCOORDS_BUTTON_ID);
-		// histogramButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
-		// HISTOGRAM_BUTTON_ID);
-		// overviewHeatMapButton = new
-		// Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
-		// OVERVIEW_HEATMAP_BUTTON_ID);
-
-		lockResizingButton = new Button(EPickingType.BRICK_LOCK_RESIZING_BUTTON,
+		lockResizingButton = new Button(
+				EPickingType.BRICK_LOCK_RESIZING_BUTTON,
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
 		viewSwitchingModeButton = new Button(
 				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
 				VIEW_SWITCHING_MODE_BUTTON_ID, EIconTextures.LOCK);
-		viewSwitchingModeButton.setSelected(dimensionGroup.isGlobalViewSwitching());
+		viewSwitchingModeButton.setSelected(dimensionGroup
+				.isGlobalViewSwitching());
 
 		configurer.configure(this);
 		registerPickingListeners();
@@ -114,7 +107,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				"RightRelationIndicatorLayout");
 		// rightRelationIndicatorLayout.setDebug(true);
 		leftRelationIndicatorLayout.setPixelGLConverter(pixelGLConverter);
-		leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
+		leftRelationIndicatorLayout
+				.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
 		leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
 		baseRow.append(leftRelationIndicatorLayout);
 
@@ -127,10 +121,15 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseRow.setRenderer(new BorderedAreaRenderer());
 
 		if (showHandles) {
-			baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter,
-					HANDLE_SIZE_PIXELS, brick.getTextureManager(),
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
+					pixelGLConverter, HANDLE_SIZE_PIXELS, brick
+							.getTextureManager(),
 					HandleRenderer.ALL_RESIZE_HANDLES
-							| HandleRenderer.MOVE_VERTICALLY_HANDLE));
+							| HandleRenderer.MOVE_VERTICALLY_HANDLE
+							| (dimensionGroup.isLeftmost() ? (0)
+									: (HandleRenderer.EXPAND_LEFT_HANDLE))
+							| (dimensionGroup.isRightmost() ? (0)
+									: (HandleRenderer.EXPAND_RIGHT_HANDLE))));
 		}
 
 		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
@@ -171,8 +170,10 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				"RightRelationIndicatorLayout");
 		// rightRelationIndicatorLayout.setDebug(true);
 		rightRelationIndicatorLayout.setPixelGLConverter(pixelGLConverter);
-		rightRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
-		rightRelationIndicatorLayout.setRenderer(rightRelationIndicatorRenderer);
+		rightRelationIndicatorLayout
+				.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
+		rightRelationIndicatorLayout
+				.setRenderer(rightRelationIndicatorRenderer);
 		baseRow.append(rightRelationIndicatorLayout);
 
 	}
@@ -206,16 +207,27 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 			}
 		}
 
-		ElementLayout ratioSpacingLayoutX = new ElementLayout("ratioSpacingLayoutX");
+		ElementLayout ratioSpacingLayoutX = new ElementLayout(
+				"ratioSpacingLayoutX");
 		ratioSpacingLayoutX.setRatioSizeX(1);
 		ratioSpacingLayoutX.setRatioSizeY(0);
 
-		ElementLayout lockResizingButtonLayout = new ElementLayout("lockResizingButton");
+		ElementLayout detailModeButtonLayout = new ElementLayout(
+				"detailModeResizingButton");
+		detailModeButtonLayout.setPixelGLConverter(pixelGLConverter);
+		detailModeButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		detailModeButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
+		detailModeButtonLayout.setRenderer(new ButtonRenderer(new Button(
+				EPickingType.BRICK_DETAIL_MODE_BUTTON, DETAIL_MODE_BUTTON_ID,
+				EIconTextures.PIN), brick, brick.getTextureManager()));
+
+		ElementLayout lockResizingButtonLayout = new ElementLayout(
+				"lockResizingButton");
 		lockResizingButtonLayout.setPixelGLConverter(pixelGLConverter);
 		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		lockResizingButtonLayout.setRenderer(new ButtonRenderer(lockResizingButton,
-				brick, brick.getTextureManager()));
+		lockResizingButtonLayout.setRenderer(new ButtonRenderer(
+				lockResizingButton, brick, brick.getTextureManager()));
 
 		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout(
 				"viewSwitchtingButtonLayout");
@@ -225,7 +237,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		toggleViewSwitchingButtonLayout.setRenderer(new ButtonRenderer(
 				viewSwitchingModeButton, brick, brick.getTextureManager()));
 
-		ElementLayout collapseButtonLayout = new ElementLayout("expandButtonLayout");
+		ElementLayout collapseButtonLayout = new ElementLayout(
+				"expandButtonLayout");
 		collapseButtonLayout.setFrameColor(1, 0, 0, 1);
 		// expandButtonLayout.setDebug(true);
 		collapseButtonLayout.setPixelGLConverter(pixelGLConverter);
@@ -237,6 +250,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_90));
 
 		toolBar.append(ratioSpacingLayoutX);
+//		toolBar.append(detailModeButtonLayout);
+//		toolBar.append(spacingLayoutX);
 		toolBar.append(lockResizingButtonLayout);
 		toolBar.append(spacingLayoutX);
 		toolBar.append(toggleViewSwitchingButtonLayout);
@@ -279,15 +294,20 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 			}
 		}, EPickingType.BRICK_LOCK_RESIZING_BUTTON, LOCK_RESIZING_BUTTON_ID);
 
-		brick.addPickingListener(new APickingListener() {
+		brick.addPickingListener(
+				new APickingListener() {
 
-			@Override
-			public void clicked(Pick pick) {
-				boolean isGlobalViewSwitching = !viewSwitchingModeButton.isSelected();
-				dimensionGroup.setGlobalViewSwitching(isGlobalViewSwitching);
-				viewSwitchingModeButton.setSelected(isGlobalViewSwitching);
-			}
-		}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON, VIEW_SWITCHING_MODE_BUTTON_ID);
+					@Override
+					public void clicked(Pick pick) {
+						boolean isGlobalViewSwitching = !viewSwitchingModeButton
+								.isSelected();
+						dimensionGroup
+								.setGlobalViewSwitching(isGlobalViewSwitching);
+						viewSwitchingModeButton
+								.setSelected(isGlobalViewSwitching);
+					}
+				}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
+				VIEW_SWITCHING_MODE_BUTTON_ID);
 
 		brick.addPickingListener(new APickingListener() {
 
@@ -297,17 +317,42 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				dimensionGroup.updateLayout();
 			}
 		}, EPickingType.BRICK_COLLAPSE_BUTTON, COLLAPSE_BUTTON_ID);
+
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				dimensionGroup.showDetailedBrick(brick, false);
+			}
+		}, EPickingType.BRICK_DETAIL_MODE_BUTTON, DETAIL_MODE_BUTTON_ID);
+
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				dimensionGroup.showDetailedBrick(brick, false);
+			}
+		}, EPickingType.EXPAND_RIGHT_HANDLE, brick.getID());
+
+		brick.addPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				dimensionGroup.showDetailedBrick(brick, true);
+			}
+		}, EPickingType.EXPAND_LEFT_HANDLE, brick.getID());
 	}
 
 	@Override
 	public int getMinHeightPixels() {
-		return 4 * SPACING_PIXELS + FUEL_BAR_HEIGHT_PIXELS + TOOLBAR_HEIGHT_PIXELS
-				+ viewRenderer.getMinHeightPixels();
+		return 4 * SPACING_PIXELS + FUEL_BAR_HEIGHT_PIXELS
+				+ TOOLBAR_HEIGHT_PIXELS + viewRenderer.getMinHeightPixels();
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup.getMinWidth());
+		return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
+				.getMinWidth());
 	}
 
 	// @Override
@@ -334,26 +379,6 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 			}
 		}
 
-		// heatMapButton.setSelected(false);
-		// parCoordsButton.setSelected(false);
-		// histogramButton.setSelected(false);
-		// overviewHeatMapButton.setSelected(false);
-		//
-		// switch (viewType) {
-		// case HEATMAP_VIEW:
-		// heatMapButton.setSelected(true);
-		// break;
-		// case PARCOORDS_VIEW:
-		// parCoordsButton.setSelected(true);
-		// break;
-		// case HISTOGRAM_VIEW:
-		// histogramButton.setSelected(true);
-		// break;
-		// case OVERVIEW_HEATMAP:
-		// overviewHeatMapButton.setSelected(true);
-		// break;
-		// }
-
 	}
 
 	@Override
@@ -361,14 +386,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		viewSwitchingModeButton.setSelected(isGlobalViewSwitching);
 	}
 
-	//
-	// @Override
-	// public void configure(IBrickLayoutConfigurer configurer) {
-	// configurer.configure(this);
-	// registerPickingListeners();
-	// }
-
-	public void setViewSwitchingButtons(ArrayList<BrickViewSwitchingButton> buttons) {
+	public void setViewSwitchingButtons(
+			ArrayList<BrickViewSwitchingButton> buttons) {
 		viewSwitchingButtons = buttons;
 	}
 

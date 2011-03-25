@@ -110,6 +110,44 @@ public class NumericalDataConfigurer implements IBrickConfigurer {
 	}
 
 	@Override
+	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
+		BrickViewSwitchingButton heatMapButton = new BrickViewSwitchingButton(
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
+				HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
+				EContainedViewType.HEATMAP_VIEW);
+		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
+				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
+				EContainedViewType.PARCOORDS_VIEW);
+		BrickViewSwitchingButton histogramButton = new BrickViewSwitchingButton(
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
+				HISTOGRAM_BUTTON_ID, EIconTextures.HISTOGRAM_ICON,
+				EContainedViewType.HISTOGRAM_VIEW);
+		BrickViewSwitchingButton overviewHeatMapButton = new BrickViewSwitchingButton(
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
+				OVERVIEW_HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
+				EContainedViewType.OVERVIEW_HEATMAP);
+
+		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
+		viewSwitchingButtons.add(heatMapButton);
+		viewSwitchingButtons.add(parCoordsButton);
+		viewSwitchingButtons.add(histogramButton);
+		viewSwitchingButtons.add(overviewHeatMapButton);
+
+		layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
+
+		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
+		validViewTypes.add(EContainedViewType.HISTOGRAM_VIEW);
+		validViewTypes.add(EContainedViewType.HEATMAP_VIEW);
+		validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
+		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP);
+
+		layoutTemplate.setValidViewTypes(validViewTypes);
+		layoutTemplate.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP);
+
+	}
+
+	@Override
 	public void setBrickViews(GLBrick brick, GL2 gl,
 			GLMouseListener glMouseListener, ABrickLayoutTemplate brickLayout) {
 

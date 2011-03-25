@@ -49,7 +49,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
 
 	protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
-	
+
 	protected GLVisBricks visBricks;
 
 	// protected Button heatMapButton;
@@ -61,7 +61,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	protected Button lockResizingButton;
 
 	public CentralBrickLayoutTemplate(GLBrick brick,
-			DimensionGroup dimensionGroup, GLVisBricks visBricks, IBrickConfigurer configurer) {
+			DimensionGroup dimensionGroup, GLVisBricks visBricks,
+			IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		this.visBricks = visBricks;
 		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
@@ -106,7 +107,9 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		if (showHandles) {
 			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
 					pixelGLConverter, HANDLE_SIZE_PIXELS, brick
-							.getTextureManager(), HandleRenderer.ALL_HANDLES));
+							.getTextureManager(),
+					HandleRenderer.ALL_MOVE_HANDLES
+							| HandleRenderer.ALL_RESIZE_HANDLES));
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
@@ -355,8 +358,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public ABrickLayoutTemplate getCollapsedLayoutTemplate() {
-		return new CompactCentralBrickLayoutTemplate(brick, dimensionGroup, visBricks,
-				brick.getLayoutConfigurer());
+		return new CompactCentralBrickLayoutTemplate(brick, dimensionGroup,
+				visBricks, brick.getLayoutConfigurer());
 	}
 
 	@Override

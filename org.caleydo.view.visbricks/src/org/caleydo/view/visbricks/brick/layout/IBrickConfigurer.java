@@ -47,6 +47,13 @@ public interface IBrickConfigurer {
 	 * @param layoutTemplate
 	 */
 	public void configure(DefaultBrickLayoutTemplate layoutTemplate);
+	
+	/**
+	 * Configures the specified layoutTemplate.
+	 * 
+	 * @param layoutTemplate
+	 */
+	public void configure(DetailBrickLayoutTemplate layoutTemplate);
 
 	/**
 	 * Sets the views and {@link AContainedViewRenderer}s in the brick that are

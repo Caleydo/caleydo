@@ -63,6 +63,8 @@ import org.caleydo.view.visbricks.listener.GLVisBricksKeyListener;
 import org.caleydo.view.visbricks.listener.NewMetaSetsListener;
 import org.caleydo.view.visbricks.renderstyle.VisBricksRenderStyle;
 
+import com.jogamp.common.util.IntIntHashMap;
+
 /**
  * VisBricks main view
  * 
@@ -480,7 +482,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// GLHelperFunctions.drawPointAt(gl, 0,0,0);
 		// gl.glCallList(iGLDisplayListToCall);
 
-		if (isLayoutDirty) {
+		if (true) {
 			isLayoutDirty = false;
 			centerLayoutManager.updateLayout();
 			float minWidth = parentGLCanvas.getPixelGLConverter()
@@ -578,26 +580,56 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		dragAndDropController.handleDragging(gl, glMouseListener);
 	}
 
-	public void switchToDetailMode(DimensionGroup leftDimGr, DimensionGroup rightDimGr) {
+	public void switchToDetailModeLeft(DimensionGroup leftDimGr) {
 
 		int leftIndex = dimensionGroupManager.indexOfDimensionGroup(leftDimGr);
+//		int rightIndex = dimensionGroupManager.indexOfDimensionGroup(rightDimGr);
+
+//		int centerGroupStartIndex = dimensionGroupManager.getCenterGroupStartIndex();
+//		int rightGroupStartIndex = dimensionGroupManager.getRightGroupStartIndex();
+		
+//		for(int index = leftIndex-centerGroupStartIndex; index <= leftIndex; index++)
+//		{
+//			centerRowLayout.remove(0);
+//			centerRowLayout.remove(0);	
+//		}
+		dimensionGroupManager.setCenterGroupStartIndex(leftIndex);
+		dimensionGroupManager.setRightGroupStartIndex(leftIndex + 2);
+//		leftDimensionGroupSpacing = centerRowLayout.getElements().get(0);
+//		centerRowLayout.getElements().get(2).setGrabX(true);
+//
+//		((DimensionGroupSpacingRenderer) leftDimensionGroupSpacing.getRenderer())
+//		.setLeftDimGroup(null);
+
+		initLeftLayout();
+		initCenterLayout();
+		initRightLayout();
+	}
+	
+	public void switchToDetailModeRight( DimensionGroup rightDimGr) {
+
+//		int leftIndex = dimensionGroupManager.indexOfDimensionGroup(leftDimGr);
 		int rightIndex = dimensionGroupManager.indexOfDimensionGroup(rightDimGr);
 
 		int centerGroupStartIndex = dimensionGroupManager.getCenterGroupStartIndex();
 		int rightGroupStartIndex = dimensionGroupManager.getRightGroupStartIndex();
 		
-		for(int index = leftIndex-centerGroupStartIndex; index < leftIndex; index++)
-		{
-			centerRowLayout.remove(0);
-			centerRowLayout.remove(0);			
-		}
-		leftDimensionGroupSpacing = centerRowLayout.getElements().get(0);
-		centerRowLayout.getElements().get(2).setGrabX(true);
-
-		((DimensionGroupSpacingRenderer) leftDimensionGroupSpacing.getRenderer())
-		.setLeftDimGroup(null);
+//		for(int index = leftIndex-centerGroupStartIndex; index <= leftIndex; index++)
+//		{
+//			centerRowLayout.remove(0);
+//			centerRowLayout.remove(0);	
+//		}
+		dimensionGroupManager.setCenterGroupStartIndex(rightIndex - 1);
+		dimensionGroupManager.setRightGroupStartIndex(rightIndex + 1);
+//		leftDimensionGroupSpacing = centerRowLayout.getElements().get(0);
+//		centerRowLayout.getElements().get(2).setGrabX(true);
+//
+//		((DimensionGroupSpacingRenderer) leftDimensionGroupSpacing.getRenderer())
+//		.setLeftDimGroup(null);
 
 		initLeftLayout();
+		initCenterLayout();
+		initRightLayout();
 	}
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {

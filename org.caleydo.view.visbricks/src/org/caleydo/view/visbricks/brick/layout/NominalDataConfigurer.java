@@ -83,6 +83,33 @@ public class NominalDataConfigurer implements IBrickConfigurer {
 		layoutTemplate.setDefaultViewType(EContainedViewType.PARCOORDS_VIEW);
 
 	}
+	
+	@Override
+	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
+
+		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
+				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
+				EContainedViewType.PARCOORDS_VIEW);
+		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
+				TAGCLOUD_BUTTON_ID, EIconTextures.TAGCLOUD_ICON,
+				EContainedViewType.TAGCLOUD_VIEW);
+		
+		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
+		viewSwitchingButtons.add(parCoordsButton);
+		viewSwitchingButtons.add(tagCloudButton);
+
+		layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
+
+		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
+		validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
+		validViewTypes.add(EContainedViewType.TAGCLOUD_VIEW);
+
+		layoutTemplate.setValidViewTypes(validViewTypes);
+		layoutTemplate.setDefaultViewType(EContainedViewType.PARCOORDS_VIEW);
+
+	}
 
 	@Override
 	public void setBrickViews(GLBrick brick, GL2 gl,
