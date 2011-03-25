@@ -10,7 +10,7 @@ import org.caleydo.view.visbricks.brick.GLBrick;
 
 public class SubGroupMatch {
 	
-	private int connectionID = -1;
+	private int connectionBandID = -1;
 	
 	private GLBrick glBrick;
 	
@@ -37,10 +37,10 @@ public class SubGroupMatch {
 	 */
 	private HashMap<SelectionType, Float> hashSelectionTypeToRatio = new HashMap<SelectionType, Float>();
 	
-	public SubGroupMatch(GLBrick glBrick) {
+	public SubGroupMatch(int connectionBandID, GLBrick glBrick) {
 		this.glBrick = glBrick;
 		
-		connectionID = GeneralManager.get().getIDCreator().createID(EManagedObjectType.BRICK_CONNECTIONS);
+		this.connectionBandID = connectionBandID;
 	}
 	
 	public void setLeftAnchorYStart(float leftAnchorYStart) {
@@ -104,6 +104,6 @@ public class SubGroupMatch {
 	}
 	
 	public int getConnectionBandID() {
-		return connectionID;
+		return connectionBandID;
 	}
 }

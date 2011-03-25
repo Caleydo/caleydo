@@ -53,7 +53,6 @@ public enum EManagedObjectType {
 
 	DIMENSION_GROUP(69),
 	DIMENSION_GROUP_SPACER(70),
-	BRICK_CONNECTIONS(71),
 
 	/**
 	 * Type for ids used to connect different elements that have different ids.
