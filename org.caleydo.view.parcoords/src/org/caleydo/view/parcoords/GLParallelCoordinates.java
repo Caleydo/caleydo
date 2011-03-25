@@ -804,211 +804,209 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 					gl.glEnd();
 
 				}
-				// }
+			}
 
-				String sAxisLabel = null;
+			String sAxisLabel = null;
 
-				sAxisLabel = set.get(storageVA.get(iCount)).getLabel();
+			sAxisLabel = set.get(storageVA.get(iCount)).getLabel();
 
-				// gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
-				gl.glTranslatef(
-						fXPosition,
-						renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(),
-						0);
-				// gl.glRotatef(25, 0, 0, 1);
+			// gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
+			gl.glTranslatef(fXPosition,
+					renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(), 0);
+			// gl.glRotatef(25, 0, 0, 1);
+			//
+			// float fScaling = renderStyle.getSmallFontScalingFactor();
+			//
+			// textRenderer.renderText(gl, sAxisLabel, 0, 0, 0,
+			// fScaling,
+			// PCRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
+
+			float width = renderStyle.getAxisSpacing(storageVA.size());
+			if(iCount == numberOfAxis-1)
+				width = fYTranslation;
+			textRenderer.renderTextInBounds(gl, sAxisLabel, 0, 0, 0.02f, width,
+					parentGLCanvas.getPixelGLConverter().getGLHeightForPixelHeight(10));
+
+			// gl.glRotatef(-25, 0, 0, 1);
+			gl.glTranslatef(-fXPosition,
+					-(renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing()),
+					0);
+
+			if (set.isSetHomogeneous()) {
+				// textRenderer.begin3DRendering();
 				//
-				// float fScaling = renderStyle.getSmallFontScalingFactor();
+				// // render values on top and bottom of axis
 				//
-				// textRenderer.renderText(gl, sAxisLabel, 0, 0, 0,
-				// fScaling,
-				// PCRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
+				// // top
+				// String text =
+				// getDecimalFormat().format(set.getMax());
+				// textRenderer.draw3D(text, fXPosition + 2 *
+				// AXIS_MARKER_WIDTH, renderStyle
+				// .getAxisHeight(), 0,
+				// renderStyle.getSmallFontScalingFactor());
+				//
+				// // bottom
+				// text = getDecimalFormat().format(set.getMin());
+				// textRenderer.draw3D(text, fXPosition + 2 *
+				// AXIS_MARKER_WIDTH, 0, 0,
+				// renderStyle.getSmallFontScalingFactor());
+				// textRenderer.end3DRendering();
+			} else {
+				// TODO
+			}
 
-				float width = renderStyle.getAxisSpacing(storageVA.size());
-				textRenderer.renderTextInBounds(gl, sAxisLabel, 0, 0, 0.02f, width,
-						parentGLCanvas.getPixelGLConverter()
-								.getGLHeightForPixelHeight(10));
+			gl.glPopAttrib();
 
-				// gl.glRotatef(-25, 0, 0, 1);
-				gl.glTranslatef(-fXPosition, -(renderStyle.getAxisHeight() + renderStyle
-						.getAxisCaptionSpacing()), 0);
+			if (!isRenderedRemote()) {
 
-				if (set.isSetHomogeneous()) {
-					// textRenderer.begin3DRendering();
-					//
-					// // render values on top and bottom of axis
-					//
-					// // top
-					// String text =
-					// getDecimalFormat().format(set.getMax());
-					// textRenderer.draw3D(text, fXPosition + 2 *
-					// AXIS_MARKER_WIDTH, renderStyle
-					// .getAxisHeight(), 0,
-					// renderStyle.getSmallFontScalingFactor());
-					//
-					// // bottom
-					// text = getDecimalFormat().format(set.getMin());
-					// textRenderer.draw3D(text, fXPosition + 2 *
-					// AXIS_MARKER_WIDTH, 0, 0,
-					// renderStyle.getSmallFontScalingFactor());
-					// textRenderer.end3DRendering();
-				} else {
-					// TODO
-				}
+				float fXButtonOrigin = axisSpacings.get(iCount);
 
-				gl.glPopAttrib();
+				Vec3f lowerLeftCorner = new Vec3f(fXButtonOrigin - 0.03f,
+						PCRenderStyle.NAN_Y_OFFSET - 0.03f, PCRenderStyle.NAN_Z);
+				Vec3f lowerRightCorner = new Vec3f(fXButtonOrigin + 0.03f,
+						PCRenderStyle.NAN_Y_OFFSET - 0.03f, PCRenderStyle.NAN_Z);
+				Vec3f upperRightCorner = new Vec3f(fXButtonOrigin + 0.03f,
+						PCRenderStyle.NAN_Y_OFFSET + 0.03f, PCRenderStyle.NAN_Z);
+				Vec3f upperLeftCorner = new Vec3f(fXButtonOrigin - 0.03f,
+						PCRenderStyle.NAN_Y_OFFSET + 0.03f, PCRenderStyle.NAN_Z);
+				Vec3f scalingPivot = new Vec3f(fXButtonOrigin,
+						PCRenderStyle.NAN_Y_OFFSET, PCRenderStyle.NAN_Z);
 
-				if (!isRenderedRemote()) {
+				int iPickingID = pickingManager.getPickingID(uniqueID,
+						EPickingType.REMOVE_NAN, storageVA.get(iCount));
+				gl.glPushName(iPickingID);
 
-					float fXButtonOrigin = axisSpacings.get(iCount);
+				textureManager.renderGUITexture(gl, EIconTextures.NAN, lowerLeftCorner,
+						lowerRightCorner, upperRightCorner, upperLeftCorner,
+						scalingPivot, 1, 1, 1, 1, 100);
 
-					Vec3f lowerLeftCorner = new Vec3f(fXButtonOrigin - 0.03f,
-							PCRenderStyle.NAN_Y_OFFSET - 0.03f, PCRenderStyle.NAN_Z);
-					Vec3f lowerRightCorner = new Vec3f(fXButtonOrigin + 0.03f,
-							PCRenderStyle.NAN_Y_OFFSET - 0.03f, PCRenderStyle.NAN_Z);
-					Vec3f upperRightCorner = new Vec3f(fXButtonOrigin + 0.03f,
-							PCRenderStyle.NAN_Y_OFFSET + 0.03f, PCRenderStyle.NAN_Z);
-					Vec3f upperLeftCorner = new Vec3f(fXButtonOrigin - 0.03f,
-							PCRenderStyle.NAN_Y_OFFSET + 0.03f, PCRenderStyle.NAN_Z);
-					Vec3f scalingPivot = new Vec3f(fXButtonOrigin,
-							PCRenderStyle.NAN_Y_OFFSET, PCRenderStyle.NAN_Z);
+				gl.glPopName();
 
-					int iPickingID = pickingManager.getPickingID(uniqueID,
-							EPickingType.REMOVE_NAN, storageVA.get(iCount));
-					gl.glPushName(iPickingID);
+				// render Buttons
 
-					textureManager.renderGUITexture(gl, EIconTextures.NAN,
-							lowerLeftCorner, lowerRightCorner, upperRightCorner,
-							upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
+				iPickingID = -1;
+				float fYDropOrigin = -PCRenderStyle.AXIS_BUTTONS_Y_OFFSET;
 
-					gl.glPopName();
+				gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
-					// render Buttons
+				// the gate add button
+				float fYGateAddOrigin = renderStyle.getAxisHeight();
+				iPickingID = pickingManager.getPickingID(uniqueID, EPickingType.ADD_GATE,
+						storageVA.get(iCount));
 
-					iPickingID = -1;
-					float fYDropOrigin = -PCRenderStyle.AXIS_BUTTONS_Y_OFFSET;
+				lowerLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin, AXIS_Z);
+				lowerRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
+				upperRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin + 0.12f,
+						AXIS_Z);
+				upperLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin + 0.12f,
+						AXIS_Z);
+				scalingPivot.set(fXButtonOrigin, fYGateAddOrigin, AXIS_Z);
 
-					gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+				gl.glPushName(iPickingID);
 
-					// the gate add button
-					float fYGateAddOrigin = renderStyle.getAxisHeight();
-					iPickingID = pickingManager.getPickingID(uniqueID,
-							EPickingType.ADD_GATE, storageVA.get(iCount));
+				textureManager.renderGUITexture(gl, EIconTextures.ADD_GATE,
+						lowerLeftCorner, lowerRightCorner, upperRightCorner,
+						upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
 
-					lowerLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin, AXIS_Z);
-					lowerRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
-					upperRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin + 0.12f,
-							AXIS_Z);
-					upperLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin + 0.12f,
-							AXIS_Z);
-					scalingPivot.set(fXButtonOrigin, fYGateAddOrigin, AXIS_Z);
+				gl.glPopName();
 
-					gl.glPushName(iPickingID);
+				if (selectedSet.contains(storageVA.get(iCount))
+						|| mouseOverSet.contains(storageVA.get(iCount))) {
 
-					textureManager.renderGUITexture(gl, EIconTextures.ADD_GATE,
-							lowerLeftCorner, lowerRightCorner, upperRightCorner,
-							upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
+					lowerLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin - 0.3f,
+							AXIS_Z + 0.005f);
+					lowerRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin - 0.3f,
+							AXIS_Z + 0.005f);
+					upperRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin,
+							AXIS_Z + 0.005f);
+					upperLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin,
+							AXIS_Z + 0.005f);
+					scalingPivot.set(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.005f);
 
-					gl.glPopName();
+					// the mouse over drop
+					if (iChangeDropOnAxisNumber == iCount) {
+						// tempTexture = textureManager.getIconTexture(gl,
+						// dropTexture);
+						textureManager.renderGUITexture(gl, dropTexture, lowerLeftCorner,
+								lowerRightCorner, upperRightCorner, upperLeftCorner,
+								scalingPivot, 1, 1, 1, 1, 80);
 
-					if (selectedSet.contains(storageVA.get(iCount))
-							|| mouseOverSet.contains(storageVA.get(iCount))) {
-
-						lowerLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin - 0.3f,
-								AXIS_Z + 0.005f);
-						lowerRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin - 0.3f,
-								AXIS_Z + 0.005f);
-						upperRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin,
-								AXIS_Z + 0.005f);
-						upperLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin,
-								AXIS_Z + 0.005f);
-						scalingPivot.set(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.005f);
-
-						// the mouse over drop
-						if (iChangeDropOnAxisNumber == iCount) {
-							// tempTexture = textureManager.getIconTexture(gl,
-							// dropTexture);
-							textureManager.renderGUITexture(gl, dropTexture,
-									lowerLeftCorner, lowerRightCorner, upperRightCorner,
-									upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
-
-							if (!bWasAxisMoved) {
-								dropTexture = EIconTextures.DROP_NORMAL;
-							}
-						} else {
-							textureManager.renderGUITexture(gl,
-									EIconTextures.DROP_NORMAL, lowerLeftCorner,
-									lowerRightCorner, upperRightCorner, upperLeftCorner,
-									scalingPivot, 1, 1, 1, 1, 80);
+						if (!bWasAxisMoved) {
+							dropTexture = EIconTextures.DROP_NORMAL;
 						}
-
-						iPickingID = pickingManager.getPickingID(uniqueID,
-								EPickingType.MOVE_AXIS, iCount);
-						gl.glColor4f(0, 0, 0, 0f);
-						gl.glPushName(iPickingID);
-						gl.glBegin(GL2.GL_TRIANGLES);
-						gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
-						gl.glVertex3f(fXButtonOrigin + 0.08f, fYDropOrigin - 0.3f,
-								AXIS_Z + 0.01f);
-						gl.glVertex3f(fXButtonOrigin - 0.08f, fYDropOrigin - 0.3f,
-								AXIS_Z + 0.01f);
-						gl.glEnd();
-						gl.glPopName();
-
-						iPickingID = pickingManager.getPickingID(uniqueID,
-								EPickingType.DUPLICATE_AXIS, iCount);
-						// gl.glColor4f(0, 1, 0, 0.5f);
-						gl.glPushName(iPickingID);
-						gl.glBegin(GL2.GL_TRIANGLES);
-						gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
-						gl.glVertex3f(fXButtonOrigin - 0.08f, fYDropOrigin - 0.21f,
-								AXIS_Z + 0.01f);
-						gl.glVertex3f(fXButtonOrigin - 0.23f, fYDropOrigin - 0.21f,
-								AXIS_Z + 0.01f);
-						gl.glEnd();
-						gl.glPopName();
-
-						iPickingID = pickingManager.getPickingID(uniqueID,
-								EPickingType.REMOVE_AXIS, iCount);
-						// gl.glColor4f(0, 0, 1, 0.5f);
-						gl.glPushName(iPickingID);
-						gl.glBegin(GL2.GL_TRIANGLES);
-						gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
-						gl.glVertex3f(fXButtonOrigin + 0.08f, fYDropOrigin - 0.21f,
-								AXIS_Z + 0.01f);
-						gl.glVertex3f(fXButtonOrigin + 0.23f, fYDropOrigin - 0.21f,
-								AXIS_Z + 0.01f);
-						gl.glEnd();
-						gl.glPopName();
-
 					} else {
-						iPickingID = pickingManager.getPickingID(uniqueID,
-								EPickingType.MOVE_AXIS, iCount);
-
-						gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
-						gl.glPushName(iPickingID);
-
-						lowerLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin - 0.2f,
-								AXIS_Z);
-						lowerRightCorner.set(fXButtonOrigin + 0.05f, fYDropOrigin - 0.2f,
-								AXIS_Z);
-						upperRightCorner
-								.set(fXButtonOrigin + 0.05f, fYDropOrigin, AXIS_Z);
-						upperLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin, AXIS_Z);
-						scalingPivot.set(fXButtonOrigin, fYDropOrigin, AXIS_Z);
-
-						textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP,
+						textureManager.renderGUITexture(gl, EIconTextures.DROP_NORMAL,
 								lowerLeftCorner, lowerRightCorner, upperRightCorner,
 								upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
-
-						gl.glPopName();
-						gl.glPopAttrib();
-
 					}
-					gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+
+					iPickingID = pickingManager.getPickingID(uniqueID,
+							EPickingType.MOVE_AXIS, iCount);
+					gl.glColor4f(0, 0, 0, 0f);
+					gl.glPushName(iPickingID);
+					gl.glBegin(GL2.GL_TRIANGLES);
+					gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
+					gl.glVertex3f(fXButtonOrigin + 0.08f, fYDropOrigin - 0.3f,
+							AXIS_Z + 0.01f);
+					gl.glVertex3f(fXButtonOrigin - 0.08f, fYDropOrigin - 0.3f,
+							AXIS_Z + 0.01f);
+					gl.glEnd();
+					gl.glPopName();
+
+					iPickingID = pickingManager.getPickingID(uniqueID,
+							EPickingType.DUPLICATE_AXIS, iCount);
+					// gl.glColor4f(0, 1, 0, 0.5f);
+					gl.glPushName(iPickingID);
+					gl.glBegin(GL2.GL_TRIANGLES);
+					gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
+					gl.glVertex3f(fXButtonOrigin - 0.08f, fYDropOrigin - 0.21f,
+							AXIS_Z + 0.01f);
+					gl.glVertex3f(fXButtonOrigin - 0.23f, fYDropOrigin - 0.21f,
+							AXIS_Z + 0.01f);
+					gl.glEnd();
+					gl.glPopName();
+
+					iPickingID = pickingManager.getPickingID(uniqueID,
+							EPickingType.REMOVE_AXIS, iCount);
+					// gl.glColor4f(0, 0, 1, 0.5f);
+					gl.glPushName(iPickingID);
+					gl.glBegin(GL2.GL_TRIANGLES);
+					gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
+					gl.glVertex3f(fXButtonOrigin + 0.08f, fYDropOrigin - 0.21f,
+							AXIS_Z + 0.01f);
+					gl.glVertex3f(fXButtonOrigin + 0.23f, fYDropOrigin - 0.21f,
+							AXIS_Z + 0.01f);
+					gl.glEnd();
+					gl.glPopName();
+
+				} else {
+					iPickingID = pickingManager.getPickingID(uniqueID,
+							EPickingType.MOVE_AXIS, iCount);
+
+					gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
+					gl.glPushName(iPickingID);
+
+					lowerLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin - 0.2f,
+							AXIS_Z);
+					lowerRightCorner.set(fXButtonOrigin + 0.05f, fYDropOrigin - 0.2f,
+							AXIS_Z);
+					upperRightCorner.set(fXButtonOrigin + 0.05f, fYDropOrigin, AXIS_Z);
+					upperLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin, AXIS_Z);
+					scalingPivot.set(fXButtonOrigin, fYDropOrigin, AXIS_Z);
+
+					textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
 
 					gl.glPopName();
+					gl.glPopAttrib();
+
 				}
+				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+
+				gl.glPopName();
 			}
+
 			iCount++;
 		}
 	}
