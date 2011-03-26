@@ -372,8 +372,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 			GLBrick brick = groupMatch.getBrick();
 
-			float xStart = leftDimGroup.getLayout().getTranslateX()
-					- brick.getLayout().getTranslateX();
+			float xStart = 	leftDimGroup.getLayout().getTranslateX() + leftDimGroup.getLayout().getSizeScaledX()
+				- brick.getLayout().getTranslateX() - brick.getLayout().getSizeScaledX();
 
 			if (groupMatch.getBrick().isInOverviewMode())
 				continue;

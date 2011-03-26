@@ -127,7 +127,6 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		detailRow = new Row("detailRow");
 		detailRow.setXDynamic(true);
 		detailRow.setFrameColor(1, 0, 1, 1);
-		// detailRow.setDebug(true);
 
 		groupColumn = new Column("dimensionGroup");
 		// groupColumn.setDebug(true);
