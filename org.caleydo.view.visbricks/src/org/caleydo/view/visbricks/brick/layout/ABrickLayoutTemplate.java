@@ -153,5 +153,21 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	public abstract ABrickLayoutTemplate getExpandedLayoutTemplate();
 
 	// public abstract void configure(IBrickLayoutConfigurer configurer);
+	
+	/**
+	 * @return Default height in pixels required by the brick with the current
+	 *         layout and view
+	 */
+	public int getDefaultHeightPixels(){
+		return getMinHeightPixels();
+	}
+
+	/**
+	 * @return Default width in pixels required by the brick with the current
+	 *         layout and view
+	 */
+	public int getDefaultWidthPixels() {
+		return getMinWidthPixels();
+	}
 
 }

@@ -25,7 +25,6 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
-import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -192,9 +191,13 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		currentRemoteView = views.get(currentRemoteView);
 
 		templateRenderer.setTemplate(brickLayout);
-		float minSize = getParentGLCanvas().getPixelGLConverter()
-				.getGLHeightForPixelHeight(brickLayout.getMinHeightPixels());
-		wrappingLayout.setAbsoluteSizeY(minSize);
+		float defaultHeight = getParentGLCanvas()
+				.getPixelGLConverter()
+				.getGLHeightForPixelHeight(brickLayout.getDefaultHeightPixels());
+		float defaultWidth = getParentGLCanvas().getPixelGLConverter()
+				.getGLHeightForPixelHeight(brickLayout.getDefaultWidthPixels());
+		wrappingLayout.setAbsoluteSizeY(defaultHeight);
+		wrappingLayout.setAbsoluteSizeX(defaultWidth);
 		templateRenderer.updateLayout();
 
 		addPickingListener(new APickingListener() {
@@ -264,14 +267,13 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		SelectionType selectedByGroupSelectionType = contentSelectionManager
 				.getSelectionType();
 
+		if (!visBricks.getKeyListener().isCtrlDown()) {
+			contentSelectionManager
+					.clearSelection(selectedByGroupSelectionType);
 
-		if (!visBricks.getKeyListener().isCtrlDown())
-		{
-			contentSelectionManager.clearSelection(selectedByGroupSelectionType);
-
-//			ClearSelectionsEvent cse = new ClearSelectionsEvent();
-//			cse.setSender(this);
-//			eventPublisher.triggerEvent(cse);
+			// ClearSelectionsEvent cse = new ClearSelectionsEvent();
+			// cse.setSender(this);
+			// eventPublisher.triggerEvent(cse);
 		}
 
 		// Prevent selection for center brick as this would select all elements
@@ -433,8 +435,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			templateRenderer.updateLayout();
 
 		if (!isSizeFixed) {
-			wrappingLayout.setAbsoluteSizeX(brickLayout.getMinWidthPixels());
-			wrappingLayout.setAbsoluteSizeY(brickLayout.getMinHeightPixels());
+			wrappingLayout.setAbsoluteSizeX(brickLayout.getDefaultWidthPixels());
+			wrappingLayout.setAbsoluteSizeY(brickLayout.getDefaultWidthPixels());
 		}
 	}
 
@@ -539,7 +541,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		float newWidth = width + changeX;
 		// float minWidth = parentGLCanvas.getPixelGLConverter()
 		// .getGLWidthForPixelWidth(brickLayout.getMinWidthPixels());
-		if (newWidth < dimensionGroup.getMinWidth() - 0.001f)
+		if (newWidth < parentGLCanvas.getPixelGLConverter()
+				.getGLWidthForPixelWidth(brickLayout.getMinWidthPixels()) - 0.001f)
 			return;
 
 		previousXCoordinate = pointCordinates[0];
@@ -763,31 +766,31 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		currentRemoteView = views.get(viewType);
 		brickLayout.setViewRenderer(viewRenderer);
 		brickLayout.viewTypeChanged(viewType);
-		int minHeightPixels = brickLayout.getMinHeightPixels();
-		int minWidthPixels = brickLayout.getMinWidthPixels();
-		float minHeight = getParentGLCanvas().getPixelGLConverter()
-				.getGLHeightForPixelHeight(minHeightPixels);
-		float minWidth = getParentGLCanvas().getPixelGLConverter()
-				.getGLWidthForPixelWidth(minWidthPixels);
+		int defaultHeightPixels = brickLayout.getDefaultHeightPixels();
+		int defaultWidthPixels = brickLayout.getDefaultWidthPixels();
+		float defaultHeight = getParentGLCanvas().getPixelGLConverter()
+				.getGLHeightForPixelHeight(defaultHeightPixels);
+		float defaultWidth = getParentGLCanvas().getPixelGLConverter()
+				.getGLWidthForPixelWidth(defaultWidthPixels);
 
 		if (isSizeFixed) {
 
 			float currentHeight = wrappingLayout.getSizeScaledY();
 			float currentWidth = wrappingLayout.getSizeScaledX();
 
-			if (currentHeight < minHeight) {
+			if (currentHeight < defaultHeight) {
 				// float width = (wrappingLayout.getSizeScaledX() /
 				// currentHeight)
 				// * minHeight;
 				// wrappingLayout.setAbsoluteSizeX(width);
-				wrappingLayout.setAbsoluteSizeY(minHeight);
+				wrappingLayout.setAbsoluteSizeY(defaultHeight);
 			}
-			if (currentWidth < minWidth) {
-				wrappingLayout.setAbsoluteSizeX(minWidth);
+			if (currentWidth < defaultWidth) {
+				wrappingLayout.setAbsoluteSizeX(defaultWidth);
 			}
 		} else {
-			wrappingLayout.setAbsoluteSizeY(minHeight);
-			wrappingLayout.setAbsoluteSizeX(minWidth);
+			wrappingLayout.setAbsoluteSizeY(defaultHeight);
+			wrappingLayout.setAbsoluteSizeX(defaultWidth);
 		}
 
 		templateRenderer.updateLayout();
@@ -1004,11 +1007,14 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			wrappingLayout.setAbsoluteSizeY(expandedBrickState.getHeight());
 		} else {
 			setBrickLayoutTemplate(layoutTemplate, currentViewType);
-			float minHeight = getParentGLCanvas().getPixelGLConverter()
+			float defaultHeight = getParentGLCanvas().getPixelGLConverter()
 					.getGLHeightForPixelHeight(
-							layoutTemplate.getMinHeightPixels());
-			wrappingLayout.setAbsoluteSizeY(minHeight);
-			wrappingLayout.setAbsoluteSizeX(dimensionGroup.getMinWidth());
+							layoutTemplate.getDefaultHeightPixels());
+			float defaultWidth = getParentGLCanvas().getPixelGLConverter()
+					.getGLWidthForPixelWidth(
+							layoutTemplate.getDefaultWidthPixels());
+			wrappingLayout.setAbsoluteSizeY(defaultHeight);
+			wrappingLayout.setAbsoluteSizeX(defaultWidth);
 		}
 		isInOverviewMode = false;
 

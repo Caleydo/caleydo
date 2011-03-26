@@ -297,12 +297,18 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinHeightPixels() {
-		return dimensionGroup.getDetailBrickHeightPixels();
+		return 4 * SPACING_PIXELS + FUEL_BAR_HEIGHT_PIXELS
+		+ TOOLBAR_HEIGHT_PIXELS + viewRenderer.getMinHeightPixels();
+//		return dimensionGroup.getDetailBrickHeightPixels();
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		return dimensionGroup.getDetailBrickWidthPixels();
+		return Math.max(4 * SPACING_PIXELS + 3 * BUTTON_WIDTH_PIXELS
+				+ viewSwitchingButtons.size() * BUTTON_WIDTH_PIXELS
+				+ SPACING_PIXELS * (viewSwitchingButtons.size() - 1), 2
+				* SPACING_PIXELS + viewRenderer.getMinWidthPixels());
+//		return dimensionGroup.getDetailBrickWidthPixels();
 	}
 
 	@Override
@@ -336,6 +342,16 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 	@Override
 	public ABrickLayoutTemplate getExpandedLayoutTemplate() {
 		return this;
+	}
+	
+	@Override
+	public int getDefaultHeightPixels() {
+		return dimensionGroup.getDetailBrickHeightPixels();
+	}
+	
+	@Override
+	public int getDefaultWidthPixels() {
+		return dimensionGroup.getDetailBrickWidthPixels();
 	}
 
 }

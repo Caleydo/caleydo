@@ -250,8 +250,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_90));
 
 		toolBar.append(ratioSpacingLayoutX);
-//		toolBar.append(detailModeButtonLayout);
-//		toolBar.append(spacingLayoutX);
+		// toolBar.append(detailModeButtonLayout);
+		// toolBar.append(spacingLayoutX);
 		toolBar.append(lockResizingButtonLayout);
 		toolBar.append(spacingLayoutX);
 		toolBar.append(toggleViewSwitchingButtonLayout);
@@ -351,8 +351,12 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinWidthPixels() {
-		return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
-				.getMinWidth());
+		return Math.max(4 * SPACING_PIXELS + 3 * BUTTON_WIDTH_PIXELS
+				+ viewSwitchingButtons.size() * BUTTON_WIDTH_PIXELS
+				+ SPACING_PIXELS * (viewSwitchingButtons.size() - 1), 2
+				* SPACING_PIXELS + viewRenderer.getMinWidthPixels());
+		// return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
+		// .getMinWidth());
 	}
 
 	// @Override

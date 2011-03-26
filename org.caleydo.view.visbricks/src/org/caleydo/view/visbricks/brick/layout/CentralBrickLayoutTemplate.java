@@ -319,8 +319,14 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinWidthPixels() {
-		return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
-				.getMinWidth());
+
+		return Math.max(
+				2 * SPACING_PIXELS + viewSwitchingButtons.size()
+						* BUTTON_WIDTH_PIXELS + SPACING_PIXELS
+						* (viewSwitchingButtons.size() - 1), 2 * SPACING_PIXELS
+						+ viewRenderer.getMinWidthPixels());
+		// return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
+		// .getMinWidth());
 	}
 
 	// @Override
@@ -366,5 +372,6 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public ABrickLayoutTemplate getExpandedLayoutTemplate() {
 		return this;
 	}
+
 
 }
