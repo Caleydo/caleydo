@@ -11,6 +11,14 @@ import java.util.ArrayList;
 public class Row
 	extends LayoutContainer {
 
+	public enum HAlign {
+		TOP,
+		BOTTOM,
+		CENTER
+	}
+
+	private HAlign hAlign = HAlign.TOP;
+
 	public Row() {
 		super();
 	}
@@ -25,6 +33,10 @@ public class Row
 	 */
 	public void setLeftToRight(boolean isLeftToRight) {
 		this.isLeftToRight = isLeftToRight;
+	}
+
+	public void sethAlign(HAlign hAlign) {
+		this.hAlign = hAlign;
 	}
 
 	@Override
@@ -83,18 +95,31 @@ public class Row
 
 		// FIXME this is probably wrong for nested elements look at Column on how to do it correctly
 		for (ElementLayout element : elements) {
+			float yTranslate = y;
+			switch (hAlign) {
+				case TOP:
+					element.setTranslateY(yTranslate);
+					break;
+				case CENTER:
+					yTranslate += (getSizeScaledY() - element.getSizeScaledY()) / 2;
+					element.setTranslateY(yTranslate);
+					break;
+				case BOTTOM:
+					// FIXME this is wrong
+					element.setTranslateY(yTranslate);
+					break;
+			}
+
 			if (element instanceof LayoutContainer) {
 				((LayoutContainer) element).calculateTransforms(bottom, left, top, right);
 			}
 
 			if (isLeftToRight) {
 				element.setTranslateX(left);
-				element.setTranslateY(y);
 				left += element.getSizeScaledX();
 			}
 			else {
 				element.setTranslateX(right);
-				element.setTranslateY(y);
 				right -= element.getSizeScaledX();
 			}
 		}

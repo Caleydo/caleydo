@@ -35,6 +35,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout.Row.HAlign;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -116,7 +117,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private boolean isDetailBrickShown = false;
 	private boolean expandLeft = false;
 
-	private ElementLayout detailBrickLayout;
+	private Column detailBrickLayout;
 
 	public static int BOTTOM_COLUMN_ID = 0;
 	public static int TOP_COLUMN_ID = 1;
@@ -127,9 +128,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		detailRow = new Row("detailRow");
 		detailRow.setXDynamic(true);
 		detailRow.setFrameColor(1, 0, 1, 1);
+		detailRow.sethAlign(HAlign.CENTER);
 
 		groupColumn = new Column("dimensionGroup");
-		// groupColumn.setDebug(true);
 		groupColumn.setXDynamic(true);
 		groupColumn.setVAlign(VAlign.CENTER);
 
@@ -140,20 +141,16 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		bottomCol.setIDs(uniqueID, BOTTOM_COLUMN_ID);
 		bottomCol.setVAlign(VAlign.CENTER);
 
-		// bottomCol.setDebug(true);
-
 		bottomBricks = new ArrayList<GLBrick>(20);
 
 		centerLayout = new Column("centerLayout");
 		centerLayout.setFrameColor(1, 1, 0, 1);
-		// centerLayout.setDebug(true);
-
+	
 		topCol = new Column("dimensionGroupColumnTop");
 		topCol.setFrameColor(1, 0, 1, 1);
 		topBricks = new ArrayList<GLBrick>(20);
 		topCol.setXDynamic(true);
 		topCol.setIDs(uniqueID, TOP_COLUMN_ID);
-		// topCol.setDebug(true);
 		topCol.setVAlign(VAlign.CENTER);
 
 		initGroupColumn();
@@ -273,8 +270,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				.getPixelGLConverter());
 		brickSpacingLayout.setPixelSizeY(10);
 		brickSpacingLayout.setRatioSizeX(0);
-		// brickSpacingLayout.setDebug(true);
-
+	
 		for (int count = 0; count < topCol.size();) {
 
 			topCol.add(count, brickSpacingLayout);
@@ -860,6 +856,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public void showDetailedBrick(GLBrick brick, boolean expandLeft) {
 
 		detailBrickLayout = new Column("detailBrickWrappingLayout");
+		
 		detailBrickLayout.setPixelGLConverter(parentGLCanvas
 				.getPixelGLConverter());
 
