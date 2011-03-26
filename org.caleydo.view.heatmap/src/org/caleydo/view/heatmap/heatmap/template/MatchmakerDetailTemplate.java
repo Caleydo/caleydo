@@ -31,7 +31,6 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 		mainColumn.setRatioSizeX(1);
 		mainColumn.setRatioSizeY(1);
 
-		contentCaptionRenderer.setFontScaling(fontScaling);
 		minSelectedFieldHeight = HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT;
 
 		Row hmRow = new Row();

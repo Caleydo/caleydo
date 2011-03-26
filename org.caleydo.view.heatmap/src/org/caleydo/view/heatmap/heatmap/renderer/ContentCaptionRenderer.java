@@ -1,12 +1,8 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
-import java.awt.Font;
-
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
@@ -44,47 +40,29 @@ public class ContentCaptionRenderer extends AContentRenderer {
 
 			heatMap.getTextRenderer().setColor(0, 0, 0, 1);
 
-			renderCaption(gl, contentID, 0, yPosition, 0, fontScaling);
+			renderCaption(gl, contentID, 0, yPosition, 0);
 
 		}
 	}
 
-	public void setFontScaling(float fontScaling) {
-		this.fontScaling = fontScaling;
-	}
 
 	private String getID(Integer contentID, boolean beVerbose) {
 		return heatMap.getDataDomain().getContentLabel(contentID);
 	}
 
 	private void renderCaption(GL2 gl, int contentIndex, float xOrigin, float yOrigin,
-			float zOrigin, float fontScaling) {
+			float zOrigin) {
 
 		String sLabel = getID(contentIndex, false);
 		if (sLabel == null)
 			sLabel = "Unknown";
 
-		if (sLabel.length() > GeneralRenderStyle.NUM_CHAR_LIMIT + 1) {
-			sLabel = sLabel.substring(0, GeneralRenderStyle.NUM_CHAR_LIMIT - 2);
-			sLabel = sLabel + "..";
-		}
-
-		float requiredSize = (float) heatMap.getTextRenderer().getScaledBounds(gl, sLabel,
-				fontScaling, fontSize).getHeight();
-
-		spacing = (contentSpacing.getFieldHeight(contentIndex) - requiredSize) / 2;
+		spacing = (contentSpacing.getFieldHeight(contentIndex));
+		
 		if (spacing < 0)
 			spacing = 0;
-
-		// textRenderer.setColor(0, 0, 0, 1);
-		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
-		gl.glTranslatef(xOrigin, yOrigin + spacing, zOrigin);
-
-		heatMap.getTextRenderer().renderText(gl, sLabel, 0, 0, 0, fontScaling,
-				HeatMapRenderStyle.LABEL_TEXT_MIN_SIZE);
-		gl.glTranslatef(-xOrigin, -yOrigin - spacing, -zOrigin);
-		// textRenderer.begin3DRendering();
-		gl.glPopAttrib();
+	
+		heatMap.getTextRenderer().renderTextInBounds(gl, sLabel, xOrigin, yOrigin, 0, x, spacing);
 	}
 
 }

@@ -28,8 +28,6 @@ public class BucketTemplate extends AHeatMapTemplate {
 		mainColumn.setRatioSizeX(1);
 		mainColumn.setRatioSizeY(1);
 
-		contentCaptionRenderer.setFontScaling(fontScaling);
-
 		Row hmRow = new Row();
 		// hmRow.grabY = true;
 		// heat map
