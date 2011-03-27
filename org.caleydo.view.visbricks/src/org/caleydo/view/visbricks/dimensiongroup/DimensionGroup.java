@@ -35,15 +35,14 @@ import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
-import org.caleydo.core.view.opengl.layout.Row.HAlign;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.Row.HAlign;
 import org.caleydo.core.view.opengl.layout.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.layout.event.ILayoutSizeCollisionHandler;
 import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionEvent;
 import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionListener;
-import org.caleydo.core.view.opengl.miniview.slider.GLDistributionMiniView.ALIGN;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
@@ -526,8 +525,18 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				detailBrick.destroy();
 				detailBrick = null;
 			}
+			
+			
+			
+			if(hideDetailBrick && expandLeft) {
+				visBricks.switchToOverviewModeRight();
+			}
+			if(hideDetailBrick && !expandLeft) {
+				visBricks.switchToOverviewModeLeft();
+			}
 			hideDetailBrick = false;
 			isDetailBrickShown = false;
+			
 			detailRow.updateSubLayout();
 			// visBricks.setLastResizeDirectionWasToLeft(false);
 			visBricks.updateLayout();
