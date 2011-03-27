@@ -919,8 +919,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		}
 
 		int detailAreaWidth = parentGLCanvas.getWidth() - 2
-				* OVERVIEW_DETAIL_GAP_PIXEL - 100 - getGroupColumnWidthPixels()
-				- otherDimensionGroupColumnWidth;
+				* OVERVIEW_DETAIL_GAP_PIXEL - 2
+				* GLVisBricks.DIMENSION_GROUP_SIDE_SPACING
+				- getGroupColumnWidthPixels() - otherDimensionGroupColumnWidth;
 		int detailGapWidth = (int) (DETAIL_GAP_PORTION * detailAreaWidth);
 		detailGapWidth = (detailGapWidth < MIN_DETAIL_GAP_PIXEL) ? MIN_DETAIL_GAP_PIXEL
 				: detailGapWidth;

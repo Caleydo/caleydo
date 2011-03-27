@@ -82,6 +82,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private final static float ARCH_STAND_WIDTH_PERCENT = 0.05f;
 
 	private final static int DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH = 30;
+	public final static int DIMENSION_GROUP_SIDE_SPACING = 50;
 
 	private NewMetaSetsListener metaSetsListener;
 	private ClearSelectionsListener clearSelectionsListener;
@@ -293,7 +294,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				.getPixelGLConverter());
 
 		if (dimensionGroupCountInCenter > 1)
-			leftDimensionGroupSpacing.setPixelSizeX(50);
+			leftDimensionGroupSpacing
+					.setPixelSizeX(DIMENSION_GROUP_SIDE_SPACING);
 		else
 			leftDimensionGroupSpacing.setGrabX(true);
 
@@ -334,7 +336,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 						.getPixelGLConverter());
 
 				if (dimensionGroupCountInCenter > 1)
-					rightDimensionGroupSpacing.setPixelSizeX(50);
+					rightDimensionGroupSpacing
+							.setPixelSizeX(DIMENSION_GROUP_SIDE_SPACING);
 				else
 					rightDimensionGroupSpacing.setGrabX(true);
 
@@ -511,7 +514,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// GLHelperFunctions.drawPointAt(gl, 0,0,0);
 		// gl.glCallList(iGLDisplayListToCall);
 
-		if (true) {
+		if (isLayoutDirty) {
 			isLayoutDirty = false;
 			centerLayoutManager.updateLayout();
 			float minWidth = parentGLCanvas.getPixelGLConverter()
@@ -591,13 +594,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// viewCamera.setCameraRotation(new Rotf());
 
 		// gl.glRotatef(angle, 1, 0, 0);
-		
 
 		for (DimensionGroup dimensionGroup : dimensionGroupManager
 				.getDimensionGroups()) {
 			dimensionGroup.display(gl);
 		}
-		
+
 		if (!isLeftDetailShown && !isRightDetailShown) {
 			renderArch(gl);
 		}
@@ -665,10 +667,10 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		int rightIndex = dimensionGroupManager
 				.indexOfDimensionGroup(rightDimGr);
 
-//		int centerGroupStartIndex = dimensionGroupManager
-//				.getCenterGroupStartIndex();
-//		int rightGroupStartIndex = dimensionGroupManager
-//				.getRightGroupStartIndex();
+		// int centerGroupStartIndex = dimensionGroupManager
+		// .getCenterGroupStartIndex();
+		// int rightGroupStartIndex = dimensionGroupManager
+		// .getRightGroupStartIndex();
 
 		// for(int index = leftIndex-centerGroupStartIndex; index <= leftIndex;
 		// index++)
@@ -690,14 +692,14 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		initCenterLayout();
 		initRightLayout();
 	}
-	
+
 	public void switchToOverviewModeLeft() {
 		isLeftDetailShown = false;
 		initLeftLayout();
 		initCenterLayout();
 		initRightLayout();
 	}
-	
+
 	public void switchToOverviewModeRight() {
 		isRightDetailShown = false;
 		initLeftLayout();
@@ -1274,6 +1276,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		movedDimGroup.getLayout().reset();
 		clearDimensionGroupSpacerHighlight();
 
+		if (movedDimGroup == referenceDimGroup)
+			return;
+
 		boolean insertComplete = false;
 
 		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
@@ -1343,9 +1348,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 						dimensionGroups.add(dimensionGroupManager
 								.getCenterGroupStartIndex(), movedDimGroup);
 					} else {
+
 						dimensionGroups.add(
 								dimensionGroups.indexOf(referenceDimGroup) + 1,
 								movedDimGroup);
+
 					}
 
 					insertComplete = true;
