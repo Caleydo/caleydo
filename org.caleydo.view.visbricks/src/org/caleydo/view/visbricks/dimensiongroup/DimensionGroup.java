@@ -70,6 +70,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	public final static int PIXEL_PER_DIMENSION = 30;
 	public final static int MIN_BRICK_WIDTH_PIXEL = 170;
+	public final static int OVERVIEW_DETAIL_GAP_PIXEL = 30;
+	public final static int MIN_DETAIL_GAP_PIXEL = 10;
+	public final static float DETAIL_GAP_PORTION = 0.05f;
 
 	private GLVisBricks glVisBricksView;
 
@@ -144,7 +147,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		centerLayout = new Column("centerLayout");
 		centerLayout.setFrameColor(1, 1, 0, 1);
-	
+
 		topCol = new Column("dimensionGroupColumnTop");
 		topCol.setFrameColor(1, 0, 1, 1);
 		topBricks = new ArrayList<GLBrick>(20);
@@ -269,7 +272,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				.getPixelGLConverter());
 		brickSpacingLayout.setPixelSizeY(10);
 		brickSpacingLayout.setRatioSizeX(0);
-	
+
 		for (int count = 0; count < topCol.size();) {
 
 			topCol.add(count, brickSpacingLayout);
@@ -490,7 +493,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 					"brickSpacingLayout");
 			spacingLayoutX.setPixelGLConverter(parentGLCanvas
 					.getPixelGLConverter());
-			spacingLayoutX.setPixelSizeX(50);
+			spacingLayoutX.setPixelSizeX(OVERVIEW_DETAIL_GAP_PIXEL);
 			spacingLayoutX.setRatioSizeY(0);
 
 			detailRow.clear();
@@ -525,18 +528,18 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				detailBrick.destroy();
 				detailBrick = null;
 			}
-			
-			
-			
-			if(hideDetailBrick && expandLeft) {
+
+			isDetailBrickShown = false;
+
+			if (hideDetailBrick && expandLeft) {
 				visBricks.switchToOverviewModeRight();
 			}
-			if(hideDetailBrick && !expandLeft) {
+			if (hideDetailBrick && !expandLeft) {
 				visBricks.switchToOverviewModeLeft();
 			}
+
 			hideDetailBrick = false;
-			isDetailBrickShown = false;
-			
+
 			detailRow.updateSubLayout();
 			// visBricks.setLastResizeDirectionWasToLeft(false);
 			visBricks.updateLayout();
@@ -865,7 +868,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public void showDetailedBrick(GLBrick brick, boolean expandLeft) {
 
 		detailBrickLayout = new Column("detailBrickWrappingLayout");
-		
+
 		detailBrickLayout.setPixelGLConverter(parentGLCanvas
 				.getPixelGLConverter());
 
@@ -894,7 +897,37 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	public int getDetailBrickWidthPixels() {
-		return 200;
+
+		DimensionGroupManager dimensionGroupManager = visBricks
+				.getDimensionGroupManager();
+		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
+				.getDimensionGroups();
+		int dimensionGroupIndex = dimensionGroups.indexOf(this);
+
+		int otherDimensionGroupColumnWidth = 0;
+		if (isLeftmost()) {
+			DimensionGroup dimensionGroupRight = dimensionGroups
+					.get(dimensionGroupIndex + 1);
+			otherDimensionGroupColumnWidth += dimensionGroupRight
+					.getGroupColumnWidthPixels();
+		}
+		if (isRightmost()) {
+			DimensionGroup dimensionGroupLeftt = dimensionGroups
+					.get(dimensionGroupIndex - 1);
+			otherDimensionGroupColumnWidth += dimensionGroupLeftt
+					.getGroupColumnWidthPixels();
+		}
+
+		int detailAreaWidth = parentGLCanvas.getWidth() - 2
+				* OVERVIEW_DETAIL_GAP_PIXEL - 100 - getGroupColumnWidthPixels()
+				- otherDimensionGroupColumnWidth;
+		int detailGapWidth = (int) (DETAIL_GAP_PORTION * detailAreaWidth);
+		detailGapWidth = (detailGapWidth < MIN_DETAIL_GAP_PIXEL) ? MIN_DETAIL_GAP_PIXEL
+				: detailGapWidth;
+
+		int detailWidth = (int) ((detailAreaWidth - detailGapWidth) / 2.0f);
+
+		return detailWidth;
 	}
 
 	public boolean isLeftmost() {
@@ -909,5 +942,10 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				.getDimensionGroupManager();
 		int index = dimensionGroupManager.indexOfDimensionGroup(this);
 		return (index == dimensionGroupManager.getRightGroupStartIndex() - 1);
+	}
+
+	public int getGroupColumnWidthPixels() {
+		return parentGLCanvas.getPixelGLConverter().getPixelWidthForGLWidth(
+				groupColumn.getSizeScaledX());
 	}
 }

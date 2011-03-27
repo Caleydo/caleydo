@@ -120,7 +120,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			gl.glVertex3f(x, yOffset, 0);
 			if (brick.getContentGroupSelectionManager().checkStatus(
 					SelectionType.SELECTION, brick.getGroup().getID()))
-				gl.glColor3f(1, 0, 0);
+				gl.glColor4fv(SelectionType.SELECTION.getColor(),0);
 			else
 
 				gl.glColor3f(1, 1, 1);

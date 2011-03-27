@@ -591,13 +591,15 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// viewCamera.setCameraRotation(new Rotf());
 
 		// gl.glRotatef(angle, 1, 0, 0);
-		if (!isLeftDetailShown && !isRightDetailShown) {
-			renderArch(gl);
-		}
+		
 
 		for (DimensionGroup dimensionGroup : dimensionGroupManager
 				.getDimensionGroups()) {
 			dimensionGroup.display(gl);
+		}
+		
+		if (!isLeftDetailShown && !isRightDetailShown) {
+			renderArch(gl);
 		}
 
 		if (!isLeftDetailShown && !isRightDetailShown) {
@@ -691,16 +693,16 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	
 	public void switchToOverviewModeLeft() {
 		isLeftDetailShown = false;
-//		initLeftLayout();
-//		initCenterLayout();
-//		initRightLayout();
+		initLeftLayout();
+		initCenterLayout();
+		initRightLayout();
 	}
 	
 	public void switchToOverviewModeRight() {
 		isRightDetailShown = false;
-//		initLeftLayout();
-//		initCenterLayout();
-//		initRightLayout();
+		initLeftLayout();
+		initCenterLayout();
+		initRightLayout();
 	}
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {

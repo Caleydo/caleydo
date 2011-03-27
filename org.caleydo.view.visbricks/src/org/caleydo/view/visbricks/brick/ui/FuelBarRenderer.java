@@ -53,7 +53,7 @@ public class FuelBarRenderer extends LayoutRenderer {
 		gl.glBegin(GL2.GL_QUADS);
 		if (selectionManager.checkStatus(SelectionType.SELECTION, brick.getGroup()
 				.getID()))
-			gl.glColor3f(1, 0, 0);
+			gl.glColor4fv(SelectionType.SELECTION.getColor(),0);
 		else
 			gl.glColor3f(0.3f, 0.3f, 0.3f);
 
