@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks.dimensiongroup;
+package org.caleydo.view.visbricks.brick.ui;
 
 import javax.media.opengl.GL2;
 

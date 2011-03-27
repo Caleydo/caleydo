@@ -54,6 +54,7 @@ import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CentralBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.ui.OverviewDetailBandRenderer;
 
 /**
  * Container for a group of dimensions. Manages layouts as well as brick views
@@ -120,6 +121,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private boolean expandLeft = false;
 
 	private Column detailBrickLayout;
+	private ElementLayout overviewDetailGapLayout;
 
 	public static int BOTTOM_COLUMN_ID = 0;
 	public static int TOP_COLUMN_ID = 1;
@@ -489,23 +491,17 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public void display(GL2 gl) {
 
 		if (showDetailBrick) {
-			ElementLayout spacingLayoutX = new ElementLayout(
-					"brickSpacingLayout");
-			spacingLayoutX.setPixelGLConverter(parentGLCanvas
-					.getPixelGLConverter());
-			spacingLayoutX.setPixelSizeX(OVERVIEW_DETAIL_GAP_PIXEL);
-			spacingLayoutX.setRatioSizeY(0);
 
 			detailRow.clear();
 			if (expandLeft) {
 				detailRow.append(detailBrickLayout);
-				detailRow.append(spacingLayoutX);
+				detailRow.append(overviewDetailGapLayout);
 				detailRow.append(groupColumn);
 				visBricks.switchToDetailModeRight(this);
 
 			} else {
 				detailRow.append(groupColumn);
-				detailRow.append(spacingLayoutX);
+				detailRow.append(overviewDetailGapLayout);
 				detailRow.append(detailBrickLayout);
 				visBricks.switchToDetailModeLeft(this);
 			}
@@ -866,6 +862,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	public void showDetailedBrick(GLBrick brick, boolean expandLeft) {
+		
+		
 
 		detailBrickLayout = new Column("detailBrickWrappingLayout");
 
@@ -882,6 +880,19 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				new DetailBrickLayoutTemplate(detailBrick, this,
 						glVisBricksView, detailBrick.getLayoutConfigurer()),
 				brick.getCurrentViewType());
+		
+		overviewDetailGapLayout = new ElementLayout(
+		"brickSpacingLayout");
+		overviewDetailGapLayout.setPixelGLConverter(parentGLCanvas
+		.getPixelGLConverter());
+		overviewDetailGapLayout.setPixelSizeX(OVERVIEW_DETAIL_GAP_PIXEL);
+		overviewDetailGapLayout.setRatioSizeY(1);
+		
+		if(expandLeft) {
+			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(detailBrick, brick));
+		} else {
+			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(brick, detailBrick));
+		}
 
 		showDetailBrick = true;
 		this.expandLeft = expandLeft;

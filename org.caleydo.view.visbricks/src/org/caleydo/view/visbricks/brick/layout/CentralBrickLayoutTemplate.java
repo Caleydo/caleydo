@@ -23,9 +23,9 @@ import org.caleydo.view.visbricks.brick.ui.BorderedAreaRenderer;
 import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.visbricks.brick.ui.DimensionBarRenderer;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
+import org.caleydo.view.visbricks.brick.ui.LineSeparatorRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupCaptionRenderer;
-import org.caleydo.view.visbricks.dimensiongroup.LineSeparatorRenderer;
 import org.eclipse.swt.widgets.Shell;
 
 /**

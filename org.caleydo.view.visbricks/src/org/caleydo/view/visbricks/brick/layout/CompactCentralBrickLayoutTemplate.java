@@ -9,9 +9,9 @@ import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
 import org.caleydo.view.visbricks.brick.ui.BorderedAreaRenderer;
 import org.caleydo.view.visbricks.brick.ui.DimensionBarRenderer;
+import org.caleydo.view.visbricks.brick.ui.LineSeparatorRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupCaptionRenderer;
-import org.caleydo.view.visbricks.dimensiongroup.LineSeparatorRenderer;
 
 public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
