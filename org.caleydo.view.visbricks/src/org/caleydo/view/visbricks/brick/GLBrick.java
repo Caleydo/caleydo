@@ -435,8 +435,10 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			templateRenderer.updateLayout();
 
 		if (!isSizeFixed) {
-			wrappingLayout.setAbsoluteSizeX(brickLayout.getDefaultWidthPixels());
-			wrappingLayout.setAbsoluteSizeY(brickLayout.getDefaultWidthPixels());
+			wrappingLayout
+					.setAbsoluteSizeX(brickLayout.getDefaultWidthPixels());
+			wrappingLayout
+					.setAbsoluteSizeY(brickLayout.getDefaultWidthPixels());
 		}
 	}
 
@@ -519,6 +521,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		if (glMouseListener.wasMouseReleased()) {
 			isBrickResizeActive = false;
 			previousXCoordinate = Float.NaN;
+			previousYCoordinate = Float.NaN;
 			return;
 		}
 
@@ -530,28 +533,45 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		if (Float.isNaN(previousXCoordinate)) {
 			previousXCoordinate = pointCordinates[0];
+			previousYCoordinate = pointCordinates[1];
 			return;
 		}
 
 		float changeX = pointCordinates[0] - previousXCoordinate;
+		float changeY = -(pointCordinates[1] - previousYCoordinate);
+		
 
 		float width = wrappingLayout.getSizeScaledX();
+		float height = wrappingLayout.getSizeScaledY();
 		float changePercentage = changeX / width;
 
 		float newWidth = width + changeX;
+		float newHeight = height + changeY;
+
+		float minWidth = parentGLCanvas.getPixelGLConverter()
+				.getGLWidthForPixelWidth(brickLayout.getMinWidthPixels());
+		float minHeight = parentGLCanvas.getPixelGLConverter()
+				.getGLHeightForPixelHeight(brickLayout.getMinHeightPixels());
 		// float minWidth = parentGLCanvas.getPixelGLConverter()
 		// .getGLWidthForPixelWidth(brickLayout.getMinWidthPixels());
-		if (newWidth < parentGLCanvas.getPixelGLConverter()
-				.getGLWidthForPixelWidth(brickLayout.getMinWidthPixels()) - 0.001f)
-			return;
+		if (newWidth < minWidth - 0.001f) {
+			newWidth = minWidth;
+		}
+		
+		if (newHeight < minHeight - 0.001f) {
+			newHeight = minHeight;
+		}
 
 		previousXCoordinate = pointCordinates[0];
+		previousYCoordinate = pointCordinates[1];
+		
 
 		wrappingLayout.setAbsoluteSizeX(newWidth);
+		wrappingLayout.setAbsoluteSizeY(newHeight);
 		// groupColumn.setAbsoluteSizeX(width + changeX);
 
-		float height = wrappingLayout.getSizeScaledY();
-		wrappingLayout.setAbsoluteSizeY(height * (1 + changePercentage));
+		// float height = wrappingLayout.getSizeScaledY();
+//		wrappingLayout.setAbsoluteSizeY(height * (1 + changePercentage));
 
 		// centerBrick.getLayout().updateSubLayout();
 
