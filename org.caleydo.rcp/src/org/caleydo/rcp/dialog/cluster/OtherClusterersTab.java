@@ -18,6 +18,8 @@ public class OtherClusterersTab {
 	private Button locationDeep;
 	private Button typeShallow;
 	private Button typeDeep;
+	private Button metalShallow;
+	private Button metalDeep;
 	private Button other;
 
 	public OtherClusterersTab(TabFolder tabFolder) {
@@ -44,6 +46,11 @@ public class OtherClusterersTab {
 		typeShallow.setText("Object Type Shallow");
 		typeDeep = new Button(composite, SWT.RADIO);
 		typeDeep.setText("Object Type Deep");
+		
+		metalShallow = new Button(composite, SWT.RADIO);
+		metalShallow.setText("Metal Shallow");
+		metalDeep = new Button(composite, SWT.RADIO);
+		metalDeep.setText("Metal Deep");
 
 		other = new Button(composite, SWT.RADIO);
 		other.setText("Other");
@@ -70,6 +77,12 @@ public class OtherClusterersTab {
 		
 		if (typeDeep.getSelection())
 			clusterState.setClustererAlgo(EClustererAlgo.OBJECT_TYPE_DEEP);
+		
+		if (metalShallow.getSelection())
+			clusterState.setClustererAlgo(EClustererAlgo.METAL_SHALLOW);
+		
+		if (metalDeep.getSelection())
+			clusterState.setClustererAlgo(EClustererAlgo.METAL_DEEP);
 
 		clusterState.setClustererType(EClustererType.CONTENT_CLUSTERING);
 		return clusterState;

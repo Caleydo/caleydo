@@ -16,6 +16,8 @@ public enum EClustererAlgo {
 	LOCATION_DEEP("Location Deep"),
 	OBJECT_TYPE_SHALLOW("Object Type Shallow"),
 	OBJECT_TYPE_DEEP("Object Type Deep"),
+	METAL_SHALLOW("Metal Shallow"),
+	METAL_DEEP("Metal Deep"),
 	OTHER("Other");
 
 	private String sName;

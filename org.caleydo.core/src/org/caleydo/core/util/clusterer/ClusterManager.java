@@ -10,6 +10,7 @@ import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.util.clusterer.nominal.AlphabeticalPartitioner;
 import org.caleydo.core.util.clusterer.nominal.DeepLocationClusterer;
 import org.caleydo.core.util.clusterer.nominal.DeepTypeClusterer;
+import org.caleydo.core.util.clusterer.nominal.MetalDecisionTreeClusterer;
 import org.caleydo.core.util.clusterer.nominal.ShallowLocationClusterer;
 import org.caleydo.core.util.clusterer.nominal.ShallowTypeClusterer;
 import org.caleydo.core.util.logging.Logger;
@@ -76,6 +77,12 @@ public class ClusterManager {
 				break;
 			case OBJECT_TYPE_DEEP:
 				clusterResult = runClustering(new DeepTypeClusterer(), clusterState);
+				break;
+			case METAL_SHALLOW:
+				clusterResult = runClustering(new MetalDecisionTreeClusterer(), clusterState);
+				break;
+			case METAL_DEEP:
+				clusterResult = runClustering(new MetalDecisionTreeClusterer(), clusterState);
 				break;
 		}
 
