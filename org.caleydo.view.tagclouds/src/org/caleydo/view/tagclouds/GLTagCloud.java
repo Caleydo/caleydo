@@ -11,7 +11,9 @@ import javax.media.opengl.GLAutoDrawable;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -90,8 +92,8 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 	Button previousButton = new Button(EPickingType.TAG_DIMENSION_CHANGE,
 			BUTTON_PREVIOUS_ID, EIconTextures.HEAT_MAP_ARROW);
-	Button nextButton = new Button(EPickingType.TAG_DIMENSION_CHANGE, BUTTON_NEXT_ID,
-			EIconTextures.HEAT_MAP_ARROW);
+	Button nextButton = new Button(EPickingType.TAG_DIMENSION_CHANGE,
+			BUTTON_NEXT_ID, EIconTextures.HEAT_MAP_ARROW);
 
 	// private StorageSelectionManager storageSelectionManager;
 
@@ -135,12 +137,26 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 			HashMap<String, Integer> stringOccurences = new HashMap<String, Integer>();
 			stringOccurencesPerStorage.put(storageID, stringOccurences);
 			IStorage genericStorage = set.get(storageID);
-			if (!(genericStorage instanceof NominalStorage<?>))
-				continue;
-			NominalStorage<String> storage = (NominalStorage<String>) genericStorage;
+			NumericalStorage numericalStorage = null;
+			NominalStorage<String> storage = null;
+			boolean isNumericalStorage = false;
+			if (genericStorage instanceof NumericalStorage) {
+				isNumericalStorage = true;
+				numericalStorage = (NumericalStorage) genericStorage;
+			}
+			if (genericStorage instanceof NominalStorage<?>) {
+				storage = (NominalStorage<String>) genericStorage;
+				isNumericalStorage = false;
+			}
 
 			for (Integer contentID : contentVA) {
-				String string = storage.getRaw(contentID);
+				String string = null;
+				if (isNumericalStorage) {
+					string = new Float(numericalStorage.getFloat(
+							EDataRepresentation.RAW, contentID)).toString();
+				} else {
+					string = storage.getRaw(contentID);
+				}
 				if (string.isEmpty() || string.equals("NaN"))
 					string = "???";
 				if (stringOccurences.containsKey(string)) {
@@ -188,35 +204,41 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 			visibleStorageVA = clippedStorageVA;
 
-			Column previousDimensionColumn = new Column("previousDimensionColumn");
+			Column previousDimensionColumn = new Column(
+					"previousDimensionColumn");
 			previousDimensionColumn.setPixelGLConverter(parentGLCanvas
 					.getPixelGLConverter());
 			previousDimensionColumn.setPixelSizeX(15);
 
-			ElementLayout previousButtonLayout = new ElementLayout("previousButtonLayout");
-			previousButtonLayout
-					.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+			ElementLayout previousButtonLayout = new ElementLayout(
+					"previousButtonLayout");
+			previousButtonLayout.setPixelGLConverter(parentGLCanvas
+					.getPixelGLConverter());
 			previousButtonLayout.setPixelSizeY(20);
 			// previousButtonLayout.setDebug(true);
 
 			previousDimensionColumn.append(previousButtonLayout);
 
-			ButtonRenderer previousButtonRenderer = new ButtonRenderer(previousButton,
-					this, textureManager, ButtonRenderer.TEXTURE_ROTATION_90);
+			ButtonRenderer previousButtonRenderer = new ButtonRenderer(
+					previousButton, this, textureManager,
+					ButtonRenderer.TEXTURE_ROTATION_90);
 
 			previousButtonLayout.setRenderer(previousButtonRenderer);
 
 			Column nextDimensionColumn = new Column("nextDimensionColumn");
-			nextDimensionColumn.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+			nextDimensionColumn.setPixelGLConverter(parentGLCanvas
+					.getPixelGLConverter());
 			nextDimensionColumn.setPixelSizeX(15);
 
-			ElementLayout nextButtonLayout = new ElementLayout("nextButtonLayout");
-			nextButtonLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+			ElementLayout nextButtonLayout = new ElementLayout(
+					"nextButtonLayout");
+			nextButtonLayout.setPixelGLConverter(parentGLCanvas
+					.getPixelGLConverter());
 			nextButtonLayout.setPixelSizeY(20);
 			// nextButtonLayout.setDebug(true);
 
-			ButtonRenderer nextButtonRenderer = new ButtonRenderer(nextButton, this,
-					textureManager, ButtonRenderer.TEXTURE_ROTATION_270);
+			ButtonRenderer nextButtonRenderer = new ButtonRenderer(nextButton,
+					this, textureManager, ButtonRenderer.TEXTURE_ROTATION_270);
 
 			nextButtonLayout.setRenderer(nextButtonRenderer);
 
@@ -272,7 +294,8 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 		for (Integer storageID : visibleStorageVA) {
 
-			ElementLayout storageCaptionLayout = new ElementLayout("storageCaptionLayout");
+			ElementLayout storageCaptionLayout = new ElementLayout(
+					"storageCaptionLayout");
 			storageCaptionLayout.setGrabX(true);
 
 			StorageCaptionRenderer storageCaptionRenderer = new StorageCaptionRenderer(
@@ -293,15 +316,15 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 			for (Entry<String, Integer> entry : stringOccurences.entrySet()) {
 
-				sortedContent.add(new Pair<Integer, String>(entry.getValue(), entry
-						.getKey()));
+				sortedContent.add(new Pair<Integer, String>(entry.getValue(),
+						entry.getKey()));
 
 			}
 
 			Collections.sort(sortedContent);
 
-			int pixel = parentGLCanvas.getPixelGLConverter().getPixelHeightForGLHeight(
-					viewFrustum.getHeight());
+			int pixel = parentGLCanvas.getPixelGLConverter()
+					.getPixelHeightForGLHeight(viewFrustum.getHeight());
 			int numberEntries = pixel / 27;
 
 			ArrayList<Pair<String, Integer>> shortenedAlpahbeticalList = new ArrayList<Pair<String, Integer>>(
@@ -310,12 +333,12 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 			double totalOccurencesRendered = 0;
 
-			for (int count = sortedContent.size() - 1; (count >= sortedContent.size()
-					- numberEntries)
+			for (int count = sortedContent.size() - 1; (count >= sortedContent
+					.size() - numberEntries)
 					&& (count > 0); count--) {
 				Pair<Integer, String> sortedPair = sortedContent.get(count);
-				shortenedAlpahbeticalList.add(new Pair<String, Integer>(sortedPair
-						.getSecond(), sortedPair.getFirst()));
+				shortenedAlpahbeticalList.add(new Pair<String, Integer>(
+						sortedPair.getSecond(), sortedPair.getFirst()));
 				totalOccurencesRendered += Math.log(sortedPair.getFirst());
 			}
 
@@ -328,8 +351,8 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 				ratio = Math.log(entry.getSecond()) / totalOccurencesRendered
 						* remainingRatio;
 				tagLayout.setRatioSizeY((float) ratio);
-				TagRenderer tagRenderer = new TagRenderer(textRenderer, entry.getFirst(),
-						this);
+				TagRenderer tagRenderer = new TagRenderer(textRenderer,
+						entry.getFirst(), this);
 				tagRenderer.setEven(isEven);
 				if (shortenedAlpahbeticalList.size() < numberEntries)
 					tagRenderer.setAllowTextScaling(true);
@@ -339,12 +362,14 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 			}
 
-			ElementLayout selectionTagLayout = new ElementLayout("selectionTagLayout");
+			ElementLayout selectionTagLayout = new ElementLayout(
+					"selectionTagLayout");
 			selectionTagLayout.setGrabX(true);
 			// selectionTagLayout.setDebug(true);
 			selectionRow.setFrameColor(1, 0, 0, 1);
 			selectionRow.append(selectionTagLayout);
-			TagRenderer tagRenderer = new TagRenderer(textRenderer, this, storageID);
+			TagRenderer tagRenderer = new TagRenderer(textRenderer, this,
+					storageID);
 			selectedTagRenderers.add(tagRenderer);
 			selectionTagLayout.setRenderer(tagRenderer);
 
@@ -398,7 +423,8 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
 		super.reshape(drawable, x, y, width, height);
 		initMapping();
 		layoutManager.updateLayout();
@@ -489,10 +515,11 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		super.registerEventListeners();
 
 		selectionUpdateListener = new SelectionUpdateListener();
-		selectionUpdateListener
-				.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		selectionUpdateListener.setExclusiveDataDomainType(dataDomain
+				.getDataDomainType());
 		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class,
+				selectionUpdateListener);
 
 	}
 

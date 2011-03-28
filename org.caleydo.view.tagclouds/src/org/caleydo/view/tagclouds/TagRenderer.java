@@ -4,7 +4,10 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -24,7 +27,8 @@ public class TagRenderer extends LayoutRenderer {
 	private boolean isEven = false;
 	private boolean allowTextScaling = false;
 
-	public TagRenderer(CaleydoTextRenderer textRenderer, String text, GLTagCloud tagCloud) {
+	public TagRenderer(CaleydoTextRenderer textRenderer, String text,
+			GLTagCloud tagCloud) {
 		this.textRenderer = textRenderer;
 		this.text = text;
 		this.tagCloud = tagCloud;
@@ -62,10 +66,16 @@ public class TagRenderer extends LayoutRenderer {
 
 		if (!tagCloud.getContentVA().contains(contentID))
 			return;
+		IStorage genericStorage = tagCloud.getSet().get(storageID);
+		if (genericStorage instanceof NumericalStorage) {
+			NumericalStorage numericalStorage = (NumericalStorage) genericStorage;
+			text = new Float(numericalStorage.getFloat(EDataRepresentation.RAW,
+					contentID)).toString();
+		} else {
+			NominalStorage<String> storage = (NominalStorage<String>) genericStorage;
+			text = storage.getRaw(contentID);
+		}
 
-		NominalStorage<String> storage = (NominalStorage<String>) tagCloud.getSet().get(
-				storageID);
-		text = storage.getRaw(contentID);
 	}
 
 	public void render(GL2 gl) {
@@ -91,11 +101,11 @@ public class TagRenderer extends LayoutRenderer {
 			float renderHeight = maxHeight;
 
 			topSpacing = (y - renderHeight) / 2;
-			textRenderer.renderTextInBounds(gl, text, sideSpacing, topSpacing, 0, x - 3
-					* sideSpacing, renderHeight);
+			textRenderer.renderTextInBounds(gl, text, sideSpacing, topSpacing,
+					0, x - 3 * sideSpacing, renderHeight);
 		} else {
-			textRenderer.renderTextInBounds(gl, text, sideSpacing, topSpacing / 2, 0, x
-					- 3 * sideSpacing, y - topSpacing);
+			textRenderer.renderTextInBounds(gl, text, sideSpacing,
+					topSpacing / 2, 0, x - 3 * sideSpacing, y - topSpacing);
 		}
 	};
 

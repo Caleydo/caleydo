@@ -25,6 +25,7 @@ public class OverviewHeatMapRenderer extends AContainedViewRenderer {
 
 	private ColorMapping colorMapper;
 	private ArrayList<float[]> heatMapValues;
+	private boolean showStandardDeviation;
 
 	/**
 	 * Constructor.
@@ -40,6 +41,7 @@ public class OverviewHeatMapRenderer extends AContainedViewRenderer {
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 		heatMapValues = new ArrayList<float[]>();
+		this.showStandardDeviation = showStandardDeviation;
 
 		float[] expressionValues = new float[contentVA.size()];
 
@@ -87,21 +89,36 @@ public class OverviewHeatMapRenderer extends AContainedViewRenderer {
 		for (float[] currentValues : heatMapValues) {
 			float currentPositionY = 0;
 
-			for (float value : currentValues) {
-				if(value >1 )
+			for (int i = 0; i < currentValues.length; i++) {
+
+				float value = currentValues[i];
+				float triangleOffsetTop = 0;
+				float triangleOffsetBottom = 0;
+
+				if (showStandardDeviation && i == 0) {
+					triangleOffsetBottom = heatMapElementWidth / 2.0f;
+				}
+
+				if (showStandardDeviation && i == 2) {
+					triangleOffsetTop = heatMapElementWidth / 2.0f;
+				}
+
+				if (value > 1)
 					value = 1;
-				if(value < 0)
+				if (value < 0)
 					value = 0;
 				float[] mappingColor = colorMapper.getColor(value);
 
 				gl.glColor3f(mappingColor[0], mappingColor[1], mappingColor[2]);
-				gl.glVertex3f(currentPositionX, currentPositionY, 0);
-				gl.glVertex3f(currentPositionX + heatMapElementWidth,
+				gl.glVertex3f(currentPositionX + triangleOffsetBottom,
 						currentPositionY, 0);
-				gl.glVertex3f(currentPositionX + heatMapElementWidth,
-						currentPositionY + heatMapElementHeight, 0);
-				gl.glVertex3f(currentPositionX, currentPositionY
+				gl.glVertex3f(currentPositionX + heatMapElementWidth
+						- triangleOffsetBottom, currentPositionY, 0);
+				gl.glVertex3f(currentPositionX + heatMapElementWidth
+						- triangleOffsetTop, currentPositionY
 						+ heatMapElementHeight, 0);
+				gl.glVertex3f(currentPositionX + triangleOffsetTop,
+						currentPositionY + heatMapElementHeight, 0);
 
 				currentPositionY += heatMapElementHeight;
 			}
@@ -137,7 +154,7 @@ public class OverviewHeatMapRenderer extends AContainedViewRenderer {
 
 	@Override
 	public int getMinWidthPixels() {
-		//TODO: Maybe not static?
+		// TODO: Maybe not static?
 		return 150;
 	}
 }
