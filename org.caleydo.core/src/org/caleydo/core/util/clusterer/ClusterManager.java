@@ -8,6 +8,10 @@ import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.util.clusterer.nominal.AlphabeticalPartitioner;
+import org.caleydo.core.util.clusterer.nominal.DeepLocationClusterer;
+import org.caleydo.core.util.clusterer.nominal.DeepTypeClusterer;
+import org.caleydo.core.util.clusterer.nominal.ShallowLocationClusterer;
+import org.caleydo.core.util.clusterer.nominal.ShallowTypeClusterer;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -60,6 +64,18 @@ public class ClusterManager {
 				break;
 			case ALPHABETICAL:
 				clusterResult = runClustering(new AlphabeticalPartitioner(), clusterState);
+				break;
+			case LOCATION_SHALLOW:
+				clusterResult = runClustering(new ShallowLocationClusterer(), clusterState);
+				break;
+			case LOCATION_DEEP:
+				clusterResult = runClustering(new DeepLocationClusterer(), clusterState);
+				break;
+			case OBJECT_TYPE_SHALLOW:
+				clusterResult = runClustering(new ShallowTypeClusterer(), clusterState);
+				break;
+			case OBJECT_TYPE_DEEP:
+				clusterResult = runClustering(new DeepTypeClusterer(), clusterState);
 				break;
 		}
 

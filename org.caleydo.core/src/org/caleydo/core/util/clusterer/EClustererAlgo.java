@@ -12,6 +12,10 @@ public enum EClustererAlgo {
 
 	// custom clusterer
 	ALPHABETICAL("Alphabetical"),
+	LOCATION_SHALLOW("Location Shallow"),
+	LOCATION_DEEP("Location Deep"),
+	OBJECT_TYPE_SHALLOW("Object Type Shallow"),
+	OBJECT_TYPE_DEEP("Object Type Deep"),
 	OTHER("Other");
 
 	private String sName;
