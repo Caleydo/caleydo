@@ -53,6 +53,7 @@ import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CentralBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.ui.OverviewDetailBandRenderer;
 
@@ -256,6 +257,13 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 							group.getEndIndex() + 1));
 
 			subBrick.setContentVA(group, subVA);
+
+			ABrickLayoutTemplate layoutTemplate = new DefaultBrickLayoutTemplate(
+					subBrick, glVisBricksView, this,
+					subBrick.getLayoutConfigurer());
+
+			subBrick.setBrickLayoutTemplate(layoutTemplate,
+					layoutTemplate.getDefaultViewType());
 			// FIXME temp solution
 			subBrick.getLayout().setPixelGLConverter(
 					parentGLCanvas.getPixelGLConverter());
@@ -810,8 +818,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				if (toBigBy < 0)
 					break;
 				if (!brick.isInOverviewMode() && !brick.isSizeFixed()) {
-					// toBigBy -= brick.collapse();
-					// changeMade = true;
+					toBigBy -= brick.collapse();
+					changeMade = true;
 				}
 			}
 			if (changeMade)
@@ -825,8 +833,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				if (toBigBy < 0)
 					break;
 				if (!brick.isInOverviewMode() && !brick.isSizeFixed()) {
-					// toBigBy -= brick.collapse();
-					// changeMade = true;
+					toBigBy -= brick.collapse();
+					changeMade = true;
 				}
 			}
 			if (changeMade)
@@ -862,8 +870,6 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	public void showDetailedBrick(GLBrick brick, boolean expandLeft) {
-		
-		
 
 		detailBrickLayout = new Column("detailBrickWrappingLayout");
 
@@ -880,18 +886,19 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				new DetailBrickLayoutTemplate(detailBrick, this,
 						glVisBricksView, detailBrick.getLayoutConfigurer()),
 				brick.getCurrentViewType());
-		
-		overviewDetailGapLayout = new ElementLayout(
-		"brickSpacingLayout");
+
+		overviewDetailGapLayout = new ElementLayout("brickSpacingLayout");
 		overviewDetailGapLayout.setPixelGLConverter(parentGLCanvas
-		.getPixelGLConverter());
+				.getPixelGLConverter());
 		overviewDetailGapLayout.setPixelSizeX(OVERVIEW_DETAIL_GAP_PIXEL);
 		overviewDetailGapLayout.setRatioSizeY(1);
-		
-		if(expandLeft) {
-			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(detailBrick, brick));
+
+		if (expandLeft) {
+			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(
+					detailBrick, brick));
 		} else {
-			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(brick, detailBrick));
+			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(
+					brick, detailBrick));
 		}
 
 		showDetailBrick = true;

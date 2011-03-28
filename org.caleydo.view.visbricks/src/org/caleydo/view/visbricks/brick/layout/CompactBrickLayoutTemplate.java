@@ -179,6 +179,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinHeightPixels() {
+		// FIXME This is dirty
 		if (viewRenderer == null)
 			return 3 * SPACING_PIXELS + FUEL_BAR_HEIGHT_PIXELS;
 		return 3 * SPACING_PIXELS + FUEL_BAR_HEIGHT_PIXELS
@@ -190,8 +191,13 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		//
 		// return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
 		// .getMinWidth());
+		// FIXME This is dirty
+		if (viewRenderer == null)
+			return 3 * SPACING_PIXELS + 60 // viewRenderer.getMinWidthPixels()
+					+ BUTTON_WIDTH_PIXELS;
 		return 3 * SPACING_PIXELS + viewRenderer.getMinWidthPixels()
 				+ BUTTON_WIDTH_PIXELS;
+
 	}
 
 	// @Override

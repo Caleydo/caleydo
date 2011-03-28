@@ -1001,7 +1001,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		ABrickLayoutTemplate layoutTemplate = brickLayout
 				.getCollapsedLayoutTemplate();
-		// isSizeFixed = false;
+//		isSizeFixed = false;
 
 		setBrickLayoutTemplate(layoutTemplate,
 				layoutTemplate.getDefaultViewType());
@@ -1040,7 +1040,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			wrappingLayout.setAbsoluteSizeX(defaultWidth);
 		}
 		isInOverviewMode = false;
-
+		isSizeFixed = true;
+		brickLayout.setLockResizing(true);
 	}
 
 	public boolean isInOverviewMode() {
