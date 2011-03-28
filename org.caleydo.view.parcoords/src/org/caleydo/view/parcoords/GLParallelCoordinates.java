@@ -748,8 +748,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				gl.glColor4fv(Y_AXIS_COLOR, 0);
 				gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 			}
-			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.Y_AXIS_SELECTION, storageVA.get(iCount)));
+			
+			int axisPickingID = pickingManager.getPickingID(uniqueID,
+					EPickingType.Y_AXIS_SELECTION, storageVA.get(iCount));
+			gl.glPushName(axisPickingID);
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(fXPosition, 0, AXIS_Z);
 			gl.glVertex3f(fXPosition, renderStyle.getAxisHeight(), AXIS_Z);
@@ -762,13 +764,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 			gl.glEnd();
 			gl.glDisable(GL2.GL_LINE_STIPPLE);
-
-			if (detailLevel != DetailLevel.HIGH
-					|| !renderStyle.isEnoughSpaceForText(numberOfAxis)) {
-				// pop the picking id here when we don't want to include the
-				// axis label
-				gl.glPopName();
-			}
+			gl.glPopName();
+		
 
 			// if (detailLevel == DetailLevel.LO) {
 			if (!isRenderedRemote()) {
@@ -810,16 +807,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 			sAxisLabel = set.get(storageVA.get(iCount)).getLabel();
 
-			// gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 			gl.glTranslatef(fXPosition,
 					renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(), 0);
-			// gl.glRotatef(25, 0, 0, 1);
-			//
-			// float fScaling = renderStyle.getSmallFontScalingFactor();
-			//
-			// textRenderer.renderText(gl, sAxisLabel, 0, 0, 0,
-			// fScaling,
-			// PCRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
+
 
 			float width = renderStyle.getAxisSpacing(storageVA.size());
 			if(iCount == numberOfAxis-1)
@@ -827,7 +817,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			textRenderer.renderTextInBounds(gl, sAxisLabel, 0, 0, 0.02f, width,
 					parentGLCanvas.getPixelGLConverter().getGLHeightForPixelHeight(10));
 
-			// gl.glRotatef(-25, 0, 0, 1);
 			gl.glTranslatef(-fXPosition,
 					-(renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing()),
 					0);
@@ -854,8 +843,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			} else {
 				// TODO
 			}
-
-			gl.glPopAttrib();
 
 			if (!isRenderedRemote()) {
 
@@ -1003,8 +990,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 				}
 				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
-
-				gl.glPopName();
 			}
 
 			iCount++;
