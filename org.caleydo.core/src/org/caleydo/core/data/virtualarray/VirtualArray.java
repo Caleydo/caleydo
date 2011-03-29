@@ -299,17 +299,20 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 *         does not contain the element
 	 */
 	public int indexOf(Integer id) {
-		if (isHashIDToIndexDirty)
-			buildIDMap();
-
-		ArrayList<Integer> results = hashIDToIndex.get(id);
-		if (results != null) {
-			if (results.size() > 1)
-				System.out.println("Ignored multi-mapping");
-			return results.get(0);
-		}
-		else
-			return -1;
+		
+		return virtualArray.indexOf(id);
+		
+//		if (isHashIDToIndexDirty)
+//			buildIDMap();
+//
+//		ArrayList<Integer> results = hashIDToIndex.get(id);
+//		if (results != null) {
+//			if (results.size() > 1)
+//				System.out.println("Ignored multi-mapping");
+//			return results.get(0);
+//		}
+//		else
+//			return -1;
 	}
 
 	private void buildIDMap() {
@@ -346,13 +349,18 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 *         elements exist
 	 */
 	public ArrayList<Integer> indicesOf(Integer id) {
-		if (isHashIDToIndexDirty)
-			buildIDMap();
-		ArrayList<Integer> list = hashIDToIndex.get(id);
-		if (list != null)
-			return list;
-		else
-			return new ArrayList<Integer>(1);
+		
+		ArrayList<Integer> indices = new ArrayList<Integer>();
+		indices.add(indexOf(id));
+		return indices;
+//		
+//		if (isHashIDToIndexDirty)
+//			buildIDMap();
+//		ArrayList<Integer> list = hashIDToIndex.get(id);
+//		if (list != null)
+//			return list;
+//		else
+//			return new ArrayList<Integer>(1);
 	}
 
 	/**
@@ -450,7 +458,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	public List<Group> getGroupOf(Integer id) {
 		ArrayList<Group> resultGroups = new ArrayList<Group>(1);
 		ArrayList<Integer> indices = indicesOf(id);
-
+		
 		if(indices.size() >1)
 			System.out.println("wu");
 

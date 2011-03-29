@@ -117,9 +117,12 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 		for (int vaIndex = group.getStartIndex(); vaIndex < group.getStartIndex() + group.getSize(); vaIndex++) {
 			Integer id = va1.get(vaIndex);
 			List<Group> groups2 = va2.getGroupOf(id);
+			
 			if(groups2.size()>1)
 			{
-				throw new IllegalArgumentException("wa");
+				System.out.println("Similarity size sum: " +groups2.size());
+//				throw new IllegalArgumentException("wa");
+				va2.getGroupOf(id);
 			}
 
 			for (Group group2 : groups2) {
@@ -139,7 +142,7 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 		
 		if(sum != group.getSize())
 		{
-			System.out.println("qe");
+			System.out.println("Similarity size sum " + sum + "!= group sum " +group.getSize());
 		}
 	}
 

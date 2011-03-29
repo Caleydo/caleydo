@@ -390,15 +390,15 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 				xStart = -(leftDimGroup.getLayout().getSizeScaledX() - brick.getLayout()
 						.getSizeScaledX()) / 2;
 
-			if (groupMatch.getBrick().isInOverviewMode())
-				continue;
+//			if (groupMatch.getBrick().isInOverviewMode())
+//				continue;
 
 			for (SubGroupMatch subGroupMatch : groupMatch.getSubGroupMatches()) {
 
 				GLBrick subBrick = subGroupMatch.getBrick();
 
-				if (subGroupMatch.getBrick().isInOverviewMode())
-					continue;
+//				if (subGroupMatch.getBrick().isInOverviewMode())
+//					continue;
 
 				HashMap<SelectionType, Float> hashRatioToSelectionType = subGroupMatch
 						.getHashRatioToSelectionType();
