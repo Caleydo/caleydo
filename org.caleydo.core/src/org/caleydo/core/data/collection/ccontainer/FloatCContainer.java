@@ -120,9 +120,11 @@ public class FloatCContainer
 		float fTmp;
 		for (int index = 0; index < fArContainer.length; index++) {
 			fTmp = fArContainer[index];
+		
 			fArTarget[index] = (float) Math.log(fTmp) / (float) Math.log(iBase);
+			
 			if (fArTarget[index] == Float.NEGATIVE_INFINITY) {
-				fArTarget[index] = Float.NaN;
+				fArTarget[index] = 0;
 			}
 		}
 

@@ -447,8 +447,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 						}
 					} else {
 
-						float maxRatio = Math.max(subGroupMatch.getLeftSimilarityRatio(),
-								subGroupMatch.getRightSimilarityRatio());
+						float maxRatio = (subGroupMatch.getLeftSimilarityRatio() +
+						subGroupMatch.getRightSimilarityRatio()) /2;
 						if (maxRatio < 0.5f)
 							trendRatio = (glVisBricks.getConnectionsFocusFactor() - maxRatio);
 						else

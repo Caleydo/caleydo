@@ -311,10 +311,11 @@ public class Set
 
 	@Override
 	public Histogram getHistogram(ContentVirtualArray contentVA) {
-		if (!isSetHomogeneous) {
-			throw new UnsupportedOperationException(
-				"Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use storage based histograms instead!");
-		}
+		// FIXME put that back
+//		if (!isSetHomogeneous) {
+//			throw new UnsupportedOperationException(
+//				"Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use storage based histograms instead!");
+//		}
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
