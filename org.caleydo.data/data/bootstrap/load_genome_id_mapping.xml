@@ -36,7 +36,7 @@
 
 	<Cmd type="CREATE_ID_TYPE" detail="PATHWAY" attrib1="GENE" attrib2="INT" />
 	
-	<Cmd type="CREATE_ID_TYPE" detail="GO_CELLULAR_COMPARTMENT" attrib1="GENE" attrib2="STRING" />
+	<Cmd type="CREATE_ID_TYPE" detail="GO_CELLULAR_COMPONENT" attrib1="GENE" attrib2="STRING" />
 
 
 	<!-- ************************** Experiments ************************** -->
@@ -91,7 +91,7 @@
 		
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE"
 		detail="data/genome/mapping/david/ORGANISM_DAVID2GOTERM_CC_ALL.txt"
-		attrib1="DAVID_2_GO_CELLULAR_COMPARTMENT" attrib2=";"
+		attrib1="DAVID_2_GO_CELLULAR_COMPONENT" attrib2=";"
 		attrib3="0 -1" attrib5="false" />
 
 </details>
