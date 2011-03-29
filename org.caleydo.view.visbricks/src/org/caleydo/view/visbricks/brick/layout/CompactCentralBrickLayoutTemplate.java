@@ -121,6 +121,10 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinHeightPixels() {
+		if(viewRenderer == null)
+		{
+			return 50;
+		}
 		return 5 * SPACING_PIXELS + DIMENSION_BAR_HEIGHT_PIXELS
 				+ LINE_SEPARATOR_HEIGHT_PIXELS + CAPTION_HEIGHT_PIXELS
 				+ viewRenderer.getMinHeightPixels();

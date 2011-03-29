@@ -79,24 +79,23 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	private GLVisBricks glVisBricksView;
 
 	private Column groupColumn;
-	private Row detailRow;
+	protected Row detailRow;
 
-	private ArrayList<GLBrick> bottomBricks;
-	private ArrayList<GLBrick> topBricks;
+	protected ArrayList<GLBrick> bottomBricks;
+	protected ArrayList<GLBrick> topBricks;
 
 	private boolean isGlobalViewSwitching = false;
 
-	private Column bottomCol;
+	protected Column bottomCol;
 	private GLBrick centerBrick;
 	private GLBrick detailBrick;
 	private Column centerLayout;
-	private Column topCol;
+	protected Column topCol;
 	// private ViewFrustum brickFrustum;
-	private ISet set;
-	private ASetBasedDataDomain dataDomain;
+	protected ISet set;
+	protected ASetBasedDataDomain dataDomain;
 
-	private EventPublisher eventPublisher = GeneralManager.get()
-			.getEventPublisher();
+	private EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 	private ContentVAUpdateListener contentVAUpdateListener;
 	private ReplaceContentVAListener replaceContentVAListener;
 	private LayoutSizeCollisionListener layoutSizeCollisionListener;
@@ -105,7 +104,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	private Queue<GLBrick> uninitializedBricks = new LinkedList<GLBrick>();
 
-	private GLVisBricks visBricks;
+	protected GLVisBricks visBricks;
 
 	// Stuff for dragging up and down
 	private boolean isVerticalMoveDraggingActive = false;
@@ -131,17 +130,17 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		super(canvas, viewFrustum, true);
 
 		viewType = VIEW_ID;
-		
+
 		detailRow = new Row("detailRow");
 		detailRow.setXDynamic(true);
 		detailRow.setFrameColor(1, 0, 1, 1);
 		detailRow.sethAlign(HAlign.CENTER);
-//		detailRow.setDebug(true);
+		// detailRow.setDebug(true);
 
 		groupColumn = new Column("dimensionGroup");
 		groupColumn.setXDynamic(true);
 		groupColumn.setVAlign(VAlign.CENTER);
-//		groupColumn.setDebug(true);
+		// groupColumn.setDebug(true);
 
 		bottomCol = new Column("dimensionGroupColumnBottom");
 		bottomCol.setFrameColor(1, 0, 1, 1);
@@ -207,44 +206,40 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	/**
 	 * Creates all bricks of the dimension group
 	 */
-	private void createBricks() {
+	protected void createBricks(ContentVirtualArray contentVA) {
 		// create basic layouts
 
 		minPixelWidth = PIXEL_PER_DIMENSION * set.size();
 		if (minPixelWidth < MIN_BRICK_WIDTH_PIXEL)
 			minPixelWidth = MIN_BRICK_WIDTH_PIXEL;
-		minWidth = parentGLCanvas.getPixelGLConverter()
-				.getGLWidthForPixelWidth(minPixelWidth);
+		minWidth = parentGLCanvas.getPixelGLConverter().getGLWidthForPixelWidth(
+				minPixelWidth);
 
 		centerBrick = createBrick(centerLayout);
-		centerBrick.setContentVA(new Group(), set.getContentData(Set.CONTENT)
-				.getContentVA());
+		centerBrick.setContentVA(new Group(), contentVA);
 
 		ABrickLayoutTemplate layoutTemplate;
 
 		if (isCollapsed) {
-			layoutTemplate = new CompactCentralBrickLayoutTemplate(centerBrick,
-					this, visBricks, centerBrick.getLayoutConfigurer());
-		} else {
-			layoutTemplate = new CentralBrickLayoutTemplate(centerBrick, this,
+			layoutTemplate = new CompactCentralBrickLayoutTemplate(centerBrick, this,
 					visBricks, centerBrick.getLayoutConfigurer());
+		} else {
+			layoutTemplate = new CentralBrickLayoutTemplate(centerBrick, this, visBricks,
+					centerBrick.getLayoutConfigurer());
 		}
 		centerBrick.setBrickLayoutTemplate(layoutTemplate,
 				layoutTemplate.getDefaultViewType());
 
-		createSubBricks();
+		createSubBricks(contentVA);
 	}
 
 	/**
 	 * Creates all bricks except for the center brick based on the groupList in
 	 * the contentVA
 	 */
-	private void createSubBricks() {
+	protected void createSubBricks(ContentVirtualArray contentVA) {
 
 		destroyOldBricks();
-
-		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT)
-				.getContentVA();
 
 		if (contentVA.getGroupList() == null)
 			return;
@@ -256,21 +251,20 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		for (Group group : groupList) {
 			GLBrick subBrick = createBrick(new ElementLayout("subbrick"));
 
-			ContentVirtualArray subVA = new ContentVirtualArray("CONTENT",
-					contentVA.getVirtualArray().subList(group.getStartIndex(),
+			ContentVirtualArray subVA = new ContentVirtualArray("CONTENT", contentVA
+					.getVirtualArray().subList(group.getStartIndex(),
 							group.getEndIndex() + 1));
 
 			subBrick.setContentVA(group, subVA);
 
 			ABrickLayoutTemplate layoutTemplate = new DefaultBrickLayoutTemplate(
-					subBrick, glVisBricksView, this,
-					subBrick.getLayoutConfigurer());
+					subBrick, glVisBricksView, this, subBrick.getLayoutConfigurer());
 
 			subBrick.setBrickLayoutTemplate(layoutTemplate,
 					layoutTemplate.getDefaultViewType());
 			// FIXME temp solution
-			subBrick.getLayout().setPixelGLConverter(
-					parentGLCanvas.getPixelGLConverter());
+			subBrick.getLayout()
+					.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 			subBrick.getLayout().setPixelSizeY(80);
 
 			if (centerBrick.getAverageValue() < subBrick.getAverageValue()) {
@@ -280,10 +274,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				insertBrick(subBrick, bottomBricks, bottomCol);
 			}
 		}
-		ElementLayout brickSpacingLayout = new ElementLayout(
-				"brickSpacingLayout");
-		brickSpacingLayout.setPixelGLConverter(parentGLCanvas
-				.getPixelGLConverter());
+		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
+		brickSpacingLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		brickSpacingLayout.setPixelSizeY(10);
 		brickSpacingLayout.setRatioSizeX(0);
 
@@ -310,8 +302,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	 * @return
 	 */
 	private GLBrick createBrick(ElementLayout wrappingLayout) {
-		ViewFrustum brickFrustum = new ViewFrustum(
-				ECameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4, 4);
+		ViewFrustum brickFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
+				0, 0, 0, -4, 4);
 		GLBrick brick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
 				.createGLView(GLBrick.class, getParentGLCanvas(), brickFrustum);
 
@@ -326,8 +318,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(brick);
 		wrappingLayout.setRenderer(brickRenderer);
-		wrappingLayout
-				.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		wrappingLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		if (isCollapsed) {
 			wrappingLayout.setPixelSizeX(visBricks.getSideArchWidthPixels());
 		} else {
@@ -345,13 +336,11 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	 * @param bricks
 	 * @param layout
 	 */
-	private void insertBrick(GLBrick subBrick, ArrayList<GLBrick> bricks,
-			Column layout) {
+	private void insertBrick(GLBrick subBrick, ArrayList<GLBrick> bricks, Column layout) {
 
 		int count;
 		for (count = 0; count < bricks.size(); count++) {
-			if (bricks.get(count).getAverageValue() > subBrick
-					.getAverageValue())
+			if (bricks.get(count).getAverageValue() > subBrick.getAverageValue())
 				break;
 		}
 		bricks.add(count, subBrick);
@@ -363,14 +352,12 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	 */
 	private void destroyOldBricks() {
 		for (GLBrick brick : topBricks) {
-			GeneralManager.get().getViewGLCanvasManager()
-					.unregisterGLView(brick);
+			GeneralManager.get().getViewGLCanvasManager().unregisterGLView(brick);
 			brick.unregisterEventListeners();
 			brick.destroy();
 		}
 		for (GLBrick brick : bottomBricks) {
-			GeneralManager.get().getViewGLCanvasManager()
-					.unregisterGLView(brick);
+			GeneralManager.get().getViewGLCanvasManager().unregisterGLView(brick);
 			brick.unregisterEventListeners();
 			brick.destroy();
 		}
@@ -403,8 +390,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			if (!(centerLayout.getSizeScaledY() > 0)) {
 				bottomCol.setRatioSizeY(0.5f);
 				topCol.setRatioSizeY(0.5f);
-				centerLayout.setPixelGLConverter(parentGLCanvas
-						.getPixelGLConverter());
+				centerLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 				centerLayout.setPixelSizeY(archHeight);
 			}
 		}
@@ -416,17 +402,15 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		contentVAUpdateListener = new ContentVAUpdateListener();
 		contentVAUpdateListener.setHandler(this);
-		contentVAUpdateListener.setExclusiveDataDomainType(dataDomain
-				.getDataDomainType());
-		eventPublisher.addListener(ContentVAUpdateEvent.class,
-				contentVAUpdateListener);
+		contentVAUpdateListener
+				.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
 
 		replaceContentVAListener = new ReplaceContentVAListener();
 		replaceContentVAListener.setHandler(this);
 		replaceContentVAListener.setExclusiveDataDomainType(dataDomain
 				.getDataDomainType());
-		eventPublisher.addListener(ReplaceContentVAEvent.class,
-				replaceContentVAListener);
+		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
 
 		layoutSizeCollisionListener = new LayoutSizeCollisionListener();
 		layoutSizeCollisionListener.setHandler(this);
@@ -467,7 +451,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			topBricks.clear();
 			bottomCol.clear();
 			bottomBricks.clear();
-			createSubBricks();
+			createSubBricks(set.getContentData(Set.CONTENT).getContentVA());
 			detailRow.updateSubLayout();
 			// groupColumn.updateSubLayout();
 			visBricks.updateConnectionLinesBetweenDimensionGroups();
@@ -493,9 +477,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void initRemote(GL2 gl, AGLView glParentView,
-			GLMouseListener glMouseListener) {
-		createBricks();
+	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
+		createBricks(set.getContentData(Set.CONTENT).getContentVA());
 		init(gl);
 	}
 
@@ -589,8 +572,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void setDraggingStartPoint(float mouseCoordinateX,
-			float mouseCoordinateY) {
+	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
 		// TODO Auto-generated method stub
 
 	}
@@ -612,8 +594,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void handleDrop(GL2 gl, float mouseCoordinateX,
-			float mouseCoordinateY) {
+	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 
 		System.out.println("handle drop");
 	}
@@ -684,7 +665,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		for (GLBrick brick : bottomBricks) {
 			brick.setContainedView(viewType);
 		}
-		if(detailBrick != null) {
+		if (detailBrick != null) {
 			detailBrick.setContainedView(viewType);
 		}
 		// centerBrick.setRemoteView(viewType);
@@ -693,8 +674,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	public float getMinWidth() {
-		return parentGLCanvas.getPixelGLConverter().getGLWidthForPixelWidth(
-				minPixelWidth);
+		return parentGLCanvas.getPixelGLConverter()
+				.getGLWidthForPixelWidth(minPixelWidth);
 	}
 
 	/**
@@ -760,11 +741,11 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		}
 		return getBricks();
 	}
-	
+
 	public boolean isDetailBrickShown() {
 		return isDetailBrickShown;
 	}
-	
+
 	public boolean isExpandLeft() {
 		return expandLeft;
 	}
@@ -822,8 +803,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void handleLayoutSizeCollision(int managingClassID, int layoutID,
-			float toBigBy) {
+	public void handleLayoutSizeCollision(int managingClassID, int layoutID, float toBigBy) {
 		if (managingClassID != uniqueID)
 			return;
 
@@ -867,7 +847,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		for (GLBrick brick : bottomBricks) {
 			brick.setGlobalViewSwitching(isGlobalViewSwitching);
 		}
-		if(detailBrick != null) {
+		if (detailBrick != null) {
 			detailBrick.setGlobalViewSwitching(isGlobalViewSwitching);
 		}
 	}
@@ -893,8 +873,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		detailBrickLayout = new Column("detailBrickWrappingLayout");
 
-		detailBrickLayout.setPixelGLConverter(parentGLCanvas
-				.getPixelGLConverter());
+		detailBrickLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 
 		detailBrick = createBrick(detailBrickLayout);
 		detailBrick.setContentVA(brick.getGroup(), brick.getContentVA());
@@ -902,14 +881,12 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		detailBrickLayout.setPixelSizeX(getDetailBrickWidthPixels());
 		detailBrickLayout.setPixelSizeY(getDetailBrickHeightPixels());
 
-		detailBrick.setBrickLayoutTemplate(
-				new DetailBrickLayoutTemplate(detailBrick, this,
-						glVisBricksView, detailBrick.getLayoutConfigurer()),
-				brick.getCurrentViewType());
+		detailBrick.setBrickLayoutTemplate(new DetailBrickLayoutTemplate(detailBrick,
+				this, glVisBricksView, detailBrick.getLayoutConfigurer()), brick
+				.getCurrentViewType());
 
 		overviewDetailGapLayout = new ElementLayout("brickSpacingLayout");
-		overviewDetailGapLayout.setPixelGLConverter(parentGLCanvas
-				.getPixelGLConverter());
+		overviewDetailGapLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		overviewDetailGapLayout.setPixelSizeX(OVERVIEW_DETAIL_GAP_PIXEL);
 		overviewDetailGapLayout.setRatioSizeY(1);
 
@@ -917,8 +894,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(
 					detailBrick, brick, false));
 		} else {
-			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(
-					brick, detailBrick, true));
+			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(brick,
+					detailBrick, true));
 		}
 
 		showDetailBrick = true;
@@ -956,9 +933,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 					.getGroupColumnWidthPixels();
 		}
 
-		int detailAreaWidth = parentGLCanvas.getWidth() - 2
-				* OVERVIEW_DETAIL_GAP_PIXEL - 2
-				* GLVisBricks.DIMENSION_GROUP_SIDE_SPACING
+		int detailAreaWidth = parentGLCanvas.getWidth() - 2 * OVERVIEW_DETAIL_GAP_PIXEL
+				- 2 * GLVisBricks.DIMENSION_GROUP_SIDE_SPACING
 				- getGroupColumnWidthPixels() - otherDimensionGroupColumnWidth;
 		int detailGapWidth = (int) (DETAIL_GAP_PORTION * detailAreaWidth);
 		detailGapWidth = (detailGapWidth < MIN_DETAIL_GAP_PIXEL) ? MIN_DETAIL_GAP_PIXEL
@@ -987,7 +963,7 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		return parentGLCanvas.getPixelGLConverter().getPixelWidthForGLWidth(
 				groupColumn.getSizeScaledX());
 	}
-	
+
 	public Column getGroupColumn() {
 		return groupColumn;
 	}

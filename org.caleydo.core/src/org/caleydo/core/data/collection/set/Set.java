@@ -43,7 +43,7 @@ public class Set
 
 	protected HashMap<Integer, IStorage> hashStorages;
 
-	private String sLabel;
+	private String sLabel = "Rootset";
 
 	private boolean bArtificialMin = false;
 	private double dMin = Double.MAX_VALUE;
@@ -279,6 +279,7 @@ public class Set
 
 		return histogram;
 	}
+
 
 	@Override
 	public Histogram getBaseHistogram() {

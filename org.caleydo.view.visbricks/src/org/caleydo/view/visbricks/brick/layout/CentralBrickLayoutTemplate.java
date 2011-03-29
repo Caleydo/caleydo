@@ -68,17 +68,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
 				CLUSTER_BUTTON_ID, EIconTextures.CLUSTER_ICON);
 
-		// heatMapButton = new Button(EPickingType.BRICK_TOOLBAR_BUTTONS,
-		// HEATMAP_BUTTON_ID);
-		// parCoordsButton = new
-		// Button(EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
-		// PARCOORDS_BUTTON_ID);
-		// histogramButton = new
-		// Button(EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
-		// HISTOGRAM_BUTTON_ID);
-		// overviewHeatMapButton = new
-		// Button(EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
-		// OVERVIEW_HEATMAP_BUTTON_ID);
+		
 		lockResizingButton = new Button(
 				EPickingType.BRICK_LOCK_RESIZING_BUTTON,
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
@@ -311,6 +301,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinHeightPixels() {
+		if(viewRenderer == null)
+			return 20;
 		return 6 * SPACING_PIXELS + TOOLBAR_HEIGHT_PIXELS
 				+ LINE_SEPARATOR_HEIGHT_PIXELS + CAPTION_HEIGHT_PIXELS
 				+ DIMENSION_BAR_HEIGHT_PIXELS
@@ -319,7 +311,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinWidthPixels() {
-
+		if(viewRenderer == null)
+			return 5;
 		return Math.max(
 				2 * SPACING_PIXELS + viewSwitchingButtons.size()
 						* BUTTON_WIDTH_PIXELS + SPACING_PIXELS

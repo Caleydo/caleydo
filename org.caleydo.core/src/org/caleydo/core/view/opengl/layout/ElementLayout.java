@@ -330,7 +330,8 @@ public class ElementLayout {
 	}
 
 	public void setRenderer(LayoutRenderer renderer) {
-		this.renderer = renderer;
+		if (renderer != null)
+			this.renderer = renderer;
 	}
 
 	public void addBackgroundRenderer(LayoutRenderer renderer) {
