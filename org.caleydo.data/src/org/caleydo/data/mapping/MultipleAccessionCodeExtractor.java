@@ -15,16 +15,22 @@ import java.util.StringTokenizer;
  */
 public class MultipleAccessionCodeExtractor {
 
-	protected static char cAccessionToExpressionStorageIndexDelimiter = ';';
+	private static final String FILE_EXT = ".csv";
+	
+	private static final String INPUT_FILE_NAME = "/home/mstreit/tmp/mappings/panther_BP";
+	
+	private static final String OUTPUT_FILE_NAME = INPUT_FILE_NAME + "_out";
+	
+	protected static char delimiter = ';';
 
-	protected static String sMultipleAccessionSeparator = ",";
+	protected static String multiFieldSeparator = ",";
 
 	protected PrintWriter writer;
 
 	public MultipleAccessionCodeExtractor() throws IOException {
 
 		writer = new PrintWriter(
-				"data/genome/mapping/accession_code_2_microarray_expression_storage_index.map");
+				OUTPUT_FILE_NAME +FILE_EXT);
 	}
 
 	protected void convertData() throws IOException {
@@ -32,7 +38,7 @@ public class MultipleAccessionCodeExtractor {
 		// Reading input by lines
 		BufferedReader in = new BufferedReader(
 				new FileReader(
-						"data/genome/mapping/accession_code_2_microarray_expression_storage_index_ORIG.map"));
+						INPUT_FILE_NAME + FILE_EXT));
 
 		String sInputLine = "";
 		String sAccessionCodes = "";
@@ -40,10 +46,10 @@ public class MultipleAccessionCodeExtractor {
 
 		while ((sInputLine = in.readLine()) != null) {
 			sAccessionCodes = sInputLine.substring(0,
-					sInputLine.indexOf(cAccessionToExpressionStorageIndexDelimiter));
+					sInputLine.indexOf(delimiter));
 
 			StringTokenizer strTokenText = new StringTokenizer(sAccessionCodes,
-					sMultipleAccessionSeparator);
+					multiFieldSeparator);
 
 			// Nothing todo because there is only one or none accession
 			if (strTokenText.countTokens() <= 1) {
@@ -53,12 +59,12 @@ public class MultipleAccessionCodeExtractor {
 				sMicroarrayExpressionStorageIndex = sInputLine
 						.substring(
 								sInputLine
-										.indexOf(cAccessionToExpressionStorageIndexDelimiter) + 1,
+										.indexOf(delimiter) + 1,
 								sInputLine.length());
 
 				while (strTokenText.hasMoreTokens()) {
 					writer.println(strTokenText.nextToken()
-							+ cAccessionToExpressionStorageIndexDelimiter
+							+ delimiter
 							+ sMicroarrayExpressionStorageIndex);
 				}
 			}

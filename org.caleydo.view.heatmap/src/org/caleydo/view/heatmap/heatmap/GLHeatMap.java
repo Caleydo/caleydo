@@ -263,7 +263,9 @@ public class GLHeatMap extends AStorageBasedView {
 	@Override
 	public void display(GL2 gl) {
 		gl.glCallList(iGLDisplayListToCall);
-
+		
+		//System.out.println(generalManager.getIDMappingManager().getIDAsSet(IDType.getIDType("DAVID"), IDType.getIDType("GO_CC"), 146860));
+		
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
 	}
