@@ -554,6 +554,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		while (!uninitializedBricks.isEmpty()) {
 			uninitializedBricks.poll().initRemote(gl, this, glMouseListener);
+			glVisBricksView.updateLayout();
+			glVisBricksView.updateConnectionLinesBetweenDimensionGroups();
 		}
 		handleVerticalMoveDragging(gl);
 		checkForHits(gl);

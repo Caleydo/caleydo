@@ -1016,6 +1016,10 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		float currentSize = wrappingLayout.getSizeScaledY();
 		wrappingLayout.setAbsoluteSizeY(minHeight);
 		wrappingLayout.setAbsoluteSizeX(minWidth);
+		
+		visBricks.updateLayout();
+		visBricks.updateConnectionLinesBetweenDimensionGroups();
+		
 		return currentSize - minHeight;
 	}
 
@@ -1045,6 +1049,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		isInOverviewMode = false;
 		isSizeFixed = true;
 		brickLayout.setLockResizing(true);
+		
+		visBricks.updateLayout();
+		visBricks.updateConnectionLinesBetweenDimensionGroups();
 	}
 
 	public boolean isInOverviewMode() {
