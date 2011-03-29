@@ -130,6 +130,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public DimensionGroup(GLCaleydoCanvas canvas, ViewFrustum viewFrustum) {
 		super(canvas, viewFrustum, true);
 
+		viewType = VIEW_ID;
+		
 		detailRow = new Row("detailRow");
 		detailRow.setXDynamic(true);
 		detailRow.setFrameColor(1, 0, 1, 1);

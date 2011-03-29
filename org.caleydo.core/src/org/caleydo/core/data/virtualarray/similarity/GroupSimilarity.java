@@ -139,7 +139,7 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 			sum += scores[count];
 			similarities[count] = ((float) scores[count]) / group.getSize();
 		}
-		
+	
 		if(sum != group.getSize())
 		{
 			System.out.println("Similarity size sum " + sum + "!= group sum " +group.getSize());

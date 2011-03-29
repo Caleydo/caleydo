@@ -35,6 +35,8 @@
 		attrib2="INT" />
 
 	<Cmd type="CREATE_ID_TYPE" detail="PATHWAY" attrib1="GENE" attrib2="INT" />
+	
+	<Cmd type="CREATE_ID_TYPE" detail="GO_CELLULAR_COMPARTMENT" attrib1="GENE" attrib2="STRING" />
 
 
 	<!-- ************************** Experiments ************************** -->
@@ -86,5 +88,10 @@
 		detail="data/genome/mapping/ORGANISM_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt"
 		attrib1="BIOCARTA_GENE_ID_2_REFSEQ_MRNA REVERSE LUT" attrib2=";"
 		attrib3="0 -1" attrib4="BIOCARTA_GENE_ID_2_DAVID" attrib5="true" />
+		
+	<Cmd type="LOAD_LOOKUP_TABLE_FILE"
+		detail="data/genome/mapping/david/ORGANISM_DAVID2GOTERM_CC_ALL.txt"
+		attrib1="DAVID_2_GO_CELLULAR_COMPARTMENT" attrib2=";"
+		attrib3="0 -1" attrib5="false" />
 
 </details>
