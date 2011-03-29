@@ -24,7 +24,9 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 public class OverviewHeatMapRenderer extends AContainedViewRenderer {
 
 	private ColorMapping colorMapper;
-	private ArrayList<float[]> heatMapValues;
+	private ArrayList<Float> heatMapValuesMean;
+	private ArrayList<Float> heatMapValuesMeanPlusStdDev;
+	private ArrayList<Float> heatMapValuesMeanMinusStdDev;
 	private boolean showStandardDeviation;
 
 	/**
@@ -40,10 +42,12 @@ public class OverviewHeatMapRenderer extends AContainedViewRenderer {
 			boolean showStandardDeviation) {
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
-		heatMapValues = new ArrayList<float[]>();
 		this.showStandardDeviation = showStandardDeviation;
 
 		float[] expressionValues = new float[contentVA.size()];
+		heatMapValuesMean = new ArrayList<Float>();
+		heatMapValuesMeanMinusStdDev = new ArrayList<Float>();
+		heatMapValuesMeanPlusStdDev = new ArrayList<Float>();
 
 		for (int storageIndex : storageVA) {
 
@@ -57,20 +61,18 @@ public class OverviewHeatMapRenderer extends AContainedViewRenderer {
 			float arithmeticMean = ClusterHelper
 					.arithmeticMean(expressionValues);
 
-			float[] currentValues;
-
 			if (showStandardDeviation) {
 				float standardDeviation = ClusterHelper.standardDeviation(
 						expressionValues, arithmeticMean);
 
-				currentValues = new float[] {
-						arithmeticMean - standardDeviation, arithmeticMean,
-						arithmeticMean + standardDeviation };
+				heatMapValuesMean.add(arithmeticMean);
+				heatMapValuesMeanMinusStdDev.add(arithmeticMean
+						- standardDeviation);
+				heatMapValuesMeanPlusStdDev.add(arithmeticMean
+						+ standardDeviation);
 			} else {
-				currentValues = new float[] { arithmeticMean };
+				heatMapValuesMean.add(arithmeticMean);
 			}
-
-			heatMapValues.add(currentValues);
 		}
 
 	}
@@ -78,83 +80,148 @@ public class OverviewHeatMapRenderer extends AContainedViewRenderer {
 	@Override
 	public void render(GL2 gl) {
 
-		if (heatMapValues.size() <= 0)
+		if (heatMapValuesMean.size() <= 0)
 			return;
 
-		float heatMapElementWidth = x / (float) heatMapValues.size();
-		float heatMapElementHeight = y / (float) heatMapValues.get(0).length;
+		float heatMapElementWidth = x / (float) heatMapValuesMean.size();
 
-		gl.glBegin(GL2.GL_QUADS);
-		float currentPositionX = 0;
-		for (float[] currentValues : heatMapValues) {
+		if (showStandardDeviation) {
+
+			float meanHeatMapElementHeight = y / 2.0f;
+			float stdDevHeatMapElementHeight = y / 4.0f;
+
+			gl.glBegin(GL2.GL_TRIANGLES);
+
+			float currentPositionX = 0;
 			float currentPositionY = 0;
+			for (Float currentValue : heatMapValuesMeanMinusStdDev) {
+				if (currentValue > 1)
+					currentValue = 1f;
+				if (currentValue < 0)
+					currentValue = 0f;
 
-			for (int i = 0; i < currentValues.length; i++) {
-
-				float value = currentValues[i];
-				float triangleOffsetTop = 0;
-				float triangleOffsetBottom = 0;
-
-				if (showStandardDeviation && i == 0) {
-					triangleOffsetBottom = heatMapElementWidth / 2.0f;
-				}
-
-				if (showStandardDeviation && i == 2) {
-					triangleOffsetTop = heatMapElementWidth / 2.0f;
-				}
-
-				if (value > 1)
-					value = 1;
-				if (value < 0)
-					value = 0;
-				float[] mappingColor = colorMapper.getColor(value);
-
+				float[] mappingColor = colorMapper.getColor(currentValue);
 				gl.glColor3f(mappingColor[0], mappingColor[1], mappingColor[2]);
-				gl.glVertex3f(currentPositionX + triangleOffsetBottom,
+				gl.glVertex3f(currentPositionX, currentPositionY
+						+ stdDevHeatMapElementHeight, 0);
+				gl.glVertex3f(currentPositionX + heatMapElementWidth,
+						currentPositionY + stdDevHeatMapElementHeight, 0);
+				gl.glVertex3f(currentPositionX + heatMapElementWidth / 2.0f,
 						currentPositionY, 0);
-				gl.glVertex3f(currentPositionX + heatMapElementWidth
-						- triangleOffsetBottom, currentPositionY, 0);
-				gl.glVertex3f(currentPositionX + heatMapElementWidth
-						- triangleOffsetTop, currentPositionY
-						+ heatMapElementHeight, 0);
-				gl.glVertex3f(currentPositionX + triangleOffsetTop,
-						currentPositionY + heatMapElementHeight, 0);
-
-				currentPositionY += heatMapElementHeight;
+				currentPositionX += heatMapElementWidth;
 			}
-			currentPositionX += heatMapElementWidth;
-		}
-		gl.glEnd();
 
-		gl.glLineWidth(1);
-		gl.glColor4f(1, 1, 1, 1);
-		gl.glBegin(GL2.GL_LINES);
-		currentPositionX = heatMapElementWidth;
-		for (int i = 0; i < heatMapValues.size() - 1; i++) {
-			gl.glVertex3f(currentPositionX, 0, 0);
-			gl.glVertex3f(currentPositionX, y, 0);
-			currentPositionX += heatMapElementWidth;
-		}
+			gl.glEnd();
 
-		float currentPositionY = heatMapElementHeight;
-		for (int i = 0; i < heatMapValues.get(0).length - 1; i++) {
-			gl.glVertex3f(0, currentPositionY, 0);
-			gl.glVertex3f(x, currentPositionY, 0);
-			currentPositionY += heatMapElementHeight;
-		}
+			gl.glBegin(GL2.GL_QUADS);
 
-		gl.glEnd();
+			currentPositionX = 0;
+			currentPositionY += stdDevHeatMapElementHeight;
+			for (Float currentValue : heatMapValuesMean) {
+				if (currentValue > 1)
+					currentValue = 1f;
+				if (currentValue < 0)
+					currentValue = 0f;
+
+				float[] mappingColor = colorMapper.getColor(currentValue);
+				gl.glColor3f(mappingColor[0], mappingColor[1], mappingColor[2]);
+				gl.glVertex3f(currentPositionX, currentPositionY, 0);
+				gl.glVertex3f(currentPositionX + heatMapElementWidth,
+						currentPositionY, 0);
+				gl.glVertex3f(currentPositionX + heatMapElementWidth,
+						currentPositionY + meanHeatMapElementHeight, 0);
+				gl.glVertex3f(currentPositionX, currentPositionY
+						+ meanHeatMapElementHeight, 0);
+				currentPositionX += heatMapElementWidth;
+			}
+
+			gl.glEnd();
+
+			gl.glBegin(GL2.GL_TRIANGLES);
+
+			currentPositionX = 0;
+			currentPositionY += meanHeatMapElementHeight;
+			for (Float currentValue : heatMapValuesMeanPlusStdDev) {
+				if (currentValue > 1)
+					currentValue = 1f;
+				if (currentValue < 0)
+					currentValue = 0f;
+
+				float[] mappingColor = colorMapper.getColor(currentValue);
+				gl.glColor3f(mappingColor[0], mappingColor[1], mappingColor[2]);
+				gl.glVertex3f(currentPositionX + heatMapElementWidth / 2.0f,
+						currentPositionY + stdDevHeatMapElementHeight, 0);
+				gl.glVertex3f(currentPositionX + heatMapElementWidth,
+						currentPositionY, 0);
+				gl.glVertex3f(currentPositionX, currentPositionY, 0);
+				currentPositionX += heatMapElementWidth;
+			}
+
+			gl.glEnd();
+
+			gl.glLineWidth(1);
+			gl.glColor4f(1, 1, 1, 1);
+			gl.glBegin(GL2.GL_LINES);
+			currentPositionX = heatMapElementWidth;
+			for (int i = 0; i < heatMapValuesMean.size() - 1; i++) {
+				gl.glVertex3f(currentPositionX, 0, 0);
+				gl.glVertex3f(currentPositionX, y, 0);
+				currentPositionX += heatMapElementWidth;
+			}
+
+			gl.glVertex3f(0, stdDevHeatMapElementHeight, 0);
+			gl.glVertex3f(x, stdDevHeatMapElementHeight, 0);
+			gl.glVertex3f(0, stdDevHeatMapElementHeight
+					+ meanHeatMapElementHeight, 0);
+			gl.glVertex3f(x, stdDevHeatMapElementHeight
+					+ meanHeatMapElementHeight, 0);
+
+			gl.glEnd();
+
+		} else {
+			gl.glBegin(GL2.GL_QUADS);
+
+			float currentPositionX = 0;
+			for (Float currentValue : heatMapValuesMean) {
+				if (currentValue > 1)
+					currentValue = 1f;
+				if (currentValue < 0)
+					currentValue = 0f;
+
+				float[] mappingColor = colorMapper.getColor(currentValue);
+				gl.glColor3f(mappingColor[0], mappingColor[1], mappingColor[2]);
+				gl.glVertex3f(currentPositionX, 0, 0);
+				gl.glVertex3f(currentPositionX + heatMapElementWidth, 0, 0);
+				gl.glVertex3f(currentPositionX + heatMapElementWidth, y, 0);
+				gl.glVertex3f(currentPositionX, y, 0);
+				currentPositionX += heatMapElementWidth;
+			}
+
+			gl.glEnd();
+			
+			gl.glLineWidth(1);
+			gl.glColor4f(1, 1, 1, 1);
+			gl.glBegin(GL2.GL_LINES);
+			currentPositionX = heatMapElementWidth;
+			for (int i = 0; i < heatMapValuesMean.size() - 1; i++) {
+				gl.glVertex3f(currentPositionX, 0, 0);
+				gl.glVertex3f(currentPositionX, y, 0);
+				currentPositionX += heatMapElementWidth;
+			}
+			gl.glEnd();
+		}
 
 	}
 
 	@Override
 	public int getMinHeightPixels() {
-		return heatMapValues.get(0).length * 16;
+		if (showStandardDeviation)
+			return 24;
+		return 11;
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		// TODO: Maybe not static?
-		return 150;
+		return Math.max(150, 16 * heatMapValuesMean.size());
 	}
 }
