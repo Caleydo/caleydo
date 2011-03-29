@@ -89,7 +89,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		fuelBarLayout.setPixelSizeY(FUEL_BAR_HEIGHT_PIXELS);
 		fuelBarLayout.setRenderer(new FuelBarRenderer(brick));
 
-		baseRow.setRenderer(new BorderedAreaRenderer());
+		baseRow.setRenderer(new BorderedAreaRenderer(brick));
 
 		if (showHandles) {
 			baseRow.addForeGroundRenderer(new HandleRenderer(brick,

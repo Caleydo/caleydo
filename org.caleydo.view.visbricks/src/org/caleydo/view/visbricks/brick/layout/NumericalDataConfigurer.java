@@ -143,7 +143,7 @@ public class NumericalDataConfigurer implements IBrickConfigurer {
 		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP);
+		layoutTemplate.setDefaultViewType(EContainedViewType.PARCOORDS_VIEW);
 
 	}
 

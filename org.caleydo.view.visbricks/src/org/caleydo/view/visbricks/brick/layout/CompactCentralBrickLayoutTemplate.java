@@ -40,7 +40,7 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseColumn.setFrameColor(0, 1, 0, 1);
 		// baseColumn.setDebug(true);
 
-		baseRow.setRenderer(new BorderedAreaRenderer());
+		baseRow.setRenderer(new BorderedAreaRenderer(brick));
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelGLConverter(pixelGLConverter);

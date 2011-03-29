@@ -102,7 +102,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		Column baseColumn = new Column("baseColumn");
 		baseColumn.setFrameColor(0, 1, 0, 0);
 
-		baseRow.setRenderer(new BorderedAreaRenderer());
+		baseRow.setRenderer(new BorderedAreaRenderer(brick));
 
 		if (showHandles) {
 			baseRow.addForeGroundRenderer(new HandleRenderer(brick,

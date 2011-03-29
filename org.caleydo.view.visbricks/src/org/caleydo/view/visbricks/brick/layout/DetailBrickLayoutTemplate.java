@@ -112,7 +112,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 		ElementLayout fuelBarLayout = new ElementLayout("fuelBarLayout");
 		fuelBarLayout.setFrameColor(0, 1, 0, 0);
 
-		baseRow.setRenderer(new BorderedAreaRenderer());
+		baseRow.setRenderer(new BorderedAreaRenderer(brick));
 
 		if (showHandles) {
 			baseRow.addForeGroundRenderer(new HandleRenderer(brick,

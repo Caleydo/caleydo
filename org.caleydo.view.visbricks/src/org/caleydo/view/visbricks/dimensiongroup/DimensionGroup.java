@@ -905,10 +905,10 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 		if (expandLeft) {
 			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(
-					detailBrick, brick));
+					detailBrick, brick, false));
 		} else {
 			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(
-					brick, detailBrick));
+					brick, detailBrick, true));
 		}
 
 		showDetailBrick = true;
@@ -976,5 +976,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public int getGroupColumnWidthPixels() {
 		return parentGLCanvas.getPixelGLConverter().getPixelWidthForGLWidth(
 				groupColumn.getSizeScaledX());
+	}
+	
+	public Column getGroupColumn() {
+		return groupColumn;
 	}
 }
