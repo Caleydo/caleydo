@@ -263,6 +263,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 	private void renderFlexibleArch(GL2 gl) {
 
+	
+		
 		if (connectionRenderer == null)
 			return;
 
@@ -277,8 +279,10 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 		float curveOffset = x * 0.2f;
 
-		float xStart;
+		float xStart = 0;
 		float xEnd;
+		
+	
 
 		// handle situation in center arch where to group is contained
 		if (leftDimGroup == null && rightDimGroup == null && glVisBricks != null) {
@@ -290,13 +294,19 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			rightCenterBrickTop = glVisBricks.getArchTopY();
 		}
 
+		
+		
 		if (leftDimGroup != null) {
+			if (leftDimGroup.isDetailBrickShown() && !leftDimGroup.isExpandLeft())
+				return;
+			
 			GLBrick leftCenterBrick = leftDimGroup.getCenterBrick();
 
 			ElementLayout layout = leftCenterBrick.getLayout();
 			leftCenterBrickBottom = layout.getTranslateY();
 			leftCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledY();
 
+			if(!leftDimGroup.isDetailBrickShown())
 			xStart = leftDimGroup.getLayout().getTranslateX()
 					- leftCenterBrick.getLayout().getTranslateX();
 
@@ -320,15 +330,23 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			}
 		}
 
+		
+		
 		if (rightDimGroup != null) {
+			if (rightDimGroup.isDetailBrickShown() && rightDimGroup.isExpandLeft())
+				return;
 			GLBrick rightCenterBrick = rightDimGroup.getCenterBrick();
 
 			ElementLayout layout = rightCenterBrick.getLayout();
 			rightCenterBrickBottom = layout.getTranslateY();
 			rightCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledY();
 
+			if(!rightDimGroup.isDetailBrickShown())
+					
 			xEnd = x + rightCenterBrick.getLayout().getTranslateX()
 					- rightDimGroup.getLayout().getTranslateX();
+			else
+				xEnd = x + rightCenterBrick.getLayout().getTranslateX();
 
 			// Render straight band connection from center brick to dimension
 			// group on

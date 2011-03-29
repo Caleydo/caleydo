@@ -757,6 +757,10 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	public boolean isDetailBrickShown() {
 		return isDetailBrickShown;
 	}
+	
+	public boolean isExpandLeft() {
+		return expandLeft;
+	}
 
 	/**
 	 * Returns the center brick that shows the summary of the dimension group
