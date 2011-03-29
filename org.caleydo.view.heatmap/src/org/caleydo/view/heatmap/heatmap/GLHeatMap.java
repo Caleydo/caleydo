@@ -645,8 +645,8 @@ public class GLHeatMap extends AStorageBasedView {
 			float yValue = 0;
 
 			// FIXME re-enable for visual links
-//			yValue = getYCoordinateByContentIndex(contentIndex);
-//			yValue = viewFrustum.getHeight() - yValue;
+			// yValue = getYCoordinateByContentIndex(contentIndex);
+			// yValue = viewFrustum.getHeight() - yValue;
 			elementRep = new SelectedElementRep(contentIDType, uniqueID,
 					xValue, yValue, 0);// - fAnimationTranslation,
 			// 0);
@@ -938,12 +938,12 @@ public class GLHeatMap extends AStorageBasedView {
 	@Override
 	public int getMinPixelHeight() {
 		// TODO: Calculate depending on content
-//		int pixelHeight = 10;
-//		if (contentVA.size() > 1) {
-//
-//			pixelHeight += (int) ((double) contentVA.size() / Math
-//					.log(contentVA.size()));
-//		}
+		// int pixelHeight = 10;
+		// if (contentVA.size() > 1) {
+		//
+		// pixelHeight += (int) ((double) contentVA.size() / Math
+		// .log(contentVA.size()));
+		// }
 
 		ContentVirtualArray setContentVA = set.getContentData(Set.CONTENT)
 				.getContentVA();
@@ -953,8 +953,8 @@ public class GLHeatMap extends AStorageBasedView {
 		}
 
 		int windowHeight = parentGLCanvas.getHeight();
-		int pixelHeight = (int) (((float)(windowHeight - numBricks * 80)
-				/ (float) setContentVA.size()) * contentVA.size());
+		int pixelHeight = (int) (((float) (windowHeight - numBricks * 80) / (float) setContentVA
+				.size()) * contentVA.size());
 		return Math.max(16, pixelHeight);
 	}
 
@@ -976,11 +976,11 @@ public class GLHeatMap extends AStorageBasedView {
 	public int getMinPixelWidth(DetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
-			return 100;
+			return Math.max(150, 16 * set.size());
 		case MEDIUM:
-			return 100;
+			return Math.max(150, 16 * set.size());
 		case LOW:
-			return Math.max(150, 30 * set.size());
+			return Math.max(150, 16 * set.size());
 		default:
 			return 100;
 		}

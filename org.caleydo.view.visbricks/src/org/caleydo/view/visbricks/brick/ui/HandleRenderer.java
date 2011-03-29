@@ -213,12 +213,22 @@ public class HandleRenderer extends LayoutRenderer {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 					EPickingType.EXPAND_LEFT_HANDLE, brick.getID()));
 
-			gl.glBegin(GL2.GL_QUADS);
-			gl.glVertex3f(-glHandleWidth, y, 1);
-			gl.glVertex3f(0, y, 1);
-			gl.glVertex3f(0, y - 2 * glHandleHeight, 1);
-			gl.glVertex3f(-glHandleWidth, y - 2 * glHandleHeight, 1);
-			gl.glEnd();
+			// gl.glBegin(GL2.GL_QUADS);
+			// gl.glVertex3f(-glHandleWidth, y, 1);
+			// gl.glVertex3f(0, y, 1);
+			// gl.glVertex3f(0, y - 2 * glHandleHeight, 1);
+			// gl.glVertex3f(-glHandleWidth, y - 2 * glHandleHeight, 1);
+			// gl.glEnd();
+
+			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y, 1);
+			Vec3f lowerRightCorner = new Vec3f(0, y, 1);
+			Vec3f upperLeftCorner = new Vec3f(0, y - 2 * glHandleHeight, 1);
+			Vec3f upperRightCorner = new Vec3f(-glHandleWidth, y - 2
+					* glHandleHeight, 1);
+			textureManager.renderTexture(gl,
+					EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, upperLeftCorner,
+					lowerRightCorner, lowerLeftCorner, upperRightCorner, 1, 1,
+					1, 1);
 
 			gl.glPopName();
 		}
@@ -227,12 +237,15 @@ public class HandleRenderer extends LayoutRenderer {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 					EPickingType.EXPAND_RIGHT_HANDLE, brick.getID()));
 
-			gl.glBegin(GL2.GL_QUADS);
-			gl.glVertex3f(x, y, 1);
-			gl.glVertex3f(x + glHandleWidth, y, 1);
-			gl.glVertex3f(x + glHandleWidth, y - 2 * glHandleHeight, 1);
-			gl.glVertex3f(x, y - 2 * glHandleHeight, 1);
-			gl.glEnd();
+			Vec3f lowerLeftCorner = new Vec3f(x, y, 1);
+			Vec3f lowerRightCorner = new Vec3f(x + glHandleWidth, y, 1);
+			Vec3f upperLeftCorner = new Vec3f(x + glHandleWidth, y - 2
+					* glHandleHeight, 1);
+			Vec3f upperRightCorner = new Vec3f(x, y - 2 * glHandleHeight, 1);
+			textureManager.renderTexture(gl,
+					EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, lowerLeftCorner,
+					upperRightCorner, upperLeftCorner, lowerRightCorner, 1, 1,
+					1, 1);
 
 			gl.glPopName();
 		}
