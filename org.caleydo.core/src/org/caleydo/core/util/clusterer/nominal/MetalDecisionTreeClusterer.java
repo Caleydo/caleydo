@@ -53,7 +53,7 @@ public class MetalDecisionTreeClusterer
 				float metal = metalStorage.getFloat(EDataRepresentation.RAW, contentID);
 				int metalSign = (int) metalSignStorage.getFloat(EDataRepresentation.RAW, contentID);
 
-				if (metal > 0.0f || metalSign == 1) {
+				if (metal > 0.0f) {
 					allZero = false;
 					break;
 				}
