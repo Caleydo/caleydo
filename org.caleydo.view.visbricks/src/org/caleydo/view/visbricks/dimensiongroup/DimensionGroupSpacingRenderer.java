@@ -46,7 +46,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 	private ConnectionBandRenderer connectionRenderer = new ConnectionBandRenderer();
 
 	private GLVisBricks glVisBricks;
-	
+
 	private int connectionBandIDCounter = 0;
 
 	public DimensionGroupSpacingRenderer(RelationAnalyzer relationAnalyzer,
@@ -107,7 +107,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 			for (GLBrick rightBrick : rightBricks) {
 
-				SubGroupMatch subGroupMatch = new SubGroupMatch(connectionBandIDCounter++, rightBrick);
+				SubGroupMatch subGroupMatch = new SubGroupMatch(
+						connectionBandIDCounter++, rightBrick);
 				groupMatch.addSubGroupMatch(rightBrick.getGroupID(), subGroupMatch);
 
 				calculateSubMatchSelections(subGroupMatch,
@@ -371,9 +372,10 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		for (GroupMatch groupMatch : hashGroupID2GroupMatches.values()) {
 
 			GLBrick brick = groupMatch.getBrick();
-
-			float xStart = 	leftDimGroup.getLayout().getTranslateX() + leftDimGroup.getLayout().getSizeScaledX()
-				- brick.getLayout().getTranslateX() - brick.getLayout().getSizeScaledX();
+			float xStart = 0;
+			if (!leftDimGroup.isDetailBrickShown())
+				xStart = -(leftDimGroup.getLayout().getSizeScaledX() - brick.getLayout()
+						.getSizeScaledX()) / 2;
 
 			if (groupMatch.getBrick().isInOverviewMode())
 				continue;
@@ -413,17 +415,18 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 						if (selectionType == SelectionType.NORMAL) {
 
-//							if (glVisBricks.getSelectedConnectionBandID() == subGroupMatch
-//									.getConnectionBandID())
-//							{
-//								trendRatio = 0.5f;
-//								color = new float[] { 0, 0, 0 };
-//
-//							}
-//							else
-//							{
-								trendRatio = 0.15f;
-//							}
+							// if (glVisBricks.getSelectedConnectionBandID() ==
+							// subGroupMatch
+							// .getConnectionBandID())
+							// {
+							// trendRatio = 0.5f;
+							// color = new float[] { 0, 0, 0 };
+							//
+							// }
+							// else
+							// {
+							trendRatio = 0.15f;
+							// }
 						} else {
 
 							trendRatio = 0.5f;
@@ -439,11 +442,9 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 							trendRatio = 1 - (glVisBricks.getConnectionsFocusFactor() + (1 - maxRatio));
 
 						if (glVisBricks.getSelectedConnectionBandID() == subGroupMatch
-								.getConnectionBandID())
-						{
+								.getConnectionBandID()) {
 							trendRatio = 0.8f;
-						}
-						else {
+						} else {
 							// it would be too opaque if we use the factor
 							// determined by the slider
 							trendRatio /= 2f;

@@ -134,10 +134,12 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		detailRow.setXDynamic(true);
 		detailRow.setFrameColor(1, 0, 1, 1);
 		detailRow.sethAlign(HAlign.CENTER);
+//		detailRow.setDebug(true);
 
 		groupColumn = new Column("dimensionGroup");
 		groupColumn.setXDynamic(true);
 		groupColumn.setVAlign(VAlign.CENTER);
+//		groupColumn.setDebug(true);
 
 		bottomCol = new Column("dimensionGroupColumnBottom");
 		bottomCol.setFrameColor(1, 0, 1, 1);
@@ -750,6 +752,10 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			return bricks;
 		}
 		return getBricks();
+	}
+	
+	public boolean isDetailBrickShown() {
+		return isDetailBrickShown;
 	}
 
 	/**
