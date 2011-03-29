@@ -61,6 +61,7 @@ public class MetalDecisionTreeClusterer
 
 			if (allZero) {
 				clusters.get(0).add(contentID);
+				continue;
 			}
 
 			if (((as > 0.025f) || (vas == 5)) && ((sb > 0.025f) || (vsb == 5))) {
