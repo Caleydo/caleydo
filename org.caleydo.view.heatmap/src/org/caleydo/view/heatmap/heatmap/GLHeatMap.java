@@ -644,8 +644,9 @@ public class GLHeatMap extends AStorageBasedView {
 
 			float yValue = 0;
 
-			yValue = getYCoordinateByContentIndex(contentIndex);
-			yValue = viewFrustum.getHeight() - yValue;
+			// FIXME re-enable for visual links
+//			yValue = getYCoordinateByContentIndex(contentIndex);
+//			yValue = viewFrustum.getHeight() - yValue;
 			elementRep = new SelectedElementRep(contentIDType, uniqueID,
 					xValue, yValue, 0);// - fAnimationTranslation,
 			// 0);
