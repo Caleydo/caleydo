@@ -47,8 +47,6 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 	private GLVisBricks glVisBricks;
 
-	private int connectionBandIDCounter = 0;
-
 	public DimensionGroupSpacingRenderer(RelationAnalyzer relationAnalyzer,
 			ConnectionBandRenderer connectionRenderer, DimensionGroup leftDimGroup,
 			DimensionGroup rightDimGroup, GLVisBricks glVisBricksView) {
@@ -73,7 +71,6 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			return;
 
 		hashGroupID2GroupMatches.clear();
-		connectionBandIDCounter = 0;
 
 		List<GLBrick> leftBricks = leftDimGroup.getBricksForRelations();
 		List<GLBrick> rightBricks = rightDimGroup.getBricksForRelations();
@@ -108,7 +105,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			for (GLBrick rightBrick : rightBricks) {
 
 				SubGroupMatch subGroupMatch = new SubGroupMatch(
-						connectionBandIDCounter++, rightBrick);
+						glVisBricks.getNextConnectionBandID(), rightBrick);
 				groupMatch.addSubGroupMatch(rightBrick.getGroupID(), subGroupMatch);
 
 				calculateSubMatchSelections(subGroupMatch,

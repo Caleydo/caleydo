@@ -155,6 +155,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private HashMap<Integer, ContentVirtualArray> hashConnectionBandIDToContentVA = new HashMap<Integer, ContentVirtualArray>();
 
 	private SelectionType volatieBandSelectionType;
+	
+	private int connectionBandIDCounter = 0;
 
 	/**
 	 * Constructor.
@@ -1398,6 +1400,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	public void updateConnectionLinesBetweenDimensionGroups() {
+		
+		connectionBandIDCounter = 0;
+		
 		if (centerRowLayout != null) {
 			for (ElementLayout elementLayout : centerRowLayout.getElements()) {
 				if (elementLayout.getRenderer() instanceof DimensionGroupSpacingRenderer) {
@@ -1503,5 +1508,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 		updateConnectionLinesBetweenDimensionGroups();
+	}
+	
+	public int getNextConnectionBandID() {
+		return connectionBandIDCounter++;
 	}
 }
