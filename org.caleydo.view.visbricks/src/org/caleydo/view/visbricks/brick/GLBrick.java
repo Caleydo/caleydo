@@ -123,6 +123,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	private float previousYCoordinate = Float.NaN;
 	private boolean isBrickResizeActive = false;
 	private boolean isSizeFixed = false;
+	private boolean isInitialized = false;
 
 	public GLBrick(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
@@ -251,6 +252,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		}, EPickingType.BRICK, getID());
 
 		dimensionGroup.updateLayout();
+		
+		isInitialized = true;
 
 	}
 
@@ -993,7 +996,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		// if (isInOverviewMode)
 		// return 0;
 
-		if (!isInOverviewMode) {
+		if (!isInOverviewMode && isInitialized) {
 			expandedBrickState = new BrickState(currentViewType,
 					wrappingLayout.getSizeScaledY(),
 					wrappingLayout.getSizeScaledX());
