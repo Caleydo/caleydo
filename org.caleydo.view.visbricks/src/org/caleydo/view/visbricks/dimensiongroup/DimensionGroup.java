@@ -682,6 +682,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		for (GLBrick brick : bottomBricks) {
 			brick.setContainedView(viewType);
 		}
+		if(detailBrick != null) {
+			detailBrick.setContainedView(viewType);
+		}
 		// centerBrick.setRemoteView(viewType);
 		detailRow.updateSubLayout();
 		// groupColumn.updateSubLayout();
@@ -861,6 +864,9 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 		}
 		for (GLBrick brick : bottomBricks) {
 			brick.setGlobalViewSwitching(isGlobalViewSwitching);
+		}
+		if(detailBrick != null) {
+			detailBrick.setGlobalViewSwitching(isGlobalViewSwitching);
 		}
 	}
 
