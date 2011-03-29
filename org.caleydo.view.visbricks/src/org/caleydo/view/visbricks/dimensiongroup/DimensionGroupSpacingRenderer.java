@@ -259,8 +259,6 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 	}
 
 	private void renderFlexibleArch(GL2 gl) {
-
-	
 		
 		if (connectionRenderer == null)
 			return;
