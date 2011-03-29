@@ -569,8 +569,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		wrappingLayout.setAbsoluteSizeX(newWidth);
 		wrappingLayout.setAbsoluteSizeY(newHeight);
 		
-		templateRenderer.updateLayout();
-		dimensionGroup.updateLayout();
+//		templateRenderer.updateLayout();
+//		dimensionGroup.updateLayout();
 		// groupColumn.setAbsoluteSizeX(width + changeX);
 
 		// float height = wrappingLayout.getSizeScaledY();
