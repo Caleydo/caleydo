@@ -350,17 +350,19 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 */
 	public ArrayList<Integer> indicesOf(Integer id) {
 		
-		ArrayList<Integer> indices = new ArrayList<Integer>();
-		indices.add(indexOf(id));
-		return indices;
-//		
-//		if (isHashIDToIndexDirty)
-//			buildIDMap();
-//		ArrayList<Integer> list = hashIDToIndex.get(id);
-//		if (list != null)
-//			return list;
-//		else
-//			return new ArrayList<Integer>(1);
+//		ArrayList<Integer> indices = new ArrayList<Integer>();
+//		indices.add(indexOf(id));
+//		return indices;
+////		
+		
+		
+		if (isHashIDToIndexDirty)
+			buildIDMap();
+		ArrayList<Integer> list = hashIDToIndex.get(id);
+		if (list != null)
+			return list;
+		else
+			return new ArrayList<Integer>(1);
 	}
 
 	/**

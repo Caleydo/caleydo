@@ -1194,44 +1194,81 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		}
 
-		BinGroup binGroup = (BinGroup) GeneralManager
-				.get()
-				.getViewGLCanvasManager()
-				.createGLView(
-						BinGroup.class,
-						getParentGLCanvas(),
-						new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
-								-1, 1));
-		binGroup.setIDTypes(dataDomain.getContentIDType(),
-				IDType.getIDType("CHROMOSOME"));
-		binGroup.setDataDomain(dataDomain);
-		
-		
-	
-//		MetaSet metaSet = new MetaSet(dataDomain.getSet(), null, null);
-		Set set = new  Set(dataDomain);
-		set.setContentVA(Set.CONTENT, dataDomain.getContentVA(Set.CONTENT));
-		set.setLabel("Cell Compartment");
-		// metaSet.setContentTree(set.getContentTree());
-		// Tree<ClusterNode> subTree = tree.getSubTree();
+//		BinGroup binGroup = (BinGroup) GeneralManager
+//				.get()
+//				.getViewGLCanvasManager()
+//				.createGLView(
+//						BinGroup.class,
+//						getParentGLCanvas(),
+//						new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+//								-1, 1));
+//		binGroup.setIDTypes(dataDomain.getContentIDType(), IDType.getIDType("GO_CC"));
+//		binGroup.setDataDomain(dataDomain);
+//
+//		// MetaSet metaSet = new MetaSet(dataDomain.getSet(), null, null);
+//		Set set = new Set(dataDomain);
+//		set.setContentVA(Set.CONTENT, dataDomain.getContentVA(Set.CONTENT));
+//		set.setLabel("Chromosome");
+//		// metaSet.setContentTree(set.getContentTree());
+//		// Tree<ClusterNode> subTree = tree.getSubTree();
+//
+//		// ArrayList<Integer> storageIDs = new ArrayList<Integer>();
+//		// SetUtils.setStorages(set, storageIDs);
+//
+//		dataDomain.addMetaSet(set);
+//		binGroup.setSet(set);
+//		binGroup.setRemoteRenderingGLView(this);
+//		binGroup.setVisBricks(this);
+//		binGroup.setVisBricksView(this);
+//		binGroup.initialize();
+//
+//		relationAnalyzer.replaceContentVA(set.getID(), dataDomain.getDataDomainType(),
+//				Set.CONTENT);
+//
+//		dimensionGroups.add(binGroup);
+//
+//		uninitializedDimensionGroups.add(binGroup);
 
-//		ArrayList<Integer> storageIDs = new ArrayList<Integer>();
-//		SetUtils.setStorages(set, storageIDs);
-		
-		dataDomain.addMetaSet(set);
-		binGroup.setSet(set);
-		binGroup.setRemoteRenderingGLView(this);
-		binGroup.setVisBricks(this);
-		binGroup.setVisBricksView(this);
-		binGroup.initialize();
-		
-		relationAnalyzer.replaceContentVA(set.getID(), dataDomain.getDataDomainType(), Set.CONTENT);
-
-		dimensionGroups.add(binGroup);
-		
-		uninitializedDimensionGroups.add(binGroup);
-
-		dimensionGroupManager.calculateGroupDivision();
+		// -------------------------------------------------
+//
+//		binGroup = (BinGroup) GeneralManager
+//				.get()
+//				.getViewGLCanvasManager()
+//				.createGLView(
+//						BinGroup.class,
+//						getParentGLCanvas(),
+//						new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+//								-1, 1));
+//		
+//		set = new Set(dataDomain);
+//		set.setContentVA(Set.CONTENT, dataDomain.getContentVA(Set.CONTENT));
+//		set.setLabel("Compartment");
+//		binGroup.setIDTypes(dataDomain.getContentIDType(), IDType.getIDType("GO_CC"));
+//		binGroup.setDataDomain(dataDomain);
+//
+//		// MetaSet metaSet = new MetaSet(dataDomain.getSet(), null, null);
+//		
+//		// metaSet.setContentTree(set.getContentTree());
+//		// Tree<ClusterNode> subTree = tree.getSubTree();
+//
+//		// ArrayList<Integer> storageIDs = new ArrayList<Integer>();
+//		// SetUtils.setStorages(set, storageIDs);
+//
+//		dataDomain.addMetaSet(set);
+//		binGroup.setSet(set);
+//		binGroup.setRemoteRenderingGLView(this);
+//		binGroup.setVisBricks(this);
+//		binGroup.setVisBricksView(this);
+//		binGroup.initialize();
+//
+//		relationAnalyzer.replaceContentVA(set.getID(), dataDomain.getDataDomainType(),
+//				Set.CONTENT);
+//
+//		dimensionGroups.add(binGroup);
+//
+//		uninitializedDimensionGroups.add(binGroup);
+//
+//		dimensionGroupManager.calculateGroupDivision();
 	}
 
 	@Override

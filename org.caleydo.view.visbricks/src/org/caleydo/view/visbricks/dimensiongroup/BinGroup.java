@@ -23,15 +23,19 @@ public class BinGroup extends DimensionGroup {
 	IDType contentIDType;
 	IDType binnigIDType;
 
-	IDBasedBinning binning;
+	
 	IDMappingManager mappingManager;
 
+	IDBasedBinning binning;
 
+	
 	public BinGroup(GLCaleydoCanvas canvas, ViewFrustum viewFrustum) {
 		super(canvas, viewFrustum);
 
 		mappingManager = GeneralManager.get().getIDMappingManager();
 	}
+	
+
 
 	public void setIDTypes(IDType contentIDType, IDType binnigIDType) {
 		this.contentIDType = contentIDType;

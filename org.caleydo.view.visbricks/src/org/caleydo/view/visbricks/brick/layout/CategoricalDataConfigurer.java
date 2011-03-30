@@ -15,6 +15,7 @@ import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.AContainedViewRenderer;
 import org.caleydo.view.visbricks.brick.ui.BrickRemoteViewRenderer;
 import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
+import org.caleydo.view.visbricks.brick.viewcreation.CategoryCreator;
 import org.caleydo.view.visbricks.brick.viewcreation.ParCoordsCreator;
 import org.caleydo.view.visbricks.brick.viewcreation.TagCloudCreator;
 
@@ -25,9 +26,8 @@ public class CategoricalDataConfigurer implements IBrickConfigurer {
 
 	@Override
 	public void configure(CentralBrickLayoutTemplate layoutTemplate) {
-		
-		 ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new
-		 ArrayList<BrickViewSwitchingButton>();
+
+		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		// viewSwitchingButtons.add(parCoordsButton);
 		// viewSwitchingButtons.add(tagCloudButton);
 		//
@@ -38,7 +38,7 @@ public class CategoricalDataConfigurer implements IBrickConfigurer {
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
 		layoutTemplate.setDefaultViewType(EContainedViewType.CATEGORY);
-		
+
 		// BrickViewSwitchingButton parCoordsButton = new
 		// BrickViewSwitchingButton(
 		// EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
@@ -90,8 +90,7 @@ public class CategoricalDataConfigurer implements IBrickConfigurer {
 		// TAGCLOUD_BUTTON_ID, EIconTextures.TAGCLOUD_ICON,
 		// EContainedViewType.TAGCLOUD_VIEW);
 		//
-		 ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new
-		 ArrayList<BrickViewSwitchingButton>();
+		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		// viewSwitchingButtons.add(parCoordsButton);
 		// viewSwitchingButtons.add(tagCloudButton);
 		//
@@ -140,21 +139,15 @@ public class CategoricalDataConfigurer implements IBrickConfigurer {
 	public void setBrickViews(GLBrick brick, GL2 gl, GLMouseListener glMouseListener,
 			ABrickLayoutTemplate brickLayout) {
 
-		// HashMap<EContainedViewType, AGLView> views = new
-		// HashMap<EContainedViewType, AGLView>();
-		// HashMap<EContainedViewType, AContainedViewRenderer>
-		// containedViewRenderers = new HashMap<EContainedViewType,
-		// AContainedViewRenderer>();
+		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
+		HashMap<EContainedViewType, AContainedViewRenderer> containedViewRenderers = new HashMap<EContainedViewType, AContainedViewRenderer>();
 		//
-		// ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
-		// AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl,
-		// glMouseListener);
-		// AContainedViewRenderer parCoordsLayoutRenderer = new
-		// BrickRemoteViewRenderer(
-		// parCoords, brick);
-		// views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
-		// containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
-		// parCoordsLayoutRenderer);
+		CategoryCreator categoryCreator = new CategoryCreator();
+		AGLView category = categoryCreator.createRemoteView(brick, gl, glMouseListener);
+		AContainedViewRenderer categoryRenderer = new BrickRemoteViewRenderer(category,
+				brick);
+		views.put(EContainedViewType.PARCOORDS_VIEW, category);
+		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW, categoryRenderer);
 		//
 		// TagCloudCreator tagCloudCreator = new TagCloudCreator();
 		// AGLView tagCloud = tagCloudCreator.createRemoteView(brick, gl,
