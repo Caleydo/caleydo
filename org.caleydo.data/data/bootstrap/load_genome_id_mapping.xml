@@ -43,7 +43,9 @@
 		attrib2="STRING" />
 	<Cmd type="CREATE_ID_TYPE" detail="PANTHER_MF" attrib1="GENE"
 		attrib2="STRING" />
-
+	<Cmd type="CREATE_ID_TYPE" detail="CHROMOSOME" attrib1="GENE"
+		attrib2="STRING" />
+		
 	<!-- ************************** Experiments ************************** -->
 
 	<Cmd type="CREATE_ID_CATEGORY" detail="EXPERIMENT" />
@@ -106,9 +108,29 @@
 		attrib3="0 -1" attrib5="true" />
 	-->
 
-	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_GO_CC2REFSEQ_MRNA.csv"
-		attrib1="GO_CC_2_REFSEQ_MRNA REVERSE" attrib2=";" attrib3="0 -1"
-		attrib4="GO_CC_2_DAVID" attrib5="true" />
+	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2GO_CC.csv"
+		attrib1="REFSEQ_MRNA_2_GO_CC LUT REVERSE" attrib2=";" attrib3="0 -1"
+		attrib4="DAVID_2_GO_CC" attrib5="true" />
+
+	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2GO_MF.csv"
+		attrib1="REFSEQ_MRNA_2_GO_MF LUT REVERSE" attrib2=";" attrib3="0 -1"
+		attrib4="DAVID_2_GO_CC" attrib5="true" />
+		
+	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2GO_BP.csv"
+		attrib1="REFSEQ_MRNA_2_GO_BP LUT REVERSE" attrib2=";" attrib3="0 -1"
+		attrib4="DAVID_2_GO_CC" attrib5="true" />		
+
+	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2PANTHER_BP.csv"
+		attrib1="REFSEQ_MRNA_2_PANTHER_BP LUT REVERSE" attrib2=";" attrib3="0 -1"
+		attrib4="DAVID_2_PANTHER_BP" attrib5="true" />		
+		
+	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2PANTHER_MF.csv"
+		attrib1="REFSEQ_MRNA_2_PANTHER_MF LUT REVERSE" attrib2=";" attrib3="0 -1"
+		attrib4="DAVID_2_PANTHER_MF" attrib5="true" />			
+		
+	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2CHROMOSOME.csv"
+		attrib1="REFSEQ_MRNA_2_CHROMOSOME LUT REVERSE" attrib2=";" attrib3="0 -1"
+		attrib4="DAVID_2_CHROMOSOME" attrib5="true" />
 
 <!-- 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_PANTHER_BP2REFSEQ_MRNA.csv"

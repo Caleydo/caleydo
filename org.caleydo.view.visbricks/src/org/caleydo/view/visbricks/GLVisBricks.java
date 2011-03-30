@@ -1203,7 +1203,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 						new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
 								-1, 1));
 		binGroup.setIDTypes(dataDomain.getContentIDType(),
-				IDType.getIDType("GO_CC"));
+				IDType.getIDType("CHROMOSOME"));
 		binGroup.setDataDomain(dataDomain);
 		
 		

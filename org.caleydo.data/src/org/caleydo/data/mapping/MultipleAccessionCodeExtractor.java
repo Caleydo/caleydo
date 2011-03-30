@@ -17,7 +17,7 @@ public class MultipleAccessionCodeExtractor {
 
 	private static final String FILE_EXT = ".csv";
 	
-	private static final String INPUT_FILE_NAME = "/home/mstreit/tmp/mappings/panther_BP";
+	private static final String INPUT_FILE_NAME = "data/genome/mapping/MUS_MUSCULUS_REFSEQ_MRNA2PANTHER_BP";
 	
 	private static final String OUTPUT_FILE_NAME = INPUT_FILE_NAME + "_out";
 	
