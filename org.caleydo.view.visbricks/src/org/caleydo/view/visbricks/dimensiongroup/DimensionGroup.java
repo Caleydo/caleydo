@@ -735,14 +735,27 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			bricks.add(bottomBricks.get(i));
 
 		}
-
-		// for (GLBrick brick : bottomBricks) {
-		// bricks.add(brick);
-		// }
-
+		
+//		for (int i = topBricks.size() - 1; i >= 0; i--) {
+//			bricks.add(topBricks.get(i));
+//
+//		}
+		
 		for (GLBrick brick : topBricks) {
 			bricks.add(brick);
 		}
+		
+	
+		
+//		for (GLBrick brick : bottomBricks) {
+//			bricks.add(brick);
+//		}	
+//		
+//	
+		
+
+		
+	
 		return bricks;
 	}
 

@@ -94,6 +94,14 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			return;
 		VASimilarity<ContentVirtualArray, ContentGroupList> vaSimilarity = map
 				.getVASimilarity(neighborSetID);
+		
+		
+//		SimilarityMap map = relationAnalyzer.getSimilarityMap(neighborSetID);
+//		if (map == null)
+//			return;
+//		VASimilarity<ContentVirtualArray, ContentGroupList> vaSimilarity = map
+//				.getVASimilarity(setID);
+		
 		if (vaSimilarity == null)
 			return;
 		GroupSimilarity<ContentVirtualArray, ContentGroupList> groupSimilarity = vaSimilarity
@@ -108,6 +116,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		if (neighborSetID == -1 || similarities == null)
 			return;
 
+		float xDebugOffset = -0.05f;
 		float yOffset = 0;
 		for (GLBrick brick : neighborBrickOrder) {
 
@@ -129,11 +138,16 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			gl.glVertex3f(0, yOffset + height, 0);
 
 			gl.glEnd();
-
+			gl.glColor3f(0,0,0);
+			this.brick.getTextRenderer().setColor(1,0,0,1);
+			this.brick.getTextRenderer().renderText(gl, ""+foreignGroupID, xDebugOffset, yOffset + height/2, 1);
+			xDebugOffset -= 0.05f;
+//			GLHelperFunctions.drawPointAt(gl, -0.2f, yOffset + height, 0);
 			yOffset += height;
-			if (yOffset > y + 0.001f)
+			if (yOffset > y + 0.0001f)
+			{
 				GLHelperFunctions.drawSmallPointAt(gl, x, yOffset, 0);
-
+			}
 		}
 	}
 }

@@ -343,6 +343,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		gl.glPopName();
 
 		gl.glCallList(baseDisplayListIndex);
+		
+		textRenderer.renderText(gl, ""+groupID, 0.5f, 0, 0);
 
 		// isMouseOverBrickArea = false;
 	}
