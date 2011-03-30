@@ -74,7 +74,7 @@ public class Set
 
 	protected StatisticsResult statisticsResult;
 
-	protected ESetDataType setType;
+	protected ESetDataType setType = ESetDataType.NUMERIC;
 
 	ASetBasedDataDomain dataDomain;
 

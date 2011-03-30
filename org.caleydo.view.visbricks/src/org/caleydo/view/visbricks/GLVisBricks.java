@@ -14,6 +14,9 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.MetaSet;
+import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
@@ -1202,11 +1205,27 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		binGroup.setIDTypes(dataDomain.getContentIDType(),
 				IDType.getIDType("GO_CC"));
 		binGroup.setDataDomain(dataDomain);
-		binGroup.setSet(dataDomain.getSet());
+		
+		
+	
+//		MetaSet metaSet = new MetaSet(dataDomain.getSet(), null, null);
+		Set set = new  Set(dataDomain);
+		set.setContentVA(Set.CONTENT, dataDomain.getContentVA(Set.CONTENT));
+		set.setLabel("Cell Compartment");
+		// metaSet.setContentTree(set.getContentTree());
+		// Tree<ClusterNode> subTree = tree.getSubTree();
+
+//		ArrayList<Integer> storageIDs = new ArrayList<Integer>();
+//		SetUtils.setStorages(set, storageIDs);
+		
+		dataDomain.addMetaSet(set);
+		binGroup.setSet(set);
 		binGroup.setRemoteRenderingGLView(this);
 		binGroup.setVisBricks(this);
 		binGroup.setVisBricksView(this);
 		binGroup.initialize();
+		
+		relationAnalyzer.replaceContentVA(set.getID(), dataDomain.getDataDomainType(), Set.CONTENT);
 
 		dimensionGroups.add(binGroup);
 		

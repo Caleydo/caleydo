@@ -47,7 +47,9 @@ public class MetaSet
 		this.isSetHomogeneous = true;
 		this.externalDataRep = originalSet.getExternalDataRep();
 
-		this.hashContentData = (HashMap<String, ContentData>) originalSet.hashContentData.clone();
+		// this.hashContentData = (HashMap<String, ContentData>) originalSet.hashContentData.clone();
+			this.hashContentData = (HashMap<String, ContentData>) originalSet.hashContentData.clone();
+	
 		this.hashStorages = new HashMap<Integer, IStorage>();
 
 		defaultStorageData = new StorageData();

@@ -140,7 +140,7 @@ public class CategoryView extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	public void display(GL2 gl) {
-
+		System.out.println("not much");
 	}
 
 	@Override

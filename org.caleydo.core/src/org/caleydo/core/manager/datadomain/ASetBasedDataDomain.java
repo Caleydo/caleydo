@@ -1,6 +1,7 @@
 package org.caleydo.core.manager.datadomain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -98,6 +99,9 @@ public abstract class ASetBasedDataDomain
 
 	private RelationAnalyzer contentRelationAnalyzer;
 
+	@XmlTransient
+	private HashMap<Integer, ISet> otherMetaSets = new HashMap<Integer, ISet>();
+
 	/**
 	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
 	 */
@@ -158,6 +162,10 @@ public abstract class ASetBasedDataDomain
 
 	}
 
+	public void addMetaSet(ISet set) {
+		otherMetaSets.put(set.getID(), set);
+	}
+
 	/**
 	 * Returns the root set which is currently loaded and used inside the views for this use case.
 	 * 
@@ -173,7 +181,15 @@ public abstract class ASetBasedDataDomain
 			return set;
 
 		ClusterNode root = set.getStorageData(Set.STORAGE).getStorageTreeRoot();
-		return root.getMetaSetFromSubTree(setID);
+		ISet set = root.getMetaSetFromSubTree(setID);
+
+		if (set == null)
+			set = otherMetaSets.get(setID);
+		return set;
+
+	}
+
+	public void registerMetaSet() {
 
 	}
 
@@ -385,6 +401,8 @@ public abstract class ASetBasedDataDomain
 		else {
 			set = this.set.getStorageData(Set.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
 		}
+		if(set == null)
+			set = otherMetaSets.get(setID);
 
 		set.setContentVA(vaType, virtualArray.clone());
 		contentSelectionManager.setVA(set.getContentData(Set.CONTENT).getContentVA());

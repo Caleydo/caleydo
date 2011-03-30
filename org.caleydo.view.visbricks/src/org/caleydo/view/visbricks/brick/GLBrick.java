@@ -12,6 +12,7 @@ import javax.media.opengl.GLAutoDrawable;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.ESetDataType;
 import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.set.StorageData;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -166,12 +167,14 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		if (contentVA == null)
 			contentVA = set.getContentData(Set.CONTENT).getContentVA();
 
-		if (storageVA == null)
-			storageVA = set.getStorageData(Set.STORAGE).getStorageVA();
+		if (storageVA == null) {
+			if (set.getStorageData(Set.STORAGE) != null)
+				storageVA = set.getStorageData(Set.STORAGE).getStorageVA();
+		}
 
 		templateRenderer = new LayoutManager(viewFrustum);
 
-		if (set.getLabel().equals("Rootset")) {
+		if (set.getStorageData(Set.STORAGE) == null) {
 			brickConfigurer = new CategoricalDataConfigurer();
 		} else if (set.getSetType().equals(ESetDataType.NUMERIC)) {
 			brickConfigurer = new NumericalDataConfigurer();
@@ -707,8 +710,18 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		if (contentVA == null)
 			throw new IllegalStateException("contentVA was null");
 		for (Integer contenID : contentVA) {
-			StorageVirtualArray storageVA = set.getStorageData(Set.STORAGE)
-					.getStorageVA();
+			StorageData storageData = set.getStorageData(Set.STORAGE);
+			if (storageData == null) {
+				averageValue = 0;
+				return;
+			}
+
+			StorageVirtualArray storageVA = storageData.getStorageVA();
+
+			if (storageVA == null) {
+				averageValue = 0;
+				return;
+			}
 			for (Integer storageID : storageVA) {
 				float value = set.get(storageID).getFloat(EDataRepresentation.NORMALIZED,
 						contenID);

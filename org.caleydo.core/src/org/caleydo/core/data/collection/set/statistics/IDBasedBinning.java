@@ -30,7 +30,7 @@ public class IDBasedBinning {
 					Set<String> mappedIDs = mappingManager.getIDAsSet(IDType.getIDType("REFSEQ_MRNA"), targetType, refSeq);
 					if (mappedIDs == null) {
 						nonMappingIDs.add(contentID);
-						bin.put("Other", nonMappingIDs);
+//						bin.put("Other", nonMappingIDs);
 						continue;
 					}
 					for (String id : mappedIDs) {
