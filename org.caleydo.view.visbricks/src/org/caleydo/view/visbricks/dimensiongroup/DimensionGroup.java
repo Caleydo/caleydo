@@ -268,10 +268,12 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 			subBrick.getLayout().setPixelSizeY(80);
 
 			if (centerBrick.getAverageValue() < subBrick.getAverageValue()) {
-				insertBrick(subBrick, topBricks, topCol);
-
+				insertTopBrick(subBrick, topBricks, topCol);
+					
 			} else {
-				insertBrick(subBrick, bottomBricks, bottomCol);
+			
+				insertBottomBrick(subBrick, bottomBricks, bottomCol);
+				
 			}
 		}
 		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
@@ -336,11 +338,22 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 	 * @param bricks
 	 * @param layout
 	 */
-	private void insertBrick(GLBrick subBrick, ArrayList<GLBrick> bricks, Column layout) {
+	private void insertTopBrick(GLBrick subBrick, ArrayList<GLBrick> bricks, Column layout) {
 
 		int count;
 		for (count = 0; count < bricks.size(); count++) {
 			if (bricks.get(count).getAverageValue() > subBrick.getAverageValue())
+				break;
+		}
+		bricks.add(count, subBrick);
+		layout.add(count, subBrick.getLayout());
+	}
+	
+	private void insertBottomBrick(GLBrick subBrick, ArrayList<GLBrick> bricks, Column layout) {
+
+		int count;
+		for (count = 0; count < bricks.size(); count++) {
+			if (bricks.get(count).getAverageValue() < subBrick.getAverageValue())
 				break;
 		}
 		bricks.add(count, subBrick);
@@ -815,8 +828,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				if (toBigBy < 0)
 					break;
 				if (!brick.isInOverviewMode() && !brick.isSizeFixed()) {
-					toBigBy -= brick.collapse();
-					changeMade = true;
+//					toBigBy -= brick.collapse();
+//					changeMade = true;
 				}
 			}
 			if (changeMade)
@@ -830,8 +843,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 				if (toBigBy < 0)
 					break;
 				if (!brick.isInOverviewMode() && !brick.isSizeFixed()) {
-					toBigBy -= brick.collapse();
-					changeMade = true;
+//					toBigBy -= brick.collapse();
+//					changeMade = true;
 				}
 			}
 			if (changeMade)
