@@ -21,12 +21,12 @@ public class IDBasedBinning {
 	public HashMap<String, ArrayList<Integer>> getBinning(IDType sourceType, IDType targetType,
 		ContentVirtualArray contenVA) {
 		if (bin.isEmpty()) {
-			ArrayList<Integer> testIDs = new ArrayList<Integer>();
+			ArrayList<Integer> nonMappingIDs = new ArrayList<Integer>();
 			for (Integer contentID : contenVA) {
 				Set<String> mappedIDs = mappingManager.getIDAsSet(sourceType, targetType, contentID);
 				if (mappedIDs == null) {
-					testIDs.add(contentID);
-					bin.put("Test", testIDs);
+					nonMappingIDs.add(contentID);
+					bin.put("Other", nonMappingIDs);
 					continue;
 				}
 				for (String id : mappedIDs) {
