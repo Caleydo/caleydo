@@ -66,6 +66,10 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 		return similarities;
 	}
 
+	public int[] getScores() {
+		return scores;
+	}
+	
 	/**
 	 * Returns a new virtual array containing all elements which occur in the primary group of this group
 	 * similarity and an external group specified through the foreign group ID.
@@ -122,7 +126,6 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 			{
 				System.out.println("Similarity size sum: " +groups2.size());
 //				throw new IllegalArgumentException("wa");
-				va2.getGroupOf(id);
 			}
 
 			for (Group group2 : groups2) {

@@ -116,29 +116,26 @@ public class VASimilarity<VAType extends VirtualArray<VAType, ?, GroupListType>,
 		ArrayList<GroupSimilarity<VAType, GroupListType>> groupSimilarities2 =
 			new ArrayList<GroupSimilarity<VAType, GroupListType>>(groupList2.size());
 
+//		for (Group group : groupList2) {
+//			GroupSimilarity<VAType, GroupListType> groupSimilarity =
+//				new GroupSimilarity<VAType, GroupListType>(group, va2, va1);
+//			groupSimilarity.calculateSimilarity();
+//			for (GroupSimilarity<VAType, GroupListType> similarity1 : groupSimilarities1) {
+//				groupSimilarity.setScore(similarity1.getGroupID(), similarity1.getScore(group.getGroupID()));
+//			}
+//
+//			// groupSimilarity.setScore(0, groupSimilarities1.get(group.getGroupID()).getScore(groupID));
+//			groupSimilarities2.add(groupSimilarity);
+//		}
+		
 		for (Group group : groupList2) {
+			// the similarities of one individual group of groupList 1
 			GroupSimilarity<VAType, GroupListType> groupSimilarity =
 				new GroupSimilarity<VAType, GroupListType>(group, va2, va1);
 			groupSimilarity.calculateSimilarity();
-			for (GroupSimilarity<VAType, GroupListType> similarity1 : groupSimilarities1) {
-				groupSimilarity.setScore(similarity1.getGroupID(), similarity1.getScore(group.getGroupID()));
-			}
-
-			// groupSimilarity.setScore(0, groupSimilarities1.get(group.getGroupID()).getScore(groupID));
 			groupSimilarities2.add(groupSimilarity);
 		}
-
-		// for (int groupID = 0; groupID < groupList2.size(); groupID++) {
-		// // the similarities of one individual group of groupList 2
-		// GroupSimilarity<VAType, GroupListType> groupSimilarity2 =
-		// new GroupSimilarity<VAType, GroupListType>(groupList2.get(groupID), va2, va1);
-		//
-		// // for (GroupSimilarity<VAType, GroupListType> groupSimilarity1 : groupSimilarities1) {
-		// // groupSimilarity2.setScore(groupSimilarity1.getGroupID(), groupSimilarity1.getScore(groupID));
-		// // }
-		// groupSimilarity2.calculateSimilarity();
-		// groupSimilarities2.add(groupSimilarity2);
-		// }
+		
 		groupListSimilarities.put(keys.get(1), groupSimilarities2);
 
 	}

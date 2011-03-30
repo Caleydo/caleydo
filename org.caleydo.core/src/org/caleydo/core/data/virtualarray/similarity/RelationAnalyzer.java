@@ -84,6 +84,14 @@ public class RelationAnalyzer
 	@Override
 	public synchronized void replaceContentVA(int setID, String dataDomainType, String vaType) {
 
+		try {
+			Thread.sleep(1000);
+		}
+		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		ISet set = dataDomain.getSet(setID);
 		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT).getContentVA();
 

@@ -46,6 +46,8 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 	float[] similarities;
 	GLBrick brick;
 
+	int[] scores;
+
 	public RelationIndicatorRenderer(GLBrick brick, GLVisBricks visBricks, boolean isLeft) {
 		this.brick = brick;
 		this.dataDomain = brick.getDataDomain();
@@ -76,7 +78,8 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			if (currentID == setID && isLeft) {
 				neighborSetID = previousID;
 				if (neighborSetID != -1)
-					neighborBrickOrder = dimensionGroups.get(count - 1).getBricksForRelations();
+					neighborBrickOrder = dimensionGroups.get(count - 1)
+							.getBricksForRelations();
 				break;
 			}
 			if (previousID == setID && !isLeft) {
@@ -94,20 +97,21 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			return;
 		VASimilarity<ContentVirtualArray, ContentGroupList> vaSimilarity = map
 				.getVASimilarity(neighborSetID);
-		
-		
-//		SimilarityMap map = relationAnalyzer.getSimilarityMap(neighborSetID);
-//		if (map == null)
-//			return;
-//		VASimilarity<ContentVirtualArray, ContentGroupList> vaSimilarity = map
-//				.getVASimilarity(setID);
-		
+
+		// SimilarityMap map = relationAnalyzer.getSimilarityMap(neighborSetID);
+		// if (map == null)
+		// return;
+		// VASimilarity<ContentVirtualArray, ContentGroupList> vaSimilarity =
+		// map
+		// .getVASimilarity(setID);
+
 		if (vaSimilarity == null)
 			return;
 		GroupSimilarity<ContentVirtualArray, ContentGroupList> groupSimilarity = vaSimilarity
 				.getGroupSimilarity(setID, groupID);
 
 		similarities = groupSimilarity.getSimilarities();
+		scores = groupSimilarity.getScores();
 
 	}
 
@@ -129,7 +133,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			gl.glVertex3f(x, yOffset, 0);
 			if (brick.getContentGroupSelectionManager().checkStatus(
 					SelectionType.SELECTION, brick.getGroup().getID()))
-				gl.glColor4fv(SelectionType.SELECTION.getColor(),0);
+				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 			else
 
 				gl.glColor3f(1, 1, 1);
@@ -138,14 +142,21 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			gl.glVertex3f(0, yOffset + height, 0);
 
 			gl.glEnd();
-			gl.glColor3f(0,0,0);
-			this.brick.getTextRenderer().setColor(1,0,0,1);
-			this.brick.getTextRenderer().renderText(gl, ""+foreignGroupID, xDebugOffset, yOffset + height/2, 1);
-			xDebugOffset -= 0.05f;
-//			GLHelperFunctions.drawPointAt(gl, -0.2f, yOffset + height, 0);
+
+			// if (isLeft) {
+			// gl.glColor3f(0, 0, 0);
+			// this.brick.getTextRenderer().setColor(1, 0, 0, 1);
+			//
+			// this.brick.getTextRenderer().renderText(gl,
+			// "" + foreignGroupID + " - " + scores[foreignGroupID],
+			// xDebugOffset, yOffset + height / 2, 1);
+			// xDebugOffset -= 0.2f;
+			//
+			// }
+
+			// GLHelperFunctions.drawPointAt(gl, -0.2f, yOffset + height, 0);
 			yOffset += height;
-			if (yOffset > y + 0.0001f)
-			{
+			if (yOffset > y + 0.0001f) {
 				GLHelperFunctions.drawSmallPointAt(gl, x, yOffset, 0);
 			}
 		}

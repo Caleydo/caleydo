@@ -1,5 +1,6 @@
 package org.caleydo.view.visbricks.dimensiongroup;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -73,8 +74,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		hashGroupID2GroupMatches.clear();
 
 		List<GLBrick> leftBricks = leftDimGroup.getBricksForRelations();
-		List<GLBrick> rightBricks = rightDimGroup.getBricksForRelations();
-
+		List<GLBrick> rightBricks = rightDimGroup.getBricksForRelations();	
+		
 		if (leftBricks.size() == 0 || rightBricks.size() == 0)
 			return;
 
