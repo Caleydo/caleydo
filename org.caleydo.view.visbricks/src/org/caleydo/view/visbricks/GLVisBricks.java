@@ -14,11 +14,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.MetaSet;
-import org.caleydo.core.data.collection.set.Set;
-import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.graph.tree.ClusterTree;
-import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
@@ -59,7 +55,6 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
-import org.caleydo.view.visbricks.dimensiongroup.BinGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupSpacingRenderer;
@@ -160,6 +155,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private SelectionType volatieBandSelectionType;
 
 	private int connectionBandIDCounter = 0;
+	
+	private boolean isConnectionLinesDirty = true;
 
 	/**
 	 * Constructor.
@@ -571,6 +568,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		// gl.glRotatef(angle, 1, 0, 0);
 
+		if (isConnectionLinesDirty)
+			performConnectionLinesUpdate();
+		
 		for (DimensionGroup dimensionGroup : dimensionGroupManager.getDimensionGroups()) {
 			dimensionGroup.display(gl);
 		}
@@ -1433,8 +1433,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	public void updateConnectionLinesBetweenDimensionGroups() {
 
-		connectionBandIDCounter = 0;
+		isConnectionLinesDirty = true;
+	}
 
+	private void performConnectionLinesUpdate() {
+		connectionBandIDCounter = 0;
+		
 		if (centerRowLayout != null) {
 			for (ElementLayout elementLayout : centerRowLayout.getElements()) {
 				if (elementLayout.getRenderer() instanceof DimensionGroupSpacingRenderer) {
@@ -1442,8 +1446,10 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				}
 			}
 		}
+		
+		isConnectionLinesDirty = false;
 	}
-
+	
 	public void updateLayout() {
 		isLayoutDirty = true;
 	}

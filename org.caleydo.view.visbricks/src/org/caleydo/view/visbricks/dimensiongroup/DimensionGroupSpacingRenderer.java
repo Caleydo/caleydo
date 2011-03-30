@@ -146,7 +146,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 				float rightSimilarityRatioY = rightSimilarities[leftBrick.getGroupID()];
 				rightSimilarityOffsetY += rightSimilarityRatioY;
-
+				
 				subGroupMatch.setSimilarityRatioRight(rightSimilarityRatioY);
 
 				subGroupMatch.setRightAnchorYStart(rightBrickElementLayout
@@ -159,6 +159,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 						* (rightSimilarityOffsetY - rightSimilarityRatioY));
 
 			}
+			
+//			break;
 		}
 	}
 
@@ -190,8 +192,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			if (selectedByGroupSelections == null
 					|| selectedByGroupSelections.size() == 0) {
 
-				ratio = 1;// (float) contentVA.size()
-				// / subGroupMatch.getBrick().getContentVA().size();
+				ratio = 1;//(float) contentVA.size()
+//				 / subGroupMatch.getBrick().getContentVA().size();
 
 				subGroupMatch.addSelectionTypeRatio(ratio, SelectionType.NORMAL);
 				continue;
@@ -202,9 +204,14 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 				if (selectedByGroupSelections.contains(contentID))
 					intersectionCount++;
 			}
-
+			
 			ratio = (float) intersectionCount / contentVA.size();
-
+			
+//			if (intersectionCount > 0) {
+//			System.out.println("intersection: " +intersectionCount);
+//			System.out.println("ratio:" +ratio);
+//			}
+			
 			subGroupMatch.addSelectionTypeRatio(ratio, selectionType);
 		}
 	}
@@ -396,6 +403,9 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			for (SubGroupMatch subGroupMatch : groupMatch.getSubGroupMatches()) {
 
 				GLBrick subBrick = subGroupMatch.getBrick();
+				
+//				if (subBrick.getGroupID() != 4)
+//					continue;
 
 //				if (subGroupMatch.getBrick().isInOverviewMode())
 //					continue;
@@ -474,7 +484,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 					float rightYDiff = subGroupMatch.getRightAnchorYTop()
 							- subGroupMatch.getRightAnchorYBottom();
 					float rightYDiffSelection = rightYDiff * ratio;
-
+				
 					connectionRenderer.renderSingleBand(gl, new float[] { 0,
 							subGroupMatch.getLeftAnchorYTop(), 0.0f },
 							new float[] {
