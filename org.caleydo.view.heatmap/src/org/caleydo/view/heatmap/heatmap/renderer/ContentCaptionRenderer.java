@@ -35,16 +35,18 @@ public class ContentCaptionRenderer extends AContentRenderer {
 			fieldHeight = contentSpacing.getFieldHeight(contentID);
 			if (fieldHeight < HeatMapRenderStyle.MIN_FIELD_HEIGHT_FOR_CAPTION)
 				continue;
-
-			yPosition = contentSpacing.getYDistances().get(contentVA.indexOf(contentID));
-
+			try {
+				yPosition = contentSpacing.getYDistances().get(
+						contentVA.indexOf(contentID));
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 			heatMap.getTextRenderer().setColor(0, 0, 0, 1);
 
 			renderCaption(gl, contentID, 0, yPosition, 0);
 
 		}
 	}
-
 
 	private String getID(Integer contentID, boolean beVerbose) {
 		return heatMap.getDataDomain().getContentLabel(contentID);
@@ -58,11 +60,12 @@ public class ContentCaptionRenderer extends AContentRenderer {
 			sLabel = "Unknown";
 
 		spacing = (contentSpacing.getFieldHeight(contentIndex));
-		
+
 		if (spacing < 0)
 			spacing = 0;
-	
-		heatMap.getTextRenderer().renderTextInBounds(gl, sLabel, xOrigin, yOrigin, 0, x, spacing);
+
+		heatMap.getTextRenderer().renderTextInBounds(gl, sLabel, xOrigin, yOrigin, 0, x,
+				spacing);
 	}
 
 }
