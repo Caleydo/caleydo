@@ -36,6 +36,7 @@
 
 	<Cmd type="CREATE_ID_TYPE" detail="PATHWAY" attrib1="GENE" attrib2="INT" />
 
+<!--
 	<Cmd type="CREATE_ID_TYPE" detail="GO_CC" attrib1="GENE" attrib2="STRING" />
 	<Cmd type="CREATE_ID_TYPE" detail="GO_MF" attrib1="GENE" attrib2="STRING" />
 	<Cmd type="CREATE_ID_TYPE" detail="GO_BP" attrib1="GENE" attrib2="STRING" />
@@ -45,6 +46,7 @@
 		attrib2="STRING" />
 	<Cmd type="CREATE_ID_TYPE" detail="CHROMOSOME" attrib1="GENE"
 		attrib2="STRING" />
+		-->
 		
 	<!-- ************************** Experiments ************************** -->
 
@@ -108,6 +110,7 @@
 		attrib3="0 -1" attrib5="true" />
 	-->
 
+<!-- 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2GO_CC.csv"
 		attrib1="REFSEQ_MRNA_2_GO_CC LUT REVERSE" attrib2=";" attrib3="0 -1"
 		attrib4="DAVID_2_GO_CC" attrib5="true" />
@@ -131,6 +134,7 @@
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2CHROMOSOME.csv"
 		attrib1="REFSEQ_MRNA_2_CHROMOSOME LUT REVERSE" attrib2=";" attrib3="0 -1"
 		attrib4="DAVID_2_CHROMOSOME" attrib5="true" />
+		-->
 
 <!-- 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_PANTHER_BP2REFSEQ_MRNA.csv"
