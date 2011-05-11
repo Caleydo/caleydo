@@ -11,7 +11,6 @@ import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 public class TagRenderer extends LayoutRenderer {

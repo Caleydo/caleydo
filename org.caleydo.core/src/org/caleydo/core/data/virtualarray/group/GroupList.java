@@ -1,6 +1,5 @@
 package org.caleydo.core.data.virtualarray.group;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Iterator;
 

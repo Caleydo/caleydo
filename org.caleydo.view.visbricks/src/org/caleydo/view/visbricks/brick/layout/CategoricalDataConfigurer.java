@@ -6,18 +6,14 @@ import java.util.HashSet;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.AContainedViewRenderer;
 import org.caleydo.view.visbricks.brick.ui.BrickRemoteViewRenderer;
 import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.visbricks.brick.viewcreation.CategoryCreator;
-import org.caleydo.view.visbricks.brick.viewcreation.ParCoordsCreator;
-import org.caleydo.view.visbricks.brick.viewcreation.TagCloudCreator;
 
 public class CategoricalDataConfigurer implements IBrickConfigurer {
 

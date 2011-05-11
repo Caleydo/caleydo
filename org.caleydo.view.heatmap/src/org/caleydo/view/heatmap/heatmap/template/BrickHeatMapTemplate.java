@@ -6,7 +6,6 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.renderer.DetailToolBar;
 
 /**
  * Render LayoutTemplate for HeatMap in GLBucketView

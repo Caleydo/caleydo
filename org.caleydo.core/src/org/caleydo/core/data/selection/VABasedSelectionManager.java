@@ -1,14 +1,11 @@
 package org.caleydo.core.data.selection;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.VirtualArray;

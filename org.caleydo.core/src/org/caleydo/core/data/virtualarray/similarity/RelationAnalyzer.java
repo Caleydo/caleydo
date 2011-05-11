@@ -2,7 +2,6 @@ package org.caleydo.core.data.virtualarray.similarity;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.concurrent.locks.Lock;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;

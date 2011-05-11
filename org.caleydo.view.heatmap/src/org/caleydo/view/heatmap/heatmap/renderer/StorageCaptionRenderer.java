@@ -1,12 +1,9 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
-import java.awt.Font;
-
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 

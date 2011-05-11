@@ -19,7 +19,6 @@ import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.Y_
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
-import java.awt.Font;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.nio.FloatBuffer;

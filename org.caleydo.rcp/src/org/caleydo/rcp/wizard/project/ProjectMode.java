@@ -1,5 +1,6 @@
 package org.caleydo.rcp.wizard.project;
 
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 
 public enum ProjectMode {

@@ -3,8 +3,6 @@ package org.caleydo.view.visbricks.dimensiongroup;
 import java.util.HashMap;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 

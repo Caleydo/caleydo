@@ -6,8 +6,6 @@ import java.util.List;
 import org.caleydo.rcp.view.toolbar.ActionToolBarContainer;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.ToolBarContainer;
-import org.caleydo.rcp.view.toolbar.action.storagebased.PropagateSelectionsAction;
-import org.caleydo.rcp.view.toolbar.action.storagebased.ResetViewAction;
 import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
 import org.caleydo.view.bookmark.GLBookmarkView;
 

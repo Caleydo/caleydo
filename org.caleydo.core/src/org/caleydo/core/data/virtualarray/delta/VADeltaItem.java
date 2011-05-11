@@ -2,6 +2,7 @@ package org.caleydo.core.data.virtualarray.delta;
 
 import org.caleydo.core.data.selection.delta.IDeltaItem;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**
  * A VADeltaItem contains all information for the modification of a single item in a virtual array. Typically

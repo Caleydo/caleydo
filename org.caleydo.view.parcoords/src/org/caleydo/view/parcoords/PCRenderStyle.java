@@ -3,11 +3,9 @@ package org.caleydo.view.parcoords;
 import java.util.HashMap;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.omg.IOP.ExceptionDetailMessage;
 
 /**
  * Render styles for the parallel coordinates

@@ -4,10 +4,7 @@ import java.util.List;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.wizard.project.DataImportWizard;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;

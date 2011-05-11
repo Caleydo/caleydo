@@ -6,7 +6,6 @@ import java.nio.IntBuffer;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
