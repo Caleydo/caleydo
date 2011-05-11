@@ -124,8 +124,9 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 		this.category = category;
 		this.categoryName = category.getCategoryName();
 		this.pickingIDManager = manager.getPickingIDManager();
-		this.containerLayout = new Column();
+		this.containerLayout = new Column("typeBookmarkColumn");
 
+//		containerLayout.setDebug(true);
 		containerLayout.setYDynamic(true);
 		containerLayout.setRatioSizeX(1);
 		containerLayout.setBottomUp(false);

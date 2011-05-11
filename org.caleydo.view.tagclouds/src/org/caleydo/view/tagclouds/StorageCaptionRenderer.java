@@ -30,7 +30,6 @@ public class StorageCaptionRenderer extends LayoutRenderer {
 		gl.glVertex3f(x, 0, -.001f);
 		gl.glEnd();
 
-		textRenderer.setWindowSize(x, y);
 		textRenderer.setColor(color);
 
 		textRenderer.renderTextInBounds(gl, text, sideSpacing, topSpacing / 2, 0, x

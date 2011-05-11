@@ -80,18 +80,7 @@ public class GeneralRenderStyle {
 		return fScaling;
 	}
 
-	public float getVerySmallFontScalingFactor() {
-
-		return VERY_SMALL_FONT_SCALING_FACTOR;// * getScaling();
-	}
-
-	public float getHeadingFontScalingFactor() {
-
-		return HEADING_FONT_SCALING_FACTOR;// * getScaling();
-	}
-
 	public float getVerySmallSpacing() {
-
 		return BUTTONS_SPACING / 5 * getScaling();
 	}
 

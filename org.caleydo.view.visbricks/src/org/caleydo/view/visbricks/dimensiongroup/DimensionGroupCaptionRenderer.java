@@ -18,8 +18,8 @@ public class DimensionGroupCaptionRenderer extends LayoutRenderer {
 	public void render(GL2 gl) {
 
 		int pickingID = dimensionGroup.getPickingManager().getPickingID(
-				dimensionGroup.getVisBricksView().getID(),
-				EPickingType.DIMENSION_GROUP, dimensionGroup.getID());
+				dimensionGroup.getVisBricksView().getID(), EPickingType.DIMENSION_GROUP,
+				dimensionGroup.getID());
 
 		gl.glPushName(pickingID);
 		gl.glColor4f(1, 1, 1, 0);
@@ -33,11 +33,12 @@ public class DimensionGroupCaptionRenderer extends LayoutRenderer {
 
 		CaleydoTextRenderer textRenderer = dimensionGroup.getTextRenderer();
 
+		float ySpacing = dimensionGroup.getParentGLCanvas().getPixelGLConverter()
+				.getGLHeightForPixelHeight(1);
+
 		textRenderer.setColor(0, 0, 0, 1);
-		textRenderer
-				.renderText(gl, dimensionGroup.getSet().getLabel(), 0, y/8.0f, 0,
-						18, dimensionGroup.getParentGLCanvas()
-								.getPixelGLConverter());
+		textRenderer.renderTextInBounds(gl, dimensionGroup.getSet().getLabel(), 0,
+				ySpacing, 0, x, y - 2 * ySpacing);
 
 	}
 }

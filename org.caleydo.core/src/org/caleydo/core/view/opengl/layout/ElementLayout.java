@@ -403,7 +403,7 @@ public class ElementLayout {
 			}
 
 			textRenderer.setColor(color[0], color[1], color[2], color[3]);
-			textRenderer.renderText(gl, layoutName, 0, yPositionDebugText, 0.4f);
+			textRenderer.renderText(gl, layoutName, 0, yPositionDebugText, 0.4f, 0.03f, 3);
 
 		}
 

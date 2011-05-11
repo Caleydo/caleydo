@@ -3,8 +3,10 @@ package org.caleydo.view.bookmark;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
@@ -14,7 +16,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  */
 class ContentBookmark extends ABookmark {
 
-	private ElementLayout layoutParameters;
+	private ElementLayout layout;
 
 	/**
 	 * Constructor taking a textRenderer
@@ -28,46 +30,34 @@ class ContentBookmark extends ABookmark {
 		super(manager, parentContainer, idType, textRenderer);
 		this.id = id;
 
-		layoutParameters = new ElementLayout();
-		layoutParameters.setRatioSizeX(1);
+		layout = new ElementLayout("ContentBookmark");
 	
+		layout.setRatioSizeX(1);
 
-		layoutParameters.setRenderer(this);
-		layoutParameters.setPixelGLConverter(manager.getParentGLCanvas().getPixelGLConverter());
-//		float height = (float) textRenderer.getBounds("Text").getHeight();
+		layout.setRenderer(this);
+		layout.setPixelGLConverter(manager.getParentGLCanvas().getPixelGLConverter());
+		// float height = (float) textRenderer.getBounds("Text").getHeight();
 
-		layoutParameters.setPixelSizeY(20);
+		layout.setPixelSizeY(20);
 
 	}
 
 	@Override
 	public ElementLayout getLayout() {
-		return layoutParameters;
+		return layout;
 	}
 
 	@Override
 	public void render(GL2 gl) {
 
 		super.render(gl);
-		// String sContent = GeneralManager.get().getIDMappingManager().getID(
-		// manager.getDataDomain().getPrimaryContentMappingType(),
-		// EIDType.GENE_SYMBOL, id);
-		//
-		// float yOrigin = bookmarkDimensions.getYOrigin() - 0.08f;
-		String sContent = manager.getDataDomain().getContentLabel(idType, id);
-		// RenderingHelpers.renderText(gl, textRenderer, sContent,
-		// bookmarkDimensions.getXOrigin() + BookmarkRenderStyle.SIDE_SPACING,
-		// yOrigin, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
+		String label = manager.getDataDomain().getContentLabel(idType, id);
+		textRenderer.setColor(0, 0, 0, 1);
+		textRenderer.renderTextInBounds(gl, label, 0 + xSpacing, 0 + ySpacing, 0, x
+				- xSpacing, y - 2 * ySpacing);
 
-		float height = (layoutParameters.getSizeScaledY() - (float)textRenderer.getBounds("Bla").getHeight())/2;
-		
-		
-		
-		RenderingHelpers.renderText(gl, textRenderer, sContent,
-				BookmarkRenderStyle.SIDE_SPACING * 2, height,
-				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
-
+	
 	}
 
 }

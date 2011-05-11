@@ -18,8 +18,8 @@ import org.caleydo.core.view.opengl.renderstyle.InfoAreaRenderStyle;
 import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
- * Info Area LayoutRenderer. Renders an info area. It needs only an id, a data type and a gl context, and renders
- * the information.
+ * Info Area LayoutRenderer. Renders an info area. It needs only an id, a data type and a gl context, and
+ * renders the information.
  * 
  * @author Alexander Lex
  */
@@ -124,10 +124,10 @@ public class GLInPlaceInfoRenderer {
 		Iterator<String> contentIterator = sContent.iterator();
 		iCount = 0;
 
-		float fFontScaling = renderStyle.getHeadingFontScalingFactor();
+		float fFontScaling = 0.01f;
 		while (contentIterator.hasNext()) {
 			if (iCount == 1) {
-				fFontScaling = renderStyle.getSmallFontScalingFactor();
+				fFontScaling = 0.005f;
 			}
 			sCurrent = contentIterator.next();
 			fNextLineHeight -= (float) textRenderer.getBounds(sCurrent).getHeight() * fFontScaling + fSpacing;
@@ -166,12 +166,12 @@ public class GLInPlaceInfoRenderer {
 
 		Iterator<String> contentIterator = sContent.iterator();
 		int iCount = 0;
-		float fFontScalingFactor = renderStyle.getHeadingFontScalingFactor();
+		float fFontScalingFactor = 0.01f;
 		while (contentIterator.hasNext()) {
 
 			sCurrent = contentIterator.next();
 			if (iCount == 1) {
-				fFontScalingFactor = renderStyle.getSmallFontScalingFactor();
+				fFontScalingFactor = 0.005f;
 			}
 
 			box = textRenderer.getBounds(sCurrent).getBounds2D();

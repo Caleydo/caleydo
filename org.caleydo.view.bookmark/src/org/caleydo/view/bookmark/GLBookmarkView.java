@@ -138,7 +138,6 @@ public class GLBookmarkView extends AGLView implements
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
 		Rectangle2D bounds = parentGLCanvas.getBounds();
-		textRenderer.setWindowSize(bounds.getWidth(), bounds.getHeight());
 		templateRenderer.updateLayout();
 
 	}
@@ -298,9 +297,7 @@ public class GLBookmarkView extends AGLView implements
 
 	@Override
 	public void init(GL2 gl) {
-		Rectangle2D bounds = parentGLCanvas.getBounds();
 		textRenderer = new CaleydoTextRenderer(24);
-		textRenderer.setWindowSize(bounds.getWidth(), bounds.getHeight());
 		bookmarkTemplate.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 	}
 
@@ -391,7 +388,8 @@ public class GLBookmarkView extends AGLView implements
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 
-		Column mainColumn = new Column();
+		Column mainColumn = new Column("baseBookmarkColumn");
+		mainColumn.setFrameColor(1, 0, 0, 1);
 		mainColumn.setYDynamic(true);
 		mainColumn.setBottomUp(false);
 		// mainColumn.setPixelGLConverter(pixelGLConverter);

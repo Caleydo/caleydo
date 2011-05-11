@@ -45,22 +45,11 @@ class StorageBookmark extends ABookmark {
 	public void render(GL2 gl) {
 
 		super.render(gl);
-		String sContent = manager.getDataDomain().getStorageLabel(id);
+		String label = manager.getDataDomain().getStorageLabel(id);
+		manager.getTextRenderer().renderTextInBounds(gl, label, 0 + xSpacing,
+				0 + ySpacing, 0, x - xSpacing, y - 2 * ySpacing);
 
-		// ((ISetBasedDataDomain) DataDomainManager.getInstance()
-		// .getDataDomain("org.caleydo.datadomain.genetic")).getSet().get(id).getLabel();
-		//
-		// GeneralManager.get().getIDMappingManager().getID(EIDType.DAVID,
-		// EIDType.GENE_SYMBOL, id);
-		//
-		// float yOrigin = bookmarkDimensions.getYOrigin() - 0.08f;
-		float height = (layout.getSizeScaledY() - (float) textRenderer.getBounds("Bla")
-				.getHeight()) / 2;
 
-//		gl.glPushName(manager.getPickingIDManager().getPickingID());
-		RenderingHelpers.renderText(gl, textRenderer, sContent,
-				BookmarkRenderStyle.SIDE_SPACING * 2, height,
-				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
 	}
 

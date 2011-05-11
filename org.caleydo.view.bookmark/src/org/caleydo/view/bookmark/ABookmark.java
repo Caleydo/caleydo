@@ -6,6 +6,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -21,11 +22,22 @@ public abstract class ABookmark extends LayoutRenderer implements ILayoutedEleme
 	protected IDType idType;
 	protected int id;
 
-	CaleydoTextRenderer textRenderer;
+	protected CaleydoTextRenderer textRenderer;
 
-	GLBookmarkView manager;
+	protected GLBookmarkView manager;
 
-	ABookmarkContainer<?> parentContainer;
+	protected ABookmarkContainer<?> parentContainer;
+
+	protected final static int Y_SPACING_PIXEL = 4;
+	protected final static int X_SPACING_PIXEL = 5;
+
+	/** spacing for text in y direction */
+	protected float ySpacing;
+
+	/** spacing for text in x direction */
+	protected float xSpacing;
+
+	protected PixelGLConverter pixelGLConverter;
 
 	/**
 	 * The constructor takes a TextRenderer which is used to render all text
@@ -39,11 +51,17 @@ public abstract class ABookmark extends LayoutRenderer implements ILayoutedEleme
 		this.idType = idType;
 		this.parentContainer = parentContainer;
 
+		pixelGLConverter = manager.getParentGLCanvas().getPixelGLConverter();
+
 	}
 
 	public void render(GL2 gl) {
 		super.render(gl);
 
+		// this needs to be done only when the frustum has changed, but that's
+		// difficult to determine here
+		ySpacing = pixelGLConverter.getGLHeightForPixelHeight(Y_SPACING_PIXEL);
+		xSpacing = pixelGLConverter.getGLWidthForPixelWidth(X_SPACING_PIXEL);
 		float[] highlightColor = null;
 
 		ArrayList<SelectionType> selectionTypes = parentContainer.selectionManager
@@ -76,7 +94,7 @@ public abstract class ABookmark extends LayoutRenderer implements ILayoutedEleme
 			// float width =
 			float width = layout.getSizeScaledX();
 			float height = layout.getSizeScaledY();
-
+			gl.glLineWidth(1);
 			gl.glColor3fv(highlightColor, 0);
 			gl.glBegin(GL2.GL_LINE_LOOP);
 			gl.glVertex3f(xOrigin, yOrigin, 0);

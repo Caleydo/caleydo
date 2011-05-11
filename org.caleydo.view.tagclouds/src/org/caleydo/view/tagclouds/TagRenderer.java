@@ -27,8 +27,7 @@ public class TagRenderer extends LayoutRenderer {
 	private boolean isEven = false;
 	private boolean allowTextScaling = false;
 
-	public TagRenderer(CaleydoTextRenderer textRenderer, String text,
-			GLTagCloud tagCloud) {
+	public TagRenderer(CaleydoTextRenderer textRenderer, String text, GLTagCloud tagCloud) {
 		this.textRenderer = textRenderer;
 		this.text = text;
 		this.tagCloud = tagCloud;
@@ -69,8 +68,9 @@ public class TagRenderer extends LayoutRenderer {
 		IStorage genericStorage = tagCloud.getSet().get(storageID);
 		if (genericStorage instanceof NumericalStorage) {
 			NumericalStorage numericalStorage = (NumericalStorage) genericStorage;
-			text = new Float(numericalStorage.getFloat(EDataRepresentation.RAW,
-					contentID)).toString();
+			text = new Float(
+					numericalStorage.getFloat(EDataRepresentation.RAW, contentID))
+					.toString();
 		} else {
 			NominalStorage<String> storage = (NominalStorage<String>) genericStorage;
 			text = storage.getRaw(contentID);
@@ -92,7 +92,6 @@ public class TagRenderer extends LayoutRenderer {
 			gl.glVertex3f(x, 0, -.001f);
 			gl.glEnd();
 		}
-		textRenderer.setWindowSize(x, y);
 		textRenderer.setColor(color);
 
 		float maxHeight = tagCloud.getParentGLCanvas().getPixelGLConverter()
@@ -101,11 +100,11 @@ public class TagRenderer extends LayoutRenderer {
 			float renderHeight = maxHeight;
 
 			topSpacing = (y - renderHeight) / 2;
-			textRenderer.renderTextInBounds(gl, text, sideSpacing, topSpacing,
-					0, x - 3 * sideSpacing, renderHeight);
+			textRenderer.renderTextInBounds(gl, text, sideSpacing, topSpacing, 0, x - 3
+					* sideSpacing, renderHeight);
 		} else {
-			textRenderer.renderTextInBounds(gl, text, sideSpacing,
-					topSpacing / 2, 0, x - 3 * sideSpacing, y - topSpacing);
+			textRenderer.renderTextInBounds(gl, text, sideSpacing, topSpacing / 2, 0, x
+					- 3 * sideSpacing, y - topSpacing);
 		}
 	};
 
