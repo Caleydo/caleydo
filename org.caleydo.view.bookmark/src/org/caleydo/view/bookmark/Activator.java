@@ -3,6 +3,8 @@ package org.caleydo.view.bookmark;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.rcp.toolbar.ToolBarContentFactory;
+import org.caleydo.view.bookmark.toolbar.BookmarkToolBarContent;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -24,8 +26,10 @@ public class Activator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-	
+
 		registerDataDomains();
+		ToolBarContentFactory.get().addToolBarContent(GLBookmarkView.VIEW_ID, false,
+				new BookmarkToolBarContent());
 	}
 
 	/*
@@ -48,7 +52,7 @@ public class Activator extends Plugin {
 	public static Activator getDefault() {
 		return plugin;
 	}
-	
+
 	private void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
