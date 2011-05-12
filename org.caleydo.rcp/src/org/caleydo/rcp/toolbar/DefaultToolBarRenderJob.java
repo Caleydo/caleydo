@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.ToolBarContainer;
 import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
@@ -83,12 +82,6 @@ public class DefaultToolBarRenderJob
 			Display display = PlatformUI.getWorkbench().getDisplay();
 			String path = toolBarContainer.getImagePath();
 			resourceLoader.getImage(display, path);
-
-			// TODO: write horizontal renderer
-			if (!GenomePerspective.bIsWideScreen) {
-				Label spacer = new Label(group, SWT.NULL);
-				spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
-			}
 
 			Label label = new Label(group, SWT.CENTER);
 			label.setText(toolBarContainer.getTitle());

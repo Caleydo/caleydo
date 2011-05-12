@@ -16,10 +16,8 @@ import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * Drop down style toolbar-contribution to select pathway.
@@ -28,7 +26,7 @@ import org.eclipse.swt.widgets.Display;
  */
 public class PathwaySearchBox extends ControlContribution implements IToolBarItem {
 
-	public static final int TOOLBAR_WIDTH = 173;
+	public static final int TOOLBAR_WIDTH = 500;
 
 	/** mediator to handle actions triggered by the contributed element */
 	PathwayToolBarMediator pathwayToolBarMediator;
@@ -128,15 +126,7 @@ public class PathwaySearchBox extends ControlContribution implements IToolBarIte
 	@Override
 	protected int computeWidth(Control control) {
 
-		Rectangle rectDisplay = Display.getCurrent().getClientArea();
-		float fRatio = (float) rectDisplay.width / rectDisplay.height;
-
-		// is widescreen setup
-		if (fRatio > 1.35) {
-			return TOOLBAR_WIDTH - 25;
-		}
-
-		return control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x;
+			return TOOLBAR_WIDTH;
 	}
 
 	public PathwayToolBarMediator getPathwayToolBarMediator() {

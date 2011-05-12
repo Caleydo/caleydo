@@ -64,11 +64,6 @@ public class PartListener
 		if (!(activePart instanceof ARcpGLViewPart))
 			return;
 
-		ARcpGLViewPart glView = (ARcpGLViewPart) activePart;
-
-		if (glView == null)
-			return;
-
 		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() == null)
 			return;
 

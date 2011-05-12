@@ -2,14 +2,11 @@ package org.caleydo.rcp;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.perspective.PartListener;
 import org.caleydo.rcp.startup.StartupProcessor;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -44,12 +41,6 @@ public class ApplicationWorkbenchWindowAdvisor
 		configurer.setTitle("Caleydo");
 
 		configurer.getWindow().getPartService().addPartListener(new PartListener());
-
-		Rectangle rectDisplay = Display.getCurrent().getMonitors()[0].getBounds();
-		float fRatio = (float) rectDisplay.width / rectDisplay.height;
-		if (fRatio > 1.35) {
-			GenomePerspective.bIsWideScreen = true;
-		}
 	}
 
 	@Override

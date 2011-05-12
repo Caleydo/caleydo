@@ -6,7 +6,6 @@ import java.util.List;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
-import org.caleydo.rcp.perspective.GenomePerspective;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -44,12 +43,7 @@ public class RcpToolBarView
 	public void createPartControl(Composite parent) {
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
 
-		if (GenomePerspective.bIsWideScreen) {
-			toolBarRenderer = new WideScreenToolBarRenderer();
-		}
-		else {
-			toolBarRenderer = new StandardToolBarRenderer();
-		}
+		toolBarRenderer = new WideScreenToolBarRenderer();
 
 		parentComposite.setLayout(toolBarRenderer.createLayout());
 		this.parentComposite = parentComposite;
