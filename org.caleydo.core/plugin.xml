@@ -143,7 +143,7 @@
       </command>
       <command
             defaultHandler="org.caleydo.core.gui.menu.KnownBugsHandler"
-            id="org.caleydo.core.gui.menu.known_bugsugs"
+            id="org.caleydo.core.gui.menu.known_bugs"
             name="Known Bugs">
       </command>
       <command
@@ -190,7 +190,7 @@
                   style="push">
             </command>
             <command
-                  commandId="org.caleydo..core.io.gui.export_data"
+                  commandId="org.caleydo.core.io.gui.export_data"
                   icon="resources/icons/general/export_data.png"
                   label="Export Data"
                   style="push">
@@ -221,7 +221,7 @@
                label="Data"
                tooltip="Data">
             <command
-                  commandId="org.caleydo.core.util.clusterer.cluster"
+                  commandId="org.caleydo.core.util.clusterer.gui.cluster"
                   icon="resources/icons/general/clustering.png"
                   label="Cluster Data"
                   style="push"
@@ -232,7 +232,7 @@
                id="org.caleydo.menu.window"
                label="Window">
             <command
-                  commandId="org.caleydo.core.command.fullscreen"
+                  commandId="org.caleydo.core.gui.fullscreen"
                   label="Full Screen"
                   mnemonic="F"
                   style="push">
@@ -287,7 +287,7 @@
                   style="push">
             </command>
             <command
-                  commandId="org.caleydo.core.gui.menu.help.report_bug"
+                  commandId="org.caleydo.core.gui.menu.report_bug"
                   icon="resources/icons/general/report_bug.gif"
                   label="Report Bug"
                   style="push">
