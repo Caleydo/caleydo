@@ -3,7 +3,7 @@ package org.caleydo.view.datawindows;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
+import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLDataWindowsView extends ARcpGLViewPart {

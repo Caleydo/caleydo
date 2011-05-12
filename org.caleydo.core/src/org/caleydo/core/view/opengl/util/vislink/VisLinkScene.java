@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 
 /**

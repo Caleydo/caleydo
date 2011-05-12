@@ -2,8 +2,8 @@ package org.caleydo.view.parcoords;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.rcp.toolbar.ToolBarContentFactory;
 import org.caleydo.view.parcoords.toolbar.ParCoordsToolBarContent;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;

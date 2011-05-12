@@ -1,7 +1,7 @@
 package org.caleydo.view.pathway.toolbar.actions;
 
+import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.view.pathway.toolbar.PathwayToolBarMediator;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;

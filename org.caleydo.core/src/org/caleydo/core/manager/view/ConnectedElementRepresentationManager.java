@@ -10,6 +10,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.selection.AddSelectionEvent;
@@ -22,7 +23,6 @@ import org.caleydo.core.manager.view.listener.AddSelectionListener;
 import org.caleydo.core.manager.view.listener.ClearConnectionsListener;
 import org.caleydo.core.manager.view.listener.ClearTransformedConnectionsListener;
 import org.caleydo.core.net.IGroupwareManager;
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 
 /**

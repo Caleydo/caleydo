@@ -3,7 +3,7 @@ package org.caleydo.view.info;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
-import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
+import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;

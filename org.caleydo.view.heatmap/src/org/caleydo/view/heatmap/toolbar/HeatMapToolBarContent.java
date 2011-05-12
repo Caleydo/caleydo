@@ -3,12 +3,12 @@ package org.caleydo.view.heatmap.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.rcp.view.toolbar.ActionToolBarContainer;
-import org.caleydo.rcp.view.toolbar.IToolBarItem;
-import org.caleydo.rcp.view.toolbar.ToolBarContainer;
-import org.caleydo.rcp.view.toolbar.action.storagebased.PropagateSelectionsAction;
-import org.caleydo.rcp.view.toolbar.action.storagebased.ResetViewAction;
-import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
+import org.caleydo.core.gui.toolbar.ActionToolBarContainer;
+import org.caleydo.core.gui.toolbar.IToolBarItem;
+import org.caleydo.core.gui.toolbar.ToolBarContainer;
+import org.caleydo.core.gui.toolbar.action.PropagateSelectionsAction;
+import org.caleydo.core.gui.toolbar.action.ResetViewAction;
+import org.caleydo.core.gui.toolbar.content.AToolBarContent;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 /**

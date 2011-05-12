@@ -6,4 +6,337 @@
    <extension-point id="org.caleydo.util.statistics.StatisticsPerformer" name="StatisticsPerformer" schema="schema/org.caleydo.util.statistics.StatisticsPerformer.exsd"/>
    <extension-point id="org.caleydo.datadomain.DataDomain" name="DataDomain" schema="schema/org.caleydo.datadomain.DataDomain.exsd"/>
    <extension-point id="org.caleydo.view.ViewCreator" name="ViewCreator" schema="schema/org.caleydo.view.ViewCreator.exsd"/>
+
+   <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="org.caleydo.core.startup.Application">
+         </run>
+      </application>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.views">
+     <category
+            name="Caleydo"
+            id="org.caleydo.core.views">
+      </category>
+  
+      <view
+            category="org.caleydo.core.views"
+            class="org.caleydo.core.gui.toolbar.RcpToolBarView"
+            icon="resources/icons/view/general.png"
+            id="org.caleydo.core.gui.toolbar.RcpToolBarView"
+            name="Tool Bar">
+      </view>
+      <view
+            category="org.caleydo.core.views"
+            class="org.caleydo.core.view.RcpCollabView"
+            id="org.caleydo.core.views.swt.CollabView"
+            name="Collaboration">
+      </view>
+   </extension>   
+   
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Genome Perspective"  class="org.caleydo.core.gui.perspective.GenomePerspective"
+            id="org.caleydo.core.gui.perspective">
+            
+      </perspective>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+          <product
+            application="org.caleydo.core.application"
+            name="Caleydo">
+         <property
+               name="appName"
+               value="Caleydo">
+         </property>        
+         <property
+               name="aboutImage"
+               value="resources/wizard/wizard.png">
+         </property>
+         <property
+               name="windowImages"
+               value="resources/icons/caleydo16.gif,resources/icons/caleydo32.gif,resources/icons/caleydo48.gif,resources/icons/caleydo64.gif,resources/icons/caleydo128.gif">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+         <property
+               name="aboutText"
+               value="Caleydo Visualization Framework&#x0A;Check out www.caleydo.org&#x0A;&#x0A;© Copyright by www.caleydo.org and Institute for Computer Graphics and Vision&#x0A;Graz University of Technology - 2011.&#x0A;All Rights Reserved.">
+         </property>
+      </product>
+   </extension>
+   <extension
+         name="Caleydo"
+         point="org.eclipse.ui.splashHandlers">
+      <splashHandler
+            class="org.caleydo.core.startup.InteractiveSplashHandler"
+            id="org.caleydo.core.startup.progress">
+      </splashHandler>
+      <splashHandlerProductBinding
+            productId="org.caleydo.core.product"
+            splashId="org.caleydo.core.startup.progress">
+      </splashHandlerProductBinding>         
+   </extension>   
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.core.startup.ExitHandler"
+            id="org.caleydo.core.startup.exit"
+            name="Exit">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.gui.FullScreenHandler"
+            id="org.caleydo.core.gui.fullscreen"
+            name="Full Screen">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.plex.SendRemoteHandler"
+            id="org.caleydo.core.plex.sendviews.remote"
+            name="Send Bucket">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.plex.ObtainViewHandler"
+            id="org.caleydo.core.plex.sendviews.obtain"
+            name="Obtain View">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.plex.PublishViewHandler"
+            id="org.caleydo.core.plex.sendviews.publish"
+            name="Publish View">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.io.gui.ExportDataHandler"
+            id="org.caleydo.core.io.gui.export_data"
+            name="Export Data">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.io.gui.ImportDataHandler"
+            id="org.caleydo.core.io.gui.import_data"
+            name="Import Data">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.io.gui.SaveProjectHandler"
+            id="org.caleydo.core.io.gui.save_project"
+            name="Save Project">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.plex.OpenCollabHandler"
+            id="org.caleydo.core.plex.open_collab"
+            name="Open Collaboration">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.gui.menu.HelpContentsHandler"
+            id="org.caleydo.core.gui.menu.help_contents"
+            name="Help Contents">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.gui.menu.KnownBugsHandler"
+            id="org.caleydo.core.gui.menu.known_bugsugs"
+            name="Known Bugs">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.gui.menu.ReportBugHandler"
+            id="org.caleydo.core.gui.menu.report_bug"
+            name="Report Bug">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.util.tracking.StartTrackingHandler"
+            id="org.caleydo.core.util.tracking.start_tracking"
+            name="Start Tracking">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.util.tracking.StopTrackingHandler"
+            id="org.caleydo.core.util.tracking.stop_tracking"
+            name="Stop Tracking">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.util.clusterer.gui.ClusterHandler"
+            id="org.caleydo.core.util.clusterer.gui.cluster"
+            name="Cluster">
+      </command>
+      		
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+         
+         
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.file"
+               label="File">
+            <command
+                  commandId="org.caleydo.core.io.gui.save_project"
+                  icon="resources/icons/general/save.png"
+                  label="Save Project"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.core.io.gui.import_data"
+                  icon="resources/icons/general/import_data.png"
+                  label="Import Data"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo..core.io.gui.export_data"
+                  icon="resources/icons/general/export_data.png"
+                  label="Export Data"
+                  style="push">
+            </command>
+            <separator
+                  name="org.caleydo.core.separator1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.window.preferences"
+                  label="Preferences"
+                  mnemonic="P"
+                  style="push">
+            </command>
+            <separator
+                  name="org.caleydo.core.separator2"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.caleydo.core.startup.exit"
+                  label="Exit"
+                  mnemonic="E"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               id="org.caleydo.menu.data"
+               label="Data"
+               tooltip="Data">
+            <command
+                  commandId="org.caleydo.core.util.clusterer.cluster"
+                  icon="resources/icons/general/clustering.png"
+                  label="Cluster Data"
+                  style="push"
+                  tooltip="Open Clustering Dialog">
+            </command>
+         </menu>
+         <menu
+               id="org.caleydo.menu.window"
+               label="Window">
+            <command
+                  commandId="org.caleydo.core.command.fullscreen"
+                  label="Full Screen"
+                  mnemonic="F"
+                  style="push">
+            </command>
+         </menu>
+         <!--
+         <menu
+               id="org.caleydo.menu.admin"
+               label="Admin">
+            <command
+                  commandId="org.caleydo.core.command.open_collab"
+                  label="Collaboration"
+                  mnemonic="T"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.core.command.start_tracking"
+                  label="Start Tracking"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.core.command.stop_tracking"
+                  label="Stop Tracking"
+                  style="push">
+            </command>
+         </menu>
+         -->
+         <menu
+               id="org.caleydo.menu.help"
+               label="Help"
+               tooltip="Help">
+            <command
+                  commandId="org.caleydo.core.gui.menu.help_contents"
+                  icon="resources/icons/general/help.gif"
+                  label="Help Contents"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="resources/icons/general/error_log.gif"
+                  label="Error Log"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="org.eclipse.pde.runtime.LogView">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.caleydo.core.gui.menu.known_bugs"
+                  icon="resources/icons/general/known_bugs.gif"
+                  label="Known Bugs"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.core.gui.menu.help.report_bug"
+                  icon="resources/icons/general/report_bug.gif"
+                  label="Report Bug"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.help.aboutAction"
+                  icon="resources/icons/caleydo16.gif"
+                  label="About Caleydo"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+      <extension
+         point="org.eclipse.ui.preferencePages">
+            <page
+            class="org.caleydo.core.preferences.ColorMappingPreferencePage"
+            id="org.caleydo.core.preferences.ColorMappingPreferencePage"
+            name="Color Mapping">
+ 			</page>
+            <page
+                  class="org.caleydo.core.preferences.GeneralPreferencePage"
+                  id="org.caleydo.core.preferences.GeneralPreferencePage"
+                  name="General">
+            </page>
+            <page
+                  class="org.caleydo.core.preferences.VisualLinksPreferencePage"
+                  id="org.caleydo.core.preferences.VisualLinksPreferencePage"
+                  name="Visual Links">
+            </page>
+            <page
+                  class="org.caleydo.core.preferences.ViewPreferencePage"
+                  id="org.caleydo.core.preferences.ViewPreferencePage"
+                  name="Views">
+            </page>
+            <page
+                  class="org.caleydo.core.preferences.ProxyPreferencePage"
+                  id="org.caleydo.core.preferences.ProxyPreferencePage"
+                  name="Proxy">
+            </page>
+   </extension>
+      <extension
+            point="org.eclipse.ui.services">
+         <sourceProvider
+               provider="org.caleydo.core.startup.AbstractSourceProvider">
+            <variable
+                  name="org.caleydo.core.isReleaseState"
+                  priorityLevel="workbench">
+            </variable>
+         </sourceProvider>
+      </extension>
 </plugin>

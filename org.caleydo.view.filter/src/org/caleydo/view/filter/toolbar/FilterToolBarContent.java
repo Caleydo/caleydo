@@ -3,11 +3,11 @@ package org.caleydo.view.filter.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.rcp.view.toolbar.ActionToolBarContainer;
-import org.caleydo.rcp.view.toolbar.IToolBarItem;
-import org.caleydo.rcp.view.toolbar.ToolBarContainer;
-import org.caleydo.rcp.view.toolbar.action.storagebased.UseRandomSamplingAction;
-import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
+import org.caleydo.core.gui.toolbar.ActionToolBarContainer;
+import org.caleydo.core.gui.toolbar.IToolBarItem;
+import org.caleydo.core.gui.toolbar.ToolBarContainer;
+import org.caleydo.core.gui.toolbar.action.UseRandomSamplingAction;
+import org.caleydo.core.gui.toolbar.content.AToolBarContent;
 import org.caleydo.view.filter.RcpFilterView;
 
 /**

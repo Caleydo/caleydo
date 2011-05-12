@@ -1,9 +1,9 @@
 package org.caleydo.view.matchmaker.toolbar;
 
+import org.caleydo.core.gui.toolbar.IToolBarItem;
+import org.caleydo.core.gui.toolbar.action.AToolBarAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.rcp.view.toolbar.IToolBarItem;
-import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.caleydo.view.matchmaker.event.UseSortingEvent;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;

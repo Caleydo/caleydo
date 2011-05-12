@@ -1,7 +1,7 @@
 package org.caleydo.view.treemap.preferences;
 
+import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;

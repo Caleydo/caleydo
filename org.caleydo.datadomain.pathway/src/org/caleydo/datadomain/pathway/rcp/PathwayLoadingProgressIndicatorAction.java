@@ -1,8 +1,8 @@
 package org.caleydo.datadomain.pathway.rcp;
 
+import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.view.ViewManager;
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayLoaderThread;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;

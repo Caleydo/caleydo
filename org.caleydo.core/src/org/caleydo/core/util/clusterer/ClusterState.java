@@ -7,6 +7,7 @@ import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.gui.toolbar.StartClusteringAction;
 
 /**
  * Stores the cluster state which is determined in the {@link StartClusteringAction}. Depending on the

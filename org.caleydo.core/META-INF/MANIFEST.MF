@@ -4,7 +4,6 @@ Bundle-Name: Caleydo Core Plug-in
 Bundle-SymbolicName: org.caleydo.core;singleton:=true
 Bundle-Version: 2.0
 Export-Package: org.caleydo.core.bridge.gui;uses:="org.caleydo.core.serialize,org.eclipse.swt.widgets",
- org.caleydo.core.bridge.gui.standalone;uses:="org.caleydo.core.serialize,org.caleydo.core.bridge.gui,org.eclipse.swt.widgets",
  org.caleydo.core.command;
   uses:="org.caleydo.core.data.mapping,
    org.caleydo.core.data.collection,
@@ -82,6 +81,17 @@ Export-Package: org.caleydo.core.bridge.gui;uses:="org.caleydo.core.serialize,or
    org.caleydo.core.data.virtualarray,
    org.caleydo.core.data.selection",
  org.caleydo.core.data.virtualarray.similarity,
+ org.caleydo.core.gui.perspective;uses:="org.caleydo.core.manager,org.caleydo.core.data,org.eclipse.ui",
+ org.caleydo.core.gui.preferences;
+  uses:="org.eclipse.jface.preference,
+   org.eclipse.ui,
+   org.eclipse.core.runtime.preferences,
+   org.eclipse.swt.widgets",
+ org.caleydo.core.gui.toolbar,
+ org.caleydo.core.gui.toolbar.action;uses:="org.caleydo.rcp.action.toolbar",
+ org.caleydo.core.gui.toolbar.content,
+ org.caleydo.core.gui.util,
+ org.caleydo.core.io.gui,
  org.caleydo.core.manager;
   uses:="org.caleydo.core.util.wii,
    org.caleydo.core.manager.id,
@@ -212,6 +222,7 @@ Export-Package: org.caleydo.core.bridge.gui;uses:="org.caleydo.core.serialize,or
    gleem.linalg,
    org.caleydo.core.data.collection.set,
    org.caleydo.core.data.selection",
+ org.caleydo.core.util.clusterer.gui,
  org.caleydo.core.util.collection,
  org.caleydo.core.util.conversion,
  org.caleydo.core.util.exception;uses:="org.caleydo.core.view.opengl.canvas",
@@ -219,7 +230,6 @@ Export-Package: org.caleydo.core.bridge.gui;uses:="org.caleydo.core.serialize,or
  org.caleydo.core.util.logging;uses:="org.eclipse.core.runtime",
  org.caleydo.core.util.mapping;uses:="org.caleydo.core.manager.mapping",
  org.caleydo.core.util.mapping.color;uses:="org.caleydo.core.view.opengl.canvas.listener,org.caleydo.core.manager.event",
- org.caleydo.core.util.preferences,
  org.caleydo.core.util.sound,
  org.caleydo.core.util.statistics;uses:="org.caleydo.core.data.collection",
  org.caleydo.core.util.system,

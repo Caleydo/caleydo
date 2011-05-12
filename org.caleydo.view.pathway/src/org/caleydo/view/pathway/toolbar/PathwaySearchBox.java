@@ -2,14 +2,14 @@ package org.caleydo.view.pathway.toolbar;
 
 import java.util.Collection;
 
+import org.caleydo.core.gui.preferences.PreferenceConstants;
+import org.caleydo.core.gui.toolbar.IToolBarItem;
+import org.caleydo.core.gui.util.SearchBox;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.rcp.util.search.SearchBox;
-import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;

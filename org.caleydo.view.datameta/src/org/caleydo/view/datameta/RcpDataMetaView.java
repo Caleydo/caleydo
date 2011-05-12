@@ -8,7 +8,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
-import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
+import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.view.histogram.RcpGLColorMapperHistogramView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;

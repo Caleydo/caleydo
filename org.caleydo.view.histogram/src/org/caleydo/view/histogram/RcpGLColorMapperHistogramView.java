@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -17,12 +18,11 @@ import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.MinimumSizeComposite;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
-import org.caleydo.rcp.view.rcp.MinimumSizeComposite;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceStore;
@@ -128,7 +128,7 @@ public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements IVi
 				// TODO Auto-generated method stub
 				PreferenceDialog pref = PreferencesUtil.createPreferenceDialogOn(
 						new Shell(),
-						"org.caleydo.rcp.preferences.ColorMappingPreferencePage", null,
+						"org.caleydo.core.gui.preferences.ColorMappingPreferencePage", null,
 						null);
 
 				if (pref != null) {

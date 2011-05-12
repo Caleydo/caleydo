@@ -1,10 +1,10 @@
 package org.caleydo.view.parcoords.toolbar;
 
+import org.caleydo.core.gui.toolbar.IToolBarItem;
+import org.caleydo.core.gui.toolbar.action.AToolBarAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.storagebased.ApplyCurrentSelectionToVirtualArrayEvent;
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.rcp.view.toolbar.IToolBarItem;
-import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 

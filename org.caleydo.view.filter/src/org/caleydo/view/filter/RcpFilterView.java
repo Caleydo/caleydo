@@ -18,7 +18,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
+import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.view.filter.listener.FilterUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuAdapter;

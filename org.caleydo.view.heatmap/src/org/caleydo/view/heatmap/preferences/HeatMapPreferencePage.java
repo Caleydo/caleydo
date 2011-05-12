@@ -2,8 +2,8 @@ package org.caleydo.view.heatmap.preferences;
 
 import java.util.Collection;
 
+import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 import org.eclipse.jface.preference.BooleanFieldEditor;

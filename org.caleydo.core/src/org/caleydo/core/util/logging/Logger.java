@@ -19,7 +19,7 @@ public class Logger {
 				// this is needed if two threads are waiting at the monitor at the
 				// time when singleton was getting instantiated
 				if (instance == null) {
-					instance = Platform.getLog(Platform.getBundle("org.caleydo.rcp"));
+					instance = Platform.getLog(Platform.getBundle("org.caleydo.core"));
 					instance.addLogListener(new LogListener());
 				}
 			}

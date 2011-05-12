@@ -1,8 +1,8 @@
 package org.caleydo.view.treemap.actions;
 
+import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.treemap.LevelHighlightingEvent;
-import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;

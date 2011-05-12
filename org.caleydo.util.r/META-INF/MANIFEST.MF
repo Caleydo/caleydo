@@ -22,7 +22,6 @@ Bundle-ClassPath: .,
  lib/JRI.jar
 Export-Package: org.rosuda.JRI
 Require-Bundle: org.caleydo.core;bundle-version="2.0.0",
- org.caleydo.view.histogram;bundle-version="2.0.0",
- org.caleydo.rcp;bundle-version="2.0.0"
+ org.caleydo.view.histogram;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.util.r.Activator

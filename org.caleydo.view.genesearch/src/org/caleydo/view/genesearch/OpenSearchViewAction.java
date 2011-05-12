@@ -1,7 +1,7 @@
 package org.caleydo.view.genesearch;
 
+import org.caleydo.core.gui.toolbar.action.AToolBarAction;
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;

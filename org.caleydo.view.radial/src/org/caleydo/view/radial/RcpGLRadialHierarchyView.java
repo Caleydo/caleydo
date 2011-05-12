@@ -8,7 +8,7 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
-import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
+import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 

@@ -10,9 +10,9 @@ import org.caleydo.core.manager.event.view.remote.EnableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.ResetRemoteRendererEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleZoomEvent;
-import org.caleydo.rcp.view.listener.DisableConnectionLinesListener;
-import org.caleydo.rcp.view.listener.EnableConnectionLinesListener;
-import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IRemoteRenderingHandler;
+import org.caleydo.view.bucket.listener.DisableConnectionLinesListener;
+import org.caleydo.view.bucket.listener.EnableConnectionLinesListener;
 import org.eclipse.swt.widgets.Display;
 
 /**

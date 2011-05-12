@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.caleydo.view.visbricks;singleton:=true
 Bundle-Version: 2.0
 Require-Bundle: org.caleydo.core;bundle-version="2.0.0",
  org.caleydo.datadomain.genetic;bundle-version="2.0.0",
- org.caleydo.rcp;bundle-version="2.0.0",
  org.caleydo.view.parcoords;bundle-version="2.0.0",
  org.caleydo.view.heatmap;bundle-version="2.0.0",
  org.caleydo.view.histogram,

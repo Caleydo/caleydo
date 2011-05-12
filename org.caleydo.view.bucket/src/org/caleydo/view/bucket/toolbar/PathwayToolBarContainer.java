@@ -3,8 +3,8 @@ package org.caleydo.view.bucket.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.rcp.view.toolbar.IToolBarItem;
-import org.caleydo.rcp.view.toolbar.ToolBarContainer;
+import org.caleydo.core.gui.toolbar.IToolBarItem;
+import org.caleydo.core.gui.toolbar.ToolBarContainer;
 import org.caleydo.view.bucket.SerializedBucketView;
 import org.caleydo.view.pathway.toolbar.PathwaySearchBox;
 import org.caleydo.view.pathway.toolbar.PathwayToolBarMediator;
