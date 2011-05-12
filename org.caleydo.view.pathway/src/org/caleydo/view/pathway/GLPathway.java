@@ -1119,5 +1119,16 @@ public class GLPathway extends AGLView implements
 	public ASetBasedDataDomain getMappingDataDomain() {
 		return mappingDataDomain;
 	}
+	
+	@Override
+	public int getMinPixelHeight() {
+		return 60;
+	}
+
+	@Override
+	public int getMinPixelWidth() {
+		float aspectRatio = (float)pathway.getWidth()/(float)pathway.getHeight();
+		return (int) (60.0f * aspectRatio);
+	}
 
 }
