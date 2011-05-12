@@ -76,6 +76,7 @@ import org.caleydo.view.tissuebrowser.SerializedTissueViewBrowserView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -2454,7 +2455,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	private void openBrowserOverlay() {
 
-		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2495,7 +2496,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	private void closeBrowserOverlay() {
 
-		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 
 			@Override
 			public void run() {

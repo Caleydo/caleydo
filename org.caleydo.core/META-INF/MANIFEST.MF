@@ -3,8 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Caleydo Core Plug-in
 Bundle-SymbolicName: org.caleydo.core;singleton:=true
 Bundle-Version: 2.0
-Export-Package: org.caleydo.core.bridge.gui;uses:="org.caleydo.core.serialize,org.eclipse.swt.widgets",
- org.caleydo.core.command;
+Export-Package: org.caleydo.core.command;
   uses:="org.caleydo.core.data.mapping,
    org.caleydo.core.data.collection,
    org.caleydo.core.command.base,

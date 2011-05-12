@@ -56,6 +56,7 @@ import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 import org.caleydo.view.heatmap.heatmap.template.DefaultTemplate;
 import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 import org.caleydo.view.heatmap.listener.GLHeatMapKeyListener;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Rendering the GLHeatMap
@@ -139,7 +140,7 @@ public class GLHeatMap extends AStorageBasedView {
 	@Override
 	public void initLocal(GL2 gl) {
 		// Register keyboard listener to GL2 canvas
-		GeneralManager.get().getGUIBridge().getDisplay()
+		PlatformUI.getWorkbench().getDisplay()
 				.asyncExec(new Runnable() {
 					@Override
 					public void run() {

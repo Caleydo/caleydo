@@ -93,6 +93,7 @@ import org.caleydo.view.heatmap.listener.GLHierarchicalHeatMapKeyListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -368,7 +369,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	public void initLocal(GL2 gl) {
 
 		// Register keyboard listener to GL2 canvas
-		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
@@ -4703,7 +4704,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	private void warn() {
-		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				Shell shell = new Shell();

@@ -78,6 +78,7 @@ import org.caleydo.view.grouper.listener.DeleteGroupsListener;
 import org.caleydo.view.grouper.listener.PasteGroupsListener;
 import org.caleydo.view.grouper.listener.RenameGroupListener;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * The group assignment interface
@@ -1351,12 +1352,11 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public void renameGroup(int groupID) {
 		final GroupRepresentation groupRep = hashGroups.get(groupID);
-		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 
 			@Override
 			public void run() {
-				ChangeGroupNameDialog.run(GeneralManager.get().getGUIBridge()
-						.getDisplay(), groupRep);
+				ChangeGroupNameDialog.run(PlatformUI.getWorkbench().getDisplay(), groupRep);
 				groupRep.getClusterNode().getMetaSet()
 						.setLabel(groupRep.getClusterNode().getLabel());
 				setDisplayListDirty();

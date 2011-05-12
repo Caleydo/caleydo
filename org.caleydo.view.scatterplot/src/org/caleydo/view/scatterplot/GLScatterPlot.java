@@ -88,6 +88,7 @@ import org.caleydo.view.scatterplot.listener.XAxisSelectorListener;
 import org.caleydo.view.scatterplot.listener.YAxisSelectorListener;
 import org.caleydo.view.scatterplot.renderstyle.EScatterPointType;
 import org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle;
+import org.eclipse.ui.PlatformUI;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -270,7 +271,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	public void initLocal(GL2 gl) {
 
 		// Register keyboard listener to GL2 canvas
-		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
