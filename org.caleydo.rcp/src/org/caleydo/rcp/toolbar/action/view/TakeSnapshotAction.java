@@ -1,4 +1,4 @@
-package org.caleydo.rcp.action.toolbar.view;
+package org.caleydo.rcp.toolbar.action.view;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

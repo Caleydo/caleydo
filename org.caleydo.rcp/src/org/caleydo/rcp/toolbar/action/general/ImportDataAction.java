@@ -1,21 +1,21 @@
-package org.caleydo.rcp.action.toolbar.general;
+package org.caleydo.rcp.toolbar.action.general;
 
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.rcp.dialog.file.ExportDataDialog;
+import org.caleydo.rcp.dialog.file.LoadDataDialog;
 import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-public class ExportDataAction
+public class ImportDataAction
 	extends AToolBarAction {
-	public static final String TEXT = "Export data";
-	public static final String ICON = "resources/icons/general/export_data.png";
+	public static final String TEXT = "Load data";
+	public static final String ICON = "resources/icons/general/load_data.png";
 
 	/**
 	 * Constructor.
 	 */
-	public ExportDataAction() {
+	public ImportDataAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
@@ -26,7 +26,7 @@ public class ExportDataAction
 	public void run() {
 		super.run();
 
-		ExportDataDialog dialog = new ExportDataDialog(new Shell());
+		LoadDataDialog dialog = new LoadDataDialog(new Shell());
 		dialog.open();
 	}
 }

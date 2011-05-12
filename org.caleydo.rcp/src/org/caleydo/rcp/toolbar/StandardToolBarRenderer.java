@@ -17,15 +17,16 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 
 /**
- * Provides toolbar rendering specific data for widescreen toolbars (toolbars on the left side) in the default
- * style (toolbar on the left side).
+ * Provides toolbar rendering specific data for 4:3 screen toolbars (toolbars on upper side of the screen) in
+ * the default style (toolbar on the left side).
  * 
  * @author Werner Puff
  */
-public class WideScreenToolBarRenderer
+public class StandardToolBarRenderer
 	implements IToolBarRenderer {
 
 	@Override
@@ -39,7 +40,7 @@ public class WideScreenToolBarRenderer
 
 	@Override
 	public GridLayout createLayout() {
-		return new GridLayout(1, false);
+		return new GridLayout(10, false);
 	}
 
 	@Override
@@ -66,16 +67,12 @@ public class WideScreenToolBarRenderer
 		toolBarManager.add(new ExportDataAction());
 		toolBarManager.add(new TakeSnapshotAction());
 
-		// IToolBarItem startClustering = new StartClusteringDialogAction(targetViewID);
-		// actionList.add(startClustering);
-
-		// if (DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic") != null) {
-		// toolBarManager2.add(new OpenSearchViewAction());
-		// }
-
-		toolBarManager2.add(new ClearSelectionsAction());
 		toolBarManager2.add(new StartClusteringAction());
+		// toolBarManager2.add(new OpenSearchViewAction());
+		toolBarManager2.add(new ClearSelectionsAction());
 		toolBarManager2.add(new RestoreOriginalDataAction());
+
+		// toolBarManager2.add(new MagnifyingGlassAction());
 
 		toolBarManager.update(true);
 
@@ -83,15 +80,27 @@ public class WideScreenToolBarRenderer
 			toolBarManager2.dispose();
 		else
 			toolBarManager2.update(true);
-	}
 
-	@Override
-	public GridData createStandardGridData() {
-		return new GridData(GridData.FILL_HORIZONTAL);
+		Label spacer = new Label(group, SWT.NULL);
+		spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
 	}
 
 	@Override
 	public int calcWrapCount(int size) {
-		return 4;
+		int wrapCount;
+
+		if (size <= 4) {
+			wrapCount = 2;
+		}
+		else {
+			wrapCount = 4;
+		}
+
+		return wrapCount;
+	}
+
+	@Override
+	public GridData createStandardGridData() {
+		return new GridData(GridData.FILL_VERTICAL);
 	}
 }

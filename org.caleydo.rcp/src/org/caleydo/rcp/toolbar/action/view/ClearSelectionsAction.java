@@ -1,7 +1,8 @@
-package org.caleydo.rcp.action.toolbar.view;
+package org.caleydo.rcp.toolbar.action.view;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.RemoveManagedSelectionTypesEvent;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;

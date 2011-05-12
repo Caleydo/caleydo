@@ -1,4 +1,4 @@
-package org.caleydo.rcp.action.toolbar.general;
+package org.caleydo.rcp.toolbar.action.general;
 
 import java.util.ArrayList;
 

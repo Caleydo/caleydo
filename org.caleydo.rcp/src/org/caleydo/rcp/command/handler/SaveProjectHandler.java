@@ -1,6 +1,6 @@
 package org.caleydo.rcp.command.handler;
 
-import org.caleydo.rcp.action.toolbar.general.SaveProjectAction;
+import org.caleydo.rcp.toolbar.action.general.SaveProjectAction;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
