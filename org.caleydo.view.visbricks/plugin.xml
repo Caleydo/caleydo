@@ -33,7 +33,7 @@
                   style="push">
                <visibleWhen checkEnabled="false">
                   <with
-                        variable="org.caleydo.rcp.isReleaseState">
+                        variable="org.caleydo.core.isReleaseState">
                      <equals
                            value="releaseVersion">
                      </equals>
@@ -47,7 +47,7 @@
                <visibleWhen
                      checkEnabled="false">
                   <with
-                        variable="org.caleydo.rcp.isReleaseState">
+                        variable="org.caleydo.core.isReleaseState">
                      <equals
                            value="releaseVersion">
                      </equals>
