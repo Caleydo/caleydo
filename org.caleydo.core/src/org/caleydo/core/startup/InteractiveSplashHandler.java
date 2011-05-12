@@ -62,7 +62,7 @@ public class InteractiveSplashHandler
 		progressMessageLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label versionLabel = new Label(splash, SWT.NONE);
-		versionLabel.setText(" Version " + Activator.sVersion + " BETA");
+		versionLabel.setText(" Version " + Activator.version + " BETA");
 		versionLabel.setFont(new Font(splash.getDisplay(), "Arial", 9, SWT.NONE));
 		versionLabel.setBounds(336, 185, 150, 20);
 		versionLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));

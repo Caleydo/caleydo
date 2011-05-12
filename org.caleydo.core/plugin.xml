@@ -304,28 +304,28 @@
       <extension
          point="org.eclipse.ui.preferencePages">
             <page
-            class="org.caleydo.core.preferences.ColorMappingPreferencePage"
-            id="org.caleydo.core.preferences.ColorMappingPreferencePage"
+            class="org.caleydo.core.gui.preferences.ColorMappingPreferencePage"
+            id="org.caleydo.core.gui.preferences.ColorMappingPreferencePage"
             name="Color Mapping">
  			</page>
             <page
-                  class="org.caleydo.core.preferences.GeneralPreferencePage"
-                  id="org.caleydo.core.preferences.GeneralPreferencePage"
+                  class="org.caleydo.core.gui.preferences.GeneralPreferencePage"
+                  id="org.caleydo.core.gui.preferences.GeneralPreferencePage"
                   name="General">
             </page>
             <page
-                  class="org.caleydo.core.preferences.VisualLinksPreferencePage"
-                  id="org.caleydo.core.preferences.VisualLinksPreferencePage"
+                  class="org.caleydo.core.gui.preferences.VisualLinksPreferencePage"
+                  id="org.caleydo.core.gui.preferences.VisualLinksPreferencePage"
                   name="Visual Links">
             </page>
             <page
-                  class="org.caleydo.core.preferences.ViewPreferencePage"
-                  id="org.caleydo.core.preferences.ViewPreferencePage"
+                  class="org.caleydo.core.gui.preferences.ViewPreferencePage"
+                  id="org.caleydo.core.gui.preferences.ViewPreferencePage"
                   name="Views">
             </page>
             <page
-                  class="org.caleydo.core.preferences.ProxyPreferencePage"
-                  id="org.caleydo.core.preferences.ProxyPreferencePage"
+                  class="org.caleydo.core.gui.preferences.ProxyPreferencePage"
+                  id="org.caleydo.core.gui.preferences.ProxyPreferencePage"
                   name="Proxy">
             </page>
    </extension>

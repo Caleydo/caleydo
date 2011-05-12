@@ -4,7 +4,7 @@
       label="Caleydo"
       version="2.0"
       provider-name="Graz University of Technology"
-      plugin="org.caleydo.rcp"
+      plugin="org.caleydo.core"
       os="linux,win32"
       ws="gtk,win32"
       nl="en_US"
@@ -82,7 +82,6 @@ All Rights Reserved.
       <import plugin="org.eclipse.ui" version="3.3.0" match="compatible"/>
       <import plugin="org.caleydo.view.bookmark" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.datadomain.genetic" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.rcp" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.view.heatmap" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.view.parcoords" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.datadomain.pathway" version="2.0.0" match="greaterOrEqual"/>
