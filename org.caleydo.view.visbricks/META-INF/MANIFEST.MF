@@ -9,11 +9,14 @@ Require-Bundle: org.caleydo.core;bundle-version="2.0.0",
  org.caleydo.view.parcoords;bundle-version="2.0.0",
  org.caleydo.view.heatmap;bundle-version="2.0.0",
  org.caleydo.view.histogram,
- org.caleydo.view.tagclouds;bundle-version="2.0.0"
+ org.caleydo.view.tagclouds;bundle-version="2.0.0",
+ org.caleydo.datadomain.pathway
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: gleem.linalg,
  javax.media.opengl,
- org.caleydo.data.loader
+ org.caleydo.data.loader,
+ org.caleydo.datadomain.pathway.manager,
+ org.caleydo.view.pathway
 Export-Package: org.caleydo.view.visbricks,
  org.caleydo.view.visbricks.toolbar
 Bundle-Vendor: Graz University of Technology

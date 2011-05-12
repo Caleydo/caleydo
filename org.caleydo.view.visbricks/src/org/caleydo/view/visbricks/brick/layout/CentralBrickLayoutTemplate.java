@@ -64,6 +64,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 			DimensionGroup dimensionGroup, GLVisBricks visBricks,
 			IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
+		viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		this.visBricks = visBricks;
 		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
 				CLUSTER_BUTTON_ID, EIconTextures.CLUSTER_ICON);

@@ -54,6 +54,7 @@ import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.layout.NominalDataConfigurer;
 import org.caleydo.view.visbricks.brick.layout.NumericalDataConfigurer;
+import org.caleydo.view.visbricks.brick.layout.PathwayDataConfigurer;
 import org.caleydo.view.visbricks.brick.picking.APickingListener;
 import org.caleydo.view.visbricks.brick.picking.IPickingListener;
 import org.caleydo.view.visbricks.brick.ui.AContainedViewRenderer;
@@ -181,6 +182,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		} else {
 			brickConfigurer = new NominalDataConfigurer();
 		}
+		//TODO: Just for testing
+		brickConfigurer = new PathwayDataConfigurer();
 
 		if (brickLayout == null) {
 
