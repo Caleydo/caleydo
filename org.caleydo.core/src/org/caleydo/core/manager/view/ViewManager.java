@@ -20,6 +20,7 @@ import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -28,6 +29,10 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 import com.jogamp.opengl.util.FPSAnimator;
 
@@ -301,8 +306,25 @@ public class ViewManager
 		}
 	}
 
-	public void createSWTView(ASerializedView serializedView) {
-		generalManager.getGUIBridge().createView(serializedView);
+	public void createSWTView(final ASerializedView serializedView) {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					IWorkbenchPage page =
+						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+					ARcpGLViewPart viewPart = (ARcpGLViewPart) page.showView(serializedView.getViewType());
+					AGLView view = viewPart.getGLView();
+					view.initFromSerializableRepresentation(serializedView);
+					// TODO re-init view with its serializedView
+
+				}
+				catch (PartInitException ex) {
+					throw new RuntimeException("could not create view with gui-id="
+						+ serializedView.getViewType(), ex);
+				}
+			}
+		});
 	}
 
 	@SuppressWarnings("rawtypes")

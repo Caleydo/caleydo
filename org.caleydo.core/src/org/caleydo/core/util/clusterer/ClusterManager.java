@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Cluster manager handels {@link ClusterState} and calls corresponding clusterer.
@@ -88,7 +89,7 @@ public class ClusterManager {
 
 		if (clusterResult == null) {
 
-			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					Shell shell = new Shell();

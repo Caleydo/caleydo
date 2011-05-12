@@ -50,7 +50,7 @@ public class ActivateViewListener
 				compareGroupsEvent.setSender(this);
 				GeneralManager.get().getEventPublisher().triggerEvent(compareGroupsEvent);
 
-				GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 
 					@Override
 					public void run() {

@@ -3,7 +3,6 @@ package org.caleydo.core.startup;
 import java.io.IOException;
 import java.util.Map;
 
-import org.caleydo.core.bridge.gui.RCPBridge;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.PreferenceManager;
 import org.caleydo.core.net.IGroupwareManager;
@@ -99,9 +98,6 @@ public class StartupProcessor {
 	public void initCore() {
 
 		GeneralManager.get().getSWTGUIManager();
-
-		GeneralManager.get().init(new RCPBridge());
-		GeneralManager.get().getGUIBridge().init();
 
 		if (startupProcedure == null) {
 			Shell shell = InteractiveSplashHandler.getShell();

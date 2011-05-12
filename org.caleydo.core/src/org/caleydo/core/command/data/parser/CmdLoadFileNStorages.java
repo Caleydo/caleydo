@@ -121,8 +121,6 @@ public class CmdLoadFileNStorages
 
 		bParsingOK = loader.loadData();
 
-		generalManager.getGUIBridge().setFileNameCurrentDataSet(loadDataParameters.getFileName());
-
 		dataDomain.setLoadDataParameters(loadDataParameters);
 
 		dataDomain.updateSetInViews();

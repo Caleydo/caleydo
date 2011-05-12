@@ -6,7 +6,10 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Catches exceptions and logs them
@@ -60,7 +63,15 @@ public class ExceptionHandler {
 		});
 
 		// Unregister view from GL2 event queue
-		GeneralManager.get().getGUIBridge().closeView(glEventListener.getViewType());
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				IViewPart viewToClose =
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(glEventListener.getViewType());
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().hideView(viewToClose);
+
+			}
+		});
 		GeneralManager.get().getViewGLCanvasManager().unregisterGLCanvas(glEventListener.getParentGLCanvas());
 		GeneralManager.get().getViewGLCanvasManager().unregisterGLView(glEventListener);
 	}

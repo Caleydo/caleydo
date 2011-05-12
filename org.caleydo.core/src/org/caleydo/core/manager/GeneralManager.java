@@ -2,7 +2,6 @@ package org.caleydo.core.manager;
 
 import java.io.File;
 
-import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.command.CommandManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.data.storage.StorageManager;
@@ -81,7 +80,6 @@ public class GeneralManager {
 	private XmlParserManager xmlParserManager;
 	private IDMappingManager genomeIdManager;
 	private IDCreator idCreator;
-	private IGUIBridge guiBridge;
 	private ResourceLoader resourceLoader;
 	private WiiRemote wiiRemote;
 	private TrackDataProvider trackDataProvider;
@@ -90,11 +88,6 @@ public class GeneralManager {
 	private IStatisticsPerformer rStatisticsPerformer;
 
 	private boolean bIsWiiMode = false;
-
-	public void init(IGUIBridge externalGUIBridge) {
-
-		this.guiBridge = externalGUIBridge;
-	}
 
 	public void init() {
 
@@ -200,10 +193,6 @@ public class GeneralManager {
 
 	public IDCreator getIDCreator() {
 		return idCreator;
-	}
-
-	public IGUIBridge getGUIBridge() {
-		return guiBridge;
 	}
 
 	public boolean isWiiModeActive() {
