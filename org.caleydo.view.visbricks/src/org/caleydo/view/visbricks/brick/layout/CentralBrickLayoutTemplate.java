@@ -2,12 +2,8 @@ package org.caleydo.view.visbricks.brick.layout;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -15,18 +11,13 @@ import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.GLVisBricks;
-import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.picking.APickingListener;
 import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
 import org.caleydo.view.visbricks.brick.ui.BorderedAreaRenderer;
-import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
-import org.caleydo.view.visbricks.brick.ui.DimensionBarRenderer;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.brick.ui.LineSeparatorRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
-import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupCaptionRenderer;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Brick layout for central brick in {@link DimensionGroup} conaining a caption
@@ -38,8 +29,8 @@ import org.eclipse.swt.widgets.Shell;
 public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected static final int TOOLBAR_HEIGHT_PIXELS = 16;
-	protected static final int CAPTION_HEIGHT_PIXELS = 16;
-	protected static final int DIMENSION_BAR_HEIGHT_PIXELS = 12;
+	protected static final int HEADER_BAR_HEIGHT_PIXELS = 16;
+	protected static final int FOOTER_BAR_HEIGHT_PIXELS = 12;
 	protected static final int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
 	protected static final int BUTTON_HEIGHT_PIXELS = 16;
 	protected static final int BUTTON_WIDTH_PIXELS = 16;
@@ -48,7 +39,10 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	protected static final int CLUSTER_BUTTON_ID = 0;
 	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
 
-	protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
+	// protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
+	protected ArrayList<ElementLayout> headerBarElements;
+	protected ArrayList<ElementLayout> toolBarElements;
+	protected ArrayList<ElementLayout> footerBarElements;
 
 	protected GLVisBricks visBricks;
 
@@ -59,17 +53,18 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected Button clusterButton;
 	protected Button lockResizingButton;
+	protected boolean showToolBar;
+	protected boolean showFooterBar;
 
 	public CentralBrickLayoutTemplate(GLBrick brick,
 			DimensionGroup dimensionGroup, GLVisBricks visBricks,
 			IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
-		viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
+		// viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		this.visBricks = visBricks;
 		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
 				CLUSTER_BUTTON_ID, EIconTextures.CLUSTER_ICON);
 
-		
 		lockResizingButton = new Button(
 				EPickingType.BRICK_LOCK_RESIZING_BUTTON,
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
@@ -115,21 +110,22 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		ElementLayout dimensionBarLayout = new ElementLayout("dimensionBar");
 		dimensionBarLayout.setFrameColor(1, 0, 1, 0);
 		dimensionBarLayout.setPixelGLConverter(pixelGLConverter);
-		dimensionBarLayout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
+		dimensionBarLayout.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
 
 		ElementLayout viewLayout = new ElementLayout("viewLayout");
 		viewLayout.setFrameColor(1, 0, 0, 1);
 		viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
 		viewLayout.setRenderer(viewRenderer);
 
-		Row toolBar = createBrickToolBar(TOOLBAR_HEIGHT_PIXELS);
+		Row headerBar = createHeaderBar();
+		Row toolBar = createToolBar();
+		Row footerBar = createFooterBar();
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
 		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
 		spacingLayoutY.setPixelSizeX(0);
 
-		Row captionRow = createCaptionRow();
 		// captionRow.append(spacingLayoutX);
 
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
@@ -138,48 +134,58 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		lineSeparatorLayout.setRatioSizeX(1);
 		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
 
-		ElementLayout dimensionBarLaylout = new ElementLayout("dimensionBar");
-		dimensionBarLaylout.setPixelGLConverter(pixelGLConverter);
-		dimensionBarLaylout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
-		dimensionBarLaylout.setRatioSizeX(1);
-		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick));
+		// ElementLayout dimensionBarLaylout = new
+		// ElementLayout("dimensionBar");
+		// dimensionBarLaylout.setPixelGLConverter(pixelGLConverter);
+		// dimensionBarLaylout.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
+		// dimensionBarLaylout.setRatioSizeX(1);
+		// dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick));
 
 		baseColumn.append(spacingLayoutY);
-		baseColumn.append(dimensionBarLaylout);
-		baseColumn.append(spacingLayoutY);
+		if (showFooterBar) {
+			baseColumn.append(footerBar);
+			baseColumn.append(spacingLayoutY);
+		}
 		baseColumn.append(viewLayout);
+		if (showToolBar) {
+			baseColumn.append(spacingLayoutY);
+			baseColumn.append(toolBar);
+			baseColumn.append(spacingLayoutY);
+			baseColumn.append(lineSeparatorLayout);
+		}
 		baseColumn.append(spacingLayoutY);
-		baseColumn.append(toolBar);
-		baseColumn.append(spacingLayoutY);
-		baseColumn.append(lineSeparatorLayout);
-		baseColumn.append(spacingLayoutY);
-		baseColumn.append(captionRow);
+		baseColumn.append(headerBar);
 		baseColumn.append(spacingLayoutY);
 
 	}
 
-	protected Row createCaptionRow() {
-		Row captionRow = new Row();
-		captionRow.setPixelGLConverter(pixelGLConverter);
-		captionRow.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
+	protected Row createFooterBar() {
+		Row footerBar = new Row("footerBar");
+		footerBar.setPixelGLConverter(pixelGLConverter);
+		footerBar.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
+
+		for (ElementLayout element : footerBarElements) {
+			footerBar.append(element);
+		}
+
+		return footerBar;
+	}
+
+	protected Row createHeaderBar() {
+		Row headerBar = new Row();
+		headerBar.setPixelGLConverter(pixelGLConverter);
+		headerBar.setPixelSizeY(HEADER_BAR_HEIGHT_PIXELS);
+
+		for (ElementLayout element : headerBarElements) {
+			headerBar.append(element);
+		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
 		spacingLayoutX.setRatioSizeY(0);
 
-		ElementLayout captionLayout = new ElementLayout("caption1");
-
-		captionLayout.setPixelGLConverter(pixelGLConverter);
-		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-		captionLayout.setFrameColor(0, 0, 1, 1);
-
-		DimensionGroupCaptionRenderer captionRenderer = new DimensionGroupCaptionRenderer(
-				dimensionGroup);
-		captionLayout.setRenderer(captionRenderer);
-
-		captionRow.append(captionLayout);
-		captionRow.append(spacingLayoutX);
+		headerBar.append(spacingLayoutX);
 
 		ElementLayout lockResizingButtonLayout = new ElementLayout(
 				"lockResizingButton");
@@ -189,19 +195,9 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		lockResizingButtonLayout.setRenderer(new ButtonRenderer(
 				lockResizingButton, brick, brick.getTextureManager()));
 
-		captionRow.append(lockResizingButtonLayout);
-		captionRow.append(spacingLayoutX);
+		headerBar.append(lockResizingButtonLayout);
 
-		ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
-		clusterButtonLayout.setPixelGLConverter(pixelGLConverter);
-		clusterButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-		clusterButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton,
-				brick, brick.getTextureManager()));
-
-		captionRow.append(clusterButtonLayout);
-
-		return captionRow;
+		return headerBar;
 	}
 
 	/**
@@ -210,28 +206,33 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	 * @param pixelHeight
 	 * @return
 	 */
-	protected Row createBrickToolBar(int pixelHeight) {
+	protected Row createToolBar() {
 		Row toolBar = new Row("ToolBarRow");
-		toolBar.setYDynamic(true);
+		toolBar.setPixelGLConverter(pixelGLConverter);
+		toolBar.setPixelSizeY(TOOLBAR_HEIGHT_PIXELS);
 
-		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
-		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
-		spacingLayoutX.setPixelSizeX(4);
-		spacingLayoutX.setPixelSizeY(0);
-
-		for (int i = 0; i < viewSwitchingButtons.size(); i++) {
-			BrickViewSwitchingButton button = viewSwitchingButtons.get(i);
-			ElementLayout buttonLayout = new ElementLayout();
-			buttonLayout.setPixelGLConverter(pixelGLConverter);
-			buttonLayout.setPixelSizeX(pixelHeight);
-			buttonLayout.setPixelSizeY(pixelHeight);
-			buttonLayout.setRenderer(new ButtonRenderer(button, brick, brick
-					.getTextureManager()));
-			toolBar.append(buttonLayout);
-			if (i != viewSwitchingButtons.size() - 1) {
-				toolBar.append(spacingLayoutX);
-			}
+		for (ElementLayout element : toolBarElements) {
+			toolBar.append(element);
 		}
+
+		// ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
+		// spacingLayoutX.setPixelGLConverter(pixelGLConverter);
+		// spacingLayoutX.setPixelSizeX(4);
+		// spacingLayoutX.setPixelSizeY(0);
+		//
+		// for (int i = 0; i < viewSwitchingButtons.size(); i++) {
+		// BrickViewSwitchingButton button = viewSwitchingButtons.get(i);
+		// ElementLayout buttonLayout = new ElementLayout();
+		// buttonLayout.setPixelGLConverter(pixelGLConverter);
+		// buttonLayout.setPixelSizeX(pixelHeight);
+		// buttonLayout.setPixelSizeY(pixelHeight);
+		// buttonLayout.setRenderer(new ButtonRenderer(button, brick, brick
+		// .getTextureManager()));
+		// toolBar.append(buttonLayout);
+		// if (i != viewSwitchingButtons.size() - 1) {
+		// toolBar.append(spacingLayoutX);
+		// }
+		// }
 
 		return toolBar;
 	}
@@ -239,22 +240,22 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	@Override
 	protected void registerPickingListeners() {
 
-		for (final BrickViewSwitchingButton button : viewSwitchingButtons) {
-
-			brick.addPickingListener(new APickingListener() {
-
-				@Override
-				public void clicked(Pick pick) {
-					for (BrickViewSwitchingButton button : viewSwitchingButtons) {
-						button.setSelected(false);
-					}
-					button.setSelected(true);
-
-					brick.setContainedView(button.getViewType());
-					dimensionGroup.updateLayout();
-				}
-			}, button.getPickingType(), button.getButtonID());
-		}
+		// for (final BrickViewSwitchingButton button : viewSwitchingButtons) {
+		//
+		// brick.addPickingListener(new APickingListener() {
+		//
+		// @Override
+		// public void clicked(Pick pick) {
+		// for (BrickViewSwitchingButton button : viewSwitchingButtons) {
+		// button.setSelected(false);
+		// }
+		// button.setSelected(true);
+		//
+		// brick.setContainedView(button.getViewType());
+		// dimensionGroup.updateLayout();
+		// }
+		// }, button.getPickingType(), button.getButtonID());
+		// }
 
 		brick.addPickingListener(new APickingListener() {
 
@@ -266,59 +267,54 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 			}
 		}, EPickingType.BRICK_LOCK_RESIZING_BUTTON, LOCK_RESIZING_BUTTON_ID);
 
-		brick.addPickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-				System.out.println("cluster");
-
-				brick.getParentGLCanvas().getParentComposite().getDisplay()
-						.asyncExec(new Runnable() {
-							@Override
-							public void run() {
-								StartClusteringDialog dialog = new StartClusteringDialog(
-										new Shell(), brick.getDataDomain());
-								dialog.open();
-								ClusterState clusterState = dialog
-										.getClusterState();
-								if (clusterState == null)
-									return;
-
-								StartClusteringEvent event = null;
-								// if (clusterState != null && set != null)
-
-								event = new StartClusteringEvent(clusterState,
-										brick.getSet().getID());
-								event.setDataDomainType(brick.getDataDomain()
-										.getDataDomainType());
-								GeneralManager.get().getEventPublisher()
-										.triggerEvent(event);
-							}
-						});
-			}
-		}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, CLUSTER_BUTTON_ID);
+		// brick.addPickingListener(new APickingListener() {
+		//
+		// @Override
+		// public void clicked(Pick pick) {
+		// System.out.println("cluster");
+		//
+		// brick.getParentGLCanvas().getParentComposite().getDisplay()
+		// .asyncExec(new Runnable() {
+		// @Override
+		// public void run() {
+		// StartClusteringDialog dialog = new StartClusteringDialog(
+		// new Shell(), brick.getDataDomain());
+		// dialog.open();
+		// ClusterState clusterState = dialog
+		// .getClusterState();
+		// if (clusterState == null)
+		// return;
+		//
+		// StartClusteringEvent event = null;
+		// // if (clusterState != null && set != null)
+		//
+		// event = new StartClusteringEvent(clusterState,
+		// brick.getSet().getID());
+		// event.setDataDomainType(brick.getDataDomain()
+		// .getDataDomainType());
+		// GeneralManager.get().getEventPublisher()
+		// .triggerEvent(event);
+		// }
+		// });
+		// }
+		// }, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, CLUSTER_BUTTON_ID);
 
 	}
 
 	@Override
 	public int getMinHeightPixels() {
-		if(viewRenderer == null)
+		if (viewRenderer == null)
 			return 20;
 		return 6 * SPACING_PIXELS + TOOLBAR_HEIGHT_PIXELS
-				+ LINE_SEPARATOR_HEIGHT_PIXELS + CAPTION_HEIGHT_PIXELS
-				+ DIMENSION_BAR_HEIGHT_PIXELS
-				+ viewRenderer.getMinHeightPixels();
+				+ LINE_SEPARATOR_HEIGHT_PIXELS + HEADER_BAR_HEIGHT_PIXELS
+				+ FOOTER_BAR_HEIGHT_PIXELS + viewRenderer.getMinHeightPixels();
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		if(viewRenderer == null)
+		if (viewRenderer == null)
 			return 5;
-		return Math.max(
-				2 * SPACING_PIXELS + viewSwitchingButtons.size()
-						* BUTTON_WIDTH_PIXELS + SPACING_PIXELS
-						* (viewSwitchingButtons.size() - 1), 2 * SPACING_PIXELS
-						+ viewRenderer.getMinWidthPixels());
+		return 2 * SPACING_PIXELS + viewRenderer.getMinWidthPixels();
 		// return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
 		// .getMinWidth());
 	}
@@ -335,26 +331,26 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	// return EContainedViewType.PARCOORDS_VIEW;
 	// }
 
-	@Override
-	public void viewTypeChanged(EContainedViewType viewType) {
-		for (BrickViewSwitchingButton button : viewSwitchingButtons) {
-			if (viewType == button.getViewType()) {
-				button.setSelected(true);
-			} else {
-				button.setSelected(false);
-			}
-		}
-	}
+	// @Override
+	// public void viewTypeChanged(EContainedViewType viewType) {
+	// for (BrickViewSwitchingButton button : viewSwitchingButtons) {
+	// if (viewType == button.getViewType()) {
+	// button.setSelected(true);
+	// } else {
+	// button.setSelected(false);
+	// }
+	// }
+	// }
 
 	// @Override
 	// public void configure(IBrickLayoutConfigurer configurer) {
 	// configurer.configure(this);
 	// }
 
-	public void setViewSwitchingButtons(
-			ArrayList<BrickViewSwitchingButton> buttons) {
-		viewSwitchingButtons = buttons;
-	}
+	// public void setViewSwitchingButtons(
+	// ArrayList<BrickViewSwitchingButton> buttons) {
+	// viewSwitchingButtons = buttons;
+	// }
 
 	@Override
 	public ABrickLayoutTemplate getCollapsedLayoutTemplate() {
@@ -367,5 +363,44 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		return this;
 	}
 
+	public ArrayList<ElementLayout> getHeaderBarElements() {
+		return headerBarElements;
+	}
+
+	public void setHeaderBarElements(ArrayList<ElementLayout> headerBarElements) {
+		this.headerBarElements = headerBarElements;
+	}
+
+	public ArrayList<ElementLayout> getToolBarElements() {
+		return toolBarElements;
+	}
+
+	public void setToolBarElements(ArrayList<ElementLayout> toolBarElements) {
+		this.toolBarElements = toolBarElements;
+	}
+
+	public ArrayList<ElementLayout> getFooterBarElements() {
+		return footerBarElements;
+	}
+
+	public void setFooterBarElements(ArrayList<ElementLayout> footerBarElements) {
+		this.footerBarElements = footerBarElements;
+	}
+
+	public boolean isShowToolBar() {
+		return showToolBar;
+	}
+
+	public void showToolBar(boolean showToolBar) {
+		this.showToolBar = showToolBar;
+	}
+
+	public boolean isShowFooterBar() {
+		return showFooterBar;
+	}
+
+	public void showFooterBar(boolean showFooterBar) {
+		this.showFooterBar = showFooterBar;
+	}
 
 }

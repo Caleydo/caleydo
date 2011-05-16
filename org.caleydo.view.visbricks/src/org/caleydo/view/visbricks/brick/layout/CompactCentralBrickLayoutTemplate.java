@@ -1,28 +1,32 @@
 package org.caleydo.view.visbricks.brick.layout;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.view.visbricks.GLVisBricks;
-import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
 import org.caleydo.view.visbricks.brick.ui.BorderedAreaRenderer;
-import org.caleydo.view.visbricks.brick.ui.DimensionBarRenderer;
-import org.caleydo.view.visbricks.brick.ui.LineSeparatorRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
-import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupCaptionRenderer;
 
 public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;
-	protected static final int DIMENSION_BAR_HEIGHT_PIXELS = 12;
+	protected static final int FOOTER_BAR_HEIGHT_PIXELS = 12;
 	protected static final int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
-	
+
 	private GLVisBricks visBricks;
 
+	protected ArrayList<ElementLayout> headerBarElements;
+	protected ArrayList<ElementLayout> footerBarElements;
+
+	protected boolean showFooterBar;
+
 	public CompactCentralBrickLayoutTemplate(GLBrick brick,
-			DimensionGroup dimensionGroup, GLVisBricks visBricks, IBrickConfigurer configurer) {
+			DimensionGroup dimensionGroup, GLVisBricks visBricks,
+			IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		this.visBricks = visBricks;
 		configurer.configure(this);
@@ -61,57 +65,65 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
 		viewLayout.setRenderer(viewRenderer);
 
-		ElementLayout dimensionBarLayout = new ElementLayout("dimensionBar");
-		dimensionBarLayout.setFrameColor(1, 0, 1, 0);
-		dimensionBarLayout.setPixelGLConverter(pixelGLConverter);
-		dimensionBarLayout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
-		dimensionBarLayout.setRenderer(new DimensionBarRenderer(brick));
+		// ElementLayout dimensionBarLayout = new ElementLayout("dimensionBar");
+		// dimensionBarLayout.setFrameColor(1, 0, 1, 0);
+		// dimensionBarLayout.setPixelGLConverter(pixelGLConverter);
+		// dimensionBarLayout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
+		// dimensionBarLayout.setRenderer(new DimensionBarRenderer(brick));
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
 		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
 		spacingLayoutY.setPixelSizeX(0);
 
-		Row captionRow = createCaptionRow();
+		Row headerBar = createHeaderBar();
+		Row footerBar = createFooterBar();
 		// captionRow.append(spacingLayoutX);
 
-		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
-		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
-		lineSeparatorLayout.setPixelSizeY(LINE_SEPARATOR_HEIGHT_PIXELS);
-		lineSeparatorLayout.setRatioSizeX(1);
-		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
+		// ElementLayout lineSeparatorLayout = new
+		// ElementLayout("lineSeparator");
+		// lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
+		// lineSeparatorLayout.setPixelSizeY(LINE_SEPARATOR_HEIGHT_PIXELS);
+		// lineSeparatorLayout.setRatioSizeX(1);
+		// lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
 
 		// baseColumn.appendElement(dimensionBarLayout);
 		baseColumn.append(spacingLayoutY);
-		baseColumn.append(dimensionBarLayout);
-		baseColumn.append(spacingLayoutY);
+		if (showFooterBar) {
+			baseColumn.append(footerBar);
+			baseColumn.append(spacingLayoutY);
+		}
 		baseColumn.append(viewLayout);
+		// baseColumn.append(spacingLayoutY);
+		// baseColumn.append(lineSeparatorLayout);
 		baseColumn.append(spacingLayoutY);
-		baseColumn.append(lineSeparatorLayout);
-		baseColumn.append(spacingLayoutY);
-		baseColumn.append(captionRow);
+		baseColumn.append(headerBar);
 		baseColumn.append(spacingLayoutY);
 
 	}
 
-	protected Row createCaptionRow() {
-		Row captionRow = new Row();
-		captionRow.setPixelGLConverter(pixelGLConverter);
-		captionRow.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
+	protected Row createHeaderBar() {
+		Row headerBar = new Row();
+		headerBar.setPixelGLConverter(pixelGLConverter);
+		headerBar.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 
-		ElementLayout captionLayout = new ElementLayout("caption1");
+		for (ElementLayout element : headerBarElements) {
+			headerBar.append(element);
+		}
 
-		captionLayout.setPixelGLConverter(pixelGLConverter);
-		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-		captionLayout.setFrameColor(0, 0, 1, 1);
+		return headerBar;
+	}
 
-		DimensionGroupCaptionRenderer captionRenderer = new DimensionGroupCaptionRenderer(
-				dimensionGroup);
-		captionLayout.setRenderer(captionRenderer);
+	protected Row createFooterBar() {
+		Row footerBar = new Row("footerBar");
+		footerBar.setPixelGLConverter(pixelGLConverter);
+		footerBar.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
 
-		captionRow.append(captionLayout);
+		for (ElementLayout element : footerBarElements) {
+			footerBar.append(element);
+		}
 
-		return captionRow;
+		return footerBar;
 	}
 
 	@Override
@@ -121,25 +133,24 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinHeightPixels() {
-		if(viewRenderer == null)
-		{
+		if (viewRenderer == null) {
 			return 50;
 		}
-		return 5 * SPACING_PIXELS + DIMENSION_BAR_HEIGHT_PIXELS
+		return 5 * SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS
 				+ LINE_SEPARATOR_HEIGHT_PIXELS + CAPTION_HEIGHT_PIXELS
 				+ viewRenderer.getMinHeightPixels();
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		//TODO: maybe something different
+		// TODO: maybe something different
 		return visBricks.getSideArchWidthPixels();
 	}
 
-	@Override
-	public void viewTypeChanged(EContainedViewType viewType) {
-
-	}
+	// @Override
+	// public void viewTypeChanged(EContainedViewType viewType) {
+	//
+	// }
 
 	@Override
 	public void setLockResizing(boolean lockResizing) {
@@ -155,6 +166,22 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public ABrickLayoutTemplate getExpandedLayoutTemplate() {
 		return new CentralBrickLayoutTemplate(brick, dimensionGroup, visBricks,
 				brick.getLayoutConfigurer());
+	}
+
+	public boolean isShowFooterBar() {
+		return showFooterBar;
+	}
+
+	public void showFooterBar(boolean showFooterBar) {
+		this.showFooterBar = showFooterBar;
+	}
+
+	public void setHeaderBarElements(ArrayList<ElementLayout> headerBarElements) {
+		this.headerBarElements = headerBarElements;
+	}
+
+	public void setFooterBarElements(ArrayList<ElementLayout> footerBarElements) {
+		this.footerBarElements = footerBarElements;
 	}
 
 }

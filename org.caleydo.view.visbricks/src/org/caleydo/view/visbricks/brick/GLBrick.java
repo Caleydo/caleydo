@@ -53,6 +53,7 @@ import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
+import org.caleydo.view.visbricks.brick.layout.IViewTypeChangeListener;
 import org.caleydo.view.visbricks.brick.layout.NominalDataConfigurer;
 import org.caleydo.view.visbricks.brick.layout.NumericalDataConfigurer;
 import org.caleydo.view.visbricks.brick.picking.APickingListener;
@@ -113,6 +114,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	private GLVisBricks visBricks;
 	private DimensionGroup dimensionGroup;
+	
 
 	private SelectionManager contentGroupSelectionManager;
 
@@ -136,6 +138,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		containedViewRenderers = new HashMap<EContainedViewType, AContainedViewRenderer>();
 
 		pickingListeners = new HashMap<EPickingType, HashMap<Integer, IPickingListener>>();
+		
 	}
 
 	@Override

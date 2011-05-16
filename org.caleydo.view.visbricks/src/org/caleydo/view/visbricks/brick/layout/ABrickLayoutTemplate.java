@@ -1,7 +1,9 @@
 package org.caleydo.view.visbricks.brick.layout;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
@@ -25,15 +27,21 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	protected DimensionGroup dimensionGroup;
 	protected HashSet<EContainedViewType> validViewTypes;
 	protected EContainedViewType defaultViewType;
+	protected ArrayList<IViewTypeChangeListener> viewTypeChangeListeners;
 
 	public ABrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup) {
 		this.brick = brick;
 		this.dimensionGroup = dimensionGroup;
 		showHandles = false;
 		validViewTypes = new HashSet<EContainedViewType>();
+		viewTypeChangeListeners = new ArrayList<IViewTypeChangeListener>();
 		// setValidViewTypes();
 		setPixelGLConverter(brick.getParentGLCanvas().getPixelGLConverter());
 		// registerPickingListeners();
+	}
+
+	public PixelGLConverter getPixelGLConverter() {
+		return pixelGLConverter;
 	}
 
 	/**
@@ -116,7 +124,11 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	/**
 	 * This method should be called when the view type in the brick changed.
 	 */
-	public abstract void viewTypeChanged(EContainedViewType viewType);
+	public void viewTypeChanged(EContainedViewType viewType) {
+		for(IViewTypeChangeListener viewTypeChangeListener : viewTypeChangeListeners) {
+			viewTypeChangeListener.viewTypeChanged(viewType);
+		}
+	}
 
 	/**
 	 * Sets, whether view switching by this brick should affect other bricks in
@@ -142,7 +154,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	 * @return
 	 */
 	public abstract ABrickLayoutTemplate getCollapsedLayoutTemplate();
-	
+
 	/**
 	 * Gets the layout that represents the expanded version of the current
 	 * layout. If no further expansion is possible, the current layout is
@@ -153,12 +165,12 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	public abstract ABrickLayoutTemplate getExpandedLayoutTemplate();
 
 	// public abstract void configure(IBrickLayoutConfigurer configurer);
-	
+
 	/**
 	 * @return Default height in pixels required by the brick with the current
 	 *         layout and view
 	 */
-	public int getDefaultHeightPixels(){
+	public int getDefaultHeightPixels() {
 		return getMinHeightPixels();
 	}
 
@@ -168,6 +180,19 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	 */
 	public int getDefaultWidthPixels() {
 		return getMinWidthPixels();
+	}
+
+	public GLBrick getBrick() {
+		return brick;
+	}
+
+	public DimensionGroup getDimensionGroup() {
+		return dimensionGroup;
+	}
+
+	public void registerViewTypeChangeListener(
+			IViewTypeChangeListener viewTypeChangeListener) {
+		viewTypeChangeListeners.add(viewTypeChangeListener);
 	}
 
 }

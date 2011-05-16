@@ -8,6 +8,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
@@ -18,7 +19,7 @@ import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.visbricks.brick.viewcreation.ParCoordsCreator;
 import org.caleydo.view.visbricks.brick.viewcreation.TagCloudCreator;
 
-public class NominalDataConfigurer implements IBrickConfigurer {
+public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 	
 	protected static final int PARCOORDS_BUTTON_ID = 2;
 	protected static final int TAGCLOUD_BUTTON_ID = 3;
@@ -37,8 +38,17 @@ public class NominalDataConfigurer implements IBrickConfigurer {
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		viewSwitchingButtons.add(parCoordsButton);
 		viewSwitchingButtons.add(tagCloudButton);
+		
+		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
+				layoutTemplate, viewSwitchingButtons);
+		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
+		
+		layoutTemplate.setHeaderBarElements(headerBarElements);
+		layoutTemplate.setToolBarElements(toolBarElements);
+		layoutTemplate.setFooterBarElements(footerBarElements);
 
-		layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
+//		layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
 
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
@@ -46,7 +56,12 @@ public class NominalDataConfigurer implements IBrickConfigurer {
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
 		layoutTemplate.setDefaultViewType(EContainedViewType.PARCOORDS_VIEW);
+		
+		layoutTemplate.showToolBar(true);
+		layoutTemplate.showFooterBar(true);
 	}
+	
+	
 
 	@Override
 	public void configure(CompactBrickLayoutTemplate layoutTemplate) {
@@ -72,8 +87,15 @@ public class NominalDataConfigurer implements IBrickConfigurer {
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		viewSwitchingButtons.add(parCoordsButton);
 		viewSwitchingButtons.add(tagCloudButton);
+		
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
+				layoutTemplate, viewSwitchingButtons);
+		layoutTemplate.setToolBarElements(toolBarElements);
 
-		layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
+		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
+		layoutTemplate.setFooterBarElements(footerBarElements);
+
+//		layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
 
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
@@ -81,6 +103,8 @@ public class NominalDataConfigurer implements IBrickConfigurer {
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
 		layoutTemplate.setDefaultViewType(EContainedViewType.PARCOORDS_VIEW);
+		
+		layoutTemplate.showFooterBar(true);
 
 	}
 	
@@ -99,8 +123,15 @@ public class NominalDataConfigurer implements IBrickConfigurer {
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		viewSwitchingButtons.add(parCoordsButton);
 		viewSwitchingButtons.add(tagCloudButton);
+		
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
+				layoutTemplate, viewSwitchingButtons);
+		layoutTemplate.setToolBarElements(toolBarElements);
 
-		layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
+		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
+		layoutTemplate.setFooterBarElements(footerBarElements);
+
+//		layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
 
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
@@ -108,6 +139,8 @@ public class NominalDataConfigurer implements IBrickConfigurer {
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
 		layoutTemplate.setDefaultViewType(EContainedViewType.PARCOORDS_VIEW);
+		
+		layoutTemplate.showFooterBar(true);
 
 	}
 
@@ -148,6 +181,13 @@ public class NominalDataConfigurer implements IBrickConfigurer {
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
 		layoutTemplate.setDefaultViewType(EContainedViewType.TAGCLOUD_VIEW);
+		
+		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
+		layoutTemplate.setHeaderBarElements(headerBarElements);
+		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
+		layoutTemplate.setFooterBarElements(footerBarElements);
+		
+		layoutTemplate.showFooterBar(true);
 	}
 
 

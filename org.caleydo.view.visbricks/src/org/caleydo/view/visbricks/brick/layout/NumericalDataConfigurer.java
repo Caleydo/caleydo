@@ -8,6 +8,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
@@ -20,7 +21,7 @@ import org.caleydo.view.visbricks.brick.viewcreation.HeatMapCreator;
 import org.caleydo.view.visbricks.brick.viewcreation.HistogramCreator;
 import org.caleydo.view.visbricks.brick.viewcreation.ParCoordsCreator;
 
-public class NumericalDataConfigurer implements IBrickConfigurer {
+public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 
 	protected static final int HEATMAP_BUTTON_ID = 1;
 	protected static final int PARCOORDS_BUTTON_ID = 2;
@@ -29,6 +30,7 @@ public class NumericalDataConfigurer implements IBrickConfigurer {
 
 	@Override
 	public void configure(CentralBrickLayoutTemplate layoutTemplate) {
+
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
 				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
 				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
@@ -47,7 +49,14 @@ public class NumericalDataConfigurer implements IBrickConfigurer {
 		viewSwitchingButtons.add(histogramButton);
 		viewSwitchingButtons.add(overviewHeatMapButton);
 
-		layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
+		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
+				layoutTemplate, viewSwitchingButtons);
+		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
+		
+		layoutTemplate.setHeaderBarElements(headerBarElements);
+		layoutTemplate.setToolBarElements(toolBarElements);
+		layoutTemplate.setFooterBarElements(footerBarElements);
 
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.HISTOGRAM_VIEW);
@@ -56,6 +65,9 @@ public class NumericalDataConfigurer implements IBrickConfigurer {
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
 		layoutTemplate.setDefaultViewType(EContainedViewType.PARCOORDS_VIEW);
+
+		layoutTemplate.showFooterBar(true);
+		layoutTemplate.showToolBar(true);
 
 	}
 
@@ -73,6 +85,7 @@ public class NumericalDataConfigurer implements IBrickConfigurer {
 
 	@Override
 	public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
+
 		BrickViewSwitchingButton heatMapButton = new BrickViewSwitchingButton(
 				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
 				HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
@@ -96,7 +109,12 @@ public class NumericalDataConfigurer implements IBrickConfigurer {
 		viewSwitchingButtons.add(histogramButton);
 		viewSwitchingButtons.add(overviewHeatMapButton);
 
-		layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
+				layoutTemplate, viewSwitchingButtons);
+		layoutTemplate.setToolBarElements(toolBarElements);
+
+		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
+		layoutTemplate.setFooterBarElements(footerBarElements);
 
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.HISTOGRAM_VIEW);
@@ -106,6 +124,8 @@ public class NumericalDataConfigurer implements IBrickConfigurer {
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
 		layoutTemplate.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP);
+
+		layoutTemplate.showFooterBar(true);
 
 	}
 
@@ -134,7 +154,12 @@ public class NumericalDataConfigurer implements IBrickConfigurer {
 		viewSwitchingButtons.add(histogramButton);
 		viewSwitchingButtons.add(overviewHeatMapButton);
 
-		layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
+				layoutTemplate, viewSwitchingButtons);
+		layoutTemplate.setToolBarElements(toolBarElements);
+
+		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
+		layoutTemplate.setFooterBarElements(footerBarElements);
 
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.HISTOGRAM_VIEW);
@@ -144,6 +169,8 @@ public class NumericalDataConfigurer implements IBrickConfigurer {
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
 		layoutTemplate.setDefaultViewType(EContainedViewType.PARCOORDS_VIEW);
+
+		layoutTemplate.showFooterBar(true);
 
 	}
 
@@ -210,6 +237,15 @@ public class NumericalDataConfigurer implements IBrickConfigurer {
 		layoutTemplate.setValidViewTypes(validViewTypes);
 		layoutTemplate
 				.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
+		
+		
+		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
+		layoutTemplate.setHeaderBarElements(headerBarElements);
+		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
+		layoutTemplate.setFooterBarElements(footerBarElements);
+		
+		layoutTemplate.showFooterBar(true);
+		
 	}
 
 }

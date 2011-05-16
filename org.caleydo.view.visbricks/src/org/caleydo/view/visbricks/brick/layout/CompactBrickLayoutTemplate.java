@@ -210,10 +210,10 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 	// return EContainedViewType.OVERVIEW_HEATMAP_COMPACT;
 	// }
 
-	@Override
-	public void viewTypeChanged(EContainedViewType viewType) {
-
-	}
+//	@Override
+//	public void viewTypeChanged(EContainedViewType viewType) {
+//
+//	}
 
 	@Override
 	public void setLockResizing(boolean lockResizing) {
