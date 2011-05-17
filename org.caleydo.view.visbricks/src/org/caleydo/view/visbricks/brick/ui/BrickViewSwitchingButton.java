@@ -6,6 +6,12 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.layout.IViewTypeChangeListener;
 
+/**
+ * Button that is supposed to be used for switching views in bricks.
+ * 
+ * @author Christian Partl
+ *
+ */
 public class BrickViewSwitchingButton extends Button implements IViewTypeChangeListener {
 
 	private EContainedViewType viewType;
