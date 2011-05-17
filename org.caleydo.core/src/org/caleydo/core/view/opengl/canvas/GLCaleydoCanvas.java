@@ -123,12 +123,6 @@ public class GLCaleydoCanvas
 		// fpsCounter.draw();
 	}
 
-	// @Override
-	// public void displayChanged(GLAutoDrawable drawable, final boolean modeChanged, final boolean
-	// deviceChanged) {
-	//
-	// }
-
 	public final GLMouseListener getGLMouseListener() {
 		return glMouseListener;
 	}
@@ -144,53 +138,7 @@ public class GLCaleydoCanvas
 
 	public void setParentComposite(final Composite composite) {
 		parentComposite = composite;
-		//
-		// parentComposite.addMouseListener(new MouseListener() {
-		//
-		// @Override
-		// public void mouseUp(MouseEvent e) {
-		// System.out.println("WAAA");
-		//
-		//
-		//
-		//
-		//
-		// }
-		//
-		// @Override
-		// public void mouseDown(MouseEvent e) {
-		// System.out.println("WAAA");
-		// // Menu menu = new Menu(composite.getShell(), SWT.POP_UP);
-		// // // int x =
-		// // Point point = composite
-		// // .toDisplay(0, 0);
-		// // System.out.println(point);
-		// //// menu.setLocation(point.x + pick.getPickedPoint().x, point.y
-		// //// + pick.getPickedPoint().y);
-		// // MenuItem item = new MenuItem(menu, SWT.PUSH);
-		// // item.setText("Popup");
-		// // item = new MenuItem(menu, SWT.PUSH);
-		// // item.setText("Popup1");
-		// // item = new MenuItem(menu, SWT.PUSH);
-		// // item.setText("Popup2");
-		// // item = new MenuItem(menu, SWT.PUSH);
-		// // item.setText("Popup3");
-		// // item = new MenuItem(menu, SWT.PUSH);
-		// // item.setText("Popup4");
-		// // item = new MenuItem(menu, SWT.PUSH);
-		// // item.setText("Popup5");
-		// // // manager.getParentGLCanvas().getParentComposite().setMenu(menu);
-		// // menu.setVisible(true);
-		// // System.out.println("fu");
-		//
-		// }
-		//
-		// @Override
-		// public void mouseDoubleClick(MouseEvent e) {
-		// System.out.println("WAAA");
-		//
-		// }
-		// });
+
 	}
 
 	public Composite getParentComposite() {

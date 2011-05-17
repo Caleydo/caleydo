@@ -1,12 +1,13 @@
 package org.caleydo.view.bookmark;
 
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
 import java.util.Iterator;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.VABasedSelectionManager;
@@ -15,7 +16,6 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.RemoveBookmarkEvent;
-import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -27,12 +27,6 @@ import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
 import org.caleydo.view.bookmark.contextmenu.BookmarkContextMenuItemContainer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * <p>
@@ -123,10 +117,10 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 		this.manager = manager;
 		this.category = category;
 		this.categoryName = category.getCategoryName();
-		this.pickingIDManager = manager.getPickingIDManager();
+		this.pickingIDManager = manager.getBookmarkPickingIDManager();
 		this.containerLayout = new Column("typeBookmarkColumn");
 
-//		containerLayout.setDebug(true);
+		// containerLayout.setDebug(true);
 		containerLayout.setYDynamic(true);
 		containerLayout.setRatioSizeX(1);
 		containerLayout.setBottomUp(false);
@@ -187,43 +181,50 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 			switch (pickingMode) {
 			case CLICKED:
 				selectionType = SelectionType.SELECTION;
-
-				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						manager.getParentGLCanvas().getParentComposite()
-								.notifyListeners(SWT.MouseDown, new Event());
-
-						Menu menu = new Menu(manager.getParentGLCanvas()
-								.getParentComposite().getShell(), SWT.POP_UP);
-						Point point = manager.getParentGLCanvas().getParentComposite()
-								.toDisplay(0, 0);
-						System.out.println(point);
-						menu.setLocation(point.x + pick.getPickedPoint().x, point.y
-								+ pick.getPickedPoint().y);
-						MenuItem item = new MenuItem(menu, SWT.PUSH);
-						item.setText("Popup");
-						item = new MenuItem(menu, SWT.PUSH);
-						item.setText("Popup1");
-						item = new MenuItem(menu, SWT.PUSH);
-						item.setText("Popup2");
-						item = new MenuItem(menu, SWT.PUSH);
-						item.setText("Popup3");
-						item = new MenuItem(menu, SWT.PUSH);
-						item.setText("Popup4");
-						item = new MenuItem(menu, SWT.PUSH);
-						item.setText("Popup5");
-						// manager.getParentGLCanvas().getParentComposite().setMenu(menu);
-						menu.setVisible(true);
-					}
-				});
 				break;
 			case MOUSE_OVER:
 				selectionType = SelectionType.MOUSE_OVER;
-
-				break;
+				// PlatformUI.getWorkbench().getDisplay().asyncExec(new
+				// Runnable() {
+				// @Override
+				// public void run() {
+				// manager.getParentGLCanvas().getParentComposite()
+				// .notifyListeners(SWT.MouseDown, new Event());
+				//
+				// Menu menu = new Menu(manager.getParentGLCanvas()
+				// .getParentComposite().getShell(), SWT.POP_UP);
+				// Point point =
+				// manager.getParentGLCanvas().getParentComposite()
+				// .toDisplay(0, 0);
+				// System.out.println(point);
+				// menu.setLocation(point.x + pick.getPickedPoint().x, point.y
+				// + pick.getPickedPoint().y);
+				// MenuItem item = new MenuItem(menu, SWT.PUSH);
+				// item.setText("Popup");
+				// item = new MenuItem(menu, SWT.PUSH);
+				// item.setText("Popup1");
+				// item = new MenuItem(menu, SWT.PUSH);
+				// item.setText("Popup2");
+				// item = new MenuItem(menu, SWT.PUSH);
+				// item.setText("Popup3");
+				// item = new MenuItem(menu, SWT.PUSH);
+				// item.setText("Popup4");
+				// item = new MenuItem(menu, SWT.PUSH);
+				// item.setText("Popup5");
+				// //
+				// manager.getParentGLCanvas().getParentComposite().setMenu(menu);
+				// menu.setVisible(true);
+				// }
+				// });
+				 break;
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
+
+				PopupMenu menu = new PopupMenu();
+				MenuItem item = new MenuItem();
+				menu.add(item);
+				menu.addNotify();
+				menu.show(manager.getParentGLCanvas(), 0, 0);
 
 				BookmarkContextMenuItemContainer bookmarkContextMenuItemContainer = new BookmarkContextMenuItemContainer();
 				bookmarkContextMenuItemContainer.setID(internalIDType, iExternalID);
@@ -248,17 +249,10 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 			selectionManager.clearSelection(selectionType);
 			selectionManager.addToType(selectionType, iExternalID);
 
-			SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
-					selectionType);
-			SelectionCommandEvent commandEvent = new SelectionCommandEvent();
-			commandEvent.setSender(this);
-			commandEvent.setIDCategory(category);
-			commandEvent.setSelectionCommand(command);
-			GeneralManager.get().getEventPublisher().triggerEvent(commandEvent);
-
 			ISelectionDelta selectionDelta = selectionManager.getDelta();
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
+			event.setDataDomainType(manager.getDataDomain().getDataDomainType());
 			event.setSelectionDelta((SelectionDelta) selectionDelta);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 			break;

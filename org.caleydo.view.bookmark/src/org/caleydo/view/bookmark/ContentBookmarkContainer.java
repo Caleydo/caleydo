@@ -1,5 +1,6 @@
 package org.caleydo.view.bookmark;
 
+import java.awt.event.ActionEvent;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.IDCategory;
@@ -61,4 +62,6 @@ class ContentBookmarkContainer extends ABookmarkContainer<ContentSelectionManage
 		updateContainerSize();
 
 	}
+
+
 }

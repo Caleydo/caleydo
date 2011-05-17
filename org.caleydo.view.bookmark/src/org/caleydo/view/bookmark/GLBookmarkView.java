@@ -375,7 +375,7 @@ public class GLBookmarkView extends AGLView implements
 		return textRenderer;
 	}
 
-	PickingIDManager getPickingIDManager() {
+	PickingIDManager getBookmarkPickingIDManager() {
 		return pickingIDManager;
 	}
 

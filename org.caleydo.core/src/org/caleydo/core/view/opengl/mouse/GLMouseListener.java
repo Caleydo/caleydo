@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Mouse picking listener for JOGL2 views
@@ -76,37 +80,36 @@ public class GLMouseListener
 	@Override
 	public void mousePressed(MouseEvent mouseEvent) {
 
-		// PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-		// @Override
-		// public void run() {
-		//
-		// AGLView canvas = alGlCanvas.get(0);
-		// Menu menu = new Menu(canvas.getParentGLCanvas()
-		// .getParentComposite().getShell(), SWT.POP_UP);
-		// // int x =
-		// // Point point = canvas.getParentGLCanvas().getParentComposite()
-		// // .toDisplay(0, 0);
-		// // System.out.println(point);
-		// // menu.setLocation(point.x + pick.getPickedPoint().x,
-		// // point.y + pick.getPickedPoint().y);
-		// menu.setLocation(100,100);
-		// MenuItem item = new MenuItem(menu, SWT.PUSH);
-		// item.setText("Popup");
-		// item = new MenuItem(menu, SWT.PUSH);
-		// item.setText("Popup1");
-		// item = new MenuItem(menu, SWT.PUSH);
-		// item.setText("Popup2");
-		// item = new MenuItem(menu, SWT.PUSH);
-		// item.setText("Popup3");
-		// item = new MenuItem(menu, SWT.PUSH);
-		// item.setText("Popup4");
-		// item = new MenuItem(menu, SWT.PUSH);
-		// item.setText("Popup5");
-		// // manager.getParentGLCanvas().getParentComposite().setMenu(menu);
-		// menu.setVisible(true);
-		//
-		// }
-		// });
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+
+				AGLView canvas = alGlCanvas.get(0);
+				Menu menu = new Menu(canvas.getParentGLCanvas().getParentComposite().getShell(), SWT.POP_UP);
+				// int x =
+				// Point point = canvas.getParentGLCanvas().getParentComposite()
+				// .toDisplay(0, 0);
+				// System.out.println(point);
+				// menu.setLocation(point.x + pick.getPickedPoint().x,
+				// point.y + pick.getPickedPoint().y);
+				menu.setLocation(100, 100);
+				MenuItem item = new MenuItem(menu, SWT.PUSH);
+				item.setText("Popup");
+				item = new MenuItem(menu, SWT.PUSH);
+				item.setText("Popup1");
+				item = new MenuItem(menu, SWT.PUSH);
+				item.setText("Popup2");
+				item = new MenuItem(menu, SWT.PUSH);
+				item.setText("Popup3");
+				item = new MenuItem(menu, SWT.PUSH);
+				item.setText("Popup4");
+				item = new MenuItem(menu, SWT.PUSH);
+				item.setText("Popup5");
+				// manager.getParentGLCanvas().getParentComposite().setMenu(menu);
+				menu.setVisible(true);
+
+			}
+		});
 		//
 
 		bMouseReleased = false;

@@ -28,7 +28,7 @@ class ContentBookmark extends ABookmark {
 		this.id = id;
 
 		layout = new ElementLayout("ContentBookmark");
-	
+
 		layout.setRatioSizeX(1);
 
 		layout.setRenderer(this);
@@ -51,10 +51,13 @@ class ContentBookmark extends ABookmark {
 
 		String label = manager.getDataDomain().getContentLabel(idType, id);
 		textRenderer.setColor(0, 0, 0, 1);
+
+		gl.glPushName(manager.getBookmarkPickingIDManager().getPickingID(parentContainer,
+				id));
 		textRenderer.renderTextInBounds(gl, label, 0 + xSpacing, 0 + ySpacing, 0, x
 				- xSpacing, y - 2 * ySpacing);
+		gl.glPopName();
 
-	
 	}
 
 }

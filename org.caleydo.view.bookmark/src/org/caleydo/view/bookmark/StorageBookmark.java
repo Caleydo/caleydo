@@ -45,10 +45,11 @@ class StorageBookmark extends ABookmark {
 
 		super.render(gl);
 		String label = manager.getDataDomain().getStorageLabel(id);
+		gl.glPushName(manager.getBookmarkPickingIDManager().getPickingID(parentContainer,
+				id));
 		manager.getTextRenderer().renderTextInBounds(gl, label, 0 + xSpacing,
 				0 + ySpacing, 0, x - xSpacing, y - 2 * ySpacing);
-
-
+		gl.glPopName();
 
 	}
 
