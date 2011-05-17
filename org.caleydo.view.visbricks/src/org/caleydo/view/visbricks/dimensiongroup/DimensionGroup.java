@@ -122,6 +122,8 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	private Column detailBrickLayout;
 	private ElementLayout overviewDetailGapLayout;
+	
+	private IDimensionGroupData dimensionGroupData;
 
 	public static int BOTTOM_COLUMN_ID = 0;
 	public static int TOP_COLUMN_ID = 1;
@@ -992,5 +994,13 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	public Column getGroupColumn() {
 		return groupColumn;
+	}
+
+	public void setDimensionGroupData(IDimensionGroupData dimensionGroupData) {
+		this.dimensionGroupData = dimensionGroupData;
+	}
+
+	public IDimensionGroupData getDimensionGroupData() {
+		return dimensionGroupData;
 	}
 }

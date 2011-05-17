@@ -17,6 +17,17 @@ public class SetBasedData implements IDimensionGroupData {
 	
 	private IDataDomain dataDomain;
 	private ISet set;
+	
+	public SetBasedData(IDataDomain dataDomain, ISet set) {
+		this.dataDomain = dataDomain;
+		this.set = set;
+
+	}
+	
+	public void update() {
+		
+	}
+	
 
 	@Override
 	public ContentVirtualArray getSummaryBrickVA() {
@@ -25,26 +36,25 @@ public class SetBasedData implements IDimensionGroupData {
 
 	@Override
 	public ArrayList<ContentVirtualArray> getSegmentBrickVAs() {
-		
 		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT).getContentVA();
 
 		if (contentVA.getGroupList() == null)
 			return null;
 
 		ContentGroupList groupList = contentVA.getGroupList();
-		// int count = 0;
 		groupList.updateGroupInfo();
 		
-		ArrayList<ContentVirtualArray> contentVAs = new ArrayList<ContentVirtualArray>();
+		ArrayList<ContentVirtualArray> segmentBrickVAs = new ArrayList<ContentVirtualArray>();
 
 		for (Group group : groupList) {
 
 			ContentVirtualArray subVA = new ContentVirtualArray("CONTENT", contentVA
 					.getVirtualArray().subList(group.getStartIndex(),
 							group.getEndIndex() + 1));
-			contentVAs.add(subVA);
+			segmentBrickVAs.add(subVA);
 		}
-		return contentVAs;
+		
+		return segmentBrickVAs;
 	}
 
 	public void setDataDomain(IDataDomain dataDomain) {
@@ -73,5 +83,19 @@ public class SetBasedData implements IDimensionGroupData {
 	public ISet getSet() {
 		return set;
 	}
+
+	@Override
+	public ArrayList<Group> getGroups() {
+		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT).getContentVA();
+
+		if (contentVA.getGroupList() == null)
+			return null;
+
+		ContentGroupList groupList = contentVA.getGroupList();
+		groupList.updateGroupInfo();
+		
+		return groupList.getGroups();
+	}
+
 
 }
