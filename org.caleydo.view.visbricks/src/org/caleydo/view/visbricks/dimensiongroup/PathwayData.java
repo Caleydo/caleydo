@@ -3,10 +3,13 @@ package org.caleydo.view.visbricks.dimensiongroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
@@ -16,11 +19,15 @@ import org.caleydo.util.graph.IGraphItem;
 import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.layout.PathwayDataConfigurer;
 
-public class PathwayData implements IDimensionGroupData {
+public class PathwayData extends AUniqueObject implements IDimensionGroupData {
 
 	private IDataDomain dataDomain;
 	private ArrayList<PathwayGraph> pathways;
 	private ArrayList<Group> groups;
+	
+	{
+		uniqueID = GeneralManager.get().getIDCreator().createID(EManagedObjectType.SET);
+	}
 
 	public PathwayData(IDataDomain dataDomain, ArrayList<PathwayGraph> pathways) {
 		this.dataDomain = dataDomain;

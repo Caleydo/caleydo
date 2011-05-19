@@ -19,4 +19,6 @@ public interface IDimensionGroupData {
 	
 	public ArrayList<Group> getGroups();
 	
+	public int getID();
+	
 }

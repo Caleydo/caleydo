@@ -1018,6 +1018,13 @@ public class DimensionGroup extends AGLView implements IDataDomainSetBasedView,
 
 	public void setDimensionGroupData(IDimensionGroupData dimensionGroupData) {
 		this.dimensionGroupData = dimensionGroupData;
+		if(dimensionGroupData instanceof SetBasedData) {
+			SetBasedData setBasedData = (SetBasedData) dimensionGroupData;
+			dataDomain = (ASetBasedDataDomain)setBasedData.getDataDomain();
+			set = setBasedData.getSet();
+			
+		}
+		
 	}
 
 	public IDimensionGroupData getDimensionGroupData() {

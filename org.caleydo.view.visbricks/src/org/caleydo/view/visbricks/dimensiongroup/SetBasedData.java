@@ -97,5 +97,10 @@ public class SetBasedData implements IDimensionGroupData {
 		return groupList.getGroups();
 	}
 
+	@Override
+	public int getID() {
+		return set.getID();
+	}
+
 
 }

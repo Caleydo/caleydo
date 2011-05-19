@@ -57,6 +57,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.StatisticsTwoS
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 import org.caleydo.view.grouper.compositegraphic.ICompositeGraphic;
+import org.caleydo.view.grouper.contextmenu.AddGroupsToVisBricksItem;
 import org.caleydo.view.grouper.contextmenu.CompareGroupsItem;
 import org.caleydo.view.grouper.contextmenu.CopyGroupsItem;
 import org.caleydo.view.grouper.contextmenu.CreateGroupItem;
@@ -663,6 +664,10 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 							if (isLeafContained == false)
 								isLeafContained = composite.isLeaf();
 						}
+						
+						AddGroupsToVisBricksItem addGroupsToVisBricksItem = new AddGroupsToVisBricksItem(
+								selectedSets);
+						contextMenu.addContextMenueItem(addGroupsToVisBricksItem);
 
 						// Lazy loading of R
 						// GeneralManager.get().getRStatisticsPerformer();
