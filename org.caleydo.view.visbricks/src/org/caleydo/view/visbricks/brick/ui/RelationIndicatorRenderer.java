@@ -12,7 +12,6 @@ import org.caleydo.core.data.virtualarray.similarity.GroupSimilarity;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
 import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
@@ -35,7 +34,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
  */
 public class RelationIndicatorRenderer extends LayoutRenderer {
 
-	private ASetBasedDataDomain dataDomain;
+//	private ASetBasedDataDomain dataDomain;
 	private RelationAnalyzer relationAnalyzer;
 	Integer setID;
 	int groupID;
@@ -50,8 +49,8 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 
 	public RelationIndicatorRenderer(GLBrick brick, GLVisBricks visBricks, boolean isLeft) {
 		this.brick = brick;
-		this.dataDomain = brick.getDataDomain();
-		this.relationAnalyzer = dataDomain.getContentRelationAnalyzer();
+//		this.dataDomain = brick.getDataDomain();
+		this.relationAnalyzer = visBricks.getRelationAnalyzer();
 		setID = brick.getSet().getID();
 		groupID = brick.getGroupID();
 		this.visBricks = visBricks;

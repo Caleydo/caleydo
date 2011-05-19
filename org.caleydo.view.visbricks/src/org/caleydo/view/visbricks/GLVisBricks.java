@@ -177,13 +177,15 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		dimensionGroupManager = new DimensionGroupManager();
 
 		glKeyListener = new GLVisBricksKeyListener();
+		
+		relationAnalyzer = new RelationAnalyzer();
 	}
 
 	@Override
 	public void init(GL2 gl) {
 		textRenderer = new CaleydoTextRenderer(24);
-		dataDomain.createContentRelationAnalyzer();
-		relationAnalyzer = dataDomain.getContentRelationAnalyzer();
+//		dataDomain.createContentRelationAnalyzer();
+//		relationAnalyzer = dataDomain.getContentRelationAnalyzer();
 
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 
@@ -1544,5 +1546,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	public int getNextConnectionBandID() {
 		return connectionBandIDCounter++;
+	}
+	
+	public RelationAnalyzer getRelationAnalyzer() {
+	return relationAnalyzer;
 	}
 }

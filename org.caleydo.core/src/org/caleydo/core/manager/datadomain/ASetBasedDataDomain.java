@@ -97,7 +97,7 @@ public abstract class ASetBasedDataDomain
 	protected ContentFilterManager contentFilterManager;
 	protected StorageFilterManager storageFilterManager;
 
-	private RelationAnalyzer contentRelationAnalyzer;
+//	private RelationAnalyzer contentRelationAnalyzer;
 
 	@XmlTransient
 	private HashMap<Integer, ISet> otherMetaSets = new HashMap<Integer, ISet>();
@@ -790,14 +790,14 @@ public abstract class ASetBasedDataDomain
 	 * Create a new {@link RelationAnalyzer} for contentVAs of this DataDomain. The contentRelationAnalyzer
 	 * runs in a separate thread and listens to {@link ReplaceContentVAEvent}s to do its business.
 	 */
-	public void createContentRelationAnalyzer() {
-		if (contentRelationAnalyzer != null)
-			return;
-		contentRelationAnalyzer = new RelationAnalyzer(this);
-
-		Thread thread = new Thread(contentRelationAnalyzer, "Relation Analyzer");
-		thread.start();
-	}
+//	public void createContentRelationAnalyzer() {
+//		if (contentRelationAnalyzer != null)
+//			return;
+//		contentRelationAnalyzer = new RelationAnalyzer(this);
+//
+//		Thread thread = new Thread(contentRelationAnalyzer, "Relation Analyzer");
+//		thread.start();
+//	}
 
 	/**
 	 * Returns the {@link RelationAnalyzer} of this dataDomain, or null if it has not been created (via
@@ -805,7 +805,7 @@ public abstract class ASetBasedDataDomain
 	 * 
 	 * @return
 	 */
-	public RelationAnalyzer getContentRelationAnalyzer() {
-		return contentRelationAnalyzer;
-	}
+//	public RelationAnalyzer getContentRelationAnalyzer() {
+//		return contentRelationAnalyzer;
+//	}
 }

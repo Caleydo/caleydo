@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -73,8 +74,13 @@ public class PathwayData implements IDimensionGroupData {
 		for (ContentVirtualArray contentVA : contentVAs) {
 			summaryBrickIDs.addAll(contentVA.getVirtualArray());
 		}
+		
+		ContentGroupList groupList = new ContentGroupList();
+		groupList.setGroups(groups);
+		ContentVirtualArray summaryBrickVA = new ContentVirtualArray("CONTENT", summaryBrickIDs);
+		summaryBrickVA.setGroupList(groupList);
 
-		return new ContentVirtualArray("CONTENT", summaryBrickIDs);
+		return summaryBrickVA;
 	}
 
 	@Override
@@ -107,7 +113,7 @@ public class PathwayData implements IDimensionGroupData {
 					}
 				}
 			}
-
+			
 			contentVAs.add(new ContentVirtualArray("CONTENT", ids));
 		}
 
