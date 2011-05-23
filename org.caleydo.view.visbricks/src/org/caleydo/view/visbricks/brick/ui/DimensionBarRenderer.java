@@ -2,10 +2,8 @@ package org.caleydo.view.visbricks.brick.ui;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**
  * Renders the dimension bar, which indicates, which storages are currently
@@ -16,18 +14,20 @@ import org.caleydo.view.visbricks.brick.GLBrick;
  */
 public class DimensionBarRenderer extends LayoutRenderer {
 
-	private GLBrick brick;
+	private StorageVirtualArray overallStorageVA;
+	private StorageVirtualArray storageVA;
 
-	public DimensionBarRenderer(GLBrick brick) {
-		this.brick = brick;
+	public DimensionBarRenderer(StorageVirtualArray overallStorageVA, StorageVirtualArray storageVA) {
+		this.overallStorageVA = overallStorageVA;
+		this.storageVA = storageVA;
 	}
 
 	@Override
 	public void render(GL2 gl) {
 
-		StorageVirtualArray overallStorageVA = brick.getDataDomain()
-				.getStorageVA(Set.STORAGE);
-		StorageVirtualArray storageVA = brick.getStorageVA();
+//		StorageVirtualArray overallStorageVA = brick.getDataDomain()
+//				.getStorageVA(Set.STORAGE);
+//		StorageVirtualArray storageVA = brick.getStorageVA();
 
 		if (overallStorageVA == null || storageVA == null)
 			return;

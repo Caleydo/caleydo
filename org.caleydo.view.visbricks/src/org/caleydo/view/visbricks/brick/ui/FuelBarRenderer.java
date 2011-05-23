@@ -21,16 +21,18 @@ public class FuelBarRenderer extends LayoutRenderer {
 
 	private GLBrick brick;
 	private SelectionManager selectionManager;
+	private ISet set;
 
-	public FuelBarRenderer(GLBrick brick) {
+	public FuelBarRenderer(GLBrick brick, ISet set) {
 		this.brick = brick;
+		this.set = set;
 		selectionManager = brick.getContentGroupSelectionManager();
 	}
 
 	@Override
 	public void render(GL2 gl) {
 
-		ISet set = brick.getSet();
+//		ISet set = brick.getSet();
 		ContentVirtualArray contentVA = brick.getContentVA();
 
 		if (set == null || contentVA == null)

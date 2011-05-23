@@ -21,33 +21,38 @@ import org.caleydo.view.visbricks.brick.GLBrick;
  */
 public class HistogramCreator implements IRemoteViewCreator {
 
+	private ISet set;
+
+	public HistogramCreator(ISet set) {
+		this.set = set;
+	}
+
 	@Override
 	public AGLView createRemoteView(GLBrick remoteRenderingView, GL2 gl,
 			GLMouseListener glMouseListener) {
 
 		GLHistogram histogram = (GLHistogram) GeneralManager
-		.get()
-		.getViewGLCanvasManager()
-		.createGLView(
-				GLHistogram.class,
-				remoteRenderingView.getParentGLCanvas(),
+				.get()
+				.getViewGLCanvasManager()
+				.createGLView(
+						GLHistogram.class,
+						remoteRenderingView.getParentGLCanvas(),
 
-				new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
-						1, 0, 1, -1, 1));
+						new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
+								1, 0, 1, -1, 1));
 
 		histogram.setRemoteRenderingGLView(remoteRenderingView);
-		ISet set = remoteRenderingView.getSet();
 		ContentVirtualArray contentVA = remoteRenderingView.getContentVA();
 		histogram.setHistogram(set.getHistogram(contentVA));
 		histogram.setDataDomain(remoteRenderingView.getDataDomain());
 		histogram.initialize();
 		histogram.initRemote(gl, remoteRenderingView, glMouseListener);
 		histogram.setDetailLevel(DetailLevel.LOW);
-		
-//		Cset.getContentData(Set.CONTENT)
-//		if (contentVA != null)
-//			histogram.setContentVA(contentVA);
-		
+
+		// Cset.getContentData(Set.CONTENT)
+		// if (contentVA != null)
+		// histogram.setContentVA(contentVA);
+
 		return histogram;
 	}
 

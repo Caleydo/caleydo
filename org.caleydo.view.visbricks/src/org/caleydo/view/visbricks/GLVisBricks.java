@@ -55,10 +55,10 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
+import org.caleydo.view.visbricks.brick.data.IDimensionGroupData;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupSpacingRenderer;
-import org.caleydo.view.visbricks.dimensiongroup.IDimensionGroupData;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.caleydo.view.visbricks.listener.AddGroupsToVisBricksListener;
 import org.caleydo.view.visbricks.listener.ConnectionsModeListener;
@@ -1253,129 +1253,129 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	}
 
-	private void initializeBricks(ArrayList<ISet> metaSets) {
-
-		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
-				.getDimensionGroups();
-
-		Iterator<DimensionGroup> dimensionGroupIterator = dimensionGroups
-				.iterator();
-		while (dimensionGroupIterator.hasNext()) {
-			DimensionGroup dimensionGroup = dimensionGroupIterator.next();
-			ISet metaSet = dimensionGroup.getSet();
-			if (!metaSets.contains(metaSet)) {
-				dimensionGroupIterator.remove();
-			} else {
-				metaSets.remove(metaSet);
-			}
-
-		}
-		for (ISet set : metaSets) {
-
-			// TODO here we need to check which metaSets have already been
-			// assigned to a dimensiongroup and not re-create them
-			DimensionGroup dimensionGroup = (DimensionGroup) GeneralManager
-					.get()
-					.getViewGLCanvasManager()
-					.createGLView(
-							DimensionGroup.class,
-							getParentGLCanvas(),
-							new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC,
-									0, 1, 0, 1, -1, 1));
-
-			dimensionGroup.setDataDomain(dataDomain);
-			dimensionGroup.setSet(set);
-			dimensionGroup.setRemoteRenderingGLView(this);
-			dimensionGroup.setVisBricks(this);
-			dimensionGroup.setVisBricksView(this);
-			dimensionGroup.initialize();
-
-			dimensionGroups.add(dimensionGroup);
-
-			uninitializedDimensionGroups.add(dimensionGroup);
-
-		}
-
-		// BinGroup binGroup = (BinGroup) GeneralManager
-		// .get()
-		// .getViewGLCanvasManager()
-		// .createGLView(
-		// BinGroup.class,
-		// getParentGLCanvas(),
-		// new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
-		// -1, 1));
-		// binGroup.setIDTypes(dataDomain.getContentIDType(),
-		// IDType.getIDType("GO_CC"));
-		// binGroup.setDataDomain(dataDomain);
-		//
-		// // MetaSet metaSet = new MetaSet(dataDomain.getSet(), null, null);
-		// Set set = new Set(dataDomain);
-		// set.setContentVA(Set.CONTENT, dataDomain.getContentVA(Set.CONTENT));
-		// set.setLabel("Chromosome");
-		// // metaSet.setContentTree(set.getContentTree());
-		// // Tree<ClusterNode> subTree = tree.getSubTree();
-		//
-		// // ArrayList<Integer> storageIDs = new ArrayList<Integer>();
-		// // SetUtils.setStorages(set, storageIDs);
-		//
-		// dataDomain.addMetaSet(set);
-		// binGroup.setSet(set);
-		// binGroup.setRemoteRenderingGLView(this);
-		// binGroup.setVisBricks(this);
-		// binGroup.setVisBricksView(this);
-		// binGroup.initialize();
-		//
-		// relationAnalyzer.replaceContentVA(set.getID(),
-		// dataDomain.getDataDomainType(),
-		// Set.CONTENT);
-		//
-		// dimensionGroups.add(binGroup);
-		//
-		// uninitializedDimensionGroups.add(binGroup);
-
-		// -------------------------------------------------
-		//
-		// binGroup = (BinGroup) GeneralManager
-		// .get()
-		// .getViewGLCanvasManager()
-		// .createGLView(
-		// BinGroup.class,
-		// getParentGLCanvas(),
-		// new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
-		// -1, 1));
-		//
-		// set = new Set(dataDomain);
-		// set.setContentVA(Set.CONTENT, dataDomain.getContentVA(Set.CONTENT));
-		// set.setLabel("Compartment");
-		// binGroup.setIDTypes(dataDomain.getContentIDType(),
-		// IDType.getIDType("GO_CC"));
-		// binGroup.setDataDomain(dataDomain);
-		//
-		// // MetaSet metaSet = new MetaSet(dataDomain.getSet(), null, null);
-		//
-		// // metaSet.setContentTree(set.getContentTree());
-		// // Tree<ClusterNode> subTree = tree.getSubTree();
-		//
-		// // ArrayList<Integer> storageIDs = new ArrayList<Integer>();
-		// // SetUtils.setStorages(set, storageIDs);
-		//
-		// dataDomain.addMetaSet(set);
-		// binGroup.setSet(set);
-		// binGroup.setRemoteRenderingGLView(this);
-		// binGroup.setVisBricks(this);
-		// binGroup.setVisBricksView(this);
-		// binGroup.initialize();
-		//
-		// relationAnalyzer.replaceContentVA(set.getID(),
-		// dataDomain.getDataDomainType(),
-		// Set.CONTENT);
-		//
-		// dimensionGroups.add(binGroup);
-		//
-		// uninitializedDimensionGroups.add(binGroup);
-		//
-		// dimensionGroupManager.calculateGroupDivision();
-	}
+//	private void initializeBricks(ArrayList<ISet> metaSets) {
+//
+//		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
+//				.getDimensionGroups();
+//
+//		Iterator<DimensionGroup> dimensionGroupIterator = dimensionGroups
+//				.iterator();
+//		while (dimensionGroupIterator.hasNext()) {
+//			DimensionGroup dimensionGroup = dimensionGroupIterator.next();
+//			ISet metaSet = dimensionGroup.getSet();
+//			if (!metaSets.contains(metaSet)) {
+//				dimensionGroupIterator.remove();
+//			} else {
+//				metaSets.remove(metaSet);
+//			}
+//
+//		}
+//		for (ISet set : metaSets) {
+//
+//			// TODO here we need to check which metaSets have already been
+//			// assigned to a dimensiongroup and not re-create them
+//			DimensionGroup dimensionGroup = (DimensionGroup) GeneralManager
+//					.get()
+//					.getViewGLCanvasManager()
+//					.createGLView(
+//							DimensionGroup.class,
+//							getParentGLCanvas(),
+//							new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC,
+//									0, 1, 0, 1, -1, 1));
+//
+//			dimensionGroup.setDataDomain(dataDomain);
+//			dimensionGroup.setSet(set);
+//			dimensionGroup.setRemoteRenderingGLView(this);
+//			dimensionGroup.setVisBricks(this);
+//			dimensionGroup.setVisBricksView(this);
+//			dimensionGroup.initialize();
+//
+//			dimensionGroups.add(dimensionGroup);
+//
+//			uninitializedDimensionGroups.add(dimensionGroup);
+//
+//		}
+//
+//		// BinGroup binGroup = (BinGroup) GeneralManager
+//		// .get()
+//		// .getViewGLCanvasManager()
+//		// .createGLView(
+//		// BinGroup.class,
+//		// getParentGLCanvas(),
+//		// new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+//		// -1, 1));
+//		// binGroup.setIDTypes(dataDomain.getContentIDType(),
+//		// IDType.getIDType("GO_CC"));
+//		// binGroup.setDataDomain(dataDomain);
+//		//
+//		// // MetaSet metaSet = new MetaSet(dataDomain.getSet(), null, null);
+//		// Set set = new Set(dataDomain);
+//		// set.setContentVA(Set.CONTENT, dataDomain.getContentVA(Set.CONTENT));
+//		// set.setLabel("Chromosome");
+//		// // metaSet.setContentTree(set.getContentTree());
+//		// // Tree<ClusterNode> subTree = tree.getSubTree();
+//		//
+//		// // ArrayList<Integer> storageIDs = new ArrayList<Integer>();
+//		// // SetUtils.setStorages(set, storageIDs);
+//		//
+//		// dataDomain.addMetaSet(set);
+//		// binGroup.setSet(set);
+//		// binGroup.setRemoteRenderingGLView(this);
+//		// binGroup.setVisBricks(this);
+//		// binGroup.setVisBricksView(this);
+//		// binGroup.initialize();
+//		//
+//		// relationAnalyzer.replaceContentVA(set.getID(),
+//		// dataDomain.getDataDomainType(),
+//		// Set.CONTENT);
+//		//
+//		// dimensionGroups.add(binGroup);
+//		//
+//		// uninitializedDimensionGroups.add(binGroup);
+//
+//		// -------------------------------------------------
+//		//
+//		// binGroup = (BinGroup) GeneralManager
+//		// .get()
+//		// .getViewGLCanvasManager()
+//		// .createGLView(
+//		// BinGroup.class,
+//		// getParentGLCanvas(),
+//		// new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+//		// -1, 1));
+//		//
+//		// set = new Set(dataDomain);
+//		// set.setContentVA(Set.CONTENT, dataDomain.getContentVA(Set.CONTENT));
+//		// set.setLabel("Compartment");
+//		// binGroup.setIDTypes(dataDomain.getContentIDType(),
+//		// IDType.getIDType("GO_CC"));
+//		// binGroup.setDataDomain(dataDomain);
+//		//
+//		// // MetaSet metaSet = new MetaSet(dataDomain.getSet(), null, null);
+//		//
+//		// // metaSet.setContentTree(set.getContentTree());
+//		// // Tree<ClusterNode> subTree = tree.getSubTree();
+//		//
+//		// // ArrayList<Integer> storageIDs = new ArrayList<Integer>();
+//		// // SetUtils.setStorages(set, storageIDs);
+//		//
+//		// dataDomain.addMetaSet(set);
+//		// binGroup.setSet(set);
+//		// binGroup.setRemoteRenderingGLView(this);
+//		// binGroup.setVisBricks(this);
+//		// binGroup.setVisBricksView(this);
+//		// binGroup.initialize();
+//		//
+//		// relationAnalyzer.replaceContentVA(set.getID(),
+//		// dataDomain.getDataDomainType(),
+//		// Set.CONTENT);
+//		//
+//		// dimensionGroups.add(binGroup);
+//		//
+//		// uninitializedDimensionGroups.add(binGroup);
+//		//
+//		// dimensionGroupManager.calculateGroupDivision();
+//	}
 
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {

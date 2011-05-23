@@ -1,6 +1,7 @@
-package org.caleydo.view.visbricks.dimensiongroup;
+package org.caleydo.view.visbricks.brick.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -20,5 +21,11 @@ public interface IDimensionGroupData {
 	public ArrayList<Group> getGroups();
 	
 	public int getID();
+	
+	public List<IBrickData> getSegmentBrickData();
+	
+	public IBrickData getSummaryBrickData();
+	
+	public IBrickSortingStrategy getDefaultSortingStrategy();
 	
 }

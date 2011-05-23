@@ -3,7 +3,7 @@ package org.caleydo.view.visbricks.event;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.view.visbricks.dimensiongroup.IDimensionGroupData;
+import org.caleydo.view.visbricks.brick.data.IDimensionGroupData;
 
 public class AddGroupsToVisBricksEvent extends AEvent {
 	

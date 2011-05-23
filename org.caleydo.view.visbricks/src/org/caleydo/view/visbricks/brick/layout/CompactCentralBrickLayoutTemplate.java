@@ -165,7 +165,7 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	@Override
 	public ABrickLayoutTemplate getExpandedLayoutTemplate() {
 		return new CentralBrickLayoutTemplate(brick, dimensionGroup, visBricks,
-				brick.getLayoutConfigurer());
+				brick.getBrickConfigurer());
 	}
 
 	public boolean isShowFooterBar() {

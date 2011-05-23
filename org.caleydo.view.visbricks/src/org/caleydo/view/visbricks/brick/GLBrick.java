@@ -48,6 +48,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
 import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.visbricks.brick.data.IBrickData;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
@@ -93,7 +94,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	// */
 	// private boolean wasMouseOverBrickArea = false;
 
-	private ISet set;
+//	private ISet set;
 	// private GLHeatMap heatMap;
 	private ASetBasedDataDomain dataDomain;
 
@@ -114,12 +115,13 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	private GLVisBricks visBricks;
 	private DimensionGroup dimensionGroup;
+	private IBrickData brickData;
 	
 
 	private SelectionManager contentGroupSelectionManager;
 
 	/** The average value of the data of this brick */
-	private double averageValue = Double.NaN;
+//	private double averageValue = Double.NaN;
 
 	private boolean isInOverviewMode = false;
 
@@ -165,24 +167,24 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		textRenderer = new CaleydoTextRenderer(24);
 		baseDisplayListIndex = gl.glGenLists(1);
 
-		if (set == null)
-			set = dataDomain.getSet();
-
-		if (contentVA == null)
-			contentVA = set.getContentData(Set.CONTENT).getContentVA();
-
-		if (storageVA == null) {
-			if (set.getStorageData(Set.STORAGE) != null)
-				storageVA = set.getStorageData(Set.STORAGE).getStorageVA();
-		}
+//		if (set == null)
+//			set = dataDomain.getSet();
+//
+//		if (contentVA == null)
+//			contentVA = set.getContentData(Set.CONTENT).getContentVA();
+//
+//		if (storageVA == null) {
+//			if (set.getStorageData(Set.STORAGE) != null)
+//				storageVA = set.getStorageData(Set.STORAGE).getStorageVA();
+//		}
 
 		templateRenderer = new LayoutManager(viewFrustum);
 
-		if (set.getSetType().equals(ESetDataType.NUMERIC)) {
-			brickConfigurer = new NumericalDataConfigurer();
-		} else {
-			brickConfigurer = new NominalDataConfigurer();
-		}
+//		if (set.getSetType().equals(ESetDataType.NUMERIC)) {
+//			brickConfigurer = new NumericalDataConfigurer();
+//		} else {
+//			brickConfigurer = new NominalDataConfigurer();
+//		}
 
 		// TODO: Just for testing
 		// brickConfigurer = new PathwayDataConfigurer();
@@ -302,10 +304,6 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		isInitialized = true;
 
-	}
-
-	public IBrickConfigurer getLayoutConfigurer() {
-		return brickConfigurer;
 	}
 
 	private void selectElementsByGroup() {
@@ -666,14 +664,14 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 * 
 	 * @param set
 	 */
-	public void setSet(ISet set) {
-		this.set = set;
-		if (set.getSetType().equals(ESetDataType.NUMERIC)) {
-			brickConfigurer = new NumericalDataConfigurer();
-		} else {
-			brickConfigurer = new NominalDataConfigurer();
-		}
-	}
+//	public void setSet(ISet set) {
+//		this.set = set;
+//		if (set.getSetType().equals(ESetDataType.NUMERIC)) {
+//			brickConfigurer = new NumericalDataConfigurer();
+//		} else {
+//			brickConfigurer = new NominalDataConfigurer();
+//		}
+//	}
 
 	/**
 	 * Set the contentVA this brick should render plus the groupID that is
@@ -751,42 +749,42 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		return null;
 	}
 
-	private void calculateAverageValueForBrick() {
-		averageValue = 0;
-		int count = 0;
-		if (contentVA == null)
-			throw new IllegalStateException("contentVA was null");
-		for (Integer contenID : contentVA) {
-			StorageData storageData = set.getStorageData(Set.STORAGE);
-			if (storageData == null) {
-				averageValue = 0;
-				return;
-			}
+//	private void calculateAverageValueForBrick() {
+//		averageValue = 0;
+//		int count = 0;
+//		if (contentVA == null)
+//			throw new IllegalStateException("contentVA was null");
+//		for (Integer contenID : contentVA) {
+//			StorageData storageData = set.getStorageData(Set.STORAGE);
+//			if (storageData == null) {
+//				averageValue = 0;
+//				return;
+//			}
+//
+//			StorageVirtualArray storageVA = storageData.getStorageVA();
+//
+//			if (storageVA == null) {
+//				averageValue = 0;
+//				return;
+//			}
+//			for (Integer storageID : storageVA) {
+//				float value = set.get(storageID).getFloat(EDataRepresentation.NORMALIZED,
+//						contenID);
+//				if (!Float.isNaN(value)) {
+//					averageValue += value;
+//					count++;
+//				}
+//			}
+//		}
+//		averageValue /= count;
+//
+//	}
 
-			StorageVirtualArray storageVA = storageData.getStorageVA();
-
-			if (storageVA == null) {
-				averageValue = 0;
-				return;
-			}
-			for (Integer storageID : storageVA) {
-				float value = set.get(storageID).getFloat(EDataRepresentation.NORMALIZED,
-						contenID);
-				if (!Float.isNaN(value)) {
-					averageValue += value;
-					count++;
-				}
-			}
-		}
-		averageValue /= count;
-
-	}
-
-	public double getAverageValue() {
-		if (Double.isNaN(averageValue))
-			calculateAverageValueForBrick();
-		return averageValue;
-	}
+//	public double getAverageValue() {
+//		if (Double.isNaN(averageValue))
+//			calculateAverageValueForBrick();
+//		return averageValue;
+//	}
 
 	@Override
 	public void setFrustum(ViewFrustum viewFrustum) {
@@ -816,9 +814,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	}
 
-	public ISet getSet() {
-		return set;
-	}
+//	public ISet getSet() {
+//		return set;
+//	}
 
 	/**
 	 * Sets the type of view that should be rendered in the brick. The view type
@@ -969,7 +967,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	public String toString() {
-		return "Brick: " + groupID + " in " + set.getLabel();
+		return "Brick: " + groupID + " in ";// + set.getLabel();
 
 	}
 
@@ -1138,6 +1136,23 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	public ElementLayout getWrappingLayout() {
 		return wrappingLayout;
+	}
+
+	public void setBrickData(IBrickData brickData) {
+		this.brickData = brickData;
+		brickData.setBrickData(this);
+	}
+
+	public IBrickData getBrickData() {
+		return brickData;
+	}
+
+	public IBrickConfigurer getBrickConfigurer() {
+		return brickConfigurer;
+	}
+
+	public void setBrickConfigurer(IBrickConfigurer brickConfigurer) {
+		this.brickConfigurer = brickConfigurer;
 	}
 
 }

@@ -42,23 +42,25 @@ public class BinGroup extends DimensionGroup {
 	public void initialize() {
 
 		super.initialize();
-		ContentVirtualArray originalContentVA = set.getContentData(Set.CONTENT).getContentVA();
-		binning = new IDBasedBinning();
-		HashMap<String, ArrayList<Integer>> bin = binning.getBinning(contentIDType,
-				binnigIDType, originalContentVA);
-
-		ContentVirtualArray newContentVA = new ContentVirtualArray();
-		ContentGroupList groupList = new ContentGroupList();
-
-		for (ArrayList<Integer> group : bin.values()) {
-			for (Integer id : group)
-				newContentVA.append(id);
-
-			groupList.append(new Group(group.size()));
-
-		}
-		newContentVA.setGroupList(groupList);
-		set.setContentVA(Set.CONTENT, newContentVA);
+//		ContentVirtualArray originalContentVA = set.getContentData(Set.CONTENT).getContentVA();
+//		binning = new IDBasedBinning();
+//		HashMap<String, ArrayList<Integer>> bin = binning.getBinning(contentIDType,
+//				binnigIDType, originalContentVA);
+//
+//		ContentVirtualArray newContentVA = new ContentVirtualArray();
+//		ContentGroupList groupList = new ContentGroupList();
+//
+//		for (ArrayList<Integer> group : bin.values()) {
+//			for (Integer id : group)
+//				newContentVA.append(id);
+//
+//			groupList.append(new Group(group.size()));
+//
+//		}
+//		newContentVA.setGroupList(groupList);
+//		set.setContentVA(Set.CONTENT, newContentVA);
+		
+		
 //		replaceContentVA(set.getID(), dataDomain.getDataDomainType(), Set.CONTENT);
 //		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent(set,
 //				dataDomain.getDataDomainType(), Set.CONTENT, newContentVA);

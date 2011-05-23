@@ -1,5 +1,7 @@
 package org.caleydo.view.visbricks.brick.layout;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -9,12 +11,10 @@ import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.GLVisBricks;
-import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.picking.APickingListener;
 import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
 import org.caleydo.view.visbricks.brick.ui.BorderedAreaRenderer;
-import org.caleydo.view.visbricks.brick.ui.FuelBarRenderer;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
@@ -29,11 +29,14 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 	protected static final int BUTTON_HEIGHT_PIXELS = 16;
 	protected static final int BUTTON_WIDTH_PIXELS = 16;
 	protected static final int HANDLE_SIZE_PIXELS = 10;
-	protected static final int FUEL_BAR_HEIGHT_PIXELS = 4;
+	protected static final int FOOTER_BAR_HEIGHT_PIXELS = 4;
 
 	private static final int EXPAND_BUTTON_ID = 0;
 
 	private GLVisBricks visBricks;
+	
+	protected ArrayList<ElementLayout> footerBarElements;
+	protected boolean showFooterBar;
 
 	// private RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	// private RelationIndicatorRenderer rightRelationIndicatorRenderer;
@@ -82,14 +85,16 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseColumn.setFrameColor(0, 1, 0, 1);
 		// baseColumn.setDebug(true);
 
-		ElementLayout fuelBarLayout = new ElementLayout("fuelBarLayout");
-		fuelBarLayout.setFrameColor(0, 1, 0, 1);
-
-		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
-		fuelBarLayout.setPixelSizeY(FUEL_BAR_HEIGHT_PIXELS);
-		fuelBarLayout.setRenderer(new FuelBarRenderer(brick));
+//		ElementLayout fuelBarLayout = new ElementLayout("fuelBarLayout");
+//		fuelBarLayout.setFrameColor(0, 1, 0, 1);
+//
+//		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
+//		fuelBarLayout.setPixelSizeY(FUEL_BAR_HEIGHT_PIXELS);
+//		fuelBarLayout.setRenderer(new FuelBarRenderer(brick));
 
 		baseRow.setRenderer(new BorderedAreaRenderer(brick));
+		
+		Row footerBar = createFooterBar();
 
 		if (showHandles) {
 			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
@@ -142,7 +147,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 		// baseColumn.appendElement(dimensionBarLayout);
 		baseColumn.append(spacingLayoutY);
-		baseColumn.append(fuelBarLayout);
+		baseColumn.append(footerBar);
 		baseColumn.append(spacingLayoutY);
 		baseColumn.append(viewRow);
 		baseColumn.append(spacingLayoutY);
@@ -156,6 +161,18 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// .setRenderer(rightRelationIndicatorRenderer);
 		// baseRow.append(rightRelationIndicatorLayout);
 
+	}
+	
+	protected Row createFooterBar() {
+		Row footerBar = new Row("footerBar");
+		footerBar.setPixelGLConverter(pixelGLConverter);
+		footerBar.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
+
+		for (ElementLayout element : footerBarElements) {
+			footerBar.append(element);
+		}
+
+		return footerBar;
 	}
 
 	@Override
@@ -181,8 +198,8 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public int getMinHeightPixels() {
 		// FIXME This is dirty
 		if (viewRenderer == null)
-			return 3 * SPACING_PIXELS + FUEL_BAR_HEIGHT_PIXELS;
-		return 3 * SPACING_PIXELS + FUEL_BAR_HEIGHT_PIXELS
+			return 3 * SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS;
+		return 3 * SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS
 				+ viewRenderer.getMinHeightPixels();
 	}
 
@@ -229,7 +246,15 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 	@Override
 	public ABrickLayoutTemplate getExpandedLayoutTemplate() {
 		return new DefaultBrickLayoutTemplate(brick, visBricks, dimensionGroup,
-				brick.getLayoutConfigurer());
+				brick.getBrickConfigurer());
+	}
+
+	public void setFooterBarElements(ArrayList<ElementLayout> footerBarElements) {
+		this.footerBarElements = footerBarElements;
+	}
+	
+	public void showFooterBar(boolean showFooterBar) {
+		this.showFooterBar = showFooterBar;
 	}
 
 	// @Override

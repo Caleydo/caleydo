@@ -418,7 +418,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 	@Override
 	public ABrickLayoutTemplate getCollapsedLayoutTemplate() {
 		return new CompactBrickLayoutTemplate(brick, visBricks, dimensionGroup,
-				brick.getLayoutConfigurer());
+				brick.getBrickConfigurer());
 	}
 
 	@Override

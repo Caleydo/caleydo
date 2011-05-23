@@ -51,7 +51,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		this.brick = brick;
 //		this.dataDomain = brick.getDataDomain();
 		this.relationAnalyzer = visBricks.getRelationAnalyzer();
-		setID = brick.getSet().getID();
+		setID = brick.getDimensionGroup().getSetID();
 		groupID = brick.getGroupID();
 		this.visBricks = visBricks;
 		this.isLeft = isLeft;

@@ -6,6 +6,7 @@ import java.util.HashSet;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -23,6 +24,12 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 	
 	protected static final int PARCOORDS_BUTTON_ID = 2;
 	protected static final int TAGCLOUD_BUTTON_ID = 3;
+	
+	public NominalDataConfigurer(ISet set) {
+		super(set);
+	}
+
+	
 
 	@Override
 	public void configure(CentralBrickLayoutTemplate layoutTemplate) {
@@ -70,6 +77,9 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
 		layoutTemplate.setDefaultViewType(EContainedViewType.TAGCLOUD_VIEW);
+		
+		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
+		layoutTemplate.setFooterBarElements(footerBarElements);
 	}
 
 	@Override
@@ -151,7 +161,7 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
 		HashMap<EContainedViewType, AContainedViewRenderer> containedViewRenderers = new HashMap<EContainedViewType, AContainedViewRenderer>();
 		
-		ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
+		ParCoordsCreator parCoordsCreator = new ParCoordsCreator(set);
 		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl,
 				glMouseListener);
 		AContainedViewRenderer parCoordsLayoutRenderer = new BrickRemoteViewRenderer(
@@ -160,7 +170,7 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
 				parCoordsLayoutRenderer);
 		
-		TagCloudCreator tagCloudCreator = new TagCloudCreator();
+		TagCloudCreator tagCloudCreator = new TagCloudCreator(set);
 		AGLView tagCloud = tagCloudCreator.createRemoteView(brick, gl,
 				glMouseListener);
 		AContainedViewRenderer tagCloudLayoutRenderer = new BrickRemoteViewRenderer(

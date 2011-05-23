@@ -2,6 +2,8 @@ package org.caleydo.view.visbricks.brick.layout;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -34,6 +36,12 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 	protected static final int SPACING_PIXELS = 4;
 
 	protected static final int CLUSTER_BUTTON_ID = 1;
+	
+	protected ISet set;
+	
+	public ASetBasedDataConfigurer(ISet set) {
+		this.set = set;
+	}
 
 	protected ArrayList<ElementLayout> createHeaderBarElements(
 			CentralBrickLayoutTemplate layoutTemplate) {
@@ -56,7 +64,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		DimensionGroupCaptionRenderer captionRenderer = new DimensionGroupCaptionRenderer(
-				layoutTemplate.getDimensionGroup());
+				layoutTemplate.getDimensionGroup(), set.getLabel());
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -97,7 +105,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 								// if (clusterState != null && set != null)
 
 								event = new StartClusteringEvent(clusterState,
-										brick.getSet().getID());
+										set.getID());
 								event.setDataDomainType(brick.getDataDomain()
 										.getDataDomainType());
 								GeneralManager.get().getEventPublisher()
@@ -125,7 +133,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		DimensionGroupCaptionRenderer captionRenderer = new DimensionGroupCaptionRenderer(
-				layoutTemplate.getDimensionGroup());
+				layoutTemplate.getDimensionGroup(), set.getLabel());
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -227,7 +235,8 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		dimensionBarLaylout.setPixelGLConverter(pixelGLConverter);
 		dimensionBarLaylout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
 		dimensionBarLaylout.setRatioSizeX(1);
-		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick));
+		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick.getDataDomain()
+				.getStorageVA(Set.STORAGE), set.getStorageData(Set.STORAGE).getStorageVA()));
 
 		footerBarElements.add(dimensionBarLaylout);
 
@@ -247,6 +256,12 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		return createDefaultFooterBarElements(layoutTemplate);
 	}
 	
+	protected ArrayList<ElementLayout> createFooterBarElements(
+			CompactBrickLayoutTemplate layoutTemplate) {
+
+		return createDefaultFooterBarElements(layoutTemplate);
+	}
+	
 	private ArrayList<ElementLayout> createDefaultFooterBarElements(
 			ABrickLayoutTemplate layoutTemplate) {
 		ArrayList<ElementLayout> footerBarElements = new ArrayList<ElementLayout>();
@@ -259,7 +274,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		fuelBarLayout.setFrameColor(0, 1, 0, 0);
 		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
 		fuelBarLayout.setPixelSizeY(FUELBAR_HEIGHT_PIXELS);
-		fuelBarLayout.setRenderer(new FuelBarRenderer(brick));
+		fuelBarLayout.setRenderer(new FuelBarRenderer(brick, set));
 
 		footerBarElements.add(fuelBarLayout);
 

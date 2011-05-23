@@ -355,7 +355,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	@Override
 	public ABrickLayoutTemplate getCollapsedLayoutTemplate() {
 		return new CompactCentralBrickLayoutTemplate(brick, dimensionGroup,
-				visBricks, brick.getLayoutConfigurer());
+				visBricks, brick.getBrickConfigurer());
 	}
 
 	@Override

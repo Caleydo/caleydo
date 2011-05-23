@@ -2,6 +2,7 @@ package org.caleydo.view.visbricks.brick.viewcreation;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
@@ -19,6 +20,12 @@ import org.caleydo.view.visbricks.brick.GLBrick;
  * 
  */
 public class HeatMapCreator implements IRemoteViewCreator {
+	
+	private ISet set;
+	
+	public HeatMapCreator(ISet set) {
+		this.set = set;
+	}
 
 	@Override
 	public AGLView createRemoteView(GLBrick remoteRenderingView, GL2 gl,
@@ -35,7 +42,7 @@ public class HeatMapCreator implements IRemoteViewCreator {
 								1, 0, 1, -1, 1));
 
 		heatMap.setRemoteRenderingGLView(remoteRenderingView);
-		heatMap.setSet(remoteRenderingView.getSet());
+		heatMap.setSet(set);
 		heatMap.setDataDomain(remoteRenderingView.getDataDomain());
 		heatMap.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		heatMap.initialize();
