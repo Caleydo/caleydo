@@ -59,5 +59,9 @@ public class PathwayBrickData implements IBrickData {
 		return "";
 	}
 
+	public PathwayGraph getPathway() {
+		return pathway;
+	}
+
 
 }

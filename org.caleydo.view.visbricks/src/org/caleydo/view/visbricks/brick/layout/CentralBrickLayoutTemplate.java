@@ -68,6 +68,9 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		lockResizingButton = new Button(
 				EPickingType.BRICK_LOCK_RESIZING_BUTTON,
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
+		headerBarElements = new ArrayList<ElementLayout>();
+		footerBarElements = new ArrayList<ElementLayout>();
+		toolBarElements = new ArrayList<ElementLayout>();
 		configurer.configure(this);
 		registerPickingListeners();
 		viewTypeChanged(getDefaultViewType());

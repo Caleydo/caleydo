@@ -45,6 +45,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 			DimensionGroup dimensionGroup, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		this.visBricks = visBricks;
+		footerBarElements = new ArrayList<ElementLayout>();
 		configurer.configure(this);
 		registerPickingListeners();
 		// leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,

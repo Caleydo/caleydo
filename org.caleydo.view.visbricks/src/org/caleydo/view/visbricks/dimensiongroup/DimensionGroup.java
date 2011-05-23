@@ -348,6 +348,10 @@ public class DimensionGroup extends AGLView implements
 			count++;
 			count++;
 		}
+		
+		visBricks.getRelationAnalyzer().updateRelations(
+				dimensionGroupData.getID(),
+				dimensionGroupData.getSummaryBrickVA());
 
 	}
 
@@ -523,10 +527,9 @@ public class DimensionGroup extends AGLView implements
 			// groupColumn.updateSubLayout();
 			visBricks.updateConnectionLinesBetweenDimensionGroups();
 
-			visBricks.getRelationAnalyzer().updateRelations(
-					dimensionGroupData.getID(),
-					dimensionGroupData.getDataDomain(),
-					dimensionGroupData.getSummaryBrickVA());
+//			visBricks.getRelationAnalyzer().updateRelations(
+//					dimensionGroupData.getID(),
+//					dimensionGroupData.getSummaryBrickVA());
 		}
 	}
 

@@ -37,8 +37,8 @@ public class AlphabeticalDataLabelSortingStrategy implements
 			comparables.add(new DataLabelComparable(brick.getBrickData()
 					.getLabel(), brick));
 		}
-		comparables.add(new DataLabelComparable(summaryBrick.getBrickData()
-				.getLabel(), summaryBrick));
+//		comparables.add(new DataLabelComparable(summaryBrick.getBrickData()
+//				.getLabel(), summaryBrick));
 		
 		Collections.sort(comparables);
 
@@ -47,6 +47,8 @@ public class AlphabeticalDataLabelSortingStrategy implements
 		for(DataLabelComparable comparable : comparables) {
 			bricks.add(comparable.brick);
 		}
+		
+		bricks.add((int)Math.floor(bricks.size() / 2), summaryBrick);
 
 		return bricks;
 	}

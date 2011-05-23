@@ -70,7 +70,7 @@ public class RelationAnalyzer {
 //	}
 
 	
-	public synchronized void updateRelations(int setID, IDataDomain dataDomain, ContentVirtualArray contentVA) {
+	public synchronized void updateRelations(int setID, ContentVirtualArray contentVA) {
 
 //		try {
 //			Thread.sleep(1000);
@@ -95,7 +95,7 @@ public class RelationAnalyzer {
 		}
 		hashSimilarityMaps.put(setID, currentMap);
 		RelationsUpdatedEvent event = new RelationsUpdatedEvent();
-		event.setDataDomainType(dataDomain.getDataDomainType());
+//		event.setDataDomainType(dataDomain.getDataDomainType());
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}

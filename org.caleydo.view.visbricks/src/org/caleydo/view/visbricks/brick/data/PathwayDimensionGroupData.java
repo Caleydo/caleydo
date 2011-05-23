@@ -154,7 +154,17 @@ public class PathwayDimensionGroupData extends AUniqueObject implements
 									(PathwayVertexGraphItem) item);
 
 					if (davidId != -1) {
-						groupSize++;
+						Set<Integer> contentIDs = GeneralManager
+								.get()
+								.getIDMappingManager()
+								.getIDAsSet(IDType.getIDType("DAVID"),
+										mappingDataDomain.getContentIDType(),
+										davidId);
+
+						if (contentIDs != null && contentIDs.size() > 0) {
+							groupSize++;
+						}
+
 					}
 				}
 			}

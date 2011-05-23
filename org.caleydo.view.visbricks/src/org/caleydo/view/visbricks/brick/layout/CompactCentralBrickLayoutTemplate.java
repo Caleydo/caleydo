@@ -29,6 +29,8 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 			IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		this.visBricks = visBricks;
+		headerBarElements = new ArrayList<ElementLayout>();
+		footerBarElements = new ArrayList<ElementLayout>();
 		configurer.configure(this);
 		registerPickingListeners();
 	}
