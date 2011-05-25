@@ -42,9 +42,9 @@ public class ElementLayout {
 	protected ArrayList<LayoutRenderer> backgroundRenderers;
 	protected ArrayList<LayoutRenderer> foregroundRenderers;
 
-	/** specifies how much this element is translated in x relative to it's parent layout */
+	/** specifies how much this element is translated in x absolutely TODO check this */
 	protected float translateX = 0;
-	/** specifies how much this element is translated in y relative to it's parent layout */
+	/** specifies how much this element is translated in y absolutely TODO check this */
 	protected float translateY = 0;
 
 	/** use the remaining space in X, invalidates absoluteSizeX */
@@ -314,16 +314,14 @@ public class ElementLayout {
 	}
 
 	/**
-	 * Get the value specifying how much this element has to be transformed in X relative to its parent
-	 * layout.
+	 * Get the value specifying how much this element has to be transformed in X absolutely TODO: check
 	 */
 	public float getTranslateX() {
 		return translateX;
 	}
 
 	/**
-	 * Get the value specifying how much this element has to be transformed in Y relative to its parent
-	 * layout.
+	 * Get the value specifying how much this element has to be transformed in Y absolutely TODO: check
 	 */
 	public float getTranslateY() {
 		return translateY;
