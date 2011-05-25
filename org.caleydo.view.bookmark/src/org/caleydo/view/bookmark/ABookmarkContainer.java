@@ -1,7 +1,5 @@
 package org.caleydo.view.bookmark;
 
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
 import java.util.Iterator;
 
 import javax.media.opengl.GL2;
@@ -27,6 +25,12 @@ import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
 import org.caleydo.view.bookmark.contextmenu.BookmarkContextMenuItemContainer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * <p>
@@ -184,6 +188,8 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 				break;
 			case MOUSE_OVER:
 				selectionType = SelectionType.MOUSE_OVER;
+			
+
 				// PlatformUI.getWorkbench().getDisplay().asyncExec(new
 				// Runnable() {
 				// @Override
@@ -216,15 +222,17 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 				// menu.setVisible(true);
 				// }
 				// });
+				
+				
 				 break;
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
-				PopupMenu menu = new PopupMenu();
-				MenuItem item = new MenuItem();
-				menu.add(item);
-				menu.addNotify();
-				menu.show(manager.getParentGLCanvas(), 0, 0);
+//				PopupMenu menu = new PopupMenu();
+//				MenuItem item = new MenuItem();
+//				menu.add(item);
+//				menu.addNotify();
+//				menu.show(manager.getParentGLCanvas(), 0, 0);
 
 				BookmarkContextMenuItemContainer bookmarkContextMenuItemContainer = new BookmarkContextMenuItemContainer();
 				bookmarkContextMenuItemContainer.setID(internalIDType, iExternalID);
