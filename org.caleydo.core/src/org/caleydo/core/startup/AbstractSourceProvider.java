@@ -17,8 +17,6 @@ public class AbstractSourceProvider
 	
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

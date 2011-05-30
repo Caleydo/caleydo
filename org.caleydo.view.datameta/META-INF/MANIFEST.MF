@@ -5,7 +5,10 @@ Bundle-SymbolicName: org.caleydo.view.datameta;singleton:=true
 Bundle-Version: 2.0
 Require-Bundle: org.caleydo.core;bundle-version="2.0.0",
  org.caleydo.view.histogram;bundle-version="2.0.0",
- org.caleydo.datadomain.genetic;bundle-version="2.0.0"
+ org.caleydo.datadomain.genetic;bundle-version="2.0.0",
+ org.caleydo.view.filterpipeline;bundle-version="2.0.0",
+ org.caleydo.view.grouper;bundle-version="2.0.0",
+ org.caleydo.view.filter;bundle-version="2.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: gleem.linalg,
  javax.media.opengl,

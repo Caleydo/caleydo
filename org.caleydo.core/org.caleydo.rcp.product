@@ -10,7 +10,7 @@
 Check out www.caleydo.org
 
 © Copyright by www.caleydo.org and Institute for Computer Graphics and Vision
-Graz University of Technology - 2010.
+Graz University of Technology - 2011.
 All Rights Reserved.
       </text>
    </aboutInfo>
@@ -24,12 +24,11 @@ All Rights Reserved.
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="resources/icons/caleydo16.gif" i32="/org.caleydo.core/resources/icons/caleydo32.gif" i48="/org.caleydo.core/resources/icons/caleydo48.gif" i64="/org.caleydo.core/resources/icons/caleydo64.gif" i128="/org.caleydo.core/resources/icons/caleydo128.gif"/>
+   <windowImages i16="/org.caleydo.data/resources/icons/caleydo/caleydo16.gif" i32="/org.caleydo.data/resources/icons/caleydo/caleydo32.gif" i48="/org.caleydo.data/resources/icons/caleydo/caleydo48.gif" i64="/org.caleydo.data/resources/icons/caleydo/caleydo64.gif" i128="/org.caleydo.data/resources/icons/caleydo/caleydo128.gif"/>
 
    <splash
       location="org.caleydo.rcp" />
-   <launcher name="caleydo">
-      <linux icon="/org.caleydo.data/resources/icons/caleydo/caleydo16.xpm"/>
+   <launcher name="Caleydo">
       <solaris/>
       <win useIco="false">
          <ico path="/org.caleydo.rcp/resources/icons/caleydo_icon.ico"/>
@@ -40,7 +39,6 @@ All Rights Reserved.
 
    <vm>
    </vm>
-
 
    <plugins>
       <plugin id="org.caleydo.core"/>

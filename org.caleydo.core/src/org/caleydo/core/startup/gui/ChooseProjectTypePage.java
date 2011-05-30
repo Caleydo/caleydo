@@ -128,6 +128,7 @@ public class ChooseProjectTypePage
 		createGeneticUseCaseTab(tabFolder);
 		createGeneralDataUseCaseTab(tabFolder);
 		createLoadProjectTab(tabFolder);
+		
 		if (!GeneralManager.RELEASE_MODE)
 			createCollaborationClientTab(tabFolder);
 
