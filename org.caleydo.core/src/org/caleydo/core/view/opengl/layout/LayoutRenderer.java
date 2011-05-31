@@ -59,5 +59,9 @@ public class LayoutRenderer {
 	protected void updateSpacing(ElementLayout elementLayout) {
 		this.elementLayout = elementLayout;
 	}
+	
+	public void setElementLayout(ElementLayout elementLayout) {
+		this.elementLayout = elementLayout;
+	}
 
 }

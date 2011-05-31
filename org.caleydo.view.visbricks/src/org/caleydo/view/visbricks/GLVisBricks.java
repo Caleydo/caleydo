@@ -1665,4 +1665,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public RelationAnalyzer getRelationAnalyzer() {
 		return relationAnalyzer;
 	}
+
+	public float getArchInnerWidth() {
+		return archInnerWidth;
+	}
 }

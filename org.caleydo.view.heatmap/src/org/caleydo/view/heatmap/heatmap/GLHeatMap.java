@@ -140,14 +140,13 @@ public class GLHeatMap extends AStorageBasedView {
 	@Override
 	public void initLocal(GL2 gl) {
 		// Register keyboard listener to GL2 canvas
-		PlatformUI.getWorkbench().getDisplay()
-				.asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						parentGLCanvas.getParentComposite().addKeyListener(
-								glKeyListener);
-					}
-				});
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				parentGLCanvas.getParentComposite().addKeyListener(
+						glKeyListener);
+			}
+		});
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
@@ -264,9 +263,10 @@ public class GLHeatMap extends AStorageBasedView {
 	@Override
 	public void display(GL2 gl) {
 		gl.glCallList(iGLDisplayListToCall);
-		
-		//System.out.println(generalManager.getIDMappingManager().getIDAsSet(IDType.getIDType("DAVID"), IDType.getIDType("GO_CC"), 146860));
-		
+
+		// System.out.println(generalManager.getIDMappingManager().getIDAsSet(IDType.getIDType("DAVID"),
+		// IDType.getIDType("GO_CC"), 146860));
+
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
 	}
@@ -987,6 +987,13 @@ public class GLHeatMap extends AStorageBasedView {
 		default:
 			return 100;
 		}
+	}
+
+	@Override
+	public void setFrustum(ViewFrustum viewFrustum) {
+		super.setFrustum(viewFrustum);
+		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
+		templateRenderer.setViewFrustum(viewFrustum);
 	}
 
 }

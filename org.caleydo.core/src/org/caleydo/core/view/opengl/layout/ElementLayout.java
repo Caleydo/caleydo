@@ -451,6 +451,7 @@ public class ElementLayout {
 		// LayoutRenderer renderer = ((RenderableLayoutElement) layout).getRenderer();
 		if (renderer == null)
 			return;
+		renderer.setElementLayout(this);
 		renderer.setLimits(getSizeScaledX(), getSizeScaledY());
 		renderer.updateSpacing(this);
 		if (backgroundRenderers != null) {

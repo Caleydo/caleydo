@@ -22,6 +22,12 @@ public class LayoutManager {
 	public LayoutManager(ViewFrustum viewFrustum) {
 		this.viewFrustum = viewFrustum;
 	}
+	
+	public void setViewFrustum(ViewFrustum viewFrustum) {
+		this.viewFrustum = viewFrustum;
+		if(template != null)
+			updateLayout();
+	}
 
 	public void setTemplate(LayoutTemplate template) {
 		this.template = template;

@@ -2249,7 +2249,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		super.setFrustum(viewFrustum);
 		updateSpacings();
 		resetAxisSpacing();
-
+		renderStyle = new PCRenderStyle(this, viewFrustum);
 	}
 
 	@Override

@@ -253,7 +253,10 @@ public class GLPathway extends AGLView implements
 			bIsDisplayListDirtyRemote = false;
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
+		
 		display(gl);
+
+		
 	}
 
 	@Override
