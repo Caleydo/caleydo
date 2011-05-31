@@ -45,11 +45,11 @@ public class BrickRemoteViewRenderer extends AContainedViewRenderer {
 	public void render(GL2 gl) {
 		// gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 		// EPickingType.BRICK, brick.getID()));
-		gl.glPushAttrib(GL2.GL_VIEWPORT_BIT);
-		gl.glPushMatrix();
-		gl.glViewport(viewportPositionX, viewportPositionY, viewportWidth,
-				viewportHeight);
-		gl.glLoadIdentity();
+//		gl.glPushAttrib(GL2.GL_VIEWPORT_BIT);
+//		gl.glPushMatrix();
+//		gl.glViewport(viewportPositionX, viewportPositionY, viewportWidth,
+//				viewportHeight);
+//		gl.glLoadIdentity();
 		// gl.glScalef(2f, 2f, 1);
 		// gl.glMatrixMode(GL2.GL_PROJECTION);
 		// gl.glPushMatrix();
@@ -63,12 +63,20 @@ public class BrickRemoteViewRenderer extends AContainedViewRenderer {
 		// gl.glLoadIdentity();
 		// view.reshape(drawable, viewportPositionX, viewportPositionY,
 		// viewportWidth, viewportHeight);
+		
+//		gl.glScissor(viewportPositionX, viewportPositionY,
+//				viewportWidth, viewportHeight/2);
+//		gl.glEnable(GL2.GL_SCISSOR_TEST);
+		view.clipToFrustum(gl);
 		view.displayRemote(gl);
+//		gl.glDisable(GL2.GL_SCISSOR_TEST);
+		gl.glDisable(GL2.GL_STENCIL_TEST);
+		
 		// gl.glMatrixMode(GL2.GL_PROJECTION);
 		// gl.glPopMatrix();
 		// gl.glMatrixMode(GL2.GL_MODELVIEW);
-		gl.glPopMatrix();
-		gl.glPopAttrib();
+//		gl.glPopMatrix();
+//		gl.glPopAttrib();
 		// gl.glPopName();
 	}
 
@@ -87,20 +95,26 @@ public class BrickRemoteViewRenderer extends AContainedViewRenderer {
 		viewportPositionY = pixelGLConverter.getPixelHeightForGLHeight(brick
 				.getWrappingLayout().getTranslateY()
 				+ elementLayout.getTranslateY());
-
-		ViewFrustum templateFrustum = view.getSerializableRepresentation()
-				.getViewFrustum();
-
-		float value = y / x
-				* (templateFrustum.getRight() - templateFrustum.getLeft());
-		templateFrustum.setTop(value);
+//
+//		ViewFrustum templateFrustum = view.getSerializableRepresentation()
+//				.getViewFrustum();
+//
+//		float value = y / x
+//				* (templateFrustum.getRight() - templateFrustum.getLeft());
+//		templateFrustum.setTop(value);
+//		ViewFrustum viewFrustum = view.getViewFrustum();
+//		viewFrustum.setLeft(templateFrustum.getLeft());
+//		viewFrustum.setBottom(templateFrustum.getBottom());
+//		viewFrustum.setRight(templateFrustum.getRight());
+//		viewFrustum.setTop(templateFrustum.getTop());
+//		viewFrustum.setNear(templateFrustum.getNear());
+//		viewFrustum.setFar(templateFrustum.getFar());
+		
 		ViewFrustum viewFrustum = view.getViewFrustum();
-		viewFrustum.setLeft(templateFrustum.getLeft());
-		viewFrustum.setBottom(templateFrustum.getBottom());
-		viewFrustum.setRight(templateFrustum.getRight());
-		viewFrustum.setTop(templateFrustum.getTop());
-		viewFrustum.setNear(templateFrustum.getNear());
-		viewFrustum.setFar(templateFrustum.getFar());
+		viewFrustum.setLeft(0);
+		viewFrustum.setBottom(0);
+		viewFrustum.setRight(x);
+		viewFrustum.setTop(y);
 		view.setFrustum(viewFrustum);
 		view.setDisplayListDirty();
 	}

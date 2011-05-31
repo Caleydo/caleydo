@@ -186,8 +186,8 @@ public abstract class AGLView
 	protected CaleydoTextRenderer textRenderer;
 
 	/**
-	 * True if the mouse is currently over this view.
-	 * If lazyMode is true then the picking does not need to be rendered
+	 * True if the mouse is currently over this view. If lazyMode is true then the picking does not need to be
+	 * rendered
 	 */
 	protected boolean lazyMode;
 
@@ -201,7 +201,6 @@ public abstract class AGLView
 
 		GeneralManager.get().getViewGLCanvasManager().registerGLView(this);
 		parentGLCanvas = glCanvas;
-
 
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
 			glMouseListener = parentGLCanvas.getGLMouseListener();
@@ -356,34 +355,35 @@ public abstract class AGLView
 	/**
 	 * This method clips everything outside the frustum
 	 */
-	protected void clipToFrustum(GL2 gl) {
+	public void clipToFrustum(GL2 gl) {
 		// if (this instanceof GLHeatMap && ((GLHeatMap) this).isInListMode())
 		// return;
 		//
-		// gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
-		// gl.glColorMask(false, false, false, false);
-		// gl.glClearStencil(0); // Clear The Stencil Buffer To 0
-		// gl.glEnable(GL2.GL_DEPTH_TEST); // Enables Depth Testing
-		// gl.glDepthFunc(GL2.GL_LEQUAL); // The Type Of Depth Testing To Do
-		// gl.glEnable(GL2.GL_STENCIL_TEST);
-		// gl.glStencilFunc(GL2.GL_ALWAYS, 1, 1);
-		// gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
-		// gl.glDisable(GL2.GL_DEPTH_TEST);
-		//
-		// // Clip region that renders in stencil buffer (in this case the
-		// // frustum)
-		// gl.glBegin(GL2.GL_POLYGON);
-		// gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
-		// gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), -0.01f);
-		// gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
-		// gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
-		// gl.glEnd();
-		//
-		// gl.glEnable(GL2.GL_DEPTH_TEST);
-		// gl.glColorMask(true, true, true, true);
-		// gl.glStencilFunc(GL2.GL_EQUAL, 1, 1);
-		// gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
-	}
+		 gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
+		 gl.glColorMask(false, false, false, false);
+		 gl.glClearStencil(0); // Clear The Stencil Buffer To 0
+		 gl.glEnable(GL2.GL_DEPTH_TEST); // Enables Depth Testing
+		 gl.glDepthFunc(GL2.GL_LEQUAL); // The Type Of Depth Testing To Do
+		 gl.glEnable(GL2.GL_STENCIL_TEST);
+		 gl.glStencilFunc(GL2.GL_ALWAYS, 1, 1);
+		 gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+		 gl.glDisable(GL2.GL_DEPTH_TEST);
+		
+		 // Clip region that renders in stencil buffer (in this case the
+		 // frustum)
+		 gl.glBegin(GL2.GL_POLYGON);
+		 gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
+		 gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), -0.01f);
+		 gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
+		 gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
+		 gl.glEnd();
+		
+		 gl.glEnable(GL2.GL_DEPTH_TEST);
+		 gl.glColorMask(true, true, true, true);
+		 gl.glStencilFunc(GL2.GL_EQUAL, 1, 1);
+		 gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
+
+			}
 
 	/**
 	 * Initialization for gl, general stuff
@@ -953,6 +953,6 @@ public abstract class AGLView
 	 */
 	public void setLazyMode(boolean lazyMode) {
 		this.lazyMode = lazyMode;
-		
+
 	}
 }

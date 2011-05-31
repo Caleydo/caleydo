@@ -501,7 +501,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		}
 		// brick.display(gl);
 
-		if (!lazyMode)
+//		if (!lazyMode)
 			pickingManager.handlePicking(this, gl);
 
 		display(gl);
