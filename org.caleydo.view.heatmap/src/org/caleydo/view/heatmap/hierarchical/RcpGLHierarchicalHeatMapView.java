@@ -7,8 +7,6 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.view.ARcpGLViewPart;
-import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
@@ -33,8 +31,7 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 
 		createGLCanvas();
 		
-		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20);
-		view = new GLHierarchicalHeatMap(glCanvas, viewFrustum);
+		view = new GLHierarchicalHeatMap(glCanvas, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 
 		if (view instanceof IDataDomainBasedView<?>) {
