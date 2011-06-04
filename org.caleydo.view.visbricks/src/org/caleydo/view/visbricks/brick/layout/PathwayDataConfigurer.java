@@ -110,7 +110,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		AGLView pathway = pathwayCreator.createRemoteView(brick, gl,
 				glMouseListener);
 		AContainedViewRenderer pathwayLayoutRenderer = new BrickRemoteViewRenderer(
-				pathway, brick, brickLayout.getPixelGLConverter());
+				pathway, brick, brickLayout.getPixelGLConverter(), true);
 		views.put(EContainedViewType.PATHWAY_VIEW, pathway);
 		containedViewRenderers.put(EContainedViewType.PATHWAY_VIEW,
 				pathwayLayoutRenderer);

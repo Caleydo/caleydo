@@ -2,6 +2,7 @@ package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Set;
@@ -38,6 +39,7 @@ import org.caleydo.core.view.AView;
 import org.caleydo.core.view.opengl.camera.IViewCamera;
 import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.canvas.listener.GLMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
 import org.caleydo.core.view.opengl.canvas.listener.ToggleMagnifyingGlassListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -101,6 +103,8 @@ public abstract class AGLView
 	protected GLKeyListener<?> glKeyListener;
 
 	protected GLMouseListener glMouseListener;
+	
+	protected GLMouseWheelListener glMouseWheelListener;
 
 	protected ViewFrustum viewFrustum;
 
@@ -138,6 +142,8 @@ public abstract class AGLView
 	private int iFrameCounter = 0;
 	private int iRotationFrameCounter = 0;
 	private static final int NUMBER_OF_FRAMES = 15;
+	
+	protected float zoomScale = 1.0f;
 
 	protected GLMagnifyingGlass magnifyingGlass;
 
@@ -182,6 +188,8 @@ public abstract class AGLView
 	// private String viewGUIID;
 
 	private boolean isVisible = true;
+	
+	protected boolean useZooming = false;
 
 	protected CaleydoTextRenderer textRenderer;
 
@@ -205,6 +213,8 @@ public abstract class AGLView
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
 			glMouseListener = parentGLCanvas.getGLMouseListener();
 		}
+		
+		glMouseWheelListener = new GLMouseWheelListener(this);
 
 		this.viewFrustum = viewFrustum;
 
@@ -257,8 +267,16 @@ public abstract class AGLView
 			gl.glTranslatef(position.x(), position.y(), position.z());
 			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(),
 				rot_Vec3f.z());
+			
+			if(useZooming) {
+				beginZoom(gl);
+			}
 
 			displayLocal(gl);
+			
+			if(useZooming) {
+				endZoom(gl);
+			}
 
 			// if (bShowMagnifyingGlass) {
 			// if (magnifyingGlass == null) {
@@ -954,5 +972,36 @@ public abstract class AGLView
 	public void setLazyMode(boolean lazyMode) {
 		this.lazyMode = lazyMode;
 
+	}
+	
+	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
+		zoomScale -= wheelAmount;
+		if(zoomScale < 1.0f)
+			zoomScale = 1.0f;
+	}
+	
+	public void useZooming(boolean useZooming) {
+		
+		if((this.useZooming && useZooming) || (!this.useZooming && !useZooming))
+			return;
+		
+		if(useZooming) {
+			parentGLCanvas.removeMouseWheelListener(glMouseListener);
+			parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
+		} else {
+			parentGLCanvas.removeMouseWheelListener(glMouseWheelListener);
+			parentGLCanvas.addMouseWheelListener(glMouseListener);
+		}
+		
+		this.useZooming = useZooming;
+	}
+	
+	public void beginZoom(GL2 gl) {
+		gl.glPushMatrix();
+		gl.glScalef(zoomScale, zoomScale, 1);
+	}
+	
+	public void endZoom(GL2 gl) {
+		gl.glPopMatrix();
 	}
 }

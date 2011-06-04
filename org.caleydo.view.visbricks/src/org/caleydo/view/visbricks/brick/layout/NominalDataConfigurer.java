@@ -165,7 +165,7 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl,
 				glMouseListener);
 		AContainedViewRenderer parCoordsLayoutRenderer = new BrickRemoteViewRenderer(
-				parCoords, brick, brickLayout.getPixelGLConverter());
+				parCoords, brick, brickLayout.getPixelGLConverter(), false);
 		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
 		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
 				parCoordsLayoutRenderer);
@@ -174,7 +174,7 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 		AGLView tagCloud = tagCloudCreator.createRemoteView(brick, gl,
 				glMouseListener);
 		AContainedViewRenderer tagCloudLayoutRenderer = new BrickRemoteViewRenderer(
-				tagCloud, brick, brickLayout.getPixelGLConverter());
+				tagCloud, brick, brickLayout.getPixelGLConverter(), false);
 		views.put(EContainedViewType.TAGCLOUD_VIEW, tagCloud);
 		containedViewRenderers.put(EContainedViewType.TAGCLOUD_VIEW,
 				tagCloudLayoutRenderer);

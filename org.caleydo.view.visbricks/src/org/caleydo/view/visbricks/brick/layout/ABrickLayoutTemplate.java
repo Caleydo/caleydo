@@ -52,6 +52,15 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	public void setViewRenderer(AContainedViewRenderer viewRenderer) {
 		this.viewRenderer = viewRenderer;
 	}
+	
+	/**
+	 * Gets the renderer for the view element of a brick.
+	 * 
+	 * @return viewRenderer
+	 */
+	public AContainedViewRenderer getViewRenderer() {
+		return viewRenderer;
+	}
 
 	/**
 	 * @return True, if handles are shown.

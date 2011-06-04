@@ -1,5 +1,9 @@
 package org.caleydo.core.view.opengl.canvas;
 
+import java.nio.FloatBuffer;
+
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
@@ -67,5 +71,31 @@ public class PixelGLConverter {
 				+ ". It's likely that the canvas is not initialized.");
 		float height = totalHeightPixel.floatValue() / totalHeightGL * glHeight;
 		return (int) height;
+	}
+	
+	public float getGLHeightForCurrentGLTransform(GL2 gl) {
+		FloatBuffer buffer = FloatBuffer.wrap(new float[16]);
+		
+		gl.glGetFloatv(GL2.GL_MODELVIEW_MATRIX, buffer);
+		
+		return buffer.get(13);
+	}
+	
+	public float getGLWidthForCurrentGLTransform(GL2 gl) {
+		FloatBuffer buffer = FloatBuffer.wrap(new float[16]);
+		
+		gl.glGetFloatv(GL2.GL_MODELVIEW_MATRIX, buffer);
+		
+		return buffer.get(12);
+	}
+	
+	public int getPixelHeightForCurrentGLTransform(GL2 gl) {
+	
+		return getPixelHeightForGLHeight(getGLHeightForCurrentGLTransform(gl));
+	}
+	
+	public int getPixelWidthForCurrentGLTransform(GL2 gl) {
+		
+		return getPixelWidthForGLWidth(getGLWidthForCurrentGLTransform(gl));
 	}
 }

@@ -1,5 +1,7 @@
 package org.caleydo.view.visbricks.brick.ui;
 
+import java.awt.Point;
+
 import javax.media.opengl.GL2;
 
 public class DummyRenderer extends AContainedViewRenderer {
@@ -19,6 +21,11 @@ public class DummyRenderer extends AContainedViewRenderer {
 	@Override
 	public void render(GL2 gl) {
 		
+	}
+
+	@Override
+	public boolean handleMouseWheel(int wheelAmount, Point wheelPosition) {
+		return false;
 	}
 
 }

@@ -197,6 +197,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		brickLayout
 				.setViewRenderer(containedViewRenderers.get(currentViewType));
 		currentRemoteView = views.get(currentRemoteView);
+		visBricks.registerRemoteViewMouseWheelListener(brickLayout
+				.getViewRenderer());
 
 		templateRenderer.setTemplate(brickLayout);
 		float defaultHeight = getParentGLCanvas()
@@ -241,9 +243,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			public void rightClicked(Pick pick) {
 
 				HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
-				
-				
-				
+
 				for (Integer gene : contentVA) {
 					java.util.Set<Integer> davids = GeneralManager
 							.get()
@@ -283,14 +283,14 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 						}
 					}
 				}
-				
+
 				ArrayList<PathwayGraph> pathways = new ArrayList<PathwayGraph>();
-				
-				for(PathwayGraph pathway : hashPathwaysToOccurences.keySet()) {
-					if(hashPathwaysToOccurences.get(pathway) >= 10)
+
+				for (PathwayGraph pathway : hashPathwaysToOccurences.keySet()) {
+					if (hashPathwaysToOccurences.get(pathway) >= 10)
 						pathways.add(pathway);
 				}
-				
+
 				AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
 				ArrayList<IDimensionGroupData> dimensionGroupData = new ArrayList<IDimensionGroupData>();
 				PathwayDimensionGroupData pathwayDimensionGroupData = new PathwayDimensionGroupData(
@@ -870,7 +870,11 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			return;
 
 		currentRemoteView = views.get(viewType);
+		visBricks.unregisterRemoteViewMouseWheelListener(brickLayout
+				.getViewRenderer());
 		brickLayout.setViewRenderer(viewRenderer);
+		visBricks.registerRemoteViewMouseWheelListener(brickLayout
+				.getViewRenderer());
 		brickLayout.viewTypeChanged(viewType);
 		int defaultHeightPixels = brickLayout.getDefaultHeightPixels();
 		int defaultWidthPixels = brickLayout.getDefaultWidthPixels();
@@ -976,6 +980,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
 		}
+		
+		visBricks.unregisterRemoteViewMouseWheelListener(brickLayout
+				.getViewRenderer());
 	}
 
 	private void registerPickingListeners() {

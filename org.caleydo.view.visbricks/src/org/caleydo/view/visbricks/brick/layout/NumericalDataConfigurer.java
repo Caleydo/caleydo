@@ -197,7 +197,7 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 			AGLView heatMap = heatMapCreator.createRemoteView(brick, gl,
 					glMouseListener);
 			AContainedViewRenderer heatMapLayoutRenderer = new BrickRemoteViewRenderer(
-					heatMap, brick, brickLayout.getPixelGLConverter());
+					heatMap, brick, brickLayout.getPixelGLConverter(), true);
 			views.put(EContainedViewType.HEATMAP_VIEW, heatMap);
 			containedViewRenderers.put(EContainedViewType.HEATMAP_VIEW,
 					heatMapLayoutRenderer);
@@ -207,7 +207,7 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl,
 				glMouseListener);
 		AContainedViewRenderer parCoordsLayoutRenderer = new BrickRemoteViewRenderer(
-				parCoords, brick, brickLayout.getPixelGLConverter());
+				parCoords, brick, brickLayout.getPixelGLConverter(), true);
 		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
 		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
 				parCoordsLayoutRenderer);
@@ -216,7 +216,7 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 		AGLView histogram = histogramCreator.createRemoteView(brick, gl,
 				glMouseListener);
 		AContainedViewRenderer histogramLayoutRenderer = new BrickRemoteViewRenderer(
-				histogram, brick, brickLayout.getPixelGLConverter());
+				histogram, brick, brickLayout.getPixelGLConverter(), true);
 		views.put(EContainedViewType.HISTOGRAM_VIEW, histogram);
 		containedViewRenderers.put(EContainedViewType.HISTOGRAM_VIEW,
 				histogramLayoutRenderer);

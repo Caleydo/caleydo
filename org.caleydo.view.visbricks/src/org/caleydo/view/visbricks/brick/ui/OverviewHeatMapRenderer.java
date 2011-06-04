@@ -1,5 +1,6 @@
 package org.caleydo.view.visbricks.brick.ui;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
@@ -223,5 +224,10 @@ public class OverviewHeatMapRenderer extends AContainedViewRenderer {
 	@Override
 	public int getMinWidthPixels() {
 		return Math.max(150, 16 * heatMapValuesMean.size());
+	}
+
+	@Override
+	public boolean handleMouseWheel(int wheelAmount, Point wheelPosition) {
+		return false;
 	}
 }
