@@ -103,7 +103,7 @@ public abstract class AGLView
 	protected GLKeyListener<?> glKeyListener;
 
 	protected GLMouseListener glMouseListener;
-	
+
 	protected GLMouseWheelListener glMouseWheelListener;
 
 	protected ViewFrustum viewFrustum;
@@ -142,8 +142,16 @@ public abstract class AGLView
 	private int iFrameCounter = 0;
 	private int iRotationFrameCounter = 0;
 	private static final int NUMBER_OF_FRAMES = 15;
-	
-	protected float zoomScale = 1.0f;
+
+	private float previousZoomScale = 1.0f;
+	private float currentZoomScale = 1.0f;
+
+	private float relativeZoomCenterX = 0.5f;
+	private float relativeZoomCenterY = 0.5f;
+
+	private boolean wasMouseWheeled = false;
+
+	private Point mouseWheelPosition;
 
 	protected GLMagnifyingGlass magnifyingGlass;
 
@@ -188,7 +196,7 @@ public abstract class AGLView
 	// private String viewGUIID;
 
 	private boolean isVisible = true;
-	
+
 	protected boolean useZooming = false;
 
 	protected CaleydoTextRenderer textRenderer;
@@ -198,6 +206,10 @@ public abstract class AGLView
 	 * rendered
 	 */
 	protected boolean lazyMode;
+
+	private float relativeViewTranlateX;
+
+	private float relativeViewTranlateY;
 
 	/**
 	 * Constructor. If the glCanvas object is null - then the view is rendered remote.
@@ -213,7 +225,7 @@ public abstract class AGLView
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
 			glMouseListener = parentGLCanvas.getGLMouseListener();
 		}
-		
+
 		glMouseWheelListener = new GLMouseWheelListener(this);
 
 		this.viewFrustum = viewFrustum;
@@ -267,14 +279,14 @@ public abstract class AGLView
 			gl.glTranslatef(position.x(), position.y(), position.z());
 			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(),
 				rot_Vec3f.z());
-			
-			if(useZooming) {
+
+			if (useZooming) {
 				beginZoom(gl);
 			}
 
 			displayLocal(gl);
-			
-			if(useZooming) {
+
+			if (useZooming) {
 				endZoom(gl);
 			}
 
@@ -377,31 +389,31 @@ public abstract class AGLView
 		// if (this instanceof GLHeatMap && ((GLHeatMap) this).isInListMode())
 		// return;
 		//
-		 gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
-		 gl.glColorMask(false, false, false, false);
-		 gl.glClearStencil(0); // Clear The Stencil Buffer To 0
-		 gl.glEnable(GL2.GL_DEPTH_TEST); // Enables Depth Testing
-		 gl.glDepthFunc(GL2.GL_LEQUAL); // The Type Of Depth Testing To Do
-		 gl.glEnable(GL2.GL_STENCIL_TEST);
-		 gl.glStencilFunc(GL2.GL_ALWAYS, 1, 1);
-		 gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
-		 gl.glDisable(GL2.GL_DEPTH_TEST);
-		
-		 // Clip region that renders in stencil buffer (in this case the
-		 // frustum)
-		 gl.glBegin(GL2.GL_POLYGON);
-		 gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
-		 gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), -0.01f);
-		 gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
-		 gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
-		 gl.glEnd();
-		
-		 gl.glEnable(GL2.GL_DEPTH_TEST);
-		 gl.glColorMask(true, true, true, true);
-		 gl.glStencilFunc(GL2.GL_EQUAL, 1, 1);
-		 gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
+		gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
+		gl.glColorMask(false, false, false, false);
+		gl.glClearStencil(0); // Clear The Stencil Buffer To 0
+		gl.glEnable(GL2.GL_DEPTH_TEST); // Enables Depth Testing
+		gl.glDepthFunc(GL2.GL_LEQUAL); // The Type Of Depth Testing To Do
+		gl.glEnable(GL2.GL_STENCIL_TEST);
+		gl.glStencilFunc(GL2.GL_ALWAYS, 1, 1);
+		gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+		gl.glDisable(GL2.GL_DEPTH_TEST);
 
-			}
+		// Clip region that renders in stencil buffer (in this case the
+		// frustum)
+		gl.glBegin(GL2.GL_POLYGON);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), -0.01f);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
+		gl.glEnd();
+
+		gl.glEnable(GL2.GL_DEPTH_TEST);
+		gl.glColorMask(true, true, true, true);
+		gl.glStencilFunc(GL2.GL_EQUAL, 1, 1);
+		gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
+
+	}
 
 	/**
 	 * Initialization for gl, general stuff
@@ -973,35 +985,109 @@ public abstract class AGLView
 		this.lazyMode = lazyMode;
 
 	}
-	
+
 	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
-		zoomScale -= wheelAmount;
-		if(zoomScale < 1.0f)
-			zoomScale = 1.0f;
+		currentZoomScale -= wheelAmount;
+		if (currentZoomScale < 1.0f)
+			currentZoomScale = 1.0f;
+		wasMouseWheeled = true;
+		mouseWheelPosition = wheelPosition;
 	}
-	
+
 	public void useZooming(boolean useZooming) {
-		
-		if((this.useZooming && useZooming) || (!this.useZooming && !useZooming))
+
+		if ((this.useZooming && useZooming) || (!this.useZooming && !useZooming))
 			return;
-		
-		if(useZooming) {
+
+		if (useZooming) {
 			parentGLCanvas.removeMouseWheelListener(glMouseListener);
 			parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
-		} else {
+		}
+		else {
 			parentGLCanvas.removeMouseWheelListener(glMouseWheelListener);
 			parentGLCanvas.addMouseWheelListener(glMouseListener);
 		}
-		
+
 		this.useZooming = useZooming;
 	}
-	
+
 	public void beginZoom(GL2 gl) {
+
+		if (currentZoomScale == 1.0f) {
+			relativeViewTranlateX = 0;
+			relativeViewTranlateY = 0;
+			return;
+		}
+
+		float viewTranslateX = relativeViewTranlateX * viewFrustum.getWidth();
+		float viewTranslateY = relativeViewTranlateY * viewFrustum.getHeight();
+
+		// float zoomCenterX = relativeZoomCenterX * viewFrustum.getWidth();
+		// float zoomCenterY = relativeZoomCenterY * viewFrustum.getHeight();
+
+		if (wasMouseWheeled) {
+			PixelGLConverter pixelGLConverter = parentGLCanvas.getPixelGLConverter();
+
+			float viewPositionX = pixelGLConverter.getGLWidthForCurrentGLTransform(gl);
+			float viewPositionY = pixelGLConverter.getGLHeightForCurrentGLTransform(gl);
+			float wheelPositionX = pixelGLConverter.getGLWidthForPixelWidth(mouseWheelPosition.x);
+			float wheelPositionY =
+				pixelGLConverter.getGLHeightForPixelHeight(parentGLCanvas.getHeight() - mouseWheelPosition.y);
+
+			float zoomCenterX = wheelPositionX - viewPositionX;
+			float zoomCenterY = wheelPositionY - viewPositionY;
+
+			float relativeImageCenterX = (-viewTranslateX + zoomCenterX) / (viewFrustum.getWidth() * previousZoomScale);
+			float relativeImageCenterY = (-viewTranslateY + zoomCenterY) / (viewFrustum.getHeight() * previousZoomScale);
+			
+			zoomCenterX = relativeImageCenterX * viewFrustum.getWidth();
+			zoomCenterY = relativeImageCenterY * viewFrustum.getHeight();
+
+			// zoomCenterX = viewPositionX + viewFrustum.getWidth() - wheelPositionX;
+			// zoomCenterY = viewPositionY + viewFrustum.getHeight() - wheelPositionY;
+			viewTranslateX =
+				(viewFrustum.getWidth() / 2.0f) - zoomCenterX
+					- (currentZoomScale - 1) * zoomCenterX;
+			viewTranslateY =
+				 (viewFrustum.getHeight() / 2.0f) - zoomCenterY
+					- (currentZoomScale - 1) * zoomCenterY;
+			
+			if(viewTranslateX > 0)
+				viewTranslateX = 0;
+			if(viewTranslateY > 0)
+				viewTranslateY = 0;
+			
+			if(viewTranslateX < -(viewFrustum.getWidth() * (currentZoomScale - 1)))
+				viewTranslateX = -(viewFrustum.getWidth() * (currentZoomScale - 1));
+			if(viewTranslateY < -(viewFrustum.getHeight() * (currentZoomScale - 1)))
+				viewTranslateY = -(viewFrustum.getHeight() * (currentZoomScale - 1));
+
+			// relativeZoomCenterX = zoomCenterX / viewFrustum.getWidth();
+			// relativeZoomCenterY = zoomCenterY / viewFrustum.getHeight();
+
+			relativeViewTranlateX = viewTranslateX / viewFrustum.getWidth();
+			relativeViewTranlateY = viewTranslateY / viewFrustum.getHeight();
+
+//			System.out.println("=========================================");
+//			System.out.println("viewPos: " + viewPositionX + "," + viewPositionY + "\n zoomCenter: "
+//				+ zoomCenterX + "," + zoomCenterY + "\n Frustum: " + viewFrustum.getWidth() + ","
+//				+ viewFrustum.getHeight() + "\n Translate: " + viewTranlateX + "," + viewTranlateY
+//				+ "\n currentZoom: " + currentZoomScale + "; prevZoom: " + previousZoomScale);
+		}
+
 		gl.glPushMatrix();
-		gl.glScalef(zoomScale, zoomScale, 1);
+		gl.glTranslatef(viewTranslateX, viewTranslateY, 0);
+		gl.glScalef(currentZoomScale, currentZoomScale, 1);
+
 	}
-	
+
 	public void endZoom(GL2 gl) {
+
+		previousZoomScale = currentZoomScale;
+
+		if (currentZoomScale == 1.0f)
+			return;
 		gl.glPopMatrix();
+		wasMouseWheeled = false;
 	}
 }

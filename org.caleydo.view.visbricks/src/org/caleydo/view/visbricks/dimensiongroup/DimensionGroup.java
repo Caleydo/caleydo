@@ -958,6 +958,14 @@ public class DimensionGroup extends AGLView implements
 	}
 
 	public void showDetailedBrick(GLBrick brick, boolean expandLeft) {
+		
+		if (detailBrick != null) {
+			GeneralManager.get().getViewGLCanvasManager()
+					.unregisterGLView(detailBrick);
+			detailBrick.unregisterEventListeners();
+			detailBrick.destroy();
+			detailBrick = null;
+		}
 
 		detailBrickLayout = new Column("detailBrickWrappingLayout");
 
