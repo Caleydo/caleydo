@@ -178,5 +178,7 @@ public enum EPickingType {
 	EXPAND_RIGHT_HANDLE,
 
 	// tag cloud
-	TAG_DIMENSION_CHANGE;
+	TAG_DIMENSION_CHANGE,
+	
+	ZOOM_SCROLLBAR;
 }

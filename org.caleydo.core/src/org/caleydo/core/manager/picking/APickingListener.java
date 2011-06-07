@@ -1,6 +1,5 @@
-package org.caleydo.view.visbricks.brick.picking;
+package org.caleydo.core.manager.picking;
 
-import org.caleydo.core.manager.picking.Pick;
 
 /**
  * Convenience class that can be extended instead of implementing

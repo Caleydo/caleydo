@@ -22,8 +22,10 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.picking.APickingListener;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.IPickingListener;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IDataDomainSetBasedView;
@@ -51,8 +53,6 @@ import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
-import org.caleydo.view.visbricks.brick.picking.APickingListener;
-import org.caleydo.view.visbricks.brick.picking.IPickingListener;
 import org.caleydo.view.visbricks.brick.ui.AContainedViewRenderer;
 import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
@@ -106,7 +106,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	/** The group on which the contentVA of this brick is based on */
 	private Group group;
 
-	private HashMap<EPickingType, HashMap<Integer, IPickingListener>> pickingListeners;
+	
 
 	private GLVisBricks visBricks;
 	private DimensionGroup dimensionGroup;
@@ -133,7 +133,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		views = new HashMap<EContainedViewType, AGLView>();
 		containedViewRenderers = new HashMap<EContainedViewType, AContainedViewRenderer>();
 
-		pickingListeners = new HashMap<EPickingType, HashMap<Integer, IPickingListener>>();
+		
 
 	}
 
@@ -521,33 +521,33 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int pickingID, Pick pick) {
 
-		HashMap<Integer, IPickingListener> map = pickingListeners
-				.get(pickingType);
-		if (map == null)
-			return;
-
-		IPickingListener pickingListener = map.get(pickingID);
-
-		if (pickingListener == null)
-			return;
-
-		switch (pickingMode) {
-		case CLICKED:
-			pickingListener.clicked(pick);
-			break;
-		case DOUBLE_CLICKED:
-			pickingListener.doubleClicked(pick);
-			break;
-		case RIGHT_CLICKED:
-			pickingListener.rightClicked(pick);
-			break;
-		case MOUSE_OVER:
-			pickingListener.mouseOver(pick);
-			break;
-		case DRAGGED:
-			pickingListener.dragged(pick);
-			break;
-		}
+//		HashMap<Integer, IPickingListener> map = pickingListeners
+//				.get(pickingType);
+//		if (map == null)
+//			return;
+//
+//		IPickingListener pickingListener = map.get(pickingID);
+//
+//		if (pickingListener == null)
+//			return;
+//
+//		switch (pickingMode) {
+//		case CLICKED:
+//			pickingListener.clicked(pick);
+//			break;
+//		case DOUBLE_CLICKED:
+//			pickingListener.doubleClicked(pick);
+//			break;
+//		case RIGHT_CLICKED:
+//			pickingListener.rightClicked(pick);
+//			break;
+//		case MOUSE_OVER:
+//			pickingListener.mouseOver(pick);
+//			break;
+//		case DRAGGED:
+//			pickingListener.dragged(pick);
+//			break;
+//		}
 
 		// switch (pickingType) {
 		// case BRICK_CLUSTER:
@@ -826,27 +826,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			templateRenderer.updateLayout();
 	}
 
-	/**
-	 * Registers a {@link IPickingListener} for this view. When objects are
-	 * picked with the specified pickingType and ID the listener's methods are
-	 * called.
-	 * 
-	 * @param pickingListener
-	 * @param pickingType
-	 * @param externalID
-	 */
-	public void addPickingListener(IPickingListener pickingListener,
-			EPickingType pickingType, int externalID) {
-		HashMap<Integer, IPickingListener> map = pickingListeners
-				.get(pickingType);
-		if (map == null) {
-			map = new HashMap<Integer, IPickingListener>();
-			pickingListeners.put(pickingType, map);
-		}
-
-		map.put(externalID, pickingListener);
-
-	}
+	
 
 	// public ISet getSet() {
 	// return set;

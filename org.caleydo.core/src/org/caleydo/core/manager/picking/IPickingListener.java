@@ -1,7 +1,5 @@
-package org.caleydo.view.visbricks.brick.picking;
+package org.caleydo.core.manager.picking;
 
-import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.manager.picking.Pick;
 
 /**
  * Listener for several mouse events. The listener has to be registered at a

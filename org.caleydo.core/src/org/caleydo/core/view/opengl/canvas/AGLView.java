@@ -5,6 +5,7 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -29,6 +30,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.IPickingListener;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.view.ViewManager;
@@ -44,11 +46,19 @@ import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
 import org.caleydo.core.view.opengl.canvas.listener.ToggleMagnifyingGlassListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
+import org.caleydo.core.view.opengl.layout.Column;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout.LayoutTemplate;
+import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLMagnifyingGlass;
+import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
+import org.caleydo.core.view.opengl.util.scrollbar.ScrollBar;
+import org.caleydo.core.view.opengl.util.scrollbar.ScrollBarRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -149,6 +159,13 @@ public abstract class AGLView
 	private float relativeZoomCenterX = 0.5f;
 	private float relativeZoomCenterY = 0.5f;
 
+	private ScrollBar hScrollBar;
+	private ScrollBar vScrollBar;
+	private LayoutManager hScrollBarLayoutManager;
+	private LayoutTemplate hScrollBarTemplate;
+	private LayoutManager vScrollBarLayoutManager;
+	private LayoutTemplate vScrollBarTemplate;
+
 	private boolean wasMouseWheeled = false;
 
 	private Point mouseWheelPosition;
@@ -211,6 +228,11 @@ public abstract class AGLView
 
 	private float relativeViewTranlateY;
 
+	private HashMap<EPickingType, HashMap<Integer, IPickingListener>> pickingListeners;
+
+	// FIXME: Maybe this can be generalized so a view only needs only one DragAndDropController
+	private DragAndDropController scrollBarDragAndDropController;
+
 	/**
 	 * Constructor. If the glCanvas object is null - then the view is rendered remote.
 	 */
@@ -227,6 +249,8 @@ public abstract class AGLView
 		}
 
 		glMouseWheelListener = new GLMouseWheelListener(this);
+		pickingListeners = new HashMap<EPickingType, HashMap<Integer, IPickingListener>>();
+		scrollBarDragAndDropController = new DragAndDropController(this);
 
 		this.viewFrustum = viewFrustum;
 
@@ -241,6 +265,59 @@ public abstract class AGLView
 
 		glCanvas.initPixelGLConverter(viewFrustum);
 
+		initScrollBars();
+
+		
+
+	}
+
+	private void initScrollBars() {
+
+		hScrollBarLayoutManager = new LayoutManager(viewFrustum);
+		hScrollBarTemplate = new LayoutTemplate();
+		hScrollBar = new ScrollBar(0, 10, 5, 5, EPickingType.ZOOM_SCROLLBAR, 0);
+
+		Column baseColumn = new Column();
+
+		ElementLayout hScrollBarLayout = new ElementLayout("horizontalScrollBar");
+		hScrollBarLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		hScrollBarLayout.setPixelSizeY(10);
+		hScrollBarLayout.setRatioSizeX(1.0f);
+		hScrollBarLayout.setRenderer(new ScrollBarRenderer(hScrollBar, this, true,
+			scrollBarDragAndDropController));
+
+		ElementLayout hSpacingLayout = new ElementLayout("horizontalSpacing");
+		hSpacingLayout.setRatioSizeX(1.0f);
+
+		baseColumn.append(hScrollBarLayout);
+		baseColumn.append(hSpacingLayout);
+
+		hScrollBarTemplate.setBaseElementLayout(baseColumn);
+
+		hScrollBarLayoutManager.setTemplate(hScrollBarTemplate);
+
+		vScrollBarLayoutManager = new LayoutManager(viewFrustum);
+		vScrollBarTemplate = new LayoutTemplate();
+		vScrollBar = new ScrollBar(0, 10, 5, 5, EPickingType.ZOOM_SCROLLBAR, 1);
+
+		Row baseRow = new Row();
+
+		ElementLayout vScrollBarLayout = new ElementLayout("horizontalScrollBar");
+		vScrollBarLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		vScrollBarLayout.setPixelSizeX(10);
+		vScrollBarLayout.setRatioSizeY(1.0f);
+		vScrollBarLayout.setRenderer(new ScrollBarRenderer(vScrollBar, this, false,
+			scrollBarDragAndDropController));
+
+		ElementLayout vSpacingLayout = new ElementLayout("verticalSpacing");
+		vSpacingLayout.setRatioSizeX(1.0f);
+
+		baseRow.append(vSpacingLayout);
+		baseRow.append(vScrollBarLayout);
+
+		vScrollBarTemplate.setBaseElementLayout(baseRow);
+
+		vScrollBarLayoutManager.setTemplate(vScrollBarTemplate);
 	}
 
 	@Override
@@ -260,6 +337,9 @@ public abstract class AGLView
 		((GLEventListener) parentGLCanvas).init(drawable);
 
 		initLocal(drawable.getGL().getGL2());
+
+		hScrollBarLayoutManager.updateLayout();
+		vScrollBarLayoutManager.updateLayout();
 	}
 
 	@Override
@@ -504,6 +584,8 @@ public abstract class AGLView
 		this.viewFrustum = viewFrustum;
 
 		updateDetailMode();
+		hScrollBarLayoutManager.updateLayout();
+		vScrollBarLayoutManager.updateLayout();
 
 		// parentGLCanvas.initPixelGLConverter(viewFrustum);
 	}
@@ -559,12 +641,64 @@ public abstract class AGLView
 					else {
 						if (tempPick.getPickingMode() != EPickingMode.RIGHT_CLICKED)
 							contextMenu.flush();
+						handlePicking(pickingType, ePickingMode, iExternalID, tempPick);
+						// FIXME: This is for legacy support -> picking listeners should be used
 						handlePickingEvents(pickingType, ePickingMode, iExternalID, tempPick);
 					}
 					pickingManager.flushHits(uniqueID, pickingType);
 				}
 			}
 		}
+	}
+
+	protected void handlePicking(EPickingType pickingType, EPickingMode pickingMode, int pickingID, Pick pick) {
+
+		HashMap<Integer, IPickingListener> map = pickingListeners.get(pickingType);
+		if (map == null)
+			return;
+
+		IPickingListener pickingListener = map.get(pickingID);
+
+		if (pickingListener == null)
+			return;
+
+		switch (pickingMode) {
+			case CLICKED:
+				pickingListener.clicked(pick);
+				break;
+			case DOUBLE_CLICKED:
+				pickingListener.doubleClicked(pick);
+				break;
+			case RIGHT_CLICKED:
+				pickingListener.rightClicked(pick);
+				break;
+			case MOUSE_OVER:
+				pickingListener.mouseOver(pick);
+				break;
+			case DRAGGED:
+				pickingListener.dragged(pick);
+				break;
+		}
+
+	}
+
+	/**
+	 * Registers a {@link IPickingListener} for this view. When objects are picked with the specified
+	 * pickingType and ID the listener's methods are called.
+	 * 
+	 * @param pickingListener
+	 * @param pickingType
+	 * @param externalID
+	 */
+	public void addPickingListener(IPickingListener pickingListener, EPickingType pickingType, int externalID) {
+		HashMap<Integer, IPickingListener> map = pickingListeners.get(pickingType);
+		if (map == null) {
+			map = new HashMap<Integer, IPickingListener>();
+			pickingListeners.put(pickingType, map);
+		}
+
+		map.put(externalID, pickingListener);
+
 	}
 
 	/**
@@ -1037,30 +1171,50 @@ public abstract class AGLView
 			float zoomCenterX = wheelPositionX - viewPositionX;
 			float zoomCenterY = wheelPositionY - viewPositionY;
 
-			float relativeImageCenterX = (-viewTranslateX + zoomCenterX) / (viewFrustum.getWidth() * previousZoomScale);
-			float relativeImageCenterY = (-viewTranslateY + zoomCenterY) / (viewFrustum.getHeight() * previousZoomScale);
-			
+			float relativeImageCenterX =
+				(-viewTranslateX + zoomCenterX) / (viewFrustum.getWidth() * previousZoomScale);
+			float relativeImageCenterY =
+				(-viewTranslateY + zoomCenterY) / (viewFrustum.getHeight() * previousZoomScale);
+
 			zoomCenterX = relativeImageCenterX * viewFrustum.getWidth();
 			zoomCenterY = relativeImageCenterY * viewFrustum.getHeight();
 
 			// zoomCenterX = viewPositionX + viewFrustum.getWidth() - wheelPositionX;
 			// zoomCenterY = viewPositionY + viewFrustum.getHeight() - wheelPositionY;
 			viewTranslateX =
-				(viewFrustum.getWidth() / 2.0f) - zoomCenterX
-					- (currentZoomScale - 1) * zoomCenterX;
+				(viewFrustum.getWidth() / 2.0f) - zoomCenterX - (currentZoomScale - 1) * zoomCenterX;
 			viewTranslateY =
-				 (viewFrustum.getHeight() / 2.0f) - zoomCenterY
-					- (currentZoomScale - 1) * zoomCenterY;
-			
-			if(viewTranslateX > 0)
+				(viewFrustum.getHeight() / 2.0f) - zoomCenterY - (currentZoomScale - 1) * zoomCenterY;
+
+			if (viewTranslateX > 0)
 				viewTranslateX = 0;
-			if(viewTranslateY > 0)
+			if (viewTranslateY > 0)
 				viewTranslateY = 0;
-			
-			if(viewTranslateX < -(viewFrustum.getWidth() * (currentZoomScale - 1)))
+
+			if (viewTranslateX < -(viewFrustum.getWidth() * (currentZoomScale - 1)))
 				viewTranslateX = -(viewFrustum.getWidth() * (currentZoomScale - 1));
-			if(viewTranslateY < -(viewFrustum.getHeight() * (currentZoomScale - 1)))
+			if (viewTranslateY < -(viewFrustum.getHeight() * (currentZoomScale - 1)))
 				viewTranslateY = -(viewFrustum.getHeight() * (currentZoomScale - 1));
+
+			relativeImageCenterX =
+				(-viewTranslateX + zoomCenterX) / (viewFrustum.getWidth() * currentZoomScale);
+			relativeImageCenterY =
+				(-viewTranslateY + zoomCenterY) / (viewFrustum.getHeight() * currentZoomScale);
+
+			zoomCenterX = relativeImageCenterX * viewFrustum.getWidth();
+			zoomCenterY = relativeImageCenterY * viewFrustum.getHeight();
+
+			hScrollBar.setPageSize(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()
+				/ currentZoomScale));
+			hScrollBar.setMaxValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()));
+			hScrollBar.setMinValue(0);
+			hScrollBar.setSelection(pixelGLConverter.getPixelWidthForGLWidth(zoomCenterX));
+
+			vScrollBar.setPageSize(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getHeight()
+				/ currentZoomScale));
+			vScrollBar.setMaxValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getHeight()));
+			vScrollBar.setMinValue(0);
+			vScrollBar.setSelection(pixelGLConverter.getPixelWidthForGLWidth(zoomCenterY));
 
 			// relativeZoomCenterX = zoomCenterX / viewFrustum.getWidth();
 			// relativeZoomCenterY = zoomCenterY / viewFrustum.getHeight();
@@ -1068,11 +1222,11 @@ public abstract class AGLView
 			relativeViewTranlateX = viewTranslateX / viewFrustum.getWidth();
 			relativeViewTranlateY = viewTranslateY / viewFrustum.getHeight();
 
-//			System.out.println("=========================================");
-//			System.out.println("viewPos: " + viewPositionX + "," + viewPositionY + "\n zoomCenter: "
-//				+ zoomCenterX + "," + zoomCenterY + "\n Frustum: " + viewFrustum.getWidth() + ","
-//				+ viewFrustum.getHeight() + "\n Translate: " + viewTranlateX + "," + viewTranlateY
-//				+ "\n currentZoom: " + currentZoomScale + "; prevZoom: " + previousZoomScale);
+			// System.out.println("=========================================");
+			// System.out.println("viewPos: " + viewPositionX + "," + viewPositionY + "\n zoomCenter: "
+			// + zoomCenterX + "," + zoomCenterY + "\n Frustum: " + viewFrustum.getWidth() + ","
+			// + viewFrustum.getHeight() + "\n Translate: " + viewTranlateX + "," + viewTranlateY
+			// + "\n currentZoom: " + currentZoomScale + "; prevZoom: " + previousZoomScale);
 		}
 
 		gl.glPushMatrix();
@@ -1089,5 +1243,10 @@ public abstract class AGLView
 			return;
 		gl.glPopMatrix();
 		wasMouseWheeled = false;
+
+		hScrollBarLayoutManager.render(gl);
+		vScrollBarLayoutManager.render(gl);
+
+		scrollBarDragAndDropController.handleDragging(gl, glMouseListener);
 	}
 }

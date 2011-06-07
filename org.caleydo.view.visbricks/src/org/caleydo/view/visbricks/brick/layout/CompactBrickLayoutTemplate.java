@@ -2,6 +2,7 @@ package org.caleydo.view.visbricks.brick.layout;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.manager.picking.APickingListener;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -12,7 +13,6 @@ import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.GLBrick;
-import org.caleydo.view.visbricks.brick.picking.APickingListener;
 import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
 import org.caleydo.view.visbricks.brick.ui.BorderedAreaRenderer;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
