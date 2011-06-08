@@ -20,6 +20,8 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -84,11 +86,19 @@ public class HTMLBrowser extends ASWTView {
 	 */
 	public HTMLBrowser(int iViewID, Composite parentComposite) {
 		super(iViewID, parentComposite);
+		
+		parentComposite.addDisposeListener(new DisposeListener() {
+			
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				unregisterEventListeners();
+			}
+		});
 	}
 
 	@Override
 	public void draw() {
-
+		
 		Composite browserBarComposite = new Composite(parentComposite, SWT.NONE);
 		browserBarComposite.setLayout(new GridLayout(3, false));
 
@@ -233,11 +243,12 @@ public class HTMLBrowser extends ASWTView {
 		return url;
 	}
 
-	public void setUrl(String sUrl) {
-		this.url = sUrl;
+	public void setUrl(String url) {
+		this.url = url;
 
-		// idExtractionLocationListener.updateSkipNextChangeEvent(true);
-		draw();
+		browser.setUrl(url);
+		textURL.setText(url);
+		browser.update();
 	}
 
 	protected boolean checkInternetConnection() {
