@@ -7,16 +7,21 @@ import java.awt.event.MouseWheelListener;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
+/**
+ * Mouse wheel listener that uses a {@link AGLView} as handler.
+ * 
+ * @author Partl
+ */
 public class GLMouseWheelListener
 	extends MouseAdapter
 	implements MouseWheelListener, MouseMotionListener {
-	
+
 	private AGLView handler;
 
 	public GLMouseWheelListener(AGLView handler) {
 		this.handler = handler;
 	}
-	
+
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent event) {
 		handler.handleMouseWheel(event.getWheelRotation(), event.getPoint());

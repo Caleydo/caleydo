@@ -9,6 +9,12 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 
+/**
+ * Renderer for a {@link ScrollBar}. Notifies the {@link IScrollBarUpdateHandler} of the ScrollBar when it is
+ * dragged.
+ * 
+ * @author Partl
+ */
 public class ScrollBarRenderer
 	extends LayoutRenderer
 	implements IDraggable {
@@ -24,6 +30,17 @@ public class ScrollBarRenderer
 	private float scrollBarHeight;
 	private float scrollBarWidth;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param scrollBar
+	 *            The ScrollBar this renderer shall be used for.
+	 * @param view
+	 *            The view that renders the ScrollBar.
+	 * @param isHorizontal
+	 *            Determines whether the ScrollBar shall be rendered horizontally.
+	 * @param dragAndDropController
+	 */
 	public ScrollBarRenderer(ScrollBar scrollBar, AGLView view, boolean isHorizontal,
 		DragAndDropController dragAndDropController) {
 		this.view = view;
@@ -133,9 +150,9 @@ public class ScrollBarRenderer
 		if (selection > scrollBar.getMaxValue())
 			selection = scrollBar.getMaxValue();
 
-		if(selection == scrollBar.getSelection())
+		if (selection == scrollBar.getSelection())
 			return;
-		
+
 		scrollBar.setSelection(selection);
 
 		prevDraggingMouseX = mouseCoordinateX;

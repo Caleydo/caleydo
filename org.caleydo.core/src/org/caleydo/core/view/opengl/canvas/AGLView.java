@@ -1119,6 +1119,12 @@ public abstract class AGLView
 
 	}
 
+	/**
+	 * This method shall be called when the mouse was wheeled for zooming.
+	 * 
+	 * @param wheelAmount
+	 * @param wheelPosition
+	 */
 	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
 		currentZoomScale -= wheelAmount;
 		if (currentZoomScale < 1.0f)
@@ -1127,6 +1133,12 @@ public abstract class AGLView
 		mouseWheelPosition = wheelPosition;
 	}
 
+	/**
+	 * Specifies whether the view should zoom when the mouse was wheeled. This method should not be called
+	 * when the view is rendered remote.
+	 * 
+	 * @param useZooming
+	 */
 	public void useZooming(boolean useZooming) {
 
 		if ((this.useZooming && useZooming) || (!this.useZooming && !useZooming))
@@ -1144,6 +1156,11 @@ public abstract class AGLView
 		this.useZooming = useZooming;
 	}
 
+	/**
+	 * This method shall be called before the view is rendered in order to be zoomed.
+	 * 
+	 * @param gl
+	 */
 	public void beginZoom(GL2 gl) {
 
 		if (currentZoomScale == 1.0f) {
@@ -1257,6 +1274,12 @@ public abstract class AGLView
 
 	}
 
+	/**
+	 * This method shall be called after the view has been rendered, if beginZoom(GL) has been called
+	 * beforehand.
+	 * 
+	 * @param gl
+	 */
 	public void endZoom(GL2 gl) {
 
 		previousZoomScale = currentZoomScale;

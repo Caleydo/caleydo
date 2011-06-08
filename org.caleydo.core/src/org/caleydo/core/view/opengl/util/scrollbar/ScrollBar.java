@@ -2,6 +2,12 @@ package org.caleydo.core.view.opengl.util.scrollbar;
 
 import org.caleydo.core.manager.picking.EPickingType;
 
+/**
+ * Class that holds all non-visual properties of a scroll bar. The rendering should be done by a
+ * {@link ScrollBarRenderer}.
+ * 
+ * @author Partl
+ */
 public class ScrollBar {
 
 	private int minValue;
@@ -12,6 +18,23 @@ public class ScrollBar {
 	private int id;
 	private IScrollBarUpdateHandler scrollBarUpdateHandler;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param minValue
+	 *            Minimum value that can be selected by the ScrollBar.
+	 * @param maxValue
+	 *            Maximum value that can be selected by the ScrollBar.
+	 * @param selection
+	 *            Currently selected value.
+	 * @param pageSize
+	 *            Area that shall be covered around the selected value.
+	 * @param pickingType
+	 * @param id
+	 *            ID used for picking.
+	 * @param scrollBarUpdateHandler
+	 *            Handler that gets notified when the scroll bar gets updated.
+	 */
 	public ScrollBar(int minValue, int maxValue, int selection, int pageSize, EPickingType pickingType,
 		int id, IScrollBarUpdateHandler scrollBarUpdateHandler) {
 		this.minValue = minValue;
@@ -23,34 +46,66 @@ public class ScrollBar {
 		this.setScrollBarUpdateHandler(scrollBarUpdateHandler);
 	}
 
+	/**
+	 * @return Minimum value that can be selected by the ScrollBar.
+	 */
 	public int getMinValue() {
 		return minValue;
 	}
 
+	/**
+	 * Sets the minimum value that can be selected by the ScrollBar.
+	 * 
+	 * @param minValue
+	 */
 	public void setMinValue(int minValue) {
 		this.minValue = minValue;
 	}
 
+	/**
+	 * @return Maximum value that can be selected by the ScrollBar.
+	 */
 	public int getMaxValue() {
 		return maxValue;
 	}
 
+	/**
+	 * Sets the maximum value that can be selected by the ScrollBar.
+	 * 
+	 * @param maxValue
+	 */
 	public void setMaxValue(int maxValue) {
 		this.maxValue = maxValue;
 	}
 
+	/**
+	 * @return Currently selected value.
+	 */
 	public int getSelection() {
 		return selection;
 	}
 
+	/**
+	 * Sets the currently selected value.
+	 * 
+	 * @param selection
+	 */
 	public void setSelection(int selection) {
 		this.selection = selection;
 	}
 
+	/**
+	 * @return Area that shall be covered around the selected value.
+	 */
 	public int getPageSize() {
 		return pageSize;
 	}
 
+	/**
+	 * Sets the area that shall be covered around the selected value.
+	 * 
+	 * @param pageSize
+	 */
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
@@ -63,18 +118,34 @@ public class ScrollBar {
 		this.pickingType = pickingType;
 	}
 
+	/**
+	 * @return ID used for picking.
+	 */
 	public int getID() {
 		return id;
 	}
 
+	/**
+	 * Sets the ID used for picking.
+	 * 
+	 * @param id
+	 */
 	public void setID(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * Sets the handler that gets notified when the scroll bar gets updated.
+	 * 
+	 * @param scrollBarUpdateHandler
+	 */
 	public void setScrollBarUpdateHandler(IScrollBarUpdateHandler scrollBarUpdateHandler) {
 		this.scrollBarUpdateHandler = scrollBarUpdateHandler;
 	}
 
+	/**
+	 * @return Handler that gets notified when the scroll bar gets updated.
+	 */
 	public IScrollBarUpdateHandler getScrollBarUpdateHandler() {
 		return scrollBarUpdateHandler;
 	}
