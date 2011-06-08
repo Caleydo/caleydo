@@ -57,6 +57,7 @@ import org.caleydo.core.view.opengl.util.GLMagnifyingGlass;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
+import org.caleydo.core.view.opengl.util.scrollbar.IScrollBarUpdateHandler;
 import org.caleydo.core.view.opengl.util.scrollbar.ScrollBar;
 import org.caleydo.core.view.opengl.util.scrollbar.ScrollBarRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -90,7 +91,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  */
 public abstract class AGLView
 	extends AView
-	implements GLEventListener, IResettableView {
+	implements GLEventListener, IResettableView, IScrollBarUpdateHandler {
 
 	public final static String VIEW_ID = "unspecified";
 
@@ -267,15 +268,13 @@ public abstract class AGLView
 
 		initScrollBars();
 
-		
-
 	}
 
 	private void initScrollBars() {
 
 		hScrollBarLayoutManager = new LayoutManager(viewFrustum);
 		hScrollBarTemplate = new LayoutTemplate();
-		hScrollBar = new ScrollBar(0, 10, 5, 5, EPickingType.ZOOM_SCROLLBAR, 0);
+		hScrollBar = new ScrollBar(0, 10, 5, 5, EPickingType.ZOOM_SCROLLBAR, 0, this);
 
 		Column baseColumn = new Column();
 
@@ -298,7 +297,7 @@ public abstract class AGLView
 
 		vScrollBarLayoutManager = new LayoutManager(viewFrustum);
 		vScrollBarTemplate = new LayoutTemplate();
-		vScrollBar = new ScrollBar(0, 10, 5, 5, EPickingType.ZOOM_SCROLLBAR, 1);
+		vScrollBar = new ScrollBar(0, 10, 5, 5, EPickingType.ZOOM_SCROLLBAR, 1, this);
 
 		Row baseRow = new Row();
 
@@ -1158,6 +1157,9 @@ public abstract class AGLView
 
 		// float zoomCenterX = relativeZoomCenterX * viewFrustum.getWidth();
 		// float zoomCenterY = relativeZoomCenterY * viewFrustum.getHeight();
+		//
+		// float viewTranslateX;
+		// float viewTranslateY;
 
 		if (wasMouseWheeled) {
 			PixelGLConverter pixelGLConverter = parentGLCanvas.getPixelGLConverter();
@@ -1168,16 +1170,21 @@ public abstract class AGLView
 			float wheelPositionY =
 				pixelGLConverter.getGLHeightForPixelHeight(parentGLCanvas.getHeight() - mouseWheelPosition.y);
 
-			float zoomCenterX = wheelPositionX - viewPositionX;
-			float zoomCenterY = wheelPositionY - viewPositionY;
+			// viewTranslateX =
+			// (viewFrustum.getWidth() / 2.0f) - zoomCenterX - (previousZoomScale - 1) * zoomCenterX;
+			// viewTranslateY =
+			// (viewFrustum.getHeight() / 2.0f) - zoomCenterY - (previousZoomScale - 1) * zoomCenterY;
+
+			float zoomCenterMouseX = wheelPositionX - viewPositionX;
+			float zoomCenterMouseY = wheelPositionY - viewPositionY;
 
 			float relativeImageCenterX =
-				(-viewTranslateX + zoomCenterX) / (viewFrustum.getWidth() * previousZoomScale);
+				(-viewTranslateX + zoomCenterMouseX) / (viewFrustum.getWidth() * previousZoomScale);
 			float relativeImageCenterY =
-				(-viewTranslateY + zoomCenterY) / (viewFrustum.getHeight() * previousZoomScale);
+				(-viewTranslateY + zoomCenterMouseY) / (viewFrustum.getHeight() * previousZoomScale);
 
-			zoomCenterX = relativeImageCenterX * viewFrustum.getWidth();
-			zoomCenterY = relativeImageCenterY * viewFrustum.getHeight();
+			float zoomCenterX = relativeImageCenterX * viewFrustum.getWidth();
+			float zoomCenterY = relativeImageCenterY * viewFrustum.getHeight();
 
 			// zoomCenterX = viewPositionX + viewFrustum.getWidth() - wheelPositionX;
 			// zoomCenterY = viewPositionY + viewFrustum.getHeight() - wheelPositionY;
@@ -1197,27 +1204,34 @@ public abstract class AGLView
 				viewTranslateY = -(viewFrustum.getHeight() * (currentZoomScale - 1));
 
 			relativeImageCenterX =
-				(-viewTranslateX + zoomCenterX) / (viewFrustum.getWidth() * currentZoomScale);
+				(-viewTranslateX + viewFrustum.getWidth() / 2.0f)
+					/ (viewFrustum.getWidth() * currentZoomScale);
 			relativeImageCenterY =
-				(-viewTranslateY + zoomCenterY) / (viewFrustum.getHeight() * currentZoomScale);
+				(-viewTranslateY + viewFrustum.getHeight() / 2.0f)
+					/ (viewFrustum.getHeight() * currentZoomScale);
 
 			zoomCenterX = relativeImageCenterX * viewFrustum.getWidth();
 			zoomCenterY = relativeImageCenterY * viewFrustum.getHeight();
 
-			hScrollBar.setPageSize(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()
-				/ currentZoomScale));
-			hScrollBar.setMaxValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()));
-			hScrollBar.setMinValue(0);
+			hScrollBar
+				.setPageSize(pixelGLConverter.getPixelWidthForGLWidth((viewFrustum.getWidth() - viewFrustum
+					.getWidth() / currentZoomScale)
+					/ currentZoomScale));
+			hScrollBar.setMaxValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()
+				- viewFrustum.getWidth() / (currentZoomScale * 2.0f)));
+			hScrollBar.setMinValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()
+				/ (currentZoomScale * 2.0f)));
 			hScrollBar.setSelection(pixelGLConverter.getPixelWidthForGLWidth(zoomCenterX));
 
-			vScrollBar.setPageSize(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getHeight()
-				/ currentZoomScale));
-			vScrollBar.setMaxValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getHeight()));
-			vScrollBar.setMinValue(0);
+			vScrollBar
+				.setPageSize(pixelGLConverter.getPixelWidthForGLWidth((viewFrustum.getHeight() - viewFrustum
+					.getHeight() / currentZoomScale)
+					/ currentZoomScale));
+			vScrollBar.setMaxValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getHeight()
+				- viewFrustum.getHeight() / (currentZoomScale * 2.0f)));
+			vScrollBar.setMinValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getHeight()
+				/ (currentZoomScale * 2.0f)));
 			vScrollBar.setSelection(pixelGLConverter.getPixelWidthForGLWidth(zoomCenterY));
-
-			// relativeZoomCenterX = zoomCenterX / viewFrustum.getWidth();
-			// relativeZoomCenterY = zoomCenterY / viewFrustum.getHeight();
 
 			relativeViewTranlateX = viewTranslateX / viewFrustum.getWidth();
 			relativeViewTranlateY = viewTranslateY / viewFrustum.getHeight();
@@ -1228,6 +1242,14 @@ public abstract class AGLView
 			// + viewFrustum.getHeight() + "\n Translate: " + viewTranlateX + "," + viewTranlateY
 			// + "\n currentZoom: " + currentZoomScale + "; prevZoom: " + previousZoomScale);
 		}
+
+		// viewTranslateX = (viewFrustum.getWidth() / 2.0f) - zoomCenterX - (currentZoomScale - 1) *
+		// zoomCenterX;
+		// viewTranslateY =
+		// (viewFrustum.getHeight() / 2.0f) - zoomCenterY - (currentZoomScale - 1) * zoomCenterY;
+		//
+		// relativeZoomCenterX = zoomCenterX / viewFrustum.getWidth();
+		// relativeZoomCenterY = zoomCenterY / viewFrustum.getHeight();
 
 		gl.glPushMatrix();
 		gl.glTranslatef(viewTranslateX, viewTranslateY, 0);
@@ -1248,5 +1270,35 @@ public abstract class AGLView
 		vScrollBarLayoutManager.render(gl);
 
 		scrollBarDragAndDropController.handleDragging(gl, glMouseListener);
+	}
+
+	@Override
+	public void handleScrollBarUpdate(ScrollBar scrollBar) {
+		if (scrollBar == hScrollBar) {
+			float zoomCenterX =
+				parentGLCanvas.getPixelGLConverter().getGLWidthForPixelWidth(scrollBar.getSelection());
+			float viewTranslateX =
+				(viewFrustum.getWidth() / 2.0f) - zoomCenterX - (currentZoomScale - 1) * zoomCenterX;
+
+			if (viewTranslateX > 0)
+				viewTranslateX = 0;
+			if (viewTranslateX < -(viewFrustum.getWidth() * (currentZoomScale - 1)))
+				viewTranslateX = -(viewFrustum.getWidth() * (currentZoomScale - 1));
+
+			relativeViewTranlateX = viewTranslateX / viewFrustum.getWidth();
+		}
+		if (scrollBar == vScrollBar) {
+			float zoomCenterY =
+				parentGLCanvas.getPixelGLConverter().getGLHeightForPixelHeight(scrollBar.getSelection());
+			float viewTranslateY =
+				(viewFrustum.getHeight() / 2.0f) - zoomCenterY - (currentZoomScale - 1) * zoomCenterY;
+
+			if (viewTranslateY > 0)
+				viewTranslateY = 0;
+			if (viewTranslateY < -(viewFrustum.getHeight() * (currentZoomScale - 1)))
+				viewTranslateY = -(viewFrustum.getHeight() * (currentZoomScale - 1));
+
+			relativeViewTranlateY = viewTranslateY / viewFrustum.getHeight();
+		}
 	}
 }

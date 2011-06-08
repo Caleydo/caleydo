@@ -10,14 +10,17 @@ public class ScrollBar {
 	private int pageSize;
 	private EPickingType pickingType;
 	private int id;
+	private IScrollBarUpdateHandler scrollBarUpdateHandler;
 
-	public ScrollBar(int minValue, int maxValue, int selection, int pageSize, EPickingType pickingType, int id) {
+	public ScrollBar(int minValue, int maxValue, int selection, int pageSize, EPickingType pickingType,
+		int id, IScrollBarUpdateHandler scrollBarUpdateHandler) {
 		this.minValue = minValue;
 		this.maxValue = maxValue;
 		this.selection = selection;
 		this.pageSize = pageSize;
 		this.pickingType = pickingType;
 		this.id = id;
+		this.setScrollBarUpdateHandler(scrollBarUpdateHandler);
 	}
 
 	public int getMinValue() {
@@ -66,6 +69,14 @@ public class ScrollBar {
 
 	public void setID(int id) {
 		this.id = id;
+	}
+
+	public void setScrollBarUpdateHandler(IScrollBarUpdateHandler scrollBarUpdateHandler) {
+		this.scrollBarUpdateHandler = scrollBarUpdateHandler;
+	}
+
+	public IScrollBarUpdateHandler getScrollBarUpdateHandler() {
+		return scrollBarUpdateHandler;
 	}
 
 }

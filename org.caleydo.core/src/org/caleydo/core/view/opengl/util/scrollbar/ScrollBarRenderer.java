@@ -63,7 +63,8 @@ public class ScrollBarRenderer
 
 		int scrollBarSize = scrollBar.getMaxValue() - scrollBar.getMinValue();
 		float relativePageSize = (float) scrollBar.getPageSize() / (float) scrollBarSize;
-		float relativeSelection = (float) scrollBar.getSelection() / (float) scrollBarSize;
+		float relativeSelection =
+			((float) scrollBar.getSelection() - (float) scrollBar.getMinValue()) / (float) scrollBarSize;
 
 		if (isHorizontal) {
 			scrollBarHeight = y;
@@ -124,7 +125,7 @@ public class ScrollBarRenderer
 		}
 
 		int scrollBarSize = scrollBar.getMaxValue() - scrollBar.getMinValue();
-		int selection = (int) (relativeSelection * (float) scrollBarSize);
+		int selection = scrollBar.getMinValue() + (int) (relativeSelection * (float) scrollBarSize);
 
 		if (selection < scrollBar.getMinValue())
 			selection = scrollBar.getMinValue();
@@ -132,42 +133,46 @@ public class ScrollBarRenderer
 		if (selection > scrollBar.getMaxValue())
 			selection = scrollBar.getMaxValue();
 
+		if(selection == scrollBar.getSelection())
+			return;
+		
 		scrollBar.setSelection(selection);
 
 		prevDraggingMouseX = mouseCoordinateX;
 		prevDraggingMouseY = mouseCoordinateY;
 
+		scrollBar.getScrollBarUpdateHandler().handleScrollBarUpdate(scrollBar);
 	}
 
 	@Override
 	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 
-//		float relativeSelection;
-//
-//		if (isHorizontal) {
-//			float mouseDelta = prevDraggingMouseX - mouseCoordinateX;
-//			positionX += mouseDelta;
-//			relativeSelection = positionX / (x - scrollBarWidth);
-//		}
-//		else {
-//			float mouseDelta = prevDraggingMouseY - mouseCoordinateY;
-//			positionY += mouseDelta;
-//			relativeSelection = positionY / (y - scrollBarHeight);
-//		}
-//
-//		int scrollBarSize = scrollBar.getMaxValue() - scrollBar.getMinValue();
-//		int selection = (int) relativeSelection / scrollBarSize;
-//
-//		if (selection < scrollBar.getMinValue())
-//			selection = scrollBar.getMinValue();
-//
-//		if (selection > scrollBar.getMaxValue())
-//			selection = scrollBar.getMaxValue();
-//
-//		scrollBar.setSelection(selection);
-//
-//		prevDraggingMouseX = mouseCoordinateX;
-//		prevDraggingMouseY = mouseCoordinateY;
+		// float relativeSelection;
+		//
+		// if (isHorizontal) {
+		// float mouseDelta = prevDraggingMouseX - mouseCoordinateX;
+		// positionX += mouseDelta;
+		// relativeSelection = positionX / (x - scrollBarWidth);
+		// }
+		// else {
+		// float mouseDelta = prevDraggingMouseY - mouseCoordinateY;
+		// positionY += mouseDelta;
+		// relativeSelection = positionY / (y - scrollBarHeight);
+		// }
+		//
+		// int scrollBarSize = scrollBar.getMaxValue() - scrollBar.getMinValue();
+		// int selection = (int) relativeSelection / scrollBarSize;
+		//
+		// if (selection < scrollBar.getMinValue())
+		// selection = scrollBar.getMinValue();
+		//
+		// if (selection > scrollBar.getMaxValue())
+		// selection = scrollBar.getMaxValue();
+		//
+		// scrollBar.setSelection(selection);
+		//
+		// prevDraggingMouseX = mouseCoordinateX;
+		// prevDraggingMouseY = mouseCoordinateY;
 
 	}
 }
