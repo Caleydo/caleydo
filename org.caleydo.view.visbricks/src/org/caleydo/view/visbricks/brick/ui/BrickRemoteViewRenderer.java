@@ -73,24 +73,44 @@ public class BrickRemoteViewRenderer extends AContainedViewRenderer {
 		// view.reshape(drawable, viewportPositionX, viewportPositionY,
 		// viewportWidth, viewportHeight);
 
-		// gl.glScissor(viewportPositionX, viewportPositionY,
-		// viewportWidth, viewportHeight/2);
-		// gl.glEnable(GL2.GL_SCISSOR_TEST);
-
 		viewportPositionX = pixelGLConverter
 				.getPixelWidthForCurrentGLTransform(gl);
 		viewportPositionY = pixelGLConverter
 				.getPixelHeightForCurrentGLTransform(gl);
+
+		int viewportWidth = pixelGLConverter.getPixelWidthForGLWidth(x);
+		int viewportHeight = pixelGLConverter.getPixelHeightForGLHeight(y);
+
+//		gl.glScissor(viewportPositionX, viewportPositionY, viewportWidth,
+//				viewportHeight);
+//		gl.glEnable(GL2.GL_SCISSOR_TEST);
 		// gl.glPushMatrix();
 		// gl.glLoadIdentity();
 		// GLHelperFunctions.drawPointAt(gl, point);
 		// gl.glPopMatrix();
-		view.clipToFrustum(gl);
+		// view.clipToFrustum(gl);
+		double[] clipPlane1 = new double[] {0.0, 1.0, 0.0, 0.0};
+		double[] clipPlane2 = new double[] {1.0, 0.0, 0.0, 0.0};
+		double[] clipPlane3 = new double[] {-1.0, 0.0, 0.0, x};
+		double[] clipPlane4 = new double[] {0.0, -1.0, 0.0, y};
+		
+		gl.glClipPlane(GL2.GL_CLIP_PLANE0, clipPlane1, 0);
+		gl.glClipPlane(GL2.GL_CLIP_PLANE1, clipPlane2, 0);
+		gl.glClipPlane(GL2.GL_CLIP_PLANE2, clipPlane3, 0);
+		gl.glClipPlane(GL2.GL_CLIP_PLANE3, clipPlane4, 0);
+		gl.glEnable(GL2.GL_CLIP_PLANE0);
+		gl.glEnable(GL2.GL_CLIP_PLANE1);
+		gl.glEnable(GL2.GL_CLIP_PLANE2);
+		gl.glEnable(GL2.GL_CLIP_PLANE3);
 		view.beginZoom(gl);
 		view.displayRemote(gl);
 		view.endZoom(gl);
-		// gl.glDisable(GL2.GL_SCISSOR_TEST);
-		gl.glDisable(GL2.GL_STENCIL_TEST);
+		gl.glDisable(GL2.GL_CLIP_PLANE0);
+		gl.glDisable(GL2.GL_CLIP_PLANE1);
+		gl.glDisable(GL2.GL_CLIP_PLANE2);
+		gl.glDisable(GL2.GL_CLIP_PLANE3);
+//		gl.glDisable(GL2.GL_SCISSOR_TEST);
+		// gl.glDisable(GL2.GL_STENCIL_TEST);
 
 		// gl.glMatrixMode(GL2.GL_PROJECTION);
 		// gl.glPopMatrix();
@@ -151,8 +171,8 @@ public class BrickRemoteViewRenderer extends AContainedViewRenderer {
 
 	@Override
 	public boolean handleMouseWheel(int wheelAmount, Point wheelPosition) {
-		
-		if(!handleMouseWheel)
+
+		if (!handleMouseWheel)
 			return false;
 
 		int viewportWidth = pixelGLConverter.getPixelWidthForGLWidth(x);

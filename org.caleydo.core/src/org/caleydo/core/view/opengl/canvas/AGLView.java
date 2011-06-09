@@ -1172,6 +1172,8 @@ public abstract class AGLView
 		float viewTranslateX = relativeViewTranlateX * viewFrustum.getWidth();
 		float viewTranslateY = relativeViewTranlateY * viewFrustum.getHeight();
 
+		PixelGLConverter pixelGLConverter = parentGLCanvas.getPixelGLConverter();
+
 		// float zoomCenterX = relativeZoomCenterX * viewFrustum.getWidth();
 		// float zoomCenterY = relativeZoomCenterY * viewFrustum.getHeight();
 		//
@@ -1179,7 +1181,6 @@ public abstract class AGLView
 		// float viewTranslateY;
 
 		if (wasMouseWheeled) {
-			PixelGLConverter pixelGLConverter = parentGLCanvas.getPixelGLConverter();
 
 			float viewPositionX = pixelGLConverter.getGLWidthForCurrentGLTransform(gl);
 			float viewPositionY = pixelGLConverter.getGLHeightForCurrentGLTransform(gl);
@@ -1220,36 +1221,6 @@ public abstract class AGLView
 			if (viewTranslateY < -(viewFrustum.getHeight() * (currentZoomScale - 1)))
 				viewTranslateY = -(viewFrustum.getHeight() * (currentZoomScale - 1));
 
-			relativeImageCenterX =
-				(-viewTranslateX + viewFrustum.getWidth() / 2.0f)
-					/ (viewFrustum.getWidth() * currentZoomScale);
-			relativeImageCenterY =
-				(-viewTranslateY + viewFrustum.getHeight() / 2.0f)
-					/ (viewFrustum.getHeight() * currentZoomScale);
-
-			zoomCenterX = relativeImageCenterX * viewFrustum.getWidth();
-			zoomCenterY = relativeImageCenterY * viewFrustum.getHeight();
-
-			hScrollBar
-				.setPageSize(pixelGLConverter.getPixelWidthForGLWidth((viewFrustum.getWidth() - viewFrustum
-					.getWidth() / currentZoomScale)
-					/ currentZoomScale));
-			hScrollBar.setMaxValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()
-				- viewFrustum.getWidth() / (currentZoomScale * 2.0f)));
-			hScrollBar.setMinValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()
-				/ (currentZoomScale * 2.0f)));
-			hScrollBar.setSelection(pixelGLConverter.getPixelWidthForGLWidth(zoomCenterX));
-
-			vScrollBar
-				.setPageSize(pixelGLConverter.getPixelWidthForGLWidth((viewFrustum.getHeight() - viewFrustum
-					.getHeight() / currentZoomScale)
-					/ currentZoomScale));
-			vScrollBar.setMaxValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getHeight()
-				- viewFrustum.getHeight() / (currentZoomScale * 2.0f)));
-			vScrollBar.setMinValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getHeight()
-				/ (currentZoomScale * 2.0f)));
-			vScrollBar.setSelection(pixelGLConverter.getPixelWidthForGLWidth(zoomCenterY));
-
 			relativeViewTranlateX = viewTranslateX / viewFrustum.getWidth();
 			relativeViewTranlateY = viewTranslateY / viewFrustum.getHeight();
 
@@ -1259,6 +1230,35 @@ public abstract class AGLView
 			// + viewFrustum.getHeight() + "\n Translate: " + viewTranlateX + "," + viewTranlateY
 			// + "\n currentZoom: " + currentZoomScale + "; prevZoom: " + previousZoomScale);
 		}
+		
+		float relativeImageCenterX =
+			(-viewTranslateX + viewFrustum.getWidth() / 2.0f)
+				/ (viewFrustum.getWidth() * currentZoomScale);
+		float relativeImageCenterY =
+			(-viewTranslateY + viewFrustum.getHeight() / 2.0f)
+				/ (viewFrustum.getHeight() * currentZoomScale);
+		
+		float zoomCenterX = relativeImageCenterX * viewFrustum.getWidth();
+		float zoomCenterY = relativeImageCenterY * viewFrustum.getHeight();
+
+		hScrollBar.setPageSize(pixelGLConverter.getPixelWidthForGLWidth((viewFrustum.getWidth() - viewFrustum
+			.getWidth() / currentZoomScale)
+			/ currentZoomScale));
+		hScrollBar.setMaxValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()
+			- viewFrustum.getWidth() / (currentZoomScale * 2.0f)));
+		hScrollBar.setMinValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()
+			/ (currentZoomScale * 2.0f)));
+		hScrollBar.setSelection(pixelGLConverter.getPixelWidthForGLWidth(zoomCenterX));
+
+		vScrollBar
+			.setPageSize(pixelGLConverter.getPixelWidthForGLWidth((viewFrustum.getHeight() - viewFrustum
+				.getHeight() / currentZoomScale)
+				/ currentZoomScale));
+		vScrollBar.setMaxValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getHeight()
+			- viewFrustum.getHeight() / (currentZoomScale * 2.0f)));
+		vScrollBar.setMinValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getHeight()
+			/ (currentZoomScale * 2.0f)));
+		vScrollBar.setSelection(pixelGLConverter.getPixelWidthForGLWidth(zoomCenterY));
 
 		// viewTranslateX = (viewFrustum.getWidth() / 2.0f) - zoomCenterX - (currentZoomScale - 1) *
 		// zoomCenterX;
