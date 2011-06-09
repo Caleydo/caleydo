@@ -52,6 +52,7 @@ public class VisLinkManager
 
 	ASetBasedDataDomain dataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
 		"org.caleydo.datadomain.genetic");
+	
 	private Display display;
 
 	private String appName = null;

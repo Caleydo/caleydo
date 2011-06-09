@@ -15,10 +15,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Mouse picking listener for JOGL2 views

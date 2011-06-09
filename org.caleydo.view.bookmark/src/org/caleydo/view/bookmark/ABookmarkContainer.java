@@ -25,12 +25,6 @@ import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
 import org.caleydo.view.bookmark.contextmenu.BookmarkContextMenuItemContainer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * <p>

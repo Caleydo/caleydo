@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 

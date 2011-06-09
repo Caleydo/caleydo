@@ -1,5 +1,6 @@
 package org.caleydo.core.manager.datadomain;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -20,18 +21,18 @@ import org.eclipse.core.runtime.Platform;
  * </p>
  * 
  * @author Alexander Lex
+ * @author Marc Streit
  */
 public class DataDomainManager {
 
 	private static DataDomainManager dataDomainManager;
-	private HashMap<String, IDataDomain> registeredDataDomains;
+	private HashMap<String, ArrayList<IDataDomain>> registeredDataDomains;
 
 	private AssociationManager associationManager;
 
 	private DataDomainManager() {
-		registeredDataDomains = new HashMap<String, IDataDomain>(8);
+		registeredDataDomains = new HashMap<String, ArrayList<IDataDomain>>(8);
 		associationManager = new AssociationManager();
-
 	}
 
 	public static DataDomainManager get() {
@@ -73,19 +74,29 @@ public class DataDomainManager {
 	 * @return
 	 */
 	public Collection<IDataDomain> getDataDomains() {
-		return registeredDataDomains.values();
+
+		Collection<IDataDomain> dataDomains = new ArrayList<IDataDomain>();
+		for (ArrayList<IDataDomain> dataDomainsPerType : registeredDataDomains.values())
+			dataDomains.addAll(dataDomainsPerType);
+
+		return dataDomains;
 	}
 
 	/**
 	 * Get the concrete dataDomain object for the dataDomainType. Returns null if no dataDomain is mapped to
 	 * the type.
 	 * 
+	 * @deprecated Returns only the first registered data domain for this type. When multiple data sets are
+	 *             loaded this might be a problem.
 	 * @param dataDomainType
 	 * @return
 	 */
 	public IDataDomain getDataDomain(String dataDomainType) {
 
-		return registeredDataDomains.get(dataDomainType);
+		if (registeredDataDomains.containsKey(dataDomainType))
+			return registeredDataDomains.get(dataDomainType).get(0);
+
+		return null;
 	}
 
 	/**
@@ -94,7 +105,11 @@ public class DataDomainManager {
 	 * @param dataDomain
 	 */
 	public void register(IDataDomain dataDomain) {
-		registeredDataDomains.put(dataDomain.getDataDomainType(), dataDomain);
+
+		if (!registeredDataDomains.containsKey(dataDomain.getDataDomainType()))
+			registeredDataDomains.put(dataDomain.getDataDomainType(), new ArrayList<IDataDomain>());
+
+		registeredDataDomains.get(dataDomain.getDataDomainType()).add(dataDomain);
 	}
 
 	/**
@@ -105,14 +120,4 @@ public class DataDomainManager {
 	public AssociationManager getAssociationManager() {
 		return associationManager;
 	}
-
-	public <T extends IDataDomain> T guessDataDomain(Class<?> dataDomainClass) {
-
-		for (IDataDomain dataDomain : registeredDataDomains.values()) {
-			if (dataDomainClass.equals(dataDomain.getClass()))
-				return (T) dataDomain;
-		}
-		return null;
-	}
-
 }
