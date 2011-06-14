@@ -401,7 +401,7 @@ public class ElementLayout {
 			}
 
 			textRenderer.setColor(color[0], color[1], color[2], color[3]);
-			textRenderer.renderText(gl, layoutName, 0, yPositionDebugText, 0.4f, 0.03f, 3);
+			textRenderer.renderText(gl, layoutName, 0, yPositionDebugText, 0.4f, 0.005f, 3);
 
 		}
 
@@ -507,6 +507,54 @@ public class ElementLayout {
 		if (!layoutName.isEmpty())
 			return layoutName;
 		return super.toString();
+	}
+
+	/**
+	 * @return Width of the ElementLayout in Pixels. Note, that the returned value is only valid, if the pixel
+	 *         size has been set explicitly.
+	 */
+	public int getPixelSizeX() {
+		return pixelSizeX;
+	}
+
+	/**
+	 * @return Height of the ElementLayout in Pixels. Note, that the returned value is only valid, if the
+	 *         pixel size has been set explicitly.
+	 */
+	public int getPixelSizeY() {
+		return pixelSizeY;
+	}
+
+	/**
+	 * @return GL-Width of the ElementLayout. Note, that the returned value is only valid, if the absolute
+	 *         size has been set explicitly.
+	 */
+	public float getAbsoluteSizeX() {
+		return absoluteSizeX;
+	}
+
+	/**
+	 * @return GL-Height of the ElementLayout. Note, that the returned value is only valid, if the absolute
+	 *         size has been set explicitly.
+	 */
+	public float getAbsoluteSizeY() {
+		return absoluteSizeY;
+	}
+
+	/**
+	 * @return Ratio width of the ElementLayout. Note, that the returned value is only valid, if the ratio
+	 *         size has been set explicitly.
+	 */
+	public float getRatioSizeX() {
+		return ratioSizeX;
+	}
+
+	/**
+	 * @return Ratio height of the ElementLayout. Note, that the returned value is only valid, if the ratio
+	 *         size has been set explicitly.
+	 */
+	public float getRatioSizeY() {
+		return ratioSizeY;
 	}
 
 }

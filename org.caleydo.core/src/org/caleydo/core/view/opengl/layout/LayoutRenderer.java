@@ -59,9 +59,27 @@ public class LayoutRenderer {
 	protected void updateSpacing(ElementLayout elementLayout) {
 		this.elementLayout = elementLayout;
 	}
-	
+
 	public void setElementLayout(ElementLayout elementLayout) {
 		this.elementLayout = elementLayout;
+	}
+
+	/**
+	 * To be overridden by subclass if needed.
+	 * 
+	 * @return The minimum height in pixels required by the renderer.
+	 */
+	public int getMinHeightPixels() {
+		return 0;
+	}
+
+	/**
+	 * To be overridden by subclass if needed.
+	 * 
+	 * @return The minimum width in pixels required by the renderer.
+	 */
+	public int getMinWidthPixels() {
+		return 0;
 	}
 
 }

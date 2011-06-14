@@ -56,6 +56,11 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	protected boolean showToolBar;
 	protected boolean showFooterBar;
 
+	protected int guiElementsHeight = 0;
+	protected Row headerBar;
+	protected Row toolBar;
+	protected Row footerBar;
+
 	public CentralBrickLayoutTemplate(GLBrick brick,
 			DimensionGroup dimensionGroup, GLVisBricks visBricks,
 			IBrickConfigurer configurer) {
@@ -71,6 +76,9 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		headerBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
 		toolBarElements = new ArrayList<ElementLayout>();
+		headerBar = new Row();
+		toolBar = new Row();
+		footerBar = new Row();
 		configurer.configure(this);
 		registerPickingListeners();
 		viewTypeChanged(getDefaultViewType());
@@ -83,6 +91,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public void setStaticLayouts() {
+		guiElementsHeight = 0;
 		Row baseRow = new Row("baseRow");
 
 		baseRow.setFrameColor(0, 0, 1, 0);
@@ -145,9 +154,11 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick));
 
 		baseColumn.append(spacingLayoutY);
+		guiElementsHeight += SPACING_PIXELS;
 		if (showFooterBar) {
 			baseColumn.append(footerBar);
 			baseColumn.append(spacingLayoutY);
+			guiElementsHeight += SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS;
 		}
 		baseColumn.append(viewLayout);
 		if (showToolBar) {
@@ -155,10 +166,13 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 			baseColumn.append(toolBar);
 			baseColumn.append(spacingLayoutY);
 			baseColumn.append(lineSeparatorLayout);
+			guiElementsHeight += (2 * SPACING_PIXELS) + TOOLBAR_HEIGHT_PIXELS
+					+ LINE_SEPARATOR_HEIGHT_PIXELS;
 		}
 		baseColumn.append(spacingLayoutY);
 		baseColumn.append(headerBar);
 		baseColumn.append(spacingLayoutY);
+		guiElementsHeight += (2 * SPACING_PIXELS) + HEADER_BAR_HEIGHT_PIXELS;
 
 	}
 
@@ -308,16 +322,25 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public int getMinHeightPixels() {
 		if (viewRenderer == null)
 			return 20;
-		return 6 * SPACING_PIXELS + TOOLBAR_HEIGHT_PIXELS
-				+ LINE_SEPARATOR_HEIGHT_PIXELS + HEADER_BAR_HEIGHT_PIXELS
-				+ FOOTER_BAR_HEIGHT_PIXELS + viewRenderer.getMinHeightPixels();
+
+		return guiElementsHeight + viewRenderer.getMinHeightPixels();
 	}
 
 	@Override
 	public int getMinWidthPixels() {
+		int headerBarWidth = calcSumPixelWidth(headerBar.getElements());
+		int toolBarWidth = showToolBar ? calcSumPixelWidth(toolBar
+				.getElements()) : 0;
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar
+				.getElements()) : 0;
+
+		int minGuiElementWidth = Math.max(headerBarWidth,
+				Math.max(toolBarWidth, footerBarWidth));
 		if (viewRenderer == null)
-			return 5;
-		return 2 * SPACING_PIXELS + viewRenderer.getMinWidthPixels();
+			return minGuiElementWidth;
+
+		return Math.max(minGuiElementWidth,
+				(2 * SPACING_PIXELS) + viewRenderer.getMinWidthPixels());
 		// return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
 		// .getMinWidth());
 	}

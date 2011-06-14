@@ -50,5 +50,15 @@ public class ViewLayoutRenderer
 	public void setView(AGLView view) {
 		this.view = view;
 	}
+	
+	@Override
+	public int getMinHeightPixels() {
+		return view.getMinPixelHeight();
+	}
+
+	@Override
+	public int getMinWidthPixels() {
+		return view.getMinPixelWidth();
+	}
 
 }

@@ -1,28 +1,32 @@
-package org.caleydo.view.visbricks.dimensiongroup;
+package org.caleydo.view.visbricks.brick.ui;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
-public class DimensionGroupCaptionRenderer extends LayoutRenderer {
+public class CaptionRenderer extends LayoutRenderer {
 
-	private DimensionGroup dimensionGroup;
+	private AGLView view;
 	private String caption;
+	private EPickingType pickingType;
+	private int id;
 
-	public DimensionGroupCaptionRenderer(DimensionGroup dimensionGroup,
-			String caption) {
-		this.dimensionGroup = dimensionGroup;
+	public CaptionRenderer(AGLView view, String caption,
+			EPickingType pickingType, int id) {
+		this.view = view;
 		this.caption = caption;
+		this.pickingType = pickingType;
+		this.id = id;
 	}
 
 	@Override
 	public void render(GL2 gl) {
 
-		int pickingID = dimensionGroup.getPickingManager().getPickingID(
-				dimensionGroup.getVisBricksView().getID(),
-				EPickingType.DIMENSION_GROUP, dimensionGroup.getID());
+		int pickingID = view.getPickingManager().getPickingID(view.getID(),
+				pickingType, id);
 
 		gl.glPushName(pickingID);
 		gl.glColor4f(1, 1, 1, 0);
@@ -34,10 +38,10 @@ public class DimensionGroupCaptionRenderer extends LayoutRenderer {
 		gl.glEnd();
 		gl.glPopName();
 
-		CaleydoTextRenderer textRenderer = dimensionGroup.getTextRenderer();
+		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
-		float ySpacing = dimensionGroup.getParentGLCanvas()
-				.getPixelGLConverter().getGLHeightForPixelHeight(1);
+		float ySpacing = view.getParentGLCanvas().getPixelGLConverter()
+				.getGLHeightForPixelHeight(1);
 
 		textRenderer.setColor(0, 0, 0, 1);
 		textRenderer.renderTextInBounds(gl, caption, 0, ySpacing, 0, x, y - 2

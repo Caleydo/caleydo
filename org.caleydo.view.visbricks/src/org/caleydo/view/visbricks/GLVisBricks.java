@@ -39,6 +39,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
+import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -61,7 +62,6 @@ import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.caleydo.view.visbricks.listener.AddGroupsToVisBricksListener;
 import org.caleydo.view.visbricks.listener.ConnectionsModeListener;
 import org.caleydo.view.visbricks.listener.GLVisBricksKeyListener;
-import org.caleydo.view.visbricks.listener.IRemoteViewMouseWheelListener;
 import org.caleydo.view.visbricks.listener.NewMetaSetsListener;
 import org.caleydo.view.visbricks.renderstyle.VisBricksRenderStyle;
 
@@ -116,7 +116,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private float archBottomY = 0;
 	private float archHeight = 0;
 
-	private HashSet<IRemoteViewMouseWheelListener> mouseWheelListeners;
+	private HashSet<IMouseWheelHandler> mouseWheelListeners;
 
 	/** Flag signaling if a group needs to be moved out of the center */
 	boolean resizeNecessary = false;
@@ -185,7 +185,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		relationAnalyzer = new RelationAnalyzer();
 
-		mouseWheelListeners = new HashSet<IRemoteViewMouseWheelListener>();
+		mouseWheelListeners = new HashSet<IMouseWheelHandler>();
 
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
 		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
@@ -1677,21 +1677,19 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	public void registerRemoteViewMouseWheelListener(
-			IRemoteViewMouseWheelListener listener) {
+			IMouseWheelHandler listener) {
 		mouseWheelListeners.add(listener);
 	}
 
 	public void unregisterRemoteViewMouseWheelListener(
-			IRemoteViewMouseWheelListener listener) {
+			IMouseWheelHandler listener) {
 		mouseWheelListeners.remove(listener);
 	}
 
 	@Override
 	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
-		for(IRemoteViewMouseWheelListener listener : mouseWheelListeners) {
-			boolean handled = listener.handleMouseWheel(wheelAmount, wheelPosition);
-			if(handled)
-				break;
+		for(IMouseWheelHandler listener : mouseWheelListeners) {
+			listener.handleMouseWheel(wheelAmount, wheelPosition);
 		}
 	}
 }

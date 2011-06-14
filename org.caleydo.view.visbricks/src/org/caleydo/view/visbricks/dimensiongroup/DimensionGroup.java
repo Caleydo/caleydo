@@ -979,7 +979,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		// detailBrick.setBrickConfigurer(brick.getBrickConfigurer());
 		// detailBrick.setContentVA(brick.getGroup(), brick.getContentVA());
 
-		int detailBrickWidth = getDetailBrickWidthPixels();
+		int detailBrickWidth = getDetailBrickWidthPixels(!expandLeft);
 		detailBrickLayout.setPixelSizeX(detailBrickWidth);
 		detailBrickLayout.setPixelSizeY(getDetailBrickHeightPixels());
 
@@ -1002,7 +1002,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 					brick, detailBrick, true));
 		}
 
-		DimensionGroup otherDetailDimensionGroup = getOtherDetailDimensionGroup();
+		DimensionGroup otherDetailDimensionGroup = getOtherDetailDimensionGroup(!expandLeft);
 
 		if (otherDetailDimensionGroup.isDetailBrickShown()) {
 			otherDetailDimensionGroup.setDetailBrickWidth(detailBrickWidth);
@@ -1021,11 +1021,12 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 	public void hideDetailedBrick() {
 		isDetailBrickShown = false;
 		hideDetailBrick = true;
-		DimensionGroup otherDetailDimensionGroup = getOtherDetailDimensionGroup();
+		DimensionGroup otherDetailDimensionGroup = getOtherDetailDimensionGroup(isLeftmost());
 		if (otherDetailDimensionGroup.isDetailBrickShown()) {
 			otherDetailDimensionGroup
 					.setDetailBrickWidth(otherDetailDimensionGroup
-							.getDetailBrickWidthPixels());
+							.getDetailBrickWidthPixels(otherDetailDimensionGroup
+									.isLeftmost()));
 		}
 	}
 
@@ -1033,7 +1034,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		return (int) (parentGLCanvas.getHeight() * 0.9f);
 	}
 
-	public int getDetailBrickWidthPixels() {
+	public int getDetailBrickWidthPixels(boolean isCurrentDimensionGroupLeft) {
 
 		// DimensionGroupManager dimensionGroupManager = visBricks
 		// .getDimensionGroupManager();
@@ -1041,7 +1042,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		// .getDimensionGroups();
 		// int dimensionGroupIndex = dimensionGroups.indexOf(this);
 
-		DimensionGroup otherDimensionGroup = getOtherDetailDimensionGroup();
+		DimensionGroup otherDimensionGroup = getOtherDetailDimensionGroup(isCurrentDimensionGroupLeft);
 		boolean otherDimensionGroupShowsDetail = otherDimensionGroup
 				.isDetailBrickShown();
 		int otherDimensionGroupColumnWidth = otherDimensionGroup
@@ -1077,7 +1078,8 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		return detailWidth;
 	}
 
-	private DimensionGroup getOtherDetailDimensionGroup() {
+	private DimensionGroup getOtherDetailDimensionGroup(
+			boolean isCurrentDimensionGroupLeft) {
 
 		DimensionGroupManager dimensionGroupManager = visBricks
 				.getDimensionGroupManager();
@@ -1086,14 +1088,11 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 				.getDimensionGroups();
 		int dimensionGroupIndex = dimensionGroups.indexOf(this);
 
-		if (isLeftmost()) {
+		if (isCurrentDimensionGroupLeft) {
 			return dimensionGroups.get(dimensionGroupIndex + 1);
 		}
-		if (isRightmost()) {
-			return dimensionGroups.get(dimensionGroupIndex - 1);
-		}
 
-		return null;
+		return dimensionGroups.get(dimensionGroupIndex - 1);
 	}
 
 	public boolean isLeftmost() {

@@ -35,6 +35,8 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 	// protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
 	protected ArrayList<ElementLayout> toolBarElements;
 	protected ArrayList<ElementLayout> footerBarElements;
+	protected Row toolBar;
+	protected Row footerBar;
 
 	// protected Button heatMapButton;
 	// protected Button parCoordsButton;
@@ -60,6 +62,8 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 				visBricks, true);
 		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
 				visBricks, false);
+		toolBar = new Row();
+		footerBar = new Row();
 		lockResizingButton = new Button(
 				EPickingType.BRICK_LOCK_RESIZING_BUTTON,
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
@@ -135,8 +139,8 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 		viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
 		viewLayout.setRenderer(viewRenderer);
 
-		Row toolBar = createToolBar();
-		Row footerBar = createFooterBar();
+		toolBar = createToolBar();
+		footerBar = createFooterBar();
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
 		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
@@ -200,10 +204,10 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// }
 		// }
 
-		ElementLayout ratioSpacingLayoutX = new ElementLayout(
-				"ratioSpacingLayoutX");
-		ratioSpacingLayoutX.setRatioSizeX(1);
-		ratioSpacingLayoutX.setRatioSizeY(0);
+		// ElementLayout ratioSpacingLayoutX = new ElementLayout(
+		// "ratioSpacingLayoutX");
+		// ratioSpacingLayoutX.setRatioSizeX(1);
+		// ratioSpacingLayoutX.setRatioSizeY(0);
 
 		ElementLayout lockResizingButtonLayout = new ElementLayout(
 				"lockResizingButton");
@@ -231,7 +235,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 				EPickingType.BRICK_CLOSE_BUTTON, CLOSE_BUTTON_ID,
 				EIconTextures.REMOVE), brick, brick.getTextureManager()));
 
-		toolBar.append(ratioSpacingLayoutX);
+		// toolBar.append(ratioSpacingLayoutX);
 		toolBar.append(lockResizingButtonLayout);
 		toolBar.append(spacingLayoutX);
 		toolBar.append(toggleViewSwitchingButtonLayout);
@@ -319,9 +323,15 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinWidthPixels() {
-		// TODO: Calculate Properly
-		return 2 * SPACING_PIXELS + viewRenderer.getMinWidthPixels();
-		// return dimensionGroup.getDetailBrickWidthPixels();
+		int toolBarWidth = calcSumPixelWidth(toolBar.getElements());
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar
+				.getElements()) : 0;
+
+		int guiElementsWidth = Math.max(toolBarWidth, footerBarWidth);
+		if (viewRenderer == null)
+			return guiElementsWidth;
+		return Math.max(guiElementsWidth,
+				(2 * SPACING_PIXELS) + viewRenderer.getMinWidthPixels());
 	}
 
 	// @Override
@@ -364,7 +374,8 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getDefaultWidthPixels() {
-		return dimensionGroup.getDetailBrickWidthPixels();
+		return dimensionGroup.getDetailBrickWidthPixels(dimensionGroup
+				.isLeftmost());
 	}
 
 	public void setToolBarElements(ArrayList<ElementLayout> toolBarElements) {

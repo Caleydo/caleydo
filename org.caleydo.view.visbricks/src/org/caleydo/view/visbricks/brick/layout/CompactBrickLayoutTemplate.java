@@ -34,9 +34,12 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 	private static final int EXPAND_BUTTON_ID = 0;
 
 	private GLVisBricks visBricks;
-	
+
 	protected ArrayList<ElementLayout> footerBarElements;
 	protected boolean showFooterBar;
+	protected Row footerBar;
+
+	protected int guiElementsHeight = 0;
 
 	// private RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	// private RelationIndicatorRenderer rightRelationIndicatorRenderer;
@@ -46,6 +49,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		super(brick, dimensionGroup);
 		this.visBricks = visBricks;
 		footerBarElements = new ArrayList<ElementLayout>();
+		footerBar = new Row();
 		configurer.configure(this);
 		registerPickingListeners();
 		// leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
@@ -66,6 +70,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public void setStaticLayouts() {
+		guiElementsHeight = 0;
 		Row baseRow = new Row("baseRow");
 
 		baseRow.setFrameColor(0, 0, 1, 0);
@@ -86,16 +91,16 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseColumn.setFrameColor(0, 1, 0, 1);
 		// baseColumn.setDebug(true);
 
-//		ElementLayout fuelBarLayout = new ElementLayout("fuelBarLayout");
-//		fuelBarLayout.setFrameColor(0, 1, 0, 1);
-//
-//		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
-//		fuelBarLayout.setPixelSizeY(FUEL_BAR_HEIGHT_PIXELS);
-//		fuelBarLayout.setRenderer(new FuelBarRenderer(brick));
+		// ElementLayout fuelBarLayout = new ElementLayout("fuelBarLayout");
+		// fuelBarLayout.setFrameColor(0, 1, 0, 1);
+		//
+		// fuelBarLayout.setPixelGLConverter(pixelGLConverter);
+		// fuelBarLayout.setPixelSizeY(FUEL_BAR_HEIGHT_PIXELS);
+		// fuelBarLayout.setRenderer(new FuelBarRenderer(brick));
 
 		baseRow.setRenderer(new BorderedAreaRenderer(brick));
-		
-		Row footerBar = createFooterBar();
+
+		footerBar = createFooterBar();
 
 		if (showHandles) {
 			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
@@ -148,10 +153,15 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 		// baseColumn.appendElement(dimensionBarLayout);
 		baseColumn.append(spacingLayoutY);
-		baseColumn.append(footerBar);
-		baseColumn.append(spacingLayoutY);
+		guiElementsHeight += SPACING_PIXELS;
+		if (showFooterBar) {
+			baseColumn.append(footerBar);
+			baseColumn.append(spacingLayoutY);
+			guiElementsHeight += SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS;
+		}
 		baseColumn.append(viewRow);
 		baseColumn.append(spacingLayoutY);
+		guiElementsHeight += SPACING_PIXELS;
 
 		// ElementLayout rightRelationIndicatorLayout = new ElementLayout(
 		// "RightRelationIndicatorLayout");
@@ -163,7 +173,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// baseRow.append(rightRelationIndicatorLayout);
 
 	}
-	
+
 	protected Row createFooterBar() {
 		Row footerBar = new Row("footerBar");
 		footerBar.setPixelGLConverter(pixelGLConverter);
@@ -199,23 +209,20 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public int getMinHeightPixels() {
 		// FIXME This is dirty
 		if (viewRenderer == null)
-			return 3 * SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS;
-		return 3 * SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS
-				+ viewRenderer.getMinHeightPixels();
+			return guiElementsHeight;
+		return guiElementsHeight + viewRenderer.getMinHeightPixels();
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		//
-		// return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
-		// .getMinWidth());
-		// FIXME This is dirty
-		if (viewRenderer == null)
-			return 3 * SPACING_PIXELS + 60 // viewRenderer.getMinWidthPixels()
-					+ BUTTON_WIDTH_PIXELS;
-		return 3 * SPACING_PIXELS + viewRenderer.getMinWidthPixels()
-				+ BUTTON_WIDTH_PIXELS;
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements()) : 0;
 
+		if (viewRenderer == null)
+			return Math.max(footerBarWidth, (2 * SPACING_PIXELS)
+					+ BUTTON_WIDTH_PIXELS);
+		return Math.max(footerBarWidth,
+				(3 * SPACING_PIXELS) + viewRenderer.getMinWidthPixels()
+						+ BUTTON_WIDTH_PIXELS);
 	}
 
 	// @Override
@@ -228,10 +235,10 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 	// return EContainedViewType.OVERVIEW_HEATMAP_COMPACT;
 	// }
 
-//	@Override
-//	public void viewTypeChanged(EContainedViewType viewType) {
-//
-//	}
+	// @Override
+	// public void viewTypeChanged(EContainedViewType viewType) {
+	//
+	// }
 
 	@Override
 	public void setLockResizing(boolean lockResizing) {
@@ -253,7 +260,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public void setFooterBarElements(ArrayList<ElementLayout> footerBarElements) {
 		this.footerBarElements = footerBarElements;
 	}
-	
+
 	public void showFooterBar(boolean showFooterBar) {
 		this.showFooterBar = showFooterBar;
 	}

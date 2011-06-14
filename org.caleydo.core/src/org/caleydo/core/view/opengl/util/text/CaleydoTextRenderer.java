@@ -163,21 +163,21 @@ public class CaleydoTextRenderer
 	 * @param yPosition
 	 *            y of lower left corner
 	 * @param zPositon
-	 * @param widht
+	 * @param width
 	 *            width fo the bounding box
 	 * @param height
 	 *            height of the bounding box
 	 */
 	public void renderTextInBounds(GL2 gl, String text, float xPosition, float yPosition, float zPositon,
-		float widht, float height) {
+		float width, float height) {
 
 		Rectangle2D bounds = super.getBounds(text);
 
 		double scaling = height / bounds.getHeight();
 
 		double requiredWidth = bounds.getWidth() * scaling;
-		if (requiredWidth > widht + 0.001) {
-			double truncateFactor = widht / requiredWidth;
+		if (requiredWidth > width + 0.001) {
+			double truncateFactor = width / requiredWidth;
 			int length = (int) (text.length() * truncateFactor);
 			if (length >= 0)
 				text = text.substring(0, length);

@@ -16,9 +16,9 @@ public class GLMouseWheelListener
 	extends MouseAdapter
 	implements MouseWheelListener, MouseMotionListener {
 
-	private AGLView handler;
+	private IMouseWheelHandler handler;
 
-	public GLMouseWheelListener(AGLView handler) {
+	public GLMouseWheelListener(IMouseWheelHandler handler) {
 		this.handler = handler;
 	}
 

@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
-import org.caleydo.view.visbricks.brick.ui.AContainedViewRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
 /**
@@ -20,9 +21,10 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 
 	protected static final int SPACING_PIXELS = 4;
+	protected static final int DEFAULT_GUI_ELEMENT_SIZE_PIXELS = 16;
 
 	protected GLBrick brick;
-	protected AContainedViewRenderer viewRenderer;
+	protected LayoutRenderer viewRenderer;
 	protected boolean showHandles;
 	protected DimensionGroup dimensionGroup;
 	protected HashSet<EContainedViewType> validViewTypes;
@@ -49,16 +51,16 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	 * 
 	 * @param viewRenderer
 	 */
-	public void setViewRenderer(AContainedViewRenderer viewRenderer) {
+	public void setViewRenderer(LayoutRenderer viewRenderer) {
 		this.viewRenderer = viewRenderer;
 	}
-	
+
 	/**
 	 * Gets the renderer for the view element of a brick.
 	 * 
 	 * @return viewRenderer
 	 */
-	public AContainedViewRenderer getViewRenderer() {
+	public LayoutRenderer getViewRenderer() {
 		return viewRenderer;
 	}
 
@@ -134,7 +136,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	 * This method should be called when the view type in the brick changed.
 	 */
 	public void viewTypeChanged(EContainedViewType viewType) {
-		for(IViewTypeChangeListener viewTypeChangeListener : viewTypeChangeListeners) {
+		for (IViewTypeChangeListener viewTypeChangeListener : viewTypeChangeListeners) {
 			viewTypeChangeListener.viewTypeChanged(viewType);
 		}
 	}
@@ -202,6 +204,80 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	public void registerViewTypeChangeListener(
 			IViewTypeChangeListener viewTypeChangeListener) {
 		viewTypeChangeListeners.add(viewTypeChangeListener);
+	}
+
+	protected int calcSumPixelWidth(ArrayList<ElementLayout> elementLayouts) {
+		int sum = 0;
+		for (ElementLayout elementLayout : elementLayouts) {
+			int pixelSize = elementLayout.getPixelSizeX();
+			if (pixelSize == Integer.MIN_VALUE) {
+				float glSize = elementLayout.getAbsoluteSizeX();
+				if (glSize == Float.NaN) {
+					pixelSize = DEFAULT_GUI_ELEMENT_SIZE_PIXELS;
+				} else {
+					pixelSize = pixelGLConverter
+							.getPixelWidthForGLWidth(glSize);
+				}
+			}
+			sum += pixelSize;
+		}
+
+		return sum;
+	}
+	
+	protected int calcSumPixelHeight(ArrayList<ElementLayout> elementLayouts) {
+		int sum = 0;
+		for (ElementLayout elementLayout : elementLayouts) {
+			int pixelSize = elementLayout.getPixelSizeY();
+			if (pixelSize == Integer.MIN_VALUE) {
+				float glSize = elementLayout.getAbsoluteSizeY();
+				if (glSize == Float.NaN) {
+					pixelSize = DEFAULT_GUI_ELEMENT_SIZE_PIXELS;
+				} else {
+					pixelSize = pixelGLConverter
+							.getPixelHeightForGLHeight(glSize);
+				}
+			}
+			sum += pixelSize;
+		}
+
+		return sum;
+	}
+	
+	protected int getMaxPixelHeight(ArrayList<ElementLayout> elementLayouts) {
+		int max = Integer.MIN_VALUE;
+		for (ElementLayout elementLayout : elementLayouts) {
+			int pixelSize = elementLayout.getPixelSizeY();
+			if (pixelSize == Integer.MIN_VALUE) {
+				float glSize = elementLayout.getAbsoluteSizeY();
+				if (glSize != Float.NaN) {
+					pixelSize = pixelGLConverter
+							.getPixelHeightForGLHeight(glSize);
+				}
+			}
+			if(max < pixelSize)
+				max = pixelSize;
+		}
+
+		return max;
+	}
+	
+	protected int getMaxPixelWidth(ArrayList<ElementLayout> elementLayouts) {
+		int max = Integer.MIN_VALUE;
+		for (ElementLayout elementLayout : elementLayouts) {
+			int pixelSize = elementLayout.getPixelSizeX();
+			if (pixelSize == Integer.MIN_VALUE) {
+				float glSize = elementLayout.getAbsoluteSizeX();
+				if (glSize != Float.NaN) {
+					pixelSize = pixelGLConverter
+							.getPixelWidthForGLWidth(glSize);
+				}
+			}
+			if(max < pixelSize)
+				max = pixelSize;
+		}
+
+		return max;
 	}
 
 }

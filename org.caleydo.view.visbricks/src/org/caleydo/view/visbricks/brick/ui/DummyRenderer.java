@@ -1,10 +1,10 @@
 package org.caleydo.view.visbricks.brick.ui;
 
-import java.awt.Point;
-
 import javax.media.opengl.GL2;
 
-public class DummyRenderer extends AContainedViewRenderer {
+import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+
+public class DummyRenderer extends LayoutRenderer {
 
 	@Override
 	public int getMinHeightPixels() {
@@ -21,11 +21,6 @@ public class DummyRenderer extends AContainedViewRenderer {
 	@Override
 	public void render(GL2 gl) {
 		
-	}
-
-	@Override
-	public boolean handleMouseWheel(int wheelAmount, Point wheelPosition) {
-		return false;
 	}
 
 }

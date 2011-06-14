@@ -1,6 +1,5 @@
 package org.caleydo.view.visbricks.brick.ui;
 
-import java.awt.Point;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
@@ -13,6 +12,7 @@ import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 /**
  * Renderer for an overview heatmap of values specified by contentVA and
@@ -22,7 +22,7 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
  * @author Christian Partl
  * 
  */
-public class OverviewHeatMapRenderer extends AContainedViewRenderer {
+public class OverviewHeatMapRenderer extends LayoutRenderer {
 
 	private ColorMapping colorMapper;
 	private ArrayList<Float> heatMapValuesMean;
@@ -226,8 +226,4 @@ public class OverviewHeatMapRenderer extends AContainedViewRenderer {
 		return Math.max(150, 16 * heatMapValuesMean.size());
 	}
 
-	@Override
-	public boolean handleMouseWheel(int wheelAmount, Point wheelPosition) {
-		return false;
-	}
 }

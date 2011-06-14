@@ -31,12 +31,14 @@ import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -52,7 +54,6 @@ import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
-import org.caleydo.view.visbricks.brick.ui.AContainedViewRenderer;
 import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
@@ -77,7 +78,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	private AGLView currentRemoteView;
 
 	private Map<EContainedViewType, AGLView> views;
-	private Map<EContainedViewType, AContainedViewRenderer> containedViewRenderers;
+	private Map<EContainedViewType, LayoutRenderer> containedViewRenderers;
 
 	private int baseDisplayListIndex;
 	private boolean isBaseDisplayListDirty = true;
@@ -105,8 +106,6 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	/** The group on which the contentVA of this brick is based on */
 	private Group group;
 
-	
-
 	private GLVisBricks visBricks;
 	private DimensionGroup dimensionGroup;
 	private IBrickData brickData;
@@ -130,9 +129,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		viewType = GLBrick.VIEW_ID;
 
 		views = new HashMap<EContainedViewType, AGLView>();
-		containedViewRenderers = new HashMap<EContainedViewType, AContainedViewRenderer>();
-
-		
+		containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
 	}
 
@@ -196,8 +193,11 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		brickLayout
 				.setViewRenderer(containedViewRenderers.get(currentViewType));
 		currentRemoteView = views.get(currentRemoteView);
-		visBricks.registerRemoteViewMouseWheelListener(brickLayout
-				.getViewRenderer());
+		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
+			visBricks
+					.registerRemoteViewMouseWheelListener((IMouseWheelHandler) brickLayout
+							.getViewRenderer());
+		}
 
 		templateRenderer.setTemplate(brickLayout);
 		float defaultHeight = getParentGLCanvas()
@@ -520,33 +520,33 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int pickingID, Pick pick) {
 
-//		HashMap<Integer, IPickingListener> map = pickingListeners
-//				.get(pickingType);
-//		if (map == null)
-//			return;
-//
-//		IPickingListener pickingListener = map.get(pickingID);
-//
-//		if (pickingListener == null)
-//			return;
-//
-//		switch (pickingMode) {
-//		case CLICKED:
-//			pickingListener.clicked(pick);
-//			break;
-//		case DOUBLE_CLICKED:
-//			pickingListener.doubleClicked(pick);
-//			break;
-//		case RIGHT_CLICKED:
-//			pickingListener.rightClicked(pick);
-//			break;
-//		case MOUSE_OVER:
-//			pickingListener.mouseOver(pick);
-//			break;
-//		case DRAGGED:
-//			pickingListener.dragged(pick);
-//			break;
-//		}
+		// HashMap<Integer, IPickingListener> map = pickingListeners
+		// .get(pickingType);
+		// if (map == null)
+		// return;
+		//
+		// IPickingListener pickingListener = map.get(pickingID);
+		//
+		// if (pickingListener == null)
+		// return;
+		//
+		// switch (pickingMode) {
+		// case CLICKED:
+		// pickingListener.clicked(pick);
+		// break;
+		// case DOUBLE_CLICKED:
+		// pickingListener.doubleClicked(pick);
+		// break;
+		// case RIGHT_CLICKED:
+		// pickingListener.rightClicked(pick);
+		// break;
+		// case MOUSE_OVER:
+		// pickingListener.mouseOver(pick);
+		// break;
+		// case DRAGGED:
+		// pickingListener.dragged(pick);
+		// break;
+		// }
 
 		// switch (pickingType) {
 		// case BRICK_CLUSTER:
@@ -825,8 +825,6 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			templateRenderer.updateLayout();
 	}
 
-	
-
 	// public ISet getSet() {
 	// return set;
 	// }
@@ -839,8 +837,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public void setContainedView(EContainedViewType viewType) {
 
-		AContainedViewRenderer viewRenderer = containedViewRenderers
-				.get(viewType);
+		LayoutRenderer viewRenderer = containedViewRenderers.get(viewType);
 
 		if (viewRenderer == null)
 			return;
@@ -849,11 +846,17 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			return;
 
 		currentRemoteView = views.get(viewType);
-		visBricks.unregisterRemoteViewMouseWheelListener(brickLayout
-				.getViewRenderer());
+		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
+			visBricks
+					.unregisterRemoteViewMouseWheelListener((IMouseWheelHandler) brickLayout
+							.getViewRenderer());
+		}
 		brickLayout.setViewRenderer(viewRenderer);
-		visBricks.registerRemoteViewMouseWheelListener(brickLayout
-				.getViewRenderer());
+		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
+			visBricks
+					.registerRemoteViewMouseWheelListener((IMouseWheelHandler) brickLayout
+							.getViewRenderer());
+		}
 		brickLayout.viewTypeChanged(viewType);
 		int defaultHeightPixels = brickLayout.getDefaultHeightPixels();
 		int defaultWidthPixels = brickLayout.getDefaultWidthPixels();
@@ -959,9 +962,12 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
 		}
-		
-		visBricks.unregisterRemoteViewMouseWheelListener(brickLayout
-				.getViewRenderer());
+
+		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
+			visBricks
+					.unregisterRemoteViewMouseWheelListener((IMouseWheelHandler) brickLayout
+							.getViewRenderer());
+		}
 	}
 
 	private void registerPickingListeners() {
@@ -1143,7 +1149,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	public void setContainedViewRenderers(
-			Map<EContainedViewType, AContainedViewRenderer> containedViewRenderers) {
+			Map<EContainedViewType, LayoutRenderer> containedViewRenderers) {
 		this.containedViewRenderers = containedViewRenderers;
 	}
 

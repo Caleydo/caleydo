@@ -4,7 +4,6 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.visbricks.brick.GLBrick;
-import org.caleydo.view.visbricks.brick.ui.AContainedViewRenderer;
 
 /**
  * Classes implementing this interface are intended to configure the different

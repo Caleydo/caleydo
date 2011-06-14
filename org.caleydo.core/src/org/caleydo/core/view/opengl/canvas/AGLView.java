@@ -42,6 +42,7 @@ import org.caleydo.core.view.opengl.camera.IViewCamera;
 import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.GLMouseWheelListener;
+import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
 import org.caleydo.core.view.opengl.canvas.listener.ToggleMagnifyingGlassListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -91,7 +92,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  */
 public abstract class AGLView
 	extends AView
-	implements GLEventListener, IResettableView, IScrollBarUpdateHandler {
+	implements GLEventListener, IResettableView, IScrollBarUpdateHandler, IMouseWheelHandler {
 
 	public final static String VIEW_ID = "unspecified";
 
@@ -1125,6 +1126,7 @@ public abstract class AGLView
 	 * @param wheelAmount
 	 * @param wheelPosition
 	 */
+	@Override
 	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
 		currentZoomScale -= wheelAmount;
 		if (currentZoomScale < 1.0f)

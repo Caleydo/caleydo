@@ -42,6 +42,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 	// protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
 	protected ArrayList<ElementLayout> toolBarElements;
 	protected ArrayList<ElementLayout> footerBarElements;
+	protected Row toolBar;
+	protected Row footerBar;
 
 	// protected Button heatMapButton;
 	// protected Button parCoordsButton;
@@ -61,6 +63,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		this.visBricks = visBricks;
 		toolBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
+		toolBar = new Row();
+		footerBar = new Row();
 		leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
 				visBricks, true);
 		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
@@ -145,8 +149,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
 		viewLayout.setRenderer(viewRenderer);
 
-		Row toolBar = createToolBar();
-		Row footerBar = createFooterBar();
+		toolBar = createToolBar();
+		footerBar = createFooterBar();
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
 		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
@@ -211,11 +215,6 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// }
 		// }
 
-		ElementLayout ratioSpacingLayoutX = new ElementLayout(
-				"ratioSpacingLayoutX");
-		ratioSpacingLayoutX.setRatioSizeX(1);
-		ratioSpacingLayoutX.setRatioSizeY(0);
-
 		// ElementLayout detailModeButtonLayout = new ElementLayout(
 		// "detailModeResizingButton");
 		// detailModeButtonLayout.setPixelGLConverter(pixelGLConverter);
@@ -253,7 +252,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE), brick, brick
 				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_90));
 
-		toolBar.append(ratioSpacingLayoutX);
+		// toolBar.append(ratioSpacingLayoutX);
 		// toolBar.append(detailModeButtonLayout);
 		// toolBar.append(spacingLayoutX);
 		toolBar.append(lockResizingButtonLayout);
@@ -370,11 +369,15 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinWidthPixels() {
+		int toolBarWidth = calcSumPixelWidth(toolBar.getElements());
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar
+				.getElements()) : 0;
 
-		// TODO: Calculate Width properly
+		int guiElementsWidth = Math.max(toolBarWidth, footerBarWidth);
 		if (viewRenderer == null)
-			return 4 * SPACING_PIXELS + 3 * BUTTON_WIDTH_PIXELS;
-		return 2 * SPACING_PIXELS + viewRenderer.getMinWidthPixels();
+			return guiElementsWidth;
+		return Math.max(guiElementsWidth,
+				(2 * SPACING_PIXELS) + viewRenderer.getMinWidthPixels());
 		// return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
 		// .getMinWidth());
 	}

@@ -18,10 +18,10 @@ import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
+import org.caleydo.view.visbricks.brick.ui.CaptionRenderer;
 import org.caleydo.view.visbricks.brick.ui.DimensionBarRenderer;
 import org.caleydo.view.visbricks.brick.ui.FuelBarRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
-import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupCaptionRenderer;
 import org.eclipse.swt.widgets.Shell;
 
 public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
@@ -36,9 +36,9 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 	protected static final int SPACING_PIXELS = 4;
 
 	protected static final int CLUSTER_BUTTON_ID = 1;
-	
+
 	protected ISet set;
-	
+
 	public ASetBasedDataConfigurer(ISet set) {
 		this.set = set;
 	}
@@ -63,8 +63,10 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		DimensionGroupCaptionRenderer captionRenderer = new DimensionGroupCaptionRenderer(
-				layoutTemplate.getDimensionGroup(), set.getLabel());
+		CaptionRenderer captionRenderer = new CaptionRenderer(
+				layoutTemplate.getDimensionGroup().getVisBricksView(),
+				set.getLabel(), EPickingType.DIMENSION_GROUP, layoutTemplate
+						.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -132,8 +134,10 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		DimensionGroupCaptionRenderer captionRenderer = new DimensionGroupCaptionRenderer(
-				layoutTemplate.getDimensionGroup(), set.getLabel());
+		CaptionRenderer captionRenderer = new CaptionRenderer(
+				layoutTemplate.getDimensionGroup().getVisBricksView(),
+				set.getLabel(), EPickingType.DIMENSION_GROUP, layoutTemplate
+						.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -235,8 +239,9 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		dimensionBarLaylout.setPixelGLConverter(pixelGLConverter);
 		dimensionBarLaylout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
 		dimensionBarLaylout.setRatioSizeX(1);
-		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick.getDataDomain()
-				.getStorageVA(Set.STORAGE), set.getStorageData(Set.STORAGE).getStorageVA()));
+		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick
+				.getDataDomain().getStorageVA(Set.STORAGE), set.getStorageData(
+				Set.STORAGE).getStorageVA()));
 
 		footerBarElements.add(dimensionBarLaylout);
 
@@ -249,19 +254,19 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 
 		return createDefaultFooterBarElements(layoutTemplate);
 	}
-	
+
 	protected ArrayList<ElementLayout> createFooterBarElements(
 			DetailBrickLayoutTemplate layoutTemplate) {
 
 		return createDefaultFooterBarElements(layoutTemplate);
 	}
-	
+
 	protected ArrayList<ElementLayout> createFooterBarElements(
 			CompactBrickLayoutTemplate layoutTemplate) {
 
 		return createDefaultFooterBarElements(layoutTemplate);
 	}
-	
+
 	private ArrayList<ElementLayout> createDefaultFooterBarElements(
 			ABrickLayoutTemplate layoutTemplate) {
 		ArrayList<ElementLayout> footerBarElements = new ArrayList<ElementLayout>();
@@ -311,6 +316,14 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 				toolBarElements.add(spacingLayoutX);
 			}
 		}
+
+		ElementLayout ratioSpacingLayoutX = new ElementLayout(
+				"ratioSpacingLayoutX");
+		// ratioSpacingLayoutX.setDebug(true);
+		ratioSpacingLayoutX.setRatioSizeX(1);
+		ratioSpacingLayoutX.setRatioSizeY(0);
+		
+		toolBarElements.add(ratioSpacingLayoutX);
 
 		// layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
 

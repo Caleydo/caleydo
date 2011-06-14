@@ -13,7 +13,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
 public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
-	protected static final int CAPTION_HEIGHT_PIXELS = 16;
+	protected static final int HEADER_BAR_HEIGHT_PIXELS = 16;
 	protected static final int FOOTER_BAR_HEIGHT_PIXELS = 12;
 	protected static final int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
 
@@ -21,8 +21,13 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected ArrayList<ElementLayout> headerBarElements;
 	protected ArrayList<ElementLayout> footerBarElements;
+	
+//	protected Row headerBar;
+//	protected Row footerBar; 
 
 	protected boolean showFooterBar;
+
+	protected int guiElementsHeight = 0;
 
 	public CompactCentralBrickLayoutTemplate(GLBrick brick,
 			DimensionGroup dimensionGroup, GLVisBricks visBricks,
@@ -31,12 +36,15 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		this.visBricks = visBricks;
 		headerBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
+//		headerBar = new Row();
+//		footerBar = new Row();
 		configurer.configure(this);
 		registerPickingListeners();
 	}
 
 	@Override
 	public void setStaticLayouts() {
+		guiElementsHeight = 0;
 		Row baseRow = new Row("baseRow");
 
 		baseRow.setFrameColor(0, 0, 1, 0);
@@ -91,9 +99,11 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 		// baseColumn.appendElement(dimensionBarLayout);
 		baseColumn.append(spacingLayoutY);
+		guiElementsHeight += SPACING_PIXELS;
 		if (showFooterBar) {
 			baseColumn.append(footerBar);
 			baseColumn.append(spacingLayoutY);
+			guiElementsHeight += SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS;
 		}
 		baseColumn.append(viewLayout);
 		// baseColumn.append(spacingLayoutY);
@@ -101,13 +111,14 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseColumn.append(spacingLayoutY);
 		baseColumn.append(headerBar);
 		baseColumn.append(spacingLayoutY);
+		guiElementsHeight += (2 * SPACING_PIXELS) + HEADER_BAR_HEIGHT_PIXELS;
 
 	}
 
 	protected Row createHeaderBar() {
 		Row headerBar = new Row();
 		headerBar.setPixelGLConverter(pixelGLConverter);
-		headerBar.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
+		headerBar.setPixelSizeY(HEADER_BAR_HEIGHT_PIXELS);
 
 		for (ElementLayout element : headerBarElements) {
 			headerBar.append(element);
@@ -138,9 +149,7 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		if (viewRenderer == null) {
 			return 50;
 		}
-		return 5 * SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS
-				+ LINE_SEPARATOR_HEIGHT_PIXELS + CAPTION_HEIGHT_PIXELS
-				+ viewRenderer.getMinHeightPixels();
+		return guiElementsHeight + viewRenderer.getMinHeightPixels();
 	}
 
 	@Override

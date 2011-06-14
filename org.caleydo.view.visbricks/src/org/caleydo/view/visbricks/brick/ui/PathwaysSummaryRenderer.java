@@ -1,0 +1,23 @@
+package org.caleydo.view.visbricks.brick.ui;
+
+import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.view.opengl.canvas.AGLView;
+
+public class PathwaysSummaryRenderer extends CaptionRenderer {
+
+	public PathwaysSummaryRenderer(AGLView view, String caption,
+			EPickingType pickingType, int id) {
+		super(view, caption, pickingType, id);
+	}
+	
+	@Override
+	public int getMinHeightPixels() {
+		return 20;
+	}
+
+	@Override
+	public int getMinWidthPixels() {
+		return 110;
+	}
+
+}
