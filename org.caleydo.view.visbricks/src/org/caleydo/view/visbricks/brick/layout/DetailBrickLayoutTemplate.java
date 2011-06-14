@@ -327,7 +327,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar
 				.getElements()) : 0;
 
-		int guiElementsWidth = Math.max(toolBarWidth, footerBarWidth);
+		int guiElementsWidth = Math.max(toolBarWidth, footerBarWidth) + 2 * SPACING_PIXELS;
 		if (viewRenderer == null)
 			return guiElementsWidth;
 		return Math.max(guiElementsWidth,

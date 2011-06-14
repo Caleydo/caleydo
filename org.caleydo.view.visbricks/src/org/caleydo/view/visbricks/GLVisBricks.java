@@ -1630,11 +1630,15 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	private void selectElementsByConnectionBandID(int connectionBandID) {
 
-		contentSelectionManager.clearSelections();
+		 contentSelectionManager.clearSelections();
+		//
+		  ClearSelectionsEvent cse = new ClearSelectionsEvent();
+		  cse.setDataDomainType(getDataDomain().getDataDomainType());
+		  cse.setSender(this);
+		  eventPublisher.triggerEvent(cse);
 
-		ClearSelectionsEvent cse = new ClearSelectionsEvent();
-		cse.setSender(this);
-		eventPublisher.triggerEvent(cse);
+		contentSelectionManager.clearSelection(contentSelectionManager
+				.getSelectionType());
 
 		// Create volatile selection type
 		volatieBandSelectionType = new SelectionType(
@@ -1650,8 +1654,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		for (Integer contentID : hashConnectionBandIDToContentVA
 				.get(connectionBandID)) {
-			contentSelectionManager.addToType(volatieBandSelectionType,
-					contentID);
+			contentSelectionManager.addToType(
+					contentSelectionManager.getSelectionType(), contentID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -1676,8 +1680,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		return archInnerWidth;
 	}
 
-	public void registerRemoteViewMouseWheelListener(
-			IMouseWheelHandler listener) {
+	public void registerRemoteViewMouseWheelListener(IMouseWheelHandler listener) {
 		mouseWheelListeners.add(listener);
 	}
 
@@ -1688,7 +1691,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
-		for(IMouseWheelHandler listener : mouseWheelListeners) {
+		for (IMouseWheelHandler listener : mouseWheelListeners) {
 			listener.handleMouseWheel(wheelAmount, wheelPosition);
 		}
 	}

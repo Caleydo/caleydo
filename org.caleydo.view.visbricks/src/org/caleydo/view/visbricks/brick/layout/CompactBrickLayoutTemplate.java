@@ -207,15 +207,18 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinHeightPixels() {
-		// FIXME This is dirty
 		if (viewRenderer == null)
-			return guiElementsHeight;
-		return guiElementsHeight + viewRenderer.getMinHeightPixels();
+			return guiElementsHeight + BUTTON_HEIGHT_PIXELS;
+		return guiElementsHeight
+				+ Math.max(viewRenderer.getMinHeightPixels(),
+						BUTTON_HEIGHT_PIXELS);
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements()) : 0;
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar
+				.getElements()) : 0;
+		footerBarWidth += 2 * SPACING_PIXELS;
 
 		if (viewRenderer == null)
 			return Math.max(footerBarWidth, (2 * SPACING_PIXELS)

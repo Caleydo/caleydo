@@ -21,6 +21,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
+import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.APickingListener;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -192,7 +193,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		currentViewType = brickLayout.getDefaultViewType();
 		brickLayout
 				.setViewRenderer(containedViewRenderers.get(currentViewType));
-		currentRemoteView = views.get(currentRemoteView);
+		currentRemoteView = views.get(currentViewType);
 		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
 			visBricks
 					.registerRemoteViewMouseWheelListener((IMouseWheelHandler) brickLayout
@@ -343,9 +344,10 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			contentSelectionManager
 					.clearSelection(selectedByGroupSelectionType);
 
-			// ClearSelectionsEvent cse = new ClearSelectionsEvent();
-			// cse.setSender(this);
-			// eventPublisher.triggerEvent(cse);
+//			 ClearSelectionsEvent cse = new ClearSelectionsEvent();
+//			 cse.setDataDomainType(getDataDomain().getDataDomainType());
+//			 cse.setSender(this);
+//			 eventPublisher.triggerEvent(cse);
 		}
 
 		// Prevent selection for center brick as this would select all elements

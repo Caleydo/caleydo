@@ -335,7 +335,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 				.getElements()) : 0;
 
 		int minGuiElementWidth = Math.max(headerBarWidth,
-				Math.max(toolBarWidth, footerBarWidth));
+				Math.max(toolBarWidth, footerBarWidth))  + 2 * SPACING_PIXELS;
 		if (viewRenderer == null)
 			return minGuiElementWidth;
 

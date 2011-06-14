@@ -212,7 +212,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 			int pixelSize = elementLayout.getPixelSizeX();
 			if (pixelSize == Integer.MIN_VALUE) {
 				float glSize = elementLayout.getAbsoluteSizeX();
-				if (glSize == Float.NaN) {
+				if (Float.isNaN(glSize)) {
 					pixelSize = DEFAULT_GUI_ELEMENT_SIZE_PIXELS;
 				} else {
 					pixelSize = pixelGLConverter
