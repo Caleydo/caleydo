@@ -485,9 +485,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		renderDataDomain(gl, (HistoryNode) historyPath.getLastNode(), x
 				- metaViewAnimation, y + DATA_DOMAIN_HEIGHT / 2f);
 		// gl.glScalef(10f/9, 10f/9, 10f/9);
-
-		java.util.Set<String> neighbors = dataDomainGraph.getNeighboursOf(historyPath
+		IDataDomain dataDomain = DataDomainManager.get().getDataDomain(historyPath
 				.getLastNode().getDataDomainType());
+		java.util.Set<IDataDomain> neighbors = dataDomainGraph.getNeighboursOf(dataDomain);
 		int numberOfVerticalDataDomains = neighbors.size() + 1;
 
 		// Render past data domains
@@ -529,8 +529,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// return;
 
 		// Render possible next data domains
-		for (String nextDataDomainType : neighbors) {
+		for (IDataDomain nextDataDomain : neighbors) {
 
+			String nextDataDomainType = nextDataDomain.getDataDomainType();
 			yNeighbor += ySteps;
 
 			boolean highlight = false;
@@ -1395,13 +1396,14 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		if (mouseOverDataDomainNode == node && node != historyPath.getLastNode()
 				&& metaViewAnimation >= DATA_DOMAIN_SPACING) {
 
-			java.util.Set<String> neighbors = dataDomainGraph
-					.getNeighboursOf(dataDomainType);
+			java.util.Set<IDataDomain> neighbors = dataDomainGraph
+					.getNeighboursOf(dataDomain);
 			int numberOfVerticalDataDomains = neighbors.size();
 			float ySteps = DATA_DOMAIN_HEIGHT / (numberOfVerticalDataDomains) / 1.3f;
 			float yNeighbor = y + 0.4f;
-			for (String nextDataDomainType : neighbors) {
+			for (IDataDomain nextDataDomain : neighbors) {
 
+				String nextDataDomainType = nextDataDomain.getDataDomainType();
 				// Prevent showing data domain which is next one anyways
 				if (nextDataDomainType == historyPath.getFollowingNodes(node).get(0)
 						.getDataDomainType())

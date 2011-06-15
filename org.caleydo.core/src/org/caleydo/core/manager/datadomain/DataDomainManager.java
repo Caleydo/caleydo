@@ -29,10 +29,12 @@ public class DataDomainManager {
 	private HashMap<String, ArrayList<IDataDomain>> registeredDataDomains;
 
 	private AssociationManager associationManager;
+	private DataDomainGraph dataDomainGraph;
 
 	private DataDomainManager() {
 		registeredDataDomains = new HashMap<String, ArrayList<IDataDomain>>(8);
 		associationManager = new AssociationManager();
+		dataDomainGraph = new DataDomainGraph();
 	}
 
 	public static DataDomainManager get() {
@@ -110,6 +112,7 @@ public class DataDomainManager {
 			registeredDataDomains.put(dataDomain.getDataDomainType(), new ArrayList<IDataDomain>());
 
 		registeredDataDomains.get(dataDomain.getDataDomainType()).add(dataDomain);
+		dataDomainGraph.addDataDomain(dataDomain);
 	}
 
 	/**
@@ -119,5 +122,9 @@ public class DataDomainManager {
 	 */
 	public AssociationManager getAssociationManager() {
 		return associationManager;
+	}
+
+	public DataDomainGraph getDataDomainGraph() {
+		return dataDomainGraph;
 	}
 }
