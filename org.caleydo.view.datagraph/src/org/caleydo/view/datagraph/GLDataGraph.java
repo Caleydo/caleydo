@@ -1,5 +1,9 @@
 package org.caleydo.view.datagraph;
 
+import java.awt.Rectangle;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
@@ -14,6 +18,7 @@ import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
 
 /**
@@ -22,12 +27,15 @@ import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
  * 
  * @author Christian Partl
  */
-public class GLDataGraph extends AGLView implements IViewCommandHandler{
+public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.datagraph";
 
 	private GLDataGraphKeyListener glKeyListener;
 	private boolean useDetailLevel = false;
+
+	private Graph dataGraph;
+	private ForceDirectedGraphLayout forceDirectedGraphLayout;
 
 	/**
 	 * Constructor.
@@ -36,6 +44,26 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler{
 		super(glCanvas, viewFrustum, true);
 		viewType = GLDataGraph.VIEW_ID;
 		glKeyListener = new GLDataGraphKeyListener();
+		dataGraph = new Graph();
+		forceDirectedGraphLayout = new ForceDirectedGraphLayout();
+
+		Object o1 = new Object();
+		Object o2 = new Object();
+		Object o3 = new Object();
+		Object o4 = new Object();
+		Object o5 = new Object();
+
+		dataGraph.addNode(o1);
+		dataGraph.addNode(o2);
+		dataGraph.addNode(o3);
+		dataGraph.addNode(o4);
+		dataGraph.addNode(o5);
+
+		dataGraph.addEdge(o1, o2);
+		dataGraph.addEdge(o1, o3);
+		dataGraph.addEdge(o3, o4);
+		dataGraph.addEdge(o5, o4);
+		dataGraph.addEdge(o3, o2);
 	}
 
 	@Override
@@ -131,6 +159,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler{
 
 	@Override
 	public void display(GL2 gl) {
+		gl.glCallList(iGLDisplayListToCall);
 
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
@@ -148,10 +177,22 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler{
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
+		forceDirectedGraphLayout.setGraph(dataGraph);
+		Rectangle2D rect = new Rectangle();
+		rect.setFrame(viewFrustum.getLeft(), viewFrustum.getBottom(),
+				viewFrustum.getWidth(), viewFrustum.getHeight());
+		forceDirectedGraphLayout.layout(rect);
+
+		for (Object node : dataGraph.getNodes()) {
+			Point2D position = forceDirectedGraphLayout.getNodePosition(node);
+
+			GLHelperFunctions.drawPointAt(gl, (float) position.getX(),
+					(float) position.getY(), 0);
+		}
+
 		gl.glEndList();
 
 	}
-
 
 	@Override
 	public String getDetailedInfo() {
@@ -164,7 +205,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler{
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
-		
+
 	}
 
 	@Override
@@ -202,18 +243,16 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler{
 
 	}
 
-	
-
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-		
+
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
-		
+
 	}
 
 	@Override
@@ -227,7 +266,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler{
 
 	@Override
 	public void handleUpdateView() {
-		
+
 		setDisplayListDirty();
 	}
 
