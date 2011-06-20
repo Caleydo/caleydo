@@ -19,12 +19,12 @@ public class DetailToolBar extends LayoutRenderer {
 	PickingManager pickingManager;
 
 	private TextureManager iconManager;
-	private TextRenderer textRender = heatMap.getTextRenderer();
+	private TextRenderer textRender;
 
 	public DetailToolBar(GLHeatMap heatMap) {
 		this.heatMap = heatMap;
 		iconManager = new TextureManager();
-
+		textRender = heatMap.getTextRenderer();
 	}
 
 	@Override
