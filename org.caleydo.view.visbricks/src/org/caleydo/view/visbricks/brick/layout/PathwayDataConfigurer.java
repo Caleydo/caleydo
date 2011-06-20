@@ -11,14 +11,14 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.layout.ZoomableViewLayoutRenderer;
+import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
+import org.caleydo.core.view.opengl.layout.util.ZoomableViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.data.PathwayBrickData;
-import org.caleydo.view.visbricks.brick.ui.CaptionRenderer;
 import org.caleydo.view.visbricks.brick.ui.CompactPathwayRenderer;
 import org.caleydo.view.visbricks.brick.ui.PathwaysSummaryRenderer;
 import org.caleydo.view.visbricks.brick.viewcreation.PathwayCreator;
@@ -138,7 +138,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		// captionLayout.setGrabX(true);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		CaptionRenderer captionRenderer = new CaptionRenderer(view, caption,
+		LabelRenderer captionRenderer = new LabelRenderer(view, caption,
 				pickingType, pickingID);
 		captionLayout.setRenderer(captionRenderer);
 

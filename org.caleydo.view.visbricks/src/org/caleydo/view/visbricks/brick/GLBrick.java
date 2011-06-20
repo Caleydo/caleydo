@@ -1045,8 +1045,10 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 					contentGroupSelectionManager.getSelectionType(), getGroup()
 							.getID())) {
 				brickLayout.setShowHandles(true);
+				brickLayout.setSelected(true);
 				visBricks.updateConnectionLinesBetweenDimensionGroups();
 			} else {
+				brickLayout.setSelected(false);
 				brickLayout.setShowHandles(false);
 			}
 			templateRenderer.updateLayout();

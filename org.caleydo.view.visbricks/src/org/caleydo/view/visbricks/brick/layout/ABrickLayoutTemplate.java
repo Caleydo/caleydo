@@ -3,10 +3,12 @@ package org.caleydo.view.visbricks.brick.layout;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.LayoutTemplate;
+import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
@@ -30,6 +32,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	protected HashSet<EContainedViewType> validViewTypes;
 	protected EContainedViewType defaultViewType;
 	protected ArrayList<IViewTypeChangeListener> viewTypeChangeListeners;
+	protected BorderedAreaRenderer borderedAreaRenderer;
 
 	public ABrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup) {
 		this.brick = brick;
@@ -37,6 +40,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 		showHandles = false;
 		validViewTypes = new HashSet<EContainedViewType>();
 		viewTypeChangeListeners = new ArrayList<IViewTypeChangeListener>();
+		borderedAreaRenderer = new BorderedAreaRenderer();
 		// setValidViewTypes();
 		setPixelGLConverter(brick.getParentGLCanvas().getPixelGLConverter());
 		// registerPickingListeners();
@@ -224,7 +228,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 
 		return sum;
 	}
-	
+
 	protected int calcSumPixelHeight(ArrayList<ElementLayout> elementLayouts) {
 		int sum = 0;
 		for (ElementLayout elementLayout : elementLayouts) {
@@ -243,7 +247,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 
 		return sum;
 	}
-	
+
 	protected int getMaxPixelHeight(ArrayList<ElementLayout> elementLayouts) {
 		int max = Integer.MIN_VALUE;
 		for (ElementLayout elementLayout : elementLayouts) {
@@ -255,13 +259,13 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 							.getPixelHeightForGLHeight(glSize);
 				}
 			}
-			if(max < pixelSize)
+			if (max < pixelSize)
 				max = pixelSize;
 		}
 
 		return max;
 	}
-	
+
 	protected int getMaxPixelWidth(ArrayList<ElementLayout> elementLayouts) {
 		int max = Integer.MIN_VALUE;
 		for (ElementLayout elementLayout : elementLayouts) {
@@ -273,11 +277,28 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 							.getPixelWidthForGLWidth(glSize);
 				}
 			}
-			if(max < pixelSize)
+			if (max < pixelSize)
 				max = pixelSize;
 		}
 
 		return max;
+	}
+
+	public void setSelected(boolean selected) {
+		if (selected) {
+			float[] color = new float[4];
+			float[] selectionColor = SelectionType.SELECTION.getColor();
+			color[0] = selectionColor[0] * 0.4f
+					+ BorderedAreaRenderer.DEFAULT_COLOR[0] * 0.6f;
+			color[1] = selectionColor[1] * 0.4f
+					+ BorderedAreaRenderer.DEFAULT_COLOR[1] * 0.6f;
+			color[2] = selectionColor[2] * 0.4f
+					+ BorderedAreaRenderer.DEFAULT_COLOR[2] * 0.6f;
+			color[3] = 1;
+			borderedAreaRenderer.setColor(color);
+		} else {
+			borderedAreaRenderer.setColor(BorderedAreaRenderer.DEFAULT_COLOR);
+		}
 	}
 
 }

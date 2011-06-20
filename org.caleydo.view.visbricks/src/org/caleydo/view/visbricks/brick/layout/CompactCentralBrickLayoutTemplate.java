@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
-import org.caleydo.view.visbricks.brick.ui.BorderedAreaRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
 public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
@@ -54,7 +54,7 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseColumn.setFrameColor(0, 1, 0, 1);
 		// baseColumn.setDebug(true);
 
-		baseRow.setRenderer(new BorderedAreaRenderer(brick));
+		baseRow.setRenderer(borderedAreaRenderer);
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelGLConverter(pixelGLConverter);

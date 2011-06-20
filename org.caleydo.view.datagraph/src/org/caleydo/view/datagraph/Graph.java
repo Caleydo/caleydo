@@ -67,6 +67,7 @@ public class Graph {
 			node1Edges = new HashSet<Object>();
 		}
 		node1Edges.add(node2);
+		nodeConnections.put(node1, node1Edges);
 
 		Set<Object> node2Edges = nodeConnections.get(node2);
 
@@ -74,5 +75,6 @@ public class Graph {
 			node2Edges = new HashSet<Object>();
 		}
 		node2Edges.add(node1);
+		nodeConnections.put(node2, node2Edges);
 	}
 }

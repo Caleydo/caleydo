@@ -6,7 +6,8 @@ Bundle-Version: 2.0
 Bundle-Activator: org.caleydo.view.datagraph.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.caleydo.core;bundle-version="2.0.0"
+ org.caleydo.core;bundle-version="2.0.0",
+ org.caleydo.view.visbricks;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: Graz University of Technology

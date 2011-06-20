@@ -8,13 +8,13 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
-import org.caleydo.view.visbricks.brick.ui.BorderedAreaRenderer;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
@@ -98,7 +98,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// fuelBarLayout.setPixelSizeY(FUEL_BAR_HEIGHT_PIXELS);
 		// fuelBarLayout.setRenderer(new FuelBarRenderer(brick));
 
-		baseRow.setRenderer(new BorderedAreaRenderer(brick));
+		baseRow.setRenderer(borderedAreaRenderer);
 
 		footerBar = createFooterBar();
 

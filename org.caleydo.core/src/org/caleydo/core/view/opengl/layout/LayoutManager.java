@@ -5,9 +5,9 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
- * The LayoutManager is responsible for rendering all the elements specified in its set {@link #template}.
- * It contains a reference to the view frustum and initializes the calculation of spacing once the view
- * frustum is changed.
+ * The LayoutManager is responsible for rendering all the elements specified in its set {@link #template}. It
+ * contains a reference to the view frustum and initializes the calculation of spacing once the view frustum
+ * is changed.
  * 
  * @author Alexander Lex
  */
@@ -22,10 +22,10 @@ public class LayoutManager {
 	public LayoutManager(ViewFrustum viewFrustum) {
 		this.viewFrustum = viewFrustum;
 	}
-	
+
 	public void setViewFrustum(ViewFrustum viewFrustum) {
 		this.viewFrustum = viewFrustum;
-		if(template != null)
+		if (template != null)
 			updateLayout();
 	}
 
@@ -44,7 +44,7 @@ public class LayoutManager {
 		totalHeight = viewFrustum.getTop() - viewFrustum.getBottom();
 
 		template.setStaticLayouts();
-		template.calculateScales(0, 0, totalWidth, totalHeight);
+		template.calculateScales(viewFrustum.getLeft(), viewFrustum.getBottom(), totalWidth, totalHeight);
 
 		template.getBaseLayoutElement().updateSpacings();
 	}

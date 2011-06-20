@@ -1,7 +1,6 @@
 package org.caleydo.view.datagraph;
 
 import java.awt.Rectangle;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import javax.media.opengl.GL2;
@@ -16,9 +15,9 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
 
 /**
@@ -30,6 +29,8 @@ import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
 public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.datagraph";
+
+	public final static int BOUNDS_SPACING_PIXELS = 30;
 
 	private GLDataGraphKeyListener glKeyListener;
 	private boolean useDetailLevel = false;
@@ -47,11 +48,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		dataGraph = new Graph();
 		forceDirectedGraphLayout = new ForceDirectedGraphLayout();
 
-		Object o1 = new Object();
-		Object o2 = new Object();
-		Object o3 = new Object();
-		Object o4 = new Object();
-		Object o5 = new Object();
+		Object o1 = new DataNode(forceDirectedGraphLayout, this);
+		Object o2 = new DataNode(forceDirectedGraphLayout, this);
+		Object o3 = new DataNode(forceDirectedGraphLayout, this);
+		Object o4 = new DataNode(forceDirectedGraphLayout, this);
+		Object o5 = new DataNode(forceDirectedGraphLayout, this);
 
 		dataGraph.addNode(o1);
 		dataGraph.addNode(o2);
@@ -179,16 +180,49 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		forceDirectedGraphLayout.setGraph(dataGraph);
 		Rectangle2D rect = new Rectangle();
-		rect.setFrame(viewFrustum.getLeft(), viewFrustum.getBottom(),
-				viewFrustum.getWidth(), viewFrustum.getHeight());
+		PixelGLConverter pixelGLConverter = parentGLCanvas
+				.getPixelGLConverter();
+
+		rect.setFrame(
+				BOUNDS_SPACING_PIXELS,
+				BOUNDS_SPACING_PIXELS,
+				pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth())
+						- 2 * BOUNDS_SPACING_PIXELS,
+				pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
+						.getHeight()) - 2 * BOUNDS_SPACING_PIXELS);
 		forceDirectedGraphLayout.layout(rect);
 
 		for (Object node : dataGraph.getNodes()) {
-			Point2D position = forceDirectedGraphLayout.getNodePosition(node);
+			// Point2D position = forceDirectedGraphLayout.getNodePosition(node,
+			// true);
+			//
+			// float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+			// .getX());
+			// float y = pixelGLConverter.getGLHeightForPixelHeight((int)
+			// position
+			// .getY());
+			//
+			// gl.glColor3f(0, 0, 0);
+			//
+			// gl.glBegin(GL2.GL_QUADS);
+			// gl.glVertex3f(x - 0.05f, y - 0.05f, 0);
+			// gl.glVertex3f(x + 0.05f, y - 0.05f, 0);
+			// gl.glVertex3f(x + 0.05f, y + 0.05f, 0);
+			// gl.glVertex3f(x - 0.05f, y + 0.05f, 0);
+			//
+			// gl.glEnd();
 
-			GLHelperFunctions.drawPointAt(gl, (float) position.getX(),
-					(float) position.getY(), 0);
+			((DataNode) node).render(gl);
+
+			// GLHelperFunctions.drawPointAt(gl, (float) pixelGLConverter
+			// .getGLWidthForPixelWidth((int) position.getX()),
+			// (float) pixelGLConverter
+			// .getGLHeightForPixelHeight((int) position.getY()),
+			// 0);
 		}
+
+		// GLHelperFunctions.drawPointAt(gl, (float) 0,
+		// (float) viewFrustum.getHeight(), 0);
 
 		gl.glEndList();
 

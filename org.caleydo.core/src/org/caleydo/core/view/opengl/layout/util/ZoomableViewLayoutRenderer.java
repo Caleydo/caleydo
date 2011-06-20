@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.layout;
+package org.caleydo.core.view.opengl.layout.util;
 
 import java.awt.Point;
 

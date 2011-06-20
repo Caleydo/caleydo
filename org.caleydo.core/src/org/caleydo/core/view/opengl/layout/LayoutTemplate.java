@@ -48,8 +48,8 @@ public class LayoutTemplate {
 	 */
 	void calculateScales(float bottom, float left, float totalWidth, float totalHeight) {
 
-		// baseElementLayout.setTransformX(left);
-		// baseElementLayout.setTransformY(bottom);
+		baseElementLayout.setTranslateX(left);
+		baseElementLayout.setTranslateY(bottom);
 		baseElementLayout.calculateScales(totalWidth, totalHeight);
 		if (baseElementLayout instanceof LayoutContainer)
 			((LayoutContainer) baseElementLayout).calculateTransforms(bottom, left, totalHeight, totalWidth);

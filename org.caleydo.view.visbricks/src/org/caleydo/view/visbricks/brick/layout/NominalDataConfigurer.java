@@ -11,7 +11,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.layout.ZoomableViewLayoutRenderer;
+import org.caleydo.core.view.opengl.layout.util.ZoomableViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.brick.EContainedViewType;

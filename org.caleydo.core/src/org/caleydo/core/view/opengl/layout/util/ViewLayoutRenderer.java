@@ -1,9 +1,10 @@
-package org.caleydo.core.view.opengl.layout;
+package org.caleydo.core.view.opengl.layout.util;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 /**
  * A sub-class for {@link LayoutRenderer} intended to render whole {@link AGLView}s. The main contract here,

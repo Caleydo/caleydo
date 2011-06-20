@@ -13,12 +13,12 @@ import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
-import org.caleydo.view.visbricks.brick.ui.CaptionRenderer;
 import org.caleydo.view.visbricks.brick.ui.DimensionBarRenderer;
 import org.caleydo.view.visbricks.brick.ui.FuelBarRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
@@ -63,7 +63,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		CaptionRenderer captionRenderer = new CaptionRenderer(
+		LabelRenderer captionRenderer = new LabelRenderer(
 				layoutTemplate.getDimensionGroup().getVisBricksView(),
 				set.getLabel(), EPickingType.DIMENSION_GROUP, layoutTemplate
 						.getDimensionGroup().getID());
@@ -134,7 +134,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		CaptionRenderer captionRenderer = new CaptionRenderer(
+		LabelRenderer captionRenderer = new LabelRenderer(
 				layoutTemplate.getDimensionGroup().getVisBricksView(),
 				set.getLabel(), EPickingType.DIMENSION_GROUP, layoutTemplate
 						.getDimensionGroup().getID());
