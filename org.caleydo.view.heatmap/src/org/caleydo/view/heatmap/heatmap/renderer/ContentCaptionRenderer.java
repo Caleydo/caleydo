@@ -33,8 +33,10 @@ public class ContentCaptionRenderer extends AContentRenderer {
 			}
 
 			fieldHeight = contentSpacing.getFieldHeight(contentID);
+			
 			if (fieldHeight < HeatMapRenderStyle.MIN_FIELD_HEIGHT_FOR_CAPTION)
 				continue;
+			
 			try {
 				yPosition = contentSpacing.getYDistances().get(
 						contentVA.indexOf(contentID));
@@ -63,6 +65,9 @@ public class ContentCaptionRenderer extends AContentRenderer {
 
 		if (spacing < 0)
 			spacing = 0;
+		//FIXME just for karl big captions
+		if (spacing >0.1f)
+			spacing = 0.1f;
 
 		heatMap.getTextRenderer().renderTextInBounds(gl, sLabel, xOrigin, yOrigin, 0, x,
 				spacing);

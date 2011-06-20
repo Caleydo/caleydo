@@ -140,7 +140,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	 * will not be rendered
 	 */
 	private boolean bSkipLevel2 = false;
-	private final static int MIN_SAMPLES_SKIP_LEVEL_2 = 40;
+	private final static int MIN_SAMPLES_SKIP_LEVEL_2 = 120;
 
 	private ColorMapping colorMapper;
 
