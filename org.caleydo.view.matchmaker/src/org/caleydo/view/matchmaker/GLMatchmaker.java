@@ -46,6 +46,7 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.matchmaker.event.UseBandBundlingEvent;
 import org.caleydo.view.matchmaker.event.UseSortingEvent;
@@ -144,6 +145,8 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		// contentVA = useCase.getContentVA(ContentVAType.CONTENT);
 		// storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
 
+		textRenderer = new CaleydoTextRenderer(24);
+		
 		compareViewStateController = new CompareViewStateController(this, uniqueID,
 				textRenderer, textureManager, pickingManager, glMouseListener,
 				contextMenu, dataDomain);
