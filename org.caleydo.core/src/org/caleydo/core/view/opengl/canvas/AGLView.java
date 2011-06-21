@@ -158,9 +158,6 @@ public abstract class AGLView
 	private float previousZoomScale = 1.0f;
 	private float currentZoomScale = 1.0f;
 
-	private float relativeZoomCenterX = 0.5f;
-	private float relativeZoomCenterY = 0.5f;
-
 	private ScrollBar hScrollBar;
 	private ScrollBar vScrollBar;
 	private LayoutManager hScrollBarLayoutManager;

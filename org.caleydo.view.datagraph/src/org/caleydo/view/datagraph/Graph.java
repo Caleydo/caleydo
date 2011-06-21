@@ -7,19 +7,23 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-public class Graph {
-	Vector<Object> nodes = null;
-	Map<Object, Set<Object>> nodeConnections = null;
+import org.caleydo.core.util.collection.Pair;
+
+public class Graph<NodeType extends IDataGraphNode> {
+	Vector<NodeType> nodes = null;
+	Map<NodeType, Set<NodeType>> nodeConnections = null;
+	Set<Pair<NodeType, NodeType>> edges;
 
 	// TODO custom constructor has to be created
 
 	public Graph() {
-		nodes = new Vector<Object>();
-		nodeConnections = new HashMap<Object, Set<Object>>();
+		nodes = new Vector<NodeType>();
+		nodeConnections = new HashMap<NodeType, Set<NodeType>>();
+		edges = new HashSet<Pair<NodeType, NodeType>>();
 	}
 
 	// node sets
-	public Collection<Object> getNodes() {
+	public Collection<NodeType> getNodes() {
 		return nodes;
 	}
 
@@ -30,11 +34,11 @@ public class Graph {
 		return nodes.size();
 	}
 
-	public boolean incident(Object node1, Object node2) {
+	public boolean incident(NodeType node1, NodeType node2) {
 		if (nodeConnections == null)
 			return false;
 
-		Set<Object> connections = nodeConnections.get(node1);
+		Set<NodeType> connections = nodeConnections.get(node1);
 		if (connections == null)
 			return false;
 
@@ -50,31 +54,37 @@ public class Graph {
 		return true;
 	}
 
-	public void addNode(Object node) {
+	public void addNode(NodeType node) {
 		if (nodes.contains(node))
 			return;
 
 		nodes.add(node);
 	}
 
-	public void addEdge(Object node1, Object node2) {
+	public void addEdge(NodeType node1, NodeType node2) {
 		if (!nodes.contains(node1) || !nodes.contains(node2))
 			return;
 
-		Set<Object> node1Edges = nodeConnections.get(node1);
+		Set<NodeType> node1Edges = nodeConnections.get(node1);
 
 		if (node1Edges == null) {
-			node1Edges = new HashSet<Object>();
+			node1Edges = new HashSet<NodeType>();
 		}
 		node1Edges.add(node2);
 		nodeConnections.put(node1, node1Edges);
 
-		Set<Object> node2Edges = nodeConnections.get(node2);
+		Set<NodeType> node2Edges = nodeConnections.get(node2);
 
 		if (node2Edges == null) {
-			node2Edges = new HashSet<Object>();
+			node2Edges = new HashSet<NodeType>();
 		}
 		node2Edges.add(node1);
 		nodeConnections.put(node2, node2Edges);
+
+		edges.add(new Pair<NodeType, NodeType>(node1, node2));
+	}
+
+	public Set<Pair<NodeType, NodeType>> getAllEdges() {
+		return edges;
 	}
 }

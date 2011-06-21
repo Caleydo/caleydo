@@ -1,7 +1,10 @@
 package org.caleydo.view.datagraph;
 
 import java.awt.Rectangle;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.media.opengl.GL2;
 
@@ -11,6 +14,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -18,6 +22,8 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
 
 /**
@@ -35,8 +41,13 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private GLDataGraphKeyListener glKeyListener;
 	private boolean useDetailLevel = false;
 
-	private Graph dataGraph;
-	private ForceDirectedGraphLayout forceDirectedGraphLayout;
+	private Graph<IDataGraphNode> dataGraph;
+	private ForceDirectedGraphLayout graphLayout;
+	private int maxNodeWidthPixels;
+	private int maxNodeHeightPixels;
+	private DragAndDropController dragAndDropController;
+	private boolean applyAutomaticLayout;
+	private Map<IDataGraphNode, Pair<Float, Float>> relativeNodePositions;
 
 	/**
 	 * Constructor.
@@ -45,14 +56,16 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		super(glCanvas, viewFrustum, true);
 		viewType = GLDataGraph.VIEW_ID;
 		glKeyListener = new GLDataGraphKeyListener();
-		dataGraph = new Graph();
-		forceDirectedGraphLayout = new ForceDirectedGraphLayout();
+		dataGraph = new Graph<IDataGraphNode>();
+		graphLayout = new ForceDirectedGraphLayout();
+		relativeNodePositions = new HashMap<IDataGraphNode, Pair<Float, Float>>();
+		dragAndDropController = new DragAndDropController(this);
 
-		Object o1 = new DataNode(forceDirectedGraphLayout, this);
-		Object o2 = new DataNode(forceDirectedGraphLayout, this);
-		Object o3 = new DataNode(forceDirectedGraphLayout, this);
-		Object o4 = new DataNode(forceDirectedGraphLayout, this);
-		Object o5 = new DataNode(forceDirectedGraphLayout, this);
+		DataNode o1 = new DataNode(graphLayout, this, dragAndDropController, 0);
+		DataNode o2 = new DataNode(graphLayout, this, dragAndDropController, 1);
+		DataNode o3 = new DataNode(graphLayout, this, dragAndDropController, 2);
+		DataNode o4 = new DataNode(graphLayout, this, dragAndDropController, 3);
+		DataNode o5 = new DataNode(graphLayout, this, dragAndDropController, 4);
 
 		dataGraph.addNode(o1);
 		dataGraph.addNode(o2);
@@ -65,11 +78,24 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		dataGraph.addEdge(o3, o4);
 		dataGraph.addEdge(o5, o4);
 		dataGraph.addEdge(o3, o2);
+
+		maxNodeWidthPixels = Integer.MIN_VALUE;
+		maxNodeHeightPixels = Integer.MIN_VALUE;
+
+		for (IDataGraphNode node : dataGraph.getNodes()) {
+			if (node.getHeightPixels() > maxNodeHeightPixels)
+				maxNodeHeightPixels = node.getHeightPixels();
+
+			if (node.getWidthPixels() > maxNodeWidthPixels)
+				maxNodeWidthPixels = node.getWidthPixels();
+		}
+
+		applyAutomaticLayout = true;
 	}
 
 	@Override
 	public void init(GL2 gl) {
-
+		textRenderer = new CaleydoTextRenderer(24);
 	}
 
 	@Override
@@ -162,6 +188,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	public void display(GL2 gl) {
 		gl.glCallList(iGLDisplayListToCall);
 
+		dragAndDropController.handleDragging(gl, glMouseListener);
+
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
 
@@ -178,54 +206,74 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
-		forceDirectedGraphLayout.setGraph(dataGraph);
-		Rectangle2D rect = new Rectangle();
 		PixelGLConverter pixelGLConverter = parentGLCanvas
 				.getPixelGLConverter();
 
-		rect.setFrame(
-				BOUNDS_SPACING_PIXELS,
-				BOUNDS_SPACING_PIXELS,
-				pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth())
-						- 2 * BOUNDS_SPACING_PIXELS,
-				pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
-						.getHeight()) - 2 * BOUNDS_SPACING_PIXELS);
-		forceDirectedGraphLayout.layout(rect);
+		int drawingAreaWidth = pixelGLConverter
+				.getPixelWidthForGLWidth(viewFrustum.getWidth())
+				- 2
+				* BOUNDS_SPACING_PIXELS - maxNodeWidthPixels;
+		int drawingAreaHeight = pixelGLConverter
+				.getPixelHeightForGLHeight(viewFrustum.getHeight())
+				- 2
+				* BOUNDS_SPACING_PIXELS - maxNodeHeightPixels;
+		if (applyAutomaticLayout) {
+			graphLayout.setGraph(dataGraph);
+			Rectangle2D rect = new Rectangle();
 
-		for (Object node : dataGraph.getNodes()) {
-			// Point2D position = forceDirectedGraphLayout.getNodePosition(node,
-			// true);
-			//
-			// float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
-			// .getX());
-			// float y = pixelGLConverter.getGLHeightForPixelHeight((int)
-			// position
-			// .getY());
-			//
-			// gl.glColor3f(0, 0, 0);
-			//
-			// gl.glBegin(GL2.GL_QUADS);
-			// gl.glVertex3f(x - 0.05f, y - 0.05f, 0);
-			// gl.glVertex3f(x + 0.05f, y - 0.05f, 0);
-			// gl.glVertex3f(x + 0.05f, y + 0.05f, 0);
-			// gl.glVertex3f(x - 0.05f, y + 0.05f, 0);
-			//
-			// gl.glEnd();
+			rect.setFrame(BOUNDS_SPACING_PIXELS + (maxNodeWidthPixels / 2.0f),
+					BOUNDS_SPACING_PIXELS + (maxNodeHeightPixels / 2.0f),
+					drawingAreaWidth, drawingAreaHeight);
+			graphLayout.layout(rect);
+		} else {
+			for(IDataGraphNode node : dataGraph.getNodes()) {
+				Pair<Float, Float> relativePosition = relativeNodePositions.get(node);
+				
+			}
+		}
+
+		for (IDataGraphNode node : dataGraph.getNodes()) {
+			Point2D position = graphLayout.getNodePosition(node, true);
+			float relativePosX = (float) position.getX() / drawingAreaWidth;
+			float relativePosY = (float) position.getY() / drawingAreaHeight;
+			relativeNodePositions.put(node, new Pair<Float, Float>(
+					relativePosX, relativePosY));
 
 			((DataNode) node).render(gl);
 
-			// GLHelperFunctions.drawPointAt(gl, (float) pixelGLConverter
-			// .getGLWidthForPixelWidth((int) position.getX()),
-			// (float) pixelGLConverter
-			// .getGLHeightForPixelHeight((int) position.getY()),
-			// 0);
 		}
-
-		// GLHelperFunctions.drawPointAt(gl, (float) 0,
-		// (float) viewFrustum.getHeight(), 0);
-
+		renderEdges(gl);
 		gl.glEndList();
 
+	}
+
+	private void renderEdges(GL2 gl) {
+
+		PixelGLConverter pixelGLConverter = parentGLCanvas
+				.getPixelGLConverter();
+
+		gl.glPushAttrib(GL2.GL_LINE_BIT);
+		gl.glLineWidth(2);
+		gl.glBegin(GL2.GL_LINES);
+		for (Pair<IDataGraphNode, IDataGraphNode> edge : dataGraph
+				.getAllEdges()) {
+			Point2D position1 = graphLayout.getNodePosition(edge.getFirst());
+			Point2D position2 = graphLayout.getNodePosition(edge.getSecond());
+
+			float x1 = pixelGLConverter.getGLWidthForPixelWidth((int) position1
+					.getX());
+			float x2 = pixelGLConverter.getGLWidthForPixelWidth((int) position2
+					.getX());
+			float y1 = pixelGLConverter
+					.getGLHeightForPixelHeight((int) position1.getY());
+			float y2 = pixelGLConverter
+					.getGLHeightForPixelHeight((int) position2.getY());
+
+			gl.glVertex3f(x1, y1, -0.5f);
+			gl.glVertex3f(x2, y2, -0.5f);
+		}
+		gl.glEnd();
+		gl.glPopAttrib();
 	}
 
 	@Override
@@ -302,6 +350,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	public void handleUpdateView() {
 
 		setDisplayListDirty();
+	}
+
+	public void setApplyAutomaticLayout(boolean applyAutomaticLayout) {
+		this.applyAutomaticLayout = applyAutomaticLayout;
 	}
 
 }

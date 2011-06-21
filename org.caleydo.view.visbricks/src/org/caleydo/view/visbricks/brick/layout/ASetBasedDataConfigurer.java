@@ -63,9 +63,9 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		LabelRenderer captionRenderer = new LabelRenderer(
-				layoutTemplate.getDimensionGroup().getVisBricksView(),
-				set.getLabel(), EPickingType.DIMENSION_GROUP, layoutTemplate
+		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
+				.getDimensionGroup().getVisBricksView(), set.getLabel(),
+				EPickingType.DIMENSION_GROUP, layoutTemplate
 						.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
@@ -134,9 +134,9 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		LabelRenderer captionRenderer = new LabelRenderer(
-				layoutTemplate.getDimensionGroup().getVisBricksView(),
-				set.getLabel(), EPickingType.DIMENSION_GROUP, layoutTemplate
+		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
+				.getDimensionGroup().getVisBricksView(), set.getLabel(),
+				EPickingType.DIMENSION_GROUP, layoutTemplate
 						.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
@@ -322,7 +322,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		// ratioSpacingLayoutX.setDebug(true);
 		ratioSpacingLayoutX.setRatioSizeX(1);
 		ratioSpacingLayoutX.setRatioSizeY(0);
-		
+
 		toolBarElements.add(ratioSpacingLayoutX);
 
 		// layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);

@@ -13,4 +13,8 @@ public interface IDataGraphNode extends IDraggable {
 	
 	public void render(GL2 gl);
 	
+	public int getHeightPixels();
+	
+	public int getWidthPixels();
+	
 }

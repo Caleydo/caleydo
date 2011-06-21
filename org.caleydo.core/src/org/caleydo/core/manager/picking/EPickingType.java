@@ -180,5 +180,7 @@ public enum EPickingType {
 	// tag cloud
 	TAG_DIMENSION_CHANGE,
 	
-	ZOOM_SCROLLBAR;
+	ZOOM_SCROLLBAR,
+	
+	DATA_GRAPH_NODE;
 }

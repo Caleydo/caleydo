@@ -14,7 +14,7 @@ public class ForceDirectedGraphLayout {
 	// http://www.cg.tuwien.ac.at/courses/InfoVis/HallOfFame/2005/07_Pfeffer_SpringEmbedders/pfeffer05_files/Source.pdf
 	
 	// data
-	protected Graph graph = null;
+	protected Graph<IDataGraphNode> graph = null;
 		
 	protected Map<Object, Point2D> nodePositions = null;
 	
@@ -22,7 +22,7 @@ public class ForceDirectedGraphLayout {
 	
 	protected Rectangle2D layoutingArea = null;
 	
-	protected Collection<Object> nodesToLayout = null;
+	protected Collection<IDataGraphNode> nodesToLayout = null;
 	
 	// calculation parameters
 	Map<Object, Map<Object, Double>> distanceMatrix = null;
@@ -54,7 +54,7 @@ public class ForceDirectedGraphLayout {
 	//###################
 	//## layout source ##
 	//###################
-	public void setGraph(Graph graph) {
+	public void setGraph(Graph<IDataGraphNode> graph) {
 		this.graph = graph;
 		
 		initializeNodes = true;
@@ -134,8 +134,8 @@ public class ForceDirectedGraphLayout {
 		
 		if (!isDataAvailable()) return;
 		// initialize with available edges
-		for (Object node1 : graph.getNodes()) {
-			for (Object node2 : graph.getNodes()) {
+		for (IDataGraphNode node1 : graph.getNodes()) {
+			for (IDataGraphNode node2 : graph.getNodes()) {
 				if (graph.incident(node1, node2)) {
 					setDistance(node1, node2, 1.0);
 				}
@@ -143,9 +143,9 @@ public class ForceDirectedGraphLayout {
 		}
 		
 		// calculate distances
-		for (Object nodek : graph.getNodes()) {
-			for (Object nodei : graph.getNodes()) {
-				for (Object nodej : graph.getNodes()) {
+		for (IDataGraphNode nodek : graph.getNodes()) {
+			for (IDataGraphNode nodei : graph.getNodes()) {
+				for (IDataGraphNode nodej : graph.getNodes()) {
 					setDistance(nodei, nodej, Math.min(
 						getDistance(nodei, nodej),
 						getDistance(nodei, nodek) + getDistance(nodek, nodej)
@@ -439,7 +439,7 @@ public class ForceDirectedGraphLayout {
 		}
 	}
 	
-	protected Collection<Object> getNodesToLayout() {
+	protected Collection<IDataGraphNode> getNodesToLayout() {
 		return graph.getNodes();
 	}
 	
@@ -596,7 +596,7 @@ public class ForceDirectedGraphLayout {
 	// nodes
 	public void setNodePosition(Object node, Point2D position) {
 		// TODO Auto-generated method stub
-		
+		nodePositions.put(node, position);
 	}
 
 	//--- getter ---
