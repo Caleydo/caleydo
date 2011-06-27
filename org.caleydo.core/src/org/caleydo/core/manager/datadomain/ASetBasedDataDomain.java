@@ -2,6 +2,7 @@ package org.caleydo.core.manager.datadomain;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -22,10 +23,12 @@ import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.IDimensionGroupData;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
@@ -68,6 +71,7 @@ public abstract class ASetBasedDataDomain
 	private ReplaceStorageVAInUseCaseListener replaceStorageVirtualArrayInUseCaseListener;
 	private ContentVAUpdateListener contentVAUpdateListener;
 	private StorageVAUpdateListener storageVAUpdateListener;
+	protected java.util.Set<IDimensionGroupData> dimensionGroups;
 
 	/** The set which is currently loaded and used inside the views for this use case. */
 	protected Set set;
@@ -115,6 +119,8 @@ public abstract class ASetBasedDataDomain
 	}
 
 	private void init() {
+		
+		dimensionGroups = new HashSet<IDimensionGroupData>();
 
 		assignIDCategories();
 		if (contentIDCategory == null || storageIDCategory == null) {
@@ -807,4 +813,20 @@ public abstract class ASetBasedDataDomain
 //	public RelationAnalyzer getContentRelationAnalyzer() {
 //		return contentRelationAnalyzer;
 //	}
+	
+	
+	@Override
+	public java.util.Set<IDimensionGroupData> getDimensionGroups() {
+		return dimensionGroups;
+	}
+	
+	@Override
+	public void setDimensionGroups(java.util.Set<IDimensionGroupData> dimensionGroups) {
+		this.dimensionGroups = dimensionGroups;
+	}
+	
+	@Override
+	public void addDimensionGroup(IDimensionGroupData dimensionGroup) {
+		dimensionGroups.add(dimensionGroup);
+	}
 }

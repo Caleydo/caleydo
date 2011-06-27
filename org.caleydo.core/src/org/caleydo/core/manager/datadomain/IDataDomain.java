@@ -3,6 +3,7 @@ package org.caleydo.core.manager.datadomain;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;
+import org.caleydo.core.data.virtualarray.IDimensionGroupData;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
@@ -52,5 +53,24 @@ public interface IDataDomain {
 
 	/** Gets the name of the boots-trap xml-file this useCase was or should be loaded */
 	public void setFileName(String bootstrapFileName);
+
+	/**
+	 * @return The dimension groups that have been created for this IDataDomain object (data set).
+	 */
+	public Set<IDimensionGroupData> getDimensionGroups();
+	
+	/**
+	 * Sets the dimension groups for this IDataDomain object (data set).
+	 * 
+	 * @param dimensionGroups
+	 */
+	public void setDimensionGroups(Set<IDimensionGroupData> dimensionGroups);
+	
+	/**
+	 * Adds a dimension group to this IDataDomain object (data set).
+	 * 
+	 * @param dimensionGroup
+	 */
+	public void addDimensionGroup(IDimensionGroupData dimensionGroup);
 
 }
