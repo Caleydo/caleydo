@@ -5,12 +5,12 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.virtualarray.IDimensionGroupData;
 import org.caleydo.core.manager.picking.APickingListener;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.view.visbricks.brick.data.IDimensionGroupData;
 
 public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	

@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks.brick.data;
+package org.caleydo.datadomain.pathway.data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,8 @@ import java.util.Set;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.IDimensionGroupData;
+import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
@@ -19,8 +21,6 @@ import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
-import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
-import org.caleydo.view.visbricks.brick.layout.PathwayDataConfigurer;
 
 public class PathwayDimensionGroupData extends AUniqueObject implements
 		IDimensionGroupData {
@@ -28,7 +28,6 @@ public class PathwayDimensionGroupData extends AUniqueObject implements
 	private IDataDomain dataDomain;
 	private ASetBasedDataDomain mappingDataDomain;
 	private ArrayList<PathwayGraph> pathways;
-	private PathwayDataConfigurer pathwayDataConfigurer;
 
 	{
 		uniqueID = GeneralManager.get().getIDCreator()
@@ -41,13 +40,12 @@ public class PathwayDimensionGroupData extends AUniqueObject implements
 		this.dataDomain = dataDomain;
 		this.mappingDataDomain = mappingDataDomain;
 		this.pathways = pathways;
-		pathwayDataConfigurer = new PathwayDataConfigurer();
 	}
 
 	@Override
-	public ContentVirtualArray getSummaryBrickVA() {
+	public ContentVirtualArray getSummaryVA() {
 		// TODO: Is this a good way?
-		ArrayList<ContentVirtualArray> contentVAs = getSegmentBrickVAs();
+		ArrayList<ContentVirtualArray> contentVAs = getSegmentVAs();
 		ArrayList<Integer> summaryBrickIDs = new ArrayList<Integer>();
 		for (ContentVirtualArray contentVA : contentVAs) {
 			summaryBrickIDs.addAll(contentVA.getVirtualArray());
@@ -63,7 +61,7 @@ public class PathwayDimensionGroupData extends AUniqueObject implements
 	}
 
 	@Override
-	public ArrayList<ContentVirtualArray> getSegmentBrickVAs() {
+	public ArrayList<ContentVirtualArray> getSegmentVAs() {
 
 		ArrayList<ContentVirtualArray> contentVAs = new ArrayList<ContentVirtualArray>();
 
@@ -112,11 +110,6 @@ public class PathwayDimensionGroupData extends AUniqueObject implements
 
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-	}
-
-	@Override
-	public IBrickConfigurer getBrickConfigurer() {
-		return pathwayDataConfigurer;
 	}
 
 	public ArrayList<PathwayGraph> getPathways() {
@@ -187,9 +180,9 @@ public class PathwayDimensionGroupData extends AUniqueObject implements
 	}
 
 	@Override
-	public List<IBrickData> getSegmentBrickData() {
+	public List<ISegmentData> getSegmentData() {
 
-		List<IBrickData> segmentBrickData = new ArrayList<IBrickData>();
+		List<ISegmentData> segmentBrickData = new ArrayList<ISegmentData>();
 
 		int groupID = 0;
 		int startIndex = 0;
@@ -233,24 +226,13 @@ public class PathwayDimensionGroupData extends AUniqueObject implements
 			group.setSize(groupSize);
 			ContentVirtualArray contentVA = new ContentVirtualArray("CONTENT",
 					ids);
-			segmentBrickData.add(new PathwayBrickData(dataDomain,
+			segmentBrickData.add(new PathwaySegmentData(dataDomain,
 					mappingDataDomain, contentVA, group, pathway, this));
 			startIndex += groupSize;
 			groupID++;
 		}
 
 		return segmentBrickData;
-	}
-
-	@Override
-	public IBrickData getSummaryBrickData() {
-		return new PathwayBrickData(dataDomain, mappingDataDomain,
-				getSummaryBrickVA(), new Group(), null, this);
-	}
-
-	@Override
-	public IBrickSortingStrategy getDefaultSortingStrategy() {
-		return new AlphabeticalDataLabelSortingStrategy();
 	}
 
 }

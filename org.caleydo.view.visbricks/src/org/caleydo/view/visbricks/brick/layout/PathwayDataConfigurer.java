@@ -15,10 +15,10 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.ZoomableViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.pathway.data.PathwaySegmentData;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
-import org.caleydo.view.visbricks.brick.data.PathwayBrickData;
 import org.caleydo.view.visbricks.brick.ui.CompactPathwayRenderer;
 import org.caleydo.view.visbricks.brick.ui.PathwaysSummaryRenderer;
 import org.caleydo.view.visbricks.brick.viewcreation.PathwayCreator;
@@ -180,7 +180,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		containedViewRenderers.put(EContainedViewType.PATHWAY_VIEW,
 				pathwayRenderer);
 
-		int numPathways = brick.getDimensionGroup().getDimensionGroupData()
+		int numPathways = brick.getDimensionGroup().getBrickDimensionGroupData()
 				.getGroups().size();
 		LayoutRenderer pathwaysSummaryRenderer = new PathwaysSummaryRenderer(
 				brick, "Pathways: " + numPathways, EPickingType.BRICK,
@@ -194,8 +194,8 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY_COMPACT,
 				pathwaysSummaryCompactRenderer);
 		
-		if (brick.getBrickData() instanceof PathwayBrickData) {
-			PathwayBrickData brickData = (PathwayBrickData) brick
+		if (brick.getBrickData() instanceof PathwaySegmentData) {
+			PathwaySegmentData brickData = (PathwaySegmentData) brick
 					.getBrickData();
 			if (brickData.getPathway() != null) {
 				EPathwayDatabaseType dataBaseType = brickData.getPathway()

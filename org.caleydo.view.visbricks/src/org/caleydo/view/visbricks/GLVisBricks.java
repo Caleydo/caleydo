@@ -20,6 +20,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.IDimensionGroupData;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -54,7 +55,8 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
-import org.caleydo.view.visbricks.brick.data.IDimensionGroupData;
+import org.caleydo.view.visbricks.brick.data.BrickDimensionGroupDataCreator;
+import org.caleydo.view.visbricks.brick.data.IBrickDimensionGroupData;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupSpacingRenderer;
@@ -1199,11 +1201,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
 				.getDimensionGroups();
 
+		BrickDimensionGroupDataCreator creator = new BrickDimensionGroupDataCreator();
+
 		for (IDimensionGroupData data : dimensionGroupData) {
 
 			boolean dimensionGroupExists = false;
 			for (DimensionGroup dimensionGroup : dimensionGroups) {
-				if (dimensionGroup.getDimensionGroupData().getID() == data
+				if (dimensionGroup.getBrickDimensionGroupData().getID() == data
 						.getID()) {
 					dimensionGroupExists = true;
 					break;
@@ -1211,6 +1215,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			}
 
 			if (!dimensionGroupExists) {
+
+				IBrickDimensionGroupData brickDimensionGroupData = creator
+						.createBrickDimensionGroupData(data);
 
 				DimensionGroup dimensionGroup = (DimensionGroup) GeneralManager
 						.get()
@@ -1224,7 +1231,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 				// dimensionGroup.setDataDomain(dataDomain);
 				// dimensionGroup.setSet(set);
-				dimensionGroup.setDimensionGroupData(data);
+				dimensionGroup.setBrickDimensionGroupData(brickDimensionGroupData);
 				dimensionGroup.setRemoteRenderingGLView(this);
 				dimensionGroup.setVisBricks(this);
 				dimensionGroup.setVisBricksView(this);
@@ -1630,12 +1637,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	private void selectElementsByConnectionBandID(int connectionBandID) {
 
-		 contentSelectionManager.clearSelections();
+		contentSelectionManager.clearSelections();
 		//
-		  ClearSelectionsEvent cse = new ClearSelectionsEvent();
-		  cse.setDataDomainType(getDataDomain().getDataDomainType());
-		  cse.setSender(this);
-		  eventPublisher.triggerEvent(cse);
+		ClearSelectionsEvent cse = new ClearSelectionsEvent();
+		cse.setDataDomainType(getDataDomain().getDataDomainType());
+		cse.setSender(this);
+		eventPublisher.triggerEvent(cse);
 
 		contentSelectionManager.clearSelection(contentSelectionManager
 				.getSelectionType());

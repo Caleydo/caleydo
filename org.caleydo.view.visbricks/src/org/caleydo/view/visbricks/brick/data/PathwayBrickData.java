@@ -2,66 +2,50 @@ package org.caleydo.view.visbricks.brick.data;
 
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.datadomain.pathway.data.PathwaySegmentData;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 public class PathwayBrickData implements IBrickData {
 
-	private IDataDomain dataDomain;
-	private ASetBasedDataDomain mappingDataDomain;
-	private ContentVirtualArray contentVA;
-	private PathwayGraph pathway;
-	private Group group;
-	private PathwayDimensionGroupData dimensionGroupData;
+	private PathwaySegmentData segmentData;
 
-	public PathwayBrickData(IDataDomain dataDomain,
-			ASetBasedDataDomain mappingDataDomain,
-			ContentVirtualArray contentVA, Group group, PathwayGraph pathway,
-			PathwayDimensionGroupData dimensionGroupData) {
-		this.dataDomain = dataDomain;
-		this.mappingDataDomain = mappingDataDomain;
-		this.contentVA = contentVA;
-		this.group = group;
-		this.pathway = pathway;
-		this.dimensionGroupData = dimensionGroupData;
+	public PathwayBrickData(PathwaySegmentData segmentData) {
+		this.segmentData = segmentData;
 	}
 
 	@Override
 	public IDataDomain getDataDomain() {
 		// TODO Auto-generated method stub
-		return dataDomain;
+		return segmentData.getDataDomain();
 	}
 
 	@Override
 	public ContentVirtualArray getContentVA() {
 		// TODO Auto-generated method stub
-		return contentVA;
+		return segmentData.getContentVA();
 	}
 
 	@Override
 	public Group getGroup() {
 		// TODO Auto-generated method stub
-		return group;
+		return segmentData.getGroup();
 	}
 
 	@Override
 	public void setBrickData(GLBrick brick) {
-		brick.setDataDomain(mappingDataDomain);
-		brick.setContentVA(group, contentVA);
+		brick.setDataDomain(segmentData.getMappingDataDomain());
+		brick.setContentVA(segmentData.getGroup(), segmentData.getContentVA());
 	}
 
 	@Override
 	public String getLabel() {
-		if(pathway != null)
-			return pathway.getTitle();
-		return "";
+		return segmentData.getLabel();
 	}
 
 	public PathwayGraph getPathway() {
-		return pathway;
+		return segmentData.getPathway();
 	}
-
 
 }

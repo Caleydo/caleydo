@@ -3,9 +3,9 @@ package org.caleydo.view.grouper.contextmenu;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.virtualarray.IDimensionGroupData;
+import org.caleydo.core.data.virtualarray.SetBasedDimensionGroupData;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
-import org.caleydo.view.visbricks.brick.data.IDimensionGroupData;
-import org.caleydo.view.visbricks.brick.data.SetBasedDimensionGroupData;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 
 public class AddGroupsToVisBricksItem extends AContextMenuItem {

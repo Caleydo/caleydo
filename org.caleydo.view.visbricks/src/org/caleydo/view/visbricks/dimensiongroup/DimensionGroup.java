@@ -13,6 +13,8 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.IDimensionGroupData;
+import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
@@ -48,8 +50,8 @@ import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.data.IBrickData;
+import org.caleydo.view.visbricks.brick.data.IBrickDimensionGroupData;
 import org.caleydo.view.visbricks.brick.data.IBrickSortingStrategy;
-import org.caleydo.view.visbricks.brick.data.IDimensionGroupData;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CentralBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
@@ -124,7 +126,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 	private Column detailBrickLayout;
 	private ElementLayout overviewDetailGapLayout;
 
-	private IDimensionGroupData dimensionGroupData;
+	private IBrickDimensionGroupData dimensionGroupData;
 
 	public static int BOTTOM_COLUMN_ID = 0;
 	public static int TOP_COLUMN_ID = 1;
@@ -1118,7 +1120,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		return groupColumn;
 	}
 
-	public void setDimensionGroupData(IDimensionGroupData dimensionGroupData) {
+	public void setBrickDimensionGroupData(IBrickDimensionGroupData dimensionGroupData) {
 		this.dimensionGroupData = dimensionGroupData;
 		dataDomain = dimensionGroupData.getDataDomain();
 		brickSortingStrategy = dimensionGroupData.getDefaultSortingStrategy();
@@ -1131,7 +1133,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 
 	}
 
-	public IDimensionGroupData getDimensionGroupData() {
+	public IBrickDimensionGroupData getBrickDimensionGroupData() {
 		return dimensionGroupData;
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.virtualarray.IDimensionGroupData;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
@@ -19,7 +20,6 @@ import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.view.visbricks.brick.data.IDimensionGroupData;
 
 public class DataNode extends ADraggableDataGraphNode {
 

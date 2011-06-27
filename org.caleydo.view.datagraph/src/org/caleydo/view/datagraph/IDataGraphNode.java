@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.virtualarray.IDimensionGroupData;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
-import org.caleydo.view.visbricks.brick.data.IDimensionGroupData;
 
 public interface IDataGraphNode extends IDraggable {
 
