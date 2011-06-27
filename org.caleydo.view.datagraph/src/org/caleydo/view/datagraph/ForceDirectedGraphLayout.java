@@ -597,6 +597,7 @@ public class ForceDirectedGraphLayout {
 	public void setNodePosition(Object node, Point2D position) {
 		// TODO Auto-generated method stub
 		nodePositions.put(node, position);
+		centeredPositions.put(node, position);
 	}
 
 	//--- getter ---

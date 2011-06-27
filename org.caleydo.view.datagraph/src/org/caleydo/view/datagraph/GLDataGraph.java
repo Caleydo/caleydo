@@ -226,9 +226,14 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 					drawingAreaWidth, drawingAreaHeight);
 			graphLayout.layout(rect);
 		} else {
-			for(IDataGraphNode node : dataGraph.getNodes()) {
-				Pair<Float, Float> relativePosition = relativeNodePositions.get(node);
-				
+			if (!dragAndDropController.isDragging()) {
+				for (IDataGraphNode node : dataGraph.getNodes()) {
+					Pair<Float, Float> relativePosition = relativeNodePositions
+							.get(node);
+					graphLayout.setNodePosition(node, new Point2D.Double(
+							relativePosition.getFirst() * drawingAreaWidth,
+							relativePosition.getSecond() * drawingAreaHeight));
+				}
 			}
 		}
 
