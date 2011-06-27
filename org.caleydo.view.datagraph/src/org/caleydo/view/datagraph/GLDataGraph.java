@@ -3,13 +3,17 @@ package org.caleydo.view.datagraph;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -48,12 +52,14 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private DragAndDropController dragAndDropController;
 	private boolean applyAutomaticLayout;
 	private Map<IDataGraphNode, Pair<Float, Float>> relativeNodePositions;
+	private int lastNodeID = 0;
 
 	/**
 	 * Constructor.
 	 */
 	public GLDataGraph(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
+
 		viewType = GLDataGraph.VIEW_ID;
 		glKeyListener = new GLDataGraphKeyListener();
 		dataGraph = new Graph<IDataGraphNode>();
@@ -61,11 +67,38 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		relativeNodePositions = new HashMap<IDataGraphNode, Pair<Float, Float>>();
 		dragAndDropController = new DragAndDropController(this);
 
-		DataNode o1 = new DataNode(graphLayout, this, dragAndDropController, 0);
-		DataNode o2 = new DataNode(graphLayout, this, dragAndDropController, 1);
-		DataNode o3 = new DataNode(graphLayout, this, dragAndDropController, 2);
-		DataNode o4 = new DataNode(graphLayout, this, dragAndDropController, 3);
-		DataNode o5 = new DataNode(graphLayout, this, dragAndDropController, 4);
+		Set<String> allowedViewTypes = new HashSet<String>();
+		//TODO: Maybe add to AView isMetaView() instead?
+		allowedViewTypes.add("org.caleydo.view.parcoords");
+		allowedViewTypes.add("org.caleydo.view.heatmap");
+		allowedViewTypes.add("org.caleydo.view.heatmap.hierarchical");
+		allowedViewTypes.add("org.caleydo.view.visbricks");
+		allowedViewTypes.add("org.caleydo.view.scatterplot");
+		allowedViewTypes.add("org.caleydo.view.tabular");
+		allowedViewTypes.add("org.caleydo.view.bucket");
+
+		Collection<AGLView> views = GeneralManager.get()
+				.getViewGLCanvasManager().getAllGLViews();
+
+		for (AGLView view : views) {
+			if (!view.isRenderedRemote()
+					&& allowedViewTypes.contains(view.getViewType())) {
+				ViewNode node = new ViewNode(graphLayout, this,
+						dragAndDropController, lastNodeID++, view);
+				dataGraph.addNode(node);
+			}
+		}
+
+		DataNode o1 = new DataNode(graphLayout, this, dragAndDropController,
+				lastNodeID++);
+		DataNode o2 = new DataNode(graphLayout, this, dragAndDropController,
+				lastNodeID++);
+		DataNode o3 = new DataNode(graphLayout, this, dragAndDropController,
+				lastNodeID++);
+		DataNode o4 = new DataNode(graphLayout, this, dragAndDropController,
+				lastNodeID++);
+		DataNode o5 = new DataNode(graphLayout, this, dragAndDropController,
+				lastNodeID++);
 
 		dataGraph.addNode(o1);
 		dataGraph.addNode(o2);
@@ -244,7 +277,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			relativeNodePositions.put(node, new Pair<Float, Float>(
 					relativePosX, relativePosY));
 
-			((DataNode) node).render(gl);
+			node.render(gl);
 
 		}
 		renderEdges(gl);

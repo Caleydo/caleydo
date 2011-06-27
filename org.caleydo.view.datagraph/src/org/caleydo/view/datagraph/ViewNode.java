@@ -6,10 +6,10 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
@@ -21,26 +21,26 @@ import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.visbricks.brick.data.IDimensionGroupData;
 
-public class DataNode extends ADraggableDataGraphNode {
-
+public class ViewNode extends ADraggableDataGraphNode {
+	
 	private final static int SPACING_PIXELS = 4;
 	private final static int CAPTION_HEIGHT_PIXELS = 16;
 	private final static int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
 	private final static int OVERVIEW_COMP_GROUP_HEIGHT_PIXELS = 32;
-
-	private IDataDomain dataDomain;
+	
 	private LayoutManager layoutManager;
 	private ComparisonGroupOverviewRenderer compGroupOverviewRenderer;
+	private AGLView representedView;
 
-	public DataNode(ForceDirectedGraphLayout graphLayout, GLDataGraph view,
-			final DragAndDropController dragAndDropController, int id) {
+	public ViewNode(ForceDirectedGraphLayout graphLayout, GLDataGraph view,
+			DragAndDropController dragAndDropController, int id, AGLView representedView) {
 		super(graphLayout, view, dragAndDropController, id);
 
+		this.representedView = representedView;
+		
 		setupLayout();
-
 	}
-
-
+	
 	private void setupLayout() {
 		layoutManager = new LayoutManager(new ViewFrustum());
 		LayoutTemplate layoutTemplate = new LayoutTemplate();
@@ -68,7 +68,7 @@ public class DataNode extends ADraggableDataGraphNode {
 		captionLayout.setPixelGLConverter(pixelGLConverter);
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setRatioSizeX(1);
-		captionLayout.setRenderer(new LabelRenderer(view, "Data Set X",
+		captionLayout.setRenderer(new LabelRenderer(view, representedView.getViewType(),
 				EPickingType.DATA_GRAPH_NODE, id));
 
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
@@ -99,12 +99,21 @@ public class DataNode extends ADraggableDataGraphNode {
 		layoutManager.setTemplate(layoutTemplate);
 	}
 
-	
 
 	@Override
 	public List<IDimensionGroupData> getDimensionGroups() {
 		// TODO Implement correctly
 		List<IDimensionGroupData> groups = new ArrayList<IDimensionGroupData>();
+		groups.add(null);
+		groups.add(null);
+		groups.add(null);
+		groups.add(null);
+		groups.add(null);
+		groups.add(null);
+		groups.add(null);
+		groups.add(null);
+		groups.add(null);
+		groups.add(null);
 		groups.add(null);
 		groups.add(null);
 		groups.add(null);
@@ -137,8 +146,6 @@ public class DataNode extends ADraggableDataGraphNode {
 
 		layoutManager.render(gl);
 		gl.glPopMatrix();
-		// GLHelperFunctions.drawPointAt(gl, x, y, 0);
-
 	}
 
 	@Override
@@ -153,4 +160,5 @@ public class DataNode extends ADraggableDataGraphNode {
 		return 2 * SPACING_PIXELS
 				+ compGroupOverviewRenderer.getMinWidthPixels();
 	}
+
 }
