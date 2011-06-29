@@ -24,6 +24,7 @@ import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.NewMetaSetsEvent;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
@@ -1701,5 +1702,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		for (IMouseWheelHandler listener : mouseWheelListeners) {
 			listener.handleMouseWheel(wheelAmount, wheelPosition);
 		}
+	}
+	
+	@Override
+	public java.util.Set<IDataDomain> getDataDomains() {
+		//TODO: change to all datadomains that are displayed
+		java.util.Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
+		dataDomains.add(dataDomain);
+		return dataDomains;
 	}
 }

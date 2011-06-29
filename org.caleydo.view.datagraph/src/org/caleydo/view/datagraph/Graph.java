@@ -62,9 +62,11 @@ public class Graph<NodeType extends IDataGraphNode> {
 	}
 
 	public void addEdge(NodeType node1, NodeType node2) {
-		if (!nodes.contains(node1) || !nodes.contains(node2))
-			return;
-
+		if (!nodes.contains(node1))
+			nodes.add(node1);
+		if (!nodes.contains(node2))
+			nodes.add(node2);
+		
 		Set<NodeType> node1Edges = nodeConnections.get(node1);
 
 		if (node1Edges == null) {
@@ -86,5 +88,21 @@ public class Graph<NodeType extends IDataGraphNode> {
 
 	public Set<Pair<NodeType, NodeType>> getAllEdges() {
 		return edges;
+	}
+	
+	public void removeNode(NodeType node) {
+		
+		Set<NodeType> neighbors = nodeConnections.get(node);
+		
+		if(neighbors != null) {
+			for(NodeType neighbor : neighbors) {
+				Set<NodeType> neighborConnections = nodeConnections.get(neighbor);
+				if(neighborConnections != null) {
+					neighborConnections.remove(node);
+				}
+			}
+		}
+		nodeConnections.remove(node);
+		nodes.remove(node);
 	}
 }

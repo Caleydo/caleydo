@@ -123,6 +123,10 @@ public class DataDomainGraph {
 	public SimpleGraph<IDataDomain, Edge> getGraph() {
 		return dataDomainGraph;
 	}
+	
+	public Set<IDataDomain> getDataDomains() {
+		return dataDomainGraph.vertexSet();
+	}
 
 	public static void main(String args[]) {
 		DataDomainGraph graph = new DataDomainGraph();

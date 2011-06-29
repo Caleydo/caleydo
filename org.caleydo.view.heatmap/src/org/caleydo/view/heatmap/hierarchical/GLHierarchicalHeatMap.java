@@ -15,6 +15,7 @@ import gleem.linalg.open.Transform;
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -39,6 +40,7 @@ import org.caleydo.core.data.virtualarray.group.StorageGroupList;
 import org.caleydo.core.io.gui.ExportDataDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.group.ExportContentGroupsEvent;
 import org.caleydo.core.manager.event.view.group.ExportStorageGroupsEvent;
@@ -5270,6 +5272,13 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		bRedrawTextures = true;
 
 		setDisplayListDirty();
+	}
+	
+	@Override
+	public java.util.Set<IDataDomain> getDataDomains() {
+		java.util.Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
+		dataDomains.add(dataDomain);
+		return dataDomains;
 	}
 
 }

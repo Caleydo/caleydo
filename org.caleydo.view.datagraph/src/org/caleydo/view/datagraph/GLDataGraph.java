@@ -14,6 +14,9 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.DataDomainGraph;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -27,6 +30,7 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
 
@@ -53,6 +57,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private boolean applyAutomaticLayout;
 	private Map<IDataGraphNode, Pair<Float, Float>> relativeNodePositions;
 	private int lastNodeID = 0;
+	private Set<DataNode> dataNodes;
+	private Set<ViewNode> viewNodes;
+	private Map<IDataDomain, Set<ViewNode>> viewNodesOfDataDomains;
+	ConnectionBandRenderer connectionBandRenderer;
 
 	/**
 	 * Constructor.
@@ -60,15 +68,61 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	public GLDataGraph(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
+		connectionBandRenderer = new ConnectionBandRenderer();
 		viewType = GLDataGraph.VIEW_ID;
 		glKeyListener = new GLDataGraphKeyListener();
 		dataGraph = new Graph<IDataGraphNode>();
 		graphLayout = new ForceDirectedGraphLayout();
 		relativeNodePositions = new HashMap<IDataGraphNode, Pair<Float, Float>>();
 		dragAndDropController = new DragAndDropController(this);
+		dataNodes = new HashSet<DataNode>();
+		viewNodes = new HashSet<ViewNode>();
+		viewNodesOfDataDomains = new HashMap<IDataDomain, Set<ViewNode>>();
+
+		DataDomainGraph dataDomainGraph = DataDomainManager.get()
+				.getDataDomainGraph();
+
+		for (IDataDomain dataDomain : dataDomainGraph.getDataDomains()) {
+			DataNode dataNode = new DataNode(graphLayout, this,
+					dragAndDropController, lastNodeID++, dataDomain);
+			boolean nodeAdded = false;
+			for (DataNode node : dataNodes) {
+				if (node.getDataDomain() == dataDomain) {
+					dataNode = node;
+					nodeAdded = true;
+					break;
+				}
+			}
+			if (!nodeAdded) {
+				dataGraph.addNode(dataNode);
+				dataNodes.add(dataNode);
+			}
+
+			Set<IDataDomain> neighbors = dataDomainGraph
+					.getNeighboursOf(dataDomain);
+
+			for (IDataDomain neighborDataDomain : neighbors) {
+				nodeAdded = false;
+				for (DataNode node : dataNodes) {
+					if (node.getDataDomain() == neighborDataDomain) {
+						dataGraph.addEdge(dataNode, node);
+						nodeAdded = true;
+						break;
+					}
+				}
+				if (!nodeAdded) {
+					DataNode node = new DataNode(graphLayout, this,
+							dragAndDropController, lastNodeID++,
+							neighborDataDomain);
+					dataGraph.addNode(node);
+					dataNodes.add(node);
+					dataGraph.addEdge(dataNode, node);
+				}
+			}
+		}
 
 		Set<String> allowedViewTypes = new HashSet<String>();
-		//TODO: Maybe add to AView isMetaView() instead?
+		// TODO: Maybe add to AView isMetaView() instead?
 		allowedViewTypes.add("org.caleydo.view.parcoords");
 		allowedViewTypes.add("org.caleydo.view.heatmap");
 		allowedViewTypes.add("org.caleydo.view.heatmap.hierarchical");
@@ -86,31 +140,53 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				ViewNode node = new ViewNode(graphLayout, this,
 						dragAndDropController, lastNodeID++, view);
 				dataGraph.addNode(node);
+				viewNodes.add(node);
+				Set<IDataDomain> dataDomains = view.getDataDomains();
+				if (dataDomains != null && !dataDomains.isEmpty()) {
+					node.setDataDomains(dataDomains);
+					for (IDataDomain dataDomain : dataDomains) {
+						Set<ViewNode> viewNodes = viewNodesOfDataDomains
+								.get(dataDomain);
+						if (viewNodes == null) {
+							viewNodes = new HashSet<ViewNode>();
+						}
+						viewNodes.add(node);
+						viewNodesOfDataDomains.put(dataDomain, viewNodes);
+					}
+				}
 			}
 		}
 
-		DataNode o1 = new DataNode(graphLayout, this, dragAndDropController,
-				lastNodeID++);
-		DataNode o2 = new DataNode(graphLayout, this, dragAndDropController,
-				lastNodeID++);
-		DataNode o3 = new DataNode(graphLayout, this, dragAndDropController,
-				lastNodeID++);
-		DataNode o4 = new DataNode(graphLayout, this, dragAndDropController,
-				lastNodeID++);
-		DataNode o5 = new DataNode(graphLayout, this, dragAndDropController,
-				lastNodeID++);
+		for (DataNode dataNode : dataNodes) {
+			Set<ViewNode> viewNodes = viewNodesOfDataDomains.get(dataNode
+					.getDataDomain());
+			if (viewNodes != null) {
+				for (ViewNode viewNode : viewNodes) {
+					dataGraph.addEdge(dataNode, viewNode);
+				}
+			}
+		}
 
-		dataGraph.addNode(o1);
-		dataGraph.addNode(o2);
-		dataGraph.addNode(o3);
-		dataGraph.addNode(o4);
-		dataGraph.addNode(o5);
-
-		dataGraph.addEdge(o1, o2);
-		dataGraph.addEdge(o1, o3);
-		dataGraph.addEdge(o3, o4);
-		dataGraph.addEdge(o5, o4);
-		dataGraph.addEdge(o3, o2);
+		// DataNode o2 = new DataNode(graphLayout, this, dragAndDropController,
+		// lastNodeID++);
+		// DataNode o3 = new DataNode(graphLayout, this, dragAndDropController,
+		// lastNodeID++);
+		// DataNode o4 = new DataNode(graphLayout, this, dragAndDropController,
+		// lastNodeID++);
+		// DataNode o5 = new DataNode(graphLayout, this, dragAndDropController,
+		// lastNodeID++);
+		//
+		// dataGraph.addNode(o1);
+		// dataGraph.addNode(o2);
+		// dataGraph.addNode(o3);
+		// dataGraph.addNode(o4);
+		// dataGraph.addNode(o5);
+		//
+		// dataGraph.addEdge(o1, o2);
+		// dataGraph.addEdge(o1, o3);
+		// dataGraph.addEdge(o3, o4);
+		// dataGraph.addEdge(o5, o4);
+		// dataGraph.addEdge(o3, o2);
 
 		maxNodeWidthPixels = Integer.MIN_VALUE;
 		maxNodeHeightPixels = Integer.MIN_VALUE;
@@ -290,28 +366,124 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		PixelGLConverter pixelGLConverter = parentGLCanvas
 				.getPixelGLConverter();
 
-		gl.glPushAttrib(GL2.GL_LINE_BIT);
-		gl.glLineWidth(2);
-		gl.glBegin(GL2.GL_LINES);
 		for (Pair<IDataGraphNode, IDataGraphNode> edge : dataGraph
 				.getAllEdges()) {
-			Point2D position1 = graphLayout.getNodePosition(edge.getFirst());
-			Point2D position2 = graphLayout.getNodePosition(edge.getSecond());
 
-			float x1 = pixelGLConverter.getGLWidthForPixelWidth((int) position1
-					.getX());
-			float x2 = pixelGLConverter.getGLWidthForPixelWidth((int) position2
-					.getX());
-			float y1 = pixelGLConverter
-					.getGLHeightForPixelHeight((int) position1.getY());
-			float y2 = pixelGLConverter
-					.getGLHeightForPixelHeight((int) position2.getY());
+			// Works because there are no edges between view nodes
+			if ((edge.getFirst() instanceof ViewNode)
+					|| (edge.getSecond() instanceof ViewNode)) {
+				renderBand(gl, edge.getFirst(), edge.getSecond());
+			} else {
 
-			gl.glVertex3f(x1, y1, -0.5f);
-			gl.glVertex3f(x2, y2, -0.5f);
+				gl.glPushAttrib(GL2.GL_LINE_BIT);
+				gl.glLineWidth(2);
+				gl.glBegin(GL2.GL_LINES);
+				Point2D position1 = graphLayout
+						.getNodePosition(edge.getFirst());
+				Point2D position2 = graphLayout.getNodePosition(edge
+						.getSecond());
+
+				float x1 = pixelGLConverter
+						.getGLWidthForPixelWidth((int) position1.getX());
+				float x2 = pixelGLConverter
+						.getGLWidthForPixelWidth((int) position2.getX());
+				float y1 = pixelGLConverter
+						.getGLHeightForPixelHeight((int) position1.getY());
+				float y2 = pixelGLConverter
+						.getGLHeightForPixelHeight((int) position2.getY());
+
+				gl.glVertex3f(x1, y1, -0.5f);
+				gl.glVertex3f(x2, y2, -0.5f);
+				gl.glEnd();
+				gl.glPopAttrib();
+			}
 		}
-		gl.glEnd();
-		gl.glPopAttrib();
+
+	}
+
+	private void renderBand(GL2 gl, IDataGraphNode node1, IDataGraphNode node2) {
+		Point2D position1 = node1.getPosition();
+		Point2D position2 = node2.getPosition();
+
+		float deltaX = (float) (position1.getX() - position2.getX());
+		float deltaY = (float) (position1.getY() - position2.getY());
+
+		Pair<Point2D, Point2D> anchorPoints1;
+		Pair<Point2D, Point2D> anchorPoints2;
+
+		if (deltaX < 0) {
+			if (deltaY < 0) {
+				float spacingX = (float) ((position2.getX() - node2.getWidth() / 2.0f) - (position1
+						.getX() + node1.getWidth() / 2.0f));
+				float spacingY = (float) ((position2.getY() - node2.getHeight() / 2.0f) - (position1
+						.getY() + node1.getHeight() / 2.0f));
+				if (spacingX > spacingY) {
+					anchorPoints1 = node1.getRightAnchorPoints();
+					anchorPoints2 = node2.getLeftAnchorPoints();
+				} else {
+					anchorPoints1 = node1.getTopAnchorPoints();
+					anchorPoints2 = node2.getBottomAnchorPoints();
+				}
+			} else {
+				float spacingX = (float) ((position2.getX() - node2.getWidth() / 2.0f) - (position1
+						.getX() + node1.getWidth() / 2.0f));
+				float spacingY = (float) ((position1.getY() - node1.getHeight() / 2.0f) - (position2
+						.getY() + node2.getHeight() / 2.0f));
+				if (spacingX > spacingY) {
+					anchorPoints1 = node1.getRightAnchorPoints();
+					anchorPoints2 = node2.getLeftAnchorPoints();
+				} else {
+					anchorPoints1 = node1.getBottomAnchorPoints();
+					anchorPoints2 = node2.getTopAnchorPoints();
+				}
+			}
+		} else {
+			if (deltaY < 0) {
+				float spacingX = (float) ((position1.getX() - node1.getWidth() / 2.0f) - (position2
+						.getX() + node2.getWidth() / 2.0f));
+				float spacingY = (float) ((position2.getY() - node2.getHeight() / 2.0f) - (position1
+						.getY() + node1.getHeight() / 2.0f));
+				if (spacingX > spacingY) {
+					anchorPoints1 = node1.getLeftAnchorPoints();
+					anchorPoints2 = node2.getRightAnchorPoints();
+				} else {
+					anchorPoints1 = node1.getTopAnchorPoints();
+					anchorPoints2 = node2.getBottomAnchorPoints();
+				}
+			} else {
+				float spacingX = (float) ((position1.getX() - node1.getWidth() / 2.0f) - (position2
+						.getX() + node2.getWidth() / 2.0f));
+				float spacingY = (float) ((position1.getY() - node1.getHeight() / 2.0f) - (position2
+						.getY() + node2.getHeight() / 2.0f));
+				if (spacingX > spacingY) {
+					anchorPoints1 = node1.getLeftAnchorPoints();
+					anchorPoints2 = node2.getRightAnchorPoints();
+				} else {
+					anchorPoints1 = node1.getBottomAnchorPoints();
+					anchorPoints2 = node2.getTopAnchorPoints();
+				}
+			}
+		}
+
+		connectionBandRenderer.init(gl);
+		float[] leftTopPos = new float[] {
+				(float) anchorPoints1.getFirst().getX(),
+				(float) anchorPoints1.getFirst().getY() };
+		float[] leftBottomPos = new float[] {
+				(float) anchorPoints1.getSecond().getX(),
+				(float) anchorPoints1.getSecond().getY() };
+
+		float[] rightTopPos = new float[] {
+				(float) anchorPoints2.getFirst().getX(),
+				(float) anchorPoints2.getFirst().getY() };
+		float[] rightBottomPos = new float[] {
+				(float) anchorPoints2.getSecond().getX(),
+				(float) anchorPoints2.getSecond().getY() };
+
+		connectionBandRenderer.renderStraightBand(gl, leftTopPos,
+				leftBottomPos, rightTopPos, rightBottomPos, false, 0, 0, false,
+				new float[] { 0, 0, 0, 1 }, 1f);
+
 	}
 
 	@Override

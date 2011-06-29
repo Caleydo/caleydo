@@ -21,6 +21,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -1322,5 +1323,10 @@ public abstract class AGLView
 
 			relativeViewTranlateY = viewTranslateY / viewFrustum.getHeight();
 		}
+	}
+	
+	//FIXME: The location of this method probably has to be changed.
+	public Set<IDataDomain> getDataDomains() {
+		return null;
 	}
 }

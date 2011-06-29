@@ -561,8 +561,8 @@ public class ForceDirectedGraphLayout {
 		}
 		
 		// update scaling
-		double fx = (layoutingArea.getWidth()) / (maxX-minX);
-		double fy = (layoutingArea.getHeight()) / (maxY-minY);
+		double fx = maxX == minX ? 1 : (layoutingArea.getWidth()) / (maxX-minX);
+		double fy = maxY == minY ? 1 : (layoutingArea.getHeight()) / (maxY-minY);
 		
 		double offsetX = layoutingArea.getMinX();
 		double offsetY = layoutingArea.getMinY();

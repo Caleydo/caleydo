@@ -3,11 +3,14 @@ package org.caleydo.view.datagraph;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -31,6 +34,7 @@ public class ViewNode extends ADraggableDataGraphNode {
 	private LayoutManager layoutManager;
 	private ComparisonGroupOverviewRenderer compGroupOverviewRenderer;
 	private AGLView representedView;
+	private Set<IDataDomain> dataDomains;
 
 	public ViewNode(ForceDirectedGraphLayout graphLayout, GLDataGraph view,
 			DragAndDropController dragAndDropController, int id, AGLView representedView) {
@@ -159,6 +163,136 @@ public class ViewNode extends ADraggableDataGraphNode {
 	public int getWidthPixels() {
 		return 2 * SPACING_PIXELS
 				+ compGroupOverviewRenderer.getMinWidthPixels();
+	}
+	
+	@Override
+	public Pair<Point2D, Point2D> getTopDimensionGroupAnchorPoints(
+			ADimensionGroupData dimensionGroup) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Pair<Point2D, Point2D> getBottomDimensionGroupAnchorPoints(
+			ADimensionGroupData dimensionGroup) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Pair<Point2D, Point2D> getTopAnchorPoints() {
+		Point2D position = graphLayout.getNodePosition(this, true);
+		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+				.getX());
+		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+				.getY());
+		float width = pixelGLConverter
+				.getGLWidthForPixelWidth(getWidthPixels());
+		float height = pixelGLConverter
+				.getGLHeightForPixelHeight(getHeightPixels());
+
+		Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
+
+		anchorPoints.setFirst(new Point2D.Float(x - width / 2.0f, y + height
+				/ 2.0f));
+		anchorPoints.setSecond(new Point2D.Float(x + width / 2.0f, y + height
+				/ 2.0f));
+
+		return anchorPoints;
+	}
+
+	@Override
+	public Pair<Point2D, Point2D> getBottomAnchorPoints() {
+		Point2D position = graphLayout.getNodePosition(this, true);
+		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+				.getX());
+		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+				.getY());
+		float width = pixelGLConverter
+				.getGLWidthForPixelWidth(getWidthPixels());
+		float height = pixelGLConverter
+				.getGLHeightForPixelHeight(getHeightPixels());
+
+		Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
+
+		anchorPoints.setFirst(new Point2D.Float(x - width / 2.0f, y - height
+				/ 2.0f));
+		anchorPoints.setSecond(new Point2D.Float(x + width / 2.0f, y - height
+				/ 2.0f));
+
+		return anchorPoints;
+	}
+
+	public void setDataDomains(Set<IDataDomain> dataDomains) {
+		this.dataDomains = dataDomains;
+	}
+
+	public Set<IDataDomain> getDataDomains() {
+		return dataDomains;
+	}
+	
+	@Override
+	public Pair<Point2D, Point2D> getLeftAnchorPoints() {
+		Point2D position = graphLayout.getNodePosition(this, true);
+		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+				.getX());
+		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+				.getY());
+		float width = pixelGLConverter
+				.getGLWidthForPixelWidth(getWidthPixels());
+		float height = pixelGLConverter
+				.getGLHeightForPixelHeight(getHeightPixels());
+
+		Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
+
+		anchorPoints.setFirst(new Point2D.Float(x - width / 2.0f, y + height
+				/ 2.0f));
+		anchorPoints.setSecond(new Point2D.Float(x - width / 2.0f, y - height
+				/ 2.0f));
+
+		return anchorPoints;
+	}
+
+	@Override
+	public Pair<Point2D, Point2D> getRightAnchorPoints() {
+		Point2D position = graphLayout.getNodePosition(this, true);
+		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+				.getX());
+		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+				.getY());
+		float width = pixelGLConverter
+				.getGLWidthForPixelWidth(getWidthPixels());
+		float height = pixelGLConverter
+				.getGLHeightForPixelHeight(getHeightPixels());
+
+		Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
+
+		anchorPoints.setFirst(new Point2D.Float(x + width / 2.0f, y + height
+				/ 2.0f));
+		anchorPoints.setSecond(new Point2D.Float(x + width / 2.0f, y - height
+				/ 2.0f));
+
+		return anchorPoints;
+	}
+
+	@Override
+	public Point2D getPosition() {
+		Point2D position = graphLayout.getNodePosition(this, true);
+		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+				.getX());
+		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+				.getY());
+		return new Point2D.Float(x, y);
+	}
+	
+	@Override
+	public float getHeight() {
+		return pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
+	}
+
+	@Override
+	public float getWidth() {
+		return pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
 	}
 
 }

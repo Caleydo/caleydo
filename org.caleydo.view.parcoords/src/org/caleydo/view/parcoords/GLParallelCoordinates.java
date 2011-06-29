@@ -24,6 +24,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -55,6 +56,7 @@ import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
@@ -2552,6 +2554,13 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		default:
 			return 80;
 		}
+	}
+	
+	@Override
+	public java.util.Set<IDataDomain> getDataDomains() {
+		java.util.Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
+		dataDomains.add(dataDomain);
+		return dataDomains;
 	}
 
 }
