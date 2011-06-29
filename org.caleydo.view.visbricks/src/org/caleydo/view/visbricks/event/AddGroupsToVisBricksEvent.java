@@ -2,12 +2,12 @@ package org.caleydo.view.visbricks.event;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.virtualarray.IDimensionGroupData;
+import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.manager.event.AEvent;
 
 public class AddGroupsToVisBricksEvent extends AEvent {
 	
-	private ArrayList<IDimensionGroupData> dimensionGroupData;
+	private ArrayList<ADimensionGroupData> dimensionGroupData;
 
 	@Override
 	public boolean checkIntegrity() {
@@ -16,13 +16,13 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 	
 
 
-	public void setDimensionGroupData(ArrayList<IDimensionGroupData> dimensionGroupData) {
+	public void setDimensionGroupData(ArrayList<ADimensionGroupData> dimensionGroupData) {
 		this.dimensionGroupData = dimensionGroupData;
 	}
 	
 
 
-	public ArrayList<IDimensionGroupData> getDimensionGroupData() {
+	public ArrayList<ADimensionGroupData> getDimensionGroupData() {
 		return dimensionGroupData;
 	}
 

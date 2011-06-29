@@ -20,7 +20,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.IDimensionGroupData;
+import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -1196,14 +1196,14 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		return null;
 	}
 
-	public void addDimensionGroups(List<IDimensionGroupData> dimensionGroupData) {
+	public void addDimensionGroups(List<ADimensionGroupData> dimensionGroupData) {
 
 		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
 				.getDimensionGroups();
 
 		BrickDimensionGroupDataCreator creator = new BrickDimensionGroupDataCreator();
 
-		for (IDimensionGroupData data : dimensionGroupData) {
+		for (ADimensionGroupData data : dimensionGroupData) {
 
 			boolean dimensionGroupExists = false;
 			for (DimensionGroup dimensionGroup : dimensionGroups) {

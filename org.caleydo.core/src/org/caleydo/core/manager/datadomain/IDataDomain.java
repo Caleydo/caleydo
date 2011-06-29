@@ -3,7 +3,7 @@ package org.caleydo.core.manager.datadomain;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;
-import org.caleydo.core.data.virtualarray.IDimensionGroupData;
+import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
@@ -57,20 +57,20 @@ public interface IDataDomain {
 	/**
 	 * @return The dimension groups that have been created for this IDataDomain object (data set).
 	 */
-	public Set<IDimensionGroupData> getDimensionGroups();
+	public Set<ADimensionGroupData> getDimensionGroups();
 	
 	/**
 	 * Sets the dimension groups for this IDataDomain object (data set).
 	 * 
 	 * @param dimensionGroups
 	 */
-	public void setDimensionGroups(Set<IDimensionGroupData> dimensionGroups);
+	public void setDimensionGroups(Set<ADimensionGroupData> dimensionGroups);
 	
 	/**
 	 * Adds a dimension group to this IDataDomain object (data set).
 	 * 
 	 * @param dimensionGroup
 	 */
-	public void addDimensionGroup(IDimensionGroupData dimensionGroup);
+	public void addDimensionGroup(ADimensionGroupData dimensionGroup);
 
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.virtualarray.IDimensionGroupData;
+import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -101,9 +101,9 @@ public class ViewNode extends ADraggableDataGraphNode {
 
 
 	@Override
-	public List<IDimensionGroupData> getDimensionGroups() {
+	public List<ADimensionGroupData> getDimensionGroups() {
 		// TODO Implement correctly
-		List<IDimensionGroupData> groups = new ArrayList<IDimensionGroupData>();
+		List<ADimensionGroupData> groups = new ArrayList<ADimensionGroupData>();
 		groups.add(null);
 		groups.add(null);
 		groups.add(null);

@@ -23,7 +23,7 @@ import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.IDimensionGroupData;
+import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
@@ -71,7 +71,7 @@ public abstract class ASetBasedDataDomain
 	private ReplaceStorageVAInUseCaseListener replaceStorageVirtualArrayInUseCaseListener;
 	private ContentVAUpdateListener contentVAUpdateListener;
 	private StorageVAUpdateListener storageVAUpdateListener;
-	protected java.util.Set<IDimensionGroupData> dimensionGroups;
+	protected java.util.Set<ADimensionGroupData> dimensionGroups;
 
 	/** The set which is currently loaded and used inside the views for this use case. */
 	protected Set set;
@@ -120,7 +120,7 @@ public abstract class ASetBasedDataDomain
 
 	private void init() {
 		
-		dimensionGroups = new HashSet<IDimensionGroupData>();
+		dimensionGroups = new HashSet<ADimensionGroupData>();
 
 		assignIDCategories();
 		if (contentIDCategory == null || storageIDCategory == null) {
@@ -816,17 +816,17 @@ public abstract class ASetBasedDataDomain
 	
 	
 	@Override
-	public java.util.Set<IDimensionGroupData> getDimensionGroups() {
+	public java.util.Set<ADimensionGroupData> getDimensionGroups() {
 		return dimensionGroups;
 	}
 	
 	@Override
-	public void setDimensionGroups(java.util.Set<IDimensionGroupData> dimensionGroups) {
+	public void setDimensionGroups(java.util.Set<ADimensionGroupData> dimensionGroups) {
 		this.dimensionGroups = dimensionGroups;
 	}
 	
 	@Override
-	public void addDimensionGroup(IDimensionGroupData dimensionGroup) {
+	public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
 		dimensionGroups.add(dimensionGroup);
 	}
 }

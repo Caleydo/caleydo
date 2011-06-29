@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.IDimensionGroupData;
 import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -22,12 +21,13 @@ import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
 
-public class PathwayDimensionGroupData extends AUniqueObject implements
-		IDimensionGroupData {
+public class PathwayDimensionGroupData extends
+		ADimensionGroupData {
 
 	private IDataDomain dataDomain;
 	private ASetBasedDataDomain mappingDataDomain;
 	private ArrayList<PathwayGraph> pathways;
+	private int uniqueID;
 
 	{
 		uniqueID = GeneralManager.get().getIDCreator()
@@ -233,6 +233,12 @@ public class PathwayDimensionGroupData extends AUniqueObject implements
 		}
 
 		return segmentBrickData;
+	}
+
+	@Override
+	public int getID() {
+		// TODO Auto-generated method stub
+		return uniqueID;
 	}
 
 }

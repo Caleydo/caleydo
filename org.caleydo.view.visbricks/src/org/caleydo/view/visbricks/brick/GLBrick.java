@@ -16,7 +16,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.IDimensionGroupData;
+import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -291,7 +291,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 				}
 
 				AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
-				ArrayList<IDimensionGroupData> dimensionGroupData = new ArrayList<IDimensionGroupData>();
+				ArrayList<ADimensionGroupData> dimensionGroupData = new ArrayList<ADimensionGroupData>();
 				PathwayDimensionGroupData pathwayDimensionGroupData = new PathwayDimensionGroupData(
 						DataDomainManager.get().getDataDomain(
 								"org.caleydo.datadomain.pathway"), dataDomain,

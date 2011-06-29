@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.virtualarray.IDimensionGroupData;
+import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -14,11 +14,11 @@ public class ComparisonGroupOverviewRenderer extends LayoutRenderer {
 	private final static int SPACING_PIXELS = 2;
 	private final static int MIN_COMP_GROUP_WIDTH_PIXELS = 10;
 
-	private List<IDimensionGroupData> dimensionGroupData;
+	private List<ADimensionGroupData> dimensionGroupData;
 	private AGLView view;
 
 	public ComparisonGroupOverviewRenderer(
-			List<IDimensionGroupData> dimensionGroupData, AGLView view) {
+			List<ADimensionGroupData> dimensionGroupData, AGLView view) {
 		this.dimensionGroupData = dimensionGroupData;
 		this.view = view;
 	}

@@ -10,7 +10,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 
-public class SetBasedDimensionGroupData implements IDimensionGroupData {
+public class SetBasedDimensionGroupData extends ADimensionGroupData {
 
 	private ASetBasedDataDomain dataDomain;
 	private ISet set;

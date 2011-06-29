@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.data.virtualarray.IDimensionGroupData;
+import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.mapping.IDMappingLoader;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -28,7 +28,7 @@ public class PathwayDataDomain extends ADataDomain {
 
 	IDType primaryIDType;
 	
-	protected Set<IDimensionGroupData> dimensionGroups;
+	protected Set<ADimensionGroupData> dimensionGroups;
 
 	/**
 	 * Constructor.
@@ -46,7 +46,7 @@ public class PathwayDataDomain extends ADataDomain {
 
 		primaryIDType = IDType.getIDType("PATHWAY_VERTEX");
 		
-		dimensionGroups = new HashSet<IDimensionGroupData>();
+		dimensionGroups = new HashSet<ADimensionGroupData>();
 	}
 
 	@Override
@@ -74,17 +74,17 @@ public class PathwayDataDomain extends ADataDomain {
 	}
 	
 	@Override
-	public Set<IDimensionGroupData> getDimensionGroups() {
+	public Set<ADimensionGroupData> getDimensionGroups() {
 		return dimensionGroups;
 	}
 	
 	@Override
-	public void setDimensionGroups(Set<IDimensionGroupData> dimensionGroups) {
+	public void setDimensionGroups(Set<ADimensionGroupData> dimensionGroups) {
 		this.dimensionGroups = dimensionGroups;
 	}
 	
 	@Override
-	public void addDimensionGroup(IDimensionGroupData dimensionGroup) {
+	public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
 		dimensionGroups.add(dimensionGroup);
 	}
 }
