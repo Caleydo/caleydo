@@ -20,6 +20,14 @@
             name="Hierarchical Heat Map"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.caleydo.view.heatmap.uncertainty.RcpGLUncertaintyHeatMapView"
+            icon="resources/icons/heatmap.png"
+            id="org.caleydo.view.heatmap.uncertainty"
+            name="Uncertainty Heat Map"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -33,6 +41,11 @@
                   icon="resources/icons/heatmap.png"
                   style="push">
             </command>
+            <command
+                  commandId="org.caleydo.view.heatmap.command.openuncertaintyheatmap"
+                  icon="resources/icons/heatmap.png"
+                  style="push">
+            </command>
          </menu>
       </menuContribution>
    </extension>
@@ -42,6 +55,11 @@
             defaultHandler="org.caleydo.view.heatmap.command.handler.OpenHierarchicalHeatMapHandler"
             id="org.caleydo.view.heatmap.command.openheatmap"
             name="Heat Map">
+      </command>
+      <command
+            defaultHandler="org.caleydo.view.heatmap.command.handler.OpenUncertaintyHeatMapHandler"
+            id="org.caleydo.view.heatmap.command.openuncertaintyheatmap"
+            name="Uncertainty Heat Map">
       </command>
    </extension>
    <extension
@@ -61,6 +79,15 @@
           id="org.caleydo.view.ViewCreator"
           name="HierarchicalHeatMapViewCreator"
           class="org.caleydo.view.heatmap.creator.ViewCreatorHierarchicalHeatMap" />
+   </extension>
+         <extension
+         id="org.caleydo.view.heatmap.uncertainty"
+         name="UncertaintyHeatMapViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="UncertaintyHeatMapViewCreator"
+          class="org.caleydo.view.heatmap.creator.ViewCreatorUncertaintyHeatMap" />
    </extension>
       <extension
          id="org.caleydo.view.dendrogram.horizontal"

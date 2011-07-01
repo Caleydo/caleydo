@@ -9,6 +9,8 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 import org.caleydo.view.heatmap.toolbar.HeatMapToolBarContent;
 import org.caleydo.view.heatmap.toolbar.HierarchicalHeatMapToolBarContent;
+import org.caleydo.view.heatmap.toolbar.UncertaintyHeatMapToolBarContent;
+import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -32,9 +34,13 @@ public class Activator extends Plugin {
 		plugin = this;
 
 		registerDataDomains();
-		
-		ToolBarContentFactory.get().addToolBarContent(GLHeatMap.VIEW_ID, false, new HeatMapToolBarContent());
-		ToolBarContentFactory.get().addToolBarContent(GLHierarchicalHeatMap.VIEW_ID, true, new HierarchicalHeatMapToolBarContent());
+
+		ToolBarContentFactory.get().addToolBarContent(GLHeatMap.VIEW_ID, false,
+				new HeatMapToolBarContent());
+		ToolBarContentFactory.get().addToolBarContent(GLHierarchicalHeatMap.VIEW_ID,
+				true, new HierarchicalHeatMapToolBarContent());
+		ToolBarContentFactory.get().addToolBarContent(GLUncertaintyHeatMap.VIEW_ID, true,
+				new UncertaintyHeatMapToolBarContent());
 	}
 
 	/*
@@ -75,6 +81,12 @@ public class Activator extends Plugin {
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLHierarchicalHeatMap.VIEW_ID);
+
+		DataDomainManager
+				.get()
+				.getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
+						GLUncertaintyHeatMap.VIEW_ID);
 
 		DataDomainManager
 				.get()
