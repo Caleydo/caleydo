@@ -148,8 +148,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	private int iNrTextures = 0;
 	/** array of textures for holding the data samples */
-	private ArrayList<Texture> AlTextures = new ArrayList<Texture>();
-	private ArrayList<Integer> iAlNumberSamples = new ArrayList<Integer>();
+	private ArrayList<Texture> textures = new ArrayList<Texture>();
+	private ArrayList<Integer> numberSamples = new ArrayList<Integer>();
 
 	private Point pickingPointLevel1 = null;
 	private int iPickedSampleLevel1 = 0;
@@ -327,8 +327,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			bSkipLevel2 = true;
 
 			iSamplesPerHeatmap = iNumberOfElements;
-			iAlNumberSamples.clear();
-			iAlNumberSamples.add(iNumberOfElements);
+			numberSamples.clear();
+			numberSamples.add(iNumberOfElements);
 
 		} else if (iNumberOfElements < MIN_SAMPLES_SKIP_LEVEL_1) {
 			bSkipLevel1 = true;
@@ -492,32 +492,32 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		if (bSkipLevel1 || bSkipLevel2) {
 
-			AlTextures.clear();
-			iAlNumberSamples.clear();
+			textures.clear();
+			numberSamples.clear();
 
 			Texture tempTextur = null;
 
-			AlTextures.add(tempTextur);
-			iAlNumberSamples.add(iSamplesPerTexture);
+			textures.add(tempTextur);
+			numberSamples.add(iSamplesPerTexture);
 
 		} else {
 
-			AlTextures.clear();
-			iAlNumberSamples.clear();
+			textures.clear();
+			numberSamples.clear();
 
 			Texture tempTextur = null;
 
 			for (int i = 0; i < iNrTextures; i++) {
 
-				AlTextures.add(tempTextur);
-				iAlNumberSamples.add(iSamplesPerTexture);
+				textures.add(tempTextur);
+				numberSamples.add(iSamplesPerTexture);
 			}
 		}
 	}
 
 	/**
 	 * Init textures, build array of textures used for holding the whole
-	 * examples
+	 * samples
 	 * 
 	 * @param gl
 	 */
@@ -530,8 +530,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 			// only one texture is needed
 
-			AlTextures.clear();
-			iAlNumberSamples.clear();
+			textures.clear();
+			numberSamples.clear();
 
 			Texture tempTextur;
 
@@ -575,13 +575,13 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			tempTextur = TextureIO.newTexture(0);
 			tempTextur.updateImage(texData);
 
-			AlTextures.add(tempTextur);
-			iAlNumberSamples.add(iSamplesPerTexture);
+			textures.add(tempTextur);
+			numberSamples.add(iSamplesPerTexture);
 
 		} else {
 
-			AlTextures.clear();
-			iAlNumberSamples.clear();
+			textures.clear();
+			numberSamples.clear();
 
 			Texture tempTextur;
 
@@ -598,12 +598,12 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			for (int itextures = 0; itextures < iNrTextures; itextures++) {
 
 				if (itextures == iNrTextures - 1) {
-					iAlNumberSamples.add(iTextureHeight - iSamplesPerTexture * itextures);
+					numberSamples.add(iTextureHeight - iSamplesPerTexture * itextures);
 					FbTemp[itextures] = FloatBuffer
 							.allocate((iTextureHeight - iSamplesPerTexture * itextures)
 									* iTextureWidth * 4);
 				} else {
-					iAlNumberSamples.add(iSamplesPerTexture);
+					numberSamples.add(iSamplesPerTexture);
 					FbTemp[itextures] = FloatBuffer.allocate(iSamplesPerTexture
 							* iTextureWidth * 4);
 				}
@@ -632,12 +632,12 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 					FbTemp[iTextureCounter].put(fArRgba);
 				}
-				if (iCount >= iAlNumberSamples.get(iTextureCounter)) {
+				if (iCount >= numberSamples.get(iTextureCounter)) {
 					FbTemp[iTextureCounter].rewind();
 
 					TextureData texData = new TextureData(GLProfile.getDefault(),
 							GL2.GL_RGBA /* internalFormat */, iTextureWidth /* height */,
-							iAlNumberSamples.get(iTextureCounter) /* width */,
+							numberSamples.get(iTextureCounter) /* width */,
 							0 /* border */, GL2.GL_RGBA /* pixelFormat */,
 							GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
 							false /* dataIsCompressed */, false /* mustFlipVertically */,
@@ -646,7 +646,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 					tempTextur = TextureIO.newTexture(0);
 					tempTextur.updateImage(texData);
 
-					AlTextures.add(tempTextur);
+					textures.add(tempTextur);
 
 					iTextureCounter++;
 					iCount = 0;
@@ -1659,17 +1659,17 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		for (int i = 0; i < iNrTextures; i++) {
 
-			fStep = fHeightElem * iAlNumberSamples.get(iNrTextures - i - 1);
+			fStep = fHeightElem * numberSamples.get(iNrTextures - i - 1);
 
-			AlTextures.get(iNrTextures - i - 1).enable();
-			AlTextures.get(iNrTextures - i - 1).bind();
+			textures.get(iNrTextures - i - 1).enable();
+			textures.get(iNrTextures - i - 1).bind();
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
 					GL2.GL_NEAREST);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
 					GL2.GL_NEAREST);
-			TextureCoords texCoords = AlTextures.get(iNrTextures - i - 1)
+			TextureCoords texCoords = textures.get(iNrTextures - i - 1)
 					.getImageTexCoords();
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
@@ -1687,7 +1687,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glPopName();
 
 			fyOffset += fStep;
-			AlTextures.get(iNrTextures - i - 1).disable();
+			textures.get(iNrTextures - i - 1).disable();
 		}
 	}
 
@@ -1831,7 +1831,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_NEAREST);
 
 		if (bSkipLevel1) {
-			Texture TexTemp1 = AlTextures.get(0);
+			Texture TexTemp1 = textures.get(0);
 			TexTemp1.enable();
 			TexTemp1.bind();
 			TextureCoords texCoords1 = TexTemp1.getImageTexCoords();
@@ -1850,16 +1850,16 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			TexTemp1.disable();
 		} else {
 
-			while (iAlNumberSamples.get(iFirstTexture) < iFirstElementFirstTexture) {
-				iFirstElementFirstTexture -= iAlNumberSamples.get(iFirstTexture);
-				if (iFirstTexture < iAlNumberSamples.size() - 1)
+			while (numberSamples.get(iFirstTexture) < iFirstElementFirstTexture) {
+				iFirstElementFirstTexture -= numberSamples.get(iFirstTexture);
+				if (iFirstTexture < numberSamples.size() - 1)
 					iFirstTexture++;
 			}
 
-			while (iLastElementLastTexture > iAlNumberSamples.get(iLastTexture)) {
-				iLastElementLastTexture -= iAlNumberSamples.get(iLastTexture);
+			while (iLastElementLastTexture > numberSamples.get(iLastTexture)) {
+				iLastElementLastTexture -= numberSamples.get(iLastTexture);
 				iLastTexture++;
-				if (iLastTexture == iAlNumberSamples.size() - 1) {
+				if (iLastTexture == numberSamples.size() - 1) {
 					if (iLastElementLastTexture > iSamplesPerTexture)
 						iLastElementLastTexture = iSamplesPerTexture;
 					break;
@@ -1871,11 +1871,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			if (iNrTexturesInUse == 1) {
 
 				float fScalingFirstElement = (float) iFirstElementFirstTexture
-						/ iAlNumberSamples.get(iFirstTexture);
+						/ numberSamples.get(iFirstTexture);
 				float fScalingLastElement = (float) (iLastElementLastTexture + 1)
-						/ iAlNumberSamples.get(iFirstTexture);
+						/ numberSamples.get(iFirstTexture);
 
-				Texture TexTemp1 = AlTextures.get(iFirstTexture);
+				Texture TexTemp1 = textures.get(iFirstTexture);
 				TexTemp1.enable();
 				TexTemp1.bind();
 				TextureCoords texCoords1 = TexTemp1.getImageTexCoords();
@@ -1901,12 +1901,12 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				float fScalingLastTexture = (float) (iLastElementLastTexture + 1)
 						/ iSamplesLevel2;
 
-				float fRatioFirstTexture = (float) (iAlNumberSamples.get(iFirstTexture) - iFirstElementFirstTexture)
-						/ iAlNumberSamples.get(iFirstTexture);
+				float fRatioFirstTexture = (float) (numberSamples.get(iFirstTexture) - iFirstElementFirstTexture)
+						/ numberSamples.get(iFirstTexture);
 				float fRatioLastTexture = (float) (iLastElementLastTexture + 1)
-						/ iAlNumberSamples.get(iLastTexture);
+						/ numberSamples.get(iLastTexture);
 
-				Texture TexTemp1 = AlTextures.get(iFirstTexture);
+				Texture TexTemp1 = textures.get(iFirstTexture);
 				TexTemp1.enable();
 				TexTemp1.bind();
 				TextureCoords texCoords1 = TexTemp1.getImageTexCoords();
@@ -1932,7 +1932,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				// gl.glVertex3f(0, fHeight * fScalingLastTexture, 0);
 				// gl.glEnd();
 
-				Texture TexTemp2 = AlTextures.get(iLastTexture);
+				Texture TexTemp2 = textures.get(iLastTexture);
 				TexTemp2.enable();
 				TexTemp2.bind();
 				TextureCoords texCoords2 = TexTemp2.getImageTexCoords();
@@ -1956,12 +1956,12 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				float fScalingLastTexture = (float) (iLastElementLastTexture + 1)
 						/ iSamplesLevel2;
 
-				float fRatioFirstTexture = (float) (iAlNumberSamples.get(iLastTexture) - iFirstElementFirstTexture)
-						/ iAlNumberSamples.get(iFirstTexture);
+				float fRatioFirstTexture = (float) (numberSamples.get(iLastTexture) - iFirstElementFirstTexture)
+						/ numberSamples.get(iFirstTexture);
 				float fRatioLastTexture = (float) (iLastElementLastTexture + 1)
-						/ iAlNumberSamples.get(iLastTexture);
+						/ numberSamples.get(iLastTexture);
 
-				Texture TexTemp1 = AlTextures.get(iFirstTexture);
+				Texture TexTemp1 = textures.get(iFirstTexture);
 				TexTemp1.enable();
 				TexTemp1.bind();
 				TextureCoords texCoords1 = TexTemp1.getImageTexCoords();
@@ -1987,7 +1987,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				// gl.glVertex3f(0, fHeight * (1 - fScalingFirstTexture), 0);
 				// gl.glEnd();
 
-				Texture TexTemp2 = AlTextures.get(iFirstTexture + 1);
+				Texture TexTemp2 = textures.get(iFirstTexture + 1);
 				TexTemp2.enable();
 				TexTemp2.bind();
 				TextureCoords texCoords2 = TexTemp2.getImageTexCoords();
@@ -2011,7 +2011,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				// gl.glVertex3f(0, fHeight * fScalingLastTexture, 0);
 				// gl.glEnd();
 
-				Texture TexTemp3 = AlTextures.get(iLastTexture);
+				Texture TexTemp3 = textures.get(iLastTexture);
 				TexTemp3.enable();
 				TexTemp3.bind();
 				TextureCoords texCoords3 = TexTemp3.getImageTexCoords();
