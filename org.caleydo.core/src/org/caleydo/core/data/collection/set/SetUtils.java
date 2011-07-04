@@ -18,9 +18,9 @@ import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
@@ -164,7 +164,7 @@ public class SetUtils {
 					cmdCreateStorage.doCommand();
 
 					storageLabel = storageLabelIterator.next();
-					INumericalStorage storage = (INumericalStorage) cmdCreateStorage.getCreatedObject();
+					NumericalStorage storage = (NumericalStorage) cmdCreateStorage.getCreatedObject();
 					storage.setLabel(storageLabel);
 					storageIds.add(storage.getID());
 					break;
@@ -233,15 +233,15 @@ public class SetUtils {
 
 			cmdLoadLookupTableFile.doCommand();
 		}
-//		else if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
-//			String lookupTableInfo =
-//				loadDataParameters.getFileIDTypeName() + "_2_" + dataDomain.getContentIDType().getTypeName()
-//					+ " REVERSE";
-//
-//			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
-//				loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
-//				loadDataParameters.getDelimiter(), "");
-//		}
+		// else if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
+		// String lookupTableInfo =
+		// loadDataParameters.getFileIDTypeName() + "_2_" + dataDomain.getContentIDType().getTypeName()
+		// + " REVERSE";
+		//
+		// cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
+		// loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
+		// loadDataParameters.getDelimiter(), "");
+		// }
 		// else {
 		// throw new IllegalStateException("Not implemented for " + dataDomain);
 		// }
@@ -275,7 +275,7 @@ public class SetUtils {
 		}
 
 		boolean isSetHomogeneous = loadDataParameters.isDataHomogeneous();
-		
+
 		if (loadDataParameters.getMathFilterMode().equals("Normal")) {
 			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL, isSetHomogeneous);
 		}

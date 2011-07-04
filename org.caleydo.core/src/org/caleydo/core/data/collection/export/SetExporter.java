@@ -7,8 +7,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
@@ -70,7 +70,7 @@ public class SetExporter {
 				}
 				out.print(identifier + "\t");
 				for (Integer iStorageIndex : alExperiments) {
-					IStorage storage = set.get(iStorageIndex);
+					AStorage storage = set.get(iStorageIndex);
 					out.print(storage.getFloat(EDataRepresentation.RAW, iContentIndex));
 					out.print("\t");
 				}
@@ -165,7 +165,7 @@ public class SetExporter {
 				}
 				out.print(identifier + "\t");
 				for (Integer iStorageIndex : storageVA) {
-					IStorage storage = set.get(iStorageIndex);
+					AStorage storage = set.get(iStorageIndex);
 					out.print(storage.getFloat(EDataRepresentation.RAW, contentID));
 					out.print("\t");
 				}

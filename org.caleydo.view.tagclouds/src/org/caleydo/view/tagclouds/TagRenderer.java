@@ -4,7 +4,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
@@ -64,7 +64,7 @@ public class TagRenderer extends LayoutRenderer {
 
 		if (!tagCloud.getContentVA().contains(contentID))
 			return;
-		IStorage genericStorage = tagCloud.getSet().get(storageID);
+		AStorage genericStorage = tagCloud.getSet().get(storageID);
 		if (genericStorage instanceof NumericalStorage) {
 			NumericalStorage numericalStorage = (NumericalStorage) genericStorage;
 			text = new Float(

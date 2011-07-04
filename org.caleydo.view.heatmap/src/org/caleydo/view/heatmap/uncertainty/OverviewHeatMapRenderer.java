@@ -3,7 +3,6 @@ package org.caleydo.view.heatmap.uncertainty;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;

@@ -33,11 +33,11 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.StorageFilter;
 import org.caleydo.core.data.filter.event.NewContentFilterEvent;
@@ -628,7 +628,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		if (!(detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM))
 			renderCaption = false;
 
-		IStorage currentStorage = null;
+		AStorage currentStorage = null;
 
 		float previousX = 0;
 		float previousY = 0;
@@ -672,7 +672,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 			if (renderCaption) {
 				String sRawValue;
-				if (currentStorage instanceof INumericalStorage) {
+				if (currentStorage instanceof NumericalStorage) {
 					sRawValue = Formatter.formatNumber(currentStorage.getFloat(
 							EDataRepresentation.RAW, contentID));
 
@@ -750,7 +750,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				gl.glColor4fv(Y_AXIS_COLOR, 0);
 				gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 			}
-			
+
 			int axisPickingID = pickingManager.getPickingID(uniqueID,
 					EPickingType.Y_AXIS_SELECTION, storageVA.get(iCount));
 			gl.glPushName(axisPickingID);
@@ -767,7 +767,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			gl.glEnd();
 			gl.glDisable(GL2.GL_LINE_STIPPLE);
 			gl.glPopName();
-		
 
 			// if (detailLevel == DetailLevel.LO) {
 			if (!isRenderedRemote()) {
@@ -812,9 +811,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			gl.glTranslatef(fXPosition,
 					renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(), 0);
 
-
 			float width = renderStyle.getAxisSpacing(storageVA.size());
-			if(iCount == numberOfAxis-1)
+			if (iCount == numberOfAxis - 1)
 				width = fYTranslation;
 			textRenderer.renderTextInBounds(gl, sAxisLabel, 0, 0, 0.02f, width,
 					parentGLCanvas.getPixelGLConverter().getGLHeightForPixelHeight(10));
@@ -2399,7 +2397,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			int storageCounter = 0;
 			for (Integer storageID : storageVA) {
 				float xValue = 0.2f * storageCounter++;
-				INumericalStorage storage = (INumericalStorage) set.get(storageID);
+				NumericalStorage storage = (NumericalStorage) set.get(storageID);
 
 				float yValue = storage.getFloat(EDataRepresentation.NORMALIZED, index);
 				vertices[vertexCounter++] = xValue;
@@ -2555,7 +2553,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			return 80;
 		}
 	}
-	
+
 	@Override
 	public java.util.Set<IDataDomain> getDataDomains() {
 		java.util.Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();

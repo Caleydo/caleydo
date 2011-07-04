@@ -8,9 +8,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
@@ -155,7 +153,7 @@ public class Set
 	@Override
 	public int depth() {
 		if (depth == 0) {
-			for (IStorage storage : hashStorages.values()) {
+			for (AStorage storage : hashStorages.values()) {
 				if (depth == 0)
 					depth = storage.size();
 				else {
@@ -261,8 +259,8 @@ public class Set
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
-		for (IStorage storage : hashStorages.values()) {
-			INumericalStorage nStorage = (INumericalStorage) storage;
+		for (AStorage storage : hashStorages.values()) {
+			NumericalStorage nStorage = (NumericalStorage) storage;
 			Histogram storageHistogram = nStorage.getHistogram();
 
 			if (bIsFirstLoop) {
@@ -281,7 +279,6 @@ public class Set
 		return histogram;
 	}
 
-
 	@Override
 	public Histogram getBaseHistogram() {
 		if (!isSetHomogeneous) {
@@ -291,8 +288,8 @@ public class Set
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
-		for (IStorage storage : hashStorages.values()) {
-			INumericalStorage nStorage = (INumericalStorage) storage;
+		for (AStorage storage : hashStorages.values()) {
+			NumericalStorage nStorage = (NumericalStorage) storage;
 			Histogram storageHistogram = nStorage.getHistogram(defaultContentData.getContentVA());
 
 			if (bIsFirstLoop) {
@@ -314,15 +311,15 @@ public class Set
 	@Override
 	public Histogram getHistogram(ContentVirtualArray contentVA) {
 		// FIXME put that back
-//		if (!isSetHomogeneous) {
-//			throw new UnsupportedOperationException(
-//				"Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use storage based histograms instead!");
-//		}
+		// if (!isSetHomogeneous) {
+		// throw new UnsupportedOperationException(
+		// "Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use storage based histograms instead!");
+		// }
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
-		for (IStorage storage : hashStorages.values()) {
-			INumericalStorage nStorage = (INumericalStorage) storage;
+		for (AStorage storage : hashStorages.values()) {
+			NumericalStorage nStorage = (NumericalStorage) storage;
 			Histogram storageHistogram = nStorage.getHistogram(contentVA);
 
 			if (bIsFirstLoop) {
@@ -478,36 +475,36 @@ public class Set
 	@Override
 	public void cluster(ClusterState clusterState) {
 
-//		if (setType.equals(ESetDataType.NUMERIC) && isSetHomogeneous == true) {
+		// if (setType.equals(ESetDataType.NUMERIC) && isSetHomogeneous == true) {
 
-			String contentVAType = clusterState.getContentVAType();
-			if (contentVAType != null) {
-				clusterState.setContentVA(getContentData(contentVAType).getContentVA());
-				clusterState.setContentIDType(dataDomain.getContentIDType());
-				// this.setContentGroupList(getContentVA(contentVAType).getGroupList());
-			}
+		String contentVAType = clusterState.getContentVAType();
+		if (contentVAType != null) {
+			clusterState.setContentVA(getContentData(contentVAType).getContentVA());
+			clusterState.setContentIDType(dataDomain.getContentIDType());
+			// this.setContentGroupList(getContentVA(contentVAType).getGroupList());
+		}
 
-			String storageVAType = clusterState.getStorageVAType();
-			if (storageVAType != null) {
-				clusterState.setStorageVA(getStorageData(storageVAType).getStorageVA());
-				clusterState.setStorageIDType(dataDomain.getStorageIDType());
-				// this.setStorageGroupList(getStorageVA(storageVAType).getGroupList());
-			}
+		String storageVAType = clusterState.getStorageVAType();
+		if (storageVAType != null) {
+			clusterState.setStorageVA(getStorageData(storageVAType).getStorageVA());
+			clusterState.setStorageIDType(dataDomain.getStorageIDType());
+			// this.setStorageGroupList(getStorageVA(storageVAType).getGroupList());
+		}
 
-			ClusterManager clusterManager = new ClusterManager(this);
-			ClusterResult result = clusterManager.cluster(clusterState);
+		ClusterManager clusterManager = new ClusterManager(this);
+		ClusterResult result = clusterManager.cluster(clusterState);
 
-			ContentData contentResult = result.getContentResult();
-			if (contentResult != null) {
-				hashContentData.put(clusterState.getContentVAType(), contentResult);
-			}
-			StorageData storageResult = result.getStorageResult();
-			if (storageResult != null) {
-				hashStorageData.put(clusterState.getStorageVAType(), storageResult);
-			}
-//		}
-//		else
-//			throw new IllegalStateException("Cannot cluster a non-numerical or non-homogeneous Set");
+		ContentData contentResult = result.getContentResult();
+		if (contentResult != null) {
+			hashContentData.put(clusterState.getContentVAType(), contentResult);
+		}
+		StorageData storageResult = result.getStorageResult();
+		if (storageResult != null) {
+			hashStorageData.put(clusterState.getStorageVAType(), storageResult);
+		}
+		// }
+		// else
+		// throw new IllegalStateException("Cannot cluster a non-numerical or non-homogeneous Set");
 
 	}
 
@@ -636,7 +633,7 @@ public class Set
 	 */
 	void addStorage(AStorage storage) {
 		// if (hashStorages.isEmpty()) {
-		if (storage instanceof INumericalStorage) {
+		if (storage instanceof NumericalStorage) {
 			if (setType == null)
 				setType = ESetDataType.NUMERIC;
 			else if (setType.equals(ESetDataType.NOMINAL))
@@ -721,9 +718,9 @@ public class Set
 
 		this.externalDataRep = externalDataRep;
 
-		for (IStorage storage : hashStorages.values()) {
-			if (storage instanceof INumericalStorage) {
-				((INumericalStorage) storage).setExternalDataRepresentation(externalDataRep);
+		for (AStorage storage : hashStorages.values()) {
+			if (storage instanceof NumericalStorage) {
+				((NumericalStorage) storage).setExternalDataRepresentation(externalDataRep);
 			}
 		}
 
@@ -765,9 +762,9 @@ public class Set
 	 * all the storages that support it manually.
 	 */
 	void log10() {
-		for (IStorage storage : hashStorages.values()) {
-			if (storage instanceof INumericalStorage) {
-				INumericalStorage nStorage = (INumericalStorage) storage;
+		for (AStorage storage : hashStorages.values()) {
+			if (storage instanceof NumericalStorage) {
+				NumericalStorage nStorage = (NumericalStorage) storage;
 				nStorage.log10();
 			}
 			else
@@ -783,9 +780,9 @@ public class Set
 	 */
 	void log2() {
 
-		for (IStorage storage : hashStorages.values()) {
-			if (storage instanceof INumericalStorage) {
-				INumericalStorage nStorage = (INumericalStorage) storage;
+		for (AStorage storage : hashStorages.values()) {
+			if (storage instanceof NumericalStorage) {
+				NumericalStorage nStorage = (NumericalStorage) storage;
 				nStorage.log2();
 			}
 			else
@@ -801,7 +798,7 @@ public class Set
 	 */
 	private void normalizeLocally() {
 		isSetHomogeneous = false;
-		for (IStorage storage : hashStorages.values()) {
+		for (AStorage storage : hashStorages.values()) {
 			storage.normalize();
 		}
 	}
@@ -814,9 +811,9 @@ public class Set
 	 */
 	private void normalizeGlobally() {
 		isSetHomogeneous = true;
-		for (IStorage storage : hashStorages.values()) {
-			if (storage instanceof INumericalStorage) {
-				INumericalStorage nStorage = (INumericalStorage) storage;
+		for (AStorage storage : hashStorages.values()) {
+			if (storage instanceof NumericalStorage) {
+				NumericalStorage nStorage = (NumericalStorage) storage;
 				nStorage.normalizeWithExternalExtrema(getMin(), getMax());
 			}
 			else
@@ -898,8 +895,8 @@ public class Set
 		double dTemp = 1.0;
 
 		if (setType.equals(ESetDataType.NUMERIC)) {
-			for (IStorage storage : hashStorages.values()) {
-				INumericalStorage nStorage = (INumericalStorage) storage;
+			for (AStorage storage : hashStorages.values()) {
+				NumericalStorage nStorage = (NumericalStorage) storage;
 				dTemp = nStorage.getMin();
 				if (!bArtificialMin && dTemp < dMin) {
 					dMin = dTemp;

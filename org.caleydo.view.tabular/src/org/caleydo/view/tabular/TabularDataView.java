@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
@@ -426,7 +426,7 @@ public class TabularDataView extends ASWTView implements
 			@Override
 			public void run() {
 				TableColumn column = new TableColumn(contentTable, SWT.NONE, index);
-				IStorage storage = set.get(storageNumber);
+				AStorage storage = set.get(storageNumber);
 				column.setText(storage.getLabel());
 				TableItem[] items = contentTable.getItems();
 				for (int i = 0; i < items.length; i++) {

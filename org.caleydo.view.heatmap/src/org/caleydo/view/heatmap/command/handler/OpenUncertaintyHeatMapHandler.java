@@ -1,6 +1,5 @@
 package org.caleydo.view.heatmap.command.handler;
 
-import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;

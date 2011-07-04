@@ -9,7 +9,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -886,7 +886,7 @@ public class GLPathwayContentCreator {
 				return null;
 			for (Integer iExpressionIndex : ids) {
 
-				IStorage storage = geneticDataDomain.getSet().get(
+				AStorage storage = geneticDataDomain.getSet().get(
 						glPathwayView.iCurrentStorageIndex);
 				if (storage == null)
 					throw new IllegalStateException("No storage in this set with id: "

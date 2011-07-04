@@ -3,7 +3,6 @@ package org.caleydo.core.data.collection.set;
 import java.util.HashMap;
 import java.util.ListIterator;
 
-import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.VAIterator;

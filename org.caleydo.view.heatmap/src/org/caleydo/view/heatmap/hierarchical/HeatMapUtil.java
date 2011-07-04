@@ -9,7 +9,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -69,7 +69,7 @@ public class HeatMapUtil {
 								contentIndex)) {
 					fOpacity = 0.3f;
 				}
-				IStorage storage = set.get(storageIndex);
+				AStorage storage = set.get(storageIndex);
 				float fLookupValue = storage.getFloat(EDataRepresentation.NORMALIZED,
 						contentIndex);
 

@@ -4,7 +4,6 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.parser.parameter.ParameterHandler.ParameterHandlerType;
-import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

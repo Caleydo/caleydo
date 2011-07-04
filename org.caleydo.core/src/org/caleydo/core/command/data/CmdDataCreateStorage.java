@@ -2,7 +2,7 @@ package org.caleydo.core.command.data;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.manager.data.storage.StorageManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 
@@ -14,7 +14,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
  * @author Alexander Lex
  */
 public class CmdDataCreateStorage
-	extends ACmdCreational<IStorage> {
+	extends ACmdCreational<AStorage> {
 	private EManagedObjectType storageType;
 
 	/**
