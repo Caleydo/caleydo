@@ -3,7 +3,6 @@ package org.caleydo.core.manager;
 import java.io.File;
 
 import org.caleydo.core.manager.command.CommandManager;
-import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.data.storage.StorageManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
@@ -72,7 +71,7 @@ public class GeneralManager {
 
 	private BasicInformation basicInfo;
 
-	private IStorageManager storageManager;
+	private StorageManager storageManager;
 	private CommandManager commandManager;
 	private SWTGUIManager sWTGUIManager;
 	private ViewManager viewGLCanvasManager;
@@ -155,7 +154,7 @@ public class GeneralManager {
 		return resourceLoader;
 	}
 
-	public IStorageManager getStorageManager() {
+	public StorageManager getStorageManager() {
 		return storageManager;
 	}
 

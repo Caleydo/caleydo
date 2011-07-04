@@ -1,6 +1,5 @@
 package org.caleydo.core.data.collection.storage;
 
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
 
@@ -15,10 +14,18 @@ import org.caleydo.core.data.collection.ccontainer.NumericalCContainer;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
- * Abstact Storage class. Implements all of the methods the different IStorages share
+ * Interface for Storages A Storage is a container that holds various representations of a particular data
+ * entity, for example a microarray experiment, or a column on illnesses in a clinical data file. It contains
+ * all information considering one such entity, for example, the raw, normalized and logarithmized data as
+ * well as metadata, such as the label of the experiment. Only the raw data and some metadata can be specified
+ * manually, the rest is computed on on demand. One distinguishes between two basic storage types: numerical
+ * and nominal. This is reflected in the two sub-interfaces INumericalSet and INominalSet. After construction
+ * one of the setRawData methods has to be called. Notice, that only one setRawData may be called exactly
+ * once, since a set is designed to contain only one raw data set at a time.
  * 
- * @author Alexander lex
+ * @author Alexander Lex
  */
+
 public abstract class AStorage
 	extends AUniqueObject
 	implements IStorage {
@@ -44,7 +51,11 @@ public abstract class AStorage
 		sLabel = new String("Not specified");
 	}
 
-	@Override
+	/**
+	 * Returns the data type of the raw data
+	 * 
+	 * @return a value of ERawDataType
+	 */
 	public ERawDataType getRawDataType() {
 		return rawDataType;
 	}
@@ -59,7 +70,12 @@ public abstract class AStorage
 		return sLabel;
 	}
 
-	@Override
+	/**
+	 * Set the raw data with data type float
+	 * 
+	 * @param fArRawData
+	 *            a float array containing the raw data
+	 */
 	public void setRawData(float[] fArRawData) {
 
 		if (bRawDataSet)
@@ -73,7 +89,12 @@ public abstract class AStorage
 		hashCContainers.put(EDataRepresentation.RAW, container);
 	}
 
-	@Override
+	/**
+	 * Set the raw data with data type int
+	 * 
+	 * @param fArRawData
+	 *            a int array containing the raw data
+	 */
 	public void setRawData(int[] iArRawData) {
 
 		if (bRawDataSet)
@@ -84,6 +105,19 @@ public abstract class AStorage
 
 		IntCContainer container = new IntCContainer(iArRawData);
 		hashCContainers.put(EDataRepresentation.RAW, container);
+	}
+
+	public void setCertaintyData(float[] certaintyData) {
+
+		if (bRawDataSet)
+			throw new IllegalStateException("Raw data was already set in Storage " + uniqueID
+				+ " , tried to set again.");
+
+		rawDataType = ERawDataType.FLOAT;
+		bRawDataSet = true;
+
+		FloatCContainer container = new FloatCContainer(certaintyData);
+		hashCContainers.put(EDataRepresentation.CERTAINTY, container);
 	}
 
 	@Override
@@ -141,12 +175,6 @@ public abstract class AStorage
 
 		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers.get(storageKind);
 		return container.iterator();
-	}
-
-	@Override
-	public void setRawData(ArrayList<? super Number> alNumber) {
-		// TODO Auto-generated method stub
-		throw new IllegalStateException("Not implemented");
 	}
 
 	@Override

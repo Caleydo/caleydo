@@ -12,6 +12,7 @@ import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
+import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NominalStorage;
@@ -20,8 +21,8 @@ import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.data.set.SetManager;
+import org.caleydo.core.manager.data.storage.StorageManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterManager;
@@ -528,7 +529,7 @@ public class Set
 	@Override
 	public void destroy() {
 		GeneralManager gm = GeneralManager.get();
-		IStorageManager sm = gm.getStorageManager();
+		StorageManager sm = gm.getStorageManager();
 		for (Integer storageID : hashStorages.keySet()) {
 			sm.unregisterItem(storageID);
 		}
@@ -619,7 +620,7 @@ public class Set
 	 * @param storageID
 	 */
 	void addStorage(int iStorageID) {
-		IStorageManager storageManager = GeneralManager.get().getStorageManager();
+		StorageManager storageManager = GeneralManager.get().getStorageManager();
 
 		if (!storageManager.hasItem(iStorageID))
 			throw new IllegalArgumentException("Requested Storage with ID " + iStorageID + " does not exist.");
@@ -633,7 +634,7 @@ public class Set
 	 * @param storage
 	 *            the storage
 	 */
-	void addStorage(IStorage storage) {
+	void addStorage(AStorage storage) {
 		// if (hashStorages.isEmpty()) {
 		if (storage instanceof INumericalStorage) {
 			if (setType == null)

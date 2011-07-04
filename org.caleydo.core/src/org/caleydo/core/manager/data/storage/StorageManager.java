@@ -1,10 +1,10 @@
 package org.caleydo.core.manager.data.storage;
 
 import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.manager.AManager;
-import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 
 /**
@@ -14,9 +14,8 @@ import org.caleydo.core.manager.id.EManagedObjectType;
  * @author Marc Streit
  */
 public class StorageManager
-	extends AManager<IStorage>
-	implements IStorageManager {
-	@Override
+	extends AManager<AStorage> {
+
 	public IStorage createStorage(final EManagedObjectType type) {
 		switch (type) {
 			case STORAGE_NUMERICAL:

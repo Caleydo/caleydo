@@ -3,7 +3,7 @@ package org.caleydo.core.command.data;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.manager.data.IStorageManager;
+import org.caleydo.core.manager.data.storage.StorageManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 
 /**
@@ -26,7 +26,7 @@ public class CmdDataCreateStorage
 
 	@Override
 	public void doCommand() {
-		IStorageManager storageManager = generalManager.getStorageManager();
+		StorageManager storageManager = generalManager.getStorageManager();
 		createdObject = storageManager.createStorage(storageType);
 
 		generalManager.getIDCreator().mapInternalToExternalID(createdObject.getID(), externalID);

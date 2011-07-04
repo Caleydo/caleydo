@@ -10,6 +10,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
+import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -30,7 +31,7 @@ public class TabularAsciiDataReader
 	/**
 	 * Imports data from file to this set. uses first storage and overwrites first selection.
 	 */
-	protected ArrayList<IStorage> targetStorages;
+	protected ArrayList<AStorage> targetStorages;
 
 	protected ArrayList<EStorageType> columnDataTypes;
 
@@ -53,7 +54,7 @@ public class TabularAsciiDataReader
 		super(sFileName);
 
 		this.dataDomain = dataDomain;
-		targetStorages = new ArrayList<IStorage>();
+		targetStorages = new ArrayList<AStorage>();
 		columnDataTypes = new ArrayList<EStorageType>();
 
 		intArrays = new ArrayList<int[]>();

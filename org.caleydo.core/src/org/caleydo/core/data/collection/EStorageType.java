@@ -1,39 +1,26 @@
 package org.caleydo.core.data.collection;
 
 /**
- * Collection of different data types used in storage.
+ * Collection of different types of storages.
  * 
- * @author Michael Kalkusch
  * @author Marc Streit
  * @author Alexander Lex
  */
 public enum EStorageType {
 	// Needed by the parser
-	// FIXME: control seqeunces are not a storage type
-	ABORT(false, null),
-	SKIP(false, null),
-	// FIXME: neither a control sequence nor a data type
-	GROUP_NUMBER(false, null),
-	GROUP_REPRESENTATIVE(false, null),
+	ABORT(null),
+	SKIP(null),
+	GROUP_NUMBER(null),
+	GROUP_REPRESENTATIVE(null),
 
-	INT(true, Integer.class),
-	FLOAT(true, Float.class),
-	STRING(true, String.class),
-	// FIXME??
-	NONE(false, null);
+	INT(Integer.class),
+	FLOAT(Float.class),
+	STRING(String.class),
 
-	private boolean bIsControlSequence;
+	CERTAINTY(Float.class);
 
-	// private Class<?> storageClass;
+	private <T> EStorageType(Class<T> storageClass) {
 
-	private <T> EStorageType(final boolean bIsControlSequence, Class<T> storageClass) {
-
-		this.bIsControlSequence = bIsControlSequence;
-	}
-
-	public boolean isControlSequence() {
-
-		return bIsControlSequence;
 	}
 
 }

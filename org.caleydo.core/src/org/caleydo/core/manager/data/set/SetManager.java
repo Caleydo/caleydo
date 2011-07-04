@@ -2,7 +2,6 @@ package org.caleydo.core.manager.data.set;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.AManager;
-import org.caleydo.core.manager.data.ISetManager;
 
 /**
  * Manage the sets TODO: register and store sets
@@ -11,8 +10,7 @@ import org.caleydo.core.manager.data.ISetManager;
  * @author Alexander Lex
  */
 public class SetManager
-	extends AManager<ISet>
-	implements ISetManager {
+	extends AManager<ISet> {
 
 	private static SetManager instance = null;
 
@@ -26,7 +24,6 @@ public class SetManager
 		return instance;
 	}
 
-	@Override
 	public ISet createSet() {
 		// ISet set = new Set();
 		// return set;
