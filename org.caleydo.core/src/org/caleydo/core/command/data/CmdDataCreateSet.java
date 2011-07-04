@@ -1,16 +1,12 @@
 package org.caleydo.core.command.data;
 
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -67,35 +63,6 @@ public class CmdDataCreateSet
 
 	@Override
 	public void undoCommand() {
-	}
-
-	@Override
-	public void setParameterHandler(final ParameterHandler parameterHandler) {
-		super.setParameterHandler(parameterHandler);
-
-		StringTokenizer strToken_StorageBlock =
-			new StringTokenizer(parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE2.getXmlKey()),
-				GeneralManager.sDelimiter_Paser_DataItemBlock);
-
-		while (strToken_StorageBlock.hasMoreTokens()) {
-			StringTokenizer strToken_StorageId =
-				new StringTokenizer(strToken_StorageBlock.nextToken(),
-					GeneralManager.sDelimiter_Parser_DataItems);
-
-			while (strToken_StorageId.hasMoreTokens()) {
-				storageIDs.add(Integer.valueOf(strToken_StorageId.nextToken()).intValue());
-			}
-		}
-
-		// Convert external IDs from XML file to internal IDs
-		storageIDs = GeneralManager.get().getIDCreator().convertExternalToInternalIDs(storageIDs);
-
-		String sAttrib3 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey());
-		dataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomain(sAttrib3);
-		if (dataDomain == null) {
-			DataDomainManager.get().createDataDomain(sAttrib3);
-			Logger.log(new Status(IStatus.INFO, this.toString(), "Lazy creation of data domain " + sAttrib3));
-		}
 	}
 
 	public void setAttributes(ArrayList<Integer> iAlStorageIDs, ASetBasedDataDomain dataDomain) {

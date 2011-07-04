@@ -5,7 +5,6 @@ import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.parser.parameter.ParameterHandler;
 
 /**
  * Command creates a new storage.
@@ -38,24 +37,6 @@ public class CmdDataCreateStorage
 
 	@Override
 	public void undoCommand() {
-	}
-
-	@Override
-	public void setParameterHandler(final ParameterHandler parameterHandler) {
-		super.setParameterHandler(parameterHandler);
-
-		if (attrib1.length() > 0) {
-			if (attrib1.equalsIgnoreCase("NOMINAL")) {
-				storageType = EManagedObjectType.STORAGE_NOMINAL;
-			}
-			else if (attrib1.equalsIgnoreCase("NUMERICAL")) {
-				storageType = EManagedObjectType.STORAGE_NUMERICAL;
-			}
-			else
-				throw new IllegalArgumentException(
-					"attrib1 of CREATE_STORAGE must be either NUMERICAL or NOMINAL, but was neither");
-		}
-
 	}
 
 	public void setAttributes(EManagedObjectType stroageType) {

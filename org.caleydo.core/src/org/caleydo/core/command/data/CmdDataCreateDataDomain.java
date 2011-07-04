@@ -1,13 +1,9 @@
 package org.caleydo.core.command.data;
 
-import java.util.StringTokenizer;
-
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
-import org.caleydo.core.parser.parameter.ParameterHandler;
 
 /**
  * Command creates a new data domain
@@ -42,35 +38,6 @@ public class CmdDataCreateDataDomain
 
 	@Override
 	public void undoCommand() {
-	}
-
-	@Override
-	public void setParameterHandler(final ParameterHandler parameterHandler) {
-		super.setParameterHandler(parameterHandler);
-
-		/**
-		 * Read TAG_ATTRIBUTE2 "attrib2" for storage!
-		 */
-
-		/**
-		 * Separate "text1@text2"
-		 */
-		StringTokenizer strToken_StorageBlock =
-			new StringTokenizer(parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey()),
-				GeneralManager.sDelimiter_Paser_DataItemBlock);
-
-		while (strToken_StorageBlock.hasMoreTokens()) {
-			/**
-			 * Separate "id1 id2 .."
-			 */
-			StringTokenizer dataDomainToken =
-				new StringTokenizer(strToken_StorageBlock.nextToken(),
-					GeneralManager.sDelimiter_Parser_DataItems);
-
-			while (dataDomainToken.hasMoreTokens()) {
-				dataDomainType = dataDomainToken.nextToken();
-			}
-		}
 	}
 
 	public void setAttributes(String dataDomainType) {

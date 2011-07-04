@@ -45,7 +45,6 @@ public class CmdCreateIDCategory
 		super.setParameterHandler(parameterHandler);
 
 		categoryName = detail;
-
 	}
 
 	public void setAttributes(String categoryName) {

@@ -22,15 +22,12 @@ Export-Package: org.caleydo.core.command;
    org.caleydo.core.parser.parameter,
    org.caleydo.core.command,
    org.caleydo.core.manager.datadomain",
- org.caleydo.core.command.data.filter;uses:="org.caleydo.core.data.collection,org.caleydo.core.command.base,org.caleydo.core.command",
  org.caleydo.core.command.data.parser;
   uses:="org.caleydo.core.command.base,
    org.caleydo.core.parser.parameter,
    org.caleydo.core.command,
    org.caleydo.core.manager.datadomain,
    org.caleydo.core.data.collection.set",
- org.caleydo.core.command.system;uses:="org.caleydo.core.command.base,org.caleydo.core.parser.parameter,org.caleydo.core.command",
- org.caleydo.core.command.view;uses:="org.caleydo.core.command.base,org.caleydo.core.command",
  org.caleydo.core.data,
  org.caleydo.core.data.collection;
   uses:="org.caleydo.core.data.collection.ccontainer,

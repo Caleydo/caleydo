@@ -1,7 +1,5 @@
 package org.caleydo.core.parser.parameter;
 
-import java.util.Hashtable;
-
 import org.xml.sax.Attributes;
 
 /**
@@ -18,8 +16,6 @@ public final class ParameterHandler {
 		FLOAT(),
 		STRING(),
 	}
-	
-	private Hashtable<String, ParameterHandlerType> hashPrimarySwitch;
 
 	private ParameterKeyValueDataAndDefault<Integer> hashKey2Integer;
 
@@ -29,10 +25,7 @@ public final class ParameterHandler {
 
 	private ParameterKeyValueDataAndDefault<Boolean> hashKey2Boolean;
 
-
 	public ParameterHandler() {
-
-		hashPrimarySwitch = new Hashtable<String, ParameterHandlerType>();
 
 		hashKey2Integer = new ParameterKeyValueDataAndDefault<Integer>();
 		hashKey2Float = new ParameterKeyValueDataAndDefault<Float>();
@@ -48,11 +41,6 @@ public final class ParameterHandler {
 	public Integer getValueInt(final String key) {
 
 		return hashKey2Integer.getValue(key);
-	}
-	
-	public ParameterHandlerType getValueType(final String key) {
-
-		return hashPrimarySwitch.get(key);
 	}
 
 	public void setValueAndTypeAndDefault(final String key, final String value,
@@ -113,40 +101,6 @@ public final class ParameterHandler {
 				+ " !");
 
 		}
-
-		hashPrimarySwitch.put(key, type);
-	}
-
-	public void setDefaultValueAnyType(final String key, final String value, final ParameterHandlerType type) {
-
-		try {
-			switch (type) {
-				case BOOL:
-					hashKey2Boolean.setDefaultValue(key, Boolean.valueOf(value));
-					break;
-				case FLOAT:
-					hashKey2Float.setDefaultValue(key, Float.valueOf(value));
-					break;
-				case INT:
-					hashKey2Integer.setDefaultValue(key, Integer.valueOf(value));
-					break;
-				case STRING:
-					hashKey2String.setDefaultValue(key, value);
-					break;
-
-				default:
-					throw new IllegalArgumentException("ParameterHandler.setValueAndType(" + key
-						+ ") uses unregistered enumeration!");
-			}
-		}
-		catch (NumberFormatException nfe) {
-			new IllegalStateException("ParameterHandler.setValueAndType(" + key + "," + value
-				+ ") value was not valid due to enumeration type=" + type.toString() + " !");
-
-		}
-
-		hashPrimarySwitch.put(key, type);
-
 	}
 	
 	public final void setValueBySaxAttributes(final Attributes attrs, final String key,
