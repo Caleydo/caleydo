@@ -7,7 +7,7 @@ import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
-import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.parser.parameter.ParameterHandler;
 
 /**
  * Command creates a new data domain
@@ -45,7 +45,7 @@ public class CmdDataCreateDataDomain
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler) {
+	public void setParameterHandler(final ParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
 		/**

@@ -206,14 +206,14 @@ public class SetUtils {
 	public static Set createData(ASetBasedDataDomain dataDomain) {
 
 		LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
-		ArrayList<Integer> iAlStorageId = loadDataParameters.getStorageIds();
+		ArrayList<Integer> storageIDs = loadDataParameters.getStorageIds();
 
 		// Create SET
 		CmdDataCreateSet cmdCreateSet =
 			(CmdDataCreateSet) GeneralManager.get().getCommandManager()
 				.createCommandByType(ECommandType.CREATE_SET_DATA);
 
-		cmdCreateSet.setAttributes(iAlStorageId, dataDomain);
+		cmdCreateSet.setAttributes(storageIDs, dataDomain);
 		cmdCreateSet.doCommand();
 
 		// ----------------- load dynamic mapping ---------------------
@@ -249,14 +249,14 @@ public class SetUtils {
 		// --------- data loading ---------------
 
 		// Trigger file loading command
-		CmdLoadFileNStorages cmdLoadCsv =
+		CmdLoadFileNStorages cmdLoadCSV =
 			(CmdLoadFileNStorages) GeneralManager.get().getCommandManager()
 				.createCommandByType(ECommandType.LOAD_DATA_FILE);
 
-		cmdLoadCsv.setAttributes(iAlStorageId, loadDataParameters);
-		cmdLoadCsv.doCommand();
+		cmdLoadCSV.setAttributes(storageIDs, loadDataParameters);
+		cmdLoadCSV.doCommand();
 
-		if (!cmdLoadCsv.isParsingOK()) {
+		if (!cmdLoadCSV.isParsingOK()) {
 			// TODO: Clear created set and storages which are empty
 			return null;
 		}
@@ -276,7 +276,6 @@ public class SetUtils {
 
 		boolean isSetHomogeneous = loadDataParameters.isDataHomogeneous();
 		
-
 		if (loadDataParameters.getMathFilterMode().equals("Normal")) {
 			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL, isSetHomogeneous);
 		}

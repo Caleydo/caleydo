@@ -14,7 +14,7 @@ import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
 import org.caleydo.core.command.system.CmdSystemExit;
 import org.caleydo.core.command.view.CmdViewCreateRcpGLCanvas;
-import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.parser.parameter.ParameterHandler;
 
 /**
  * Manager for creating commands.
@@ -30,7 +30,7 @@ public class CommandManager {
 	 *            Define several attributes and assign them in new Command
 	 * @return new Command with attributes defined in phAttributes
 	 */
-	public ICommand createCommand(final IParameterHandler phAttributes) {
+	public ICommand createCommand(final ParameterHandler phAttributes) {
 
 		ECommandType cmdType =
 			ECommandType.valueOf(phAttributes.getValueString(ECommandType.TAG_TYPE.getXmlKey()));

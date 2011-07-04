@@ -10,7 +10,7 @@ import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -70,7 +70,7 @@ public class CmdDataCreateSet
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler) {
+	public void setParameterHandler(final ParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
 		StringTokenizer strToken_StorageBlock =

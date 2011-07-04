@@ -1,7 +1,7 @@
 package org.caleydo.core.command.base;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.parser.parameter.ParameterHandler;
 
 /**
  * Abstract command for reading in attributes and detail tag.
@@ -33,7 +33,7 @@ public abstract class ACmdExternalAttributes
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler) {
+	public void setParameterHandler(final ParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
 		externalID = parameterHandler.getValueInt(ECommandType.TAG_UNIQUE_ID.getXmlKey());

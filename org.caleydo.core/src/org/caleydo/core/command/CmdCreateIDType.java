@@ -4,7 +4,7 @@ import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -46,7 +46,7 @@ public class CmdCreateIDType
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler) {
+	public void setParameterHandler(final ParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
 		typeName = detail;

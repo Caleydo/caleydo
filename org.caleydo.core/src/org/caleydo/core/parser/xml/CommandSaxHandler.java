@@ -2,8 +2,8 @@ package org.caleydo.core.parser.xml;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
-import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
+import org.caleydo.core.parser.parameter.ParameterHandler;
+import org.caleydo.core.parser.parameter.ParameterHandler.ParameterHandlerType;
 import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -17,9 +17,7 @@ import org.xml.sax.SAXException;
 public class CommandSaxHandler
 	extends AXmlParserHandler {
 
-	/* XML Tags */
 	private final String sTag_Command = ECommandType.TAG_CMD.getXmlKey();
-	/* END: XML Tags */
 
 	/**
 	 * Since the opening tag is handled by the external handler this fal is set to true by default.
@@ -44,7 +42,7 @@ public class CommandSaxHandler
 
 		ICommand lastCommand = null;
 
-		IParameterHandler phAttributes = new ParameterHandler();
+		ParameterHandler phAttributes = new ParameterHandler();
 
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_LABEL.getXmlKey(),
 			ECommandType.TAG_LABEL.getDefault(), ParameterHandlerType.STRING);

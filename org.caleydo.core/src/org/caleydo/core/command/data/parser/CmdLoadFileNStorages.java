@@ -10,7 +10,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.parser.ascii.TabularAsciiDataReader;
-import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.eclipse.core.runtime.IStatus;
@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.Status;
 public class CmdLoadFileNStorages
 	extends ACommand {
 
-	private ArrayList<Integer> iAlStorageIDs;
+	private ArrayList<Integer> storageIDs;
 
 	private LoadDataParameters loadDataParameters;
 
@@ -42,7 +42,7 @@ public class CmdLoadFileNStorages
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler) {
+	public void setParameterHandler(final ParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
 		loadDataParameters.setFileName(parameterHandler.getValueString(ECommandType.TAG_DETAIL.getXmlKey()));
@@ -54,14 +54,14 @@ public class CmdLoadFileNStorages
 			new StringTokenizer(parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE2.getXmlKey()),
 				GeneralManager.sDelimiter_Parser_DataItems);
 
-		iAlStorageIDs = new ArrayList<Integer>();
+		storageIDs = new ArrayList<Integer>();
 
 		while (tokenizer.hasMoreTokens()) {
-			iAlStorageIDs.add(Integer.valueOf(tokenizer.nextToken()).intValue());
+			storageIDs.add(Integer.valueOf(tokenizer.nextToken()).intValue());
 		}
 
 		// Convert external IDs from XML file to internal IDs
-		iAlStorageIDs = GeneralManager.get().getIDCreator().convertExternalToInternalIDs(iAlStorageIDs);
+		storageIDs = GeneralManager.get().getIDCreator().convertExternalToInternalIDs(storageIDs);
 
 		int[] iArrayStartStop =
 			StringConversionTool.convertStringToIntArray(
@@ -94,7 +94,7 @@ public class CmdLoadFileNStorages
 	public void setAttributes(final ArrayList<Integer> iAlStorageId,
 		final LoadDataParameters loadDataParameters) {
 		this.dataDomain = loadDataParameters.getDataDomain();
-		this.iAlStorageIDs = iAlStorageId;
+		this.storageIDs = iAlStorageId;
 		this.loadDataParameters = loadDataParameters;
 	}
 
@@ -104,12 +104,12 @@ public class CmdLoadFileNStorages
 			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Loading data from file "
 				+ loadDataParameters.getFileName() + " using token pattern "
 				+ loadDataParameters.getInputPattern() + ". Data is stored in Storage with ID "
-				+ iAlStorageIDs.toString()));
+				+ storageIDs.toString()));
 
 		TabularAsciiDataReader loader =
 			new TabularAsciiDataReader(loadDataParameters.getFileName(), dataDomain);
 		loader.setTokenPattern(loadDataParameters.getInputPattern());
-		loader.setTargetStorages(iAlStorageIDs);
+		loader.setTargetStorages(storageIDs);
 		if (loadDataParameters.isUseExperimentClusterInfo())
 			loader.enableExperimentClusterInfo();
 		loader.setStartParsingStopParsingAtLine(loadDataParameters.getStartParseFileAtLine(),

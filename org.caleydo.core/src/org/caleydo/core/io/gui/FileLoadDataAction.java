@@ -67,14 +67,15 @@ public class FileLoadDataAction
 	private Text txtMax;
 
 	private Button buttonHomogeneous;
+	private Button buttonCertaintyDataProvided;
 
 	private Table previewTable;
 
-	private ArrayList<Button> arSkipColumn;
+	private ArrayList<Button> skipColumn;
 
 	private Combo idCombo;
 
-	private ArrayList<IDType> alIDTypes;
+	private ArrayList<IDType> idTypes;
 
 	private String inputFile = "";
 	private String filePath = "";
@@ -85,6 +86,7 @@ public class FileLoadDataAction
 
 	private boolean useGeneClusterInfo = false;
 	private boolean useExperimentClusterInfo = false;
+	private boolean useUncertainty = false;
 
 	private ASetBasedDataDomain dataDomain = null;
 
@@ -101,7 +103,7 @@ public class FileLoadDataAction
 		super("Load data");
 		this.parentComposite = parentComposite;
 		loadDataParameters = new LoadDataParameters();
-		arSkipColumn = new ArrayList<Button>();
+		skipColumn = new ArrayList<Button>();
 	}
 
 	/**
@@ -204,22 +206,22 @@ public class FileLoadDataAction
 			idTypeGroup.setLayout(new RowLayout());
 
 			idCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
-			alIDTypes = new ArrayList<IDType>();
+			idTypes = new ArrayList<IDType>();
 
 			HashSet<IDType> tempIDTypes = GeneralManager.get().getIDMappingManager().getIDTypes();
 
 			for (IDType idType : tempIDTypes) {
 				if (!idType.isInternalType())
-					alIDTypes.add(idType);
+					idTypes.add(idType);
 			}
 
-			String[] idTypes = new String[alIDTypes.size()];
+			String[] idTypesAsString = new String[idTypes.size()];
 			int index = 0;
-			for (IDType idType : alIDTypes) {
-				idTypes[index] = idType.getTypeName();
+			for (IDType idType : idTypes) {
+				idTypesAsString[index] = idType.getTypeName();
 				index++;
 			}
-			idCombo.setItems(idTypes);
+			idCombo.setItems(idTypesAsString);
 			idCombo.setEnabled(true);
 			idCombo.select(0);
 			idCombo.addSelectionListener(new SelectionAdapter() {
@@ -232,9 +234,7 @@ public class FileLoadDataAction
 		}
 
 		createDelimiterGroup();
-
 		createFilterGroup();
-
 		createDataPropertiesGroup();
 
 		previewTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
@@ -543,13 +543,11 @@ public class FileLoadDataAction
 		buttonHomogeneous.setText("Homogeneous data");
 		buttonHomogeneous.setEnabled(true);
 		buttonHomogeneous.setSelection(true);
-		// buttonHomogeneous.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// txtMin.setEnabled(buttonHomogeneous.getSelection());
-		// }
-		// });
 
+		buttonCertaintyDataProvided = new Button(dataPropertiesGroup, SWT.CHECK);
+		buttonCertaintyDataProvided.setText("Uncertainty data");
+		buttonCertaintyDataProvided.setEnabled(true);
+		buttonCertaintyDataProvided.setSelection(false);
 	}
 
 	private void createDataPreviewTable(final String sDelimiter) {
@@ -569,35 +567,35 @@ public class FileLoadDataAction
 		editor.grabHorizontal = true;
 
 		// Read preview table
-		BufferedReader brFile;
+		BufferedReader file;
 		try {
-			brFile = GeneralManager.get().getResourceLoader().getResource(loadDataParameters.getFileName());
+			file = GeneralManager.get().getResourceLoader().getResource(loadDataParameters.getFileName());
 
-			String sLine = "";
+			String line = "";
 
 			// Ignore unwanted header files of file
 			for (int iIgnoreLineIndex = 0; iIgnoreLineIndex < loadDataParameters.getStartParseFileAtLine() - 1; iIgnoreLineIndex++) {
-				brFile.readLine();
+				file.readLine();
 			}
 
-			String sTmpNextToken = "";
+			String nextToken = "";
 			StringTokenizer tokenizer;
 			TableColumn column;
 			TableItem item;
-			int iColIndex = 0;
+			int colIndex = 0;
 
 			// Read labels
-			if ((sLine = brFile.readLine()) != null) {
-				tokenizer = new StringTokenizer(sLine, sDelimiter, false);
+			if ((line = file.readLine()) != null) {
+				tokenizer = new StringTokenizer(line, sDelimiter, false);
 				column = new TableColumn(previewTable, SWT.NONE);
 				column.setWidth(100);
 				column.setText("");
 
 				while (tokenizer.hasMoreTokens()) {
-					sTmpNextToken = tokenizer.nextToken();
+					nextToken = tokenizer.nextToken();
 
 					// Check for group information
-					if (sTmpNextToken.equals("GROUP_NUMBER") || sTmpNextToken.equals("Cluster_Number")) {
+					if (nextToken.equals("GROUP_NUMBER") || nextToken.equals("Cluster_Number")) {
 						useGeneClusterInfo = true;
 						// If group info is detected no more columns are parsed
 						break;
@@ -605,7 +603,7 @@ public class FileLoadDataAction
 
 					final TableColumn dataColumn = new TableColumn(previewTable, SWT.NONE);
 					dataColumn.setWidth(100);
-					dataColumn.setText(sTmpNextToken);
+					dataColumn.setText(nextToken);
 
 					dataColumn.addSelectionListener(new SelectionAdapter() {
 						@Override
@@ -619,58 +617,58 @@ public class FileLoadDataAction
 						}
 					});
 
-					iColIndex++;
+					colIndex++;
 				}
 			}
 
 			createDataClassBar();
 
-			int iRowCount = 0;
-			boolean bCellFilled = false;
+			int rowCount = 0;
+			boolean isCellFilled = false;
 
 			// Read raw data
-			while ((sLine = brFile.readLine()) != null && iRowCount < MAX_PREVIEW_TABLE_ROWS) {
+			while ((line = file.readLine()) != null && rowCount < MAX_PREVIEW_TABLE_ROWS) {
 				// last flag triggers return of delimiter itself
-				tokenizer = new StringTokenizer(sLine, sDelimiter, true);
+				tokenizer = new StringTokenizer(line, sDelimiter, true);
 				item = new TableItem(previewTable, SWT.NONE);
-				item.setText("Row " + (iRowCount + 1)); // +1 to be intuitive for a non programmer :)
-				iColIndex = 0;
+				item.setText("Row " + (rowCount + 1)); // +1 to be intuitive for a non programmer :)
+				colIndex = 0;
 
 				while (tokenizer.hasMoreTokens()) {
-					sTmpNextToken = tokenizer.nextToken();
+					nextToken = tokenizer.nextToken();
 
 					// check for experiment cluster info
-					if (sTmpNextToken.equals("Cluster_Number") || sTmpNextToken.equals("Cluster_Repr"))
+					if (nextToken.equals("Cluster_Number") || nextToken.equals("Cluster_Repr"))
 						useExperimentClusterInfo = true;
 
 					// Check for empty cells
-					if (sTmpNextToken.equals(sDelimiter) && !bCellFilled) {
-						item.setText(iColIndex + 1, "");
-						iColIndex++;
+					if (nextToken.equals(sDelimiter) && !isCellFilled) {
+						item.setText(colIndex + 1, "");
+						colIndex++;
 					}
-					else if (sTmpNextToken.equals(sDelimiter) && bCellFilled) {
-						bCellFilled = false; // reset
+					else if (nextToken.equals(sDelimiter) && isCellFilled) {
+						isCellFilled = false; // reset
 					}
 					else {
-						bCellFilled = true;
-						item.setText(iColIndex + 1, sTmpNextToken);
-						iColIndex++;
+						isCellFilled = true;
+						item.setText(colIndex + 1, nextToken);
+						colIndex++;
 					}
 				}
 
-				bCellFilled = false; // reset
+				isCellFilled = false; // reset
 
-				iRowCount++;
+				rowCount++;
 			}
 
 			// check for experiment cluster info in the rest of the file
-			while ((sLine = brFile.readLine()) != null) {
+			while ((line = file.readLine()) != null) {
 
-				tokenizer = new StringTokenizer(sLine, sDelimiter, true);
-				sTmpNextToken = tokenizer.nextToken();
+				tokenizer = new StringTokenizer(line, sDelimiter, true);
+				nextToken = tokenizer.nextToken();
 
 				// probably weeks performance
-				if (sTmpNextToken.equals("Cluster_Number") || sTmpNextToken.equals("Cluster_Repr"))
+				if (nextToken.equals("Cluster_Number") || nextToken.equals("Cluster_Repr"))
 					useExperimentClusterInfo = true;
 			}
 
@@ -714,7 +712,7 @@ public class FileLoadDataAction
 				}
 			});
 
-			arSkipColumn.add(skipButton);
+			skipColumn.add(skipButton);
 
 			TableEditor editor = new TableEditor(previewTable);
 			editor.grabHorizontal = editor.grabVertical = true;
@@ -760,12 +758,12 @@ public class FileLoadDataAction
 		}
 
 		if (isGenetic) {
-			loadDataParameters.setFileIDType(alIDTypes.get(idCombo.getSelectionIndex()));
+			loadDataParameters.setFileIDType(idTypes.get(idCombo.getSelectionIndex()));
 		}
 
 		loadDataParameters.setMathFilterMode(mathFilterMode);
-
 		loadDataParameters.setIsDataHomogeneous(buttonHomogeneous.getSelection());
+		loadDataParameters.setIsCertaintyDataProvided(buttonCertaintyDataProvided.getSelection());
 	}
 
 	/**
@@ -782,7 +780,7 @@ public class FileLoadDataAction
 
 		for (int columnIndex = 2; columnIndex < previewTable.getColumnCount(); columnIndex++) {
 
-			if (!arSkipColumn.get(columnIndex - 2).getSelection()) {
+			if (!skipColumn.get(columnIndex - 2).getSelection()) {
 				inputPattern.append("SKIP;");
 			}
 			else {
@@ -863,19 +861,19 @@ public class FileLoadDataAction
 			idList.add(items[rowIndex].getText(1));
 			rowIndex++;
 		}
-		if (alIDTypes == null) {
-			alIDTypes = new ArrayList<IDType>();
+		if (idTypes == null) {
+			idTypes = new ArrayList<IDType>();
 			HashSet<IDType> alIDTypesTemp = GeneralManager.get().getIDMappingManager().getIDTypes();
 			for (IDType idType : alIDTypesTemp) {
 				if (!idType.isInternalType())
-					alIDTypes.add(idType);
+					idTypes.add(idType);
 			}
 		}
 
 		int maxCorrectElements = 0;
 		IDType mostProbableIDType = null;
 
-		for (IDType idType : alIDTypes) {
+		for (IDType idType : idTypes) {
 
 			int currentCorrectElements = 0;
 
@@ -907,7 +905,7 @@ public class FileLoadDataAction
 			}
 
 			if (currentCorrectElements >= idList.size()) {
-				idCombo.select(alIDTypes.indexOf(idType));
+				idCombo.select(idTypes.indexOf(idType));
 				TableColumn idColumn = previewTable.getColumn(1);
 				idColumn.setText(idType.getTypeName());
 				return;
@@ -918,7 +916,7 @@ public class FileLoadDataAction
 			}
 		}
 
-		idCombo.select(alIDTypes.indexOf(mostProbableIDType));
+		idCombo.select(idTypes.indexOf(mostProbableIDType));
 		TableColumn idColumn = previewTable.getColumn(1);
 		idColumn.setText(mostProbableIDType.getTypeName());
 

@@ -2,7 +2,7 @@ package org.caleydo.core.command;
 
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.mapping.IDCategory;
-import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -41,7 +41,7 @@ public class CmdCreateIDCategory
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler) {
+	public void setParameterHandler(final ParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
 		categoryName = detail;

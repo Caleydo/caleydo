@@ -12,7 +12,7 @@ import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.data.set.SetManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.parser.parameter.ParameterHandler;
 
 /**
  * Command triggers filtering of storage data Example: LIN -> LOG etc.
@@ -42,7 +42,7 @@ public class CmdSetDataRepresentation
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler) {
+	public void setParameterHandler(final ParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
 		externalDataRep = EExternalDataRepresentation.valueOf(attrib1);

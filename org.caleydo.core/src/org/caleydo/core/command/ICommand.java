@@ -1,7 +1,7 @@
 package org.caleydo.core.command;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.parser.parameter.ParameterHandler;
 
 /**
  * Design Pattern "Command" ; behavior pattern Is combined with Design Pattern "IMemento" to provide Do-Undo
@@ -22,7 +22,7 @@ public interface ICommand
 	 */
 	public abstract void undoCommand();
 
-	public abstract void setParameterHandler(IParameterHandler parameterHandler);
+	public abstract void setParameterHandler(ParameterHandler parameterHandler);
 
 	/**
 	 * Get type information on this command.

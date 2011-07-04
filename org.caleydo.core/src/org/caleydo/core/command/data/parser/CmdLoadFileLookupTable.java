@@ -11,7 +11,7 @@ import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.mapping.MappingType;
 import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.parser.ascii.LookupTableLoader;
-import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.util.system.StringConversionTool;
 
 /**
@@ -83,7 +83,7 @@ public class CmdLoadFileLookupTable
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler) {
+	public void setParameterHandler(final ParameterHandler parameterHandler) {
 
 		super.setParameterHandler(parameterHandler);
 

@@ -1271,6 +1271,11 @@ public abstract class AGLView
 		gl.glPushMatrix();
 		gl.glTranslatef(viewTranslateX, viewTranslateY, 0);
 		gl.glScalef(currentZoomScale, currentZoomScale, 1);
+		
+		// JUST FOR TESTING OF 1D ZOOM IN Z-DIRECTION
+		// TODO: ADD MODE FOR X-ZOOM, Y-ZOOM OR BOTH
+//		gl.glTranslatef(0, viewTranslateY, 0);
+//		gl.glScalef(1, currentZoomScale, 1);
 
 	}
 

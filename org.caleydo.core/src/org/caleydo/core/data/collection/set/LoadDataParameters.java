@@ -14,6 +14,7 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
  * Parameters to load the initial data-{@link Set}.
  * 
  * @author Werner Puff
+ * @author Marc Streit
  */
 @XmlType
 public class LoadDataParameters {
@@ -73,6 +74,9 @@ public class LoadDataParameters {
 
 	@XmlElement
 	private boolean isDataHomogeneous = false;
+
+	/** Certainty given for each data column */
+	private boolean isCertaintyDataProvided = false;
 
 	public LoadDataParameters() {
 		this.fileName = null;
@@ -242,4 +246,22 @@ public class LoadDataParameters {
 		return isDataHomogeneous;
 	}
 
+	/**
+	 * Set whether the data you want to load contains an extra certainty column per data column.
+	 * 
+	 * @param loadUncertaintyData
+	 *            true if uncertainty is provided for your data
+	 */
+	public void setIsCertaintyDataProvided(boolean isCertaintyDataProvided) {
+		this.isCertaintyDataProvided = isCertaintyDataProvided;
+	}
+
+	/**
+	 * Tells you whether the data to be processed comes with certainty data for each data column.
+	 * 
+	 * @return true if data comes with extra uncertainty columns
+	 */
+	public boolean isCertaintyDataProvided() {
+		return isCertaintyDataProvided;
+	}
 }

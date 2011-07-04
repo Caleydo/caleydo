@@ -6,7 +6,7 @@ import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.command.CommandManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.parser.parameter.ParameterHandler;
 
 /**
  * Abstract base class for all commands. Supports serialization for exporting commands.
@@ -43,7 +43,7 @@ public abstract class ACommand
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler phHandler) {
+	public void setParameterHandler(final ParameterHandler phHandler) {
 
 	}
 
