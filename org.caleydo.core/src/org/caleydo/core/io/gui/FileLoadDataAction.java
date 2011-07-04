@@ -86,7 +86,7 @@ public class FileLoadDataAction
 
 	private boolean useGeneClusterInfo = false;
 	private boolean useExperimentClusterInfo = false;
-	private boolean useUncertainty = false;
+	private boolean isCertaintyDataProvided = false;
 
 	private ASetBasedDataDomain dataDomain = null;
 
@@ -118,7 +118,6 @@ public class FileLoadDataAction
 	public void run() {
 
 		createGUI();
-
 	}
 
 	private void createGUI() {
@@ -545,9 +544,15 @@ public class FileLoadDataAction
 		buttonHomogeneous.setSelection(true);
 
 		buttonCertaintyDataProvided = new Button(dataPropertiesGroup, SWT.CHECK);
-		buttonCertaintyDataProvided.setText("Uncertainty data");
+		buttonCertaintyDataProvided.setText("Certainty data");
 		buttonCertaintyDataProvided.setEnabled(true);
 		buttonCertaintyDataProvided.setSelection(false);
+		buttonCertaintyDataProvided.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				isCertaintyDataProvided = buttonCertaintyDataProvided.getSelection();
+			}
+		});
 	}
 
 	private void createDataPreviewTable(final String sDelimiter) {
@@ -763,7 +768,6 @@ public class FileLoadDataAction
 
 		loadDataParameters.setMathFilterMode(mathFilterMode);
 		loadDataParameters.setIsDataHomogeneous(buttonHomogeneous.getSelection());
-		loadDataParameters.setIsCertaintyDataProvided(buttonCertaintyDataProvided.getSelection());
 	}
 
 	/**
@@ -785,6 +789,12 @@ public class FileLoadDataAction
 			}
 			else {
 
+				// in certainty mode each second column is flagged with "CERTAINTY"
+				if (isCertaintyDataProvided && (columnIndex % 2 != 0)) {
+					inputPattern.append("CERTAINTY;");
+					continue;
+				}
+				
 				// here we try to guess the datatype
 				// TODO: move this to the preview window where it can be modified by the user
 				String dataType = "FLOAT";

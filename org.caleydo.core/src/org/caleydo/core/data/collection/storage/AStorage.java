@@ -109,12 +109,13 @@ public abstract class AStorage
 
 	public void setCertaintyData(float[] certaintyData) {
 
-		if (bRawDataSet)
-			throw new IllegalStateException("Raw data was already set in Storage " + uniqueID
-				+ " , tried to set again.");
+		// TODO ALEX
+//		if (uisC)
+//			throw new IllegalStateException("Raw data was already set in Storage " + uniqueID
+//				+ " , tried to set again.");
 
-		rawDataType = ERawDataType.FLOAT;
-		bRawDataSet = true;
+//		rawDataType = ERawDataType.FLOAT;
+//		bRawDataSet = true;
 
 		FloatCContainer container = new FloatCContainer(certaintyData);
 		hashCContainers.put(EDataRepresentation.CERTAINTY, container);

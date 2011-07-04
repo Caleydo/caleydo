@@ -75,9 +75,6 @@ public class LoadDataParameters {
 	@XmlElement
 	private boolean isDataHomogeneous = false;
 
-	/** Certainty given for each data column */
-	private boolean isCertaintyDataProvided = false;
-
 	public LoadDataParameters() {
 		this.fileName = null;
 		this.geneTreeFileName = null;
@@ -244,24 +241,5 @@ public class LoadDataParameters {
 	 */
 	public boolean isDataHomogeneous() {
 		return isDataHomogeneous;
-	}
-
-	/**
-	 * Set whether the data you want to load contains an extra certainty column per data column.
-	 * 
-	 * @param loadUncertaintyData
-	 *            true if uncertainty is provided for your data
-	 */
-	public void setIsCertaintyDataProvided(boolean isCertaintyDataProvided) {
-		this.isCertaintyDataProvided = isCertaintyDataProvided;
-	}
-
-	/**
-	 * Tells you whether the data to be processed comes with certainty data for each data column.
-	 * 
-	 * @return true if data comes with extra uncertainty columns
-	 */
-	public boolean isCertaintyDataProvided() {
-		return isCertaintyDataProvided;
 	}
 }

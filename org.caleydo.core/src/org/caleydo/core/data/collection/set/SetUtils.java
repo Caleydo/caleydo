@@ -137,7 +137,7 @@ public class SetUtils {
 	}
 
 	/**
-	 * Creates the storages from a previously prepared storage defintion.
+	 * Creates the storages from a previously prepared storage definition.
 	 * 
 	 * @param loadDataParameters
 	 *            definition how to create the storages

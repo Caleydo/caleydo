@@ -76,36 +76,40 @@ public class TabularAsciiDataReader
 		final String sTokenPatternParserSeperator = GeneralManager.sDelimiter_Parser_DataType;
 
 		while (tokenizer.hasMoreTokens()) {
-			String sBuffer = tokenizer.nextToken(sTokenPatternParserSeperator);
+			String buffer = tokenizer.nextToken(sTokenPatternParserSeperator);
 
-			if (sBuffer.equalsIgnoreCase("abort")) {
+			if (buffer.equalsIgnoreCase("abort")) {
 				columnDataTypes.add(EStorageType.ABORT);
 
 				return areAllTokensProper;
 			}
-			else if (sBuffer.equalsIgnoreCase("skip")) {
+			else if (buffer.equalsIgnoreCase("skip")) {
 				columnDataTypes.add(EStorageType.SKIP);
 			}
-			else if (sBuffer.equalsIgnoreCase("int")) {
+			else if (buffer.equalsIgnoreCase("int")) {
 				columnDataTypes.add(EStorageType.INT);
 			}
-			else if (sBuffer.equalsIgnoreCase("float")) {
+			else if (buffer.equalsIgnoreCase("float")) {
 				columnDataTypes.add(EStorageType.FLOAT);
 			}
-			else if (sBuffer.equalsIgnoreCase("string")) {
+			else if (buffer.equalsIgnoreCase("string")) {
 				columnDataTypes.add(EStorageType.STRING);
 			}
-			else if (sBuffer.equalsIgnoreCase("group_number")) {
+			else if (buffer.equalsIgnoreCase("group_number")) {
 				columnDataTypes.add(EStorageType.GROUP_NUMBER);
 			}
-			else if (sBuffer.equalsIgnoreCase("group_representative")) {
+			else if (buffer.equalsIgnoreCase("group_representative")) {
 				columnDataTypes.add(EStorageType.GROUP_REPRESENTATIVE);
 			}
+			else if (buffer.equalsIgnoreCase("certainty")) {
+				columnDataTypes.add(EStorageType.CERTAINTY);
+			}
+			
 			else {
 				areAllTokensProper = false;
 
 				Logger.log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "Unknown column data type: "
-					+ tokenPattern));
+					+ buffer + " in " + tokenPattern));
 			}
 		}
 
@@ -148,6 +152,9 @@ public class TabularAsciiDataReader
 					break;
 				case STRING:
 					stringLists.add(new ArrayList<String>(nrLinesToRead));
+					break;
+				case CERTAINTY:
+					floatArrays.add(new float[nrLinesToRead]);
 					break;
 				case SKIP:
 					break;
@@ -212,6 +219,7 @@ public class TabularAsciiDataReader
 							intIndex++;
 							break;
 						case FLOAT:
+						case CERTAINTY:
 							Float value;
 							tempToken = strTokenLine.nextToken();
 							try {
@@ -315,6 +323,10 @@ public class TabularAsciiDataReader
 					targetStorages.get(storageIndex).setRawData(floatArrays.get(iFloatArrayIndex));
 					iFloatArrayIndex++;
 					storageIndex++;
+					break;
+				case CERTAINTY:
+					targetStorages.get(storageIndex-1).setCertaintyData(floatArrays.get(iFloatArrayIndex));
+					iFloatArrayIndex++;
 					break;
 				case STRING:
 
