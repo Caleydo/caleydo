@@ -3,6 +3,7 @@ package org.caleydo.view.heatmap.uncertainty;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -36,6 +37,10 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 
 	public void init(GL2 gl) {
 		ContentVirtualArray contentVA = uncertaintyHeatMap.getContentVA();
+		
+//		ContentVirtualArray clusterVA = new ContentVirtualArray(Set.CONTENT, LIST);
+		
+
 		StorageVirtualArray storageVA = uncertaintyHeatMap.getStorageVA();
 		ISet set = uncertaintyHeatMap.getDataDomain().getSet();
 		textureRenderer.init(gl, set, contentVA, storageVA,

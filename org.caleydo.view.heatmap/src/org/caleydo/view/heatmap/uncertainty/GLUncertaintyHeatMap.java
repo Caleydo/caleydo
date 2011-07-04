@@ -176,10 +176,14 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	}
 
 	private void createDetailHeatMap(GL2 gl) {
-		detailHeatMap = (GLHeatMap) GeneralManager.get().getViewGLCanvasManager()
-				.createGLView(GLHeatMap.class, this.getParentGLCanvas(),
-
-				new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
+		detailHeatMap = (GLHeatMap) GeneralManager
+				.get()
+				.getViewGLCanvasManager()
+				.createGLView(
+						GLHeatMap.class,
+						this.getParentGLCanvas(),
+						new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+								-1, 1));
 
 		detailHeatMap.setDataDomain(dataDomain);
 
@@ -355,5 +359,11 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 	public ColorMapping getColorMapper() {
 		return colorMapper;
+	}
+	
+	@Override
+	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
+		// TODO Auto-generated method stub
+		super.replaceContentVA(setID, dataDomainType, vaType);
 	}
 }
