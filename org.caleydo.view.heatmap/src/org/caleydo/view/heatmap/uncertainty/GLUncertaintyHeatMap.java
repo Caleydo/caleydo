@@ -72,7 +72,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
+	 * @param label
 	 * @param viewFrustum
 	 */
 	public GLUncertaintyHeatMap(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {

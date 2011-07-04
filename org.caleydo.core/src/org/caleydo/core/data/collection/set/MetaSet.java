@@ -3,8 +3,8 @@ package org.caleydo.core.data.collection.set;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
+import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -48,9 +48,9 @@ public class MetaSet
 		this.externalDataRep = originalSet.getExternalDataRep();
 
 		// this.hashContentData = (HashMap<String, ContentData>) originalSet.hashContentData.clone();
-			this.hashContentData = (HashMap<String, ContentData>) originalSet.hashContentData.clone();
-	
-		this.hashStorages = new HashMap<Integer, IStorage>();
+		this.hashContentData = (HashMap<String, ContentData>) originalSet.hashContentData.clone();
+
+		this.hashStorages = new HashMap<Integer, AStorage>();
 
 		defaultStorageData = new StorageData();
 		defaultStorageData.setStorageVA(new StorageVirtualArray(STORAGE));

@@ -85,7 +85,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
+	 * @param label
 	 * @param viewFrustum
 	 */
 	public GLHierarchicalTreeMap(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {

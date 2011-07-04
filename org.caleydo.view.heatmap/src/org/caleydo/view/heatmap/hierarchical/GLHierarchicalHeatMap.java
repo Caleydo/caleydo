@@ -918,7 +918,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	 * Render caption, simplified version used in (original) heatmap
 	 * 
 	 * @param gl
-	 * @param sLabel
+	 * @param label
 	 * @param fXOrigin
 	 * @param fYOrigin
 	 * @param fFontScaling

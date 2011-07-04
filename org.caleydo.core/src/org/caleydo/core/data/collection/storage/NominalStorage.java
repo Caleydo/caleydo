@@ -36,10 +36,10 @@ public class NominalStorage<T>
 	 *            the ArrayList containing the data
 	 */
 	public void setRawNominalData(ArrayList<T> alData) {
-		if (bRawDataSet)
+		if (isRawDataSet)
 			throw new IllegalStateException("Raw data was already set, tried to set again.");
 
-		bRawDataSet = true;
+		isRawDataSet = true;
 
 		if (alData.isEmpty())
 			throw new IllegalStateException("Raw Data is empty");

@@ -44,7 +44,7 @@ public class CategoryView extends AGLView implements IDataDomainSetBasedView,
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
+	 * @param label
 	 * @param viewFrustum
 	 */
 	public CategoryView(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {

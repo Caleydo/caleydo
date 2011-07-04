@@ -111,7 +111,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
+	 * @param label
 	 * @param viewFrustum
 	 */
 	public GLMatchmaker(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {

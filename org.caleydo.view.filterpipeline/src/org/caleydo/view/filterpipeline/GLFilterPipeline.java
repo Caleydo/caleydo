@@ -122,7 +122,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
+	 * @param label
 	 * @param viewFrustum
 	 */
 	public GLFilterPipeline(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {

@@ -27,7 +27,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
+	 * @param label
 	 * @param viewFrustum
 	 */
 	public OverviewHeatMapRenderer(GLUncertaintyHeatMap uncertaintyHeatMap) {

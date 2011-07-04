@@ -116,7 +116,7 @@ public abstract class AStorageBasedView
 	 * Constructor for storage based views
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
+	 * @param label
 	 * @param viewFrustum
 	 */
 	protected AStorageBasedView(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {

@@ -1883,7 +1883,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		// FIXME: this is the evil call where the text renderer is messed up.
 		// This might be a problem with a buggy texture state.
-//		textRenderer.renderText(gl, sLabel, 0,
+//		textRenderer.renderText(gl, label, 0,
 //				0,// + (1 * height / 3),
 //				ScatterPlotRenderStyle.MATRIX_HISTOGRAMM_Z, fScaling,
 //				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);

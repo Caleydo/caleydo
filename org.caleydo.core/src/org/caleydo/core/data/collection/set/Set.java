@@ -42,7 +42,7 @@ public class Set
 	extends AUniqueObject
 	implements ISet {
 
-	protected HashMap<Integer, IStorage> hashStorages;
+	protected HashMap<Integer, AStorage> hashStorages;
 
 	private String sLabel = "Rootset";
 
@@ -108,7 +108,7 @@ public class Set
 	 */
 	protected void init() {
 
-		hashStorages = new HashMap<Integer, IStorage>();
+		hashStorages = new HashMap<Integer, AStorage>();
 		hashContentData = new HashMap<String, ContentData>(6);
 		hashStorageData = new HashMap<String, StorageData>(3);
 		defaultStorageData = new StorageData();
@@ -143,7 +143,7 @@ public class Set
 	}
 
 	@Override
-	public IStorage get(Integer storageID) {
+	public AStorage get(Integer storageID) {
 		return hashStorages.get(storageID);
 	}
 
@@ -179,7 +179,7 @@ public class Set
 	}
 
 	@Override
-	public Iterator<IStorage> iterator(String type) {
+	public Iterator<AStorage> iterator(String type) {
 		return new StorageIterator(hashStorages, hashStorageData.get(type).getStorageVA());
 	}
 

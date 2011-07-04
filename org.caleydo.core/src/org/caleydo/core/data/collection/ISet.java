@@ -11,6 +11,7 @@ import org.caleydo.core.data.collection.set.ESetDataType;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.collection.set.StorageData;
 import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
+import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
@@ -62,7 +63,7 @@ public interface ISet
 	 *            a unique storage ID
 	 * @return
 	 */
-	public IStorage get(Integer storageID);
+	public AStorage get(Integer storageID);
 
 	/**
 	 * Get the number of storages in a set
@@ -177,7 +178,7 @@ public interface ISet
 	 * @param type
 	 * @return
 	 */
-	public Iterator<IStorage> iterator(String type);
+	public Iterator<AStorage> iterator(String type);
 
 	/**
 	 * Set a contentVA. The contentVA in the contentData object is replaced and the other elements in the

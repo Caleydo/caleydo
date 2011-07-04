@@ -35,7 +35,7 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
+	 * @param label
 	 * @param viewFrustum
 	 */
 	public GLTemplate(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {

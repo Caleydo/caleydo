@@ -31,9 +31,10 @@ public abstract class AStorage
 	implements IStorage {
 	protected EnumMap<EDataRepresentation, ICContainer> hashCContainers;
 
-	protected String sLabel;
+	protected String label;
 
-	boolean bRawDataSet = false;
+	boolean isRawDataSet = false;
+	boolean isCertaintyDataSet = false;
 
 	ERawDataType rawDataType = ERawDataType.UNDEFINED;
 
@@ -48,7 +49,7 @@ public abstract class AStorage
 		GeneralManager.get().getStorageManager().registerItem(this);
 
 		hashCContainers = new EnumMap<EDataRepresentation, ICContainer>(EDataRepresentation.class);
-		sLabel = new String("Not specified");
+		label = new String("Not specified");
 	}
 
 	/**
@@ -62,12 +63,12 @@ public abstract class AStorage
 
 	@Override
 	public void setLabel(String sLabel) {
-		this.sLabel = sLabel;
+		this.label = sLabel;
 	}
 
 	@Override
 	public String getLabel() {
-		return sLabel;
+		return label;
 	}
 
 	/**
@@ -78,12 +79,12 @@ public abstract class AStorage
 	 */
 	public void setRawData(float[] fArRawData) {
 
-		if (bRawDataSet)
+		if (isRawDataSet)
 			throw new IllegalStateException("Raw data was already set in Storage " + uniqueID
 				+ " , tried to set again.");
 
 		rawDataType = ERawDataType.FLOAT;
-		bRawDataSet = true;
+		isRawDataSet = true;
 
 		FloatCContainer container = new FloatCContainer(fArRawData);
 		hashCContainers.put(EDataRepresentation.RAW, container);
@@ -97,11 +98,11 @@ public abstract class AStorage
 	 */
 	public void setRawData(int[] iArRawData) {
 
-		if (bRawDataSet)
+		if (isRawDataSet)
 			throw new IllegalStateException("Raw data was already set, tried to set again.");
 
 		rawDataType = ERawDataType.INT;
-		bRawDataSet = true;
+		isRawDataSet = true;
 
 		IntCContainer container = new IntCContainer(iArRawData);
 		hashCContainers.put(EDataRepresentation.RAW, container);
@@ -109,16 +110,18 @@ public abstract class AStorage
 
 	public void setCertaintyData(float[] certaintyData) {
 
-		// TODO ALEX
-//		if (uisC)
-//			throw new IllegalStateException("Raw data was already set in Storage " + uniqueID
-//				+ " , tried to set again.");
+		if (isCertaintyDataSet)
+			throw new IllegalStateException("Certainty data was already set in Storage " + uniqueID
+				+ " , tried to set again.");
 
-//		rawDataType = ERawDataType.FLOAT;
-//		bRawDataSet = true;
+		isCertaintyDataSet = true;
 
 		FloatCContainer container = new FloatCContainer(certaintyData);
 		hashCContainers.put(EDataRepresentation.CERTAINTY, container);
+	}
+
+	public boolean hasCertaintyData() {
+		return isCertaintyDataSet;
 	}
 
 	@Override

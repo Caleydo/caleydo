@@ -111,7 +111,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	 * /** Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
+	 * @param label
 	 * @param viewFrustum
 	 */
 	public GLDataWindows(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {

@@ -4,7 +4,7 @@ import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -30,7 +30,7 @@ public class HeatMapRenderer extends AContentRenderer {
 	public void updateSpacing(ElementLayout parameters) {
 
 		AHeatMapTemplate heatMapTemplate = heatMap.getTemplate();
-			
+
 		int contentElements = heatMap.getContentVA().size();
 
 		ContentSelectionManager selectionManager = heatMap.getContentSelectionManager();
@@ -57,9 +57,8 @@ public class HeatMapRenderer extends AContentRenderer {
 		float fieldHeight = 0;
 		float fieldWidth = contentSpacing.getFieldWidth();
 
-	
 		int iCount = 0;
-		
+
 		for (Integer contentID : heatMap.getContentVA()) {
 			iCount++;
 			fieldHeight = contentSpacing.getFieldHeight(contentID);
@@ -94,18 +93,20 @@ public class HeatMapRenderer extends AContentRenderer {
 			final int iContentIndex, final float fYPosition, final float fXPosition,
 			final float fFieldHeight, final float fFieldWidth) {
 
-//		GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
-		IStorage storage = heatMap.getSet().get(iStorageIndex);
+		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
+		AStorage storage = heatMap.getSet().get(iStorageIndex);
 		if (storage == null)
 			return;
 		float value = storage.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
-		float fOpacity = 0;
-		if (heatMap.getContentSelectionManager().checkStatus(SelectionType.DESELECTED,
-				iContentIndex)) {
+		float fOpacity = 1.0f;
+
+		if (storage.hasCertaintyData())
+			fOpacity = storage.getFloat(EDataRepresentation.CERTAINTY_NORMALIZED,
+					iContentIndex);
+		else if (heatMap.getContentSelectionManager().checkStatus(
+				SelectionType.DESELECTED, iContentIndex)) {
 			fOpacity = 0.3f;
-		} else {
-			fOpacity = 1.0f;
 		}
 
 		float[] fArMappingColor = colorMapper.getColor(value);

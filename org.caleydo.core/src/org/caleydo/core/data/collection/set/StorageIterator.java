@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.ListIterator;
 
 import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.VAIterator;
 
@@ -13,9 +14,9 @@ import org.caleydo.core.data.virtualarray.VAIterator;
  * @author Alexander Lex
  */
 public class StorageIterator
-	implements ListIterator<IStorage> {
+	implements ListIterator<AStorage> {
 	private VAIterator vaIterator;
-	private HashMap<Integer, IStorage> alStorages;
+	private HashMap<Integer, AStorage> storages;
 
 	/**
 	 * Constructor
@@ -23,13 +24,13 @@ public class StorageIterator
 	 * @param set
 	 * @param virtualArray
 	 */
-	public StorageIterator(HashMap<Integer, IStorage> alStorages, StorageVirtualArray virtualArray) {
+	public StorageIterator(HashMap<Integer, AStorage> storages, StorageVirtualArray virtualArray) {
 		this.vaIterator = virtualArray.iterator();
-		this.alStorages = alStorages;
+		this.storages = storages;
 	}
 
 	@Override
-	public void add(IStorage storage) {
+	public void add(AStorage storage) {
 		vaIterator.add(storage.getID());
 	}
 
@@ -44,8 +45,8 @@ public class StorageIterator
 	}
 
 	@Override
-	public IStorage next() {
-		return alStorages.get(vaIterator.next());
+	public AStorage next() {
+		return storages.get(vaIterator.next());
 	}
 
 	@Override
@@ -54,8 +55,8 @@ public class StorageIterator
 	}
 
 	@Override
-	public IStorage previous() {
-		return alStorages.get(vaIterator.previous());
+	public AStorage previous() {
+		return storages.get(vaIterator.previous());
 	}
 
 	@Override
@@ -69,7 +70,7 @@ public class StorageIterator
 	}
 
 	@Override
-	public void set(IStorage storage) {
+	public void set(AStorage storage) {
 		vaIterator.set(storage.getID());
 	}
 

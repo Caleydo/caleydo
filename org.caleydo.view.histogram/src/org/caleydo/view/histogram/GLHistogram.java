@@ -81,7 +81,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param sLabel
+	 * @param label
 	 * @param viewFrustum
 	 */
 	public GLHistogram(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {

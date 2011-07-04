@@ -11,5 +11,6 @@ public enum EDataRepresentation {
 	NORMALIZED,
 	LOG10,
 	LOG2,
-	CERTAINTY;
+	CERTAINTY,
+	CERTAINTY_NORMALIZED;
 }
