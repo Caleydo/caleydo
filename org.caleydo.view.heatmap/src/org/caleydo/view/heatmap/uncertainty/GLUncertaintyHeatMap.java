@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.IDType;
@@ -12,6 +13,7 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -28,8 +30,15 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout.LayoutTemplate;
+import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.template.UncertaintyDetailHeatMapTemplate;
 
 /**
  * Uncertainty heat map view.
@@ -39,15 +48,23 @@ import org.caleydo.view.heatmap.HeatMapRenderStyle;
  * @author Clemens Holzhüter
  */
 
-public class GLUncertaintyHeatMap extends AStorageBasedView implements IViewCommandHandler,
-		ISelectionUpdateHandler, IGLRemoteRenderingView {
+public class GLUncertaintyHeatMap extends AStorageBasedView implements
+		IViewCommandHandler, ISelectionUpdateHandler, IGLRemoteRenderingView {
 
 	public final static String VIEW_ID = "org.caleydo.view.heatmap.uncertainty";
 
 	private HeatMapRenderStyle renderStyle;
-	
-	private UncertaintyOverviewHeatMap overviewHeatMap;
-	
+
+	private OverviewHeatMapRenderer overviewHeatMap;
+	private GLHeatMap detailHeatMap;
+
+	private LayoutManager templateRenderer;
+	private LayoutTemplate template;
+
+	private Row baseRow;
+	private ElementLayout overviewLayout;
+	private ElementLayout detailLayout;
+
 	private ColorMapping colorMapper = ColorMappingManager.get().getColorMapping(
 			EColorMappingType.GENE_EXPRESSION);
 
@@ -66,11 +83,32 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements IViewComm
 	@Override
 	public void init(GL2 gl) {
 
+		templateRenderer = new LayoutManager(this.viewFrustum);
+		if (template == null)
+			template = new LayoutTemplate();
+
+		templateRenderer.setTemplate(template);
+
+		baseRow = new Row("baseRow");
+		template.setBaseElementLayout(baseRow);
+
+		overviewLayout = new ElementLayout("overviewLayout");
+		overviewLayout.setDebug(true);
+		overviewLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		overviewLayout.setPixelSizeX(60);
+		detailLayout = new ElementLayout("detailLayout");
+		detailLayout.setDebug(true);
+
+		baseRow.append(overviewLayout);
+		baseRow.append(detailLayout);
+
 		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;
-		
-		createOverviewHeatMap();
-		overviewHeatMap.initRemote(gl, this, glMouseListener);
+
+		createOverviewHeatMap(gl);
+		createDetailHeatMap(gl);
+
+		templateRenderer.updateLayout();
 	}
 
 	@Override
@@ -99,45 +137,79 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements IViewComm
 		init(gl);
 	}
 
+	@Override
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+		super.reshape(drawable, x, y, width, height);
+		templateRenderer.updateLayout();
+	}
+
 	/**
 	 * Create embedded heat map
 	 * 
 	 * @param
 	 */
-	private void createOverviewHeatMap() {
+	private void createOverviewHeatMap(GL2 gl) {
+		//
+		// float fHeatMapHeight = viewFrustum.getHeight() * 0.3f;
+		// float fHeatMapWidth = viewFrustum.getWidth();
+		// ViewFrustum viewFrustum = new
+		// ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
+		// (int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
-		float fHeatMapHeight = viewFrustum.getHeight() * 0.3f;
-		float fHeatMapWidth = viewFrustum.getWidth();
-		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
-				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
+		overviewHeatMap = new OverviewHeatMapRenderer(this);
+		// glHeatMapView.setDataDomain(dataDomain);
 
-		overviewHeatMap = new UncertaintyOverviewHeatMap(this.getParentGLCanvas(), viewFrustum);
-//		glHeatMapView.setDataDomain(dataDomain);
+		// overviewHeatMap.setRemoteRenderingGLView(this);
+		// glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
 
-		overviewHeatMap.setRemoteRenderingGLView(this);
-//		glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
+		// renderTemplate = new UncertaintyDetailHeatMapTemplate(glHeatMapView);
+		// glHeatMapView.setRenderTemplate(renderTemplate);
+		// renderTemplate.setBottomSpacing(0.6f);
+		// heatMapRemoteElement.setGLView(glHeatMapView);
+		// glHeatMapView.setContentVAType(GLHeatMap.CONTENT_EMBEDDED_VA);
+		// overviewHeatMap.initialize();
+		// glHeatMapView.initData();
 
-//		renderTemplate = new HierarchicalHeatMapTemplate(glHeatMapView);
-//		glHeatMapView.setRenderTemplate(renderTemplate);
-//		renderTemplate.setBottomSpacing(0.6f);
-//		heatMapRemoteElement.setGLView(glHeatMapView);
-//		glHeatMapView.setContentVAType(GLHeatMap.CONTENT_EMBEDDED_VA);
-		overviewHeatMap.initialize();
-//		glHeatMapView.initData();
-		
+		overviewLayout.setRenderer(overviewHeatMap);
 
+		overviewHeatMap.init(gl);
+	}
+
+	private void createDetailHeatMap(GL2 gl) {
+		detailHeatMap = (GLHeatMap) GeneralManager.get().getViewGLCanvasManager()
+				.createGLView(GLHeatMap.class, this.getParentGLCanvas(),
+
+				new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
+
+		detailHeatMap.setDataDomain(dataDomain);
+
+		detailHeatMap.setRemoteRenderingGLView(this);
+
+		detailHeatMap.setSet(set);
+		detailHeatMap.setRenderTemplate(new UncertaintyDetailHeatMapTemplate(
+				detailHeatMap));
+		detailHeatMap.initialize();
+		detailHeatMap.initRemote(gl, this, glMouseListener);
+
+		if (contentVA != null)
+			detailHeatMap.setContentVA(contentVA);
+
+		ViewLayoutRenderer detailHeatMapLayoutRenderer = new ViewLayoutRenderer(
+				detailHeatMap);
+
+		detailLayout.setRenderer(detailHeatMapLayoutRenderer);
 
 	}
-	
+
 	@Override
 	public void displayLocal(GL2 gl) {
 
 		pickingManager.handlePicking(this, gl);
 		display(gl);
 		checkForHits(gl);
-		
-		if (overviewHeatMap != null)
-			overviewHeatMap.processEvents();
+
+		// if (overviewHeatMap != null)
+		// overviewHeatMap.processEvents();
 	}
 
 	@Override
@@ -147,8 +219,8 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements IViewComm
 
 	@Override
 	public void display(GL2 gl) {
-
-		overviewHeatMap.displayRemote(gl);
+		baseRow.render(gl);
+		// overviewHeatMap.displayRemote(gl);
 	}
 
 	@Override
@@ -239,17 +311,18 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements IViewComm
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
-		ArrayList<AGLView> remoteRenderedViews = new ArrayList<AGLView>();
-		remoteRenderedViews.add(overviewHeatMap);
-		return remoteRenderedViews;
+		// ArrayList<AGLView> remoteRenderedViews = new ArrayList<AGLView>();
+		// remoteRenderedViews.add(overviewHeatMap);
+		// return remoteRenderedViews;
+		return null;
 	}
 
 	@Override
 	public void renderContext(boolean bRenderContext) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	protected void initLists() {
 
@@ -272,14 +345,14 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements IViewComm
 
 		setDisplayListDirty();
 	}
-	
+
 	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
 			throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public ColorMapping getColorMapper() {
 		return colorMapper;
 	}
