@@ -538,7 +538,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -546,7 +546,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		switch (pickingType) {
 
 		case GROUPER_GROUP_SELECTION:
-			final GroupRepresentation groupRep = hashGroups.get(iExternalID);
+			final GroupRepresentation groupRep = hashGroups.get(externalID);
 			switch (pickingMode) {
 
 			case CLICKED:
@@ -621,7 +621,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 							groupRep.getID())
 							&& groupRep != rootGroup) {
 
-						RenameGroupItem renameItem = new RenameGroupItem(iExternalID);
+						RenameGroupItem renameItem = new RenameGroupItem(externalID);
 						contextMenu.addContextMenueItem(renameItem);
 						// groupRep.addAsDraggable(dragAndDropController);
 						//
@@ -766,7 +766,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 			break;
 
 		case GROUPER_COLLAPSE_BUTTON_SELECTION:
-			GroupRepresentation group = hashGroups.get(iExternalID);
+			GroupRepresentation group = hashGroups.get(externalID);
 			switch (pickingMode) {
 			case CLICKED:
 				iDraggedOverCollapseButtonID = -1;

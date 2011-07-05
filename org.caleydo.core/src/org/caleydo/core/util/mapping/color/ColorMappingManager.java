@@ -26,7 +26,7 @@ public class ColorMappingManager
 	implements IColorMappingHandler {
 
 	private static ColorMappingManager colorMappingManager = null;
-	private EnumMap<EColorMappingType, ColorMapping> hashColorMapping = null;
+	private EnumMap<EColorMappingType, ColorMapper> hashColorMapping = null;
 
 	private EventPublisher eventPublisher;
 	private UpdateColorMappingListener updateColorMappingListener;
@@ -37,7 +37,7 @@ public class ColorMappingManager
 	private ColorMappingManager() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
-		hashColorMapping = new EnumMap<EColorMappingType, ColorMapping>(EColorMappingType.class);
+		hashColorMapping = new EnumMap<EColorMappingType, ColorMapper>(EColorMappingType.class);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class ColorMappingManager
 			hashColorMapping.get(colorMappingType).resetColorMapping(alMarkerPoints);
 			return;
 		}
-		hashColorMapping.put(colorMappingType, new ColorMapping(colorMappingType, alMarkerPoints));
+		hashColorMapping.put(colorMappingType, new ColorMapper(colorMappingType, alMarkerPoints));
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class ColorMappingManager
 			hashColorMapping.get(colorMappingType).initiFromPreferenceStore();
 			return;
 		}
-		hashColorMapping.put(colorMappingType, new ColorMapping(colorMappingType));
+		hashColorMapping.put(colorMappingType, new ColorMapper(colorMappingType));
 
 		for (AGLView view : GeneralManager.get().getViewGLCanvasManager().getAllGLViews()) {
 			view.setDisplayListDirty();
@@ -116,8 +116,8 @@ public class ColorMappingManager
 	 *            the type
 	 * @return the color mapping
 	 */
-	public ColorMapping getColorMapping(EColorMappingType colorMappingType) {
-		ColorMapping colorMapping = hashColorMapping.get(colorMappingType);
+	public ColorMapper getColorMapping(EColorMappingType colorMappingType) {
+		ColorMapper colorMapping = hashColorMapping.get(colorMappingType);
 		if (colorMapping == null) {
 			colorMapping = getDefaultColorMapping(colorMappingType);
 			hashColorMapping.put(colorMappingType, colorMapping);
@@ -132,9 +132,9 @@ public class ColorMappingManager
 	 *            the type
 	 * @return the color mapping
 	 */
-	private ColorMapping getDefaultColorMapping(EColorMappingType colorMappingType) {
+	private ColorMapper getDefaultColorMapping(EColorMappingType colorMappingType) {
 
-		ColorMapping colorMapping;
+		ColorMapper colorMapping;
 		ArrayList<ColorMarkerPoint> alColorMarkerPoints = new ArrayList<ColorMarkerPoint>();
 		switch (colorMappingType) {
 			case GENE_EXPRESSION:
@@ -142,26 +142,26 @@ public class ColorMappingManager
 				alColorMarkerPoints.add(new ColorMarkerPoint(0, 0, 1, 0));
 				alColorMarkerPoints.add(new ColorMarkerPoint(0.2f, 0, 0, 0));
 				alColorMarkerPoints.add(new ColorMarkerPoint(1, 1, 0, 0));
-				colorMapping = new ColorMapping(colorMappingType, alColorMarkerPoints);
+				colorMapping = new ColorMapper(colorMappingType, alColorMarkerPoints);
 				break;
 			default:
 				alColorMarkerPoints.add(new ColorMarkerPoint(0, 0, 1, 0));
 				alColorMarkerPoints.add(new ColorMarkerPoint(1, 0, 0, 0));
-				colorMapping = new ColorMapping(colorMappingType, alColorMarkerPoints);
+				colorMapping = new ColorMapper(colorMappingType, alColorMarkerPoints);
 		}
 
 		return colorMapping;
 	}
 
 	/**
-	 * Handles changes of {@link ColorMapping}s by storing the new received ColorMapping with the contained
+	 * Handles changes of {@link ColorMapper}s by storing the new received ColorMapping with the contained
 	 * {@link EColorMappingType}.
 	 * 
 	 * @param colorMapping
-	 *            changed {@link ColorMapping} to store
+	 *            changed {@link ColorMapper} to store
 	 */
 	@Override
-	public void distributeColorMapping(ColorMapping colorMapping) {
+	public void distributeColorMapping(ColorMapper colorMapping) {
 		hashColorMapping.put(colorMapping.getColorMappingType(), colorMapping);
 		colorMapping.writeToPrefStore();
 
@@ -173,7 +173,7 @@ public class ColorMappingManager
 	/**
 	 * @param colorMapping
 	 */
-	public void changeColorMapping(ColorMapping colorMapping) {
+	public void changeColorMapping(ColorMapper colorMapping) {
 		distributeColorMapping(colorMapping);
 
 		UpdateColorMappingEvent updateColorMappingEvent = new UpdateColorMappingEvent();

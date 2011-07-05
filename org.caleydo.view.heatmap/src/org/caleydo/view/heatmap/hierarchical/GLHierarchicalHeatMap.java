@@ -57,7 +57,7 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
@@ -144,7 +144,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	private boolean bSkipLevel2 = false;
 	private final static int MIN_SAMPLES_SKIP_LEVEL_2 = 120;
 
-	private ColorMapping colorMapper;
+	private ColorMapper colorMapper;
 
 	private int iNrTextures = 0;
 	/** array of textures for holding the data samples */
@@ -1335,7 +1335,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			}
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.HIER_HEAT_MAP_GENES_GROUP, i));
+					EPickingType.HEAT_MAP_CLUSTER_GROUP, i));
 
 			tempTexture.enable();
 			tempTexture.bind();
@@ -1423,7 +1423,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 							EIconTextures.HEAT_MAP_GROUP_NORMAL);
 				}
 				gl.glPushName(pickingManager.getPickingID(uniqueID,
-						EPickingType.HIER_HEAT_MAP_GENES_GROUP, iIdxCluster));
+						EPickingType.HEAT_MAP_CLUSTER_GROUP, iIdxCluster));
 
 				tempTexture.enable();
 				tempTexture.bind();
@@ -1480,7 +1480,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		}
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				EPickingType.HIER_HEAT_MAP_GENES_GROUP, iIdxCluster));
+				EPickingType.HEAT_MAP_CLUSTER_GROUP, iIdxCluster));
 
 		tempTexture.enable();
 		tempTexture.bind();
@@ -1560,7 +1560,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				}
 
 				gl.glPushName(pickingManager.getPickingID(uniqueID,
-						EPickingType.HIER_HEAT_MAP_GENES_GROUP, iIdxCluster));
+						EPickingType.HEAT_MAP_CLUSTER_GROUP, iIdxCluster));
 
 				tempTexture.enable();
 				tempTexture.bind();
@@ -1615,7 +1615,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		}
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				EPickingType.HIER_HEAT_MAP_GENES_GROUP, iIdxCluster));
+				EPickingType.HEAT_MAP_CLUSTER_GROUP, iIdxCluster));
 
 		tempTexture.enable();
 		tempTexture.bind();
@@ -1673,7 +1673,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 					.getImageTexCoords();
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.HIER_HEAT_MAP_TEXTURE_SELECTION, iNrTextures - i));
+					EPickingType.HEAT_MAP_TEXTURE_SELECTION, iNrTextures - i));
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2d(texCoords.left(), texCoords.top());
 			gl.glVertex3f(0, fyOffset, 0);
@@ -4013,7 +4013,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -4021,7 +4021,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		switch (pickingType) {
 
 		// handling the groups/clusters of genes
-		case HIER_HEAT_MAP_GENES_GROUP:
+		case HEAT_MAP_CLUSTER_GROUP:
 			switch (pickingMode) {
 			case RIGHT_CLICKED:
 
@@ -4053,10 +4053,10 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 						bEnableInterchange, bEnableExport);
 				groupContextMenuItemContainer.setDataDomain(dataDomain);
 				groupContextMenuItemContainer.setContentIDs(contentIDType,
-						contentVA.getIDsOfGroup(iExternalID));
+						contentVA.getIDsOfGroup(externalID));
 
 				BookmarkItem bookmarkItem = new BookmarkItem(contentIDType,
-						contentVA.getIDsOfGroup(iExternalID));
+						contentVA.getIDsOfGroup(externalID));
 				groupContextMenuItemContainer.addContextMenuItem(bookmarkItem);
 
 				contextMenu.addItemContanier(groupContextMenuItemContainer);
@@ -4064,16 +4064,16 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 						.getWidth(), getParentGLCanvas().getHeight());
 				contextMenu.setMasterGLView(this);
 
-				if (contentVA.getGroupList().get(iExternalID).getSelectionType() == SelectionType.SELECTION)
+				if (contentVA.getGroupList().get(externalID).getSelectionType() == SelectionType.SELECTION)
 					break;
 				// else we want to go to clicked as well
 			case CLICKED:
-				contentVA.getGroupList().get(iExternalID).togglSelectionType();
+				contentVA.getGroupList().get(externalID).togglSelectionType();
 				deactivateAllDraggingCursor();
 				bActivateDraggingGenes = true;
 
 				// ArrayList<Integer> temp =
-				// contentVA.getGeneIdsOfGroup( iExternalID);
+				// contentVA.getGeneIdsOfGroup( externalID);
 				// for (int i = 0; i < temp.size(); i++) {
 				// System.out.println(idMappingManager.getID(EIDType.EXPRESSION_INDEX,
 				// EIDType.GENE_SYMBOL, temp.get(i)));
@@ -4082,19 +4082,19 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				// ArrayList<Float> representatives =
 				// contentVA.getGroupList().determineRepresentativeElement(set,
 				// contentVA,
-				// storageVA, iExternalID, true);
+				// storageVA, externalID, true);
 
 				// set node in tree selected
 				// if
-				// (contentVA.getGroupList().get(iExternalID).getClusterNode()
+				// (contentVA.getGroupList().get(externalID).getClusterNode()
 				// != null) {
-				// contentVA.getGroupList().get(iExternalID).getClusterNode().togglSelectionType();
+				// contentVA.getGroupList().get(externalID).getClusterNode().togglSelectionType();
 				// }
 
-				// System.out.println(contentVA.getGroupList().get(iExternalID).getIdxExample());
+				// System.out.println(contentVA.getGroupList().get(externalID).getIdxExample());
 				// System.out.println(idMappingManager.getID(EIDType.EXPRESSION_INDEX,
 				// EIDType.GENE_SYMBOL,
-				// contentVA.getGroupList().get(iExternalID).getIdxExample()));
+				// contentVA.getGroupList().get(externalID).getIdxExample()));
 
 				setDisplayListDirty();
 				break;
@@ -4106,23 +4106,23 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				if (bDragDropGeneGroup == false) {
 					bDragDropGeneGroup = true;
 					bDragDropExpGroup = false;
-					iGeneGroupToDrag = iExternalID;
+					iGeneGroupToDrag = externalID;
 				}
 
 				// group splitting
 				// if (bSplitGroupGene == false) {
 				// bSplitGroupGene = true;
 				// bSplitGroupExp = false;
-				// iGroupToSplit = iExternalID;
+				// iGroupToSplit = externalID;
 				// DraggingPoint = pick.getPickedPoint();
 				// }
 				setDisplayListDirty();
 				break;
 
 			case MOUSE_OVER:
-				// System.out.print("genes group " + iExternalID);
+				// System.out.print("genes group " + externalID);
 				// System.out.print(" number elements in group: ");
-				// System.out.println(contentVA.getGroupList().get(iExternalID)
+				// System.out.println(contentVA.getGroupList().get(externalID)
 				// .getNrElements());
 				// setDisplayListDirty();
 				break;
@@ -4162,16 +4162,16 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 						.getWidth(), getParentGLCanvas().getHeight());
 				contextMenu.setMasterGLView(this);
 
-				if (storageVA.getGroupList().get(iExternalID).getSelectionType() == SelectionType.SELECTION)
+				if (storageVA.getGroupList().get(externalID).getSelectionType() == SelectionType.SELECTION)
 					break;
 				// else we want to do clicked here as well
 			case CLICKED:
-				storageVA.getGroupList().get(iExternalID).togglSelectionType();
+				storageVA.getGroupList().get(externalID).togglSelectionType();
 				deactivateAllDraggingCursor();
 				bActivateDraggingExperiments = true;
 
 				// ArrayList<Integer> temp =
-				// storageVA.getGeneIdsOfGroup( iExternalID);
+				// storageVA.getGeneIdsOfGroup( externalID);
 				// for (int i = 0; i < temp.size(); i++) {
 				// System.out.println(set.get(temp.get(i)).getLabel());
 				// }
@@ -4179,17 +4179,17 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				// ArrayList<Float> representatives =
 				// contentVA.getGroupList().determineRepresentativeElement(set,
 				// contentVA,
-				// storageVA, iExternalID, false);
+				// storageVA, externalID, false);
 
 				// set node in tree selected
 				// if
-				// (storageVA.getGroupList().get(iExternalID).getClusterNode()
+				// (storageVA.getGroupList().get(externalID).getClusterNode()
 				// != null) {
-				// storageVA.getGroupList().get(iExternalID).getClusterNode().togglSelectionType();
+				// storageVA.getGroupList().get(externalID).getClusterNode().togglSelectionType();
 				// }
 
-				// System.out.println(storageVA.getGroupList().get(iExternalID).getIdxExample());
-				// System.out.println(set.get(storageVA.getGroupList().get(iExternalID).getIdxExample())
+				// System.out.println(storageVA.getGroupList().get(externalID).getIdxExample());
+				// System.out.println(set.get(storageVA.getGroupList().get(externalID).getIdxExample())
 				// .getLabel());
 
 				setDisplayListDirty();
@@ -4202,14 +4202,14 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				if (bDragDropExpGroup == false) {
 					bDragDropExpGroup = true;
 					bDragDropGeneGroup = false;
-					iExpGroupToDrag = iExternalID;
+					iExpGroupToDrag = externalID;
 				}
 
 				// group splitting
 				// if (bSplitGroupExp == false) {
 				// bSplitGroupExp = true;
 				// bSplitGroupGene = false;
-				// iGroupToSplit = iExternalID;
+				// iGroupToSplit = externalID;
 				// DraggingPoint = pick.getPickedPoint();
 				// }
 				setDisplayListDirty();
@@ -4312,7 +4312,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 					return;
 				bIsDraggingActiveLevel1 = true;
 				bDisableBlockDraggingLevel1 = true;
-				iDraggedCursorLevel1 = iExternalID;
+				iDraggedCursorLevel1 = externalID;
 				setDisplayListDirty();
 				break;
 			}
@@ -4333,7 +4333,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 					return;
 				bIsDraggingWholeBlockLevel1 = true;
 				bDisableCursorDraggingLevel1 = true;
-				iDraggedCursorLevel1 = iExternalID;
+				iDraggedCursorLevel1 = externalID;
 				setDisplayListDirty();
 				break;
 			}
@@ -4355,7 +4355,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 					return;
 				bIsDraggingActiveLevel2 = true;
 				bDisableBlockDraggingLevel2 = true;
-				iDraggedCursorLevel2 = iExternalID;
+				iDraggedCursorLevel2 = externalID;
 				setDisplayListDirty();
 				break;
 			}
@@ -4376,14 +4376,14 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 					return;
 				bIsDraggingWholeBlockLevel2 = true;
 				bDisableCursorDraggingLevel2 = true;
-				iDraggedCursorLevel2 = iExternalID;
+				iDraggedCursorLevel2 = externalID;
 				setDisplayListDirty();
 				break;
 			}
 			break;
 
 		// handle click on level 1 (overview bar)
-		case HIER_HEAT_MAP_TEXTURE_SELECTION:
+		case HEAT_MAP_TEXTURE_SELECTION:
 			switch (pickingMode) {
 			case CLICKED:
 

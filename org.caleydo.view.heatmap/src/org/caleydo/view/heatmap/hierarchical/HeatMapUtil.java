@@ -19,7 +19,7 @@ import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -42,7 +42,7 @@ public class HeatMapUtil {
 		int numStorages = storageVA.size();
 
 		ArrayList<Texture> textures = new ArrayList<Texture>();
-		ColorMapping colorMapping = ColorMappingManager.get().getColorMapping(
+		ColorMapper colorMapping = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 
 		int numSamplesProcessed = 0;

@@ -8,17 +8,19 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
@@ -66,7 +68,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	private Column overviewLayout;
 	private ElementLayout detailLayout;
 
-	private ColorMapping colorMapper = ColorMappingManager.get().getColorMapping(
+	private ColorMapper colorMapper = ColorMappingManager.get().getColorMapping(
 			EColorMappingType.GENE_EXPRESSION);
 
 	/**
@@ -97,7 +99,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		overviewLayout.setDebug(false);
 		overviewLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		overviewLayout.setPixelSizeX(60);
-		
+
 		detailLayout = new ElementLayout("detailLayout");
 		detailLayout.setDebug(true);
 
@@ -147,7 +149,8 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 	/**
 	 * Create embedded heat map
-	 * @param overviewLayout2 
+	 * 
+	 * @param overviewLayout2
 	 * 
 	 * @param
 	 */
@@ -185,9 +188,6 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 				detailHeatMap);
 
 		detailLayout.setRenderer(detailHeatMapLayoutRenderer);
-		
-		overviewHeatMap.setDetailHeatMap(detailHeatMap);
-
 	}
 
 	@Override
@@ -226,9 +226,36 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 
-		// TODO: Implement picking processing here!
+		switch (pickingType) {
+
+		// handling the groups/clusters of genes
+		case HEAT_MAP_CLUSTER_GROUP:
+			switch (pickingMode) {
+			case CLICKED:
+
+				// if group ID is 0 then the data set is not clustered
+				if (externalID == 0)
+					break;
+				
+				ArrayList<Integer> clusterElements = contentVA.getIDsOfGroup(contentVA
+						.getGroupList().get(externalID).getID());
+				ContentVirtualArray clusterVA = new ContentVirtualArray(Set.CONTENT,
+						clusterElements);
+				detailHeatMap.setContentVA(clusterVA);
+				
+				setDisplayListDirty();
+				break;
+
+			case DRAGGED:
+				break;
+
+			case MOUSE_OVER:
+				break;
+			}
+			break;
+		}
 	}
 
 	@Override
@@ -342,15 +369,15 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		return null;
 	}
 
-	public ColorMapping getColorMapper() {
+	public ColorMapper getColorMapper() {
 		return colorMapper;
 	}
-	
+
 	@Override
 	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
-	
+
 		super.replaceContentVA(setID, dataDomainType, vaType);
-		
+
 		overviewHeatMap.init();
 	}
 }

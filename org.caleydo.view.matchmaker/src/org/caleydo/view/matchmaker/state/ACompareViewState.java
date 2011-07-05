@@ -773,7 +773,7 @@ public abstract class ACompareViewState {
 	public abstract void setSetsToCompare(ArrayList<ISet> setsToCompare);
 
 	public abstract void handlePickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick, boolean isControlPressed);
+			EPickingMode pickingMode, int externalID, Pick pick, boolean isControlPressed);
 
 	public abstract int getNumSetsInFocus();
 

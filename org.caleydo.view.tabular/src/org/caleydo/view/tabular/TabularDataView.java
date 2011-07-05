@@ -263,11 +263,11 @@ public class TabularDataView extends ASWTView implements
 		// @Override
 		// public void widgetSelected(SelectionEvent e) {
 		// storageVA.remove(0);
-		// // axisSelectionManager.remove(iExternalID, false);
+		// // axisSelectionManager.remove(externalID, false);
 		// // IVirtualArrayDelta vaDelta = new
 		// // VirtualArrayDelta(axisVAType,
 		// // EIDType.EXPERIMENT_INDEX);
-		// // vaDelta.add(VADeltaItem.remove(iExternalID));
+		// // vaDelta.add(VADeltaItem.remove(externalID));
 		// // sendVirtualArrayUpdateEvent(vaDelta);
 		// }
 		// });

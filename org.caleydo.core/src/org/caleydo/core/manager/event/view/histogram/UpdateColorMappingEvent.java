@@ -4,10 +4,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 
 /**
- * Event to signal that a {@link ColorMapping} has been updated.
+ * Event to signal that a {@link ColorMapper} has been updated.
  * 
  * @author Werner Puff
  */
@@ -16,8 +16,8 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 public class UpdateColorMappingEvent
 	extends AEvent {
 
-	/** The new or changed {@link ColorMapping} object */
-	private ColorMapping colorMapping;
+	/** The new or changed {@link ColorMapper} object */
+	private ColorMapper colorMapping;
 
 	@Override
 	public boolean checkIntegrity() {
@@ -28,21 +28,21 @@ public class UpdateColorMappingEvent
 	}
 
 	/**
-	 * Gets the new or changed {@link ColorMapping}. Required.
+	 * Gets the new or changed {@link ColorMapper}. Required.
 	 * 
-	 * @return new or changed {@link ColorMapping}
+	 * @return new or changed {@link ColorMapper}
 	 */
-	public ColorMapping getColorMapping() {
+	public ColorMapper getColorMapping() {
 		return colorMapping;
 	}
 
 	/**
-	 * Sets the new or changed {@link ColorMapping}. Required.
+	 * Sets the new or changed {@link ColorMapper}. Required.
 	 * 
 	 * @param colorMapping
-	 *            new or changed {@link ColorMapping}
+	 *            new or changed {@link ColorMapper}
 	 */
-	public void setColorMapping(ColorMapping colorMapping) {
+	public void setColorMapping(ColorMapper colorMapping) {
 		this.colorMapping = colorMapping;
 	}
 }

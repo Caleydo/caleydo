@@ -293,7 +293,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -301,7 +301,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 				getParentGLCanvas().getHeight());
 		contextMenu.setMasterGLView(this);
 		compareViewStateController.handlePickingEvents(pickingType, pickingMode,
-				iExternalID, pick, isControlPressed);
+				externalID, pick, isControlPressed);
 	}
 
 	@Override

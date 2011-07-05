@@ -53,7 +53,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 
 	@Override
 	public void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode,
-			int iExternalID, Pick pick, boolean isControlPressed) {
+			int externalID, Pick pick, boolean isControlPressed) {
 		SelectionType selectionType = null;
 
 		switch (ePickingType) {
@@ -80,12 +80,12 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			// selection manager
 			ContentSelectionManager contentSelectionManager = dataDomain
 					.getContentSelectionManager();
-			if (contentSelectionManager.checkStatus(selectionType, iExternalID)) {
+			if (contentSelectionManager.checkStatus(selectionType, externalID)) {
 				break;
 			}
 
 			contentSelectionManager.clearSelection(selectionType);
-			contentSelectionManager.addToType(selectionType, iExternalID);
+			contentSelectionManager.addToType(selectionType, externalID);
 
 			ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -103,7 +103,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			//
 			// ISelectionDelta selectionDelta = new
 			// SelectionDelta(EIDType.EXPRESSION_INDEX);
-			// selectionDelta.addSelection(iExternalID, selectionType);
+			// selectionDelta.addSelection(externalID, selectionType);
 			// SelectionUpdateEvent event = new SelectionUpdateEvent();
 			// event.setSender(this);
 			// event.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -113,7 +113,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			break;
 
 		case COMPARE_SET_BAR_ITEM_SELECTION:
-			setBar.handleSetBarItemSelection(iExternalID, pickingMode, pick);
+			setBar.handleSetBarItemSelection(externalID, pickingMode, pick);
 			break;
 
 		case COMPARE_RIBBON_SELECTION:
@@ -124,7 +124,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 				for (ArrayList<DetailBand> detailBands : leftHeatMapWrapperToDetailBands
 						.values()) {
 					for (DetailBand detailBand : detailBands) {
-						if (iExternalID == detailBand.getBandID()) {
+						if (externalID == detailBand.getBandID()) {
 							activeDetailBand = detailBand;
 							break;
 						}
@@ -158,12 +158,12 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		case COMPARE_SELECTION_WINDOW_SELECTION:
 		case COMPARE_SELECTION_WINDOW_ARROW_LEFT_SELECTION:
 		case COMPARE_SELECTION_WINDOW_ARROW_RIGHT_SELECTION:
-			setBar.handleSetBarSelectionWindowSelection(iExternalID, ePickingType,
+			setBar.handleSetBarSelectionWindowSelection(externalID, ePickingType,
 					pickingMode, pick);
 			break;
 		}
 
-		handleStateSpecificPickingEvents(ePickingType, pickingMode, iExternalID, pick,
+		handleStateSpecificPickingEvents(ePickingType, pickingMode, externalID, pick,
 				isControlPressed);
 	}
 
@@ -288,5 +288,5 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	protected abstract void renderSelections(GL2 gl);
 
 	public abstract void handleStateSpecificPickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick, boolean isControlPressed);
+			EPickingMode pickingMode, int externalID, Pick pick, boolean isControlPressed);
 }

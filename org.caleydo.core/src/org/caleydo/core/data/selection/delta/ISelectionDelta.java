@@ -29,11 +29,11 @@ public interface ISelectionDelta
 	 *            the selection id
 	 * @param selectionType
 	 *            the selection type
-	 * @param iInternalID
+	 * @param internalID
 	 *            the internal id
 	 * @return the {@link SelectionDeltaItem} that reflects this operation
 	 */
-	public SelectionDeltaItem addSelection(int iSelectionID, SelectionType selectionType, int iInternalID);
+	public SelectionDeltaItem addSelection(int iSelectionID, SelectionType selectionType, int internalID);
 
 	/**
 	 * Stores a selectionDeltaItem in the delta that triggers a removal of a particular element from a

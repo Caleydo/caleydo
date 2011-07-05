@@ -1457,7 +1457,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// // selection manager.
 			// Integer iRefSeqID =
 			// idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-			// iExternalID);
+			// externalID);
 			// if (iRefSeqID == null) {
 			// pickingManager.flushHits(uniqueID, ePickingType);
 			// return;
@@ -1575,7 +1575,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// case DRAGGED:
 			// bIsDraggingActive = true;
 			// draggedObject = EPickingType.GATE_TIP_SELECTION;
-			// iDraggedGateNumber = iExternalID;
+			// iDraggedGateNumber = externalID;
 			// break;
 
 			}

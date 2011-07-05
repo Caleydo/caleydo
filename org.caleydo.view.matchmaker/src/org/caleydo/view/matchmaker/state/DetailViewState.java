@@ -541,7 +541,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 	@Override
 	public void handleStateSpecificPickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick, boolean isControlPressed) {
+			EPickingMode pickingMode, int externalID, Pick pick, boolean isControlPressed) {
 
 		SelectionType selectionType = null;
 
@@ -551,18 +551,18 @@ public class DetailViewState extends ACompareViewStateStatic {
 		switch (ePickingType) {
 		case COMPARE_LEFT_EMBEDDED_VIEW_SELECTION:
 			rightHeatMapWrapper.setHeatMapsInactive();
-			leftHeatMapWrapper.setHeatMapActive(iExternalID, false);
+			leftHeatMapWrapper.setHeatMapActive(externalID, false);
 			break;
 
 		case COMPARE_RIGHT_EMBEDDED_VIEW_SELECTION:
 			leftHeatMapWrapper.setHeatMapsInactive();
-			rightHeatMapWrapper.setHeatMapActive(iExternalID, false);
+			rightHeatMapWrapper.setHeatMapActive(externalID, false);
 			break;
 
 		case COMPARE_OVERVIEW_SLIDER_ARROW_DOWN_SELECTION:
 		case COMPARE_OVERVIEW_SLIDER_ARROW_UP_SELECTION:
 		case COMPARE_OVERVIEW_SLIDER_BODY_SELECTION:
-			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(iExternalID);
+			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(externalID);
 			if (heatMapWrapper != null) {
 				heatMapWrapper.handleOverviewSliderSelection(ePickingType, pickingMode);
 			}
@@ -578,7 +578,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 				break;
 			}
 
-			leftHeatMapWrapper.handleGroupSelection(selectionType, iExternalID,
+			leftHeatMapWrapper.handleGroupSelection(selectionType, externalID,
 					isControlPressed, createSelectionTypes);
 			rightHeatMapWrapper.setHeatMapsInactive();
 			break;
@@ -592,22 +592,22 @@ public class DetailViewState extends ACompareViewStateStatic {
 				selectionType = SelectionType.MOUSE_OVER;
 				break;
 			}
-			rightHeatMapWrapper.handleGroupSelection(selectionType, iExternalID,
+			rightHeatMapWrapper.handleGroupSelection(selectionType, externalID,
 					isControlPressed, createSelectionTypes);
 			leftHeatMapWrapper.setHeatMapsInactive();
 			break;
 
 		case COMPARE_DENDROGRAM_BUTTON_SELECTION:
 			if (pickingMode == EPickingMode.CLICKED) {
-				if (indexOfHeatMapWrapperWithDendrogram == iExternalID) {
-					layouts.get(iExternalID).useDendrogram(false);
+				if (indexOfHeatMapWrapperWithDendrogram == externalID) {
+					layouts.get(externalID).useDendrogram(false);
 					indexOfHeatMapWrapperWithDendrogram = -1;
 				} else {
 					for (AHeatMapLayout layout : layouts) {
 						layout.useDendrogram(false);
 					}
-					layouts.get(iExternalID).useDendrogram(true);
-					indexOfHeatMapWrapperWithDendrogram = iExternalID;
+					layouts.get(externalID).useDendrogram(true);
+					indexOfHeatMapWrapperWithDendrogram = externalID;
 				}
 				setHeatMapWrapperDisplayListDirty();
 			}

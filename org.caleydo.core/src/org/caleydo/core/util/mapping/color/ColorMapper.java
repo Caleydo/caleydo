@@ -18,7 +18,7 @@ import org.eclipse.jface.preference.PreferenceStore;
  * @author Alexander Lex
  */
 @XmlType
-public class ColorMapping {
+public class ColorMapper {
 
 	ArrayList<float[]> colorList;
 	ArrayList<ColorMarkerPoint> markerPoints;
@@ -32,7 +32,7 @@ public class ColorMapping {
 	/**
 	 * Default no-arg constructor, especially needed for xml-serialization.
 	 */
-	public ColorMapping() {
+	public ColorMapper() {
 
 	}
 
@@ -53,18 +53,18 @@ public class ColorMapping {
 	 * @throws IllegalArgumentException
 	 *             if values in marker points are not increasing, or if fvalue > 1 || fvalue < 0
 	 */
-	protected ColorMapping(EColorMappingType colorMappingType, ArrayList<ColorMarkerPoint> alMarkerPoints) {
+	protected ColorMapper(EColorMappingType colorMappingType, ArrayList<ColorMarkerPoint> alMarkerPoints) {
 		this.colorMappingType = colorMappingType;
 		init(alMarkerPoints);
 	}
 
-	protected ColorMapping(EColorMappingType colorMappingType) {
+	protected ColorMapper(EColorMappingType colorMappingType) {
 		this.colorMappingType = colorMappingType;
 		initiFromPreferenceStore();
 	}
 
 	/**
-	 * Reset the color mapping, same principles as constructor {@link ColorMapping#ColorMapping(ArrayList)}
+	 * Reset the color mapping, same principles as constructor {@link ColorMapper#ColorMapping(ArrayList)}
 	 * 
 	 * @param alMarkerPoints
 	 */

@@ -402,13 +402,13 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	 * delegates events to the embedded treemap.
 	 */
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
+	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int externalID, Pick pick) {
 		// System.out.println(pickingType + " " + pickingMode + ": " +
-		// iExternalID);
+		// externalID);
 		if (pickingType == EPickingType.TREEMAP_THUMBNAILVIEW_SELECTED && pickingMode == EPickingMode.DOUBLE_CLICKED) {
-			zoomOut(iExternalID);
+			zoomOut(externalID);
 		} else
-			mainTreeMapView.handleRemotePickingEvents(pickingType, pickingMode, iExternalID, pick);
+			mainTreeMapView.handleRemotePickingEvents(pickingType, pickingMode, externalID, pick);
 
 	}
 

@@ -21,7 +21,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -52,7 +52,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	boolean bUseDetailLevel = true;
 
 	private Histogram histogram;
-	private ColorMapping colorMapping;
+	private ColorMapper colorMapping;
 	// private HistogramRenderStyle renderStyle;
 
 	private boolean bUpdateColorPointPosition = false;
@@ -568,7 +568,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -580,7 +580,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 			case CLICKED:
 				bUpdateColorPointPosition = true;
 				bIsFirstTimeUpdateColor = true;
-				iColorMappingPointMoved = iExternalID;
+				iColorMappingPointMoved = externalID;
 				break;
 			case MOUSE_OVER:
 
@@ -594,7 +594,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 			switch (pickingMode) {
 			case CLICKED:
 				bUpdateLeftSpread = true;
-				iColorMappingPointMoved = iExternalID;
+				iColorMappingPointMoved = externalID;
 				break;
 			case MOUSE_OVER:
 
@@ -608,7 +608,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 			switch (pickingMode) {
 			case CLICKED:
 				bUpdateRightSpread = true;
-				iColorMappingPointMoved = iExternalID;
+				iColorMappingPointMoved = externalID;
 				break;
 			case MOUSE_OVER:
 

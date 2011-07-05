@@ -47,11 +47,11 @@ public class IDCreator {
 
 	/**
 	 * When dealing with external IDs for example specified in an xml file, this method creates a mapping
-	 * between those two, which can be retrieved by calling getInternalFromExternalID(int iExternalID)
+	 * between those two, which can be retrieved by calling getInternalFromExternalID(int externalID)
 	 */
-	public void mapInternalToExternalID(int iInternalID, int iExternalID) {
-		hashExternalToInternalID.put(iExternalID, iInternalID);
-		hashInternalToExternalID.put(iInternalID, iExternalID);
+	public void mapInternalToExternalID(int internalID, int externalID) {
+		hashExternalToInternalID.put(externalID, internalID);
+		hashInternalToExternalID.put(internalID, externalID);
 	}
 
 	/**
@@ -63,8 +63,8 @@ public class IDCreator {
 	public ArrayList<Integer> convertExternalToInternalIDs(ArrayList<Integer> iAlExternalIDs) {
 		ArrayList<Integer> iAlInternalIDs = new ArrayList<Integer>(iAlExternalIDs.size());
 
-		for (Integer iExternalID : iAlExternalIDs) {
-			iAlInternalIDs.add(getInternalFromExternalID(iExternalID));
+		for (Integer externalID : iAlExternalIDs) {
+			iAlInternalIDs.add(getInternalFromExternalID(externalID));
 		}
 
 		return iAlInternalIDs;
@@ -73,28 +73,28 @@ public class IDCreator {
 	/**
 	 * Returns an internal id which is mapped to an external id, when such a mapping exists.
 	 * 
-	 * @param iExternalID
+	 * @param externalID
 	 *            the external id
 	 * @return the internal id
 	 * @throws IllegalArgumentException
 	 *             if now mapping exists
 	 */
-	public int getInternalFromExternalID(int iExternalID)
+	public int getInternalFromExternalID(int externalID)
 
 	{
-		if (!hashExternalToInternalID.containsKey(iExternalID))
-			throw new IllegalArgumentException("Given external ID " + iExternalID
+		if (!hashExternalToInternalID.containsKey(externalID))
+			throw new IllegalArgumentException("Given external ID " + externalID
 				+ " does not map to any internal ID.");
 
-		return hashExternalToInternalID.get(iExternalID);
+		return hashExternalToInternalID.get(externalID);
 	}
 
-	public int getExternalFromInternalID(int iInternalID) {
-		if (!hashInternalToExternalID.containsKey(iInternalID))
-			throw new IllegalArgumentException("Given internal ID " + iInternalID
+	public int getExternalFromInternalID(int internalID) {
+		if (!hashInternalToExternalID.containsKey(internalID))
+			throw new IllegalArgumentException("Given internal ID " + internalID
 				+ " does not map to an external ID.");
 
-		return hashInternalToExternalID.get(iInternalID);
+		return hashInternalToExternalID.get(internalID);
 	}
 
 	/**

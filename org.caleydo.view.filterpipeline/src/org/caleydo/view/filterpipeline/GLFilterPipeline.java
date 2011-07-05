@@ -363,7 +363,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 		int newFullSizedFilter = -1;
 
 		switch (pickingMode) {
@@ -381,38 +381,38 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 			case MOUSE_OVER:
 				// remove old mouse over
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				selectionManager.addToType(SelectionType.MOUSE_OVER, iExternalID);
+				selectionManager.addToType(SelectionType.MOUSE_OVER, externalID);
 				// try
 				// {
-				// filterMenu.setFilter(filterList.get(iExternalID));
+				// filterMenu.setFilter(filterList.get(externalID));
 				// }
 				// catch (Exception e)
 				// {
 				// // maybe the filter has been destroyed in the meantime
 				// filterMenu.setFilter(null);
 				// }
-				if (fullSizedFilter != iExternalID)
+				if (fullSizedFilter != externalID)
 					mouseOverTimeStamp = Calendar.getInstance().getTimeInMillis();
 
-				newFullSizedFilter = iExternalID;
+				newFullSizedFilter = externalID;
 				break;
 			case CLICKED:
 				if (!bControlPressed)
 					selectionManager.clearSelection(SelectionType.SELECTION);
 
 				// Toggle add/remove element to selection
-				if (selectionManager.checkStatus(SelectionType.SELECTION, iExternalID)) {
-					selectionManager.removeFromType(SelectionType.SELECTION, iExternalID);
+				if (selectionManager.checkStatus(SelectionType.SELECTION, externalID)) {
+					selectionManager.removeFromType(SelectionType.SELECTION, externalID);
 				} else {
-					selectionManager.addToType(SelectionType.SELECTION, iExternalID);
+					selectionManager.addToType(SelectionType.SELECTION, externalID);
 				}
 
 				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
-				dragAndDropController.addDraggable(filterList.get(iExternalID)
+				dragAndDropController.addDraggable(filterList.get(externalID)
 						.getRepresentation());
 				break;
 			case RIGHT_CLICKED:
-				radialMenu.show(iExternalID, mousePosition);
+				radialMenu.show(externalID, mousePosition);
 				break;
 			case DRAGGED:
 				if (dragAndDropController.hasDraggables()) {
@@ -421,7 +421,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 					else if (!dragAndDropController.isDragging())
 						dragAndDropController.startDragging();
 				}
-				dragAndDropController.setDropArea(filterList.get(iExternalID));
+				dragAndDropController.setDropArea(filterList.get(externalID));
 				break;
 			}
 			break;
@@ -429,7 +429,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		case FILTERPIPE_SUB_FILTER:
 			// switch (pickingMode) {
 			// case MOUSE_OVER:
-			// filterMenu.handleIconMouseOver(iExternalID);
+			// filterMenu.handleIconMouseOver(externalID);
 			// break;
 			// }
 			break;
@@ -437,7 +437,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		case FILTERPIPE_START_ARROW:
 			switch (pickingMode) {
 			case CLICKED:
-				firstFilter = iExternalID;
+				firstFilter = externalID;
 				updateFilterSize();
 				// break; Fall through...
 			case MOUSE_OVER:

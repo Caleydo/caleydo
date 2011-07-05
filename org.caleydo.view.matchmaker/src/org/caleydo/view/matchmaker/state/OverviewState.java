@@ -187,7 +187,7 @@ public class OverviewState extends ACompareViewStateStatic {
 
 	@Override
 	public void handleStateSpecificPickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick, boolean isControlPressed) {
+			EPickingMode pickingMode, int externalID, Pick pick, boolean isControlPressed) {
 
 		HeatMapWrapper selectedHeatMapWrapper = null;
 
@@ -222,7 +222,7 @@ public class OverviewState extends ACompareViewStateStatic {
 				heatMapWrapper.setHeatMapsInactive();
 			}
 
-			selectedHeatMapWrapper.setHeatMapActive(iExternalID, createSelectionTypes);
+			selectedHeatMapWrapper.setHeatMapActive(externalID, createSelectionTypes);
 			if (createSelectionTypes) {
 				setHeatMapWrapperDisplayListDirty();
 			} else {

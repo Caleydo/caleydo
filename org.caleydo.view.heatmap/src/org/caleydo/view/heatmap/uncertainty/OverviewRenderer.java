@@ -6,11 +6,9 @@ import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
@@ -30,20 +28,11 @@ public class OverviewRenderer extends LayoutRenderer {
 	private ClusterRenderer clusterHeatMapRenderer;
 	private GLUncertaintyHeatMap uncertaintyHeatMap;
 
-	private GLHeatMap detailHeatMap;
 	private ElementLayout lineSeparatorLayout;
-
-	private ViewFrustum viewFrustum;
-	private LayoutManager templateRenderer;
-
-	private Object template;
 
 	private Column overviewLayout;
 
-	private ContentGroupList clusterList;
-	private ContentVirtualArray contentVA;
-
-	private int spacerSize = 3;
+	private final static int CLUSTER_SPACER_SIZE = 10;
 
 	/**
 	 * Constructor.
@@ -63,20 +52,20 @@ public class OverviewRenderer extends LayoutRenderer {
 		overviewLayout.clear();
 		
 		ContentVirtualArray contentVA = uncertaintyHeatMap.getContentVA();
-		ContentGroupList clusterList = contentVA.getGroupList();
+		ContentGroupList groupList = contentVA.getGroupList();
 
 		int counter = 0;
 
-		int lastLayoutElement = 0;//overviewLayout.size();
+		int lastLayoutElement = 0;
 
-		if (clusterList != null) {
-			int totalSpacerSize = spacerSize * (clusterList.size() - 1);
-			for (int i = 0; i < clusterList.size(); i++) {
+		if (groupList != null) {
+			//int totalSpacerSize = spacerSize * (clusterList.size() - 1);
+			for (int groupIndex = 0; groupIndex < groupList.size(); groupIndex++) {
 
 				// creatinng Texture for each cluster
 
 				// creating Layout for each cluster
-				ContentVirtualArray clusterVA = this.getClusterVA(i);
+				ContentVirtualArray clusterVA = this.getClusterVA(groupIndex);
 				float ratio = (float) clusterVA.size()
 						/ ((float) contentVA.getIndexList().size());
 			
@@ -85,7 +74,7 @@ public class OverviewRenderer extends LayoutRenderer {
 				clusterLayout.setRatioSizeY(ratio);
 
 				clusterHeatMapRenderer = new ClusterRenderer(
-						uncertaintyHeatMap, clusterLayout, clusterVA);
+						uncertaintyHeatMap, clusterLayout, clusterVA, groupIndex);
 				clusterLayout.setRenderer(clusterHeatMapRenderer);
 
 				overviewLayout.add(lastLayoutElement, clusterLayout);
@@ -93,12 +82,12 @@ public class OverviewRenderer extends LayoutRenderer {
 				clusterHeatMapRenderer.init();
 				counter++;
 
-				if (i < (clusterList.size() - 1)) {
+				if (groupIndex < (groupList.size() - 1)) {
 					lineSeparatorLayout = new ElementLayout("lineSeparator");
 					PixelGLConverter pixelGLConverter = uncertaintyHeatMap
 							.getParentGLCanvas().getPixelGLConverter();
 					lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
-					lineSeparatorLayout.setPixelSizeY(spacerSize);
+					lineSeparatorLayout.setPixelSizeY(CLUSTER_SPACER_SIZE);
 					lineSeparatorLayout.setRatioSizeX(1);
 					lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(
 							false));
@@ -107,10 +96,6 @@ public class OverviewRenderer extends LayoutRenderer {
 					overviewLayout.add(lastLayoutElement, lineSeparatorLayout);
 					// overviewLayout.append(lineSeparatorLayout);
 				}
-				
-				// JUST FOR TESTING
-				if (i == 0)
-					detailHeatMap.setContentVA(clusterVA);
 			}
 		} else {
 			Row clusterLayout = new Row("clusterLayout");
@@ -118,7 +103,7 @@ public class OverviewRenderer extends LayoutRenderer {
 			clusterLayout.setRatioSizeY(1);
 
 			clusterHeatMapRenderer = new ClusterRenderer(uncertaintyHeatMap,
-					clusterLayout, contentVA);
+					clusterLayout, contentVA, 0);
 			clusterLayout.setRenderer(clusterHeatMapRenderer);
 			clusterHeatMapRenderer.init();
 			overviewLayout.add(lastLayoutElement, clusterLayout);
@@ -142,9 +127,5 @@ public class OverviewRenderer extends LayoutRenderer {
 
 
 		return clusterVA;
-	}
-
-	public void setDetailHeatMap(GLHeatMap detailHeatMap) {
-		this.detailHeatMap = detailHeatMap;		
 	}
 }

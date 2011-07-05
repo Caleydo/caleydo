@@ -9,7 +9,7 @@ import java.awt.Point;
  */
 public class Pick {
 
-	private int iExternalID = 0;
+	private int externalID = 0;
 
 	private EPickingMode ePickingMode = EPickingMode.CLICKED;
 
@@ -22,10 +22,10 @@ public class Pick {
 	/**
 	 * Constructor.
 	 */
-	public Pick(int iExternalID, EPickingMode ePickingMode, Point pickedPoint, Point dragStartPoint,
+	public Pick(int externalID, EPickingMode ePickingMode, Point pickedPoint, Point dragStartPoint,
 		float fDepth) {
 
-		this.iExternalID = iExternalID;
+		this.externalID = externalID;
 		this.ePickingMode = ePickingMode;
 		this.pickedPoint = pickedPoint;
 		this.dragStartPoint = dragStartPoint;
@@ -40,7 +40,7 @@ public class Pick {
 	 */
 	public int getID() {
 
-		return iExternalID;
+		return externalID;
 	}
 
 	/**

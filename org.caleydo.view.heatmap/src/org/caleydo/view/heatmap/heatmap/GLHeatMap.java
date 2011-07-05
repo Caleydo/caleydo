@@ -367,7 +367,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -375,7 +375,7 @@ public class GLHeatMap extends AStorageBasedView {
 		SelectionType selectionType;
 		switch (pickingType) {
 		case HEAT_MAP_LINE_SELECTION:
-			iCurrentMouseOverElement = iExternalID;
+			iCurrentMouseOverElement = externalID;
 			switch (pickingMode) {
 
 			case CLICKED:
@@ -398,7 +398,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 				ContentContextMenuItemContainer contentContextMenuItemContainer = new ContentContextMenuItemContainer();
 				contentContextMenuItemContainer.setDataDomain(dataDomain);
-				contentContextMenuItemContainer.setID(contentIDType, iExternalID);
+				contentContextMenuItemContainer.setID(contentIDType, externalID);
 				contextMenu.addItemContanier(contentContextMenuItemContainer);
 				break;
 
@@ -407,7 +407,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 			}
 
-			createContentSelection(selectionType, iExternalID);
+			createContentSelection(selectionType, externalID);
 
 			break;
 
@@ -428,13 +428,13 @@ public class GLHeatMap extends AStorageBasedView {
 				}
 				StorageContextMenuItemContainer experimentContextMenuItemContainer = new StorageContextMenuItemContainer();
 				experimentContextMenuItemContainer.setDataDomain(dataDomain);
-				experimentContextMenuItemContainer.setID(storageIDType, iExternalID);
+				experimentContextMenuItemContainer.setID(storageIDType, externalID);
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 			default:
 				return;
 			}
 
-			createStorageSelection(selectionType, iExternalID);
+			createStorageSelection(selectionType, externalID);
 
 			break;
 

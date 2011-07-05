@@ -8,7 +8,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -128,7 +128,7 @@ public class PDDrawingStrategyRainbow extends APDDrawingStrategyChildIndicator {
 			fMidAngle += 360;
 		}
 
-		ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(
+		ColorMapper cmRainbow = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.RAINBOW);
 
 		float fArRGB[] = cmRainbow.getColor(fMidAngle / 360.0f);

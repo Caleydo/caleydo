@@ -37,7 +37,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -109,7 +109,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	private int iMaxDepth = 0;
 	private boolean bEnableDepthCheck = false;
 
-	private ColorMapping colorMapper;
+	private ColorMapper colorMapper;
 
 	private boolean bRedrawDendrogram = true;
 
@@ -1442,7 +1442,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -1480,7 +1480,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 				break;
 			case RIGHT_CLICKED:
 
-				ClusterNode leafNode = tree.getNodeByNumber(iExternalID);
+				ClusterNode leafNode = tree.getNodeByNumber(externalID);
 				if (contentSelectionManager.checkStatus(leafNode.getLeafID()) == false
 						&& storageSelectionManager.checkStatus(leafNode.getLeafID()) == false)
 					break;
@@ -1509,8 +1509,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 				resetAllTreeSelections();
 
-				if (tree.getNodeByNumber(iExternalID) != null)
-					tree.getNodeByNumber(iExternalID).setSelectionType(selectionType);
+				if (tree.getNodeByNumber(externalID) != null)
+					tree.getNodeByNumber(externalID).setSelectionType(selectionType);
 
 				ISelectionDelta selectionDelta = null;
 				VABasedSelectionManager selectionManager = null;
@@ -1519,7 +1519,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 				selectionManager.clearSelection(selectionType);
 				selectionManager.addToType(selectionType,
-						tree.getNodeByNumber(iExternalID).getLeafID());
+						tree.getNodeByNumber(externalID).getLeafID());
 				selectionDelta = selectionManager.getDelta();
 
 				handleConnectedElementReps(selectionDelta);
@@ -1546,16 +1546,16 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 				break;
 			}
 			if (selectionType != SelectionType.NORMAL
-					&& tree.getNodeByNumber(iExternalID) != null) {
+					&& tree.getNodeByNumber(externalID) != null) {
 
 				resetAllTreeSelections();
 
-				tree.getNodeByNumber(iExternalID).setSelectionType(selectionType);
+				tree.getNodeByNumber(externalID).setSelectionType(selectionType);
 
 				ClusterNodeSelectionEvent clusterNodeEvent = new ClusterNodeSelectionEvent();
 				SelectionDelta selectionDeltaClusterNode = new SelectionDelta(
 						tree.getNodeIDType());
-				selectionDeltaClusterNode.addSelection(iExternalID, selectionType);
+				selectionDeltaClusterNode.addSelection(externalID, selectionType);
 				clusterNodeEvent.setSelectionDelta(selectionDeltaClusterNode);
 				eventPublisher.triggerEvent(clusterNodeEvent);
 			}
@@ -1575,7 +1575,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 				selectionType = SelectionType.MOUSE_OVER;
 				break;
 			case RIGHT_CLICKED:
-				ClusterNode leafNode = tree.getNodeByNumber(iExternalID);
+				ClusterNode leafNode = tree.getNodeByNumber(externalID);
 
 				if (contentSelectionManager.checkStatus(leafNode.getLeafID()) == false
 						&& storageSelectionManager.checkStatus(leafNode.getLeafID()) == false)
@@ -1599,8 +1599,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 				resetAllTreeSelections();
 
-				if (tree.getNodeByNumber(iExternalID) != null)
-					tree.getNodeByNumber(iExternalID).setSelectionType(selectionType);
+				if (tree.getNodeByNumber(externalID) != null)
+					tree.getNodeByNumber(externalID).setSelectionType(selectionType);
 
 				ISelectionDelta selectionDelta = null;
 				VABasedSelectionManager selectionManager = null;
@@ -1609,7 +1609,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 				selectionManager.clearSelection(selectionType);
 				selectionManager.addToType(selectionType,
-						tree.getNodeByNumber(iExternalID).getLeafID());
+						tree.getNodeByNumber(externalID).getLeafID());
 				selectionDelta = selectionManager.getDelta();
 
 				handleConnectedElementReps(selectionDelta);

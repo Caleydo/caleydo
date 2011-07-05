@@ -675,7 +675,7 @@ public class GLPathway extends AGLView implements
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -686,7 +686,7 @@ public class GLPathway extends AGLView implements
 			SelectionType selectionType;
 
 			PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) pathwayItemManager
-					.getItem(iExternalID);
+					.getItem(externalID);
 
 			setDisplayListDirty();
 
@@ -769,7 +769,7 @@ public class GLPathway extends AGLView implements
 				return;
 			}
 
-			if (selectionManager.checkStatus(selectionType, iExternalID)) {
+			if (selectionManager.checkStatus(selectionType, externalID)) {
 				break;
 			}
 

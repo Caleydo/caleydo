@@ -19,7 +19,7 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -67,7 +67,7 @@ public class GLPathwayContentCreator {
 	// private HashMap<Integer, ArrayList<float[]>>
 	// hashElementId2MappingColorArray;
 
-	private ColorMapping colorMapper;
+	private ColorMapper colorMapper;
 
 	private SelectionManager internalSelectionManager;
 

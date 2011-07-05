@@ -625,8 +625,8 @@ public abstract class AGLView
 
 				for (int iCount = 0; iCount < alHits.size(); iCount++) {
 					Pick tempPick = alHits.get(iCount);
-					int iExternalID = tempPick.getID();
-					if (iExternalID == -1) {
+					int externalID = tempPick.getID();
+					if (externalID == -1) {
 						continue;
 					}
 
@@ -634,14 +634,14 @@ public abstract class AGLView
 					if (pickingType == EPickingType.CONTEXT_MENU_SELECTION
 						|| pickingType == EPickingType.CONTEXT_MENU_SCROLL_DOWN
 						|| pickingType == EPickingType.CONTEXT_MENU_SCROLL_UP) {
-						contextMenu.handlePickingEvents(pickingType, ePickingMode, iExternalID);
+						contextMenu.handlePickingEvents(pickingType, ePickingMode, externalID);
 					}
 					else {
 						if (tempPick.getPickingMode() != EPickingMode.RIGHT_CLICKED)
 							contextMenu.flush();
-						handlePicking(pickingType, ePickingMode, iExternalID, tempPick);
+						handlePicking(pickingType, ePickingMode, externalID, tempPick);
 						// FIXME: This is for legacy support -> picking listeners should be used
-						handlePickingEvents(pickingType, ePickingMode, iExternalID, tempPick);
+						handlePickingEvents(pickingType, ePickingMode, externalID, tempPick);
 					}
 					pickingManager.flushHits(uniqueID, pickingType);
 				}

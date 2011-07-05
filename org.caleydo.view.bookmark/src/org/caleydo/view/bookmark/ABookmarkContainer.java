@@ -164,13 +164,13 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 * 
 	 * @param pickingMode
 	 *            for example mouse-over or clicked
-	 * @param iExternalID
+	 * @param externalID
 	 *            the id specified when calling
 	 *            {@link PickingIDManager#getPickingID(ABookmarkContainer, int)}
 	 *            Internal to the specific BookmarkContainer
 	 */
 	void handleEvents(EPickingType ePickingType, EPickingMode pickingMode,
-			Integer iExternalID, final Pick pick) {
+			Integer externalID, final Pick pick) {
 		SelectionType selectionType;
 		switch (ePickingType) {
 
@@ -229,7 +229,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 //				menu.show(manager.getParentGLCanvas(), 0, 0);
 
 				BookmarkContextMenuItemContainer bookmarkContextMenuItemContainer = new BookmarkContextMenuItemContainer();
-				bookmarkContextMenuItemContainer.setID(internalIDType, iExternalID);
+				bookmarkContextMenuItemContainer.setID(internalIDType, externalID);
 				ContextMenu contextMenu = manager.getContextMenu();
 				contextMenu.addItemContanier(bookmarkContextMenuItemContainer);
 
@@ -249,7 +249,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 
 			}
 			selectionManager.clearSelection(selectionType);
-			selectionManager.addToType(selectionType, iExternalID);
+			selectionManager.addToType(selectionType, externalID);
 
 			ISelectionDelta selectionDelta = selectionManager.getDelta();
 			SelectionUpdateEvent event = new SelectionUpdateEvent();

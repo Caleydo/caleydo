@@ -61,7 +61,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -108,7 +108,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	private ScatterPlotRenderStyle renderStyle;
 
-	private ColorMapping colorMapper;
+	private ColorMapper colorMapper;
 
 	// private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 	// private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
@@ -3037,7 +3037,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -3050,7 +3050,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		case SCATTER_POINT_SELECTION:
 			if (bMainViewZoomDragged)
 				return;
-			// iCurrentMouseOverElement = iExternalID;
+			// iCurrentMouseOverElement = externalID;
 			switch (pickingMode) {
 
 			case CLICKED:
@@ -3070,11 +3070,11 @@ public class GLScatterPlot extends AStorageBasedView {
 				return;
 
 			}
-			createContentSelection(selectionType, iExternalID);
+			createContentSelection(selectionType, externalID);
 			break;
 
 		case SCATTER_MATRIX_SELECTION:
-			// iCurrentMouseOverElement = iExternalID;
+			// iCurrentMouseOverElement = externalID;
 			switch (pickingMode) {
 			case CLICKED:
 				selectionType = SelectionType.SELECTION;
@@ -3088,20 +3088,20 @@ public class GLScatterPlot extends AStorageBasedView {
 			default:
 				return;
 			}
-			createStorageSelection(selectionType, iExternalID);
+			createStorageSelection(selectionType, externalID);
 			break;
 		case SCATTER_MAIN_ZOOM:
 			switch (pickingMode) {
 			case CLICKED:
 				if (!bMainViewZoomDragged) {
 					bMainViewZoomDragged = true;
-					iCurrentDragZoom = iExternalID;
+					iCurrentDragZoom = externalID;
 					bClearSomeDisplayLists = true;
 				}
 				break;
 			// case MOUSE_OVER :
 			// if(bMainViewZoomDragged)
-			// handleMainViewZoom(iExternalID);
+			// handleMainViewZoom(externalID);
 			// break;
 
 			default:

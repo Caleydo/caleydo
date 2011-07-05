@@ -415,8 +415,8 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
-		super.handlePickingEvents(pickingType, pickingMode, iExternalID, pick);
+			EPickingMode pickingMode, int externalID, Pick pick) {
+		super.handlePickingEvents(pickingType, pickingMode, externalID, pick);
 
 		switch (pickingType) {
 		case REMOTE_VIEW_SELECTION:
@@ -433,7 +433,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 			}
 
 			GLTexture textureView = (GLTexture) generalManager.getViewGLCanvasManager()
-					.getGLView(iExternalID);
+					.getGLView(externalID);
 			if (textureView == null) {
 				System.out.println("Warning, unrecognized view ID");
 				return;

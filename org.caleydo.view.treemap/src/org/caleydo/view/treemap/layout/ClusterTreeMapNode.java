@@ -8,7 +8,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 
 /**
  * This class represents a the treemap model filled with a tree of ClusterNode
@@ -19,7 +19,7 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 
 public class ClusterTreeMapNode extends ATreeMapNode {
 
-	public static ClusterTreeMapNode createFromClusterNodeTree(Tree<ClusterNode> clusterTree, ColorMapping colorMapper, int maxDepth) {
+	public static ClusterTreeMapNode createFromClusterNodeTree(Tree<ClusterNode> clusterTree, ColorMapper colorMapper, int maxDepth) {
 		return createFromClusterNodeTree(clusterTree.getRoot(), colorMapper, maxDepth);
 	}
 
@@ -30,7 +30,7 @@ public class ClusterTreeMapNode extends ATreeMapNode {
 	 * @param maxDepth maximal depth of the treemap model
 	 * @return root of the treemap model
 	 */
-	public static ClusterTreeMapNode createFromClusterNodeTree(ClusterNode clusterNode, ColorMapping colorMapper, int maxDepth) {
+	public static ClusterTreeMapNode createFromClusterNodeTree(ClusterNode clusterNode, ColorMapper colorMapper, int maxDepth) {
 
 		// ClusterNode clusterNode = clusterTree.getRoot();
 		if (clusterNode != null) {

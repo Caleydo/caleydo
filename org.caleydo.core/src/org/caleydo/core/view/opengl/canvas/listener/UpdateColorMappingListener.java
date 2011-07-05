@@ -5,10 +5,10 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.histogram.UpdateColorMappingEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 
 /**
- * Listener for updates on {@link ColorMapping}s.
+ * Listener for updates on {@link ColorMapper}s.
  * 
  * @author Werner Puff
  */

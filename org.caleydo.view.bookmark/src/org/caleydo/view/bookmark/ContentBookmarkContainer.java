@@ -8,7 +8,7 @@ import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.util.collection.UniqueList;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 
@@ -20,7 +20,7 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
  */
 class ContentBookmarkContainer extends ABookmarkContainer<ContentSelectionManager> {
 
-	ColorMapping colorMapping;
+	ColorMapper colorMapping;
 	IDCategory category;
 	IDType idType;
 

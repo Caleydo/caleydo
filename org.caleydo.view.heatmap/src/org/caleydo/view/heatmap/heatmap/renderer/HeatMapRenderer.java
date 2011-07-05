@@ -9,7 +9,7 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -18,7 +18,7 @@ import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 
 public class HeatMapRenderer extends AContentRenderer {
 
-	private ColorMapping colorMapper;
+	private ColorMapper colorMapper;
 
 	public HeatMapRenderer(GLHeatMap heatMap) {
 		super(heatMap);

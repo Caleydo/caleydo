@@ -29,7 +29,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.IDataDomainSetBasedView;
@@ -78,7 +78,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 
 	private Tree<ClusterNode> tree;
 
-	private ColorMapping colorMapper;
+	private ColorMapper colorMapper;
 
 	private PickingManager remotePickingManager = null;
 
@@ -267,7 +267,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 
 				break;
 			case DRAGGED:
-				// System.out.println(iExternalID+" dragged");
+				// System.out.println(externalID+" dragged");
 				break;
 			default:
 				return;
@@ -585,7 +585,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	}
 
 	@Override
-	public void distributeColorMapping(ColorMapping colorMapping) {
+	public void distributeColorMapping(ColorMapper colorMapping) {
 		colorMapper = colorMapping;
 
 	}

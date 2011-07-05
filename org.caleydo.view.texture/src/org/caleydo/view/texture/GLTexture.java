@@ -136,7 +136,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 		// if (detailLevel == EDetailLevel.VERY_LOW) {
 		// return;
 		// }

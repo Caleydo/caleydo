@@ -120,12 +120,12 @@ public class FilterMenu
 		endGUIElement(gl);
 	}
 
-	public void handleIconMouseOver(int iExternalID)
+	public void handleIconMouseOver(int externalID)
 	{
-		mouseOverItem = iExternalID;
+		mouseOverItem = externalID;
 		
 		if( filter != null )
-			filter.handleIconMouseOver(iExternalID);
+			filter.handleIconMouseOver(externalID);
 	}
 
 	public void handleClearMouseOver()

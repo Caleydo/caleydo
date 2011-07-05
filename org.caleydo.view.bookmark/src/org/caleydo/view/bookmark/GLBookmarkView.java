@@ -103,8 +103,8 @@ public class GLBookmarkView extends AGLView implements
 			return pickingID;
 		}
 
-		private Pair<IDCategory, Integer> getPrivateID(int iExternalID) {
-			return pickingIDToBookmarkContainer.get(iExternalID);
+		private Pair<IDCategory, Integer> getPrivateID(int externalID) {
+			return pickingIDToBookmarkContainer.get(externalID);
 		}
 
 		private void reset() {
@@ -256,10 +256,10 @@ public class GLBookmarkView extends AGLView implements
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 		switch (pickingType) {
 		case BOOKMARK_ELEMENT:
-			Pair<IDCategory, Integer> pair = pickingIDManager.getPrivateID(iExternalID);
+			Pair<IDCategory, Integer> pair = pickingIDManager.getPrivateID(externalID);
 			hashCategoryToBookmarkContainer.get(pair.getFirst()).handleEvents(
 					pickingType, pickingMode, pair.getSecond(), pick);
 		}

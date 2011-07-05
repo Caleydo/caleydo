@@ -11,7 +11,7 @@ import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -43,7 +43,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 	private ContentVirtualArray contentVA;
 
 	public void init(ISet set, ContentVirtualArray contentVA,
-			StorageVirtualArray storageVA, ColorMapping colorMapper) {
+			StorageVirtualArray storageVA, ColorMapper colorMapper) {
 
 		this.storageVA = storageVA;
 		this.contentVA = contentVA;

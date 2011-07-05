@@ -386,7 +386,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -406,7 +406,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		case REMOTE_VIEW_SELECTION:
 			switch (pickingMode) {
 			case MOUSE_OVER:
-				// this.focusViewEvent(iExternalID, 0.75, true);
+				// this.focusViewEvent(externalID, 0.75, true);
 				break;
 			case CLICKED:
 				evaluateUserSelection();

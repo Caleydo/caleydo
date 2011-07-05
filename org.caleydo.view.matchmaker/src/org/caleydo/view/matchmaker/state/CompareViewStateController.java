@@ -91,8 +91,8 @@ public class CompareViewStateController {
 	}
 
 	public void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode,
-			int iExternalID, Pick pick, boolean isControlPressed) {
-		currentState.handlePickingEvents(ePickingType, pickingMode, iExternalID, pick,
+			int externalID, Pick pick, boolean isControlPressed) {
+		currentState.handlePickingEvents(ePickingType, pickingMode, externalID, pick,
 				isControlPressed);
 	}
 

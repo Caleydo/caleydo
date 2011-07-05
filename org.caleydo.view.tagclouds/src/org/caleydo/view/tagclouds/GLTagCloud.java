@@ -447,19 +447,19 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 
 		switch (pickingType) {
 		case TAG_DIMENSION_CHANGE:
 			switch (pickingMode) {
 			case CLICKED:
-				if (iExternalID == BUTTON_NEXT_ID) {
+				if (externalID == BUTTON_NEXT_ID) {
 					if (lastStorageIndex != storageVA.size() - 1) {
 						firstStorageIndex++;
 						lastStorageIndex++;
 						updateClippedVA();
 					}
-				} else if (iExternalID == BUTTON_PREVIOUS_ID) {
+				} else if (externalID == BUTTON_PREVIOUS_ID) {
 					if (firstStorageIndex != 0) {
 						firstStorageIndex--;
 						lastStorageIndex--;

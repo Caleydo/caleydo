@@ -222,13 +222,13 @@ public class PickingManager {
 	 *            the ID of the calling view
 	 * @param ePickingType
 	 *            the type of the pick
-	 * @param iExternalID
+	 * @param externalID
 	 *            an arbitrary integer which helps the client of the manager to determine which element was
 	 *            picked
 	 * @return the picking id, use {@link #getExternalIDFromPickingID(int, int)} to retrieve the corresponding
 	 *         external id
 	 */
-	public int getPickingID(int iViewID, EPickingType ePickingType, int iExternalID) {
+	public int getPickingID(int iViewID, EPickingType ePickingType, int externalID) {
 
 		ViewSpecificPickingIDContainer pickingIDContainer =
 			hashViewIDToViewSpecificPickingIDContainer.get(iViewID);
@@ -236,11 +236,11 @@ public class PickingManager {
 			pickingIDContainer = new ViewSpecificPickingIDContainer();
 			hashViewIDToViewSpecificPickingIDContainer.put(iViewID, pickingIDContainer);
 		}
-		Integer pickingID = pickingIDContainer.getPickingID(ePickingType, iExternalID);
+		Integer pickingID = pickingIDContainer.getPickingID(ePickingType, externalID);
 		if (pickingID == null)
 			pickingID = calculateID();
 
-		pickingIDContainer.put(ePickingType, pickingID, iExternalID);
+		pickingIDContainer.put(ePickingType, pickingID, externalID);
 		hashPickingIDToViewID.put(pickingID, new Pair<Integer, EPickingType>(iViewID, ePickingType));
 		return pickingID;
 	}

@@ -6,7 +6,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 
@@ -117,7 +117,7 @@ public class PDDrawingStrategyLabelDecorator extends APDDrawingStrategyDecorator
 
 		float fAverageExpressionValue = clusterNode.getAverageExpressionValue();
 		float fStandardDeviation = clusterNode.getStandardDeviation();
-		ColorMapping cmExpression = ColorMappingManager.get().getColorMapping(
+		ColorMapper cmExpression = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 
 		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue

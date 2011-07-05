@@ -369,9 +369,9 @@ public class FilterRepresentation
 		// TODO Auto-generated method stub
 	}
 
-	public void handleIconMouseOver(int iExternalID)
+	public void handleIconMouseOver(int externalID)
 	{
-		mouseOverItem = iExternalID;
+		mouseOverItem = externalID;
 	}
 
 	public void handleClearMouseOver()

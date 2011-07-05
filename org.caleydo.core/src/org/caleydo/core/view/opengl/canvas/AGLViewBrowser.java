@@ -378,7 +378,7 @@ public abstract class AGLViewBrowser
 		if (glMouseListener.wasMouseReleased() && dragAndDrop.isDragActionRunning()) {
 			int iDraggedObjectId = dragAndDrop.getDraggedObjectedId();
 
-			// System.out.println("over: " +iExternalID);
+			// System.out.println("over: " +externalID);
 			// System.out.println("dragged: " +iDraggedObjectId);
 
 			// Prevent user from dragging element onto selection level
@@ -1125,7 +1125,7 @@ public abstract class AGLViewBrowser
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID,
+	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int externalID,
 		Pick pick) {
 
 		switch (pickingType) {
@@ -1136,10 +1136,10 @@ public abstract class AGLViewBrowser
 
 						if (!dragAndDrop.isDragActionRunning()) {
 							// System.out.println("Start drag!");
-							dragAndDrop.startDragAction(iExternalID);
+							dragAndDrop.startDragAction(externalID);
 						}
 
-						iMouseOverObjectID = iExternalID;
+						iMouseOverObjectID = externalID;
 
 						compactPoolLevel();
 
@@ -1152,7 +1152,7 @@ public abstract class AGLViewBrowser
 				switch (pickingMode) {
 					case CLICKED:
 
-						RemoteLevelElement element = RemoteElementManager.get().getItem(iExternalID);
+						RemoteLevelElement element = RemoteElementManager.get().getItem(externalID);
 
 						AGLView glView = element.getGLView();
 
@@ -1184,7 +1184,7 @@ public abstract class AGLViewBrowser
 				switch (pickingMode) {
 					case CLICKED:
 
-						RemoteLevelElement element = RemoteElementManager.get().getItem(iExternalID);
+						RemoteLevelElement element = RemoteElementManager.get().getItem(externalID);
 
 						// Toggle lock flag
 						element.lock(!element.isLocked());
@@ -1198,7 +1198,7 @@ public abstract class AGLViewBrowser
 				switch (pickingMode) {
 					case MOUSE_OVER:
 					case DRAGGED:
-						iMouseOverObjectID = iExternalID;
+						iMouseOverObjectID = externalID;
 						break;
 					case CLICKED:
 
@@ -1209,8 +1209,8 @@ public abstract class AGLViewBrowser
 
 						// Check if view is contained in pool level
 						for (RemoteLevelElement element : poolLevel.getAllElements()) {
-							if (element.getID() == iExternalID) {
-								loadViewToFocusLevel(iExternalID);
+							if (element.getID() == externalID) {
+								loadViewToFocusLevel(externalID);
 								break;
 							}
 						}
@@ -1224,14 +1224,14 @@ public abstract class AGLViewBrowser
 					case MOUSE_OVER:
 
 						// generalManager.getViewGLCanvasManager().getInfoAreaManager()
-						// .setDataAboutView(iExternalID);
+						// .setDataAboutView(externalID);
 
 						// Prevent update flood when moving mouse over view
-						if (iActiveViewID == iExternalID) {
+						if (iActiveViewID == externalID) {
 							break;
 						}
 
-						iActiveViewID = iExternalID;
+						iActiveViewID = externalID;
 
 						setDisplayListDirty();
 
@@ -1239,14 +1239,14 @@ public abstract class AGLViewBrowser
 						// generalManager.getEventPublisher().triggerEvent(
 						// EMediatorType.VIEW_SELECTION,
 						// generalManager.getViewGLCanvasManager().getGLEventListener(
-						// iExternalID), );
+						// externalID), );
 
 						break;
 
 					case CLICKED:
 
 						// generalManager.getViewGLCanvasManager().getInfoAreaManager()
-						// .setDataAboutView(iExternalID);
+						// .setDataAboutView(externalID);
 
 						break;
 					case RIGHT_CLICKED:

@@ -235,8 +235,8 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 		}
 	}
 
-	public void handleIconMouseOver(int iExternalID) {
-		representation.handleIconMouseOver(iExternalID);
+	public void handleIconMouseOver(int externalID) {
+		representation.handleIconMouseOver(externalID);
 	}
 
 	public void handleClearMouseOver() {

@@ -121,7 +121,7 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 
 		// TODO: Implement picking processing here!
 	}

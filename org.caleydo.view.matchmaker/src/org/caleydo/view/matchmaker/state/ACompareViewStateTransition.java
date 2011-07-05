@@ -167,7 +167,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 
 	@Override
 	public void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode,
-			int iExternalID, Pick pick, boolean isControlPressed) {
+			int externalID, Pick pick, boolean isControlPressed) {
 	}
 
 	@Override

@@ -634,16 +634,16 @@ public class ContextMenu
 	 * 
 	 * @param ePickingMode
 	 *            the mode of the picking, eg. mouse-over or clicked. Only mouse-over and clicked are handled.
-	 * @param iExternalID
+	 * @param externalID
 	 *            the id which has to match one of the ids specified in {@link #display}
 	 */
-	public void handlePickingEvents(EPickingType pickingType, EPickingMode ePickingMode, int iExternalID) {
+	public void handlePickingEvents(EPickingType pickingType, EPickingMode ePickingMode, int externalID) {
 
 		for (SubMenu subMenu : hashContextMenuIDToSubMenu.values()) {
 			subMenu.scrollButtonDownOver = false;
 			subMenu.scrollButtonUpOver = false;
 		}
-		if (iExternalID == Integer.MAX_VALUE)
+		if (externalID == Integer.MAX_VALUE)
 			return;
 		SubMenu metaData;
 		switch (pickingType) {
@@ -651,11 +651,11 @@ public class ContextMenu
 
 				switch (ePickingMode) {
 					case MOUSE_OVER:
-						mouseOverElement = iExternalID;
+						mouseOverElement = externalID;
 						isDisplayListDirty = true;
 						break;
 					case CLICKED:
-						hashUniqueIDToContextMenuItem.get(iExternalID).triggerEvent();
+						hashUniqueIDToContextMenuItem.get(externalID).triggerEvent();
 						isDisplayListDirty = true;
 						flush();
 						break;
@@ -663,7 +663,7 @@ public class ContextMenu
 				break;
 
 			case CONTEXT_MENU_SCROLL_DOWN:
-				metaData = hashContextMenuIDToSubMenu.get(iExternalID);
+				metaData = hashContextMenuIDToSubMenu.get(externalID);
 				switch (ePickingMode) {
 
 					case CLICKED:
@@ -684,7 +684,7 @@ public class ContextMenu
 				}
 				break;
 			case CONTEXT_MENU_SCROLL_UP:
-				metaData = hashContextMenuIDToSubMenu.get(iExternalID);
+				metaData = hashContextMenuIDToSubMenu.get(externalID);
 				switch (ePickingMode) {
 
 					case CLICKED:

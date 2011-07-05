@@ -44,6 +44,8 @@ public class ClusterRenderer extends LayoutRenderer {
 	private Row clusterLayout;
 
 	private ContentVirtualArray clusterVA;
+	
+	private int clusterIndex;
 
 	/**
 	 * Constructor.
@@ -53,18 +55,16 @@ public class ClusterRenderer extends LayoutRenderer {
 	 * @param viewFrustum
 	 */
 	public ClusterRenderer(GLUncertaintyHeatMap uncertaintyHeatMap,
-			Row clusterLayout, ContentVirtualArray clusterVA) {
+			Row clusterLayout, ContentVirtualArray clusterVA, int clusterIndex) {
+		
 		this.uncertaintyHeatMap = uncertaintyHeatMap;
 		this.clusterLayout = clusterLayout;
 		this.clusterVA = clusterVA;
+		this.clusterIndex = clusterIndex;
 	}
 
 	public void init() {
-		ContentVirtualArray contentVA = uncertaintyHeatMap.getContentVA();
-		ContentGroupList clusterList = contentVA.getGroupList();
-
-		int counter = 0;
-
+		
 		StorageVirtualArray storageVA = uncertaintyHeatMap.getStorageVA();
 		ISet set = uncertaintyHeatMap.getDataDomain().getSet();
 
@@ -80,15 +80,13 @@ public class ClusterRenderer extends LayoutRenderer {
 		barTextureRenderer = new BarplotTextureRenderer();
 		clusterBarLayout.setRenderer(barTextureRenderer);
 
-		clusterLayout.append(clusterHeatMapLayout);
 		clusterLayout.append(clusterBarLayout);
+		clusterLayout.append(clusterHeatMapLayout);
 
-		textureRenderer.init(set, clusterVA, storageVA,
-				uncertaintyHeatMap.getColorMapper());
+		textureRenderer.init(uncertaintyHeatMap, set, clusterVA, storageVA, clusterIndex);
 
 		barTextureRenderer.init(set, clusterVA, storageVA,
 				uncertaintyHeatMap.getColorMapper());
-
 	}
 
 	@Override

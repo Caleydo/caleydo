@@ -9,7 +9,7 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterHelper;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -24,7 +24,7 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
  */
 public class OverviewHeatMapRenderer extends LayoutRenderer {
 
-	private ColorMapping colorMapper;
+	private ColorMapper colorMapper;
 	private ArrayList<Float> heatMapValuesMean;
 	private ArrayList<Float> heatMapValuesMeanPlusStdDev;
 	private ArrayList<Float> heatMapValuesMeanMinusStdDev;

@@ -1,7 +1,7 @@
 package org.caleydo.view.treemap.layout;
 
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 
 
 /**
@@ -14,7 +14,7 @@ public class ClusterReferenzData{
 	float colorReferenzSpace=1;
 	float colorMin;
 	float colorMax;
-	ColorMapping colorMapper;
+	ColorMapper colorMapper;
 	
 	boolean bUseExpressionValues = false;
 	ASetBasedDataDomain dataDomain;

@@ -10,8 +10,12 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
-import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -33,73 +37,23 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 
 	private ArrayList<Integer> numberSamples = new ArrayList<Integer>();
 	
+	private GLUncertaintyHeatMap uncertaintyHeatMap;
+	
+	private PickingManager pickingManager = GeneralManager.get().getViewGLCanvasManager().getPickingManager();
+
+	private int groupIndex;
+	
 	
 	/**
 	 * Init textures, build array of textures used for holding the whole samples
-	 * 
-	 * @param gl
 	 */
-	public void init(ISet set, ContentVirtualArray contentVA,
-			StorageVirtualArray storageVA, ColorMapping colorMapper) {
+	public void init(GLUncertaintyHeatMap uncertaintyHeatMap, ISet set, ContentVirtualArray contentVA,
+			StorageVirtualArray storageVA, int groupIndex) {
 
-		// if (bSkipLevel1 && bSkipLevel2)
-		// return;
-
-		// if (bSkipLevel1) {
-		//
-		// // only one texture is needed
-		//
-		// textures.clear();
-		// numberSamples.clear();
-		//
-		// Texture tempTextur;
-		//
-		// int iTextureHeight = contentVA.size();
-		// int iTextureWidth = storageVA.size();
-		//
-		// float fLookupValue = 0;
-		// float fOpacity = 0;
-		//
-		// FloatBuffer FbTemp = FloatBuffer.allocate(iTextureWidth *
-		// iTextureHeight * 4);
-		//
-		// for (Integer iContentIndex : contentVA) {
-		// for (Integer iStorageIndex : storageVA) {
-		// if (contentSelectionManager.checkStatus(SelectionType.DESELECTED,
-		// iContentIndex)) {
-		// fOpacity = 0.3f;
-		// } else {
-		// fOpacity = 1.0f;
-		// }
-		//
-		// fLookupValue = set.get(iStorageIndex).getFloat(
-		// EDataRepresentation.NORMALIZED, iContentIndex);
-		//
-		// float[] fArMappingColor = colorMapper.getColor(fLookupValue);
-		//
-		// float[] fArRgba = { fArMappingColor[0], fArMappingColor[1],
-		// fArMappingColor[2], fOpacity };
-		//
-		// FbTemp.put(fArRgba);
-		// }
-		// }
-		// FbTemp.rewind();
-		//
-		// TextureData texData = new TextureData(GLProfile.getDefault(),
-		// GL2.GL_RGBA /* internalFormat */, iTextureWidth /* height */,
-		// iTextureHeight /* width */, 0 /* border */,
-		// GL2.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
-		// false /* mipmap */, false /* dataIsCompressed */,
-		// false /* mustFlipVertically */, FbTemp, null);
-		//
-		// tempTextur = TextureIO.newTexture(0);
-		// tempTextur.updateImage(texData);
-		//
-		// textures.add(tempTextur);
-		// numberSamples.add(iSamplesPerTexture);
-		//
-		// } else {
-
+		this.uncertaintyHeatMap = uncertaintyHeatMap;
+		ColorMapper colorMapper = uncertaintyHeatMap.getColorMapper();
+		this.groupIndex = groupIndex;
+		
 		int textureHeight = numberOfElements = contentVA.size();
 		int textureWidth = storageVA.size();
 		
@@ -182,11 +136,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 		}
 	}
 
-	/**
-	 * TODO
-	 * 
-	 * @param gl
-	 */
+	@Override
 	public void render(GL2 gl) {
 
 		float yOffset = 0.0f;
@@ -214,8 +164,8 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 			TextureCoords texCoords = textures.get(numberOfTextures - i - 1)
 					.getImageTexCoords();
 
-//			gl.glPushName(pickingManager.getPickingID(uniqueID,
-//					EPickingType.HIER_HEAT_MAP_TEXTURE_SELECTION, numberOfTextures - i));
+			gl.glPushName(pickingManager.getPickingID(uncertaintyHeatMap.getID(),
+					EPickingType.HEAT_MAP_CLUSTER_GROUP, groupIndex));
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2d(texCoords.left(), texCoords.top());
 			gl.glVertex3f(0, yOffset, 0);
@@ -226,7 +176,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 			gl.glTexCoord2d(texCoords.right(), texCoords.top());
 			gl.glVertex3f(x, yOffset, 0);
 			gl.glEnd();
-//			gl.glPopName();
+			gl.glPopName();
 
 			yOffset += step;
 			textures.get(numberOfTextures - i - 1).disable();

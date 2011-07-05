@@ -227,12 +227,12 @@ public class RadialMenu
 
 	/**
 	 * 
-	 * @param iExternalID
+	 * @param externalID
 	 * @param mousePosition 
 	 */
-	public void show(int iExternalID, Vec2f mousePosition)
+	public void show(int externalID, Vec2f mousePosition)
 	{
-		externalId = iExternalID;
+		externalId = externalID;
 		position = mousePosition.copy();
 		visible = true;
 	}

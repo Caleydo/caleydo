@@ -363,7 +363,7 @@ public class GLBucket extends AGLView implements
 		if (glMouseListener.wasMouseReleased() && dragAndDrop.isDragActionRunning()) {
 			int iDraggedObjectId = dragAndDrop.getDraggedObjectedId();
 
-			// System.out.println("over: " +iExternalID);
+			// System.out.println("over: " +externalID);
 			// System.out.println("dragged: " +iDraggedObjectId);
 
 			// Prevent user from dragging element onto selection level
@@ -1794,7 +1794,7 @@ public class GLBucket extends AGLView implements
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalID, Pick pick) {
 
 		switch (pickingType) {
 		case REMOTE_VIEW_DRAG:
@@ -1804,10 +1804,10 @@ public class GLBucket extends AGLView implements
 
 				if (!dragAndDrop.isDragActionRunning()) {
 					// System.out.println("Start drag!");
-					dragAndDrop.startDragAction(iExternalID);
+					dragAndDrop.startDragAction(externalID);
 				}
 
-				iMouseOverObjectID = iExternalID;
+				iMouseOverObjectID = externalID;
 
 				compactPoolLevel();
 
@@ -1821,7 +1821,7 @@ public class GLBucket extends AGLView implements
 			case CLICKED:
 
 				RemoteLevelElement element = RemoteElementManager.get().getItem(
-						iExternalID);
+						externalID);
 
 				AGLView glView = element.getGLView();
 
@@ -1847,7 +1847,7 @@ public class GLBucket extends AGLView implements
 			case CLICKED:
 
 				RemoteLevelElement element = RemoteElementManager.get().getItem(
-						iExternalID);
+						externalID);
 
 				// Toggle lock flag
 				element.lock(!element.isLocked());
@@ -1860,7 +1860,7 @@ public class GLBucket extends AGLView implements
 			switch (pickingMode) {
 			case MOUSE_OVER:
 			case DRAGGED:
-				iMouseOverObjectID = iExternalID;
+				iMouseOverObjectID = externalID;
 				break;
 			case CLICKED:
 
@@ -1871,8 +1871,8 @@ public class GLBucket extends AGLView implements
 
 				// Check if view is contained in pool level
 				for (RemoteLevelElement element : poolLevel.getAllElements()) {
-					if (element.getID() == iExternalID) {
-						loadViewToFocusLevel(iExternalID);
+					if (element.getID() == externalID) {
+						loadViewToFocusLevel(externalID);
 						break;
 					}
 				}
@@ -1885,14 +1885,14 @@ public class GLBucket extends AGLView implements
 			case MOUSE_OVER:
 
 				// generalManager.getViewGLCanvasManager().getInfoAreaManager()
-				// .setDataAboutView(iExternalID);
+				// .setDataAboutView(externalID);
 
 				// Prevent update flood when moving mouse over view
-				if (iActiveViewID == iExternalID) {
+				if (iActiveViewID == externalID) {
 					break;
 				}
 
-				iActiveViewID = iExternalID;
+				iActiveViewID = externalID;
 
 				setDisplayListDirty();
 
@@ -1900,14 +1900,14 @@ public class GLBucket extends AGLView implements
 				// generalManager.getEventPublisher().triggerEvent(
 				// EMediatorType.VIEW_SELECTION,
 				// generalManager.getViewGLCanvasManager().getGLEventListener(
-				// iExternalID), );
+				// externalID), );
 
 				break;
 
 			case CLICKED:
 
 				// generalManager.getViewGLCanvasManager().getInfoAreaManager()
-				// .setDataAboutView(iExternalID);
+				// .setDataAboutView(externalID);
 
 				break;
 			case RIGHT_CLICKED:
@@ -1917,14 +1917,14 @@ public class GLBucket extends AGLView implements
 				break;
 
 			}
-			// infoAreaManager.setData(iExternalID, dataDomain.get,
+			// infoAreaManager.setData(externalID, dataDomain.get,
 			// pick.getPickedPoint(), 0.3f);// pick.getDepth());
 			break;
 
 		case BUCKET_MOVE_IN_ICON_SELECTION:
 			switch (pickingMode) {
 			case CLICKED:
-				loadViewToFocusLevel(iExternalID);
+				loadViewToFocusLevel(externalID);
 				bEnableNavigationOverlay = false;
 				// glConnectionLineRenderer.enableRendering(true);
 				break;
@@ -1933,7 +1933,7 @@ public class GLBucket extends AGLView implements
 				iNavigationMouseOverViewID_left = -1;
 				iNavigationMouseOverViewID_right = -1;
 				iNavigationMouseOverViewID_out = -1;
-				iNavigationMouseOverViewID_in = iExternalID;
+				iNavigationMouseOverViewID_in = externalID;
 				iNavigationMouseOverViewID_lock = -1;
 
 				break;
@@ -1954,7 +1954,7 @@ public class GLBucket extends AGLView implements
 				arSlerpActions.clear();
 
 				RemoteLevelElement element = RemoteElementManager.get().getItem(
-						iExternalID);
+						externalID);
 				SlerpAction slerpActionTransition = new SlerpAction(element,
 						poolLevel.getNextFree());
 				arSlerpActions.add(slerpActionTransition);
@@ -1970,7 +1970,7 @@ public class GLBucket extends AGLView implements
 
 				iNavigationMouseOverViewID_left = -1;
 				iNavigationMouseOverViewID_right = -1;
-				iNavigationMouseOverViewID_out = iExternalID;
+				iNavigationMouseOverViewID_out = externalID;
 				iNavigationMouseOverViewID_in = -1;
 				iNavigationMouseOverViewID_lock = -1;
 
@@ -1991,7 +1991,7 @@ public class GLBucket extends AGLView implements
 				arSlerpActions.clear();
 
 				RemoteLevelElement selectedElement = RemoteElementManager.get().getItem(
-						iExternalID);
+						externalID);
 
 				int iDestinationPosIndex = stackLevel
 						.getPositionIndexByElementID(selectedElement);
@@ -2031,7 +2031,7 @@ public class GLBucket extends AGLView implements
 
 			case MOUSE_OVER:
 
-				iNavigationMouseOverViewID_left = iExternalID;
+				iNavigationMouseOverViewID_left = externalID;
 				iNavigationMouseOverViewID_right = -1;
 				iNavigationMouseOverViewID_out = -1;
 				iNavigationMouseOverViewID_in = -1;
@@ -2054,7 +2054,7 @@ public class GLBucket extends AGLView implements
 				arSlerpActions.clear();
 
 				RemoteLevelElement selectedElement = RemoteElementManager.get().getItem(
-						iExternalID);
+						externalID);
 
 				int iDestinationPosIndex = stackLevel
 						.getPositionIndexByElementID(selectedElement);
@@ -2095,7 +2095,7 @@ public class GLBucket extends AGLView implements
 			case MOUSE_OVER:
 
 				iNavigationMouseOverViewID_left = -1;
-				iNavigationMouseOverViewID_right = iExternalID;
+				iNavigationMouseOverViewID_right = externalID;
 				iNavigationMouseOverViewID_out = -1;
 				iNavigationMouseOverViewID_in = -1;
 				iNavigationMouseOverViewID_lock = -1;
