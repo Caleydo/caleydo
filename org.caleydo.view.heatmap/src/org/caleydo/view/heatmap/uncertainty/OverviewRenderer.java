@@ -11,11 +11,13 @@ import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.view.heatmap.texture.HeatMapTextureRenderer;
 
 /**
@@ -32,6 +34,7 @@ public class OverviewRenderer extends LayoutRenderer {
 	private GLUncertaintyHeatMap uncertaintyHeatMap;
 
 	private Row clusterLayout;
+	private ElementLayout lineSeparatorLayout;
 
 	private ViewFrustum viewFrustum;
 	private LayoutManager templateRenderer;
@@ -39,12 +42,12 @@ public class OverviewRenderer extends LayoutRenderer {
 	private Object template;
 
 	private Column overviewLayout;
-	
-	
+
 	private ContentGroupList clusterList;
 	private ContentVirtualArray contentVA;
 
-	private int spacerSize = 2;
+	private int spacerSize = 3;
+
 	/**
 	 * Constructor.
 	 * 
@@ -65,7 +68,6 @@ public class OverviewRenderer extends LayoutRenderer {
 
 		int counter = 0;
 
-		
 		this.overviewLayout = overviewLayout;
 		StorageVirtualArray storageVA = uncertaintyHeatMap.getStorageVA();
 		ISet set = uncertaintyHeatMap.getDataDomain().getSet();
@@ -73,36 +75,54 @@ public class OverviewRenderer extends LayoutRenderer {
 		int lastLayoutElement = overviewLayout.size();
 		if (clusterList != null) {
 			int totalSpacerSize = spacerSize * (clusterList.size() - 1);
-			for (int i = 0; i< clusterList.size(); i++ ) {
+			for (int i = 0; i < clusterList.size(); i++) {
+
 				// creatinng Texture for each cluster
-				
+
 				// creating Layout for each cluster
 				ContentVirtualArray clusterVA = this.getClusterVA(i);
 				float ratio = (float) clusterVA.size()
-						/ (float) contentVA.getIndexList().size();
+						/ ((float) contentVA.getIndexList().size());
 				clusterLayout = new Row("clusterLayout_" + counter);
 				clusterLayout.setDebug(false);
 				clusterLayout.setRatioSizeY(ratio);
 
-				clusterHeatMapRenderer = new ClusterRenderer(uncertaintyHeatMap, clusterLayout, clusterVA );
+				clusterHeatMapRenderer = new ClusterRenderer(
+						uncertaintyHeatMap, clusterLayout, clusterVA);
 				clusterLayout.setRenderer(clusterHeatMapRenderer);
 
 				overviewLayout.add(lastLayoutElement, clusterLayout);
 
 				clusterHeatMapRenderer.init(gl);
 				counter++;
+
+				if (i < (clusterList.size() - 1)) {
+					lineSeparatorLayout = new ElementLayout("lineSeparator");
+					PixelGLConverter pixelGLConverter = uncertaintyHeatMap
+							.getParentGLCanvas().getPixelGLConverter();
+					lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
+					lineSeparatorLayout.setPixelSizeY(spacerSize);
+					lineSeparatorLayout.setRatioSizeX(1);
+					lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(
+							false));
+					lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.3f);
+					
+					overviewLayout.add(lastLayoutElement, lineSeparatorLayout);
+					// overviewLayout.append(lineSeparatorLayout);
+				}
+
 			}
 		} else {
-			
+
 			clusterLayout = new Row("clusterLayout");
 			clusterLayout.setDebug(false);
 			clusterLayout.setRatioSizeY(1);
 
-			clusterHeatMapRenderer = new ClusterRenderer(uncertaintyHeatMap, clusterLayout, contentVA );
+			clusterHeatMapRenderer = new ClusterRenderer(uncertaintyHeatMap,
+					clusterLayout, contentVA);
 			clusterLayout.setRenderer(clusterHeatMapRenderer);
 			clusterHeatMapRenderer.init(gl);
 			overviewLayout.add(lastLayoutElement, clusterLayout);
-
 
 		}
 	}
@@ -114,16 +134,16 @@ public class OverviewRenderer extends LayoutRenderer {
 
 	public ContentVirtualArray getClusterVA(int clusterIndex) {
 		ContentVirtualArray contentVA = uncertaintyHeatMap.getContentVA();
-		ContentGroupList clusterList = contentVA.getGroupList();	
+		ContentGroupList clusterList = contentVA.getGroupList();
 		if (clusterList == null) {
 			return contentVA;
 		}
 		Group group = clusterList.getGroups().get(clusterIndex);
-		
-		ArrayList<Integer> clusterGenes = uncertaintyHeatMap.getContentVA().getIDsOfGroup(group
-				.getID());
-		ContentVirtualArray clusterVA = new ContentVirtualArray(
-				Set.CONTENT, clusterGenes);
+
+		ArrayList<Integer> clusterGenes = uncertaintyHeatMap.getContentVA()
+				.getIDsOfGroup(group.getID());
+		ContentVirtualArray clusterVA = new ContentVirtualArray(Set.CONTENT,
+				clusterGenes);
 
 		return clusterVA;
 	}

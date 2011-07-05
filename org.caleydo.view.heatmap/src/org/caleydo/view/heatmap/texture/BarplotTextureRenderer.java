@@ -95,7 +95,6 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 		for (Integer contentIndex : contentVA) {
 			contentCount++;
-
 			for (int i = 0; i<textureWidth; i++) {
 				// if
 				// (contentSelectionManager.checkStatus(SelectionType.DESELECTED,
@@ -106,7 +105,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 				// }
 
 				// TODO from set
-				fLookupValue = getMaxUncertainty(contentCount, i);
+				fLookupValue = getMaxUncertainty(contentCount-1, i);
 				float[] mappingColor = colorMapper.getColor(fLookupValue);
 
 				float[] rgba = { 0.0f, 0.0f, 0.0f, fLookupValue };
@@ -135,6 +134,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 				textureCounter++;
 				contentCount = 0;
 			}
+			
 		}
 	}
 
