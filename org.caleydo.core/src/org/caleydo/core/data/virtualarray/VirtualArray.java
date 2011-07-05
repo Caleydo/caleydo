@@ -492,10 +492,13 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		Group group = null;
 		int iCounter = 0;
 		int offset = 0;
+		
 		// throws exception
+		// CLEMENS HAS CHANGED THIS. FIXME ALEX
 		/*
 		 * for (int i = 0; i < groupID; i++) { iOffset += groupList.get(i).getSize(); }
 		 */
+		
 		for (Group igroup : groupList) {
 			if (igroup.getID() < groupID) {
 				offset += igroup.getSize();

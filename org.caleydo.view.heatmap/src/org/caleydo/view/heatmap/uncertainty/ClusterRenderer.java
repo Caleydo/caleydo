@@ -57,10 +57,9 @@ public class ClusterRenderer extends LayoutRenderer {
 		this.uncertaintyHeatMap = uncertaintyHeatMap;
 		this.clusterLayout = clusterLayout;
 		this.clusterVA = clusterVA;
-
 	}
 
-	public void init(GL2 gl) {
+	public void init() {
 		ContentVirtualArray contentVA = uncertaintyHeatMap.getContentVA();
 		ContentGroupList clusterList = contentVA.getGroupList();
 
@@ -84,10 +83,10 @@ public class ClusterRenderer extends LayoutRenderer {
 		clusterLayout.append(clusterHeatMapLayout);
 		clusterLayout.append(clusterBarLayout);
 
-		textureRenderer.init(gl, set, clusterVA, storageVA,
+		textureRenderer.init(set, clusterVA, storageVA,
 				uncertaintyHeatMap.getColorMapper());
 
-		barTextureRenderer.init(gl, set, clusterVA, storageVA,
+		barTextureRenderer.init(set, clusterVA, storageVA,
 				uncertaintyHeatMap.getColorMapper());
 
 	}

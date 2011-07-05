@@ -98,8 +98,6 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		overviewLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		overviewLayout.setPixelSizeX(60);
 		
-		
-		
 		detailLayout = new ElementLayout("detailLayout");
 		detailLayout.setDebug(true);
 
@@ -154,30 +152,12 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	 * @param
 	 */
 	private void createOverviewHeatMap(GL2 gl) {
-		//
-		// float fHeatMapHeight = viewFrustum.getHeight() * 0.3f;
-		// float fHeatMapWidth = viewFrustum.getWidth();
-		// ViewFrustum viewFrustum = new
-		// ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
-		// (int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
 		overviewHeatMap = new OverviewRenderer(this, overviewLayout);
-		// glHeatMapView.setDataDomain(dataDomain);
-
-		// overviewHeatMap.setRemoteRenderingGLView(this);
-		// glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
-
-		// renderTemplate = new UncertaintyDetailHeatMapTemplate(glHeatMapView);
-		// glHeatMapView.setRenderTemplate(renderTemplate);
-		// renderTemplate.setBottomSpacing(0.6f);
-		// heatMapRemoteElement.setGLView(glHeatMapView);
-		// glHeatMapView.setContentVAType(GLHeatMap.CONTENT_EMBEDDED_VA);
-		// overviewHeatMap.initialize();
-		// glHeatMapView.initData();
 
 		overviewLayout.setRenderer(overviewHeatMap);
 
-		overviewHeatMap.init(gl);
+		overviewHeatMap.init();
 	}
 
 	private void createDetailHeatMap(GL2 gl) {
@@ -191,9 +171,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 								-1, 1));
 
 		detailHeatMap.setDataDomain(dataDomain);
-
 		detailHeatMap.setRemoteRenderingGLView(this);
-
 		detailHeatMap.setSet(set);
 		detailHeatMap.setRenderTemplate(new UncertaintyDetailHeatMapTemplate(
 				detailHeatMap));
@@ -207,6 +185,8 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 				detailHeatMap);
 
 		detailLayout.setRenderer(detailHeatMapLayoutRenderer);
+		
+		overviewHeatMap.setDetailHeatMap(detailHeatMap);
 
 	}
 
@@ -368,7 +348,9 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	
 	@Override
 	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
-		// TODO Auto-generated method stub
+	
 		super.replaceContentVA(setID, dataDomainType, vaType);
+		
+		overviewHeatMap.init();
 	}
 }

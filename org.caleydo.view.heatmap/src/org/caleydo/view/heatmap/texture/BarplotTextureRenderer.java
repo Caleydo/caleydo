@@ -44,10 +44,9 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 	private ContentVirtualArray contentVA;
 
-	public void init(final GL2 gl, ISet set, ContentVirtualArray contentVA,
+	public void init(ISet set, ContentVirtualArray contentVA,
 			StorageVirtualArray storageVA, ColorMapping colorMapper) {
 
-		ColorMapping colorMapper2 = new ColorMapping();
 		this.storageVA = storageVA;
 		this.contentVA = contentVA;
 		this.set = set;
@@ -159,6 +158,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 		
 
 		return 1-opacity;
+
 	}
 
 	private float getMaxUncertainty2(int contentIndex, int storageIndex) {

@@ -39,7 +39,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 	 * 
 	 * @param gl
 	 */
-	public void init(final GL2 gl, ISet set, ContentVirtualArray contentVA,
+	public void init(ISet set, ContentVirtualArray contentVA,
 			StorageVirtualArray storageVA, ColorMapping colorMapper) {
 
 		// if (bSkipLevel1 && bSkipLevel2)
