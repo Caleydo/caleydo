@@ -1,4 +1,4 @@
-package org.caleydo.view.heatmap.texture;
+package org.caleydo.view.heatmap.heatmap.renderer.texture;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;

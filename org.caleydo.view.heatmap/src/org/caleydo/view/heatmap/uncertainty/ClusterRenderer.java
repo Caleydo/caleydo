@@ -16,8 +16,8 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
-import org.caleydo.view.heatmap.texture.BarplotTextureRenderer;
-import org.caleydo.view.heatmap.texture.HeatMapTextureRenderer;
+import org.caleydo.view.heatmap.heatmap.renderer.texture.BarplotTextureRenderer;
+import org.caleydo.view.heatmap.heatmap.renderer.texture.HeatMapTextureRenderer;
 
 /**
  * Uncertainty overview heat map view.

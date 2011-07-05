@@ -1,4 +1,4 @@
-package org.caleydo.view.heatmap.texture;
+package org.caleydo.view.heatmap.heatmap.renderer.texture;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -7,8 +7,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.storage.AStorage;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.util.mapping.color.ColorMapper;
@@ -34,22 +32,10 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 	private ArrayList<Integer> numberSamples = new ArrayList<Integer>();
 
-	private int textureWidth = 10;
-
-	private StorageVirtualArray storageVA;
-
-	private ISet set;
-
-	private ContentVirtualArray contentVA;
-
 	public void init(ISet set, ContentVirtualArray contentVA,
 			StorageVirtualArray storageVA, ColorMapper colorMapper) {
 
-		this.storageVA = storageVA;
-		this.contentVA = contentVA;
-		this.set = set;
 		int textureWidth = storageVA.size();
-
 		int textureHeight = numberOfElements = contentVA.size();
 
 		numberOfTextures = (int) Math.ceil((double) numberOfElements
@@ -127,11 +113,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 		}
 	}
 
-	/**
-	 * TODO
-	 * 
-	 * @param gl
-	 */
+	@Override
 	public void render(GL2 gl) {
 
 		float yOffset = 0.0f;

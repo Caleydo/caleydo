@@ -15,6 +15,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -41,6 +42,7 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.renderer.OverviewDetailConnectorRenderer;
 import org.caleydo.view.heatmap.heatmap.template.UncertaintyDetailHeatMapTemplate;
 
 /**
@@ -67,6 +69,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	private Row baseRow;
 	private Column overviewLayout;
 	private ElementLayout detailLayout;
+	private ElementLayout overviewDetailConnectorLayout;
 
 	private ColorMapper colorMapper = ColorMappingManager.get().getColorMapping(
 			EColorMappingType.GENE_EXPRESSION);
@@ -100,10 +103,16 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		overviewLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		overviewLayout.setPixelSizeX(60);
 
+		overviewDetailConnectorLayout = new Column("overviewDetailConnectorLayout");
+		overviewDetailConnectorLayout.setDebug(false);
+		overviewDetailConnectorLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		overviewDetailConnectorLayout.setPixelSizeX(100);	
+		
 		detailLayout = new ElementLayout("detailLayout");
 		detailLayout.setDebug(true);
 
 		baseRow.append(overviewLayout);
+		baseRow.append(overviewDetailConnectorLayout);
 		baseRow.append(detailLayout);
 
 		super.renderStyle = renderStyle;
@@ -111,6 +120,9 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 		createOverviewHeatMap(gl);
 		createDetailHeatMap(gl);
+		
+		OverviewDetailConnectorRenderer overviewDetailConnectorRenderer = new OverviewDetailConnectorRenderer(overviewHeatMap, detailHeatMap);
+		overviewDetailConnectorLayout.setRenderer(overviewDetailConnectorRenderer);
 
 		templateRenderer.updateLayout();
 	}
@@ -157,9 +169,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	private void createOverviewHeatMap(GL2 gl) {
 
 		overviewHeatMap = new OverviewRenderer(this, overviewLayout);
-
 		overviewLayout.setRenderer(overviewHeatMap);
-
 		overviewHeatMap.init();
 	}
 
@@ -234,13 +244,15 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		case HEAT_MAP_CLUSTER_GROUP:
 			switch (pickingMode) {
 			case CLICKED:
-
-				// if group ID is 0 then the data set is not clustered
-				if (externalID == 0)
+				
+				overviewHeatMap.setSelectedGroup(externalID);
+				ContentGroupList groupList = contentVA.getGroupList();
+				
+				// null if data set is not clustered
+				if (groupList == null)
 					break;
 				
-				ArrayList<Integer> clusterElements = contentVA.getIDsOfGroup(contentVA
-						.getGroupList().get(externalID).getID());
+				ArrayList<Integer> clusterElements = contentVA.getIDsOfGroup(groupList.get(externalID).getID());
 				ContentVirtualArray clusterVA = new ContentVirtualArray(Set.CONTENT,
 						clusterElements);
 				detailHeatMap.setContentVA(clusterVA);
