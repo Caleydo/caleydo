@@ -77,6 +77,8 @@ public class Set
 
 	ASetBasedDataDomain dataDomain;
 
+	private float[] aggregatedUncertainties;
+
 	public Set() {
 		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.SET));
 	}
@@ -922,4 +924,58 @@ public class Set
 		return hashStorageData.keySet();
 	}
 
+	public float getUncertainty(int contentIndex) {
+		if (aggregatedUncertainties == null) {
+			updateAggregatedUncertainties();
+		}
+		return aggregatedUncertainties[contentIndex];
+	}
+
+	private void updateAggregatedUncertainties() {
+		aggregatedUncertainties = new float[depth()];
+
+		for (int contentIndex = 0; contentIndex < depth(); contentIndex++) {
+			// float aggregatedUncertainty = calculateMaxUncertainty(contentIndex);
+			float aggregatedUncertainty = calcualteAverageUncertainty(contentIndex);
+			aggregatedUncertainties[contentIndex] = aggregatedUncertainty;
+		}
+	}
+
+	private float calcualteAverageUncertainty(int contentIndex) {
+		float uncertaintySum = 0;
+		StorageVirtualArray storageVA = hashStorageData.get(STORAGE).getStorageVA();
+		for (Integer storageID : storageVA) {
+
+			try {
+				uncertaintySum +=
+					hashStorages.get(storageID).getFloat(EDataRepresentation.CERTAINTY_NORMALIZED,
+						contentIndex);
+			}
+			catch (Exception e) {
+				System.out.println("storageID: " + storageID);
+
+			}
+		}
+		return uncertaintySum / storageVA.size();
+	}
+
+	private float calculateMaxUncertainty(int contentIndex) {
+		float maxUncertainty = Float.MAX_VALUE;
+		for (Integer storageID : hashStorageData.get(STORAGE).getStorageVA()) {
+			float cellUncertainty = 0;
+			try {
+				cellUncertainty =
+					hashStorages.get(storageID).getFloat(EDataRepresentation.CERTAINTY_NORMALIZED,
+						contentIndex);
+			}
+			catch (Exception e) {
+				System.out.println("storageID: " + storageID);
+
+			}
+			if (cellUncertainty < maxUncertainty) {
+				maxUncertainty = cellUncertainty;
+			}
+		}
+		return maxUncertainty;
+	}
 }

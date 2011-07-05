@@ -9,11 +9,9 @@ import javax.media.opengl.GLProfile;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.util.mapping.color.ColorMapping;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -67,10 +65,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 		Texture tempTexture;
 
-		samplesPerTexture = (int) Math.ceil((double) textureHeight
-				/ numberOfTextures);
-
-		float fLookupValue = 0;
+		samplesPerTexture = (int) Math.ceil((double) textureHeight / numberOfTextures);
 
 		FloatBuffer[] floatBuffer = new FloatBuffer[numberOfTextures];
 
@@ -90,40 +85,36 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 		int contentCount = 0;
 		int textureCounter = 0;
-		float opacity = 0.5f;
-
 		for (Integer contentIndex : contentVA) {
 			contentCount++;
-			for (int i = 0; i<textureWidth; i++) {
-				// if
-				// (contentSelectionManager.checkStatus(SelectionType.DESELECTED,
-				// iContentIndex)) {
-				// fOpacity = 0.3f;
-				// } else {
-				// fOpacity = 1.0f;
-				// }
 
-				// TODO from set
-				fLookupValue = getMaxUncertainty(contentCount-1, i);
-				float[] mappingColor = colorMapper.getColor(fLookupValue);
+			float uncertainty = set.getUncertainty(contentIndex);
 
-				float[] rgba = { 0.0f, 0.0f, 0.0f, fLookupValue };
+			for (int i = 0; i < textureWidth; i++) {
+				float[] rgba = new float[4];
+				if ((float) i / textureWidth > uncertainty) {
+					rgba[0] = 1;
+					rgba[1] = 1;
+					rgba[2] = 1;
+					rgba[3] = 0;
+				} else {
+					rgba[0] = 0;
+					rgba[1] = 0;
+					rgba[2] = 0;
+					rgba[3] = 1;
+				}
 
 				floatBuffer[textureCounter].put(rgba);
-
 			}
 			if (contentCount >= numberSamples.get(textureCounter)) {
 				floatBuffer[textureCounter].rewind();
 
 				TextureData texData = new TextureData(GLProfile.getDefault(),
-						GL2.GL_RGBA /* internalFormat */,
-						textureWidth /* height */,
-						numberSamples.get(textureCounter) /* width */,
-						0 /* border */, GL2.GL_RGBA /* pixelFormat */,
-						GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
-						false /* dataIsCompressed */,
-						false /* mustFlipVertically */,
-						floatBuffer[textureCounter], null);
+						GL2.GL_RGBA /* internalFormat */, textureWidth /* height */,
+						numberSamples.get(textureCounter) /* width */, 0 /* border */,
+						GL2.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
+						false /* mipmap */, false /* dataIsCompressed */,
+						false /* mustFlipVertically */, floatBuffer[textureCounter], null);
 
 				tempTexture = TextureIO.newTexture(0);
 				tempTexture.updateImage(texData);
@@ -133,51 +124,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 				textureCounter++;
 				contentCount = 0;
 			}
-			
 		}
-	}
-
-	private float getMaxUncertainty(int row, int col) {
-
-		// cholz
-		float uncertainty = 0; // 1 = uncertain
-		float maxUncertainty = 0;
-
-		for (int i = 0; i < storageVA.size(); i++) {
-			AStorage storage = set.get(storageVA.get(i));
-			uncertainty = 0;
-			if (storage.hasCertaintyData()) {
-				uncertainty = 1-storage.getFloat(
-						EDataRepresentation.CERTAINTY_NORMALIZED, contentVA.get(row));
-			}
-			maxUncertainty = uncertainty > maxUncertainty?uncertainty:maxUncertainty;
-		}
-		
-		// mapping value to position
-		float opacity = maxUncertainty>((float)(col)/(float)storageVA.size())?0.8f:0.0f  ;
-		
-
-		return 1-opacity;
-
-	}
-
-	private float getMaxUncertainty2(int contentIndex, int storageIndex) {
-
-		// cholz
-		float fOpacity = 0;
-		AStorage storage = set.get(storageIndex);
-		if (storage.hasCertaintyData()) {
-			fOpacity = storage.getFloat(
-					EDataRepresentation.CERTAINTY_NORMALIZED, contentIndex);
-		} else {
-			fOpacity = 0.3f;
-		}
-
-		// float val = row / (float) this.numberOfElements;
-		// val = val * col / (float) textureWidth;
-		// val = val > 0.20 ? 0.999f : 0.2f;
-
-		return fOpacity;
 	}
 
 	/**
@@ -203,10 +150,8 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 			textures.get(numberOfTextures - i - 1).enable();
 			textures.get(numberOfTextures - i - 1).bind();
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S,
-					GL2.GL_CLAMP);
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T,
-					GL2.GL_CLAMP);
+			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
+			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
 					GL2.GL_NEAREST);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,

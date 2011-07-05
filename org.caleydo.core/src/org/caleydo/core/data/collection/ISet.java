@@ -295,4 +295,6 @@ public interface ISet
 	 */
 	public Set<String> getRegisteredStorageVATypes();
 
+	public float getUncertainty(int contentIndex);
+	
 }
