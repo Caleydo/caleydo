@@ -30,6 +30,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
+import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutTemplate;
@@ -55,14 +56,14 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 	private HeatMapRenderStyle renderStyle;
 
-	private OverviewHeatMapRenderer overviewHeatMap;
+	private OverviewRenderer overviewHeatMap;
 	private GLHeatMap detailHeatMap;
 
 	private LayoutManager templateRenderer;
 	private LayoutTemplate template;
 
 	private Row baseRow;
-	private ElementLayout overviewLayout;
+	private Column overviewLayout;
 	private ElementLayout detailLayout;
 
 	private ColorMapping colorMapper = ColorMappingManager.get().getColorMapping(
@@ -92,10 +93,13 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		baseRow = new Row("baseRow");
 		template.setBaseElementLayout(baseRow);
 
-		overviewLayout = new ElementLayout("overviewLayout");
-		overviewLayout.setDebug(true);
+		overviewLayout = new Column("overviewLayout");
+		overviewLayout.setDebug(false);
 		overviewLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		overviewLayout.setPixelSizeX(60);
+		
+		
+		
 		detailLayout = new ElementLayout("detailLayout");
 		detailLayout.setDebug(true);
 
@@ -145,6 +149,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 	/**
 	 * Create embedded heat map
+	 * @param overviewLayout2 
 	 * 
 	 * @param
 	 */
@@ -156,7 +161,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		// ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
 		// (int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
-		overviewHeatMap = new OverviewHeatMapRenderer(this);
+		overviewHeatMap = new OverviewRenderer(this, overviewLayout);
 		// glHeatMapView.setDataDomain(dataDomain);
 
 		// overviewHeatMap.setRemoteRenderingGLView(this);

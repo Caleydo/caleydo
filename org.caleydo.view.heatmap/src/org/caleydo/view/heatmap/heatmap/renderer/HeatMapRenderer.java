@@ -101,6 +101,7 @@ public class HeatMapRenderer extends AContentRenderer {
 
 		float fOpacity = 1.0f;
 
+		//cholz
 		if (storage.hasCertaintyData())
 			fOpacity = storage.getFloat(EDataRepresentation.CERTAINTY_NORMALIZED,
 					iContentIndex);

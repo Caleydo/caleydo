@@ -11,13 +11,14 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
 
-public class HeatMapTextureRenderer {
+public class HeatMapTextureRenderer extends LayoutRenderer{
 
 	private final static int MAX_SAMPLES_PER_TEXTURE = 2000;
 	
@@ -32,9 +33,7 @@ public class HeatMapTextureRenderer {
 
 	private ArrayList<Integer> numberSamples = new ArrayList<Integer>();
 	
-	private float viewWidth = 0;
-	private float viewHeight = 0;
-
+	
 	/**
 	 * Init textures, build array of textures used for holding the whole samples
 	 * 
@@ -195,7 +194,7 @@ public class HeatMapTextureRenderer {
 //		fHeight = viewFrustum.getHeight();
 //		fWidth = renderStyle.getWidthLevel1();
 
-		float elementHeight = viewHeight / numberOfElements;
+		float elementHeight = y / numberOfElements;
 		float step = 0;
 
 		gl.glColor4f(1f, 1f, 0f, 1f);
@@ -223,22 +222,14 @@ public class HeatMapTextureRenderer {
 			gl.glTexCoord2d(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(0, yOffset + step, 0);
 			gl.glTexCoord2d(texCoords.right(), texCoords.bottom());
-			gl.glVertex3f(viewWidth, yOffset + step, 0);
+			gl.glVertex3f(x, yOffset + step, 0);
 			gl.glTexCoord2d(texCoords.right(), texCoords.top());
-			gl.glVertex3f(viewWidth, yOffset, 0);
+			gl.glVertex3f(x, yOffset, 0);
 			gl.glEnd();
 //			gl.glPopName();
 
 			yOffset += step;
 			textures.get(numberOfTextures - i - 1).disable();
 		}
-	}
-	
-	public void setViewHeight(float viewHeight) {
-		this.viewHeight = viewHeight;
-	}
-	
-	public void setViewWidth(float viewWidth) {
-		this.viewWidth = viewWidth;
 	}
 }

@@ -299,20 +299,20 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 *         does not contain the element
 	 */
 	public int indexOf(Integer id) {
-		
+
 		return virtualArray.indexOf(id);
-		
-//		if (isHashIDToIndexDirty)
-//			buildIDMap();
-//
-//		ArrayList<Integer> results = hashIDToIndex.get(id);
-//		if (results != null) {
-//			if (results.size() > 1)
-//				System.out.println("Ignored multi-mapping");
-//			return results.get(0);
-//		}
-//		else
-//			return -1;
+
+		// if (isHashIDToIndexDirty)
+		// buildIDMap();
+		//
+		// ArrayList<Integer> results = hashIDToIndex.get(id);
+		// if (results != null) {
+		// if (results.size() > 1)
+		// System.out.println("Ignored multi-mapping");
+		// return results.get(0);
+		// }
+		// else
+		// return -1;
 	}
 
 	private void buildIDMap() {
@@ -349,20 +349,20 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 *         elements exist
 	 */
 	public ArrayList<Integer> indicesOf(Integer id) {
-		
+
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 		indices.add(indexOf(id));
 		return indices;
-//		
-		
-//		
-//		if (isHashIDToIndexDirty)
-//			buildIDMap();
-//		ArrayList<Integer> list = hashIDToIndex.get(id);
-//		if (list != null)
-//			return list;
-//		else
-//			return new ArrayList<Integer>(1);
+		//
+
+		//
+		// if (isHashIDToIndexDirty)
+		// buildIDMap();
+		// ArrayList<Integer> list = hashIDToIndex.get(id);
+		// if (list != null)
+		// return list;
+		// else
+		// return new ArrayList<Integer>(1);
 	}
 
 	/**
@@ -460,8 +460,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	public List<Group> getGroupOf(Integer id) {
 		ArrayList<Group> resultGroups = new ArrayList<Group>(1);
 		ArrayList<Integer> indices = indicesOf(id);
-		
-		if(indices.size() >1)
+
+		if (indices.size() > 1)
 			System.out.println("wu");
 
 		for (Integer index : indices) {
@@ -489,22 +489,25 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 		ArrayList<Integer> alGeneIds = new ArrayList<Integer>();
 
-		int iNrElements = size();
+		Group group = null;
 		int iCounter = 0;
-		int iOffset = 0;
-
-		for (int i = 0; i < groupID; i++) {
-			iOffset += groupList.get(i).getSize();
+		int offset = 0;
+		// throws exception
+		/*
+		 * for (int i = 0; i < groupID; i++) { iOffset += groupList.get(i).getSize(); }
+		 */
+		for (Group igroup : groupList) {
+			if (igroup.getID() < groupID) {
+				offset += igroup.getSize();
+			} else if (igroup.getID() == groupID) {
+				group = igroup;
+				break;
+			}
 		}
 
-		for (int i = iOffset; i < iNrElements; i++) {
-
+		for (int i = offset; i < group.getSize() + offset; i++) {
 			alGeneIds.add(iCounter, get(i));
-
 			iCounter++;
-
-			if (groupList.get(groupID).getSize() == iCounter)
-				break;
 		}
 
 		return alGeneIds;
