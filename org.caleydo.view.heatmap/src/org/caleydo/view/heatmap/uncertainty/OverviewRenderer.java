@@ -60,7 +60,7 @@ public class OverviewRenderer extends LayoutRenderer {
 
 	public void init() {
 
-//		overviewLayout.clear();
+		overviewLayout.clear();
 		
 		ContentVirtualArray contentVA = uncertaintyHeatMap.getContentVA();
 		ContentGroupList clusterList = contentVA.getGroupList();
@@ -123,6 +123,8 @@ public class OverviewRenderer extends LayoutRenderer {
 			clusterHeatMapRenderer.init();
 			overviewLayout.add(lastLayoutElement, clusterLayout);
 		}
+		
+		overviewLayout.updateSubLayout();
 	}
 
 	public ContentVirtualArray getClusterVA(int clusterIndex) {
