@@ -35,6 +35,17 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		mainRow.setGrabY(true);
 		mainRow.setRatioSizeX(1);
 		
+		
+		barPlotLayout = new ElementLayout("BarPlotLayout");
+		
+		barPlotLayout.setRenderer(barPlotRenderer);
+		barPlotLayout.setAbsoluteSizeX(0.9f);
+		//barPlotLayout.setPixelGLConverter(heatMap.getParentGLCanvas().getPixelGLConverter());
+		//barPlotLayout.setPixelSizeX(60);
+		//barPlotLayout.addForeGroundRenderer(contentSelectionRenderer);
+		//barPlotLayout.addForeGroundRenderer(storageSelectionRenderer);
+		mainRow.append(barPlotLayout);
+		
 		heatMapLayout = new ElementLayout("hmlayout");
 		heatMapLayout.setGrabX(true);
 		heatMapLayout.setRenderer(heatMapRenderer);
@@ -48,6 +59,7 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		mainRow.append(spacing);
 
 		// content captions
+		
 		ElementLayout contentCaptionLayout = new ElementLayout("contentCaption");
 //		contentCaptionLayout.setRatioSizeX(heatMapSizeX);
 		contentCaptionLayout.setRatioSizeY(1);
@@ -70,14 +82,21 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		storageCaptionLayout.setRatioSizeY(1);
 		storageCaptionLayout.setGrabX(true);
 		storageCaptionLayout.setRenderer(storageCaptionRenderer);
+		
+		ElementLayout leadSpacingLayout = new ElementLayout();
+		leadSpacingLayout.setAbsoluteSizeX(0.9f);
+		storageCaptionRow.append(leadSpacingLayout);
+		
 		storageCaptionRow.append(storageCaptionLayout);
 		
-		ElementLayout spacingLayout = new ElementLayout();
-		spacingLayout.setAbsoluteSizeX(0.65f);
+		ElementLayout postSpacingLayout = new ElementLayout();
+		postSpacingLayout.setAbsoluteSizeX(0.65f);
 		
-		storageCaptionRow.append(spacingLayout);
+		storageCaptionRow.append(postSpacingLayout);
 
 		mainColumn.append(storageCaptionRow);
+		
+		
 
 	}
 

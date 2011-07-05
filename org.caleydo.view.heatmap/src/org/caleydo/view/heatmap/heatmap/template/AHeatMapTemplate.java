@@ -3,6 +3,7 @@ package org.caleydo.view.heatmap.heatmap.template;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.renderer.BarPlotRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.CaptionCageRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ContentCaptionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ContentSelectionRenderer;
@@ -13,7 +14,9 @@ import org.caleydo.view.heatmap.heatmap.renderer.spacing.ContentSpacing;
 
 public abstract class AHeatMapTemplate extends LayoutTemplate {
 
+	
 	protected HeatMapRenderer heatMapRenderer;
+	protected BarPlotRenderer barPlotRenderer;
 	protected ContentCaptionRenderer contentCaptionRenderer;
 	protected StorageCaptionRenderer storageCaptionRenderer;
 	protected ContentSelectionRenderer contentSelectionRenderer;
@@ -23,12 +26,15 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 	protected GLHeatMap heatMap;
 
 	protected ElementLayout heatMapLayout;
+	protected ElementLayout barPlotLayout;
+
 
 	public float minSelectedFieldHeight = 0.1f;
 	// private float xOverheadToHeatMap;
 	// private float yOverheadToHeatMap;
 
 	ContentSpacing contentSpacing;
+	
 
 	public AHeatMapTemplate(GLHeatMap heatMap) {
 		this.heatMap = heatMap;
@@ -36,6 +42,9 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 
 		heatMapRenderer = new HeatMapRenderer(heatMap);
 		heatMapRenderer.setContentSpacing(contentSpacing);
+		barPlotRenderer = new BarPlotRenderer(heatMap);
+		barPlotRenderer.setContentSpacing(contentSpacing);
+		
 		contentCaptionRenderer = new ContentCaptionRenderer(heatMap);
 		contentCaptionRenderer.setContentSpacing(contentSpacing);
 		storageCaptionRenderer = new StorageCaptionRenderer(heatMap);

@@ -11,6 +11,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -79,16 +80,10 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 			for (int i = 0; i < textureWidth; i++) {
 				float[] rgba = new float[4];
 				if ((float) i / textureWidth > uncertainty) {
-					rgba[0] = 1;
-					rgba[1] = 1;
-					rgba[2] = 1;
-					rgba[3] = 0;
+					rgba = GLUncertaintyHeatMap.light;
 				} else {
-					rgba[0] = 0;
-					rgba[1] = 0;
-					rgba[2] = 0;
-					rgba[3] = 1;
-				}
+					rgba = GLUncertaintyHeatMap.dark;
+					}
 
 				floatBuffer[textureCounter].put(rgba);
 			}

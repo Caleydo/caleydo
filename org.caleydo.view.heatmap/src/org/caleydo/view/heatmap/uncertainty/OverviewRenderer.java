@@ -24,9 +24,11 @@ import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 
 public class OverviewRenderer extends LayoutRenderer {
 
+
+	private ClusterRenderer clusterRenderer;
+
 	private final static int CLUSTER_SPACER_SIZE = 10;
 	
-	private ClusterRenderer clusterHeatMapRenderer;
 	private GLUncertaintyHeatMap uncertaintyHeatMap;
 
 	private ElementLayout lineSeparatorLayout;
@@ -78,13 +80,13 @@ public class OverviewRenderer extends LayoutRenderer {
 				clusterLayout.setRatioSizeY(ratio);
 				clusterLayoutList.add(clusterLayout);
 
-				clusterHeatMapRenderer = new ClusterRenderer(
+				clusterRenderer = new ClusterRenderer(
 						uncertaintyHeatMap, clusterLayout, clusterVA, clusterIndex);
-				clusterLayout.setRenderer(clusterHeatMapRenderer);
+				clusterLayout.setRenderer(clusterRenderer);
 
 				overviewLayout.add(lastLayoutElement, clusterLayout);
 
-				clusterHeatMapRenderer.init();
+				clusterRenderer.init();
 				counter++;
 
 				if (clusterIndex < (clusterList.size() - 1)) {
@@ -107,10 +109,10 @@ public class OverviewRenderer extends LayoutRenderer {
 			clusterLayout.setDebug(false);
 			clusterLayout.setRatioSizeY(1);
 
-			clusterHeatMapRenderer = new ClusterRenderer(uncertaintyHeatMap,
+			clusterRenderer = new ClusterRenderer(uncertaintyHeatMap,
 					clusterLayout, contentVA, 0);
-			clusterLayout.setRenderer(clusterHeatMapRenderer);
-			clusterHeatMapRenderer.init();
+			clusterLayout.setRenderer(clusterRenderer);
+			clusterRenderer.init();
 			overviewLayout.add(lastLayoutElement, clusterLayout);
 		}
 		

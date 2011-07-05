@@ -57,7 +57,9 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		IViewCommandHandler, ISelectionUpdateHandler, IGLRemoteRenderingView {
 
 	public final static String VIEW_ID = "org.caleydo.view.heatmap.uncertainty";
-
+	public final static float[] light = {0.0f, 0.0f, 0.0f, 0.95f};
+	public final static float[] dark = {0.0f, 0.0f, 0.0f, 0.15f};
+	
 	private HeatMapRenderStyle renderStyle;
 
 	private OverviewRenderer overviewHeatMap;
@@ -109,7 +111,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		overviewDetailConnectorLayout.setPixelSizeX(100);	
 		
 		detailLayout = new ElementLayout("detailLayout");
-		detailLayout.setDebug(true);
+		detailLayout.setDebug(false);
 
 		baseRow.append(overviewLayout);
 		baseRow.append(overviewDetailConnectorLayout);
