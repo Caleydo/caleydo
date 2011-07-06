@@ -11,6 +11,10 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.data.collection.Histogram;
+import org.caleydo.core.data.collection.HistogramCreator;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.ContentMetaOrFilter;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
@@ -50,6 +54,7 @@ import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 import org.caleydo.view.filterpipeline.representation.Background;
 import org.caleydo.view.filterpipeline.representation.FilterRepresentation;
 import org.caleydo.view.filterpipeline.representation.FilterRepresentationMetaOrAdvanced;
+import org.caleydo.view.filterpipeline.representation.FilterRepresentationSNR;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -134,6 +139,8 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 
 		dragAndDropController = new DragAndDropController(this);
 		glKeyListener = new GLFilterPipelineKeyListener(this);
+
+		performDataUncertaintyFilter();
 	}
 
 	@Override
@@ -273,11 +280,14 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 
 				if (filter.getId() == fullSizedFilter
 						&& Calendar.getInstance().getTimeInMillis() - mouseOverTimeStamp > 500) {
+
 					Vec2f pos = filter.getRepresentation().getPosition();
+
 					float fullHeightLeft = (filterList.get(0).getInput().size() * filterSize
-							.y()) / 100.f, fullHeightRight = ((filterList.get(0)
-							.getInput().size() - filter.getSizeVADelta()) * filterSize
 							.y()) / 100.f;
+
+					float fullHeightRight = ((filterList.get(0).getInput().size() - filter
+							.getSizeVADelta()) * filterSize.y()) / 100.f;
 
 					gl.glBegin(GL2.GL_QUADS);
 					gl.glColor4f(153 / 255.f, 213 / 255.f, 148 / 255.f, 0.3f);
@@ -605,7 +615,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 	}
 
 	/**
-	 * Rebuild the filterpipeline
+	 * Rebuild the filter pipeline
 	 */
 	public void updateFilterPipeline() {
 		pipelineNeedsUpdate = false;
@@ -644,6 +654,30 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		}
 
 		updateFilterSize();
+	}
+
+	private void performDataUncertaintyFilter() {
+
+		ISet set = dataDomain.getSet();
+		if (!set.containsUncertaintyData())
+			return;
+		
+		if (set.getNormalizedUncertainty() != null)
+			return;
+
+		ContentFilter contentFilter = new ContentFilter();
+		contentFilter.setDataDomain(dataDomain);
+		contentFilter.setLabel("Signal-To-Noise Ratio Filter");
+
+		set.calculateRawAverageUncertainty();
+		Histogram histogram = HistogramCreator.createHistogram(set.getRawUncertainty());
+
+		FilterRepresentationSNR filterRep = new FilterRepresentationSNR();
+		filterRep.setFilter(contentFilter);
+		filterRep.setSet(set);
+		filterRep.setHistogram(histogram);
+		contentFilter.setFilterRep(filterRep);
+		contentFilter.openRepresentation();
 	}
 
 	public void handleSetFilterTypeEvent(FilterType type) {
@@ -704,5 +738,4 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 	public void setControlPressed(boolean state) {
 		bControlPressed = state;
 	}
-
 }

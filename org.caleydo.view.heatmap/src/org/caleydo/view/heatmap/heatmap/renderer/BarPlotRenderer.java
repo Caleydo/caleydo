@@ -95,7 +95,7 @@ public class BarPlotRenderer extends AContentRenderer {
 		ISet set = heatMap.getSet();
 		if (set == null)
 			return;
-		float certainty = set.getUncertainty(iContentIndex);
+		float certainty = set.getNormalizedUncertainty(iContentIndex);
 
 		certainty = certainty > 1 ? 1 : certainty;
 		certainty = certainty < 0 ? 0 : certainty;

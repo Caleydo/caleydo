@@ -111,8 +111,13 @@ public class SetExporter {
 			// Writing storage labels
 			out.print("Identifier \t");
 			for (Integer iStorageIndex : storageVA) {
-				out.print(set.get(iStorageIndex).getLabel());
+				AStorage storage = set.get(iStorageIndex);
+				out.print(storage.getLabel());
 				out.print("\t");
+				
+				if (storage.containsUncertaintyData()) {
+					out.print("Uncertainty\t");
+				}
 			}
 
 			if (contentVA.getGroupList() != null)
@@ -134,13 +139,13 @@ public class SetExporter {
 					// of
 					// values, depending on the IDType that has been specified when loading expression data.
 					// Possibly a different handling of the Set is required.
-//					java.util.Set<String> setRefSeqIDs =
-//						iDMappingManager.getIDAsSet(set.getDataDomain().getContentIDType(), targetIDType,
-//							contentID);
-	
+					// java.util.Set<String> setRefSeqIDs =
+					// iDMappingManager.getIDAsSet(set.getDataDomain().getContentIDType(), targetIDType,
+					// contentID);
+
 					java.util.Set<String> setRefSeqIDs =
-						iDMappingManager.getIDAsSet(set.getDataDomain().getContentIDType(), IDType.getIDType("REFSEQ_MRNA"),
-							contentID);
+						iDMappingManager.getIDAsSet(set.getDataDomain().getContentIDType(),
+							IDType.getIDType("REFSEQ_MRNA"), contentID);
 
 					if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
 						identifier = (String) setRefSeqIDs.toArray()[0];
@@ -168,6 +173,11 @@ public class SetExporter {
 					AStorage storage = set.get(iStorageIndex);
 					out.print(storage.getFloat(EDataRepresentation.RAW, contentID));
 					out.print("\t");
+
+					if (storage.containsUncertaintyData()) {
+						out.print(storage.getFloat(EDataRepresentation.UNCERTAINTY_RAW, contentID));
+						out.print("\t");
+					}
 				}
 
 				// export partitional cluster info for genes/entities

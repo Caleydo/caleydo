@@ -118,10 +118,10 @@ public abstract class AStorage
 		isCertaintyDataSet = true;
 
 		FloatCContainer container = new FloatCContainer(certaintyData);
-		hashCContainers.put(EDataRepresentation.CERTAINTY, container);
+		hashCContainers.put(EDataRepresentation.UNCERTAINTY_RAW, container);
 	}
 
-	public boolean hasCertaintyData() {
+	public boolean containsUncertaintyData() {
 		return isCertaintyDataSet;
 	}
 

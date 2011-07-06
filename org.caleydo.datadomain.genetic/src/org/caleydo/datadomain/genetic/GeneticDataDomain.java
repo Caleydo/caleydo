@@ -103,7 +103,6 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	@Override
 	protected void initFullVA() {
 
-		// TODO preferences seem not to be initialized here either in XML case
 		String sLevel = GeneralManager.get().getPreferenceStore()
 				.getString(PreferenceConstants.DATA_FILTER_LEVEL);
 		if (sLevel.equals("complete")) {

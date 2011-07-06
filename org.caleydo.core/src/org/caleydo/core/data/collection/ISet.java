@@ -295,6 +295,18 @@ public interface ISet
 	 */
 	public Set<String> getRegisteredStorageVATypes();
 
-	public float getUncertainty(int contentIndex);
+	public boolean containsUncertaintyData();
+	
+	public void setContainsUncertaintyData(boolean containsUncertaintyData);
+	
+	public float getNormalizedUncertainty(int contentIndex);
+
+	public float[] getNormalizedUncertainty();
+
+	public float[] getRawUncertainty();
+	
+	public void calculateNormalizedAverageUncertainty(float invalidThreshold, float validThreshold);
+
+	public void calculateRawAverageUncertainty();
 	
 }

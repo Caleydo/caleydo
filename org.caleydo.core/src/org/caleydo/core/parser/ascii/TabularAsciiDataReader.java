@@ -325,6 +325,7 @@ public class TabularAsciiDataReader
 					break;
 				case CERTAINTY:
 					targetStorages.get(storageIndex-1).setCertaintyData(floatArrays.get(iFloatArrayIndex));
+					dataDomain.getSet().setContainsUncertaintyData(true);
 					iFloatArrayIndex++;
 					break;
 				case STRING:

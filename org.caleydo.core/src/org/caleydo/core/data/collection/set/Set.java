@@ -77,7 +77,11 @@ public class Set
 
 	ASetBasedDataDomain dataDomain;
 
-	private float[] aggregatedUncertainties;
+	private boolean containsUncertaintyData;
+	
+	private float[] aggregatedNormalizedUncertainties;
+
+	private float[] aggregatedRawUncertainties;
 
 	public Set() {
 		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.SET));
@@ -625,7 +629,8 @@ public class Set
 		if (!storageManager.hasItem(iStorageID))
 			throw new IllegalArgumentException("Requested Storage with ID " + iStorageID + " does not exist.");
 
-		addStorage(storageManager.getItem(iStorageID));
+		AStorage storage = storageManager.getItem(iStorageID);
+		addStorage(storage);
 	}
 
 	/**
@@ -925,32 +930,84 @@ public class Set
 		return hashStorageData.keySet();
 	}
 
-	public float getUncertainty(int contentIndex) {
-		if (aggregatedUncertainties == null) {
-			updateAggregatedUncertainties();
+	@Override
+	public boolean containsUncertaintyData() {
+        return containsUncertaintyData;
+    }
+	
+	@Override
+	public void setContainsUncertaintyData(boolean containsUncertaintyData) {
+		this.containsUncertaintyData = containsUncertaintyData;
+	}
+	
+	@Override
+	public float getNormalizedUncertainty(int contentIndex) {
+
+		if (aggregatedRawUncertainties == null) {
+//			calculateRawAverageUncertainty();
+//			calculateNormalizedAverageUncertainty(2, 3);
+			 throw new IllegalStateException("Certainty has not been calculated yet.");
 		}
-		return aggregatedUncertainties[contentIndex];
+	
+		return aggregatedNormalizedUncertainties[contentIndex];
 	}
 
-	private void updateAggregatedUncertainties() {
-		aggregatedUncertainties = new float[depth()];
+	@Override
+	public float[] getNormalizedUncertainty() {
 
+//		if (aggregatedRawUncertainties == null) {
+//			calculateRawAverageUncertainty();
+//			// throw new IllegalStateException("Certainty has not been calculated yet.");
+//		}
+		
+		return aggregatedNormalizedUncertainties;
+	}
+
+	@Override
+	public float[] getRawUncertainty() {
+
+		if (aggregatedRawUncertainties == null)
+			throw new IllegalStateException("Certainty has not been calculated yet.");
+
+		return aggregatedRawUncertainties;
+	}
+
+	@Override
+	public void calculateNormalizedAverageUncertainty(float invalidThreshold, float validThreshold) {
+
+		for (AStorage storage : hashStorages.values()) {
+
+			if (storage instanceof NumericalStorage)
+				((NumericalStorage) storage).normalizeCertainty(invalidThreshold, validThreshold);
+		}
+
+		aggregatedNormalizedUncertainties = new float[depth()];
 		for (int contentIndex = 0; contentIndex < depth(); contentIndex++) {
 			// float aggregatedUncertainty = calculateMaxUncertainty(contentIndex);
-			float aggregatedUncertainty = calcualteAverageUncertainty(contentIndex);
-			aggregatedUncertainties[contentIndex] = aggregatedUncertainty;
+			float aggregatedUncertainty =
+				calcualteAverageUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_NORMALIZED);
+			aggregatedNormalizedUncertainties[contentIndex] = aggregatedUncertainty;
 		}
 	}
 
-	private float calcualteAverageUncertainty(int contentIndex) {
+	@Override
+	public void calculateRawAverageUncertainty() {
+		aggregatedRawUncertainties = new float[depth()];
+		for (int contentIndex = 0; contentIndex < depth(); contentIndex++) {
+			// float aggregatedUncertainty = calculateMaxUncertainty(contentIndex);
+			float aggregatedUncertainty =
+				calcualteAverageUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_RAW);
+			aggregatedRawUncertainties[contentIndex] = aggregatedUncertainty;
+		}
+	}
+
+	private float calcualteAverageUncertainty(int contentIndex, EDataRepresentation dataRepresentation) {
 		float uncertaintySum = 0;
 		StorageVirtualArray storageVA = hashStorageData.get(STORAGE).getStorageVA();
 		for (Integer storageID : storageVA) {
 
 			try {
-				uncertaintySum +=
-					hashStorages.get(storageID).getFloat(EDataRepresentation.CERTAINTY_NORMALIZED,
-						contentIndex);
+				uncertaintySum += hashStorages.get(storageID).getFloat(dataRepresentation, contentIndex);
 			}
 			catch (Exception e) {
 				System.out.println("storageID: " + storageID);
@@ -960,14 +1017,12 @@ public class Set
 		return uncertaintySum / storageVA.size();
 	}
 
-	private float calculateMaxUncertainty(int contentIndex) {
+	private float calculateMaxUncertainty(int contentIndex, EDataRepresentation dataRepresentation) {
 		float maxUncertainty = Float.MAX_VALUE;
 		for (Integer storageID : hashStorageData.get(STORAGE).getStorageVA()) {
 			float cellUncertainty = 0;
 			try {
-				cellUncertainty =
-					hashStorages.get(storageID).getFloat(EDataRepresentation.CERTAINTY_NORMALIZED,
-						contentIndex);
+				cellUncertainty = hashStorages.get(storageID).getFloat(dataRepresentation, contentIndex);
 			}
 			catch (Exception e) {
 				System.out.println("storageID: " + storageID);

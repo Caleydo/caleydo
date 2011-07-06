@@ -32,19 +32,14 @@ public class NumericalStorage
 	public void normalize() {
 
 		INumericalCContainer iRawContainer = (INumericalCContainer) hashCContainers.get(dataRep);
-
 		hashCContainers.put(EDataRepresentation.NORMALIZED, iRawContainer.normalize());
-
-		if (isCertaintyDataSet) {
-			normalizeCertainty();
-		}
 	}
 
-	private void normalizeCertainty() {
-		FloatCContainer certainties = (FloatCContainer) hashCContainers.get(EDataRepresentation.CERTAINTY);
-		// TODO here is the manual cut-off for certainties
-		FloatCContainer normalizedCertainties = certainties.normalizeWithExternalExtrema(1, 2);
-		hashCContainers.put(EDataRepresentation.CERTAINTY_NORMALIZED, normalizedCertainties);
+	public void normalizeCertainty(float invalidThreshold, float validThreshold) {
+
+		FloatCContainer certainties = (FloatCContainer) hashCContainers.get(EDataRepresentation.UNCERTAINTY_RAW);
+		FloatCContainer normalizedCertainties = certainties.normalizeWithExternalExtrema(invalidThreshold, validThreshold);
+		hashCContainers.put(EDataRepresentation.UNCERTAINTY_NORMALIZED, normalizedCertainties);
 	}
 
 	/**
@@ -73,10 +68,6 @@ public class NumericalStorage
 		INumericalCContainer numericalContainer = rawStorage.normalizeWithExternalExtrema(dMin, dMax);
 
 		hashCContainers.put(EDataRepresentation.NORMALIZED, numericalContainer);
-
-		if (isCertaintyDataSet) {
-			normalizeCertainty();
-		}
 	}
 
 	@Override

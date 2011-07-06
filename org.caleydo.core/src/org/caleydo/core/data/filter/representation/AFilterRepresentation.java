@@ -90,8 +90,8 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 						else if( event.widget == okButton )
 							applyFilter();
 
-						((Shell) parentComposite).close();
 						isDisplayed = false;
+						((Shell) parentComposite).close();
 					}
 				};
 				okButton.addListener(SWT.Selection, listener);
