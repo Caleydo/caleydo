@@ -256,9 +256,9 @@ public class FilterRepresentationSNR extends
 				contentVADelta
 						.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));
 			
-			if (value <= invalidThreshold && value > validThreshold)
+			if (value > invalidThreshold && value < validThreshold)
 				uncertaintyContentVADelta
-				.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));				
+				.add(VADeltaItem.append(contentVA.get(contentIndex)));				
 		}
 		
 		subFilter.setVADelta(contentVADelta);

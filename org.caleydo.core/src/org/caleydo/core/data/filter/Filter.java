@@ -16,7 +16,7 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 
 	private DeltaType vaDelta;
 	
-	private DeltaType vaDeltaUncertain;
+	private DeltaType vaDeltaUncertainty;
 
 	private String label = "<unspecified>";
 
@@ -35,11 +35,11 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 	}
 
 	public void setVADeltaUncertainty(DeltaType vaDeltaUncertain) {
-		this.vaDeltaUncertain = vaDeltaUncertain;
+		this.vaDeltaUncertainty = vaDeltaUncertain;
 	}
 	
 	public DeltaType getVADeltaUncertainty() {
-		return vaDeltaUncertain;
+		return vaDeltaUncertainty;
 	}
 	
 	public void setFilterRep(AFilterRepresentation<DeltaType, ?> filterRep) {

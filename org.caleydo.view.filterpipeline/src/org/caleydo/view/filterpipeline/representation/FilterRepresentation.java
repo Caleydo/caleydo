@@ -23,239 +23,164 @@ import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
  * Represents a filter which can be rendered and dragged arround
  * 
  * @author Thomas Geymayer
- *
+ * 
  */
-public class FilterRepresentation
-	implements IDraggable, IRenderable, IDropArea
-{
+public class FilterRepresentation implements IDraggable, IRenderable, IDropArea {
 	protected FilterPipelineRenderStyle renderStyle;
 	protected PickingManager pickingManager;
 	protected int viewId;
-	
-	protected static final float Z_POS_BODY 	= 0.1f;
-	protected static final float Z_POS_BORDER 	= 0.15f;
-	protected static final float Z_POS_MARK 	= 0.6f;
-	protected static final float Z_POS_TEXT 	= 0.7f;
-	protected static final float Z_POS_DRAG 	= 0.8f;
+
+	protected static final float Z_POS_BODY = 0.1f;
+	protected static final float Z_POS_BORDER = 0.15f;
+	protected static final float Z_POS_MARK = 0.6f;
+	protected static final float Z_POS_TEXT = 0.7f;
+	protected static final float Z_POS_DRAG = 0.8f;
 	protected static final float Z_POS_DRAG_OVER = 0.9f;
 
 	protected FilterItem<?> filter;
 	protected int iPickingID = -1;
 	protected SelectionType selectionType = SelectionType.NORMAL;
-	
+
 	protected Vec2f vPos = new Vec2f();
 	protected Vec2f vSize = new Vec2f();
 	protected Vec2f vDragStart = null;
-	
+
 	protected int mouseOverItem = -1;
-	
+
 	float heightLeft = 0;
 	float heightRight = 0;
-	
-	public FilterRepresentation( FilterPipelineRenderStyle renderStyle,
-								 PickingManager pickingManager,
-								 int viewId )
-	{
+
+	public FilterRepresentation(FilterPipelineRenderStyle renderStyle,
+			PickingManager pickingManager, int viewId) {
 		this.renderStyle = renderStyle;
 		this.pickingManager = pickingManager;
 		this.viewId = viewId;
 	}
-	
-	public void setFilter(FilterItem<?> filter)
-	{
+
+	public void setFilter(FilterItem<?> filter) {
 		this.filter = filter;
 		this.iPickingID = filter.getPickingID();
 	}
-	
-	public FilterItem<?> getFilter()
-	{
+
+	public FilterItem<?> getFilter() {
 		return filter;
 	}
-	
-	public void setPosition(Vec2f filterPosition)
-	{
+
+	public void setPosition(Vec2f filterPosition) {
 		vPos = filterPosition.copy();
 	}
-	
-	public Vec2f getPosition()
-	{
+
+	public Vec2f getPosition() {
 		return vPos;
 	}
-	
-	public void setSize(Vec2f filterSize)
-	{
+
+	public void setSize(Vec2f filterSize) {
 		vSize = filterSize.copy();
 	}
-	
-	public Vec2f getSize()
-	{
+
+	public Vec2f getSize() {
 		return vSize;
 	}
-	
-	public float getHeightLeft()
-	{
-		return vSize.y() * (filter.getInput().size()/100.f);
+
+	public float getHeightLeft() {
+		return vSize.y() * (filter.getInput().size() / 100.f);
 	}
-	
-	public float getHeightRight()
-	{
-		return vSize.y() * (filter.getOutput().size()/100.f);
+
+	public float getHeightRight() {
+		return vSize.y() * (filter.getOutput().size() / 100.f);
 	}
 
 	@Override
-	public void render(GL2 gl, CaleydoTextRenderer textRenderer)
-	{
+	public void render(GL2 gl, CaleydoTextRenderer textRenderer) {
 		heightLeft = getHeightLeft();
 		heightRight = getHeightRight();
-		
+
 		gl.glPushName(iPickingID);
 		renderBasicShape(gl, textRenderer, renderStyle.FILTER_COLOR);
 		gl.glPopName();
-		
+
 		// render selection/mouseover if needed
-		if( selectionType != SelectionType.NORMAL )
-		{
-			gl.glLineWidth
-			( 
-				(selectionType == SelectionType.SELECTION)
-					? SelectionType.SELECTION.getLineWidth()
-	                : SelectionType.MOUSE_OVER.getLineWidth()
-	        );
-			
-			renderShape
-			(
-				gl,
-				GL2.GL_LINE_LOOP,
-				(selectionType == SelectionType.SELECTION)
-					? SelectionType.SELECTION.getColor()
-					: SelectionType.MOUSE_OVER.getColor(),
-				Z_POS_MARK
-			);
-			
-//			if( selectionType == SelectionType.MOUSE_OVER )
-//			{
-//			}
+		if (selectionType != SelectionType.NORMAL) {
+			gl.glLineWidth((selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION
+					.getLineWidth() : SelectionType.MOUSE_OVER.getLineWidth());
+
+			renderShape(
+					gl,
+					GL2.GL_LINE_LOOP,
+					(selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION
+							.getColor() : SelectionType.MOUSE_OVER.getColor(), Z_POS_MARK);
+
+			// if( selectionType == SelectionType.MOUSE_OVER )
+			// {
+			// }
 		}
-		
+
 		// label
-		textRenderer.renderText
-		(
-			gl,
-			filter.getLabel(),
-			vPos.x() + 0.05f,
-			vPos.y() + 0.05f,
-			Z_POS_TEXT,
-			0.004f,
-			20
-		);
-		
-		renderOutputBand
-		(
-			gl,
-			new float[]{vPos.x() + vSize.x(), vPos.y(), Z_POS_BODY},
-		    new float[]{vPos.x() + vSize.x(), vPos.y() + heightRight, Z_POS_BODY},
-		    new float[]{vPos.x() + vSize.x() + 0.058f * vSize.x(), vPos.y() + heightRight, Z_POS_BODY},
-		    new float[]{vPos.x() + vSize.x() + 0.058f * vSize.x(), vPos.y(), Z_POS_BODY},
-		    new float[]{0.8f,0.8f,0.8f,0.5f},
-		    new float[]{0f,0f,0f,1f}
-		);
+		textRenderer.renderText(gl, filter.getLabel(), vPos.x() + 0.05f,
+				vPos.y() + 0.05f, Z_POS_TEXT, 0.004f, 20);
+
+		renderOutputBand(gl, new float[] { vPos.x() + vSize.x(), vPos.y(), Z_POS_BODY },
+				new float[] { vPos.x() + vSize.x(), vPos.y() + heightRight, Z_POS_BODY },
+				new float[] { vPos.x() + vSize.x() + 0.058f * vSize.x(),
+						vPos.y() + heightRight, Z_POS_BODY },
+				new float[] { vPos.x() + vSize.x() + 0.058f * vSize.x(), vPos.y(),
+						Z_POS_BODY }, new float[] { 0.8f, 0.8f, 0.8f, 0.5f },
+				new float[] { 0f, 0f, 0f, 1f });
 	}
-	
-	protected void renderShape( GL2 gl,
-			                    int renderMode,
-			                    final Vec2f pos,
-			                    float width,
-			                    float heightLeft,
-			                    float heightRight,
-			                    float offsetRight,
-			                    float[] color,
-			                    float z )
-	{
+
+	protected void renderShape(GL2 gl, int renderMode, final Vec2f pos, float width,
+			float heightLeft, float heightRight, float offsetRight, float[] color, float z) {
 		gl.glBegin(renderMode);
 		{
 			gl.glColor4fv(color, 0);
-	
+
 			gl.glVertex3f(pos.x(), pos.y(), z);
 			gl.glVertex3f(pos.x(), pos.y() + heightLeft, z);
 			gl.glVertex3f(pos.x() + width, pos.y() + offsetRight + heightRight, z);
-			gl.glVertex3f(pos.x() + width, pos.y() + offsetRight, z);			
+			gl.glVertex3f(pos.x() + width, pos.y() + offsetRight, z);
 		}
 		gl.glEnd();
 	}
-	
-	protected void renderShape( GL2 gl,
-            int renderMode,
-            final Vec2f pos,
-            float width,
-            float heightLeft,
-            float heightRight,
-            float[] color,
-            float z )
-	{
+
+	protected void renderShape(GL2 gl, int renderMode, final Vec2f pos, float width,
+			float heightLeft, float heightRight, float[] color, float z) {
 		renderShape(gl, renderMode, pos, width, heightLeft, heightRight, 0, color, z);
 	}
-	
-	protected void renderShape( GL2 gl,
-            int renderMode,
-            float[] color,
-            float z )
-	{
+
+	protected void renderShape(GL2 gl, int renderMode, float[] color, float z) {
 		renderShape(gl, renderMode, vPos, vSize.x(), heightLeft, heightRight, color, z);
 	}
-	
+
 	/**
 	 * Render the basic filter (background and border)
 	 * 
 	 * @param gl
 	 * @param color
 	 */
-	protected void renderBasicShape( GL2 gl, CaleydoTextRenderer textRenderer, float[] color )
-	{
-		renderShape
-		(
-			gl,
-			GL2.GL_QUADS,
-			color,
-			Z_POS_BODY
-		);
+	protected void renderBasicShape(GL2 gl, CaleydoTextRenderer textRenderer,
+			float[] color) {
+		 renderShape(gl, GL2.GL_QUADS, color, Z_POS_BODY);
 		gl.glLineWidth(1);
-		renderShape
-		(
-			gl,
-			GL2.GL_LINE_LOOP,
-			renderStyle.FILTER_BORDER_COLOR,
-			Z_POS_BORDER
-		);
-		
+		renderShape(gl, GL2.GL_LINE_LOOP, renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER);
+
+		// Render uncertainty line
+		float heightRightUncertainty = heightRight - vSize.y() * (filter.getFilter().getVADeltaUncertainty().size() / 100.f);
+		renderShape(gl, GL2.GL_LINE_LOOP, vPos, vSize.x(), heightLeft,
+				heightRightUncertainty, renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER);
+
 		// currently not filtered elements
-		textRenderer.renderText
-		(
-			gl,
-			""+filter.getOutput().size(),
-			vPos.x() + vSize.x() - 0.03f,
-			vPos.y() + heightRight + 0.05f,
-			Z_POS_TEXT,
-			0.004f,
-			20
-		);
-		
+		textRenderer.renderText(gl, "" + filter.getOutput().size(), vPos.x() + vSize.x()
+				- 0.03f, vPos.y() + heightRight + 0.05f, Z_POS_TEXT, 0.004f, 20);
+
 		// label
-		textRenderer.renderText
-		(
-			gl,
-			""+(filter.getOutput().size() - filter.getInput().size())
-			/*+ " (-"+filter.getSizeVADelta()+")"*/,
-			vPos.x() + 0.2f,
-			vPos.y() - 0.1f,
-			Z_POS_TEXT,
-			0.004f,
-			20
-		);
+		textRenderer.renderText(gl, ""
+				+ (filter.getOutput().size() - filter.getInput().size())
+		/* + " (-"+filter.getSizeVADelta()+")" */, vPos.x() + 0.2f, vPos.y() - 0.1f,
+				Z_POS_TEXT, 0.004f, 20);
 	}
-	
+
 	/**
-	 * Render a band with a transparent body, bounded by lines at top and
-	 * bottom
+	 * Render a band with a transparent body, bounded by lines at top and bottom
 	 * 
 	 * @param gl
 	 * @param bottomLeft
@@ -265,14 +190,8 @@ public class FilterRepresentation
 	 * @param bodyColor
 	 * @param borderColor
 	 */
-	protected void renderOutputBand(	GL2 gl,
-										float[] bottomLeft,
-										float[] topLeft,
-										float[] topRight,
-										float[] bottomRight,
-										float[] bodyColor,
-										float[] borderColor )
-	{
+	protected void renderOutputBand(GL2 gl, float[] bottomLeft, float[] topLeft,
+			float[] topRight, float[] bottomRight, float[] bodyColor, float[] borderColor) {
 		gl.glColor4fv(bodyColor, 0);
 		gl.glBegin(GL2.GL_QUADS);
 		{
@@ -282,7 +201,7 @@ public class FilterRepresentation
 			gl.glVertex3fv(bottomLeft, 0);
 		}
 		gl.glEnd();
-		
+
 		gl.glColor4fv(borderColor, 0);
 		gl.glLineWidth(1);
 		gl.glBegin(GL2.GL_LINES);
@@ -295,87 +214,62 @@ public class FilterRepresentation
 		}
 		gl.glEnd();
 	}
-	
+
 	/**
 	 * Updates the selection state by gathering the selection state from the
 	 * given {@link SelectionManager}
 	 * 
 	 * @param selectionManager
 	 */
-	public void updateSelections(SelectionManager selectionManager)
-	{
-		if( selectionManager.checkStatus(SelectionType.SELECTION, filter.getId()) )
+	public void updateSelections(SelectionManager selectionManager) {
+		if (selectionManager.checkStatus(SelectionType.SELECTION, filter.getId()))
 			selectionType = SelectionType.SELECTION;
-		else if( selectionManager.checkStatus(SelectionType.MOUSE_OVER, filter.getId()) )
+		else if (selectionManager.checkStatus(SelectionType.MOUSE_OVER, filter.getId()))
 			selectionType = SelectionType.MOUSE_OVER;
 		else
 			selectionType = SelectionType.NORMAL;
 	}
 
 	@Override
-	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY)
-	{
+	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
 		vDragStart = new Vec2f(mouseCoordinateX, mouseCoordinateY);
 	}
 
 	@Override
-	public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY)
-	{
+	public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 		Vec2f tempPos = vPos.copy();
-		vPos.add
-		(
-			new Vec2f
-			(
-				mouseCoordinateX - vDragStart.x(),
-				mouseCoordinateY - vDragStart.y()
-			)
-		);
+		vPos.add(new Vec2f(mouseCoordinateX - vDragStart.x(), mouseCoordinateY
+				- vDragStart.y()));
 
-		renderShape
-		(
-			gl,
-			GL2.GL_POLYGON,
-			renderStyle.getFilterColorDrag(filter.getId()),
-			Z_POS_DRAG
-		);
-		
+		renderShape(gl, GL2.GL_POLYGON, renderStyle.getFilterColorDrag(filter.getId()),
+				Z_POS_DRAG);
+
 		vPos = tempPos;
 	}
 
 	@Override
-	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY)
-	{
+	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
-			float mouseCoordinateY)
-	{
+	public void handleDragOver(GL2 gl, Set<IDraggable> draggables,
+			float mouseCoordinateX, float mouseCoordinateY) {
 		gl.glLineWidth(5);
-		renderShape
-		(
-			gl,
-			GL2.GL_LINE_LOOP,
-			renderStyle.DRAG_OVER_COLOR,
-			Z_POS_DRAG_OVER
-		);
+		renderShape(gl, GL2.GL_LINE_LOOP, renderStyle.DRAG_OVER_COLOR, Z_POS_DRAG_OVER);
 	}
 
 	@Override
 	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
-			float mouseCoordinateY, DragAndDropController dragAndDropController)
-	{
+			float mouseCoordinateY, DragAndDropController dragAndDropController) {
 		// TODO Auto-generated method stub
 	}
 
-	public void handleIconMouseOver(int externalID)
-	{
+	public void handleIconMouseOver(int externalID) {
 		mouseOverItem = externalID;
 	}
 
-	public void handleClearMouseOver()
-	{
+	public void handleClearMouseOver() {
 		mouseOverItem = -1;
 	}
 }
