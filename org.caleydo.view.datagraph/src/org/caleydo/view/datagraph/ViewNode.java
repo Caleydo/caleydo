@@ -1,8 +1,7 @@
 package org.caleydo.view.datagraph;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
@@ -82,8 +81,7 @@ public class ViewNode extends ADraggableDataGraphNode {
 		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
-		compGroupOverviewRenderer = new ComparisonGroupOverviewRenderer(
-				getDimensionGroups(), view);
+		compGroupOverviewRenderer = new ComparisonGroupOverviewRenderer(this, view);
 		compGroupLayout.setPixelGLConverter(pixelGLConverter);
 		compGroupLayout.setPixelSizeY(OVERVIEW_COMP_GROUP_HEIGHT_PIXELS);
 		// compGroupLayout.setPixelSizeX(compGroupOverviewRenderer.getMinWidthPixels());
@@ -105,24 +103,11 @@ public class ViewNode extends ADraggableDataGraphNode {
 
 
 	@Override
-	public List<ADimensionGroupData> getDimensionGroups() {
-		// TODO Implement correctly
-		List<ADimensionGroupData> groups = new ArrayList<ADimensionGroupData>();
-		groups.add(null);
-		groups.add(null);
-		groups.add(null);
-		groups.add(null);
-		groups.add(null);
-		groups.add(null);
-		groups.add(null);
-		groups.add(null);
-		groups.add(null);
-		groups.add(null);
-		groups.add(null);
-		groups.add(null);
-		groups.add(null);
-		groups.add(null);
-		groups.add(null);
+	public Set<ADimensionGroupData> getDimensionGroups() {
+		Set<ADimensionGroupData> groups = representedView.getDimensionGroups();
+		if(groups == null) {
+			groups = new HashSet<ADimensionGroupData>();
+		}
 		return groups;
 	}
 

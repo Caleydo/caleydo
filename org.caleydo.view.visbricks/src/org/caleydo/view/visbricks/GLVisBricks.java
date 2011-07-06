@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -165,6 +166,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private int connectionBandIDCounter = 0;
 
 	private boolean isConnectionLinesDirty = true;
+	
+	private Set<IDataDomain> dataDomains;
+	private Set<ADimensionGroupData> dimensionGroupData;
 
 	/**
 	 * Constructor.
@@ -189,6 +193,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		relationAnalyzer = new RelationAnalyzer();
 
 		mouseWheelListeners = new HashSet<IMouseWheelHandler>();
+		dataDomains = new HashSet<IDataDomain>();
+		dimensionGroupData = new HashSet<ADimensionGroupData>();
 
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
 		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
@@ -1241,6 +1247,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				dimensionGroups.add(dimensionGroup);
 
 				uninitializedDimensionGroups.add(dimensionGroup);
+				dataDomains.add(data.getDataDomain());
+				this.dimensionGroupData.add(data);
 			}
 		}
 	}
@@ -1705,10 +1713,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 	
 	@Override
-	public java.util.Set<IDataDomain> getDataDomains() {
-		//TODO: change to all datadomains that are displayed
-		java.util.Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
-		dataDomains.add(dataDomain);
+	public Set<IDataDomain> getDataDomains() {
 		return dataDomains;
+	}
+	
+	@Override
+	public Set<ADimensionGroupData> getDimensionGroups() {
+		return dimensionGroupData;
 	}
 }

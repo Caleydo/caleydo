@@ -411,6 +411,9 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		Pair<Point2D, Point2D> anchorPoints1;
 		Pair<Point2D, Point2D> anchorPoints2;
 
+		float offset1 = 0;
+		boolean isOffsetHorizontal = false;
+
 		if (deltaX < 0) {
 			if (deltaY < 0) {
 				float spacingX = (float) ((position2.getX() - node2.getWidth() / 2.0f) - (position1
@@ -420,9 +423,13 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				if (spacingX > spacingY) {
 					anchorPoints1 = node1.getRightAnchorPoints();
 					anchorPoints2 = node2.getLeftAnchorPoints();
+					offset1 = 0.3f * spacingX;
+					isOffsetHorizontal = true;
 				} else {
 					anchorPoints1 = node1.getTopAnchorPoints();
 					anchorPoints2 = node2.getBottomAnchorPoints();
+					offset1 = 0.3f * spacingY;
+					isOffsetHorizontal = false;
 				}
 			} else {
 				float spacingX = (float) ((position2.getX() - node2.getWidth() / 2.0f) - (position1
@@ -432,9 +439,13 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				if (spacingX > spacingY) {
 					anchorPoints1 = node1.getRightAnchorPoints();
 					anchorPoints2 = node2.getLeftAnchorPoints();
+					offset1 = 0.3f * (spacingX);
+					isOffsetHorizontal = true;
 				} else {
 					anchorPoints1 = node1.getBottomAnchorPoints();
 					anchorPoints2 = node2.getTopAnchorPoints();
+					offset1 = -0.3f * spacingY;
+					isOffsetHorizontal = false;
 				}
 			}
 		} else {
@@ -446,9 +457,13 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				if (spacingX > spacingY) {
 					anchorPoints1 = node1.getLeftAnchorPoints();
 					anchorPoints2 = node2.getRightAnchorPoints();
+					offset1 = -0.3f * (spacingX);
+					isOffsetHorizontal = true;
 				} else {
 					anchorPoints1 = node1.getTopAnchorPoints();
 					anchorPoints2 = node2.getBottomAnchorPoints();
+					offset1 = 0.3f * spacingY;
+					isOffsetHorizontal = false;
 				}
 			} else {
 				float spacingX = (float) ((position1.getX() - node1.getWidth() / 2.0f) - (position2
@@ -458,31 +473,39 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				if (spacingX > spacingY) {
 					anchorPoints1 = node1.getLeftAnchorPoints();
 					anchorPoints2 = node2.getRightAnchorPoints();
+					offset1 = -0.3f * (spacingX);
+					isOffsetHorizontal = true;
 				} else {
 					anchorPoints1 = node1.getBottomAnchorPoints();
 					anchorPoints2 = node2.getTopAnchorPoints();
+					offset1 = -0.3f * spacingY;
+					isOffsetHorizontal = false;
 				}
 			}
 		}
 
 		connectionBandRenderer.init(gl);
-		float[] leftTopPos = new float[] {
+		float[] side1AnchorPos1 = new float[] {
 				(float) anchorPoints1.getFirst().getX(),
 				(float) anchorPoints1.getFirst().getY() };
-		float[] leftBottomPos = new float[] {
+		float[] side1AnchorPos2 = new float[] {
 				(float) anchorPoints1.getSecond().getX(),
 				(float) anchorPoints1.getSecond().getY() };
 
-		float[] rightTopPos = new float[] {
+		float[] side2AnchorPos1 = new float[] {
 				(float) anchorPoints2.getFirst().getX(),
 				(float) anchorPoints2.getFirst().getY() };
-		float[] rightBottomPos = new float[] {
+		float[] side2AnchorPos2 = new float[] {
 				(float) anchorPoints2.getSecond().getX(),
 				(float) anchorPoints2.getSecond().getY() };
 
-		connectionBandRenderer.renderStraightBand(gl, leftTopPos,
-				leftBottomPos, rightTopPos, rightBottomPos, false, 0, 0, false,
-				new float[] { 0, 0, 0, 1 }, 1f);
+		// connectionBandRenderer.renderStraightBand(gl, leftTopPos,
+		// leftBottomPos, rightTopPos, rightBottomPos, false, 0, 0, false,
+		// new float[] { 0, 0, 0, 1 }, 1f);
+		connectionBandRenderer.renderSingleBand(gl, side1AnchorPos1,
+				side1AnchorPos2, side2AnchorPos1, side2AnchorPos2, false,
+				offset1, -offset1, new float[] { 0, 0, 0 }, 0.2f,
+				isOffsetHorizontal, isOffsetHorizontal);
 
 	}
 

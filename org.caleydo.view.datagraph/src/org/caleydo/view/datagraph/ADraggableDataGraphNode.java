@@ -1,11 +1,9 @@
 package org.caleydo.view.datagraph;
 
 import java.awt.geom.Point2D;
-import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.manager.picking.APickingListener;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -13,27 +11,30 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 
 public abstract class ADraggableDataGraphNode implements IDataGraphNode {
-	
+
 	protected ForceDirectedGraphLayout graphLayout;
 	protected GLDataGraph view;
 	protected PixelGLConverter pixelGLConverter;
 	protected int id;
-	
+	protected DragAndDropController dragAndDropController;
+
 	private float prevDraggingMouseX;
 	private float prevDraggingMouseY;
-	
-	public ADraggableDataGraphNode(ForceDirectedGraphLayout graphLayout, GLDataGraph view,
+
+	public ADraggableDataGraphNode(ForceDirectedGraphLayout graphLayout,
+			GLDataGraph view,
 			final DragAndDropController dragAndDropController, int id) {
 		this.graphLayout = graphLayout;
 		this.view = view;
 		this.pixelGLConverter = view.getParentGLCanvas().getPixelGLConverter();
 		this.id = id;
-		
-		createPickingListener(dragAndDropController);
+
+		this.dragAndDropController = dragAndDropController;
+
+		createPickingListener();
 	}
-	
-	private void createPickingListener(
-			final DragAndDropController dragAndDropController) {
+
+	private void createPickingListener() {
 		view.addPickingListener(new APickingListener() {
 
 			@Override
@@ -41,7 +42,8 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 				dragAndDropController.clearDraggables();
 				dragAndDropController.setDraggingStartPosition(pick
 						.getPickedPoint());
-				dragAndDropController.addDraggable(ADraggableDataGraphNode.this);
+				dragAndDropController
+						.addDraggable(ADraggableDataGraphNode.this);
 			}
 
 			@Override
@@ -89,7 +91,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 
 		prevDraggingMouseX = mouseCoordinateX;
 		prevDraggingMouseY = mouseCoordinateY;
-		
+
 		view.setDisplayListDirty();
 		view.setApplyAutomaticLayout(false);
 
@@ -98,7 +100,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	@Override
 	public void handleDrop(GL2 gl, float mouseCoordinateX,
 			float mouseCoordinateY) {
-//		view.setApplyAutomaticLayout(true);
+		dragAndDropController.clearDraggables();
 	}
 
 }

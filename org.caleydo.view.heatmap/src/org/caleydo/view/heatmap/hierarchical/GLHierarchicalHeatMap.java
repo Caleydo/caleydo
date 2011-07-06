@@ -5253,6 +5253,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			bExperimentDendrogramActive = false;
 			bExperimentDendrogramRenderCut = false;
 			set.getStorageData(storageVAType).setStorageTree(null);
+			dataDomain.createDimensionGroupsFromStorageTree(null);
 		}
 
 		// merge

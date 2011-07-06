@@ -223,6 +223,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		ClusterHelper.determineExpressionValue(tree, EClustererType.STORAGE_CLUSTERING,
 				set);
 		set.getStorageData(storageVAType).setStorageTree(tree);
+		dataDomain.createDimensionGroupsFromStorageTree(tree);
 		// useCase.replaceVirtualArray(idCategory, vaType, virtualArray)
 	}
 
@@ -329,6 +330,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 		// FIXME no one is notified that there is a new tree
 		set.getStorageData(storageVAType).setStorageTree(tree);
+		dataDomain.createDimensionGroupsFromStorageTree(tree);
 
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);

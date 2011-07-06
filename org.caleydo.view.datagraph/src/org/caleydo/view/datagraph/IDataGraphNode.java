@@ -1,7 +1,7 @@
 package org.caleydo.view.datagraph;
 
 import java.awt.geom.Point2D;
-import java.util.List;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 
@@ -11,7 +11,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 
 public interface IDataGraphNode extends IDraggable {
 
-	public List<ADimensionGroupData> getDimensionGroups();
+	public Set<ADimensionGroupData> getDimensionGroups();
 
 	public void render(GL2 gl);
 
