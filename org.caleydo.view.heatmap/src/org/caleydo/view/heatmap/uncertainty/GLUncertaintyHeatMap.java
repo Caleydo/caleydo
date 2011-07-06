@@ -15,6 +15,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -353,6 +354,15 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 	}
 
+	@Override
+	protected void reactOnContentVAChanges(ContentVADelta delta) {
+
+		super.reactOnContentVAChanges(delta);
+		
+		setDisplayListDirty();
+		overviewHeatMap.init();
+	}
+	
 	@Override
 	protected void initLists() {
 
