@@ -13,6 +13,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 /**
  * Uncertainty overview heat map view.
@@ -24,12 +25,13 @@ import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 
 public class OverviewRenderer extends LayoutRenderer {
 
-
 	private ClusterRenderer clusterRenderer;
 
 	private final static int CLUSTER_SPACER_SIZE = 10;
 	
 	private GLUncertaintyHeatMap uncertaintyHeatMap;
+	
+	private GLHeatMap detailHeatMap;
 
 	private ElementLayout lineSeparatorLayout;
 
@@ -101,8 +103,12 @@ public class OverviewRenderer extends LayoutRenderer {
 					lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.3f);
 					
 					overviewLayout.add(lastLayoutElement, lineSeparatorLayout);
-					// overviewLayout.append(lineSeparatorLayout);
+					// overviewLayout.append(lineSeparatorLayout);	
 				}
+				
+				// Initially the first cluster gets selected
+				if (clusterIndex == 0)
+					detailHeatMap.setContentVA(clusterVA);
 			}
 		} else {
 			Row clusterLayout = new Row("clusterLayout");
@@ -153,5 +159,9 @@ public class OverviewRenderer extends LayoutRenderer {
 			return uncertaintyHeatMap.getViewFrustum().getHeight();
 		
 		return clusterLayoutList.get(selectedClusterIndex).getSizeScaledY();
+	}
+	
+	public void setDetailHeatMap(GLHeatMap detailHeatMap) {
+		this.detailHeatMap = detailHeatMap;
 	}
 }

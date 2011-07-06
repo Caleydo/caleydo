@@ -201,6 +201,8 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 				detailHeatMap);
 
 		detailLayout.setRenderer(detailHeatMapLayoutRenderer);
+		
+		overviewHeatMap.setDetailHeatMap(detailHeatMap);
 	}
 
 	@Override
