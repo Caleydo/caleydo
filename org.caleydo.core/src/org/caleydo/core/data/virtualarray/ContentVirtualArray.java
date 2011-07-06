@@ -47,12 +47,12 @@ public class ContentVirtualArray
 	 * Creates a new group list based on the cluster nodes supplied and sets it to the group list memeber of
 	 * this virtual array
 	 * 
-	 * @param iAlClusterNodes
+	 * @param clusterNodes
 	 *            the list of cluster nodes on which the group list is based
 	 * @return a reference to the local groupList variable
 	 */
-	public ContentGroupList buildNewGroupList(ArrayList<ClusterNode> iAlClusterNodes) {
-		groupList = (ContentGroupList) buildNewGroupList(new ContentGroupList(), iAlClusterNodes);
+	public ContentGroupList buildNewGroupList(ArrayList<ClusterNode> clusterNodes) {
+		groupList = (ContentGroupList) buildNewGroupList(new ContentGroupList(), clusterNodes);
 		return groupList;
 	}
 

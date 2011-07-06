@@ -606,45 +606,15 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	protected GroupList<GroupType, ConcreteType, VADelta> buildNewGroupList(
 		GroupList<GroupType, ConcreteType, VADelta> groupList, ArrayList<ClusterNode> clusterNodes) {
 
-		// if (iAlClusterNodes.size() < 1) {
-		//
-		// Group temp = new Group(rootNode.getNrLeaves(), false, 0, SelectionType.NORMAL, rootNode);
-		// groupList.append(temp);
-		// triggerGroupListEvent();
-		// return;
-		// }
-		//
-		// if (bRenderContentTree) {
-		// groupList = (GroupType) new ContentGroupList();
-		// }
-		// else {
-		// groupList = (GroupType) new StorageGroupList();
-		// }
-		//
-		// bEnableDepthCheck = true;
-
-		int cnt = 0;
-		int iExample = 0;
-
-		// IVirtualArray<?, ?, ?, ?> currentVA = null;
-		//
-		// if (bRenderContentTree) {
-		// currentVA = contentVA;
-		// }
-		// else {
-		// currentVA = storageVA;
-		// }
+		int sampleElementIndex = 0;
 
 		for (ClusterNode node : clusterNodes) {
-			// Group temp = new Group(iter.getNrElements(), false,
-			// currentVA.get(iExample),
-			// iter.getRepresentativeElement(), SelectionType.NORMAL, iter);
-			Group temp = new Group(node.getNrLeaves(), this.indexOf(iExample), node);
+
+			Group temp = new Group(node.getNrLeaves(), sampleElementIndex, node);
 			groupList.append(temp);
-			cnt++;
-			iExample += node.getNrLeaves();
+			sampleElementIndex += node.getNrLeaves();
 		}
 		return groupList;
-		// triggerGroupListEvent();
+
 	}
 }

@@ -137,10 +137,11 @@ public class ContentData {
 	}
 
 	public void updateVABasedOnSortingStrategy() {
-		ContentGroupList groupList = contentVA.getGroupList();
+//		ContentGroupList groupList = contentVA.getGroupList();
 
 		contentVA = new ContentVirtualArray(Set.CONTENT, contentTree.getRoot().getLeaveIds());
-		contentVA.setGroupList(groupList);
+		contentVA.buildNewGroupList(contentTree.getRoot().getChildren());
+//		contentVA.setGroupList(groupList);
 	}
 
 	public boolean isPartitionallyClustered() {

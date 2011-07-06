@@ -148,7 +148,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 				.registerGLCanvasToAnimator(grouperView.getGLCanvas());
 		ExpandItem item4 = new ExpandItem (bar, SWT.NONE, 2);
 		item4.setText("Grouper");
-		item4.setHeight(200);//composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		item4.setHeight(800);//composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item4.setControl(composite);
 //		item2.setImage(image);
 		
