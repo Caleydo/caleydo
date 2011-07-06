@@ -9,6 +9,7 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.util.collection.Pair;
 
 /**
  * Cluster helper provides methods needed in cluster algorithms such as median, arithmetic mean, etc.
@@ -127,124 +128,125 @@ public class ClusterHelper {
 	// determineNrElementsRec(tree, tree.getRoot());
 	// }
 
-	public static void determineExpressionValue(Tree<ClusterNode> tree, EClustererType eClustererType,
+	public static void calculateClusterAverages(Tree<ClusterNode> tree, EClustererType eClustererType,
 		ISet set) {
 		// FIXME - direct references here - should be parameters
 		StorageVirtualArray storageVA = set.getStorageData(Set.STORAGE).getStorageVA();
 		ContentVirtualArray contentVA = set.getContentData(ISet.CONTENT).getContentVA();
-		determineExpressionValueRec(tree, tree.getRoot(), eClustererType, set, storageVA, contentVA);
+		calculateClusterAveragesRecursive(tree, tree.getRoot(), eClustererType, set, storageVA, contentVA);
+
+		calculateAggregatedUncertainties(tree, set);
+
 	}
 
-	private static float[] determineExpressionValueRec(Tree<ClusterNode> tree, ClusterNode node,
-		EClustererType eClustererType, ISet set, StorageVirtualArray storageVA, ContentVirtualArray contentVA) {
+	private static float[] calculateClusterAveragesRecursive(Tree<ClusterNode> tree, ClusterNode node,
+		EClustererType clustererType, ISet set, StorageVirtualArray storageVA, ContentVirtualArray contentVA) {
 
-		float[] fArExpressionValues;
+		float[] values;
 
 		if (tree.hasChildren(node)) {
 
-			int iNrNodes = tree.getChildren(node).size();
-			int iNrElements = 0;
-			float[][] fArTempValues;
+			int numberOfChildren = tree.getChildren(node).size();
+			int numberOfElements = 0;
+			float[][] tempValues;
 
-			if (eClustererType == EClustererType.CONTENT_CLUSTERING) {
-				// IVirtualArray storageVA = set.getVA(iVAIdStorage);
-				// IVirtualArray storageVA = set.createCompleteStorageVA();
-				iNrElements = storageVA.size();
+			if (clustererType == EClustererType.CONTENT_CLUSTERING) {
+				numberOfElements = storageVA.size();
 			}
 			else {
-				// IVirtualArray contentVA = set.getVA(iVAIdContent);
-				// IVirtualArray contentVA =
-				// GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getVA(EVAType.CONTENT);
-				iNrElements = contentVA.size();
+				numberOfElements = contentVA.size();
 			}
 
-			fArTempValues = new float[iNrNodes][iNrElements];
+			tempValues = new float[numberOfChildren][numberOfElements];
 
 			int cnt = 0;
 
-			for (ClusterNode current : tree.getChildren(node)) {
-				fArTempValues[cnt] =
-					determineExpressionValueRec(tree, current, eClustererType, set, storageVA, contentVA);
+			for (ClusterNode currentNode : tree.getChildren(node)) {
+				tempValues[cnt] =
+					calculateClusterAveragesRecursive(tree, currentNode, clustererType, set, storageVA,
+						contentVA);
 				cnt++;
 			}
 
-			fArExpressionValues = new float[iNrElements];
+			values = new float[numberOfElements];
 
-			for (int i = 0; i < iNrElements; i++) {
+			for (int i = 0; i < numberOfElements; i++) {
 				float means = 0;
 
-				for (int nodes = 0; nodes < iNrNodes; nodes++) {
-					means += fArTempValues[nodes][i];
+				for (int nodes = 0; nodes < numberOfChildren; nodes++) {
+					means += tempValues[nodes][i];
 				}
-				fArExpressionValues[i] = means / iNrNodes;
+				values[i] = means / numberOfChildren;
 			}
 		}
 		// no children --> leaf node
 		else {
 
-			if (eClustererType == EClustererType.CONTENT_CLUSTERING) {
-				// IVirtualArray storageVA = set.getVA(iVAIdStorage);
-				// IVirtualArray storageVA = set.createCompleteStorageVA();
-				fArExpressionValues = new float[storageVA.size()];
+			if (clustererType == EClustererType.CONTENT_CLUSTERING) {
+				values = new float[storageVA.size()];
 
 				int isto = 0;
 				for (Integer iStorageIndex : storageVA) {
-					fArExpressionValues[isto] =
+					values[isto] =
 						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, node.getLeafID());
 					isto++;
 				}
 
 			}
 			else {
-				// IVirtualArray contentVA = set.getVA(iVAIdContent);
-				// IVirtualArray contentVA =
-				// GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getVA(EVAType.CONTENT);
-				fArExpressionValues = new float[contentVA.size()];
+				values = new float[contentVA.size()];
 
 				int icon = 0;
-				for (Integer iContentIndex : contentVA) {
-					fArExpressionValues[icon] =
-						set.get(node.getLeafID()).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+				for (Integer contentIndex : contentVA) {
+					values[icon] =
+						set.get(node.getLeafID()).getFloat(EDataRepresentation.NORMALIZED, contentIndex);
 					icon++;
 				}
 			}
 		}
-		float averageExpressionvalue = ClusterHelper.arithmeticMean(fArExpressionValues);
-		float deviation = ClusterHelper.standardDeviation(fArExpressionValues, averageExpressionvalue);
+		float averageExpressionvalue = ClusterHelper.arithmeticMean(values);
+		float deviation = ClusterHelper.standardDeviation(values, averageExpressionvalue);
 		node.setAverageExpressionValue(averageExpressionvalue);
 		// Setting an float array for the representative element in each node causes a very big xml-file when
 		// exporting the tree
 		// node.setRepresentativeElement(fArExpressionValues);
 		node.setStandardDeviation(deviation);
 
-		return fArExpressionValues;
+		return values;
 	}
 
-	// /**
-	// * Recursive function which determines the number of elements in each node of the tree.
-	// *
-	// * @param tree
-	// * @param node
-	// * current node
-	// * @return number of elements in the current node
-	// */
-	// private static int determineNrElementsRec(Tree<ClusterNode> tree, ClusterNode node) {
-	//
-	// if (tree.hasChildren(node)) {
-	// int temp = 0;
-	//
-	// for (ClusterNode current : tree.getChildren(node)) {
-	// temp += determineNrElementsRec(tree, current);
-	// }
-	//
-	// node.setNrElements(temp);
-	// } else {
-	// node.setNrElements(1);
-	// }
-	//
-	// return node.getNrElements();
-	//
-	// }
+	public static void calculateAggregatedUncertainties(Tree<ClusterNode> tree, ISet set) {
+		ContentVirtualArray contentVA = set.getContentData(ISet.CONTENT).getContentVA();
+		calculateAggregatedUncertaintiesRecursive(tree, tree.getRoot(), set, contentVA);
+	}
+
+	private static Pair<Float, Integer> calculateAggregatedUncertaintiesRecursive(Tree<ClusterNode> tree,
+		ClusterNode node, ISet set, ContentVirtualArray contentVA) {
+
+		Pair<Float, Integer> result = new Pair<Float, Integer>();
+
+		if (node.isLeaf()) {
+			float certainty = set.getNormalizedUncertainty(node.getLeafID());
+			result.setFirst(certainty);
+			result.setSecond(1);
+			node.setUncertainty(certainty);
+			return result;
+		}
+
+		int childCount = 0;
+		float uncertaintySum = 0;
+		for (ClusterNode child : node.getChildren()) {
+			Pair<Float, Integer> childResult =
+				calculateAggregatedUncertaintiesRecursive(tree, child, set, contentVA);
+			uncertaintySum += childResult.getFirst();
+			childCount += childResult.getSecond();
+
+		}
+		node.setUncertainty(uncertaintySum / childCount);
+		result.setFirst(uncertaintySum);
+		result.setSecond(childCount);
+		return result;
+	}
 
 	/**
 	 * Function sorts clusters depending on their average value (in case of genes: expression value).
@@ -266,12 +268,12 @@ public class ClusterHelper {
 			int icontent = 0;
 			fColorSum = new float[iNrExamples];
 
-			for (Integer iContentIndex : examples) {
+			for (Integer contentIndex : examples) {
 
-				for (Integer iStorageIndex : storageVA) {
+				for (Integer storageIndex : storageVA) {
 					float temp =
-						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
-							contentVA.get(iContentIndex));
+						set.get(storageIndex).getFloat(EDataRepresentation.NORMALIZED,
+							contentVA.get(contentIndex));
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;
 					else

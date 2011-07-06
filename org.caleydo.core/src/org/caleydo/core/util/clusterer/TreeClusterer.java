@@ -7,6 +7,7 @@ import java.util.Set;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.ClusterTree;
+import org.caleydo.core.data.graph.tree.ESortingStrategy;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
@@ -65,7 +66,7 @@ public class TreeClusterer
 
 			if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
 				tree = new ClusterTree();
-				tree.setUseDefaultComparator(false);
+//				tree.setSortingStrategy(ESortingStrategy.AVERAGE_VALUE);
 				this.iNrSamples = clusterState.getContentVA().size();
 			}
 			else if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING) {
@@ -358,7 +359,7 @@ public class TreeClusterer
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 
-		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
+		ClusterHelper.calculateClusterAverages(tree, eClustererType, set);
 
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 		indices = tree.getRoot().getLeaveIds();
@@ -502,7 +503,7 @@ public class TreeClusterer
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 
-		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
+		ClusterHelper.calculateClusterAverages(tree, eClustererType, set);
 		// determineExpressionValue(tree, eClustererType);
 
 		indices = tree.getRoot().getLeaveIds();
@@ -720,7 +721,7 @@ public class TreeClusterer
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 
-		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
+		ClusterHelper.calculateClusterAverages(tree, eClustererType, set);
 		// determineExpressionValue(tree, eClustererType);
 
 		indices = tree.getRoot().getLeaveIds();

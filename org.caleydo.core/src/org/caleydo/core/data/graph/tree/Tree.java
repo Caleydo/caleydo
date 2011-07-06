@@ -7,8 +7,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.util.collection.Pair;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
@@ -40,8 +44,8 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	private HashMap<Integer, Integer> mLayerMap;
 
-	boolean useDefaultComparator = true;
-
+	private ESortingStrategy sortingStrategy = ESortingStrategy.DEFAULT;
+	
 	/**
 	 * Constructor that should only be used for de-serialization or for trees synchronized with a previously
 	 * existing tree. For other cases use {@link #Tree(IDType)} instead.
@@ -271,6 +275,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 			alNodes.add(graph.getEdgeTarget(tempEdge));
 		}
 
+
 		Collections.sort(alNodes);
 
 		if (alNodes.isEmpty())
@@ -278,6 +283,8 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 		else
 			return alNodes;
 	}
+	
+	
 
 	/**
 	 * Returns true, when parentNode has children, else false
@@ -364,43 +371,6 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 		rootNode.calculateHierarchyLevels(0);
 	}
 
-	/**
-	 * Walks through all children of a node and determines depth from node downwards.
-	 * 
-	 * @param node
-	 * @return
-	 */
-	// private int determineDepth(NodeType node) {
-	// NodeInfo info = mNodeMap.get(node);
-	// int iDepth = 1;
-	// if (hasChildren(node)) {
-	// // Get Depth of all childs and update our depth to max. depth of childs + 1
-	// for (NodeType currentNode : getChildren(node)) {
-	// int iChildDepth = determineDepth(currentNode);
-	// if (iDepth <= iChildDepth)
-	// iDepth = iChildDepth + 1;
-	// }
-	// }
-	// // store our Depth and return it, leaves would have depth = 1
-	// info.setDepth(iDepth);
-	// return iDepth;
-	// }
-
-	/**
-	 * Determine depth of a specific node.
-	 * 
-	 * @param node
-	 * @return
-	 */
-	@Deprecated
-	public int getDepth(NodeType node) {
-		// update whole tree depth informations if they are dirty
-		if (isDirty()) {
-			makeClean();
-		}
-		// return current depth
-		return node.getDepth();
-	}
 
 	/**
 	 * Returns the number of all nodes in the tree
@@ -429,51 +399,22 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	}
 
 	/**
-	 * Recursively calculates the hierarchy depths of the elements of the sub-hierarchy using the current
-	 * element as root node.
-	 * 
-	 * @return HierarchyDepth of the current element.
+	 * Set the sorting strategy to be used for this tree. The default sorting (based on the cluster ID, which
+	 * is generated on the fly) needs not be set. If a non-default strategy is used the nodes in the tree must
+	 * implement the {@link Comparable#compareTo(Object)} method with options for the sorting strategies
 	 */
-	// private int calculateHierarchyDepth() {
-	//
-	// ArrayList<Node> alChildren = tree.getChildren(node);
-	// iHierarchyDepth = 1;
-	//
-	// if (alChildren == null) {
-	// return 1;
-	// }
-	//
-	// for (Node child : alChildren) {
-	// int iChildDepth = child.calculateHierarchyDepth();
-	// iHierarchyDepth = (iChildDepth >= iHierarchyDepth) ? iChildDepth + 1 : iHierarchyDepth;
-	// }
-	// return iHierarchyDepth;
-	// }
-
-	// public Tree<NodeType> getSubTree(NodeType newRoot)
-	// {
-	// Tree<NodeType> subTree = new Tree<NodeType>();
-	//
-	// }
-
-	/**
-	 * Signal whether to sort the tree using the default sorting (based on the cluster ID, which is generated
-	 * on the fly) or some more intelligent version provided by possible nodes. If this is fals, the nodes in
-	 * the tree should implement the {@link Comparable#compareTo(Object)} method with an option for the
-	 * default as well as the advanced sorting.
-	 */
-	public void setUseDefaultComparator(boolean useDefaultComparator) {
-		this.useDefaultComparator = useDefaultComparator;
+	public void setSortingStrategy(ESortingStrategy sortingStrategy) {
+		this.sortingStrategy = sortingStrategy;
+		
 	}
 
 	/**
-	 * Check whether the default comparator should be used, or a possibly advanced comparison funktion added
-	 * by nodes. See {@link #setUseDefaultComparator(boolean)} for details.
+	 * Get the sorting strategy used in this tree.
 	 * 
 	 * @return
 	 */
-	public boolean isUseDefaultComparator() {
-		return useDefaultComparator;
+	public ESortingStrategy getSortingStrategy() {
+		return sortingStrategy;
 	}
-
+	
 }

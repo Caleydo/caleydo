@@ -220,7 +220,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		rootGroup.calculateHierarchyLevels(0);
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
-		ClusterHelper.determineExpressionValue(tree, EClustererType.STORAGE_CLUSTERING,
+		ClusterHelper.calculateClusterAverages(tree, EClustererType.STORAGE_CLUSTERING,
 				set);
 		set.getStorageData(storageVAType).setStorageTree(tree);
 		dataDomain.createDimensionGroupsFromStorageTree(tree);
@@ -316,7 +316,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		// ClusterHelper.determineHierarchyDepth(tree);
 		// FIXME: do that differently.
 		// set = set.getStorageTree().getRoot().getMetaSet();
-		ClusterHelper.determineExpressionValue(tree, EClustererType.STORAGE_CLUSTERING,
+		ClusterHelper.calculateClusterAverages(tree, EClustererType.STORAGE_CLUSTERING,
 				set);
 		tree.setDirty();
 		tree.createMetaSets((org.caleydo.core.data.collection.set.Set) set);

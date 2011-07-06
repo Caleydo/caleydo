@@ -219,7 +219,7 @@ public class ElementLayout {
 
 	/**
 	 * Get the scaled size of X. This is the absolute size actually used for rendering. It is calculated from
-	 * the size set via one of the set methods.
+	 * the size set via one of the set* methods.
 	 * 
 	 * @return
 	 */
@@ -228,8 +228,8 @@ public class ElementLayout {
 	}
 
 	/**
-	 * Get the scaled size of Z. This is the absolute size actually used for rendering. It is calculated from
-	 * the size set via one of the set methods.
+	 * Get the scaled size of Y. This is the absolute size actually used for rendering. It is calculated from
+	 * the size set via one of the set* methods.
 	 * 
 	 * @return
 	 */

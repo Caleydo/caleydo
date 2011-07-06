@@ -13,7 +13,6 @@ import javax.xml.bind.annotation.XmlTransient;
  * @param <Node>
  *            Concrete type that is stored in the hierarchy.
  */
-//@XmlSeeAlso({ ClusterNode.class })
 public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	implements Comparable<Node> {
 
@@ -45,10 +44,8 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	/** if this node is a leaf, this id is >= 0 */
 	private int leafID = -1;
 
-	private ArrayList<Integer> leaveIDs;
-
-//	@XmlElement
-//	protected boolean useDefaultComparator = true;
+	// @XmlElement
+	// protected boolean useDefaultComparator = true;
 
 	public AHierarchyElement() {
 	}
@@ -321,9 +318,11 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 */
 	@XmlTransient
 	public ArrayList<Integer> getLeaveIds() {
-		if (leaveIDs == null || tree.isDirty())
-			tree.makeClean();
-
+		ArrayList<AHierarchyElement<Node>> leaves = calculateLeaveIDs();
+		ArrayList<Integer> leaveIDs = new ArrayList<Integer>();
+		for (AHierarchyElement<Node> leaf : leaves) {
+			leaveIDs.add(leaf.getLeafID());
+		}
 		return leaveIDs;
 	}
 
@@ -336,18 +335,20 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 		return getID();
 	}
 
-	ArrayList<Integer> calculateLeaveIDs() {
-		leaveIDs = new ArrayList<Integer>();
+	ArrayList<AHierarchyElement<Node>> calculateLeaveIDs() {
+		ArrayList<AHierarchyElement<Node>> leaves = new ArrayList<AHierarchyElement<Node>>();
 		ArrayList<Node> children = tree.getChildren(node);
 		if (children == null) {
-			leaveIDs.add(leafID);
-			return leaveIDs;
+			// this is a child
+			leaves.add(this);
+			return leaves;
 		}
 		else {
 			for (Node child : children) {
-				leaveIDs.addAll(child.calculateLeaveIDs());
+				ArrayList<AHierarchyElement<Node>> childsLeaves = child.calculateLeaveIDs();
+				leaves.addAll(childsLeaves);
 			}
-			return leaveIDs;
+			return leaves;
 		}
 	}
 
@@ -393,15 +394,11 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 		}
 	}
 
-	/**
-	 * Choose whether comparisons should be based on the default comparator (the ID) or some custom comparator
-	 * defined in a sub-class
-	 * 
-	 * @param compareAverageExpressionValues
-	 *            if true expression values are used, else IDs
-	 */
-//	public void setUseDefaultComparator(boolean useDefaultComparator) {
-//		this.useDefaultComparator = useDefaultComparator;
-//	}
+	public boolean isLeaf() {
+		if (getLeafID() != -1)
+			return true;
+		else
+			return false;
 
+	}
 }

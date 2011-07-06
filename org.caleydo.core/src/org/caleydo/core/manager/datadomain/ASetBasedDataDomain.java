@@ -15,6 +15,7 @@ import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.filter.ContentFilterManager;
 import org.caleydo.core.data.filter.StorageFilterManager;
 import org.caleydo.core.data.graph.tree.ClusterTree;
+import org.caleydo.core.data.graph.tree.ESortingStrategy;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
@@ -44,6 +45,7 @@ import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
 import org.caleydo.core.manager.mapping.IDMappingManager;
+import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererType;
@@ -334,6 +336,14 @@ public abstract class ASetBasedDataDomain
 			return;
 
 		set.cluster(clusterState);
+
+		ContentData contentData = set.getContentData(Set.CONTENT);
+		ClusterHelper.calculateAggregatedUncertainties(contentData.getContentTree(), set);
+		ClusterHelper.calculateClusterAverages(contentData.getContentTree(), EClustererType.CONTENT_CLUSTERING, set);
+		contentData.getContentTree().setSortingStrategy(ESortingStrategy.CERTAINTY);
+		contentData.updateVABasedOnSortingStrategy();
+
+	
 
 		// This should be done to avoid problems with group info in HHM
 
@@ -812,6 +822,7 @@ public abstract class ASetBasedDataDomain
 	 * 
 	 * @return
 	 */
+
 	// public RelationAnalyzer getContentRelationAnalyzer() {
 	// return contentRelationAnalyzer;
 	// }
@@ -834,6 +845,7 @@ public abstract class ASetBasedDataDomain
 			}
 		}
 	}
+
 
 	@Override
 	public java.util.Set<ADimensionGroupData> getDimensionGroups() {

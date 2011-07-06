@@ -3,6 +3,7 @@ package org.caleydo.core.data.collection.set;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.graph.tree.ClusterTree;
+import org.caleydo.core.data.graph.tree.ESortingStrategy;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
@@ -102,7 +103,6 @@ public class ContentData {
 			int cnt = 0;
 			// int iOffset = 0;
 			contentTree = new ClusterTree(contentIDIdType);
-			contentTree.setUseDefaultComparator(false);
 			int clusterNr = 0;
 			ClusterNode root = new ClusterNode(contentTree, "Root", clusterNr++, true, -1);
 			contentTree.setRootNode(root);
@@ -134,7 +134,13 @@ public class ContentData {
 		else if (contentVA != null && contentTree != null) {
 			contentVA.buildNewGroupList(contentTree.getRoot().getChildren());
 		}
-		contentTree.setUseDefaultComparator(false);
+	}
+
+	public void updateVABasedOnSortingStrategy() {
+		ContentGroupList groupList = contentVA.getGroupList();
+
+		contentVA = new ContentVirtualArray(Set.CONTENT, contentTree.getRoot().getLeaveIds());
+		contentVA.setGroupList(groupList);
 	}
 
 	public boolean isPartitionallyClustered() {

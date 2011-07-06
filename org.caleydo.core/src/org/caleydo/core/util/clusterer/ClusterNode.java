@@ -16,6 +16,7 @@ import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.ClusterTree;
+import org.caleydo.core.data.graph.tree.ESortingStrategy;
 import org.caleydo.core.data.selection.SelectionType;
 
 /**
@@ -32,11 +33,6 @@ public class ClusterNode
 	extends AHierarchyElement<ClusterNode>
 	implements IHierarchyData<ClusterNode>, Comparable<ClusterNode> {
 
-	// @XmlAttribute
-	// private String nodeName;
-
-	// @XmlElement
-	// private int iNrElements;
 	@XmlElement
 	private Vec3f vPos;
 	@XmlElement
@@ -44,19 +40,16 @@ public class ClusterNode
 	@XmlElement
 	private boolean isRootNode;
 	@XmlElement
-	private float fAverageExpressionValue;
+	private float averageExpressionValue;
 	@XmlElement
-	private float fStandardDeviation;
+	private float uncertainty;
+	@XmlElement
+	private float standardDeviation;
 	@XmlTransient
-	private boolean bIsPartOfSubTree = false;
+	private boolean isPartOfSubTree = false;
 	private Vec3f vPosSubTree;
 	@XmlTransient
 	private MetaSet metaSet;
-//	@XmlTransient
-//	private ClusterTree tree;
-
-	// @XmlElement
-	// private float[] fArRepresentativeElement;
 
 	public ClusterNode() {
 	}
@@ -76,15 +69,14 @@ public class ClusterNode
 	 *            the id of the leaf, or -1 if this is not a leaf
 	 */
 	public ClusterNode(ClusterTree tree, String label, int clusterNr, boolean isRootNode, int leafID) {
-
 		super(tree);
 		this.label = label;
 		this.id = clusterNr;
 		super.setLeafID(leafID);
 		this.isRootNode = isRootNode;
 		this.selectionType = SelectionType.NORMAL;
-		this.fAverageExpressionValue = 0f;
-		this.fStandardDeviation = 0f;
+		this.averageExpressionValue = 0f;
+		this.standardDeviation = 0f;
 
 	}
 
@@ -94,7 +86,7 @@ public class ClusterNode
 	 * @param set
 	 */
 	public <SetType extends Set> void createMetaSet(SetType set) {
-		if(metaSet != null)
+		if (metaSet != null)
 			return;
 		metaSet = new MetaSet(set, (ClusterTree) tree, this);
 		metaSet.setLabel(label);
@@ -199,27 +191,27 @@ public class ClusterNode
 	}
 
 	public void setAverageExpressionValue(float fAverageExpressionValue) {
-		this.fAverageExpressionValue = fAverageExpressionValue;
+		this.averageExpressionValue = fAverageExpressionValue;
 	}
 
 	public float getAverageExpressionValue() {
-		return fAverageExpressionValue;
+		return averageExpressionValue;
 	}
 
 	public void setStandardDeviation(float fStandardDeviation) {
-		this.fStandardDeviation = fStandardDeviation;
+		this.standardDeviation = fStandardDeviation;
 	}
 
 	public float getStandardDeviation() {
-		return fStandardDeviation;
+		return standardDeviation;
 	}
 
 	public void setIsPartOfSubTree(boolean bIsPartOfSubTree) {
-		this.bIsPartOfSubTree = bIsPartOfSubTree;
+		this.isPartOfSubTree = bIsPartOfSubTree;
 	}
 
 	public boolean isPartOfSubTree() {
-		return bIsPartOfSubTree;
+		return isPartOfSubTree;
 	}
 
 	public void setPosSubTree(Vec3f vPosSubTree) {
@@ -228,6 +220,10 @@ public class ClusterNode
 
 	public Vec3f getPosSubTree() {
 		return vPosSubTree;
+	}
+
+	public void setUncertainty(float uncertainty) {
+		this.uncertainty = uncertainty;
 	}
 
 	@Override
@@ -258,12 +254,23 @@ public class ClusterNode
 
 	@Override
 	public int compareTo(ClusterNode node) {
-		if (tree.isUseDefaultComparator())
-			return super.compareTo(node);
+		ESortingStrategy strategy = tree.getSortingStrategy();
+		
+		switch (strategy) {
+			case AVERAGE_VALUE:
+				if (averageExpressionValue < node.averageExpressionValue)
+					return 1;
+				else
+					return -1;
+			case CERTAINTY:
+				if (uncertainty < node.uncertainty)
+					return 1;
+				else
+					return -1;
+			case DEFAULT:
+			default:
+				return super.compareTo(node);
+		}
 
-		if (fAverageExpressionValue < node.fAverageExpressionValue)
-			return 1;
-		else
-			return -1;
 	}
 }

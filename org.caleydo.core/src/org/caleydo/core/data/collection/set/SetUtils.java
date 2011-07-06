@@ -22,6 +22,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.graph.tree.ClusterTree;
+import org.caleydo.core.data.graph.tree.ESortingStrategy;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
@@ -433,7 +434,7 @@ public class SetUtils {
 				try {
 
 					tree = treePorter.importTree(geneTreeFileName, set.getDataDomain().getContentIDType());
-					tree.setUseDefaultComparator(false);
+//					tree.setSortingStrategy(ESortingStrategy.AVERAGE_VALUE);
 					set.getContentData(ISet.CONTENT).setContentTree(tree);
 				}
 				catch (JAXBException e) {

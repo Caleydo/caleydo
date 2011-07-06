@@ -18,6 +18,8 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.Status;
 
 /**
  * A Virtual Array provides an association between a modifiable index in the virtual arrays and the static
@@ -260,7 +262,13 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 			// System.out.println(indices);
 		}
 		for (int count = indices.size() - 1; count >= 0; count--) {
-			remove(indices.get(count));
+			int index = indices.get(count);
+			if (index < 0 || index > virtualArray.size()) {
+				Logger.log(new Status(Status.WARNING, "core", "When removing element in VA, id: " + iElement
+					+ " does not map to an index, produces: " + index));
+				continue;
+			}
+			remove(index);
 		}
 	}
 
@@ -492,17 +500,18 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		Group group = null;
 		int iCounter = 0;
 		int offset = 0;
-		
+
 		// throws exception
 		// CLEMENS HAS CHANGED THIS. FIXME ALEX
 		/*
 		 * for (int i = 0; i < groupID; i++) { iOffset += groupList.get(i).getSize(); }
 		 */
-		
+
 		for (Group igroup : groupList) {
 			if (igroup.getID() < groupID) {
 				offset += igroup.getSize();
-			} else if (igroup.getID() == groupID) {
+			}
+			else if (igroup.getID() == groupID) {
 				group = igroup;
 				break;
 			}

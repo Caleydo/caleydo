@@ -78,7 +78,7 @@ public class Set
 	ASetBasedDataDomain dataDomain;
 
 	private boolean containsUncertaintyData;
-	
+
 	private float[] aggregatedNormalizedUncertainties;
 
 	private float[] aggregatedRawUncertainties;
@@ -932,34 +932,35 @@ public class Set
 
 	@Override
 	public boolean containsUncertaintyData() {
-        return containsUncertaintyData;
-    }
-	
+		return containsUncertaintyData;
+	}
+
 	@Override
 	public void setContainsUncertaintyData(boolean containsUncertaintyData) {
 		this.containsUncertaintyData = containsUncertaintyData;
 	}
-	
+
 	@Override
 	public float getNormalizedUncertainty(int contentIndex) {
 
 		if (aggregatedRawUncertainties == null) {
-//			calculateRawAverageUncertainty();
-//			calculateNormalizedAverageUncertainty(2, 3);
-			 throw new IllegalStateException("Certainty has not been calculated yet.");
+			// calculateRawAverageUncertainty();
+			// calculateNormalizedAverageUncertainty(2, 3);
+			throw new IllegalStateException("Certainty has not been calculated yet.");
+
 		}
-	
+
 		return aggregatedNormalizedUncertainties[contentIndex];
 	}
 
 	@Override
 	public float[] getNormalizedUncertainty() {
 
-//		if (aggregatedRawUncertainties == null) {
-//			calculateRawAverageUncertainty();
-//			// throw new IllegalStateException("Certainty has not been calculated yet.");
-//		}
-		
+		// if (aggregatedRawUncertainties == null) {
+		// calculateRawAverageUncertainty();
+		// // throw new IllegalStateException("Certainty has not been calculated yet.");
+		// }
+
 		return aggregatedNormalizedUncertainties;
 	}
 
