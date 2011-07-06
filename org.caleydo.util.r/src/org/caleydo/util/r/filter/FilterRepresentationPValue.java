@@ -188,7 +188,7 @@ public class FilterRepresentationPValue extends
 				contentVADelta
 						.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));
 		}
-		subFilter.setDelta(contentVADelta);
+		subFilter.setVADelta(contentVADelta);
 	}
 
 	@Override

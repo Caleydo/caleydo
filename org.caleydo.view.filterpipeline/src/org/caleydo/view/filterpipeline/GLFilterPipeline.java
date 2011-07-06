@@ -296,6 +296,18 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 					gl.glVertex2f(pos.x() + filterSize.x(), pos.y() + fullHeightRight);
 					gl.glVertex2f(pos.x() + filterSize.x(), pos.y());
 					gl.glEnd();
+
+//					float fullUncertaintyHeightRight = ((filterList.get(0).getInput()
+//							.size() - filter.getFilter().getVADeltaUncertainty().size()) * filterSize
+//							.y()) / 100.f;
+//
+//					gl.glBegin(GL2.GL_QUADS);
+//					gl.glColor4f(153 / 255.f, 213 / 255.f, 148 / 255.f, 0.3f);
+//					gl.glVertex2f(pos.x(), pos.y());
+//					gl.glVertex2f(pos.x(), pos.y() + fullUncertaintyHeightRight);
+//					gl.glVertex2f(pos.x() + filterSize.x(), pos.y() + fullUncertaintyHeightRight);
+//					gl.glVertex2f(pos.x() + filterSize.x(), pos.y());
+//					gl.glEnd();
 				}
 
 				filter.getRepresentation().updateSelections(selectionManager);
@@ -661,7 +673,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		ISet set = dataDomain.getSet();
 		if (!set.containsUncertaintyData())
 			return;
-		
+
 		if (set.getNormalizedUncertainty() != null)
 			return;
 

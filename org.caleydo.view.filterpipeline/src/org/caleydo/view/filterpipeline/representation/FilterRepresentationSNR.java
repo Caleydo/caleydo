@@ -40,11 +40,11 @@ public class FilterRepresentationSNR extends
 
 	private Histogram histogram;
 	
-	private float invalidThreshold = 1;
-	private float invalidThresholdMax = 2;
+	private float invalidThreshold = 2;
+	private float invalidThresholdMax = 5;
 	
-	private float validThreshold = 2;
-	private float validThresholdMax = 4;
+	private float validThreshold = 3;
+	private float validThresholdMax = 5;
 	
 	public boolean create() {
 		
@@ -239,19 +239,30 @@ public class FilterRepresentationSNR extends
 
 		ContentVADelta contentVADelta = new ContentVADelta(ISet.CONTENT, subFilter
 				.getDataDomain().getContentIDType());
+
+		ContentVADelta uncertaintyContentVADelta = new ContentVADelta(ISet.CONTENT, subFilter
+				.getDataDomain().getContentIDType());
+		
 		ContentVirtualArray contentVA = subFilter.getDataDomain()
 				.getContentFilterManager().getBaseVA();
 
 		float[] rawUncertainty = ((FilterRepresentationSNR) subFilter.getFilterRep())
 				.getSet().getRawUncertainty();
-
+		
 		for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 
-			if (rawUncertainty != null && rawUncertainty[contentIndex] < invalidThreshold)
+			float value = rawUncertainty[contentIndex];
+			if (value <= validThreshold)
 				contentVADelta
 						.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));
+			
+			if (value <= invalidThreshold && value > validThreshold)
+				uncertaintyContentVADelta
+				.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));				
 		}
-		subFilter.setDelta(contentVADelta);
+		
+		subFilter.setVADelta(contentVADelta);
+		subFilter.setVADeltaUncertainty(uncertaintyContentVADelta);
 	}
 	
 

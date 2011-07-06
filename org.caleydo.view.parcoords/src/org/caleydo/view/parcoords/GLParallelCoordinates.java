@@ -1774,7 +1774,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	private void triggerStorageFilterEvent(StorageVADelta delta, String label) {
 
 		StorageFilter filter = new StorageFilter();
-		filter.setDelta(delta);
+		filter.setVADelta(delta);
 		filter.setLabel(label);
 
 		NewStorageFilterEvent filterEvent = new NewStorageFilterEvent();
@@ -1788,7 +1788,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	private void triggerContentFilterEvent(ContentVADelta delta, String label) {
 
 		ContentFilter filter = new ContentFilter();
-		filter.setDelta(delta);
+		filter.setVADelta(delta);
 		filter.setLabel(label);
 		filter.setDataDomain(dataDomain);
 

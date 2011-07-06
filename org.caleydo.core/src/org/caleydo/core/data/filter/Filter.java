@@ -15,6 +15,8 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 
 	private DeltaType vaDelta;
+	
+	private DeltaType vaDeltaUncertain;
 
 	private String label = "<unspecified>";
 
@@ -24,7 +26,7 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 
 	protected ASetBasedDataDomain dataDomain;
 
-	public void setDelta(DeltaType vaDelta) {
+	public void setVADelta(DeltaType vaDelta) {
 		this.vaDelta = vaDelta;
 	}
 
@@ -32,6 +34,14 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 		return vaDelta;
 	}
 
+	public void setVADeltaUncertainty(DeltaType vaDeltaUncertain) {
+		this.vaDeltaUncertain = vaDeltaUncertain;
+	}
+	
+	public DeltaType getVADeltaUncertainty() {
+		return vaDeltaUncertain;
+	}
+	
 	public void setFilterRep(AFilterRepresentation<DeltaType, ?> filterRep) {
 		this.filterRep = filterRep;
 	}

@@ -28,7 +28,7 @@ public class ContentMetaOrFilter
 	}
 	
 	@Override
-	public void setDelta(ContentVADelta vaDelta) {
+	public void setVADelta(ContentVADelta vaDelta) {
 		throw new RuntimeException("ContentMetaOrFilter::setDelta() not allowed."); 
 	}
 	
@@ -60,7 +60,7 @@ public class ContentMetaOrFilter
 				vaDelta.add(vaDeltaItem);
 		}
 		
-		super.setDelta(vaDelta);
+		super.setVADelta(vaDelta);
 	}
 
 }

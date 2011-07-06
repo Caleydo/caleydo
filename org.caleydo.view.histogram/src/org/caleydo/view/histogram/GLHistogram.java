@@ -104,7 +104,6 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	public void init(GL2 gl) {
-
 	}
 
 	@Override
