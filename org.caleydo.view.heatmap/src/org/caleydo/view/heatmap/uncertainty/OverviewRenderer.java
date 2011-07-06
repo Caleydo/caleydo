@@ -107,7 +107,7 @@ public class OverviewRenderer extends LayoutRenderer {
 				}
 				
 				// Initially the first cluster gets selected
-				if (clusterIndex == 0)
+				if (clusterIndex == 0 && detailHeatMap != null)
 					detailHeatMap.setContentVA(clusterVA);
 			}
 		} else {
@@ -160,8 +160,22 @@ public class OverviewRenderer extends LayoutRenderer {
 		
 		return clusterLayoutList.get(selectedClusterIndex).getSizeScaledY();
 	}
+
+
+	public ArrayList<ClusterRenderer> getClusterRendererList() {
+		ArrayList<ClusterRenderer> ret = new ArrayList<ClusterRenderer>();
+		for (Row layout: clusterLayoutList) {
+			ret.add((ClusterRenderer)layout.getRenderer());
+		}
+		if (ret.size() == 0) {
+			ret.add(clusterRenderer);
+		}
+		return ret;
+	}
+
 	
 	public void setDetailHeatMap(GLHeatMap detailHeatMap) {
 		this.detailHeatMap = detailHeatMap;
 	}
+
 }

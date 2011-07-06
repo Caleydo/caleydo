@@ -33,11 +33,115 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 	private ArrayList<Integer> numberSamples = new ArrayList<Integer>();
 
-	public void init(ISet set, ContentVirtualArray contentVA,
-			StorageVirtualArray storageVA, ColorMapper colorMapper) {
+	private boolean orientation = true;
 
+	private boolean alternativeUncertainty = false;
+
+	private StorageVirtualArray storageVA;
+
+	private ContentVirtualArray contentVA;
+
+	private ISet set;
+
+	private boolean updateTexture = false;
+
+	private float[] dark;
+
+	private float[] light;
+
+	public void setOrientationLeft(boolean tr) {
+		orientation = tr;
+	}
+
+	public void updateTexture(ArrayList<Float> uncertaintyVA) {
+
+		if (uncertaintyVA == null) {
+		} else {
+			int textureWidth = storageVA.size();
+			int textureHeight = numberOfElements = uncertaintyVA.size();
+
+			numberOfTextures = (int) Math.ceil((double) numberOfElements
+					/ MAX_SAMPLES_PER_TEXTURE);
+
+			if (numberOfTextures <= 1)
+				samplesPerTexture = numberOfElements;
+			else
+				samplesPerTexture = MAX_SAMPLES_PER_TEXTURE;
+
+			textures.clear();
+			numberSamples.clear();
+
+			Texture tempTexture;
+
+			samplesPerTexture = (int) Math.ceil((double) textureHeight
+					/ numberOfTextures);
+
+			FloatBuffer[] floatBuffer = new FloatBuffer[numberOfTextures];
+
+			for (int iTexture = 0; iTexture < numberOfTextures; iTexture++) {
+
+				if (iTexture == numberOfTextures - 1) {
+					numberSamples.add(textureHeight - samplesPerTexture
+							* iTexture);
+					floatBuffer[iTexture] = FloatBuffer
+							.allocate((textureHeight - samplesPerTexture
+									* iTexture)
+									* textureWidth * 4);
+				} else {
+					numberSamples.add(samplesPerTexture);
+					floatBuffer[iTexture] = FloatBuffer
+							.allocate(samplesPerTexture * textureWidth * 4);
+				}
+			}
+
+			int contentCount = 0;
+			int textureCounter = 0;
+			for (float uncertainty : uncertaintyVA) {
+				contentCount++;
+				for (int i = 0; i < textureWidth; i++) {
+					float[] rgba = new float[4];
+					if ((float) i / textureWidth > uncertainty) {
+						rgba = light;
+					} else {
+						rgba = dark;
+					}
+
+					floatBuffer[textureCounter].put(rgba);
+				}
+				if (contentCount >= numberSamples.get(textureCounter)) {
+					floatBuffer[textureCounter].rewind();
+
+					TextureData texData = new TextureData(
+							GLProfile.getDefault(),
+							GL2.GL_RGBA /* internalFormat */,
+							textureWidth /* height */,
+							numberSamples.get(textureCounter) /* width */,
+							0 /* border */, GL2.GL_RGBA /* pixelFormat */,
+							GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
+							false /* dataIsCompressed */,
+							false /* mustFlipVertically */,
+							floatBuffer[textureCounter], null);
+
+					tempTexture = TextureIO.newTexture(0);
+					tempTexture.updateImage(texData);
+
+					textures.add(tempTexture);
+
+					textureCounter++;
+					contentCount = 0;
+				}
+			}
+		}
+	}
+
+	public void initTextures(ISet set, ContentVirtualArray contentVA,
+			StorageVirtualArray storageVA) {
 		int textureWidth = storageVA.size();
 		int textureHeight = numberOfElements = contentVA.size();
+
+		this.storageVA = storageVA;
+		this.contentVA = contentVA;
+		this.set = set;
 
 		numberOfTextures = (int) Math.ceil((double) numberOfElements
 				/ MAX_SAMPLES_PER_TEXTURE);
@@ -52,7 +156,8 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 		Texture tempTexture;
 
-		samplesPerTexture = (int) Math.ceil((double) textureHeight / numberOfTextures);
+		samplesPerTexture = (int) Math.ceil((double) textureHeight
+				/ numberOfTextures);
 
 		FloatBuffer[] floatBuffer = new FloatBuffer[numberOfTextures];
 
@@ -75,15 +180,16 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 		for (Integer contentIndex : contentVA) {
 			contentCount++;
 
+
 			float uncertainty = set.getNormalizedUncertainty(contentIndex);
 
 			for (int i = 0; i < textureWidth; i++) {
 				float[] rgba = new float[4];
 				if ((float) i / textureWidth > uncertainty) {
-					rgba = GLUncertaintyHeatMap.light;
+					rgba = light;
 				} else {
-					rgba = GLUncertaintyHeatMap.dark;
-					}
+					rgba = dark;
+				}
 
 				floatBuffer[textureCounter].put(rgba);
 			}
@@ -91,11 +197,14 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 				floatBuffer[textureCounter].rewind();
 
 				TextureData texData = new TextureData(GLProfile.getDefault(),
-						GL2.GL_RGBA /* internalFormat */, textureWidth /* height */,
-						numberSamples.get(textureCounter) /* width */, 0 /* border */,
-						GL2.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
-						false /* mipmap */, false /* dataIsCompressed */,
-						false /* mustFlipVertically */, floatBuffer[textureCounter], null);
+						GL2.GL_RGBA /* internalFormat */,
+						textureWidth /* height */,
+						numberSamples.get(textureCounter) /* width */,
+						0 /* border */, GL2.GL_RGBA /* pixelFormat */,
+						GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
+						false /* dataIsCompressed */,
+						false /* mustFlipVertically */,
+						floatBuffer[textureCounter], null);
 
 				tempTexture = TextureIO.newTexture(0);
 				tempTexture.updateImage(texData);
@@ -106,6 +215,14 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 				contentCount = 0;
 			}
 		}
+	}
+
+	public void init(ISet set, ContentVirtualArray contentVA,
+			StorageVirtualArray storageVA, ColorMapper colorMapper) {
+
+		dark = GLUncertaintyHeatMap.darkDark;
+		light = GLUncertaintyHeatMap.lightLight;
+		initTextures(set, contentVA, storageVA);
 	}
 
 	@Override
@@ -119,16 +236,16 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 		float elementHeight = y / numberOfElements;
 		float step = 0;
 
-		gl.glColor4f(1f, 1f, 0f, 1f);
-
 		for (int i = 0; i < numberOfTextures; i++) {
 
 			step = elementHeight * numberSamples.get(numberOfTextures - i - 1);
 
 			textures.get(numberOfTextures - i - 1).enable();
 			textures.get(numberOfTextures - i - 1).bind();
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
+			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S,
+					GL2.GL_CLAMP);
+			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T,
+					GL2.GL_CLAMP);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
 					GL2.GL_NEAREST);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
@@ -139,21 +256,42 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 			// gl.glPushName(pickingManager.getPickingID(uniqueID,
 			// EPickingType.HIER_HEAT_MAP_TEXTURE_SELECTION, numberOfTextures -
 			// i));
+			float x1, x2 = 0;
+			if (orientation) {
+				x1 = 0;
+				x2 = x;
+			} else {
+				x1 = x;
+				x2 = 0;
+			}
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2d(texCoords.left(), texCoords.top());
-			gl.glVertex3f(0, yOffset, 0);
+			gl.glVertex3f(x1, yOffset, 0);
 			gl.glTexCoord2d(texCoords.left(), texCoords.bottom());
-			gl.glVertex3f(0, yOffset + step, 0);
+			gl.glVertex3f(x1, yOffset + step, 0);
 			gl.glTexCoord2d(texCoords.right(), texCoords.bottom());
-			gl.glVertex3f(x, yOffset + step, 0);
+			gl.glVertex3f(x2, yOffset + step, 0);
 			gl.glTexCoord2d(texCoords.right(), texCoords.top());
-			gl.glVertex3f(x, yOffset, 0);
+			gl.glVertex3f(x2, yOffset, 0);
 			gl.glEnd();
 			// gl.glPopName();
 
 			yOffset += step;
 			textures.get(numberOfTextures - i - 1).disable();
 		}
+	}
+
+	public void enableAlternativeUncertainty(boolean b) {
+		alternativeUncertainty = b;
+	}
+
+	public void setDarkColor(float[] dark) {
+		this.dark = dark;
+	}
+
+	public void setLightColor(float[] light) {
+		this.light = light;
+
 	}
 
 }

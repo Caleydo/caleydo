@@ -39,7 +39,7 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		barPlotLayout = new ElementLayout("BarPlotLayout");
 		
 		barPlotLayout.setRenderer(barPlotRenderer);
-		barPlotLayout.setAbsoluteSizeX(0.9f);
+		barPlotLayout.setAbsoluteSizeX(0.5f);
 		//barPlotLayout.setPixelGLConverter(heatMap.getParentGLCanvas().getPixelGLConverter());
 		//barPlotLayout.setPixelSizeX(60);
 		//barPlotLayout.addForeGroundRenderer(contentSelectionRenderer);

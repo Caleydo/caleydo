@@ -111,7 +111,7 @@ public class BarPlotRenderer extends AContentRenderer {
 		// uncertain
 
 		gl.glBegin(GL2.GL_POLYGON);
-		gl.glColor4fv(GLUncertaintyHeatMap.dark, 0);
+		gl.glColor4fv(GLUncertaintyHeatMap.darkDark, 0);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition + fFieldHeight,
@@ -121,7 +121,7 @@ public class BarPlotRenderer extends AContentRenderer {
 
 		// certain
 		gl.glBegin(GL2.GL_POLYGON);
-		gl.glColor4fv(GLUncertaintyHeatMap.light, 0);
+		gl.glColor4fv(GLUncertaintyHeatMap.lightLight, 0);
 		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + certainWidth + unCertainWidth, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + certainWidth + unCertainWidth, fYPosition + fFieldHeight,
