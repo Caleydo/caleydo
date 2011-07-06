@@ -100,6 +100,7 @@ public class Set
 		ClusterNode root = new ClusterNode(tree, "Root", 1, true, -1);
 		tree.setRootNode(root);
 		defaultStorageData.setStorageTree(tree);
+		dataDomain.createDimensionGroupsFromStorageTree(tree);
 		// hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
 	}
 

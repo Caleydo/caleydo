@@ -150,6 +150,7 @@ public class ClusterManager {
 		}
 		else {
 			result.storageResult.setStorageTree(tempResult.tree);
+			set.getDataDomain().createDimensionGroupsFromStorageTree(tempResult.tree);
 			result.storageResult.setDefaultTree(false);
 		}
 		result.storageResult.getStorageTree().initializeIDTypes(clusterState.getContentIDType());

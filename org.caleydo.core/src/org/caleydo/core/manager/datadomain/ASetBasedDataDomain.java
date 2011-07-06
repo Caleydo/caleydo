@@ -14,6 +14,7 @@ import org.caleydo.core.data.collection.set.ContentData;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.filter.ContentFilterManager;
 import org.caleydo.core.data.filter.StorageFilterManager;
+import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
@@ -24,6 +25,7 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.SetBasedDimensionGroupData;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
@@ -100,7 +102,7 @@ public abstract class ASetBasedDataDomain
 	protected ContentFilterManager contentFilterManager;
 	protected StorageFilterManager storageFilterManager;
 
-//	private RelationAnalyzer contentRelationAnalyzer;
+	// private RelationAnalyzer contentRelationAnalyzer;
 
 	@XmlTransient
 	private HashMap<Integer, ISet> otherMetaSets = new HashMap<Integer, ISet>();
@@ -119,7 +121,7 @@ public abstract class ASetBasedDataDomain
 	}
 
 	private void init() {
-		
+
 		dimensionGroups = new HashSet<ADimensionGroupData>();
 
 		assignIDCategories();
@@ -406,7 +408,7 @@ public abstract class ASetBasedDataDomain
 		else {
 			set = this.set.getStorageData(Set.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
 		}
-		if(set == null)
+		if (set == null)
 			set = otherMetaSets.get(setID);
 
 		set.setContentVA(vaType, virtualArray.clone());
@@ -795,14 +797,14 @@ public abstract class ASetBasedDataDomain
 	 * Create a new {@link RelationAnalyzer} for contentVAs of this DataDomain. The contentRelationAnalyzer
 	 * runs in a separate thread and listens to {@link ReplaceContentVAEvent}s to do its business.
 	 */
-//	public void createContentRelationAnalyzer() {
-//		if (contentRelationAnalyzer != null)
-//			return;
-//		contentRelationAnalyzer = new RelationAnalyzer(this);
-//
-//		Thread thread = new Thread(contentRelationAnalyzer, "Relation Analyzer");
-//		thread.start();
-//	}
+	// public void createContentRelationAnalyzer() {
+	// if (contentRelationAnalyzer != null)
+	// return;
+	// contentRelationAnalyzer = new RelationAnalyzer(this);
+	//
+	// Thread thread = new Thread(contentRelationAnalyzer, "Relation Analyzer");
+	// thread.start();
+	// }
 
 	/**
 	 * Returns the {@link RelationAnalyzer} of this dataDomain, or null if it has not been created (via
@@ -810,21 +812,39 @@ public abstract class ASetBasedDataDomain
 	 * 
 	 * @return
 	 */
-//	public RelationAnalyzer getContentRelationAnalyzer() {
-//		return contentRelationAnalyzer;
-//	}
-	
-	
+	// public RelationAnalyzer getContentRelationAnalyzer() {
+	// return contentRelationAnalyzer;
+	// }
+
+	public void createDimensionGroupsFromStorageTree(ClusterTree tree) {
+		dimensionGroups.clear();
+		if (tree == null)
+			return;
+		ClusterNode rootNode = tree.getRoot();
+		if(rootNode != null && rootNode.hasChildren())
+			createDimensionGroupsFromStorageTree(rootNode);
+	}
+
+	private void createDimensionGroupsFromStorageTree(ClusterNode parent) {
+
+		for (ClusterNode child : parent.getChildren()) {
+			if(child.hasChildren()) {
+				dimensionGroups.add(new SetBasedDimensionGroupData(this, child.getMetaSet()));
+				createDimensionGroupsFromStorageTree(child);
+			}
+		}
+	}
+
 	@Override
 	public java.util.Set<ADimensionGroupData> getDimensionGroups() {
 		return dimensionGroups;
 	}
-	
+
 	@Override
 	public void setDimensionGroups(java.util.Set<ADimensionGroupData> dimensionGroups) {
 		this.dimensionGroups = dimensionGroups;
 	}
-	
+
 	@Override
 	public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
 		dimensionGroups.add(dimensionGroup);

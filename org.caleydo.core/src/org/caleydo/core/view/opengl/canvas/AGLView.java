@@ -17,6 +17,7 @@ import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
@@ -1332,6 +1333,11 @@ public abstract class AGLView
 	
 	//FIXME: The location of this method probably has to be changed.
 	public Set<IDataDomain> getDataDomains() {
+		return null;
+	}
+	
+	//FIXME: The location of this method probably has to be changed.
+	public Set<ADimensionGroupData> getDimensionGroups() {
 		return null;
 	}
 }

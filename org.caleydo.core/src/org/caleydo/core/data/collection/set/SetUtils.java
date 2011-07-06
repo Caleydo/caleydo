@@ -458,6 +458,7 @@ public class SetUtils {
 				try {
 					tree = treePorter.importStorageTree(experimentsTreeFileName);
 					set.getStorageData(Set.STORAGE).setStorageTree(tree);
+					set.getDataDomain().createDimensionGroupsFromStorageTree(tree);
 				}
 				catch (JAXBException e) {
 					e.printStackTrace();

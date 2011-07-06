@@ -109,37 +109,37 @@ public class ConnectionBandRenderer {
 
 		// Band border
 		gl.glLineWidth(1);
-		
+
 		if (highlight)
 			gl.glColor4f(color[0], color[1], color[2], 0.8f);
 		else
-			gl.glColor4f(color[0], color[1], color[2], opacity*2);
-		
-		 gl.glBegin(GL2.GL_LINES);
-		 gl.glVertex3f(leftTopPos[0], leftTopPos[1], 0);
-		 gl.glVertex3f(rightTopPos[0], rightTopPos[1], 0);
-		 gl.glEnd();
-	 
-		 gl.glBegin(GL2.GL_LINES);
-		 gl.glVertex3f(rightBottomPos[0], rightBottomPos[1], 0);
-		 gl.glVertex3f(leftBottomPos[0], leftBottomPos[1], 0);
-		 gl.glEnd();
+			gl.glColor4f(color[0], color[1], color[2], opacity * 2);
+
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3f(leftTopPos[0], leftTopPos[1], 0);
+		gl.glVertex3f(rightTopPos[0], rightTopPos[1], 0);
+		gl.glEnd();
+
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3f(rightBottomPos[0], rightBottomPos[1], 0);
+		gl.glVertex3f(leftBottomPos[0], leftBottomPos[1], 0);
+		gl.glEnd();
 
 		if (highlight)
 			gl.glColor4f(color[0], color[1], color[2], 0.5f);
 		else
 			gl.glColor4f(color[0], color[1], color[2], opacity);
-		
-		 gl.glBegin(GL2.GL_POLYGON);
-		 gl.glVertex3f(leftTopPos[0], leftTopPos[1], 0);
-		 gl.glVertex3f(rightTopPos[0], rightTopPos[1], 0);
-		 gl.glVertex3f(rightBottomPos[0], rightBottomPos[1], 0);
-		 gl.glVertex3f(leftBottomPos[0], leftBottomPos[1], 0);
-		 gl.glEnd();
+
+		gl.glBegin(GL2.GL_POLYGON);
+		gl.glVertex3f(leftTopPos[0], leftTopPos[1], 0);
+		gl.glVertex3f(rightTopPos[0], rightTopPos[1], 0);
+		gl.glVertex3f(rightBottomPos[0], rightBottomPos[1], 0);
+		gl.glVertex3f(leftBottomPos[0], leftBottomPos[1], 0);
+		gl.glEnd();
 
 		// gl.glPopName();
 	}
-	
+
 	public void renderSingleBand(GL2 gl, float[] leftTopPos, float[] leftBottomPos, float[] rightTopPos,
 		float[] rightBottomPos, boolean highlight, float xOffset, int bandID, boolean bandDetailAdaption,
 		float[] color, float opacity) {
@@ -164,15 +164,15 @@ public class ConnectionBandRenderer {
 
 		// Band border
 		gl.glLineWidth(1);
-		
+
 		if (highlight)
-			gl.glColor4f(color[0], color[1], color[2], opacity);//0.8f);
+			gl.glColor4f(color[0], color[1], color[2], opacity);// 0.8f);
 		else
-			gl.glColor4f(color[0], color[1], color[2], opacity*2);
-		
+			gl.glColor4f(color[0], color[1], color[2], opacity * 2);
+
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < outputPoints.size(); i++) {
-			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(),  outputPoints.get(i).z());
+			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints.get(i).z());
 		}
 		gl.glEnd();
 
@@ -194,12 +194,85 @@ public class ConnectionBandRenderer {
 		// gl.glLineWidth(1);
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < points.size(); i++) {
-			gl.glVertex3f(points.get(i).x(), points.get(i).y(),  points.get(i).z());
+			gl.glVertex3f(points.get(i).x(), points.get(i).y(), points.get(i).z());
 		}
 		gl.glEnd();
 
 		if (highlight)
-			gl.glColor4f(color[0], color[1], color[2], opacity);//0.5f);
+			gl.glColor4f(color[0], color[1], color[2], opacity);// 0.5f);
+		else
+			gl.glColor4f(color[0], color[1], color[2], opacity);
+
+		render(gl, outputPoints);
+		// gl.glPopName();
+	}
+
+	public void renderSingleBand(GL2 gl, float[] side1AnchorPos1, float[] side1AnchorPos2,
+		float[] side2AnchorPos1, float[] side2AnchorPos2, boolean highlight, float offsetSide1,
+		float offsetSide2, float[] color, float opacity, boolean isOffset1Horizontal,
+		boolean isOffset2Horizontal) {
+
+		if (side1AnchorPos1 == null || side1AnchorPos2 == null || side2AnchorPos1 == null
+			|| side2AnchorPos2 == null)
+			return;
+
+		// gl.glPushName(pickingManager.getPickingID(viewID,
+		// EPickingType.COMPARE_RIBBON_SELECTION, bandID));
+
+		float yCorrection = 0;
+		float z = 0.1f;
+
+		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
+		inputPoints.add(new Vec3f(side1AnchorPos1[0], side1AnchorPos1[1], z));
+		inputPoints.add(new Vec3f(side1AnchorPos1[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),
+			side1AnchorPos1[1] + ((!isOffset1Horizontal) ? offsetSide1 : 0), z));
+		inputPoints.add(new Vec3f(side2AnchorPos1[0] + ((isOffset2Horizontal) ? offsetSide2 : 0),
+			side2AnchorPos1[1] + ((!isOffset2Horizontal) ? offsetSide2 : 0), z));
+		inputPoints.add(new Vec3f(side2AnchorPos1[0], side2AnchorPos1[1], z));
+
+		NURBSCurve curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
+		ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
+
+		// Band border
+		gl.glLineWidth(1);
+
+		if (highlight)
+			gl.glColor4f(color[0], color[1], color[2], opacity);// 0.8f);
+		else
+			gl.glColor4f(color[0], color[1], color[2], opacity * 2);
+
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (int i = 0; i < outputPoints.size(); i++) {
+			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints.get(i).z());
+		}
+		gl.glEnd();
+
+		inputPoints = new ArrayList<Vec3f>();
+		inputPoints.add(new Vec3f(side1AnchorPos2[0], side1AnchorPos2[1], z));
+		inputPoints.add(new Vec3f(side1AnchorPos2[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),
+			side1AnchorPos2[1] + ((!isOffset1Horizontal) ? offsetSide1 : 0), z));
+		inputPoints.add(new Vec3f(side2AnchorPos2[0] + ((isOffset2Horizontal) ? offsetSide2 : 0),
+			side2AnchorPos2[1] + ((!isOffset2Horizontal) ? offsetSide2 : 0), z));
+		inputPoints.add(new Vec3f(side2AnchorPos2[0], side2AnchorPos2[1], z));
+
+		curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
+		ArrayList<Vec3f> points = curve.getCurvePoints();
+
+		// Reverse point order
+		for (int i = points.size() - 1; i >= 0; i--) {
+			outputPoints.add(points.get(i));
+		}
+
+		// Band border
+		// gl.glLineWidth(1);
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (int i = 0; i < points.size(); i++) {
+			gl.glVertex3f(points.get(i).x(), points.get(i).y(), points.get(i).z());
+		}
+		gl.glEnd();
+
+		if (highlight)
+			gl.glColor4f(color[0], color[1], color[2], opacity);// 0.5f);
 		else
 			gl.glColor4f(color[0], color[1], color[2], opacity);
 
