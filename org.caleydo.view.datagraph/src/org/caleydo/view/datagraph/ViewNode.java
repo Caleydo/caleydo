@@ -160,8 +160,30 @@ public class ViewNode extends ADraggableDataGraphNode {
 	@Override
 	public Pair<Point2D, Point2D> getBottomDimensionGroupAnchorPoints(
 			ADimensionGroupData dimensionGroup) {
-		// TODO Auto-generated method stub
-		return null;
+		Point2D position = graphLayout.getNodePosition(this, true);
+		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+				.getX());
+		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+				.getY());
+		float width = pixelGLConverter
+				.getGLWidthForPixelWidth(getWidthPixels());
+		float height = pixelGLConverter
+				.getGLHeightForPixelHeight(getHeightPixels());
+		float spacingX = pixelGLConverter
+				.getGLWidthForPixelWidth(SPACING_PIXELS);
+		float spacingY = pixelGLConverter
+				.getGLHeightForPixelHeight(SPACING_PIXELS);
+
+		Pair<Point2D, Point2D> anchorPoints = compGroupOverviewRenderer
+				.getAnchorPointsOfDimensionGroup(dimensionGroup);
+		anchorPoints.getFirst().setLocation(
+				anchorPoints.getFirst().getX() + x - width / 2.0f + spacingX,
+				anchorPoints.getFirst().getY() + y - height / 2.0f + spacingY);
+		anchorPoints.getSecond().setLocation(
+				anchorPoints.getSecond().getX() + x - width / 2.0f + spacingX,
+				anchorPoints.getSecond().getY() + y - height / 2.0f + spacingY);
+
+		return anchorPoints;
 	}
 
 	@Override

@@ -2,12 +2,15 @@ package org.caleydo.core.view.opengl.util.spline;
 
 import gleem.linalg.Vec3f;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUtessellator;
 
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 
 public class ConnectionBandRenderer {
@@ -254,6 +257,84 @@ public class ConnectionBandRenderer {
 		inputPoints.add(new Vec3f(side2AnchorPos2[0] + ((isOffset2Horizontal) ? offsetSide2 : 0),
 			side2AnchorPos2[1] + ((!isOffset2Horizontal) ? offsetSide2 : 0), z));
 		inputPoints.add(new Vec3f(side2AnchorPos2[0], side2AnchorPos2[1], z));
+
+		curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
+		ArrayList<Vec3f> points = curve.getCurvePoints();
+
+		// Reverse point order
+		for (int i = points.size() - 1; i >= 0; i--) {
+			outputPoints.add(points.get(i));
+		}
+
+		// Band border
+		// gl.glLineWidth(1);
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (int i = 0; i < points.size(); i++) {
+			gl.glVertex3f(points.get(i).x(), points.get(i).y(), points.get(i).z());
+		}
+		gl.glEnd();
+
+		if (highlight)
+			gl.glColor4f(color[0], color[1], color[2], opacity);// 0.5f);
+		else
+			gl.glColor4f(color[0], color[1], color[2], opacity);
+
+		render(gl, outputPoints);
+		// gl.glPopName();
+	}
+
+	public void renderComplexBand(GL2 gl, List<Pair<Point2D, Point2D>> anchorPoints, boolean highlight,
+		float[] color, float opacity) {
+
+		if (anchorPoints == null || anchorPoints.size() < 2)
+			return;
+
+		// gl.glPushName(pickingManager.getPickingID(viewID,
+		// EPickingType.COMPARE_RIBBON_SELECTION, bandID));
+
+		float yCorrection = 0;
+		float z = 0.1f;
+
+		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
+		for (Pair<Point2D, Point2D> anchorPair : anchorPoints) {
+			inputPoints.add(new Vec3f((float) anchorPair.getFirst().getX(), (float) anchorPair.getFirst()
+				.getY(), z));
+		}
+		// inputPoints.add(new Vec3f(side1AnchorPos1[0], side1AnchorPos1[1], z));
+		// inputPoints.add(new Vec3f(side1AnchorPos1[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),
+		// side1AnchorPos1[1] + ((!isOffset1Horizontal) ? offsetSide1 : 0), z));
+		// inputPoints.add(new Vec3f(side2AnchorPos1[0] + ((isOffset2Horizontal) ? offsetSide2 : 0),
+		// side2AnchorPos1[1] + ((!isOffset2Horizontal) ? offsetSide2 : 0), z));
+		// inputPoints.add(new Vec3f(side2AnchorPos1[0], side2AnchorPos1[1], z));
+
+		NURBSCurve curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
+		ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
+
+		// Band border
+		gl.glLineWidth(1);
+
+		if (highlight)
+			gl.glColor4f(color[0], color[1], color[2], opacity);// 0.8f);
+		else
+			gl.glColor4f(color[0], color[1], color[2], opacity * 2);
+
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (int i = 0; i < outputPoints.size(); i++) {
+			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints.get(i).z());
+		}
+		gl.glEnd();
+
+		inputPoints = new ArrayList<Vec3f>();
+		for (Pair<Point2D, Point2D> anchorPair : anchorPoints) {
+			inputPoints.add(new Vec3f((float) anchorPair.getSecond().getX(), (float) anchorPair.getSecond()
+				.getY(), z));
+		}
+		// inputPoints.add(new Vec3f(side1AnchorPos2[0], side1AnchorPos2[1], z));
+		// inputPoints.add(new Vec3f(side1AnchorPos2[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),
+		// side1AnchorPos2[1] + ((!isOffset1Horizontal) ? offsetSide1 : 0), z));
+		// inputPoints.add(new Vec3f(side2AnchorPos2[0] + ((isOffset2Horizontal) ? offsetSide2 : 0),
+		// side2AnchorPos2[1] + ((!isOffset2Horizontal) ? offsetSide2 : 0), z));
+		// inputPoints.add(new Vec3f(side2AnchorPos2[0], side2AnchorPos2[1], z));
 
 		curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
 		ArrayList<Vec3f> points = curve.getCurvePoints();

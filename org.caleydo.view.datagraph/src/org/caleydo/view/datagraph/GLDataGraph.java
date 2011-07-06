@@ -3,9 +3,11 @@ package org.caleydo.view.datagraph;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,6 +34,9 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.view.datagraph.bandlayout.AConnectionBandCreator;
+import org.caleydo.view.datagraph.bandlayout.BandInfo;
+import org.caleydo.view.datagraph.bandlayout.ConnectionBandCreatorFactory;
 import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
 
 /**
@@ -372,7 +377,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			// Works because there are no edges between view nodes
 			if ((edge.getFirst() instanceof ViewNode)
 					|| (edge.getSecond() instanceof ViewNode)) {
-				renderBand(gl, edge.getFirst(), edge.getSecond());
+				renderConnectionBands(gl, edge.getFirst(), edge.getSecond());
 			} else {
 
 				gl.glPushAttrib(GL2.GL_LINE_BIT);
@@ -401,88 +406,139 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	}
 
-	private void renderBand(GL2 gl, IDataGraphNode node1, IDataGraphNode node2) {
-		Point2D position1 = node1.getPosition();
-		Point2D position2 = node2.getPosition();
+	private void renderConnectionBands(GL2 gl, IDataGraphNode node1,
+			IDataGraphNode node2) {
 
-		float deltaX = (float) (position1.getX() - position2.getX());
-		float deltaY = (float) (position1.getY() - position2.getY());
+		AConnectionBandCreator bandCreator = ConnectionBandCreatorFactory
+				.getConnectionBandCreator(node1, node2,
+						parentGLCanvas.getPixelGLConverter());
 
-		Pair<Point2D, Point2D> anchorPoints1;
-		Pair<Point2D, Point2D> anchorPoints2;
-
-		float offset1 = 0;
-		boolean isOffsetHorizontal = false;
-
-		if (deltaX < 0) {
-			if (deltaY < 0) {
-				float spacingX = (float) ((position2.getX() - node2.getWidth() / 2.0f) - (position1
-						.getX() + node1.getWidth() / 2.0f));
-				float spacingY = (float) ((position2.getY() - node2.getHeight() / 2.0f) - (position1
-						.getY() + node1.getHeight() / 2.0f));
-				if (spacingX > spacingY) {
-					anchorPoints1 = node1.getRightAnchorPoints();
-					anchorPoints2 = node2.getLeftAnchorPoints();
-					offset1 = 0.3f * spacingX;
-					isOffsetHorizontal = true;
-				} else {
-					anchorPoints1 = node1.getTopAnchorPoints();
-					anchorPoints2 = node2.getBottomAnchorPoints();
-					offset1 = 0.3f * spacingY;
-					isOffsetHorizontal = false;
-				}
-			} else {
-				float spacingX = (float) ((position2.getX() - node2.getWidth() / 2.0f) - (position1
-						.getX() + node1.getWidth() / 2.0f));
-				float spacingY = (float) ((position1.getY() - node1.getHeight() / 2.0f) - (position2
-						.getY() + node2.getHeight() / 2.0f));
-				if (spacingX > spacingY) {
-					anchorPoints1 = node1.getRightAnchorPoints();
-					anchorPoints2 = node2.getLeftAnchorPoints();
-					offset1 = 0.3f * (spacingX);
-					isOffsetHorizontal = true;
-				} else {
-					anchorPoints1 = node1.getBottomAnchorPoints();
-					anchorPoints2 = node2.getTopAnchorPoints();
-					offset1 = -0.3f * spacingY;
-					isOffsetHorizontal = false;
-				}
-			}
-		} else {
-			if (deltaY < 0) {
-				float spacingX = (float) ((position1.getX() - node1.getWidth() / 2.0f) - (position2
-						.getX() + node2.getWidth() / 2.0f));
-				float spacingY = (float) ((position2.getY() - node2.getHeight() / 2.0f) - (position1
-						.getY() + node1.getHeight() / 2.0f));
-				if (spacingX > spacingY) {
-					anchorPoints1 = node1.getLeftAnchorPoints();
-					anchorPoints2 = node2.getRightAnchorPoints();
-					offset1 = -0.3f * (spacingX);
-					isOffsetHorizontal = true;
-				} else {
-					anchorPoints1 = node1.getTopAnchorPoints();
-					anchorPoints2 = node2.getBottomAnchorPoints();
-					offset1 = 0.3f * spacingY;
-					isOffsetHorizontal = false;
-				}
-			} else {
-				float spacingX = (float) ((position1.getX() - node1.getWidth() / 2.0f) - (position2
-						.getX() + node2.getWidth() / 2.0f));
-				float spacingY = (float) ((position1.getY() - node1.getHeight() / 2.0f) - (position2
-						.getY() + node2.getHeight() / 2.0f));
-				if (spacingX > spacingY) {
-					anchorPoints1 = node1.getLeftAnchorPoints();
-					anchorPoints2 = node2.getRightAnchorPoints();
-					offset1 = -0.3f * (spacingX);
-					isOffsetHorizontal = true;
-				} else {
-					anchorPoints1 = node1.getBottomAnchorPoints();
-					anchorPoints2 = node2.getTopAnchorPoints();
-					offset1 = -0.3f * spacingY;
-					isOffsetHorizontal = false;
-				}
-			}
+		for (List<Pair<Point2D, Point2D>> anchorPoints : bandCreator.calcConnectionBands()) {
+			connectionBandRenderer.init(gl);
+			connectionBandRenderer.renderComplexBand(gl, anchorPoints, false, new float[] { 0,
+					0, 0 }, 0.2f);
 		}
+
+		// Set<ADimensionGroupData> dimensionGroups1 =
+		// node1.getDimensionGroups();
+		// Set<ADimensionGroupData> dimensionGroups2 =
+		// node2.getDimensionGroups();
+		// List<Pair<Point2D, Point2D>> anchorPoints1Group = new
+		// ArrayList<Pair<Point2D, Point2D>>();
+		// List<Pair<Point2D, Point2D>> anchorPoints2Group = new
+		// ArrayList<Pair<Point2D, Point2D>>();
+		//
+		// if (dimensionGroups1 != null && !dimensionGroups1.isEmpty()
+		// && dimensionGroups2 != null && !dimensionGroups2.isEmpty()) {
+		// for (ADimensionGroupData dimGroupData1 : dimensionGroups1) {
+		// for (ADimensionGroupData dimGroupData2 : dimensionGroups2) {
+		// if (dimGroupData1.getID() == dimGroupData2.getID()) {
+		// renderBand(
+		// gl,
+		// node1.getBottomDimensionGroupAnchorPoints(dimGroupData1),
+		// node2.getBottomDimensionGroupAnchorPoints(dimGroupData2),
+		// -0.2f, -0.2f, false, false);
+		// }
+		// }
+		// }
+		//
+		// } else {
+		//
+		// Point2D position1 = node1.getPosition();
+		// Point2D position2 = node2.getPosition();
+		//
+		// float deltaX = (float) (position1.getX() - position2.getX());
+		// float deltaY = (float) (position1.getY() - position2.getY());
+		//
+		// Pair<Point2D, Point2D> anchorPoints1;
+		// Pair<Point2D, Point2D> anchorPoints2;
+		//
+		// float offset1 = 0;
+		// boolean isOffsetHorizontal = false;
+		//
+		// if (deltaX < 0) {
+		// if (deltaY < 0) {
+		// float spacingX = (float) ((position2.getX() - node2
+		// .getWidth() / 2.0f) - (position1.getX() + node1
+		// .getWidth() / 2.0f));
+		// float spacingY = (float) ((position2.getY() - node2
+		// .getHeight() / 2.0f) - (position1.getY() + node1
+		// .getHeight() / 2.0f));
+		// if (spacingX > spacingY) {
+		// anchorPoints1 = node1.getRightAnchorPoints();
+		// anchorPoints2 = node2.getLeftAnchorPoints();
+		// offset1 = 0.3f * spacingX;
+		// isOffsetHorizontal = true;
+		// } else {
+		// anchorPoints1 = node1.getTopAnchorPoints();
+		// anchorPoints2 = node2.getBottomAnchorPoints();
+		// offset1 = 0.3f * spacingY;
+		// isOffsetHorizontal = false;
+		// }
+		// } else {
+		// float spacingX = (float) ((position2.getX() - node2
+		// .getWidth() / 2.0f) - (position1.getX() + node1
+		// .getWidth() / 2.0f));
+		// float spacingY = (float) ((position1.getY() - node1
+		// .getHeight() / 2.0f) - (position2.getY() + node2
+		// .getHeight() / 2.0f));
+		// if (spacingX > spacingY) {
+		// anchorPoints1 = node1.getRightAnchorPoints();
+		// anchorPoints2 = node2.getLeftAnchorPoints();
+		// offset1 = 0.3f * (spacingX);
+		// isOffsetHorizontal = true;
+		// } else {
+		// anchorPoints1 = node1.getBottomAnchorPoints();
+		// anchorPoints2 = node2.getTopAnchorPoints();
+		// offset1 = -0.3f * spacingY;
+		// isOffsetHorizontal = false;
+		// }
+		// }
+		// } else {
+		// if (deltaY < 0) {
+		// float spacingX = (float) ((position1.getX() - node1
+		// .getWidth() / 2.0f) - (position2.getX() + node2
+		// .getWidth() / 2.0f));
+		// float spacingY = (float) ((position2.getY() - node2
+		// .getHeight() / 2.0f) - (position1.getY() + node1
+		// .getHeight() / 2.0f));
+		// if (spacingX > spacingY) {
+		// anchorPoints1 = node1.getLeftAnchorPoints();
+		// anchorPoints2 = node2.getRightAnchorPoints();
+		// offset1 = -0.3f * (spacingX);
+		// isOffsetHorizontal = true;
+		// } else {
+		// anchorPoints1 = node1.getTopAnchorPoints();
+		// anchorPoints2 = node2.getBottomAnchorPoints();
+		// offset1 = 0.3f * spacingY;
+		// isOffsetHorizontal = false;
+		// }
+		// } else {
+		// float spacingX = (float) ((position1.getX() - node1
+		// .getWidth() / 2.0f) - (position2.getX() + node2
+		// .getWidth() / 2.0f));
+		// float spacingY = (float) ((position1.getY() - node1
+		// .getHeight() / 2.0f) - (position2.getY() + node2
+		// .getHeight() / 2.0f));
+		// if (spacingX > spacingY) {
+		// anchorPoints1 = node1.getLeftAnchorPoints();
+		// anchorPoints2 = node2.getRightAnchorPoints();
+		// offset1 = -0.3f * (spacingX);
+		// isOffsetHorizontal = true;
+		// } else {
+		// anchorPoints1 = node1.getBottomAnchorPoints();
+		// anchorPoints2 = node2.getTopAnchorPoints();
+		// offset1 = -0.3f * spacingY;
+		// isOffsetHorizontal = false;
+		// }
+		// }
+		// }
+
+	}
+
+	private void renderBand(GL2 gl, BandInfo bandInfo) {
+		Pair<Point2D, Point2D> anchorPoints1 = bandInfo.getAnchorPoints1();
+		Pair<Point2D, Point2D> anchorPoints2 = bandInfo.getAnchorPoints2();
 
 		connectionBandRenderer.init(gl);
 		float[] side1AnchorPos1 = new float[] {
@@ -499,14 +555,60 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				(float) anchorPoints2.getSecond().getX(),
 				(float) anchorPoints2.getSecond().getY() };
 
+		float[] offset1AnchorPos1 = new float[] {
+				side1AnchorPos1[0]
+						+ (bandInfo.isOffset1Horizontal() ? (bandInfo
+								.getOffset1()) : 0),
+				side1AnchorPos1[1]
+						+ (bandInfo.isOffset1Horizontal() ? 0 : bandInfo
+								.getOffset1()) };
+		float[] offset1AnchorPos2 = new float[] {
+				side1AnchorPos2[0]
+						+ (bandInfo.isOffset1Horizontal() ? (bandInfo
+								.getOffset1()) : 0),
+				side1AnchorPos2[1]
+						+ (bandInfo.isOffset1Horizontal() ? 0 : bandInfo
+								.getOffset1()) };
+		
+		float[] offset2AnchorPos1 = new float[] {
+				side2AnchorPos1[0]
+						+ (bandInfo.isOffset2Horizontal() ? (bandInfo
+								.getOffset1()) : 0),
+				side2AnchorPos1[1]
+						+ (bandInfo.isOffset2Horizontal() ? 0 : bandInfo
+								.getOffset1()) };
+		float[] offset2AnchorPos2 = new float[] {
+				side2AnchorPos2[0]
+						+ (bandInfo.isOffset2Horizontal() ? (bandInfo
+								.getOffset1()) : 0),
+				side2AnchorPos2[1]
+						+ (bandInfo.isOffset2Horizontal() ? 0 : bandInfo
+								.getOffset1()) };
+
+		Pair<float[], float[]> pair1 = new Pair<float[], float[]>(
+				side1AnchorPos1, side1AnchorPos2);
+		Pair<float[], float[]> pair2 = new Pair<float[], float[]>(
+				offset1AnchorPos1, offset1AnchorPos2);
+		Pair<float[], float[]> pair3 = new Pair<float[], float[]>(
+				offset2AnchorPos1, offset2AnchorPos2);
+		Pair<float[], float[]> pair4 = new Pair<float[], float[]>(
+				side2AnchorPos1, side2AnchorPos2);
+
+		List<Pair<float[], float[]>> anchorPoints = new ArrayList<Pair<float[], float[]>>();
+		anchorPoints.add(pair1);
+		anchorPoints.add(pair2);
+		anchorPoints.add(pair3);
+		anchorPoints.add(pair4);
+
 		// connectionBandRenderer.renderStraightBand(gl, leftTopPos,
 		// leftBottomPos, rightTopPos, rightBottomPos, false, 0, 0, false,
 		// new float[] { 0, 0, 0, 1 }, 1f);
-		connectionBandRenderer.renderSingleBand(gl, side1AnchorPos1,
-				side1AnchorPos2, side2AnchorPos1, side2AnchorPos2, false,
-				offset1, -offset1, new float[] { 0, 0, 0 }, 0.2f,
-				isOffsetHorizontal, isOffsetHorizontal);
-
+		
+		// connectionBandRenderer.renderSingleBand(gl, side1AnchorPos1,
+		// side1AnchorPos2, side2AnchorPos1, side2AnchorPos2, false,
+		// bandInfo.getOffset1(), bandInfo.getOffset2(), new float[] { 0,
+		// 0, 0 }, 0.2f, bandInfo.isOffset1Horizontal(),
+		// bandInfo.isOffset2Horizontal());
 	}
 
 	@Override
