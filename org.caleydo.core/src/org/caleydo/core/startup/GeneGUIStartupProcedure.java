@@ -23,6 +23,8 @@ public class GeneGUIStartupProcedure
 
 	private boolean loadSampleData = false;
 
+
+	// NOTE: change also organism when setting another dataset
 	private static String REAL_DATA_SAMPLE_FILE =
 //		"data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
 		"data/genome/microarray/kashofer/mouse/all_mice_plus_SN_only_with_mapping.csv";
@@ -36,7 +38,7 @@ public class GeneGUIStartupProcedure
 			GeneralManager.get().getPreferenceStore()
 				.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES, "KEGG;BioCarta");
 
-			GeneralManager.get().getBasicInfo().setOrganism(Organism.HOMO_SAPIENS);
+			GeneralManager.get().getBasicInfo().setOrganism(Organism.MUS_MUSCULUS);
 		}
 		
 		// FIXME this needs to be done after the wizard is closed, and dynamically
