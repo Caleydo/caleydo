@@ -24,7 +24,8 @@ public class GeneGUIStartupProcedure
 	private boolean loadSampleData = false;
 
 	private static String REAL_DATA_SAMPLE_FILE =
-		"data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
+//		"data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
+		"data/genome/microarray/kashofer/mouse/all_mice_plus_SN_only_with_mapping.csv";
 
 	@Override
 	public void init(ApplicationInitData appInitData) {

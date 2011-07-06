@@ -67,7 +67,7 @@ public class FileLoadDataAction
 	private Text txtMax;
 
 	private Button buttonHomogeneous;
-	private Button buttonCertaintyDataProvided;
+	private Button buttonUncertaintyDataProvided;
 
 	private Table previewTable;
 
@@ -86,7 +86,7 @@ public class FileLoadDataAction
 
 	private boolean useGeneClusterInfo = false;
 	private boolean useExperimentClusterInfo = false;
-	private boolean isCertaintyDataProvided = false;
+	private boolean isCertaintyDataProvided = true;
 
 	private ASetBasedDataDomain dataDomain = null;
 
@@ -543,14 +543,14 @@ public class FileLoadDataAction
 		buttonHomogeneous.setEnabled(true);
 		buttonHomogeneous.setSelection(true);
 
-		buttonCertaintyDataProvided = new Button(dataPropertiesGroup, SWT.CHECK);
-		buttonCertaintyDataProvided.setText("Certainty data");
-		buttonCertaintyDataProvided.setEnabled(true);
-		buttonCertaintyDataProvided.setSelection(false);
-		buttonCertaintyDataProvided.addSelectionListener(new SelectionAdapter() {
+		buttonUncertaintyDataProvided = new Button(dataPropertiesGroup, SWT.CHECK);
+		buttonUncertaintyDataProvided.setText("Uncertainty data");
+		buttonUncertaintyDataProvided.setEnabled(true);
+		buttonUncertaintyDataProvided.setSelection(true);
+		buttonUncertaintyDataProvided.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				isCertaintyDataProvided = buttonCertaintyDataProvided.getSelection();
+				isCertaintyDataProvided = buttonUncertaintyDataProvided.getSelection();
 			}
 		});
 	}

@@ -44,6 +44,7 @@ public class FilterRepresentationSNR extends
 	private float invalidThresholdMax = 2;
 	
 	private float validThreshold = 2;
+	private float validThresholdMax = 4;
 	
 	public boolean create() {
 		
@@ -120,6 +121,63 @@ public class FilterRepresentationSNR extends
 					}
 				});
 
+				//-----------
+				
+				Label validThresholdLabel = new Label(infoComposite, SWT.NONE);
+				validThresholdLabel.setText("Valid threshold:");
+
+				final Text validThresholdInputField = new Text(infoComposite, SWT.SINGLE);
+				final Slider validThresholdSlider = new Slider(infoComposite, SWT.HORIZONTAL);
+
+				if (validThreshold == -1) {
+					validThresholdMax = histogram.getMax();
+					validThreshold = validThresholdMax;
+				}
+
+				gridData = new GridData();
+				gridData.grabExcessHorizontalSpace = true;
+				gridData.horizontalAlignment = GridData.FILL;
+				validThresholdSlider.setLayoutData(gridData);
+				validThresholdSlider.setSelection((int) (validThreshold * 10000));
+
+				validThresholdInputField.setEditable(true);
+				validThresholdInputField.setText(Float.toString(validThreshold));
+				validThresholdInputField.addKeyListener(new KeyAdapter() {
+					@Override
+					public void keyPressed(KeyEvent e) {
+
+						String enteredValue = validThresholdInputField.getText();
+						validThreshold = new Float(enteredValue);
+						validThresholdSlider.setSelection((int) (validThreshold * 10000));
+						isDirty = true;
+					}
+				});
+
+				validThresholdSlider.setMinimum(0);
+				validThresholdSlider.setMaximum((int) (validThresholdMax * 10000));
+				validThresholdSlider.setIncrement(1);
+				validThresholdSlider.setPageIncrement(5);
+				validThresholdSlider.setSelection((int) (validThreshold * 10000));
+
+				validThresholdSlider.addMouseListener(new MouseAdapter() {
+
+					@Override
+					public void mouseUp(MouseEvent e) {
+						validThreshold = (float) validThresholdSlider.getSelection() / 10000.00f;
+						validThresholdInputField.setText(Float.toString(validThreshold));
+						isDirty = true;
+						parentComposite.pack();
+						parentComposite.layout();
+
+						// if (reducedVA != null)
+						// reducedNumberLabel.setText("# Genes: " +
+						// reducedVA.size());
+
+					}
+				});
+				
+				//-------------
+					
 				final Button applyFilterButton = new Button(infoComposite, SWT.PUSH);
 				applyFilterButton.setText("Apply");
 				applyFilterButton.addSelectionListener(new SelectionAdapter() {
