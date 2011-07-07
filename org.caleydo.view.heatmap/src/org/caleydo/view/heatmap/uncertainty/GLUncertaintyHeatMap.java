@@ -60,7 +60,9 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		IViewCommandHandler, ISelectionUpdateHandler, IGLRemoteRenderingView {
 
 	public final static String VIEW_ID = "org.caleydo.view.heatmap.uncertainty";
-	public final static float[] lightLight = { 1.0f, 1.0f, 1.0f, 0.25f };
+	public final static float[] lightLight = { 0.95f, 0.95f, 0.95f, 1f };
+	public final static float[][] levelLightColor = {{ 0.95f, 0.95f, 0.95f, 1f },{ 0.8f, 0.8f, 0.8f, 1f },{ 0.75f, 0.75f, 0.75f, 1f }};
+	
 	public final static float[] lightDark = { 0.0f, 0.0f, 0.0f, 0.8f };
 
 	public final static float[] darkLight = { 0.0f, 0.0f, 0.0f, 0.35f };

@@ -13,16 +13,16 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
-import org.eclipse.jface.layout.PixelConverter;
 
-public class BarPlotRenderer extends AContentRenderer {
+public class TrippleBarPlotRenderer extends AContentRenderer {
 
-	public BarPlotRenderer(GLHeatMap heatMap) {
+	
+	
+	public TrippleBarPlotRenderer(GLHeatMap heatMap) {
 		super(heatMap);
 
 	}
@@ -77,47 +77,28 @@ public class BarPlotRenderer extends AContentRenderer {
 			yPosition -= fieldHeight;
 			xPosition = 0;
 
-			// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
-			ISet set = heatMap.getSet();
-			if (set == null)
-				return;
-			float[] certainty = new float[3];
+			renderLine(gl, contentID, yPosition, xPosition, fieldHeight,
+					fieldWidth);
 
-			certainty[0] = set.getNormalizedUncertainty(contentID);
-			certainty[1] = set.getNormalizedUncertainty(contentID);
-			certainty[2] = set.getNormalizedUncertainty(contentID);
-
-			PixelGLConverter conv = heatMap.getParentGLCanvas()
-					.getPixelGLConverter();
-			int screenHeight = conv.getPixelHeightForGLHeight(fieldHeight);
-			if (screenHeight < 3) {
-				int i = 0;
-				certainty[i] = certainty[i] > 1 ? 1 : certainty[i];
-				certainty[i] = certainty[i] < 0 ? 0 : certainty[i];
-
-				renderLine(gl, yPosition, xPosition, fieldHeight,
-						fieldWidth, certainty[i], GLUncertaintyHeatMap.lightLight);
-			} else {
-				for (int i = 0; i < certainty.length; i++) {
-					float height = fieldHeight / (float)certainty.length; 
-					float yPos = yPosition + height*i;
-					certainty[i] = certainty[i] > 1 ? 1 : certainty[i];
-					certainty[i] = certainty[i] < 0 ? 0 : certainty[i];
-
-					renderLine(gl,  yPos, xPosition,
-							height, fieldWidth, certainty[i], GLUncertaintyHeatMap.levelLightColor[i]);
-				}
-			}
+			
 
 			contentSpacing.getYDistances().add(yPosition);
 
 		}
 	}
 
-	private void renderLine(final GL2 gl,
+	private void renderLine(final GL2 gl, final int iContentIndex,
 			final float fYPosition, final float fXPosition,
-			final float fFieldHeight, final float fFieldWidth,
-			final float certainty, float[] rgba) {
+			final float fFieldHeight, final float fFieldWidth) {
+
+		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
+		ISet set = heatMap.getSet();
+		if (set == null)
+			return;
+		float certainty = set.getNormalizedUncertainty(iContentIndex);
+
+		certainty = certainty > 1 ? 1 : certainty;
+		certainty = certainty < 0 ? 0 : certainty;
 
 		float certainWidth = fFieldWidth * (1 - certainty);
 		float unCertainWidth = fFieldWidth * (certainty);
@@ -140,15 +121,14 @@ public class BarPlotRenderer extends AContentRenderer {
 
 		// certain
 		gl.glBegin(GL2.GL_POLYGON);
-		gl.glColor4fv(rgba, 0);
+		gl.glColor4fv(GLUncertaintyHeatMap.lightLight, 0);
 		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition, FIELD_Z);
-		gl.glVertex3f(fXPosition + certainWidth + unCertainWidth, fYPosition,
+		gl.glVertex3f(fXPosition + certainWidth + unCertainWidth, fYPosition, FIELD_Z);
+		gl.glVertex3f(fXPosition + certainWidth + unCertainWidth, fYPosition + fFieldHeight,
 				FIELD_Z);
-		gl.glVertex3f(fXPosition + certainWidth + unCertainWidth, fYPosition
-				+ fFieldHeight, FIELD_Z);
-		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition + fFieldHeight,
-				FIELD_Z);
+		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition + fFieldHeight, FIELD_Z);
 		gl.glEnd();
+		
 
 		// gl.glPopName();
 		// gl.glPopName();

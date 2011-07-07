@@ -84,7 +84,7 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		storageCaptionLayout.setRenderer(storageCaptionRenderer);
 		
 		ElementLayout leadSpacingLayout = new ElementLayout();
-		leadSpacingLayout.setAbsoluteSizeX(0.5f);
+		leadSpacingLayout.setAbsoluteSizeX(0.9f);
 		storageCaptionRow.append(leadSpacingLayout);
 		
 		storageCaptionRow.append(storageCaptionLayout);

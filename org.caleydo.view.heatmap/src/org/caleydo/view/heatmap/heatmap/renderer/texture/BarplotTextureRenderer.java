@@ -282,6 +282,8 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 				x2 = 0;
 			}
 			gl.glBegin(GL2.GL_QUADS);
+			gl.glColor4f(1f,1f,1f,1f);
+
 			gl.glTexCoord2d(texCoords.left(), texCoords.top());
 			gl.glVertex3f(x1, yOffset, 0);
 			gl.glTexCoord2d(texCoords.left(), texCoords.bottom());
