@@ -120,8 +120,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private float archBottomY = 0;
 	private float archHeight = 0;
 
-	private HashSet<IMouseWheelHandler> mouseWheelListeners;
-
+	
 	/** Flag signaling if a group needs to be moved out of the center */
 	boolean resizeNecessary = false;
 	boolean lastResizeDirectionWasToLeft = true;
@@ -192,7 +191,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		relationAnalyzer = new RelationAnalyzer();
 
-		mouseWheelListeners = new HashSet<IMouseWheelHandler>();
 		dataDomains = new HashSet<IDataDomain>();
 		dimensionGroupData = new HashSet<ADimensionGroupData>();
 
@@ -1696,21 +1694,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		return archInnerWidth;
 	}
 
-	public void registerRemoteViewMouseWheelListener(IMouseWheelHandler listener) {
-		mouseWheelListeners.add(listener);
-	}
-
-	public void unregisterRemoteViewMouseWheelListener(
-			IMouseWheelHandler listener) {
-		mouseWheelListeners.remove(listener);
-	}
-
-	@Override
-	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
-		for (IMouseWheelHandler listener : mouseWheelListeners) {
-			listener.handleMouseWheel(wheelAmount, wheelPosition);
-		}
-	}
 	
 	@Override
 	public Set<IDataDomain> getDataDomains() {

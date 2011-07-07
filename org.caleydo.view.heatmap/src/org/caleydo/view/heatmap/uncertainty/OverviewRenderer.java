@@ -17,8 +17,8 @@ import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
-import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.layout.util.SpacerRenderer;
+import org.caleydo.core.view.opengl.layout.util.Zoomer;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 /**
@@ -34,9 +34,9 @@ public class OverviewRenderer extends LayoutRenderer {
 	private ClusterRenderer clusterRenderer;
 
 	private final static int CLUSTER_SPACER_SIZE = 10;
-	
+
 	private GLUncertaintyHeatMap uncertaintyHeatMap;
-	
+
 	private GLHeatMap detailHeatMap;
 
 	private ElementLayout lineSeparatorLayout;
@@ -49,9 +49,7 @@ public class OverviewRenderer extends LayoutRenderer {
 
 	java.util.Set<Integer> setMouseOverElements;
 	java.util.Set<Integer> setSelectedElements;
-	
-	
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -59,17 +57,18 @@ public class OverviewRenderer extends LayoutRenderer {
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public OverviewRenderer(GLUncertaintyHeatMap uncertaintyHeatMap,
-			Column overviewLayout) {
+	public OverviewRenderer(GLUncertaintyHeatMap uncertaintyHeatMap, Column overviewLayout) {
 		this.uncertaintyHeatMap = uncertaintyHeatMap;
 		this.overviewLayout = overviewLayout;
+		Zoomer zoomer = new Zoomer(uncertaintyHeatMap, overviewLayout);
+		this.overviewLayout.setZoomer(zoomer);
 	}
 
 	public void init() {
 
-		overviewLayout.clear();
+//		overviewLayout.clear();
 		clusterLayoutList.clear();
-		
+
 		ContentVirtualArray contentVA = uncertaintyHeatMap.getContentVA();
 		ContentGroupList clusterList = contentVA.getGroupList();
 
@@ -78,7 +77,7 @@ public class OverviewRenderer extends LayoutRenderer {
 		int lastLayoutElement = 0;
 
 		if (clusterList != null) {
-			//int totalSpacerSize = spacerSize * (clusterList.size() - 1);
+			// int totalSpacerSize = spacerSize * (clusterList.size() - 1);
 			for (int clusterIndex = 0; clusterIndex < clusterList.size(); clusterIndex++) {
 
 				// creatinng Texture for each cluster
@@ -87,14 +86,14 @@ public class OverviewRenderer extends LayoutRenderer {
 				ContentVirtualArray clusterVA = this.getClusterVA(clusterIndex);
 				float ratio = (float) clusterVA.size()
 						/ ((float) contentVA.getIndexList().size());
-			
+
 				Row clusterLayout = new Row("clusterLayout_" + counter);
 				clusterLayout.setDebug(false);
 				clusterLayout.setRatioSizeY(ratio);
 				clusterLayoutList.add(clusterLayout);
 
-				clusterRenderer = new ClusterRenderer(
-						uncertaintyHeatMap, clusterLayout, clusterVA, clusterIndex);
+				clusterRenderer = new ClusterRenderer(uncertaintyHeatMap, clusterLayout,
+						clusterVA, clusterIndex);
 				clusterLayout.setRenderer(clusterRenderer);
 
 				overviewLayout.add(lastLayoutElement, clusterLayout);
@@ -109,14 +108,13 @@ public class OverviewRenderer extends LayoutRenderer {
 					lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
 					lineSeparatorLayout.setPixelSizeY(CLUSTER_SPACER_SIZE);
 					lineSeparatorLayout.setRatioSizeX(1);
-					lineSeparatorLayout.setRenderer(new SpacerRenderer(
-							false));
+					lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
 					lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.3f);
-					
+
 					overviewLayout.add(lastLayoutElement, lineSeparatorLayout);
-					// overviewLayout.append(lineSeparatorLayout);	
+					// overviewLayout.append(lineSeparatorLayout);
 				}
-				
+
 				// Initially the first cluster gets selected
 				if (clusterIndex == 0 && detailHeatMap != null)
 					detailHeatMap.setContentVA(clusterVA);
@@ -126,13 +124,13 @@ public class OverviewRenderer extends LayoutRenderer {
 			clusterLayout.setDebug(false);
 			clusterLayout.setRatioSizeY(1);
 
-			clusterRenderer = new ClusterRenderer(uncertaintyHeatMap,
-					clusterLayout, contentVA, 0);
+			clusterRenderer = new ClusterRenderer(uncertaintyHeatMap, clusterLayout,
+					contentVA, 0);
 			clusterLayout.setRenderer(clusterRenderer);
 			clusterRenderer.init();
 			overviewLayout.add(lastLayoutElement, clusterLayout);
 		}
-		
+
 		overviewLayout.updateSubLayout();
 	}
 
@@ -146,37 +144,35 @@ public class OverviewRenderer extends LayoutRenderer {
 
 		ArrayList<Integer> clusterGenes = uncertaintyHeatMap.getContentVA()
 				.getIDsOfGroup(group.getID());
-		ContentVirtualArray clusterVA = new ContentVirtualArray(Set.CONTENT,
-				clusterGenes);
+		ContentVirtualArray clusterVA = new ContentVirtualArray(Set.CONTENT, clusterGenes);
 
 		return clusterVA;
 	}
-	
+
 	public void setSelectedGroup(int selectedGroup) {
 		this.selectedClusterIndex = selectedGroup;
 	}
 
 	public float getSelectedClusterY() {
-		
+
 		if (clusterLayoutList.size() == 0)
 			return 0;
-		
+
 		return clusterLayoutList.get(selectedClusterIndex).getTranslateY();
 	}
-	
+
 	public float getSelectedClusterHeight() {
-		
+
 		if (clusterLayoutList.size() == 0)
 			return uncertaintyHeatMap.getViewFrustum().getHeight();
-		
+
 		return clusterLayoutList.get(selectedClusterIndex).getSizeScaledY();
 	}
 
-
 	public ArrayList<ClusterRenderer> getClusterRendererList() {
 		ArrayList<ClusterRenderer> ret = new ArrayList<ClusterRenderer>();
-		for (Row layout: clusterLayoutList) {
-			ret.add((ClusterRenderer)layout.getRenderer());
+		for (Row layout : clusterLayoutList) {
+			ret.add((ClusterRenderer) layout.getRenderer());
 		}
 		if (ret.size() == 0) {
 			ret.add(clusterRenderer);
@@ -184,11 +180,10 @@ public class OverviewRenderer extends LayoutRenderer {
 		return ret;
 	}
 
-	
 	public void setDetailHeatMap(GLHeatMap detailHeatMap) {
 		this.detailHeatMap = detailHeatMap;
 	}
-	
+
 	private void renderSelectedElementsLevel1(GL2 gl) {
 		float height = y;
 		float widthLevel1 = x;
@@ -196,7 +191,6 @@ public class OverviewRenderer extends LayoutRenderer {
 		ContentVirtualArray contentVA = uncertaintyHeatMap.getContentVA();
 		float heightElem = height / contentVA.size();
 
-		
 		setMouseOverElements = uncertaintyHeatMap.getContentSelectionManager()
 				.getElements(SelectionType.MOUSE_OVER);
 		setSelectedElements = uncertaintyHeatMap.getContentSelectionManager()
@@ -208,28 +202,28 @@ public class OverviewRenderer extends LayoutRenderer {
 
 			int index = contentVA.indexOf(mouseOverElement.intValue());
 
-			//if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1) == false) {
-				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
-				gl.glBegin(GL2.GL_LINES);
-				gl.glVertex3f(widthLevel1, height - heightElem * index, SELECTION_Z);
-				gl.glVertex3f(widthLevel1 + 0.1f, height - heightElem * index,
-						SELECTION_Z);
-				gl.glEnd();
-			//}
+			// if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1)
+			// == false) {
+			gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
+			gl.glBegin(GL2.GL_LINES);
+			gl.glVertex3f(widthLevel1, height - heightElem * index, SELECTION_Z);
+			gl.glVertex3f(widthLevel1 + 0.1f, height - heightElem * index, SELECTION_Z);
+			gl.glEnd();
+			// }
 		}
 
 		for (Integer selectedElement : setSelectedElements) {
 
 			int index = contentVA.indexOf(selectedElement.intValue());
 
-		//	if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1) == false) {
-				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
-				gl.glBegin(GL2.GL_LINES);
-				gl.glVertex3f(widthLevel1, height - heightElem * index, SELECTION_Z);
-				gl.glVertex3f(widthLevel1 + 0.1f, height - heightElem * index,
-						SELECTION_Z);
-				gl.glEnd();
-		//	}
+			// if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1)
+			// == false) {
+			gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
+			gl.glBegin(GL2.GL_LINES);
+			gl.glVertex3f(widthLevel1, height - heightElem * index, SELECTION_Z);
+			gl.glVertex3f(widthLevel1 + 0.1f, height - heightElem * index, SELECTION_Z);
+			gl.glEnd();
+			// }
 		}
 	}
 

@@ -12,7 +12,7 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
-import org.caleydo.core.view.opengl.layout.util.ZoomableViewLayoutRenderer;
+import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.data.PathwaySegmentData;
@@ -40,9 +40,8 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
 		headerBarElements.add(createCaptionLayout(layoutTemplate, "sdfsd",
-				EPickingType.DIMENSION_GROUP, layoutTemplate
-						.getDimensionGroup().getID(), layoutTemplate
-						.getDimensionGroup().getVisBricksView()));
+				EPickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID(),
+				layoutTemplate.getDimensionGroup().getVisBricksView()));
 
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
@@ -75,9 +74,8 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
 		headerBarElements.add(createCaptionLayout(layoutTemplate, "sdfsd",
-				EPickingType.DIMENSION_GROUP, layoutTemplate
-						.getDimensionGroup().getID(), layoutTemplate
-						.getDimensionGroup().getVisBricksView()));
+				EPickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID(),
+				layoutTemplate.getDimensionGroup().getVisBricksView()));
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setHeaderBarElements(headerBarElements);
@@ -95,9 +93,9 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
-		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
-				.getBrick().getBrickData().getLabel(), EPickingType.BRICK,
-				layoutTemplate.getBrick().getID(), layoutTemplate.getBrick()));
+		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick()
+				.getBrickData().getLabel(), EPickingType.BRICK, layoutTemplate.getBrick()
+				.getID(), layoutTemplate.getBrick()));
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setToolBarElements(toolBarElements);
@@ -114,9 +112,9 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAY_VIEW);
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
-		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
-				.getBrick().getBrickData().getLabel(), EPickingType.BRICK,
-				layoutTemplate.getBrick().getID(), layoutTemplate.getBrick()));
+		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick()
+				.getBrickData().getLabel(), EPickingType.BRICK, layoutTemplate.getBrick()
+				.getID(), layoutTemplate.getBrick()));
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setToolBarElements(toolBarElements);
@@ -124,11 +122,9 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		layoutTemplate.showFooterBar(false);
 	}
 
-	private ElementLayout createCaptionLayout(
-			ABrickLayoutTemplate layoutTemplate, String caption,
-			EPickingType pickingType, int pickingID, AGLView view) {
-		PixelGLConverter pixelGLConverter = layoutTemplate
-				.getPixelGLConverter();
+	private ElementLayout createCaptionLayout(ABrickLayoutTemplate layoutTemplate,
+			String caption, EPickingType pickingType, int pickingID, AGLView view) {
+		PixelGLConverter pixelGLConverter = layoutTemplate.getPixelGLConverter();
 
 		ElementLayout captionLayout = new ElementLayout("caption1");
 
@@ -138,17 +134,16 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		// captionLayout.setGrabX(true);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		LabelRenderer captionRenderer = new LabelRenderer(view, caption,
-				pickingType, pickingID);
+		LabelRenderer captionRenderer = new LabelRenderer(view, caption, pickingType,
+				pickingID);
 		captionLayout.setRenderer(captionRenderer);
 
 		return captionLayout;
 	}
 
-	private ElementLayout createSpacingLayout(
-			ABrickLayoutTemplate layoutTemplate, boolean isHorizontalSpacing) {
-		PixelGLConverter pixelGLConverter = layoutTemplate
-				.getPixelGLConverter();
+	private ElementLayout createSpacingLayout(ABrickLayoutTemplate layoutTemplate,
+			boolean isHorizontalSpacing) {
+		PixelGLConverter pixelGLConverter = layoutTemplate.getPixelGLConverter();
 
 		ElementLayout spacingLayout = new ElementLayout("spacingLayoutX");
 		spacingLayout.setPixelGLConverter(pixelGLConverter);
@@ -164,52 +159,45 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 	}
 
 	@Override
-	public void setBrickViews(GLBrick brick, GL2 gl,
-			GLMouseListener glMouseListener, ABrickLayoutTemplate brickLayout) {
+	public void setBrickViews(GLBrick brick, GL2 gl, GLMouseListener glMouseListener,
+			ABrickLayoutTemplate brickLayout) {
 
 		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
 		PathwayCreator pathwayCreator = new PathwayCreator();
-		AGLView pathway = pathwayCreator.createRemoteView(brick, gl,
-				glMouseListener);
+		AGLView pathway = pathwayCreator.createRemoteView(brick, gl, glMouseListener);
 
-		LayoutRenderer pathwayRenderer = new ZoomableViewLayoutRenderer(
-				pathway, brick);
+		LayoutRenderer pathwayRenderer = new ViewLayoutRenderer(pathway);		
+		
 		views.put(EContainedViewType.PATHWAY_VIEW, pathway);
-		containedViewRenderers.put(EContainedViewType.PATHWAY_VIEW,
-				pathwayRenderer);
+		containedViewRenderers.put(EContainedViewType.PATHWAY_VIEW, pathwayRenderer);
 
 		int numPathways = brick.getDimensionGroup().getBrickDimensionGroupData()
 				.getGroups().size();
-		LayoutRenderer pathwaysSummaryRenderer = new PathwaysSummaryRenderer(
-				brick, "Pathways: " + numPathways, EPickingType.BRICK,
-				brick.getID());
+		LayoutRenderer pathwaysSummaryRenderer = new PathwaysSummaryRenderer(brick,
+				"Pathways: " + numPathways, EPickingType.BRICK, brick.getID());
 		containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY,
 				pathwaysSummaryRenderer);
 
 		LayoutRenderer pathwaysSummaryCompactRenderer = new PathwaysSummaryRenderer(
-				brick, "PWs: " + numPathways, EPickingType.BRICK,
-				brick.getID());
+				brick, "PWs: " + numPathways, EPickingType.BRICK, brick.getID());
 		containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY_COMPACT,
 				pathwaysSummaryCompactRenderer);
-		
+
 		if (brick.getBrickData() instanceof PathwaySegmentData) {
-			PathwaySegmentData brickData = (PathwaySegmentData) brick
-					.getBrickData();
+			PathwaySegmentData brickData = (PathwaySegmentData) brick.getBrickData();
 			if (brickData.getPathway() != null) {
-				EPathwayDatabaseType dataBaseType = brickData.getPathway()
-						.getType();
+				EPathwayDatabaseType dataBaseType = brickData.getPathway().getType();
 				EIconTextures texture;
 				if (dataBaseType == EPathwayDatabaseType.KEGG) {
 					texture = EIconTextures.CM_KEGG;
 				} else {
 					texture = EIconTextures.CM_BIOCARTA;
 				}
-				LayoutRenderer compactPathwayRenderer = new CompactPathwayRenderer(
-						brick, brick.getBrickData().getLabel(),
-						EPickingType.BRICK, brick.getID(),
-						brick.getTextureManager(), texture);
+				LayoutRenderer compactPathwayRenderer = new CompactPathwayRenderer(brick,
+						brick.getBrickData().getLabel(), EPickingType.BRICK,
+						brick.getID(), brick.getTextureManager(), texture);
 
 				containedViewRenderers.put(EContainedViewType.PATHWAY_COMPACT,
 						compactPathwayRenderer);

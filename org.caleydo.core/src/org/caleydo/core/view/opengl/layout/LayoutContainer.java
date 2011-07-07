@@ -55,6 +55,14 @@ public abstract class LayoutContainer
 		super();
 	}
 
+	@Override
+	void destroy() {
+		super.destroy();
+		for (ElementLayout element : elements) {
+			element.destroy();
+		}
+	}
+
 	public LayoutContainer(String layoutName) {
 		super(layoutName);
 	}

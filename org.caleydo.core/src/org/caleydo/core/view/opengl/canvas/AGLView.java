@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -233,8 +234,10 @@ public abstract class AGLView
 
 	// FIXME: Maybe this can be generalized so a view only needs only one DragAndDropController
 	private DragAndDropController scrollBarDragAndDropController;
-	
+
 	private int currentScrollBarID = 0;
+
+	private HashSet<IMouseWheelHandler> mouseWheelListeners;
 
 	/**
 	 * Constructor. If the glCanvas object is null - then the view is rendered remote.
@@ -267,6 +270,8 @@ public abstract class AGLView
 		bShowMagnifyingGlass = false;
 
 		glCanvas.initPixelGLConverter(viewFrustum);
+
+		mouseWheelListeners = new HashSet<IMouseWheelHandler>();
 
 		initScrollBars();
 
@@ -1122,21 +1127,6 @@ public abstract class AGLView
 	}
 
 	/**
-	 * This method shall be called when the mouse was wheeled for zooming.
-	 * 
-	 * @param wheelAmount
-	 * @param wheelPosition
-	 */
-	@Override
-	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
-		currentZoomScale -= wheelAmount;
-		if (currentZoomScale < 1.0f)
-			currentZoomScale = 1.0f;
-		wasMouseWheeled = true;
-		mouseWheelPosition = wheelPosition;
-	}
-
-	/**
 	 * Specifies whether the view should zoom when the mouse was wheeled. This method should not be called
 	 * when the view is rendered remote.
 	 * 
@@ -1233,14 +1223,12 @@ public abstract class AGLView
 			// + viewFrustum.getHeight() + "\n Translate: " + viewTranlateX + "," + viewTranlateY
 			// + "\n currentZoom: " + currentZoomScale + "; prevZoom: " + previousZoomScale);
 		}
-		
+
 		float relativeImageCenterX =
-			(-viewTranslateX + viewFrustum.getWidth() / 2.0f)
-				/ (viewFrustum.getWidth() * currentZoomScale);
+			(-viewTranslateX + viewFrustum.getWidth() / 2.0f) / (viewFrustum.getWidth() * currentZoomScale);
 		float relativeImageCenterY =
-			(-viewTranslateY + viewFrustum.getHeight() / 2.0f)
-				/ (viewFrustum.getHeight() * currentZoomScale);
-		
+			(-viewTranslateY + viewFrustum.getHeight() / 2.0f) / (viewFrustum.getHeight() * currentZoomScale);
+
 		float zoomCenterX = relativeImageCenterX * viewFrustum.getWidth();
 		float zoomCenterY = relativeImageCenterY * viewFrustum.getHeight();
 
@@ -1274,11 +1262,11 @@ public abstract class AGLView
 		gl.glPushMatrix();
 		gl.glTranslatef(viewTranslateX, viewTranslateY, 0);
 		gl.glScalef(currentZoomScale, currentZoomScale, 1);
-		
+
 		// JUST FOR TESTING OF 1D ZOOM IN Z-DIRECTION
 		// TODO: ADD MODE FOR X-ZOOM, Y-ZOOM OR BOTH
-//		gl.glTranslatef(0, viewTranslateY, 0);
-//		gl.glScalef(1, currentZoomScale, 1);
+		// gl.glTranslatef(0, viewTranslateY, 0);
+		// gl.glScalef(1, currentZoomScale, 1);
 
 	}
 
@@ -1332,18 +1320,48 @@ public abstract class AGLView
 			relativeViewTranlateY = viewTranslateY / viewFrustum.getHeight();
 		}
 	}
-	
-	//FIXME: The location of this method probably has to be changed.
+
+	// FIXME: The location of this method probably has to be changed.
 	public Set<IDataDomain> getDataDomains() {
 		return null;
 	}
-	
-	//FIXME: The location of this method probably has to be changed.
+
+	// FIXME: The location of this method probably has to be changed.
 	public Set<ADimensionGroupData> getDimensionGroups() {
 		return null;
 	}
-	
+
 	public synchronized int createNewScrollBarID() {
 		return currentScrollBarID++;
+	}
+
+	public GLMouseListener getGLMouseListener() {
+		return glMouseListener;
+	}
+
+	/**
+	 * Register any mouseWheelListener that may be interested in being notified when the mouse wheel is moved
+	 * 
+	 * @param listener
+	 */
+	public void registerMouseWheelListener(IMouseWheelHandler listener) {
+		mouseWheelListeners.add(listener);
+	}
+
+	public void unregisterRemoteViewMouseWheelListener(IMouseWheelHandler listener) {
+		mouseWheelListeners.remove(listener);
+	}
+
+	/**
+	 * This method shall be called when the mouse was wheeled for zooming.
+	 * 
+	 * @param wheelAmount
+	 * @param wheelPosition
+	 */
+	@Override
+	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
+		for (IMouseWheelHandler listener : mouseWheelListeners) {
+			listener.handleMouseWheel(wheelAmount, wheelPosition);
+		}
 	}
 }

@@ -11,7 +11,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.layout.util.ZoomableViewLayoutRenderer;
+import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
@@ -32,21 +32,19 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 	@Override
 	public void configure(CentralBrickLayoutTemplate layoutTemplate) {
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
-				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
-				EContainedViewType.PARCOORDS_VIEW);
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, PARCOORDS_BUTTON_ID,
+				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
-				TAGCLOUD_BUTTON_ID, EIconTextures.TAGCLOUD_ICON,
-				EContainedViewType.TAGCLOUD_VIEW);
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, TAGCLOUD_BUTTON_ID,
+				EIconTextures.TAGCLOUD_ICON, EContainedViewType.TAGCLOUD_VIEW);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		viewSwitchingButtons.add(parCoordsButton);
 		viewSwitchingButtons.add(tagCloudButton);
 
 		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
-		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
-				layoutTemplate, viewSwitchingButtons);
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate,
+				viewSwitchingButtons);
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
 
 		layoutTemplate.setHeaderBarElements(headerBarElements);
@@ -82,20 +80,18 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 	public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
 
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
-				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
-				EContainedViewType.PARCOORDS_VIEW);
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, PARCOORDS_BUTTON_ID,
+				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
-				TAGCLOUD_BUTTON_ID, EIconTextures.TAGCLOUD_ICON,
-				EContainedViewType.TAGCLOUD_VIEW);
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, TAGCLOUD_BUTTON_ID,
+				EIconTextures.TAGCLOUD_ICON, EContainedViewType.TAGCLOUD_VIEW);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		viewSwitchingButtons.add(parCoordsButton);
 		viewSwitchingButtons.add(tagCloudButton);
 
-		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
-				layoutTemplate, viewSwitchingButtons);
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate,
+				viewSwitchingButtons);
 		layoutTemplate.setToolBarElements(toolBarElements);
 
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
@@ -118,20 +114,18 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
 
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
-				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
-				EContainedViewType.PARCOORDS_VIEW);
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, PARCOORDS_BUTTON_ID,
+				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
-				TAGCLOUD_BUTTON_ID, EIconTextures.TAGCLOUD_ICON,
-				EContainedViewType.TAGCLOUD_VIEW);
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, TAGCLOUD_BUTTON_ID,
+				EIconTextures.TAGCLOUD_ICON, EContainedViewType.TAGCLOUD_VIEW);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		viewSwitchingButtons.add(parCoordsButton);
 		viewSwitchingButtons.add(tagCloudButton);
 
-		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
-				layoutTemplate, viewSwitchingButtons);
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate,
+				viewSwitchingButtons);
 		layoutTemplate.setToolBarElements(toolBarElements);
 
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
@@ -151,26 +145,22 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 	}
 
 	@Override
-	public void setBrickViews(GLBrick brick, GL2 gl,
-			GLMouseListener glMouseListener, ABrickLayoutTemplate brickLayout) {
+	public void setBrickViews(GLBrick brick, GL2 gl, GLMouseListener glMouseListener,
+			ABrickLayoutTemplate brickLayout) {
 
 		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
 		ParCoordsCreator parCoordsCreator = new ParCoordsCreator(set);
-		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl,
-				glMouseListener);
-		LayoutRenderer parCoordsLayoutRenderer = new ZoomableViewLayoutRenderer(
-				parCoords, brick);
+		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl, glMouseListener);
+		LayoutRenderer parCoordsLayoutRenderer = new ViewLayoutRenderer(parCoords);
 		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
 		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
 				parCoordsLayoutRenderer);
 
 		TagCloudCreator tagCloudCreator = new TagCloudCreator(set);
-		AGLView tagCloud = tagCloudCreator.createRemoteView(brick, gl,
-				glMouseListener);
-		LayoutRenderer tagCloudLayoutRenderer = new ZoomableViewLayoutRenderer(
-				tagCloud, brick);
+		AGLView tagCloud = tagCloudCreator.createRemoteView(brick, gl, glMouseListener);
+		LayoutRenderer tagCloudLayoutRenderer = new ViewLayoutRenderer(tagCloud);
 		views.put(EContainedViewType.TAGCLOUD_VIEW, tagCloud);
 		containedViewRenderers.put(EContainedViewType.TAGCLOUD_VIEW,
 				tagCloudLayoutRenderer);

@@ -37,11 +37,15 @@ public class LayoutManager {
 	/**
 	 * Recursively update the whole layout of this renderer. The dimensions are extracted from the viewFrustum
 	 * provided in the constructor. Since the viewFrustum is passed by reference, changes to the viewFrustum,
-	 * e.g. by a reshape of the window are reflected.
+	 * e.g. by a reshape of the window are reflected. FIXME: this should be split into two different methods,
+	 * one for updating the layout due to size changes, and one for updating the layout through to new
+	 * elements
 	 */
 	public void updateLayout() {
 		totalWidth = viewFrustum.getRight() - viewFrustum.getLeft();
 		totalHeight = viewFrustum.getTop() - viewFrustum.getBottom();
+
+//		template.getBaseLayoutElement().destroy();
 
 		template.setStaticLayouts();
 		template.calculateScales(viewFrustum.getLeft(), viewFrustum.getBottom(), totalWidth, totalHeight);

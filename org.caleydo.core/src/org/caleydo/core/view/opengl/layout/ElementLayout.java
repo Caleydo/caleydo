@@ -7,6 +7,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout.util.Zoomer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
@@ -90,6 +91,8 @@ public class ElementLayout {
 
 	protected boolean debug = false;
 
+	protected Zoomer zoomer;
+
 	public ElementLayout() {
 		renderer = new LayoutRenderer();
 		layoutName = "";
@@ -98,6 +101,15 @@ public class ElementLayout {
 	public ElementLayout(String layoutName) {
 		renderer = new LayoutRenderer();
 		this.layoutName = layoutName;
+	}
+	
+	void destroy()
+	{
+		if (zoomer != null)
+		{
+			zoomer.destroy();
+			zoomer = null;
+		}		
 	}
 
 	/**
@@ -352,7 +364,12 @@ public class ElementLayout {
 		resetY();
 	}
 
+	public void setZoomer(Zoomer zoomer) {
+		this.zoomer = zoomer;
+	}
+
 	// ---------------------------- END OF PUBLIC INTERFACE -----------------------------------
+
 
 	private void resetX() {
 		absoluteSizeX = Float.NaN;
@@ -405,6 +422,9 @@ public class ElementLayout {
 
 		}
 
+		if (zoomer != null)
+			zoomer.beginZoom(gl);
+
 		if (backgroundRenderers != null) {
 			for (LayoutRenderer backgroundRenderer : backgroundRenderers) {
 				backgroundRenderer.render(gl);
@@ -416,6 +436,9 @@ public class ElementLayout {
 				foregroundRenderer.render(gl);
 			}
 		}
+		if (zoomer != null)
+			zoomer.endZoom(gl);
+
 		gl.glTranslatef(-getTranslateX(), -getTranslateY(), 0);
 	}
 
@@ -446,6 +469,8 @@ public class ElementLayout {
 	void setTranslateY(float translateY) {
 		this.translateY = translateY;
 	}
+	
+
 
 	protected void updateSpacings() {
 		// LayoutRenderer renderer = ((RenderableLayoutElement) layout).getRenderer();
@@ -453,6 +478,9 @@ public class ElementLayout {
 			return;
 		renderer.setElementLayout(this);
 		renderer.setLimits(getSizeScaledX(), getSizeScaledY());
+		if (zoomer != null)
+			zoomer.setLimits(getSizeScaledX(), getSizeScaledY());
+
 		renderer.updateSpacing(this);
 		if (backgroundRenderers != null) {
 			for (LayoutRenderer renderer : backgroundRenderers) {

@@ -218,7 +218,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		super(glCanvas, viewFrustum);
 		viewType = GLParallelCoordinates.VIEW_ID;
-
 		renderStyle = new PCRenderStyle(this, viewFrustum);
 		super.renderStyle = this.renderStyle;
 

@@ -195,7 +195,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		currentRemoteView = views.get(currentViewType);
 		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
 			visBricks
-					.registerRemoteViewMouseWheelListener((IMouseWheelHandler) brickLayout
+					.registerMouseWheelListener((IMouseWheelHandler) brickLayout
 							.getViewRenderer());
 		}
 
@@ -855,7 +855,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		brickLayout.setViewRenderer(viewRenderer);
 		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
 			visBricks
-					.registerRemoteViewMouseWheelListener((IMouseWheelHandler) brickLayout
+					.registerMouseWheelListener((IMouseWheelHandler) brickLayout
 							.getViewRenderer());
 		}
 		brickLayout.viewTypeChanged(viewType);
