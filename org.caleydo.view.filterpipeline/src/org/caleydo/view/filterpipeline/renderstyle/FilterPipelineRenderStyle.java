@@ -23,6 +23,7 @@ public class FilterPipelineRenderStyle extends GeneralRenderStyle
 	public final float[] FILTER_PASSED_ALL_COLOR  = {.2f, 0.8f, .3f, 0.5f};
 	public final float[] FILTER_OR_COLOR  = {255/255.f, 255/255.f, 179/255.f, 1};
 	public final float[] FILTER_COLOR = {141/255.f, 211/255.f, 199/255.f, 1};
+	public final float[] FILTER_COLOR_UNCERTAINTY = {141/255.f, 150f, 199/255.f, 1};
 	public final float[] FILTER_BORDER_COLOR = {0,0,0,1};
 	
 	private ArrayList<float[]> filterColors = new ArrayList<float[]>();

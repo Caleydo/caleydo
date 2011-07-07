@@ -159,15 +159,20 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	 */
 	protected void renderBasicShape(GL2 gl, CaleydoTextRenderer textRenderer,
 			float[] color) {
-		 renderShape(gl, GL2.GL_QUADS, color, Z_POS_BODY);
-		gl.glLineWidth(1);
+		
+		renderShape(gl, GL2.GL_QUADS, color, Z_POS_BODY);
+		gl.glLineWidth(2);
 		renderShape(gl, GL2.GL_LINE_LOOP, renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER);
 
 		// Render uncertainty line
-		float heightRightUncertainty = heightRight - vSize.y() * (filter.getFilter().getVADeltaUncertainty().size() / 100.f);
+		float heightRightUncertainty = heightRight - vSize.y()
+				* (filter.getFilter().getVADeltaUncertainty().size() / 100.f);
+		renderShape(gl, GL2.GL_QUADS, vPos, vSize.x(), heightLeft,
+				heightRightUncertainty, renderStyle.FILTER_COLOR_UNCERTAINTY, Z_POS_BODY);
+		gl.glLineWidth(1);
 		renderShape(gl, GL2.GL_LINE_LOOP, vPos, vSize.x(), heightLeft,
 				heightRightUncertainty, renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER);
-
+		
 		// currently not filtered elements
 		textRenderer.renderText(gl, "" + filter.getOutput().size(), vPos.x() + vSize.x()
 				- 0.03f, vPos.y() + heightRight + 0.05f, Z_POS_TEXT, 0.004f, 20);
