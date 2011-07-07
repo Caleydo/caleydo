@@ -199,7 +199,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 			}
 
 			gl.glEnd();
-			
+
 			gl.glLineWidth(1);
 			gl.glColor4f(1, 1, 1, 1);
 			gl.glBegin(GL2.GL_LINES);

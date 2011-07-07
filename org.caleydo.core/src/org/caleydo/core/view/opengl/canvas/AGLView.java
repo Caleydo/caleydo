@@ -233,6 +233,8 @@ public abstract class AGLView
 
 	// FIXME: Maybe this can be generalized so a view only needs only one DragAndDropController
 	private DragAndDropController scrollBarDragAndDropController;
+	
+	private int currentScrollBarID = 0;
 
 	/**
 	 * Constructor. If the glCanvas object is null - then the view is rendered remote.
@@ -1339,5 +1341,9 @@ public abstract class AGLView
 	//FIXME: The location of this method probably has to be changed.
 	public Set<ADimensionGroupData> getDimensionGroups() {
 		return null;
+	}
+	
+	public synchronized int createNewScrollBarID() {
+		return currentScrollBarID++;
 	}
 }

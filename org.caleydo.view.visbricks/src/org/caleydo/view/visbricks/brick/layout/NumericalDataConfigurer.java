@@ -34,8 +34,7 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 		super(set);
 		// TODO Auto-generated constructor stub
 	}
-	
-	
+
 	@Override
 	public void configure(CentralBrickLayoutTemplate layoutTemplate) {
 
@@ -61,7 +60,7 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
 				layoutTemplate, viewSwitchingButtons);
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
-		
+
 		layoutTemplate.setHeaderBarElements(headerBarElements);
 		layoutTemplate.setToolBarElements(toolBarElements);
 		layoutTemplate.setFooterBarElements(footerBarElements);
@@ -88,7 +87,7 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 		layoutTemplate.setValidViewTypes(validViewTypes);
 		layoutTemplate
 				.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
-		
+
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
 		layoutTemplate.setFooterBarElements(footerBarElements);
 
@@ -222,15 +221,15 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 				histogramLayoutRenderer);
 
 		LayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getContentVA(), set.getStorageData(Set.STORAGE).getStorageVA(), set,
-				true);
+				brick.getContentVA(), set.getStorageData(Set.STORAGE)
+						.getStorageVA(), set, true);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
 				overviewHeatMapRenderer);
 
 		LayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getContentVA(), set.getStorageData(Set.STORAGE).getStorageVA(), set,
-				false);
+				brick.getContentVA(), set.getStorageData(Set.STORAGE)
+						.getStorageVA(), set, false);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
 				compactOverviewHeatMapRenderer);
@@ -248,15 +247,14 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 		layoutTemplate.setValidViewTypes(validViewTypes);
 		layoutTemplate
 				.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
-		
-		
+
 		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
 		layoutTemplate.setHeaderBarElements(headerBarElements);
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
 		layoutTemplate.setFooterBarElements(footerBarElements);
-		
+
 		layoutTemplate.showFooterBar(true);
-		
+
 	}
 
 }
