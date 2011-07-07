@@ -21,6 +21,7 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
+import org.caleydo.core.view.opengl.layout.util.SpacerRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.texture.BarplotTextureRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.texture.HeatMapTextureRenderer;
 
@@ -97,15 +98,40 @@ public class ClusterRenderer extends LayoutRenderer {
 
 		dataUncBarTextureRenderer = new BarplotTextureRenderer();
 		clusterDataUncBarLayout.setRenderer(dataUncBarTextureRenderer);
-		dataUncBarTextureRenderer.setOrientationLeft(false);
+		dataUncBarTextureRenderer.setOrientationLeft(true);
 
 		visUncBarTextureRenderer = new BarplotTextureRenderer();
 		clusterVisUncBarLayout.setRenderer(visUncBarTextureRenderer);
 
 		clusterLayout.append(clusterVisUncBarLayout);
 		
-	
+		{
+			ElementLayout lineSeparatorLayout = new ElementLayout(
+					"lineSeparator");
+
+			PixelGLConverter pixelGLConverter = uncertaintyHeatMap
+					.getParentGLCanvas().getPixelGLConverter();
+			lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
+			lineSeparatorLayout.setPixelSizeX(1);
+			lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
+			lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.2f);
+			clusterLayout.append(lineSeparatorLayout);
+
+		}
 		clusterLayout.append(clusterDataUncBarLayout);
+		{
+			ElementLayout lineSeparatorLayout = new ElementLayout(
+					"lineSeparator");
+
+			PixelGLConverter pixelGLConverter = uncertaintyHeatMap
+					.getParentGLCanvas().getPixelGLConverter();
+			lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
+			lineSeparatorLayout.setPixelSizeX(1);
+			lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
+			lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.8f);
+			clusterLayout.append(lineSeparatorLayout);
+
+		}
 		clusterLayout.append(clusterHeatMapLayout);
 		{
 			ElementLayout lineSeparatorLayout = new ElementLayout(
@@ -115,7 +141,7 @@ public class ClusterRenderer extends LayoutRenderer {
 					.getParentGLCanvas().getPixelGLConverter();
 			lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
 			lineSeparatorLayout.setPixelSizeX(1);
-			lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
+			lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
 			lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.3f);
 			clusterLayout.append(lineSeparatorLayout);
 

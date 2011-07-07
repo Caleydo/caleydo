@@ -18,6 +18,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
+import org.caleydo.core.view.opengl.layout.util.SpacerRenderer;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 /**
@@ -108,7 +109,7 @@ public class OverviewRenderer extends LayoutRenderer {
 					lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
 					lineSeparatorLayout.setPixelSizeY(CLUSTER_SPACER_SIZE);
 					lineSeparatorLayout.setRatioSizeX(1);
-					lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(
+					lineSeparatorLayout.setRenderer(new SpacerRenderer(
 							false));
 					lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.3f);
 					
