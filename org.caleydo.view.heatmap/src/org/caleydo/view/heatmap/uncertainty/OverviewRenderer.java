@@ -47,9 +47,7 @@ public class OverviewRenderer extends LayoutRenderer {
 
 	private List<Row> clusterLayoutList = new ArrayList<Row>();
 
-	java.util.Set<Integer> setMouseOverElements;
-	java.util.Set<Integer> setSelectedElements;
-
+	
 	/**
 	 * Constructor.
 	 * 
@@ -183,53 +181,16 @@ public class OverviewRenderer extends LayoutRenderer {
 	public void setDetailHeatMap(GLHeatMap detailHeatMap) {
 		this.detailHeatMap = detailHeatMap;
 	}
-
-	private void renderSelectedElementsLevel1(GL2 gl) {
-		float height = y;
-		float widthLevel1 = x;
-
-		ContentVirtualArray contentVA = uncertaintyHeatMap.getContentVA();
-		float heightElem = height / contentVA.size();
-
-		setMouseOverElements = uncertaintyHeatMap.getContentSelectionManager()
-				.getElements(SelectionType.MOUSE_OVER);
-		setSelectedElements = uncertaintyHeatMap.getContentSelectionManager()
-				.getElements(SelectionType.SELECTION);
-
-		gl.glLineWidth(2f);
-
-		for (Integer mouseOverElement : setMouseOverElements) {
-
-			int index = contentVA.indexOf(mouseOverElement.intValue());
-
-			// if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1)
-			// == false) {
-			gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
-			gl.glBegin(GL2.GL_LINES);
-			gl.glVertex3f(widthLevel1, height - heightElem * index, SELECTION_Z);
-			gl.glVertex3f(widthLevel1 + 0.1f, height - heightElem * index, SELECTION_Z);
-			gl.glEnd();
-			// }
-		}
-
-		for (Integer selectedElement : setSelectedElements) {
-
-			int index = contentVA.indexOf(selectedElement.intValue());
-
-			// if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1)
-			// == false) {
-			gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
-			gl.glBegin(GL2.GL_LINES);
-			gl.glVertex3f(widthLevel1, height - heightElem * index, SELECTION_Z);
-			gl.glVertex3f(widthLevel1 + 0.1f, height - heightElem * index, SELECTION_Z);
-			gl.glEnd();
-			// }
-		}
+	
+	public GLUncertaintyHeatMap getUncertaintyHeatMap() {
+		return uncertaintyHeatMap;
 	}
+
+	
 
 	@Override
 	public void render(GL2 gl) {
-		renderSelectedElementsLevel1(gl);
+	//	renderSelectedElementsLevel1(gl);
 	}
 
 }

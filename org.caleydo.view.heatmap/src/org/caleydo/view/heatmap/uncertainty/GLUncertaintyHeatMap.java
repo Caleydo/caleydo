@@ -47,6 +47,7 @@ import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.OverviewDetailConnectorRenderer;
 import org.caleydo.view.heatmap.heatmap.template.UncertaintyDetailHeatMapTemplate;
+import org.eclipse.jface.layout.PixelConverter;
 
 /**
  * Uncertainty heat map view.
@@ -97,8 +98,6 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 			final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum);
 		viewType = GLUncertaintyHeatMap.VIEW_ID;
-		parentGLCanvas.removeMouseWheelListener(glMouseListener);
-		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
 	}
 
 	@Override
@@ -144,7 +143,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		overviewDetailConnectorLayout
 				.setRenderer(overviewDetailConnectorRenderer);
 
-//		templateRenderer.updateLayout();
+		templateRenderer.updateLayout();
 
 	}
 
@@ -259,7 +258,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 							clusterRenderer.textureRenderer, uncertaintyVA);
 
 					clusterRenderer.visUncBarTextureRenderer
-							.updateTexture(uncertaintyVA);
+							.initTextures(uncertaintyVA);
 				}
 			}
 

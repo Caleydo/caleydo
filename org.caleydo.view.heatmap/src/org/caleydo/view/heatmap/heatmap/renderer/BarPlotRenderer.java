@@ -83,9 +83,12 @@ public class BarPlotRenderer extends AContentRenderer {
 				return;
 			float[] certainty = new float[3];
 			try {
+				
 				certainty[0] = set.getNormalizedUncertainty(contentID);
+				//certainty[1] = set.getStatisticsResult().getFoldChangeResult(set)
 				certainty[1] = set.getNormalizedUncertainty(contentID);
 				certainty[2] = set.getNormalizedUncertainty(contentID);
+			
 			} catch (IllegalStateException ex) {
 				certainty[0] = 1f;
 				certainty[1] = 1f;

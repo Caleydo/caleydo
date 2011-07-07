@@ -1,10 +1,13 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.DENDROGRAM_BACKROUND;
+import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -27,7 +30,11 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 	private GLHeatMap detailHeatMap;
 
 	private TextureManager textureManager = new TextureManager();
+	java.util.Set<Integer> setMouseOverElements;
+	java.util.Set<Integer> setSelectedElements;
 
+	
+	
 	public OverviewDetailConnectorRenderer(OverviewRenderer overviewHeatMap,
 			GLHeatMap detailHeatMap) {
 
@@ -52,6 +59,8 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 		render(gl,
 				new Vec3f(0, yOverview + overviewHeatMap.getSelectedClusterHeight(), 0),
 				new Vec3f(x, y, 0), new Vec3f(0, yOverview, 0), new Vec3f(x, 0, 0));
+		
+		renderSelectedElementsLevel1(gl);
 	}
 
 	/**
@@ -241,5 +250,49 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 		textureMaskNeg.disable();
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glPopAttrib();
+	}
+	
+	private void renderSelectedElementsLevel1(GL2 gl) {
+		float height = y;
+		float widthLevel1 = 0f;
+
+		ContentVirtualArray contentVA = overviewHeatMap.getUncertaintyHeatMap().getContentVA();
+		float heightElem = height / contentVA.size();
+
+		setMouseOverElements = detailHeatMap.getContentSelectionManager()
+				.getElements(SelectionType.MOUSE_OVER);
+		setSelectedElements = detailHeatMap.getContentSelectionManager()
+				.getElements(SelectionType.SELECTION);
+
+		gl.glLineWidth(2f);
+
+		for (Integer mouseOverElement : setMouseOverElements) {
+
+			int index = contentVA.indexOf(mouseOverElement.intValue());
+
+			// if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1)
+			// == false) {
+			gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
+			gl.glBegin(GL2.GL_LINES);
+			
+			gl.glVertex3f(widthLevel1, height - heightElem * index, 0.9f);
+			gl.glVertex3f(widthLevel1 + 0.1f, height - heightElem * index, 0.9f);
+			gl.glEnd();
+			// }
+		}
+
+		for (Integer selectedElement : setSelectedElements) {
+
+			int index = contentVA.indexOf(selectedElement.intValue());
+
+			// if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1)
+			// == false) {
+			gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
+			gl.glBegin(GL2.GL_LINES);
+			gl.glVertex3f(widthLevel1, height - heightElem * index, SELECTION_Z);
+			gl.glVertex3f(widthLevel1 + 0.1f, height - heightElem * index, SELECTION_Z);
+			gl.glEnd();
+			// }
+		}
 	}
 }

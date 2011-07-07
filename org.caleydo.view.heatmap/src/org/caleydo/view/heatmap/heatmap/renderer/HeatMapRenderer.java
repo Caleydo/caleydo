@@ -101,14 +101,14 @@ public class HeatMapRenderer extends AContentRenderer {
 
 		float fOpacity = 1.0f;
 
-		//cholz
-		if (storage.containsUncertaintyData())
+		/*if (storage.containsUncertaintyData())
 			fOpacity = storage.getFloat(EDataRepresentation.UNCERTAINTY_NORMALIZED,
 					iContentIndex);
 		else if (heatMap.getContentSelectionManager().checkStatus(
 				SelectionType.DESELECTED, iContentIndex)) {
 			fOpacity = 0.3f;
 		}
+		*/
 
 		float[] fArMappingColor = colorMapper.getColor(value);
 

@@ -122,7 +122,8 @@ public abstract class AStorage
 	}
 
 	public boolean containsUncertaintyData() {
-		return isCertaintyDataSet;
+		return (isCertaintyDataSet && hashCContainers.containsKey(EDataRepresentation.UNCERTAINTY_NORMALIZED));
+		
 	}
 
 	/**
