@@ -1,6 +1,9 @@
 package org.caleydo.view.heatmap.heatmap.renderer.texture;
 
+import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
+
 import java.awt.image.BufferedImage;
+import org.caleydo.core.manager.event.view.selection.AddSelectionEvent;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferFloat;
 import java.awt.image.WritableRaster;
@@ -19,17 +22,29 @@ import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
 
@@ -40,7 +55,7 @@ import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
 import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 
-public class HeatMapTextureRenderer extends LayoutRenderer {
+public class HeatMapTextureRenderer extends LayoutRenderer{
 
 	private final static int MAX_SAMPLES_PER_TEXTURE = 2000;
 
@@ -78,12 +93,20 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 
 	private ISet set;
 
+	private SelectionUpdateListener selectionUpdateListener;
+
+	private int selectedLine = -1;
+
+	private float glYCoordinate = 50;
+
+	
 	public HeatMapTextureRenderer(GLUncertaintyHeatMap uncertaintyHeatMap,
 			Column heatmapLayout) {
 
 		this.uncertaintyHeatMap = uncertaintyHeatMap;
 		this.heatmapLayout = heatmapLayout;
-
+		// selectionUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		
 	}
 
 	/*
@@ -186,9 +209,11 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 				textureCounter++;
 				contentCount = 0;
 			}
+
 		}
 	}
 
+	
 	@Override
 	public void render(GL2 gl) {
 
@@ -207,39 +232,11 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 			step = elementHeight * numberSamples.get(numberOfTextures - i - 1);
 			renderTexture(gl, textures.get(numberOfTextures - i - 1), 0,
 					yOffset, x, yOffset + step);
-			yOffset += step;
 
-			/*
-			 * step = elementHeight * numberSamples.get(numberOfTextures - i -
-			 * 1);
-			 * 
-			 * textures.get(numberOfTextures - i - 1).enable();
-			 * textures.get(numberOfTextures - i - 1).bind();
-			 * gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S,
-			 * GL2.GL_CLAMP); gl.glTexParameteri(GL2.GL_TEXTURE_2D,
-			 * GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
-			 * gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
-			 * GL2.GL_NEAREST); gl.glTexParameteri(GL2.GL_TEXTURE_2D,
-			 * GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_NEAREST); TextureCoords
-			 * texCoords = textures.get(numberOfTextures - i - 1)
-			 * .getImageTexCoords();
-			 * 
-			 * gl.glPushName(pickingManager.getPickingID(
-			 * uncertaintyHeatMap.getID(), EPickingType.HEAT_MAP_CLUSTER_GROUP,
-			 * groupIndex)); gl.glBegin(GL2.GL_QUADS);
-			 * gl.glTexCoord2d(texCoords.left(), texCoords.top());
-			 * gl.glVertex3f(0, yOffset, 0); gl.glTexCoord2d(texCoords.left(),
-			 * texCoords.bottom()); gl.glVertex3f(0, yOffset + step, 0);
-			 * gl.glTexCoord2d(texCoords.right(), texCoords.bottom());
-			 * gl.glVertex3f(x, yOffset + step, 0);
-			 * gl.glTexCoord2d(texCoords.right(), texCoords.top());
-			 * gl.glVertex3f(x, yOffset, 0); gl.glEnd(); gl.glPopName();
-			 * 
-			 * yOffset += step; textures.get(numberOfTextures - i -
-			 * 1).disable();
-			 */
+			yOffset += step;
 		}
-	}
+
+			}
 
 	private void renderTexture(GL2 gl, Texture texture, float x, float y,
 			float width, float height) {
@@ -271,167 +268,14 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 		gl.glPopName();
 
 		texture.disable();
-
 	}
-
-	public ArrayList<Float> getVisualUncertainty() {
-		return visualUncertaintyArray;
-	}
-
-	private int genFBO(GL2 gl) {
-		int[] array = new int[1];
-		IntBuffer ib = IntBuffer.wrap(array);
-		gl.glGenFramebuffers(1, ib);
-		return ib.get(0);
-	}
-
-	public void getScreenAreaShot(GL2 gl, int x, int y, int width, int height) {
-
-		/*
-		 * if (myFBO == -1) { myFBO = genFBO(gl);}
-		 * gl.glBindFramebuffer(GL2.GL_DRAW_BUFFER, this.myFBO);
-		 * gl.glReadBuffer(GL2.GL_FRONT); gl.glDrawBuffer(myFBO);
-		 * 
-		 * gl.glBlitFramebuffer(x, y, x + width - 1, y + height - 1, 0, 0, 600,
-		 * 600, GL2.GL_COLOR_BUFFER_BIT, GL2.GL_LINEAR);
-		 * //gl.glBlitFramebuffer(x, y, x+width, y+height, 0, 0,
-		 * numberOfExpirments, numberOfElements, GL2.GL_COLOR_BUFFER_BIT, //
-		 * GL2.GL_LINEAR);
-		 */
-		// gl.glReadBuffer(GL2.GL_AUX1);
-		// gl.glDrawBuffer(GL2.GL_BACK);
-
-		gl.glReadBuffer(GL2.GL_FRONT);
-		ByteBuffer screenShotByteBuffer = null;
-		BufferedImage screenShotImage = null;
-		screenShotImage = new BufferedImage(width, height,
-				BufferedImage.TYPE_4BYTE_ABGR);
-
-		screenShotByteBuffer = ByteBuffer
-				.wrap(((DataBufferByte) screenShotImage.getRaster()
-						.getDataBuffer()).getData());
-
-		gl.glReadPixels(x, y, width, height, GL2.GL_ABGR_EXT,
-				GL2.GL_UNSIGNED_BYTE, screenShotByteBuffer);
-
-		ImageUtil.flipImageVertically(screenShotImage);
-
-		visualUncertaintyArray = new ArrayList<Float>();
-		Date now = new Date();
-
-		try {
-			ImageIO.write(screenShotImage, "png", new File(
-					"C:\\Documents and Settings\\Clemens\\bild" + now.getTime()
-							+ ".png"));
-		} catch (IOException e) { // TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		// resizeImageByFactor();
-
-		// float xScale = width / numberOfExpirments;
-		// float yScale = height / numberOfElements;
-
-		// Fgl.glBindFramebuffer(GL2.GL_DRAW_BUFFER, 0);
-		// gl.glReadBuffer(GL2.GL_NONE);
-		// gl.glDrawBuffer(GL2.GL_BACK);
-
-	}
-
-	// public float getVisUncForContent
-
-	public float getValueFromBytes(byte[] abgr) {
-
-		float val = -((abgr[2] + 128) / 255f) + ((abgr[3] + 128) / 255f);
-		return val;
-
-	}
-
-	public void getScreenAreaShot2(GL2 gl, int x, int y, int width, int height) {
-
-		// readScreenShot
-		{
-			ByteBuffer screenShotByteBuffer = null;
-			BufferedImage screenShotImage = null;
-			screenShotImage = new BufferedImage(width, height,
-					BufferedImage.TYPE_4BYTE_ABGR);
-
-			screenShotByteBuffer = ByteBuffer
-					.wrap(((DataBufferByte) screenShotImage.getRaster()
-							.getDataBuffer()).getData());
-
-			gl.glReadBuffer(GL2.GL_FRONT);
-			gl.glReadPixels(x, y, width, height, GL2.GL_ABGR_EXT,
-					GL2.GL_UNSIGNED_BYTE, screenShotByteBuffer);
-
-			Texture awtTexture = AWTTextureIO.newTexture(
-					GLProfile.getDefault(), screenShotImage, false);
-			// create new Texture from ScreenShot
-			TextureData texData = new TextureData(GLProfile.getDefault(),
-					GL2.GL_RGBA /* internalFormat */, height /* height */,
-					width /* width */, 0 /* border */,
-					GL2.GL_RGBA /* pixelFormat */,
-					GL2.GL_UNSIGNED_BYTE /* pixelType */, false /* mipmap */,
-					false /* dataIsCompressed */, false /* mustFlipVertically */,
-					screenShotByteBuffer, null);
-			Texture tex = TextureIO.newTexture(0);
-			tex.updateImage(texData);
-
-			try {
-				ImageIO.write(screenShotImage, "png", new File(
-						"C:\\Documents and Settings\\Clemens\\bild.png"));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		/*
-		 * // Draw ScreenShot as new Texture in BackBuffer
-		 * gl.glDrawBuffer(GL2.GL_BACK); // gl.glDrawBuffer(GL2.GL_FRONT);
-		 * PixelGLConverter pixelGLConverter = this.uncertaintyHeatMap
-		 * .getParentGLCanvas().getPixelGLConverter(); float glHeight =
-		 * pixelGLConverter .getGLHeightForPixelHeight(numberOfElements); float
-		 * glWidth = pixelGLConverter
-		 * .getGLWidthForPixelWidth(numberOfExpirments); renderTexture(gl,
-		 * awtTexture, 0, 0, glWidth, glHeight);
-		 * 
-		 * 
-		 * 
-		 * 
-		 * // getNewScreenShots { gl.glReadBuffer(GL2.GL_BACK); ByteBuffer
-		 * screenShotByteBuffer = null; BufferedImage screenShotImage = null;
-		 * screenShotImage = new BufferedImage(width, height,
-		 * BufferedImage.TYPE_4BYTE_ABGR);
-		 * 
-		 * screenShotByteBuffer = ByteBuffer .wrap(((DataBufferByte)
-		 * screenShotImage.getRaster() .getDataBuffer()).getData());
-		 * 
-		 * gl.glReadBuffer(GL2.GL_BACK); gl.glReadPixels(x, y, width, height,
-		 * GL2.GL_ABGR_EXT, GL2.GL_UNSIGNED_BYTE, screenShotByteBuffer);
-		 * 
-		 * try { ImageIO.write(screenShotImage, "png", new File(
-		 * "C:\\Documents and Settings\\Clemens\\bild2.png")); } catch
-		 * (IOException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); }
-		 * 
-		 * }
-		 */
-		gl.glReadBuffer(GL2.GL_FRONT);
-		gl.glDrawBuffer(GL2.GL_FRONT);
-
-	}
-
-	public final static BufferedImage resizeImageByFactor(BufferedImage image,
-			double factor) {
-		int width = (int) (image.getWidth() * factor);
-		int height = (int) (image.getHeight() * factor);
-		BufferedImage newimage = new BufferedImage(width, height,
-				BufferedImage.TYPE_INT_RGB);
-		newimage.createGraphics().drawImage(image, 0, 0, width, height, null);
-
-		return newimage;
-	}
-
+	
+	/**
+	 * Render marker next to OverviewBar for visualization of selected elements
+	 * in the data set
+	 * 
+	 * @param gl
+	 */
 	public float getUncertaintyForLine(int imageLine, int width, int height) {
 
 		float maxUncertainty = 0;
@@ -451,8 +295,10 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 			for (int i = startGene; i < endGene; i++) {
 				byte[] abgr = new byte[4];
 
-				val = val+ ((set.get(storageVA.get(exps)).getFloat(
-						EDataRepresentation.NORMALIZED, contentVA.get(i)) - 0.5f));
+				val = val
+						+ ((set.get(storageVA.get(exps)).getFloat(
+								EDataRepresentation.NORMALIZED,
+								contentVA.get(i))));
 			}
 			// buffer.get(abgr, i * numberOfExpirments * 4 + exps * 4, 4);
 
@@ -462,17 +308,18 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 			uncertainty = 0;
 			for (int i = startGene; i < endGene; i++) {
 				float tempVal = set.get(storageVA.get(exps)).getFloat(
-						EDataRepresentation.NORMALIZED, contentVA.get(i)) - 0.5f;
+						EDataRepresentation.NORMALIZED, contentVA.get(i));
 				uncertainty = Math.abs(val - tempVal);
 				if (uncertainty > maxUncertainty) {
 					maxUncertainty = uncertainty;
 				}
 			}
-			//uncertainty = uncertainty / (float) (endGene - startGene);;
-			//System.out.println(ratio);
+			// uncertainty = uncertainty / (float) (endGene - startGene);;
+			//System.out.println(maxUncertainty);
 		}
 
-		return 1-maxUncertainty*2;
+		return 1 - (maxUncertainty * 2);
 	}
 
+	
 }

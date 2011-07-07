@@ -10,6 +10,7 @@ import javax.media.opengl.GLAutoDrawable;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -63,8 +64,8 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	public final static float[] lightLight = { 1.0f, 1.0f, 1.0f, 0.15f };
 	public final static float[] lightDark = { 0.0f, 0.0f, 0.0f, 0.8f };
 
-	public final static float[] darkLight = { 0.0f, 0.0f, 0.0f, 0.30f };
-	public final static float[] darkDark = { 0.0f, 0.0f, 0.0f, 0.95f };
+	public final static float[] darkLight = { 0.0f, 0.0f, 0.0f, 0.35f };
+	public final static float[] darkDark = { 0.0f, 0.0f, 0.0f, 0.90f };
 
 	private HeatMapRenderStyle renderStyle;
 
@@ -141,6 +142,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 				.setRenderer(overviewDetailConnectorRenderer);
 
 		templateRenderer.updateLayout();
+
 	}
 
 	@Override
@@ -216,7 +218,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 				detailHeatMap);
 
 		detailLayout.setRenderer(detailHeatMapLayoutRenderer);
-		
+
 		overviewHeatMap.setDetailHeatMap(detailHeatMap);
 	}
 
@@ -247,13 +249,15 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 			for (ClusterRenderer clusterRenderer : overviewHeatMap
 					.getClusterRendererList()) {
 				ArrayList<Float> uncertaintyVA = new ArrayList<Float>();
-				VisualUncertaintyUtil.calcVisualUncertainty(gl, pc,
-						clusterRenderer.textureRenderer.heatmapLayout,
-						clusterRenderer.textureRenderer, uncertaintyVA);
+				if (clusterRenderer.textureRenderer != null
+						&& clusterRenderer.textureRenderer.heatmapLayout != null&& clusterRenderer.visUncBarTextureRenderer != null) {
+					VisualUncertaintyUtil.calcVisualUncertainty(gl, pc,
+							clusterRenderer.textureRenderer.heatmapLayout,
+							clusterRenderer.textureRenderer, uncertaintyVA);
 
-				
-				clusterRenderer.visUncBarTextureRenderer
-						.updateTexture(uncertaintyVA);
+					clusterRenderer.visUncBarTextureRenderer
+							.updateTexture(uncertaintyVA);
+				}
 			}
 
 			updateVisualUncertainty = false;
@@ -337,7 +341,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
-		// TODO Auto-generated method stub
+		super.handleSelectionUpdate(selectionDelta, scrollToSelection, info);
 
 	}
 
@@ -395,11 +399,11 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	protected void reactOnContentVAChanges(ContentVADelta delta) {
 
 		super.reactOnContentVAChanges(delta);
-		
+
 		setDisplayListDirty();
 		overviewHeatMap.init();
 	}
-	
+
 	@Override
 	protected void initLists() {
 
@@ -445,6 +449,11 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 	public HeatMapRenderStyle getRenderStyle() {
 		return renderStyle;
+	}
+
+	public ContentSelectionManager getContentSelectionManager() {
+		return contentSelectionManager;
+
 	}
 
 }

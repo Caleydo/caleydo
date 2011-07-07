@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -29,6 +30,7 @@ import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
+import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 
 public class VisualUncertaintyUtil {
 
@@ -110,6 +112,106 @@ public class VisualUncertaintyUtil {
 
 	}
 
-	
+
+	public float getValueFromBytes(byte[] abgr) {
+
+		float val = -((abgr[2] + 128) / 255f) + ((abgr[3] + 128) / 255f);
+		return val;
+
+	}
+
+	public void getScreenAreaShot2(GL2 gl, int x, int y, int width, int height) {
+
+		// readScreenShot
+		{
+			ByteBuffer screenShotByteBuffer = null;
+			BufferedImage screenShotImage = null;
+			screenShotImage = new BufferedImage(width, height,
+					BufferedImage.TYPE_4BYTE_ABGR);
+
+			screenShotByteBuffer = ByteBuffer
+					.wrap(((DataBufferByte) screenShotImage.getRaster()
+							.getDataBuffer()).getData());
+
+			gl.glReadBuffer(GL2.GL_FRONT);
+			gl.glReadPixels(x, y, width, height, GL2.GL_ABGR_EXT,
+					GL2.GL_UNSIGNED_BYTE, screenShotByteBuffer);
+
+			Texture awtTexture = AWTTextureIO.newTexture(
+					GLProfile.getDefault(), screenShotImage, false);
+			// create new Texture from ScreenShot
+			TextureData texData = new TextureData(GLProfile.getDefault(),
+					GL2.GL_RGBA /* internalFormat */, height /* height */,
+					width /* width */, 0 /* border */,
+					GL2.GL_RGBA /* pixelFormat */,
+					GL2.GL_UNSIGNED_BYTE /* pixelType */, false /* mipmap */,
+					false /* dataIsCompressed */, false /* mustFlipVertically */,
+					screenShotByteBuffer, null);
+			Texture tex = TextureIO.newTexture(0);
+			tex.updateImage(texData);
+
+			try {
+				ImageIO.write(screenShotImage, "png", new File(
+						"C:\\Documents and Settings\\Clemens\\bild.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		/*
+		 * // Draw ScreenShot as new Texture in BackBuffer
+		 * gl.glDrawBuffer(GL2.GL_BACK); // gl.glDrawBuffer(GL2.GL_FRONT);
+		 * PixelGLConverter pixelGLConverter = this.uncertaintyHeatMap
+		 * .getParentGLCanvas().getPixelGLConverter(); float glHeight =
+		 * pixelGLConverter .getGLHeightForPixelHeight(numberOfElements); float
+		 * glWidth = pixelGLConverter
+		 * .getGLWidthForPixelWidth(numberOfExpirments); renderTexture(gl,
+		 * awtTexture, 0, 0, glWidth, glHeight);
+		 * 
+		 * 
+		 * 
+		 * 
+		 * // getNewScreenShots { gl.glReadBuffer(GL2.GL_BACK); ByteBuffer
+		 * screenShotByteBuffer = null; BufferedImage screenShotImage = null;
+		 * screenShotImage = new BufferedImage(width, height,
+		 * BufferedImage.TYPE_4BYTE_ABGR);
+		 * 
+		 * screenShotByteBuffer = ByteBuffer .wrap(((DataBufferByte)
+		 * screenShotImage.getRaster() .getDataBuffer()).getData());
+		 * 
+		 * gl.glReadBuffer(GL2.GL_BACK); gl.glReadPixels(x, y, width, height,
+		 * GL2.GL_ABGR_EXT, GL2.GL_UNSIGNED_BYTE, screenShotByteBuffer);
+		 * 
+		 * try { ImageIO.write(screenShotImage, "png", new File(
+		 * "C:\\Documents and Settings\\Clemens\\bild2.png")); } catch
+		 * (IOException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 * 
+		 * }
+		 */
+		gl.glReadBuffer(GL2.GL_FRONT);
+		gl.glDrawBuffer(GL2.GL_FRONT);
+
+	}
+
+	public final static BufferedImage resizeImageByFactor(BufferedImage image,
+			double factor) {
+		int width = (int) (image.getWidth() * factor);
+		int height = (int) (image.getHeight() * factor);
+		BufferedImage newimage = new BufferedImage(width, height,
+				BufferedImage.TYPE_INT_RGB);
+		newimage.createGraphics().drawImage(image, 0, 0, width, height, null);
+
+		return newimage;
+	}
+
+
+
+	private int genFBO(GL2 gl) {
+		int[] array = new int[1];
+		IntBuffer ib = IntBuffer.wrap(array);
+		gl.glGenFramebuffers(1, ib);
+		return ib.get(0);
+	}
 	
 }

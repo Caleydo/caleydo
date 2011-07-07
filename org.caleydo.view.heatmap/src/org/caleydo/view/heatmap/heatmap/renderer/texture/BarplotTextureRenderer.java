@@ -55,7 +55,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 	public void updateTexture(ArrayList<Float> uncertaintyVA) {
 
-		if (uncertaintyVA == null) {
+		if (uncertaintyVA == null || storageVA == null || contentVA == null) {
 		} else {
 			int textureWidth = storageVA.size();
 			int textureHeight = numberOfElements = uncertaintyVA.size();
@@ -96,16 +96,33 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 			int contentCount = 0;
 			int textureCounter = 0;
+			
+			float[] middle1 = {(light[0]+dark[0])/2f,
+					(light[1]+dark[1])*0.66f,
+					(light[2]+dark[2])*0.66f,
+					(light[3]+dark[3])*0.66f,
+					};
+			float[] middle2 = {(light[0]+dark[0])/2f,
+					(light[1]+dark[1])*0.33f,
+					(light[2]+dark[2])*0.33f,
+					(light[3]+dark[3])*0.33f,
+					};
 			for (float uncertainty : uncertaintyVA) {
 				contentCount++;
 				for (int i = 0; i < textureWidth; i++) {
 					float[] rgba = new float[4];
-					if ((float) i / textureWidth > uncertainty) {
+					if ((((float) i / textureWidth)*0.25) > (uncertainty)) {
+						rgba = light;
+					} else if ((((float) i / textureWidth)*0.5) > (uncertainty)) {
+						rgba = light;
+					} else if ((((float) i / textureWidth)*0.75) > (uncertainty)) {
+						rgba = light;
+					} else if (((float) i / textureWidth) > (uncertainty)) {
 						rgba = light;
 					} else {
 						rgba = dark;
 					}
-
+					
 					floatBuffer[textureCounter].put(rgba);
 				}
 				if (contentCount >= numberSamples.get(textureCounter)) {

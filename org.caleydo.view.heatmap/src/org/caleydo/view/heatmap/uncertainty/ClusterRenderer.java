@@ -20,6 +20,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.texture.BarplotTextureRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.texture.HeatMapTextureRenderer;
 
@@ -78,31 +79,48 @@ public class ClusterRenderer extends LayoutRenderer {
 		ISet set = uncertaintyHeatMap.getDataDomain().getSet();
 
 		clusterHeatMapLayout = new Column("heatmap");
-		clusterHeatMapLayout.setRatioSizeX(0.8f);
+		clusterHeatMapLayout.setRatioSizeX(1f);
 
 		clusterDataUncBarLayout = new Column("bar");
-		clusterDataUncBarLayout.setPixelGLConverter(uncertaintyHeatMap.getParentGLCanvas()
-				.getPixelGLConverter());		
+		clusterDataUncBarLayout.setPixelGLConverter(uncertaintyHeatMap
+				.getParentGLCanvas().getPixelGLConverter());
 		clusterDataUncBarLayout.setPixelSizeX(14);
 
 		clusterVisUncBarLayout = new Column("bar2");
-		clusterVisUncBarLayout.setPixelGLConverter(uncertaintyHeatMap.getParentGLCanvas()
-				.getPixelGLConverter());
+		clusterVisUncBarLayout.setPixelGLConverter(uncertaintyHeatMap
+				.getParentGLCanvas().getPixelGLConverter());
 		clusterVisUncBarLayout.setPixelSizeX(14);
 
-
-		textureRenderer = new HeatMapTextureRenderer( uncertaintyHeatMap, clusterHeatMapLayout);
+		textureRenderer = new HeatMapTextureRenderer(uncertaintyHeatMap,
+				clusterHeatMapLayout);
 		clusterHeatMapLayout.setRenderer(textureRenderer);
 
 		dataUncBarTextureRenderer = new BarplotTextureRenderer();
 		clusterDataUncBarLayout.setRenderer(dataUncBarTextureRenderer);
+		dataUncBarTextureRenderer.setOrientationLeft(false);
 
 		visUncBarTextureRenderer = new BarplotTextureRenderer();
 		clusterVisUncBarLayout.setRenderer(visUncBarTextureRenderer);
 
 		clusterLayout.append(clusterVisUncBarLayout);
+		
+	
 		clusterLayout.append(clusterDataUncBarLayout);
 		clusterLayout.append(clusterHeatMapLayout);
+		{
+			ElementLayout lineSeparatorLayout = new ElementLayout(
+					"lineSeparator");
+
+			PixelGLConverter pixelGLConverter = uncertaintyHeatMap
+					.getParentGLCanvas().getPixelGLConverter();
+			lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
+			lineSeparatorLayout.setPixelSizeX(1);
+			lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
+			lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.3f);
+			clusterLayout.append(lineSeparatorLayout);
+
+		}
+		
 
 		textureRenderer.init(uncertaintyHeatMap, set, clusterVA, storageVA,
 				clusterIndex);
@@ -112,17 +130,15 @@ public class ClusterRenderer extends LayoutRenderer {
 
 		visUncBarTextureRenderer.init(set, clusterVA, storageVA,
 				uncertaintyHeatMap.getColorMapper());
-		visUncBarTextureRenderer.setOrientationLeft(false);
+
 		visUncBarTextureRenderer.setLightColor(uncertaintyHeatMap.darkLight);
-		visUncBarTextureRenderer.setDarkColor(uncertaintyHeatMap.darkDark);
-		
+		//visUncBarTextureRenderer.setDarkColor(uncertaintyHeatMap.darkDark);
+
 	}
 
 	@Override
 	public void render(GL2 gl) {
-	
-	}
 
-	
+	}
 
 }
