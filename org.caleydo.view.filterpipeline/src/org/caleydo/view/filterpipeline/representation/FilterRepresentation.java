@@ -49,6 +49,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 
 	float heightLeft = 0;
 	float heightRight = 0;
+	float uncertaintyHeightRight = 0;
 
 	public FilterRepresentation(FilterPipelineRenderStyle renderStyle,
 			PickingManager pickingManager, int viewId) {
@@ -90,10 +91,16 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 		return vSize.y() * (filter.getOutput().size() / 100.f);
 	}
 
+	public float getUncertaintyHeightRight() {
+		return heightRight - heightRight
+				* ((float)filter.getUncertaintyOutput().size() / filter.getOutput().size());
+	}
+
 	@Override
 	public void render(GL2 gl, CaleydoTextRenderer textRenderer) {
 		heightLeft = getHeightLeft();
 		heightRight = getHeightRight();
+		uncertaintyHeightRight = getUncertaintyHeightRight();
 
 		gl.glPushName(iPickingID);
 		renderBasicShape(gl, textRenderer, renderStyle.FILTER_COLOR);
@@ -129,17 +136,23 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	}
 
 	protected void renderShape(GL2 gl, int renderMode, final Vec2f pos, float width,
-			float heightLeft, float heightRight, float offsetRight, float[] color, float z) {
+			float heightLeft, float heightRight, float offsetLeft, float offsetRight,
+			float[] color, float z) {
 		gl.glBegin(renderMode);
 		{
 			gl.glColor4fv(color, 0);
 
-			gl.glVertex3f(pos.x(), pos.y(), z);
-			gl.glVertex3f(pos.x(), pos.y() + heightLeft, z);
+			gl.glVertex3f(pos.x(), pos.y() + offsetLeft, z);
+			gl.glVertex3f(pos.x(), pos.y() + offsetLeft + heightLeft, z);
 			gl.glVertex3f(pos.x() + width, pos.y() + offsetRight + heightRight, z);
 			gl.glVertex3f(pos.x() + width, pos.y() + offsetRight, z);
 		}
 		gl.glEnd();
+	}
+
+	protected void renderShape(GL2 gl, int renderMode, final Vec2f pos, float width,
+			float heightLeft, float heightRight, float offsetRight, float[] color, float z) {
+		renderShape(gl, renderMode, pos, width, heightLeft, heightRight, 0, 0, color, z);
 	}
 
 	protected void renderShape(GL2 gl, int renderMode, final Vec2f pos, float width,
@@ -159,20 +172,25 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	 */
 	protected void renderBasicShape(GL2 gl, CaleydoTextRenderer textRenderer,
 			float[] color) {
-		
+
 		renderShape(gl, GL2.GL_QUADS, color, Z_POS_BODY);
 		gl.glLineWidth(2);
 		renderShape(gl, GL2.GL_LINE_LOOP, renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER);
 
 		// Render uncertainty line
-		float heightRightUncertainty = heightRight - vSize.y()
-				* (filter.getFilter().getVADeltaUncertainty().size() / 100.f);
-		renderShape(gl, GL2.GL_QUADS, vPos, vSize.x(), heightLeft,
-				heightRightUncertainty, renderStyle.FILTER_COLOR_UNCERTAINTY, Z_POS_BODY);
-		gl.glLineWidth(1);
-		renderShape(gl, GL2.GL_LINE_LOOP, vPos, vSize.x(), heightLeft,
-				heightRightUncertainty, renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER);
-		
+		if (filter.getFilter().getVADeltaUncertainty() != null) {
+
+			renderShape(gl, GL2.GL_QUADS, vPos, vSize.x(), heightLeft,
+					uncertaintyHeightRight, 0, 0, renderStyle.FILTER_COLOR_UNCERTAINTY,
+					Z_POS_BODY);
+
+			gl.glLineWidth(1);
+
+			renderShape(gl, GL2.GL_LINE_LOOP, vPos, vSize.x(), 0, 0,
+					heightLeft, uncertaintyHeightRight, renderStyle.FILTER_BORDER_COLOR,
+					Z_POS_BORDER);
+		}
+
 		// currently not filtered elements
 		textRenderer.renderText(gl, "" + filter.getOutput().size(), vPos.x() + vSize.x()
 				- 0.03f, vPos.y() + heightRight + 0.05f, Z_POS_TEXT, 0.004f, 20);

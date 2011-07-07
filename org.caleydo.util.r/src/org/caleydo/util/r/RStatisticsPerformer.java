@@ -93,7 +93,6 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 				.getEventPublisher()
 				.addListener(StatisticsTwoSidedTTestReductionEvent.class,
 						statisticsTwoSidedTTestReductionListener);
-
 	}
 
 	// TODO: never called!

@@ -671,23 +671,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 								selectedSets);
 						contextMenu.addContextMenueItem(addGroupsToVisBricksItem);
 
-						// Lazy loading of R
-						// GeneralManager.get().getRStatisticsPerformer();
-						//
-						// StatisticsPValueReductionItem pValueReductionItem =
-						// new StatisticsPValueReductionItem(
-						// selectedSets);
-						// contextMenu
-						// .addContextMenueItem(pValueReductionItem);
-
-						// if (orderedComposites.size() == 2) {
-						// StatisticsFoldChangeReductionItem
-						// foldChangeReductionItem = new
-						// StatisticsFoldChangeReductionItem(
-						// selectedSets.get(0), selectedSets
-						// .get(1));
-
-						if (Platform.getBundle("org.caleydo.util.r") != null && false) {
+						if (Platform.getBundle("org.caleydo.util.r") != null) {
 
 							contextMenu.addSeparator();
 
@@ -1363,7 +1347,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 			@Override
 			public void run() {
-				ChangeGroupNameDialog.run(PlatformUI.getWorkbench().getDisplay(), groupRep);
+				ChangeGroupNameDialog.run(PlatformUI.getWorkbench().getDisplay(),
+						groupRep);
 				groupRep.getClusterNode().getMetaSet()
 						.setLabel(groupRep.getClusterNode().getLabel());
 				setDisplayListDirty();

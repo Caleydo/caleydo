@@ -264,8 +264,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		for (int count = indices.size() - 1; count >= 0; count--) {
 			int index = indices.get(count);
 			if (index < 0 || index > virtualArray.size()) {
-				Logger.log(new Status(Status.WARNING, "core", "When removing element in VA, id: " + iElement
-					+ " does not map to an index, produces: " + index));
+//				Logger.log(new Status(Status.WARNING, "core", "When removing element in VA, id: " + iElement
+//					+ " does not map to an index, produces: " + index));
 				continue;
 			}
 			remove(index);

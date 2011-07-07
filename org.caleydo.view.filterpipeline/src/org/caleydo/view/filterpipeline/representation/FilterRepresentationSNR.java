@@ -66,7 +66,7 @@ public class FilterRepresentationSNR extends
 
 				Composite infoComposite = new Composite(parentComposite, SWT.NULL);
 				infoComposite.setLayoutData(gridData);
-				infoComposite.setLayout(new GridLayout(4, false));
+				infoComposite.setLayout(new GridLayout(3, false));
 
 				Label invalidThresholdLabel = new Label(infoComposite, SWT.NONE);
 				invalidThresholdLabel.setText("Invalid threshold:");
@@ -252,13 +252,13 @@ public class FilterRepresentationSNR extends
 		for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 
 			float value = rawUncertainty[contentIndex];
-			if (value <= validThreshold)
+			if (value < invalidThreshold)
 				contentVADelta
 						.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));
 			
-			if (value > invalidThreshold && value < validThreshold)
+			if (value < invalidThreshold || value > validThreshold)
 				uncertaintyContentVADelta
-				.add(VADeltaItem.append(contentVA.get(contentIndex)));				
+				.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));				
 		}
 		
 		subFilter.setVADelta(contentVADelta);

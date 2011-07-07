@@ -458,5 +458,4 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		return contentSelectionManager;
 
 	}
-
 }

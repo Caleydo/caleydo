@@ -35,7 +35,7 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 	public static final float BUTTON_Z = 0.01f;
 	public static final float BACKGROUND_Z = -0.1f;
 
-	private float selectedFieldHeight = 1.0f;
+	private float selectedFieldHeight = 5.0f;
 
 	private float normalFieldHeight = 0f;
 

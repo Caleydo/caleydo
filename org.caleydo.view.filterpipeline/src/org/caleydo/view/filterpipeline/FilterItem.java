@@ -44,6 +44,7 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 
 	VirtualArray<?, DeltaType, ?> input = null;
 	VirtualArray<?, DeltaType, ?> output = null;
+	VirtualArray<?, DeltaType, ?> outputUncertainty = null;
 
 	/**
 	 * Constructor
@@ -109,7 +110,11 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	public void setInput(VirtualArray<?, ?, ?> input) {
 		this.input = (VirtualArray<?, DeltaType, ?>) input;
 		output = this.input.clone();
+		outputUncertainty = this.input.clone();
 		output.setDelta(filter.getVADelta());
+		outputUncertainty.setDelta(filter.getVADeltaUncertainty());
+		
+		System.out.println("BLA");
 	}
 
 	/**
@@ -129,6 +134,15 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	public VirtualArray<?, DeltaType, ?> getOutput() {
 		return output;
 	}
+	
+	/**
+	 * Get the uncertain items which passed this filter
+	 * 
+	 * @return
+	 */
+	public VirtualArray<?, DeltaType, ?> getUncertaintyOutput() {
+		return outputUncertainty;
+	}	
 
 	public int getSizeVADelta() {
 		return filter.getVADelta().size();

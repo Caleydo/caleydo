@@ -41,15 +41,16 @@ public class FilterRepresentationFoldChange extends
 	private ISet set1;
 	private ISet set2;
 
-	private float foldChange = 2;
+	private float foldChange = 3;
+	private float foldChangeUncertainty = 1.2f;
 
 	Button[] evaluatorCheckBox;
 
 	private Histogram histogram;
 
 	public boolean create() {
-		
-		if( !super.create() )
+
+		if (!super.create())
 			return false;
 
 		Display.getDefault().asyncExec(new Runnable() {
@@ -61,29 +62,47 @@ public class FilterRepresentationFoldChange extends
 				Composite infoComposite = new Composite(parentComposite, SWT.NULL);
 				GridData gridData = new GridData();
 				infoComposite.setLayoutData(gridData);
-				infoComposite.setLayout(new GridLayout(4, false));
+				infoComposite.setLayout(new GridLayout(3, false));
 
-				final Label foldChangeLabel = new Label(infoComposite, SWT.NULL);
-				foldChangeLabel.setText("Fold change:");
+				final Label validFoldChangeLabel = new Label(infoComposite, SWT.NULL);
+				validFoldChangeLabel.setText("Valid threshold:");
 
-				final Text foldChangeInputField = new Text(infoComposite, SWT.SINGLE);
-				final Slider foldChangeSlider = new Slider(infoComposite, SWT.HORIZONTAL);
+				final Text validFoldChangeInputField = new Text(infoComposite, SWT.SINGLE);
+				final Slider validFoldChangeSlider = new Slider(infoComposite, SWT.HORIZONTAL);
 
-				// gridData.grabExcessHorizontalSpace = true;
-				// gridData.horizontalAlignment = GridData.FILL;
-				// pValueSlider.setLayoutData(gridData);
-
-				foldChangeInputField.setEditable(true);
-				foldChangeInputField.setText(Float.toString(foldChange));
-				foldChangeInputField.addKeyListener(new KeyAdapter() {
+				validFoldChangeInputField.setEditable(true);
+				validFoldChangeInputField.setText(Float.toString(foldChange));
+				validFoldChangeInputField.addKeyListener(new KeyAdapter() {
 					@Override
 					public void keyPressed(KeyEvent e) {
 
-						String enteredValue = foldChangeInputField.getText();
+						String enteredValue = validFoldChangeInputField.getText();
 
 						if (enteredValue != null && !enteredValue.isEmpty()) {
 							foldChange = new Float(enteredValue);
-							foldChangeSlider.setSelection((int) (foldChange * 10));
+							validFoldChangeSlider.setSelection((int) (foldChange * 10));
+							isDirty = true;
+						}
+					}
+				});
+				
+				final Label invalidFoldChangeLabel = new Label(infoComposite, SWT.NULL);
+				invalidFoldChangeLabel.setText("Invalid threshold:");
+
+				final Text invalidFoldChangeInputField = new Text(infoComposite, SWT.SINGLE);
+				final Slider invalidFoldChangeSlider = new Slider(infoComposite, SWT.HORIZONTAL);
+
+				invalidFoldChangeInputField.setEditable(true);
+				invalidFoldChangeInputField.setText(Float.toString(foldChangeUncertainty));
+				invalidFoldChangeInputField.addKeyListener(new KeyAdapter() {
+					@Override
+					public void keyPressed(KeyEvent e) {
+
+						String enteredValue = invalidFoldChangeInputField.getText();
+
+						if (enteredValue != null && !enteredValue.isEmpty()) {
+							foldChangeUncertainty = new Float(enteredValue);
+							invalidFoldChangeSlider.setSelection((int) (foldChangeUncertainty * 10));
 							isDirty = true;
 						}
 					}
@@ -106,28 +125,23 @@ public class FilterRepresentationFoldChange extends
 
 				evaluatorCheckBox[1] = new Button(parentComposite, SWT.CHECK);
 				evaluatorCheckBox[1].setText("Greater (up regulated)");
-				
-				try
-				{
+
+				try {
 					FoldChangeSettings settings = set1.getStatisticsResult()
-													  .getFoldChangeResult(set2)
-													  .getSecond();
-					switch( settings.getEvaluator() )
-		            {
-						case GREATER:
-							evaluatorCheckBox[1].setSelection(true);
-							break;
-						case BOTH:
-							evaluatorCheckBox[1].setSelection(true);
-						case LESS:
-							evaluatorCheckBox[0].setSelection(true);
-		            }
-				}
-				catch (Exception e) // fails on filter creation
+							.getFoldChangeResult(set2).getSecond();
+					switch (settings.getEvaluator()) {
+					case GREATER:
+						evaluatorCheckBox[1].setSelection(true);
+						break;
+					case BOTH:
+						evaluatorCheckBox[1].setSelection(true);
+					case LESS:
+						evaluatorCheckBox[0].setSelection(true);
+					}
+				} catch (Exception e) // fails on filter creation
 				{
 					evaluatorCheckBox[0].setSelection(true);
 				}
-				
 
 				evaluatorCheckBox[0].addSelectionListener(new SelectionAdapter() {
 					@Override
@@ -143,18 +157,18 @@ public class FilterRepresentationFoldChange extends
 					}
 				});
 
-				foldChangeSlider.setMinimum(0);
-				foldChangeSlider.setMaximum(100);
-				foldChangeSlider.setIncrement(1);
-				foldChangeSlider.setPageIncrement(10);
-				foldChangeSlider.setSelection((int) (foldChange * 10));
+				validFoldChangeSlider.setMinimum(0);
+				validFoldChangeSlider.setMaximum(100);
+				validFoldChangeSlider.setIncrement(1);
+				validFoldChangeSlider.setPageIncrement(10);
+				validFoldChangeSlider.setSelection((int) (foldChange * 10));
 
-				foldChangeSlider.addMouseListener(new MouseAdapter() {
+				validFoldChangeSlider.addMouseListener(new MouseAdapter() {
 
 					@Override
 					public void mouseUp(MouseEvent e) {
-						foldChange = foldChangeSlider.getSelection() / 10f;
-						foldChangeInputField.setText("" + foldChange);
+						foldChange = validFoldChangeSlider.getSelection() / 10f;
+						validFoldChangeInputField.setText("" + foldChange);
 						isDirty = true;
 						// int reducedNumberOfElements =
 						// set1.getStatisticsResult()
@@ -165,8 +179,29 @@ public class FilterRepresentationFoldChange extends
 						// parentComposite.layout();
 					}
 				});
-				;
+				
+				invalidFoldChangeSlider.setMinimum(0);
+				invalidFoldChangeSlider.setMaximum(100);
+				invalidFoldChangeSlider.setIncrement(1);
+				invalidFoldChangeSlider.setPageIncrement(10);
+				invalidFoldChangeSlider.setSelection((int) (foldChangeUncertainty * 10));
 
+				invalidFoldChangeSlider.addMouseListener(new MouseAdapter() {
+
+					@Override
+					public void mouseUp(MouseEvent e) {
+						foldChangeUncertainty = invalidFoldChangeSlider.getSelection() / 10f;
+						invalidFoldChangeInputField.setText("" + foldChangeUncertainty);
+						isDirty = true;
+						// int reducedNumberOfElements =
+						// set1.getStatisticsResult()
+						// .getElementNumberOfFoldChangeReduction(set2);
+						//
+						// label.setText("The fold change reduced results in a dataset of the size "
+						// + reducedNumberOfElements);
+						// parentComposite.layout();
+					}
+				});
 				set1.getStatisticsResult().getFoldChangeResult(set2).getFirst();
 
 				Composite histoComposite = new Composite(parentComposite, SWT.NULL);
@@ -198,7 +233,7 @@ public class FilterRepresentationFoldChange extends
 		});
 
 		addOKCancel();
-		
+
 		return true;
 	}
 
@@ -230,6 +265,9 @@ public class FilterRepresentationFoldChange extends
 
 		ContentVADelta contentVADelta = new ContentVADelta(ISet.CONTENT, subFilter
 				.getDataDomain().getContentIDType());
+		ContentVADelta contentVADeltaUncertainty = new ContentVADelta(ISet.CONTENT,
+				subFilter.getDataDomain().getContentIDType());
+
 		ContentVirtualArray contentVA = subFilter.getDataDomain()
 				.getContentFilterManager().getBaseVA();
 
@@ -239,21 +277,24 @@ public class FilterRepresentationFoldChange extends
 				.getFoldChangeResult(set2).getSecond();
 
 		double foldChangeRatio = settings.getRatio();
+		double foldChangeRatioUncertainty = settings.getRatioUncertainty();
+
 		FoldChangeEvaluator foldChangeEvaluator = settings.getEvaluator();
 
 		for (Integer contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 
+			double foldChangeResult = resultVector[contentIndex];
 			switch (foldChangeEvaluator) {
 			case LESS:
-				if (resultVector[contentIndex] * -1 > foldChangeRatio)
+				if (foldChangeResult * -1 > foldChangeRatioUncertainty)
 					continue;
 				break;
 			case GREATER:
-				if (resultVector[contentIndex] > foldChangeRatio)
+				if (foldChangeResult > foldChangeRatioUncertainty)
 					continue;
 				break;
 			case BOTH:
-				if (Math.abs(resultVector[contentIndex]) > foldChangeRatio)
+				if (Math.abs(foldChangeResult) > foldChangeRatioUncertainty)
 					continue;
 				break;
 			}
@@ -261,7 +302,34 @@ public class FilterRepresentationFoldChange extends
 			contentVADelta.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));
 		}
 
+		// Evaluate uncertainty
+		for (Integer contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
+			
+			double foldChangeResult = resultVector[contentIndex];
+			switch (foldChangeEvaluator) {
+			case LESS:
+				if (foldChangeResult * -1 > foldChangeRatioUncertainty
+						&& foldChangeResult * -1 < foldChangeRatio)
+					continue;
+				break;
+			case GREATER:
+				if (foldChangeResult > foldChangeRatioUncertainty && foldChangeResult < foldChangeRatio)
+					continue;
+				break;
+			case BOTH:
+				if (Math.abs(foldChangeResult) > foldChangeRatioUncertainty
+						&& Math.abs(foldChangeResult) < foldChangeRatio)
+					continue;
+				break;
+			}
+
+			contentVADeltaUncertainty
+					.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));
+
+		}
+
 		subFilter.setVADelta(contentVADelta);
+		subFilter.setVADeltaUncertainty(contentVADeltaUncertainty);
 	}
 
 	@Override
@@ -287,7 +355,7 @@ public class FilterRepresentationFoldChange extends
 			}
 
 			FoldChangeSettings foldChangeSettings = new FoldChangeSettings(foldChange,
-					foldChangeEvaluator);
+					foldChangeUncertainty, foldChangeEvaluator);
 
 			set1.getStatisticsResult().setFoldChangeSettings(set2, foldChangeSettings);
 			set2.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
