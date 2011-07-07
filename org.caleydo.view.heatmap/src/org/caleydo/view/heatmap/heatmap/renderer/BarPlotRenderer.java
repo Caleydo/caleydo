@@ -82,10 +82,15 @@ public class BarPlotRenderer extends AContentRenderer {
 			if (set == null)
 				return;
 			float[] certainty = new float[3];
-
-			certainty[0] = set.getNormalizedUncertainty(contentID);
-			certainty[1] = set.getNormalizedUncertainty(contentID);
-			certainty[2] = set.getNormalizedUncertainty(contentID);
+			try {
+				certainty[0] = set.getNormalizedUncertainty(contentID);
+				certainty[1] = set.getNormalizedUncertainty(contentID);
+				certainty[2] = set.getNormalizedUncertainty(contentID);
+			} catch (IllegalStateException ex) {
+				certainty[0] = 1f;
+				certainty[1] = 1f;
+				certainty[2] = 1f;
+			}
 
 			PixelGLConverter conv = heatMap.getParentGLCanvas()
 					.getPixelGLConverter();
@@ -95,17 +100,18 @@ public class BarPlotRenderer extends AContentRenderer {
 				certainty[i] = certainty[i] > 1 ? 1 : certainty[i];
 				certainty[i] = certainty[i] < 0 ? 0 : certainty[i];
 
-				renderLine(gl, yPosition, xPosition, fieldHeight,
-						fieldWidth, certainty[i], GLUncertaintyHeatMap.lightLight);
+				renderLine(gl, yPosition, xPosition, fieldHeight, fieldWidth,
+						certainty[i], GLUncertaintyHeatMap.lightLight);
 			} else {
 				for (int i = 0; i < certainty.length; i++) {
-					float height = fieldHeight / (float)certainty.length; 
-					float yPos = yPosition + height*i;
+					float height = fieldHeight / (float) certainty.length;
+					float yPos = yPosition + height * i;
 					certainty[i] = certainty[i] > 1 ? 1 : certainty[i];
 					certainty[i] = certainty[i] < 0 ? 0 : certainty[i];
 
-					renderLine(gl,  yPos, xPosition,
-							height, fieldWidth, certainty[i], GLUncertaintyHeatMap.levelLightColor[i]);
+					renderLine(gl, yPos, xPosition, height, fieldWidth,
+							certainty[i],
+							GLUncertaintyHeatMap.levelLightColor[i]);
 				}
 			}
 
@@ -114,10 +120,9 @@ public class BarPlotRenderer extends AContentRenderer {
 		}
 	}
 
-	private void renderLine(final GL2 gl,
-			final float fYPosition, final float fXPosition,
-			final float fFieldHeight, final float fFieldWidth,
-			final float certainty, float[] rgba) {
+	private void renderLine(final GL2 gl, final float fYPosition,
+			final float fXPosition, final float fFieldHeight,
+			final float fFieldWidth, final float certainty, float[] rgba) {
 
 		float certainWidth = fFieldWidth * (1 - certainty);
 		float unCertainWidth = fFieldWidth * (certainty);

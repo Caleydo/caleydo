@@ -197,9 +197,12 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 		for (Integer contentIndex : contentVA) {
 			contentCount++;
 
-
-			float uncertainty = set.getNormalizedUncertainty(contentIndex);
-
+			float uncertainty;
+			try {
+			uncertainty = set.getNormalizedUncertainty(contentIndex);
+			} catch (IllegalStateException ex) {
+				uncertainty = 0;
+			} 
 			for (int i = 0; i < textureWidth; i++) {
 				float[] rgba = new float[4];
 				if ((float) i / textureWidth > uncertainty) {
