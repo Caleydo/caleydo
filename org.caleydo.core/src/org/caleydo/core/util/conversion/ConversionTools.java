@@ -2,6 +2,8 @@ package org.caleydo.core.util.conversion;
 
 import java.util.StringTokenizer;
 
+import javax.management.InvalidAttributeValueException;
+
 /**
  * Class that provides static methods to convert between different things
  * 
@@ -76,4 +78,103 @@ public class ConversionTools {
 		return iArColor;
 	}
 
+	/**
+	 * Does the actual normalization between 0 and 1 values that are NaN in the input are kept to be NaN
+	 * 
+	 * @param inputData
+	 *            the input data
+	 * @param min
+	 *            the minimum considered in the normalization
+	 * @param max
+	 *            the maximum considered in the normalization
+	 * @return
+	 * @throws InvalidAttributeValueException
+	 *             when fMin is >= fMax
+	 */
+	public static float[] normalize(float[] inputData, final float min, final float max) {
+		if (min > max)
+			throw new IllegalArgumentException("Minimum (" + min + ") was bigger as maximum (" + max + ")");
+
+		float[] targetData = new float[inputData.length];
+		if (inputData.length > 1) {
+
+			for (int iCount = 0; iCount < inputData.length; iCount++) {
+				if (Float.isNaN(inputData[iCount])) {
+					targetData[iCount] = Float.NaN;
+				}
+
+				targetData[iCount] = (inputData[iCount] - min) / (max - min);
+				if (targetData[iCount] > 1) {
+					targetData[iCount] = 1;
+				}
+				else if (targetData[iCount] < 0) {
+					targetData[iCount] = 0;
+				}
+			}
+		}
+		return targetData;
+	}
+
+	/**
+	 * Does the actual normalization between 0 and 1 values that are NaN in the input are kept to be NaN
+	 * 
+	 * @param inputData
+	 *            the input data
+	 * @param min
+	 *            the minimum considered in the normalization
+	 * @param max
+	 *            the maximum considered in the normalization
+	 * @param calculateAbsolute
+	 *            if true the sign (+/-) is ignored
+	 * @return
+	 * @throws InvalidAttributeValueException
+	 *             when fMin is >= fMax
+	 */
+	public static double[] normalize(double[] inputData, final double min, final double max,
+		boolean calculateAbsolute) {
+		
+		if (min > max)
+			throw new IllegalArgumentException("Minimum (" + min + ") was bigger as maximum (" + max + ")");
+
+		double[] targetData = new double[inputData.length];
+		if (inputData.length > 1) {
+
+			for (int iCount = 0; iCount < inputData.length; iCount++) {
+				if (Double.isNaN(inputData[iCount])) {
+					targetData[iCount] = Float.NaN;
+				}
+
+				if (calculateAbsolute)
+					targetData[iCount] = (Math.abs(inputData[iCount]) - min) / (max - min);
+				else					
+					targetData[iCount] = (inputData[iCount] - min) / (max - min);
+				
+				if (targetData[iCount] > 1) {
+					targetData[iCount] = 1;
+				}
+				else if (targetData[iCount] < 0) {
+					targetData[iCount] = 0;
+				}
+			}
+		}
+		return targetData;
+	}
+
+	/**
+	 * Does the actual normalization between 0 and 1 values that are NaN in the input are kept to be NaN
+	 * 
+	 * @param inputData
+	 *            the input data
+	 * @param min
+	 *            the minimum considered in the normalization
+	 * @param max
+	 *            the maximum considered in the normalization
+	 * @return
+	 * @throws InvalidAttributeValueException
+	 *             when fMin is >= fMax
+	 */
+	public static double[] normalize(double[] inputData, final double min, final double max) {
+
+		return normalize(inputData, min, max, false);
+	}
 }

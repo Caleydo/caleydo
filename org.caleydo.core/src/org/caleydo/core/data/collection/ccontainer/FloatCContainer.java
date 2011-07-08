@@ -1,8 +1,7 @@
 package org.caleydo.core.data.collection.ccontainer;
 
-import javax.management.InvalidAttributeValueException;
-
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.util.conversion.ConversionTools;
 
 /**
  * A container for floats. Initialized with a float array. The length can not be modified after
@@ -85,7 +84,7 @@ public class FloatCContainer
 
 	@Override
 	public FloatCContainer normalize() {
-		return normalize((int) getMin(), (int) getMax());
+		return new FloatCContainer(ConversionTools.normalize(fArContainer, (int) getMin(), (int) getMax()));
 	}
 
 	@Override
@@ -93,7 +92,8 @@ public class FloatCContainer
 		if (fMin >= fMax)
 			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
 
-		return normalize((float) dMin, (float) dMax);
+		return new FloatCContainer(ConversionTools.normalize(fArContainer, (float) dMin, (float) dMax));
+
 	}
 
 	// @Override
@@ -129,42 +129,6 @@ public class FloatCContainer
 		}
 
 		return new FloatCContainer(fArTarget);
-	}
-
-	/**
-	 * Does the actual normalization between 0 and 1 values that are NaN in the input are kept to be NaN
-	 * 
-	 * @param min
-	 *            the minimum considered in the normalization
-	 * @param max
-	 *            the maximum considered in the normalization
-	 * @return
-	 * @throws InvalidAttributeValueException
-	 *             when fMin is >= fMax
-	 */
-	private FloatCContainer normalize(final float min, final float max) {
-		if (min > max)
-			throw new IllegalArgumentException("Minimum (" + min + ") was bigger as maximum (" + max
-				+ ")");
-
-		float[] fArTmpTarget = new float[fArContainer.length];
-		if (fArContainer.length > 1) {
-
-			for (int iCount = 0; iCount < fArContainer.length; iCount++) {
-				if (Float.isNaN(fArContainer[iCount])) {
-					fArTmpTarget[iCount] = Float.NaN;
-				}
-
-				fArTmpTarget[iCount] = (fArContainer[iCount] - min) / (max - min);
-				if (fArTmpTarget[iCount] > 1) {
-					fArTmpTarget[iCount] = 1;
-				}
-				else if (fArTmpTarget[iCount] < 0) {
-					fArTmpTarget[iCount] = 0;
-				}
-			}
-		}
-		return new FloatCContainer(fArTmpTarget);
 	}
 
 	/**

@@ -281,6 +281,7 @@ public class FilterRepresentationFoldChange extends
 
 		FoldChangeEvaluator foldChangeEvaluator = settings.getEvaluator();
 
+		// FIXME: two sided fold change should be a parallel filter
 		for (Integer contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 
 			double foldChangeResult = resultVector[contentIndex];

@@ -1,59 +1,28 @@
 package org.caleydo.view.heatmap.heatmap.renderer.texture;
 
-import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
-
-import java.awt.image.BufferedImage;
-import org.caleydo.core.manager.event.view.selection.AddSelectionEvent;
-import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferFloat;
-import java.awt.image.WritableRaster;
-import java.io.File;
-import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 
-import javax.imageio.ImageIO;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
-
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.layout.Column;
-import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.layout.Row;
-import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
-import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
 
-import com.jogamp.opengl.util.awt.ImageUtil;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
-import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 
 public class HeatMapTextureRenderer extends LayoutRenderer{
 

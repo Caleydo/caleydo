@@ -1,10 +1,13 @@
 package org.caleydo.core.data.collection.set.statistics;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.conversion.ConversionTools;
 
 public class StatisticsResult {
 
@@ -19,9 +22,12 @@ public class StatisticsResult {
 
 	HashMap<ISet, Pair<double[], FoldChangeSettings>> setToFoldChangeResult;
 
+	HashMap<ISet, double[]> setToFoldChangeUncertainty;
+
 	public StatisticsResult(ISet set) {
 		setToTwoSidedTTestResult = new HashMap<ISet, ArrayList<Double>>();
 		setToFoldChangeResult = new HashMap<ISet, Pair<double[], FoldChangeSettings>>();
+		setToFoldChangeUncertainty = new HashMap<ISet, double[]>();
 		// oneSidedTTestResult = new double[0];
 		this.set = set;
 	}
@@ -68,8 +74,28 @@ public class StatisticsResult {
 		return setToFoldChangeResult.get(set);
 	}
 
+	public double[] getFoldChangeUncertainty(ISet set) {
+
+		return setToFoldChangeUncertainty.get(set);
+	}
+	
+	public Collection<double[]> getAllFoldChangeUncertainties() {
+
+		return setToFoldChangeUncertainty.values();
+	}	
+
 	public void setFoldChangeSettings(ISet set, FoldChangeSettings foldChangeSettings) {
 		setToFoldChangeResult.get(set).setSecond(foldChangeSettings);
+
+		// Recalculate normalized uncertainty for fold change
+		boolean calculateAbsolute = false;
+		if (foldChangeSettings.getEvaluator() == FoldChangeEvaluator.BOTH)
+			calculateAbsolute = true;
+
+		setToFoldChangeUncertainty.put(
+			set,
+			ConversionTools.normalize(setToFoldChangeResult.get(set).getFirst(),
+				foldChangeSettings.getRatioUncertainty(), foldChangeSettings.getRatio(), calculateAbsolute));
 	}
 
 	public void clearStatisticsResults() {

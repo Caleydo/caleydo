@@ -113,8 +113,6 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 		outputUncertainty = this.input.clone();
 		output.setDelta(filter.getVADelta());
 		outputUncertainty.setDelta(filter.getVADeltaUncertainty());
-		
-		System.out.println("BLA");
 	}
 
 	/**

@@ -47,7 +47,6 @@ public class OverviewRenderer extends LayoutRenderer {
 
 	private List<Row> clusterLayoutList = new ArrayList<Row>();
 
-	
 	/**
 	 * Constructor.
 	 * 
@@ -64,7 +63,7 @@ public class OverviewRenderer extends LayoutRenderer {
 
 	public void init() {
 
-//		overviewLayout.clear();
+		// overviewLayout.clear();
 		clusterLayoutList.clear();
 
 		ContentVirtualArray contentVA = uncertaintyHeatMap.getContentVA();
@@ -73,6 +72,12 @@ public class OverviewRenderer extends LayoutRenderer {
 		int counter = 0;
 
 		int lastLayoutElement = 0;
+		
+		// If the dataset is unclustered yet, the whole VA is given to the detail heat map.
+		if (clusterList == null && detailHeatMap != null) {
+			detailHeatMap.setContentVA(contentVA);
+			detailHeatMap.setDisplayListDirty();
+		}
 
 		if (clusterList != null) {
 			// int totalSpacerSize = spacerSize * (clusterList.size() - 1);
@@ -112,10 +117,12 @@ public class OverviewRenderer extends LayoutRenderer {
 					overviewLayout.add(lastLayoutElement, lineSeparatorLayout);
 					// overviewLayout.append(lineSeparatorLayout);
 				}
-
+				
 				// Initially the first cluster gets selected
-				if (clusterIndex == 0 && detailHeatMap != null)
+				if (clusterIndex == 0 && detailHeatMap != null) {
 					detailHeatMap.setContentVA(clusterVA);
+					detailHeatMap.setDisplayListDirty();
+				}
 			}
 		} else {
 			Row clusterLayout = new Row("clusterLayout");
@@ -181,16 +188,14 @@ public class OverviewRenderer extends LayoutRenderer {
 	public void setDetailHeatMap(GLHeatMap detailHeatMap) {
 		this.detailHeatMap = detailHeatMap;
 	}
-	
+
 	public GLUncertaintyHeatMap getUncertaintyHeatMap() {
 		return uncertaintyHeatMap;
 	}
 
-	
-
 	@Override
 	public void render(GL2 gl) {
-	//	renderSelectedElementsLevel1(gl);
+		// renderSelectedElementsLevel1(gl);
 	}
 
 }
