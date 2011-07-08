@@ -58,6 +58,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 import org.caleydo.view.grouper.compositegraphic.ICompositeGraphic;
 import org.caleydo.view.grouper.contextmenu.AddGroupsToVisBricksItem;
+import org.caleydo.view.grouper.contextmenu.AggregateGroupItem;
 import org.caleydo.view.grouper.contextmenu.CompareGroupsItem;
 import org.caleydo.view.grouper.contextmenu.CopyGroupsItem;
 import org.caleydo.view.grouper.contextmenu.CreateGroupItem;
@@ -657,6 +658,10 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 						ArrayList<ICompositeGraphic> orderedComposites = getOrderedCompositeList(
 								setClickedGroups, false);
 
+						AggregateGroupItem aggregateGroupItem = new AggregateGroupItem(
+								setSelectedGroups);
+						contextMenu.addContextMenueItem(aggregateGroupItem);
+
 						ArrayList<ISet> selectedSets = new ArrayList<ISet>();
 						boolean isLeafContained = false;
 						for (ICompositeGraphic composite : orderedComposites) {
@@ -666,7 +671,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 							if (isLeafContained == false)
 								isLeafContained = composite.isLeaf();
 						}
-						
+
 						AddGroupsToVisBricksItem addGroupsToVisBricksItem = new AddGroupsToVisBricksItem(
 								selectedSets);
 						contextMenu.addContextMenueItem(addGroupsToVisBricksItem);
@@ -706,8 +711,9 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 									selectedSets);
 							contextMenu.addContextMenueItem(compareGroupsItem);
 						}
-						
-						Log2ForSetItem log2ForSetItem = new Log2ForSetItem(selectedSets.get(0));
+
+						Log2ForSetItem log2ForSetItem = new Log2ForSetItem(
+								selectedSets.get(0));
 						contextMenu.addContextMenueItem(log2ForSetItem);
 
 						bContextMenueItemsAvailable = true;

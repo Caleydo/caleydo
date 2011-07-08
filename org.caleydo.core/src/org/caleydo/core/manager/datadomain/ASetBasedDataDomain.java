@@ -68,13 +68,15 @@ public abstract class ASetBasedDataDomain
 	implements IContentVAUpdateHandler, IStorageVAUpdateHandler, ISelectionUpdateHandler,
 	ISelectionCommandHandler {
 
-	protected SelectionUpdateListener selectionUpdateListener;
-	protected SelectionCommandListener selectionCommandListener;
+	private SelectionUpdateListener selectionUpdateListener;
+	private SelectionCommandListener selectionCommandListener;
 	private StartClusteringListener startClusteringListener;
 	private ReplaceContentVAInUseCaseListener replaceContentVirtualArrayInUseCaseListener;
 	private ReplaceStorageVAInUseCaseListener replaceStorageVirtualArrayInUseCaseListener;
 	private ContentVAUpdateListener contentVAUpdateListener;
 	private StorageVAUpdateListener storageVAUpdateListener;
+	private AggregateGroupListener aggregateGroupListener;
+
 	protected java.util.Set<ADimensionGroupData> dimensionGroups;
 
 	/** The set which is currently loaded and used inside the views for this use case. */
@@ -339,11 +341,10 @@ public abstract class ASetBasedDataDomain
 
 		ContentData contentData = set.getContentData(Set.CONTENT);
 		ClusterHelper.calculateAggregatedUncertainties(contentData.getContentTree(), set);
-		ClusterHelper.calculateClusterAverages(contentData.getContentTree(), EClustererType.CONTENT_CLUSTERING, set);
+		ClusterHelper.calculateClusterAverages(contentData.getContentTree(),
+			EClustererType.CONTENT_CLUSTERING, set);
 		contentData.getContentTree().setSortingStrategy(ESortingStrategy.CERTAINTY);
 		contentData.updateVABasedOnSortingStrategy();
-
-	
 
 		// This should be done to avoid problems with group info in HHM
 
@@ -564,6 +565,10 @@ public abstract class ASetBasedDataDomain
 		storageVAUpdateListener.setHandler(this);
 		storageVAUpdateListener.setDataDomainType(dataDomainType);
 		eventPublisher.addListener(StorageVAUpdateEvent.class, storageVAUpdateListener);
+
+		aggregateGroupListener = new AggregateGroupListener();
+		aggregateGroupListener.setHandler(this);
+		eventPublisher.addListener(AggregateGroupEvent.class, aggregateGroupListener);
 	}
 
 	// TODO this is never called!
@@ -603,6 +608,11 @@ public abstract class ASetBasedDataDomain
 		if (storageVAUpdateListener != null) {
 			eventPublisher.removeListener(storageVAUpdateListener);
 			storageVAUpdateListener = null;
+		}
+
+		if (aggregateGroupListener != null) {
+			eventPublisher.removeListener(aggregateGroupListener);
+			aggregateGroupListener = null;
 		}
 	}
 
@@ -832,20 +842,19 @@ public abstract class ASetBasedDataDomain
 		if (tree == null)
 			return;
 		ClusterNode rootNode = tree.getRoot();
-		if(rootNode != null && rootNode.hasChildren())
+		if (rootNode != null && rootNode.hasChildren())
 			createDimensionGroupsFromStorageTree(rootNode);
 	}
 
 	private void createDimensionGroupsFromStorageTree(ClusterNode parent) {
 
 		for (ClusterNode child : parent.getChildren()) {
-			if(child.hasChildren()) {
+			if (child.hasChildren()) {
 				dimensionGroups.add(new SetBasedDimensionGroupData(this, child.getMetaSet()));
 				createDimensionGroupsFromStorageTree(child);
 			}
 		}
 	}
-
 
 	@Override
 	public java.util.Set<ADimensionGroupData> getDimensionGroups() {
@@ -860,5 +869,10 @@ public abstract class ASetBasedDataDomain
 	@Override
 	public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
 		dimensionGroups.add(dimensionGroup);
+	}
+
+	public void aggregateGroups(java.util.Set<Integer> groups) {
+		System.out.println("Received command to aggregate experiments, not implemented yet");
+
 	}
 }

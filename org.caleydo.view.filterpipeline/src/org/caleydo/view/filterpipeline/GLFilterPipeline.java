@@ -682,6 +682,7 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		contentFilter.setLabel("Signal-To-Noise Ratio Filter");
 
 		set.calculateRawAverageUncertainty();
+
 		Histogram histogram = HistogramCreator.createHistogram(set.getRawUncertainty());
 
 		FilterRepresentationSNR filterRep = new FilterRepresentationSNR();

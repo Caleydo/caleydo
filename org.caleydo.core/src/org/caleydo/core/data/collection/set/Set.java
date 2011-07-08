@@ -64,9 +64,6 @@ public class Set
 	protected StorageData defaultStorageData;
 	protected ContentData defaultContentData;
 
-	// private boolean bGeneClusterInfo = false;
-	// private boolean bExperimentClusterInfo = false;
-
 	protected EExternalDataRepresentation externalDataRep;
 
 	protected boolean isSetHomogeneous = false;
@@ -78,9 +75,15 @@ public class Set
 	ASetBasedDataDomain dataDomain;
 
 	private boolean containsUncertaintyData;
-
+	/**
+	 * the uncertainties for the whole storage aggregated across the storageVA based on the normalized
+	 * uncertainty values
+	 */
 	private float[] aggregatedNormalizedUncertainties;
-
+	/**
+	 * the uncertainties for the whole storage aggregated across the storageVA based on the raw uncertainty
+	 * values
+	 */
 	private float[] aggregatedRawUncertainties;
 
 	public Set() {
@@ -995,9 +998,13 @@ public class Set
 	public void calculateRawAverageUncertainty() {
 		aggregatedRawUncertainties = new float[depth()];
 		for (int contentIndex = 0; contentIndex < depth(); contentIndex++) {
-			// float aggregatedUncertainty = calculateMaxUncertainty(contentIndex);
-			float aggregatedUncertainty =
-				calcualteAverageUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_RAW);
+			float aggregatedUncertainty;
+			if (false)
+				aggregatedUncertainty =
+					calcualteAverageUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_RAW);
+			else
+				aggregatedUncertainty =
+					calculateMaxUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_RAW);
 			aggregatedRawUncertainties[contentIndex] = aggregatedUncertainty;
 		}
 	}
@@ -1006,13 +1013,11 @@ public class Set
 		float uncertaintySum = 0;
 		StorageVirtualArray storageVA = hashStorageData.get(STORAGE).getStorageVA();
 		for (Integer storageID : storageVA) {
-
 			try {
 				uncertaintySum += hashStorages.get(storageID).getFloat(dataRepresentation, contentIndex);
 			}
 			catch (Exception e) {
 				System.out.println("storageID: " + storageID);
-
 			}
 		}
 		return uncertaintySum / storageVA.size();
