@@ -78,12 +78,12 @@ public class ClusterRenderer extends LayoutRenderer {
 		clusterDataUncBarLayout = new Column("bar");
 		clusterDataUncBarLayout.setPixelGLConverter(uncertaintyHeatMap
 				.getParentGLCanvas().getPixelGLConverter());
-		clusterDataUncBarLayout.setPixelSizeX(14);
+		clusterDataUncBarLayout.setPixelSizeX(50);
 
 		clusterVisUncBarLayout = new Column("bar2");
 		clusterVisUncBarLayout.setPixelGLConverter(uncertaintyHeatMap.getParentGLCanvas()
 				.getPixelGLConverter());
-		clusterVisUncBarLayout.setPixelSizeX(14);
+		clusterVisUncBarLayout.setPixelSizeX(50);
 
 		textureRenderer = new HeatMapTextureRenderer(uncertaintyHeatMap,
 				clusterHeatMapLayout);
@@ -104,7 +104,7 @@ public class ClusterRenderer extends LayoutRenderer {
 			PixelGLConverter pixelGLConverter = uncertaintyHeatMap.getParentGLCanvas()
 					.getPixelGLConverter();
 			lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
-			lineSeparatorLayout.setPixelSizeX(1);
+			lineSeparatorLayout.setPixelSizeX(2);
 			lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
 			lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.2f);
 			clusterLayout.append(lineSeparatorLayout);
@@ -117,7 +117,7 @@ public class ClusterRenderer extends LayoutRenderer {
 			PixelGLConverter pixelGLConverter = uncertaintyHeatMap.getParentGLCanvas()
 					.getPixelGLConverter();
 			lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
-			lineSeparatorLayout.setPixelSizeX(1);
+			lineSeparatorLayout.setPixelSizeX(2);
 			lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
 			lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.8f);
 			clusterLayout.append(lineSeparatorLayout);
@@ -130,7 +130,7 @@ public class ClusterRenderer extends LayoutRenderer {
 			PixelGLConverter pixelGLConverter = uncertaintyHeatMap.getParentGLCanvas()
 					.getPixelGLConverter();
 			lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
-			lineSeparatorLayout.setPixelSizeX(1);
+			lineSeparatorLayout.setPixelSizeX(2);
 			lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
 			lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.3f);
 			clusterLayout.append(lineSeparatorLayout);

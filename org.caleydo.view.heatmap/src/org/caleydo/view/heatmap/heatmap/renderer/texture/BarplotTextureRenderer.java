@@ -47,7 +47,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 	private boolean updateTexture = false;
 
 	private float[] lightCertain = GLUncertaintyHeatMap.DATA_VALID[0];
-	private float[] lightUncertain = GLUncertaintyHeatMap.DATA_UNCERTAIN[0];
+	private float[] lightUncertain = GLUncertaintyHeatMap.getUncertaintyColor(0);
 
 	private GLUncertaintyHeatMap glUncHeatmap;
 

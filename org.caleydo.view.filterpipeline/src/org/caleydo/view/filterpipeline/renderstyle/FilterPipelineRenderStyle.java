@@ -22,9 +22,21 @@ public class FilterPipelineRenderStyle extends GeneralRenderStyle
 	
 	public final float[] FILTER_PASSED_ALL_COLOR  = {.2f, 0.8f, .3f, 0.5f};
 	public final float[] FILTER_OR_COLOR  = {255/255.f, 255/255.f, 179/255.f, 1};
-	public final float[] FILTER_COLOR = {141/255.f, 211/255.f, 199/255.f, 1};
-	public final float[] FILTER_COLOR_UNCERTAINTY = {141/255.f, 150f, 199/255.f, 1};
+	public final float[] FILTER_COLOR = {041/255.f, 211/255.f, 199/255.f, 1};
+	//public final float[] FILTER_COLOR_UNCERTAINTY = {141/255.f, 150f, 199/255.f, 1};
+	public final float[] FILTER_COLOR_UNCERTAINTY = { 0.7f, 0.7f, 0.7f, 1f };
 	public final float[] FILTER_BORDER_COLOR = {0,0,0,1};
+	
+	
+	private final static float[][] DATA_UNCERTAIN = {
+		{179/255f, 88/255f, 6/255f, 1f},
+		{ 241/255f, 163/255f, 64/255f, 1f }, 
+		{ 254/255f, 224/255f, 182/255f, 1f },
+		{216/255f, 218/255f, 235/255f, 1f }, 
+		{153/255f, 142/255f, 195/255f, 1f }, 
+		
+		};
+	
 	
 	private ArrayList<float[]> filterColors = new ArrayList<float[]>();
 
@@ -74,5 +86,10 @@ public class FilterPipelineRenderStyle extends GeneralRenderStyle
 		float[] color = getColorSubfilterOutput(filterId);
 		color[3] = 1f;
 		return color;
+	}
+	
+	public static float[] getUncertaintyColor(int level) {
+		int l =  level %  DATA_UNCERTAIN.length;
+		return DATA_UNCERTAIN[l];
 	}
 }

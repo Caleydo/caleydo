@@ -68,11 +68,28 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 	public final static float[][] DATA_VALID = { { 0.90f, 0.90f, 0.90f, 1f },
 			{ 0.80f, 0.80f, 0.80f, 1f }, { 0.0f, 0.70f, 0.70f, 1f } };
-	public final static float[][] DATA_UNCERTAIN = { { 0.90f, 0.90f, 0.20f, 1f },
-			{ 0.80f, 0.80f, 0.20f, 1f }, { 0.7f, 0.70f, 0.20f, 1f } };
 
-	public final static float[] BACKGROUND = { 0.5f, 0.5f, 0.5f, 1f };
-	public final static float[] VIS_UNC = { 0.7f, 0.7f, 0.7f, 1f };
+	private final static float[][] DATA_UNCERTAIN = {
+			{179/255f, 88/255f, 6/255f, 1f},
+			{ 241/255f, 163/255f, 64/255f, 1f }, 
+			{ 254/255f, 224/255f, 182/255f, 1f },
+			{216/255f, 218/255f, 235/255f, 1f }, 
+			{153/255f, 142/255f, 195/255f, 1f }, 
+			
+			};
+	
+	/*
+	179 88 6
+	   2 E 241 163 64
+	   3 G 254 224 182
+	   4 I 216 218 235
+	   5 K 153 142 195
+	   6 N 84 39 136
+	   */
+
+
+	public final static float[] BACKGROUND = { 0.7f, 0.7f, 0.7f, 1f };
+	public final static float[] VIS_UNC = { 84/255f, 39/255f, 136/255f, 1f } ;
 
 	private HeatMapRenderStyle renderStyle;
 
@@ -143,7 +160,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		overviewLayout = new Column("overviewLayout");
 		overviewLayout.setDebug(false);
 		overviewLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
-		overviewLayout.setPixelSizeX(90);
+		overviewLayout.setPixelSizeX(220);
 
 		overviewDetailConnectorLayout = new Column("overviewDetailConnectorLayout");
 		overviewDetailConnectorLayout.setDebug(false);
@@ -561,11 +578,17 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		set.getStatisticsResult().setAggregatedUncertainty(aggregatedUncertainty);
 	}
 
+
 	public float getMaxUncertainty(int contentID) {
 		return (float) aggregatedUncertainty[contentID];
+
 	}
 	
 	public ArrayList<double[]> getMultiLevelUncertainty() {
 		return multiLevelUncertainty;
+	}
+	public static float[] getUncertaintyColor(int level) {
+		int l =  level %  DATA_UNCERTAIN.length;
+		return DATA_UNCERTAIN[l];
 	}
 }

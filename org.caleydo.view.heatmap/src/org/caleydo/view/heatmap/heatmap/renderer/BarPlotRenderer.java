@@ -95,6 +95,7 @@ public class BarPlotRenderer extends AContentRenderer {
 				float uncertainty = uncertaintyHeatmap.getMaxUncertainty(contentID);
 
 				// in case of not normalized values, show valid data as well
+
 //				if (certainty.size() == 0) {
 //					//float height = fieldHeight;
 //					//float yPos = yPosition + height * i;
@@ -102,8 +103,9 @@ public class BarPlotRenderer extends AContentRenderer {
 //							GLUncertaintyHeatMap.DATA_VALID[i]);
 //				} else {
 					renderLine(gl, yPosition, xPosition, fieldHeight, fieldWidth,
-							uncertainty, GLUncertaintyHeatMap.DATA_UNCERTAIN[i]);
+							uncertainty, GLUncertaintyHeatMap.getUncertaintyColor(0));
 //				}
+
 			} else {
 
 				for (int i = 0; i < uncertainties.size(); i++) {
@@ -111,7 +113,7 @@ public class BarPlotRenderer extends AContentRenderer {
 					float uncertainty = (float) uncertainties.get(i)[contentID];
 					
 					float height = fieldHeight / (float) uncertainties.size();
-					float yPos = yPosition + height * i;
+					float yPos = yPosition + height * (uncertainties.size() - i -1);
 					// certainty[i] = certainty[i] > 1 ? 1 : certainty[i];
 					// certainty[i] = certainty[i] < 0 ? 0 : certainty[i];
 
@@ -121,7 +123,7 @@ public class BarPlotRenderer extends AContentRenderer {
 //								GLUncertaintyHeatMap.DATA_VALID[i]);
 //					} else {
 						renderLine(gl, yPos, xPosition, height, fieldWidth, uncertainty,
-								GLUncertaintyHeatMap.DATA_UNCERTAIN[i]);
+								GLUncertaintyHeatMap.getUncertaintyColor(i+1));
 //					}
 				}
 			}

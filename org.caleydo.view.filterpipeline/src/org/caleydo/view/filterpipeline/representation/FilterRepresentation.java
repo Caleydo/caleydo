@@ -103,7 +103,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 		uncertaintyHeightRight = getUncertaintyHeightRight();
 
 		gl.glPushName(iPickingID);
-		renderBasicShape(gl, textRenderer, renderStyle.FILTER_COLOR);
+		renderBasicShape(gl, textRenderer, renderStyle.getUncertaintyColor(filter.getId()+1));
 		gl.glPopName();
 
 		// render selection/mouseover if needed
@@ -177,6 +177,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 		gl.glLineWidth(2);
 		renderShape(gl, GL2.GL_LINE_LOOP, renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER);
 
+		
 		// Render uncertainty line
 		if (filter.getFilter().getVADeltaUncertainty() != null) {
 
