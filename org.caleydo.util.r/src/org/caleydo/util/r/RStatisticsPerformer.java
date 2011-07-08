@@ -179,6 +179,10 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 		set1.getStatisticsResult().setFoldChangeResult(set2, resultVec);
 		set2.getStatisticsResult().setFoldChangeResult(set1, resultVec);
+		
+		// FIXME: just for uncertainty paper so that the uncertainty view can access it via the main set
+		ISet set = set1.getDataDomain().getSet();
+		set.getStatisticsResult().setFoldChangeResult(set1, resultVec);
 
 		ContentFilter contentFilter = new ContentFilter();
 		contentFilter.setDataDomain(set1.getDataDomain());

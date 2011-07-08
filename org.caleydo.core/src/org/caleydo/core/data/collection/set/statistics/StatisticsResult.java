@@ -23,6 +23,9 @@ public class StatisticsResult {
 	HashMap<ISet, Pair<double[], FoldChangeSettings>> setToFoldChangeResult;
 
 	HashMap<ISet, double[]> setToFoldChangeUncertainty;
+	
+	//FIXME: just for uncertainty paper. this needs to be calculated here and not inside the view
+	double[] aggregatedUncertainty;
 
 	public StatisticsResult(ISet set) {
 		setToTwoSidedTTestResult = new HashMap<ISet, ArrayList<Double>>();
@@ -190,5 +193,14 @@ public class StatisticsResult {
 	//
 	// return numberOfElements;
 	// }
+	
+	@Deprecated
+	public void setAggregatedUncertainty(double[] aggregatedUncertainty) {
+		this.aggregatedUncertainty = aggregatedUncertainty;
+	}
+	
+	public double[] getAggregatedUncertainty() {
+		return aggregatedUncertainty;
+	}
 
 }

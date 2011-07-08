@@ -24,11 +24,8 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		barPlotRenderer.setContentSpacing(contentSpacing);
 		
 		minSelectedFieldHeight *= 2; 
-
 	}
-
 	
-
 	public float bottomSpacing = 0;
 
 	@Override

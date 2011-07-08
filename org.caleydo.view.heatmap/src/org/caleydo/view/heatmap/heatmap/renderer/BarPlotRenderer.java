@@ -3,29 +3,16 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Set;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings;
-import org.caleydo.core.data.collection.storage.AStorage;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.ContentSelectionManager;
-import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
-import org.eclipse.jface.layout.PixelConverter;
 
 public class BarPlotRenderer extends AContentRenderer {
 
@@ -36,8 +23,6 @@ public class BarPlotRenderer extends AContentRenderer {
 	public BarPlotRenderer(GLHeatMap heatMap, GLUncertaintyHeatMap uncertaintyHeatmap) {
 		super(heatMap);
 		this.uncertaintyHeatmap = uncertaintyHeatmap;
-		//initFoldChangeResults();
-
 	}
 
 	@Override
@@ -47,17 +32,16 @@ public class BarPlotRenderer extends AContentRenderer {
 
 		int contentElements = heatMap.getContentVA().size();
 
-		ContentSelectionManager selectionManager = heatMap
-				.getContentSelectionManager();
+		ContentSelectionManager selectionManager = heatMap.getContentSelectionManager();
 		if (heatMap.isHideElements()) {
 
 			contentElements -= selectionManager
 					.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
 		}
 
-		contentSpacing.calculateContentSpacing(contentElements, heatMap
-				.getStorageVA().size(), parameters.getSizeScaledX(), parameters
-				.getSizeScaledY(), heatMapTemplate.getMinSelectedFieldHeight());
+		contentSpacing.calculateContentSpacing(contentElements, heatMap.getStorageVA()
+				.size(), parameters.getSizeScaledX(), parameters.getSizeScaledY(),
+				heatMapTemplate.getMinSelectedFieldHeight());
 		heatMapTemplate.setContentSpacing(contentSpacing);
 
 		// ((AContentRenderer) renderer).setContentSpacing(contentSpacing);
@@ -74,10 +58,19 @@ public class BarPlotRenderer extends AContentRenderer {
 
 		int iCount = 0;
 
-		if (this.isDirty ) {
+		if (this.isDirty) {
 			isDirty = false;
 		}
-		
+
+		ArrayList<double[]> uncertainties = uncertaintyHeatmap.getMultiLevelUncertainty();
+
+		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
+		ISet set = heatMap.getSet();
+		if (set == null)
+			return;
+
+		PixelGLConverter conv = heatMap.getParentGLCanvas().getPixelGLConverter();
+
 		for (Integer contentID : heatMap.getContentVA()) {
 			iCount++;
 			fieldHeight = contentSpacing.getFieldHeight(contentID);
@@ -94,50 +87,42 @@ public class BarPlotRenderer extends AContentRenderer {
 			yPosition -= fieldHeight;
 			xPosition = 0;
 
-			// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
-			ISet set = heatMap.getSet();
-			if (set == null)
-				return;
-			ArrayList<Double> certainty = uncertaintyHeatmap.getUncertainty(contentID);
-			
-			PixelGLConverter conv = heatMap.getParentGLCanvas()
-					.getPixelGLConverter();
 			int screenHeight = conv.getPixelHeightForGLHeight(fieldHeight);
-			
+
 			if (screenHeight < 3) {
 				int i = 0;
-				
+
+				float uncertainty = uncertaintyHeatmap.getMaxUncertainty(contentID);
+
 				// in case of not normalized values, show valid data as well
-				if (certainty.size() == 0) {
-					float height = fieldHeight;
-					float yPos = yPosition + height * i;
-					renderLine(gl, yPosition, xPosition, fieldHeight,
-							fieldWidth, 1f,
-							GLUncertaintyHeatMap.DATA_VALID[i]);
-				} else {
-					renderLine(gl, yPosition, xPosition, fieldHeight,
-							fieldWidth, certainty.get(i).floatValue(),
-							GLUncertaintyHeatMap.DATA_UNCERTAIN[i]);
-				}
+//				if (certainty.size() == 0) {
+//					//float height = fieldHeight;
+//					//float yPos = yPosition + height * i;
+//					renderLine(gl, yPosition, xPosition, fieldHeight, fieldWidth, 1f,
+//							GLUncertaintyHeatMap.DATA_VALID[i]);
+//				} else {
+					renderLine(gl, yPosition, xPosition, fieldHeight, fieldWidth,
+							uncertainty, GLUncertaintyHeatMap.DATA_UNCERTAIN[i]);
+//				}
 			} else {
-				
-				
-				for (int i = 0; i < certainty.size(); i++) {
-					float height = fieldHeight / (float) certainty.size();
+
+				for (int i = 0; i < uncertainties.size(); i++) {
+
+					float uncertainty = (float) uncertainties.get(i)[contentID];
+					
+					float height = fieldHeight / (float) uncertainties.size();
 					float yPos = yPosition + height * i;
-					//certainty[i] = certainty[i] > 1 ? 1 : certainty[i];
-					//certainty[i] = certainty[i] < 0 ? 0 : certainty[i];
+					// certainty[i] = certainty[i] > 1 ? 1 : certainty[i];
+					// certainty[i] = certainty[i] < 0 ? 0 : certainty[i];
 
 					// in case of not normalized values, show valid data as well
-					if (certainty.get(i).floatValue() >= 1) {
-						renderLine(gl, yPos, xPosition, height, fieldWidth,
-								certainty.get(i).floatValue(),
-								GLUncertaintyHeatMap.DATA_VALID[i]);
-					} else {
-						renderLine(gl, yPos, xPosition, height, fieldWidth,
-								certainty.get(i).floatValue(),
+//					if (uncertainty >= 1) {
+//						renderLine(gl, yPos, xPosition, height, fieldWidth, uncertainty,
+//								GLUncertaintyHeatMap.DATA_VALID[i]);
+//					} else {
+						renderLine(gl, yPos, xPosition, height, fieldWidth, uncertainty,
 								GLUncertaintyHeatMap.DATA_UNCERTAIN[i]);
-					}
+//					}
 				}
 			}
 
@@ -146,9 +131,9 @@ public class BarPlotRenderer extends AContentRenderer {
 		}
 	}
 
-	private void renderLine(final GL2 gl, final float fYPosition,
-			final float fXPosition, final float fFieldHeight,
-			final float fFieldWidth, final float certainty, float[] rgba) {
+	private void renderLine(final GL2 gl, final float fYPosition, final float fXPosition,
+			final float fFieldHeight, final float fFieldWidth, final float certainty,
+			float[] rgba) {
 
 		float certainWidth = fFieldWidth * (1 - certainty);
 		float unCertainWidth = fFieldWidth * (certainty);
@@ -164,8 +149,7 @@ public class BarPlotRenderer extends AContentRenderer {
 		gl.glColor4fv(GLUncertaintyHeatMap.BACKGROUND, 0);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition, FIELD_Z);
-		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition + fFieldHeight,
-				FIELD_Z);
+		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition + fFieldHeight, FIELD_Z);
 		gl.glVertex3f(fXPosition, fYPosition + fFieldHeight, FIELD_Z);
 		gl.glEnd();
 
@@ -173,12 +157,10 @@ public class BarPlotRenderer extends AContentRenderer {
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glColor4fv(rgba, 0);
 		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition, FIELD_Z);
-		gl.glVertex3f(fXPosition + certainWidth + unCertainWidth, fYPosition,
-				FIELD_Z);
+		gl.glVertex3f(fXPosition + certainWidth + unCertainWidth, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + certainWidth + unCertainWidth, fYPosition
 				+ fFieldHeight, FIELD_Z);
-		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition + fFieldHeight,
-				FIELD_Z);
+		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition + fFieldHeight, FIELD_Z);
 		gl.glEnd();
 
 		// gl.glPopName();
@@ -202,8 +184,5 @@ public class BarPlotRenderer extends AContentRenderer {
 	public String toString() {
 		return "BarPlotRenderer";
 	}
-
-	
-	
 
 }

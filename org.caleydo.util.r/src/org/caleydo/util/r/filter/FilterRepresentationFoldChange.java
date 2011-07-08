@@ -360,6 +360,10 @@ public class FilterRepresentationFoldChange extends
 
 			set1.getStatisticsResult().setFoldChangeSettings(set2, foldChangeSettings);
 			set2.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
+			
+			// FIXME: just for uncertainty paper so that the uncertainty view can access it via the main set
+			ISet set = filter.getDataDomain().getSet();
+			set.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
 
 			createVADelta();
 			filter.updateFilterManager();
