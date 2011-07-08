@@ -62,8 +62,9 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 	public final static String VIEW_ID = "org.caleydo.view.heatmap.uncertainty";
 	public final static float[] lightLight = { 0.95f, 0.95f, 0.95f, 1f };
-	public final static float[][] levelLightColor = {{ 0.95f, 0.95f, 0.95f, 1f },{ 0.8f, 0.8f, 0.8f, 1f },{ 0.75f, 0.75f, 0.75f, 1f }};
-	
+	public final static float[][] levelLightColor = { { 0.95f, 0.95f, 0.95f, 1f },
+			{ 0.8f, 0.8f, 0.8f, 1f }, { 0.75f, 0.75f, 0.75f, 1f } };
+
 	public final static float[] lightDark = { 0.0f, 0.0f, 0.0f, 0.8f };
 
 	public final static float[] darkLight = { 0.0f, 0.0f, 0.0f, 0.35f };
@@ -78,12 +79,13 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	private LayoutTemplate template;
 
 	private Row baseRow;
+	private Row contentRow;
 	private Column overviewLayout;
 	private ElementLayout detailLayout;
 	private ElementLayout overviewDetailConnectorLayout;
 
-	private ColorMapper colorMapper = ColorMappingManager.get()
-			.getColorMapping(EColorMappingType.GENE_EXPRESSION);
+	private ColorMapper colorMapper = ColorMappingManager.get().getColorMapping(
+			EColorMappingType.GENE_EXPRESSION);
 
 	private boolean updateVisualUncertainty = true;
 
@@ -94,8 +96,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLUncertaintyHeatMap(GLCaleydoCanvas glCanvas,
-			final ViewFrustum viewFrustum) {
+	public GLUncertaintyHeatMap(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum);
 		viewType = GLUncertaintyHeatMap.VIEW_ID;
 	}
@@ -112,14 +113,32 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		baseRow = new Row("baseRow");
 		template.setBaseElementLayout(baseRow);
 
+		ElementLayout sideSpacer = new ElementLayout("sideSpacer");
+		sideSpacer.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		sideSpacer.setPixelSizeX(15);
+
+		ElementLayout topSpacer = new ElementLayout("topSpacer");
+		topSpacer.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		topSpacer.setPixelSizeY(15);
+
+		Column baseColumnn = new Column("baseColumn");
+
+		baseRow.append(sideSpacer);
+		baseRow.append(baseColumnn);
+		baseRow.append(sideSpacer);
+
+		contentRow = new Row("contentRow");
+	
+		baseColumnn.append(topSpacer);
+		baseColumnn.append(contentRow);
+		baseColumnn.append(topSpacer);
+
 		overviewLayout = new Column("overviewLayout");
 		overviewLayout.setDebug(false);
-		overviewLayout
-				.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		overviewLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
 		overviewLayout.setPixelSizeX(90);
 
-		overviewDetailConnectorLayout = new Column(
-				"overviewDetailConnectorLayout");
+		overviewDetailConnectorLayout = new Column("overviewDetailConnectorLayout");
 		overviewDetailConnectorLayout.setDebug(false);
 		overviewDetailConnectorLayout.setPixelGLConverter(parentGLCanvas
 				.getPixelGLConverter());
@@ -128,9 +147,9 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		detailLayout = new ElementLayout("detailLayout");
 		detailLayout.setDebug(false);
 
-		baseRow.append(overviewLayout);
-		baseRow.append(overviewDetailConnectorLayout);
-		baseRow.append(detailLayout);
+		contentRow.append(overviewLayout);
+		contentRow.append(overviewDetailConnectorLayout);
+		contentRow.append(detailLayout);
 
 		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;
@@ -140,8 +159,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 		OverviewDetailConnectorRenderer overviewDetailConnectorRenderer = new OverviewDetailConnectorRenderer(
 				overviewHeatMap, detailHeatMap);
-		overviewDetailConnectorLayout
-				.setRenderer(overviewDetailConnectorRenderer);
+		overviewDetailConnectorLayout.setRenderer(overviewDetailConnectorRenderer);
 
 		templateRenderer.updateLayout();
 
@@ -174,8 +192,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
-			int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
 		templateRenderer.updateLayout();
 		updateVisualUncertainty = true;
@@ -202,8 +219,8 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 				.createGLView(
 						GLHeatMap.class,
 						this.getParentGLCanvas(),
-						new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
-								1, 0, 1, -1, 1));
+						new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+								-1, 1));
 
 		detailHeatMap.setDataDomain(dataDomain);
 		detailHeatMap.setRemoteRenderingGLView(this);
@@ -237,13 +254,12 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 	@Override
 	public void displayRemote(GL2 gl) {
-		throw new IllegalStateException(
-				"This view cannot be rendered remotely!");
+		throw new IllegalStateException("This view cannot be rendered remotely!");
 	}
 
 	@Override
 	public void display(GL2 gl) {
-		baseRow.render(gl);
+		templateRenderer.render(gl);
 		PixelGLConverter pc = this.getParentGLCanvas().getPixelGLConverter();
 		if (updateVisualUncertainty) {
 
@@ -252,13 +268,13 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 					.getClusterRendererList()) {
 				ArrayList<Float> uncertaintyVA = new ArrayList<Float>();
 				if (clusterRenderer.textureRenderer != null
-						&& clusterRenderer.textureRenderer.heatmapLayout != null&& clusterRenderer.visUncBarTextureRenderer != null) {
+						&& clusterRenderer.textureRenderer.heatmapLayout != null
+						&& clusterRenderer.visUncBarTextureRenderer != null) {
 					VisualUncertaintyUtil.calcVisualUncertainty(gl, pc,
 							clusterRenderer.textureRenderer.heatmapLayout,
 							clusterRenderer.textureRenderer, uncertaintyVA);
 
-					clusterRenderer.visUncBarTextureRenderer
-							.initTextures(uncertaintyVA);
+					clusterRenderer.visUncBarTextureRenderer.initTextures(uncertaintyVA);
 				}
 			}
 
@@ -297,10 +313,10 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 				if (groupList == null)
 					break;
 
-				ArrayList<Integer> clusterElements = contentVA
-						.getIDsOfGroup(groupList.get(externalID).getID());
-				ContentVirtualArray clusterVA = new ContentVirtualArray(
-						Set.CONTENT, clusterElements);
+				ArrayList<Integer> clusterElements = contentVA.getIDsOfGroup(groupList
+						.get(externalID).getID());
+				ContentVirtualArray clusterVA = new ContentVirtualArray(Set.CONTENT,
+						clusterElements);
 				detailHeatMap.setContentVA(clusterVA);
 
 				setDisplayListDirty();
@@ -430,8 +446,8 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
-			int id) throws InvalidAttributeValueException {
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+			throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}

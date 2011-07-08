@@ -1,14 +1,11 @@
 package org.caleydo.view.heatmap.uncertainty;
 
-import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.set.Set;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -72,8 +69,9 @@ public class OverviewRenderer extends LayoutRenderer {
 		int counter = 0;
 
 		int lastLayoutElement = 0;
-		
-		// If the dataset is unclustered yet, the whole VA is given to the detail heat map.
+
+		// If the dataset is unclustered yet, the whole VA is given to the
+		// detail heat map.
 		if (clusterList == null && detailHeatMap != null) {
 			detailHeatMap.setContentVA(contentVA);
 			detailHeatMap.setDisplayListDirty();
@@ -117,7 +115,7 @@ public class OverviewRenderer extends LayoutRenderer {
 					overviewLayout.add(lastLayoutElement, lineSeparatorLayout);
 					// overviewLayout.append(lineSeparatorLayout);
 				}
-				
+
 				// Initially the first cluster gets selected
 				if (clusterIndex == 0 && detailHeatMap != null) {
 					detailHeatMap.setContentVA(clusterVA);
@@ -163,7 +161,7 @@ public class OverviewRenderer extends LayoutRenderer {
 		if (clusterLayoutList.size() == 0)
 			return 0;
 
-		return clusterLayoutList.get(selectedClusterIndex).getTranslateY();
+		return clusterLayoutList.get(selectedClusterIndex).getTranslateY() - overviewLayout.getTranslateY();
 	}
 
 	public float getSelectedClusterHeight() {
