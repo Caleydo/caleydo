@@ -111,9 +111,9 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 		Texture textureMaskNeg = null;
 
 		textureMask = textureManager.getIconTexture(gl,
-				EIconTextures.NAVIGATION_MASK_CURVE);
+				EIconTextures.NAVIGATION_MASK_CURVE_LIGHT);
 		textureMaskNeg = textureManager.getIconTexture(gl,
-				EIconTextures.NAVIGATION_MASK_CURVE_NEG);
+				EIconTextures.NAVIGATION_MASK_CURVE_NEG_LIGHT);
 		gl.glColor4fv(GLUncertaintyHeatMap.BACKGROUND, 0);
 
 		gl.glBegin(GL2.GL_QUADS);
