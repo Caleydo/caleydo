@@ -993,5 +993,6 @@ public class GLHeatMap extends AStorageBasedView {
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
 		templateRenderer.setViewFrustum(viewFrustum);
 	}
+	
 
 }

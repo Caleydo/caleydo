@@ -16,7 +16,6 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 
 	
 	protected HeatMapRenderer heatMapRenderer;
-	protected BarPlotRenderer barPlotRenderer;
 	protected ContentCaptionRenderer contentCaptionRenderer;
 	protected StorageCaptionRenderer storageCaptionRenderer;
 	protected ContentSelectionRenderer contentSelectionRenderer;
@@ -42,8 +41,6 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 
 		heatMapRenderer = new HeatMapRenderer(heatMap);
 		heatMapRenderer.setContentSpacing(contentSpacing);
-		barPlotRenderer = new BarPlotRenderer(heatMap);
-		barPlotRenderer.setContentSpacing(contentSpacing);
 		
 		contentCaptionRenderer = new ContentCaptionRenderer(heatMap);
 		contentCaptionRenderer.setContentSpacing(contentSpacing);
@@ -97,4 +94,5 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 		this.contentSpacing = contentSpacing;
 	}
 
+	
 }

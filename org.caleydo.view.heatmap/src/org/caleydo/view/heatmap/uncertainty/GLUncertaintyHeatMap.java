@@ -1,6 +1,8 @@
 package org.caleydo.view.heatmap.uncertainty;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
@@ -60,15 +62,20 @@ import org.eclipse.jface.layout.PixelConverter;
 public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		IViewCommandHandler, ISelectionUpdateHandler, IGLRemoteRenderingView {
 
+	public static enum UncertaintyColors {
+		VISUAL_VALID, VISUAL_UNCERTAIN, DATA_VALID, DATA_UNCERTAIN, DATA2_VALID, DATA2_UNCERTAIN, DATA3_VALID, DATA3_UNCERTAIN, BACKGROUND
+	}
+
 	public final static String VIEW_ID = "org.caleydo.view.heatmap.uncertainty";
-	public final static float[] lightLight = { 0.95f, 0.95f, 0.95f, 1f };
-	public final static float[][] levelLightColor = { { 0.95f, 0.95f, 0.95f, 1f },
-			{ 0.8f, 0.8f, 0.8f, 1f }, { 0.75f, 0.75f, 0.75f, 1f } };
 
-	public final static float[] lightDark = { 0.0f, 0.0f, 0.0f, 0.8f };
+	public final static float[][] DATA_VALID = { { 0.90f, 0.90f, 0.90f, 1f },
+			{ 0.80f, 0.80f, 0.80f, 1f }, { 0.0f, 0.70f, 0.70f, 1f } };
+	public final static float[][] DATA_UNCERTAIN = {
+			{ 0.90f, 0.90f, 0.20f, 1f }, { 0.80f, 0.80f, 0.20f, 1f },
+			{ 0.7f, 0.70f, 0.20f, 1f } };
 
-	public final static float[] darkLight = { 0.0f, 0.0f, 0.0f, 0.35f };
-	public final static float[] darkDark = { 0.0f, 0.0f, 0.0f, 0.90f };
+	public final static float[] BACKGROUND = { 0.2f, 0.2f, 0.2f, 1f };
+	public final static float[] VIS_UNC = { 0.7f, 0.7f, 0.2f, 1f };
 
 	private HeatMapRenderStyle renderStyle;
 
@@ -84,10 +91,14 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	private ElementLayout detailLayout;
 	private ElementLayout overviewDetailConnectorLayout;
 
-	private ColorMapper colorMapper = ColorMappingManager.get().getColorMapping(
-			EColorMappingType.GENE_EXPRESSION);
+	private ColorMapper colorMapper = ColorMappingManager.get()
+			.getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 	private boolean updateVisualUncertainty = true;
+
+	HashMap<Integer, ArrayList<Double>> uncertaintyValues = new HashMap<Integer, ArrayList<Double>>();
+	HashMap<Integer, Integer> maxUncertaintyValueIndex = new HashMap<Integer, Integer>();
+	
 
 	/**
 	 * Constructor.
@@ -96,7 +107,8 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLUncertaintyHeatMap(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+	public GLUncertaintyHeatMap(GLCaleydoCanvas glCanvas,
+			final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum);
 		viewType = GLUncertaintyHeatMap.VIEW_ID;
 	}
@@ -104,6 +116,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	@Override
 	public void init(GL2 gl) {
 
+		
 		templateRenderer = new LayoutManager(this.viewFrustum);
 		if (template == null)
 			template = new LayoutTemplate();
@@ -163,6 +176,48 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 		templateRenderer.updateLayout();
 
+//		templateRenderer = new LayoutManager(this.viewFrustum);
+//		if (template == null)
+//			template = new LayoutTemplate();
+//
+//		templateRenderer.setTemplate(template);
+//
+//		baseRow = new Row("baseRow");
+//		template.setBaseElementLayout(baseRow);
+//
+//		overviewLayout = new Column("overviewLayout");
+//		overviewLayout.setDebug(false);
+//		overviewLayout
+//				.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+//		overviewLayout.setPixelSizeX(90);
+//
+//		overviewDetailConnectorLayout = new Column(
+//				"overviewDetailConnectorLayout");
+//		overviewDetailConnectorLayout.setDebug(false);
+//		overviewDetailConnectorLayout.setPixelGLConverter(parentGLCanvas
+//				.getPixelGLConverter());
+//		overviewDetailConnectorLayout.setPixelSizeX(60);
+//
+//		detailLayout = new ElementLayout("detailLayout");
+//		detailLayout.setDebug(false);
+//
+//		baseRow.append(overviewLayout);
+//		baseRow.append(overviewDetailConnectorLayout);
+//		baseRow.append(detailLayout);
+//
+//		super.renderStyle = renderStyle;
+//		detailLevel = DetailLevel.HIGH;
+//
+//		createOverviewHeatMap(gl);
+//		createDetailHeatMap(gl);
+//
+//		OverviewDetailConnectorRenderer overviewDetailConnectorRenderer = new OverviewDetailConnectorRenderer(
+//				overviewHeatMap, detailHeatMap);
+//		overviewDetailConnectorLayout
+//				.setRenderer(overviewDetailConnectorRenderer);
+//
+//		templateRenderer.updateLayout();
+
 	}
 
 	@Override
@@ -192,7 +247,8 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
 		super.reshape(drawable, x, y, width, height);
 		templateRenderer.updateLayout();
 		updateVisualUncertainty = true;
@@ -219,14 +275,14 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 				.createGLView(
 						GLHeatMap.class,
 						this.getParentGLCanvas(),
-						new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
-								-1, 1));
+						new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
+								1, 0, 1, -1, 1));
 
 		detailHeatMap.setDataDomain(dataDomain);
 		detailHeatMap.setRemoteRenderingGLView(this);
 		detailHeatMap.setSet(set);
 		detailHeatMap.setRenderTemplate(new UncertaintyDetailHeatMapTemplate(
-				detailHeatMap));
+				detailHeatMap, this));
 		detailHeatMap.initialize();
 		detailHeatMap.initRemote(gl, this, glMouseListener);
 
@@ -254,12 +310,13 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 	@Override
 	public void displayRemote(GL2 gl) {
-		throw new IllegalStateException("This view cannot be rendered remotely!");
+		throw new IllegalStateException(
+				"This view cannot be rendered remotely!");
 	}
 
 	@Override
 	public void display(GL2 gl) {
-		templateRenderer.render(gl);
+		baseRow.render(gl);
 		PixelGLConverter pc = this.getParentGLCanvas().getPixelGLConverter();
 		if (updateVisualUncertainty) {
 
@@ -274,7 +331,8 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 							clusterRenderer.textureRenderer.heatmapLayout,
 							clusterRenderer.textureRenderer, uncertaintyVA);
 
-					clusterRenderer.visUncBarTextureRenderer.initTextures(uncertaintyVA);
+					clusterRenderer.visUncBarTextureRenderer
+							.initTextures(uncertaintyVA);
 				}
 			}
 
@@ -313,10 +371,10 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 				if (groupList == null)
 					break;
 
-				ArrayList<Integer> clusterElements = contentVA.getIDsOfGroup(groupList
-						.get(externalID).getID());
-				ContentVirtualArray clusterVA = new ContentVirtualArray(Set.CONTENT,
-						clusterElements);
+				ArrayList<Integer> clusterElements = contentVA
+						.getIDsOfGroup(groupList.get(externalID).getID());
+				ContentVirtualArray clusterVA = new ContentVirtualArray(
+						Set.CONTENT, clusterElements);
 				detailHeatMap.setContentVA(clusterVA);
 
 				setDisplayListDirty();
@@ -419,7 +477,9 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		super.reactOnContentVAChanges(delta);
 
 		setDisplayListDirty();
+		initUncertaintyArrays();
 		overviewHeatMap.init();
+		
 	}
 
 	@Override
@@ -441,13 +501,13 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 		contentSelectionManager.setVA(contentVA);
 		storageSelectionManager.setVA(storageVA);
-
+		initUncertaintyArrays();
 		setDisplayListDirty();
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
-			throws InvalidAttributeValueException {
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
+			int id) throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -473,4 +533,80 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		return contentSelectionManager;
 
 	}
+
+	/*
+	 * generating MAX uncertainties
+	 */
+	public void initUncertaintyArrays() {
+
+		uncertaintyValues.clear();
+		maxUncertaintyValueIndex.clear();
+
+		float[] snr = set.getNormalizedUncertainty();
+
+		// getFold
+		Collection<double[]> fold = this.set.getStatisticsResult()
+				.getAllFoldChangeUncertainties();
+
+		// init first with snr values
+		
+		for (Integer contentID: contentVA) {
+
+			// init 2 levels
+			int uncertainties = 2;
+			ArrayList<Double> geneUnc = new ArrayList<Double>(5);
+			// getSNR
+			double unc1 = 0;
+			if (snr != null) {
+				unc1 = snr[contentID];
+			} else {
+				unc1 = 1;
+			}
+			geneUnc.add(unc1);
+			uncertaintyValues.put(contentID,geneUnc);
+			maxUncertaintyValueIndex.put(contentID, 0);
+		}
+		
+		
+		
+		// init now with Foldchange
+		
+		int 	contentID = 0;
+		for (double[] val : fold) {
+
+			double unc2 = 0f;
+			// getMaxFoldChangeUnc
+			for (int i = 0; i < val.length; i++) {
+				double temp = val[i];
+				if (unc2 < temp)
+					unc2 = temp;
+			}
+			ArrayList<Double> geneUnc = uncertaintyValues.get(contentID);
+			geneUnc.add(unc2);
+			if (geneUnc.get(contentID) >= unc2) {
+				//maxUncertaintyValueIndex.set(contentID, element);
+			} else {
+				maxUncertaintyValueIndex.put(contentID, 1);
+			}
+			contentID++;
+		}
+		
+	}
+
+	public double getMaxUncertainty(int contentIndex) {
+		double ret = 1;
+		int uncLevel = maxUncertaintyValueIndex.get(contentIndex);
+		ret = uncertaintyValues.get(contentIndex).get(uncLevel);
+		return ret;
+	}
+
+	public ArrayList<Double> getUncertainty(int contentID) {
+
+		ArrayList<Double> ret = uncertaintyValues.get(contentID);
+		
+		if (ret == null) ret = new ArrayList<Double>();
+		
+		return ret;
+	}
+
 }

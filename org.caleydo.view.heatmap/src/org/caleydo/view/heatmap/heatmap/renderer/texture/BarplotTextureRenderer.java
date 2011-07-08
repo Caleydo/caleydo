@@ -3,6 +3,7 @@ package org.caleydo.view.heatmap.heatmap.renderer.texture;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
@@ -45,9 +46,8 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 	private boolean updateTexture = false;
 
-	private float[] dark;
-
-	private float[] light;
+	private float[] lightCertain = GLUncertaintyHeatMap.DATA_VALID[0];
+	private float[] lightUncertain = GLUncertaintyHeatMap.DATA_UNCERTAIN[0];
 
 	public void setOrientationLeft(boolean tr) {
 		orientation = tr;
@@ -102,14 +102,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 			int contentCount = 0;
 			int textureCounter = 0;
 
-			float[] middle1 = { (light[0] + dark[0]) / 2f,
-					(light[1] + dark[1]) * 0.66f, (light[2] + dark[2]) * 0.66f,
-					(light[3] + dark[3]) * 0.66f, };
-			float[] middle2 = { (light[0] + dark[0]) / 2f,
-					(light[1] + dark[1]) * 0.33f, (light[2] + dark[2]) * 0.33f,
-					(light[3] + dark[3]) * 0.33f, };
-			
-			for ( int index = 0; index< numberOfElements; index++) {
+				for ( int index = 0; index< numberOfElements; index++) {
 				
 				float uncertainty;
 				contentCount++;
@@ -125,16 +118,12 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 				}
 				for (int i = 0; i < textureWidth; i++) {
 					float[] rgba = new float[4];
-					if ((((float) i / textureWidth) * 0.25) > (uncertainty)) {
-						rgba = light;
-					} else if ((((float) i / textureWidth) * 0.5) > (uncertainty)) {
-						rgba = light;
-					} else if ((((float) i / textureWidth) * 0.75) > (uncertainty)) {
-						rgba = light;
-					} else if (((float) i / textureWidth) > (uncertainty)) {
-						rgba = light;
+					if (((float) i / textureWidth) > uncertainty) {
+						if (uncertainty >= 1)
+							rgba = this.lightCertain;
+						else rgba = this.lightUncertain;
 					} else {
-						rgba = dark;
+						rgba = GLUncertaintyHeatMap.BACKGROUND;
 					}
 
 					floatBuffer[textureCounter].put(rgba);
@@ -165,13 +154,9 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 		
 	}
 
-
 	public void init(ISet set, ContentVirtualArray contentVA,
 			StorageVirtualArray storageVA, ColorMapper colorMapper) {
 
-		dark = GLUncertaintyHeatMap.darkDark;
-		light = GLUncertaintyHeatMap.lightLight;
-		
 		this.storageVA = storageVA;
 		this.contentVA = contentVA;
 		this.set = set;
@@ -237,16 +222,13 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 		}
 	}
 
-	public void enableAlternativeUncertainty(boolean b) {
-		alternativeUncertainty = b;
+	public void setLightUnCertainColor(float[] light) {
+		this.lightUncertain = light;
+
 	}
 
-	public void setDarkColor(float[] dark) {
-		this.dark = dark;
-	}
-
-	public void setLightColor(float[] light) {
-		this.light = light;
+	public void setLightCertainColor(float[] light) {
+		this.lightCertain = light;
 
 	}
 

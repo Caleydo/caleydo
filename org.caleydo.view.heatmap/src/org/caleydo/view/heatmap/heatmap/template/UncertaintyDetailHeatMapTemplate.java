@@ -4,6 +4,8 @@ import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.renderer.BarPlotRenderer;
+import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
 
 /**
  * Render template for the embedded heat map of the uncertainty heat map.
@@ -13,12 +15,19 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
  * 
  */
 public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
-
-	public UncertaintyDetailHeatMapTemplate(GLHeatMap heatMap) {
+	protected BarPlotRenderer barPlotRenderer;
+	
+	public UncertaintyDetailHeatMapTemplate(GLHeatMap heatMap, GLUncertaintyHeatMap glUncertaintyHeatMap) {
 		super(heatMap);
 
-		minSelectedFieldHeight *= 2;
+		barPlotRenderer = new BarPlotRenderer(heatMap, glUncertaintyHeatMap);
+		barPlotRenderer.setContentSpacing(contentSpacing);
+		
+		minSelectedFieldHeight *= 2; 
+
 	}
+
+	
 
 	public float bottomSpacing = 0;
 
@@ -44,11 +53,13 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		barPlotLayout = new ElementLayout("BarPlotLayout");
 
 		barPlotLayout.setRenderer(barPlotRenderer);
+
 		barPlotLayout.setPixelGLConverter(heatMap.getParentGLCanvas()
 				.getPixelGLConverter());
 		barPlotLayout.setPixelSizeX(barPlotPixelWidth);
 		// barPlotLayout.addForeGroundRenderer(contentSelectionRenderer);
 		// barPlotLayout.addForeGroundRenderer(storageSelectionRenderer);
+
 		mainRow.append(barPlotLayout);
 
 		heatMapLayout = new ElementLayout("hmlayout");
@@ -88,8 +99,10 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		storageCaptionLayout.setRenderer(storageCaptionRenderer);
 
 		ElementLayout leadSpacingLayout = new ElementLayout();
+
 		leadSpacingLayout.setPixelGLConverter(heatMap.getParentGLCanvas().getPixelGLConverter());
 		leadSpacingLayout.setPixelSizeX(barPlotPixelWidth);
+
 		storageCaptionRow.append(leadSpacingLayout);
 
 		storageCaptionRow.append(storageCaptionLayout);
