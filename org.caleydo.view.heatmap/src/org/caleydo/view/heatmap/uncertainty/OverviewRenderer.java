@@ -1,11 +1,14 @@
 package org.caleydo.view.heatmap.uncertainty;
 
+import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -89,7 +92,6 @@ public class OverviewRenderer extends LayoutRenderer {
 						/ ((float) contentVA.getIndexList().size());
 
 				Row clusterLayout = new Row("clusterLayout_" + counter);
-				clusterLayout.setDebug(false);
 				clusterLayout.setRatioSizeY(ratio);
 				clusterLayoutList.add(clusterLayout);
 
@@ -161,7 +163,8 @@ public class OverviewRenderer extends LayoutRenderer {
 		if (clusterLayoutList.size() == 0)
 			return 0;
 
-		return clusterLayoutList.get(selectedClusterIndex).getTranslateY() - overviewLayout.getTranslateY();
+		return clusterLayoutList.get(selectedClusterIndex).getTranslateY()
+				- overviewLayout.getTranslateY();
 	}
 
 	public float getSelectedClusterHeight() {
@@ -193,7 +196,8 @@ public class OverviewRenderer extends LayoutRenderer {
 
 	@Override
 	public void render(GL2 gl) {
-		// renderSelectedElementsLevel1(gl);
+	
 	}
 
+	
 }

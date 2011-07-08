@@ -30,9 +30,7 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 	private GLHeatMap detailHeatMap;
 
 	private TextureManager textureManager = new TextureManager();
-	private java.util.Set<Integer> setMouseOverElements;
-	private java.util.Set<Integer> setSelectedElements;
-	
+
 	public OverviewDetailConnectorRenderer(OverviewRenderer overviewHeatMap,
 			GLHeatMap detailHeatMap) {
 
@@ -55,20 +53,23 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 		// gl.glEnd();
 
 		try {
-		float height = detailHeatMap.getYCoordinateByContentIndex(detailHeatMap.getContentVA().size()-1)-detailHeatMap.getYCoordinateByContentIndex(0);
-		
-		render(gl,
-				new Vec3f(0, yOverview + overviewHeatMap.getSelectedClusterHeight(), 0),
-				new Vec3f(x, y, 0), new Vec3f(0, yOverview, 0), new Vec3f(x, y-height, 0));
-		}catch (Exception e) {
+			float height = detailHeatMap.getYCoordinateByContentIndex(detailHeatMap
+					.getContentVA().size() - 1)
+					- detailHeatMap.getYCoordinateByContentIndex(0);
+
+			render(gl,
+					new Vec3f(0, yOverview + overviewHeatMap.getSelectedClusterHeight(),
+							0), new Vec3f(x, y, 0), new Vec3f(0, yOverview, 0),
+					new Vec3f(x, y - height, 0));
+		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		renderSelectedElementsLevel1(gl);
+
 	}
 
 	/**
-	 * Render a curved (nice looking) grey area between two views
-	 * FIXME: This is an old method written by Bernhard. It needs some cleanup.
+	 * Render a curved (nice looking) grey area between two views FIXME: This is
+	 * an old method written by Bernhard. It needs some cleanup.
 	 * 
 	 * @param gl
 	 * @param startpoint1
@@ -254,48 +255,5 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glPopAttrib();
 	}
-	
-	private void renderSelectedElementsLevel1(GL2 gl) {
-		float height = y;
-		float widthLevel1 = 0f;
 
-		ContentVirtualArray contentVA = overviewHeatMap.getUncertaintyHeatMap().getContentVA();
-		float heightElem = height / contentVA.size();
-
-		setMouseOverElements = detailHeatMap.getContentSelectionManager()
-				.getElements(SelectionType.MOUSE_OVER);
-		setSelectedElements = detailHeatMap.getContentSelectionManager()
-				.getElements(SelectionType.SELECTION);
-
-		gl.glLineWidth(2f);
-
-		for (Integer mouseOverElement : setMouseOverElements) {
-
-			int index = contentVA.indexOf(mouseOverElement.intValue());
-
-			// if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1)
-			// == false) {
-			gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
-			gl.glBegin(GL2.GL_LINES);
-			
-			gl.glVertex3f(widthLevel1, height - heightElem * index, 0.9f);
-			gl.glVertex3f(widthLevel1 + 0.1f, height - heightElem * index, 0.9f);
-			gl.glEnd();
-			// }
-		}
-
-		for (Integer selectedElement : setSelectedElements) {
-
-			int index = contentVA.indexOf(selectedElement.intValue());
-
-			// if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1)
-			// == false) {
-			gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
-			gl.glBegin(GL2.GL_LINES);
-			gl.glVertex3f(widthLevel1, height - heightElem * index, SELECTION_Z);
-			gl.glVertex3f(widthLevel1 + 0.1f, height - heightElem * index, SELECTION_Z);
-			gl.glEnd();
-			// }
-		}
-	}
 }

@@ -174,7 +174,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		OverviewDetailConnectorRenderer overviewDetailConnectorRenderer = new OverviewDetailConnectorRenderer(
 				overviewHeatMap, detailHeatMap);
 		overviewDetailConnectorLayout.setRenderer(overviewDetailConnectorRenderer);
-
+		
 		templateRenderer.updateLayout();
 
 //		templateRenderer = new LayoutManager(this.viewFrustum);
@@ -317,7 +317,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 	@Override
 	public void display(GL2 gl) {
-		baseRow.render(gl);
+		templateRenderer.render(gl);
 		PixelGLConverter pc = this.getParentGLCanvas().getPixelGLConverter();
 		if (updateVisualUncertainty) {
 

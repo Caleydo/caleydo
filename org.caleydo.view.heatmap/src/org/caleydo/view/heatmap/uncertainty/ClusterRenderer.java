@@ -1,5 +1,7 @@
 package org.caleydo.view.heatmap.uncertainty;
 
+import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.nio.ByteBuffer;
@@ -9,6 +11,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
@@ -55,8 +58,12 @@ public class ClusterRenderer extends LayoutRenderer {
 	private ContentVirtualArray clusterVA;
 
 	private int clusterIndex;
-	private int height;
-	private int width;
+	// private int height;
+	// private int width;
+	//
+
+	private java.util.Set<Integer> setMouseOverElements;
+	private java.util.Set<Integer> setSelectedElements;
 
 	/**
 	 * Constructor.
@@ -65,8 +72,8 @@ public class ClusterRenderer extends LayoutRenderer {
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public ClusterRenderer(GLUncertaintyHeatMap uncertaintyHeatMap,
-			Row clusterLayout, ContentVirtualArray clusterVA, int clusterIndex) {
+	public ClusterRenderer(GLUncertaintyHeatMap uncertaintyHeatMap, Row clusterLayout,
+			ContentVirtualArray clusterVA, int clusterIndex) {
 
 		this.uncertaintyHeatMap = uncertaintyHeatMap;
 		this.clusterLayout = clusterLayout;
@@ -88,8 +95,8 @@ public class ClusterRenderer extends LayoutRenderer {
 		clusterDataUncBarLayout.setPixelSizeX(14);
 
 		clusterVisUncBarLayout = new Column("bar2");
-		clusterVisUncBarLayout.setPixelGLConverter(uncertaintyHeatMap
-				.getParentGLCanvas().getPixelGLConverter());
+		clusterVisUncBarLayout.setPixelGLConverter(uncertaintyHeatMap.getParentGLCanvas()
+				.getPixelGLConverter());
 		clusterVisUncBarLayout.setPixelSizeX(14);
 
 		textureRenderer = new HeatMapTextureRenderer(uncertaintyHeatMap,
@@ -104,13 +111,12 @@ public class ClusterRenderer extends LayoutRenderer {
 		clusterVisUncBarLayout.setRenderer(visUncBarTextureRenderer);
 
 		clusterLayout.append(clusterVisUncBarLayout);
-		
-		{
-			ElementLayout lineSeparatorLayout = new ElementLayout(
-					"lineSeparator");
 
-			PixelGLConverter pixelGLConverter = uncertaintyHeatMap
-					.getParentGLCanvas().getPixelGLConverter();
+		{
+			ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
+
+			PixelGLConverter pixelGLConverter = uncertaintyHeatMap.getParentGLCanvas()
+					.getPixelGLConverter();
 			lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
 			lineSeparatorLayout.setPixelSizeX(1);
 			lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
@@ -120,11 +126,10 @@ public class ClusterRenderer extends LayoutRenderer {
 		}
 		clusterLayout.append(clusterDataUncBarLayout);
 		{
-			ElementLayout lineSeparatorLayout = new ElementLayout(
-					"lineSeparator");
+			ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 
-			PixelGLConverter pixelGLConverter = uncertaintyHeatMap
-					.getParentGLCanvas().getPixelGLConverter();
+			PixelGLConverter pixelGLConverter = uncertaintyHeatMap.getParentGLCanvas()
+					.getPixelGLConverter();
 			lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
 			lineSeparatorLayout.setPixelSizeX(1);
 			lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
@@ -134,11 +139,10 @@ public class ClusterRenderer extends LayoutRenderer {
 		}
 		clusterLayout.append(clusterHeatMapLayout);
 		{
-			ElementLayout lineSeparatorLayout = new ElementLayout(
-					"lineSeparator");
+			ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 
-			PixelGLConverter pixelGLConverter = uncertaintyHeatMap
-					.getParentGLCanvas().getPixelGLConverter();
+			PixelGLConverter pixelGLConverter = uncertaintyHeatMap.getParentGLCanvas()
+					.getPixelGLConverter();
 			lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
 			lineSeparatorLayout.setPixelSizeX(1);
 			lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
@@ -146,10 +150,8 @@ public class ClusterRenderer extends LayoutRenderer {
 			clusterLayout.append(lineSeparatorLayout);
 
 		}
-		
 
-		textureRenderer.init(uncertaintyHeatMap, set, clusterVA, storageVA,
-				clusterIndex);
+		textureRenderer.init(uncertaintyHeatMap, set, clusterVA, storageVA, clusterIndex);
 
 		dataUncBarTextureRenderer.init(uncertaintyHeatMap, set, clusterVA, storageVA,
 				uncertaintyHeatMap.getColorMapper());
@@ -159,13 +161,60 @@ public class ClusterRenderer extends LayoutRenderer {
 
 		visUncBarTextureRenderer.setLightCertainColor(uncertaintyHeatMap.VIS_UNC);
 		visUncBarTextureRenderer.setLightUnCertainColor(uncertaintyHeatMap.VIS_UNC);
-		//visUncBarTextureRenderer.setDarkColor(uncertaintyHeatMap.darkDark);
+		// visUncBarTextureRenderer.setDarkColor(uncertaintyHeatMap.darkDark);
 
 	}
 
 	@Override
 	public void render(GL2 gl) {
+		renderSelectedElementsLevel1(gl);
+	}
 
+	private void renderSelectedElementsLevel1(GL2 gl) {
+		float height = y;
+		float widthLevel1 = 0f;
+
+		float heightElem = height / clusterVA.size();
+
+		setMouseOverElements = uncertaintyHeatMap.getContentSelectionManager()
+				.getElements(SelectionType.MOUSE_OVER);
+		setSelectedElements = uncertaintyHeatMap.getContentSelectionManager()
+				.getElements(SelectionType.SELECTION);
+
+		gl.glLineWidth(2f);
+
+		for (Integer mouseOverElement : setMouseOverElements) {
+
+			int index = clusterVA.indexOf(mouseOverElement);
+			if (index < 0)
+				break;
+
+			// if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1)
+			// == false) {
+			gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
+			gl.glBegin(GL2.GL_LINES);
+
+			gl.glVertex3f(0, height - heightElem * index, SELECTION_Z);
+			gl.glVertex3f(x, height - heightElem * index, SELECTION_Z);
+			gl.glEnd();
+			// }
+		}
+
+		for (Integer selectedElement : setSelectedElements) {
+
+			int index = clusterVA.indexOf(selectedElement);
+			if (index < 0)
+				break;
+
+			// if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1)
+			// == false) {
+			gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
+			gl.glBegin(GL2.GL_LINES);
+			gl.glVertex3f(0, height - heightElem * index, SELECTION_Z);
+			gl.glVertex3f(x, height - heightElem * index, SELECTION_Z);
+			gl.glEnd();
+			// }
+		}
 	}
 
 }
