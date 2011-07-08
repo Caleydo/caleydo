@@ -999,7 +999,7 @@ public class Set
 		aggregatedRawUncertainties = new float[depth()];
 		for (int contentIndex = 0; contentIndex < depth(); contentIndex++) {
 			float aggregatedUncertainty;
-			if (false)
+			if (true)
 				aggregatedUncertainty =
 					calcualteAverageUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_RAW);
 			else
