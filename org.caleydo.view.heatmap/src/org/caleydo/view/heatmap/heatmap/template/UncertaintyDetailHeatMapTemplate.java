@@ -16,6 +16,8 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 
 	public UncertaintyDetailHeatMapTemplate(GLHeatMap heatMap) {
 		super(heatMap);
+		
+		minSelectedFieldHeight *= 2; 
 	}
 
 	public float bottomSpacing = 0;
@@ -30,11 +32,10 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		// rendererParameters.clear();
 		
 		float heatMapSizeX = 0.806f;
-
+			
 		Row mainRow = new Row("heatMapRow");
 		mainRow.setGrabY(true);
 		mainRow.setRatioSizeX(1);
-		
 		
 		barPlotLayout = new ElementLayout("BarPlotLayout");
 		
@@ -95,14 +96,11 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		storageCaptionRow.append(postSpacingLayout);
 
 		mainColumn.append(storageCaptionRow);
-		
-		
-
 	}
 
 	/**
 	 * set the static spacing at the bottom (for the caption). This needs to be
-	 * done before it is renedered the first time.
+	 * done before it is rendered the first time.
 	 * 
 	 * @param bottomSpacing
 	 */

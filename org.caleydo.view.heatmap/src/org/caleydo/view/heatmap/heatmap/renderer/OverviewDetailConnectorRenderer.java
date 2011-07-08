@@ -30,10 +30,8 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 	private GLHeatMap detailHeatMap;
 
 	private TextureManager textureManager = new TextureManager();
-	java.util.Set<Integer> setMouseOverElements;
-	java.util.Set<Integer> setSelectedElements;
-
-	
+	private java.util.Set<Integer> setMouseOverElements;
+	private java.util.Set<Integer> setSelectedElements;
 	
 	public OverviewDetailConnectorRenderer(OverviewRenderer overviewHeatMap,
 			GLHeatMap detailHeatMap) {
@@ -56,10 +54,15 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 		// gl.glVertex3f(x, 0, 0);
 		// gl.glEnd();
 
+		try {
+		float height = detailHeatMap.getYCoordinateByContentIndex(detailHeatMap.getContentVA().size()-1)-detailHeatMap.getYCoordinateByContentIndex(0);
+		
 		render(gl,
 				new Vec3f(0, yOverview + overviewHeatMap.getSelectedClusterHeight(), 0),
-				new Vec3f(x, y, 0), new Vec3f(0, yOverview, 0), new Vec3f(x, 0, 0));
-		
+				new Vec3f(x, y, 0), new Vec3f(0, yOverview, 0), new Vec3f(x, y-height, 0));
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
 		renderSelectedElementsLevel1(gl);
 	}
 
