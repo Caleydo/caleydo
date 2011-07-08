@@ -167,6 +167,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;
 
+		initUncertaintyArrays();
 		createOverviewHeatMap(gl);
 		createDetailHeatMap(gl);
 
@@ -501,7 +502,6 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 		contentSelectionManager.setVA(contentVA);
 		storageSelectionManager.setVA(storageVA);
-		initUncertaintyArrays();
 		setDisplayListDirty();
 	}
 
@@ -593,10 +593,12 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		
 	}
 
-	public double getMaxUncertainty(int contentIndex) {
-		double ret = 1;
-		int uncLevel = maxUncertaintyValueIndex.get(contentIndex);
-		ret = uncertaintyValues.get(contentIndex).get(uncLevel);
+	public float getMaxUncertainty(int contentIndex) {
+		float ret = 0;
+		Integer uncLevel = maxUncertaintyValueIndex.get(contentIndex);
+		if (uncLevel != null) {
+			ret = uncertaintyValues.get(contentIndex).get(uncLevel).floatValue();
+		}
 		return ret;
 	}
 

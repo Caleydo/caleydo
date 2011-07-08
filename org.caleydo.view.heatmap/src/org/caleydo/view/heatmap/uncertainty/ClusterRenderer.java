@@ -151,10 +151,10 @@ public class ClusterRenderer extends LayoutRenderer {
 		textureRenderer.init(uncertaintyHeatMap, set, clusterVA, storageVA,
 				clusterIndex);
 
-		dataUncBarTextureRenderer.init(set, clusterVA, storageVA,
+		dataUncBarTextureRenderer.init(uncertaintyHeatMap, set, clusterVA, storageVA,
 				uncertaintyHeatMap.getColorMapper());
 
-		visUncBarTextureRenderer.init(set, clusterVA, storageVA,
+		visUncBarTextureRenderer.init(uncertaintyHeatMap, set, clusterVA, storageVA,
 				uncertaintyHeatMap.getColorMapper());
 
 		visUncBarTextureRenderer.setLightCertainColor(uncertaintyHeatMap.VIS_UNC);

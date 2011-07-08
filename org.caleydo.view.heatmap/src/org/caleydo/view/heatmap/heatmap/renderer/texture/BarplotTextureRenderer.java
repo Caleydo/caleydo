@@ -49,114 +49,111 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 	private float[] lightCertain = GLUncertaintyHeatMap.DATA_VALID[0];
 	private float[] lightUncertain = GLUncertaintyHeatMap.DATA_UNCERTAIN[0];
 
+	private GLUncertaintyHeatMap glUncHeatmap;
+
 	public void setOrientationLeft(boolean tr) {
 		orientation = tr;
 	}
 
 	public void initTextures(ArrayList<Float> uncertaintyVA) {
 
-		if ( storageVA == null || contentVA == null)
+		if (storageVA == null || contentVA == null)
 			return;
-		
-		
-			int textureWidth = storageVA.size();
-			int textureHeight = numberOfElements = contentVA.size();
+
+		int textureWidth = storageVA.size();
+		int textureHeight = numberOfElements = contentVA.size();
+		if (uncertaintyVA != null) {
+			textureHeight = numberOfElements = uncertaintyVA.size();
+		}
+
+		numberOfTextures = (int) Math.ceil((double) numberOfElements
+				/ MAX_SAMPLES_PER_TEXTURE);
+
+		if (numberOfTextures <= 1)
+			samplesPerTexture = numberOfElements;
+		else
+			samplesPerTexture = MAX_SAMPLES_PER_TEXTURE;
+
+		textures.clear();
+		numberSamples.clear();
+
+		Texture tempTexture;
+
+		samplesPerTexture = (int) Math.ceil((double) textureHeight
+				/ numberOfTextures);
+
+		FloatBuffer[] floatBuffer = new FloatBuffer[numberOfTextures];
+
+		for (int iTexture = 0; iTexture < numberOfTextures; iTexture++) {
+
+			if (iTexture == numberOfTextures - 1) {
+				numberSamples.add(textureHeight - samplesPerTexture * iTexture);
+				floatBuffer[iTexture] = FloatBuffer
+						.allocate((textureHeight - samplesPerTexture * iTexture)
+								* textureWidth * 4);
+			} else {
+				numberSamples.add(samplesPerTexture);
+				floatBuffer[iTexture] = FloatBuffer.allocate(samplesPerTexture
+						* textureWidth * 4);
+			}
+		}
+
+		int contentCount = 0;
+		int textureCounter = 0;
+
+		for (int index = 0; index < numberOfElements; index++) {
+
+			float uncertainty;
+			contentCount++;
+
 			if (uncertaintyVA != null) {
-				textureHeight = numberOfElements = uncertaintyVA.size();
+				uncertainty = uncertaintyVA.get(index);
+			} else {
+				uncertainty = glUncHeatmap.getMaxUncertainty(contentVA.get(index));
 			}
-
-			numberOfTextures = (int) Math.ceil((double) numberOfElements
-					/ MAX_SAMPLES_PER_TEXTURE);
-
-			if (numberOfTextures <= 1)
-				samplesPerTexture = numberOfElements;
-			else
-				samplesPerTexture = MAX_SAMPLES_PER_TEXTURE;
-
-			textures.clear();
-			numberSamples.clear();
-
-			Texture tempTexture;
-
-			samplesPerTexture = (int) Math.ceil((double) textureHeight
-					/ numberOfTextures);
-
-			FloatBuffer[] floatBuffer = new FloatBuffer[numberOfTextures];
-
-			for (int iTexture = 0; iTexture < numberOfTextures; iTexture++) {
-
-				if (iTexture == numberOfTextures - 1) {
-					numberSamples.add(textureHeight - samplesPerTexture
-							* iTexture);
-					floatBuffer[iTexture] = FloatBuffer
-							.allocate((textureHeight - samplesPerTexture
-									* iTexture)
-									* textureWidth * 4);
+			for (int i = 0; i < textureWidth; i++) {
+				float[] rgba = new float[4];
+				if (((float) i / textureWidth) > uncertainty) {
+					if (uncertainty >= 1)
+						rgba = this.lightCertain;
+					else
+						rgba = this.lightUncertain;
 				} else {
-					numberSamples.add(samplesPerTexture);
-					floatBuffer[iTexture] = FloatBuffer
-							.allocate(samplesPerTexture * textureWidth * 4);
+					rgba = GLUncertaintyHeatMap.BACKGROUND;
 				}
+
+				floatBuffer[textureCounter].put(rgba);
 			}
+			if (contentCount >= numberSamples.get(textureCounter)) {
+				floatBuffer[textureCounter].rewind();
 
-			int contentCount = 0;
-			int textureCounter = 0;
+				TextureData texData = new TextureData(GLProfile.getDefault(),
+						GL2.GL_RGBA /* internalFormat */,
+						textureWidth /* height */,
+						numberSamples.get(textureCounter) /* width */,
+						0 /* border */, GL2.GL_RGBA /* pixelFormat */,
+						GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
+						false /* dataIsCompressed */,
+						false /* mustFlipVertically */,
+						floatBuffer[textureCounter], null);
 
-				for ( int index = 0; index< numberOfElements; index++) {
-				
-				float uncertainty;
-				contentCount++;
-				
-				if (uncertaintyVA != null) {
-					uncertainty = uncertaintyVA.get(index);
-				}else {
-					try {
-						uncertainty = set.getNormalizedUncertainty(contentVA.get(index));
-					} catch (IllegalStateException ex) {
-						uncertainty = 0;
-					}
-				}
-				for (int i = 0; i < textureWidth; i++) {
-					float[] rgba = new float[4];
-					if (((float) i / textureWidth) > uncertainty) {
-						if (uncertainty >= 1)
-							rgba = this.lightCertain;
-						else rgba = this.lightUncertain;
-					} else {
-						rgba = GLUncertaintyHeatMap.BACKGROUND;
-					}
+				tempTexture = TextureIO.newTexture(0);
+				tempTexture.updateImage(texData);
 
-					floatBuffer[textureCounter].put(rgba);
-				}
-				if (contentCount >= numberSamples.get(textureCounter)) {
-					floatBuffer[textureCounter].rewind();
+				textures.add(tempTexture);
 
-					TextureData texData = new TextureData(
-							GLProfile.getDefault(),
-							GL2.GL_RGBA /* internalFormat */,
-							textureWidth /* height */,
-							numberSamples.get(textureCounter) /* width */,
-							0 /* border */, GL2.GL_RGBA /* pixelFormat */,
-							GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
-							false /* dataIsCompressed */,
-							false /* mustFlipVertically */,
-							floatBuffer[textureCounter], null);
-
-					tempTexture = TextureIO.newTexture(0);
-					tempTexture.updateImage(texData);
-
-					textures.add(tempTexture);
-
-					textureCounter++;
-					contentCount = 0;
-				}
+				textureCounter++;
+				contentCount = 0;
 			}
-		
+		}
+
 	}
 
-	public void init(ISet set, ContentVirtualArray contentVA,
-			StorageVirtualArray storageVA, ColorMapper colorMapper) {
+	public void init(GLUncertaintyHeatMap glUncHeatmap, ISet set,
+			ContentVirtualArray contentVA, StorageVirtualArray storageVA,
+			ColorMapper colorMapper) {
 
+		this.glUncHeatmap = glUncHeatmap;
 		this.storageVA = storageVA;
 		this.contentVA = contentVA;
 		this.set = set;
