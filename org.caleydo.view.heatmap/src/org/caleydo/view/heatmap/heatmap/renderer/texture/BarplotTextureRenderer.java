@@ -36,15 +36,11 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 	private boolean orientation = true;
 
-	private boolean alternativeUncertainty = false;
-
 	private StorageVirtualArray storageVA;
 
 	private ContentVirtualArray contentVA;
 
 	private ISet set;
-
-	private boolean updateTexture = false;
 
 	private float[] lightCertain = GLUncertaintyHeatMap.DATA_VALID[0];
 	private float[] lightUncertain = GLUncertaintyHeatMap.getUncertaintyColor(0);

@@ -30,11 +30,9 @@ public class FilterPipelineRenderStyle extends GeneralRenderStyle
 	
 	private final static float[][] DATA_UNCERTAIN = {
 		{179/255f, 88/255f, 6/255f, 1f},
-		{ 241/255f, 163/255f, 64/255f, 1f }, 
-		{ 254/255f, 224/255f, 182/255f, 1f },
-		{216/255f, 218/255f, 235/255f, 1f }, 
-		{153/255f, 142/255f, 195/255f, 1f }, 
-		
+		{ 224/255f, 130/255f, 20/255f, 1f }, 
+		{ 253/255f, 184/255f, 99/255f, 1f },
+		{254/255f, 224/255f, 182/255f, 1f }, 
 		};
 	
 	

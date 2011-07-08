@@ -70,13 +70,10 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 			{ 0.80f, 0.80f, 0.80f, 1f }, { 0.0f, 0.70f, 0.70f, 1f } };
 
 	private final static float[][] DATA_UNCERTAIN = {
-			{179/255f, 88/255f, 6/255f, 1f},
-			{ 241/255f, 163/255f, 64/255f, 1f }, 
-			{ 254/255f, 224/255f, 182/255f, 1f },
-			{216/255f, 218/255f, 235/255f, 1f }, 
-			{153/255f, 142/255f, 195/255f, 1f }, 
-			
-			};
+		{179/255f, 88/255f, 6/255f, 1f},
+		{ 224/255f, 130/255f, 20/255f, 1f }, 
+		{ 253/255f, 184/255f, 99/255f, 1f },
+		{254/255f, 224/255f, 182/255f, 1f }, };
 	
 	/*
 	179 88 6
@@ -557,7 +554,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		
 		// Initialize with 1 in order to calculate uncertainty max
 		for (int index = 0; index < aggregatedUncertainty.length; index++) {
-			aggregatedUncertainty[index] = 1.0f;
+			aggregatedUncertainty[index] = 1f;
 		}
 		
 		multiLevelUncertainty.add(convertedSNR);
