@@ -1,17 +1,14 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
-import static org.caleydo.view.heatmap.HeatMapRenderStyle.DENDROGRAM_BACKROUND;
-import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
 import org.caleydo.view.heatmap.uncertainty.OverviewRenderer;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -40,7 +37,7 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 
 	public void render(GL2 gl) {
 
-		gl.glColor4f(0f, 0f, 0f, 0.5f);
+		// gl.glColor4fv(GLUncertaintyHeatMap.BACKGROUND, 0);
 
 		float yOverview = overviewHeatMap.getSelectedClusterY();
 
@@ -53,9 +50,11 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 		// gl.glEnd();
 
 		try {
-			float height = detailHeatMap.getYCoordinateByContentIndex(detailHeatMap
-					.getContentVA().size() - 1)
-					- detailHeatMap.getYCoordinateByContentIndex(0);
+			int lastElementIndex = detailHeatMap.getContentVA().size() - 1;
+			int lastElementID = detailHeatMap.getContentVA().get(lastElementIndex);
+			float lastElementHeight = detailHeatMap.getFieldHeight(lastElementID) / 2;
+			float height = detailHeatMap.getYCoordinateByContentIndex(lastElementIndex)
+					+ lastElementHeight - detailHeatMap.getYCoordinateByContentIndex(0);
 
 			render(gl,
 					new Vec3f(0, yOverview + overviewHeatMap.getSelectedClusterHeight(),
@@ -115,7 +114,7 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 				EIconTextures.NAVIGATION_MASK_CURVE);
 		textureMaskNeg = textureManager.getIconTexture(gl,
 				EIconTextures.NAVIGATION_MASK_CURVE_NEG);
-		gl.glColor4fv(DENDROGRAM_BACKROUND, 0);
+		gl.glColor4fv(GLUncertaintyHeatMap.BACKGROUND, 0);
 
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(startpoint1.x(), startpoint1.y(), startpoint1.z());

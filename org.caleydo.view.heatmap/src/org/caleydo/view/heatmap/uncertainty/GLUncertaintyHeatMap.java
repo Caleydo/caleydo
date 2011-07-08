@@ -74,8 +74,8 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 			{ 0.90f, 0.90f, 0.20f, 1f }, { 0.80f, 0.80f, 0.20f, 1f },
 			{ 0.7f, 0.70f, 0.20f, 1f } };
 
-	public final static float[] BACKGROUND = { 0.2f, 0.2f, 0.2f, 1f };
-	public final static float[] VIS_UNC = { 0.7f, 0.7f, 0.2f, 1f };
+	public final static float[] BACKGROUND = { 0.5f, 0.5f, 0.5f, 1f };
+	public final static float[] VIS_UNC = { 0.7f, 0.7f, 0.7f, 1f };
 
 	private HeatMapRenderStyle renderStyle;
 

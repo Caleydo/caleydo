@@ -2,20 +2,12 @@ package org.caleydo.view.heatmap.uncertainty;
 
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -23,7 +15,6 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
-import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.layout.util.SpacerRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.texture.BarplotTextureRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.texture.HeatMapTextureRenderer;
@@ -47,11 +38,6 @@ public class ClusterRenderer extends LayoutRenderer {
 	private Column clusterHeatMapLayout;
 	private Column clusterDataUncBarLayout;
 	private Column clusterVisUncBarLayout;
-
-	private ViewFrustum viewFrustum;
-	private LayoutManager templateRenderer;
-
-	private Object template;
 
 	private Row clusterLayout;
 
@@ -159,8 +145,8 @@ public class ClusterRenderer extends LayoutRenderer {
 		visUncBarTextureRenderer.init(uncertaintyHeatMap, set, clusterVA, storageVA,
 				uncertaintyHeatMap.getColorMapper());
 
-		visUncBarTextureRenderer.setLightCertainColor(uncertaintyHeatMap.VIS_UNC);
-		visUncBarTextureRenderer.setLightUnCertainColor(uncertaintyHeatMap.VIS_UNC);
+		visUncBarTextureRenderer.setLightCertainColor(GLUncertaintyHeatMap.VIS_UNC);
+		visUncBarTextureRenderer.setLightUnCertainColor(GLUncertaintyHeatMap.VIS_UNC);
 		// visUncBarTextureRenderer.setDarkColor(uncertaintyHeatMap.darkDark);
 
 	}
