@@ -33,8 +33,6 @@ public class MatchmakerToolBarContent extends AToolBarContent {
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		int targetViewID = getTargetViewData().getViewID();
-
 		// UseSortingAction useSortingAction = new
 		// UseSortingAction(targetViewID);
 		// useSortingAction.setSortingEnabled(true);

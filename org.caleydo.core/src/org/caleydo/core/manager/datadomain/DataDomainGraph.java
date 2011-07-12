@@ -48,7 +48,7 @@ public class DataDomainGraph {
 
 		IDMappingManager idMappingManager = GeneralManager.get().getIDMappingManager();
 
-		//FIXME: This is not generic at all, move the IDTypes of the DataDomains into IDataDomain 
+		// FIXME: This is not generic at all, move the IDTypes of the DataDomains into IDataDomain
 		for (IDataDomain vertex : dataDomainGraph.vertexSet()) {
 			if (vertex != dataDomain) {
 				boolean mappingExists = false;
@@ -123,17 +123,14 @@ public class DataDomainGraph {
 	public SimpleGraph<IDataDomain, Edge> getGraph() {
 		return dataDomainGraph;
 	}
-	
+
 	public Set<IDataDomain> getDataDomains() {
 		return dataDomainGraph.vertexSet();
 	}
 
 	public static void main(String args[]) {
-		DataDomainGraph graph = new DataDomainGraph();
-
+		// DataDomainGraph graph = new DataDomainGraph();
 		// System.out.println(graph.dataDomainGraph.edgesOf(CLINICAL));
-
 		// System.out.println(graph.getNeighboursOf(GENETIC));
-
 	}
 }

@@ -34,12 +34,8 @@ public class BookmarkToolBarContent extends AToolBarContent {
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		int targetViewID = getTargetViewData().getViewID();
-
-		
 		IToolBarItem exportDataItem = new ExportDataAction();
 		actionList.add(exportDataItem);
-	
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);

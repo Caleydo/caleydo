@@ -39,10 +39,6 @@ public class TreeMapRenderer {
 	private boolean bDrawNodeFrame = false;
 	private Color frameColor = Color.WHITE;
 
-	private List<Integer> extendedFrameList = null;
-	private Color extendedFrameColor;
-	private float extendedFrameLineWidth;
-
 	private boolean bDrawLabel = true;
 
 	public void initRenderer(ViewFrustum viewFrustum, PickingManager pickingManager, int viewID, SelectionManager selectionManager,
@@ -81,13 +77,7 @@ public class TreeMapRenderer {
 		bDrawNodeFrame = flag;
 		frameColor = color;
 	}
-
-	public void setExtendedNodeFrame(List<Integer> clusterIDs, Color color, float lineWidth) {
-		extendedFrameList = clusterIDs;
-		extendedFrameColor = color;
-		extendedFrameLineWidth = lineWidth;
-	}
-
+	
 	/**
 	 * Switch label on/off
 	 * 

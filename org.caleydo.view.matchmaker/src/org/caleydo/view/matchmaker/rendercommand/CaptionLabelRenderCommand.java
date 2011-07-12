@@ -34,8 +34,7 @@ public class CaptionLabelRenderCommand implements IHeatMapRenderCommand {
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
 
 		Rectangle2D bounds = textRenderer.getBounds(textToRender);
-		float captionLabelHeight = layout.getCaptionLabelHeight();
-		float captionLabelWidth = layout.getCaptionLabelWidth();
+
 		float fFontScaling = determineFontScaling(gl, textToRender, layout);
 		Vec3f captionLabelPosition = layout.getCaptionLabelPosition((float) bounds
 				.getWidth() * fFontScaling);

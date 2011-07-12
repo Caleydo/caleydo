@@ -292,7 +292,7 @@ public class ConnectionBandRenderer {
 		// gl.glPushName(pickingManager.getPickingID(viewID,
 		// EPickingType.COMPARE_RIBBON_SELECTION, bandID));
 
-		float yCorrection = 0;
+		// float yCorrection = 0;
 		float z = 0.1f;
 
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();

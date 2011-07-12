@@ -543,13 +543,13 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		clusteredSets.add(setID);
 
 		// Check if all sets are properly clustered
-		boolean allSetsClustered = true;
-		for (ISet set : setsToCompare) {
-			if (!clusteredSets.contains(set.getID())) {
-				allSetsClustered = false;
-				break;
-			}
-		}
+		// boolean allSetsClustered = true;
+		// for (ISet set : setsToCompare) {
+		// if (!clusteredSets.contains(set.getID())) {
+		// allSetsClustered = false;
+		// break;
+		// }
+		// }
 		// if (!allSetsClustered)
 		// return;
 

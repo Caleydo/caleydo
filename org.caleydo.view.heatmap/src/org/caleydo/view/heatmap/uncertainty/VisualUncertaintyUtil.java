@@ -21,36 +21,34 @@ import com.jogamp.opengl.util.awt.ImageUtil;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
-import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 
 public class VisualUncertaintyUtil {
 
-	public static void calcVisualUncertainty(GL2 gl,
-			PixelGLConverter pixelGLConverter, ElementLayout layout, HeatMapTextureRenderer renderer, ArrayList<Float> ret) {
+	public static void calcVisualUncertainty(GL2 gl, PixelGLConverter pixelGLConverter,
+			ElementLayout layout, HeatMapTextureRenderer renderer, ArrayList<Float> ret) {
 
 		// float sizeX = clusterHeatMapLayout.getUnscalableElementWidth();
 		float scaledX = layout.getSizeScaledX();
 		float scaledY = layout.getSizeScaledY();
 
-		float transX = layout.getTranslateX();
+		// float transX = layout.getTranslateX();
 		float transY = layout.getTranslateY();
 
 		int width = pixelGLConverter.getPixelWidthForGLWidth(scaledX);
-		int xScreen = pixelGLConverter.getPixelWidthForGLWidth(transX);
+		// int xScreen = pixelGLConverter.getPixelWidthForGLWidth(transX);
 
 		int height = pixelGLConverter.getPixelWidthForGLWidth(scaledY);
-		int yScreen = pixelGLConverter.getPixelWidthForGLWidth(transY);
+		// int yScreen = pixelGLConverter.getPixelWidthForGLWidth(transY);
 
-		for (int i = 0; i< height; i++) {
-			ret.add(renderer.getUncertaintyForLine(i, width, height)) ;
+		for (int i = 0; i < height; i++) {
+			ret.add(renderer.getUncertaintyForLine(i, width, height));
 		}
-		//getScreenAreaShot(gl, xScreen, yScreen, width, height);
+		// getScreenAreaShot(gl, xScreen, yScreen, width, height);
 		// HeatMapRenderStyle renderStyle = uncertaintyHeatMap.getRenderStyle();
 		// float x = renderStyle.getXScaling();
 		// float y = renderStyle.getYScaling();
 	}
 
-	
 	private static void getScreenAreaShot(GL2 gl, int x, int y, int width, int height) {
 
 		/*
@@ -70,15 +68,13 @@ public class VisualUncertaintyUtil {
 		gl.glReadBuffer(GL2.GL_FRONT);
 		ByteBuffer screenShotByteBuffer = null;
 		BufferedImage screenShotImage = null;
-		screenShotImage = new BufferedImage(width, height,
-				BufferedImage.TYPE_4BYTE_ABGR);
+		screenShotImage = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
 
-		screenShotByteBuffer = ByteBuffer
-				.wrap(((DataBufferByte) screenShotImage.getRaster()
-						.getDataBuffer()).getData());
+		screenShotByteBuffer = ByteBuffer.wrap(((DataBufferByte) screenShotImage
+				.getRaster().getDataBuffer()).getData());
 
-		gl.glReadPixels(x, y, width, height, GL2.GL_ABGR_EXT,
-				GL2.GL_UNSIGNED_BYTE, screenShotByteBuffer);
+		gl.glReadPixels(x, y, width, height, GL2.GL_ABGR_EXT, GL2.GL_UNSIGNED_BYTE,
+				screenShotByteBuffer);
 
 		ImageUtil.flipImageVertically(screenShotImage);
 
@@ -86,8 +82,7 @@ public class VisualUncertaintyUtil {
 
 		try {
 			ImageIO.write(screenShotImage, "png", new File(
-					"C:\\Documents and Settings\\Clemens\\bild" + now.getTime()
-							+ ".png"));
+					"C:\\Documents and Settings\\Clemens\\bild" + now.getTime() + ".png"));
 		} catch (IOException e) { // TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -102,7 +97,6 @@ public class VisualUncertaintyUtil {
 		// gl.glDrawBuffer(GL2.GL_BACK);
 
 	}
-
 
 	public float getValueFromBytes(byte[] abgr) {
 
@@ -120,21 +114,17 @@ public class VisualUncertaintyUtil {
 			screenShotImage = new BufferedImage(width, height,
 					BufferedImage.TYPE_4BYTE_ABGR);
 
-			screenShotByteBuffer = ByteBuffer
-					.wrap(((DataBufferByte) screenShotImage.getRaster()
-							.getDataBuffer()).getData());
+			screenShotByteBuffer = ByteBuffer.wrap(((DataBufferByte) screenShotImage
+					.getRaster().getDataBuffer()).getData());
 
 			gl.glReadBuffer(GL2.GL_FRONT);
-			gl.glReadPixels(x, y, width, height, GL2.GL_ABGR_EXT,
-					GL2.GL_UNSIGNED_BYTE, screenShotByteBuffer);
+			gl.glReadPixels(x, y, width, height, GL2.GL_ABGR_EXT, GL2.GL_UNSIGNED_BYTE,
+					screenShotByteBuffer);
 
-			Texture awtTexture = AWTTextureIO.newTexture(
-					GLProfile.getDefault(), screenShotImage, false);
 			// create new Texture from ScreenShot
 			TextureData texData = new TextureData(GLProfile.getDefault(),
 					GL2.GL_RGBA /* internalFormat */, height /* height */,
-					width /* width */, 0 /* border */,
-					GL2.GL_RGBA /* pixelFormat */,
+					width /* width */, 0 /* border */, GL2.GL_RGBA /* pixelFormat */,
 					GL2.GL_UNSIGNED_BYTE /* pixelType */, false /* mipmap */,
 					false /* dataIsCompressed */, false /* mustFlipVertically */,
 					screenShotByteBuffer, null);
@@ -196,13 +186,11 @@ public class VisualUncertaintyUtil {
 		return newimage;
 	}
 
-
-
 	private int genFBO(GL2 gl) {
 		int[] array = new int[1];
 		IntBuffer ib = IntBuffer.wrap(array);
 		gl.glGenFramebuffers(1, ib);
 		return ib.get(0);
 	}
-	
+
 }

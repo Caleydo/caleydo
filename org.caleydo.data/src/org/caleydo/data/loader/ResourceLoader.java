@@ -60,10 +60,7 @@ public class ResourceLoader {
 		} else {
 			image = new Image(display, sFileName);
 		}
-
-		if (image == null)
-			throw new IllegalStateException("Cannot load image: " + sFileName);
-
+		
 		return image;
 	}
 

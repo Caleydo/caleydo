@@ -36,8 +36,6 @@ public class ParCoordsToolBarContent extends AToolBarContent {
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		int targetViewID = getTargetViewData().getViewID();
-
 		// all pc views
 		IToolBarItem angularBrushingAction = new AngularBrushingAction();
 		actionList.add(angularBrushingAction);

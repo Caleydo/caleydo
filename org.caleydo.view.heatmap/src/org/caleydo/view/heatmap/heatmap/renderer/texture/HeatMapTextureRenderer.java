@@ -14,7 +14,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
@@ -48,11 +47,6 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 	private FloatBuffer[] floatBuffer;
 
 	private int numberOfExpirments;
-	private int myFBO = -1;
-
-	private boolean takeScreenShot = false;
-
-	private ArrayList<Float> visualUncertaintyArray;
 
 	public Column heatmapLayout;
 
@@ -62,13 +56,6 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 
 	private ISet set;
 
-	private SelectionUpdateListener selectionUpdateListener;
-
-	private int selectedLine = -1;
-
-	private float glYCoordinate = 50;
-
-	
 	public HeatMapTextureRenderer(GLUncertaintyHeatMap uncertaintyHeatMap,
 			Column heatmapLayout) {
 
@@ -262,7 +249,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 			val = 0;
 
 			for (int i = startGene; i < endGene; i++) {
-				byte[] abgr = new byte[4];
+//				byte[] abgr = new byte[4];
 
 				val = val
 						+ ((set.get(storageVA.get(exps)).getFloat(

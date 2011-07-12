@@ -1870,8 +1870,9 @@ public class GLScatterPlot extends AStorageBasedView {
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 
-		Rectangle2D bounds = textRenderer.getScaledBounds(gl, sLabel, fScaling,
-				ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
+		// Rectangle2D bounds = textRenderer.getScaledBounds(gl, sLabel,
+		// fScaling,
+		// ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
 
 		float fRotation = 45;
 		// gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);

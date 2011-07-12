@@ -1,6 +1,5 @@
 package org.caleydo.view.bookmark;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -137,9 +136,7 @@ public class GLBookmarkView extends AGLView implements
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
-		Rectangle2D bounds = parentGLCanvas.getBounds();
 		templateRenderer.updateLayout();
-
 	}
 
 	@Override

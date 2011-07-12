@@ -999,12 +999,13 @@ public class Set
 		aggregatedRawUncertainties = new float[depth()];
 		for (int contentIndex = 0; contentIndex < depth(); contentIndex++) {
 			float aggregatedUncertainty;
-			if (true)
-				aggregatedUncertainty =
-					calcualteAverageUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_RAW);
-			else
-				aggregatedUncertainty =
-					calculateMaxUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_RAW);
+
+			aggregatedUncertainty =
+				calcualteAverageUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_RAW);
+
+			// aggregatedUncertainty =
+			// calculateMaxUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_RAW);
+
 			aggregatedRawUncertainties[contentIndex] = aggregatedUncertainty;
 		}
 	}
