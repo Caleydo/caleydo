@@ -20,9 +20,10 @@ import org.caleydo.view.filterpipeline.FilterItem;
 import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 
 /**
- * Represents a filter which can be rendered and dragged arround
+ * Represents a filter which can be rendered and dragged around
  * 
  * @author Thomas Geymayer
+ * @uathor Marc Streit
  * 
  */
 public class FilterRepresentation implements IDraggable, IRenderable, IDropArea {
@@ -116,10 +117,6 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 					GL2.GL_LINE_LOOP,
 					(selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION
 							.getColor() : SelectionType.MOUSE_OVER.getColor(), Z_POS_MARK);
-
-			// if( selectionType == SelectionType.MOUSE_OVER )
-			// {
-			// }
 		}
 
 		// label
@@ -173,8 +170,9 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	protected void renderBasicShape(GL2 gl, CaleydoTextRenderer textRenderer,
 			float[] color) {
 
-		renderShape(gl, GL2.GL_QUADS, color, Z_POS_BODY);
-		gl.glLineWidth(2);
+		renderShape(gl, GL2.GL_QUADS, vPos, vSize.x(), 0, uncertaintyHeightRight-heightRight, heightLeft, heightRight, color, Z_POS_BODY);
+		
+		gl.glLineWidth(1);
 		renderShape(gl, GL2.GL_LINE_LOOP, renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER);
 
 		

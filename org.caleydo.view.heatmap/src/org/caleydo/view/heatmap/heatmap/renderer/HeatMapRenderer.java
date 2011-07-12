@@ -111,13 +111,13 @@ public class HeatMapRenderer extends AContentRenderer {
 		if (storage.containsUncertaintyData()) {
 			setSelectedElements = heatMap.getContentSelectionManager()
 					.getElements(SelectionType.MOUSE_OVER);
-			for (Integer selectedElement : setSelectedElements) {
-				if (iContentIndex == selectedElement.intValue()) {
-					fOpacity = storage.getFloat(
-							EDataRepresentation.UNCERTAINTY_NORMALIZED,
-							iContentIndex);
-				}
-			}
+//			for (Integer selectedElement : setSelectedElements) {
+//				if (iContentIndex == selectedElement.intValue()) {
+//					fOpacity = storage.getFloat(
+//							EDataRepresentation.UNCERTAINTY_NORMALIZED,
+//							iContentIndex);
+//				}
+//			}
 		} else if (heatMap.getContentSelectionManager().checkStatus(
 				SelectionType.DESELECTED, iContentIndex)) {
 			fOpacity = 0.3f;

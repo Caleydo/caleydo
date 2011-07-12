@@ -11,6 +11,7 @@ import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.histogram.RcpBasicGLHistogramView;
 import org.eclipse.swt.SWT;
@@ -35,31 +36,32 @@ public class FilterRepresentationSNR extends
 		AFilterRepresentation<ContentVADelta, ContentFilter> {
 
 	private final static String TITLE = "Signal-To-Noice Ratio Filter";
-	
+
 	private ISet set;
 
 	private Histogram histogram;
-	
+
 	private float invalidThreshold = 2;
 	private float invalidThresholdMax = 5;
-	
+
 	private float validThreshold = 3;
 	private float validThresholdMax = 5;
-	
+
 	public boolean create() {
-		
-		if( !super.create() )
+
+		if (!super.create())
 			return false;
-		
-		// Calculate it with defaults in order to have some sort of result at the beginning
+
+		// Calculate it with defaults in order to have some sort of result at
+		// the beginning
 		set.calculateNormalizedAverageUncertainty(invalidThreshold, validThreshold);
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				
-				((Shell)parentComposite).setText(TITLE);
-				
+
+				((Shell) parentComposite).setText(TITLE);
+
 				GridData gridData = new GridData();
 				gridData.grabExcessHorizontalSpace = true;
 				gridData.horizontalAlignment = GridData.FILL;
@@ -71,9 +73,11 @@ public class FilterRepresentationSNR extends
 				Label invalidThresholdLabel = new Label(infoComposite, SWT.NONE);
 				invalidThresholdLabel.setText("Invalid threshold:");
 
-				final Text invalidThresholdInputField = new Text(infoComposite, SWT.SINGLE);
-				final Slider invalidThresholdSlider = new Slider(infoComposite, SWT.HORIZONTAL);
-				
+				final Text invalidThresholdInputField = new Text(infoComposite,
+						SWT.SINGLE);
+				final Slider invalidThresholdSlider = new Slider(infoComposite,
+						SWT.HORIZONTAL);
+
 				if (invalidThreshold == -1) {
 					invalidThresholdMax = histogram.getMax();
 					invalidThreshold = invalidThresholdMax;
@@ -93,7 +97,8 @@ public class FilterRepresentationSNR extends
 
 						String enteredValue = invalidThresholdInputField.getText();
 						invalidThreshold = new Float(enteredValue);
-						invalidThresholdSlider.setSelection((int) (invalidThreshold * 10000));
+						invalidThresholdSlider
+								.setSelection((int) (invalidThreshold * 10000));
 						isDirty = true;
 					}
 				});
@@ -109,7 +114,8 @@ public class FilterRepresentationSNR extends
 					@Override
 					public void mouseUp(MouseEvent e) {
 						invalidThreshold = (float) invalidThresholdSlider.getSelection() / 10000.00f;
-						invalidThresholdInputField.setText(Float.toString(invalidThreshold));
+						invalidThresholdInputField.setText(Float
+								.toString(invalidThreshold));
 						isDirty = true;
 						parentComposite.pack();
 						parentComposite.layout();
@@ -121,13 +127,14 @@ public class FilterRepresentationSNR extends
 					}
 				});
 
-				//-----------
-				
+				// -----------
+
 				Label validThresholdLabel = new Label(infoComposite, SWT.NONE);
 				validThresholdLabel.setText("Valid threshold:");
 
 				final Text validThresholdInputField = new Text(infoComposite, SWT.SINGLE);
-				final Slider validThresholdSlider = new Slider(infoComposite, SWT.HORIZONTAL);
+				final Slider validThresholdSlider = new Slider(infoComposite,
+						SWT.HORIZONTAL);
 
 				if (validThreshold == -1) {
 					validThresholdMax = histogram.getMax();
@@ -175,9 +182,9 @@ public class FilterRepresentationSNR extends
 
 					}
 				});
-				
-				//-------------
-					
+
+				// -------------
+
 				final Button applyFilterButton = new Button(infoComposite, SWT.PUSH);
 				applyFilterButton.setText("Apply");
 				applyFilterButton.addSelectionListener(new SelectionAdapter() {
@@ -203,7 +210,10 @@ public class FilterRepresentationSNR extends
 
 				histogramView.createDefaultSerializedView();
 				histogramView.createPartControl(histoComposite);
-				((GLHistogram) (histogramView.getGLView())).setHistogram(histogram);
+				GLHistogram glHistogram = ((GLHistogram) (histogramView.getGLView()));
+				glHistogram.setUseColor(false);
+				glHistogram.setDetailLevel(DetailLevel.HIGH);
+				glHistogram.setHistogram(histogram);
 				// Usually the canvas is registered to the GL2 animator in the
 				// PartListener.
 				// Because the GL2 histogram is no usual RCP view we have to do
@@ -211,11 +221,12 @@ public class FilterRepresentationSNR extends
 				// own
 				GeneralManager.get().getViewGLCanvasManager()
 						.registerGLCanvasToAnimator(histogramView.getGLCanvas());
+				glHistogram.setDisplayListDirty();
 			}
 		});
-		
+
 		addOKCancel();
-		
+
 		return true;
 	}
 
@@ -240,31 +251,30 @@ public class FilterRepresentationSNR extends
 		ContentVADelta contentVADelta = new ContentVADelta(ISet.CONTENT, subFilter
 				.getDataDomain().getContentIDType());
 
-		ContentVADelta uncertaintyContentVADelta = new ContentVADelta(ISet.CONTENT, subFilter
-				.getDataDomain().getContentIDType());
-		
+		ContentVADelta uncertaintyContentVADelta = new ContentVADelta(ISet.CONTENT,
+				subFilter.getDataDomain().getContentIDType());
+
 		ContentVirtualArray contentVA = subFilter.getDataDomain()
 				.getContentFilterManager().getBaseVA();
 
 		float[] rawUncertainty = ((FilterRepresentationSNR) subFilter.getFilterRep())
 				.getSet().getRawUncertainty();
-		
+
 		for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 
 			float value = rawUncertainty[contentIndex];
 			if (value < invalidThreshold)
 				contentVADelta
 						.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));
-			
+
 			if (value < invalidThreshold || value > validThreshold)
-				uncertaintyContentVADelta
-				.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));				
+				uncertaintyContentVADelta.add(VADeltaItem.removeElement(contentVA
+						.get(contentIndex)));
 		}
-		
+
 		subFilter.setVADelta(contentVADelta);
 		subFilter.setVADeltaUncertainty(uncertaintyContentVADelta);
 	}
-	
 
 	@Override
 	protected void triggerRemoveFilterEvent() {
@@ -281,11 +291,10 @@ public class FilterRepresentationSNR extends
 	public ISet getSet() {
 		return set;
 	}
-	
+
 	@Override
 	protected void applyFilter() {
-		if (isDirty)
-		{
+		if (isDirty) {
 			createVADelta();
 			set.calculateNormalizedAverageUncertainty(invalidThreshold, validThreshold);
 			filter.updateFilterManager();

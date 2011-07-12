@@ -93,7 +93,7 @@ public class RcpBasicGLHistogramView extends ARcpGLViewPart implements
 			dataDomainBasedView.setDataDomain(dataDomain);
 			this.dataDomain = dataDomain;
 		}
-		((GLHistogram) view).setUseColorMapping(false);
+		((GLHistogram) view).setRenderColorBars(false);
 		view.initialize();
 
 		createPartControlGL();

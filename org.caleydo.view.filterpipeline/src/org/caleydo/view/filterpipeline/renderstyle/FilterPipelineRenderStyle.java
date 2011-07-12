@@ -25,7 +25,7 @@ public class FilterPipelineRenderStyle extends GeneralRenderStyle
 	public final float[] FILTER_COLOR = {041/255.f, 211/255.f, 199/255.f, 1};
 	//public final float[] FILTER_COLOR_UNCERTAINTY = {141/255.f, 150f, 199/255.f, 1};
 	public final float[] FILTER_COLOR_UNCERTAINTY = { 0.7f, 0.7f, 0.7f, 1f };
-	public final float[] FILTER_BORDER_COLOR = {0,0,0,1};
+	public final float[] FILTER_BORDER_COLOR = {0.2f,0.2f,0.2f,1};
 	
 	
 	private final static float[][] DATA_UNCERTAIN = {

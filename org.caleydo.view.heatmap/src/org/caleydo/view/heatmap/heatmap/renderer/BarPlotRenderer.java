@@ -95,7 +95,7 @@ public class BarPlotRenderer extends AContentRenderer {
 
 			float uncertaintyMax = uncertaintyHeatmap
 					.getMaxUncertainty(contentID);
-			if (screenHeight < 3) {
+			if (screenHeight < 15) {
 				int i = 0;
 				renderBlock(gl, yPosition, xPosition, fieldHeight, fieldWidth,
 						uncertaintyMax,
