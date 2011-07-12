@@ -61,9 +61,9 @@ public class StartClusteringDialogAction
 	private float fclusterFactorExperiments = 1f;
 
 	private String[] sArTypeOptions = { "DETERMINED_DEPENDING_ON_USE_CASE", "Experiment", "Both dimensions" };
-	private String[] sArDistOptions = { "Euclid distance", "Manhattan distance", "Chebyshev distance",
+	private String[] sArDistOptions = { "Euclidean distance", "Manhattan distance", "Chebyshev distance",
 			"Pearson correlation" };
-	private String[] sArDistOptionsWeka = { "Euclid distance", "Manhattan distance" };// ,"Chebyshev distance"};
+	private String[] sArDistOptionsWeka = { "Euclidean distance", "Manhattan distance" };// ,"Chebyshev distance"};
 	private String[] sArTreeClusterer = { "Complete Linkage", "Average Linkage", "Single Linkage" };
 
 	private ClusterState clusterState = new ClusterState();
