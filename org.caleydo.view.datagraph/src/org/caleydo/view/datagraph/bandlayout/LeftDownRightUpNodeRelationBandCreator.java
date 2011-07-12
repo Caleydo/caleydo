@@ -119,48 +119,132 @@ public class LeftDownRightUpNodeRelationBandCreator extends
 			for (ADimensionGroupData dimGroupData1 : dimensionGroups1) {
 				for (ADimensionGroupData dimGroupData2 : dimensionGroups2) {
 					if (dimGroupData1.getID() == dimGroupData2.getID()) {
-						
+
 						List<Pair<Point2D, Point2D>> anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
 
 						Pair<Point2D, Point2D> dimGroup1AnchorPoints = node1
 								.getBottomDimensionGroupAnchorPoints(dimGroupData1);
+						Pair<Point2D, Point2D> dimGroup1AnchorPointsSwapped = new Pair<Point2D, Point2D>(
+								dimGroup1AnchorPoints.getSecond(),dimGroup1AnchorPoints.getFirst());
+						Pair<Point2D, Point2D> dimGroup2AnchorPoints = node2
+								.getBottomDimensionGroupAnchorPoints(dimGroupData2);
+						Pair<Point2D, Point2D> dimGroup2AnchorPointsSwapped = new Pair<Point2D, Point2D>(
+								dimGroup2AnchorPoints.getSecond(),dimGroup2AnchorPoints.getFirst());
 
-						float bandWidth = (float) (dimGroup1AnchorPoints
-								.getSecond().getX() - dimGroup1AnchorPoints
-								.getFirst().getX());
-						float bandHeight = pixelGLConverter
-								.getGLHeightForPixelHeight(pixelGLConverter
-										.getPixelWidthForGLWidth(bandWidth));
-						Point2D bendAnchorPoint1 = new Point2D.Float(
-								(float) position1.getX() + node1.getWidth()
-										/ 2.0f, currentBendPosY);
-						Point2D bendAnchorPoint2 = new Point2D.Float(
-								(float) bendAnchorPoint1.getX(),
-								(float) bendAnchorPoint1.getY() - bandHeight);
+						float vecX1 = (float) dimGroup2AnchorPoints.getFirst()
+								.getX()
+								- (float) dimGroup1AnchorPoints.getFirst()
+										.getX();
+						float vecX2 = (float) dimGroup2AnchorPoints.getSecond()
+								.getX()
+								- (float) dimGroup1AnchorPoints.getSecond()
+										.getX();
+						float vecY1 = (float) dimGroup2AnchorPoints.getFirst()
+								.getY()
+								- (float) dimGroup1AnchorPoints.getFirst()
+										.getY();
+						float vecY2 = (float) dimGroup2AnchorPoints.getSecond()
+								.getY()
+								- (float) dimGroup1AnchorPoints.getSecond()
+										.getY();
+						
+						int pixelVecX1 = pixelGLConverter.getPixelWidthForGLWidth(vecX1);
+						int pixelVecY1 = pixelGLConverter.getPixelHeightForGLHeight(vecY1);
+						
+						if(pixelVecX1 > pixelVecY1) {
+							float ratio = (float)pixelVecY1 / (float)pixelVecX1;
+							pixelVecX1 = pixelVecY1;
+							
+							pixelVecY1 = (int) (pixelVecY1 * ratio);
+						} else {
+							float ratio = (float)pixelVecX1 / (float)pixelVecY1;
+							pixelVecY1 = pixelVecX1;
+							
+							pixelVecX1 = (int) (pixelVecX1 * ratio);
+						}
 
-						Pair<Point2D, Point2D> bendAnchorPoints1 = new Pair<Point2D, Point2D>(
-								bendAnchorPoint1, bendAnchorPoint2);
-						Pair<Point2D, Point2D> bendAnchorPoints2 = new Pair<Point2D, Point2D>(
-								bendAnchorPoint2, bendAnchorPoint1);
-						// Pair<Point2D, Point2D> bendAnchorPoints2 = new
-						// Pair<Point2D, Point2D>(
-						// bendAnchorPoint1, bendAnchorPoint2);
+						float dirVecY1 = -pixelGLConverter
+								.getGLHeightForPixelHeight(pixelVecX1);
+						float dirVecY2 = -pixelGLConverter
+								.getGLHeightForGLWidth(vecX2);
+						float dirVecX1 = pixelGLConverter
+								.getGLWidthForPixelWidth(pixelVecY1);
+						float dirVecX2 = pixelGLConverter
+								.getGLWidthForGLHeight(vecY2);
+						
+						anchorPoints.add(dimGroup1AnchorPoints);
 
-						anchorPoints
-								.add(dimGroup1AnchorPoints);
-						anchorPoints.add(bendAnchorPoints1);
-						anchorPoints.add(node2.getBottomDimensionGroupAnchorPoints(dimGroupData2));
-
-						// bands.add(new BandInfo(
-						// node1.getBottomDimensionGroupAnchorPoints(dimGroupData1),
-						// bendAnchorPoints1, -0.2f, -0.2f, false, true));
-						//
-						// bands.add(new BandInfo(bendAnchorPoints2,
-						// dimGroup2AnchorPoints, 0, currentBendPosY
-						// - (float) dimGroup2AnchorPoints
-						// .getFirst().getY(), true, false));
-
-						currentBendPosY -= bandHeight + bandSpacing;
+						Point2D controlPoint1 = new Point2D.Float(
+								(float) dimGroup1AnchorPoints.getFirst().getX()
+										+ dirVecX1,
+								(float) dimGroup1AnchorPoints.getFirst().getY()
+										+ dirVecY1);
+						Point2D controlPoint2 = new Point2D.Float(
+								(float) dimGroup1AnchorPoints.getSecond().getX()
+										+ dirVecX2,
+								(float) dimGroup1AnchorPoints.getSecond().getY()
+										+ dirVecY2);
+						
+						Pair<Point2D, Point2D> controlPoints = new Pair<Point2D, Point2D>(
+								controlPoint1, controlPoint2);
+						
+						anchorPoints.add(controlPoints);
+						
+						controlPoint1 = new Point2D.Float(
+								(float) dimGroup2AnchorPoints.getFirst().getX()
+										+ dirVecX1,
+								(float) dimGroup2AnchorPoints.getFirst().getY()
+										+ dirVecY1);
+						controlPoint2 = new Point2D.Float(
+								(float) dimGroup2AnchorPoints.getSecond().getX()
+										+ dirVecX2,
+								(float) dimGroup2AnchorPoints.getSecond().getY()
+										+ dirVecY2);
+						
+						controlPoints = new Pair<Point2D, Point2D>(
+								controlPoint1, controlPoint2);
+						
+						anchorPoints.add(controlPoints);
+						
+						anchorPoints.add(dimGroup2AnchorPoints);
+						
+//						float bandWidth = (float) (dimGroup1AnchorPoints
+//								.getSecond().getX() - dimGroup1AnchorPoints
+//								.getFirst().getX());
+//						float bandHeight = pixelGLConverter
+//								.getGLHeightForPixelHeight(pixelGLConverter
+//										.getPixelWidthForGLWidth(bandWidth));
+//						Point2D bendAnchorPoint1 = new Point2D.Float(
+//								(float) position1.getX() + node1.getWidth()
+//										/ 2.0f, currentBendPosY);
+//						Point2D bendAnchorPoint2 = new Point2D.Float(
+//								(float) bendAnchorPoint1.getX(),
+//								(float) bendAnchorPoint1.getY() - bandHeight);
+//
+//						Pair<Point2D, Point2D> bendAnchorPoints1 = new Pair<Point2D, Point2D>(
+//								bendAnchorPoint1, bendAnchorPoint2);
+//						Pair<Point2D, Point2D> bendAnchorPoints2 = new Pair<Point2D, Point2D>(
+//								bendAnchorPoint2, bendAnchorPoint1);
+//						// Pair<Point2D, Point2D> bendAnchorPoints2 = new
+//						// Pair<Point2D, Point2D>(
+//						// bendAnchorPoint1, bendAnchorPoint2);
+//
+//						anchorPoints.add(dimGroup1AnchorPoints);
+//						anchorPoints.add(bendAnchorPoints1);
+//						anchorPoints
+//								.add(node2
+//										.getBottomDimensionGroupAnchorPoints(dimGroupData2));
+//
+//						// bands.add(new BandInfo(
+//						// node1.getBottomDimensionGroupAnchorPoints(dimGroupData1),
+//						// bendAnchorPoints1, -0.2f, -0.2f, false, true));
+//						//
+//						// bands.add(new BandInfo(bendAnchorPoints2,
+//						// dimGroup2AnchorPoints, 0, currentBendPosY
+//						// - (float) dimGroup2AnchorPoints
+//						// .getFirst().getY(), true, false));
+//
+//						currentBendPosY -= bandHeight + bandSpacing;
 						bands.add(anchorPoints);
 					}
 				}

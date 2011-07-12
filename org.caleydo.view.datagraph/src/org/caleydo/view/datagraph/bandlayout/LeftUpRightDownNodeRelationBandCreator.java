@@ -62,7 +62,7 @@ public class LeftUpRightDownNodeRelationBandCreator extends
 										.getSecond().getX(),
 								(float) position1.getY() - node1.getHeight()
 										/ 2.0f - 0.05f);
-						
+
 						Pair<Point2D, Point2D> offsetAnchorPoints1 = new Pair<Point2D, Point2D>(
 								anchorOffsetPoint1, anchorOffsetPoint2);
 
@@ -103,9 +103,21 @@ public class LeftUpRightDownNodeRelationBandCreator extends
 
 						anchorPoints.add(dimGroup1AnchorPointsSwapped);
 						anchorPoints.add(offsetAnchorPoints1);
-						anchorPoints.add(bendAnchorPoints1);
+						bands.add(anchorPoints);
+						
+						
+
+						anchorPoints = getBend(offsetAnchorPoints1, bendAnchorPoints1);
+						bands.add(anchorPoints);
+
+						anchorPoints = getBend(bendOffsetAnchorPoints1, bendAnchorPoints1);
+						bands.add(anchorPoints);
+
+						anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
+
 						anchorPoints.add(bendOffsetAnchorPoints1);
 						anchorPoints.add(dimGroup2AnchorPoints);
+						bands.add(anchorPoints);
 
 						// bands.add(new BandInfo(
 						// node1.getBottomDimensionGroupAnchorPoints(dimGroupData1),
@@ -117,7 +129,7 @@ public class LeftUpRightDownNodeRelationBandCreator extends
 						// .getFirst().getY(), true, false));
 
 						currentBendPosY -= bandHeight + bandSpacing;
-						bands.add(anchorPoints);
+
 					}
 				}
 			}
@@ -188,5 +200,26 @@ public class LeftUpRightDownNodeRelationBandCreator extends
 		}
 
 		return bands;
+	}
+
+	private List<Pair<Point2D, Point2D>> getBend(
+			Pair<Point2D, Point2D> horizontalAnchors,
+			Pair<Point2D, Point2D> verticalAnchors) {
+		List<Pair<Point2D, Point2D>> anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
+
+		Point2D controlPoint1 = new Point2D.Float((float) horizontalAnchors
+				.getFirst().getX(), (float) verticalAnchors.getFirst().getY());
+		Point2D controlPoint2 = new Point2D.Float((float) horizontalAnchors
+				.getSecond().getX(), (float) verticalAnchors.getSecond()
+				.getY());
+
+		Pair<Point2D, Point2D> controlPoints = new Pair<Point2D, Point2D>(
+				controlPoint1, controlPoint2);
+
+		anchorPoints.add(horizontalAnchors);
+		anchorPoints.add(controlPoints);
+		anchorPoints.add(verticalAnchors);
+
+		return anchorPoints;
 	}
 }

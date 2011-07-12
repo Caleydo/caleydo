@@ -49,7 +49,19 @@ public class PixelGLConverter {
 		float height = totalHeightGL / totalHeightPixel.floatValue() * pixelHeight;
 		return height;
 	}
+	
+	public float getGLHeightForGLWidth(float glWidth) {
+		int pixelWidth = getPixelWidthForGLWidth(glWidth);
+		
+		return getGLHeightForPixelHeight(pixelWidth);
+	}
 
+	
+	public float getGLWidthForGLHeight(float glHeight) {
+		int pixelHeight = getPixelHeightForGLHeight(glHeight);
+		
+		return getGLWidthForPixelWidth(pixelHeight);
+	}
 	public int getPixelWidthForGLWidth(float glWidth) {
 		float totalWidthGL = viewFrustum.getWidth();
 		Double totalWidthPixel = canvas.getBounds().getWidth();
