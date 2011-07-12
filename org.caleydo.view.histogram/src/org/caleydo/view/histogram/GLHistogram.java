@@ -220,7 +220,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	private void renderHistogram(GL2 gl) {
 
 		float fSpacing = (viewFrustum.getWidth() - 2 * sideSpacing) / histogram.size();
-		float fContinuousColorRegion = 1.0f / histogram.size();
+		//float fContinuousColorRegion = 1.0f / histogram.size();
 
 		float fOneHeightValue = (viewFrustum.getHeight() - 2 * sideSpacing)
 				/ histogram.getLargestValue();

@@ -61,7 +61,6 @@ public class HeatMapWrapper {
 	private HeatMapOverview overview;
 	private ISet set;
 
-	private GeneralManager generalManager;
 	private String contentVAType = ISet.CONTENT;
 	private ContentVirtualArray contentVA;
 	private AHeatMapLayout layout;
@@ -76,7 +75,7 @@ public class HeatMapWrapper {
 
 	private AGLView glParentView;
 	private ACompareViewState state;
-	private GLInfoAreaManager infoAreaManager;
+	// private GLInfoAreaManager infoAreaManager;
 	private ASetBasedDataDomain dataDomain;
 	private IGLRemoteRenderingView parentView;
 
@@ -85,14 +84,13 @@ public class HeatMapWrapper {
 	private ContentSelectionManager contentSelectionManager;
 
 	private boolean useSorting = true;
-	private boolean useZoom = false;
+	// private boolean useZoom = false;
 	private boolean useFishEye = false;
 
 	public HeatMapWrapper(int id, AHeatMapLayout layout, AGLView glParentView,
 			GLInfoAreaManager infoAreaManager, ASetBasedDataDomain dataDomain,
 			IGLRemoteRenderingView parentView, ACompareViewState state) {
 
-		generalManager = GeneralManager.get();
 		overview = new HeatMapOverview(layout);
 		hashHeatMaps = new HashMap<Integer, GLHeatMap>();
 		// hashHeatMapPositions = new HashMap<Integer, Vec3f>();
@@ -101,7 +99,6 @@ public class HeatMapWrapper {
 		this.layout = layout;
 		this.id = id;
 		this.glParentView = glParentView;
-		this.infoAreaManager = infoAreaManager;
 		this.dataDomain = dataDomain;
 		this.parentView = parentView;
 		this.state = state;
@@ -261,8 +258,7 @@ public class HeatMapWrapper {
 				continue;
 
 			float heatMapHeight = layout.getDetailHeatMapHeight(group.getGroupID());
-			Vec3f heatMapPosition = layout
-					.getDetailHeatMapPosition(group.getGroupID());
+			Vec3f heatMapPosition = layout.getDetailHeatMapPosition(group.getGroupID());
 
 			heatMap.getViewFrustum().setLeft(heatMapPosition.x());
 			heatMap.getViewFrustum().setBottom(heatMapPosition.y());

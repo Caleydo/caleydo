@@ -38,8 +38,6 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		mainColumn.setBottomUp(false);
 		// rendererParameters.clear();
 
-		float heatMapSizeX = 0.806f;
-
 		Row mainRow = new Row("heatMapRow");
 //		mainRow.setDebug(true);
 		mainRow.setGrabY(true);

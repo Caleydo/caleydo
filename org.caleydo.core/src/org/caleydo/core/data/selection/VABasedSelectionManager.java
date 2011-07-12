@@ -1,6 +1,5 @@
 package org.caleydo.core.data.selection;
 
-import java.util.HashMap;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.IDType;
@@ -99,7 +98,6 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 
 		tempDelta.setVAType(virtualArray.getVaType());
 		tempDelta.setIDType(iDType);
-		HashMap<Integer, Integer> tempHash;
 
 		for (Integer id : virtualArray) {
 			tempDelta.add(VADeltaItem.appendUnique(id));

@@ -156,7 +156,6 @@ public class ClusterRenderer extends LayoutRenderer {
 
 	private void renderSelectedElementsLevel1(GL2 gl) {
 		float height = y;
-		float widthLevel1 = 0f;
 
 		float heightElem = height / clusterVA.size();
 

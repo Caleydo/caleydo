@@ -107,7 +107,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	private float fLevelHeight = 0;
 
 	private int iMaxDepth = 0;
-	private boolean bEnableDepthCheck = false;
 
 	private ColorMapper colorMapper;
 

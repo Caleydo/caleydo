@@ -262,7 +262,7 @@ public class OverviewState extends ACompareViewStateStatic {
 				heatMapWrappers.clear();
 
 				int heatMapWrapperID = 0;
-				for (ISet set : setsInFocus) {
+				for (@SuppressWarnings("unused") ISet set : setsInFocus) {
 					AHeatMapLayout layout = null;
 					if (heatMapWrapperID == 0) {
 						layout = new HeatMapLayoutOverviewLeft(renderCommandFactory);

@@ -2,8 +2,6 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
 
-import java.util.Set;
-
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.storage.AStorage;
@@ -21,7 +19,8 @@ import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 public class HeatMapRenderer extends AContentRenderer {
 
 	private ColorMapper colorMapper;
-	private Set<Integer> setSelectedElements;
+
+	// private Set<Integer> setSelectedElements;
 
 	public HeatMapRenderer(GLHeatMap heatMap) {
 		super(heatMap);
@@ -36,17 +35,16 @@ public class HeatMapRenderer extends AContentRenderer {
 
 		int contentElements = heatMap.getContentVA().size();
 
-		ContentSelectionManager selectionManager = heatMap
-				.getContentSelectionManager();
+		ContentSelectionManager selectionManager = heatMap.getContentSelectionManager();
 		if (heatMap.isHideElements()) {
 
 			contentElements -= selectionManager
 					.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
 		}
 
-		contentSpacing.calculateContentSpacing(contentElements, heatMap
-				.getStorageVA().size(), parameters.getSizeScaledX(), parameters
-				.getSizeScaledY(), heatMapTemplate.getMinSelectedFieldHeight());
+		contentSpacing.calculateContentSpacing(contentElements, heatMap.getStorageVA()
+				.size(), parameters.getSizeScaledX(), parameters.getSizeScaledY(),
+				heatMapTemplate.getMinSelectedFieldHeight());
 		heatMapTemplate.setContentSpacing(contentSpacing);
 
 		// ((AContentRenderer) renderer).setContentSpacing(contentSpacing);
@@ -81,8 +79,8 @@ public class HeatMapRenderer extends AContentRenderer {
 
 			for (Integer iStorageIndex : heatMap.getStorageVA()) {
 
-				renderElement(gl, iStorageIndex, contentID, yPosition,
-						xPosition, fieldHeight, fieldWidth);
+				renderElement(gl, iStorageIndex, contentID, yPosition, xPosition,
+						fieldHeight, fieldWidth);
 
 				xPosition += fieldWidth;
 
@@ -94,29 +92,27 @@ public class HeatMapRenderer extends AContentRenderer {
 	}
 
 	private void renderElement(final GL2 gl, final int iStorageIndex,
-			final int iContentIndex, final float fYPosition,
-			final float fXPosition, final float fFieldHeight,
-			final float fFieldWidth) {
+			final int iContentIndex, final float fYPosition, final float fXPosition,
+			final float fFieldHeight, final float fFieldWidth) {
 
 		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
 		AStorage storage = heatMap.getSet().get(iStorageIndex);
 		if (storage == null)
 			return;
-		float value = storage.getFloat(EDataRepresentation.NORMALIZED,
-				iContentIndex);
+		float value = storage.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
 		float fOpacity = 1.0f;
 
 		if (storage.containsUncertaintyData()) {
-			setSelectedElements = heatMap.getContentSelectionManager()
-					.getElements(SelectionType.MOUSE_OVER);
-//			for (Integer selectedElement : setSelectedElements) {
-//				if (iContentIndex == selectedElement.intValue()) {
-//					fOpacity = storage.getFloat(
-//							EDataRepresentation.UNCERTAINTY_NORMALIZED,
-//							iContentIndex);
-//				}
-//			}
+			// setSelectedElements = heatMap.getContentSelectionManager()
+			// .getElements(SelectionType.MOUSE_OVER);
+			// for (Integer selectedElement : setSelectedElements) {
+			// if (iContentIndex == selectedElement.intValue()) {
+			// fOpacity = storage.getFloat(
+			// EDataRepresentation.UNCERTAINTY_NORMALIZED,
+			// iContentIndex);
+			// }
+			// }
 		} else if (heatMap.getContentSelectionManager().checkStatus(
 				SelectionType.DESELECTED, iContentIndex)) {
 			fOpacity = 0.3f;
@@ -124,8 +120,7 @@ public class HeatMapRenderer extends AContentRenderer {
 
 		float[] fArMappingColor = colorMapper.getColor(value);
 
-		gl.glColor4f(fArMappingColor[0], fArMappingColor[1],
-				fArMappingColor[2], fOpacity);
+		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
 				EPickingType.HEAT_MAP_STORAGE_SELECTION, iStorageIndex));
@@ -134,8 +129,7 @@ public class HeatMapRenderer extends AContentRenderer {
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);
-		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition + fFieldHeight,
-				FIELD_Z);
+		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition + fFieldHeight, FIELD_Z);
 		gl.glVertex3f(fXPosition, fYPosition + fFieldHeight, FIELD_Z);
 		gl.glEnd();
 

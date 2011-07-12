@@ -38,7 +38,7 @@ public class Activator extends AbstractUIPlugin {
 		try {
 			//InformationProviderEvent event = new InformationProviderEvent();
 			//System.out.println(event);
-			CaleydoProxy proxy = new CaleydoProxy(GeneralManager.get(), "localhost", 21801);
+			new CaleydoProxy(GeneralManager.get(), "localhost", 21801);
 		}
 		catch (UnknownHostException e) {
 			// TODO Auto-generated catch block

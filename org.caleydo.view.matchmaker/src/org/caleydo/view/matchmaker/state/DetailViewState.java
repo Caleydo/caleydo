@@ -194,8 +194,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 			// // If at least one element in the band is in mouse_over state ->
 			// // change
 			// // band color
-			ContentSelectionManager contentSelectionManager = heatMapWrapper
-					.getContentSelectionManager();
+
 			for (Integer contentID : heatMap.getContentVA()) {
 
 				if (activeBand != null && activeBand.getContentIDs().contains(contentID)) {
@@ -384,7 +383,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 	protected void renderSingleDetailToDetailRelation(GL2 gl, Integer contentID) {
 
-		float positionZ = setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
+		// float positionZ = setRelationColor(gl, heatMapWrappers.get(0),
+		// contentID, true);
 
 		float[] leftPos = heatMapWrappers.get(0).getRightDetailLinkPositionFromContentID(
 				contentID);
@@ -412,8 +412,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 				boolean isActive = false;
 				for (SelectionType type : contentSelectionManager
 						.getSelectionTypes(contentID)) {
-					ArrayList<SelectionType> tmp = contentSelectionManager
-							.getSelectionTypes(contentID);
 
 					if (type == SelectionType.MOUSE_OVER)
 						isActive = true;
@@ -631,7 +629,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 				heatMapWrappers.clear();
 
 				int heatMapWrapperID = 0;
-				for (ISet set : setsInFocus) {
+				for (@SuppressWarnings("unused")
+				ISet set : setsInFocus) {
 					AHeatMapLayout layout = null;
 					if (heatMapWrapperID == 0) {
 						layout = new HeatMapLayoutDetailViewLeft(renderCommandFactory);

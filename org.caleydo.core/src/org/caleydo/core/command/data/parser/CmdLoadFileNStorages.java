@@ -11,8 +11,8 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.parser.ascii.TabularAsciiDataReader;
 import org.caleydo.core.parser.parameter.ParameterHandler;
+import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -64,7 +64,7 @@ public class CmdLoadFileNStorages
 		storageIDs = GeneralManager.get().getIDCreator().convertExternalToInternalIDs(storageIDs);
 
 		int[] iArrayStartStop =
-			StringConversionTool.convertStringToIntArray(
+			ConversionTools.convertStringToIntArray(
 				parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
 
 		if (iArrayStartStop.length > 0) {

@@ -30,7 +30,6 @@ import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -44,7 +43,6 @@ import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
-import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -119,7 +117,7 @@ public abstract class AGLViewBrowser
 
 	private boolean connectionLinesEnabled = true;
 
-	private GLInfoAreaManager infoAreaManager;
+	// private GLInfoAreaManager infoAreaManager;
 
 	/**
 	 * Transformation utility object to transform and project view related coordinates
@@ -271,10 +269,8 @@ public abstract class AGLViewBrowser
 			glConnectionLineRenderer.init(gl);
 		}
 
-		// iconTextureManager = new TextureManager(gl);
-
-		time = new SystemTime();
-		((SystemTime) time).rebase();
+		time = new Time();
+		((Time) time).rebase();
 	}
 
 	protected abstract void addInitialViews();

@@ -70,7 +70,7 @@ public class PathwayImageMapSaxHandler extends AXmlParserHandler {
 	 */
 	protected void handleImageMapTag() {
 
-		String sImageLink = "";
+		// String sImageLink = "";
 
 		sAttributeName = attributes.getLocalName(0);
 
@@ -79,7 +79,7 @@ public class PathwayImageMapSaxHandler extends AXmlParserHandler {
 		}
 
 		if (sAttributeName.equals("image")) {
-			sImageLink = attributes.getValue(0);
+			// sImageLink = attributes.getValue(0);
 		}
 
 		// generalManager.getPathwayManager().createPathwayImageMap(sImageLink);

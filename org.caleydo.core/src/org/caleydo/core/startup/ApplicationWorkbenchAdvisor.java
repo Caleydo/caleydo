@@ -66,8 +66,7 @@ public class ApplicationWorkbenchAdvisor
 		filterPreferencePages();
 		// initializeViews();
 
-		// FIXME: turn on auto saver here when data domain integration is finished
-		// autoSaver = new AutoSaver();
+		autoSaver = new AutoSaver();
 		// ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
 		// vm.getDisplayLoopExecution().executeMultiple(autoSaver);
 	}
@@ -99,8 +98,8 @@ public class ApplicationWorkbenchAdvisor
 	public boolean preShutdown() {
 		super.preShutdown();
 
-//		ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
-//		vm.getDisplayLoopExecution().stopMultipleExecution(autoSaver);
+		// ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+		// vm.getDisplayLoopExecution().stopMultipleExecution(autoSaver);
 		autoSaver = null;
 
 		ProjectSaver saver = new ProjectSaver();

@@ -12,7 +12,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.graph.tree.ClusterTree;
@@ -52,7 +51,7 @@ public class Set
 
 	protected int depth = 0;
 
-	private ERawDataType rawDataType;
+	// private ERawDataType rawDataType;
 
 	// private boolean bIsNumerical;
 
@@ -657,7 +656,7 @@ public class Set
 				setType = ESetDataType.HYBRID;
 		}
 
-		rawDataType = storage.getRawDataType();
+		// rawDataType = storage.getRawDataType();
 		// iDepth = storage.size();
 		// }
 		// else {
@@ -1024,6 +1023,7 @@ public class Set
 		return uncertaintySum / storageVA.size();
 	}
 
+	@SuppressWarnings("unused")
 	private float calculateMaxUncertainty(int contentIndex, EDataRepresentation dataRepresentation) {
 		float maxUncertainty = Float.MAX_VALUE;
 		for (Integer storageID : hashStorageData.get(STORAGE).getStorageVA()) {

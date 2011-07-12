@@ -586,12 +586,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 							.setRightGroupStartIndex(dimensionGroupManager
 									.getRightGroupStartIndex() - 1);
 
-					float width = centerRowLayout.getElements().get(size - 1)
-							.getSizeScaledX()
-							+ centerRowLayout.getElements().get(size - 2)
-									.getSizeScaledX()
-							+ centerRowLayout.getElements().get(size - 3)
-									.getSizeScaledX();
+					// float width = centerRowLayout.getElements().get(size - 1)
+					// .getSizeScaledX()
+					// + centerRowLayout.getElements().get(size - 2)
+					// .getSizeScaledX()
+					// + centerRowLayout.getElements().get(size - 3)
+					// .getSizeScaledX();
 					centerRowLayout.remove(centerRowLayout.size() - 1);
 					centerRowLayout.remove(centerRowLayout.size() - 1);
 					rightDimensionGroupSpacing = centerRowLayout.getElements()

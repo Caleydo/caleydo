@@ -34,7 +34,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
  */
 public class RelationIndicatorRenderer extends LayoutRenderer {
 
-//	private ASetBasedDataDomain dataDomain;
+	// private ASetBasedDataDomain dataDomain;
 	private RelationAnalyzer relationAnalyzer;
 	Integer setID;
 	int groupID;
@@ -49,7 +49,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 
 	public RelationIndicatorRenderer(GLBrick brick, GLVisBricks visBricks, boolean isLeft) {
 		this.brick = brick;
-//		this.dataDomain = brick.getDataDomain();
+		// this.dataDomain = brick.getDataDomain();
 		this.relationAnalyzer = visBricks.getRelationAnalyzer();
 		setID = brick.getDimensionGroup().getSetID();
 		groupID = brick.getGroupID();
@@ -119,7 +119,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		if (neighborSetID == -1 || similarities == null)
 			return;
 
-		float xDebugOffset = -0.05f;
+		// float xDebugOffset = -0.05f;
 		float yOffset = 0;
 		for (GLBrick brick : neighborBrickOrder) {
 

@@ -71,7 +71,7 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Returns all dataDomains
+	 * Returns all data domains
 	 * 
 	 * @return
 	 */

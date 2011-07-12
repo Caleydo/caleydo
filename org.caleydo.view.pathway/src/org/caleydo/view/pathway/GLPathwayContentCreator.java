@@ -242,9 +242,9 @@ public class GLPathwayContentCreator {
 		List<List<IGraphItem>> lDepthSearchResult = graphVisitorSearchBFS
 				.getSearchResultDepthOrdered();
 		List<IGraphItem> lGraphItems = new ArrayList<IGraphItem>();
-
-		int iTmpDepth = 0;
-		SelectionType tmpType;
+		//
+		// int iTmpDepth = 0;
+		// SelectionType tmpType;
 
 		for (int iDepthIndex = 0; iDepthIndex < lDepthSearchResult.size(); iDepthIndex++) {
 			lGraphItems = lDepthSearchResult.get(iDepthIndex);
@@ -252,7 +252,7 @@ public class GLPathwayContentCreator {
 			for (int iItemIndex = 0; iItemIndex < lGraphItems.size(); iItemIndex++) {
 				// Check if selected item is a vertex
 				if (lGraphItems.get(iItemIndex) instanceof PathwayVertexGraphItemRep) {
-					iTmpDepth = (iDepthIndex + 1) / 2;
+					// iTmpDepth = (iDepthIndex + 1) / 2;
 
 					// FIXME - this needs to be adapted to the new selection
 					// types when re-activating the neighborhoods

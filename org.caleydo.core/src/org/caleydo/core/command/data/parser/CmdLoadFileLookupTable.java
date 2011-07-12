@@ -12,7 +12,7 @@ import org.caleydo.core.manager.mapping.MappingType;
 import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.parser.ascii.LookupTableLoader;
 import org.caleydo.core.parser.parameter.ParameterHandler;
-import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.util.conversion.ConversionTools;
 
 /**
  * Command loads lookup table from file using one delimiter and a target Collection.
@@ -92,7 +92,7 @@ public class CmdLoadFileLookupTable
 		sLookupTableDelimiter = attrib2;
 
 		if (attrib3 != null) {
-			int[] iArrayStartStop = StringConversionTool.convertStringToIntArray(attrib3, " ");
+			int[] iArrayStartStop = ConversionTools.convertStringToIntArray(attrib3, " ");
 
 			if (iArrayStartStop.length == 2) {
 				iStartPareseFileAtLine = iArrayStartStop[0];

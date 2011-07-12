@@ -1,7 +1,6 @@
 package org.caleydo.view.datawindows;
 
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 
 public class NodeSlerp {
@@ -24,8 +23,8 @@ public class NodeSlerp {
 		this.startPoint = startPoint;
 		this.targetPoint = targetPoint;
 		this.speed = speed;
-		time = new SystemTime();
-		((SystemTime) time).rebase();
+		time = new Time();
+		((Time) time).rebase();
 
 		// calculate the direction of the slerp
 		float[] tempVector = new float[2];

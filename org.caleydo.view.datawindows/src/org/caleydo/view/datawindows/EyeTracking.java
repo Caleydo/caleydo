@@ -2,7 +2,6 @@ package org.caleydo.view.datawindows;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.util.tracking.TrackDataProvider;
 
@@ -12,10 +11,10 @@ public class EyeTracking {
 	private float[] receivedEyeData;
 	private float[] eyeTrackerOffset;
 	private int[] fixedCoordinate;
-	private boolean simulation;
+	// private boolean simulation;
 	private double timeToFixCoordinate;
 	private float radiusOfFixedCoordinate;
-	private String ipTracker;
+	// private String ipTracker;
 	public int debugMode;
 	private ArrayList<EyeCoordinateListEntry> coordinateList;
 	private Time time;
@@ -29,13 +28,13 @@ public class EyeTracking {
 		fixedCoordinate = new int[2];
 		timeToFixCoordinate = 0.2f;
 		radiusOfFixedCoordinate = 40;
-		this.ipTracker = ipTracker;
-		this.simulation = simulation;
+		// this.ipTracker = ipTracker;
+		// this.simulation = simulation;
 		rawEyeTrackerPosition = new int[2];
 		this.rawEyeTrackerPosition[0] = 0;
 		this.rawEyeTrackerPosition[1] = 0;
-		time = new SystemTime();
-		((SystemTime) time).rebase();
+		time = new Time();
+		((Time) time).rebase();
 		time.update();
 		coordinateList = new ArrayList<EyeCoordinateListEntry>();
 		totalTime = 0;

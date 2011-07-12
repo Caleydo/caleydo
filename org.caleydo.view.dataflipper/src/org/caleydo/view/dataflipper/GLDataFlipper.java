@@ -39,7 +39,6 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -290,8 +289,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	public void init(final GL2 gl) {
 		gl.glClearColor(0.5f, 0.5f, 0.5f, 1f);
 
-		time = new SystemTime();
-		((SystemTime) time).rebase();
+		time = new Time();
+		((Time) time).rebase();
 
 		infoAreaManager = new GLInfoAreaManager();
 		infoAreaManager.initInfoInPlace(viewFrustum);

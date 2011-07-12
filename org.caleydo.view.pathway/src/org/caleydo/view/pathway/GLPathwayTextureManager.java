@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -24,16 +23,12 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  */
 public class GLPathwayTextureManager {
 
-	private GeneralManager generalManager;
-
 	private HashMap<PathwayGraph, Texture> hashPathwayToTexture;
 
 	/**
 	 * Constructor.
 	 */
 	public GLPathwayTextureManager() {
-		this.generalManager = GeneralManager.get();
-
 		hashPathwayToTexture = new HashMap<PathwayGraph, Texture>();
 	}
 

@@ -73,8 +73,6 @@ public class GLBookmarkView extends AGLView implements
 
 	protected ASetBasedDataDomain dataDomain;
 
-	private boolean contentChanged = true;
-
 	/** The class responsible for rendering the template */
 	private LayoutManager templateRenderer;
 

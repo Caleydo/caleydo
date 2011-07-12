@@ -36,9 +36,9 @@ public class SetBar extends AGLGUIElement {
 	private float width;
 	private PickingManager pickingManager;
 	private TextRenderer textRenderer;
-	private TextureManager textureManager;
+	// private TextureManager textureManager;
 	private DragAndDropController dragAndDropController;
-	private GLMouseListener glMouseListener;
+	// private GLMouseListener glMouseListener;
 	private SetBarItem currentMouseOverItem;
 	private ContextMenu contextMenu;
 	private int viewID;
@@ -53,10 +53,10 @@ public class SetBar extends AGLGUIElement {
 		this.pickingManager = pickingManager;
 		this.textRenderer = textRenderer;
 		this.dragAndDropController = dragAndDropController;
-		this.glMouseListener = glMouseListener;
+		// this.glMouseListener = glMouseListener;
 		this.view = view;
 		this.contextMenu = contextMenu;
-		this.textureManager = textureManager;
+		// this.textureManager = textureManager;
 		items = new ArrayList<SetBarItem>();
 		selectionWindow = new SetBarSelectionWindow(0, viewID, this, items,
 				pickingManager, textureManager, dragAndDropController);

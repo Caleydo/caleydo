@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.util.overlay.infoarea;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Creates the content for e.g. the InfoArea. Just pass it an ID and an Inputdatatype, it returns an AL of
@@ -18,8 +17,6 @@ public class InformationContentCreator {
 
 	// private GeneAnnotationMapper mapper;
 
-	private GeneralManager generalManager;
-
 	/**
 	 * Constructor
 	 * 
@@ -28,8 +25,6 @@ public class InformationContentCreator {
 	public InformationContentCreator() {
 		sContent = new ArrayList<String>();
 		// mapper = new GeneAnnotationMapper();
-
-		this.generalManager = GeneralManager.get();
 	}
 
 	/**

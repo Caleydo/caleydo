@@ -4,7 +4,6 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -157,16 +156,15 @@ public class GLPathway extends AGLView implements
 		pathwayManager = PathwayManager.get();
 		pathwayItemManager = PathwayItemManager.get();
 
-		mappingDataDomain = (ASetBasedDataDomain) DataDomainManager.get()
-				.getDataDomain("org.caleydo.datadomain.genetic");
+		mappingDataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
+				"org.caleydo.datadomain.genetic");
 
 		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum, this);
 		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 		// hashPathwayContainingSelectedVertex2VertexCount = new
 		// HashMap<Integer, Integer>();
 
-		connectedElementRepresentationManager = generalManager
-				.getViewGLCanvasManager()
+		connectedElementRepresentationManager = generalManager.getViewGLCanvasManager()
 				.getConnectedElementRepresentationManager();
 
 		vecScaling = new Vec3f(1, 1, 1);
@@ -253,10 +251,9 @@ public class GLPathway extends AGLView implements
 			bIsDisplayListDirtyRemote = false;
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-		
+
 		display(gl);
 
-		
 	}
 
 	@Override
@@ -274,15 +271,16 @@ public class GLPathway extends AGLView implements
 
 	protected void initPathwayData(final GL2 gl) {
 		// Initialize all elements in selection manager
-		Iterator<IGraphItem> iterPathwayVertexGraphItem = pathway
-				.getAllItemsByKind(EGraphItemKind.NODE).iterator();
-		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
-		while (iterPathwayVertexGraphItem.hasNext()) {
-			tmpPathwayVertexGraphItemRep = (PathwayVertexGraphItemRep) iterPathwayVertexGraphItem
-					.next();
-
-			// selectionManager.initialAdd(tmpPathwayVertexGraphItemRep.getId());
-		}
+		// Iterator<IGraphItem> iterPathwayVertexGraphItem =
+		// pathway.getAllItemsByKind(
+		//	EGraphItemKind.NODE).iterator();
+		// PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
+		// while (iterPathwayVertexGraphItem.hasNext()) {
+		// tmpPathwayVertexGraphItemRep = (PathwayVertexGraphItemRep)
+		// iterPathwayVertexGraphItem
+		// .next();
+		// selectionManager.initialAdd(tmpPathwayVertexGraphItemRep.getId());
+		// }
 
 		gLPathwayContentCreator.init(gl, selectionManager);
 
@@ -302,15 +300,14 @@ public class GLPathway extends AGLView implements
 
 		gl.glPushMatrix();
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(0,0,0));
-		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(),
-				vecTranslation.z());
+		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
 		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
 
 		if (bEnablePathwayTexture) {
 			float fPathwayTransparency = 1.0f;
 
-			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this,
-					pathway, fPathwayTransparency, false);
+			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway,
+					fPathwayTransparency, false);
 		}
 
 		float tmp = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
@@ -344,8 +341,7 @@ public class GLPathway extends AGLView implements
 		gl.glTranslatef(0, -tmp, 0);
 
 		gl.glScalef(1 / vecScaling.x(), 1 / vecScaling.y(), 1 / vecScaling.z());
-		gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(),
-				-vecTranslation.z());
+		gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(), -vecTranslation.z());
 
 		gl.glPopMatrix();
 	}
@@ -402,16 +398,15 @@ public class GLPathway extends AGLView implements
 
 				SelectedElementRep elementRep = new SelectedElementRep(
 						mappingDataDomain.getContentIDType(), iViewID,
-						vertexRep.getXOrigin()
-								* PathwayRenderStyle.SCALING_FACTOR_X
+						vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X
 								* vecScaling.x() + vecTranslation.x(),
 						(iPathwayHeight - vertexRep.getYOrigin())
-								* PathwayRenderStyle.SCALING_FACTOR_Y
-								* vecScaling.y() + vecTranslation.y(), 0);
+								* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()
+								+ vecTranslation.y(), 0);
 
 				for (Integer iConnectionID : item.getConnectionIDs()) {
-					connectedElementRepresentationManager.addSelection(
-							iConnectionID, elementRep, item.getSelectionType());
+					connectedElementRepresentationManager.addSelection(iConnectionID,
+							elementRep, item.getSelectionType());
 				}
 			}
 		}
@@ -445,8 +440,8 @@ public class GLPathway extends AGLView implements
 			// for (Integer iDavid : iSetRefSeq) {
 
 			Set<Integer> iSetExpressionIndex = idMappingManager.getIDAsSet(
-					IDType.getIDType("DAVID"),
-					mappingDataDomain.getContentIDType(), davidID);
+					IDType.getIDType("DAVID"), mappingDataDomain.getContentIDType(),
+					davidID);
 			if (iSetExpressionIndex == null)
 				continue;
 			alExpressionIndex.addAll(iSetExpressionIndex);
@@ -456,8 +451,7 @@ public class GLPathway extends AGLView implements
 		return alExpressionIndex;
 	}
 
-	private ISelectionDelta createExternalSelectionDelta(
-			ISelectionDelta selectionDelta) {
+	private ISelectionDelta createExternalSelectionDelta(ISelectionDelta selectionDelta) {
 		ISelectionDelta newSelectionDelta = new SelectionDelta(
 				mappingDataDomain.getContentIDType());
 
@@ -466,13 +460,11 @@ public class GLPathway extends AGLView implements
 					.getPrimaryID())) {
 
 				SelectionDeltaItem newItem = newSelectionDelta.addSelection(
-						iExpressionIndex, item.getSelectionType(),
-						item.getPrimaryID());
+						iExpressionIndex, item.getSelectionType(), item.getPrimaryID());
 				newItem.setRemove(item.isRemove());
 
 				for (Integer iConnectionID : item.getConnectionIDs()) {
-					newSelectionDelta.addConnectionID(iExpressionIndex,
-							iConnectionID);
+					newSelectionDelta.addConnectionID(iExpressionIndex, iConnectionID);
 				}
 			}
 		}
@@ -480,16 +472,14 @@ public class GLPathway extends AGLView implements
 		return newSelectionDelta;
 	}
 
-	private ISelectionDelta resolveExternalSelectionDelta(
-			ISelectionDelta selectionDelta) {
+	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta) {
 
 		ISelectionDelta newSelectionDelta = new SelectionDelta(
 				dataDomain.getPrimaryIDType(), dataDomain.getDavidIDType());
 
 		PathwayVertexGraphItem pathwayVertexGraphItem;
 
-		IDMappingManager idMappingManager = generalManager
-				.getIDMappingManager();
+		IDMappingManager idMappingManager = generalManager.getIDMappingManager();
 
 		for (SelectionDeltaItem item : selectionDelta) {
 
@@ -498,9 +488,8 @@ public class GLPathway extends AGLView implements
 			// values, depending on the IDType that has been specified when
 			// loading expression data.
 			// Possibly a different handling of the Set is required.
-			Set<Integer> setIDs = idMappingManager.getIDAsSet(
-					selectionDelta.getIDType(), dataDomain.getDavidIDType(),
-					item.getPrimaryID());
+			Set<Integer> setIDs = idMappingManager.getIDAsSet(selectionDelta.getIDType(),
+					dataDomain.getDavidIDType(), item.getPrimaryID());
 
 			if (setIDs == null || setIDs.isEmpty()) {
 				continue;
@@ -525,8 +514,7 @@ public class GLPathway extends AGLView implements
 				}
 
 				SelectionDeltaItem newItem = newSelectionDelta.addSelection(
-						tmpGraphItemRep.getId(), item.getSelectionType(),
-						iDavidID);
+						tmpGraphItemRep.getId(), item.getSelectionType(), iDavidID);
 				newItem.setRemove(item.isRemove());
 				for (int iConnectionID : item.getConnectionIDs()) {
 					newItem.addConnectionID(iConnectionID);
@@ -537,8 +525,7 @@ public class GLPathway extends AGLView implements
 		return newSelectionDelta;
 	}
 
-	private void calculatePathwayScaling(final GL2 gl,
-			final PathwayGraph pathway) {
+	private void calculatePathwayScaling(final GL2 gl, final PathwayGraph pathway) {
 
 		if (hashGLcontext2TextureManager.get(gl) == null)
 			return;
@@ -567,42 +554,38 @@ public class GLPathway extends AGLView implements
 		int iImageWidth = pathway.getWidth();
 		int iImageHeight = pathway.getHeight();
 
-		Logger.log(new Status(IStatus.INFO, this.toString(),
-				"Pathway texture width=" + iImageWidth + " / height="
-						+ iImageHeight));
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Pathway texture width="
+				+ iImageWidth + " / height=" + iImageHeight));
 
 		if (iImageWidth == -1 || iImageHeight == -1) {
 			Logger.log(new Status(IStatus.ERROR, this.toString(),
 					"Problem because pathway texture width or height is invalid!"));
 		}
 
-		float fTmpPathwayWidth = iImageWidth
-				* PathwayRenderStyle.SCALING_FACTOR_X * fPathwayScalingFactor;
-		float fTmpPathwayHeight = iImageHeight
-				* PathwayRenderStyle.SCALING_FACTOR_Y * fPathwayScalingFactor;
+		float fTmpPathwayWidth = iImageWidth * PathwayRenderStyle.SCALING_FACTOR_X
+				* fPathwayScalingFactor;
+		float fTmpPathwayHeight = iImageHeight * PathwayRenderStyle.SCALING_FACTOR_Y
+				* fPathwayScalingFactor;
 
 		float pathwayAspectRatio = fTmpPathwayWidth / fTmpPathwayHeight;
 		float viewFrustumWidth = viewFrustum.getRight() - viewFrustum.getLeft();
-		float viewFrustumHeight = viewFrustum.getTop()
-				- viewFrustum.getBottom();
+		float viewFrustumHeight = viewFrustum.getTop() - viewFrustum.getBottom();
 		float viewFrustumAspectRatio = viewFrustumWidth / viewFrustumHeight;
 		boolean pathwayFitsViewFrustum = true;
 
 		if (viewFrustumAspectRatio < pathwayAspectRatio
 				&& fTmpPathwayWidth > viewFrustumWidth) {
 
-//			 if (fTmpPathwayWidth > viewFrustum.getRight() -
-//			 viewFrustum.getLeft()
-//			 && fTmpPathwayWidth > fTmpPathwayHeight) {
+			// if (fTmpPathwayWidth > viewFrustum.getRight() -
+			// viewFrustum.getLeft()
+			// && fTmpPathwayWidth > fTmpPathwayHeight) {
 			vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft())
-					/ (iImageWidth * PathwayRenderStyle.SCALING_FACTOR_X)
-					* fPadding);
+					/ (iImageWidth * PathwayRenderStyle.SCALING_FACTOR_X) * fPadding);
 			vecScaling.setY(vecScaling.x());
 
 			vecTranslation
 					.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
-							* PathwayRenderStyle.SCALING_FACTOR_X
-							* vecScaling.x()) / 2.0f,
+							* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f,
 							(viewFrustum.getTop() - viewFrustum.getBottom() - iImageHeight
 									* PathwayRenderStyle.SCALING_FACTOR_Y
 									* vecScaling.y()) / 2.0f, 0);
@@ -610,30 +593,28 @@ public class GLPathway extends AGLView implements
 		}
 		if (viewFrustumAspectRatio >= pathwayAspectRatio
 				&& fTmpPathwayHeight > viewFrustumHeight) {
-//
-//	else if (fTmpPathwayHeight > viewFrustum.getTop()
-//			 - viewFrustum.getBottom()) {
+			//
+			// else if (fTmpPathwayHeight > viewFrustum.getTop()
+			// - viewFrustum.getBottom()) {
 			vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom())
-					/ (iImageHeight * PathwayRenderStyle.SCALING_FACTOR_Y)
-					* fPadding);
+					/ (iImageHeight * PathwayRenderStyle.SCALING_FACTOR_Y) * fPadding);
 			vecScaling.setX(vecScaling.y());
 
 			vecTranslation
 					.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
-							* PathwayRenderStyle.SCALING_FACTOR_X
-							* vecScaling.x()) / 2.0f,
+							* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f,
 							(viewFrustum.getTop() - viewFrustum.getBottom() - iImageHeight
 									* PathwayRenderStyle.SCALING_FACTOR_Y
 									* vecScaling.y()) / 2.0f, 0);
 			pathwayFitsViewFrustum = false;
-			
+
 		} // else {
 
 		if (pathwayFitsViewFrustum) {
 			vecScaling.set(fPathwayScalingFactor, fPathwayScalingFactor, 1f);
 
-			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft())
-					/ 2.0f - fTmpPathwayWidth / 2.0f,
+			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f
+					- fTmpPathwayWidth / 2.0f,
 					(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f
 							- fTmpPathwayHeight / 2.0f, 0);
 		}
@@ -699,8 +680,7 @@ public class GLPathway extends AGLView implements
 				// Load embedded pathway
 				if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
 					PathwayGraph pathway = pathwayManager.searchPathwayByName(
-							tmpVertexGraphItemRep.getName(),
-							EPathwayDatabaseType.KEGG);
+							tmpVertexGraphItemRep.getName(), EPathwayDatabaseType.KEGG);
 
 					if (pathway != null) {
 						LoadPathwayEvent event = new LoadPathwayEvent();
@@ -740,24 +720,20 @@ public class GLPathway extends AGLView implements
 
 					EmbeddedPathwayContextMenuItemContainer pathwayContextMenuItemContainer = new EmbeddedPathwayContextMenuItemContainer();
 					pathwayContextMenuItemContainer.setPathway(pathwayManager
-							.searchPathwayByName(
-									tmpVertexGraphItemRep.getName(),
+							.searchPathwayByName(tmpVertexGraphItemRep.getName(),
 									EPathwayDatabaseType.KEGG));
-					contextMenu
-							.addItemContanier(pathwayContextMenuItemContainer);
+					contextMenu.addItemContanier(pathwayContextMenuItemContainer);
 				} else if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.gene) {
 					for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 
 						ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
-						geneContextMenuItemContainer
-								.setDataDomain(mappingDataDomain);
+						geneContextMenuItemContainer.setDataDomain(mappingDataDomain);
 						geneContextMenuItemContainer
 								.setID(dataDomain.getDavidIDType(),
 										pathwayItemManager
 												.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) pathwayVertexGraphItem));
-						contextMenu
-								.addItemContanier(geneContextMenuItemContainer);
+						contextMenu.addItemContanier(geneContextMenuItemContainer);
 					}
 				} else {
 					// do nothing if the type is neither a gene nor an
@@ -775,19 +751,17 @@ public class GLPathway extends AGLView implements
 
 			selectionManager.clearSelection(selectionType);
 
-			SelectionCommand command = new SelectionCommand(
-					ESelectionCommandType.CLEAR, selectionType);
-			sendSelectionCommandEvent(mappingDataDomain.getContentIDType(),
-					command);
+			SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
+					selectionType);
+			sendSelectionCommandEvent(mappingDataDomain.getContentIDType(), command);
 
 			// Add new vertex to internal selection manager
-			selectionManager.addToType(selectionType,
-					tmpVertexGraphItemRep.getId());
+			selectionManager.addToType(selectionType, tmpVertexGraphItemRep.getId());
 
 			int iConnectionID = generalManager.getIDCreator().createID(
 					EManagedObjectType.CONNECTION);
-			selectionManager.addConnectionID(iConnectionID,
-					tmpVertexGraphItemRep.getId());
+			selectionManager
+					.addConnectionID(iConnectionID, tmpVertexGraphItemRep.getId());
 			connectedElementRepresentationManager.clear(
 					mappingDataDomain.getContentIDType(), selectionType);
 			// gLPathwayContentCreator
@@ -809,8 +783,7 @@ public class GLPathway extends AGLView implements
 		}
 	}
 
-	private void createConnectionLines(SelectionType selectionType,
-			int iConnectionID) {
+	private void createConnectionLines(SelectionType selectionType, int iConnectionID) {
 		// check in preferences if we should draw connection lines for mouse
 		// over
 		if (!connectedElementRepresentationManager
@@ -836,20 +809,19 @@ public class GLPathway extends AGLView implements
 					.getPathwayVertexRep(iVertexRepID);
 
 			SelectedElementRep elementRep = new SelectedElementRep(
-					mappingDataDomain.getContentIDType(),
-					iViewID,
+					mappingDataDomain.getContentIDType(), iViewID,
 					tmpPathwayVertexGraphItemRep.getXOrigin()
-							* PathwayRenderStyle.SCALING_FACTOR_X
-							* vecScaling.x() + vecTranslation.x(),
+							* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()
+							+ vecTranslation.x(),
 					(iPathwayHeight - tmpPathwayVertexGraphItemRep.getYOrigin())
-							* PathwayRenderStyle.SCALING_FACTOR_Y
-							* vecScaling.y() + vecTranslation.y(), 0);
+							* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()
+							+ vecTranslation.y(), 0);
 
 			// for (Integer iConnectionID : selectionManager
 			// .getConnectionForElementID(iVertexRepID))
 			// {
-			connectedElementRepresentationManager.addSelection(iConnectionID,
-					elementRep, selectionType);
+			connectedElementRepresentationManager.addSelection(iConnectionID, elementRep,
+					selectionType);
 			// }
 		}
 		// }
@@ -895,8 +867,7 @@ public class GLPathway extends AGLView implements
 
 		ContentVAUpdateEvent virtualArrayUpdateEvent = new ContentVAUpdateEvent();
 		virtualArrayUpdateEvent.setSender(this);
-		virtualArrayUpdateEvent.setDataDomainType(mappingDataDomain
-				.getDataDomainType());
+		virtualArrayUpdateEvent.setDataDomainType(mappingDataDomain.getDataDomainType());
 		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
 		virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
@@ -926,8 +897,7 @@ public class GLPathway extends AGLView implements
 
 	@Override
 	public void initData() {
-		connectedElementRepresentationManager.clear(mappingDataDomain
-				.getContentIDType());
+		connectedElementRepresentationManager.clear(mappingDataDomain.getContentIDType());
 		iCurrentStorageIndex = -1;
 		super.initData();
 
@@ -972,13 +942,11 @@ public class GLPathway extends AGLView implements
 
 		enableTexturesListener = new EnableTexturesListener();
 		enableTexturesListener.setHandler(this);
-		eventPublisher.addListener(EnableTexturesEvent.class,
-				enableTexturesListener);
+		eventPublisher.addListener(EnableTexturesEvent.class, enableTexturesListener);
 
 		disableTexturesListener = new DisableTexturesListener();
 		disableTexturesListener.setHandler(this);
-		eventPublisher.addListener(DisableTexturesEvent.class,
-				disableTexturesListener);
+		eventPublisher.addListener(DisableTexturesEvent.class, disableTexturesListener);
 
 		enableNeighborhoodListener = new EnableNeighborhoodListener();
 		enableNeighborhoodListener.setHandler(this);
@@ -1004,8 +972,7 @@ public class GLPathway extends AGLView implements
 		selectionUpdateListener.setHandler(this);
 		selectionUpdateListener.setExclusiveDataDomainType(mappingDataDomain
 				.getDataDomainType());
-		eventPublisher.addListener(SelectionUpdateEvent.class,
-				selectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		// virtualArrayUpdateListener = new ContentVAUpdateListener();
 		// virtualArrayUpdateListener.setHandler(this);
@@ -1018,17 +985,13 @@ public class GLPathway extends AGLView implements
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
-		clearSelectionsListener.setDataDomainType(mappingDataDomain
-				.getDataDomainType());
-		eventPublisher.addListener(ClearSelectionsEvent.class,
-				clearSelectionsListener);
+		clearSelectionsListener.setDataDomainType(mappingDataDomain.getDataDomainType());
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setDataDomainType(mappingDataDomain
-				.getDataDomainType());
-		eventPublisher.addListener(SelectionCommandEvent.class,
-				selectionCommandListener);
+		selectionCommandListener.setDataDomainType(mappingDataDomain.getDataDomainType());
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		// replaceVirtualArrayListener = new ReplaceContentVAListener();
 		// replaceVirtualArrayListener.setHandler(this);
@@ -1122,7 +1085,7 @@ public class GLPathway extends AGLView implements
 	public ASetBasedDataDomain getMappingDataDomain() {
 		return mappingDataDomain;
 	}
-	
+
 	@Override
 	public int getMinPixelHeight() {
 		return 60;
@@ -1130,7 +1093,7 @@ public class GLPathway extends AGLView implements
 
 	@Override
 	public int getMinPixelWidth() {
-		float aspectRatio = (float)pathway.getWidth()/(float)pathway.getHeight();
+		float aspectRatio = (float) pathway.getWidth() / (float) pathway.getHeight();
 		return (int) (60.0f * aspectRatio);
 	}
 

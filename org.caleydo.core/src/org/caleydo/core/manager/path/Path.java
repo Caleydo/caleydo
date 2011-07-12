@@ -79,7 +79,7 @@ public class Path {
 	}
 
 	public static void main(String args[]) {
-		Path path = new Path();
+		// Path path = new Path();
 		// path.addNode(new Node("Oans", "Oansaview"));
 		// Node node = new Node("Zwoa", "Zwoaview");
 		// path.addNode(node);

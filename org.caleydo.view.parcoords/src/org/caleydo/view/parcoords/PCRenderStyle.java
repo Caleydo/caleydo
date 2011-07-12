@@ -82,7 +82,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 	// coordinate system
 	private static final float COORDINATE_TOP_SPACING = 0.07f;
 
-	private static final float COORDINATE_SIDE_SPACING = 0.05f;
+	// private static final float COORDINATE_SIDE_SPACING = 0.05f;
 
 	private static final float COORDINATE_BOTTOM_SPACING = 0.06f;
 
@@ -99,11 +99,11 @@ public class PCRenderStyle extends GeneralRenderStyle {
 	// buttons below axis
 	public static final float AXIS_BUTTONS_Y_OFFSET = 0.12f;
 
-	private static final float fAxisSpacingLowerLimit = 0.001f;
+	// private static final float fAxisSpacingLowerLimit = 0.001f;
 
 	private static final float fMinAxisSpacingForText = 0.1f;
 
-	private static final float fXAxisOverlap = 0.1f;
+	// private static final float fXAxisOverlap = 0.1f;
 
 	// minimum text sizes
 

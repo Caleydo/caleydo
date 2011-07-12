@@ -65,7 +65,7 @@ public class TreeClusterer
 
 			if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
 				tree = new ClusterTree();
-//				tree.setSortingStrategy(ESortingStrategy.AVERAGE_VALUE);
+				// tree.setSortingStrategy(ESortingStrategy.AVERAGE_VALUE);
 				this.iNrSamples = clusterState.getContentVA().size();
 			}
 			else if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING) {
@@ -775,7 +775,7 @@ public class TreeClusterer
 			}
 			if (nodeName == null || nodeName.equals(""))
 				nodeName = "Unkonwn";
-			String refSeq = null;
+			// String refSeq = null;
 			// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
 			// values, depending on the IDType that has been specified when loading expression data.
 			// Possibly a different handling of the Set is required.

@@ -177,7 +177,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	private Pick linePick;
 
-	private SelectedElementRep elementRep;
+	// private SelectedElementRep elementRep;
 
 	// private int iPolylineVAID = 0;
 

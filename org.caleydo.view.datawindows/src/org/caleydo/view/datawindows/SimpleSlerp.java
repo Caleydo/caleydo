@@ -1,6 +1,5 @@
 package org.caleydo.view.datawindows;
 
-import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 
 public class SimpleSlerp {
@@ -12,8 +11,8 @@ public class SimpleSlerp {
 	public float relativeState = 0;
 
 	public SimpleSlerp() {
-		time = new SystemTime();
-		((SystemTime) time).rebase();
+		time = new Time();
+		((Time) time).rebase();
 
 		time.update();
 		speed = 1;

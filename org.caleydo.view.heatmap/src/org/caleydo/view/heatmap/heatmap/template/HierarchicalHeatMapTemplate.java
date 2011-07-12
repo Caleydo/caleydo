@@ -22,19 +22,19 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 
 	@Override
 	public void setStaticLayouts() {
-		Column mainColumn = new Column("mainColumn");		
+		Column mainColumn = new Column("mainColumn");
 		setBaseElementLayout(mainColumn);
 		mainColumn.setRatioSizeX(1);
 		mainColumn.setRatioSizeY(1);
 		mainColumn.setBottomUp(false);
 		// rendererParameters.clear();
-		
-		float heatMapSizeX = 0.806f;
+
+		// float heatMapSizeX = 0.806f;
 
 		Row mainRow = new Row("heatMapRow");
 		mainRow.setGrabY(true);
 		mainRow.setRatioSizeX(1);
-		
+
 		heatMapLayout = new ElementLayout("hmlayout");
 		heatMapLayout.setGrabX(true);
 		heatMapLayout.setRenderer(heatMapRenderer);
@@ -49,7 +49,7 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 
 		// content captions
 		ElementLayout contentCaptionLayout = new ElementLayout("contentCaption");
-//		contentCaptionLayout.setRatioSizeX(heatMapSizeX);
+		// contentCaptionLayout.setRatioSizeX(heatMapSizeX);
 		contentCaptionLayout.setRatioSizeY(1);
 		contentCaptionLayout.setAbsoluteSizeX(0.6f);
 		contentCaptionLayout.setRenderer(contentCaptionRenderer);
@@ -57,11 +57,10 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		mainRow.append(contentCaptionLayout);
 
 		mainColumn.append(mainRow);
-		
+
 		ElementLayout ySpacing = new ElementLayout();
 		ySpacing.setAbsoluteSizeY(0.05f);
 		mainColumn.append(ySpacing);
-		
 
 		Row storageCaptionRow = new Row("storageCaptionRow");
 		storageCaptionRow.setAbsoluteSizeY(0.35f);
@@ -71,10 +70,10 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		storageCaptionLayout.setGrabX(true);
 		storageCaptionLayout.setRenderer(storageCaptionRenderer);
 		storageCaptionRow.append(storageCaptionLayout);
-		
+
 		ElementLayout spacingLayout = new ElementLayout();
 		spacingLayout.setAbsoluteSizeX(0.65f);
-		
+
 		storageCaptionRow.append(spacingLayout);
 
 		mainColumn.append(storageCaptionRow);
