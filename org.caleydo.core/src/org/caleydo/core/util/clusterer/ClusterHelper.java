@@ -135,6 +135,7 @@ public class ClusterHelper {
 		ContentVirtualArray contentVA = set.getContentData(ISet.CONTENT).getContentVA();
 		calculateClusterAveragesRecursive(tree, tree.getRoot(), eClustererType, set, storageVA, contentVA);
 
+
 	}
 
 	private static float[] calculateClusterAveragesRecursive(Tree<ClusterNode> tree, ClusterNode node,

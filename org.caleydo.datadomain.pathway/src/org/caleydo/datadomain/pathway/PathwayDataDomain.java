@@ -1,7 +1,7 @@
 package org.caleydo.datadomain.pathway;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -28,7 +28,7 @@ public class PathwayDataDomain extends ADataDomain {
 
 	IDType primaryIDType;
 	
-	protected Set<ADimensionGroupData> dimensionGroups;
+	protected List<ADimensionGroupData> dimensionGroups;
 
 	/**
 	 * Constructor.
@@ -46,7 +46,7 @@ public class PathwayDataDomain extends ADataDomain {
 
 		primaryIDType = IDType.getIDType("PATHWAY_VERTEX");
 		
-		dimensionGroups = new HashSet<ADimensionGroupData>();
+		dimensionGroups = new ArrayList<ADimensionGroupData>();
 	}
 
 	@Override
@@ -74,12 +74,12 @@ public class PathwayDataDomain extends ADataDomain {
 	}
 	
 	@Override
-	public Set<ADimensionGroupData> getDimensionGroups() {
+	public List<ADimensionGroupData> getDimensionGroups() {
 		return dimensionGroups;
 	}
 	
 	@Override
-	public void setDimensionGroups(Set<ADimensionGroupData> dimensionGroups) {
+	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups) {
 		this.dimensionGroups = dimensionGroups;
 	}
 	

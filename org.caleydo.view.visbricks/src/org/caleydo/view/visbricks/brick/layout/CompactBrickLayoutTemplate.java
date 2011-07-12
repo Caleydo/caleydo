@@ -122,10 +122,12 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// viewRow.setPixelGLConverter(pixelGLConverter);
 		// viewRow.setPixelSizeY(16);
 
-		ElementLayout viewLayout = new ElementLayout("compactViewLayout");
-		viewLayout.setFrameColor(1, 0, 0, 1);
-		// viewLayout.setDebug(true);
-		viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
+		if (viewLayout == null) {
+			viewLayout = new ElementLayout("compactViewLayout");
+			viewLayout.setFrameColor(1, 0, 0, 1);
+			// viewLayout.setDebug(true);
+			viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
+		}
 		viewLayout.setRenderer(viewRenderer);
 
 		ElementLayout expandButtonLayout = new ElementLayout(

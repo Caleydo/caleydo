@@ -166,7 +166,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private boolean isConnectionLinesDirty = true;
 	
 	private Set<IDataDomain> dataDomains;
-	private Set<ADimensionGroupData> dimensionGroupData;
+	private List<ADimensionGroupData> dimensionGroupData;
 
 	/**
 	 * Constructor.
@@ -191,7 +191,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		relationAnalyzer = new RelationAnalyzer();
 
 		dataDomains = new HashSet<IDataDomain>();
-		dimensionGroupData = new HashSet<ADimensionGroupData>();
+		dimensionGroupData = new ArrayList<ADimensionGroupData>();
 
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
 		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
@@ -1700,7 +1700,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 	
 	@Override
-	public Set<ADimensionGroupData> getDimensionGroups() {
+	public List<ADimensionGroupData> getDimensionGroups() {
 		return dimensionGroupData;
 	}
 }

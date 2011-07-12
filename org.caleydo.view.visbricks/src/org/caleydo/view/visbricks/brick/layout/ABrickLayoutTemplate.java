@@ -27,12 +27,14 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 
 	protected GLBrick brick;
 	protected LayoutRenderer viewRenderer;
+	protected ElementLayout viewLayout;
 	protected boolean showHandles;
 	protected DimensionGroup dimensionGroup;
 	protected HashSet<EContainedViewType> validViewTypes;
 	protected EContainedViewType defaultViewType;
 	protected ArrayList<IViewTypeChangeListener> viewTypeChangeListeners;
 	protected BorderedAreaRenderer borderedAreaRenderer;
+	
 
 	public ABrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup) {
 		this.brick = brick;
@@ -298,6 +300,16 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 			borderedAreaRenderer.setColor(color);
 		} else {
 			borderedAreaRenderer.setColor(BorderedAreaRenderer.DEFAULT_COLOR);
+		}
+	}
+	
+	/**
+	 * This method should be called if the layout template is no longer needed.
+	 */
+	public void destroy() {
+		if(viewLayout != null) {
+			viewLayout.destroy();
+			viewLayout = null;
 		}
 	}
 

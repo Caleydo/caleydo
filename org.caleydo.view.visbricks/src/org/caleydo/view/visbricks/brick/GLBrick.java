@@ -828,16 +828,19 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			return;
 
 		currentRemoteView = views.get(viewType);
-		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
-			visBricks
-					.unregisterRemoteViewMouseWheelListener((IMouseWheelHandler) brickLayout
-							.getViewRenderer());
-		}
+//		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
+//			visBricks
+//					.unregisterRemoteViewMouseWheelListener((IMouseWheelHandler) brickLayout
+//							.getViewRenderer());
+//		}
 		brickLayout.setViewRenderer(viewRenderer);
-		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
-			visBricks.registerMouseWheelListener((IMouseWheelHandler) brickLayout
-					.getViewRenderer());
-		}
+
+//		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
+//			visBricks
+//					.registerMouseWheelListener((IMouseWheelHandler) brickLayout
+//							.getViewRenderer());
+//		}
+
 		brickLayout.viewTypeChanged(viewType);
 		int defaultHeightPixels = brickLayout.getDefaultHeightPixels();
 		int defaultWidthPixels = brickLayout.getDefaultWidthPixels();
@@ -888,7 +891,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public void setBrickLayoutTemplate(ABrickLayoutTemplate brickLayoutTemplate,
 			EContainedViewType viewType) {
-		this.brickLayout = brickLayoutTemplate;
+		if(brickLayout != null)
+			brickLayout.destroy();
+		brickLayout = brickLayoutTemplate;
 		if ((brickLayout instanceof CompactBrickLayoutTemplate)
 				|| (brickLayout instanceof CompactCentralBrickLayoutTemplate))
 			isInOverviewMode = true;
@@ -941,11 +946,11 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			selectionUpdateListener = null;
 		}
 
-		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
-			visBricks
-					.unregisterRemoteViewMouseWheelListener((IMouseWheelHandler) brickLayout
-							.getViewRenderer());
-		}
+//		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
+//			visBricks
+//					.unregisterRemoteViewMouseWheelListener((IMouseWheelHandler) brickLayout
+//							.getViewRenderer());
+//		}
 	}
 
 	private void registerPickingListeners() {

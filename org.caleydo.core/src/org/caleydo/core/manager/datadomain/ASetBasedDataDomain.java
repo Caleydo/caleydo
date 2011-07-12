@@ -2,7 +2,7 @@ package org.caleydo.core.manager.datadomain;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -77,7 +77,7 @@ public abstract class ASetBasedDataDomain
 	private StorageVAUpdateListener storageVAUpdateListener;
 	private AggregateGroupListener aggregateGroupListener;
 
-	protected java.util.Set<ADimensionGroupData> dimensionGroups;
+	protected List<ADimensionGroupData> dimensionGroups;
 
 	/** The set which is currently loaded and used inside the views for this use case. */
 	protected Set set;
@@ -126,7 +126,7 @@ public abstract class ASetBasedDataDomain
 
 	private void init() {
 
-		dimensionGroups = new HashSet<ADimensionGroupData>();
+		dimensionGroups = new ArrayList<ADimensionGroupData>();
 
 		assignIDCategories();
 		if (contentIDCategory == null || storageIDCategory == null) {
@@ -857,12 +857,12 @@ public abstract class ASetBasedDataDomain
 	}
 
 	@Override
-	public java.util.Set<ADimensionGroupData> getDimensionGroups() {
+	public List<ADimensionGroupData> getDimensionGroups() {
 		return dimensionGroups;
 	}
 
 	@Override
-	public void setDimensionGroups(java.util.Set<ADimensionGroupData> dimensionGroups) {
+	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups) {
 		this.dimensionGroups = dimensionGroups;
 	}
 

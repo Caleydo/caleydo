@@ -3,7 +3,6 @@ package org.caleydo.view.datagraph.bandlayout;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.util.collection.Pair;
@@ -108,8 +107,8 @@ public class LeftDownRightUpNodeRelationBandCreator extends
 		float spacingY = (float) ((position2.getY() - node2.getHeight() / 2.0f) - (position1
 				.getY() + node1.getHeight() / 2.0f));
 
-		Set<ADimensionGroupData> dimensionGroups1 = node1.getDimensionGroups();
-		Set<ADimensionGroupData> dimensionGroups2 = node2.getDimensionGroups();
+		List<ADimensionGroupData> dimensionGroups1 = node1.getDimensionGroups();
+		List<ADimensionGroupData> dimensionGroups2 = node2.getDimensionGroups();
 
 		if (dimensionGroups1 != null && !dimensionGroups1.isEmpty()
 				&& dimensionGroups2 != null && !dimensionGroups2.isEmpty()) {
@@ -183,15 +182,15 @@ public class LeftDownRightUpNodeRelationBandCreator extends
 								.getSecond().getY()));
 
 				Pair<Point2D, Point2D> anchorPointsSide2 = node2
-						.getRightAnchorPoints();
+						.getLeftAnchorPoints();
 				Pair<Point2D, Point2D> offsetAnchorPointsSide2 = new Pair<Point2D, Point2D>();
 				offsetAnchorPointsSide2.setFirst(new Point2D.Float(
 						(float) anchorPointsSide2.getFirst().getX() - 0.3f
-								* spacingX, (float) anchorPointsSide1
+								* spacingX, (float) anchorPointsSide2
 								.getFirst().getY()));
 				offsetAnchorPointsSide2.setSecond(new Point2D.Float(
-						(float) anchorPointsSide1.getSecond().getX() - 0.3f
-								* spacingX, (float) anchorPointsSide1
+						(float) anchorPointsSide2.getSecond().getX() - 0.3f
+								* spacingX, (float) anchorPointsSide2
 								.getSecond().getY()));
 
 				anchorPoints.add(anchorPointsSide1);
@@ -217,11 +216,11 @@ public class LeftDownRightUpNodeRelationBandCreator extends
 				Pair<Point2D, Point2D> offsetAnchorPointsSide2 = new Pair<Point2D, Point2D>();
 				offsetAnchorPointsSide2.setFirst(new Point2D.Float(
 						(float) anchorPointsSide2.getFirst().getX(),
-						(float) anchorPointsSide1.getFirst().getY() - 0.3f
+						(float) anchorPointsSide2.getFirst().getY() - 0.3f
 								* spacingY));
 				offsetAnchorPointsSide2.setSecond(new Point2D.Float(
-						(float) anchorPointsSide1.getSecond().getX(),
-						(float) anchorPointsSide1.getSecond().getY() - 0.3f
+						(float) anchorPointsSide2.getSecond().getX(),
+						(float) anchorPointsSide2.getSecond().getY() - 0.3f
 								* spacingY));
 
 				anchorPoints.add(anchorPointsSide1);

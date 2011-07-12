@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -1327,7 +1328,7 @@ public abstract class AGLView
 	}
 
 	// FIXME: The location of this method probably has to be changed.
-	public Set<ADimensionGroupData> getDimensionGroups() {
+	public List<ADimensionGroupData> getDimensionGroups() {
 		return null;
 	}
 

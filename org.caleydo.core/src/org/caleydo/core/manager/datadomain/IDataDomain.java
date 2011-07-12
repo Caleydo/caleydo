@@ -1,5 +1,6 @@
 package org.caleydo.core.manager.datadomain;
 
+import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;
@@ -57,14 +58,14 @@ public interface IDataDomain {
 	/**
 	 * @return The dimension groups that have been created for this IDataDomain object (data set).
 	 */
-	public Set<ADimensionGroupData> getDimensionGroups();
+	public List<ADimensionGroupData> getDimensionGroups();
 	
 	/**
 	 * Sets the dimension groups for this IDataDomain object (data set).
 	 * 
 	 * @param dimensionGroups
 	 */
-	public void setDimensionGroups(Set<ADimensionGroupData> dimensionGroups);
+	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups);
 	
 	/**
 	 * Adds a dimension group to this IDataDomain object (data set).

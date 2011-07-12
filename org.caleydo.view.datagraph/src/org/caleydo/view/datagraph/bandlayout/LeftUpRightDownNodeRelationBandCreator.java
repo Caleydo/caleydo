@@ -3,7 +3,6 @@ package org.caleydo.view.datagraph.bandlayout;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.util.collection.Pair;
@@ -31,13 +30,12 @@ public class LeftUpRightDownNodeRelationBandCreator extends
 		float spacingY = (float) ((position1.getY() - node1.getHeight() / 2.0f) - (position2
 				.getY() + node2.getHeight() / 2.0f));
 
-		Set<ADimensionGroupData> dimensionGroups1 = node1.getDimensionGroups();
-		Set<ADimensionGroupData> dimensionGroups2 = node2.getDimensionGroups();
+		List<ADimensionGroupData> dimensionGroups1 = node1.getDimensionGroups();
+		List<ADimensionGroupData> dimensionGroups2 = node2.getDimensionGroups();
 
 		if (dimensionGroups1 != null && !dimensionGroups1.isEmpty()
 				&& dimensionGroups2 != null && !dimensionGroups2.isEmpty()) {
-			float currentBendPosY = (float) position2.getY()
-					- node2.getHeight() / 2.0f - 0.2f;
+
 			float bandSpacing = pixelGLConverter
 					.getGLHeightForPixelHeight(SPACING_PIXELS);
 			for (ADimensionGroupData dimGroupData1 : dimensionGroups1) {
@@ -49,12 +47,37 @@ public class LeftUpRightDownNodeRelationBandCreator extends
 						Pair<Point2D, Point2D> dimGroup2AnchorPoints = node2
 								.getBottomDimensionGroupAnchorPoints(dimGroupData2);
 
+						Pair<Point2D, Point2D> dimGroup1AnchorPoints = node1
+								.getBottomDimensionGroupAnchorPoints(dimGroupData1);
+						Pair<Point2D, Point2D> dimGroup1AnchorPointsSwapped = new Pair<Point2D, Point2D>(
+								dimGroup1AnchorPoints.getSecond(),
+								dimGroup1AnchorPoints.getFirst());
+
+						Point2D anchorOffsetPoint1 = new Point2D.Float(
+								(float) dimGroup1AnchorPointsSwapped.getFirst()
+										.getX(), (float) position1.getY()
+										- node1.getHeight() / 2.0f - 0.05f);
+						Point2D anchorOffsetPoint2 = new Point2D.Float(
+								(float) dimGroup1AnchorPointsSwapped
+										.getSecond().getX(),
+								(float) position1.getY() - node1.getHeight()
+										/ 2.0f - 0.05f);
+						
+						Pair<Point2D, Point2D> offsetAnchorPoints1 = new Pair<Point2D, Point2D>(
+								anchorOffsetPoint1, anchorOffsetPoint2);
+
 						float bandWidth = (float) (dimGroup2AnchorPoints
 								.getSecond().getX() - dimGroup2AnchorPoints
 								.getFirst().getX());
 						float bandHeight = pixelGLConverter
 								.getGLHeightForPixelHeight(pixelGLConverter
 										.getPixelWidthForGLWidth(bandWidth));
+
+						float currentBendPosY = (float) position2.getY()
+								- node2.getHeight() / 2.0f - 0.05f
+								- dimensionGroups2.indexOf(dimGroupData2)
+								* (bandHeight + bandSpacing);
+
 						Point2D bendAnchorPoint1 = new Point2D.Float(
 								(float) position2.getX() - node2.getWidth()
 										/ 2.0f, currentBendPosY);
@@ -62,16 +85,26 @@ public class LeftUpRightDownNodeRelationBandCreator extends
 								(float) bendAnchorPoint1.getX(),
 								(float) bendAnchorPoint1.getY() - bandHeight);
 
+						Point2D bendAnchorOffsetPoint1 = new Point2D.Float(
+								(float) dimGroup2AnchorPoints.getFirst().getX(),
+								currentBendPosY + 5 * bandSpacing);
+						Point2D bendAnchorOffsetPoint2 = new Point2D.Float(
+								(float) dimGroup2AnchorPoints.getSecond()
+										.getX(), (float) currentBendPosY + 5
+										* bandSpacing);
+
 						Pair<Point2D, Point2D> bendAnchorPoints1 = new Pair<Point2D, Point2D>(
-								bendAnchorPoint2, bendAnchorPoint1);
+								bendAnchorPoint1, bendAnchorPoint2);
+						Pair<Point2D, Point2D> bendOffsetAnchorPoints1 = new Pair<Point2D, Point2D>(
+								bendAnchorOffsetPoint1, bendAnchorOffsetPoint2);
 						// Pair<Point2D, Point2D> bendAnchorPoints2 = new
 						// Pair<Point2D, Point2D>(
 						// bendAnchorPoint1, bendAnchorPoint2);
 
-						anchorPoints
-								.add(node1
-										.getBottomDimensionGroupAnchorPoints(dimGroupData1));
+						anchorPoints.add(dimGroup1AnchorPointsSwapped);
+						anchorPoints.add(offsetAnchorPoints1);
 						anchorPoints.add(bendAnchorPoints1);
+						anchorPoints.add(bendOffsetAnchorPoints1);
 						anchorPoints.add(dimGroup2AnchorPoints);
 
 						// bands.add(new BandInfo(
@@ -109,11 +142,11 @@ public class LeftUpRightDownNodeRelationBandCreator extends
 				Pair<Point2D, Point2D> offsetAnchorPointsSide2 = new Pair<Point2D, Point2D>();
 				offsetAnchorPointsSide2.setFirst(new Point2D.Float(
 						(float) anchorPointsSide2.getFirst().getX() - 0.3f
-								* spacingX, (float) anchorPointsSide1
+								* spacingX, (float) anchorPointsSide2
 								.getFirst().getY()));
 				offsetAnchorPointsSide2.setSecond(new Point2D.Float(
-						(float) anchorPointsSide1.getSecond().getX() - 0.3f
-								* spacingX, (float) anchorPointsSide1
+						(float) anchorPointsSide2.getSecond().getX() - 0.3f
+								* spacingX, (float) anchorPointsSide2
 								.getSecond().getY()));
 
 				anchorPoints.add(anchorPointsSide1);
@@ -139,11 +172,11 @@ public class LeftUpRightDownNodeRelationBandCreator extends
 				Pair<Point2D, Point2D> offsetAnchorPointsSide2 = new Pair<Point2D, Point2D>();
 				offsetAnchorPointsSide2.setFirst(new Point2D.Float(
 						(float) anchorPointsSide2.getFirst().getX(),
-						(float) anchorPointsSide1.getFirst().getY() + 0.3f
+						(float) anchorPointsSide2.getFirst().getY() + 0.3f
 								* spacingY));
 				offsetAnchorPointsSide2.setSecond(new Point2D.Float(
-						(float) anchorPointsSide1.getSecond().getX(),
-						(float) anchorPointsSide1.getSecond().getY() + 0.3f
+						(float) anchorPointsSide2.getSecond().getX(),
+						(float) anchorPointsSide2.getSecond().getY() + 0.3f
 								* spacingY));
 
 				anchorPoints.add(anchorPointsSide1);

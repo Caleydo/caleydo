@@ -56,7 +56,7 @@ public abstract class LayoutContainer
 	}
 
 	@Override
-	void destroy() {
+	public void destroy() {
 		super.destroy();
 		for (ElementLayout element : elements) {
 			element.destroy();

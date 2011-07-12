@@ -6,11 +6,13 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUtessellator;
 
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 
 public class ConnectionBandRenderer {
@@ -297,8 +299,14 @@ public class ConnectionBandRenderer {
 
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
 		for (Pair<Point2D, Point2D> anchorPair : anchorPoints) {
-			inputPoints.add(new Vec3f((float) anchorPair.getFirst().getX(), (float) anchorPair.getFirst()
-				.getY(), z));
+			Vec3f vec =
+				new Vec3f((float) anchorPair.getFirst().getX(), (float) anchorPair.getFirst().getY(), z);
+			inputPoints.add(vec);
+			gl.glColor4f(1, 0, 0, 1);
+			gl.glBegin(GL.GL_POINTS);
+			gl.glVertex3f(vec.x(), vec.y(), vec.z());
+			gl.glEnd();
+//			GLHelperFunctions.drawPointAt(gl, vec);
 		}
 		// inputPoints.add(new Vec3f(side1AnchorPos1[0], side1AnchorPos1[1], z));
 		// inputPoints.add(new Vec3f(side1AnchorPos1[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),
@@ -326,8 +334,14 @@ public class ConnectionBandRenderer {
 
 		inputPoints = new ArrayList<Vec3f>();
 		for (Pair<Point2D, Point2D> anchorPair : anchorPoints) {
-			inputPoints.add(new Vec3f((float) anchorPair.getSecond().getX(), (float) anchorPair.getSecond()
-				.getY(), z));
+			Vec3f vec =
+				new Vec3f((float) anchorPair.getSecond().getX(), (float) anchorPair.getSecond().getY(), z);
+			inputPoints.add(vec);
+			gl.glColor4f(1, 0, 0, 1);
+			gl.glBegin(GL.GL_POINTS);
+			gl.glVertex3f(vec.x(), vec.y(), vec.z());
+			gl.glEnd();
+//			GLHelperFunctions.drawPointAt(gl, vec);
 		}
 		// inputPoints.add(new Vec3f(side1AnchorPos2[0], side1AnchorPos2[1], z));
 		// inputPoints.add(new Vec3f(side1AnchorPos2[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),

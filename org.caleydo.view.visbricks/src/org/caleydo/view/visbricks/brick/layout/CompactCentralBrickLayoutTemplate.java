@@ -20,9 +20,9 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected ArrayList<ElementLayout> headerBarElements;
 	protected ArrayList<ElementLayout> footerBarElements;
-	
-//	protected Row headerBar;
-//	protected Row footerBar; 
+
+	// protected Row headerBar;
+	// protected Row footerBar;
 
 	protected boolean showFooterBar;
 
@@ -35,8 +35,8 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		this.visBricks = visBricks;
 		headerBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
-//		headerBar = new Row();
-//		footerBar = new Row();
+		// headerBar = new Row();
+		// footerBar = new Row();
 		configurer.configure(this);
 		registerPickingListeners();
 	}
@@ -68,10 +68,12 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// viewRow.setPixelGLConverter(pixelGLConverter);
 		// viewRow.setPixelSizeY(16);
 
-		ElementLayout viewLayout = new ElementLayout("compactViewLayout");
-		viewLayout.setFrameColor(1, 0, 0, 1);
-		// viewLayout.setDebug(true);
-		viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
+		if (viewLayout == null) {
+			viewLayout = new ElementLayout("compactViewLayout");
+			viewLayout.setFrameColor(1, 0, 0, 1);
+			// viewLayout.setDebug(true);
+			viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
+		}
 		viewLayout.setRenderer(viewRenderer);
 
 		// ElementLayout dimensionBarLayout = new ElementLayout("dimensionBar");

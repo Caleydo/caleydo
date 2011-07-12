@@ -61,15 +61,17 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	protected Row toolBar;
 	protected Row footerBar;
 
-	public CentralBrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup,
-			GLVisBricks visBricks, IBrickConfigurer configurer) {
+	public CentralBrickLayoutTemplate(GLBrick brick,
+			DimensionGroup dimensionGroup, GLVisBricks visBricks,
+			IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		// viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		this.visBricks = visBricks;
 		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
 				CLUSTER_BUTTON_ID, EIconTextures.CLUSTER_ICON);
 
-		lockResizingButton = new Button(EPickingType.BRICK_LOCK_RESIZING_BUTTON,
+		lockResizingButton = new Button(
+				EPickingType.BRICK_LOCK_RESIZING_BUTTON,
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
 		headerBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
@@ -101,9 +103,11 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseRow.setRenderer(borderedAreaRenderer);
 
 		if (showHandles) {
-			baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter,
-					HANDLE_SIZE_PIXELS, brick.getTextureManager(),
-					HandleRenderer.ALL_MOVE_HANDLES | HandleRenderer.ALL_RESIZE_HANDLES));
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
+					pixelGLConverter, HANDLE_SIZE_PIXELS, brick
+							.getTextureManager(),
+					HandleRenderer.ALL_MOVE_HANDLES
+							| HandleRenderer.ALL_RESIZE_HANDLES));
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
@@ -120,12 +124,14 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		dimensionBarLayout.setPixelGLConverter(pixelGLConverter);
 		dimensionBarLayout.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
 
-		ElementLayout viewLayout = new ElementLayout("viewLayout");
-		viewLayout.setFrameColor(1, 0, 0, 1);
-		viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
+		if (viewLayout == null) {
+			viewLayout = new ElementLayout("viewLayout");
+			viewLayout.setFrameColor(1, 0, 0, 1);
+			viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
+			Zoomer zoomer = new Zoomer(visBricks, viewLayout);
+			viewLayout.setZoomer(zoomer);
+		}
 		viewLayout.setRenderer(viewRenderer);
-		Zoomer zoomer = new Zoomer(visBricks, viewLayout);
-		viewLayout.setZoomer(zoomer);
 
 		Row headerBar = createHeaderBar();
 		Row toolBar = createToolBar();
@@ -202,12 +208,13 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 		headerBar.append(spacingLayoutX);
 
-		ElementLayout lockResizingButtonLayout = new ElementLayout("lockResizingButton");
+		ElementLayout lockResizingButtonLayout = new ElementLayout(
+				"lockResizingButton");
 		lockResizingButtonLayout.setPixelGLConverter(pixelGLConverter);
 		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		lockResizingButtonLayout.setRenderer(new ButtonRenderer(lockResizingButton,
-				brick, brick.getTextureManager()));
+		lockResizingButtonLayout.setRenderer(new ButtonRenderer(
+				lockResizingButton, brick, brick.getTextureManager()));
 
 		headerBar.append(lockResizingButtonLayout);
 
@@ -326,9 +333,10 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	@Override
 	public int getMinWidthPixels() {
 		int headerBarWidth = calcSumPixelWidth(headerBar.getElements());
-		int toolBarWidth = showToolBar ? calcSumPixelWidth(toolBar.getElements()) : 0;
-		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements())
-				: 0;
+		int toolBarWidth = showToolBar ? calcSumPixelWidth(toolBar
+				.getElements()) : 0;
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar
+				.getElements()) : 0;
 
 		int minGuiElementWidth = Math.max(headerBarWidth,
 				Math.max(toolBarWidth, footerBarWidth))
@@ -377,8 +385,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public ABrickLayoutTemplate getCollapsedLayoutTemplate() {
-		return new CompactCentralBrickLayoutTemplate(brick, dimensionGroup, visBricks,
-				brick.getBrickConfigurer());
+		return new CompactCentralBrickLayoutTemplate(brick, dimensionGroup,
+				visBricks, brick.getBrickConfigurer());
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package org.caleydo.datadomain.tissue;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -21,7 +21,7 @@ public class TissueDataDomain extends ADataDomain {
 
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.tissue";
 
-	protected Set<ADimensionGroupData> dimensionGroups;
+	protected List<ADimensionGroupData> dimensionGroups;
 	
 	/**
 	 * Constructor.
@@ -32,7 +32,7 @@ public class TissueDataDomain extends ADataDomain {
 		
 		icon = EIconTextures.DATA_DOMAIN_TISSUE;
 		
-		dimensionGroups = new HashSet<ADimensionGroupData>();
+		dimensionGroups = new ArrayList<ADimensionGroupData>();
 
 		// possibleIDCategories.put(EIDCategory.GENE, null);
 	}
@@ -55,12 +55,12 @@ public class TissueDataDomain extends ADataDomain {
 	}
 	
 	@Override
-	public Set<ADimensionGroupData> getDimensionGroups() {
+	public List<ADimensionGroupData> getDimensionGroups() {
 		return dimensionGroups;
 	}
 	
 	@Override
-	public void setDimensionGroups(Set<ADimensionGroupData> dimensionGroups) {
+	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups) {
 		this.dimensionGroups = dimensionGroups;
 	}
 	

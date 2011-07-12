@@ -1,8 +1,8 @@
 package org.caleydo.view.datagraph;
 
 import java.awt.geom.Point2D;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL2;
 
@@ -102,10 +102,10 @@ public class DataNode extends ADraggableDataGraphNode {
 	}
 
 	@Override
-	public Set<ADimensionGroupData> getDimensionGroups() {
-		Set<ADimensionGroupData> groups = dataDomain.getDimensionGroups();
+	public List<ADimensionGroupData> getDimensionGroups() {
+		List<ADimensionGroupData> groups = dataDomain.getDimensionGroups();
 		if (groups == null) {
-			groups = new HashSet<ADimensionGroupData>();
+			groups = new ArrayList<ADimensionGroupData>();
 		}
 		return groups;
 	}

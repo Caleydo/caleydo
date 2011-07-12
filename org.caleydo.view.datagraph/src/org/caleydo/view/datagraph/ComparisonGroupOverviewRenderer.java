@@ -2,8 +2,8 @@ package org.caleydo.view.datagraph;
 
 import java.awt.geom.Point2D;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.media.opengl.GL2;
 
@@ -41,7 +41,7 @@ public class ComparisonGroupOverviewRenderer extends LayoutRenderer {
 		float step = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS
 				+ MIN_COMP_GROUP_WIDTH_PIXELS);
 
-		Set<ADimensionGroupData> dimensionGroupData = node.getDimensionGroups();
+		List<ADimensionGroupData> dimensionGroupData = node.getDimensionGroups();
 		dimensionGroupPositions.clear();
 
 		for (ADimensionGroupData data : dimensionGroupData) {

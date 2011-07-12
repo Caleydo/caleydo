@@ -144,15 +144,14 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseRow.append(baseColumn);
 		baseRow.append(spacingLayoutX);
 
-		ElementLayout viewLayout = new ElementLayout("viewLayout");
-		viewLayout.setFrameColor(1, 0, 0, 1);
-		
-		viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
+		if (viewLayout == null) {
+			viewLayout = new ElementLayout("viewLayout");
+			viewLayout.setFrameColor(1, 0, 0, 1);
+			viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
+			Zoomer zoomer = new Zoomer(visBricks, viewLayout);
+			viewLayout.setZoomer(zoomer);
+		}
 		viewLayout.setRenderer(viewRenderer);
-		
-
-		Zoomer zoomer = new Zoomer(visBricks, viewLayout);
-		viewLayout.setZoomer(zoomer);
 
 		toolBar = createToolBar();
 		footerBar = createFooterBar();
@@ -378,7 +377,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar
 				.getElements()) : 0;
 
-		int guiElementsWidth = Math.max(toolBarWidth, footerBarWidth) + 2 * SPACING_PIXELS;
+		int guiElementsWidth = Math.max(toolBarWidth, footerBarWidth) + 2
+				* SPACING_PIXELS;
 		if (viewRenderer == null)
 			return guiElementsWidth;
 		return Math.max(guiElementsWidth,

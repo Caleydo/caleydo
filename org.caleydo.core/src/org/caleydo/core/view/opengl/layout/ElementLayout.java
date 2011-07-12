@@ -103,7 +103,7 @@ public class ElementLayout {
 		this.layoutName = layoutName;
 	}
 	
-	void destroy()
+	public void destroy()
 	{
 		if (zoomer != null)
 		{
