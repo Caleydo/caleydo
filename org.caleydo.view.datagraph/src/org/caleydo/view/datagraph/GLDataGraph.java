@@ -126,22 +126,22 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			}
 		}
 
-		Set<String> allowedViewTypes = new HashSet<String>();
-		// TODO: Maybe add to AView isMetaView() instead?
-		allowedViewTypes.add("org.caleydo.view.parcoords");
-		allowedViewTypes.add("org.caleydo.view.heatmap");
-		allowedViewTypes.add("org.caleydo.view.heatmap.hierarchical");
-		allowedViewTypes.add("org.caleydo.view.visbricks");
-		allowedViewTypes.add("org.caleydo.view.scatterplot");
-		allowedViewTypes.add("org.caleydo.view.tabular");
-		allowedViewTypes.add("org.caleydo.view.bucket");
+//		Set<String> allowedViewTypes = new HashSet<String>();
+//		// TODO: Maybe add to AView isMetaView() instead?
+//		allowedViewTypes.add("org.caleydo.view.parcoords");
+//		allowedViewTypes.add("org.caleydo.view.heatmap");
+//		allowedViewTypes.add("org.caleydo.view.heatmap.hierarchical");
+//		allowedViewTypes.add("org.caleydo.view.visbricks");
+//		allowedViewTypes.add("org.caleydo.view.scatterplot");
+//		allowedViewTypes.add("org.caleydo.view.tabular");
+//		allowedViewTypes.add("org.caleydo.view.bucket");
 
 		Collection<AGLView> views = GeneralManager.get()
 				.getViewGLCanvasManager().getAllGLViews();
 
 		for (AGLView view : views) {
 			if (!view.isRenderedRemote()
-					&& allowedViewTypes.contains(view.getViewType())) {
+					&& view.isDataView()) {
 				ViewNode node = new ViewNode(graphLayout, this,
 						dragAndDropController, lastNodeID++, view);
 				dataGraph.addNode(node);

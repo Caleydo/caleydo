@@ -1884,4 +1884,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		tree = null;
 		rootNode = null;
 	}
+	
+	public boolean isDataView() {
+		return false;
+	}
 }

@@ -1096,5 +1096,10 @@ public class GLPathway extends AGLView implements
 		float aspectRatio = (float) pathway.getWidth() / (float) pathway.getHeight();
 		return (int) (60.0f * aspectRatio);
 	}
+	
+	@Override
+	public boolean isDataView() {
+		return true;
+	}
 
 }

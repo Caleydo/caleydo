@@ -2991,4 +2991,9 @@ public class GLBucket extends AGLView implements
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
+	
+	@Override
+	public boolean isDataView() {
+		return true;
+	}
 }

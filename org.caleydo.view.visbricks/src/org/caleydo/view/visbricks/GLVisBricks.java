@@ -1703,4 +1703,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public List<ADimensionGroupData> getDimensionGroups() {
 		return dimensionGroupData;
 	}
+	
+	@Override
+	public boolean isDataView() {
+		return true;
+	}
 }

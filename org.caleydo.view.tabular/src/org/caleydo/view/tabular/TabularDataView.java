@@ -710,5 +710,10 @@ public class TabularDataView extends ASWTView implements
 	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
+	
+	@Override
+	public boolean isDataView() {
+		return true;
+	}
 
 }

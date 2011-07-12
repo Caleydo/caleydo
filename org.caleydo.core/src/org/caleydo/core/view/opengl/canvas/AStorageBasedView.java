@@ -600,4 +600,9 @@ public abstract class AStorageBasedView
 	public void setStorageVAType(String vaType) {
 		this.storageVAType = vaType;
 	}
+	
+	@Override
+	public boolean isDataView() {
+		return true;
+	}
 }

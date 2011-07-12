@@ -1322,15 +1322,7 @@ public abstract class AGLView
 		}
 	}
 
-	// FIXME: The location of this method probably has to be changed.
-	public Set<IDataDomain> getDataDomains() {
-		return null;
-	}
-
-	// FIXME: The location of this method probably has to be changed.
-	public List<ADimensionGroupData> getDimensionGroups() {
-		return null;
-	}
+	
 
 	public synchronized int createNewScrollBarID() {
 		return currentScrollBarID++;

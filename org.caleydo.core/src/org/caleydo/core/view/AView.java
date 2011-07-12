@@ -1,9 +1,14 @@
 package org.caleydo.core.view;
 
+import java.util.List;
+import java.util.Set;
+
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -66,5 +71,22 @@ public abstract class AView
 	@Override
 	public String getViewType() {
 		return viewType;
+	}
+	
+	public Set<IDataDomain> getDataDomains() {
+		return null;
+	}
+
+	public List<ADimensionGroupData> getDimensionGroups() {
+		return null;
+	}
+	
+	/**
+	 * Determines whether the view displays concrete data of a data set or not.
+	 * 
+	 * @return
+	 */
+	public boolean isDataView() {
+		return false;
 	}
 }
