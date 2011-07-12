@@ -7,12 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.collection.Pair;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;

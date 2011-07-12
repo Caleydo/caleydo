@@ -18,8 +18,6 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.logging.Logger;
-import org.eclipse.core.runtime.Status;
 
 /**
  * A Virtual Array provides an association between a modifiable index in the virtual arrays and the static

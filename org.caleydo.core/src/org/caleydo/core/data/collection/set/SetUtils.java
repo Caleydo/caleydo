@@ -22,7 +22,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.graph.tree.ClusterTree;
-import org.caleydo.core.data.graph.tree.ESortingStrategy;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;

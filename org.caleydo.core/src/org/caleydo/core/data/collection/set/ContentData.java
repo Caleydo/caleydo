@@ -3,7 +3,6 @@ package org.caleydo.core.data.collection.set;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.graph.tree.ClusterTree;
-import org.caleydo.core.data.graph.tree.ESortingStrategy;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;

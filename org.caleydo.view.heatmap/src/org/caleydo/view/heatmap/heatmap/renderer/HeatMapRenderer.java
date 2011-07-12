@@ -1,7 +1,6 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
-import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 
 import java.util.Set;
 

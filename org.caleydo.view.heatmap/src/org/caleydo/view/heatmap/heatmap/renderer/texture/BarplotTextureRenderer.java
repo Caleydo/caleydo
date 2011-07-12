@@ -3,7 +3,6 @@ package org.caleydo.view.heatmap.heatmap.renderer.texture;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
