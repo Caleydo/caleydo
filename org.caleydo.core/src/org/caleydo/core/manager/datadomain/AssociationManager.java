@@ -94,7 +94,7 @@ public class AssociationManager {
 	 * @param viewType
 	 * @return
 	 */
-	public ArrayList<IDataDomain> getAvailableDataDomainTypesForViewTypes(String viewType) {
+	public ArrayList<IDataDomain> getAvailableDataDomainTypesForViewType(String viewType) {
 
 		Set<String> dataDomainTypes = getDataDomainTypesForViewTypes(viewType);
 		if (dataDomainTypes == null)

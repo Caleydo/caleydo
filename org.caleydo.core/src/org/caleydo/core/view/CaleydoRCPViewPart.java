@@ -10,6 +10,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.caleydo.core.gui.dialog.ChooseDataDomainDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
@@ -22,6 +23,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
@@ -127,26 +129,19 @@ public abstract class CaleydoRCPViewPart
 		if (dataDomainType == null) {
 			ArrayList<IDataDomain> availableDomains =
 				DataDomainManager.get().getAssociationManager()
-					.getAvailableDataDomainTypesForViewTypes(serializedView.getViewType());
+					.getAvailableDataDomainTypesForViewType(serializedView.getViewType());
 			if (availableDomains == null)
 				throw new IllegalStateException("Not able to determine which data domain to use");
 			else if (availableDomains.size() == 0)
 				throw new IllegalStateException("No datadomain for this view loaded");
-			else if (availableDomains.size() > 1)
-				throw new IllegalStateException(
-					"Not able to choose which data domain to use - not yet implemented");
-			else
+			else if (availableDomains.size() == 1)
 				serializedView.setDataDomainType(availableDomains.get(0).getDataDomainType());
+			else if (availableDomains.size() > 1) {
+				ChooseDataDomainDialog dialog = new ChooseDataDomainDialog(new Shell());
+				serializedView.setDataDomain(dialog.open());
+			}
 		}
 	}
-
-	// public void registerEventListeners() {
-	// // no registration to the event system in the default implementation
-	// }
-	//
-	// public void unregisterEventListeners() {
-	// // no registration to the event system in the default implementation
-	// }
 
 	/**
 	 * Creates a default serialized form ({@link ASerializedView}) of the contained gl-view

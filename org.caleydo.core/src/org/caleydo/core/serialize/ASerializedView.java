@@ -3,6 +3,7 @@ package org.caleydo.core.serialize;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -35,6 +36,8 @@ public abstract class ASerializedView {
 	 * The full qualified view class name needed for the creation of views using reflections.
 	 */
 	protected String viewClassType;
+
+	private ADataDomain dataDomain;
 	
 	/**
 	 * Sets the data domain associated with a view
@@ -44,6 +47,16 @@ public abstract class ASerializedView {
 	public void setDataDomainType(String dataDomainType) {
 		this.dataDomainType = dataDomainType;
 	}
+	
+	/**
+	 * Sets the data domain associated with a view
+	 * 
+	 * @param dataDomain
+	 */
+	public void setDataDomain(ADataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+	}
+	
 
 	/**
 	 * Returns the data domain a view is associated with
@@ -54,6 +67,15 @@ public abstract class ASerializedView {
 		return dataDomainType;
 	}
 
+	/**
+	 * Returns the data domain a view is associated with
+	 * 
+	 * @return
+	 */
+	public ADataDomain getDataDomain() {
+		return dataDomain;
+	}
+	
 	/**
 	 * Gets the view-id as used by ViewManager implementations
 	 * 
