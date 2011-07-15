@@ -37,13 +37,13 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?>>
 	 * @param vaType
 	 */
 	public ReplaceVAEvent(ISet set, String dataDomainType, String vaType) {
-		this.dataDomainType = dataDomainType;
+		this.dataDomainID = dataDomainType;
 		this.vaType = vaType;
 		this.setID = set.getID();
 	}
 
 	public ReplaceVAEvent(ISet set, String dataDomainType, String vaType, E virtualArray) {
-		this.dataDomainType = dataDomainType;
+		this.dataDomainID = dataDomainType;
 		this.vaType = vaType;
 		this.virtualArray = virtualArray;
 		usesVADirectly = true;
@@ -58,7 +58,7 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?>>
 	 * @param virtualArray
 	 */
 	protected ReplaceVAEvent(String dataDomainType, String vaType, E virtualArray) {
-		this.dataDomainType = dataDomainType;
+		this.dataDomainID = dataDomainType;
 		this.vaType = vaType;
 		this.virtualArray = virtualArray;
 		usesVADirectly = true;

@@ -119,7 +119,7 @@ public class ContentFilterManager
 	protected void triggerVAUpdateEvent(ContentVADelta delta) {
 		ContentVAUpdateEvent event = new ContentVAUpdateEvent();
 		event.setSender(this);
-		event.setDataDomainType(dataDomain.getDataDomainID());
+		event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setVirtualArrayDelta(delta);
 		eventPublisher.triggerEvent(event);
 	}
@@ -130,7 +130,7 @@ public class ContentFilterManager
 		event.setVAType(ISet.CONTENT);
 		event.setVirtualArray(currentVA);
 		event.setSender(this);
-		event.setDataDomainType(dataDomain.getDataDomainID());
+		event.setDataDomainID(dataDomain.getDataDomainID());
 
 		eventPublisher.triggerEvent(event);
 	}

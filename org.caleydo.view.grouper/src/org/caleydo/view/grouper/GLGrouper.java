@@ -821,7 +821,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 		selectionUpdateEvent.setSender(this);
-		selectionUpdateEvent.setDataDomainType(dataDomain.getDataDomainID());
+		selectionUpdateEvent.setDataDomainID(dataDomain.getDataDomainID());
 		selectionUpdateEvent.setSelectionDelta(delta);
 		eventPublisher.triggerEvent(selectionUpdateEvent);
 	}

@@ -206,13 +206,13 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 
 				if (selectedTreeItem.getData() instanceof StorageFilter) {
 					RemoveStorageFilterEvent filterEvent = new RemoveStorageFilterEvent();
-					filterEvent.setDataDomainType(dataDomain.getDataDomainID());
+					filterEvent.setDataDomainID(dataDomain.getDataDomainID());
 					filterEvent.setFilter((StorageFilter) selectedTreeItem.getData());
 					selectedTreeItem.dispose();
 					eventPublisher.triggerEvent(filterEvent);
 				} else if (selectedTreeItem.getData() instanceof ContentFilter) {
 					RemoveContentFilterEvent filterEvent = new RemoveContentFilterEvent();
-					filterEvent.setDataDomainType(dataDomain.getDataDomainID());
+					filterEvent.setDataDomainID(dataDomain.getDataDomainID());
 					filterEvent.setFilter((ContentFilter) selectedTreeItem.getData());
 					selectedTreeItem.dispose();
 					eventPublisher.triggerEvent(filterEvent);

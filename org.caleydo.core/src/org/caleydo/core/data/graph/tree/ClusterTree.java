@@ -20,7 +20,7 @@ public class ClusterTree
 	public void createMetaSets(Set set) {
 		getRoot().createMetaSets(set);
 		NewMetaSetsEvent event = new NewMetaSetsEvent();
-		event.setDataDomainType(set.getDataDomain().getDataDomainID());
+		event.setDataDomainID(set.getDataDomain().getDataDomainID());
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 

@@ -458,7 +458,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 			}
 			setInfo(textureView, experimentIndex);
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
-			event.setDataDomainType(FOREIGN_DATADOMAIN_TYPE);
+			event.setDataDomainID(FOREIGN_DATADOMAIN_TYPE);
 			event.setSelectionDelta(delta);
 			eventPublisher.triggerEvent(event);
 

@@ -91,7 +91,7 @@ public class EventPublisher {
 		if (!event.checkIntegrity()) {
 			throw new IllegalStateException("Event " + event + " has failed integrity check");
 		}
-		String dataDomainType = event.getDataDomainType();
+		String dataDomainType = event.getDataDomainID();
 		HashMap<String, Collection<AEventListener<?>>> dataDomainToListenersMap =
 			listenerMap.get(event.getClass());
 		if (dataDomainToListenersMap == null)
@@ -114,7 +114,7 @@ public class EventPublisher {
 		if (listeners != null) {
 			for (AEventListener<?> receiver : listeners) {
 				// check if a receiver wants events that are not if his data domain
-				if (event.getDataDomainType() == null && receiver.isExclusiveDataDomain()) {
+				if (event.getDataDomainID() == null && receiver.isExclusiveDataDomain()) {
 				}
 				else
 					receiver.queueEvent(event);

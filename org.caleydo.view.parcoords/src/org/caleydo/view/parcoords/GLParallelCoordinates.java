@@ -1189,7 +1189,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 		InfoAreaUpdateEvent event = new InfoAreaUpdateEvent();
-		event.setDataDomainType(dataDomain.getDataDomainID());
+		event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSender(this);
 		event.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(event);
@@ -1377,7 +1377,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	private void triggerSelectionUpdate() {
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
-		selectionUpdateEvent.setDataDomainType(dataDomain.getDataDomainID());
+		selectionUpdateEvent.setDataDomainID(dataDomain.getDataDomainID());
 		selectionUpdateEvent.setSelectionDelta(contentSelectionManager.getDelta());
 		selectionUpdateEvent.setSender(this);
 		eventPublisher.triggerEvent(selectionUpdateEvent);
@@ -1491,7 +1491,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				handleConnectedElementReps(selectionDelta);
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
-				event.setDataDomainType(dataDomain.getDataDomainID());
+				event.setDataDomainID(dataDomain.getDataDomainID());
 				event.setSelectionDelta((SelectionDelta) selectionDelta);
 				event.setInfo(getShortInfoLocal());
 				eventPublisher.triggerEvent(event);
@@ -1553,7 +1553,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// }
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
-			event.setDataDomainType(dataDomain.getDataDomainID());
+			event.setDataDomainID(dataDomain.getDataDomainID());
 			event.setSelectionDelta((SelectionDelta) selectionDelta);
 			eventPublisher.triggerEvent(event);
 
@@ -1779,7 +1779,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		NewStorageFilterEvent filterEvent = new NewStorageFilterEvent();
 		filterEvent.setFilter(filter);
 		filterEvent.setSender(this);
-		filterEvent.setDataDomainType(dataDomain.getDataDomainID());
+		filterEvent.setDataDomainID(dataDomain.getDataDomainID());
 
 		eventPublisher.triggerEvent(filterEvent);
 	}
@@ -1794,7 +1794,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		NewContentFilterEvent filterEvent = new NewContentFilterEvent();
 		filterEvent.setFilter(filter);
 		filterEvent.setSender(this);
-		filterEvent.setDataDomainType(dataDomain.getDataDomainID());
+		filterEvent.setDataDomainID(dataDomain.getDataDomainID());
 
 		eventPublisher.triggerEvent(filterEvent);
 	}

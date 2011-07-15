@@ -60,7 +60,7 @@ public class StartClusteringAction
 		}
 		for (ISet tmpSet : sets) {
 			event = new StartClusteringEvent(clusterState, tmpSet.getID());
-			event.setDataDomainType(dataDomain.getDataDomainID());
+			event.setDataDomainID(dataDomain.getDataDomainID());
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 		}
 	}

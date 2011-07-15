@@ -290,7 +290,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
-		event.setDataDomainType(dataDomain.getDataDomainID());
+		event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSelectionDelta(delta);
 		event.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(event);
@@ -307,7 +307,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 		}
 		SelectionUpdateEvent leafEvent = new SelectionUpdateEvent();
 		leafEvent.setSender(this);
-		leafEvent.setDataDomainType(dataDomain.getDataDomainID());
+		leafEvent.setDataDomainID(dataDomain.getDataDomainID());
 
 		leafEvent.setSelectionDelta(newDelta);
 		leafEvent.setInfo(getShortInfoLocal());

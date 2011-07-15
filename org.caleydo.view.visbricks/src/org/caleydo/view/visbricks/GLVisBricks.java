@@ -1535,7 +1535,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// initLayouts();
 
 		RelationsUpdatedEvent event = new RelationsUpdatedEvent();
-		event.setDataDomainType(dataDomain.getDataDomainID());
+		event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
@@ -1651,7 +1651,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		contentSelectionManager.clearSelections();
 		//
 		ClearSelectionsEvent cse = new ClearSelectionsEvent();
-		cse.setDataDomainType(getDataDomain().getDataDomainID());
+		cse.setDataDomainID(getDataDomain().getDataDomainID());
 		cse.setSender(this);
 		eventPublisher.triggerEvent(cse);
 
@@ -1677,7 +1677,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
-		event.setDataDomainType(getDataDomain().getDataDomainID());
+		event.setDataDomainID(getDataDomain().getDataDomainID());
 		event.setSender(this);
 		SelectionDelta delta = contentSelectionManager.getDelta();
 		event.setSelectionDelta(delta);

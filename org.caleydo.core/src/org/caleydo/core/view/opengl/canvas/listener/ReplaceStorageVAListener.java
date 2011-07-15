@@ -15,7 +15,7 @@ public class ReplaceStorageVAListener
 		if (event instanceof ReplaceStorageVAEvent) {
 			ReplaceStorageVAEvent vaEvent = ((ReplaceStorageVAEvent) event);
 
-			handler.replaceStorageVA(vaEvent.getDataDomainType(), vaEvent.getVaType());
+			handler.replaceStorageVA(vaEvent.getDataDomainID(), vaEvent.getVaType());
 
 		}
 

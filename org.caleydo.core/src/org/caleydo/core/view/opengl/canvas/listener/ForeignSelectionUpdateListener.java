@@ -29,7 +29,7 @@ public class ForeignSelectionUpdateListener
 			ISelectionDelta delta = selectioUpdateEvent.getSelectionDelta();
 			boolean scrollToSelection = selectioUpdateEvent.isScrollToSelection();
 			String info = selectioUpdateEvent.getInfo();
-			handler.handleForeignSelectionUpdate(selectioUpdateEvent.getDataDomainType(), delta,
+			handler.handleForeignSelectionUpdate(selectioUpdateEvent.getDataDomainID(), delta,
 				scrollToSelection, info);
 			VisLinkScene.resetAnimation(System.currentTimeMillis());
 		}

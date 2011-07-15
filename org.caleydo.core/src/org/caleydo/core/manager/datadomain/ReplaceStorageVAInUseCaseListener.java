@@ -12,7 +12,7 @@ public class ReplaceStorageVAInUseCaseListener
 		if (event instanceof ReplaceStorageVAInUseCaseEvent) {
 			ReplaceStorageVAInUseCaseEvent vaEvent = (ReplaceStorageVAInUseCaseEvent) event;
 
-			handler.replaceStorageVA(vaEvent.getDataDomainType(), vaEvent.getVaType(),
+			handler.replaceStorageVA(vaEvent.getDataDomainID(), vaEvent.getVaType(),
 				vaEvent.getVirtualArray());
 		}
 

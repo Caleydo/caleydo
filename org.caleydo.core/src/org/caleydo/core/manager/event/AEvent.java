@@ -22,7 +22,7 @@ public abstract class AEvent {
 	@XmlTransient
 	Object Sender;
 
-	protected String dataDomainType = null;
+	protected String dataDomainID = null;
 
 	/**
 	 * Basic constructor
@@ -73,22 +73,22 @@ public abstract class AEvent {
 	}
 
 	/**
-	 * Set a dataDomainType string so that only those receivers which either have the same or no registered
+	 * Set a dataDomainID string so that only those receivers which either have the same or no registered
 	 * domain receive the event
 	 * 
-	 * @param dataDomainType
+	 * @param dataDomainID
 	 */
-	public void setDataDomainType(String dataDomainType) {
-		this.dataDomainType = dataDomainType;
+	public void setDataDomainID(String dataDomainID) {
+		this.dataDomainID = dataDomainID;
 	}
 
 	/**
-	 * Get the dataDomainType for the event
+	 * Get the dataDomainID for the event
 	 * 
 	 * @return
 	 */
-	public String getDataDomainType() {
-		return dataDomainType;
+	public String getDataDomainID() {
+		return dataDomainID;
 	}
 
 	/**

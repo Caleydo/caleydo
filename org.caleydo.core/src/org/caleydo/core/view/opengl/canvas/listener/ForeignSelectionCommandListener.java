@@ -29,7 +29,7 @@ public class ForeignSelectionCommandListener
 			SelectionCommandEvent selectionCommandEvent = (SelectionCommandEvent) event;
 			SelectionCommand selectionCommand = selectionCommandEvent.getSelectionCommand();
 			IDCategory idCategory = selectionCommandEvent.getIdCategory();
-			String dataDomainType = selectionCommandEvent.getDataDomainType();
+			String dataDomainType = selectionCommandEvent.getDataDomainID();
 			handler.handleForeignSelectionCommand(dataDomainType, idCategory, selectionCommand);
 		}
 	}

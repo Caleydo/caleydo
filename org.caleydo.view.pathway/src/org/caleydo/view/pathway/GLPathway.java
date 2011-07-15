@@ -773,7 +773,7 @@ public class GLPathway extends AGLView implements
 					.getDelta());
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
-			event.setDataDomainType(mappingDataDomain.getDataDomainID());
+			event.setDataDomainID(mappingDataDomain.getDataDomainID());
 			event.setSelectionDelta((SelectionDelta) selectionDelta);
 			event.setInfo(getShortInfoLocal());
 
@@ -867,7 +867,7 @@ public class GLPathway extends AGLView implements
 
 		ContentVAUpdateEvent virtualArrayUpdateEvent = new ContentVAUpdateEvent();
 		virtualArrayUpdateEvent.setSender(this);
-		virtualArrayUpdateEvent.setDataDomainType(mappingDataDomain.getDataDomainID());
+		virtualArrayUpdateEvent.setDataDomainID(mappingDataDomain.getDataDomainID());
 		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
 		virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(virtualArrayUpdateEvent);

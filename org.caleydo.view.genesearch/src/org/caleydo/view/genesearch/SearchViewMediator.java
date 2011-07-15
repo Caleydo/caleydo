@@ -55,7 +55,7 @@ public class SearchViewMediator {
 		// Create new selection with the selected david ID
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 		selectionUpdateEvent.setSender(this);
-		selectionUpdateEvent.setDataDomainType(dataDomain.getDataDomainID());
+		selectionUpdateEvent.setDataDomainID(dataDomain.getDataDomainID());
 		ISelectionDelta delta = new SelectionDelta(contentIDType);
 //		Set<Integer> setExpIndex = GeneralManager.get().getIDMappingManager()
 //				.getIDAsSet(IDType.getIDType("DAVID"), contentIDType, davidID);

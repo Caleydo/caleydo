@@ -20,7 +20,7 @@ public class StorageFilter
 			NewStorageFilterEvent filterEvent = new NewStorageFilterEvent();
 			filterEvent.setFilter(this);
 			filterEvent.setSender(this);
-			filterEvent.setDataDomainType(dataDomain.getDataDomainID());
+			filterEvent.setDataDomainID(dataDomain.getDataDomainID());
 
 			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 			isRegistered = true;
@@ -30,7 +30,7 @@ public class StorageFilter
 			ReEvaluateStorageFilterListEvent reevaluateEvent = new ReEvaluateStorageFilterListEvent();
 			// reevaluateEvent.addFilter(filter);
 			reevaluateEvent.setSender(this);
-			reevaluateEvent.setDataDomainType(dataDomain.getDataDomainID());
+			reevaluateEvent.setDataDomainID(dataDomain.getDataDomainID());
 
 			GeneralManager.get().getEventPublisher().triggerEvent(reevaluateEvent);
 		}

@@ -222,7 +222,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 						group.getID());
 
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setDataDomainType(getDataDomain().getDataDomainID());
+				event.setDataDomainID(getDataDomain().getDataDomainID());
 				event.setSender(this);
 				SelectionDelta delta = contentGroupSelectionManager.getDelta();
 				event.setSelectionDelta(delta);
@@ -364,7 +364,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
-		event.setDataDomainType(getDataDomain().getDataDomainID());
+		event.setDataDomainID(getDataDomain().getDataDomainID());
 		event.setSender(this);
 		SelectionDelta delta = contentSelectionManager.getDelta();
 		event.setSelectionDelta(delta);

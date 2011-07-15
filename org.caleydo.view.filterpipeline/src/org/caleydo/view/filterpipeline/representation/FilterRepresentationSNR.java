@@ -279,7 +279,7 @@ public class FilterRepresentationSNR extends
 	@Override
 	protected void triggerRemoveFilterEvent() {
 		RemoveContentFilterEvent filterEvent = new RemoveContentFilterEvent();
-		filterEvent.setDataDomainType(filter.getDataDomain().getDataDomainID());
+		filterEvent.setDataDomainID(filter.getDataDomain().getDataDomainID());
 		filterEvent.setFilter(filter);
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 	}

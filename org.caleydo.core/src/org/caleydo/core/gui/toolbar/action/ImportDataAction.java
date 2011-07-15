@@ -25,7 +25,6 @@ public class ImportDataAction
 	public void run() {
 		super.run();
 
-		ImportDataDialog dialog = new ImportDataDialog(new Shell());
-		dialog.open();
+		new ImportDataDialog(new Shell()).open();
 	}
 }

@@ -149,7 +149,7 @@ public class VisLinkManager
 		SelectionDeltaItem sdi = sd.addSelection(destId, SelectionType.MOUSE_OVER);
 		sdi.addConnectionID(885);
 		SelectionUpdateEvent sue = new SelectionUpdateEvent();
-		sue.setDataDomainType(dataDomain.getDataDomainID());
+		sue.setDataDomainID(dataDomain.getDataDomainID());
 		sue.setSelectionDelta(sd);
 		sue.setSender(this);
 		eventPublisher.triggerEvent(sue);

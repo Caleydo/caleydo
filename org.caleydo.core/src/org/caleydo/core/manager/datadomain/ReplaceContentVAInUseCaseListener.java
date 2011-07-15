@@ -13,10 +13,10 @@ public class ReplaceContentVAInUseCaseListener
 			ReplaceContentVAInUseCaseEvent vaEvent = (ReplaceContentVAInUseCaseEvent) event;
 
 			if (vaEvent.getSetID() <= 0)
-				handler.replaceContentVA(vaEvent.getDataDomainType(), vaEvent.getVaType(),
+				handler.replaceContentVA(vaEvent.getDataDomainID(), vaEvent.getVaType(),
 					vaEvent.getVirtualArray());
 			else
-				handler.replaceContentVA(vaEvent.getSetID(), event.getDataDomainType(), vaEvent.getVaType(),
+				handler.replaceContentVA(vaEvent.getSetID(), event.getDataDomainID(), vaEvent.getVaType(),
 					vaEvent.getVirtualArray());
 		}
 

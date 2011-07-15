@@ -459,7 +459,7 @@ public class GLHeatMap extends AStorageBasedView {
 			HideHeatMapElementsEvent event = new HideHeatMapElementsEvent(
 					hideElements);
 			event.setSender(this);
-			event.setDataDomainType(dataDomain.getDataDomainID());
+			event.setDataDomainID(dataDomain.getDataDomainID());
 			eventPublisher.triggerEvent(event);
 
 			setDisplayListDirty();
@@ -512,7 +512,7 @@ public class GLHeatMap extends AStorageBasedView {
 		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
-		event.setDataDomainType(dataDomain.getDataDomainID());
+		event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSelectionDelta(selectionDelta);
 		event.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(event);
@@ -541,7 +541,7 @@ public class GLHeatMap extends AStorageBasedView {
 		SelectionDelta selectionDelta = storageSelectionManager.getDelta();
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
-		event.setDataDomainType(dataDomain.getDataDomainID());
+		event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
 

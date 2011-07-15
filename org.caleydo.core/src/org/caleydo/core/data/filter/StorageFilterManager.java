@@ -107,7 +107,7 @@ public class StorageFilterManager
 	protected void triggerVAUpdateEvent(StorageVADelta delta) {
 		StorageVAUpdateEvent event = new StorageVAUpdateEvent();
 		event.setSender(this);
-		event.setDataDomainType(dataDomain.getDataDomainID());
+		event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setVirtualArrayDelta(delta);
 		eventPublisher.triggerEvent(event);
 	}
@@ -118,7 +118,7 @@ public class StorageFilterManager
 		event.setVAType(Set.STORAGE);
 		event.setVirtualArray(currentVA);
 		event.setSender(this);
-		event.setDataDomainType(dataDomain.getDataDomainID());
+		event.setDataDomainID(dataDomain.getDataDomainID());
 
 		eventPublisher.triggerEvent(event);
 	}
