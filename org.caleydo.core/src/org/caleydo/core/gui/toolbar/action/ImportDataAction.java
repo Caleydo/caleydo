@@ -1,6 +1,6 @@
 package org.caleydo.core.gui.toolbar.action;
 
-import org.caleydo.core.io.gui.LoadDataDialog;
+import org.caleydo.core.io.gui.ImportDataDialog;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
@@ -25,7 +25,7 @@ public class ImportDataAction
 	public void run() {
 		super.run();
 
-		LoadDataDialog dialog = new LoadDataDialog(new Shell());
+		ImportDataDialog dialog = new ImportDataDialog(new Shell());
 		dialog.open();
 	}
 }

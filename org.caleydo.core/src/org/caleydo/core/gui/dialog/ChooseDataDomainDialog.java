@@ -28,12 +28,12 @@ public class ChooseDataDomainDialog
 	public ChooseDataDomainDialog(Shell parent, int style) {
 		// Let users override the default styles
 		super(parent, style);
-		setText("Choose Data Domain");
+		setText("Choose data domain");
 	}
 
 	public void setPossibleDataDomains(Collection<IDataDomain> possibleDataDomains)
 	{
-		possibleDataDomains.toArray(this.possibleDataDomains);
+		this.possibleDataDomains = (IDataDomain[])possibleDataDomains.toArray(new IDataDomain[possibleDataDomains.size()]);
 	}
 	
 	public IDataDomain open() {

@@ -27,11 +27,8 @@ public class ImportDataHandler
 			chooseDataDomainDialog.setPossibleDataDomains(possibleDataDomains);
 			chosenDataDomain = chooseDataDomainDialog.open();			
 		}
-		
-		LoadDataDialog dialog = new LoadDataDialog(new Shell(), chosenDataDomain);
-		dialog.open();			
 
-
+		new ImportDataDialog(new Shell(), chosenDataDomain).open();
 		return null;
 	}
 }

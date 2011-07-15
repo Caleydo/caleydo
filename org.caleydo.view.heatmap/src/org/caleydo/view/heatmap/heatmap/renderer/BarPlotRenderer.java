@@ -136,10 +136,10 @@ public class BarPlotRenderer extends AContentRenderer {
 
 	private void renderBlock(final GL2 gl, final float fYPosition,
 			final float fXPosition, final float fFieldHeight,
-			final float fFieldWidth, final float certainty, float[] rgba) {
+			final float fFieldWidth, final float uncertainty, float[] rgba) {
 
-		float certainWidth = fFieldWidth * (1 - certainty);
-		float unCertainWidth = fFieldWidth * (certainty);
+		float certainWidth = fFieldWidth * (1 - uncertainty);
+		float unCertainWidth = fFieldWidth * (uncertainty);
 
 		// gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
 		// EPickingType.HEAT_MAP_STORAGE_SELECTION, iStorageIndex));

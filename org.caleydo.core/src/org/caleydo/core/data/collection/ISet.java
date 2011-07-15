@@ -308,7 +308,4 @@ public interface ISet
 	public void calculateNormalizedAverageUncertainty(float invalidThreshold, float validThreshold);
 
 	public void calculateRawAverageUncertainty();
-	
-	
-	
 }

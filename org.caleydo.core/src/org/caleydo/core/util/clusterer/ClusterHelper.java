@@ -225,10 +225,10 @@ public class ClusterHelper {
 		Pair<Float, Integer> result = new Pair<Float, Integer>();
 
 		if (node.isLeaf()) {
-			float certainty = (float)set.getStatisticsResult().getAggregatedUncertainty()[node.getLeafID()];
-			result.setFirst(certainty);
+			float uncertainty = (float)set.getStatisticsResult().getAggregatedUncertainty()[node.getLeafID()];
+			result.setFirst(uncertainty);
 			result.setSecond(1);
-			node.setUncertainty(certainty);
+			node.setUncertainty(uncertainty);
 			return result;
 		}
 

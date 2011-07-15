@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
-import org.caleydo.core.io.gui.LoadDataDialog;
+import org.caleydo.core.io.gui.ImportDataDialog;
 import org.caleydo.core.util.collection.Pair;
 
 /**
@@ -30,7 +30,7 @@ public class GenericGUIStartupProcedure
 	public void execute() {
 		super.execute();
 
-		new LoadDataDialog(StartupProcessor.get().getDisplay().getActiveShell(), dataDomain);
+		new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(), dataDomain);
 	}
 
 	@Override

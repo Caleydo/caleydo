@@ -35,7 +35,7 @@ public class NumericalStorage
 		hashCContainers.put(EDataRepresentation.NORMALIZED, iRawContainer.normalize());
 	}
 
-	public void normalizeCertainty(float invalidThreshold, float validThreshold) {
+	public void normalizeUncertainty(float invalidThreshold, float validThreshold) {
 
 		FloatCContainer certainties = (FloatCContainer) hashCContainers.get(EDataRepresentation.UNCERTAINTY_RAW);
 		FloatCContainer normalizedCertainties = certainties.normalizeWithExternalExtrema(invalidThreshold, validThreshold);

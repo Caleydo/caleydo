@@ -5,7 +5,7 @@ import java.util.List;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
-import org.caleydo.core.io.gui.LoadDataDialog;
+import org.caleydo.core.io.gui.ImportDataDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.util.collection.Pair;
@@ -22,8 +22,8 @@ public class GeneticGUIStartupProcedure
 
 	// NOTE: change also organism when setting another dataset
 	private static String REAL_DATA_SAMPLE_FILE =
-	// "data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
-		"data/genome/microarray/kashofer/mouse/all_mice_plus_SN_only_with_mapping.csv";
+	 "data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
+		//"data/genome/microarray/kashofer/mouse/all_mice_plus_SN_only_with_mapping.csv";
 
 	@Override
 	public void init(ApplicationInitData appInitData) {
@@ -34,7 +34,7 @@ public class GeneticGUIStartupProcedure
 			GeneralManager.get().getPreferenceStore()
 				.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES, "KEGG;BioCarta");
 
-			GeneralManager.get().getBasicInfo().setOrganism(Organism.MUS_MUSCULUS);
+			GeneralManager.get().getBasicInfo().setOrganism(Organism.HOMO_SAPIENS);
 		}
 
 		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
@@ -50,10 +50,10 @@ public class GeneticGUIStartupProcedure
 		super.execute();
 
 		if (loadSampleData)
-			new LoadDataDialog(StartupProcessor.get().getDisplay().getActiveShell(), REAL_DATA_SAMPLE_FILE,
+			new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(), REAL_DATA_SAMPLE_FILE,
 				dataDomain).open();
 		else
-			new LoadDataDialog(StartupProcessor.get().getDisplay().getActiveShell(),
+			new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(),
 				dataDomain).open();
 
 	}

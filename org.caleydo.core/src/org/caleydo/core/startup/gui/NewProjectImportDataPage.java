@@ -1,6 +1,6 @@
 package org.caleydo.core.startup.gui;
 
-import org.caleydo.core.io.gui.LoadDataDialog;
+import org.caleydo.core.io.gui.ImportDataDialog;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
@@ -45,10 +45,10 @@ public class NewProjectImportDataPage
 	@Override
 	public void createControl(Composite parent) {
 		if (inputFile != null) {
-			new LoadDataDialog(parent.getShell(), inputFile, dataDomain);
+			new ImportDataDialog(parent.getShell(), inputFile, dataDomain);
 		}
 		else {
-			new LoadDataDialog(parent.getShell(), dataDomain);
+			new ImportDataDialog(parent.getShell(), dataDomain);
 		}
 	}
 }

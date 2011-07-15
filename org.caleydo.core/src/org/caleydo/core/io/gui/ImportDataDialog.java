@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author Marc Streit
  */
-public class LoadDataDialog
+public class ImportDataDialog
 	extends Dialog {
 
 	private static int MAX_PREVIEW_TABLE_ROWS = 50;
@@ -83,23 +83,23 @@ public class LoadDataDialog
 
 	private boolean useGeneClusterInfo = false;
 	private boolean useExperimentClusterInfo = false;
-	private boolean isCertaintyDataProvided = true;
+	private boolean isUncertaintyDataProvided = false;
 
 	private ASetBasedDataDomain dataDomain = null;
 
 	boolean isGenetic = false;
 
-	public LoadDataDialog(Shell parentShell) {
+	public ImportDataDialog(Shell parentShell) {
 		super(parentShell);
 		throw new IllegalStateException("Not implemented yet!");
 	}
 
-	public LoadDataDialog(Shell parentShell, IDataDomain dataDomain) {
+	public ImportDataDialog(Shell parentShell, IDataDomain dataDomain) {
 		super(parentShell);
 		this.dataDomain = (ASetBasedDataDomain) dataDomain;
 	}
 
-	public LoadDataDialog(Shell parentShell, String inputFile, IDataDomain dataDomain) {
+	public ImportDataDialog(Shell parentShell, String inputFile, IDataDomain dataDomain) {
 		this(parentShell, dataDomain);
 		this.inputFile = inputFile;
 	}
@@ -556,11 +556,11 @@ public class LoadDataDialog
 		buttonUncertaintyDataProvided = new Button(dataPropertiesGroup, SWT.CHECK);
 		buttonUncertaintyDataProvided.setText("Uncertainty data");
 		buttonUncertaintyDataProvided.setEnabled(true);
-		buttonUncertaintyDataProvided.setSelection(true);
+		buttonUncertaintyDataProvided.setSelection(isUncertaintyDataProvided);
 		buttonUncertaintyDataProvided.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				isCertaintyDataProvided = buttonUncertaintyDataProvided.getSelection();
+				isUncertaintyDataProvided = buttonUncertaintyDataProvided.getSelection();
 			}
 		});
 	}
@@ -781,8 +781,8 @@ public class LoadDataDialog
 			}
 			else {
 
-				// in certainty mode each second column is flagged with "CERTAINTY"
-				if (isCertaintyDataProvided && (columnIndex % 2 != 0)) {
+				// in uncertainty mode each second column is flagged with "CERTAINTY"
+				if (isUncertaintyDataProvided && (columnIndex % 2 != 0)) {
 					inputPattern.append("CERTAINTY;");
 					continue;
 				}

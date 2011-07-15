@@ -293,17 +293,23 @@ public class GLFilterPipeline extends AStorageBasedView implements IViewCommandH
 					gl.glVertex2f(pos.x() + filterSize.x(), pos.y());
 					gl.glEnd();
 
-//					float fullUncertaintyHeightRight = ((filterList.get(0).getInput()
-//							.size() - filter.getFilter().getVADeltaUncertainty().size()) * filterSize
-//							.y()) / 100.f;
-//
-//					gl.glBegin(GL2.GL_QUADS);
-//					gl.glColor4f(153 / 255.f, 213 / 255.f, 148 / 255.f, 0.3f);
-//					gl.glVertex2f(pos.x(), pos.y());
-//					gl.glVertex2f(pos.x(), pos.y() + fullUncertaintyHeightRight);
-//					gl.glVertex2f(pos.x() + filterSize.x(), pos.y() + fullUncertaintyHeightRight);
-//					gl.glVertex2f(pos.x() + filterSize.x(), pos.y());
-//					gl.glEnd();
+					// float fullUncertaintyHeightRight =
+					// ((filterList.get(0).getInput()
+					// .size() -
+					// filter.getFilter().getVADeltaUncertainty().size()) *
+					// filterSize
+					// .y()) / 100.f;
+					//
+					// gl.glBegin(GL2.GL_QUADS);
+					// gl.glColor4f(153 / 255.f, 213 / 255.f, 148 / 255.f,
+					// 0.3f);
+					// gl.glVertex2f(pos.x(), pos.y());
+					// gl.glVertex2f(pos.x(), pos.y() +
+					// fullUncertaintyHeightRight);
+					// gl.glVertex2f(pos.x() + filterSize.x(), pos.y() +
+					// fullUncertaintyHeightRight);
+					// gl.glVertex2f(pos.x() + filterSize.x(), pos.y());
+					// gl.glEnd();
 				}
 
 				filter.getRepresentation().updateSelections(selectionManager);
@@ -667,7 +673,7 @@ public class GLFilterPipeline extends AStorageBasedView implements IViewCommandH
 	@Override
 	public void initData() {
 		super.initData();
-		
+
 		performDataUncertaintyFilter();
 	}
 
@@ -758,13 +764,13 @@ public class GLFilterPipeline extends AStorageBasedView implements IViewCommandH
 	@Override
 	public void renderContext(boolean bRenderContext) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void initLists() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

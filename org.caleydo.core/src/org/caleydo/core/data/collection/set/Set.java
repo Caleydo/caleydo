@@ -73,7 +73,7 @@ public class Set
 
 	ASetBasedDataDomain dataDomain;
 
-	private boolean containsUncertaintyData;
+	private boolean containsUncertaintyData = false;
 	/**
 	 * the uncertainties for the whole storage aggregated across the storageVA based on the normalized
 	 * uncertainty values
@@ -981,7 +981,7 @@ public class Set
 		for (AStorage storage : hashStorages.values()) {
 
 			if (storage instanceof NumericalStorage)
-				((NumericalStorage) storage).normalizeCertainty(invalidThreshold, validThreshold);
+				((NumericalStorage) storage).normalizeUncertainty(invalidThreshold, validThreshold);
 		}
 
 		aggregatedNormalizedUncertainties = new float[depth()];

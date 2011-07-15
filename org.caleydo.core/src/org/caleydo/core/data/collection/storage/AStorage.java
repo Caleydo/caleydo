@@ -109,7 +109,7 @@ public abstract class AStorage
 		hashCContainers.put(EDataRepresentation.RAW, container);
 	}
 
-	public void setCertaintyData(float[] certaintyData) {
+	public void setUncertaintyData(float[] uncertaintyData) {
 
 		if (isCertaintyDataSet)
 			throw new IllegalStateException("Certainty data was already set in Storage " + uniqueID
@@ -117,7 +117,7 @@ public abstract class AStorage
 
 		isCertaintyDataSet = true;
 
-		FloatCContainer container = new FloatCContainer(certaintyData);
+		FloatCContainer container = new FloatCContainer(uncertaintyData);
 		hashCContainers.put(EDataRepresentation.UNCERTAINTY_RAW, container);
 	}
 
