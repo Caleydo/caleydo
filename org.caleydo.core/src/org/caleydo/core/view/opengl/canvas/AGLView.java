@@ -228,7 +228,8 @@ public abstract class AGLView
 
 	private float relativeViewTranlateY;
 
-	private HashMap<String, HashMap<Integer, IPickingListener>> pickingListeners;
+	private HashMap<String, HashMap<Integer, IPickingListener>> singleIDPickingListeners;
+	private HashMap<String, IPickingListener> multiIDPickingListeners;
 
 	// FIXME: Maybe this can be generalized so a view only needs only one DragAndDropController
 	private DragAndDropController scrollBarDragAndDropController;
@@ -253,7 +254,8 @@ public abstract class AGLView
 		}
 
 		glMouseWheelListener = new GLMouseWheelListener(this);
-		pickingListeners = new HashMap<String, HashMap<Integer, IPickingListener>>();
+		singleIDPickingListeners = new HashMap<String, HashMap<Integer, IPickingListener>>();
+		multiIDPickingListeners = new HashMap<String, IPickingListener>();
 		scrollBarDragAndDropController = new DragAndDropController(this);
 
 		this.viewFrustum = viewFrustum;
@@ -640,14 +642,21 @@ public abstract class AGLView
 					if (pickingType == EPickingType.CONTEXT_MENU_SELECTION.name()
 						|| pickingType == EPickingType.CONTEXT_MENU_SCROLL_DOWN.name()
 						|| pickingType == EPickingType.CONTEXT_MENU_SCROLL_UP.name()) {
-						contextMenu.handlePickingEvents(EPickingType.valueOf(pickingType), ePickingMode, externalID);
+						contextMenu.handlePickingEvents(EPickingType.valueOf(pickingType), ePickingMode,
+							externalID);
 					}
 					else {
 						if (tempPick.getPickingMode() != EPickingMode.RIGHT_CLICKED)
 							contextMenu.flush();
 						handlePicking(pickingType, ePickingMode, externalID, tempPick);
 						// FIXME: This is for legacy support -> picking listeners should be used
-						handlePickingEvents(EPickingType.valueOf(pickingType), ePickingMode, externalID, tempPick);
+						try {
+							handlePickingEvents(EPickingType.valueOf(pickingType), ePickingMode, externalID,
+								tempPick);
+						}
+						catch (Exception e) {
+
+						}
 					}
 					pickingManager.flushHits(uniqueID, pickingType);
 				}
@@ -657,12 +666,21 @@ public abstract class AGLView
 
 	protected void handlePicking(String pickingType, EPickingMode pickingMode, int pickingID, Pick pick) {
 
-		HashMap<Integer, IPickingListener> map = pickingListeners.get(pickingType);
+		IPickingListener pickingListener = multiIDPickingListeners.get(pickingType);
+
+		handlePicking(pickingListener, pickingMode, pick);
+
+		HashMap<Integer, IPickingListener> map = singleIDPickingListeners.get(pickingType);
 		if (map == null)
 			return;
 
-		IPickingListener pickingListener = map.get(pickingID);
+		pickingListener = map.get(pickingID);
 
+		handlePicking(pickingListener, pickingMode, pick);
+
+	}
+
+	private void handlePicking(IPickingListener pickingListener, EPickingMode pickingMode, Pick pick) {
 		if (pickingListener == null)
 			return;
 
@@ -683,7 +701,6 @@ public abstract class AGLView
 				pickingListener.dragged(pick);
 				break;
 		}
-
 	}
 
 	/**
@@ -694,15 +711,27 @@ public abstract class AGLView
 	 * @param pickingType
 	 * @param externalID
 	 */
-	public void addPickingListener(IPickingListener pickingListener, String pickingType, int externalID) {
-		HashMap<Integer, IPickingListener> map = pickingListeners.get(pickingType);
+	public void addSingleIDPickingListener(IPickingListener pickingListener, String pickingType,
+		int externalID) {
+		HashMap<Integer, IPickingListener> map = singleIDPickingListeners.get(pickingType);
 		if (map == null) {
 			map = new HashMap<Integer, IPickingListener>();
-			pickingListeners.put(pickingType, map);
+			singleIDPickingListeners.put(pickingType, map);
 		}
 
 		map.put(externalID, pickingListener);
 
+	}
+
+	/**
+	 * Registers a {@link IPickingListener} for this view. When objects are picked with the specified
+	 * pickingType the listener's methods are called.
+	 * 
+	 * @param pickingListener
+	 * @param pickingType
+	 */
+	public void addMultiIDPickingListener(IPickingListener pickingListener, String pickingType) {
+		multiIDPickingListeners.put(pickingType, pickingListener);
 	}
 
 	/**
@@ -1318,8 +1347,6 @@ public abstract class AGLView
 			relativeViewTranlateY = viewTranslateY / viewFrustum.getHeight();
 		}
 	}
-
-	
 
 	public synchronized int createNewScrollBarID() {
 		return currentScrollBarID++;

@@ -35,7 +35,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	}
 
 	private void createPickingListener() {
-		view.addPickingListener(new APickingListener() {
+		view.addSingleIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -101,6 +101,11 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	public void handleDrop(GL2 gl, float mouseCoordinateX,
 			float mouseCoordinateY) {
 		dragAndDropController.clearDraggables();
+	}
+
+	@Override
+	public int getID() {
+		return id;
 	}
 
 }

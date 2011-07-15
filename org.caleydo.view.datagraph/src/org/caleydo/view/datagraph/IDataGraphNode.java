@@ -38,4 +38,6 @@ public interface IDataGraphNode extends IDraggable {
 	public Pair<Point2D, Point2D> getRightAnchorPoints();
 	
 	public Point2D getPosition();
+	
+	public int getID();
 }

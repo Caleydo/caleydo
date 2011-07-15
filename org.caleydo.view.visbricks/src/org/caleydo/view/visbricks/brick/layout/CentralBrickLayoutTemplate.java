@@ -278,7 +278,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// }, button.getPickingType(), button.getButtonID());
 		// }
 
-		brick.addPickingListener(new APickingListener() {
+		brick.addSingleIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {

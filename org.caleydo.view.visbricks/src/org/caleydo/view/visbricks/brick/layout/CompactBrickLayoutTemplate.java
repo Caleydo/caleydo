@@ -189,7 +189,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	protected void registerPickingListeners() {
-		brick.addPickingListener(new APickingListener() {
+		brick.addSingleIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {

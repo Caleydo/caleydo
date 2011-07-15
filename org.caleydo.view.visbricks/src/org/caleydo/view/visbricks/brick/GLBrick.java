@@ -210,7 +210,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		wrappingLayout.setAbsoluteSizeX(defaultWidth);
 		templateRenderer.updateLayout();
 
-		addPickingListener(new APickingListener() {
+		addSingleIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -986,7 +986,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	private void registerPickingListeners() {
-		addPickingListener(new APickingListener() {
+		addSingleIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
