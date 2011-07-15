@@ -228,7 +228,7 @@ public abstract class AGLView
 
 	private float relativeViewTranlateY;
 
-	private HashMap<EPickingType, HashMap<Integer, IPickingListener>> pickingListeners;
+	private HashMap<String, HashMap<Integer, IPickingListener>> pickingListeners;
 
 	// FIXME: Maybe this can be generalized so a view only needs only one DragAndDropController
 	private DragAndDropController scrollBarDragAndDropController;
@@ -253,7 +253,7 @@ public abstract class AGLView
 		}
 
 		glMouseWheelListener = new GLMouseWheelListener(this);
-		pickingListeners = new HashMap<EPickingType, HashMap<Integer, IPickingListener>>();
+		pickingListeners = new HashMap<String, HashMap<Integer, IPickingListener>>();
 		scrollBarDragAndDropController = new DragAndDropController(this);
 
 		this.viewFrustum = viewFrustum;
@@ -619,10 +619,10 @@ public abstract class AGLView
 	 */
 	protected final void checkForHits(final GL2 gl) {
 
-		Set<EPickingType> hitTypes = pickingManager.getHitTypes(uniqueID);
+		Set<String> hitTypes = pickingManager.getHitTypes(uniqueID);
 		if (hitTypes == null)
 			return;
-		for (EPickingType pickingType : hitTypes) {
+		for (String pickingType : hitTypes) {
 
 			ArrayList<Pick> alHits = null;
 
@@ -637,17 +637,17 @@ public abstract class AGLView
 					}
 
 					EPickingMode ePickingMode = tempPick.getPickingMode();
-					if (pickingType == EPickingType.CONTEXT_MENU_SELECTION
-						|| pickingType == EPickingType.CONTEXT_MENU_SCROLL_DOWN
-						|| pickingType == EPickingType.CONTEXT_MENU_SCROLL_UP) {
-						contextMenu.handlePickingEvents(pickingType, ePickingMode, externalID);
+					if (pickingType == EPickingType.CONTEXT_MENU_SELECTION.name()
+						|| pickingType == EPickingType.CONTEXT_MENU_SCROLL_DOWN.name()
+						|| pickingType == EPickingType.CONTEXT_MENU_SCROLL_UP.name()) {
+						contextMenu.handlePickingEvents(EPickingType.valueOf(pickingType), ePickingMode, externalID);
 					}
 					else {
 						if (tempPick.getPickingMode() != EPickingMode.RIGHT_CLICKED)
 							contextMenu.flush();
 						handlePicking(pickingType, ePickingMode, externalID, tempPick);
 						// FIXME: This is for legacy support -> picking listeners should be used
-						handlePickingEvents(pickingType, ePickingMode, externalID, tempPick);
+						handlePickingEvents(EPickingType.valueOf(pickingType), ePickingMode, externalID, tempPick);
 					}
 					pickingManager.flushHits(uniqueID, pickingType);
 				}
@@ -655,7 +655,7 @@ public abstract class AGLView
 		}
 	}
 
-	protected void handlePicking(EPickingType pickingType, EPickingMode pickingMode, int pickingID, Pick pick) {
+	protected void handlePicking(String pickingType, EPickingMode pickingMode, int pickingID, Pick pick) {
 
 		HashMap<Integer, IPickingListener> map = pickingListeners.get(pickingType);
 		if (map == null)
@@ -694,7 +694,7 @@ public abstract class AGLView
 	 * @param pickingType
 	 * @param externalID
 	 */
-	public void addPickingListener(IPickingListener pickingListener, EPickingType pickingType, int externalID) {
+	public void addPickingListener(IPickingListener pickingListener, String pickingType, int externalID) {
 		HashMap<Integer, IPickingListener> map = pickingListeners.get(pickingType);
 		if (map == null) {
 			map = new HashMap<Integer, IPickingListener>();

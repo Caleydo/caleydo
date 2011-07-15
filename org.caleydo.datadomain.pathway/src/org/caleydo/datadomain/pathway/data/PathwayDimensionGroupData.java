@@ -28,6 +28,7 @@ public class PathwayDimensionGroupData extends
 	private ASetBasedDataDomain mappingDataDomain;
 	private ArrayList<PathwayGraph> pathways;
 	private int uniqueID;
+	private String label;
 
 	{
 		uniqueID = GeneralManager.get().getIDCreator()
@@ -36,10 +37,11 @@ public class PathwayDimensionGroupData extends
 
 	public PathwayDimensionGroupData(IDataDomain dataDomain,
 			ASetBasedDataDomain mappingDataDomain,
-			ArrayList<PathwayGraph> pathways) {
+			ArrayList<PathwayGraph> pathways, String label) {
 		this.dataDomain = dataDomain;
 		this.mappingDataDomain = mappingDataDomain;
 		this.pathways = pathways;
+		this.label = label;
 	}
 
 	@Override
@@ -239,6 +241,11 @@ public class PathwayDimensionGroupData extends
 	public int getID() {
 		// TODO Auto-generated method stub
 		return uniqueID;
+	}
+
+	@Override
+	public String getLabel() {
+		return label;
 	}
 
 }

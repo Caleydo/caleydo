@@ -20,4 +20,6 @@ public abstract class ADimensionGroupData {
 	
 	public abstract List<ISegmentData> getSegmentData();
 	
+	public abstract String getLabel();
+	
 }

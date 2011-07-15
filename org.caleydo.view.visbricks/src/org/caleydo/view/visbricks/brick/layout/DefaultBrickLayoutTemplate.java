@@ -311,7 +311,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				brick.setSizeFixed(isResizingLocked);
 				lockResizingButton.setSelected(isResizingLocked);
 			}
-		}, EPickingType.BRICK_LOCK_RESIZING_BUTTON, LOCK_RESIZING_BUTTON_ID);
+		}, EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 
 		brick.addPickingListener(
 				new APickingListener() {
@@ -325,7 +325,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 						viewSwitchingModeButton
 								.setSelected(isGlobalViewSwitching);
 					}
-				}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
+				}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID);
 
 		brick.addPickingListener(new APickingListener() {
@@ -335,7 +335,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				brick.collapse();
 				dimensionGroup.updateLayout();
 			}
-		}, EPickingType.BRICK_COLLAPSE_BUTTON, COLLAPSE_BUTTON_ID);
+		}, EPickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID);
 
 		// brick.addPickingListener(new APickingListener() {
 		//
@@ -351,7 +351,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 			public void clicked(Pick pick) {
 				dimensionGroup.showDetailedBrick(brick, false);
 			}
-		}, EPickingType.EXPAND_RIGHT_HANDLE, brick.getID());
+		}, EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 
 		brick.addPickingListener(new APickingListener() {
 
@@ -359,7 +359,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 			public void clicked(Pick pick) {
 				dimensionGroup.showDetailedBrick(brick, true);
 			}
-		}, EPickingType.EXPAND_LEFT_HANDLE, brick.getID());
+		}, EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 	}
 
 	@Override

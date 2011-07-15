@@ -297,7 +297,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 				IDataDomain pathwayDataDomain = DataDomainManager.get()
 						.getDataDomainByType("org.caleydo.datadomain.pathway");
 				PathwayDimensionGroupData pathwayDimensionGroupData = new PathwayDimensionGroupData(
-						pathwayDataDomain, dataDomain, pathways);
+						pathwayDataDomain, dataDomain, pathways, "PathwayGroup");
 
 				pathwayDataDomain.addDimensionGroup(pathwayDimensionGroupData);
 
@@ -327,7 +327,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 			}
 
-		}, EPickingType.BRICK, getID());
+		}, EPickingType.BRICK.name(), getID());
 
 		dimensionGroup.updateLayout();
 
@@ -993,7 +993,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 				isBrickResizeActive = true;
 
 			}
-		}, EPickingType.RESIZE_HANDLE_LOWER_RIGHT, 1);
+		}, EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
 	}
 
 	/**

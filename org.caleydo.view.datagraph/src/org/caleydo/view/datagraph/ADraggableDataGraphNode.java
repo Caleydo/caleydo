@@ -57,7 +57,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 				}
 			}
 
-		}, EPickingType.DATA_GRAPH_NODE, id);
+		}, EPickingType.DATA_GRAPH_NODE.name(), id);
 	}
 
 	@Override

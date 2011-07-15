@@ -115,7 +115,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 							}
 						});
 			}
-		}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, CLUSTER_BUTTON_ID);
+		}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID);
 
 		return headerBarElements;
 	}
@@ -169,7 +169,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 					}
 					dimensionGroup.updateLayout();
 				}
-			}, button.getPickingType(), button.getButtonID());
+			}, button.getPickingType().name(), button.getButtonID());
 
 			layoutTemplate.registerViewTypeChangeListener(button);
 		}

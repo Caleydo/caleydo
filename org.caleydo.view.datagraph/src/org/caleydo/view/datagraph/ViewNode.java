@@ -25,26 +25,27 @@ import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 
 public class ViewNode extends ADraggableDataGraphNode {
-	
+
 	private final static int SPACING_PIXELS = 4;
 	private final static int CAPTION_HEIGHT_PIXELS = 16;
 	private final static int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
 	private final static int OVERVIEW_COMP_GROUP_HEIGHT_PIXELS = 32;
-	
+
 	private LayoutManager layoutManager;
 	private ComparisonGroupOverviewRenderer compGroupOverviewRenderer;
 	private AGLView representedView;
 	private Set<IDataDomain> dataDomains;
 
 	public ViewNode(ForceDirectedGraphLayout graphLayout, GLDataGraph view,
-			DragAndDropController dragAndDropController, int id, AGLView representedView) {
+			DragAndDropController dragAndDropController, int id,
+			AGLView representedView) {
 		super(graphLayout, view, dragAndDropController, id);
 
 		this.representedView = representedView;
-		
+
 		setupLayout();
 	}
-	
+
 	private void setupLayout() {
 		layoutManager = new LayoutManager(new ViewFrustum());
 		LayoutTemplate layoutTemplate = new LayoutTemplate();
@@ -72,8 +73,8 @@ public class ViewNode extends ADraggableDataGraphNode {
 		captionLayout.setPixelGLConverter(pixelGLConverter);
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setRatioSizeX(1);
-		captionLayout.setRenderer(new LabelRenderer(view, representedView.getViewType(),
-				EPickingType.DATA_GRAPH_NODE, id));
+		captionLayout.setRenderer(new LabelRenderer(view, representedView
+				.getViewType(), EPickingType.DATA_GRAPH_NODE, id));
 
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
@@ -82,7 +83,8 @@ public class ViewNode extends ADraggableDataGraphNode {
 		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
-		compGroupOverviewRenderer = new ComparisonGroupOverviewRenderer(this, view);
+		compGroupOverviewRenderer = new ComparisonGroupOverviewRenderer(this,
+				view, dragAndDropController);
 		compGroupLayout.setPixelGLConverter(pixelGLConverter);
 		compGroupLayout.setPixelSizeY(OVERVIEW_COMP_GROUP_HEIGHT_PIXELS);
 		// compGroupLayout.setPixelSizeX(compGroupOverviewRenderer.getMinWidthPixels());
@@ -102,11 +104,10 @@ public class ViewNode extends ADraggableDataGraphNode {
 		layoutManager.setTemplate(layoutTemplate);
 	}
 
-
 	@Override
 	public List<ADimensionGroupData> getDimensionGroups() {
 		List<ADimensionGroupData> groups = representedView.getDimensionGroups();
-		if(groups == null) {
+		if (groups == null) {
 			groups = new ArrayList<ADimensionGroupData>();
 		}
 		return groups;
@@ -150,7 +151,7 @@ public class ViewNode extends ADraggableDataGraphNode {
 		return 2 * SPACING_PIXELS
 				+ compGroupOverviewRenderer.getMinWidthPixels();
 	}
-	
+
 	@Override
 	public Pair<Point2D, Point2D> getTopDimensionGroupAnchorPoints(
 			ADimensionGroupData dimensionGroup) {
@@ -238,7 +239,7 @@ public class ViewNode extends ADraggableDataGraphNode {
 	public Set<IDataDomain> getDataDomains() {
 		return dataDomains;
 	}
-	
+
 	@Override
 	public Pair<Point2D, Point2D> getLeftAnchorPoints() {
 		Point2D position = graphLayout.getNodePosition(this, true);
@@ -292,7 +293,7 @@ public class ViewNode extends ADraggableDataGraphNode {
 				.getY());
 		return new Point2D.Float(x, y);
 	}
-	
+
 	@Override
 	public float getHeight() {
 		return pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());

@@ -202,7 +202,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 				// brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
 				dimensionGroup.updateLayout();
 			}
-		}, EPickingType.BRICK_EXPAND_BUTTON, EXPAND_BUTTON_ID);
+		}, EPickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID);
 
 	}
 

@@ -111,4 +111,9 @@ public class SetBasedDimensionGroupData extends ADimensionGroupData {
 		return segmentBrickData;
 	}
 
+	@Override
+	public String getLabel() {
+		return set.getLabel();
+	}
+
 }

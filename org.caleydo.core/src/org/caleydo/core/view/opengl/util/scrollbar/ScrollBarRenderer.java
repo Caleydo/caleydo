@@ -72,7 +72,7 @@ public class ScrollBarRenderer
 				}
 			}
 
-		}, scrollBar.getPickingType(), scrollBar.getID());
+		}, scrollBar.getPickingType().name(), scrollBar.getID());
 	}
 
 	@Override

@@ -81,7 +81,7 @@ public class DataNode extends ADraggableDataGraphNode {
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
 		compGroupOverviewRenderer = new ComparisonGroupOverviewRenderer(this,
-				view);
+				view, dragAndDropController);
 		compGroupLayout.setPixelGLConverter(pixelGLConverter);
 		compGroupLayout.setPixelSizeY(OVERVIEW_COMP_GROUP_HEIGHT_PIXELS);
 		// compGroupLayout.setPixelSizeX(compGroupOverviewRenderer.getMinWidthPixels());
