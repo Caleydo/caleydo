@@ -779,4 +779,9 @@ public class GLFilterPipeline extends AStorageBasedView implements IViewCommandH
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public boolean isDataView() {
+		return false;
+	}
 }

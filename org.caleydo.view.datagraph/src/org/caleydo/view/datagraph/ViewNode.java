@@ -303,4 +303,8 @@ public class ViewNode extends ADraggableDataGraphNode {
 		return pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
 	}
 
+	public AGLView getRepresentedView() {
+		return representedView;
+	}
+
 }

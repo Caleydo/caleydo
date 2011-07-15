@@ -34,11 +34,13 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
+import org.caleydo.core.manager.event.data.DimensionGroupsChangedEvent;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAEvent;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
+import org.caleydo.core.manager.event.view.DataDomainsChangedEvent;
 import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
@@ -854,6 +856,10 @@ public abstract class ASetBasedDataDomain
 				createDimensionGroupsFromStorageTree(child);
 			}
 		}
+		
+		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 	@Override
@@ -864,11 +870,17 @@ public abstract class ASetBasedDataDomain
 	@Override
 	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups) {
 		this.dimensionGroups = dimensionGroups;
+		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 	@Override
 	public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
 		dimensionGroups.add(dimensionGroup);
+		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 	public void aggregateGroups(java.util.Set<Integer> groups) {

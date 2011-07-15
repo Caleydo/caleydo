@@ -102,6 +102,19 @@ public class Graph<NodeType extends IDataGraphNode> {
 				}
 			}
 		}
+		
+		Set<Pair<NodeType, NodeType>> edgesToRemove = new HashSet<Pair<NodeType,NodeType>>();
+		
+		for(Pair<NodeType, NodeType> edge : edges) {
+			if(edge.getFirst() == node || edge.getSecond() == node) {
+				edgesToRemove.add(edge);
+			}
+		}
+		
+		for(Pair<NodeType, NodeType> edge : edgesToRemove) {
+			edges.remove(edge);
+		}
+		
 		nodeConnections.remove(node);
 		nodes.remove(node);
 	}

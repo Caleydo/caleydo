@@ -29,6 +29,7 @@ import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.NewMetaSetsEvent;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.DataDomainsChangedEvent;
 import org.caleydo.core.manager.event.view.storagebased.ConnectionsModeEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -1248,6 +1249,10 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				this.dimensionGroupData.add(data);
 			}
 		}
+		
+		DataDomainsChangedEvent event = new DataDomainsChangedEvent(this);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 	public void metaSetsUpdated() {

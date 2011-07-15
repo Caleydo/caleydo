@@ -19,6 +19,10 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainGraph;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.event.data.DimensionGroupsChangedEvent;
+import org.caleydo.core.manager.event.view.DataDomainsChangedEvent;
+import org.caleydo.core.manager.event.view.NewViewEvent;
+import org.caleydo.core.manager.event.view.ViewClosedEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -37,7 +41,11 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.datagraph.bandlayout.AConnectionBandCreator;
 import org.caleydo.view.datagraph.bandlayout.BandInfo;
 import org.caleydo.view.datagraph.bandlayout.ConnectionBandCreatorFactory;
+import org.caleydo.view.datagraph.listener.DataDomainsChangedEventListener;
+import org.caleydo.view.datagraph.listener.DimensionGroupsChangedEventListener;
 import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
+import org.caleydo.view.datagraph.listener.NewViewEventListener;
+import org.caleydo.view.datagraph.listener.ViewClosedEventListener;
 
 /**
  * This class is responsible for rendering the radial hierarchy and receiving
@@ -65,7 +73,13 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private Set<DataNode> dataNodes;
 	private Set<ViewNode> viewNodes;
 	private Map<IDataDomain, Set<ViewNode>> viewNodesOfDataDomains;
-	ConnectionBandRenderer connectionBandRenderer;
+	private Map<IDataDomain, DataNode> dataNodesOfDataDomains;
+	private ConnectionBandRenderer connectionBandRenderer;
+
+	private NewViewEventListener newViewEventListener;
+	private ViewClosedEventListener viewClosedEventListener;
+	private DataDomainsChangedEventListener dataDomainsChangedEventListener;
+	private DimensionGroupsChangedEventListener dimensionGroupsChangedEventListener;
 
 	/**
 	 * Constructor.
@@ -83,6 +97,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		dataNodes = new HashSet<DataNode>();
 		viewNodes = new HashSet<ViewNode>();
 		viewNodesOfDataDomains = new HashMap<IDataDomain, Set<ViewNode>>();
+		dataNodesOfDataDomains = new HashMap<IDataDomain, DataNode>();
 
 		DataDomainGraph dataDomainGraph = DataDomainManager.get()
 				.getDataDomainGraph();
@@ -101,6 +116,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			if (!nodeAdded) {
 				dataGraph.addNode(dataNode);
 				dataNodes.add(dataNode);
+				dataNodesOfDataDomains.put(dataNode.getDataDomain(), dataNode);
 			}
 
 			Set<IDataDomain> neighbors = dataDomainGraph
@@ -121,56 +137,38 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 							neighborDataDomain);
 					dataGraph.addNode(node);
 					dataNodes.add(node);
+					dataNodesOfDataDomains.put(node.getDataDomain(), node);
 					dataGraph.addEdge(dataNode, node);
 				}
 			}
 		}
 
-//		Set<String> allowedViewTypes = new HashSet<String>();
-//		// TODO: Maybe add to AView isMetaView() instead?
-//		allowedViewTypes.add("org.caleydo.view.parcoords");
-//		allowedViewTypes.add("org.caleydo.view.heatmap");
-//		allowedViewTypes.add("org.caleydo.view.heatmap.hierarchical");
-//		allowedViewTypes.add("org.caleydo.view.visbricks");
-//		allowedViewTypes.add("org.caleydo.view.scatterplot");
-//		allowedViewTypes.add("org.caleydo.view.tabular");
-//		allowedViewTypes.add("org.caleydo.view.bucket");
+		// Set<String> allowedViewTypes = new HashSet<String>();
+		// // TODO: Maybe add to AView isMetaView() instead?
+		// allowedViewTypes.add("org.caleydo.view.parcoords");
+		// allowedViewTypes.add("org.caleydo.view.heatmap");
+		// allowedViewTypes.add("org.caleydo.view.heatmap.hierarchical");
+		// allowedViewTypes.add("org.caleydo.view.visbricks");
+		// allowedViewTypes.add("org.caleydo.view.scatterplot");
+		// allowedViewTypes.add("org.caleydo.view.tabular");
+		// allowedViewTypes.add("org.caleydo.view.bucket");
 
 		Collection<AGLView> views = GeneralManager.get()
 				.getViewGLCanvasManager().getAllGLViews();
 
 		for (AGLView view : views) {
-			if (!view.isRenderedRemote()
-					&& view.isDataView()) {
-				ViewNode node = new ViewNode(graphLayout, this,
-						dragAndDropController, lastNodeID++, view);
-				dataGraph.addNode(node);
-				viewNodes.add(node);
-				Set<IDataDomain> dataDomains = view.getDataDomains();
-				if (dataDomains != null && !dataDomains.isEmpty()) {
-					node.setDataDomains(dataDomains);
-					for (IDataDomain dataDomain : dataDomains) {
-						Set<ViewNode> viewNodes = viewNodesOfDataDomains
-								.get(dataDomain);
-						if (viewNodes == null) {
-							viewNodes = new HashSet<ViewNode>();
-						}
-						viewNodes.add(node);
-						viewNodesOfDataDomains.put(dataDomain, viewNodes);
-					}
-				}
-			}
+			addView(view);
 		}
 
-		for (DataNode dataNode : dataNodes) {
-			Set<ViewNode> viewNodes = viewNodesOfDataDomains.get(dataNode
-					.getDataDomain());
-			if (viewNodes != null) {
-				for (ViewNode viewNode : viewNodes) {
-					dataGraph.addEdge(dataNode, viewNode);
-				}
-			}
-		}
+		// for (DataNode dataNode : dataNodes) {
+		// Set<ViewNode> viewNodes = viewNodesOfDataDomains.get(dataNode
+		// .getDataDomain());
+		// if (viewNodes != null) {
+		// for (ViewNode viewNode : viewNodes) {
+		// dataGraph.addEdge(dataNode, viewNode);
+		// }
+		// }
+		// }
 
 		// DataNode o2 = new DataNode(graphLayout, this, dragAndDropController,
 		// lastNodeID++);
@@ -338,6 +336,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			rect.setFrame(BOUNDS_SPACING_PIXELS + (maxNodeWidthPixels / 2.0f),
 					BOUNDS_SPACING_PIXELS + (maxNodeHeightPixels / 2.0f),
 					drawingAreaWidth, drawingAreaHeight);
+			graphLayout.clearNodePositions();
 			graphLayout.layout(rect);
 		} else {
 			if (!dragAndDropController.isDragging()) {
@@ -413,10 +412,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				.getConnectionBandCreator(node1, node2,
 						parentGLCanvas.getPixelGLConverter());
 
-		for (List<Pair<Point2D, Point2D>> anchorPoints : bandCreator.calcConnectionBands()) {
+		for (List<Pair<Point2D, Point2D>> anchorPoints : bandCreator
+				.calcConnectionBands()) {
 			connectionBandRenderer.init(gl);
-			connectionBandRenderer.renderComplexBand(gl, anchorPoints, false, new float[] { 0,
-					0, 0 }, 0.2f);
+			connectionBandRenderer.renderComplexBand(gl, anchorPoints, false,
+					new float[] { 0, 0, 0 }, 0.2f);
 		}
 
 		// Set<ADimensionGroupData> dimensionGroups1 =
@@ -569,7 +569,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				side1AnchorPos2[1]
 						+ (bandInfo.isOffset1Horizontal() ? 0 : bandInfo
 								.getOffset1()) };
-		
+
 		float[] offset2AnchorPos1 = new float[] {
 				side2AnchorPos1[0]
 						+ (bandInfo.isOffset2Horizontal() ? (bandInfo
@@ -603,7 +603,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		// connectionBandRenderer.renderStraightBand(gl, leftTopPos,
 		// leftBottomPos, rightTopPos, rightBottomPos, false, 0, 0, false,
 		// new float[] { 0, 0, 0, 1 }, 1f);
-		
+
 		// connectionBandRenderer.renderSingleBand(gl, side1AnchorPos1,
 		// side1AnchorPos2, side2AnchorPos1, side2AnchorPos2, false,
 		// bandInfo.getOffset1(), bandInfo.getOffset2(), new float[] { 0,
@@ -664,12 +664,49 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
+		newViewEventListener = new NewViewEventListener();
+		newViewEventListener.setHandler(this);
+		eventPublisher.addListener(NewViewEvent.class, newViewEventListener);
+
+		viewClosedEventListener = new ViewClosedEventListener();
+		viewClosedEventListener.setHandler(this);
+		eventPublisher.addListener(ViewClosedEvent.class,
+				viewClosedEventListener);
+		
+		dataDomainsChangedEventListener = new DataDomainsChangedEventListener();
+		dataDomainsChangedEventListener.setHandler(this);
+		eventPublisher.addListener(DataDomainsChangedEvent.class,
+				dataDomainsChangedEventListener);
+		
+		dimensionGroupsChangedEventListener = new DimensionGroupsChangedEventListener();
+		dimensionGroupsChangedEventListener.setHandler(this);
+		eventPublisher.addListener(DimensionGroupsChangedEvent.class,
+				dimensionGroupsChangedEventListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
+		if (newViewEventListener != null) {
+			eventPublisher.removeListener(newViewEventListener);
+			newViewEventListener = null;
+		}
+
+		if (viewClosedEventListener != null) {
+			eventPublisher.removeListener(viewClosedEventListener);
+			viewClosedEventListener = null;
+		}
+		
+		if (dataDomainsChangedEventListener != null) {
+			eventPublisher.removeListener(dataDomainsChangedEventListener);
+			dataDomainsChangedEventListener = null;
+		}
+
+		if (dimensionGroupsChangedEventListener != null) {
+			eventPublisher.removeListener(dimensionGroupsChangedEventListener);
+			dimensionGroupsChangedEventListener = null;
+		}
 	}
 
 	@Override
@@ -689,6 +726,76 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	public void setApplyAutomaticLayout(boolean applyAutomaticLayout) {
 		this.applyAutomaticLayout = applyAutomaticLayout;
+	}
+
+	public void addView(AGLView view) {
+		if (!view.isRenderedRemote() && view.isDataView()) {
+			ViewNode node = new ViewNode(graphLayout, this,
+					dragAndDropController, lastNodeID++, view);
+			dataGraph.addNode(node);
+			viewNodes.add(node);
+			Set<IDataDomain> dataDomains = view.getDataDomains();
+			if (dataDomains != null && !dataDomains.isEmpty()) {
+				node.setDataDomains(dataDomains);
+				for (IDataDomain dataDomain : dataDomains) {
+					Set<ViewNode> viewNodes = viewNodesOfDataDomains
+							.get(dataDomain);
+					if (viewNodes == null) {
+						viewNodes = new HashSet<ViewNode>();
+					}
+					viewNodes.add(node);
+					viewNodesOfDataDomains.put(dataDomain, viewNodes);
+					DataNode dataNode = dataNodesOfDataDomains.get(dataDomain);
+					if (dataNode != null) {
+						dataGraph.addEdge(dataNode, node);
+					}
+				}
+			}
+			applyAutomaticLayout = true;
+			setDisplayListDirty();
+		}
+	}
+
+	public void removeView(AGLView view) {
+
+		ViewNode viewNode = null;
+		for (ViewNode node : viewNodes) {
+			if (node.getRepresentedView() == view) {
+				viewNode = node;
+				break;
+			}
+		}
+
+		if (viewNode == null)
+			return;
+
+		Set<IDataDomain> dataDomains = viewNode.getDataDomains();
+
+		if (dataDomains != null) {
+			for (IDataDomain dataDomain : dataDomains) {
+				Set<ViewNode> viewNodes = viewNodesOfDataDomains
+						.get(dataDomain);
+				if (viewNodes != null) {
+					viewNodes.remove(viewNode);
+				}
+			}
+		}
+
+		dataGraph.removeNode(viewNode);
+		viewNodes.remove(viewNode);
+		applyAutomaticLayout = true;
+		setDisplayListDirty();
+	}
+	
+	public void updateView(AGLView view) {
+		removeView(view);
+		addView(view);
+	}
+	
+	public void updateDataDomain(IDataDomain dataDomain) {
+		if(dataNodesOfDataDomains.get(dataDomain) != null) {
+			setDisplayListDirty();
+		}
 	}
 
 }

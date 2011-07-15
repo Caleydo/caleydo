@@ -16,6 +16,8 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
+import org.caleydo.core.manager.event.view.NewViewEvent;
+import org.caleydo.core.manager.event.view.ViewClosedEvent;
 import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -150,6 +152,10 @@ public class ViewManager
 
 	public void registerGLView(AGLView glView) {
 		hashGLViewID2GLView.put(glView.getID(), glView);
+		
+		NewViewEvent event = new NewViewEvent(glView);
+		event.setSender(this);
+		generalManager.getEventPublisher().triggerEvent(event);
 	}
 
 	public void registerGLEventListenerByGLCanvas(final GLCaleydoCanvas glCanvas, final AGLView glView) {
@@ -177,22 +183,26 @@ public class ViewManager
 		hashItems.clear();
 	}
 
-	public void unregisterGLView(final AGLView gViews) {
+	public void unregisterGLView(final AGLView glView) {
 
-		if (gViews == null)
+		if (glView == null)
 			return;
 
-		GLCaleydoCanvas parentGLCanvas = (gViews).getParentGLCanvas();
+		GLCaleydoCanvas parentGLCanvas = (glView).getParentGLCanvas();
 
 		if (parentGLCanvas != null) {
-			parentGLCanvas.removeGLEventListener(gViews);
+			parentGLCanvas.removeGLEventListener(glView);
 
 			if (hashGLCanvas2GLView.containsKey(parentGLCanvas)) {
-				hashGLCanvas2GLView.get(parentGLCanvas).remove(gViews);
+				hashGLCanvas2GLView.get(parentGLCanvas).remove(glView);
 			}
 		}
 
-		hashGLViewID2GLView.remove(gViews.getID());
+		hashGLViewID2GLView.remove(glView.getID());
+		
+		ViewClosedEvent event = new ViewClosedEvent(glView);
+		event.setSender(this);
+		generalManager.getEventPublisher().triggerEvent(event);
 	}
 
 	public Collection<GLCaleydoCanvas> getAllGLCanvas() {

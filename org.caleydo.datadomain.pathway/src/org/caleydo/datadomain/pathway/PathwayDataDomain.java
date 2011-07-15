@@ -8,7 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
+import org.caleydo.core.manager.event.data.DimensionGroupsChangedEvent;
 import org.caleydo.core.manager.mapping.IDMappingLoader;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -87,10 +89,16 @@ public class PathwayDataDomain extends ADataDomain {
 	@Override
 	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups) {
 		this.dimensionGroups = dimensionGroups;
+		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 	
 	@Override
 	public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
 		dimensionGroups.add(dimensionGroup);
+		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 }

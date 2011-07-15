@@ -51,8 +51,9 @@ public class PathwayCreator implements IRemoteViewCreator {
 								1, 0, 1, -1, 1));
 
 		pathwayView.setPathway(pathway);
+		//FIXME: DataDomainByType may be not appropriate
 		pathwayView.setDataDomain((PathwayDataDomain) (DataDomainManager.get()
-				.getDataDomainByID(serPathway.getDataDomainID())));
+				.getDataDomainByType(serPathway.getDataDomainID())));
 		pathwayView.enablePathwayTextures(true);
 		pathwayView.enableNeighborhood(true);
 		pathwayView.enableGeneMapping(true);
