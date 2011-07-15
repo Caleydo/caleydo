@@ -14,7 +14,7 @@ public class OpenBookmarkHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(GLBookmarkView.VIEW_ID);
+					.showView(GLBookmarkView.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

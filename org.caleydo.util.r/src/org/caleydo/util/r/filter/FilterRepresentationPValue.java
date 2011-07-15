@@ -135,7 +135,7 @@ public class FilterRepresentationPValue extends
 				histoComposite.setLayoutData(gridData);
 
 				RcpBasicGLHistogramView histogramView = new RcpBasicGLHistogramView();
-				histogramView.setDataDomain(DataDomainManager.get().getDataDomain(
+				histogramView.setDataDomain(DataDomainManager.get().getDataDomainByID(
 						"org.caleydo.datadomain.genetic"));
 
 				histogramView.createDefaultSerializedView();
@@ -194,7 +194,7 @@ public class FilterRepresentationPValue extends
 	@Override
 	protected void triggerRemoveFilterEvent() {
 		RemoveContentFilterEvent filterEvent = new RemoveContentFilterEvent();
-		filterEvent.setDataDomainType(filter.getDataDomain().getDataDomainType());
+		filterEvent.setDataDomainType(filter.getDataDomain().getDataDomainID());
 		filterEvent.setFilter(filter);
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 	}

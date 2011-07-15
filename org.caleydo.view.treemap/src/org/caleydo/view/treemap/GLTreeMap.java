@@ -64,7 +64,7 @@ import org.caleydo.view.treemap.listener.ToggleLabelListener;
  */
 public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISelectionUpdateHandler, IViewCommandHandler, IColorMappingHandler {
 
-	public final static String VIEW_ID = "org.caleydo.view.treemap";
+	public final static String VIEW_TYPE = "org.caleydo.view.treemap";
 
 	private ASetBasedDataDomain dataDomain;
 
@@ -111,7 +111,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	public GLTreeMap(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
-		viewType = GLTreeMap.VIEW_ID;
+		viewType = GLTreeMap.VIEW_TYPE;
 
 		renderer = new TreeMapRenderer();
 		renderer.setNodeFrame(GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.TREEMAP_DRAW_CLUSTER_FRAME), Color.WHITE);
@@ -290,7 +290,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
-		event.setDataDomainType(dataDomain.getDataDomainType());
+		event.setDataDomainType(dataDomain.getDataDomainID());
 		event.setSelectionDelta(delta);
 		event.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(event);
@@ -307,7 +307,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 		}
 		SelectionUpdateEvent leafEvent = new SelectionUpdateEvent();
 		leafEvent.setSender(this);
-		leafEvent.setDataDomainType(dataDomain.getDataDomainType());
+		leafEvent.setDataDomainType(dataDomain.getDataDomainID());
 
 		leafEvent.setSelectionDelta(newDelta);
 		leafEvent.setInfo(getShortInfoLocal());
@@ -492,7 +492,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 		eventPublisher.addListener(LevelHighlightingEvent.class, levelHighlightingListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
-		selectionUpdateListener.setDataDomainType(dataDomain.getDataDomainType());
+		selectionUpdateListener.setDataDomainType(dataDomain.getDataDomainID());
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 

@@ -14,7 +14,7 @@ public class OpenFilterHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(RcpFilterView.VIEW_ID);
+					.showView(RcpFilterView.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

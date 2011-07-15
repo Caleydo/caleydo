@@ -41,7 +41,7 @@ public class RcpGLDataWindowsView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return GLDataWindows.VIEW_ID;
+		return GLDataWindows.VIEW_TYPE;
 	}
 
 }

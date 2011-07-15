@@ -22,7 +22,7 @@ public class OpenHierarchicalHeatMapHandler extends AbstractHandler implements
 		try {
 
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(GLHierarchicalHeatMap.VIEW_ID, Integer.toString(SECONDARY_ID), IWorkbenchPage.VIEW_ACTIVATE);
+					.showView(GLHierarchicalHeatMap.VIEW_TYPE, Integer.toString(SECONDARY_ID), IWorkbenchPage.VIEW_ACTIVATE);
 			
 			SECONDARY_ID++;
 			

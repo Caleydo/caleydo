@@ -67,7 +67,7 @@ public class ApplicationWorkbenchWindowAdvisor
 			.setExternalRCPStatusLine(getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(),
 				getWindowConfigurer().getWindow().getShell().getDisplay());
 
-		if (DataDomainManager.get().getDataDomain("org.caleydo.datadomain.generic") != null) {
+		if (DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.generic") != null) {
 
 			IActionBarConfigurer configurer = getWindowConfigurer().getActionBarConfigurer();
 

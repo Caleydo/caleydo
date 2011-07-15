@@ -35,7 +35,7 @@ public class SerializedHyperbolicView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLHyperbolic.VIEW_ID;
+		return GLHyperbolic.VIEW_TYPE;
 	}
 	
 	@Override

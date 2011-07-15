@@ -86,8 +86,8 @@ public class RcpBasicGLHistogramView extends ARcpGLViewPart implements
 		view.initFromSerializableRepresentation(serializedView);
 
 		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(
-					serializedView.getDataDomainType());
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
+					serializedView.getDataDomainID());
 			@SuppressWarnings("unchecked")
 			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
@@ -272,12 +272,12 @@ public class RcpBasicGLHistogramView extends ARcpGLViewPart implements
 		if (dataDomain == null)
 			determineDataDomain(serializedView);
 		else
-			serializedView.setDataDomainType(dataDomain.getDataDomainType());
+			serializedView.setDataDomainID(dataDomain.getDataDomainID());
 	}
 
 	@Override
 	public String getViewGUIID() {
-		return GLHistogram.VIEW_ID;
+		return GLHistogram.VIEW_TYPE;
 	}
 
 	@Override

@@ -11,7 +11,7 @@ import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
- * TODO The use case for tissue input data.
+ * The data domain for tissue input data.
  * 
  * @author Marc Streit
  */
@@ -24,11 +24,17 @@ public class TissueDataDomain extends ADataDomain {
 	protected List<ADimensionGroupData> dimensionGroups;
 	
 	/**
+	 * Counter used for determining the extension that together with the type
+	 * builds the data domain ID.
+	 */
+	private static int extensionID = 0;
+
+	/**
 	 * Constructor.
 	 */
 	public TissueDataDomain() {
 		
-		super(DATA_DOMAIN_TYPE);
+		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + ":" + extensionID++);
 		
 		icon = EIconTextures.DATA_DOMAIN_TISSUE;
 		

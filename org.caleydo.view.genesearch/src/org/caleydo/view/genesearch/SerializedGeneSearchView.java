@@ -26,6 +26,6 @@ public class SerializedGeneSearchView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return RcpGeneSearchView.VIEW_ID;
+		return RcpGeneSearchView.VIEW_TYPE;
 	}
 }

@@ -25,7 +25,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
  */
 public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDomain> {
 
-	public final static String VIEW_ID = "org.caleydo.view.texture";
+	public final static String VIEW_TYPE = "org.caleydo.view.texture";
 
 	private String texturePath;
 	private int experimentIndex;
@@ -44,7 +44,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	public GLTexture(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, false);
 
-		viewType = VIEW_ID;
+		viewType = VIEW_TYPE;
 
 	}
 

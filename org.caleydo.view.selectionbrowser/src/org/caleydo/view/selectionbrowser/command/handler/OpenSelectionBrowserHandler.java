@@ -14,7 +14,7 @@ public class OpenSelectionBrowserHandler extends AbstractHandler implements IHan
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(RcpSelectionBrowserView.VIEW_ID);
+					.showView(RcpSelectionBrowserView.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

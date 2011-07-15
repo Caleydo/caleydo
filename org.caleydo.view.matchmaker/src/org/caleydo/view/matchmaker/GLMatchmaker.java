@@ -77,7 +77,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		IGLRemoteRenderingView, ISelectionUpdateHandler, ISelectionCommandHandler,
 		IContentVAUpdateHandler, IDataDomainBasedView<ASetBasedDataDomain> {
 
-	public final static String VIEW_ID = "org.caleydo.view.matchmaker";
+	public final static String VIEW_TYPE = "org.caleydo.view.matchmaker";
 
 	private CompareViewStateController compareViewStateController;
 
@@ -117,7 +117,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	public GLMatchmaker(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
-		viewType = VIEW_ID;
+		viewType = VIEW_TYPE;
 
 		glKeyListener = new GLMatchmakerKeyListener(this);
 		isControlPressed = false;
@@ -349,7 +349,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	public ASerializedView getSerializableRepresentation() {
 
 		SerializedMatchmakerView serializedForm = new SerializedMatchmakerView(
-				dataDomain.getDataDomainType());
+				dataDomain.getDataDomainID());
 
 		serializedForm.setViewID(this.getID());
 		return serializedForm;

@@ -29,7 +29,7 @@ public class Activator extends Plugin {
 		
 		registerDataDomains();
 		
-		ToolBarContentFactory.get().addToolBarContent(GLBucket.VIEW_ID, false, new RemoteRenderingToolBarContent());
+		ToolBarContentFactory.get().addToolBarContent(GLBucket.VIEW_TYPE, false, new RemoteRenderingToolBarContent());
 	}
 
 	/*
@@ -61,6 +61,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLBucket.VIEW_ID);
+						GLBucket.VIEW_TYPE);
 	}
 }

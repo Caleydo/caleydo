@@ -7,7 +7,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.net.StandardGroupwareManager;
 import org.caleydo.core.startup.Application;
 import org.caleydo.core.startup.ApplicationMode;
-import org.caleydo.core.startup.GeneGUIStartupProcedure;
+import org.caleydo.core.startup.GeneticGUIStartupProcedure;
 import org.caleydo.core.startup.SerializationStartupProcedure;
 import org.caleydo.core.startup.StartupProcessor;
 import org.caleydo.core.startup.gui.ChooseProjectTypePage.EProjectLoadType;
@@ -87,8 +87,8 @@ public class CaleydoProjectWizard
 			}
 			else if (projectMode == ProjectMode.GENE_EXPRESSION_SAMPLE_DATA) {
 
-				GeneGUIStartupProcedure startupProcedure =
-					(GeneGUIStartupProcedure) StartupProcessor.get().createStartupProcedure(
+				GeneticGUIStartupProcedure startupProcedure =
+					(GeneticGUIStartupProcedure) StartupProcessor.get().createStartupProcedure(
 						ApplicationMode.GUI);
 				startupProcedure.setLoadSampleData(true);
 			}

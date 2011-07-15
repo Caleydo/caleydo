@@ -50,32 +50,32 @@ public class ContentFilterManager
 		super.registerEventListeners();
 		contentVAUpdateListener = new ContentVAUpdateListener();
 		contentVAUpdateListener.setHandler(this);
-		contentVAUpdateListener.setDataDomainType(dataDomain.getDataDomainType());
+		contentVAUpdateListener.setDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
 
 		removeContentFilterListener = new RemoveContentFilterListener();
 		removeContentFilterListener.setHandler(this);
-		removeContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		removeContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RemoveContentFilterEvent.class, removeContentFilterListener);
 		
 		moveContentFilterListener = new MoveContentFilterListener();
 		moveContentFilterListener.setHandler(this);
-		moveContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		moveContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(MoveContentFilterEvent.class, moveContentFilterListener);
 		
 		combineContentFilterListener = new CombineContentFilterListener();
 		combineContentFilterListener.setHandler(this);
-		combineContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		combineContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(CombineContentFilterEvent.class, combineContentFilterListener);
 
 		newContentFilterListener = new NewContentFilterListener();
 		newContentFilterListener.setHandler(this);
-		newContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		newContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(NewContentFilterEvent.class, newContentFilterListener);
 
 		reEvaluateContentFilterListListener = new ReEvaluateContentFilterListListener();
 		reEvaluateContentFilterListListener.setHandler(this);
-		reEvaluateContentFilterListListener.setDataDomainType(dataDomain.getDataDomainType());
+		reEvaluateContentFilterListListener.setDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ReEvaluateContentFilterListEvent.class,
 			reEvaluateContentFilterListListener);
 
@@ -119,7 +119,7 @@ public class ContentFilterManager
 	protected void triggerVAUpdateEvent(ContentVADelta delta) {
 		ContentVAUpdateEvent event = new ContentVAUpdateEvent();
 		event.setSender(this);
-		event.setDataDomainType(dataDomain.getDataDomainType());
+		event.setDataDomainType(dataDomain.getDataDomainID());
 		event.setVirtualArrayDelta(delta);
 		eventPublisher.triggerEvent(event);
 	}
@@ -130,7 +130,7 @@ public class ContentFilterManager
 		event.setVAType(ISet.CONTENT);
 		event.setVirtualArray(currentVA);
 		event.setSender(this);
-		event.setDataDomainType(dataDomain.getDataDomainType());
+		event.setDataDomainType(dataDomain.getDataDomainID());
 
 		eventPublisher.triggerEvent(event);
 	}

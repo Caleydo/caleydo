@@ -4,6 +4,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -20,7 +23,7 @@ public class RcpGLFilterPipelineView
 	extends ARcpGLViewPart
 	implements IListenerOwner
 {
-	public static final String VIEW_ID = "org.caleydo.view.filterpipeline";
+	public static final String VIEW_TYPE = "org.caleydo.view.filterpipeline";
 
 	/**
 	 * Constructor.
@@ -50,6 +53,13 @@ public class RcpGLFilterPipelineView
 		createGLCanvas();
 		view = new GLFilterPipeline(glCanvas, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
+		if (view instanceof IDataDomainBasedView<?>) {
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
+					serializedView.getDataDomainID());
+			@SuppressWarnings("unchecked")
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
+			dataDomainBasedView.setDataDomain(dataDomain);
+		}
 		view.initialize();
 		createPartControlGL();
 	}
@@ -64,7 +74,7 @@ public class RcpGLFilterPipelineView
 	@Override
 	public String getViewGUIID()
 	{
-		return GLFilterPipeline.VIEW_ID;
+		return GLFilterPipeline.VIEW_TYPE;
 	}
 
 	@Override

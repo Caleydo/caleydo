@@ -58,6 +58,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLPathwayViewBrowser.VIEW_ID);
+						GLPathwayViewBrowser.VIEW_TYPE);
 	}
 }

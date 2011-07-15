@@ -46,7 +46,7 @@ import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
 public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		MouseMotionListener {
 
-	public final static String VIEW_ID = "org.caleydo.view.datawindows";
+	public final static String VIEW_TYPE = "org.caleydo.view.datawindows";
 
 	private ArrayList<NodeSlerp> arSlerpActions;
 
@@ -118,7 +118,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 		super(glCanvas, viewFrustum, true);
 		canvas = glCanvas;
-		viewType = GLDataWindows.VIEW_ID;
+		viewType = GLDataWindows.VIEW_TYPE;
 
 		containedGLViews = new ArrayList<AGLView>();
 		newViews = new ArrayList<ASerializedView>();
@@ -514,7 +514,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 		// Heat map
 		ASerializedView serView = new SerializedHeatMapView();// SerializedHierarchicalHeatMapView();//
-		serView.setDataDomainType("org.caleydo.datadomain.genetic");
+		serView.setDataDomainID("org.caleydo.datadomain.genetic");
 		AGLView view = createView(gl, serView);
 		((AStorageBasedView) view).renderContext(true);
 
@@ -523,7 +523,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 		// Parallel coordinates
 		serView = new SerializedParallelCoordinatesView();
-		serView.setDataDomainType("org.caleydo.datadomain.genetic");
+		serView.setDataDomainID("org.caleydo.datadomain.genetic");
 		view = createView(gl, serView);
 		((AStorageBasedView) view).renderContext(true);
 
@@ -586,7 +586,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-					.get().getDataDomain(serView.getDataDomainType()));
+					.get().getDataDomainByID(serView.getDataDomainID()));
 		}
 		glView.initialize();
 		glView.initRemote(gl, this, glMouseListener);

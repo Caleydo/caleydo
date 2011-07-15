@@ -23,7 +23,7 @@ public class OpenHistogramHandler extends AbstractHandler implements IHandler {
 			HandlerUtil
 					.getActiveWorkbenchWindow(event)
 					.getActivePage()
-					.showView(GLHistogram.VIEW_ID, Integer.toString(SECONDARY_ID),
+					.showView(GLHistogram.VIEW_TYPE, Integer.toString(SECONDARY_ID),
 							IWorkbenchPage.VIEW_ACTIVATE);
 
 			SECONDARY_ID++;

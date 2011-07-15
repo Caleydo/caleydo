@@ -64,7 +64,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		VISUAL_VALID, VISUAL_UNCERTAIN, DATA_VALID, DATA_UNCERTAIN, DATA2_VALID, DATA2_UNCERTAIN, DATA3_VALID, DATA3_UNCERTAIN, BACKGROUND
 	}
 
-	public final static String VIEW_ID = "org.caleydo.view.heatmap.uncertainty";
+	public final static String VIEW_TYPE = "org.caleydo.view.heatmap.uncertainty";
 
 	public final static float[][] DATA_VALID = { { 0.90f, 0.90f, 0.90f, 1f },
 			{ 0.80f, 0.80f, 0.80f, 1f }, { 0.0f, 0.70f, 0.70f, 1f } };
@@ -119,7 +119,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	 */
 	public GLUncertaintyHeatMap(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum);
-		viewType = GLUncertaintyHeatMap.VIEW_ID;
+		viewType = GLUncertaintyHeatMap.VIEW_TYPE;
 	}
 
 	@Override

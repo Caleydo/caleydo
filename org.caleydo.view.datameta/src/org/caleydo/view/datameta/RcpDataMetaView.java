@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Label;
 public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		IDataDomainBasedView<ASetBasedDataDomain> {
 
-	public final static String VIEW_ID = "org.caleydo.view.datameta";
+	public final static String VIEW_TYPE = "org.caleydo.view.datameta";
 
 	private ASetBasedDataDomain dataDomain;
 
@@ -49,8 +49,8 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 	@Override
 	public void createPartControl(Composite parent) {
 
-		dataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
-				serializedView.getDataDomainType());
+		dataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+				serializedView.getDataDomainID());
 		set = dataDomain.getSet();
 
 		parentComposite = new Composite(parent, SWT.NULL);

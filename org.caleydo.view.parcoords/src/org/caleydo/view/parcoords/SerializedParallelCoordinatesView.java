@@ -26,7 +26,7 @@ public class SerializedParallelCoordinatesView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLParallelCoordinates.VIEW_ID;
+		return GLParallelCoordinates.VIEW_TYPE;
 	}
 	
 	@Override

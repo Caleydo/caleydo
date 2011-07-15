@@ -93,7 +93,7 @@ public class GLPathway extends AGLView implements
 		IDataDomainBasedView<PathwayDataDomain>, ISelectionUpdateHandler,
 		IViewCommandHandler, ISelectionCommandHandler {
 
-	public final static String VIEW_ID = "org.caleydo.view.pathway";
+	public final static String VIEW_TYPE = "org.caleydo.view.pathway";
 
 	private ASetBasedDataDomain mappingDataDomain;
 	protected PathwayDataDomain dataDomain;
@@ -151,12 +151,12 @@ public class GLPathway extends AGLView implements
 	public GLPathway(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
 		super(glCanvas, viewFrustum, false);
-		viewType = VIEW_ID;
+		viewType = VIEW_TYPE;
 
 		pathwayManager = PathwayManager.get();
 		pathwayItemManager = PathwayItemManager.get();
 
-		mappingDataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
+		mappingDataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomainByType(
 				"org.caleydo.datadomain.genetic");
 
 		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum, this);
@@ -773,7 +773,7 @@ public class GLPathway extends AGLView implements
 					.getDelta());
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
-			event.setDataDomainType(mappingDataDomain.getDataDomainType());
+			event.setDataDomainType(mappingDataDomain.getDataDomainID());
 			event.setSelectionDelta((SelectionDelta) selectionDelta);
 			event.setInfo(getShortInfoLocal());
 
@@ -867,7 +867,7 @@ public class GLPathway extends AGLView implements
 
 		ContentVAUpdateEvent virtualArrayUpdateEvent = new ContentVAUpdateEvent();
 		virtualArrayUpdateEvent.setSender(this);
-		virtualArrayUpdateEvent.setDataDomainType(mappingDataDomain.getDataDomainType());
+		virtualArrayUpdateEvent.setDataDomainType(mappingDataDomain.getDataDomainID());
 		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
 		virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
@@ -971,7 +971,7 @@ public class GLPathway extends AGLView implements
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		selectionUpdateListener.setExclusiveDataDomainType(mappingDataDomain
-				.getDataDomainType());
+				.getDataDomainID());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		// virtualArrayUpdateListener = new ContentVAUpdateListener();
@@ -985,12 +985,12 @@ public class GLPathway extends AGLView implements
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
-		clearSelectionsListener.setDataDomainType(mappingDataDomain.getDataDomainType());
+		clearSelectionsListener.setDataDomainType(mappingDataDomain.getDataDomainID());
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setDataDomainType(mappingDataDomain.getDataDomainType());
+		selectionCommandListener.setDataDomainType(mappingDataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		// replaceVirtualArrayListener = new ReplaceContentVAListener();
@@ -1055,7 +1055,7 @@ public class GLPathway extends AGLView implements
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedPathwayView serializedForm = new SerializedPathwayView(
-				dataDomain.getDataDomainType());
+				dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		serializedForm.setPathwayID(pathway.getID());
 		return serializedForm;

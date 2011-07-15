@@ -28,7 +28,7 @@ import org.caleydo.view.pathway.SerializedPathwayView;
 public class GLPathwayViewBrowser extends AGLViewBrowser implements
 		IRemoteRenderingHandler, IPathwayLoader {
 
-	public final static String VIEW_ID = "org.caleydo.view.pathwaybrowser";
+	public final static String VIEW_TYPE = "org.caleydo.view.pathwaybrowser";
 
 	private LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
 	private AddPathwayListener addPathwayListener = null;
@@ -36,7 +36,7 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 	public GLPathwayViewBrowser(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum);
 
-		viewType = VIEW_ID;
+		viewType = VIEW_TYPE;
 		viewSymbol = EIconTextures.PATHWAY_SYMBOL;
 
 	}
@@ -189,7 +189,7 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 		if (!PathwayManager.get().isPathwayVisible(
 				PathwayManager.get().getItem(iPathwayID))) {
 			SerializedPathwayView serPathway = new SerializedPathwayView(
-					dataDomain.getDataDomainType());
+					dataDomain.getDataDomainID());
 			serPathway.setPathwayID(iPathwayID);
 			newViews.add(serPathway);
 		}

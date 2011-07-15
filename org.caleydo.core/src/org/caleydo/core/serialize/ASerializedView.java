@@ -3,7 +3,6 @@ package org.caleydo.core.serialize;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -22,49 +21,28 @@ public abstract class ASerializedView {
 	public ASerializedView() {
 	}
 
-	public ASerializedView(String dataDomainType) {
-		this.dataDomainType = dataDomainType;
+	public ASerializedView(String dataDomainID) {
+		this.dataDomainID = dataDomainID;
 	}
 
 	protected int viewID;
 
 	protected String viewType;
 
-	protected String dataDomainType;
+	protected String dataDomainID;
 
 	/**
 	 * The full qualified view class name needed for the creation of views using reflections.
 	 */
 	protected String viewClassType;
-
-	private ADataDomain dataDomain;
 	
 	/**
 	 * Sets the data domain associated with a view
 	 * 
 	 * @param dataDomain
 	 */
-	public void setDataDomainType(String dataDomainType) {
-		this.dataDomainType = dataDomainType;
-	}
-	
-	/**
-	 * Sets the data domain associated with a view
-	 * 
-	 * @param dataDomain
-	 */
-	public void setDataDomain(ADataDomain dataDomain) {
-		this.dataDomain = dataDomain;
-	}
-	
-
-	/**
-	 * Returns the data domain a view is associated with
-	 * 
-	 * @return
-	 */
-	public String getDataDomainType() {
-		return dataDomainType;
+	public void setDataDomainID(String dataDomainType) {
+		this.dataDomainID = dataDomainType;
 	}
 
 	/**
@@ -72,8 +50,8 @@ public abstract class ASerializedView {
 	 * 
 	 * @return
 	 */
-	public ADataDomain getDataDomain() {
-		return dataDomain;
+	public String getDataDomainID() {
+		return dataDomainID;
 	}
 	
 	/**

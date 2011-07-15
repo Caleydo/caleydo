@@ -23,7 +23,7 @@ public class SerializedHistogramView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLHistogram.VIEW_ID;
+		return GLHistogram.VIEW_TYPE;
 	}
 
 }

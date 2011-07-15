@@ -26,6 +26,6 @@ public class SerializedBookmarkView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLBookmarkView.VIEW_ID;
+		return GLBookmarkView.VIEW_TYPE;
 	}
 }

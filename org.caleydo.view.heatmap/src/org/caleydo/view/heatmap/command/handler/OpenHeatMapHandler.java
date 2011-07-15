@@ -14,7 +14,7 @@ public class OpenHeatMapHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(GLHeatMap.VIEW_ID);
+					.showView(GLHeatMap.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

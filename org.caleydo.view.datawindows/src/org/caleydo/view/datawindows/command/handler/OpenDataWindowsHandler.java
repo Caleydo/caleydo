@@ -14,7 +14,7 @@ public class OpenDataWindowsHandler extends AbstractHandler implements IHandler 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(GLDataWindows.VIEW_ID);
+					.showView(GLDataWindows.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

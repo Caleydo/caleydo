@@ -110,7 +110,7 @@ public class GLBucket extends AGLView implements
 		IDataDomainBasedView<ASetBasedDataDomain>, ISelectionUpdateHandler,
 		IGLBucketView, IRemoteRenderingHandler, IPathwayLoader {
 
-	public final static String VIEW_ID = "org.caleydo.view.bucket";
+	public final static String VIEW_TYPE = "org.caleydo.view.bucket";
 
 	protected ASetBasedDataDomain dataDomain;
 
@@ -217,7 +217,7 @@ public class GLBucket extends AGLView implements
 	public GLBucket(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
 		super(glCanvas, viewFrustum, true);
-		viewType = GLBucket.VIEW_ID;
+		viewType = GLBucket.VIEW_TYPE;
 
 		layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET;
 
@@ -1783,9 +1783,8 @@ public class GLBucket extends AGLView implements
 
 		if (!PathwayManager.get().isPathwayVisible(
 				PathwayManager.get().getItem(iPathwayID))) {
-			SerializedPathwayView serPathway = new SerializedPathwayView(
-					dataDomain.getDataDomainType());
-			serPathway.setDataDomainType("org.caleydo.datadomain.pathway");
+			SerializedPathwayView serPathway = new SerializedPathwayView();
+			serPathway.setDataDomainID(DataDomainManager.get().getDataDomainByType("org.caleydo.datadomain.pathway").getDataDomainID());
 			serPathway.setPathwayID(iPathwayID);
 			newViews.add(serPathway);
 		}
@@ -2559,7 +2558,7 @@ public class GLBucket extends AGLView implements
 
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-					.get().getDataDomain(serView.getDataDomainType()));
+					.get().getDataDomainByID(serView.getDataDomainID()));
 		}
 
 		if (glView instanceof GLHeatMap) {
@@ -2871,7 +2870,7 @@ public class GLBucket extends AGLView implements
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedBucketView serializedForm = new SerializedBucketView(
-				dataDomain.getDataDomainType());
+				dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		serializedForm.setPathwayTexturesEnabled(pathwayTexturesEnabled);
 		serializedForm.setNeighborhoodEnabled(neighborhoodEnabled);

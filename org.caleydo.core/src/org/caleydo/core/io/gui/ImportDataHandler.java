@@ -1,5 +1,10 @@
 package org.caleydo.core.io.gui;
 
+import java.util.Collection;
+
+import org.caleydo.core.gui.dialog.ChooseDataDomainDialog;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -11,9 +16,21 @@ public class ImportDataHandler
 	implements IHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		Shell shell = new Shell();
-		LoadDataDialog dialog = new LoadDataDialog(shell);
-		dialog.open();
+		
+		Collection<IDataDomain> possibleDataDomains = DataDomainManager.get().getDataDomains();
+		IDataDomain chosenDataDomain = null;
+		
+		if (possibleDataDomains.size() == 1)
+			chosenDataDomain = (IDataDomain)possibleDataDomains.toArray()[0];
+		else {
+			ChooseDataDomainDialog chooseDataDomainDialog = new ChooseDataDomainDialog(new Shell());
+			chooseDataDomainDialog.setPossibleDataDomains(possibleDataDomains);
+			chosenDataDomain = chooseDataDomainDialog.open();			
+		}
+		
+		LoadDataDialog dialog = new LoadDataDialog(new Shell(), chosenDataDomain);
+		dialog.open();			
+
 
 		return null;
 	}

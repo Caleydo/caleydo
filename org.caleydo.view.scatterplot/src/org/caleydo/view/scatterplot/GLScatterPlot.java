@@ -104,7 +104,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
 // @SuppressWarnings("unused")
 public class GLScatterPlot extends AStorageBasedView {
 
-	public final static String VIEW_ID = "org.caleydo.view.scatterplot";
+	public final static String VIEW_TYPE = "org.caleydo.view.scatterplot";
 
 	private ScatterPlotRenderStyle renderStyle;
 
@@ -217,7 +217,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	public GLScatterPlot(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
 		super(glCanvas, viewFrustum);
-		viewType = GLScatterPlot.VIEW_ID;
+		viewType = GLScatterPlot.VIEW_TYPE;
 
 		// ArrayList<SelectionType> alSelectionTypes = new
 		// ArrayList<SelectionType>();
@@ -3317,7 +3317,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedScatterplotView serializedForm = new SerializedScatterplotView(
-				dataDomain.getDataDomainType());
+				dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

@@ -38,8 +38,8 @@ public class RcpGLTagCloudView extends ARcpGLViewPart {
 		view = new GLTagCloud(glCanvas, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(
-					serializedView.getDataDomainType());
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
+					serializedView.getDataDomainID());
 			if (dataDomain == null)
 				throw new IllegalStateException("DataDomain null");
 			@SuppressWarnings("unchecked")
@@ -58,7 +58,7 @@ public class RcpGLTagCloudView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return GLTagCloud.VIEW_ID;
+		return GLTagCloud.VIEW_TYPE;
 	}
 
 }

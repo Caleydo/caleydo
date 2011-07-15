@@ -38,7 +38,7 @@ public class RcpGLBrickView extends ARcpGLViewPart {
 		view = new GLBrick(glCanvas, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(serializedView.getDataDomainType());
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(serializedView.getDataDomainID());
 			if(dataDomain == null)
 				throw new IllegalStateException("DataDomain null");
 			@SuppressWarnings("unchecked")
@@ -58,7 +58,7 @@ public class RcpGLBrickView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return GLBrick.VIEW_ID;
+		return GLBrick.VIEW_TYPE;
 	}
 
 }

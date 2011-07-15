@@ -14,7 +14,7 @@ public class OpenBucketHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(GLBucket.VIEW_ID);
+					.showView(GLBucket.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

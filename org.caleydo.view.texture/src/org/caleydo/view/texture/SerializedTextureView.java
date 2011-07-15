@@ -35,7 +35,7 @@ public class SerializedTextureView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLTexture.VIEW_ID;
+		return GLTexture.VIEW_TYPE;
 	}
 
 	public void setTexturePath(String texturePath) {

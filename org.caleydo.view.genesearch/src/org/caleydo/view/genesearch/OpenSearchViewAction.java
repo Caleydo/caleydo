@@ -27,7 +27,7 @@ public class OpenSearchViewAction extends AToolBarAction {
 
 		try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.showView(RcpGeneSearchView.VIEW_ID);
+					.showView(RcpGeneSearchView.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

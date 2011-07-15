@@ -26,6 +26,6 @@ public class SerializedSelectionBrowserView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return RcpSelectionBrowserView.VIEW_ID;
+		return RcpSelectionBrowserView.VIEW_TYPE;
 	}
 }

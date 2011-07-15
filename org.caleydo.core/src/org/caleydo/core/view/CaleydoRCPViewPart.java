@@ -120,13 +120,13 @@ public abstract class CaleydoRCPViewPart
 			if (startView.getFirst().equals(serializedView.getViewID())) {
 				String dataDomainType = startView.getSecond();
 				// StartupProcessor.get().getAppArgumentStartViewWithDataDomain().remove(startView);
-				serializedView.setDataDomainType(dataDomainType);
+				serializedView.setDataDomainID(dataDomainType);
 			}
 		}
 
 		// then we check whether the serialization has a datadomain already
-		String dataDomainType = serializedView.getDataDomainType();
-		if (dataDomainType == null) {
+		String dataDomainID = serializedView.getDataDomainID();
+		if (dataDomainID == null) {
 			ArrayList<IDataDomain> availableDomains =
 				DataDomainManager.get().getAssociationManager()
 					.getAvailableDataDomainTypesForViewType(serializedView.getViewType());
@@ -135,10 +135,12 @@ public abstract class CaleydoRCPViewPart
 			else if (availableDomains.size() == 0)
 				throw new IllegalStateException("No datadomain for this view loaded");
 			else if (availableDomains.size() == 1)
-				serializedView.setDataDomainType(availableDomains.get(0).getDataDomainType());
+				serializedView.setDataDomainID(availableDomains.get(0).getDataDomainID());
 			else if (availableDomains.size() > 1) {
 				ChooseDataDomainDialog dialog = new ChooseDataDomainDialog(new Shell());
-				serializedView.setDataDomain(dialog.open());
+				dialog.setPossibleDataDomains(availableDomains);
+				IDataDomain chosenDataDomain = dialog.open();
+				serializedView.setDataDomainID(chosenDataDomain.getDataDomainID());
 			}
 		}
 	}
@@ -174,7 +176,7 @@ public abstract class CaleydoRCPViewPart
 			catch (JAXBException ex) {
 				throw new RuntimeException("could not deserialize view-xml", ex);
 			}
-			if (DataDomainManager.get().getDataDomain(serializedView.getDataDomainType()) == null)
+			if (DataDomainManager.get().getDataDomainByID(serializedView.getDataDomainID()) == null)
 				serializedView = null;
 		}
 		// this is the case if either the view has not been saved to a memento before, or the configuration

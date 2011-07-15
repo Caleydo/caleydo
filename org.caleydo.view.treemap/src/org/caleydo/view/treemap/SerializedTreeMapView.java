@@ -26,6 +26,6 @@ public class SerializedTreeMapView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLTreeMap.VIEW_ID;
+		return GLTreeMap.VIEW_TYPE;
 	}
 }

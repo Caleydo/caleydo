@@ -41,7 +41,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner {
 
-	public static final String VIEW_ID = "org.caleydo.view.filter";
+	public static final String VIEW_TYPE = "org.caleydo.view.filter";
 
 	private ASetBasedDataDomain dataDomain;
 
@@ -72,8 +72,8 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 	@Override
 	public void createPartControl(Composite parent) {
 
-		dataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
-				serializedView.getDataDomainType());
+		dataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+				serializedView.getDataDomainID());
 
 		parentComposite = parent;
 
@@ -206,13 +206,13 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 
 				if (selectedTreeItem.getData() instanceof StorageFilter) {
 					RemoveStorageFilterEvent filterEvent = new RemoveStorageFilterEvent();
-					filterEvent.setDataDomainType(dataDomain.getDataDomainType());
+					filterEvent.setDataDomainType(dataDomain.getDataDomainID());
 					filterEvent.setFilter((StorageFilter) selectedTreeItem.getData());
 					selectedTreeItem.dispose();
 					eventPublisher.triggerEvent(filterEvent);
 				} else if (selectedTreeItem.getData() instanceof ContentFilter) {
 					RemoveContentFilterEvent filterEvent = new RemoveContentFilterEvent();
-					filterEvent.setDataDomainType(dataDomain.getDataDomainType());
+					filterEvent.setDataDomainType(dataDomain.getDataDomainID());
 					filterEvent.setFilter((ContentFilter) selectedTreeItem.getData());
 					selectedTreeItem.dispose();
 					eventPublisher.triggerEvent(filterEvent);

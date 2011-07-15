@@ -47,7 +47,7 @@ import com.jogamp.opengl.util.awt.TextRenderer;
 public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 		IViewCommandHandler {
 
-	public final static String VIEW_ID = "org.caleydo.view.histogram";
+	public final static String VIEW_TYPE = "org.caleydo.view.histogram";
 
 	private boolean bUseDetailLevel = true;
 
@@ -89,7 +89,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	public GLHistogram(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
-		viewType = VIEW_ID;
+		viewType = VIEW_TYPE;
 		colorMappingManager = ColorMappingManager.get();
 		colorMapping = colorMappingManager
 				.getColorMapping(EColorMappingType.GENE_EXPRESSION);
@@ -643,7 +643,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedHistogramView serializedForm = new SerializedHistogramView(
-				dataDomain.getDataDomainType());
+				dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

@@ -67,7 +67,7 @@ import org.caleydo.view.visbricks.brick.ui.OverviewDetailBandRenderer;
 public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		ILayoutSizeCollisionHandler, ILayoutedElement, IDraggable {
 
-	public final static String VIEW_ID = "org.caleydo.view.dimensiongroup";
+	public final static String VIEW_TYPE = "org.caleydo.view.dimensiongroup";
 
 	public final static int PIXEL_PER_DIMENSION = 30;
 	public final static int MIN_BRICK_WIDTH_PIXEL = 170;
@@ -132,7 +132,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 	public DimensionGroup(GLCaleydoCanvas canvas, ViewFrustum viewFrustum) {
 		super(canvas, viewFrustum, true);
 
-		viewType = VIEW_ID;
+		viewType = VIEW_TYPE;
 
 		detailRow = new Row("detailRow");
 		detailRow.setXDynamic(true);
@@ -474,14 +474,14 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		contentVAUpdateListener = new ContentVAUpdateListener();
 		contentVAUpdateListener.setHandler(this);
 		contentVAUpdateListener.setExclusiveDataDomainType(dataDomain
-				.getDataDomainType());
+				.getDataDomainID());
 		eventPublisher.addListener(ContentVAUpdateEvent.class,
 				contentVAUpdateListener);
 
 		replaceContentVAListener = new ReplaceContentVAListener();
 		replaceContentVAListener.setHandler(this);
 		replaceContentVAListener.setExclusiveDataDomainType(dataDomain
-				.getDataDomainType());
+				.getDataDomainID());
 		eventPublisher.addListener(ReplaceContentVAEvent.class,
 				replaceContentVAListener);
 

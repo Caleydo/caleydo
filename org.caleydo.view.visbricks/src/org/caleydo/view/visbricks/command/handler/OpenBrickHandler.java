@@ -14,7 +14,7 @@ public class OpenBrickHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(GLBrick.VIEW_ID);
+					.showView(GLBrick.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

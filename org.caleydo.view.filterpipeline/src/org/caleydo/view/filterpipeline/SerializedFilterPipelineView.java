@@ -6,9 +6,9 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.serialize.ASerializedView;
 
 /**
- * Serialized <INSERT VIEW NAME> view.
+ * Serialized filter pipeline view.
  * 
- * @author <INSERT_YOUR_NAME>
+ * @author Marc Streit
  */
 @XmlRootElement
 @XmlType
@@ -26,6 +26,6 @@ public class SerializedFilterPipelineView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLFilterPipeline.VIEW_ID;
+		return GLFilterPipeline.VIEW_TYPE;
 	}
 }

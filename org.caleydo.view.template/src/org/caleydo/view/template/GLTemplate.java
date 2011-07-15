@@ -27,7 +27,7 @@ import org.caleydo.view.template.renderstyle.TemplateRenderStyle;
 public class GLTemplate extends AGLView implements IViewCommandHandler,
 		ISelectionUpdateHandler {
 
-	public final static String VIEW_ID = "org.caleydo.view.template";
+	public final static String VIEW_TYPE = "org.caleydo.view.template";
 
 	private TemplateRenderStyle renderStyle;
 
@@ -41,7 +41,7 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 	public GLTemplate(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
-		viewType = GLTemplate.VIEW_ID;
+		viewType = GLTemplate.VIEW_TYPE;
 	}
 
 	@Override

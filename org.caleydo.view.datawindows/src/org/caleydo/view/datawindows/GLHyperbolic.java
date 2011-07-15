@@ -49,7 +49,7 @@ import org.caleydo.view.pathway.SerializedPathwayView;
 public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 		IPathwayLoader {
 
-	public final static String VIEW_ID = "org.caleydo.view.hyperbolic";
+	public final static String VIEW_TYPE = "org.caleydo.view.hyperbolic";
 
 	private TrackDataProvider tracker;
 	private float[] receivedEyeData;
@@ -94,7 +94,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	public GLHyperbolic(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
 		super(glCanvas, viewFrustum, true);
-		viewType = GLHyperbolic.VIEW_ID;
+		viewType = GLHyperbolic.VIEW_TYPE;
 
 		// preparing the eyetracker
 		// this.tracker = new TrackDataProvider();
@@ -440,7 +440,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-					.get().getDataDomain(serView.getDataDomainType()));
+					.get().getDataDomainByID(serView.getDataDomainID()));
 		}
 		
 		if (glView instanceof GLPathway) {

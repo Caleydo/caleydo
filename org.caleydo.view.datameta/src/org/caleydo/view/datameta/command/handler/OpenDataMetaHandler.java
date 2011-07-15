@@ -14,7 +14,7 @@ public class OpenDataMetaHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(RcpDataMetaView.VIEW_ID);
+					.showView(RcpDataMetaView.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

@@ -47,7 +47,7 @@ import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
  */
 public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
-	public final static String VIEW_ID = "org.caleydo.view.datagraph";
+	public final static String VIEW_TYPE = "org.caleydo.view.datagraph";
 
 	public final static int BOUNDS_SPACING_PIXELS = 30;
 
@@ -74,7 +74,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		super(glCanvas, viewFrustum, true);
 
 		connectionBandRenderer = new ConnectionBandRenderer();
-		viewType = GLDataGraph.VIEW_ID;
+		viewType = GLDataGraph.VIEW_TYPE;
 		glKeyListener = new GLDataGraphKeyListener();
 		dataGraph = new Graph<IDataGraphNode>();
 		graphLayout = new ForceDirectedGraphLayout();

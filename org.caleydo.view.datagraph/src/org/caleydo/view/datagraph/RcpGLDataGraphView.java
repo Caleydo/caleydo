@@ -33,8 +33,8 @@ public class RcpGLDataGraphView extends ARcpGLViewPart {
 		view = new GLDataGraph(glCanvas, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(
-					serializedView.getDataDomainType());
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
+					serializedView.getDataDomainID());
 			if (dataDomain == null)
 				throw new IllegalStateException("DataDomain null");
 			@SuppressWarnings("unchecked")
@@ -53,7 +53,7 @@ public class RcpGLDataGraphView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return GLDataGraph.VIEW_ID;
+		return GLDataGraph.VIEW_TYPE;
 	}
 
 }

@@ -23,11 +23,17 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.generic";
 
 	/**
+	 * Counter used for determining the extension that together with the type
+	 * builds the data domain ID.
+	 */
+	private static int extensionID = 0;
+
+	/**
 	 * Constructor.
 	 */
 	public GenericDataDomain() {
 
-		super(DATA_DOMAIN_TYPE);
+		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + ":" + extensionID++);
 
 		contentLabelSingular = "entity";
 		contentLabelPlural = "entities";

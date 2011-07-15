@@ -68,7 +68,7 @@ import org.caleydo.view.visbricks.listener.RelationsUpdatedListener;
 public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		IGLRemoteRenderingView, ISelectionUpdateHandler, ILayoutedElement {
 
-	public final static String VIEW_ID = "org.caleydo.view.brick";
+	public final static String VIEW_TYPE = "org.caleydo.view.brick";
 
 	private LayoutManager templateRenderer;
 	private ABrickLayoutTemplate brickLayout;
@@ -126,7 +126,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	public GLBrick(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
-		viewType = GLBrick.VIEW_ID;
+		viewType = GLBrick.VIEW_TYPE;
 
 		views = new HashMap<EContainedViewType, AGLView>();
 		containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
@@ -216,7 +216,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 						group.getID());
 
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setDataDomainType(getDataDomain().getDataDomainType());
+				event.setDataDomainType(getDataDomain().getDataDomainID());
 				event.setSender(this);
 				SelectionDelta delta = contentGroupSelectionManager.getDelta();
 				event.setSelectionDelta(delta);
@@ -282,7 +282,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 				AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
 				ArrayList<ADimensionGroupData> dimensionGroupData = new ArrayList<ADimensionGroupData>();
 				PathwayDimensionGroupData pathwayDimensionGroupData = new PathwayDimensionGroupData(
-						DataDomainManager.get().getDataDomain(
+						DataDomainManager.get().getDataDomainByID(
 								"org.caleydo.datadomain.pathway"), dataDomain, pathways);
 				dimensionGroupData.add(pathwayDimensionGroupData);
 				event.setDimensionGroupData(dimensionGroupData);
@@ -345,7 +345,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
-		event.setDataDomainType(getDataDomain().getDataDomainType());
+		event.setDataDomainType(getDataDomain().getDataDomainID());
 		event.setSender(this);
 		SelectionDelta delta = contentSelectionManager.getDelta();
 		event.setSelectionDelta(delta);
@@ -923,13 +923,13 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		relationsUpdateListener = new RelationsUpdatedListener();
 		relationsUpdateListener.setHandler(this);
 		relationsUpdateListener
-				.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+				.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RelationsUpdatedEvent.class, relationsUpdateListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		selectionUpdateListener
-				.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+				.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 	}
 

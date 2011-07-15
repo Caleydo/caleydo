@@ -69,35 +69,35 @@ public class DataDomainGraph {
 					}
 				}
 
-				if ((dataDomain.getDataDomainType().startsWith(CLINICAL) && vertex.getDataDomainType()
+				if ((dataDomain.getDataDomainID().startsWith(CLINICAL) && vertex.getDataDomainID()
 					.startsWith(TISSUE))
-					|| (vertex.getDataDomainType().startsWith(CLINICAL) && dataDomain.getDataDomainType()
+					|| (vertex.getDataDomainID().startsWith(CLINICAL) && dataDomain.getDataDomainID()
 						.startsWith(TISSUE))) {
 					mappingExists = true;
 				}
-				if ((dataDomain.getDataDomainType().startsWith(CLINICAL) && vertex.getDataDomainType()
+				if ((dataDomain.getDataDomainID().startsWith(CLINICAL) && vertex.getDataDomainID()
 					.startsWith(ORGAN))
-					|| (vertex.getDataDomainType().startsWith(CLINICAL) && dataDomain.getDataDomainType()
+					|| (vertex.getDataDomainID().startsWith(CLINICAL) && dataDomain.getDataDomainID()
 						.startsWith(ORGAN))) {
 					mappingExists = true;
 				}
 
-				if ((dataDomain.getDataDomainType().startsWith(GENETIC) && vertex.getDataDomainType()
+				if ((dataDomain.getDataDomainID().startsWith(GENETIC) && vertex.getDataDomainID()
 					.startsWith(PATHWAY))
-					|| (vertex.getDataDomainType().startsWith(GENETIC) && dataDomain.getDataDomainType()
+					|| (vertex.getDataDomainID().startsWith(GENETIC) && dataDomain.getDataDomainID()
 						.startsWith(PATHWAY))) {
 					mappingExists = true;
 				}
 
-				if ((dataDomain.getDataDomainType().startsWith(GENETIC) && vertex.getDataDomainType()
+				if ((dataDomain.getDataDomainID().startsWith(GENETIC) && vertex.getDataDomainID()
 					.startsWith(TISSUE))
-					|| (vertex.getDataDomainType().startsWith(GENETIC) && dataDomain.getDataDomainType()
+					|| (vertex.getDataDomainID().startsWith(GENETIC) && dataDomain.getDataDomainID()
 						.startsWith(TISSUE))) {
 					mappingExists = true;
 				}
 
-				if (dataDomain.getDataDomainType().startsWith(PATHWAY)
-					&& vertex.getDataDomainType().startsWith(PATHWAY))
+				if (dataDomain.getDataDomainID().startsWith(PATHWAY)
+					&& vertex.getDataDomainID().startsWith(PATHWAY))
 					mappingExists = true;
 
 				if (mappingExists) {

@@ -59,6 +59,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLTagCloud.VIEW_ID);
+						GLTagCloud.VIEW_TYPE);
 	}
 }

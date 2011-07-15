@@ -59,6 +59,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						RcpFilterView.VIEW_ID);
+						RcpFilterView.VIEW_TYPE);
 	}
 }

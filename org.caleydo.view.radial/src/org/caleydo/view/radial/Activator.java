@@ -29,7 +29,7 @@ public class Activator extends Plugin {
 		
 		registerDataDomains();
 		
-		ToolBarContentFactory.get().addToolBarContent(GLRadialHierarchy.VIEW_ID, false, new RadialHierarchyToolBarContent());
+		ToolBarContentFactory.get().addToolBarContent(GLRadialHierarchy.VIEW_TYPE, false, new RadialHierarchyToolBarContent());
 	}
 
 	/*
@@ -62,6 +62,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLRadialHierarchy.VIEW_ID);
+						GLRadialHierarchy.VIEW_TYPE);
 	}
 }

@@ -26,6 +26,6 @@ public class SerializedDataMetaView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return RcpDataMetaView.VIEW_ID;
+		return RcpDataMetaView.VIEW_TYPE;
 	}
 }

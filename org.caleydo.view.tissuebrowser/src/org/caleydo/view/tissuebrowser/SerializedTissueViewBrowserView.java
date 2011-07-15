@@ -53,6 +53,6 @@ public class SerializedTissueViewBrowserView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLTissueViewBrowser.VIEW_ID;
+		return GLTissueViewBrowser.VIEW_TYPE;
 	}
 }

@@ -18,7 +18,7 @@ public class RcpHTMLBrowserView extends CaleydoRCPViewPart {
 
 		if (view instanceof IDataDomainBasedView<?>) {
 				((IDataDomainBasedView<IDataDomain>) view).setDataDomain(DataDomainManager
-						.get().getDataDomain(serializedView.getDataDomainType()));
+						.get().getDataDomainByID(serializedView.getDataDomainID()));
 		}
 
 		((ASWTView)view).draw();

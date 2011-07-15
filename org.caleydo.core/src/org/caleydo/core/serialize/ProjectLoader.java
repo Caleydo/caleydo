@@ -108,7 +108,7 @@ public class ProjectLoader {
 
 			for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
 
-				Thread thread = new Thread(dataDomain, dataDomain.getDataDomainType());
+				Thread thread = new Thread(dataDomain, dataDomain.getDataDomainID());
 				thread.start();
 				if (dataDomain instanceof ASetBasedDataDomain) {
 

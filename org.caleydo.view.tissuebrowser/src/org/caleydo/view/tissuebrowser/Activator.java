@@ -57,6 +57,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLTissueViewBrowser.VIEW_ID);
+						GLTissueViewBrowser.VIEW_TYPE);
 	}
 }

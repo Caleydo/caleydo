@@ -43,7 +43,7 @@ public class StartClusteringAction
 		// ASetBasedDataDomain dataDomain =
 		// DataDomainManager.getInstance().guessDataDomain(ASetBasedDataDomain.class);
 		ASetBasedDataDomain dataDomain =
-			(ASetBasedDataDomain) DataDomainManager.get().getDataDomain("org.caleydo.datadomain.genetic");
+			(ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.genetic");
 
 		StartClusteringDialog dialog = new StartClusteringDialog(new Shell(), dataDomain);
 		dialog.open();
@@ -60,7 +60,7 @@ public class StartClusteringAction
 		}
 		for (ISet tmpSet : sets) {
 			event = new StartClusteringEvent(clusterState, tmpSet.getID());
-			event.setDataDomainType(dataDomain.getDataDomainType());
+			event.setDataDomainType(dataDomain.getDataDomainID());
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 		}
 	}

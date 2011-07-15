@@ -39,7 +39,7 @@ public class RcpGLRadialHierarchyView extends ARcpGLViewPart {
 		view = new GLRadialHierarchy(glCanvas, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(serializedView.getDataDomainType());
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(serializedView.getDataDomainID());
 			@SuppressWarnings("unchecked")
 			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
 				(IDataDomainBasedView<IDataDomain>) view;
@@ -62,7 +62,7 @@ public class RcpGLRadialHierarchyView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return GLRadialHierarchy.VIEW_ID;
+		return GLRadialHierarchy.VIEW_TYPE;
 	}
 
 }

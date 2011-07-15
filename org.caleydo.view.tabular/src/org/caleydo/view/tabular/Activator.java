@@ -59,6 +59,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						TabularDataView.VIEW_ID);
+						TabularDataView.VIEW_TYPE);
 	}
 }

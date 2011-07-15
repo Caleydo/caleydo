@@ -8,7 +8,7 @@ import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
- * Serialized form of a heatmap-view.
+ * Serialized form of a heatmap view.
  * 
  * @author Werner Puff
  */
@@ -23,8 +23,8 @@ public class SerializedHeatMapView extends ASerializedView {
 		
 	}
 
-	public SerializedHeatMapView(String dataDomainType) {
-		super(dataDomainType);
+	public SerializedHeatMapView(String dataDomainID) {
+		super(dataDomainID);
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class SerializedHeatMapView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLHeatMap.VIEW_ID;
+		return GLHeatMap.VIEW_TYPE;
 	}
 	
 	

@@ -26,7 +26,7 @@ public class SerializedVisBricksView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLVisBricks.VIEW_ID;
+		return GLVisBricks.VIEW_TYPE;
 	}
 
 	@Override

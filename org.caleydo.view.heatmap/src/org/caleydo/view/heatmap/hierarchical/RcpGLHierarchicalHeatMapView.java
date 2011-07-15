@@ -35,7 +35,7 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 		view.initFromSerializableRepresentation(serializedView);
 
 		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(serializedView.getDataDomainType());
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(serializedView.getDataDomainID());
 			@SuppressWarnings("unchecked")
 			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
 				(IDataDomainBasedView<IDataDomain>) view;
@@ -55,7 +55,7 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return GLHierarchicalHeatMap.VIEW_ID;
+		return GLHierarchicalHeatMap.VIEW_TYPE;
 	}
 
 }

@@ -52,7 +52,7 @@ public class GLBookmarkView extends AGLView implements
 		IDataDomainBasedView<ASetBasedDataDomain>, ISelectionUpdateHandler,
 		ISelectionCommandHandler {
 
-	public final static String VIEW_ID = "org.caleydo.view.bookmark";
+	public final static String VIEW_TYPE = "org.caleydo.view.bookmark";
 
 	// private ColorMapping colorMapper;
 
@@ -116,7 +116,7 @@ public class GLBookmarkView extends AGLView implements
 	public GLBookmarkView(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 
 		super(glCanvas, viewFrustum, true);
-		viewType = GLBookmarkView.VIEW_ID;
+		viewType = GLBookmarkView.VIEW_TYPE;
 
 		renderStyle = new BookmarkRenderStyle(viewFrustum);
 
@@ -317,7 +317,7 @@ public class GLBookmarkView extends AGLView implements
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedBookmarkView serializedForm = new SerializedBookmarkView(
-				dataDomain.getDataDomainType());
+				dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

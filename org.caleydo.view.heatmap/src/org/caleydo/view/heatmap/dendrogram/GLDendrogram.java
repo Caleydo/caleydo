@@ -65,7 +65,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
 public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorageBasedView
 		implements IClusterNodeEventReceiver {
 
-	public final static String VIEW_ID = "org.caleydo.view.dendrogram";
+	public final static String VIEW_TYPE = "org.caleydo.view.dendrogram";
 
 	boolean bUseDetailLevel = true;
 
@@ -134,7 +134,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			final boolean bRenderGeneTree) {
 		super(glCanvas, viewFrustum);
 
-		viewType = GLDendrogram.VIEW_ID;
+		viewType = GLDendrogram.VIEW_TYPE;
 
 		ArrayList<SelectionType> alSelectionTypes = new ArrayList<SelectionType>();
 		alSelectionTypes.add(SelectionType.NORMAL);
@@ -1485,7 +1485,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 					break;
 
 				// Prevent handling of non genetic data in context menu
-				if (!dataDomain.getDataDomainType().equals(
+				if (!dataDomain.getDataDomainID().equals(
 						"org.caleydo.datadomain.genetic"))
 					break;
 
@@ -1666,11 +1666,11 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		ASerializedView serializedForm;
 		if (bRenderContentTree) {
 			SerializedDendogramHorizontalView horizontal = new SerializedDendogramHorizontalView(
-					dataDomain.getDataDomainType());
+					dataDomain.getDataDomainID());
 			serializedForm = horizontal;
 		} else {
 			SerializedDendogramVerticalView vertical = new SerializedDendogramVerticalView(
-					dataDomain.getDataDomainType());
+					dataDomain.getDataDomainID());
 			serializedForm = vertical;
 		}
 		serializedForm.setViewID(this.getID());

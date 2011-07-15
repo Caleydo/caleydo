@@ -1,10 +1,9 @@
 package org.caleydo.core.startup.gui;
 
-import org.caleydo.core.io.gui.FileLoadDataAction;
+import org.caleydo.core.io.gui.LoadDataDialog;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -17,9 +16,9 @@ public class NewProjectImportDataPage
 
 	public static final String PAGE_NAME = "Import data to new project";
 
-	public FileLoadDataAction fileLoadDataAction;
+	private String inputFile;
 
-	private String sInputFile;
+	private IDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -36,31 +35,20 @@ public class NewProjectImportDataPage
 	/**
 	 * Constructor.
 	 */
-	public NewProjectImportDataPage(String sFileName) {
+	public NewProjectImportDataPage(String inputFile, IDataDomain dataDomain) {
 		this();
 
-		this.sInputFile = sFileName;
+		this.inputFile = inputFile;
+		this.dataDomain = dataDomain;
 	}
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite topLevel = new Composite(parent, SWT.NONE);
-		topLevel.setLayout(new FillLayout());
-
-		if (sInputFile != null) {
-			fileLoadDataAction = new FileLoadDataAction(topLevel, sInputFile);
+		if (inputFile != null) {
+			new LoadDataDialog(parent.getShell(), inputFile, dataDomain);
 		}
 		else {
-			fileLoadDataAction = new FileLoadDataAction(topLevel);
+			new LoadDataDialog(parent.getShell(), dataDomain);
 		}
-
-		fileLoadDataAction.run();
-
-		setControl(topLevel);
-		// setPageComplete(true);
-	}
-
-	public FileLoadDataAction getFileLoadDataAction() {
-		return fileLoadDataAction;
 	}
 }

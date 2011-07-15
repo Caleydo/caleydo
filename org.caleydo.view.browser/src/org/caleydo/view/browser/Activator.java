@@ -57,6 +57,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GenomeHTMLBrowser.VIEW_ID);
+						GenomeHTMLBrowser.VIEW_TYPE);
 	}
 }

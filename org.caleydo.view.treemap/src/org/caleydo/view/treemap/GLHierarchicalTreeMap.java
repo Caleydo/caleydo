@@ -48,7 +48,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
 
 public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandler, IDataDomainSetBasedView, IGLRemoteRenderingView {
 
-	public final static String VIEW_ID = "org.caleydo.view.treemap.hierarchical";
+	public final static String VIEW_TYPE = "org.caleydo.view.treemap.hierarchical";
 
 	private TreeMapRenderStyle renderStyle;
 
@@ -91,7 +91,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	public GLHierarchicalTreeMap(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
-		viewType = GLHierarchicalTreeMap.VIEW_ID;
+		viewType = GLHierarchicalTreeMap.VIEW_TYPE;
 
 		parentGLCanvas.addMouseWheelListener(new MouseWheelListener() {
 			@Override
@@ -419,7 +419,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedTreeMapView serializedForm = new SerializedTreeMapView(dataDomain.getDataDomainType());
+		SerializedTreeMapView serializedForm = new SerializedTreeMapView(dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

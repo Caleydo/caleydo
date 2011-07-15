@@ -53,6 +53,6 @@ public class SerializedPathwayViewBrowserView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLPathwayViewBrowser.VIEW_ID;
+		return GLPathwayViewBrowser.VIEW_TYPE;
 	}
 }

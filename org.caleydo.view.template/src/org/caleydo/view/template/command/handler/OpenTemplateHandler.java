@@ -14,7 +14,7 @@ public class OpenTemplateHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(GLTemplate.VIEW_ID);
+					.showView(GLTemplate.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

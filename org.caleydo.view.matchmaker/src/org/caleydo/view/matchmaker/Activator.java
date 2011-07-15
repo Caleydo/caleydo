@@ -29,7 +29,7 @@ public class Activator extends Plugin {
 		
 		registerDataDomains();
 		
-		ToolBarContentFactory.get().addToolBarContent(GLMatchmaker.VIEW_ID, false, new MatchmakerToolBarContent());
+		ToolBarContentFactory.get().addToolBarContent(GLMatchmaker.VIEW_TYPE, false, new MatchmakerToolBarContent());
 	}
 
 	/*
@@ -62,6 +62,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLMatchmaker.VIEW_ID);
+						GLMatchmaker.VIEW_TYPE);
 	}
 }

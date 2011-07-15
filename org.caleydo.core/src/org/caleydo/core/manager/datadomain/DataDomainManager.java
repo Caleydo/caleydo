@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.caleydo.core.gui.dialog.ChooseDataDomainDialog;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * <p>
@@ -26,16 +28,12 @@ import org.eclipse.core.runtime.Platform;
 public class DataDomainManager {
 
 	private static DataDomainManager dataDomainManager;
-	private HashMap<String, ArrayList<IDataDomain>> registeredDataDomains;
+	private HashMap<String, IDataDomain> registeredDataDomainsByID = new HashMap<String, IDataDomain>(8);
+	private HashMap<String, ArrayList<IDataDomain>> registeredDataDomainsByType =
+		new HashMap<String, ArrayList<IDataDomain>>();
 
-	private AssociationManager associationManager;
-	private DataDomainGraph dataDomainGraph;
-
-	private DataDomainManager() {
-		registeredDataDomains = new HashMap<String, ArrayList<IDataDomain>>(8);
-		associationManager = new AssociationManager();
-		dataDomainGraph = new DataDomainGraph();
-	}
+	private AssociationManager associationManager = new AssociationManager();
+	private DataDomainGraph dataDomainGraph = new DataDomainGraph();;
 
 	public static DataDomainManager get() {
 		if (dataDomainManager == null)
@@ -76,29 +74,45 @@ public class DataDomainManager {
 	 * @return
 	 */
 	public Collection<IDataDomain> getDataDomains() {
-
-		Collection<IDataDomain> dataDomains = new ArrayList<IDataDomain>();
-		for (ArrayList<IDataDomain> dataDomainsPerType : registeredDataDomains.values())
-			dataDomains.addAll(dataDomainsPerType);
-
-		return dataDomains;
+		return registeredDataDomainsByID.values();
 	}
 
 	/**
-	 * Get the concrete dataDomain object for the dataDomainType. Returns null if no dataDomain is mapped to
-	 * the type.
+	 * Get a concrete dataDomain object for the dataDomainID. Returns null if no dataDomain object is mapped
+	 * to the ID.
 	 * 
-	 * @deprecated Returns only the first registered data domain for this type. When multiple data sets are
-	 *             loaded this might be a problem.
+	 * @param dataDomainID
+	 * @return
+	 */
+	public IDataDomain getDataDomainByID(String dataDomainID) {
+
+		return registeredDataDomainsByID.get(dataDomainID);
+	}
+
+	/**
+	 * Get a concrete dataDomain object for the dataDomainType. Returns null if no dataDomain object is mapped
+	 * to the type. If more than one data domain object is registered for that ID, the chooser dialog is
+	 * opened where the user can determine the data domain.
+	 * 
 	 * @param dataDomainType
 	 * @return
 	 */
-	public IDataDomain getDataDomain(String dataDomainType) {
+	public IDataDomain getDataDomainByType(String dataDomainType) {
 
-		if (registeredDataDomains.containsKey(dataDomainType))
-			return registeredDataDomains.get(dataDomainType).get(0);
+		IDataDomain dataDomain = null;
+		ArrayList<IDataDomain> possibleDataDomains = registeredDataDomainsByType.get(dataDomainType);
 
-		return null;
+		if (possibleDataDomains == null)
+			return null;
+		if (possibleDataDomains.size() == 1)
+			dataDomain = possibleDataDomains.get(0);
+		else {
+			ChooseDataDomainDialog chooseDataDomainDialog = new ChooseDataDomainDialog(new Shell());
+			chooseDataDomainDialog.setPossibleDataDomains(possibleDataDomains);
+			dataDomain = chooseDataDomainDialog.open();
+		}
+
+		return dataDomain;
 	}
 
 	/**
@@ -108,10 +122,18 @@ public class DataDomainManager {
 	 */
 	public void register(IDataDomain dataDomain) {
 
-		if (!registeredDataDomains.containsKey(dataDomain.getDataDomainType()))
-			registeredDataDomains.put(dataDomain.getDataDomainType(), new ArrayList<IDataDomain>());
+		if (!registeredDataDomainsByID.containsKey(dataDomain.getDataDomainID()))
+			registeredDataDomainsByID.put(dataDomain.getDataDomainID(), dataDomain);
 
-		registeredDataDomains.get(dataDomain.getDataDomainType()).add(dataDomain);
+		if (registeredDataDomainsByType.get(dataDomain.getDataDomainType()) == null) {
+			ArrayList<IDataDomain> dataDomainList = new ArrayList<IDataDomain>();
+			dataDomainList.add(dataDomain);
+			registeredDataDomainsByType.put(dataDomain.getDataDomainType(), dataDomainList);
+		}
+		else {
+			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).add(dataDomain);
+		}
+
 		dataDomainGraph.addDataDomain(dataDomain);
 	}
 

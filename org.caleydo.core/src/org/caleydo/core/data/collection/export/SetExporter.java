@@ -51,7 +51,7 @@ public class SetExporter {
 			String identifier;
 			IDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer iContentIndex : alGenes) {
-				if (set.getDataDomain().getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
+				if (set.getDataDomain().getDataDomainID().equals("org.caleydo.datadomain.genetic")) {
 					java.util.Set<String> setRefSeqIDs =
 						iDMappingManager.getIDAsSet(set.getDataDomain().getContentIDType(), targetIDType,
 							iContentIndex);
@@ -133,7 +133,7 @@ public class SetExporter {
 			String identifier;
 			IDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer contentID : contentVA) {
-				if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
+				if (dataDomain.getDataDomainID().equals("org.caleydo.datadomain.genetic")) {
 
 					// FIXME: Due to new mapping system, a mapping involving expression index can return a Set
 					// of

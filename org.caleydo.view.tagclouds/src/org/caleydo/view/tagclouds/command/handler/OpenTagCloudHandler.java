@@ -14,7 +14,7 @@ public class OpenTagCloudHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(GLTagCloud.VIEW_ID);
+					.showView(GLTagCloud.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

@@ -26,6 +26,6 @@ public class SerializedTagCloudView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLTagCloud.VIEW_ID;
+		return GLTagCloud.VIEW_TYPE;
 	}
 }

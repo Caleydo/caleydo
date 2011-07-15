@@ -20,14 +20,14 @@ public interface IDataDomain {
 	/**
 	 * Returns the qualified name of the concrete data domain
 	 */
-	public String getDataDomainType();
+	public String getDataDomainID();
 
 	/**
 	 * Set the dataDomain Type.
 	 * 
 	 * @param dataDomainType
 	 */
-	public void setDataDomainType(String dataDomainType);
+	public void setDataDomainID(String dataDomainType);
 
 	/**
 	 * Returns the icon representing the data contained in this domain
@@ -74,4 +74,7 @@ public interface IDataDomain {
 	 */
 	public void addDimensionGroup(ADimensionGroupData dimensionGroup);
 
+	public String getDataDomainType();
+
+	public void setDataDomainType(String dataDomainType);
 }

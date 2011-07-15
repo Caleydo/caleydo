@@ -56,6 +56,6 @@ public class Activator extends Plugin {
 		dataDomainTypes.add("org.caleydo.datadomain.generic");		
 
 		DataDomainManager.get().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, RcpSelectionBrowserView.VIEW_ID);
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, RcpSelectionBrowserView.VIEW_TYPE);
 	}
 }

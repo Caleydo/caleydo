@@ -11,7 +11,7 @@ public class StartClusteringListener
 	public void handleEvent(AEvent event) {
 		if (event instanceof StartClusteringEvent) {
 			StartClusteringEvent startClusteringEvent = (StartClusteringEvent) event;
-			if (handler.getDataDomainType() == startClusteringEvent.getDataDomainType())
+			if (handler.getDataDomainID() == startClusteringEvent.getDataDomainType())
 				handler.startClustering(startClusteringEvent.getSetID(),
 					startClusteringEvent.getClusterState());
 		}

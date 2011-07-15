@@ -58,6 +58,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLHistogram.VIEW_ID);
+						GLHistogram.VIEW_TYPE);
 	}
 }

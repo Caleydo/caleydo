@@ -53,6 +53,12 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	private static final String CLINICAL_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
 
 	/**
+	 * Counter used for determining the extension that together with the type
+	 * builds the data domain ID.
+	 */
+	private static int extensionID = 0;
+	
+	/**
 	 * <code>TRUE</code>if only pathways can be displayed (no gene-expression
 	 * data), <code>FALSE</code> otherwise
 	 */
@@ -70,7 +76,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	 */
 	public GeneticDataDomain() {
 
-		super(DATA_DOMAIN_TYPE);
+		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + ":" + extensionID++);
 
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
 		primaryContentMappingType = IDType.getIDType("DAVID");
@@ -251,7 +257,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		if (delta.getIDType() == storageIDType) {
 			// for(ISeldelta)
 			SelectionUpdateEvent resendEvent = new SelectionUpdateEvent();
-			resendEvent.setDataDomainType(this.dataDomainType);
+			resendEvent.setDataDomainType(this.dataDomainID);
 
 			SelectionDelta convertedDelta = new SelectionDelta(delta.getIDType());
 			for (SelectionDeltaItem item : delta) {
@@ -289,7 +295,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 			}
 
 			ReplaceStorageVAInUseCaseEvent event = new ReplaceStorageVAInUseCaseEvent();
-			event.setDataDomainType(this.dataDomainType);
+			event.setDataDomainType(this.dataDomainID);
 			event.setVAType(Set.STORAGE);
 			event.setVirtualArray(newStorageVirtualArray);
 
@@ -302,7 +308,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 			Integer clinicalContentIndex) {
 
 		// FIXME - this is a hack for one special dataset (asslaber)
-		Set clinicalSet = ((ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
+		Set clinicalSet = ((ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 				CLINICAL_DATADOMAIN_TYPE)).getSet();
 		int storageID = clinicalSet.getStorageData(Set.STORAGE).getStorageVA().get(1);
 

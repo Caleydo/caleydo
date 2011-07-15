@@ -26,7 +26,7 @@ public class SerializedDendogramVerticalView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLDendrogram.VIEW_ID + ".vertical";
+		return GLDendrogram.VIEW_TYPE + ".vertical";
 	}
 
 }

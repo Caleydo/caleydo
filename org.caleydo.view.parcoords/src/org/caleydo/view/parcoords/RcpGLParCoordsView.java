@@ -34,7 +34,7 @@ public class RcpGLParCoordsView extends ARcpGLViewPart {
 		view = new GLParallelCoordinates(glCanvas, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(serializedView.getDataDomainType());
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(serializedView.getDataDomainID());
 			@SuppressWarnings("unchecked")
 			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
 				(IDataDomainBasedView<IDataDomain>) view;
@@ -54,7 +54,7 @@ public class RcpGLParCoordsView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return GLParallelCoordinates.VIEW_ID;
+		return GLParallelCoordinates.VIEW_TYPE;
 	}
 
 }

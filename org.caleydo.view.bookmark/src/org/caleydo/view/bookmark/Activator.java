@@ -28,7 +28,7 @@ public class Activator extends Plugin {
 		plugin = this;
 
 		registerDataDomains();
-		ToolBarContentFactory.get().addToolBarContent(GLBookmarkView.VIEW_ID, false,
+		ToolBarContentFactory.get().addToolBarContent(GLBookmarkView.VIEW_TYPE, false,
 				new BookmarkToolBarContent());
 	}
 
@@ -61,6 +61,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLBookmarkView.VIEW_ID);
+						GLBookmarkView.VIEW_TYPE);
 	}
 }

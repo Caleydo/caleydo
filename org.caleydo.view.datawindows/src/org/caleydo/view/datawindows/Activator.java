@@ -59,12 +59,12 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLDataWindows.VIEW_ID);
+						GLDataWindows.VIEW_TYPE);
 
 		DataDomainManager
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLHyperbolic.VIEW_ID);
+						GLHyperbolic.VIEW_TYPE);
 	}
 }

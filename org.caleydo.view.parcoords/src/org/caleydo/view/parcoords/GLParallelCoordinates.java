@@ -107,7 +107,7 @@ import com.jogamp.common.nio.Buffers;
 public class GLParallelCoordinates extends AStorageBasedView implements
 		IGLRemoteRenderingView {
 
-	public final static String VIEW_ID = "org.caleydo.view.parcoords";
+	public final static String VIEW_TYPE = "org.caleydo.view.parcoords";
 
 	private EPickingType draggedObject;
 
@@ -217,7 +217,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	public GLParallelCoordinates(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
 		super(glCanvas, viewFrustum);
-		viewType = GLParallelCoordinates.VIEW_ID;
+		viewType = GLParallelCoordinates.VIEW_TYPE;
 		renderStyle = new PCRenderStyle(this, viewFrustum);
 		super.renderStyle = this.renderStyle;
 
@@ -1189,7 +1189,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 		InfoAreaUpdateEvent event = new InfoAreaUpdateEvent();
-		event.setDataDomainType(dataDomain.getDataDomainType());
+		event.setDataDomainType(dataDomain.getDataDomainID());
 		event.setSender(this);
 		event.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(event);
@@ -1377,7 +1377,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	private void triggerSelectionUpdate() {
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
-		selectionUpdateEvent.setDataDomainType(dataDomain.getDataDomainType());
+		selectionUpdateEvent.setDataDomainType(dataDomain.getDataDomainID());
 		selectionUpdateEvent.setSelectionDelta(contentSelectionManager.getDelta());
 		selectionUpdateEvent.setSender(this);
 		eventPublisher.triggerEvent(selectionUpdateEvent);
@@ -1420,7 +1420,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				selectionType = SelectionType.SELECTION;
 
 				// Prevent handling of non genetic data in context menu
-				if (!dataDomain.getDataDomainType().equals(
+				if (!dataDomain.getDataDomainID().equals(
 						"org.caleydo.datadomain.genetic"))
 					break;
 
@@ -1491,7 +1491,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				handleConnectedElementReps(selectionDelta);
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
-				event.setDataDomainType(dataDomain.getDataDomainType());
+				event.setDataDomainType(dataDomain.getDataDomainID());
 				event.setSelectionDelta((SelectionDelta) selectionDelta);
 				event.setInfo(getShortInfoLocal());
 				eventPublisher.triggerEvent(event);
@@ -1553,7 +1553,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// }
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
-			event.setDataDomainType(dataDomain.getDataDomainType());
+			event.setDataDomainType(dataDomain.getDataDomainID());
 			event.setSelectionDelta((SelectionDelta) selectionDelta);
 			eventPublisher.triggerEvent(event);
 
@@ -1779,7 +1779,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		NewStorageFilterEvent filterEvent = new NewStorageFilterEvent();
 		filterEvent.setFilter(filter);
 		filterEvent.setSender(this);
-		filterEvent.setDataDomainType(dataDomain.getDataDomainType());
+		filterEvent.setDataDomainType(dataDomain.getDataDomainID());
 
 		eventPublisher.triggerEvent(filterEvent);
 	}
@@ -1794,7 +1794,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		NewContentFilterEvent filterEvent = new NewContentFilterEvent();
 		filterEvent.setFilter(filter);
 		filterEvent.setSender(this);
-		filterEvent.setDataDomainType(dataDomain.getDataDomainType());
+		filterEvent.setDataDomainType(dataDomain.getDataDomainID());
 
 		eventPublisher.triggerEvent(filterEvent);
 	}
@@ -1809,7 +1809,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		float y = 0;
 
 		if (idType == storageIDType
-				&& dataDomain.getDataDomainType()
+				&& dataDomain.getDataDomainID()
 						.equals("org.caleydo.datadomain.genetic")) {
 
 			int axisCount = storageVA.indexOf(id);
@@ -2254,7 +2254,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedParallelCoordinatesView serializedForm = new SerializedParallelCoordinatesView(
-				dataDomain.getDataDomainType());
+				dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

@@ -5,33 +5,29 @@ import java.util.List;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
+import org.caleydo.core.io.gui.LoadDataDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.specialized.Organism;
-import org.caleydo.core.startup.gui.DataImportWizard;
 import org.caleydo.core.util.collection.Pair;
-import org.eclipse.jface.window.Window;
-import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Startup procedure for project wizard.
  * 
  * @author Marc Streit
  */
-public class GeneGUIStartupProcedure
+public class GeneticGUIStartupProcedure
 	extends AStartupProcedure {
 
 	private boolean loadSampleData = false;
 
-
 	// NOTE: change also organism when setting another dataset
 	private static String REAL_DATA_SAMPLE_FILE =
-//		"data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
+	// "data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
 		"data/genome/microarray/kashofer/mouse/all_mice_plus_SN_only_with_mapping.csv";
 
 	@Override
 	public void init(ApplicationInitData appInitData) {
-	
+
 		if (loadSampleData) {
 			appInitData.setLoadPathways(true);
 
@@ -40,12 +36,12 @@ public class GeneGUIStartupProcedure
 
 			GeneralManager.get().getBasicInfo().setOrganism(Organism.MUS_MUSCULUS);
 		}
-		
-		// FIXME this needs to be done after the wizard is closed, and dynamically
+
 		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
 		cmd.setAttributes("org.caleydo.datadomain.genetic");
 		cmd.doCommand();
-
+		dataDomain = cmd.getCreatedObject();
+		
 		super.init(appInitData);
 	}
 
@@ -53,25 +49,13 @@ public class GeneGUIStartupProcedure
 	public void execute() {
 		super.execute();
 
-		Shell shell = StartupProcessor.get().getDisplay().getActiveShell();
+		if (loadSampleData)
+			new LoadDataDialog(StartupProcessor.get().getDisplay().getActiveShell(), REAL_DATA_SAMPLE_FILE,
+				dataDomain).open();
+		else
+			new LoadDataDialog(StartupProcessor.get().getDisplay().getActiveShell(),
+				dataDomain).open();
 
-		WizardDialog dataImportWizard;
-
-		if (loadSampleData) {
-
-			dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
-
-			if (Window.CANCEL == dataImportWizard.open()) {
-				StartupProcessor.get().shutdown();
-			}
-		}
-		else {
-			dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
-
-			if (Window.CANCEL == dataImportWizard.open()) {
-				StartupProcessor.get().shutdown();
-			}
-		}
 	}
 
 	public void setLoadSampleData(boolean loadSampleData) {

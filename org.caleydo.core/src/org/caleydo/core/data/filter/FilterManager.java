@@ -127,7 +127,7 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 		currentVA.setDelta(vaDelta);
 
 		FilterUpdatedEvent event = new FilterUpdatedEvent();
-		event.setDataDomainType(dataDomain.getDataDomainType());
+		event.setDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.triggerEvent(event);
 	}
 
@@ -217,7 +217,7 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 
 	private void triggerFilterUpdatedEvent() {
 		FilterUpdatedEvent event = new FilterUpdatedEvent();
-		event.setDataDomainType(dataDomain.getDataDomainType());
+		event.setDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.triggerEvent(event);
 	}
 

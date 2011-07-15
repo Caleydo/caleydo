@@ -24,7 +24,7 @@ public class OpenRadialHierarchyHandler extends AbstractHandler implements IHand
 			HandlerUtil
 					.getActiveWorkbenchWindow(event)
 					.getActivePage()
-					.showView(GLRadialHierarchy.VIEW_ID, Integer.toString(SECONDARY_ID),
+					.showView(GLRadialHierarchy.VIEW_TYPE, Integer.toString(SECONDARY_ID),
 							IWorkbenchPage.VIEW_ACTIVATE);
 
 			SECONDARY_ID++;

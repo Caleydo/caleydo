@@ -3,10 +3,12 @@ package org.caleydo.view.filterpipeline;
 import gleem.linalg.Vec2f;
 
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
@@ -22,13 +24,12 @@ import org.caleydo.core.data.filter.event.ReEvaluateContentFilterListEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateStorageFilterListEvent;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.view.filterpipeline.SetFilterTypeEvent;
 import org.caleydo.core.manager.event.view.filterpipeline.SetFilterTypeEvent.FilterType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -38,6 +39,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -62,15 +64,15 @@ import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 
 /**
- * TODO
+ * Filter pipeline
  * 
  * @author Thomas Geymayer
  */
 
-public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
+public class GLFilterPipeline extends AStorageBasedView implements IViewCommandHandler,
 		ISelectionUpdateHandler, IRadialMenuListener {
 
-	public final static String VIEW_ID = "org.caleydo.view.filterpipeline";
+	public final static String VIEW_TYPE = "org.caleydo.view.filterpipeline";
 
 	private FilterPipelineRenderStyle renderStyle;
 	private DragAndDropController dragAndDropController;
@@ -81,7 +83,6 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 	private SetFilterTypeListener setFilterTypeListener;
 	private ReEvaluateFilterListener reEvaluateFilterListener;
 
-	private ASetBasedDataDomain dataDomain;
 	private FilterType filterType = FilterType.CONTENT;
 
 	/**
@@ -131,16 +132,11 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 	 * @param viewFrustum
 	 */
 	public GLFilterPipeline(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum, true);
+		super(glCanvas, viewFrustum);
 
-		viewType = GLFilterPipeline.VIEW_ID;
-		dataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomain(
-				"org.caleydo.datadomain.genetic");
-
+		viewType = GLFilterPipeline.VIEW_TYPE;
 		dragAndDropController = new DragAndDropController(this);
 		glKeyListener = new GLFilterPipelineKeyListener(this);
-
-		performDataUncertaintyFilter();
 	}
 
 	@Override
@@ -668,6 +664,13 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 		updateFilterSize();
 	}
 
+	@Override
+	public void initData() {
+		super.initData();
+		
+		performDataUncertaintyFilter();
+	}
+
 	private void performDataUncertaintyFilter() {
 
 		ISet set = dataDomain.getSet();
@@ -750,5 +753,24 @@ public class GLFilterPipeline extends AGLView implements IViewCommandHandler,
 
 	public void setControlPressed(boolean state) {
 		bControlPressed = state;
+	}
+
+	@Override
+	public void renderContext(boolean bRenderContext) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void initLists() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+			throws InvalidAttributeValueException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

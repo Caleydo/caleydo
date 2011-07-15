@@ -21,7 +21,7 @@ public class OpenTabularDataHandler extends AbstractHandler implements IHandler 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(TabularDataView.VIEW_ID, Integer.toString(SECONDARY_ID), IWorkbenchPage.VIEW_ACTIVATE);
+					.showView(TabularDataView.VIEW_TYPE, Integer.toString(SECONDARY_ID), IWorkbenchPage.VIEW_ACTIVATE);
 
 			SECONDARY_ID++;
 		} catch (PartInitException e) {

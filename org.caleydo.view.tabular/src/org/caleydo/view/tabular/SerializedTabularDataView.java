@@ -18,7 +18,7 @@ public class SerializedTabularDataView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return TabularDataView.VIEW_ID;
+		return TabularDataView.VIEW_TYPE;
 	}
 
 }

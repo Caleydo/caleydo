@@ -1664,7 +1664,7 @@ public abstract class AGLViewBrowser
 
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-					.get().getDataDomain(serView.getDataDomainType()));
+					.get().getDataDomainByID(serView.getDataDomainID()));
 		}
 		
 		glView.initialize();

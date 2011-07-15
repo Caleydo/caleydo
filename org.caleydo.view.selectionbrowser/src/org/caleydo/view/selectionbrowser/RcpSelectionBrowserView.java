@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 
-	public static final String VIEW_ID = "org.caleydo.view.selectionbrowser";
+	public static final String VIEW_TYPE = "org.caleydo.view.selectionbrowser";
 
 	public RcpSelectionBrowserView() {
 		super();
@@ -56,7 +56,7 @@ public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 
 		if (view instanceof IDataDomainBasedView<?>) {
 				((IDataDomainBasedView<IDataDomain>) view).setDataDomain(DataDomainManager
-						.get().getDataDomain(serializedView.getDataDomainType()));
+						.get().getDataDomainByID(serializedView.getDataDomainID()));
 		}
 		
 		((ASWTView)view).draw();

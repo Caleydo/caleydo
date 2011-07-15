@@ -26,6 +26,6 @@ public class SerializedTemplateView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLTemplate.VIEW_ID;
+		return GLTemplate.VIEW_TYPE;
 	}
 }

@@ -14,7 +14,7 @@ public class OpenInfoHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(RcpInfoAreaView.VIEW_ID);
+					.showView(RcpInfoAreaView.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

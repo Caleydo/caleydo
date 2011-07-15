@@ -7,7 +7,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -19,12 +18,10 @@ import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -75,7 +72,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
 /**
  * Abstract base class for all OpenGL2 views.
  * <p>
- * Every view has to specify its {@link #VIEW_ID}.
+ * Every view has to specify its {@link #VIEW_TYPE}.
  * </p>
  * <h2>Creating a View</h2>
  * <p>
@@ -98,7 +95,7 @@ public abstract class AGLView
 	extends AView
 	implements GLEventListener, IResettableView, IScrollBarUpdateHandler, IMouseWheelHandler {
 
-	public final static String VIEW_ID = "unspecified";
+	public final static String VIEW_TYPE = "unspecified";
 
 	public enum EBusyModeState {
 		SWITCH_OFF,
@@ -1068,7 +1065,7 @@ public abstract class AGLView
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
-		System.out.println("Finalizing " + VIEW_ID);
+		System.out.println("Finalizing " + VIEW_TYPE);
 	}
 
 	/**

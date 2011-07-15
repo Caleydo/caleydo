@@ -26,6 +26,6 @@ public class SerializedFilterView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return RcpFilterView.VIEW_ID;
+		return RcpFilterView.VIEW_TYPE;
 	}
 }

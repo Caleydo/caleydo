@@ -14,7 +14,7 @@ public class OpenVisBricksHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(GLVisBricks.VIEW_ID);
+					.showView(GLVisBricks.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

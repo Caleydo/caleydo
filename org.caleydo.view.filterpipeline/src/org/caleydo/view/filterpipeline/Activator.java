@@ -31,7 +31,7 @@ public class Activator extends Plugin {
 		
 		ToolBarContentFactory.get().addToolBarContent
 		(
-			GLFilterPipeline.VIEW_ID,
+			GLFilterPipeline.VIEW_TYPE,
 			false,
 			new FilterPipelineToolBarContent()
 		);
@@ -67,6 +67,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLFilterPipeline.VIEW_ID);
+						GLFilterPipeline.VIEW_TYPE);
 	}
 }

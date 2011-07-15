@@ -30,7 +30,7 @@ public class Activator extends Plugin {
 
 		registerDataDomains();
 		
-		ToolBarContentFactory.get().addToolBarContent(GLVisBricks.VIEW_ID, false, new VisBricksToolBarContent());
+		ToolBarContentFactory.get().addToolBarContent(GLVisBricks.VIEW_TYPE, false, new VisBricksToolBarContent());
 	}
 
 	/*
@@ -65,13 +65,13 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLVisBricks.VIEW_ID);
+						GLVisBricks.VIEW_TYPE);
 		
 		DataDomainManager
 		.get()
 		.getAssociationManager()
 		.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-				GLBrick.VIEW_ID);
+				GLBrick.VIEW_TYPE);
 
 	}
 }

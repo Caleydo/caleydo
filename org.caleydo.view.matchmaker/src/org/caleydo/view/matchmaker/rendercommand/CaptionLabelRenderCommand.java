@@ -13,8 +13,8 @@ import com.jogamp.opengl.util.awt.TextRenderer;
 
 public class CaptionLabelRenderCommand implements IHeatMapRenderCommand {
 
-	private static final float VERTICAL_TEXT_SPACING = 0.1f;
-	private static final float HORIZONTAL_TEXT_SPACING = 0.001f;
+	//private static final float VERTICAL_TEXT_SPACING = 0.1f;
+	//private static final float HORIZONTAL_TEXT_SPACING = 0.001f;
 
 	private TextRenderer textRenderer;
 

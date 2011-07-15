@@ -2,6 +2,7 @@ package org.caleydo.core.startup;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.RCPViewManager;
 import org.eclipse.ui.IFolderLayout;
@@ -15,6 +16,8 @@ public abstract class AStartupProcedure {
 
 	protected ApplicationInitData appInitData;
 
+	protected IDataDomain dataDomain;
+	
 	public void init(ApplicationInitData appInitData) {
 		this.appInitData = appInitData;
 		initializeStartViews();

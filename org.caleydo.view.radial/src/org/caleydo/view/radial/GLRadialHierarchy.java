@@ -60,7 +60,7 @@ import org.caleydo.view.radial.listener.SetMaxDisplayedHierarchyDepthListener;
 public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		IDataDomainSetBasedView {
 
-	public final static String VIEW_ID = "org.caleydo.view.radial";
+	public final static String VIEW_TYPE = "org.caleydo.view.radial";
 
 	public static final int DISP_HIER_DEPTH_DEFAULT = 14;
 	private static final int MIN_PIXELS_PER_DISPLAYED_LEVEL = 10;
@@ -119,7 +119,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	public GLRadialHierarchy(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
-		viewType = VIEW_ID;
+		viewType = VIEW_TYPE;
 
 		ArrayList<SelectionType> alSelectionTypes = new ArrayList<SelectionType>();
 		alSelectionTypes.add(SelectionType.NORMAL);
@@ -508,7 +508,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 				if (pdPickedElement != null) {
 					// Prevent handling of non genetic data in context
 					// menu
-					if (!dataDomain.getDataDomainType().equals(
+					if (!dataDomain.getDataDomainID().equals(
 							"org.caleydo.datadomain.genetic"))
 						break;
 					if (!pdPickedElement.hasChildren()) {
@@ -807,7 +807,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedRadialHierarchyView serializedForm = new SerializedRadialHierarchyView(
-				dataDomain.getDataDomainType());
+				dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		serializedForm.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
 		serializedForm.setNewSelection(bIsNewSelection);

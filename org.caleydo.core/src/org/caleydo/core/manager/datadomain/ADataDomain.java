@@ -24,12 +24,14 @@ public abstract class ADataDomain
 
 	protected EDataFilterLevel dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 
+	protected String dataDomainType; 
+	
 	/**
 	 * This mode determines whether the user can load and work with gene expression data or otherwise if an
 	 * not further specified data set is loaded. In the case of the unspecified data set some specialized gene
 	 * expression features are not available.
 	 */
-	protected String dataDomainType = "unspecified";
+	protected String dataDomainID = "unspecified";
 
 	protected EIconTextures icon = EIconTextures.NO_ICON_AVAILABLE;
 
@@ -52,8 +54,9 @@ public abstract class ADataDomain
 		initIDMappings();
 	}
 
-	public ADataDomain(String dataDomainType) {
+	public ADataDomain(String dataDomainType, String dataDomainID) {
 		this.dataDomainType = dataDomainType;
+		this.dataDomainID = dataDomainID;
 		DataDomainManager.get().register(this);
 		initIDMappings();
 	}
@@ -61,10 +64,20 @@ public abstract class ADataDomain
 	protected abstract void initIDMappings();
 
 	@Override
+	public String getDataDomainID() {
+		return dataDomainID;
+	}
+
+	@Override
+	public void setDataDomainID(String dataDomainType) {
+		this.dataDomainID = dataDomainType;
+	}
+	
+	@Override
 	public String getDataDomainType() {
 		return dataDomainType;
 	}
-
+	
 	@Override
 	public void setDataDomainType(String dataDomainType) {
 		this.dataDomainType = dataDomainType;
@@ -123,6 +136,6 @@ public abstract class ADataDomain
 
 	@Override
 	public String toString() {
-		return dataDomainType;
+		return dataDomainID;
 	}
 }

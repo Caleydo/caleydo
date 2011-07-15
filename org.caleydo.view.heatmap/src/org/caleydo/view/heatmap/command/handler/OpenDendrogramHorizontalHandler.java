@@ -14,7 +14,7 @@ public class OpenDendrogramHorizontalHandler extends AbstractHandler implements 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(GLDendrogram.VIEW_ID + ".horizontal");
+					.showView(GLDendrogram.VIEW_TYPE + ".horizontal");
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

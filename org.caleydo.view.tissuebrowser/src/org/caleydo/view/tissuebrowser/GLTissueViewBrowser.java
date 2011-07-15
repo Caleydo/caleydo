@@ -58,7 +58,7 @@ import org.caleydo.view.texture.SerializedTextureView;
 public class GLTissueViewBrowser extends AGLViewBrowser implements
 		IContentVAUpdateHandler {
 
-	public final static String VIEW_ID = "org.caleydo.view.tissuebrowser";
+	public final static String VIEW_TYPE = "org.caleydo.view.tissuebrowser";
 
 	/**
 	 * 
@@ -84,7 +84,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	public GLTissueViewBrowser(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum);
 
-		viewType = VIEW_ID;
+		viewType = VIEW_TYPE;
 		viewSymbol = EIconTextures.NO_ICON_AVAILABLE;
 		mapExperimentToTexturePath = new HashMap<Integer, String>();
 	}
@@ -94,7 +94,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		this.dataDomain = dataDomain;
 
 		this.foreignDataDomain = (ASetBasedDataDomain) DataDomainManager.get()
-				.getDataDomain(FOREIGN_DATADOMAIN_TYPE);
+				.getDataDomainByID(FOREIGN_DATADOMAIN_TYPE);
 
 		contentVA = foreignDataDomain.getContentVA(ISet.CONTENT);
 		primaryIDType = foreignDataDomain.getContentIDType();
@@ -124,7 +124,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 					+ experimentIndex % 24 + ".jpg");
 
 			SerializedTextureView tissue = new SerializedTextureView();
-			tissue.setDataDomainType("org.caleydo.view.texture");
+			tissue.setDataDomainID("org.caleydo.view.texture");
 			tissue.setTexturePath(mapExperimentToTexturePath.get(experimentIndex));
 
 			tissue.setExperimentIndex(experimentIndex);

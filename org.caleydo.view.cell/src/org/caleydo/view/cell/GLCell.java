@@ -32,7 +32,7 @@ public class GLCell extends AGLView {
 
 	// private GenericSelectionManager selectionManager;
 
-	public final static String VIEW_ID = "org.caleydo.view.cell";
+	public final static String VIEW_TYPE = "org.caleydo.view.cell";
 
 	/**
 	 * Constructor.
@@ -40,7 +40,7 @@ public class GLCell extends AGLView {
 	public GLCell(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
 		super(glCanvas, viewFrustum, false);
-		viewType = VIEW_ID;
+		viewType = VIEW_TYPE;
 
 		// connectedElementRepresentationManager =
 		// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();

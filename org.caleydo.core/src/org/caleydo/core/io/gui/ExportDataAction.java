@@ -66,15 +66,7 @@ public class ExportDataAction
 
 	@Override
 	public void run() {
-		// Check if load data GUI is embedded in a wizard or if a own dialog
-		// must be created.
-		if (parentComposite == null && window != null) {
-			LoadDataDialog loadDataFileDialog = new LoadDataDialog(window.getShell());
-			loadDataFileDialog.open();
-		}
-		else {
-			createGUI();
-		}
+		createGUI();
 	}
 
 	/**

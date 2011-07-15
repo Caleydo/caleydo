@@ -29,7 +29,7 @@ public class Activator extends Plugin {
 		
 		registerDataDomains();
 		
-		ToolBarContentFactory.get().addToolBarContent(GLParallelCoordinates.VIEW_ID, false, new ParCoordsToolBarContent());
+		ToolBarContentFactory.get().addToolBarContent(GLParallelCoordinates.VIEW_TYPE, false, new ParCoordsToolBarContent());
 	}
 
 	/*
@@ -63,6 +63,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLParallelCoordinates.VIEW_ID);
+						GLParallelCoordinates.VIEW_TYPE);
 	}
 }

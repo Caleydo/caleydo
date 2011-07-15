@@ -26,7 +26,7 @@ public class SerializedDataGraphView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLDataGraph.VIEW_ID;
+		return GLDataGraph.VIEW_TYPE;
 	}
 
 	@Override

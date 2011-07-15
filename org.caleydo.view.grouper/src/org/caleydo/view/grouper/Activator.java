@@ -58,6 +58,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLGrouper.VIEW_ID);
+						GLGrouper.VIEW_TYPE);
 	}
 }

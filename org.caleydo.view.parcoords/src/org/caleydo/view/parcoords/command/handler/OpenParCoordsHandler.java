@@ -23,7 +23,7 @@ public class OpenParCoordsHandler extends AbstractHandler implements IHandler {
 			HandlerUtil
 					.getActiveWorkbenchWindow(event)
 					.getActivePage()
-					.showView(GLParallelCoordinates.VIEW_ID,
+					.showView(GLParallelCoordinates.VIEW_TYPE,
 							Integer.toString(SECONDARY_ID), IWorkbenchPage.VIEW_ACTIVATE);
 
 			SECONDARY_ID++;

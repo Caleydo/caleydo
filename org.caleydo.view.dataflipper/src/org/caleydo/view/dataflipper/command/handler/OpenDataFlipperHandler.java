@@ -14,7 +14,7 @@ public class OpenDataFlipperHandler extends AbstractHandler implements IHandler 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(GLDataFlipper.VIEW_ID);
+					.showView(GLDataFlipper.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

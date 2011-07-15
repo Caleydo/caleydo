@@ -69,13 +69,13 @@ public class Activator extends AbstractUIPlugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLDataGraph.VIEW_ID);
+						GLDataGraph.VIEW_TYPE);
 
 		DataDomainManager
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLDataGraph.VIEW_ID);
+						GLDataGraph.VIEW_TYPE);
 
 	}
 

@@ -29,7 +29,7 @@ public class Activator extends Plugin {
 
 		registerDataDomains();
 		
-		ToolBarContentFactory.get().addToolBarContent(GLTemplate.VIEW_ID, false, new TemplateToolBarContent());
+		ToolBarContentFactory.get().addToolBarContent(GLTemplate.VIEW_TYPE, false, new TemplateToolBarContent());
 	}
 
 	/*
@@ -64,6 +64,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLTemplate.VIEW_ID);
+						GLTemplate.VIEW_TYPE);
 	}
 }

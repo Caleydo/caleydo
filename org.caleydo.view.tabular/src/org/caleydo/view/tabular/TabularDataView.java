@@ -71,7 +71,7 @@ public class TabularDataView extends ASWTView implements
 		IContentVAUpdateHandler, IStorageVAUpdateHandler, ISelectionCommandHandler,
 		IViewCommandHandler {
 
-	public final static String VIEW_ID = "org.caleydo.view.tabular";
+	public final static String VIEW_TYPE = "org.caleydo.view.tabular";
 	private final static int COLUMN_OFFSET = 3;
 
 	/**
@@ -132,7 +132,7 @@ public class TabularDataView extends ASWTView implements
 				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER),
 				parentComposite);
 
-		this.viewType = VIEW_ID;
+		this.viewType = VIEW_TYPE;
 	}
 
 	@Override
@@ -289,7 +289,7 @@ public class TabularDataView extends ASWTView implements
 		column.setText("#");
 		column.setWidth(50);
 
-		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
+		if (dataDomain.getDataDomainID().equals("org.caleydo.datadomain.genetic")) {
 
 			column = new TableColumn(contentTable, SWT.NONE);
 			column.setText("RefSeq ID");
@@ -298,7 +298,7 @@ public class TabularDataView extends ASWTView implements
 			column = new TableColumn(contentTable, SWT.NONE);
 			column.setText("Gene Symbol");
 			column.setWidth(110);
-		} else if (dataDomain.getDataDomainType()
+		} else if (dataDomain.getDataDomainID()
 				.equals("org.caleydo.datadomain.generic")) {
 
 			column = new TableColumn(contentTable, SWT.NONE);

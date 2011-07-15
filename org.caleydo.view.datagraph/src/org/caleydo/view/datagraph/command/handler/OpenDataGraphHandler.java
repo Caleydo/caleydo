@@ -15,7 +15,7 @@ public class OpenDataGraphHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(GLDataGraph.VIEW_ID);
+					.showView(GLDataGraph.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

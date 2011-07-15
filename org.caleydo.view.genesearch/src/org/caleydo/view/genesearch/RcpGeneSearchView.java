@@ -62,9 +62,9 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 		IDataDomainBasedView<GeneticDataDomain> {
 
 	private GeneticDataDomain dataDomain = (GeneticDataDomain) DataDomainManager
-			.get().getDataDomain("org.caleydo.datadomain.genetic");
+			.get().getDataDomainByID("org.caleydo.datadomain.genetic");
 
-	public static final String VIEW_ID = "org.caleydo.view.genesearch";
+	public static final String VIEW_TYPE = "org.caleydo.view.genesearch";
 
 	public static boolean bHorizontal = false;
 

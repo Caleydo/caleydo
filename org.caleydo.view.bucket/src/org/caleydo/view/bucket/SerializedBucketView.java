@@ -53,8 +53,8 @@ public class SerializedBucketView extends ASerializedView {
 	}
 
 	@Override
-	public void setDataDomainType(String dataDomainType) {
-		super.setDataDomainType(dataDomainType);
+	public void setDataDomainID(String dataDomainType) {
+		super.setDataDomainID(dataDomainType);
 		init();
 
 	}
@@ -67,14 +67,11 @@ public class SerializedBucketView extends ASerializedView {
 
 		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
 
-		if (DataDomainManager.get().getDataDomain(
+		if (DataDomainManager.get().getDataDomainByType(
 				"org.caleydo.datadomain.genetic") != null) {
 			SerializedHeatMapView heatMap = new SerializedHeatMapView(
-					"org.caleydo.datadomain.genetic");
+					DataDomainManager.get().getDataDomainByType("org.caleydo.datadomain.genetic").getDataDomainID());
 			remoteViews.add(heatMap);
-//			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView(
-//					"org.caleydo.datadomain.genetic");
-//			remoteViews.add(parCoords);
 		}
 
 		ArrayList<ASerializedView> focusLevel = new ArrayList<ASerializedView>();
@@ -137,7 +134,7 @@ public class SerializedBucketView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLBucket.VIEW_ID;
+		return GLBucket.VIEW_TYPE;
 	}
 	
 	@Override

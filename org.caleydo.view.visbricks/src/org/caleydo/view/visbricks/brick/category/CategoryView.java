@@ -29,7 +29,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 public class CategoryView extends AGLView implements IDataDomainSetBasedView,
 		IViewCommandHandler {
 
-	public final static String VIEW_ID = "org.caleydo.view.histogram";
+	public final static String VIEW_TYPE = "org.caleydo.view.histogram";
 
 	boolean bUseDetailLevel = true;
 
@@ -50,7 +50,7 @@ public class CategoryView extends AGLView implements IDataDomainSetBasedView,
 	public CategoryView(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
-		viewType = VIEW_ID;
+		viewType = VIEW_TYPE;
 
 		// registerEventListeners();
 	}

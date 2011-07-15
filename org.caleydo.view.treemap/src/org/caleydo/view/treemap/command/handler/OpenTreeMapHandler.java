@@ -21,7 +21,7 @@ public class OpenTreeMapHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(GLTreeMap.VIEW_ID, Integer.toString(SECONDARY_ID), IWorkbenchPage.VIEW_ACTIVATE);
+					.showView(GLTreeMap.VIEW_TYPE, Integer.toString(SECONDARY_ID), IWorkbenchPage.VIEW_ACTIVATE);
 
 			SECONDARY_ID++;
 		} catch (PartInitException e) {

@@ -29,7 +29,7 @@ public class Activator extends Plugin {
 		
 		registerDataDomains();
 		
-		ToolBarContentFactory.get().addToolBarContent(GLScatterPlot.VIEW_ID, false, new ScatterplotToolBarContent());
+		ToolBarContentFactory.get().addToolBarContent(GLScatterPlot.VIEW_TYPE, false, new ScatterplotToolBarContent());
 	}
 
 	/*
@@ -63,6 +63,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLScatterPlot.VIEW_ID);
+						GLScatterPlot.VIEW_TYPE);
 	}
 }

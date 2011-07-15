@@ -254,7 +254,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 			ISelectionDelta selectionDelta = selectionManager.getDelta();
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
-			event.setDataDomainType(manager.getDataDomain().getDataDomainType());
+			event.setDataDomainType(manager.getDataDomain().getDataDomainID());
 			event.setSelectionDelta((SelectionDelta) selectionDelta);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 			break;

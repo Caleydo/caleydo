@@ -46,7 +46,7 @@ public class RcpGLTemplateView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return GLTemplate.VIEW_ID;
+		return GLTemplate.VIEW_TYPE;
 	}
 
 }

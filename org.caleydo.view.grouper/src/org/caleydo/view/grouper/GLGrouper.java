@@ -91,7 +91,7 @@ import org.eclipse.ui.PlatformUI;
 public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		IViewCommandHandler, ISelectionUpdateHandler, IClusterNodeEventReceiver {
 
-	public final static String VIEW_ID = "org.caleydo.view.grouper";
+	public final static String VIEW_TYPE = "org.caleydo.view.grouper";
 
 	boolean bUseDetailLevel = true;
 
@@ -144,7 +144,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	public GLGrouper(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
-		viewType = VIEW_ID;
+		viewType = VIEW_TYPE;
 		hashGroups = new HashMap<Integer, GroupRepresentation>();
 
 		dragAndDropController = new DragAndDropController(this);
@@ -327,7 +327,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 				org.caleydo.core.data.collection.set.Set.STORAGE, alIndices);
 
 		eventPublisher.triggerEvent(new ReplaceStorageVAInUseCaseEvent(set, dataDomain
-				.getDataDomainType(), storageVAType, storageVA));
+				.getDataDomainID(), storageVAType, storageVA));
 
 		// FIXME no one is notified that there is a new tree
 		set.getStorageData(storageVAType).setStorageTree(tree);
@@ -821,7 +821,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 		selectionUpdateEvent.setSender(this);
-		selectionUpdateEvent.setDataDomainType(dataDomain.getDataDomainType());
+		selectionUpdateEvent.setDataDomainType(dataDomain.getDataDomainID());
 		selectionUpdateEvent.setSelectionDelta(delta);
 		eventPublisher.triggerEvent(selectionUpdateEvent);
 	}
@@ -868,7 +868,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedGrouperView serializedForm = new SerializedGrouperView(
-				dataDomain.getDataDomainType());
+				dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

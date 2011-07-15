@@ -171,14 +171,6 @@ public abstract class AStorageBasedView
 			(glRemoteRenderingView != null && glRemoteRenderingView.getViewType().equals(
 				"org.caleydo.view.bucket"));
 
-		// TODO: do we need this here?
-		// if (set == null) {
-		// contentSelectionManager.resetSelectionManager();
-		// storageSelectionManager.resetSelectionManager();
-		// connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
-		// return;
-		// }
-
 		initLists();
 	}
 
@@ -477,37 +469,37 @@ public abstract class AStorageBasedView
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		selectionUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		contentVAUpdateListener = new ContentVAUpdateListener();
 		contentVAUpdateListener.setHandler(this);
-		contentVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		contentVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
 
 		replaceContentVAListener = new ReplaceContentVAListener();
 		replaceContentVAListener.setHandler(this);
-		replaceContentVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		replaceContentVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
 
 		storageVAUpdateListener = new StorageVAUpdateListener();
 		storageVAUpdateListener.setHandler(this);
-		storageVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		storageVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(StorageVAUpdateEvent.class, storageVAUpdateListener);
 
 		replaceStorageVAListener = new ReplaceStorageVAListener();
 		replaceStorageVAListener.setHandler(this);
-		replaceStorageVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		replaceStorageVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ReplaceStorageVAEvent.class, replaceStorageVAListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		selectionCommandListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
-		redrawViewListener.setDataDomainType(dataDomain.getDataDomainType());
+		redrawViewListener.setDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
 
 		clearSelectionsListener = new ClearSelectionsListener();

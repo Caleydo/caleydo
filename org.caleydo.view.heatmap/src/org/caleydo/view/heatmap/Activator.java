@@ -35,11 +35,11 @@ public class Activator extends Plugin {
 
 		registerDataDomains();
 
-		ToolBarContentFactory.get().addToolBarContent(GLHeatMap.VIEW_ID, false,
+		ToolBarContentFactory.get().addToolBarContent(GLHeatMap.VIEW_TYPE, false,
 				new HeatMapToolBarContent());
-		ToolBarContentFactory.get().addToolBarContent(GLHierarchicalHeatMap.VIEW_ID,
+		ToolBarContentFactory.get().addToolBarContent(GLHierarchicalHeatMap.VIEW_TYPE,
 				true, new HierarchicalHeatMapToolBarContent());
-		ToolBarContentFactory.get().addToolBarContent(GLUncertaintyHeatMap.VIEW_ID, true,
+		ToolBarContentFactory.get().addToolBarContent(GLUncertaintyHeatMap.VIEW_TYPE, true,
 				new UncertaintyHeatMapToolBarContent());
 	}
 
@@ -74,30 +74,30 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLHeatMap.VIEW_ID);
+						GLHeatMap.VIEW_TYPE);
 
 		DataDomainManager
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLHierarchicalHeatMap.VIEW_ID);
+						GLHierarchicalHeatMap.VIEW_TYPE);
 
 		DataDomainManager
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLUncertaintyHeatMap.VIEW_ID);
+						GLUncertaintyHeatMap.VIEW_TYPE);
 
 		DataDomainManager
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLDendrogram.VIEW_ID);
+						GLDendrogram.VIEW_TYPE);
 
 		DataDomainManager
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLDendrogram.VIEW_ID);
+						GLDendrogram.VIEW_TYPE);
 	}
 }

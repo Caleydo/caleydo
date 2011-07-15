@@ -48,27 +48,27 @@ public class StorageFilterManager
 
 		storageVAUpdateListener = new StorageVAUpdateListener();
 		storageVAUpdateListener.setHandler(this);
-		storageVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		storageVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(StorageVAUpdateEvent.class, storageVAUpdateListener);
 
 		removeStorageFilterListener = new RemoveStorageFilterListener();
 		removeStorageFilterListener.setHandler(this);
-		removeStorageFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		removeStorageFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RemoveStorageFilterEvent.class, removeStorageFilterListener);
 		
 		moveStorageFilterListener = new MoveStorageFilterListener();
 		moveStorageFilterListener.setHandler(this);
-		moveStorageFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		moveStorageFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(MoveStorageFilterEvent.class, moveStorageFilterListener);
 
 		newStorageFilterListener = new NewStorageFilterListener();
 		newStorageFilterListener.setHandler(this);
-		newStorageFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		newStorageFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(NewStorageFilterEvent.class, newStorageFilterListener);
 
 		reEvaluateStorageFilterListListener = new ReEvaluateStorageFilterListListener();
 		reEvaluateStorageFilterListListener.setHandler(this);
-		reEvaluateStorageFilterListListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+		reEvaluateStorageFilterListListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ReEvaluateStorageFilterListEvent.class,
 			reEvaluateStorageFilterListListener);
 
@@ -107,7 +107,7 @@ public class StorageFilterManager
 	protected void triggerVAUpdateEvent(StorageVADelta delta) {
 		StorageVAUpdateEvent event = new StorageVAUpdateEvent();
 		event.setSender(this);
-		event.setDataDomainType(dataDomain.getDataDomainType());
+		event.setDataDomainType(dataDomain.getDataDomainID());
 		event.setVirtualArrayDelta(delta);
 		eventPublisher.triggerEvent(event);
 	}
@@ -118,7 +118,7 @@ public class StorageFilterManager
 		event.setVAType(Set.STORAGE);
 		event.setVirtualArray(currentVA);
 		event.setSender(this);
-		event.setDataDomainType(dataDomain.getDataDomainType());
+		event.setDataDomainType(dataDomain.getDataDomainID());
 
 		eventPublisher.triggerEvent(event);
 	}

@@ -58,6 +58,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLTexture.VIEW_ID);
+						GLTexture.VIEW_TYPE);
 	}
 }

@@ -14,7 +14,7 @@ public class OpenGeneSearchHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(RcpGeneSearchView.VIEW_ID);
+					.showView(RcpGeneSearchView.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

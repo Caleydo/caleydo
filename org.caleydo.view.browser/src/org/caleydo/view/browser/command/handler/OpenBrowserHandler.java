@@ -14,7 +14,7 @@ public class OpenBrowserHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(HTMLBrowser.VIEW_ID);
+					.showView(HTMLBrowser.VIEW_TYPE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

@@ -278,7 +278,7 @@ public class Connection {
 
 		// FIXME this should work for more than one use case now
 		ASetBasedDataDomain useCase =
-			(ASetBasedDataDomain) DataDomainManager.get().getDataDomain("org.caleydo.datadomain.genetic");
+			(ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.genetic");
 		ISet set = useCase.getSet();
 
 		initData.setDataDomain(useCase);

@@ -78,7 +78,7 @@ import org.caleydo.view.visbricks.renderstyle.VisBricksRenderStyle;
 public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		IViewCommandHandler, ISelectionUpdateHandler, IDataDomainSetBasedView {
 
-	public final static String VIEW_ID = "org.caleydo.view.visbricks";
+	public final static String VIEW_TYPE = "org.caleydo.view.visbricks";
 
 	private final static int ARCH_PIXEL_HEIGHT = 150;
 	private final static float ARCH_BOTTOM_PERCENT = 0.5f;
@@ -178,7 +178,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public GLVisBricks(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
-		viewType = GLVisBricks.VIEW_ID;
+		viewType = GLVisBricks.VIEW_TYPE;
 
 		connectionRenderer = new ConnectionBandRenderer();
 
@@ -1092,7 +1092,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedVisBricksView serializedForm = new SerializedVisBricksView(
-				dataDomain.getDataDomainType());
+				dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -1530,7 +1530,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// initLayouts();
 
 		RelationsUpdatedEvent event = new RelationsUpdatedEvent();
-		event.setDataDomainType(dataDomain.getDataDomainType());
+		event.setDataDomainType(dataDomain.getDataDomainID());
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
@@ -1646,7 +1646,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		contentSelectionManager.clearSelections();
 		//
 		ClearSelectionsEvent cse = new ClearSelectionsEvent();
-		cse.setDataDomainType(getDataDomain().getDataDomainType());
+		cse.setDataDomainType(getDataDomain().getDataDomainID());
 		cse.setSender(this);
 		eventPublisher.triggerEvent(cse);
 
@@ -1672,7 +1672,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
-		event.setDataDomainType(getDataDomain().getDataDomainType());
+		event.setDataDomainType(getDataDomain().getDataDomainID());
 		event.setSender(this);
 		SelectionDelta delta = contentSelectionManager.getDelta();
 		event.setSelectionDelta(delta);

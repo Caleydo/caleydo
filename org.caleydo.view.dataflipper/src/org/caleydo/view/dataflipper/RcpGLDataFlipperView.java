@@ -63,6 +63,6 @@ public class RcpGLDataFlipperView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return GLDataFlipper.VIEW_ID;
+		return GLDataFlipper.VIEW_TYPE;
 	}
 }

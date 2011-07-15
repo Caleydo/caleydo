@@ -37,7 +37,7 @@ public class PathwayCreator implements IRemoteViewCreator {
 		}
 
 		SerializedPathwayView serPathway = new SerializedPathwayView();
-		serPathway.setDataDomainType("org.caleydo.datadomain.pathway");
+		serPathway.setDataDomainID("org.caleydo.datadomain.pathway");
 		serPathway.setPathwayID(pathway.getID());
 
 		GLPathway pathwayView = (GLPathway) GeneralManager
@@ -52,7 +52,7 @@ public class PathwayCreator implements IRemoteViewCreator {
 
 		pathwayView.setPathway(pathway);
 		pathwayView.setDataDomain((PathwayDataDomain) (DataDomainManager.get()
-				.getDataDomain(serPathway.getDataDomainType())));
+				.getDataDomainByID(serPathway.getDataDomainID())));
 		pathwayView.enablePathwayTextures(true);
 		pathwayView.enableNeighborhood(true);
 		pathwayView.enableGeneMapping(true);

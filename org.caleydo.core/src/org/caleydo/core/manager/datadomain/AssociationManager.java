@@ -99,14 +99,14 @@ public class AssociationManager {
 		Set<String> dataDomainTypes = getDataDomainTypesForViewTypes(viewType);
 		if (dataDomainTypes == null)
 			return null;
-		ArrayList<IDataDomain> availabelDataDomainTypes = new ArrayList<IDataDomain>();
+		ArrayList<IDataDomain> availabelDataDomains = new ArrayList<IDataDomain>();
 
 		for (String dataDomainType : dataDomainTypes) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomain(dataDomainType);
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByType(dataDomainType);
 			if (dataDomain != null)
-				availabelDataDomainTypes.add(dataDomain);
+				availabelDataDomains.add(dataDomain);
 		}
-		return availabelDataDomainTypes;
+		return availabelDataDomains;
 	}
 
 }

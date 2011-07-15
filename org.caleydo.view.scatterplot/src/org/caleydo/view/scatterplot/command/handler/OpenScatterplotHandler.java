@@ -23,7 +23,7 @@ public class OpenScatterplotHandler extends AbstractHandler implements IHandler 
 			HandlerUtil
 					.getActiveWorkbenchWindow(event)
 					.getActivePage()
-					.showView(GLScatterPlot.VIEW_ID, Integer.toString(SECONDARY_ID),
+					.showView(GLScatterPlot.VIEW_TYPE, Integer.toString(SECONDARY_ID),
 							IWorkbenchPage.VIEW_ACTIVATE);
 
 			SECONDARY_ID++;

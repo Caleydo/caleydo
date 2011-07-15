@@ -21,7 +21,7 @@ public class OpenFilterPipelineHandler extends AbstractHandler implements IHandl
 		try {
 
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(GLFilterPipeline.VIEW_ID, Integer.toString(SECONDARY_ID), IWorkbenchPage.VIEW_ACTIVATE);
+					.showView(GLFilterPipeline.VIEW_TYPE, Integer.toString(SECONDARY_ID), IWorkbenchPage.VIEW_ACTIVATE);
 			
 			SECONDARY_ID++;
 			

@@ -32,6 +32,6 @@ public class SerializedHierarchicalHeatMapView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLHierarchicalHeatMap.VIEW_ID;
+		return GLHierarchicalHeatMap.VIEW_TYPE;
 	}
 }

@@ -32,6 +32,6 @@ public class SerializedUncertaintyHeatMapView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLUncertaintyHeatMap.VIEW_ID;
+		return GLUncertaintyHeatMap.VIEW_TYPE;
 	}
 }

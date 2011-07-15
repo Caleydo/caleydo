@@ -66,7 +66,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class GLHeatMap extends AStorageBasedView {
 
-	public final static String VIEW_ID = "org.caleydo.view.heatmap";
+	public final static String VIEW_TYPE = "org.caleydo.view.heatmap";
 	public static final SelectionType SELECTION_HIDDEN = new SelectionType(
 			"Hidden", new float[] { 0f, 0f, 0f, 1f }, 1, false, false, 0.2f);
 
@@ -117,7 +117,7 @@ public class GLHeatMap extends AStorageBasedView {
 	public GLHeatMap(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
 
 		super(glCanvas, viewFrustum);
-		viewType = GLHeatMap.VIEW_ID;
+		viewType = GLHeatMap.VIEW_TYPE;
 
 		glKeyListener = new GLHeatMapKeyListener(this);
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
@@ -459,7 +459,7 @@ public class GLHeatMap extends AStorageBasedView {
 			HideHeatMapElementsEvent event = new HideHeatMapElementsEvent(
 					hideElements);
 			event.setSender(this);
-			event.setDataDomainType(dataDomain.getDataDomainType());
+			event.setDataDomainType(dataDomain.getDataDomainID());
 			eventPublisher.triggerEvent(event);
 
 			setDisplayListDirty();
@@ -512,7 +512,7 @@ public class GLHeatMap extends AStorageBasedView {
 		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
-		event.setDataDomainType(dataDomain.getDataDomainType());
+		event.setDataDomainType(dataDomain.getDataDomainID());
 		event.setSelectionDelta(selectionDelta);
 		event.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(event);
@@ -541,7 +541,7 @@ public class GLHeatMap extends AStorageBasedView {
 		SelectionDelta selectionDelta = storageSelectionManager.getDelta();
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
-		event.setDataDomainType(dataDomain.getDataDomainType());
+		event.setDataDomainType(dataDomain.getDataDomainID());
 		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
 
@@ -736,7 +736,7 @@ public class GLHeatMap extends AStorageBasedView {
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedHeatMapView serializedForm = new SerializedHeatMapView(
-				dataDomain.getDataDomainType());
+				dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

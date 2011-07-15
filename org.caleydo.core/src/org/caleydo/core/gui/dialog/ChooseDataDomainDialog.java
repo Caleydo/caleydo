@@ -1,8 +1,7 @@
 package org.caleydo.core.gui.dialog;
 
-import java.util.List;
+import java.util.Collection;
 
-import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -18,8 +17,8 @@ import org.eclipse.swt.widgets.Shell;
 public class ChooseDataDomainDialog
 	extends Dialog {
 
-	private ADataDomain selectedDataDomain;
-	private List<ADataDomain> possibleDataDomains;
+	private IDataDomain selectedDataDomain;
+	private IDataDomain[] possibleDataDomains;
 	
 	public ChooseDataDomainDialog(Shell parent) {
 		// Pass the default styles here
@@ -32,12 +31,12 @@ public class ChooseDataDomainDialog
 		setText("Choose Data Domain");
 	}
 
-	public void setPossibleDataDomains(List<ADataDomain> possibleDataDomains)
+	public void setPossibleDataDomains(Collection<IDataDomain> possibleDataDomains)
 	{
-		this.possibleDataDomains = possibleDataDomains;
+		possibleDataDomains.toArray(this.possibleDataDomains);
 	}
 	
-	public ADataDomain open() {
+	public IDataDomain open() {
 		// Create the dialog window
 		Shell shell = new Shell(getParent(), getStyle());
 		shell.setText(getText());
@@ -60,9 +59,9 @@ public class ChooseDataDomainDialog
 		final Combo comboDropDown = new Combo(shell, SWT.DROP_DOWN | SWT.BORDER);
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		comboDropDown.setLayoutData(data);
-		for (int index = 0; index < possibleDataDomains.size(); index++) {
-			IDataDomain possibleDataDomain = possibleDataDomains.get(index);
-			comboDropDown.add(possibleDataDomain.getDataDomainType(), index);	
+		for (int index = 0; index < possibleDataDomains.length; index++) {
+			IDataDomain possibleDataDomain = possibleDataDomains[index];
+			comboDropDown.add(possibleDataDomain.getDataDomainID(), index);	
 		}
 
 		// Create the OK button and add a handler
@@ -75,7 +74,7 @@ public class ChooseDataDomainDialog
 		ok.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
 
-				selectedDataDomain = possibleDataDomains.get(comboDropDown.getSelectionIndex());
+				selectedDataDomain = possibleDataDomains[comboDropDown.getSelectionIndex()];
 				shell.close();
 			}
 		});

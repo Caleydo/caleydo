@@ -26,7 +26,7 @@ public class SerializedInfoAreaView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return RcpInfoAreaView.VIEW_ID;
+		return RcpInfoAreaView.VIEW_TYPE;
 	}
 
 	@Override

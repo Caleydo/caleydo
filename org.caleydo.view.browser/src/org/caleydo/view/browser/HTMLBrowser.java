@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.ToolItem;
  */
 public class HTMLBrowser extends ASWTView {
 
-	public final static String VIEW_ID = "org.caleydo.view.browser";
+	public final static String VIEW_TYPE = "org.caleydo.view.browser";
 
 	public final static String CALEYDO_HOME = "http://www.caleydo.org";
 
@@ -78,7 +78,7 @@ public class HTMLBrowser extends ASWTView {
 	public HTMLBrowser(Composite parentComposite) {
 		super(GeneralManager.get().getIDCreator()
 				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENERAL), parentComposite);
-		viewType = VIEW_ID;
+		viewType = VIEW_TYPE;
 	}
 
 	/**

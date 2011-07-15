@@ -20,7 +20,7 @@ public class ContentFilter
 			NewContentFilterEvent filterEvent = new NewContentFilterEvent();
 			filterEvent.setFilter(this);
 			filterEvent.setSender(this);
-			filterEvent.setDataDomainType(dataDomain.getDataDomainType());
+			filterEvent.setDataDomainType(dataDomain.getDataDomainID());
 
 			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 			
@@ -31,7 +31,7 @@ public class ContentFilter
 			ReEvaluateContentFilterListEvent reevaluateEvent = new ReEvaluateContentFilterListEvent();
 			// reevaluateEvent.addFilter(filter);
 			reevaluateEvent.setSender(this);
-			reevaluateEvent.setDataDomainType(dataDomain.getDataDomainType());
+			reevaluateEvent.setDataDomainType(dataDomain.getDataDomainID());
 
 			GeneralManager.get().getEventPublisher().triggerEvent(reevaluateEvent);
 		}

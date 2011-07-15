@@ -119,8 +119,8 @@ public abstract class ASetBasedDataDomain
 		init();
 	}
 
-	public ASetBasedDataDomain(String dataDomainType) {
-		super(dataDomainType);
+	public ASetBasedDataDomain(String dataDomainType, String dataDomainID) {
+		super(dataDomainType, dataDomainID);
 		init();
 	}
 
@@ -135,14 +135,14 @@ public abstract class ASetBasedDataDomain
 				+ storageIDCategory);
 		}
 		contentIDType =
-			IDType.registerType("content_" + dataDomainType + "_" + hashCode(), contentIDCategory,
+			IDType.registerType("content_" + dataDomainID + "_" + hashCode(), contentIDCategory,
 				EStorageType.INT);
 		storageIDType =
-			IDType.registerType("storage_" + dataDomainType + "_" + hashCode(), storageIDCategory,
+			IDType.registerType("storage_" + dataDomainID + "_" + hashCode(), storageIDCategory,
 				EStorageType.INT);
 
 		contentGroupIDType =
-			IDType.registerType("group_content_" + dataDomainType + "_" + hashCode(), contentIDCategory,
+			IDType.registerType("group_content_" + dataDomainID + "_" + hashCode(), contentIDCategory,
 				EStorageType.INT);
 	}
 
@@ -348,9 +348,9 @@ public abstract class ASetBasedDataDomain
 
 		// This should be done to avoid problems with group info in HHM
 
-		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, dataDomainType, clusterState
+		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, dataDomainID, clusterState
 			.getContentVAType()));
-		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, dataDomainType, Set.STORAGE));
+		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, dataDomainID, Set.STORAGE));
 
 		if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING
 			|| clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
@@ -408,7 +408,7 @@ public abstract class ASetBasedDataDomain
 	public void replaceContentVA(int setID, String dataDomainType, String vaType,
 		ContentVirtualArray virtualArray) {
 
-		if (dataDomainType != this.dataDomainType) {
+		if (dataDomainType != this.dataDomainID) {
 			handleForeignContentVAUpdate(setID, dataDomainType, vaType, virtualArray);
 			return;
 		}
@@ -487,7 +487,7 @@ public abstract class ASetBasedDataDomain
 	public void restoreOriginalContentVA() {
 		initFullVA();
 
-		ReplaceContentVAEvent event = new ReplaceContentVAEvent(set, dataDomainType, ISet.CONTENT);
+		ReplaceContentVAEvent event = new ReplaceContentVAEvent(set, dataDomainID, ISet.CONTENT);
 
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
@@ -531,39 +531,39 @@ public abstract class ASetBasedDataDomain
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setExclusiveDataDomainType(dataDomainType);
+		selectionUpdateListener.setExclusiveDataDomainType(dataDomainID);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setDataDomainType(dataDomainType);
+		selectionCommandListener.setDataDomainType(dataDomainID);
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		startClusteringListener = new StartClusteringListener();
 		startClusteringListener.setHandler(this);
-		startClusteringListener.setDataDomainType(dataDomainType);
+		startClusteringListener.setDataDomainType(dataDomainID);
 		eventPublisher.addListener(StartClusteringEvent.class, startClusteringListener);
 
 		replaceContentVirtualArrayInUseCaseListener = new ReplaceContentVAInUseCaseListener();
 		replaceContentVirtualArrayInUseCaseListener.setHandler(this);
-		replaceContentVirtualArrayInUseCaseListener.setDataDomainType(dataDomainType);
+		replaceContentVirtualArrayInUseCaseListener.setDataDomainType(dataDomainID);
 		eventPublisher.addListener(ReplaceContentVAInUseCaseEvent.class,
 			replaceContentVirtualArrayInUseCaseListener);
 
 		replaceStorageVirtualArrayInUseCaseListener = new ReplaceStorageVAInUseCaseListener();
 		replaceStorageVirtualArrayInUseCaseListener.setHandler(this);
-		replaceStorageVirtualArrayInUseCaseListener.setDataDomainType(dataDomainType);
+		replaceStorageVirtualArrayInUseCaseListener.setDataDomainType(dataDomainID);
 		eventPublisher.addListener(ReplaceStorageVAInUseCaseEvent.class,
 			replaceStorageVirtualArrayInUseCaseListener);
 
 		contentVAUpdateListener = new ContentVAUpdateListener();
 		contentVAUpdateListener.setHandler(this);
-		contentVAUpdateListener.setDataDomainType(dataDomainType);
+		contentVAUpdateListener.setDataDomainType(dataDomainID);
 		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
 
 		storageVAUpdateListener = new StorageVAUpdateListener();
 		storageVAUpdateListener.setHandler(this);
-		storageVAUpdateListener.setDataDomainType(dataDomainType);
+		storageVAUpdateListener.setDataDomainType(dataDomainID);
 		eventPublisher.addListener(StorageVAUpdateEvent.class, storageVAUpdateListener);
 
 		aggregateGroupListener = new AggregateGroupListener();

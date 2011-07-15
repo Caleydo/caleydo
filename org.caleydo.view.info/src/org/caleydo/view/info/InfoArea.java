@@ -102,7 +102,6 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
-
 	}
 
 	public Control createControl(final Composite parent) {
@@ -303,32 +302,32 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 	public void registerEventListeners() {
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setDataDomainType(dataDomain.getDataDomainType());
+		selectionUpdateListener.setDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		contentVAUpdateListener = new ContentVAUpdateListener();
 		contentVAUpdateListener.setHandler(this);
-		contentVAUpdateListener.setDataDomainType(dataDomain.getDataDomainType());
+		contentVAUpdateListener.setDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
 
 		replaceContentVAListener = new ReplaceContentVAListener();
 		replaceContentVAListener.setHandler(this);
-		replaceContentVAListener.setDataDomainType(dataDomain.getDataDomainType());
+		replaceContentVAListener.setDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
 
 		storageVAUpdateListener = new StorageVAUpdateListener();
 		storageVAUpdateListener.setHandler(this);
-		storageVAUpdateListener.setDataDomainType(dataDomain.getDataDomainType());
+		storageVAUpdateListener.setDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(StorageVAUpdateEvent.class, storageVAUpdateListener);
 
 		replaceStorageVAListener = new ReplaceStorageVAListener();
 		replaceStorageVAListener.setHandler(this);
-		replaceStorageVAListener.setDataDomainType(dataDomain.getDataDomainType());
+		replaceStorageVAListener.setDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ReplaceStorageVAEvent.class, replaceStorageVAListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setDataDomainType(dataDomain.getDataDomainType());
+		selectionCommandListener.setDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		redrawViewListener = new RedrawViewListener();

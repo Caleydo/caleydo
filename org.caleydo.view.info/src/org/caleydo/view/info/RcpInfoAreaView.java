@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class RcpInfoAreaView extends CaleydoRCPViewPart {
 
-	public static final String VIEW_ID = "org.caleydo.view.info";
+	public static final String VIEW_TYPE = "org.caleydo.view.info";
 
 	public static boolean bHorizontal = false;
 
@@ -69,10 +69,8 @@ public class RcpInfoAreaView extends CaleydoRCPViewPart {
 		infoComposite.setLayout(layout);
 		infoArea = new InfoArea();
 
-		// FIXME use determineDataDomain for this
-
-		IDataDomain dataDomain = DataDomainManager.get().getDataDomain(
-				serializedView.getDataDomainType());
+		IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
+				serializedView.getDataDomainID());
 		infoArea.setDataDomain((ASetBasedDataDomain) dataDomain);
 
 		infoArea.registerEventListeners();

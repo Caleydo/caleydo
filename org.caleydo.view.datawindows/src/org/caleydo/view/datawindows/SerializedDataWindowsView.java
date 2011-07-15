@@ -26,6 +26,6 @@ public class SerializedDataWindowsView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLDataWindows.VIEW_ID;
+		return GLDataWindows.VIEW_TYPE;
 	}
 }

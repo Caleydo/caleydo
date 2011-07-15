@@ -31,11 +31,17 @@ public class PathwayDataDomain extends ADataDomain {
 	protected List<ADimensionGroupData> dimensionGroups;
 
 	/**
+	 * Counter used for determining the extension that together with the type
+	 * builds the data domain ID.
+	 */
+	private static int extensionID = 0;
+
+	/**
 	 * Constructor.
 	 */
 	public PathwayDataDomain() {
-
-		super(DATA_DOMAIN_TYPE);
+		
+		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + ":" + extensionID++);
 		
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 

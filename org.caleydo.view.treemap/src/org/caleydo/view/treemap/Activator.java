@@ -29,7 +29,7 @@ public class Activator extends Plugin {
 	
 		registerDataDomains();
 		
-		ToolBarContentFactory.get().addToolBarContent(GLHierarchicalTreeMap.VIEW_ID, false, new HierarchicalTreeMapToolBarContent());
+		ToolBarContentFactory.get().addToolBarContent(GLHierarchicalTreeMap.VIEW_TYPE, false, new HierarchicalTreeMapToolBarContent());
 	}
 
 	/*
@@ -58,7 +58,7 @@ public class Activator extends Plugin {
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 		// dataDomainTypes.add("org.caleydo.datadomain.generic");
 
-		DataDomainManager.get().getAssociationManager().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLHierarchicalTreeMap.VIEW_ID);
-		DataDomainManager.get().getAssociationManager().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLTreeMap.VIEW_ID);
+		DataDomainManager.get().getAssociationManager().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLHierarchicalTreeMap.VIEW_TYPE);
+		DataDomainManager.get().getAssociationManager().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, GLTreeMap.VIEW_TYPE);
 	}
 }

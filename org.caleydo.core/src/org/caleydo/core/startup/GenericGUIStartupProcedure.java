@@ -4,11 +4,8 @@ import java.util.List;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
-import org.caleydo.core.startup.gui.DataImportWizard;
+import org.caleydo.core.io.gui.LoadDataDialog;
 import org.caleydo.core.util.collection.Pair;
-import org.eclipse.jface.window.Window;
-import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Startup procedure for project wizard.
@@ -20,11 +17,11 @@ public class GenericGUIStartupProcedure
 
 	@Override
 	public void init(ApplicationInitData appInitData) {
-			
-		// FIXME this needs to be done after the wizard is closed, and dynamically
+
 		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
 		cmd.setAttributes("org.caleydo.datadomain.generic");
 		cmd.doCommand();
+		dataDomain = cmd.getCreatedObject();
 
 		super.init(appInitData);
 	}
@@ -33,21 +30,8 @@ public class GenericGUIStartupProcedure
 	public void execute() {
 		super.execute();
 
-		Shell shell = StartupProcessor.get().getDisplay().getActiveShell();
-
-		WizardDialog dataImportWizard;
-
-	
-	
-			dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
-
-			if (Window.CANCEL == dataImportWizard.open()) {
-				StartupProcessor.get().shutdown();
-			}
-		
+		new LoadDataDialog(StartupProcessor.get().getDisplay().getActiveShell(), dataDomain);
 	}
-
-
 
 	@Override
 	public void addDefaultStartViews() {
@@ -60,11 +44,10 @@ public class GenericGUIStartupProcedure
 			return;
 
 		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.browser",
-			"org.caleydo.datadomain.generic"));
-		
-		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.parcoords",
-			"org.caleydo.datadomain.generic"));
+			dataDomain.getDataDomainType()));
 
-	
+		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.parcoords",
+			dataDomain.getDataDomainType()));
+
 	}
 }

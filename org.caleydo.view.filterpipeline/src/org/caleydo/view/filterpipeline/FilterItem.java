@@ -164,7 +164,7 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 		}
 
 		if (filterEvent != null) {
-			filterEvent.setDataDomainType(filter.getDataDomain().getDataDomainType());
+			filterEvent.setDataDomainType(filter.getDataDomain().getDataDomainID());
 			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 		}
 	}
@@ -183,7 +183,7 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 		}
 
 		if (filterEvent != null) {
-			filterEvent.setDataDomainType(filter.getDataDomain().getDataDomainType());
+			filterEvent.setDataDomainType(filter.getDataDomain().getDataDomainID());
 			((MoveFilterEvent<?>) filterEvent).setOffset(offset);
 			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 		}
@@ -242,7 +242,7 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 		}
 
 		if (filterEvent != null) {
-			filterEvent.setDataDomainType(filter.getDataDomain().getDataDomainType());
+			filterEvent.setDataDomainType(filter.getDataDomain().getDataDomainID());
 			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 		}
 	}

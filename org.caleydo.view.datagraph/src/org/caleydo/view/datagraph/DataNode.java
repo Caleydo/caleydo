@@ -71,7 +71,7 @@ public class DataNode extends ADraggableDataGraphNode {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setRatioSizeX(1);
 		captionLayout.setRenderer(new LabelRenderer(view, dataDomain
-				.getDataDomainType(), EPickingType.DATA_GRAPH_NODE, id));
+				.getDataDomainID(), EPickingType.DATA_GRAPH_NODE, id));
 
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);

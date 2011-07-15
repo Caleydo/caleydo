@@ -56,7 +56,7 @@ import org.caleydo.view.tagclouds.renderstyle.TagCloudRenderStyle;
 public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		IViewCommandHandler, ISelectionUpdateHandler {
 
-	public final static String VIEW_ID = "org.caleydo.view.tagclouds";
+	public final static String VIEW_TYPE = "org.caleydo.view.tagclouds";
 
 	public final static int MIN_NUMBER_PIXELS_PER_DIMENSION = 100;
 
@@ -113,7 +113,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	public GLTagCloud(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
-		viewType = GLTagCloud.VIEW_ID;
+		viewType = GLTagCloud.VIEW_TYPE;
 
 		layoutManager = new LayoutManager(viewFrustum);
 		layoutTemplate = new LayoutTemplate();
@@ -506,7 +506,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener
-				.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+				.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 

@@ -113,7 +113,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		IContentGroupsActionHandler, IStorageGroupsActionHandler,
 		IClusterNodeEventReceiver, INewContentGroupInfoHandler, IGLRemoteRenderingView {
 
-	public final static String VIEW_ID = "org.caleydo.view.heatmap.hierarchical";
+	public final static String VIEW_TYPE = "org.caleydo.view.heatmap.hierarchical";
 
 	private HeatMapRenderStyle renderStyle;
 
@@ -265,7 +265,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	public GLHierarchicalHeatMap(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 
 		super(glCanvas, viewFrustum);
-		viewType = GLHierarchicalHeatMap.VIEW_ID;
+		viewType = GLHierarchicalHeatMap.VIEW_TYPE;
 
 		ArrayList<SelectionType> alSelectionTypes = new ArrayList<SelectionType>();
 		alSelectionTypes.add(SelectionType.NORMAL);
@@ -4660,7 +4660,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedHierarchicalHeatMapView serializedForm = new SerializedHierarchicalHeatMapView(
-				dataDomain.getDataDomainType());
+				dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

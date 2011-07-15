@@ -109,7 +109,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 								event = new StartClusteringEvent(clusterState,
 										set.getID());
 								event.setDataDomainType(brick.getDataDomain()
-										.getDataDomainType());
+										.getDataDomainID());
 								GeneralManager.get().getEventPublisher()
 										.triggerEvent(event);
 							}

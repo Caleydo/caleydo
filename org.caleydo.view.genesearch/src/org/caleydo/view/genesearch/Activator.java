@@ -56,6 +56,6 @@ public class Activator extends Plugin {
 				.get()
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						RcpGeneSearchView.VIEW_ID);
+						RcpGeneSearchView.VIEW_TYPE);
 	}
 }

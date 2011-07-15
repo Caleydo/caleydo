@@ -23,7 +23,7 @@ public class SerializedMatchmakerView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLMatchmaker.VIEW_ID;
+		return GLMatchmaker.VIEW_TYPE;
 	}
 
 }
