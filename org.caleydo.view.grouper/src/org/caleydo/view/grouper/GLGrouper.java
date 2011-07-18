@@ -676,7 +676,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 								selectedSets);
 						contextMenu.addContextMenueItem(addGroupsToVisBricksItem);
 
-						if (Platform.getBundle("org.caleydo.util.r") != null) {
+						if (Platform.getBundle("org.caleydo.util.r") != null && false) {
 
 							contextMenu.addSeparator();
 

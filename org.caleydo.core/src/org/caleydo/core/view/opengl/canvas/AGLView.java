@@ -91,6 +91,9 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Marc Streit
  * @author Alexander Lex
  */
+/**
+ * @author test
+ */
 public abstract class AGLView
 	extends AView
 	implements GLEventListener, IResettableView, IScrollBarUpdateHandler, IMouseWheelHandler {
@@ -228,8 +231,8 @@ public abstract class AGLView
 
 	private float relativeViewTranlateY;
 
-	private HashMap<String, HashMap<Integer, IPickingListener>> singleIDPickingListeners;
-	private HashMap<String, IPickingListener> multiIDPickingListeners;
+	private HashMap<String, HashMap<Integer, Set<IPickingListener>>> singleIDPickingListeners;
+	private HashMap<String, Set<IPickingListener>> multiIDPickingListeners;
 
 	// FIXME: Maybe this can be generalized so a view only needs only one DragAndDropController
 	private DragAndDropController scrollBarDragAndDropController;
@@ -254,8 +257,8 @@ public abstract class AGLView
 		}
 
 		glMouseWheelListener = new GLMouseWheelListener(this);
-		singleIDPickingListeners = new HashMap<String, HashMap<Integer, IPickingListener>>();
-		multiIDPickingListeners = new HashMap<String, IPickingListener>();
+		singleIDPickingListeners = new HashMap<String, HashMap<Integer, Set<IPickingListener>>>();
+		multiIDPickingListeners = new HashMap<String, Set<IPickingListener>>();
 		scrollBarDragAndDropController = new DragAndDropController(this);
 
 		this.viewFrustum = viewFrustum;
@@ -666,18 +669,25 @@ public abstract class AGLView
 
 	protected void handlePicking(String pickingType, EPickingMode pickingMode, int pickingID, Pick pick) {
 
-		IPickingListener pickingListener = multiIDPickingListeners.get(pickingType);
+		Set<IPickingListener> pickingListeners = multiIDPickingListeners.get(pickingType);
 
-		handlePicking(pickingListener, pickingMode, pick);
+		if (pickingListeners != null) {
+			for (IPickingListener pickingListener : pickingListeners) {
+				handlePicking(pickingListener, pickingMode, pick);
+			}
+		}
 
-		HashMap<Integer, IPickingListener> map = singleIDPickingListeners.get(pickingType);
+		HashMap<Integer, Set<IPickingListener>> map = singleIDPickingListeners.get(pickingType);
 		if (map == null)
 			return;
 
-		pickingListener = map.get(pickingID);
+		pickingListeners = map.get(pickingID);
 
-		handlePicking(pickingListener, pickingMode, pick);
-
+		if (pickingListeners != null) {
+			for (IPickingListener pickingListener : pickingListeners) {
+				handlePicking(pickingListener, pickingMode, pick);
+			}
+		}
 	}
 
 	private void handlePicking(IPickingListener pickingListener, EPickingMode pickingMode, Pick pick) {
@@ -713,13 +723,17 @@ public abstract class AGLView
 	 */
 	public void addSingleIDPickingListener(IPickingListener pickingListener, String pickingType,
 		int externalID) {
-		HashMap<Integer, IPickingListener> map = singleIDPickingListeners.get(pickingType);
+		HashMap<Integer, Set<IPickingListener>> map = singleIDPickingListeners.get(pickingType);
 		if (map == null) {
-			map = new HashMap<Integer, IPickingListener>();
+			map = new HashMap<Integer, Set<IPickingListener>>();
 			singleIDPickingListeners.put(pickingType, map);
 		}
-
-		map.put(externalID, pickingListener);
+		Set<IPickingListener> pickingListeners = map.get(externalID);
+		if (pickingListeners == null) {
+			pickingListeners = new HashSet<IPickingListener>();
+			pickingListeners.add(pickingListener);
+		}
+		map.put(externalID, pickingListeners);
 
 	}
 
@@ -731,7 +745,94 @@ public abstract class AGLView
 	 * @param pickingType
 	 */
 	public void addMultiIDPickingListener(IPickingListener pickingListener, String pickingType) {
-		multiIDPickingListeners.put(pickingType, pickingListener);
+		Set<IPickingListener> pickingListeners = multiIDPickingListeners.get(pickingType);
+		if (pickingListeners == null) {
+			pickingListeners = new HashSet<IPickingListener>();
+			pickingListeners.add(pickingListener);
+		}
+		multiIDPickingListeners.put(pickingType, pickingListeners);
+	}
+
+	/**
+	 * Removes the specified {@link IPickingListener} for single ids that has been added with the specified
+	 * picking type and id.
+	 * 
+	 * @param pickingListener
+	 * @param pickingType
+	 * @param externalID
+	 */
+	public void removeSingleIDPickingListener(IPickingListener pickingListener, String pickingType,
+		int externalID) {
+		HashMap<Integer, Set<IPickingListener>> map = singleIDPickingListeners.get(pickingType);
+		if (map == null) {
+			return;
+		}
+
+		Set<IPickingListener> pickingListeners = map.get(externalID);
+		if (pickingListeners == null) {
+			return;
+		}
+		pickingListeners.remove(pickingListener);
+	}
+
+	/**
+	 * Removes the specified {@link IPickingListener} for multiple ids that has been added with the specified
+	 * picking type.
+	 * 
+	 * @param pickingListener
+	 * @param pickingType
+	 */
+	public void removeMultiIDPickingListener(IPickingListener pickingListener, String pickingType) {
+		Set<IPickingListener> pickingListeners = multiIDPickingListeners.get(pickingType);
+		if (pickingListeners == null) {
+			return;
+		}
+		pickingListeners.remove(pickingListener);
+	}
+
+	/**
+	 * Removes the specified {@link IPickingListener} for single ids that has been added with any picking type
+	 * or id.
+	 * 
+	 * @param pickingListener
+	 */
+	public void removeSingleIDPickingListener(IPickingListener pickingListener) {
+
+		for (HashMap<Integer, Set<IPickingListener>> map : singleIDPickingListeners.values()) {
+			if (map != null) {
+				for (Set<IPickingListener> pickingListeners : map.values()) {
+					if (pickingListeners != null) {
+						pickingListeners.remove(pickingListener);
+					}
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Removes the specified {@link IPickingListener} for multiple ids that has been added with any picking
+	 * type.
+	 * 
+	 * @param pickingListener
+	 */
+	public void removeMultiIDPickingListener(IPickingListener pickingListener) {
+		for (Set<IPickingListener> pickingListeners : multiIDPickingListeners.values()) {
+			if (pickingListeners != null) {
+				pickingListeners.remove(pickingListener);
+			}
+		}
+	}
+
+	/**
+	 * Equal to calling both of the methods {@link #removeMultiIDPickingListener(IPickingListener)} and
+	 * {@link #removeSingleIDPickingListener(IPickingListener)}.
+	 * 
+	 * @param pickingListener
+	 */
+	public void removePickingListener(IPickingListener pickingListener) {
+		removeSingleIDPickingListener(pickingListener);
+		removeMultiIDPickingListener(pickingListener);
 	}
 
 	/**

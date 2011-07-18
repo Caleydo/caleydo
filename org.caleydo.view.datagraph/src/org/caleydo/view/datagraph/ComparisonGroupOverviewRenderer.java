@@ -124,7 +124,7 @@ public class ComparisonGroupOverviewRenderer extends LayoutRenderer implements
 			textRenderer.renderTextInBounds(gl, data.getLabel(), 0, 0, 0, y,
 					currentDimGroupWidth);
 			gl.glPopMatrix();
-			
+
 			gl.glPopName();
 
 			Point2D position1 = new Point2D.Float(currentPosX, 0);
@@ -156,30 +156,20 @@ public class ComparisonGroupOverviewRenderer extends LayoutRenderer implements
 			float mouseCoordinateY) {
 		prevDraggingMouseX = mouseCoordinateX;
 		prevDraggingMouseY = mouseCoordinateY;
-		draggingPosition = node.getPosition();
-		getAnchorPointsOfDimensionGroup(
-				draggedDimensionGroupData).getFirst();
-		
+		draggingPosition = node.getBottomDimensionGroupAnchorPoints(draggedDimensionGroupData).getFirst();
+//		Point2D anchorPoint = getAnchorPointsOfDimensionGroup(
+//				draggedDimensionGroupData).getFirst();
+//		draggingPosition.setLocation(
+//				draggingPosition.getX() + anchorPoint.getX(),
+//				draggingPosition.getY() + anchorPoint.getY());
+
 	}
 
 	@Override
 	public void handleDragging(GL2 gl, float mouseCoordinateX,
 			float mouseCoordinateY) {
-		if ((prevDraggingMouseX >= mouseCoordinateX - 0.01 && prevDraggingMouseX <= mouseCoordinateX + 0.01)
-				&& (prevDraggingMouseY >= mouseCoordinateY - 0.01 && prevDraggingMouseY <= mouseCoordinateY + 0.01))
-			return;
-
-		float mouseDeltaX = prevDraggingMouseX - mouseCoordinateX;
-		float mouseDeltaY = prevDraggingMouseY - mouseCoordinateY;
-		PixelGLConverter pixelGLConverter = view.getParentGLCanvas()
-				.getPixelGLConverter();
-
-		int mouseDeltaXPixels = pixelGLConverter
-				.getPixelWidthForGLWidth(mouseDeltaX);
-		int mouseDeltaYPixels = pixelGLConverter
-				.getPixelHeightForGLHeight(mouseDeltaY);
-
-		gl.glColor4f(0.6f, 0.6f, 0.6f, 1f);
+		
+		gl.glColor4f(0.6f, 0.6f, 0.6f, 0.5f);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f((float) draggingPosition.getX(),
 				(float) draggingPosition.getY(), 0);
@@ -190,10 +180,17 @@ public class ComparisonGroupOverviewRenderer extends LayoutRenderer implements
 		gl.glVertex3f((float) draggingPosition.getX(),
 				(float) draggingPosition.getY() + y, 0);
 		gl.glEnd();
+		
+		if ((prevDraggingMouseX >= mouseCoordinateX - 0.01 && prevDraggingMouseX <= mouseCoordinateX + 0.01)
+				&& (prevDraggingMouseY >= mouseCoordinateY - 0.01 && prevDraggingMouseY <= mouseCoordinateY + 0.01))
+			return;
+
+		float mouseDeltaX = prevDraggingMouseX - mouseCoordinateX;
+		float mouseDeltaY = prevDraggingMouseY - mouseCoordinateY;
 
 		draggingPosition.setLocation(draggingPosition.getX()
-				- mouseDeltaXPixels, draggingPosition.getY()
-				- mouseDeltaYPixels);
+				- mouseDeltaX, draggingPosition.getY()
+				- mouseDeltaY);
 
 		prevDraggingMouseX = mouseCoordinateX;
 		prevDraggingMouseY = mouseCoordinateY;

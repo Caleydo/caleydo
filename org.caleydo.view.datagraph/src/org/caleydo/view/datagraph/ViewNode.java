@@ -9,7 +9,9 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.picking.APickingListener;
 import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -23,8 +25,11 @@ import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
+import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
+import org.caleydo.view.visbricks.GLVisBricks;
 
-public class ViewNode extends ADraggableDataGraphNode {
+public class ViewNode extends ADraggableDataGraphNode implements IDropArea{
 
 	private final static int SPACING_PIXELS = 4;
 	private final static int CAPTION_HEIGHT_PIXELS = 16;
@@ -42,6 +47,20 @@ public class ViewNode extends ADraggableDataGraphNode {
 		super(graphLayout, view, dragAndDropController, id);
 
 		this.representedView = representedView;
+		
+		//TODO: this is not nice
+//		if(representedView instanceof GLVisBricks) {
+//			view.addSingleIDPickingListener(new APickingListener() {
+//				
+//				@Override
+//				public void dragged(Pick pick) {
+//					DragAndDropController dragAndDropController = ViewNode.this.dragAndDropController;
+//					if (dragAndDropController.isDragging()) {
+//						dragAndDropController.setDropArea(ViewNode.this);
+//					}
+//				}
+//			}, EPickingType.DATA_GRAPH_NODE.name(), id);
+//		}
 
 		setupLayout();
 	}
@@ -306,6 +325,21 @@ public class ViewNode extends ADraggableDataGraphNode {
 
 	public AGLView getRepresentedView() {
 		return representedView;
+	}
+
+	@Override
+	public void handleDragOver(GL2 gl, Set<IDraggable> draggables,
+			float mouseCoordinateX, float mouseCoordinateY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleDrop(GL2 gl, Set<IDraggable> draggables,
+			float mouseCoordinateX, float mouseCoordinateY,
+			DragAndDropController dragAndDropController) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
