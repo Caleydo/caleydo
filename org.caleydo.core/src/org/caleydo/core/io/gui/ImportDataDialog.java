@@ -87,7 +87,7 @@ public class ImportDataDialog
 
 	private ASetBasedDataDomain dataDomain = null;
 
-	boolean isGenetic = false;
+	boolean isGenetic = true;
 
 	public ImportDataDialog(Shell parentShell) {
 		super(parentShell);

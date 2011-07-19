@@ -174,23 +174,6 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		set.setContentVA(ISet.CONTENT, contentVA);
 	}
 
-	// public ContentVirtualArray removeDuplicates(ContentVirtualArray
-	// contentVirtualArray) {
-	// Map<Object, Object> idMap = GeneralManager.get().getIDMappingManager()
-	// .getMap(EMappingType.REFSEQ_MRNA_INT_2_DAVID);
-	// for (Object idObject : idMap.keySet()) {
-	// Integer id = (Integer) idObject;
-	// ArrayList<Integer> indices = contentVirtualArray.indicesOf(id);
-	// if (indices.size() > 1) {
-	// for (int count = 1; count < indices.size(); count++) {
-	// contentVirtualArray.remove(indices.get(count));
-	// }
-	// }
-	//
-	// }
-	// return contentVirtualArray;
-	// }
-
 	public boolean isPathwayViewerMode() {
 		return pathwayViewerMode;
 	}
@@ -222,7 +205,6 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		clinicalSelectionCommandListener.setDataDomainType(CLINICAL_DATADOMAIN_TYPE);
 		eventPublisher.addListener(SelectionCommandEvent.class,
 				clinicalSelectionCommandListener);
-
 	}
 
 	@Override

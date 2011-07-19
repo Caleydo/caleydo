@@ -77,7 +77,7 @@ public class GeneralManager {
 	private ViewManager viewGLCanvasManager;
 	private EventPublisher eventPublisher;
 	private XmlParserManager xmlParserManager;
-	private IDMappingManager genomeIdManager;
+	private IDMappingManager idMappingManager;
 	private IDCreator idCreator;
 	private ResourceLoader resourceLoader;
 	private WiiRemote wiiRemote;
@@ -100,7 +100,7 @@ public class GeneralManager {
 		eventPublisher = new EventPublisher();
 		viewGLCanvasManager = new ViewManager();
 		sWTGUIManager = new SWTGUIManager();
-		genomeIdManager = new IDMappingManager();
+		idMappingManager = new IDMappingManager();
 		xmlParserManager = new XmlParserManager();
 		idCreator = new IDCreator();
 		xmlParserManager.initHandlers();
@@ -175,7 +175,7 @@ public class GeneralManager {
 	}
 
 	public IDMappingManager getIDMappingManager() {
-		return genomeIdManager;
+		return idMappingManager;
 	}
 
 	public CommandManager getCommandManager() {

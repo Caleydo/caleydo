@@ -222,7 +222,7 @@ public class SetUtils {
 			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager()
 				.createCommandByType(ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
-		if (dataDomain.getDataDomainID().equals("org.caleydo.datadomain.genetic")) {
+		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 			String lookupTableInfo =
 				loadDataParameters.getFileIDTypeName() + "_2_" + dataDomain.getContentIDType().getTypeName()
 					+ " REVERSE";
@@ -233,6 +233,7 @@ public class SetUtils {
 
 			cmdLoadLookupTableFile.doCommand();
 		}
+		// FIXME: general data loading (non genetic)
 		// else if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
 		// String lookupTableInfo =
 		// loadDataParameters.getFileIDTypeName() + "_2_" + dataDomain.getContentIDType().getTypeName()

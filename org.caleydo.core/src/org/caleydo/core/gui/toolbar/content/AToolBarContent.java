@@ -77,12 +77,7 @@ public abstract class AToolBarContent {
 	 * @return list of actions for a toolbar
 	 */
 	public List<ToolBarContainer> getInlineToolBar() {
-//		if (!attached) {
-			return getToolBarContent();
-//		}
-//		else {
-//			return new ArrayList<ToolBarContainer>();
-//		}
+		return getToolBarContent();
 	}
 
 	/**

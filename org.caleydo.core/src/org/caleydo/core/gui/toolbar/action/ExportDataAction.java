@@ -25,7 +25,6 @@ public class ExportDataAction
 	public void run() {
 		super.run();
 
-		ExportDataDialog dialog = new ExportDataDialog(new Shell());
-		dialog.open();
+		new ExportDataDialog(new Shell()).open();
 	}
 }
