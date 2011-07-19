@@ -4,7 +4,7 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
@@ -26,11 +26,11 @@ import org.eclipse.swt.widgets.Label;
  * @author Marc Streit
  */
 public class RcpDataMetaView extends CaleydoRCPViewPart implements
-		IDataDomainBasedView<ASetBasedDataDomain> {
+		IDataDomainBasedView<ATableBasedDataDomain> {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.datameta";
 
-	private ASetBasedDataDomain dataDomain;
+	private ATableBasedDataDomain dataDomain;
 
 	private DataTable set;
 
@@ -48,7 +48,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 	@Override
 	public void createPartControl(Composite parent) {
 
-		dataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+		dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 				serializedView.getDataDomainID());
 		set = dataDomain.getSet();
 
@@ -169,7 +169,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 	}
 
 	@Override
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		this.set = dataDomain.getSet();
 
@@ -181,7 +181,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 	}
 
 	@Override
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 

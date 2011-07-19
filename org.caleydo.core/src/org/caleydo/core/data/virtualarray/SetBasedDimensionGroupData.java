@@ -6,15 +6,15 @@ import java.util.List;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 
 public class SetBasedDimensionGroupData extends ADimensionGroupData {
 
-	private ASetBasedDataDomain dataDomain;
+	private ATableBasedDataDomain dataDomain;
 	private DataTable set;
 
-	public SetBasedDimensionGroupData(ASetBasedDataDomain dataDomain, DataTable set) {
+	public SetBasedDimensionGroupData(ATableBasedDataDomain dataDomain, DataTable set) {
 		this.dataDomain = dataDomain;
 		this.set = set;
 	}
@@ -48,7 +48,7 @@ public class SetBasedDimensionGroupData extends ADimensionGroupData {
 		return segmentBrickVAs;
 	}
 
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 

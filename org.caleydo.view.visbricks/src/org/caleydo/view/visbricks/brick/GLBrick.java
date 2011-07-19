@@ -19,7 +19,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
@@ -92,7 +92,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	// private DataTable set;
 	// private GLHeatMap heatMap;
-	private ASetBasedDataDomain dataDomain;
+	private ATableBasedDataDomain dataDomain;
 
 	private RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	private RelationIndicatorRenderer rightRelationIndicatorRenderer;
@@ -687,12 +687,12 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 
 	@Override
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		// TODO Auto-generated method stub
 		return dataDomain;
 	}

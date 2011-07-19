@@ -62,7 +62,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 
 @XmlType
 @XmlRootElement
-public abstract class ASetBasedDataDomain
+public abstract class ATableBasedDataDomain
 	extends ADataDomain
 	implements IContentVAUpdateHandler, IStorageVAUpdateHandler, ISelectionUpdateHandler,
 	ISelectionCommandHandler {
@@ -79,7 +79,7 @@ public abstract class ASetBasedDataDomain
 	protected List<ADimensionGroupData> dimensionGroups;
 
 	/** The set which is currently loaded and used inside the views for this use case. */
-	protected DataTable set;
+	protected DataTable table;
 
 	protected IDType humanReadableContentIDType;
 	protected IDType humanReadableStorageIDType;
@@ -113,12 +113,12 @@ public abstract class ASetBasedDataDomain
 	/**
 	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
 	 */
-	public ASetBasedDataDomain() {
+	public ATableBasedDataDomain() {
 		super();
 		init();
 	}
 
-	public ASetBasedDataDomain(String dataDomainType, String dataDomainID) {
+	public ATableBasedDataDomain(String dataDomainType, String dataDomainID) {
 		super(dataDomainType, dataDomainID);
 		init();
 	}
@@ -163,8 +163,8 @@ public abstract class ASetBasedDataDomain
 
 		// set.setDataDomain(this);
 
-		DataTable oldSet = this.set;
-		this.set = set;
+		DataTable oldSet = this.table;
+		this.table = set;
 		if (oldSet != null) {
 			oldSet.destroy();
 			oldSet = null;
@@ -183,14 +183,14 @@ public abstract class ASetBasedDataDomain
 	 */
 	@XmlTransient
 	public DataTable getSet() {
-		return set;
+		return table;
 	}
 
 	public DataTable getSet(int setID) {
-		if (set.getID() == setID)
-			return set;
+		if (table.getID() == setID)
+			return table;
 
-		ClusterNode root = set.getStorageData(DataTable.STORAGE).getStorageTreeRoot();
+		ClusterNode root = table.getStorageData(DataTable.STORAGE).getStorageTreeRoot();
 		DataTable set = root.getMetaSetFromSubTree(setID);
 
 		if (set == null)
@@ -258,9 +258,9 @@ public abstract class ASetBasedDataDomain
 
 	protected void initSelectionManagers() {
 		contentSelectionManager = new ContentSelectionManager(contentIDType);
-		contentSelectionManager.setVA(set.getContentData(DataTable.CONTENT).getContentVA());
+		contentSelectionManager.setVA(table.getContentData(DataTable.CONTENT).getContentVA());
 		storageSelectionManager = new StorageSelectionManager(storageIDType);
-		storageSelectionManager.setVA(set.getStorageData(DataTable.STORAGE).getStorageVA());
+		storageSelectionManager.setVA(table.getStorageData(DataTable.STORAGE).getStorageVA());
 		contentGroupSelectionManager = new SelectionManager(contentGroupIDType);
 	}
 
@@ -296,7 +296,7 @@ public abstract class ASetBasedDataDomain
 	 * @return
 	 */
 	public ContentVirtualArray getContentVA(String vaType) {
-		ContentVirtualArray va = set.getContentData(vaType).getContentVA();
+		ContentVirtualArray va = table.getContentData(vaType).getContentVA();
 		ContentVirtualArray vaCopy = va.clone();
 		return vaCopy;
 	}
@@ -309,7 +309,7 @@ public abstract class ASetBasedDataDomain
 	 * @return
 	 */
 	public StorageVirtualArray getStorageVA(String vaType) {
-		StorageVirtualArray va = set.getStorageData(vaType).getStorageVA();
+		StorageVirtualArray va = table.getStorageData(vaType).getStorageVA();
 		StorageVirtualArray vaCopy = va.clone();
 		return vaCopy;
 	}
@@ -325,10 +325,10 @@ public abstract class ASetBasedDataDomain
 	public void startClustering(int setID, ClusterState clusterState) {
 
 		DataTable set = null;
-		if (this.set.getID() == setID)
-			set = this.set;
+		if (this.table.getID() == setID)
+			set = this.table;
 		else
-			set = this.set.getStorageData(DataTable.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
+			set = this.table.getStorageData(DataTable.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
 
 		// TODO: warning
 		if (set == null)
@@ -360,7 +360,7 @@ public abstract class ASetBasedDataDomain
 	 */
 	public void resetContextVA() {
 
-		set.setContentVA(DataTable.CONTENT_CONTEXT, new ContentVirtualArray(DataTable.CONTENT_CONTEXT));
+		table.setContentVA(DataTable.CONTENT_CONTEXT, new ContentVirtualArray(DataTable.CONTENT_CONTEXT));
 	}
 
 	/**
@@ -379,7 +379,7 @@ public abstract class ASetBasedDataDomain
 
 	public void replaceContentVA(String dataDomainType, String vaType, ContentVirtualArray virtualArray) {
 
-		replaceContentVA(set.getID(), dataDomainType, vaType, virtualArray);
+		replaceContentVA(table.getID(), dataDomainType, vaType, virtualArray);
 
 		// Tree<ClusterNode> storageTree = set.getStorageData(Set.STORAGE).getStorageTree();
 		// if (storageTree == null)
@@ -410,11 +410,11 @@ public abstract class ASetBasedDataDomain
 			return;
 		}
 		DataTable set;
-		if (setID == this.set.getID()) {
-			set = this.set;
+		if (setID == this.table.getID()) {
+			set = this.table;
 		}
 		else {
-			set = this.set.getStorageData(DataTable.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
+			set = this.table.getStorageData(DataTable.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
 		}
 		if (set == null)
 			set = otherMetaSets.get(setID);
@@ -444,7 +444,7 @@ public abstract class ASetBasedDataDomain
 
 	public void replaceStorageVA(String dataDomainType, String vaType, StorageVirtualArray virtualArray) {
 
-		set.setStorageVA(vaType, virtualArray);
+		table.setStorageVA(vaType, virtualArray);
 		storageSelectionManager.setVA(virtualArray);
 
 		// if (set.getStorageData(StorageVAType.STORAGE).getStorageTree() != null) {
@@ -459,23 +459,23 @@ public abstract class ASetBasedDataDomain
 		// }
 		// });
 		// }
-		ReplaceStorageVAEvent event = new ReplaceStorageVAEvent(set, dataDomainType, vaType);
+		ReplaceStorageVAEvent event = new ReplaceStorageVAEvent(table, dataDomainType, vaType);
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 
 	}
 
 	public void setContentVirtualArray(String vaType, ContentVirtualArray virtualArray) {
-		set.setContentVA(vaType, virtualArray);
+		table.setContentVA(vaType, virtualArray);
 	}
 
 	public void setStorageVirtualArray(String vaType, StorageVirtualArray virtualArray) {
-		set.setStorageVA(vaType, virtualArray);
+		table.setStorageVA(vaType, virtualArray);
 	}
 
 	protected void initFullVA() {
-		if (set.getContentData(DataTable.CONTENT) == null)
-			set.restoreOriginalContentVA();
+		if (table.getContentData(DataTable.CONTENT) == null)
+			table.restoreOriginalContentVA();
 	}
 
 	/**
@@ -484,7 +484,7 @@ public abstract class ASetBasedDataDomain
 	public void restoreOriginalContentVA() {
 		initFullVA();
 
-		ReplaceContentVAEvent event = new ReplaceContentVAEvent(set, dataDomainID, DataTable.CONTENT);
+		ReplaceContentVAEvent event = new ReplaceContentVAEvent(table, dataDomainID, DataTable.CONTENT);
 
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
@@ -498,7 +498,7 @@ public abstract class ASetBasedDataDomain
 
 		if (targetCategory == contentIDCategory && vaDelta.getIDType() != contentIDType)
 			vaDelta = DeltaConverter.convertDelta(contentIDType, vaDelta);
-		ContentData contentData = set.getContentData(vaDelta.getVAType());
+		ContentData contentData = table.getContentData(vaDelta.getVAType());
 		contentData.reset();
 		contentData.setVADelta(vaDelta);
 
@@ -510,7 +510,7 @@ public abstract class ASetBasedDataDomain
 		if (targetCategory != storageIDCategory)
 			return;
 
-		StorageVirtualArray va = set.getStorageData(vaDelta.getVAType()).getStorageVA();
+		StorageVirtualArray va = table.getStorageData(vaDelta.getVAType()).getStorageVA();
 
 		va.setDelta(vaDelta);
 	}
@@ -751,7 +751,7 @@ public abstract class ASetBasedDataDomain
 	 * @return the readable label
 	 */
 	public String getStorageLabel(IDType idType, Object id) {
-		String label = set.get((Integer) id).getLabel();
+		String label = table.get((Integer) id).getLabel();
 		if (label == null)
 			label = "";
 		return label;

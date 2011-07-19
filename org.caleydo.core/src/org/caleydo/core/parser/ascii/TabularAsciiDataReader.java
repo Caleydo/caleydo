@@ -11,7 +11,7 @@ import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -43,12 +43,12 @@ public class TabularAsciiDataReader
 
 	private boolean useExperimentClusterInfo;
 
-	private ASetBasedDataDomain dataDomain;
+	private ATableBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
 	 */
-	public TabularAsciiDataReader(final String sFileName, ASetBasedDataDomain dataDomain) {
+	public TabularAsciiDataReader(final String sFileName, ATableBasedDataDomain dataDomain) {
 		super(sFileName);
 
 		this.dataDomain = dataDomain;

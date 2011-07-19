@@ -14,7 +14,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -42,7 +42,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 	public DetailViewState(GLMatchmaker view, int viewID, TextRenderer textRenderer,
 			TextureManager textureManager, PickingManager pickingManager,
 			GLMouseListener glMouseListener, SetBar setBar,
-			RenderCommandFactory renderCommandFactory, ASetBasedDataDomain dataDomain,
+			RenderCommandFactory renderCommandFactory, ATableBasedDataDomain dataDomain,
 			DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
 

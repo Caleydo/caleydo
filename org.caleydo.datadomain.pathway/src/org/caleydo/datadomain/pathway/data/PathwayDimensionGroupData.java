@@ -11,7 +11,7 @@ import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -25,7 +25,7 @@ public class PathwayDimensionGroupData extends
 		ADimensionGroupData {
 
 	private IDataDomain dataDomain;
-	private ASetBasedDataDomain mappingDataDomain;
+	private ATableBasedDataDomain mappingDataDomain;
 	private ArrayList<PathwayGraph> pathways;
 	private int uniqueID;
 	private String label;
@@ -36,7 +36,7 @@ public class PathwayDimensionGroupData extends
 	}
 
 	public PathwayDimensionGroupData(IDataDomain dataDomain,
-			ASetBasedDataDomain mappingDataDomain,
+			ATableBasedDataDomain mappingDataDomain,
 			ArrayList<PathwayGraph> pathways, String label) {
 		this.dataDomain = dataDomain;
 		this.mappingDataDomain = mappingDataDomain;
@@ -173,11 +173,11 @@ public class PathwayDimensionGroupData extends
 		return groups;
 	}
 
-	public ASetBasedDataDomain getMappingDataDomain() {
+	public ATableBasedDataDomain getMappingDataDomain() {
 		return mappingDataDomain;
 	}
 
-	public void setMappingDataDomain(ASetBasedDataDomain mappingDataDomain) {
+	public void setMappingDataDomain(ATableBasedDataDomain mappingDataDomain) {
 		this.mappingDataDomain = mappingDataDomain;
 	}
 

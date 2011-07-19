@@ -24,7 +24,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.NewMetaSetsEvent;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
@@ -93,7 +93,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private ClearSelectionsListener clearSelectionsListener;
 	private ConnectionsModeListener trendHighlightModeListener;
 
-	private ASetBasedDataDomain dataDomain;
+	private ATableBasedDataDomain dataDomain;
 
 	private VisBricksRenderStyle renderStyle;
 
@@ -1402,13 +1402,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	// }
 
 	@Override
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 
 	}
 
 	@Override
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 

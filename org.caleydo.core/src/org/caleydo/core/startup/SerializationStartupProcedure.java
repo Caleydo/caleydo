@@ -9,7 +9,7 @@ import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.datadomain.ADataDomain;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.serialize.DataInitializationData;
 import org.caleydo.core.serialize.ProjectLoader;
 import org.caleydo.core.util.logging.Logger;
@@ -66,8 +66,8 @@ public class SerializationStartupProcedure
 
 		ADataDomain dataDomain = data.getDataDomain();
 
-		if (dataDomain instanceof ASetBasedDataDomain) {
-			ASetBasedDataDomain setBasedDataDomain = (ASetBasedDataDomain) dataDomain;
+		if (dataDomain instanceof ATableBasedDataDomain) {
+			ATableBasedDataDomain setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
 
 			LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 			DataTableUtils.createStorages(loadDataParameters);

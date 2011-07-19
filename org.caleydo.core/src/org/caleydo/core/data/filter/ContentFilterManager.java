@@ -13,7 +13,7 @@ import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveContentFilterListener;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
@@ -35,7 +35,7 @@ public class ContentFilterManager
 	private NewContentFilterListener newContentFilterListener;
 	private ReEvaluateContentFilterListListener reEvaluateContentFilterListListener;
 
-	public ContentFilterManager(ASetBasedDataDomain dataDomain) {
+	public ContentFilterManager(ATableBasedDataDomain dataDomain) {
 		super(dataDomain, dataDomain.getSet().getBaseContentVA(), new ContentFilterFactory());
 	}
 

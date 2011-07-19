@@ -2,18 +2,18 @@ package org.caleydo.core.data.virtualarray;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 
 public class SetBasedSegmentData implements ISegmentData {
 
-	private ASetBasedDataDomain dataDomain;
+	private ATableBasedDataDomain dataDomain;
 	private ContentVirtualArray contentVA;
 	private Group group;
 	private DataTable set;
 	private SetBasedDimensionGroupData dimensionGroupData;
 
-	public SetBasedSegmentData(ASetBasedDataDomain dataDomain, DataTable set,
+	public SetBasedSegmentData(ATableBasedDataDomain dataDomain, DataTable set,
 			ContentVirtualArray contentVA, Group group,
 			SetBasedDimensionGroupData dimensionGroupData) {
 		this.set = set;

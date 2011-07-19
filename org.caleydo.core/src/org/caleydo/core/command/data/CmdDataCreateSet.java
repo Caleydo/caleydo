@@ -6,7 +6,7 @@ import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.Status;
 public class CmdDataCreateSet
 	extends ACmdCreational<DataTable> {
 
-	private ASetBasedDataDomain dataDomain;
+	private ATableBasedDataDomain dataDomain;
 	private ArrayList<Integer> storageIDs;
 
 	/**
@@ -65,7 +65,7 @@ public class CmdDataCreateSet
 	public void undoCommand() {
 	}
 
-	public void setAttributes(ArrayList<Integer> iAlStorageIDs, ASetBasedDataDomain dataDomain) {
+	public void setAttributes(ArrayList<Integer> iAlStorageIDs, ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		this.storageIDs = iAlStorageIDs;
 	}

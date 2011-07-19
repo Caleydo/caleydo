@@ -9,7 +9,7 @@ import org.caleydo.core.manager.event.AEventListener;
  * @author Alexander Lex
  */
 public class AggregateGroupListener
-	extends AEventListener<ASetBasedDataDomain> {
+	extends AEventListener<ATableBasedDataDomain> {
 
 	@Override
 	public void handleEvent(AEvent event) {

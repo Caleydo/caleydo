@@ -24,7 +24,7 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
@@ -95,7 +95,7 @@ public class GLPathway extends AGLView implements
 
 	public final static String VIEW_TYPE = "org.caleydo.view.pathway";
 
-	private ASetBasedDataDomain mappingDataDomain;
+	private ATableBasedDataDomain mappingDataDomain;
 	protected PathwayDataDomain dataDomain;
 	private PathwayGraph pathway;
 
@@ -156,7 +156,7 @@ public class GLPathway extends AGLView implements
 		pathwayManager = PathwayManager.get();
 		pathwayItemManager = PathwayItemManager.get();
 
-		mappingDataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomainByType(
+		mappingDataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByType(
 				"org.caleydo.datadomain.genetic");
 
 		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum, this);
@@ -1082,7 +1082,7 @@ public class GLPathway extends AGLView implements
 		selectionManager = new SelectionManager(dataDomain.getPrimaryIDType());
 	}
 
-	public ASetBasedDataDomain getMappingDataDomain() {
+	public ATableBasedDataDomain getMappingDataDomain() {
 		return mappingDataDomain;
 	}
 

@@ -13,7 +13,7 @@ import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -37,7 +37,7 @@ public class CompareViewStateController {
 	public CompareViewStateController(GLMatchmaker view, int viewID,
 			TextRenderer textRenderer, TextureManager textureManager,
 			PickingManager pickingManager, GLMouseListener glMouseListener,
-			ContextMenu contextMenu, ASetBasedDataDomain dataDomain) {
+			ContextMenu contextMenu, ATableBasedDataDomain dataDomain) {
 		DragAndDropController dragAndDropController = new DragAndDropController(view);
 		SetBar setBar = new SetBar(viewID, pickingManager, textRenderer,
 				dragAndDropController, glMouseListener, view, contextMenu, textureManager);

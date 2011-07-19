@@ -10,7 +10,7 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.SubDataTable;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -176,9 +176,9 @@ public class ExportDataDialog
 	protected void okPressed() {
 
 		for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
-			ASetBasedDataDomain setBasedDataDomain = null;
-			if (dataDomain instanceof ASetBasedDataDomain)
-				setBasedDataDomain = (ASetBasedDataDomain) dataDomain;
+			ATableBasedDataDomain setBasedDataDomain = null;
+			if (dataDomain instanceof ATableBasedDataDomain)
+				setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
 			else
 				continue;
 

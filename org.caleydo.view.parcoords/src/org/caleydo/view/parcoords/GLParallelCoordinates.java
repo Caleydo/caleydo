@@ -77,7 +77,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
@@ -104,7 +104,7 @@ import com.jogamp.common.nio.Buffers;
  * @author Alexander Lex (responsible for PC)
  * @author Marc Streit
  */
-public class GLParallelCoordinates extends AStorageBasedView implements
+public class GLParallelCoordinates extends ATableBasedView implements
 		IGLRemoteRenderingView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.parcoords";
@@ -288,7 +288,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	@Override
 	public void displayLocal(final GL2 gl) {
 
-		if (set == null)
+		if (table == null)
 			return;
 
 		if (!lazyMode)
@@ -318,7 +318,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	@Override
 	public void displayRemote(final GL2 gl) {
 
-		if (set == null)
+		if (table == null)
 			return;
 
 		handleUnselection();
@@ -501,9 +501,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		// contentVA = dataDomain.getContentVA(contentVAType);
 		if (contentVA == null)
-			contentVA = set.getContentData(contentVAType).getContentVA();
+			contentVA = table.getContentData(contentVAType).getContentVA();
 		if (storageVA == null)
-			storageVA = set.getStorageData(storageVAType).getStorageVA();
+			storageVA = table.getStorageData(storageVAType).getStorageVA();
 		// storageVA = dataDomain.getStorageVA(storageVAType);
 
 		contentSelectionManager.setVA(contentVA);
@@ -519,7 +519,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	private void initGates() {
 		hashGates = new HashMap<Integer, AGate>();
 		hashIsGateBlocking = new HashMap<Integer, ArrayList<Integer>>();
-		if (set.isSetHomogeneous()) {
+		if (table.isSetHomogeneous()) {
 			hashMasterGates = new HashMap<Integer, Gate>();
 		}
 		hashExcludeNAN = new HashMap<Integer, Boolean>();
@@ -544,7 +544,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			gl.glTranslatef(+xSideSpacing, fYTranslation, 0.0f);
 		} else {
 
-			if (set.isSetHomogeneous() && !isRenderedRemote()) {
+			if (table.isSetHomogeneous() && !isRenderedRemote()) {
 				renderMasterGate(gl);
 			}
 
@@ -646,7 +646,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		// this loop executes once per axis
 		for (int storageCount = 0; storageCount < storageVA.size(); storageCount++) {
 
-			currentStorage = set.get(storageVA.get(storageCount));
+			currentStorage = table.get(storageVA.get(storageCount));
 
 			currentX = axisSpacings.get(storageCount);
 			currentY = currentStorage.getFloat(EDataRepresentation.NORMALIZED, contentID);
@@ -775,8 +775,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				for (int iInnerCount = 1; iInnerCount <= NUMBER_AXIS_MARKERS; iInnerCount++) {
 					float fCurrentHeight = fMarkerSpacing * iInnerCount;
 					if (iCount == 0) {
-						if (set.isSetHomogeneous()) {
-							float fNumber = (float) set
+						if (table.isSetHomogeneous()) {
+							float fNumber = (float) table
 									.getRawForNormalized(fCurrentHeight
 											/ renderStyle.getAxisHeight());
 
@@ -805,7 +805,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 			String sAxisLabel = null;
 
-			sAxisLabel = set.get(storageVA.get(iCount)).getLabel();
+			sAxisLabel = table.get(storageVA.get(iCount)).getLabel();
 
 			gl.glTranslatef(fXPosition,
 					renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(), 0);
@@ -820,7 +820,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 					-(renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing()),
 					0);
 
-			if (set.isSetHomogeneous()) {
+			if (table.isSetHomogeneous()) {
 				// textRenderer.begin3DRendering();
 				//
 				// // render values on top and bottom of axis
@@ -1222,10 +1222,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				continue;
 			for (int contentID : contentVA) {
 				EDataRepresentation usedDataRepresentation = EDataRepresentation.RAW;
-				if (!set.isSetHomogeneous())
+				if (!table.isSetHomogeneous())
 					usedDataRepresentation = EDataRepresentation.NORMALIZED;
 
-				fCurrentValue = set.get(iAxisID).getFloat(usedDataRepresentation,
+				fCurrentValue = table.get(iAxisID).getFloat(usedDataRepresentation,
 						contentID);
 
 				if (Float.isNaN(fCurrentValue)) {
@@ -1248,7 +1248,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			ArrayList<Integer> alDeselectedLines = new ArrayList<Integer>();
 			for (int iPolylineIndex : contentVA) {
 
-				fCurrentValue = set.get(iAxisID).getFloat(EDataRepresentation.NORMALIZED,
+				fCurrentValue = table.get(iAxisID).getFloat(EDataRepresentation.NORMALIZED,
 						iPolylineIndex);
 
 				if (Float.isNaN(fCurrentValue)) {
@@ -1273,7 +1273,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				boolean bIsBlocking = true;
 				for (int iAxisIndex : storageVA) {
 
-					fCurrentValue = set.get(iAxisIndex).getFloat(EDataRepresentation.RAW,
+					fCurrentValue = table.get(iAxisIndex).getFloat(EDataRepresentation.RAW,
 							iPolylineIndex);
 
 					if (Float.isNaN(fCurrentValue)) {
@@ -1353,7 +1353,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		hasFilterChanged = false;
 		handleGateUnselection();
 		handleNANUnselection();
-		if (set.isSetHomogeneous())
+		if (table.isSetHomogeneous())
 			handleMasterGateUnselection();
 
 		contentSelectionManager.clearSelection(SelectionType.DESELECTED);
@@ -1686,12 +1686,12 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			case CLICKED:
 				hasFilterChanged = true;
 				AGate gate;
-				if (set.isSetHomogeneous()) {
+				if (table.isSetHomogeneous()) {
 					gate = new Gate(++iGateCounter, pickingID,
-							(float) set.getRawForNormalized(0),
-							(float) set.getRawForNormalized(0.5f), set, renderStyle);
+							(float) table.getRawForNormalized(0),
+							(float) table.getRawForNormalized(0.5f), table, renderStyle);
 				} else {
-					gate = new NominalGate(++iGateCounter, pickingID, 0, 0.5f, set,
+					gate = new NominalGate(++iGateCounter, pickingID, 0, 0.5f, table,
 							renderStyle);
 				}
 				hashGates.put(this.iGateCounter, gate);
@@ -1708,8 +1708,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			case CLICKED:
 				hasFilterChanged = true;
 				Gate gate = new Gate(++iGateCounter, -1,
-						(float) set.getRawForNormalized(0),
-						(float) set.getRawForNormalized(0.5f), set, renderStyle);
+						(float) table.getRawForNormalized(0),
+						(float) table.getRawForNormalized(0.5f), table, renderStyle);
 				gate.setMasterGate(true);
 				hashMasterGates.put(iGateCounter, gate);
 				hashIsGateBlocking.put(iGateCounter, new ArrayList<Integer>());
@@ -1846,7 +1846,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// fXValue = viewFrustum.getRight() - 0.2f;
 			// else
 			x = viewFrustum.getLeft() + renderStyle.getXSpacing();
-			y = set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, id);
+			y = table.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, id);
 			// }
 
 			// // get the value on the leftmost axis
@@ -1950,10 +1950,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		Vec3f vecLeftPoint = new Vec3f(0, 0, 0);
 		Vec3f vecRightPoint = new Vec3f(0, 0, 0);
 
-		vecLeftPoint.setY(set.get(iAxisLeftIndex).getFloat(
+		vecLeftPoint.setY(table.get(iAxisLeftIndex).getFloat(
 				EDataRepresentation.NORMALIZED, iSelectedLineID)
 				* renderStyle.getAxisHeight());
-		vecRightPoint.setY(set.get(iAxisRightIndex).getFloat(
+		vecRightPoint.setY(table.get(iAxisRightIndex).getFloat(
 				EDataRepresentation.NORMALIZED, iSelectedLineID)
 				* renderStyle.getAxisHeight());
 
@@ -2062,10 +2062,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		for (Integer iCurrent : contentVA) {
 
-			vecLeftPoint.setY(set.get(iAxisLeftIndex).getFloat(
+			vecLeftPoint.setY(table.get(iAxisLeftIndex).getFloat(
 					EDataRepresentation.NORMALIZED, iCurrent)
 					* renderStyle.getAxisHeight());
-			vecRightPoint.setY(set.get(iAxisRightIndex).getFloat(
+			vecRightPoint.setY(table.get(iAxisRightIndex).getFloat(
 					EDataRepresentation.NORMALIZED, iCurrent)
 					* renderStyle.getAxisHeight());
 
@@ -2368,11 +2368,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	}
 
 	public DataTable getSet() {
-		return set;
+		return table;
 	}
 
 	public void setSet(DataTable set) {
-		this.set = set;
+		this.table = set;
 	}
 
 	public void setContentVA(ContentVirtualArray contentVA) {
@@ -2387,16 +2387,16 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	}
 
 	private float[] generateVertexBuffer() {
-		int numberOfVertices = set.depth() * set.size() * 2;
+		int numberOfVertices = table.depth() * table.size() * 2;
 
 		float vertices[] = new float[numberOfVertices];
 		int vertexCounter = 0;
 
-		for (int index = 0; index < set.depth(); index++) {
+		for (int index = 0; index < table.depth(); index++) {
 			int storageCounter = 0;
 			for (Integer storageID : storageVA) {
 				float xValue = 0.2f * storageCounter++;
-				NumericalStorage storage = (NumericalStorage) set.get(storageID);
+				NumericalStorage storage = (NumericalStorage) table.get(storageID);
 
 				float yValue = storage.getFloat(EDataRepresentation.NORMALIZED, index);
 				vertices[vertexCounter++] = xValue;
@@ -2547,7 +2547,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		case MEDIUM:
 			return 80;
 		case LOW:
-			return Math.max(150, 30 * set.size());
+			return Math.max(150, 30 * table.size());
 		default:
 			return 80;
 		}

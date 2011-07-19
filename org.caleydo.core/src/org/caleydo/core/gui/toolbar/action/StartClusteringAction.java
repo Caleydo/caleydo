@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.util.clusterer.ClusterState;
@@ -42,8 +42,8 @@ public class StartClusteringAction
 		// FIXME replace with dynamic guess based version when it works
 		// ASetBasedDataDomain dataDomain =
 		// DataDomainManager.getInstance().guessDataDomain(ASetBasedDataDomain.class);
-		ASetBasedDataDomain dataDomain =
-			(ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.genetic");
+		ATableBasedDataDomain dataDomain =
+			(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.genetic");
 
 		StartClusteringDialog dialog = new StartClusteringDialog(new Shell(), dataDomain);
 		dialog.open();

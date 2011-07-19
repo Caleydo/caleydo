@@ -15,7 +15,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -62,7 +62,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
+public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 		ISelectionUpdateHandler, IContentVAUpdateHandler, IStorageVAUpdateHandler,
 		ISelectionCommandHandler, IViewCommandHandler {
 
@@ -90,7 +90,7 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 	protected ClearSelectionsListener clearSelectionsListener;
 	protected InfoAreaUpdateListener infoAreaUpdateListener;
 
-	protected ASetBasedDataDomain dataDomain;
+	protected ATableBasedDataDomain dataDomain;
 
 	ContentSelectionManager contentSelectionManager;
 	StorageSelectionManager storageSelectionManager;
@@ -439,12 +439,12 @@ public class InfoArea implements IDataDomainBasedView<ASetBasedDataDomain>,
 	}
 
 	@Override
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
 	@Override
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 

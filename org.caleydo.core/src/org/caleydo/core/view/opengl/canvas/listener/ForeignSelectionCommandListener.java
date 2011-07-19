@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.canvas.listener;
 
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -15,7 +15,7 @@ import org.caleydo.core.manager.event.view.SelectionCommandEvent;
  * @author Alexander Lex
  */
 public class ForeignSelectionCommandListener
-	extends AEventListener<ASetBasedDataDomain> {
+	extends AEventListener<ATableBasedDataDomain> {
 
 	/**
 	 * Handles {@link SelectionCommandEvent}s by extracting the events payload and calling the related handler

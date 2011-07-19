@@ -5,7 +5,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
@@ -43,7 +43,7 @@ public class SearchViewMediator {
 		eventPublisher.triggerEvent(loadPathwaysByGeneEvent);
 	}
 
-	public void selectGeneSystemWide(ASetBasedDataDomain dataDomain, int davidID) {
+	public void selectGeneSystemWide(ATableBasedDataDomain dataDomain, int davidID) {
 
 		IDType contentIDType = dataDomain.getPrimaryContentMappingType();
 		

@@ -1356,7 +1356,7 @@ public abstract class AGLViewBrowser
 			if (glView.getViewType().equals("org.caleydo.view.heatmap")
 				|| glView.getViewType().equals("org.caleydo.view.parcoords")) {
 				// Remove all elements from heatmap and parallel coordinates
-				((AStorageBasedView) glView).resetView();
+				((ATableBasedView) glView).resetView();
 
 				if (!glView.isRenderedRemote()) {
 					glView.enableBusyMode(false);

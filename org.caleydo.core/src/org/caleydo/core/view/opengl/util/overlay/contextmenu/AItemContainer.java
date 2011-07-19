@@ -3,7 +3,7 @@ package org.caleydo.core.view.opengl.util.overlay.contextmenu;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 
 /**
  * Abstract implementation for a container for items grouped by a specific topic. It holds a list of
@@ -18,7 +18,7 @@ public abstract class AItemContainer
 
 	private ArrayList<IContextMenuEntry> contextMenuEntries;
 
-	protected ASetBasedDataDomain dataDomain = null;
+	protected ATableBasedDataDomain dataDomain = null;
 
 	/**
 	 * Constructor
@@ -67,7 +67,7 @@ public abstract class AItemContainer
 		return contextMenuEntries.iterator();
 	}
 
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 }

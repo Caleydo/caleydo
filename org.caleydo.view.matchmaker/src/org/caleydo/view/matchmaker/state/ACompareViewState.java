@@ -20,7 +20,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -70,7 +70,7 @@ public abstract class ACompareViewState {
 
 	protected RenderCommandFactory renderCommandFactory;
 	protected EventPublisher eventPublisher;
-	protected ASetBasedDataDomain dataDomain;
+	protected ATableBasedDataDomain dataDomain;
 	protected DragAndDropController dragAndDropController;
 	protected CompareViewStateController compareViewStateController;
 	protected int setBarDisplayListIndex;
@@ -117,7 +117,7 @@ public abstract class ACompareViewState {
 	public ACompareViewState(GLMatchmaker view, int viewID, TextRenderer textRenderer,
 			TextureManager textureManager, PickingManager pickingManager,
 			GLMouseListener glMouseListener, SetBar setBar,
-			RenderCommandFactory renderCommandFactory, ASetBasedDataDomain dataDomain,
+			RenderCommandFactory renderCommandFactory, ATableBasedDataDomain dataDomain,
 			DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
 		this.view = view;

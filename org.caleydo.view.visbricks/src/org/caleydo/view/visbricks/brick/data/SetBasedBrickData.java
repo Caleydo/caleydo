@@ -7,7 +7,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.SetBasedSegmentData;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
@@ -41,7 +41,7 @@ public class SetBasedBrickData implements IBrickData {
 
 	@Override
 	public void setBrickData(GLBrick brick) {
-		brick.setDataDomain((ASetBasedDataDomain) getDataDomain());
+		brick.setDataDomain((ATableBasedDataDomain) getDataDomain());
 		brick.setContentVA(getGroup(), getContentVA());
 	}
 

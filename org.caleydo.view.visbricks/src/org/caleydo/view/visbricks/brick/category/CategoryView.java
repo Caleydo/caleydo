@@ -4,7 +4,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -38,7 +38,7 @@ public class CategoryView extends AGLView implements IDataDomainSetBasedView,
 
 	float fRenderWidth;
 
-	private ASetBasedDataDomain dataDomain;
+	private ATableBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -244,12 +244,12 @@ public class CategoryView extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
 	@Override
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		initData();
 	}

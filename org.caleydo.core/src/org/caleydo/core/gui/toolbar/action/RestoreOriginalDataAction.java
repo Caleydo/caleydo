@@ -1,6 +1,6 @@
 package org.caleydo.core.gui.toolbar.action;
 
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.data.loader.ResourceLoader;
@@ -29,8 +29,8 @@ public class RestoreOriginalDataAction
 		super.run();
 
 		for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
-			if (dataDomain instanceof ASetBasedDataDomain)
-				((ASetBasedDataDomain) dataDomain).restoreOriginalContentVA();
+			if (dataDomain instanceof ATableBasedDataDomain)
+				((ATableBasedDataDomain) dataDomain).restoreOriginalContentVA();
 		}
 	}
 }

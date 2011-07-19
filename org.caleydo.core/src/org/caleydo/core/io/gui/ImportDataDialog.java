@@ -15,7 +15,7 @@ import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.gui.util.LabelEditorDialog;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.startup.StartupProcessor;
@@ -86,7 +86,7 @@ public class ImportDataDialog
 	private boolean useExperimentClusterInfo = false;
 	private boolean isUncertaintyDataProvided = false;
 
-	private ASetBasedDataDomain dataDomain = null;
+	private ATableBasedDataDomain dataDomain = null;
 
 	// FIXME: this is never set to false. for loading general data this needs to be set.
 	boolean isGenetic = true;
@@ -98,12 +98,12 @@ public class ImportDataDialog
 		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain();
 		cmd.setAttributes("org.caleydo.datadomain.genetic");
 		cmd.doCommand();
-		this.dataDomain = (ASetBasedDataDomain) cmd.getCreatedObject();
+		this.dataDomain = (ATableBasedDataDomain) cmd.getCreatedObject();
 	}
 
 	public ImportDataDialog(Shell parentShell, IDataDomain dataDomain) {
 		super(parentShell);
-		this.dataDomain = (ASetBasedDataDomain) dataDomain;
+		this.dataDomain = (ATableBasedDataDomain) dataDomain;
 	}
 
 	public ImportDataDialog(Shell parentShell, String inputFile, IDataDomain dataDomain) {

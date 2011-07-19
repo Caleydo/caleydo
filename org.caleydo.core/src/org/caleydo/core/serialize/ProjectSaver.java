@@ -19,7 +19,7 @@ import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.view.ViewManager;
@@ -169,7 +169,7 @@ public class ProjectSaver {
 		
 			for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
 
-				if (dataDomain instanceof ASetBasedDataDomain) {
+				if (dataDomain instanceof ATableBasedDataDomain) {
 
 					LoadDataParameters parameters = dataDomain.getLoadDataParameters();
 					String sourceFileName = parameters.getFileName();
@@ -186,7 +186,7 @@ public class ProjectSaver {
 						throw new IllegalStateException("Error saving project file", e);
 					}
 
-					ASetBasedDataDomain setBasedDataDomain = (ASetBasedDataDomain) dataDomain;
+					ATableBasedDataDomain setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
 
 					for (String type : setBasedDataDomain.getSet().getRegisteredContentVATypes()) {
 						saveContentVA(marshaller, dirName, setBasedDataDomain, type);
@@ -287,14 +287,14 @@ public class ProjectSaver {
 	 * @param type
 	 *            type of the virtual array within the given {@link IDataDomain}.
 	 */
-	private void saveContentVA(Marshaller marshaller, String dir, ASetBasedDataDomain dataDomain,
+	private void saveContentVA(Marshaller marshaller, String dir, ATableBasedDataDomain dataDomain,
 		String type) throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
 		ContentVirtualArray va = (ContentVirtualArray) dataDomain.getContentVA(type);
 		marshaller.marshal(va, new File(fileName));
 	}
 
-	private void saveStorageVA(Marshaller marshaller, String dir, ASetBasedDataDomain dataDomain,
+	private void saveStorageVA(Marshaller marshaller, String dir, ATableBasedDataDomain dataDomain,
 		String type) throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
 		StorageVirtualArray va = (StorageVirtualArray) dataDomain.getStorageVA(type);

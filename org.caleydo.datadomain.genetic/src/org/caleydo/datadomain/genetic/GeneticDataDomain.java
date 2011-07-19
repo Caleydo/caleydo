@@ -17,7 +17,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.ReplaceContentVAInUseCaseListener;
@@ -45,7 +45,7 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
  */
 @XmlType
 @XmlRootElement
-public class GeneticDataDomain extends ASetBasedDataDomain {
+public class GeneticDataDomain extends ATableBasedDataDomain {
 
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.genetic";
 
@@ -126,9 +126,9 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 			dataFilterLevel = EDataFilterLevel.COMPLETE;
 
 		// initialize virtual array that contains all (filtered) information
-		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
+		ArrayList<Integer> alTempList = new ArrayList<Integer>(table.depth());
 
-		for (int iCount = 0; iCount < set.depth(); iCount++) {
+		for (int iCount = 0; iCount < table.depth(); iCount++) {
 			if (dataFilterLevel != EDataFilterLevel.COMPLETE) {
 
 				Integer iDavidID = null;
@@ -170,7 +170,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		ContentVirtualArray contentVA = new ContentVirtualArray(DataTable.CONTENT, alTempList);
 		// removeDuplicates(contentVA);
 		// FIXME make this a filter?
-		set.setContentVA(DataTable.CONTENT, contentVA);
+		table.setContentVA(DataTable.CONTENT, contentVA);
 	}
 
 	public boolean isPathwayViewerMode() {
@@ -289,13 +289,13 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 			Integer clinicalContentIndex) {
 
 		// FIXME - this is a hack for one special dataset (asslaber)
-		DataTable clinicalSet = ((ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+		DataTable clinicalSet = ((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 				CLINICAL_DATADOMAIN_TYPE)).getSet();
 		int storageID = clinicalSet.getStorageData(DataTable.STORAGE).getStorageVA().get(1);
 
 		NominalStorage clinicalStorage = (NominalStorage<String>) clinicalSet
 				.get(storageID);
-		StorageVirtualArray origianlGeneticStorageVA = set.getStorageData(DataTable.STORAGE)
+		StorageVirtualArray origianlGeneticStorageVA = table.getStorageData(DataTable.STORAGE)
 				.getStorageVA();
 
 		String label = (String) clinicalStorage.getRaw(clinicalContentIndex);
@@ -304,7 +304,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		// System.out.println(label);
 
 		for (Integer storageIndex : origianlGeneticStorageVA) {
-			if (label.equals(set.get(storageIndex).getLabel()))
+			if (label.equals(table.get(storageIndex).getLabel()))
 				return storageIndex;
 		}
 

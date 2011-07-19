@@ -16,7 +16,7 @@ import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.radial.ChangeColorModeEvent;
 import org.caleydo.core.manager.event.view.radial.DetailOutsideEvent;
@@ -111,7 +111,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	private SelectionManager selectionManager;
 	boolean bUseDetailLevel = true;
 
-	private ASetBasedDataDomain dataDomain;
+	private ATableBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -1047,7 +1047,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
 			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 			// new GeneClusterDataEventManager(this), alColorModes);
-			initHierarchy(tree, ((ASetBasedDataDomain) dataDomain).getSet()
+			initHierarchy(tree, ((ATableBasedDataDomain) dataDomain).getSet()
 					.getStorageData(storageVAType).getStorageTreeRoot(),
 					new ExperimentClusterDataEventManager(this), alColorModes);
 			// }
@@ -1135,7 +1135,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		return hashPartialDiscs.values();
 	}
 
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
@@ -1144,7 +1144,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 
 		// Tree<ClusterNode> tree =

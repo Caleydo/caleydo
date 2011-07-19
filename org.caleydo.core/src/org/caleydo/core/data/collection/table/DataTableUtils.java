@@ -27,7 +27,7 @@ import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.StorageGroupList;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.ascii.TabularAsciiDataReader;
@@ -202,7 +202,7 @@ public class DataTableUtils {
 	/**
 	 * Creates the set from a previously prepared storage definition.
 	 */
-	public static DataTable createData(ASetBasedDataDomain dataDomain) {
+	public static DataTable createData(ATableBasedDataDomain dataDomain) {
 
 		LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 		ArrayList<Integer> storageIDs = loadDataParameters.getStorageIds();

@@ -41,7 +41,7 @@ import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
@@ -63,7 +63,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLHeatMap extends AStorageBasedView {
+public class GLHeatMap extends ATableBasedView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.heatmap";
 	public static final SelectionType SELECTION_HIDDEN = new SelectionType(
@@ -206,7 +206,7 @@ public class GLHeatMap extends AStorageBasedView {
 	@Override
 	public void displayLocal(GL2 gl) {
 
-		if (set == null)
+		if (table == null)
 			return;
 
 		if (!lazyMode)
@@ -236,7 +236,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	public void displayRemote(GL2 gl) {
-		if (set == null)
+		if (table == null)
 			return;
 
 		if (bIsDisplayListDirtyRemote) {
@@ -293,7 +293,7 @@ public class GLHeatMap extends AStorageBasedView {
 		// determine which to use
 
 		if (contentVAType.equals(CONTENT_EMBEDDED_VA)) {
-			set.setContentVA(contentVAType, new ContentVirtualArray(
+			table.setContentVA(contentVAType, new ContentVirtualArray(
 					contentVAType));
 		} else {
 			if (bRenderOnlyContext)
@@ -303,9 +303,9 @@ public class GLHeatMap extends AStorageBasedView {
 		}
 
 		if (contentVA == null)
-			contentVA = set.getContentData(contentVAType).getContentVA();
+			contentVA = table.getContentData(contentVAType).getContentVA();
 		if (storageVA == null)
-			storageVA = set.getStorageData(storageVAType).getStorageVA();
+			storageVA = table.getStorageData(storageVAType).getStorageVA();
 
 		contentSelectionManager.setVA(contentVA);
 		storageSelectionManager.setVA(storageVA);
@@ -717,7 +717,7 @@ public class GLHeatMap extends AStorageBasedView {
 			state.setStorageVA(storageVA);
 			state.setAffinityPropClusterFactorGenes(4.0f);
 
-			ClusterManager clusterManger = new ClusterManager(set);
+			ClusterManager clusterManger = new ClusterManager(table);
 			ClusterResult result = clusterManger.cluster(state);
 
 			contentVA = result.getContentResult().getContentVA();
@@ -782,7 +782,7 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	public void setSet(DataTable set) {
-		this.set = set;
+		this.table = set;
 	}
 
 	public PickingManager getPickingManager() {
@@ -921,7 +921,7 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	public DataTable getSet() {
-		return set;
+		return table;
 	}
 
 	public AHeatMapTemplate getTemplate() {
@@ -938,7 +938,7 @@ public class GLHeatMap extends AStorageBasedView {
 		// .log(contentVA.size()));
 		// }
 
-		ContentVirtualArray setContentVA = set.getContentData(DataTable.CONTENT)
+		ContentVirtualArray setContentVA = table.getContentData(DataTable.CONTENT)
 				.getContentVA();
 		int numBricks = 1;
 		if (setContentVA.getGroupList() != null) {
@@ -969,11 +969,11 @@ public class GLHeatMap extends AStorageBasedView {
 	public int getMinPixelWidth(DetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
-			return Math.max(150, 16 * set.size());
+			return Math.max(150, 16 * table.size());
 		case MEDIUM:
-			return Math.max(150, 16 * set.size());
+			return Math.max(150, 16 * table.size());
 		case LOW:
-			return Math.max(150, 16 * set.size());
+			return Math.max(150, 16 * table.size());
 		default:
 			return 100;
 		}

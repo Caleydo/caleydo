@@ -26,7 +26,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -514,7 +514,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		ASerializedView serView = new SerializedHeatMapView();// SerializedHierarchicalHeatMapView();//
 		serView.setDataDomainID("org.caleydo.datadomain.genetic");
 		AGLView view = createView(gl, serView);
-		((AStorageBasedView) view).renderContext(true);
+		((ATableBasedView) view).renderContext(true);
 
 		remoteElementHeatMap = new RemoteLevelElement(null);
 		remoteElementHeatMap.setGLView(view);
@@ -523,7 +523,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		serView = new SerializedParallelCoordinatesView();
 		serView.setDataDomainID("org.caleydo.datadomain.genetic");
 		view = createView(gl, serView);
-		((AStorageBasedView) view).renderContext(true);
+		((ATableBasedView) view).renderContext(true);
 
 		remoteElementParCoords = new RemoteLevelElement(null);
 		remoteElementParCoords.setGLView(view);

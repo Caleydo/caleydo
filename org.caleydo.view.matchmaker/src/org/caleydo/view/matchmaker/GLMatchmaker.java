@@ -16,7 +16,7 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
@@ -75,7 +75,7 @@ import org.eclipse.swt.events.KeyListener;
  */
 public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		IGLRemoteRenderingView, ISelectionUpdateHandler, ISelectionCommandHandler,
-		IContentVAUpdateHandler, IDataDomainBasedView<ASetBasedDataDomain> {
+		IContentVAUpdateHandler, IDataDomainBasedView<ATableBasedDataDomain> {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.matchmaker";
 
@@ -105,7 +105,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	private ArrayList<DataTable> setsToCompare;
 	private ArrayList<Integer> clusteredSets;
 
-	protected ASetBasedDataDomain dataDomain;
+	protected ATableBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -591,12 +591,12 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
 	@Override
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 	

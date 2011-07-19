@@ -20,7 +20,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceVAEvent;
@@ -64,7 +64,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	 * 
 	 * The foreign dataDomain
 	 */
-	public ASetBasedDataDomain foreignDataDomain;
+	public ATableBasedDataDomain foreignDataDomain;
 	public final static String FOREIGN_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
 
 	private HashMap<Integer, String> mapExperimentToTexturePath;
@@ -93,7 +93,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 
-		this.foreignDataDomain = (ASetBasedDataDomain) DataDomainManager.get()
+		this.foreignDataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 				.getDataDomainByID(FOREIGN_DATADOMAIN_TYPE);
 
 		contentVA = foreignDataDomain.getContentVA(DataTable.CONTENT);

@@ -6,7 +6,7 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageSelectionManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 
@@ -83,7 +83,7 @@ public class ClusterTreeMapNode extends ATreeMapNode {
 	 * @param bUseStorage true when using only selected experiments.
 	 * @param dataDomain Data for experiments.
 	 */
-	public void setColorData(boolean bUseStorage, ASetBasedDataDomain dataDomain){
+	public void setColorData(boolean bUseStorage, ATableBasedDataDomain dataDomain){
 		referenzData.bUseExpressionValues=bUseStorage;
 		referenzData.dataDomain=dataDomain;
 	}

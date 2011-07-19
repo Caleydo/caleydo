@@ -29,7 +29,7 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -56,7 +56,7 @@ import org.caleydo.view.heatmap.heatmap.template.UncertaintyDetailHeatMapTemplat
  * @author Clemens Holzhüter
  */
 
-public class GLUncertaintyHeatMap extends AStorageBasedView implements
+public class GLUncertaintyHeatMap extends ATableBasedView implements
 		IViewCommandHandler, ISelectionUpdateHandler, IGLRemoteRenderingView {
 
 	public static enum UncertaintyColors {
@@ -288,7 +288,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 		detailHeatMap.setDataDomain(dataDomain);
 		detailHeatMap.setRemoteRenderingGLView(this);
-		detailHeatMap.setSet(set);
+		detailHeatMap.setSet(table);
 		detailHeatMap.setRenderTemplate(new UncertaintyDetailHeatMapTemplate(
 				detailHeatMap, this));
 		detailHeatMap.initialize();
@@ -542,7 +542,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 	public void initMultiLevelUncertainty() {
 
-		float[] SNR = set.getNormalizedUncertainty();
+		float[] SNR = table.getNormalizedUncertainty();
 		aggregatedUncertainty = new double[SNR.length];
 		multiLevelUncertainty.clear();
 		
@@ -558,7 +558,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 		
 		multiLevelUncertainty.add(convertedSNR);
 
-		Collection<double[]> statisticsUncertainties = this.set.getStatisticsResult()
+		Collection<double[]> statisticsUncertainties = this.table.getStatisticsResult()
 				.getAllFoldChangeUncertainties();
 		multiLevelUncertainty.addAll(statisticsUncertainties);
 
@@ -571,7 +571,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 			}
 		}
 
-		set.getStatisticsResult().setAggregatedUncertainty(aggregatedUncertainty);
+		table.getStatisticsResult().setAggregatedUncertainty(aggregatedUncertainty);
 	}
 
 

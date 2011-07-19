@@ -22,7 +22,7 @@ import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.gui.util.LabelEditorDialog;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
@@ -67,7 +67,7 @@ import org.eclipse.swt.widgets.Text;
  * @author Marc Streit
  */
 public class TabularDataView extends ASWTView implements
-		IDataDomainBasedView<ASetBasedDataDomain>, ISelectionUpdateHandler,
+		IDataDomainBasedView<ATableBasedDataDomain>, ISelectionUpdateHandler,
 		IContentVAUpdateHandler, IStorageVAUpdateHandler, ISelectionCommandHandler,
 		IViewCommandHandler {
 
@@ -120,7 +120,7 @@ public class TabularDataView extends ASWTView implements
 	protected ClearSelectionsListener clearSelectionsListener;
 	protected ReplaceContentVAListener replaceContentVAListener;
 
-	protected ASetBasedDataDomain dataDomain;
+	protected ATableBasedDataDomain dataDomain;
 
 	protected DataTable dataTable;
 
@@ -700,14 +700,14 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 
 		initData();
 	}
 
 	@Override
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 	

@@ -1,6 +1,6 @@
 package org.caleydo.view.info;
 
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.view.CaleydoRCPViewPart;
@@ -71,7 +71,7 @@ public class RcpInfoAreaView extends CaleydoRCPViewPart {
 
 		IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
 				serializedView.getDataDomainID());
-		infoArea.setDataDomain((ASetBasedDataDomain) dataDomain);
+		infoArea.setDataDomain((ATableBasedDataDomain) dataDomain);
 
 		infoArea.registerEventListeners();
 		infoArea.createControl(infoComposite);

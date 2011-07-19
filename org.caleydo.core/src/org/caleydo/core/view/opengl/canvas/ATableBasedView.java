@@ -19,7 +19,7 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
@@ -52,19 +52,19 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Base class for OpenGL2 views that heavily use storages.
+ * Base class for OpenGL2 views that visualize {@link DataTable}s.
  * 
  * @author Alexander Lex
  * @author Marc Streit
  */
-public abstract class AStorageBasedView
+public abstract class ATableBasedView
 	extends AGLView
 	implements IDataDomainSetBasedView, ISelectionUpdateHandler, IContentVAUpdateHandler,
 	IStorageVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
-	protected DataTable set;
+	protected DataTable table;
 
-	protected ASetBasedDataDomain dataDomain;
+	protected ATableBasedDataDomain dataDomain;
 
 	// protected ArrayList<Boolean> alUseInRandomSampling;
 
@@ -121,7 +121,7 @@ public abstract class AStorageBasedView
 	 * @param label
 	 * @param viewFrustum
 	 */
-	protected AStorageBasedView(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+	protected ATableBasedView(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, true);
 
 		connectedElementRepresentationManager =
@@ -129,8 +129,8 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
-		this.dataDomain = (ASetBasedDataDomain) dataDomain;
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
+		this.dataDomain = (ATableBasedDataDomain) dataDomain;
 
 		contentSelectionManager = this.dataDomain.getContentSelectionManager();
 		storageSelectionManager = this.dataDomain.getStorageSelectionManager();
@@ -146,7 +146,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
@@ -168,8 +168,8 @@ public abstract class AStorageBasedView
 
 	@Override
 	public void initData() {
-		if (set == null)
-			set = dataDomain.getSet();
+		if (table == null)
+			table = dataDomain.getSet();
 
 		super.initData();
 
@@ -560,10 +560,10 @@ public abstract class AStorageBasedView
 	@Override
 	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
 
-		if (set.getID() != setID || this.contentVAType != vaType)
+		if (table.getID() != setID || this.contentVAType != vaType)
 			return;
 
-		contentVA = set.getContentData(vaType).getContentVA();
+		contentVA = table.getContentData(vaType).getContentVA();
 		contentSelectionManager.setVA(contentVA);
 
 		initData();
@@ -574,7 +574,7 @@ public abstract class AStorageBasedView
 		if (vaType != storageVAType)
 			return;
 
-		storageVA = set.getStorageData(vaType).getStorageVA();
+		storageVA = table.getStorageData(vaType).getStorageVA();
 
 		initData();
 	}

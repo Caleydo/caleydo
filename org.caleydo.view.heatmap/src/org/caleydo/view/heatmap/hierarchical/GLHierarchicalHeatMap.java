@@ -62,7 +62,7 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
@@ -108,7 +108,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class GLHierarchicalHeatMap extends AStorageBasedView implements
+public class GLHierarchicalHeatMap extends ATableBasedView implements
 		IContentGroupsActionHandler, IStorageGroupsActionHandler,
 		IClusterNodeEventReceiver, INewContentGroupInfoHandler, IGLRemoteRenderingView {
 
@@ -315,7 +315,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	 */
 	private void initHierarchy() {
 
-		if (set == null)
+		if (table == null)
 			return;
 
 		iNumberOfElements = contentVA.size();
@@ -551,7 +551,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 						fOpacity = 1.0f;
 					}
 
-					fLookupValue = set.get(iStorageIndex).getFloat(
+					fLookupValue = table.get(iStorageIndex).getFloat(
 							EDataRepresentation.NORMALIZED, iContentIndex);
 
 					float[] fArMappingColor = colorMapper.getColor(fLookupValue);
@@ -621,7 +621,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 						fOpacity = 1.0f;
 					}
 
-					fLookupValue = set.get(iStorageIndex).getFloat(
+					fLookupValue = table.get(iStorageIndex).getFloat(
 							EDataRepresentation.NORMALIZED, iContentIndex);
 
 					float[] fArMappingColor = colorMapper.getColor(fLookupValue);
@@ -729,7 +729,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		if (glHeatMapView != null)
 			glHeatMapView.processEvents();
 
-		if (set == null)
+		if (table == null)
 			return;
 
 		if (!lazyMode)
@@ -754,7 +754,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	@Override
 	public void displayRemote(GL2 gl) {
 
-		if (set == null)
+		if (table == null)
 			return;
 
 		if (bIsDisplayListDirtyRemote) {
@@ -2040,7 +2040,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	private void renderSubTreeLevel2(GL2 gl) {
-		if (set.getContentData(contentVAType).getContentTree() != null) {
+		if (table.getContentData(contentVAType).getContentTree() != null) {
 			gl.glTranslatef(renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS / 2, 0, 0);
 
 			if (contentVA.getGroupList() != null)
@@ -2062,7 +2062,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	private void renderSubTreeLevel3(GL2 gl) {
 		// render sub tree for level 3
-		if (set.getContentData(contentVAType).getContentTree() != null) {
+		if (table.getContentData(contentVAType).getContentTree() != null) {
 
 			if (contentVA.getGroupList() != null)
 				gl.glTranslatef(2 * renderStyle.getWidthClusterVisualization(), 0, 0);
@@ -2514,7 +2514,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		// cluster dragging only allowed in case of partition based cluster
 		// result
 		if (bDragDropExpGroup
-				&& set.getStorageData(storageVAType).getStorageTree() == null) {
+				&& table.getStorageData(storageVAType).getStorageTree() == null) {
 			handleDragDropGroupExperiments(gl);
 			if (glMouseListener.wasMouseReleased()) {
 				bDragDropExpGroup = false;
@@ -2524,7 +2524,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		// cluster dragging only allowed in case of partition based cluster
 		// result
 		if (bDragDropGeneGroup
-				&& set.getContentData(contentVAType).getContentTree() == null) {
+				&& table.getContentData(contentVAType).getContentTree() == null) {
 			handleDragDropGroupGenes(gl);
 			if (glMouseListener.wasMouseReleased()) {
 				bDragDropGeneGroup = false;
@@ -2881,7 +2881,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		viewFrustum.setLeft(viewFrustum.getLeft() + 0.1f);
 		gl.glTranslatef(0.1f, 0.4f, 0);
 
-		if (set.getContentData(contentVAType).getContentTree() != null)
+		if (table.getContentData(contentVAType).getContentTree() != null)
 			bRenderDendrogramBackgroundWhite = true;
 		else
 			bRenderDendrogramBackgroundWhite = false;
@@ -3147,7 +3147,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glPopAttrib();
 		}
 
-		if (set.getContentData(contentVAType).getContentTree() != null) {
+		if (table.getContentData(contentVAType).getContentTree() != null) {
 
 			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -3264,7 +3264,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glPopAttrib();
 		}
 
-		if (!set.getStorageData(DataTable.STORAGE).isDefaultTree()) {
+		if (!table.getStorageData(DataTable.STORAGE).isDefaultTree()) {
 
 			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -4632,7 +4632,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			initPosCursorLevel2();
 		}
 
-		if (set.getContentData(contentVAType).getContentTree() != null) {
+		if (table.getContentData(contentVAType).getContentTree() != null) {
 			bGeneDendrogramActive = true;
 			bGeneDendrogramRenderCut = false;
 			bFirstStartGeneDendrogram = true;
@@ -4642,7 +4642,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			bGeneDendrogramRenderCut = false;
 		}
 
-		if (!set.getStorageData(storageVAType).isDefaultTree()) {
+		if (!table.getStorageData(storageVAType).isDefaultTree()) {
 			bExperimentDendrogramActive = true;
 			bExperimentDendrogramRenderCut = false;
 			bFirstStartExperimentDendrogram = true;
@@ -4669,7 +4669,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		Tree<ClusterNode> tree = null;
 
 		ContentVirtualArray va = contentVA;
-		tree = set.getContentData(contentVAType).getContentTree();
+		tree = table.getContentData(contentVAType).getContentTree();
 		ContentGroupList groupList = va.getGroupList();
 
 		ArrayList<Integer> selGroups = new ArrayList<Integer>();
@@ -4688,7 +4688,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			warn();
 			bGeneDendrogramActive = false;
 			bGeneDendrogramRenderCut = false;
-			set.getContentData(contentVAType).setContentTree(null);
+			table.getContentData(contentVAType).setContentTree(null);
 
 		}
 
@@ -4898,7 +4898,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	public void handleDendrogramActivation(boolean bGeneDendrogram) {
 
 		if (bGeneDendrogram) {
-			if (set.getContentData(contentVAType).getContentTree() == null)
+			if (table.getContentData(contentVAType).getContentTree() == null)
 				return;
 			bGeneDendrogramActive = bGeneDendrogramActive == true ? false : true;
 
@@ -4924,7 +4924,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 			setDisplayListDirty();
 		} else {
-			if (set.getStorageData(storageVAType).getStorageTree() == null)
+			if (table.getStorageData(storageVAType).getStorageTree() == null)
 				return;
 			bExperimentDendrogramActive = bExperimentDendrogramActive == true ? false
 					: true;
@@ -5054,7 +5054,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		if (vaType.equals(contentVA.getVaType())) {
 			contentVA.setGroupList(groupList);
-			tree = set.getContentData(contentVAType).getContentTree();
+			tree = table.getContentData(contentVAType).getContentTree();
 		} else {
 			return;
 		}
@@ -5065,7 +5065,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 			bGeneDendrogramActive = false;
 			bGeneDendrogramRenderCut = false;
-			set.getContentData(contentVAType).setContentTree(null);
+			table.getContentData(contentVAType).setContentTree(null);
 
 		}
 
@@ -5178,7 +5178,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		Tree<ClusterNode> tree = null;
 
 		va = contentVA;
-		tree = set.getContentData(contentVAType).getContentTree();
+		tree = table.getContentData(contentVAType).getContentTree();
 
 		ContentGroupList groupList = va.getGroupList();
 
@@ -5200,7 +5200,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 			bGeneDendrogramActive = false;
 			bGeneDendrogramRenderCut = false;
-			set.getContentData(contentVAType).setContentTree(null);
+			table.getContentData(contentVAType).setContentTree(null);
 
 		}
 
@@ -5229,7 +5229,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		Tree<ClusterNode> tree = null;
 
 		va = storageVA;
-		tree = set.getStorageData(storageVAType).getStorageTree();
+		tree = table.getStorageData(storageVAType).getStorageTree();
 
 		StorageGroupList groupList = va.getGroupList();
 
@@ -5251,7 +5251,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 			bExperimentDendrogramActive = false;
 			bExperimentDendrogramRenderCut = false;
-			set.getStorageData(storageVAType).setStorageTree(null);
+			table.getStorageData(storageVAType).setStorageTree(null);
 			dataDomain.createDimensionGroupsFromStorageTree(null);
 		}
 

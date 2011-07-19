@@ -53,9 +53,9 @@ public class DataDomainGraph {
 			if (vertex != dataDomain) {
 				boolean mappingExists = false;
 
-				if (dataDomain instanceof ASetBasedDataDomain && vertex instanceof ASetBasedDataDomain) {
-					ASetBasedDataDomain setBasedDataDomain = (ASetBasedDataDomain) dataDomain;
-					ASetBasedDataDomain setBasedVertex = (ASetBasedDataDomain) vertex;
+				if (dataDomain instanceof ATableBasedDataDomain && vertex instanceof ATableBasedDataDomain) {
+					ATableBasedDataDomain setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
+					ATableBasedDataDomain setBasedVertex = (ATableBasedDataDomain) vertex;
 
 					// TODO: Also mapping between content and storage?
 					boolean hasContentMapping =

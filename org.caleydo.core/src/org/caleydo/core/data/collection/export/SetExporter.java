@@ -15,7 +15,7 @@ import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
@@ -89,7 +89,7 @@ public class SetExporter {
 		ContentVirtualArray contentVA = null;
 		StorageVirtualArray storageVA = null;
 
-		ASetBasedDataDomain dataDomain = set.getDataDomain();
+		ATableBasedDataDomain dataDomain = set.getDataDomain();
 
 		if (eWhichViewToExport == EWhichViewToExport.BUCKET) {
 

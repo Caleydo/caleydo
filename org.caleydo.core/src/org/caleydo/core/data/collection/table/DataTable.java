@@ -23,7 +23,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.data.set.SetManager;
 import org.caleydo.core.manager.data.storage.StorageManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -89,7 +89,7 @@ public class DataTable
 
 	protected EDataTableDataType setType = EDataTableDataType.NUMERIC;
 
-	ASetBasedDataDomain dataDomain;
+	ATableBasedDataDomain dataDomain;
 
 	private boolean containsUncertaintyData = false;
 	/**
@@ -111,7 +111,7 @@ public class DataTable
 	 * Constructor for the set. Creates and initializes members and registers the set whit the set manager.
 	 * Also creates a new default tree. This should not be called by implementing sub-classes.
 	 */
-	public DataTable(ASetBasedDataDomain dataDomain) {
+	public DataTable(ATableBasedDataDomain dataDomain) {
 		this();
 		this.dataDomain = dataDomain;
 		initWithDataDomain();
@@ -160,7 +160,7 @@ public class DataTable
 	 * @param dataDomain
 	 */
 	@XmlTransient
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		initWithDataDomain();
 	}
@@ -171,7 +171,7 @@ public class DataTable
 	 * @param dataDomain
 	 */
 
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 

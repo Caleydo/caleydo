@@ -1,6 +1,6 @@
 package org.caleydo.core.view;
 
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 
 /**
@@ -9,6 +9,6 @@ import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
  * @author Alexander Lex
  */
 public interface IDataDomainSetBasedView
-	extends IDataDomainBasedView<ASetBasedDataDomain>, IView {
+	extends IDataDomainBasedView<ATableBasedDataDomain>, IView {
 
 }

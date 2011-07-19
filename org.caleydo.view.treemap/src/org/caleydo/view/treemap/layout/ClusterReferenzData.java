@@ -1,6 +1,6 @@
 package org.caleydo.view.treemap.layout;
 
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 
 
@@ -17,5 +17,5 @@ public class ClusterReferenzData{
 	ColorMapper colorMapper;
 	
 	boolean bUseExpressionValues = false;
-	ASetBasedDataDomain dataDomain;
+	ATableBasedDataDomain dataDomain;
 }

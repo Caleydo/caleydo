@@ -17,7 +17,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
@@ -50,7 +50,7 @@ public class VisLinkManager
 
 	private static VisLinkManager visLinkManager = null;
 
-	ASetBasedDataDomain dataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+	ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 		"org.caleydo.datadomain.genetic");
 	
 	private Display display;

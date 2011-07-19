@@ -3,21 +3,21 @@ package org.caleydo.datadomain.pathway.data;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 public class PathwaySegmentData implements ISegmentData {
 
 	private IDataDomain dataDomain;
-	private ASetBasedDataDomain mappingDataDomain;
+	private ATableBasedDataDomain mappingDataDomain;
 	private ContentVirtualArray contentVA;
 	private PathwayGraph pathway;
 	private Group group;
 	private PathwayDimensionGroupData dimensionGroupData;
 
 	public PathwaySegmentData(IDataDomain dataDomain,
-			ASetBasedDataDomain mappingDataDomain,
+			ATableBasedDataDomain mappingDataDomain,
 			ContentVirtualArray contentVA, Group group, PathwayGraph pathway,
 			PathwayDimensionGroupData dimensionGroupData) {
 		this.dataDomain = dataDomain;
@@ -57,7 +57,7 @@ public class PathwaySegmentData implements ISegmentData {
 		return pathway;
 	}
 
-	public ASetBasedDataDomain getMappingDataDomain() {
+	public ATableBasedDataDomain getMappingDataDomain() {
 		return mappingDataDomain;
 	}
 

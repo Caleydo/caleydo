@@ -26,7 +26,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.data.virtualarray.group.StorageGroupList;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.NewStorageGroupInfoEvent;
@@ -42,7 +42,7 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
@@ -62,7 +62,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * 
  * @author Bernhard Schlegl
  */
-public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorageBasedView
+public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBasedView
 		implements IClusterNodeEventReceiver {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.dendrogram";
@@ -220,7 +220,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	@Override
 	public void displayLocal(GL2 gl) {
 
-		if (set == null)
+		if (table == null)
 			return;
 
 		pickingManager.handlePicking(this, gl);
@@ -241,7 +241,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 	@Override
 	public void displayRemote(GL2 gl) {
-		if (set == null)
+		if (table == null)
 			return;
 
 		if (bIsDisplayListDirtyRemote) {
@@ -1229,16 +1229,16 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			iAlClusterNodes.clear();
 
 			if (bRenderContentTree == true) {
-				if (set.getContentData(contentVAType).getContentTree() != null) {
-					tree = set.getContentData(contentVAType).getContentTree();
+				if (table.getContentData(contentVAType).getContentTree() != null) {
+					tree = table.getContentData(contentVAType).getContentTree();
 					groupList = (GroupType) new ContentGroupList();
 					rootNode = tree.getRoot();
 				} else
 					renderSymbol(gl);
 			} else {
-				if (!set.getStorageData(storageVAType).isDefaultTree()
-						&& set.getStorageData(storageVAType).getStorageTree() != null) {
-					tree = set.getStorageData(storageVAType).getStorageTree();
+				if (!table.getStorageData(storageVAType).isDefaultTree()
+						&& table.getStorageData(storageVAType).getStorageTree() != null) {
+					tree = table.getStorageData(storageVAType).getStorageTree();
 					groupList = (GroupType) new StorageGroupList();
 					rootNode = tree.getRoot();
 				} else
@@ -1368,7 +1368,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			newGroupInfoEvent.setVAType(contentVAType);
 			newGroupInfoEvent.setGroupList((ContentGroupList) groupList);
 			newGroupInfoEvent.setDeleteTree(false);
-			newGroupInfoEvent.setSetID(set.getID());
+			newGroupInfoEvent.setSetID(table.getID());
 			eventPublisher.triggerEvent(newGroupInfoEvent);
 		} else {
 			NewStorageGroupInfoEvent newGroupInfoEvent = new NewStorageGroupInfoEvent();
@@ -1879,7 +1879,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	}
 
 	@Override
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		super.setDataDomain(dataDomain);
 		tree = null;
 		rootNode = null;

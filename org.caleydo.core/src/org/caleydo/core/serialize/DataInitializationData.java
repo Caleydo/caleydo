@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 
 /**
  * Bean that holds the initialization data for new started caleydo application. Used to store and restore
@@ -22,7 +22,7 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 public class DataInitializationData {
 
 	/** defines the type of usage of the application */
-	private ASetBasedDataDomain dataDomain;
+	private ATableBasedDataDomain dataDomain;
 
 	/** content of the set file the application is based on, only used to sync remote clients */
 	private byte[] setFileContent;
@@ -40,11 +40,11 @@ public class DataInitializationData {
 	/** list of views in use, not used to sync remote clients */
 	private List<String> views;
 
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 

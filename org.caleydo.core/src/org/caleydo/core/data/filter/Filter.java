@@ -2,7 +2,7 @@ package org.caleydo.core.data.filter;
 
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 
 /**
  * Generic base class for Filters. A Filter contains changes made to a virtual array. Sub-classes may
@@ -24,7 +24,7 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 
 	protected boolean isRegistered = false;
 
-	protected ASetBasedDataDomain dataDomain;
+	protected ATableBasedDataDomain dataDomain;
 
 	public void setVADelta(DeltaType vaDelta) {
 		this.vaDelta = vaDelta;
@@ -72,11 +72,11 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 		this.isRegistered = isRegistered;
 	}
 
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 

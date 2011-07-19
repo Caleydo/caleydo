@@ -437,7 +437,7 @@ public abstract class AGLView
 	/**
 	 * <p>
 	 * Method responsible for initialization of the data. It is intended to be overridden, all subclasses must
-	 * use this method to initialize their members related to {@link AView#set}.
+	 * use this method to initialize their members related to {@link AView#table}.
 	 * </p>
 	 * <p>
 	 * Note: This is completely independent of {@link #init(GL)}

@@ -5,7 +5,7 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 
 public class ReplaceContentVAInUseCaseListener
-	extends AEventListener<ASetBasedDataDomain> {
+	extends AEventListener<ATableBasedDataDomain> {
 
 	@Override
 	public void handleEvent(AEvent event) {

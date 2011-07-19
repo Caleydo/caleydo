@@ -6,7 +6,7 @@ import java.util.List;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.datadomain.pathway.data.PathwaySegmentData;
@@ -55,7 +55,7 @@ public class PathwayBrickDimensionGroupData implements IBrickDimensionGroupData 
 		return dimensionGroupData.getGroups();
 	}
 
-	public ASetBasedDataDomain getMappingDataDomain() {
+	public ATableBasedDataDomain getMappingDataDomain() {
 		return dimensionGroupData.getMappingDataDomain();
 	}
 

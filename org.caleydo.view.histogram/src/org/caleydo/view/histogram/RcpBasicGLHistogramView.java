@@ -7,7 +7,7 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
@@ -179,7 +179,7 @@ public class RcpBasicGLHistogramView extends ARcpGLViewPart implements
 					.getFloat(PreferenceConstants.GENE_EXPRESSION_PREFIX
 							+ PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
 
-			double correspondingValue = ((ASetBasedDataDomain) dataDomain).getSet()
+			double correspondingValue = ((ATableBasedDataDomain) dataDomain).getSet()
 					.getRawForNormalized(normalizedValue);
 
 			labels.get(iCount - 1).setText(Formatter.formatNumber(correspondingValue));

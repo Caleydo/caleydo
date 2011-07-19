@@ -66,7 +66,7 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -102,7 +102,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
  * @author Juergen Pillhofer
  */
 // @SuppressWarnings("unused")
-public class GLScatterPlot extends AStorageBasedView {
+public class GLScatterPlot extends ATableBasedView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.scatterplot";
 
@@ -347,7 +347,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	@Override
 	public void displayLocal(GL2 gl) {
 
-		if (set == null)
+		if (table == null)
 			return;
 
 		// textRenderer.dispose();
@@ -1294,9 +1294,9 @@ public class GLScatterPlot extends AStorageBasedView {
 						int current_SELECTED_X_AXIS = iAxisX;
 						int current_SELECTED_Y_AXIS = iAxisY;
 
-						xnormalized = set.get(storageVA.get(current_SELECTED_X_AXIS))
+						xnormalized = table.get(storageVA.get(current_SELECTED_X_AXIS))
 								.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
-						ynormalized = set.get(storageVA.get(current_SELECTED_Y_AXIS))
+						ynormalized = table.get(storageVA.get(current_SELECTED_Y_AXIS))
 								.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
 						ix = (int) Math.floor(xnormalized * (double) (iTextureWidth - 1));
@@ -1438,10 +1438,10 @@ public class GLScatterPlot extends AStorageBasedView {
 							int current_SELECTED_X_AXIS = iAxisX;
 							int current_SELECTED_Y_AXIS = iAxisY;
 
-							xnormalized = set.get(storageVA.get(current_SELECTED_X_AXIS))
+							xnormalized = table.get(storageVA.get(current_SELECTED_X_AXIS))
 									.getFloat(EDataRepresentation.NORMALIZED,
 											iContentIndex);
-							ynormalized = set.get(storageVA.get(current_SELECTED_Y_AXIS))
+							ynormalized = table.get(storageVA.get(current_SELECTED_Y_AXIS))
 									.getFloat(EDataRepresentation.NORMALIZED,
 											iContentIndex);
 
@@ -1936,8 +1936,8 @@ public class GLScatterPlot extends AStorageBasedView {
 			float fCurrentHeight = fMarkerSpacingY * iInnerCount;
 			float fCurrentWidth = fMarkerSpacingX * iInnerCount;
 
-			if (set.isSetHomogeneous()) {
-				float fNumber = (float) set.getRawForNormalized(fCurrentHeight
+			if (table.isSetHomogeneous()) {
+				float fNumber = (float) table.getRawForNormalized(fCurrentHeight
 						/ renderStyle.getAxisHeight());
 				// float max = (float) set.getMax();
 				// float min = (float) set.getMin();
@@ -2060,9 +2060,9 @@ public class GLScatterPlot extends AStorageBasedView {
 			fScaling *= 1.5f;
 
 		String sAxisLabel = "X-Axis: "
-				+ set.get(storageVA.get(iSelectedAxisIndexX)).getLabel();
+				+ table.get(storageVA.get(iSelectedAxisIndexX)).getLabel();
 		if (bRender2Axis)
-			sAxisLabel += " / " + set.get(storageVA.get(iSelectedAxisIndexX2)).getLabel();
+			sAxisLabel += " / " + table.get(storageVA.get(iSelectedAxisIndexX2)).getLabel();
 
 		textRenderer.renderText(gl, sAxisLabel, 0, 0, 0, fScaling,
 				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
@@ -2090,9 +2090,9 @@ public class GLScatterPlot extends AStorageBasedView {
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 
-		sAxisLabel = "Y-Axis: " + set.get(storageVA.get(iSelectedAxisIndexY)).getLabel();
+		sAxisLabel = "Y-Axis: " + table.get(storageVA.get(iSelectedAxisIndexY)).getLabel();
 		if (bRender2Axis)
-			sAxisLabel += " / " + set.get(storageVA.get(iSelectedAxisIndexY2)).getLabel();
+			sAxisLabel += " / " + table.get(storageVA.get(iSelectedAxisIndexY2)).getLabel();
 
 		// sAxisLabel
 		// ="Y-Achse: "+set.get(2).getLabel()+" (O) / "+set.get(3).getLabel()+" (X)";
@@ -2172,9 +2172,9 @@ public class GLScatterPlot extends AStorageBasedView {
 				throw new IllegalStateException("No such element in virtual array");
 			}
 
-			xnormalized = set.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
+			xnormalized = table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
 					EDataRepresentation.NORMALIZED, iContentIndex);
-			ynormalized = set.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
+			ynormalized = table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
 					EDataRepresentation.NORMALIZED, iContentIndex);
 
 			x = transformOnXZoom(xnormalized) * XScale;
@@ -2193,9 +2193,9 @@ public class GLScatterPlot extends AStorageBasedView {
 					iContentIndex, 1.0f); // scale
 
 			if (bRender2Axis) {
-				xnormalized = set.get(storageVA.get(iSelectedAxisIndexX2)).getFloat(
+				xnormalized = table.get(storageVA.get(iSelectedAxisIndexX2)).getFloat(
 						EDataRepresentation.NORMALIZED, iContentIndex);
-				ynormalized = set.get(storageVA.get(iSelectedAxisIndexY2)).getFloat(
+				ynormalized = table.get(storageVA.get(iSelectedAxisIndexY2)).getFloat(
 						EDataRepresentation.NORMALIZED, iContentIndex);
 
 				x_2 = transformOnXZoom(xnormalized) * XScale;
@@ -2246,9 +2246,9 @@ public class GLScatterPlot extends AStorageBasedView {
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 
-		float xnormalized = set.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
+		float xnormalized = table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
 				EDataRepresentation.NORMALIZED, iContentIndex);
-		float ynormalized = set.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
+		float ynormalized = table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
 				EDataRepresentation.NORMALIZED, iContentIndex);
 
 		float x = transformOnXZoom(xnormalized) * XScale;
@@ -2326,29 +2326,29 @@ public class GLScatterPlot extends AStorageBasedView {
 					+ " ("
 					+ genLabel
 					+ "):"
-					+ +set.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
+					+ +table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
 							EDataRepresentation.RAW, contentIndex)
 					+ " / "
-					+ set.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
+					+ table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
 							EDataRepresentation.RAW, contentIndex);
 		else if (contentSelectionManager.checkStatus(SelectionType.SELECTION,
 				contentIndex))
 			sLabel = "Selected Point ("
 					+ genLabel
 					+ "):"
-					+ +set.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
+					+ +table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
 							EDataRepresentation.RAW, contentIndex)
 					+ " / "
-					+ set.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
+					+ table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
 							EDataRepresentation.RAW, contentIndex);
 		else
 			sLabel = "Point ("
 					+ genLabel
 					+ "):"
-					+ +set.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
+					+ +table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
 							EDataRepresentation.RAW, contentIndex)
 					+ " / "
-					+ set.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
+					+ table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
 							EDataRepresentation.RAW, contentIndex);
 
 		float fScaling = renderStyle.getSmallFontScalingFactor();
@@ -2445,9 +2445,9 @@ public class GLScatterPlot extends AStorageBasedView {
 				if (iContentIndex % iDisplayEveryNthPoint != 0)
 					continue;
 
-			float xnormalized = set.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
+			float xnormalized = table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
 					EDataRepresentation.NORMALIZED, iContentIndex);
-			float ynormalized = set.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
+			float ynormalized = table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
 					EDataRepresentation.NORMALIZED, iContentIndex);
 
 			x = transformOnXZoom(xnormalized) * XScale;
@@ -2510,9 +2510,9 @@ public class GLScatterPlot extends AStorageBasedView {
 
 			for (int iContentIndex : selectionSet) {
 
-				float xnormalized = set.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
+				float xnormalized = table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
 						EDataRepresentation.NORMALIZED, iContentIndex);
-				float ynormalized = set.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
+				float ynormalized = table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
 						EDataRepresentation.NORMALIZED, iContentIndex);
 
 				x = transformOnXZoom(xnormalized) * XScale;

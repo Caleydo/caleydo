@@ -10,7 +10,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
@@ -20,7 +20,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  */
 @XmlType
 @XmlRootElement
-public class ClinicalDataDomain extends ASetBasedDataDomain {
+public class ClinicalDataDomain extends ATableBasedDataDomain {
 
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.genetic";
 

@@ -11,7 +11,7 @@ import org.caleydo.core.data.filter.event.RemoveStorageFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveStorageFilterListener;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;
@@ -32,7 +32,7 @@ public class StorageFilterManager
 	private NewStorageFilterListener newStorageFilterListener;
 	private ReEvaluateStorageFilterListListener reEvaluateStorageFilterListListener;
 
-	public StorageFilterManager(ASetBasedDataDomain dataDomain) {
+	public StorageFilterManager(ATableBasedDataDomain dataDomain) {
 		super(dataDomain, dataDomain.getSet().getBaseStorageVA(), new StorageFilterFactory());
 
 	}

@@ -9,7 +9,7 @@ import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.SetBasedDimensionGroupData;
 import org.caleydo.core.data.virtualarray.SetBasedSegmentData;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.view.visbricks.brick.layout.ASetBasedDataConfigurer;
 import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
@@ -83,7 +83,7 @@ public class SetBasedBrickDimensionGroupData implements IBrickDimensionGroupData
 	@Override
 	public IBrickData getSummaryBrickData() {
 		SetBasedSegmentData tempSegmentData = new SetBasedSegmentData(
-				(ASetBasedDataDomain) getDataDomain(),
+				(ATableBasedDataDomain) getDataDomain(),
 				dimensionGroupData.getSet(), getSummaryBrickVA(), new Group(),
 				dimensionGroupData);
 		return new SetBasedBrickData(tempSegmentData);

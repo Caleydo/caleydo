@@ -39,7 +39,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -69,7 +69,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Thomas Geymayer
  */
 
-public class GLFilterPipeline extends AStorageBasedView implements IViewCommandHandler,
+public class GLFilterPipeline extends ATableBasedView implements IViewCommandHandler,
 		ISelectionUpdateHandler, IRadialMenuListener {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.filterpipeline";

@@ -8,7 +8,7 @@ import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 
 /**
  * Use case for generic set-based data which is not further specified.
@@ -18,7 +18,7 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
  */
 @XmlType
 @XmlRootElement
-public class GenericDataDomain extends ASetBasedDataDomain {
+public class GenericDataDomain extends ATableBasedDataDomain {
 
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.generic";
 
@@ -74,7 +74,7 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 
 	@Override
 	public String getStorageLabel(IDType idType, Object id) {
-		String label = set.get((Integer) id).getLabel();
+		String label = table.get((Integer) id).getLabel();
 		if (label == null)
 			label = "";
 		return label;

@@ -22,7 +22,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -76,7 +76,7 @@ public class HeatMapWrapper {
 	private AGLView glParentView;
 	private ACompareViewState state;
 	// private GLInfoAreaManager infoAreaManager;
-	private ASetBasedDataDomain dataDomain;
+	private ATableBasedDataDomain dataDomain;
 	private IGLRemoteRenderingView parentView;
 
 	// private SelectionUpdateListener selectionUpdateListener;
@@ -88,7 +88,7 @@ public class HeatMapWrapper {
 	private boolean useFishEye = false;
 
 	public HeatMapWrapper(int id, AHeatMapLayout layout, AGLView glParentView,
-			GLInfoAreaManager infoAreaManager, ASetBasedDataDomain dataDomain,
+			GLInfoAreaManager infoAreaManager, ATableBasedDataDomain dataDomain,
 			IGLRemoteRenderingView parentView, ACompareViewState state) {
 
 		overview = new HeatMapOverview(layout);

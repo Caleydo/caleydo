@@ -17,7 +17,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.BasicInformation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.IStatus;
@@ -109,13 +109,13 @@ public class ProjectLoader {
 
 				Thread thread = new Thread(dataDomain, dataDomain.getDataDomainID());
 				thread.start();
-				if (dataDomain instanceof ASetBasedDataDomain) {
+				if (dataDomain instanceof ATableBasedDataDomain) {
 
 					String setFileName = dirName + ProjectSaver.SET_DATA_FILE_NAME;
 
 					LoadDataParameters loadingParameters = dataDomain.getLoadDataParameters();
 					loadingParameters.setFileName(setFileName);
-					loadingParameters.setDataDomain((ASetBasedDataDomain) dataDomain);
+					loadingParameters.setDataDomain((ATableBasedDataDomain) dataDomain);
 
 					HashMap<String, ContentVirtualArray> contentVAMap =
 						new HashMap<String, ContentVirtualArray>(6);
@@ -145,7 +145,7 @@ public class ProjectLoader {
 					// }
 
 					// TODO: now only the last set data domain is handled
-					initData.setDataDomain((ASetBasedDataDomain) dataDomain);
+					initData.setDataDomain((ATableBasedDataDomain) dataDomain);
 					initData.setContentVAMap(contentVAMap);
 					initData.setStorageVAMap(storageVAMap);
 

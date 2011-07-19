@@ -11,7 +11,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.RemoveBookmarkEvent;
@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.MenuItem;
  * @author Alexander Lex
  */
 public class GLBookmarkView extends AGLView implements
-		IDataDomainBasedView<ASetBasedDataDomain>, ISelectionUpdateHandler,
+		IDataDomainBasedView<ATableBasedDataDomain>, ISelectionUpdateHandler,
 		ISelectionCommandHandler {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.bookmark";
@@ -71,7 +71,7 @@ public class GLBookmarkView extends AGLView implements
 
 	private RemoveBookmarkListener removeBookmarkListener;
 
-	protected ASetBasedDataDomain dataDomain;
+	protected ATableBasedDataDomain dataDomain;
 
 	/** The class responsible for rendering the template */
 	private LayoutManager templateRenderer;
@@ -375,12 +375,12 @@ public class GLBookmarkView extends AGLView implements
 	}
 
 	@Override
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
 	@Override
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 
 		Column mainColumn = new Column("baseBookmarkColumn");

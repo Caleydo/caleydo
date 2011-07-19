@@ -15,7 +15,7 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.AssociationManager;
 import org.caleydo.core.manager.datadomain.DataDomainGraph;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -1225,7 +1225,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (interfaceType.equals("org.caleydo.analytical.clustering")) {
 			ArrayList<DataTable> sets = new ArrayList<DataTable>();
-			sets.add(((ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+			sets.add(((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 					dataDomainType)).getSet());
 
 			ClusterSetEvent event = new ClusterSetEvent(sets);
@@ -1666,13 +1666,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// TODO move conditions to own class
 
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
-			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.get()
+			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID(dataDomainType)).getSet().getStorageData(DataTable.STORAGE)
 					.getStorageVA().size();
 			if (numberOfPatients > 40)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
-			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.get()
+			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID("org.caleydo.datadomain.genetic")).getSet()
 					.getStorageData(DataTable.STORAGE).getStorageVA().size();
 			if (numberOfPatients > 20)

@@ -17,7 +17,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
@@ -51,7 +51,7 @@ import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.AddPathwayListener;
@@ -107,12 +107,12 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Werner Puff
  */
 public class GLBucket extends AGLView implements
-		IDataDomainBasedView<ASetBasedDataDomain>, ISelectionUpdateHandler,
+		IDataDomainBasedView<ATableBasedDataDomain>, ISelectionUpdateHandler,
 		IGLBucketView, IRemoteRenderingHandler, IPathwayLoader {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.bucket";
 
-	protected ASetBasedDataDomain dataDomain;
+	protected ATableBasedDataDomain dataDomain;
 
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 
@@ -2288,7 +2288,7 @@ public class GLBucket extends AGLView implements
 			if (glView.getViewType().equals("org.caleydo.view.heatmap")
 					|| glView.getViewType().equals("org.caleydo.view.parcoords")) {
 				// Remove all elements from heatmap and parallel coordinates
-				((AStorageBasedView) glView).resetView();
+				((ATableBasedView) glView).resetView();
 
 				if (!glView.isRenderedRemote()) {
 					glView.enableBusyMode(false);
@@ -2982,12 +2982,12 @@ public class GLBucket extends AGLView implements
 	}
 
 	@Override
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
 	@Override
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 	

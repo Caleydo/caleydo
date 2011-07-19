@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
@@ -47,7 +47,7 @@ public class ShowPathwaysByGenesItem extends AContextMenuItem {
 	 * @param david
 	 *            the int code associated with a refseq
 	 */
-	public void setIDs(ASetBasedDataDomain dataDomain, IDType idType,
+	public void setIDs(ATableBasedDataDomain dataDomain, IDType idType,
 			ArrayList<Integer> genes) {
 
 		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();

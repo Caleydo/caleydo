@@ -12,7 +12,7 @@ import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveStorageFilterEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -43,7 +43,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 
 	public static final String VIEW_TYPE = "org.caleydo.view.filter";
 
-	private ASetBasedDataDomain dataDomain;
+	private ATableBasedDataDomain dataDomain;
 
 	private Tree tree;
 
@@ -72,7 +72,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 	@Override
 	public void createPartControl(Composite parent) {
 
-		dataDomain = (ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+		dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 				serializedView.getDataDomainID());
 
 		parentComposite = parent;

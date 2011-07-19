@@ -14,7 +14,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -57,7 +57,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Alexander Lex
  */
 public class SelectionBrowserView extends ASWTView implements
-		IDataDomainBasedView<ASetBasedDataDomain>, ISelectionUpdateHandler,
+		IDataDomainBasedView<ATableBasedDataDomain>, ISelectionUpdateHandler,
 		IContentVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	private final static String SELECTION_TYPE_NAME_1 = "Selected by group 1";
@@ -72,7 +72,7 @@ public class SelectionBrowserView extends ASWTView implements
 //	private final static float[] SELECTION_COLOR_3 = new float[] { 1, 1, 51f/255, 1 };
 	private final static float[] SELECTION_COLOR_4 = new float[] { 166f/255, 86f/255, 40f/255, 1 };
 		
-	ASetBasedDataDomain dataDomain;
+	ATableBasedDataDomain dataDomain;
 
 	GeneralManager generalManager = null;
 	EventPublisher eventPublisher = null;
@@ -479,14 +479,14 @@ public class SelectionBrowserView extends ASWTView implements
 	}
 
 	@Override
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 
 		initContent();
 	}
 
 	@Override
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 

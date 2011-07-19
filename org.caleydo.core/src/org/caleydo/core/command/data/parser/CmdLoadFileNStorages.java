@@ -7,7 +7,7 @@ import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.parser.ascii.TabularAsciiDataReader;
 import org.caleydo.core.parser.parameter.ParameterHandler;
@@ -31,7 +31,7 @@ public class CmdLoadFileNStorages
 
 	private boolean bParsingOK = false;
 
-	ASetBasedDataDomain dataDomain;
+	ATableBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -85,7 +85,7 @@ public class CmdLoadFileNStorages
 		}
 
 		dataDomain =
-			(ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+			(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 				parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE4.getXmlKey()));
 		loadDataParameters.setDataDomain(dataDomain);
 

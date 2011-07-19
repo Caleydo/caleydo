@@ -8,7 +8,7 @@ import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
@@ -39,7 +39,7 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 	private ArrayList<FilterType> filterPipe;
 	private VA baseVA;
 	protected VA currentVA;
-	protected ASetBasedDataDomain dataDomain;
+	protected ATableBasedDataDomain dataDomain;
 
 	// private ReplaceContentVAInUseCaseListener replaceContentVirtualArrayInUseCaseListener;
 	// private ReplaceStorageVAInUseCaseListener replaceStorageVirtualArrayInUseCaseListener;
@@ -54,7 +54,7 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 	 * @param factory
 	 */
 	@SuppressWarnings("unchecked")
-	public FilterManager(ASetBasedDataDomain dataDomain, VA baseVA, IFilterFactory<FilterType> factory) {
+	public FilterManager(ATableBasedDataDomain dataDomain, VA baseVA, IFilterFactory<FilterType> factory) {
 		this.dataDomain = dataDomain;
 		this.baseVA = baseVA;
 		currentVA = (VA) baseVA.clone();

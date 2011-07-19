@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 
 /**
  * Parameters to load the initial data-{@link DataTable}.
@@ -21,7 +21,7 @@ public class LoadDataParameters {
 
 	/** The data domain associated with the loading process */
 	@XmlTransient
-	private ASetBasedDataDomain dataDomain;
+	private ATableBasedDataDomain dataDomain;
 
 	/** TODO doc */
 	private ArrayList<Integer> storageIds;
@@ -87,12 +87,12 @@ public class LoadDataParameters {
 		this.dataDomain = null;
 	}
 
-	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 
 	@XmlTransient
-	public ASetBasedDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
