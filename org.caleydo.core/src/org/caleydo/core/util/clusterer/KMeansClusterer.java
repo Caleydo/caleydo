@@ -5,8 +5,8 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
@@ -35,7 +35,7 @@ public class KMeansClusterer
 		clusterer = new SimpleKMeans();
 	}
 
-	private TempResult cluster(ISet set, ClusterState clusterState) {
+	private TempResult cluster(DataTable set, ClusterState clusterState) {
 
 		// Arraylist holding clustered indicess
 		ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -309,7 +309,7 @@ public class KMeansClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(DataTable set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;

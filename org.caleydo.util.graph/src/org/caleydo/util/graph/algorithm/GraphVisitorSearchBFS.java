@@ -33,11 +33,11 @@ public class GraphVisitorSearchBFS extends AGraphVisitorSearch
 		super(item, iSearchDepth);
 	}
 
-	private List<List<IGraphItem>> createDepthSortedList(final int iSetDepth) {
+	private List<List<IGraphItem>> createDepthSortedList(final int DataTableDepth) {
 
 		/** create list and initialize it .. */
 		List<List<IGraphItem>> resultDepthSortedList = new ArrayList<List<IGraphItem>>(
-				iSetDepth);
+				DataTableDepth);
 		for (int i = 0; i < iSearchDepth; i++) {
 			resultDepthSortedList.add(i, new ArrayList<IGraphItem>());
 		}

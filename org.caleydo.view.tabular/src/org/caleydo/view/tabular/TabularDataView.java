@@ -3,9 +3,9 @@ package org.caleydo.view.tabular;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -96,12 +96,12 @@ public class TabularDataView extends ASWTView implements
 	/**
 	 * The type of the content VA
 	 */
-	protected String contentVAType = ISet.CONTENT;
+	protected String contentVAType = DataTable.CONTENT;
 
 	/**
 	 * The type of the storage VA
 	 */
-	protected String storageVAType = ISet.STORAGE;
+	protected String storageVAType = DataTable.STORAGE;
 
 	/**
 	 * Define what level of filtering on the data should be applied
@@ -122,7 +122,7 @@ public class TabularDataView extends ASWTView implements
 
 	protected ASetBasedDataDomain dataDomain;
 
-	protected ISet set;
+	protected DataTable dataTable;
 
 	/**
 	 * Constructor.
@@ -143,12 +143,12 @@ public class TabularDataView extends ASWTView implements
 
 	public void initData() {
 
-		set = dataDomain.getSet();
+		dataTable = dataDomain.getSet();
 
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 		storageSelectionManager = dataDomain.getStorageSelectionManager();
 
-		if (set == null) {
+		if (dataTable == null) {
 			contentSelectionManager.resetSelectionManager();
 			storageSelectionManager.resetSelectionManager();
 			return;
@@ -315,7 +315,7 @@ public class TabularDataView extends ASWTView implements
 
 		for (final Integer iStorageIndex : storageVA) {
 			final TableColumn col = new TableColumn(contentTable, SWT.NONE);
-			col.setText(set.get(iStorageIndex).getLabel());
+			col.setText(dataTable.get(iStorageIndex).getLabel());
 			col.setWidth(120);
 			col.setMoveable(true);
 
@@ -324,10 +324,10 @@ public class TabularDataView extends ASWTView implements
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					LabelEditorDialog dialog = new LabelEditorDialog(new Shell());
-					String sLabel = dialog.open(set.get(iStorageIndex).getLabel());
+					String sLabel = dialog.open(dataTable.get(iStorageIndex).getLabel());
 
 					if (sLabel != null && !sLabel.isEmpty()) {
-						set.get(iStorageIndex).setLabel(sLabel);
+						dataTable.get(iStorageIndex).setLabel(sLabel);
 						contentTable.getColumn(iStorageIndex + 3).setText(sLabel);
 						RedrawViewEvent event = new RedrawViewEvent();
 						event.setSender(this);
@@ -348,7 +348,7 @@ public class TabularDataView extends ASWTView implements
 
 			int i = 3;
 			for (Integer iStorageIndex : storageVA) {
-				fValue = set.get(iStorageIndex).getFloat(EDataRepresentation.RAW,
+				fValue = dataTable.get(iStorageIndex).getFloat(EDataRepresentation.RAW,
 						iContentIndex);
 
 				item.setText(i++, Float.toString(fValue));
@@ -426,12 +426,12 @@ public class TabularDataView extends ASWTView implements
 			@Override
 			public void run() {
 				TableColumn column = new TableColumn(contentTable, SWT.NONE, index);
-				AStorage storage = set.get(storageNumber);
+				AStorage storage = dataTable.get(storageNumber);
 				column.setText(storage.getLabel());
 				TableItem[] items = contentTable.getItems();
 				for (int i = 0; i < items.length; i++) {
 					TableItem item = items[i];
-					float value = set.get(storageNumber).getFloat(
+					float value = dataTable.get(storageNumber).getFloat(
 							EDataRepresentation.RAW, contentVA.get(i));
 					item.setText(index, Float.toString(value));
 

@@ -2,23 +2,23 @@ package org.caleydo.core.manager.event.data;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.event.AEvent;
 
 public class StatisticsTwoSidedTTestReductionEvent
 	extends AEvent {
 
-	private ArrayList<ISet> sets;
+	private ArrayList<DataTable> sets;
 
-	public StatisticsTwoSidedTTestReductionEvent(ArrayList<ISet> sets) {
+	public StatisticsTwoSidedTTestReductionEvent(ArrayList<DataTable> sets) {
 		this.sets = sets;
 	}
 
-	public void setSets(ArrayList<ISet> sets) {
+	public void setSets(ArrayList<DataTable> sets) {
 		this.sets = sets;
 	}
 
-	public ArrayList<ISet> getSets() {
+	public ArrayList<DataTable> getSets() {
 		return sets;
 	}
 

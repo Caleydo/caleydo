@@ -4,10 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.export.SetExporter;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
-import org.caleydo.core.data.collection.set.MetaSet;
+import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.SubDataTable;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -171,7 +171,7 @@ public class ExportDataDialog
 		// }
 
 	}
-	
+
 	@Override
 	protected void okPressed() {
 
@@ -185,21 +185,21 @@ public class ExportDataDialog
 			SetExporter exporter = new SetExporter();
 			// exporter.export(this, sFileName, eWichViewToExport);
 
-			ISet set = setBasedDataDomain.getSet();
+			DataTable table = setBasedDataDomain.getSet();
 			IDType targetIDType = setBasedDataDomain.getPrimaryContentMappingType();
-			if (set instanceof MetaSet)
+			if (table instanceof SubDataTable)
 				continue;
 			if (radios[0].getSelection()) {
-				exporter.export(set, sFileName, EWhichViewToExport.BUCKET, targetIDType);
+				exporter.export(table, sFileName, EWhichViewToExport.BUCKET, targetIDType);
 			}
 			else if (radios[1].getSelection()) {
-				exporter.export(set, sFileName, EWhichViewToExport.WHOLE_DATA, targetIDType);
+				exporter.export(table, sFileName, EWhichViewToExport.WHOLE_DATA, targetIDType);
 			}
 			else if (radios[2].getSelection()) {
-				exporter.exportGroups(set, sFileName, genesToExport, experimentsToExport, targetIDType);
+				exporter.exportGroups(table, sFileName, genesToExport, experimentsToExport, targetIDType);
 			}
 		}
-		
+
 		super.okPressed();
 	}
 }

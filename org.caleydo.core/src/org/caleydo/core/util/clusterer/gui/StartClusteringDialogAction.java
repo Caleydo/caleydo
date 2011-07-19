@@ -1,7 +1,6 @@
 package org.caleydo.core.util.clusterer.gui;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
@@ -543,8 +542,8 @@ public class StartClusteringDialogAction
 			clusterState = othersTab.getClusterState();
 
 		// by default we use the main VAs for clustering
-		clusterState.setContentVAType(ISet.CONTENT);
-		clusterState.setStorageVAType(Set.STORAGE);
+		clusterState.setContentVAType(DataTable.CONTENT);
+		clusterState.setStorageVAType(DataTable.STORAGE);
 
 		ClusteringProgressBar progressBar =
 			new ClusteringProgressBar(clusterState.getClustererAlgo(), clusterState.getClustererType());

@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACommand;
-import org.caleydo.core.data.collection.set.LoadDataParameters;
+import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Command loads data from file using a token pattern and a target ISet. Use AMicroArrayLoader to load data
+ * Command loads data from file using a token pattern and a target DataTable. Use AMicroArrayLoader to load data
  * set.
  * 
  * @author Marc Streit

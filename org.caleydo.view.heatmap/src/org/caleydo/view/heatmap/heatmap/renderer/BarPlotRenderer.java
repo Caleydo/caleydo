@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -68,7 +68,7 @@ public class BarPlotRenderer extends AContentRenderer {
 				.getMultiLevelUncertainty();
 
 		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
-		ISet set = heatMap.getSet();
+		DataTable set = heatMap.getSet();
 		if (set == null)
 			return;
 

@@ -91,7 +91,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 	private Column centerLayout;
 	protected Column topCol;
 	// private ViewFrustum brickFrustum;
-	// protected ISet set;
+	// protected DataTable set;
 	protected IDataDomain dataDomain;
 
 	private EventPublisher eventPublisher = GeneralManager.get()
@@ -777,7 +777,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		return glVisBricksView;
 	}
 
-	// public ISet getSet() {
+	// public DataTable getSet() {
 	// return set;
 	// }
 
@@ -887,7 +887,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 	// return dataDomain;
 	// }
 
-	// public void setSet(ISet set) {
+	// public void setSet(DataTable set) {
 	// this.set = set;
 	// }
 

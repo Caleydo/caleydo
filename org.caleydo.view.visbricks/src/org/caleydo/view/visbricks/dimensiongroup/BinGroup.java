@@ -1,6 +1,6 @@
 package org.caleydo.view.visbricks.dimensiongroup;
 
-import org.caleydo.core.data.collection.set.statistics.IDBasedBinning;
+import org.caleydo.core.data.collection.table.statistics.IDBasedBinning;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.mapping.IDMappingManager;

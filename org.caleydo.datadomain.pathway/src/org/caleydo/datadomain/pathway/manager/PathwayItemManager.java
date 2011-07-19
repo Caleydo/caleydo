@@ -76,11 +76,11 @@ public class PathwayItemManager extends AManager<ICaleydoGraphItem> implements
 
 	public ArrayList<IGraphItem> createVertexGene(final String sName, final String sType,
 			final String sExternalLink, final String sReactionId,
-			final Set<Integer> iSetDavidId) {
+			final Set<Integer> DataTableDavidId) {
 
 		ArrayList<IGraphItem> alGraphItems = new ArrayList<IGraphItem>();
 		IGraphItem tmpGraphItem = null;
-		for (int iDavidId : iSetDavidId) {
+		for (int iDavidId : DataTableDavidId) {
 
 			// Do not create a new vertex if it is already registered
 			if (hashDavidIdToPathwayVertexGraphItem.containsKey(iDavidId)) {

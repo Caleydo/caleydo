@@ -9,9 +9,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.ContentData;
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.ContentData;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.ContentFilterManager;
 import org.caleydo.core.data.filter.StorageFilterManager;
 import org.caleydo.core.data.graph.tree.ClusterTree;
@@ -80,7 +79,7 @@ public abstract class ASetBasedDataDomain
 	protected List<ADimensionGroupData> dimensionGroups;
 
 	/** The set which is currently loaded and used inside the views for this use case. */
-	protected Set set;
+	protected DataTable set;
 
 	protected IDType humanReadableContentIDType;
 	protected IDType humanReadableStorageIDType;
@@ -109,7 +108,7 @@ public abstract class ASetBasedDataDomain
 	// private RelationAnalyzer contentRelationAnalyzer;
 
 	@XmlTransient
-	private HashMap<Integer, ISet> otherMetaSets = new HashMap<Integer, ISet>();
+	private HashMap<Integer, DataTable> otherMetaSets = new HashMap<Integer, DataTable>();
 
 	/**
 	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
@@ -159,12 +158,12 @@ public abstract class ASetBasedDataDomain
 	 * @param set
 	 *            The new set which replaced the currently loaded one.
 	 */
-	public void setSet(Set set) {
+	public void setSet(DataTable set) {
 		assert (set != null);
 
 		// set.setDataDomain(this);
 
-		ISet oldSet = this.set;
+		DataTable oldSet = this.set;
 		this.set = set;
 		if (oldSet != null) {
 			oldSet.destroy();
@@ -173,7 +172,7 @@ public abstract class ASetBasedDataDomain
 
 	}
 
-	public void addMetaSet(ISet set) {
+	public void addMetaSet(DataTable set) {
 		otherMetaSets.put(set.getID(), set);
 	}
 
@@ -183,16 +182,16 @@ public abstract class ASetBasedDataDomain
 	 * @return a data set
 	 */
 	@XmlTransient
-	public Set getSet() {
+	public DataTable getSet() {
 		return set;
 	}
 
-	public ISet getSet(int setID) {
+	public DataTable getSet(int setID) {
 		if (set.getID() == setID)
 			return set;
 
-		ClusterNode root = set.getStorageData(Set.STORAGE).getStorageTreeRoot();
-		ISet set = root.getMetaSetFromSubTree(setID);
+		ClusterNode root = set.getStorageData(DataTable.STORAGE).getStorageTreeRoot();
+		DataTable set = root.getMetaSetFromSubTree(setID);
 
 		if (set == null)
 			set = otherMetaSets.get(setID);
@@ -237,6 +236,7 @@ public abstract class ASetBasedDataDomain
 		initFullVA();
 		initSelectionManagers();
 
+
 		contentFilterManager = new ContentFilterManager(this);
 		storageFilterManager = new StorageFilterManager(this);
 
@@ -258,9 +258,9 @@ public abstract class ASetBasedDataDomain
 
 	protected void initSelectionManagers() {
 		contentSelectionManager = new ContentSelectionManager(contentIDType);
-		contentSelectionManager.setVA(set.getContentData(Set.CONTENT).getContentVA());
+		contentSelectionManager.setVA(set.getContentData(DataTable.CONTENT).getContentVA());
 		storageSelectionManager = new StorageSelectionManager(storageIDType);
-		storageSelectionManager.setVA(set.getStorageData(Set.STORAGE).getStorageVA());
+		storageSelectionManager.setVA(set.getStorageData(DataTable.STORAGE).getStorageVA());
 		contentGroupSelectionManager = new SelectionManager(contentGroupIDType);
 	}
 
@@ -324,11 +324,11 @@ public abstract class ASetBasedDataDomain
 	 */
 	public void startClustering(int setID, ClusterState clusterState) {
 
-		ISet set = null;
+		DataTable set = null;
 		if (this.set.getID() == setID)
 			set = this.set;
 		else
-			set = this.set.getStorageData(Set.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
+			set = this.set.getStorageData(DataTable.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
 
 		// TODO: warning
 		if (set == null)
@@ -336,7 +336,7 @@ public abstract class ASetBasedDataDomain
 
 		set.cluster(clusterState);
 
-		ContentData contentData = set.getContentData(Set.CONTENT);
+		ContentData contentData = set.getContentData(DataTable.CONTENT);
 		ClusterHelper.calculateAggregatedUncertainties(contentData.getContentTree(), set);
 		ClusterHelper.calculateClusterAverages(contentData.getContentTree(),
 			EClustererType.CONTENT_CLUSTERING, set);
@@ -347,11 +347,11 @@ public abstract class ASetBasedDataDomain
 
 		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, dataDomainID, clusterState
 			.getContentVAType()));
-		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, dataDomainID, Set.STORAGE));
+		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, dataDomainID, DataTable.STORAGE));
 
 		if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING
 			|| clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
-			((Set) set).createMetaSets();
+			((DataTable) set).createMetaSets();
 		}
 	}
 
@@ -360,7 +360,7 @@ public abstract class ASetBasedDataDomain
 	 */
 	public void resetContextVA() {
 
-		set.setContentVA(ISet.CONTENT_CONTEXT, new ContentVirtualArray(ISet.CONTENT_CONTEXT));
+		set.setContentVA(DataTable.CONTENT_CONTEXT, new ContentVirtualArray(DataTable.CONTENT_CONTEXT));
 	}
 
 	/**
@@ -387,7 +387,7 @@ public abstract class ASetBasedDataDomain
 		// else {
 		// // TODO check whether we need this for the meat sets, it fires a lot of unnecessar events in other
 		// // cases
-		// // for (ISet tmpSet : storageTree.getRoot().getAllMetaSetsFromSubTree()) {
+		// // for (DataTable tmpSet : storageTree.getRoot().getAllMetaSetsFromSubTree()) {
 		// // tmpSet.setContentVA(vaType, virtualArray.clone());
 		// // eventPublisher.triggerEvent(new ReplaceContentVAEvent(tmpSet, dataDomainType, vaType));
 		// // }
@@ -409,18 +409,18 @@ public abstract class ASetBasedDataDomain
 			handleForeignContentVAUpdate(setID, dataDomainType, vaType, virtualArray);
 			return;
 		}
-		ISet set;
+		DataTable set;
 		if (setID == this.set.getID()) {
 			set = this.set;
 		}
 		else {
-			set = this.set.getStorageData(Set.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
+			set = this.set.getStorageData(DataTable.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
 		}
 		if (set == null)
 			set = otherMetaSets.get(setID);
 
 		set.setContentVA(vaType, virtualArray.clone());
-		contentSelectionManager.setVA(set.getContentData(Set.CONTENT).getContentVA());
+		contentSelectionManager.setVA(set.getContentData(DataTable.CONTENT).getContentVA());
 
 		virtualArray.setGroupList(null);
 		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, dataDomainType, vaType));
@@ -474,7 +474,7 @@ public abstract class ASetBasedDataDomain
 	}
 
 	protected void initFullVA() {
-		if (set.getContentData(ISet.CONTENT) == null)
+		if (set.getContentData(DataTable.CONTENT) == null)
 			set.restoreOriginalContentVA();
 	}
 
@@ -484,7 +484,7 @@ public abstract class ASetBasedDataDomain
 	public void restoreOriginalContentVA() {
 		initFullVA();
 
-		ReplaceContentVAEvent event = new ReplaceContentVAEvent(set, dataDomainID, ISet.CONTENT);
+		ReplaceContentVAEvent event = new ReplaceContentVAEvent(set, dataDomainID, DataTable.CONTENT);
 
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);

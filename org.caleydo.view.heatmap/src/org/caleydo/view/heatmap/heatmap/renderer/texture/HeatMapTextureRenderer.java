@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -54,7 +54,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 
 	private StorageVirtualArray storageVA;
 
-	private ISet set;
+	private DataTable set;
 
 	public HeatMapTextureRenderer(GLUncertaintyHeatMap uncertaintyHeatMap,
 			Column heatmapLayout) {
@@ -68,7 +68,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 	/*
 	 * Init textures, build array of textures used for holding the whole samples
 	 */
-	public void init(GLUncertaintyHeatMap uncertaintyHeatMap, ISet set,
+	public void init(GLUncertaintyHeatMap uncertaintyHeatMap, DataTable set,
 			ContentVirtualArray contentVA, StorageVirtualArray storageVA,
 			int groupIndex) {
 

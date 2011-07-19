@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
@@ -34,7 +34,7 @@ public class HeatMapUtil {
 
 	public static int MAX_SAMPLES_PER_TEXTURE = 2000;
 
-	public static ArrayList<Texture> createHeatMapTextures(ISet set,
+	public static ArrayList<Texture> createHeatMapTextures(DataTable set,
 			ContentVirtualArray contentVA, StorageVirtualArray storageVA,
 			ContentSelectionManager contentSelectionManager) {
 

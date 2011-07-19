@@ -11,8 +11,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
@@ -1225,7 +1224,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private void triggerAnalyticalInterface(String dataDomainType, String interfaceType) {
 
 		if (interfaceType.equals("org.caleydo.analytical.clustering")) {
-			ArrayList<ISet> sets = new ArrayList<ISet>();
+			ArrayList<DataTable> sets = new ArrayList<DataTable>();
 			sets.add(((ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 					dataDomainType)).getSet());
 
@@ -1668,14 +1667,14 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.get()
-					.getDataDomainByID(dataDomainType)).getSet().getStorageData(Set.STORAGE)
+					.getDataDomainByID(dataDomainType)).getSet().getStorageData(DataTable.STORAGE)
 					.getStorageVA().size();
 			if (numberOfPatients > 40)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
 			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID("org.caleydo.datadomain.genetic")).getSet()
-					.getStorageData(Set.STORAGE).getStorageVA().size();
+					.getStorageData(DataTable.STORAGE).getStorageVA().size();
 			if (numberOfPatients > 20)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.pathway")) {

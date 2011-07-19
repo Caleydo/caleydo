@@ -3,9 +3,9 @@ package org.caleydo.core.startup;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.LoadDataParameters;
-import org.caleydo.core.data.collection.set.SetUtils;
+import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.LoadDataParameters;
+import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.datadomain.ADataDomain;
@@ -70,8 +70,8 @@ public class SerializationStartupProcedure
 			ASetBasedDataDomain setBasedDataDomain = (ASetBasedDataDomain) dataDomain;
 
 			LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
-			SetUtils.createStorages(loadDataParameters);
-			ISet set = SetUtils.createData(setBasedDataDomain);
+			DataTableUtils.createStorages(loadDataParameters);
+			DataTable set = DataTableUtils.createData(setBasedDataDomain);
 
 			HashMap<String, ContentVirtualArray> contentVAMap = data.getContentVAMap();
 			for (Entry<String, ContentVirtualArray> entry : contentVAMap.entrySet()) {
@@ -83,7 +83,7 @@ public class SerializationStartupProcedure
 				setBasedDataDomain.setStorageVirtualArray(entry.getKey(), entry.getValue());
 			}
 			// we need the VAs to be available before the tree is initialized
-			SetUtils.loadTrees(loadDataParameters, set);
+			DataTableUtils.loadTrees(loadDataParameters, set);
 		}
 	}
 

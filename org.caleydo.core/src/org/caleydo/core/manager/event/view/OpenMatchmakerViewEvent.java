@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 
 /**
  * Event to create a compare view. The sets to compare are handed over.
@@ -17,13 +17,13 @@ import org.caleydo.core.data.collection.ISet;
 public class OpenMatchmakerViewEvent
 	extends OpenViewEvent {
 
-	ArrayList<ISet> setsToCompare;
+	ArrayList<DataTable> setsToCompare;
 
-	public ArrayList<ISet> getSetsToCompare() {
+	public ArrayList<DataTable> getSetsToCompare() {
 		return setsToCompare;
 	}
 
-	public void setSetsToCompare(ArrayList<ISet> setsToCompare) {
+	public void setSetsToCompare(ArrayList<DataTable> setsToCompare) {
 		this.setsToCompare = setsToCompare;
 	}
 }

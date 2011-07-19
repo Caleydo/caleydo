@@ -16,7 +16,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -188,7 +188,7 @@ public abstract class AGLView
 	/**
 	 * The type of the content VA
 	 */
-	protected String contentVAType = ISet.CONTENT;
+	protected String contentVAType = DataTable.CONTENT;
 
 	/**
 	 * The id of the virtual array that manages the storage references in the set
@@ -197,7 +197,7 @@ public abstract class AGLView
 	/**
 	 * The type of the storage VA
 	 */
-	protected String storageVAType = ISet.STORAGE;
+	protected String storageVAType = DataTable.STORAGE;
 
 	/**
 	 * The context menu each view should implement. It has to be created in initLocal or is set via initRemote
@@ -928,7 +928,7 @@ public abstract class AGLView
 	}
 
 	public final boolean rendersContextOnly() {
-		if (contentVAType.equals(ISet.CONTENT))
+		if (contentVAType.equals(DataTable.CONTENT))
 			return false;
 		return true;
 	}

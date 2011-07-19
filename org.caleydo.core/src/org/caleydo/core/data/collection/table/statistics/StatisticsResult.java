@@ -1,11 +1,11 @@
-package org.caleydo.core.data.collection.set.statistics;
+package org.caleydo.core.data.collection.table.statistics;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings.FoldChangeEvaluator;
+import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.statistics.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.conversion.ConversionTools;
 
@@ -14,38 +14,38 @@ public class StatisticsResult {
 	/**
 	 * The set for which the result is valid.
 	 */
-	ISet set;
+	DataTable set;
 
-	HashMap<ISet, ArrayList<Double>> setToTwoSidedTTestResult;
+	HashMap<DataTable, ArrayList<Double>> setToTwoSidedTTestResult;
 
 	double[] oneSidedTTestResult;
 
-	HashMap<ISet, Pair<double[], FoldChangeSettings>> setToFoldChangeResult;
+	HashMap<DataTable, Pair<double[], FoldChangeSettings>> setToFoldChangeResult;
 
-	HashMap<ISet, double[]> setToFoldChangeUncertainty;
+	HashMap<DataTable, double[]> setToFoldChangeUncertainty;
 	
 	//FIXME: just for uncertainty paper. this needs to be calculated here and not inside the view
 	double[] aggregatedUncertainty;
 
-	public StatisticsResult(ISet set) {
-		setToTwoSidedTTestResult = new HashMap<ISet, ArrayList<Double>>();
-		setToFoldChangeResult = new HashMap<ISet, Pair<double[], FoldChangeSettings>>();
-		setToFoldChangeUncertainty = new HashMap<ISet, double[]>();
+	public StatisticsResult(DataTable set) {
+		setToTwoSidedTTestResult = new HashMap<DataTable, ArrayList<Double>>();
+		setToFoldChangeResult = new HashMap<DataTable, Pair<double[], FoldChangeSettings>>();
+		setToFoldChangeUncertainty = new HashMap<DataTable, double[]>();
 		// oneSidedTTestResult = new double[0];
 		this.set = set;
 	}
 
-	public void setTwoSiddedTTestResult(ISet set, ArrayList<Double> resultVector) {
+	public void setTwoSiddedTTestResult(DataTable set, ArrayList<Double> resultVector) {
 
 		setToTwoSidedTTestResult.put(set, resultVector);
 	}
 
-	public ArrayList<Double> getTwoSidedTTestResult(ISet set) {
+	public ArrayList<Double> getTwoSidedTTestResult(DataTable set) {
 
 		return setToTwoSidedTTestResult.get(set);
 	}
 
-	public Double getTwoSidedTTestResult(ISet compareSet, Integer contentID) {
+	public Double getTwoSidedTTestResult(DataTable compareSet, Integer contentID) {
 
 		return setToTwoSidedTTestResult.get(compareSet).get(contentID);
 	}
@@ -59,25 +59,25 @@ public class StatisticsResult {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void setFoldChangeResult(ISet set, double[] resultVector) {
+	public void setFoldChangeResult(DataTable set, double[] resultVector) {
 
 		setToFoldChangeResult.put(set, new Pair(resultVector, -1d));
 	}
 
-	public HashMap<ISet, Pair<double[], FoldChangeSettings>> getAllFoldChangeResults() {
+	public HashMap<DataTable, Pair<double[], FoldChangeSettings>> getAllFoldChangeResults() {
 		return setToFoldChangeResult;
 	}
 
-	public HashMap<ISet, ArrayList<Double>> getAllTwoSidedTTestResults() {
+	public HashMap<DataTable, ArrayList<Double>> getAllTwoSidedTTestResults() {
 		return setToTwoSidedTTestResult;
 	}
 
-	public Pair<double[], FoldChangeSettings> getFoldChangeResult(ISet set) {
+	public Pair<double[], FoldChangeSettings> getFoldChangeResult(DataTable set) {
 
 		return setToFoldChangeResult.get(set);
 	}
 
-	public double[] getFoldChangeUncertainty(ISet set) {
+	public double[] getFoldChangeUncertainty(DataTable set) {
 
 		return setToFoldChangeUncertainty.get(set);
 	}
@@ -87,7 +87,7 @@ public class StatisticsResult {
 		return setToFoldChangeUncertainty.values();
 	}	
 
-	public void setFoldChangeSettings(ISet set, FoldChangeSettings foldChangeSettings) {
+	public void setFoldChangeSettings(DataTable set, FoldChangeSettings foldChangeSettings) {
 		setToFoldChangeResult.get(set).setSecond(foldChangeSettings);
 
 		// Recalculate normalized uncertainty for fold change
@@ -114,7 +114,7 @@ public class StatisticsResult {
 	// * @param cutOffPValue A cutoff p-value between 0 and 1.
 	// * @return the content VA fulfilling the cutoff value.
 	// */
-	// public ContentVirtualArray getVABasedOnTwoSidedTTestResult(ISet compareSet, float cutOffPValue) {
+	// public ContentVirtualArray getVABasedOnTwoSidedTTestResult(DataTable compareSet, float cutOffPValue) {
 	//
 	// ContentVirtualArray filteredVA = new ContentVirtualArray(ContentVAType.CONTENT);
 	// ContentVirtualArray origVA = compareSet.getContentVA(ContentVAType.CONTENT);
@@ -140,7 +140,7 @@ public class StatisticsResult {
 	// * A cutoff foldChange value.
 	// * @return the content VA greater than the cutoff fold change value.
 	// */
-	// public ContentVirtualArray getVABasedOnFoldChangeResult(ISet compareSet) {
+	// public ContentVirtualArray getVABasedOnFoldChangeResult(DataTable compareSet) {
 	//
 	// ContentVirtualArray filteredVA = new ContentVirtualArray(ContentVAType.CONTENT);
 	// ContentVirtualArray origVA = compareSet.getContentVA(ContentVAType.CONTENT);
@@ -158,7 +158,7 @@ public class StatisticsResult {
 	// return filteredVA;
 	// }
 
-	// public int getElementNumberOfFoldChangeReduction(ISet compareSet) {
+	// public int getElementNumberOfFoldChangeReduction(DataTable compareSet) {
 	//
 	// int numberOfElements = 0;
 	// ContentVirtualArray origVA = compareSet.getContentData(ContentVAType.CONTENT).getContentVA();

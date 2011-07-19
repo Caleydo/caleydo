@@ -6,8 +6,7 @@ import java.util.HashSet;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -30,7 +29,7 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 	protected static final int HISTOGRAM_BUTTON_ID = 3;
 	protected static final int OVERVIEW_HEATMAP_BUTTON_ID = 4;
 
-	public NumericalDataConfigurer(ISet set) {
+	public NumericalDataConfigurer(DataTable set) {
 		super(set);
 		// TODO Auto-generated constructor stub
 	}
@@ -206,14 +205,14 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 				histogramLayoutRenderer);
 
 		LayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getContentVA(), set.getStorageData(Set.STORAGE).getStorageVA(),
+				brick.getContentVA(), set.getStorageData(DataTable.STORAGE).getStorageVA(),
 				set, true);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
 				overviewHeatMapRenderer);
 
 		LayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getContentVA(), set.getStorageData(Set.STORAGE).getStorageVA(),
+				brick.getContentVA(), set.getStorageData(DataTable.STORAGE).getStorageVA(),
 				set, false);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,

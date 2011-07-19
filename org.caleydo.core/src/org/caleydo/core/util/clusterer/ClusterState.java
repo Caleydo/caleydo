@@ -2,8 +2,7 @@ package org.caleydo.core.util.clusterer;
 
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
@@ -29,8 +28,8 @@ public class ClusterState {
 	private float affinityPropClusterFactorGenes;
 	private float affinityPropClusterFactorExperiments;
 
-	private String contentVAType = ISet.CONTENT;
-	private String storageVAType = Set.STORAGE;
+	private String contentVAType = DataTable.CONTENT;
+	private String storageVAType = DataTable.STORAGE;
 
 	private ContentVirtualArray contentVA;
 	private StorageVirtualArray storageVA;

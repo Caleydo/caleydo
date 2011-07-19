@@ -33,11 +33,11 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.StorageFilter;
 import org.caleydo.core.data.filter.event.NewContentFilterEvent;
@@ -388,10 +388,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (bRenderOnlyContext) {
-			contentVAType = ISet.CONTENT_CONTEXT;
+			contentVAType = DataTable.CONTENT_CONTEXT;
 			contentVA = dataDomain.getContentVA(contentVAType);
 		} else {
-			contentVAType = ISet.CONTENT;
+			contentVAType = DataTable.CONTENT;
 			contentVA = dataDomain.getContentVA(contentVAType);
 		}
 
@@ -495,9 +495,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = ISet.CONTENT_CONTEXT;
+			contentVAType = DataTable.CONTENT_CONTEXT;
 		else
-			contentVAType = ISet.CONTENT;
+			contentVAType = DataTable.CONTENT;
 
 		// contentVA = dataDomain.getContentVA(contentVAType);
 		if (contentVA == null)
@@ -1629,7 +1629,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				// Integer storageID = storageVA.remove(pickingID);
 				Integer storageID = storageVA.get(pickingID);
 				storageSelectionManager.remove(pickingID);
-				StorageVADelta vaDelta = new StorageVADelta(ISet.STORAGE, storageIDType);
+				StorageVADelta vaDelta = new StorageVADelta(DataTable.STORAGE, storageIDType);
 				vaDelta.add(VADeltaItem.remove(pickingID));
 
 				triggerStorageFilterEvent(vaDelta,
@@ -1665,7 +1665,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			case CLICKED:
 				if (pickingID >= 0) {
 					// storageVA.copy(pickingID);
-					StorageVADelta vaDelta = new StorageVADelta(ISet.STORAGE,
+					StorageVADelta vaDelta = new StorageVADelta(DataTable.STORAGE,
 							storageIDType);
 					vaDelta.add(VADeltaItem.copy(pickingID));
 					triggerStorageFilterEvent(
@@ -2367,11 +2367,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	}
 
-	public ISet getSet() {
+	public DataTable getSet() {
 		return set;
 	}
 
-	public void setSet(ISet set) {
+	public void setSet(DataTable set) {
 		this.set = set;
 	}
 

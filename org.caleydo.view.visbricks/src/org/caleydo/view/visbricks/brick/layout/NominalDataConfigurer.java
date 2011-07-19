@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -25,7 +25,7 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 	protected static final int PARCOORDS_BUTTON_ID = 2;
 	protected static final int TAGCLOUD_BUTTON_ID = 3;
 
-	public NominalDataConfigurer(ISet set) {
+	public NominalDataConfigurer(DataTable set) {
 		super(set);
 	}
 

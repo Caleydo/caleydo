@@ -21,9 +21,8 @@ import java.util.List;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -706,11 +705,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glExperimentDendrogramView.setDataDomain(dataDomain);
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
 
-		glContentDendrogramView.setContentVAType(ISet.CONTENT);
+		glContentDendrogramView.setContentVAType(DataTable.CONTENT);
 		glContentDendrogramView.initData();
 		glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 
-		glExperimentDendrogramView.setContentVAType(ISet.CONTENT);
+		glExperimentDendrogramView.setContentVAType(DataTable.CONTENT);
 		glExperimentDendrogramView.initData();
 		glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
 	}
@@ -3265,7 +3264,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glPopAttrib();
 		}
 
-		if (!set.getStorageData(Set.STORAGE).isDefaultTree()) {
+		if (!set.getStorageData(DataTable.STORAGE).isDefaultTree()) {
 
 			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -3350,9 +3349,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = ISet.CONTENT_CONTEXT;
+			contentVAType = DataTable.CONTENT_CONTEXT;
 		else
-			contentVAType = ISet.CONTENT;
+			contentVAType = DataTable.CONTENT;
 
 		contentVA = dataDomain.getContentVA(contentVAType);
 		storageVA = dataDomain.getStorageVA(storageVAType);

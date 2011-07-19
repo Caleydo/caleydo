@@ -1,17 +1,16 @@
-package org.caleydo.core.data.collection.set;
+package org.caleydo.core.data.collection.table;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 
-public class SetComparer {
+public class DataTableComparer {
 
-	public static SetRelations compareSets(ISet setLeft, ISet setRight) {
-		SetRelations setRelations = new SetRelations(setLeft, setRight);
+	public static DataTableRelations compareSets(DataTable setLeft, DataTable setRight) {
+		DataTableRelations setRelations = new DataTableRelations(setLeft, setRight);
 
-		ContentVirtualArray contentVALeft = setLeft.getContentData(ISet.CONTENT).getContentVA();
-		ContentVirtualArray contentVARight = setRight.getContentData(ISet.CONTENT).getContentVA();
+		ContentVirtualArray contentVALeft = setLeft.getContentData(DataTable.CONTENT).getContentVA();
+		ContentVirtualArray contentVARight = setRight.getContentData(DataTable.CONTENT).getContentVA();
 
 		/** hash ID to index for faster accessibility */
 		HashMap<Integer, Integer> hashRightIndices = new HashMap<Integer, Integer>();

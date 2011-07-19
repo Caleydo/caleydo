@@ -1,6 +1,7 @@
 package org.caleydo.core.startup.gui;
 
-import org.caleydo.core.data.collection.set.Set;
+import java.util.Set;
+
 import org.caleydo.core.data.virtualarray.VirtualArray;
 
 public enum ProjectMode {

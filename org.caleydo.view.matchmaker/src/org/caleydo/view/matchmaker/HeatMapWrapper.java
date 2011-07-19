@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -59,9 +59,9 @@ public class HeatMapWrapper {
 	private static int selectionTypeNumber = 0;
 
 	private HeatMapOverview overview;
-	private ISet set;
+	private DataTable set;
 
-	private String contentVAType = ISet.CONTENT;
+	private String contentVAType = DataTable.CONTENT;
 	private ContentVirtualArray contentVA;
 	private AHeatMapLayout layout;
 	private HashMap<Integer, GLHeatMap> hashHeatMaps;
@@ -151,13 +151,13 @@ public class HeatMapWrapper {
 		dendrogram.initRemote(gl, glParentView, glMouseListener);
 	}
 
-	public ISet getSet() {
+	public DataTable getSet() {
 		return set;
 	}
 
-	public void setSet(ISet set) {
+	public void setSet(DataTable set) {
 		this.set = set;
-		contentVA = set.getContentData(ISet.CONTENT).getContentVA();
+		contentVA = set.getContentData(DataTable.CONTENT).getContentVA();
 
 		// FIXME: Can we do this? Shall we do this in some other way? Do it also
 		// with dendrogram.

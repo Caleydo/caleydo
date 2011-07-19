@@ -2,7 +2,7 @@ package org.caleydo.view.selectionbrowser;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -106,7 +106,7 @@ public class SelectionBrowserView extends ASWTView implements
 	}
 
 	private void initContent() {
-		String contentVAType = ISet.CONTENT;
+		String contentVAType = DataTable.CONTENT;
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 
 		ContentVirtualArray contentVA = dataDomain.getContentVA(contentVAType);

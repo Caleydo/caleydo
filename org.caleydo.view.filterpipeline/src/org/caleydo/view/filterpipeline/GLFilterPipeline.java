@@ -15,7 +15,7 @@ import javax.media.opengl.GLAutoDrawable;
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.ContentMetaOrFilter;
 import org.caleydo.core.data.filter.Filter;
@@ -679,7 +679,7 @@ public class GLFilterPipeline extends AStorageBasedView implements IViewCommandH
 
 	private void performDataUncertaintyFilter() {
 
-		ISet set = dataDomain.getSet();
+		DataTable set = dataDomain.getSet();
 		if (!set.containsUncertaintyData())
 			return;
 

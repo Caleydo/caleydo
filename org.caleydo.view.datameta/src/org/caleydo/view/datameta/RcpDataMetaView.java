@@ -1,7 +1,6 @@
 package org.caleydo.view.datameta;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -33,7 +32,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 
 	private ASetBasedDataDomain dataDomain;
 
-	private Set set;
+	private DataTable set;
 
 	private ContentSelectionManager contentSelectionManager;
 
@@ -174,7 +173,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		this.dataDomain = dataDomain;
 		this.set = dataDomain.getSet();
 
-		String contentVAType = ISet.CONTENT;
+		String contentVAType = DataTable.CONTENT;
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 
 		ContentVirtualArray contentVA = dataDomain.getContentVA(contentVAType);

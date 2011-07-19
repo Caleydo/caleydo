@@ -6,10 +6,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.mapping.IDType;
@@ -32,7 +31,7 @@ public class SetExporter {
 		WHOLE_DATA
 	}
 
-	public void exportGroups(ISet set, String sFileName, ArrayList<Integer> alGenes,
+	public void exportGroups(DataTable set, String sFileName, ArrayList<Integer> alGenes,
 		ArrayList<Integer> alExperiments, IDType targetIDType) {
 
 		try {
@@ -86,7 +85,7 @@ public class SetExporter {
 	}
 
 	@SuppressWarnings("unused")
-	public void export(ISet set, String sFileName, EWhichViewToExport eWhichViewToExport, IDType targetIDType) {
+	public void export(DataTable set, String sFileName, EWhichViewToExport eWhichViewToExport, IDType targetIDType) {
 		ContentVirtualArray contentVA = null;
 		StorageVirtualArray storageVA = null;
 
@@ -94,12 +93,12 @@ public class SetExporter {
 
 		if (eWhichViewToExport == EWhichViewToExport.BUCKET) {
 
-			contentVA = dataDomain.getContentVA(ISet.CONTENT_CONTEXT);
-			storageVA = dataDomain.getStorageVA(Set.STORAGE);
+			contentVA = dataDomain.getContentVA(DataTable.CONTENT_CONTEXT);
+			storageVA = dataDomain.getStorageVA(DataTable.STORAGE);
 		}
 		else if (eWhichViewToExport == EWhichViewToExport.WHOLE_DATA) {
-			contentVA = dataDomain.getContentVA(ISet.CONTENT);
-			storageVA = dataDomain.getStorageVA(ISet.STORAGE);
+			contentVA = dataDomain.getContentVA(DataTable.CONTENT);
+			storageVA = dataDomain.getStorageVA(DataTable.STORAGE);
 		}
 
 		if (contentVA == null || storageVA == null)
@@ -243,17 +242,17 @@ public class SetExporter {
 	}
 
 	// FIXME: implement different content data / storage data instances
-	public void exportTrees(ISet set, String directory) {
+	public void exportTrees(DataTable set, String directory) {
 		try {
 			// export gene cluster tree to own xml file
-			Tree<ClusterNode> tree = set.getContentData(ISet.CONTENT).getContentTree();
+			Tree<ClusterNode> tree = set.getContentData(DataTable.CONTENT).getContentTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(set.getDataDomain());
 				treePorter.exportTree(directory + "/horizontal_gene.xml", tree);
 			}
 			// export experiment cluster tree to own xml file
-			tree = set.getStorageData(Set.STORAGE).getStorageTree();
+			tree = set.getStorageData(DataTable.STORAGE).getStorageTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(set.getDataDomain());

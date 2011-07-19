@@ -136,8 +136,8 @@ public class TreePorter {
 	public ClusterTree importStorageTree(String fileName) throws JAXBException, FileNotFoundException {
 		ClusterTree tree = importTree(fileName, dataDomain.getStorageIDType());
 
-		org.caleydo.core.data.collection.set.Set set =
-			(org.caleydo.core.data.collection.set.Set) dataDomain.getSet();
+		org.caleydo.core.data.collection.table.DataTable set =
+			(org.caleydo.core.data.collection.table.DataTable) dataDomain.getSet();
 		tree.createMetaSets(set);
 		return tree;
 	}

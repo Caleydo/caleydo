@@ -6,8 +6,8 @@ import java.util.Iterator;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
@@ -556,7 +556,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 
 	}
 
-	public ArrayList<Float> determineRepresentativeElement(ISet set, ContentVirtualArray contentVA,
+	public ArrayList<Float> determineRepresentativeElement(DataTable set, ContentVirtualArray contentVA,
 		StorageVirtualArray storageVA, int iGroupNr, boolean bGeneGroup) {
 
 		ArrayList<Float> representative = new ArrayList<Float>();

@@ -10,9 +10,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.LoadDataParameters;
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
@@ -198,14 +197,14 @@ public class ProjectSaver {
 					}
 					TreePorter treePorter = new TreePorter();
 					Tree<ClusterNode> geneTree =
-						setBasedDataDomain.getSet().getContentData(ISet.CONTENT).getContentTree();
+						setBasedDataDomain.getSet().getContentData(DataTable.CONTENT).getContentTree();
 					if (geneTree != null) {
 						treePorter.exportTree(dirName + GENE_TREE_FILE_NAME, geneTree);
 					}
 
 					treePorter = new TreePorter();
 					Tree<ClusterNode> expTree =
-						setBasedDataDomain.getSet().getStorageData(Set.STORAGE).getStorageTree();
+						setBasedDataDomain.getSet().getStorageData(DataTable.STORAGE).getStorageTree();
 					if (expTree != null) {
 						treePorter.exportTree(dirName + EXP_TREE_FILE_NAME, expTree);
 					}
@@ -305,7 +304,7 @@ public class ProjectSaver {
 
 // String geneTreePath = tempDirectory + "/bgene_tree.xml";
 
-// ISet set = GeneralManager.get().getUseCase().getSet();
+// DataTable set = GeneralManager.get().getUseCase().getSet();
 
 // SetExporter exporter = new SetExporter();
 // exporter.export(set, exportedData, EWhichViewToExport.WHOLE_DATA);

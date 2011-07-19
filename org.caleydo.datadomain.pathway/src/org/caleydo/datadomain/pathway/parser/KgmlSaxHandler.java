@@ -213,7 +213,7 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 			StringTokenizer sTokenText = new StringTokenizer(sName, " ");
 			Integer iDavidId = -1;
 			String sTmpVertexName = "";
-			Set<Integer> iSetDavidID = new HashSet<Integer>();
+			Set<Integer> DataTableDavidID = new HashSet<Integer>();
 
 			while (sTokenText.hasMoreTokens()) {
 				sTmpVertexName = sTokenText.nextToken();
@@ -242,11 +242,11 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 					continue;
 				}
 
-				iSetDavidID.add(iDavidId);
+				DataTableDavidID.add(iDavidId);
 			}
 
 			alCurrentVertex.addAll(pathwayItemManager.createVertexGene(sTmpVertexName,
-					sType, sExternalLink, sReactionId, iSetDavidID));
+					sType, sExternalLink, sReactionId, DataTableDavidID));
 		} else {
 			currentVertex = pathwayItemManager.createVertex(sName, sType, sExternalLink,
 					sReactionId);

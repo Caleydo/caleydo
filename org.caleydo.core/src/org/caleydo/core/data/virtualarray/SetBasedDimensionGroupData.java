@@ -3,8 +3,7 @@ package org.caleydo.core.data.virtualarray;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -13,21 +12,21 @@ import org.caleydo.core.manager.datadomain.IDataDomain;
 public class SetBasedDimensionGroupData extends ADimensionGroupData {
 
 	private ASetBasedDataDomain dataDomain;
-	private ISet set;
+	private DataTable set;
 
-	public SetBasedDimensionGroupData(ASetBasedDataDomain dataDomain, ISet set) {
+	public SetBasedDimensionGroupData(ASetBasedDataDomain dataDomain, DataTable set) {
 		this.dataDomain = dataDomain;
 		this.set = set;
 	}
 
 	@Override
 	public ContentVirtualArray getSummaryVA() {
-		return set.getContentData(Set.CONTENT).getContentVA();
+		return set.getContentData(DataTable.CONTENT).getContentVA();
 	}
 
 	@Override
 	public ArrayList<ContentVirtualArray> getSegmentVAs() {
-		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT)
+		ContentVirtualArray contentVA = set.getContentData(DataTable.CONTENT)
 				.getContentVA();
 
 		if (contentVA.getGroupList() == null)
@@ -58,17 +57,17 @@ public class SetBasedDimensionGroupData extends ADimensionGroupData {
 		return dataDomain;
 	}
 
-	public void setSet(ISet set) {
+	public void setSet(DataTable set) {
 		this.set = set;
 	}
 
-	public ISet getSet() {
+	public DataTable getSet() {
 		return set;
 	}
 
 	@Override
 	public ArrayList<Group> getGroups() {
-		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT)
+		ContentVirtualArray contentVA = set.getContentData(DataTable.CONTENT)
 				.getContentVA();
 
 		if (contentVA.getGroupList() == null)
@@ -88,7 +87,7 @@ public class SetBasedDimensionGroupData extends ADimensionGroupData {
 	@Override
 	public List<ISegmentData> getSegmentData() {
 
-		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT)
+		ContentVirtualArray contentVA = set.getContentData(DataTable.CONTENT)
 				.getContentVA();
 
 		if (contentVA.getGroupList() == null)

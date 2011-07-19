@@ -40,7 +40,8 @@ Export-Package: org.caleydo.core.command;
    org.caleydo.core.data.collection.set",
  org.caleydo.core.data.collection.ccontainer;uses:="org.caleydo.core.data.virtualarray",
  org.caleydo.core.data.collection.export;uses:="org.caleydo.core.data.mapping,org.caleydo.core.data.collection",
- org.caleydo.core.data.collection.set;
+ org.caleydo.core.data.collection.storage;uses:="org.caleydo.core.data.collection,org.caleydo.core.data.collection.ccontainer,org.caleydo.core.data",
+ org.caleydo.core.data.collection.table;
   uses:="org.caleydo.core.data.collection,
    org.caleydo.core.data,
    org.caleydo.core.data.virtualarray,
@@ -50,8 +51,7 @@ Export-Package: org.caleydo.core.command;
    org.caleydo.core.data.mapping,
    org.caleydo.core.util.clusterer,
    org.caleydo.core.manager.datadomain",
- org.caleydo.core.data.collection.set.statistics;uses:="org.caleydo.core.data.collection,org.caleydo.core.util.collection",
- org.caleydo.core.data.collection.storage;uses:="org.caleydo.core.data.collection,org.caleydo.core.data.collection.ccontainer,org.caleydo.core.data",
+ org.caleydo.core.data.collection.table.statistics;uses:="org.caleydo.core.data.collection,org.caleydo.core.util.collection",
  org.caleydo.core.data.filter,
  org.caleydo.core.data.filter.event,
  org.caleydo.core.data.filter.representation,

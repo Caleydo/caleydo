@@ -2,9 +2,8 @@ package org.caleydo.view.grouper.drawingstrategies.group;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -67,8 +66,8 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 
 		// gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
 
-		ISet set = groupRepresentation.getClusterNode().getMetaSet();
-		StorageVirtualArray storageVA = set.getStorageData(Set.STORAGE).getStorageVA();
+		DataTable set = groupRepresentation.getClusterNode().getMetaSet();
+		StorageVirtualArray storageVA = set.getStorageData(DataTable.STORAGE).getStorageVA();
 
 		boolean isNominal = false;
 		boolean isNumerical = false;

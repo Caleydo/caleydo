@@ -2,13 +2,13 @@ package org.caleydo.view.grouper.contextmenu;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.event.view.OpenMatchmakerViewEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 
 public class CompareGroupsItem extends AContextMenuItem {
 
-	public CompareGroupsItem(ArrayList<ISet> setsToCompare) {
+	public CompareGroupsItem(ArrayList<DataTable> setsToCompare) {
 		super();
 
 		setText("Compare Groups in Matchmaker");

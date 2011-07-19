@@ -3,7 +3,7 @@ package org.caleydo.core.manager.datadomain;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.set.LoadDataParameters;
+import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.manager.event.AEventHandler;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 

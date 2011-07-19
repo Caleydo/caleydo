@@ -1,6 +1,6 @@
 package org.caleydo.core.manager.data.set;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.AManager;
 
 /**
@@ -10,7 +10,7 @@ import org.caleydo.core.manager.AManager;
  * @author Alexander Lex
  */
 public class SetManager
-	extends AManager<ISet> {
+	extends AManager<DataTable> {
 
 	private static SetManager instance = null;
 
@@ -24,8 +24,8 @@ public class SetManager
 		return instance;
 	}
 
-	public ISet createSet() {
-		// ISet set = new Set();
+	public DataTable createSet() {
+		// DataTable set = new Set();
 		// return set;
 		throw new IllegalStateException("No Longer used");
 	}

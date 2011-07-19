@@ -10,10 +10,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.MetaSet;
-import org.caleydo.core.data.collection.set.Set;
-import org.caleydo.core.data.collection.set.SetUtils;
+import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.DataTableUtils;
+import org.caleydo.core.data.collection.table.SubDataTable;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.ESortingStrategy;
@@ -49,7 +48,7 @@ public class ClusterNode
 	private boolean isPartOfSubTree = false;
 	private Vec3f vPosSubTree;
 	@XmlTransient
-	private MetaSet metaSet;
+	private SubDataTable metaSet;
 
 	public ClusterNode() {
 	}
@@ -85,16 +84,16 @@ public class ClusterNode
 	 * 
 	 * @param set
 	 */
-	public <SetType extends Set> void createMetaSet(SetType set) {
+	public <SetType extends DataTable> void createMetaSet(SetType set) {
 		if (metaSet != null)
 			return;
-		metaSet = new MetaSet(set, (ClusterTree) tree, this);
+		metaSet = new SubDataTable(set, (ClusterTree) tree, this);
 		metaSet.setLabel(label);
 		// metaSet.setContentTree(set.getContentTree());
 		// Tree<ClusterNode> subTree = tree.getSubTree();
 
 		ArrayList<Integer> storageIDs = this.getLeaveIds();
-		SetUtils.setStorages(metaSet, storageIDs);
+		DataTableUtils.setStorages(metaSet, storageIDs);
 	}
 
 	/**
@@ -102,7 +101,7 @@ public class ClusterNode
 	 * 
 	 * @param set
 	 */
-	public <SetType extends Set> void createMetaSets(SetType set) {
+	public <SetType extends DataTable> void createMetaSets(SetType set) {
 		createMetaSet(set);
 		ArrayList<ClusterNode> children = tree.getChildren(this);
 		if (children != null)
@@ -111,7 +110,7 @@ public class ClusterNode
 			}
 	}
 
-	public ISet getMetaSet() {
+	public DataTable getMetaSet() {
 		return metaSet;
 	}
 
@@ -121,7 +120,7 @@ public class ClusterNode
 	 * @param setID
 	 * @return
 	 */
-	public ISet getMetaSetFromSubTree(int setID) {
+	public DataTable getMetaSetFromSubTree(int setID) {
 
 		if (metaSet.getID() == setID)
 			return metaSet;
@@ -129,7 +128,7 @@ public class ClusterNode
 			return null;
 		else {
 			for (ClusterNode child : getChildren()) {
-				ISet tempSet = child.getMetaSetFromSubTree(setID);
+				DataTable tempSet = child.getMetaSetFromSubTree(setID);
 				if (tempSet != null)
 					return tempSet;
 			}
@@ -137,9 +136,9 @@ public class ClusterNode
 		}
 	}
 
-	public ArrayList<ISet> getAllMetaSetsFromSubTree() {
+	public ArrayList<DataTable> getAllMetaSetsFromSubTree() {
 
-		ArrayList<ISet> allMetaSets = new ArrayList<ISet>();
+		ArrayList<DataTable> allMetaSets = new ArrayList<DataTable>();
 
 		allMetaSets.add(metaSet);
 

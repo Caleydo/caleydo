@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.set.ESetDataType;
+import org.caleydo.core.data.collection.table.EDataTableDataType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -409,7 +409,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	private void renderCaption(GL2 gl, float normalizedValue) {
 
 		if (getParentGLCanvas().getSize().getWidth() < 500
-				|| dataDomain.getSet().getSetType() != ESetDataType.NUMERIC)
+				|| dataDomain.getSet().getSetType() != EDataTableDataType.NUMERIC)
 			return;
 
 		textRenderer.begin3DRendering();

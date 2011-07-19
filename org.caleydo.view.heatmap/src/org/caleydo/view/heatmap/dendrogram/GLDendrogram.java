@@ -14,7 +14,7 @@ import java.util.List;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -1689,7 +1689,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		// if (bRenderOnlyContext)
 		// contentVAType = EVAType.CONTENT_CONTEXT;
 		// else
-		contentVAType = ISet.CONTENT;
+		contentVAType = DataTable.CONTENT;
 
 		contentVA = dataDomain.getContentVA(contentVAType);
 		storageVA = dataDomain.getStorageVA(storageVAType);

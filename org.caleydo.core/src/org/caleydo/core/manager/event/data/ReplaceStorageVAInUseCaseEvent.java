@@ -3,7 +3,7 @@ package org.caleydo.core.manager.event.data;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 
@@ -28,7 +28,7 @@ public class ReplaceStorageVAInUseCaseEvent
 		// nothing to initialize here
 	}
 
-	public ReplaceStorageVAInUseCaseEvent(ISet set, String dataDomain, String vaType,
+	public ReplaceStorageVAInUseCaseEvent(DataTable set, String dataDomain, String vaType,
 		StorageVirtualArray virtualArray) {
 		super(set, dataDomain, vaType, virtualArray);
 	}

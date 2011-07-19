@@ -3,9 +3,8 @@ package org.caleydo.core.util.clusterer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
@@ -129,17 +128,17 @@ public class ClusterHelper {
 	// }
 
 	public static void calculateClusterAverages(Tree<ClusterNode> tree, EClustererType eClustererType,
-		ISet set) {
+		DataTable set) {
 		// FIXME - direct references here - should be parameters
-		StorageVirtualArray storageVA = set.getStorageData(Set.STORAGE).getStorageVA();
-		ContentVirtualArray contentVA = set.getContentData(ISet.CONTENT).getContentVA();
+		StorageVirtualArray storageVA = set.getStorageData(DataTable.STORAGE).getStorageVA();
+		ContentVirtualArray contentVA = set.getContentData(DataTable.CONTENT).getContentVA();
 		calculateClusterAveragesRecursive(tree, tree.getRoot(), eClustererType, set, storageVA, contentVA);
 
 
 	}
 
 	private static float[] calculateClusterAveragesRecursive(Tree<ClusterNode> tree, ClusterNode node,
-		EClustererType clustererType, ISet set, StorageVirtualArray storageVA, ContentVirtualArray contentVA) {
+		EClustererType clustererType, DataTable set, StorageVirtualArray storageVA, ContentVirtualArray contentVA) {
 
 		float[] values;
 
@@ -214,13 +213,13 @@ public class ClusterHelper {
 		return values;
 	}
 
-	public static void calculateAggregatedUncertainties(Tree<ClusterNode> tree, ISet set) {
-		ContentVirtualArray contentVA = set.getContentData(ISet.CONTENT).getContentVA();
+	public static void calculateAggregatedUncertainties(Tree<ClusterNode> tree, DataTable set) {
+		ContentVirtualArray contentVA = set.getContentData(DataTable.CONTENT).getContentVA();
 		calculateAggregatedUncertaintiesRecursive(tree, tree.getRoot(), set, contentVA);
 	}
 
 	private static Pair<Float, Integer> calculateAggregatedUncertaintiesRecursive(Tree<ClusterNode> tree,
-		ClusterNode node, ISet set, ContentVirtualArray contentVA) {
+		ClusterNode node, DataTable set, ContentVirtualArray contentVA) {
 
 		Pair<Float, Integer> result = new Pair<Float, Integer>();
 
@@ -256,7 +255,7 @@ public class ClusterHelper {
 	 * @param examples
 	 * @param eClustererType
 	 */
-	public static void sortClusters(ISet set, ContentVirtualArray contentVA, StorageVirtualArray storageVA,
+	public static void sortClusters(DataTable set, ContentVirtualArray contentVA, StorageVirtualArray storageVA,
 		ArrayList<Integer> examples, EClustererType eClustererType) {
 
 		int iNrExamples = examples.size();

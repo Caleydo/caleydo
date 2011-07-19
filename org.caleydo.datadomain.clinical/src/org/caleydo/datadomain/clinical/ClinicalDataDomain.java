@@ -3,7 +3,7 @@ package org.caleydo.datadomain.clinical;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -45,7 +45,7 @@ public class ClinicalDataDomain extends ASetBasedDataDomain {
 	}
 
 	@Override
-	public void setSet(Set set) {
+	public void setSet(DataTable set) {
 
 		super.setSet(set);
 	}

@@ -1,4 +1,4 @@
-package org.caleydo.core.data.collection.set;
+package org.caleydo.core.data.collection.table;
 
 import java.util.ArrayList;
 
@@ -138,7 +138,7 @@ public class ContentData {
 	public void updateVABasedOnSortingStrategy() {
 //		ContentGroupList groupList = contentVA.getGroupList();
 
-		contentVA = new ContentVirtualArray(Set.CONTENT, contentTree.getRoot().getLeaveIds());
+		contentVA = new ContentVirtualArray(DataTable.CONTENT, contentTree.getRoot().getLeaveIds());
 		contentVA.buildNewGroupList(contentTree.getRoot().getChildren());
 //		contentVA.setGroupList(groupList);
 	}

@@ -4,10 +4,9 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
@@ -147,7 +146,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 	}
 
-	public void foldChange(ISet set1, ISet set2) {
+	public void foldChange(DataTable set1, DataTable set2) {
 
 		// Do nothing if the operations was already performed earlier
 		// if (set1.getStatisticsResult().getFoldChangeResult(set2) != null
@@ -181,7 +180,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		set2.getStatisticsResult().setFoldChangeResult(set1, resultVec);
 		
 		// FIXME: just for uncertainty paper so that the uncertainty view can access it via the main set
-		ISet set = set1.getDataDomain().getSet();
+		DataTable set = set1.getDataDomain().getSet();
 		set.getStatisticsResult().setFoldChangeResult(set1, resultVec);
 
 		ContentFilter contentFilter = new ContentFilter();
@@ -202,12 +201,12 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		contentFilter.openRepresentation();
 	}
 
-	public void oneSidedTTest(ArrayList<ISet> sets) {
+	public void oneSidedTTest(ArrayList<DataTable> sets) {
 
 		// TODO: don't recalculate if pvalue array is already calculated
 		// however, the evaluation must be done using the new pvalue
 		// boolean allCalculated = true;
-		// for (ISet set : sets) {
+		// for (DataTable set : sets) {
 		// if (set.getStatisticsResult().getOneSidedTTestResult() == null)
 		// continue;
 		//
@@ -227,17 +226,17 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 //			metaFilter.setFilterRep(filterRep);
 //		}
 
-		for (ISet set : sets) {
+		for (DataTable set : sets) {
 
 			ContentVirtualArray contentVA = set.getBaseContentVA();
-			//getContentData(ISet.CONTENT).getContentVA();
+			//getContentData(DataTable.CONTENT).getContentVA();
 
 			double[] pValueVector = new double[set.getBaseContentVA().size()];
-			       //set.getContentData(ISet.CONTENT).getContentVA().size()];
+			       //set.getContentData(DataTable.CONTENT).getContentVA().size()];
 
 			for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 
-				StorageVirtualArray storageVA1 = set.getStorageData(Set.STORAGE)
+				StorageVirtualArray storageVA1 = set.getStorageData(DataTable.STORAGE)
 						.getStorageVA();
 
 				double[] compareVec1 = new double[storageVA1.size()];
@@ -290,7 +289,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 //			metaFilter.openRepresentation();
 	}
 
-	public void twoSidedTTest(ArrayList<ISet> sets) {
+	public void twoSidedTTest(ArrayList<DataTable> sets) {
 
 		// Perform t-test between all neighboring sets (A<->B<->C)
 		// for (int setIndex = 0; setIndex < sets.size(); setIndex++) {
@@ -298,17 +297,17 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		// if (setIndex + 1 == sets.size())
 		// break;
 
-		ISet set1 = sets.get(0);
-		ISet set2 = sets.get(1);
+		DataTable set1 = sets.get(0);
+		DataTable set2 = sets.get(1);
 
 		ArrayList<Double> pValueVector = new ArrayList<Double>();
 
 		for (int contentIndex = 0; contentIndex < set1.get(
-				set1.getStorageData(Set.STORAGE).getStorageVA().get(0)).size(); contentIndex++) {
+				set1.getStorageData(DataTable.STORAGE).getStorageVA().get(0)).size(); contentIndex++) {
 
-			StorageVirtualArray storageVA1 = set1.getStorageData(Set.STORAGE)
+			StorageVirtualArray storageVA1 = set1.getStorageData(DataTable.STORAGE)
 					.getStorageVA();
-			StorageVirtualArray storageVA2 = set2.getStorageData(Set.STORAGE)
+			StorageVirtualArray storageVA2 = set2.getStorageData(DataTable.STORAGE)
 					.getStorageVA();
 
 			double[] compareVec1 = new double[storageVA1.size()];

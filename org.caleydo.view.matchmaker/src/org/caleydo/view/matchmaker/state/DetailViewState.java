@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -615,7 +615,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void setSetsInFocus(ArrayList<ISet> setsInFocus) {
+	public void setSetsInFocus(ArrayList<DataTable> setsInFocus) {
 
 		indexOfHeatMapWrapperWithDendrogram = -1;
 
@@ -630,7 +630,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 				int heatMapWrapperID = 0;
 				for (@SuppressWarnings("unused")
-				ISet set : setsInFocus) {
+				DataTable set : setsInFocus) {
 					AHeatMapLayout layout = null;
 					if (heatMapWrapperID == 0) {
 						layout = new HeatMapLayoutDetailViewLeft(renderCommandFactory);
@@ -650,8 +650,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 			}
 
 			// FIXME: Use array of relations?
-			// ISet setLeft = setsInFocus.get(0);
-			// ISet setRight = setsInFocus.get(1);
+			// DataTable setLeft = setsInFocus.get(0);
+			// DataTable setRight = setsInFocus.get(1);
 			// relations = SetComparer.compareSets(setLeft, setRight);
 
 			for (int i = 0; i < heatMapWrappers.size(); i++) {

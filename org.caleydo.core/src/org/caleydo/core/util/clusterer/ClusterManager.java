@@ -1,8 +1,8 @@
 package org.caleydo.core.util.clusterer;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.ContentData;
-import org.caleydo.core.data.collection.set.StorageData;
+import org.caleydo.core.data.collection.table.ContentData;
+import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.StorageData;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -23,14 +23,14 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ClusterManager {
 
-	private ISet set;
+	private DataTable set;
 
 	/**
 	 * Constructor
 	 * 
 	 * @param set
 	 */
-	public ClusterManager(ISet set) {
+	public ClusterManager(DataTable set) {
 		this.set = set;
 	}
 

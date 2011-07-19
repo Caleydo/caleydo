@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterHelper;
@@ -39,7 +39,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 	 * @param showStandardDeviation
 	 */
 	public OverviewHeatMapRenderer(ContentVirtualArray contentVA,
-			StorageVirtualArray storageVA, ISet set,
+			StorageVirtualArray storageVA, DataTable set,
 			boolean showStandardDeviation) {
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);

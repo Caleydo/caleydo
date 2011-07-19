@@ -9,9 +9,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.LoadDataParameters;
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -120,8 +119,8 @@ public class ProjectLoader {
 
 					HashMap<String, ContentVirtualArray> contentVAMap =
 						new HashMap<String, ContentVirtualArray>(6);
-					String tmpType = ISet.CONTENT;
-					contentVAMap.put(ISet.CONTENT, loadContentVirtualArray(unmarshaller, dirName, tmpType));
+					String tmpType = DataTable.CONTENT;
+					contentVAMap.put(DataTable.CONTENT, loadContentVirtualArray(unmarshaller, dirName, tmpType));
 					// tmpType = ContentVAType.CONTENT_CONTEXT;
 					// contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
 					// tmpType));
@@ -136,7 +135,7 @@ public class ProjectLoader {
 					HashMap<String, StorageVirtualArray> storageVAMap =
 						new HashMap<String, StorageVirtualArray>(2);
 
-					String tempStorageType = Set.STORAGE;
+					String tempStorageType = DataTable.STORAGE;
 					storageVAMap.put(tempStorageType,
 						loadStorageVirtualArray(unmarshaller, dirName, tempStorageType));
 

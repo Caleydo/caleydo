@@ -174,14 +174,14 @@ public class BioCartaPathwayImageMapSaxHandler extends AXmlParserHandler {
 		// Convert BioCarta ID to DAVID ID
 		IDMappingManager genomeIdManager = generalManager.getIDMappingManager();
 
-		Set<Integer> iSetDavidID = genomeIdManager.getID(
+		Set<Integer> DataTableDavidID = genomeIdManager.getID(
 				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("DAVID"), sName);
 
-		if (iSetDavidID == null)
+		if (DataTableDavidID == null)
 			return;
 
 		ArrayList<IGraphItem> alVertex = pathwayItemManager.createVertexGene(sName,
-				"gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink, "", iSetDavidID);
+				"gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink, "", DataTableDavidID);
 
 		pathwayItemManager.createVertexRep(currentPathway, alVertex, sName, sShape,
 				sCoords);

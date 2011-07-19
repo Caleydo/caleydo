@@ -6,7 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -17,7 +17,7 @@ public class ContentVirtualArray
 	extends VirtualArray<ContentVirtualArray,  ContentVADelta, ContentGroupList> {
 
 	public ContentVirtualArray() {
-		super(ISet.CONTENT);
+		super(DataTable.CONTENT);
 	}
 
 	/**

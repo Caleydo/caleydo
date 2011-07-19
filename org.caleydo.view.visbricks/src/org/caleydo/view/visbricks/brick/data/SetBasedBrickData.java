@@ -1,8 +1,8 @@
 package org.caleydo.view.visbricks.brick.data;
 
-import org.caleydo.core.data.collection.set.Set;
-import org.caleydo.core.data.collection.set.StorageData;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.StorageData;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.SetBasedSegmentData;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
@@ -51,7 +51,7 @@ public class SetBasedBrickData implements IBrickData {
 		// throw new IllegalStateException("contentVA was null");
 		for (Integer contenID : getContentVA()) {
 			StorageData storageData = segmentData.getSet().getStorageData(
-					Set.STORAGE);
+					DataTable.STORAGE);
 			if (storageData == null) {
 				averageValue = 0;
 				return;

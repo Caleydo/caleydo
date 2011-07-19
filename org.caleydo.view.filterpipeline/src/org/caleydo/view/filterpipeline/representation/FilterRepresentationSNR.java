@@ -1,7 +1,7 @@
 package org.caleydo.view.filterpipeline.representation;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.ContentMetaFilter;
 import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
@@ -37,7 +37,7 @@ public class FilterRepresentationSNR extends
 
 	private final static String TITLE = "Signal-To-Noice Ratio Filter";
 
-	private ISet set;
+	private DataTable set;
 
 	private Histogram histogram;
 
@@ -248,10 +248,10 @@ public class FilterRepresentationSNR extends
 
 	private void createVADelta(ContentFilter subFilter) {
 
-		ContentVADelta contentVADelta = new ContentVADelta(ISet.CONTENT, subFilter
+		ContentVADelta contentVADelta = new ContentVADelta(DataTable.CONTENT, subFilter
 				.getDataDomain().getContentIDType());
 
-		ContentVADelta uncertaintyContentVADelta = new ContentVADelta(ISet.CONTENT,
+		ContentVADelta uncertaintyContentVADelta = new ContentVADelta(DataTable.CONTENT,
 				subFilter.getDataDomain().getContentIDType());
 
 		ContentVirtualArray contentVA = subFilter.getDataDomain()
@@ -284,11 +284,11 @@ public class FilterRepresentationSNR extends
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 	}
 
-	public void setSet(ISet set) {
+	public void setSet(DataTable set) {
 		this.set = set;
 	}
 
-	public ISet getSet() {
+	public DataTable getSet() {
 		return set;
 	}
 

@@ -2,8 +2,7 @@ package org.caleydo.view.visbricks.brick.layout;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.picking.APickingListener;
@@ -37,9 +36,9 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 
 	protected static final int CLUSTER_BUTTON_ID = 1;
 
-	protected ISet set;
+	protected DataTable set;
 
-	public ASetBasedDataConfigurer(ISet set) {
+	public ASetBasedDataConfigurer(DataTable set) {
 		this.set = set;
 	}
 
@@ -240,8 +239,8 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		dimensionBarLaylout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
 		dimensionBarLaylout.setRatioSizeX(1);
 		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick
-				.getDataDomain().getStorageVA(Set.STORAGE), set.getStorageData(
-				Set.STORAGE).getStorageVA()));
+				.getDataDomain().getStorageVA(DataTable.STORAGE), set.getStorageData(
+				DataTable.STORAGE).getStorageVA()));
 
 		footerBarElements.add(dimensionBarLaylout);
 

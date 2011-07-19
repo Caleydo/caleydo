@@ -8,12 +8,11 @@ import java.util.Map.Entry;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -66,7 +65,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 	private TagCloudRenderStyle renderStyle;
 
-	private ISet set;
+	private DataTable set;
 
 	private ASetBasedDataDomain dataDomain;
 
@@ -127,9 +126,9 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		if (set == null)
 			set = dataDomain.getSet();
 		if (contentVA == null)
-			contentVA = set.getContentData(Set.CONTENT).getContentVA();
+			contentVA = set.getContentData(DataTable.CONTENT).getContentVA();
 		if (storageVA == null)
-			storageVA = set.getStorageData(Set.STORAGE).getStorageVA();
+			storageVA = set.getStorageData(DataTable.STORAGE).getStorageVA();
 		if (contentSelectionManager == null)
 			contentSelectionManager = dataDomain.getContentSelectionManager();
 
@@ -579,11 +578,11 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		return dataDomain;
 	}
 
-	public void setSet(ISet set) {
+	public void setSet(DataTable set) {
 		this.set = set;
 	}
 
-	public ISet getSet() {
+	public DataTable getSet() {
 		return set;
 	}
 

@@ -34,7 +34,7 @@ public class SerializedDataFlipperView extends ASerializedView {
 	public void init() {
 		initialContainedViews = new ArrayList<ASerializedView>();
 
-		// ((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+		// ((DataTableBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
 		// "org.caleydo.datadomain.clinical")).updateSetInViews();
 
 		// SerializedParallelCoordinatesView parCoords = new

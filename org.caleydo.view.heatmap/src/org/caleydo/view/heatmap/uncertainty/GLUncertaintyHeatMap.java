@@ -8,8 +8,7 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -380,7 +379,7 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 
 				ArrayList<Integer> clusterElements = contentVA.getIDsOfGroup(groupList
 						.get(externalID).getID());
-				ContentVirtualArray clusterVA = new ContentVirtualArray(Set.CONTENT,
+				ContentVirtualArray clusterVA = new ContentVirtualArray(DataTable.CONTENT,
 						clusterElements);
 				detailHeatMap.setContentVA(clusterVA);
 
@@ -493,9 +492,9 @@ public class GLUncertaintyHeatMap extends AStorageBasedView implements
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = ISet.CONTENT_CONTEXT;
+			contentVAType = DataTable.CONTENT_CONTEXT;
 		else
-			contentVAType = ISet.CONTENT;
+			contentVAType = DataTable.CONTENT;
 
 		contentVA = dataDomain.getContentVA(contentVAType);
 		storageVA = dataDomain.getStorageVA(storageVAType);

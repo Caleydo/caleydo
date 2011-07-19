@@ -7,7 +7,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.format.Formatter;
@@ -37,7 +37,7 @@ public class NominalGate extends AGate {
 	 * @param renderStyle
 	 *            Render Style.
 	 */
-	public NominalGate(int gateID, int axisID, float bottom, float top, ISet set,
+	public NominalGate(int gateID, int axisID, float bottom, float top, DataTable set,
 			PCRenderStyle renderStyle) {
 		this.gateID = gateID;
 

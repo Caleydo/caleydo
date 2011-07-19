@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.data.collection.set.Set;
-import org.caleydo.core.data.collection.set.SetUtils;
+import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.Status;
  * @author Alexander Lex
  */
 public class CmdDataCreateSet
-	extends ACmdCreational<Set> {
+	extends ACmdCreational<DataTable> {
 
 	private ASetBasedDataDomain dataDomain;
 	private ArrayList<Integer> storageIDs;
@@ -33,11 +33,11 @@ public class CmdDataCreateSet
 		storageIDs = new ArrayList<Integer>();
 	}
 
-	private void fillSets(Set newSet) {
+	private void fillSets(DataTable newSet) {
 		if (storageIDs.isEmpty())
 			throw new IllegalStateException("No data available for creating storage.");
 
-		SetUtils.setStorages(newSet, storageIDs);
+		DataTableUtils.setStorages(newSet, storageIDs);
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class CmdDataCreateSet
 	@Override
 	public void doCommand() {
 
-		createdObject = new Set(dataDomain);
+		createdObject = new DataTable(dataDomain);
 
 		if (externalID != -1) {
 			generalManager.getIDCreator().mapInternalToExternalID(createdObject.getID(), externalID);

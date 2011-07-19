@@ -5,8 +5,8 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
@@ -27,7 +27,7 @@ public class HierarchicalClusterer
 		clusterer = new Cobweb();
 	}
 
-	private TempResult cluster(ISet set, ClusterState clusterState) {
+	private TempResult cluster(DataTable set, ClusterState clusterState) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -291,7 +291,7 @@ public class HierarchicalClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(DataTable set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.management.InvalidAttributeValueException;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
@@ -62,7 +62,7 @@ public abstract class AStorageBasedView
 	implements IDataDomainSetBasedView, ISelectionUpdateHandler, IContentVAUpdateHandler,
 	IStorageVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
-	protected ISet set;
+	protected DataTable set;
 
 	protected ASetBasedDataDomain dataDomain;
 

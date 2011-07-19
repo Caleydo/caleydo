@@ -2,7 +2,7 @@ package org.caleydo.core.data.filter;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 
@@ -35,13 +35,13 @@ public class ContentMetaOrFilter
 	public void updateDelta()
 	{
 		ContentVADelta vaDeltaAll =
-			new ContentVADelta(ISet.CONTENT, dataDomain.getContentIDType());
+			new ContentVADelta(DataTable.CONTENT, dataDomain.getContentIDType());
 		
 		for (ContentFilter filter : filterList)
 			vaDeltaAll.append(filter.getVADelta());
 		
 		ContentVADelta vaDelta =
-			new ContentVADelta(ISet.CONTENT, dataDomain.getContentIDType());
+			new ContentVADelta(DataTable.CONTENT, dataDomain.getContentIDType());
 
 		for (VADeltaItem vaDeltaItem : vaDeltaAll.getAllItems())
 		{

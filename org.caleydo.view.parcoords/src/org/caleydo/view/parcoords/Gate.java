@@ -8,7 +8,7 @@ import gleem.linalg.Vec3f;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.format.Formatter;
@@ -46,7 +46,7 @@ public class Gate extends AGate {
 	 * @param renderStyle
 	 *            Render Style.
 	 */
-	public Gate(int gateID, int axisID, float lowerValue, float upperValue, ISet set,
+	public Gate(int gateID, int axisID, float lowerValue, float upperValue, DataTable set,
 			PCRenderStyle renderStyle) {
 		this.gateID = gateID;
 		this.axisID = axisID;

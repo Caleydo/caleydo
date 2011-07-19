@@ -1,11 +1,11 @@
-package org.caleydo.core.data.collection.set;
+package org.caleydo.core.data.collection.table;
 
 /**
  * Data type of storages in set
  * 
  * @author Alexander Lex
  */
-public enum ESetDataType {
+public enum EDataTableDataType {
 	NOMINAL,
 	NUMERIC,
 	HYBRID

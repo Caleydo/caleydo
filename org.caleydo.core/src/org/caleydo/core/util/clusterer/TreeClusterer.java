@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
@@ -39,7 +39,7 @@ public class TreeClusterer
 		}
 	}
 
-	private ISet set = null;
+	private DataTable set = null;
 
 	private float[][] similarities = null;
 
@@ -90,7 +90,7 @@ public class TreeClusterer
 	 * @param eClustererType
 	 * @return in case of error a negative value will be returned.
 	 */
-	private int determineSimilarities(ISet set, EClustererType eClustererType) {
+	private int determineSimilarities(DataTable set, EClustererType eClustererType) {
 
 		IDistanceMeasure distanceMeasure;
 
@@ -906,7 +906,7 @@ public class TreeClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(DataTable set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 
 		eDistanceMeasure = clusterState.getDistanceMeasure();

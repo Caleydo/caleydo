@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.util.mapping.color.ColorMapper;
@@ -39,7 +39,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 	private ContentVirtualArray contentVA;
 
-	private ISet set;
+	private DataTable set;
 
 	private float[] lightCertain = GLUncertaintyHeatMap.DATA_VALID[0];
 	private float[] lightUncertain = GLUncertaintyHeatMap.getUncertaintyColor(0);
@@ -144,7 +144,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 	}
 
-	public void init(GLUncertaintyHeatMap glUncHeatmap, ISet set,
+	public void init(GLUncertaintyHeatMap glUncHeatmap, DataTable set,
 			ContentVirtualArray contentVA, StorageVirtualArray storageVA,
 			ColorMapper colorMapper) {
 

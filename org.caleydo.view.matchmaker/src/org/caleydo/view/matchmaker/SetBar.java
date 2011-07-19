@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -29,7 +29,7 @@ public class SetBar extends AGLGUIElement {
 	private static final float ITEM_HEIGHT_PROTION = 0.7f;
 	private static final float SELECTION_WINDOW_HEIGHT_PROTION = 0.8f;
 
-	// private ArrayList<ISet> sets;
+	// private ArrayList<DataTable> sets;
 	private ArrayList<SetBarItem> items;
 	private Vec3f position;
 	private float height;
@@ -60,7 +60,7 @@ public class SetBar extends AGLGUIElement {
 		items = new ArrayList<SetBarItem>();
 		selectionWindow = new SetBarSelectionWindow(0, viewID, this, items,
 				pickingManager, textureManager, dragAndDropController);
-		// sets = new ArrayList<ISet>();
+		// sets = new ArrayList<DataTable>();
 		setMinSize(60);
 	}
 
@@ -103,7 +103,7 @@ public class SetBar extends AGLGUIElement {
 		updateItemProperties();
 	}
 
-	public void setSets(ArrayList<ISet> sets) {
+	public void setSets(ArrayList<DataTable> sets) {
 		// this.sets.clear();
 		// this.sets.addAll(sets);
 		items.clear();
@@ -113,7 +113,7 @@ public class SetBar extends AGLGUIElement {
 		int itemID = 0;
 		float currentPositionX = position.x();
 
-		for (ISet set : sets) {
+		for (DataTable set : sets) {
 			SetBarItem item = new SetBarItem(itemID, viewID, pickingManager,
 					textRenderer, this);
 			item.setSet(set);
@@ -165,7 +165,7 @@ public class SetBar extends AGLGUIElement {
 			break;
 		case RIGHT_CLICKED:
 			contextMenu.addContextMenueItem(new DuplicateSetBarElementItem(itemID));
-			ArrayList<ISet> sets = new ArrayList<ISet>();
+			ArrayList<DataTable> sets = new ArrayList<DataTable>();
 			sets.add(items.get(itemID).getSet());
 			contextMenu.addContextMenueItem(new ClusterSetItem(sets));
 			contextMenu.addContextMenueItem(new AdjustPValueItem());
@@ -249,7 +249,7 @@ public class SetBar extends AGLGUIElement {
 	}
 
 	public void updateSelectedItems(ArrayList<SetBarItem> itemsInFocus) {
-		ArrayList<ISet> setsInFocus = new ArrayList<ISet>();
+		ArrayList<DataTable> setsInFocus = new ArrayList<DataTable>();
 
 		for (SetBarItem item : itemsInFocus) {
 			setsInFocus.add(item.getSet());
@@ -300,8 +300,8 @@ public class SetBar extends AGLGUIElement {
 		selectionWindow.adjustWindowSizeCentered(windowSize);
 	}
 
-	public ArrayList<ISet> getSetsInFocus() {
-		ArrayList<ISet> setsInFocus = new ArrayList<ISet>();
+	public ArrayList<DataTable> getSetsInFocus() {
+		ArrayList<DataTable> setsInFocus = new ArrayList<DataTable>();
 
 		for (SetBarItem item : selectionWindow.getSelectedItems()) {
 			setsInFocus.add(item.getSet());

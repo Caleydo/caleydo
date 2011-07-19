@@ -90,7 +90,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	// */
 	// private boolean wasMouseOverBrickArea = false;
 
-	// private ISet set;
+	// private DataTable set;
 	// private GLHeatMap heatMap;
 	private ASetBasedDataDomain dataDomain;
 
@@ -702,7 +702,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 * 
 	 * @param set
 	 */
-	// public void setSet(ISet set) {
+	// public void setSet(DataTable set) {
 	// this.set = set;
 	// if (set.getSetType().equals(ESetDataType.NUMERIC)) {
 	// brickConfigurer = new NumericalDataConfigurer();
@@ -831,7 +831,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			templateRenderer.updateLayout();
 	}
 
-	// public ISet getSet() {
+	// public DataTable getSet() {
 	// return set;
 	// }
 

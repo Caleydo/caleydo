@@ -1,6 +1,6 @@
 package org.caleydo.core.data.filter;
 
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.event.MoveStorageFilterEvent;
 import org.caleydo.core.data.filter.event.MoveStorageFilterListener;
 import org.caleydo.core.data.filter.event.NewStorageFilterEvent;
@@ -115,7 +115,7 @@ public class StorageFilterManager
 	@Override
 	protected void triggerReplaceVAEvent() {
 		ReplaceStorageVAInUseCaseEvent event = new ReplaceStorageVAInUseCaseEvent();
-		event.setVAType(Set.STORAGE);
+		event.setVAType(DataTable.STORAGE);
 		event.setVirtualArray(currentVA);
 		event.setSender(this);
 		event.setDataDomainID(dataDomain.getDataDomainID());

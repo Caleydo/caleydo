@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -146,7 +146,7 @@ public class OverviewRenderer extends LayoutRenderer {
 
 		ArrayList<Integer> clusterGenes = uncertaintyHeatMap.getContentVA()
 				.getIDsOfGroup(group.getID());
-		ContentVirtualArray clusterVA = new ContentVirtualArray(Set.CONTENT, clusterGenes);
+		ContentVirtualArray clusterVA = new ContentVirtualArray(DataTable.CONTENT, clusterGenes);
 
 		return clusterVA;
 	}

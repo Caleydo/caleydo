@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
@@ -102,7 +102,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	private int wheelAmount;
 	private Point wheelPoint;
 
-	private ArrayList<ISet> setsToCompare;
+	private ArrayList<DataTable> setsToCompare;
 	private ArrayList<Integer> clusteredSets;
 
 	protected ASetBasedDataDomain dataDomain;
@@ -136,7 +136,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		eventPublisher.triggerEvent(selectionTypeEvent);
 
 		clusteredSets = new ArrayList<Integer>();
-		setsToCompare = new ArrayList<ISet>();
+		setsToCompare = new ArrayList<DataTable>();
 
 	}
 
@@ -489,7 +489,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		return new ArrayList<AGLView>();
 	}
 
-	public void setSetsToCompare(final ArrayList<ISet> sets) {
+	public void setSetsToCompare(final ArrayList<DataTable> sets) {
 
 		this.setsToCompare = sets;
 	}
@@ -544,7 +544,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 		// Check if all sets are properly clustered
 		// boolean allSetsClustered = true;
-		// for (ISet set : setsToCompare) {
+		// for (DataTable set : setsToCompare) {
 		// if (!clusteredSets.contains(set.getID())) {
 		// allSetsClustered = false;
 		// break;

@@ -1,10 +1,9 @@
-package org.caleydo.core.data.collection.set;
+package org.caleydo.core.data.collection.table;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
 import org.caleydo.core.data.collection.storage.AStorage;
+import org.caleydo.core.data.collection.table.statistics.StatisticsResult;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -24,18 +23,18 @@ import org.caleydo.core.util.clusterer.ClusterNode;
  * 
  * @author Alexander Lex
  */
-public class MetaSet
-	extends Set
-	implements ISet {
+public class SubDataTable
+	extends DataTable
+	 {
 
-	ISet originalSet;
+	DataTable originalSet;
 
 	// public MetaSet() {
 	// init();
 	// }
 
 	@SuppressWarnings("unchecked")
-	public MetaSet(Set originalSet, ClusterTree storageTree, ClusterNode storageTreeRoot) {
+	public SubDataTable(DataTable originalSet, ClusterTree storageTree, ClusterNode storageTreeRoot) {
 		super();
 		this.dataDomain = originalSet.getDataDomain();
 		// init();
@@ -65,7 +64,7 @@ public class MetaSet
 
 	}
 
-	public ISet getOriginalSet() {
+	public DataTable getOriginalSet() {
 		return originalSet;
 	}
 

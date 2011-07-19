@@ -2,15 +2,15 @@ package org.caleydo.core.manager.event.view.grouper;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.event.AEvent;
 
 public class CompareGroupsEvent
 	extends AEvent {
 
-	private ArrayList<ISet> setsToCompare;
+	private ArrayList<DataTable> setsToCompare;
 
-	public CompareGroupsEvent(ArrayList<ISet> setsToCompare) {
+	public CompareGroupsEvent(ArrayList<DataTable> setsToCompare) {
 
 		this.setsToCompare = setsToCompare;
 	}
@@ -20,11 +20,11 @@ public class CompareGroupsEvent
 		return setsToCompare != null;
 	}
 
-	public ArrayList<ISet> getSets() {
+	public ArrayList<DataTable> getSets() {
 		return setsToCompare;
 	}
 
-	public void setSets(ArrayList<ISet> setsToCompare) {
+	public void setSets(ArrayList<DataTable> setsToCompare) {
 		this.setsToCompare = setsToCompare;
 	}
 }

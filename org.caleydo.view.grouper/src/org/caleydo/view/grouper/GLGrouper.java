@@ -11,7 +11,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -133,7 +133,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 	private ASetBasedDataDomain dataDomain;
 
-	private ISet set;
+	private DataTable set;
 
 	/**
 	 * Constructor.
@@ -320,11 +320,11 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		ClusterHelper.calculateClusterAverages(tree, EClustererType.STORAGE_CLUSTERING,
 				set);
 		tree.setDirty();
-		tree.createMetaSets((org.caleydo.core.data.collection.set.Set) set);
+		tree.createMetaSets((org.caleydo.core.data.collection.table.DataTable) set);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
 		storageVA = new StorageVirtualArray(
-				org.caleydo.core.data.collection.set.Set.STORAGE, alIndices);
+				org.caleydo.core.data.collection.table.DataTable.STORAGE, alIndices);
 
 		eventPublisher.triggerEvent(new ReplaceStorageVAInUseCaseEvent(set, dataDomain
 				.getDataDomainID(), storageVAType, storageVA));
@@ -662,7 +662,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 								setSelectedGroups);
 						contextMenu.addContextMenueItem(aggregateGroupItem);
 
-						ArrayList<ISet> selectedSets = new ArrayList<ISet>();
+						ArrayList<DataTable> selectedSets = new ArrayList<DataTable>();
 						boolean isLeafContained = false;
 						for (ICompositeGraphic composite : orderedComposites) {
 							selectedSets.add(((GroupRepresentation) composite)
@@ -1375,7 +1375,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		this.dataDomain = dataDomain;
 		set = this.dataDomain.getSet();
 
-		storageVA = set.getStorageData(org.caleydo.core.data.collection.set.Set.STORAGE)
+		storageVA = set.getStorageData(org.caleydo.core.data.collection.table.DataTable.STORAGE)
 				.getStorageVA();
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager, uniqueID,
 				renderStyle);

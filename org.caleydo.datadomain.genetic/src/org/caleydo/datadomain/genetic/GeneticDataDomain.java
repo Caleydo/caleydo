@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -96,7 +95,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	}
 
 	@Override
-	public void setSet(Set set) {
+	public void setSet(DataTable set) {
 		super.setSet(set);
 
 	}
@@ -168,10 +167,10 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 			alTempList.add(iCount);
 		}
-		ContentVirtualArray contentVA = new ContentVirtualArray(ISet.CONTENT, alTempList);
+		ContentVirtualArray contentVA = new ContentVirtualArray(DataTable.CONTENT, alTempList);
 		// removeDuplicates(contentVA);
 		// FIXME make this a filter?
-		set.setContentVA(ISet.CONTENT, contentVA);
+		set.setContentVA(DataTable.CONTENT, contentVA);
 	}
 
 	public boolean isPathwayViewerMode() {
@@ -278,7 +277,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 			ReplaceStorageVAInUseCaseEvent event = new ReplaceStorageVAInUseCaseEvent();
 			event.setDataDomainID(this.dataDomainID);
-			event.setVAType(Set.STORAGE);
+			event.setVAType(DataTable.STORAGE);
 			event.setVirtualArray(newStorageVirtualArray);
 
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
@@ -290,13 +289,13 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 			Integer clinicalContentIndex) {
 
 		// FIXME - this is a hack for one special dataset (asslaber)
-		Set clinicalSet = ((ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+		DataTable clinicalSet = ((ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 				CLINICAL_DATADOMAIN_TYPE)).getSet();
-		int storageID = clinicalSet.getStorageData(Set.STORAGE).getStorageVA().get(1);
+		int storageID = clinicalSet.getStorageData(DataTable.STORAGE).getStorageVA().get(1);
 
 		NominalStorage clinicalStorage = (NominalStorage<String>) clinicalSet
 				.get(storageID);
-		StorageVirtualArray origianlGeneticStorageVA = set.getStorageData(Set.STORAGE)
+		StorageVirtualArray origianlGeneticStorageVA = set.getStorageData(DataTable.STORAGE)
 				.getStorageVA();
 
 		String label = (String) clinicalStorage.getRaw(clinicalContentIndex);

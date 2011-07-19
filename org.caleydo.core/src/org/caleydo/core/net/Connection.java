@@ -11,8 +11,8 @@ import java.util.HashMap;
 
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.SetUtils;
+import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -279,12 +279,12 @@ public class Connection {
 		// FIXME this should work for more than one use case now
 		ASetBasedDataDomain useCase =
 			(ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.genetic");
-		ISet set = useCase.getSet();
+		DataTable set = useCase.getSet();
 
 		initData.setDataDomain(useCase);
-		initData.setSetFileContent(SetUtils.loadSetFile(useCase.getLoadDataParameters()));
-		initData.setGeneClusterTree(SetUtils.getGeneClusterXml(set));
-		initData.setExperimentClusterTree(SetUtils.getExperimentClusterXml(set));
+		initData.setSetFileContent(DataTableUtils.loadSetFile(useCase.getLoadDataParameters()));
+		initData.setGeneClusterTree(DataTableUtils.getGeneClusterXml(set));
+		initData.setExperimentClusterTree(DataTableUtils.getExperimentClusterXml(set));
 
 		HashMap<String, ContentVirtualArray> contentVAMap = new HashMap<String, ContentVirtualArray>();
 		for (String type : set.getRegisteredContentVATypes()) {

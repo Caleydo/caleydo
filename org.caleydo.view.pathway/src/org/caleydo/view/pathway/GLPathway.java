@@ -9,7 +9,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -170,7 +170,7 @@ public class GLPathway extends AGLView implements
 		vecScaling = new Vec3f(1, 1, 1);
 		vecTranslation = new Vec3f(0, 0, 0);
 
-		contentVAType = ISet.CONTENT_CONTEXT;
+		contentVAType = DataTable.CONTENT_CONTEXT;
 
 	}
 
@@ -427,24 +427,24 @@ public class GLPathway extends AGLView implements
 				continue;
 			}
 
-			// Set<Integer> iSetRefSeq = idMappingManager.getID(EIDType.DAVID,
+			// Set<Integer> DataTableRefSeq = idMappingManager.getID(EIDType.DAVID,
 			// EIDType.REFSEQ_MRNA_INT, iDavidID);
 			//
-			// if (iSetRefSeq == null) {
+			// if (DataTableRefSeq == null) {
 			// generalManager.getLogger().log(
 			// new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
 			// "No RefSeq IDs found for David: " + iDavidID));
 			// continue;
 			// }
 
-			// for (Integer iDavid : iSetRefSeq) {
+			// for (Integer iDavid : DataTableRefSeq) {
 
-			Set<Integer> iSetExpressionIndex = idMappingManager.getIDAsSet(
+			Set<Integer> DataTableExpressionIndex = idMappingManager.getIDAsSet(
 					IDType.getIDType("DAVID"), mappingDataDomain.getContentIDType(),
 					davidID);
-			if (iSetExpressionIndex == null)
+			if (DataTableExpressionIndex == null)
 				continue;
-			alExpressionIndex.addAll(iSetExpressionIndex);
+			alExpressionIndex.addAll(DataTableExpressionIndex);
 			// }
 		}
 
@@ -847,11 +847,11 @@ public class GLPathway extends AGLView implements
 					continue;
 				}
 
-				// Set<Integer> iSetRefSeq =
+				// Set<Integer> DataTableRefSeq =
 				// idMappingManager.getID(EIDType.DAVID,
 				// EIDType.REFSEQ_MRNA_INT, iDavidID);
 				//
-				// if (iSetRefSeq == null) {
+				// if (DataTableRefSeq == null) {
 				//
 				// generalManager.getLogger().log(
 				// new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
@@ -859,7 +859,7 @@ public class GLPathway extends AGLView implements
 				// continue;
 				// }
 
-				// for (Object iRefSeqID : iSetRefSeq) {
+				// for (Object iRefSeqID : DataTableRefSeq) {
 				delta.add(VADeltaItem.create(type, (Integer) iDavidID));
 				// }
 			}

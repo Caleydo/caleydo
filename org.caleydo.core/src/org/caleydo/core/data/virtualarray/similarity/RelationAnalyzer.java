@@ -79,7 +79,7 @@ public class RelationAnalyzer {
 //			e.printStackTrace();
 //		}
 //		
-//		ISet set = dataDomain.getSet(setID);
+//		DataTable set = dataDomain.getSet(setID);
 //		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT).getContentVA();
 
 		// if this thing does not exist yet, we create it here, else we replace the pre-existing one

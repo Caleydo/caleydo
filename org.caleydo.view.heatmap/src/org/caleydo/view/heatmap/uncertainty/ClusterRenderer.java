@@ -4,7 +4,7 @@ import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
@@ -68,7 +68,7 @@ public class ClusterRenderer extends LayoutRenderer {
 	public void init() {
 
 		StorageVirtualArray storageVA = uncertaintyHeatMap.getStorageVA();
-		ISet set = uncertaintyHeatMap.getDataDomain().getSet();
+		DataTable set = uncertaintyHeatMap.getDataDomain().getSet();
 
 		clusterHeatMapLayout = new Column("heatmap");
 		clusterHeatMapLayout.setRatioSizeX(1f);

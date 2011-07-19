@@ -2,7 +2,7 @@ package org.caleydo.util.r.filter;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.ContentMetaFilter;
 import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
@@ -27,8 +27,8 @@ public class FilterRepresentationTwoSidedTTest extends
 
 	private final static String TITLE = "Two-sided T-Test Filter";
 	
-	private ISet set1;
-	private ISet set2;
+	private DataTable set1;
+	private DataTable set2;
 
 	private float pValue = 1f;
 
@@ -101,7 +101,7 @@ public class FilterRepresentationTwoSidedTTest extends
 
 	private void createVADelta(ContentFilter subFilter) {
 
-		ContentVADelta contentVADelta = new ContentVADelta(ISet.CONTENT, subFilter
+		ContentVADelta contentVADelta = new ContentVADelta(DataTable.CONTENT, subFilter
 				.getDataDomain().getContentIDType());
 		ContentVirtualArray contentVA = subFilter.getDataDomain()
 				.getContentFilterManager().getBaseVA();
@@ -131,19 +131,19 @@ public class FilterRepresentationTwoSidedTTest extends
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 	}
 
-	public void setSet1(ISet set1) {
+	public void setSet1(DataTable set1) {
 		this.set1 = set1;
 	}
 
-	public void setSet2(ISet set2) {
+	public void setSet2(DataTable set2) {
 		this.set2 = set2;
 	}
 
-	public ISet getSet1() {
+	public DataTable getSet1() {
 		return set1;
 	}
 
-	public ISet getSet2() {
+	public DataTable getSet2() {
 		return set2;
 	}
 	

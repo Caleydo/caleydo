@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
@@ -28,7 +28,7 @@ public class HeatMapOverview {
 	private AHeatMapLayout layout;
 	private VerticalSlider slider;
 	private ArrayList<ArrayList<Texture>> overviewTextures;
-	private ISet set;
+	private DataTable set;
 	private ContentVirtualArray contentVA;
 	private StorageVirtualArray storageVA;
 	private HashMap<Group, Boolean> selectedGroups;
@@ -234,10 +234,10 @@ public class HeatMapOverview {
 		slider.handleSliderSelection(pickingType, pickingMode);
 	}
 
-	public void setSet(ISet set) {
+	public void setSet(DataTable set) {
 		this.set = set;
-		contentVA = set.getContentData(ISet.CONTENT).getContentVA();
-		storageVA = set.getStorageData(ISet.STORAGE).getStorageVA();
+		contentVA = set.getContentData(DataTable.CONTENT).getContentVA();
+		storageVA = set.getStorageData(DataTable.STORAGE).getStorageVA();
 
 		updateHeatMapTextures(null);
 	}

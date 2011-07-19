@@ -1,22 +1,25 @@
-package org.caleydo.core.data.collection.set;
+package org.caleydo.core.data.collection.table;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
+import javax.naming.OperationNotSupportedException;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
+import org.caleydo.core.data.collection.ICollection;
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.collection.table.statistics.StatisticsResult;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.data.set.SetManager;
 import org.caleydo.core.manager.data.storage.StorageManager;
@@ -31,14 +34,29 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Implementation of the ISet interface
+ * <h2>General Information</h2>
+ * <p>
+ * A set is the main container for tabular data in Caleydo. A set is made up of {@link IStorage}s, where each
+ * storage corresponds to a column in a tabular data set. Columns are therefore always refered to as
+ * <b>Storages</b> and rows as <b>Content</b> The data should be accessed through {@link VirtualArray}s, which
+ * are stored in {@link StorageData}s for Storages and {@link ContentData}s for Content.
+ * </p>
+ * <h2>Set Creation</h2>
+ * <p>
+ * A set relies heavily upon {@link DataTableUtils} for being created. Many creation related functions are provided
+ * there, sometimes interfacing with package private methods in this class.
+ * </p>
  * 
  * @author Alexander Lex
  */
-public class Set
-	extends AUniqueObject
-	implements ISet {
+public class DataTable
+	extends AUniqueObject implements ICollection {
 
+	public static final String CONTENT = "Content";
+	public static final String STORAGE = "Storage";
+	public static final String CONTENT_CONTEXT = "Content_Context";
+	
+	
 	protected HashMap<Integer, AStorage> hashStorages;
 
 	private String sLabel = "Rootset";
@@ -69,7 +87,7 @@ public class Set
 
 	protected StatisticsResult statisticsResult;
 
-	protected ESetDataType setType = ESetDataType.NUMERIC;
+	protected EDataTableDataType setType = EDataTableDataType.NUMERIC;
 
 	ASetBasedDataDomain dataDomain;
 
@@ -85,7 +103,7 @@ public class Set
 	 */
 	private float[] aggregatedRawUncertainties;
 
-	public Set() {
+	public DataTable() {
 		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.SET));
 	}
 
@@ -93,7 +111,7 @@ public class Set
 	 * Constructor for the set. Creates and initializes members and registers the set whit the set manager.
 	 * Also creates a new default tree. This should not be called by implementing sub-classes.
 	 */
-	public Set(ASetBasedDataDomain dataDomain) {
+	public DataTable(ASetBasedDataDomain dataDomain) {
 		this();
 		this.dataDomain = dataDomain;
 		initWithDataDomain();
@@ -123,13 +141,12 @@ public class Set
 		statisticsResult = new StatisticsResult(this);
 	}
 
-	@Override
-	public ESetDataType getSetType() {
+	public EDataTableDataType getSetType() {
 		return setType;
 	}
 
 	/**
-	 * Creates a {@link MetaSet} for every node in the storage tree.
+	 * Creates a {@link SubDataTable} for every node in the storage tree.
 	 */
 	public void createMetaSets() {
 		// ClusterNode rootNode = hashStorageData.get(STORAGE).getStorageTreeRoot();
@@ -137,29 +154,52 @@ public class Set
 		defaultStorageData.getStorageTree().createMetaSets(this);
 	}
 
+	/**
+	 * Set the data domain that is responsible for the set
+	 * 
+	 * @param dataDomain
+	 */
 	@XmlTransient
-	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		initWithDataDomain();
 	}
 
-	@Override
+	/**
+	 * Get the data domain that is responsible for the set
+	 * 
+	 * @param dataDomain
+	 */
+
 	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
-	@Override
+	/**
+	 * Get the storage associated with the ID provided. Returns null if no such storage is registered.
+	 * 
+	 * @param storageID
+	 *            a unique storage ID
+	 * @return
+	 */
 	public AStorage get(Integer storageID) {
 		return hashStorages.get(storageID);
 	}
 
-	@Override
+	/**
+	 * Get the number of storages in a set
+	 * 
+	 * @return
+	 */
 	public int size() {
 		return hashStorages.size();
 	}
 
-	@Override
+	/**
+	 * Get the depth of the set, which is the length of the storages (i.e. the number of content elements)
+	 * 
+	 * @return the number of elements in the storages contained in the list
+	 */
 	public int depth() {
 		if (depth == 0) {
 			for (AStorage storage : hashStorages.values()) {
@@ -185,12 +225,23 @@ public class Set
 		return sLabel;
 	}
 
-	@Override
+	/**
+	 * Iterate over the storages based on a virtual array
+	 * 
+	 * @param type
+	 * @return
+	 */
 	public Iterator<AStorage> iterator(String type) {
 		return new StorageIterator(hashStorages, hashStorageData.get(type).getStorageVA());
 	}
 
-	@Override
+	/**
+	 * Get the minimum value in the set.
+	 * 
+	 * @throws OperationNotSupportedException
+	 *             when executed on nominal data
+	 * @return the absolute minimum value in the set
+	 */
 	public double getMin() {
 		if (dMin == Double.MAX_VALUE) {
 			calculateGlobalExtrema();
@@ -198,7 +249,13 @@ public class Set
 		return dMin;
 	}
 
-	@Override
+	/**
+	 * Get the maximum value in the set.
+	 * 
+	 * @throws OperationNotSupportedException
+	 *             when executed on nominal data
+	 * @return the absolute minimum value in the set
+	 */
 	public double getMax() {
 		if (dMax == Double.MIN_VALUE) {
 			calculateGlobalExtrema();
@@ -206,7 +263,13 @@ public class Set
 		return dMax;
 	}
 
-	@Override
+	/**
+	 * Calculates a raw value based on min and max from a normalized value.
+	 * 
+	 * @param dNormalized
+	 *            a value between 0 and 1
+	 * @return a value between min and max
+	 */
 	public double getRawForNormalized(double dNormalized) {
 		if (!isSetHomogeneous)
 			throw new IllegalStateException(
@@ -232,7 +295,13 @@ public class Set
 			+ externalDataRep);
 	}
 
-	@Override
+	/**
+	 * Calculates a normalized value based on min and max.
+	 * 
+	 * @param dRaw
+	 *            the raw value
+	 * @return a value between 0 and 1
+	 */
 	public double getNormalizedForRaw(double dRaw) {
 		if (!isSetHomogeneous)
 			throw new IllegalStateException(
@@ -259,7 +328,15 @@ public class Set
 		return result;
 	}
 
-	@Override
+	/**
+	 * Returns a histogram of the values of all storages in the set (not considering VAs). The number of the
+	 * bins is sqrt(numberOfElements). This only works for homogeneous sets, if used on other sets an
+	 * exception is thrown.
+	 * 
+	 * @return the Histogram of the values in the set
+	 * @throws UnsupportedOperationException
+	 *             when used on non-homogeneous sets
+	 */
 	public Histogram getHistogram() {
 		if (!isSetHomogeneous) {
 			throw new UnsupportedOperationException(
@@ -288,7 +365,15 @@ public class Set
 		return histogram;
 	}
 
-	@Override
+	/**
+	 * Returns a histogram of the values of all storages in the set considering the VA of the default content
+	 * data. The number of the bins is sqrt(VA size). This only works for homogeneous sets, if used on other
+	 * sets an exception is thrown.
+	 * 
+	 * @return the Histogram of the values in the set
+	 * @throws UnsupportedOperationException
+	 *             when used on non-homogeneous sets
+	 */
 	public Histogram getBaseHistogram() {
 		if (!isSetHomogeneous) {
 			throw new UnsupportedOperationException(
@@ -317,7 +402,15 @@ public class Set
 		return histogram;
 	}
 
-	@Override
+	/**
+	 * Returns a histogram of the values of all storages in the set considering the specified VA. The number
+	 * of the bins is sqrt(VA size). This only works for homogeneous sets, if used on other sets an exception
+	 * is thrown.
+	 * 
+	 * @return the Histogram of the values in the set
+	 * @throws UnsupportedOperationException
+	 *             when used on non-homogeneous sets
+	 */
 	public Histogram getHistogram(ContentVirtualArray contentVA) {
 		// FIXME put that back
 		// if (!isSetHomogeneous) {
@@ -347,18 +440,28 @@ public class Set
 		return histogram;
 	}
 
-	@Override
+	/**
+	 * Restores the original virtual array using the whole set data.
+	 */
 	public void restoreOriginalContentVA() {
 		ContentData contentData = createContentData(CONTENT);
 		hashContentData.put(CONTENT, contentData);
 	}
 
-	@Override
+	/**
+	 * Get a copy of the original storage VA (i.e., the va containing all storages in the order loaded
+	 * 
+	 * @return
+	 */
 	public StorageVirtualArray getBaseStorageVA() {
 		return defaultStorageData.getStorageVA().clone();
 	}
 
-	@Override
+	/**
+	 * Get a copy of the original content VA (i.e., the one equal to the actual content of the storages)
+	 * 
+	 * @return
+	 */
 	public ContentVirtualArray getBaseContentVA() {
 		if (defaultContentData == null)
 			defaultContentData = createContentData(CONTENT);
@@ -445,7 +548,14 @@ public class Set
 	// else
 	// throw new IllegalArgumentException("No Virtual Array for the unique id: " + uniqueID);
 	// }
-	@Override
+
+	/**
+	 * Set a contentVA. The contentVA in the contentData object is replaced and the other elements in the
+	 * contentData are reset.
+	 * 
+	 * @param vaType
+	 * @param virtualArray
+	 */
 	public void setContentVA(String vaType, ContentVirtualArray virtualArray) {
 		ContentData contentData = hashContentData.get(vaType);
 		if (contentData == null)
@@ -460,7 +570,13 @@ public class Set
 		hashContentData.put(vaType, contentData);
 	}
 
-	@Override
+	/**
+	 * Sets a storageVA. The storageVA in the storageData object is replaced and the other elements in the
+	 * storageData are reset.
+	 * 
+	 * @param vaType
+	 * @param virtualArray
+	 */
 	public void setStorageVA(String vaType, StorageVirtualArray virtualArray) {
 		StorageData storageData = hashStorageData.get(vaType);
 		if (storageData == null)
@@ -471,17 +587,31 @@ public class Set
 		hashStorageData.put(vaType, storageData);
 	}
 
-	@Override
+	/**
+	 * Returns the current external data rep.
+	 * 
+	 * @return
+	 */
 	public EExternalDataRepresentation getExternalDataRep() {
 		return externalDataRep;
 	}
 
-	@Override
+	/**
+	 * Returns true if the set contains homgeneous data (data of the same kind, with one global minimum and
+	 * maximum), else false
+	 * 
+	 * @return
+	 */
 	public boolean isSetHomogeneous() {
 		return isSetHomogeneous;
 	}
 
-	@Override
+	/**
+	 * Clusters a Storage
+	 * 
+	 * @param clusterState
+	 * @return ArrayList<IVirtualArray> Virtual arrays holding cluster result
+	 */
 	public void cluster(ClusterState clusterState) {
 
 		// if (setType.equals(ESetDataType.NUMERIC) && isSetHomogeneous == true) {
@@ -517,7 +647,13 @@ public class Set
 
 	}
 
-	@Override
+	/**
+	 * Returns a {@link ContentData} object for the specified ContentVAType. The ContentData provides access
+	 * to all data on a storage, e.g., virtualArryay, cluster tree, group list etc.
+	 * 
+	 * @param vaType
+	 * @return
+	 */
 	public ContentData getContentData(String vaType) {
 		ContentData contentData = hashContentData.get(vaType);
 		if (contentData == null) {
@@ -527,12 +663,21 @@ public class Set
 		return contentData;
 	}
 
-	@Override
+	/**
+	 * Returns a {@link StorageData} object for the specified StorageVAType. The StorageData provides access
+	 * to all data on a storage, e.g., virtualArryay, cluster tree, group list etc.
+	 * 
+	 * @param vaType
+	 * @return
+	 */
 	public StorageData getStorageData(String vaType) {
 		return hashStorageData.get(vaType);
 	}
 
-	@Override
+	/**
+	 * Removes all data related to the set (Storages, Virtual Arrays and Sets) from the managers so that the
+	 * garbage collector can handle it.
+	 */
 	public void destroy() {
 		GeneralManager gm = GeneralManager.get();
 		StorageManager sm = gm.getStorageManager();
@@ -553,7 +698,15 @@ public class Set
 		return "Set " + getLabel() + " with " + hashStorages.size() + " storages.";
 	}
 
-	@Override
+	/**
+	 * Gets the minimum value in the set in the specified data representation.
+	 * 
+	 * @param dataRepresentation
+	 *            Data representation the minimum value shall be returned in.
+	 * @throws OperationNotSupportedException
+	 *             when executed on nominal data
+	 * @return The absolute minimum value in the set in the specified data representation.
+	 */
 	public double getMinAs(EExternalDataRepresentation dataRepresentation) {
 		if (dMin == Double.MAX_VALUE) {
 			calculateGlobalExtrema();
@@ -565,7 +718,15 @@ public class Set
 		return getDataRepFromRaw(result, dataRepresentation);
 	}
 
-	@Override
+	/**
+	 * Gets the maximum value in the set in the specified data representation.
+	 * 
+	 * @param dataRepresentation
+	 *            Data representation the maximum value shall be returned in.
+	 * @throws OperationNotSupportedException
+	 *             when executed on nominal data
+	 * @return The absolute maximum value in the set in the specified data representation.
+	 */
 	public double getMaxAs(EExternalDataRepresentation dataRepresentation) {
 		if (dMax == Double.MIN_VALUE) {
 			calculateGlobalExtrema();
@@ -577,15 +738,26 @@ public class Set
 		return getDataRepFromRaw(result, dataRepresentation);
 	}
 
+	/**
+	 * Returns the statistics results. E.g. comparative t-test between sets.
+	 * 
+	 * @return the statistics result object containing all results.
+	 */
 	@XmlTransient
-	@Override
 	public StatisticsResult getStatisticsResult() {
 		return statisticsResult;
 	}
 
-	@Override
+	/**
+	 * Returns a storage containing the mean values of all the storages in the set. The mean storage contains
+	 * raw and normalized values. The mean is calculated based on the raw data, that means for calculating the
+	 * means possibly specified cut-off values are not considered, since cut-off values are meant for
+	 * visualization only.
+	 * 
+	 * @return the storage containing means for all content elements
+	 */
 	public NumericalStorage getMeanStorage() {
-		if (!setType.equals(ESetDataType.NUMERIC) || !isSetHomogeneous)
+		if (!setType.equals(EDataTableDataType.NUMERIC) || !isSetHomogeneous)
 			throw new IllegalStateException(
 				"Can not provide a mean storage if set is not numerical (Set type: " + setType
 					+ ") or not homgeneous (isHomogeneous: " + isSetHomogeneous + ")");
@@ -645,15 +817,15 @@ public class Set
 		// if (hashStorages.isEmpty()) {
 		if (storage instanceof NumericalStorage) {
 			if (setType == null)
-				setType = ESetDataType.NUMERIC;
-			else if (setType.equals(ESetDataType.NOMINAL))
-				setType = ESetDataType.HYBRID;
+				setType = EDataTableDataType.NUMERIC;
+			else if (setType.equals(EDataTableDataType.NOMINAL))
+				setType = EDataTableDataType.HYBRID;
 		}
 		else {
 			if (setType == null)
-				setType = ESetDataType.NOMINAL;
-			else if (setType.equals(ESetDataType.NUMERIC))
-				setType = ESetDataType.HYBRID;
+				setType = EDataTableDataType.NOMINAL;
+			else if (setType.equals(EDataTableDataType.NUMERIC))
+				setType = EDataTableDataType.HYBRID;
 		}
 
 		// rawDataType = storage.getRawDataType();
@@ -675,7 +847,7 @@ public class Set
 
 	void finalizeAddedStorages() {
 		// this needs only be done by the root set
-		if ((this.getClass().equals(Set.class))) {
+		if ((this.getClass().equals(DataTable.class))) {
 			ClusterTree tree = defaultStorageData.getStorageTree();
 			int count = 1;
 			for (Integer storageID : defaultStorageData.getStorageVA()) {
@@ -904,7 +1076,7 @@ public class Set
 	private void calculateGlobalExtrema() {
 		double dTemp = 1.0;
 
-		if (setType.equals(ESetDataType.NUMERIC)) {
+		if (setType.equals(EDataTableDataType.NUMERIC)) {
 			for (AStorage storage : hashStorages.values()) {
 				NumericalStorage nStorage = (NumericalStorage) storage;
 				dTemp = nStorage.getMin();
@@ -922,27 +1094,32 @@ public class Set
 				+ "on nominal data");
 	}
 
-	@Override
+	/**
+	 * Return a list of content VA types that have registered {@link ContentData}.
+	 * 
+	 * @return
+	 */
 	public java.util.Set<String> getRegisteredContentVATypes() {
 		return hashContentData.keySet();
 	}
 
-	@Override
-	public java.util.Set<String> getRegisteredStorageVATypes() {
+	/**
+	 * Return a list of storage VA types that have registered {@link StorageData}
+	 * 
+	 * @return
+	 */
+	public Set<String> getRegisteredStorageVATypes() {
 		return hashStorageData.keySet();
 	}
 
-	@Override
 	public boolean containsUncertaintyData() {
 		return containsUncertaintyData;
 	}
 
-	@Override
 	public void setContainsUncertaintyData(boolean containsUncertaintyData) {
 		this.containsUncertaintyData = containsUncertaintyData;
 	}
 
-	@Override
 	public float getNormalizedUncertainty(int contentIndex) {
 
 		if (aggregatedRawUncertainties == null) {
@@ -955,7 +1132,6 @@ public class Set
 		return aggregatedNormalizedUncertainties[contentIndex];
 	}
 
-	@Override
 	public float[] getNormalizedUncertainty() {
 
 		// if (aggregatedRawUncertainties == null) {
@@ -966,7 +1142,6 @@ public class Set
 		return aggregatedNormalizedUncertainties;
 	}
 
-	@Override
 	public float[] getRawUncertainty() {
 
 		if (aggregatedRawUncertainties == null)
@@ -975,7 +1150,6 @@ public class Set
 		return aggregatedRawUncertainties;
 	}
 
-	@Override
 	public void calculateNormalizedAverageUncertainty(float invalidThreshold, float validThreshold) {
 
 		for (AStorage storage : hashStorages.values()) {
@@ -993,7 +1167,6 @@ public class Set
 		}
 	}
 
-	@Override
 	public void calculateRawAverageUncertainty() {
 		aggregatedRawUncertainties = new float[depth()];
 		for (int contentIndex = 0; contentIndex < depth(); contentIndex++) {

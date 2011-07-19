@@ -9,7 +9,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
@@ -83,7 +83,7 @@ public abstract class ACompareViewState {
 
 	// protected HashMap<ClusterNode, Vec3f> hashNodePositions;
 
-	protected ArrayList<ISet> setsInFocus;
+	protected ArrayList<DataTable> setsInFocus;
 	protected HashMap<HeatMapWrapper, HashMap<Integer, ArrayList<Vec3f>>> contentIDToIndividualLines;
 	protected int numSetsInFocus;
 
@@ -134,7 +134,7 @@ public abstract class ACompareViewState {
 
 		heatMapWrappers = new ArrayList<HeatMapWrapper>();
 		layouts = new ArrayList<AHeatMapLayout>();
-		setsInFocus = new ArrayList<ISet>();
+		setsInFocus = new ArrayList<DataTable>();
 
 		setsChanged = false;
 
@@ -770,7 +770,7 @@ public abstract class ACompareViewState {
 		return z;
 	}
 
-	public abstract void setSetsToCompare(ArrayList<ISet> setsToCompare);
+	public abstract void setSetsToCompare(ArrayList<DataTable> setsToCompare);
 
 	public abstract void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int externalID, Pick pick, boolean isControlPressed);
@@ -801,7 +801,7 @@ public abstract class ACompareViewState {
 	public abstract void handleSelectionCommand(IDCategory category,
 			SelectionCommand selectionCommand);
 
-	public abstract void setSetsInFocus(ArrayList<ISet> setsInFocus);
+	public abstract void setSetsInFocus(ArrayList<DataTable> setsInFocus);
 
 	public abstract void adjustPValue();
 

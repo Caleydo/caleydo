@@ -2,8 +2,7 @@ package org.caleydo.view.visbricks.brick.ui;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
@@ -21,9 +20,9 @@ public class FuelBarRenderer extends LayoutRenderer {
 
 	private GLBrick brick;
 	private SelectionManager selectionManager;
-	private ISet set;
+	private DataTable set;
 
-	public FuelBarRenderer(GLBrick brick, ISet set) {
+	public FuelBarRenderer(GLBrick brick, DataTable set) {
 		this.brick = brick;
 		this.set = set;
 		selectionManager = brick.getContentGroupSelectionManager();
@@ -32,13 +31,13 @@ public class FuelBarRenderer extends LayoutRenderer {
 	@Override
 	public void render(GL2 gl) {
 
-//		ISet set = brick.getSet();
+//		DataTable set = brick.getSet();
 		ContentVirtualArray contentVA = brick.getContentVA();
 
 		if (set == null || contentVA == null)
 			return;
 
-		ContentVirtualArray setContentVA = set.getContentData(Set.CONTENT).getContentVA();
+		ContentVirtualArray setContentVA = set.getContentData(DataTable.CONTENT).getContentVA();
 
 		if (setContentVA == null)
 			return;

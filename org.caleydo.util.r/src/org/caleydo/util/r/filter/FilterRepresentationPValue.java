@@ -1,7 +1,7 @@
 package org.caleydo.util.r.filter;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.ContentMetaFilter;
 import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
@@ -36,7 +36,7 @@ public class FilterRepresentationPValue extends
 
 	private final static String TITLE = "Variance Filter";
 	
-	private ISet set;
+	private DataTable set;
 
 	private Histogram histogram;
 	private float pValue = -1;
@@ -174,7 +174,7 @@ public class FilterRepresentationPValue extends
 
 	private void createVADelta(ContentFilter subFilter) {
 
-		ContentVADelta contentVADelta = new ContentVADelta(ISet.CONTENT, subFilter
+		ContentVADelta contentVADelta = new ContentVADelta(DataTable.CONTENT, subFilter
 				.getDataDomain().getContentIDType());
 		ContentVirtualArray contentVA = subFilter.getDataDomain()
 				.getContentFilterManager().getBaseVA();
@@ -199,11 +199,11 @@ public class FilterRepresentationPValue extends
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 	}
 
-	public void setSet(ISet set) {
+	public void setSet(DataTable set) {
 		this.set = set;
 	}
 
-	public ISet getSet() {
+	public DataTable getSet() {
 		return set;
 	}
 	

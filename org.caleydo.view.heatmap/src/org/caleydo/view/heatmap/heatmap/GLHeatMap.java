@@ -8,8 +8,7 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -298,9 +297,9 @@ public class GLHeatMap extends AStorageBasedView {
 					contentVAType));
 		} else {
 			if (bRenderOnlyContext)
-				contentVAType = ISet.CONTENT_CONTEXT;
+				contentVAType = DataTable.CONTENT_CONTEXT;
 			else
-				contentVAType = ISet.CONTENT;
+				contentVAType = DataTable.CONTENT;
 		}
 
 		if (contentVA == null)
@@ -686,9 +685,9 @@ public class GLHeatMap extends AStorageBasedView {
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (this.bRenderOnlyContext) {
-			contentVA = dataDomain.getContentVA(ISet.CONTENT_CONTEXT);
+			contentVA = dataDomain.getContentVA(DataTable.CONTENT_CONTEXT);
 		} else {
-			contentVA = dataDomain.getContentVA(ISet.CONTENT);
+			contentVA = dataDomain.getContentVA(DataTable.CONTENT);
 		}
 
 		contentSelectionManager.setVA(contentVA);
@@ -703,8 +702,8 @@ public class GLHeatMap extends AStorageBasedView {
 
 		super.handleVAUpdate(delta, info);
 
-		if (delta.getVAType().equals(ISet.CONTENT_CONTEXT)
-				&& contentVAType.equals(ISet.CONTENT_CONTEXT)) {
+		if (delta.getVAType().equals(DataTable.CONTENT_CONTEXT)
+				&& contentVAType.equals(DataTable.CONTENT_CONTEXT)) {
 			ClusterState state = new ClusterState(
 					EClustererAlgo.AFFINITY_PROPAGATION,
 					EClustererType.CONTENT_CLUSTERING,
@@ -782,7 +781,7 @@ public class GLHeatMap extends AStorageBasedView {
 		this.sendClearSelectionsEvent = sendClearSelectionsEvent;
 	}
 
-	public void setSet(ISet set) {
+	public void setSet(DataTable set) {
 		this.set = set;
 	}
 
@@ -921,7 +920,7 @@ public class GLHeatMap extends AStorageBasedView {
 		return zoomedElements;
 	}
 
-	public ISet getSet() {
+	public DataTable getSet() {
 		return set;
 	}
 
@@ -939,7 +938,7 @@ public class GLHeatMap extends AStorageBasedView {
 		// .log(contentVA.size()));
 		// }
 
-		ContentVirtualArray setContentVA = set.getContentData(Set.CONTENT)
+		ContentVirtualArray setContentVA = set.getContentData(DataTable.CONTENT)
 				.getContentVA();
 		int numBricks = 1;
 		if (setContentVA.getGroupList() != null) {

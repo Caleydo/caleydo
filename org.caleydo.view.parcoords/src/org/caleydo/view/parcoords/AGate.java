@@ -4,7 +4,7 @@ import static org.caleydo.view.parcoords.PCRenderStyle.GATE_TIP_HEIGHT;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
@@ -17,7 +17,7 @@ public abstract class AGate extends AGLGUIElement {
 	protected int gateID;
 	protected float currentPosition;
 
-	protected ISet set;
+	protected DataTable set;
 	protected PCRenderStyle renderStyle;
 	protected float mouseTopSpacing;
 	protected float mouseBottomSpacing;

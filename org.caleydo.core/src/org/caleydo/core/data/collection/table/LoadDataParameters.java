@@ -1,4 +1,4 @@
-package org.caleydo.core.data.collection.set;
+package org.caleydo.core.data.collection.table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 
 /**
- * Parameters to load the initial data-{@link Set}.
+ * Parameters to load the initial data-{@link DataTable}.
  * 
  * @author Werner Puff
  * @author Marc Streit

@@ -1,25 +1,23 @@
-package org.caleydo.core.data.collection.set;
+package org.caleydo.core.data.collection.table;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.ISet;
+public class DataTableRelations {
 
-public class SetRelations {
-
-	ISet setLeft;
-	ISet setRight;
+	DataTable setLeft;
+	DataTable setRight;
 
 	HashMap<Integer, Integer> hashLeftToRight;
 	HashMap<Integer, Integer> hashRightToLeft;
-	HashMap<ISet, HashMap<Integer, Integer>> hashSetToRelations;
+	HashMap<DataTable, HashMap<Integer, Integer>> hashSetToRelations;
 
-	public SetRelations(ISet setLeft, ISet setRight) {
+	public DataTableRelations(DataTable setLeft, DataTable setRight) {
 		this.setLeft = setLeft;
 		this.setRight = setRight;
 		Integer size = (int) (setLeft.depth() * 1.5);
 		hashLeftToRight = new HashMap<Integer, Integer>(size);
 		hashRightToLeft = new HashMap<Integer, Integer>(size);
-		hashSetToRelations = new HashMap<ISet, HashMap<Integer, Integer>>(4);
+		hashSetToRelations = new HashMap<DataTable, HashMap<Integer, Integer>>(4);
 		hashSetToRelations.put(setLeft, hashLeftToRight);
 		hashSetToRelations.put(setRight, hashRightToLeft);
 	}
@@ -35,19 +33,19 @@ public class SetRelations {
 	 * @param set
 	 *            the "from" set
 	 */
-	public HashMap<Integer, Integer> getMapping(ISet set) {
+	public HashMap<Integer, Integer> getMapping(DataTable set) {
 		return hashSetToRelations.get(set);
 	}
 
-	public Integer getEquivalentID(ISet set, Integer id) {
+	public Integer getEquivalentID(DataTable set, Integer id) {
 		return hashSetToRelations.get(set).get(id);
 	}
 
-	public ISet getSetLeft() {
+	public DataTable getSetLeft() {
 		return setLeft;
 	}
 
-	public ISet getSetRight() {
+	public DataTable getSetRight() {
 		return setRight;
 	}
 }

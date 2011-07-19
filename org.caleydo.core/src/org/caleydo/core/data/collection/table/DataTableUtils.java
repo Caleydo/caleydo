@@ -1,4 +1,4 @@
-package org.caleydo.core.data.collection.set;
+package org.caleydo.core.data.collection.table;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,7 +18,6 @@ import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.graph.tree.ClusterTree;
@@ -43,7 +42,7 @@ import org.eclipse.core.runtime.Status;
  * @author Werner Puff
  * @author Alexander Lex
  */
-public class SetUtils {
+public class DataTableUtils {
 
 	/** prefix for temporary set-file */
 	public static final String DATA_FILE_PREFIX = "setfile";
@@ -203,7 +202,7 @@ public class SetUtils {
 	/**
 	 * Creates the set from a previously prepared storage definition.
 	 */
-	public static Set createData(ASetBasedDataDomain dataDomain) {
+	public static DataTable createData(ASetBasedDataDomain dataDomain) {
 
 		LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 		ArrayList<Integer> storageIDs = loadDataParameters.getStorageIds();
@@ -263,7 +262,7 @@ public class SetUtils {
 		}
 
 		// ----------------------------------------
-		Set set = (Set) dataDomain.getSet();
+		DataTable set = (DataTable) dataDomain.getSet();
 
 		// loadTrees(loadDataParameters, set);
 
@@ -291,7 +290,7 @@ public class SetUtils {
 		return set;
 	}
 
-	public static void setStorages(Set set, ArrayList<Integer> storageIDs) {
+	public static void setStorages(DataTable set, ArrayList<Integer> storageIDs) {
 		for (int iStorageID : storageIDs) {
 			set.addStorage(iStorageID);
 		}
@@ -301,17 +300,17 @@ public class SetUtils {
 	}
 
 	/**
-	 * Creates the gene-cluster information of the given {@link ISet} as xml-String
+	 * Creates the gene-cluster information of the given {@link DataTable} as xml-String
 	 * 
 	 * @param set
-	 *            {@link ISet} to create the gene-cluster information of
+	 *            {@link DataTable} to create the gene-cluster information of
 	 * @return xml-document representing the gene-cluster information
 	 */
-	public static String getGeneClusterXml(ISet set) {
+	public static String getGeneClusterXml(DataTable set) {
 		String xml = null;
 
 		try {
-			xml = getTreeClusterXml(set.getContentData(ISet.CONTENT).getContentTree());
+			xml = getTreeClusterXml(set.getContentData(DataTable.CONTENT).getContentTree());
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
@@ -324,17 +323,17 @@ public class SetUtils {
 	}
 
 	/**
-	 * Creates the experiment-cluster information of the given {@link ISet} as XML-String
+	 * Creates the experiment-cluster information of the given {@link DataTable} as XML-String
 	 * 
 	 * @param set
-	 *            {@link ISet} to create the experiment-cluster information of
+	 *            {@link DataTable} to create the experiment-cluster information of
 	 * @return XML-document representing the experiment-cluster information
 	 */
-	public static String getExperimentClusterXml(ISet set) {
+	public static String getExperimentClusterXml(DataTable set) {
 		String xml = null;
 
 		try {
-			xml = getTreeClusterXml(set.getStorageData(Set.STORAGE).getStorageTree());
+			xml = getTreeClusterXml(set.getStorageData(DataTable.STORAGE).getStorageTree());
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
@@ -419,7 +418,7 @@ public class SetUtils {
 	 * @param loadDataParameters
 	 * @param set
 	 */
-	public static void loadTrees(LoadDataParameters loadDataParameters, ISet set) {
+	public static void loadTrees(LoadDataParameters loadDataParameters, DataTable set) {
 		// import gene tree
 		String geneTreeFileName = loadDataParameters.getGeneTreeFileName();
 		if (geneTreeFileName != null) {
@@ -434,7 +433,7 @@ public class SetUtils {
 
 					tree = treePorter.importTree(geneTreeFileName, set.getDataDomain().getContentIDType());
 //					tree.setSortingStrategy(ESortingStrategy.AVERAGE_VALUE);
-					set.getContentData(ISet.CONTENT).setContentTree(tree);
+					set.getContentData(DataTable.CONTENT).setContentTree(tree);
 				}
 				catch (JAXBException e) {
 					e.printStackTrace();
@@ -457,7 +456,7 @@ public class SetUtils {
 				ClusterTree tree;
 				try {
 					tree = treePorter.importStorageTree(experimentsTreeFileName);
-					set.getStorageData(Set.STORAGE).setStorageTree(tree);
+					set.getStorageData(DataTable.STORAGE).setStorageTree(tree);
 					set.getDataDomain().createDimensionGroupsFromStorageTree(tree);
 				}
 				catch (JAXBException e) {
@@ -482,7 +481,7 @@ public class SetUtils {
 	 *            storage is treated separately, has it's own min and max etc. Sets that contain nominal data
 	 *            MUST be inhomogeneous.
 	 */
-	public static void setExternalDataRepresentation(Set set, EExternalDataRepresentation externalDataRep,
+	public static void setExternalDataRepresentation(DataTable set, EExternalDataRepresentation externalDataRep,
 		boolean isSetHomogeneous) {
 		set.setExternalDataRepresentation(externalDataRep, isSetHomogeneous);
 	}
@@ -496,7 +495,7 @@ public class SetUtils {
 	 * @param groupInfo
 	 *            the array list extracted from the file
 	 */
-	public static void setContentGroupList(Set set, String vaType, int[] groupInfo) {
+	public static void setContentGroupList(DataTable set, String vaType, int[] groupInfo) {
 
 		int cluster = 0, cnt = 0;
 
@@ -528,7 +527,7 @@ public class SetUtils {
 	 * @param groupInfo
 	 *            the array list extracted from the file
 	 */
-	public static void setStorageGroupList(Set set, String vaType, int[] groupInfo) {
+	public static void setStorageGroupList(DataTable set, String vaType, int[] groupInfo) {
 		int cluster = 0, cnt = 0;
 
 		StorageGroupList storageGroupList = set.getStorageData(vaType).getStorageVA().getGroupList();
@@ -557,7 +556,7 @@ public class SetUtils {
 	 * @param vaType
 	 * @param groupReps
 	 */
-	public static void setContentGroupRepresentatives(Set set, String vaType, int[] groupReps) {
+	public static void setContentGroupRepresentatives(DataTable set, String vaType, int[] groupReps) {
 
 		int group = 0;
 
@@ -581,7 +580,7 @@ public class SetUtils {
 	 * @param vaType
 	 * @param groupReps
 	 */
-	public static void setStorageGroupRepresentatives(Set set, String vaType, int[] groupReps) {
+	public static void setStorageGroupRepresentatives(DataTable set, String vaType, int[] groupReps) {
 
 		int group = 0;
 

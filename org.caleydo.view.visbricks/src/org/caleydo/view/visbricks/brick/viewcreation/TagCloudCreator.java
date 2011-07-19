@@ -2,7 +2,7 @@ package org.caleydo.view.visbricks.brick.viewcreation;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
@@ -15,9 +15,9 @@ import org.caleydo.view.visbricks.brick.GLBrick;
 
 public class TagCloudCreator implements IRemoteViewCreator {
 	
-	private ISet set;
+	private DataTable set;
 
-	public TagCloudCreator(ISet set) {
+	public TagCloudCreator(DataTable set) {
 		this.set = set;
 	}
 

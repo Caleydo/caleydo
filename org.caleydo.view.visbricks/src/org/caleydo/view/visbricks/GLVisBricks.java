@@ -1262,13 +1262,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// if (storageTree == null)
 		// return;
 		//
-		// ArrayList<ISet> allMetaSets = storageTree.getRoot()
+		// ArrayList<DataTable> allMetaSets = storageTree.getRoot()
 		// .getAllMetaSetsFromSubTree();
 		//
-		// ArrayList<ISet> filteredMetaSets = new ArrayList<ISet>(
+		// ArrayList<DataTable> filteredMetaSets = new ArrayList<DataTable>(
 		// allMetaSets.size() / 2);
 		//
-		// for (ISet metaSet : allMetaSets) {
+		// for (DataTable metaSet : allMetaSets) {
 		// if (metaSet.size() > 1
 		// && metaSet.size() != dataDomain.getSet().size())
 		// filteredMetaSets.add(metaSet);
@@ -1277,7 +1277,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	}
 
-	// private void initializeBricks(ArrayList<ISet> metaSets) {
+	// private void initializeBricks(ArrayList<DataTable> metaSets) {
 	//
 	// ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
 	// .getDimensionGroups();
@@ -1286,7 +1286,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	// .iterator();
 	// while (dimensionGroupIterator.hasNext()) {
 	// DimensionGroup dimensionGroup = dimensionGroupIterator.next();
-	// ISet metaSet = dimensionGroup.getSet();
+	// DataTable metaSet = dimensionGroup.getSet();
 	// if (!metaSets.contains(metaSet)) {
 	// dimensionGroupIterator.remove();
 	// } else {
@@ -1294,7 +1294,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	// }
 	//
 	// }
-	// for (ISet set : metaSets) {
+	// for (DataTable set : metaSets) {
 	//
 	// // TODO here we need to check which metaSets have already been
 	// // assigned to a dimensiongroup and not re-create them

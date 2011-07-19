@@ -3,7 +3,7 @@ package org.caleydo.core.manager.event.data;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.event.AEvent;
 
@@ -36,13 +36,13 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?>>
 	 * 
 	 * @param vaType
 	 */
-	public ReplaceVAEvent(ISet set, String dataDomainType, String vaType) {
+	public ReplaceVAEvent(DataTable set, String dataDomainType, String vaType) {
 		this.dataDomainID = dataDomainType;
 		this.vaType = vaType;
 		this.setID = set.getID();
 	}
 
-	public ReplaceVAEvent(ISet set, String dataDomainType, String vaType, E virtualArray) {
+	public ReplaceVAEvent(DataTable set, String dataDomainType, String vaType, E virtualArray) {
 		this.dataDomainID = dataDomainType;
 		this.vaType = vaType;
 		this.virtualArray = virtualArray;

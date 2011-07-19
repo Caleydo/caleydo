@@ -2,8 +2,8 @@ package org.caleydo.core.util.clusterer;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -54,7 +54,7 @@ public class AffinityClusterer
 
 	private int iNrSimilarities = 0;
 
-	private ISet set;
+	private DataTable set;
 
 	public AffinityClusterer() {
 
@@ -87,7 +87,7 @@ public class AffinityClusterer
 	 * @param clusterState
 	 * @return in case of error a negative value will be returned.
 	 */
-	private int determineSimilarities(ISet set, ClusterState clusterState) {
+	private int determineSimilarities(DataTable set, ClusterState clusterState) {
 
 		ContentVirtualArray contentVA = clusterState.getContentVA();
 		StorageVirtualArray storageVA = clusterState.getStorageVA();
@@ -588,7 +588,7 @@ public class AffinityClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(DataTable set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 
 		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING)

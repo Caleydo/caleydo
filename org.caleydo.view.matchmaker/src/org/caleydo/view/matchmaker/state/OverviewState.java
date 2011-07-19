@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -249,7 +249,7 @@ public class OverviewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void setSetsInFocus(ArrayList<ISet> setsInFocus) {
+	public void setSetsInFocus(ArrayList<DataTable> setsInFocus) {
 		// FIXME: Maybe we can put this in the base class.
 
 		if (setsInFocus.size() >= getMinSetsInFocus()
@@ -262,7 +262,7 @@ public class OverviewState extends ACompareViewStateStatic {
 				heatMapWrappers.clear();
 
 				int heatMapWrapperID = 0;
-				for (@SuppressWarnings("unused") ISet set : setsInFocus) {
+				for (@SuppressWarnings("unused") DataTable set : setsInFocus) {
 					AHeatMapLayout layout = null;
 					if (heatMapWrapperID == 0) {
 						layout = new HeatMapLayoutOverviewLeft(renderCommandFactory);
@@ -282,8 +282,8 @@ public class OverviewState extends ACompareViewStateStatic {
 			}
 
 			// FIXME: Use array of relations?
-			// ISet setLeft = setsInFocus.get(0);
-			// ISet setRight = setsInFocus.get(1);
+			// DataTable setLeft = setsInFocus.get(0);
+			// DataTable setRight = setsInFocus.get(1);
 			// relations = SetComparer.compareSets(setLeft, setRight);
 
 			for (int i = 0; i < heatMapWrappers.size(); i++) {
@@ -355,7 +355,7 @@ public class OverviewState extends ACompareViewStateStatic {
 		int numTotalExperiments = 0;
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			numTotalExperiments += heatMapWrapper.getSet()
-					.getStorageData(ISet.STORAGE).getStorageVA().size();
+					.getStorageData(DataTable.STORAGE).getStorageVA().size();
 		}
 		float heatMapWrapperGapWidth = (1 - HEATMAP_WRAPPER_SPACE_PORTION)
 				* viewFrustum.getWidth() / (float) (heatMapWrappers.size() - 1);
@@ -364,7 +364,7 @@ public class OverviewState extends ACompareViewStateStatic {
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
 			AHeatMapLayout layout = layouts.get(i);
 			int numExperiments = heatMapWrapper.getSet()
-					.getStorageData(ISet.STORAGE).getStorageVA().size();
+					.getStorageData(DataTable.STORAGE).getStorageVA().size();
 			// TODO: Maybe get info in layout from heatmapwrapper
 			layout.setTotalSpaceForAllHeatMapWrappers(spaceForHeatMapWrapperOverviews);
 			layout.setNumExperiments(numExperiments);

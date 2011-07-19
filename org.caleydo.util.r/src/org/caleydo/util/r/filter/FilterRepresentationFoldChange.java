@@ -1,9 +1,9 @@
 package org.caleydo.util.r.filter;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings;
-import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings.FoldChangeEvaluator;
+import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.statistics.FoldChangeSettings;
+import org.caleydo.core.data.collection.table.statistics.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.ContentMetaFilter;
 import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
@@ -38,8 +38,8 @@ public class FilterRepresentationFoldChange extends
 
 	private final static String TITLE = "Fold Change Filter";
 
-	private ISet set1;
-	private ISet set2;
+	private DataTable set1;
+	private DataTable set2;
 
 	private float foldChange = 3;
 	private float foldChangeUncertainty = 1.2f;
@@ -241,11 +241,11 @@ public class FilterRepresentationFoldChange extends
 		this.histogram = histogram;
 	}
 
-	public void setSet1(ISet set1) {
+	public void setSet1(DataTable set1) {
 		this.set1 = set1;
 	}
 
-	public void setSet2(ISet set2) {
+	public void setSet2(DataTable set2) {
 		this.set2 = set2;
 	}
 
@@ -263,9 +263,9 @@ public class FilterRepresentationFoldChange extends
 
 	private void createVADelta(ContentFilter subFilter) {
 
-		ContentVADelta contentVADelta = new ContentVADelta(ISet.CONTENT, subFilter
+		ContentVADelta contentVADelta = new ContentVADelta(DataTable.CONTENT, subFilter
 				.getDataDomain().getContentIDType());
-		ContentVADelta contentVADeltaUncertainty = new ContentVADelta(ISet.CONTENT,
+		ContentVADelta contentVADeltaUncertainty = new ContentVADelta(DataTable.CONTENT,
 				subFilter.getDataDomain().getContentIDType());
 
 		ContentVirtualArray contentVA = subFilter.getDataDomain()
@@ -362,7 +362,7 @@ public class FilterRepresentationFoldChange extends
 			set2.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
 			
 			// FIXME: just for uncertainty paper so that the uncertainty view can access it via the main set
-			ISet set = filter.getDataDomain().getSet();
+			DataTable set = filter.getDataDomain().getSet();
 			set.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
 
 			createVADelta();

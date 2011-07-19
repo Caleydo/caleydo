@@ -1,6 +1,6 @@
 package org.caleydo.core.data.virtualarray;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
@@ -10,10 +10,10 @@ public class SetBasedSegmentData implements ISegmentData {
 	private ASetBasedDataDomain dataDomain;
 	private ContentVirtualArray contentVA;
 	private Group group;
-	private ISet set;
+	private DataTable set;
 	private SetBasedDimensionGroupData dimensionGroupData;
 
-	public SetBasedSegmentData(ASetBasedDataDomain dataDomain, ISet set,
+	public SetBasedSegmentData(ASetBasedDataDomain dataDomain, DataTable set,
 			ContentVirtualArray contentVA, Group group,
 			SetBasedDimensionGroupData dimensionGroupData) {
 		this.set = set;
@@ -46,7 +46,7 @@ public class SetBasedSegmentData implements ISegmentData {
 		return "Group " + group.getGroupID() + " in " + set.getLabel();
 	}
 
-	public ISet getSet() {
+	public DataTable getSet() {
 		return set;
 	}
 

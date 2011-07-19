@@ -9,9 +9,9 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.collection.set.LoadDataParameters;
-import org.caleydo.core.data.collection.set.Set;
-import org.caleydo.core.data.collection.set.SetUtils;
+import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.DataTableUtils;
+import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.gui.util.LabelEditorDialog;
 import org.caleydo.core.manager.GeneralManager;
@@ -90,17 +90,17 @@ public class ImportDataDialog
 
 	// FIXME: this is never set to false. for loading general data this needs to be set.
 	boolean isGenetic = true;
-	
+
 	public ImportDataDialog(Shell parentShell) {
 		super(parentShell);
-		
-		// FIXME: the user needs to determine whether to load genetic or generic data 
+
+		// FIXME: the user needs to determine whether to load genetic or generic data
 		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain();
 		cmd.setAttributes("org.caleydo.datadomain.genetic");
 		cmd.doCommand();
 		this.dataDomain = (ASetBasedDataDomain) cmd.getCreatedObject();
 	}
-	
+
 	public ImportDataDialog(Shell parentShell, IDataDomain dataDomain) {
 		super(parentShell);
 		this.dataDomain = (ASetBasedDataDomain) dataDomain;
@@ -129,16 +129,16 @@ public class ImportDataDialog
 
 		boolean success = readStorageDefinition();
 		if (success) {
-			success = SetUtils.createStorages(loadDataParameters);
+			success = DataTableUtils.createStorages(loadDataParameters);
 		}
 		readParameters();
 
 		dataDomain.setLoadDataParameters(loadDataParameters);
 
-		Set set = SetUtils.createData(dataDomain);
-		if (set == null)
+		DataTable table = DataTableUtils.createData(dataDomain);
+		if (table == null)
 			throw new IllegalStateException("Problem while creating set!");
-		
+
 		super.okPressed();
 	}
 

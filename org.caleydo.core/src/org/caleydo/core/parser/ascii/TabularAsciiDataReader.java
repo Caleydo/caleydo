@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
-import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.util.logging.Logger;
@@ -307,7 +306,7 @@ public class TabularAsciiDataReader
 		int iStringArrayIndex = 0;
 		int storageIndex = 0;
 
-		ISet set = dataDomain.getSet();
+		DataTable set = dataDomain.getSet();
 
 		for (EStorageType storageType : columnDataTypes) {
 			// if(iStorageIndex + 1 == targetStorages.size())
@@ -343,23 +342,23 @@ public class TabularAsciiDataReader
 				case GROUP_NUMBER:
 
 					int[] iArGroupInfo = groupInfo.get(0);
-					SetUtils.setContentGroupList((Set) set, ISet.CONTENT, iArGroupInfo);
+					DataTableUtils.setContentGroupList((DataTable) set, DataTable.CONTENT, iArGroupInfo);
 
 					iIntArrayIndex++;
 					break;
 				case GROUP_REPRESENTATIVE:
 
 					int[] iArGroupRepr = groupInfo.get(1);
-					SetUtils.setContentGroupRepresentatives((Set) set, ISet.CONTENT, iArGroupRepr);
+					DataTableUtils.setContentGroupRepresentatives((DataTable) set, DataTable.CONTENT, iArGroupRepr);
 
 					iIntArrayIndex++;
 					break;
 				case ABORT:
 					if (useExperimentClusterInfo) {
 						iArGroupInfo = groupInfo.get(2);
-						SetUtils.setStorageGroupList((Set) set, Set.STORAGE, iArGroupInfo);
+						DataTableUtils.setStorageGroupList((DataTable) set, DataTable.STORAGE, iArGroupInfo);
 						iArGroupRepr = groupInfo.get(3);
-						SetUtils.setStorageGroupRepresentatives((Set) set, Set.STORAGE, iArGroupRepr);
+						DataTableUtils.setStorageGroupRepresentatives((DataTable) set, DataTable.STORAGE, iArGroupRepr);
 					}
 					return;
 

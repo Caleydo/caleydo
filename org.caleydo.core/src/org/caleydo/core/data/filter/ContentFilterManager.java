@@ -1,6 +1,6 @@
 package org.caleydo.core.data.filter;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.event.CombineContentFilterEvent;
 import org.caleydo.core.data.filter.event.CombineContentFilterListener;
 import org.caleydo.core.data.filter.event.MoveContentFilterEvent;
@@ -127,7 +127,7 @@ public class ContentFilterManager
 	@Override
 	protected void triggerReplaceVAEvent() {
 		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent();
-		event.setVAType(ISet.CONTENT);
+		event.setVAType(DataTable.CONTENT);
 		event.setVirtualArray(currentVA);
 		event.setSender(this);
 		event.setDataDomainID(dataDomain.getDataDomainID());
