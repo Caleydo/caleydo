@@ -40,7 +40,6 @@ import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAEvent;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
-import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -237,9 +236,6 @@ public abstract class ASetBasedDataDomain
 
 		initFullVA();
 		initSelectionManagers();
-		NewSetEvent newSetEvent = new NewSetEvent();
-		newSetEvent.setSet((Set) set);
-		GeneralManager.get().getEventPublisher().triggerEvent(newSetEvent);
 
 		contentFilterManager = new ContentFilterManager(this);
 		storageFilterManager = new StorageFilterManager(this);

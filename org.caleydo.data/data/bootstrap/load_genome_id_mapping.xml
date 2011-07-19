@@ -27,10 +27,6 @@
 	<Cmd type="CREATE_ID_TYPE" detail="ENTREZ_GENE_ID" attrib1="GENE"
 		attrib2="INT" />
 
-	<!-- TODO this should created dynamically in datadomain! -->
-	<Cmd type="CREATE_ID_TYPE" detail="CONTENT_INDEX" attrib1="GENE"
-		attrib2="INT" />
-
 	<Cmd type="CREATE_ID_TYPE" detail="PATHWAY_VERTEX" attrib1="GENE"
 		attrib2="INT" />
 
@@ -55,13 +51,8 @@
 	<Cmd type="CREATE_ID_TYPE" detail="STORAGE" attrib1="EXPERIMENT"
 		attrib2="STRING" />
 
-	<!-- TODO this should created dynamically in datadomain! -->
-	<Cmd type="CREATE_ID_TYPE" detail="STORAGE_INDEX" attrib1="EXPERIMENT"
-		attrib2="INT" />
-
 	<!-- TODO this should created dynamically when creating a new tree! -->
 	<!--<Cmd type="CREATE_ID_TYPE" detail="CLUSTER_NUMBER" attrib="INT" /> -->
-
 
 
 	<!-- ************************** Loading Mappings ************************** -->

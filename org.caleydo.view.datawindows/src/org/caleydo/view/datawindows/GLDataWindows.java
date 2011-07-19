@@ -13,7 +13,6 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -153,8 +152,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 		// FIXME: maybe we have to find a better place for trigger pathway
 		// loading
-		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(
-				ECommandType.CREATE_DATA_DOMAIN);
+		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain();
 		cmd.setAttributes("org.caleydo.datadomain.pathway");
 		cmd.doCommand();
 

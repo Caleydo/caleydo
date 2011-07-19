@@ -10,7 +10,6 @@ import java.util.List;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
@@ -250,15 +249,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				stackElementsLeft, stackElementsRight);
 
 		if (DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.pathway") == null) {
-			CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(
-					ECommandType.CREATE_DATA_DOMAIN);
+			CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain();
 			cmd.setAttributes("org.caleydo.datadomain.pathway");
 			cmd.doCommand();
 		}
 
 		if (DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.tissue") == null) {
-			CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(
-					ECommandType.CREATE_DATA_DOMAIN);
+			CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain();
 			cmd.setAttributes("org.caleydo.datadomain.tissue");
 			cmd.doCommand();
 		}

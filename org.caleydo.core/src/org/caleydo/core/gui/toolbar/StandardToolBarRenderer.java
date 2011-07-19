@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.gui.toolbar.action.ClearSelectionsAction;
-import org.caleydo.core.gui.toolbar.action.ExportDataAction;
-import org.caleydo.core.gui.toolbar.action.ImportDataAction;
 import org.caleydo.core.gui.toolbar.action.RestoreOriginalDataAction;
 import org.caleydo.core.gui.toolbar.action.SaveProjectAction;
 import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 import org.caleydo.core.gui.toolbar.action.TakeSnapshotAction;
 import org.caleydo.core.gui.toolbar.content.AToolBarContent;
+import org.caleydo.core.io.gui.ExportDataAction;
+import org.caleydo.core.io.gui.ImportDataAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;

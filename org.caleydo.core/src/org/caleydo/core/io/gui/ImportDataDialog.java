@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
+import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.Set;
@@ -87,13 +88,19 @@ public class ImportDataDialog
 
 	private ASetBasedDataDomain dataDomain = null;
 
+	// FIXME: this is never set to false. for loading general data this needs to be set.
 	boolean isGenetic = true;
-
+	
 	public ImportDataDialog(Shell parentShell) {
 		super(parentShell);
-		throw new IllegalStateException("Not implemented yet!");
+		
+		// FIXME: the user needs to determine whether to load genetic or generic data 
+		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain();
+		cmd.setAttributes("org.caleydo.datadomain.genetic");
+		cmd.doCommand();
+		this.dataDomain = (ASetBasedDataDomain) cmd.getCreatedObject();
 	}
-
+	
 	public ImportDataDialog(Shell parentShell, IDataDomain dataDomain) {
 		super(parentShell);
 		this.dataDomain = (ASetBasedDataDomain) dataDomain;

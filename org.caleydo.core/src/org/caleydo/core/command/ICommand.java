@@ -31,7 +31,7 @@ public interface ICommand
 	 * @throws PrometheusCommandException
 	 * @see org.caleydo.core.command.factory.CommandFactory.getCommandType()
 	 */
-	public abstract ECommandType getCommandType();
+	public abstract CommandType getCommandType();
 
 	/**
 	 * Method returns a description of the command. This is mainly used for the UNDO/REDO GUI component to

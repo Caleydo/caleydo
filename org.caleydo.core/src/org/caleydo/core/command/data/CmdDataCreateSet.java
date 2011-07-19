@@ -2,7 +2,7 @@ package org.caleydo.core.command.data;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
@@ -27,8 +27,8 @@ public class CmdDataCreateSet
 	/**
 	 * Constructor.
 	 */
-	public CmdDataCreateSet(final ECommandType cmdType) {
-		super(cmdType);
+	public CmdDataCreateSet() {
+		super(CommandType.CREATE_SET_DATA);
 
 		storageIDs = new ArrayList<Integer>();
 	}

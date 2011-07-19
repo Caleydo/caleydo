@@ -3,7 +3,7 @@ package org.caleydo.core.command.view;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -24,8 +24,8 @@ public class CmdViewCreateRcpGLCanvas
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateRcpGLCanvas(final ECommandType cmdType) {
-		super(cmdType);
+	public CmdViewCreateRcpGLCanvas() {
+		super(CommandType.CREATE_VIEW_RCP_GLCANVAS);
 	}
 
 	@Override

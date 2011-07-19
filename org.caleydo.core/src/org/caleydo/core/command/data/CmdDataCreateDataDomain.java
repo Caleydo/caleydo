@@ -1,6 +1,6 @@
 package org.caleydo.core.command.data;
 
-import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
@@ -17,8 +17,8 @@ public class CmdDataCreateDataDomain
 	/**
 	 * Constructor.
 	 */
-	public CmdDataCreateDataDomain(final ECommandType cmdType) {
-		super(cmdType);
+	public CmdDataCreateDataDomain() {
+		super(CommandType.CREATE_DATA_DOMAIN);
 
 		dataDomainType = "unspecified";
 	}

@@ -25,9 +25,8 @@ public class CmdCreateIDType
 	/**
 	 * Constructor.
 	 */
-	public CmdCreateIDType(final ECommandType cmdType) {
-		super(cmdType);
-
+	public CmdCreateIDType() {
+		super(CommandType.CREATE_ID_TYPE);
 	}
 
 	/**

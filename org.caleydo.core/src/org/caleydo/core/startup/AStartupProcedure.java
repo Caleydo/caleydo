@@ -1,6 +1,5 @@
 package org.caleydo.core.startup;
 
-import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.util.collection.Pair;
@@ -63,7 +62,7 @@ public abstract class AStartupProcedure {
 		if (!appInitData.isLoadPathways())
 			return;
 
-		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain();
 		cmd.setAttributes("org.caleydo.datadomain.pathway");
 		cmd.doCommand();
 	}

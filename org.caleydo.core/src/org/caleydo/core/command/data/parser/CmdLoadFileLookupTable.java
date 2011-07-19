@@ -3,7 +3,7 @@ package org.caleydo.core.command.data.parser;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.GeneralManager;
@@ -78,8 +78,8 @@ public class CmdLoadFileLookupTable
 	 * 
 	 * @param cmdType
 	 */
-	public CmdLoadFileLookupTable(final ECommandType cmdType) {
-		super(cmdType);
+	public CmdLoadFileLookupTable() {
+		super(CommandType.LOAD_LOOKUP_TABLE_FILE);
 	}
 
 	@Override

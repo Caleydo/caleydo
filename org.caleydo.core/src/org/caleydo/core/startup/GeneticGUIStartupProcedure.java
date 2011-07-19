@@ -2,7 +2,6 @@ package org.caleydo.core.startup;
 
 import java.util.List;
 
-import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.io.gui.ImportDataDialog;
@@ -37,7 +36,7 @@ public class GeneticGUIStartupProcedure
 			GeneralManager.get().getBasicInfo().setOrganism(Organism.HOMO_SAPIENS);
 		}
 
-		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain();
 		cmd.setAttributes("org.caleydo.datadomain.genetic");
 		cmd.doCommand();
 		dataDomain = cmd.getCreatedObject();

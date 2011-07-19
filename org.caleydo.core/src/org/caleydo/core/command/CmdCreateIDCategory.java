@@ -20,9 +20,8 @@ public class CmdCreateIDCategory
 	/**
 	 * Constructor.
 	 */
-	public CmdCreateIDCategory(final ECommandType cmdType) {
-		super(cmdType);
-
+	public CmdCreateIDCategory() {
+		super(CommandType.CREATE_ID_CATEGORY);
 	}
 
 	/**

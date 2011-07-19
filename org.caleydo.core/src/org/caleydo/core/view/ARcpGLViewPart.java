@@ -4,7 +4,7 @@ import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.view.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -38,7 +38,7 @@ public abstract class ARcpGLViewPart
 	protected void createGLCanvas() {
 		CmdViewCreateRcpGLCanvas cmdCanvas =
 			(CmdViewCreateRcpGLCanvas) GeneralManager.get().getCommandManager()
-				.createCommandByType(ECommandType.CREATE_VIEW_RCP_GLCANVAS);
+				.createCommandByType(CommandType.CREATE_VIEW_RCP_GLCANVAS);
 		cmdCanvas.setAttributes(-1, false, false, false);
 		cmdCanvas.doCommand();
 

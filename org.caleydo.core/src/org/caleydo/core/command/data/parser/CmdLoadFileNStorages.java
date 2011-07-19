@@ -3,7 +3,7 @@ package org.caleydo.core.command.data.parser;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.manager.GeneralManager;
@@ -36,8 +36,8 @@ public class CmdLoadFileNStorages
 	/**
 	 * Constructor.
 	 */
-	public CmdLoadFileNStorages(final ECommandType cmdType) {
-		super(cmdType);
+	public CmdLoadFileNStorages() {
+		super(CommandType.LOAD_DATA_FILE);
 		loadDataParameters = new LoadDataParameters();
 	}
 
@@ -45,13 +45,13 @@ public class CmdLoadFileNStorages
 	public void setParameterHandler(final ParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
-		loadDataParameters.setFileName(parameterHandler.getValueString(ECommandType.TAG_DETAIL.getXmlKey()));
+		loadDataParameters.setFileName(parameterHandler.getValueString(CommandType.TAG_DETAIL.getXmlKey()));
 		// this.sTreeFileName = parameterHandler.getValueString(ECommandType.TAG_DETAIL.getXmlKey());
-		loadDataParameters.setInputPattern(parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE1
+		loadDataParameters.setInputPattern(parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE1
 			.getXmlKey()));
 
 		StringTokenizer tokenizer =
-			new StringTokenizer(parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE2.getXmlKey()),
+			new StringTokenizer(parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE2.getXmlKey()),
 				GeneralManager.sDelimiter_Parser_DataItems);
 
 		storageIDs = new ArrayList<Integer>();
@@ -65,7 +65,7 @@ public class CmdLoadFileNStorages
 
 		int[] iArrayStartStop =
 			ConversionTools.convertStringToIntArray(
-				parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
+				parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
 
 		if (iArrayStartStop.length > 0) {
 			loadDataParameters.setStartParseFileAtLine(iArrayStartStop[0]);
@@ -86,7 +86,7 @@ public class CmdLoadFileNStorages
 
 		dataDomain =
 			(ASetBasedDataDomain) DataDomainManager.get().getDataDomainByID(
-				parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE4.getXmlKey()));
+				parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE4.getXmlKey()));
 		loadDataParameters.setDataDomain(dataDomain);
 
 	}

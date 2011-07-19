@@ -1,6 +1,6 @@
 package org.caleydo.core.parser.xml;
 
-import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.parser.parameter.ParameterHandler.ParameterHandlerType;
@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 public class CommandSaxHandler
 	extends AXmlParserHandler {
 
-	private final String sTag_Command = ECommandType.TAG_CMD.getXmlKey();
+	private final String sTag_Command = CommandType.TAG_CMD.getXmlKey();
 
 	/**
 	 * Since the opening tag is handled by the external handler this fal is set to true by default.
@@ -43,32 +43,32 @@ public class CommandSaxHandler
 
 		ParameterHandler phAttributes = new ParameterHandler();
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_LABEL.getXmlKey(),
-			ECommandType.TAG_LABEL.getDefault(), ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_LABEL.getXmlKey(),
+			CommandType.TAG_LABEL.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_UNIQUE_ID.getXmlKey(),
-			ECommandType.TAG_UNIQUE_ID.getDefault(), ParameterHandlerType.INT);
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_UNIQUE_ID.getXmlKey(),
+			CommandType.TAG_UNIQUE_ID.getDefault(), ParameterHandlerType.INT);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_TYPE.getXmlKey(),
-			ECommandType.TAG_TYPE.getDefault(), ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_TYPE.getXmlKey(),
+			CommandType.TAG_TYPE.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE1.getXmlKey(),
-			ECommandType.TAG_ATTRIBUTE1.getDefault(), ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE1.getXmlKey(),
+			CommandType.TAG_ATTRIBUTE1.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE2.getXmlKey(),
-			ECommandType.TAG_ATTRIBUTE2.getDefault(), ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE2.getXmlKey(),
+			CommandType.TAG_ATTRIBUTE2.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE3.getXmlKey(),
-			ECommandType.TAG_ATTRIBUTE3.getDefault(), ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE3.getXmlKey(),
+			CommandType.TAG_ATTRIBUTE3.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE4.getXmlKey(),
-			ECommandType.TAG_ATTRIBUTE4.getDefault(), ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE4.getXmlKey(),
+			CommandType.TAG_ATTRIBUTE4.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE5.getXmlKey(),
-			ECommandType.TAG_ATTRIBUTE5.getDefault(), ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE5.getXmlKey(),
+			CommandType.TAG_ATTRIBUTE5.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_DETAIL.getXmlKey(),
-			ECommandType.TAG_DETAIL.getDefault(), ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_DETAIL.getXmlKey(),
+			CommandType.TAG_DETAIL.getDefault(), ParameterHandlerType.STRING);
 
 		lastCommand = generalManager.getCommandManager().createCommand(phAttributes);
 

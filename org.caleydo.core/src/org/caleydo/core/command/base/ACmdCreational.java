@@ -1,6 +1,6 @@
 package org.caleydo.core.command.base;
 
-import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.CommandType;
 
 /**
  * This abstract command provides functionality to return the created object.
@@ -16,7 +16,7 @@ public abstract class ACmdCreational<T>
 	/**
 	 * Constructor
 	 */
-	protected ACmdCreational(final ECommandType cmdType) {
+	protected ACmdCreational(final CommandType cmdType) {
 		super(cmdType);
 	}
 

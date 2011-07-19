@@ -11,7 +11,7 @@ import java.util.Iterator;
 
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.CmdDataCreateSet;
 import org.caleydo.core.command.data.CmdDataCreateStorage;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
@@ -159,7 +159,7 @@ public class SetUtils {
 				case FLOAT:
 					cmdCreateStorage =
 						(CmdDataCreateStorage) GeneralManager.get().getCommandManager()
-							.createCommandByType(ECommandType.CREATE_STORAGE);
+							.createCommandByType(CommandType.CREATE_STORAGE);
 					cmdCreateStorage.setAttributes(EManagedObjectType.STORAGE_NUMERICAL);
 					cmdCreateStorage.doCommand();
 
@@ -171,7 +171,7 @@ public class SetUtils {
 				case STRING:
 					cmdCreateStorage =
 						(CmdDataCreateStorage) GeneralManager.get().getCommandManager()
-							.createCommandByType(ECommandType.CREATE_STORAGE);
+							.createCommandByType(CommandType.CREATE_STORAGE);
 					cmdCreateStorage.setAttributes(EManagedObjectType.STORAGE_NOMINAL);
 					cmdCreateStorage.doCommand();
 
@@ -211,7 +211,7 @@ public class SetUtils {
 		// Create SET
 		CmdDataCreateSet cmdCreateSet =
 			(CmdDataCreateSet) GeneralManager.get().getCommandManager()
-				.createCommandByType(ECommandType.CREATE_SET_DATA);
+				.createCommandByType(CommandType.CREATE_SET_DATA);
 
 		cmdCreateSet.setAttributes(storageIDs, dataDomain);
 		cmdCreateSet.doCommand();
@@ -220,7 +220,7 @@ public class SetUtils {
 
 		CmdLoadFileLookupTable cmdLoadLookupTableFile =
 			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager()
-				.createCommandByType(ECommandType.LOAD_LOOKUP_TABLE_FILE);
+				.createCommandByType(CommandType.LOAD_LOOKUP_TABLE_FILE);
 
 		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 			String lookupTableInfo =
@@ -252,7 +252,7 @@ public class SetUtils {
 		// Trigger file loading command
 		CmdLoadFileNStorages cmdLoadCSV =
 			(CmdLoadFileNStorages) GeneralManager.get().getCommandManager()
-				.createCommandByType(ECommandType.LOAD_DATA_FILE);
+				.createCommandByType(CommandType.LOAD_DATA_FILE);
 
 		cmdLoadCSV.setAttributes(storageIDs, loadDataParameters);
 		cmdLoadCSV.doCommand();
@@ -263,7 +263,6 @@ public class SetUtils {
 		}
 
 		// ----------------------------------------
-
 		Set set = (Set) dataDomain.getSet();
 
 		// loadTrees(loadDataParameters, set);
