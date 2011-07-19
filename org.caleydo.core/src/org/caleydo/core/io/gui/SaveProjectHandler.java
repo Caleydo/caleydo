@@ -1,6 +1,6 @@
 package org.caleydo.core.io.gui;
 
-import org.caleydo.core.gui.toolbar.SaveProjectAction;
+import org.caleydo.core.gui.toolbar.action.SaveProjectAction;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

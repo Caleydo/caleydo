@@ -51,9 +51,6 @@ public class RcpToolBarView
 		viewSpecificGroups = new ArrayList<Group>();
 
 		addGeneralToolBar();
-
-		ToolBarMediator toolBarMediator = new ToolBarMediator();
-		toolBarMediator.setToolBarView(this);
 	}
 
 	@Override

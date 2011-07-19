@@ -2,17 +2,12 @@ package org.caleydo.core.gui.perspective;
 
 import java.util.List;
 
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.RcpToolBarView;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
 import org.caleydo.core.gui.toolbar.content.AToolBarContent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.event.view.RemoveViewSpecificItemsEvent;
-import org.caleydo.core.manager.event.view.ViewActivationEvent;
-import org.caleydo.core.manager.event.view.ViewEvent;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IView;
@@ -32,18 +27,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Marc Streit
  */
 public class PartListener
-	implements IPartListener2, IUniqueObject {
-
-	EventPublisher eventPublisher;
-
-	public PartListener() {
-		eventPublisher = GeneralManager.get().getEventPublisher();
-	}
-
-	@Override
-	public int getID() {
-		return 815; // FIXXXME unique id for this object or find another uniqueObject to trigger events from
-	}
+	implements IPartListener2 {
 
 	@Override
 	public void partOpened(IWorkbenchPartReference partRef) {
@@ -74,8 +58,6 @@ public class PartListener
 
 		if (toolBarView == null)
 			return;
-
-//		toolBarView.removeViewSpecificToolBar(glView.getGLView().getID());
 	}
 
 	@Override
@@ -89,9 +71,6 @@ public class PartListener
 		CaleydoRCPViewPart viewPart = (CaleydoRCPViewPart) activePart;
 		viewPart.setAttached(isViewAttached(viewPart));
 
-		// GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID,
-		// "partVisible(): " +viewPart));
-
 		if (viewPart instanceof ARcpGLViewPart) {
 			ARcpGLViewPart glViewPart = (ARcpGLViewPart) activePart;
 
@@ -99,21 +78,12 @@ public class PartListener
 
 		}
 
-		// if (!activePart.getSite().getShell().getText().equals("Caleydo")) {
-		// viewpart is detached from caleydo main window
 		drawInlineToolBar(viewPart);
-		// removeViewSpecificToolBarItems();
-		// }
-		// else {
-		// viewpart is attached within caleydo main window
-		// removeInlineToolBar(viewPart);
-		// sendViewActivationEvent(viewPart);
-		// }
 	}
 
 	@Override
 	public void partDeactivated(IWorkbenchPartReference partRef) {
-		// removeViewSpecificToolBarItems();
+
 	}
 
 	@Override
@@ -124,9 +94,6 @@ public class PartListener
 			return;
 		}
 		CaleydoRCPViewPart viewPart = (CaleydoRCPViewPart) activePart;
-
-		// GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID,
-		// "partHidden(): " +viewPart));
 
 		viewPart.setAttached(isViewAttached(viewPart));
 
@@ -155,28 +122,11 @@ public class PartListener
 
 		CaleydoRCPViewPart viewPart = (CaleydoRCPViewPart) activePart;
 
-		// GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID,
-		// "partActivated(): " +viewPart));
-
 		// Make sure that keyboard listener gets the events
 		if (viewPart.getSWTComposite() != null)
 			viewPart.getSWTComposite().forceFocus();
 
-//		sendViewActivationEvent(viewPart);
 		drawInlineToolBar(viewPart);
-	}
-
-	private void sendViewActivationEvent(CaleydoRCPViewPart viewPart) {
-		ViewEvent viewActivationEvent;
-		viewActivationEvent = new ViewActivationEvent();
-		viewActivationEvent.setSender(this);
-		viewActivationEvent.setViews(getAllViews(viewPart));
-
-		// Do not trigger event when no view is assigned to view part (e.g. info area)
-		if (viewActivationEvent.getViewIDs().get(0) == null)
-			return;
-
-		eventPublisher.triggerEvent(viewActivationEvent);
 	}
 
 	@Override
@@ -211,28 +161,6 @@ public class PartListener
 				toolBarManager.add(new Separator());
 			}
 		}
-		toolBarManager.update(true);
-	}
-
-	/**
-	 * removes all view specific toolbar items in the toolbar view
-	 */
-	private void removeViewSpecificToolBarItems() {
-		RemoveViewSpecificItemsEvent event;
-		event = new RemoveViewSpecificItemsEvent();
-		event.setSender(this);
-		eventPublisher.triggerEvent(event);
-	}
-
-	/**
-	 * removes all inline toolbar items
-	 * 
-	 * @param viewPart
-	 *            view to remove the toolbar items from
-	 */
-	private void removeInlineToolBar(CaleydoRCPViewPart viewPart) {
-		final IToolBarManager toolBarManager = viewPart.getViewSite().getActionBars().getToolBarManager();
-		toolBarManager.removeAll();
 		toolBarManager.update(true);
 	}
 

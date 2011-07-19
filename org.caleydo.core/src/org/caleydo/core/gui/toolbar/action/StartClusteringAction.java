@@ -1,9 +1,9 @@
-package org.caleydo.core.gui.toolbar;
+package org.caleydo.core.gui.toolbar.action;
 
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.gui.toolbar.action.AToolBarAction;
+import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;

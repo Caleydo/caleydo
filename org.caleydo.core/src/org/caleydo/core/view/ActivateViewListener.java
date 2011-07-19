@@ -1,6 +1,6 @@
 package org.caleydo.core.view;
 
-import org.caleydo.core.gui.toolbar.StartClusteringAction;
+import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;

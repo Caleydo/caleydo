@@ -1,6 +1,6 @@
 package org.caleydo.core.util.clusterer.gui;
 
-import org.caleydo.core.gui.toolbar.StartClusteringAction;
+import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

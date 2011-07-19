@@ -1,6 +1,5 @@
-package org.caleydo.core.gui.toolbar;
+package org.caleydo.core.gui.toolbar.action;
 
-import org.caleydo.core.gui.toolbar.action.AToolBarAction;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
