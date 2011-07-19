@@ -24,14 +24,11 @@ public class OpenParCoordsHandler extends AbstractHandler implements IHandler {
 					.getActiveWorkbenchWindow(event)
 					.getActivePage()
 					.showView(GLParallelCoordinates.VIEW_TYPE,
-							Integer.toString(SECONDARY_ID), IWorkbenchPage.VIEW_ACTIVATE);
-
-			SECONDARY_ID++;
+							Integer.toString(SECONDARY_ID++), IWorkbenchPage.VIEW_ACTIVATE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
 
 		return null;
 	}
-
 }

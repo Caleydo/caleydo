@@ -29,6 +29,8 @@ public class CmdDataCreateDataDomain
 	@Override
 	public void doCommand() {
 		createdObject = createDataDomain(dataDomainType);
+		
+		DataDomainManager.get().register(createdObject);
 	}
 
 	private IDataDomain createDataDomain(String dataDomainType) {

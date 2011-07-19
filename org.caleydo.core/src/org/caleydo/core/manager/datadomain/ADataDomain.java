@@ -57,7 +57,6 @@ public abstract class ADataDomain
 	public ADataDomain(String dataDomainType, String dataDomainID) {
 		this.dataDomainType = dataDomainType;
 		this.dataDomainID = dataDomainID;
-		DataDomainManager.get().register(this);
 		initIDMappings();
 	}
 

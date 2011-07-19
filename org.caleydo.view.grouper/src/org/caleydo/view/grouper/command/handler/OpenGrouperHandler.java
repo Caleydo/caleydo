@@ -23,10 +23,9 @@ public class OpenGrouperHandler extends AbstractHandler implements IHandler {
 			HandlerUtil
 					.getActiveWorkbenchWindow(event)
 					.getActivePage()
-					.showView(GLGrouper.VIEW_TYPE, Integer.toString(SECONDARY_ID),
+					.showView(GLGrouper.VIEW_TYPE, Integer.toString(SECONDARY_ID++),
 							IWorkbenchPage.VIEW_ACTIVATE);
 
-			SECONDARY_ID++;
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

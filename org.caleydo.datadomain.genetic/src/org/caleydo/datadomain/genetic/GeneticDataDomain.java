@@ -76,7 +76,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	public GeneticDataDomain() {
 
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + ":" + extensionID++);
-
+		
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
 		primaryContentMappingType = IDType.getIDType("DAVID");
 		humanReadableContentIDType = IDType.getIDType("GENE_SYMBOL");
@@ -89,7 +89,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 	@Override
 	protected void initIDMappings() {
-
+	
 		// Load IDs needed in this datadomain
 		IDMappingLoader.get().loadMappingFile(fileName);
 	}
