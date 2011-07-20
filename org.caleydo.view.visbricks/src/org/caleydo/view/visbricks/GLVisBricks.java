@@ -43,6 +43,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
+import org.caleydo.core.view.opengl.canvas.listener.GLMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -169,6 +170,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	
 	private Set<IDataDomain> dataDomains;
 	private List<ADimensionGroupData> dimensionGroupData;
+	
 
 	/**
 	 * Constructor.

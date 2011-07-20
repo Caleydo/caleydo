@@ -21,6 +21,7 @@ import org.caleydo.core.manager.datadomain.DataDomainGraph;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.DimensionGroupsChangedEvent;
+import org.caleydo.core.manager.event.data.NewDataDomainEvent;
 import org.caleydo.core.manager.event.view.DataDomainsChangedEvent;
 import org.caleydo.core.manager.event.view.NewViewEvent;
 import org.caleydo.core.manager.event.view.ViewClosedEvent;
@@ -43,6 +44,7 @@ import org.caleydo.view.datagraph.bandlayout.ConnectionBandCreatorFactory;
 import org.caleydo.view.datagraph.listener.DataDomainsChangedEventListener;
 import org.caleydo.view.datagraph.listener.DimensionGroupsChangedEventListener;
 import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
+import org.caleydo.view.datagraph.listener.NewDataDomainEventListener;
 import org.caleydo.view.datagraph.listener.NewViewEventListener;
 import org.caleydo.view.datagraph.listener.ViewClosedEventListener;
 import org.eclipse.swt.widgets.Composite;
@@ -77,6 +79,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private ConnectionBandRenderer connectionBandRenderer;
 
 	private NewViewEventListener newViewEventListener;
+	private NewDataDomainEventListener newDataDomainEventListener;
 	private ViewClosedEventListener viewClosedEventListener;
 	private DataDomainsChangedEventListener dataDomainsChangedEventListener;
 	private DimensionGroupsChangedEventListener dimensionGroupsChangedEventListener;
@@ -84,7 +87,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	/**
 	 * Constructor.
 	 */
-	public GLDataGraph(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLDataGraph(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 
@@ -100,45 +104,49 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		viewNodesOfDataDomains = new HashMap<IDataDomain, Set<ViewNode>>();
 		dataNodesOfDataDomains = new HashMap<IDataDomain, DataNode>();
 
-		DataDomainGraph dataDomainGraph = DataDomainManager.get().getDataDomainGraph();
+		DataDomainGraph dataDomainGraph = DataDomainManager.get()
+				.getDataDomainGraph();
 
 		for (IDataDomain dataDomain : dataDomainGraph.getDataDomains()) {
-			DataNode dataNode = new DataNode(graphLayout, this, dragAndDropController,
-					lastNodeID++, dataDomain);
-			boolean nodeAdded = false;
-			for (DataNode node : dataNodes) {
-				if (node.getDataDomain() == dataDomain) {
-					dataNode = node;
-					nodeAdded = true;
-					break;
-				}
-			}
-			if (!nodeAdded) {
-				dataGraph.addNode(dataNode);
-				dataNodes.add(dataNode);
-				dataNodesOfDataDomains.put(dataNode.getDataDomain(), dataNode);
-			}
-
-			Set<IDataDomain> neighbors = dataDomainGraph.getNeighboursOf(dataDomain);
-
-			for (IDataDomain neighborDataDomain : neighbors) {
-				nodeAdded = false;
-				for (DataNode node : dataNodes) {
-					if (node.getDataDomain() == neighborDataDomain) {
-						dataGraph.addEdge(dataNode, node);
-						nodeAdded = true;
-						break;
-					}
-				}
-				if (!nodeAdded) {
-					DataNode node = new DataNode(graphLayout, this,
-							dragAndDropController, lastNodeID++, neighborDataDomain);
-					dataGraph.addNode(node);
-					dataNodes.add(node);
-					dataNodesOfDataDomains.put(node.getDataDomain(), node);
-					dataGraph.addEdge(dataNode, node);
-				}
-			}
+//			DataNode dataNode = new DataNode(graphLayout, this,
+//					dragAndDropController, lastNodeID++, dataDomain);
+//			boolean nodeAdded = false;
+//			for (DataNode node : dataNodes) {
+//				if (node.getDataDomain() == dataDomain) {
+//					dataNode = node;
+//					nodeAdded = true;
+//					break;
+//				}
+//			}
+//			if (!nodeAdded) {
+//				dataGraph.addNode(dataNode);
+//				dataNodes.add(dataNode);
+//				dataNodesOfDataDomains.put(dataNode.getDataDomain(), dataNode);
+//			}
+//
+//			Set<IDataDomain> neighbors = dataDomainGraph
+//					.getNeighboursOf(dataDomain);
+//
+//			for (IDataDomain neighborDataDomain : neighbors) {
+//				nodeAdded = false;
+//				for (DataNode node : dataNodes) {
+//					if (node.getDataDomain() == neighborDataDomain) {
+//						dataGraph.addEdge(dataNode, node);
+//						nodeAdded = true;
+//						break;
+//					}
+//				}
+//				if (!nodeAdded) {
+//					DataNode node = new DataNode(graphLayout, this,
+//							dragAndDropController, lastNodeID++,
+//							neighborDataDomain);
+//					dataGraph.addNode(node);
+//					dataNodes.add(node);
+//					dataNodesOfDataDomains.put(node.getDataDomain(), node);
+//					dataGraph.addEdge(dataNode, node);
+//				}
+//			}
+			addDataDomain(dataDomain);
 		}
 
 		// Set<String> allowedViewTypes = new HashSet<String>();
@@ -151,8 +159,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		// allowedViewTypes.add("org.caleydo.view.tabular");
 		// allowedViewTypes.add("org.caleydo.view.bucket");
 
-		Collection<AGLView> views = GeneralManager.get().getViewGLCanvasManager()
-				.getAllGLViews();
+		Collection<AGLView> views = GeneralManager.get()
+				.getViewGLCanvasManager().getAllGLViews();
 
 		for (AGLView view : views) {
 			addView(view);
@@ -312,10 +320,14 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
-		int drawingAreaWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum
-				.getWidth()) - 2 * BOUNDS_SPACING_PIXELS - maxNodeWidthPixels;
-		int drawingAreaHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
-				.getHeight()) - 2 * BOUNDS_SPACING_PIXELS - maxNodeHeightPixels;
+		int drawingAreaWidth = pixelGLConverter
+				.getPixelWidthForGLWidth(viewFrustum.getWidth())
+				- 2
+				* BOUNDS_SPACING_PIXELS - maxNodeWidthPixels;
+		int drawingAreaHeight = pixelGLConverter
+				.getPixelHeightForGLHeight(viewFrustum.getHeight())
+				- 2
+				* BOUNDS_SPACING_PIXELS - maxNodeHeightPixels;
 		if (applyAutomaticLayout) {
 			graphLayout.setGraph(dataGraph);
 			Rectangle2D rect = new Rectangle();
@@ -328,11 +340,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		} else {
 			if (!dragAndDropController.isDragging()) {
 				for (IDataGraphNode node : dataGraph.getNodes()) {
-					Pair<Float, Float> relativePosition = relativeNodePositions.get(node);
-					graphLayout.setNodePosition(node,
-							new Point2D.Double(relativePosition.getFirst()
-									* drawingAreaWidth, relativePosition.getSecond()
-									* drawingAreaHeight));
+					Pair<Float, Float> relativePosition = relativeNodePositions
+							.get(node);
+					graphLayout.setNodePosition(node, new Point2D.Double(
+							relativePosition.getFirst() * drawingAreaWidth,
+							relativePosition.getSecond() * drawingAreaHeight));
 				}
 			}
 		}
@@ -341,8 +353,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			Point2D position = graphLayout.getNodePosition(node, true);
 			float relativePosX = (float) position.getX() / drawingAreaWidth;
 			float relativePosY = (float) position.getY() / drawingAreaHeight;
-			relativeNodePositions.put(node, new Pair<Float, Float>(relativePosX,
-					relativePosY));
+			relativeNodePositions.put(node, new Pair<Float, Float>(
+					relativePosX, relativePosY));
 
 			node.render(gl);
 
@@ -354,7 +366,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	private void renderEdges(GL2 gl) {
 
-		for (Pair<IDataGraphNode, IDataGraphNode> edge : dataGraph.getAllEdges()) {
+		for (Pair<IDataGraphNode, IDataGraphNode> edge : dataGraph
+				.getAllEdges()) {
 
 			// Works because there are no edges between view nodes
 			if ((edge.getFirst() instanceof ViewNode)
@@ -365,17 +378,19 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				gl.glPushAttrib(GL2.GL_LINE_BIT);
 				gl.glLineWidth(2);
 				gl.glBegin(GL2.GL_LINES);
-				Point2D position1 = graphLayout.getNodePosition(edge.getFirst());
-				Point2D position2 = graphLayout.getNodePosition(edge.getSecond());
+				Point2D position1 = graphLayout
+						.getNodePosition(edge.getFirst());
+				Point2D position2 = graphLayout.getNodePosition(edge
+						.getSecond());
 
-				float x1 = pixelGLConverter.getGLWidthForPixelWidth((int) position1
-						.getX());
-				float x2 = pixelGLConverter.getGLWidthForPixelWidth((int) position2
-						.getX());
-				float y1 = pixelGLConverter.getGLHeightForPixelHeight((int) position1
-						.getY());
-				float y2 = pixelGLConverter.getGLHeightForPixelHeight((int) position2
-						.getY());
+				float x1 = pixelGLConverter
+						.getGLWidthForPixelWidth((int) position1.getX());
+				float x2 = pixelGLConverter
+						.getGLWidthForPixelWidth((int) position2.getX());
+				float y1 = pixelGLConverter
+						.getGLHeightForPixelHeight((int) position1.getY());
+				float y2 = pixelGLConverter
+						.getGLHeightForPixelHeight((int) position2.getY());
 
 				gl.glVertex3f(x1, y1, -0.5f);
 				gl.glVertex3f(x2, y2, -0.5f);
@@ -386,7 +401,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	}
 
-	private void renderConnectionBands(GL2 gl, IDataGraphNode node1, IDataGraphNode node2) {
+	private void renderConnectionBands(GL2 gl, IDataGraphNode node1,
+			IDataGraphNode node2) {
 
 		AConnectionBandCreator bandCreator = ConnectionBandCreatorFactory
 				.getConnectionBandCreator(node1, node2, pixelGLConverter);
@@ -520,46 +536,58 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		Pair<Point2D, Point2D> anchorPoints2 = bandInfo.getAnchorPoints2();
 
 		connectionBandRenderer.init(gl);
-		float[] side1AnchorPos1 = new float[] { (float) anchorPoints1.getFirst().getX(),
+		float[] side1AnchorPos1 = new float[] {
+				(float) anchorPoints1.getFirst().getX(),
 				(float) anchorPoints1.getFirst().getY() };
-		float[] side1AnchorPos2 = new float[] { (float) anchorPoints1.getSecond().getX(),
+		float[] side1AnchorPos2 = new float[] {
+				(float) anchorPoints1.getSecond().getX(),
 				(float) anchorPoints1.getSecond().getY() };
 
-		float[] side2AnchorPos1 = new float[] { (float) anchorPoints2.getFirst().getX(),
+		float[] side2AnchorPos1 = new float[] {
+				(float) anchorPoints2.getFirst().getX(),
 				(float) anchorPoints2.getFirst().getY() };
-		float[] side2AnchorPos2 = new float[] { (float) anchorPoints2.getSecond().getX(),
+		float[] side2AnchorPos2 = new float[] {
+				(float) anchorPoints2.getSecond().getX(),
 				(float) anchorPoints2.getSecond().getY() };
 
 		float[] offset1AnchorPos1 = new float[] {
 				side1AnchorPos1[0]
-						+ (bandInfo.isOffset1Horizontal() ? (bandInfo.getOffset1()) : 0),
+						+ (bandInfo.isOffset1Horizontal() ? (bandInfo
+								.getOffset1()) : 0),
 				side1AnchorPos1[1]
-						+ (bandInfo.isOffset1Horizontal() ? 0 : bandInfo.getOffset1()) };
+						+ (bandInfo.isOffset1Horizontal() ? 0 : bandInfo
+								.getOffset1()) };
 		float[] offset1AnchorPos2 = new float[] {
 				side1AnchorPos2[0]
-						+ (bandInfo.isOffset1Horizontal() ? (bandInfo.getOffset1()) : 0),
+						+ (bandInfo.isOffset1Horizontal() ? (bandInfo
+								.getOffset1()) : 0),
 				side1AnchorPos2[1]
-						+ (bandInfo.isOffset1Horizontal() ? 0 : bandInfo.getOffset1()) };
+						+ (bandInfo.isOffset1Horizontal() ? 0 : bandInfo
+								.getOffset1()) };
 
 		float[] offset2AnchorPos1 = new float[] {
 				side2AnchorPos1[0]
-						+ (bandInfo.isOffset2Horizontal() ? (bandInfo.getOffset1()) : 0),
+						+ (bandInfo.isOffset2Horizontal() ? (bandInfo
+								.getOffset1()) : 0),
 				side2AnchorPos1[1]
-						+ (bandInfo.isOffset2Horizontal() ? 0 : bandInfo.getOffset1()) };
+						+ (bandInfo.isOffset2Horizontal() ? 0 : bandInfo
+								.getOffset1()) };
 		float[] offset2AnchorPos2 = new float[] {
 				side2AnchorPos2[0]
-						+ (bandInfo.isOffset2Horizontal() ? (bandInfo.getOffset1()) : 0),
+						+ (bandInfo.isOffset2Horizontal() ? (bandInfo
+								.getOffset1()) : 0),
 				side2AnchorPos2[1]
-						+ (bandInfo.isOffset2Horizontal() ? 0 : bandInfo.getOffset1()) };
+						+ (bandInfo.isOffset2Horizontal() ? 0 : bandInfo
+								.getOffset1()) };
 
-		Pair<float[], float[]> pair1 = new Pair<float[], float[]>(side1AnchorPos1,
-				side1AnchorPos2);
-		Pair<float[], float[]> pair2 = new Pair<float[], float[]>(offset1AnchorPos1,
-				offset1AnchorPos2);
-		Pair<float[], float[]> pair3 = new Pair<float[], float[]>(offset2AnchorPos1,
-				offset2AnchorPos2);
-		Pair<float[], float[]> pair4 = new Pair<float[], float[]>(side2AnchorPos1,
-				side2AnchorPos2);
+		Pair<float[], float[]> pair1 = new Pair<float[], float[]>(
+				side1AnchorPos1, side1AnchorPos2);
+		Pair<float[], float[]> pair2 = new Pair<float[], float[]>(
+				offset1AnchorPos1, offset1AnchorPos2);
+		Pair<float[], float[]> pair3 = new Pair<float[], float[]>(
+				offset2AnchorPos1, offset2AnchorPos2);
+		Pair<float[], float[]> pair4 = new Pair<float[], float[]>(
+				side2AnchorPos1, side2AnchorPos2);
 
 		List<Pair<float[], float[]>> anchorPoints = new ArrayList<Pair<float[], float[]>>();
 		anchorPoints.add(pair1);
@@ -637,7 +665,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		viewClosedEventListener = new ViewClosedEventListener();
 		viewClosedEventListener.setHandler(this);
-		eventPublisher.addListener(ViewClosedEvent.class, viewClosedEventListener);
+		eventPublisher.addListener(ViewClosedEvent.class,
+				viewClosedEventListener);
 
 		dataDomainsChangedEventListener = new DataDomainsChangedEventListener();
 		dataDomainsChangedEventListener.setHandler(this);
@@ -648,6 +677,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		dimensionGroupsChangedEventListener.setHandler(this);
 		eventPublisher.addListener(DimensionGroupsChangedEvent.class,
 				dimensionGroupsChangedEventListener);
+
+		newDataDomainEventListener = new NewDataDomainEventListener();
+		newDataDomainEventListener.setHandler(this);
+		eventPublisher.addListener(NewDataDomainEvent.class,
+				newDataDomainEventListener);
 	}
 
 	@Override
@@ -673,6 +707,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			eventPublisher.removeListener(dimensionGroupsChangedEventListener);
 			dimensionGroupsChangedEventListener = null;
 		}
+
+		if (newDataDomainEventListener != null) {
+			eventPublisher.removeListener(newDataDomainEventListener);
+			newDataDomainEventListener = null;
+		}
 	}
 
 	@Override
@@ -696,15 +735,16 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	public void addView(AGLView view) {
 		if (!view.isRenderedRemote() && view.isDataView()) {
-			ViewNode node = new ViewNode(graphLayout, this, dragAndDropController,
-					lastNodeID++, view);
+			ViewNode node = new ViewNode(graphLayout, this,
+					dragAndDropController, lastNodeID++, view);
 			dataGraph.addNode(node);
 			viewNodes.add(node);
 			Set<IDataDomain> dataDomains = view.getDataDomains();
 			if (dataDomains != null && !dataDomains.isEmpty()) {
 				node.setDataDomains(dataDomains);
 				for (IDataDomain dataDomain : dataDomains) {
-					Set<ViewNode> viewNodes = viewNodesOfDataDomains.get(dataDomain);
+					Set<ViewNode> viewNodes = viewNodesOfDataDomains
+							.get(dataDomain);
 					if (viewNodes == null) {
 						viewNodes = new HashSet<ViewNode>();
 					}
@@ -738,7 +778,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		if (dataDomains != null) {
 			for (IDataDomain dataDomain : dataDomains) {
-				Set<ViewNode> viewNodes = viewNodesOfDataDomains.get(dataDomain);
+				Set<ViewNode> viewNodes = viewNodesOfDataDomains
+						.get(dataDomain);
 				if (viewNodes != null) {
 					viewNodes.remove(viewNode);
 				}
@@ -761,6 +802,53 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		if (dataNodesOfDataDomains.get(dataDomain) != null) {
 			setDisplayListDirty();
 		}
+	}
+
+	public void addDataDomain(IDataDomain dataDomain) {
+		DataNode dataNode = null;
+		boolean nodeAdded = false;
+		for (DataNode node : dataNodes) {
+			if (node.getDataDomain() == dataDomain) {
+				dataNode = node;
+				nodeAdded = true;
+				break;
+			}
+		}
+		if (!nodeAdded) {
+			dataNode = new DataNode(graphLayout, this, dragAndDropController,
+					lastNodeID++, dataDomain);
+			dataGraph.addNode(dataNode);
+			dataNodes.add(dataNode);
+			dataNodesOfDataDomains.put(dataNode.getDataDomain(), dataNode);
+		}
+
+		DataDomainGraph dataDomainGraph = DataDomainManager.get()
+				.getDataDomainGraph();
+
+		Set<IDataDomain> neighbors = dataDomainGraph
+				.getNeighboursOf(dataDomain);
+
+		for (IDataDomain neighborDataDomain : neighbors) {
+			nodeAdded = false;
+			for (DataNode node : dataNodes) {
+				if (node.getDataDomain() == neighborDataDomain) {
+					dataGraph.addEdge(dataNode, node);
+					nodeAdded = true;
+					break;
+				}
+			}
+			if (!nodeAdded) {
+				DataNode node = new DataNode(graphLayout, this,
+						dragAndDropController, lastNodeID++, neighborDataDomain);
+				dataGraph.addNode(node);
+				dataNodes.add(node);
+				dataNodesOfDataDomains.put(node.getDataDomain(), node);
+				dataGraph.addEdge(dataNode, node);
+			}
+		}
+		
+		applyAutomaticLayout = true;
+		setDisplayListDirty();
 	}
 
 }

@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.caleydo.core.gui.dialog.ChooseDataDomainDialog;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.event.data.NewDataDomainEvent;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -135,6 +137,10 @@ public class DataDomainManager {
 		}
 
 		dataDomainGraph.addDataDomain(dataDomain);
+		
+		NewDataDomainEvent event = new NewDataDomainEvent(dataDomain);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 	/**

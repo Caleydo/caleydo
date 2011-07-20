@@ -47,20 +47,11 @@ import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
 import org.caleydo.core.view.opengl.canvas.listener.ToggleMagnifyingGlassListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
-import org.caleydo.core.view.opengl.layout.Column;
-import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.LayoutTemplate;
-import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLMagnifyingGlass;
-import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
-import org.caleydo.core.view.opengl.util.scrollbar.IScrollBarUpdateHandler;
-import org.caleydo.core.view.opengl.util.scrollbar.ScrollBar;
-import org.caleydo.core.view.opengl.util.scrollbar.ScrollBarRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -96,7 +87,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  */
 public abstract class AGLView
 	extends AView
-	implements GLEventListener, IResettableView, IScrollBarUpdateHandler, IMouseWheelHandler {
+	implements GLEventListener, IResettableView, IMouseWheelHandler {
 
 	public final static String VIEW_TYPE = "unspecified";
 
@@ -119,8 +110,6 @@ public abstract class AGLView
 	protected GLKeyListener<?> glKeyListener;
 
 	protected GLMouseListener glMouseListener;
-
-	protected GLMouseWheelListener glMouseWheelListener;
 
 	protected ViewFrustum viewFrustum;
 
@@ -162,21 +151,7 @@ public abstract class AGLView
 	private int iFrameCounter = 0;
 	private int iRotationFrameCounter = 0;
 	private static final int NUMBER_OF_FRAMES = 15;
-
-	private float previousZoomScale = 1.0f;
-	private float currentZoomScale = 1.0f;
-
-	private ScrollBar hScrollBar;
-	private ScrollBar vScrollBar;
-	private LayoutManager hScrollBarLayoutManager;
-	private LayoutTemplate hScrollBarTemplate;
-	private LayoutManager vScrollBarLayoutManager;
-	private LayoutTemplate vScrollBarTemplate;
-
-	private boolean wasMouseWheeled = false;
-
-	private Point mouseWheelPosition;
-
+	
 	protected GLMagnifyingGlass magnifyingGlass;
 
 	private ToggleMagnifyingGlassListener magnifyingGlassListener;
@@ -221,8 +196,6 @@ public abstract class AGLView
 
 	private boolean isVisible = true;
 
-	protected boolean useZooming = false;
-
 	protected CaleydoTextRenderer textRenderer;
 
 	/**
@@ -231,19 +204,14 @@ public abstract class AGLView
 	 */
 	protected boolean lazyMode;
 
-	private float relativeViewTranlateX;
-
-	private float relativeViewTranlateY;
-
 	private HashMap<String, HashMap<Integer, Set<IPickingListener>>> singleIDPickingListeners;
 	private HashMap<String, Set<IPickingListener>> multiIDPickingListeners;
-
-	// FIXME: Maybe this can be generalized so a view only needs only one DragAndDropController
-	private DragAndDropController scrollBarDragAndDropController;
 
 	private int currentScrollBarID = 0;
 
 	private HashSet<IMouseWheelHandler> mouseWheelListeners;
+	
+	protected GLMouseWheelListener glMouseWheelListener;
 
 	/**
 	 * Constructor. If the glCanvas object is null - then the view is rendered remote.
@@ -257,7 +225,6 @@ public abstract class AGLView
 
 		glMouseListener = new GLMouseListener();
 		glMouseListener.setNavigationModes(false, false, false);
-		glMouseWheelListener = new GLMouseWheelListener(this);
 		
 		// Register mouse listener to GL2 canvas
 		glCanvas.addMouseListener(glMouseListener);
@@ -266,7 +233,6 @@ public abstract class AGLView
 		
 		singleIDPickingListeners = new HashMap<String, HashMap<Integer, Set<IPickingListener>>>();
 		multiIDPickingListeners = new HashMap<String, Set<IPickingListener>>();
-		scrollBarDragAndDropController = new DragAndDropController(this);
 
 		this.viewFrustum = viewFrustum;
 
@@ -276,6 +242,8 @@ public abstract class AGLView
 		idMappingManager = generalManager.getIDMappingManager();
 		textureManager = new TextureManager();
 		contextMenu = ContextMenu.get();
+		
+		glMouseWheelListener = new GLMouseWheelListener(this);
 
 		bShowMagnifyingGlass = false;
 
@@ -283,57 +251,6 @@ public abstract class AGLView
 
 		mouseWheelListeners = new HashSet<IMouseWheelHandler>();
 
-		initScrollBars();
-
-	}
-
-	private void initScrollBars() {
-
-		hScrollBarLayoutManager = new LayoutManager(viewFrustum);
-		hScrollBarTemplate = new LayoutTemplate();
-		hScrollBar = new ScrollBar(0, 10, 5, 5, EPickingType.ZOOM_SCROLLBAR, 0, this);
-
-		Column baseColumn = new Column();
-
-		ElementLayout hScrollBarLayout = new ElementLayout("horizontalScrollBar");
-		hScrollBarLayout.setPixelGLConverter(pixelGLConverter);
-		hScrollBarLayout.setPixelSizeY(10);
-		hScrollBarLayout.setRatioSizeX(1.0f);
-		hScrollBarLayout.setRenderer(new ScrollBarRenderer(hScrollBar, this, true,
-			scrollBarDragAndDropController));
-
-		ElementLayout hSpacingLayout = new ElementLayout("horizontalSpacing");
-		hSpacingLayout.setRatioSizeX(1.0f);
-
-		baseColumn.append(hScrollBarLayout);
-		baseColumn.append(hSpacingLayout);
-
-		hScrollBarTemplate.setBaseElementLayout(baseColumn);
-
-		hScrollBarLayoutManager.setTemplate(hScrollBarTemplate);
-
-		vScrollBarLayoutManager = new LayoutManager(viewFrustum);
-		vScrollBarTemplate = new LayoutTemplate();
-		vScrollBar = new ScrollBar(0, 10, 5, 5, EPickingType.ZOOM_SCROLLBAR, 1, this);
-
-		Row baseRow = new Row();
-
-		ElementLayout vScrollBarLayout = new ElementLayout("horizontalScrollBar");
-		vScrollBarLayout.setPixelGLConverter(pixelGLConverter);
-		vScrollBarLayout.setPixelSizeX(10);
-		vScrollBarLayout.setRatioSizeY(1.0f);
-		vScrollBarLayout.setRenderer(new ScrollBarRenderer(vScrollBar, this, false,
-			scrollBarDragAndDropController));
-
-		ElementLayout vSpacingLayout = new ElementLayout("verticalSpacing");
-		vSpacingLayout.setRatioSizeX(1.0f);
-
-		baseRow.append(vSpacingLayout);
-		baseRow.append(vScrollBarLayout);
-
-		vScrollBarTemplate.setBaseElementLayout(baseRow);
-
-		vScrollBarLayoutManager.setTemplate(vScrollBarTemplate);
 	}
 
 	@Override
@@ -383,9 +300,6 @@ public abstract class AGLView
 		glMouseListener.addGLCanvas(this);
 
 		initLocal(gl);
-
-		hScrollBarLayoutManager.updateLayout();
-		vScrollBarLayoutManager.updateLayout();
 	}
 
 	@Override
@@ -411,15 +325,7 @@ public abstract class AGLView
 			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(),
 				rot_Vec3f.z());
 
-			if (useZooming) {
-				beginZoom(gl);
-			}
-
 			displayLocal(gl);
-
-			if (useZooming) {
-				endZoom(gl);
-			}
 
 			// if (bShowMagnifyingGlass) {
 			// if (magnifyingGlass == null) {
@@ -637,8 +543,6 @@ public abstract class AGLView
 		this.viewFrustum = viewFrustum;
 
 		updateDetailMode();
-		hScrollBarLayoutManager.updateLayout();
-		vScrollBarLayoutManager.updateLayout();
 
 		// parentGLCanvas.initPixelGLConverter(viewFrustum);
 	}
@@ -1343,199 +1247,6 @@ public abstract class AGLView
 	public void setLazyMode(boolean lazyMode) {
 		this.lazyMode = lazyMode;
 
-	}
-
-	/**
-	 * Specifies whether the view should zoom when the mouse was wheeled. This method should not be called
-	 * when the view is rendered remote.
-	 * 
-	 * @param useZooming
-	 */
-	public void useZooming(boolean useZooming) {
-
-		if ((this.useZooming && useZooming) || (!this.useZooming && !useZooming))
-			return;
-
-		if (useZooming) {
-			parentGLCanvas.removeMouseWheelListener(glMouseListener);
-			parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
-		}
-		else {
-			parentGLCanvas.removeMouseWheelListener(glMouseWheelListener);
-			parentGLCanvas.addMouseWheelListener(glMouseListener);
-		}
-
-		this.useZooming = useZooming;
-	}
-
-	/**
-	 * This method shall be called before the view is rendered in order to be zoomed.
-	 * 
-	 * @param gl
-	 */
-	public void beginZoom(GL2 gl) {
-
-		if (currentZoomScale == 1.0f) {
-			relativeViewTranlateX = 0;
-			relativeViewTranlateY = 0;
-			return;
-		}
-
-		float viewTranslateX = relativeViewTranlateX * viewFrustum.getWidth();
-		float viewTranslateY = relativeViewTranlateY * viewFrustum.getHeight();
-
-		// float zoomCenterX = relativeZoomCenterX * viewFrustum.getWidth();
-		// float zoomCenterY = relativeZoomCenterY * viewFrustum.getHeight();
-		//
-		// float viewTranslateX;
-		// float viewTranslateY;
-
-		if (wasMouseWheeled) {
-
-			float viewPositionX = pixelGLConverter.getGLWidthForCurrentGLTransform(gl);
-			float viewPositionY = pixelGLConverter.getGLHeightForCurrentGLTransform(gl);
-			float wheelPositionX = pixelGLConverter.getGLWidthForPixelWidth(mouseWheelPosition.x);
-			float wheelPositionY =
-				pixelGLConverter.getGLHeightForPixelHeight(parentGLCanvas.getHeight() - mouseWheelPosition.y);
-
-			// viewTranslateX =
-			// (viewFrustum.getWidth() / 2.0f) - zoomCenterX - (previousZoomScale - 1) * zoomCenterX;
-			// viewTranslateY =
-			// (viewFrustum.getHeight() / 2.0f) - zoomCenterY - (previousZoomScale - 1) * zoomCenterY;
-
-			float zoomCenterMouseX = wheelPositionX - viewPositionX;
-			float zoomCenterMouseY = wheelPositionY - viewPositionY;
-
-			float relativeImageCenterX =
-				(-viewTranslateX + zoomCenterMouseX) / (viewFrustum.getWidth() * previousZoomScale);
-			float relativeImageCenterY =
-				(-viewTranslateY + zoomCenterMouseY) / (viewFrustum.getHeight() * previousZoomScale);
-
-			float zoomCenterX = relativeImageCenterX * viewFrustum.getWidth();
-			float zoomCenterY = relativeImageCenterY * viewFrustum.getHeight();
-
-			// zoomCenterX = viewPositionX + viewFrustum.getWidth() - wheelPositionX;
-			// zoomCenterY = viewPositionY + viewFrustum.getHeight() - wheelPositionY;
-			viewTranslateX =
-				(viewFrustum.getWidth() / 2.0f) - zoomCenterX - (currentZoomScale - 1) * zoomCenterX;
-			viewTranslateY =
-				(viewFrustum.getHeight() / 2.0f) - zoomCenterY - (currentZoomScale - 1) * zoomCenterY;
-
-			if (viewTranslateX > 0)
-				viewTranslateX = 0;
-			if (viewTranslateY > 0)
-				viewTranslateY = 0;
-
-			if (viewTranslateX < -(viewFrustum.getWidth() * (currentZoomScale - 1)))
-				viewTranslateX = -(viewFrustum.getWidth() * (currentZoomScale - 1));
-			if (viewTranslateY < -(viewFrustum.getHeight() * (currentZoomScale - 1)))
-				viewTranslateY = -(viewFrustum.getHeight() * (currentZoomScale - 1));
-
-			relativeViewTranlateX = viewTranslateX / viewFrustum.getWidth();
-			relativeViewTranlateY = viewTranslateY / viewFrustum.getHeight();
-
-			// System.out.println("=========================================");
-			// System.out.println("viewPos: " + viewPositionX + "," + viewPositionY + "\n zoomCenter: "
-			// + zoomCenterX + "," + zoomCenterY + "\n Frustum: " + viewFrustum.getWidth() + ","
-			// + viewFrustum.getHeight() + "\n Translate: " + viewTranlateX + "," + viewTranlateY
-			// + "\n currentZoom: " + currentZoomScale + "; prevZoom: " + previousZoomScale);
-		}
-
-		float relativeImageCenterX =
-			(-viewTranslateX + viewFrustum.getWidth() / 2.0f) / (viewFrustum.getWidth() * currentZoomScale);
-		float relativeImageCenterY =
-			(-viewTranslateY + viewFrustum.getHeight() / 2.0f) / (viewFrustum.getHeight() * currentZoomScale);
-
-		float zoomCenterX = relativeImageCenterX * viewFrustum.getWidth();
-		float zoomCenterY = relativeImageCenterY * viewFrustum.getHeight();
-
-		hScrollBar.setPageSize(pixelGLConverter.getPixelWidthForGLWidth((viewFrustum.getWidth() - viewFrustum
-			.getWidth() / currentZoomScale)
-			/ currentZoomScale));
-		hScrollBar.setMaxValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()
-			- viewFrustum.getWidth() / (currentZoomScale * 2.0f)));
-		hScrollBar.setMinValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()
-			/ (currentZoomScale * 2.0f)));
-		hScrollBar.setSelection(pixelGLConverter.getPixelWidthForGLWidth(zoomCenterX));
-
-		vScrollBar
-			.setPageSize(pixelGLConverter.getPixelWidthForGLWidth((viewFrustum.getHeight() - viewFrustum
-				.getHeight() / currentZoomScale)
-				/ currentZoomScale));
-		vScrollBar.setMaxValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getHeight()
-			- viewFrustum.getHeight() / (currentZoomScale * 2.0f)));
-		vScrollBar.setMinValue(pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getHeight()
-			/ (currentZoomScale * 2.0f)));
-		vScrollBar.setSelection(pixelGLConverter.getPixelWidthForGLWidth(zoomCenterY));
-
-		// viewTranslateX = (viewFrustum.getWidth() / 2.0f) - zoomCenterX - (currentZoomScale - 1) *
-		// zoomCenterX;
-		// viewTranslateY =
-		// (viewFrustum.getHeight() / 2.0f) - zoomCenterY - (currentZoomScale - 1) * zoomCenterY;
-		//
-		// relativeZoomCenterX = zoomCenterX / viewFrustum.getWidth();
-		// relativeZoomCenterY = zoomCenterY / viewFrustum.getHeight();
-
-		gl.glPushMatrix();
-		gl.glTranslatef(viewTranslateX, viewTranslateY, 0);
-		gl.glScalef(currentZoomScale, currentZoomScale, 1);
-
-		// JUST FOR TESTING OF 1D ZOOM IN Z-DIRECTION
-		// TODO: ADD MODE FOR X-ZOOM, Y-ZOOM OR BOTH
-		// gl.glTranslatef(0, viewTranslateY, 0);
-		// gl.glScalef(1, currentZoomScale, 1);
-
-	}
-
-	/**
-	 * This method shall be called after the view has been rendered, if beginZoom(GL) has been called
-	 * beforehand.
-	 * 
-	 * @param gl
-	 */
-	public void endZoom(GL2 gl) {
-
-		previousZoomScale = currentZoomScale;
-
-		if (currentZoomScale == 1.0f)
-			return;
-		gl.glPopMatrix();
-		wasMouseWheeled = false;
-
-		hScrollBarLayoutManager.render(gl);
-		vScrollBarLayoutManager.render(gl);
-
-		scrollBarDragAndDropController.handleDragging(gl, glMouseListener);
-	}
-
-	@Override
-	public void handleScrollBarUpdate(ScrollBar scrollBar) {
-		if (scrollBar == hScrollBar) {
-			float zoomCenterX =
-				pixelGLConverter.getGLWidthForPixelWidth(scrollBar.getSelection());
-			float viewTranslateX =
-				(viewFrustum.getWidth() / 2.0f) - zoomCenterX - (currentZoomScale - 1) * zoomCenterX;
-
-			if (viewTranslateX > 0)
-				viewTranslateX = 0;
-			if (viewTranslateX < -(viewFrustum.getWidth() * (currentZoomScale - 1)))
-				viewTranslateX = -(viewFrustum.getWidth() * (currentZoomScale - 1));
-
-			relativeViewTranlateX = viewTranslateX / viewFrustum.getWidth();
-		}
-		if (scrollBar == vScrollBar) {
-			float zoomCenterY =
-				pixelGLConverter.getGLHeightForPixelHeight(scrollBar.getSelection());
-			float viewTranslateY =
-				(viewFrustum.getHeight() / 2.0f) - zoomCenterY - (currentZoomScale - 1) * zoomCenterY;
-
-			if (viewTranslateY > 0)
-				viewTranslateY = 0;
-			if (viewTranslateY < -(viewFrustum.getHeight() * (currentZoomScale - 1)))
-				viewTranslateY = -(viewFrustum.getHeight() * (currentZoomScale - 1));
-
-			relativeViewTranlateY = viewTranslateY / viewFrustum.getHeight();
-		}
 	}
 
 	public synchronized int createNewScrollBarID() {
