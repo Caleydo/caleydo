@@ -3,9 +3,9 @@ package org.caleydo.view.browser;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.util.logging.Logger;
@@ -77,7 +77,7 @@ public class HTMLBrowser extends ASWTView {
 	 */
 	public HTMLBrowser(Composite parentComposite) {
 		super(GeneralManager.get().getIDCreator()
-				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENERAL), parentComposite);
+				.createID(ManagedObjectType.VIEW_SWT_BROWSER_GENERAL), parentComposite);
 		viewType = VIEW_TYPE;
 	}
 

@@ -3,8 +3,8 @@ package org.caleydo.core.manager.datadomain;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.jgrapht.graph.SimpleGraph;
 
 /**

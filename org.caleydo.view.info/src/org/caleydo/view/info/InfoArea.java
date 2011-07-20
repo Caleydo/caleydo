@@ -2,8 +2,8 @@ package org.caleydo.view.info;
 
 import java.util.Set;
 
-import org.caleydo.core.data.mapping.IDCategory;
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;

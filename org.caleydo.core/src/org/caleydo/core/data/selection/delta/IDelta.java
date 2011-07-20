@@ -2,7 +2,7 @@ package org.caleydo.core.data.selection.delta;
 
 import java.util.Collection;
 
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
 
 /**
  * Interface for all deltas that contain information on changes and are used to submit information to other

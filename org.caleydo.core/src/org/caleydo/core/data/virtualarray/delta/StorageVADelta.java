@@ -1,6 +1,6 @@
 package org.caleydo.core.data.virtualarray.delta;
 
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
 
 public class StorageVADelta
 	extends VirtualArrayDelta<StorageVADelta> {

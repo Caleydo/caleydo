@@ -43,8 +43,9 @@ import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.StorageFilter;
 import org.caleydo.core.data.filter.event.NewContentFilterEvent;
 import org.caleydo.core.data.filter.event.NewStorageFilterEvent;
-import org.caleydo.core.data.mapping.IDCategory;
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
@@ -69,7 +70,6 @@ import org.caleydo.core.manager.event.view.storagebased.ResetParallelCoordinates
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -1475,7 +1475,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			// else {
 			contentSelectionManager.addToType(selectionType, pickingID);
 			contentSelectionManager.addConnectionID(generalManager.getIDCreator()
-					.createID(EManagedObjectType.CONNECTION), pickingID);
+					.createID(ManagedObjectType.CONNECTION), pickingID);
 
 			// }
 
@@ -1533,7 +1533,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			storageSelectionManager.addToType(selectionType, pickingID);
 
 			storageSelectionManager.addConnectionID(generalManager.getIDCreator()
-					.createID(EManagedObjectType.CONNECTION), pickingID);
+					.createID(ManagedObjectType.CONNECTION), pickingID);
 
 			connectedElementRepresentationManager.clear(
 					storageSelectionManager.getIDType(), selectionType);

@@ -1,6 +1,6 @@
 package org.caleydo.datadomain.genetic.contextmenu.item;
 
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;

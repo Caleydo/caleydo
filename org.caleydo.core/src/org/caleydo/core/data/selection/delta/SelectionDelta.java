@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionType;
 
 /**

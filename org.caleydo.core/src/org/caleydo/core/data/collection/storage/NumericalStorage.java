@@ -5,9 +5,9 @@ import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 
 /**
  * INumericalStorage is a specialization of IStorage. It is meant for numerical data of a continuous range,
@@ -25,7 +25,7 @@ public class NumericalStorage
 	 * Constructor
 	 */
 	public NumericalStorage() {
-		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.STORAGE_NUMERICAL));
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.STORAGE_NUMERICAL));
 	}
 
 	@Override

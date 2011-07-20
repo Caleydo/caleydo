@@ -11,12 +11,12 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
@@ -44,7 +44,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	private String vaType;
 
 	public VirtualArray() {
-		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.VIRTUAL_ARRAY));
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
 		this.virtualArray = new ArrayList<Integer>();
 	}
 
@@ -52,7 +52,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * Constructor, creates an empty Virtual Array
 	 */
 	public VirtualArray(String vaType) {
-		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.VIRTUAL_ARRAY));
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
 		this.vaType = vaType;
 		this.virtualArray = new ArrayList<Integer>();
 		// init();
@@ -67,7 +67,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * @param initialList
 	 */
 	public VirtualArray(String vaType, List<Integer> initialList) {
-		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.VIRTUAL_ARRAY));
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
 		this.vaType = vaType;
 		this.virtualArray = new ArrayList<Integer>();
 		virtualArray.addAll(initialList);

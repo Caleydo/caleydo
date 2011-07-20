@@ -3,9 +3,9 @@ package org.caleydo.view.visbricks.dimensiongroup;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.statistics.IDBasedBinning;
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.eclipse.swt.widgets.Composite;
 

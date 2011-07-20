@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
@@ -15,7 +16,6 @@ import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
 import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -62,7 +62,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 	{
 		ID = GeneralManager.get().getIDCreator()
-				.createID(EManagedObjectType.DIMENSION_GROUP_SPACER);
+				.createID(ManagedObjectType.DIMENSION_GROUP_SPACER);
 	}
 
 	public void init() {

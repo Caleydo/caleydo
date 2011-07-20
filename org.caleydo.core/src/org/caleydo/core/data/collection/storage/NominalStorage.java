@@ -5,8 +5,8 @@ import java.util.HashMap;
 
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.ccontainer.NominalCContainer;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 
 /**
  * The NominalStorage is an extension of the AStorage interface. It is meant for data which has no discrete
@@ -26,7 +26,7 @@ public class NominalStorage<T>
 	 * Constructor
 	 */
 	public NominalStorage() {
-		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.STORAGE_NOMINAL));
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.STORAGE_NOMINAL));
 	}
 
 	/**

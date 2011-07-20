@@ -1,4 +1,4 @@
-package org.caleydo.core.data.mapping;
+package org.caleydo.core.data.id;
 
 import java.util.HashMap;
 

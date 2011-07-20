@@ -11,8 +11,10 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.mapping.IDCategory;
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.id.ManagedObjectType;
+import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -40,8 +42,6 @@ import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -760,7 +760,7 @@ public class GLPathway extends AGLView implements
 			selectionManager.addToType(selectionType, tmpVertexGraphItemRep.getId());
 
 			int iConnectionID = generalManager.getIDCreator().createID(
-					EManagedObjectType.CONNECTION);
+					ManagedObjectType.CONNECTION);
 			selectionManager
 					.addConnectionID(iConnectionID, tmpVertexGraphItemRep.getId());
 			connectedElementRepresentationManager.clear(

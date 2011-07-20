@@ -14,13 +14,13 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.collection.table.statistics.StatisticsResult;
 import org.caleydo.core.data.graph.tree.ClusterTree;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.data.storage.StorageManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterResult;
@@ -85,7 +85,7 @@ public class DataTable
 	private Normalization normalization;
 
 	public DataTable() {
-		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.SET));
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.SET));
 	}
 
 	/**

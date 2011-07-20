@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
 
 /**
  * Class that holds information about a selected element in a specific view.

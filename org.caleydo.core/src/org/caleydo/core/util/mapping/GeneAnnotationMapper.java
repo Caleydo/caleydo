@@ -1,7 +1,7 @@
 package org.caleydo.core.util.mapping;
 
+import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.mapping.IDMappingManager;
 
 /**
  * @TODO Revise this class

@@ -3,7 +3,7 @@ package org.caleydo.core.util.clusterer;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.gui.toolbar.action.StartClusteringAction;

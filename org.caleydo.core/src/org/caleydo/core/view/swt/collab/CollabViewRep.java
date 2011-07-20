@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.net.Connection;
 import org.caleydo.core.net.ENetworkStatus;
@@ -70,7 +70,7 @@ public class CollabViewRep
 	 */
 	public CollabViewRep(Composite parentComposite) {
 		super(GeneralManager.get().getIDCreator()
-			.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER), parentComposite);
+			.createID(ManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER), parentComposite);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.id;
+package org.caleydo.core.data.id;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -14,7 +14,7 @@ public class IDCreator {
 	private HashMap<Integer, Integer> hashExternalToInternalID;
 	private HashMap<Integer, Integer> hashInternalToExternalID;
 
-	private EnumMap<EManagedObjectType, Integer> hashObjectTypeToCounter;
+	private EnumMap<ManagedObjectType, Integer> hashObjectTypeToCounter;
 
 	/**
 	 * Constructor.
@@ -23,7 +23,7 @@ public class IDCreator {
 		hashExternalToInternalID = new HashMap<Integer, Integer>();
 		hashInternalToExternalID = new HashMap<Integer, Integer>();
 
-		hashObjectTypeToCounter = new EnumMap<EManagedObjectType, Integer>(EManagedObjectType.class);
+		hashObjectTypeToCounter = new EnumMap<ManagedObjectType, Integer>(ManagedObjectType.class);
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class IDCreator {
 	 *            the type of object
 	 * @return the id
 	 */
-	public int createID(EManagedObjectType type) {
+	public int createID(ManagedObjectType type) {
 		Integer iCount = hashObjectTypeToCounter.get(type);
 
 		if (iCount == null) {
@@ -106,7 +106,7 @@ public class IDCreator {
 	 *            the counter
 	 * @return the ID
 	 */
-	private int calculateID(EManagedObjectType type, int iCount) {
+	private int calculateID(ManagedObjectType type, int iCount) {
 		if (iCount > 99999)
 			throw new IllegalStateException("ID Overflow for type " + type
 				+ ". Number of IDs is limited to 99,999 per type");

@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.util.collection.Pair;
 
 public class IDBasedBinning {

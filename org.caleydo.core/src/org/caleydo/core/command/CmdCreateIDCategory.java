@@ -1,7 +1,7 @@
 package org.caleydo.core.command;
 
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.data.mapping.IDCategory;
+import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;

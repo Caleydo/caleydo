@@ -4,8 +4,8 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.mapping.IDCategory;
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.VABasedSelectionManager;

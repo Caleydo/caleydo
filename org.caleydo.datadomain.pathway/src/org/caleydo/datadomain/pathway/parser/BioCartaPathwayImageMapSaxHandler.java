@@ -3,8 +3,8 @@ package org.caleydo.datadomain.pathway.parser;
 import java.util.ArrayList;
 import java.util.Set;
 
-import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.manager.mapping.IDMappingManager;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.parser.xml.AXmlParserHandler;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;

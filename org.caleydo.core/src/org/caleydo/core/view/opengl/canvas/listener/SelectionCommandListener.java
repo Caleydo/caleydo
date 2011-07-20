@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
-import org.caleydo.core.data.mapping.IDCategory;
+import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;

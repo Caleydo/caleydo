@@ -4,8 +4,8 @@ import org.caleydo.core.command.CommandManager;
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.data.AUniqueObject;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.ParameterHandler;
 
 /**
@@ -30,7 +30,7 @@ public abstract class ACommand
 	 * Constructor.
 	 */
 	public ACommand(final CommandType cmdType) {
-		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.COMMAND));
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.COMMAND));
 
 		this.generalManager = GeneralManager.get();
 		this.commandManager = generalManager.getCommandManager();

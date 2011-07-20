@@ -3,9 +3,9 @@ package org.caleydo.core.data.virtualarray.group;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.AUniqueObject;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
@@ -56,7 +56,7 @@ public class Group
 	}
 
 	{
-		uniqueID = GeneralManager.get().getIDCreator().createID(EManagedObjectType.GROUP);
+		uniqueID = GeneralManager.get().getIDCreator().createID(ManagedObjectType.GROUP);
 	}
 
 	/**

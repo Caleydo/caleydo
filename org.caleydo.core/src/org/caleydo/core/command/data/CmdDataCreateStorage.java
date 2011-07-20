@@ -3,8 +3,8 @@ package org.caleydo.core.command.data;
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.collection.storage.AStorage;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.data.storage.StorageManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 
 /**
  * Command creates a new storage.
@@ -15,7 +15,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
  */
 public class CmdDataCreateStorage
 	extends ACmdCreational<AStorage> {
-	private EManagedObjectType storageType;
+	private ManagedObjectType storageType;
 
 	/**
 	 * Constructor.
@@ -39,7 +39,7 @@ public class CmdDataCreateStorage
 	public void undoCommand() {
 	}
 
-	public void setAttributes(EManagedObjectType stroageType) {
+	public void setAttributes(ManagedObjectType stroageType) {
 		this.storageType = stroageType;
 	}
 }

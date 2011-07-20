@@ -5,9 +5,9 @@ import java.util.HashMap;
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.table.statistics.StatisticsResult;
 import org.caleydo.core.data.graph.tree.ClusterTree;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
@@ -39,7 +39,7 @@ public class SubDataTable
 		this.dataDomain = originalSet.getDataDomain();
 		// init();
 
-		this.uniqueID = GeneralManager.get().getIDCreator().createID(EManagedObjectType.SET);
+		this.uniqueID = GeneralManager.get().getIDCreator().createID(ManagedObjectType.SET);
 		// this.setSetType(originalSet.getSetType());
 		// FIXME: this is not always true, but if we create the MetaSet from the serialization, we didn't
 		// check yet whether it was homogeneous

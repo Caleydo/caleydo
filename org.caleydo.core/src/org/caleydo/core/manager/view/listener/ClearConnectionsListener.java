@@ -1,6 +1,6 @@
 package org.caleydo.core.manager.view.listener;
 
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.selection.ClearConnectionsEvent;

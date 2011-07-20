@@ -18,6 +18,8 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.id.ManagedObjectType;
+import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -27,8 +29,6 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.ToggleMagnifyingGlassEvent;
-import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.IPickingListener;
@@ -218,7 +218,7 @@ public abstract class AGLView
 	 */
 	protected AGLView(GLCanvas glCanvas, Composite parentComposite, final ViewFrustum viewFrustum) {
 
-		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.GL_VIEW), parentComposite);
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), parentComposite);
 
 		GeneralManager.get().getViewGLCanvasManager().registerGLView(this);
 		parentGLCanvas = glCanvas;

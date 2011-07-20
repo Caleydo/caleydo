@@ -2,7 +2,7 @@ package org.caleydo.datadomain.pathway.listener;
 
 import java.util.Set;
 
-import org.caleydo.core.data.mapping.IDCategory;
+import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.util.logging.Logger;

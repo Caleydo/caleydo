@@ -11,7 +11,8 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
@@ -28,7 +29,6 @@ import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -446,7 +446,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 			experiementSelectionManager.addToType(selectionType, experimentIndex);
 
 			experiementSelectionManager.addConnectionID(generalManager.getIDCreator()
-					.createID(EManagedObjectType.CONNECTION), experimentIndex);
+					.createID(ManagedObjectType.CONNECTION), experimentIndex);
 
 			SelectionDelta delta = experiementSelectionManager.getDelta();
 

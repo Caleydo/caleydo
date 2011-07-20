@@ -3,7 +3,7 @@ package org.caleydo.view.selectionbrowser;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.mapping.IDCategory;
+import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;

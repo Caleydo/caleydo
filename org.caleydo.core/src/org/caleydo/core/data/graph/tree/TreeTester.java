@@ -1,8 +1,8 @@
 package org.caleydo.core.data.graph.tree;
 
 import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.mapping.IDCategory;
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.IDType;
 
 public class TreeTester {
 

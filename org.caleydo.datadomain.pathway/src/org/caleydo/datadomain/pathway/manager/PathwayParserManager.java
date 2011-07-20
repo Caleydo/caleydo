@@ -1,6 +1,6 @@
 package org.caleydo.datadomain.pathway.manager;
 
-import org.caleydo.core.manager.parser.XmlParserManager;
+import org.caleydo.core.parser.xml.XmlParserManager;
 import org.xml.sax.InputSource;
 
 public class PathwayParserManager extends XmlParserManager {

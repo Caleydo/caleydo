@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.mapping;
+package org.caleydo.core.data.mapping;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.MultiHashMap;
 import org.jgrapht.alg.DijkstraShortestPath;

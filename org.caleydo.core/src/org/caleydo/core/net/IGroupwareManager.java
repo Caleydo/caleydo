@@ -2,7 +2,7 @@ package org.caleydo.core.net;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.view.CanvasConnectionMap;
 import org.caleydo.core.serialize.DataInitializationData;
 

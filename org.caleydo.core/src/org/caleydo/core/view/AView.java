@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.AUniqueObject;
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.manager.GeneralManager;

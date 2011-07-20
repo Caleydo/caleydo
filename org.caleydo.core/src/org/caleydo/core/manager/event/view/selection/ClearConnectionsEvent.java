@@ -3,7 +3,7 @@ package org.caleydo.core.manager.event.view.selection;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**

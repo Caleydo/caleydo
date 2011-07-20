@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.mapping;
+package org.caleydo.core.data.mapping;
 
 import java.util.ArrayList;
 

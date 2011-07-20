@@ -10,7 +10,8 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -26,7 +27,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.event.view.storagebased.HideHeatMapElementsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -478,7 +478,7 @@ public class GLHeatMap extends ATableBasedView {
 		// TODO: Integrate multi spotting support again
 
 		Integer iMappingID = generalManager.getIDCreator().createID(
-				EManagedObjectType.CONNECTION);
+				ManagedObjectType.CONNECTION);
 		contentSelectionManager.addToType(selectionType, contentID);
 		contentSelectionManager.addConnectionID(iMappingID, contentID);
 

@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.id;
+package org.caleydo.core.data.id;
 
 /**
  * Types of managed objects
@@ -6,7 +6,7 @@ package org.caleydo.core.manager.id;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public enum EManagedObjectType {
+public enum ManagedObjectType {
 	STORAGE(10),
 	STORAGE_NUMERICAL(11),
 	STORAGE_NOMINAL(12),
@@ -66,7 +66,7 @@ public enum EManagedObjectType {
 	/**
 	 * Constructor.
 	 */
-	private EManagedObjectType(final int iIdPrefix) {
+	private ManagedObjectType(final int iIdPrefix) {
 		this.iIdPrefix = iIdPrefix;
 	}
 

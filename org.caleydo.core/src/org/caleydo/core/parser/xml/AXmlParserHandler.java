@@ -1,7 +1,6 @@
 package org.caleydo.core.parser.xml;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.parser.XmlParserManager;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**

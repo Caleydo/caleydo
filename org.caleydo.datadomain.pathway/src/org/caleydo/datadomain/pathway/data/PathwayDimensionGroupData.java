@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.ISegmentData;
@@ -13,7 +14,6 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
@@ -32,7 +32,7 @@ public class PathwayDimensionGroupData extends
 
 	{
 		uniqueID = GeneralManager.get().getIDCreator()
-				.createID(EManagedObjectType.SET);
+				.createID(ManagedObjectType.SET);
 	}
 
 	public PathwayDimensionGroupData(IDataDomain dataDomain,

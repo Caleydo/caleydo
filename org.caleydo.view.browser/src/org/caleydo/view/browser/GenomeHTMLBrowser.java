@@ -2,7 +2,8 @@ package org.caleydo.view.browser;
 
 import java.util.Set;
 
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -10,7 +11,6 @@ import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -48,7 +48,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 	public GenomeHTMLBrowser(Composite parentComposite) {
 
 		super(GeneralManager.get().getIDCreator()
-				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENOME), parentComposite);
+				.createID(ManagedObjectType.VIEW_SWT_BROWSER_GENOME), parentComposite);
 
 		registerEventListeners();
 	}

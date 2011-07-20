@@ -3,7 +3,7 @@ package org.caleydo.core.manager.event.data;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**

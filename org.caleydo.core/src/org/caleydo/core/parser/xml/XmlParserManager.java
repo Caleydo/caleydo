@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.parser;
+package org.caleydo.core.parser.xml;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -7,9 +7,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.parser.xml.CommandSaxHandler;
-import org.caleydo.core.parser.xml.IXmlParserHandler;
-import org.caleydo.core.parser.xml.OpenExternalXmlFileSaxHandler;
 import org.ccil.cowan.tagsoup.HTMLSchema;
 import org.ccil.cowan.tagsoup.Parser;
 import org.xml.sax.Attributes;

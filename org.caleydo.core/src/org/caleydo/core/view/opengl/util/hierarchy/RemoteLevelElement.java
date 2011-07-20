@@ -3,9 +3,9 @@ package org.caleydo.core.view.opengl.util.hierarchy;
 import gleem.linalg.open.Transform;
 
 import org.caleydo.core.data.AUniqueObject;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
 public class RemoteLevelElement
@@ -29,7 +29,7 @@ public class RemoteLevelElement
 	private IDataDomainBasedView<?> dataDomainBasedView = null;
 
 	public RemoteLevelElement(RemoteLevel remoteLevel) {
-		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT));
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.REMOTE_LEVEL_ELEMENT));
 
 		RemoteElementManager.get().registerItem(this);
 		this.remoteLevel = remoteLevel;

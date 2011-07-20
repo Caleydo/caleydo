@@ -23,13 +23,13 @@ import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.StorageGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.ascii.TabularAsciiDataReader;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.logging.Logger;
@@ -159,7 +159,7 @@ public class DataTableUtils {
 					cmdCreateStorage =
 						(CmdDataCreateStorage) GeneralManager.get().getCommandManager()
 							.createCommandByType(CommandType.CREATE_STORAGE);
-					cmdCreateStorage.setAttributes(EManagedObjectType.STORAGE_NUMERICAL);
+					cmdCreateStorage.setAttributes(ManagedObjectType.STORAGE_NUMERICAL);
 					cmdCreateStorage.doCommand();
 
 					storageLabel = storageLabelIterator.next();
@@ -171,7 +171,7 @@ public class DataTableUtils {
 					cmdCreateStorage =
 						(CmdDataCreateStorage) GeneralManager.get().getCommandManager()
 							.createCommandByType(CommandType.CREATE_STORAGE);
-					cmdCreateStorage.setAttributes(EManagedObjectType.STORAGE_NOMINAL);
+					cmdCreateStorage.setAttributes(ManagedObjectType.STORAGE_NOMINAL);
 					cmdCreateStorage.doCommand();
 
 					storageLabel = storageLabelIterator.next();

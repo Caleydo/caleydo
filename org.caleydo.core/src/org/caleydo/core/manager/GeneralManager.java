@@ -3,15 +3,15 @@ package org.caleydo.core.manager;
 import java.io.File;
 
 import org.caleydo.core.command.CommandManager;
+import org.caleydo.core.data.id.IDCreator;
+import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.manager.data.storage.StorageManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.id.IDCreator;
-import org.caleydo.core.manager.mapping.IDMappingManager;
-import org.caleydo.core.manager.parser.XmlParserManager;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.net.IGroupwareManager;
+import org.caleydo.core.parser.xml.XmlParserManager;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.core.util.tracking.TrackDataProvider;

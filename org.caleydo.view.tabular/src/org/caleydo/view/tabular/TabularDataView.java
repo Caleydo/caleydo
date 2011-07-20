@@ -6,7 +6,8 @@ import java.util.Iterator;
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.mapping.IDCategory;
+import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -31,7 +32,6 @@ import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
@@ -129,7 +129,7 @@ public class TabularDataView extends ASWTView implements
 	 */
 	public TabularDataView(Composite parentComposite) {
 		super(GeneralManager.get().getIDCreator()
-				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER),
+				.createID(ManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER),
 				parentComposite);
 
 		this.viewType = VIEW_TYPE;
