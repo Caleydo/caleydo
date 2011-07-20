@@ -2,7 +2,7 @@ package org.caleydo.core.manager;
 
 import java.io.File;
 
-import org.caleydo.core.manager.command.CommandManager;
+import org.caleydo.core.command.CommandManager;
 import org.caleydo.core.manager.data.storage.StorageManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;

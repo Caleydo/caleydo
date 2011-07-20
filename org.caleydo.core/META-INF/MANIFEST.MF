@@ -107,7 +107,6 @@ Export-Package: org.caleydo.core.command;
    org.caleydo.core.manager.gui,
    org.caleydo.core.manager.datadomain,
    org.caleydo.data.loader",
- org.caleydo.core.manager.command;uses:="org.caleydo.core.parser.parameter,org.caleydo.core.command",
  org.caleydo.core.manager.data.storage;
   uses:="org.caleydo.core.manager.id,
    org.caleydo.core.data.collection,

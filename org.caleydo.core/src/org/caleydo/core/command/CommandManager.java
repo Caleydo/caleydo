@@ -1,15 +1,10 @@
-package org.caleydo.core.manager.command;
+package org.caleydo.core.command;
 
-import org.caleydo.core.command.CmdCreateIDCategory;
-import org.caleydo.core.command.CmdCreateIDType;
-import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.command.data.CmdDataCreateSet;
 import org.caleydo.core.command.data.CmdDataCreateStorage;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
-import org.caleydo.core.command.view.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.parser.parameter.ParameterHandler;
 
 /**
@@ -82,10 +77,7 @@ public class CommandManager {
 				createdCommand = new CmdDataCreateSet();
 				break;
 			}
-			case CREATE_VIEW_RCP_GLCANVAS: {
-				createdCommand = new CmdViewCreateRcpGLCanvas();
-				break;
-			}
+
 			default:
 				throw new IllegalStateException("Unsupported CommandQueue key= [" + cmdType + "]");
 		}

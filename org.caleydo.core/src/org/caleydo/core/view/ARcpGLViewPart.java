@@ -4,11 +4,10 @@ import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.view.CmdViewCreateRcpGLCanvas;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.eclipse.swt.SWT;
@@ -37,13 +36,10 @@ public abstract class ARcpGLViewPart
 	}
 
 	protected void createGLCanvas() {
-		CmdViewCreateRcpGLCanvas cmdCanvas =
-			(CmdViewCreateRcpGLCanvas) GeneralManager.get().getCommandManager()
-				.createCommandByType(CommandType.CREATE_VIEW_RCP_GLCANVAS);
-		cmdCanvas.setAttributes(-1, false, false, false);
-		cmdCanvas.doCommand();
+		GLCapabilities glCapabilities = new GLCapabilities(GLProfile.get(GLProfile.GL2));
+		glCapabilities.setStencilBits(1);
 
-		glCanvas = cmdCanvas.getCreatedObject();
+		glCanvas = new GLCanvas(glCapabilities);
 	}
 
 	@Override
