@@ -2625,10 +2625,10 @@ public class GLBucket extends AGLView implements
 		}
 
 		if (!newViews.isEmpty()) {
-			// Zoom out of the bucket when loading pathways
-			if (bucketMouseWheelListener.isZoomedIn()) {
-				bucketMouseWheelListener.triggerZoom(false);
-			}
+//			// Zoom out of the bucket when loading pathways
+//			if (bucketMouseWheelListener.isZoomedIn()) {
+//				bucketMouseWheelListener.triggerZoom(false);
+//			}
 			disableUserInteraction();
 		}
 	}
