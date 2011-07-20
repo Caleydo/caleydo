@@ -9,7 +9,7 @@ import java.awt.geom.Rectangle2D;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
@@ -130,7 +130,7 @@ public class OneWaySlider extends AGLGUIElement {
 		beginGUIElement(gl, scalingPivot);
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.RAD_HIERARCHY_SLIDER_BODY_SELECTION, iSliderBodyID));
+				PickingType.RAD_HIERARCHY_SLIDER_BODY_SELECTION, iSliderBodyID));
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
 		gl.glColor3f(0.6f, 0.6f, 0.6f);
@@ -144,7 +144,7 @@ public class OneWaySlider extends AGLGUIElement {
 		gl.glPopName();
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.RAD_HIERARCHY_SLIDER_SELECTION, iSliderID));
+				PickingType.RAD_HIERARCHY_SLIDER_SELECTION, iSliderID));
 
 		gl.glColor4f(0.3f, 0.3f, 0.3f, 0.5f);
 		gl.glBegin(GL2.GL_POLYGON);
@@ -157,7 +157,7 @@ public class OneWaySlider extends AGLGUIElement {
 
 		gl.glPopName();
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.RAD_HIERARCHY_SLIDER_BUTTON_SELECTION, iSliderButtonID));
+				PickingType.RAD_HIERARCHY_SLIDER_BUTTON_SELECTION, iSliderButtonID));
 
 		Vec3f lowerLeftCorner = new Vec3f(fWidth, fDownButtonHeight, 0);
 		Vec3f lowerRightCorner = new Vec3f(0, fDownButtonHeight, 0);
@@ -276,7 +276,7 @@ public class OneWaySlider extends AGLGUIElement {
 	 *            Type of the selected element.
 	 * @return True, if the slider button has been selected, false otherwise.
 	 */
-	public boolean handleSliderSelection(EPickingType pickingType) {
+	public boolean handleSliderSelection(PickingType pickingType) {
 
 		switch (pickingType) {
 		case RAD_HIERARCHY_SLIDER_BODY_SELECTION:

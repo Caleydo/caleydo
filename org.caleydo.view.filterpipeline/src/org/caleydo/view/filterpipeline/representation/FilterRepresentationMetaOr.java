@@ -11,7 +11,7 @@ import org.caleydo.core.data.filter.ContentMetaOrFilter;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
@@ -48,7 +48,7 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 		
 		for( int i = 0; i < subFilterSizes.length; ++i )
 		{
-			gl.glPushName(pickingManager.getPickingID(viewId, EPickingType.FILTERPIPE_SUB_FILTER, i));
+			gl.glPushName(pickingManager.getPickingID(viewId, PickingType.FILTERPIPE_SUB_FILTER, i));
 			heightRight = vSize.y() * (subFilterSizes[i]/100.f);
 			renderShape
 			(

@@ -9,7 +9,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class StorageSelectionRenderer extends AContentRenderer {
@@ -51,7 +51,7 @@ public class StorageSelectionRenderer extends AContentRenderer {
 					float z = SELECTION_Z * selectionType.getPriority();
 
 					gl.glPushName(heatMap.getPickingManager().getPickingID(
-							heatMap.getID(), EPickingType.HEAT_MAP_STORAGE_SELECTION,
+							heatMap.getID(), PickingType.HEAT_MAP_STORAGE_SELECTION,
 							selectedColumn));
 					gl.glBegin(GL2.GL_LINE_LOOP);
 					gl.glVertex3f(xPosition, y, z);

@@ -3,8 +3,8 @@ package org.caleydo.core.parser.ascii;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

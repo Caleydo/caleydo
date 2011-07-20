@@ -15,8 +15,8 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.RemoveBookmarkEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -169,7 +169,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 *            {@link PickingIDManager#getPickingID(ABookmarkContainer, int)}
 	 *            Internal to the specific BookmarkContainer
 	 */
-	void handleEvents(EPickingType ePickingType, EPickingMode pickingMode,
+	void handleEvents(PickingType ePickingType, PickingMode pickingMode,
 			Integer externalID, final Pick pick) {
 		SelectionType selectionType;
 		switch (ePickingType) {

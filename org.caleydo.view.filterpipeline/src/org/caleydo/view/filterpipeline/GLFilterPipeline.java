@@ -33,8 +33,8 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.event.view.filterpipeline.SetFilterTypeEvent;
 import org.caleydo.core.manager.event.view.filterpipeline.SetFilterTypeEvent.FilterType;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
@@ -324,7 +324,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 
 	private void displayCollapseArrow(GL2 gl, int id, float left) {
 		int iPickingID = pickingManager.getPickingID(uniqueID,
-				EPickingType.FILTERPIPE_START_ARROW, id);
+				PickingType.FILTERPIPE_START_ARROW, id);
 		float bottom = 0.025f;
 		float halfSize = 0.075f;
 
@@ -383,8 +383,8 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int externalID, Pick pick) {
 		int newFullSizedFilter = -1;
 
 		switch (pickingMode) {

@@ -26,8 +26,8 @@ import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.APickingListener;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IDataDomainSetBasedView;
@@ -328,7 +328,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 			}
 
-		}, EPickingType.BRICK.name(), getID());
+		}, PickingType.BRICK.name(), getID());
 
 		dimensionGroup.updateLayout();
 
@@ -409,7 +409,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		templateRenderer.render(gl);
 
 		gl.glPushName(getPickingManager().getPickingID(getID(),
-				EPickingType.BRICK, getID()));
+				PickingType.BRICK, getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0f);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, 0);
@@ -524,8 +524,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int pickingID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int pickingID, Pick pick) {
 
 		// HashMap<Integer, IPickingListener> map = pickingListeners
 		// .get(pickingType);
@@ -994,7 +994,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 				isBrickResizeActive = true;
 
 			}
-		}, EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
+		}, PickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
 	}
 
 	/**

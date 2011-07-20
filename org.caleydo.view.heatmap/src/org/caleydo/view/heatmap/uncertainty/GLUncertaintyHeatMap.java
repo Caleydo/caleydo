@@ -20,8 +20,8 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.ColorMapper;
@@ -352,8 +352,8 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int externalID, Pick pick) {
 
 		switch (pickingType) {
 

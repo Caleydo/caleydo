@@ -40,8 +40,8 @@ import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleZoomEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
@@ -582,9 +582,9 @@ public class GLBucket extends AGLView implements
 		}
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
+				PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				EPickingType.REMOTE_VIEW_SELECTION, glView.getID()));
+				PickingType.REMOTE_VIEW_SELECTION, glView.getID()));
 
 		gl.glPushMatrix();
 
@@ -787,7 +787,7 @@ public class GLBucket extends AGLView implements
 		gl.glPushMatrix();
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
+				PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 
 		Transform transform = element.getTransform();
 		Vec3f translation = transform.getTranslation();
@@ -925,27 +925,27 @@ public class GLBucket extends AGLView implements
 
 		// Render icons
 		gl.glTranslatef(0, 2 + fHandleHeight, 0);
-		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_DRAG,
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_DRAG,
 				EIconTextures.NAVIGATION_DRAG_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(fHandleWidth - 2 * fHandleHeight, 0, 0);
 		if (bUpsideDown) {
 			gl.glRotatef(180, 1, 0, 0);
 			gl.glTranslatef(0, fHandleHeight, 0);
 		}
-		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_LOCK,
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_LOCK,
 				EIconTextures.NAVIGATION_LOCK_VIEW, fHandleHeight, fHandleHeight);
 		if (bUpsideDown) {
 			gl.glTranslatef(0, -fHandleHeight, 0);
 			gl.glRotatef(-180, 1, 0, 0);
 		}
 		gl.glTranslatef(fHandleHeight, 0, 0);
-		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_REMOVE,
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_REMOVE,
 				EIconTextures.NAVIGATION_REMOVE_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				EPickingType.REMOTE_VIEW_DRAG, element.getID()));
+				PickingType.REMOTE_VIEW_DRAG, element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);
@@ -985,7 +985,7 @@ public class GLBucket extends AGLView implements
 	}
 
 	private void renderSingleHandle(final GL2 gl, int iRemoteLevelElementID,
-			EPickingType ePickingType, EIconTextures eIconTexture, float fWidth,
+			PickingType ePickingType, EIconTextures eIconTexture, float fWidth,
 			float fHeight) {
 		gl.glPushName(pickingManager.getPickingID(uniqueID, ePickingType,
 				iRemoteLevelElementID));
@@ -1020,10 +1020,10 @@ public class GLBucket extends AGLView implements
 		RemoteLevelElement remoteLevelElement = RemoteElementManager.get().getItem(
 				iRemoteLevelElementID);
 
-		EPickingType leftWallPickingType = null;
-		EPickingType rightWallPickingType = null;
-		EPickingType topWallPickingType = null;
-		EPickingType bottomWallPickingType = null;
+		PickingType leftWallPickingType = null;
+		PickingType rightWallPickingType = null;
+		PickingType topWallPickingType = null;
+		PickingType bottomWallPickingType = null;
 
 		Vec4f tmpColor_out = new Vec4f(0.9f, 0.9f, 0.9f,
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
@@ -1073,10 +1073,10 @@ public class GLBucket extends AGLView implements
 		}
 
 		if (layoutMode.equals(LayoutMode.JUKEBOX)) {
-			topWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
-			bottomWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
-			leftWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
-			rightWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
+			topWallPickingType = PickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
+			bottomWallPickingType = PickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
+			leftWallPickingType = PickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+			rightWallPickingType = PickingType.BUCKET_MOVE_IN_ICON_SELECTION;
 
 			if (iNavigationMouseOverViewID_out == iRemoteLevelElementID) {
 				tmpColor_left.set(1, 0.3f, 0.3f,
@@ -1100,10 +1100,10 @@ public class GLBucket extends AGLView implements
 		} else {
 			if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 0) // top
 			{
-				topWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
-				bottomWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
-				leftWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
-				rightWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
+				topWallPickingType = PickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+				bottomWallPickingType = PickingType.BUCKET_MOVE_IN_ICON_SELECTION;
+				leftWallPickingType = PickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
+				rightWallPickingType = PickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iRemoteLevelElementID) {
 					tmpColor_out.set(1, 0.3f, 0.3f,
@@ -1129,10 +1129,10 @@ public class GLBucket extends AGLView implements
 						EIconTextures.ARROW_LEFT);
 			} else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 2) // bottom
 			{
-				topWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
-				bottomWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
-				leftWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
-				rightWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
+				topWallPickingType = PickingType.BUCKET_MOVE_IN_ICON_SELECTION;
+				bottomWallPickingType = PickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+				leftWallPickingType = PickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
+				rightWallPickingType = PickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iRemoteLevelElementID) {
 					tmpColor_in.set(1, 0.3f, 0.3f,
@@ -1158,10 +1158,10 @@ public class GLBucket extends AGLView implements
 						EIconTextures.ARROW_LEFT);
 			} else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 1) // left
 			{
-				topWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
-				bottomWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
-				leftWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
-				rightWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
+				topWallPickingType = PickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
+				bottomWallPickingType = PickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
+				leftWallPickingType = PickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+				rightWallPickingType = PickingType.BUCKET_MOVE_IN_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iRemoteLevelElementID) {
 					tmpColor_left.set(1, 0.3f, 0.3f,
@@ -1187,10 +1187,10 @@ public class GLBucket extends AGLView implements
 						EIconTextures.ARROW_LEFT);
 			} else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 3) // right
 			{
-				topWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
-				bottomWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
-				leftWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
-				rightWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+				topWallPickingType = PickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
+				bottomWallPickingType = PickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
+				leftWallPickingType = PickingType.BUCKET_MOVE_IN_ICON_SELECTION;
+				rightWallPickingType = PickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iRemoteLevelElementID) {
 					tmpColor_right.set(1, 0.3f, 0.3f,
@@ -1485,10 +1485,10 @@ public class GLBucket extends AGLView implements
 		gl.glTranslatef(fXOrigin + 2.5f / fAspectRatio * sideSwitchFactor, fYOrigin
 				- fHeight / 2f + fHeight - 1f, 1.8f);
 		gl.glScalef(fHandleScaleFactor, fHandleScaleFactor, fHandleScaleFactor);
-		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_DRAG,
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_DRAG,
 				EIconTextures.POOL_DRAG_VIEW, 0.1f, 0.1f);
 		gl.glTranslatef(0, -0.2f, 0);
-		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_REMOVE,
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_REMOVE,
 				EIconTextures.POOL_REMOVE_VIEW, 0.1f, 0.1f);
 		gl.glTranslatef(0, 0.2f, 0);
 		gl.glScalef(1f / fHandleScaleFactor, 1f / fHandleScaleFactor,
@@ -1507,9 +1507,9 @@ public class GLBucket extends AGLView implements
 		// gl.glEnd();
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
+				PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				EPickingType.REMOTE_VIEW_SELECTION, element.getID()));
+				PickingType.REMOTE_VIEW_SELECTION, element.getID()));
 	}
 
 	private void doSlerpActions(final GL2 gl) {
@@ -1792,8 +1792,8 @@ public class GLBucket extends AGLView implements
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int externalID, Pick pick) {
 
 		switch (pickingType) {
 		case REMOTE_VIEW_DRAG:
@@ -2352,7 +2352,7 @@ public class GLBucket extends AGLView implements
 
 		if (layoutMode.equals(LayoutMode.BUCKET)) {
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.REMOTE_LEVEL_ELEMENT, iPoolLevelCommonID));
+					PickingType.REMOTE_LEVEL_ELEMENT, iPoolLevelCommonID));
 
 			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 			gl.glLineWidth(1);

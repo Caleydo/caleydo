@@ -17,8 +17,8 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.treemap.ZoomInEvent;
 import org.caleydo.core.manager.event.view.treemap.ZoomOutEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -244,7 +244,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 			// gl.glPushMatrix();
 			// gl.glTranslated(viewFrustum.getWidth() * xOffset,
 			// viewFrustum.getHeight() * (1.0 - yMargin - thumbNailHeight), 0);
-			gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.TREEMAP_THUMBNAILVIEW_SELECTED, i));
+			gl.glPushName(pickingManager.getPickingID(getID(), PickingType.TREEMAP_THUMBNAILVIEW_SELECTED, i));
 			treemap.displayRemote(gl);
 			gl.glPopName();
 			// gl.glPopMatrix();
@@ -404,10 +404,10 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	 * delegates events to the embedded treemap.
 	 */
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int externalID, Pick pick) {
 		// System.out.println(pickingType + " " + pickingMode + ": " +
 		// externalID);
-		if (pickingType == EPickingType.TREEMAP_THUMBNAILVIEW_SELECTED && pickingMode == EPickingMode.DOUBLE_CLICKED) {
+		if (pickingType == PickingType.TREEMAP_THUMBNAILVIEW_SELECTED && pickingMode == PickingMode.DOUBLE_CLICKED) {
 			zoomOut(externalID);
 		} else
 			mainTreeMapView.handleRemotePickingEvents(pickingType, pickingMode, externalID, pick);

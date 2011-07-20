@@ -11,7 +11,7 @@ public class Pick {
 
 	private int externalID = 0;
 
-	private EPickingMode ePickingMode = EPickingMode.CLICKED;
+	private PickingMode ePickingMode = PickingMode.CLICKED;
 
 	private Point pickedPoint;
 
@@ -22,7 +22,7 @@ public class Pick {
 	/**
 	 * Constructor.
 	 */
-	public Pick(int externalID, EPickingMode ePickingMode, Point pickedPoint, Point dragStartPoint,
+	public Pick(int externalID, PickingMode ePickingMode, Point pickedPoint, Point dragStartPoint,
 		float fDepth) {
 
 		this.externalID = externalID;
@@ -48,7 +48,7 @@ public class Pick {
 	 * 
 	 * @return
 	 */
-	public EPickingMode getPickingMode() {
+	public PickingMode getPickingMode() {
 
 		return ePickingMode;
 	}

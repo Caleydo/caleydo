@@ -7,8 +7,8 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializedDummyView;
@@ -176,8 +176,8 @@ public class GLCell extends AGLView {
 	// }
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}

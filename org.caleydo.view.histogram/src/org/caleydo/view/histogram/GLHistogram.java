@@ -17,8 +17,8 @@ import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
@@ -270,7 +270,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 
 		for (ColorMarkerPoint markerPoint : markerPoints) {
 			int iColorLinePickingID = pickingManager.getPickingID(uniqueID,
-					EPickingType.HISTOGRAM_COLOR_LINE, iCount);
+					PickingType.HISTOGRAM_COLOR_LINE, iCount);
 
 			boolean bIsFirstOrLast = false;
 			float fPickingScaling = 0.8f;
@@ -281,7 +281,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 
 				float fLeftSpread = markerPoint.getLeftSpread();
 				int iLeftSpreadPickingID = pickingManager.getPickingID(uniqueID,
-						EPickingType.HISTOGRAM_LEFT_SPREAD_COLOR_LINE, iCount);
+						PickingType.HISTOGRAM_LEFT_SPREAD_COLOR_LINE, iCount);
 
 				// the left polygon between the central line and the spread
 				gl.glColor4f(markerPoint.getColor()[0], markerPoint.getColor()[1],
@@ -340,7 +340,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 						* fRenderWidth;
 
 				int iRightSpreadPickingID = pickingManager.getPickingID(uniqueID,
-						EPickingType.HISTOGRAM_RIGHT_SPREAD_COLOR_LINE, iCount);
+						PickingType.HISTOGRAM_RIGHT_SPREAD_COLOR_LINE, iCount);
 
 				// the polygon between the central line and the right spread
 				// the first part which picks the central line
@@ -549,8 +549,8 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}

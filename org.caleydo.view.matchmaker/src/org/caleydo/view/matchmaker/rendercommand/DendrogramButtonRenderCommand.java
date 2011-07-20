@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -44,7 +44,7 @@ public class DendrogramButtonRenderCommand implements IHeatMapRenderCommand {
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
-				EPickingType.COMPARE_DENDROGRAM_BUTTON_SELECTION, heatMapWrapper.getID()));
+				PickingType.COMPARE_DENDROGRAM_BUTTON_SELECTION, heatMapWrapper.getID()));
 		Vec3f lowerLeftCorner = new Vec3f(position.x(), position.y(), position.z());
 		Vec3f lowerRightCorner = new Vec3f(position.x() + width, position.y(),
 				position.z());

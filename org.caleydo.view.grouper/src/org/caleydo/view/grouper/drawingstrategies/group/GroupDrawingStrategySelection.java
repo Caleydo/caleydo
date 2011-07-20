@@ -3,7 +3,7 @@ package org.caleydo.view.grouper.drawingstrategies.group;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.view.grouper.GrouperRenderStyle;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
@@ -28,7 +28,7 @@ public class GroupDrawingStrategySelection extends AGroupDrawingStrategyRectangu
 			TextRenderer textRenderer) {
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
+				PickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
 		gl.glColor4fv(renderStyle.getGroupColorForLevel(groupRepresentation
@@ -44,7 +44,7 @@ public class GroupDrawingStrategySelection extends AGroupDrawingStrategyRectangu
 		gl.glPopName();
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.GROUPER_COLLAPSE_BUTTON_SELECTION,
+				PickingType.GROUPER_COLLAPSE_BUTTON_SELECTION,
 				groupRepresentation.getID()));
 
 		drawCollapseButton(gl, groupRepresentation, textRenderer);
@@ -60,7 +60,7 @@ public class GroupDrawingStrategySelection extends AGroupDrawingStrategyRectangu
 			TextRenderer textRenderer) {
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
+				PickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
 		gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);

@@ -3,7 +3,7 @@ package org.caleydo.view.visbricks.brick.layout;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.picking.APickingListener;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -67,11 +67,11 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		super(brick, dimensionGroup);
 		// viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		this.visBricks = visBricks;
-		clusterButton = new Button(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
+		clusterButton = new Button(PickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
 				CLUSTER_BUTTON_ID, EIconTextures.CLUSTER_ICON);
 
 		lockResizingButton = new Button(
-				EPickingType.BRICK_LOCK_RESIZING_BUTTON,
+				PickingType.BRICK_LOCK_RESIZING_BUTTON,
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
 		headerBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
@@ -270,7 +270,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 				lockResizingButton.setSelected(isResizingLocked);
 			}
 
-		}, EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
+		}, PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
 				LOCK_RESIZING_BUTTON_ID);
 
 	}
@@ -358,7 +358,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public void destroy() {
 		super.destroy();
 		brick.removeSingleIDPickingListeners(
-				EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
+				PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
 				LOCK_RESIZING_BUTTON_ID);
 	}
 

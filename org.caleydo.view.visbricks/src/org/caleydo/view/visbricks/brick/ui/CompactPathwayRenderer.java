@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -19,13 +19,13 @@ public class CompactPathwayRenderer extends LayoutRenderer {
 
 	private AGLView view;
 	private String caption;
-	private EPickingType pickingType;
+	private PickingType pickingType;
 	private TextureManager textureManager;
 	private EIconTextures texture;
 	private int id;
 
 	public CompactPathwayRenderer(AGLView view, String caption,
-			EPickingType pickingType, int id, TextureManager textureManager,
+			PickingType pickingType, int id, TextureManager textureManager,
 			EIconTextures texture) {
 		this.view = view;
 		this.caption = caption;

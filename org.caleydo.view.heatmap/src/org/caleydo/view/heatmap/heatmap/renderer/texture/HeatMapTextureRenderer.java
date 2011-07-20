@@ -11,7 +11,7 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -210,7 +210,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 		TextureCoords texCoords = texture.getImageTexCoords();
 
 		gl.glPushName(pickingManager.getPickingID(uncertaintyHeatMap.getID(),
-				EPickingType.HEAT_MAP_CLUSTER_GROUP, groupIndex));
+				PickingType.HEAT_MAP_CLUSTER_GROUP, groupIndex));
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glTexCoord2d(texCoords.left(), texCoords.top());
 		gl.glVertex3f(x, y, 0);

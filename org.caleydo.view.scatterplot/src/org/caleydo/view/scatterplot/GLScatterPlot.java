@@ -57,8 +57,8 @@ import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
 import org.caleydo.core.manager.event.view.storagebased.YAxisSelectorEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
@@ -682,7 +682,7 @@ public class GLScatterPlot extends ATableBasedView {
 		gl.glEnd();
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				EPickingType.SCATTER_MAIN_ZOOM, 1));
+				PickingType.SCATTER_MAIN_ZOOM, 1));
 		x = x - fIconwith;
 
 		Vec3f lowerLeftCorner = new Vec3f(x, y, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
@@ -742,7 +742,7 @@ public class GLScatterPlot extends ATableBasedView {
 				ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				EPickingType.SCATTER_MAIN_ZOOM, 2));
+				PickingType.SCATTER_MAIN_ZOOM, 2));
 
 		if (fTransformNewMaxX < 1) {
 			if (bMainViewZoomDragged && iCurrentDragZoom == 2)
@@ -788,7 +788,7 @@ public class GLScatterPlot extends ATableBasedView {
 			gl.glEnd();
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.SCATTER_MAIN_ZOOM, 3));
+					PickingType.SCATTER_MAIN_ZOOM, 3));
 			x = x - fIconwith;
 
 			lowerLeftCorner = new Vec3f(x, y, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
@@ -852,7 +852,7 @@ public class GLScatterPlot extends ATableBasedView {
 					ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.SCATTER_MAIN_ZOOM, 4));
+					PickingType.SCATTER_MAIN_ZOOM, 4));
 
 			if (fTransformOldMaxX < 1) {
 				if (bMainViewZoomDragged && iCurrentDragZoom == 4)
@@ -913,7 +913,7 @@ public class GLScatterPlot extends ATableBasedView {
 		gl.glEnd();
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				EPickingType.SCATTER_MAIN_ZOOM, 5));
+				PickingType.SCATTER_MAIN_ZOOM, 5));
 		y = y - fIconwith;
 
 		Vec3f lowerLeftCorner = new Vec3f(x, y, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
@@ -972,7 +972,7 @@ public class GLScatterPlot extends ATableBasedView {
 				ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				EPickingType.SCATTER_MAIN_ZOOM, 6));
+				PickingType.SCATTER_MAIN_ZOOM, 6));
 
 		if (fTransformNewMaxY < 1) {
 			if (bMainViewZoomDragged && iCurrentDragZoom == 6)
@@ -1019,7 +1019,7 @@ public class GLScatterPlot extends ATableBasedView {
 			gl.glEnd();
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.SCATTER_MAIN_ZOOM, 7));
+					PickingType.SCATTER_MAIN_ZOOM, 7));
 			y = y - fIconwith;
 
 			lowerLeftCorner = new Vec3f(x, y, ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
@@ -1083,7 +1083,7 @@ public class GLScatterPlot extends ATableBasedView {
 					ScatterPlotRenderStyle.MAINVIEW_ZOOM_Z);
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.SCATTER_MAIN_ZOOM, 8));
+					PickingType.SCATTER_MAIN_ZOOM, 8));
 
 			if (fTransformOldMaxY < 1) {
 				if (bMainViewZoomDragged && iCurrentDragZoom == 8)
@@ -1774,7 +1774,7 @@ public class GLScatterPlot extends ATableBasedView {
 						}
 
 						gl.glPushName(this.pickingManager.getPickingID(this.uniqueID,
-								EPickingType.SCATTER_MATRIX_SELECTION, icounter));
+								PickingType.SCATTER_MATRIX_SELECTION, icounter));
 
 						gl.glBegin(7);
 						gl.glTexCoord2d(texCoords.left(), texCoords.top());
@@ -2208,7 +2208,7 @@ public class GLScatterPlot extends ATableBasedView {
 				POINTSTYLE = tmpPoint;
 
 				int iPickingID = pickingManager.getPickingID(uniqueID,
-						EPickingType.SCATTER_POINT_SELECTION, iContentIndex);
+						PickingType.SCATTER_POINT_SELECTION, iContentIndex);
 
 				gl.glPushName(iPickingID);
 				gl.glColor4f(0.0f, 0.0f, 1.0f, 0.3f);
@@ -2532,7 +2532,7 @@ public class GLScatterPlot extends ATableBasedView {
 		float halfPoint = (fullPoint / 2.0f);
 
 		int iPickingID = pickingManager.getPickingID(uniqueID,
-				EPickingType.SCATTER_POINT_SELECTION, iContentIndex);
+				PickingType.SCATTER_POINT_SELECTION, iContentIndex);
 		gl.glColor3f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2]);
 
 		gl.glPushName(iPickingID);
@@ -3036,8 +3036,8 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}

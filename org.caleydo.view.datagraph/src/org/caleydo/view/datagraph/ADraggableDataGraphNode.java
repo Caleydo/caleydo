@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.APickingListener;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.IPickingListener;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -60,7 +60,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 
 		};
 		view.addSingleIDPickingListener(pickingListener,
-				EPickingType.DATA_GRAPH_NODE.name(), id);
+				PickingType.DATA_GRAPH_NODE.name(), id);
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	@Override
 	public void destroy() {
 		view.removeSingleIDPickingListener(pickingListener,
-				EPickingType.DATA_GRAPH_NODE.name(), id);
+				PickingType.DATA_GRAPH_NODE.name(), id);
 	}
 
 }

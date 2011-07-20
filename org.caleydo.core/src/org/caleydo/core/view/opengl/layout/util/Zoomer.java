@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -78,7 +78,7 @@ public class Zoomer
 		hScrollBarLayoutManager = new LayoutManager(viewFrustum);
 		hScrollBarTemplate = new LayoutTemplate();
 		hScrollBar =
-			new ScrollBar(0, 10, 5, 5, EPickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
+			new ScrollBar(0, 10, 5, 5, PickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
 
 		Column baseColumn = new Column();
 
@@ -102,7 +102,7 @@ public class Zoomer
 		vScrollBarLayoutManager = new LayoutManager(viewFrustum);
 		vScrollBarTemplate = new LayoutTemplate();
 		vScrollBar =
-			new ScrollBar(0, 10, 5, 5, EPickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
+			new ScrollBar(0, 10, 5, 5, PickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
 
 		Row baseRow = new Row();
 

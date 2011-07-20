@@ -18,8 +18,8 @@ import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -52,7 +52,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	}
 
 	@Override
-	public void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode,
+	public void handlePickingEvents(PickingType ePickingType, PickingMode pickingMode,
 			int externalID, Pick pick, boolean isControlPressed) {
 		SelectionType selectionType = null;
 
@@ -227,7 +227,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 					gl.glPushAttrib(GL2.GL_LINE_BIT);
 
 					gl.glPushName(pickingManager.getPickingID(viewID,
-							EPickingType.POLYLINE_SELECTION, contentID));
+							PickingType.POLYLINE_SELECTION, contentID));
 
 					z = setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
 					HashMap<Integer, ArrayList<Vec3f>> map = contentIDToIndividualLines
@@ -287,6 +287,6 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 
 	protected abstract void renderSelections(GL2 gl);
 
-	public abstract void handleStateSpecificPickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int externalID, Pick pick, boolean isControlPressed);
+	public abstract void handleStateSpecificPickingEvents(PickingType ePickingType,
+			PickingMode pickingMode, int externalID, Pick pick, boolean isControlPressed);
 }

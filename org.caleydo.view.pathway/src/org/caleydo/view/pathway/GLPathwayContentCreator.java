@@ -16,7 +16,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.mapping.IDMappingManager;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -453,7 +453,7 @@ public class GLPathwayContentCreator {
 				.getViewGLCanvasManager()
 				.getPickingManager()
 				.getPickingID(containingView.getID(),
-						EPickingType.PATHWAY_ELEMENT_SELECTION, vertexRep.getId()));
+						PickingType.PATHWAY_ELEMENT_SELECTION, vertexRep.getId()));
 
 		EPathwayVertexShape shape = vertexRep.getShapeType();
 

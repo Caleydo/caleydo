@@ -6,8 +6,8 @@ import java.awt.Point;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -55,7 +55,7 @@ public class VerticalSlider {
 		float sliderPositionX = layout.getOverviewSliderPositionX();
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
-				EPickingType.COMPARE_OVERVIEW_SLIDER_ARROW_DOWN_SELECTION, pickingID));
+				PickingType.COMPARE_OVERVIEW_SLIDER_ARROW_DOWN_SELECTION, pickingID));
 		Vec3f upperLeftCorner = new Vec3f(sliderPositionX, sliderBottomPositionY, 0.0f);
 		Vec3f upperRightCorner = new Vec3f(sliderPositionX + sliderWidth,
 				sliderBottomPositionY, 0.0f);
@@ -72,7 +72,7 @@ public class VerticalSlider {
 		// fill gap between cursor
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
 		gl.glPushName(pickingManager.getPickingID(viewID,
-				EPickingType.COMPARE_OVERVIEW_SLIDER_BODY_SELECTION, pickingID));
+				PickingType.COMPARE_OVERVIEW_SLIDER_BODY_SELECTION, pickingID));
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), 0.0f);
 		gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(), 0.0f);
@@ -83,7 +83,7 @@ public class VerticalSlider {
 
 		// Polygon for iLastElement-Cursor
 		gl.glPushName(pickingManager.getPickingID(viewID,
-				EPickingType.COMPARE_OVERVIEW_SLIDER_ARROW_UP_SELECTION, pickingID));
+				PickingType.COMPARE_OVERVIEW_SLIDER_ARROW_UP_SELECTION, pickingID));
 
 		lowerLeftCorner = new Vec3f(sliderPositionX, sliderTopPositionY - arrowHeight,
 				0.0f);
@@ -243,9 +243,9 @@ public class VerticalSlider {
 	// }
 	// }
 
-	public void handleSliderSelection(EPickingType pickingType, EPickingMode pickingMode) {
+	public void handleSliderSelection(PickingType pickingType, PickingMode pickingMode) {
 
-		if (pickingMode != EPickingMode.CLICKED)
+		if (pickingMode != PickingMode.CLICKED)
 			return;
 
 		switch (pickingType) {

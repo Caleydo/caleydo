@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.util.button;
 
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
@@ -15,7 +15,7 @@ public class Button {
 	private boolean isSelected;
 	private int buttonID;
 	private EIconTextures iconTexture;
-	private EPickingType pickingType;
+	private PickingType pickingType;
 
 	/**
 	 * @param pickingType
@@ -25,7 +25,7 @@ public class Button {
 	 * @param iconTexture
 	 *            Texture for the button.
 	 */
-	public Button(EPickingType pickingType, int buttonID,
+	public Button(PickingType pickingType, int buttonID,
 			EIconTextures iconTexture) {
 		isSelected = false;
 		this.buttonID = buttonID;
@@ -52,7 +52,7 @@ public class Button {
 	/**
 	 * @return Picking type of button.
 	 */
-	public EPickingType getPickingType() {
+	public PickingType getPickingType() {
 		return pickingType;
 	}
 
@@ -61,7 +61,7 @@ public class Button {
 	 * 
 	 * @param pickingType
 	 */
-	public void setPickingType(EPickingType pickingType) {
+	public void setPickingType(PickingType pickingType) {
 		this.pickingType = pickingType;
 	}
 

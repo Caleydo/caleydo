@@ -29,8 +29,8 @@ import org.caleydo.core.manager.event.view.matchmaker.DuplicateSetBarItemEvent;
 import org.caleydo.core.manager.event.view.storagebased.HideHeatMapElementsEvent;
 import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -294,8 +294,8 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}

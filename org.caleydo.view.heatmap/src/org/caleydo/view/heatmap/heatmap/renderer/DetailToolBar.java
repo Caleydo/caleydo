@@ -2,7 +2,7 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -76,7 +76,7 @@ public class DetailToolBar extends LayoutRenderer {
 			gl.glColor4f(1, 1, 1, 1);
 			gl.glTranslatef(sideSpacing, spacing, 0);
 			gl.glPushName(pickingManager.getPickingID(heatMap.getID(),
-					EPickingType.HEAT_MAP_HIDE_HIDDEN_ELEMENTS, 1));
+					PickingType.HEAT_MAP_HIDE_HIDDEN_ELEMENTS, 1));
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(0, 0, buttonZ);

@@ -18,8 +18,8 @@ import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.RemoveBookmarkEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
@@ -94,7 +94,7 @@ public class GLBookmarkView extends AGLView implements
 		public int getPickingID(ABookmarkContainer<?> container, int privateID) {
 
 			int pickingID = pickingManager.getPickingID(uniqueID,
-					EPickingType.BOOKMARK_ELEMENT, idCount);
+					PickingType.BOOKMARK_ELEMENT, idCount);
 			pickingIDToBookmarkContainer.put(idCount++, new Pair<IDCategory, Integer>(
 					container.getCategory(), privateID));
 			return pickingID;
@@ -250,8 +250,8 @@ public class GLBookmarkView extends AGLView implements
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int externalID, Pick pick) {
 		switch (pickingType) {
 		case BOOKMARK_ELEMENT:
 			Pair<IDCategory, Integer> pair = pickingIDManager.getPrivateID(externalID);

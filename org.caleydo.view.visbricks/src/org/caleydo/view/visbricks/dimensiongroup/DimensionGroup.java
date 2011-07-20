@@ -20,8 +20,8 @@ import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
@@ -637,11 +637,11 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int pickingID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int pickingID, Pick pick) {
 		switch (pickingType) {
 		case MOVE_VERTICALLY_HANDLE:
-			if (pickingMode == EPickingMode.CLICKED) {
+			if (pickingMode == PickingMode.CLICKED) {
 				isVerticalMoveDraggingActive = true;
 			}
 			break;

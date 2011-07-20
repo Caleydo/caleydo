@@ -10,7 +10,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
@@ -63,7 +63,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 	public void render(GL2 gl) {
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
-				EPickingType.COMPARE_SET_BAR_ITEM_SELECTION, id));
+				PickingType.COMPARE_SET_BAR_ITEM_SELECTION, id));
 		renderItemBody(gl, selectionStatus, position.x(), position.y(), position.z());
 		gl.glPopName();
 

@@ -259,7 +259,7 @@ public class PickingManager {
 	 *         external id
 	 */
 	//FIXME: Legacy Support
-	public int getPickingID(int iViewID, EPickingType ePickingType, int externalID) {
+	public int getPickingID(int iViewID, PickingType ePickingType, int externalID) {
 
 		return getPickingID(iViewID, ePickingType.name(), externalID);
 	}
@@ -283,24 +283,24 @@ public class PickingManager {
 
 		Point pickPoint = null;
 
-		EPickingMode ePickingMode = EPickingMode.CLICKED;
+		PickingMode ePickingMode = PickingMode.CLICKED;
 
 		if (glMouseListener.wasMouseDoubleClicked()) {
 			pickPoint = glMouseListener.getPickedPoint();
-			ePickingMode = EPickingMode.DOUBLE_CLICKED;
+			ePickingMode = PickingMode.DOUBLE_CLICKED;
 		}
 		else if (glMouseListener.wasMouseDragged()) {
 			pickPoint = glMouseListener.getPickedPoint();
-			ePickingMode = EPickingMode.DRAGGED;
+			ePickingMode = PickingMode.DRAGGED;
 		}
 		else if (glMouseListener.wasLeftMouseButtonPressed()) {
 			pickPoint = glMouseListener.getPickedPoint();
-			ePickingMode = EPickingMode.CLICKED;
+			ePickingMode = PickingMode.CLICKED;
 			// ContextMenu.get().flush();
 		}
 		else if (glMouseListener.wasRightMouseButtonPressed()) {
 			pickPoint = glMouseListener.getPickedPoint();
-			ePickingMode = EPickingMode.RIGHT_CLICKED;
+			ePickingMode = PickingMode.RIGHT_CLICKED;
 		}
 		else if (glMouseListener.wasMouseMoved()) {
 			// Restart timer
@@ -313,7 +313,7 @@ public class PickingManager {
 			pickPoint = glMouseListener.getPickedPoint();
 			// hashViewIDToLastMouseMovedTimeStamp.put(iViewID,
 			// System.nanoTime());
-			ePickingMode = EPickingMode.MOUSE_OVER;
+			ePickingMode = PickingMode.MOUSE_OVER;
 		}
 
 		if (pickPoint == null)
@@ -538,7 +538,7 @@ public class PickingManager {
 	 * @param pickedPoint
 	 * @param dragStartPoint
 	 */
-	private void processPicks(ArrayList<Integer> alPickingIDs, EPickingMode myMode, Point pickedPoint,
+	private void processPicks(ArrayList<Integer> alPickingIDs, PickingMode myMode, Point pickedPoint,
 		Point dragStartPoint) {
 
 		for (int pickingID : alPickingIDs) {

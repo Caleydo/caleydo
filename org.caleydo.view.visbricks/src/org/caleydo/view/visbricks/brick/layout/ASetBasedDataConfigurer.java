@@ -6,7 +6,7 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.picking.APickingListener;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
@@ -64,7 +64,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
 				.getDimensionGroup().getVisBricksView(), set.getLabel(),
-				EPickingType.DIMENSION_GROUP, layoutTemplate
+				PickingType.DIMENSION_GROUP, layoutTemplate
 						.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
@@ -72,7 +72,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		headerBarElements.add(spacingLayoutX);
 
 		Button clusterButton = new Button(
-				EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, CLUSTER_BUTTON_ID,
+				PickingType.DIMENSION_GROUP_CLUSTER_BUTTON, CLUSTER_BUTTON_ID,
 				EIconTextures.CLUSTER_ICON);
 		ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
 		clusterButtonLayout.setPixelGLConverter(pixelGLConverter);
@@ -114,7 +114,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 							}
 						});
 			}
-		}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID);
+		}, PickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID);
 
 		return headerBarElements;
 	}
@@ -135,7 +135,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
 				.getDimensionGroup().getVisBricksView(), set.getLabel(),
-				EPickingType.DIMENSION_GROUP, layoutTemplate
+				PickingType.DIMENSION_GROUP, layoutTemplate
 						.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 

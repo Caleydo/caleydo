@@ -16,7 +16,7 @@ import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
 import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -229,7 +229,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 	private void renderBackground(GL2 gl) {
 
 		int pickingID = glVisBricks.getPickingManager().getPickingID(glVisBricks.getID(),
-				EPickingType.DIMENSION_GROUP_SPACER, ID);
+				PickingType.DIMENSION_GROUP_SPACER, ID);
 
 		gl.glPushName(pickingID);
 		gl.glColor4f(1, 1, 0, 0f);
@@ -417,7 +417,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 						- rightDimGroup.getLayout().getTranslateX();
 
 				gl.glPushName(glVisBricks.getPickingManager().getPickingID(
-						glVisBricks.getID(), EPickingType.BRICK_CONNECTION_BAND,
+						glVisBricks.getID(), PickingType.BRICK_CONNECTION_BAND,
 						subGroupMatch.getConnectionBandID()));
 
 				// Render selected portion

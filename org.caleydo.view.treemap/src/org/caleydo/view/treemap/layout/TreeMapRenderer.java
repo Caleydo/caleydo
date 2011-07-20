@@ -9,7 +9,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -161,7 +161,7 @@ public class TreeMapRenderer {
 	private void renderHelp(GL2 gl, ATreeMapNode root) {
 		List<ATreeMapNode> children = root.getChildren();
 		if (children == null || children.size() == 0) {
-			gl.glPushName(pickingManager.getPickingID(viewID, EPickingType.TREEMAP_ELEMENT_SELECTED, root.getID()));
+			gl.glPushName(pickingManager.getPickingID(viewID, PickingType.TREEMAP_ELEMENT_SELECTED, root.getID()));
 
 			fillRectangle(gl, root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(), root.getColorAttribute());
 			gl.glPopName();

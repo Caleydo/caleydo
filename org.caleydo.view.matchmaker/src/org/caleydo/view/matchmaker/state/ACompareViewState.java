@@ -22,8 +22,8 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -267,7 +267,7 @@ public abstract class ACompareViewState {
 			return;
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
-				EPickingType.COMPARE_RIBBON_SELECTION, bandID));
+				PickingType.COMPARE_RIBBON_SELECTION, bandID));
 
 		float yCorrection = 0;
 		if (bandDetailAdaption)
@@ -667,7 +667,7 @@ public abstract class ACompareViewState {
 		points = curve.getCurvePoints();
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
-				EPickingType.POLYLINE_SELECTION, contentID));
+				PickingType.POLYLINE_SELECTION, contentID));
 
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < points.size(); i++) {
@@ -772,8 +772,8 @@ public abstract class ACompareViewState {
 
 	public abstract void setSetsToCompare(ArrayList<DataTable> setsToCompare);
 
-	public abstract void handlePickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int externalID, Pick pick, boolean isControlPressed);
+	public abstract void handlePickingEvents(PickingType ePickingType,
+			PickingMode pickingMode, int externalID, Pick pick, boolean isControlPressed);
 
 	public abstract int getNumSetsInFocus();
 
@@ -927,7 +927,7 @@ public abstract class ACompareViewState {
 				return;
 
 			gl.glPushName(pickingManager.getPickingID(viewID,
-					EPickingType.POLYLINE_SELECTION, contentID));
+					PickingType.POLYLINE_SELECTION, contentID));
 
 			gl.glBegin(GL2.GL_LINE_STRIP);
 			for (int i = 0; i < points.size(); i++)

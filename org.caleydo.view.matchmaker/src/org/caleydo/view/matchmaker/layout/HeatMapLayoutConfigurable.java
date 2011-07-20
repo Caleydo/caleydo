@@ -5,7 +5,7 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.view.matchmaker.rendercommand.IHeatMapRenderCommand;
 import org.caleydo.view.matchmaker.rendercommand.RenderCommandFactory;
 
@@ -53,8 +53,8 @@ public class HeatMapLayoutConfigurable extends AHeatMapLayout {
 
 	private boolean useDendrogram;
 
-	private EPickingType groupPickingType;
-	private EPickingType heatMapPickingType;
+	private PickingType groupPickingType;
+	private PickingType heatMapPickingType;
 
 	private HashMap<Integer, Vec3f> hashHeatMapPositions;
 	private HashMap<Integer, Float> hashHeatMapHeights;
@@ -333,20 +333,20 @@ public class HeatMapLayoutConfigurable extends AHeatMapLayout {
 	}
 
 	@Override
-	public EPickingType getGroupPickingType() {
+	public PickingType getGroupPickingType() {
 		return groupPickingType;
 	}
 
-	public void setGroupPickingType(EPickingType groupPickingType) {
+	public void setGroupPickingType(PickingType groupPickingType) {
 		this.groupPickingType = groupPickingType;
 	}
 
 	@Override
-	public EPickingType getHeatMapPickingType() {
+	public PickingType getHeatMapPickingType() {
 		return heatMapPickingType;
 	}
 
-	public void setHeatMapPickingType(EPickingType heatMapPickingType) {
+	public void setHeatMapPickingType(PickingType heatMapPickingType) {
 		this.heatMapPickingType = heatMapPickingType;
 	}
 

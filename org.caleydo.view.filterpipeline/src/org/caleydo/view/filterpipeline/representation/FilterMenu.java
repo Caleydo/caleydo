@@ -8,7 +8,7 @@ import gleem.linalg.Vec3f;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.filter.ContentMetaOrFilter;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -88,7 +88,7 @@ public class FilterMenu
 		// render filter buttons
 		for( int i = 0; i < numFilters; ++i )
 		{
-			gl.glPushName(pickingManager.getPickingID(viewId, EPickingType.FILTERPIPE_SUB_FILTER, i));
+			gl.glPushName(pickingManager.getPickingID(viewId, PickingType.FILTERPIPE_SUB_FILTER, i));
 			gl.glBegin(GL2.GL_QUADS);
 			{
 				gl.glColor4fv(renderStyle.getFilterColor(i), 0);

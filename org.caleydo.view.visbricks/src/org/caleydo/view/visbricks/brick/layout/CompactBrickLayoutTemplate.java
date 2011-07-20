@@ -3,7 +3,7 @@ package org.caleydo.view.visbricks.brick.layout;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.picking.APickingListener;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -139,7 +139,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// expandButtonLayout.setRatioSizeX(0.2f);
 		expandButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		expandButtonLayout.setRenderer(new ButtonRenderer(new Button(
-				EPickingType.BRICK_EXPAND_BUTTON, EXPAND_BUTTON_ID,
+				PickingType.BRICK_EXPAND_BUTTON, EXPAND_BUTTON_ID,
 				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE), brick, brick
 				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_180));
 
@@ -202,7 +202,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 				// brick.setRemoteView(EContainedViewType.OVERVIEW_HEATMAP);
 				dimensionGroup.updateLayout();
 			}
-		}, EPickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID);
+		}, PickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID);
 
 	}
 
@@ -273,7 +273,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public void destroy() {
 		super.destroy();
 		brick.removeSingleIDPickingListeners(
-				EPickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID);
+				PickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID);
 	}
 
 	// @Override

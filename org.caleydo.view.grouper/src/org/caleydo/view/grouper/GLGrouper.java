@@ -31,8 +31,8 @@ import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterHelper;
@@ -484,7 +484,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				EPickingType.GROUPER_BACKGROUND_SELECTION, 0));
+				PickingType.GROUPER_BACKGROUND_SELECTION, 0));
 
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 		gl.glColor3f(1.0f, 1.0f, 1.0f);
@@ -542,8 +542,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}

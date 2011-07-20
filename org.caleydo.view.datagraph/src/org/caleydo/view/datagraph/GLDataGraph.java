@@ -25,8 +25,8 @@ import org.caleydo.core.manager.event.data.NewDataDomainEvent;
 import org.caleydo.core.manager.event.view.DataDomainsChangedEvent;
 import org.caleydo.core.manager.event.view.NewViewEvent;
 import org.caleydo.core.manager.event.view.ViewClosedEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
@@ -612,8 +612,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}

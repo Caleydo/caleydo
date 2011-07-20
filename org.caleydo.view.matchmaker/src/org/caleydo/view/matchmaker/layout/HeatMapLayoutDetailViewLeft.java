@@ -2,7 +2,7 @@ package org.caleydo.view.matchmaker.layout;
 
 import gleem.linalg.Vec3f;
 
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.view.matchmaker.rendercommand.RenderCommandFactory;
 
 public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
@@ -44,8 +44,8 @@ public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 	}
 
 	@Override
-	public EPickingType getHeatMapPickingType() {
-		return EPickingType.COMPARE_LEFT_EMBEDDED_VIEW_SELECTION;
+	public PickingType getHeatMapPickingType() {
+		return PickingType.COMPARE_LEFT_EMBEDDED_VIEW_SELECTION;
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.filter.ContentMetaOrFilter;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -73,7 +73,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 			heightRight = vSize.y() * (subFilterSizes[i] / 100.f);
 
 			gl.glPushName(pickingManager.getPickingID(viewId,
-					EPickingType.FILTERPIPE_SUB_FILTER, i));
+					PickingType.FILTERPIPE_SUB_FILTER, i));
 			renderShape(gl, GL2.GL_QUADS, curPos, subFilterWidth, scaleY * heightLeft,
 					scaleY * heightRight, renderStyle.getFilterColor(i),
 					Z_POS_BODY + 0.1f);

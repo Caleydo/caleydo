@@ -9,7 +9,7 @@ import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.matchmaker.HeatMapWrapper;
@@ -93,29 +93,29 @@ public abstract class AHeatMapLayout {
 
 	public abstract float getOverviewSliderPositionX();
 
-	public EPickingType getGroupPickingType() {
+	public PickingType getGroupPickingType() {
 		// FIXME: There is no other way to do that yet, but this is way too
 		// static
 		int heatMapID = heatMapWrapper.getID();
 		switch (heatMapID) {
 		case 0:
-			return EPickingType.COMPARE_GROUP_1_SELECTION;
+			return PickingType.COMPARE_GROUP_1_SELECTION;
 		case 1:
-			return EPickingType.COMPARE_GROUP_2_SELECTION;
+			return PickingType.COMPARE_GROUP_2_SELECTION;
 		case 2:
-			return EPickingType.COMPARE_GROUP_3_SELECTION;
+			return PickingType.COMPARE_GROUP_3_SELECTION;
 		case 3:
-			return EPickingType.COMPARE_GROUP_4_SELECTION;
+			return PickingType.COMPARE_GROUP_4_SELECTION;
 		case 4:
-			return EPickingType.COMPARE_GROUP_5_SELECTION;
+			return PickingType.COMPARE_GROUP_5_SELECTION;
 		case 5:
-			return EPickingType.COMPARE_GROUP_6_SELECTION;
+			return PickingType.COMPARE_GROUP_6_SELECTION;
 		default:
 			return null;
 		}
 	}
 
-	public abstract EPickingType getHeatMapPickingType();
+	public abstract PickingType getHeatMapPickingType();
 
 	public abstract Vec3f getCaptionLabelPosition(float textWidth);
 

@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.gui;
+package org.caleydo.core.gui;
 
 import java.util.HashMap;
 
@@ -50,16 +50,6 @@ public class SWTGUIManager {
 	}
 
 	public void setProgressBarPercentageFromExternalThread(final int iPercentage) {
-		// if (loadingProgressBar.isDisposed())
-		// return;
-
-		// loadingProgressBar.getDisplay().asyncExec(new Runnable() {
-		// public void run() {
-		// if (loadingProgressBar.isDisposed())
-		// return;
-		// loadingProgressBar.setSelection(iPercentage);
-		// }
-		// });
 	}
 
 	public void setProgressBarText(String sText) {
@@ -72,14 +62,6 @@ public class SWTGUIManager {
 	}
 
 	public void setProgressBarTextFromExternalThread(final String sText) {
-		// if (loadingProgressBar.isDisposed())
-		// return;
-
-		// loadingProgressBar.getDisplay().asyncExec(new Runnable() {
-		// public void run() {
-		// setProgressBarText(sText);
-		// }
-		// });
 	}
 
 	public void setExternalProgressBarAndLabel(ProgressBar progressBar, Label progressLabel) {

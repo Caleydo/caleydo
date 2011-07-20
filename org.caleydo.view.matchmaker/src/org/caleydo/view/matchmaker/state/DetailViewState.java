@@ -15,8 +15,8 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -538,8 +538,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void handleStateSpecificPickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int externalID, Pick pick, boolean isControlPressed) {
+	public void handleStateSpecificPickingEvents(PickingType ePickingType,
+			PickingMode pickingMode, int externalID, Pick pick, boolean isControlPressed) {
 
 		SelectionType selectionType = null;
 
@@ -596,7 +596,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 			break;
 
 		case COMPARE_DENDROGRAM_BUTTON_SELECTION:
-			if (pickingMode == EPickingMode.CLICKED) {
+			if (pickingMode == PickingMode.CLICKED) {
 				if (indexOfHeatMapWrapperWithDendrogram == externalID) {
 					layouts.get(externalID).useDendrogram(false);
 					indexOfHeatMapWrapperWithDendrogram = -1;

@@ -24,8 +24,8 @@ import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.treemap.LevelHighlightingEvent;
 import org.caleydo.core.manager.event.view.treemap.ToggleColoringModeEvent;
 import org.caleydo.core.manager.event.view.treemap.ToggleLabelEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -237,13 +237,13 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 		display(gl);
 	}
 
-	public void handleRemotePickingEvents(EPickingType ePickingType, EPickingMode ePickingMode, int externalPickingID, Pick pick) {
+	public void handleRemotePickingEvents(PickingType ePickingType, PickingMode ePickingMode, int externalPickingID, Pick pick) {
 		if (bIsInteractive)
 			handlePickingEvents(ePickingType, ePickingMode, externalPickingID, pick);
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int pickingID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int pickingID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}

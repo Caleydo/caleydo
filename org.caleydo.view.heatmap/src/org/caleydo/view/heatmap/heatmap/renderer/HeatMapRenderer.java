@@ -8,7 +8,7 @@ import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -123,9 +123,9 @@ public class HeatMapRenderer extends AContentRenderer {
 		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
-				EPickingType.HEAT_MAP_STORAGE_SELECTION, iStorageIndex));
+				PickingType.HEAT_MAP_STORAGE_SELECTION, iStorageIndex));
 		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
-				EPickingType.HEAT_MAP_LINE_SELECTION, iContentIndex));
+				PickingType.HEAT_MAP_LINE_SELECTION, iContentIndex));
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);

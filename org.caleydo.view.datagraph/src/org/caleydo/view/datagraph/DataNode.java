@@ -8,7 +8,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.manager.datadomain.IDataDomain;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -52,7 +52,7 @@ public class DataNode extends ADraggableDataGraphNode {
 		baseRow.setFrameColor(0, 0, 1, 0);
 
 		baseRow.setRenderer(new BorderedAreaRenderer(view,
-				EPickingType.DATA_GRAPH_NODE, id));
+				PickingType.DATA_GRAPH_NODE, id));
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
@@ -71,7 +71,7 @@ public class DataNode extends ADraggableDataGraphNode {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setRatioSizeX(1);
 		captionLayout.setRenderer(new LabelRenderer(view, dataDomain
-				.getDataDomainID(), EPickingType.DATA_GRAPH_NODE, id));
+				.getDataDomainID(), PickingType.DATA_GRAPH_NODE, id));
 
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);

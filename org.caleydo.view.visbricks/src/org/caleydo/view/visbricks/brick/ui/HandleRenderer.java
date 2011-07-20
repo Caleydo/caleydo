@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -73,7 +73,7 @@ public class HandleRenderer extends LayoutRenderer {
 
 		if ((handles & RESIZE_HANDLE_LOWER_LEFT) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					EPickingType.RESIZE_HANDLE_LOWER_LEFT, 1));
+					PickingType.RESIZE_HANDLE_LOWER_LEFT, 1));
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(glHandleWidth, 0, 0);
@@ -85,7 +85,7 @@ public class HandleRenderer extends LayoutRenderer {
 
 		if ((handles & RESIZE_HANDLE_LOWER_RIGHT) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					EPickingType.RESIZE_HANDLE_LOWER_RIGHT, 1));
+					PickingType.RESIZE_HANDLE_LOWER_RIGHT, 1));
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(x, 0, 0);
 			gl.glVertex3f(x - glHandleWidth, 0, 0);
@@ -97,7 +97,7 @@ public class HandleRenderer extends LayoutRenderer {
 
 		if ((handles & RESIZE_HANDLE_UPPER_RIGHT) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					EPickingType.RESIZE_HANDLE_UPPER_RIGHT, 1));
+					PickingType.RESIZE_HANDLE_UPPER_RIGHT, 1));
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(x, y, 0);
 			gl.glVertex3f(x - glHandleWidth, y, 0);
@@ -109,7 +109,7 @@ public class HandleRenderer extends LayoutRenderer {
 
 		if ((handles & RESIZE_HANDLE_UPPER_LEFT) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					EPickingType.RESIZE_HANDLE_UPPER_LEFT, 1));
+					PickingType.RESIZE_HANDLE_UPPER_LEFT, 1));
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(0, y, 0);
 			gl.glVertex3f(glHandleWidth, y, 0);
@@ -122,7 +122,7 @@ public class HandleRenderer extends LayoutRenderer {
 		if ((handles & MOVE_VERTICALLY_HANDLE) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(
 					brick.getDimensionGroup().getID(),
-					EPickingType.MOVE_VERTICALLY_HANDLE, 0));
+					PickingType.MOVE_VERTICALLY_HANDLE, 0));
 			// gl.glColor4f(1f, 1f, 1f, 1);
 			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f
 					- glHandleHeight, 1);
@@ -160,7 +160,7 @@ public class HandleRenderer extends LayoutRenderer {
 		if ((handles & MOVE_HORIZONTALLY_HANDLE) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(
 					brick.getDimensionGroup().getVisBricksView().getID(),
-					EPickingType.MOVE_HORIZONTALLY_HANDLE,
+					PickingType.MOVE_HORIZONTALLY_HANDLE,
 					brick.getDimensionGroup().getID()));
 			//
 			// Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth * 2.0f, y / 2.0f
@@ -211,7 +211,7 @@ public class HandleRenderer extends LayoutRenderer {
 
 		if ((handles & EXPAND_LEFT_HANDLE) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					EPickingType.EXPAND_LEFT_HANDLE, brick.getID()));
+					PickingType.EXPAND_LEFT_HANDLE, brick.getID()));
 
 			// gl.glBegin(GL2.GL_QUADS);
 			// gl.glVertex3f(-glHandleWidth, y, 1);
@@ -235,7 +235,7 @@ public class HandleRenderer extends LayoutRenderer {
 
 		if ((handles & EXPAND_RIGHT_HANDLE) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					EPickingType.EXPAND_RIGHT_HANDLE, brick.getID()));
+					PickingType.EXPAND_RIGHT_HANDLE, brick.getID()));
 
 			Vec3f lowerLeftCorner = new Vec3f(x, y, 1);
 			Vec3f lowerRightCorner = new Vec3f(x + glHandleWidth, y, 1);

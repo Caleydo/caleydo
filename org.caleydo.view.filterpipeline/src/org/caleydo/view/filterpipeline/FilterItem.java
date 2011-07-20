@@ -18,7 +18,7 @@ import org.caleydo.core.data.filter.event.RemoveStorageFilterEvent;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
@@ -58,7 +58,7 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 			int iUniqueID) {
 		this.id = id;
 		pickingId = pickingManager.getPickingID(iUniqueID,
-				EPickingType.FILTERPIPE_FILTER, id);
+				PickingType.FILTERPIPE_FILTER, id);
 		this.filter = filter;
 	}
 

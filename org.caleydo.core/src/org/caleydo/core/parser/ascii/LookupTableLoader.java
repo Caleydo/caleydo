@@ -6,8 +6,8 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.mapping.MappingType;
 

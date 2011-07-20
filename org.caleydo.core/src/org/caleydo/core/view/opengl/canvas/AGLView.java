@@ -29,8 +29,8 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.ToggleMagnifyingGlassEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.mapping.IDMappingManager;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.IPickingListener;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -588,20 +588,20 @@ public abstract class AGLView
 						continue;
 					}
 
-					EPickingMode ePickingMode = tempPick.getPickingMode();
-					if (pickingType == EPickingType.CONTEXT_MENU_SELECTION.name()
-						|| pickingType == EPickingType.CONTEXT_MENU_SCROLL_DOWN.name()
-						|| pickingType == EPickingType.CONTEXT_MENU_SCROLL_UP.name()) {
-						contextMenu.handlePickingEvents(EPickingType.valueOf(pickingType), ePickingMode,
+					PickingMode ePickingMode = tempPick.getPickingMode();
+					if (pickingType == PickingType.CONTEXT_MENU_SELECTION.name()
+						|| pickingType == PickingType.CONTEXT_MENU_SCROLL_DOWN.name()
+						|| pickingType == PickingType.CONTEXT_MENU_SCROLL_UP.name()) {
+						contextMenu.handlePickingEvents(PickingType.valueOf(pickingType), ePickingMode,
 							externalID);
 					}
 					else {
-						if (tempPick.getPickingMode() != EPickingMode.RIGHT_CLICKED)
+						if (tempPick.getPickingMode() != PickingMode.RIGHT_CLICKED)
 							contextMenu.flush();
 						handlePicking(pickingType, ePickingMode, externalID, tempPick);
 						// FIXME: This is for legacy support -> picking listeners should be used
 						try {
-							handlePickingEvents(EPickingType.valueOf(pickingType), ePickingMode, externalID,
+							handlePickingEvents(PickingType.valueOf(pickingType), ePickingMode, externalID,
 								tempPick);
 						}
 						catch (Exception e) {
@@ -614,7 +614,7 @@ public abstract class AGLView
 		}
 	}
 
-	protected void handlePicking(String pickingType, EPickingMode pickingMode, int pickingID, Pick pick) {
+	protected void handlePicking(String pickingType, PickingMode pickingMode, int pickingID, Pick pick) {
 
 		Set<IPickingListener> pickingListeners = multiIDPickingListeners.get(pickingType);
 
@@ -637,7 +637,7 @@ public abstract class AGLView
 		}
 	}
 
-	private void handlePicking(IPickingListener pickingListener, EPickingMode pickingMode, Pick pick) {
+	private void handlePicking(IPickingListener pickingListener, PickingMode pickingMode, Pick pick) {
 		if (pickingListener == null)
 			return;
 
@@ -844,8 +844,8 @@ public abstract class AGLView
 	 *            the pick object which can be useful to retrieve for example the mouse position when the pick
 	 *            occurred
 	 */
-	abstract protected void handlePickingEvents(final EPickingType pickingType,
-		final EPickingMode pickingMode, final int pickingID, final Pick pick);
+	abstract protected void handlePickingEvents(final PickingType pickingType,
+		final PickingMode pickingMode, final int pickingID, final Pick pick);
 
 	/**
 	 * Returns a short info string about the view. Typically this should mention the name of the view plus the

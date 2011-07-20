@@ -14,8 +14,8 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -90,7 +90,7 @@ public class CompareViewStateController {
 		currentState.drawActiveElements(gl);
 	}
 
-	public void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode,
+	public void handlePickingEvents(PickingType ePickingType, PickingMode pickingMode,
 			int externalID, Pick pick, boolean isControlPressed) {
 		currentState.handlePickingEvents(ePickingType, pickingMode, externalID, pick,
 				isControlPressed);

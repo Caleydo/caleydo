@@ -9,7 +9,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -95,7 +95,7 @@ public class Gate extends AGate {
 		beginGUIElement(gl, scalingPivot);
 
 		gl.glColor4f(1, 1, 1, 0f);
-		int PickingID = pickingManager.getPickingID(iViewID, EPickingType.REMOVE_GATE,
+		int PickingID = pickingManager.getPickingID(iViewID, PickingType.REMOVE_GATE,
 				gateID);
 		gl.glPushName(PickingID);
 		gl.glBegin(GL2.GL_POLYGON);
@@ -118,7 +118,7 @@ public class Gate extends AGate {
 				GATE_Z);
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.GATE_TIP_SELECTION, gateID));
+				PickingType.GATE_TIP_SELECTION, gateID));
 
 		textureManager.renderTexture(gl, EIconTextures.GATE_TOP, lowerLeftCorner,
 				lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
@@ -153,7 +153,7 @@ public class Gate extends AGate {
 		// }
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.GATE_BODY_SELECTION, gateID));
+				PickingType.GATE_BODY_SELECTION, gateID));
 
 		lowerLeftCorner.set(currentPosition - GATE_WIDTH, bottom
 				+ PCRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
@@ -170,7 +170,7 @@ public class Gate extends AGate {
 		gl.glPopName();
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.GATE_BOTTOM_SELECTION, gateID));
+				PickingType.GATE_BOTTOM_SELECTION, gateID));
 
 		lowerLeftCorner.set(currentPosition - GATE_WIDTH, bottom, GATE_Z);
 		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom, GATE_Z);

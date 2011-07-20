@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -137,7 +137,7 @@ public class SetBar extends AGLGUIElement {
 		}
 	}
 
-	public void handleSetBarItemSelection(int itemID, EPickingMode pickingMode, Pick pick) {
+	public void handleSetBarItemSelection(int itemID, PickingMode pickingMode, Pick pick) {
 
 		SetBarItem item = items.get(itemID);
 
@@ -182,7 +182,7 @@ public class SetBar extends AGLGUIElement {
 	}
 
 	public void handleSetBarSelectionWindowSelection(int externalID,
-			EPickingType pickingType, EPickingMode pickingMode, Pick pick) {
+			PickingType pickingType, PickingMode pickingMode, Pick pick) {
 
 		selectionWindow.handleSelection(externalID, pickingType, pickingMode, pick);
 	}

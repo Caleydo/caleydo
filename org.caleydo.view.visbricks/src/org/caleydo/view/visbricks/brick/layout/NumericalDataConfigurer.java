@@ -7,7 +7,7 @@ import java.util.HashSet;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -38,13 +38,13 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 	public void configure(CentralBrickLayoutTemplate layoutTemplate) {
 
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, PARCOORDS_BUTTON_ID,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, PARCOORDS_BUTTON_ID,
 				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton histogramButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, HISTOGRAM_BUTTON_ID,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, HISTOGRAM_BUTTON_ID,
 				EIconTextures.HISTOGRAM_ICON, EContainedViewType.HISTOGRAM_VIEW);
 		BrickViewSwitchingButton overviewHeatMapButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
 				OVERVIEW_HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
 				EContainedViewType.OVERVIEW_HEATMAP);
 
@@ -93,16 +93,16 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 	public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
 
 		BrickViewSwitchingButton heatMapButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, HEATMAP_BUTTON_ID,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, HEATMAP_BUTTON_ID,
 				EIconTextures.HEAT_MAP_ICON, EContainedViewType.HEATMAP_VIEW);
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, PARCOORDS_BUTTON_ID,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, PARCOORDS_BUTTON_ID,
 				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton histogramButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, HISTOGRAM_BUTTON_ID,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, HISTOGRAM_BUTTON_ID,
 				EIconTextures.HISTOGRAM_ICON, EContainedViewType.HISTOGRAM_VIEW);
 		BrickViewSwitchingButton overviewHeatMapButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
 				OVERVIEW_HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
 				EContainedViewType.OVERVIEW_HEATMAP);
 
@@ -135,16 +135,16 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 	@Override
 	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
 		BrickViewSwitchingButton heatMapButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, HEATMAP_BUTTON_ID,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, HEATMAP_BUTTON_ID,
 				EIconTextures.HEAT_MAP_ICON, EContainedViewType.HEATMAP_VIEW);
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, PARCOORDS_BUTTON_ID,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, PARCOORDS_BUTTON_ID,
 				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton histogramButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, HISTOGRAM_BUTTON_ID,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, HISTOGRAM_BUTTON_ID,
 				EIconTextures.HISTOGRAM_ICON, EContainedViewType.HISTOGRAM_VIEW);
 		BrickViewSwitchingButton overviewHeatMapButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
 				OVERVIEW_HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
 				EContainedViewType.OVERVIEW_HEATMAP);
 

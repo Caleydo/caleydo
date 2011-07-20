@@ -4,16 +4,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.naming.OperationNotSupportedException;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
-import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.ICollection;
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.collection.table.statistics.StatisticsResult;
 import org.caleydo.core.data.graph.tree.ClusterTree;
@@ -21,7 +18,6 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.data.set.SetManager;
 import org.caleydo.core.manager.data.storage.StorageManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -103,7 +99,6 @@ public class DataTable
 	}
 
 	private void initWithDataDomain() {
-		SetManager.getInstance().registerItem(this);
 		init();
 		ClusterTree tree = new ClusterTree(dataDomain.getStorageIDType());
 		ClusterNode root = new ClusterNode(tree, "Root", 1, true, -1);

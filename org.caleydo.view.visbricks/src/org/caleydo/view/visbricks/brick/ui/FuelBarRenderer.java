@@ -6,7 +6,7 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
@@ -49,7 +49,7 @@ public class FuelBarRenderer extends LayoutRenderer {
 		float fuelWidth = (float) x / totalNumElements * currentNumElements;
 
 		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-				EPickingType.BRICK, brick.getID()));
+				PickingType.BRICK, brick.getID()));
 
 		gl.glBegin(GL2.GL_QUADS);
 		

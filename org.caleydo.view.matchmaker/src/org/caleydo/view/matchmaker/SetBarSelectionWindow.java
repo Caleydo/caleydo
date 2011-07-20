@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -27,7 +27,7 @@ public class SetBarSelectionWindow implements IDraggable {
 	private int lowestItemIndex;
 	private int viewID;
 	private int id;
-	private EPickingType draggingSelection;
+	private PickingType draggingSelection;
 	private PickingManager pickingManager;
 	private TextureManager textureManager;
 	private ArrayList<SetBarItem> items;
@@ -81,14 +81,14 @@ public class SetBarSelectionWindow implements IDraggable {
 
 		if (isPickable) {
 			gl.glPushName(pickingManager.getPickingID(viewID,
-					EPickingType.COMPARE_SELECTION_WINDOW_ARROW_LEFT_SELECTION, id));
+					PickingType.COMPARE_SELECTION_WINDOW_ARROW_LEFT_SELECTION, id));
 
 			renderArrow(gl, lowestItemPosition, arrowWidth, alpha, true, zOffset);
 
 			gl.glPopName();
 
 			gl.glPushName(pickingManager.getPickingID(viewID,
-					EPickingType.COMPARE_SELECTION_WINDOW_ARROW_RIGHT_SELECTION, id));
+					PickingType.COMPARE_SELECTION_WINDOW_ARROW_RIGHT_SELECTION, id));
 
 			renderArrow(gl, new Vec3f(rightArrowPositionX, lowestItemPosition.y(),
 					lowestItemPosition.z()), arrowWidth, alpha, false, zOffset);
@@ -96,7 +96,7 @@ public class SetBarSelectionWindow implements IDraggable {
 			gl.glPopName();
 
 			gl.glPushName(pickingManager.getPickingID(viewID,
-					EPickingType.COMPARE_SELECTION_WINDOW_SELECTION, id));
+					PickingType.COMPARE_SELECTION_WINDOW_SELECTION, id));
 
 			renderBody(gl, lowestItemPosition, arrowWidth, width, alpha, zOffset);
 
@@ -338,10 +338,10 @@ public class SetBarSelectionWindow implements IDraggable {
 		this.positionY = positionY;
 	}
 
-	public void handleSelection(int externalID, EPickingType pickingType,
-			EPickingMode pickingMode, Pick pick) {
+	public void handleSelection(int externalID, PickingType pickingType,
+			PickingMode pickingMode, Pick pick) {
 
-		if (pickingMode == EPickingMode.CLICKED) {
+		if (pickingMode == PickingMode.CLICKED) {
 			draggingSelection = pickingType;
 			dragAndDropController.clearDraggables();
 			dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());

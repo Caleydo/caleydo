@@ -17,7 +17,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -148,7 +148,7 @@ public class HeatMapUtil {
 
 	public static void renderGroupBar(GL2 gl, ContentVirtualArray contentVA,
 			float totalHeight, float groupWidth, PickingManager pickingManager,
-			int viewID, EPickingType pickingType, TextureManager textureManager) {
+			int viewID, PickingType pickingType, TextureManager textureManager) {
 
 		ContentGroupList contentGroupList = contentVA.getGroupList();
 

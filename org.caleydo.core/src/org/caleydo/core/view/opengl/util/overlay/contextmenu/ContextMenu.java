@@ -8,8 +8,8 @@ import java.util.HashMap;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -437,7 +437,7 @@ public class ContextMenu
 				if (!subMenu.scrollButtonUpActive)
 					return;
 				iPickingID =
-					pickingManager.getPickingID(masterGLView.getID(), EPickingType.CONTEXT_MENU_SCROLL_UP,
+					pickingManager.getPickingID(masterGLView.getID(), PickingType.CONTEXT_MENU_SCROLL_UP,
 						subMenu.contextMenuID);
 				bottom = yPosition;
 				top = yPosition + ICON_SIZE;
@@ -452,7 +452,7 @@ public class ContextMenu
 				if (!subMenu.scrollButtonDownActive)
 					return;
 				iPickingID =
-					pickingManager.getPickingID(masterGLView.getID(), EPickingType.CONTEXT_MENU_SCROLL_DOWN,
+					pickingManager.getPickingID(masterGLView.getID(), PickingType.CONTEXT_MENU_SCROLL_DOWN,
 						subMenu.contextMenuID);
 				top = yPosition;
 				bottom = yPosition + ICON_SIZE;
@@ -514,7 +514,7 @@ public class ContextMenu
 		gl.glColor4f(0, 0, 0, 0);
 
 		int iPickingID =
-			pickingManager.getPickingID(masterGLView.getID(), EPickingType.CONTEXT_MENU_SELECTION, itemID);
+			pickingManager.getPickingID(masterGLView.getID(), PickingType.CONTEXT_MENU_SELECTION, itemID);
 		gl.glPushName(iPickingID);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(xPosition, yPosition - SPACING / 2, BUTTON_Z * 2);
@@ -630,14 +630,14 @@ public class ContextMenu
 
 	/**
 	 * The handling of the picking. This has to be called when an element of the type
-	 * {@link EPickingType#CONTEXT_MENU_SELECTION} or other CONTEXT_MENU_* types are picked.
+	 * {@link PickingType#CONTEXT_MENU_SELECTION} or other CONTEXT_MENU_* types are picked.
 	 * 
 	 * @param ePickingMode
 	 *            the mode of the picking, eg. mouse-over or clicked. Only mouse-over and clicked are handled.
 	 * @param externalID
 	 *            the id which has to match one of the ids specified in {@link #display}
 	 */
-	public void handlePickingEvents(EPickingType pickingType, EPickingMode ePickingMode, int externalID) {
+	public void handlePickingEvents(PickingType pickingType, PickingMode ePickingMode, int externalID) {
 
 		for (SubMenu subMenu : hashContextMenuIDToSubMenu.values()) {
 			subMenu.scrollButtonDownOver = false;
@@ -723,7 +723,7 @@ public class ContextMenu
 		// the body
 		// gl.glBlendFunc(GL2.GL_DST_ALPHA, GL2.GL_ONE_MINUS_DST_ALPHA);
 
-		gl.glPushName(pickingManager.getPickingID(masterGLView.getID(), EPickingType.CONTEXT_MENU_SELECTION,
+		gl.glPushName(pickingManager.getPickingID(masterGLView.getID(), PickingType.CONTEXT_MENU_SELECTION,
 			Integer.MAX_VALUE));
 		gl.glColor4f(0f, 0f, 0f, 0.9f);
 		gl.glBegin(GL2.GL_POLYGON);

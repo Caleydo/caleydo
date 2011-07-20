@@ -4,7 +4,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
@@ -44,7 +44,7 @@ public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildInd
 		float fRadius = pdDiscToDraw.getCurrentWidth();
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
+				PickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
@@ -76,7 +76,7 @@ public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildInd
 		float fWidth = pdDiscToDraw.getCurrentWidth();
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,
-				EPickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
+				PickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {

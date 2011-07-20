@@ -22,8 +22,8 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
@@ -90,9 +90,9 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	/** list sorted based on number of occurrences */
 	private ArrayList<Pair<Integer, String>> sortedContent;
 
-	Button previousButton = new Button(EPickingType.TAG_DIMENSION_CHANGE,
+	Button previousButton = new Button(PickingType.TAG_DIMENSION_CHANGE,
 			BUTTON_PREVIOUS_ID, EIconTextures.HEAT_MAP_ARROW);
-	Button nextButton = new Button(EPickingType.TAG_DIMENSION_CHANGE, BUTTON_NEXT_ID,
+	Button nextButton = new Button(PickingType.TAG_DIMENSION_CHANGE, BUTTON_NEXT_ID,
 			EIconTextures.HEAT_MAP_ARROW);
 
 	// private StorageSelectionManager storageSelectionManager;
@@ -443,8 +443,8 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int externalID, Pick pick) {
 
 		switch (pickingType) {
 		case TAG_DIMENSION_CHANGE:

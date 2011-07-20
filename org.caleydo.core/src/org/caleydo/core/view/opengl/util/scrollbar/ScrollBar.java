@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.util.scrollbar;
 
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 
 /**
  * Class that holds all non-visual properties of a scroll bar. The rendering should be done by a
@@ -14,7 +14,7 @@ public class ScrollBar {
 	private int maxValue;
 	private int selection;
 	private int pageSize;
-	private EPickingType pickingType;
+	private PickingType pickingType;
 	private int id;
 	private IScrollBarUpdateHandler scrollBarUpdateHandler;
 
@@ -35,7 +35,7 @@ public class ScrollBar {
 	 * @param scrollBarUpdateHandler
 	 *            Handler that gets notified when the scroll bar gets updated.
 	 */
-	public ScrollBar(int minValue, int maxValue, int selection, int pageSize, EPickingType pickingType,
+	public ScrollBar(int minValue, int maxValue, int selection, int pageSize, PickingType pickingType,
 		int id, IScrollBarUpdateHandler scrollBarUpdateHandler) {
 		this.minValue = minValue;
 		this.maxValue = maxValue;
@@ -110,11 +110,11 @@ public class ScrollBar {
 		this.pageSize = pageSize;
 	}
 
-	public EPickingType getPickingType() {
+	public PickingType getPickingType() {
 		return pickingType;
 	}
 
-	public void setPickingType(EPickingType pickingType) {
+	public void setPickingType(PickingType pickingType) {
 		this.pickingType = pickingType;
 	}
 

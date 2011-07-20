@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -40,7 +40,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
 		headerBarElements.add(createCaptionLayout(layoutTemplate, "sdfsd",
-				EPickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID(),
+				PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID(),
 				layoutTemplate.getDimensionGroup().getVisBricksView()));
 
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
@@ -74,7 +74,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
 		headerBarElements.add(createCaptionLayout(layoutTemplate, "sdfsd",
-				EPickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID(),
+				PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID(),
 				layoutTemplate.getDimensionGroup().getVisBricksView()));
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
@@ -94,7 +94,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
 		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick()
-				.getBrickData().getLabel(), EPickingType.BRICK, layoutTemplate.getBrick()
+				.getBrickData().getLabel(), PickingType.BRICK, layoutTemplate.getBrick()
 				.getID(), layoutTemplate.getBrick()));
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
@@ -113,7 +113,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
 		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick()
-				.getBrickData().getLabel(), EPickingType.BRICK, layoutTemplate.getBrick()
+				.getBrickData().getLabel(), PickingType.BRICK, layoutTemplate.getBrick()
 				.getID(), layoutTemplate.getBrick()));
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
@@ -123,7 +123,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 	}
 
 	private ElementLayout createCaptionLayout(ABrickLayoutTemplate layoutTemplate,
-			String caption, EPickingType pickingType, int pickingID, AGLView view) {
+			String caption, PickingType pickingType, int pickingID, AGLView view) {
 		PixelGLConverter pixelGLConverter = layoutTemplate.getPixelGLConverter();
 
 		ElementLayout captionLayout = new ElementLayout("caption1");
@@ -176,12 +176,12 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		int numPathways = brick.getDimensionGroup().getBrickDimensionGroupData()
 				.getGroups().size();
 		LayoutRenderer pathwaysSummaryRenderer = new PathwaysSummaryRenderer(brick,
-				"Pathways: " + numPathways, EPickingType.BRICK, brick.getID());
+				"Pathways: " + numPathways, PickingType.BRICK, brick.getID());
 		containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY,
 				pathwaysSummaryRenderer);
 
 		LayoutRenderer pathwaysSummaryCompactRenderer = new PathwaysSummaryRenderer(
-				brick, "PWs: " + numPathways, EPickingType.BRICK, brick.getID());
+				brick, "PWs: " + numPathways, PickingType.BRICK, brick.getID());
 		containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY_COMPACT,
 				pathwaysSummaryCompactRenderer);
 
@@ -196,7 +196,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 					texture = EIconTextures.CM_BIOCARTA;
 				}
 				LayoutRenderer compactPathwayRenderer = new CompactPathwayRenderer(brick,
-						brick.getBrickData().getLabel(), EPickingType.BRICK,
+						brick.getBrickData().getLabel(), PickingType.BRICK,
 						brick.getID(), brick.getTextureManager(), texture);
 
 				containedViewRenderers.put(EContainedViewType.PATHWAY_COMPACT,

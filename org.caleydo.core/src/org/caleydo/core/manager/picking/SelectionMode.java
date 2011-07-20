@@ -6,7 +6,7 @@ package org.caleydo.core.manager.picking;
  * @author Alexander Lex
  */
 
-public enum ESelectionMode {
+public enum SelectionMode {
 
 	// Flag for adding the pick to the current selection
 	ADD_PICK,

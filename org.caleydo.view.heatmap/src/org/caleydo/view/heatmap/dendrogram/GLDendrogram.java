@@ -33,8 +33,8 @@ import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent
 import org.caleydo.core.manager.event.view.storagebased.NewStorageGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -378,7 +378,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			TextureCoords texCoordsArrow = textureArrow.getImageTexCoords();
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.DENDROGRAM_CUT_SELECTION, 1));
+					PickingType.DENDROGRAM_CUT_SELECTION, 1));
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fPosCut, -fSizeDendrogramArrow, BUTTON_Z);
@@ -458,7 +458,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			TextureCoords texCoordsArrow = textureArrow.getImageTexCoords();
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.DENDROGRAM_CUT_SELECTION, 1));
+					PickingType.DENDROGRAM_CUT_SELECTION, 1));
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fWidth + fSizeDendrogramArrow, fPosCut, BUTTON_Z);
@@ -762,7 +762,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			if (currentNode.isPartOfSubTree()) {
 
 				gl.glPushName(pickingManager.getPickingID(uniqueID,
-						EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode.getID()));
+						PickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode.getID()));
 
 				// vertical line connecting all child nodes
 				gl.glBegin(GL2.GL_LINES);
@@ -795,7 +795,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 		if (currentNode.isPartOfSubTree()) {
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode.getID()));
+					PickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode.getID()));
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(currentNode.getPosSubTree().x() + fLevelWidthSubTree,
 					currentNode.getPosSubTree().y(), currentNode.getPosSubTree().z());
@@ -1041,7 +1041,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			fDiff = fTemp - xmin;
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode.getID()));
+					PickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode.getID()));
 
 			// vertical line connecting all child nodes
 			gl.glBegin(GL2.GL_LINES);
@@ -1068,7 +1068,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 		} else {
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode.getID()));
+					PickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode.getID()));
 
 			// horizontal line visualizing leaf nodes
 			gl.glBegin(GL2.GL_LINES);
@@ -1164,7 +1164,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			fDiff = fTemp - ymax;
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.DENDROGRAM_EXPERIMENT_NODE_SELECTION,
+					PickingType.DENDROGRAM_EXPERIMENT_NODE_SELECTION,
 					currentNode.getID()));
 
 			// horizontal line connecting all child nodes
@@ -1193,7 +1193,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 		} else {
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					EPickingType.DENDROGRAM_EXPERIMENT_LEAF_SELECTION,
+					PickingType.DENDROGRAM_EXPERIMENT_LEAF_SELECTION,
 					currentNode.getID()));
 
 			// vertical line visualizing leaf nodes
@@ -1441,8 +1441,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}

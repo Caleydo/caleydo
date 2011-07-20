@@ -20,8 +20,8 @@ import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.tracking.TrackDataProvider;
@@ -269,9 +269,9 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 		}
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
+				PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				EPickingType.REMOTE_VIEW_SELECTION, glView.getID()));
+				PickingType.REMOTE_VIEW_SELECTION, glView.getID()));
 		gl.glPushMatrix();
 
 		Transform transform = element.getTransform();
@@ -310,8 +310,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}

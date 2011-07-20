@@ -23,8 +23,8 @@ import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
@@ -494,9 +494,9 @@ public abstract class AGLViewBrowser
 			return;
 		}
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT,
 			element.getID()));
-		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.REMOTE_VIEW_SELECTION,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_SELECTION,
 			glView.getID()));
 
 		gl.glPushMatrix();
@@ -706,7 +706,7 @@ public abstract class AGLViewBrowser
 	private void renderEmptyBucketWall(final GL2 gl, RemoteLevelElement element, RemoteLevel level) {
 		gl.glPushMatrix();
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT,
 			element.getID()));
 
 		Transform transform = element.getTransform();
@@ -853,26 +853,26 @@ public abstract class AGLViewBrowser
 
 		// Render icons
 		gl.glTranslatef(0, 2 + fHandleHeight, 0);
-		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_DRAG,
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_DRAG,
 			EIconTextures.NAVIGATION_DRAG_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(fHandleWidth - 2 * fHandleHeight, 0, 0);
 		if (bUpsideDown) {
 			gl.glRotatef(180, 1, 0, 0);
 			gl.glTranslatef(0, fHandleHeight, 0);
 		}
-		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_LOCK,
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_LOCK,
 			EIconTextures.NAVIGATION_LOCK_VIEW, fHandleHeight, fHandleHeight);
 		if (bUpsideDown) {
 			gl.glTranslatef(0, -fHandleHeight, 0);
 			gl.glRotatef(-180, 1, 0, 0);
 		}
 		gl.glTranslatef(fHandleHeight, 0, 0);
-		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_REMOVE,
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_REMOVE,
 			EIconTextures.NAVIGATION_REMOVE_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
-		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.REMOTE_VIEW_DRAG, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_DRAG, element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);
@@ -911,7 +911,7 @@ public abstract class AGLViewBrowser
 		}
 	}
 
-	private void renderSingleHandle(final GL2 gl, int iRemoteLevelElementID, EPickingType ePickingType,
+	private void renderSingleHandle(final GL2 gl, int iRemoteLevelElementID, PickingType ePickingType,
 		EIconTextures eIconTexture, float fWidth, float fHeight) {
 		gl.glPushName(pickingManager.getPickingID(uniqueID, ePickingType, iRemoteLevelElementID));
 
@@ -978,10 +978,10 @@ public abstract class AGLViewBrowser
 		int fHandleScaleFactor = 18;
 		gl.glTranslatef(fXOrigin - 1.2f, fYOrigin - fHeight / 2f + fHeight - 1f, 1.8f);
 		gl.glScalef(fHandleScaleFactor, fHandleScaleFactor, fHandleScaleFactor);
-		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_DRAG, EIconTextures.POOL_DRAG_VIEW,
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_DRAG, EIconTextures.POOL_DRAG_VIEW,
 			0.1f, 0.1f);
 		gl.glTranslatef(0, -0.2f, 0);
-		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_REMOVE,
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_REMOVE,
 			EIconTextures.POOL_REMOVE_VIEW, 0.1f, 0.1f);
 		gl.glTranslatef(0, 0.2f, 0);
 		gl.glScalef(1f / fHandleScaleFactor, 1f / fHandleScaleFactor, 1f / fHandleScaleFactor);
@@ -997,9 +997,9 @@ public abstract class AGLViewBrowser
 		// gl.glVertex3f(fXOrigin + 3f, fYOrigin- fHeight / 2f + 1.5f , 0f);
 		// gl.glEnd();
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT,
 			element.getID()));
-		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.REMOTE_VIEW_SELECTION,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_SELECTION,
 			element.getID()));
 	}
 
@@ -1123,7 +1123,7 @@ public abstract class AGLViewBrowser
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int externalID,
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int externalID,
 		Pick pick) {
 
 		switch (pickingType) {

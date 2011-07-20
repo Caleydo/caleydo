@@ -3,7 +3,7 @@ package org.caleydo.view.visbricks.brick.layout;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.picking.APickingListener;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -65,10 +65,10 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 		toolBar = new Row();
 		footerBar = new Row();
 		lockResizingButton = new Button(
-				EPickingType.BRICK_LOCK_RESIZING_BUTTON,
+				PickingType.BRICK_LOCK_RESIZING_BUTTON,
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
 		viewSwitchingModeButton = new Button(
-				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
+				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
 				VIEW_SWITCHING_MODE_BUTTON_ID, EIconTextures.LOCK);
 		viewSwitchingModeButton.setSelected(dimensionGroup
 				.isGlobalViewSwitching());
@@ -236,7 +236,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 		closeButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		closeButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		closeButtonLayout.setRenderer(new ButtonRenderer(new Button(
-				EPickingType.BRICK_CLOSE_BUTTON, CLOSE_BUTTON_ID,
+				PickingType.BRICK_CLOSE_BUTTON, CLOSE_BUTTON_ID,
 				EIconTextures.REMOVE), brick, brick.getTextureManager()));
 
 		// toolBar.append(ratioSpacingLayoutX);
@@ -272,7 +272,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 				brick.setSizeFixed(isResizingLocked);
 				lockResizingButton.setSelected(isResizingLocked);
 			}
-		}, EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
+		}, PickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 
 		brick.addSingleIDPickingListener(
 				new APickingListener() {
@@ -286,7 +286,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 						viewSwitchingModeButton
 								.setSelected(isGlobalViewSwitching);
 					}
-				}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
+				}, PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID);
 
 		brick.addSingleIDPickingListener(new APickingListener() {
@@ -295,7 +295,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 			public void clicked(Pick pick) {
 				dimensionGroup.hideDetailedBrick();
 			}
-		}, EPickingType.BRICK_CLOSE_BUTTON.name(), CLOSE_BUTTON_ID);
+		}, PickingType.BRICK_CLOSE_BUTTON.name(), CLOSE_BUTTON_ID);
 	}
 
 	@Override
@@ -379,14 +379,14 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public void destroy() {
 		super.destroy();
 		brick.removeSingleIDPickingListeners(
-				EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
+				PickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 
 		brick.removeSingleIDPickingListeners(
-				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
+				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID);
 
 		brick.removeSingleIDPickingListeners(
-				EPickingType.BRICK_CLOSE_BUTTON.name(), CLOSE_BUTTON_ID);
+				PickingType.BRICK_CLOSE_BUTTON.name(), CLOSE_BUTTON_ID);
 	}
 
 }

@@ -27,8 +27,8 @@ import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.event.view.storagebased.HideHeatMapElementsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
@@ -356,8 +356,8 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -429,7 +429,7 @@ public class GLHeatMap extends ATableBasedView {
 			break;
 
 		case HEAT_MAP_HIDE_HIDDEN_ELEMENTS:
-			if (pickingMode == EPickingMode.CLICKED)
+			if (pickingMode == PickingMode.CLICKED)
 				if (hideElements)
 					hideElements = false;
 				else
@@ -445,7 +445,7 @@ public class GLHeatMap extends ATableBasedView {
 			break;
 		case HEAT_MAP_SHOW_CAPTIONS:
 
-			if (pickingMode == EPickingMode.CLICKED)
+			if (pickingMode == PickingMode.CLICKED)
 				if (showCaptions)
 					showCaptions = false;
 				else {

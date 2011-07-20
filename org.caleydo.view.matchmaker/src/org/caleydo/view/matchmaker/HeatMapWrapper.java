@@ -26,8 +26,8 @@ import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -532,8 +532,8 @@ public class HeatMapWrapper {
 		return id;
 	}
 
-	public void handleOverviewSliderSelection(EPickingType pickingType,
-			EPickingMode pickingMode) {
+	public void handleOverviewSliderSelection(PickingType pickingType,
+			PickingMode pickingMode) {
 		overview.handleSliderSelection(pickingType, pickingMode);
 	}
 

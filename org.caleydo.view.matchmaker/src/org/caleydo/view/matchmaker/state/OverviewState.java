@@ -11,8 +11,8 @@ import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -186,8 +186,8 @@ public class OverviewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void handleStateSpecificPickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int externalID, Pick pick, boolean isControlPressed) {
+	public void handleStateSpecificPickingEvents(PickingType ePickingType,
+			PickingMode pickingMode, int externalID, Pick pick, boolean isControlPressed) {
 
 		HeatMapWrapper selectedHeatMapWrapper = null;
 

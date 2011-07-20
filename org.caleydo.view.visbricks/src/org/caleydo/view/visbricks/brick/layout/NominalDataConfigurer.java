@@ -7,7 +7,7 @@ import java.util.HashSet;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -32,10 +32,10 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 	@Override
 	public void configure(CentralBrickLayoutTemplate layoutTemplate) {
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, PARCOORDS_BUTTON_ID,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, PARCOORDS_BUTTON_ID,
 				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, TAGCLOUD_BUTTON_ID,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, TAGCLOUD_BUTTON_ID,
 				EIconTextures.TAGCLOUD_ICON, EContainedViewType.TAGCLOUD_VIEW);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
@@ -80,10 +80,10 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 	public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
 
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, PARCOORDS_BUTTON_ID,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, PARCOORDS_BUTTON_ID,
 				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, TAGCLOUD_BUTTON_ID,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, TAGCLOUD_BUTTON_ID,
 				EIconTextures.TAGCLOUD_ICON, EContainedViewType.TAGCLOUD_VIEW);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
@@ -114,10 +114,10 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
 
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, PARCOORDS_BUTTON_ID,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, PARCOORDS_BUTTON_ID,
 				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
-				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, TAGCLOUD_BUTTON_ID,
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS, TAGCLOUD_BUTTON_ID,
 				EIconTextures.TAGCLOUD_ICON, EContainedViewType.TAGCLOUD_VIEW);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();

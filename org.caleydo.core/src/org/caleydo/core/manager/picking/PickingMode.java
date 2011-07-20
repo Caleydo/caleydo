@@ -1,6 +1,6 @@
 package org.caleydo.core.manager.picking;
 
-public enum EPickingMode {
+public enum PickingMode {
 	CLICKED,
 	DOUBLE_CLICKED,
 	MOUSE_OVER,

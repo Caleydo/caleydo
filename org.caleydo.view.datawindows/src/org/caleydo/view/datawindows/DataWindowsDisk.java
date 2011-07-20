@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -133,7 +133,7 @@ public class DataWindowsDisk extends PoincareDisk {
 			size = getMetric(node.getPosition(), nodeSize);
 		}
 
-		int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.DATAW_NODE,
+		int iPickingID = pickingManager.getPickingID(iUniqueID, PickingType.DATAW_NODE,
 				node.iComparableValue);
 
 		gl.glPushName(iPickingID);

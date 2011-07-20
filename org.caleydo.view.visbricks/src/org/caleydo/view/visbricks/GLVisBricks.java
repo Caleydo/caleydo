@@ -33,8 +33,8 @@ import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.DataDomainsChangedEvent;
 import org.caleydo.core.manager.event.view.storagebased.ConnectionsModeEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IDataDomainSetBasedView;
@@ -1018,8 +1018,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int externalID, Pick pick) {
 
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
@@ -1081,7 +1081,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			break;
 
 		case MOVE_HORIZONTALLY_HANDLE:
-			if (pickingMode == EPickingMode.CLICKED) {
+			if (pickingMode == PickingMode.CLICKED) {
 				isHorizontalMoveDraggingActive = true;
 				movedDimensionGroup = externalID;
 			}

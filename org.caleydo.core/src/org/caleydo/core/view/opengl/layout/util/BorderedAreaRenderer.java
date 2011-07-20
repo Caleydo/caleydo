@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.layout.util;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
@@ -17,7 +17,7 @@ public class BorderedAreaRenderer
 	public final static float[] DEFAULT_COLOR = { 0.5f, 0.5f, 0.5f, 1.0f };
 
 	private float[] color;
-	private EPickingType pickingType;
+	private PickingType pickingType;
 	private int id;
 	private AGLView view;
 	private boolean isPickable;
@@ -27,7 +27,7 @@ public class BorderedAreaRenderer
 		isPickable = false;
 	}
 
-	public BorderedAreaRenderer(AGLView view, EPickingType pickingType, int id) {
+	public BorderedAreaRenderer(AGLView view, PickingType pickingType, int id) {
 		color = DEFAULT_COLOR;
 		this.pickingType = pickingType;
 		this.id = id;

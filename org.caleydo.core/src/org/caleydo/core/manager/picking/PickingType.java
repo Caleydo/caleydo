@@ -6,7 +6,7 @@ package org.caleydo.core.manager.picking;
  * 
  * @author Alexander Lex
  */
-public enum EPickingType {
+public enum PickingType {
 	BACKGROUND,
 	BACKGROUND_HYPERBOLIC,
 

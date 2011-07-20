@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.layout.util;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -17,7 +17,7 @@ public class LabelRenderer
 
 	private AGLView view;
 	private String text;
-	private EPickingType pickingType;
+	private PickingType pickingType;
 	private int id;
 	private boolean isPickable;
 
@@ -31,7 +31,7 @@ public class LabelRenderer
 	 * @param id
 	 *            ID for picking.
 	 */
-	public LabelRenderer(AGLView view, String text, EPickingType pickingType, int id) {
+	public LabelRenderer(AGLView view, String text, PickingType pickingType, int id) {
 		this.view = view;
 		this.text = text;
 		this.pickingType = pickingType;

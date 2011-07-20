@@ -3,7 +3,7 @@ package org.caleydo.view.visbricks.brick.layout;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.picking.APickingListener;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -71,10 +71,10 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				visBricks, false);
 
 		lockResizingButton = new Button(
-				EPickingType.BRICK_LOCK_RESIZING_BUTTON,
+				PickingType.BRICK_LOCK_RESIZING_BUTTON,
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
 		viewSwitchingModeButton = new Button(
-				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
+				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
 				VIEW_SWITCHING_MODE_BUTTON_ID, EIconTextures.LOCK);
 		viewSwitchingModeButton.setSelected(dimensionGroup
 				.isGlobalViewSwitching());
@@ -252,7 +252,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		collapseButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		collapseButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		collapseButtonLayout.setRenderer(new ButtonRenderer(new Button(
-				EPickingType.BRICK_COLLAPSE_BUTTON, COLLAPSE_BUTTON_ID,
+				PickingType.BRICK_COLLAPSE_BUTTON, COLLAPSE_BUTTON_ID,
 				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE), brick, brick
 				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_90));
 
@@ -291,7 +291,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				brick.setSizeFixed(isResizingLocked);
 				lockResizingButton.setSelected(isResizingLocked);
 			}
-		}, EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
+		}, PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
 				LOCK_RESIZING_BUTTON_ID);
 
 		brick.addSingleIDPickingListener(
@@ -306,7 +306,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 						viewSwitchingModeButton
 								.setSelected(isGlobalViewSwitching);
 					}
-				}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
+				}, PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID);
 
 		brick.addSingleIDPickingListener(new APickingListener() {
@@ -316,7 +316,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				brick.collapse();
 				dimensionGroup.updateLayout();
 			}
-		}, EPickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID);
+		}, PickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID);
 
 		brick.addSingleIDPickingListener(new APickingListener() {
 
@@ -324,7 +324,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 			public void clicked(Pick pick) {
 				dimensionGroup.showDetailedBrick(brick, false);
 			}
-		}, EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
+		}, PickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 
 		brick.addSingleIDPickingListener(new APickingListener() {
 
@@ -332,7 +332,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 			public void clicked(Pick pick) {
 				dimensionGroup.showDetailedBrick(brick, true);
 			}
-		}, EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
+		}, PickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 	}
 
 	@Override
@@ -423,20 +423,20 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public void destroy() {
 		super.destroy();
 		brick.removeSingleIDPickingListeners(
-				EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
+				PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
 				LOCK_RESIZING_BUTTON_ID);
 
 		brick.removeSingleIDPickingListeners(
-				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
+				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID);
 
 		brick.removeSingleIDPickingListeners(
-				EPickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID);
+				PickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID);
 
 		brick.removeSingleIDPickingListeners(
-				EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
+				PickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 
 		brick.removeSingleIDPickingListeners(
-				EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
+				PickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 	}
 }

@@ -12,8 +12,8 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -230,7 +230,7 @@ public class HeatMapOverview {
 		return new Pair<Integer, Integer>(sampleIndexTop, sampleIndexBottom);
 	}
 
-	public void handleSliderSelection(EPickingType pickingType, EPickingMode pickingMode) {
+	public void handleSliderSelection(PickingType pickingType, PickingMode pickingMode) {
 		slider.handleSliderSelection(pickingType, pickingMode);
 	}
 
