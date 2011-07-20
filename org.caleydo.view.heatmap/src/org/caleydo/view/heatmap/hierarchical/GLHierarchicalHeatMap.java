@@ -262,7 +262,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 * @param glCanvas
 	 * @param viewFrustum
 	 */
-	public GLHierarchicalHeatMap(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLHierarchicalHeatMap(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLHierarchicalHeatMap.VIEW_TYPE;
@@ -295,9 +296,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@Override
 	public void init(GL2 gl) {
-		
+
 		textRenderer = new CaleydoTextRenderer(24);
-		
+
 		createHeatMap();
 		createDendrogram();
 
@@ -389,14 +390,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentComposite().getDisplay()
-				.asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						glParentView.getParentComposite()
-								.addKeyListener(glKeyListener);
-					}
-				});
+		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				glParentView.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		this.glMouseListener = glMouseListener;
 
@@ -516,8 +515,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	/**
-	 * Init textures, build array of textures used for holding the whole
-	 * samples
+	 * Init textures, build array of textures used for holding the whole samples
 	 * 
 	 * @param gl
 	 */
@@ -553,7 +551,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					}
 
 					fLookupValue = table.get(iStorageIndex).getFloat(
-							EDataRepresentation.NORMALIZED, iContentIndex);
+							renderingRepresentation, iContentIndex);
 
 					float[] fArMappingColor = colorMapper.getColor(fLookupValue);
 
@@ -695,13 +693,13 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
 				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
-		glContentDendrogramView = new GLDendrogram<ContentGroupList>(
-				parentGLCanvas, parentComposite, viewFrustum, true);
+		glContentDendrogramView = new GLDendrogram<ContentGroupList>(parentGLCanvas,
+				parentComposite, viewFrustum, true);
 		glContentDendrogramView.setRemoteRenderingGLView(this);
 		glContentDendrogramView.setDataDomain(dataDomain);
 
-		glExperimentDendrogramView = new GLDendrogram<StorageGroupList>(
-				parentGLCanvas, parentComposite, viewFrustum, false);
+		glExperimentDendrogramView = new GLDendrogram<StorageGroupList>(parentGLCanvas,
+				parentComposite, viewFrustum, false);
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
 		glExperimentDendrogramView.setDataDomain(dataDomain);
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
@@ -4012,8 +4010,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -5274,7 +5272,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		setDisplayListDirty();
 	}
-	
+
 	@Override
 	public java.util.Set<IDataDomain> getDataDomains() {
 		java.util.Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();

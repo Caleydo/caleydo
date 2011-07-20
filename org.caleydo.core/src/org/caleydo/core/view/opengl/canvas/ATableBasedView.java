@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.awt.GLCanvas;
 
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
@@ -28,6 +30,7 @@ import org.caleydo.core.manager.event.data.ReplaceStorageVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.DataDomainsChangedEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
+import org.caleydo.core.manager.event.view.SwitchDataRepresentationEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -49,6 +52,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ReplaceStorageVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.StorageVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.SwitchDataRepresentationListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
@@ -113,8 +117,12 @@ public abstract class ATableBasedView
 	protected ReplaceContentVAListener replaceContentVAListener;
 	protected ReplaceStorageVAListener replaceStorageVAListener;
 
+	protected SwitchDataRepresentationListener switchDataRepresentationListener;
+
 	protected IDType contentIDType;
 	protected IDType storageIDType;
+
+	protected EDataRepresentation renderingRepresentation = EDataRepresentation.NORMALIZED;
 
 	/**
 	 * Constructor for storage based views
@@ -141,7 +149,7 @@ public abstract class ATableBasedView
 		storageIDType = dataDomain.getStorageIDType();
 
 		initData();
-		
+
 		DataDomainsChangedEvent event = new DataDomainsChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
@@ -514,6 +522,10 @@ public abstract class ATableBasedView
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
+		switchDataRepresentationListener = new SwitchDataRepresentationListener();
+		switchDataRepresentationListener.setHandler(this);
+		eventPublisher.addListener(SwitchDataRepresentationEvent.class, switchDataRepresentationListener);
+
 	}
 
 	@Override
@@ -555,6 +567,11 @@ public abstract class ATableBasedView
 		if (replaceStorageVAListener != null) {
 			eventPublisher.removeListener(replaceStorageVAListener);
 			replaceStorageVAListener = null;
+		}
+
+		if (switchDataRepresentationListener != null) {
+			eventPublisher.removeListener(switchDataRepresentationListener);
+			switchDataRepresentationListener = null;
 		}
 
 	}
@@ -600,9 +617,24 @@ public abstract class ATableBasedView
 	public void setStorageVAType(String vaType) {
 		this.storageVAType = vaType;
 	}
-	
+
 	@Override
 	public boolean isDataView() {
 		return true;
 	}
+
+	public void switchDataRepresentation() {
+		if (renderingRepresentation.equals(EDataRepresentation.NORMALIZED)) {
+			if (!table.containsFoldChangeRepresentation())
+				table.createFoldChangeRepresentation();
+			renderingRepresentation = EDataRepresentation.FOLD_CHANGE_NORMALIZED;
+		}
+		else
+			renderingRepresentation = EDataRepresentation.NORMALIZED;
+	}
+
+	public EDataRepresentation getRenderingRepresentation() {
+		return renderingRepresentation;
+	}
+
 }

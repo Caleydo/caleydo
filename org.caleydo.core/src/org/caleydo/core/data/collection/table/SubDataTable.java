@@ -62,6 +62,8 @@ public class SubDataTable
 		statisticsResult = new StatisticsResult(this);
 
 		metaData = new MetaData(this);
+		metaData.min = originalSet.metaData.min;
+		metaData.max = originalSet.metaData.max;
 
 	}
 

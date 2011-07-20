@@ -616,8 +616,6 @@ public class DataTable
 					normalization.log2();
 					normalization.normalizeGlobally();
 					break;
-				case FOLD_CHANGE:
-					normalization.normalizeUsingFoldChange();
 			}
 		}
 		else {
@@ -635,6 +633,17 @@ public class DataTable
 					break;
 			}
 		}
+	}
+
+	public void createFoldChangeRepresentation() {
+		normalization.normalizeUsingFoldChange();
+	}
+
+	public boolean containsFoldChangeRepresentation() {
+		for (AStorage storage : hashStorages.values()) {
+			return storage.containsDataRepresentation(EDataRepresentation.FOLD_CHANGE_RAW);
+		}
+		return false;
 	}
 
 	// ---------------------- helper functions ------------------------------

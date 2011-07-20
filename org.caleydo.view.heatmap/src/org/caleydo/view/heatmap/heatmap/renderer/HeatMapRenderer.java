@@ -99,7 +99,7 @@ public class HeatMapRenderer extends AContentRenderer {
 		AStorage storage = heatMap.getSet().get(iStorageIndex);
 		if (storage == null)
 			return;
-		float value = storage.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+		float value = storage.getFloat(heatMap.getRenderingRepresentation(), iContentIndex);
 
 		float fOpacity = 1.0f;
 

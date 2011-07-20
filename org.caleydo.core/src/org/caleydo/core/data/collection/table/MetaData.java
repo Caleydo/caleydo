@@ -21,10 +21,10 @@ public class MetaData {
 	protected int depth = 0;
 
 	private boolean bArtificialMin = false;
-	private double dMin = Double.MAX_VALUE;
+	double min = Double.MAX_VALUE;
 
 	private boolean bArtificialMax = false;
-	private double dMax = Double.MIN_VALUE;
+	double max = Double.MIN_VALUE;
 
 	public MetaData(DataTable table) {
 		this.table = table;
@@ -179,10 +179,10 @@ public class MetaData {
 	 * @return the absolute minimum value in the set
 	 */
 	public double getMin() {
-		if (dMin == Double.MAX_VALUE) {
+		if (min == Double.MAX_VALUE) {
 			calculateGlobalExtrema();
 		}
-		return dMin;
+		return min;
 	}
 
 	/**
@@ -193,10 +193,10 @@ public class MetaData {
 	 * @return the absolute minimum value in the set
 	 */
 	public double getMax() {
-		if (dMax == Double.MIN_VALUE) {
+		if (max == Double.MIN_VALUE) {
 			calculateGlobalExtrema();
 		}
-		return dMax;
+		return max;
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class MetaData {
 	 */
 	void setMin(double dMin) {
 		bArtificialMin = true;
-		this.dMin = dMin;
+		this.min = dMin;
 	}
 
 	/**
@@ -214,7 +214,7 @@ public class MetaData {
 	 */
 	void setMax(double dMax) {
 		bArtificialMax = true;
-		this.dMax = dMax;
+		this.max = dMax;
 	}
 
 	/**
@@ -227,12 +227,12 @@ public class MetaData {
 	 * @return The absolute minimum value in the set in the specified data representation.
 	 */
 	public double getMinAs(EExternalDataRepresentation dataRepresentation) {
-		if (dMin == Double.MAX_VALUE) {
+		if (min == Double.MAX_VALUE) {
 			calculateGlobalExtrema();
 		}
 		if (dataRepresentation == table.externalDataRep)
-			return dMin;
-		double result = getRawFromExternalDataRep(dMin);
+			return min;
+		double result = getRawFromExternalDataRep(min);
 
 		return getDataRepFromRaw(result, dataRepresentation);
 	}
@@ -247,12 +247,12 @@ public class MetaData {
 	 * @return The absolute maximum value in the set in the specified data representation.
 	 */
 	public double getMaxAs(EExternalDataRepresentation dataRepresentation) {
-		if (dMax == Double.MIN_VALUE) {
+		if (max == Double.MIN_VALUE) {
 			calculateGlobalExtrema();
 		}
 		if (dataRepresentation == table.externalDataRep)
-			return dMax;
-		double result = getRawFromExternalDataRep(dMax);
+			return max;
+		double result = getRawFromExternalDataRep(max);
 
 		return getDataRepFromRaw(result, dataRepresentation);
 	}
@@ -308,12 +308,12 @@ public class MetaData {
 			for (AStorage storage : table.hashStorages.values()) {
 				NumericalStorage nStorage = (NumericalStorage) storage;
 				dTemp = nStorage.getMin();
-				if (!bArtificialMin && dTemp < dMin) {
-					dMin = dTemp;
+				if (!bArtificialMin && dTemp < min) {
+					min = dTemp;
 				}
 				dTemp = nStorage.getMax();
-				if (!bArtificialMax && dTemp > dMax) {
-					dMax = dTemp;
+				if (!bArtificialMax && dTemp > max) {
+					max = dTemp;
 				}
 			}
 		}

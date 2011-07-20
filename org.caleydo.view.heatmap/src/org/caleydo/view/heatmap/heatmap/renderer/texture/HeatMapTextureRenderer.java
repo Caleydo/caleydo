@@ -23,7 +23,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
 
-public class HeatMapTextureRenderer extends LayoutRenderer{
+public class HeatMapTextureRenderer extends LayoutRenderer {
 
 	private final static int MAX_SAMPLES_PER_TEXTURE = 2000;
 
@@ -40,8 +40,8 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 
 	private GLUncertaintyHeatMap uncertaintyHeatMap;
 
-	private PickingManager pickingManager = GeneralManager.get()
-			.getViewGLCanvasManager().getPickingManager();
+	private PickingManager pickingManager = GeneralManager.get().getViewGLCanvasManager()
+			.getPickingManager();
 
 	private int groupIndex;
 	private FloatBuffer[] floatBuffer;
@@ -62,15 +62,14 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 		this.uncertaintyHeatMap = uncertaintyHeatMap;
 		this.heatmapLayout = heatmapLayout;
 		// selectionUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
-		
+
 	}
 
 	/*
 	 * Init textures, build array of textures used for holding the whole samples
 	 */
 	public void init(GLUncertaintyHeatMap uncertaintyHeatMap, DataTable set,
-			ContentVirtualArray contentVA, StorageVirtualArray storageVA,
-			int groupIndex) {
+			ContentVirtualArray contentVA, StorageVirtualArray storageVA, int groupIndex) {
 
 		this.contentVA = contentVA;
 		this.storageVA = storageVA;
@@ -96,8 +95,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 
 		Texture tempTexture;
 
-		samplesPerTexture = (int) Math.ceil((double) textureHeight
-				/ numberOfTextures);
+		samplesPerTexture = (int) Math.ceil((double) textureHeight / numberOfTextures);
 
 		float fLookupValue = 0;
 
@@ -106,11 +104,9 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 		for (int itextures = 0; itextures < numberOfTextures; itextures++) {
 
 			if (itextures == numberOfTextures - 1) {
-				numberSamples
-						.add(textureHeight - samplesPerTexture * itextures);
+				numberSamples.add(textureHeight - samplesPerTexture * itextures);
 				floatBuffer[itextures] = FloatBuffer
-						.allocate((textureHeight - samplesPerTexture
-								* itextures)
+						.allocate((textureHeight - samplesPerTexture * itextures)
 								* textureWidth * 4);
 			} else {
 				numberSamples.add(samplesPerTexture);
@@ -135,12 +131,12 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 				// }
 
 				fLookupValue = set.get(storageIndex).getFloat(
-						EDataRepresentation.NORMALIZED, contentIndex);
+						uncertaintyHeatMap.getRenderingRepresentation(), contentIndex);
 
 				float[] mappingColor = colorMapper.getColor(fLookupValue);
 
-				float[] rgba = { mappingColor[0], mappingColor[1],
-						mappingColor[2], opacity };
+				float[] rgba = { mappingColor[0], mappingColor[1], mappingColor[2],
+						opacity };
 
 				floatBuffer[textureCounter].put(rgba);
 			}
@@ -148,14 +144,11 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 				floatBuffer[textureCounter].rewind();
 
 				TextureData texData = new TextureData(GLProfile.getDefault(),
-						GL2.GL_RGBA /* internalFormat */,
-						textureWidth /* height */,
-						numberSamples.get(textureCounter) /* width */,
-						0 /* border */, GL2.GL_RGBA /* pixelFormat */,
-						GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
-						false /* dataIsCompressed */,
-						false /* mustFlipVertically */,
-						floatBuffer[textureCounter], null);
+						GL2.GL_RGBA /* internalFormat */, textureWidth /* height */,
+						numberSamples.get(textureCounter) /* width */, 0 /* border */,
+						GL2.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
+						false /* mipmap */, false /* dataIsCompressed */,
+						false /* mustFlipVertically */, floatBuffer[textureCounter], null);
 
 				tempTexture = TextureIO.newTexture(0);
 				tempTexture.updateImage(texData);
@@ -169,7 +162,6 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 		}
 	}
 
-	
 	@Override
 	public void render(GL2 gl) {
 
@@ -186,27 +178,23 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 		for (int i = 0; i < numberOfTextures; i++) {
 
 			step = elementHeight * numberSamples.get(numberOfTextures - i - 1);
-			renderTexture(gl, textures.get(numberOfTextures - i - 1), 0,
-					yOffset, x, yOffset + step);
+			renderTexture(gl, textures.get(numberOfTextures - i - 1), 0, yOffset, x,
+					yOffset + step);
 
 			yOffset += step;
 		}
 
-			}
+	}
 
-	private void renderTexture(GL2 gl, Texture texture, float x, float y,
-			float width, float height) {
+	private void renderTexture(GL2 gl, Texture texture, float x, float y, float width,
+			float height) {
 
 		texture.enable();
 		texture.bind();
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S,
-				GL2.GL_CLAMP);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T,
-				GL2.GL_CLAMP);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
-				GL2.GL_NEAREST);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
-				GL2.GL_NEAREST);
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_NEAREST);
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_NEAREST);
 		TextureCoords texCoords = texture.getImageTexCoords();
 
 		gl.glPushName(pickingManager.getPickingID(uncertaintyHeatMap.getID(),
@@ -225,7 +213,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 
 		texture.disable();
 	}
-	
+
 	/**
 	 * Render marker next to OverviewBar for visualization of selected elements
 	 * in the data set
@@ -242,19 +230,17 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 		int startGene = (int) ((ratio * imageLine) - (Math.round(ratio / 2f)));
 		int endGene = (int) ((ratio * imageLine) + (Math.round(ratio / 2f)));
 		startGene = startGene < 0 ? 0 : startGene;
-		endGene = endGene > numberOfElements - 1 ? numberOfElements - 1
-				: endGene;
+		endGene = endGene > numberOfElements - 1 ? numberOfElements - 1 : endGene;
 
 		for (int exps = 0; exps < numberOfExpirments; exps++) {
 			val = 0;
 
 			for (int i = startGene; i < endGene; i++) {
-//				byte[] abgr = new byte[4];
+				// byte[] abgr = new byte[4];
 
 				val = val
 						+ ((set.get(storageVA.get(exps)).getFloat(
-								EDataRepresentation.NORMALIZED,
-								contentVA.get(i))));
+								EDataRepresentation.NORMALIZED, contentVA.get(i))));
 			}
 			// buffer.get(abgr, i * numberOfExpirments * 4 + exps * 4, 4);
 
@@ -271,11 +257,10 @@ public class HeatMapTextureRenderer extends LayoutRenderer{
 				}
 			}
 			// uncertainty = uncertainty / (float) (endGene - startGene);;
-			//System.out.println(maxUncertainty);
+			// System.out.println(maxUncertainty);
 		}
 
 		return 1 - (maxUncertainty * 2);
 	}
 
-	
 }
