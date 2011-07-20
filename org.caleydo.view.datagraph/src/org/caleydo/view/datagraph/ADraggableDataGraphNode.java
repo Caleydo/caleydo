@@ -6,6 +6,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.picking.APickingListener;
 import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.IPickingListener;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -17,7 +18,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	protected PixelGLConverter pixelGLConverter;
 	protected int id;
 	protected DragAndDropController dragAndDropController;
-
+	private IPickingListener pickingListener;
 	private float prevDraggingMouseX;
 	private float prevDraggingMouseY;
 
@@ -35,7 +36,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	}
 
 	private void createPickingListener() {
-		view.addSingleIDPickingListener(new APickingListener() {
+		pickingListener = new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -57,7 +58,9 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 				}
 			}
 
-		}, EPickingType.DATA_GRAPH_NODE.name(), id);
+		};
+		view.addSingleIDPickingListener(pickingListener,
+				EPickingType.DATA_GRAPH_NODE.name(), id);
 	}
 
 	@Override
@@ -106,6 +109,12 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	@Override
 	public int getID() {
 		return id;
+	}
+
+	@Override
+	public void destroy() {
+		view.removeSingleIDPickingListener(pickingListener,
+				EPickingType.DATA_GRAPH_NODE.name(), id);
 	}
 
 }

@@ -747,6 +747,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		dataGraph.removeNode(viewNode);
 		viewNodes.remove(viewNode);
+		viewNode.destroy();
 		applyAutomaticLayout = true;
 		setDisplayListDirty();
 	}

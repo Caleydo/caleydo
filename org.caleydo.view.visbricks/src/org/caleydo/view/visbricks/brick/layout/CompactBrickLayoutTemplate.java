@@ -269,6 +269,13 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		this.showFooterBar = showFooterBar;
 	}
 
+	@Override
+	public void destroy() {
+		super.destroy();
+		brick.removeSingleIDPickingListeners(
+				EPickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID);
+	}
+
 	// @Override
 	// public void configure(IBrickLayoutConfigurer configurer) {
 	// configurer.configure(this);

@@ -264,26 +264,6 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 	@Override
 	protected void registerPickingListeners() {
 
-		// for (final BrickViewSwitchingButton button : viewSwitchingButtons) {
-		//
-		// brick.addPickingListener(new APickingListener() {
-		//
-		// @Override
-		// public void clicked(Pick pick) {
-		// for (BrickViewSwitchingButton button : viewSwitchingButtons) {
-		// button.setSelected(false);
-		// }
-		// button.setSelected(true);
-		// if (viewSwitchingModeButton.isSelected()) {
-		// dimensionGroup.switchBrickViews(button.getViewType());
-		// } else {
-		// brick.setContainedView(button.getViewType());
-		// }
-		// dimensionGroup.updateLayout();
-		// }
-		// }, button.getPickingType(), button.getButtonID());
-		// }
-
 		brick.addSingleIDPickingListener(new APickingListener() {
 
 			@Override
@@ -393,6 +373,20 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	public void showFooterBar(boolean showFooterBar) {
 		this.showFooterBar = showFooterBar;
+	}
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		brick.removeSingleIDPickingListeners(
+				EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
+
+		brick.removeSingleIDPickingListeners(
+				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
+				VIEW_SWITCHING_MODE_BUTTON_ID);
+
+		brick.removeSingleIDPickingListeners(
+				EPickingType.BRICK_CLOSE_BUTTON.name(), CLOSE_BUTTON_ID);
 	}
 
 }

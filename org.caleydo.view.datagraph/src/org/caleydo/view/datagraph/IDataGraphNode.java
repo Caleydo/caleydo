@@ -40,4 +40,6 @@ public interface IDataGraphNode extends IDraggable {
 	public Point2D getPosition();
 	
 	public int getID();
+	
+	public void destroy();
 }

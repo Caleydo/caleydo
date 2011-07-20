@@ -758,7 +758,8 @@ public abstract class AGLView
 
 	/**
 	 * Registers a {@link IPickingListener} for this view. When objects are picked with the specified
-	 * pickingType and ID the listener's methods are called.
+	 * pickingType and ID the listener's methods are called. Note that only one instance of the same
+	 * PickingListener class can be added to a picking type plus ID.
 	 * 
 	 * @param pickingListener
 	 * @param pickingType
@@ -774,15 +775,22 @@ public abstract class AGLView
 		Set<IPickingListener> pickingListeners = map.get(externalID);
 		if (pickingListeners == null) {
 			pickingListeners = new HashSet<IPickingListener>();
-			pickingListeners.add(pickingListener);
+
 		}
+		for (IPickingListener listener : pickingListeners) {
+			if (listener.getClass() == pickingListener.getClass()) {
+				return;
+			}
+		}
+		pickingListeners.add(pickingListener);
 		map.put(externalID, pickingListeners);
 
 	}
 
 	/**
 	 * Registers a {@link IPickingListener} for this view. When objects are picked with the specified
-	 * pickingType the listener's methods are called.
+	 * pickingType the listener's methods are called. Note that only one instance of the same PickingListener
+	 * class can be added to a picking type.
 	 * 
 	 * @param pickingListener
 	 * @param pickingType
@@ -791,8 +799,14 @@ public abstract class AGLView
 		Set<IPickingListener> pickingListeners = multiIDPickingListeners.get(pickingType);
 		if (pickingListeners == null) {
 			pickingListeners = new HashSet<IPickingListener>();
-			pickingListeners.add(pickingListener);
+
 		}
+		for (IPickingListener listener : pickingListeners) {
+			if (listener.getClass() == pickingListener.getClass()) {
+				return;
+			}
+		}
+		pickingListeners.add(pickingListener);
 		multiIDPickingListeners.put(pickingType, pickingListeners);
 	}
 
@@ -876,6 +890,40 @@ public abstract class AGLView
 	public void removePickingListener(IPickingListener pickingListener) {
 		removeSingleIDPickingListener(pickingListener);
 		removeMultiIDPickingListener(pickingListener);
+	}
+
+	/**
+	 * Removes all single ID picking listeners for a specific picking type and ID.
+	 * 
+	 * @param pickingType
+	 * @param externalID
+	 */
+	public void removeSingleIDPickingListeners(String pickingType, int externalID) {
+
+		HashMap<Integer, Set<IPickingListener>> map = singleIDPickingListeners.get(pickingType);
+		if (map == null) {
+			return;
+		}
+
+		Set<IPickingListener> pickingListeners = map.get(externalID);
+		if (pickingListeners == null) {
+			return;
+		}
+		pickingListeners.clear();
+	}
+	
+	/**
+	 * Removes all Multiple ID picking listeners for a specific picking type.
+	 * 
+	 * @param pickingType
+	 */
+	public void removeMultiIDPickingListeners(String pickingType) {
+
+		Set<IPickingListener> pickingListeners = multiIDPickingListeners.get(pickingType);
+		if (pickingListeners == null) {
+			return;
+		}
+		pickingListeners.clear();
 	}
 
 	/**

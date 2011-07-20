@@ -261,23 +261,6 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	@Override
 	protected void registerPickingListeners() {
 
-		// for (final BrickViewSwitchingButton button : viewSwitchingButtons) {
-		//
-		// brick.addPickingListener(new APickingListener() {
-		//
-		// @Override
-		// public void clicked(Pick pick) {
-		// for (BrickViewSwitchingButton button : viewSwitchingButtons) {
-		// button.setSelected(false);
-		// }
-		// button.setSelected(true);
-		//
-		// brick.setContainedView(button.getViewType());
-		// dimensionGroup.updateLayout();
-		// }
-		// }, button.getPickingType(), button.getButtonID());
-		// }
-
 		brick.addSingleIDPickingListener(new APickingListener() {
 
 			@Override
@@ -286,39 +269,9 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 				brick.setSizeFixed(isResizingLocked);
 				lockResizingButton.setSelected(isResizingLocked);
 			}
-		}, EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 
-		// brick.addPickingListener(new APickingListener() {
-		//
-		// @Override
-		// public void clicked(Pick pick) {
-		// System.out.println("cluster");
-		//
-		// brick.getParentComposite().getDisplay()
-		// .asyncExec(new Runnable() {
-		// @Override
-		// public void run() {
-		// StartClusteringDialog dialog = new StartClusteringDialog(
-		// new Shell(), brick.getDataDomain());
-		// dialog.open();
-		// ClusterState clusterState = dialog
-		// .getClusterState();
-		// if (clusterState == null)
-		// return;
-		//
-		// StartClusteringEvent event = null;
-		// // if (clusterState != null && set != null)
-		//
-		// event = new StartClusteringEvent(clusterState,
-		// brick.getSet().getID());
-		// event.setDataDomainType(brick.getDataDomain()
-		// .getDataDomainType());
-		// GeneralManager.get().getEventPublisher()
-		// .triggerEvent(event);
-		// }
-		// });
-		// }
-		// }, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON, CLUSTER_BUTTON_ID);
+		}, EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
+				LOCK_RESIZING_BUTTON_ID);
 
 	}
 
@@ -349,39 +302,6 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
 		// .getMinWidth());
 	}
-
-	// @Override
-	// protected void setValidViewTypes() {
-	// validViewTypes.add(EContainedViewType.HISTOGRAM_VIEW);
-	// validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
-	// validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP);
-	// }
-
-	// @Override
-	// public EContainedViewType getDefaultViewType() {
-	// return EContainedViewType.PARCOORDS_VIEW;
-	// }
-
-	// @Override
-	// public void viewTypeChanged(EContainedViewType viewType) {
-	// for (BrickViewSwitchingButton button : viewSwitchingButtons) {
-	// if (viewType == button.getViewType()) {
-	// button.setSelected(true);
-	// } else {
-	// button.setSelected(false);
-	// }
-	// }
-	// }
-
-	// @Override
-	// public void configure(IBrickLayoutConfigurer configurer) {
-	// configurer.configure(this);
-	// }
-
-	// public void setViewSwitchingButtons(
-	// ArrayList<BrickViewSwitchingButton> buttons) {
-	// viewSwitchingButtons = buttons;
-	// }
 
 	@Override
 	public ABrickLayoutTemplate getCollapsedLayoutTemplate() {
@@ -432,6 +352,14 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	public void showFooterBar(boolean showFooterBar) {
 		this.showFooterBar = showFooterBar;
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		brick.removeSingleIDPickingListeners(
+				EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
+				LOCK_RESIZING_BUTTON_ID);
 	}
 
 }

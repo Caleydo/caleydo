@@ -16,7 +16,8 @@ import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.layout.NominalDataConfigurer;
 import org.caleydo.view.visbricks.brick.layout.NumericalDataConfigurer;
 
-public class SetBasedBrickDimensionGroupData implements IBrickDimensionGroupData {
+public class SetBasedBrickDimensionGroupData implements
+		IBrickDimensionGroupData {
 
 	private SetBasedDimensionGroupData dimensionGroupData;
 	private ASetBasedDataConfigurer setBasedDataConfigurer;
@@ -72,9 +73,11 @@ public class SetBasedBrickDimensionGroupData implements IBrickDimensionGroupData
 
 		List<IBrickData> segmentBrickData = new ArrayList<IBrickData>();
 
-		for (ISegmentData data : segmentData) {
-			segmentBrickData.add(new SetBasedBrickData(
-					(SetBasedSegmentData) data));
+		if (segmentData != null) {
+			for (ISegmentData data : segmentData) {
+				segmentBrickData.add(new SetBasedBrickData(
+						(SetBasedSegmentData) data));
+			}
 		}
 
 		return segmentBrickData;
