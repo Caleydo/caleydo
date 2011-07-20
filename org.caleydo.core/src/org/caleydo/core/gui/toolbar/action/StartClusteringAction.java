@@ -39,11 +39,8 @@ public class StartClusteringAction
 	public void run() {
 		super.run();
 
-		// FIXME replace with dynamic guess based version when it works
-		// ASetBasedDataDomain dataDomain =
-		// DataDomainManager.getInstance().guessDataDomain(ASetBasedDataDomain.class);
 		ATableBasedDataDomain dataDomain =
-			(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.genetic");
+			(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByType("org.caleydo.datadomain.genetic");
 
 		StartClusteringDialog dialog = new StartClusteringDialog(new Shell(), dataDomain);
 		dialog.open();

@@ -54,14 +54,16 @@ public class ChooseDataDomainDialog
 	}
 
 	private void createContents(final Shell shell) {
-		shell.setLayout(new GridLayout(2, true));
+		shell.setLayout(new GridLayout(2, false));
 
 		final Combo comboDropDown = new Combo(shell, SWT.DROP_DOWN | SWT.BORDER);
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalSpan = 2;
+		data.minimumWidth = 400;
 		comboDropDown.setLayoutData(data);
 		for (int index = 0; index < possibleDataDomains.length; index++) {
 			IDataDomain possibleDataDomain = possibleDataDomains[index];
-			comboDropDown.add(possibleDataDomain.getDataDomainID(), index);	
+			comboDropDown.add(possibleDataDomain.getFileName(), index);	
 		}
 
 		// Create the OK button and add a handler
