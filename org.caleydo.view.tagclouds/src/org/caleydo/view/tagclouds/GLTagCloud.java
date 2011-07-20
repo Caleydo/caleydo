@@ -124,7 +124,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	@SuppressWarnings("unchecked")
 	public void initData() {
 		if (set == null)
-			set = dataDomain.getSet();
+			set = dataDomain.getDataTable();
 		if (contentVA == null)
 			contentVA = set.getContentData(DataTable.CONTENT).getContentVA();
 		if (storageVA == null)
@@ -616,7 +616,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		case MEDIUM:
 			return 100;
 		case LOW:
-			return Math.max(150, 30 * set.size());
+			return Math.max(150, 30 * set.getMetaData().size());
 		default:
 			return 100;
 		}

@@ -37,7 +37,7 @@ public class FilterRepresentationSNR extends
 
 	private final static String TITLE = "Signal-To-Noice Ratio Filter";
 
-	private DataTable set;
+	private DataTable table;
 
 	private Histogram histogram;
 
@@ -54,7 +54,7 @@ public class FilterRepresentationSNR extends
 
 		// Calculate it with defaults in order to have some sort of result at
 		// the beginning
-		set.calculateNormalizedAverageUncertainty(invalidThreshold, validThreshold);
+		table.getUncertainty().calculateNormalizedAverageUncertainty(invalidThreshold, validThreshold);
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
@@ -258,7 +258,7 @@ public class FilterRepresentationSNR extends
 				.getContentFilterManager().getBaseVA();
 
 		float[] rawUncertainty = ((FilterRepresentationSNR) subFilter.getFilterRep())
-				.getSet().getRawUncertainty();
+				.getDataTable().getUncertainty().getRawUncertainty();
 
 		for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 
@@ -285,18 +285,18 @@ public class FilterRepresentationSNR extends
 	}
 
 	public void setSet(DataTable set) {
-		this.set = set;
+		this.table = set;
 	}
 
-	public DataTable getSet() {
-		return set;
+	public DataTable getDataTable() {
+		return table;
 	}
 
 	@Override
 	protected void applyFilter() {
 		if (isDirty) {
 			createVADelta();
-			set.calculateNormalizedAverageUncertainty(invalidThreshold, validThreshold);
+			table.getUncertainty().calculateNormalizedAverageUncertainty(invalidThreshold, validThreshold);
 			filter.updateFilterManager();
 		}
 		isDirty = false;

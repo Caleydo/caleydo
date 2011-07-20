@@ -885,7 +885,7 @@ public class GLPathwayContentCreator {
 				return null;
 			for (Integer iExpressionIndex : ids) {
 
-				AStorage storage = geneticDataDomain.getSet().get(
+				AStorage storage = geneticDataDomain.getDataTable().get(
 						glPathwayView.iCurrentStorageIndex);
 				if (storage == null)
 					throw new IllegalStateException("No storage in this set with id: "

@@ -542,7 +542,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 	public void initMultiLevelUncertainty() {
 
-		float[] SNR = table.getNormalizedUncertainty();
+		float[] SNR = table.getUncertainty().getNormalizedUncertainty();
 		aggregatedUncertainty = new double[SNR.length];
 		multiLevelUncertainty.clear();
 		

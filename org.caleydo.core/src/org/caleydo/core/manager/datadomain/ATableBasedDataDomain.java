@@ -182,7 +182,7 @@ public abstract class ATableBasedDataDomain
 	 * @return a data set
 	 */
 	@XmlTransient
-	public DataTable getSet() {
+	public DataTable getDataTable() {
 		return table;
 	}
 
@@ -359,7 +359,6 @@ public abstract class ATableBasedDataDomain
 	 * Resets the context VA to it's initial state
 	 */
 	public void resetContextVA() {
-
 		table.setContentVA(DataTable.CONTENT_CONTEXT, new ContentVirtualArray(DataTable.CONTENT_CONTEXT));
 	}
 

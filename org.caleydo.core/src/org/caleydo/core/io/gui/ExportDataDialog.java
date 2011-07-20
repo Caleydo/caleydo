@@ -185,7 +185,7 @@ public class ExportDataDialog
 			SetExporter exporter = new SetExporter();
 			// exporter.export(this, sFileName, eWichViewToExport);
 
-			DataTable table = setBasedDataDomain.getSet();
+			DataTable table = setBasedDataDomain.getDataTable();
 			IDType targetIDType = setBasedDataDomain.getPrimaryContentMappingType();
 			if (table instanceof SubDataTable)
 				continue;

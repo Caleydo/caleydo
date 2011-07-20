@@ -53,7 +53,7 @@ public class StartClusteringAction
 		if (sets == null || sets.size() == 0) {
 			sets = new ArrayList<DataTable>();
 
-			sets.add(dataDomain.getSet());
+			sets.add(dataDomain.getDataTable());
 		}
 		for (DataTable tmpSet : sets) {
 			event = new StartClusteringEvent(clusterState, tmpSet.getID());

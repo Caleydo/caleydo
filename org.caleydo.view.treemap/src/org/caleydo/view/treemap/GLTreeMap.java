@@ -167,7 +167,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	public void initData() {
 		if (dataDomain == null)
 			return;
-		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
+		tree = dataDomain.getDataTable().getContentData(contentVAType).getContentTree();
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 		int maxDepth = Integer.MAX_VALUE;
 		maxDepth = GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
@@ -376,7 +376,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		if (dataDomain != null) {
-			tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
+			tree = dataDomain.getDataTable().getContentData(contentVAType).getContentTree();
 			if (tree != null) {
 				treeSelectionManager = new SelectionManager(tree.getNodeIDType());
 			}

@@ -2387,12 +2387,12 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	}
 
 	private float[] generateVertexBuffer() {
-		int numberOfVertices = table.depth() * table.size() * 2;
+		int numberOfVertices = table.getMetaData().depth() * table.getMetaData().size() * 2;
 
 		float vertices[] = new float[numberOfVertices];
 		int vertexCounter = 0;
 
-		for (int index = 0; index < table.depth(); index++) {
+		for (int index = 0; index < table.getMetaData().depth(); index++) {
 			int storageCounter = 0;
 			for (Integer storageID : storageVA) {
 				float xValue = 0.2f * storageCounter++;
@@ -2547,7 +2547,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		case MEDIUM:
 			return 80;
 		case LOW:
-			return Math.max(150, 30 * table.size());
+			return Math.max(150, 30 * table.getMetaData().size());
 		default:
 			return 80;
 		}

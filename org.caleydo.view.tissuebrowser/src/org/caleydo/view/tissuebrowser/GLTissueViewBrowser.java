@@ -482,22 +482,22 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	}
 
 	private void setInfo(GLTexture tissueView, Integer experimentIndex) {
-		StorageVirtualArray va = foreignDataDomain.getSet().getStorageData(DataTable.STORAGE)
+		StorageVirtualArray va = foreignDataDomain.getDataTable().getStorageData(DataTable.STORAGE)
 				.getStorageVA();
 
 		NominalStorage<String> storage = (NominalStorage<String>) foreignDataDomain
-				.getSet().get(va.get(1));
+				.getDataTable().get(va.get(1));
 		String label = storage.getRaw(experimentIndex);
 
 		tissueView.setInfo(label);
 	}
 
 	private void setInfo(SerializedTextureView tissueView, Integer experimentIndex) {
-		StorageVirtualArray va = foreignDataDomain.getSet().getStorageData(DataTable.STORAGE)
+		StorageVirtualArray va = foreignDataDomain.getDataTable().getStorageData(DataTable.STORAGE)
 				.getStorageVA();
 
 		NominalStorage<String> storage = (NominalStorage<String>) foreignDataDomain
-				.getSet().get(va.get(1));
+				.getDataTable().get(va.get(1));
 		String label = storage.getRaw(experimentIndex);
 
 		tissueView.setInfo(label);

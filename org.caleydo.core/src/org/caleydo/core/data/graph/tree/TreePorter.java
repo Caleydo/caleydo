@@ -137,7 +137,7 @@ public class TreePorter {
 		ClusterTree tree = importTree(fileName, dataDomain.getStorageIDType());
 
 		org.caleydo.core.data.collection.table.DataTable set =
-			(org.caleydo.core.data.collection.table.DataTable) dataDomain.getSet();
+			(org.caleydo.core.data.collection.table.DataTable) dataDomain.getDataTable();
 		tree.createMetaSets(set);
 		return tree;
 	}

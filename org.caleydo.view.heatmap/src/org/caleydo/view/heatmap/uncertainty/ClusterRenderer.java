@@ -68,7 +68,7 @@ public class ClusterRenderer extends LayoutRenderer {
 	public void init() {
 
 		StorageVirtualArray storageVA = uncertaintyHeatMap.getStorageVA();
-		DataTable set = uncertaintyHeatMap.getDataDomain().getSet();
+		DataTable set = uncertaintyHeatMap.getDataDomain().getDataTable();
 
 		clusterHeatMapLayout = new Column("heatmap");
 		clusterHeatMapLayout.setRatioSizeX(1f);

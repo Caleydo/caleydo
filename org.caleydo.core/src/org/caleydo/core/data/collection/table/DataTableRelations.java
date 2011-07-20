@@ -4,22 +4,22 @@ import java.util.HashMap;
 
 public class DataTableRelations {
 
-	DataTable setLeft;
-	DataTable setRight;
+	DataTable leftTable;
+	DataTable rightTable;
 
 	HashMap<Integer, Integer> hashLeftToRight;
 	HashMap<Integer, Integer> hashRightToLeft;
 	HashMap<DataTable, HashMap<Integer, Integer>> hashSetToRelations;
 
-	public DataTableRelations(DataTable setLeft, DataTable setRight) {
-		this.setLeft = setLeft;
-		this.setRight = setRight;
-		Integer size = (int) (setLeft.depth() * 1.5);
+	public DataTableRelations(DataTable leftTable, DataTable rightTable) {
+		this.leftTable = leftTable;
+		this.rightTable = rightTable;
+		Integer size = (int) (leftTable.getMetaData().depth() * 1.5);
 		hashLeftToRight = new HashMap<Integer, Integer>(size);
 		hashRightToLeft = new HashMap<Integer, Integer>(size);
 		hashSetToRelations = new HashMap<DataTable, HashMap<Integer, Integer>>(4);
-		hashSetToRelations.put(setLeft, hashLeftToRight);
-		hashSetToRelations.put(setRight, hashRightToLeft);
+		hashSetToRelations.put(leftTable, hashLeftToRight);
+		hashSetToRelations.put(rightTable, hashRightToLeft);
 	}
 
 	//
@@ -42,10 +42,10 @@ public class DataTableRelations {
 	}
 
 	public DataTable getSetLeft() {
-		return setLeft;
+		return leftTable;
 	}
 
 	public DataTable getSetRight() {
-		return setRight;
+		return rightTable;
 	}
 }

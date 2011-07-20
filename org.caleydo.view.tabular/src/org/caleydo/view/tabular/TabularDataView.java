@@ -143,7 +143,7 @@ public class TabularDataView extends ASWTView implements
 
 	public void initData() {
 
-		dataTable = dataDomain.getSet();
+		dataTable = dataDomain.getDataTable();
 
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 		storageSelectionManager = dataDomain.getStorageSelectionManager();

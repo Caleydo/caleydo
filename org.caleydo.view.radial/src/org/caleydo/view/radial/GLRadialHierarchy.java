@@ -1035,7 +1035,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	@Override
 	public void handleUpdateView() {
 		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
-		Tree<ClusterNode> tree = dataDomain.getSet().getStorageData(storageVAType)
+		Tree<ClusterNode> tree = dataDomain.getDataTable().getStorageData(storageVAType)
 				.getStorageTree();
 		if (tree != null) {
 
@@ -1047,7 +1047,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
 			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 			// new GeneClusterDataEventManager(this), alColorModes);
-			initHierarchy(tree, ((ATableBasedDataDomain) dataDomain).getSet()
+			initHierarchy(tree, ((ATableBasedDataDomain) dataDomain).getDataTable()
 					.getStorageData(storageVAType).getStorageTreeRoot(),
 					new ExperimentClusterDataEventManager(this), alColorModes);
 			// }
@@ -1164,7 +1164,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		// alColorModes);
 		// }
 
-		Tree<ClusterNode> tree = dataDomain.getSet().getContentData(contentVAType)
+		Tree<ClusterNode> tree = dataDomain.getDataTable().getContentData(contentVAType)
 				.getContentTree();
 		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		if (tree != null) {

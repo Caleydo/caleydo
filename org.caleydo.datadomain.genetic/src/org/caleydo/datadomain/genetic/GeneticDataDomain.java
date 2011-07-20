@@ -126,9 +126,9 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 			dataFilterLevel = EDataFilterLevel.COMPLETE;
 
 		// initialize virtual array that contains all (filtered) information
-		ArrayList<Integer> alTempList = new ArrayList<Integer>(table.depth());
+		ArrayList<Integer> alTempList = new ArrayList<Integer>(table.getMetaData().depth());
 
-		for (int iCount = 0; iCount < table.depth(); iCount++) {
+		for (int iCount = 0; iCount < table.getMetaData().depth(); iCount++) {
 			if (dataFilterLevel != EDataFilterLevel.COMPLETE) {
 
 				Integer iDavidID = null;
@@ -290,7 +290,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 		// FIXME - this is a hack for one special dataset (asslaber)
 		DataTable clinicalSet = ((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
-				CLINICAL_DATADOMAIN_TYPE)).getSet();
+				CLINICAL_DATADOMAIN_TYPE)).getDataTable();
 		int storageID = clinicalSet.getStorageData(DataTable.STORAGE).getStorageVA().get(1);
 
 		NominalStorage clinicalStorage = (NominalStorage<String>) clinicalSet

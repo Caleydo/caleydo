@@ -306,7 +306,7 @@ public class TabularAsciiDataReader
 		int iStringArrayIndex = 0;
 		int storageIndex = 0;
 
-		DataTable set = dataDomain.getSet();
+		DataTable set = dataDomain.getDataTable();
 
 		for (EStorageType storageType : columnDataTypes) {
 			// if(iStorageIndex + 1 == targetStorages.size())
@@ -324,7 +324,7 @@ public class TabularAsciiDataReader
 					break;
 				case CERTAINTY:
 					targetStorages.get(storageIndex-1).setUncertaintyData(floatArrays.get(iFloatArrayIndex));
-					dataDomain.getSet().setContainsUncertaintyData(true);
+					dataDomain.getDataTable().setContainsUncertaintyData(true);
 					iFloatArrayIndex++;
 					break;
 				case STRING:

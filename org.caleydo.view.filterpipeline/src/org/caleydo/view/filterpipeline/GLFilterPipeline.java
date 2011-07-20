@@ -679,24 +679,24 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 
 	private void performDataUncertaintyFilter() {
 
-		DataTable set = dataDomain.getSet();
-		if (!set.containsUncertaintyData())
+		DataTable table = dataDomain.getDataTable();
+		if (!table.containsUncertaintyData())
 			return;
 
-		if (set.getNormalizedUncertainty() != null)
+		if (table.getUncertainty().getNormalizedUncertainty() != null)
 			return;
 
 		ContentFilter contentFilter = new ContentFilter();
 		contentFilter.setDataDomain(dataDomain);
 		contentFilter.setLabel("Signal-To-Noise Ratio Filter");
 
-		set.calculateRawAverageUncertainty();
+		table.getUncertainty().calculateRawAverageUncertainty();
 
-		Histogram histogram = HistogramCreator.createHistogram(set.getRawUncertainty());
+		Histogram histogram = HistogramCreator.createHistogram(table.getUncertainty().getRawUncertainty());
 
 		FilterRepresentationSNR filterRep = new FilterRepresentationSNR();
 		filterRep.setFilter(contentFilter);
-		filterRep.setSet(set);
+		filterRep.setSet(table);
 		filterRep.setHistogram(histogram);
 		contentFilter.setFilterRep(filterRep);
 		contentFilter.openRepresentation();

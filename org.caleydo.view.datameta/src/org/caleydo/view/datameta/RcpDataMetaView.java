@@ -50,7 +50,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 
 		dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 				serializedView.getDataDomainID());
-		set = dataDomain.getSet();
+		set = dataDomain.getDataTable();
 
 		parentComposite = new Composite(parent, SWT.NULL);
 		parentComposite.setLayout(new GridLayout(1, false));
@@ -63,10 +63,10 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		infoComposite.setLayoutData(gridData);
 
 		Label label = new Label(infoComposite, SWT.NONE);
-		label.setText("Number of genes: " + set.depth());
+		label.setText("Number of genes: " + set.getMetaData().depth());
 
 		label = new Label(infoComposite, SWT.NONE);
-		label.setText("Number of experiments: " + set.size());
+		label.setText("Number of experiments: " + set.getMetaData().size());
 
 		label = new Label(infoComposite, SWT.NONE);
 		label.setText("Loaded from file: " + dataDomain.getFileName());
@@ -171,7 +171,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		this.set = dataDomain.getSet();
+		this.set = dataDomain.getDataTable();
 
 		String contentVAType = DataTable.CONTENT;
 		contentSelectionManager = dataDomain.getContentSelectionManager();

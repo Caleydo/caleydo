@@ -262,15 +262,15 @@ public class DataTableUtils {
 		}
 
 		// ----------------------------------------
-		DataTable set = (DataTable) dataDomain.getSet();
+		DataTable set = (DataTable) dataDomain.getDataTable();
 
 		// loadTrees(loadDataParameters, set);
 
 		if (loadDataParameters.isMinDefined()) {
-			set.setMin(loadDataParameters.getMin());
+			set.getMetaData().setMin(loadDataParameters.getMin());
 		}
 		if (loadDataParameters.isMaxDefined()) {
-			set.setMax(loadDataParameters.getMax());
+			set.getMetaData().setMax(loadDataParameters.getMax());
 		}
 
 		boolean isSetHomogeneous = loadDataParameters.isDataHomogeneous();

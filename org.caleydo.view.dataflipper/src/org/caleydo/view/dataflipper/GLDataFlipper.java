@@ -1226,7 +1226,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		if (interfaceType.equals("org.caleydo.analytical.clustering")) {
 			ArrayList<DataTable> sets = new ArrayList<DataTable>();
 			sets.add(((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
-					dataDomainType)).getSet());
+					dataDomainType)).getDataTable());
 
 			ClusterSetEvent event = new ClusterSetEvent(sets);
 			event.setSender(this);
@@ -1667,13 +1667,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
-					.getDataDomainByID(dataDomainType)).getSet().getStorageData(DataTable.STORAGE)
+					.getDataDomainByID(dataDomainType)).getDataTable().getStorageData(DataTable.STORAGE)
 					.getStorageVA().size();
 			if (numberOfPatients > 40)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
 			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
-					.getDataDomainByID("org.caleydo.datadomain.genetic")).getSet()
+					.getDataDomainByID("org.caleydo.datadomain.genetic")).getDataTable()
 					.getStorageData(DataTable.STORAGE).getStorageVA().size();
 			if (numberOfPatients > 20)
 				return false;

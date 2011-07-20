@@ -279,7 +279,7 @@ public class Connection {
 		// FIXME this should work for more than one use case now
 		ATableBasedDataDomain useCase =
 			(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.genetic");
-		DataTable set = useCase.getSet();
+		DataTable set = useCase.getDataTable();
 
 		initData.setDataDomain(useCase);
 		initData.setSetFileContent(DataTableUtils.loadSetFile(useCase.getLoadDataParameters()));

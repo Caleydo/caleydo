@@ -126,7 +126,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	}
 
 	public void initData() {
-		bDisplayData = dataDomain.getSet().getContentData(contentVAType).getContentTree() != null;
+		bDisplayData = dataDomain.getDataTable().getContentData(contentVAType).getContentTree() != null;
 		for (GLTreeMap view : thumbnailTreemapViews)
 			view.initData();
 	}
@@ -310,7 +310,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		Set<Integer> elements = mainTreeMapView.getSelectionManager().getElements(SelectionType.SELECTION);
 		if (elements.size() == 1 /* && thumbnailTreemapViews.size() < 3 */) {
 
-			ClusterNode dataRoot = dataDomain.getSet().getContentData(contentVAType).getContentTree().getNodeByNumber(elements.iterator().next());
+			ClusterNode dataRoot = dataDomain.getDataTable().getContentData(contentVAType).getContentTree().getNodeByNumber(elements.iterator().next());
 
 			mainTreeMapView.setRemotePickingManager(null, 0);
 			mainTreeMapView.clearAllSelections();
@@ -388,7 +388,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	@Override
 	public String getShortInfo() {
 
-		return "Hierarchical Tree Map (" + dataDomain.getSet().getBaseStorageVA().size() + " nodes displayed)";
+		return "Hierarchical Tree Map (" + dataDomain.getDataTable().getBaseStorageVA().size() + " nodes displayed)";
 	}
 
 	@Override
@@ -504,7 +504,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		if (dataDomain != null) {
-			if (dataDomain.getSet().getContentData(contentVAType).getContentTree() != null) {
+			if (dataDomain.getDataTable().getContentData(contentVAType).getContentTree() != null) {
 				for (GLTreeMap view : thumbnailTreemapViews) {
 					view.setDataDomain(dataDomain);
 				}

@@ -188,23 +188,23 @@ public class ProjectSaver {
 
 					ATableBasedDataDomain setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
 
-					for (String type : setBasedDataDomain.getSet().getRegisteredContentVATypes()) {
+					for (String type : setBasedDataDomain.getDataTable().getRegisteredContentVATypes()) {
 						saveContentVA(marshaller, dirName, setBasedDataDomain, type);
 					}
 
-					for (String type : setBasedDataDomain.getSet().getRegisteredStorageVATypes()) {
+					for (String type : setBasedDataDomain.getDataTable().getRegisteredStorageVATypes()) {
 						saveStorageVA(marshaller, dirName, setBasedDataDomain, type);
 					}
 					TreePorter treePorter = new TreePorter();
 					Tree<ClusterNode> geneTree =
-						setBasedDataDomain.getSet().getContentData(DataTable.CONTENT).getContentTree();
+						setBasedDataDomain.getDataTable().getContentData(DataTable.CONTENT).getContentTree();
 					if (geneTree != null) {
 						treePorter.exportTree(dirName + GENE_TREE_FILE_NAME, geneTree);
 					}
 
 					treePorter = new TreePorter();
 					Tree<ClusterNode> expTree =
-						setBasedDataDomain.getSet().getStorageData(DataTable.STORAGE).getStorageTree();
+						setBasedDataDomain.getDataTable().getStorageData(DataTable.STORAGE).getStorageTree();
 					if (expTree != null) {
 						treePorter.exportTree(dirName + EXP_TREE_FILE_NAME, expTree);
 					}

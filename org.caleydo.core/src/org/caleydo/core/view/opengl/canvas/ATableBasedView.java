@@ -169,7 +169,7 @@ public abstract class ATableBasedView
 	@Override
 	public void initData() {
 		if (table == null)
-			table = dataDomain.getSet();
+			table = dataDomain.getDataTable();
 
 		super.initData();
 

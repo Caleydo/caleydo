@@ -179,7 +179,7 @@ public class RcpBasicGLHistogramView extends ARcpGLViewPart implements
 					.getFloat(PreferenceConstants.GENE_EXPRESSION_PREFIX
 							+ PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
 
-			double correspondingValue = ((ATableBasedDataDomain) dataDomain).getSet()
+			double correspondingValue = ((ATableBasedDataDomain) dataDomain).getDataTable()
 					.getRawForNormalized(normalizedValue);
 
 			labels.get(iCount - 1).setText(Formatter.formatNumber(correspondingValue));

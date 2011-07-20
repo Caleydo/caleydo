@@ -133,7 +133,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	public void initData() {
 		super.initData();
 		if (histogram == null) {
-			histogram = dataDomain.getSet().getHistogram();
+			histogram = dataDomain.getDataTable().getMetaData().getHistogram();
 		}
 	}
 
@@ -409,14 +409,14 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	private void renderCaption(GL2 gl, float normalizedValue) {
 
 		if (getParentGLCanvas().getSize().getWidth() < 500
-				|| dataDomain.getSet().getSetType() != EDataTableDataType.NUMERIC)
+				|| dataDomain.getDataTable().getSetType() != EDataTableDataType.NUMERIC)
 			return;
 
 		textRenderer.begin3DRendering();
 		textRenderer.setColor(0, 0, 0, 1);
 		gl.glDisable(GL2.GL_DEPTH_TEST);
 
-		double correspondingValue = dataDomain.getSet().getRawForNormalized(
+		double correspondingValue = dataDomain.getDataTable().getRawForNormalized(
 				normalizedValue);
 
 		String text = Formatter.formatNumber(correspondingValue);

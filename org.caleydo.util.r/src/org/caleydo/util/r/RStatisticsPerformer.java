@@ -180,7 +180,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		set2.getStatisticsResult().setFoldChangeResult(set1, resultVec);
 		
 		// FIXME: just for uncertainty paper so that the uncertainty view can access it via the main set
-		DataTable set = set1.getDataDomain().getSet();
+		DataTable set = set1.getDataDomain().getDataTable();
 		set.getStatisticsResult().setFoldChangeResult(set1, resultVec);
 
 		ContentFilter contentFilter = new ContentFilter();

@@ -43,7 +43,7 @@ public class HistogramCreator implements IRemoteViewCreator {
 
 		histogram.setRemoteRenderingGLView(remoteRenderingView);
 		ContentVirtualArray contentVA = remoteRenderingView.getContentVA();
-		histogram.setHistogram(set.getHistogram(contentVA));
+		histogram.setHistogram(set.getMetaData().getHistogram(contentVA));
 		histogram.setDataDomain(remoteRenderingView.getDataDomain());
 		histogram.initialize();
 		histogram.initRemote(gl, remoteRenderingView, glMouseListener);

@@ -969,11 +969,11 @@ public class GLHeatMap extends ATableBasedView {
 	public int getMinPixelWidth(DetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
-			return Math.max(150, 16 * table.size());
+			return Math.max(150, 16 * table.getMetaData().size());
 		case MEDIUM:
-			return Math.max(150, 16 * table.size());
+			return Math.max(150, 16 * table.getMetaData().size());
 		case LOW:
-			return Math.max(150, 16 * table.size());
+			return Math.max(150, 16 * table.getMetaData().size());
 		default:
 			return 100;
 		}

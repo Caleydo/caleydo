@@ -1373,7 +1373,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 
 		this.dataDomain = dataDomain;
-		set = this.dataDomain.getSet();
+		set = this.dataDomain.getDataTable();
 
 		storageVA = set.getStorageData(org.caleydo.core.data.collection.table.DataTable.STORAGE)
 				.getStorageVA();

@@ -33,7 +33,7 @@ public class StorageFilterManager
 	private ReEvaluateStorageFilterListListener reEvaluateStorageFilterListListener;
 
 	public StorageFilterManager(ATableBasedDataDomain dataDomain) {
-		super(dataDomain, dataDomain.getSet().getBaseStorageVA(), new StorageFilterFactory());
+		super(dataDomain, dataDomain.getDataTable().getBaseStorageVA(), new StorageFilterFactory());
 
 	}
 

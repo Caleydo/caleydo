@@ -46,8 +46,8 @@ public class Gate extends AGate {
 	 * @param renderStyle
 	 *            Render Style.
 	 */
-	public Gate(int gateID, int axisID, float lowerValue, float upperValue, DataTable set,
-			PCRenderStyle renderStyle) {
+	public Gate(int gateID, int axisID, float lowerValue, float upperValue,
+			DataTable set, PCRenderStyle renderStyle) {
 		this.gateID = gateID;
 		this.axisID = axisID;
 		this.upperValue = upperValue;
@@ -78,8 +78,8 @@ public class Gate extends AGate {
 	 *            Unique ID of the view.
 	 */
 	@Override
-	public void draw(GL2 gl, PickingManager pickingManager, TextureManager textureManager,
-			CaleydoTextRenderer textRenderer, int iViewID) {
+	public void draw(GL2 gl, PickingManager pickingManager,
+			TextureManager textureManager, CaleydoTextRenderer textRenderer, int iViewID) {
 
 		top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
 		// top = upperValue;
@@ -286,7 +286,7 @@ public class Gate extends AGate {
 		lowerValue = (float) set
 				.getRawForNormalized(bottom / renderStyle.getAxisHeight());
 
-		double setMin = set.getMinAs(EExternalDataRepresentation.NORMAL);
+		double setMin = set.getMetaData().getMinAs(EExternalDataRepresentation.NORMAL);
 
 		if (lowerValue < setMin) {
 			lowerValue = (float) setMin;
@@ -304,7 +304,7 @@ public class Gate extends AGate {
 		this.top = top;
 		upperValue = (float) set.getRawForNormalized(top / renderStyle.getAxisHeight());
 
-		double setMax = set.getMaxAs(EExternalDataRepresentation.NORMAL);
+		double setMax = set.getMetaData().getMaxAs(EExternalDataRepresentation.NORMAL);
 
 		if (upperValue > setMax) {
 			upperValue = (float) setMax;

@@ -43,35 +43,23 @@ import org.eclipse.core.runtime.Status;
  * </p>
  * <h2>Set Creation</h2>
  * <p>
- * A set relies heavily upon {@link DataTableUtils} for being created. Many creation related functions are provided
- * there, sometimes interfacing with package private methods in this class.
+ * A set relies heavily upon {@link DataTableUtils} for being created. Many creation related functions are
+ * provided there, sometimes interfacing with package private methods in this class.
  * </p>
  * 
  * @author Alexander Lex
  */
 public class DataTable
-	extends AUniqueObject implements ICollection {
+	extends AUniqueObject
+	implements ICollection {
 
 	public static final String CONTENT = "Content";
 	public static final String STORAGE = "Storage";
 	public static final String CONTENT_CONTEXT = "Content_Context";
-	
-	
+
 	protected HashMap<Integer, AStorage> hashStorages;
 
 	private String sLabel = "Rootset";
-
-	private boolean bArtificialMin = false;
-	private double dMin = Double.MAX_VALUE;
-
-	private boolean bArtificialMax = false;
-	private double dMax = Double.MIN_VALUE;
-
-	protected int depth = 0;
-
-	// private ERawDataType rawDataType;
-
-	// private boolean bIsNumerical;
 
 	protected HashMap<String, ContentData> hashContentData;
 	protected HashMap<String, StorageData> hashStorageData;
@@ -87,21 +75,18 @@ public class DataTable
 
 	protected StatisticsResult statisticsResult;
 
-	protected EDataTableDataType setType = EDataTableDataType.NUMERIC;
+	protected EDataTableDataType dataTableType = EDataTableDataType.NUMERIC;
 
 	ATableBasedDataDomain dataDomain;
 
-	private boolean containsUncertaintyData = false;
-	/**
-	 * the uncertainties for the whole storage aggregated across the storageVA based on the normalized
-	 * uncertainty values
-	 */
-	private float[] aggregatedNormalizedUncertainties;
-	/**
-	 * the uncertainties for the whole storage aggregated across the storageVA based on the raw uncertainty
-	 * values
-	 */
-	private float[] aggregatedRawUncertainties;
+	boolean containsUncertaintyData = false;
+
+	/** all metaData for this DataTable is held in or accessible through this object */
+	private MetaData metaData;
+	/** everything related to uncertainty is held in or accessible through this object */
+	private Uncertainty uncertainty;
+	/** everything related to normalization of the data is held in or accessible through this object */
+	private Normalization normalization;
 
 	public DataTable() {
 		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.SET));
@@ -139,10 +124,21 @@ public class DataTable
 		defaultStorageData = new StorageData();
 		defaultStorageData.setStorageVA(new StorageVirtualArray(STORAGE));
 		statisticsResult = new StatisticsResult(this);
+		metaData = new MetaData(this);
+		normalization = new Normalization(this);
+	}
+
+	/**
+	 * Returns an object which can be asked about different kinds of meta data of this set
+	 * 
+	 * @return
+	 */
+	public MetaData getMetaData() {
+		return metaData;
 	}
 
 	public EDataTableDataType getSetType() {
-		return setType;
+		return dataTableType;
 	}
 
 	/**
@@ -186,35 +182,6 @@ public class DataTable
 		return hashStorages.get(storageID);
 	}
 
-	/**
-	 * Get the number of storages in a set
-	 * 
-	 * @return
-	 */
-	public int size() {
-		return hashStorages.size();
-	}
-
-	/**
-	 * Get the depth of the set, which is the length of the storages (i.e. the number of content elements)
-	 * 
-	 * @return the number of elements in the storages contained in the list
-	 */
-	public int depth() {
-		if (depth == 0) {
-			for (AStorage storage : hashStorages.values()) {
-				if (depth == 0)
-					depth = storage.size();
-				else {
-					if (depth != storage.size())
-						throw new IllegalArgumentException("All storages in a set must be of the same length");
-				}
-
-			}
-		}
-		return depth;
-	}
-
 	@Override
 	public void setLabel(String sLabel) {
 		this.sLabel = sLabel;
@@ -236,34 +203,6 @@ public class DataTable
 	}
 
 	/**
-	 * Get the minimum value in the set.
-	 * 
-	 * @throws OperationNotSupportedException
-	 *             when executed on nominal data
-	 * @return the absolute minimum value in the set
-	 */
-	public double getMin() {
-		if (dMin == Double.MAX_VALUE) {
-			calculateGlobalExtrema();
-		}
-		return dMin;
-	}
-
-	/**
-	 * Get the maximum value in the set.
-	 * 
-	 * @throws OperationNotSupportedException
-	 *             when executed on nominal data
-	 * @return the absolute minimum value in the set
-	 */
-	public double getMax() {
-		if (dMax == Double.MIN_VALUE) {
-			calculateGlobalExtrema();
-		}
-		return dMax;
-	}
-
-	/**
 	 * Calculates a raw value based on min and max from a normalized value.
 	 * 
 	 * @param dNormalized
@@ -278,9 +217,9 @@ public class DataTable
 		double result;
 
 		if (dNormalized == 0)
-			result = getMin();
+			result = metaData.getMin();
 		// if(getMin() > 0)
-		result = getMin() + dNormalized * (getMax() - getMin());
+		result = metaData.getMin() + dNormalized * (metaData.getMax() - metaData.getMin());
 		// return (dNormalized) * (getMax() + getMin());
 		if (externalDataRep == EExternalDataRepresentation.NORMAL) {
 			return result;
@@ -323,121 +262,9 @@ public class DataTable
 				+ externalDataRep);
 		}
 
-		result = (result - getMin()) / (getMax() - getMin());
+		result = (result - metaData.getMin()) / (metaData.getMax() - metaData.getMin());
 
 		return result;
-	}
-
-	/**
-	 * Returns a histogram of the values of all storages in the set (not considering VAs). The number of the
-	 * bins is sqrt(numberOfElements). This only works for homogeneous sets, if used on other sets an
-	 * exception is thrown.
-	 * 
-	 * @return the Histogram of the values in the set
-	 * @throws UnsupportedOperationException
-	 *             when used on non-homogeneous sets
-	 */
-	public Histogram getHistogram() {
-		if (!isSetHomogeneous) {
-			throw new UnsupportedOperationException(
-				"Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use storage based histograms instead!");
-		}
-		Histogram histogram = new Histogram();
-
-		boolean bIsFirstLoop = true;
-		for (AStorage storage : hashStorages.values()) {
-			NumericalStorage nStorage = (NumericalStorage) storage;
-			Histogram storageHistogram = nStorage.getHistogram();
-
-			if (bIsFirstLoop) {
-				bIsFirstLoop = false;
-				for (int iCount = 0; iCount < storageHistogram.size(); iCount++) {
-					histogram.add(0);
-				}
-			}
-			int iCount = 0;
-			for (Integer histoValue : histogram) {
-				histoValue += storageHistogram.get(iCount);
-				histogram.set(iCount++, histoValue);
-			}
-		}
-
-		return histogram;
-	}
-
-	/**
-	 * Returns a histogram of the values of all storages in the set considering the VA of the default content
-	 * data. The number of the bins is sqrt(VA size). This only works for homogeneous sets, if used on other
-	 * sets an exception is thrown.
-	 * 
-	 * @return the Histogram of the values in the set
-	 * @throws UnsupportedOperationException
-	 *             when used on non-homogeneous sets
-	 */
-	public Histogram getBaseHistogram() {
-		if (!isSetHomogeneous) {
-			throw new UnsupportedOperationException(
-				"Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use storage based histograms instead!");
-		}
-		Histogram histogram = new Histogram();
-
-		boolean bIsFirstLoop = true;
-		for (AStorage storage : hashStorages.values()) {
-			NumericalStorage nStorage = (NumericalStorage) storage;
-			Histogram storageHistogram = nStorage.getHistogram(defaultContentData.getContentVA());
-
-			if (bIsFirstLoop) {
-				bIsFirstLoop = false;
-				for (int iCount = 0; iCount < storageHistogram.size(); iCount++) {
-					histogram.add(0);
-				}
-			}
-			int iCount = 0;
-			for (Integer histoValue : histogram) {
-				histoValue += storageHistogram.get(iCount);
-				histogram.set(iCount++, histoValue);
-			}
-		}
-
-		return histogram;
-	}
-
-	/**
-	 * Returns a histogram of the values of all storages in the set considering the specified VA. The number
-	 * of the bins is sqrt(VA size). This only works for homogeneous sets, if used on other sets an exception
-	 * is thrown.
-	 * 
-	 * @return the Histogram of the values in the set
-	 * @throws UnsupportedOperationException
-	 *             when used on non-homogeneous sets
-	 */
-	public Histogram getHistogram(ContentVirtualArray contentVA) {
-		// FIXME put that back
-		// if (!isSetHomogeneous) {
-		// throw new UnsupportedOperationException(
-		// "Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use storage based histograms instead!");
-		// }
-		Histogram histogram = new Histogram();
-
-		boolean bIsFirstLoop = true;
-		for (AStorage storage : hashStorages.values()) {
-			NumericalStorage nStorage = (NumericalStorage) storage;
-			Histogram storageHistogram = nStorage.getHistogram(contentVA);
-
-			if (bIsFirstLoop) {
-				bIsFirstLoop = false;
-				for (int iCount = 0; iCount < storageHistogram.size(); iCount++) {
-					histogram.add(0);
-				}
-			}
-			int iCount = 0;
-			for (Integer histoValue : histogram) {
-				histoValue += storageHistogram.get(iCount);
-				histogram.set(iCount++, histoValue);
-			}
-		}
-
-		return histogram;
 	}
 
 	/**
@@ -467,87 +294,6 @@ public class DataTable
 			defaultContentData = createContentData(CONTENT);
 		return defaultContentData.getContentVA().clone();
 	}
-
-	// private int createStorageVA(IVirtualArray virtualArray) {
-	// int uniqueID = virtualArray.getID();
-	// hashStorageVAs.put(uniqueID, virtualArray);
-	// return uniqueID;
-	// }
-
-	// public IVirtualArray createCompleteStorageVA() {
-	//
-	// ArrayList<Integer> storages;
-	// if (storageTree == null || !storageTreeRoot.isRootNode()) {
-	// storages = new ArrayList<Integer>();
-	// for (int count = 0; count < hashStorages.size(); count++) {
-	// storages.add(count);
-	// }
-	// }
-	// else {
-	// storages = storageTreeRoot.getLeaveIds();
-	// // if (!storageTreeRoot.isRootNode()) {
-	// // Collections.min(storages);
-	// //
-	// // // ArrayList<ClusterNode> siblings = storageTreeRoot.getParent().getChildren();
-	// // // int siblingsLeavesCount = 0;
-	// // // for (ClusterNode sibling : siblings) {
-	// // // if (sibling == storageTreeRoot)
-	// // // break;
-	// // //
-	// // // siblingsLeavesCount+=sibling.getNrLeaves();
-	// // // }
-	// // //
-	// // // for (Integer storageID : storages)
-	// // // storageID-=siblingsLeavesCount;
-	// // }
-	// }
-	// VirtualArray virtualArray = new VirtualArray(VAType.STORAGE, size(), storages);
-	// return virtualArray;
-	// }
-
-	// public IVirtualArray createCompleteContentVA() {
-	// ArrayList<Integer> content = new ArrayList<Integer>();
-	// for (int count = 0; count < hashStorages.get(0).size(); count++) {
-	// content.add(count);
-	// }
-	// VirtualArray virtualArray = new VirtualArray(VAType.CONTENT, size(), content);
-	// return virtualArray;
-	// }
-
-	// @SuppressWarnings("unused")
-	// private int createStorageVA(VAType vaType, ArrayList<Integer> iAlSelections) {
-	// VirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
-	// int uniqueID = virtualArray.getID();
-	//
-	// hashStorageVAs.put(uniqueID, virtualArray);
-	//
-	// return uniqueID;
-	// }
-	// @Override
-	// public void resetVirtualArray(int uniqueID) {
-	// if (hashStorageVAs.containsKey(uniqueID)) {
-	// hashStorageVAs.get(uniqueID).reset();
-	// return;
-	// }
-	//
-	// if (hashContentVAs.containsKey(uniqueID)) {
-	// hashContentVAs.get(uniqueID).reset();
-	// }
-	// }
-	// @Override
-	// public void removeVirtualArray(int uniqueID) {
-	// hashStorageVAs.remove(uniqueID);
-	// hashContentVAs.remove(uniqueID);
-	// }
-	// @Override
-	// public IVirtualArray getVA(int uniqueID) {
-	// if (hashStorageVAs.containsKey(uniqueID))
-	// return hashStorageVAs.get(uniqueID);
-	// else if (hashContentVAs.containsKey(uniqueID))
-	// return hashContentVAs.get(uniqueID);
-	// else
-	// throw new IllegalArgumentException("No Virtual Array for the unique id: " + uniqueID);
-	// }
 
 	/**
 	 * Set a contentVA. The contentVA in the contentData object is replaced and the other elements in the
@@ -699,46 +445,6 @@ public class DataTable
 	}
 
 	/**
-	 * Gets the minimum value in the set in the specified data representation.
-	 * 
-	 * @param dataRepresentation
-	 *            Data representation the minimum value shall be returned in.
-	 * @throws OperationNotSupportedException
-	 *             when executed on nominal data
-	 * @return The absolute minimum value in the set in the specified data representation.
-	 */
-	public double getMinAs(EExternalDataRepresentation dataRepresentation) {
-		if (dMin == Double.MAX_VALUE) {
-			calculateGlobalExtrema();
-		}
-		if (dataRepresentation == externalDataRep)
-			return dMin;
-		double result = getRawFromExternalDataRep(dMin);
-
-		return getDataRepFromRaw(result, dataRepresentation);
-	}
-
-	/**
-	 * Gets the maximum value in the set in the specified data representation.
-	 * 
-	 * @param dataRepresentation
-	 *            Data representation the maximum value shall be returned in.
-	 * @throws OperationNotSupportedException
-	 *             when executed on nominal data
-	 * @return The absolute maximum value in the set in the specified data representation.
-	 */
-	public double getMaxAs(EExternalDataRepresentation dataRepresentation) {
-		if (dMax == Double.MIN_VALUE) {
-			calculateGlobalExtrema();
-		}
-		if (dataRepresentation == externalDataRep)
-			return dMax;
-		double result = getRawFromExternalDataRep(dMax);
-
-		return getDataRepFromRaw(result, dataRepresentation);
-	}
-
-	/**
 	 * Returns the statistics results. E.g. comparative t-test between sets.
 	 * 
 	 * @return the statistics result object containing all results.
@@ -757,22 +463,22 @@ public class DataTable
 	 * @return the storage containing means for all content elements
 	 */
 	public NumericalStorage getMeanStorage() {
-		if (!setType.equals(EDataTableDataType.NUMERIC) || !isSetHomogeneous)
+		if (!dataTableType.equals(EDataTableDataType.NUMERIC) || !isSetHomogeneous)
 			throw new IllegalStateException(
-				"Can not provide a mean storage if set is not numerical (Set type: " + setType
+				"Can not provide a mean storage if set is not numerical (Set type: " + dataTableType
 					+ ") or not homgeneous (isHomogeneous: " + isSetHomogeneous + ")");
 		if (meanStorage == null) {
 			meanStorage = new NumericalStorage();
 			meanStorage.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL);
 
-			float[] meanValues = new float[depth()];
+			float[] meanValues = new float[metaData.depth()];
 			StorageVirtualArray storageVA = defaultStorageData.getStorageVA();
-			for (int contentCount = 0; contentCount < depth(); contentCount++) {
+			for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
 				float sum = 0;
 				for (int storageID : storageVA) {
 					sum += get(storageID).getFloat(EDataRepresentation.RAW, contentCount);
 				}
-				meanValues[contentCount] = sum / size();
+				meanValues[contentCount] = sum / metaData.size();
 			}
 			meanStorage.setRawData(meanValues);
 			// meanStorage.normalize();
@@ -782,6 +488,20 @@ public class DataTable
 
 	public void setStatisticsResult(StatisticsResult statisticsResult) {
 		this.statisticsResult = statisticsResult;
+	}
+
+	public void setContainsUncertaintyData(boolean containsUncertaintyData) {
+		this.containsUncertaintyData = containsUncertaintyData;
+		if (containsUncertaintyData == true)
+			uncertainty = new Uncertainty(this);
+	}
+
+	public Uncertainty getUncertainty() {
+		return uncertainty;
+	}
+
+	public boolean containsUncertaintyData() {
+		return containsUncertaintyData;
 	}
 
 	// ----------------------------------------------------------------------------
@@ -816,16 +536,16 @@ public class DataTable
 	void addStorage(AStorage storage) {
 		// if (hashStorages.isEmpty()) {
 		if (storage instanceof NumericalStorage) {
-			if (setType == null)
-				setType = EDataTableDataType.NUMERIC;
-			else if (setType.equals(EDataTableDataType.NOMINAL))
-				setType = EDataTableDataType.HYBRID;
+			if (dataTableType == null)
+				dataTableType = EDataTableDataType.NUMERIC;
+			else if (dataTableType.equals(EDataTableDataType.NOMINAL))
+				dataTableType = EDataTableDataType.HYBRID;
 		}
 		else {
-			if (setType == null)
-				setType = EDataTableDataType.NOMINAL;
-			else if (setType.equals(EDataTableDataType.NUMERIC))
-				setType = EDataTableDataType.HYBRID;
+			if (dataTableType == null)
+				dataTableType = EDataTableDataType.NOMINAL;
+			else if (dataTableType.equals(EDataTableDataType.NUMERIC))
+				dataTableType = EDataTableDataType.HYBRID;
 		}
 
 		// rawDataType = storage.getRawDataType();
@@ -864,24 +584,6 @@ public class DataTable
 	}
 
 	/**
-	 * Set an artificial minimum for the dataset. All elements smaller than that are clipped to this value in
-	 * the representation. This only affects the normalization, does not alter the raw data
-	 */
-	void setMin(double dMin) {
-		bArtificialMin = true;
-		this.dMin = dMin;
-	}
-
-	/**
-	 * Set an artificial maximum for the dataset. All elements smaller than that are clipped to this value in
-	 * the representation. This only affects the normalization, does not alter the raw data
-	 */
-	void setMax(double dMax) {
-		bArtificialMax = true;
-		this.dMax = dMax;
-	}
-
-	/**
 	 * Switch the representation of the data. When this is called the data in normalized is replaced with data
 	 * calculated from the mode specified.
 	 * 
@@ -909,98 +611,32 @@ public class DataTable
 		if (bIsSetHomogeneous) {
 			switch (externalDataRep) {
 				case NORMAL:
-					normalizeGlobally();
+					normalization.normalizeGlobally();
 					break;
 				case LOG10:
-					log10();
-					normalizeGlobally();
+					normalization.log10();
+					normalization.normalizeGlobally();
 					break;
 				case LOG2:
-					log2();
-					normalizeGlobally();
+					normalization.log2();
+					normalization.normalizeGlobally();
 					break;
 			}
 		}
 		else {
 			switch (externalDataRep) {
 				case NORMAL:
-					normalizeLocally();
+					normalization.normalizeLocally();
 					break;
 				case LOG10:
-					log10();
-					normalizeLocally();
+					normalization.log10();
+					normalization.normalizeLocally();
 					break;
 				case LOG2:
-					log2();
-					normalizeLocally();
+					normalization.log2();
+					normalization.normalizeLocally();
 					break;
 			}
-		}
-	}
-
-	/**
-	 * Calculates log10 on all storages in the set. Take care that the set contains only numerical storages,
-	 * since nominal storages will cause a runtime exception. If you have mixed data you have to call log10 on
-	 * all the storages that support it manually.
-	 */
-	void log10() {
-		for (AStorage storage : hashStorages.values()) {
-			if (storage instanceof NumericalStorage) {
-				NumericalStorage nStorage = (NumericalStorage) storage;
-				nStorage.log10();
-			}
-			else
-				throw new UnsupportedOperationException("Tried to calcualte log values on a set wich has"
-					+ "contains nominal storages. This is not possible!");
-		}
-	}
-
-	/**
-	 * Calculates log2 on all storages in the set. Take care that the set contains only numerical storages,
-	 * since nominal storages will cause a runtime exception. If you have mixed data you have to call log2 on
-	 * all the storages that support it manually.
-	 */
-	void log2() {
-
-		for (AStorage storage : hashStorages.values()) {
-			if (storage instanceof NumericalStorage) {
-				NumericalStorage nStorage = (NumericalStorage) storage;
-				nStorage.log2();
-			}
-			else
-				throw new UnsupportedOperationException("Tried to calcualte log values on a set wich has"
-					+ "contains nominal storages. This is not possible!");
-		}
-	}
-
-	/**
-	 * Normalize all storages in the set, based solely on the values within each storage. Operates with the
-	 * raw data as basis by default, however when a logarithmized representation is in the storage this is
-	 * used.
-	 */
-	private void normalizeLocally() {
-		isSetHomogeneous = false;
-		for (AStorage storage : hashStorages.values()) {
-			storage.normalize();
-		}
-	}
-
-	/**
-	 * Normalize all storages in the set, based on values of all storages. For a numerical storage, this would
-	 * mean, that global minima and maxima are retrieved instead of local ones (as is done with normalize())
-	 * Operates with the raw data as basis by default, however when a logarithmized representation is in the
-	 * storage this is used. Make sure that all storages are logarithmized.
-	 */
-	private void normalizeGlobally() {
-		isSetHomogeneous = true;
-		for (AStorage storage : hashStorages.values()) {
-			if (storage instanceof NumericalStorage) {
-				NumericalStorage nStorage = (NumericalStorage) storage;
-				nStorage.normalizeWithExternalExtrema(getMin(), getMax());
-			}
-			else
-				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"
-					+ "contains nominal storages, currently not supported!");
 		}
 	}
 
@@ -1023,75 +659,10 @@ public class DataTable
 
 	private ContentVirtualArray createBaseContentVA(String vaType) {
 		ContentVirtualArray contentVA = new ContentVirtualArray(vaType);
-		for (int count = 0; count < depth(); count++) {
+		for (int count = 0; count < metaData.depth(); count++) {
 			contentVA.append(count);
 		}
 		return contentVA;
-	}
-
-	/**
-	 * Converts a raw value to the specified data representation.
-	 * 
-	 * @param dRaw
-	 *            Raw value that shall be converted
-	 * @param dataRepresentation
-	 *            Data representation the raw value shall be converted to.
-	 * @return Value in the specified data representation converted from the raw value.
-	 */
-	private double getDataRepFromRaw(double dRaw, EExternalDataRepresentation dataRepresentation) {
-		switch (dataRepresentation) {
-			case NORMAL:
-				return dRaw;
-			case LOG2:
-				return Math.log(dRaw) / Math.log(2);
-			case LOG10:
-				return Math.log10(dRaw);
-			default:
-				throw new IllegalStateException("Conversion to data rep not implemented for data rep"
-					+ dataRepresentation);
-		}
-	}
-
-	/**
-	 * Converts the specified value into raw using the current external data representation.
-	 * 
-	 * @param dNumber
-	 *            Value in the current external data representation.
-	 * @return Raw value converted from the specified value.
-	 */
-	private double getRawFromExternalDataRep(double dNumber) {
-		switch (externalDataRep) {
-			case NORMAL:
-				return dNumber;
-			case LOG2:
-				return Math.pow(2, dNumber);
-			case LOG10:
-				return Math.pow(10, dNumber);
-			default:
-				throw new IllegalStateException("Conversion to raw not implemented for data rep"
-					+ externalDataRep);
-		}
-	}
-
-	private void calculateGlobalExtrema() {
-		double dTemp = 1.0;
-
-		if (setType.equals(EDataTableDataType.NUMERIC)) {
-			for (AStorage storage : hashStorages.values()) {
-				NumericalStorage nStorage = (NumericalStorage) storage;
-				dTemp = nStorage.getMin();
-				if (!bArtificialMin && dTemp < dMin) {
-					dMin = dTemp;
-				}
-				dTemp = nStorage.getMax();
-				if (!bArtificialMax && dTemp > dMax) {
-					dMax = dTemp;
-				}
-			}
-		}
-		else if (hashStorages.get(0) instanceof NominalStorage<?>)
-			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
-				+ "on nominal data");
 	}
 
 	/**
@@ -1110,108 +681,5 @@ public class DataTable
 	 */
 	public Set<String> getRegisteredStorageVATypes() {
 		return hashStorageData.keySet();
-	}
-
-	public boolean containsUncertaintyData() {
-		return containsUncertaintyData;
-	}
-
-	public void setContainsUncertaintyData(boolean containsUncertaintyData) {
-		this.containsUncertaintyData = containsUncertaintyData;
-	}
-
-	public float getNormalizedUncertainty(int contentIndex) {
-
-		if (aggregatedRawUncertainties == null) {
-			// calculateRawAverageUncertainty();
-			// calculateNormalizedAverageUncertainty(2, 3);
-			throw new IllegalStateException("Certainty has not been calculated yet.");
-
-		}
-
-		return aggregatedNormalizedUncertainties[contentIndex];
-	}
-
-	public float[] getNormalizedUncertainty() {
-
-		// if (aggregatedRawUncertainties == null) {
-		// calculateRawAverageUncertainty();
-		// // throw new IllegalStateException("Certainty has not been calculated yet.");
-		// }
-
-		return aggregatedNormalizedUncertainties;
-	}
-
-	public float[] getRawUncertainty() {
-
-		if (aggregatedRawUncertainties == null)
-			throw new IllegalStateException("Certainty has not been calculated yet.");
-
-		return aggregatedRawUncertainties;
-	}
-
-	public void calculateNormalizedAverageUncertainty(float invalidThreshold, float validThreshold) {
-
-		for (AStorage storage : hashStorages.values()) {
-
-			if (storage instanceof NumericalStorage)
-				((NumericalStorage) storage).normalizeUncertainty(invalidThreshold, validThreshold);
-		}
-
-		aggregatedNormalizedUncertainties = new float[depth()];
-		for (int contentIndex = 0; contentIndex < depth(); contentIndex++) {
-			// float aggregatedUncertainty = calculateMaxUncertainty(contentIndex);
-			float aggregatedUncertainty =
-				calcualteAverageUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_NORMALIZED);
-			aggregatedNormalizedUncertainties[contentIndex] = aggregatedUncertainty;
-		}
-	}
-
-	public void calculateRawAverageUncertainty() {
-		aggregatedRawUncertainties = new float[depth()];
-		for (int contentIndex = 0; contentIndex < depth(); contentIndex++) {
-			float aggregatedUncertainty;
-
-			aggregatedUncertainty =
-				calcualteAverageUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_RAW);
-
-			// aggregatedUncertainty =
-			// calculateMaxUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_RAW);
-
-			aggregatedRawUncertainties[contentIndex] = aggregatedUncertainty;
-		}
-	}
-
-	private float calcualteAverageUncertainty(int contentIndex, EDataRepresentation dataRepresentation) {
-		float uncertaintySum = 0;
-		StorageVirtualArray storageVA = hashStorageData.get(STORAGE).getStorageVA();
-		for (Integer storageID : storageVA) {
-			try {
-				uncertaintySum += hashStorages.get(storageID).getFloat(dataRepresentation, contentIndex);
-			}
-			catch (Exception e) {
-				System.out.println("storageID: " + storageID);
-			}
-		}
-		return uncertaintySum / storageVA.size();
-	}
-
-	@SuppressWarnings("unused")
-	private float calculateMaxUncertainty(int contentIndex, EDataRepresentation dataRepresentation) {
-		float maxUncertainty = Float.MAX_VALUE;
-		for (Integer storageID : hashStorageData.get(STORAGE).getStorageVA()) {
-			float cellUncertainty = 0;
-			try {
-				cellUncertainty = hashStorages.get(storageID).getFloat(dataRepresentation, contentIndex);
-			}
-			catch (Exception e) {
-				System.out.println("storageID: " + storageID);
-
-			}
-			if (cellUncertainty < maxUncertainty) {
-				maxUncertainty = cellUncertainty;
-			}
-		}
-		return maxUncertainty;
 	}
 }
