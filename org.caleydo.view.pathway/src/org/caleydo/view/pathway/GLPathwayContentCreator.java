@@ -100,8 +100,7 @@ public class GLPathwayContentCreator {
 		idMappingManager = generalManager.getIDMappingManager();
 		pathwayItemManager = PathwayItemManager.get();
 
-		geneticDataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
-				"org.caleydo.datadomain.genetic");
+		geneticDataDomain = glPathwayView.getMappingDataDomain();
 	}
 
 	public void init(final GL2 gl, final SelectionManager internalSelectionManager) {
