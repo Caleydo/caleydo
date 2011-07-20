@@ -30,7 +30,7 @@ public class RcpGLGrouperView extends ARcpGLViewPart {
 
 		createGLCanvas();
 
-		view = new GLGrouper(glCanvas, serializedView.getViewFrustum());
+		view = new GLGrouper(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(

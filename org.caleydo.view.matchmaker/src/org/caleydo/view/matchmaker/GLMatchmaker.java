@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDCategory;
@@ -35,7 +36,6 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
@@ -65,6 +65,7 @@ import org.caleydo.view.matchmaker.state.CompareViewStateController;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * The matchmaker view for comparing clustered data sets.
@@ -114,8 +115,9 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLMatchmaker(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum, true);
+	public GLMatchmaker(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+
+		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = VIEW_TYPE;
 
@@ -153,7 +155,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 		compareViewStateController.init(gl);
 
-		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				KeyListener listener = new org.eclipse.swt.events.KeyAdapter() {
@@ -165,7 +167,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 						}
 					}
 				};
-				parentGLCanvas.getParentComposite().addKeyListener(listener);
+				parentComposite.addKeyListener(listener);
 			}
 		});
 
@@ -178,10 +180,10 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		// Register keyboard listener to GL2 canvas
-		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+				parentComposite.addKeyListener(glKeyListener);
 			}
 		});
 
@@ -193,11 +195,11 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 			final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
+		glParentView.getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
 					@Override
 					public void run() {
-						glParentView.getParentGLCanvas().getParentComposite()
+						glParentView.getParentComposite()
 								.addKeyListener(glKeyListener);
 					}
 				});

@@ -6,6 +6,7 @@ import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -36,7 +37,6 @@ import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IColorMappingHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -54,6 +54,7 @@ import org.caleydo.view.treemap.layout.algorithm.SquarifiedLayoutAlgorithm;
 import org.caleydo.view.treemap.listener.LevelHighlightingListener;
 import org.caleydo.view.treemap.listener.ToggleColoringModeListener;
 import org.caleydo.view.treemap.listener.ToggleLabelListener;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Control Class for a single treemap. Handles interaction and events. Calls
@@ -108,8 +109,9 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	UpdateColorMappingListener updateColorMappingListener;
 	LevelHighlightingListener levelHighlightingListener;
 
-	public GLTreeMap(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum, true);
+	public GLTreeMap(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+
+		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = GLTreeMap.VIEW_TYPE;
 

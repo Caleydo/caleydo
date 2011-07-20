@@ -90,7 +90,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 			public void clicked(Pick pick) {
 				System.out.println("cluster");
 
-				brick.getParentGLCanvas().getParentComposite().getDisplay()
+				brick.getParentComposite().getDisplay()
 						.asyncExec(new Runnable() {
 							@Override
 							public void run() {

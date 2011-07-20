@@ -89,8 +89,7 @@ public class ComparisonGroupOverviewRenderer extends LayoutRenderer implements
 	@Override
 	public void render(GL2 gl) {
 
-		PixelGLConverter pixelGLConverter = view.getParentGLCanvas()
-				.getPixelGLConverter();
+		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
 		float currentPosX = 0;

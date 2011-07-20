@@ -1,11 +1,13 @@
 package org.caleydo.view.visbricks.dimensiongroup;
 
+import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.collection.table.statistics.IDBasedBinning;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.eclipse.swt.widgets.Composite;
 
 public class BinGroup extends DimensionGroup {
 
@@ -17,8 +19,9 @@ public class BinGroup extends DimensionGroup {
 	IDBasedBinning binning;
 
 	
-	public BinGroup(GLCaleydoCanvas canvas, ViewFrustum viewFrustum) {
-		super(canvas, viewFrustum);
+	public BinGroup(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+
+		super(glCanvas, parentComposite, viewFrustum);
 
 		mappingManager = GeneralManager.get().getIDMappingManager();
 	}

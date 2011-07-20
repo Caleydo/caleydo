@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -32,7 +33,6 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
@@ -59,6 +59,7 @@ import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.caleydo.view.visbricks.listener.RelationsUpdatedListener;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Individual Brick for VisBricks
@@ -125,8 +126,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	private boolean isSizeFixed = false;
 	private boolean isInitialized = false;
 
-	public GLBrick(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum, true);
+	public GLBrick(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+
+		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLBrick.VIEW_TYPE;
 
 		views = new HashMap<EContainedViewType, AGLView>();
@@ -201,10 +203,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		}
 
 		templateRenderer.setTemplate(brickLayout);
-		float defaultHeight = getParentGLCanvas()
-				.getPixelGLConverter()
+		float defaultHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(brickLayout.getDefaultHeightPixels());
-		float defaultWidth = getParentGLCanvas().getPixelGLConverter()
+		float defaultWidth = pixelGLConverter
 				.getGLHeightForPixelHeight(brickLayout.getDefaultWidthPixels());
 		wrappingLayout.setAbsoluteSizeY(defaultHeight);
 		wrappingLayout.setAbsoluteSizeX(defaultWidth);
@@ -627,11 +628,11 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		float newWidth = width + changeX;
 		float newHeight = height + changeY;
 
-		float minWidth = parentGLCanvas.getPixelGLConverter()
+		float minWidth = pixelGLConverter
 				.getGLWidthForPixelWidth(brickLayout.getMinWidthPixels());
-		float minHeight = parentGLCanvas.getPixelGLConverter()
+		float minHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(brickLayout.getMinHeightPixels());
-		// float minWidth = parentGLCanvas.getPixelGLConverter()
+		// float minWidth = pixelGLConverter
 		// .getGLWidthForPixelWidth(brickLayout.getMinWidthPixels());
 		if (newWidth < minWidth - 0.001f) {
 			newWidth = minWidth;
@@ -869,9 +870,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		brickLayout.viewTypeChanged(viewType);
 		int defaultHeightPixels = brickLayout.getDefaultHeightPixels();
 		int defaultWidthPixels = brickLayout.getDefaultWidthPixels();
-		float defaultHeight = getParentGLCanvas().getPixelGLConverter()
+		float defaultHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(defaultHeightPixels);
-		float defaultWidth = getParentGLCanvas().getPixelGLConverter()
+		float defaultWidth = pixelGLConverter
 				.getGLWidthForPixelWidth(defaultWidthPixels);
 
 		if (isSizeFixed) {
@@ -1098,9 +1099,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		setBrickLayoutTemplate(layoutTemplate,
 				layoutTemplate.getDefaultViewType());
 
-		float minHeight = getParentGLCanvas().getPixelGLConverter()
+		float minHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(layoutTemplate.getMinHeightPixels());
-		float minWidth = getParentGLCanvas().getPixelGLConverter()
+		float minWidth = pixelGLConverter
 				.getGLHeightForPixelHeight(layoutTemplate.getMinWidthPixels());
 		float currentSize = wrappingLayout.getSizeScaledY();
 		wrappingLayout.setAbsoluteSizeY(minHeight);
@@ -1126,10 +1127,10 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			wrappingLayout.setAbsoluteSizeY(expandedBrickState.getHeight());
 		} else {
 			setBrickLayoutTemplate(layoutTemplate, currentViewType);
-			float defaultHeight = getParentGLCanvas().getPixelGLConverter()
+			float defaultHeight = pixelGLConverter
 					.getGLHeightForPixelHeight(
 							layoutTemplate.getDefaultHeightPixels());
-			float defaultWidth = getParentGLCanvas().getPixelGLConverter()
+			float defaultWidth = pixelGLConverter
 					.getGLWidthForPixelWidth(
 							layoutTemplate.getDefaultWidthPixels());
 			wrappingLayout.setAbsoluteSizeY(defaultHeight);

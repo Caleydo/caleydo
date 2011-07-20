@@ -35,7 +35,7 @@ public class RcpGLBrickView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		view = new GLBrick(glCanvas, serializedView.getViewFrustum());
+		view = new GLBrick(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(serializedView.getDataDomainID());

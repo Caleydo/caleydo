@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -26,7 +27,6 @@ import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -35,6 +35,7 @@ import org.caleydo.view.treemap.layout.TreeMapRenderer;
 import org.caleydo.view.treemap.listener.ZoomInListener;
 import org.caleydo.view.treemap.listener.ZoomOutListener;
 import org.caleydo.view.treemap.renderstyle.TreeMapRenderStyle;
+import org.eclipse.swt.widgets.Composite;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -88,8 +89,9 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLHierarchicalTreeMap(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum, true);
+	public GLHierarchicalTreeMap(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+
+		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = GLHierarchicalTreeMap.VIEW_TYPE;
 
@@ -135,9 +137,9 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				glParentView.getParentGLCanvas().getParentComposite().addKeyListener(glKeyListener);
+				glParentView.getParentComposite().addKeyListener(glKeyListener);
 			}
 		});
 
@@ -521,7 +523,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		float fHeatMapWidth = viewFrustum.getWidth();
 		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, (int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
-		GLTreeMap treemap = new GLTreeMap(this.getParentGLCanvas(), viewFrustum);
+		GLTreeMap treemap = new GLTreeMap(parentGLCanvas, parentComposite, viewFrustum);
 		treemap.setDataDomain(dataDomain);
 		treemap.setRemoteRenderingGLView(this);
 		treemap.registerEventListeners();

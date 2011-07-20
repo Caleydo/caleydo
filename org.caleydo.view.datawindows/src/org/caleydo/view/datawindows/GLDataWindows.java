@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.data.selection.SelectionType;
@@ -28,12 +29,13 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
 import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Rendering the Datawindow
@@ -73,8 +75,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 	private DataWindowsMouseWheelListener mouseWheelListener;
 
-	private GLCaleydoCanvas canvas;
-
 	private float[] layoutHotSpot;
 	private float[] defaultLayoutHotSpot;
 
@@ -113,10 +113,9 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLDataWindows(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+	public GLDataWindows(GLCanvas glCanvas, final Composite parentComposite, ViewFrustum viewFrustum) {
 
-		super(glCanvas, viewFrustum, true);
-		canvas = glCanvas;
+		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLDataWindows.VIEW_TYPE;
 
 		containedGLViews = new ArrayList<AGLView>();
@@ -156,11 +155,10 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		cmd.setAttributes("org.caleydo.datadomain.pathway");
 		cmd.doCommand();
 
-		getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+		Display.getCurrent().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				upperLeftScreenPos = getParentGLCanvas().getParentComposite().toDisplay(
-						1, 1);
+				upperLeftScreenPos = parentComposite.toDisplay(1, 1);
 			}
 		});
 	}
@@ -538,8 +536,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 		mouseWheelListener = new DataWindowsMouseWheelListener(this.directHyperbolicView);
 
-		canvas.removeMouseWheelListener(glMouseListener);
-		canvas.addMouseWheelListener(mouseWheelListener);
+		// removeMouseWheelListener(glMouseListener);
+		// addMouseWheelListener(mouseWheelListener);
 		glMouseListener.addGLCanvas(this);
 
 	}
@@ -575,11 +573,12 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		try {
 			viewClass = Class.forName(serView.getViewClassType());
 		} catch (ClassNotFoundException e) {
-			throw new IllegalStateException("Cannot find class for view "+serView.getViewType());
+			throw new IllegalStateException("Cannot find class for view "
+					+ serView.getViewType());
 		}
-		
+
 		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
-				.createGLView(viewClass, parentGLCanvas, viewFrustum);
+				.createGLView(viewClass, parentGLCanvas, parentComposite, viewFrustum);
 		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof IDataDomainBasedView<?>) {
@@ -588,7 +587,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		}
 		glView.initialize();
 		glView.initRemote(gl, this, glMouseListener);
-		
+
 		return glView;
 	}
 

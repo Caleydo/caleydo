@@ -116,7 +116,8 @@ public class HeatMapWrapper {
 		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
 				50, 0, 50, -20, 20);
 
-		GLHeatMap heatMap = new GLHeatMap(parentView.getParentGLCanvas(), viewFrustum);
+		GLHeatMap heatMap = new GLHeatMap(parentView.getParentGLCanvas(),
+				parentView.getParentComposite(), viewFrustum);
 		heatMap.setRemoteRenderingGLView(parentView);
 		heatMap.setDataDomain(dataDomain);
 		heatMap.setContentVAType(GLHeatMap.CONTENT_EMBEDDED_VA);
@@ -142,7 +143,7 @@ public class HeatMapWrapper {
 				50, 0, 50, -20, 20);
 
 		dendrogram = new GLDendrogram<ContentGroupList>(glParentView.getParentGLCanvas(),
-				viewFrustum, true);
+				glParentView.getParentComposite(), viewFrustum, true);
 		dendrogram.setDataDomain(dataDomain);
 		dendrogram.setRemoteRenderingGLView(parentView);
 		dendrogram.setContentVAType(contentVAType);

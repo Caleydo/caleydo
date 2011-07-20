@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.canvas;
 import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -14,16 +15,16 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  */
 public class PixelGLConverter {
 	ViewFrustum viewFrustum;
-	GLCaleydoCanvas canvas;
+	GLCanvas canvas;
 
 	/**
-	 * The constructor requires a ViewFrustum and a GLCaleydoCanvas. Notice, that both have to be from the
+	 * The constructor requires a ViewFrustum and a GLCanvas. Notice, that both have to be from the
 	 * same top level, locally rendered view - i.e., viewFrustums of embedded views don't work.
 	 * 
 	 * @param viewFrustum
 	 * @param canvas
 	 */
-	PixelGLConverter(ViewFrustum viewFrustum, GLCaleydoCanvas canvas) {
+	PixelGLConverter(ViewFrustum viewFrustum, GLCanvas canvas) {
 		this.viewFrustum = viewFrustum;
 		this.canvas = canvas;
 	}

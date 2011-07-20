@@ -51,7 +51,7 @@ public abstract class ABookmark extends LayoutRenderer implements ILayoutedEleme
 		this.idType = idType;
 		this.parentContainer = parentContainer;
 
-		pixelGLConverter = manager.getParentGLCanvas().getPixelGLConverter();
+		pixelGLConverter = manager.getPixelGLConverter();
 
 	}
 

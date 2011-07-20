@@ -188,13 +188,13 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 				// Runnable() {
 				// @Override
 				// public void run() {
-				// manager.getParentGLCanvas().getParentComposite()
+				// manager.getParentComposite()
 				// .notifyListeners(SWT.MouseDown, new Event());
 				//
 				// Menu menu = new Menu(manager.getParentGLCanvas()
 				// .getParentComposite().getShell(), SWT.POP_UP);
 				// Point point =
-				// manager.getParentGLCanvas().getParentComposite()
+				// manager.getParentComposite()
 				// .toDisplay(0, 0);
 				// System.out.println(point);
 				// menu.setLocation(point.x + pick.getPickedPoint().x, point.y
@@ -212,7 +212,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 				// item = new MenuItem(menu, SWT.PUSH);
 				// item.setText("Popup5");
 				// //
-				// manager.getParentGLCanvas().getParentComposite().setMenu(menu);
+				// manager.getParentComposite().setMenu(menu);
 				// menu.setVisible(true);
 				// }
 				// });

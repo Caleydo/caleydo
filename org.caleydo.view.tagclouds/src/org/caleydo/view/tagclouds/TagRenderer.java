@@ -93,7 +93,7 @@ public class TagRenderer extends LayoutRenderer {
 		}
 		textRenderer.setColor(color);
 
-		float maxHeight = tagCloud.getParentGLCanvas().getPixelGLConverter()
+		float maxHeight = tagCloud.getPixelGLConverter()
 				.getGLHeightForPixelHeight(50);
 		if (allowTextScaling && y > maxHeight) {
 			float renderHeight = maxHeight;

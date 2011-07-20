@@ -12,6 +12,7 @@ import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Abstract class that is the base of all view representations. It holds the the own view ID, the parent ID
@@ -31,15 +32,18 @@ public abstract class AView
 	protected GeneralManager generalManager;
 
 	protected EventPublisher eventPublisher;
+	
+	protected Composite parentComposite;
 
 	/**
 	 * Constructor.
 	 */
-	public AView(int viewID) {
+	public AView(int viewID, Composite parentComposite) {
 		super(viewID);
 
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
+		this.parentComposite = parentComposite;
 	}
 
 	/**
@@ -88,5 +92,9 @@ public abstract class AView
 	 */
 	public boolean isDataView() {
 		return false;
+	}
+	
+	public Composite getParentComposite() {
+		return parentComposite;
 	}
 }

@@ -6,6 +6,7 @@ import gleem.linalg.open.Transform;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
@@ -13,7 +14,6 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AGLViewBrowser;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.AddPathwayListener;
 import org.caleydo.core.view.opengl.canvas.listener.IRemoteRenderingHandler;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -24,6 +24,7 @@ import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneListener;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
+import org.eclipse.swt.widgets.Composite;
 
 public class GLPathwayViewBrowser extends AGLViewBrowser implements
 		IRemoteRenderingHandler, IPathwayLoader {
@@ -33,8 +34,9 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 	private LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
 	private AddPathwayListener addPathwayListener = null;
 
-	public GLPathwayViewBrowser(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum);
+	public GLPathwayViewBrowser(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+
+		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = VIEW_TYPE;
 		viewSymbol = EIconTextures.PATHWAY_SYMBOL;

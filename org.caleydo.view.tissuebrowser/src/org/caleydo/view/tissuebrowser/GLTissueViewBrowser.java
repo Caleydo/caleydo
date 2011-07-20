@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.table.DataTable;
@@ -36,7 +37,6 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AGLViewBrowser;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
@@ -45,6 +45,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.texture.GLTexture;
 import org.caleydo.view.texture.SerializedTextureView;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * FIXME: this view uses and listenes to the clinical data domain despite beeing
@@ -81,8 +82,9 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 	private boolean poolLeft = false;
 
-	public GLTissueViewBrowser(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum);
+	public GLTissueViewBrowser(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+
+		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = VIEW_TYPE;
 		viewSymbol = EIconTextures.NO_ICON_AVAILABLE;

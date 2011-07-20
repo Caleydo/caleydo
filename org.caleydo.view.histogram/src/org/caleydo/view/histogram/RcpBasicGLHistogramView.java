@@ -82,7 +82,7 @@ public class RcpBasicGLHistogramView extends ARcpGLViewPart implements
 
 		createGLCanvas();
 
-		view = new GLHistogram(glCanvas, serializedView.getViewFrustum());
+		view = new GLHistogram(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 
 		if (view instanceof IDataDomainBasedView<?>) {

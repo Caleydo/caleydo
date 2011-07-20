@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
@@ -64,7 +65,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
 import org.caleydo.core.view.opengl.canvas.listener.ContentGroupExportingListener;
 import org.caleydo.core.view.opengl.canvas.listener.ContentGroupInterChangingActionListener;
@@ -92,6 +92,7 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.HierarchicalHeatMapTemplate;
 import org.caleydo.view.heatmap.listener.GLHierarchicalHeatMapKeyListener;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -261,9 +262,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 * @param glCanvas
 	 * @param viewFrustum
 	 */
-	public GLHierarchicalHeatMap(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+	public GLHierarchicalHeatMap(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
-		super(glCanvas, viewFrustum);
+		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLHierarchicalHeatMap.VIEW_TYPE;
 
 		ArrayList<SelectionType> alSelectionTypes = new ArrayList<SelectionType>();
@@ -370,10 +371,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	public void initLocal(GL2 gl) {
 
 		// Register keyboard listener to GL2 canvas
-		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+				parentComposite.addKeyListener(glKeyListener);
 			}
 		});
 
@@ -388,11 +389,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
+		glParentView.getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
 					@Override
 					public void run() {
-						glParentView.getParentGLCanvas().getParentComposite()
+						glParentView.getParentComposite()
 								.addKeyListener(glKeyListener);
 					}
 				});
@@ -666,7 +667,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
 				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
-		glHeatMapView = new GLHeatMap(this.getParentGLCanvas(), viewFrustum);
+		glHeatMapView = new GLHeatMap(parentGLCanvas, parentComposite, viewFrustum);
 		glHeatMapView.setDataDomain(dataDomain);
 
 		glHeatMapView.setRemoteRenderingGLView(this);
@@ -695,12 +696,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
 		glContentDendrogramView = new GLDendrogram<ContentGroupList>(
-				this.getParentGLCanvas(), viewFrustum, true);
+				parentGLCanvas, parentComposite, viewFrustum, true);
 		glContentDendrogramView.setRemoteRenderingGLView(this);
 		glContentDendrogramView.setDataDomain(dataDomain);
 
 		glExperimentDendrogramView = new GLDendrogram<StorageGroupList>(
-				this.getParentGLCanvas(), viewFrustum, false);
+				parentGLCanvas, parentComposite, viewFrustum, false);
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
 		glExperimentDendrogramView.setDataDomain(dataDomain);
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
@@ -5153,7 +5154,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	private void openExportDialog(final ArrayList<Integer> genesToExport,
 			final ArrayList<Integer> experimentsToExport) {
 
-		getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
 
 			@Override
 			public void run() {

@@ -1,6 +1,7 @@
 package org.caleydo.view.visbricks.brick.category;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -15,11 +16,11 @@ import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Rendering the histogram.
@@ -47,8 +48,8 @@ public class CategoryView extends AGLView implements IDataDomainSetBasedView,
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public CategoryView(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum, true);
+	public CategoryView(GLCanvas glCanvas, Composite parentComposite, final ViewFrustum viewFrustum) {
+		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = VIEW_TYPE;
 

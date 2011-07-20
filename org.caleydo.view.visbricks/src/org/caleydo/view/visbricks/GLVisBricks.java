@@ -13,6 +13,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -41,7 +42,6 @@ import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -68,6 +68,7 @@ import org.caleydo.view.visbricks.listener.ConnectionsModeListener;
 import org.caleydo.view.visbricks.listener.GLVisBricksKeyListener;
 import org.caleydo.view.visbricks.listener.NewMetaSetsListener;
 import org.caleydo.view.visbricks.renderstyle.VisBricksRenderStyle;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * VisBricks main view
@@ -172,12 +173,10 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	/**
 	 * Constructor.
 	 * 
-	 * @param glCanvas
-	 * @param label
-	 * @param viewFrustum
 	 */
-	public GLVisBricks(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum, true);
+	public GLVisBricks(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+
+		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = GLVisBricks.VIEW_TYPE;
 
@@ -255,7 +254,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	public int getSideArchWidthPixels() {
-		return parentGLCanvas.getPixelGLConverter().getPixelWidthForGLWidth(
+		return pixelGLConverter.getPixelWidthForGLWidth(
 				viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT);
 	}
 
@@ -273,7 +272,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 					* (ARCH_STAND_WIDTH_PERCENT + 0.024f);
 		}
 
-		archHeight = parentGLCanvas.getPixelGLConverter()
+		archHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(ARCH_PIXEL_HEIGHT);
 		archBottomY = viewFrustum.getHeight() * ARCH_BOTTOM_PERCENT
 				- archHeight / 2f;
@@ -311,8 +310,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		leftDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 		dimensionGroupSpacingRenderer.setLineLength(archHeight);
 
-		leftDimensionGroupSpacing.setPixelGLConverter(parentGLCanvas
-				.getPixelGLConverter());
+		leftDimensionGroupSpacing.setPixelGLConverter(pixelGLConverter);
 
 		if (dimensionGroupCountInCenter > 1)
 			leftDimensionGroupSpacing
@@ -353,8 +351,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 						"lastDimGrSpacing");
 				dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(
 						null, connectionRenderer, group, null, this);
-				rightDimensionGroupSpacing.setPixelGLConverter(parentGLCanvas
-						.getPixelGLConverter());
+				rightDimensionGroupSpacing.setPixelGLConverter(pixelGLConverter);
 
 				if (dimensionGroupCountInCenter > 1)
 					rightDimensionGroupSpacing
@@ -372,7 +369,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		}
 
 		centerLayout = new LayoutTemplate();
-		centerLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		centerLayout.setPixelGLConverter(pixelGLConverter);
 		centerLayout.setBaseElementLayout(centerRowLayout);
 
 		ViewFrustum centerArchFrustum = new ViewFrustum(
@@ -398,7 +395,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			int dimensinoGroupStartIndex, int dimensinoGroupEndIndex) {
 
 		layoutTemplate
-				.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+				.setPixelGLConverter(pixelGLConverter);
 		layoutTemplate.setBaseElementLayout(columnLayout);
 
 		layoutManager.setTemplate(layoutTemplate);
@@ -469,11 +466,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public void initLocal(GL2 gl) {
 
 		// Register keyboard listener to GL2 canvas
-		parentGLCanvas.getParentComposite().getDisplay()
+		parentComposite.getDisplay()
 				.asyncExec(new Runnable() {
 					@Override
 					public void run() {
-						parentGLCanvas.getParentComposite().addKeyListener(
+						parentComposite.addKeyListener(
 								glKeyListener);
 					}
 				});
@@ -538,7 +535,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		if (isLayoutDirty) {
 			isLayoutDirty = false;
 			centerLayoutManager.updateLayout();
-			float minWidth = parentGLCanvas.getPixelGLConverter()
+			float minWidth = pixelGLConverter
 					.getGLWidthForPixelWidth(
 							DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH);
 			for (ElementLayout layout : centerRowLayout) {
@@ -948,7 +945,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		float leftSizeX = leftSpacing.getSizeScaledX();
 		float rightSizeX = rightSpacing.getSizeScaledX();
-		float minWidth = parentGLCanvas.getPixelGLConverter()
+		float minWidth = pixelGLConverter
 				.getGLWidthForPixelWidth(
 						DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH);
 
@@ -1229,7 +1226,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 						.getViewGLCanvasManager()
 						.createGLView(
 								DimensionGroup.class,
-								getParentGLCanvas(),
+								getParentGLCanvas(), parentComposite,
 								new ViewFrustum(
 										ECameraProjectionMode.ORTHOGRAPHIC, 0,
 										1, 0, 1, -1, 1));

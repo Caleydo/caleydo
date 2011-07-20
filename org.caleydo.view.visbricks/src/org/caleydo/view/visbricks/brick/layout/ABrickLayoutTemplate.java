@@ -44,7 +44,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 		viewTypeChangeListeners = new ArrayList<IViewTypeChangeListener>();
 		borderedAreaRenderer = new BorderedAreaRenderer();
 		// setValidViewTypes();
-		setPixelGLConverter(brick.getParentGLCanvas().getPixelGLConverter());
+		setPixelGLConverter(brick.getPixelGLConverter());
 		// registerPickingListeners();
 	}
 

@@ -19,7 +19,7 @@ public class ContainerHeading extends LayoutRenderer implements ILayoutedElement
 	public ContainerHeading(GLBookmarkView manager) {
 		this.manager = manager;
 		layout = new ElementLayout("ContainerHeading");
-		layout.setPixelGLConverter(manager.getParentGLCanvas().getPixelGLConverter());
+		layout.setPixelGLConverter(manager.getPixelGLConverter());
 		layout.setRatioSizeX(1);
 		layout.setPixelSizeY(20);
 		layout.setRenderer(this);
@@ -39,8 +39,7 @@ public class ContainerHeading extends LayoutRenderer implements ILayoutedElement
 	public void render(GL2 gl) {
 		super.render(gl);
 
-		PixelGLConverter pixelGLConverter = manager.getParentGLCanvas()
-				.getPixelGLConverter();
+		PixelGLConverter pixelGLConverter = manager.getPixelGLConverter();
 		float ySpacing = pixelGLConverter.getGLHeightForPixelHeight(Y_SPACING_PIXEL);
 		float xSpacing = pixelGLConverter.getGLWidthForPixelWidth(X_SPACING_PIXEL);
 
@@ -49,5 +48,4 @@ public class ContainerHeading extends LayoutRenderer implements ILayoutedElement
 				0 + ySpacing, 0, x - xSpacing, y - 2 * ySpacing);
 
 	}
-
 }

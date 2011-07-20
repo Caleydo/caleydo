@@ -15,6 +15,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionType;
@@ -63,6 +64,7 @@ import org.caleydo.core.view.opengl.util.scrollbar.ScrollBarRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.eclipse.swt.widgets.Composite;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -75,8 +77,8 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * <h2>Creating a View</h2>
  * <p>
  * Views may only be instantiated using the
- * {@link ViewManager#createGLView(Class, GLCaleydoCanvas, ViewFrustum)}. As a consequence, the constructor of
- * the view may have only those two arguments (GLCaleydoCanvas, ViewFrustum). Otherwise, the creation will
+ * {@link ViewManager#createGLView(Class, GLCanvas, ViewFrustum)}. As a consequence, the constructor of
+ * the view may have only those two arguments (GLCanvas, ViewFrustum). Otherwise, the creation will
  * fail.
  * </p>
  * <p>
@@ -107,7 +109,7 @@ public abstract class AGLView
 	/**
 	 * The canvas rendering the view. The canvas also holds the {@link PixelGLConverter}
 	 */
-	protected GLCaleydoCanvas parentGLCanvas;
+	protected GLCanvas parentGLCanvas;
 
 	protected PickingManager pickingManager;
 
@@ -123,6 +125,10 @@ public abstract class AGLView
 	protected ViewFrustum viewFrustum;
 
 	protected IViewCamera viewCamera;
+	
+//	private FPSCounter fpsCounter;
+
+	protected PixelGLConverter pixelGLConverter = null;
 
 	/**
 	 * The views current aspect ratio. Value gets updated when reshape is called by the JOGL2 animator.
@@ -242,19 +248,22 @@ public abstract class AGLView
 	/**
 	 * Constructor. If the glCanvas object is null - then the view is rendered remote.
 	 */
-	protected AGLView(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum,
-		final boolean bRegisterToParentCanvasNow) {
+	protected AGLView(GLCanvas glCanvas, Composite parentComposite, final ViewFrustum viewFrustum) {
 
-		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.GL_VIEW));
+		super(GeneralManager.get().getIDCreator().createID(EManagedObjectType.GL_VIEW), parentComposite);
 
 		GeneralManager.get().getViewGLCanvasManager().registerGLView(this);
 		parentGLCanvas = glCanvas;
 
-		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
-			glMouseListener = parentGLCanvas.getGLMouseListener();
-		}
-
+		glMouseListener = new GLMouseListener();
+		glMouseListener.setNavigationModes(false, false, false);
 		glMouseWheelListener = new GLMouseWheelListener(this);
+		
+		// Register mouse listener to GL2 canvas
+		glCanvas.addMouseListener(glMouseListener);
+		glCanvas.addMouseMotionListener(glMouseListener);
+		glCanvas.addMouseWheelListener(glMouseListener);
+		
 		singleIDPickingListeners = new HashMap<String, HashMap<Integer, Set<IPickingListener>>>();
 		multiIDPickingListeners = new HashMap<String, Set<IPickingListener>>();
 		scrollBarDragAndDropController = new DragAndDropController(this);
@@ -270,7 +279,7 @@ public abstract class AGLView
 
 		bShowMagnifyingGlass = false;
 
-		glCanvas.initPixelGLConverter(viewFrustum);
+		initPixelGLConverter(viewFrustum);
 
 		mouseWheelListeners = new HashSet<IMouseWheelHandler>();
 
@@ -287,7 +296,7 @@ public abstract class AGLView
 		Column baseColumn = new Column();
 
 		ElementLayout hScrollBarLayout = new ElementLayout("horizontalScrollBar");
-		hScrollBarLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		hScrollBarLayout.setPixelGLConverter(pixelGLConverter);
 		hScrollBarLayout.setPixelSizeY(10);
 		hScrollBarLayout.setRatioSizeX(1.0f);
 		hScrollBarLayout.setRenderer(new ScrollBarRenderer(hScrollBar, this, true,
@@ -310,7 +319,7 @@ public abstract class AGLView
 		Row baseRow = new Row();
 
 		ElementLayout vScrollBarLayout = new ElementLayout("horizontalScrollBar");
-		vScrollBarLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		vScrollBarLayout.setPixelGLConverter(pixelGLConverter);
 		vScrollBarLayout.setPixelSizeX(10);
 		vScrollBarLayout.setRatioSizeY(1.0f);
 		vScrollBarLayout.setRenderer(new ScrollBarRenderer(vScrollBar, this, false,
@@ -330,20 +339,50 @@ public abstract class AGLView
 	@Override
 	public void initialize() {
 		registerEventListeners();
-
-		if (glRemoteRenderingView == null)
-			GeneralManager.get().getViewGLCanvasManager()
-				.registerGLEventListenerByGLCanvas(parentGLCanvas, this);
+		
+		 if (glRemoteRenderingView == null)
+             GeneralManager.get().getViewGLCanvasManager()
+                     .registerGLEventListenerByGLCanvas(parentGLCanvas, this);
 	}
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
 
+		GL2 gl = drawable.getGL().getGL2();
+		
+		// This is specially important for Windows. Otherwise JOGL2 internally
+		// slows down dramatically (factor of 10).
+		gl.setSwapInterval(0);
+
+		// fpsCounter = new FPSCounter(drawable, 16);
+		// fpsCounter.setColor(0.5f, 0.5f, 0.5f, 1);
+
+		gl.glShadeModel(GL2.GL_SMOOTH); // Enables Smooth Shading
+		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // white Background
+		gl.glClearDepth(1.0f); // Depth Buffer Setup
+		gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT | GL2.GL_STENCIL_BUFFER_BIT);
+
+		gl.glEnable(GL2.GL_DEPTH_TEST);
+		gl.glDepthFunc(GL2.GL_LEQUAL);
+
+		gl.glEnable(GL2.GL_BLEND);
+		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+
+		// gl.glEnable(GL2.GL_POINT_SMOOTH);
+		// gl.glHint(GL2.GL_POINT_SMOOTH_HINT, GL2.GL_NICEST);
+		gl.glEnable(GL2.GL_LINE_SMOOTH);
+		gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_NICEST);
+		// gl.glEnable(GL2.GL_POLYGON_SMOOTH);
+		// gl.glHint(GL2.GL_POLYGON_SMOOTH_HINT, GL2.GL_NICEST);
+
+		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
+
+		gl.glEnable(GL2.GL_COLOR_MATERIAL);
+		gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_DIFFUSE);
+		
 		glMouseListener.addGLCanvas(this);
 
-		((GLEventListener) parentGLCanvas).init(drawable);
-
-		initLocal(drawable.getGL().getGL2());
+		initLocal(gl);
 
 		hScrollBarLayoutManager.updateLayout();
 		vScrollBarLayoutManager.updateLayout();
@@ -356,13 +395,18 @@ public abstract class AGLView
 			if (!isVisible())
 				return;
 
-			((GLEventListener) parentGLCanvas).display(drawable);
-
 			final Vec3f rot_Vec3f = new Vec3f();
 			final Vec3f position = viewCamera.getCameraPosition();
 
 			GL2 gl = drawable.getGL().getGL2();
 
+			// load identity matrix
+			gl.glMatrixMode(GL2.GL_MODELVIEW);
+			gl.glLoadIdentity();
+	
+			// clear screen
+			gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+			
 			gl.glTranslatef(position.x(), position.y(), position.z());
 			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(),
 				rot_Vec3f.z());
@@ -383,6 +427,8 @@ public abstract class AGLView
 			// }
 			// magnifyingGlass.draw(gl, glMouseListener);
 			// }
+			
+			// fpsCounter.draw();
 		}
 		catch (RuntimeException exception) {
 			ExceptionHandler.get().handleViewException(exception, this);
@@ -576,7 +622,7 @@ public abstract class AGLView
 	 */
 	public abstract void displayRemote(final GL2 gl);
 
-	public final GLCaleydoCanvas getParentGLCanvas() {
+	public final GLCanvas getParentGLCanvas() {
 		if (this.isRenderedRemote())
 			return getRemoteRenderingGLCanvas().getParentGLCanvas();
 
@@ -598,7 +644,6 @@ public abstract class AGLView
 	}
 
 	private void updateDetailMode() {
-		PixelGLConverter pixelGLConverter = parentGLCanvas.getPixelGLConverter();
 		int pixelWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth());
 		int pixelHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());
 		if (pixelHeight > getMinPixelHeight(DetailLevel.HIGH)
@@ -1291,8 +1336,6 @@ public abstract class AGLView
 		float viewTranslateX = relativeViewTranlateX * viewFrustum.getWidth();
 		float viewTranslateY = relativeViewTranlateY * viewFrustum.getHeight();
 
-		PixelGLConverter pixelGLConverter = parentGLCanvas.getPixelGLConverter();
-
 		// float zoomCenterX = relativeZoomCenterX * viewFrustum.getWidth();
 		// float zoomCenterY = relativeZoomCenterY * viewFrustum.getHeight();
 		//
@@ -1421,7 +1464,7 @@ public abstract class AGLView
 	public void handleScrollBarUpdate(ScrollBar scrollBar) {
 		if (scrollBar == hScrollBar) {
 			float zoomCenterX =
-				parentGLCanvas.getPixelGLConverter().getGLWidthForPixelWidth(scrollBar.getSelection());
+				pixelGLConverter.getGLWidthForPixelWidth(scrollBar.getSelection());
 			float viewTranslateX =
 				(viewFrustum.getWidth() / 2.0f) - zoomCenterX - (currentZoomScale - 1) * zoomCenterX;
 
@@ -1434,7 +1477,7 @@ public abstract class AGLView
 		}
 		if (scrollBar == vScrollBar) {
 			float zoomCenterY =
-				parentGLCanvas.getPixelGLConverter().getGLHeightForPixelHeight(scrollBar.getSelection());
+				pixelGLConverter.getGLHeightForPixelHeight(scrollBar.getSelection());
 			float viewTranslateY =
 				(viewFrustum.getHeight() / 2.0f) - zoomCenterY - (currentZoomScale - 1) * zoomCenterY;
 
@@ -1479,5 +1522,32 @@ public abstract class AGLView
 		for (IMouseWheelHandler listener : mouseWheelListeners) {
 			listener.handleMouseWheel(wheelAmount, wheelPosition);
 		}
+	}
+	
+	/**
+	 * Initialize the pixelGLConverter. This must initially only be done for not-remotely rendered view of
+	 * this canvas.
+	 * 
+	 * @param viewFrustum
+	 */
+	void initPixelGLConverter(ViewFrustum viewFrustum) {
+//		if (this.viewFrustum == null) {
+//			this.viewFrustum = viewFrustum;
+			pixelGLConverter = new PixelGLConverter(viewFrustum, this.getParentGLCanvas());
+//		}
+			
+		// if (pixelGLConverter == null)
+
+		// else
+		// pixelGLConverter.viewFrustum = viewFrustum;
+	}
+
+	/**
+	 * Returns the pixelGLConverter associated with this canvas.
+	 * 
+	 * @return
+	 */
+	public PixelGLConverter getPixelGLConverter() {
+		return pixelGLConverter;
 	}
 }

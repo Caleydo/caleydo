@@ -72,8 +72,7 @@ public class BarPlotRenderer extends AContentRenderer {
 		if (set == null)
 			return;
 
-		PixelGLConverter conv = heatMap.getParentGLCanvas()
-				.getPixelGLConverter();
+		PixelGLConverter conv = heatMap.getPixelGLConverter();
 
 		for (Integer contentID : heatMap.getContentVA()) {
 			iCount++;

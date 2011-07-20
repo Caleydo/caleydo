@@ -41,8 +41,7 @@ public class CompactPathwayRenderer extends LayoutRenderer {
 		int pickingID = view.getPickingManager().getPickingID(view.getID(),
 				pickingType, id);
 
-		PixelGLConverter pixelGLConverter = view.getParentGLCanvas()
-				.getPixelGLConverter();
+		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 		float iconHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(ICON_SIZE_PIXELS);
 		float iconWidth = pixelGLConverter
@@ -72,7 +71,7 @@ public class CompactPathwayRenderer extends LayoutRenderer {
 
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
-		float ySpacing = view.getParentGLCanvas().getPixelGLConverter()
+		float ySpacing = view.getPixelGLConverter()
 				.getGLHeightForPixelHeight(1);
 
 		textRenderer.setColor(0, 0, 0, 1);

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDCategory;
@@ -50,7 +51,6 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
@@ -82,6 +82,7 @@ import org.caleydo.view.pathway.listener.EnableNeighborhoodListener;
 import org.caleydo.view.pathway.listener.EnableTexturesListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Single OpenGL2 pathway view
@@ -148,9 +149,9 @@ public class GLPathway extends AGLView implements
 	/**
 	 * Constructor.
 	 */
-	public GLPathway(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+	public GLPathway(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
-		super(glCanvas, viewFrustum, false);
+		super(glCanvas, parentComposite, viewFrustum);
 		viewType = VIEW_TYPE;
 
 		pathwayManager = PathwayManager.get();

@@ -81,9 +81,9 @@ public class GLMouseListener
 //			public void run() {
 //
 //				AGLView canvas = alGlCanvas.get(0);
-//				Menu menu = new Menu(canvas.getParentGLCanvas().getParentComposite().getShell(), SWT.POP_UP);
+//				Menu menu = new Menu(canvas.getParentComposite().getShell(), SWT.POP_UP);
 //				// int x =
-//				// Point point = canvas.getParentGLCanvas().getParentComposite()
+//				// Point point = canvas.getParentComposite()
 //				// .toDisplay(0, 0);
 //				// System.out.println(point);
 //				// menu.setLocation(point.x + pick.getPickedPoint().x,
@@ -101,7 +101,7 @@ public class GLMouseListener
 //				item.setText("Popup4");
 //				item = new MenuItem(menu, SWT.PUSH);
 //				item.setText("Popup5");
-//				// manager.getParentGLCanvas().getParentComposite().setMenu(menu);
+//				// manager.getParentComposite().setMenu(menu);
 //				menu.setVisible(true);
 //
 //			}

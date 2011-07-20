@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
@@ -21,15 +21,11 @@ import org.caleydo.core.manager.event.view.ViewClosedEvent;
 import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
@@ -48,9 +44,7 @@ public class ViewManager
 	extends AManager<IView>
 	implements IListenerOwner {
 
-	protected HashMap<Integer, GLCaleydoCanvas> hashGLCanvasID2GLCanvas;
-
-	protected HashMap<GLCaleydoCanvas, ArrayList<AGLView>> hashGLCanvas2GLView;
+	protected HashMap<GLCanvas, ArrayList<AGLView>> hashGLCanvas2GLView;
 
 	protected HashMap<Integer, AGLView> hashGLViewID2GLView;
 
@@ -82,8 +76,7 @@ public class ViewManager
 		connectedElementRepManager = ConnectedElementRepresentationManager.get();
 		infoAreaManager = new GLInfoAreaManager();
 
-		hashGLCanvasID2GLCanvas = new HashMap<Integer, GLCaleydoCanvas>();
-		hashGLCanvas2GLView = new HashMap<GLCaleydoCanvas, ArrayList<AGLView>>();
+		hashGLCanvas2GLView = new HashMap<GLCanvas, ArrayList<AGLView>>();
 		hashGLViewID2GLView = new HashMap<Integer, AGLView>();
 
 		busyRequests = new HashSet<Object>();
@@ -94,18 +87,15 @@ public class ViewManager
 	public void init() {
 		fpsAnimator = new FPSAnimator(60);
 
-//		displayLoopExecution = DisplayLoopExecution.get();
-//		fpsAnimator.add(displayLoopExecution.getDisplayLoopCanvas());
-//
-//		displayLoopExecution.executeMultiple(connectedElementRepManager);
+		displayLoopExecution = DisplayLoopExecution.get();
+		// fpsAnimator.add((GLAutoDrawable)displayLoopExecution.getDisplayLoopCanvas());
+
+		// displayLoopExecution.executeMultiple(connectedElementRepManager);
 	}
 
 	@Override
 	public boolean hasItem(int iItemId) {
 		if (hashItems.containsKey(iItemId))
-			return true;
-
-		if (hashGLCanvasID2GLCanvas.containsKey(iItemId))
 			return true;
 
 		if (hashGLViewID2GLView.containsKey(iItemId))
@@ -114,37 +104,16 @@ public class ViewManager
 		return false;
 	}
 
-	public GLCaleydoCanvas getCanvas(int iItemID) {
-		return hashGLCanvasID2GLCanvas.get(iItemID);
-	}
-
 	public AGLView getGLView(int iItemID) {
 		return hashGLViewID2GLView.get(iItemID);
 	}
 
-	public boolean registerGLCanvas(final GLCaleydoCanvas glCanvas) {
-		int iGLCanvasID = glCanvas.getID();
-
-		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasID)) {
-			Logger.log(new Status(IStatus.WARNING, this.toString(), "GL2 Canvas with ID " + iGLCanvasID
-				+ " is already registered! Do nothing."));
-
-			return false;
-		}
-
-		hashGLCanvasID2GLCanvas.put(iGLCanvasID, glCanvas);
-		// fpsAnimator.add(glCanvas);
-
-		return true;
-	}
-
-	public boolean unregisterGLCanvas(final GLCaleydoCanvas glCanvas) {
+	public boolean unregisterGLCanvas(final GLCanvas glCanvas) {
 
 		if (glCanvas == null)
 			return false;
 
 		fpsAnimator.remove(glCanvas);
-		hashGLCanvasID2GLCanvas.remove(glCanvas.getID());
 		hashGLCanvas2GLView.remove(glCanvas);
 
 		return true;
@@ -152,13 +121,13 @@ public class ViewManager
 
 	public void registerGLView(AGLView glView) {
 		hashGLViewID2GLView.put(glView.getID(), glView);
-		
+
 		NewViewEvent event = new NewViewEvent(glView);
 		event.setSender(this);
 		generalManager.getEventPublisher().triggerEvent(event);
 	}
 
-	public void registerGLEventListenerByGLCanvas(final GLCaleydoCanvas glCanvas, final AGLView glView) {
+	public void registerGLEventListenerByGLCanvas(final GLCanvas glCanvas, final AGLView glView) {
 
 		// This is the case when a view is rendered remote
 		if (glCanvas == null)
@@ -177,7 +146,6 @@ public class ViewManager
 	 */
 	public void cleanup() {
 
-		hashGLCanvasID2GLCanvas.clear();
 		hashGLCanvas2GLView.clear();
 		hashGLViewID2GLView.clear();
 		hashItems.clear();
@@ -188,7 +156,7 @@ public class ViewManager
 		if (glView == null)
 			return;
 
-		GLCaleydoCanvas parentGLCanvas = (glView).getParentGLCanvas();
+		GLCanvas parentGLCanvas = (glView).getParentGLCanvas();
 
 		if (parentGLCanvas != null) {
 			parentGLCanvas.removeGLEventListener(glView);
@@ -199,14 +167,10 @@ public class ViewManager
 		}
 
 		hashGLViewID2GLView.remove(glView.getID());
-		
+
 		ViewClosedEvent event = new ViewClosedEvent(glView);
 		event.setSender(this);
 		generalManager.getEventPublisher().triggerEvent(event);
-	}
-
-	public Collection<GLCaleydoCanvas> getAllGLCanvas() {
-		return hashGLCanvasID2GLCanvas.values();
 	}
 
 	public Collection<AGLView> getAllGLViews() {
@@ -227,14 +191,6 @@ public class ViewManager
 
 	public void startAnimator() {
 
-		// // add all canvas objects before starting animator
-		// // this is needed because all the views are fully filled with needed
-		// data at that time.
-		// for (GLCaleydoCanvas glCanvas : hashGLCanvasID2GLCanvas.values())
-		// {
-		// fpsAnimator.add(glCanvas);
-		// }
-
 		fpsAnimator.start();
 		fpsAnimator.setIgnoreExceptions(true);
 		fpsAnimator.setPrintExceptions(true);
@@ -245,12 +201,12 @@ public class ViewManager
 			fpsAnimator.stop();
 	}
 
-	public void registerGLCanvasToAnimator(final GLCaleydoCanvas glCaleydoCanvas) {
+	public void registerGLCanvasToAnimator(final GLCanvas glCaleydoCanvas) {
 
-		fpsAnimator.add((GLAutoDrawable) glCaleydoCanvas);
+		fpsAnimator.add(glCaleydoCanvas);
 	}
 
-	public void unregisterGLCanvasFromAnimator(final GLCaleydoCanvas glCanvas) {
+	public void unregisterGLCanvasFromAnimator(final GLCanvas glCanvas) {
 		fpsAnimator.remove(glCanvas);
 	}
 
@@ -338,14 +294,14 @@ public class ViewManager
 	}
 
 	@SuppressWarnings("rawtypes")
-	public AGLView createGLView(Class<? extends AGLView> viewClass, GLCaleydoCanvas glCanvas,
-		ViewFrustum viewFrustum) {
+	public AGLView createGLView(Class<? extends AGLView> viewClass, GLCanvas glCanvas,
+		Composite parentComposite, ViewFrustum viewFrustum) {
 
 		AGLView view;
 		try {
-			Class[] argTypes = {GLCaleydoCanvas.class, ViewFrustum.class };
+			Class[] argTypes = { GLCanvas.class, Composite.class, ViewFrustum.class };
 			Constructor aConstructor = viewClass.getConstructor(argTypes);
-			view = (AGLView) aConstructor.newInstance(glCanvas, viewFrustum);
+			view = (AGLView) aConstructor.newInstance(glCanvas, parentComposite, viewFrustum);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

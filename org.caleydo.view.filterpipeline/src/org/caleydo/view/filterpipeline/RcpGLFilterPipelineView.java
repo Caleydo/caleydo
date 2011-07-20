@@ -51,7 +51,8 @@ public class RcpGLFilterPipelineView
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		view = new GLFilterPipeline(glCanvas, serializedView.getViewFrustum());
+		
+		view = new GLFilterPipeline(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
@@ -61,6 +62,7 @@ public class RcpGLFilterPipelineView
 			dataDomainBasedView.setDataDomain(dataDomain);
 		}
 		view.initialize();
+
 		createPartControlGL();
 	}
 

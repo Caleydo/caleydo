@@ -65,7 +65,7 @@ public class LabelRenderer
 
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
-		float ySpacing = view.getParentGLCanvas().getPixelGLConverter().getGLHeightForPixelHeight(1);
+		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 
 		textRenderer.setColor(0, 0, 0, 1);
 		textRenderer.renderTextInBounds(gl, text, 0, ySpacing, 0, x, y - 2 * ySpacing);

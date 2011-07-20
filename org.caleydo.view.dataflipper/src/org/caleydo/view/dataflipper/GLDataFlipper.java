@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.data.collection.table.DataTable;
@@ -42,7 +43,6 @@ import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.AddPathwayListener;
 import org.caleydo.core.view.opengl.canvas.listener.IRemoteRenderingHandler;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
@@ -72,6 +72,7 @@ import org.caleydo.view.tissuebrowser.GLTissueViewBrowser;
 import org.caleydo.view.tissuebrowser.SerializedTissueViewBrowserView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
@@ -178,9 +179,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	/**
 	 * Constructor.
 	 */
-	public GLDataFlipper(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+	public GLDataFlipper(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
-		super(glCanvas, viewFrustum, true);
+		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = GLDataFlipper.VIEW_TYPE;
 
@@ -703,7 +704,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		}
 
 		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
-				.createGLView(viewClass, parentGLCanvas, viewFrustum);
+				.createGLView(viewClass, parentGLCanvas, parentComposite, viewFrustum);
 		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof IDataDomainBasedView<?>) {
@@ -2474,7 +2475,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						}
 					}
 
-					browserView.getComposite().setParent(browserOverlayShell);
+					browserView.getParentComposite().setParent(browserOverlayShell);
 
 					FillLayout fillLayout = new FillLayout(SWT.VERTICAL);
 					fillLayout.marginHeight = 5;

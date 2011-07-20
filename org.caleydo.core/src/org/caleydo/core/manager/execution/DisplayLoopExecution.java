@@ -1,19 +1,12 @@
 package org.caleydo.core.manager.execution;
 
-import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
-import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.awt.SWT_AWT;
-import org.eclipse.swt.graphics.Region;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.jogamp.opengl.util.FPSAnimator;
@@ -61,24 +54,21 @@ public class DisplayLoopExecution
 	public static DisplayLoopExecution get() {
 		if (displayLoopExecution == null) {
 			displayLoopExecution = new DisplayLoopExecution();
-			
-			if(GLProfile.isGL2Available())
-				System.out.println("Rendering with GL2");
 
-			GLCapabilities glCapabilities = new GLCapabilities(GLProfile.get(GLProfile.GL2));
-			glCapabilities.setStencilBits(1);
-			displayLoopExecution.displayLoopCanvas = new GLCanvas(glCapabilities);
-			displayLoopExecution.displayLoopCanvas.addGLEventListener(displayLoopExecution);
+//			GLCapabilities glCapabilities = new GLCapabilities(GLProfile.get(GLProfile.GL2));
+//			glCapabilities.setStencilBits(1);
+//			displayLoopExecution.displayLoopCanvas = new GLCanvas(glCapabilities);
+//			displayLoopExecution.displayLoopCanvas.addGLEventListener(displayLoopExecution);
 
-			displayLoopExecution.displayLoopShell =
-				new Shell(Display.getDefault(), SWT.EMBEDDED | SWT.NO_TRIM | SWT.ON_TOP);
-			displayLoopExecution.displayLoopShell.setSize(1, 1);
-			displayLoopExecution.displayLoopShell.open();
-
-			Region region = new Region();
-			displayLoopExecution.displayLoopShell.setRegion(region);
-			Frame frame = SWT_AWT.new_Frame(displayLoopExecution.displayLoopShell);
-			frame.add(displayLoopExecution.displayLoopCanvas);
+//			displayLoopExecution.displayLoopShell =
+//				new Shell(SWT.EMBEDDED | SWT.NO_TRIM | SWT.ON_TOP);
+//			displayLoopExecution.displayLoopShell.setSize(1, 1);
+//			displayLoopExecution.displayLoopShell.open();
+//
+//			Region region = new Region();
+//			displayLoopExecution.displayLoopShell.setRegion(region);
+//			Frame frame = SWT_AWT.new_Frame(displayLoopExecution.displayLoopShell);
+//			frame.add(displayLoopExecution.displayLoopCanvas);
 		}
 		return displayLoopExecution;
 	}

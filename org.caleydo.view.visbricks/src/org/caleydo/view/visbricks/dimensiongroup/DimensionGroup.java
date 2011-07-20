@@ -9,6 +9,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
@@ -26,7 +27,6 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
@@ -56,6 +56,7 @@ import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.ui.OverviewDetailBandRenderer;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Container for a group of dimensions. Manages layouts as well as brick views
@@ -129,8 +130,8 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 	public static int BOTTOM_COLUMN_ID = 0;
 	public static int TOP_COLUMN_ID = 1;
 
-	public DimensionGroup(GLCaleydoCanvas canvas, ViewFrustum viewFrustum) {
-		super(canvas, viewFrustum, true);
+	public DimensionGroup(GLCanvas canvas, Composite parentComposite, ViewFrustum viewFrustum) {
+		super(canvas, parentComposite, viewFrustum);
 
 		viewType = VIEW_TYPE;
 
@@ -215,7 +216,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		// minPixelWidth = PIXEL_PER_DIMENSION * set.size();
 		// if (minPixelWidth < MIN_BRICK_WIDTH_PIXEL)
 		minPixelWidth = MIN_BRICK_WIDTH_PIXEL;
-		minWidth = parentGLCanvas.getPixelGLConverter()
+		minWidth = pixelGLConverter
 				.getGLWidthForPixelWidth(minPixelWidth);
 
 		centerBrick = createBrick(centerLayout,
@@ -269,7 +270,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 					layoutTemplate.getDefaultViewType());
 			// FIXME temp solution
 			segmentBrick.getLayout().setPixelGLConverter(
-					parentGLCanvas.getPixelGLConverter());
+					pixelGLConverter);
 			segmentBrick.getLayout().setPixelSizeY(80);
 
 			segmentBricks.add(segmentBrick);
@@ -318,7 +319,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		// layoutTemplate.getDefaultViewType());
 		// // FIXME temp solution
 		// subBrick.getLayout().setPixelGLConverter(
-		// parentGLCanvas.getPixelGLConverter());
+		// pixelGLConverter);
 		// subBrick.getLayout().setPixelSizeY(80);
 		//
 		// if (centerBrick.getAverageValue() < subBrick.getAverageValue()) {
@@ -332,8 +333,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		// }
 		ElementLayout brickSpacingLayout = new ElementLayout(
 				"brickSpacingLayout");
-		brickSpacingLayout.setPixelGLConverter(parentGLCanvas
-				.getPixelGLConverter());
+		brickSpacingLayout.setPixelGLConverter(pixelGLConverter);
 		brickSpacingLayout.setPixelSizeY(10);
 		brickSpacingLayout.setRatioSizeX(0);
 
@@ -368,7 +368,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		ViewFrustum brickFrustum = new ViewFrustum(
 				ECameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4, 4);
 		GLBrick brick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
-				.createGLView(GLBrick.class, getParentGLCanvas(), brickFrustum);
+				.createGLView(GLBrick.class, parentGLCanvas, parentComposite, brickFrustum);
 
 		brick.setBrickData(brickData);
 		brick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
@@ -384,7 +384,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(brick);
 		wrappingLayout.setRenderer(brickRenderer);
 		wrappingLayout
-				.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+				.setPixelGLConverter(pixelGLConverter);
 		if (isCollapsed) {
 			wrappingLayout.setPixelSizeX(visBricks.getSideArchWidthPixels());
 		} else {
@@ -460,8 +460,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 			if (!(centerLayout.getSizeScaledY() > 0)) {
 				bottomCol.setRatioSizeY(0.5f);
 				topCol.setRatioSizeY(0.5f);
-				centerLayout.setPixelGLConverter(parentGLCanvas
-						.getPixelGLConverter());
+				centerLayout.setPixelGLConverter(pixelGLConverter);
 				centerLayout.setPixelSizeY(archHeight);
 			}
 		}
@@ -755,7 +754,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 	}
 
 	public float getMinWidth() {
-		return parentGLCanvas.getPixelGLConverter().getGLWidthForPixelWidth(
+		return pixelGLConverter.getGLWidthForPixelWidth(
 				minPixelWidth);
 	}
 
@@ -971,8 +970,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 
 		detailBrickLayout = new Column("detailBrickWrappingLayout");
 
-		detailBrickLayout.setPixelGLConverter(parentGLCanvas
-				.getPixelGLConverter());
+		detailBrickLayout.setPixelGLConverter(pixelGLConverter);
 
 		detailBrick = createBrick(detailBrickLayout, brick.getBrickData());
 		// detailBrick.setBrickData(brick.getBrickData());
@@ -989,8 +987,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 				brick.getCurrentViewType());
 
 		overviewDetailGapLayout = new ElementLayout("brickSpacingLayout");
-		overviewDetailGapLayout.setPixelGLConverter(parentGLCanvas
-				.getPixelGLConverter());
+		overviewDetailGapLayout.setPixelGLConverter(pixelGLConverter);
 		overviewDetailGapLayout.setPixelSizeX(OVERVIEW_DETAIL_GAP_PIXEL);
 		overviewDetailGapLayout.setRatioSizeY(1);
 
@@ -1110,7 +1107,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 	}
 
 	public int getGroupColumnWidthPixels() {
-		return parentGLCanvas.getPixelGLConverter().getPixelWidthForGLWidth(
+		return pixelGLConverter.getPixelWidthForGLWidth(
 				groupColumn.getSizeScaledX());
 	}
 

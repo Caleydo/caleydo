@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.EDataTableDataType;
@@ -29,13 +30,13 @@ import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.eclipse.swt.widgets.Composite;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
 
@@ -86,8 +87,9 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLHistogram(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum, true);
+	public GLHistogram(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+
+		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = VIEW_TYPE;
 		colorMappingManager = ColorMappingManager.get();

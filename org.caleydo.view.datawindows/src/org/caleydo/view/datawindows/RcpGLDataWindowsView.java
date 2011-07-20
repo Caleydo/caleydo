@@ -27,7 +27,7 @@ public class RcpGLDataWindowsView extends ARcpGLViewPart {
 
 		createGLCanvas();
 		
-		view = new GLDataWindows(glCanvas, serializedView.getViewFrustum());
+		view = new GLDataWindows(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view.initialize();
 		createPartControlGL();
 	}

@@ -15,7 +15,6 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.util.logging.Logger;

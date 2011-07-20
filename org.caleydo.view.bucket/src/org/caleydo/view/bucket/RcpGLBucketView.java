@@ -52,7 +52,7 @@ public class RcpGLBucketView extends ARcpGLViewPart {
 		
 		createGLCanvas();
 		
-		view = new GLBucket(glCanvas, serializedView.getViewFrustum());
+		view = new GLBucket(glCanvas, parentComposite, serializedView.getViewFrustum());
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(serializedView.getDataDomainID());
 			@SuppressWarnings("unchecked")

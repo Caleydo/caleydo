@@ -31,7 +31,7 @@ public class RcpGLScatterplotView extends ARcpGLViewPart {
 		
 		createGLCanvas();
 		
-		view = new GLScatterPlot(glCanvas, serializedView.getViewFrustum());
+		view = new GLScatterPlot(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(serializedView.getDataDomainID());

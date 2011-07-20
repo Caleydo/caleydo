@@ -32,6 +32,7 @@ import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
@@ -79,7 +80,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -95,6 +95,7 @@ import org.caleydo.view.parcoords.listener.BookmarkButtonListener;
 import org.caleydo.view.parcoords.listener.ResetAxisSpacingListener;
 import org.caleydo.view.parcoords.listener.UseRandomSamplingListener;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Composite;
 
 import com.jogamp.common.nio.Buffers;
 
@@ -214,9 +215,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	/**
 	 * Constructor.
 	 */
-	public GLParallelCoordinates(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+	public GLParallelCoordinates(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
-		super(glCanvas, viewFrustum);
+		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLParallelCoordinates.VIEW_TYPE;
 		renderStyle = new PCRenderStyle(this, viewFrustum);
 		super.renderStyle = this.renderStyle;
@@ -442,14 +443,13 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 		ContentVADelta delta = contentSelectionManager.getBroadcastVADelta();
 		if (delta.size() > 20) {
-			getParentGLCanvas().getParentComposite().getDisplay()
+			parentComposite.getDisplay()
 					.asyncExec(new Runnable() {
 
 						@Override
 						public void run() {
 							MessageDialog
-									.openError(getParentGLCanvas().getParentComposite()
-											.getShell(), "Bookmark Limit",
+									.openError(parentComposite.getShell(), "Bookmark Limit",
 											"Can not bookmark more than 20 elements - reduce polylines to less than 20 first");
 
 							return;
@@ -814,7 +814,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			if (iCount == numberOfAxis - 1)
 				width = fYTranslation;
 			textRenderer.renderTextInBounds(gl, sAxisLabel, 0, 0, 0.02f, width,
-					parentGLCanvas.getPixelGLConverter().getGLHeightForPixelHeight(10));
+					pixelGLConverter.getGLHeightForPixelHeight(10));
 
 			gl.glTranslatef(-fXPosition,
 					-(renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing()),
@@ -1037,7 +1037,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		gl.glLineWidth(PCRenderStyle.Y_AXIS_LINE_WIDTH);
 		// gl.glPushName(iPickingID);
 
-		float fXOrigin = parentGLCanvas.getPixelGLConverter().getGLWidthForPixelWidth(0);
+		float fXOrigin = pixelGLConverter.getGLWidthForPixelWidth(0);
 
 		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(fXOrigin, 0, AXIS_Z);
@@ -2171,10 +2171,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 		// TODO: very performance intensive - better solution needed (only in
 		// reshape)!
-		getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				upperLeftScreenPos = getParentGLCanvas().getParentComposite().toDisplay(
+				upperLeftScreenPos = parentComposite.toDisplay(
 						1, 1);
 			}
 		});

@@ -143,7 +143,7 @@ public class VisualUncertaintyUtil {
 		 * // Draw ScreenShot as new Texture in BackBuffer
 		 * gl.glDrawBuffer(GL2.GL_BACK); // gl.glDrawBuffer(GL2.GL_FRONT);
 		 * PixelGLConverter pixelGLConverter = this.uncertaintyHeatMap
-		 * .getParentGLCanvas().getPixelGLConverter(); float glHeight =
+		 * .getPixelGLConverter(); float glHeight =
 		 * pixelGLConverter .getGLHeightForPixelHeight(numberOfElements); float
 		 * glWidth = pixelGLConverter
 		 * .getGLWidthForPixelWidth(numberOfExpirments); renderTexture(gl,

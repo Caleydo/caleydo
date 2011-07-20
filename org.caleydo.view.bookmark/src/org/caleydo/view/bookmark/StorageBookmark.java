@@ -30,7 +30,7 @@ class StorageBookmark extends ABookmark {
 		layout = new ElementLayout();
 		layout.setRatioSizeX(1);
 		layout.setRenderer(this);
-		layout.setPixelGLConverter(manager.getParentGLCanvas().getPixelGLConverter());
+		layout.setPixelGLConverter(manager.getPixelGLConverter());
 		layout.setPixelSizeY(20);
 
 	}

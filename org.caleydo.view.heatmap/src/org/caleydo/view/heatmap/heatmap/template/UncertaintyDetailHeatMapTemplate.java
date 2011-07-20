@@ -30,7 +30,7 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 
 	@Override
 	public void setStaticLayouts() {
-		pixelGLConverter = heatMap.getParentGLCanvas().getPixelGLConverter();
+		pixelGLConverter = heatMap.getPixelGLConverter();
 		Column mainColumn = new Column("mainColumn");
 		setBaseElementLayout(mainColumn);
 		mainColumn.setRatioSizeX(1);
@@ -49,8 +49,7 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 
 		barPlotLayout.setRenderer(barPlotRenderer);
 
-		barPlotLayout.setPixelGLConverter(heatMap.getParentGLCanvas()
-				.getPixelGLConverter());
+		barPlotLayout.setPixelGLConverter(heatMap.getPixelGLConverter());
 		barPlotLayout.setPixelSizeX(barPlotPixelWidth);
 		// barPlotLayout.addForeGroundRenderer(contentSelectionRenderer);
 		// barPlotLayout.addForeGroundRenderer(storageSelectionRenderer);
@@ -95,7 +94,7 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 
 		ElementLayout leadSpacingLayout = new ElementLayout();
 
-		leadSpacingLayout.setPixelGLConverter(heatMap.getParentGLCanvas().getPixelGLConverter());
+		leadSpacingLayout.setPixelGLConverter(heatMap.getPixelGLConverter());
 		leadSpacingLayout.setPixelSizeX(barPlotPixelWidth);
 
 		storageCaptionRow.append(leadSpacingLayout);

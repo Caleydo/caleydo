@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.ClusterTree;
@@ -41,7 +42,6 @@ import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
@@ -80,6 +80,7 @@ import org.caleydo.view.grouper.listener.DeleteGroupsListener;
 import org.caleydo.view.grouper.listener.PasteGroupsListener;
 import org.caleydo.view.grouper.listener.RenameGroupListener;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -141,8 +142,9 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	 * @param glCanvas
 	 * @param viewFrustum
 	 */
-	public GLGrouper(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum, true);
+	public GLGrouper(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+
+		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = VIEW_TYPE;
 		hashGroups = new HashMap<Integer, GroupRepresentation>();
@@ -174,10 +176,10 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		// Register keyboard listener to GL2 canvas
-		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+				parentComposite.addKeyListener(glKeyListener);
 			}
 		});
 
@@ -381,11 +383,11 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 			final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
+		glParentView.getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
 					@Override
 					public void run() {
-						glParentView.getParentGLCanvas().getParentComposite()
+						glParentView.getParentComposite()
 								.addKeyListener(glKeyListener);
 					}
 				});

@@ -37,7 +37,7 @@ public class HistogramCreator implements IRemoteViewCreator {
 				.createGLView(
 						GLHistogram.class,
 						remoteRenderingView.getParentGLCanvas(),
-
+						remoteRenderingView.getParentComposite(),
 						new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
 								1, 0, 1, -1, 1));
 

@@ -11,6 +11,7 @@ import java.util.List;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.Histogram;
@@ -41,7 +42,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -59,6 +59,7 @@ import org.caleydo.view.filterpipeline.representation.FilterRepresentationMetaOr
 import org.caleydo.view.filterpipeline.representation.FilterRepresentationSNR;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Composite;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -127,12 +128,10 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 	/**
 	 * Constructor.
 	 * 
-	 * @param glCanvas
-	 * @param label
-	 * @param viewFrustum
 	 */
-	public GLFilterPipeline(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum);
+	public GLFilterPipeline(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+
+		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = GLFilterPipeline.VIEW_TYPE;
 		dragAndDropController = new DragAndDropController(this);
@@ -177,10 +176,10 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 	@Override
 	public void initLocal(GL2 gl) {
 		// Register keyboard listener to GL2 canvas
-		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+				parentComposite.addKeyListener(glKeyListener);
 			}
 		});
 
@@ -191,14 +190,12 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener) {
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
-				.asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						glParentView.getParentGLCanvas().getParentComposite()
-								.addKeyListener(glKeyListener);
-					}
-				});
+		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				glParentView.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		this.glMouseListener = glMouseListener;
 
@@ -779,7 +776,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
 	public boolean isDataView() {
 		return false;

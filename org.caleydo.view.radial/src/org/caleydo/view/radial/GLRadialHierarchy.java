@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
@@ -36,7 +37,6 @@ import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
@@ -50,6 +50,7 @@ import org.caleydo.view.radial.listener.DetailOutsideListener;
 import org.caleydo.view.radial.listener.GoBackInHistoryListener;
 import org.caleydo.view.radial.listener.GoForthInHistoryListener;
 import org.caleydo.view.radial.listener.SetMaxDisplayedHierarchyDepthListener;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * This class is responsible for rendering the radial hierarchy and receiving
@@ -116,8 +117,9 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	/**
 	 * Constructor.
 	 */
-	public GLRadialHierarchy(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum, true);
+	public GLRadialHierarchy(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+
+		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = VIEW_TYPE;
 
@@ -163,10 +165,10 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		// Register keyboard listener to GL2 canvas
-		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+				parentComposite.addKeyListener(glKeyListener);
 			}
 		});
 
@@ -178,11 +180,11 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 			final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
+		glParentView.getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
 					@Override
 					public void run() {
-						glParentView.getParentGLCanvas().getParentComposite()
+						glParentView.getParentComposite()
 								.addKeyListener(glKeyListener);
 					}
 				});

@@ -48,11 +48,11 @@ public class ExceptionHandler {
 		Logger.log(new Status(IStatus.ERROR, this.toString(), "Caught Exception: " + exception.getMessage(),
 			exception));
 
-		glEventListener.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+		glEventListener.getParentComposite().getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				MessageBox messageBox =
-					new MessageBox(glEventListener.getParentGLCanvas().getParentComposite().getShell(),
+					new MessageBox(glEventListener.getParentComposite().getShell(),
 						SWT.OK);
 				messageBox.setText("Error in view");
 				messageBox.setMessage("An unexpected error occured in view "

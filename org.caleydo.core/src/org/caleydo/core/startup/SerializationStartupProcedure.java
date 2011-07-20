@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.collection.table.DataTableUtils;
+import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.datadomain.ADataDomain;

@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -53,7 +54,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.AddPathwayListener;
 import org.caleydo.core.view.opengl.canvas.listener.IRemoteRenderingHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -95,6 +95,7 @@ import org.caleydo.view.pathway.SerializedPathwayView;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -214,9 +215,9 @@ public class GLBucket extends AGLView implements
 	/**
 	 * Constructor.
 	 */
-	public GLBucket(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+	public GLBucket(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
-		super(glCanvas, viewFrustum, true);
+		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLBucket.VIEW_TYPE;
 
 		layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET;
@@ -310,7 +311,7 @@ public class GLBucket extends AGLView implements
 		gl.glClearColor(0.5f, 0.5f, 0.5f, 1f);
 
 		textRenderer = new CaleydoTextRenderer(24);
-		
+
 		if (glConnectionLineRenderer != null) {
 			glConnectionLineRenderer.init(gl);
 		}
@@ -456,14 +457,12 @@ public class GLBucket extends AGLView implements
 
 			// TODO: very performance intensive - better solution needed (only
 			// in reshape)!
-			getParentGLCanvas().getParentComposite().getDisplay()
-					.asyncExec(new Runnable() {
-						@Override
-						public void run() {
-							upperLeftScreenPos = getParentGLCanvas().getParentComposite()
-									.toDisplay(0, 0);
-						}
-					});
+			parentComposite.getDisplay().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					upperLeftScreenPos = parentComposite.toDisplay(0, 0);
+				}
+			});
 
 			((BucketLayoutRenderStyle) layoutRenderStyle).initFocusLevelTrack(gl,
 					getParentGLCanvas().getBounds(), upperLeftScreenPos);
@@ -1784,7 +1783,9 @@ public class GLBucket extends AGLView implements
 		if (!PathwayManager.get().isPathwayVisible(
 				PathwayManager.get().getItem(iPathwayID))) {
 			SerializedPathwayView serPathway = new SerializedPathwayView();
-			serPathway.setDataDomainID(DataDomainManager.get().getDataDomainByType("org.caleydo.datadomain.pathway").getDataDomainID());
+			serPathway.setDataDomainID(DataDomainManager.get()
+					.getDataDomainByType("org.caleydo.datadomain.pathway")
+					.getDataDomainID());
 			serPathway.setPathwayID(iPathwayID);
 			newViews.add(serPathway);
 		}
@@ -2553,7 +2554,7 @@ public class GLBucket extends AGLView implements
 		}
 
 		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
-				.createGLView(viewClass, parentGLCanvas, serView.getViewFrustum());
+				.createGLView(viewClass, parentGLCanvas, parentComposite, serView.getViewFrustum());
 		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof IDataDomainBasedView<?>) {
@@ -2990,7 +2991,7 @@ public class GLBucket extends AGLView implements
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
-	
+
 	@Override
 	public boolean isDataView() {
 		return true;

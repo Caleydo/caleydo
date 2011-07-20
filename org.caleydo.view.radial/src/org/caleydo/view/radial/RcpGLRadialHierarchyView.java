@@ -36,7 +36,7 @@ public class RcpGLRadialHierarchyView extends ARcpGLViewPart {
 		
 		createGLCanvas();
 		
-		view = new GLRadialHierarchy(glCanvas, serializedView.getViewFrustum());
+		view = new GLRadialHierarchy(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(serializedView.getDataDomainID());

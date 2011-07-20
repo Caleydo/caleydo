@@ -26,7 +26,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 			final DragAndDropController dragAndDropController, int id) {
 		this.graphLayout = graphLayout;
 		this.view = view;
-		this.pixelGLConverter = view.getParentGLCanvas().getPixelGLConverter();
+		this.pixelGLConverter = view.getPixelGLConverter();
 		this.id = id;
 
 		this.dragAndDropController = dragAndDropController;

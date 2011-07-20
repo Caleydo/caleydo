@@ -170,7 +170,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 			return viewFrustum.getWidth() / 30;
 		else
 			return viewFrustum.getWidth() / 50;
-		// return pcs.getParentGLCanvas().getPixelGLConverter()
+		// return pcs.getPixelGLConverter()
 		// .getGLWidthForPixelWidth(20);
 	}
 

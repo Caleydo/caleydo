@@ -75,12 +75,11 @@ public class ClusterRenderer extends LayoutRenderer {
 
 		clusterDataUncBarLayout = new Column("bar");
 		clusterDataUncBarLayout.setPixelGLConverter(uncertaintyHeatMap
-				.getParentGLCanvas().getPixelGLConverter());
+				.getPixelGLConverter());
 		clusterDataUncBarLayout.setPixelSizeX(50);
 
 		clusterVisUncBarLayout = new Column("bar2");
-		clusterVisUncBarLayout.setPixelGLConverter(uncertaintyHeatMap.getParentGLCanvas()
-				.getPixelGLConverter());
+		clusterVisUncBarLayout.setPixelGLConverter(uncertaintyHeatMap.getPixelGLConverter());
 		clusterVisUncBarLayout.setPixelSizeX(50);
 
 		textureRenderer = new HeatMapTextureRenderer(uncertaintyHeatMap,
@@ -99,8 +98,7 @@ public class ClusterRenderer extends LayoutRenderer {
 		{
 			ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 
-			PixelGLConverter pixelGLConverter = uncertaintyHeatMap.getParentGLCanvas()
-					.getPixelGLConverter();
+			PixelGLConverter pixelGLConverter = uncertaintyHeatMap.getPixelGLConverter();
 			lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
 			lineSeparatorLayout.setPixelSizeX(2);
 			lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
@@ -112,8 +110,7 @@ public class ClusterRenderer extends LayoutRenderer {
 		{
 			ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 
-			PixelGLConverter pixelGLConverter = uncertaintyHeatMap.getParentGLCanvas()
-					.getPixelGLConverter();
+			PixelGLConverter pixelGLConverter = uncertaintyHeatMap.getPixelGLConverter();
 			lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
 			lineSeparatorLayout.setPixelSizeX(2);
 			lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
@@ -125,9 +122,7 @@ public class ClusterRenderer extends LayoutRenderer {
 		{
 			ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 
-			PixelGLConverter pixelGLConverter = uncertaintyHeatMap.getParentGLCanvas()
-					.getPixelGLConverter();
-			lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
+			lineSeparatorLayout.setPixelGLConverter(uncertaintyHeatMap.getPixelGLConverter());
 			lineSeparatorLayout.setPixelSizeX(2);
 			lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
 			lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.3f);

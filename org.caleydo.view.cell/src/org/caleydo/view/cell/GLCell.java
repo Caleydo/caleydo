@@ -3,6 +3,7 @@ package org.caleydo.view.cell;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -14,9 +15,9 @@ import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.eclipse.swt.widgets.Composite;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -37,9 +38,9 @@ public class GLCell extends AGLView {
 	/**
 	 * Constructor.
 	 */
-	public GLCell(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+	public GLCell(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
-		super(glCanvas, viewFrustum, false);
+		super(glCanvas, parentComposite, viewFrustum);
 		viewType = VIEW_TYPE;
 
 		// connectedElementRepresentationManager =

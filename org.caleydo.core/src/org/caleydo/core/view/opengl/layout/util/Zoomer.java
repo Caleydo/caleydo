@@ -60,7 +60,7 @@ public class Zoomer
 		this.glMouseListener = parentView.getGLMouseListener();
 		parentView.registerMouseWheelListener(this);
 
-		pixelGLConverter = parentView.getParentGLCanvas().getPixelGLConverter();
+		pixelGLConverter = parentView.getPixelGLConverter();
 		scrollBarDragAndDropController = new DragAndDropController(parentView);
 		viewFrustum = new ViewFrustum();
 		initScrollBars();

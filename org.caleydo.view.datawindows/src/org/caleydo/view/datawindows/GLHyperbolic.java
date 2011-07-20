@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionType;
@@ -27,7 +28,6 @@ import org.caleydo.core.util.tracking.TrackDataProvider;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.AddPathwayListener;
 import org.caleydo.core.view.opengl.canvas.listener.IRemoteRenderingHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -38,6 +38,7 @@ import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneListener;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Rendering the Datawindow
@@ -91,9 +92,9 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	 * @param glCanvas
 	 * @param viewFrustum
 	 */
-	public GLHyperbolic(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+	public GLHyperbolic(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
-		super(glCanvas, viewFrustum, true);
+		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLHyperbolic.VIEW_TYPE;
 
 		// preparing the eyetracker
@@ -435,7 +436,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 		}
 		
 		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
-				.createGLView(viewClass, parentGLCanvas, viewFrustum);
+				.createGLView(viewClass, parentGLCanvas, parentComposite, viewFrustum);
 		//glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof IDataDomainBasedView<?>) {

@@ -30,6 +30,7 @@ import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
@@ -68,7 +69,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -87,7 +87,7 @@ import org.caleydo.view.scatterplot.listener.XAxisSelectorListener;
 import org.caleydo.view.scatterplot.listener.YAxisSelectorListener;
 import org.caleydo.view.scatterplot.renderstyle.EScatterPointType;
 import org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.swt.widgets.Composite;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -214,9 +214,9 @@ public class GLScatterPlot extends ATableBasedView {
 	 * @param glCanvas
 	 * @param viewFrustum
 	 */
-	public GLScatterPlot(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+	public GLScatterPlot(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
-		super(glCanvas, viewFrustum);
+		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLScatterPlot.VIEW_TYPE;
 
 		// ArrayList<SelectionType> alSelectionTypes = new
@@ -270,10 +270,10 @@ public class GLScatterPlot extends ATableBasedView {
 	public void initLocal(GL2 gl) {
 
 		// Register keyboard listener to GL2 canvas
-		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+				parentComposite.addKeyListener(glKeyListener);
 			}
 		});
 
@@ -321,11 +321,11 @@ public class GLScatterPlot extends ATableBasedView {
 			final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
+		glParentView.getParentComposite().getDisplay()
 				.asyncExec(new Runnable() {
 					@Override
 					public void run() {
-						glParentView.getParentGLCanvas().getParentComposite()
+						glParentView.getParentComposite()
 								.addKeyListener(glKeyListener);
 					}
 				});
@@ -357,7 +357,6 @@ public class GLScatterPlot extends ATableBasedView {
 		// renderNumber(gl, "ScatterPlot View 1.0", 0, 0);
 
 		if (detailLevel == DetailLevel.HIGH) {
-			GLMouseListener glMouseListener = getParentGLCanvas().getGLMouseListener();
 
 			if (bMainViewZoomDragged) {
 

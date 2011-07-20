@@ -29,7 +29,7 @@ public class RcpGLMatchmakerView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		view = new GLMatchmaker(glCanvas, serializedView.getViewFrustum());
+		view = new GLMatchmaker(glCanvas, parentComposite, serializedView.getViewFrustum());
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
 					serializedView.getDataDomainID());

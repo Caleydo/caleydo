@@ -4,13 +4,14 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
+import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.view.matchmaker.HeatMapWrapper;
 import org.caleydo.view.matchmaker.rendercommand.IHeatMapRenderCommand;
 import org.caleydo.view.matchmaker.rendercommand.RenderCommandFactory;
@@ -233,7 +234,7 @@ public abstract class AHeatMapLayout {
 	public float getOverviewClusterBorderSize() {
 		AGLView view = heatMapWrapper.getView();
 		ViewFrustum viewFrustum = view.getViewFrustum();
-		GLCaleydoCanvas canvas = view.getParentGLCanvas();
+		GLCanvas canvas = view.getParentGLCanvas();
 		// One pixel in height
 		return viewFrustum.getHeight() / (float) canvas.getHeight();
 	}

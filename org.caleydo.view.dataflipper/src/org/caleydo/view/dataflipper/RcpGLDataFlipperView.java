@@ -31,7 +31,7 @@ public class RcpGLDataFlipperView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 		
 		createGLCanvas();
-		view = new GLDataFlipper(glCanvas, serializedView.getViewFrustum());
+		view = new GLDataFlipper(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		view.initialize();
 		createPartControlGL();

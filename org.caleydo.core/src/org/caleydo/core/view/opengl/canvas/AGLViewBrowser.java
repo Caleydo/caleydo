@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -48,6 +49,7 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Composite;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -147,9 +149,9 @@ public abstract class AGLViewBrowser
 	/**
 	 * Constructor.
 	 */
-	public AGLViewBrowser(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
+	public AGLViewBrowser(GLCanvas glCanvas, Composite parentComposite, final ViewFrustum viewFrustum) {
 
-		super(glCanvas, viewFrustum, true);
+		super(glCanvas, parentComposite, viewFrustum);
 
 		focusLevel = new RemoteLevel(1, "Focus Level", null, stackLevel);
 		stackLevel = new RemoteLevel(4, "Stack Level", focusLevel, poolLevel);
@@ -238,10 +240,10 @@ public abstract class AGLViewBrowser
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		// glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new
+		// glParentView.getParentComposite().getDisplay().asyncExec(new
 		// Runnable() {
 		// public void run() {
-		// glParentView.getParentGLCanvas().getParentComposite().addKeyListener(glKeyListener);
+		// glParentView.getParentComposite().addKeyListener(glKeyListener);
 		// }
 		// });
 
@@ -1659,7 +1661,7 @@ public abstract class AGLViewBrowser
 		}
 		
 		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
-				.createGLView(viewClass, parentGLCanvas, viewFrustum);
+				.createGLView(viewClass, parentGLCanvas, parentComposite, viewFrustum);
 		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof IDataDomainBasedView<?>) {

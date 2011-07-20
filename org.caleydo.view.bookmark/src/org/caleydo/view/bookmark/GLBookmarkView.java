@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -24,7 +25,6 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
@@ -113,9 +113,9 @@ public class GLBookmarkView extends AGLView implements
 	/**
 	 * Constructor.
 	 */
-	public GLBookmarkView(GLCaleydoCanvas glCanvas, ViewFrustum viewFrustum) {
+	public GLBookmarkView(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
-		super(glCanvas, viewFrustum, true);
+		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLBookmarkView.VIEW_TYPE;
 
 		renderStyle = new BookmarkRenderStyle(viewFrustum);
@@ -293,7 +293,7 @@ public class GLBookmarkView extends AGLView implements
 	@Override
 	public void init(GL2 gl) {
 		textRenderer = new CaleydoTextRenderer(24);
-		bookmarkTemplate.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		bookmarkTemplate.setPixelGLConverter(pixelGLConverter);
 	}
 
 	@Override
@@ -407,7 +407,7 @@ public class GLBookmarkView extends AGLView implements
 	}
 
 	public Menu createEditPopup() {
-		Composite comp = getParentGLCanvas().getParentComposite();
+		Composite comp = getParentComposite();
 
 		MenuManager menu = new MenuManager();
 		Menu quickMenu = menu.createContextMenu(comp);

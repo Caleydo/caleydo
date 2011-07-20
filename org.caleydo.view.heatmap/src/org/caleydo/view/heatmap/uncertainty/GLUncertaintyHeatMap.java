@@ -7,6 +7,7 @@ import java.util.List;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDType;
@@ -31,8 +32,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -47,6 +46,7 @@ import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.OverviewDetailConnectorRenderer;
 import org.caleydo.view.heatmap.heatmap.template.UncertaintyDetailHeatMapTemplate;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Uncertainty heat map view.
@@ -56,8 +56,8 @@ import org.caleydo.view.heatmap.heatmap.template.UncertaintyDetailHeatMapTemplat
  * @author Clemens Holzhüter
  */
 
-public class GLUncertaintyHeatMap extends ATableBasedView implements
-		IViewCommandHandler, ISelectionUpdateHandler, IGLRemoteRenderingView {
+public class GLUncertaintyHeatMap extends ATableBasedView implements IViewCommandHandler,
+		ISelectionUpdateHandler, IGLRemoteRenderingView {
 
 	public static enum UncertaintyColors {
 		VISUAL_VALID, VISUAL_UNCERTAIN, DATA_VALID, DATA_UNCERTAIN, DATA2_VALID, DATA2_UNCERTAIN, DATA3_VALID, DATA3_UNCERTAIN, BACKGROUND
@@ -69,23 +69,18 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 			{ 0.80f, 0.80f, 0.80f, 1f }, { 0.0f, 0.70f, 0.70f, 1f } };
 
 	private final static float[][] DATA_UNCERTAIN = {
-		{179/255f, 88/255f, 6/255f, 1f},
-		{ 224/255f, 130/255f, 20/255f, 1f }, 
-		{ 253/255f, 184/255f, 99/255f, 1f },
-		{254/255f, 224/255f, 182/255f, 1f }, };
-	
-	/*
-	179 88 6
-	   2 E 241 163 64
-	   3 G 254 224 182
-	   4 I 216 218 235
-	   5 K 153 142 195
-	   6 N 84 39 136
-	   */
+			{ 179 / 255f, 88 / 255f, 6 / 255f, 1f },
+			{ 224 / 255f, 130 / 255f, 20 / 255f, 1f },
+			{ 253 / 255f, 184 / 255f, 99 / 255f, 1f },
+			{ 254 / 255f, 224 / 255f, 182 / 255f, 1f }, };
 
+	/*
+	 * 179 88 6 2 E 241 163 64 3 G 254 224 182 4 I 216 218 235 5 K 153 142 195 6
+	 * N 84 39 136
+	 */
 
 	public final static float[] BACKGROUND = { 0.7f, 0.7f, 0.7f, 1f };
-	public final static float[] VIS_UNC = { 84/255f, 39/255f, 136/255f, 1f } ;
+	public final static float[] VIS_UNC = { 84 / 255f, 39 / 255f, 136 / 255f, 1f };
 
 	private HeatMapRenderStyle renderStyle;
 
@@ -116,8 +111,9 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLUncertaintyHeatMap(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum);
+	public GLUncertaintyHeatMap(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+
+		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLUncertaintyHeatMap.VIEW_TYPE;
 	}
 
@@ -134,11 +130,11 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		template.setBaseElementLayout(baseRow);
 
 		ElementLayout sideSpacer = new ElementLayout("sideSpacer");
-		sideSpacer.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		sideSpacer.setPixelGLConverter(pixelGLConverter);
 		sideSpacer.setPixelSizeX(15);
 
 		ElementLayout topSpacer = new ElementLayout("topSpacer");
-		topSpacer.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		topSpacer.setPixelGLConverter(pixelGLConverter);
 		topSpacer.setPixelSizeY(15);
 
 		Column baseColumnn = new Column("baseColumn");
@@ -155,13 +151,12 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 		overviewLayout = new Column("overviewLayout");
 		overviewLayout.setDebug(false);
-		overviewLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		overviewLayout.setPixelGLConverter(pixelGLConverter);
 		overviewLayout.setPixelSizeX(220);
 
 		overviewDetailConnectorLayout = new Column("overviewDetailConnectorLayout");
 		overviewDetailConnectorLayout.setDebug(false);
-		overviewDetailConnectorLayout.setPixelGLConverter(parentGLCanvas
-				.getPixelGLConverter());
+		overviewDetailConnectorLayout.setPixelGLConverter(pixelGLConverter);
 		overviewDetailConnectorLayout.setPixelSizeX(60);
 
 		detailLayout = new ElementLayout("detailLayout");
@@ -181,7 +176,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		OverviewDetailConnectorRenderer overviewDetailConnectorRenderer = new OverviewDetailConnectorRenderer(
 				overviewHeatMap, detailHeatMap);
 		overviewDetailConnectorLayout.setRenderer(overviewDetailConnectorRenderer);
-		
+
 		templateRenderer.updateLayout();
 
 		// templateRenderer = new LayoutManager(this.viewFrustum);
@@ -196,7 +191,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		// overviewLayout = new Column("overviewLayout");
 		// overviewLayout.setDebug(false);
 		// overviewLayout
-		// .setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		// .setPixelGLConverter(pixelGLConverter);
 		// overviewLayout.setPixelSizeX(90);
 		//
 		// overviewDetailConnectorLayout = new Column(
@@ -239,14 +234,12 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 			final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
-				.asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						glParentView.getParentGLCanvas().getParentComposite()
-								.addKeyListener(glKeyListener);
-					}
-				});
+		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				glParentView.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		this.glMouseListener = glMouseListener;
 
@@ -282,7 +275,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 				.getViewGLCanvasManager()
 				.createGLView(
 						GLHeatMap.class,
-						this.getParentGLCanvas(),
+						parentGLCanvas, parentComposite,
 						new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
 								-1, 1));
 
@@ -324,7 +317,6 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	@Override
 	public void display(GL2 gl) {
 		templateRenderer.render(gl);
-		PixelGLConverter pc = this.getParentGLCanvas().getPixelGLConverter();
 		if (updateVisualUncertainty) {
 
 			// very dirty
@@ -334,7 +326,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 				if (clusterRenderer.textureRenderer != null
 						&& clusterRenderer.textureRenderer.heatmapLayout != null
 						&& clusterRenderer.visUncBarTextureRenderer != null) {
-					VisualUncertaintyUtil.calcVisualUncertainty(gl, pc,
+					VisualUncertaintyUtil.calcVisualUncertainty(gl, pixelGLConverter,
 							clusterRenderer.textureRenderer.heatmapLayout,
 							clusterRenderer.textureRenderer, uncertaintyVA);
 
@@ -379,8 +371,8 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 				ArrayList<Integer> clusterElements = contentVA.getIDsOfGroup(groupList
 						.get(externalID).getID());
-				ContentVirtualArray clusterVA = new ContentVirtualArray(DataTable.CONTENT,
-						clusterElements);
+				ContentVirtualArray clusterVA = new ContentVirtualArray(
+						DataTable.CONTENT, clusterElements);
 				detailHeatMap.setContentVA(clusterVA);
 
 				setDisplayListDirty();
@@ -545,17 +537,17 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		float[] SNR = table.getUncertainty().getNormalizedUncertainty();
 		aggregatedUncertainty = new double[SNR.length];
 		multiLevelUncertainty.clear();
-		
+
 		double[] convertedSNR = new double[SNR.length];
 		for (int index = 0; index < SNR.length; index++) {
 			convertedSNR[index] = (double) (SNR[index]);
 		}
-		
+
 		// Initialize with 1 in order to calculate uncertainty max
 		for (int index = 0; index < aggregatedUncertainty.length; index++) {
 			aggregatedUncertainty[index] = 1f;
 		}
-		
+
 		multiLevelUncertainty.add(convertedSNR);
 
 		Collection<double[]> statisticsUncertainties = this.table.getStatisticsResult()
@@ -574,17 +566,17 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		table.getStatisticsResult().setAggregatedUncertainty(aggregatedUncertainty);
 	}
 
-
 	public float getMaxUncertainty(int contentID) {
 		return (float) aggregatedUncertainty[contentID];
 
 	}
-	
+
 	public ArrayList<double[]> getMultiLevelUncertainty() {
 		return multiLevelUncertainty;
 	}
+
 	public static float[] getUncertaintyColor(int level) {
-		int l =  level %  DATA_UNCERTAIN.length;
+		int l = level % DATA_UNCERTAIN.length;
 		return DATA_UNCERTAIN[l];
 	}
 }

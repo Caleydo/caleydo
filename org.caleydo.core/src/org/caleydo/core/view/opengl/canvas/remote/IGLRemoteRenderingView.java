@@ -2,9 +2,11 @@ package org.caleydo.core.view.opengl.canvas.remote;
 
 import java.util.List;
 
+import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Interface for accessing views that remotely render other views.
@@ -14,8 +16,10 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 public interface IGLRemoteRenderingView
 	extends IView {
 
-	public GLCaleydoCanvas getParentGLCanvas();
+	public GLCanvas getParentGLCanvas();
 
+	public Composite getParentComposite();
+	
 	/**
 	 * Retrieves all the contained view-types from a given view.
 	 * 

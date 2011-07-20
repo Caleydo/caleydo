@@ -11,14 +11,11 @@ public abstract class ASWTView
 	extends AView
 	implements IListenerOwner {
 
-	protected Composite parentComposite;
-	
 	/**
 	 * Constructor.
 	 */
 	public ASWTView(int viewID, Composite parentComposite) {
-		super(viewID);
-		this.parentComposite = parentComposite;
+		super(viewID, parentComposite);
 		GeneralManager.get().getViewGLCanvasManager().registerItem(this);
 	}
 	
@@ -44,9 +41,5 @@ public abstract class ASWTView
 	public void unregisterEventListeners() {
 		// TODO Auto-generated method stub
 
-	}
-
-	public Composite getComposite() {
-		return parentComposite;
 	}
 }

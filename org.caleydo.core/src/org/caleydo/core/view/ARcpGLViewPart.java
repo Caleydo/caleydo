@@ -4,11 +4,12 @@ import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.view.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
@@ -25,7 +26,7 @@ public abstract class ARcpGLViewPart
 	extends CaleydoRCPViewPart {
 
 	protected Frame frameGL;
-	protected GLCaleydoCanvas glCanvas;
+	protected GLCanvas glCanvas;
 	protected MinimumSizeComposite minSizeComposite;
 
 	/**
@@ -43,7 +44,6 @@ public abstract class ARcpGLViewPart
 		cmdCanvas.doCommand();
 
 		glCanvas = cmdCanvas.getCreatedObject();
-		glCanvas.setParentComposite(parentComposite);
 	}
 
 	@Override
@@ -58,6 +58,7 @@ public abstract class ARcpGLViewPart
 	}
 
 	public void createPartControlGL() {
+		
 		if (frameGL == null) {
 			frameGL = SWT_AWT.new_Frame(parentComposite);
 		}
@@ -104,7 +105,7 @@ public abstract class ARcpGLViewPart
 		return (AGLView) view;
 	}
 
-	public GLCaleydoCanvas getGLCanvas() {
+	public GLCanvas getGLCanvas() {
 		return glCanvas;
 	}
 

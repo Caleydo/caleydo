@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.canvas;
 import java.util.ArrayList;
 
 import javax.management.InvalidAttributeValueException;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.mapping.IDCategory;
@@ -50,6 +51,7 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.StorageVAUpdateListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Base class for OpenGL2 views that visualize {@link DataTable}s.
@@ -121,8 +123,8 @@ public abstract class ATableBasedView
 	 * @param label
 	 * @param viewFrustum
 	 */
-	protected ATableBasedView(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum, true);
+	protected ATableBasedView(GLCanvas glCanvas, Composite parentComposite, final ViewFrustum viewFrustum) {
+		super(glCanvas, parentComposite, viewFrustum);
 
 		connectedElementRepresentationManager =
 			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();

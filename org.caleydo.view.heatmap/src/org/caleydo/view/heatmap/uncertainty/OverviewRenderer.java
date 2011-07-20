@@ -104,7 +104,7 @@ public class OverviewRenderer extends LayoutRenderer {
 				if (clusterIndex < (clusterList.size() - 1)) {
 					lineSeparatorLayout = new ElementLayout("lineSeparator");
 					PixelGLConverter pixelGLConverter = uncertaintyHeatMap
-							.getParentGLCanvas().getPixelGLConverter();
+							.getPixelGLConverter();
 					lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
 					lineSeparatorLayout.setPixelSizeY(CLUSTER_SPACER_SIZE);
 					lineSeparatorLayout.setRatioSizeX(1);

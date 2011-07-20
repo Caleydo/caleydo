@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.storage.AStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
@@ -30,7 +31,6 @@ import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
@@ -45,6 +45,7 @@ import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.tagclouds.renderstyle.TagCloudRenderStyle;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Parallel Tag Cloud view
@@ -109,8 +110,9 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLTagCloud(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum, true);
+	public GLTagCloud(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+
+		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = GLTagCloud.VIEW_TYPE;
 
@@ -180,7 +182,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 		StorageVirtualArray visibleStorageVA;
 
-		int numberOfVisibleDimensions = parentGLCanvas.getPixelGLConverter()
+		int numberOfVisibleDimensions = pixelGLConverter
 				.getPixelWidthForGLWidth(viewFrustum.getWidth())
 				/ MIN_NUMBER_PIXELS_PER_DIMENSION;
 
@@ -204,13 +206,11 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 			visibleStorageVA = clippedStorageVA;
 
 			Column previousDimensionColumn = new Column("previousDimensionColumn");
-			previousDimensionColumn.setPixelGLConverter(parentGLCanvas
-					.getPixelGLConverter());
+			previousDimensionColumn.setPixelGLConverter(pixelGLConverter);
 			previousDimensionColumn.setPixelSizeX(15);
 
 			ElementLayout previousButtonLayout = new ElementLayout("previousButtonLayout");
-			previousButtonLayout
-					.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+			previousButtonLayout.setPixelGLConverter(pixelGLConverter);
 			previousButtonLayout.setPixelSizeY(20);
 			// previousButtonLayout.setDebug(true);
 
@@ -222,11 +222,11 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 			previousButtonLayout.setRenderer(previousButtonRenderer);
 
 			Column nextDimensionColumn = new Column("nextDimensionColumn");
-			nextDimensionColumn.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+			nextDimensionColumn.setPixelGLConverter(pixelGLConverter);
 			nextDimensionColumn.setPixelSizeX(15);
 
 			ElementLayout nextButtonLayout = new ElementLayout("nextButtonLayout");
-			nextButtonLayout.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+			nextButtonLayout.setPixelGLConverter(pixelGLConverter);
 			nextButtonLayout.setPixelSizeY(20);
 			// nextButtonLayout.setDebug(true);
 
@@ -254,21 +254,21 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		// tagCloudRow.setDebug(true);
 
 		captionRow = new Row("captionRow");
-		captionRow.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		captionRow.setPixelGLConverter(pixelGLConverter);
 		captionRow.setPixelSizeY(15);
 
 		selectionRow = new Row("selectionRow");
-		selectionRow.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		selectionRow.setPixelGLConverter(pixelGLConverter);
 		selectionRow.setPixelSizeY(15);
 		// selectionRow.setDebug(true);
 
 		ElementLayout spacing = new ElementLayout("spacing");
-		spacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		spacing.setPixelGLConverter(pixelGLConverter);
 		spacing.setPixelSizeY(2);
 		spacing.setRatioSizeX(0);
 
 		ElementLayout largerSpacing = new ElementLayout("spacing");
-		largerSpacing.setPixelGLConverter(parentGLCanvas.getPixelGLConverter());
+		largerSpacing.setPixelGLConverter(pixelGLConverter);
 		largerSpacing.setPixelSizeY(7);
 		largerSpacing.setRatioSizeX(0);
 		if (detailLevel != DetailLevel.LOW) {
@@ -315,8 +315,8 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 			Collections.sort(sortedContent);
 
-			int pixel = parentGLCanvas.getPixelGLConverter().getPixelHeightForGLHeight(
-					viewFrustum.getHeight());
+			int pixel = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
+					.getHeight());
 			int numberEntries = pixel / 27;
 
 			ArrayList<Pair<String, Integer>> shortenedAlpahbeticalList = new ArrayList<Pair<String, Integer>>(
@@ -388,14 +388,12 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 			final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
-				.asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						glParentView.getParentGLCanvas().getParentComposite()
-								.addKeyListener(glKeyListener);
-					}
-				});
+		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				glParentView.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		this.glMouseListener = glMouseListener;
 
@@ -504,8 +502,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		super.registerEventListeners();
 
 		selectionUpdateListener = new SelectionUpdateListener();
-		selectionUpdateListener
-				.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		selectionUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 

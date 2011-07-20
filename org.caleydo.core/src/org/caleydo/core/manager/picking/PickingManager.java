@@ -279,7 +279,7 @@ public class PickingManager {
 		if (bEnablePicking == false)
 			return;
 
-		GLMouseListener glMouseListener = glView.getParentGLCanvas().getGLMouseListener();
+		GLMouseListener glMouseListener = glView.getGLMouseListener();
 
 		Point pickPoint = null;
 

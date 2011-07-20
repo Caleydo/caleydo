@@ -3,6 +3,7 @@ package org.caleydo.view.texture;
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -15,8 +16,8 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Single OpenGL2 tissue view
@@ -41,8 +42,9 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	/**
 	 * Constructor.
 	 */
-	public GLTexture(GLCaleydoCanvas glCanvas, final ViewFrustum viewFrustum) {
-		super(glCanvas, viewFrustum, false);
+	public GLTexture(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+
+		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = VIEW_TYPE;
 
