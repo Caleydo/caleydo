@@ -10,5 +10,6 @@ package org.caleydo.core.data.collection;
 public enum EExternalDataRepresentation {
 	NORMAL,
 	LOG10,
-	LOG2;
+	LOG2,
+	FOLD_CHANGE;
 }

@@ -103,7 +103,8 @@ public class HeatMapRenderer extends AContentRenderer {
 
 		float fOpacity = 1.0f;
 
-		if (storage.containsUncertaintyData()) {
+		if (storage
+				.containsDataRepresentation(EDataRepresentation.UNCERTAINTY_NORMALIZED)) {
 			// setSelectedElements = heatMap.getContentSelectionManager()
 			// .getElements(SelectionType.MOUSE_OVER);
 			// for (Integer selectedElement : setSelectedElements) {

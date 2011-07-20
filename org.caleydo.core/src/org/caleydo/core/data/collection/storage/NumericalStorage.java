@@ -4,6 +4,7 @@ import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainerIterator;
+import org.caleydo.core.data.collection.ccontainer.ICContainer;
 import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
@@ -37,20 +38,38 @@ public class NumericalStorage
 
 	public void normalizeUncertainty(float invalidThreshold, float validThreshold) {
 
-		FloatCContainer certainties = (FloatCContainer) hashCContainers.get(EDataRepresentation.UNCERTAINTY_RAW);
-		FloatCContainer normalizedCertainties = certainties.normalizeWithExternalExtrema(invalidThreshold, validThreshold);
+		FloatCContainer certainties =
+			(FloatCContainer) hashCContainers.get(EDataRepresentation.UNCERTAINTY_RAW);
+		FloatCContainer normalizedCertainties =
+			certainties.normalizeWithExternalExtrema(invalidThreshold, validThreshold);
 		hashCContainers.put(EDataRepresentation.UNCERTAINTY_NORMALIZED, normalizedCertainties);
 	}
 
 	/**
+	 * Same as {@link #normalizeWithExternalExtrema(double, double)}, but with an additional parameter letting
+	 * you specify the source of the normalization
+	 * 
+	 * @param sourceRep
+	 * @param dMin
+	 * @param dMax
+	 */
+	public void normalizeWithExternalExtrema(EDataRepresentation sourceRep, EDataRepresentation targetRep,
+		double dMin, double dMax) {
+		INumericalCContainer rawStorage = (INumericalCContainer) hashCContainers.get(sourceRep);
+
+		INumericalCContainer numericalContainer = rawStorage.normalizeWithExternalExtrema(dMin, dMax);
+
+		hashCContainers.put(targetRep, numericalContainer);
+	}
+
+	/**
 	 * <p>
-	 * If you want to consider extremas for normalization which do not occur in the dataset, use this method
-	 * instead of normalize(). This is e.g. useful if other sets need to be comparable, but contain larger or
-	 * smaller elements.
+	 * If you want to consider extremas for normalization which do not occur in this storage (e.g., because
+	 * the global extremas for the DataTable are used), use this method instead of normalize().
 	 * </p>
-	 * If dMin is smaller respectively dMax bigger than the actual minimum the values that are bigger are set
-	 * to 0 (minimum) or 1 (maximum) in the normalized data. However, the raw data stays the way it is.
-	 * Therefore elements that are drawn at 1 or 0 can have different raw values associated.
+	 * Values that are bigger or smaller then the extrema specified are set to 0 (minimum) or 1 (maximum) in
+	 * the normalized data. The raw data is untouched. Therefore elements with values 0 or one can have
+	 * different raw values associated.
 	 * <p>
 	 * Normalize operates on the raw data, except if you previously called log, then the logarithmized data is
 	 * used.
@@ -63,11 +82,7 @@ public class NumericalStorage
 	 *             if dMin >= dMax
 	 */
 	public void normalizeWithExternalExtrema(double dMin, double dMax) {
-		INumericalCContainer rawStorage = (INumericalCContainer) hashCContainers.get(dataRep);
-
-		INumericalCContainer numericalContainer = rawStorage.normalizeWithExternalExtrema(dMin, dMax);
-
-		hashCContainers.put(EDataRepresentation.NORMALIZED, numericalContainer);
+		normalizeWithExternalExtrema(dataRep, EDataRepresentation.NORMALIZED, dMin, dMax);
 	}
 
 	@Override
@@ -207,6 +222,22 @@ public class NumericalStorage
 		}
 
 		return histogram;
+	}
+
+	/**
+	 * Creates an empty container for the given {@link EDataRepresentation} and stores it
+	 * 
+	 * @param dataRepresentation
+	 */
+	public void setNewRepresentation(EDataRepresentation dataRepresentation, float[] representation) {
+		if (representation.length != size())
+			throw new IllegalArgumentException("The size of the storage (" + size()
+				+ ") is not equal the size of the given new representation (" + representation.length + ")");
+		if (hashCContainers.containsKey(dataRepresentation))
+			throw new IllegalStateException("The data representation " + dataRepresentation
+				+ " already exists in " + this);
+		ICContainer container = new FloatCContainer(representation);
+		hashCContainers.put(dataRepresentation, container);
 	}
 
 }

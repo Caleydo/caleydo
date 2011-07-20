@@ -236,7 +236,6 @@ public abstract class ATableBasedDataDomain
 		initFullVA();
 		initSelectionManagers();
 
-
 		contentFilterManager = new ContentFilterManager(this);
 		storageFilterManager = new StorageFilterManager(this);
 
@@ -328,7 +327,9 @@ public abstract class ATableBasedDataDomain
 		if (this.table.getID() == setID)
 			set = this.table;
 		else
-			set = this.table.getStorageData(DataTable.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
+			set =
+				this.table.getStorageData(DataTable.STORAGE).getStorageTreeRoot()
+					.getMetaSetFromSubTree(setID);
 
 		// TODO: warning
 		if (set == null)
@@ -337,7 +338,8 @@ public abstract class ATableBasedDataDomain
 		set.cluster(clusterState);
 
 		ContentData contentData = set.getContentData(DataTable.CONTENT);
-		ClusterHelper.calculateAggregatedUncertainties(contentData.getContentTree(), set);
+		if (set.containsUncertaintyData())
+			ClusterHelper.calculateAggregatedUncertainties(contentData.getContentTree(), set);
 		ClusterHelper.calculateClusterAverages(contentData.getContentTree(),
 			EClustererType.CONTENT_CLUSTERING, set);
 		contentData.getContentTree().setSortingStrategy(ESortingStrategy.CERTAINTY);
@@ -413,7 +415,9 @@ public abstract class ATableBasedDataDomain
 			set = this.table;
 		}
 		else {
-			set = this.table.getStorageData(DataTable.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
+			set =
+				this.table.getStorageData(DataTable.STORAGE).getStorageTreeRoot()
+					.getMetaSetFromSubTree(setID);
 		}
 		if (set == null)
 			set = otherMetaSets.get(setID);
@@ -850,7 +854,7 @@ public abstract class ATableBasedDataDomain
 				createDimensionGroupsFromStorageTree(child);
 			}
 		}
-		
+
 		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);

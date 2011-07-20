@@ -78,7 +78,7 @@ public class DataTable
 	boolean containsUncertaintyData = false;
 
 	/** all metaData for this DataTable is held in or accessible through this object */
-	private MetaData metaData;
+	protected MetaData metaData;
 	/** everything related to uncertainty is held in or accessible through this object */
 	private Uncertainty uncertainty;
 	/** everything related to normalization of the data is held in or accessible through this object */
@@ -616,6 +616,8 @@ public class DataTable
 					normalization.log2();
 					normalization.normalizeGlobally();
 					break;
+				case FOLD_CHANGE:
+					normalization.normalizeUsingFoldChange();
 			}
 		}
 		else {

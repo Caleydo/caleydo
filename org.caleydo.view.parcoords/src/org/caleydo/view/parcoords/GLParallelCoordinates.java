@@ -673,7 +673,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				String sRawValue;
 				if (currentStorage instanceof NumericalStorage) {
 					sRawValue = Formatter.formatNumber(currentStorage.getFloat(
-							EDataRepresentation.RAW, contentID));
+							EDataRepresentation.FOLD_CHANGE_RAW, contentID));
 
 				} else if (currentStorage instanceof NominalStorage) {
 					sRawValue = ((NominalStorage<String>) currentStorage)

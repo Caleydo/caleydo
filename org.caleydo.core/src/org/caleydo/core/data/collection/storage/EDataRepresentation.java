@@ -8,9 +8,13 @@ package org.caleydo.core.data.collection.storage;
  */
 public enum EDataRepresentation {
 	RAW,
-	NORMALIZED,
 	LOG10,
 	LOG2,
+	NORMALIZED,
+	
+	FOLD_CHANGE_RAW,
+	FOLD_CHANGE_NORMALIZED,
+	
 	UNCERTAINTY_RAW,
 	UNCERTAINTY_NORMALIZED;
 }

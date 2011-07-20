@@ -85,7 +85,8 @@ public class SetExporter {
 	}
 
 	@SuppressWarnings("unused")
-	public void export(DataTable set, String sFileName, EWhichViewToExport eWhichViewToExport, IDType targetIDType) {
+	public void export(DataTable set, String sFileName, EWhichViewToExport eWhichViewToExport,
+		IDType targetIDType) {
 		ContentVirtualArray contentVA = null;
 		StorageVirtualArray storageVA = null;
 
@@ -113,8 +114,8 @@ public class SetExporter {
 				AStorage storage = set.get(iStorageIndex);
 				out.print(storage.getLabel());
 				out.print("\t");
-				
-				if (storage.containsUncertaintyData()) {
+
+				if (storage.containsDataRepresentation(EDataRepresentation.UNCERTAINTY_RAW)) {
 					out.print("Uncertainty\t");
 				}
 			}
@@ -173,7 +174,7 @@ public class SetExporter {
 					out.print(storage.getFloat(EDataRepresentation.RAW, contentID));
 					out.print("\t");
 
-					if (storage.containsUncertaintyData()) {
+					if (storage.containsDataRepresentation(EDataRepresentation.UNCERTAINTY_RAW)) {
 						out.print(storage.getFloat(EDataRepresentation.UNCERTAINTY_RAW, contentID));
 						out.print("\t");
 					}

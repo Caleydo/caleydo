@@ -35,7 +35,6 @@ public abstract class AStorage
 	protected String label;
 
 	boolean isRawDataSet = false;
-	boolean isCertaintyDataSet = false;
 
 	ERawDataType rawDataType = ERawDataType.UNDEFINED;
 
@@ -110,20 +109,17 @@ public abstract class AStorage
 	}
 
 	public void setUncertaintyData(float[] uncertaintyData) {
-
-		if (isCertaintyDataSet)
+		if (hashCContainers.containsKey(EDataRepresentation.UNCERTAINTY_RAW))
 			throw new IllegalStateException("Certainty data was already set in Storage " + uniqueID
 				+ " , tried to set again.");
-
-		isCertaintyDataSet = true;
 
 		FloatCContainer container = new FloatCContainer(uncertaintyData);
 		hashCContainers.put(EDataRepresentation.UNCERTAINTY_RAW, container);
 	}
 
-	public boolean containsUncertaintyData() {
-		return (isCertaintyDataSet && hashCContainers.containsKey(EDataRepresentation.UNCERTAINTY_NORMALIZED));
-		
+
+	public boolean containsDataRepresentation(EDataRepresentation dataRepresentation) {
+		return hashCContainers.containsKey(dataRepresentation);
 	}
 
 	/**

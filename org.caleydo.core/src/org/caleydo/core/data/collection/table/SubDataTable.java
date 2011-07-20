@@ -24,8 +24,7 @@ import org.caleydo.core.util.clusterer.ClusterNode;
  * @author Alexander Lex
  */
 public class SubDataTable
-	extends DataTable
-	 {
+	extends DataTable {
 
 	DataTable originalSet;
 
@@ -61,6 +60,8 @@ public class SubDataTable
 
 		defaultStorageData.setStorageVA(new StorageVirtualArray(STORAGE));
 		statisticsResult = new StatisticsResult(this);
+
+		metaData = new MetaData(this);
 
 	}
 

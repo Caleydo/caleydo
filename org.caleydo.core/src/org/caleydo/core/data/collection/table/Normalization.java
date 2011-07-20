@@ -1,6 +1,9 @@
 package org.caleydo.core.data.collection.table;
 
+import java.util.HashMap;
+
 import org.caleydo.core.data.collection.storage.AStorage;
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 
 /**
@@ -30,8 +33,8 @@ public class Normalization {
 				nStorage.log10();
 			}
 			else
-				throw new UnsupportedOperationException("Tried to calcualte log values on a set wich has"
-					+ "contains nominal storages. This is not possible!");
+				throw new UnsupportedOperationException(
+					"Tried to calcualte log values on a set wich contains nominal storages. This is not possible!");
 		}
 	}
 
@@ -72,6 +75,7 @@ public class Normalization {
 	 * storage this is used. Make sure that all storages are logarithmized.
 	 */
 	void normalizeGlobally() {
+
 		table.isSetHomogeneous = true;
 		for (AStorage storage : table.hashStorages.values()) {
 			if (storage instanceof NumericalStorage) {
@@ -84,4 +88,67 @@ public class Normalization {
 		}
 	}
 
+	void normalizeUsingFoldChange() {
+		for (AStorage storage : table.hashStorages.values()) {
+			if (!storage.containsDataRepresentation(EDataRepresentation.FOLD_CHANGE_RAW))
+				calculateFoldChange();
+			break;
+		}
+
+		for (AStorage storage : table.hashStorages.values()) {
+			if (storage instanceof NumericalStorage) {
+				NumericalStorage nStorage = (NumericalStorage) storage;
+				nStorage.normalizeWithExternalExtrema(EDataRepresentation.FOLD_CHANGE_RAW,
+					EDataRepresentation.FOLD_CHANGE_NORMALIZED, 1, 10);
+			}
+			else
+				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"
+					+ "contains nominal storages, currently not supported!");
+		}
+
+	}
+
+	private void calculateFoldChange() {
+		HashMap<Integer, float[]> foldChangePerStorage =
+			new HashMap<Integer, float[]>(table.hashStorages.size());
+
+		for (Integer storageKey : table.hashStorages.keySet()) {
+			foldChangePerStorage.put(storageKey, new float[metaData.depth()]);
+		}
+
+		for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
+			float minValue = Float.MAX_VALUE;
+			// find out which is the smalles raw value
+			for (Integer storageKey : table.hashStorages.keySet()) {
+				NumericalStorage nStorage = (NumericalStorage) table.hashStorages.get(storageKey);
+				float rawValue = nStorage.getFloat(EDataRepresentation.RAW, contentCount);
+				if (rawValue < minValue)
+					minValue = rawValue;
+			}
+			// set the fold changes
+			for (Integer storageKey : table.hashStorages.keySet()) {
+				NumericalStorage nStorage = (NumericalStorage) table.hashStorages.get(storageKey);
+				float rawValue = nStorage.getFloat(EDataRepresentation.RAW, contentCount);
+				float[] foldChanges = foldChangePerStorage.get(storageKey);
+				if (minValue == 0)
+					foldChanges[contentCount] = Float.POSITIVE_INFINITY;
+				else {
+					foldChanges[contentCount] = rawValue / minValue;
+					if (foldChanges[contentCount] < 1)
+						System.out.println("problem");
+				}
+			}
+		}
+
+		// set the float[] to the storages
+		for (Integer storageKey : table.hashStorages.keySet()) {
+			NumericalStorage nStorage = (NumericalStorage) table.hashStorages.get(storageKey);
+			if (!nStorage.containsDataRepresentation(EDataRepresentation.FOLD_CHANGE_RAW))
+				nStorage.setNewRepresentation(EDataRepresentation.FOLD_CHANGE_RAW,
+					foldChangePerStorage.get(storageKey));
+			else
+				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"
+					+ "contains nominal storages, currently not supported!");
+		}
+	}
 }
