@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.manager.AManager;
@@ -85,12 +86,7 @@ public class ViewManager
 	}
 
 	public void init() {
-		fpsAnimator = new FPSAnimator(60);
 
-		displayLoopExecution = DisplayLoopExecution.get();
-		// fpsAnimator.add((GLAutoDrawable)displayLoopExecution.getDisplayLoopCanvas());
-
-		// displayLoopExecution.executeMultiple(connectedElementRepManager);
 	}
 
 	@Override
@@ -202,6 +198,15 @@ public class ViewManager
 	}
 
 	public void registerGLCanvasToAnimator(final GLCanvas glCaleydoCanvas) {
+
+		// Lazy creation of animator
+		if (fpsAnimator == null) {
+			fpsAnimator = new FPSAnimator(60);
+
+			displayLoopExecution = DisplayLoopExecution.get();
+			fpsAnimator.add((GLAutoDrawable) displayLoopExecution.getDisplayLoopCanvas());
+			displayLoopExecution.executeMultiple(connectedElementRepManager);
+		}
 
 		fpsAnimator.add(glCaleydoCanvas);
 	}

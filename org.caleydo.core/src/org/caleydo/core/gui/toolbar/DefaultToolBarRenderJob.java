@@ -23,7 +23,6 @@ public class DefaultToolBarRenderJob
 
 	@Override
 	public void run() {
-		toolBarView.removeAllViewSpecificToolBars();
 	}
 
 	public List<AToolBarContent> getToolBarContents() {
