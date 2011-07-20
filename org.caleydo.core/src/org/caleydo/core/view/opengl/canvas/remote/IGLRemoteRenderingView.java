@@ -5,6 +5,7 @@ import java.util.List;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.view.IView;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.swt.widgets.Composite;
 
@@ -26,4 +27,6 @@ public interface IGLRemoteRenderingView
 	 * @return list of view-types contained in the given view
 	 */
 	public List<AGLView> getRemoteRenderedViews();
+	
+	public ViewFrustum getViewFrustum();
 }

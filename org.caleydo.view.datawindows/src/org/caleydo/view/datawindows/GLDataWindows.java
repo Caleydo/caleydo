@@ -14,16 +14,16 @@ import java.util.List;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -113,7 +113,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLDataWindows(GLCanvas glCanvas, final Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLDataWindows(GLCanvas glCanvas, final Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLDataWindows.VIEW_TYPE;
@@ -151,9 +152,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 		// FIXME: maybe we have to find a better place for trigger pathway
 		// loading
-		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain();
-		cmd.setAttributes("org.caleydo.datadomain.pathway");
-		cmd.doCommand();
+		DataDomainManager.get().createDataDomain("org.caleydo.datadomain.pathway");
 
 		Display.getCurrent().asyncExec(new Runnable() {
 			@Override
@@ -381,8 +380,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}

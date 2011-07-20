@@ -52,8 +52,8 @@ public class ProjectSaver {
 	public static final String RECENT_PROJECT_DIR_NAME_TMP = GeneralManager.CALEYDO_HOME_PATH
 		+ "recent_project_tmp" + File.separator;
 
-	/** file name of the set-data-file in project-folders */
-	public static final String SET_DATA_FILE_NAME = "data.csv";
+	/** file name of the data table file in project-folders */
+	public static final String DATA_TABLE_FILE_NAME = "data.csv";
 
 	/** file name of the datadomain-file in project-folders */
 	public static final String DATA_DOMAIN_FILE_NAME = "datadomain.xml";
@@ -69,7 +69,7 @@ public class ProjectSaver {
 
 	/** file name of the experiment-cluster-file in project-folders */
 	public static final String EXP_TREE_FILE_NAME = "experiment_cluster.xml";
-	
+
 	/** file name of the datadomain-file in project-folders */
 	public static final String BASIC_INFORMATION_FILE_NAME = "basic_information.xml";
 
@@ -149,7 +149,7 @@ public class ProjectSaver {
 	}
 
 	private void saveDataDomains(String dirName) {
-
+		
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 		JAXBContext projectContext = serializationManager.getProjectContext();
 
@@ -166,11 +166,13 @@ public class ProjectSaver {
 			dataDomainList.setDataDomains(dataDomains);
 
 			marshaller.marshal(dataDomainList, dataDomainFile);
-		
+
 			for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
 
 				if (dataDomain instanceof ATableBasedDataDomain) {
 
+					String extendedDirName = dirName + dataDomain.getDataDomainID() + "_";
+					
 					LoadDataParameters parameters = dataDomain.getLoadDataParameters();
 					String sourceFileName = parameters.getFileName();
 
@@ -179,8 +181,8 @@ public class ProjectSaver {
 							sourceFileName.replace(RECENT_PROJECT_DIR_NAME, RECENT_PROJECT_DIR_NAME_TMP);
 
 					try {
-						FileOperations.writeInputStreamToFile(dirName + SET_DATA_FILE_NAME, GeneralManager
-							.get().getResourceLoader().getResource(sourceFileName));
+						FileOperations.writeInputStreamToFile(extendedDirName + DATA_TABLE_FILE_NAME,
+							GeneralManager.get().getResourceLoader().getResource(sourceFileName));
 					}
 					catch (FileNotFoundException e) {
 						throw new IllegalStateException("Error saving project file", e);
@@ -189,27 +191,27 @@ public class ProjectSaver {
 					ATableBasedDataDomain setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
 
 					for (String type : setBasedDataDomain.getDataTable().getRegisteredContentVATypes()) {
-						saveContentVA(marshaller, dirName, setBasedDataDomain, type);
+						saveContentVA(marshaller, extendedDirName, setBasedDataDomain, type);
 					}
 
 					for (String type : setBasedDataDomain.getDataTable().getRegisteredStorageVATypes()) {
-						saveStorageVA(marshaller, dirName, setBasedDataDomain, type);
+						saveStorageVA(marshaller, extendedDirName, setBasedDataDomain, type);
 					}
 					TreePorter treePorter = new TreePorter();
 					Tree<ClusterNode> geneTree =
 						setBasedDataDomain.getDataTable().getContentData(DataTable.CONTENT).getContentTree();
 					if (geneTree != null) {
-						treePorter.exportTree(dirName + GENE_TREE_FILE_NAME, geneTree);
+						treePorter.exportTree(extendedDirName + GENE_TREE_FILE_NAME, geneTree);
 					}
 
 					treePorter = new TreePorter();
 					Tree<ClusterNode> expTree =
 						setBasedDataDomain.getDataTable().getStorageData(DataTable.STORAGE).getStorageTree();
 					if (expTree != null) {
-						treePorter.exportTree(dirName + EXP_TREE_FILE_NAME, expTree);
+						treePorter.exportTree(extendedDirName + EXP_TREE_FILE_NAME, expTree);
 					}
 				}
-				
+
 				String fileName = dirName + BASIC_INFORMATION_FILE_NAME;
 				marshaller.marshal(GeneralManager.get().getBasicInfo(), new File(fileName));
 			}

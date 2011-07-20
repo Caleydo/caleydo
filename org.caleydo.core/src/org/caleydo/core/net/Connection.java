@@ -18,7 +18,8 @@ import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.serialize.DataInitializationData;
+import org.caleydo.core.serialize.DataDomainSerializationData;
+import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -123,9 +124,9 @@ public class Connection {
 	 * @throws ConnectException
 	 *             if a error during handshaking occurs
 	 */
-	public DataInitializationData connect(InetAddress address, int port) throws ConnectException {
+	public SerializationData connect(InetAddress address, int port) throws ConnectException {
 		Logger.log(new Status(IStatus.INFO, this.toString(), "connect(): address=" + address));
-		DataInitializationData initData;
+		SerializationData initData;
 		try {
 			socket = new Socket(address, port);
 			inputStream = socket.getInputStream();
@@ -155,7 +156,7 @@ public class Connection {
 			clientHandshake.setRequestType(ClientHandshake.REQUEST_CONNECTION_ESTABLISHED);
 			networkUtils.writeHandshake(clientHandshake, outputStream);
 
-			initData = (DataInitializationData) networkUtils.readHandshake(inputStream);
+			initData = (SerializationData) networkUtils.readHandshake(inputStream);
 
 			clientHandshake.setRequestType(ClientHandshake.CLIENT_SYNCHRONIZED);
 			networkUtils.writeHandshake(clientHandshake, outputStream);
@@ -274,29 +275,29 @@ public class Connection {
 	 *            {@link OutputStream} of the socket for sending to client
 	 */
 	private void sendServerInitializationData(OutputStream outputStream) {
-		DataInitializationData initData = new DataInitializationData();
+		SerializationData initData = new SerializationData();
 
 		// FIXME this should work for more than one use case now
-		ATableBasedDataDomain useCase =
-			(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.genetic");
-		DataTable set = useCase.getDataTable();
-
-		initData.setDataDomain(useCase);
-		initData.setSetFileContent(DataTableUtils.loadSetFile(useCase.getLoadDataParameters()));
-		initData.setGeneClusterTree(DataTableUtils.getGeneClusterXml(set));
-		initData.setExperimentClusterTree(DataTableUtils.getExperimentClusterXml(set));
-
-		HashMap<String, ContentVirtualArray> contentVAMap = new HashMap<String, ContentVirtualArray>();
-		for (String type : set.getRegisteredContentVATypes()) {
-			contentVAMap.put(type, useCase.getContentVA(type));
-		}
-		initData.setContentVAMap(contentVAMap);
-
-		HashMap<String, StorageVirtualArray> storageVAMap = new HashMap<String, StorageVirtualArray>();
-		for (String type : set.getRegisteredStorageVATypes()) {
-			storageVAMap.put(type, useCase.getStorageVA(type));
-		}
-		initData.setStorageVAMap(storageVAMap);
+//		ATableBasedDataDomain useCase =
+//			(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.genetic");
+//		DataTable set = useCase.getDataTable();
+//
+//		initData.setDataDomain(useCase);
+//		initData.setSetFileContent(DataTableUtils.loadSetFile(useCase.getLoadDataParameters()));
+//		initData.setGeneClusterTree(DataTableUtils.getGeneClusterXml(set));
+//		initData.setExperimentClusterTree(DataTableUtils.getExperimentClusterXml(set));
+//
+//		HashMap<String, ContentVirtualArray> contentVAMap = new HashMap<String, ContentVirtualArray>();
+//		for (String type : set.getRegisteredContentVATypes()) {
+//			contentVAMap.put(type, useCase.getContentVA(type));
+//		}
+//		initData.setContentVAMap(contentVAMap);
+//
+//		HashMap<String, StorageVirtualArray> storageVAMap = new HashMap<String, StorageVirtualArray>();
+//		for (String type : set.getRegisteredStorageVATypes()) {
+//			storageVAMap.put(type, useCase.getStorageVA(type));
+//		}
+//		initData.setStorageVAMap(storageVAMap);
 
 		NetworkUtils utils = networkManager.getNetworkUtils();
 		utils.writeHandshake(initData, outputStream);

@@ -12,7 +12,7 @@ import java.util.Iterator;
 import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.data.CmdDataCreateSet;
+import org.caleydo.core.command.data.CmdDataCreateTable;
 import org.caleydo.core.command.data.CmdDataCreateStorage;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
@@ -208,8 +208,8 @@ public class DataTableUtils {
 		ArrayList<Integer> storageIDs = loadDataParameters.getStorageIds();
 
 		// Create SET
-		CmdDataCreateSet cmdCreateSet =
-			(CmdDataCreateSet) GeneralManager.get().getCommandManager()
+		CmdDataCreateTable cmdCreateSet =
+			(CmdDataCreateTable) GeneralManager.get().getCommandManager()
 				.createCommandByType(CommandType.CREATE_SET_DATA);
 
 		cmdCreateSet.setAttributes(storageIDs, dataDomain);

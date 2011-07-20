@@ -11,7 +11,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -31,9 +30,9 @@ import org.caleydo.core.manager.path.GuidanceNode;
 import org.caleydo.core.manager.path.HistoryNode;
 import org.caleydo.core.manager.path.INode;
 import org.caleydo.core.manager.path.Path;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.manager.view.ViewManager;
@@ -179,7 +178,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	/**
 	 * Constructor.
 	 */
-	public GLDataFlipper(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLDataFlipper(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 
@@ -249,15 +249,11 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				stackElementsLeft, stackElementsRight);
 
 		if (DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.pathway") == null) {
-			CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain();
-			cmd.setAttributes("org.caleydo.datadomain.pathway");
-			cmd.doCommand();
+			DataDomainManager.get().createDataDomain("org.caleydo.datadomain.pathway");
 		}
 
 		if (DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.tissue") == null) {
-			CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain();
-			cmd.setAttributes("org.caleydo.datadomain.tissue");
-			cmd.doCommand();
+			DataDomainManager.get().createDataDomain("org.caleydo.datadomain.tissue");
 		}
 	}
 
@@ -481,9 +477,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		renderDataDomain(gl, (HistoryNode) historyPath.getLastNode(), x
 				- metaViewAnimation, y + DATA_DOMAIN_HEIGHT / 2f);
 		// gl.glScalef(10f/9, 10f/9, 10f/9);
-		IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(historyPath
-				.getLastNode().getDataDomainType());
-		java.util.Set<IDataDomain> neighbors = dataDomainGraph.getNeighboursOf(dataDomain);
+		IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
+				historyPath.getLastNode().getDataDomainType());
+		java.util.Set<IDataDomain> neighbors = dataDomainGraph
+				.getNeighboursOf(dataDomain);
 		int numberOfVerticalDataDomains = neighbors.size() + 1;
 
 		// Render past data domains
@@ -906,8 +903,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int pickingID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int pickingID, Pick pick) {
 
 		// if (pickingType != EPickingType.REMOTE_LEVEL_ELEMENT) {
 		mouseOverNextDataDomain = null;
@@ -1383,7 +1380,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private void renderDataDomain(final GL2 gl, HistoryNode node, float x, float y) {
 
 		String dataDomainType = node.getDataDomainType();
-		IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(dataDomainType);
+		IDataDomain dataDomain = DataDomainManager.get()
+				.getDataDomainByID(dataDomainType);
 		EIconTextures dataDomainIcon = dataDomain.getIcon();
 
 		float maxViewIcons = 4;
@@ -1668,8 +1666,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
-					.getDataDomainByID(dataDomainType)).getDataTable().getStorageData(DataTable.STORAGE)
-					.getStorageVA().size();
+					.getDataDomainByID(dataDomainType)).getDataTable()
+					.getStorageData(DataTable.STORAGE).getStorageVA().size();
 			if (numberOfPatients > 40)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
@@ -1706,8 +1704,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// Check if data domain is organ because this datadomain does not exist
 		// as plugin.
 		if (!dataDomainType.equals("org.caleydo.datadomain.organ")) {
-			IDataDomain dataDomain = DataDomainManager.get()
-					.getDataDomainByID(dataDomainType);
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
+					dataDomainType);
 			dataDomainIcon = dataDomain.getIcon();
 		} else
 			dataDomainIcon = EIconTextures.DATA_DOMAIN_ORGAN;
@@ -2033,8 +2031,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.REMOTE_VIEW_DRAG, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_DRAG,
+				element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);

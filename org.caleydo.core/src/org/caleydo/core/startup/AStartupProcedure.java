@@ -1,6 +1,7 @@
 package org.caleydo.core.startup;
 
-import org.caleydo.core.command.data.CmdDataCreateDataDomain;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.RCPViewManager;
@@ -16,7 +17,7 @@ public abstract class AStartupProcedure {
 	protected ApplicationInitData appInitData;
 
 	protected IDataDomain dataDomain;
-	
+
 	public void init(ApplicationInitData appInitData) {
 		this.appInitData = appInitData;
 		initializeStartViews();
@@ -24,7 +25,7 @@ public abstract class AStartupProcedure {
 
 	public void execute() {
 		loadPathways();
-		
+
 		// Create RCP view manager
 		RCPViewManager.get();
 	}
@@ -42,11 +43,11 @@ public abstract class AStartupProcedure {
 
 		for (Pair<String, String> viewWithDataDomain : appInitData.getAppArgumentStartViewWithDataDomain()) {
 
-//			ASerializedView view =
-//				GeneralManager.get().getViewGLCanvasManager().getViewCreator(viewWithDataDomain.getFirst())
-//					.createSerializedView();
-//
-//			view.setDataDomainType(viewWithDataDomain.getSecond());
+			// ASerializedView view =
+			// GeneralManager.get().getViewGLCanvasManager().getViewCreator(viewWithDataDomain.getFirst())
+			// .createSerializedView();
+			//
+			// view.setDataDomainType(viewWithDataDomain.getSecond());
 			appInitData.getInitializedStartViews().add(viewWithDataDomain.getFirst());
 		}
 	}
@@ -62,8 +63,6 @@ public abstract class AStartupProcedure {
 		if (!appInitData.isLoadPathways())
 			return;
 
-		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain();
-		cmd.setAttributes("org.caleydo.datadomain.pathway");
-		cmd.doCommand();
+		DataDomainManager.get().createDataDomain("org.caleydo.datadomain.pathway");
 	}
 }

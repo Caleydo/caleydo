@@ -10,8 +10,10 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.serialize.DataInitializationData;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.serialize.DataDomainSerializationData;
 import org.caleydo.core.serialize.ProjectLoader;
+import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -32,58 +34,54 @@ public class SerializationStartupProcedure
 		// super.init(appInitData);
 
 		this.appInitData = appInitData;
-		DataInitializationData data;
+		SerializationData serializationDataList;
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Load sample project"));
 
 		ProjectLoader loader = new ProjectLoader();
 
 		if (loadSampleProject) {
-			data = loader.load(SAMPLE_PROJECT_LOCATION);
-
-			// Application.initializedStartViews = Application.initData.getViewIDs();
-			// Application.ProjectMode = ProjectMode.SAMPLE_PROJECT;
+			serializationDataList = loader.load(SAMPLE_PROJECT_LOCATION);
 			Application.bDeleteRestoredWorkbenchState = true;
 		}
 		else {
 			if (loadRecentProject) {
-				data = loader.loadRecent();
+				serializationDataList = loader.loadRecent();
 			}
 			else if (projectLocation != null || projectLocation.isEmpty()) {
-				data = loader.load(projectLocation);
+				serializationDataList = loader.load(projectLocation);
 			}
 			else {
 				throw new IllegalArgumentException("encoutnered unknown project-load-type");
 			}
-			// dataDomain = Application.initData.getDataDomain();
-			// Application.startViewWithDataDomain.clear();
-			// Application.initializedStartViews = Application.initData.getViewIDs();
-			// Application.ProjectMode = ProjectMode.LOAD_PROJECT;
-			// SerializationManager.
-			// Application.bDeleteRestoredWorkbenchState = true;
 		}
 
-		// CODE FROM APPLICATION.JAVA
+		for (DataDomainSerializationData dataSerializationData : serializationDataList
+			.getDataSerializationDataList()) {
+			ADataDomain dataDomain = dataSerializationData.getDataDomain();
 
-		ADataDomain dataDomain = data.getDataDomain();
+			// Register data domain by hand because it restored from the serialization and not created via the
+			// DataDomainManager
+			DataDomainManager.get().register(dataDomain);
 
-		if (dataDomain instanceof ATableBasedDataDomain) {
-			ATableBasedDataDomain setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
+			if (dataDomain instanceof ATableBasedDataDomain) {
+				ATableBasedDataDomain setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
 
-			LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
-			DataTableUtils.createStorages(loadDataParameters);
-			DataTable set = DataTableUtils.createData(setBasedDataDomain);
+				LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
+				DataTableUtils.createStorages(loadDataParameters);
+				DataTable dataTable = DataTableUtils.createData(setBasedDataDomain);
 
-			HashMap<String, ContentVirtualArray> contentVAMap = data.getContentVAMap();
-			for (Entry<String, ContentVirtualArray> entry : contentVAMap.entrySet()) {
-				setBasedDataDomain.setContentVirtualArray(entry.getKey(), entry.getValue());
+				HashMap<String, ContentVirtualArray> contentVAMap = dataSerializationData.getContentVAMap();
+				for (Entry<String, ContentVirtualArray> entry : contentVAMap.entrySet()) {
+					setBasedDataDomain.setContentVirtualArray(entry.getKey(), entry.getValue());
+				}
+
+				HashMap<String, StorageVirtualArray> storageVAMap = dataSerializationData.getStorageVAMap();
+				for (Entry<String, StorageVirtualArray> entry : storageVAMap.entrySet()) {
+					setBasedDataDomain.setStorageVirtualArray(entry.getKey(), entry.getValue());
+				}
+				// we need the VAs to be available before the tree is initialized
+				DataTableUtils.loadTrees(loadDataParameters, dataTable);
 			}
-
-			HashMap<String, StorageVirtualArray> storageVAMap = data.getStorageVAMap();
-			for (Entry<String, StorageVirtualArray> entry : storageVAMap.entrySet()) {
-				setBasedDataDomain.setStorageVirtualArray(entry.getKey(), entry.getValue());
-			}
-			// we need the VAs to be available before the tree is initialized
-			DataTableUtils.loadTrees(loadDataParameters, set);
 		}
 	}
 

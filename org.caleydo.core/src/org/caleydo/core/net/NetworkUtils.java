@@ -10,7 +10,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import org.caleydo.core.serialize.DataInitializationData;
+import org.caleydo.core.serialize.SerializationData;
 
 /**
  * Utility class for reading and writing handshake messages between client and server applications. The
@@ -30,7 +30,7 @@ public class NetworkUtils {
 		try {
 			handshakeJAXBContext =
 				JAXBContext.newInstance(ClientHandshake.class, ServerHandshake.class,
-					DataInitializationData.class);
+					SerializationData.class);
 		}
 		catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext for client/server handshake messages");

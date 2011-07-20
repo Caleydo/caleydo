@@ -534,7 +534,7 @@ public class ChooseProjectTypePage
 		String lastModifiedDate = "";
 		String text = "Open project from last session";
 		File recentProjectFile =
-			new File(ProjectSaver.RECENT_PROJECT_DIR_NAME + ProjectSaver.SET_DATA_FILE_NAME);
+			new File(ProjectSaver.RECENT_PROJECT_DIR_NAME + ProjectSaver.DATA_TABLE_FILE_NAME);
 		if (recentProjectFile.exists()) {
 			Date date = new Date(recentProjectFile.lastModified());
 			DateFormat dataformat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);

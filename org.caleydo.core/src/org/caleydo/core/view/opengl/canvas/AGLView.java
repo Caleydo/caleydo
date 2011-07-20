@@ -235,7 +235,6 @@ public abstract class AGLView
 		multiIDPickingListeners = new HashMap<String, Set<IPickingListener>>();
 
 		this.viewFrustum = viewFrustum;
-
 		viewCamera = new ViewCameraBase(uniqueID);
 
 		pickingManager = generalManager.getViewGLCanvasManager().getPickingManager();
@@ -247,7 +246,7 @@ public abstract class AGLView
 
 		bShowMagnifyingGlass = false;
 
-		initPixelGLConverter(viewFrustum);
+		pixelGLConverter = new PixelGLConverter(viewFrustum, parentGLCanvas);
 
 		mouseWheelListeners = new HashSet<IMouseWheelHandler>();
 
@@ -931,7 +930,8 @@ public abstract class AGLView
 	}
 
 	public final void setRemoteRenderingGLView(IGLRemoteRenderingView glRemoteRenderingView) {
-		this.glRemoteRenderingView = glRemoteRenderingView;;
+		this.glRemoteRenderingView = glRemoteRenderingView;
+		pixelGLConverter = new PixelGLConverter(glRemoteRenderingView.getViewFrustum(), parentGLCanvas);
 	}
 
 	public final IGLRemoteRenderingView getRemoteRenderingGLCanvas() {
@@ -1281,24 +1281,6 @@ public abstract class AGLView
 		for (IMouseWheelHandler listener : mouseWheelListeners) {
 			listener.handleMouseWheel(wheelAmount, wheelPosition);
 		}
-	}
-	
-	/**
-	 * Initialize the pixelGLConverter. This must initially only be done for not-remotely rendered view of
-	 * this canvas.
-	 * 
-	 * @param viewFrustum
-	 */
-	void initPixelGLConverter(ViewFrustum viewFrustum) {
-//		if (this.viewFrustum == null) {
-//			this.viewFrustum = viewFrustum;
-			pixelGLConverter = new PixelGLConverter(viewFrustum, this.getParentGLCanvas());
-//		}
-			
-		// if (pixelGLConverter == null)
-
-		// else
-		// pixelGLConverter.viewFrustum = viewFrustum;
 	}
 
 	/**

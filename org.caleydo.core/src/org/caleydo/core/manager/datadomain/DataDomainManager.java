@@ -63,6 +63,7 @@ public class DataDomainManager {
 			ADataDomain dataDomain = (ADataDomain) ce[0].createExecutableExtension("class");
 			Thread thread = new Thread(dataDomain, dataDomainType);
 			thread.start();
+			register(dataDomain);
 			return dataDomain;
 		}
 		catch (Exception ex) {

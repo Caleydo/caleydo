@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
@@ -17,6 +16,7 @@ import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.gui.util.LabelEditorDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.startup.StartupProcessor;
 import org.eclipse.jface.dialogs.Dialog;
@@ -94,11 +94,9 @@ public class ImportDataDialog
 	public ImportDataDialog(Shell parentShell) {
 		super(parentShell);
 
-		// FIXME: the user needs to determine whether to load genetic or generic data
-		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain();
-		cmd.setAttributes("org.caleydo.datadomain.genetic");
-		cmd.doCommand();
-		this.dataDomain = (ATableBasedDataDomain) cmd.getCreatedObject();
+		this.dataDomain =
+			(ATableBasedDataDomain) DataDomainManager.get()
+				.createDataDomain("org.caleydo.datadomain.genetic");
 	}
 
 	public ImportDataDialog(Shell parentShell, IDataDomain dataDomain) {

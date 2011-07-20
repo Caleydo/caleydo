@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.view.CanvasConnectionMap;
-import org.caleydo.core.serialize.DataInitializationData;
+import org.caleydo.core.serialize.SerializationData;
 
 /**
  * GroupwareManager for standard networking environment where each user uses its own desktop for caleydo. One
@@ -26,7 +26,7 @@ public class StandardGroupwareManager
 	private String networkName;
 
 	/** initialization data for the application read from a server */
-	private DataInitializationData initData;
+	private SerializationData serializationData;
 
 	/**
 	 * Creates an initalized {@link StandardGroupwareManager}
@@ -78,7 +78,7 @@ public class StandardGroupwareManager
 	public void startClient() {
 		networkManager.setNetworkName(networkName);
 		networkManager.startNetworkService();
-		initData = networkManager.createConnection(serverAddress);
+		serializationData = networkManager.createConnection(serverAddress);
 	}
 
 	@Override
@@ -141,8 +141,7 @@ public class StandardGroupwareManager
 	}
 
 	@Override
-	public DataInitializationData getInitData() {
-		return initData;
+	public SerializationData getSerializationData() {
+		return serializationData;
 	}
-
 }

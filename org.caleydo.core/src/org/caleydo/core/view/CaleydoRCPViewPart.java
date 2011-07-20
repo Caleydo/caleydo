@@ -130,10 +130,8 @@ public abstract class CaleydoRCPViewPart
 			ArrayList<IDataDomain> availableDomains =
 				DataDomainManager.get().getAssociationManager()
 					.getAvailableDataDomainTypesForViewType(serializedView.getViewType());
-			if (availableDomains == null)
-				throw new IllegalStateException("Not able to determine which data domain to use");
-			else if (availableDomains.size() == 0)
-				throw new IllegalStateException("No datadomain for this view loaded");
+			if (availableDomains == null || availableDomains.size() == 0)
+				throw new IllegalStateException("No datadomain for this view available");
 			else if (availableDomains.size() == 1)
 				serializedView.setDataDomainID(availableDomains.get(0).getDataDomainID());
 			else if (availableDomains.size() > 1) {

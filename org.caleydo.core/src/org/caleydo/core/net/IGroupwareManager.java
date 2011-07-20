@@ -4,7 +4,8 @@ import java.util.HashMap;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.view.CanvasConnectionMap;
-import org.caleydo.core.serialize.DataInitializationData;
+import org.caleydo.core.serialize.DataDomainSerializationData;
+import org.caleydo.core.serialize.SerializationData;
 
 /**
  * This interface has to be implemented by environment specific groupware-manager classes.
@@ -69,12 +70,12 @@ public interface IGroupwareManager
 	public void setNetworkManager(NetworkManager networkManager);
 
 	/**
-	 * On clients it returns the {@link DataInitializationData} as retrieved from the server to startup a client
+	 * On clients it returns the {@link SerializationData} as retrieved from the server to startup a client
 	 * in the same manner as the server.
 	 * 
 	 * @return initialization parameters for clients to start
 	 */
-	public DataInitializationData getInitData();
+	public SerializationData getSerializationData();
 
 	/**
 	 * Propagates groupware connection lines to other caleydo applications.

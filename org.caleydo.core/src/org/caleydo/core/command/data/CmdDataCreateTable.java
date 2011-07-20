@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.Status;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class CmdDataCreateSet
+public class CmdDataCreateTable
 	extends ACmdCreational<DataTable> {
 
 	private ATableBasedDataDomain dataDomain;
@@ -27,7 +27,7 @@ public class CmdDataCreateSet
 	/**
 	 * Constructor.
 	 */
-	public CmdDataCreateSet() {
+	public CmdDataCreateTable() {
 		super(CommandType.CREATE_SET_DATA);
 
 		storageIDs = new ArrayList<Integer>();

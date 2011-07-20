@@ -31,7 +31,8 @@ public class SerializationManager {
 		try {
 			Collection<Class<? extends AEvent>> eventTypes = getSerializeableEventTypes();
 			projectTypes = new ArrayList<Class<?>>();
-			projectTypes.add(DataInitializationData.class);
+			projectTypes.add(SerializationData.class);
+			projectTypes.add(DataDomainSerializationData.class);
 			projectTypes.add(DataDomainList.class);
 			projectTypes.add(ViewList.class);
 			projectTypes.add(BasicInformation.class);

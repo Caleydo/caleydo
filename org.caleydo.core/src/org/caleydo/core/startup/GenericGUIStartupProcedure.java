@@ -2,8 +2,9 @@ package org.caleydo.core.startup;
 
 import java.util.List;
 
-import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.io.gui.ImportDataDialog;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.util.collection.Pair;
 
 /**
@@ -17,10 +18,9 @@ public class GenericGUIStartupProcedure
 	@Override
 	public void init(ApplicationInitData appInitData) {
 
-		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain();
-		cmd.setAttributes("org.caleydo.datadomain.generic");
-		cmd.doCommand();
-		dataDomain = cmd.getCreatedObject();
+		this.dataDomain =
+			(ATableBasedDataDomain) DataDomainManager.get()
+				.createDataDomain("org.caleydo.datadomain.generic");
 
 		super.init(appInitData);
 	}

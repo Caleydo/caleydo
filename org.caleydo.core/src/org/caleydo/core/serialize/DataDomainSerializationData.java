@@ -1,10 +1,6 @@
 package org.caleydo.core.serialize;
 
 import java.util.HashMap;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.StorageVirtualArray;
@@ -17,9 +13,7 @@ import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
  * @author Werner Puff
  * @author Alexander Lex
  */
-@XmlType
-@XmlRootElement
-public class DataInitializationData {
+public class DataDomainSerializationData {
 
 	/** defines the type of usage of the application */
 	private ATableBasedDataDomain dataDomain;
@@ -36,9 +30,6 @@ public class DataInitializationData {
 	/** virtual arrays of this application stored in relation with their their-key */
 	private HashMap<String, ContentVirtualArray> contentVAMap;
 	private HashMap<String, StorageVirtualArray> storageVAMap;
-
-	/** list of views in use, not used to sync remote clients */
-	private List<String> views;
 
 	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
@@ -70,14 +61,6 @@ public class DataInitializationData {
 
 	public void setStorageVAMap(HashMap<String, StorageVirtualArray> storageVAMap) {
 		this.storageVAMap = storageVAMap;
-	}
-
-	public List<String> getViewIDs() {
-		return views;
-	}
-
-	public void setViews(List<String> viewIDs) {
-		this.views = viewIDs;
 	}
 
 	public String getGeneClusterTree() {

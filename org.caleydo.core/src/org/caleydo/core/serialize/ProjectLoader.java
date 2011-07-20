@@ -45,14 +45,14 @@ public class ProjectLoader {
 	 *            name of the file to load the project from
 	 * @return initialization data for the application from which it can restore itself
 	 */
-	public DataInitializationData load(String fileName) {
+	public SerializationData load(String fileName) {
 
 		FileOperations.deleteDirectory(TEMP_PROJECT_DIR_NAME);
 
 		ZipUtils zipUtils = new ZipUtils();
 		zipUtils.unzipToDirectory(fileName, TEMP_PROJECT_DIR_NAME);
-		DataInitializationData initData = loadDirectory(TEMP_PROJECT_DIR_NAME);
-		return initData;
+
+		return loadDirectory(TEMP_PROJECT_DIR_NAME);
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class ProjectLoader {
 	 * 
 	 * @return initialization data for the application from which it can restore itself
 	 */
-	public DataInitializationData loadRecent() {
+	public SerializationData loadRecent() {
 		return loadDirectory(ProjectSaver.RECENT_PROJECT_DIR_NAME);
 	}
 
@@ -71,11 +71,11 @@ public class ProjectLoader {
 	 *            name of the directory to load the project from
 	 * @return initialization data for the application from which it can restore itself
 	 */
-	public DataInitializationData loadDirectory(String dirName) {
+	public SerializationData loadDirectory(String dirName) {
 
 		loadPlugins(dirName);
 
-		DataInitializationData initData = null;
+		SerializationData serializationData = null;
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 
@@ -103,16 +103,19 @@ public class ProjectLoader {
 				throw new IllegalStateException("Cannot load data domain list from project file");
 			}
 
-			initData = new DataInitializationData();
+			serializationData = new SerializationData();
 
 			for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
-
+				
 				Thread thread = new Thread(dataDomain, dataDomain.getDataDomainID());
 				thread.start();
 				if (dataDomain instanceof ATableBasedDataDomain) {
 
-					String setFileName = dirName + ProjectSaver.SET_DATA_FILE_NAME;
+					String extendedDirName = dirName + dataDomain.getDataDomainID() + "_";
+					String setFileName = extendedDirName + ProjectSaver.DATA_TABLE_FILE_NAME;
 
+					DataDomainSerializationData dataInitializationData = new DataDomainSerializationData();
+					
 					LoadDataParameters loadingParameters = dataDomain.getLoadDataParameters();
 					loadingParameters.setFileName(setFileName);
 					loadingParameters.setDataDomain((ATableBasedDataDomain) dataDomain);
@@ -120,7 +123,7 @@ public class ProjectLoader {
 					HashMap<String, ContentVirtualArray> contentVAMap =
 						new HashMap<String, ContentVirtualArray>(6);
 					String tmpType = DataTable.CONTENT;
-					contentVAMap.put(DataTable.CONTENT, loadContentVirtualArray(unmarshaller, dirName, tmpType));
+					contentVAMap.put(DataTable.CONTENT, loadContentVirtualArray(unmarshaller, extendedDirName, tmpType));
 					// tmpType = ContentVAType.CONTENT_CONTEXT;
 					// contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
 					// tmpType));
@@ -137,22 +140,23 @@ public class ProjectLoader {
 
 					String tempStorageType = DataTable.STORAGE;
 					storageVAMap.put(tempStorageType,
-						loadStorageVirtualArray(unmarshaller, dirName, tempStorageType));
+						loadStorageVirtualArray(unmarshaller, extendedDirName, tempStorageType));
 
 					// FIXME: this should be done like this:
 					// for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
 					// storageVAMap.put(type, loadStorageVirtualArray(unmarshaller, dirName, type));
 					// }
 
-					// TODO: now only the last set data domain is handled
-					initData.setDataDomain((ATableBasedDataDomain) dataDomain);
-					initData.setContentVAMap(contentVAMap);
-					initData.setStorageVAMap(storageVAMap);
+					dataInitializationData.setDataDomain((ATableBasedDataDomain) dataDomain);
+					dataInitializationData.setContentVAMap(contentVAMap);
+					dataInitializationData.setStorageVAMap(storageVAMap);
 
 					dataDomain.getLoadDataParameters().setGeneTreeFileName(
-						dirName + ProjectSaver.GENE_TREE_FILE_NAME);
+						extendedDirName + ProjectSaver.GENE_TREE_FILE_NAME);
 					dataDomain.getLoadDataParameters().setExperimentsFileName(
-						dirName + ProjectSaver.EXP_TREE_FILE_NAME);
+						extendedDirName + ProjectSaver.EXP_TREE_FILE_NAME);
+					
+					serializationData.addDataSerializationData(dataInitializationData);
 				}
 			}
 
@@ -167,14 +171,14 @@ public class ProjectLoader {
 			}
 
 			if (loadViews != null) {
-				initData.setViews(loadViews.getViews());
+				serializationData.setViews(loadViews.getViews());
 			}
 		}
 		catch (JAXBException ex) {
 			throw new RuntimeException("Error while loading project", ex);
 		}
 
-		return initData;
+		return serializationData;
 	}
 
 	private void loadPlugins(String dirName) {
