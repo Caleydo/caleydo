@@ -799,7 +799,9 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	}
 
 	public void updateDataDomain(IDataDomain dataDomain) {
-		if (dataNodesOfDataDomains.get(dataDomain) != null) {
+		DataNode dataNode = dataNodesOfDataDomains.get(dataDomain);
+		if (dataNode != null) {
+			dataNode.update();
 			setDisplayListDirty();
 		}
 	}

@@ -81,7 +81,7 @@ public class DataNode extends ADraggableDataGraphNode {
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
 		compGroupOverviewRenderer = new ComparisonGroupOverviewRenderer(this,
-				view, dragAndDropController);
+				view, dragAndDropController, getDimensionGroups());
 		compGroupLayout.setPixelGLConverter(pixelGLConverter);
 		compGroupLayout.setPixelSizeY(OVERVIEW_COMP_GROUP_HEIGHT_PIXELS);
 		// compGroupLayout.setPixelSizeX(compGroupOverviewRenderer.getMinWidthPixels());
@@ -303,5 +303,10 @@ public class DataNode extends ADraggableDataGraphNode {
 	@Override
 	public float getWidth() {
 		return pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
+	}
+	
+	@Override
+	public void update() {
+		compGroupOverviewRenderer.setDimensionGroups(getDimensionGroups());
 	}
 }

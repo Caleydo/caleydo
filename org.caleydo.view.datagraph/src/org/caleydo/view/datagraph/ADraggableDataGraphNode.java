@@ -54,7 +54,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 			@Override
 			public void dragged(Pick pick) {
 				if (!dragAndDropController.isDragging()) {
-					dragAndDropController.startDragging();
+					dragAndDropController.startDragging("NodeDrag");
 				}
 			}
 

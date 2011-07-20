@@ -42,4 +42,6 @@ public interface IDataGraphNode extends IDraggable {
 	public int getID();
 	
 	public void destroy();
+	
+	public void update();
 }

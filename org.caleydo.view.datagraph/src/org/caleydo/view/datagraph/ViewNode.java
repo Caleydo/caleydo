@@ -8,8 +8,14 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
+
+import org.caleydo.core.manager.picking.APickingListener;
+
 import org.caleydo.core.manager.picking.PickingType;
+
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -25,8 +31,10 @@ import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
+import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 
-public class ViewNode extends ADraggableDataGraphNode implements IDropArea{
+public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 
 	private final static int SPACING_PIXELS = 4;
 	private final static int CAPTION_HEIGHT_PIXELS = 16;
@@ -44,20 +52,22 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea{
 		super(graphLayout, view, dragAndDropController, id);
 
 		this.representedView = representedView;
-		
-		//TODO: this is not nice
-//		if(representedView instanceof GLVisBricks) {
-//			view.addSingleIDPickingListener(new APickingListener() {
-//				
-//				@Override
-//				public void dragged(Pick pick) {
-//					DragAndDropController dragAndDropController = ViewNode.this.dragAndDropController;
-//					if (dragAndDropController.isDragging()) {
-//						dragAndDropController.setDropArea(ViewNode.this);
-//					}
-//				}
-//			}, EPickingType.DATA_GRAPH_NODE.name(), id);
-//		}
+
+		// TODO: this is not nice
+		if (representedView instanceof GLVisBricks) {
+			view.addSingleIDPickingListener(new APickingListener() {
+
+				@Override
+				public void dragged(Pick pick) {
+					DragAndDropController dragAndDropController = ViewNode.this.dragAndDropController;
+					if (dragAndDropController.isDragging()
+							&& dragAndDropController.getDraggingMode().equals(
+									"DimensionGroupDrag")) {
+						dragAndDropController.setDropArea(ViewNode.this);
+					}
+				}
+			}, PickingType.DATA_GRAPH_NODE.name(), id);
+		}
 
 		setupLayout();
 	}
@@ -100,7 +110,7 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea{
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
 		compGroupOverviewRenderer = new ComparisonGroupOverviewRenderer(this,
-				view, dragAndDropController);
+				view, dragAndDropController, getDimensionGroups());
 		compGroupLayout.setPixelGLConverter(pixelGLConverter);
 		compGroupLayout.setPixelSizeY(OVERVIEW_COMP_GROUP_HEIGHT_PIXELS);
 		// compGroupLayout.setPixelSizeX(compGroupOverviewRenderer.getMinWidthPixels());
@@ -328,15 +338,36 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea{
 	public void handleDragOver(GL2 gl, Set<IDraggable> draggables,
 			float mouseCoordinateX, float mouseCoordinateY) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void handleDrop(GL2 gl, Set<IDraggable> draggables,
 			float mouseCoordinateX, float mouseCoordinateY,
 			DragAndDropController dragAndDropController) {
-		// TODO Auto-generated method stub
-		
+		ArrayList<ADimensionGroupData> dimensionGroupData = new ArrayList<ADimensionGroupData>();
+		for (IDraggable draggable : draggables) {
+			if (draggable instanceof ComparisonGroupRepresentation) {
+				ComparisonGroupRepresentation comparisonGroupRepresentation = (ComparisonGroupRepresentation) draggable;
+				dimensionGroupData.add(comparisonGroupRepresentation
+						.getDimensionGroupData());
+			}
+		}
+
+		if (!dimensionGroupData.isEmpty()) {
+			AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
+			event.setDimensionGroupData(dimensionGroupData);
+			event.setSender(this);
+			GeneralManager.get().getEventPublisher().triggerEvent(event);
+		}
+
+		dragAndDropController.clearDraggables();
+
+	}
+
+	@Override
+	public void update() {
+		compGroupOverviewRenderer.setDimensionGroups(getDimensionGroups());
 	}
 
 }

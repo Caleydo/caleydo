@@ -18,6 +18,7 @@ public class DragAndDropController {
 	private boolean isDraggingFirstTime;
 	private Point startDraggingWindowCoords;
 	private AGLView view;
+	private String draggingMode;
 
 	public DragAndDropController(AGLView view) {
 		draggables = new HashSet<IDraggable>();
@@ -33,6 +34,11 @@ public class DragAndDropController {
 
 	public void removeDraggable(IDraggable draggable) {
 		draggables.remove(draggable);
+	}
+
+	public void startDragging(String draggingMode) {
+		this.draggingMode = draggingMode;
+		startDragging();
 	}
 
 	public void startDragging() {
@@ -84,6 +90,7 @@ public class DragAndDropController {
 						fArTargetWorldCoordinates[1], this);
 
 				}
+				draggingMode = null;
 				view.setDisplayListDirty();
 			}
 
@@ -109,5 +116,9 @@ public class DragAndDropController {
 
 	public void setDraggingStartPosition(Point startPosition) {
 		startDraggingWindowCoords = startPosition;
+	}
+
+	public String getDraggingMode() {
+		return draggingMode;
 	}
 }
