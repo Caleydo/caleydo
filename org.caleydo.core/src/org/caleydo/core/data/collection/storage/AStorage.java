@@ -134,7 +134,7 @@ public abstract class AStorage
 	 */
 	public float getFloat(EDataRepresentation storageKind, int iIndex) {
 		if (!hashCContainers.containsKey(storageKind))
-			throw new IllegalArgumentException("Requested storage kind not produced");
+			throw new IllegalArgumentException("Requested storage kind " + storageKind +" not produced");
 		if (!(hashCContainers.get(storageKind) instanceof FloatCContainer))
 			throw new IllegalArgumentException("Requested storage kind is not of type float");
 
