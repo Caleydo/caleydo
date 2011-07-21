@@ -11,6 +11,7 @@ import org.caleydo.core.util.clusterer.nominal.AlphabeticalPartitioner;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -44,45 +45,51 @@ public class ClusterManager {
 	 */
 	public ClusterResult cluster(ClusterState clusterState) {
 
-		ClusterResult clusterResult = null;
+		try {
+			ClusterResult clusterResult = null;
 
-		switch (clusterState.getClustererAlgo()) {
-			case TREE_CLUSTERER:
-				clusterResult = runClustering(new TreeClusterer(), clusterState);
-				break;
-			case COBWEB_CLUSTERER:
-				clusterResult = runClustering(new HierarchicalClusterer(), clusterState);
-				break;
-			case AFFINITY_PROPAGATION:
-				clusterResult = runClustering(new AffinityClusterer(), clusterState);
-				break;
-			case KMEANS_CLUSTERER:
-				clusterResult = runClustering(new KMeansClusterer(), clusterState);
-				break;
-			case ALPHABETICAL:
-				clusterResult = runClustering(new AlphabeticalPartitioner(), clusterState);
-				break;
+			switch (clusterState.getClustererAlgo()) {
+				case TREE_CLUSTERER:
+					clusterResult = runClustering(new TreeClusterer(), clusterState);
+					break;
+				case COBWEB_CLUSTERER:
+					clusterResult = runClustering(new HierarchicalClusterer(), clusterState);
+					break;
+				case AFFINITY_PROPAGATION:
+					clusterResult = runClustering(new AffinityClusterer(), clusterState);
+					break;
+				case KMEANS_CLUSTERER:
+					clusterResult = runClustering(new KMeansClusterer(), clusterState);
+					break;
+				case ALPHABETICAL:
+					clusterResult = runClustering(new AlphabeticalPartitioner(), clusterState);
+					break;
+			}
+
+			if (clusterResult != null)
+				GeneralManager.get().getEventPublisher().triggerEvent(new UpdateViewEvent());
+
+			return clusterResult;
 		}
-
-		if (clusterResult == null) {
-
+		catch (final RuntimeException e) {
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					Shell shell = new Shell();
-					MessageBox messageBox = new MessageBox(shell, SWT.ERROR);
-					messageBox.setText("Error");
-					messageBox.setMessage("A problem occured during clustering!");
-					messageBox.open();
+					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							Shell shell = new Shell();
+							MessageBox messageBox = new MessageBox(shell, SWT.ERROR);
+							messageBox.setText("Error");
+							messageBox.setMessage("A problem occured during clustering!");
+							messageBox.open();
+						}
+					});
 				}
 			});
-
-		}
-		else {
-			GeneralManager.get().getEventPublisher().triggerEvent(new UpdateViewEvent());
 		}
 
-		return clusterResult;
+		return null;
 	}
 
 	private ClusterResult runClustering(AClusterer clusterer, ClusterState clusterState) {
@@ -145,6 +152,7 @@ public class ClusterManager {
 			tempResult.indices));
 		result.storageResult.setStorageClusterSizes(tempResult.clusterSizes);
 		result.storageResult.setStorageSampleElements(tempResult.sampleElements);
+
 		if (tempResult.tree == null) {
 			result.storageResult.setDefaultTree(true);
 		}
@@ -152,7 +160,7 @@ public class ClusterManager {
 			result.storageResult.setStorageTree(tempResult.tree);
 			set.getDataDomain().createDimensionGroupsFromStorageTree(tempResult.tree);
 			result.storageResult.setDefaultTree(false);
+			result.storageResult.getStorageTree().initializeIDTypes(clusterState.getStorageIDType());
 		}
-		result.storageResult.getStorageTree().initializeIDTypes(clusterState.getContentIDType());
 	}
 }

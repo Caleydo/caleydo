@@ -339,11 +339,13 @@ public abstract class ATableBasedDataDomain
 
 		ContentData contentData = set.getContentData(DataTable.CONTENT);
 		if (set.containsUncertaintyData())
+		{
 			ClusterHelper.calculateAggregatedUncertainties(contentData.getContentTree(), set);
-		ClusterHelper.calculateClusterAverages(contentData.getContentTree(),
-			EClustererType.CONTENT_CLUSTERING, set);
-		contentData.getContentTree().setSortingStrategy(ESortingStrategy.CERTAINTY);
-		contentData.updateVABasedOnSortingStrategy();
+			ClusterHelper.calculateClusterAverages(contentData.getContentTree(),
+				EClustererType.CONTENT_CLUSTERING, set);
+			contentData.getContentTree().setSortingStrategy(ESortingStrategy.CERTAINTY);
+			contentData.updateVABasedOnSortingStrategy();
+		}
 
 		// This should be done to avoid problems with group info in HHM
 

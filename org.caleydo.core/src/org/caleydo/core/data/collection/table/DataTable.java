@@ -374,18 +374,19 @@ public class DataTable
 		ClusterManager clusterManager = new ClusterManager(this);
 		ClusterResult result = clusterManager.cluster(clusterState);
 
-		ContentData contentResult = result.getContentResult();
-		if (contentResult != null) {
-			hashContentData.put(clusterState.getContentVAType(), contentResult);
+		if (result != null) {
+			ContentData contentResult = result.getContentResult();
+			if (contentResult != null) {
+				hashContentData.put(clusterState.getContentVAType(), contentResult);
+			}
+			StorageData storageResult = result.getStorageResult();
+			if (storageResult != null) {
+				hashStorageData.put(clusterState.getStorageVAType(), storageResult);
+			}
+			// }
+			// else
+			// throw new IllegalStateException("Cannot cluster a non-numerical or non-homogeneous Set");
 		}
-		StorageData storageResult = result.getStorageResult();
-		if (storageResult != null) {
-			hashStorageData.put(clusterState.getStorageVAType(), storageResult);
-		}
-		// }
-		// else
-		// throw new IllegalStateException("Cannot cluster a non-numerical or non-homogeneous Set");
-
 	}
 
 	/**
