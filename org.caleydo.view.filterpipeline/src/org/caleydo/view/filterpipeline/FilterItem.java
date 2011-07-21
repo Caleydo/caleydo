@@ -57,8 +57,8 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	public FilterItem(int id, Filter<DeltaType> filter, PickingManager pickingManager,
 			int iUniqueID) {
 		this.id = id;
-		pickingId = pickingManager.getPickingID(iUniqueID,
-				PickingType.FILTERPIPE_FILTER, id);
+		pickingId = pickingManager.getPickingID(iUniqueID, PickingType.FILTERPIPE_FILTER,
+				id);
 		this.filter = filter;
 	}
 
@@ -110,9 +110,14 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	public void setInput(VirtualArray<?, ?, ?> input) {
 		this.input = (VirtualArray<?, DeltaType, ?>) input;
 		output = this.input.clone();
-		outputUncertainty = this.input.clone();
+
+		if (filter.getVADeltaUncertainty() != null)
+			outputUncertainty = this.input.clone();
+
 		output.setDelta(filter.getVADelta());
-		outputUncertainty.setDelta(filter.getVADeltaUncertainty());
+
+		if (filter.getVADeltaUncertainty() != null)
+			outputUncertainty.setDelta(filter.getVADeltaUncertainty());
 	}
 
 	/**
@@ -132,7 +137,7 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	public VirtualArray<?, DeltaType, ?> getOutput() {
 		return output;
 	}
-	
+
 	/**
 	 * Get the uncertain items which passed this filter
 	 * 
@@ -140,7 +145,7 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	 */
 	public VirtualArray<?, DeltaType, ?> getUncertaintyOutput() {
 		return outputUncertainty;
-	}	
+	}
 
 	public int getSizeVADelta() {
 		return filter.getVADelta().size();

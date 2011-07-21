@@ -6,9 +6,10 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 
 /**
+ * 
  * @author Alexander Lex
  */
-public class NewFilterListener<FilterType extends Filter<?>, FilterManagerType extends FilterManager<?, FilterType, ?>>
+public abstract class NewFilterListener<FilterType extends Filter<?>, FilterManagerType extends FilterManager<?, FilterType, ?>>
 	extends AEventListener<FilterManagerType> {
 
 	@SuppressWarnings("unchecked")
@@ -17,7 +18,5 @@ public class NewFilterListener<FilterType extends Filter<?>, FilterManagerType e
 		if (event instanceof NewFilterEvent<?>) {
 			handler.addFilter(((NewFilterEvent<FilterType>) event).getFilter());
 		}
-
 	}
-
 }

@@ -9,6 +9,7 @@ import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.util.collection.Pair;
+import org.eclipse.jface.window.Window;
 
 /**
  * Startup procedure for project wizard.
@@ -22,8 +23,9 @@ public class GeneticGUIStartupProcedure
 
 	// NOTE: change also organism when setting another dataset
 	private static String REAL_DATA_SAMPLE_FILE =
-	 "data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
-		//"data/genome/microarray/kashofer/mouse/all_mice_plus_SN_only_with_mapping.csv";
+		"data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
+
+	// "data/genome/microarray/kashofer/mouse/all_mice_plus_SN_only_with_mapping.csv";
 
 	@Override
 	public void init(ApplicationInitData appInitData) {
@@ -40,7 +42,7 @@ public class GeneticGUIStartupProcedure
 		this.dataDomain =
 			(ATableBasedDataDomain) DataDomainManager.get()
 				.createDataDomain("org.caleydo.datadomain.genetic");
-		
+
 		super.init(appInitData);
 	}
 
@@ -48,12 +50,17 @@ public class GeneticGUIStartupProcedure
 	public void execute() {
 		super.execute();
 
+		ImportDataDialog dialog;
+
 		if (loadSampleData)
-			new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(), REAL_DATA_SAMPLE_FILE,
-				dataDomain).open();
+			dialog =
+				new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(),
+					REAL_DATA_SAMPLE_FILE, dataDomain);
 		else
-			new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(),
-				dataDomain).open();
+			dialog = new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(), dataDomain);
+
+		if (Window.CANCEL == dialog.open())
+			StartupProcessor.get().shutdown();
 
 	}
 

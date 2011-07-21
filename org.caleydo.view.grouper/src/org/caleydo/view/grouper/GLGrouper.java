@@ -31,9 +31,9 @@ import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -134,7 +134,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 	private ATableBasedDataDomain dataDomain;
 
-	private DataTable set;
+	private DataTable dataTable;
 
 	/**
 	 * Constructor.
@@ -206,7 +206,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 		for (Integer currentIndex : indexList) {
 
-			String nodeName = set.get(currentIndex).getLabel();
+			String nodeName = dataTable.get(currentIndex).getLabel();
 			int leafID = currentIndex;
 			ClusterNode currentNode = new ClusterNode(tree, nodeName, iLastUsedGroupID++,
 					false, leafID);
@@ -224,8 +224,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 		ClusterHelper.calculateClusterAverages(tree, EClustererType.STORAGE_CLUSTERING,
-				set);
-		set.getStorageData(storageVAType).setStorageTree(tree);
+				dataTable);
+		dataTable.getStorageData(storageVAType).setStorageTree(tree);
 		dataDomain.createDimensionGroupsFromStorageTree(tree);
 		// useCase.replaceVirtualArray(idCategory, vaType, virtualArray)
 	}
@@ -320,19 +320,19 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		// FIXME: do that differently.
 		// set = set.getStorageTree().getRoot().getMetaSet();
 		ClusterHelper.calculateClusterAverages(tree, EClustererType.STORAGE_CLUSTERING,
-				set);
+				dataTable);
 		tree.setDirty();
-		tree.createMetaSets((org.caleydo.core.data.collection.table.DataTable) set);
+		tree.createMetaSets((org.caleydo.core.data.collection.table.DataTable) dataTable);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
 		storageVA = new StorageVirtualArray(
 				org.caleydo.core.data.collection.table.DataTable.STORAGE, alIndices);
 
-		eventPublisher.triggerEvent(new ReplaceStorageVAInUseCaseEvent(set, dataDomain
+		eventPublisher.triggerEvent(new ReplaceStorageVAInUseCaseEvent(dataTable, dataDomain
 				.getDataDomainID(), storageVAType, storageVA));
 
 		// FIXME no one is notified that there is a new tree
-		set.getStorageData(storageVAType).setStorageTree(tree);
+		dataTable.getStorageData(storageVAType).setStorageTree(tree);
 		dataDomain.createDimensionGroupsFromStorageTree(tree);
 
 		UpdateViewEvent event = new UpdateViewEvent();
@@ -383,14 +383,12 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 			final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentComposite().getDisplay()
-				.asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						glParentView.getParentComposite()
-								.addKeyListener(glKeyListener);
-					}
-				});
+		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				glParentView.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		this.glMouseListener = glMouseListener;
 
@@ -542,8 +540,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -626,6 +624,24 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 							groupRep.getID())
 							&& groupRep != rootGroup) {
 
+						Set<Integer> selectedGroups = new HashSet<Integer>(
+								selectionManager.getElements(SelectionType.SELECTION));
+
+						Set<Integer> setClickedGroups = new HashSet<Integer>(
+								selectionManager.getElements(selectionTypeClicked));
+						ArrayList<ICompositeGraphic> orderedComposites = getOrderedCompositeList(
+								setClickedGroups, false);
+
+						ArrayList<DataTable> selectedTables = new ArrayList<DataTable>();
+						boolean isLeafContained = false;
+						for (ICompositeGraphic composite : orderedComposites) {
+							selectedTables.add(((GroupRepresentation) composite)
+									.getClusterNode().getMetaSet());
+
+							if (isLeafContained == false)
+								isLeafContained = composite.isLeaf();
+						}
+
 						RenameGroupItem renameItem = new RenameGroupItem(externalID);
 						contextMenu.addContextMenueItem(renameItem);
 						// groupRep.addAsDraggable(dragAndDropController);
@@ -640,45 +656,26 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 						// triggerSelectionEvents();
 						// setDisplayListDirty();
 
-						Set<Integer> setSelectedGroups = new HashSet<Integer>(
-								selectionManager.getElements(SelectionType.SELECTION));
-
 						CreateGroupItem createGroupItem = new CreateGroupItem(
-								setSelectedGroups);
+								selectedGroups);
 						contextMenu.addContextMenueItem(createGroupItem);
 
-						CopyGroupsItem copyGroupsItem = new CopyGroupsItem(
-								setSelectedGroups);
+						CopyGroupsItem copyGroupsItem = new CopyGroupsItem(selectedGroups);
 						contextMenu.addContextMenueItem(copyGroupsItem);
 
 						DeleteGroupsItem deleteGroupsItem = new DeleteGroupsItem(
-								setSelectedGroups);
+								selectedGroups);
 						contextMenu.addContextMenueItem(deleteGroupsItem);
 
-						Set<Integer> setClickedGroups = new HashSet<Integer>(
-								selectionManager.getElements(selectionTypeClicked));
-						ArrayList<ICompositeGraphic> orderedComposites = getOrderedCompositeList(
-								setClickedGroups, false);
-
 						AggregateGroupItem aggregateGroupItem = new AggregateGroupItem(
-								setSelectedGroups);
+								selectedGroups);
 						contextMenu.addContextMenueItem(aggregateGroupItem);
 
-						ArrayList<DataTable> selectedSets = new ArrayList<DataTable>();
-						boolean isLeafContained = false;
-						for (ICompositeGraphic composite : orderedComposites) {
-							selectedSets.add(((GroupRepresentation) composite)
-									.getClusterNode().getMetaSet());
-
-							if (isLeafContained == false)
-								isLeafContained = composite.isLeaf();
-						}
-
 						AddGroupsToVisBricksItem addGroupsToVisBricksItem = new AddGroupsToVisBricksItem(
-								selectedSets);
+								selectedTables);
 						contextMenu.addContextMenueItem(addGroupsToVisBricksItem);
 
-						if (Platform.getBundle("org.caleydo.util.r") != null && false) {
+						if (Platform.getBundle("org.caleydo.util.r") != null) {
 
 							contextMenu.addSeparator();
 
@@ -689,17 +686,17 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 							// leaf meta sets
 							if (!isLeafContained && orderedComposites.size() < 2) {
 								StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
-										selectedSets);
+										selectedTables);
 								contextMenu.addContextMenueItem(pValueReductionItem);
 							}
 
 							if (orderedComposites.size() == 2) {
 								StatisticsFoldChangeReductionItem foldChangeReductionItem = new StatisticsFoldChangeReductionItem(
-										selectedSets.get(0), selectedSets.get(1));
+										selectedTables.get(0), selectedTables.get(1));
 								contextMenu.addContextMenueItem(foldChangeReductionItem);
 
 								StatisticsTwoSidedTTestReductionItem twoSidedTTestReductionItem = new StatisticsTwoSidedTTestReductionItem(
-										selectedSets);
+										selectedTables);
 								contextMenu
 										.addContextMenueItem(twoSidedTTestReductionItem);
 							}
@@ -710,12 +707,12 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 							contextMenu.addSeparator();
 
 							CompareGroupsItem compareGroupsItem = new CompareGroupsItem(
-									selectedSets);
+									selectedTables);
 							contextMenu.addContextMenueItem(compareGroupsItem);
 						}
 
 						Log2ForSetItem log2ForSetItem = new Log2ForSetItem(
-								selectedSets.get(0));
+								selectedTables.get(0));
 						contextMenu.addContextMenueItem(log2ForSetItem);
 
 						bContextMenueItemsAvailable = true;
@@ -1292,7 +1289,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		if (selectionDelta.getIDType() == selectionManager.getIDType()
 				|| selectionDelta.getIDType() == dataDomain.getStorageIDType()) {
 			Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
-			Tree<ClusterNode> experimentTree = set.getStorageData(storageVAType)
+			Tree<ClusterNode> experimentTree = dataTable.getStorageData(storageVAType)
 					.getStorageTree();
 
 			if (experimentTree != null) {
@@ -1375,16 +1372,16 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 
 		this.dataDomain = dataDomain;
-		set = this.dataDomain.getDataTable();
+		dataTable = this.dataDomain.getDataTable();
 
-		storageVA = set.getStorageData(org.caleydo.core.data.collection.table.DataTable.STORAGE)
-				.getStorageVA();
+		storageVA = dataTable.getStorageData(
+				org.caleydo.core.data.collection.table.DataTable.STORAGE).getStorageVA();
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager, uniqueID,
 				renderStyle);
-		if (set.getStorageData(storageVAType).getStorageTree() != null) {
+		if (dataTable.getStorageData(storageVAType).getStorageTree() != null) {
 			// FIXME: do that differently.
 			// set = set.getStorageTree().getRoot().getMetaSet();
-			tree = set.getStorageData(storageVAType).getStorageTree();
+			tree = dataTable.getStorageData(storageVAType).getStorageTree();
 
 			initHierarchy(tree);
 		} else {

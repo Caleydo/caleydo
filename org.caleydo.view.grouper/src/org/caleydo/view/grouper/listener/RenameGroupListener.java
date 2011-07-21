@@ -14,7 +14,5 @@ public class RenameGroupListener extends AEventListener<GLGrouper> {
 			copyGroupsEvent = (RenameGroupEvent) event;
 			handler.renameGroup(copyGroupsEvent.getGroupID());
 		}
-
 	}
-
 }

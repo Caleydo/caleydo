@@ -18,7 +18,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
-import org.caleydo.core.startup.StartupProcessor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -89,7 +88,7 @@ public class ImportDataDialog
 	private ATableBasedDataDomain dataDomain = null;
 
 	// FIXME: this is never set to false. for loading general data this needs to be set.
-	boolean isGenetic = true;
+	private boolean isGenetic = true;
 
 	public ImportDataDialog(Shell parentShell) {
 		super(parentShell);
@@ -140,12 +139,6 @@ public class ImportDataDialog
 		super.okPressed();
 	}
 
-	@Override
-	protected void cancelPressed() {
-		super.cancelPressed();
-		StartupProcessor.get().shutdown();
-	}
-
 	private void createGUI(Composite parent) {
 		int numGridCols = 5;
 
@@ -184,10 +177,8 @@ public class ImportDataDialog
 
 				createDataPreviewTable("\t");
 
-				if (loadDataParameters.getDataDomain().getDataDomainID()
-					.equals("org.caleydo.datadomain.genetic")) {
-					determineFileIDType();
-				}
+//				if (isGenetic)
+//					determineFileIDType();
 			}
 		});
 
@@ -268,9 +259,6 @@ public class ImportDataDialog
 			// mathFilterCombo.select(1);
 
 			createDataPreviewTable("\t");
-
-			if (isGenetic)
-				determineFileIDType();
 		}
 	}
 
@@ -333,11 +321,6 @@ public class ImportDataDialog
 
 				createDataPreviewTable("\t");
 
-				if (loadDataParameters.getFileName().isEmpty())
-					return;
-
-				createDataPreviewTable("\t");
-
 				composite.pack();
 			}
 		});
@@ -351,11 +334,6 @@ public class ImportDataDialog
 				buttonDelimiter[4].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
 				txtCustomizedDelimiter.setEnabled(false);
-
-				if (loadDataParameters.getFileName().isEmpty())
-					return;
-
-				createDataPreviewTable(";");
 
 				if (loadDataParameters.getFileName().isEmpty())
 					return;
@@ -381,11 +359,6 @@ public class ImportDataDialog
 
 				createDataPreviewTable(",");
 
-				if (loadDataParameters.getFileName().isEmpty())
-					return;
-
-				createDataPreviewTable(",");
-
 				composite.pack();
 			}
 		});
@@ -399,11 +372,6 @@ public class ImportDataDialog
 				buttonDelimiter[4].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
 				txtCustomizedDelimiter.setEnabled(false);
-
-				if (loadDataParameters.getFileName().isEmpty())
-					return;
-
-				createDataPreviewTable(".");
 
 				if (loadDataParameters.getFileName().isEmpty())
 					return;
@@ -429,11 +397,6 @@ public class ImportDataDialog
 
 				createDataPreviewTable(" ");
 
-				if (loadDataParameters.getFileName().isEmpty())
-					return;
-
-				createDataPreviewTable(" ");
-
 				composite.pack();
 			}
 		});
@@ -447,11 +410,6 @@ public class ImportDataDialog
 				buttonDelimiter[3].setSelection(false);
 				buttonDelimiter[4].setSelection(false);
 				txtCustomizedDelimiter.setEnabled(true);
-
-				if (loadDataParameters.getFileName().isEmpty())
-					return;
-
-				createDataPreviewTable(" ");
 
 				if (loadDataParameters.getFileName().isEmpty())
 					return;
@@ -478,7 +436,6 @@ public class ImportDataDialog
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				mathFilterMode = mathFilterCombo.getText();
-
 			}
 		});
 
@@ -571,6 +528,7 @@ public class ImportDataDialog
 	}
 
 	private void createDataPreviewTable(final String sDelimiter) {
+
 		this.loadDataParameters.setDelimiter(sDelimiter);
 
 		// boolean clusterInfo = false;
@@ -699,6 +657,9 @@ public class ImportDataDialog
 		catch (IOException ioe) {
 			throw new IllegalStateException("Input/output problem!");
 		}
+		
+		if (isGenetic)
+			determineFileIDType();
 	}
 
 	private void createDataClassBar() {

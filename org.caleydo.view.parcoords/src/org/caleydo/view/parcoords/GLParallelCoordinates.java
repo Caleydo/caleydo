@@ -1775,6 +1775,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		StorageFilter filter = new StorageFilter();
 		filter.setVADelta(delta);
 		filter.setLabel(label);
+		filter.setDataDomain(dataDomain);
 
 		NewStorageFilterEvent filterEvent = new NewStorageFilterEvent();
 		filterEvent.setFilter(filter);

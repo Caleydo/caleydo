@@ -93,6 +93,10 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	}
 
 	public float getUncertaintyHeightRight() {
+		
+		if (filter.getUncertaintyOutput() == null)
+			return 0;
+		
 		return heightRight - heightRight
 				* ((float)filter.getUncertaintyOutput().size() / filter.getOutput().size());
 	}

@@ -631,7 +631,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 	public void updateFilterPipeline() {
 		pipelineNeedsUpdate = false;
 
-		Logger.log(new Status(IStatus.INFO, this.toString(), "Filterupdate: filterType="
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Filter update: filterType="
 				+ filterType));
 
 		filterList.clear();

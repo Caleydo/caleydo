@@ -193,7 +193,7 @@ public class ViewManager
 	}
 
 	public void stopAnimator() {
-		if (fpsAnimator.isAnimating())
+		if (fpsAnimator != null && fpsAnimator.isAnimating())
 			fpsAnimator.stop();
 	}
 
