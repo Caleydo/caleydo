@@ -206,7 +206,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		float defaultHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(brickLayout.getDefaultHeightPixels());
 		float defaultWidth = pixelGLConverter
-				.getGLHeightForPixelHeight(brickLayout.getDefaultWidthPixels());
+				.getGLWidthForPixelWidth(brickLayout.getDefaultWidthPixels());
 		wrappingLayout.setAbsoluteSizeY(defaultHeight);
 		wrappingLayout.setAbsoluteSizeX(defaultWidth);
 		templateRenderer.updateLayout();

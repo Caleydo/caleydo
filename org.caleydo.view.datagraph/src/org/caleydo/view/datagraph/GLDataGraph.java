@@ -108,44 +108,44 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				.getDataDomainGraph();
 
 		for (IDataDomain dataDomain : dataDomainGraph.getDataDomains()) {
-//			DataNode dataNode = new DataNode(graphLayout, this,
-//					dragAndDropController, lastNodeID++, dataDomain);
-//			boolean nodeAdded = false;
-//			for (DataNode node : dataNodes) {
-//				if (node.getDataDomain() == dataDomain) {
-//					dataNode = node;
-//					nodeAdded = true;
-//					break;
-//				}
-//			}
-//			if (!nodeAdded) {
-//				dataGraph.addNode(dataNode);
-//				dataNodes.add(dataNode);
-//				dataNodesOfDataDomains.put(dataNode.getDataDomain(), dataNode);
-//			}
-//
-//			Set<IDataDomain> neighbors = dataDomainGraph
-//					.getNeighboursOf(dataDomain);
-//
-//			for (IDataDomain neighborDataDomain : neighbors) {
-//				nodeAdded = false;
-//				for (DataNode node : dataNodes) {
-//					if (node.getDataDomain() == neighborDataDomain) {
-//						dataGraph.addEdge(dataNode, node);
-//						nodeAdded = true;
-//						break;
-//					}
-//				}
-//				if (!nodeAdded) {
-//					DataNode node = new DataNode(graphLayout, this,
-//							dragAndDropController, lastNodeID++,
-//							neighborDataDomain);
-//					dataGraph.addNode(node);
-//					dataNodes.add(node);
-//					dataNodesOfDataDomains.put(node.getDataDomain(), node);
-//					dataGraph.addEdge(dataNode, node);
-//				}
-//			}
+			// DataNode dataNode = new DataNode(graphLayout, this,
+			// dragAndDropController, lastNodeID++, dataDomain);
+			// boolean nodeAdded = false;
+			// for (DataNode node : dataNodes) {
+			// if (node.getDataDomain() == dataDomain) {
+			// dataNode = node;
+			// nodeAdded = true;
+			// break;
+			// }
+			// }
+			// if (!nodeAdded) {
+			// dataGraph.addNode(dataNode);
+			// dataNodes.add(dataNode);
+			// dataNodesOfDataDomains.put(dataNode.getDataDomain(), dataNode);
+			// }
+			//
+			// Set<IDataDomain> neighbors = dataDomainGraph
+			// .getNeighboursOf(dataDomain);
+			//
+			// for (IDataDomain neighborDataDomain : neighbors) {
+			// nodeAdded = false;
+			// for (DataNode node : dataNodes) {
+			// if (node.getDataDomain() == neighborDataDomain) {
+			// dataGraph.addEdge(dataNode, node);
+			// nodeAdded = true;
+			// break;
+			// }
+			// }
+			// if (!nodeAdded) {
+			// DataNode node = new DataNode(graphLayout, this,
+			// dragAndDropController, lastNodeID++,
+			// neighborDataDomain);
+			// dataGraph.addNode(node);
+			// dataNodes.add(node);
+			// dataNodesOfDataDomains.put(node.getDataDomain(), node);
+			// dataGraph.addEdge(dataNode, node);
+			// }
+			// }
 			addDataDomain(dataDomain);
 		}
 
@@ -366,16 +366,20 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	private void renderEdges(GL2 gl) {
 
+		List<Pair<IDataGraphNode, IDataGraphNode>> bandConnectedNodes = new ArrayList<Pair<IDataGraphNode, IDataGraphNode>>();
+
 		for (Pair<IDataGraphNode, IDataGraphNode> edge : dataGraph
 				.getAllEdges()) {
 
 			// Works because there are no edges between view nodes
 			if ((edge.getFirst() instanceof ViewNode)
 					|| (edge.getSecond() instanceof ViewNode)) {
-				renderConnectionBands(gl, edge.getFirst(), edge.getSecond());
+				//Render later in transparent in foreground
+				bandConnectedNodes.add(edge);
 			} else {
 
-				gl.glPushAttrib(GL2.GL_LINE_BIT);
+				gl.glPushAttrib(GL2.GL_LINE_BIT | GL2.GL_COLOR_BUFFER_BIT);
+				gl.glColor3f(0, 0, 0);
 				gl.glLineWidth(2);
 				gl.glBegin(GL2.GL_LINES);
 				Point2D position1 = graphLayout
@@ -397,6 +401,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				gl.glEnd();
 				gl.glPopAttrib();
 			}
+		}
+		
+		for(Pair<IDataGraphNode, IDataGraphNode> edge : bandConnectedNodes) {
+			renderConnectionBands(gl, edge.getFirst(), edge.getSecond());
 		}
 
 	}
@@ -848,7 +856,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				dataGraph.addEdge(dataNode, node);
 			}
 		}
-		
+
 		applyAutomaticLayout = true;
 		setDisplayListDirty();
 	}

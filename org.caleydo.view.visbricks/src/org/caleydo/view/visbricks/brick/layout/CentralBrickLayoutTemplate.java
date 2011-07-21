@@ -133,9 +133,9 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		}
 		viewLayout.setRenderer(viewRenderer);
 
-		Row headerBar = createHeaderBar();
-		Row toolBar = createToolBar();
-		Row footerBar = createFooterBar();
+		headerBar = createHeaderBar();
+		toolBar = createToolBar();
+		footerBar = createFooterBar();
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
 		spacingLayoutY.setPixelGLConverter(pixelGLConverter);

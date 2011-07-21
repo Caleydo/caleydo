@@ -32,7 +32,7 @@ public class ComparisonGroupRepresentation implements IDraggable {
 
 	public void render(GL2 gl) {
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
-		
+
 		gl.glColor3f(0.6f, 0.6f, 0.6f);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, 0.1f);
@@ -120,6 +120,7 @@ public class ComparisonGroupRepresentation implements IDraggable {
 	@Override
 	public void handleDrop(GL2 gl, float mouseCoordinateX,
 			float mouseCoordinateY) {
+		draggingPosition.setLocation(0,0);
 	}
 
 }

@@ -204,14 +204,19 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 
 		Pair<Point2D, Point2D> anchorPoints = compGroupOverviewRenderer
 				.getAnchorPointsOfDimensionGroup(dimensionGroup);
-		anchorPoints.getFirst().setLocation(
+
+		Point2D first = (Point2D)anchorPoints.getFirst().clone();
+		Point2D second = (Point2D)anchorPoints.getSecond().clone();
+		
+		first.setLocation(
 				anchorPoints.getFirst().getX() + x - width / 2.0f + spacingX,
 				anchorPoints.getFirst().getY() + y - height / 2.0f + spacingY);
-		anchorPoints.getSecond().setLocation(
+		second.setLocation(
 				anchorPoints.getSecond().getX() + x - width / 2.0f + spacingX,
 				anchorPoints.getSecond().getY() + y - height / 2.0f + spacingY);
+		
 
-		return anchorPoints;
+		return new Pair<Point2D, Point2D>(first, second);
 	}
 
 	@Override
