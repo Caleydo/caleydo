@@ -2,11 +2,11 @@ package org.caleydo.core.data.collection.table;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.storage.AStorage;
+import org.caleydo.core.data.collection.storage.ADimension;
 import org.caleydo.core.data.collection.table.statistics.StatisticsResult;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.id.ManagedObjectType;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
@@ -38,7 +38,7 @@ public class SubDataTable
 		this.dataDomain = originalSet.getDataDomain();
 		// init();
 
-		this.uniqueID = GeneralManager.get().getIDCreator().createID(ManagedObjectType.SET);
+		this.uniqueID = GeneralManager.get().getIDCreator().createID(ManagedObjectType.DATA_TABLE);
 		// this.setSetType(originalSet.getSetType());
 		// FIXME: this is not always true, but if we create the MetaSet from the serialization, we didn't
 		// check yet whether it was homogeneous
@@ -46,19 +46,19 @@ public class SubDataTable
 		this.externalDataRep = originalSet.getExternalDataRep();
 
 		// this.hashContentData = (HashMap<String, ContentData>) originalSet.hashContentData.clone();
-		this.hashContentData = (HashMap<String, ContentData>) originalSet.hashContentData.clone();
+		this.hashContentData = (HashMap<String, RecordData>) originalSet.hashContentData.clone();
 
-		this.hashStorages = new HashMap<Integer, AStorage>();
+		this.hashDimensions = new HashMap<Integer, ADimension>();
 
-		defaultStorageData = new StorageData();
-		defaultStorageData.setStorageVA(new StorageVirtualArray(STORAGE));
-		defaultStorageData.setStorageTree(storageTree);
-		defaultStorageData.setStorageTreeRoot(storageTreeRoot);
+		defaultDimensionData = new DimensionData();
+		defaultDimensionData.setStorageVA(new DimensionVirtualArray(DIMENSION));
+		defaultDimensionData.setStorageTree(storageTree);
+		defaultDimensionData.setStorageTreeRoot(storageTreeRoot);
 
-		hashStorageData = new HashMap<String, StorageData>();
-		hashStorageData.put(STORAGE, defaultStorageData.clone());
+		hashDimensionData = new HashMap<String, DimensionData>();
+		hashDimensionData.put(DIMENSION, defaultDimensionData.clone());
 
-		defaultStorageData.setStorageVA(new StorageVirtualArray(STORAGE));
+		defaultDimensionData.setStorageVA(new DimensionVirtualArray(DIMENSION));
 		statisticsResult = new StatisticsResult(this);
 
 		metaData = new MetaData(this);

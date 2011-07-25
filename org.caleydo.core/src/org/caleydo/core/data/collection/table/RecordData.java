@@ -16,7 +16,7 @@ import org.caleydo.core.util.clusterer.ClusterNode;
  * 
  * @author Alexander Lex
  */
-public class ContentData {
+public class RecordData {
 	ContentVirtualArray contentVA;
 	/** indices of examples (cluster centers) */
 	ArrayList<Integer> contentSampleElements;
@@ -32,7 +32,7 @@ public class ContentData {
 	// public ContentData() {
 	// }
 
-	public ContentData(IDType contentIDType) {
+	public RecordData(IDType contentIDType) {
 		this.contentIDIdType = contentIDType;
 	}
 
@@ -138,7 +138,7 @@ public class ContentData {
 	public void updateVABasedOnSortingStrategy() {
 //		ContentGroupList groupList = contentVA.getGroupList();
 
-		contentVA = new ContentVirtualArray(DataTable.CONTENT, contentTree.getRoot().getLeaveIds());
+		contentVA = new ContentVirtualArray(DataTable.RECORD, contentTree.getRoot().getLeaveIds());
 		contentVA.buildNewGroupList(contentTree.getRoot().getChildren());
 //		contentVA.setGroupList(groupList);
 	}

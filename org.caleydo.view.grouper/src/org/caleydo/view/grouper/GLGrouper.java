@@ -22,10 +22,10 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
+import org.caleydo.core.manager.event.data.ReplaceDimensionVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
@@ -325,10 +325,10 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		tree.createMetaSets((org.caleydo.core.data.collection.table.DataTable) dataTable);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
-		storageVA = new StorageVirtualArray(
-				org.caleydo.core.data.collection.table.DataTable.STORAGE, alIndices);
+		storageVA = new DimensionVirtualArray(
+				org.caleydo.core.data.collection.table.DataTable.DIMENSION, alIndices);
 
-		eventPublisher.triggerEvent(new ReplaceStorageVAInUseCaseEvent(dataTable, dataDomain
+		eventPublisher.triggerEvent(new ReplaceDimensionVAInUseCaseEvent(dataTable, dataDomain
 				.getDataDomainID(), storageVAType, storageVA));
 
 		// FIXME no one is notified that there is a new tree
@@ -1375,7 +1375,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		dataTable = this.dataDomain.getDataTable();
 
 		storageVA = dataTable.getStorageData(
-				org.caleydo.core.data.collection.table.DataTable.STORAGE).getStorageVA();
+				org.caleydo.core.data.collection.table.DataTable.DIMENSION).getStorageVA();
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager, uniqueID,
 				renderStyle);
 		if (dataTable.getStorageData(storageVAType).getStorageTree() != null) {

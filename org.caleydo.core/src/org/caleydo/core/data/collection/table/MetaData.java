@@ -2,11 +2,11 @@ package org.caleydo.core.data.collection.table;
 
 import javax.naming.OperationNotSupportedException;
 
-import org.caleydo.core.data.collection.EExternalDataRepresentation;
+import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.storage.AStorage;
-import org.caleydo.core.data.collection.storage.NominalStorage;
-import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.collection.storage.ADimension;
+import org.caleydo.core.data.collection.storage.NominalDimension;
+import org.caleydo.core.data.collection.storage.NumericalDimension;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 
 /**
@@ -36,7 +36,7 @@ public class MetaData {
 	 * @return
 	 */
 	public int size() {
-		return table.hashStorages.size();
+		return table.hashDimensions.size();
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class MetaData {
 	 */
 	public int depth() {
 		if (depth == 0) {
-			for (AStorage storage : table.hashStorages.values()) {
+			for (ADimension storage : table.hashDimensions.values()) {
 				if (depth == 0)
 					depth = storage.size();
 				else {
@@ -76,8 +76,8 @@ public class MetaData {
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
-		for (AStorage storage : table.hashStorages.values()) {
-			NumericalStorage nStorage = (NumericalStorage) storage;
+		for (ADimension storage : table.hashDimensions.values()) {
+			NumericalDimension nStorage = (NumericalDimension) storage;
 			Histogram storageHistogram = nStorage.getHistogram();
 
 			if (bIsFirstLoop) {
@@ -113,9 +113,9 @@ public class MetaData {
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
-		for (AStorage storage : table.hashStorages.values()) {
-			NumericalStorage nStorage = (NumericalStorage) storage;
-			Histogram storageHistogram = nStorage.getHistogram(table.defaultContentData.getContentVA());
+		for (ADimension storage : table.hashDimensions.values()) {
+			NumericalDimension nStorage = (NumericalDimension) storage;
+			Histogram storageHistogram = nStorage.getHistogram(table.defaultRecordData.getContentVA());
 
 			if (bIsFirstLoop) {
 				bIsFirstLoop = false;
@@ -151,8 +151,8 @@ public class MetaData {
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
-		for (AStorage storage : table.hashStorages.values()) {
-			NumericalStorage nStorage = (NumericalStorage) storage;
+		for (ADimension storage : table.hashDimensions.values()) {
+			NumericalDimension nStorage = (NumericalDimension) storage;
 			Histogram storageHistogram = nStorage.getHistogram(contentVA);
 
 			if (bIsFirstLoop) {
@@ -226,7 +226,7 @@ public class MetaData {
 	 *             when executed on nominal data
 	 * @return The absolute minimum value in the set in the specified data representation.
 	 */
-	public double getMinAs(EExternalDataRepresentation dataRepresentation) {
+	public double getMinAs(ExternalDataRepresentation dataRepresentation) {
 		if (min == Double.MAX_VALUE) {
 			calculateGlobalExtrema();
 		}
@@ -246,7 +246,7 @@ public class MetaData {
 	 *             when executed on nominal data
 	 * @return The absolute maximum value in the set in the specified data representation.
 	 */
-	public double getMaxAs(EExternalDataRepresentation dataRepresentation) {
+	public double getMaxAs(ExternalDataRepresentation dataRepresentation) {
 		if (max == Double.MIN_VALUE) {
 			calculateGlobalExtrema();
 		}
@@ -266,7 +266,7 @@ public class MetaData {
 	 *            Data representation the raw value shall be converted to.
 	 * @return Value in the specified data representation converted from the raw value.
 	 */
-	private double getDataRepFromRaw(double dRaw, EExternalDataRepresentation dataRepresentation) {
+	private double getDataRepFromRaw(double dRaw, ExternalDataRepresentation dataRepresentation) {
 		switch (dataRepresentation) {
 			case NORMAL:
 				return dRaw;
@@ -305,8 +305,8 @@ public class MetaData {
 		double dTemp = 1.0;
 
 		if (table.dataTableType.equals(EDataTableDataType.NUMERIC)) {
-			for (AStorage storage : table.hashStorages.values()) {
-				NumericalStorage nStorage = (NumericalStorage) storage;
+			for (ADimension storage : table.hashDimensions.values()) {
+				NumericalDimension nStorage = (NumericalDimension) storage;
 				dTemp = nStorage.getMin();
 				if (!bArtificialMin && dTemp < min) {
 					min = dTemp;
@@ -317,7 +317,7 @@ public class MetaData {
 				}
 			}
 		}
-		else if (table.hashStorages.get(0) instanceof NominalStorage<?>)
+		else if (table.hashDimensions.get(0) instanceof NominalDimension<?>)
 			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
 				+ "on nominal data");
 	}

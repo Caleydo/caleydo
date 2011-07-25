@@ -174,7 +174,7 @@ public class FilterRepresentationPValue extends
 
 	private void createVADelta(ContentFilter subFilter) {
 
-		ContentVADelta contentVADelta = new ContentVADelta(DataTable.CONTENT, subFilter
+		ContentVADelta contentVADelta = new ContentVADelta(DataTable.RECORD, subFilter
 				.getDataDomain().getContentIDType());
 		ContentVirtualArray contentVA = subFilter.getDataDomain()
 				.getContentFilterManager().getBaseVA();

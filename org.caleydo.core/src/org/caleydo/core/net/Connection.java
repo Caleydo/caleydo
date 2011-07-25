@@ -14,7 +14,7 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;

@@ -12,7 +12,7 @@ import javax.xml.bind.Unmarshaller;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.BasicInformation;
 import org.caleydo.core.manager.GeneralManager;
@@ -122,8 +122,8 @@ public class ProjectLoader {
 
 					HashMap<String, ContentVirtualArray> contentVAMap =
 						new HashMap<String, ContentVirtualArray>(6);
-					String tmpType = DataTable.CONTENT;
-					contentVAMap.put(DataTable.CONTENT, loadContentVirtualArray(unmarshaller, extendedDirName, tmpType));
+					String tmpType = DataTable.RECORD;
+					contentVAMap.put(DataTable.RECORD, loadContentVirtualArray(unmarshaller, extendedDirName, tmpType));
 					// tmpType = ContentVAType.CONTENT_CONTEXT;
 					// contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
 					// tmpType));
@@ -135,10 +135,10 @@ public class ProjectLoader {
 					// contentVAMap.put(type, loadContentVirtualArray(unmarshaller, dirName, type));
 					// }
 
-					HashMap<String, StorageVirtualArray> storageVAMap =
-						new HashMap<String, StorageVirtualArray>(2);
+					HashMap<String, DimensionVirtualArray> storageVAMap =
+						new HashMap<String, DimensionVirtualArray>(2);
 
-					String tempStorageType = DataTable.STORAGE;
+					String tempStorageType = DataTable.DIMENSION;
 					storageVAMap.put(tempStorageType,
 						loadStorageVirtualArray(unmarshaller, extendedDirName, tempStorageType));
 
@@ -235,17 +235,10 @@ public class ProjectLoader {
 		return va;
 	}
 
-	private StorageVirtualArray loadStorageVirtualArray(Unmarshaller unmarshaller, String dir, String type)
+	private DimensionVirtualArray loadStorageVirtualArray(Unmarshaller unmarshaller, String dir, String type)
 		throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
-		StorageVirtualArray va = (StorageVirtualArray) unmarshaller.unmarshal(new File(fileName));
+		DimensionVirtualArray va = (DimensionVirtualArray) unmarshaller.unmarshal(new File(fileName));
 		return va;
 	}
-
-	private StorageVirtualArray load(Unmarshaller unmarshaller, String dir, String type) throws JAXBException {
-		String fileName = dir + "va_" + type.toString() + ".xml";
-		StorageVirtualArray va = (StorageVirtualArray) unmarshaller.unmarshal(new File(fileName));
-		return va;
-	}
-
 }

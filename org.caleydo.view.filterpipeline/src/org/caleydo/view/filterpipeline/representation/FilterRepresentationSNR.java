@@ -248,10 +248,10 @@ public class FilterRepresentationSNR extends
 
 	private void createVADelta(ContentFilter subFilter) {
 
-		ContentVADelta contentVADelta = new ContentVADelta(DataTable.CONTENT, subFilter
+		ContentVADelta contentVADelta = new ContentVADelta(DataTable.RECORD, subFilter
 				.getDataDomain().getContentIDType());
 
-		ContentVADelta uncertaintyContentVADelta = new ContentVADelta(DataTable.CONTENT,
+		ContentVADelta uncertaintyContentVADelta = new ContentVADelta(DataTable.RECORD,
 				subFilter.getDataDomain().getContentIDType());
 
 		ContentVirtualArray contentVA = subFilter.getDataDomain()

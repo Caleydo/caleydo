@@ -4,7 +4,7 @@ import java.util.EnumMap;
 import java.util.Iterator;
 
 import org.caleydo.core.data.AUniqueObject;
-import org.caleydo.core.data.collection.EExternalDataRepresentation;
+import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.ICollection;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainerIterator;
@@ -27,28 +27,29 @@ import org.caleydo.core.manager.GeneralManager;
  * @author Alexander Lex
  */
 
-public abstract class AStorage
+public abstract class ADimension
 	extends AUniqueObject
 	implements ICollection {
-	protected EnumMap<EDataRepresentation, ICContainer> hashCContainers;
+	
+	protected EnumMap<DataRepresentation, ICContainer> hashCContainers;
 
 	protected String label;
 
 	boolean isRawDataSet = false;
 
-	ERawDataType rawDataType = ERawDataType.UNDEFINED;
+	RawDataType rawDataType = RawDataType.UNDEFINED;
 
-	EDataRepresentation dataRep;
+	DataRepresentation dataRep;
 
 	/**
 	 * Constructor Initializes objects
 	 */
-	public AStorage(int iUniqueID) {
+	public ADimension(int iUniqueID) {
 		super(iUniqueID);
 
-		GeneralManager.get().getStorageManager().registerItem(this);
+		GeneralManager.get().getDimensionManager().registerItem(this);
 
-		hashCContainers = new EnumMap<EDataRepresentation, ICContainer>(EDataRepresentation.class);
+		hashCContainers = new EnumMap<DataRepresentation, ICContainer>(DataRepresentation.class);
 		label = new String("Not specified");
 	}
 
@@ -57,7 +58,7 @@ public abstract class AStorage
 	 * 
 	 * @return a value of ERawDataType
 	 */
-	public ERawDataType getRawDataType() {
+	public RawDataType getRawDataType() {
 		return rawDataType;
 	}
 
@@ -83,11 +84,11 @@ public abstract class AStorage
 			throw new IllegalStateException("Raw data was already set in Storage " + uniqueID
 				+ " , tried to set again.");
 
-		rawDataType = ERawDataType.FLOAT;
+		rawDataType = RawDataType.FLOAT;
 		isRawDataSet = true;
 
 		FloatCContainer container = new FloatCContainer(fArRawData);
-		hashCContainers.put(EDataRepresentation.RAW, container);
+		hashCContainers.put(DataRepresentation.RAW, container);
 	}
 
 	/**
@@ -101,24 +102,24 @@ public abstract class AStorage
 		if (isRawDataSet)
 			throw new IllegalStateException("Raw data was already set, tried to set again.");
 
-		rawDataType = ERawDataType.INT;
+		rawDataType = RawDataType.INT;
 		isRawDataSet = true;
 
 		IntCContainer container = new IntCContainer(iArRawData);
-		hashCContainers.put(EDataRepresentation.RAW, container);
+		hashCContainers.put(DataRepresentation.RAW, container);
 	}
 
 	public void setUncertaintyData(float[] uncertaintyData) {
-		if (hashCContainers.containsKey(EDataRepresentation.UNCERTAINTY_RAW))
+		if (hashCContainers.containsKey(DataRepresentation.UNCERTAINTY_RAW))
 			throw new IllegalStateException("Certainty data was already set in Storage " + uniqueID
 				+ " , tried to set again.");
 
 		FloatCContainer container = new FloatCContainer(uncertaintyData);
-		hashCContainers.put(EDataRepresentation.UNCERTAINTY_RAW, container);
+		hashCContainers.put(DataRepresentation.UNCERTAINTY_RAW, container);
 	}
 
 
-	public boolean containsDataRepresentation(EDataRepresentation dataRepresentation) {
+	public boolean containsDataRepresentation(DataRepresentation dataRepresentation) {
 		return hashCContainers.containsKey(dataRepresentation);
 	}
 
@@ -132,7 +133,7 @@ public abstract class AStorage
 	 *            The index of the requested Element
 	 * @return The associated value
 	 */
-	public float getFloat(EDataRepresentation storageKind, int iIndex) {
+	public float getFloat(DataRepresentation storageKind, int iIndex) {
 		if (!hashCContainers.containsKey(storageKind))
 			throw new IllegalArgumentException("Requested storage kind " + storageKind +" not produced");
 		if (!(hashCContainers.get(storageKind) instanceof FloatCContainer))
@@ -148,7 +149,7 @@ public abstract class AStorage
 	 * @param storageKind
 	 * @return
 	 */
-	public FloatCContainerIterator floatIterator(EDataRepresentation storageKind) {
+	public FloatCContainerIterator floatIterator(DataRepresentation storageKind) {
 
 		if (!(hashCContainers.get(storageKind) instanceof FloatCContainer))
 			throw new IllegalArgumentException("Requested storage kind is not of type float");
@@ -167,7 +168,7 @@ public abstract class AStorage
 	 *            The index of the requested Element
 	 * @return The associated value
 	 */
-	public int getInt(EDataRepresentation storageKind, int iIndex) {
+	public int getInt(DataRepresentation storageKind, int iIndex) {
 		if (!(hashCContainers.get(storageKind) instanceof IntCContainer))
 			throw new IllegalArgumentException("Requested storage kind is not of type int");
 
@@ -181,7 +182,7 @@ public abstract class AStorage
 	 * @param storageKind
 	 * @return
 	 */
-	public IntCContainerIterator intIterator(EDataRepresentation storageKind) {
+	public IntCContainerIterator intIterator(DataRepresentation storageKind) {
 		if (!(hashCContainers.get(storageKind) instanceof IntCContainer))
 			throw new IllegalArgumentException("Requested storage kind is not of type int");
 
@@ -197,7 +198,7 @@ public abstract class AStorage
 	 * @iIndex the index of the element
 	 * @return the Number
 	 */
-	public Number get(EDataRepresentation storageKind, int iIndex) {
+	public Number get(DataRepresentation storageKind, int iIndex) {
 		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer<?>))
 			throw new IllegalArgumentException("Requested storage kind is not a subtype of Number");
 
@@ -212,7 +213,7 @@ public abstract class AStorage
 	 *            specifies which kind of storage (eg: raw, normalized)
 	 * @return the iterator
 	 */
-	public Iterator<? extends Number> iterator(EDataRepresentation storageKind) {
+	public Iterator<? extends Number> iterator(DataRepresentation storageKind) {
 		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer<?>))
 			throw new IllegalArgumentException("Requested storage kind is not a subtype of Number");
 
@@ -226,7 +227,7 @@ public abstract class AStorage
 	 * @return the number of raw data elements
 	 */
 	public int size() {
-		return hashCContainers.get(EDataRepresentation.RAW).size();
+		return hashCContainers.get(DataRepresentation.RAW).size();
 	}
 
 	@Override
@@ -248,6 +249,6 @@ public abstract class AStorage
 	 * 
 	 * @param dataRep
 	 */
-	public abstract void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep);
+	public abstract void setExternalDataRepresentation(ExternalDataRepresentation externalDataRep);
 
 }

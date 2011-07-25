@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 
 /**
@@ -28,11 +28,11 @@ public class ClusterState {
 	private float affinityPropClusterFactorGenes;
 	private float affinityPropClusterFactorExperiments;
 
-	private String contentVAType = DataTable.CONTENT;
-	private String storageVAType = DataTable.STORAGE;
+	private String contentVAType = DataTable.RECORD;
+	private String storageVAType = DataTable.DIMENSION;
 
 	private ContentVirtualArray contentVA;
-	private StorageVirtualArray storageVA;
+	private DimensionVirtualArray storageVA;
 
 	public ClusterState() {
 
@@ -84,11 +84,11 @@ public class ClusterState {
 		return contentVA;
 	}
 
-	public void setStorageVA(StorageVirtualArray storageVA) {
+	public void setStorageVA(DimensionVirtualArray storageVA) {
 		this.storageVA = storageVA;
 	}
 
-	public StorageVirtualArray getStorageVA() {
+	public DimensionVirtualArray getStorageVA() {
 		return storageVA;
 	}
 

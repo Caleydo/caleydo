@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
@@ -121,7 +121,7 @@ public abstract class ATableBasedView
 	protected IDType contentIDType;
 	protected IDType storageIDType;
 
-	protected EDataRepresentation renderingRepresentation = EDataRepresentation.NORMALIZED;
+	protected DataRepresentation renderingRepresentation = DataRepresentation.NORMALIZED;
 
 	/**
 	 * Constructor for storage based views
@@ -161,8 +161,8 @@ public abstract class ATableBasedView
 
 	/**
 	 * Toggle whether to render the complete dataset (with regards to the filters though) or only contextual
-	 * data This effectively means switching between the {@link VAType#CONTENT} and
-	 * {@link VAType#CONTENT_CONTEXT}
+	 * data This effectively means switching between the {@link VAType#RECORD} and
+	 * {@link VAType#RECORD_CONTEXT}
 	 */
 	public abstract void renderContext(boolean bRenderContext);
 
@@ -623,16 +623,16 @@ public abstract class ATableBasedView
 	}
 
 	public void switchDataRepresentation() {
-		if (renderingRepresentation.equals(EDataRepresentation.NORMALIZED)) {
+		if (renderingRepresentation.equals(DataRepresentation.NORMALIZED)) {
 			if (!table.containsFoldChangeRepresentation())
 				table.createFoldChangeRepresentation();
-			renderingRepresentation = EDataRepresentation.FOLD_CHANGE_NORMALIZED;
+			renderingRepresentation = DataRepresentation.FOLD_CHANGE_NORMALIZED;
 		}
 		else
-			renderingRepresentation = EDataRepresentation.NORMALIZED;
+			renderingRepresentation = DataRepresentation.NORMALIZED;
 	}
 
-	public EDataRepresentation getRenderingRepresentation() {
+	public DataRepresentation getRenderingRepresentation() {
 		return renderingRepresentation;
 	}
 

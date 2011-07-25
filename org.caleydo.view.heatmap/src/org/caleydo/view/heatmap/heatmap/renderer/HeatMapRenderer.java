@@ -4,8 +4,8 @@ import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.storage.AStorage;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.ADimension;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.PickingType;
@@ -96,7 +96,7 @@ public class HeatMapRenderer extends AContentRenderer {
 			final float fFieldHeight, final float fFieldWidth) {
 
 		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
-		AStorage storage = heatMap.getSet().get(iStorageIndex);
+		ADimension storage = heatMap.getSet().get(iStorageIndex);
 		if (storage == null)
 			return;
 		float value = storage.getFloat(heatMap.getRenderingRepresentation(), iContentIndex);
@@ -104,7 +104,7 @@ public class HeatMapRenderer extends AContentRenderer {
 		float fOpacity = 1.0f;
 
 		if (storage
-				.containsDataRepresentation(EDataRepresentation.UNCERTAINTY_NORMALIZED)) {
+				.containsDataRepresentation(DataRepresentation.UNCERTAINTY_NORMALIZED)) {
 			// setSelectedElements = heatMap.getContentSelectionManager()
 			// .getElements(SelectionType.MOUSE_OVER);
 			// for (Integer selectedElement : setSelectedElements) {

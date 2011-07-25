@@ -6,15 +6,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.storage.AStorage;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.ADimension;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -69,8 +69,8 @@ public class SetExporter {
 				}
 				out.print(identifier + "\t");
 				for (Integer iStorageIndex : alExperiments) {
-					AStorage storage = set.get(iStorageIndex);
-					out.print(storage.getFloat(EDataRepresentation.RAW, iContentIndex));
+					ADimension storage = set.get(iStorageIndex);
+					out.print(storage.getFloat(DataRepresentation.RAW, iContentIndex));
 					out.print("\t");
 				}
 				out.println();
@@ -88,18 +88,18 @@ public class SetExporter {
 	public void export(DataTable set, String sFileName, EWhichViewToExport eWhichViewToExport,
 		IDType targetIDType) {
 		ContentVirtualArray contentVA = null;
-		StorageVirtualArray storageVA = null;
+		DimensionVirtualArray storageVA = null;
 
 		ATableBasedDataDomain dataDomain = set.getDataDomain();
 
 		if (eWhichViewToExport == EWhichViewToExport.BUCKET) {
 
-			contentVA = dataDomain.getContentVA(DataTable.CONTENT_CONTEXT);
-			storageVA = dataDomain.getStorageVA(DataTable.STORAGE);
+			contentVA = dataDomain.getContentVA(DataTable.RECORD_CONTEXT);
+			storageVA = dataDomain.getStorageVA(DataTable.DIMENSION);
 		}
 		else if (eWhichViewToExport == EWhichViewToExport.WHOLE_DATA) {
-			contentVA = dataDomain.getContentVA(DataTable.CONTENT);
-			storageVA = dataDomain.getStorageVA(DataTable.STORAGE);
+			contentVA = dataDomain.getContentVA(DataTable.RECORD);
+			storageVA = dataDomain.getStorageVA(DataTable.DIMENSION);
 		}
 
 		if (contentVA == null || storageVA == null)
@@ -111,11 +111,11 @@ public class SetExporter {
 			// Writing storage labels
 			out.print("Identifier \t");
 			for (Integer iStorageIndex : storageVA) {
-				AStorage storage = set.get(iStorageIndex);
+				ADimension storage = set.get(iStorageIndex);
 				out.print(storage.getLabel());
 				out.print("\t");
 
-				if (storage.containsDataRepresentation(EDataRepresentation.UNCERTAINTY_RAW)) {
+				if (storage.containsDataRepresentation(DataRepresentation.UNCERTAINTY_RAW)) {
 					out.print("Uncertainty\t");
 				}
 			}
@@ -170,12 +170,12 @@ public class SetExporter {
 				}
 				out.print(identifier + "\t");
 				for (Integer iStorageIndex : storageVA) {
-					AStorage storage = set.get(iStorageIndex);
-					out.print(storage.getFloat(EDataRepresentation.RAW, contentID));
+					ADimension storage = set.get(iStorageIndex);
+					out.print(storage.getFloat(DataRepresentation.RAW, contentID));
 					out.print("\t");
 
-					if (storage.containsDataRepresentation(EDataRepresentation.UNCERTAINTY_RAW)) {
-						out.print(storage.getFloat(EDataRepresentation.UNCERTAINTY_RAW, contentID));
+					if (storage.containsDataRepresentation(DataRepresentation.UNCERTAINTY_RAW)) {
+						out.print(storage.getFloat(DataRepresentation.UNCERTAINTY_RAW, contentID));
 						out.print("\t");
 					}
 				}
@@ -246,14 +246,14 @@ public class SetExporter {
 	public void exportTrees(DataTable set, String directory) {
 		try {
 			// export gene cluster tree to own xml file
-			Tree<ClusterNode> tree = set.getContentData(DataTable.CONTENT).getContentTree();
+			Tree<ClusterNode> tree = set.getContentData(DataTable.RECORD).getContentTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(set.getDataDomain());
 				treePorter.exportTree(directory + "/horizontal_gene.xml", tree);
 			}
 			// export experiment cluster tree to own xml file
-			tree = set.getStorageData(DataTable.STORAGE).getStorageTree();
+			tree = set.getStorageData(DataTable.DIMENSION).getStorageTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(set.getDataDomain());

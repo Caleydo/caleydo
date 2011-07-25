@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 
 /**
@@ -21,15 +21,15 @@ import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
  */
 @XmlRootElement
 @XmlType
-public class ReplaceStorageVAInUseCaseEvent
+public class ReplaceDimensionVAInUseCaseEvent
 	extends ReplaceStorageVAEvent {
 
-	public ReplaceStorageVAInUseCaseEvent() {
+	public ReplaceDimensionVAInUseCaseEvent() {
 		// nothing to initialize here
 	}
 
-	public ReplaceStorageVAInUseCaseEvent(DataTable set, String dataDomain, String vaType,
-		StorageVirtualArray virtualArray) {
+	public ReplaceDimensionVAInUseCaseEvent(DataTable set, String dataDomain, String vaType,
+		DimensionVirtualArray virtualArray) {
 		super(set, dataDomain, vaType, virtualArray);
 	}
 }

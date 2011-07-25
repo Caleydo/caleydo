@@ -7,19 +7,19 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.AUniqueObject;
-import org.caleydo.core.data.collection.EExternalDataRepresentation;
+import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.ICollection;
-import org.caleydo.core.data.collection.storage.AStorage;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.collection.storage.ADimension;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
+import org.caleydo.core.data.collection.storage.NumericalDimension;
 import org.caleydo.core.data.collection.table.statistics.StatisticsResult;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.data.storage.StorageManager;
+import org.caleydo.core.manager.data.storage.DimensionManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -35,7 +35,7 @@ import org.eclipse.core.runtime.Status;
  * A set is the main container for tabular data in Caleydo. A set is made up of {@link IStorage}s, where each
  * storage corresponds to a column in a tabular data set. Columns are therefore always refered to as
  * <b>Storages</b> and rows as <b>Content</b> The data should be accessed through {@link VirtualArray}s, which
- * are stored in {@link StorageData}s for Storages and {@link ContentData}s for Content.
+ * are stored in {@link DimensionData}s for Storages and {@link RecordData}s for Content.
  * </p>
  * <h2>Set Creation</h2>
  * <p>
@@ -49,23 +49,23 @@ public class DataTable
 	extends AUniqueObject
 	implements ICollection {
 
-	public static final String CONTENT = "Content";
-	public static final String STORAGE = "Storage";
-	public static final String CONTENT_CONTEXT = "Content_Context";
+	public static final String DIMENSION = "Storage";
+	public static final String RECORD = "Record";
+	public static final String RECORD_CONTEXT = "Record_Context";
 
-	protected HashMap<Integer, AStorage> hashStorages;
+	protected HashMap<Integer, ADimension> hashDimensions;
 
 	private String sLabel = "Rootset";
 
-	protected HashMap<String, ContentData> hashContentData;
-	protected HashMap<String, StorageData> hashStorageData;
+	protected HashMap<String, RecordData> hashContentData;
+	protected HashMap<String, DimensionData> hashDimensionData;
 
-	protected NumericalStorage meanStorage;
+	protected NumericalDimension meanStorage;
 
-	protected StorageData defaultStorageData;
-	protected ContentData defaultContentData;
+	protected DimensionData defaultDimensionData;
+	protected RecordData defaultRecordData;
 
-	protected EExternalDataRepresentation externalDataRep;
+	protected ExternalDataRepresentation externalDataRep;
 
 	protected boolean isSetHomogeneous = false;
 
@@ -85,7 +85,7 @@ public class DataTable
 	private Normalization normalization;
 
 	public DataTable() {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.SET));
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.DATA_TABLE));
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class DataTable
 		ClusterTree tree = new ClusterTree(dataDomain.getStorageIDType());
 		ClusterNode root = new ClusterNode(tree, "Root", 1, true, -1);
 		tree.setRootNode(root);
-		defaultStorageData.setStorageTree(tree);
+		defaultDimensionData.setStorageTree(tree);
 		dataDomain.createDimensionGroupsFromStorageTree(tree);
 		// hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
 	}
@@ -113,11 +113,11 @@ public class DataTable
 	 */
 	protected void init() {
 
-		hashStorages = new HashMap<Integer, AStorage>();
-		hashContentData = new HashMap<String, ContentData>(6);
-		hashStorageData = new HashMap<String, StorageData>(3);
-		defaultStorageData = new StorageData();
-		defaultStorageData.setStorageVA(new StorageVirtualArray(STORAGE));
+		hashDimensions = new HashMap<Integer, ADimension>();
+		hashContentData = new HashMap<String, RecordData>(6);
+		hashDimensionData = new HashMap<String, DimensionData>(3);
+		defaultDimensionData = new DimensionData();
+		defaultDimensionData.setStorageVA(new DimensionVirtualArray(DIMENSION));
 		statisticsResult = new StatisticsResult(this);
 		metaData = new MetaData(this);
 		normalization = new Normalization(this);
@@ -139,10 +139,10 @@ public class DataTable
 	/**
 	 * Creates a {@link SubDataTable} for every node in the storage tree.
 	 */
-	public void createMetaSets() {
+	public void createSubDataTable() {
 		// ClusterNode rootNode = hashStorageData.get(STORAGE).getStorageTreeRoot();
 		// rootNode.createMetaSets(this);
-		defaultStorageData.getStorageTree().createMetaSets(this);
+		defaultDimensionData.getStorageTree().createMetaSets(this);
 	}
 
 	/**
@@ -173,8 +173,8 @@ public class DataTable
 	 *            a unique storage ID
 	 * @return
 	 */
-	public AStorage get(Integer storageID) {
-		return hashStorages.get(storageID);
+	public ADimension get(Integer storageID) {
+		return hashDimensions.get(storageID);
 	}
 
 	@Override
@@ -193,8 +193,8 @@ public class DataTable
 	 * @param type
 	 * @return
 	 */
-	public Iterator<AStorage> iterator(String type) {
-		return new StorageIterator(hashStorages, hashStorageData.get(type).getStorageVA());
+	public Iterator<ADimension> iterator(String type) {
+		return new DimensionIterator(hashDimensions, hashDimensionData.get(type).getStorageVA());
 	}
 
 	/**
@@ -216,13 +216,13 @@ public class DataTable
 		// if(getMin() > 0)
 		result = metaData.getMin() + dNormalized * (metaData.getMax() - metaData.getMin());
 		// return (dNormalized) * (getMax() + getMin());
-		if (externalDataRep == EExternalDataRepresentation.NORMAL) {
+		if (externalDataRep == ExternalDataRepresentation.NORMAL) {
 			return result;
 		}
-		else if (externalDataRep == EExternalDataRepresentation.LOG2) {
+		else if (externalDataRep == ExternalDataRepresentation.LOG2) {
 			return Math.pow(2, result);
 		}
-		else if (externalDataRep == EExternalDataRepresentation.LOG10) {
+		else if (externalDataRep == ExternalDataRepresentation.LOG10) {
 			return Math.pow(10, result);
 		}
 		throw new IllegalStateException("Conversion raw to normalized not implemented for data rep"
@@ -243,13 +243,13 @@ public class DataTable
 
 		double result;
 
-		if (externalDataRep == EExternalDataRepresentation.NORMAL) {
+		if (externalDataRep == ExternalDataRepresentation.NORMAL) {
 			result = dRaw;
 		}
-		else if (externalDataRep == EExternalDataRepresentation.LOG2) {
+		else if (externalDataRep == ExternalDataRepresentation.LOG2) {
 			result = Math.log(dRaw) / Math.log(2);
 		}
-		else if (externalDataRep == EExternalDataRepresentation.LOG10) {
+		else if (externalDataRep == ExternalDataRepresentation.LOG10) {
 			result = Math.log10(dRaw);
 		}
 		else {
@@ -266,8 +266,8 @@ public class DataTable
 	 * Restores the original virtual array using the whole set data.
 	 */
 	public void restoreOriginalContentVA() {
-		ContentData contentData = createContentData(CONTENT);
-		hashContentData.put(CONTENT, contentData);
+		RecordData contentData = createContentData(RECORD);
+		hashContentData.put(RECORD, contentData);
 	}
 
 	/**
@@ -275,8 +275,8 @@ public class DataTable
 	 * 
 	 * @return
 	 */
-	public StorageVirtualArray getBaseStorageVA() {
-		return defaultStorageData.getStorageVA().clone();
+	public DimensionVirtualArray getBaseStorageVA() {
+		return defaultDimensionData.getStorageVA().clone();
 	}
 
 	/**
@@ -285,9 +285,9 @@ public class DataTable
 	 * @return
 	 */
 	public ContentVirtualArray getBaseContentVA() {
-		if (defaultContentData == null)
-			defaultContentData = createContentData(CONTENT);
-		return defaultContentData.getContentVA().clone();
+		if (defaultRecordData == null)
+			defaultRecordData = createContentData(RECORD);
+		return defaultRecordData.getContentVA().clone();
 	}
 
 	/**
@@ -298,7 +298,7 @@ public class DataTable
 	 * @param virtualArray
 	 */
 	public void setContentVA(String vaType, ContentVirtualArray virtualArray) {
-		ContentData contentData = hashContentData.get(vaType);
+		RecordData contentData = hashContentData.get(vaType);
 		if (contentData == null)
 			contentData = createContentData(vaType);
 		else
@@ -318,14 +318,14 @@ public class DataTable
 	 * @param vaType
 	 * @param virtualArray
 	 */
-	public void setStorageVA(String vaType, StorageVirtualArray virtualArray) {
-		StorageData storageData = hashStorageData.get(vaType);
+	public void setStorageVA(String vaType, DimensionVirtualArray virtualArray) {
+		DimensionData storageData = hashDimensionData.get(vaType);
 		if (storageData == null)
-			storageData = defaultStorageData.clone();
+			storageData = defaultDimensionData.clone();
 		// else
 		// storageData.reset();
 		storageData.setStorageVA(virtualArray);
-		hashStorageData.put(vaType, storageData);
+		hashDimensionData.put(vaType, storageData);
 	}
 
 	/**
@@ -333,7 +333,7 @@ public class DataTable
 	 * 
 	 * @return
 	 */
-	public EExternalDataRepresentation getExternalDataRep() {
+	public ExternalDataRepresentation getExternalDataRep() {
 		return externalDataRep;
 	}
 
@@ -375,13 +375,13 @@ public class DataTable
 		ClusterResult result = clusterManager.cluster(clusterState);
 
 		if (result != null) {
-			ContentData contentResult = result.getContentResult();
+			RecordData contentResult = result.getContentResult();
 			if (contentResult != null) {
 				hashContentData.put(clusterState.getContentVAType(), contentResult);
 			}
-			StorageData storageResult = result.getStorageResult();
+			DimensionData storageResult = result.getStorageResult();
 			if (storageResult != null) {
-				hashStorageData.put(clusterState.getStorageVAType(), storageResult);
+				hashDimensionData.put(clusterState.getStorageVAType(), storageResult);
 			}
 			// }
 			// else
@@ -390,14 +390,14 @@ public class DataTable
 	}
 
 	/**
-	 * Returns a {@link ContentData} object for the specified ContentVAType. The ContentData provides access
+	 * Returns a {@link RecordData} object for the specified ContentVAType. The ContentData provides access
 	 * to all data on a storage, e.g., virtualArryay, cluster tree, group list etc.
 	 * 
 	 * @param vaType
 	 * @return
 	 */
-	public ContentData getContentData(String vaType) {
-		ContentData contentData = hashContentData.get(vaType);
+	public RecordData getContentData(String vaType) {
+		RecordData contentData = hashContentData.get(vaType);
 		if (contentData == null) {
 			contentData = createContentData(vaType);
 			hashContentData.put(vaType, contentData);
@@ -406,14 +406,14 @@ public class DataTable
 	}
 
 	/**
-	 * Returns a {@link StorageData} object for the specified StorageVAType. The StorageData provides access
+	 * Returns a {@link DimensionData} object for the specified StorageVAType. The StorageData provides access
 	 * to all data on a storage, e.g., virtualArryay, cluster tree, group list etc.
 	 * 
 	 * @param vaType
 	 * @return
 	 */
-	public StorageData getStorageData(String vaType) {
-		return hashStorageData.get(vaType);
+	public DimensionData getStorageData(String vaType) {
+		return hashDimensionData.get(vaType);
 	}
 
 	/**
@@ -422,8 +422,8 @@ public class DataTable
 	 */
 	public void destroy() {
 		GeneralManager gm = GeneralManager.get();
-		StorageManager sm = gm.getStorageManager();
-		for (Integer storageID : hashStorages.keySet()) {
+		DimensionManager sm = gm.getDimensionManager();
+		for (Integer storageID : hashDimensions.keySet()) {
 			sm.unregisterItem(storageID);
 		}
 		// clearing the VAs. This should not be necessary since they should be destroyed automatically.
@@ -437,7 +437,7 @@ public class DataTable
 
 	@Override
 	public String toString() {
-		return "Set " + getLabel() + " with " + hashStorages.size() + " storages.";
+		return "Set " + getLabel() + " with " + hashDimensions.size() + " storages.";
 	}
 
 	/**
@@ -458,21 +458,21 @@ public class DataTable
 	 * 
 	 * @return the storage containing means for all content elements
 	 */
-	public NumericalStorage getMeanStorage() {
+	public NumericalDimension getMeanStorage() {
 		if (!dataTableType.equals(EDataTableDataType.NUMERIC) || !isSetHomogeneous)
 			throw new IllegalStateException(
 				"Can not provide a mean storage if set is not numerical (Set type: " + dataTableType
 					+ ") or not homgeneous (isHomogeneous: " + isSetHomogeneous + ")");
 		if (meanStorage == null) {
-			meanStorage = new NumericalStorage();
-			meanStorage.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL);
+			meanStorage = new NumericalDimension();
+			meanStorage.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL);
 
 			float[] meanValues = new float[metaData.depth()];
-			StorageVirtualArray storageVA = defaultStorageData.getStorageVA();
+			DimensionVirtualArray storageVA = defaultDimensionData.getStorageVA();
 			for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
 				float sum = 0;
 				for (int storageID : storageVA) {
-					sum += get(storageID).getFloat(EDataRepresentation.RAW, contentCount);
+					sum += get(storageID).getFloat(DataRepresentation.RAW, contentCount);
 				}
 				meanValues[contentCount] = sum / metaData.size();
 			}
@@ -514,12 +514,12 @@ public class DataTable
 	 * @param storageID
 	 */
 	void addStorage(int iStorageID) {
-		StorageManager storageManager = GeneralManager.get().getStorageManager();
+		DimensionManager storageManager = GeneralManager.get().getDimensionManager();
 
 		if (!storageManager.hasItem(iStorageID))
 			throw new IllegalArgumentException("Requested Storage with ID " + iStorageID + " does not exist.");
 
-		AStorage storage = storageManager.getItem(iStorageID);
+		ADimension storage = storageManager.getItem(iStorageID);
 		addStorage(storage);
 	}
 
@@ -529,9 +529,9 @@ public class DataTable
 	 * @param storage
 	 *            the storage
 	 */
-	void addStorage(AStorage storage) {
+	void addStorage(ADimension storage) {
 		// if (hashStorages.isEmpty()) {
-		if (storage instanceof NumericalStorage) {
+		if (storage instanceof NumericalDimension) {
 			if (dataTableType == null)
 				dataTableType = EDataTableDataType.NUMERIC;
 			else if (dataTableType.equals(EDataTableDataType.NOMINAL))
@@ -556,27 +556,27 @@ public class DataTable
 		// // if (iDepth != storage.size())
 		// // throw new IllegalArgumentException("All storages in a set must be of the same length");
 		// }
-		hashStorages.put(storage.getID(), storage);
-		defaultStorageData.getStorageVA().append(storage.getID());
+		hashDimensions.put(storage.getID(), storage);
+		defaultDimensionData.getStorageVA().append(storage.getID());
 
 	}
 
-	void finalizeAddedStorages() {
+	void finalizeAddedDimensions() {
+		
 		// this needs only be done by the root set
 		if ((this.getClass().equals(DataTable.class))) {
-			ClusterTree tree = defaultStorageData.getStorageTree();
+			ClusterTree tree = defaultDimensionData.getStorageTree();
 			int count = 1;
-			for (Integer storageID : defaultStorageData.getStorageVA()) {
+			for (Integer storageID : defaultDimensionData.getStorageVA()) {
 				ClusterNode node =
 					new ClusterNode(tree, get(storageID).getLabel(), count++, false, storageID);
 				tree.addChild(tree.getRoot(), node);
 			}
 
-			createMetaSets();
+			createSubDataTable();
 
 		}
-		hashStorageData.put(STORAGE, defaultStorageData.clone());
-
+		hashDimensionData.put(DIMENSION, defaultDimensionData.clone());
 	}
 
 	/**
@@ -584,23 +584,23 @@ public class DataTable
 	 * calculated from the mode specified.
 	 * 
 	 * @param externalDataRep
-	 *            Determines how the data is visualized. For options see {@link EExternalDataRepresentation}
+	 *            Determines how the data is visualized. For options see {@link ExternalDataRepresentation}
 	 * @param bIsSetHomogeneous
 	 *            Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
 	 *            maximum and minimum, meaning that all storages in the set contain equal data. If false, each
 	 *            storage is treated separately, has it's own min and max etc. Sets that contain nominal data
 	 *            MUST be inhomogeneous.
 	 */
-	void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep, boolean bIsSetHomogeneous) {
+	void setExternalDataRepresentation(ExternalDataRepresentation externalDataRep, boolean bIsSetHomogeneous) {
 		this.isSetHomogeneous = bIsSetHomogeneous;
 		if (externalDataRep == this.externalDataRep)
 			return;
 
 		this.externalDataRep = externalDataRep;
 
-		for (AStorage storage : hashStorages.values()) {
-			if (storage instanceof NumericalStorage) {
-				((NumericalStorage) storage).setExternalDataRepresentation(externalDataRep);
+		for (ADimension storage : hashDimensions.values()) {
+			if (storage instanceof NumericalDimension) {
+				((NumericalDimension) storage).setExternalDataRepresentation(externalDataRep);
 			}
 		}
 
@@ -641,19 +641,19 @@ public class DataTable
 	}
 
 	public boolean containsFoldChangeRepresentation() {
-		for (AStorage storage : hashStorages.values()) {
-			return storage.containsDataRepresentation(EDataRepresentation.FOLD_CHANGE_RAW);
+		for (ADimension storage : hashDimensions.values()) {
+			return storage.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW);
 		}
 		return false;
 	}
 
 	// ---------------------- helper functions ------------------------------
 
-	private ContentData createContentData(String vaType) {
-		ContentData contentData = new ContentData(dataDomain.getContentIDType());
+	private RecordData createContentData(String vaType) {
+		RecordData contentData = new RecordData(dataDomain.getContentIDType());
 
 		ContentVirtualArray contentVA;
-		if (vaType != CONTENT_CONTEXT) {
+		if (vaType != RECORD_CONTEXT) {
 			contentVA = createBaseContentVA(vaType);
 		}
 		else {
@@ -673,7 +673,7 @@ public class DataTable
 	}
 
 	/**
-	 * Return a list of content VA types that have registered {@link ContentData}.
+	 * Return a list of content VA types that have registered {@link RecordData}.
 	 * 
 	 * @return
 	 */
@@ -682,11 +682,11 @@ public class DataTable
 	}
 
 	/**
-	 * Return a list of storage VA types that have registered {@link StorageData}
+	 * Return a list of storage VA types that have registered {@link DimensionData}
 	 * 
 	 * @return
 	 */
 	public Set<String> getRegisteredStorageVATypes() {
-		return hashStorageData.keySet();
+		return hashDimensionData.keySet();
 	}
 }

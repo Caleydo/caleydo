@@ -32,7 +32,7 @@ public class PathwayDimensionGroupData extends
 
 	{
 		uniqueID = GeneralManager.get().getIDCreator()
-				.createID(ManagedObjectType.SET);
+				.createID(ManagedObjectType.DATA_TABLE);
 	}
 
 	public PathwayDimensionGroupData(IDataDomain dataDomain,

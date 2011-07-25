@@ -6,7 +6,7 @@ package org.caleydo.core.data.collection;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public enum EStorageType {
+public enum DimensionType {
 	// Needed by the parser
 	ABORT(null),
 	SKIP(null),
@@ -19,7 +19,7 @@ public enum EStorageType {
 
 	CERTAINTY(Float.class);
 
-	private <T> EStorageType(Class<T> storageClass) {
+	private <T> DimensionType(Class<T> dimensionClass) {
 
 	}
 

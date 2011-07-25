@@ -20,7 +20,7 @@ import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.manager.GeneralManager;
@@ -289,9 +289,9 @@ public class GLHeatMap extends ATableBasedView {
 			table.setContentVA(contentVAType, new ContentVirtualArray(contentVAType));
 		} else {
 			if (bRenderOnlyContext)
-				contentVAType = DataTable.CONTENT_CONTEXT;
+				contentVAType = DataTable.RECORD_CONTEXT;
 			else
-				contentVAType = DataTable.CONTENT;
+				contentVAType = DataTable.RECORD;
 		}
 
 		if (contentVA == null)
@@ -532,7 +532,7 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	public void leftRightSelect(boolean isLeft) {
-		StorageVirtualArray virtualArray = storageVA;
+		DimensionVirtualArray virtualArray = storageVA;
 		if (virtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for selectNext Operation");
@@ -543,7 +543,7 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	public void enterPressedSelect() {
-		StorageVirtualArray virtualArray = storageVA;
+		DimensionVirtualArray virtualArray = storageVA;
 		if (virtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for enterPressed Operation");
@@ -659,9 +659,9 @@ public class GLHeatMap extends ATableBasedView {
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (this.bRenderOnlyContext) {
-			contentVA = dataDomain.getContentVA(DataTable.CONTENT_CONTEXT);
+			contentVA = dataDomain.getContentVA(DataTable.RECORD_CONTEXT);
 		} else {
-			contentVA = dataDomain.getContentVA(DataTable.CONTENT);
+			contentVA = dataDomain.getContentVA(DataTable.RECORD);
 		}
 
 		contentSelectionManager.setVA(contentVA);
@@ -676,8 +676,8 @@ public class GLHeatMap extends ATableBasedView {
 
 		super.handleVAUpdate(delta, info);
 
-		if (delta.getVAType().equals(DataTable.CONTENT_CONTEXT)
-				&& contentVAType.equals(DataTable.CONTENT_CONTEXT)) {
+		if (delta.getVAType().equals(DataTable.RECORD_CONTEXT)
+				&& contentVAType.equals(DataTable.RECORD_CONTEXT)) {
 			ClusterState state = new ClusterState(EClustererAlgo.AFFINITY_PROPAGATION,
 					EClustererType.CONTENT_CLUSTERING,
 					EDistanceMeasure.EUCLIDEAN_DISTANCE);
@@ -908,7 +908,7 @@ public class GLHeatMap extends ATableBasedView {
 		// .log(contentVA.size()));
 		// }
 
-		ContentVirtualArray setContentVA = table.getContentData(DataTable.CONTENT)
+		ContentVirtualArray setContentVA = table.getContentData(DataTable.RECORD)
 				.getContentVA();
 		int numBricks = 1;
 		if (setContentVA.getGroupList() != null) {

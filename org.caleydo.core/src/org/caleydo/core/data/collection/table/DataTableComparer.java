@@ -9,8 +9,8 @@ public class DataTableComparer {
 	public static DataTableRelations compareSets(DataTable setLeft, DataTable setRight) {
 		DataTableRelations setRelations = new DataTableRelations(setLeft, setRight);
 
-		ContentVirtualArray contentVALeft = setLeft.getContentData(DataTable.CONTENT).getContentVA();
-		ContentVirtualArray contentVARight = setRight.getContentData(DataTable.CONTENT).getContentVA();
+		ContentVirtualArray contentVALeft = setLeft.getContentData(DataTable.RECORD).getContentVA();
+		ContentVirtualArray contentVARight = setRight.getContentData(DataTable.RECORD).getContentVA();
 
 		/** hash ID to index for faster accessibility */
 		HashMap<Integer, Integer> hashRightIndices = new HashMap<Integer, Integer>();

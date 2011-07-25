@@ -21,12 +21,12 @@ public class SetBasedDimensionGroupData extends ADimensionGroupData {
 
 	@Override
 	public ContentVirtualArray getSummaryVA() {
-		return set.getContentData(DataTable.CONTENT).getContentVA();
+		return set.getContentData(DataTable.RECORD).getContentVA();
 	}
 
 	@Override
 	public ArrayList<ContentVirtualArray> getSegmentVAs() {
-		ContentVirtualArray contentVA = set.getContentData(DataTable.CONTENT)
+		ContentVirtualArray contentVA = set.getContentData(DataTable.RECORD)
 				.getContentVA();
 
 		if (contentVA.getGroupList() == null)
@@ -67,7 +67,7 @@ public class SetBasedDimensionGroupData extends ADimensionGroupData {
 
 	@Override
 	public ArrayList<Group> getGroups() {
-		ContentVirtualArray contentVA = set.getContentData(DataTable.CONTENT)
+		ContentVirtualArray contentVA = set.getContentData(DataTable.RECORD)
 				.getContentVA();
 
 		if (contentVA.getGroupList() == null)
@@ -87,7 +87,7 @@ public class SetBasedDimensionGroupData extends ADimensionGroupData {
 	@Override
 	public List<ISegmentData> getSegmentData() {
 
-		ContentVirtualArray contentVA = set.getContentData(DataTable.CONTENT)
+		ContentVirtualArray contentVA = set.getContentData(DataTable.RECORD)
 				.getContentVA();
 
 		if (contentVA.getGroupList() == null)

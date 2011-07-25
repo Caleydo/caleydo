@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
+import org.caleydo.core.data.collection.storage.NumericalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -153,19 +153,19 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		// && set2.getStatisticsResult().getFoldChangeResult(set1) != null)
 		// return;
 
-		NumericalStorage meanStorageVec1 = set1.getMeanStorage();
-		NumericalStorage meanStorageVec2 = set2.getMeanStorage();
+		NumericalDimension meanStorageVec1 = set1.getMeanStorage();
+		NumericalDimension meanStorageVec2 = set2.getMeanStorage();
 
 		double[] meanStorage1 = new double[meanStorageVec1.size()];
 		for (int contentIndex = 0; contentIndex < meanStorageVec1.size(); contentIndex++) {
 			meanStorage1[contentIndex] = meanStorageVec1.getFloat(
-					EDataRepresentation.RAW, contentIndex);
+					DataRepresentation.RAW, contentIndex);
 		}
 
 		double[] meanStorage2 = new double[meanStorageVec2.size()];
 		for (int contentIndex = 0; contentIndex < meanStorageVec2.size(); contentIndex++) {
 			meanStorage2[contentIndex] = meanStorageVec2.getFloat(
-					EDataRepresentation.RAW, contentIndex);
+					DataRepresentation.RAW, contentIndex);
 		}
 
 		engine.assign("set_1", meanStorage1);
@@ -236,7 +236,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 			for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 
-				StorageVirtualArray storageVA1 = set.getStorageData(DataTable.STORAGE)
+				DimensionVirtualArray storageVA1 = set.getStorageData(DataTable.DIMENSION)
 						.getStorageVA();
 
 				double[] compareVec1 = new double[storageVA1.size()];
@@ -244,7 +244,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 				int storageCount = 0;
 				for (Integer storageIndex : storageVA1) {
 					compareVec1[storageCount++] = set.get(storageIndex).getFloat(
-							EDataRepresentation.RAW, contentIndex);
+							DataRepresentation.RAW, contentIndex);
 				}
 
 				engine.assign("set", compareVec1);
@@ -303,11 +303,11 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		ArrayList<Double> pValueVector = new ArrayList<Double>();
 
 		for (int contentIndex = 0; contentIndex < set1.get(
-				set1.getStorageData(DataTable.STORAGE).getStorageVA().get(0)).size(); contentIndex++) {
+				set1.getStorageData(DataTable.DIMENSION).getStorageVA().get(0)).size(); contentIndex++) {
 
-			StorageVirtualArray storageVA1 = set1.getStorageData(DataTable.STORAGE)
+			DimensionVirtualArray storageVA1 = set1.getStorageData(DataTable.DIMENSION)
 					.getStorageVA();
-			StorageVirtualArray storageVA2 = set2.getStorageData(DataTable.STORAGE)
+			DimensionVirtualArray storageVA2 = set2.getStorageData(DataTable.DIMENSION)
 					.getStorageVA();
 
 			double[] compareVec1 = new double[storageVA1.size()];
@@ -316,13 +316,13 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			int storageCount = 0;
 			for (Integer storageIndex : storageVA1) {
 				compareVec1[storageCount++] = set1.get(storageIndex).getFloat(
-						EDataRepresentation.RAW, contentIndex);
+						DataRepresentation.RAW, contentIndex);
 			}
 
 			storageCount = 0;
 			for (Integer storageIndex : storageVA2) {
 				compareVec2[storageCount++] = set2.get(storageIndex).getFloat(
-						EDataRepresentation.RAW, contentIndex);
+						DataRepresentation.RAW, contentIndex);
 			}
 
 			engine.assign("set_1", compareVec1);

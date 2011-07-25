@@ -263,9 +263,9 @@ public class FilterRepresentationFoldChange extends
 
 	private void createVADelta(ContentFilter subFilter) {
 
-		ContentVADelta contentVADelta = new ContentVADelta(DataTable.CONTENT, subFilter
+		ContentVADelta contentVADelta = new ContentVADelta(DataTable.RECORD, subFilter
 				.getDataDomain().getContentIDType());
-		ContentVADelta contentVADeltaUncertainty = new ContentVADelta(DataTable.CONTENT,
+		ContentVADelta contentVADeltaUncertainty = new ContentVADelta(DataTable.RECORD,
 				subFilter.getDataDomain().getContentIDType());
 
 		ContentVirtualArray contentVA = subFilter.getDataDomain()

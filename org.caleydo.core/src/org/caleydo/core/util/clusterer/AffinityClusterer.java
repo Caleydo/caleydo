@@ -2,10 +2,10 @@ package org.caleydo.core.util.clusterer;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
@@ -90,7 +90,7 @@ public class AffinityClusterer
 	private int determineSimilarities(DataTable set, ClusterState clusterState) {
 
 		ContentVirtualArray contentVA = clusterState.getContentVA();
-		StorageVirtualArray storageVA = clusterState.getStorageVA();
+		DimensionVirtualArray storageVA = clusterState.getStorageVA();
 
 		IDistanceMeasure distanceMeasure;
 
@@ -130,7 +130,7 @@ public class AffinityClusterer
 					isto = 0;
 					for (Integer iStorageIndex1 : storageVA) {
 						dArInstance1[isto] =
-							set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
+							set.get(iStorageIndex1).getFloat(DataRepresentation.NORMALIZED, iContentIndex1);
 						isto++;
 					}
 
@@ -140,7 +140,7 @@ public class AffinityClusterer
 						isto = 0;
 						for (Integer iStorageIndex2 : storageVA) {
 							dArInstance2[isto] =
-								set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED,
+								set.get(iStorageIndex2).getFloat(DataRepresentation.NORMALIZED,
 									iContentIndex2);
 							isto++;
 						}
@@ -200,7 +200,7 @@ public class AffinityClusterer
 					icnt = 0;
 					for (Integer iContentIndex1 : contentVA) {
 						dArInstance1[icnt] =
-							set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
+							set.get(iStorageIndex1).getFloat(DataRepresentation.NORMALIZED, iContentIndex1);
 						icnt++;
 					}
 
@@ -210,7 +210,7 @@ public class AffinityClusterer
 						icnt = 0;
 						for (Integer iContentIndex2 : contentVA) {
 							dArInstance2[icnt] =
-								set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED,
+								set.get(iStorageIndex2).getFloat(DataRepresentation.NORMALIZED,
 									iContentIndex2);
 							icnt++;
 						}

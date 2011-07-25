@@ -1,6 +1,6 @@
 package org.caleydo.core.command;
 
-import org.caleydo.core.command.data.CmdDataCreateStorage;
+import org.caleydo.core.command.data.CmdDataCreateDimension;
 import org.caleydo.core.command.data.CmdDataCreateTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
@@ -64,11 +64,11 @@ public class CommandManager {
 				createdCommand = new CmdLoadFileNStorages();
 				break;
 			}
-			case CREATE_STORAGE: {
-				createdCommand = new CmdDataCreateStorage();
+			case CREATE_DIMENSION: {
+				createdCommand = new CmdDataCreateDimension();
 				break;
 			}
-			case CREATE_SET_DATA: {
+			case CREATE_DATA_TABLE: {
 				createdCommand = new CmdDataCreateTable();
 				break;
 			}

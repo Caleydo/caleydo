@@ -5,7 +5,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.manager.GeneralManager;
@@ -63,7 +63,7 @@ public class HierarchicalClusterer
 					}
 
 					for (Integer iStorageIndex : storageVA) {
-						buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex)
+						buffer.append(set.get(iStorageIndex).getFloat(DataRepresentation.RAW, iContentIndex)
 							+ ", ");
 
 					}
@@ -102,7 +102,7 @@ public class HierarchicalClusterer
 					}
 
 					for (Integer iContentIndex : contentVA) {
-						buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex)
+						buffer.append(set.get(iStorageIndex).getFloat(DataRepresentation.RAW, iContentIndex)
 							+ ", ");
 
 					}

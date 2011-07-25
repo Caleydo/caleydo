@@ -3,8 +3,8 @@ package org.caleydo.core.data.collection.table;
 import java.util.HashMap;
 import java.util.ListIterator;
 
-import org.caleydo.core.data.collection.storage.AStorage;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.collection.storage.ADimension;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VAIterator;
 
 /**
@@ -12,10 +12,10 @@ import org.caleydo.core.data.virtualarray.VAIterator;
  * 
  * @author Alexander Lex
  */
-public class StorageIterator
-	implements ListIterator<AStorage> {
+public class DimensionIterator
+	implements ListIterator<ADimension> {
 	private VAIterator vaIterator;
-	private HashMap<Integer, AStorage> storages;
+	private HashMap<Integer, ADimension> dimensions;
 
 	/**
 	 * Constructor
@@ -23,14 +23,14 @@ public class StorageIterator
 	 * @param set
 	 * @param virtualArray
 	 */
-	public StorageIterator(HashMap<Integer, AStorage> storages, StorageVirtualArray virtualArray) {
+	public DimensionIterator(HashMap<Integer, ADimension> dimension, DimensionVirtualArray virtualArray) {
 		this.vaIterator = virtualArray.iterator();
-		this.storages = storages;
+		this.dimensions = dimension;
 	}
 
 	@Override
-	public void add(AStorage storage) {
-		vaIterator.add(storage.getID());
+	public void add(ADimension dimension) {
+		vaIterator.add(dimension.getID());
 	}
 
 	@Override
@@ -44,8 +44,8 @@ public class StorageIterator
 	}
 
 	@Override
-	public AStorage next() {
-		return storages.get(vaIterator.next());
+	public ADimension next() {
+		return dimensions.get(vaIterator.next());
 	}
 
 	@Override
@@ -54,8 +54,8 @@ public class StorageIterator
 	}
 
 	@Override
-	public AStorage previous() {
-		return storages.get(vaIterator.previous());
+	public ADimension previous() {
+		return dimensions.get(vaIterator.previous());
 	}
 
 	@Override
@@ -69,8 +69,8 @@ public class StorageIterator
 	}
 
 	@Override
-	public void set(AStorage storage) {
-		vaIterator.set(storage.getID());
+	public void set(ADimension dimension) {
+		vaIterator.set(dimension.getID());
 	}
 
 }

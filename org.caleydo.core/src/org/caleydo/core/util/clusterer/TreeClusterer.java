@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.manager.GeneralManager;
@@ -128,7 +128,7 @@ public class TreeClusterer
 					isto = 0;
 					for (Integer iStorageIndex1 : storageVA) {
 						dArInstance1[isto] =
-							set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
+							set.get(iStorageIndex1).getFloat(DataRepresentation.NORMALIZED, iContentIndex1);
 						isto++;
 					}
 
@@ -140,7 +140,7 @@ public class TreeClusterer
 						if (icnt2 < icnt1) {
 							for (Integer iStorageIndex2 : storageVA) {
 								dArInstance2[isto] =
-									set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED,
+									set.get(iStorageIndex2).getFloat(DataRepresentation.NORMALIZED,
 										iContentIndex2);
 								isto++;
 							}
@@ -181,7 +181,7 @@ public class TreeClusterer
 					isto = 0;
 					for (Integer iContentIndex1 : contentVA) {
 						dArInstance1[isto] =
-							set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
+							set.get(iStorageIndex1).getFloat(DataRepresentation.NORMALIZED, iContentIndex1);
 						isto++;
 					}
 
@@ -192,7 +192,7 @@ public class TreeClusterer
 						if (icnt2 < icnt1) {
 							for (Integer iContentIndex2 : contentVA) {
 								dArInstance2[isto] =
-									set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED,
+									set.get(iStorageIndex2).getFloat(DataRepresentation.NORMALIZED,
 										iContentIndex2);
 								isto++;
 							}

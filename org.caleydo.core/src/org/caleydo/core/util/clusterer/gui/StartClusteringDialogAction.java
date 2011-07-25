@@ -542,8 +542,8 @@ public class StartClusteringDialogAction
 			clusterState = othersTab.getClusterState();
 
 		// by default we use the main VAs for clustering
-		clusterState.setContentVAType(DataTable.CONTENT);
-		clusterState.setStorageVAType(DataTable.STORAGE);
+		clusterState.setContentVAType(DataTable.RECORD);
+		clusterState.setStorageVAType(DataTable.DIMENSION);
 
 		ClusteringProgressBar progressBar =
 			new ClusteringProgressBar(clusterState.getClustererAlgo(), clusterState.getClustererType());

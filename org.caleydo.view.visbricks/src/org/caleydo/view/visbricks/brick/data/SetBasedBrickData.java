@@ -1,11 +1,11 @@
 package org.caleydo.view.visbricks.brick.data;
 
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.collection.table.StorageData;
+import org.caleydo.core.data.collection.table.DimensionData;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.SetBasedSegmentData;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
@@ -50,14 +50,14 @@ public class SetBasedBrickData implements IBrickData {
 		// if (contentVA == null)
 		// throw new IllegalStateException("contentVA was null");
 		for (Integer contenID : getContentVA()) {
-			StorageData storageData = segmentData.getSet().getStorageData(
-					DataTable.STORAGE);
+			DimensionData storageData = segmentData.getSet().getStorageData(
+					DataTable.DIMENSION);
 			if (storageData == null) {
 				averageValue = 0;
 				return;
 			}
 
-			StorageVirtualArray storageVA = storageData.getStorageVA();
+			DimensionVirtualArray storageVA = storageData.getStorageVA();
 
 			if (storageVA == null) {
 				averageValue = 0;
@@ -65,7 +65,7 @@ public class SetBasedBrickData implements IBrickData {
 			}
 			for (Integer storageID : storageVA) {
 				float value = segmentData.getSet().get(storageID)
-						.getFloat(EDataRepresentation.NORMALIZED, contenID);
+						.getFloat(DataRepresentation.NORMALIZED, contenID);
 				if (!Float.isNaN(value)) {
 					averageValue += value;
 					count++;

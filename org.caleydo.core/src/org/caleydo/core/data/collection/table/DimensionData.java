@@ -3,7 +3,7 @@ package org.caleydo.core.data.collection.table;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.graph.tree.ClusterTree;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.StorageGroupList;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -13,10 +13,10 @@ import org.caleydo.core.util.clusterer.ClusterNode;
  * 
  * @author Alexander Lex
  */
-public class StorageData
+public class DimensionData
 	implements Cloneable {
 
-	StorageVirtualArray storageVA;
+	DimensionVirtualArray storageVA;
 
 	/** indices of examples (cluster centers) */
 	ArrayList<Integer> storageSampleElements;
@@ -30,11 +30,11 @@ public class StorageData
 	/** Root node for storage hierarchy which is only set in metaSets */
 	private ClusterNode storageTreeRoot = null;
 
-	public StorageVirtualArray getStorageVA() {
+	public DimensionVirtualArray getStorageVA() {
 		return storageVA;
 	}
 
-	public void setStorageVA(StorageVirtualArray storageVA) {
+	public void setStorageVA(DimensionVirtualArray storageVA) {
 		this.storageVA = storageVA;
 	}
 
@@ -100,10 +100,10 @@ public class StorageData
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public StorageData clone() {
-		StorageData clone = null;
+	public DimensionData clone() {
+		DimensionData clone = null;
 		try {
-			clone = (StorageData) super.clone();
+			clone = (DimensionData) super.clone();
 		}
 		catch (CloneNotSupportedException e) {
 			// TODO: handle exception

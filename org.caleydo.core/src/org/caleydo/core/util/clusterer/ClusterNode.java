@@ -93,7 +93,7 @@ public class ClusterNode
 		// Tree<ClusterNode> subTree = tree.getSubTree();
 
 		ArrayList<Integer> storageIDs = this.getLeaveIds();
-		DataTableUtils.setStorages(metaSet, storageIDs);
+		DataTableUtils.setDataTables(metaSet, storageIDs);
 	}
 
 	/**

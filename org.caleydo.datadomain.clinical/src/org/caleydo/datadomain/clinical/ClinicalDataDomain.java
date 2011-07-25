@@ -45,9 +45,9 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void setSet(DataTable set) {
+	public void setDataTable(DataTable set) {
 
-		super.setSet(set);
+		super.setDataTable(set);
 	}
 
 	@Override

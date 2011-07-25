@@ -1,6 +1,6 @@
 package org.caleydo.core.data.collection.storage;
 
-import org.caleydo.core.data.collection.EExternalDataRepresentation;
+import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainerIterator;
@@ -19,30 +19,39 @@ import org.caleydo.core.manager.GeneralManager;
  * @author Alexander Lex
  */
 
-public class NumericalStorage
-	extends AStorage {
+public class NumericalDimension
+	extends ADimension {
 
 	/**
 	 * Constructor
 	 */
-	public NumericalStorage() {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.STORAGE_NUMERICAL));
+	public NumericalDimension() {
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.DIMENSION_NUMERICAL));
 	}
+
+	/**
+	 * Constructor that takes a storage ID. This is needed for de-serialization.
+	 * 
+	 * @param storageID
+	 */
+	public NumericalDimension(int storageID) {
+		super(storageID);
+	}	
 
 	@Override
 	public void normalize() {
 
 		INumericalCContainer iRawContainer = (INumericalCContainer) hashCContainers.get(dataRep);
-		hashCContainers.put(EDataRepresentation.NORMALIZED, iRawContainer.normalize());
+		hashCContainers.put(DataRepresentation.NORMALIZED, iRawContainer.normalize());
 	}
 
 	public void normalizeUncertainty(float invalidThreshold, float validThreshold) {
 
 		FloatCContainer certainties =
-			(FloatCContainer) hashCContainers.get(EDataRepresentation.UNCERTAINTY_RAW);
+			(FloatCContainer) hashCContainers.get(DataRepresentation.UNCERTAINTY_RAW);
 		FloatCContainer normalizedCertainties =
 			certainties.normalizeWithExternalExtrema(invalidThreshold, validThreshold);
-		hashCContainers.put(EDataRepresentation.UNCERTAINTY_NORMALIZED, normalizedCertainties);
+		hashCContainers.put(DataRepresentation.UNCERTAINTY_NORMALIZED, normalizedCertainties);
 	}
 
 	/**
@@ -53,7 +62,7 @@ public class NumericalStorage
 	 * @param dMin
 	 * @param dMax
 	 */
-	public void normalizeWithExternalExtrema(EDataRepresentation sourceRep, EDataRepresentation targetRep,
+	public void normalizeWithExternalExtrema(DataRepresentation sourceRep, DataRepresentation targetRep,
 		double dMin, double dMax) {
 		INumericalCContainer rawStorage = (INumericalCContainer) hashCContainers.get(sourceRep);
 
@@ -82,11 +91,11 @@ public class NumericalStorage
 	 *             if dMin >= dMax
 	 */
 	public void normalizeWithExternalExtrema(double dMin, double dMax) {
-		normalizeWithExternalExtrema(dataRep, EDataRepresentation.NORMALIZED, dMin, dMax);
+		normalizeWithExternalExtrema(dataRep, DataRepresentation.NORMALIZED, dMin, dMax);
 	}
 
 	@Override
-	public ERawDataType getRawDataType() {
+	public RawDataType getRawDataType() {
 		return rawDataType;
 	}
 
@@ -127,8 +136,8 @@ public class NumericalStorage
 	 * Normalize then uses the log data instead of the raw data
 	 */
 	public void log10() {
-		hashCContainers.put(EDataRepresentation.LOG10,
-			((INumericalCContainer) hashCContainers.get(EDataRepresentation.RAW)).log(10));
+		hashCContainers.put(DataRepresentation.LOG10,
+			((INumericalCContainer) hashCContainers.get(DataRepresentation.RAW)).log(10));
 	}
 
 	/**
@@ -137,30 +146,30 @@ public class NumericalStorage
 	 * Normalize then uses the log data instead of the raw data
 	 */
 	public void log2() {
-		hashCContainers.put(EDataRepresentation.LOG2,
-			((INumericalCContainer) hashCContainers.get(EDataRepresentation.RAW)).log(2));
+		hashCContainers.put(DataRepresentation.LOG2,
+			((INumericalCContainer) hashCContainers.get(DataRepresentation.RAW)).log(2));
 	}
 
 	/**
 	 * Remove log and normalized data. Normalize has to be called again.
 	 */
 	public void reset() {
-		hashCContainers.remove(EDataRepresentation.LOG2);
-		hashCContainers.remove(EDataRepresentation.LOG10);
-		hashCContainers.remove(EDataRepresentation.NORMALIZED);
+		hashCContainers.remove(DataRepresentation.LOG2);
+		hashCContainers.remove(DataRepresentation.LOG10);
+		hashCContainers.remove(DataRepresentation.NORMALIZED);
 	}
 
 	@Override
-	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep) {
+	public void setExternalDataRepresentation(ExternalDataRepresentation externalDataRep) {
 		switch (externalDataRep) {
 			case NORMAL:
-				dataRep = EDataRepresentation.RAW;
+				dataRep = DataRepresentation.RAW;
 				break;
 			case LOG10:
-				dataRep = EDataRepresentation.LOG10;
+				dataRep = DataRepresentation.LOG10;
 				break;
 			case LOG2:
-				dataRep = EDataRepresentation.LOG2;
+				dataRep = DataRepresentation.LOG2;
 				break;
 		}
 
@@ -181,7 +190,7 @@ public class NumericalStorage
 		}
 
 		FloatCContainerIterator iterator =
-			((FloatCContainer) hashCContainers.get(EDataRepresentation.NORMALIZED)).iterator();
+			((FloatCContainer) hashCContainers.get(DataRepresentation.NORMALIZED)).iterator();
 		while (iterator.hasNext()) {
 			// this works because the values in the container are already noramlized
 			int iIndex = (int) (iterator.next() * iNumberOfBuckets);
@@ -211,7 +220,7 @@ public class NumericalStorage
 		}
 
 		FloatCContainerIterator iterator =
-			((FloatCContainer) hashCContainers.get(EDataRepresentation.NORMALIZED)).iterator(contentVA);
+			((FloatCContainer) hashCContainers.get(DataRepresentation.NORMALIZED)).iterator(contentVA);
 		while (iterator.hasNext()) {
 			// this works because the values in the container are already noramlized
 			int iIndex = (int) (iterator.next() * iNumberOfBuckets);
@@ -225,11 +234,11 @@ public class NumericalStorage
 	}
 
 	/**
-	 * Creates an empty container for the given {@link EDataRepresentation} and stores it
+	 * Creates an empty container for the given {@link DataRepresentation} and stores it
 	 * 
 	 * @param dataRepresentation
 	 */
-	public void setNewRepresentation(EDataRepresentation dataRepresentation, float[] representation) {
+	public void setNewRepresentation(DataRepresentation dataRepresentation, float[] representation) {
 		if (representation.length != size())
 			throw new IllegalArgumentException("The size of the storage (" + size()
 				+ ") is not equal the size of the given new representation (" + representation.length + ")");

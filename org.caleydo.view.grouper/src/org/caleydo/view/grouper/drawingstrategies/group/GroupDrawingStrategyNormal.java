@@ -2,9 +2,9 @@ package org.caleydo.view.grouper.drawingstrategies.group;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.collection.storage.NominalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.view.grouper.GrouperRenderStyle;
@@ -67,13 +67,13 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 		// gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
 
 		DataTable set = groupRepresentation.getClusterNode().getMetaSet();
-		StorageVirtualArray storageVA = set.getStorageData(DataTable.STORAGE).getStorageVA();
+		DimensionVirtualArray storageVA = set.getStorageData(DataTable.DIMENSION).getStorageVA();
 
 		boolean isNominal = false;
 		boolean isNumerical = false;
 		for (Integer storageID : storageVA) {
 
-			if (set.get(storageID) instanceof NominalStorage<?>) {
+			if (set.get(storageID) instanceof NominalDimension<?>) {
 				gl.glColor4f(116f / 255f, 196f / 255f, 118f / 255f, 1f);
 				isNominal = true;
 			} else {

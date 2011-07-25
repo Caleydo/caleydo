@@ -1690,7 +1690,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		// if (bRenderOnlyContext)
 		// contentVAType = EVAType.CONTENT_CONTEXT;
 		// else
-		contentVAType = DataTable.CONTENT;
+		contentVAType = DataTable.RECORD;
 
 		contentVA = dataDomain.getContentVA(contentVAType);
 		storageVA = dataDomain.getStorageVA(storageVAType);

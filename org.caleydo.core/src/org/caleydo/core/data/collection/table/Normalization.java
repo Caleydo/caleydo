@@ -2,9 +2,9 @@ package org.caleydo.core.data.collection.table;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.storage.AStorage;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.collection.storage.ADimension;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
+import org.caleydo.core.data.collection.storage.NumericalDimension;
 
 /**
  * This class handles everything related to the normalization of DataTables
@@ -27,9 +27,9 @@ public class Normalization {
 	 * all the storages that support it manually.
 	 */
 	void log10() {
-		for (AStorage storage : table.hashStorages.values()) {
-			if (storage instanceof NumericalStorage) {
-				NumericalStorage nStorage = (NumericalStorage) storage;
+		for (ADimension storage : table.hashDimensions.values()) {
+			if (storage instanceof NumericalDimension) {
+				NumericalDimension nStorage = (NumericalDimension) storage;
 				nStorage.log10();
 			}
 			else
@@ -45,9 +45,9 @@ public class Normalization {
 	 */
 	void log2() {
 
-		for (AStorage storage : table.hashStorages.values()) {
-			if (storage instanceof NumericalStorage) {
-				NumericalStorage nStorage = (NumericalStorage) storage;
+		for (ADimension storage : table.hashDimensions.values()) {
+			if (storage instanceof NumericalDimension) {
+				NumericalDimension nStorage = (NumericalDimension) storage;
 				nStorage.log2();
 			}
 			else
@@ -63,7 +63,7 @@ public class Normalization {
 	 */
 	void normalizeLocally() {
 		table.isSetHomogeneous = false;
-		for (AStorage storage : table.hashStorages.values()) {
+		for (ADimension storage : table.hashDimensions.values()) {
 			storage.normalize();
 		}
 	}
@@ -77,9 +77,9 @@ public class Normalization {
 	void normalizeGlobally() {
 
 		table.isSetHomogeneous = true;
-		for (AStorage storage : table.hashStorages.values()) {
-			if (storage instanceof NumericalStorage) {
-				NumericalStorage nStorage = (NumericalStorage) storage;
+		for (ADimension storage : table.hashDimensions.values()) {
+			if (storage instanceof NumericalDimension) {
+				NumericalDimension nStorage = (NumericalDimension) storage;
 				nStorage.normalizeWithExternalExtrema(metaData.getMin(), metaData.getMax());
 			}
 			else
@@ -89,17 +89,17 @@ public class Normalization {
 	}
 
 	void normalizeUsingFoldChange() {
-		for (AStorage storage : table.hashStorages.values()) {
-			if (!storage.containsDataRepresentation(EDataRepresentation.FOLD_CHANGE_RAW))
+		for (ADimension storage : table.hashDimensions.values()) {
+			if (!storage.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW))
 				calculateFoldChange();
 			break;
 		}
 
-		for (AStorage storage : table.hashStorages.values()) {
-			if (storage instanceof NumericalStorage) {
-				NumericalStorage nStorage = (NumericalStorage) storage;
-				nStorage.normalizeWithExternalExtrema(EDataRepresentation.FOLD_CHANGE_RAW,
-					EDataRepresentation.FOLD_CHANGE_NORMALIZED, 1, 10);
+		for (ADimension storage : table.hashDimensions.values()) {
+			if (storage instanceof NumericalDimension) {
+				NumericalDimension nStorage = (NumericalDimension) storage;
+				nStorage.normalizeWithExternalExtrema(DataRepresentation.FOLD_CHANGE_RAW,
+					DataRepresentation.FOLD_CHANGE_NORMALIZED, 1, 10);
 			}
 			else
 				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"
@@ -110,25 +110,25 @@ public class Normalization {
 
 	private void calculateFoldChange() {
 		HashMap<Integer, float[]> foldChangePerStorage =
-			new HashMap<Integer, float[]>(table.hashStorages.size());
+			new HashMap<Integer, float[]>(table.hashDimensions.size());
 
-		for (Integer storageKey : table.hashStorages.keySet()) {
+		for (Integer storageKey : table.hashDimensions.keySet()) {
 			foldChangePerStorage.put(storageKey, new float[metaData.depth()]);
 		}
 
 		for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
 			float minValue = Float.MAX_VALUE;
 			// find out which is the smalles raw value
-			for (Integer storageKey : table.hashStorages.keySet()) {
-				NumericalStorage nStorage = (NumericalStorage) table.hashStorages.get(storageKey);
-				float rawValue = nStorage.getFloat(EDataRepresentation.RAW, contentCount);
+			for (Integer storageKey : table.hashDimensions.keySet()) {
+				NumericalDimension nStorage = (NumericalDimension) table.hashDimensions.get(storageKey);
+				float rawValue = nStorage.getFloat(DataRepresentation.RAW, contentCount);
 				if (rawValue < minValue)
 					minValue = rawValue;
 			}
 			// set the fold changes
-			for (Integer storageKey : table.hashStorages.keySet()) {
-				NumericalStorage nStorage = (NumericalStorage) table.hashStorages.get(storageKey);
-				float rawValue = nStorage.getFloat(EDataRepresentation.RAW, contentCount);
+			for (Integer storageKey : table.hashDimensions.keySet()) {
+				NumericalDimension nStorage = (NumericalDimension) table.hashDimensions.get(storageKey);
+				float rawValue = nStorage.getFloat(DataRepresentation.RAW, contentCount);
 				float[] foldChanges = foldChangePerStorage.get(storageKey);
 				if (minValue == 0)
 					foldChanges[contentCount] = Float.POSITIVE_INFINITY;
@@ -141,10 +141,10 @@ public class Normalization {
 		}
 
 		// set the float[] to the storages
-		for (Integer storageKey : table.hashStorages.keySet()) {
-			NumericalStorage nStorage = (NumericalStorage) table.hashStorages.get(storageKey);
-			if (!nStorage.containsDataRepresentation(EDataRepresentation.FOLD_CHANGE_RAW))
-				nStorage.setNewRepresentation(EDataRepresentation.FOLD_CHANGE_RAW,
+		for (Integer storageKey : table.hashDimensions.keySet()) {
+			NumericalDimension nStorage = (NumericalDimension) table.hashDimensions.get(storageKey);
+			if (!nStorage.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW))
+				nStorage.setNewRepresentation(DataRepresentation.FOLD_CHANGE_RAW,
 					foldChangePerStorage.get(storageKey));
 			else
 				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"

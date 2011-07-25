@@ -9,21 +9,21 @@ import org.caleydo.core.data.filter.event.ReEvaluateStorageFilterListEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateStorageFilterListListener;
 import org.caleydo.core.data.filter.event.RemoveStorageFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveStorageFilterListener;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
+import org.caleydo.core.manager.event.data.ReplaceDimensionVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.StorageVAUpdateListener;
 
 /**
- * Concrete implementation of {@link FilterManager} for {@link StorageVirtualArray}s.
+ * Concrete implementation of {@link FilterManager} for {@link DimensionVirtualArray}s.
  * 
  * @author Alexander Lex
  */
 public class StorageFilterManager
-	extends FilterManager<StorageVADelta, StorageFilter, StorageVirtualArray>
+	extends FilterManager<StorageVADelta, StorageFilter, DimensionVirtualArray>
 	implements IStorageVAUpdateHandler {
 
 	private StorageVAUpdateListener storageVAUpdateListener;
@@ -114,8 +114,8 @@ public class StorageFilterManager
 
 	@Override
 	protected void triggerReplaceVAEvent() {
-		ReplaceStorageVAInUseCaseEvent event = new ReplaceStorageVAInUseCaseEvent();
-		event.setVAType(DataTable.STORAGE);
+		ReplaceDimensionVAInUseCaseEvent event = new ReplaceDimensionVAInUseCaseEvent();
+		event.setVAType(DataTable.DIMENSION);
 		event.setVirtualArray(currentVA);
 		event.setSender(this);
 		event.setDataDomainID(dataDomain.getDataDomainID());

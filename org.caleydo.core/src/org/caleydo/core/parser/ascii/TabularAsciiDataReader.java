@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.collection.storage.AStorage;
-import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.collection.DimensionType;
+import org.caleydo.core.data.collection.storage.ADimension;
+import org.caleydo.core.data.collection.storage.NominalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.manager.GeneralManager;
@@ -29,9 +29,9 @@ public class TabularAsciiDataReader
 	/**
 	 * Imports data from file to this set. uses first storage and overwrites first selection.
 	 */
-	protected ArrayList<AStorage> targetStorages;
+	protected ArrayList<ADimension> targetStorages;
 
-	protected ArrayList<EStorageType> columnDataTypes;
+	protected ArrayList<DimensionType> columnDataTypes;
 
 	private ArrayList<int[]> intArrays;
 
@@ -52,8 +52,8 @@ public class TabularAsciiDataReader
 		super(sFileName);
 
 		this.dataDomain = dataDomain;
-		targetStorages = new ArrayList<AStorage>();
-		columnDataTypes = new ArrayList<EStorageType>();
+		targetStorages = new ArrayList<ADimension>();
+		columnDataTypes = new ArrayList<DimensionType>();
 
 		intArrays = new ArrayList<int[]>();
 		floatArrays = new ArrayList<float[]>();
@@ -77,30 +77,30 @@ public class TabularAsciiDataReader
 			String buffer = tokenizer.nextToken(sTokenPatternParserSeperator);
 
 			if (buffer.equalsIgnoreCase("abort")) {
-				columnDataTypes.add(EStorageType.ABORT);
+				columnDataTypes.add(DimensionType.ABORT);
 
 				return areAllTokensProper;
 			}
 			else if (buffer.equalsIgnoreCase("skip")) {
-				columnDataTypes.add(EStorageType.SKIP);
+				columnDataTypes.add(DimensionType.SKIP);
 			}
 			else if (buffer.equalsIgnoreCase("int")) {
-				columnDataTypes.add(EStorageType.INT);
+				columnDataTypes.add(DimensionType.INT);
 			}
 			else if (buffer.equalsIgnoreCase("float")) {
-				columnDataTypes.add(EStorageType.FLOAT);
+				columnDataTypes.add(DimensionType.FLOAT);
 			}
 			else if (buffer.equalsIgnoreCase("string")) {
-				columnDataTypes.add(EStorageType.STRING);
+				columnDataTypes.add(DimensionType.STRING);
 			}
 			else if (buffer.equalsIgnoreCase("group_number")) {
-				columnDataTypes.add(EStorageType.GROUP_NUMBER);
+				columnDataTypes.add(DimensionType.GROUP_NUMBER);
 			}
 			else if (buffer.equalsIgnoreCase("group_representative")) {
-				columnDataTypes.add(EStorageType.GROUP_REPRESENTATIVE);
+				columnDataTypes.add(DimensionType.GROUP_REPRESENTATIVE);
 			}
 			else if (buffer.equalsIgnoreCase("certainty")) {
-				columnDataTypes.add(EStorageType.CERTAINTY);
+				columnDataTypes.add(DimensionType.CERTAINTY);
 			}
 			
 			else {
@@ -120,7 +120,7 @@ public class TabularAsciiDataReader
 
 	public void setTargetStorages(final ArrayList<Integer> targetStorageIDs) {
 		for (int storageID : targetStorageIDs) {
-			targetStorages.add(GeneralManager.get().getStorageManager().getItem(storageID));
+			targetStorages.add(GeneralManager.get().getDimensionManager().getItem(storageID));
 		}
 	}
 
@@ -128,7 +128,7 @@ public class TabularAsciiDataReader
 
 		int lineCount = 0;
 
-		for (EStorageType storageType : columnDataTypes) {
+		for (DimensionType storageType : columnDataTypes) {
 
 			switch (storageType) {
 				case GROUP_NUMBER:
@@ -207,7 +207,7 @@ public class TabularAsciiDataReader
 			int floatIndex = 0;
 			int stringIndex = 0;
 
-			for (EStorageType columnDataType : columnDataTypes) {
+			for (DimensionType columnDataType : columnDataTypes) {
 				if (strTokenLine.hasMoreTokens()) {
 					switch (columnDataType) {
 						case INT:
@@ -308,7 +308,7 @@ public class TabularAsciiDataReader
 
 		DataTable set = dataDomain.getDataTable();
 
-		for (EStorageType storageType : columnDataTypes) {
+		for (DimensionType storageType : columnDataTypes) {
 			// if(iStorageIndex + 1 == targetStorages.size())
 			// break;
 			switch (storageType) {
@@ -331,7 +331,7 @@ public class TabularAsciiDataReader
 
 					ArrayList<String> rawStringData = stringLists.get(iStringArrayIndex);
 					rawStringData = fillUp(rawStringData);
-					((NominalStorage<String>) targetStorages.get(storageIndex))
+					((NominalDimension<String>) targetStorages.get(storageIndex))
 						.setRawNominalData(rawStringData);
 					// stringLists.add(new ArrayList<String>(iStopParsingAtLine - parsingStartLine));
 					iStringArrayIndex++;
@@ -342,23 +342,23 @@ public class TabularAsciiDataReader
 				case GROUP_NUMBER:
 
 					int[] iArGroupInfo = groupInfo.get(0);
-					DataTableUtils.setContentGroupList((DataTable) set, DataTable.CONTENT, iArGroupInfo);
+					DataTableUtils.setContentGroupList((DataTable) set, DataTable.RECORD, iArGroupInfo);
 
 					iIntArrayIndex++;
 					break;
 				case GROUP_REPRESENTATIVE:
 
 					int[] iArGroupRepr = groupInfo.get(1);
-					DataTableUtils.setContentGroupRepresentatives((DataTable) set, DataTable.CONTENT, iArGroupRepr);
+					DataTableUtils.setContentGroupRepresentatives((DataTable) set, DataTable.RECORD, iArGroupRepr);
 
 					iIntArrayIndex++;
 					break;
 				case ABORT:
 					if (useExperimentClusterInfo) {
 						iArGroupInfo = groupInfo.get(2);
-						DataTableUtils.setStorageGroupList((DataTable) set, DataTable.STORAGE, iArGroupInfo);
+						DataTableUtils.setStorageGroupList((DataTable) set, DataTable.DIMENSION, iArGroupInfo);
 						iArGroupRepr = groupInfo.get(3);
-						DataTableUtils.setStorageGroupRepresentatives((DataTable) set, DataTable.STORAGE, iArGroupRepr);
+						DataTableUtils.setStorageGroupRepresentatives((DataTable) set, DataTable.DIMENSION, iArGroupRepr);
 					}
 					return;
 
@@ -390,7 +390,7 @@ public class TabularAsciiDataReader
 
 	}
 
-	public ArrayList<EStorageType> getColumnDataTypes() {
+	public ArrayList<DimensionType> getColumnDataTypes() {
 		return columnDataTypes;
 	}
 }

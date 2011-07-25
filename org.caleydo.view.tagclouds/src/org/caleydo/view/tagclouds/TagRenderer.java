@@ -4,10 +4,10 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.storage.AStorage;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.collection.storage.NominalStorage;
-import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.collection.storage.ADimension;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
+import org.caleydo.core.data.collection.storage.NominalDimension;
+import org.caleydo.core.data.collection.storage.NumericalDimension;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -64,14 +64,14 @@ public class TagRenderer extends LayoutRenderer {
 
 		if (!tagCloud.getContentVA().contains(contentID))
 			return;
-		AStorage genericStorage = tagCloud.getSet().get(storageID);
-		if (genericStorage instanceof NumericalStorage) {
-			NumericalStorage numericalStorage = (NumericalStorage) genericStorage;
+		ADimension genericStorage = tagCloud.getSet().get(storageID);
+		if (genericStorage instanceof NumericalDimension) {
+			NumericalDimension numericalStorage = (NumericalDimension) genericStorage;
 			text = new Float(
-					numericalStorage.getFloat(EDataRepresentation.RAW, contentID))
+					numericalStorage.getFloat(DataRepresentation.RAW, contentID))
 					.toString();
 		} else {
-			NominalStorage<String> storage = (NominalStorage<String>) genericStorage;
+			NominalDimension<String> storage = (NominalDimension<String>) genericStorage;
 			text = storage.getRaw(contentID);
 		}
 

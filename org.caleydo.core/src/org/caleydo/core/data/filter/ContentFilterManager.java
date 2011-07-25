@@ -127,7 +127,7 @@ public class ContentFilterManager
 	@Override
 	protected void triggerReplaceVAEvent() {
 		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent();
-		event.setVAType(DataTable.CONTENT);
+		event.setVAType(DataTable.RECORD);
 		event.setVirtualArray(currentVA);
 		event.setSender(this);
 		event.setDataDomainID(dataDomain.getDataDomainID());

@@ -16,8 +16,8 @@ public enum CommandType {
 	LOAD_DATA_FILE("cmd", "type", "", "No description available!"),
 	LOAD_LOOKUP_TABLE_FILE("cmd", "type", "", "Load a lookup table"),
 	
-	CREATE_SET_DATA("cmd", "type", "-1", "Create SET"),
-	CREATE_STORAGE("cmd", "type", "-1", "Create Storage"),
+	CREATE_DATA_TABLE("cmd", "type", "-1", "Create Data Table"),
+	CREATE_DIMENSION("cmd", "type", "-1", "Create Dimension"),
 	CREATE_VIRTUAL_ARRAY("cmd", "type", "-1", "Create VirtualArray"),
 
 	CREATE_ID_CATEGORY("cmd", "type", "Create ID Category"),

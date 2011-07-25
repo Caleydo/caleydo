@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -52,7 +52,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 
 	private ContentVirtualArray contentVA;
 
-	private StorageVirtualArray storageVA;
+	private DimensionVirtualArray storageVA;
 
 	private DataTable set;
 
@@ -69,7 +69,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 	 * Init textures, build array of textures used for holding the whole samples
 	 */
 	public void init(GLUncertaintyHeatMap uncertaintyHeatMap, DataTable set,
-			ContentVirtualArray contentVA, StorageVirtualArray storageVA, int groupIndex) {
+			ContentVirtualArray contentVA, DimensionVirtualArray storageVA, int groupIndex) {
 
 		this.contentVA = contentVA;
 		this.storageVA = storageVA;
@@ -240,7 +240,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 
 				val = val
 						+ ((set.get(storageVA.get(exps)).getFloat(
-								EDataRepresentation.NORMALIZED, contentVA.get(i))));
+								DataRepresentation.NORMALIZED, contentVA.get(i))));
 			}
 			// buffer.get(abgr, i * numberOfExpirments * 4 + exps * 4, 4);
 
@@ -250,7 +250,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 			uncertainty = 0;
 			for (int i = startGene; i < endGene; i++) {
 				float tempVal = set.get(storageVA.get(exps)).getFloat(
-						EDataRepresentation.NORMALIZED, contentVA.get(i));
+						DataRepresentation.NORMALIZED, contentVA.get(i));
 				uncertainty = Math.abs(val - tempVal);
 				if (uncertainty > maxUncertainty) {
 					maxUncertainty = uncertainty;

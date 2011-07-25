@@ -15,9 +15,9 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.RemoveBookmarkEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -25,6 +25,15 @@ import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
 import org.caleydo.view.bookmark.contextmenu.BookmarkContextMenuItemContainer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MenuEvent;
+import org.eclipse.swt.events.MenuListener;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * <p>
@@ -179,10 +188,10 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 			switch (pickingMode) {
 			case CLICKED:
 				selectionType = SelectionType.SELECTION;
+
 				break;
 			case MOUSE_OVER:
 				selectionType = SelectionType.MOUSE_OVER;
-			
 
 				// PlatformUI.getWorkbench().getDisplay().asyncExec(new
 				// Runnable() {
@@ -191,8 +200,8 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 				// manager.getParentComposite()
 				// .notifyListeners(SWT.MouseDown, new Event());
 				//
-				// Menu menu = new Menu(manager.getParentGLCanvas()
-				// .getParentComposite().getShell(), SWT.POP_UP);
+				// Menu menu = new Menu(manager.getParentComposite().getShell(),
+				// SWT.POP_UP);
 				// Point point =
 				// manager.getParentComposite()
 				// .toDisplay(0, 0);
@@ -216,17 +225,70 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 				// menu.setVisible(true);
 				// }
 				// });
-				
-				
-				 break;
+
+				break;
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
-//				PopupMenu menu = new PopupMenu();
-//				MenuItem item = new MenuItem();
-//				menu.add(item);
-//				menu.addNotify();
-//				menu.show(manager.getParentGLCanvas(), 0, 0);
+//				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+//					@Override
+//					public void run() {
+//
+////						final Shell shell = new Shell(SWT.EMBEDDED);// | SWT.NO_TRIM | SWT.ON_TOP);
+//
+////						final Shell shell = new Shell(manager.getParentComposite().getShell());
+//						final Shell shell = manager.getParentComposite().getShell();
+//
+//						shell.notifyListeners(SWT.MouseDown, new Event());
+//
+//						final Menu menu = new Menu(shell, SWT.POP_UP);
+//						Point point = manager.getParentComposite().toDisplay(0, 0);
+//						System.out.println(point);
+//						menu.setLocation(point.x + pick.getPickedPoint().x, point.y
+//								+ pick.getPickedPoint().y);
+////						shell.setLocation(point.x + pick.getPickedPoint().x, point.y
+////								+ pick.getPickedPoint().y);
+//						MenuItem item = new MenuItem(menu, SWT.PUSH);
+//						item.setText("Popup");
+//						item = new MenuItem(menu, SWT.PUSH);
+//						item.setText("Popup1");
+//						item = new MenuItem(menu, SWT.PUSH);
+//						item.setText("Popup2");
+//						item = new MenuItem(menu, SWT.PUSH);
+//						item.setText("Popup3");
+//						item = new MenuItem(menu, SWT.PUSH);
+//						item.setText("Popup4");
+//						item = new MenuItem(menu, SWT.PUSH);
+//						item.setText("Popup5");
+//						
+//						menu.addMenuListener(new MenuListener() {
+//							
+//							@Override
+//							public void menuShown(MenuEvent e) {
+////								shell.setMenu(menu);
+////								shell.notifyListeners(SWT.MouseDown, new Event());
+//							}
+//							
+//							@Override
+//							public void menuHidden(MenuEvent e) {
+//				
+////								shell.close();
+//							}
+//						});
+//
+//						shell.setMenu(menu);
+//						menu.setVisible(true);
+////						shell.setVisible(false);
+////						shell.setSize(100, 100);
+////						 shell.open();
+//					}
+//				});
+
+				// PopupMenu menu = new PopupMenu();
+				// MenuItem item = new MenuItem();
+				// menu.add(item);
+				// menu.addNotify();
+				// menu.show(manager.getParentGLCanvas(), 0, 0);
 
 				BookmarkContextMenuItemContainer bookmarkContextMenuItemContainer = new BookmarkContextMenuItemContainer();
 				bookmarkContextMenuItemContainer.setID(internalIDType, externalID);

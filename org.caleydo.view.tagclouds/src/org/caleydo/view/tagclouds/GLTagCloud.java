@@ -9,17 +9,17 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.storage.AStorage;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.collection.storage.NominalStorage;
-import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.collection.storage.ADimension;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
+import org.caleydo.core.data.collection.storage.NominalDimension;
+import org.caleydo.core.data.collection.storage.NumericalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.PickingMode;
@@ -60,7 +60,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 	public final static int MIN_NUMBER_PIXELS_PER_DIMENSION = 100;
 
-	private StorageVirtualArray clippedStorageVA;
+	private DimensionVirtualArray clippedStorageVA;
 	private int firstStorageIndex = -1;
 	private int lastStorageIndex = -1;
 
@@ -128,32 +128,32 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		if (set == null)
 			set = dataDomain.getDataTable();
 		if (contentVA == null)
-			contentVA = set.getContentData(DataTable.CONTENT).getContentVA();
+			contentVA = set.getContentData(DataTable.RECORD).getContentVA();
 		if (storageVA == null)
-			storageVA = set.getStorageData(DataTable.STORAGE).getStorageVA();
+			storageVA = set.getStorageData(DataTable.DIMENSION).getStorageVA();
 		if (contentSelectionManager == null)
 			contentSelectionManager = dataDomain.getContentSelectionManager();
 
 		for (Integer storageID : storageVA) {
 			HashMap<String, Integer> stringOccurences = new HashMap<String, Integer>();
 			stringOccurencesPerStorage.put(storageID, stringOccurences);
-			AStorage genericStorage = set.get(storageID);
-			NumericalStorage numericalStorage = null;
-			NominalStorage<String> storage = null;
+			ADimension genericStorage = set.get(storageID);
+			NumericalDimension numericalStorage = null;
+			NominalDimension<String> storage = null;
 			boolean isNumericalStorage = false;
-			if (genericStorage instanceof NumericalStorage) {
+			if (genericStorage instanceof NumericalDimension) {
 				isNumericalStorage = true;
-				numericalStorage = (NumericalStorage) genericStorage;
+				numericalStorage = (NumericalDimension) genericStorage;
 			}
-			if (genericStorage instanceof NominalStorage<?>) {
-				storage = (NominalStorage<String>) genericStorage;
+			if (genericStorage instanceof NominalDimension<?>) {
+				storage = (NominalDimension<String>) genericStorage;
 				isNumericalStorage = false;
 			}
 
 			for (Integer contentID : contentVA) {
 				String string = null;
 				if (isNumericalStorage) {
-					string = new Float(numericalStorage.getFloat(EDataRepresentation.RAW,
+					string = new Float(numericalStorage.getFloat(DataRepresentation.RAW,
 							contentID)).toString();
 				} else {
 					string = storage.getRaw(contentID);
@@ -180,7 +180,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		layoutTemplate.setBaseElementLayout(baseRow);
 		baseColumn = new Column("baseColumn");
 
-		StorageVirtualArray visibleStorageVA;
+		DimensionVirtualArray visibleStorageVA;
 
 		int numberOfVisibleDimensions = pixelGLConverter
 				.getPixelWidthForGLWidth(viewFrustum.getWidth())
@@ -188,7 +188,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 		if (storageVA.size() > numberOfVisibleDimensions) {
 			if (clippedStorageVA == null) {
-				clippedStorageVA = new StorageVirtualArray();
+				clippedStorageVA = new DimensionVirtualArray();
 
 				firstStorageIndex = 0;
 				lastStorageIndex = numberOfVisibleDimensions - 1;
@@ -479,7 +479,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	private void updateClippedVA() {
-		clippedStorageVA = new StorageVirtualArray();
+		clippedStorageVA = new DimensionVirtualArray();
 		for (int count = firstStorageIndex; count <= lastStorageIndex; count++) {
 			clippedStorageVA.append(storageVA.get(count));
 		}

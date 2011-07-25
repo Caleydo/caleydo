@@ -4,7 +4,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -30,7 +30,7 @@ public abstract class AClusterer
 	protected int iProgressBarOffsetValue;
 
 	protected ContentVirtualArray contentVA;
-	protected StorageVirtualArray storageVA;
+	protected DimensionVirtualArray storageVA;
 
 	protected ClusterState clusterState;
 

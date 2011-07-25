@@ -23,7 +23,7 @@ import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -169,16 +169,16 @@ public abstract class AGLView
 	/**
 	 * The type of the content VA
 	 */
-	protected String contentVAType = DataTable.CONTENT;
+	protected String contentVAType = DataTable.RECORD;
 
 	/**
 	 * The id of the virtual array that manages the storage references in the set
 	 */
-	protected StorageVirtualArray storageVA;
+	protected DimensionVirtualArray storageVA;
 	/**
 	 * The type of the storage VA
 	 */
-	protected String storageVAType = DataTable.STORAGE;
+	protected String storageVAType = DataTable.DIMENSION;
 
 	/**
 	 * The context menu each view should implement. It has to be created in initLocal or is set via initRemote
@@ -924,7 +924,7 @@ public abstract class AGLView
 	}
 
 	public final boolean rendersContextOnly() {
-		if (contentVAType.equals(DataTable.CONTENT))
+		if (contentVAType.equals(DataTable.RECORD))
 			return false;
 		return true;
 	}
@@ -1060,7 +1060,7 @@ public abstract class AGLView
 		return contentVA;
 	}
 
-	public final StorageVirtualArray getStorageVA() {
+	public final DimensionVirtualArray getStorageVA() {
 		return storageVA;
 	}
 

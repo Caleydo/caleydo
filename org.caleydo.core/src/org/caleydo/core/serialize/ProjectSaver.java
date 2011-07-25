@@ -15,7 +15,7 @@ import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
@@ -199,14 +199,14 @@ public class ProjectSaver {
 					}
 					TreePorter treePorter = new TreePorter();
 					Tree<ClusterNode> geneTree =
-						setBasedDataDomain.getDataTable().getContentData(DataTable.CONTENT).getContentTree();
+						setBasedDataDomain.getDataTable().getContentData(DataTable.RECORD).getContentTree();
 					if (geneTree != null) {
 						treePorter.exportTree(extendedDirName + GENE_TREE_FILE_NAME, geneTree);
 					}
 
 					treePorter = new TreePorter();
 					Tree<ClusterNode> expTree =
-						setBasedDataDomain.getDataTable().getStorageData(DataTable.STORAGE).getStorageTree();
+						setBasedDataDomain.getDataTable().getStorageData(DataTable.DIMENSION).getStorageTree();
 					if (expTree != null) {
 						treePorter.exportTree(extendedDirName + EXP_TREE_FILE_NAME, expTree);
 					}
@@ -299,7 +299,7 @@ public class ProjectSaver {
 	private void saveStorageVA(Marshaller marshaller, String dir, ATableBasedDataDomain dataDomain,
 		String type) throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
-		StorageVirtualArray va = (StorageVirtualArray) dataDomain.getStorageVA(type);
+		DimensionVirtualArray va = (DimensionVirtualArray) dataDomain.getStorageVA(type);
 		marshaller.marshal(va, new File(fileName));
 	}
 }

@@ -1,6 +1,6 @@
 package org.caleydo.view.grouper.contextmenu;
 
-import org.caleydo.core.data.collection.EExternalDataRepresentation;
+import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
@@ -19,7 +19,7 @@ public class Log2ForSetItem extends AContextMenuItem {
 
 	public void triggerEvent() {
 		DataTableUtils.setExternalDataRepresentation((DataTable) set,
-				EExternalDataRepresentation.LOG2, false);
+				ExternalDataRepresentation.LOG2, false);
 
 	};
 }

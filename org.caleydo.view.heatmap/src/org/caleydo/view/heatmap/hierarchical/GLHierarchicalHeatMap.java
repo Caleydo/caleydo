@@ -22,7 +22,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.id.IDType;
@@ -31,7 +31,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
@@ -621,7 +621,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					}
 
 					fLookupValue = table.get(iStorageIndex).getFloat(
-							EDataRepresentation.NORMALIZED, iContentIndex);
+							DataRepresentation.NORMALIZED, iContentIndex);
 
 					float[] fArMappingColor = colorMapper.getColor(fLookupValue);
 
@@ -704,11 +704,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		glExperimentDendrogramView.setDataDomain(dataDomain);
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
 
-		glContentDendrogramView.setContentVAType(DataTable.CONTENT);
+		glContentDendrogramView.setContentVAType(DataTable.RECORD);
 		glContentDendrogramView.initData();
 		glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 
-		glExperimentDendrogramView.setContentVAType(DataTable.CONTENT);
+		glExperimentDendrogramView.setContentVAType(DataTable.RECORD);
 		glExperimentDendrogramView.initData();
 		glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
 	}
@@ -3263,7 +3263,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glPopAttrib();
 		}
 
-		if (!table.getStorageData(DataTable.STORAGE).isDefaultTree()) {
+		if (!table.getStorageData(DataTable.DIMENSION).isDefaultTree()) {
 
 			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -3348,9 +3348,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = DataTable.CONTENT_CONTEXT;
+			contentVAType = DataTable.RECORD_CONTEXT;
 		else
-			contentVAType = DataTable.CONTENT;
+			contentVAType = DataTable.RECORD;
 
 		contentVA = dataDomain.getContentVA(contentVAType);
 		storageVA = dataDomain.getStorageVA(storageVAType);
@@ -5224,7 +5224,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@Override
 	public void handleMergeStorageGroups() {
-		StorageVirtualArray va;
+		DimensionVirtualArray va;
 		Tree<ClusterNode> tree = null;
 
 		va = storageVA;

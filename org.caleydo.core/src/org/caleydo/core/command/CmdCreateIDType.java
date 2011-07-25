@@ -1,7 +1,7 @@
 package org.caleydo.core.command;
 
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.data.collection.DimensionType;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.parser.parameter.ParameterHandler;
@@ -19,7 +19,7 @@ public class CmdCreateIDType
 	extends ACmdCreational<IDType> {
 
 	private String typeName;
-	private EStorageType storageType;
+	private DimensionType storageType;
 	private IDCategory idCategory;
 
 	/**
@@ -50,11 +50,11 @@ public class CmdCreateIDType
 
 		typeName = detail;
 		idCategory = IDCategory.getIDCategory(attrib1);
-		storageType = EStorageType.valueOf(attrib2);
+		storageType = DimensionType.valueOf(attrib2);
 
 	}
 
-	public void setAttributes(String typeName, IDCategory idCategory, EStorageType storageType) {
+	public void setAttributes(String typeName, IDCategory idCategory, DimensionType storageType) {
 		this.typeName = typeName;
 		this.idCategory = idCategory;
 		this.storageType = storageType;

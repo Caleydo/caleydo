@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -39,7 +39,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 	 * @param showStandardDeviation
 	 */
 	public OverviewHeatMapRenderer(ContentVirtualArray contentVA,
-			StorageVirtualArray storageVA, DataTable set,
+			DimensionVirtualArray storageVA, DataTable set,
 			boolean showStandardDeviation) {
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
@@ -55,7 +55,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 			int index = 0;
 			for (int contentIndex : contentVA) {
 				expressionValues[index] = set.get(storageIndex).getFloat(
-						EDataRepresentation.NORMALIZED, contentIndex);
+						DataRepresentation.NORMALIZED, contentIndex);
 				index++;
 			}
 

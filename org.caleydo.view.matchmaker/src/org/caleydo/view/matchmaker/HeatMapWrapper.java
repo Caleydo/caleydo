@@ -61,7 +61,7 @@ public class HeatMapWrapper {
 	private HeatMapOverview overview;
 	private DataTable set;
 
-	private String contentVAType = DataTable.CONTENT;
+	private String contentVAType = DataTable.RECORD;
 	private ContentVirtualArray contentVA;
 	private AHeatMapLayout layout;
 	private HashMap<Integer, GLHeatMap> hashHeatMaps;
@@ -158,7 +158,7 @@ public class HeatMapWrapper {
 
 	public void setSet(DataTable set) {
 		this.set = set;
-		contentVA = set.getContentData(DataTable.CONTENT).getContentVA();
+		contentVA = set.getContentData(DataTable.RECORD).getContentVA();
 
 		// FIXME: Can we do this? Shall we do this in some other way? Do it also
 		// with dendrogram.

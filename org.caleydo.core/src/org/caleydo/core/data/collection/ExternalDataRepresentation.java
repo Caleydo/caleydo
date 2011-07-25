@@ -7,7 +7,7 @@ package org.caleydo.core.data.collection;
  * @author Alexander Lex
  */
 
-public enum EExternalDataRepresentation {
+public enum ExternalDataRepresentation {
 	NORMAL,
 	LOG10,
 	LOG2,

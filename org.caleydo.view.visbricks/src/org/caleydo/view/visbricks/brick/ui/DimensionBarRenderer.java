@@ -2,7 +2,7 @@ package org.caleydo.view.visbricks.brick.ui;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 /**
@@ -14,10 +14,10 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
  */
 public class DimensionBarRenderer extends LayoutRenderer {
 
-	private StorageVirtualArray overallStorageVA;
-	private StorageVirtualArray storageVA;
+	private DimensionVirtualArray overallStorageVA;
+	private DimensionVirtualArray storageVA;
 
-	public DimensionBarRenderer(StorageVirtualArray overallStorageVA, StorageVirtualArray storageVA) {
+	public DimensionBarRenderer(DimensionVirtualArray overallStorageVA, DimensionVirtualArray storageVA) {
 		this.overallStorageVA = overallStorageVA;
 		this.storageVA = storageVA;
 	}

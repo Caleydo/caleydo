@@ -8,8 +8,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.collection.table.ContentData;
+import org.caleydo.core.data.collection.DimensionType;
+import org.caleydo.core.data.collection.table.RecordData;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.ContentFilterManager;
 import org.caleydo.core.data.filter.StorageFilterManager;
@@ -27,7 +27,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.SetBasedDimensionGroupData;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -38,7 +38,7 @@ import org.caleydo.core.manager.event.data.DimensionGroupsChangedEvent;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAEvent;
-import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
+import org.caleydo.core.manager.event.data.ReplaceDimensionVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
@@ -71,7 +71,7 @@ public abstract class ATableBasedDataDomain
 	private SelectionCommandListener selectionCommandListener;
 	private StartClusteringListener startClusteringListener;
 	private ReplaceContentVAInUseCaseListener replaceContentVirtualArrayInUseCaseListener;
-	private ReplaceStorageVAInUseCaseListener replaceStorageVirtualArrayInUseCaseListener;
+	private ReplaceDimensionVAInUseCaseListener replaceStorageVirtualArrayInUseCaseListener;
 	private ContentVAUpdateListener contentVAUpdateListener;
 	private StorageVAUpdateListener storageVAUpdateListener;
 	private AggregateGroupListener aggregateGroupListener;
@@ -135,14 +135,14 @@ public abstract class ATableBasedDataDomain
 		}
 		contentIDType =
 			IDType.registerType("content_" + dataDomainID + "_" + hashCode(), contentIDCategory,
-				EStorageType.INT);
+				DimensionType.INT);
 		storageIDType =
 			IDType.registerType("storage_" + dataDomainID + "_" + hashCode(), storageIDCategory,
-				EStorageType.INT);
+				DimensionType.INT);
 
 		contentGroupIDType =
 			IDType.registerType("group_content_" + dataDomainID + "_" + hashCode(), contentIDCategory,
-				EStorageType.INT);
+				DimensionType.INT);
 	}
 
 	/**
@@ -155,25 +155,24 @@ public abstract class ATableBasedDataDomain
 	/**
 	 * Sets the set which is currently loaded and used inside the views for this use case.
 	 * 
-	 * @param set
+	 * @param dataTable
 	 *            The new set which replaced the currently loaded one.
 	 */
-	public void setSet(DataTable set) {
-		assert (set != null);
+	public void setDataTable(DataTable dataTable) {
+		assert (dataTable != null);
 
 		// set.setDataDomain(this);
 
 		DataTable oldSet = this.table;
-		this.table = set;
+		this.table = dataTable;
 		if (oldSet != null) {
 			oldSet.destroy();
 			oldSet = null;
 		}
-
 	}
 
-	public void addMetaSet(DataTable set) {
-		otherMetaSets.put(set.getID(), set);
+	public void addMetaSet(DataTable dataTable) {
+		otherMetaSets.put(dataTable.getID(), dataTable);
 	}
 
 	/**
@@ -190,7 +189,7 @@ public abstract class ATableBasedDataDomain
 		if (table.getID() == setID)
 			return table;
 
-		ClusterNode root = table.getStorageData(DataTable.STORAGE).getStorageTreeRoot();
+		ClusterNode root = table.getStorageData(DataTable.DIMENSION).getStorageTreeRoot();
 		DataTable set = root.getMetaSetFromSubTree(setID);
 
 		if (set == null)
@@ -257,9 +256,9 @@ public abstract class ATableBasedDataDomain
 
 	protected void initSelectionManagers() {
 		contentSelectionManager = new ContentSelectionManager(contentIDType);
-		contentSelectionManager.setVA(table.getContentData(DataTable.CONTENT).getContentVA());
+		contentSelectionManager.setVA(table.getContentData(DataTable.RECORD).getContentVA());
 		storageSelectionManager = new StorageSelectionManager(storageIDType);
-		storageSelectionManager.setVA(table.getStorageData(DataTable.STORAGE).getStorageVA());
+		storageSelectionManager.setVA(table.getStorageData(DataTable.DIMENSION).getStorageVA());
 		contentGroupSelectionManager = new SelectionManager(contentGroupIDType);
 	}
 
@@ -307,9 +306,9 @@ public abstract class ATableBasedDataDomain
 	 *            the type of VA requested
 	 * @return
 	 */
-	public StorageVirtualArray getStorageVA(String vaType) {
-		StorageVirtualArray va = table.getStorageData(vaType).getStorageVA();
-		StorageVirtualArray vaCopy = va.clone();
+	public DimensionVirtualArray getStorageVA(String vaType) {
+		DimensionVirtualArray va = table.getStorageData(vaType).getStorageVA();
+		DimensionVirtualArray vaCopy = va.clone();
 		return vaCopy;
 	}
 
@@ -328,7 +327,7 @@ public abstract class ATableBasedDataDomain
 			set = this.table;
 		else
 			set =
-				this.table.getStorageData(DataTable.STORAGE).getStorageTreeRoot()
+				this.table.getStorageData(DataTable.DIMENSION).getStorageTreeRoot()
 					.getMetaSetFromSubTree(setID);
 
 		// TODO: warning
@@ -337,7 +336,7 @@ public abstract class ATableBasedDataDomain
 
 		set.cluster(clusterState);
 
-		ContentData contentData = set.getContentData(DataTable.CONTENT);
+		RecordData contentData = set.getContentData(DataTable.RECORD);
 		if (set.containsUncertaintyData())
 		{
 			ClusterHelper.calculateAggregatedUncertainties(contentData.getContentTree(), set);
@@ -351,11 +350,11 @@ public abstract class ATableBasedDataDomain
 
 		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, dataDomainID, clusterState
 			.getContentVAType()));
-		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, dataDomainID, DataTable.STORAGE));
+		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, dataDomainID, DataTable.DIMENSION));
 
 		if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING
 			|| clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
-			((DataTable) set).createMetaSets();
+			((DataTable) set).createSubDataTable();
 		}
 	}
 
@@ -363,7 +362,7 @@ public abstract class ATableBasedDataDomain
 	 * Resets the context VA to it's initial state
 	 */
 	public void resetContextVA() {
-		table.setContentVA(DataTable.CONTENT_CONTEXT, new ContentVirtualArray(DataTable.CONTENT_CONTEXT));
+		table.setContentVA(DataTable.RECORD_CONTEXT, new ContentVirtualArray(DataTable.RECORD_CONTEXT));
 	}
 
 	/**
@@ -418,14 +417,14 @@ public abstract class ATableBasedDataDomain
 		}
 		else {
 			set =
-				this.table.getStorageData(DataTable.STORAGE).getStorageTreeRoot()
+				this.table.getStorageData(DataTable.DIMENSION).getStorageTreeRoot()
 					.getMetaSetFromSubTree(setID);
 		}
 		if (set == null)
 			set = otherMetaSets.get(setID);
 
 		set.setContentVA(vaType, virtualArray.clone());
-		contentSelectionManager.setVA(set.getContentData(DataTable.CONTENT).getContentVA());
+		contentSelectionManager.setVA(set.getContentData(DataTable.RECORD).getContentVA());
 
 		virtualArray.setGroupList(null);
 		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, dataDomainType, vaType));
@@ -447,7 +446,7 @@ public abstract class ATableBasedDataDomain
 		throw new IllegalStateException("UseCases shouldn't react to this");
 	}
 
-	public void replaceStorageVA(String dataDomainType, String vaType, StorageVirtualArray virtualArray) {
+	public void replaceDimensionVA(String dataDomainType, String vaType, DimensionVirtualArray virtualArray) {
 
 		table.setStorageVA(vaType, virtualArray);
 		storageSelectionManager.setVA(virtualArray);
@@ -474,12 +473,12 @@ public abstract class ATableBasedDataDomain
 		table.setContentVA(vaType, virtualArray);
 	}
 
-	public void setStorageVirtualArray(String vaType, StorageVirtualArray virtualArray) {
+	public void setStorageVirtualArray(String vaType, DimensionVirtualArray virtualArray) {
 		table.setStorageVA(vaType, virtualArray);
 	}
 
 	protected void initFullVA() {
-		if (table.getContentData(DataTable.CONTENT) == null)
+		if (table.getContentData(DataTable.RECORD) == null)
 			table.restoreOriginalContentVA();
 	}
 
@@ -489,7 +488,7 @@ public abstract class ATableBasedDataDomain
 	public void restoreOriginalContentVA() {
 		initFullVA();
 
-		ReplaceContentVAEvent event = new ReplaceContentVAEvent(table, dataDomainID, DataTable.CONTENT);
+		ReplaceContentVAEvent event = new ReplaceContentVAEvent(table, dataDomainID, DataTable.RECORD);
 
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
@@ -503,7 +502,7 @@ public abstract class ATableBasedDataDomain
 
 		if (targetCategory == contentIDCategory && vaDelta.getIDType() != contentIDType)
 			vaDelta = DeltaConverter.convertDelta(contentIDType, vaDelta);
-		ContentData contentData = table.getContentData(vaDelta.getVAType());
+		RecordData contentData = table.getContentData(vaDelta.getVAType());
 		contentData.reset();
 		contentData.setVADelta(vaDelta);
 
@@ -515,7 +514,7 @@ public abstract class ATableBasedDataDomain
 		if (targetCategory != storageIDCategory)
 			return;
 
-		StorageVirtualArray va = table.getStorageData(vaDelta.getVAType()).getStorageVA();
+		DimensionVirtualArray va = table.getStorageData(vaDelta.getVAType()).getStorageVA();
 
 		va.setDelta(vaDelta);
 	}
@@ -552,10 +551,10 @@ public abstract class ATableBasedDataDomain
 		eventPublisher.addListener(ReplaceContentVAInUseCaseEvent.class,
 			replaceContentVirtualArrayInUseCaseListener);
 
-		replaceStorageVirtualArrayInUseCaseListener = new ReplaceStorageVAInUseCaseListener();
+		replaceStorageVirtualArrayInUseCaseListener = new ReplaceDimensionVAInUseCaseListener();
 		replaceStorageVirtualArrayInUseCaseListener.setHandler(this);
 		replaceStorageVirtualArrayInUseCaseListener.setDataDomainType(dataDomainID);
-		eventPublisher.addListener(ReplaceStorageVAInUseCaseEvent.class,
+		eventPublisher.addListener(ReplaceDimensionVAInUseCaseEvent.class,
 			replaceStorageVirtualArrayInUseCaseListener);
 
 		contentVAUpdateListener = new ContentVAUpdateListener();

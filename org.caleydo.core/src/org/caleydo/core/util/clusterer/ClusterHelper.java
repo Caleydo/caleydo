@@ -3,11 +3,11 @@ package org.caleydo.core.util.clusterer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.util.collection.Pair;
 
 /**
@@ -130,13 +130,13 @@ public class ClusterHelper {
 	public static void calculateClusterAverages(Tree<ClusterNode> tree, EClustererType eClustererType,
 		DataTable set) {
 		// FIXME - direct references here - should be parameters
-		StorageVirtualArray storageVA = set.getStorageData(DataTable.STORAGE).getStorageVA();
-		ContentVirtualArray contentVA = set.getContentData(DataTable.CONTENT).getContentVA();
+		DimensionVirtualArray storageVA = set.getStorageData(DataTable.DIMENSION).getStorageVA();
+		ContentVirtualArray contentVA = set.getContentData(DataTable.RECORD).getContentVA();
 		calculateClusterAveragesRecursive(tree, tree.getRoot(), eClustererType, set, storageVA, contentVA);
 	}
 
 	private static float[] calculateClusterAveragesRecursive(Tree<ClusterNode> tree, ClusterNode node,
-		EClustererType clustererType, DataTable set, StorageVirtualArray storageVA, ContentVirtualArray contentVA) {
+		EClustererType clustererType, DataTable set, DimensionVirtualArray storageVA, ContentVirtualArray contentVA) {
 
 		float[] values;
 
@@ -184,7 +184,7 @@ public class ClusterHelper {
 				int isto = 0;
 				for (Integer iStorageIndex : storageVA) {
 					values[isto] =
-						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, node.getLeafID());
+						set.get(iStorageIndex).getFloat(DataRepresentation.NORMALIZED, node.getLeafID());
 					isto++;
 				}
 
@@ -195,7 +195,7 @@ public class ClusterHelper {
 				int icon = 0;
 				for (Integer contentIndex : contentVA) {
 					values[icon] =
-						set.get(node.getLeafID()).getFloat(EDataRepresentation.NORMALIZED, contentIndex);
+						set.get(node.getLeafID()).getFloat(DataRepresentation.NORMALIZED, contentIndex);
 					icon++;
 				}
 			}
@@ -212,7 +212,7 @@ public class ClusterHelper {
 	}
 
 	public static void calculateAggregatedUncertainties(Tree<ClusterNode> tree, DataTable set) {
-		ContentVirtualArray contentVA = set.getContentData(DataTable.CONTENT).getContentVA();
+		ContentVirtualArray contentVA = set.getContentData(DataTable.RECORD).getContentVA();
 		calculateAggregatedUncertaintiesRecursive(tree, tree.getRoot(), set, contentVA);
 	}
 
@@ -253,7 +253,7 @@ public class ClusterHelper {
 	 * @param examples
 	 * @param eClustererType
 	 */
-	public static void sortClusters(DataTable set, ContentVirtualArray contentVA, StorageVirtualArray storageVA,
+	public static void sortClusters(DataTable set, ContentVirtualArray contentVA, DimensionVirtualArray storageVA,
 		ArrayList<Integer> examples, EClustererType eClustererType) {
 
 		int iNrExamples = examples.size();
@@ -268,7 +268,7 @@ public class ClusterHelper {
 
 				for (Integer storageIndex : storageVA) {
 					float temp =
-						set.get(storageIndex).getFloat(EDataRepresentation.NORMALIZED,
+						set.get(storageIndex).getFloat(DataRepresentation.NORMALIZED,
 							contentVA.get(contentIndex));
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;
@@ -287,7 +287,7 @@ public class ClusterHelper {
 
 				for (Integer iContentIndex : contentVA) {
 					float temp =
-						set.get(storageVA.get(iStorageIndex)).getFloat(EDataRepresentation.NORMALIZED,
+						set.get(storageVA.get(iStorageIndex)).getFloat(DataRepresentation.NORMALIZED,
 							iContentIndex);
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;

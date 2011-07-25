@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.collection.storage.NominalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
@@ -16,7 +16,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
@@ -24,7 +24,7 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.ReplaceContentVAInUseCaseListener;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
-import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
+import org.caleydo.core.manager.event.data.ReplaceDimensionVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
@@ -95,8 +95,8 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void setSet(DataTable set) {
-		super.setSet(set);
+	public void setDataTable(DataTable set) {
+		super.setDataTable(set);
 
 	}
 
@@ -167,10 +167,10 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 			alTempList.add(iCount);
 		}
-		ContentVirtualArray contentVA = new ContentVirtualArray(DataTable.CONTENT, alTempList);
+		ContentVirtualArray contentVA = new ContentVirtualArray(DataTable.RECORD, alTempList);
 		// removeDuplicates(contentVA);
 		// FIXME make this a filter?
-		table.setContentVA(DataTable.CONTENT, contentVA);
+		table.setContentVA(DataTable.RECORD, contentVA);
 	}
 
 	public boolean isPathwayViewerMode() {
@@ -266,7 +266,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 			String vaType, ContentVirtualArray virtualArray) {
 
 		if (dataDomainType.equals(CLINICAL_DATADOMAIN_TYPE)) {
-			StorageVirtualArray newStorageVirtualArray = new StorageVirtualArray();
+			DimensionVirtualArray newStorageVirtualArray = new DimensionVirtualArray();
 
 			for (Integer clinicalContentIndex : virtualArray) {
 				Integer converteID = convertClinicalExperimentToGeneticExperiment(clinicalContentIndex);
@@ -275,9 +275,9 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 			}
 
-			ReplaceStorageVAInUseCaseEvent event = new ReplaceStorageVAInUseCaseEvent();
+			ReplaceDimensionVAInUseCaseEvent event = new ReplaceDimensionVAInUseCaseEvent();
 			event.setDataDomainID(this.dataDomainID);
-			event.setVAType(DataTable.STORAGE);
+			event.setVAType(DataTable.DIMENSION);
 			event.setVirtualArray(newStorageVirtualArray);
 
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
@@ -291,11 +291,11 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		// FIXME - this is a hack for one special dataset (asslaber)
 		DataTable clinicalSet = ((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 				CLINICAL_DATADOMAIN_TYPE)).getDataTable();
-		int storageID = clinicalSet.getStorageData(DataTable.STORAGE).getStorageVA().get(1);
+		int storageID = clinicalSet.getStorageData(DataTable.DIMENSION).getStorageVA().get(1);
 
-		NominalStorage clinicalStorage = (NominalStorage<String>) clinicalSet
+		NominalDimension clinicalStorage = (NominalDimension<String>) clinicalSet
 				.get(storageID);
-		StorageVirtualArray origianlGeneticStorageVA = table.getStorageData(DataTable.STORAGE)
+		DimensionVirtualArray origianlGeneticStorageVA = table.getStorageData(DataTable.DIMENSION)
 				.getStorageVA();
 
 		String label = (String) clinicalStorage.getRaw(clinicalContentIndex);

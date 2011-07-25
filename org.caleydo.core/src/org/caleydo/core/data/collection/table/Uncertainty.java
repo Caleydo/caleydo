@@ -1,9 +1,9 @@
 package org.caleydo.core.data.collection.table;
 
-import org.caleydo.core.data.collection.storage.AStorage;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.collection.storage.NumericalStorage;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.collection.storage.ADimension;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
+import org.caleydo.core.data.collection.storage.NumericalDimension;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 
 /**
  * This class encapsulates all uncertainty-related functionality of the data table
@@ -64,17 +64,17 @@ public class Uncertainty {
 
 	public void calculateNormalizedAverageUncertainty(float invalidThreshold, float validThreshold) {
 
-		for (AStorage storage : table.hashStorages.values()) {
+		for (ADimension storage : table.hashDimensions.values()) {
 
-			if (storage instanceof NumericalStorage)
-				((NumericalStorage) storage).normalizeUncertainty(invalidThreshold, validThreshold);
+			if (storage instanceof NumericalDimension)
+				((NumericalDimension) storage).normalizeUncertainty(invalidThreshold, validThreshold);
 		}
 
 		aggregatedNormalizedUncertainties = new float[metaData.depth()];
 		for (int contentIndex = 0; contentIndex < metaData.depth(); contentIndex++) {
 			// float aggregatedUncertainty = calculateMaxUncertainty(contentIndex);
 			float aggregatedUncertainty =
-				calcualteAverageUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_NORMALIZED);
+				calcualteAverageUncertainty(contentIndex, DataRepresentation.UNCERTAINTY_NORMALIZED);
 			aggregatedNormalizedUncertainties[contentIndex] = aggregatedUncertainty;
 		}
 	}
@@ -85,7 +85,7 @@ public class Uncertainty {
 			float aggregatedUncertainty;
 
 			aggregatedUncertainty =
-				calcualteAverageUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_RAW);
+				calcualteAverageUncertainty(contentIndex, DataRepresentation.UNCERTAINTY_RAW);
 
 			// aggregatedUncertainty =
 			// calculateMaxUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_RAW);
@@ -94,13 +94,13 @@ public class Uncertainty {
 		}
 	}
 
-	private float calcualteAverageUncertainty(int contentIndex, EDataRepresentation dataRepresentation) {
+	private float calcualteAverageUncertainty(int contentIndex, DataRepresentation dataRepresentation) {
 		float uncertaintySum = 0;
-		StorageVirtualArray storageVA = table.hashStorageData.get(DataTable.STORAGE).getStorageVA();
+		DimensionVirtualArray storageVA = table.hashDimensionData.get(DataTable.DIMENSION).getStorageVA();
 		for (Integer storageID : storageVA) {
 			try {
 				uncertaintySum +=
-					table.hashStorages.get(storageID).getFloat(dataRepresentation, contentIndex);
+					table.hashDimensions.get(storageID).getFloat(dataRepresentation, contentIndex);
 			}
 			catch (Exception e) {
 				System.out.println("storageID: " + storageID);
@@ -110,13 +110,13 @@ public class Uncertainty {
 	}
 
 	@SuppressWarnings("unused")
-	private float calculateMaxUncertainty(int contentIndex, EDataRepresentation dataRepresentation) {
+	private float calculateMaxUncertainty(int contentIndex, DataRepresentation dataRepresentation) {
 		float maxUncertainty = Float.MAX_VALUE;
-		for (Integer storageID : table.hashStorageData.get(DataTable.STORAGE).getStorageVA()) {
+		for (Integer storageID : table.hashDimensionData.get(DataTable.DIMENSION).getStorageVA()) {
 			float cellUncertainty = 0;
 			try {
 				cellUncertainty =
-					table.hashStorages.get(storageID).getFloat(dataRepresentation, contentIndex);
+					table.hashDimensions.get(storageID).getFloat(dataRepresentation, contentIndex);
 			}
 			catch (Exception e) {
 				System.out.println("storageID: " + storageID);

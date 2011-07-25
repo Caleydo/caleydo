@@ -372,7 +372,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 				ArrayList<Integer> clusterElements = contentVA.getIDsOfGroup(groupList
 						.get(externalID).getID());
 				ContentVirtualArray clusterVA = new ContentVirtualArray(
-						DataTable.CONTENT, clusterElements);
+						DataTable.RECORD, clusterElements);
 				detailHeatMap.setContentVA(clusterVA);
 
 				setDisplayListDirty();
@@ -484,9 +484,9 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = DataTable.CONTENT_CONTEXT;
+			contentVAType = DataTable.RECORD_CONTEXT;
 		else
-			contentVAType = DataTable.CONTENT;
+			contentVAType = DataTable.RECORD;
 
 		contentVA = dataDomain.getContentVA(contentVAType);
 		storageVA = dataDomain.getStorageVA(storageVAType);

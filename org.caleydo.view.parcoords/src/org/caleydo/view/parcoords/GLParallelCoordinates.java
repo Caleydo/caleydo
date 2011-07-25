@@ -34,10 +34,10 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.storage.AStorage;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.collection.storage.NominalStorage;
-import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.collection.storage.ADimension;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
+import org.caleydo.core.data.collection.storage.NominalDimension;
+import org.caleydo.core.data.collection.storage.NumericalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.StorageFilter;
@@ -389,10 +389,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (bRenderOnlyContext) {
-			contentVAType = DataTable.CONTENT_CONTEXT;
+			contentVAType = DataTable.RECORD_CONTEXT;
 			contentVA = dataDomain.getContentVA(contentVAType);
 		} else {
-			contentVAType = DataTable.CONTENT;
+			contentVAType = DataTable.RECORD;
 			contentVA = dataDomain.getContentVA(contentVAType);
 		}
 
@@ -495,9 +495,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = DataTable.CONTENT_CONTEXT;
+			contentVAType = DataTable.RECORD_CONTEXT;
 		else
-			contentVAType = DataTable.CONTENT;
+			contentVAType = DataTable.RECORD;
 
 		// contentVA = dataDomain.getContentVA(contentVAType);
 		if (contentVA == null)
@@ -627,7 +627,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		if (!(detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM))
 			renderCaption = false;
 
-		AStorage currentStorage = null;
+		ADimension currentStorage = null;
 
 		float previousX = 0;
 		float previousY = 0;
@@ -649,7 +649,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			currentStorage = table.get(storageVA.get(storageCount));
 
 			currentX = axisSpacings.get(storageCount);
-			currentY = currentStorage.getFloat(EDataRepresentation.NORMALIZED, contentID);
+			currentY = currentStorage.getFloat(DataRepresentation.NORMALIZED, contentID);
 			if (Float.isNaN(currentY)) {
 				currentY = NAN_Y_OFFSET / renderStyle.getAxisHeight();
 			}
@@ -671,12 +671,12 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 			if (renderCaption) {
 				String sRawValue;
-				if (currentStorage instanceof NumericalStorage) {
+				if (currentStorage instanceof NumericalDimension) {
 					sRawValue = Formatter.formatNumber(currentStorage.getFloat(
-							EDataRepresentation.RAW, contentID));
+							DataRepresentation.RAW, contentID));
 
-				} else if (currentStorage instanceof NominalStorage) {
-					sRawValue = ((NominalStorage<String>) currentStorage)
+				} else if (currentStorage instanceof NominalDimension) {
+					sRawValue = ((NominalDimension<String>) currentStorage)
 							.getRaw(contentID);
 				} else
 					throw new IllegalStateException("Unknown Storage Type");
@@ -1221,9 +1221,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			if (iAxisID == -1)
 				continue;
 			for (int contentID : contentVA) {
-				EDataRepresentation usedDataRepresentation = EDataRepresentation.RAW;
+				DataRepresentation usedDataRepresentation = DataRepresentation.RAW;
 				if (!table.isSetHomogeneous())
-					usedDataRepresentation = EDataRepresentation.NORMALIZED;
+					usedDataRepresentation = DataRepresentation.NORMALIZED;
 
 				fCurrentValue = table.get(iAxisID).getFloat(usedDataRepresentation,
 						contentID);
@@ -1248,7 +1248,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			ArrayList<Integer> alDeselectedLines = new ArrayList<Integer>();
 			for (int iPolylineIndex : contentVA) {
 
-				fCurrentValue = table.get(iAxisID).getFloat(EDataRepresentation.NORMALIZED,
+				fCurrentValue = table.get(iAxisID).getFloat(DataRepresentation.NORMALIZED,
 						iPolylineIndex);
 
 				if (Float.isNaN(fCurrentValue)) {
@@ -1273,7 +1273,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				boolean bIsBlocking = true;
 				for (int iAxisIndex : storageVA) {
 
-					fCurrentValue = table.get(iAxisIndex).getFloat(EDataRepresentation.RAW,
+					fCurrentValue = table.get(iAxisIndex).getFloat(DataRepresentation.RAW,
 							iPolylineIndex);
 
 					if (Float.isNaN(fCurrentValue)) {
@@ -1418,11 +1418,6 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
-
-				// Prevent handling of non genetic data in context menu
-				if (!dataDomain.getDataDomainType().equals(
-						"org.caleydo.datadomain.genetic"))
-					break;
 
 				ContentContextMenuItemContainer contentContextMenuItemContainer = new ContentContextMenuItemContainer();
 				contentContextMenuItemContainer.setDataDomain(dataDomain);
@@ -1629,7 +1624,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				// Integer storageID = storageVA.remove(pickingID);
 				Integer storageID = storageVA.get(pickingID);
 				storageSelectionManager.remove(pickingID);
-				StorageVADelta vaDelta = new StorageVADelta(DataTable.STORAGE, storageIDType);
+				StorageVADelta vaDelta = new StorageVADelta(DataTable.DIMENSION, storageIDType);
 				vaDelta.add(VADeltaItem.remove(pickingID));
 
 				triggerStorageFilterEvent(vaDelta,
@@ -1665,7 +1660,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			case CLICKED:
 				if (pickingID >= 0) {
 					// storageVA.copy(pickingID);
-					StorageVADelta vaDelta = new StorageVADelta(DataTable.STORAGE,
+					StorageVADelta vaDelta = new StorageVADelta(DataTable.DIMENSION,
 							storageIDType);
 					vaDelta.add(VADeltaItem.copy(pickingID));
 					triggerStorageFilterEvent(
@@ -1847,7 +1842,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			// fXValue = viewFrustum.getRight() - 0.2f;
 			// else
 			x = viewFrustum.getLeft() + renderStyle.getXSpacing();
-			y = table.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, id);
+			y = table.get(storageVA.get(0)).getFloat(DataRepresentation.NORMALIZED, id);
 			// }
 
 			// // get the value on the leftmost axis
@@ -1952,10 +1947,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		Vec3f vecRightPoint = new Vec3f(0, 0, 0);
 
 		vecLeftPoint.setY(table.get(iAxisLeftIndex).getFloat(
-				EDataRepresentation.NORMALIZED, iSelectedLineID)
+				DataRepresentation.NORMALIZED, iSelectedLineID)
 				* renderStyle.getAxisHeight());
 		vecRightPoint.setY(table.get(iAxisRightIndex).getFloat(
-				EDataRepresentation.NORMALIZED, iSelectedLineID)
+				DataRepresentation.NORMALIZED, iSelectedLineID)
 				* renderStyle.getAxisHeight());
 
 		vecLeftPoint.setX(axisSpacings.get(iPosition));
@@ -2064,10 +2059,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		for (Integer iCurrent : contentVA) {
 
 			vecLeftPoint.setY(table.get(iAxisLeftIndex).getFloat(
-					EDataRepresentation.NORMALIZED, iCurrent)
+					DataRepresentation.NORMALIZED, iCurrent)
 					* renderStyle.getAxisHeight());
 			vecRightPoint.setY(table.get(iAxisRightIndex).getFloat(
-					EDataRepresentation.NORMALIZED, iCurrent)
+					DataRepresentation.NORMALIZED, iCurrent)
 					* renderStyle.getAxisHeight());
 
 			vecLeftPoint.setX(axisSpacings.get(iPosition));
@@ -2397,9 +2392,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			int storageCounter = 0;
 			for (Integer storageID : storageVA) {
 				float xValue = 0.2f * storageCounter++;
-				NumericalStorage storage = (NumericalStorage) table.get(storageID);
+				NumericalDimension storage = (NumericalDimension) table.get(storageID);
 
-				float yValue = storage.getFloat(EDataRepresentation.NORMALIZED, index);
+				float yValue = storage.getFloat(DataRepresentation.NORMALIZED, index);
 				vertices[vertexCounter++] = xValue;
 				vertices[vertexCounter++] = yValue;
 			}

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.data.collection.DimensionType;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.MultiHashMap;
@@ -188,8 +188,8 @@ public class IDMappingManager {
 
 		if (originKeyType == destKeyType) {
 			if (originValueType != destValueType) {
-				if (originKeyType.getStorageType() == EStorageType.INT
-					&& destValueType.getStorageType() == EStorageType.INT) {
+				if (originKeyType.getStorageType() == DimensionType.INT
+					&& destValueType.getStorageType() == DimensionType.INT) {
 					codeResolvedMap = new HashMap<Integer, Integer>();
 
 					if (!mappingType.isMultiMap()) {
@@ -225,20 +225,20 @@ public class IDMappingManager {
 						}
 					}
 				}
-				else if (originKeyType.getStorageType() == EStorageType.INT
-					&& destValueType.getStorageType() == EStorageType.STRING) {
+				else if (originKeyType.getStorageType() == DimensionType.INT
+					&& destValueType.getStorageType() == DimensionType.STRING) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
-				else if (originKeyType.getStorageType() == EStorageType.STRING
-					&& destValueType.getStorageType() == EStorageType.STRING) {
+				else if (originKeyType.getStorageType() == DimensionType.STRING
+					&& destValueType.getStorageType() == DimensionType.STRING) {
 					codeResolvedMap = new HashMap<String, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
-				else if (originKeyType.getStorageType() == EStorageType.STRING
-					&& destValueType.getStorageType() == EStorageType.INT) {
+				else if (originKeyType.getStorageType() == DimensionType.STRING
+					&& destValueType.getStorageType() == DimensionType.INT) {
 
 					if (!mappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<String, Integer>();
@@ -277,8 +277,8 @@ public class IDMappingManager {
 		}
 		else {
 			if (originValueType == destValueType) {
-				if (destKeyType.getStorageType() == EStorageType.INT
-					&& destValueType.getStorageType() == EStorageType.INT) {
+				if (destKeyType.getStorageType() == DimensionType.INT
+					&& destValueType.getStorageType() == DimensionType.INT) {
 					codeResolvedMap = new HashMap<Integer, Integer>();
 
 					MappingType conversionType = mappingType;// MappingType.valueOf(originKeyType + "_2_" +
@@ -320,8 +320,8 @@ public class IDMappingManager {
 						}
 					}
 				}
-				else if (destKeyType.getStorageType() == EStorageType.INT
-					&& destValueType.getStorageType() == EStorageType.STRING) {
+				else if (destKeyType.getStorageType() == DimensionType.INT
+					&& destValueType.getStorageType() == DimensionType.STRING) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
 					MappingType conversionType = mappingType;// MappingType.valueOf(originKeyType + "_2_" +
@@ -333,14 +333,14 @@ public class IDMappingManager {
 								conversionType.getToIDType(), key), srcMap.get(key));
 					}
 				}
-				else if (destKeyType.getStorageType() == EStorageType.STRING
-					&& destValueType.getStorageType() == EStorageType.STRING) {
+				else if (destKeyType.getStorageType() == DimensionType.STRING
+					&& destValueType.getStorageType() == DimensionType.STRING) {
 					codeResolvedMap = new HashMap<String, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
-				else if (destKeyType.getStorageType() == EStorageType.STRING
-					&& destValueType.getStorageType() == EStorageType.INT) {
+				else if (destKeyType.getStorageType() == DimensionType.STRING
+					&& destValueType.getStorageType() == DimensionType.INT) {
 					codeResolvedMap = new HashMap<String, Integer>();
 
 					throw new RuntimeException("Not implemented!");

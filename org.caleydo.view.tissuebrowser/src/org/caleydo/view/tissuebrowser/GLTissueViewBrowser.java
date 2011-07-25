@@ -9,7 +9,7 @@ import java.util.HashMap;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.collection.storage.NominalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
@@ -19,7 +19,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
@@ -98,7 +98,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		this.foreignDataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 				.getDataDomainByID(FOREIGN_DATADOMAIN_TYPE);
 
-		contentVA = foreignDataDomain.getContentVA(DataTable.CONTENT);
+		contentVA = foreignDataDomain.getContentVA(DataTable.RECORD);
 		primaryIDType = foreignDataDomain.getContentIDType();
 
 		experiementSelectionManager = foreignDataDomain.getContentSelectionManager();
@@ -378,7 +378,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	protected void removeSelection(int iElementID) {
 
 		experiementSelectionManager.remove(iElementID);
-		ContentVADelta vaDelta = new ContentVADelta(DataTable.CONTENT, primaryIDType);
+		ContentVADelta vaDelta = new ContentVADelta(DataTable.RECORD, primaryIDType);
 		vaDelta.add(VADeltaItem.removeElement(iElementID));
 
 		ContentVAUpdateEvent virtualArrayUpdateEvent = new ContentVAUpdateEvent();
@@ -484,10 +484,10 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	}
 
 	private void setInfo(GLTexture tissueView, Integer experimentIndex) {
-		StorageVirtualArray va = foreignDataDomain.getDataTable().getStorageData(DataTable.STORAGE)
+		DimensionVirtualArray va = foreignDataDomain.getDataTable().getStorageData(DataTable.DIMENSION)
 				.getStorageVA();
 
-		NominalStorage<String> storage = (NominalStorage<String>) foreignDataDomain
+		NominalDimension<String> storage = (NominalDimension<String>) foreignDataDomain
 				.getDataTable().get(va.get(1));
 		String label = storage.getRaw(experimentIndex);
 
@@ -495,10 +495,10 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	}
 
 	private void setInfo(SerializedTextureView tissueView, Integer experimentIndex) {
-		StorageVirtualArray va = foreignDataDomain.getDataTable().getStorageData(DataTable.STORAGE)
+		DimensionVirtualArray va = foreignDataDomain.getDataTable().getStorageData(DataTable.DIMENSION)
 				.getStorageVA();
 
-		NominalStorage<String> storage = (NominalStorage<String>) foreignDataDomain
+		NominalDimension<String> storage = (NominalDimension<String>) foreignDataDomain
 				.getDataTable().get(va.get(1));
 		String label = storage.getRaw(experimentIndex);
 

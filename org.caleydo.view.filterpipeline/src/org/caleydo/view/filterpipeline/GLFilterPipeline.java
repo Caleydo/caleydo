@@ -13,7 +13,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.data.collection.DimensionType;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
 import org.caleydo.core.data.collection.table.DataTable;
@@ -143,7 +143,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new FilterPipelineRenderStyle(viewFrustum);
 		selectionManager = new SelectionManager(IDType.registerType("filter_"
-				+ hashCode(), IDCategory.registerCategory("filter"), EStorageType.INT));
+				+ hashCode(), IDCategory.registerCategory("filter"), DimensionType.INT));
 
 		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;

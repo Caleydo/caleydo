@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.storage.AStorage;
+import org.caleydo.core.data.collection.storage.ADimension;
 
 /**
  * Abstract class for all kinds of mini views.
@@ -18,9 +18,9 @@ public abstract class AGLMiniView
 
 	protected float fWidth;
 
-	protected ArrayList<AStorage> alStorage;
+	protected ArrayList<ADimension> alStorage;
 
-	public void setData(ArrayList<AStorage> alStorages) {
+	public void setData(ArrayList<ADimension> alStorages) {
 
 	}
 

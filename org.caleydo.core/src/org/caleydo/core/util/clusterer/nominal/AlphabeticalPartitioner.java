@@ -3,7 +3,7 @@ package org.caleydo.core.util.clusterer.nominal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.collection.storage.NominalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.util.clusterer.AClusterer;
@@ -16,9 +16,9 @@ public class AlphabeticalPartitioner
 	@Override
 	public TempResult getSortedVA(DataTable set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
-		ContentVirtualArray contentVA = set.getContentData(DataTable.CONTENT).getContentVA();
-		NominalStorage<String> storage =
-			(NominalStorage<String>) set.get(set.getStorageData(DataTable.STORAGE).getStorageVA().get(0));
+		ContentVirtualArray contentVA = set.getContentData(DataTable.RECORD).getContentVA();
+		NominalDimension<String> storage =
+			(NominalDimension<String>) set.get(set.getStorageData(DataTable.DIMENSION).getStorageVA().get(0));
 
 		HashMap<String, ArrayList<Integer>> letterBins = new HashMap<String, ArrayList<Integer>>(40);
 

@@ -37,7 +37,7 @@ public class FuelBarRenderer extends LayoutRenderer {
 		if (set == null || contentVA == null)
 			return;
 
-		ContentVirtualArray setContentVA = set.getContentData(DataTable.CONTENT).getContentVA();
+		ContentVirtualArray setContentVA = set.getContentData(DataTable.RECORD).getContentVA();
 
 		if (setContentVA == null)
 			return;

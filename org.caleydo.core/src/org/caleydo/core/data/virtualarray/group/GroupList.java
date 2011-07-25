@@ -6,11 +6,11 @@ import java.util.Iterator;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.util.clusterer.ClusterHelper;
@@ -557,7 +557,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	}
 
 	public ArrayList<Float> determineRepresentativeElement(DataTable set, ContentVirtualArray contentVA,
-		StorageVirtualArray storageVA, int iGroupNr, boolean bGeneGroup) {
+		DimensionVirtualArray storageVA, int iGroupNr, boolean bGeneGroup) {
 
 		ArrayList<Float> representative = new ArrayList<Float>();
 
@@ -574,7 +574,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 				fArExpressionValues = new float[iNrElementsInGroup];
 				for (int index = 0; index < iNrElementsInGroup; index++) {
 					fArExpressionValues[index] +=
-						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
+						set.get(iStorageIndex).getFloat(DataRepresentation.NORMALIZED,
 							contentVA.get(iOffset + index));
 				}
 				representative.add(ClusterHelper.arithmeticMean(fArExpressionValues));
@@ -585,7 +585,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 				fArExpressionValues = new float[iNrElementsInGroup];
 				for (int index = 0; index < iNrElementsInGroup; index++) {
 					fArExpressionValues[index] +=
-						set.get(storageVA.get(iOffset + index)).getFloat(EDataRepresentation.NORMALIZED,
+						set.get(storageVA.get(iOffset + index)).getFloat(DataRepresentation.NORMALIZED,
 							iContentIndex);
 				}
 				representative.add(ClusterHelper.arithmeticMean(fArExpressionValues));

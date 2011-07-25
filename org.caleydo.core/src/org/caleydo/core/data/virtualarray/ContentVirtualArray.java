@@ -17,7 +17,7 @@ public class ContentVirtualArray
 	extends VirtualArray<ContentVirtualArray,  ContentVADelta, ContentGroupList> {
 
 	public ContentVirtualArray() {
-		super(DataTable.CONTENT);
+		super(DataTable.RECORD);
 	}
 
 	/**

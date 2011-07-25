@@ -3,7 +3,7 @@ package org.caleydo.core.data.collection.storage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.EExternalDataRepresentation;
+import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.ccontainer.NominalCContainer;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
@@ -19,15 +19,24 @@ import org.caleydo.core.manager.GeneralManager;
  * @author Alexander Lex
  */
 
-public class NominalStorage<T>
-	extends AStorage {
+public class NominalDimension<T>
+	extends ADimension {
 
 	/**
 	 * Constructor
 	 */
-	public NominalStorage() {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.STORAGE_NOMINAL));
+	public NominalDimension() {
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.DIMENSION_NOMINAL));
 	}
+	
+	/**
+	 * Constructor that takes a storage ID. This is needed for de-serialization.
+	 * 
+	 * @param storageID
+	 */
+	public NominalDimension(int storageID) {
+		super(storageID);
+	}	
 
 	/**
 	 * Set the raw data Currently supported: String
@@ -45,14 +54,14 @@ public class NominalStorage<T>
 			throw new IllegalStateException("Raw Data is empty");
 		else {
 			if (alData.get(0) instanceof String) {
-				rawDataType = ERawDataType.STRING;
+				rawDataType = RawDataType.STRING;
 			}
 			else {
-				rawDataType = ERawDataType.OBJECT;
+				rawDataType = RawDataType.OBJECT;
 			}
 
 			NominalCContainer<T> sStorage = new NominalCContainer<T>(alData);
-			hashCContainers.put(EDataRepresentation.RAW, sStorage);
+			hashCContainers.put(DataRepresentation.RAW, sStorage);
 		}
 	}
 
@@ -66,11 +75,11 @@ public class NominalStorage<T>
 		if (alPossibleValues.isEmpty())
 			throw new IllegalStateException("Raw Data is empty");
 		else {
-			if (hashCContainers.get(EDataRepresentation.RAW) instanceof NominalCContainer)
+			if (hashCContainers.get(DataRepresentation.RAW) instanceof NominalCContainer)
 				throw new IllegalStateException("Raw data format does not correspond to"
 					+ "specified value list.");
 			else {
-				((NominalCContainer<T>) hashCContainers.get(EDataRepresentation.RAW))
+				((NominalCContainer<T>) hashCContainers.get(DataRepresentation.RAW))
 					.setPossibleValues(alPossibleValues);
 			}
 		}
@@ -78,7 +87,7 @@ public class NominalStorage<T>
 
 	@SuppressWarnings("unchecked")
 	public T getRaw(int index) {
-		return ((NominalCContainer<T>) hashCContainers.get(EDataRepresentation.RAW)).get(index);
+		return ((NominalCContainer<T>) hashCContainers.get(DataRepresentation.RAW)).get(index);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -90,23 +99,23 @@ public class NominalStorage<T>
 	 * @return a hash map mapping the nominal value to it's histogram value
 	 */
 	public HashMap<T, Float> getHistogram() {
-		return ((NominalCContainer<T>) hashCContainers.get(EDataRepresentation.RAW)).getHistogram();
+		return ((NominalCContainer<T>) hashCContainers.get(DataRepresentation.RAW)).getHistogram();
 	}
 
 	@Override
-	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep) {
+	public void setExternalDataRepresentation(ExternalDataRepresentation externalDataRep) {
 
-		if (externalDataRep != EExternalDataRepresentation.NORMAL)
+		if (externalDataRep != ExternalDataRepresentation.NORMAL)
 			throw new IllegalArgumentException("Nominal storages support only raw representations");
 
-		dataRep = EDataRepresentation.RAW;
+		dataRep = DataRepresentation.RAW;
 
 	}
 
 	@Override
 	public void normalize() {
 
-		hashCContainers.put(EDataRepresentation.NORMALIZED, hashCContainers.get(EDataRepresentation.RAW)
+		hashCContainers.put(DataRepresentation.NORMALIZED, hashCContainers.get(DataRepresentation.RAW)
 			.normalize());
 	}
 

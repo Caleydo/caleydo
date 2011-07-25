@@ -1,6 +1,6 @@
 package org.caleydo.core.data.graph.tree;
 
-import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.data.collection.DimensionType;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 
@@ -32,7 +32,7 @@ public class TreeTester {
 
 		tree =
 			new Tree<DefaultNode>(IDType.registerType("test", IDCategory.registerCategory("testcategory"),
-				EStorageType.INT));
+				DimensionType.INT));
 		// tree.getRoot();
 		DefaultNode node = new DefaultNode(tree, "Root", 1);
 		tree.setRootNode(node);

@@ -35,13 +35,13 @@ public class ContentMetaOrFilter
 	public void updateDelta()
 	{
 		ContentVADelta vaDeltaAll =
-			new ContentVADelta(DataTable.CONTENT, dataDomain.getContentIDType());
+			new ContentVADelta(DataTable.RECORD, dataDomain.getContentIDType());
 		
 		for (ContentFilter filter : filterList)
 			vaDeltaAll.append(filter.getVADelta());
 		
 		ContentVADelta vaDelta =
-			new ContentVADelta(DataTable.CONTENT, dataDomain.getContentIDType());
+			new ContentVADelta(DataTable.RECORD, dataDomain.getContentIDType());
 
 		for (VADeltaItem vaDeltaItem : vaDeltaAll.getAllItems())
 		{

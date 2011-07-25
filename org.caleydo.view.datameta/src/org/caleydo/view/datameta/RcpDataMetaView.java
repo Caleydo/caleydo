@@ -173,7 +173,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		this.dataDomain = dataDomain;
 		this.set = dataDomain.getDataTable();
 
-		String contentVAType = DataTable.CONTENT;
+		String contentVAType = DataTable.RECORD;
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 
 		ContentVirtualArray contentVA = dataDomain.getContentVA(contentVAType);

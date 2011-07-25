@@ -3,8 +3,8 @@ package org.caleydo.view.tabular;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.caleydo.core.data.collection.storage.AStorage;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.ADimension;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.ManagedObjectType;
@@ -17,7 +17,7 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
@@ -92,16 +92,16 @@ public class TabularDataView extends ASWTView implements
 	/**
 	 * The virtual array that manages the storage references in the set
 	 */
-	protected StorageVirtualArray storageVA;
+	protected DimensionVirtualArray storageVA;
 	/**
 	 * The type of the content VA
 	 */
-	protected String contentVAType = DataTable.CONTENT;
+	protected String contentVAType = DataTable.RECORD;
 
 	/**
 	 * The type of the storage VA
 	 */
-	protected String storageVAType = DataTable.STORAGE;
+	protected String storageVAType = DataTable.DIMENSION;
 
 	/**
 	 * Define what level of filtering on the data should be applied
@@ -348,7 +348,7 @@ public class TabularDataView extends ASWTView implements
 
 			int i = 3;
 			for (Integer iStorageIndex : storageVA) {
-				fValue = dataTable.get(iStorageIndex).getFloat(EDataRepresentation.RAW,
+				fValue = dataTable.get(iStorageIndex).getFloat(DataRepresentation.RAW,
 						iContentIndex);
 
 				item.setText(i++, Float.toString(fValue));
@@ -426,13 +426,13 @@ public class TabularDataView extends ASWTView implements
 			@Override
 			public void run() {
 				TableColumn column = new TableColumn(contentTable, SWT.NONE, index);
-				AStorage storage = dataTable.get(storageNumber);
+				ADimension storage = dataTable.get(storageNumber);
 				column.setText(storage.getLabel());
 				TableItem[] items = contentTable.getItems();
 				for (int i = 0; i < items.length; i++) {
 					TableItem item = items[i];
 					float value = dataTable.get(storageNumber).getFloat(
-							EDataRepresentation.RAW, contentVA.get(i));
+							DataRepresentation.RAW, contentVA.get(i));
 					item.setText(index, Float.toString(value));
 
 				}

@@ -12,14 +12,14 @@ import java.util.Iterator;
 import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.data.CmdDataCreateDimension;
 import org.caleydo.core.command.data.CmdDataCreateTable;
-import org.caleydo.core.command.data.CmdDataCreateStorage;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
-import org.caleydo.core.data.collection.EExternalDataRepresentation;
-import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.collection.storage.NominalStorage;
-import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.collection.DimensionType;
+import org.caleydo.core.data.collection.ExternalDataRepresentation;
+import org.caleydo.core.data.collection.storage.NominalDimension;
+import org.caleydo.core.data.collection.storage.NumericalDimension;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
@@ -143,42 +143,73 @@ public class DataTableUtils {
 	 * @return <code>true</code>if the creation was successful, <code>false</code> otherwise
 	 */
 	public static boolean createStorages(LoadDataParameters loadDataParameters) {
-		ArrayList<Integer> storageIds = new ArrayList<Integer>();
+
+		ArrayList<Integer> storageIds = null;
+		boolean createStoragesFromExistingIDs = false;
+		
+		if (loadDataParameters.getStorageIds() == null)
+			storageIds = new ArrayList<Integer>();
+		else
+		{
+			storageIds = loadDataParameters.getStorageIds();
+			createStoragesFromExistingIDs = true;
+		}
 
 		TabularAsciiDataReader reader = new TabularAsciiDataReader(null, loadDataParameters.getDataDomain());
 		reader.setTokenPattern(loadDataParameters.getInputPattern());
-		ArrayList<EStorageType> dataTypes = reader.getColumnDataTypes();
+		ArrayList<DimensionType> dataTypes = reader.getColumnDataTypes();
 
 		boolean abort = false;
 		Iterator<String> storageLabelIterator = loadDataParameters.getStorageLabels().iterator();
-		CmdDataCreateStorage cmdCreateStorage;
+		CmdDataCreateDimension cmdCreateStorage;
 		String storageLabel;
-		for (EStorageType dataType : dataTypes) {
+
+		for (int dataTableIndex = 0; dataTableIndex < dataTypes.size(); dataTableIndex++) {
+			DimensionType dataType = dataTypes.get(dataTableIndex);
 			switch (dataType) {
 				case FLOAT:
 					cmdCreateStorage =
-						(CmdDataCreateStorage) GeneralManager.get().getCommandManager()
-							.createCommandByType(CommandType.CREATE_STORAGE);
-					cmdCreateStorage.setAttributes(ManagedObjectType.STORAGE_NUMERICAL);
-					cmdCreateStorage.doCommand();
+						(CmdDataCreateDimension) GeneralManager.get().getCommandManager()
+							.createCommandByType(CommandType.CREATE_DIMENSION);
 
+					if (createStoragesFromExistingIDs)
+						cmdCreateStorage.setAttributes(ManagedObjectType.DIMENSION_NUMERICAL,
+							storageIds.get(dataTableIndex));
+					else
+						cmdCreateStorage.setAttributes(ManagedObjectType.DIMENSION_NUMERICAL);
+
+					cmdCreateStorage.doCommand();
 					storageLabel = storageLabelIterator.next();
-					NumericalStorage storage = (NumericalStorage) cmdCreateStorage.getCreatedObject();
+					NumericalDimension storage = (NumericalDimension) cmdCreateStorage.getCreatedObject();
 					storage.setLabel(storageLabel);
-					storageIds.add(storage.getID());
+					
+					if (!createStoragesFromExistingIDs)
+						storageIds.add(storage.getID());
+						
 					break;
 				case STRING:
 					cmdCreateStorage =
-						(CmdDataCreateStorage) GeneralManager.get().getCommandManager()
-							.createCommandByType(CommandType.CREATE_STORAGE);
-					cmdCreateStorage.setAttributes(ManagedObjectType.STORAGE_NOMINAL);
+						(CmdDataCreateDimension) GeneralManager.get().getCommandManager()
+							.createCommandByType(CommandType.CREATE_DIMENSION);
+
+					if (createStoragesFromExistingIDs)
+						cmdCreateStorage.setAttributes(ManagedObjectType.DIMENSION_NOMINAL,
+							storageIds.get(dataTableIndex));
+					else
+					{
+						cmdCreateStorage.setAttributes(ManagedObjectType.DIMENSION_NOMINAL);
+					}
+
 					cmdCreateStorage.doCommand();
 
 					storageLabel = storageLabelIterator.next();
-					NominalStorage<?> nominalStorage =
-						(NominalStorage<?>) cmdCreateStorage.getCreatedObject();
+					NominalDimension<?> nominalStorage =
+						(NominalDimension<?>) cmdCreateStorage.getCreatedObject();
 					nominalStorage.setLabel(storageLabel);
-					storageIds.add(nominalStorage.getID());
+					
+					if (!createStoragesFromExistingIDs)
+						storageIds.add(nominalStorage.getID());
+
 				case SKIP:
 					// nothing to do, just skip
 					break;
@@ -210,13 +241,12 @@ public class DataTableUtils {
 		// Create SET
 		CmdDataCreateTable cmdCreateSet =
 			(CmdDataCreateTable) GeneralManager.get().getCommandManager()
-				.createCommandByType(CommandType.CREATE_SET_DATA);
+				.createCommandByType(CommandType.CREATE_DATA_TABLE);
 
 		cmdCreateSet.setAttributes(storageIDs, dataDomain);
 		cmdCreateSet.doCommand();
 
-		// ----------------- load dynamic mapping ---------------------
-
+		// Load dynamic mapping
 		CmdLoadFileLookupTable cmdLoadLookupTableFile =
 			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager()
 				.createCommandByType(CommandType.LOAD_LOOKUP_TABLE_FILE);
@@ -262,41 +292,40 @@ public class DataTableUtils {
 		}
 
 		// ----------------------------------------
-		DataTable set = (DataTable) dataDomain.getDataTable();
+		DataTable dataTable = (DataTable) dataDomain.getDataTable();
 
 		// loadTrees(loadDataParameters, set);
 
 		if (loadDataParameters.isMinDefined()) {
-			set.getMetaData().setMin(loadDataParameters.getMin());
+			dataTable.getMetaData().setMin(loadDataParameters.getMin());
 		}
 		if (loadDataParameters.isMaxDefined()) {
-			set.getMetaData().setMax(loadDataParameters.getMax());
+			dataTable.getMetaData().setMax(loadDataParameters.getMax());
 		}
 
 		boolean isSetHomogeneous = loadDataParameters.isDataHomogeneous();
 
 		if (loadDataParameters.getMathFilterMode().equals("Normal")) {
-			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL, isSetHomogeneous);
+			dataTable.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL, isSetHomogeneous);
 		}
 		else if (loadDataParameters.getMathFilterMode().equals("Log10")) {
-			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG10, isSetHomogeneous);
+			dataTable.setExternalDataRepresentation(ExternalDataRepresentation.LOG10, isSetHomogeneous);
 		}
 		else if (loadDataParameters.getMathFilterMode().equals("Log2")) {
-			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG2, isSetHomogeneous);
+			dataTable.setExternalDataRepresentation(ExternalDataRepresentation.LOG2, isSetHomogeneous);
 		}
 		else
 			throw new IllegalStateException("Unknown data representation type");
 
-		return set;
+		return dataTable;
 	}
 
-	public static void setStorages(DataTable set, ArrayList<Integer> storageIDs) {
+	public static void setDataTables(DataTable dataTable, ArrayList<Integer> storageIDs) {
 		for (int iStorageID : storageIDs) {
-			set.addStorage(iStorageID);
+			dataTable.addStorage(iStorageID);
 		}
 
-		set.finalizeAddedStorages();
-
+		dataTable.finalizeAddedDimensions();
 	}
 
 	/**
@@ -310,7 +339,7 @@ public class DataTableUtils {
 		String xml = null;
 
 		try {
-			xml = getTreeClusterXml(set.getContentData(DataTable.CONTENT).getContentTree());
+			xml = getTreeClusterXml(set.getContentData(DataTable.RECORD).getContentTree());
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
@@ -333,7 +362,7 @@ public class DataTableUtils {
 		String xml = null;
 
 		try {
-			xml = getTreeClusterXml(set.getStorageData(DataTable.STORAGE).getStorageTree());
+			xml = getTreeClusterXml(set.getStorageData(DataTable.DIMENSION).getStorageTree());
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
@@ -432,8 +461,8 @@ public class DataTableUtils {
 				try {
 
 					tree = treePorter.importTree(geneTreeFileName, set.getDataDomain().getContentIDType());
-//					tree.setSortingStrategy(ESortingStrategy.AVERAGE_VALUE);
-					set.getContentData(DataTable.CONTENT).setContentTree(tree);
+					// tree.setSortingStrategy(ESortingStrategy.AVERAGE_VALUE);
+					set.getContentData(DataTable.RECORD).setContentTree(tree);
 				}
 				catch (JAXBException e) {
 					e.printStackTrace();
@@ -456,7 +485,7 @@ public class DataTableUtils {
 				ClusterTree tree;
 				try {
 					tree = treePorter.importStorageTree(experimentsTreeFileName);
-					set.getStorageData(DataTable.STORAGE).setStorageTree(tree);
+					set.getStorageData(DataTable.DIMENSION).setStorageTree(tree);
 					set.getDataDomain().createDimensionGroupsFromStorageTree(tree);
 				}
 				catch (JAXBException e) {
@@ -474,15 +503,15 @@ public class DataTableUtils {
 	 * calculated from the mode specified.
 	 * 
 	 * @param externalDataRep
-	 *            Determines how the data is visualized. For options see {@link EExternalDataRepresentation}
+	 *            Determines how the data is visualized. For options see {@link ExternalDataRepresentation}
 	 * @param bIsSetHomogeneous
 	 *            Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
 	 *            maximum and minimum, meaning that all storages in the set contain equal data. If false, each
 	 *            storage is treated separately, has it's own min and max etc. Sets that contain nominal data
 	 *            MUST be inhomogeneous.
 	 */
-	public static void setExternalDataRepresentation(DataTable set, EExternalDataRepresentation externalDataRep,
-		boolean isSetHomogeneous) {
+	public static void setExternalDataRepresentation(DataTable set,
+		ExternalDataRepresentation externalDataRep, boolean isSetHomogeneous) {
 		set.setExternalDataRepresentation(externalDataRep, isSetHomogeneous);
 	}
 

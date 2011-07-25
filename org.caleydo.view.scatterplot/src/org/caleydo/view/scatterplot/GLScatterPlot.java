@@ -32,7 +32,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -1294,9 +1294,9 @@ public class GLScatterPlot extends ATableBasedView {
 						int current_SELECTED_Y_AXIS = iAxisY;
 
 						xnormalized = table.get(storageVA.get(current_SELECTED_X_AXIS))
-								.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+								.getFloat(DataRepresentation.NORMALIZED, iContentIndex);
 						ynormalized = table.get(storageVA.get(current_SELECTED_Y_AXIS))
-								.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+								.getFloat(DataRepresentation.NORMALIZED, iContentIndex);
 
 						ix = (int) Math.floor(xnormalized * (double) (iTextureWidth - 1));
 						iy = ix
@@ -1438,10 +1438,10 @@ public class GLScatterPlot extends ATableBasedView {
 							int current_SELECTED_Y_AXIS = iAxisY;
 
 							xnormalized = table.get(storageVA.get(current_SELECTED_X_AXIS))
-									.getFloat(EDataRepresentation.NORMALIZED,
+									.getFloat(DataRepresentation.NORMALIZED,
 											iContentIndex);
 							ynormalized = table.get(storageVA.get(current_SELECTED_Y_AXIS))
-									.getFloat(EDataRepresentation.NORMALIZED,
+									.getFloat(DataRepresentation.NORMALIZED,
 											iContentIndex);
 
 							ix = (int) Math.floor(xnormalized
@@ -2172,9 +2172,9 @@ public class GLScatterPlot extends ATableBasedView {
 			}
 
 			xnormalized = table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
-					EDataRepresentation.NORMALIZED, iContentIndex);
+					DataRepresentation.NORMALIZED, iContentIndex);
 			ynormalized = table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
-					EDataRepresentation.NORMALIZED, iContentIndex);
+					DataRepresentation.NORMALIZED, iContentIndex);
 
 			x = transformOnXZoom(xnormalized) * XScale;
 			y = transformOnYZoom(ynormalized) * YScale;
@@ -2193,9 +2193,9 @@ public class GLScatterPlot extends ATableBasedView {
 
 			if (bRender2Axis) {
 				xnormalized = table.get(storageVA.get(iSelectedAxisIndexX2)).getFloat(
-						EDataRepresentation.NORMALIZED, iContentIndex);
+						DataRepresentation.NORMALIZED, iContentIndex);
 				ynormalized = table.get(storageVA.get(iSelectedAxisIndexY2)).getFloat(
-						EDataRepresentation.NORMALIZED, iContentIndex);
+						DataRepresentation.NORMALIZED, iContentIndex);
 
 				x_2 = transformOnXZoom(xnormalized) * XScale;
 				y_2 = transformOnYZoom(ynormalized) * YScale;
@@ -2246,9 +2246,9 @@ public class GLScatterPlot extends ATableBasedView {
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 
 		float xnormalized = table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
-				EDataRepresentation.NORMALIZED, iContentIndex);
+				DataRepresentation.NORMALIZED, iContentIndex);
 		float ynormalized = table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
-				EDataRepresentation.NORMALIZED, iContentIndex);
+				DataRepresentation.NORMALIZED, iContentIndex);
 
 		float x = transformOnXZoom(xnormalized) * XScale;
 		float y = transformOnYZoom(ynormalized) * YScale;
@@ -2326,29 +2326,29 @@ public class GLScatterPlot extends ATableBasedView {
 					+ genLabel
 					+ "):"
 					+ +table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
-							EDataRepresentation.RAW, contentIndex)
+							DataRepresentation.RAW, contentIndex)
 					+ " / "
 					+ table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
-							EDataRepresentation.RAW, contentIndex);
+							DataRepresentation.RAW, contentIndex);
 		else if (contentSelectionManager.checkStatus(SelectionType.SELECTION,
 				contentIndex))
 			sLabel = "Selected Point ("
 					+ genLabel
 					+ "):"
 					+ +table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
-							EDataRepresentation.RAW, contentIndex)
+							DataRepresentation.RAW, contentIndex)
 					+ " / "
 					+ table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
-							EDataRepresentation.RAW, contentIndex);
+							DataRepresentation.RAW, contentIndex);
 		else
 			sLabel = "Point ("
 					+ genLabel
 					+ "):"
 					+ +table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
-							EDataRepresentation.RAW, contentIndex)
+							DataRepresentation.RAW, contentIndex)
 					+ " / "
 					+ table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
-							EDataRepresentation.RAW, contentIndex);
+							DataRepresentation.RAW, contentIndex);
 
 		float fScaling = renderStyle.getSmallFontScalingFactor();
 		if (isRenderedRemote())
@@ -2445,9 +2445,9 @@ public class GLScatterPlot extends ATableBasedView {
 					continue;
 
 			float xnormalized = table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
-					EDataRepresentation.NORMALIZED, iContentIndex);
+					DataRepresentation.NORMALIZED, iContentIndex);
 			float ynormalized = table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
-					EDataRepresentation.NORMALIZED, iContentIndex);
+					DataRepresentation.NORMALIZED, iContentIndex);
 
 			x = transformOnXZoom(xnormalized) * XScale;
 			y = transformOnYZoom(ynormalized) * YScale;
@@ -2510,9 +2510,9 @@ public class GLScatterPlot extends ATableBasedView {
 			for (int iContentIndex : selectionSet) {
 
 				float xnormalized = table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
-						EDataRepresentation.NORMALIZED, iContentIndex);
+						DataRepresentation.NORMALIZED, iContentIndex);
 				float ynormalized = table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
-						EDataRepresentation.NORMALIZED, iContentIndex);
+						DataRepresentation.NORMALIZED, iContentIndex);
 
 				x = transformOnXZoom(xnormalized) * XScale;
 				y = transformOnYZoom(ynormalized) * YScale;
@@ -2907,9 +2907,9 @@ public class GLScatterPlot extends ATableBasedView {
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = DataTable.CONTENT_CONTEXT;
+			contentVAType = DataTable.RECORD_CONTEXT;
 		else
-			contentVAType = DataTable.CONTENT;
+			contentVAType = DataTable.RECORD;
 
 		contentVA = dataDomain.getContentVA(contentVAType);
 		storageVA = dataDomain.getStorageVA(storageVAType);
@@ -3299,10 +3299,10 @@ public class GLScatterPlot extends ATableBasedView {
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (this.bRenderOnlyContext) {
-			contentVAType = DataTable.CONTENT_CONTEXT;
+			contentVAType = DataTable.RECORD_CONTEXT;
 			contentVA = dataDomain.getContentVA(contentVAType);
 		} else {
-			contentVAType = DataTable.CONTENT;
+			contentVAType = DataTable.RECORD;
 			contentVA = dataDomain.getContentVA(contentVAType);
 		}
 

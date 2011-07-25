@@ -7,13 +7,13 @@ package org.caleydo.core.data.id;
  * @author Alexander Lex
  */
 public enum ManagedObjectType {
-	STORAGE(10),
-	STORAGE_NUMERICAL(11),
-	STORAGE_NOMINAL(12),
+	DIMENSION(10),
+	DIMENSION_NUMERICAL(11),
+	DIMENSION_NOMINAL(12),
 
 	VIRTUAL_ARRAY(13),
 	SELECTION(14),
-	SET(15),
+	DATA_TABLE(15),
 	GROUP(16),
 
 	VIEW(20),

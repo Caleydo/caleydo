@@ -28,16 +28,16 @@ public class CmdDataCreateTable
 	 * Constructor.
 	 */
 	public CmdDataCreateTable() {
-		super(CommandType.CREATE_SET_DATA);
+		super(CommandType.CREATE_DATA_TABLE);
 
 		storageIDs = new ArrayList<Integer>();
 	}
 
-	private void fillSets(DataTable newSet) {
+	private void fillDataTables(DataTable newSet) {
 		if (storageIDs.isEmpty())
 			throw new IllegalStateException("No data available for creating storage.");
 
-		DataTableUtils.setStorages(newSet, storageIDs);
+		DataTableUtils.setDataTables(newSet, storageIDs);
 	}
 
 	/**
@@ -52,13 +52,12 @@ public class CmdDataCreateTable
 			generalManager.getIDCreator().mapInternalToExternalID(createdObject.getID(), externalID);
 		}
 
-		fillSets(createdObject);
+		fillDataTables(createdObject);
 
 		Logger.log(new Status(IStatus.INFO, this.toString(), "New Set with internal ID "
 			+ createdObject.getID() + " and external ID " + externalID + " created."));
 
-		dataDomain.setSet(createdObject);
-
+		dataDomain.setDataTable(createdObject);
 	}
 
 	@Override

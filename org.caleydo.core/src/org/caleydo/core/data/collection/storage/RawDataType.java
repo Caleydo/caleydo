@@ -5,7 +5,7 @@ package org.caleydo.core.data.collection.storage;
  * 
  * @author Alexander Lex
  */
-public enum ERawDataType {
+public enum RawDataType {
 	// For generic Nominal Storages
 	OBJECT,
 	// For generic Numerical Storages

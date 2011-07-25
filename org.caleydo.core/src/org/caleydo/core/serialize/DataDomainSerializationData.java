@@ -3,7 +3,7 @@ package org.caleydo.core.serialize;
 import java.util.HashMap;
 
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 
 /**
@@ -29,7 +29,7 @@ public class DataDomainSerializationData {
 
 	/** virtual arrays of this application stored in relation with their their-key */
 	private HashMap<String, ContentVirtualArray> contentVAMap;
-	private HashMap<String, StorageVirtualArray> storageVAMap;
+	private HashMap<String, DimensionVirtualArray> storageVAMap;
 
 	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
@@ -55,11 +55,11 @@ public class DataDomainSerializationData {
 		this.contentVAMap = contentVAMap;
 	}
 
-	public HashMap<String, StorageVirtualArray> getStorageVAMap() {
+	public HashMap<String, DimensionVirtualArray> getStorageVAMap() {
 		return storageVAMap;
 	}
 
-	public void setStorageVAMap(HashMap<String, StorageVirtualArray> storageVAMap) {
+	public void setStorageVAMap(HashMap<String, DimensionVirtualArray> storageVAMap) {
 		this.storageVAMap = storageVAMap;
 	}
 

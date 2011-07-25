@@ -1,10 +1,10 @@
 package org.caleydo.core.util.clusterer;
 
-import org.caleydo.core.data.collection.table.ContentData;
+import org.caleydo.core.data.collection.table.RecordData;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.collection.table.StorageData;
+import org.caleydo.core.data.collection.table.DimensionData;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.StorageVirtualArray;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.util.clusterer.nominal.AlphabeticalPartitioner;
@@ -129,7 +129,7 @@ public class ClusterManager {
 				+ clusterer.toString()));
 			return;
 		}
-		result.contentResult = new ContentData(set.getDataDomain().getContentIDType());
+		result.contentResult = new RecordData(set.getDataDomain().getContentIDType());
 		result.contentResult.setContentVA(new ContentVirtualArray(clusterState.getContentVAType(),
 			tempResult.indices));
 		result.contentResult.setContentClusterSizes(tempResult.clusterSizes);
@@ -146,8 +146,8 @@ public class ClusterManager {
 		clusterer.setClusterState(clusterState);
 
 		TempResult tempResult = clusterer.getSortedVA(set, clusterState, progressBarOffset, progressBarMulti);
-		result.storageResult = new StorageData();
-		result.storageResult.setStorageVA(new StorageVirtualArray(clusterState.getStorageVAType(),
+		result.storageResult = new DimensionData();
+		result.storageResult.setStorageVA(new DimensionVirtualArray(clusterState.getStorageVAType(),
 			tempResult.indices));
 		result.storageResult.setStorageClusterSizes(tempResult.clusterSizes);
 		result.storageResult.setStorageSampleElements(tempResult.sampleElements);

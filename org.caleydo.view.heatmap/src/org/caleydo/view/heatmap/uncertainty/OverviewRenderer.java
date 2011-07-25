@@ -146,7 +146,7 @@ public class OverviewRenderer extends LayoutRenderer {
 
 		ArrayList<Integer> clusterGenes = uncertaintyHeatMap.getContentVA()
 				.getIDsOfGroup(group.getID());
-		ContentVirtualArray clusterVA = new ContentVirtualArray(DataTable.CONTENT, clusterGenes);
+		ContentVirtualArray clusterVA = new ContentVirtualArray(DataTable.RECORD, clusterGenes);
 
 		return clusterVA;
 	}

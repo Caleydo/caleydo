@@ -6,7 +6,7 @@ import org.caleydo.core.command.CommandManager;
 import org.caleydo.core.data.id.IDCreator;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.gui.SWTGUIManager;
-import org.caleydo.core.manager.data.storage.StorageManager;
+import org.caleydo.core.manager.data.storage.DimensionManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.view.ViewManager;
@@ -71,7 +71,7 @@ public class GeneralManager {
 
 	private BasicInformation basicInfo;
 
-	private StorageManager storageManager;
+	private DimensionManager storageManager;
 	private CommandManager commandManager;
 	private SWTGUIManager sWTGUIManager;
 	private ViewManager viewGLCanvasManager;
@@ -95,7 +95,7 @@ public class GeneralManager {
 
 		basicInfo = new BasicInformation();
 
-		storageManager = new StorageManager();
+		storageManager = new DimensionManager();
 		commandManager = new CommandManager();
 		eventPublisher = new EventPublisher();
 		viewGLCanvasManager = new ViewManager();
@@ -154,7 +154,7 @@ public class GeneralManager {
 		return resourceLoader;
 	}
 
-	public StorageManager getStorageManager() {
+	public DimensionManager getDimensionManager() {
 		return storageManager;
 	}
 

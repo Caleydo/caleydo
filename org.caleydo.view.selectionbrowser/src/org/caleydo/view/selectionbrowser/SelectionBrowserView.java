@@ -106,7 +106,7 @@ public class SelectionBrowserView extends ASWTView implements
 	}
 
 	private void initContent() {
-		String contentVAType = DataTable.CONTENT;
+		String contentVAType = DataTable.RECORD;
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 
 		ContentVirtualArray contentVA = dataDomain.getContentVA(contentVAType);
