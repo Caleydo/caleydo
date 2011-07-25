@@ -9,10 +9,10 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.storage.ADimension;
-import org.caleydo.core.data.collection.storage.DataRepresentation;
-import org.caleydo.core.data.collection.storage.NominalDimension;
-import org.caleydo.core.data.collection.storage.NumericalDimension;
+import org.caleydo.core.data.collection.dimension.ADimension;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.NominalDimension;
+import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;

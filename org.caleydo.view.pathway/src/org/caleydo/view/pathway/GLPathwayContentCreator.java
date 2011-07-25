@@ -9,8 +9,8 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.collection.storage.ADimension;
-import org.caleydo.core.data.collection.storage.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.ADimension;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;

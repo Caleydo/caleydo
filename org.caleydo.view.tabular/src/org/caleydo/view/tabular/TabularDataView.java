@@ -3,8 +3,8 @@ package org.caleydo.view.tabular;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.caleydo.core.data.collection.storage.ADimension;
-import org.caleydo.core.data.collection.storage.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.ADimension;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.ManagedObjectType;

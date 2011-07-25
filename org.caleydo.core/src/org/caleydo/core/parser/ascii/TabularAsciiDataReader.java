@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.DimensionType;
-import org.caleydo.core.data.collection.storage.ADimension;
-import org.caleydo.core.data.collection.storage.NominalDimension;
+import org.caleydo.core.data.collection.dimension.ADimension;
+import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.manager.GeneralManager;

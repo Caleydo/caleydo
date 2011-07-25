@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
-import org.caleydo.core.data.collection.storage.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;

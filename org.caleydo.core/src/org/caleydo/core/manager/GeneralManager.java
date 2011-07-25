@@ -6,7 +6,7 @@ import org.caleydo.core.command.CommandManager;
 import org.caleydo.core.data.id.IDCreator;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.gui.SWTGUIManager;
-import org.caleydo.core.manager.data.storage.DimensionManager;
+import org.caleydo.core.manager.data.dimension.DimensionManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.view.ViewManager;

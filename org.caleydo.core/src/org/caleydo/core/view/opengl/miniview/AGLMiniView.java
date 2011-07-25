@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.storage.ADimension;
+import org.caleydo.core.data.collection.dimension.ADimension;
 
 /**
  * Abstract class for all kinds of mini views.

@@ -3,7 +3,7 @@ package org.caleydo.core.util.clusterer.nominal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.storage.NominalDimension;
+import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.util.clusterer.AClusterer;

@@ -1,6 +1,6 @@
 package org.caleydo.view.visbricks.brick.data;
 
-import org.caleydo.core.data.collection.storage.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DimensionData;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
