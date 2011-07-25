@@ -17,7 +17,7 @@ public abstract class AGate extends AGLGUIElement {
 	protected int gateID;
 	protected float currentPosition;
 
-	protected DataTable set;
+	protected DataTable dataTable;
 	protected PCRenderStyle renderStyle;
 	protected float mouseTopSpacing;
 	protected float mouseBottomSpacing;
@@ -25,7 +25,7 @@ public abstract class AGate extends AGLGUIElement {
 	protected float bottom;
 
 	public abstract void draw(GL2 gl, PickingManager pickingManager,
-			TextureManager textureManager, CaleydoTextRenderer textRenderer, int iViewID);
+			TextureManager textureManager, CaleydoTextRenderer textRenderer, int viewID);
 
 	/**
 	 * Sets the current position (x coordinate) of the gate.
@@ -114,10 +114,10 @@ public abstract class AGate extends AGLGUIElement {
 	 */
 	public void setBottom(float bottom) {
 		this.bottom = bottom / renderStyle.getAxisHeight();
-		// lowerValue = (float) set.getRawForNormalized(bottom /
+		// lowerValue = (float) dataTable.getRawForNormalized(bottom /
 		// renderStyle.getAxisHeight());
 
-		// double setMin = set.getMinAs(EExternalDataRepresentation.NORMAL);
+		// double setMin = dataTable.getMinAs(EExternalDataRepresentation.NORMAL);
 
 		// if (lowerValue < setMin) {
 		// lowerValue = (float) setMin;
@@ -132,10 +132,10 @@ public abstract class AGate extends AGLGUIElement {
 	 */
 	public void setTop(float top) {
 		this.top = top / renderStyle.getAxisHeight();
-		// upperValue = (float) set.getRawForNormalized(top /
+		// upperValue = (float) dataTable.getRawForNormalized(top /
 		// renderStyle.getAxisHeight());
 		//
-		// double setMax = set.getMaxAs(EExternalDataRepresentation.NORMAL);
+		// double setMax = dataTable.getMaxAs(EExternalDataRepresentation.NORMAL);
 		//
 		// if (upperValue > setMax) {
 		// upperValue = (float) setMax;

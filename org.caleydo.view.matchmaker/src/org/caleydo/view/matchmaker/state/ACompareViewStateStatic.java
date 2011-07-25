@@ -8,13 +8,13 @@ import java.util.HashMap;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
@@ -47,8 +47,8 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	}
 
 	@Override
-	public void setSetsToCompare(ArrayList<DataTable> setsToCompare) {
-		setBar.setSets(setsToCompare);
+	public void setDataTablesToCompare(ArrayList<DataTable> setsToCompare) {
+		setBar.setDataTables(setsToCompare);
 	}
 
 	@Override
@@ -78,8 +78,8 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 
 			// FIXME: This is not ok! Probably this view should use its own
 			// selection manager
-			ContentSelectionManager contentSelectionManager = dataDomain
-					.getContentSelectionManager();
+			RecordSelectionManager contentSelectionManager = dataDomain
+					.getRecordSelectionManager();
 			if (contentSelectionManager.checkStatus(selectionType, externalID)) {
 				break;
 			}
@@ -135,16 +135,16 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 					break;
 
 				SelectionCommandEvent selectionCommandEvent = new SelectionCommandEvent();
-				selectionCommandEvent.setIDCategory(dataDomain.getContentIDCategory());
+				selectionCommandEvent.dataTableIDCategory(dataDomain.getRecordIDCategory());
 				selectionCommandEvent.setSelectionCommand(new SelectionCommand(
 						ESelectionCommandType.CLEAR, ACTIVE_HEATMAP_SELECTION_TYPE));
 				eventPublisher.triggerEvent(selectionCommandEvent);
 
 				ISelectionDelta bandSelectionDelta = new SelectionDelta(
-						dataDomain.getContentIDType());
+						dataDomain.getRecordIDType());
 
-				for (Integer contentID : activeDetailBand.getContentIDs())
-					bandSelectionDelta.addSelection(contentID,
+				for (Integer recordID : activeDetailBand.getContentIDs())
+					bandSelectionDelta.addSelection(recordID,
 							ACTIVE_HEATMAP_SELECTION_TYPE);
 
 				SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
@@ -178,9 +178,9 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	}
 
 	@Override
-	public void handleContentGroupListUpdate(int setID, ContentGroupList contentGroupList) {
+	public void handleContentGroupListUpdate(int dataTableID, RecordGroupList contentGroupList) {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-			if (heatMapWrapper.getSet().getID() == setID) {
+			if (heatMapWrapper.getDataTable().getID() == dataTableID) {
 				heatMapWrapper.handleContentGroupListUpdate(contentGroupList);
 				setHeatMapWrapperDisplayListDirty();
 				return;
@@ -189,15 +189,15 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	}
 
 	@Override
-	public void handleReplaceContentVA(int setID, String dataDomain, String vaType) {
+	public void handleReplaceRecordVA(int dataTableID, String dataDomain, String vaType) {
 
 		// FIXME: we should not destroy all the heat map wrappers when a
-		// contentVA is handled
-		setSetsInFocus(setBar.getSetsInFocus());
+		// recordVA is handled
+		setDataTablesInFocus(setBar.getDataTablesInFocus());
 	}
 
 	protected void renderOverviewLineSelections(GL2 gl) {
-		ContentSelectionManager contentSelectionManager = heatMapWrappers.get(0)
+		RecordSelectionManager contentSelectionManager = heatMapWrappers.get(0)
 				.getContentSelectionManager();
 
 		ArrayList<SelectionType> selectionTypes = new ArrayList<SelectionType>();
@@ -221,27 +221,27 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 
 			for (SelectionType selectionType : selectionTypes) {
 
-				for (Integer contentID : contentSelectionManager
+				for (Integer recordID : contentSelectionManager
 						.getElements(selectionType)) {
 
 					gl.glPushAttrib(GL2.GL_LINE_BIT);
 
 					gl.glPushName(pickingManager.getPickingID(viewID,
-							PickingType.POLYLINE_SELECTION, contentID));
+							PickingType.POLYLINE_SELECTION, recordID));
 
-					z = setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
-					HashMap<Integer, ArrayList<Vec3f>> map = contentIDToIndividualLines
+					z = setRelationColor(gl, heatMapWrappers.get(0), recordID, true);
+					HashMap<Integer, ArrayList<Vec3f>> map = recordIDToIndividualLines
 							.get(heatMapWrapper);
 					if (map != null) {
 
-						ArrayList<Vec3f> points = map.get(contentID);
+						ArrayList<Vec3f> points = map.get(recordID);
 						if (points == null)
 							continue;
 
 						for (Vec3f point : points)
 							point.setZ(z);
 
-						renderSingleCurve(gl, points, contentID,
+						renderSingleCurve(gl, points, recordID,
 								40 + (int) (20 * Math.random()));
 					}
 
@@ -268,14 +268,14 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		//
 		// for (SelectionType selectionType : selectionTypes) {
 		//
-		// for (Integer contentID : contentSelectionManager
+		// for (Integer recordID : contentSelectionManager
 		// .getElements(selectionType)) {
 		// gl.glPushAttrib(GL2.GL_LINE_BIT);
-		// setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
-		// HashMap<Integer, ArrayList<Vec3f>> map = contentIDToIndividualLines
+		// setRelationColor(gl, heatMapWrappers.get(0), recordID, true);
+		// HashMap<Integer, ArrayList<Vec3f>> map = recordIDToIndividualLines
 		// .get(heatMapWrapper);
 		// if (map != null) {
-		// renderSingleCurve(gl, map.get(contentID), contentID,
+		// renderSingleCurve(gl, map.get(recordID), recordID,
 		// 40 + (int) (20 * Math.random()));
 		// }
 		//

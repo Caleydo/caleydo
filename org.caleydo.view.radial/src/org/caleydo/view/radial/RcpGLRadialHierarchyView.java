@@ -50,7 +50,7 @@ public class RcpGLRadialHierarchyView extends ARcpGLViewPart {
 		createPartControlGL();
 	}
 
-	public static void createToolBarItems(int iViewID) {
+	public static void createToolBarItems(int viewID) {
 		alToolbar = new ArrayList<IAction>();
 	}
 

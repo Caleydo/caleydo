@@ -2,7 +2,7 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class CaptionCageRenderer extends AContentRenderer {
@@ -23,25 +23,25 @@ public class CaptionCageRenderer extends AContentRenderer {
 
 		// if (!contentSpacing.isUseFishEye()) {
 
-		ContentVirtualArray contentVA = heatMap.getContentVA();
+		RecordVirtualArray recordVA = heatMap.getRecordVA();
 
-		for (Integer contentID : contentVA) {
+		for (Integer recordID : recordVA) {
 			if (heatMap.isHideElements()
 					&& heatMap.getContentSelectionManager().checkStatus(
-							GLHeatMap.SELECTION_HIDDEN, contentID)) {
+							GLHeatMap.SELECTION_HIDDEN, recordID)) {
 				continue;
 			}
 			// else if (heatMap.getContentSelectionManager().checkStatus(
-			// SelectionType.SELECTION, iContentIndex)
+			// SelectionType.SELECTION, recordIndex)
 			// || heatMap.getContentSelectionManager().checkStatus(
-			// SelectionType.MOUSE_OVER, iContentIndex)) {
+			// SelectionType.MOUSE_OVER, recordIndex)) {
 			// fieldHeight = selectedFieldHeight;
 			//
 			// } else {
 			//
 			// fieldHeight = normalFieldHeight;
 			// }
-			fieldHeight = contentSpacing.getFieldHeight(contentID);
+			fieldHeight = contentSpacing.getFieldHeight(recordID);
 
 			gl.glBegin(GL2.GL_LINE_STRIP);
 			gl.glVertex3f(xPosition, yPosition, 0);

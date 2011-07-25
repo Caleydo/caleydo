@@ -7,9 +7,9 @@ import java.util.Set;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.ISegmentData;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
@@ -45,17 +45,17 @@ public class PathwayDimensionGroupData extends
 	}
 
 	@Override
-	public ContentVirtualArray getSummaryVA() {
+	public RecordVirtualArray getSummaryVA() {
 		// TODO: Is this a good way?
-		ArrayList<ContentVirtualArray> contentVAs = getSegmentVAs();
+		ArrayList<RecordVirtualArray> recordVAs = getSegmentVAs();
 		ArrayList<Integer> summaryBrickIDs = new ArrayList<Integer>();
-		for (ContentVirtualArray contentVA : contentVAs) {
-			summaryBrickIDs.addAll(contentVA.getVirtualArray());
+		for (RecordVirtualArray recordVA : recordVAs) {
+			summaryBrickIDs.addAll(recordVA.getVirtualArray());
 		}
 
-		ContentGroupList groupList = new ContentGroupList();
+		RecordGroupList groupList = new RecordGroupList();
 		groupList.setGroups(getGroups());
-		ContentVirtualArray summaryBrickVA = new ContentVirtualArray("CONTENT",
+		RecordVirtualArray summaryBrickVA = new RecordVirtualArray("CONTENT",
 				summaryBrickIDs);
 		summaryBrickVA.setGroupList(groupList);
 
@@ -63,9 +63,9 @@ public class PathwayDimensionGroupData extends
 	}
 
 	@Override
-	public ArrayList<ContentVirtualArray> getSegmentVAs() {
+	public ArrayList<RecordVirtualArray> getSegmentVAs() {
 
-		ArrayList<ContentVirtualArray> contentVAs = new ArrayList<ContentVirtualArray>();
+		ArrayList<RecordVirtualArray> recordVAs = new ArrayList<RecordVirtualArray>();
 
 		for (PathwayGraph pathway : pathways) {
 			List<IGraphItem> vertexGraphItemReps = pathway
@@ -85,24 +85,24 @@ public class PathwayDimensionGroupData extends
 
 					if (davidId != -1) {
 						// TODO: Map to content id type (given as parameter)
-						Set<Integer> contentIDs = GeneralManager
+						Set<Integer> recordIDs = GeneralManager
 								.get()
 								.getIDMappingManager()
 								.getIDAsSet(IDType.getIDType("DAVID"),
-										mappingDataDomain.getContentIDType(),
+										mappingDataDomain.getRecordIDType(),
 										davidId);
 
-						if (contentIDs != null && contentIDs.size() > 0) {
-							ids.addAll(contentIDs);
+						if (recordIDs != null && recordIDs.size() > 0) {
+							ids.addAll(recordIDs);
 						}
 					}
 				}
 			}
 
-			contentVAs.add(new ContentVirtualArray("CONTENT", ids));
+			recordVAs.add(new RecordVirtualArray("CONTENT", ids));
 		}
 
-		return contentVAs;
+		return recordVAs;
 	}
 
 	@Override
@@ -149,14 +149,14 @@ public class PathwayDimensionGroupData extends
 									(PathwayVertexGraphItem) item);
 
 					if (davidId != -1) {
-						Set<Integer> contentIDs = GeneralManager
+						Set<Integer> recordIDs = GeneralManager
 								.get()
 								.getIDMappingManager()
 								.getIDAsSet(IDType.getIDType("DAVID"),
-										mappingDataDomain.getContentIDType(),
+										mappingDataDomain.getRecordIDType(),
 										davidId);
 
-						if (contentIDs != null && contentIDs.size() > 0) {
+						if (recordIDs != null && recordIDs.size() > 0) {
 							groupSize++;
 						}
 
@@ -211,25 +211,25 @@ public class PathwayDimensionGroupData extends
 
 					if (davidId != -1) {
 						groupSize++;
-						Set<Integer> contentIDs = GeneralManager
+						Set<Integer> recordIDs = GeneralManager
 								.get()
 								.getIDMappingManager()
 								.getIDAsSet(IDType.getIDType("DAVID"),
-										mappingDataDomain.getContentIDType(),
+										mappingDataDomain.getRecordIDType(),
 										davidId);
 
-						if (contentIDs != null && contentIDs.size() > 0) {
-							ids.addAll(contentIDs);
+						if (recordIDs != null && recordIDs.size() > 0) {
+							ids.addAll(recordIDs);
 						}
 					}
 				}
 			}
 
 			group.setSize(groupSize);
-			ContentVirtualArray contentVA = new ContentVirtualArray("CONTENT",
+			RecordVirtualArray recordVA = new RecordVirtualArray("CONTENT",
 					ids);
 			segmentBrickData.add(new PathwaySegmentData(dataDomain,
-					mappingDataDomain, contentVA, group, pathway, this));
+					mappingDataDomain, recordVA, group, pathway, this));
 			startIndex += groupSize;
 			groupID++;
 		}

@@ -411,7 +411,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	private void renderCaption(GL2 gl, float normalizedValue) {
 
 		if (getParentGLCanvas().getSize().getWidth() < 500
-				|| dataDomain.getDataTable().getSetType() != DataTableDataType.NUMERIC)
+				|| dataDomain.getDataTable().getDataTableType() != DataTableDataType.NUMERIC)
 			return;
 
 		textRenderer.begin3DRendering();

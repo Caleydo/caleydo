@@ -24,7 +24,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
@@ -39,7 +39,7 @@ import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.ContentVAUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.RecordVAUpdateEvent;
 import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.PickingMode;
@@ -52,16 +52,16 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
+import org.caleydo.core.view.opengl.canvas.listener.ReplaceRecordVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.RecordContextMenuItemContainer;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
@@ -137,9 +137,9 @@ public class GLPathway extends AGLView implements
 	protected DisableNeighborhoodListener disableNeighborhoodListener;
 
 	protected SelectionUpdateListener selectionUpdateListener;
-	protected ContentVAUpdateListener virtualArrayUpdateListener;
+	protected RecordVAUpdateListener virtualArrayUpdateListener;
 
-	protected ReplaceContentVAListener replaceVirtualArrayListener;
+	protected ReplaceRecordVAListener replaceVirtualArrayListener;
 
 	protected RedrawViewListener redrawViewListener;
 	protected ClearSelectionsListener clearSelectionsListener;
@@ -171,7 +171,7 @@ public class GLPathway extends AGLView implements
 		vecScaling = new Vec3f(1, 1, 1);
 		vecTranslation = new Vec3f(0, 0, 0);
 
-		contentVAType = DataTable.RECORD_CONTEXT;
+		recordVAType = DataTable.RECORD_CONTEXT;
 
 	}
 
@@ -373,7 +373,7 @@ public class GLPathway extends AGLView implements
 			setDisplayListDirty();
 
 		} else if (selectionDelta.getIDType().getIDCategory() == mappingDataDomain
-				.getContentIDCategory()) {
+				.getRecordIDCategory()) {
 
 			ISelectionDelta resolvedDelta = resolveExternalSelectionDelta(selectionDelta);
 			selectionManager.setDelta(resolvedDelta);
@@ -390,15 +390,15 @@ public class GLPathway extends AGLView implements
 				PathwayVertexGraphItemRep vertexRep = (PathwayVertexGraphItemRep) pathwayItemManager
 						.getItem(item.getPrimaryID());
 
-				int iViewID = uniqueID;
+				int viewID = uniqueID;
 				// If rendered remote (hierarchical heat map) - use the remote
 				// view ID
 				// if (glRemoteRenderingView != null && glRemoteRenderingView
 				// instanceof AGLViewBrowser)
-				// iViewID = glRemoteRenderingView.getID();
+				// viewID = glRemoteRenderingView.getID();
 
 				SelectedElementRep elementRep = new SelectedElementRep(
-						mappingDataDomain.getContentIDType(), iViewID,
+						mappingDataDomain.getRecordIDType(), viewID,
 						vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X
 								* vecScaling.x() + vecTranslation.x(),
 						(iPathwayHeight - vertexRep.getYOrigin())
@@ -441,7 +441,7 @@ public class GLPathway extends AGLView implements
 			// for (Integer iDavid : DataTableRefSeq) {
 
 			Set<Integer> DataTableExpressionIndex = idMappingManager.getIDAsSet(
-					IDType.getIDType("DAVID"), mappingDataDomain.getContentIDType(),
+					IDType.getIDType("DAVID"), mappingDataDomain.getRecordIDType(),
 					davidID);
 			if (DataTableExpressionIndex == null)
 				continue;
@@ -454,7 +454,7 @@ public class GLPathway extends AGLView implements
 
 	private ISelectionDelta createExternalSelectionDelta(ISelectionDelta selectionDelta) {
 		ISelectionDelta newSelectionDelta = new SelectionDelta(
-				mappingDataDomain.getContentIDType());
+				mappingDataDomain.getRecordIDType());
 
 		for (SelectionDeltaItem item : selectionDelta) {
 			for (int iExpressionIndex : getExpressionIndicesFromPathwayVertexGraphItemRep(item
@@ -489,15 +489,15 @@ public class GLPathway extends AGLView implements
 			// values, depending on the IDType that has been specified when
 			// loading expression data.
 			// Possibly a different handling of the Set is required.
-			Set<Integer> setIDs = idMappingManager.getIDAsSet(selectionDelta.getIDType(),
+			Set<Integer> dataTableIDs = idMappingManager.getIDAsSet(selectionDelta.getIDType(),
 					dataDomain.getDavidIDType(), item.getPrimaryID());
 
-			if (setIDs == null || setIDs.isEmpty()) {
+			if (dataTableIDs == null || dataTableIDs.isEmpty()) {
 				continue;
 				// throw new
 				// IllegalStateException("Cannot resolve RefSeq ID to David ID.");
 			}
-			Integer iDavidID = (Integer) setIDs.toArray()[0];
+			Integer iDavidID = (Integer) dataTableIDs.toArray()[0];
 
 			pathwayVertexGraphItem = pathwayItemManager
 					.getPathwayVertexGraphItemByDavidId(iDavidID);
@@ -728,10 +728,10 @@ public class GLPathway extends AGLView implements
 					for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 
-						ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
+						RecordContextMenuItemContainer geneContextMenuItemContainer = new RecordContextMenuItemContainer();
 						geneContextMenuItemContainer.setDataDomain(mappingDataDomain);
 						geneContextMenuItemContainer
-								.setID(dataDomain.getDavidIDType(),
+								.dataTableID(dataDomain.getDavidIDType(),
 										pathwayItemManager
 												.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) pathwayVertexGraphItem));
 						contextMenu.addItemContanier(geneContextMenuItemContainer);
@@ -754,7 +754,7 @@ public class GLPathway extends AGLView implements
 
 			SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
 					selectionType);
-			sendSelectionCommandEvent(mappingDataDomain.getContentIDType(), command);
+			sendSelectionCommandEvent(mappingDataDomain.getRecordIDType(), command);
 
 			// Add new vertex to internal selection manager
 			selectionManager.addToType(selectionType, tmpVertexGraphItemRep.getId());
@@ -764,7 +764,7 @@ public class GLPathway extends AGLView implements
 			selectionManager
 					.addConnectionID(iConnectionID, tmpVertexGraphItemRep.getId());
 			connectedElementRepresentationManager.clear(
-					mappingDataDomain.getContentIDType(), selectionType);
+					mappingDataDomain.getRecordIDType(), selectionType);
 			// gLPathwayContentCreator
 			// .performIdenticalNodeHighlighting(selectionType);
 
@@ -799,18 +799,18 @@ public class GLPathway extends AGLView implements
 		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep;
 		int iPathwayHeight = pathway.getHeight();
 
-		int iViewID = uniqueID;
+		int viewID = uniqueID;
 		// If rendered remote (hierarchical heat map) - use the remote view ID
 		// if (glRemoteRenderingView != null && glRemoteRenderingView instanceof
 		// AGLViewBrowser)
-		// iViewID = glRemoteRenderingView.getID();
+		// viewID = glRemoteRenderingView.getID();
 
 		for (int iVertexRepID : selectionManager.getElements(selectionType)) {
 			tmpPathwayVertexGraphItemRep = pathwayItemManager
 					.getPathwayVertexRep(iVertexRepID);
 
 			SelectedElementRep elementRep = new SelectedElementRep(
-					mappingDataDomain.getContentIDType(), iViewID,
+					mappingDataDomain.getRecordIDType(), viewID,
 					tmpPathwayVertexGraphItemRep.getXOrigin()
 							* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()
 							+ vecTranslation.x(),
@@ -831,7 +831,7 @@ public class GLPathway extends AGLView implements
 	@Override
 	public void broadcastElements(EVAOperation type) {
 
-		ContentVADelta delta = new ContentVADelta(contentVAType,
+		RecordVADelta delta = new RecordVADelta(recordVAType,
 				dataDomain.getDavidIDType());
 
 		for (IGraphItem tmpPathwayVertexGraphItemRep : pathway
@@ -866,7 +866,7 @@ public class GLPathway extends AGLView implements
 			}
 		}
 
-		ContentVAUpdateEvent virtualArrayUpdateEvent = new ContentVAUpdateEvent();
+		RecordVAUpdateEvent virtualArrayUpdateEvent = new RecordVAUpdateEvent();
 		virtualArrayUpdateEvent.setSender(this);
 		virtualArrayUpdateEvent.setDataDomainID(mappingDataDomain.getDataDomainID());
 		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
@@ -898,7 +898,7 @@ public class GLPathway extends AGLView implements
 
 	@Override
 	public void initData() {
-		connectedElementRepresentationManager.clear(mappingDataDomain.getContentIDType());
+		connectedElementRepresentationManager.clear(mappingDataDomain.getRecordIDType());
 		iCurrentDimensionIndex = -1;
 		super.initData();
 
@@ -975,7 +975,7 @@ public class GLPathway extends AGLView implements
 				.getDataDomainID());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
-		// virtualArrayUpdateListener = new ContentVAUpdateListener();
+		// virtualArrayUpdateListener = new RecordVAUpdateListener();
 		// virtualArrayUpdateListener.setHandler(this);
 		// eventPublisher.addListener(VirtualArrayUpdateEvent.class,
 		// virtualArrayUpdateListener);
@@ -994,7 +994,7 @@ public class GLPathway extends AGLView implements
 		selectionCommandListener.setDataDomainType(mappingDataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
-		// replaceVirtualArrayListener = new ReplaceContentVAListener();
+		// replaceVirtualArrayListener = new ReplaceRecordVAListener();
 		// replaceVirtualArrayListener.setHandler(this);
 		// eventPublisher.addListener(ReplaceVAEvent.class,
 		// replaceVirtualArrayListener);
@@ -1065,7 +1065,7 @@ public class GLPathway extends AGLView implements
 	@Override
 	public void handleSelectionCommand(IDCategory category,
 			SelectionCommand selectionCommand) {
-		if (mappingDataDomain.getContentIDCategory() == category)
+		if (mappingDataDomain.getRecordIDCategory() == category)
 			selectionManager.executeSelectionCommand(selectionCommand);
 
 	}

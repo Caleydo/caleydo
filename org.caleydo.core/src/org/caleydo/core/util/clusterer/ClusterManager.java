@@ -3,7 +3,7 @@ package org.caleydo.core.util.clusterer;
 import org.caleydo.core.data.collection.table.RecordData;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DimensionData;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.dimensionbased.UpdateViewEvent;
@@ -24,15 +24,15 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ClusterManager {
 
-	private DataTable set;
+	private DataTable dataTable;
 
 	/**
 	 * Constructor
 	 * 
 	 * @param set
 	 */
-	public ClusterManager(DataTable set) {
-		this.set = set;
+	public ClusterManager(DataTable dataTable) {
+		this.dataTable = dataTable;
 	}
 
 	/**
@@ -95,14 +95,14 @@ public class ClusterManager {
 		ClusterResult result = new ClusterResult();
 
 		try {
-			if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
+			if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
 				runContentClustering(clusterer, clusterState, result, 0, 2);
 			}
-			else if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING) {
+			else if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING) {
 
 				runDimensionClustering(clusterer, clusterState, result, 0, 2);
 			}
-			else if (clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
+			else if (clusterState.getClustererType() == ClustererType.BI_CLUSTERING) {
 
 				runContentClustering(clusterer, clusterState, result, 0, 1);
 
@@ -123,20 +123,20 @@ public class ClusterManager {
 		int progressBarOffset, int progressBarMulti) {
 
 		clusterer.setClusterState(clusterState);
-		TempResult tempResult = clusterer.getSortedVA(set, clusterState, progressBarOffset, progressBarMulti);
+		TempResult tempResult = clusterer.getSortedVA(dataTable, clusterState, progressBarOffset, progressBarMulti);
 		if (tempResult == null) {
 			Logger.log(new Status(IStatus.ERROR, toString(), "Clustering result was null, clusterer was: "
 				+ clusterer.toString()));
 			return;
 		}
-		result.contentResult = new RecordData(set.getDataDomain().getContentIDType());
-		result.contentResult.setContentVA(new ContentVirtualArray(clusterState.getContentVAType(),
+		result.contentResult = new RecordData(dataTable.getDataDomain().getRecordIDType());
+		result.contentResult.setRecordVA(new RecordVirtualArray(clusterState.getRecordVAType(),
 			tempResult.indices));
-		result.contentResult.setContentClusterSizes(tempResult.clusterSizes);
-		result.contentResult.setContentSampleElements(tempResult.sampleElements);
+		result.contentResult.setRecordClusterSizes(tempResult.clusterSizes);
+		result.contentResult.setRecordSampleElements(tempResult.sampleElements);
 		if (tempResult.tree != null) {
-			tempResult.tree.initializeIDTypes(clusterState.getContentIDType());
-			result.contentResult.setContentTree(tempResult.tree);
+			tempResult.tree.initializeIDTypes(clusterState.getRecordIDType());
+			result.contentResult.setRecordTree(tempResult.tree);
 		}
 
 	}
@@ -145,7 +145,7 @@ public class ClusterManager {
 		int progressBarOffset, int progressBarMulti) {
 		clusterer.setClusterState(clusterState);
 
-		TempResult tempResult = clusterer.getSortedVA(set, clusterState, progressBarOffset, progressBarMulti);
+		TempResult tempResult = clusterer.getSortedVA(dataTable, clusterState, progressBarOffset, progressBarMulti);
 		result.dimensionResult = new DimensionData();
 		result.dimensionResult.setDimensionVA(new DimensionVirtualArray(clusterState.getDimensionVAType(),
 			tempResult.indices));
@@ -157,7 +157,7 @@ public class ClusterManager {
 		}
 		else {
 			result.dimensionResult.setDimensionTree(tempResult.tree);
-			set.getDataDomain().createDimensionGroupsFromDimensionTree(tempResult.tree);
+			dataTable.getDataDomain().createDimensionGroupsFromDimensionTree(tempResult.tree);
 			result.dimensionResult.setDefaultTree(false);
 			result.dimensionResult.getDimensionTree().initializeIDTypes(clusterState.getDimensionIDType());
 		}

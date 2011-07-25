@@ -27,7 +27,7 @@ public class DimensionData
 
 	boolean isDefaultTree = true;
 
-	/** Root node for dimension hierarchy which is only set in metaSets */
+	/** Root node for dimension hierarchy which is only set in subDataTables */
 	private ClusterNode dimensionTreeRoot = null;
 
 	public DimensionVirtualArray getDimensionVA() {

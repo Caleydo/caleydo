@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 
@@ -17,10 +17,10 @@ import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 @XmlType
 public class ClusterState {
 
-	private IDType contentIDType;
+	private IDType recordIDType;
 	private IDType dimensionIDType;
 	private EClustererAlgo clustererAlgo;
-	private EClustererType clustererType;
+	private ClustererType clustererType;
 	private EDistanceMeasure distanceMeasure;
 	private ETreeClustererAlgo treeClustererAlgo;
 	private int kMeansClusterCntGenes;
@@ -28,28 +28,28 @@ public class ClusterState {
 	private float affinityPropClusterFactorGenes;
 	private float affinityPropClusterFactorExperiments;
 
-	private String contentVAType = DataTable.RECORD;
+	private String recordVAType = DataTable.RECORD;
 	private String dimensionVAType = DataTable.DIMENSION;
 
-	private ContentVirtualArray contentVA;
+	private RecordVirtualArray recordVA;
 	private DimensionVirtualArray dimensionVA;
 
 	public ClusterState() {
 
 	}
 
-	public ClusterState(EClustererAlgo algo, EClustererType type, EDistanceMeasure dist) {
+	public ClusterState(EClustererAlgo algo, ClustererType type, EDistanceMeasure dist) {
 		this.setClustererAlgo(algo);
 		this.setClustererType(type);
 		this.setDistanceMeasure(dist);
 	}
 
-	public void setContentIDType(IDType contentIDType) {
-		this.contentIDType = contentIDType;
+	public void setRecordIDType(IDType recordIDType) {
+		this.recordIDType = recordIDType;
 	}
 
-	public IDType getContentIDType() {
-		return contentIDType;
+	public IDType getRecordIDType() {
+		return recordIDType;
 	}
 
 	public void setDimensionIDType(IDType dimensionIDType) {
@@ -60,12 +60,12 @@ public class ClusterState {
 		return dimensionIDType;
 	}
 
-	public void setContentVAType(String contentVAType) {
-		this.contentVAType = contentVAType;
+	public void setRecordVAType(String recordVAType) {
+		this.recordVAType = recordVAType;
 	}
 
-	public String getContentVAType() {
-		return contentVAType;
+	public String getRecordVAType() {
+		return recordVAType;
 	}
 
 	public void setDimensionVAType(String dimensionVAType) {
@@ -76,12 +76,12 @@ public class ClusterState {
 		return dimensionVAType;
 	}
 
-	public void setContentVA(ContentVirtualArray contentVA) {
-		this.contentVA = contentVA;
+	public void setRecordVA(RecordVirtualArray recordVA) {
+		this.recordVA = recordVA;
 	}
 
-	public ContentVirtualArray getContentVA() {
-		return contentVA;
+	public RecordVirtualArray getRecordVA() {
+		return recordVA;
 	}
 
 	public void setDimensionVA(DimensionVirtualArray dimensionVA) {
@@ -100,11 +100,11 @@ public class ClusterState {
 		return clustererAlgo;
 	}
 
-	public void setClustererType(EClustererType eClustererType) {
+	public void setClustererType(ClustererType eClustererType) {
 		this.clustererType = eClustererType;
 	}
 
-	public EClustererType getClustererType() {
+	public ClustererType getClustererType() {
 		return clustererType;
 	}
 

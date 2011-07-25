@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
@@ -17,7 +17,7 @@ import org.caleydo.core.util.clusterer.ClusterNode;
  * @author Alexander Lex
  */
 public class RecordData {
-	ContentVirtualArray contentVA;
+	RecordVirtualArray recordVA;
 	/** indices of examples (cluster centers) */
 	ArrayList<Integer> contentSampleElements;
 	/** number of elements per cluster */
@@ -27,32 +27,32 @@ public class RecordData {
 
 	boolean isPartitionallyClustered = false;
 
-	IDType contentIDIdType;
+	IDType recordIDIdType;
 
 	// public ContentData() {
 	// }
 
-	public RecordData(IDType contentIDType) {
-		this.contentIDIdType = contentIDType;
+	public RecordData(IDType recordIDType) {
+		this.recordIDIdType = recordIDType;
 	}
 
-	public void setContentIDIdType(IDType contentIDIdType) {
-		this.contentIDIdType = contentIDIdType;
+	public void setContentIDIdType(IDType recordIDIdType) {
+		this.recordIDIdType = recordIDIdType;
 	}
 
-	public ContentVirtualArray getContentVA() {
-		return contentVA;
+	public RecordVirtualArray getRecordVA() {
+		return recordVA;
 	}
 
-	public void setContentVA(ContentVirtualArray contentVA) {
-		this.contentVA = contentVA;
+	public void setRecordVA(RecordVirtualArray recordVA) {
+		this.recordVA = recordVA;
 	}
 
 	public ArrayList<Integer> getContentSampleElements() {
 		return contentSampleElements;
 	}
 
-	public void setContentSampleElements(ArrayList<Integer> contentSampleElements) {
+	public void setRecordSampleElements(ArrayList<Integer> contentSampleElements) {
 		this.contentSampleElements = contentSampleElements;
 	}
 
@@ -60,15 +60,15 @@ public class RecordData {
 		return contentClusterSizes;
 	}
 
-	public void setContentClusterSizes(ArrayList<Integer> contentClusterSizes) {
+	public void setRecordClusterSizes(ArrayList<Integer> contentClusterSizes) {
 		this.contentClusterSizes = contentClusterSizes;
 	}
 
-	public Tree<ClusterNode> getContentTree() {
+	public Tree<ClusterNode> getRecordTree() {
 		return contentTree;
 	}
 
-	public void setContentTree(ClusterTree contentTree) {
+	public void setRecordTree(ClusterTree contentTree) {
 		this.contentTree = contentTree;
 	}
 
@@ -85,23 +85,23 @@ public class RecordData {
 	 * 
 	 * @param delta
 	 */
-	public void setVADelta(ContentVADelta delta) {
-		contentVA.setDelta(delta);
+	public void setVADelta(RecordVADelta delta) {
+		recordVA.setDelta(delta);
 		if (contentTree != null)
 			contentTree.destroy();
 		contentTree = null;
-		contentVA.setGroupList(null);
+		recordVA.setGroupList(null);
 	}
 
 	public void finish() {
 		// calculate the group list based on contentClusterSizes (for example for affinity propagation
-		if (contentVA != null && contentClusterSizes != null && contentSampleElements != null) {
+		if (recordVA != null && contentClusterSizes != null && contentSampleElements != null) {
 			isPartitionallyClustered = true;
-			ContentGroupList contentGroupList = new ContentGroupList();
+			RecordGroupList contentGroupList = new RecordGroupList();
 
 			int cnt = 0;
 			// int iOffset = 0;
-			contentTree = new ClusterTree(contentIDIdType);
+			contentTree = new ClusterTree(recordIDIdType);
 			int clusterNr = 0;
 			ClusterNode root = new ClusterNode(contentTree, "Root", clusterNr++, true, -1);
 			contentTree.setRootNode(root);
@@ -119,28 +119,28 @@ public class RecordData {
 				to += clusterSize;
 				ClusterNode leaf;
 				for (int vaIndex = from; vaIndex < to; vaIndex++) {
-					Integer contentID = contentVA.get(vaIndex);
-					leaf = new ClusterNode(contentTree, "Leaf: " + contentID, clusterNr++, true, contentID);
+					Integer recordID = recordVA.get(vaIndex);
+					leaf = new ClusterNode(contentTree, "Leaf: " + recordID, clusterNr++, true, recordID);
 					contentTree.addChild(node, leaf);
 				}
 				from = to;
 
 			}
 
-			contentVA.setGroupList(contentGroupList);
+			recordVA.setGroupList(contentGroupList);
 		}
 		// calculate the group list based on the tree's first level
-		else if (contentVA != null && contentTree != null) {
-			contentVA.buildNewGroupList(contentTree.getRoot().getChildren());
+		else if (recordVA != null && contentTree != null) {
+			recordVA.buildNewGroupList(contentTree.getRoot().getChildren());
 		}
 	}
 
 	public void updateVABasedOnSortingStrategy() {
-//		ContentGroupList groupList = contentVA.getGroupList();
+//		ContentGroupList groupList = recordVA.getGroupList();
 
-		contentVA = new ContentVirtualArray(DataTable.RECORD, contentTree.getRoot().getLeaveIds());
-		contentVA.buildNewGroupList(contentTree.getRoot().getChildren());
-//		contentVA.setGroupList(groupList);
+		recordVA = new RecordVirtualArray(DataTable.RECORD, contentTree.getRoot().getLeaveIds());
+		recordVA.buildNewGroupList(contentTree.getRoot().getChildren());
+//		recordVA.setGroupList(groupList);
 	}
 
 	public boolean isPartitionallyClustered() {

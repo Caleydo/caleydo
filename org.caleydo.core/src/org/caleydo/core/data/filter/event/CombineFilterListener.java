@@ -2,7 +2,7 @@ package org.caleydo.core.data.filter.event;
 
 import java.util.Collection;
 
-import org.caleydo.core.data.filter.ContentFilter;
+import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.FilterManager;
 import org.caleydo.core.manager.event.AEvent;
@@ -23,7 +23,7 @@ public abstract class CombineFilterListener<FilterType extends Filter<?>>
 			handler.handleCombineFilter
 			(
 				filterEvent.getFilter(),
-				(Collection<? extends ContentFilter>) filterEvent.getCombineFilters()
+				(Collection<? extends RecordFilter>) filterEvent.getCombineFilters()
 			);
 		}
 	}

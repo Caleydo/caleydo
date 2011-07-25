@@ -10,13 +10,13 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
@@ -103,9 +103,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	private BrickState expandedBrickState;
 
-	/** The id of the group in the contentVA this brick is rendering. */
+	/** The id of the group in the recordVA this brick is rendering. */
 	private int groupID = -1;
-	/** The group on which the contentVA of this brick is based on */
+	/** The group on which the recordVA of this brick is based on */
 	private Group group;
 
 	private GLVisBricks visBricks;
@@ -140,7 +140,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	public void initialize() {
 		super.initialize();
 		contentGroupSelectionManager = dataDomain
-				.getContentGroupSelectionManager();
+				.getRecordGroupSelectionManager();
 		registerPickingListeners();
 	}
 
@@ -162,19 +162,19 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		baseDisplayListIndex = gl.glGenLists(1);
 
 		// if (set == null)
-		// set = dataDomain.getSet();
+		// set = dataDomain.getDataTable();
 		//
-		// if (contentVA == null)
-		// contentVA = set.getContentData(Set.CONTENT).getContentVA();
+		// if (recordVA == null)
+		// recordVA = dataTable.getContentData(Set.CONTENT).getRecordVA();
 		//
 		// if (dimensionVA == null) {
-		// if (set.getDimensionData(Set.STORAGE) != null)
-		// dimensionVA = set.getDimensionData(Set.STORAGE).getDimensionVA();
+		// if (dataTable.getDimensionData(Set.STORAGE) != null)
+		// dimensionVA = dataTable.getDimensionData(Set.STORAGE).getDimensionVA();
 		// }
 
 		templateRenderer = new LayoutManager(viewFrustum);
 
-		// if (set.getSetType().equals(ESetDataType.NUMERIC)) {
+		// if (dataTable.getDataTableType().equals(ESetDataType.NUMERIC)) {
 		// brickConfigurer = new NumericalDataConfigurer();
 		// } else {
 		// brickConfigurer = new NominalDataConfigurer();
@@ -245,12 +245,12 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 				HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
 
-				for (Integer gene : contentVA) {
+				for (Integer gene : recordVA) {
 					java.util.Set<Integer> davids = GeneralManager
 							.get()
 							.getIDMappingManager()
-							.getIDAsSet(dataDomain.getContentIDType(),
-									dataDomain.getPrimaryContentMappingType(),
+							.getIDAsSet(dataDomain.getRecordIDType(),
+									dataDomain.getPrimaryRecordMappingType(),
 									gene);
 					if (davids == null || davids.size() == 0)
 						continue;
@@ -259,7 +259,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 								.get()
 								.getPathwayGraphsByGeneID(
 										dataDomain
-												.getPrimaryContentMappingType(),
+												.getPrimaryRecordMappingType(),
 										david);
 
 						// int iPathwayCount = 0;
@@ -340,13 +340,13 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 		// Select all elements in group with special type
 
-		ContentSelectionManager contentSelectionManager = visBricks
-				.getContentSelectionManager();
-		SelectionType selectedByGroupSelectionType = contentSelectionManager
+		RecordSelectionManager recordSelectionManager = visBricks
+				.getRecordSelectionManager();
+		SelectionType selectedByGroupSelectionType = recordSelectionManager
 				.getSelectionType();
 
 		if (!visBricks.getKeyListener().isCtrlDown()) {
-			contentSelectionManager
+			recordSelectionManager
 					.clearSelection(selectedByGroupSelectionType);
 
 			// ClearSelectionsEvent cse = new ClearSelectionsEvent();
@@ -359,15 +359,15 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		if (dimensionGroup.getCenterBrick() == this)
 			return;
 
-		for (Integer contentID : contentVA) {
-			contentSelectionManager.addToType(selectedByGroupSelectionType,
-					contentID);
+		for (Integer recordID : recordVA) {
+			recordSelectionManager.addToType(selectedByGroupSelectionType,
+					recordID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setDataDomainID(getDataDomain().getDataDomainID());
 		event.setSender(this);
-		SelectionDelta delta = contentSelectionManager.getDelta();
+		SelectionDelta delta = recordSelectionManager.getDelta();
 		event.setSelectionDelta(delta);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
@@ -559,7 +559,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		// case BRICK_CLUSTER:
 		// switch (pickingMode) {
 		// case CLICKED:
-		// // set.cluster(clusterState);
+		// // dataTable.cluster(clusterState);
 		// System.out.println("cluster");
 		//
 		// getParentGLCanvas().getParentComposite().getDisplay()
@@ -576,7 +576,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		// // if (clusterState != null && set != null)
 		//
 		// event = new StartClusteringEvent(clusterState,
-		// set.getID());
+		// dataTable.getID());
 		// event.setDataDomainType(dataDomain
 		// .getDataDomainType());
 		// GeneralManager.get().getEventPublisher()
@@ -703,9 +703,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 * 
 	 * @param set
 	 */
-	// public void setSet(DataTable set) {
+	// public void setDataTable(DataTable set) {
 	// this.set = set;
-	// if (set.getSetType().equals(ESetDataType.NUMERIC)) {
+	// if (dataTable.getDataTableType().equals(ESetDataType.NUMERIC)) {
 	// brickConfigurer = new NumericalDataConfigurer();
 	// } else {
 	// brickConfigurer = new NominalDataConfigurer();
@@ -713,17 +713,17 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	// }
 
 	/**
-	 * Set the contentVA this brick should render plus the groupID that is
-	 * associated with this contentVA.
+	 * Set the recordVA this brick should render plus the groupID that is
+	 * associated with this recordVA.
 	 * 
 	 * @param groupID
-	 * @param contentVA
+	 * @param recordVA
 	 */
-	public void setContentVA(Group group, ContentVirtualArray contentVA) {
+	public void setRecordVA(Group group, RecordVirtualArray recordVA) {
 		this.group = group;
 		if (group != null)
 			this.groupID = group.getGroupID();
-		this.contentVA = contentVA;
+		this.recordVA = recordVA;
 	}
 
 	/**
@@ -774,7 +774,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	/**
-	 * Returns the group on which the contentVA of this brick is based on.
+	 * Returns the group on which the recordVA of this brick is based on.
 	 * 
 	 * @return
 	 */
@@ -791,10 +791,10 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	// private void calculateAverageValueForBrick() {
 	// averageValue = 0;
 	// int count = 0;
-	// if (contentVA == null)
-	// throw new IllegalStateException("contentVA was null");
-	// for (Integer contenID : contentVA) {
-	// DimensionData dimensionData = set.getDimensionData(Set.STORAGE);
+	// if (recordVA == null)
+	// throw new IllegalStateException("recordVA was null");
+	// for (Integer contenID : recordVA) {
+	// DimensionData dimensionData = dataTable.getDimensionData(Set.STORAGE);
 	// if (dimensionData == null) {
 	// averageValue = 0;
 	// return;
@@ -807,7 +807,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	// return;
 	// }
 	// for (Integer dimensionID : dimensionVA) {
-	// float value = set.get(dimensionID).getFloat(EDataRepresentation.NORMALIZED,
+	// float value = dataTable.get(dimensionID).getFloat(EDataRepresentation.NORMALIZED,
 	// contenID);
 	// if (!Float.isNaN(value)) {
 	// averageValue += value;
@@ -832,7 +832,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			templateRenderer.updateLayout();
 	}
 
-	// public DataTable getSet() {
+	// public DataTable getDataTable() {
 	// return set;
 	// }
 
@@ -910,7 +910,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	/**
 	 * Sets the {@link ABrickLayoutTemplate} for this brick, specifying its
 	 * appearance. If the specified view type is valid, it will be set,
-	 * otherwise the default view type will be set.
+	 * otherwise the default view type will be dataTable.
 	 * 
 	 * @param brickLayoutTemplate
 	 * @param viewType
@@ -1013,7 +1013,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	@Override
 	public String toString() {
-		return "Brick: " + groupID + " in ";// + set.getLabel();
+		return "Brick: " + groupID + " in ";// + dataTable.getLabel();
 
 	}
 
@@ -1043,7 +1043,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	 * 
 	 * @return
 	 */
-	public SelectionManager getContentGroupSelectionManager() {
+	public SelectionManager getRecordGroupSelectionManager() {
 		return contentGroupSelectionManager;
 	}
 

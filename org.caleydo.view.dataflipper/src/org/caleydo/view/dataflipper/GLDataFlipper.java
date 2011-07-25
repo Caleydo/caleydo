@@ -819,9 +819,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	private void slerpView(final GL2 gl, SlerpAction slerpAction) {
-		int iViewID = slerpAction.getElementId();
+		int viewID = slerpAction.getElementId();
 
-		if (iViewID == -1)
+		if (viewID == -1)
 			return;
 
 		SlerpMod slerpMod = new SlerpMod();
@@ -840,7 +840,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		slerpMod.applySlerp(gl, transform, true, true);
 
 		renderBucketWall(gl, true);
-		generalManager.getViewGLCanvasManager().getGLView(iViewID).displayRemote(gl);
+		generalManager.getViewGLCanvasManager().getGLView(viewID).displayRemote(gl);
 
 		gl.glPopMatrix();
 

@@ -81,7 +81,7 @@ public class Application
 	// || applicationMode == ApplicationMode.PLEX_CLIENT) {
 	// IDataDomain dataDomain = initData.getDataDomain();
 	// LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
-	// SetUtils.saveSetFile(loadDataParameters, initData.getSetFileContent());
+	// SetUtils.saveSetFile(loadDataParameters, initData.getDataTableFileContent());
 	// if (initData.getGeneClusterTree() != null) {
 	// SetUtils.saveGeneTreeFile(loadDataParameters, initData.getGeneClusterTree());
 	// }
@@ -94,8 +94,8 @@ public class Application
 	// // SetUtils.createDimensions(loadDataParameters);
 	// // DataTable set = SetUtils.createData(dataDomain);
 	// //
-	// // HashMap<ContentVAType, ContentVirtualArray> contentVAMap = initData.getContentVAMap();
-	// // for (Entry<ContentVAType, ContentVirtualArray> entry : contentVAMap.entrySet()) {
+	// // HashMap<RecordVAType, ContentVirtualArray> recordVAMap = initData.getRecordVAMap();
+	// // for (Entry<RecordVAType, ContentVirtualArray> entry : recordVAMap.entrySet()) {
 	// // ((ADataDomain) dataDomain).setContentVirtualArray(entry.getKey(), entry.getValue());
 	// // }
 	// //

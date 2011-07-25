@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.caleydo.core.data.collection.export.SetExporter;
-import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
+import org.caleydo.core.data.collection.export.DataTableExporter;
+import org.caleydo.core.data.collection.export.DataTableExporter.WhichViewToExport;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.SubDataTable;
 import org.caleydo.core.data.id.IDType;
@@ -182,18 +182,18 @@ public class ExportDataDialog
 			else
 				continue;
 
-			SetExporter exporter = new SetExporter();
+			DataTableExporter exporter = new DataTableExporter();
 			// exporter.export(this, sFileName, eWichViewToExport);
 
 			DataTable table = setBasedDataDomain.getDataTable();
-			IDType targetIDType = setBasedDataDomain.getPrimaryContentMappingType();
+			IDType targetIDType = setBasedDataDomain.getPrimaryRecordMappingType();
 			if (table instanceof SubDataTable)
 				continue;
 			if (radios[0].getSelection()) {
-				exporter.export(table, sFileName, EWhichViewToExport.BUCKET, targetIDType);
+				exporter.export(table, sFileName, WhichViewToExport.BUCKET, targetIDType);
 			}
 			else if (radios[1].getSelection()) {
-				exporter.export(table, sFileName, EWhichViewToExport.WHOLE_DATA, targetIDType);
+				exporter.export(table, sFileName, WhichViewToExport.WHOLE_DATA, targetIDType);
 			}
 			else if (radios[2].getSelection()) {
 				exporter.exportGroups(table, sFileName, genesToExport, experimentsToExport, targetIDType);

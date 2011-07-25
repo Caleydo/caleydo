@@ -121,7 +121,7 @@ public class ElementLayout {
 	 * @param an
 	 *            arbitrary id to identify the layout
 	 */
-	public void setIDs(int managingClassID, int layoutID) {
+	public void dataTableIDs(int managingClassID, int layoutID) {
 		this.managingClassID = managingClassID;
 		this.layoutID = layoutID;
 	}
@@ -210,7 +210,7 @@ public class ElementLayout {
 	 */
 	public void setPixelSizeX(int pixelSizeX) {
 		if (pixelGLConverter == null)
-			throw new IllegalStateException("Tried to set a pixel size, but no pixelGLConverter is set.");
+			throw new IllegalStateException("Tried to set a pixel size, but no pixelGLConverter is dataTable.");
 		resetX();
 		this.pixelSizeX = pixelSizeX;
 	}
@@ -224,7 +224,7 @@ public class ElementLayout {
 	 */
 	public void setPixelSizeY(int pixelSizeY) {
 		if (pixelGLConverter == null)
-			throw new IllegalStateException("Tried to set a pixel size, but no pixelGLConverter is set.");
+			throw new IllegalStateException("Tried to set a pixel size, but no pixelGLConverter is dataTable.");
 		resetY();
 		this.pixelSizeY = pixelSizeY;
 	}

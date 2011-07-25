@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -31,9 +31,9 @@ public class BarPlotRenderer extends AContentRenderer {
 
 		AHeatMapTemplate heatMapTemplate = heatMap.getTemplate();
 
-		int contentElements = heatMap.getContentVA().size();
+		int contentElements = heatMap.getRecordVA().size();
 
-		ContentSelectionManager selectionManager = heatMap
+		RecordSelectionManager selectionManager = heatMap
 				.getContentSelectionManager();
 		if (heatMap.isHideElements()) {
 
@@ -68,21 +68,21 @@ public class BarPlotRenderer extends AContentRenderer {
 				.getMultiLevelUncertainty();
 
 		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
-		DataTable set = heatMap.getSet();
+		DataTable set = heatMap.getDataTable();
 		if (set == null)
 			return;
 
 		PixelGLConverter conv = heatMap.getPixelGLConverter();
 
-		for (Integer contentID : heatMap.getContentVA()) {
+		for (Integer recordID : heatMap.getRecordVA()) {
 			iCount++;
-			fieldHeight = contentSpacing.getFieldHeight(contentID);
+			fieldHeight = contentSpacing.getFieldHeight(recordID);
 
 			// we treat normal and deselected the same atm
 
 			if (heatMap.isHideElements()
 					&& heatMap.getContentSelectionManager().checkStatus(
-							GLHeatMap.SELECTION_HIDDEN, contentID)) {
+							GLHeatMap.SELECTION_HIDDEN, recordID)) {
 				contentSpacing.getYDistances().add(yPosition);
 				continue;
 			}
@@ -93,7 +93,7 @@ public class BarPlotRenderer extends AContentRenderer {
 			int screenHeight = conv.getPixelHeightForGLHeight(fieldHeight);
 
 			float uncertaintyMax = uncertaintyHeatmap
-					.getMaxUncertainty(contentID);
+					.getMaxUncertainty(recordID);
 			if (screenHeight < 15) {
 				renderBlock(gl, yPosition, xPosition, fieldHeight, fieldWidth,
 						uncertaintyMax,
@@ -102,7 +102,7 @@ public class BarPlotRenderer extends AContentRenderer {
 
 				for (int i = 0; i < uncertainties.size(); i++) {
 
-					float uncertainty = (float) uncertainties.get(i)[contentID];
+					float uncertainty = (float) uncertainties.get(i)[recordID];
 
 					float height = fieldHeight / (float) uncertainties.size();
 					float yPos = yPosition + height
@@ -143,7 +143,7 @@ public class BarPlotRenderer extends AContentRenderer {
 		// gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
 		// EPickingType.HEAT_MAP_STORAGE_SELECTION, iDimensionIndex));
 		// gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
-		// EPickingType.HEAT_MAP_LINE_SELECTION, iContentIndex));
+		// EPickingType.HEAT_MAP_LINE_SELECTION, recordIndex));
 
 		// uncertain
 
@@ -188,12 +188,12 @@ public class BarPlotRenderer extends AContentRenderer {
 		// gl.glPopName();
 	}
 
-	public float getYCoordinateByContentIndex(int contentIndex) {
+	public float getYCoordinateByContentIndex(int recordIndex) {
 		if (contentSpacing != null)
 			return y
-					- contentSpacing.getYDistances().get(contentIndex)
-					- contentSpacing.getFieldHeight(heatMap.getContentVA().get(
-							contentIndex)) / 2;
+					- contentSpacing.getYDistances().get(recordIndex)
+					- contentSpacing.getFieldHeight(heatMap.getRecordVA().get(
+							recordIndex)) / 2;
 		return 0;
 	}
 

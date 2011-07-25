@@ -10,7 +10,7 @@ import org.caleydo.core.data.IUniqueObject;
  * View camera interface
  * 
  * @see org.caleydo.core.data.collection.SetDataType
- * @see org.caleydo.core.data.collection.set.viewdata.DataTableViewData
+ * @see org.caleydo.core.data.collection.dataTable.viewdata.DataTableViewData
  * @author Michael Kalkusch
  * @author Marc Streit
  */

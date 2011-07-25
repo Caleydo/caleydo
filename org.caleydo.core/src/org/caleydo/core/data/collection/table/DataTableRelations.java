@@ -41,11 +41,11 @@ public class DataTableRelations {
 		return hashSetToRelations.get(set).get(id);
 	}
 
-	public DataTable getSetLeft() {
+	public DataTable getDataTableLeft() {
 		return leftTable;
 	}
 
-	public DataTable getSetRight() {
+	public DataTable getDataTableRight() {
 		return rightTable;
 	}
 }

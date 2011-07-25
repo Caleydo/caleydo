@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
@@ -23,7 +23,7 @@ import org.caleydo.core.util.clusterer.ClusterHelper;
  * @author Alexander Lex
  */
 @XmlType
-@XmlSeeAlso({ ContentGroupList.class, DimensionGroupList.class })
+@XmlSeeAlso({ RecordGroupList.class, DimensionGroupList.class })
 public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA, VADelta>, VA extends VirtualArray<?, ?, ?>, VADelta extends VirtualArrayDelta<?>>
 	implements Iterable<Group>
 // implements IGroupList<ConcreteType, VA, VADelta> {
@@ -556,7 +556,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 
 	}
 
-	public ArrayList<Float> determineRepresentativeElement(DataTable set, ContentVirtualArray contentVA,
+	public ArrayList<Float> determineRepresentativeElement(DataTable dataTable, RecordVirtualArray recordVA,
 		DimensionVirtualArray dimensionVA, int iGroupNr, boolean bGeneGroup) {
 
 		ArrayList<Float> representative = new ArrayList<Float>();
@@ -574,19 +574,19 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 				fArExpressionValues = new float[iNrElementsInGroup];
 				for (int index = 0; index < iNrElementsInGroup; index++) {
 					fArExpressionValues[index] +=
-						set.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED,
-							contentVA.get(iOffset + index));
+						dataTable.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED,
+							recordVA.get(iOffset + index));
 				}
 				representative.add(ClusterHelper.arithmeticMean(fArExpressionValues));
 			}
 		}
 		else {
-			for (Integer iContentIndex : contentVA) {
+			for (Integer recordIndex : recordVA) {
 				fArExpressionValues = new float[iNrElementsInGroup];
 				for (int index = 0; index < iNrElementsInGroup; index++) {
 					fArExpressionValues[index] +=
-						set.get(dimensionVA.get(iOffset + index)).getFloat(DataRepresentation.NORMALIZED,
-							iContentIndex);
+						dataTable.get(dimensionVA.get(iOffset + index)).getFloat(DataRepresentation.NORMALIZED,
+							recordIndex);
 				}
 				representative.add(ClusterHelper.arithmeticMean(fArExpressionValues));
 			}

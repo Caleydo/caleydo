@@ -13,7 +13,7 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -283,18 +283,18 @@ public class Connection {
 //		DataTable set = useCase.getDataTable();
 //
 //		initData.setDataDomain(useCase);
-//		initData.setSetFileContent(DataTableUtils.loadSetFile(useCase.getLoadDataParameters()));
+//		initData.setDataTableFileContent(DataTableUtils.loadSetFile(useCase.getLoadDataParameters()));
 //		initData.setGeneClusterTree(DataTableUtils.getGeneClusterXml(set));
 //		initData.setExperimentClusterTree(DataTableUtils.getExperimentClusterXml(set));
 //
-//		HashMap<String, ContentVirtualArray> contentVAMap = new HashMap<String, ContentVirtualArray>();
-//		for (String type : set.getRegisteredContentVATypes()) {
-//			contentVAMap.put(type, useCase.getContentVA(type));
+//		HashMap<String, ContentVirtualArray> recordVAMap = new HashMap<String, ContentVirtualArray>();
+//		for (String type : dataTable.getRegisteredRecordVATypes()) {
+//			recordVAMap.put(type, useCase.getRecordVA(type));
 //		}
-//		initData.setContentVAMap(contentVAMap);
+//		initData.setRecordVAMap(recordVAMap);
 //
 //		HashMap<String, DimensionVirtualArray> dimensionVAMap = new HashMap<String, DimensionVirtualArray>();
-//		for (String type : set.getRegisteredDimensionVATypes()) {
+//		for (String type : dataTable.getRegisteredDimensionVATypes()) {
 //			dimensionVAMap.put(type, useCase.getDimensionVA(type));
 //		}
 //		initData.setDimensionVAMap(dimensionVAMap);

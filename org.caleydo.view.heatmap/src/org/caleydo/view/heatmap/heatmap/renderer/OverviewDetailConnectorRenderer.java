@@ -50,8 +50,8 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 		// gl.glEnd();
 
 		try {
-			int lastElementIndex = detailHeatMap.getContentVA().size() - 1;
-			int lastElementID = detailHeatMap.getContentVA().get(lastElementIndex);
+			int lastElementIndex = detailHeatMap.getRecordVA().size() - 1;
+			int lastElementID = detailHeatMap.getRecordVA().get(lastElementIndex);
 			float lastElementHeight = detailHeatMap.getFieldHeight(lastElementID) / 2;
 			float height = detailHeatMap.getYCoordinateByContentIndex(lastElementIndex)
 					+ lastElementHeight - detailHeatMap.getYCoordinateByContentIndex(0);

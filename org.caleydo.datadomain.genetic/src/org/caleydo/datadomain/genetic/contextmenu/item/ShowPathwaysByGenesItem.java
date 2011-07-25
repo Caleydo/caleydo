@@ -47,19 +47,19 @@ public class ShowPathwaysByGenesItem extends AContextMenuItem {
 	 * @param david
 	 *            the int code associated with a refseq
 	 */
-	public void setIDs(ATableBasedDataDomain dataDomain, IDType idType,
+	public void dataTableIDs(ATableBasedDataDomain dataDomain, IDType idType,
 			ArrayList<Integer> genes) {
 
 		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
 		for (Integer gene : genes) {
 			Set<Integer> davids = GeneralManager.get().getIDMappingManager()
-					.getIDAsSet(idType, dataDomain.getPrimaryContentMappingType(), gene);
+					.getIDAsSet(idType, dataDomain.getPrimaryRecordMappingType(), gene);
 			if (davids == null || davids.size() == 0)
 				continue;
 			for (Integer david : davids) {
 				Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper.get()
 						.getPathwayGraphsByGeneID(
-								dataDomain.getPrimaryContentMappingType(), david);
+								dataDomain.getPrimaryRecordMappingType(), david);
 
 				// int iPathwayCount = 0;
 				if (pathwayGraphs != null) {

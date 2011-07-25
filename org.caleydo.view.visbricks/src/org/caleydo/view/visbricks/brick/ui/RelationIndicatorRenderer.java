@@ -6,8 +6,8 @@ import java.util.List;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.similarity.GroupSimilarity;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
@@ -36,7 +36,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 
 	// private ASetBasedDataDomain dataDomain;
 	private RelationAnalyzer relationAnalyzer;
-	Integer setID;
+	Integer dataTableID;
 	int groupID;
 	GLVisBricks visBricks;
 	int neighborSetID = -1;
@@ -51,7 +51,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		this.brick = brick;
 		// this.dataDomain = brick.getDataDomain();
 		this.relationAnalyzer = visBricks.getRelationAnalyzer();
-		setID = brick.getDimensionGroup().getSetID();
+		dataTableID = brick.getDimensionGroup().getDataTableID();
 		groupID = brick.getGroupID();
 		this.visBricks = visBricks;
 		this.isLeft = isLeft;
@@ -73,15 +73,15 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 
 		int count = 0;
 		for (DimensionGroup dimensionGroup : dimensionGroups) {
-			currentID = dimensionGroup.getSetID();
-			if (currentID == setID && isLeft) {
+			currentID = dimensionGroup.getDataTableID();
+			if (currentID == dataTableID && isLeft) {
 				neighborSetID = previousID;
 				if (neighborSetID != -1)
 					neighborBrickOrder = dimensionGroups.get(count - 1)
 							.getBricksForRelations();
 				break;
 			}
-			if (previousID == setID && !isLeft) {
+			if (previousID == dataTableID && !isLeft) {
 				neighborSetID = currentID;
 				neighborBrickOrder = dimensionGroup.getBricksForRelations();
 				break;
@@ -91,10 +91,10 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			count++;
 		}
 
-		SimilarityMap map = relationAnalyzer.getSimilarityMap(setID);
+		SimilarityMap map = relationAnalyzer.getSimilarityMap(dataTableID);
 		if (map == null)
 			return;
-		VASimilarity<ContentVirtualArray, ContentGroupList> vaSimilarity = map
+		VASimilarity<RecordVirtualArray, RecordGroupList> vaSimilarity = map
 				.getVASimilarity(neighborSetID);
 
 		// SimilarityMap map = relationAnalyzer.getSimilarityMap(neighborSetID);
@@ -102,12 +102,12 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		// return;
 		// VASimilarity<ContentVirtualArray, ContentGroupList> vaSimilarity =
 		// map
-		// .getVASimilarity(setID);
+		// .getVASimilarity(dataTableID);
 
 		if (vaSimilarity == null)
 			return;
-		GroupSimilarity<ContentVirtualArray, ContentGroupList> groupSimilarity = vaSimilarity
-				.getGroupSimilarity(setID, groupID);
+		GroupSimilarity<RecordVirtualArray, RecordGroupList> groupSimilarity = vaSimilarity
+				.getGroupSimilarity(dataTableID, groupID);
 
 		similarities = groupSimilarity.getSimilarities();
 		scores = groupSimilarity.getScores();
@@ -130,7 +130,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			gl.glColor3f(0, 0, 0);
 			gl.glVertex3f(0, yOffset, 0);
 			gl.glVertex3f(x, yOffset, 0);
-			if (brick.getContentGroupSelectionManager().checkStatus(
+			if (brick.getRecordGroupSelectionManager().checkStatus(
 					SelectionType.SELECTION, brick.getGroup().getID()))
 				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 			else

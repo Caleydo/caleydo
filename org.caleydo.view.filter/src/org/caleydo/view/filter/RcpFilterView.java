@@ -3,13 +3,13 @@ package org.caleydo.view.filter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.data.filter.ContentFilter;
-import org.caleydo.core.data.filter.ContentMetaFilter;
+import org.caleydo.core.data.filter.RecordFilter;
+import org.caleydo.core.data.filter.RecordMetaFilter;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.DimensionFilter;
 import org.caleydo.core.data.filter.DimensionMetaFilter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
-import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
+import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveDimensionFilterEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Filter view showing a pipeline of filters for a data set.
+ * Filter view showing a pipeline of filters for a data dataTable.
  * 
  * @author Marc Streit
  */
@@ -142,16 +142,16 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		TreeItem contentFilterTreeItem = new TreeItem(tree, SWT.NONE, 0);
 		contentFilterTreeItem.setText("Gene Filter");
 
-		for (ContentFilter filter : dataDomain.getContentFilterManager().getFilterPipe()) {
+		for (RecordFilter filter : dataDomain.getRecordFilterManager().getFilterPipe()) {
 
-			if (filter instanceof ContentMetaFilter) {
+			if (filter instanceof RecordMetaFilter) {
 
 				TreeItem metaContentFilterTreeItem = new TreeItem(contentFilterTreeItem,
 						SWT.NONE, 0);
 				metaContentFilterTreeItem.setText(filter.getLabel());
 				metaContentFilterTreeItem.setData(filter);
 
-				for (ContentFilter subFilter : ((ContentMetaFilter) filter)
+				for (RecordFilter subFilter : ((RecordMetaFilter) filter)
 						.getFilterList()) {
 					child = new TreeItem(metaContentFilterTreeItem, SWT.NONE, 0);
 					child.setText(subFilter.getLabel());
@@ -210,10 +210,10 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 					filterEvent.setFilter((DimensionFilter) selectedTreeItem.getData());
 					selectedTreeItem.dispose();
 					eventPublisher.triggerEvent(filterEvent);
-				} else if (selectedTreeItem.getData() instanceof ContentFilter) {
-					RemoveContentFilterEvent filterEvent = new RemoveContentFilterEvent();
+				} else if (selectedTreeItem.getData() instanceof RecordFilter) {
+					RemoveRecordFilterEvent filterEvent = new RemoveRecordFilterEvent();
 					filterEvent.setDataDomainID(dataDomain.getDataDomainID());
-					filterEvent.setFilter((ContentFilter) selectedTreeItem.getData());
+					filterEvent.setFilter((RecordFilter) selectedTreeItem.getData());
 					selectedTreeItem.dispose();
 					eventPublisher.triggerEvent(filterEvent);
 				}

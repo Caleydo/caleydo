@@ -572,7 +572,7 @@ public class GLBucket extends AGLView implements
 	private void renderRemoteLevelElement(final GL2 gl, RemoteLevelElement element,
 			RemoteLevel level) {
 		// // Check if view is visible
-		// if (!level.getElementVisibilityById(iViewID))
+		// if (!level.getElementVisibilityById(viewID))
 		// return;
 
 		AGLView glView = element.getGLView();
@@ -1216,7 +1216,7 @@ public class GLBucket extends AGLView implements
 						EIconTextures.ARROW_LEFT);
 			}
 			// else if
-			// (underInteractionLayer.getPositionIndexByElementID(iViewID) == 0)
+			// (underInteractionLayer.getPositionIndexByElementID(viewID) == 0)
 			// // center
 			// {
 			// topWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
@@ -1227,13 +1227,13 @@ public class GLBucket extends AGLView implements
 			// rightWallPickingType =
 			// EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
 			//
-			// if (iNavigationMouseOverViewID_out == iViewID)
+			// if (iNavigationMouseOverViewID_out == viewID)
 			// tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
-			// else if (iNavigationMouseOverViewID_in == iViewID)
+			// else if (iNavigationMouseOverViewID_in == viewID)
 			// tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
-			// else if (iNavigationMouseOverViewID_left == iViewID)
+			// else if (iNavigationMouseOverViewID_left == viewID)
 			// tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
-			// else if (iNavigationMouseOverViewID_right == iViewID)
+			// else if (iNavigationMouseOverViewID_right == viewID)
 			// tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
 			//
 			// textureMoveIn =
@@ -1246,7 +1246,7 @@ public class GLBucket extends AGLView implements
 			// .getIconTexture(EIconTextures.ARROW_LEFT);
 			// }
 		}
-		// else if (underInteractionLayer.containsElement(iViewID))
+		// else if (underInteractionLayer.containsElement(viewID))
 		// {
 		// topWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
 		// bottomWallPickingType =
@@ -1261,7 +1261,7 @@ public class GLBucket extends AGLView implements
 
 		// CENTER - NAVIGATION: VIEW IDENTIFICATION ICON
 		// gl.glPushName(pickingManager.getPickingID(uniqueID,
-		// EPickingType.BUCKET_LOCK_ICON_SELECTION, iViewID));
+		// EPickingType.BUCKET_LOCK_ICON_SELECTION, viewID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL2.GL_LINE_LOOP);
@@ -1537,7 +1537,7 @@ public class GLBucket extends AGLView implements
 	}
 
 	private void slerpView(final GL2 gl, SlerpAction slerpAction) {
-		int iViewID = slerpAction.getElementId();
+		int viewID = slerpAction.getElementId();
 
 		SlerpMod slerpMod = new SlerpMod();
 
@@ -1554,7 +1554,7 @@ public class GLBucket extends AGLView implements
 
 		slerpMod.applySlerp(gl, transform, true, false);
 
-		generalManager.getViewGLCanvasManager().getGLView(iViewID).displayRemote(gl);
+		generalManager.getViewGLCanvasManager().getGLView(viewID).displayRemote(gl);
 
 		gl.glPopMatrix();
 
@@ -1656,7 +1656,7 @@ public class GLBucket extends AGLView implements
 		//
 		// // Slerp selected view from transition position to under interaction
 		// // position
-		// SlerpAction slerpAction = new SlerpAction(iViewID, transitionLevel,
+		// SlerpAction slerpAction = new SlerpAction(viewID, transitionLevel,
 		// focusLevel);
 		// arSlerpActions.add(slerpAction);
 		// }

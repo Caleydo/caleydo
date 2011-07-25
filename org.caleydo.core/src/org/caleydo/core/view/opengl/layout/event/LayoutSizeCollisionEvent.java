@@ -20,7 +20,7 @@ public class LayoutSizeCollisionEvent
 	 * Set the uniqueID of the managing class. Used for notifications on collisions via event and an id to
 	 * identify the layout.
 	 */
-	public void setIDs(int managingClassID, int layoutID) {
+	public void dataTableIDs(int managingClassID, int layoutID) {
 		this.managingClassID = managingClassID;
 		this.layoutID = layoutID;
 	}

@@ -14,12 +14,12 @@ public class GroupDrawingStrategyMouseOver extends AGroupDrawingStrategyRectangu
 
 	private PickingManager pickingManager;
 	private GrouperRenderStyle renderStyle;
-	private int iViewID;
+	private int viewID;
 
-	public GroupDrawingStrategyMouseOver(PickingManager pickingManager, int iViewID,
+	public GroupDrawingStrategyMouseOver(PickingManager pickingManager, int viewID,
 			GrouperRenderStyle renderStyle) {
 		this.pickingManager = pickingManager;
-		this.iViewID = iViewID;
+		this.viewID = viewID;
 		this.renderStyle = renderStyle;
 	}
 
@@ -27,7 +27,7 @@ public class GroupDrawingStrategyMouseOver extends AGroupDrawingStrategyRectangu
 	public void draw(GL2 gl, GroupRepresentation groupRepresentation,
 			TextRenderer textRenderer) {
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
@@ -43,7 +43,7 @@ public class GroupDrawingStrategyMouseOver extends AGroupDrawingStrategyRectangu
 
 		gl.glPopName();
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.GROUPER_COLLAPSE_BUTTON_SELECTION,
 				groupRepresentation.getID()));
 
@@ -60,7 +60,7 @@ public class GroupDrawingStrategyMouseOver extends AGroupDrawingStrategyRectangu
 	public void drawAsLeaf(GL2 gl, GroupRepresentation groupRepresentation,
 			TextRenderer textRenderer) {
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 

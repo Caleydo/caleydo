@@ -62,7 +62,7 @@ public class StartClusteringAction
 		}
 	}
 
-	public void setSets(ArrayList<DataTable> sets) {
+	public void setDataTables(ArrayList<DataTable> sets) {
 		this.sets = sets;
 	}
 }

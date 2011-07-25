@@ -103,7 +103,7 @@ public class SetBar extends AGLGUIElement {
 		updateItemProperties();
 	}
 
-	public void setSets(ArrayList<DataTable> sets) {
+	public void setDataTables(ArrayList<DataTable> sets) {
 		// this.sets.clear();
 		// this.sets.addAll(sets);
 		items.clear();
@@ -116,7 +116,7 @@ public class SetBar extends AGLGUIElement {
 		for (DataTable set : sets) {
 			SetBarItem item = new SetBarItem(itemID, viewID, pickingManager,
 					textRenderer, this);
-			item.setSet(set);
+			item.setDataTable(set);
 			item.setHeight(height * ITEM_HEIGHT_PROTION);
 			item.setWidth(itemWidth);
 			item.setPosition(new Vec3f(currentPositionX, position.y()
@@ -160,13 +160,13 @@ public class SetBar extends AGLGUIElement {
 				currentMouseOverItem
 						.setSelectionStatus(SetBarItem.SELECTION_STATUS_NORMAL);
 			currentMouseOverItem = item;
-			viewState.setSetBarDisplayListDirty();
+			viewState.setDataTableBarDisplayListDirty();
 
 			break;
 		case RIGHT_CLICKED:
 			contextMenu.addContextMenueItem(new DuplicateSetBarElementItem(itemID));
 			ArrayList<DataTable> sets = new ArrayList<DataTable>();
-			sets.add(items.get(itemID).getSet());
+			sets.add(items.get(itemID).getDataTable());
 			contextMenu.addContextMenueItem(new ClusterSetItem(sets));
 			contextMenu.addContextMenueItem(new AdjustPValueItem());
 			contextMenu.setLocation(pick.getPickedPoint(), view.getParentGLCanvas()
@@ -205,7 +205,7 @@ public class SetBar extends AGLGUIElement {
 			updateSelectedItems(newSelection);
 		}
 
-		viewState.setSetBarDisplayListDirty();
+		viewState.setDataTableBarDisplayListDirty();
 	}
 
 	public void handleDuplicateSetBarItem(int itemID) {
@@ -215,7 +215,7 @@ public class SetBar extends AGLGUIElement {
 
 		SetBarItem clone = new SetBarItem(itemID, viewID, pickingManager, textRenderer,
 				this);
-		clone.setSet(item.getSet());
+		clone.setDataTable(item.getDataTable());
 
 		ArrayList<SetBarItem> oldSelection = selectionWindow.getSelectedItems();
 
@@ -229,7 +229,7 @@ public class SetBar extends AGLGUIElement {
 			updateSelectedItems(newSelection);
 		}
 
-		viewState.setSetBarDisplayListDirty();
+		viewState.setDataTableBarDisplayListDirty();
 	}
 
 	private void updateItemProperties() {
@@ -238,7 +238,7 @@ public class SetBar extends AGLGUIElement {
 		float itemWidth = width / (float) items.size();
 		float currentPositionX = position.x();
 		for (SetBarItem item : items) {
-			item.setID(itemID);
+			item.dataTableID(itemID);
 			item.setHeight(height * ITEM_HEIGHT_PROTION);
 			item.setWidth(itemWidth);
 			item.setPosition(new Vec3f(currentPositionX, position.y()
@@ -252,9 +252,9 @@ public class SetBar extends AGLGUIElement {
 		ArrayList<DataTable> setsInFocus = new ArrayList<DataTable>();
 
 		for (SetBarItem item : itemsInFocus) {
-			setsInFocus.add(item.getSet());
+			setsInFocus.add(item.getDataTable());
 		}
-		viewState.setSetsInFocus(setsInFocus);
+		viewState.setDataTablesInFocus(setsInFocus);
 	}
 
 	public ACompareViewState getViewState() {
@@ -300,11 +300,11 @@ public class SetBar extends AGLGUIElement {
 		selectionWindow.adjustWindowSizeCentered(windowSize);
 	}
 
-	public ArrayList<DataTable> getSetsInFocus() {
+	public ArrayList<DataTable> getDataTablesInFocus() {
 		ArrayList<DataTable> setsInFocus = new ArrayList<DataTable>();
 
 		for (SetBarItem item : selectionWindow.getSelectedItems()) {
-			setsInFocus.add(item.getSet());
+			setsInFocus.add(item.getDataTable());
 		}
 
 		return setsInFocus;

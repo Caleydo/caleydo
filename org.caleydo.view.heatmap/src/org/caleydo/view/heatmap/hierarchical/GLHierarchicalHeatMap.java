@@ -30,11 +30,11 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.io.gui.ExportDataDialog;
@@ -48,7 +48,7 @@ import org.caleydo.core.manager.event.view.group.InterchangeContentGroupsEvent;
 import org.caleydo.core.manager.event.view.group.InterchangeDimensionGroupsEvent;
 import org.caleydo.core.manager.event.view.group.MergeContentGroupsEvent;
 import org.caleydo.core.manager.event.view.group.MergeDimensionGroupsEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.NewContentGroupInfoEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.NewRecordGroupInfoEvent;
 import org.caleydo.core.manager.event.view.dimensionbased.UpdateViewEvent;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
@@ -66,9 +66,9 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
-import org.caleydo.core.view.opengl.canvas.listener.ContentGroupExportingListener;
-import org.caleydo.core.view.opengl.canvas.listener.ContentGroupInterChangingActionListener;
-import org.caleydo.core.view.opengl.canvas.listener.ContentGroupMergingActionListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordGroupExportingListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordGroupInterChangingActionListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordGroupMergingActionListener;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.NewContentGroupInfoActionListener;
 import org.caleydo.core.view.opengl.canvas.listener.DimensionGroupExportingListener;
@@ -182,7 +182,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	private boolean bIsHeatmapInFocus = false;
 
 	/** embedded dendrogram */
-	private GLDendrogram<ContentGroupList> glContentDendrogramView;
+	private GLDendrogram<RecordGroupList> glContentDendrogramView;
 	private boolean bGeneDendrogramActive = false;
 	private boolean bGeneDendrogramRenderCut = false;
 	private boolean bFirstStartGeneDendrogram = true;
@@ -229,13 +229,13 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	private int iGeneGroupToDrag = -1;
 	private boolean bActivateDraggingGenes = false;
 
-	private ContentGroupExportingListener contentGroupExportingListener;
+	private RecordGroupExportingListener contentGroupExportingListener;
 	private DimensionGroupExportingListener dimensionGroupExportingListener;
 
-	private ContentGroupInterChangingActionListener contentGroupInterchangingListener;
+	private RecordGroupInterChangingActionListener contentGroupInterchangingListener;
 	private DimensionGroupInterChangingActionListener dimensionGroupInterchangingListener;
 
-	private ContentGroupMergingActionListener contentGroupMergingListener;
+	private RecordGroupMergingActionListener contentGroupMergingListener;
 	private DimensionGroupMergingActionListener dimensionGroupMergingListener;
 	private UpdateViewListener updateViewListener;
 	private ClusterNodeSelectionListener clusterNodeMouseOverListener;
@@ -320,7 +320,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (table == null)
 			return;
 
-		iNumberOfElements = contentVA.size();
+		iNumberOfElements = recordVA.size();
 
 		if (iNumberOfElements < MIN_SAMPLES_SKIP_LEVEL_2) {
 
@@ -533,7 +533,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			Texture tempTextur;
 
-			int iTextureHeight = contentVA.size();
+			int iTextureHeight = recordVA.size();
 			int iTextureWidth = dimensionVA.size();
 
 			float fLookupValue = 0;
@@ -541,17 +541,17 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			FloatBuffer FbTemp = FloatBuffer.allocate(iTextureWidth * iTextureHeight * 4);
 
-			for (Integer iContentIndex : contentVA) {
+			for (Integer recordIndex : recordVA) {
 				for (Integer iDimensionIndex : dimensionVA) {
-					if (contentSelectionManager.checkStatus(SelectionType.DESELECTED,
-							iContentIndex)) {
+					if (recordSelectionManager.checkStatus(SelectionType.DESELECTED,
+							recordIndex)) {
 						fOpacity = 0.3f;
 					} else {
 						fOpacity = 1.0f;
 					}
 
 					fLookupValue = table.get(iDimensionIndex).getFloat(
-							renderingRepresentation, iContentIndex);
+							renderingRepresentation, recordIndex);
 
 					float[] fArMappingColor = colorMapper.getColor(fLookupValue);
 
@@ -583,7 +583,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			Texture tempTextur;
 
-			int iTextureHeight = contentVA.size();
+			int iTextureHeight = recordVA.size();
 			int iTextureWidth = dimensionVA.size();
 
 			iSamplesPerTexture = (int) Math.ceil((double) iTextureHeight / iNrTextures);
@@ -610,18 +610,18 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			int iCount = 0;
 			int iTextureCounter = 0;
 
-			for (Integer iContentIndex : contentVA) {
+			for (Integer recordIndex : recordVA) {
 				iCount++;
 				for (Integer iDimensionIndex : dimensionVA) {
-					if (contentSelectionManager.checkStatus(SelectionType.DESELECTED,
-							iContentIndex)) {
+					if (recordSelectionManager.checkStatus(SelectionType.DESELECTED,
+							recordIndex)) {
 						fOpacity = 0.3f;
 					} else {
 						fOpacity = 1.0f;
 					}
 
 					fLookupValue = table.get(iDimensionIndex).getFloat(
-							DataRepresentation.NORMALIZED, iContentIndex);
+							DataRepresentation.NORMALIZED, recordIndex);
 
 					float[] fArMappingColor = colorMapper.getColor(fLookupValue);
 
@@ -675,7 +675,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		glHeatMapView.setRenderTemplate(renderTemplate);
 		renderTemplate.setBottomSpacing(0.6f);
 		heatMapRemoteElement.setGLView(glHeatMapView);
-		glHeatMapView.setContentVAType(GLHeatMap.CONTENT_EMBEDDED_VA);
+		glHeatMapView.setRecordVAType(GLHeatMap.CONTENT_EMBEDDED_VA);
 		glHeatMapView.initialize();
 		glHeatMapView.initData();
 
@@ -693,7 +693,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
 				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
-		glContentDendrogramView = new GLDendrogram<ContentGroupList>(parentGLCanvas,
+		glContentDendrogramView = new GLDendrogram<RecordGroupList>(parentGLCanvas,
 				parentComposite, viewFrustum, true);
 		glContentDendrogramView.setRemoteRenderingGLView(this);
 		glContentDendrogramView.setDataDomain(dataDomain);
@@ -704,11 +704,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		glExperimentDendrogramView.setDataDomain(dataDomain);
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
 
-		glContentDendrogramView.setContentVAType(DataTable.RECORD);
+		glContentDendrogramView.setRecordVAType(DataTable.RECORD);
 		glContentDendrogramView.initData();
 		glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 
-		glExperimentDendrogramView.setContentVAType(DataTable.RECORD);
+		glExperimentDendrogramView.setRecordVAType(DataTable.RECORD);
 		glExperimentDendrogramView.initData();
 		glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
 	}
@@ -780,7 +780,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	protected void reactOnExternalSelection(ISelectionDelta delta,
 			boolean scrollToSelection) {
 
-		if (delta.getIDType() != contentIDType)
+		if (delta.getIDType() != recordIDType)
 			return;
 
 		if (scrollToSelection && bSkipLevel2 == false) {
@@ -802,7 +802,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				return;
 			// for (Integer mouseOverElement : setMouseOverElements) {
 
-			int index = contentVA.indexOf(mouseOverElement);
+			int index = recordVA.indexOf(mouseOverElement);
 
 			// selected element is in level 3
 			if (index >= (iFirstSampleLevel1 + iFirstSampleLevel2)
@@ -863,10 +863,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	protected void reactOnContentVAChanges(ContentVADelta delta) {
+	protected void reactOnRecordVAChanges(RecordVADelta delta) {
 
-		if (delta.getVAType().equals(contentVAType))
-			contentVA.setGroupList(null);
+		if (delta.getVAType().equals(recordVAType))
+			recordVA.setGroupList(null);
 
 		// glHeatMapView.handleVirtualArrayUpdate(delta, getShortInfo());
 		bRedrawTextures = true;
@@ -881,8 +881,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	public void handleVAUpdate(ContentVADelta delta, String info) {
-		if (!delta.getVAType().equals(contentVAType))
+	public void handleVAUpdate(RecordVADelta delta, String info) {
+		if (!delta.getVAType().equals(recordVAType))
 			return;
 		super.handleVAUpdate(delta, info);
 		bRedrawTextures = true;
@@ -895,10 +895,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	public void replaceContentVA(int setID, String dataDomain, String vaType) {
-		if (!vaType.equals(contentVAType))
+	public void replaceRecordVA(int dataTableID, String dataDomain, String vaType) {
+		if (!vaType.equals(recordVAType))
 			return;
-		super.replaceContentVA(setID, dataDomain, vaType);
+		super.replaceRecordVA(dataTableID, dataDomain, vaType);
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
 		setDisplayListDirty();
@@ -1295,7 +1295,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 */
 	private void renderClassAssignmentsGenesLevel1(final GL2 gl) {
 
-		if (contentVA.getGroupList() == null)
+		if (recordVA.getGroupList() == null)
 			return;
 
 		float fHeight = viewFrustum.getHeight();
@@ -1306,7 +1306,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float fWidthLevel1 = renderStyle.getWidthLevel1();
 		float fWidthClusterVisualization = renderStyle.getWidthClusterVisualization();
 
-		ContentGroupList groupList = contentVA.getGroupList();
+		RecordGroupList groupList = recordVA.getGroupList();
 
 		gl.glTranslatef(fWidthLevel1, 0, 0);
 
@@ -1322,7 +1322,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			Texture tempTexture = null;
 
-			if (contentVA.getGroupList().get(i).getSelectionType() == SelectionType.SELECTION) {
+			if (recordVA.getGroupList().get(i).getSelectionType() == SelectionType.SELECTION) {
 				tempTexture = textureManager.getIconTexture(gl,
 						EIconTextures.HEAT_MAP_GROUP_SELECTED);
 			}
@@ -1380,7 +1380,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 */
 	private void renderClassAssignmentsGenesLevel2(final GL2 gl) {
 		// FIXME: Class assignments could be rendered using HeatMapUtil
-		if (contentVA.getGroupList() == null)
+		if (recordVA.getGroupList() == null)
 			return;
 
 		float fHeight = viewFrustum.getHeight();
@@ -1394,11 +1394,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		int iIdxCluster = 0;
 		int iCounter = iFirstSampleLevel1;
 
-		Group group = contentVA.getGroupList().get(iIdxCluster);
+		Group group = recordVA.getGroupList().get(iIdxCluster);
 		while (group.getSize() < iCounter) {
 			iIdxCluster++;
 			iCounter -= group.getSize();
-			group = contentVA.getGroupList().get(iIdxCluster);
+			group = recordVA.getGroupList().get(iIdxCluster);
 		}
 
 		int iCnt = 0;
@@ -1407,13 +1407,13 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		for (int i = 0; i < iSamplesLevel2; i++) {
 
-			if (iCounter == contentVA.getGroupList().get(iIdxCluster).getSize()) {
+			if (iCounter == recordVA.getGroupList().get(iIdxCluster).getSize()) {
 
 				gl.glColor4f(1, 1, 1, 1);
 				gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 				Texture tempTexture = null;
 
-				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
+				if (recordVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
 					tempTexture = textureManager.getIconTexture(gl,
 							EIconTextures.HEAT_MAP_GROUP_SELECTED);
 				} else {
@@ -1454,7 +1454,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 				fHeight -= fHeightSamples * iCnt;
 				// FIXME
-				if (iIdxCluster == contentVA.getGroupList().size() - 1)
+				if (iIdxCluster == recordVA.getGroupList().size() - 1)
 					break;
 				iIdxCluster++;
 				iCounter = 0;
@@ -1469,7 +1469,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		Texture tempTexture = null;
 
-		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
+		if (recordVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
 			tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.HEAT_MAP_GROUP_SELECTED);
 		} else {
@@ -1511,7 +1511,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 */
 	private void renderClassAssignmentsGenesLevel3(final GL2 gl) {
 
-		if (contentVA.getGroupList() == null)
+		if (recordVA.getGroupList() == null)
 			return;
 
 		float fHeight = 0;
@@ -1530,11 +1530,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		int iIdxCluster = 0;
 		int iCounter = iFirstSampleLevel1 + iFirstSampleLevel2;
 
-		Group group = contentVA.getGroupList().get(iIdxCluster);
+		Group group = recordVA.getGroupList().get(iIdxCluster);
 		while (group.getSize() < iCounter) {
 			iIdxCluster++;
 			iCounter -= group.getSize();
-			group = contentVA.getGroupList().get(iIdxCluster);
+			group = recordVA.getGroupList().get(iIdxCluster);
 		}
 
 		int iCnt = 0;
@@ -1543,13 +1543,13 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		for (int i = 0; i < iSamplesPerHeatmap; i++) {
 
-			if (iCounter == contentVA.getGroupList().get(iIdxCluster).getSize()) {
+			if (iCounter == recordVA.getGroupList().get(iIdxCluster).getSize()) {
 
 				gl.glColor4f(1, 1, 1, 1);
 				gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 				Texture tempTexture = null;
 
-				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
+				if (recordVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
 					tempTexture = textureManager.getIconTexture(gl,
 							EIconTextures.HEAT_MAP_GROUP_SELECTED);
 				} else {
@@ -1590,7 +1590,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 				fHeight -= fHeightSamples * iCnt;
 				// FIXME
-				if (iIdxCluster == contentVA.getGroupList().size() - 1)
+				if (iIdxCluster == recordVA.getGroupList().size() - 1)
 					break;
 				iIdxCluster++;
 				iCounter = 0;
@@ -1604,7 +1604,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		Texture tempTexture = null;
 
-		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
+		if (recordVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
 			tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.HEAT_MAP_GROUP_SELECTED);
 		} else {
@@ -1702,7 +1702,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		float fOffsetClusterVis = 0f;
 
-		if (contentVA.getGroupList() != null)
+		if (recordVA.getGroupList() != null)
 			fOffsetClusterVis += 0.1f;
 
 		float fHeightElem = fHeight / iNumberOfElements;
@@ -1765,16 +1765,16 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		float fHeightElem = fHeight / iNumberOfElements;
 
-		java.util.Set<Integer> setMouseOverElements = contentSelectionManager
+		java.util.Set<Integer> setMouseOverElements = recordSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
-		java.util.Set<Integer> setSelectedElements = contentSelectionManager
+		java.util.Set<Integer> setSelectedElements = recordSelectionManager
 				.getElements(SelectionType.SELECTION);
 
 		gl.glLineWidth(2f);
 
 		for (Integer mouseOverElement : setMouseOverElements) {
 
-			int index = contentVA.indexOf(mouseOverElement.intValue());
+			int index = recordVA.indexOf(mouseOverElement.intValue());
 
 			if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1) == false) {
 				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
@@ -1788,7 +1788,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		for (Integer selectedElement : setSelectedElements) {
 
-			int index = contentVA.indexOf(selectedElement.intValue());
+			int index = recordVA.indexOf(selectedElement.intValue());
 
 			if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1) == false) {
 				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
@@ -2039,10 +2039,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	private void renderSubTreeLevel2(GL2 gl) {
-		if (table.getContentData(contentVAType).getContentTree() != null) {
+		if (table.getRecordData(recordVAType).getRecordTree() != null) {
 			gl.glTranslatef(renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS / 2, 0, 0);
 
-			if (contentVA.getGroupList() != null)
+			if (recordVA.getGroupList() != null)
 				gl.glTranslatef(renderStyle.getWidthClusterVisualization(), 0, 0);
 
 			float fHeightSubTree = viewFrustum.getHeight();
@@ -2051,7 +2051,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					iLastSampleLevel1, iSamplesLevel2, GAP_BETWEEN_LEVELS / 2,
 					fHeightSubTree);
 
-			if (contentVA.getGroupList() != null)
+			if (recordVA.getGroupList() != null)
 				gl.glTranslatef(-renderStyle.getWidthClusterVisualization(), 0, 0);
 
 			gl.glTranslatef(-(renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS / 2), 0,
@@ -2061,9 +2061,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	private void renderSubTreeLevel3(GL2 gl) {
 		// render sub tree for level 3
-		if (table.getContentData(contentVAType).getContentTree() != null) {
+		if (table.getRecordData(recordVAType).getRecordTree() != null) {
 
-			if (contentVA.getGroupList() != null)
+			if (recordVA.getGroupList() != null)
 				gl.glTranslatef(2 * renderStyle.getWidthClusterVisualization(), 0, 0);
 
 			float fHeightSubTree = 0;
@@ -2079,7 +2079,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			glContentDendrogramView.renderSubTreeFromIndexToIndex(gl, from, to,
 					iSamplesPerHeatmap, GAP_BETWEEN_LEVELS / 2, fHeightSubTree);
 
-			if (contentVA.getGroupList() != null)
+			if (recordVA.getGroupList() != null)
 				gl.glTranslatef(-2 * renderStyle.getWidthClusterVisualization(), 0, 0);
 
 		}
@@ -2102,7 +2102,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		float fOffsetClusterVis = 0f;
 
-		if (contentVA.getGroupList() != null)
+		if (recordVA.getGroupList() != null)
 			fOffsetClusterVis += renderStyle.getWidthClusterVisualization();
 
 		gl.glColor4f(1, 1, 0, 1);
@@ -2259,13 +2259,13 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		gl.glDisable(GL2.GL_LINE_STIPPLE);
 
-		java.util.Set<Integer> setMouseOverElements = contentSelectionManager
+		java.util.Set<Integer> setMouseOverElements = recordSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
 		gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 
 		for (Integer mouseOverElement : setMouseOverElements) {
 
-			int selectedElement = contentVA.indexOf(mouseOverElement.intValue());
+			int selectedElement = recordVA.indexOf(mouseOverElement.intValue());
 
 			if (selectedElement >= iFirstSampleLevel1
 					&& selectedElement <= iLastSampleLevel1) {
@@ -2289,13 +2289,13 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			}
 		}
 
-		java.util.Set<Integer> setSelectedElements = contentSelectionManager
+		java.util.Set<Integer> setSelectedElements = recordSelectionManager
 				.getElements(SelectionType.SELECTION);
 		gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 
 		for (Integer iSelectedElement : setSelectedElements) {
 
-			int selectedElement = contentVA.indexOf(iSelectedElement.intValue());
+			int selectedElement = recordVA.indexOf(iSelectedElement.intValue());
 
 			if (selectedElement >= iFirstSampleLevel1
 					&& selectedElement <= iLastSampleLevel1) {
@@ -2331,7 +2331,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float fSizeHeatmapArrow = renderStyle.getSizeHeatmapArrow();
 		float fOffsetClusterVis = 0f;
 
-		if (contentVA.getGroupList() != null)
+		if (recordVA.getGroupList() != null)
 			fOffsetClusterVis += 0.1f;
 
 		gl.glTranslatef(fWidthLevel1 + fOffsetClusterVis, 0, 0);
@@ -2523,21 +2523,21 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		// cluster dragging only allowed in case of partition based cluster
 		// result
 		if (bDragDropGeneGroup
-				&& table.getContentData(contentVAType).getContentTree() == null) {
+				&& table.getRecordData(recordVAType).getRecordTree() == null) {
 			handleDragDropGroupGenes(gl);
 			if (glMouseListener.wasMouseReleased()) {
 				bDragDropGeneGroup = false;
 			}
 		}
 
-		// if (bSplitGroupExp && set.getClusteredTreeExps() == null) {
+		// if (bSplitGroupExp && dataTable.getClusteredTreeExps() == null) {
 		// handleGroupSplitExperiments(gl);
 		// if (glMouseListener.wasMouseReleased()) {
 		// bSplitGroupExp = false;
 		// }
 		// }
 
-		// if (bSplitGroupGene && set.getClusteredTreeGenes() == null) {
+		// if (bSplitGroupGene && dataTable.getClusteredTreeGenes() == null) {
 		// handleGroupSplitGenes(gl);
 		// if (glMouseListener.wasMouseReleased()) {
 		// bSplitGroupGene = false;
@@ -2546,7 +2546,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		gl.glCallList(iGLDisplayListToCall);
 
-		if (contentVA.getGroupList() != null)
+		if (recordVA.getGroupList() != null)
 			glHeatMapView.setClusterVisualizationGenesActiveFlag(true);
 		else
 			glHeatMapView.setClusterVisualizationGenesActiveFlag(false);
@@ -2589,7 +2589,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
 			fleftOffset += renderStyle.getWidthGeneDendrogram();
 
-		if (contentVA.getGroupList() != null)
+		if (recordVA.getGroupList() != null)
 			fleftOffset += 2 * renderStyle.getWidthClusterVisualization();
 
 		if (!bIsHeatmapInFocus)
@@ -2695,7 +2695,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float fleftOffset = 0.1f + renderStyle.getWidthLevel2() * fScalingLevel2
 				+ GAP_BETWEEN_LEVELS;
 
-		if (contentVA.getGroupList() != null)
+		if (recordVA.getGroupList() != null)
 			fleftOffset += renderStyle.getWidthClusterVisualization();
 
 		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
@@ -2880,7 +2880,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		viewFrustum.setLeft(viewFrustum.getLeft() + 0.1f);
 		gl.glTranslatef(0.1f, 0.4f, 0);
 
-		if (table.getContentData(contentVAType).getContentTree() != null)
+		if (table.getRecordData(recordVAType).getRecordTree() != null)
 			bRenderDendrogramBackgroundWhite = true;
 		else
 			bRenderDendrogramBackgroundWhite = false;
@@ -2940,11 +2940,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
 			fleftOffset += renderStyle.getWidthGeneDendrogram();
 
-		if (contentVA.getGroupList() != null && bSkipLevel1 == false
+		if (recordVA.getGroupList() != null && bSkipLevel1 == false
 				&& bSkipLevel2 == false)
 			fleftOffset += 2 * renderStyle.getWidthClusterVisualization();
 
-		if (contentVA.getGroupList() != null && bSkipLevel1 == true
+		if (recordVA.getGroupList() != null && bSkipLevel1 == true
 				&& bSkipLevel2 == false)
 			fleftOffset += renderStyle.getWidthClusterVisualization();
 
@@ -2975,7 +2975,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		// all stuff for rendering level 2 (textures)
 
 		gl.glTranslatef(renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS, 0, 0);
-		if (contentVA.getGroupList() != null)
+		if (recordVA.getGroupList() != null)
 			gl.glTranslatef(renderStyle.getWidthClusterVisualization(), 0, 0);
 
 		if (pickingPointLevel2 != null)
@@ -2988,7 +2988,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		renderClassAssignmentsExperimentsLevel2(gl);
 
 		gl.glTranslatef(-(renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS), 0, 0);
-		if (contentVA.getGroupList() != null)
+		if (recordVA.getGroupList() != null)
 			gl.glTranslatef(-renderStyle.getWidthClusterVisualization(), 0, 0);
 
 		gl.glTranslatef(
@@ -2999,7 +2999,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				-(0.3f + renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2()
 						* fScalingLevel2 + GAP_BETWEEN_LEVELS), 0, 0);
 
-		if (contentVA.getGroupList() != null)
+		if (recordVA.getGroupList() != null)
 			gl.glTranslatef(2 * renderStyle.getWidthClusterVisualization(), 0, 0);
 		gl.glTranslatef(renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2()
 				* fScalingLevel2, 0, 0);
@@ -3017,7 +3017,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glTranslatef(-(renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2()
 				* fScalingLevel2), 0, 0);
 
-		if (contentVA.getGroupList() != null)
+		if (recordVA.getGroupList() != null)
 			gl.glTranslatef(-2 * renderStyle.getWidthClusterVisualization(), 0, 0);
 
 	}
@@ -3041,7 +3041,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				-(renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS / 3),
 				0, 0);
 
-		if (contentVA.getGroupList() != null)
+		if (recordVA.getGroupList() != null)
 			gl.glTranslatef(renderStyle.getWidthClusterVisualization(), 0, 0);
 		gl.glTranslatef(renderStyle.getWidthLevel2() * fScalingLevel2, 0, 0);
 
@@ -3054,7 +3054,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glTranslatef(-GAP_BETWEEN_LEVELS, 0, 0);
 
 		gl.glTranslatef(-renderStyle.getWidthLevel2() * fScalingLevel2, 0, 0);
-		if (contentVA.getGroupList() != null)
+		if (recordVA.getGroupList() != null)
 			gl.glTranslatef(-renderStyle.getWidthClusterVisualization(), 0, 0);
 
 	}
@@ -3146,7 +3146,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glPopAttrib();
 		}
 
-		if (table.getContentData(contentVAType).getContentTree() != null) {
+		if (table.getRecordData(recordVAType).getRecordTree() != null) {
 
 			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -3322,7 +3322,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					+ ")");
 		}
 
-		ContentVirtualArray hmContentVa = new ContentVirtualArray();
+		RecordVirtualArray hmContentVa = new RecordVirtualArray();
 
 		// every time we change the window of the embedded heat map we need to
 		// remove the previously used ids
@@ -3330,17 +3330,17 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		connectedElementRepresentationManager.clearByView(this.getID());
 
 		int vaIndex = 0;
-		int contentID = 0;
+		int recordID = 0;
 
 		for (int count = 0; count < iSamplesPerHeatmap; count++) {
 			vaIndex = offset + count;
-			if (vaIndex < contentVA.size()) {
-				contentID = contentVA.get(vaIndex);
-				hmContentVa.append(contentID);
+			if (vaIndex < recordVA.size()) {
+				recordID = recordVA.get(vaIndex);
+				hmContentVa.append(recordID);
 			}
 
 		}
-		glHeatMapView.setContentVA(hmContentVa);
+		glHeatMapView.setRecordVA(hmContentVa);
 
 	}
 
@@ -3348,20 +3348,20 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = DataTable.RECORD_CONTEXT;
+			recordVAType = DataTable.RECORD_CONTEXT;
 		else
-			contentVAType = DataTable.RECORD;
+			recordVAType = DataTable.RECORD;
 
-		contentVA = dataDomain.getContentVA(contentVAType);
+		recordVA = dataDomain.getRecordVA(recordVAType);
 		dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
 
 		// In case of importing group info
-		// if (set.isGeneClusterInfo())
-		// contentVA.setGroupList(set.getContentGroupList());
-		// if (set.isExperimentClusterInfo())
-		// dimensionVA.setGroupList(set.getDimensionGroupList());
+		// if (dataTable.isGeneClusterInfo())
+		// recordVA.setGroupList(dataTable.getContentGroupList());
+		// if (dataTable.isExperimentClusterInfo())
+		// dimensionVA.setGroupList(dataTable.getDimensionGroupList());
 
-		contentSelectionManager.setVA(contentVA);
+		recordSelectionManager.setVA(recordVA);
 		dimensionSelectionManager.setVA(dimensionVA);
 
 		setDisplayListDirty();
@@ -3371,15 +3371,15 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	@Override
 	public String toString() {
 		return "Standalone hierarchical heat map, rendered remote: " + isRenderedRemote()
-				+ ", contentSize: " + contentVA.size() + ", dimensionSize: "
-				+ dimensionVA.size() + ", contentVAType: " + contentVAType
+				+ ", contentSize: " + recordVA.size() + ", dimensionSize: "
+				+ dimensionVA.size() + ", recordVAType: " + recordVAType
 				+ ", remoteRenderer: " + getRemoteRenderingGLCanvas();
 	}
 
 	@Override
 	public String getShortInfo() {
-		return "Hierarchical Heat Map (" + contentVA.size() + " "
-				+ dataDomain.getContentName(false, true) + " / " + dimensionVA.size()
+		return "Hierarchical Heat Map (" + recordVA.size() + " "
+				+ dataDomain.getRecordName(false, true) + " / " + dimensionVA.size()
 				+ " experiments)";
 	}
 
@@ -3388,19 +3388,19 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Hierarchical Heat Map\n");
 
-		sInfoText.append(contentVA.size() + " " + dataDomain.getContentName(true, true)
+		sInfoText.append(recordVA.size() + " " + dataDomain.getRecordName(true, true)
 				+ " in rows and " + dimensionVA.size() + " experiments in columns.\n");
 
 		if (bRenderOnlyContext) {
 			sInfoText.append("Showing only " + " "
-					+ dataDomain.getContentName(false, true)
+					+ dataDomain.getRecordName(false, true)
 					+ " which occur in one of the other views in focus\n");
 		} else {
 			if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-				sInfoText.append("Showing all " + dataDomain.getContentName(false, true)
+				sInfoText.append("Showing all " + dataDomain.getRecordName(false, true)
 						+ " in the dataset\n");
 			} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-				sInfoText.append("Showing all " + dataDomain.getContentName(false, true)
+				sInfoText.append("Showing all " + dataDomain.getRecordName(false, true)
 						+ " that have a known DAVID ID mapping\n");
 			} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 				sInfoText
@@ -3620,7 +3620,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
 						currentPoint.y);
 
-		ContentGroupList groupList = contentVA.getGroupList();
+		RecordGroupList groupList = recordVA.getGroupList();
 
 		if (groupList == null) {
 			System.out.println("No group assignment available!");
@@ -3665,7 +3665,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		if (glMouseListener.wasMouseReleased()) {
 
-			if (groupList.move(contentVA, iGeneGroupToDrag, iTargetIdx) == false)
+			if (groupList.move(recordVA, iGeneGroupToDrag, iTargetIdx) == false)
 				System.out.println("Move operation not allowed!");
 
 			bDragDropGeneGroup = false;
@@ -3702,7 +3702,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			float fYPosRelease = fArTargetWorldCoordinates[1] - 0.4f;
 
 			float fHeight = viewFrustum.getHeight() - 0.6f;
-			int iNrSamples = contentVA.size();
+			int iNrSamples = recordVA.size();
 			float fHeightSample = fHeight / iNrSamples;
 
 			int iFirstSample = iNrSamples
@@ -3710,7 +3710,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			int iLastSample = iNrSamples
 					- (int) Math.ceil((double) fYPosRelease / fHeightSample);
 
-			if (contentVA.getGroupList().split(iGroupToSplit, iFirstSample, iLastSample) == false)
+			if (recordVA.getGroupList().split(iGroupToSplit, iFirstSample, iLastSample) == false)
 				System.out.println("Operation not allowed!!");
 		}
 	}
@@ -4028,7 +4028,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				boolean bEnableExport = true;
 				int iNrSelectedGroups = 0;
 
-				ContentGroupList tempGroupList = contentVA.getGroupList();
+				RecordGroupList tempGroupList = recordVA.getGroupList();
 
 				for (Group group : tempGroupList) {
 					if (group.getSelectionType() == SelectionType.SELECTION)
@@ -4050,11 +4050,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				groupContextMenuItemContainer.initContextMenu(true, bEnableMerge,
 						bEnableInterchange, bEnableExport);
 				groupContextMenuItemContainer.setDataDomain(dataDomain);
-				groupContextMenuItemContainer.setContentIDs(contentIDType,
-						contentVA.getIDsOfGroup(externalID));
+				groupContextMenuItemContainer.setContentIDs(recordIDType,
+						recordVA.getIDsOfGroup(externalID));
 
-				BookmarkItem bookmarkItem = new BookmarkItem(contentIDType,
-						contentVA.getIDsOfGroup(externalID));
+				BookmarkItem bookmarkItem = new BookmarkItem(recordIDType,
+						recordVA.getIDsOfGroup(externalID));
 				groupContextMenuItemContainer.addContextMenuItem(bookmarkItem);
 
 				contextMenu.addItemContanier(groupContextMenuItemContainer);
@@ -4062,37 +4062,37 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 						.getWidth(), getParentGLCanvas().getHeight());
 				contextMenu.setMasterGLView(this);
 
-				if (contentVA.getGroupList().get(externalID).getSelectionType() == SelectionType.SELECTION)
+				if (recordVA.getGroupList().get(externalID).getSelectionType() == SelectionType.SELECTION)
 					break;
 				// else we want to go to clicked as well
 			case CLICKED:
-				contentVA.getGroupList().get(externalID).togglSelectionType();
+				recordVA.getGroupList().get(externalID).togglSelectionType();
 				deactivateAllDraggingCursor();
 				bActivateDraggingGenes = true;
 
 				// ArrayList<Integer> temp =
-				// contentVA.getGeneIdsOfGroup( externalID);
+				// recordVA.getGeneIdsOfGroup( externalID);
 				// for (int i = 0; i < temp.size(); i++) {
 				// System.out.println(idMappingManager.getID(EIDType.EXPRESSION_INDEX,
 				// EIDType.GENE_SYMBOL, temp.get(i)));
 				// }
 
 				// ArrayList<Float> representatives =
-				// contentVA.getGroupList().determineRepresentativeElement(set,
-				// contentVA,
+				// recordVA.getGroupList().determineRepresentativeElement(set,
+				// recordVA,
 				// dimensionVA, externalID, true);
 
 				// set node in tree selected
 				// if
-				// (contentVA.getGroupList().get(externalID).getClusterNode()
+				// (recordVA.getGroupList().get(externalID).getClusterNode()
 				// != null) {
-				// contentVA.getGroupList().get(externalID).getClusterNode().togglSelectionType();
+				// recordVA.getGroupList().get(externalID).getClusterNode().togglSelectionType();
 				// }
 
-				// System.out.println(contentVA.getGroupList().get(externalID).getIdxExample());
+				// System.out.println(recordVA.getGroupList().get(externalID).getIdxExample());
 				// System.out.println(idMappingManager.getID(EIDType.EXPRESSION_INDEX,
 				// EIDType.GENE_SYMBOL,
-				// contentVA.getGroupList().get(externalID).getIdxExample()));
+				// recordVA.getGroupList().get(externalID).getIdxExample()));
 
 				setDisplayListDirty();
 				break;
@@ -4120,7 +4120,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			case MOUSE_OVER:
 				// System.out.print("genes group " + externalID);
 				// System.out.print(" number elements in group: ");
-				// System.out.println(contentVA.getGroupList().get(externalID)
+				// System.out.println(recordVA.getGroupList().get(externalID)
 				// .getNrElements());
 				// setDisplayListDirty();
 				break;
@@ -4171,12 +4171,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				// ArrayList<Integer> temp =
 				// dimensionVA.getGeneIdsOfGroup( externalID);
 				// for (int i = 0; i < temp.size(); i++) {
-				// System.out.println(set.get(temp.get(i)).getLabel());
+				// System.out.println(dataTable.get(temp.get(i)).getLabel());
 				// }
 
 				// ArrayList<Float> representatives =
-				// contentVA.getGroupList().determineRepresentativeElement(set,
-				// contentVA,
+				// recordVA.getGroupList().determineRepresentativeElement(set,
+				// recordVA,
 				// dimensionVA, externalID, false);
 
 				// set node in tree selected
@@ -4187,7 +4187,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				// }
 
 				// System.out.println(dimensionVA.getGroupList().get(externalID).getIdxExample());
-				// System.out.println(set.get(dimensionVA.getGroupList().get(externalID).getIdxExample())
+				// System.out.println(dataTable.get(dimensionVA.getGroupList().get(externalID).getIdxExample())
 				// .getLabel());
 
 				setDisplayListDirty();
@@ -4455,7 +4455,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	@Override
 	public void clearAllSelections() {
 
-		contentSelectionManager.clearSelections();
+		recordSelectionManager.clearSelections();
 		dimensionSelectionManager.clearSelections();
 
 		if (bSkipLevel1 == false)
@@ -4474,8 +4474,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			for (Group group : groupList)
 				group.setSelectionType(SelectionType.NORMAL);
 		}
-		if (contentVA.getGroupList() != null) {
-			ContentGroupList groupList = contentVA.getGroupList();
+		if (recordVA.getGroupList() != null) {
+			RecordGroupList groupList = recordVA.getGroupList();
 
 			for (Group group : groupList)
 				group.setSelectionType(SelectionType.NORMAL);
@@ -4485,11 +4485,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	@SuppressWarnings("unused")
 	private void activateGroupHandling() {
 
-		if (contentVA.getGroupList() == null) {
-			ContentGroupList groupList = new ContentGroupList();
-			Group group = new Group(contentVA.size());
+		if (recordVA.getGroupList() == null) {
+			RecordGroupList groupList = new RecordGroupList();
+			Group group = new Group(recordVA.size());
 			groupList.append(group);
-			contentVA.setGroupList(groupList);
+			recordVA.setGroupList(groupList);
 		}
 
 		if (dimensionVA.getGroupList() == null) {
@@ -4631,7 +4631,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			initPosCursorLevel2();
 		}
 
-		if (table.getContentData(contentVAType).getContentTree() != null) {
+		if (table.getRecordData(recordVAType).getRecordTree() != null) {
 			bGeneDendrogramActive = true;
 			bGeneDendrogramRenderCut = false;
 			bFirstStartGeneDendrogram = true;
@@ -4667,9 +4667,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	public void handleInterchangeContentGroups() {
 		Tree<ClusterNode> tree = null;
 
-		ContentVirtualArray va = contentVA;
-		tree = table.getContentData(contentVAType).getContentTree();
-		ContentGroupList groupList = va.getGroupList();
+		RecordVirtualArray va = recordVA;
+		tree = table.getRecordData(recordVAType).getRecordTree();
+		RecordGroupList groupList = va.getGroupList();
 
 		ArrayList<Integer> selGroups = new ArrayList<Integer>();
 
@@ -4687,7 +4687,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			warn();
 			bGeneDendrogramActive = false;
 			bGeneDendrogramRenderCut = false;
-			table.getContentData(contentVAType).setContentTree(null);
+			table.getRecordData(recordVAType).setRecordTree(null);
 
 		}
 
@@ -4721,7 +4721,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		contentGroupExportingListener = new ContentGroupExportingListener();
+		contentGroupExportingListener = new RecordGroupExportingListener();
 		contentGroupExportingListener.setHandler(this);
 		eventPublisher.addListener(ExportContentGroupsEvent.class,
 				contentGroupExportingListener);
@@ -4731,7 +4731,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		eventPublisher.addListener(ExportDimensionGroupsEvent.class,
 				dimensionGroupExportingListener);
 
-		contentGroupInterchangingListener = new ContentGroupInterChangingActionListener();
+		contentGroupInterchangingListener = new RecordGroupInterChangingActionListener();
 		contentGroupInterchangingListener.setHandler(this);
 		eventPublisher.addListener(InterchangeContentGroupsEvent.class,
 				contentGroupInterchangingListener);
@@ -4741,7 +4741,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		eventPublisher.addListener(InterchangeDimensionGroupsEvent.class,
 				dimensionGroupInterchangingListener);
 
-		contentGroupMergingListener = new ContentGroupMergingActionListener();
+		contentGroupMergingListener = new RecordGroupMergingActionListener();
 		contentGroupMergingListener.setHandler(this);
 		eventPublisher.addListener(MergeContentGroupsEvent.class,
 				contentGroupMergingListener);
@@ -4762,7 +4762,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		newGroupInfoActionListener = new NewContentGroupInfoActionListener();
 		newGroupInfoActionListener.setHandler(this);
-		eventPublisher.addListener(NewContentGroupInfoEvent.class,
+		eventPublisher.addListener(NewRecordGroupInfoEvent.class,
 				newGroupInfoActionListener);
 
 	}
@@ -4897,7 +4897,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	public void handleDendrogramActivation(boolean bGeneDendrogram) {
 
 		if (bGeneDendrogram) {
-			if (table.getContentData(contentVAType).getContentTree() == null)
+			if (table.getRecordData(recordVAType).getRecordTree() == null)
 				return;
 			bGeneDendrogramActive = bGeneDendrogramActive == true ? false : true;
 
@@ -5017,7 +5017,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		// SelectionDelta selectionDeltaTree = event.getSelectionDelta();
 		//
 		// // cluster mouse over events only used for gene trees
-		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		// Tree<ClusterNode> tree = dataTable.getClusteredTreeGenes();
 		//
 		// if (selectionDeltaTree.getIDType() == EIDType.CLUSTER_NUMBER && tree
 		// != null) {
@@ -5046,14 +5046,14 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	public void handleNewContentGroupInfo(String vaType, ContentGroupList groupList,
+	public void handleNewContentGroupInfo(String vaType, RecordGroupList groupList,
 			boolean bDeleteTree) {
 
 		Tree<ClusterNode> tree = null;
 
-		if (vaType.equals(contentVA.getVaType())) {
-			contentVA.setGroupList(groupList);
-			tree = table.getContentData(contentVAType).getContentTree();
+		if (vaType.equals(recordVA.getVaType())) {
+			recordVA.setGroupList(groupList);
+			tree = table.getRecordData(recordVAType).getRecordTree();
 		} else {
 			return;
 		}
@@ -5064,7 +5064,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			bGeneDendrogramActive = false;
 			bGeneDendrogramRenderCut = false;
-			table.getContentData(contentVAType).setContentTree(null);
+			table.getRecordData(recordVAType).setRecordTree(null);
 
 		}
 
@@ -5085,13 +5085,13 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		ArrayList<Integer> genesToExport = new ArrayList<Integer>();
 		ArrayList<Integer> experimentsToExport = new ArrayList<Integer>();
 
-		ContentGroupList groupList = contentVA.getGroupList();
+		RecordGroupList groupList = recordVA.getGroupList();
 
 		int groupCnt = 0;
 
 		for (Group iter : groupList) {
 			if (iter.getSelectionType() == SelectionType.SELECTION)
-				genesToExport.addAll(contentVA.getIDsOfGroup(groupCnt));
+				genesToExport.addAll(recordVA.getIDsOfGroup(groupCnt));
 			groupCnt++;
 		}
 
@@ -5130,20 +5130,20 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			groupCnt++;
 		}
 
-		if (contentVA.getGroupList() != null) {
-			ContentGroupList contentGroupList = contentVA.getGroupList();
+		if (recordVA.getGroupList() != null) {
+			RecordGroupList contentGroupList = recordVA.getGroupList();
 
 			groupCnt = 0;
 			for (Group iter : contentGroupList) {
 				if (iter.getSelectionType() == SelectionType.SELECTION)
-					genesToExport.addAll(contentVA.getIDsOfGroup(groupCnt));
+					genesToExport.addAll(recordVA.getIDsOfGroup(groupCnt));
 				groupCnt++;
 			}
 			if (genesToExport.size() == 0)
-				genesToExport = contentVA.getIndexList();
+				genesToExport = recordVA.getIndexList();
 
 		} else
-			genesToExport = contentVA.getIndexList();
+			genesToExport = recordVA.getIndexList();
 
 		openExportDialog(genesToExport, experimentsToExport);
 
@@ -5173,13 +5173,13 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@Override
 	public void handleMergeContentGroups() {
-		ContentVirtualArray va;
+		RecordVirtualArray va;
 		Tree<ClusterNode> tree = null;
 
-		va = contentVA;
-		tree = table.getContentData(contentVAType).getContentTree();
+		va = recordVA;
+		tree = table.getRecordData(recordVAType).getRecordTree();
 
-		ContentGroupList groupList = va.getGroupList();
+		RecordGroupList groupList = va.getGroupList();
 
 		ArrayList<Integer> selGroups = new ArrayList<Integer>();
 
@@ -5199,7 +5199,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			bGeneDendrogramActive = false;
 			bGeneDendrogramRenderCut = false;
-			table.getContentData(contentVAType).setContentTree(null);
+			table.getRecordData(recordVAType).setRecordTree(null);
 
 		}
 

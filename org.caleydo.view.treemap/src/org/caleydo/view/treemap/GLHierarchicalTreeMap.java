@@ -128,7 +128,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	}
 
 	public void initData() {
-		bDisplayData = dataDomain.getDataTable().getContentData(contentVAType).getContentTree() != null;
+		bDisplayData = dataDomain.getDataTable().getRecordData(recordVAType).getRecordTree() != null;
 		for (GLTreeMap view : thumbnailTreemapViews)
 			view.initData();
 	}
@@ -312,7 +312,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		Set<Integer> elements = mainTreeMapView.getSelectionManager().getElements(SelectionType.SELECTION);
 		if (elements.size() == 1 /* && thumbnailTreemapViews.size() < 3 */) {
 
-			ClusterNode dataRoot = dataDomain.getDataTable().getContentData(contentVAType).getContentTree().getNodeByNumber(elements.iterator().next());
+			ClusterNode dataRoot = dataDomain.getDataTable().getRecordData(recordVAType).getRecordTree().getNodeByNumber(elements.iterator().next());
 
 			mainTreeMapView.setRemotePickingManager(null, 0);
 			mainTreeMapView.clearAllSelections();
@@ -439,8 +439,8 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	@Override
 	public String toString() {
-		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote() + ", contentSize: " + contentVA.size() + ", dimensionSize: " + dimensionVA.size()
-				+ ", contentVAType: " + contentVAType + ", remoteRenderer:" + getRemoteRenderingGLCanvas();
+		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote() + ", contentSize: " + recordVA.size() + ", dimensionSize: " + dimensionVA.size()
+				+ ", recordVAType: " + recordVAType + ", remoteRenderer:" + getRemoteRenderingGLCanvas();
 	}
 
 	@Override
@@ -506,7 +506,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		if (dataDomain != null) {
-			if (dataDomain.getDataTable().getContentData(contentVAType).getContentTree() != null) {
+			if (dataDomain.getDataTable().getRecordData(recordVAType).getRecordTree() != null) {
 				for (GLTreeMap view : thumbnailTreemapViews) {
 					view.setDataDomain(dataDomain);
 				}

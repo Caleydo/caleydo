@@ -396,7 +396,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	/**
 	 * Set the sorting strategy to be used for this tree. The default sorting (based on the cluster ID, which
-	 * is generated on the fly) needs not be set. If a non-default strategy is used the nodes in the tree must
+	 * is generated on the fly) needs not be dataTable. If a non-default strategy is used the nodes in the tree must
 	 * implement the {@link Comparable#compareTo(Object)} method with options for the sorting strategies
 	 */
 	public void setSortingStrategy(ESortingStrategy sortingStrategy) {

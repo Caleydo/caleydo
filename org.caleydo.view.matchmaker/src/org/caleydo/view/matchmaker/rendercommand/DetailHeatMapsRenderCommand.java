@@ -73,7 +73,7 @@ public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 			gl.glTranslatef(-heatMapPosition.x(), -heatMapPosition.y(),
 					-heatMapPosition.z());
 
-			// ContentVirtualArray va = heatMap.getContentVA();
+			// ContentVirtualArray va = heatMap.getRecordVA();
 			//
 			// for (int i = 0; i < va.size(); i++) {
 			// // Vec2f position = getLeftLinkPositionFromContentID(va.get(i));

@@ -516,7 +516,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 			String sExpressionValueInCurrentDataSet = "NOT FOUND";
 
 			Set<Integer> setExpIndex = idMappingManager.getIDAsSet(davidIDType,
-					dataDomain.getContentIDType(), iDavidID);
+					dataDomain.getRecordIDType(), iDavidID);
 			// h.getExpressionIndicesFromDavid(iDavidID);
 
 			if (setExpIndex != null && setExpIndex.size() > 0)

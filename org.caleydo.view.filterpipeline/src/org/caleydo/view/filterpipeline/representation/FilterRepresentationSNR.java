@@ -2,12 +2,12 @@ package org.caleydo.view.filterpipeline.representation;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.filter.ContentFilter;
-import org.caleydo.core.data.filter.ContentMetaFilter;
-import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
+import org.caleydo.core.data.filter.RecordFilter;
+import org.caleydo.core.data.filter.RecordMetaFilter;
+import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Text;
 
 public class FilterRepresentationSNR extends
-		AFilterRepresentation<ContentVADelta, ContentFilter> {
+		AFilterRepresentation<RecordVADelta, RecordFilter> {
 
 	private final static String TITLE = "Signal-To-Noice Ratio Filter";
 
@@ -237,8 +237,8 @@ public class FilterRepresentationSNR extends
 	@Override
 	protected void createVADelta() {
 
-		if (filter instanceof ContentMetaFilter) {
-			for (ContentFilter subFilter : ((ContentMetaFilter) filter).getFilterList()) {
+		if (filter instanceof RecordMetaFilter) {
+			for (RecordFilter subFilter : ((RecordMetaFilter) filter).getFilterList()) {
 
 				createVADelta(subFilter);
 			}
@@ -246,45 +246,45 @@ public class FilterRepresentationSNR extends
 			createVADelta(filter);
 	}
 
-	private void createVADelta(ContentFilter subFilter) {
+	private void createVADelta(RecordFilter subFilter) {
 
-		ContentVADelta contentVADelta = new ContentVADelta(DataTable.RECORD, subFilter
-				.getDataDomain().getContentIDType());
+		RecordVADelta recordVADelta = new RecordVADelta(DataTable.RECORD, subFilter
+				.getDataDomain().getRecordIDType());
 
-		ContentVADelta uncertaintyContentVADelta = new ContentVADelta(DataTable.RECORD,
-				subFilter.getDataDomain().getContentIDType());
+		RecordVADelta uncertaintyRecordVADelta = new RecordVADelta(DataTable.RECORD,
+				subFilter.getDataDomain().getRecordIDType());
 
-		ContentVirtualArray contentVA = subFilter.getDataDomain()
-				.getContentFilterManager().getBaseVA();
+		RecordVirtualArray recordVA = subFilter.getDataDomain()
+				.getRecordFilterManager().getBaseVA();
 
 		float[] rawUncertainty = ((FilterRepresentationSNR) subFilter.getFilterRep())
 				.getDataTable().getUncertainty().getRawUncertainty();
 
-		for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
+		for (int recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
 
-			float value = rawUncertainty[contentIndex];
+			float value = rawUncertainty[recordIndex];
 			if (value < invalidThreshold)
-				contentVADelta
-						.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));
+				recordVADelta
+						.add(VADeltaItem.removeElement(recordVA.get(recordIndex)));
 
 			if (value < invalidThreshold || value > validThreshold)
-				uncertaintyContentVADelta.add(VADeltaItem.removeElement(contentVA
-						.get(contentIndex)));
+				uncertaintyRecordVADelta.add(VADeltaItem.removeElement(recordVA
+						.get(recordIndex)));
 		}
 
-		subFilter.setVADelta(contentVADelta);
-		subFilter.setVADeltaUncertainty(uncertaintyContentVADelta);
+		subFilter.setVADelta(recordVADelta);
+		subFilter.setVADeltaUncertainty(uncertaintyRecordVADelta);
 	}
 
 	@Override
 	protected void triggerRemoveFilterEvent() {
-		RemoveContentFilterEvent filterEvent = new RemoveContentFilterEvent();
+		RemoveRecordFilterEvent filterEvent = new RemoveRecordFilterEvent();
 		filterEvent.setDataDomainID(filter.getDataDomain().getDataDomainID());
 		filterEvent.setFilter(filter);
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 	}
 
-	public void setSet(DataTable set) {
+	public void setDataTable(DataTable set) {
 		this.table = set;
 	}
 

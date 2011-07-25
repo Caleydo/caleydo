@@ -1,8 +1,8 @@
 package org.caleydo.view.datameta;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.selection.ContentSelectionManager;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.selection.RecordSelectionManager;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
 
 /**
- * Data meta view showing details about a data set.
+ * Data meta view showing details about a data dataTable.
  * 
  * @author Marc Streit
  */
@@ -32,9 +32,9 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 
 	private ATableBasedDataDomain dataDomain;
 
-	private DataTable set;
+	private DataTable dataTable;
 
-	private ContentSelectionManager contentSelectionManager;
+	private RecordSelectionManager contentSelectionManager;
 
 	/**
 	 * Constructor.
@@ -50,7 +50,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 
 		dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 				serializedView.getDataDomainID());
-		set = dataDomain.getDataTable();
+		dataTable = dataDomain.getDataTable();
 
 		parentComposite = new Composite(parent, SWT.NULL);
 		parentComposite.setLayout(new GridLayout(1, false));
@@ -63,30 +63,30 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		infoComposite.setLayoutData(gridData);
 
 		Label label = new Label(infoComposite, SWT.NONE);
-		label.setText("Number of genes: " + set.getMetaData().depth());
+		label.setText("Number of genes: " + dataTable.getMetaData().depth());
 
 		label = new Label(infoComposite, SWT.NONE);
-		label.setText("Number of experiments: " + set.getMetaData().size());
+		label.setText("Number of experiments: " + dataTable.getMetaData().size());
 
 		label = new Label(infoComposite, SWT.NONE);
 		label.setText("Loaded from file: " + dataDomain.getFileName());
 
 		label = new Label(infoComposite, SWT.NONE);
 		label.setText("Human readable ID type: "
-				+ dataDomain.getHumanReadableContentIDType().getTypeName());
+				+ dataDomain.getHumanReadableRecordIDType().getTypeName());
 
 		// Tree<ClusterNode> dimensionTree =
-		// dataDomain.getSet().getDimensionData(DimensionVAType.STORAGE).getDimensionTree();
+		// dataDomain.getDataTable().getDimensionData(DimensionVAType.STORAGE).getDimensionTree();
 
 		// label = new Label(parent, SWT.NONE);
 		// label.setText("Experiments clustered: "+dimensionTree == null ? "false"
 		// : "true");
 		//
 		// if
-		// (dataDomain.getSet().getDimensionData(DimensionVAType.STORAGE).getDimensionClusterSizes()
+		// (dataDomain.getDataTable().getDimensionData(DimensionVAType.STORAGE).getDimensionClusterSizes()
 		// != null) {
 		// label = new Label(parent, SWT.NONE);
-		// label.setText("Number of clusters: "+dataDomain.getSet().getDimensionData(DimensionVAType.STORAGE).getDimensionClusterSizes().size());
+		// label.setText("Number of clusters: "+dataDomain.getDataTable().getDimensionData(DimensionVAType.STORAGE).getDimensionClusterSizes().size());
 		// }
 
 		// label = new Label(parent, SWT.NONE);
@@ -171,13 +171,13 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		this.set = dataDomain.getDataTable();
+		this.dataTable = dataDomain.getDataTable();
 
-		String contentVAType = DataTable.RECORD;
-		contentSelectionManager = dataDomain.getContentSelectionManager();
+		String recordVAType = DataTable.RECORD;
+		contentSelectionManager = dataDomain.getRecordSelectionManager();
 
-		ContentVirtualArray contentVA = dataDomain.getContentVA(contentVAType);
-		contentSelectionManager.setVA(contentVA);
+		RecordVirtualArray recordVA = dataDomain.getRecordVA(recordVAType);
+		contentSelectionManager.setVA(recordVA);
 	}
 
 	@Override

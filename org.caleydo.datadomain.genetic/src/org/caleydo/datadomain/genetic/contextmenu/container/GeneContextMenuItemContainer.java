@@ -27,9 +27,9 @@ public class GeneContextMenuItemContainer extends AItemContainer {
 
 	}
 
-	public void setID(IDType idType, int id) {
+	public void dataTableID(IDType idType, int id) {
 		Set<Integer> davids = GeneralManager.get().getIDMappingManager()
-				.getIDAsSet(idType, dataDomain.getPrimaryContentMappingType(), id);
+				.getIDAsSet(idType, dataDomain.getPrimaryRecordMappingType(), id);
 		if (davids == null)
 			return;
 		for (Integer david : davids) {
@@ -42,21 +42,21 @@ public class GeneContextMenuItemContainer extends AItemContainer {
 		GeneralManager generalManager = GeneralManager.get();
 
 		String sGeneSymbol = generalManager.getIDMappingManager().getID(
-				dataDomain.getPrimaryContentMappingType(),
+				dataDomain.getPrimaryRecordMappingType(),
 				((GeneticDataDomain) (DataDomainManager.get().getDataDomainByID(dataDomain
-						.getDataDomainID()))).getHumanReadableContentIDType(), davidID);
+						.getDataDomainID()))).getHumanReadableRecordIDType(), davidID);
 		if (sGeneSymbol == "" || sGeneSymbol == null)
 			sGeneSymbol = "Unkonwn Gene";
 		addHeading(sGeneSymbol);
 
 		if (PathwayManager.get().isPathwayLoadingFinished()) {
 			LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
-			loadPathwaysByGeneItem.setDavid(dataDomain.getPrimaryContentMappingType(),
+			loadPathwaysByGeneItem.setDavid(dataDomain.getPrimaryRecordMappingType(),
 					davidID);
 			addContextMenuItem(loadPathwaysByGeneItem);
 
 			ShowPathwaysByGeneItem showPathwaysByGeneItem = new ShowPathwaysByGeneItem();
-			showPathwaysByGeneItem.setDavid(dataDomain.getPrimaryContentMappingType(),
+			showPathwaysByGeneItem.setDavid(dataDomain.getPrimaryRecordMappingType(),
 					davidID);
 			addContextMenuItem(showPathwaysByGeneItem);
 		}

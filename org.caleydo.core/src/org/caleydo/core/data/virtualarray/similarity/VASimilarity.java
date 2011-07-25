@@ -18,13 +18,13 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 public class VASimilarity<VAType extends VirtualArray<VAType, ?, GroupListType>, GroupListType extends GroupList<GroupListType, VAType, ?>> {
 
 	/**
-	 * Returns the VA associated with the provides setID
+	 * Returns the VA associated with the provides dataTableID
 	 * 
-	 * @param setID
+	 * @param dataTableID
 	 * @return
 	 */
-	public VAType getVA(Integer setID) {
-		return vaMap.get(setID);
+	public VAType getVA(Integer dataTableID) {
+		return vaMap.get(dataTableID);
 	}
 
 	/**
@@ -32,38 +32,38 @@ public class VASimilarity<VAType extends VirtualArray<VAType, ?, GroupListType>,
 	 * 
 	 * @return
 	 */
-	public Set<Integer> getSetIDs() {
+	public Set<Integer> getDataTableIDs() {
 		return vaMap.keySet();
 	}
 
 	/**
-	 * Get the GroupSimilarity of a specific group of a specific VA associated with the setID
+	 * Get the GroupSimilarity of a specific group of a specific VA associated with the dataTableID
 	 * 
-	 * @param setID
+	 * @param dataTableID
 	 * @param groupID
 	 * @return
 	 */
-	public GroupSimilarity<VAType, GroupListType> getGroupSimilarity(Integer setID, Integer groupID) {
-		return groupListSimilarities.get(setID).get(groupID);
+	public GroupSimilarity<VAType, GroupListType> getGroupSimilarity(Integer dataTableID, Integer groupID) {
+		return groupListSimilarities.get(dataTableID).get(groupID);
 	}
 
 	/**
 	 * Add a new VA
 	 * 
-	 * @param setID
+	 * @param dataTableID
 	 * @param va
 	 */
-	public void addVA(Integer setID, VAType va) {
+	public void addVA(Integer dataTableID, VAType va) {
 
-		if (vaMap.size() <= 2 && !vaMap.containsKey(setID)) {
-			vaMap.put(setID, va);
-			keys.add(setID);
+		if (vaMap.size() <= 2 && !vaMap.containsKey(dataTableID)) {
+			vaMap.put(dataTableID, va);
+			keys.add(dataTableID);
 		}
 		else {
-			if (!vaMap.containsKey(setID))
-				throw new IllegalStateException("VASimilarity has already two VAs set.");
+			if (!vaMap.containsKey(dataTableID))
+				throw new IllegalStateException("VASimilarity has already two VAs dataTable.");
 
-			vaMap.put(setID, va);
+			vaMap.put(dataTableID, va);
 		}
 	}
 

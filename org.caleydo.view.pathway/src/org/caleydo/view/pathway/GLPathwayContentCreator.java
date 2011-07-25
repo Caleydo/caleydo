@@ -879,7 +879,7 @@ public class GLPathwayContentCreator {
 
 			Set<Integer> ids = idMappingManager.<Integer, Integer> getIDAsSet(
 					glPathwayView.getDataDomain().getDavidIDType(), glPathwayView
-							.getMappingDataDomain().getContentIDType(), iDavidID);
+							.getMappingDataDomain().getRecordIDType(), iDavidID);
 			if (ids == null)
 				return null;
 			for (Integer iExpressionIndex : ids) {

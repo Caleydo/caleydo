@@ -6,8 +6,8 @@ import java.util.List;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -63,8 +63,8 @@ public class OverviewRenderer extends LayoutRenderer {
 		// overviewLayout.clear();
 		clusterLayoutList.clear();
 
-		ContentVirtualArray contentVA = uncertaintyHeatMap.getContentVA();
-		ContentGroupList clusterList = contentVA.getGroupList();
+		RecordVirtualArray recordVA = uncertaintyHeatMap.getRecordVA();
+		RecordGroupList clusterList = recordVA.getGroupList();
 
 		int counter = 0;
 
@@ -73,7 +73,7 @@ public class OverviewRenderer extends LayoutRenderer {
 		// If the dataset is unclustered yet, the whole VA is given to the
 		// detail heat map.
 		if (clusterList == null && detailHeatMap != null) {
-			detailHeatMap.setContentVA(contentVA);
+			detailHeatMap.setRecordVA(recordVA);
 			detailHeatMap.setDisplayListDirty();
 		}
 
@@ -84,9 +84,9 @@ public class OverviewRenderer extends LayoutRenderer {
 				// creatinng Texture for each cluster
 
 				// creating Layout for each cluster
-				ContentVirtualArray clusterVA = this.getClusterVA(clusterIndex);
+				RecordVirtualArray clusterVA = this.getClusterVA(clusterIndex);
 				float ratio = (float) clusterVA.size()
-						/ ((float) contentVA.getIndexList().size());
+						/ ((float) recordVA.getIndexList().size());
 
 				Row clusterLayout = new Row("clusterLayout_" + counter);
 				clusterLayout.setRatioSizeY(ratio);
@@ -117,7 +117,7 @@ public class OverviewRenderer extends LayoutRenderer {
 
 				// Initially the first cluster gets selected
 				if (clusterIndex == 0 && detailHeatMap != null) {
-					detailHeatMap.setContentVA(clusterVA);
+					detailHeatMap.setRecordVA(clusterVA);
 					detailHeatMap.setDisplayListDirty();
 				}
 			}
@@ -127,7 +127,7 @@ public class OverviewRenderer extends LayoutRenderer {
 			clusterLayout.setRatioSizeY(1);
 
 			clusterRenderer = new ClusterRenderer(uncertaintyHeatMap, clusterLayout,
-					contentVA, 0);
+					recordVA, 0);
 			clusterLayout.setRenderer(clusterRenderer);
 			clusterRenderer.init();
 			overviewLayout.add(lastLayoutElement, clusterLayout);
@@ -136,17 +136,17 @@ public class OverviewRenderer extends LayoutRenderer {
 		overviewLayout.updateSubLayout();
 	}
 
-	public ContentVirtualArray getClusterVA(int clusterIndex) {
-		ContentVirtualArray contentVA = uncertaintyHeatMap.getContentVA();
-		ContentGroupList clusterList = contentVA.getGroupList();
+	public RecordVirtualArray getClusterVA(int clusterIndex) {
+		RecordVirtualArray recordVA = uncertaintyHeatMap.getRecordVA();
+		RecordGroupList clusterList = recordVA.getGroupList();
 		if (clusterList == null) {
-			return contentVA;
+			return recordVA;
 		}
 		Group group = clusterList.getGroups().get(clusterIndex);
 
-		ArrayList<Integer> clusterGenes = uncertaintyHeatMap.getContentVA()
+		ArrayList<Integer> clusterGenes = uncertaintyHeatMap.getRecordVA()
 				.getIDsOfGroup(group.getID());
-		ContentVirtualArray clusterVA = new ContentVirtualArray(DataTable.RECORD, clusterGenes);
+		RecordVirtualArray clusterVA = new RecordVirtualArray(DataTable.RECORD, clusterGenes);
 
 		return clusterVA;
 	}

@@ -45,9 +45,9 @@ public class StatisticsResult {
 		return setToTwoSidedTTestResult.get(set);
 	}
 
-	public Double getTwoSidedTTestResult(DataTable compareSet, Integer contentID) {
+	public Double getTwoSidedTTestResult(DataTable compareSet, Integer recordID) {
 
-		return setToTwoSidedTTestResult.get(compareSet).get(contentID);
+		return setToTwoSidedTTestResult.get(compareSet).get(recordID);
 	}
 
 	public void setOneSiddedTTestResult(double[] pValueVector) {
@@ -108,24 +108,24 @@ public class StatisticsResult {
 	}
 
 	// /**
-	// * Calculate and return the content VA based on a given cutoff p-value.
+	// * Calculate and return the record VA based on a given cutoff p-value.
 	// *
 	// * @param set The set for which the VA comparison result needs to be calculated.
 	// * @param cutOffPValue A cutoff p-value between 0 and 1.
-	// * @return the content VA fulfilling the cutoff value.
+	// * @return the record VA fulfilling the cutoff value.
 	// */
 	// public ContentVirtualArray getVABasedOnTwoSidedTTestResult(DataTable compareSet, float cutOffPValue) {
 	//
-	// ContentVirtualArray filteredVA = new ContentVirtualArray(ContentVAType.CONTENT);
-	// ContentVirtualArray origVA = compareSet.getContentVA(ContentVAType.CONTENT);
+	// ContentVirtualArray filteredVA = new ContentVirtualArray(RecordVAType.CONTENT);
+	// ContentVirtualArray origVA = compareSet.getRecordVA(RecordVAType.CONTENT);
 	//
 	// ArrayList<Double> compareResultVector = setToTwoSidedTTestResult.get(compareSet);
 	//
-	// for (Integer contentIndex = 0; contentIndex < origVA.size(); contentIndex++) {
+	// for (Integer recordIndex = 0; recordIndex < origVA.size(); recordIndex++) {
 	//
-	// Integer contentID = origVA.get(contentIndex);
-	// if (compareResultVector.get(contentIndex) < cutOffPValue)
-	// filteredVA.appendUnique(contentID);
+	// Integer recordID = origVA.get(recordIndex);
+	// if (compareResultVector.get(recordIndex) < cutOffPValue)
+	// filteredVA.appendUnique(recordID);
 	// }
 	//
 	// return filteredVA;
@@ -142,17 +142,17 @@ public class StatisticsResult {
 	// */
 	// public ContentVirtualArray getVABasedOnFoldChangeResult(DataTable compareSet) {
 	//
-	// ContentVirtualArray filteredVA = new ContentVirtualArray(ContentVAType.CONTENT);
-	// ContentVirtualArray origVA = compareSet.getContentVA(ContentVAType.CONTENT);
+	// ContentVirtualArray filteredVA = new ContentVirtualArray(RecordVAType.CONTENT);
+	// ContentVirtualArray origVA = compareSet.getRecordVA(RecordVAType.CONTENT);
 	//
 	// double[] resultVector = setToFoldChangeResult.get(compareSet).getFirst();
 	// double foldChangeRatio = setToFoldChangeResult.get(compareSet).getSecond().getRatio();
 	//
-	// for (Integer contentIndex = 0; contentIndex < origVA.size(); contentIndex++) {
+	// for (Integer recordIndex = 0; recordIndex < origVA.size(); recordIndex++) {
 	//
-	// Integer contentID = origVA.get(contentIndex);
-	// if (resultVector[contentIndex] > foldChangeRatio)
-	// filteredVA.appendUnique(contentID);
+	// Integer recordID = origVA.get(recordIndex);
+	// if (resultVector[recordIndex] > foldChangeRatio)
+	// filteredVA.appendUnique(recordID);
 	// }
 	//
 	// return filteredVA;
@@ -161,7 +161,7 @@ public class StatisticsResult {
 	// public int getElementNumberOfFoldChangeReduction(DataTable compareSet) {
 	//
 	// int numberOfElements = 0;
-	// ContentVirtualArray origVA = compareSet.getContentData(ContentVAType.CONTENT).getContentVA();
+	// ContentVirtualArray origVA = compareSet.getContentData(RecordVAType.CONTENT).getRecordVA();
 	//
 	// double[] resultVector = setToFoldChangeResult.get(compareSet).getFirst();
 	// FoldChangeSettings settings = setToFoldChangeResult.get(compareSet).getSecond();
@@ -169,25 +169,25 @@ public class StatisticsResult {
 	// double foldChangeRatio = settings.getRatio();
 	// FoldChangeEvaluator foldChangeEvaluator = settings.getEvaluator();
 	//
-	// for (Integer contentIndex = 0; contentIndex < origVA.size(); contentIndex++) {
+	// for (Integer recordIndex = 0; recordIndex < origVA.size(); recordIndex++) {
 	//
 	// switch (foldChangeEvaluator) {
 	// case LESS:
-	// if (resultVector[contentIndex] * -1 < foldChangeRatio)
+	// if (resultVector[recordIndex] * -1 < foldChangeRatio)
 	// continue;
 	// break;
 	// case GREATER:
-	// if (resultVector[contentIndex] < foldChangeRatio)
+	// if (resultVector[recordIndex] < foldChangeRatio)
 	// continue;
 	// break;
 	// case SAME:
-	// if (Math.abs(resultVector[contentIndex]) > foldChangeRatio)
+	// if (Math.abs(resultVector[recordIndex]) > foldChangeRatio)
 	// continue;
 	// break;
 	// }
 	//
 	// // System.out.println("Found valid gene fulfilling statistics criteria: " +compareSet
-	// // +" "+contentIndex);
+	// // +" "+recordIndex);
 	// numberOfElements++;
 	// }
 	//

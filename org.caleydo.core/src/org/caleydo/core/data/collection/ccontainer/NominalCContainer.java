@@ -126,10 +126,10 @@ public class NominalCContainer<T>
 		keySet.toArray(sortedArray);
 		Arrays.sort(sortedArray, 0, sortedArray.length - 1);
 
-		for (Object content : sortedArray) {
-			Float fDiscrete = hashNominalToDiscrete.get(content);
+		for (Object record : sortedArray) {
+			Float fDiscrete = hashNominalToDiscrete.get(record);
 			fDiscrete = fDivisor * iCount;
-			T tContent = (T) content;
+			T tContent = (T) record;
 			hashNominalToDiscrete.put(tContent, fDiscrete);
 			hashDiscreteToNominal.put(fDiscrete, tContent);
 

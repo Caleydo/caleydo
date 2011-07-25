@@ -7,7 +7,7 @@ public interface ISegmentData {
 
 	public IDataDomain getDataDomain();
 	
-	public ContentVirtualArray getContentVA();
+	public RecordVirtualArray getRecordVA();
 	
 	public Group getGroup();
 	

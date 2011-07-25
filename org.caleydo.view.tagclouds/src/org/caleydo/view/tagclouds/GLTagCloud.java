@@ -14,10 +14,10 @@ import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
@@ -66,7 +66,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 	private TagCloudRenderStyle renderStyle;
 
-	private DataTable set;
+	private DataTable dataTable;
 
 	private ATableBasedDataDomain dataDomain;
 
@@ -83,7 +83,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	private final static int BUTTON_PREVIOUS_ID = 0;
 	private final static int BUTTON_NEXT_ID = 1;
 
-	private ContentSelectionManager contentSelectionManager;
+	private RecordSelectionManager contentSelectionManager;
 
 	private ArrayList<TagRenderer> selectedTagRenderers = new ArrayList<TagRenderer>();
 
@@ -125,19 +125,19 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	@SuppressWarnings("unchecked")
 	public void initData() {
-		if (set == null)
-			set = dataDomain.getDataTable();
-		if (contentVA == null)
-			contentVA = set.getContentData(DataTable.RECORD).getContentVA();
+		if (dataTable == null)
+			dataTable = dataDomain.getDataTable();
+		if (recordVA == null)
+			recordVA = dataTable.getRecordData(DataTable.RECORD).getRecordVA();
 		if (dimensionVA == null)
-			dimensionVA = set.getDimensionData(DataTable.DIMENSION).getDimensionVA();
+			dimensionVA = dataTable.getDimensionData(DataTable.DIMENSION).getDimensionVA();
 		if (contentSelectionManager == null)
-			contentSelectionManager = dataDomain.getContentSelectionManager();
+			contentSelectionManager = dataDomain.getRecordSelectionManager();
 
 		for (Integer dimensionID : dimensionVA) {
 			HashMap<String, Integer> stringOccurences = new HashMap<String, Integer>();
 			stringOccurencesPerDimension.put(dimensionID, stringOccurences);
-			ADimension genericDimension = set.get(dimensionID);
+			ADimension genericDimension = dataTable.get(dimensionID);
 			NumericalDimension numericalDimension = null;
 			NominalDimension<String> dimension = null;
 			boolean isNumericalDimension = false;
@@ -150,13 +150,13 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 				isNumericalDimension = false;
 			}
 
-			for (Integer contentID : contentVA) {
+			for (Integer recordID : recordVA) {
 				String string = null;
 				if (isNumericalDimension) {
 					string = new Float(numericalDimension.getFloat(DataRepresentation.RAW,
-							contentID)).toString();
+							recordID)).toString();
 				} else {
-					string = dimension.getRaw(contentID);
+					string = dimension.getRaw(recordID);
 				}
 				if (string.isEmpty() || string.equals("NaN"))
 					string = "???";
@@ -291,7 +291,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 			dimensionCaptionLayout.setGrabX(true);
 
 			DimensionCaptionRenderer dimensionCaptionRenderer = new DimensionCaptionRenderer(
-					textRenderer, set.get(dimensionID).getLabel());
+					textRenderer, dataTable.get(dimensionID).getLabel());
 			dimensionCaptionLayout.setRenderer(dimensionCaptionRenderer);
 			// dimensionCaptionLayout.setDebug(true);
 
@@ -575,19 +575,19 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		return dataDomain;
 	}
 
-	public void setSet(DataTable set) {
-		this.set = set;
+	public void setDataTable(DataTable dataTable) {
+		this.dataTable = dataTable;
 	}
 
-	public DataTable getSet() {
-		return set;
+	public DataTable getDataTable() {
+		return dataTable;
 	}
 
-	public void setContentVA(ContentVirtualArray contentVA) {
-		this.contentVA = contentVA;
+	public void setRecordVA(RecordVirtualArray recordVA) {
+		this.recordVA = recordVA;
 	}
 
-	public ContentSelectionManager getContentSelectionManager() {
+	public RecordSelectionManager getContentSelectionManager() {
 		return contentSelectionManager;
 	}
 
@@ -613,7 +613,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		case MEDIUM:
 			return 100;
 		case LOW:
-			return Math.max(150, 30 * set.getMetaData().size());
+			return Math.max(150, 30 * dataTable.getMetaData().size());
 		default:
 			return 100;
 		}

@@ -3,7 +3,7 @@ package org.caleydo.view.radial;
 public class GeneClusterElementRepCreator implements IElementRepCreator {
 
 	@Override
-	public void createElementRep(PartialDisc partialDisc, int iViewID,
+	public void createElementRep(PartialDisc partialDisc, int viewID,
 			float fHierarchyCenterX, float fHierarchyCenterY, float fHierarchyCenterZ) {
 
 		// APDDrawingStrategy drawingStrategy =

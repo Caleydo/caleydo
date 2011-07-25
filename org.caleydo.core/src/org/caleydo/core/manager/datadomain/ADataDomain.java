@@ -19,8 +19,8 @@ public abstract class ADataDomain
 	extends AEventHandler
 	implements IDataDomain {
 
-	protected String contentLabelSingular = "<not specified>";
-	protected String contentLabelPlural = "<not specified>";
+	protected String recordLabelSingular = "<not specified>";
+	protected String recordLabelPlural = "<not specified>";
 
 	protected EDataFilterLevel dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 
@@ -88,19 +88,19 @@ public abstract class ADataDomain
 	};
 
 	public String getContentLabelSingular() {
-		return contentLabelSingular;
+		return recordLabelSingular;
 	}
 
 	public void setContentLabelSingular(String contentLabelSingular) {
-		this.contentLabelSingular = contentLabelSingular;
+		this.recordLabelSingular = contentLabelSingular;
 	}
 
 	public String getContentLabelPlural() {
-		return contentLabelPlural;
+		return recordLabelPlural;
 	}
 
 	public void setContentLabelPlural(String contentLabelPlural) {
-		this.contentLabelPlural = contentLabelPlural;
+		this.recordLabelPlural = contentLabelPlural;
 	}
 
 	public EDataFilterLevel getDataFilterLevel() {

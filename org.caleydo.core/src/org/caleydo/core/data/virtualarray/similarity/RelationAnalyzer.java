@@ -3,8 +3,8 @@ package org.caleydo.core.data.virtualarray.similarity;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
@@ -20,8 +20,8 @@ public class RelationAnalyzer {
 	 * The queue which holds the events
 	 */
 
-//	private ContentVAUpdateListener contentVAUpdateListener;
-//	private ReplaceContentVAListener replaceContentVAListener;
+//	private RecordVAUpdateListener recordVAUpdateListener;
+//	private ReplaceRecordVAListener replaceRecordVAListener;
 	private EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
 //	private ASetBasedDataDomain dataDomain;
@@ -37,39 +37,39 @@ public class RelationAnalyzer {
 //	@Override
 //	public void registerEventListeners() {
 //
-//		contentVAUpdateListener = new ContentVAUpdateListener();
-//		contentVAUpdateListener.setHandler(this);
-//		contentVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
-//		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
+//		recordVAUpdateListener = new RecordVAUpdateListener();
+//		recordVAUpdateListener.setHandler(this);
+//		recordVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+//		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
 //
-//		replaceContentVAListener = new ReplaceContentVAListener();
-//		replaceContentVAListener.setHandler(this);
-//		replaceContentVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
-//		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
+//		replaceRecordVAListener = new ReplaceRecordVAListener();
+//		replaceRecordVAListener.setHandler(this);
+//		replaceRecordVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+//		eventPublisher.addListener(ReplaceRecordVAEvent.class, replaceRecordVAListener);
 //
 //	}
 //
 //	@Override
 //	public void unregisterEventListeners() {
-//		if (contentVAUpdateListener != null) {
-//			eventPublisher.removeListener(contentVAUpdateListener);
-//			contentVAUpdateListener = null;
+//		if (recordVAUpdateListener != null) {
+//			eventPublisher.removeListener(recordVAUpdateListener);
+//			recordVAUpdateListener = null;
 //		}
 //
-//		if (replaceContentVAListener != null) {
-//			eventPublisher.removeListener(replaceContentVAListener);
-//			replaceContentVAListener = null;
+//		if (replaceRecordVAListener != null) {
+//			eventPublisher.removeListener(replaceRecordVAListener);
+//			replaceRecordVAListener = null;
 //		}
 //	}
 //
 //	@Override
-//	public void handleVAUpdate(ContentVADelta vaDelta, String info) {
+//	public void handleVAUpdate(RecordVADelta vaDelta, String info) {
 //		// TODO Auto-generated method stub
 //
 //	}
 
 	
-	public synchronized void updateRelations(int setID, ContentVirtualArray contentVA) {
+	public synchronized void updateRelations(int dataTableID, RecordVirtualArray recordVA) {
 
 //		try {
 //			Thread.sleep(1000);
@@ -79,20 +79,20 @@ public class RelationAnalyzer {
 //			e.printStackTrace();
 //		}
 //		
-//		DataTable set = dataDomain.getSet(setID);
-//		ContentVirtualArray contentVA = set.getContentData(Set.CONTENT).getContentVA();
+//		DataTable set = dataDomain.getDataTable(dataTableID);
+//		ContentVirtualArray recordVA = dataTable.getContentData(Set.CONTENT).getRecordVA();
 
 		// if this thing does not exist yet, we create it here, else we replace the pre-existing one
-		SimilarityMap currentMap = new SimilarityMap(setID, contentVA);
+		SimilarityMap currentMap = new SimilarityMap(dataTableID, recordVA);
 
 		for (Entry<Integer, SimilarityMap> entry : hashSimilarityMaps.entrySet()) {
-			if (entry.getKey() == setID)
+			if (entry.getKey() == dataTableID)
 				continue;
-			VASimilarity<ContentVirtualArray, ContentGroupList> similarity =
-				entry.getValue().calculateVASimilarity(setID, contentVA);
+			VASimilarity<RecordVirtualArray, RecordGroupList> similarity =
+				entry.getValue().calculateVASimilarity(dataTableID, recordVA);
 			currentMap.setVaSimilarity(similarity);
 		}
-		hashSimilarityMaps.put(setID, currentMap);
+		hashSimilarityMaps.put(dataTableID, currentMap);
 		RelationsUpdatedEvent event = new RelationsUpdatedEvent();
 //		event.setDataDomainType(dataDomain.getDataDomainType());
 		event.setSender(this);
@@ -100,13 +100,13 @@ public class RelationAnalyzer {
 	}
 
 	/**
-	 * Returns the similarity map for a specific set.
+	 * Returns the similarity map for a specific dataTable.
 	 * 
-	 * @param setID
+	 * @param dataTableID
 	 *            The id of the set
 	 * @return the similarity map with info on all relations to other registered meta sets
 	 */
-	public synchronized SimilarityMap getSimilarityMap(Integer setID) {
-		return hashSimilarityMaps.get(setID);
+	public synchronized SimilarityMap getSimilarityMap(Integer dataTableID) {
+		return hashSimilarityMaps.get(dataTableID);
 	}
 }

@@ -36,10 +36,10 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 
 	protected static final int CLUSTER_BUTTON_ID = 1;
 
-	protected DataTable set;
+	protected DataTable dataTable;
 
-	public ASetBasedDataConfigurer(DataTable set) {
-		this.set = set;
+	public ASetBasedDataConfigurer(DataTable dataTable) {
+		this.dataTable = dataTable;
 	}
 
 	protected ArrayList<ElementLayout> createHeaderBarElements(
@@ -63,7 +63,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getVisBricksView(), set.getLabel(),
+				.getDimensionGroup().getVisBricksView(), dataTable.getLabel(),
 				PickingType.DIMENSION_GROUP, layoutTemplate
 						.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
@@ -106,7 +106,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 								// if (clusterState != null && set != null)
 
 								event = new StartClusteringEvent(clusterState,
-										set.getID());
+										dataTable.getID());
 								event.setDataDomainID(brick.getDataDomain()
 										.getDataDomainID());
 								GeneralManager.get().getEventPublisher()
@@ -134,7 +134,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getVisBricksView(), set.getLabel(),
+				.getDimensionGroup().getVisBricksView(), dataTable.getLabel(),
 				PickingType.DIMENSION_GROUP, layoutTemplate
 						.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
@@ -239,7 +239,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		dimensionBarLaylout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
 		dimensionBarLaylout.setRatioSizeX(1);
 		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick
-				.getDataDomain().getDimensionVA(DataTable.DIMENSION), set.getDimensionData(
+				.getDataDomain().getDimensionVA(DataTable.DIMENSION), dataTable.getDimensionData(
 				DataTable.DIMENSION).getDimensionVA()));
 
 		footerBarElements.add(dimensionBarLaylout);
@@ -278,7 +278,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		fuelBarLayout.setFrameColor(0, 1, 0, 0);
 		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
 		fuelBarLayout.setPixelSizeY(FUELBAR_HEIGHT_PIXELS);
-		fuelBarLayout.setRenderer(new FuelBarRenderer(brick, set));
+		fuelBarLayout.setRenderer(new FuelBarRenderer(brick, dataTable));
 
 		footerBarElements.add(fuelBarLayout);
 

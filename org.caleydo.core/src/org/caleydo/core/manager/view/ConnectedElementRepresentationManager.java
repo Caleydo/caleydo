@@ -305,10 +305,10 @@ public class ConnectedElementRepresentationManager
 	 * 
 	 * @param idType
 	 *            the type to be cleared
-	 * @param iViewID
+	 * @param viewID
 	 *            the id of the view
 	 */
-	public void clearByViewAndType(IDType idType, int iViewID) {
+	public void clearByViewAndType(IDType idType, int viewID) {
 		ConnectionMap hashReps = sourceConnectionsByType.get(idType);
 		if (hashReps == null)
 			return;
@@ -317,7 +317,7 @@ public class ConnectedElementRepresentationManager
 
 			Iterator<SelectedElementRep> iterator = alRep.iterator();
 			while (iterator.hasNext()) {
-				if (iterator.next().getSourceViewID() == iViewID) {
+				if (iterator.next().getSourceViewID() == viewID) {
 					iterator.remove();
 				}
 			}
@@ -329,12 +329,12 @@ public class ConnectedElementRepresentationManager
 	/**
 	 * Clear all elements of a view, regardless of their type.
 	 * 
-	 * @param iViewID
+	 * @param viewID
 	 *            the view which id's should be removed
 	 */
-	public void clearByView(int iViewID) {
+	public void clearByView(int viewID) {
 		for (IDType idType : sourceConnectionsByType.keySet()) {
-			clearByViewAndType(idType, iViewID);
+			clearByViewAndType(idType, viewID);
 		}
 		transformedConnectionsByType.clear();
 		canvasConnectionsByType.clear();

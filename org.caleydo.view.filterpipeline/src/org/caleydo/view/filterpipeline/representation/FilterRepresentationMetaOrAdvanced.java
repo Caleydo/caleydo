@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.filter.ContentMetaOrFilter;
+import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -83,7 +83,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 					renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER + 0.1f);
 			gl.glPopName();
 
-			textRenderer.renderText(gl, ((ContentMetaOrFilter) filter.getFilter())
+			textRenderer.renderText(gl, ((RecordMetaOrFilter) filter.getFilter())
 					.getFilterList().get(i).getLabel(), curPos.x() + 0.02f,
 					curPos.y() + 0.02f, Z_POS_TEXT, 0.0035f, 18);
 

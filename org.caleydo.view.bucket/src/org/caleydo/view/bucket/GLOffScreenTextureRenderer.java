@@ -21,7 +21,7 @@ public class GLOffScreenTextureRenderer {
 		}
 	}
 
-	public void renderToTexture(GL2 gl, int iViewID, int iTextureIndex, int iViewWidth,
+	public void renderToTexture(GL2 gl, int viewID, int iTextureIndex, int iViewWidth,
 			int iViewHeight) {
 		gl.glViewport(0, 0, 1024, 1024);
 
@@ -32,7 +32,7 @@ public class GLOffScreenTextureRenderer {
 
 		// RENDER VIEW CONTENT
 		AGLView glEventListener = GeneralManager.get().getViewGLCanvasManager()
-				.getGLView(iViewID);
+				.getGLView(viewID);
 
 		ViewFrustum viewFrustum = glEventListener.getViewFrustum();
 

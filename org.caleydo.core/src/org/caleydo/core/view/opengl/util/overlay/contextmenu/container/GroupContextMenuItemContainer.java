@@ -64,10 +64,10 @@ public class GroupContextMenuItemContainer
 		}
 	}
 
-	public void setContentIDs(IDType idType, ArrayList<Integer> contentIDs) {
+	public void setContentIDs(IDType idType, ArrayList<Integer> recordIDs) {
 		if (isGeneGroup) {
 			AItemContainer domainSpecificContainer =
-				dataDomain.getContentGroupItemContainer(idType, contentIDs);
+				dataDomain.getRecordGroupItemContainer(idType, recordIDs);
 			if (domainSpecificContainer != null)
 				addItemContainer(domainSpecificContainer);
 

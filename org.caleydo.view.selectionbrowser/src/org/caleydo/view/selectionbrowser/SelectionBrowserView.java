@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
@@ -27,8 +27,8 @@ import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.dimensionbased.VirtualArrayUpdateEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -58,7 +58,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class SelectionBrowserView extends ASWTView implements
 		IDataDomainBasedView<ATableBasedDataDomain>, ISelectionUpdateHandler,
-		IContentVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
+		IRecordVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	private final static String SELECTION_TYPE_NAME_1 = "Selected by group 1";
 	private final static String SELECTION_TYPE_NAME_2 = "Selected by group 2";
@@ -77,7 +77,7 @@ public class SelectionBrowserView extends ASWTView implements
 	GeneralManager generalManager = null;
 	EventPublisher eventPublisher = null;
 
-	ContentSelectionManager contentSelectionManager;
+	RecordSelectionManager contentSelectionManager;
 	DimensionSelectionManager dimensionSelectionManager;
 
 	private Tree selectionTree;
@@ -88,7 +88,7 @@ public class SelectionBrowserView extends ASWTView implements
 	private Button btnSub;
 
 	private SelectionUpdateListener selectionUpdateListener;
-	private ContentVAUpdateListener virtualArrayUpdateListener;
+	private RecordVAUpdateListener virtualArrayUpdateListener;
 	private SelectionCommandListener selectionCommandListener;
 
 	private RedrawViewListener redrawViewListener;
@@ -106,11 +106,11 @@ public class SelectionBrowserView extends ASWTView implements
 	}
 
 	private void initContent() {
-		String contentVAType = DataTable.RECORD;
-		contentSelectionManager = dataDomain.getContentSelectionManager();
+		String recordVAType = DataTable.RECORD;
+		contentSelectionManager = dataDomain.getRecordSelectionManager();
 
-		ContentVirtualArray contentVA = dataDomain.getContentVA(contentVAType);
-		contentSelectionManager.setVA(contentVA);
+		RecordVirtualArray recordVA = dataDomain.getRecordVA(recordVAType);
+		contentSelectionManager.setVA(recordVA);
 
 		initSelectedByGroupSelectionTypes();
 	}
@@ -407,7 +407,7 @@ public class SelectionBrowserView extends ASWTView implements
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
-		virtualArrayUpdateListener = new ContentVAUpdateListener();
+		virtualArrayUpdateListener = new RecordVAUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class,
 				virtualArrayUpdateListener);
@@ -469,12 +469,12 @@ public class SelectionBrowserView extends ASWTView implements
 	}
 
 	@Override
-	public void handleVAUpdate(ContentVADelta vaDelta, final String info) {
+	public void handleVAUpdate(RecordVADelta vaDelta, final String info) {
 		initContent();
 	}
 
 	@Override
-	public void replaceContentVA(int setID, String dataDomain, String vaType) {
+	public void replaceRecordVA(int dataTableID, String dataDomain, String vaType) {
 		// nothing to do here
 	}
 

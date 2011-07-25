@@ -6,7 +6,7 @@ import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
-import org.caleydo.core.util.clusterer.EClustererType;
+import org.caleydo.core.util.clusterer.ClustererType;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.core.util.clusterer.ETreeClustererAlgo;
 import org.caleydo.data.loader.ResourceLoader;
@@ -88,7 +88,7 @@ public class StartClusteringDialogAction
 
 		this.parentComposite = parentComposite;
 
-		sArTypeOptions[0] = dataDomain.getContentName(true, false);
+		sArTypeOptions[0] = dataDomain.getRecordName(true, false);
 	}
 
 	@Override
@@ -511,11 +511,11 @@ public class StartClusteringDialogAction
 		}
 
 		if (clusterType.equals(sArTypeOptions[0]))
-			clusterState.setClustererType(EClustererType.CONTENT_CLUSTERING);
+			clusterState.setClustererType(ClustererType.RECORD_CLUSTERING);
 		else if (clusterType.equals(sArTypeOptions[1]))
-			clusterState.setClustererType(EClustererType.STORAGE_CLUSTERING);
+			clusterState.setClustererType(ClustererType.DIMENSION_CLUSTERING);
 		else if (clusterType.equals(sArTypeOptions[2]))
-			clusterState.setClustererType(EClustererType.BI_CLUSTERING);
+			clusterState.setClustererType(ClustererType.BI_CLUSTERING);
 
 		if (distmeasure.equals(sArDistOptions[0]))
 			clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
@@ -542,7 +542,7 @@ public class StartClusteringDialogAction
 			clusterState = othersTab.getClusterState();
 
 		// by default we use the main VAs for clustering
-		clusterState.setContentVAType(DataTable.RECORD);
+		clusterState.setRecordVAType(DataTable.RECORD);
 		clusterState.setDimensionVAType(DataTable.DIMENSION);
 
 		ClusteringProgressBar progressBar =

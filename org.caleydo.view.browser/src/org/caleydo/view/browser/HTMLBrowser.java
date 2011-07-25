@@ -84,8 +84,8 @@ public class HTMLBrowser extends ASWTView {
 	/**
 	 * Constructor.
 	 */
-	public HTMLBrowser(int iViewID, Composite parentComposite) {
-		super(iViewID, parentComposite);
+	public HTMLBrowser(int viewID, Composite parentComposite) {
+		super(viewID, parentComposite);
 		
 		parentComposite.addDisposeListener(new DisposeListener() {
 			

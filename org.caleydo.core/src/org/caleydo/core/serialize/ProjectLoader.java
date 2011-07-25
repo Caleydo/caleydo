@@ -11,7 +11,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.BasicInformation;
@@ -120,19 +120,19 @@ public class ProjectLoader {
 					loadingParameters.setFileName(setFileName);
 					loadingParameters.setDataDomain((ATableBasedDataDomain) dataDomain);
 
-					HashMap<String, ContentVirtualArray> contentVAMap =
-						new HashMap<String, ContentVirtualArray>(6);
+					HashMap<String, RecordVirtualArray> recordVAMap =
+						new HashMap<String, RecordVirtualArray>(6);
 					String tmpType = DataTable.RECORD;
-					contentVAMap.put(DataTable.RECORD, loadContentVirtualArray(unmarshaller, extendedDirName, tmpType));
-					// tmpType = ContentVAType.CONTENT_CONTEXT;
-					// contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
+					recordVAMap.put(DataTable.RECORD, loadContentVirtualArray(unmarshaller, extendedDirName, tmpType));
+					// tmpType = RecordVAType.CONTENT_CONTEXT;
+					// recordVAMap.put(RecordVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
 					// tmpType));
-					// tmpType = ContentVAType.CONTENT_EMBEDDED_HM;
-					// contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
+					// tmpType = RecordVAType.CONTENT_EMBEDDED_HM;
+					// recordVAMap.put(RecordVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
 					// tmpType));
 					// FIXME: this should be done like this:
-					// for (ContentVAType type : ContentVAType.getRegisteredVATypes()) {
-					// contentVAMap.put(type, loadContentVirtualArray(unmarshaller, dirName, type));
+					// for (RecordVAType type : RecordVAType.getRegisteredVATypes()) {
+					// recordVAMap.put(type, loadContentVirtualArray(unmarshaller, dirName, type));
 					// }
 
 					HashMap<String, DimensionVirtualArray> dimensionVAMap =
@@ -148,7 +148,7 @@ public class ProjectLoader {
 					// }
 
 					dataInitializationData.setDataDomain((ATableBasedDataDomain) dataDomain);
-					dataInitializationData.setContentVAMap(contentVAMap);
+					dataInitializationData.setRecordVAMap(recordVAMap);
 					dataInitializationData.setDimensionVAMap(dimensionVAMap);
 
 					dataDomain.getLoadDataParameters().setGeneTreeFileName(
@@ -228,10 +228,10 @@ public class ProjectLoader {
 	 * @throws JAXBException
 	 *             in case of a {@link JAXBException} while unmarshalling the xml file
 	 */
-	private ContentVirtualArray loadContentVirtualArray(Unmarshaller unmarshaller, String dir, String type)
+	private RecordVirtualArray loadContentVirtualArray(Unmarshaller unmarshaller, String dir, String type)
 		throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
-		ContentVirtualArray va = (ContentVirtualArray) unmarshaller.unmarshal(new File(fileName));
+		RecordVirtualArray va = (RecordVirtualArray) unmarshaller.unmarshal(new File(fileName));
 		return va;
 	}
 

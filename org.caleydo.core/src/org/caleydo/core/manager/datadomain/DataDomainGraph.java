@@ -59,8 +59,8 @@ public class DataDomainGraph {
 
 					// TODO: Also mapping between content and dimension?
 					boolean hasContentMapping =
-						idMappingManager.hasMapping(setBasedDataDomain.getPrimaryContentMappingType(),
-							setBasedVertex.getPrimaryContentMappingType());
+						idMappingManager.hasMapping(setBasedDataDomain.getPrimaryRecordMappingType(),
+							setBasedVertex.getPrimaryRecordMappingType());
 					boolean hasDimensionMapping =
 						idMappingManager.hasMapping(setBasedDataDomain.getPrimaryDimensionMappingType(),
 							setBasedVertex.getPrimaryDimensionMappingType());

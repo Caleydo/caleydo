@@ -11,11 +11,11 @@ import javax.media.opengl.GLProfile;
 import org.caleydo.core.data.collection.dimension.ADimension;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -34,11 +34,11 @@ public class HeatMapUtil {
 
 	public static int MAX_SAMPLES_PER_TEXTURE = 2000;
 
-	public static ArrayList<Texture> createHeatMapTextures(DataTable set,
-			ContentVirtualArray contentVA, DimensionVirtualArray dimensionVA,
-			ContentSelectionManager contentSelectionManager) {
+	public static ArrayList<Texture> createHeatMapTextures(DataTable dataTable,
+			RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA,
+			RecordSelectionManager contentSelectionManager) {
 
-		int numSamples = contentVA.size();
+		int numSamples = recordVA.size();
 		int numDimensions = dimensionVA.size();
 
 		ArrayList<Texture> textures = new ArrayList<Texture>();
@@ -50,7 +50,7 @@ public class HeatMapUtil {
 		FloatBuffer textureBuffer = null;
 		int numSamplesInTexture = 0;
 
-		for (Integer contentIndex : contentVA) {
+		for (Integer recordIndex : recordVA) {
 
 			if (isNewTexture) {
 				numSamplesInTexture = Math.min(MAX_SAMPLES_PER_TEXTURE, numSamples
@@ -66,12 +66,12 @@ public class HeatMapUtil {
 
 				if (contentSelectionManager != null
 						&& contentSelectionManager.checkStatus(SelectionType.DESELECTED,
-								contentIndex)) {
+								recordIndex)) {
 					fOpacity = 0.3f;
 				}
-				ADimension dimension = set.get(dimensionIndex);
+				ADimension dimension = dataTable.get(dimensionIndex);
 				float fLookupValue = dimension.getFloat(DataRepresentation.NORMALIZED,
-						contentIndex);
+						recordIndex);
 
 				float[] fArMappingColor = colorMapping.getColor(fLookupValue);
 
@@ -146,14 +146,14 @@ public class HeatMapUtil {
 		}
 	}
 
-	public static void renderGroupBar(GL2 gl, ContentVirtualArray contentVA,
+	public static void renderGroupBar(GL2 gl, RecordVirtualArray recordVA,
 			float totalHeight, float groupWidth, PickingManager pickingManager,
 			int viewID, PickingType pickingType, TextureManager textureManager) {
 
-		ContentGroupList contentGroupList = contentVA.getGroupList();
+		RecordGroupList contentGroupList = recordVA.getGroupList();
 
 		if (contentGroupList != null) {
-			float sampleHeight = totalHeight / ((float) contentVA.size());
+			float sampleHeight = totalHeight / ((float) recordVA.size());
 			float groupPositionY = totalHeight;
 
 			gl.glColor4f(1, 1, 1, 1);

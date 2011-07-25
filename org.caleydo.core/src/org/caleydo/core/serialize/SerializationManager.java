@@ -157,7 +157,7 @@ public class SerializationManager {
 		// eventTypes.add(ClusterProgressEvent.class);
 		// eventTypes.add(RenameProgressBarEvent.class);
 		// eventTypes.add(ReplaceVAEvent.class);
-		// eventTypes.add(ReplaceContentVAInUseCaseEvent.class);
+		// eventTypes.add(ReplaceRecordVAInUseCaseEvent.class);
 		// eventTypes.add(StartClusteringEvent.class);
 		// eventTypes.add(ClusterNodeSelectionEvent.class);
 		// eventTypes.add(ClientListEvent.class);

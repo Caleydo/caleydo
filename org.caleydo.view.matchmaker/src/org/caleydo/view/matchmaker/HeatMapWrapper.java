@@ -10,7 +10,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
@@ -18,8 +18,8 @@ import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
@@ -59,14 +59,14 @@ public class HeatMapWrapper {
 	private static int selectionTypeNumber = 0;
 
 	private HeatMapOverview overview;
-	private DataTable set;
+	private DataTable dataTable;
 
-	private String contentVAType = DataTable.RECORD;
-	private ContentVirtualArray contentVA;
+	private String recordVAType = DataTable.RECORD;
+	private RecordVirtualArray recordVA;
 	private AHeatMapLayout layout;
 	private HashMap<Integer, GLHeatMap> hashHeatMaps;
 	private HashMap<Group, Boolean> selectedGroups;
-	private GLDendrogram<ContentGroupList> dendrogram;
+	private GLDendrogram<RecordGroupList> dendrogram;
 	private boolean isNewSelection;
 	private boolean isInitialized;
 	private boolean isNewSet;
@@ -81,7 +81,7 @@ public class HeatMapWrapper {
 
 	// private SelectionUpdateListener selectionUpdateListener;
 	private EventPublisher eventPublisher;
-	private ContentSelectionManager contentSelectionManager;
+	private RecordSelectionManager contentSelectionManager;
 
 	private boolean useSorting = true;
 	// private boolean useZoom = false;
@@ -105,7 +105,7 @@ public class HeatMapWrapper {
 
 		isNewSelection = false;
 		eventPublisher = GeneralManager.get().getEventPublisher();
-		contentSelectionManager = dataDomain.getContentSelectionManager();
+		contentSelectionManager = dataDomain.getRecordSelectionManager();
 		// contentSelectionManager.addTypeToDeltaBlacklist(activeHeatMapSelectionType);
 		activeHeatMapID = -1;
 
@@ -120,14 +120,14 @@ public class HeatMapWrapper {
 				parentView.getParentComposite(), viewFrustum);
 		heatMap.setRemoteRenderingGLView(parentView);
 		heatMap.setDataDomain(dataDomain);
-		heatMap.setContentVAType(GLHeatMap.CONTENT_EMBEDDED_VA);
+		heatMap.setRecordVAType(GLHeatMap.CONTENT_EMBEDDED_VA);
 
 		if (layout instanceof HeatMapLayoutDetailViewRight)
 			heatMap.setRenderTemplate(new MatchmakerDetailTemplate(heatMap, false));
 		else
 			heatMap.setRenderTemplate(new MatchmakerDetailTemplate(heatMap, true));
 
-		heatMap.setSet(set);
+		heatMap.setDataTable(dataTable);
 		heatMap.initData();
 		heatMap.setDetailLevel(DetailLevel.MEDIUM);
 		heatMap.initRemote(gl, glParentView, glMouseListener);
@@ -142,23 +142,23 @@ public class HeatMapWrapper {
 		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
 				50, 0, 50, -20, 20);
 
-		dendrogram = new GLDendrogram<ContentGroupList>(glParentView.getParentGLCanvas(),
+		dendrogram = new GLDendrogram<RecordGroupList>(glParentView.getParentGLCanvas(),
 				glParentView.getParentComposite(), viewFrustum, true);
 		dendrogram.setDataDomain(dataDomain);
 		dendrogram.setRemoteRenderingGLView(parentView);
-		dendrogram.setContentVAType(contentVAType);
+		dendrogram.setRecordVAType(recordVAType);
 		dendrogram.initData();
 		dendrogram.setRenderUntilCut(false);
 		dendrogram.initRemote(gl, glParentView, glMouseListener);
 	}
 
-	public DataTable getSet() {
-		return set;
+	public DataTable getDataTable() {
+		return dataTable;
 	}
 
-	public void setSet(DataTable set) {
-		this.set = set;
-		contentVA = set.getContentData(DataTable.RECORD).getContentVA();
+	public void setDataTable(DataTable dataTable) {
+		this.dataTable = dataTable;
+		recordVA = dataTable.getRecordData(DataTable.RECORD).getRecordVA();
 
 		// FIXME: Can we do this? Shall we do this in some other way? Do it also
 		// with dendrogram.
@@ -167,10 +167,10 @@ public class HeatMapWrapper {
 		}
 		hashHeatMaps.clear();
 		selectedGroups.clear();
-		contentSelectionManager = dataDomain.getContentSelectionManager();
+		contentSelectionManager = dataDomain.getRecordSelectionManager();
 		// contentSelectionManager.clearSelections();
-		contentSelectionManager.setVA(contentVA);
-		ContentGroupList contentGroupList = contentVA.getGroupList();
+		contentSelectionManager.setVA(recordVA);
+		RecordGroupList contentGroupList = recordVA.getGroupList();
 
 		// FIXME
 		try {
@@ -187,7 +187,7 @@ public class HeatMapWrapper {
 		// heatMap.useFishEye(false);
 		// heatMap.setDisplayListDirty();
 
-		overview.setSet(set);
+		overview.setDataTable(dataTable);
 		isNewSet = true;
 		isInitialized = false;
 		activeHeatMapID = -1;
@@ -196,10 +196,10 @@ public class HeatMapWrapper {
 	public void init(GL2 gl, GLMouseListener glMouseListener,
 			GLInfoAreaManager infoAreaManager) {
 
-		if (set == null)
+		if (dataTable == null)
 			return;
 
-		ContentGroupList contentGroupList = contentVA.getGroupList();
+		RecordGroupList contentGroupList = recordVA.getGroupList();
 		hashHeatMaps.clear();
 		// selectedGroups.clear();
 
@@ -234,16 +234,16 @@ public class HeatMapWrapper {
 
 		// TODO: Is this really necessary?
 		heatMap.resetView();
-		ContentVirtualArray va = new ContentVirtualArray();
+		RecordVirtualArray va = new RecordVirtualArray();
 
 		for (int i = firstSampleIndex; i <= lastSampleIndex; i++) {
-			if (i >= contentVA.size())
+			if (i >= recordVA.size())
 				break;
-			va.append(contentVA.get(i));
+			va.append(recordVA.get(i));
 
 		}
 
-		heatMap.setContentVA(va);
+		heatMap.setRecordVA(va);
 		heatMap.useFishEye(false);
 	}
 
@@ -360,45 +360,45 @@ public class HeatMapWrapper {
 
 	}
 
-	public float[] getLeftOverviewLinkPositionFromContentIndex(int contentIndex) {
+	public float[] getLeftOverviewLinkPositionFromContentIndex(int recordIndex) {
 
 		Vec3f overviewPosition = layout.getOverviewHeatMapPosition();
 
 		return new float[] { overviewPosition.x(),
-				layout.getOverviewHeatMapSamplePositionY(contentIndex), 0 };
+				layout.getOverviewHeatMapSamplePositionY(recordIndex), 0 };
 	}
 
-	public float[] getLeftOverviewLinkPositionFromContentID(int contentID) {
+	public float[] getLeftOverviewLinkPositionFromContentID(int recordID) {
 
-		int contentIndex = contentVA.indexOf(contentID);
+		int recordIndex = recordVA.indexOf(recordID);
 
-		if (contentVA.indexOf(contentID) == -1)
+		if (recordVA.indexOf(recordID) == -1)
 			return null;
 
-		return getLeftOverviewLinkPositionFromContentIndex(contentIndex);
+		return getLeftOverviewLinkPositionFromContentIndex(recordIndex);
 	}
 
-	public float[] getRightOverviewLinkPositionFromContentIndex(int contentIndex) {
+	public float[] getRightOverviewLinkPositionFromContentIndex(int recordIndex) {
 
 		Vec3f overviewPosition = layout.getOverviewHeatMapPosition();
 
 		return new float[] { overviewPosition.x() + layout.getOverviewHeatMapWidth(),
-				layout.getOverviewHeatMapSamplePositionY(contentIndex), 0 };
+				layout.getOverviewHeatMapSamplePositionY(recordIndex), 0 };
 	}
 
-	public float[] getRightOverviewLinkPositionFromContentID(int contentID) {
+	public float[] getRightOverviewLinkPositionFromContentID(int recordID) {
 
-		int contentIndex = contentVA.indexOf(contentID);
+		int recordIndex = recordVA.indexOf(recordID);
 
-		if (contentVA.indexOf(contentID) == -1)
+		if (recordVA.indexOf(recordID) == -1)
 			return null;
 
-		return getRightOverviewLinkPositionFromContentIndex(contentIndex);
+		return getRightOverviewLinkPositionFromContentIndex(recordIndex);
 	}
 
-	public float[] getRightDetailLinkPositionFromContentID(int contentID) {
+	public float[] getRightDetailLinkPositionFromContentID(int recordID) {
 
-		Float yCoordinate = getDetailYCoordinateByContentID(contentID);
+		Float yCoordinate = getDetailYCoordinateByContentID(recordID);
 
 		if (yCoordinate == null)
 			return null;
@@ -407,9 +407,9 @@ public class HeatMapWrapper {
 				yCoordinate, 0 };
 	}
 
-	public float[] getLeftDetailLinkPositionFromContentID(int contentID) {
+	public float[] getLeftDetailLinkPositionFromContentID(int recordID) {
 
-		Float yCoordinate = getDetailYCoordinateByContentID(contentID);
+		Float yCoordinate = getDetailYCoordinateByContentID(recordID);
 
 		if (yCoordinate == null)
 			return null;
@@ -417,10 +417,10 @@ public class HeatMapWrapper {
 		return new float[] { layout.getDetailPosition().x(), yCoordinate, 0 };
 	}
 
-	private Float getDetailYCoordinateByContentID(int contentID) {
+	private Float getDetailYCoordinateByContentID(int recordID) {
 
 		// For the group check we need the index in the global content VA
-		Group group = getSelectedGroupFromContentIndex(contentVA.indexOf(contentID));
+		Group group = getSelectedGroupFromContentIndex(recordVA.indexOf(recordID));
 		if (group == null)
 			return null;
 
@@ -430,8 +430,8 @@ public class HeatMapWrapper {
 		if (heatMap == null)
 			return null;
 
-		int contentIndex = heatMap.getContentVA().indexOf(contentID);
-		if (contentIndex == -1)
+		int recordIndex = heatMap.getRecordVA().indexOf(recordID);
+		if (recordIndex == -1)
 			return null;
 
 		// calculateHeatMapPositions();
@@ -449,7 +449,7 @@ public class HeatMapWrapper {
 
 		float heatMapHeight = layout.getDetailHeatMapHeight(groupIndex);
 
-		Float elementInHMPosition = heatMap.getYCoordinateByContentIndex(contentIndex);
+		Float elementInHMPosition = heatMap.getYCoordinateByContentIndex(recordIndex);
 
 		if (elementInHMPosition == null)
 			return null;
@@ -466,20 +466,20 @@ public class HeatMapWrapper {
 	 *            selected.
 	 * @return
 	 */
-	public ArrayList<ContentVirtualArray> getContentVAsOfHeatMaps(
+	public ArrayList<RecordVirtualArray> getRecordVAsOfHeatMaps(
 			boolean considerSelectedGroups) {
-		ArrayList<ContentVirtualArray> contentVAs = new ArrayList<ContentVirtualArray>();
+		ArrayList<RecordVirtualArray> recordVAs = new ArrayList<RecordVirtualArray>();
 
-		ContentGroupList groupList = contentVA.getGroupList();
+		RecordGroupList groupList = recordVA.getGroupList();
 		for (int groupIndex = 0; groupIndex < groupList.size(); groupIndex++) {
 			Group group = groupList.get(groupIndex);
 
 			if (!considerSelectedGroups || selectedGroups.containsKey(group)) {
 				GLHeatMap heatMap = hashHeatMaps.get(group.getGroupID());
-				contentVAs.add(heatMap.getContentVA());
+				recordVAs.add(heatMap.getRecordVA());
 			}
 		}
-		return contentVAs;
+		return recordVAs;
 	}
 
 	public Collection<GLHeatMap> getHeatMaps(boolean considerSelections) {
@@ -507,9 +507,9 @@ public class HeatMapWrapper {
 	// return hashHeatMaps.values();
 	// }
 
-	public ArrayList<ContentSelectionManager> getContentSelectionManagersOfHeatMaps() {
+	public ArrayList<RecordSelectionManager> getContentSelectionManagersOfHeatMaps() {
 
-		ArrayList<ContentSelectionManager> contentSelectionManagers = new ArrayList<ContentSelectionManager>();
+		ArrayList<RecordSelectionManager> contentSelectionManagers = new ArrayList<RecordSelectionManager>();
 		for (Group group : selectedGroups.keySet()) {
 			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupID());
 			contentSelectionManagers.add(heatMap.getContentSelectionManager());
@@ -518,10 +518,10 @@ public class HeatMapWrapper {
 		return contentSelectionManagers;
 	}
 
-	public Group getSelectedGroupFromContentIndex(int contentIndex) {
+	public Group getSelectedGroupFromContentIndex(int recordIndex) {
 		for (Group group : selectedGroups.keySet()) {
-			if (contentIndex >= group.getStartIndex()
-					&& contentIndex <= group.getEndIndex()) {
+			if (recordIndex >= group.getStartIndex()
+					&& recordIndex <= group.getEndIndex()) {
 				return group;
 			}
 		}
@@ -552,10 +552,10 @@ public class HeatMapWrapper {
 	 * virtual array to {@link GLHeatMap#SELECTION_HIDDEN} so that they can be
 	 * hidden on demand.
 	 */
-	public void choosePassiveHeatMaps(ArrayList<ContentVirtualArray> foreignContentVAs,
+	public void choosePassiveHeatMaps(ArrayList<RecordVirtualArray> foreignRecordVAs,
 			boolean hideVisible, boolean considerSelectedGroups, boolean selectGroups) {
 
-		ContentGroupList groupList = contentVA.getGroupList();
+		RecordGroupList groupList = recordVA.getGroupList();
 		// FIXME this isn't to nice
 		for (Group group : groupList.getGroups())
 			group.setSelectionType(SelectionType.NORMAL);
@@ -564,9 +564,9 @@ public class HeatMapWrapper {
 		HashMap<Group, Boolean> tempGroups = new HashMap<Group, Boolean>();
 
 		tempGroups.clear();
-		for (ContentVirtualArray foreignVa : foreignContentVAs) {
-			for (Integer contentID : foreignVa) {
-				int vaIndex = contentVA.indexOf(contentID);
+		for (RecordVirtualArray foreignVa : foreignRecordVAs) {
+			for (Integer recordID : foreignVa) {
+				int vaIndex = recordVA.indexOf(recordID);
 				Group selectedGroup = groupList.getGroupOfVAIndex(vaIndex);
 				if (!tempGroups.containsKey(selectedGroup)) {
 					tempGroups.put(selectedGroup, null);
@@ -574,8 +574,8 @@ public class HeatMapWrapper {
 				}
 
 				GLHeatMap heatMap = hashHeatMaps.get(selectedGroup.getGroupID());
-				ContentVirtualArray heatMapVA = heatMap.getContentVA();
-				int index = heatMapVA.indexOf(contentID);
+				RecordVirtualArray heatMapVA = heatMap.getRecordVA();
+				int index = heatMapVA.indexOf(recordID);
 				if (useSorting && index >= 0)
 					heatMapVA.move(index, selectedGroup.getContainedNrGenes());
 				else
@@ -590,7 +590,7 @@ public class HeatMapWrapper {
 			selectedGroups.clear();
 			selectedGroups.putAll(tempGroups);
 		}
-		sort(foreignContentVAs, considerSelectedGroups, hideVisible);
+		sort(foreignRecordVAs, considerSelectedGroups, hideVisible);
 
 		// here we Hide those that are not part of the other va, and re-sort the
 		// source va
@@ -602,17 +602,17 @@ public class HeatMapWrapper {
 		//
 		// int nrGenes = group.getContainedNrGenes();
 		//
-		// ContentVirtualArray contentVA = heatMap.getContentVA();
+		// ContentVirtualArray recordVA = heatMap.getRecordVA();
 		//
 		// if (useSorting) {
 		// // re-sort the source virtual array to group genes according
 		// // to
 		// // vas in the destination (here)
-		// for (ContentVirtualArray foreignVA : foreignContentVAs) {
+		// for (ContentVirtualArray foreignVA : foreignRecordVAs) {
 		// Integer foreignContentLastOrdererIndex = 0;
-		// for (int contentIndex = 0; contentIndex < nrGenes; contentIndex++) {
-		// Integer contentID = contentVA.get(contentIndex);
-		// int foreignIndex = foreignVA.indexOf(contentID);
+		// for (int recordIndex = 0; recordIndex < nrGenes; recordIndex++) {
+		// Integer recordID = recordVA.get(recordIndex);
+		// int foreignIndex = foreignVA.indexOf(recordID);
 		// if (foreignIndex != -1) {
 		// foreignVA.move(foreignIndex,
 		// foreignContentLastOrdererIndex++);
@@ -624,10 +624,10 @@ public class HeatMapWrapper {
 		// SelectionDelta contentSelectionDelta = new SelectionDelta(
 		// EIDType.EXPRESSION_INDEX);
 		//
-		// for (int contentIndex = nrGenes; contentIndex < contentVA
-		// .size(); contentIndex++) {
+		// for (int recordIndex = nrGenes; recordIndex < recordVA
+		// .size(); recordIndex++) {
 		// SelectionDeltaItem item = new SelectionDeltaItem();
-		// item.setPrimaryID(contentVA.get(contentIndex));
+		// item.setPrimaryID(recordVA.get(recordIndex));
 		// item.setSelectionType(GLHeatMap.SELECTION_HIDDEN);
 		// contentSelectionDelta.add(item);
 		// }
@@ -652,16 +652,16 @@ public class HeatMapWrapper {
 	 * whether elements should be hidden or not. If all elements occur in the
 	 * foreign VA the parameter has no effect but increased performance
 	 * 
-	 * @param foreignContentVAs
+	 * @param foreignRecordVAs
 	 * @param hideVisible
 	 */
-	public void sort(ArrayList<ContentVirtualArray> foreignContentVAs,
+	public void sort(ArrayList<RecordVirtualArray> foreignRecordVAs,
 			boolean hideVisible, boolean considerSelectedGroups) {
-		ContentGroupList groupList = contentVA.getGroupList();
+		RecordGroupList groupList = recordVA.getGroupList();
 
-		// for (ContentVirtualArray foreignVa : foreignContentVAs) {
-		// for (Integer contentID : foreignVa) {
-		// int vaIndex = contentVA.indexOf(contentID);
+		// for (ContentVirtualArray foreignVa : foreignRecordVAs) {
+		// for (Integer recordID : foreignVa) {
+		// int vaIndex = recordVA.indexOf(recordID);
 		// Group selectedGroup = groupList.getGroupOfVAIndex(vaIndex);
 		// gr
 		// }
@@ -675,17 +675,17 @@ public class HeatMapWrapper {
 
 				int nrGenes = group.getContainedNrGenes();
 
-				ContentVirtualArray contentVA = heatMap.getContentVA();
+				RecordVirtualArray recordVA = heatMap.getRecordVA();
 
 				if (useSorting) {
 					// re-sort the source virtual array to group genes according
 					// to
 					// vas in the destination (here)
-					for (ContentVirtualArray foreignVA : foreignContentVAs) {
+					for (RecordVirtualArray foreignVA : foreignRecordVAs) {
 						Integer foreignContentLastOrdererIndex = 0;
-						for (int contentIndex = 0; contentIndex < nrGenes; contentIndex++) {
-							Integer contentID = contentVA.get(contentIndex);
-							int foreignIndex = foreignVA.indexOf(contentID);
+						for (int recordIndex = 0; recordIndex < nrGenes; recordIndex++) {
+							Integer recordID = recordVA.get(recordIndex);
+							int foreignIndex = foreignVA.indexOf(recordID);
 							if (foreignIndex != -1) {
 								foreignVA.move(foreignIndex,
 										foreignContentLastOrdererIndex++);
@@ -696,11 +696,11 @@ public class HeatMapWrapper {
 					if (hideVisible) {
 						// hide the elements not in the source vas
 						SelectionDelta contentSelectionDelta = new SelectionDelta(
-								dataDomain.getContentIDType());
+								dataDomain.getRecordIDType());
 
-						for (int contentIndex = nrGenes; contentIndex < contentVA.size(); contentIndex++) {
+						for (int recordIndex = nrGenes; recordIndex < recordVA.size(); recordIndex++) {
 							SelectionDeltaItem item = new SelectionDeltaItem();
-							item.setPrimaryID(contentVA.get(contentIndex));
+							item.setPrimaryID(recordVA.get(recordIndex));
 							item.setSelectionType(GLHeatMap.SELECTION_HIDDEN);
 							contentSelectionDelta.add(item);
 						}
@@ -742,7 +742,7 @@ public class HeatMapWrapper {
 			}
 		}
 
-		ContentGroupList contentGroupList = contentVA.getGroupList();
+		RecordGroupList contentGroupList = recordVA.getGroupList();
 		contentGroupList.updateGroupInfo();
 
 		if (!isControlPressed) {
@@ -765,7 +765,7 @@ public class HeatMapWrapper {
 		//
 		// contentSelectionManager.clearSelection(selectionType);
 		//
-		// ArrayList<Integer> groupElements = set.getContentTree()
+		// ArrayList<Integer> groupElements = dataTable.getContentTree()
 		// .getNodeByNumber(selectedGroup.getClusterNode().getID())
 		// .getLeaveIds();
 		//
@@ -788,7 +788,7 @@ public class HeatMapWrapper {
 
 		SelectionCommandEvent event = new SelectionCommandEvent();
 		event.setSelectionCommand(selectionCommand);
-		event.setIDCategory(dataDomain.getContentIDCategory());
+		event.dataTableIDCategory(dataDomain.getRecordIDCategory());
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
@@ -800,7 +800,7 @@ public class HeatMapWrapper {
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 
-		if (selectionDelta.getIDType() == dataDomain.getContentIDType()) {
+		if (selectionDelta.getIDType() == dataDomain.getRecordIDType()) {
 			contentSelectionManager.setDelta(selectionDelta);
 			// TODO: Maybe just set selection list dirty
 			if (selectedGroups.isEmpty())
@@ -810,9 +810,9 @@ public class HeatMapWrapper {
 		}
 	}
 
-	public void handleReplaceContentVA(IDCategory idCategory, String vaType) {
+	public void handleReplaceRecordVA(IDCategory idCategory, String vaType) {
 
-		contentVA = set.getContentData(vaType).getContentVA();
+		recordVA = dataTable.getRecordData(vaType).getRecordVA();
 	}
 
 	public void handleClearSelections() {
@@ -845,7 +845,7 @@ public class HeatMapWrapper {
 
 		if (previouslyActiveHeatMapID != -1) {
 			GLHeatMap heatMap = hashHeatMaps.get(activeHeatMapID);
-			for (Integer elementID : heatMap.getContentVA()) {
+			for (Integer elementID : heatMap.getRecordVA()) {
 
 				contentSelectionManager.removeFromType(
 						ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE, elementID);
@@ -859,7 +859,7 @@ public class HeatMapWrapper {
 		GLHeatMap heatMap = hashHeatMaps.get(groupIndex);
 		// heatMap.setActive(true);
 		contentSelectionManager.addToType(
-				ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE, heatMap.getContentVA()
+				ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE, heatMap.getRecordVA()
 						.getVirtualArray());
 
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
@@ -879,7 +879,7 @@ public class HeatMapWrapper {
 			event.addSelectionType(selectionType);
 			event.setSender(heatMap);
 			eventPublisher.triggerEvent(event);
-			contentSelectionManager.addToType(selectionType, heatMap.getContentVA()
+			contentSelectionManager.addToType(selectionType, heatMap.getRecordVA()
 					.getVirtualArray());
 			selectionUpdateEvent = new SelectionUpdateEvent();
 
@@ -892,7 +892,7 @@ public class HeatMapWrapper {
 
 	public void setHeatMapsInactive() {
 
-		for (Integer elementID : contentVA) {
+		for (Integer elementID : recordVA) {
 			contentSelectionManager.removeFromType(
 					ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE, elementID);
 		}
@@ -909,7 +909,7 @@ public class HeatMapWrapper {
 		// GLHeatMap heatMap = hashHeatMaps.get(activeHeatMapID);
 		// ContentSelectionManager hmContentSelectionManager = heatMap
 		// .getContentSelectionManager();
-		// for (Integer elementID : heatMap.getContentVA()) {
+		// for (Integer elementID : heatMap.getRecordVA()) {
 		// hmContentSelectionManager.removeFromType(
 		// ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE, elementID);
 		// }
@@ -930,12 +930,12 @@ public class HeatMapWrapper {
 		return overview;
 	}
 
-	public ContentSelectionManager getContentSelectionManager() {
+	public RecordSelectionManager getContentSelectionManager() {
 		return contentSelectionManager;
 	}
 
-	public ContentVirtualArray getContentVA() {
-		return contentVA;
+	public RecordVirtualArray getRecordVA() {
+		return recordVA;
 	}
 
 	public HashMap<Group, Boolean> getSelectedGroups() {
@@ -952,12 +952,12 @@ public class HeatMapWrapper {
 	}
 
 	public String getCaption() {
-		return set.getLabel();
+		return dataTable.getLabel();
 	}
 
-	public GLHeatMap getHeatMapByContentID(int contentID) {
+	public GLHeatMap getHeatMapByContentID(int recordID) {
 		for (GLHeatMap tmpHeatMap : hashHeatMaps.values()) {
-			if (tmpHeatMap.getContentVA().contains(contentID)) {
+			if (tmpHeatMap.getRecordVA().contains(recordID)) {
 				return tmpHeatMap;
 			}
 		}
@@ -965,7 +965,7 @@ public class HeatMapWrapper {
 		return null;
 	}
 
-	public GLDendrogram<ContentGroupList> getDendrogram() {
+	public GLDendrogram<RecordGroupList> getDendrogram() {
 		return dendrogram;
 	}
 
@@ -982,9 +982,9 @@ public class HeatMapWrapper {
 		this.useFishEye = useFishEye;
 	}
 
-	public void handleContentGroupListUpdate(ContentGroupList contentGroupList) {
+	public void handleContentGroupListUpdate(RecordGroupList contentGroupList) {
 		selectedGroups.clear();
-		contentVA.setGroupList(contentGroupList);
+		recordVA.setGroupList(contentGroupList);
 		contentGroupList.updateGroupInfo();
 		// for (int i = 0; i <= 10 && i < contentGroupList.size(); i++) {
 		// Group group = contentGroupList.get(i);

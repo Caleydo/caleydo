@@ -37,7 +37,7 @@ import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.clusterer.EClustererType;
+import org.caleydo.core.util.clusterer.ClustererType;
 import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -223,7 +223,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		rootGroup.calculateHierarchyLevels(0);
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
-		ClusterHelper.calculateClusterAverages(tree, EClustererType.STORAGE_CLUSTERING,
+		ClusterHelper.calculateClusterAverages(tree, ClustererType.DIMENSION_CLUSTERING,
 				dataTable);
 		dataTable.getDimensionData(dimensionVAType).setDimensionTree(tree);
 		dataDomain.createDimensionGroupsFromDimensionTree(tree);
@@ -301,7 +301,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		rootNode.setTree(tree);
 		tree.setRootNode(rootNode);
 		iLastUsedGroupID = 0;
-		rootGroup.getClusterNode().setID(iLastUsedGroupID++);
+		rootGroup.getClusterNode().dataTableID(iLastUsedGroupID++);
 		hashGroups.clear();
 
 		selectionManager.clearSelections();
@@ -318,11 +318,11 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 		// FIXME: do that differently.
-		// set = set.getDimensionTree().getRoot().getMetaSet();
-		ClusterHelper.calculateClusterAverages(tree, EClustererType.STORAGE_CLUSTERING,
+		// set = dataTable.getDimensionTree().getRoot().getSubDataTable();
+		ClusterHelper.calculateClusterAverages(tree, ClustererType.DIMENSION_CLUSTERING,
 				dataTable);
 		tree.setDirty();
-		tree.createMetaSets((org.caleydo.core.data.collection.table.DataTable) dataTable);
+		tree.createSubDataTables((org.caleydo.core.data.collection.table.DataTable) dataTable);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
 		dimensionVA = new DimensionVirtualArray(
@@ -363,7 +363,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 			GroupRepresentation groupRep = (GroupRepresentation) child;
 			ClusterNode childNode = groupRep.getClusterNode();
 			childNode.setTree(tree);
-			childNode.setID(iLastUsedGroupID++);
+			childNode.dataTableID(iLastUsedGroupID++);
 			tree.addChild(parentNode, childNode);
 			if (!child.isLeaf()) {
 				buildTreeFromGroupHierarchy(tree, childNode, groupRep);
@@ -636,7 +636,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 						boolean isLeafContained = false;
 						for (ICompositeGraphic composite : orderedComposites) {
 							selectedTables.add(((GroupRepresentation) composite)
-									.getClusterNode().getMetaSet());
+									.getClusterNode().getSubDataTable());
 
 							if (isLeafContained == false)
 								isLeafContained = composite.isLeaf();
@@ -1354,13 +1354,13 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 			public void run() {
 				ChangeGroupNameDialog.run(PlatformUI.getWorkbench().getDisplay(),
 						groupRep);
-				groupRep.getClusterNode().getMetaSet()
+				groupRep.getClusterNode().getSubDataTable()
 						.setLabel(groupRep.getClusterNode().getLabel());
 				setDisplayListDirty();
 			}
 		});
 
-		// groupRep.getClusterNode().getMetaSet().setLabel(groupRep.getClusterNode().getNodeName());
+		// groupRep.getClusterNode().getSubDataTable().setLabel(groupRep.getClusterNode().getNodeName());
 	}
 
 	@Override
@@ -1380,7 +1380,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 				renderStyle);
 		if (dataTable.getDimensionData(dimensionVAType).getDimensionTree() != null) {
 			// FIXME: do that differently.
-			// set = set.getDimensionTree().getRoot().getMetaSet();
+			// set = dataTable.getDimensionTree().getRoot().getSubDataTable();
 			tree = dataTable.getDimensionData(dimensionVAType).getDimensionTree();
 
 			initHierarchy(tree);

@@ -23,12 +23,12 @@ public abstract class APDDrawingStrategyDecorator extends APDDrawingStrategy {
 	 * @param pickingManager
 	 *            The picking manager that should handle the picking of the
 	 *            drawn elements.
-	 * @param iViewID
+	 * @param viewID
 	 *            ID of the view where the elements will be displayed. Needed
 	 *            for picking.
 	 */
-	public APDDrawingStrategyDecorator(PickingManager pickingManager, int iViewID) {
-		super(pickingManager, iViewID);
+	public APDDrawingStrategyDecorator(PickingManager pickingManager, int viewID) {
+		super(pickingManager, viewID);
 	}
 
 	@Override

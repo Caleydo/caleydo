@@ -21,7 +21,7 @@ public class ClusterResult {
 			dimensionResult.finish();
 	}
 
-	public RecordData getContentResult() {
+	public RecordData getRecordResult() {
 		return contentResult;
 	}
 

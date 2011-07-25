@@ -7,8 +7,8 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -51,7 +51,7 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void handleVAUpdate(ContentVADelta vaDelta, String info) {
+	public void handleVAUpdate(RecordVADelta vaDelta, String info) {
 		// TODO Auto-generated method stub
 
 	}
@@ -63,8 +63,8 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void handleForeignContentVAUpdate(int setID, String dataDomainType,
-			String vaType, ContentVirtualArray virtualArray) {
+	public void handleForeignRecordVAUpdate(int dataTableID, String dataDomainType,
+			String vaType, RecordVirtualArray virtualArray) {
 		// TODO Auto-generated method stub
 
 	}
@@ -77,7 +77,7 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public String getContentLabel(IDType idType, Object id) {
+	public String getRecordLabel(IDType idType, Object id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -90,7 +90,7 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 
 	@Override
 	protected void assignIDCategories() {
-		contentIDCategory = IDCategory.getIDCategory("EXPERIMENT");
+		recordIDCategory = IDCategory.getIDCategory("EXPERIMENT");
 		dimensionIDCategory = IDCategory.getIDCategory("EXPERIMENT_DATA");
 
 	}

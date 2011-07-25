@@ -7,7 +7,7 @@ import org.caleydo.core.data.collection.ccontainer.FloatCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.ICContainer;
 import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
 import org.caleydo.core.data.id.ManagedObjectType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
@@ -207,20 +207,20 @@ public class NumericalDimension
 	 * Returns a histogram of the values in the dimension for all values considering the specified VA. The
 	 * number of the bins is sqrt(VA size)
 	 * 
-	 * @param contentVA
+	 * @param recordVA
 	 *            VA to consider for the histogram
 	 * @return
 	 */
-	public Histogram getHistogram(ContentVirtualArray contentVA) {
+	public Histogram getHistogram(RecordVirtualArray recordVA) {
 
-		int iNumberOfBuckets = (int) Math.sqrt(contentVA.size());
+		int iNumberOfBuckets = (int) Math.sqrt(recordVA.size());
 		Histogram histogram = new Histogram(iNumberOfBuckets);
 		for (int iCount = 0; iCount < iNumberOfBuckets; iCount++) {
 			histogram.add(0);
 		}
 
 		FloatCContainerIterator iterator =
-			((FloatCContainer) hashCContainers.get(DataRepresentation.NORMALIZED)).iterator(contentVA);
+			((FloatCContainer) hashCContainers.get(DataRepresentation.NORMALIZED)).iterator(recordVA);
 		while (iterator.hasNext()) {
 			// this works because the values in the container are already noramlized
 			int iIndex = (int) (iterator.next() * iNumberOfBuckets);

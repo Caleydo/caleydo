@@ -2,7 +2,7 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
@@ -22,46 +22,46 @@ public class ContentCaptionRenderer extends AContentRenderer {
 		float yPosition = y;
 		float fieldHeight = 0;
 
-		ContentVirtualArray contentVA = heatMap.getContentVA();
+		RecordVirtualArray recordVA = heatMap.getRecordVA();
 
-		for (Integer contentID : contentVA) {
+		for (Integer recordID : recordVA) {
 
 			if (heatMap.isHideElements()
 					&& heatMap.getContentSelectionManager().checkStatus(
-							GLHeatMap.SELECTION_HIDDEN, contentID)) {
+							GLHeatMap.SELECTION_HIDDEN, recordID)) {
 				continue;
 			}
 
-			fieldHeight = contentSpacing.getFieldHeight(contentID);
+			fieldHeight = contentSpacing.getFieldHeight(recordID);
 			
 			if (fieldHeight < HeatMapRenderStyle.MIN_FIELD_HEIGHT_FOR_CAPTION)
 				continue;
 			
 			try {
 				yPosition = contentSpacing.getYDistances().get(
-						contentVA.indexOf(contentID));
+						recordVA.indexOf(recordID));
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
 			heatMap.getTextRenderer().setColor(0, 0, 0, 1);
 
-			renderCaption(gl, contentID, 0, yPosition, 0);
+			renderCaption(gl, recordID, 0, yPosition, 0);
 
 		}
 	}
 
-	private String getID(Integer contentID, boolean beVerbose) {
-		return heatMap.getDataDomain().getContentLabel(contentID);
+	private String getID(Integer recordID, boolean beVerbose) {
+		return heatMap.getDataDomain().getRecordLabel(recordID);
 	}
 
-	private void renderCaption(GL2 gl, int contentIndex, float xOrigin, float yOrigin,
+	private void renderCaption(GL2 gl, int recordIndex, float xOrigin, float yOrigin,
 			float zOrigin) {
 
-		String sLabel = getID(contentIndex, false);
+		String sLabel = getID(recordIndex, false);
 		if (sLabel == null)
 			sLabel = "Unknown";
 
-		spacing = (contentSpacing.getFieldHeight(contentIndex));
+		spacing = (contentSpacing.getFieldHeight(recordIndex));
 
 		if (spacing < 0)
 			spacing = 0;

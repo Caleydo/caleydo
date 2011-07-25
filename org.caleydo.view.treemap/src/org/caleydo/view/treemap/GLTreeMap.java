@@ -169,7 +169,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	public void initData() {
 		if (dataDomain == null)
 			return;
-		tree = dataDomain.getDataTable().getContentData(contentVAType).getContentTree();
+		tree = dataDomain.getDataTable().getRecordData(recordVAType).getRecordTree();
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 		int maxDepth = Integer.MAX_VALUE;
 		maxDepth = GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
@@ -298,7 +298,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 		eventPublisher.triggerEvent(event);
 
 		SelectionDelta newDelta = new SelectionDelta(treeSelectionManager.getIDType());
-		newDelta.setIDType(dataDomain.getContentIDType());
+		newDelta.dataTableIDType(dataDomain.getRecordIDType());
 		for (SelectionDeltaItem item : delta) {
 			ClusterNode node = tree.getNodeByNumber(item.getPrimaryID());
 			if (node.getLeafID() >= 0) {
@@ -378,7 +378,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		if (dataDomain != null) {
-			tree = dataDomain.getDataTable().getContentData(contentVAType).getContentTree();
+			tree = dataDomain.getDataTable().getRecordData(recordVAType).getRecordTree();
 			if (tree != null) {
 				treeSelectionManager = new SelectionManager(tree.getNodeIDType());
 			}
@@ -548,7 +548,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		if (bIsInteractive) {
-			if (dataDomain.getContentIDType() == selectionDelta.getIDType()) {
+			if (dataDomain.getRecordIDType() == selectionDelta.getIDType()) {
 				SelectionDelta newDelta = new SelectionDelta(treeSelectionManager.getIDType());
 				for (SelectionDeltaItem item : selectionDelta) {
 					ArrayList<Integer> nodeIDs = tree.getNodeIDsFromLeafID(item.getPrimaryID());

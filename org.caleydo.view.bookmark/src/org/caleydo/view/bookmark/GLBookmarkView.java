@@ -392,12 +392,12 @@ public class GLBookmarkView extends AGLView implements
 		// mainColumn.setPixelGLConverter(pixelGLConverter);
 		bookmarkTemplate.setBaseElementLayout(mainColumn);
 
-		ContentBookmarkContainer geneContainer = new ContentBookmarkContainer(this,
-				dataDomain.getContentIDCategory(),
-				dataDomain.getPrimaryContentMappingType());
+		RecordBookmarkContainer geneContainer = new RecordBookmarkContainer(this,
+				dataDomain.getRecordIDCategory(),
+				dataDomain.getPrimaryRecordMappingType());
 		mainColumn.append(geneContainer.getLayout());
 
-		hashCategoryToBookmarkContainer.put(dataDomain.getContentIDCategory(),
+		hashCategoryToBookmarkContainer.put(dataDomain.getRecordIDCategory(),
 				geneContainer);
 		bookmarkContainers.add(geneContainer);
 

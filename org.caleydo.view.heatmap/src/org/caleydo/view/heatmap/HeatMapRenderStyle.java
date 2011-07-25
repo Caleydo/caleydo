@@ -112,7 +112,7 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 		numberSelected += heatMap.getContentSelectionManager().getNumberOfElements(
 				SelectionType.SELECTION);
 
-		int numberTotal = heatMap.getContentVA().size();
+		int numberTotal = heatMap.getRecordVA().size();
 
 		float selecteFieldHeightPercentage = SELECTED_FIELD_HEIGHT_PERCENTAGE;
 		if (numberSelected > 0 && SELECTED_FIELD_HEIGHT_PERCENTAGE * numberSelected > 1) {

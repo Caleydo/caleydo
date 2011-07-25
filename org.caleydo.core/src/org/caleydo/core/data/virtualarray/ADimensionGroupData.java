@@ -8,9 +8,9 @@ import org.caleydo.core.manager.datadomain.IDataDomain;
 
 public abstract class ADimensionGroupData {
 
-	public abstract ContentVirtualArray getSummaryVA();
+	public abstract RecordVirtualArray getSummaryVA();
 	
-	public abstract ArrayList<ContentVirtualArray> getSegmentVAs();
+	public abstract ArrayList<RecordVirtualArray> getSegmentVAs();
 	
 	public abstract IDataDomain getDataDomain();
 	

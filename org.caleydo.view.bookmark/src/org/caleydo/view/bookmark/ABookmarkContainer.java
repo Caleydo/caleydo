@@ -291,7 +291,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 				// menu.show(manager.getParentGLCanvas(), 0, 0);
 
 				BookmarkContextMenuItemContainer bookmarkContextMenuItemContainer = new BookmarkContextMenuItemContainer();
-				bookmarkContextMenuItemContainer.setID(internalIDType, externalID);
+				bookmarkContextMenuItemContainer.dataTableID(internalIDType, externalID);
 				ContextMenu contextMenu = manager.getContextMenu();
 				contextMenu.addItemContanier(bookmarkContextMenuItemContainer);
 

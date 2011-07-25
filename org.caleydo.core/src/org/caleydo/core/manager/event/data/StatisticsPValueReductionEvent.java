@@ -14,11 +14,11 @@ public class StatisticsPValueReductionEvent
 		this.sets = sets;
 	}
 
-	public void setSets(ArrayList<DataTable> sets) {
+	public void setDataTables(ArrayList<DataTable> sets) {
 		this.sets = sets;
 	}
 
-	public ArrayList<DataTable> getSets() {
+	public ArrayList<DataTable> getDataTables() {
 		return sets;
 	}
 

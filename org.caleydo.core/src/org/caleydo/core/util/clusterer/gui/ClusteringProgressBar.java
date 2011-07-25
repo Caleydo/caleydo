@@ -8,7 +8,7 @@ import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.ClustererCanceledEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
-import org.caleydo.core.util.clusterer.EClustererType;
+import org.caleydo.core.util.clusterer.ClustererType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -43,7 +43,7 @@ public class ClusteringProgressBar
 	private Shell shell;
 	private Label lbProgressBarClusterer;
 
-	public ClusteringProgressBar(EClustererAlgo algorithmType, EClustererType clustererType) {
+	public ClusteringProgressBar(EClustererAlgo algorithmType, ClustererType clustererType) {
 		this.algorithmType = algorithmType;
 		// this.clusterType = clustererType;
 	}

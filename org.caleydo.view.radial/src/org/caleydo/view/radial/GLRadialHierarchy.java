@@ -42,7 +42,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.RecordContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DetailOutsideItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.radial.listener.ChangeColorModeListener;
@@ -514,9 +514,9 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 							"org.caleydo.datadomain.genetic"))
 						break;
 					if (!pdPickedElement.hasChildren()) {
-						ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
+						RecordContextMenuItemContainer geneContextMenuItemContainer = new RecordContextMenuItemContainer();
 						geneContextMenuItemContainer.setDataDomain(dataDomain);
-						geneContextMenuItemContainer.setID(dataDomain.getContentIDType(),
+						geneContextMenuItemContainer.dataTableID(dataDomain.getRecordIDType(),
 								externalID);
 						contextMenu.addItemContanier(geneContextMenuItemContainer);
 					} else {
@@ -853,9 +853,9 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 
 		// FIXME: this code has been moved to setDataDomain - is this ok?
 		// Tree<ClusterNode> tree =
-		// dataDomain.getSet().getDimensionData(dimensionVAType)
+		// dataDomain.getDataTable().getDimensionData(dimensionVAType)
 		// .getDimensionTree();
-		// // Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		// // Tree<ClusterNode> tree = dataTable.getClusteredTreeGenes();
 		// if (tree != null) {
 		// ArrayList<EPDDrawingStrategyType> alColorModes = new
 		// ArrayList<EPDDrawingStrategyType>();
@@ -864,7 +864,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		//
 		// // initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 		// // new GeneClusterDataEventManager(this), alColorModes);
-		// initHierarchy(tree, dataDomain.getSet().getDimensionData(dimensionVAType)
+		// initHierarchy(tree, dataDomain.getDataTable().getDimensionData(dimensionVAType)
 		// .getDimensionTreeRoot(), new ExperimentClusterDataEventManager(this),
 		// alColorModes);
 		// }
@@ -1036,7 +1036,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void handleUpdateView() {
-		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		// Tree<ClusterNode> tree = dataTable.getClusteredTreeGenes();
 		Tree<ClusterNode> tree = dataDomain.getDataTable().getDimensionData(dimensionVAType)
 				.getDimensionTree();
 		if (tree != null) {
@@ -1150,9 +1150,9 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		this.dataDomain = dataDomain;
 
 		// Tree<ClusterNode> tree =
-		// dataDomain.getSet().getDimensionData(dimensionVAType)
+		// dataDomain.getDataTable().getDimensionData(dimensionVAType)
 		// .getDimensionTree();
-		// // Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		// // Tree<ClusterNode> tree = dataTable.getClusteredTreeGenes();
 		// if (tree != null) {
 		// ArrayList<EPDDrawingStrategyType> alColorModes = new
 		// ArrayList<EPDDrawingStrategyType>();
@@ -1161,14 +1161,14 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		//
 		// // initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 		// // new GeneClusterDataEventManager(this), alColorModes);
-		// initHierarchy(tree, dataDomain.getSet().getDimensionData(dimensionVAType)
+		// initHierarchy(tree, dataDomain.getDataTable().getDimensionData(dimensionVAType)
 		// .getDimensionTreeRoot(), new ExperimentClusterDataEventManager(this),
 		// alColorModes);
 		// }
 
-		Tree<ClusterNode> tree = dataDomain.getDataTable().getContentData(contentVAType)
-				.getContentTree();
-		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		Tree<ClusterNode> tree = dataDomain.getDataTable().getRecordData(recordVAType)
+				.getRecordTree();
+		// Tree<ClusterNode> tree = dataTable.getClusteredTreeGenes();
 		if (tree != null) {
 			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
 			alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
@@ -1181,7 +1181,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		}
 
 		// Tree<ClusterNode> tree =
-		// dataDomain.getSet().getContentData(contentVAType)
+		// dataDomain.getDataTable().getContentData(recordVAType)
 		// .getContentTree();
 		// if (tree != null) {
 		// // initHierarchy(tree);

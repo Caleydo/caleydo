@@ -11,14 +11,14 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
@@ -281,14 +281,14 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 
 		detailHeatMap.setDataDomain(dataDomain);
 		detailHeatMap.setRemoteRenderingGLView(this);
-		detailHeatMap.setSet(table);
+		detailHeatMap.setDataTable(table);
 		detailHeatMap.setRenderTemplate(new UncertaintyDetailHeatMapTemplate(
 				detailHeatMap, this));
 		detailHeatMap.initialize();
 		detailHeatMap.initRemote(gl, this, glMouseListener);
 
-		if (contentVA != null)
-			detailHeatMap.setContentVA(contentVA);
+		if (recordVA != null)
+			detailHeatMap.setRecordVA(recordVA);
 
 		ViewLayoutRenderer detailHeatMapLayoutRenderer = new ViewLayoutRenderer(
 				detailHeatMap);
@@ -363,17 +363,17 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 			case CLICKED:
 
 				overviewHeatMap.setSelectedGroup(externalID);
-				ContentGroupList groupList = contentVA.getGroupList();
+				RecordGroupList groupList = recordVA.getGroupList();
 
 				// null if data set is not clustered
 				if (groupList == null)
 					break;
 
-				ArrayList<Integer> clusterElements = contentVA.getIDsOfGroup(groupList
+				ArrayList<Integer> clusterElements = recordVA.getIDsOfGroup(groupList
 						.get(externalID).getID());
-				ContentVirtualArray clusterVA = new ContentVirtualArray(
+				RecordVirtualArray clusterVA = new RecordVirtualArray(
 						DataTable.RECORD, clusterElements);
-				detailHeatMap.setContentVA(clusterVA);
+				detailHeatMap.setRecordVA(clusterVA);
 
 				setDisplayListDirty();
 				break;
@@ -470,9 +470,9 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 	}
 
 	@Override
-	protected void reactOnContentVAChanges(ContentVADelta delta) {
+	protected void reactOnRecordVAChanges(RecordVADelta delta) {
 
-		super.reactOnContentVAChanges(delta);
+		super.reactOnRecordVAChanges(delta);
 
 		setDisplayListDirty();
 		initMultiLevelUncertainty();
@@ -484,20 +484,20 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = DataTable.RECORD_CONTEXT;
+			recordVAType = DataTable.RECORD_CONTEXT;
 		else
-			contentVAType = DataTable.RECORD;
+			recordVAType = DataTable.RECORD;
 
-		contentVA = dataDomain.getContentVA(contentVAType);
+		recordVA = dataDomain.getRecordVA(recordVAType);
 		dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
 
 		// In case of importing group info
-		// if (set.isGeneClusterInfo())
-		// contentVA.setGroupList(set.getContentGroupList());
-		// if (set.isExperimentClusterInfo())
-		// dimensionVA.setGroupList(set.getDimensionGroupList());
+		// if (dataTable.isGeneClusterInfo())
+		// recordVA.setGroupList(dataTable.getContentGroupList());
+		// if (dataTable.isExperimentClusterInfo())
+		// dimensionVA.setGroupList(dataTable.getDimensionGroupList());
 
-		contentSelectionManager.setVA(contentVA);
+		recordSelectionManager.setVA(recordVA);
 		dimensionSelectionManager.setVA(dimensionVA);
 		setDisplayListDirty();
 	}
@@ -514,9 +514,9 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 	}
 
 	@Override
-	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
+	public void replaceRecordVA(int dataTableID, String dataDomainType, String vaType) {
 
-		super.replaceContentVA(setID, dataDomainType, vaType);
+		super.replaceRecordVA(dataTableID, dataDomainType, vaType);
 
 		initMultiLevelUncertainty();
 		overviewHeatMap.init();
@@ -527,8 +527,8 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 		return renderStyle;
 	}
 
-	public ContentSelectionManager getContentSelectionManager() {
-		return contentSelectionManager;
+	public RecordSelectionManager getContentSelectionManager() {
+		return recordSelectionManager;
 
 	}
 
@@ -554,20 +554,20 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 				.getAllFoldChangeUncertainties();
 		multiLevelUncertainty.addAll(statisticsUncertainties);
 
-		for (Integer contentID : contentVA) {
+		for (Integer recordID : recordVA) {
 			for (double[] uncertaintyLevel : multiLevelUncertainty) {
 
-				double uncertainty = uncertaintyLevel[contentID];
-				if (uncertainty < aggregatedUncertainty[contentID])
-					aggregatedUncertainty[contentID] = uncertainty;
+				double uncertainty = uncertaintyLevel[recordID];
+				if (uncertainty < aggregatedUncertainty[recordID])
+					aggregatedUncertainty[recordID] = uncertainty;
 			}
 		}
 
 		table.getStatisticsResult().setAggregatedUncertainty(aggregatedUncertainty);
 	}
 
-	public float getMaxUncertainty(int contentID) {
-		return (float) aggregatedUncertainty[contentID];
+	public float getMaxUncertainty(int recordID) {
+		return (float) aggregatedUncertainty[recordID];
 
 	}
 

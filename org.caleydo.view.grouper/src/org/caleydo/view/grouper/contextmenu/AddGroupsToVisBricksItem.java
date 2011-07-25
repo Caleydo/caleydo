@@ -18,8 +18,8 @@ public class AddGroupsToVisBricksItem extends AContextMenuItem {
 		ArrayList<ADimensionGroupData> dimensionGroupData = new ArrayList<ADimensionGroupData>(
 				setsToShow.size());
 
-		for (DataTable set : setsToShow) {
-			SetBasedDimensionGroupData data = new SetBasedDimensionGroupData(set.getDataDomain(), set);
+		for (DataTable dataTable : setsToShow) {
+			SetBasedDimensionGroupData data = new SetBasedDimensionGroupData(dataTable.getDataDomain(), dataTable);
 			dimensionGroupData.add(data);
 		}
 		

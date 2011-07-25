@@ -26,12 +26,12 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 	 * @param pickingManager
 	 *            The picking manager that should handle the picking of the
 	 *            drawn elements.
-	 * @param iViewID
+	 * @param viewID
 	 *            ID of the view where the elements will be displayed. Needed
 	 *            for picking.
 	 */
-	public PDDrawingStrategySelected(PickingManager pickingManager, int iViewID) {
-		super(pickingManager, iViewID);
+	public PDDrawingStrategySelected(PickingManager pickingManager, int viewID) {
+		super(pickingManager, viewID);
 		fArBorderColor = SelectionType.MOUSE_OVER.getColor();
 	}
 
@@ -43,7 +43,7 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 
 		float fRadius = pdDiscToDraw.getCurrentWidth();
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 
@@ -75,7 +75,7 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 		float fInnerRadius = pdDiscToDraw.getCurrentInnerRadius();
 		float fWidth = pdDiscToDraw.getCurrentWidth();
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 

@@ -3,7 +3,7 @@ package org.caleydo.view.visbricks.brick.data;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DimensionData;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.SetBasedSegmentData;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -28,9 +28,9 @@ public class SetBasedBrickData implements IBrickData {
 	}
 
 	@Override
-	public ContentVirtualArray getContentVA() {
+	public RecordVirtualArray getRecordVA() {
 		// TODO Auto-generated method stub
-		return segmentData.getContentVA();
+		return segmentData.getRecordVA();
 	}
 
 	@Override
@@ -42,15 +42,15 @@ public class SetBasedBrickData implements IBrickData {
 	@Override
 	public void setBrickData(GLBrick brick) {
 		brick.setDataDomain((ATableBasedDataDomain) getDataDomain());
-		brick.setContentVA(getGroup(), getContentVA());
+		brick.setRecordVA(getGroup(), getRecordVA());
 	}
 
 	private void calculateAverageValue() {
 		int count = 0;
-		// if (contentVA == null)
-		// throw new IllegalStateException("contentVA was null");
-		for (Integer contenID : getContentVA()) {
-			DimensionData dimensionData = segmentData.getSet().getDimensionData(
+		// if (recordVA == null)
+		// throw new IllegalStateException("recordVA was null");
+		for (Integer contenID : getRecordVA()) {
+			DimensionData dimensionData = segmentData.getDataTable().getDimensionData(
 					DataTable.DIMENSION);
 			if (dimensionData == null) {
 				averageValue = 0;
@@ -64,7 +64,7 @@ public class SetBasedBrickData implements IBrickData {
 				return;
 			}
 			for (Integer dimensionID : dimensionVA) {
-				float value = segmentData.getSet().get(dimensionID)
+				float value = segmentData.getDataTable().get(dimensionID)
 						.getFloat(DataRepresentation.NORMALIZED, contenID);
 				if (!Float.isNaN(value)) {
 					averageValue += value;

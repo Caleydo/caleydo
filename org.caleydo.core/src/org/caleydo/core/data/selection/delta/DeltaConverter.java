@@ -43,7 +43,7 @@ public class DeltaConverter {
 
 			VirtualArrayDelta vaDelta = (VirtualArrayDelta) delta;
 			VirtualArrayDelta newVADelta = vaDelta.getInstance();
-			newVADelta.setIDType(targetType);
+			newVADelta.dataTableIDType(targetType);
 			newVADelta.setVAType(vaDelta.getVAType());
 			newDelta = (T) newVADelta;
 
@@ -54,13 +54,13 @@ public class DeltaConverter {
 
 		for (Object tempItem : delta) {
 			IDeltaItem item = (IDeltaItem) tempItem;
-			Set<Integer> setIDs =
+			Set<Integer> dataTableIDs =
 				GeneralManager.get().getIDMappingManager()
 					.getIDAsSet(delta.getIDType(), targetType, item.getPrimaryID());
-			if (setIDs == null) {
+			if (dataTableIDs == null) {
 				continue;
 			}
-			for (Integer id : setIDs) {
+			for (Integer id : dataTableIDs) {
 				IDeltaItem clonedItem = (IDeltaItem) item.clone();
 				clonedItem.setPrimaryID(id);
 				clonedItem.setSecondaryID(item.getPrimaryID());

@@ -5,8 +5,8 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 
@@ -35,11 +35,11 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + ":" + extensionID++);
 
-		contentLabelSingular = "entity";
-		contentLabelPlural = "entities";
+		recordLabelSingular = "entity";
+		recordLabelPlural = "entities";
 
-		primaryContentMappingType = IDType.getIDType("DAVID");
-		humanReadableContentIDType = IDType.getIDType("GENE_SYMBOL");
+		primaryRecordMappingType = IDType.getIDType("DAVID");
+		humanReadableRecordIDType = IDType.getIDType("GENE_SYMBOL");
 		humanReadableDimensionIDType = IDType.getIDType("STORAGE");
 	}
 
@@ -49,7 +49,7 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void handleVAUpdate(ContentVADelta vaDelta, String info) {
+	public void handleVAUpdate(RecordVADelta vaDelta, String info) {
 		// TODO Auto-generated method stub
 
 	}
@@ -61,14 +61,14 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void handleForeignContentVAUpdate(int setID, String dataDomainType,
-			String vaType, ContentVirtualArray virtualArray) {
+	public void handleForeignRecordVAUpdate(int dataTableID, String dataDomainType,
+			String vaType, RecordVirtualArray virtualArray) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public String getContentLabel(IDType idType, Object id) {
+	public String getRecordLabel(IDType idType, Object id) {
 		return "";
 	}
 
@@ -83,7 +83,7 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	@Override
 	protected void assignIDCategories() {
 
-		contentIDCategory = IDCategory.registerCategory("UNSPECIFIED_CONTENT");
+		recordIDCategory = IDCategory.registerCategory("UNSPECIFIED_CONTENT");
 		dimensionIDCategory = IDCategory.registerCategory("UNSPECIFIED_STORAGE");
 	}
 }

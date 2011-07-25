@@ -48,7 +48,7 @@ public class ClusterNode
 	private boolean isPartOfSubTree = false;
 	private Vec3f vPosSubTree;
 	@XmlTransient
-	private SubDataTable metaSet;
+	private SubDataTable subDataTable;
 
 	public ClusterNode() {
 	}
@@ -84,16 +84,16 @@ public class ClusterNode
 	 * 
 	 * @param set
 	 */
-	public <SetType extends DataTable> void createMetaSet(SetType set) {
-		if (metaSet != null)
+	public <SetType extends DataTable> void createSubDataTable(SetType set) {
+		if (subDataTable != null)
 			return;
-		metaSet = new SubDataTable(set, (ClusterTree) tree, this);
-		metaSet.setLabel(label);
-		// metaSet.setContentTree(set.getContentTree());
+		subDataTable = new SubDataTable(set, (ClusterTree) tree, this);
+		subDataTable.setLabel(label);
+		// subDataTable.setContentTree(dataTable.getContentTree());
 		// Tree<ClusterNode> subTree = tree.getSubTree();
 
 		ArrayList<Integer> dimensionIDs = this.getLeaveIds();
-		DataTableUtils.setDataTables(metaSet, dimensionIDs);
+		DataTableUtils.setDataTables(subDataTable, dimensionIDs);
 	}
 
 	/**
@@ -101,34 +101,34 @@ public class ClusterNode
 	 * 
 	 * @param set
 	 */
-	public <SetType extends DataTable> void createMetaSets(SetType set) {
-		createMetaSet(set);
+	public <SetType extends DataTable> void createSubDataTables(SetType set) {
+		createSubDataTable(set);
 		ArrayList<ClusterNode> children = tree.getChildren(this);
 		if (children != null)
 			for (ClusterNode child : children) {
-				child.createMetaSets(set);
+				child.createSubDataTables(set);
 			}
 	}
 
-	public DataTable getMetaSet() {
-		return metaSet;
+	public DataTable getSubDataTable() {
+		return subDataTable;
 	}
 
 	/**
-	 * Returns a metaset if this node or any of its sub-nodes contain the MetaSet specified by the ID
+	 * Returns a metaset if this node or any of its sub-nodes contain the SubDataTable specified by the ID
 	 * 
-	 * @param setID
+	 * @param dataTableID
 	 * @return
 	 */
-	public DataTable getMetaSetFromSubTree(int setID) {
+	public DataTable getSubDataTableFromSubTree(int dataTableID) {
 
-		if (metaSet.getID() == setID)
-			return metaSet;
+		if (subDataTable.getID() == dataTableID)
+			return subDataTable;
 		else if (!this.hasChildren())
 			return null;
 		else {
 			for (ClusterNode child : getChildren()) {
-				DataTable tempSet = child.getMetaSetFromSubTree(setID);
+				DataTable tempSet = child.getSubDataTableFromSubTree(dataTableID);
 				if (tempSet != null)
 					return tempSet;
 			}
@@ -136,19 +136,19 @@ public class ClusterNode
 		}
 	}
 
-	public ArrayList<DataTable> getAllMetaSetsFromSubTree() {
+	public ArrayList<DataTable> getAllSubDataTablesFromSubTree() {
 
-		ArrayList<DataTable> allMetaSets = new ArrayList<DataTable>();
+		ArrayList<DataTable> allSubDataTables = new ArrayList<DataTable>();
 
-		allMetaSets.add(metaSet);
+		allSubDataTables.add(subDataTable);
 
 		if (this.hasChildren()) {
 			for (ClusterNode child : getChildren()) {
-				allMetaSets.addAll(child.getAllMetaSetsFromSubTree());
+				allSubDataTables.addAll(child.getAllSubDataTablesFromSubTree());
 			}
 		}
 
-		return allMetaSets;
+		return allSubDataTables;
 	}
 
 	@Override

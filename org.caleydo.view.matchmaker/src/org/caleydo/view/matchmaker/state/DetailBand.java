@@ -6,18 +6,18 @@ public class DetailBand {
 
 	private int bandID;
 
-	private ArrayList<Integer> contentIDs;
+	private ArrayList<Integer> recordIDs;
 
 	public DetailBand(int bandID) {
 		this.bandID = bandID;
 	}
 
-	public void setContentIDs(ArrayList<Integer> contentIDs) {
-		this.contentIDs = contentIDs;
+	public void setContentIDs(ArrayList<Integer> recordIDs) {
+		this.recordIDs = recordIDs;
 	}
 
 	public ArrayList<Integer> getContentIDs() {
-		return contentIDs;
+		return recordIDs;
 	}
 
 	public int getBandID() {

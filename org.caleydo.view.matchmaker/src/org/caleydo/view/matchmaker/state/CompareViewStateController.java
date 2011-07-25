@@ -12,7 +12,7 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
@@ -96,8 +96,8 @@ public class CompareViewStateController {
 				isControlPressed);
 	}
 
-	public void setSetsToCompare(ArrayList<DataTable> setsToCompare) {
-		currentState.setSetsToCompare(setsToCompare);
+	public void setDataTablesToCompare(ArrayList<DataTable> setsToCompare) {
+		currentState.setDataTablesToCompare(setsToCompare);
 	}
 
 	public void duplicateSetBarItem(int itemID) {
@@ -123,8 +123,8 @@ public class CompareViewStateController {
 		currentState.handleMouseWheel(gl, amount, wheelPoint);
 	}
 
-	public void handleReplaceContentVA(int setID, String dataDomain, String vaType) {
-		currentState.handleReplaceContentVA(setID, dataDomain, vaType);
+	public void handleReplaceRecordVA(int dataTableID, String dataDomain, String vaType) {
+		currentState.handleReplaceRecordVA(dataTableID, dataDomain, vaType);
 	}
 
 	public void handleClearSelections() {
@@ -147,8 +147,8 @@ public class CompareViewStateController {
 		currentState.setBandBundling(bandBundlingActive);
 	}
 
-	public void handleContentGroupListUpdate(int setID, ContentGroupList contentGroupList) {
-		currentState.handleContentGroupListUpdate(setID, contentGroupList);
+	public void handleContentGroupListUpdate(int dataTableID, RecordGroupList contentGroupList) {
+		currentState.handleContentGroupListUpdate(dataTableID, contentGroupList);
 	}
 
 	public void handleDragging(GL2 gl) {

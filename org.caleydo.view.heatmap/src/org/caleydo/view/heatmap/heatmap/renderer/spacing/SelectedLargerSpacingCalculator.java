@@ -22,12 +22,12 @@ public class SelectedLargerSpacingCalculator extends ASpacingCalculator {
 	}
 
 	@Override
-	public float getFieldHeight(int contentID) {
+	public float getFieldHeight(int recordID) {
 
 		if (heatMap.getContentSelectionManager().checkStatus(SelectionType.SELECTION,
-				contentID)
+				recordID)
 				|| heatMap.getContentSelectionManager().checkStatus(
-						SelectionType.MOUSE_OVER, contentID)) {
+						SelectionType.MOUSE_OVER, recordID)) {
 			return selectedFieldHeight;
 		}
 		return normalFieldHeight;

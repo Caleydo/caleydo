@@ -138,14 +138,14 @@ public class VisLinkManager
 		int destId = 0;
 
 		try {
-			destId = idmm.getID(IDType.getIDType("UNSPECIFIED"), dataDomain.getContentIDType(), selectionId);
+			destId = idmm.getID(IDType.getIDType("UNSPECIFIED"), dataDomain.getRecordIDType(), selectionId);
 		}
 		catch (NullPointerException e) {
-			HashSet<Integer> set =
-				idmm.getID(IDType.getIDType("GENE_SYMBOL"), dataDomain.getContentIDType(), selectionId);
-			destId = (Integer) set.iterator().next();
+			HashSet<Integer> dataTable =
+				idmm.getID(IDType.getIDType("GENE_SYMBOL"), dataDomain.getRecordIDType(), selectionId);
+			destId = (Integer) dataTable.iterator().next();
 		}
-		SelectionDelta sd = new SelectionDelta(dataDomain.getContentIDType());
+		SelectionDelta sd = new SelectionDelta(dataDomain.getRecordIDType());
 		SelectionDeltaItem sdi = sd.addSelection(destId, SelectionType.MOUSE_OVER);
 		sdi.addConnectionID(885);
 		SelectionUpdateEvent sue = new SelectionUpdateEvent();
@@ -235,7 +235,7 @@ public class VisLinkManager
 			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
 		if (cerm.isNewCanvasVertices()) {
 			final CanvasConnectionMap ccm =
-				cerm.getCanvasConnectionsByType().get(dataDomain.getContentIDType());
+				cerm.getCanvasConnectionsByType().get(dataDomain.getRecordIDType());
 			if (ccm != null) {
 				cerm.setNewCanvasVertices(false);
 				display.asyncExec(new Runnable() {

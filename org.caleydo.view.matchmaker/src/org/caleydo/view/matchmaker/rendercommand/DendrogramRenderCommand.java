@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
 import org.caleydo.view.matchmaker.HeatMapWrapper;
 import org.caleydo.view.matchmaker.layout.AHeatMapLayout;
@@ -20,7 +20,7 @@ public class DendrogramRenderCommand implements IHeatMapRenderCommand {
 	@Override
 	public void render(GL2 gl, HeatMapWrapper heatMapWrapper) {
 
-		GLDendrogram<ContentGroupList> dendrogram = heatMapWrapper.getDendrogram();
+		GLDendrogram<RecordGroupList> dendrogram = heatMapWrapper.getDendrogram();
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
 
 		if (layout instanceof HeatMapLayoutDetailViewRight) {

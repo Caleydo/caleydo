@@ -207,7 +207,7 @@ public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements IVi
 		colorMappingPreviewLabel.update();
 	}
 
-	public static void createToolBarItems(int iViewID) {
+	public static void createToolBarItems(int viewID) {
 		alToolbar = new ArrayList<IAction>();
 	}
 

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.view.heatmap.hierarchical.HeatMapUtil;
 import org.caleydo.view.matchmaker.HeatMapWrapper;
@@ -30,8 +30,8 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
 
-		ContentVirtualArray contentVA = heatMapWrapper.getOverview().getContentVA();
-		ContentGroupList contentGroupList = contentVA.getGroupList();
+		RecordVirtualArray recordVA = heatMapWrapper.getOverview().getRecordVA();
+		RecordGroupList contentGroupList = recordVA.getGroupList();
 
 		for (int i = 0; i < contentGroupList.size(); i++) {
 			Vec3f overviewHeatMapGroupPosition = layout
@@ -52,7 +52,7 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 			gl.glPopName();
 		}
 
-		// drawSelections(gl, layout, contentSelectionManager, contentVA);
+		// drawSelections(gl, layout, contentSelectionManager, recordVA);
 
 	}
 

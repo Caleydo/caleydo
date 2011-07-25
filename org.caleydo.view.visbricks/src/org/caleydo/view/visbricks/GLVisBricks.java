@@ -15,19 +15,19 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
-import org.caleydo.core.manager.event.data.NewMetaSetsEvent;
+import org.caleydo.core.manager.event.data.NewSubDataTablesEvent;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.DataDomainsChangedEvent;
@@ -67,7 +67,7 @@ import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.caleydo.view.visbricks.listener.AddGroupsToVisBricksListener;
 import org.caleydo.view.visbricks.listener.ConnectionsModeListener;
 import org.caleydo.view.visbricks.listener.GLVisBricksKeyListener;
-import org.caleydo.view.visbricks.listener.NewMetaSetsListener;
+import org.caleydo.view.visbricks.listener.NewSubDataTablesListener;
 import org.caleydo.view.visbricks.renderstyle.VisBricksRenderStyle;
 import org.eclipse.swt.widgets.Composite;
 
@@ -90,7 +90,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private final static int DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH = 30;
 	public final static int DIMENSION_GROUP_SIDE_SPACING = 50;
 
-	private NewMetaSetsListener metaSetsListener;
+	private NewSubDataTablesListener subDataTablesListener;
 	private AddGroupsToVisBricksListener addGroupsToVisBricksListener;
 	private ClearSelectionsListener clearSelectionsListener;
 	private ConnectionsModeListener trendHighlightModeListener;
@@ -141,7 +141,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private ElementLayout leftDimensionGroupSpacing;
 	private ElementLayout rightDimensionGroupSpacing;
 
-	private ContentSelectionManager contentSelectionManager;
+	private RecordSelectionManager contentSelectionManager;
 
 	private boolean connectionsOn = true;
 	private boolean connectionsHighlightDynamic = false;
@@ -160,7 +160,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private float previousXCoordinate = Float.NaN;
 
 	/** Needed for selecting the elments when a connection band is picked **/
-	private HashMap<Integer, ContentVirtualArray> hashConnectionBandIDToContentVA = new HashMap<Integer, ContentVirtualArray>();
+	private HashMap<Integer, RecordVirtualArray> hashConnectionBandIDToRecordVA = new HashMap<Integer, RecordVirtualArray>();
 
 	private SelectionType volatieBandSelectionType;
 
@@ -205,14 +205,14 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// dataDomain.createContentRelationAnalyzer();
 		// relationAnalyzer = dataDomain.getContentRelationAnalyzer();
 
-		contentSelectionManager = dataDomain.getContentSelectionManager();
+		contentSelectionManager = dataDomain.getRecordSelectionManager();
 
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new VisBricksRenderStyle(viewFrustum);
 
 		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;
-		metaSetsUpdated();
+		subDataTablesUpdated();
 		connectionRenderer.init(gl);
 		// viewFrustum.setProjectionMode(ECameraProjectionMode.PERSPECTIVE);
 		// viewCamera.setCameraRotation(new Rotf());
@@ -1106,9 +1106,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		metaSetsListener = new NewMetaSetsListener();
-		metaSetsListener.setHandler(this);
-		eventPublisher.addListener(NewMetaSetsEvent.class, metaSetsListener);
+		subDataTablesListener = new NewSubDataTablesListener();
+		subDataTablesListener.setHandler(this);
+		eventPublisher.addListener(NewSubDataTablesEvent.class, subDataTablesListener);
 
 		addGroupsToVisBricksListener = new AddGroupsToVisBricksListener();
 		addGroupsToVisBricksListener.setHandler(this);
@@ -1131,9 +1131,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
-		if (metaSetsListener != null) {
-			eventPublisher.removeListener(metaSetsListener);
-			metaSetsListener = null;
+		if (subDataTablesListener != null) {
+			eventPublisher.removeListener(subDataTablesListener);
+			subDataTablesListener = null;
 		}
 
 		if (addGroupsToVisBricksListener != null) {
@@ -1234,7 +1234,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 										1, 0, 1, -1, 1));
 
 				// dimensionGroup.setDataDomain(dataDomain);
-				// dimensionGroup.setSet(set);
+				// dimensionGroup.setDataTable(set);
 				dimensionGroup.setBrickDimensionGroupData(brickDimensionGroupData);
 				dimensionGroup.setRemoteRenderingGLView(this);
 				dimensionGroup.setVisBricks(this);
@@ -1254,29 +1254,29 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
-	public void metaSetsUpdated() {
+	public void subDataTablesUpdated() {
 
-		// ClusterTree dimensionTree = dataDomain.getSet()
+		// ClusterTree dimensionTree = dataDomain.getDataTable()
 		// .getDimensionData(dimensionVAType).getDimensionTree();
 		// if (dimensionTree == null)
 		// return;
 		//
-		// ArrayList<DataTable> allMetaSets = dimensionTree.getRoot()
-		// .getAllMetaSetsFromSubTree();
+		// ArrayList<DataTable> allSubDataTables = dimensionTree.getRoot()
+		// .getAllSubDataTablesFromSubTree();
 		//
-		// ArrayList<DataTable> filteredMetaSets = new ArrayList<DataTable>(
-		// allMetaSets.size() / 2);
+		// ArrayList<DataTable> filteredSubDataTables = new ArrayList<DataTable>(
+		// allSubDataTables.size() / 2);
 		//
-		// for (DataTable metaSet : allMetaSets) {
-		// if (metaSet.size() > 1
-		// && metaSet.size() != dataDomain.getSet().size())
-		// filteredMetaSets.add(metaSet);
+		// for (DataTable subDataTable : allSubDataTables) {
+		// if (subDataTable.size() > 1
+		// && subDataTable.size() != dataDomain.getDataTable().size())
+		// filteredSubDataTables.add(subDataTable);
 		// }
-		// initializeBricks(filteredMetaSets);
+		// initializeBricks(filteredSubDataTables);
 
 	}
 
-	// private void initializeBricks(ArrayList<DataTable> metaSets) {
+	// private void initializeBricks(ArrayList<DataTable> subDataTables) {
 	//
 	// ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
 	// .getDimensionGroups();
@@ -1285,17 +1285,17 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	// .iterator();
 	// while (dimensionGroupIterator.hasNext()) {
 	// DimensionGroup dimensionGroup = dimensionGroupIterator.next();
-	// DataTable metaSet = dimensionGroup.getSet();
-	// if (!metaSets.contains(metaSet)) {
+	// DataTable subDataTable = dimensionGroup.getDataTable();
+	// if (!subDataTables.contains(subDataTable)) {
 	// dimensionGroupIterator.remove();
 	// } else {
-	// metaSets.remove(metaSet);
+	// subDataTables.remove(subDataTable);
 	// }
 	//
 	// }
-	// for (DataTable set : metaSets) {
+	// for (DataTable set : subDataTables) {
 	//
-	// // TODO here we need to check which metaSets have already been
+	// // TODO here we need to check which subDataTables have already been
 	// // assigned to a dimensiongroup and not re-create them
 	// DimensionGroup dimensionGroup = (DimensionGroup) GeneralManager
 	// .get()
@@ -1307,7 +1307,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	// 0, 1, 0, 1, -1, 1));
 	//
 	// dimensionGroup.setDataDomain(dataDomain);
-	// dimensionGroup.setSet(set);
+	// dimensionGroup.setDataTable(set);
 	// dimensionGroup.setRemoteRenderingGLView(this);
 	// dimensionGroup.setVisBricks(this);
 	// dimensionGroup.setVisBricksView(this);
@@ -1327,28 +1327,28 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	// // getParentGLCanvas(),
 	// // new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
 	// // -1, 1));
-	// // binGroup.setIDTypes(dataDomain.getContentIDType(),
+	// // binGroup.dataTableIDTypes(dataDomain.getContentIDType(),
 	// // IDType.getIDType("GO_CC"));
 	// // binGroup.setDataDomain(dataDomain);
 	// //
-	// // // MetaSet metaSet = new MetaSet(dataDomain.getSet(), null, null);
+	// // // SubDataTable subDataTable = new SubDataTable(dataDomain.getDataTable(), null, null);
 	// // Set set = new Set(dataDomain);
-	// // set.setContentVA(Set.CONTENT, dataDomain.getContentVA(Set.CONTENT));
-	// // set.setLabel("Chromosome");
-	// // // metaSet.setContentTree(set.getContentTree());
+	// // dataTable.setRecordVA(Set.CONTENT, dataDomain.getRecordVA(Set.CONTENT));
+	// // dataTable.setLabel("Chromosome");
+	// // // subDataTable.setContentTree(dataTable.getContentTree());
 	// // // Tree<ClusterNode> subTree = tree.getSubTree();
 	// //
 	// // // ArrayList<Integer> dimensionIDs = new ArrayList<Integer>();
 	// // // SetUtils.setDimensions(set, dimensionIDs);
 	// //
-	// // dataDomain.addMetaSet(set);
-	// // binGroup.setSet(set);
+	// // dataDomain.addSubDataTable(set);
+	// // binGroup.setDataTable(set);
 	// // binGroup.setRemoteRenderingGLView(this);
 	// // binGroup.setVisBricks(this);
 	// // binGroup.setVisBricksView(this);
 	// // binGroup.initialize();
 	// //
-	// // relationAnalyzer.replaceContentVA(set.getID(),
+	// // relationAnalyzer.replaceRecordVA(dataTable.getID(),
 	// // dataDomain.getDataDomainType(),
 	// // Set.CONTENT);
 	// //
@@ -1368,28 +1368,28 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	// // -1, 1));
 	// //
 	// // set = new Set(dataDomain);
-	// // set.setContentVA(Set.CONTENT, dataDomain.getContentVA(Set.CONTENT));
-	// // set.setLabel("Compartment");
-	// // binGroup.setIDTypes(dataDomain.getContentIDType(),
+	// // dataTable.setRecordVA(Set.CONTENT, dataDomain.getRecordVA(Set.CONTENT));
+	// // dataTable.setLabel("Compartment");
+	// // binGroup.dataTableIDTypes(dataDomain.getContentIDType(),
 	// // IDType.getIDType("GO_CC"));
 	// // binGroup.setDataDomain(dataDomain);
 	// //
-	// // // MetaSet metaSet = new MetaSet(dataDomain.getSet(), null, null);
+	// // // SubDataTable subDataTable = new SubDataTable(dataDomain.getDataTable(), null, null);
 	// //
-	// // // metaSet.setContentTree(set.getContentTree());
+	// // // subDataTable.setContentTree(dataTable.getContentTree());
 	// // // Tree<ClusterNode> subTree = tree.getSubTree();
 	// //
 	// // // ArrayList<Integer> dimensionIDs = new ArrayList<Integer>();
 	// // // SetUtils.setDimensions(set, dimensionIDs);
 	// //
-	// // dataDomain.addMetaSet(set);
-	// // binGroup.setSet(set);
+	// // dataDomain.addSubDataTable(set);
+	// // binGroup.setDataTable(set);
 	// // binGroup.setRemoteRenderingGLView(this);
 	// // binGroup.setVisBricks(this);
 	// // binGroup.setVisBricksView(this);
 	// // binGroup.initialize();
 	// //
-	// // relationAnalyzer.replaceContentVA(set.getID(),
+	// // relationAnalyzer.replaceRecordVA(dataTable.getID(),
 	// // dataDomain.getDataDomainType(),
 	// // Set.CONTENT);
 	// //
@@ -1607,7 +1607,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		return archBottomY;
 	}
 
-	public ContentSelectionManager getContentSelectionManager() {
+	public RecordSelectionManager getRecordSelectionManager() {
 		return contentSelectionManager;
 	}
 
@@ -1641,8 +1641,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		return selectedConnectionBandID;
 	}
 
-	public HashMap<Integer, ContentVirtualArray> getHashConnectionBandIDToContentVA() {
-		return hashConnectionBandIDToContentVA;
+	public HashMap<Integer, RecordVirtualArray> getHashConnectionBandIDToRecordVA() {
+		return hashConnectionBandIDToRecordVA;
 	}
 
 	private void selectElementsByConnectionBandID(int connectionBandID) {
@@ -1669,10 +1669,10 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		GeneralManager.get().getEventPublisher()
 				.triggerEvent(selectionTypeEvent);
 
-		for (Integer contentID : hashConnectionBandIDToContentVA
+		for (Integer recordID : hashConnectionBandIDToRecordVA
 				.get(connectionBandID)) {
 			contentSelectionManager.addToType(
-					contentSelectionManager.getSelectionType(), contentID);
+					contentSelectionManager.getSelectionType(), recordID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();

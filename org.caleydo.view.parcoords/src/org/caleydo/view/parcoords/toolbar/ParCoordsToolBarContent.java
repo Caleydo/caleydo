@@ -40,7 +40,7 @@ public class ParCoordsToolBarContent extends AToolBarContent {
 		IToolBarItem angularBrushingAction = new AngularBrushingAction();
 		actionList.add(angularBrushingAction);
 		// IAction occlusionPreventionAction = new
-		// OcclusionPreventionAction(iViewID);
+		// OcclusionPreventionAction(viewID);
 		// alToolbar.add(occlusionPreventionAction);
 
 		IToolBarItem resetAxisSpacing = new ResetAxisSpacingAction();

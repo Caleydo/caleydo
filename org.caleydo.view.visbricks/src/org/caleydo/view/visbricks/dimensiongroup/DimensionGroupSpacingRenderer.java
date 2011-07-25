@@ -7,10 +7,10 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.id.ManagedObjectType;
-import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.similarity.GroupSimilarity;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
@@ -79,13 +79,13 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			return;
 
 		SimilarityMap similarityMap = relationAnalyzer.getSimilarityMap(leftDimGroup
-				.getSetID());
+				.getDataTableID());
 
 		if (similarityMap == null)
 			return;
 
-		VASimilarity<ContentVirtualArray, ContentGroupList> vaSimilarityMap = similarityMap
-				.getVASimilarity(rightDimGroup.getSetID());
+		VASimilarity<RecordVirtualArray, RecordGroupList> vaSimilarityMap = similarityMap
+				.getVASimilarity(rightDimGroup.getDataTableID());
 		if (vaSimilarityMap == null)
 			return;
 
@@ -96,8 +96,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 			ElementLayout leftBrickElementLayout = leftBrick.getLayout();
 
-			GroupSimilarity<ContentVirtualArray, ContentGroupList> leftGroupSimilarity = vaSimilarityMap
-					.getGroupSimilarity(leftDimGroup.getSetID(), leftBrick.getGroupID());
+			GroupSimilarity<RecordVirtualArray, RecordGroupList> leftGroupSimilarity = vaSimilarityMap
+					.getGroupSimilarity(leftDimGroup.getDataTableID(), leftBrick.getGroupID());
 
 			float[] leftSimilarities = leftGroupSimilarity.getSimilarities();
 			float leftSimilarityOffsetY = 0;
@@ -130,8 +130,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 			ElementLayout rightBrickElementLayout = rightBrick.getLayout();
 
-			GroupSimilarity<ContentVirtualArray, ContentGroupList> rightGroupSimilarity = vaSimilarityMap
-					.getGroupSimilarity(rightDimGroup.getSetID(), rightBrick.getGroupID());
+			GroupSimilarity<RecordVirtualArray, RecordGroupList> rightGroupSimilarity = vaSimilarityMap
+					.getGroupSimilarity(rightDimGroup.getDataTableID(), rightBrick.getGroupID());
 
 			float[] rightSimilarities = rightGroupSimilarity.getSimilarities();
 
@@ -165,16 +165,16 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 	}
 
 	private void calculateSubMatchSelections(SubGroupMatch subGroupMatch,
-			ContentVirtualArray contentVA) {
+			RecordVirtualArray recordVA) {
 
-		if (contentVA.size() == 0)
+		if (recordVA.size() == 0)
 			return;
 
-		ContentSelectionManager contentSelectionManager = glVisBricks
-				.getContentSelectionManager();
+		RecordSelectionManager contentSelectionManager = glVisBricks
+				.getRecordSelectionManager();
 
-		glVisBricks.getHashConnectionBandIDToContentVA().put(
-				subGroupMatch.getConnectionBandID(), contentVA);
+		glVisBricks.getHashConnectionBandIDToRecordVA().put(
+				subGroupMatch.getConnectionBandID(), recordVA);
 
 		float ratio = 0;
 
@@ -192,20 +192,20 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			if (selectedByGroupSelections == null
 					|| selectedByGroupSelections.size() == 0) {
 
-				ratio = 1;//(float) contentVA.size()
-//				 / subGroupMatch.getBrick().getContentVA().size();
+				ratio = 1;//(float) recordVA.size()
+//				 / subGroupMatch.getBrick().getRecordVA().size();
 
 				subGroupMatch.addSelectionTypeRatio(ratio, SelectionType.NORMAL);
 				continue;
 			}
 
 			int intersectionCount = 0;
-			for (int contentID : contentVA) {
-				if (selectedByGroupSelections.contains(contentID))
+			for (int recordID : recordVA) {
+				if (selectedByGroupSelections.contains(recordID))
 					intersectionCount++;
 			}
 			
-			ratio = (float) intersectionCount / contentVA.size();
+			ratio = (float) intersectionCount / recordVA.size();
 			
 //			if (intersectionCount > 0) {
 //			System.out.println("intersection: " +intersectionCount);

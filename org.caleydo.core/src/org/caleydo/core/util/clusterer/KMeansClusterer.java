@@ -35,7 +35,7 @@ public class KMeansClusterer
 		clusterer = new SimpleKMeans();
 	}
 
-	private TempResult cluster(DataTable set, ClusterState clusterState) {
+	private TempResult cluster(DataTable dataTable, ClusterState clusterState) {
 
 		// Arraylist holding clustered indicess
 		ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -71,12 +71,12 @@ public class KMeansClusterer
 
 		int iPercentage = 1;
 
-		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
+		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
 
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
 
-			int iNrElements = contentVA.size();
+			int iNrElements = recordVA.size();
 
 			if (iNrCluster >= iNrElements)
 				return null;
@@ -88,10 +88,10 @@ public class KMeansClusterer
 			buffer.append("@data\n");
 
 			int icnt = 0;
-			for (Integer iContentIndex : contentVA) {
+			for (Integer recordIndex : recordVA) {
 
 				if (bClusteringCanceled == false) {
-					int tempPercentage = (int) ((float) icnt / contentVA.size() * 100);
+					int tempPercentage = (int) ((float) icnt / recordVA.size() * 100);
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher()
 							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
@@ -99,8 +99,8 @@ public class KMeansClusterer
 					}
 
 					for (Integer iDimensionIndex : dimensionVA) {
-						buffer.append(set.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED,
-							iContentIndex)
+						buffer.append(dataTable.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED,
+							recordIndex)
 							+ ", ");
 
 					}
@@ -126,7 +126,7 @@ public class KMeansClusterer
 			if (iNrCluster >= iNrElements)
 				return null;
 
-			for (int nr = 0; nr < contentVA.size(); nr++) {
+			for (int nr = 0; nr < recordVA.size(); nr++) {
 				buffer.append("@attribute Gene" + nr + " real\n");
 			}
 
@@ -136,16 +136,16 @@ public class KMeansClusterer
 			for (Integer iDimensionIndex : dimensionVA) {
 
 				if (bClusteringCanceled == false) {
-					int tempPercentage = (int) ((float) isto / contentVA.size() * 100);
+					int tempPercentage = (int) ((float) isto / recordVA.size() * 100);
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher()
 							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
-					for (Integer iContentIndex : contentVA) {
-						buffer.append(set.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED,
-							iContentIndex)
+					for (Integer recordIndex : recordVA) {
+						buffer.append(dataTable.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED,
+							recordIndex)
 							+ ", ");
 
 					}
@@ -166,7 +166,7 @@ public class KMeansClusterer
 			.triggerEvent(
 				new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
-		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING)
+		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("KMeans clustering of genes in progress"));
 		else
@@ -231,9 +231,9 @@ public class KMeansClusterer
 
 		// IVirtualArray currentVA = null;
 		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-		// currentVA = set.getVA(iVAIdContent);
+		// currentVA = dataTable.getVA(iVAIdContent);
 		// else
-		// currentVA = set.getVA(iVAIdDimension);
+		// currentVA = dataTable.getVA(iVAIdDimension);
 
 		for (int cluster = 0; cluster < iNrCluster; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {
@@ -260,13 +260,13 @@ public class KMeansClusterer
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-		ClusterHelper.sortClusters(set, contentVA, dimensionVA, alExamples, clusterState.getClustererType());
+		ClusterHelper.sortClusters(dataTable, recordVA, dimensionVA, alExamples, clusterState.getClustererType());
 
-		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
+		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
 			for (int cluster : alExamples) {
 				for (int i = 0; i < data.numInstances(); i++) {
 					if (ClusterAssignments[i] == hashExamples.get(cluster)) {
-						indices.add(contentVA.get(i));
+						indices.add(recordVA.get(i));
 						count.set(hashExamples.get(cluster), count.get(hashExamples.get(cluster)) + 1);
 					}
 				}
@@ -286,9 +286,9 @@ public class KMeansClusterer
 
 		// IVirtualArray virtualArray = null;
 		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-		// virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), indices);
+		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdContent).getVAType(), dataTable.depth(), indices);
 		// else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(set.getVA(iVAIdDimension).getVAType(), set.size(), indices);
+		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdDimension).getVAType(), dataTable.size(), indices);
 
 		TempResult tempResult = new TempResult();
 		tempResult.indices = indices;
@@ -296,8 +296,8 @@ public class KMeansClusterer
 		tempResult.sampleElements = alExamples;
 
 		// set cluster result in Set
-		// set.setAlClusterSizes(count);
-		// set.setAlExamples(alExamples);
+		// dataTable.setAlClusterSizes(count);
+		// dataTable.setAlExamples(alExamples);
 
 		GeneralManager
 			.get()
@@ -315,7 +315,7 @@ public class KMeansClusterer
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
-		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING)
+		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)
 			iNrCluster = clusterState.getKMeansClusterCntGenes();
 		else
 			iNrCluster = clusterState.getKMeansClusterCntExperiments();

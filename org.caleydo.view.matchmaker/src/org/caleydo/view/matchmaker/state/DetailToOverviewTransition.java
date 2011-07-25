@@ -74,7 +74,7 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 		if (!overviewState.isInitialized()) {
 			overviewState.init(gl);
 		}
-		overviewState.setSetsInFocus(setBar.getSetsInFocus());
+		overviewState.setDataTablesInFocus(setBar.getDataTablesInFocus());
 
 		heatMapWrappers = overviewState.getHeatMapWrappers();
 
@@ -85,7 +85,7 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 
 		for (int i = 0; i < heatMapWrappers.size(); i++) {
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
-			if (heatMapWrapper.getSet().getID() == sourceHeatMapWrappers.get(0).getSet()
+			if (heatMapWrapper.getDataTable().getID() == sourceHeatMapWrappers.get(0).getDataTable()
 					.getID()) {
 				indexOffset = i;
 				break;
@@ -153,7 +153,7 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
 			heatMapWrapper.setLayout(layouts.get(i));
 			layouts.get(i).setHeatMapWrapper(heatMapWrapper);
-			setsInFocus.add(heatMapWrapper.getSet());
+			setsInFocus.add(heatMapWrapper.getDataTable());
 		}
 
 		setAllDisplayListsDirty();

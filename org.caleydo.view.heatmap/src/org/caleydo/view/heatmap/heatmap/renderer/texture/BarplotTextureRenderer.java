@@ -7,7 +7,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -37,7 +37,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 	private DimensionVirtualArray dimensionVA;
 
-	private ContentVirtualArray contentVA;
+	private RecordVirtualArray recordVA;
 
 	private DataTable set;
 
@@ -52,11 +52,11 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 	public void initTextures(ArrayList<Float> uncertaintyVA) {
 
-		if (dimensionVA == null || contentVA == null)
+		if (dimensionVA == null || recordVA == null)
 			return;
 
 		int textureWidth = dimensionVA.size();
-		int textureHeight = numberOfElements = contentVA.size();
+		int textureHeight = numberOfElements = recordVA.size();
 		if (uncertaintyVA != null) {
 			textureHeight = numberOfElements = uncertaintyVA.size();
 		}
@@ -104,7 +104,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 			if (uncertaintyVA != null) {
 				uncertainty = uncertaintyVA.get(index);
 			} else {
-				uncertainty = glUncHeatmap.getMaxUncertainty(contentVA.get(index));
+				uncertainty = glUncHeatmap.getMaxUncertainty(recordVA.get(index));
 			}
 			for (int i = 0; i < textureWidth; i++) {
 				float[] rgba = new float[4];
@@ -145,12 +145,12 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 	}
 
 	public void init(GLUncertaintyHeatMap glUncHeatmap, DataTable set,
-			ContentVirtualArray contentVA, DimensionVirtualArray dimensionVA,
+			RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA,
 			ColorMapper colorMapper) {
 
 		this.glUncHeatmap = glUncHeatmap;
 		this.dimensionVA = dimensionVA;
-		this.contentVA = contentVA;
+		this.recordVA = recordVA;
 		this.set = set;
 
 		initTextures(null);

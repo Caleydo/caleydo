@@ -2,7 +2,7 @@ package org.caleydo.core.serialize;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 
@@ -28,7 +28,7 @@ public class DataDomainSerializationData {
 	private String experimentClusterTree;
 
 	/** virtual arrays of this application stored in relation with their their-key */
-	private HashMap<String, ContentVirtualArray> contentVAMap;
+	private HashMap<String, RecordVirtualArray> recordVAMap;
 	private HashMap<String, DimensionVirtualArray> dimensionVAMap;
 
 	public ATableBasedDataDomain getDataDomain() {
@@ -39,20 +39,20 @@ public class DataDomainSerializationData {
 		this.dataDomain = dataDomain;
 	}
 
-	public byte[] getSetFileContent() {
+	public byte[] getDataTableFileContent() {
 		return setFileContent;
 	}
 
-	public void setSetFileContent(byte[] setFileContent) {
+	public void setDataTableFileContent(byte[] setFileContent) {
 		this.setFileContent = setFileContent;
 	}
 
-	public HashMap<String, ContentVirtualArray> getContentVAMap() {
-		return contentVAMap;
+	public HashMap<String, RecordVirtualArray> getRecordVAMap() {
+		return recordVAMap;
 	}
 
-	public void setContentVAMap(HashMap<String, ContentVirtualArray> contentVAMap) {
-		this.contentVAMap = contentVAMap;
+	public void setRecordVAMap(HashMap<String, RecordVirtualArray> recordVAMap) {
+		this.recordVAMap = recordVAMap;
 	}
 
 	public HashMap<String, DimensionVirtualArray> getDimensionVAMap() {

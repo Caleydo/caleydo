@@ -30,7 +30,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 	private static final float VERTICAL_TEXT_PADDING_PORTION = 0.7f;
 	private static final String TEXT_FOR_HEIGHT_CALCULATION = "Text without characters below the bottom textline";
 
-	private DataTable set;
+	private DataTable dataTable;
 	private Vec3f position;
 	private float height;
 	private float width;
@@ -68,7 +68,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 		gl.glPopName();
 
 		float fontScaling = determineFontScaling();
-		String caption = getTruncatedCaption(set.getLabel(), fontScaling);
+		String caption = getTruncatedCaption(dataTable.getLabel(), fontScaling);
 		Vec3f textPosition = calculateTextPosition(caption, fontScaling);
 
 		textRenderer.setColor(0, 0, 0, 1);
@@ -158,12 +158,12 @@ public class SetBarItem implements IDraggable, IDropArea {
 				+ (VERTICAL_TEXT_PADDING_PORTION / 2.0f * height), position.z() + 0.1f);
 	}
 
-	public DataTable getSet() {
-		return set;
+	public DataTable getDataTable() {
+		return dataTable;
 	}
 
-	public void setSet(DataTable set) {
-		this.set = set;
+	public void setDataTable(DataTable dataTable) {
+		this.dataTable = dataTable;
 	}
 
 	public Vec3f getPosition() {
@@ -277,7 +277,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 		return id;
 	}
 
-	public void setID(int id) {
+	public void dataTableID(int id) {
 		this.id = id;
 	}
 

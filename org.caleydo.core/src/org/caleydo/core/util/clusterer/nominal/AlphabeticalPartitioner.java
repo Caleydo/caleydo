@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.util.clusterer.AClusterer;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.TempResult;
@@ -14,11 +14,11 @@ public class AlphabeticalPartitioner
 	extends AClusterer {
 
 	@Override
-	public TempResult getSortedVA(DataTable set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(DataTable dataTable, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
-		ContentVirtualArray contentVA = set.getContentData(DataTable.RECORD).getContentVA();
+		RecordVirtualArray recordVA = dataTable.getRecordData(DataTable.RECORD).getRecordVA();
 		NominalDimension<String> dimension =
-			(NominalDimension<String>) set.get(set.getDimensionData(DataTable.DIMENSION).getDimensionVA().get(0));
+			(NominalDimension<String>) dataTable.get(dataTable.getDimensionData(DataTable.DIMENSION).getDimensionVA().get(0));
 
 		HashMap<String, ArrayList<Integer>> letterBins = new HashMap<String, ArrayList<Integer>>(40);
 
@@ -33,14 +33,14 @@ public class AlphabeticalPartitioner
 		String unknown = "UNKNOWN";
 		letterBins.put(unknown, new ArrayList<Integer>());
 
-		for (Integer contentID : contentVA) {
-			String value = dimension.getRaw(contentID);
+		for (Integer recordID : recordVA) {
+			String value = dimension.getRaw(recordID);
 			String firstLetter = value.substring(0, 1);
 			firstLetter = firstLetter.toLowerCase();
 			if (letterBins.containsKey(firstLetter))
-				letterBins.get(firstLetter).add(contentID);
+				letterBins.get(firstLetter).add(recordID);
 			else {
-				letterBins.get(unknown).add(contentID);
+				letterBins.get(unknown).add(recordID);
 			}
 		}
 
@@ -48,12 +48,12 @@ public class AlphabeticalPartitioner
 		ArrayList<Integer> clusterSizes = new ArrayList<Integer>();
 		ArrayList<Integer> sampleElements = new ArrayList<Integer>();
 		for (String letter : letters) {
-			ArrayList<Integer> contentIDs = letterBins.get(letter);
-			if (contentIDs.size() == 0)
+			ArrayList<Integer> recordIDs = letterBins.get(letter);
+			if (recordIDs.size() == 0)
 				continue;
 
-			indices.addAll(contentIDs);
-			clusterSizes.add(contentIDs.size());
+			indices.addAll(recordIDs);
+			clusterSizes.add(recordIDs.size());
 			// set the first to be the sample element, not really a nice solution
 			sampleElements.add(indices.get(0));
 		}

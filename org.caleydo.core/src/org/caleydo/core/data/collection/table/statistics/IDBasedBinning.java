@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 
@@ -28,31 +28,31 @@ public class IDBasedBinning {
 	}
 
 	public HashMap<String, ArrayList<Integer>> getBinning(IDType sourceType, IDType targetType,
-		ContentVirtualArray contenVA) {
+		RecordVirtualArray contenVA) {
 		if (bin.isEmpty()) {
 			ArrayList<Integer> nonMappingIDs = new ArrayList<Integer>();
-			for (Integer contentID : contenVA) {
+			for (Integer recordID : contenVA) {
 
 				Set<String> refSeqIDs =
-					mappingManager.getIDAsSet(sourceType, IDType.getIDType("REFSEQ_MRNA"), contentID);
+					mappingManager.getIDAsSet(sourceType, IDType.getIDType("REFSEQ_MRNA"), recordID);
 
 				for (String refSeq : refSeqIDs) {
 					Set<String> mappedIDs =
 						mappingManager.getIDAsSet(IDType.getIDType("REFSEQ_MRNA"), targetType, refSeq);
 					if (mappedIDs == null) {
-						nonMappingIDs.add(contentID);
+						nonMappingIDs.add(recordID);
 						// bin.put("Other", nonMappingIDs);
 						continue;
 					}
 					for (String id : mappedIDs) {
 						if (!bin.containsKey(id)) {
 							ArrayList<Integer> ids = new ArrayList<Integer>();
-							ids.add(contentID);
+							ids.add(recordID);
 							bin.put(id, ids);
 						}
 						else {
 							ArrayList<Integer> ids = bin.get(id);
-							ids.add(contentID);
+							ids.add(recordID);
 							bin.put(id, ids);
 						}
 					}

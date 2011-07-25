@@ -1,6 +1,6 @@
 package org.caleydo.datadomain.pathway.data;
 
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
@@ -11,18 +11,18 @@ public class PathwaySegmentData implements ISegmentData {
 
 	private IDataDomain dataDomain;
 	private ATableBasedDataDomain mappingDataDomain;
-	private ContentVirtualArray contentVA;
+	private RecordVirtualArray recordVA;
 	private PathwayGraph pathway;
 	private Group group;
 	private PathwayDimensionGroupData dimensionGroupData;
 
 	public PathwaySegmentData(IDataDomain dataDomain,
 			ATableBasedDataDomain mappingDataDomain,
-			ContentVirtualArray contentVA, Group group, PathwayGraph pathway,
+			RecordVirtualArray recordVA, Group group, PathwayGraph pathway,
 			PathwayDimensionGroupData dimensionGroupData) {
 		this.dataDomain = dataDomain;
 		this.mappingDataDomain = mappingDataDomain;
-		this.contentVA = contentVA;
+		this.recordVA = recordVA;
 		this.group = group;
 		this.pathway = pathway;
 		this.dimensionGroupData = dimensionGroupData;
@@ -35,9 +35,9 @@ public class PathwaySegmentData implements ISegmentData {
 	}
 
 	@Override
-	public ContentVirtualArray getContentVA() {
+	public RecordVirtualArray getRecordVA() {
 		// TODO Auto-generated method stub
-		return contentVA;
+		return recordVA;
 	}
 
 	@Override

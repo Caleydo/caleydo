@@ -5,7 +5,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
@@ -20,31 +20,31 @@ public class FuelBarRenderer extends LayoutRenderer {
 
 	private GLBrick brick;
 	private SelectionManager selectionManager;
-	private DataTable set;
+	private DataTable dataTable;
 
-	public FuelBarRenderer(GLBrick brick, DataTable set) {
+	public FuelBarRenderer(GLBrick brick, DataTable dataTable) {
 		this.brick = brick;
-		this.set = set;
-		selectionManager = brick.getContentGroupSelectionManager();
+		this.dataTable = dataTable;
+		selectionManager = brick.getRecordGroupSelectionManager();
 	}
 
 	@Override
 	public void render(GL2 gl) {
 
-//		DataTable set = brick.getSet();
-		ContentVirtualArray contentVA = brick.getContentVA();
+//		DataTable set = brick.getDataTable();
+		RecordVirtualArray recordVA = brick.getRecordVA();
 
-		if (set == null || contentVA == null)
+		if (dataTable == null || recordVA == null)
 			return;
 
-		ContentVirtualArray setContentVA = set.getContentData(DataTable.RECORD).getContentVA();
+		RecordVirtualArray setRecordVA = dataTable.getRecordData(DataTable.RECORD).getRecordVA();
 
-		if (setContentVA == null)
+		if (setRecordVA == null)
 			return;
 
-		int totalNumElements = setContentVA.size();
+		int totalNumElements = setRecordVA.size();
 
-		int currentNumElements = contentVA.size();
+		int currentNumElements = recordVA.size();
 
 		float fuelWidth = (float) x / totalNumElements * currentNumElements;
 

@@ -4,15 +4,15 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.filter.ContentFilter;
+import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.DimensionFilter;
-import org.caleydo.core.data.filter.event.CombineContentFilterEvent;
+import org.caleydo.core.data.filter.event.CombineRecordFilterEvent;
 import org.caleydo.core.data.filter.event.CombineFilterEvent;
-import org.caleydo.core.data.filter.event.MoveContentFilterEvent;
+import org.caleydo.core.data.filter.event.MoveRecordtFilterEvent;
 import org.caleydo.core.data.filter.event.MoveFilterEvent;
 import org.caleydo.core.data.filter.event.MoveDimensionFilterEvent;
-import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
+import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveDimensionFilterEvent;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -158,9 +158,9 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	public void triggerRemove() {
 		RemoveFilterEvent<?> filterEvent = null;
 
-		if (filter instanceof ContentFilter) {
-			filterEvent = new RemoveContentFilterEvent();
-			((RemoveContentFilterEvent) filterEvent).setFilter((ContentFilter) filter);
+		if (filter instanceof RecordFilter) {
+			filterEvent = new RemoveRecordFilterEvent();
+			((RemoveRecordFilterEvent) filterEvent).setFilter((RecordFilter) filter);
 		} else if (filter instanceof DimensionFilter) {
 			filterEvent = new RemoveDimensionFilterEvent();
 			((RemoveDimensionFilterEvent) filterEvent).setFilter((DimensionFilter) filter);
@@ -177,9 +177,9 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	public void triggerMove(int offset) {
 		MoveFilterEvent<?> filterEvent = null;
 
-		if (filter instanceof ContentFilter) {
-			filterEvent = new MoveContentFilterEvent();
-			((MoveContentFilterEvent) filterEvent).setFilter((ContentFilter) filter);
+		if (filter instanceof RecordFilter) {
+			filterEvent = new MoveRecordtFilterEvent();
+			((MoveRecordtFilterEvent) filterEvent).setFilter((RecordFilter) filter);
 		} else if (filter instanceof DimensionFilter) {
 			filterEvent = new MoveDimensionFilterEvent();
 			((MoveDimensionFilterEvent) filterEvent).setFilter((DimensionFilter) filter);
@@ -231,11 +231,11 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 
 		CombineFilterEvent<?> filterEvent = null;
 
-		if (filter instanceof ContentFilter) {
-			filterEvent = new CombineContentFilterEvent();
-			((CombineContentFilterEvent) filterEvent).setFilter((ContentFilter) filter);
-			((CombineContentFilterEvent) filterEvent)
-					.addCombineFilter((ContentFilter) getFilterRepresentation(draggables)
+		if (filter instanceof RecordFilter) {
+			filterEvent = new CombineRecordFilterEvent();
+			((CombineRecordFilterEvent) filterEvent).setFilter((RecordFilter) filter);
+			((CombineRecordFilterEvent) filterEvent)
+					.addCombineFilter((RecordFilter) getFilterRepresentation(draggables)
 							.getFilter().filter);
 		}
 		// else if( filter instanceof DimensionFilter )

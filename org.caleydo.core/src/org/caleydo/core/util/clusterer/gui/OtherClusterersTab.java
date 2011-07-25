@@ -2,7 +2,7 @@ package org.caleydo.core.util.clusterer.gui;
 
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
-import org.caleydo.core.util.clusterer.EClustererType;
+import org.caleydo.core.util.clusterer.ClustererType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -46,7 +46,7 @@ public class OtherClusterersTab {
 		if (alphabetical.getSelection())
 			clusterState.setClustererAlgo(EClustererAlgo.ALPHABETICAL);
 
-		clusterState.setClustererType(EClustererType.CONTENT_CLUSTERING);
+		clusterState.setClustererType(ClustererType.RECORD_CLUSTERING);
 		return clusterState;
 	}
 }

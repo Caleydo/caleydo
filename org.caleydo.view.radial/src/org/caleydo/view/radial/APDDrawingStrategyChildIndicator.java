@@ -28,12 +28,12 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 	 * @param pickingManager
 	 *            The picking manager that should handle the picking of the
 	 *            drawn elements.
-	 * @param iViewID
+	 * @param viewID
 	 *            ID of the view where the elements will be displayed. Needed
 	 *            for picking.
 	 */
-	public APDDrawingStrategyChildIndicator(PickingManager pickingManager, int iViewID) {
-		super(pickingManager, iViewID);
+	public APDDrawingStrategyChildIndicator(PickingManager pickingManager, int viewID) {
+		super(pickingManager, viewID);
 		fArChildIndicatorColor = RadialHierarchyRenderStyle.CHILD_INDICATOR_COLOR;
 		fTransparency = 1.0f;
 	}

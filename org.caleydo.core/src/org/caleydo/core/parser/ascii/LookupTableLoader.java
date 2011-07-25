@@ -68,7 +68,7 @@ public class LookupTableLoader
 					if (sLine.length() != 0 && strTokenText.countTokens() == 1) {
 
 						// Special case for creating indexing of dimensions
-						if (mappingType.getToIDType().getTypeName().equals("content_")) {
+						if (mappingType.getToIDType().getTypeName().equals("record_")) {
 
 							// Remove multiple RefSeqs because all point to the
 							// same gene DAVID ID
@@ -107,7 +107,7 @@ public class LookupTableLoader
 							String buffer = strTokenText.nextToken();
 
 							// Special case for creating indexing of dimensions
-							if (mappingType.getToIDType().getTypeName().contains("content_")) {
+							if (mappingType.getToIDType().getTypeName().contains("record_")) {
 
 								if (mappingType.getFromIDType().getTypeName().contains("REFSEQ")) {
 									// Remove multiple RefSeqs because all point to
@@ -181,7 +181,7 @@ public class LookupTableLoader
 				}
 				catch (NoSuchElementException nsee) {
 					/*
-					 * no ABORT was set. since no more tokens are in ParserTokenHandler skip rest of line..
+					 * no ABORT was dataTable. since no more tokens are in ParserTokenHandler skip rest of line..
 					 */
 					bMaintainLoop = false;
 

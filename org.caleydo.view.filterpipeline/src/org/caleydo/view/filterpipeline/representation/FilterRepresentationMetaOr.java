@@ -6,11 +6,11 @@ import java.util.TreeSet;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.filter.ContentFilter;
-import org.caleydo.core.data.filter.ContentMetaOrFilter;
+import org.caleydo.core.data.filter.RecordFilter;
+import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -100,19 +100,19 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 
 		// TODO also handle dimension filter
 		@SuppressWarnings("unchecked")
-		VirtualArray<?, ContentVADelta, ?> input =
-			(VirtualArray<?, ContentVADelta, ?>)filter.getInput().clone();
-		ArrayList<ContentFilter> filterList =
-			((ContentMetaOrFilter)filter.getFilter()).getFilterList();
+		VirtualArray<?, RecordVADelta, ?> input =
+			(VirtualArray<?, RecordVADelta, ?>)filter.getInput().clone();
+		ArrayList<RecordFilter> filterList =
+			((RecordMetaOrFilter)filter.getFilter()).getFilterList();
 
 		subFilterSizes = new int[filterList.size()];
 		subFiltersPassedElements =
 			new ArrayList<SortedSet<Integer>>( filterList.size() );
 
 		int i = 0;
-		for (ContentFilter subFilter : filterList)
+		for (RecordFilter subFilter : filterList)
 		{
-			VirtualArray<?, ContentVADelta, ?> tempInput = input.clone();
+			VirtualArray<?, RecordVADelta, ?> tempInput = input.clone();
 			tempInput.setDelta(subFilter.getVADelta());
 
 			SortedSet<Integer> passedElements = new TreeSet<Integer>();

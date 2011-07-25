@@ -182,7 +182,7 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
 		if (!(brickLayout instanceof CentralBrickLayoutTemplate)) {
-			HeatMapCreator heatMapCreator = new HeatMapCreator(set);
+			HeatMapCreator heatMapCreator = new HeatMapCreator(dataTable);
 			AGLView heatMap = heatMapCreator.createRemoteView(brick, gl, glMouseListener);
 			LayoutRenderer heatMapLayoutRenderer = new ViewLayoutRenderer(heatMap);
 			views.put(EContainedViewType.HEATMAP_VIEW, heatMap);
@@ -190,14 +190,14 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 					heatMapLayoutRenderer);
 		}
 
-		ParCoordsCreator parCoordsCreator = new ParCoordsCreator(set);
+		ParCoordsCreator parCoordsCreator = new ParCoordsCreator(dataTable);
 		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl, glMouseListener);
 		LayoutRenderer parCoordsLayoutRenderer = new ViewLayoutRenderer(parCoords);
 		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
 		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
 				parCoordsLayoutRenderer);
 
-		HistogramCreator histogramCreator = new HistogramCreator(set);
+		HistogramCreator histogramCreator = new HistogramCreator(dataTable);
 		AGLView histogram = histogramCreator.createRemoteView(brick, gl, glMouseListener);
 		LayoutRenderer histogramLayoutRenderer = new ViewLayoutRenderer(histogram);
 		views.put(EContainedViewType.HISTOGRAM_VIEW, histogram);
@@ -205,15 +205,15 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 				histogramLayoutRenderer);
 
 		LayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getContentVA(), set.getDimensionData(DataTable.DIMENSION).getDimensionVA(),
-				set, true);
+				brick.getRecordVA(), dataTable.getDimensionData(DataTable.DIMENSION).getDimensionVA(),
+				dataTable, true);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
 				overviewHeatMapRenderer);
 
 		LayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getContentVA(), set.getDimensionData(DataTable.DIMENSION).getDimensionVA(),
-				set, false);
+				brick.getRecordVA(), dataTable.getDimensionData(DataTable.DIMENSION).getDimensionVA(),
+				dataTable, false);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
 				compactOverviewHeatMapRenderer);

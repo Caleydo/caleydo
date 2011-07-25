@@ -138,7 +138,7 @@ public class TreePorter {
 
 		org.caleydo.core.data.collection.table.DataTable set =
 			(org.caleydo.core.data.collection.table.DataTable) dataDomain.getDataTable();
-		tree.createMetaSets(set);
+		tree.createSubDataTables(set);
 		return tree;
 	}
 

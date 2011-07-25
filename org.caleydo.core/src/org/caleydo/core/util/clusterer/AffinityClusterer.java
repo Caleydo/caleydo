@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
@@ -65,9 +65,9 @@ public class AffinityClusterer
 		super.setClusterState(clusterState);
 
 		try {
-			if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING)
-				this.iNrSamples = clusterState.getContentVA().size();
-			else if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING)
+			if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)
+				this.iNrSamples = clusterState.getRecordVA().size();
+			else if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING)
 				this.iNrSamples = clusterState.getDimensionVA().size();
 
 			this.iNrSimilarities = iNrSamples * iNrSamples;
@@ -83,13 +83,13 @@ public class AffinityClusterer
 	/**
 	 * Calculates the similarity vector for a given set and given VAs
 	 * 
-	 * @param set
+	 * @param dataTable
 	 * @param clusterState
 	 * @return in case of error a negative value will be returned.
 	 */
-	private int determineSimilarities(DataTable set, ClusterState clusterState) {
+	private int determineSimilarities(DataTable dataTable, ClusterState clusterState) {
 
-		ContentVirtualArray contentVA = clusterState.getContentVA();
+		RecordVirtualArray recordVA = clusterState.getRecordVA();
 		DimensionVirtualArray dimensionVA = clusterState.getDimensionVA();
 
 		IDistanceMeasure distanceMeasure;
@@ -105,7 +105,7 @@ public class AffinityClusterer
 
 		int iPercentage = 1;
 
-		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
+		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
 
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
@@ -116,10 +116,10 @@ public class AffinityClusterer
 			int icnt1 = 0, icnt2 = 0, isto = 0;
 			int count = 0;
 
-			for (Integer iContentIndex1 : contentVA) {
+			for (Integer recordIndex1 : recordVA) {
 
 				if (bClusteringCanceled == false) {
-					int tempPercentage = (int) ((float) icnt1 / contentVA.size() * 100);
+					int tempPercentage = (int) ((float) icnt1 / recordVA.size() * 100);
 
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher()
@@ -130,25 +130,25 @@ public class AffinityClusterer
 					isto = 0;
 					for (Integer iDimensionIndex1 : dimensionVA) {
 						dArInstance1[isto] =
-							set.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, iContentIndex1);
+							dataTable.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, recordIndex1);
 						isto++;
 					}
 
 					icnt2 = 0;
-					for (Integer iContentIndex2 : contentVA) {
+					for (Integer recordIndex2 : recordVA) {
 
 						isto = 0;
 						for (Integer iDimensionIndex2 : dimensionVA) {
 							dArInstance2[isto] =
-								set.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
-									iContentIndex2);
+								dataTable.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
+									recordIndex2);
 							isto++;
 						}
 
 						if (icnt1 != icnt2) {
 							s[count] = -distanceMeasure.getMeasure(dArInstance1, dArInstance2);
-							i[count] = contentVA.indexOf(iContentIndex1);
-							k[count] = contentVA.indexOf(iContentIndex2);
+							i[count] = recordVA.indexOf(recordIndex1);
+							k[count] = recordVA.indexOf(recordIndex2);
 							count++;
 						}
 						icnt2++;
@@ -167,10 +167,10 @@ public class AffinityClusterer
 			float median = ClusterHelper.median(s);
 
 			int cnt = 0;
-			for (Integer iContentIndex : contentVA) {
+			for (Integer recordIndex : recordVA) {
 				s[count] = median * fClusterFactor;
-				i[count] = contentVA.indexOf(iContentIndex);
-				k[count] = contentVA.indexOf(iContentIndex);
+				i[count] = recordVA.indexOf(recordIndex);
+				k[count] = recordVA.indexOf(recordIndex);
 				count++;
 				cnt++;
 			}
@@ -180,8 +180,8 @@ public class AffinityClusterer
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
 
-			float[] dArInstance1 = new float[contentVA.size()];
-			float[] dArInstance2 = new float[contentVA.size()];
+			float[] dArInstance1 = new float[recordVA.size()];
+			float[] dArInstance2 = new float[recordVA.size()];
 
 			int isto1 = 0, isto2 = 0, icnt = 0;
 			int count = 0;
@@ -198,9 +198,9 @@ public class AffinityClusterer
 					}
 
 					icnt = 0;
-					for (Integer iContentIndex1 : contentVA) {
+					for (Integer recordIndex1 : recordVA) {
 						dArInstance1[icnt] =
-							set.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, iContentIndex1);
+							dataTable.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, recordIndex1);
 						icnt++;
 					}
 
@@ -208,10 +208,10 @@ public class AffinityClusterer
 					for (Integer iDimensionIndex2 : dimensionVA) {
 
 						icnt = 0;
-						for (Integer iContentIndex2 : contentVA) {
+						for (Integer recordIndex2 : recordVA) {
 							dArInstance2[icnt] =
-								set.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
-									iContentIndex2);
+								dataTable.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
+									recordIndex2);
 							icnt++;
 						}
 
@@ -261,7 +261,7 @@ public class AffinityClusterer
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
-	private TempResult affinityPropagation(EClustererType eClustererType) {
+	private TempResult affinityPropagation(ClustererType eClustererType) {
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 		// Arraylist holding indices of examples (cluster centers)
@@ -292,7 +292,7 @@ public class AffinityClusterer
 
 		int iPercentage = 1;
 
-		if (eClustererType == EClustererType.CONTENT_CLUSTERING)
+		if (eClustererType == ClustererType.RECORD_CLUSTERING)
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Affinity propagation of genes in progress"));
 		else
@@ -499,7 +499,7 @@ public class AffinityClusterer
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-		ClusterHelper.sortClusters(set, contentVA, dimensionVA, alExamples, eClustererType);
+		ClusterHelper.sortClusters(set, recordVA, dimensionVA, alExamples, eClustererType);
 
 		indices = getAl(alExamples, alClusterSizes, idxExamples, idx, eClustererType);
 
@@ -517,9 +517,9 @@ public class AffinityClusterer
 
 		// IVirtualArray virtualArray = null;
 		// if (eClustererType == EClustererType.GENE_CLUSTERING)
-		// virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), indexes);
+		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdContent).getVAType(), dataTable.depth(), indexes);
 		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(set.getVA(iVAIdDimension).getVAType(), set.size(), indexes);
+		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdDimension).getVAType(), dataTable.size(), indexes);
 
 	}
 
@@ -541,17 +541,17 @@ public class AffinityClusterer
 	 * @return An array list with indexes in the VA
 	 */
 	private ArrayList<Integer> getAl(ArrayList<Integer> alExamples, ArrayList<Integer> alClusterSizes,
-		ArrayList<Integer> idxExamples, int[] idx, EClustererType eClustererType) {
+		ArrayList<Integer> idxExamples, int[] idx, ClustererType eClustererType) {
 
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 
 		int counter = 0;
 		int idxCnt = 0;
 
-		ArrayList<Integer> alIndexListContent = contentVA.getIndexList();
+		ArrayList<Integer> alIndexListContent = recordVA.getIndexList();
 		ArrayList<Integer> alIndexListDimension = dimensionVA.getIndexList();
 
-		if (eClustererType == EClustererType.CONTENT_CLUSTERING) {
+		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
 			for (Integer example : alExamples) {
 				for (int index = 0; index < alIndexListContent.size(); index++) {
 					if (idx[index] == example) {
@@ -559,7 +559,7 @@ public class AffinityClusterer
 						alClusterSizes.set(counter, alClusterSizes.get(counter) + 1);
 					}
 					if (example == index) {
-						idxExamples.add(contentVA.get(example));
+						idxExamples.add(recordVA.get(example));
 						idxCnt = 0;
 					}
 					idxCnt++;
@@ -591,7 +591,7 @@ public class AffinityClusterer
 	public TempResult getSortedVA(DataTable set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 
-		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING)
+		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)
 			fClusterFactor = clusterState.getAffinityPropClusterFactorGenes();
 		else
 			fClusterFactor = clusterState.getAffinityPropClusterFactorExperiments();

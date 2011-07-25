@@ -110,7 +110,7 @@ public class OneWaySlider extends AGLGUIElement {
 	 *            Picking manager that shall be used.
 	 * @param textureManager
 	 *            Texture manager that shall be used.
-	 * @param iViewID
+	 * @param viewID
 	 *            ID of the view where the slider shall be drawn.
 	 * @param iSliderID
 	 *            Picking ID for the slider (the sliding element).
@@ -120,7 +120,7 @@ public class OneWaySlider extends AGLGUIElement {
 	 *            Picking ID for the slider body.
 	 */
 	public void draw(GL2 gl, PickingManager pickingManager, TextureManager textureManager,
-			int iViewID, int iSliderID, int iSliderButtonID, int iSliderBodyID) {
+			int viewID, int iSliderID, int iSliderButtonID, int iSliderBodyID) {
 
 		gl.glPushMatrix();
 
@@ -129,7 +129,7 @@ public class OneWaySlider extends AGLGUIElement {
 
 		beginGUIElement(gl, scalingPivot);
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.RAD_HIERARCHY_SLIDER_BODY_SELECTION, iSliderBodyID));
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
@@ -143,7 +143,7 @@ public class OneWaySlider extends AGLGUIElement {
 
 		gl.glPopName();
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.RAD_HIERARCHY_SLIDER_SELECTION, iSliderID));
 
 		gl.glColor4f(0.3f, 0.3f, 0.3f, 0.5f);
@@ -156,7 +156,7 @@ public class OneWaySlider extends AGLGUIElement {
 		gl.glEnd();
 
 		gl.glPopName();
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.RAD_HIERARCHY_SLIDER_BUTTON_SELECTION, iSliderButtonID));
 
 		Vec3f lowerLeftCorner = new Vec3f(fWidth, fDownButtonHeight, 0);

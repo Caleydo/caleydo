@@ -17,7 +17,7 @@ public class NormalSpacingCalculator extends ASpacingCalculator {
 	}
 
 	@Override
-	public float getFieldHeight(int contentID) {
+	public float getFieldHeight(int recordID) {
 		return normalFieldHeight;
 	}
 }

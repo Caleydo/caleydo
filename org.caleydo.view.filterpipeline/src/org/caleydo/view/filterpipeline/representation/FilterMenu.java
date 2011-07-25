@@ -7,7 +7,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.filter.ContentMetaOrFilter;
+import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
@@ -62,9 +62,9 @@ public class FilterMenu
 		
 		int numFilters = 1;
 		
-		if( filter.getFilter() instanceof ContentMetaOrFilter )
+		if( filter.getFilter() instanceof RecordMetaOrFilter )
 		{
-			numFilters = ((ContentMetaOrFilter)filter.getFilter()).getFilterList().size();
+			numFilters = ((RecordMetaOrFilter)filter.getFilter()).getFilterList().size();
 		}
 
 		float x = filter.getRepresentation().getPosition().x(),

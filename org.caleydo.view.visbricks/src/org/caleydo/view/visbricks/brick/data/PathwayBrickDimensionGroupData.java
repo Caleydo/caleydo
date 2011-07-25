@@ -3,7 +3,7 @@ package org.caleydo.view.visbricks.brick.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
@@ -26,12 +26,12 @@ public class PathwayBrickDimensionGroupData implements IBrickDimensionGroupData 
 	}
 
 	@Override
-	public ContentVirtualArray getSummaryBrickVA() {
+	public RecordVirtualArray getSummaryBrickVA() {
 		return dimensionGroupData.getSummaryVA();
 	}
 
 	@Override
-	public ArrayList<ContentVirtualArray> getSegmentBrickVAs() {
+	public ArrayList<RecordVirtualArray> getSegmentBrickVAs() {
 
 		return dimensionGroupData.getSegmentVAs();
 	}

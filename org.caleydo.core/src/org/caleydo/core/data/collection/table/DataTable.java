@@ -15,7 +15,7 @@ import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.collection.table.statistics.StatisticsResult;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.id.ManagedObjectType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -33,13 +33,13 @@ import org.eclipse.core.runtime.Status;
  * <h2>General Information</h2>
  * <p>
  * A set is the main container for tabular data in Caleydo. A set is made up of {@link IDimension}s, where each
- * dimension corresponds to a column in a tabular data set. Columns are therefore always refered to as
- * <b>Dimensions</b> and rows as <b>Content</b> The data should be accessed through {@link VirtualArray}s, which
- * are stored in {@link DimensionData}s for Dimensions and {@link RecordData}s for Content.
+ * dimension corresponds to a column in a tabular data dataTable. Columns are therefore always referred to as
+ * <b>Dimensions</b> and rows as <b>Record</b> The data should be accessed through {@link VirtualArray}s, which
+ * are stored in {@link DimensionData}s for Dimensions and {@link RecordData}s for Record.
  * </p>
- * <h2>Set Creation</h2>
+ * <h2>DataTable Creation</h2>
  * <p>
- * A set relies heavily upon {@link DataTableUtils} for being created. Many creation related functions are
+ * A data table relies heavily upon {@link DataTableUtils} for being created. Many creation related functions are
  * provided there, sometimes interfacing with package private methods in this class.
  * </p>
  * 
@@ -57,7 +57,7 @@ public class DataTable
 
 	private String sLabel = "Rootset";
 
-	protected HashMap<String, RecordData> hashContentData;
+	protected HashMap<String, RecordData> hashRecordData;
 	protected HashMap<String, DimensionData> hashDimensionData;
 
 	protected NumericalDimension meanDimension;
@@ -89,7 +89,7 @@ public class DataTable
 	}
 
 	/**
-	 * Constructor for the set. Creates and initializes members and registers the set whit the set manager.
+	 * Constructor for the dataTable. Creates and initializes members and registers the set whit the set manager.
 	 * Also creates a new default tree. This should not be called by implementing sub-classes.
 	 */
 	public DataTable(ATableBasedDataDomain dataDomain) {
@@ -114,7 +114,7 @@ public class DataTable
 	protected void init() {
 
 		hashDimensions = new HashMap<Integer, ADimension>();
-		hashContentData = new HashMap<String, RecordData>(6);
+		hashRecordData = new HashMap<String, RecordData>(6);
 		hashDimensionData = new HashMap<String, DimensionData>(3);
 		defaultDimensionData = new DimensionData();
 		defaultDimensionData.setDimensionVA(new DimensionVirtualArray(DIMENSION));
@@ -132,7 +132,7 @@ public class DataTable
 		return metaData;
 	}
 
-	public DataTableDataType getSetType() {
+	public DataTableDataType getDataTableType() {
 		return dataTableType;
 	}
 
@@ -141,8 +141,8 @@ public class DataTable
 	 */
 	public void createSubDataTable() {
 		// ClusterNode rootNode = hashDimensionData.get(STORAGE).getDimensionTreeRoot();
-		// rootNode.createMetaSets(this);
-		defaultDimensionData.getDimensionTree().createMetaSets(this);
+		// rootNode.createSubDataTables(this);
+		defaultDimensionData.getDimensionTree().createSubDataTables(this);
 	}
 
 	/**
@@ -265,9 +265,9 @@ public class DataTable
 	/**
 	 * Restores the original virtual array using the whole set data.
 	 */
-	public void restoreOriginalContentVA() {
-		RecordData contentData = createContentData(RECORD);
-		hashContentData.put(RECORD, contentData);
+	public void restoreOriginalRecordVA() {
+		RecordData recordData = createRecordData(RECORD);
+		hashRecordData.put(RECORD, recordData);
 	}
 
 	/**
@@ -284,36 +284,36 @@ public class DataTable
 	 * 
 	 * @return
 	 */
-	public ContentVirtualArray getBaseContentVA() {
+	public RecordVirtualArray getBaseRecordVA() {
 		if (defaultRecordData == null)
-			defaultRecordData = createContentData(RECORD);
-		return defaultRecordData.getContentVA().clone();
+			defaultRecordData = createRecordData(RECORD);
+		return defaultRecordData.getRecordVA().clone();
 	}
 
 	/**
-	 * Set a contentVA. The contentVA in the contentData object is replaced and the other elements in the
-	 * contentData are reset.
+	 * Set a recordVA. The recordVA in the recordData object is replaced and the other elements in the
+	 * recordData are redataTable.
 	 * 
 	 * @param vaType
 	 * @param virtualArray
 	 */
-	public void setContentVA(String vaType, ContentVirtualArray virtualArray) {
-		RecordData contentData = hashContentData.get(vaType);
-		if (contentData == null)
-			contentData = createContentData(vaType);
+	public void setRecordVA(String vaType, RecordVirtualArray virtualArray) {
+		RecordData recordData = hashRecordData.get(vaType);
+		if (recordData == null)
+			recordData = createRecordData(vaType);
 		else
-			contentData.reset();
-		contentData.setContentVA(virtualArray);
+			recordData.reset();
+		recordData.setRecordVA(virtualArray);
 		// FIXME - this happens when we filter genes based on pathway occurrences. However, we should consider
 		// this as a filter instead of the new default
 		// if (vaType == CONTENT)
-		// defaultContentData = contentData;
-		hashContentData.put(vaType, contentData);
+		// defaultContentData = recordData;
+		hashRecordData.put(vaType, recordData);
 	}
 
 	/**
 	 * Sets a dimensionVA. The dimensionVA in the dimensionData object is replaced and the other elements in the
-	 * dimensionData are reset.
+	 * dimensionData are redataTable.
 	 * 
 	 * @param vaType
 	 * @param virtualArray
@@ -357,11 +357,11 @@ public class DataTable
 
 		// if (setType.equals(ESetDataType.NUMERIC) && isSetHomogeneous == true) {
 
-		String contentVAType = clusterState.getContentVAType();
-		if (contentVAType != null) {
-			clusterState.setContentVA(getContentData(contentVAType).getContentVA());
-			clusterState.setContentIDType(dataDomain.getContentIDType());
-			// this.setContentGroupList(getContentVA(contentVAType).getGroupList());
+		String recordVAType = clusterState.getRecordVAType();
+		if (recordVAType != null) {
+			clusterState.setRecordVA(getRecordData(recordVAType).getRecordVA());
+			clusterState.setRecordIDType(dataDomain.getRecordIDType());
+			// this.setContentGroupList(getRecordVA(recordVAType).getGroupList());
 		}
 
 		String dimensionVAType = clusterState.getDimensionVAType();
@@ -375,9 +375,9 @@ public class DataTable
 		ClusterResult result = clusterManager.cluster(clusterState);
 
 		if (result != null) {
-			RecordData contentResult = result.getContentResult();
-			if (contentResult != null) {
-				hashContentData.put(clusterState.getContentVAType(), contentResult);
+			RecordData recordResult = result.getRecordResult();
+			if (recordResult != null) {
+				hashRecordData.put(clusterState.getRecordVAType(), recordResult);
 			}
 			DimensionData dimensionResult = result.getDimensionResult();
 			if (dimensionResult != null) {
@@ -390,19 +390,19 @@ public class DataTable
 	}
 
 	/**
-	 * Returns a {@link RecordData} object for the specified ContentVAType. The ContentData provides access
+	 * Returns a {@link RecordData} object for the specified RecordVAType. The ContentData provides access
 	 * to all data on a dimension, e.g., virtualArryay, cluster tree, group list etc.
 	 * 
 	 * @param vaType
 	 * @return
 	 */
-	public RecordData getContentData(String vaType) {
-		RecordData contentData = hashContentData.get(vaType);
-		if (contentData == null) {
-			contentData = createContentData(vaType);
-			hashContentData.put(vaType, contentData);
+	public RecordData getRecordData(String vaType) {
+		RecordData recordData = hashRecordData.get(vaType);
+		if (recordData == null) {
+			recordData = createRecordData(vaType);
+			hashRecordData.put(vaType, recordData);
 		}
-		return contentData;
+		return recordData;
 	}
 
 	/**
@@ -451,7 +451,7 @@ public class DataTable
 	}
 
 	/**
-	 * Returns a dimension containing the mean values of all the dimensions in the set. The mean dimension contains
+	 * Returns a dimension containing the mean values of all the dimensions in the dataTable. The mean dimension contains
 	 * raw and normalized values. The mean is calculated based on the raw data, that means for calculating the
 	 * means possibly specified cut-off values are not considered, since cut-off values are meant for
 	 * visualization only.
@@ -506,7 +506,7 @@ public class DataTable
 
 	// -------------------- set creation ------------------------------
 	// Set creation is achieved by employing methods of SetUtils which utilizes package private methods in the
-	// set.
+	// dataTable.
 
 	/**
 	 * Add a dimension based on its id. The dimension has to be fully initialized with data
@@ -649,27 +649,27 @@ public class DataTable
 
 	// ---------------------- helper functions ------------------------------
 
-	private RecordData createContentData(String vaType) {
-		RecordData contentData = new RecordData(dataDomain.getContentIDType());
+	private RecordData createRecordData(String vaType) {
+		RecordData recordData = new RecordData(dataDomain.getRecordIDType());
 
-		ContentVirtualArray contentVA;
+		RecordVirtualArray recordVA;
 		if (vaType != RECORD_CONTEXT) {
-			contentVA = createBaseContentVA(vaType);
+			recordVA = createBaseRecordVA(vaType);
 		}
 		else {
-			contentVA = new ContentVirtualArray(vaType);
+			recordVA = new RecordVirtualArray(vaType);
 		}
-		contentData.setContentVA(contentVA);
-		return contentData;
+		recordData.setRecordVA(recordVA);
+		return recordData;
 
 	}
 
-	private ContentVirtualArray createBaseContentVA(String vaType) {
-		ContentVirtualArray contentVA = new ContentVirtualArray(vaType);
+	private RecordVirtualArray createBaseRecordVA(String vaType) {
+		RecordVirtualArray recordVA = new RecordVirtualArray(vaType);
 		for (int count = 0; count < metaData.depth(); count++) {
-			contentVA.append(count);
+			recordVA.append(count);
 		}
-		return contentVA;
+		return recordVA;
 	}
 
 	/**
@@ -677,8 +677,8 @@ public class DataTable
 	 * 
 	 * @return
 	 */
-	public java.util.Set<String> getRegisteredContentVATypes() {
-		return hashContentData.keySet();
+	public java.util.Set<String> getRegisteredRecordVATypes() {
+		return hashRecordData.keySet();
 	}
 
 	/**

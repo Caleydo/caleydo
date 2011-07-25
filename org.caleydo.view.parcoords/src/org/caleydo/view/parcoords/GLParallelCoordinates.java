@@ -39,9 +39,9 @@ import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.filter.ContentFilter;
+import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.DimensionFilter;
-import org.caleydo.core.data.filter.event.NewContentFilterEvent;
+import org.caleydo.core.data.filter.event.NewRecordFilterEvent;
 import org.caleydo.core.data.filter.event.NewDimensionFilterEvent;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
@@ -51,9 +51,9 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
@@ -84,7 +84,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.RecordContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.DimensionContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -389,14 +389,14 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (bRenderOnlyContext) {
-			contentVAType = DataTable.RECORD_CONTEXT;
-			contentVA = dataDomain.getContentVA(contentVAType);
+			recordVAType = DataTable.RECORD_CONTEXT;
+			recordVA = dataDomain.getRecordVA(recordVAType);
 		} else {
-			contentVAType = DataTable.RECORD;
-			contentVA = dataDomain.getContentVA(contentVAType);
+			recordVAType = DataTable.RECORD;
+			recordVA = dataDomain.getRecordVA(recordVAType);
 		}
 
-		contentSelectionManager.setVA(contentVA);
+		recordSelectionManager.setVA(recordVA);
 		// initGates();
 		clearAllSelections();
 
@@ -409,12 +409,12 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	@Override
 	public void clearAllSelections() {
 
-		contentSelectionManager.clearSelections();
+		recordSelectionManager.clearSelections();
 		dimensionSelectionManager.clearSelections();
 
 		clearFilters();
 		setDisplayListDirty();
-		connectedElementRepresentationManager.clear(contentIDType);
+		connectedElementRepresentationManager.clear(recordIDType);
 	}
 
 	/**
@@ -441,7 +441,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	 */
 	public void bookmarkElements() {
 
-		ContentVADelta delta = contentSelectionManager.getBroadcastVADelta();
+		RecordVADelta delta = recordSelectionManager.getBroadcastVADelta();
 		if (delta.size() > 20) {
 			parentComposite.getDisplay()
 					.asyncExec(new Runnable() {
@@ -460,7 +460,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 		if (!isRenderedRemote()) {
 			BookmarkEvent<Integer> bookmarkEvent = new BookmarkEvent<Integer>(
-					contentIDType);
+					recordIDType);
 			for (VADeltaItem item : delta.getAllItems()) {
 				bookmarkEvent.addBookmark(item.getPrimaryID());
 			}
@@ -472,17 +472,17 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	public void saveSelection() {
 
-		Set<Integer> removedElements = contentSelectionManager
+		Set<Integer> removedElements = recordSelectionManager
 				.getElements(SelectionType.DESELECTED);
 
-		ContentVADelta delta = new ContentVADelta(contentVAType, contentIDType);
-		for (Integer contentID : removedElements) {
-			delta.add(VADeltaItem.removeElement(contentID));
+		RecordVADelta delta = new RecordVADelta(recordVAType, recordIDType);
+		for (Integer recordID : removedElements) {
+			delta.add(VADeltaItem.removeElement(recordID));
 		}
 
-		contentSelectionManager.clearSelection(SelectionType.DESELECTED);
+		recordSelectionManager.clearSelection(SelectionType.DESELECTED);
 		clearFilters();
-		triggerContentFilterEvent(delta, "Removed via gates");
+		triggerRecordFilterEvent(delta, "Removed via gates");
 
 	}
 
@@ -495,18 +495,18 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = DataTable.RECORD_CONTEXT;
+			recordVAType = DataTable.RECORD_CONTEXT;
 		else
-			contentVAType = DataTable.RECORD;
+			recordVAType = DataTable.RECORD;
 
-		// contentVA = dataDomain.getContentVA(contentVAType);
-		if (contentVA == null)
-			contentVA = table.getContentData(contentVAType).getContentVA();
+		// recordVA = dataDomain.getRecordVA(recordVAType);
+		if (recordVA == null)
+			recordVA = table.getRecordData(recordVAType).getRecordVA();
 		if (dimensionVA == null)
 			dimensionVA = table.getDimensionData(dimensionVAType).getDimensionVA();
 		// dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
 
-		contentSelectionManager.setVA(contentVA);
+		recordSelectionManager.setVA(recordVA);
 		dimensionSelectionManager.setVA(dimensionVA);
 
 		initGates();
@@ -538,7 +538,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
-		if (contentVA.size() == 0) {
+		if (recordVA.size() == 0) {
 			gl.glTranslatef(-xSideSpacing, -fYTranslation, 0.0f);
 			renderSymbol(gl, EIconTextures.PAR_COORDS_SYMBOL, 2);
 			gl.glTranslatef(+xSideSpacing, fYTranslation, 0.0f);
@@ -550,7 +550,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 			renderCoordinateSystem(gl);
 
-			for (SelectionType selectionType : contentSelectionManager
+			for (SelectionType selectionType : recordSelectionManager
 					.getSelectionTypes()) {
 				if (selectionType.isVisible()) {
 					if (selectionType == SelectionType.NORMAL)
@@ -579,10 +579,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	 */
 	private void renderNormalPolylines(GL2 gl, SelectionType selectionType) {
 
-		int nrVisibleLines = contentVA.size()
-				- contentSelectionManager.getNumberOfElements(SelectionType.DESELECTED);
+		int nrVisibleLines = recordVA.size()
+				- recordSelectionManager.getNumberOfElements(SelectionType.DESELECTED);
 
-		displayEveryNthPolyline = (contentVA.size() - contentSelectionManager
+		displayEveryNthPolyline = (recordVA.size() - recordSelectionManager
 				.getNumberOfElements(SelectionType.DESELECTED)) / iNumberOfRandomElements;
 
 		if (displayEveryNthPolyline == 0) {
@@ -593,33 +593,33 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				nrVisibleLines / displayEveryNthPolyline);
 
 		// this loop executes once per polyline
-		for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex += displayEveryNthPolyline) {
-			int contentID = contentVA.get(contentIndex);
-			if (!contentSelectionManager.checkStatus(SelectionType.DESELECTED, contentID))
-				renderSingleLine(gl, contentID, selectionType, renderState, false);
+		for (int recordIndex = 0; recordIndex < recordVA.size(); recordIndex += displayEveryNthPolyline) {
+			int recordID = recordVA.get(recordIndex);
+			if (!recordSelectionManager.checkStatus(SelectionType.DESELECTED, recordID))
+				renderSingleLine(gl, recordID, selectionType, renderState, false);
 		}
 	}
 
 	private void renderSelectedPolylines(GL2 gl, SelectionType selectionType) {
 		if (!selectionType.isVisible())
 			return;
-		int nrVisibleLines = contentSelectionManager.getNumberOfElements(selectionType);
-		Set<Integer> lines = contentSelectionManager.getElements(selectionType);
+		int nrVisibleLines = recordSelectionManager.getNumberOfElements(selectionType);
+		Set<Integer> lines = recordSelectionManager.getElements(selectionType);
 		boolean renderAsSelection = true;
 		if (lines.size() > 1)
 			renderAsSelection = false;
 		PolyLineState renderState = renderStyle.getPolyLineState(selectionType,
 				nrVisibleLines / displayEveryNthPolyline);
 		renderState.updateOcclusionPrev(nrVisibleLines);
-		for (Integer contentID : lines) {
+		for (Integer recordID : lines) {
 
-			if (contentVA.contains(contentID))
-				renderSingleLine(gl, contentID, selectionType, renderState,
+			if (recordVA.contains(recordID))
+				renderSingleLine(gl, recordID, selectionType, renderState,
 						renderAsSelection);
 		}
 	}
 
-	private void renderSingleLine(GL2 gl, Integer contentID, SelectionType selectionType,
+	private void renderSingleLine(GL2 gl, Integer recordID, SelectionType selectionType,
 			PolyLineState renderState, boolean renderCaption) {
 
 		gl.glColor4fv(renderState.color, 0);
@@ -636,7 +636,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 		if (selectionType != SelectionType.DESELECTED) {
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.POLYLINE_SELECTION, contentID));
+					PickingType.POLYLINE_SELECTION, recordID));
 		}
 
 		if (!renderCaption) {
@@ -649,7 +649,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			currentDimension = table.get(dimensionVA.get(dimensionCount));
 
 			currentX = axisSpacings.get(dimensionCount);
-			currentY = currentDimension.getFloat(DataRepresentation.NORMALIZED, contentID);
+			currentY = currentDimension.getFloat(DataRepresentation.NORMALIZED, recordID);
 			if (Float.isNaN(currentY)) {
 				currentY = NAN_Y_OFFSET / renderStyle.getAxisHeight();
 			}
@@ -673,11 +673,11 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				String sRawValue;
 				if (currentDimension instanceof NumericalDimension) {
 					sRawValue = Formatter.formatNumber(currentDimension.getFloat(
-							DataRepresentation.RAW, contentID));
+							DataRepresentation.RAW, recordID));
 
 				} else if (currentDimension instanceof NominalDimension) {
 					sRawValue = ((NominalDimension<String>) currentDimension)
-							.getRaw(contentID);
+							.getRaw(recordID);
 				} else
 					throw new IllegalStateException("Unknown Dimension Type");
 
@@ -827,14 +827,14 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				//
 				// // top
 				// String text =
-				// getDecimalFormat().format(set.getMax());
+				// getDecimalFormat().format(dataTable.getMax());
 				// textRenderer.draw3D(text, fXPosition + 2 *
 				// AXIS_MARKER_WIDTH, renderStyle
 				// .getAxisHeight(), 0,
 				// renderStyle.getSmallFontScalingFactor());
 				//
 				// // bottom
-				// text = getDecimalFormat().format(set.getMin());
+				// text = getDecimalFormat().format(dataTable.getMin());
 				// textRenderer.draw3D(text, fXPosition + 2 *
 				// AXIS_MARKER_WIDTH, 0, 0,
 				// renderStyle.getSmallFontScalingFactor());
@@ -1019,7 +1019,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			for (int iAxisIndex : iAlAxisIndex) {
 				float fCurrentPosition = axisSpacings.get(iAxisIndex);
 				gate.setCurrentPosition(fCurrentPosition);
-				// String label = set.get(iAxisID).getLabel();
+				// String label = dataTable.get(iAxisID).getLabel();
 
 				gate.draw(gl, pickingManager, textureManager, textRenderer, uniqueID);
 				// renderSingleGate(gl, gate, iAxisID, iGateID,
@@ -1220,13 +1220,13 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			int iAxisID = gate.getAxisID();
 			if (iAxisID == -1)
 				continue;
-			for (int contentID : contentVA) {
+			for (int recordID : recordVA) {
 				DataRepresentation usedDataRepresentation = DataRepresentation.RAW;
 				if (!table.isSetHomogeneous())
 					usedDataRepresentation = DataRepresentation.NORMALIZED;
 
 				fCurrentValue = table.get(iAxisID).getFloat(usedDataRepresentation,
-						contentID);
+						recordID);
 
 				if (Float.isNaN(fCurrentValue)) {
 					continue;
@@ -1234,7 +1234,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 				if (fCurrentValue <= gate.getUpperValue()
 						&& fCurrentValue >= gate.getLowerValue()) {
-					alCurrentGateBlocks.add(contentID);
+					alCurrentGateBlocks.add(recordID);
 				}
 			}
 		}
@@ -1246,7 +1246,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		hashIsNANBlocking.clear();
 		for (Integer iAxisID : hashExcludeNAN.keySet()) {
 			ArrayList<Integer> alDeselectedLines = new ArrayList<Integer>();
-			for (int iPolylineIndex : contentVA) {
+			for (int iPolylineIndex : recordVA) {
 
 				fCurrentValue = table.get(iAxisID).getFloat(DataRepresentation.NORMALIZED,
 						iPolylineIndex);
@@ -1269,7 +1269,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				return;
 			alCurrentGateBlocks.clear();
 			Gate gate = hashMasterGates.get(iGateID);
-			for (int iPolylineIndex : contentVA) {
+			for (int iPolylineIndex : recordVA) {
 				boolean bIsBlocking = true;
 				for (int iAxisIndex : dimensionVA) {
 
@@ -1303,9 +1303,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	}
 
 	@Override
-	protected void reactOnContentVAChanges(ContentVADelta delta) {
+	protected void reactOnRecordVAChanges(RecordVADelta delta) {
 
-		contentSelectionManager.setVADelta(delta);
+		recordSelectionManager.setVADelta(delta);
 
 	}
 
@@ -1356,18 +1356,18 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		if (table.isSetHomogeneous())
 			handleMasterGateUnselection();
 
-		contentSelectionManager.clearSelection(SelectionType.DESELECTED);
+		recordSelectionManager.clearSelection(SelectionType.DESELECTED);
 
 		for (ArrayList<Integer> alCurrent : hashIsGateBlocking.values()) {
-			contentSelectionManager.addToType(SelectionType.DESELECTED, alCurrent);
+			recordSelectionManager.addToType(SelectionType.DESELECTED, alCurrent);
 		}
 
 		for (ArrayList<Integer> alCurrent : alIsAngleBlocking) {
-			contentSelectionManager.addToType(SelectionType.DESELECTED, alCurrent);
+			recordSelectionManager.addToType(SelectionType.DESELECTED, alCurrent);
 		}
 
 		for (ArrayList<Integer> alCurrent : hashIsNANBlocking.values()) {
-			contentSelectionManager.addToType(SelectionType.DESELECTED, alCurrent);
+			recordSelectionManager.addToType(SelectionType.DESELECTED, alCurrent);
 		}
 
 		if (bIsDraggingActive || bIsAngularBrushingActive) {
@@ -1378,7 +1378,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	private void triggerSelectionUpdate() {
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 		selectionUpdateEvent.setDataDomainID(dataDomain.getDataDomainID());
-		selectionUpdateEvent.setSelectionDelta(contentSelectionManager.getDelta());
+		selectionUpdateEvent.setSelectionDelta(recordSelectionManager.getDelta());
 		selectionUpdateEvent.setSender(this);
 		eventPublisher.triggerEvent(selectionUpdateEvent);
 		// send out a major update which tells the hhm to update its textures
@@ -1419,10 +1419,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
-				ContentContextMenuItemContainer contentContextMenuItemContainer = new ContentContextMenuItemContainer();
-				contentContextMenuItemContainer.setDataDomain(dataDomain);
-				contentContextMenuItemContainer.setID(contentIDType, pickingID);
-				contextMenu.addItemContanier(contentContextMenuItemContainer);
+				RecordContextMenuItemContainer recordContextMenuItemContainer = new RecordContextMenuItemContainer();
+				recordContextMenuItemContainer.setDataDomain(dataDomain);
+				recordContextMenuItemContainer.dataTableID(recordIDType, pickingID);
+				contextMenu.addItemContanier(recordContextMenuItemContainer);
 
 				if (!isRenderedRemote()) {
 					contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
@@ -1436,14 +1436,14 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 			}
 
-			if (contentSelectionManager.checkStatus(selectionType, pickingID)) {
+			if (recordSelectionManager.checkStatus(selectionType, pickingID)) {
 				break;
 			}
 
 			connectedElementRepresentationManager.clear(
-					contentSelectionManager.getIDType(), selectionType);
+					recordSelectionManager.getIDType(), selectionType);
 
-			contentSelectionManager.clearSelection(selectionType);
+			recordSelectionManager.clearSelection(selectionType);
 
 			// TODO: Integrate multi spotting support again
 			// if (ePolylineDataType == EIDType.EXPRESSION_INDEX) {
@@ -1468,8 +1468,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			// }
 			// }
 			// else {
-			contentSelectionManager.addToType(selectionType, pickingID);
-			contentSelectionManager.addConnectionID(generalManager.getIDCreator()
+			recordSelectionManager.addToType(selectionType, pickingID);
+			recordSelectionManager.addConnectionID(generalManager.getIDCreator()
 					.createID(ManagedObjectType.CONNECTION), pickingID);
 
 			// }
@@ -1482,7 +1482,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				// ESelectionCommandType.CLEAR, selectionType);
 				// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
-				ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+				ISelectionDelta selectionDelta = recordSelectionManager.getDelta();
 				handleConnectedElementReps(selectionDelta);
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
@@ -1516,7 +1516,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				}
 				DimensionContextMenuItemContainer experimentContextMenuItemContainer = new DimensionContextMenuItemContainer();
 				experimentContextMenuItemContainer.setDataDomain(dataDomain);
-				experimentContextMenuItemContainer.setID(dimensionIDType, pickingID);
+				experimentContextMenuItemContainer.dataTableID(dimensionIDType, pickingID);
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 
 			default:
@@ -1780,14 +1780,14 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		eventPublisher.triggerEvent(filterEvent);
 	}
 
-	private void triggerContentFilterEvent(ContentVADelta delta, String label) {
+	private void triggerRecordFilterEvent(RecordVADelta delta, String label) {
 
-		ContentFilter filter = new ContentFilter();
+		RecordFilter filter = new RecordFilter();
 		filter.setVADelta(delta);
 		filter.setLabel(label);
 		filter.setDataDomain(dataDomain);
 
-		NewContentFilterEvent filterEvent = new NewContentFilterEvent();
+		NewRecordFilterEvent filterEvent = new NewRecordFilterEvent();
 		filterEvent.setFilter(filter);
 		filterEvent.setSender(this);
 		filterEvent.setDataDomainID(dataDomain.getDataDomainID());
@@ -1814,7 +1814,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			axisCount++;
 			x = x + renderStyle.getXSpacing();
 			y = renderStyle.getBottomSpacing();
-			// y =set.get(dimensionVA.get(dimensionVA.size() - 1)).getFloat(
+			// y =dataTable.get(dimensionVA.get(dimensionVA.size() - 1)).getFloat(
 			// EDataRepresentation.NORMALIZED, iAxisID);
 			alElementReps.add(new SelectedElementRep(idType, uniqueID, x, y, 0.0f));
 			// }
@@ -1835,7 +1835,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			// if (renderConnectionsLeft) {
 			// x = x + renderStyle.getXSpacing();
 			// y =
-			// set.get(dimensionVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
+			// dataTable.get(dimensionVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
 			// iDimensionIndex);
 			// } else {
 			// if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
@@ -1847,7 +1847,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 			// // get the value on the leftmost axis
 			// fYValue =
-			// set.get(dimensionVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
+			// dataTable.get(dimensionVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
 			// iDimensionIndex);
 
 			if (Float.isNaN(y)) {
@@ -1865,15 +1865,15 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	@Override
 	public String getShortInfo() {
 		String message;
-		int iNumLines = contentVA.size();
+		int iNumLines = recordVA.size();
 		if (displayEveryNthPolyline == 1) {
 			message = "Parallel Coordinates - " + iNumLines + " "
-					+ dataDomain.getContentName(false, true) + " / " + dimensionVA.size()
+					+ dataDomain.getRecordName(false, true) + " / " + dimensionVA.size()
 					+ " experiments";
 		} else {
 			message = "Parallel Coordinates showing a sample of " + iNumLines
 					/ displayEveryNthPolyline + " out of " + iNumLines + " "
-					+ dataDomain.getContentName(false, true) + " / " + dimensionVA.size()
+					+ dataDomain.getRecordName(false, true) + " / " + dimensionVA.size()
 					+ " experiments";
 		}
 		return message;
@@ -1884,7 +1884,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Parallel Coordinates\n");
-		sInfoText.append(contentVA.size() + dataDomain.getContentName(false, true)
+		sInfoText.append(recordVA.size() + dataDomain.getRecordName(false, true)
 				+ " as polylines and " + dimensionVA.size() + " experiments as axis.\n");
 
 		if (bRenderOnlyContext) {
@@ -1899,10 +1899,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			}
 
 			if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-				sInfoText.append("Showing all " + dataDomain.getContentName(false, true)
+				sInfoText.append("Showing all " + dataDomain.getRecordName(false, true)
 						+ " in the dataset\n");
 			} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-				sInfoText.append("Showing all " + dataDomain.getContentName(false, true)
+				sInfoText.append("Showing all " + dataDomain.getRecordName(false, true)
 						+ " that have a known DAVID ID mapping\n");
 			} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 				sInfoText
@@ -2056,7 +2056,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 		// check selection
 
-		for (Integer iCurrent : contentVA) {
+		for (Integer iCurrent : recordVA) {
 
 			vecLeftPoint.setY(table.get(iAxisLeftIndex).getFloat(
 					DataRepresentation.NORMALIZED, iCurrent)
@@ -2331,8 +2331,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	@Override
 	public void handleSelectionCommand(IDCategory category,
 			SelectionCommand selectionCommand) {
-		if (category == contentSelectionManager.getIDType().getIDCategory())
-			contentSelectionManager.executeSelectionCommand(selectionCommand);
+		if (category == recordSelectionManager.getIDType().getIDCategory())
+			recordSelectionManager.executeSelectionCommand(selectionCommand);
 		else if (category == dimensionSelectionManager.getIDType().getIDCategory())
 			dimensionSelectionManager.executeSelectionCommand(selectionCommand);
 		else
@@ -2343,13 +2343,13 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	@Override
 	public String toString() {
-		int iNumElements = (contentSelectionManager.getNumberOfElements() - contentSelectionManager
+		int iNumElements = (recordSelectionManager.getNumberOfElements() - recordSelectionManager
 				.getNumberOfElements(SelectionType.DESELECTED));
 		String renderMode = "standalone";
 		if (isRenderedRemote())
 			renderMode = "remote";
 		return ("PCs, " + renderMode + ", " + iNumElements + " elements" + " Axis DT: "
-				+ dimensionSelectionManager.getIDType() + " Polyline DT:" + contentSelectionManager
+				+ dimensionSelectionManager.getIDType() + " Polyline DT:" + recordSelectionManager
 				.getIDType());
 	}
 
@@ -2363,17 +2363,17 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	}
 
-	public DataTable getSet() {
+	public DataTable getDataTable() {
 		return table;
 	}
 
-	public void setSet(DataTable set) {
+	public void setDataTable(DataTable set) {
 		this.table = set;
 	}
 
-	public void setContentVA(ContentVirtualArray contentVA) {
-		this.contentVA = contentVA;
-		contentSelectionManager.setVA(contentVA);
+	public void setRecordVA(RecordVirtualArray recordVA) {
+		this.recordVA = recordVA;
+		recordSelectionManager.setVA(recordVA);
 	}
 
 	@Override

@@ -72,7 +72,7 @@ public class DataWindowsDisk extends PoincareDisk {
 	}
 
 	public void renderTree(GL2 gl, TextureManager texManager, PickingManager pickManager,
-			int iViewID, float viewingWidth, float viewingHeight) {
+			int viewID, float viewingWidth, float viewingHeight) {
 
 		this.gl = gl;
 
@@ -83,7 +83,7 @@ public class DataWindowsDisk extends PoincareDisk {
 		textureManager = texManager;
 		canvasWidth = viewingWidth;
 		canvasHeight = viewingHeight;
-		iUniqueID = iViewID;
+		iUniqueID = viewID;
 		// displayDetailLevels();
 
 		drawBackground();

@@ -53,10 +53,10 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 		captionCageRenderer.setContentSpacing(contentSpacing);
 	}
 
-	public Float getYCoordinateByContentIndex(int contentIndex) {
+	public Float getYCoordinateByContentIndex(int recordIndex) {
 		return heatMapLayout.getTranslateY()
 				+ ((HeatMapRenderer) heatMapLayout.getRenderer())
-						.getYCoordinateByContentIndex(contentIndex);
+						.getYCoordinateByContentIndex(recordIndex);
 	}
 
 	public Float getXCoordinateByDimensionIndex(int dimensionIndex) {
@@ -66,15 +66,15 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 						.getXCoordinateByDimensionIndex(dimensionIndex);
 	}
 
-	public float getElementHeight(int contentID) {
-		// int contentIndex = heatMap.getContentVA().indexOf(contentID);
-		// if (contentIndex < 0)
+	public float getElementHeight(int recordID) {
+		// int recordIndex = heatMap.getRecordVA().indexOf(recordID);
+		// if (recordIndex < 0)
 		// return 0;
-		return contentSpacing.getFieldHeight(contentID);
+		return contentSpacing.getFieldHeight(recordID);
 		// if (heatMap.getContentSelectionManager().checkStatus(
-		// SelectionType.MOUSE_OVER, contentID)
+		// SelectionType.MOUSE_OVER, recordID)
 		// || heatMap.getContentSelectionManager().checkStatus(
-		// SelectionType.SELECTION, contentID))
+		// SelectionType.SELECTION, recordID))
 		//
 		// return contentSpacing.getSelectedFieldHeight();
 		//

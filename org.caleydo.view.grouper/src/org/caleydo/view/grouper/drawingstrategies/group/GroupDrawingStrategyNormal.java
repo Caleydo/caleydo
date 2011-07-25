@@ -16,12 +16,12 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 
 	private PickingManager pickingManager;
 	private GrouperRenderStyle renderStyle;
-	private int iViewID;
+	private int viewID;
 
-	public GroupDrawingStrategyNormal(PickingManager pickingManager, int iViewID,
+	public GroupDrawingStrategyNormal(PickingManager pickingManager, int viewID,
 			GrouperRenderStyle renderStyle) {
 		this.pickingManager = pickingManager;
-		this.iViewID = iViewID;
+		this.viewID = viewID;
 		this.renderStyle = renderStyle;
 	}
 
@@ -29,7 +29,7 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 	public void draw(GL2 gl, GroupRepresentation groupRepresentation,
 			TextRenderer textRenderer) {
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
@@ -42,7 +42,7 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 
 		gl.glPopName();
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.GROUPER_COLLAPSE_BUTTON_SELECTION,
 				groupRepresentation.getID()));
 
@@ -60,20 +60,20 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 	public void drawAsLeaf(GL2 gl, GroupRepresentation groupRepresentation,
 			TextRenderer textRenderer) {
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
 		// gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
 
-		DataTable set = groupRepresentation.getClusterNode().getMetaSet();
-		DimensionVirtualArray dimensionVA = set.getDimensionData(DataTable.DIMENSION).getDimensionVA();
+		DataTable dataTable = groupRepresentation.getClusterNode().getSubDataTable();
+		DimensionVirtualArray dimensionVA = dataTable.getDimensionData(DataTable.DIMENSION).getDimensionVA();
 
 		boolean isNominal = false;
 		boolean isNumerical = false;
 		for (Integer dimensionID : dimensionVA) {
 
-			if (set.get(dimensionID) instanceof NominalDimension<?>) {
+			if (dataTable.get(dimensionID) instanceof NominalDimension<?>) {
 				gl.glColor4f(116f / 255f, 196f / 255f, 118f / 255f, 1f);
 				isNominal = true;
 			} else {

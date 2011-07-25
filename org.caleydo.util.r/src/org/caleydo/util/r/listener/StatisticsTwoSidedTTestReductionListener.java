@@ -13,7 +13,7 @@ public class StatisticsTwoSidedTTestReductionListener extends
 		StatisticsTwoSidedTTestReductionEvent pValueReductionEvent = null;
 		if (event instanceof StatisticsTwoSidedTTestReductionEvent) {
 			pValueReductionEvent = (StatisticsTwoSidedTTestReductionEvent) event;
-			handler.twoSidedTTest(pValueReductionEvent.getSets());
+			handler.twoSidedTTest(pValueReductionEvent.getDataTables());
 		}
 	}
 }

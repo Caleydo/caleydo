@@ -14,7 +14,7 @@ public interface IDimensionVAUpdateHandler
 
 	/**
 	 * Handler method to be called when a virtual array update event is catched by a related
-	 * {@link ContentVAUpdateListener}.
+	 * {@link RecordVAUpdateListener}.
 	 * 
 	 * @param delta
 	 *            difference in the old and new virtual array
@@ -24,7 +24,7 @@ public interface IDimensionVAUpdateHandler
 	public void handleVAUpdate(DimensionVADelta vaDelta, String info);
 
 	/**
-	 * Handler method to be called by the {@link ReplaceContentVAListener} when a {@link ReplaceVAEvent} was
+	 * Handler method to be called by the {@link ReplaceRecordVAListener} when a {@link ReplaceVAEvent} was
 	 * received.
 	 * 
 	 * @param vaType

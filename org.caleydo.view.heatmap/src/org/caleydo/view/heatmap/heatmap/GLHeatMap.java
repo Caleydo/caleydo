@@ -12,17 +12,17 @@ import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
-import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.event.view.dimensionbased.HideHeatMapElementsEvent;
@@ -38,7 +38,7 @@ import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
-import org.caleydo.core.util.clusterer.EClustererType;
+import org.caleydo.core.util.clusterer.ClustererType;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -46,7 +46,7 @@ import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.RecordContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.DimensionContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -264,7 +264,7 @@ public class GLHeatMap extends ATableBasedView {
 		}
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
-		if (contentVA.size() == 0) {
+		if (recordVA.size() == 0) {
 			renderSymbol(gl, EIconTextures.HEAT_MAP_SYMBOL, 2);
 		} else {
 			templateRenderer.render(gl);
@@ -272,8 +272,8 @@ public class GLHeatMap extends ATableBasedView {
 		gl.glEndList();
 	}
 
-	public ContentSelectionManager getContentSelectionManager() {
-		return contentSelectionManager;
+	public RecordSelectionManager getContentSelectionManager() {
+		return recordSelectionManager;
 	}
 
 	public DimensionSelectionManager getDimensionSelectionManager() {
@@ -285,21 +285,21 @@ public class GLHeatMap extends ATableBasedView {
 		// todo this is not nice here, we may need a more intelligent way to
 		// determine which to use
 
-		if (contentVAType.equals(CONTENT_EMBEDDED_VA)) {
-			table.setContentVA(contentVAType, new ContentVirtualArray(contentVAType));
+		if (recordVAType.equals(CONTENT_EMBEDDED_VA)) {
+			table.setRecordVA(recordVAType, new RecordVirtualArray(recordVAType));
 		} else {
 			if (bRenderOnlyContext)
-				contentVAType = DataTable.RECORD_CONTEXT;
+				recordVAType = DataTable.RECORD_CONTEXT;
 			else
-				contentVAType = DataTable.RECORD;
+				recordVAType = DataTable.RECORD;
 		}
 
-		if (contentVA == null)
-			contentVA = table.getContentData(contentVAType).getContentVA();
+		if (recordVA == null)
+			recordVA = table.getRecordData(recordVAType).getRecordVA();
 		if (dimensionVA == null)
 			dimensionVA = table.getDimensionData(dimensionVAType).getDimensionVA();
 
-		contentSelectionManager.setVA(contentVA);
+		recordSelectionManager.setVA(recordVA);
 		dimensionSelectionManager.setVA(dimensionVA);
 
 		// FIXME: do we need to do this here?
@@ -311,12 +311,12 @@ public class GLHeatMap extends ATableBasedView {
 	@Override
 	public String getShortInfo() {
 
-		if (contentVA == null)
-			return "Heat Map - 0 " + dataDomain.getContentName(false, true)
+		if (recordVA == null)
+			return "Heat Map - 0 " + dataDomain.getRecordName(false, true)
 					+ " / 0 experiments";
 
-		return "Heat Map - " + contentVA.size() + " "
-				+ dataDomain.getContentName(false, true) + " / " + dimensionVA.size()
+		return "Heat Map - " + recordVA.size() + " "
+				+ dataDomain.getRecordName(false, true) + " / " + dimensionVA.size()
 				+ " experiments";
 	}
 
@@ -326,12 +326,12 @@ public class GLHeatMap extends ATableBasedView {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Heat Map\n");
 
-		sInfoText.append(contentVA.size() + " " + dataDomain.getContentName(true, true)
+		sInfoText.append(recordVA.size() + " " + dataDomain.getRecordName(true, true)
 				+ " in rows and " + dimensionVA.size() + " experiments in columns.\n");
 
 		if (bRenderOnlyContext) {
 			sInfoText.append("Showing only " + " "
-					+ dataDomain.getContentName(false, true)
+					+ dataDomain.getRecordName(false, true)
 					+ " which occur in one of the other views in focus\n");
 		} else {
 			if (bUseRandomSampling) {
@@ -386,9 +386,9 @@ public class GLHeatMap extends ATableBasedView {
 					contextMenu.setMasterGLView(this);
 				}
 
-				ContentContextMenuItemContainer contentContextMenuItemContainer = new ContentContextMenuItemContainer();
+				RecordContextMenuItemContainer contentContextMenuItemContainer = new RecordContextMenuItemContainer();
 				contentContextMenuItemContainer.setDataDomain(dataDomain);
-				contentContextMenuItemContainer.setID(contentIDType, externalID);
+				contentContextMenuItemContainer.dataTableID(recordIDType, externalID);
 				contextMenu.addItemContanier(contentContextMenuItemContainer);
 				break;
 
@@ -418,7 +418,7 @@ public class GLHeatMap extends ATableBasedView {
 				}
 				DimensionContextMenuItemContainer experimentContextMenuItemContainer = new DimensionContextMenuItemContainer();
 				experimentContextMenuItemContainer.setDataDomain(dataDomain);
-				experimentContextMenuItemContainer.setID(dimensionIDType, externalID);
+				experimentContextMenuItemContainer.dataTableID(dimensionIDType, externalID);
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 			default:
 				return;
@@ -458,31 +458,31 @@ public class GLHeatMap extends ATableBasedView {
 		}
 	}
 
-	private void createContentSelection(SelectionType selectionType, int contentID) {
-		if (contentSelectionManager.checkStatus(selectionType, contentID))
+	private void createContentSelection(SelectionType selectionType, int recordID) {
+		if (recordSelectionManager.checkStatus(selectionType, recordID))
 			return;
 
 		// check if the mouse-overed element is already selected, and if it is,
 		// whether mouse over is clear.
 		// If that all is true we don't need to do anything
 		if (selectionType == SelectionType.MOUSE_OVER
-				&& contentSelectionManager
-						.checkStatus(SelectionType.SELECTION, contentID)
-				&& contentSelectionManager.getElements(SelectionType.MOUSE_OVER).size() == 0)
+				&& recordSelectionManager
+						.checkStatus(SelectionType.SELECTION, recordID)
+				&& recordSelectionManager.getElements(SelectionType.MOUSE_OVER).size() == 0)
 			return;
 
-		connectedElementRepresentationManager.clear(contentIDType, selectionType);
+		connectedElementRepresentationManager.clear(recordIDType, selectionType);
 
-		contentSelectionManager.clearSelection(selectionType);
+		recordSelectionManager.clearSelection(selectionType);
 
 		// TODO: Integrate multi spotting support again
 
 		Integer iMappingID = generalManager.getIDCreator().createID(
 				ManagedObjectType.CONNECTION);
-		contentSelectionManager.addToType(selectionType, contentID);
-		contentSelectionManager.addConnectionID(iMappingID, contentID);
+		recordSelectionManager.addToType(selectionType, recordID);
+		recordSelectionManager.addConnectionID(iMappingID, recordID);
 
-		SelectionDelta selectionDelta = contentSelectionManager.getDelta();
+		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
 
 		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -521,11 +521,11 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	public void upDownSelect(boolean isUp) {
-		ContentVirtualArray virtualArray = contentVA;
+		RecordVirtualArray virtualArray = recordVA;
 		if (virtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for selectNext Operation");
-		int selectedElement = cursorSelect(virtualArray, contentSelectionManager, isUp);
+		int selectedElement = cursorSelect(virtualArray, recordSelectionManager, isUp);
 		if (selectedElement < 0)
 			return;
 		createContentSelection(SelectionType.MOUSE_OVER, selectedElement);
@@ -556,11 +556,11 @@ public class GLHeatMap extends ATableBasedView {
 			createDimensionSelection(SelectionType.SELECTION, selectedElement);
 		}
 
-		ContentVirtualArray contentVirtualArray = contentVA;
+		RecordVirtualArray contentVirtualArray = recordVA;
 		if (contentVirtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for enterPressed Operation");
-		elements = contentSelectionManager.getElements(SelectionType.MOUSE_OVER);
+		elements = recordSelectionManager.getElements(SelectionType.MOUSE_OVER);
 		selectedElement = -1;
 		if (elements.size() == 1) {
 			selectedElement = (Integer) elements.toArray()[0];
@@ -605,8 +605,8 @@ public class GLHeatMap extends ATableBasedView {
 		SelectedElementRep elementRep;
 		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
 
-		for (int contentIndex : contentVA.indicesOf(id)) {
-			if (contentIndex == -1) {
+		for (int recordIndex : recordVA.indicesOf(id)) {
+			if (recordIndex == -1) {
 				continue;
 			}
 
@@ -614,9 +614,9 @@ public class GLHeatMap extends ATableBasedView {
 
 			float yValue = 0;
 
-			yValue = getYCoordinateByContentIndex(contentIndex);
+			yValue = getYCoordinateByContentIndex(recordIndex);
 			yValue = viewFrustum.getHeight() - yValue;
-			elementRep = new SelectedElementRep(contentIDType, uniqueID, xValue, yValue,
+			elementRep = new SelectedElementRep(recordIDType, uniqueID, xValue, yValue,
 					0);
 
 			alElementReps.add(elementRep);
@@ -626,20 +626,20 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	/**
-	 * Returns the y coordinate of the element rendered at contentIndex, or null
+	 * Returns the y coordinate of the element rendered at recordIndex, or null
 	 * if the current element is hidden
 	 * 
-	 * @param contentIndex
+	 * @param recordIndex
 	 * @return
 	 */
-	public Float getYCoordinateByContentIndex(int contentIndex) {
+	public Float getYCoordinateByContentIndex(int recordIndex) {
 
 		if (isHideElements()) {
-			Integer contentID = contentVA.get(contentIndex);
-			if (contentSelectionManager.checkStatus(SELECTION_HIDDEN, contentID))
+			Integer recordID = recordVA.get(recordIndex);
+			if (recordSelectionManager.checkStatus(SELECTION_HIDDEN, recordID))
 				return null;
 		}
-		return template.getYCoordinateByContentIndex(contentIndex);
+		return template.getYCoordinateByContentIndex(recordIndex);
 
 	}
 
@@ -659,43 +659,43 @@ public class GLHeatMap extends ATableBasedView {
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (this.bRenderOnlyContext) {
-			contentVA = dataDomain.getContentVA(DataTable.RECORD_CONTEXT);
+			recordVA = dataDomain.getRecordVA(DataTable.RECORD_CONTEXT);
 		} else {
-			contentVA = dataDomain.getContentVA(DataTable.RECORD);
+			recordVA = dataDomain.getRecordVA(DataTable.RECORD);
 		}
 
-		contentSelectionManager.setVA(contentVA);
-		// renderStyle.setActiveVirtualArray(iContentVAID);
+		recordSelectionManager.setVA(recordVA);
+		// renderStyle.setActiveVirtualArray(iRecordVAID);
 
 		setDisplayListDirty();
 
 	}
 
 	@Override
-	public void handleVAUpdate(ContentVADelta delta, String info) {
+	public void handleVAUpdate(RecordVADelta delta, String info) {
 
 		super.handleVAUpdate(delta, info);
 
 		if (delta.getVAType().equals(DataTable.RECORD_CONTEXT)
-				&& contentVAType.equals(DataTable.RECORD_CONTEXT)) {
+				&& recordVAType.equals(DataTable.RECORD_CONTEXT)) {
 			ClusterState state = new ClusterState(EClustererAlgo.AFFINITY_PROPAGATION,
-					EClustererType.CONTENT_CLUSTERING,
+					ClustererType.RECORD_CLUSTERING,
 					EDistanceMeasure.EUCLIDEAN_DISTANCE);
-			int contentVAID = contentVA.getID();
+			int recordVAID = recordVA.getID();
 
-			if (contentVA.size() == 0 || dimensionVA.size() == 0)
+			if (recordVA.size() == 0 || dimensionVA.size() == 0)
 				return;
 
-			state.setContentVA(contentVA);
+			state.setRecordVA(recordVA);
 			state.setDimensionVA(dimensionVA);
 			state.setAffinityPropClusterFactorGenes(4.0f);
 
 			ClusterManager clusterManger = new ClusterManager(table);
 			ClusterResult result = clusterManger.cluster(state);
 
-			contentVA = result.getContentResult().getContentVA();
-			contentSelectionManager.setVA(contentVA);
-			contentVA.setID(contentVAID);
+			recordVA = result.getRecordResult().getRecordVA();
+			recordSelectionManager.setVA(recordVA);
+			recordVA.dataTableID(recordVAID);
 		}
 	}
 
@@ -724,8 +724,8 @@ public class GLHeatMap extends ATableBasedView {
 	@Override
 	public String toString() {
 		return "Standalone heat map, rendered remote: " + isRenderedRemote()
-				+ ", contentSize: " + contentVA.size() + ", dimensionSize: "
-				+ dimensionVA.size() + ", contentVAType: " + contentVAType
+				+ ", contentSize: " + recordVA.size() + ", dimensionSize: "
+				+ dimensionVA.size() + ", recordVAType: " + recordVAType
 				+ ", remoteRenderer:" + getRemoteRenderingGLCanvas();
 	}
 
@@ -739,9 +739,9 @@ public class GLHeatMap extends ATableBasedView {
 		renderStyle.setUseFishEye(useFishEye);
 	}
 
-	public void setContentVA(ContentVirtualArray contentVA) {
-		contentSelectionManager.setVA(contentVA);
-		this.contentVA = contentVA;
+	public void setRecordVA(RecordVirtualArray recordVA) {
+		recordSelectionManager.setVA(recordVA);
+		this.recordVA = recordVA;
 		setDisplayListDirty();
 	}
 
@@ -753,7 +753,7 @@ public class GLHeatMap extends ATableBasedView {
 		this.sendClearSelectionsEvent = sendClearSelectionsEvent;
 	}
 
-	public void setSet(DataTable set) {
+	public void setDataTable(DataTable set) {
 		this.table = set;
 	}
 
@@ -790,10 +790,10 @@ public class GLHeatMap extends ATableBasedView {
 	 */
 	public int getNumberOfVisibleElements() {
 		if (isHideElements())
-			return contentVA.size()
-					- contentSelectionManager.getNumberOfElements(SELECTION_HIDDEN);
+			return recordVA.size()
+					- recordSelectionManager.getNumberOfElements(SELECTION_HIDDEN);
 		else
-			return contentVA.size();
+			return recordVA.size();
 	}
 
 	/**
@@ -835,13 +835,13 @@ public class GLHeatMap extends ATableBasedView {
 	/**
 	 * Returns the height of a particular element
 	 * 
-	 * @param contentID
+	 * @param recordID
 	 *            the id of the element - since they can be of different height
 	 *            due to the fish eye
 	 * @return the height of the element
 	 */
-	public float getFieldHeight(int contentID) {
-		return template.getElementHeight(contentID);
+	public float getFieldHeight(int recordID) {
+		return template.getElementHeight(recordID);
 	}
 
 	public float getFieldWidth(int dimensionID) {
@@ -876,21 +876,21 @@ public class GLHeatMap extends ATableBasedView {
 
 	public java.util.Set<Integer> getZoomedElements() {
 		java.util.Set<Integer> zoomedElements = new HashSet<Integer>(
-				contentSelectionManager.getElements(SelectionType.SELECTION));
+				recordSelectionManager.getElements(SelectionType.SELECTION));
 		// zoomedElements.addAll(contentSelectionManager
 		// .getElements(SelectionType.MOUSE_OVER));
 		Iterator<Integer> elementIterator = zoomedElements.iterator();
 		while (elementIterator.hasNext()) {
-			int contentID = elementIterator.next();
-			if (!contentVA.contains(contentID))
+			int recordID = elementIterator.next();
+			if (!recordVA.contains(recordID))
 				elementIterator.remove();
-			else if (contentSelectionManager.checkStatus(SELECTION_HIDDEN, contentID))
+			else if (recordSelectionManager.checkStatus(SELECTION_HIDDEN, recordID))
 				elementIterator.remove();
 		}
 		return zoomedElements;
 	}
 
-	public DataTable getSet() {
+	public DataTable getDataTable() {
 		return table;
 	}
 
@@ -902,22 +902,22 @@ public class GLHeatMap extends ATableBasedView {
 	public int getMinPixelHeight() {
 		// TODO: Calculate depending on content
 		// int pixelHeight = 10;
-		// if (contentVA.size() > 1) {
+		// if (recordVA.size() > 1) {
 		//
-		// pixelHeight += (int) ((double) contentVA.size() / Math
-		// .log(contentVA.size()));
+		// pixelHeight += (int) ((double) recordVA.size() / Math
+		// .log(recordVA.size()));
 		// }
 
-		ContentVirtualArray setContentVA = table.getContentData(DataTable.RECORD)
-				.getContentVA();
+		RecordVirtualArray setRecordVA = table.getRecordData(DataTable.RECORD)
+				.getRecordVA();
 		int numBricks = 1;
-		if (setContentVA.getGroupList() != null) {
-			numBricks += setContentVA.getGroupList().size();
+		if (setRecordVA.getGroupList() != null) {
+			numBricks += setRecordVA.getGroupList().size();
 		}
 
 		int windowHeight = parentGLCanvas.getHeight();
-		int pixelHeight = (int) (((float) (windowHeight - numBricks * 80) / (float) setContentVA
-				.size()) * contentVA.size());
+		int pixelHeight = (int) (((float) (windowHeight - numBricks * 80) / (float) setRecordVA
+				.size()) * recordVA.size());
 		return Math.max(16, pixelHeight);
 	}
 

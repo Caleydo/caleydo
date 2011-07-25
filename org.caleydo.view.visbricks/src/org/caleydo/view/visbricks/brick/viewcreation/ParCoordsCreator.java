@@ -3,7 +3,7 @@ package org.caleydo.view.visbricks.brick.viewcreation;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -42,14 +42,14 @@ public class ParCoordsCreator implements IRemoteViewCreator {
 								1, 0, 1, -1, 1));
 
 		parCoords.setRemoteRenderingGLView(remoteRenderingView);
-		parCoords.setSet(set);
+		parCoords.setDataTable(set);
 		parCoords.setDataDomain(remoteRenderingView.getDataDomain());
 		parCoords.initialize();
 		parCoords.initRemote(gl, remoteRenderingView, glMouseListener);
 		parCoords.setDetailLevel(DetailLevel.LOW);
-		ContentVirtualArray contentVA = remoteRenderingView.getContentVA();
-		if (contentVA != null)
-			parCoords.setContentVA(contentVA);
+		RecordVirtualArray recordVA = remoteRenderingView.getRecordVA();
+		if (recordVA != null)
+			parCoords.setRecordVA(recordVA);
 
 		return parCoords;
 	}

@@ -27,7 +27,7 @@ public class TabularAsciiDataReader
 	extends AbstractLoader {
 
 	/**
-	 * Imports data from file to this set. uses first dimension and overwrites first selection.
+	 * Imports data from file to this dataTable. uses first dimension and overwrites first selection.
 	 */
 	protected ArrayList<ADimension> targetDimensions;
 

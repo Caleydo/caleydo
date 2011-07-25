@@ -560,7 +560,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * 
 	 * @param uniqueID
 	 */
-	public void setID(int iUniqueID) {
+	public void dataTableID(int iUniqueID) {
 		this.uniqueID = iUniqueID;
 	}
 

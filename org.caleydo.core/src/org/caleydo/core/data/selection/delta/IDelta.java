@@ -20,7 +20,7 @@ public interface IDelta<T extends IDeltaItem>
 	public Collection<T> getAllItems();
 
 	/** Set the id type of the delta */
-	public void setIDType(IDType idType);
+	public void dataTableIDType(IDType idType);
 
 	/**
 	 * Get the type of the id, which has to be listed in {@link EIDType}

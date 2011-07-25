@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * Command loads data from file using a token pattern and a target DataTable. Use AMicroArrayLoader to load data
- * set.
+ * dataTable.
  * 
  * @author Marc Streit
  */

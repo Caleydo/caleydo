@@ -8,17 +8,17 @@ import org.caleydo.core.manager.datadomain.IDataDomain;
 public class SetBasedSegmentData implements ISegmentData {
 
 	private ATableBasedDataDomain dataDomain;
-	private ContentVirtualArray contentVA;
+	private RecordVirtualArray recordVA;
 	private Group group;
-	private DataTable set;
+	private DataTable dataTable;
 	private SetBasedDimensionGroupData dimensionGroupData;
 
-	public SetBasedSegmentData(ATableBasedDataDomain dataDomain, DataTable set,
-			ContentVirtualArray contentVA, Group group,
+	public SetBasedSegmentData(ATableBasedDataDomain dataDomain, DataTable dataTable,
+			RecordVirtualArray recordVA, Group group,
 			SetBasedDimensionGroupData dimensionGroupData) {
-		this.set = set;
+		this.dataTable = dataTable;
 		this.dataDomain = dataDomain;
-		this.contentVA = contentVA;
+		this.recordVA = recordVA;
 		this.group = group;
 		this.dimensionGroupData = dimensionGroupData;
 	}
@@ -30,9 +30,9 @@ public class SetBasedSegmentData implements ISegmentData {
 	}
 
 	@Override
-	public ContentVirtualArray getContentVA() {
+	public RecordVirtualArray getRecordVA() {
 		// TODO Auto-generated method stub
-		return contentVA;
+		return recordVA;
 	}
 
 	@Override
@@ -43,11 +43,11 @@ public class SetBasedSegmentData implements ISegmentData {
 
 	@Override
 	public String getLabel() {
-		return "Group " + group.getGroupID() + " in " + set.getLabel();
+		return "Group " + group.getGroupID() + " in " + dataTable.getLabel();
 	}
 
-	public DataTable getSet() {
-		return set;
+	public DataTable getDataTable() {
+		return dataTable;
 	}
 
 }

@@ -16,7 +16,7 @@ public final class DrawingStrategyManager {
 
 	private APDDrawingStrategy dsDefault;
 	private PickingManager pickingManager;
-	private int iViewID;
+	private int viewID;
 	private ArrayList<EPDDrawingStrategyType> alColorModes;
 	private int iColorModeIndex;
 
@@ -34,18 +34,18 @@ public final class DrawingStrategyManager {
 	 * @param pickingManager
 	 *            PickingManager that shall be used for creating drawing
 	 *            strategies.
-	 * @param iViewID
+	 * @param viewID
 	 *            ViewID that shall be used for creating drawing strategies.
 	 * @param alColorModes
 	 *            List that specifies the drawing strategies which are used for
 	 *            color modes of the radial hierarchy view. It must at least
 	 *            contain one valid drawing strategy type.
 	 */
-	public void init(PickingManager pickingManager, int iViewID,
+	public void init(PickingManager pickingManager, int viewID,
 			ArrayList<EPDDrawingStrategyType> alColorModes) {
 
 		this.pickingManager = pickingManager;
-		this.iViewID = iViewID;
+		this.viewID = viewID;
 		this.alColorModes.clear();
 		this.alColorModes.addAll(alColorModes);
 		iColorModeIndex = 0;
@@ -74,17 +74,17 @@ public final class DrawingStrategyManager {
 			EPDDrawingStrategyType eDrawingStrategyType) {
 		switch (eDrawingStrategyType) {
 		case RAINBOW_COLOR:
-			return new PDDrawingStrategyRainbow(pickingManager, iViewID);
+			return new PDDrawingStrategyRainbow(pickingManager, viewID);
 		case SELECTED:
-			return new PDDrawingStrategySelected(pickingManager, iViewID);
+			return new PDDrawingStrategySelected(pickingManager, viewID);
 		case FIXED_COLOR:
-			return new PDDrawingStrategyFixedColor(pickingManager, iViewID);
+			return new PDDrawingStrategyFixedColor(pickingManager, viewID);
 		case LABEL_DECORATOR:
 			return new PDDrawingStrategyLabelDecorator();
 		case EXPRESSION_COLOR:
-			return new PDDrawingStrategyExpressionColor(pickingManager, iViewID);
+			return new PDDrawingStrategyExpressionColor(pickingManager, viewID);
 		case INVISIBLE:
-			return new PDDrawingStrategyInvisible(pickingManager, iViewID);
+			return new PDDrawingStrategyInvisible(pickingManager, viewID);
 		default:
 			return null;
 		}

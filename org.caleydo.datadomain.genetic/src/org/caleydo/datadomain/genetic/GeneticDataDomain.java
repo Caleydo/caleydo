@@ -15,15 +15,15 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
-import org.caleydo.core.manager.datadomain.ReplaceContentVAInUseCaseListener;
-import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
+import org.caleydo.core.manager.datadomain.ReplaceRecordVAInUseCaseListener;
+import org.caleydo.core.manager.event.data.ReplaceRecordVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.ReplaceDimensionVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
@@ -31,7 +31,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListe
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.datadomain.genetic.contextmenu.container.GeneContentGroupMenuItemContainer;
+import org.caleydo.datadomain.genetic.contextmenu.container.GeneRecordGroupMenuItemContainer;
 import org.caleydo.datadomain.genetic.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
@@ -63,7 +63,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	 */
 	private boolean pathwayViewerMode;
 
-	private ReplaceContentVAInUseCaseListener clinicalReplaceContentVirtualArrayInUseCaseListener;
+	private ReplaceRecordVAInUseCaseListener clinicalReplaceContentVirtualArrayInUseCaseListener;
 	private ForeignSelectionUpdateListener clinicalSelectionUpdateListener;
 	private ForeignSelectionCommandListener clinicalSelectionCommandListener;
 
@@ -78,13 +78,13 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + ":" + extensionID++);
 		
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
-		primaryContentMappingType = IDType.getIDType("DAVID");
-		humanReadableContentIDType = IDType.getIDType("GENE_SYMBOL");
+		primaryRecordMappingType = IDType.getIDType("DAVID");
+		humanReadableRecordIDType = IDType.getIDType("GENE_SYMBOL");
 		humanReadableDimensionIDType = IDType.getIDType("STORAGE");
 
 		pathwayViewerMode = false;
-		contentLabelSingular = "gene";
-		contentLabelPlural = "genes";
+		recordLabelSingular = "gene";
+		recordLabelPlural = "genes";
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 				// Possibly a different handling of the Set is required.
 				java.util.Set<Integer> setDavidIDs = GeneralManager.get()
 						.getIDMappingManager()
-						.getIDAsSet(contentIDType, primaryContentMappingType, iCount);
+						.getIDAsSet(recordIDType, primaryRecordMappingType, iCount);
 
 				if ((setDavidIDs != null && !setDavidIDs.isEmpty())) {
 					iDavidID = (Integer) setDavidIDs.toArray()[0];
@@ -167,10 +167,10 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 			alTempList.add(iCount);
 		}
-		ContentVirtualArray contentVA = new ContentVirtualArray(DataTable.RECORD, alTempList);
-		// removeDuplicates(contentVA);
+		RecordVirtualArray recordVA = new RecordVirtualArray(DataTable.RECORD, alTempList);
+		// removeDuplicates(recordVA);
 		// FIXME make this a filter?
-		table.setContentVA(DataTable.RECORD, contentVA);
+		table.setRecordVA(DataTable.RECORD, recordVA);
 	}
 
 	public boolean isPathwayViewerMode() {
@@ -185,11 +185,11 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		clinicalReplaceContentVirtualArrayInUseCaseListener = new ReplaceContentVAInUseCaseListener();
+		clinicalReplaceContentVirtualArrayInUseCaseListener = new ReplaceRecordVAInUseCaseListener();
 		clinicalReplaceContentVirtualArrayInUseCaseListener.setHandler(this);
 		clinicalReplaceContentVirtualArrayInUseCaseListener
 				.setExclusiveDataDomainType(CLINICAL_DATADOMAIN_TYPE);
-		eventPublisher.addListener(ReplaceContentVAInUseCaseEvent.class,
+		eventPublisher.addListener(ReplaceRecordVAInUseCaseEvent.class,
 				clinicalReplaceContentVirtualArrayInUseCaseListener);
 
 		clinicalSelectionUpdateListener = new ForeignSelectionUpdateListener();
@@ -262,8 +262,8 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void handleForeignContentVAUpdate(int setID, String dataDomainType,
-			String vaType, ContentVirtualArray virtualArray) {
+	public void handleForeignRecordVAUpdate(int dataTableID, String dataDomainType,
+			String vaType, RecordVirtualArray virtualArray) {
 
 		if (dataDomainType.equals(CLINICAL_DATADOMAIN_TYPE)) {
 			DimensionVirtualArray newDimensionVirtualArray = new DimensionVirtualArray();
@@ -318,14 +318,14 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE && idCategory == dimensionIDCategory) {
 			SelectionCommandEvent newCommandEvent = new SelectionCommandEvent();
 			newCommandEvent.setSelectionCommand(selectionCommand);
-			newCommandEvent.setIDCategory(idCategory);
+			newCommandEvent.dataTableIDCategory(idCategory);
 			newCommandEvent.setDataDomainID(dataDomainType);
 			eventPublisher.triggerEvent(newCommandEvent);
 		}
 	}
 
 	@Override
-	public String getContentLabel(IDType idType, Object id) {
+	public String getRecordLabel(IDType idType, Object id) {
 		String geneSymbol = null;
 		String refSeq = null;
 
@@ -342,7 +342,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		// loading expression data.
 		// Possibly a different handling of the Set is required.
 		java.util.Set<String> setGeneSymbols = idMappingManager.getIDAsSet(idType,
-				humanReadableContentIDType, id);
+				humanReadableRecordIDType, id);
 
 		if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
 			geneSymbol = (String) setGeneSymbols.toArray()[0];
@@ -358,26 +358,26 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public AItemContainer getContentItemContainer(IDType idType, int id) {
+	public AItemContainer getRecordItemContainer(IDType idType, int id) {
 
 		GeneContextMenuItemContainer geneContainer = new GeneContextMenuItemContainer();
 		geneContainer.setDataDomain(this);
-		geneContainer.setID(idType, id);
+		geneContainer.dataTableID(idType, id);
 		return geneContainer;
 	}
 
 	@Override
-	public AItemContainer getContentGroupItemContainer(IDType idType,
+	public AItemContainer getRecordGroupItemContainer(IDType idType,
 			ArrayList<Integer> ids) {
-		GeneContentGroupMenuItemContainer geneContentGroupContainer = new GeneContentGroupMenuItemContainer();
+		GeneRecordGroupMenuItemContainer geneContentGroupContainer = new GeneRecordGroupMenuItemContainer();
 		geneContentGroupContainer.setDataDomain(this);
-		geneContentGroupContainer.setGeneIDs(contentIDType, ids);
+		geneContentGroupContainer.setGeneIDs(recordIDType, ids);
 		return geneContentGroupContainer;
 	}
 
 	@Override
 	protected void assignIDCategories() {
-		contentIDCategory = IDCategory.getIDCategory("GENE");
+		recordIDCategory = IDCategory.getIDCategory("GENE");
 		dimensionIDCategory = IDCategory.getIDCategory("EXPERIMENT");
 	}
 }

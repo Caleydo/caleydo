@@ -94,7 +94,7 @@ public class DetailToolBar extends LayoutRenderer {
 		}
 		float secondButtonOffset = 2 * sideSpacing + buttonSize;
 
-		int nrTotal = heatMap.getContentVA().size();
+		int nrTotal = heatMap.getRecordVA().size();
 		int nrVisible = nrTotal
 				- heatMap.getContentSelectionManager().getNumberOfElements(
 						GLHeatMap.SELECTION_HIDDEN);

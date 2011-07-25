@@ -6,11 +6,11 @@ import java.util.HashMap;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
@@ -28,8 +28,8 @@ public class HeatMapOverview {
 	private AHeatMapLayout layout;
 	private VerticalSlider slider;
 	private ArrayList<ArrayList<Texture>> overviewTextures;
-	private DataTable set;
-	private ContentVirtualArray contentVA;
+	private DataTable dataTable;
+	private RecordVirtualArray recordVA;
 	private DimensionVirtualArray dimensionVA;
 	private HashMap<Group, Boolean> selectedGroups;
 
@@ -41,7 +41,7 @@ public class HeatMapOverview {
 	}
 
 	public void draw(GL2 gl, TextureManager textureManager, PickingManager pickingManager,
-			ContentSelectionManager contentSelectionManager, int viewID,
+			RecordSelectionManager contentSelectionManager, int viewID,
 			int sliderPickingID) {
 
 		// Vec3f overviewHeatMapPosition = layout.getOverviewHeatMapPosition();
@@ -63,20 +63,20 @@ public class HeatMapOverview {
 		// overviewGroupsPosition.y(),
 		// overviewGroupsPosition.z());
 		//
-		// HeatMapUtil.renderGroupBar(gl, contentVA, layout.getOverviewHeight(),
+		// HeatMapUtil.renderGroupBar(gl, recordVA, layout.getOverviewHeight(),
 		// layout.getOverviewGroupWidth(), pickingManager, viewID, layout
 		// .getGroupPickingType(), textureManager);
 		//
 		// gl.glPopMatrix();
 
-		// HeatMapUtil.renderGroupBar(gl, contentVA, layout.getOverviewHeight(),
+		// HeatMapUtil.renderGroupBar(gl, recordVA, layout.getOverviewHeight(),
 		// layout.getOverviewGroupWidth(), pickingManager, viewID, layout
 		// .getGroupPickingType(), textureManager);
 		//
 		// //FIXME: remove this. the group borders need to be actually put in
 		// the heatmap texture
 		// // Render group borders over heatmap texture
-		// ContentGroupList contentGroupList = contentVA.getGroupList();
+		// ContentGroupList contentGroupList = recordVA.getGroupList();
 		// boolean isLeft = true;
 		// if (layout.getOverviewHeatMapPosition().x() <
 		// layout.getDetailPosition().x())
@@ -84,7 +84,7 @@ public class HeatMapOverview {
 		//
 		// if (contentGroupList != null) {
 		// float sampleHeight = layout.getOverviewHeight() / ((float)
-		// contentVA.size());
+		// recordVA.size());
 		// float groupPositionY = layout.getOverviewHeight();
 		//
 		// gl.glColor4f(1, 1, 1, 1);
@@ -120,7 +120,7 @@ public class HeatMapOverview {
 	// ContentSelectionManager contentSelectionManager) {
 	//
 	// float overviewHeight = layout.getOverviewHeight();
-	// float sampleHeight = overviewHeight / contentVA.size();
+	// float sampleHeight = overviewHeight / recordVA.size();
 	//
 	// Set<Integer> mouseOverElements = contentSelectionManager
 	// .getElements(SelectionType.MOUSE_OVER);
@@ -128,7 +128,7 @@ public class HeatMapOverview {
 	// .getElements(SelectionType.SELECTION);
 	//
 	// for (Integer mouseOverElement : mouseOverElements) {
-	// int elementIndex = contentVA.indexOf(mouseOverElement);
+	// int elementIndex = recordVA.indexOf(mouseOverElement);
 	//
 	// if (elementIndex != -1) {
 	// gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
@@ -148,7 +148,7 @@ public class HeatMapOverview {
 	// }
 	//
 	// for (Integer selectedElement : selectedElements) {
-	// int elementIndex = contentVA.indexOf(selectedElement);
+	// int elementIndex = recordVA.indexOf(selectedElement);
 	//
 	// if (elementIndex != -1) {
 	// gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
@@ -180,7 +180,7 @@ public class HeatMapOverview {
 	private void selectGroupsAccordingToBoundIndices(int lowerBoundIndex,
 			int upperBoundIndex) {
 
-		ContentGroupList contentGroupList = contentVA.getGroupList();
+		RecordGroupList contentGroupList = recordVA.getGroupList();
 		int groupSampleStartIndex = 0;
 		int groupSampleEndIndex = 0;
 		int groupIndex = 0;
@@ -206,7 +206,7 @@ public class HeatMapOverview {
 		float sliderHeight = slider.getSliderHeight();
 		float sliderTopPositionY = sliderBottomPositionY + sliderHeight;
 		float overviewHeight = layout.getOverviewHeight();
-		float sampleHeight = overviewHeight / ((float) contentVA.size());
+		float sampleHeight = overviewHeight / ((float) recordVA.size());
 
 		int numSamplesInFocus = (int) Math.ceil(sliderHeight / sampleHeight);
 		int sampleIndexTop = (int) Math
@@ -216,8 +216,8 @@ public class HeatMapOverview {
 			sampleIndexTop = 0;
 		int sampleIndexBottom = sampleIndexTop + numSamplesInFocus;
 
-		if (sampleIndexBottom >= contentVA.size()) {
-			sampleIndexBottom = contentVA.size() - 1;
+		if (sampleIndexBottom >= recordVA.size()) {
+			sampleIndexBottom = recordVA.size() - 1;
 			if (sampleIndexTop - sampleIndexBottom < numSamplesInFocus)
 				sampleIndexTop = sampleIndexBottom - numSamplesInFocus;
 		}
@@ -234,10 +234,10 @@ public class HeatMapOverview {
 		slider.handleSliderSelection(pickingType, pickingMode);
 	}
 
-	public void setSet(DataTable set) {
-		this.set = set;
-		contentVA = set.getContentData(DataTable.RECORD).getContentVA();
-		dimensionVA = set.getDimensionData(DataTable.DIMENSION).getDimensionVA();
+	public void setDataTable(DataTable dataTable) {
+		this.dataTable = dataTable;
+		recordVA = dataTable.getRecordData(DataTable.RECORD).getRecordVA();
+		dimensionVA = dataTable.getDimensionData(DataTable.DIMENSION).getDimensionVA();
 
 		updateHeatMapTextures(null);
 	}
@@ -250,26 +250,26 @@ public class HeatMapOverview {
 		return overviewTextures.get(index);
 	}
 
-	public ContentVirtualArray getContentVA() {
-		return contentVA;
+	public RecordVirtualArray getRecordVA() {
+		return recordVA;
 	}
 
 	public VerticalSlider getOverviewSlider() {
 		return slider;
 	}
 
-	public void updateHeatMapTextures(ContentSelectionManager contentSelectionManager) {
+	public void updateHeatMapTextures(RecordSelectionManager contentSelectionManager) {
 		overviewTextures.clear();
-		ContentGroupList groupList = contentVA.getGroupList();
+		RecordGroupList groupList = recordVA.getGroupList();
 		for (Group group : groupList) {
-			ContentVirtualArray clusterVA = new ContentVirtualArray();
+			RecordVirtualArray clusterVA = new RecordVirtualArray();
 
 			for (int i = group.getStartIndex(); i <= group.getEndIndex(); i++) {
-				if (i >= contentVA.size())
+				if (i >= recordVA.size())
 					break;
-				clusterVA.append(contentVA.get(i));
+				clusterVA.append(recordVA.get(i));
 			}
-			overviewTextures.add(HeatMapUtil.createHeatMapTextures(set, clusterVA,
+			overviewTextures.add(HeatMapUtil.createHeatMapTextures(dataTable, clusterVA,
 					dimensionVA, contentSelectionManager));
 		}
 	}

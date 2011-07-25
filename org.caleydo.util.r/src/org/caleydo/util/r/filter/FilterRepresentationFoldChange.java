@@ -4,12 +4,12 @@ import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.statistics.FoldChangeSettings;
 import org.caleydo.core.data.collection.table.statistics.FoldChangeSettings.FoldChangeEvaluator;
-import org.caleydo.core.data.filter.ContentFilter;
-import org.caleydo.core.data.filter.ContentMetaFilter;
-import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
+import org.caleydo.core.data.filter.RecordFilter;
+import org.caleydo.core.data.filter.RecordMetaFilter;
+import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Text;
 
 public class FilterRepresentationFoldChange extends
-		AFilterRepresentation<ContentVADelta, ContentFilter> {
+		AFilterRepresentation<RecordVADelta, RecordFilter> {
 
 	private final static String TITLE = "Fold Change Filter";
 
@@ -241,19 +241,19 @@ public class FilterRepresentationFoldChange extends
 		this.histogram = histogram;
 	}
 
-	public void setSet1(DataTable set1) {
+	public void setDataTable1(DataTable set1) {
 		this.set1 = set1;
 	}
 
-	public void setSet2(DataTable set2) {
+	public void setDataTable2(DataTable set2) {
 		this.set2 = set2;
 	}
 
 	@Override
 	protected void createVADelta() {
 
-		if (filter instanceof ContentMetaFilter) {
-			for (ContentFilter subFilter : ((ContentMetaFilter) filter).getFilterList()) {
+		if (filter instanceof RecordMetaFilter) {
+			for (RecordFilter subFilter : ((RecordMetaFilter) filter).getFilterList()) {
 
 				createVADelta(subFilter);
 			}
@@ -261,15 +261,15 @@ public class FilterRepresentationFoldChange extends
 			createVADelta(filter);
 	}
 
-	private void createVADelta(ContentFilter subFilter) {
+	private void createVADelta(RecordFilter subFilter) {
 
-		ContentVADelta contentVADelta = new ContentVADelta(DataTable.RECORD, subFilter
-				.getDataDomain().getContentIDType());
-		ContentVADelta contentVADeltaUncertainty = new ContentVADelta(DataTable.RECORD,
-				subFilter.getDataDomain().getContentIDType());
+		RecordVADelta recordVADelta = new RecordVADelta(DataTable.RECORD, subFilter
+				.getDataDomain().getRecordIDType());
+		RecordVADelta recordVADeltaUncertainty = new RecordVADelta(DataTable.RECORD,
+				subFilter.getDataDomain().getRecordIDType());
 
-		ContentVirtualArray contentVA = subFilter.getDataDomain()
-				.getContentFilterManager().getBaseVA();
+		RecordVirtualArray recordVA = subFilter.getDataDomain()
+				.getRecordFilterManager().getBaseVA();
 
 		double[] resultVector = set1.getStatisticsResult().getFoldChangeResult(set2)
 				.getFirst();
@@ -282,9 +282,9 @@ public class FilterRepresentationFoldChange extends
 		FoldChangeEvaluator foldChangeEvaluator = settings.getEvaluator();
 
 		// FIXME: two sided fold change should be a parallel filter
-		for (Integer contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
+		for (Integer recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
 
-			double foldChangeResult = resultVector[contentIndex];
+			double foldChangeResult = resultVector[recordIndex];
 			switch (foldChangeEvaluator) {
 			case LESS:
 				if (foldChangeResult * -1 > foldChangeRatioUncertainty)
@@ -300,13 +300,13 @@ public class FilterRepresentationFoldChange extends
 				break;
 			}
 
-			contentVADelta.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));
+			recordVADelta.add(VADeltaItem.removeElement(recordVA.get(recordIndex)));
 		}
 
 		// Evaluate uncertainty
-		for (Integer contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
+		for (Integer recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
 			
-			double foldChangeResult = resultVector[contentIndex];
+			double foldChangeResult = resultVector[recordIndex];
 			switch (foldChangeEvaluator) {
 			case LESS:
 				if (foldChangeResult * -1 > foldChangeRatioUncertainty
@@ -324,18 +324,18 @@ public class FilterRepresentationFoldChange extends
 				break;
 			}
 
-			contentVADeltaUncertainty
-					.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));
+			recordVADeltaUncertainty
+					.add(VADeltaItem.removeElement(recordVA.get(recordIndex)));
 
 		}
 
-		subFilter.setVADelta(contentVADelta);
-		subFilter.setVADeltaUncertainty(contentVADeltaUncertainty);
+		subFilter.setVADelta(recordVADelta);
+		subFilter.setVADeltaUncertainty(recordVADeltaUncertainty);
 	}
 
 	@Override
 	protected void triggerRemoveFilterEvent() {
-		RemoveContentFilterEvent filterEvent = new RemoveContentFilterEvent();
+		RemoveRecordFilterEvent filterEvent = new RemoveRecordFilterEvent();
 		filterEvent.setDataDomainID(filter.getDataDomain().getDataDomainID());
 		filterEvent.setFilter(filter);
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
@@ -362,8 +362,8 @@ public class FilterRepresentationFoldChange extends
 			set2.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
 			
 			// FIXME: just for uncertainty paper so that the uncertainty view can access it via the main set
-			DataTable set = filter.getDataDomain().getDataTable();
-			set.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
+			DataTable dataTable = filter.getDataDomain().getDataTable();
+			dataTable.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
 
 			createVADelta();
 			filter.updateFilterManager();

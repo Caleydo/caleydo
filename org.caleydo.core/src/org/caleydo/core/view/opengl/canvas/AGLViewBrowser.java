@@ -486,7 +486,7 @@ public abstract class AGLViewBrowser
 
 	private void renderRemoteLevelElement(final GL2 gl, RemoteLevelElement element, RemoteLevel level) {
 		// // Check if view is visible
-		// if (!level.getElementVisibilityById(iViewID))
+		// if (!level.getElementVisibilityById(viewID))
 		// return;
 
 		AGLView glView = element.getGLView();
@@ -1028,7 +1028,7 @@ public abstract class AGLViewBrowser
 	}
 
 	private void slerpView(final GL2 gl, SlerpAction slerpAction) {
-		int iViewID = slerpAction.getElementId();
+		int viewID = slerpAction.getElementId();
 
 		SlerpMod slerpMod = new SlerpMod();
 
@@ -1044,7 +1044,7 @@ public abstract class AGLViewBrowser
 
 		slerpMod.applySlerp(gl, transform, true, false);
 
-		generalManager.getViewGLCanvasManager().getGLView(iViewID).displayRemote(gl);
+		generalManager.getViewGLCanvasManager().getGLView(viewID).displayRemote(gl);
 
 		gl.glPopMatrix();
 

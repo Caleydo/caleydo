@@ -136,7 +136,7 @@ public class Translate1Manip extends Manip {
 		parts.highlight();
 		dragLine.setDirection(axis);
 		dragLine.setPoint(hit.intPt.getIntersectionPoint());
-		dragOffset.sub(translation, hit.intPt.getIntersectionPoint());
+		dragOffdataTable.sub(translation, hit.intPt.getIntersectionPoint());
 	}
 
 	public void drag(Vec3f rayStart, Vec3f rayDirection) {

@@ -22,7 +22,7 @@ public abstract class APDDrawingStrategy {
 	 */
 	protected int iNumSlicesPerFullDisc;
 	protected PickingManager pickingManager;
-	protected int iViewID;
+	protected int viewID;
 
 	/**
 	 * Constructor.
@@ -30,13 +30,13 @@ public abstract class APDDrawingStrategy {
 	 * @param pickingManager
 	 *            The picking manager that should handle the picking of the
 	 *            drawn elements.
-	 * @param iViewID
+	 * @param viewID
 	 *            ID of the view where the elements will be displayed. Needed
 	 *            for picking.
 	 */
-	public APDDrawingStrategy(PickingManager pickingManager, int iViewID) {
+	public APDDrawingStrategy(PickingManager pickingManager, int viewID) {
 		this.pickingManager = pickingManager;
-		this.iViewID = iViewID;
+		this.viewID = viewID;
 		iNumSlicesPerFullDisc = RadialHierarchyRenderStyle.NUM_SLICES_PER_FULL_DISC;
 	}
 
@@ -110,11 +110,11 @@ public abstract class APDDrawingStrategy {
 	}
 
 	public int getViewID() {
-		return iViewID;
+		return viewID;
 	}
 
-	public void setViewID(int iViewID) {
-		this.iViewID = iViewID;
+	public void setViewID(int viewID) {
+		this.viewID = viewID;
 	}
 
 }

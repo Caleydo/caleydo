@@ -6,7 +6,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.mapping.color.ColorMapper;
@@ -15,7 +15,7 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 /**
- * Renderer for an overview heatmap of values specified by contentVA and
+ * Renderer for an overview heatmap of values specified by recordVA and
  * dimensionVA. It shows the average values per dimension and optionally the average
  * values + and - the standard deviation per dimension.
  * 
@@ -33,19 +33,19 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 	/**
 	 * Constructor.
 	 * 
-	 * @param contentVA
+	 * @param recordVA
 	 * @param dimensionVA
 	 * @param set
 	 * @param showStandardDeviation
 	 */
-	public OverviewHeatMapRenderer(ContentVirtualArray contentVA,
-			DimensionVirtualArray dimensionVA, DataTable set,
+	public OverviewHeatMapRenderer(RecordVirtualArray recordVA,
+			DimensionVirtualArray dimensionVA, DataTable dataTable,
 			boolean showStandardDeviation) {
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 		this.showStandardDeviation = showStandardDeviation;
 
-		float[] expressionValues = new float[contentVA.size()];
+		float[] expressionValues = new float[recordVA.size()];
 		heatMapValuesMean = new ArrayList<Float>();
 		heatMapValuesMeanMinusStdDev = new ArrayList<Float>();
 		heatMapValuesMeanPlusStdDev = new ArrayList<Float>();
@@ -53,9 +53,9 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 		for (int dimensionIndex : dimensionVA) {
 
 			int index = 0;
-			for (int contentIndex : contentVA) {
-				expressionValues[index] = set.get(dimensionIndex).getFloat(
-						DataRepresentation.NORMALIZED, contentIndex);
+			for (int recordIndex : recordVA) {
+				expressionValues[index] = dataTable.get(dimensionIndex).getFloat(
+						DataRepresentation.NORMALIZED, recordIndex);
 				index++;
 			}
 

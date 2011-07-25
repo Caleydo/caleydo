@@ -15,7 +15,7 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
@@ -102,7 +102,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 			setBar.setWidth(viewFrustum.getWidth());
 			setBar.render(gl);
 
-			contentIDToIndividualLines.clear();
+			recordIDToIndividualLines.clear();
 			leftHeatMapWrapperToDetailBands = new HashMap<HeatMapWrapper, ArrayList<DetailBand>>();
 			detailBandID = 0;
 
@@ -158,7 +158,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void handleContentGroupListUpdate(int setID, ContentGroupList contentGroupList) {
+	public void handleContentGroupListUpdate(int dataTableID, RecordGroupList contentGroupList) {
 	}
 
 	@Override
@@ -171,7 +171,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void handleReplaceContentVA(int setID, String dataDomain, String vaType) {
+	public void handleReplaceRecordVA(int dataTableID, String dataDomain, String vaType) {
 	}
 
 	@Override
@@ -193,12 +193,12 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void setSetsInFocus(ArrayList<DataTable> setsInFocus) {
+	public void setDataTablesInFocus(ArrayList<DataTable> setsInFocus) {
 
 	}
 
 	@Override
-	public void setSetsToCompare(ArrayList<DataTable> setsToCompare) {
+	public void setDataTablesToCompare(ArrayList<DataTable> setsToCompare) {
 
 	}
 

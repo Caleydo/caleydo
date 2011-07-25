@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -198,8 +198,8 @@ public abstract class AHeatMapLayout {
 	}
 
 	public float getOverviewHeatMapGroupHeight(int groupID) {
-		ContentVirtualArray contentVA = heatMapWrapper.getContentVA();
-		ContentGroupList contentGroupList = contentVA.getGroupList();
+		RecordVirtualArray recordVA = heatMapWrapper.getRecordVA();
+		RecordGroupList contentGroupList = recordVA.getGroupList();
 
 		Group group = contentGroupList.get(groupID);
 		float sampleHeight = getOverviewHeatMapSampleHeight();
@@ -208,8 +208,8 @@ public abstract class AHeatMapLayout {
 	}
 
 	public Vec3f getOverviewHeatMapGroupPosition(int groupID) {
-		ContentVirtualArray contentVA = heatMapWrapper.getContentVA();
-		ContentGroupList contentGroupList = contentVA.getGroupList();
+		RecordVirtualArray recordVA = heatMapWrapper.getRecordVA();
+		RecordGroupList contentGroupList = recordVA.getGroupList();
 		Group group = contentGroupList.get(groupID);
 		float positionY = getOverviewHeatMapSamplePositionY(group.getEndIndex(),
 				group.getGroupID());
@@ -219,10 +219,10 @@ public abstract class AHeatMapLayout {
 	}
 
 	public float getOverviewHeatMapSampleHeight() {
-		ContentVirtualArray contentVA = heatMapWrapper.getContentVA();
-		ContentGroupList contentGroupList = contentVA.getGroupList();
+		RecordVirtualArray recordVA = heatMapWrapper.getRecordVA();
+		RecordGroupList contentGroupList = recordVA.getGroupList();
 		return (getOverviewHeight() - (contentGroupList.size() * getOverviewClusterBorderSize()))
-				/ contentVA.size();
+				/ recordVA.size();
 	}
 
 	public Vec3f getOverviewGroupPosition(int groupID) {
@@ -239,28 +239,28 @@ public abstract class AHeatMapLayout {
 		return viewFrustum.getHeight() / (float) canvas.getHeight();
 	}
 
-	public float getOverviewHeatMapSamplePositionY(int contentIndex) {
+	public float getOverviewHeatMapSamplePositionY(int recordIndex) {
 
-		return getOverviewHeatMapSamplePositionY(contentIndex,
-				getGroupIDFromContentIndex(contentIndex));
+		return getOverviewHeatMapSamplePositionY(recordIndex,
+				getGroupIDFromContentIndex(recordIndex));
 	}
 
-	protected int getGroupIDFromContentIndex(int contentIndex) {
-		ContentVirtualArray contentVA = heatMapWrapper.getContentVA();
-		for (Group group : contentVA.getGroupList()) {
-			if (contentIndex >= group.getStartIndex()
-					&& contentIndex <= group.getEndIndex()) {
+	protected int getGroupIDFromContentIndex(int recordIndex) {
+		RecordVirtualArray recordVA = heatMapWrapper.getRecordVA();
+		for (Group group : recordVA.getGroupList()) {
+			if (recordIndex >= group.getStartIndex()
+					&& recordIndex <= group.getEndIndex()) {
 				return group.getGroupID();
 			}
 		}
 		return -1;
 	}
 
-	public float getOverviewHeatMapSamplePositionY(int contentIndex, int groupIndex) {
+	public float getOverviewHeatMapSamplePositionY(int recordIndex, int groupIndex) {
 
 		float sampleHeight = getOverviewHeatMapSampleHeight();
 		return getOverviewHeatMapPosition().y() + getOverviewHeight()
-				- (sampleHeight * (contentIndex + 1))
+				- (sampleHeight * (recordIndex + 1))
 				- (groupIndex * getOverviewClusterBorderSize());
 	}
 

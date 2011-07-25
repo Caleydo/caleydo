@@ -32,7 +32,7 @@ public class Uncertainty {
 		this.metaData = table.getMetaData();
 	}
 
-	public float getNormalizedUncertainty(int contentIndex) {
+	public float getNormalizedUncertainty(int recordIndex) {
 
 		if (aggregatedRawUncertainties == null) {
 			// calculateRawAverageUncertainty();
@@ -41,7 +41,7 @@ public class Uncertainty {
 
 		}
 
-		return aggregatedNormalizedUncertainties[contentIndex];
+		return aggregatedNormalizedUncertainties[recordIndex];
 	}
 
 	public float[] getNormalizedUncertainty() {
@@ -71,36 +71,36 @@ public class Uncertainty {
 		}
 
 		aggregatedNormalizedUncertainties = new float[metaData.depth()];
-		for (int contentIndex = 0; contentIndex < metaData.depth(); contentIndex++) {
-			// float aggregatedUncertainty = calculateMaxUncertainty(contentIndex);
+		for (int recordIndex = 0; recordIndex < metaData.depth(); recordIndex++) {
+			// float aggregatedUncertainty = calculateMaxUncertainty(recordIndex);
 			float aggregatedUncertainty =
-				calcualteAverageUncertainty(contentIndex, DataRepresentation.UNCERTAINTY_NORMALIZED);
-			aggregatedNormalizedUncertainties[contentIndex] = aggregatedUncertainty;
+				calcualteAverageUncertainty(recordIndex, DataRepresentation.UNCERTAINTY_NORMALIZED);
+			aggregatedNormalizedUncertainties[recordIndex] = aggregatedUncertainty;
 		}
 	}
 
 	public void calculateRawAverageUncertainty() {
 		aggregatedRawUncertainties = new float[metaData.depth()];
-		for (int contentIndex = 0; contentIndex < metaData.depth(); contentIndex++) {
+		for (int recordIndex = 0; recordIndex < metaData.depth(); recordIndex++) {
 			float aggregatedUncertainty;
 
 			aggregatedUncertainty =
-				calcualteAverageUncertainty(contentIndex, DataRepresentation.UNCERTAINTY_RAW);
+				calcualteAverageUncertainty(recordIndex, DataRepresentation.UNCERTAINTY_RAW);
 
 			// aggregatedUncertainty =
-			// calculateMaxUncertainty(contentIndex, EDataRepresentation.UNCERTAINTY_RAW);
+			// calculateMaxUncertainty(recordIndex, EDataRepresentation.UNCERTAINTY_RAW);
 
-			aggregatedRawUncertainties[contentIndex] = aggregatedUncertainty;
+			aggregatedRawUncertainties[recordIndex] = aggregatedUncertainty;
 		}
 	}
 
-	private float calcualteAverageUncertainty(int contentIndex, DataRepresentation dataRepresentation) {
+	private float calcualteAverageUncertainty(int recordIndex, DataRepresentation dataRepresentation) {
 		float uncertaintySum = 0;
 		DimensionVirtualArray dimensionVA = table.hashDimensionData.get(DataTable.DIMENSION).getDimensionVA();
 		for (Integer dimensionID : dimensionVA) {
 			try {
 				uncertaintySum +=
-					table.hashDimensions.get(dimensionID).getFloat(dataRepresentation, contentIndex);
+					table.hashDimensions.get(dimensionID).getFloat(dataRepresentation, recordIndex);
 			}
 			catch (Exception e) {
 				System.out.println("dimensionID: " + dimensionID);
@@ -110,13 +110,13 @@ public class Uncertainty {
 	}
 
 	@SuppressWarnings("unused")
-	private float calculateMaxUncertainty(int contentIndex, DataRepresentation dataRepresentation) {
+	private float calculateMaxUncertainty(int recordIndex, DataRepresentation dataRepresentation) {
 		float maxUncertainty = Float.MAX_VALUE;
 		for (Integer dimensionID : table.hashDimensionData.get(DataTable.DIMENSION).getDimensionVA()) {
 			float cellUncertainty = 0;
 			try {
 				cellUncertainty =
-					table.hashDimensions.get(dimensionID).getFloat(dataRepresentation, contentIndex);
+					table.hashDimensions.get(dimensionID).getFloat(dataRepresentation, recordIndex);
 			}
 			catch (Exception e) {
 				System.out.println("dimensionID: " + dimensionID);

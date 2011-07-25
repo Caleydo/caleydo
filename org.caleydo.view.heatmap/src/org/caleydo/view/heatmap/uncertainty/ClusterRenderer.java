@@ -6,7 +6,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -39,7 +39,7 @@ public class ClusterRenderer extends LayoutRenderer {
 
 	private Row clusterLayout;
 
-	private ContentVirtualArray clusterVA;
+	private RecordVirtualArray clusterVA;
 
 	private int clusterIndex;
 	// private int height;
@@ -57,7 +57,7 @@ public class ClusterRenderer extends LayoutRenderer {
 	 * @param viewFrustum
 	 */
 	public ClusterRenderer(GLUncertaintyHeatMap uncertaintyHeatMap, Row clusterLayout,
-			ContentVirtualArray clusterVA, int clusterIndex) {
+			RecordVirtualArray clusterVA, int clusterIndex) {
 
 		this.uncertaintyHeatMap = uncertaintyHeatMap;
 		this.clusterLayout = clusterLayout;

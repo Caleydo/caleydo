@@ -8,7 +8,7 @@ import org.caleydo.core.data.collection.dimension.ADimension;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
-import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -18,7 +18,7 @@ public class TagRenderer extends LayoutRenderer {
 	private String text = "";
 
 	private GLTagCloud tagCloud;
-	private ContentSelectionManager contentSelectionManager;
+	private RecordSelectionManager contentSelectionManager;
 	private Integer dimensionID;
 
 	private float color[];
@@ -56,23 +56,23 @@ public class TagRenderer extends LayoutRenderer {
 		if (selectedElements.isEmpty())
 			return;
 
-		int contentID = -1;
+		int recordID = -1;
 		for (Integer tempID : selectedElements) {
-			contentID = tempID;
+			recordID = tempID;
 			break;
 		}
 
-		if (!tagCloud.getContentVA().contains(contentID))
+		if (!tagCloud.getRecordVA().contains(recordID))
 			return;
-		ADimension genericDimension = tagCloud.getSet().get(dimensionID);
+		ADimension genericDimension = tagCloud.getDataTable().get(dimensionID);
 		if (genericDimension instanceof NumericalDimension) {
 			NumericalDimension numericalDimension = (NumericalDimension) genericDimension;
 			text = new Float(
-					numericalDimension.getFloat(DataRepresentation.RAW, contentID))
+					numericalDimension.getFloat(DataRepresentation.RAW, recordID))
 					.toString();
 		} else {
 			NominalDimension<String> dimension = (NominalDimension<String>) genericDimension;
-			text = dimension.getRaw(contentID);
+			text = dimension.getRaw(recordID);
 		}
 
 	}

@@ -5,8 +5,8 @@ import gleem.linalg.Vec3f;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.group.ContentGroupList;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -31,10 +31,10 @@ public class OverviewGroupBarRenderCommand implements IHeatMapRenderCommand {
 	public void render(GL2 gl, HeatMapWrapper heatMapWrapper) {
 
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
-		ContentVirtualArray contentVA = heatMapWrapper.getOverview().getContentVA();
+		RecordVirtualArray recordVA = heatMapWrapper.getOverview().getRecordVA();
 
 		gl.glPushMatrix();
-		ContentGroupList contentGroupList = contentVA.getGroupList();
+		RecordGroupList contentGroupList = recordVA.getGroupList();
 		float groupWidth = layout.getOverviewGroupBarWidth();
 
 		if (contentGroupList != null) {
@@ -73,7 +73,7 @@ public class OverviewGroupBarRenderCommand implements IHeatMapRenderCommand {
 		// overviewGroupsPosition.y(),
 		// overviewGroupsPosition.z());
 		//
-		// HeatMapUtil.renderGroupBar(gl, contentVA, layout.getOverviewHeight(),
+		// HeatMapUtil.renderGroupBar(gl, recordVA, layout.getOverviewHeight(),
 		// layout.getOverviewGroupBarWidth(), pickingManager, viewID,
 		// layout.getGroupPickingType(), textureManager);
 		//

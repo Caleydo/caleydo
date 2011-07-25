@@ -13,9 +13,9 @@ public interface IElementRepCreator {
 	 * 
 	 * @param partialDisc
 	 *            Partial disc an element representation shall be created for.
-	 * @param iViewID
+	 * @param viewID
 	 *            View ID of the radial hierarchy.
 	 */
-	public void createElementRep(PartialDisc partialDisc, int iViewIDfloat,
+	public void createElementRep(PartialDisc partialDisc, int viewIDfloat,
 			float fHierarchyCenterX, float fHierarchyCenterY, float fHierarchyCenterZ);
 }

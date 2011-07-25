@@ -2,7 +2,7 @@ package org.caleydo.view.heatmap.heatmap.renderer.spacing;
 
 import java.util.Set;
 
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class FishEyeSpacingCalculator extends ASpacingCalculator {
@@ -25,7 +25,7 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 		Set<Integer> zoomedElements = heatMap.getZoomedElements();
 		float baseSize = (y - (zoomedElements.size() * minSelectedFieldHeight));
 
-		ContentVirtualArray contentVA = heatMap.getContentVA();
+		RecordVirtualArray recordVA = heatMap.getRecordVA();
 
 		int level1Elements = 0;
 		Integer[] zoomedArray = new Integer[zoomedElements.size()];
@@ -34,7 +34,7 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 			int zoomedElementID = zoomedArray[count];
 			int elementsForThisSelection = spread * 2;
 
-			int indexOfZoomedElement = contentVA.indexOf(zoomedElementID);
+			int indexOfZoomedElement = recordVA.indexOf(zoomedElementID);
 			for (int limitCount = 1; limitCount <= spread; limitCount++) {
 				if (indexOfZoomedElement - limitCount < 0)
 					elementsForThisSelection--;
@@ -44,7 +44,7 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 
 			for (int innerCount = count + 1; innerCount < zoomedArray.length; innerCount++) {
 
-				int indexOfInnerZoomedElement = contentVA
+				int indexOfInnerZoomedElement = recordVA
 						.indexOf(zoomedArray[innerCount]);
 				int difference = Math.abs(indexOfInnerZoomedElement
 						- indexOfZoomedElement);
@@ -68,19 +68,19 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 	}
 
 	@Override
-	public float getFieldHeight(int contentID) {
-		if (heatMap.getZoomedElements().contains(contentID))
+	public float getFieldHeight(int recordID) {
+		if (heatMap.getZoomedElements().contains(recordID))
 			return minSelectedFieldHeight;
 		else {
-			ContentVirtualArray contentVA = heatMap.getContentVA();
+			RecordVirtualArray recordVA = heatMap.getRecordVA();
 			for (int selectedContentID : heatMap.getZoomedElements()) {
-				int selectedContentIndex = contentVA.indexOf(selectedContentID);
+				int selectedContentIndex = recordVA.indexOf(selectedContentID);
 				for (int count = 1; count <= spread; count++) {
-					if ((selectedContentIndex - count >= 0 && contentID == contentVA
+					if ((selectedContentIndex - count >= 0 && recordID == recordVA
 							.get(selectedContentIndex - count)))
 						return level1Size;
 					else if (selectedContentIndex < contentElements - count
-							&& contentID == contentVA.get(selectedContentIndex + count))
+							&& recordID == recordVA.get(selectedContentIndex + count))
 						return level1Size;
 				}
 			}

@@ -3,7 +3,7 @@ package org.caleydo.core.util.clusterer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
@@ -29,7 +29,7 @@ public abstract class AClusterer
 	protected int iProgressBarMultiplier;
 	protected int iProgressBarOffsetValue;
 
-	protected ContentVirtualArray contentVA;
+	protected RecordVirtualArray recordVA;
 	protected DimensionVirtualArray dimensionVA;
 
 	protected ClusterState clusterState;
@@ -41,7 +41,7 @@ public abstract class AClusterer
 
 	public void setClusterState(ClusterState clusterState) {
 		this.clusterState = clusterState;
-		this.contentVA = clusterState.getContentVA();
+		this.recordVA = clusterState.getRecordVA();
 		this.dimensionVA = clusterState.getDimensionVA();
 	}
 

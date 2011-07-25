@@ -7,7 +7,7 @@ import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.dimension.ADimension;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 
 /**
  * This class encapsulates all metadata related operations for DataTables. Examples are size, depth and
@@ -71,7 +71,7 @@ public class MetaData {
 	public Histogram getHistogram() {
 		if (!table.isSetHomogeneous) {
 			throw new UnsupportedOperationException(
-				"Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use dimension based histograms instead!");
+				"Tried to calcualte a set-wide histogram on a not homogeneous dataTable. This makes no sense. Use dimension based histograms instead!");
 		}
 		Histogram histogram = new Histogram();
 
@@ -108,14 +108,14 @@ public class MetaData {
 	public Histogram getBaseHistogram() {
 		if (!table.isSetHomogeneous) {
 			throw new UnsupportedOperationException(
-				"Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use dimension based histograms instead!");
+				"Tried to calcualte a set-wide histogram on a not homogeneous dataTable. This makes no sense. Use dimension based histograms instead!");
 		}
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
 		for (ADimension dimension : table.hashDimensions.values()) {
 			NumericalDimension nDimension = (NumericalDimension) dimension;
-			Histogram dimensionHistogram = nDimension.getHistogram(table.defaultRecordData.getContentVA());
+			Histogram dimensionHistogram = nDimension.getHistogram(table.defaultRecordData.getRecordVA());
 
 			if (bIsFirstLoop) {
 				bIsFirstLoop = false;
@@ -142,18 +142,18 @@ public class MetaData {
 	 * @throws UnsupportedOperationException
 	 *             when used on non-homogeneous sets
 	 */
-	public Histogram getHistogram(ContentVirtualArray contentVA) {
+	public Histogram getHistogram(RecordVirtualArray recordVA) {
 		// FIXME put that back
 		// if (!isSetHomogeneous) {
 		// throw new UnsupportedOperationException(
-		// "Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use dimension based histograms instead!");
+		// "Tried to calcualte a set-wide histogram on a not homogeneous dataTable. This makes no sense. Use dimension based histograms instead!");
 		// }
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
 		for (ADimension dimension : table.hashDimensions.values()) {
 			NumericalDimension nDimension = (NumericalDimension) dimension;
-			Histogram dimensionHistogram = nDimension.getHistogram(contentVA);
+			Histogram dimensionHistogram = nDimension.getHistogram(recordVA);
 
 			if (bIsFirstLoop) {
 				bIsFirstLoop = false;
@@ -172,7 +172,7 @@ public class MetaData {
 	}
 
 	/**
-	 * Get the minimum value in the set.
+	 * Get the minimum value in the dataTable.
 	 * 
 	 * @throws OperationNotSupportedException
 	 *             when executed on nominal data
@@ -186,7 +186,7 @@ public class MetaData {
 	}
 
 	/**
-	 * Get the maximum value in the set.
+	 * Get the maximum value in the dataTable.
 	 * 
 	 * @throws OperationNotSupportedException
 	 *             when executed on nominal data
@@ -200,7 +200,7 @@ public class MetaData {
 	}
 
 	/**
-	 * Set an artificial minimum for the dataset. All elements smaller than that are clipped to this value in
+	 * Set an artificial minimum for the datadataTable. All elements smaller than that are clipped to this value in
 	 * the representation. This only affects the normalization, does not alter the raw data
 	 */
 	void setMin(double dMin) {
@@ -209,7 +209,7 @@ public class MetaData {
 	}
 
 	/**
-	 * Set an artificial maximum for the dataset. All elements smaller than that are clipped to this value in
+	 * Set an artificial maximum for the datadataTable. All elements smaller than that are clipped to this value in
 	 * the representation. This only affects the normalization, does not alter the raw data
 	 */
 	void setMax(double dMax) {

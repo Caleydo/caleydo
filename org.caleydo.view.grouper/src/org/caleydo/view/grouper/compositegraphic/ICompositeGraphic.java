@@ -119,7 +119,7 @@ public interface ICompositeGraphic extends IDraggable {
 
 	/**
 	 * Sets the Width of the current composite to the specified one. Its
-	 * children will recursively be set to the width minus the offset.
+	 * children will recursively be set to the width minus the offdataTable.
 	 * 
 	 * @param fWidth
 	 *            Width the current composite should be set to.

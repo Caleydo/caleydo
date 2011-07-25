@@ -9,7 +9,7 @@ import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
@@ -18,19 +18,19 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.IDataDomain;
-import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
+import org.caleydo.core.manager.event.data.ReplaceRecordVAEvent;
 import org.caleydo.core.manager.event.data.ReplaceDimensionVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.DataDomainsChangedEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.SwitchDataRepresentationEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.ContentVAUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.RecordVAUpdateEvent;
 import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.dimensionbased.DimensionVAUpdateEvent;
@@ -39,14 +39,14 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IDimensionVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
+import org.caleydo.core.view.opengl.canvas.listener.ReplaceRecordVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceDimensionVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
@@ -64,7 +64,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public abstract class ATableBasedView
 	extends AGLView
-	implements IDataDomainSetBasedView, ISelectionUpdateHandler, IContentVAUpdateHandler,
+	implements IDataDomainSetBasedView, ISelectionUpdateHandler, IRecordVAUpdateHandler,
 	IDimensionVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	protected DataTable table;
@@ -79,10 +79,10 @@ public abstract class ATableBasedView
 	 * This manager is responsible for the content in the dimensions (the indices). The contentSelectionManager
 	 * is initialized when the useCase is set ({@link #setDataDomain(IDataDomain)}).
 	 */
-	protected ContentSelectionManager contentSelectionManager;
+	protected RecordSelectionManager recordSelectionManager;
 
 	/**
-	 * This manager is responsible for the management of the dimensions in the set. The dimensionSelectionManager
+	 * This manager is responsible for the management of the dimensions in the dataTable. The dimensionSelectionManager
 	 * is initialized when the useCase is set ( {@link #setDataDomain(IDataDomain)}).
 	 */
 	protected DimensionSelectionManager dimensionSelectionManager;
@@ -111,14 +111,14 @@ public abstract class ATableBasedView
 	protected RedrawViewListener redrawViewListener;
 	protected ClearSelectionsListener clearSelectionsListener;
 
-	protected ContentVAUpdateListener contentVAUpdateListener;
+	protected RecordVAUpdateListener recordVAUpdateListener;
 	protected DimensionVAUpdateListener dimensionVAUpdateListener;
-	protected ReplaceContentVAListener replaceContentVAListener;
+	protected ReplaceRecordVAListener replaceRecordVAListener;
 	protected ReplaceDimensionVAListener replaceDimensionVAListener;
 
 	protected SwitchDataRepresentationListener switchDataRepresentationListener;
 
-	protected IDType contentIDType;
+	protected IDType recordIDType;
 	protected IDType dimensionIDType;
 
 	protected DataRepresentation renderingRepresentation = DataRepresentation.NORMALIZED;
@@ -141,10 +141,10 @@ public abstract class ATableBasedView
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = (ATableBasedDataDomain) dataDomain;
 
-		contentSelectionManager = this.dataDomain.getContentSelectionManager();
+		recordSelectionManager = this.dataDomain.getRecordSelectionManager();
 		dimensionSelectionManager = this.dataDomain.getDimensionSelectionManager();
 
-		contentIDType = dataDomain.getContentIDType();
+		recordIDType = dataDomain.getRecordIDType();
 		dimensionIDType = dataDomain.getDimensionIDType();
 
 		initData();
@@ -210,13 +210,13 @@ public abstract class ATableBasedView
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 
-		if (selectionDelta.getIDType().getIDCategory().equals(contentIDType.getIDCategory())) {
+		if (selectionDelta.getIDType().getIDCategory().equals(recordIDType.getIDCategory())) {
 			// Check for type that can be handled
-			if (selectionDelta.getIDType() != contentIDType) {
-				selectionDelta = DeltaConverter.convertDelta(contentIDType, selectionDelta);
+			if (selectionDelta.getIDType() != recordIDType) {
+				selectionDelta = DeltaConverter.convertDelta(recordIDType, selectionDelta);
 			}
 
-			contentSelectionManager.setDelta(selectionDelta);
+			recordSelectionManager.setDelta(selectionDelta);
 			// ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
 			handleConnectedElementReps(selectionDelta);
@@ -266,14 +266,14 @@ public abstract class ATableBasedView
 	}
 
 	@Override
-	public void handleVAUpdate(ContentVADelta delta, String info) {
-		if (!delta.getVAType().equals(contentVAType))
+	public void handleVAUpdate(RecordVADelta delta, String info) {
+		if (!delta.getVAType().equals(recordVAType))
 			return;
 
-		contentVA.setGroupList(null);
-		contentSelectionManager.setVADelta(delta);
+		recordVA.setGroupList(null);
+		recordSelectionManager.setVADelta(delta);
 
-		reactOnContentVAChanges(delta);
+		reactOnRecordVAChanges(delta);
 
 		// reactOnExternalSelection();
 		setDisplayListDirty();
@@ -300,7 +300,7 @@ public abstract class ATableBasedView
 	 * 
 	 * @param delta
 	 */
-	protected void reactOnContentVAChanges(ContentVADelta delta) {
+	protected void reactOnRecordVAChanges(RecordVADelta delta) {
 
 	}
 
@@ -313,9 +313,9 @@ public abstract class ATableBasedView
 
 	@Override
 	public void clearAllSelections() {
-		connectedElementRepresentationManager.clear(contentIDType);
+		connectedElementRepresentationManager.clear(recordIDType);
 		connectedElementRepresentationManager.clear(dimensionIDType);
-		contentSelectionManager.clearSelections();
+		recordSelectionManager.clearSelections();
 		dimensionSelectionManager.clearSelections();
 
 		setDisplayListDirty();
@@ -362,8 +362,8 @@ public abstract class ATableBasedView
 
 	@Override
 	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
-		if (idCategory == dataDomain.getContentIDCategory())
-			contentSelectionManager.executeSelectionCommand(selectionCommand);
+		if (idCategory == dataDomain.getRecordIDCategory())
+			recordSelectionManager.executeSelectionCommand(selectionCommand);
 		else if (idCategory == dataDomain.getDimensionIDCategory())
 			dimensionSelectionManager.executeSelectionCommand(selectionCommand);
 		else
@@ -389,11 +389,11 @@ public abstract class ATableBasedView
 					if (!connectedElementRepresentationManager.isSelectionTypeRenderedWithVisuaLinks(item
 						.getSelectionType()) || item.isRemove())
 						continue;
-					if (selectionDelta.getIDType() == contentIDType) {
+					if (selectionDelta.getIDType() == recordIDType) {
 						id = item.getPrimaryID();
 
 						iID = item.getSecondaryID();
-						idType = contentIDType;
+						idType = recordIDType;
 
 					}
 					else if (selectionDelta.getIDType() == dimensionIDType) {
@@ -475,7 +475,7 @@ public abstract class ATableBasedView
 
 	@Override
 	public int getNumberOfSelections(SelectionType SelectionType) {
-		return contentSelectionManager.getElements(SelectionType).size();
+		return recordSelectionManager.getElements(SelectionType).size();
 	}
 
 	@Override
@@ -487,15 +487,15 @@ public abstract class ATableBasedView
 		selectionUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
-		contentVAUpdateListener = new ContentVAUpdateListener();
-		contentVAUpdateListener.setHandler(this);
-		contentVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
-		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
+		recordVAUpdateListener = new RecordVAUpdateListener();
+		recordVAUpdateListener.setHandler(this);
+		recordVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
 
-		replaceContentVAListener = new ReplaceContentVAListener();
-		replaceContentVAListener.setHandler(this);
-		replaceContentVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
-		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
+		replaceRecordVAListener = new ReplaceRecordVAListener();
+		replaceRecordVAListener.setHandler(this);
+		replaceRecordVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		eventPublisher.addListener(ReplaceRecordVAEvent.class, replaceRecordVAListener);
 
 		dimensionVAUpdateListener = new DimensionVAUpdateListener();
 		dimensionVAUpdateListener.setHandler(this);
@@ -549,18 +549,18 @@ public abstract class ATableBasedView
 			clearSelectionsListener = null;
 		}
 
-		if (contentVAUpdateListener != null) {
-			eventPublisher.removeListener(contentVAUpdateListener);
-			contentVAUpdateListener = null;
+		if (recordVAUpdateListener != null) {
+			eventPublisher.removeListener(recordVAUpdateListener);
+			recordVAUpdateListener = null;
 		}
 
 		if (dimensionVAUpdateListener != null) {
 			eventPublisher.removeListener(dimensionVAUpdateListener);
 			dimensionVAUpdateListener = null;
 		}
-		if (replaceContentVAListener != null) {
-			eventPublisher.removeListener(replaceContentVAListener);
-			replaceContentVAListener = null;
+		if (replaceRecordVAListener != null) {
+			eventPublisher.removeListener(replaceRecordVAListener);
+			replaceRecordVAListener = null;
 		}
 
 		if (replaceDimensionVAListener != null) {
@@ -576,13 +576,13 @@ public abstract class ATableBasedView
 	}
 
 	@Override
-	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
+	public void replaceRecordVA(int dataTableID, String dataDomainType, String vaType) {
 
-		if (table.getID() != setID || this.contentVAType != vaType)
+		if (table.getID() != dataTableID || this.recordVAType != vaType)
 			return;
 
-		contentVA = table.getContentData(vaType).getContentVA();
-		contentSelectionManager.setVA(contentVA);
+		recordVA = table.getRecordData(vaType).getRecordVA();
+		recordSelectionManager.setVA(recordVA);
 
 		initData();
 	}
@@ -603,8 +603,8 @@ public abstract class ATableBasedView
 	 * 
 	 * @param vaType
 	 */
-	public void setContentVAType(String vaType) {
-		this.contentVAType = vaType;
+	public void setRecordVAType(String vaType) {
+		this.recordVAType = vaType;
 	}
 
 	/**

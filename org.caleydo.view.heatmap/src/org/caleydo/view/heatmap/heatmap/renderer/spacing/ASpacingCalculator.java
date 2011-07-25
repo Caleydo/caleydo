@@ -17,7 +17,7 @@ public abstract class ASpacingCalculator {
 
 	public abstract void calculateFieldHeights();
 
-	public abstract float getFieldHeight(int contentID);
+	public abstract float getFieldHeight(int recordID);
 
 	public void setMinSelectedFieldHeight(float minSelectedFieldHeight) {
 		this.minSelectedFieldHeight = minSelectedFieldHeight;

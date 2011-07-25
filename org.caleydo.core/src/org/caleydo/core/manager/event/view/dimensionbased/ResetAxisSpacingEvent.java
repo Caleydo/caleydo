@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event that signals that the spacing between the axis should be reset.
+ * Event that signals that the spacing between the axis should be redataTable.
  * 
  * @author Alexander Lex
  */

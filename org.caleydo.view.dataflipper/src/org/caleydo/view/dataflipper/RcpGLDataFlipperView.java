@@ -48,7 +48,7 @@ public class RcpGLDataFlipperView extends ARcpGLViewPart {
 	public void dispose() {
 		// GLDataFlipper glDataFlipperView =
 		// (GLDataFlipper)
-		// GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
+		// GeneralManager.get().getViewGLCanvasManager().getGLEventListener(viewID);
 
 		// glRemoteView.clearAll();
 

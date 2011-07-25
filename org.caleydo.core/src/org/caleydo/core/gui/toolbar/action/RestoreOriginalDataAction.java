@@ -30,7 +30,7 @@ public class RestoreOriginalDataAction
 
 		for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
 			if (dataDomain instanceof ATableBasedDataDomain)
-				((ATableBasedDataDomain) dataDomain).restoreOriginalContentVA();
+				((ATableBasedDataDomain) dataDomain).restoreOriginalRecordVA();
 		}
 	}
 }

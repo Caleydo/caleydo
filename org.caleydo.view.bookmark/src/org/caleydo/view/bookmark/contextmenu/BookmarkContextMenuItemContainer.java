@@ -22,14 +22,14 @@ public class BookmarkContextMenuItemContainer
 	/**
 	 * Set the experiment index
 	 */
-	public void setID(IDType idType, int id) {
+	public void dataTableID(IDType idType, int id) {
 		createMenuContent(idType, id);
 	}
 
 	private void createMenuContent(IDType idType, int id) {
 
 		if (dataDomain != null) {
-			addItemContainer(dataDomain.getContentItemContainer(idType, id));
+			addItemContainer(dataDomain.getRecordItemContainer(idType, id));
 		}
 
 		RemoveBookmarkItem removeBookmarkItem = new RemoveBookmarkItem(idType, id);

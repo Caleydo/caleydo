@@ -3,7 +3,7 @@
  */
 package org.caleydo.view.filterpipeline.listener;
 
-import org.caleydo.core.data.filter.event.ReEvaluateContentFilterListEvent;
+import org.caleydo.core.data.filter.event.ReEvaluateRecordFilterListEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateDimensionFilterListEvent;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -21,7 +21,7 @@ public class ReEvaluateFilterListener
 	@Override
 	public void handleEvent(AEvent event)
 	{
-		if( event instanceof ReEvaluateContentFilterListEvent )
+		if( event instanceof ReEvaluateRecordFilterListEvent )
 			handler.handleReEvaluateFilter(FilterType.CONTENT);
 		else if( event instanceof ReEvaluateDimensionFilterListEvent )
 			handler.handleReEvaluateFilter(FilterType.STORAGE);

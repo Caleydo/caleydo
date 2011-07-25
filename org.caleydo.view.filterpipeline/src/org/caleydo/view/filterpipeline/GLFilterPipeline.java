@@ -17,11 +17,11 @@ import org.caleydo.core.data.collection.DimensionType;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.filter.ContentFilter;
-import org.caleydo.core.data.filter.ContentMetaOrFilter;
+import org.caleydo.core.data.filter.RecordFilter;
+import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
-import org.caleydo.core.data.filter.event.ReEvaluateContentFilterListEvent;
+import org.caleydo.core.data.filter.event.ReEvaluateRecordFilterListEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateDimensionFilterListEvent;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
@@ -597,7 +597,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 
 		reEvaluateFilterListener = new ReEvaluateFilterListener();
 		reEvaluateFilterListener.setHandler(this);
-		eventPublisher.addListener(ReEvaluateContentFilterListEvent.class,
+		eventPublisher.addListener(ReEvaluateRecordFilterListEvent.class,
 				reEvaluateFilterListener);
 		eventPublisher.addListener(ReEvaluateDimensionFilterListEvent.class,
 				reEvaluateFilterListener);
@@ -638,12 +638,12 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 		int filterID = 0;
 
 		for (Filter<?> filter : filterType == FilterType.CONTENT ? dataDomain
-				.getContentFilterManager().getFilterPipe() : dataDomain
+				.getRecordFilterManager().getFilterPipe() : dataDomain
 				.getDimensionFilterManager().getFilterPipe()) {
 			FilterItem<?> filterItem = new FilterItem(filterID++, filter, pickingManager,
 					uniqueID);
 
-			if (filter instanceof ContentMetaOrFilter)
+			if (filter instanceof RecordMetaOrFilter)
 				filterItem.setRepresentation(new FilterRepresentationMetaOrAdvanced(
 						renderStyle, pickingManager, uniqueID));
 			else
@@ -655,7 +655,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 
 		// TODO move to separate function...
 		VirtualArray<?, ?, ?> currentVA = filterType == FilterType.CONTENT ? dataDomain
-				.getContentFilterManager().getBaseVA().clone() : dataDomain
+				.getRecordFilterManager().getBaseVA().clone() : dataDomain
 				.getDimensionFilterManager().getBaseVA().clone();
 
 		for (FilterItem<?> filter : filterList) {
@@ -683,7 +683,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 		if (table.getUncertainty().getNormalizedUncertainty() != null)
 			return;
 
-		ContentFilter contentFilter = new ContentFilter();
+		RecordFilter contentFilter = new RecordFilter();
 		contentFilter.setDataDomain(dataDomain);
 		contentFilter.setLabel("Signal-To-Noise Ratio Filter");
 
@@ -693,7 +693,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 
 		FilterRepresentationSNR filterRep = new FilterRepresentationSNR();
 		filterRep.setFilter(contentFilter);
-		filterRep.setSet(table);
+		filterRep.setDataTable(table);
 		filterRep.setHistogram(histogram);
 		contentFilter.setFilterRep(filterRep);
 		contentFilter.openRepresentation();

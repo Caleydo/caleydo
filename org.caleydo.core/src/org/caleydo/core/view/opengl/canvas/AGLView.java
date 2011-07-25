@@ -21,7 +21,7 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -165,11 +165,11 @@ public abstract class AGLView
 	/**
 	 * The virtual array that manages the contents (the indices) in the dimensions
 	 */
-	protected ContentVirtualArray contentVA;
+	protected RecordVirtualArray recordVA;
 	/**
 	 * The type of the content VA
 	 */
-	protected String contentVAType = DataTable.RECORD;
+	protected String recordVAType = DataTable.RECORD;
 
 	/**
 	 * The id of the virtual array that manages the dimension references in the set
@@ -400,7 +400,7 @@ public abstract class AGLView
 	/**
 	 * Clears all selections, meaning that no element is selected or deselected after this method was called.
 	 * Everything returns to "normal". Note that virtual array manipulations are not considered selections and
-	 * are therefore not reset.
+	 * are therefore not redataTable.
 	 */
 	public abstract void clearAllSelections();
 
@@ -924,7 +924,7 @@ public abstract class AGLView
 	}
 
 	public final boolean rendersContextOnly() {
-		if (contentVAType.equals(DataTable.RECORD))
+		if (recordVAType.equals(DataTable.RECORD))
 			return false;
 		return true;
 	}
@@ -1056,8 +1056,8 @@ public abstract class AGLView
 		return fAspectRatio;
 	}
 
-	public ContentVirtualArray getContentVA() {
-		return contentVA;
+	public RecordVirtualArray getRecordVA() {
+		return recordVA;
 	}
 
 	public final DimensionVirtualArray getDimensionVA() {

@@ -14,7 +14,7 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -190,8 +190,8 @@ public class ProjectSaver {
 
 					ATableBasedDataDomain setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
 
-					for (String type : setBasedDataDomain.getDataTable().getRegisteredContentVATypes()) {
-						saveContentVA(marshaller, extendedDirName, setBasedDataDomain, type);
+					for (String type : setBasedDataDomain.getDataTable().getRegisteredRecordVATypes()) {
+						saveRecordVA(marshaller, extendedDirName, setBasedDataDomain, type);
 					}
 
 					for (String type : setBasedDataDomain.getDataTable().getRegisteredDimensionVATypes()) {
@@ -199,7 +199,7 @@ public class ProjectSaver {
 					}
 					TreePorter treePorter = new TreePorter();
 					Tree<ClusterNode> geneTree =
-						setBasedDataDomain.getDataTable().getContentData(DataTable.RECORD).getContentTree();
+						setBasedDataDomain.getDataTable().getRecordData(DataTable.RECORD).getRecordTree();
 					if (geneTree != null) {
 						treePorter.exportTree(extendedDirName + GENE_TREE_FILE_NAME, geneTree);
 					}
@@ -289,10 +289,10 @@ public class ProjectSaver {
 	 * @param type
 	 *            type of the virtual array within the given {@link IDataDomain}.
 	 */
-	private void saveContentVA(Marshaller marshaller, String dir, ATableBasedDataDomain dataDomain,
+	private void saveRecordVA(Marshaller marshaller, String dir, ATableBasedDataDomain dataDomain,
 		String type) throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
-		ContentVirtualArray va = (ContentVirtualArray) dataDomain.getContentVA(type);
+		RecordVirtualArray va = (RecordVirtualArray) dataDomain.getRecordVA(type);
 		marshaller.marshal(va, new File(fileName));
 	}
 
@@ -306,7 +306,7 @@ public class ProjectSaver {
 
 // String geneTreePath = tempDirectory + "/bgene_tree.xml";
 
-// DataTable set = GeneralManager.get().getUseCase().getSet();
+// DataTable set = GeneralManager.get().getUseCase().getDataTable();
 
 // SetExporter exporter = new SetExporter();
 // exporter.export(set, exportedData, EWhichViewToExport.WHOLE_DATA);

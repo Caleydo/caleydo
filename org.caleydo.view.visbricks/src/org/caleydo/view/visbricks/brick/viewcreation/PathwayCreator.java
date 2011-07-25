@@ -58,14 +58,14 @@ public class PathwayCreator implements IRemoteViewCreator {
 		pathwayView.enableNeighborhood(true);
 		pathwayView.enableGeneMapping(true);
 		pathwayView.setRemoteRenderingGLView(remoteRenderingView);
-		// pathway.setSet(remoteRenderingView.getSet());
+		// pathway.setDataTable(remoteRenderingView.getDataTable());
 		// parCoords.setDataDomain(remoteRenderingView.getDataDomain());
 		pathwayView.initialize();
 		pathwayView.initRemote(gl, remoteRenderingView, glMouseListener);
 		// parCoords.setDetailLevel(DetailLevel.LOW);
-		// ContentVirtualArray contentVA = remoteRenderingView.getContentVA();
-		// if (contentVA != null)
-		// parCoords.setContentVA(contentVA);
+		// ContentVirtualArray recordVA = remoteRenderingView.getRecordVA();
+		// if (recordVA != null)
+		// parCoords.setRecordVA(recordVA);
 
 		return pathwayView;
 	}

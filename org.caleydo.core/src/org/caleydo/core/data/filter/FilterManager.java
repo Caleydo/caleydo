@@ -22,7 +22,7 @@ import org.caleydo.core.manager.event.view.dimensionbased.VirtualArrayUpdateEven
  * allowing undo functionality.
  * </p>
  * <p>
- * The FilterManager is the base for a statically typed FilterManager sub-class, such as {@link ContentFilter}
+ * The FilterManager is the base for a statically typed FilterManager sub-class, such as {@link RecordFilter}
  * .
  * </p>
  * 
@@ -41,7 +41,7 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 	protected VA currentVA;
 	protected ATableBasedDataDomain dataDomain;
 
-	// private ReplaceContentVAInUseCaseListener replaceContentVirtualArrayInUseCaseListener;
+	// private ReplaceRecordVAInUseCaseListener replaceContentVirtualArrayInUseCaseListener;
 	// private ReplaceDimensionVAInUseCaseListener replaceDimensionVirtualArrayInUseCaseListener;
 
 	EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
@@ -185,24 +185,24 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 		triggerFilterUpdatedEvent();
 	}
 	
-	public void handleCombineFilter(Filter<?> filter, Collection<? extends ContentFilter> combineFilters)
+	public void handleCombineFilter(Filter<?> filter, Collection<? extends RecordFilter> combineFilters)
 	{
 		int index = filterPipe.indexOf(filter);
 		
 		if( index < 0 )
 			throw new RuntimeException("handleCombineFilter: filter not found.");
 		
-		ContentMetaOrFilter metaFilter = null;
+		RecordMetaOrFilter metaFilter = null;
 		
-		if( filter instanceof ContentMetaOrFilter )
+		if( filter instanceof RecordMetaOrFilter )
 		{
-			metaFilter = (ContentMetaOrFilter) filter;
+			metaFilter = (RecordMetaOrFilter) filter;
 		}
 		else
 		{
-			metaFilter = new ContentMetaOrFilter();
+			metaFilter = new RecordMetaOrFilter();
 			metaFilter.setDataDomain(filter.getDataDomain());
-			metaFilter.getFilterList().add((ContentFilter) filter);
+			metaFilter.getFilterList().add((RecordFilter) filter);
 		}
 		
 		metaFilter.getFilterList().addAll(combineFilters);

@@ -2,12 +2,12 @@ package org.caleydo.util.r.filter;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.filter.ContentFilter;
-import org.caleydo.core.data.filter.ContentMetaFilter;
-import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
+import org.caleydo.core.data.filter.RecordFilter;
+import org.caleydo.core.data.filter.RecordMetaFilter;
+import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Text;
 
 public class FilterRepresentationPValue extends
-		AFilterRepresentation<ContentVADelta, ContentFilter> {
+		AFilterRepresentation<RecordVADelta, RecordFilter> {
 
 	private final static String TITLE = "Variance Filter";
 	
@@ -163,8 +163,8 @@ public class FilterRepresentationPValue extends
 	@Override
 	protected void createVADelta() {
 
-		if (filter instanceof ContentMetaFilter) {
-			for (ContentFilter subFilter : ((ContentMetaFilter) filter).getFilterList()) {
+		if (filter instanceof RecordMetaFilter) {
+			for (RecordFilter subFilter : ((RecordMetaFilter) filter).getFilterList()) {
 
 				createVADelta(subFilter);
 			}
@@ -172,38 +172,38 @@ public class FilterRepresentationPValue extends
 			createVADelta(filter);
 	}
 
-	private void createVADelta(ContentFilter subFilter) {
+	private void createVADelta(RecordFilter subFilter) {
 
-		ContentVADelta contentVADelta = new ContentVADelta(DataTable.RECORD, subFilter
-				.getDataDomain().getContentIDType());
-		ContentVirtualArray contentVA = subFilter.getDataDomain()
-				.getContentFilterManager().getBaseVA();
+		RecordVADelta recordVADelta = new RecordVADelta(DataTable.RECORD, subFilter
+				.getDataDomain().getRecordIDType());
+		RecordVirtualArray recordVA = subFilter.getDataDomain()
+				.getRecordFilterManager().getBaseVA();
 
 		double[] tTestResult = ((FilterRepresentationPValue) subFilter.getFilterRep())
-				.getSet().getStatisticsResult().getOneSidedTTestResult();
+				.getDataTable().getStatisticsResult().getOneSidedTTestResult();
 
-		for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
+		for (int recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
 
-			if (tTestResult != null && tTestResult[contentIndex] > pValue)
-				contentVADelta
-						.add(VADeltaItem.removeElement(contentVA.get(contentIndex)));
+			if (tTestResult != null && tTestResult[recordIndex] > pValue)
+				recordVADelta
+						.add(VADeltaItem.removeElement(recordVA.get(recordIndex)));
 		}
-		subFilter.setVADelta(contentVADelta);
+		subFilter.setVADelta(recordVADelta);
 	}
 
 	@Override
 	protected void triggerRemoveFilterEvent() {
-		RemoveContentFilterEvent filterEvent = new RemoveContentFilterEvent();
+		RemoveRecordFilterEvent filterEvent = new RemoveRecordFilterEvent();
 		filterEvent.setDataDomainID(filter.getDataDomain().getDataDomainID());
 		filterEvent.setFilter(filter);
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 	}
 
-	public void setSet(DataTable set) {
+	public void setDataTable(DataTable set) {
 		this.set = set;
 	}
 
-	public DataTable getSet() {
+	public DataTable getDataTable() {
 		return set;
 	}
 	

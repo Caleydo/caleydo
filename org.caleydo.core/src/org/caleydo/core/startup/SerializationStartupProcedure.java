@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
@@ -71,9 +71,9 @@ public class SerializationStartupProcedure
 				
 				DataTable dataTable = DataTableUtils.createData(setBasedDataDomain);
 
-				HashMap<String, ContentVirtualArray> contentVAMap = dataSerializationData.getContentVAMap();
-				for (Entry<String, ContentVirtualArray> entry : contentVAMap.entrySet()) {
-					setBasedDataDomain.setContentVirtualArray(entry.getKey(), entry.getValue());
+				HashMap<String, RecordVirtualArray> recordVAMap = dataSerializationData.getRecordVAMap();
+				for (Entry<String, RecordVirtualArray> entry : recordVAMap.entrySet()) {
+					setBasedDataDomain.setRecordVirtualArray(entry.getKey(), entry.getValue());
 				}
 
 				HashMap<String, DimensionVirtualArray> dimensionVAMap = dataSerializationData.getDimensionVAMap();

@@ -27,7 +27,7 @@ public class HierarchicalClusterer
 		clusterer = new Cobweb();
 	}
 
-	private TempResult cluster(DataTable set, ClusterState clusterState) {
+	private TempResult cluster(DataTable dataTable, ClusterState clusterState) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -38,9 +38,9 @@ public class HierarchicalClusterer
 
 		int iPercentage = 1;
 
-		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
+		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
 
-			tree = new ClusterTree(set.getDataDomain().getContentIDType());
+			tree = new ClusterTree(dataTable.getDataDomain().getRecordIDType());
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
 
@@ -51,11 +51,11 @@ public class HierarchicalClusterer
 			buffer.append("@data\n");
 
 			int icnt = 0;
-			for (Integer iContentIndex : contentVA) {
+			for (Integer recordIndex : recordVA) {
 
 				if (bClusteringCanceled == false) {
 
-					int tempPercentage = (int) ((float) icnt / contentVA.size() * 100);
+					int tempPercentage = (int) ((float) icnt / recordVA.size() * 100);
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher()
 							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
@@ -63,7 +63,7 @@ public class HierarchicalClusterer
 					}
 
 					for (Integer iDimensionIndex : dimensionVA) {
-						buffer.append(set.get(iDimensionIndex).getFloat(DataRepresentation.RAW, iContentIndex)
+						buffer.append(dataTable.get(iDimensionIndex).getFloat(DataRepresentation.RAW, recordIndex)
 							+ ", ");
 
 					}
@@ -79,12 +79,12 @@ public class HierarchicalClusterer
 			}
 		}
 		else {
-			tree = new ClusterTree(set.getDataDomain().getDimensionIDType());
+			tree = new ClusterTree(dataTable.getDataDomain().getDimensionIDType());
 
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
 
-			for (int nr = 0; nr < contentVA.size(); nr++) {
+			for (int nr = 0; nr < recordVA.size(); nr++) {
 				buffer.append("@attribute Gene" + nr + " real\n");
 			}
 
@@ -101,8 +101,8 @@ public class HierarchicalClusterer
 						iPercentage++;
 					}
 
-					for (Integer iContentIndex : contentVA) {
-						buffer.append(set.get(iDimensionIndex).getFloat(DataRepresentation.RAW, iContentIndex)
+					for (Integer recordIndex : recordVA) {
+						buffer.append(dataTable.get(iDimensionIndex).getFloat(DataRepresentation.RAW, recordIndex)
 							+ ", ");
 
 					}
@@ -123,7 +123,7 @@ public class HierarchicalClusterer
 			.triggerEvent(
 				new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
-		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING)
+		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Cobweb clustering of genes in progress"));
 		else
@@ -225,9 +225,9 @@ public class HierarchicalClusterer
 
 		// IVirtualArray virtualArray = null;
 		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-		// virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), indices);
+		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdContent).getVAType(), dataTable.depth(), indices);
 		// else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(set.getVA(iVAIdDimension).getVAType(), set.size(), indices);
+		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdDimension).getVAType(), dataTable.size(), indices);
 
 		CNode node = clusterer.m_cobwebTree;
 
@@ -246,8 +246,8 @@ public class HierarchicalClusterer
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(90, false));
 
-		// set.setAlClusterSizes(temp);
-		// set.setAlExamples(alExamples);
+		// dataTable.setAlClusterSizes(temp);
+		// dataTable.setAlExamples(alExamples);
 
 		GeneralManager
 			.get()
@@ -269,7 +269,7 @@ public class HierarchicalClusterer
 	 * @param node
 	 * @param eClustererType
 	 */
-	private void CNodeToTree(ClusterNode clusterNode, CNode node, EClustererType eClustererType) {
+	private void CNodeToTree(ClusterNode clusterNode, CNode node, ClustererType eClustererType) {
 
 		if (node.getChilds() != null) {
 			int iNrChildsNode = node.getChilds().size();

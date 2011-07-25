@@ -53,7 +53,7 @@ public class GeneClusterDataEventManager extends ADataEventManager implements
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		if (selectionDelta.getIDType() == radialHierarchy.getDataDomain()
-				.getContentIDType()) {
+				.getRecordIDType()) {
 			SelectionManager selectionManager = radialHierarchy.getSelectionManager();
 			Collection<PartialDisc> partialDiscs = radialHierarchy.getPartialDiscs();
 
@@ -123,7 +123,7 @@ public class GeneClusterDataEventManager extends ADataEventManager implements
 				clusterNode = (ClusterNode) hierarchyData;
 
 				SelectionDelta delta = new SelectionDelta(radialHierarchy.getDataDomain()
-						.getContentIDType());
+						.getRecordIDType());
 				delta.addSelection(clusterNode.getLeafID(), selectionType);
 				SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 				selectionUpdateEvent.setSender(this);

@@ -37,11 +37,11 @@ public class NominalGate extends AGate {
 	 * @param renderStyle
 	 *            Render Style.
 	 */
-	public NominalGate(int gateID, int axisID, float bottom, float top, DataTable set,
+	public NominalGate(int gateID, int axisID, float bottom, float top, DataTable dataTable,
 			PCRenderStyle renderStyle) {
 		this.gateID = gateID;
 
-		this.set = set;
+		this.dataTable = dataTable;
 		this.renderStyle = renderStyle;
 		this.axisID = axisID;
 		this.top = top;
@@ -61,14 +61,14 @@ public class NominalGate extends AGate {
 	 *            TextureManager that shall be used.
 	 * @param textRenderer
 	 *            TextRenderer that shall be used.
-	 * @param iViewID
+	 * @param viewID
 	 *            Unique ID of the view.
 	 */
 	@Override
 	public void draw(GL2 gl, PickingManager pickingManager, TextureManager textureManager,
-			CaleydoTextRenderer textRenderer, int iViewID) {
+			CaleydoTextRenderer textRenderer, int viewID) {
 
-		// top = (float) set.getNormalizedForRaw(upperValue) *
+		// top = (float) dataTable.getNormalizedForRaw(upperValue) *
 		// renderStyle.getAxisHeight();
 		// top = upperValue;
 
@@ -84,7 +84,7 @@ public class NominalGate extends AGate {
 		beginGUIElement(gl, scalingPivot);
 
 		gl.glColor4f(1, 1, 1, 0f);
-		int PickingID = pickingManager.getPickingID(iViewID, PickingType.REMOVE_GATE,
+		int PickingID = pickingManager.getPickingID(viewID, PickingType.REMOVE_GATE,
 				gateID);
 		gl.glPushName(PickingID);
 		gl.glBegin(GL2.GL_POLYGON);
@@ -106,7 +106,7 @@ public class NominalGate extends AGate {
 		Vec3f upperLeftCorner = new Vec3f(currentPosition - GATE_WIDTH, unscaledTop,
 				GATE_Z);
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.GATE_TIP_SELECTION, gateID));
 
 		textureManager.renderTexture(gl, EIconTextures.GATE_TOP, lowerLeftCorner,
@@ -130,11 +130,11 @@ public class NominalGate extends AGate {
 				* GATE_WIDTH, unscaledTop + 0.02f);
 		gl.glPopName();
 
-		// if (set.isSetHomogeneous())
+		// if (dataTable.isSetHomogeneous())
 		// {
 		// // renderBoxedYValues(gl, fCurrentPosition, fTop,
 		// // getDecimalFormat().format(
-		// // set.getRawForNormalized(fTop / renderStyle.getAxisHeight())),
+		// // dataTable.getRawForNormalized(fTop / renderStyle.getAxisHeight())),
 		// // SelectionType.NORMAL);
 		// }
 		// else
@@ -142,7 +142,7 @@ public class NominalGate extends AGate {
 		// // TODO dimension based acces
 		// }
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.GATE_BODY_SELECTION, gateID));
 
 		lowerLeftCorner.set(currentPosition - GATE_WIDTH, unscaledBottom
@@ -159,7 +159,7 @@ public class NominalGate extends AGate {
 
 		gl.glPopName();
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.GATE_BOTTOM_SELECTION, gateID));
 
 		lowerLeftCorner.set(currentPosition - GATE_WIDTH, unscaledBottom, GATE_Z);
@@ -302,7 +302,7 @@ public class NominalGate extends AGate {
 	 */
 	// public void setUpperValue(float upperValue) {
 	// this.upperValue = upperValue;
-	// top = (float) set.getNormalizedForRaw(upperValue) *
+	// top = (float) dataTable.getNormalizedForRaw(upperValue) *
 	// renderStyle.getAxisHeight();
 	// }
 
@@ -314,7 +314,7 @@ public class NominalGate extends AGate {
 	 */
 	// public void setLowerValue(float lowerValue) {
 	// this.lowerValue = lowerValue;
-	// bottom = (float) set.getNormalizedForRaw(lowerValue) *
+	// bottom = (float) dataTable.getNormalizedForRaw(lowerValue) *
 	// renderStyle.getAxisHeight();
 	// }
 

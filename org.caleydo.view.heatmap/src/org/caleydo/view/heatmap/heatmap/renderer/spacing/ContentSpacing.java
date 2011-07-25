@@ -48,8 +48,8 @@ public class ContentSpacing {
 		spacingCalculator.calculateFieldHeights();
 	}
 
-	public float getFieldHeight(int contentID) {
-		return spacingCalculator.getFieldHeight(contentID);
+	public float getFieldHeight(int recordID) {
+		return spacingCalculator.getFieldHeight(recordID);
 	}
 
 	public float getFieldWidth() {

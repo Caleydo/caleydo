@@ -47,17 +47,17 @@ public class Gate extends AGate {
 	 *            Render Style.
 	 */
 	public Gate(int gateID, int axisID, float lowerValue, float upperValue,
-			DataTable set, PCRenderStyle renderStyle) {
+			DataTable dataTable, PCRenderStyle renderStyle) {
 		this.gateID = gateID;
 		this.axisID = axisID;
 		this.upperValue = upperValue;
 		this.lowerValue = lowerValue;
-		this.set = set;
+		this.dataTable = dataTable;
 		this.renderStyle = renderStyle;
 		// top = upperValue;
 		// bottom = lowerValue;
-		top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
-		bottom = (float) set.getNormalizedForRaw(lowerValue)
+		top = (float) dataTable.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
+		bottom = (float) dataTable.getNormalizedForRaw(lowerValue)
 				* renderStyle.getAxisHeight();
 		minSize = 100;
 	}
@@ -74,18 +74,18 @@ public class Gate extends AGate {
 	 *            TextureManager that shall be used.
 	 * @param textRenderer
 	 *            TextRenderer that shall be used.
-	 * @param iViewID
+	 * @param viewID
 	 *            Unique ID of the view.
 	 */
 	@Override
 	public void draw(GL2 gl, PickingManager pickingManager,
-			TextureManager textureManager, CaleydoTextRenderer textRenderer, int iViewID) {
+			TextureManager textureManager, CaleydoTextRenderer textRenderer, int viewID) {
 
-		top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
+		top = (float) dataTable.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
 		// top = upperValue;
 
 		// Scaled bottom = unscaled bottom !
-		bottom = (float) set.getNormalizedForRaw(lowerValue)
+		bottom = (float) dataTable.getNormalizedForRaw(lowerValue)
 				* renderStyle.getAxisHeight();
 		// bottom = upperValue;
 		float unscaledTop = getRealCoordinateFromScaledCoordinate(gl, top, bottom);
@@ -95,7 +95,7 @@ public class Gate extends AGate {
 		beginGUIElement(gl, scalingPivot);
 
 		gl.glColor4f(1, 1, 1, 0f);
-		int PickingID = pickingManager.getPickingID(iViewID, PickingType.REMOVE_GATE,
+		int PickingID = pickingManager.getPickingID(viewID, PickingType.REMOVE_GATE,
 				gateID);
 		gl.glPushName(PickingID);
 		gl.glBegin(GL2.GL_POLYGON);
@@ -117,7 +117,7 @@ public class Gate extends AGate {
 		Vec3f upperLeftCorner = new Vec3f(currentPosition - GATE_WIDTH, unscaledTop,
 				GATE_Z);
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.GATE_TIP_SELECTION, gateID));
 
 		textureManager.renderTexture(gl, EIconTextures.GATE_TOP, lowerLeftCorner,
@@ -140,11 +140,11 @@ public class Gate extends AGate {
 				- 5 * GATE_WIDTH, unscaledTop + 0.02f);
 		gl.glPopName();
 
-		// if (set.isSetHomogeneous())
+		// if (dataTable.isSetHomogeneous())
 		// {
 		// // renderBoxedYValues(gl, fCurrentPosition, fTop,
 		// // getDecimalFormat().format(
-		// // set.getRawForNormalized(fTop / renderStyle.getAxisHeight())),
+		// // dataTable.getRawForNormalized(fTop / renderStyle.getAxisHeight())),
 		// // SelectionType.NORMAL);
 		// }
 		// else
@@ -152,7 +152,7 @@ public class Gate extends AGate {
 		// // TODO dimension based acces
 		// }
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.GATE_BODY_SELECTION, gateID));
 
 		lowerLeftCorner.set(currentPosition - GATE_WIDTH, bottom
@@ -169,7 +169,7 @@ public class Gate extends AGate {
 
 		gl.glPopName();
 
-		gl.glPushName(pickingManager.getPickingID(iViewID,
+		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.GATE_BOTTOM_SELECTION, gateID));
 
 		lowerLeftCorner.set(currentPosition - GATE_WIDTH, bottom, GATE_Z);
@@ -283,10 +283,10 @@ public class Gate extends AGate {
 	@Override
 	public void setBottom(float bottom) {
 		this.bottom = bottom;
-		lowerValue = (float) set
+		lowerValue = (float) dataTable
 				.getRawForNormalized(bottom / renderStyle.getAxisHeight());
 
-		double setMin = set.getMetaData().getMinAs(ExternalDataRepresentation.NORMAL);
+		double setMin = dataTable.getMetaData().getMinAs(ExternalDataRepresentation.NORMAL);
 
 		if (lowerValue < setMin) {
 			lowerValue = (float) setMin;
@@ -302,9 +302,9 @@ public class Gate extends AGate {
 	@Override
 	public void setTop(float top) {
 		this.top = top;
-		upperValue = (float) set.getRawForNormalized(top / renderStyle.getAxisHeight());
+		upperValue = (float) dataTable.getRawForNormalized(top / renderStyle.getAxisHeight());
 
-		double setMax = set.getMetaData().getMaxAs(ExternalDataRepresentation.NORMAL);
+		double setMax = dataTable.getMetaData().getMaxAs(ExternalDataRepresentation.NORMAL);
 
 		if (upperValue > setMax) {
 			upperValue = (float) setMax;
@@ -319,7 +319,7 @@ public class Gate extends AGate {
 	 */
 	public void setUpperValue(float upperValue) {
 		this.upperValue = upperValue;
-		top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
+		top = (float) dataTable.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
 	}
 
 	/**
@@ -338,7 +338,7 @@ public class Gate extends AGate {
 	 */
 	public void setLowerValue(float lowerValue) {
 		this.lowerValue = lowerValue;
-		bottom = (float) set.getNormalizedForRaw(lowerValue)
+		bottom = (float) dataTable.getNormalizedForRaw(lowerValue)
 				* renderStyle.getAxisHeight();
 	}
 

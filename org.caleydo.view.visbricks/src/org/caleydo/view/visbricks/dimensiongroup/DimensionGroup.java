@@ -12,14 +12,14 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.ContentVAUpdateEvent;
+import org.caleydo.core.manager.event.data.ReplaceRecordVAEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.RecordVAUpdateEvent;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -27,9 +27,9 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ReplaceRecordVAListener;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -65,7 +65,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  * 
  */
-public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
+public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		ILayoutSizeCollisionHandler, ILayoutedElement, IDraggable {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.dimensiongroup";
@@ -97,8 +97,8 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 
 	private EventPublisher eventPublisher = GeneralManager.get()
 			.getEventPublisher();
-	private ContentVAUpdateListener contentVAUpdateListener;
-	private ReplaceContentVAListener replaceContentVAListener;
+	private RecordVAUpdateListener recordVAUpdateListener;
+	private ReplaceRecordVAListener replaceRecordVAListener;
 	private LayoutSizeCollisionListener layoutSizeCollisionListener;
 	private IBrickSortingStrategy brickSortingStrategy;
 
@@ -150,7 +150,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		bottomCol.setFrameColor(1, 0, 1, 1);
 		bottomCol.setBottomUp(false);
 		bottomCol.setXDynamic(true);
-		bottomCol.setIDs(uniqueID, BOTTOM_COLUMN_ID);
+		bottomCol.dataTableIDs(uniqueID, BOTTOM_COLUMN_ID);
 		bottomCol.setVAlign(VAlign.CENTER);
 
 		bottomBricks = new ArrayList<GLBrick>(20);
@@ -162,7 +162,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		topCol.setFrameColor(1, 0, 1, 1);
 		topBricks = new ArrayList<GLBrick>(20);
 		topCol.setXDynamic(true);
-		topCol.setIDs(uniqueID, TOP_COLUMN_ID);
+		topCol.dataTableIDs(uniqueID, TOP_COLUMN_ID);
 		topCol.setVAlign(VAlign.CENTER);
 
 		initGroupColumn();
@@ -210,10 +210,10 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 	/**
 	 * Creates all bricks of the dimension group
 	 */
-	protected void createBricks(ContentVirtualArray contentVA) {
+	protected void createBricks(RecordVirtualArray recordVA) {
 		// create basic layouts
 
-		// minPixelWidth = PIXEL_PER_DIMENSION * set.size();
+		// minPixelWidth = PIXEL_PER_DIMENSION * dataTable.size();
 		// if (minPixelWidth < MIN_BRICK_WIDTH_PIXEL)
 		minPixelWidth = MIN_BRICK_WIDTH_PIXEL;
 		minWidth = pixelGLConverter
@@ -223,7 +223,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 				dimensionGroupData.getSummaryBrickData());
 		// centerBrick.setBrickData(dimensionGroupData.getSummaryBrickData());
 		// centerBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
-		// centerBrick.setContentVA(new Group(), contentVA);
+		// centerBrick.setRecordVA(new Group(), recordVA);
 
 		ABrickLayoutTemplate layoutTemplate;
 
@@ -237,14 +237,14 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		centerBrick.setBrickLayoutTemplate(layoutTemplate,
 				layoutTemplate.getDefaultViewType());
 
-		createSubBricks(contentVA);
+		createSubBricks(recordVA);
 	}
 
 	/**
 	 * Creates all bricks except for the center brick based on the groupList in
-	 * the contentVA
+	 * the recordVA
 	 */
-	protected void createSubBricks(ContentVirtualArray contentVA) {
+	protected void createSubBricks(RecordVirtualArray recordVA) {
 
 		destroyOldBricks();
 
@@ -295,10 +295,10 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 			}
 		}
 
-		// if (contentVA.getGroupList() == null)
+		// if (recordVA.getGroupList() == null)
 		// return;
 		//
-		// ContentGroupList groupList = contentVA.getGroupList();
+		// ContentGroupList groupList = recordVA.getGroupList();
 		// // int count = 0;
 		// groupList.updateGroupInfo();
 		//
@@ -306,10 +306,10 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		// GLBrick subBrick = createBrick(new ElementLayout("subbrick"));
 		//
 		// ContentVirtualArray subVA = new ContentVirtualArray("CONTENT",
-		// contentVA.getVirtualArray().subList(group.getStartIndex(),
+		// recordVA.getVirtualArray().subList(group.getStartIndex(),
 		// group.getEndIndex() + 1));
 		//
-		// subBrick.setContentVA(group, subVA);
+		// subBrick.setRecordVA(group, subVA);
 		//
 		// ABrickLayoutTemplate layoutTemplate = new DefaultBrickLayoutTemplate(
 		// subBrick, glVisBricksView, this,
@@ -374,7 +374,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		brick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
 		brick.setRemoteRenderingGLView(getRemoteRenderingGLCanvas());
 		// brick.setDataDomain(dataDomain);
-		// brick.setSet(set);
+		// brick.setDataTable(set);
 		brick.setVisBricks(visBricks);
 		brick.setLayout(wrappingLayout);
 		brick.setDimensionGroup(this);
@@ -470,19 +470,19 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 	@Override
 	public void registerEventListeners() {
 
-		contentVAUpdateListener = new ContentVAUpdateListener();
-		contentVAUpdateListener.setHandler(this);
-		contentVAUpdateListener.setExclusiveDataDomainType(dataDomain
+		recordVAUpdateListener = new RecordVAUpdateListener();
+		recordVAUpdateListener.setHandler(this);
+		recordVAUpdateListener.setExclusiveDataDomainType(dataDomain
 				.getDataDomainID());
-		eventPublisher.addListener(ContentVAUpdateEvent.class,
-				contentVAUpdateListener);
+		eventPublisher.addListener(RecordVAUpdateEvent.class,
+				recordVAUpdateListener);
 
-		replaceContentVAListener = new ReplaceContentVAListener();
-		replaceContentVAListener.setHandler(this);
-		replaceContentVAListener.setExclusiveDataDomainType(dataDomain
+		replaceRecordVAListener = new ReplaceRecordVAListener();
+		replaceRecordVAListener.setHandler(this);
+		replaceRecordVAListener.setExclusiveDataDomainType(dataDomain
 				.getDataDomainID());
-		eventPublisher.addListener(ReplaceContentVAEvent.class,
-				replaceContentVAListener);
+		eventPublisher.addListener(ReplaceRecordVAEvent.class,
+				replaceRecordVAListener);
 
 		layoutSizeCollisionListener = new LayoutSizeCollisionListener();
 		layoutSizeCollisionListener.setHandler(this);
@@ -492,14 +492,14 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 
 	@Override
 	public void unregisterEventListeners() {
-		if (contentVAUpdateListener != null) {
-			eventPublisher.removeListener(contentVAUpdateListener);
-			contentVAUpdateListener = null;
+		if (recordVAUpdateListener != null) {
+			eventPublisher.removeListener(recordVAUpdateListener);
+			recordVAUpdateListener = null;
 		}
 
-		if (replaceContentVAListener != null) {
-			eventPublisher.removeListener(replaceContentVAListener);
-			replaceContentVAListener = null;
+		if (replaceRecordVAListener != null) {
+			eventPublisher.removeListener(replaceRecordVAListener);
+			replaceRecordVAListener = null;
 		}
 
 		if (layoutSizeCollisionListener != null) {
@@ -509,16 +509,16 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 	}
 
 	@Override
-	public void handleVAUpdate(ContentVADelta vaDelta, String info) {
+	public void handleVAUpdate(RecordVADelta vaDelta, String info) {
 	}
 
 	/**
 	 * This is called when a clustering was run, so we replace the sub-bricks
 	 */
 	@Override
-	public void replaceContentVA(int setID, String dataDomainType, String vaType) {
+	public void replaceRecordVA(int dataTableID, String dataDomainType, String vaType) {
 
-		if (dimensionGroupData.getID() == setID) {
+		if (dimensionGroupData.getID() == dataTableID) {
 			topCol.clear();
 			topBricks.clear();
 			bottomCol.clear();
@@ -555,7 +555,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView,
 			GLMouseListener glMouseListener) {
-		// createBricks(set.getContentData(Set.CONTENT).getContentVA());
+		// createBricks(dataTable.getContentData(Set.CONTENT).getRecordVA());
 		createBricks(dimensionGroupData.getSummaryBrickVA());
 		init(gl);
 	}
@@ -776,7 +776,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		return glVisBricksView;
 	}
 
-	// public DataTable getSet() {
+	// public DataTable getDataTable() {
 	// return set;
 	// }
 
@@ -785,7 +785,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 	 * 
 	 * @return
 	 */
-	public int getSetID() {
+	public int getDataTableID() {
 		return dimensionGroupData.getID();
 	}
 
@@ -886,7 +886,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 	// return dataDomain;
 	// }
 
-	// public void setSet(DataTable set) {
+	// public void setDataTable(DataTable set) {
 	// this.set = set;
 	// }
 
@@ -975,7 +975,7 @@ public class DimensionGroup extends AGLView implements IContentVAUpdateHandler,
 		detailBrick = createBrick(detailBrickLayout, brick.getBrickData());
 		// detailBrick.setBrickData(brick.getBrickData());
 		// detailBrick.setBrickConfigurer(brick.getBrickConfigurer());
-		// detailBrick.setContentVA(brick.getGroup(), brick.getContentVA());
+		// detailBrick.setRecordVA(brick.getGroup(), brick.getRecordVA());
 
 		int detailBrickWidth = getDetailBrickWidthPixels(!expandLeft);
 		detailBrickLayout.setPixelSizeX(detailBrickWidth);

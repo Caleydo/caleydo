@@ -6,7 +6,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.dimension.ADimension;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
@@ -33,9 +33,9 @@ public class HeatMapRenderer extends AContentRenderer {
 
 		AHeatMapTemplate heatMapTemplate = heatMap.getTemplate();
 
-		int contentElements = heatMap.getContentVA().size();
+		int contentElements = heatMap.getRecordVA().size();
 
-		ContentSelectionManager selectionManager = heatMap.getContentSelectionManager();
+		RecordSelectionManager selectionManager = heatMap.getContentSelectionManager();
 		if (heatMap.isHideElements()) {
 
 			contentElements -= selectionManager
@@ -61,15 +61,15 @@ public class HeatMapRenderer extends AContentRenderer {
 
 		int iCount = 0;
 
-		for (Integer contentID : heatMap.getContentVA()) {
+		for (Integer recordID : heatMap.getRecordVA()) {
 			iCount++;
-			fieldHeight = contentSpacing.getFieldHeight(contentID);
+			fieldHeight = contentSpacing.getFieldHeight(recordID);
 
 			// we treat normal and deselected the same atm
 
 			if (heatMap.isHideElements()
 					&& heatMap.getContentSelectionManager().checkStatus(
-							GLHeatMap.SELECTION_HIDDEN, contentID)) {
+							GLHeatMap.SELECTION_HIDDEN, recordID)) {
 				contentSpacing.getYDistances().add(yPosition);
 				continue;
 			}
@@ -79,7 +79,7 @@ public class HeatMapRenderer extends AContentRenderer {
 
 			for (Integer iDimensionIndex : heatMap.getDimensionVA()) {
 
-				renderElement(gl, iDimensionIndex, contentID, yPosition, xPosition,
+				renderElement(gl, iDimensionIndex, recordID, yPosition, xPosition,
 						fieldHeight, fieldWidth);
 
 				xPosition += fieldWidth;
@@ -92,14 +92,14 @@ public class HeatMapRenderer extends AContentRenderer {
 	}
 
 	private void renderElement(final GL2 gl, final int iDimensionIndex,
-			final int iContentIndex, final float fYPosition, final float fXPosition,
+			final int recordIndex, final float fYPosition, final float fXPosition,
 			final float fFieldHeight, final float fFieldWidth) {
 
 		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
-		ADimension dimension = heatMap.getSet().get(iDimensionIndex);
+		ADimension dimension = heatMap.getDataTable().get(iDimensionIndex);
 		if (dimension == null)
 			return;
-		float value = dimension.getFloat(heatMap.getRenderingRepresentation(), iContentIndex);
+		float value = dimension.getFloat(heatMap.getRenderingRepresentation(), recordIndex);
 
 		float fOpacity = 1.0f;
 
@@ -108,14 +108,14 @@ public class HeatMapRenderer extends AContentRenderer {
 			// setSelectedElements = heatMap.getContentSelectionManager()
 			// .getElements(SelectionType.MOUSE_OVER);
 			// for (Integer selectedElement : setSelectedElements) {
-			// if (iContentIndex == selectedElement.intValue()) {
+			// if (recordIndex == selectedElement.intValue()) {
 			// fOpacity = dimension.getFloat(
 			// EDataRepresentation.UNCERTAINTY_NORMALIZED,
-			// iContentIndex);
+			// recordIndex);
 			// }
 			// }
 		} else if (heatMap.getContentSelectionManager().checkStatus(
-				SelectionType.DESELECTED, iContentIndex)) {
+				SelectionType.DESELECTED, recordIndex)) {
 			fOpacity = 0.3f;
 		}
 
@@ -126,7 +126,7 @@ public class HeatMapRenderer extends AContentRenderer {
 		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
 				PickingType.HEAT_MAP_STORAGE_SELECTION, iDimensionIndex));
 		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
-				PickingType.HEAT_MAP_LINE_SELECTION, iContentIndex));
+				PickingType.HEAT_MAP_LINE_SELECTION, recordIndex));
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);
@@ -138,12 +138,12 @@ public class HeatMapRenderer extends AContentRenderer {
 		gl.glPopName();
 	}
 
-	public float getYCoordinateByContentIndex(int contentIndex) {
+	public float getYCoordinateByContentIndex(int recordIndex) {
 		if (contentSpacing != null)
 			return y
-					- contentSpacing.getYDistances().get(contentIndex)
-					- contentSpacing.getFieldHeight(heatMap.getContentVA().get(
-							contentIndex)) / 2;
+					- contentSpacing.getYDistances().get(recordIndex)
+					- contentSpacing.getFieldHeight(heatMap.getRecordVA().get(
+							recordIndex)) / 2;
 		return 0;
 	}
 

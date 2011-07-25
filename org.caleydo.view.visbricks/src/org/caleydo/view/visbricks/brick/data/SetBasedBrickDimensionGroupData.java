@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.data.collection.table.DataTableDataType;
-import org.caleydo.core.data.virtualarray.ContentVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.SetBasedDimensionGroupData;
 import org.caleydo.core.data.virtualarray.SetBasedSegmentData;
@@ -25,23 +25,23 @@ public class SetBasedBrickDimensionGroupData implements
 	public SetBasedBrickDimensionGroupData(
 			SetBasedDimensionGroupData dimensionGroupData) {
 		this.dimensionGroupData = dimensionGroupData;
-		if (dimensionGroupData.getSet().getSetType()
+		if (dimensionGroupData.getDataTable().getDataTableType()
 				.equals(DataTableDataType.NUMERIC)) {
 			setBasedDataConfigurer = new NumericalDataConfigurer(
-					dimensionGroupData.getSet());
+					dimensionGroupData.getDataTable());
 		} else {
 			setBasedDataConfigurer = new NominalDataConfigurer(
-					dimensionGroupData.getSet());
+					dimensionGroupData.getDataTable());
 		}
 	}
 
 	@Override
-	public ContentVirtualArray getSummaryBrickVA() {
+	public RecordVirtualArray getSummaryBrickVA() {
 		return dimensionGroupData.getSummaryVA();
 	}
 
 	@Override
-	public ArrayList<ContentVirtualArray> getSegmentBrickVAs() {
+	public ArrayList<RecordVirtualArray> getSegmentBrickVAs() {
 		return dimensionGroupData.getSegmentVAs();
 	}
 
@@ -87,7 +87,7 @@ public class SetBasedBrickDimensionGroupData implements
 	public IBrickData getSummaryBrickData() {
 		SetBasedSegmentData tempSegmentData = new SetBasedSegmentData(
 				(ATableBasedDataDomain) getDataDomain(),
-				dimensionGroupData.getSet(), getSummaryBrickVA(), new Group(),
+				dimensionGroupData.getDataTable(), getSummaryBrickVA(), new Group(),
 				dimensionGroupData);
 		return new SetBasedBrickData(tempSegmentData);
 	}

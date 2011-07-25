@@ -13,7 +13,7 @@ public class StatisticsPValueReductionListener extends
 		StatisticsPValueReductionEvent pValueReductionEvent = null;
 		if (event instanceof StatisticsPValueReductionEvent) {
 			pValueReductionEvent = (StatisticsPValueReductionEvent) event;
-			handler.oneSidedTTest(pValueReductionEvent.getSets());
+			handler.oneSidedTTest(pValueReductionEvent.getDataTables());
 		}
 	}
 }

@@ -14,19 +14,19 @@ public class StatisticsFoldChangeReductionEvent
 		this.set2 = set2;
 	}
 
-	public void setSet1(DataTable set1) {
+	public void setDataTable1(DataTable set1) {
 		this.set1 = set1;
 	}
 
-	public void setSet2(DataTable set2) {
+	public void setDataTable2(DataTable set2) {
 		this.set2 = set2;
 	}
 
-	public DataTable getSet1() {
+	public DataTable getDataTable1() {
 		return set1;
 	}
 
-	public DataTable getSet2() {
+	public DataTable getDataTable2() {
 		return set2;
 	}
 

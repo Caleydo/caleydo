@@ -203,7 +203,7 @@ public class RcpBasicGLHistogramView extends ARcpGLViewPart implements
 		colorMappingPreviewLabel.update();
 	}
 
-	public static void createToolBarItems(int iViewID) {
+	public static void createToolBarItems(int viewID) {
 		alToolbar = new ArrayList<IAction>();
 	}
 

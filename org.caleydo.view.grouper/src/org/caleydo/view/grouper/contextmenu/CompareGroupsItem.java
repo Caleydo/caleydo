@@ -16,7 +16,7 @@ public class CompareGroupsItem extends AContextMenuItem {
 		OpenMatchmakerViewEvent openViewEvent = new OpenMatchmakerViewEvent();
 		openViewEvent.setViewType("org.caleydo.view.matchmaker");
 		openViewEvent.setSender(this);
-		openViewEvent.setSetsToCompare(setsToCompare);
+		openViewEvent.setDataTablesToCompare(setsToCompare);
 		registerEvent(openViewEvent);
 	}
 }

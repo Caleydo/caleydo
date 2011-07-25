@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 
 public class BinGroup extends DimensionGroup {
 
-	IDType contentIDType;
+	IDType recordIDType;
 	IDType binnigIDType;
 
 	IDMappingManager mappingManager;
@@ -28,8 +28,8 @@ public class BinGroup extends DimensionGroup {
 	
 
 
-	public void setIDTypes(IDType contentIDType, IDType binnigIDType) {
-		this.contentIDType = contentIDType;
+	public void dataTableIDTypes(IDType recordIDType, IDType binnigIDType) {
+		this.recordIDType = recordIDType;
 		this.binnigIDType = binnigIDType;
 	}
 
@@ -37,42 +37,42 @@ public class BinGroup extends DimensionGroup {
 	public void initialize() {
 
 		super.initialize();
-//		ContentVirtualArray originalContentVA = set.getContentData(Set.CONTENT).getContentVA();
+//		ContentVirtualArray originalRecordVA = dataTable.getContentData(Set.CONTENT).getRecordVA();
 //		binning = new IDBasedBinning();
-//		HashMap<String, ArrayList<Integer>> bin = binning.getBinning(contentIDType,
-//				binnigIDType, originalContentVA);
+//		HashMap<String, ArrayList<Integer>> bin = binning.getBinning(recordIDType,
+//				binnigIDType, originalRecordVA);
 //
-//		ContentVirtualArray newContentVA = new ContentVirtualArray();
+//		ContentVirtualArray newRecordVA = new ContentVirtualArray();
 //		ContentGroupList groupList = new ContentGroupList();
 //
 //		for (ArrayList<Integer> group : bin.values()) {
 //			for (Integer id : group)
-//				newContentVA.append(id);
+//				newRecordVA.append(id);
 //
 //			groupList.append(new Group(group.size()));
 //
 //		}
-//		newContentVA.setGroupList(groupList);
-//		set.setContentVA(Set.CONTENT, newContentVA);
+//		newRecordVA.setGroupList(groupList);
+//		dataTable.setRecordVA(Set.CONTENT, newRecordVA);
 		
 		
-//		replaceContentVA(set.getID(), dataDomain.getDataDomainType(), Set.CONTENT);
-//		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent(set,
-//				dataDomain.getDataDomainType(), Set.CONTENT, newContentVA);
+//		replaceRecordVA(dataTable.getID(), dataDomain.getDataDomainType(), Set.CONTENT);
+//		ReplaceRecordVAInUseCaseEvent event = new ReplaceRecordVAInUseCaseEvent(set,
+//				dataDomain.getDataDomainType(), Set.CONTENT, newRecordVA);
 		// event.setVirtualArray(contentVirtualArray);
 		// event.setDataDomainType(dataDomain.getDataDomainType());
 		// event.setVAType(Set.CONTENT);
 
 //		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
-		// replaceContentVA(set.getID(),
-		// set.getDataDomain().getDataDomainType(),
+		// replaceRecordVA(dataTable.getID(),
+		// dataTable.getDataDomain().getDataDomainType(),
 		// Set.CONTENT);
 
 	}
 
 	// @Override
-	// public void replaceContentVA(int setID, String dataDomainType, String
+	// public void replaceRecordVA(int dataTableID, String dataDomainType, String
 	// vaType) {
 	//
 	// topCol.clear();
