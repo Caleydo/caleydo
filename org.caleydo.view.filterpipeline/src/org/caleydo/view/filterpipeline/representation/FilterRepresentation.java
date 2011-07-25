@@ -93,12 +93,14 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	}
 
 	public float getUncertaintyHeightRight() {
-		
+
 		if (filter.getUncertaintyOutput() == null)
 			return 0;
-		
-		return heightRight - heightRight
-				* ((float)filter.getUncertaintyOutput().size() / filter.getOutput().size());
+
+		return heightRight
+				- heightRight
+				* ((float) filter.getUncertaintyOutput().size() / filter.getOutput()
+						.size());
 	}
 
 	@Override
@@ -108,7 +110,8 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 		uncertaintyHeightRight = getUncertaintyHeightRight();
 
 		gl.glPushName(iPickingID);
-		renderBasicShape(gl, textRenderer, renderStyle.getUncertaintyColor(filter.getId()+1));
+		renderBasicShape(gl, textRenderer,
+				renderStyle.getUncertaintyColor(filter.getId() + 1));
 		gl.glPopName();
 
 		// render selection/mouseover if needed
@@ -174,24 +177,27 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	protected void renderBasicShape(GL2 gl, CaleydoTextRenderer textRenderer,
 			float[] color) {
 
-		renderShape(gl, GL2.GL_QUADS, vPos, vSize.x(), 0, uncertaintyHeightRight-heightRight, heightLeft, heightRight, color, Z_POS_BODY);
-		
 		gl.glLineWidth(1);
+		// Render outline of filter
 		renderShape(gl, GL2.GL_LINE_LOOP, renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER);
 
-		
 		// Render uncertainty line
-		if (filter.getFilter().getVADeltaUncertainty() != null) {
+		if (filter.getUncertaintyOutput() == null)
+			renderShape(gl, GL2.GL_QUADS, color, Z_POS_BODY);
+		else {
 
+			// Render uncertain area
+			renderShape(gl, GL2.GL_QUADS, vPos, vSize.x(), 0, uncertaintyHeightRight
+					- heightRight, heightLeft, heightRight, color, Z_POS_BODY);
+
+			// Render certain area
 			renderShape(gl, GL2.GL_QUADS, vPos, vSize.x(), heightLeft,
 					uncertaintyHeightRight, 0, 0, renderStyle.FILTER_COLOR_UNCERTAINTY,
 					Z_POS_BODY);
 
-			gl.glLineWidth(1);
-
-			renderShape(gl, GL2.GL_LINE_LOOP, vPos, vSize.x(), 0, 0,
-					heightLeft, uncertaintyHeightRight, renderStyle.FILTER_BORDER_COLOR,
-					Z_POS_BORDER);
+			// Render delimiter line between certain and uncertain area
+			renderShape(gl, GL2.GL_LINE_LOOP, vPos, vSize.x(), 0, 0, heightLeft,
+					uncertaintyHeightRight, renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER);
 		}
 
 		// currently not filtered elements

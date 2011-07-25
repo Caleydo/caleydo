@@ -78,8 +78,7 @@ public class ClusterManager {
 					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 						@Override
 						public void run() {
-							Shell shell = new Shell();
-							MessageBox messageBox = new MessageBox(shell, SWT.ERROR);
+							MessageBox messageBox = new MessageBox(new Shell(), SWT.ERROR);
 							messageBox.setText("Error");
 							messageBox.setMessage("A problem occured during clustering!");
 							messageBox.open();
