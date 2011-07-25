@@ -10,8 +10,8 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
@@ -19,16 +19,16 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -59,7 +59,7 @@ public class HeatMapWrapper {
 	private static int selectionTypeNumber = 0;
 
 	private HeatMapOverview overview;
-	private DataTable dataTable;
+	private DataTable table;
 
 	private String recordVAType = DataTable.RECORD;
 	private RecordVirtualArray recordVA;
@@ -127,7 +127,7 @@ public class HeatMapWrapper {
 		else
 			heatMap.setRenderTemplate(new MatchmakerDetailTemplate(heatMap, true));
 
-		heatMap.setDataTable(dataTable);
+		heatMap.setTable(table);
 		heatMap.initData();
 		heatMap.setDetailLevel(DetailLevel.MEDIUM);
 		heatMap.initRemote(gl, glParentView, glMouseListener);
@@ -152,13 +152,13 @@ public class HeatMapWrapper {
 		dendrogram.initRemote(gl, glParentView, glMouseListener);
 	}
 
-	public DataTable getDataTable() {
-		return dataTable;
+	public DataTable getTable() {
+		return table;
 	}
 
-	public void setDataTable(DataTable dataTable) {
-		this.dataTable = dataTable;
-		recordVA = dataTable.getRecordData(DataTable.RECORD).getRecordVA();
+	public void setTable(DataTable table) {
+		this.table = table;
+		recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
 
 		// FIXME: Can we do this? Shall we do this in some other way? Do it also
 		// with dendrogram.
@@ -187,7 +187,7 @@ public class HeatMapWrapper {
 		// heatMap.useFishEye(false);
 		// heatMap.setDisplayListDirty();
 
-		overview.setDataTable(dataTable);
+		overview.setTable(table);
 		isNewSet = true;
 		isInitialized = false;
 		activeHeatMapID = -1;
@@ -196,7 +196,7 @@ public class HeatMapWrapper {
 	public void init(GL2 gl, GLMouseListener glMouseListener,
 			GLInfoAreaManager infoAreaManager) {
 
-		if (dataTable == null)
+		if (table == null)
 			return;
 
 		RecordGroupList contentGroupList = recordVA.getGroupList();
@@ -765,7 +765,7 @@ public class HeatMapWrapper {
 		//
 		// contentSelectionManager.clearSelection(selectionType);
 		//
-		// ArrayList<Integer> groupElements = dataTable.getContentTree()
+		// ArrayList<Integer> groupElements = table.getContentTree()
 		// .getNodeByNumber(selectedGroup.getClusterNode().getID())
 		// .getLeaveIds();
 		//
@@ -788,7 +788,7 @@ public class HeatMapWrapper {
 
 		SelectionCommandEvent event = new SelectionCommandEvent();
 		event.setSelectionCommand(selectionCommand);
-		event.dataTableIDCategory(dataDomain.getRecordIDCategory());
+		event.tableIDCategory(dataDomain.getRecordIDCategory());
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
@@ -812,7 +812,7 @@ public class HeatMapWrapper {
 
 	public void handleReplaceRecordVA(IDCategory idCategory, String vaType) {
 
-		recordVA = dataTable.getRecordData(vaType).getRecordVA();
+		recordVA = table.getRecordData(vaType).getRecordVA();
 	}
 
 	public void handleClearSelections() {
@@ -952,7 +952,7 @@ public class HeatMapWrapper {
 	}
 
 	public String getCaption() {
-		return dataTable.getLabel();
+		return table.getLabel();
 	}
 
 	public GLHeatMap getHeatMapByContentID(int recordID) {

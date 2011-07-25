@@ -67,7 +67,7 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 	}
 
 	@Override
-	public void dataTableIDType(IDType idType) {
+	public void tableIDType(IDType idType) {
 		this.idType = idType;
 	}
 

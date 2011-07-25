@@ -11,7 +11,7 @@ import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 
 public class SearchViewMediator {
 
@@ -39,7 +39,7 @@ public class SearchViewMediator {
 		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
 		loadPathwaysByGeneEvent.setSender(this);
 		loadPathwaysByGeneEvent.setGeneID((davidID));
-		loadPathwaysByGeneEvent.dataTableIDType(IDType.getIDType("DAVID"));
+		loadPathwaysByGeneEvent.tableIDType(IDType.getIDType("DAVID"));
 		eventPublisher.triggerEvent(loadPathwaysByGeneEvent);
 	}
 

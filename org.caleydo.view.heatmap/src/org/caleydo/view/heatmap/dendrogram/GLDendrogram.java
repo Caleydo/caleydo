@@ -24,18 +24,18 @@ import org.caleydo.core.data.selection.VABasedSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
-import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
+import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.NewRecordGroupInfoEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.NewDimensionGroupInfoEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.UpdateViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.NewDimensionGroupInfoEvent;
+import org.caleydo.core.manager.event.view.tablebased.NewRecordGroupInfoEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapper;
@@ -50,8 +50,8 @@ import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.RecordContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.DimensionContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.RecordContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.eclipse.swt.widgets.Composite;
 
@@ -1369,7 +1369,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			newGroupInfoEvent.setVAType(recordVAType);
 			newGroupInfoEvent.setGroupList((RecordGroupList) groupList);
 			newGroupInfoEvent.setDeleteTree(false);
-			newGroupInfoEvent.setDataTableID(table.getID());
+			newGroupInfoEvent.setTableID(table.getID());
 			eventPublisher.triggerEvent(newGroupInfoEvent);
 		} else {
 			NewDimensionGroupInfoEvent newGroupInfoEvent = new NewDimensionGroupInfoEvent();
@@ -1499,7 +1499,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				RecordContextMenuItemContainer contentContextMenuItemContainer = new RecordContextMenuItemContainer();
 				contentContextMenuItemContainer.setDataDomain(dataDomain);
 				contentContextMenuItemContainer
-						.dataTableID(recordIDType, leafNode.getLeafID());
+						.tableID(recordIDType, leafNode.getLeafID());
 				contextMenu.addItemContanier(contentContextMenuItemContainer);
 
 				break;
@@ -1588,7 +1588,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				}
 
 				DimensionContextMenuItemContainer experimentContextMenuItemContainer = new DimensionContextMenuItemContainer();
-				experimentContextMenuItemContainer.dataTableID(tree.getLeaveIDType(),
+				experimentContextMenuItemContainer.tableID(tree.getLeaveIDType(),
 						leafNode.getLeafID());
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 

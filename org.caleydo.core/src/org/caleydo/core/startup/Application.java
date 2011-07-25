@@ -81,7 +81,7 @@ public class Application
 	// || applicationMode == ApplicationMode.PLEX_CLIENT) {
 	// IDataDomain dataDomain = initData.getDataDomain();
 	// LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
-	// SetUtils.saveSetFile(loadDataParameters, initData.getDataTableFileContent());
+	// SetUtils.saveSetFile(loadDataParameters, initData.getTableFileContent());
 	// if (initData.getGeneClusterTree() != null) {
 	// SetUtils.saveGeneTreeFile(loadDataParameters, initData.getGeneClusterTree());
 	// }

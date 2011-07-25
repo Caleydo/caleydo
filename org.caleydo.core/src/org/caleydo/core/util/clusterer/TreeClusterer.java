@@ -39,7 +39,7 @@ public class TreeClusterer
 		}
 	}
 
-	private DataTable dataTable = null;
+	private DataTable table = null;
 
 	private float[][] similarities = null;
 
@@ -90,7 +90,7 @@ public class TreeClusterer
 	 * @param eClustererType
 	 * @return in case of error a negative value will be returned.
 	 */
-	private int determineSimilarities(DataTable dataTable, ClustererType eClustererType) {
+	private int determineSimilarities(DataTable table, ClustererType eClustererType) {
 
 		IDistanceMeasure distanceMeasure;
 
@@ -128,7 +128,7 @@ public class TreeClusterer
 					isto = 0;
 					for (Integer iDimensionIndex1 : dimensionVA) {
 						dArInstance1[isto] =
-							dataTable.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, recordIndex1);
+							table.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, recordIndex1);
 						isto++;
 					}
 
@@ -140,7 +140,7 @@ public class TreeClusterer
 						if (icnt2 < icnt1) {
 							for (Integer iDimensionIndex2 : dimensionVA) {
 								dArInstance2[isto] =
-									dataTable.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
+									table.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
 										recordIndex2);
 								isto++;
 							}
@@ -181,7 +181,7 @@ public class TreeClusterer
 					isto = 0;
 					for (Integer recordIndex1 : recordVA) {
 						dArInstance1[isto] =
-							dataTable.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, recordIndex1);
+							table.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, recordIndex1);
 						isto++;
 					}
 
@@ -192,7 +192,7 @@ public class TreeClusterer
 						if (icnt2 < icnt1) {
 							for (Integer recordIndex2 : recordVA) {
 								dArInstance2[isto] =
-									dataTable.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
+									table.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
 										recordIndex2);
 								isto++;
 							}
@@ -358,21 +358,21 @@ public class TreeClusterer
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 
-		ClusterHelper.calculateClusterAverages(tree, eClustererType, dataTable);
+		ClusterHelper.calculateClusterAverages(tree, eClustererType, table);
 
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 		indices = tree.getRoot().getLeaveIds();
 
 		// if (eClustererType == EClustererType.GENE_CLUSTERING)
-		// dataTable.setContentTree(tree);
+		// table.setContentTree(tree);
 		// else
-		// dataTable.setDimensionTree(tree);
+		// table.setDimensionTree(tree);
 
 		// IVirtualArray virtualArray = null;
 		// if (eClustererType == EClustererType.GENE_CLUSTERING)
-		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdContent).getVAType(), dataTable.depth(), alIndices);
+		// virtualArray = new VirtualArray(table.getVA(iVAIdContent).getVAType(), table.depth(), alIndices);
 		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdDimension).getVAType(), dataTable.size(), alIndices);
+		// virtualArray = new VirtualArray(table.getVA(iVAIdDimension).getVAType(), table.size(), alIndices);
 
 		GeneralManager
 			.get()
@@ -502,7 +502,7 @@ public class TreeClusterer
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 
-		ClusterHelper.calculateClusterAverages(tree, eClustererType, dataTable);
+		ClusterHelper.calculateClusterAverages(tree, eClustererType, table);
 		// determineExpressionValue(tree, eClustererType);
 
 		indices = tree.getRoot().getLeaveIds();
@@ -550,11 +550,11 @@ public class TreeClusterer
 	// float[][] fArTempValues;
 	//
 	// if (eClustererType == EClustererType.GENE_CLUSTERING) {
-	// IVirtualArray dimensionVA = dataTable.getVA(iVAIdDimension);
+	// IVirtualArray dimensionVA = table.getVA(iVAIdDimension);
 	// iNrElements = dimensionVA.size();
 	// }
 	// else {
-	// IVirtualArray recordVA = dataTable.getVA(iVAIdContent);
+	// IVirtualArray recordVA = table.getVA(iVAIdContent);
 	// iNrElements = recordVA.size();
 	// }
 	//
@@ -582,25 +582,25 @@ public class TreeClusterer
 	// else {
 	//
 	// if (eClustererType == EClustererType.GENE_CLUSTERING) {
-	// IVirtualArray dimensionVA = dataTable.getVA(iVAIdDimension);
+	// IVirtualArray dimensionVA = table.getVA(iVAIdDimension);
 	// fArExpressionValues = new float[dimensionVA.size()];
 	//
 	// int isto = 0;
 	// for (Integer iDimensionIndex : dimensionVA) {
 	// fArExpressionValues[isto] =
-	// dataTable.get(iDimensionIndex).getFloat(EDataRepresentation.NORMALIZED, node.getLeaveID());
+	// table.get(iDimensionIndex).getFloat(EDataRepresentation.NORMALIZED, node.getLeaveID());
 	// isto++;
 	// }
 	//
 	// }
 	// else {
-	// IVirtualArray recordVA = dataTable.getVA(iVAIdContent);
+	// IVirtualArray recordVA = table.getVA(iVAIdContent);
 	// fArExpressionValues = new float[recordVA.size()];
 	//
 	// int icon = 0;
 	// for (Integer recordIndex : recordVA) {
 	// fArExpressionValues[icon] =
-	// dataTable.get(node.getLeaveID()).getFloat(EDataRepresentation.NORMALIZED, recordIndex);
+	// table.get(node.getLeaveID()).getFloat(EDataRepresentation.NORMALIZED, recordIndex);
 	// icon++;
 	// }
 	// }
@@ -720,16 +720,16 @@ public class TreeClusterer
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 
-		ClusterHelper.calculateClusterAverages(tree, eClustererType, dataTable);
+		ClusterHelper.calculateClusterAverages(tree, eClustererType, table);
 		// determineExpressionValue(tree, eClustererType);
 
 		indices = tree.getRoot().getLeaveIds();
 
 		// IVirtualArray virtualArray = null;
 		// if (eClustererType == EClustererType.GENE_CLUSTERING)
-		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdContent).getVAType(), dataTable.depth(), indices);
+		// virtualArray = new VirtualArray(table.getVA(iVAIdContent).getVAType(), table.depth(), indices);
 		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdDimension).getVAType(), dataTable.size(), indices);
+		// virtualArray = new VirtualArray(table.getVA(iVAIdDimension).getVAType(), table.size(), indices);
 
 		GeneralManager
 			.get()
@@ -758,7 +758,7 @@ public class TreeClusterer
 		String nodeName = null;
 
 		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
-			// if (dataTable.getDataTableType() == ESetDataType.GENE_EXPRESSION_DATA) {
+			// if (table.getTableType() == ESetDataType.GENE_EXPRESSION_DATA) {
 
 			// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
 			// values, depending on the IDType that has been specified when loading expression data.
@@ -767,8 +767,8 @@ public class TreeClusterer
 				GeneralManager
 					.get()
 					.getIDMappingManager()
-					.getIDAsSet(dataTable.getDataDomain().getRecordIDType(),
-						dataTable.getDataDomain().getHumanReadableRecordIDType(), recordVA.get(index));
+					.getIDAsSet(table.getDataDomain().getRecordIDType(),
+						table.getDataDomain().getHumanReadableRecordIDType(), recordVA.get(index));
 
 			if ((humanReadableContentSymbols != null && !humanReadableContentSymbols.isEmpty())) {
 				nodeName = (String) humanReadableContentSymbols.toArray()[0];
@@ -790,16 +790,16 @@ public class TreeClusterer
 			// nodeName += " | ";
 			// nodeName += (refSeq == null) ? ("Unknown") : (refSeq);
 			// }
-			// else if (dataTable.getDataTableType() == ESetDataType.UNSPECIFIED) {
+			// else if (table.getTableType() == ESetDataType.UNSPECIFIED) {
 			// nodeName = generalManager.getIDMappingManager().getID( recordVA.get(index));
 			// }
 			// else {
-			// throw new IllegalStateException("Label extraction for " + dataTable.getDataTableType()
+			// throw new IllegalStateException("Label extraction for " + table.getTableType()
 			// + " not implemented yet!");
 			// }
 		}
 		else {
-			nodeName = dataTable.get(dimensionVA.get(index)).getLabel();
+			nodeName = table.get(dimensionVA.get(index)).getLabel();
 		}
 
 		// check if current node name was already used. If yes we add signs to make it unique.
@@ -906,7 +906,7 @@ public class TreeClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(DataTable dataTable, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(DataTable table, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 
 		eDistanceMeasure = clusterState.getDistanceMeasure();
@@ -915,14 +915,14 @@ public class TreeClusterer
 
 		int iReturnValue = 0;
 
-		iReturnValue = determineSimilarities(dataTable, clusterState.getClustererType());
+		iReturnValue = determineSimilarities(table, clusterState.getClustererType());
 
 		if (iReturnValue < 0) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
 		}
 
-		this.dataTable = dataTable;
+		this.table = table;
 
 		TempResult tempResult;
 

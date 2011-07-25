@@ -21,7 +21,7 @@ public class RecordContextMenuItemContainer
 
 	}
 
-	public void dataTableID(IDType idType, int id) {
+	public void tableID(IDType idType, int id) {
 		createMenuContent(idType, id);
 	}
 

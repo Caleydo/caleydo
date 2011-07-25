@@ -21,10 +21,10 @@ import org.caleydo.view.visbricks.brick.GLBrick;
  */
 public class HistogramCreator implements IRemoteViewCreator {
 
-	private DataTable dataTable;
+	private DataTable table;
 
-	public HistogramCreator(DataTable dataTable) {
-		this.dataTable = dataTable;
+	public HistogramCreator(DataTable table) {
+		this.table = table;
 	}
 
 	@Override
@@ -43,13 +43,13 @@ public class HistogramCreator implements IRemoteViewCreator {
 
 		histogram.setRemoteRenderingGLView(remoteRenderingView);
 		RecordVirtualArray recordVA = remoteRenderingView.getRecordVA();
-		histogram.setHistogram(dataTable.getMetaData().getHistogram(recordVA));
+		histogram.setHistogram(table.getMetaData().getHistogram(recordVA));
 		histogram.setDataDomain(remoteRenderingView.getDataDomain());
 		histogram.initialize();
 		histogram.initRemote(gl, remoteRenderingView, glMouseListener);
 		histogram.setDetailLevel(DetailLevel.LOW);
 
-		// CdataTable.getContentData(Set.CONTENT)
+		// Ctable.getContentData(Set.CONTENT)
 		// if (recordVA != null)
 		// histogram.setRecordVA(recordVA);
 

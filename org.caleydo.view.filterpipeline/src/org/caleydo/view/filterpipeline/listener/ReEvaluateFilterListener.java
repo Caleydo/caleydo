@@ -3,8 +3,8 @@
  */
 package org.caleydo.view.filterpipeline.listener;
 
-import org.caleydo.core.data.filter.event.ReEvaluateRecordFilterListEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateDimensionFilterListEvent;
+import org.caleydo.core.data.filter.event.ReEvaluateRecordFilterListEvent;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.filterpipeline.SetFilterTypeEvent.FilterType;
@@ -22,9 +22,9 @@ public class ReEvaluateFilterListener
 	public void handleEvent(AEvent event)
 	{
 		if( event instanceof ReEvaluateRecordFilterListEvent )
-			handler.handleReEvaluateFilter(FilterType.CONTENT);
+			handler.handleReEvaluateFilter(FilterType.RECORD);
 		else if( event instanceof ReEvaluateDimensionFilterListEvent )
-			handler.handleReEvaluateFilter(FilterType.STORAGE);
+			handler.handleReEvaluateFilter(FilterType.DIMENSION);
 	}
 
 }

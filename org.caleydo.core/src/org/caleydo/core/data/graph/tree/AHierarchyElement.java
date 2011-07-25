@@ -89,7 +89,7 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 		return tree;
 	}
 
-	public void dataTableID(Integer id) {
+	public void tableID(Integer id) {
 		this.id = id;
 	}
 

@@ -10,7 +10,7 @@ public class SwitchDataRepresentationAction
 	extends AToolBarAction {
 
 	public static final String TEXT = "Switch Data Representation (Fold change, normal)";
-	public static final String ICON = "resources/icons/view/dimensionbased/clear_selections.png";
+	public static final String ICON = "resources/icons/view/tablebased/clear_selections.png";
 
 	public SwitchDataRepresentationAction() {
 		setText(TEXT);

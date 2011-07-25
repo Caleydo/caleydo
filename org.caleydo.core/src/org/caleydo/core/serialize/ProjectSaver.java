@@ -14,8 +14,8 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
@@ -190,23 +190,23 @@ public class ProjectSaver {
 
 					ATableBasedDataDomain setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
 
-					for (String type : setBasedDataDomain.getDataTable().getRegisteredRecordVATypes()) {
+					for (String type : setBasedDataDomain.getTable().getRegisteredRecordVATypes()) {
 						saveRecordVA(marshaller, extendedDirName, setBasedDataDomain, type);
 					}
 
-					for (String type : setBasedDataDomain.getDataTable().getRegisteredDimensionVATypes()) {
+					for (String type : setBasedDataDomain.getTable().getRegisteredDimensionVATypes()) {
 						saveDimensionVA(marshaller, extendedDirName, setBasedDataDomain, type);
 					}
 					TreePorter treePorter = new TreePorter();
 					Tree<ClusterNode> geneTree =
-						setBasedDataDomain.getDataTable().getRecordData(DataTable.RECORD).getRecordTree();
+						setBasedDataDomain.getTable().getRecordData(DataTable.RECORD).getRecordTree();
 					if (geneTree != null) {
 						treePorter.exportTree(extendedDirName + GENE_TREE_FILE_NAME, geneTree);
 					}
 
 					treePorter = new TreePorter();
 					Tree<ClusterNode> expTree =
-						setBasedDataDomain.getDataTable().getDimensionData(DataTable.DIMENSION).getDimensionTree();
+						setBasedDataDomain.getTable().getDimensionData(DataTable.DIMENSION).getDimensionTree();
 					if (expTree != null) {
 						treePorter.exportTree(extendedDirName + EXP_TREE_FILE_NAME, expTree);
 					}
@@ -306,7 +306,7 @@ public class ProjectSaver {
 
 // String geneTreePath = tempDirectory + "/bgene_tree.xml";
 
-// DataTable set = GeneralManager.get().getUseCase().getDataTable();
+// DataTable set = GeneralManager.get().getUseCase().getTable();
 
 // SetExporter exporter = new SetExporter();
 // exporter.export(set, exportedData, EWhichViewToExport.WHOLE_DATA);

@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
 
 /**
- * Data meta view showing details about a data dataTable.
+ * Data meta view showing details about a data table.
  * 
  * @author Marc Streit
  */
@@ -32,7 +32,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 
 	private ATableBasedDataDomain dataDomain;
 
-	private DataTable dataTable;
+	private DataTable table;
 
 	private RecordSelectionManager contentSelectionManager;
 
@@ -50,7 +50,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 
 		dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 				serializedView.getDataDomainID());
-		dataTable = dataDomain.getDataTable();
+		table = dataDomain.getTable();
 
 		parentComposite = new Composite(parent, SWT.NULL);
 		parentComposite.setLayout(new GridLayout(1, false));
@@ -63,10 +63,10 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		infoComposite.setLayoutData(gridData);
 
 		Label label = new Label(infoComposite, SWT.NONE);
-		label.setText("Number of genes: " + dataTable.getMetaData().depth());
+		label.setText("Number of genes: " + table.getMetaData().depth());
 
 		label = new Label(infoComposite, SWT.NONE);
-		label.setText("Number of experiments: " + dataTable.getMetaData().size());
+		label.setText("Number of experiments: " + table.getMetaData().size());
 
 		label = new Label(infoComposite, SWT.NONE);
 		label.setText("Loaded from file: " + dataDomain.getFileName());
@@ -76,17 +76,17 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 				+ dataDomain.getHumanReadableRecordIDType().getTypeName());
 
 		// Tree<ClusterNode> dimensionTree =
-		// dataDomain.getDataTable().getDimensionData(DimensionVAType.STORAGE).getDimensionTree();
+		// dataDomain.getTable().getDimensionData(DimensionVAType.STORAGE).getDimensionTree();
 
 		// label = new Label(parent, SWT.NONE);
 		// label.setText("Experiments clustered: "+dimensionTree == null ? "false"
 		// : "true");
 		//
 		// if
-		// (dataDomain.getDataTable().getDimensionData(DimensionVAType.STORAGE).getDimensionClusterSizes()
+		// (dataDomain.getTable().getDimensionData(DimensionVAType.STORAGE).getDimensionClusterSizes()
 		// != null) {
 		// label = new Label(parent, SWT.NONE);
-		// label.setText("Number of clusters: "+dataDomain.getDataTable().getDimensionData(DimensionVAType.STORAGE).getDimensionClusterSizes().size());
+		// label.setText("Number of clusters: "+dataDomain.getTable().getDimensionData(DimensionVAType.STORAGE).getDimensionClusterSizes().size());
 		// }
 
 		// label = new Label(parent, SWT.NONE);
@@ -171,7 +171,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		this.dataTable = dataDomain.getDataTable();
+		this.table = dataDomain.getTable();
 
 		String recordVAType = DataTable.RECORD;
 		contentSelectionManager = dataDomain.getRecordSelectionManager();

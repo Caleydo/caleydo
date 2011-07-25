@@ -5,8 +5,8 @@ import static org.caleydo.view.parcoords.PCRenderStyle.GATE_TIP_HEIGHT;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -17,7 +17,7 @@ public abstract class AGate extends AGLGUIElement {
 	protected int gateID;
 	protected float currentPosition;
 
-	protected DataTable dataTable;
+	protected DataTable table;
 	protected PCRenderStyle renderStyle;
 	protected float mouseTopSpacing;
 	protected float mouseBottomSpacing;
@@ -114,10 +114,10 @@ public abstract class AGate extends AGLGUIElement {
 	 */
 	public void setBottom(float bottom) {
 		this.bottom = bottom / renderStyle.getAxisHeight();
-		// lowerValue = (float) dataTable.getRawForNormalized(bottom /
+		// lowerValue = (float) table.getRawForNormalized(bottom /
 		// renderStyle.getAxisHeight());
 
-		// double setMin = dataTable.getMinAs(EExternalDataRepresentation.NORMAL);
+		// double setMin = table.getMinAs(EExternalDataRepresentation.NORMAL);
 
 		// if (lowerValue < setMin) {
 		// lowerValue = (float) setMin;
@@ -132,10 +132,10 @@ public abstract class AGate extends AGLGUIElement {
 	 */
 	public void setTop(float top) {
 		this.top = top / renderStyle.getAxisHeight();
-		// upperValue = (float) dataTable.getRawForNormalized(top /
+		// upperValue = (float) table.getRawForNormalized(top /
 		// renderStyle.getAxisHeight());
 		//
-		// double setMax = dataTable.getMaxAs(EExternalDataRepresentation.NORMAL);
+		// double setMax = table.getMaxAs(EExternalDataRepresentation.NORMAL);
 		//
 		// if (upperValue > setMax) {
 		// upperValue = (float) setMax;

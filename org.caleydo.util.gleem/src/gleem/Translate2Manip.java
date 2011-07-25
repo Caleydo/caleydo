@@ -138,7 +138,7 @@ public class Translate2Manip extends Manip {
 		parts.highlight();
 		dragPlane.setNormal(normal);
 		dragPlane.setPoint(hit.intPt.getIntersectionPoint());
-		dragOffdataTable.sub(translation, hit.intPt.getIntersectionPoint());
+		dragOfftable.sub(translation, hit.intPt.getIntersectionPoint());
 	}
 
 	public void drag(Vec3f rayStart, Vec3f rayDirection) {

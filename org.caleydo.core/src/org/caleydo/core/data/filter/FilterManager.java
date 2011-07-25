@@ -13,7 +13,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.view.dimensionbased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.VirtualArrayUpdateEvent;
 
 /**
  * <p>

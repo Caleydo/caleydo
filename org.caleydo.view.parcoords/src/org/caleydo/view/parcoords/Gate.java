@@ -9,8 +9,8 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -47,17 +47,17 @@ public class Gate extends AGate {
 	 *            Render Style.
 	 */
 	public Gate(int gateID, int axisID, float lowerValue, float upperValue,
-			DataTable dataTable, PCRenderStyle renderStyle) {
+			DataTable table, PCRenderStyle renderStyle) {
 		this.gateID = gateID;
 		this.axisID = axisID;
 		this.upperValue = upperValue;
 		this.lowerValue = lowerValue;
-		this.dataTable = dataTable;
+		this.table = table;
 		this.renderStyle = renderStyle;
 		// top = upperValue;
 		// bottom = lowerValue;
-		top = (float) dataTable.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
-		bottom = (float) dataTable.getNormalizedForRaw(lowerValue)
+		top = (float) table.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
+		bottom = (float) table.getNormalizedForRaw(lowerValue)
 				* renderStyle.getAxisHeight();
 		minSize = 100;
 	}
@@ -81,11 +81,11 @@ public class Gate extends AGate {
 	public void draw(GL2 gl, PickingManager pickingManager,
 			TextureManager textureManager, CaleydoTextRenderer textRenderer, int viewID) {
 
-		top = (float) dataTable.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
+		top = (float) table.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
 		// top = upperValue;
 
 		// Scaled bottom = unscaled bottom !
-		bottom = (float) dataTable.getNormalizedForRaw(lowerValue)
+		bottom = (float) table.getNormalizedForRaw(lowerValue)
 				* renderStyle.getAxisHeight();
 		// bottom = upperValue;
 		float unscaledTop = getRealCoordinateFromScaledCoordinate(gl, top, bottom);
@@ -140,11 +140,11 @@ public class Gate extends AGate {
 				- 5 * GATE_WIDTH, unscaledTop + 0.02f);
 		gl.glPopName();
 
-		// if (dataTable.isSetHomogeneous())
+		// if (table.isSetHomogeneous())
 		// {
 		// // renderBoxedYValues(gl, fCurrentPosition, fTop,
 		// // getDecimalFormat().format(
-		// // dataTable.getRawForNormalized(fTop / renderStyle.getAxisHeight())),
+		// // table.getRawForNormalized(fTop / renderStyle.getAxisHeight())),
 		// // SelectionType.NORMAL);
 		// }
 		// else
@@ -283,10 +283,10 @@ public class Gate extends AGate {
 	@Override
 	public void setBottom(float bottom) {
 		this.bottom = bottom;
-		lowerValue = (float) dataTable
+		lowerValue = (float) table
 				.getRawForNormalized(bottom / renderStyle.getAxisHeight());
 
-		double setMin = dataTable.getMetaData().getMinAs(ExternalDataRepresentation.NORMAL);
+		double setMin = table.getMetaData().getMinAs(ExternalDataRepresentation.NORMAL);
 
 		if (lowerValue < setMin) {
 			lowerValue = (float) setMin;
@@ -302,9 +302,9 @@ public class Gate extends AGate {
 	@Override
 	public void setTop(float top) {
 		this.top = top;
-		upperValue = (float) dataTable.getRawForNormalized(top / renderStyle.getAxisHeight());
+		upperValue = (float) table.getRawForNormalized(top / renderStyle.getAxisHeight());
 
-		double setMax = dataTable.getMetaData().getMaxAs(ExternalDataRepresentation.NORMAL);
+		double setMax = table.getMetaData().getMaxAs(ExternalDataRepresentation.NORMAL);
 
 		if (upperValue > setMax) {
 			upperValue = (float) setMax;
@@ -319,7 +319,7 @@ public class Gate extends AGate {
 	 */
 	public void setUpperValue(float upperValue) {
 		this.upperValue = upperValue;
-		top = (float) dataTable.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
+		top = (float) table.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
 	}
 
 	/**
@@ -338,7 +338,7 @@ public class Gate extends AGate {
 	 */
 	public void setLowerValue(float lowerValue) {
 		this.lowerValue = lowerValue;
-		bottom = (float) dataTable.getNormalizedForRaw(lowerValue)
+		bottom = (float) table.getNormalizedForRaw(lowerValue)
 				* renderStyle.getAxisHeight();
 	}
 

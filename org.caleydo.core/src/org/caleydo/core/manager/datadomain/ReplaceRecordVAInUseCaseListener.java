@@ -12,11 +12,11 @@ public class ReplaceRecordVAInUseCaseListener
 		if (event instanceof ReplaceRecordVAInUseCaseEvent) {
 			ReplaceRecordVAInUseCaseEvent vaEvent = (ReplaceRecordVAInUseCaseEvent) event;
 
-			if (vaEvent.getDataTableID() <= 0)
+			if (vaEvent.getTableID() <= 0)
 				handler.replaceRecordVA(vaEvent.getDataDomainID(), vaEvent.getVaType(),
 					vaEvent.getVirtualArray());
 			else
-				handler.replaceRecordVA(vaEvent.getDataTableID(), event.getDataDomainID(), vaEvent.getVaType(),
+				handler.replaceRecordVA(vaEvent.getTableID(), event.getDataDomainID(), vaEvent.getVaType(),
 					vaEvent.getVirtualArray());
 		}
 

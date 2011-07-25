@@ -146,7 +146,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 
 		// this checks whether we render a global brush or not
 		// float numberOfSpacings = 2;
-		// if (pcs.getDataTable().isSetHomogeneous())
+		// if (pcs.getTable().isSetHomogeneous())
 		// numberOfSpacings = 2.5f;
 
 		return viewFrustum.getWidth() - 2 * getXSpacing();

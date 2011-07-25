@@ -17,7 +17,6 @@ import org.caleydo.core.net.event.ClientListEvent;
 import org.caleydo.core.net.event.ClientListListener;
 import org.caleydo.core.net.event.ConnectToServerEvent;
 import org.caleydo.core.net.event.ConnectToServerListener;
-import org.caleydo.core.serialize.DataDomainSerializationData;
 import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.view.swt.collab.RedrawCollabViewEvent;

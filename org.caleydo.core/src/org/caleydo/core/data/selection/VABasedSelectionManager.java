@@ -5,11 +5,11 @@ import java.util.Set;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -97,7 +97,7 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 			tempDelta = (VADelta) new DimensionVADelta();
 
 		tempDelta.setVAType(virtualArray.getVaType());
-		tempDelta.dataTableIDType(iDType);
+		tempDelta.tableIDType(iDType);
 
 		for (Integer id : virtualArray) {
 			tempDelta.add(VADeltaItem.appendUnique(id));

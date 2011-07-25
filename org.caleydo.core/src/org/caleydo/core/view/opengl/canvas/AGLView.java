@@ -21,19 +21,19 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.ToggleMagnifyingGlassEvent;
-import org.caleydo.core.manager.picking.PickingMode;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.IPickingListener;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.exception.ExceptionHandler;
@@ -400,7 +400,7 @@ public abstract class AGLView
 	/**
 	 * Clears all selections, meaning that no element is selected or deselected after this method was called.
 	 * Everything returns to "normal". Note that virtual array manipulations are not considered selections and
-	 * are therefore not redataTable.
+	 * are therefore not retable.
 	 */
 	public abstract void clearAllSelections();
 

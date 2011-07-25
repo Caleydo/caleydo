@@ -30,13 +30,13 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
-import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.io.gui.ExportDataDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
@@ -48,11 +48,11 @@ import org.caleydo.core.manager.event.view.group.InterchangeContentGroupsEvent;
 import org.caleydo.core.manager.event.view.group.InterchangeDimensionGroupsEvent;
 import org.caleydo.core.manager.event.view.group.MergeContentGroupsEvent;
 import org.caleydo.core.manager.event.view.group.MergeDimensionGroupsEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.NewRecordGroupInfoEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.UpdateViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.NewRecordGroupInfoEvent;
+import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.serialize.ASerializedView;
@@ -66,19 +66,19 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
-import org.caleydo.core.view.opengl.canvas.listener.RecordGroupExportingListener;
-import org.caleydo.core.view.opengl.canvas.listener.RecordGroupInterChangingActionListener;
-import org.caleydo.core.view.opengl.canvas.listener.RecordGroupMergingActionListener;
-import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
-import org.caleydo.core.view.opengl.canvas.listener.NewContentGroupInfoActionListener;
 import org.caleydo.core.view.opengl.canvas.listener.DimensionGroupExportingListener;
 import org.caleydo.core.view.opengl.canvas.listener.DimensionGroupInterChangingActionListener;
 import org.caleydo.core.view.opengl.canvas.listener.DimensionGroupMergingActionListener;
+import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
+import org.caleydo.core.view.opengl.canvas.listener.NewContentGroupInfoActionListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordGroupExportingListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordGroupInterChangingActionListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordGroupMergingActionListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.remote.receiver.IContentGroupsActionHandler;
-import org.caleydo.core.view.opengl.canvas.remote.receiver.INewContentGroupInfoHandler;
 import org.caleydo.core.view.opengl.canvas.remote.receiver.IDimensionGroupsActionHandler;
+import org.caleydo.core.view.opengl.canvas.remote.receiver.INewContentGroupInfoHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -895,10 +895,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	public void replaceRecordVA(int dataTableID, String dataDomain, String vaType) {
+	public void replaceRecordVA(int tableID, String dataDomain, String vaType) {
 		if (!vaType.equals(recordVAType))
 			return;
-		super.replaceRecordVA(dataTableID, dataDomain, vaType);
+		super.replaceRecordVA(tableID, dataDomain, vaType);
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
 		setDisplayListDirty();
@@ -2530,14 +2530,14 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			}
 		}
 
-		// if (bSplitGroupExp && dataTable.getClusteredTreeExps() == null) {
+		// if (bSplitGroupExp && table.getClusteredTreeExps() == null) {
 		// handleGroupSplitExperiments(gl);
 		// if (glMouseListener.wasMouseReleased()) {
 		// bSplitGroupExp = false;
 		// }
 		// }
 
-		// if (bSplitGroupGene && dataTable.getClusteredTreeGenes() == null) {
+		// if (bSplitGroupGene && table.getClusteredTreeGenes() == null) {
 		// handleGroupSplitGenes(gl);
 		// if (glMouseListener.wasMouseReleased()) {
 		// bSplitGroupGene = false;
@@ -3356,10 +3356,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
 
 		// In case of importing group info
-		// if (dataTable.isGeneClusterInfo())
-		// recordVA.setGroupList(dataTable.getContentGroupList());
-		// if (dataTable.isExperimentClusterInfo())
-		// dimensionVA.setGroupList(dataTable.getDimensionGroupList());
+		// if (table.isGeneClusterInfo())
+		// recordVA.setGroupList(table.getContentGroupList());
+		// if (table.isExperimentClusterInfo())
+		// dimensionVA.setGroupList(table.getDimensionGroupList());
 
 		recordSelectionManager.setVA(recordVA);
 		dimensionSelectionManager.setVA(dimensionVA);
@@ -4171,7 +4171,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				// ArrayList<Integer> temp =
 				// dimensionVA.getGeneIdsOfGroup( externalID);
 				// for (int i = 0; i < temp.size(); i++) {
-				// System.out.println(dataTable.get(temp.get(i)).getLabel());
+				// System.out.println(table.get(temp.get(i)).getLabel());
 				// }
 
 				// ArrayList<Float> representatives =
@@ -4187,7 +4187,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				// }
 
 				// System.out.println(dimensionVA.getGroupList().get(externalID).getIdxExample());
-				// System.out.println(dataTable.get(dimensionVA.getGroupList().get(externalID).getIdxExample())
+				// System.out.println(table.get(dimensionVA.getGroupList().get(externalID).getIdxExample())
 				// .getLabel());
 
 				setDisplayListDirty();
@@ -5017,7 +5017,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		// SelectionDelta selectionDeltaTree = event.getSelectionDelta();
 		//
 		// // cluster mouse over events only used for gene trees
-		// Tree<ClusterNode> tree = dataTable.getClusteredTreeGenes();
+		// Tree<ClusterNode> tree = table.getClusteredTreeGenes();
 		//
 		// if (selectionDeltaTree.getIDType() == EIDType.CLUSTER_NUMBER && tree
 		// != null) {

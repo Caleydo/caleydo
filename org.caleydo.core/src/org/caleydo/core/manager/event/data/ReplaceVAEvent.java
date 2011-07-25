@@ -22,7 +22,7 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?>>
 	E virtualArray;
 	boolean usesVADirectly = false;
 
-	int dataTableID = -1;
+	int tableID = -1;
 
 	/**
 	 * default no-arg constructor.
@@ -36,18 +36,18 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?>>
 	 * 
 	 * @param vaType
 	 */
-	public ReplaceVAEvent(DataTable dataTable, String dataDomainType, String vaType) {
+	public ReplaceVAEvent(DataTable table, String dataDomainType, String vaType) {
 		this.dataDomainID = dataDomainType;
 		this.vaType = vaType;
-		this.dataTableID = dataTable.getID();
+		this.tableID = table.getID();
 	}
 
-	public ReplaceVAEvent(DataTable dataTable, String dataDomainType, String vaType, E virtualArray) {
+	public ReplaceVAEvent(DataTable table, String dataDomainType, String vaType, E virtualArray) {
 		this.dataDomainID = dataDomainType;
 		this.vaType = vaType;
 		this.virtualArray = virtualArray;
 		usesVADirectly = true;
-		this.dataTableID = dataTable.getID();
+		this.tableID = table.getID();
 	}
 
 	/**
@@ -110,7 +110,7 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?>>
 		this.virtualArray = virtualArray;
 	}
 
-	public int getDataTableID() {
-		return dataTableID;
+	public int getTableID() {
+		return tableID;
 	}
 }

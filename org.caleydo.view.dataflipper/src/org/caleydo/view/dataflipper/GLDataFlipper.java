@@ -1224,7 +1224,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		if (interfaceType.equals("org.caleydo.analytical.clustering")) {
 			ArrayList<DataTable> sets = new ArrayList<DataTable>();
 			sets.add(((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
-					dataDomainType)).getDataTable());
+					dataDomainType)).getTable());
 
 			ClusterSetEvent event = new ClusterSetEvent(sets);
 			event.setSender(this);
@@ -1666,13 +1666,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
-					.getDataDomainByID(dataDomainType)).getDataTable()
+					.getDataDomainByID(dataDomainType)).getTable()
 					.getDimensionData(DataTable.DIMENSION).getDimensionVA().size();
 			if (numberOfPatients > 40)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
 			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
-					.getDataDomainByID("org.caleydo.datadomain.genetic")).getDataTable()
+					.getDataDomainByID("org.caleydo.datadomain.genetic")).getTable()
 					.getDimensionData(DataTable.DIMENSION).getDimensionVA().size();
 			if (numberOfPatients > 20)
 				return false;
@@ -1882,7 +1882,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private String determineViewIconPath(String viewName) {
 
 		if (viewName.equals("org.caleydo.analytical.clustering"))
-			return "resources/icons/view/dimensionbased/clustering.png";
+			return "resources/icons/view/tablebased/clustering.png";
 
 		viewName = viewName.replace("org.caleydo.view.", "");
 
@@ -1898,7 +1898,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		String subfolder = "";
 		if (viewName.contains("parcoords") || viewName.contains("heatmap"))
-			subfolder = "dimensionbased/";
+			subfolder = "tablebased/";
 
 		return "resources/icons/view/" + subfolder + viewName + "/" + viewName + ".png";
 	}

@@ -12,19 +12,19 @@ public enum EIconTextures {
 	LOCK("resources/icons/view/remote/lock.png"),
 
 	// Parallel Coordinates
-	DROP_NORMAL("resources/icons/view/dimensionbased/parcoords/drop_normal.png"),
-	DROP_DELETE("resources/icons/view/dimensionbased/parcoords/drop_delete.png"),
-	DROP_DUPLICATE("resources/icons/view/dimensionbased/parcoords/drop_duplicate.png"),
-	DROP_MOVE("resources/icons/view/dimensionbased/parcoords/drop_move.png"),
-	SMALL_DROP("resources/icons/view/dimensionbased/parcoords/drop_small.png"),
-	SMALL_DROP_ROTATED("resources/icons/view/dimensionbased/parcoords/drop_small_rotated.png"),
-	ADD_GATE("resources/icons/view/dimensionbased/parcoords/add_gate.png"),
-	NAN("resources/icons/view/dimensionbased/parcoords/nan.png"),
+	DROP_NORMAL("resources/icons/view/tablebased/parcoords/drop_normal.png"),
+	DROP_DELETE("resources/icons/view/tablebased/parcoords/drop_delete.png"),
+	DROP_DUPLICATE("resources/icons/view/tablebased/parcoords/drop_duplicate.png"),
+	DROP_MOVE("resources/icons/view/tablebased/parcoords/drop_move.png"),
+	SMALL_DROP("resources/icons/view/tablebased/parcoords/drop_small.png"),
+	SMALL_DROP_ROTATED("resources/icons/view/tablebased/parcoords/drop_small_rotated.png"),
+	ADD_GATE("resources/icons/view/tablebased/parcoords/add_gate.png"),
+	NAN("resources/icons/view/tablebased/parcoords/nan.png"),
 
-	GATE_BOTTOM("resources/icons/view/dimensionbased/parcoords/gate_bottom.png"),
-	GATE_TOP("resources/icons/view/dimensionbased/parcoords/gate_top.png"),
-	GATE_MENUE("resources/icons/view/dimensionbased/parcoords/gate_menue.png"),
-	GATE_BODY("resources/icons/view/dimensionbased/parcoords/gate_body.png"),
+	GATE_BOTTOM("resources/icons/view/tablebased/parcoords/gate_bottom.png"),
+	GATE_TOP("resources/icons/view/tablebased/parcoords/gate_top.png"),
+	GATE_MENUE("resources/icons/view/tablebased/parcoords/gate_menue.png"),
+	GATE_BODY("resources/icons/view/tablebased/parcoords/gate_body.png"),
 
 	REMOVE("resources/icons/general/remove.png"),
 	
@@ -37,23 +37,23 @@ public enum EIconTextures {
 	// RENDER_SELECTION("resources/icons/general/no_icon_available.png"),
 	// RESET_SELECTIONS("resources/icons/general/no_icon_available.png"),
 	// SAVE_SELECTIONS("resources/icons/general/no_icon_available.png"),
-	// ANGULAR_BRUSHING("resources/icons/view/dimensionbased/parcoords/angular_brush.png"),
+	// ANGULAR_BRUSHING("resources/icons/view/tablebased/parcoords/angular_brush.png"),
 
 	// hierarchical heat map
-	HEAT_MAP_SYMBOL("resources/icons/view/dimensionbased/heatmap/heatmap128x128.png"),
-	HEAT_MAP_ICON("resources/icons/view/dimensionbased/heatmap/heatmap.png"),
-	HEAT_MAP_ARROW("resources/icons/view/dimensionbased/heatmap/hm_arrow.png"),
-	HEAT_MAP_GROUP_SELECTED("resources/icons/view/dimensionbased/heatmap/hm_group_selected.png"),
-	HEAT_MAP_GROUP_NORMAL("resources/icons/view/dimensionbased/heatmap/hm_group_normal.png"),
+	HEAT_MAP_SYMBOL("resources/icons/view/tablebased/heatmap/heatmap128x128.png"),
+	HEAT_MAP_ICON("resources/icons/view/tablebased/heatmap/heatmap.png"),
+	HEAT_MAP_ARROW("resources/icons/view/tablebased/heatmap/hm_arrow.png"),
+	HEAT_MAP_GROUP_SELECTED("resources/icons/view/tablebased/heatmap/hm_group_selected.png"),
+	HEAT_MAP_GROUP_NORMAL("resources/icons/view/tablebased/heatmap/hm_group_normal.png"),
 
 	// dendrogram
-	SLIDER_MIDDLE("resources/icons/view/dimensionbased/dendrogram/slider_middle.png"),
-	SLIDER_ENDING("resources/icons/view/dimensionbased/dendrogram/slider_ending.png"),
-	DENDROGRAM_HORIZONTAL_SYMBOL("resources/icons/view/dimensionbased/dendrogram/dendrogram_horizontal.png"),
-	DENDROGRAM_VERTICAL_SYMBOL("resources/icons/view/dimensionbased/dendrogram/dendrogram_vertical.png"),
+	SLIDER_MIDDLE("resources/icons/view/tablebased/dendrogram/slider_middle.png"),
+	SLIDER_ENDING("resources/icons/view/tablebased/dendrogram/slider_ending.png"),
+	DENDROGRAM_HORIZONTAL_SYMBOL("resources/icons/view/tablebased/dendrogram/dendrogram_horizontal.png"),
+	DENDROGRAM_VERTICAL_SYMBOL("resources/icons/view/tablebased/dendrogram/dendrogram_vertical.png"),
 
-	PAR_COORDS_SYMBOL("resources/icons/view/dimensionbased/parcoords/parcoords128x128.png"),
-	PAR_COORDS_ICON("resources/icons/view/dimensionbased/parcoords/parcoords.png"),
+	PAR_COORDS_SYMBOL("resources/icons/view/tablebased/parcoords/parcoords128x128.png"),
+	PAR_COORDS_ICON("resources/icons/view/tablebased/parcoords/parcoords.png"),
 
 	PATHWAY_SYMBOL("resources/icons/view/pathway/pathway128x128.png"),
 	PATHWAY_ICON("resources/icons/view/pathway/pathway.png"),
@@ -136,7 +136,7 @@ public enum EIconTextures {
 	GROUPER_COLLAPSE_PLUS("resources/icons/general/plus.png"),
 	GROUPER_COLLAPSE_MINUS("resources/icons/general/minus.png"),
 	
-	CLUSTER_ICON("resources/icons/view/dimensionbased/clustering.png"),
+	CLUSTER_ICON("resources/icons/view/tablebased/clustering.png"),
 	
 //	MOVE_ICON("resources/icons/view/histogram/move_icon.png"),
 	

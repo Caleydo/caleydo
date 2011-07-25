@@ -14,10 +14,10 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.picking.PickingMode;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
@@ -96,8 +96,8 @@ public class CompareViewStateController {
 				isControlPressed);
 	}
 
-	public void setDataTablesToCompare(ArrayList<DataTable> setsToCompare) {
-		currentState.setDataTablesToCompare(setsToCompare);
+	public void setTablesToCompare(ArrayList<DataTable> setsToCompare) {
+		currentState.setTablesToCompare(setsToCompare);
 	}
 
 	public void duplicateSetBarItem(int itemID) {
@@ -123,8 +123,8 @@ public class CompareViewStateController {
 		currentState.handleMouseWheel(gl, amount, wheelPoint);
 	}
 
-	public void handleReplaceRecordVA(int dataTableID, String dataDomain, String vaType) {
-		currentState.handleReplaceRecordVA(dataTableID, dataDomain, vaType);
+	public void handleReplaceRecordVA(int tableID, String dataDomain, String vaType) {
+		currentState.handleReplaceRecordVA(tableID, dataDomain, vaType);
 	}
 
 	public void handleClearSelections() {
@@ -147,8 +147,8 @@ public class CompareViewStateController {
 		currentState.setBandBundling(bandBundlingActive);
 	}
 
-	public void handleContentGroupListUpdate(int dataTableID, RecordGroupList contentGroupList) {
-		currentState.handleContentGroupListUpdate(dataTableID, contentGroupList);
+	public void handleContentGroupListUpdate(int tableID, RecordGroupList contentGroupList) {
+		currentState.handleContentGroupListUpdate(tableID, contentGroupList);
 	}
 
 	public void handleDragging(GL2 gl) {

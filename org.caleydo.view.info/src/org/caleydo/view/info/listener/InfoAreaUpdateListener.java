@@ -3,8 +3,8 @@ package org.caleydo.view.info.listener;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.VirtualArrayUpdateEvent;
 import org.caleydo.view.info.InfoArea;
 
 /**

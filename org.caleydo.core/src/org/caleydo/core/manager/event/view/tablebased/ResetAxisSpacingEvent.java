@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.event.view.dimensionbased;
+package org.caleydo.core.manager.event.view.tablebased;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -6,13 +6,13 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event that Changes enables/disables the 2-Axis_mode in ScatterPlot.
+ * Event that signals that the spacing between the axis should be redataTable.
  * 
- * @author J�rgen Pillhofer
+ * @author Alexander Lex
  */
 @XmlRootElement
 @XmlType
-public class Toggle2AxisEvent
+public class ResetAxisSpacingEvent
 	extends AEvent {
 
 	@Override

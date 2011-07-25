@@ -7,8 +7,8 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**

@@ -8,8 +8,8 @@ import java.util.HashMap;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -17,11 +17,11 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
-import org.caleydo.core.manager.picking.PickingMode;
-import org.caleydo.core.manager.picking.PickingType;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -47,8 +47,8 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	}
 
 	@Override
-	public void setDataTablesToCompare(ArrayList<DataTable> setsToCompare) {
-		setBar.setDataTables(setsToCompare);
+	public void setTablesToCompare(ArrayList<DataTable> setsToCompare) {
+		setBar.setTables(setsToCompare);
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 					break;
 
 				SelectionCommandEvent selectionCommandEvent = new SelectionCommandEvent();
-				selectionCommandEvent.dataTableIDCategory(dataDomain.getRecordIDCategory());
+				selectionCommandEvent.tableIDCategory(dataDomain.getRecordIDCategory());
 				selectionCommandEvent.setSelectionCommand(new SelectionCommand(
 						ESelectionCommandType.CLEAR, ACTIVE_HEATMAP_SELECTION_TYPE));
 				eventPublisher.triggerEvent(selectionCommandEvent);
@@ -178,9 +178,9 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	}
 
 	@Override
-	public void handleContentGroupListUpdate(int dataTableID, RecordGroupList contentGroupList) {
+	public void handleContentGroupListUpdate(int tableID, RecordGroupList contentGroupList) {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-			if (heatMapWrapper.getDataTable().getID() == dataTableID) {
+			if (heatMapWrapper.getTable().getID() == tableID) {
 				heatMapWrapper.handleContentGroupListUpdate(contentGroupList);
 				setHeatMapWrapperDisplayListDirty();
 				return;
@@ -189,11 +189,11 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	}
 
 	@Override
-	public void handleReplaceRecordVA(int dataTableID, String dataDomain, String vaType) {
+	public void handleReplaceRecordVA(int tableID, String dataDomain, String vaType) {
 
 		// FIXME: we should not destroy all the heat map wrappers when a
 		// recordVA is handled
-		setDataTablesInFocus(setBar.getDataTablesInFocus());
+		setTablesInFocus(setBar.getTablesInFocus());
 	}
 
 	protected void renderOverviewLineSelections(GL2 gl) {

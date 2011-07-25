@@ -42,24 +42,24 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SetPointSizeEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SwitchMatrixViewEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.Toggle2AxisEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.ToggleColorModeEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.ToggleMainViewZoomEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.ToggleMatrixZoomEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.TogglePointTypeEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.UseRandomSamplingEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.XAxisSelectorEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.YAxisSelectorEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.SetPointSizeEvent;
+import org.caleydo.core.manager.event.view.tablebased.SwitchMatrixViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.Toggle2AxisEvent;
+import org.caleydo.core.manager.event.view.tablebased.ToggleColorModeEvent;
+import org.caleydo.core.manager.event.view.tablebased.ToggleMainViewZoomEvent;
+import org.caleydo.core.manager.event.view.tablebased.ToggleMatrixZoomEvent;
+import org.caleydo.core.manager.event.view.tablebased.TogglePointTypeEvent;
+import org.caleydo.core.manager.event.view.tablebased.UseRandomSamplingEvent;
+import org.caleydo.core.manager.event.view.tablebased.XAxisSelectorEvent;
+import org.caleydo.core.manager.event.view.tablebased.YAxisSelectorEvent;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ColorMapper;
@@ -1863,7 +1863,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 		// TODO InsertHistogramm here
 
-		// String sLabel = dataTable.get(dimensionVA.get(selected_Axis)).getLabel();
+		// String sLabel = table.get(dimensionVA.get(selected_Axis)).getLabel();
 
 		float fScaling = renderStyle.getSmallFontScalingFactor() * 0.7f;
 		if (isRenderedRemote())
@@ -1938,8 +1938,8 @@ public class GLScatterPlot extends ATableBasedView {
 			if (table.isSetHomogeneous()) {
 				float fNumber = (float) table.getRawForNormalized(fCurrentHeight
 						/ renderStyle.getAxisHeight());
-				// float max = (float) dataTable.getMax();
-				// float min = (float) dataTable.getMin();
+				// float max = (float) table.getMax();
+				// float min = (float) table.getMin();
 
 				// textRenderer.begin3DRendering();
 				Rectangle2D bounds = textRenderer.getScaledBounds(gl,
@@ -2094,7 +2094,7 @@ public class GLScatterPlot extends ATableBasedView {
 			sAxisLabel += " / " + table.get(dimensionVA.get(iSelectedAxisIndexY2)).getLabel();
 
 		// sAxisLabel
-		// ="Y-Achse: "+dataTable.get(2).getLabel()+" (O) / "+dataTable.get(3).getLabel()+" (X)";
+		// ="Y-Achse: "+table.get(2).getLabel()+" (O) / "+table.get(3).getLabel()+" (X)";
 		textRenderer.draw3D(gl, sAxisLabel, 0, 0, 0, fScaling,
 				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
 		textRenderer.end3DRendering();
@@ -2784,7 +2784,7 @@ public class GLScatterPlot extends ATableBasedView {
 	// int axisCount = 0;
 	// for (Integer iDimensionIndex : dimensionVA) {
 	//
-	// tmpString[axisCount++] = dataTable.get(iDimensionIndex).getLabel();
+	// tmpString[axisCount++] = table.get(iDimensionIndex).getLabel();
 	//
 	// }
 	// return tmpString;

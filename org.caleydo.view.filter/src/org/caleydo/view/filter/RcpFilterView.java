@@ -3,14 +3,14 @@ package org.caleydo.view.filter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.data.filter.RecordFilter;
-import org.caleydo.core.data.filter.RecordMetaFilter;
-import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.DimensionFilter;
 import org.caleydo.core.data.filter.DimensionMetaFilter;
+import org.caleydo.core.data.filter.Filter;
+import org.caleydo.core.data.filter.RecordFilter;
+import org.caleydo.core.data.filter.RecordMetaFilter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
-import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveDimensionFilterEvent;
+import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Filter view showing a pipeline of filters for a data dataTable.
+ * Filter view showing a pipeline of filters for a data table.
  * 
  * @author Marc Streit
  */

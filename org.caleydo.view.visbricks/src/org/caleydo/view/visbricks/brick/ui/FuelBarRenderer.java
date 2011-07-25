@@ -20,24 +20,24 @@ public class FuelBarRenderer extends LayoutRenderer {
 
 	private GLBrick brick;
 	private SelectionManager selectionManager;
-	private DataTable dataTable;
+	private DataTable table;
 
-	public FuelBarRenderer(GLBrick brick, DataTable dataTable) {
+	public FuelBarRenderer(GLBrick brick, DataTable table) {
 		this.brick = brick;
-		this.dataTable = dataTable;
+		this.table = table;
 		selectionManager = brick.getRecordGroupSelectionManager();
 	}
 
 	@Override
 	public void render(GL2 gl) {
 
-//		DataTable set = brick.getDataTable();
+//		DataTable set = brick.getTable();
 		RecordVirtualArray recordVA = brick.getRecordVA();
 
-		if (dataTable == null || recordVA == null)
+		if (table == null || recordVA == null)
 			return;
 
-		RecordVirtualArray setRecordVA = dataTable.getRecordData(DataTable.RECORD).getRecordVA();
+		RecordVirtualArray setRecordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
 
 		if (setRecordVA == null)
 			return;

@@ -14,8 +14,8 @@ public class SetFilterTypeEvent
 
 	public enum FilterType
 	{
-		CONTENT,
-		STORAGE
+		RECORD,
+		DIMENSION
 	}
 
 	/**

@@ -35,7 +35,7 @@ public class KMeansClusterer
 		clusterer = new SimpleKMeans();
 	}
 
-	private TempResult cluster(DataTable dataTable, ClusterState clusterState) {
+	private TempResult cluster(DataTable table, ClusterState clusterState) {
 
 		// Arraylist holding clustered indicess
 		ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -99,7 +99,7 @@ public class KMeansClusterer
 					}
 
 					for (Integer iDimensionIndex : dimensionVA) {
-						buffer.append(dataTable.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED,
+						buffer.append(table.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED,
 							recordIndex)
 							+ ", ");
 
@@ -144,7 +144,7 @@ public class KMeansClusterer
 					}
 
 					for (Integer recordIndex : recordVA) {
-						buffer.append(dataTable.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED,
+						buffer.append(table.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED,
 							recordIndex)
 							+ ", ");
 
@@ -231,9 +231,9 @@ public class KMeansClusterer
 
 		// IVirtualArray currentVA = null;
 		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-		// currentVA = dataTable.getVA(iVAIdContent);
+		// currentVA = table.getVA(iVAIdContent);
 		// else
-		// currentVA = dataTable.getVA(iVAIdDimension);
+		// currentVA = table.getVA(iVAIdDimension);
 
 		for (int cluster = 0; cluster < iNrCluster; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {
@@ -260,7 +260,7 @@ public class KMeansClusterer
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-		ClusterHelper.sortClusters(dataTable, recordVA, dimensionVA, alExamples, clusterState.getClustererType());
+		ClusterHelper.sortClusters(table, recordVA, dimensionVA, alExamples, clusterState.getClustererType());
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
 			for (int cluster : alExamples) {
@@ -286,9 +286,9 @@ public class KMeansClusterer
 
 		// IVirtualArray virtualArray = null;
 		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdContent).getVAType(), dataTable.depth(), indices);
+		// virtualArray = new VirtualArray(table.getVA(iVAIdContent).getVAType(), table.depth(), indices);
 		// else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdDimension).getVAType(), dataTable.size(), indices);
+		// virtualArray = new VirtualArray(table.getVA(iVAIdDimension).getVAType(), table.size(), indices);
 
 		TempResult tempResult = new TempResult();
 		tempResult.indices = indices;
@@ -296,8 +296,8 @@ public class KMeansClusterer
 		tempResult.sampleElements = alExamples;
 
 		// set cluster result in Set
-		// dataTable.setAlClusterSizes(count);
-		// dataTable.setAlExamples(alExamples);
+		// table.setAlClusterSizes(count);
+		// table.setAlExamples(alExamples);
 
 		GeneralManager
 			.get()

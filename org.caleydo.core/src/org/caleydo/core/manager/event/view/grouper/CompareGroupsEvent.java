@@ -20,11 +20,11 @@ public class CompareGroupsEvent
 		return setsToCompare != null;
 	}
 
-	public ArrayList<DataTable> getDataTables() {
+	public ArrayList<DataTable> getTables() {
 		return setsToCompare;
 	}
 
-	public void setDataTables(ArrayList<DataTable> setsToCompare) {
+	public void setTables(ArrayList<DataTable> setsToCompare) {
 		this.setsToCompare = setsToCompare;
 	}
 }

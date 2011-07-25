@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.view.CanvasConnectionMap;
-import org.caleydo.core.serialize.DataDomainSerializationData;
 import org.caleydo.core.serialize.SerializationData;
 
 /**

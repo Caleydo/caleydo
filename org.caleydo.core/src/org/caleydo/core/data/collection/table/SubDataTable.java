@@ -12,8 +12,8 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
  * <p>
- * A SubDataTable is a set containing a sub-set of dimensions of a root dataTable. Therefore, every SubDataTable is associated
- * with a root dataTable. The sub set is defined through the dimensionTree of a root dataTable. The subset is defined by a
+ * A SubDataTable is a set containing a sub-set of dimensions of a root table. Therefore, every SubDataTable is associated
+ * with a root table. The sub set is defined through the dimensionTree of a root table. The subset is defined by a
  * dimension tree and a ClusterNode (which is part of the tree). The subDataTable manages all dimensions which are
  * below or at the level of the ClusterNode.
  * </p>
@@ -39,7 +39,7 @@ public class SubDataTable
 		// init();
 
 		this.uniqueID = GeneralManager.get().getIDCreator().createID(ManagedObjectType.DATA_TABLE);
-		// this.setDataTableType(originalSet.getDataTableType());
+		// this.setTableType(originalSet.getTableType());
 		// FIXME: this is not always true, but if we create the SubDataTable from the serialization, we didn't
 		// check yet whether it was homogeneous
 		this.isSetHomogeneous = true;

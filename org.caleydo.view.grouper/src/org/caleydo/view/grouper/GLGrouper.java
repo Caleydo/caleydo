@@ -21,16 +21,16 @@ import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceDimensionVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.UpdateViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
@@ -134,7 +134,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 	private ATableBasedDataDomain dataDomain;
 
-	private DataTable dataTable;
+	private DataTable table;
 
 	/**
 	 * Constructor.
@@ -206,7 +206,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 		for (Integer currentIndex : indexList) {
 
-			String nodeName = dataTable.get(currentIndex).getLabel();
+			String nodeName = table.get(currentIndex).getLabel();
 			int leafID = currentIndex;
 			ClusterNode currentNode = new ClusterNode(tree, nodeName, iLastUsedGroupID++,
 					false, leafID);
@@ -224,8 +224,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 		ClusterHelper.calculateClusterAverages(tree, ClustererType.DIMENSION_CLUSTERING,
-				dataTable);
-		dataTable.getDimensionData(dimensionVAType).setDimensionTree(tree);
+				table);
+		table.getDimensionData(dimensionVAType).setDimensionTree(tree);
 		dataDomain.createDimensionGroupsFromDimensionTree(tree);
 		// useCase.replaceVirtualArray(idCategory, vaType, virtualArray)
 	}
@@ -301,7 +301,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		rootNode.setTree(tree);
 		tree.setRootNode(rootNode);
 		iLastUsedGroupID = 0;
-		rootGroup.getClusterNode().dataTableID(iLastUsedGroupID++);
+		rootGroup.getClusterNode().tableID(iLastUsedGroupID++);
 		hashGroups.clear();
 
 		selectionManager.clearSelections();
@@ -318,21 +318,21 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 		// FIXME: do that differently.
-		// set = dataTable.getDimensionTree().getRoot().getSubDataTable();
+		// set = table.getDimensionTree().getRoot().getSubDataTable();
 		ClusterHelper.calculateClusterAverages(tree, ClustererType.DIMENSION_CLUSTERING,
-				dataTable);
+				table);
 		tree.setDirty();
-		tree.createSubDataTables((org.caleydo.core.data.collection.table.DataTable) dataTable);
+		tree.createSubDataTables((org.caleydo.core.data.collection.table.DataTable) table);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
 		dimensionVA = new DimensionVirtualArray(
 				org.caleydo.core.data.collection.table.DataTable.DIMENSION, alIndices);
 
-		eventPublisher.triggerEvent(new ReplaceDimensionVAInUseCaseEvent(dataTable, dataDomain
+		eventPublisher.triggerEvent(new ReplaceDimensionVAInUseCaseEvent(table, dataDomain
 				.getDataDomainID(), dimensionVAType, dimensionVA));
 
 		// FIXME no one is notified that there is a new tree
-		dataTable.getDimensionData(dimensionVAType).setDimensionTree(tree);
+		table.getDimensionData(dimensionVAType).setDimensionTree(tree);
 		dataDomain.createDimensionGroupsFromDimensionTree(tree);
 
 		UpdateViewEvent event = new UpdateViewEvent();
@@ -363,7 +363,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 			GroupRepresentation groupRep = (GroupRepresentation) child;
 			ClusterNode childNode = groupRep.getClusterNode();
 			childNode.setTree(tree);
-			childNode.dataTableID(iLastUsedGroupID++);
+			childNode.tableID(iLastUsedGroupID++);
 			tree.addChild(parentNode, childNode);
 			if (!child.isLeaf()) {
 				buildTreeFromGroupHierarchy(tree, childNode, groupRep);
@@ -1289,7 +1289,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		if (selectionDelta.getIDType() == selectionManager.getIDType()
 				|| selectionDelta.getIDType() == dataDomain.getDimensionIDType()) {
 			Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
-			Tree<ClusterNode> experimentTree = dataTable.getDimensionData(dimensionVAType)
+			Tree<ClusterNode> experimentTree = table.getDimensionData(dimensionVAType)
 					.getDimensionTree();
 
 			if (experimentTree != null) {
@@ -1372,16 +1372,16 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 
 		this.dataDomain = dataDomain;
-		dataTable = this.dataDomain.getDataTable();
+		table = this.dataDomain.getTable();
 
-		dimensionVA = dataTable.getDimensionData(
+		dimensionVA = table.getDimensionData(
 				org.caleydo.core.data.collection.table.DataTable.DIMENSION).getDimensionVA();
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager, uniqueID,
 				renderStyle);
-		if (dataTable.getDimensionData(dimensionVAType).getDimensionTree() != null) {
+		if (table.getDimensionData(dimensionVAType).getDimensionTree() != null) {
 			// FIXME: do that differently.
-			// set = dataTable.getDimensionTree().getRoot().getSubDataTable();
-			tree = dataTable.getDimensionData(dimensionVAType).getDimensionTree();
+			// set = table.getDimensionTree().getRoot().getSubDataTable();
+			tree = table.getDimensionData(dimensionVAType).getDimensionTree();
 
 			initHierarchy(tree);
 		} else {

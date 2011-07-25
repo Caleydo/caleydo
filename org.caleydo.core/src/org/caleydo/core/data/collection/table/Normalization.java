@@ -22,7 +22,7 @@ public class Normalization {
 	}
 
 	/**
-	 * Calculates log10 on all dimensions in the dataTable. Take care that the set contains only numerical dimensions,
+	 * Calculates log10 on all dimensions in the table. Take care that the set contains only numerical dimensions,
 	 * since nominal dimensions will cause a runtime exception. If you have mixed data you have to call log10 on
 	 * all the dimensions that support it manually.
 	 */
@@ -39,7 +39,7 @@ public class Normalization {
 	}
 
 	/**
-	 * Calculates log2 on all dimensions in the dataTable. Take care that the set contains only numerical dimensions,
+	 * Calculates log2 on all dimensions in the table. Take care that the set contains only numerical dimensions,
 	 * since nominal dimensions will cause a runtime exception. If you have mixed data you have to call log2 on
 	 * all the dimensions that support it manually.
 	 */

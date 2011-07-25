@@ -48,9 +48,9 @@ public class SelectFilterTypeWidget
 				FilterType filterType = null;
 				
 				if( type == "Genes" )
-					filterType = FilterType.CONTENT;
+					filterType = FilterType.RECORD;
 				else if( type == "Experiments" )
-					filterType = FilterType.STORAGE;
+					filterType = FilterType.DIMENSION;
 
 				GeneralManager.get().getEventPublisher().triggerEvent
 				(

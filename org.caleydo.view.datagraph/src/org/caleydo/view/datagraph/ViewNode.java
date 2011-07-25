@@ -10,12 +10,9 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
-
 import org.caleydo.core.manager.picking.APickingListener;
-
-import org.caleydo.core.manager.picking.PickingType;
-
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;

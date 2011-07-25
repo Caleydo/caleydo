@@ -6,8 +6,8 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 
 /**
@@ -61,7 +61,7 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void handleForeignRecordVAUpdate(int dataTableID, String dataDomainType,
+	public void handleForeignRecordVAUpdate(int tableID, String dataDomainType,
 			String vaType, RecordVirtualArray virtualArray) {
 		// TODO Auto-generated method stub
 

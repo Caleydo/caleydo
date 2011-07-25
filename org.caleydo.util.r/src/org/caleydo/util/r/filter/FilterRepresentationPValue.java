@@ -180,7 +180,7 @@ public class FilterRepresentationPValue extends
 				.getRecordFilterManager().getBaseVA();
 
 		double[] tTestResult = ((FilterRepresentationPValue) subFilter.getFilterRep())
-				.getDataTable().getStatisticsResult().getOneSidedTTestResult();
+				.getTable().getStatisticsResult().getOneSidedTTestResult();
 
 		for (int recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
 
@@ -199,11 +199,11 @@ public class FilterRepresentationPValue extends
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 	}
 
-	public void setDataTable(DataTable set) {
+	public void setTable(DataTable set) {
 		this.set = set;
 	}
 
-	public DataTable getDataTable() {
+	public DataTable getTable() {
 		return set;
 	}
 	

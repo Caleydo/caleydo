@@ -15,14 +15,14 @@ import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -281,7 +281,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 
 		detailHeatMap.setDataDomain(dataDomain);
 		detailHeatMap.setRemoteRenderingGLView(this);
-		detailHeatMap.setDataTable(table);
+		detailHeatMap.setTable(table);
 		detailHeatMap.setRenderTemplate(new UncertaintyDetailHeatMapTemplate(
 				detailHeatMap, this));
 		detailHeatMap.initialize();
@@ -492,10 +492,10 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 		dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
 
 		// In case of importing group info
-		// if (dataTable.isGeneClusterInfo())
-		// recordVA.setGroupList(dataTable.getContentGroupList());
-		// if (dataTable.isExperimentClusterInfo())
-		// dimensionVA.setGroupList(dataTable.getDimensionGroupList());
+		// if (table.isGeneClusterInfo())
+		// recordVA.setGroupList(table.getContentGroupList());
+		// if (table.isExperimentClusterInfo())
+		// dimensionVA.setGroupList(table.getDimensionGroupList());
 
 		recordSelectionManager.setVA(recordVA);
 		dimensionSelectionManager.setVA(dimensionVA);
@@ -514,9 +514,9 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 	}
 
 	@Override
-	public void replaceRecordVA(int dataTableID, String dataDomainType, String vaType) {
+	public void replaceRecordVA(int tableID, String dataDomainType, String vaType) {
 
-		super.replaceRecordVA(dataTableID, dataDomainType, vaType);
+		super.replaceRecordVA(tableID, dataDomainType, vaType);
 
 		initMultiLevelUncertainty();
 		overviewHeatMap.init();

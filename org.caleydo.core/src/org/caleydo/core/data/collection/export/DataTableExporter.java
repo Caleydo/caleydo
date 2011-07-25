@@ -13,8 +13,8 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -31,7 +31,7 @@ public class DataTableExporter {
 		WHOLE_DATA
 	}
 
-	public void exportGroups(DataTable dataTable, String sFileName, ArrayList<Integer> alGenes,
+	public void exportGroups(DataTable table, String sFileName, ArrayList<Integer> alGenes,
 		ArrayList<Integer> alExperiments, IDType targetIDType) {
 
 		try {
@@ -39,20 +39,20 @@ public class DataTableExporter {
 			// Writing dimension labels
 			out.print("Identifier \t");
 			for (Integer iDimensionIndex : alExperiments) {
-				out.print(dataTable.get(iDimensionIndex).getLabel());
+				out.print(table.get(iDimensionIndex).getLabel());
 				out.print("\t");
 			}
 
 			out.println();
 
-			// IUseCase useCase = GeneralManager.get().getUseCase(dataTable.getDataTableType().getDataDomain());
+			// IUseCase useCase = GeneralManager.get().getUseCase(table.getTableType().getDataDomain());
 			//
 			String identifier;
 			IDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer recordIndex : alGenes) {
-				if (dataTable.getDataDomain().getDataDomainID().equals("org.caleydo.datadomain.genetic")) {
+				if (table.getDataDomain().getDataDomainID().equals("org.caleydo.datadomain.genetic")) {
 					java.util.Set<String> setRefSeqIDs =
-						iDMappingManager.getIDAsSet(dataTable.getDataDomain().getRecordIDType(), targetIDType,
+						iDMappingManager.getIDAsSet(table.getDataDomain().getRecordIDType(), targetIDType,
 							recordIndex);
 
 					if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
@@ -64,12 +64,12 @@ public class DataTableExporter {
 				}
 				else {
 					identifier =
-						iDMappingManager.getID(dataTable.getDataDomain().getRecordIDType(), targetIDType,
+						iDMappingManager.getID(table.getDataDomain().getRecordIDType(), targetIDType,
 							recordIndex);
 				}
 				out.print(identifier + "\t");
 				for (Integer iDimensionIndex : alExperiments) {
-					ADimension dimension = dataTable.get(iDimensionIndex);
+					ADimension dimension = table.get(iDimensionIndex);
 					out.print(dimension.getFloat(DataRepresentation.RAW, recordIndex));
 					out.print("\t");
 				}
@@ -85,12 +85,12 @@ public class DataTableExporter {
 	}
 
 	@SuppressWarnings("unused")
-	public void export(DataTable dataTable, String sFileName, WhichViewToExport eWhichViewToExport,
+	public void export(DataTable table, String sFileName, WhichViewToExport eWhichViewToExport,
 		IDType targetIDType) {
 		RecordVirtualArray recordVA = null;
 		DimensionVirtualArray dimensionVA = null;
 
-		ATableBasedDataDomain dataDomain = dataTable.getDataDomain();
+		ATableBasedDataDomain dataDomain = table.getDataDomain();
 
 		if (eWhichViewToExport == WhichViewToExport.BUCKET) {
 
@@ -111,7 +111,7 @@ public class DataTableExporter {
 			// Writing dimension labels
 			out.print("Identifier \t");
 			for (Integer iDimensionIndex : dimensionVA) {
-				ADimension dimension = dataTable.get(iDimensionIndex);
+				ADimension dimension = table.get(iDimensionIndex);
 				out.print(dimension.getLabel());
 				out.print("\t");
 
@@ -140,11 +140,11 @@ public class DataTableExporter {
 					// values, depending on the IDType that has been specified when loading expression data.
 					// Possibly a different handling of the Set is required.
 					// java.util.Set<String> setRefSeqIDs =
-					// iDMappingManager.getIDAsSet(dataTable.getDataDomain().getContentIDType(), targetIDType,
+					// iDMappingManager.getIDAsSet(table.getDataDomain().getContentIDType(), targetIDType,
 					// recordID);
 
 					java.util.Set<String> setRefSeqIDs =
-						iDMappingManager.getIDAsSet(dataTable.getDataDomain().getRecordIDType(),
+						iDMappingManager.getIDAsSet(table.getDataDomain().getRecordIDType(),
 							IDType.getIDType("REFSEQ_MRNA"), recordID);
 
 					if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
@@ -165,12 +165,12 @@ public class DataTableExporter {
 				}
 				else {
 					identifier =
-						iDMappingManager.getID(dataTable.getDataDomain().getRecordIDType(), targetIDType,
+						iDMappingManager.getID(table.getDataDomain().getRecordIDType(), targetIDType,
 							recordID);
 				}
 				out.print(identifier + "\t");
 				for (Integer iDimensionIndex : dimensionVA) {
-					ADimension dimension = dataTable.get(iDimensionIndex);
+					ADimension dimension = table.get(iDimensionIndex);
 					out.print(dimension.getFloat(DataRepresentation.RAW, recordID));
 					out.print("\t");
 
@@ -243,20 +243,20 @@ public class DataTableExporter {
 	}
 
 	// FIXME: implement different content data / dimension data instances
-	public void exportTrees(DataTable dataTable, String directory) {
+	public void exportTrees(DataTable table, String directory) {
 		try {
 			// export gene cluster tree to own xml file
-			Tree<ClusterNode> tree = dataTable.getRecordData(DataTable.RECORD).getRecordTree();
+			Tree<ClusterNode> tree = table.getRecordData(DataTable.RECORD).getRecordTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
-				treePorter.setDataDomain(dataTable.getDataDomain());
+				treePorter.setDataDomain(table.getDataDomain());
 				treePorter.exportTree(directory + "/horizontal_gene.xml", tree);
 			}
 			// export experiment cluster tree to own xml file
-			tree = dataTable.getDimensionData(DataTable.DIMENSION).getDimensionTree();
+			tree = table.getDimensionData(DataTable.DIMENSION).getDimensionTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
-				treePorter.setDataDomain(dataTable.getDataDomain());
+				treePorter.setDataDomain(table.getDataDomain());
 				treePorter.exportTree(directory + "/vertical_experiments.xml", tree);
 			}
 		}

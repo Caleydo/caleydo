@@ -86,7 +86,7 @@ public class SelectionDeltaItem
 	}
 
 	/**
-	 * Returns the internal id, which must not be dataTable. Returns -1 if no internal id was set
+	 * Returns the internal id, which must not be table. Returns -1 if no internal id was set
 	 * 
 	 * @return the internal id
 	 */

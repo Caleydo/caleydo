@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.event.view.dimensionbased;
+package org.caleydo.core.manager.event.view.tablebased;
 
 import org.caleydo.core.manager.event.AEvent;
 

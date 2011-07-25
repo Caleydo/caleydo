@@ -25,7 +25,7 @@ public class BookmarkEvent<IDDataType>
 		elements = new ArrayList<IDDataType>();
 	}
 
-	public void dataTableIDType(IDType idType) {
+	public void tableIDType(IDType idType) {
 		this.idType = idType;
 	}
 

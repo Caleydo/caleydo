@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.event.view.dimensionbased;
+package org.caleydo.core.manager.event.view.tablebased;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -6,13 +6,13 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event that En/disables the matrix zoom event in the ScatterPlot.
+ * Event that Changes enables/disables the 2-Axis_mode in ScatterPlot.
  * 
  * @author J�rgen Pillhofer
  */
 @XmlRootElement
 @XmlType
-public class ToggleMatrixZoomEvent
+public class Toggle2AxisEvent
 	extends AEvent {
 
 	@Override

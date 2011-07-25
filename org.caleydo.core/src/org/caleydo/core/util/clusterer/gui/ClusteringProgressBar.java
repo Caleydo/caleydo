@@ -7,8 +7,8 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.ClustererCanceledEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
-import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.ClustererType;
+import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -96,7 +96,7 @@ public class ClusteringProgressBar
 		shell = new Shell();
 		shell.setText(algorithmType.getName());
 		shell.setImage(GeneralManager.get().getResourceLoader()
-			.getImage(shell.getDisplay(), "resources/icons/view/dimensionbased/clustering.png"));
+			.getImage(shell.getDisplay(), "resources/icons/view/tablebased/clustering.png"));
 
 		// Center shell on screen
 		Monitor primary = shell.getDisplay().getPrimaryMonitor();
@@ -166,7 +166,7 @@ public class ClusteringProgressBar
 		// shell = new Shell();
 		// shell.setText(algorithmType.getName());
 		// shell.setImage(GeneralManager.get().getResourceLoader().getImage(shell.getDisplay(),
-		// "resources/icons/view/dimensionbased/clustering.png"));
+		// "resources/icons/view/tablebased/clustering.png"));
 		//
 		// // Center shell on screen
 		// Monitor primary = shell.getDisplay().getPrimaryMonitor();

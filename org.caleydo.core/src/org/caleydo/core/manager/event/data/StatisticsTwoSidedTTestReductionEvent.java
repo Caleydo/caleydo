@@ -14,11 +14,11 @@ public class StatisticsTwoSidedTTestReductionEvent
 		this.sets = sets;
 	}
 
-	public void setDataTables(ArrayList<DataTable> sets) {
+	public void setTables(ArrayList<DataTable> sets) {
 		this.sets = sets;
 	}
 
-	public ArrayList<DataTable> getDataTables() {
+	public ArrayList<DataTable> getTables() {
 		return sets;
 	}
 

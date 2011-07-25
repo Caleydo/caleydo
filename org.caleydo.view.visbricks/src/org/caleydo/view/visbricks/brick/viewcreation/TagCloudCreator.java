@@ -35,7 +35,7 @@ public class TagCloudCreator implements IRemoteViewCreator {
 								1, 0, 1, -1, 1));
 
 		tagCloud.setRemoteRenderingGLView(remoteRenderingView);
-		tagCloud.setDataTable(set);
+		tagCloud.setTable(set);
 		tagCloud.setDataDomain(remoteRenderingView.getDataDomain());
 		tagCloud.initialize();
 		tagCloud.initRemote(gl, remoteRenderingView, glMouseListener);

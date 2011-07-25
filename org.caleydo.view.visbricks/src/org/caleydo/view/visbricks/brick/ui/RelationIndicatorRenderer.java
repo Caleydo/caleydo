@@ -36,7 +36,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 
 	// private ASetBasedDataDomain dataDomain;
 	private RelationAnalyzer relationAnalyzer;
-	Integer dataTableID;
+	Integer tableID;
 	int groupID;
 	GLVisBricks visBricks;
 	int neighborSetID = -1;
@@ -51,7 +51,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		this.brick = brick;
 		// this.dataDomain = brick.getDataDomain();
 		this.relationAnalyzer = visBricks.getRelationAnalyzer();
-		dataTableID = brick.getDimensionGroup().getDataTableID();
+		tableID = brick.getDimensionGroup().getTableID();
 		groupID = brick.getGroupID();
 		this.visBricks = visBricks;
 		this.isLeft = isLeft;
@@ -73,15 +73,15 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 
 		int count = 0;
 		for (DimensionGroup dimensionGroup : dimensionGroups) {
-			currentID = dimensionGroup.getDataTableID();
-			if (currentID == dataTableID && isLeft) {
+			currentID = dimensionGroup.getTableID();
+			if (currentID == tableID && isLeft) {
 				neighborSetID = previousID;
 				if (neighborSetID != -1)
 					neighborBrickOrder = dimensionGroups.get(count - 1)
 							.getBricksForRelations();
 				break;
 			}
-			if (previousID == dataTableID && !isLeft) {
+			if (previousID == tableID && !isLeft) {
 				neighborSetID = currentID;
 				neighborBrickOrder = dimensionGroup.getBricksForRelations();
 				break;
@@ -91,7 +91,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			count++;
 		}
 
-		SimilarityMap map = relationAnalyzer.getSimilarityMap(dataTableID);
+		SimilarityMap map = relationAnalyzer.getSimilarityMap(tableID);
 		if (map == null)
 			return;
 		VASimilarity<RecordVirtualArray, RecordGroupList> vaSimilarity = map
@@ -102,12 +102,12 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		// return;
 		// VASimilarity<ContentVirtualArray, ContentGroupList> vaSimilarity =
 		// map
-		// .getVASimilarity(dataTableID);
+		// .getVASimilarity(tableID);
 
 		if (vaSimilarity == null)
 			return;
 		GroupSimilarity<RecordVirtualArray, RecordGroupList> groupSimilarity = vaSimilarity
-				.getGroupSimilarity(dataTableID, groupID);
+				.getGroupSimilarity(tableID, groupID);
 
 		similarities = groupSimilarity.getSimilarities();
 		scores = groupSimilarity.getScores();

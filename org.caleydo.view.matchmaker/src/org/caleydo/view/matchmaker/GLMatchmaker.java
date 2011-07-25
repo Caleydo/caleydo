@@ -26,12 +26,12 @@ import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.event.view.matchmaker.AdjustPValueEvent;
 import org.caleydo.core.manager.event.view.matchmaker.CreateSelectionTypesEvent;
 import org.caleydo.core.manager.event.view.matchmaker.DuplicateSetBarItemEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.HideHeatMapElementsEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.NewRecordGroupInfoEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.HideHeatMapElementsEvent;
+import org.caleydo.core.manager.event.view.tablebased.NewRecordGroupInfoEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -491,7 +491,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		return new ArrayList<AGLView>();
 	}
 
-	public void setDataTablesToCompare(final ArrayList<DataTable> sets) {
+	public void setTablesToCompare(final ArrayList<DataTable> sets) {
 
 		this.setsToCompare = sets;
 	}
@@ -540,14 +540,14 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void replaceRecordVA(int dataTableID, String dataDomain, String vaType) {
+	public void replaceRecordVA(int tableID, String dataDomain, String vaType) {
 
-		clusteredSets.add(dataTableID);
+		clusteredSets.add(tableID);
 
 		// Check if all sets are properly clustered
 		// boolean allSetsClustered = true;
 		// for (DataTable set : setsToCompare) {
-		// if (!clusteredSets.contains(dataTable.getID())) {
+		// if (!clusteredSets.contains(table.getID())) {
 		// allSetsClustered = false;
 		// break;
 		// }
@@ -555,8 +555,8 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		// if (!allSetsClustered)
 		// return;
 
-		compareViewStateController.setDataTablesToCompare(setsToCompare);
-		compareViewStateController.handleReplaceRecordVA(dataTableID, dataDomain, vaType);
+		compareViewStateController.setTablesToCompare(setsToCompare);
+		compareViewStateController.handleReplaceRecordVA(tableID, dataDomain, vaType);
 		clusteredSets.clear();
 
 	}
@@ -573,10 +573,10 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		compareViewStateController.setUseZoom(useZoom);
 	}
 
-	public void handleContentGroupListUpdate(String recordVAType, int dataTableID,
+	public void handleContentGroupListUpdate(String recordVAType, int tableID,
 			RecordGroupList contentGroupList) {
 		if (this.recordVAType.equals(recordVAType))
-			compareViewStateController.handleContentGroupListUpdate(dataTableID,
+			compareViewStateController.handleContentGroupListUpdate(tableID,
 					contentGroupList);
 	}
 

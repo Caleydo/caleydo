@@ -31,11 +31,11 @@ public class ClusterSetEvent
 		this.sets = sets;
 	}
 
-	public ArrayList<DataTable> setDataTables() {
+	public ArrayList<DataTable> setTables() {
 		return sets;
 	}
 
-	public ArrayList<DataTable> getDataTables() {
+	public ArrayList<DataTable> getTables() {
 		return sets;
 	}
 

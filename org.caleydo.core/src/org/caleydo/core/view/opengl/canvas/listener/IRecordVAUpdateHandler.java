@@ -22,10 +22,10 @@ public interface IRecordVAUpdateHandler
 	 * Handler method to be called by the {@link ReplaceRecordVAListener} when a {@link ReplaceVAEvent} was
 	 * received.
 	 * 
-	 * @param dataTableID
+	 * @param tableID
 	 *            TODO
 	 * @param vaType
 	 *            the type of the VA which is updated
 	 */
-	public void replaceRecordVA(int dataTableID, String dataDomainType, String vaType);
+	public void replaceRecordVA(int tableID, String dataDomainType, String vaType);
 }

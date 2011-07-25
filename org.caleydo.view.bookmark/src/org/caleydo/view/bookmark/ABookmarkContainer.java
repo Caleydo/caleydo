@@ -14,7 +14,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.RemoveBookmarkEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
@@ -25,15 +25,6 @@ import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
 import org.caleydo.view.bookmark.contextmenu.BookmarkContextMenuItemContainer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MenuEvent;
-import org.eclipse.swt.events.MenuListener;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * <p>
@@ -291,7 +282,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 				// menu.show(manager.getParentGLCanvas(), 0, 0);
 
 				BookmarkContextMenuItemContainer bookmarkContextMenuItemContainer = new BookmarkContextMenuItemContainer();
-				bookmarkContextMenuItemContainer.dataTableID(internalIDType, externalID);
+				bookmarkContextMenuItemContainer.tableID(internalIDType, externalID);
 				ContextMenu contextMenu = manager.getContextMenu();
 				contextMenu.addItemContanier(bookmarkContextMenuItemContainer);
 

@@ -15,7 +15,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.ARcpGLViewPart;
@@ -179,7 +179,7 @@ public class RcpBasicGLHistogramView extends ARcpGLViewPart implements
 					.getFloat(PreferenceConstants.GENE_EXPRESSION_PREFIX
 							+ PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
 
-			double correspondingValue = ((ATableBasedDataDomain) dataDomain).getDataTable()
+			double correspondingValue = ((ATableBasedDataDomain) dataDomain).getTable()
 					.getRawForNormalized(normalizedValue);
 
 			labels.get(iCount - 1).setText(Formatter.formatNumber(correspondingValue));

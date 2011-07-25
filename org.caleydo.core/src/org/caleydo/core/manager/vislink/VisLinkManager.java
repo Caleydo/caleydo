@@ -22,7 +22,7 @@ import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.execution.ADisplayLoopEventHandler;
 import org.caleydo.core.manager.view.CanvasConnectionMap;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
@@ -141,9 +141,9 @@ public class VisLinkManager
 			destId = idmm.getID(IDType.getIDType("UNSPECIFIED"), dataDomain.getRecordIDType(), selectionId);
 		}
 		catch (NullPointerException e) {
-			HashSet<Integer> dataTable =
+			HashSet<Integer> table =
 				idmm.getID(IDType.getIDType("GENE_SYMBOL"), dataDomain.getRecordIDType(), selectionId);
-			destId = (Integer) dataTable.iterator().next();
+			destId = (Integer) table.iterator().next();
 		}
 		SelectionDelta sd = new SelectionDelta(dataDomain.getRecordIDType());
 		SelectionDeltaItem sdi = sd.addSelection(destId, SelectionType.MOUSE_OVER);

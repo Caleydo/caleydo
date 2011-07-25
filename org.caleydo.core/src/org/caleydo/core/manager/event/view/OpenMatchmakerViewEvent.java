@@ -19,11 +19,11 @@ public class OpenMatchmakerViewEvent
 
 	ArrayList<DataTable> setsToCompare;
 
-	public ArrayList<DataTable> getDataTablesToCompare() {
+	public ArrayList<DataTable> getTablesToCompare() {
 		return setsToCompare;
 	}
 
-	public void setDataTablesToCompare(ArrayList<DataTable> setsToCompare) {
+	public void setTablesToCompare(ArrayList<DataTable> setsToCompare) {
 		this.setsToCompare = setsToCompare;
 	}
 }

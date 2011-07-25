@@ -25,7 +25,7 @@ public class RemoveBookmarkEvent<IDDataType>
 		elements = new ArrayList<IDDataType>();
 	}
 
-	public void dataTableIDType(IDType idType) {
+	public void tableIDType(IDType idType) {
 		this.idType = idType;
 	}
 

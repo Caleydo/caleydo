@@ -17,10 +17,10 @@ public class ClusterTree
 		super(leaveIDType);
 	}
 
-	public void createSubDataTables(DataTable dataTable) {
-		getRoot().createSubDataTables(dataTable);
+	public void createSubDataTables(DataTable table) {
+		getRoot().createSubDataTables(table);
 		NewSubDataTablesEvent event = new NewSubDataTablesEvent();
-		event.setDataDomainID(dataTable.getDataDomain().getDataDomainID());
+		event.setDataDomainID(table.getDataDomain().getDataDomainID());
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 

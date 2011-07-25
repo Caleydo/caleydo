@@ -4,8 +4,8 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.DimensionSelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapper;
@@ -100,7 +100,7 @@ public class ClusterTreeMapNode extends ATreeMapNode {
 			if (dimensionIDs != null && dimensionIDs.size() > 0) {
 				float expressionValue = 0;
 				for (Integer dimensionID : dimensionIDs) {
-					expressionValue += referenzData.dataDomain.getDataTable().get(dimensionID).getFloat(DataRepresentation.NORMALIZED, data.getLeafID());
+					expressionValue += referenzData.dataDomain.getTable().get(dimensionID).getFloat(DataRepresentation.NORMALIZED, data.getLeafID());
 				}
 				expressionValue /= dimensionIDs.size();
 				return referenzData.colorMapper.getColor(expressionValue);

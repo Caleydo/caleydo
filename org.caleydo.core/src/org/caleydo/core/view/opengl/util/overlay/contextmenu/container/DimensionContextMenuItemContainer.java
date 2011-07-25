@@ -23,7 +23,7 @@ public class DimensionContextMenuItemContainer
 	/**
 	 * Set the experiment index
 	 */
-	public void dataTableID(IDType idType, int experimentIndex) {
+	public void tableID(IDType idType, int experimentIndex) {
 		createMenuContent(idType, experimentIndex);
 	}
 

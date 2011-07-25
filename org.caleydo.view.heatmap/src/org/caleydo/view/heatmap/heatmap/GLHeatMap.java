@@ -12,33 +12,33 @@ import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
+import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
-import org.caleydo.core.manager.event.view.dimensionbased.HideHeatMapElementsEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
-import org.caleydo.core.manager.picking.PickingMode;
-import org.caleydo.core.manager.picking.PickingType;
+import org.caleydo.core.manager.event.view.tablebased.HideHeatMapElementsEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.StandardTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.ClustererType;
+import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -46,8 +46,8 @@ import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.RecordContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.DimensionContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.RecordContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
@@ -388,7 +388,7 @@ public class GLHeatMap extends ATableBasedView {
 
 				RecordContextMenuItemContainer contentContextMenuItemContainer = new RecordContextMenuItemContainer();
 				contentContextMenuItemContainer.setDataDomain(dataDomain);
-				contentContextMenuItemContainer.dataTableID(recordIDType, externalID);
+				contentContextMenuItemContainer.tableID(recordIDType, externalID);
 				contextMenu.addItemContanier(contentContextMenuItemContainer);
 				break;
 
@@ -418,7 +418,7 @@ public class GLHeatMap extends ATableBasedView {
 				}
 				DimensionContextMenuItemContainer experimentContextMenuItemContainer = new DimensionContextMenuItemContainer();
 				experimentContextMenuItemContainer.setDataDomain(dataDomain);
-				experimentContextMenuItemContainer.dataTableID(dimensionIDType, externalID);
+				experimentContextMenuItemContainer.tableID(dimensionIDType, externalID);
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 			default:
 				return;
@@ -695,7 +695,7 @@ public class GLHeatMap extends ATableBasedView {
 
 			recordVA = result.getRecordResult().getRecordVA();
 			recordSelectionManager.setVA(recordVA);
-			recordVA.dataTableID(recordVAID);
+			recordVA.tableID(recordVAID);
 		}
 	}
 
@@ -753,7 +753,7 @@ public class GLHeatMap extends ATableBasedView {
 		this.sendClearSelectionsEvent = sendClearSelectionsEvent;
 	}
 
-	public void setDataTable(DataTable set) {
+	public void setTable(DataTable set) {
 		this.table = set;
 	}
 
@@ -890,7 +890,7 @@ public class GLHeatMap extends ATableBasedView {
 		return zoomedElements;
 	}
 
-	public DataTable getDataTable() {
+	public DataTable getTable() {
 		return table;
 	}
 

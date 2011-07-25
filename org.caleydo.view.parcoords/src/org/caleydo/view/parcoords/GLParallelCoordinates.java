@@ -39,10 +39,10 @@ import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.DimensionFilter;
-import org.caleydo.core.data.filter.event.NewRecordFilterEvent;
+import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.event.NewDimensionFilterEvent;
+import org.caleydo.core.data.filter.event.NewRecordFilterEvent;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
@@ -51,10 +51,10 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
@@ -62,17 +62,17 @@ import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.AngularBrushingEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.ApplyCurrentSelectionToVirtualArrayEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.BookmarkButtonEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.ResetAxisSpacingEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.ResetParallelCoordinatesEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.UpdateViewEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.UseRandomSamplingEvent;
+import org.caleydo.core.manager.event.view.tablebased.AngularBrushingEvent;
+import org.caleydo.core.manager.event.view.tablebased.ApplyCurrentSelectionToVirtualArrayEvent;
+import org.caleydo.core.manager.event.view.tablebased.BookmarkButtonEvent;
+import org.caleydo.core.manager.event.view.tablebased.ResetAxisSpacingEvent;
+import org.caleydo.core.manager.event.view.tablebased.ResetParallelCoordinatesEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.UseRandomSamplingEvent;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.view.StandardTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
@@ -84,8 +84,8 @@ import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.RecordContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.DimensionContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.RecordContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.parcoords.PCRenderStyle.PolyLineState;
@@ -827,14 +827,14 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				//
 				// // top
 				// String text =
-				// getDecimalFormat().format(dataTable.getMax());
+				// getDecimalFormat().format(table.getMax());
 				// textRenderer.draw3D(text, fXPosition + 2 *
 				// AXIS_MARKER_WIDTH, renderStyle
 				// .getAxisHeight(), 0,
 				// renderStyle.getSmallFontScalingFactor());
 				//
 				// // bottom
-				// text = getDecimalFormat().format(dataTable.getMin());
+				// text = getDecimalFormat().format(table.getMin());
 				// textRenderer.draw3D(text, fXPosition + 2 *
 				// AXIS_MARKER_WIDTH, 0, 0,
 				// renderStyle.getSmallFontScalingFactor());
@@ -1019,7 +1019,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			for (int iAxisIndex : iAlAxisIndex) {
 				float fCurrentPosition = axisSpacings.get(iAxisIndex);
 				gate.setCurrentPosition(fCurrentPosition);
-				// String label = dataTable.get(iAxisID).getLabel();
+				// String label = table.get(iAxisID).getLabel();
 
 				gate.draw(gl, pickingManager, textureManager, textRenderer, uniqueID);
 				// renderSingleGate(gl, gate, iAxisID, iGateID,
@@ -1421,7 +1421,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 				RecordContextMenuItemContainer recordContextMenuItemContainer = new RecordContextMenuItemContainer();
 				recordContextMenuItemContainer.setDataDomain(dataDomain);
-				recordContextMenuItemContainer.dataTableID(recordIDType, pickingID);
+				recordContextMenuItemContainer.tableID(recordIDType, pickingID);
 				contextMenu.addItemContanier(recordContextMenuItemContainer);
 
 				if (!isRenderedRemote()) {
@@ -1516,7 +1516,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				}
 				DimensionContextMenuItemContainer experimentContextMenuItemContainer = new DimensionContextMenuItemContainer();
 				experimentContextMenuItemContainer.setDataDomain(dataDomain);
-				experimentContextMenuItemContainer.dataTableID(dimensionIDType, pickingID);
+				experimentContextMenuItemContainer.tableID(dimensionIDType, pickingID);
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 
 			default:
@@ -1814,7 +1814,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			axisCount++;
 			x = x + renderStyle.getXSpacing();
 			y = renderStyle.getBottomSpacing();
-			// y =dataTable.get(dimensionVA.get(dimensionVA.size() - 1)).getFloat(
+			// y =table.get(dimensionVA.get(dimensionVA.size() - 1)).getFloat(
 			// EDataRepresentation.NORMALIZED, iAxisID);
 			alElementReps.add(new SelectedElementRep(idType, uniqueID, x, y, 0.0f));
 			// }
@@ -1835,7 +1835,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			// if (renderConnectionsLeft) {
 			// x = x + renderStyle.getXSpacing();
 			// y =
-			// dataTable.get(dimensionVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
+			// table.get(dimensionVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
 			// iDimensionIndex);
 			// } else {
 			// if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
@@ -1847,7 +1847,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 			// // get the value on the leftmost axis
 			// fYValue =
-			// dataTable.get(dimensionVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
+			// table.get(dimensionVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
 			// iDimensionIndex);
 
 			if (Float.isNaN(y)) {
@@ -2363,11 +2363,11 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	}
 
-	public DataTable getDataTable() {
+	public DataTable getTable() {
 		return table;
 	}
 
-	public void setDataTable(DataTable set) {
+	public void setTable(DataTable set) {
 		this.table = set;
 	}
 

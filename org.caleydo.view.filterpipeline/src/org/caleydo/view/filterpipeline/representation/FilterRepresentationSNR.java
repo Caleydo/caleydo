@@ -258,7 +258,7 @@ public class FilterRepresentationSNR extends
 				.getRecordFilterManager().getBaseVA();
 
 		float[] rawUncertainty = ((FilterRepresentationSNR) subFilter.getFilterRep())
-				.getDataTable().getUncertainty().getRawUncertainty();
+				.getTable().getUncertainty().getRawUncertainty();
 
 		for (int recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
 
@@ -284,11 +284,11 @@ public class FilterRepresentationSNR extends
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 	}
 
-	public void setDataTable(DataTable set) {
+	public void setTable(DataTable set) {
 		this.table = set;
 	}
 
-	public DataTable getDataTable() {
+	public DataTable getTable() {
 		return table;
 	}
 

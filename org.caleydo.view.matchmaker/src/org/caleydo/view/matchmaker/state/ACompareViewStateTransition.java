@@ -17,10 +17,10 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.picking.PickingMode;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.animation.MovementVector2;
@@ -158,7 +158,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void handleContentGroupListUpdate(int dataTableID, RecordGroupList contentGroupList) {
+	public void handleContentGroupListUpdate(int tableID, RecordGroupList contentGroupList) {
 	}
 
 	@Override
@@ -171,7 +171,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void handleReplaceRecordVA(int dataTableID, String dataDomain, String vaType) {
+	public void handleReplaceRecordVA(int tableID, String dataDomain, String vaType) {
 	}
 
 	@Override
@@ -193,12 +193,12 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void setDataTablesInFocus(ArrayList<DataTable> setsInFocus) {
+	public void setTablesInFocus(ArrayList<DataTable> setsInFocus) {
 
 	}
 
 	@Override
-	public void setDataTablesToCompare(ArrayList<DataTable> setsToCompare) {
+	public void setTablesToCompare(ArrayList<DataTable> setsToCompare) {
 
 	}
 

@@ -8,11 +8,11 @@ import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -54,7 +54,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 
 	private DimensionVirtualArray dimensionVA;
 
-	private DataTable dataTable;
+	private DataTable table;
 
 	public HeatMapTextureRenderer(GLUncertaintyHeatMap uncertaintyHeatMap,
 			Column heatmapLayout) {
@@ -68,12 +68,12 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 	/*
 	 * Init textures, build array of textures used for holding the whole samples
 	 */
-	public void init(GLUncertaintyHeatMap uncertaintyHeatMap, DataTable dataTable,
+	public void init(GLUncertaintyHeatMap uncertaintyHeatMap, DataTable table,
 			RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA, int groupIndex) {
 
 		this.recordVA = recordVA;
 		this.dimensionVA = dimensionVA;
-		this.dataTable = dataTable;
+		this.table = table;
 
 		this.uncertaintyHeatMap = uncertaintyHeatMap;
 		ColorMapper colorMapper = uncertaintyHeatMap.getColorMapper();
@@ -130,7 +130,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 				// fOpacity = 1.0f;
 				// }
 
-				fLookupValue = dataTable.get(dimensionIndex).getFloat(
+				fLookupValue = table.get(dimensionIndex).getFloat(
 						uncertaintyHeatMap.getRenderingRepresentation(), recordIndex);
 
 				float[] mappingColor = colorMapper.getColor(fLookupValue);
@@ -239,7 +239,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 				// byte[] abgr = new byte[4];
 
 				val = val
-						+ ((dataTable.get(dimensionVA.get(exps)).getFloat(
+						+ ((table.get(dimensionVA.get(exps)).getFloat(
 								DataRepresentation.NORMALIZED, recordVA.get(i))));
 			}
 			// buffer.get(abgr, i * numberOfExpirments * 4 + exps * 4, 4);
@@ -249,7 +249,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 			// unc = difference
 			uncertainty = 0;
 			for (int i = startGene; i < endGene; i++) {
-				float tempVal = dataTable.get(dimensionVA.get(exps)).getFloat(
+				float tempVal = table.get(dimensionVA.get(exps)).getFloat(
 						DataRepresentation.NORMALIZED, recordVA.get(i));
 				uncertainty = Math.abs(val - tempVal);
 				if (uncertainty > maxUncertainty) {

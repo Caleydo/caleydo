@@ -227,7 +227,7 @@ public class ChooseProjectTypePage
 		Text sampleProjectDescription = new Text(composite, SWT.MULTI | SWT.WRAP);
 		sampleProjectDescription
 			.setText("This sample project loads the dataset linked below. The data is pre-filterd to "
-				+ "2000 genes and 39 experiments. Hierarchical clustering was run on the datadataTable. Pathways are loaded. The visualizations "
+				+ "2000 genes and 39 experiments. Hierarchical clustering was run on the datatable. Pathways are loaded. The visualizations "
 				+ "use a logarithmic scale. The ideal choice if you want to try out Calyedo.");
 		sampleProjectDescription.setBackground(composite.getBackground());
 		gd = new GridData(GridData.FILL_BOTH);

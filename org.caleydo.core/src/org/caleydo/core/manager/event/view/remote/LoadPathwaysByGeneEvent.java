@@ -33,7 +33,7 @@ public class LoadPathwaysByGeneEvent
 		return idType;
 	}
 
-	public void dataTableIDType(IDType idType) {
+	public void tableIDType(IDType idType) {
 		this.idType = idType;
 	}
 

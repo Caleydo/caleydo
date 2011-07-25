@@ -12,23 +12,23 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.ReplaceRecordVAEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.RecordVAUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.RecordVAUpdateEvent;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceRecordVAListener;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -150,7 +150,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		bottomCol.setFrameColor(1, 0, 1, 1);
 		bottomCol.setBottomUp(false);
 		bottomCol.setXDynamic(true);
-		bottomCol.dataTableIDs(uniqueID, BOTTOM_COLUMN_ID);
+		bottomCol.tableIDs(uniqueID, BOTTOM_COLUMN_ID);
 		bottomCol.setVAlign(VAlign.CENTER);
 
 		bottomBricks = new ArrayList<GLBrick>(20);
@@ -162,7 +162,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		topCol.setFrameColor(1, 0, 1, 1);
 		topBricks = new ArrayList<GLBrick>(20);
 		topCol.setXDynamic(true);
-		topCol.dataTableIDs(uniqueID, TOP_COLUMN_ID);
+		topCol.tableIDs(uniqueID, TOP_COLUMN_ID);
 		topCol.setVAlign(VAlign.CENTER);
 
 		initGroupColumn();
@@ -213,7 +213,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	protected void createBricks(RecordVirtualArray recordVA) {
 		// create basic layouts
 
-		// minPixelWidth = PIXEL_PER_DIMENSION * dataTable.size();
+		// minPixelWidth = PIXEL_PER_DIMENSION * table.size();
 		// if (minPixelWidth < MIN_BRICK_WIDTH_PIXEL)
 		minPixelWidth = MIN_BRICK_WIDTH_PIXEL;
 		minWidth = pixelGLConverter
@@ -374,7 +374,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		brick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
 		brick.setRemoteRenderingGLView(getRemoteRenderingGLCanvas());
 		// brick.setDataDomain(dataDomain);
-		// brick.setDataTable(set);
+		// brick.setTable(set);
 		brick.setVisBricks(visBricks);
 		brick.setLayout(wrappingLayout);
 		brick.setDimensionGroup(this);
@@ -516,9 +516,9 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	 * This is called when a clustering was run, so we replace the sub-bricks
 	 */
 	@Override
-	public void replaceRecordVA(int dataTableID, String dataDomainType, String vaType) {
+	public void replaceRecordVA(int tableID, String dataDomainType, String vaType) {
 
-		if (dimensionGroupData.getID() == dataTableID) {
+		if (dimensionGroupData.getID() == tableID) {
 			topCol.clear();
 			topBricks.clear();
 			bottomCol.clear();
@@ -555,7 +555,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView,
 			GLMouseListener glMouseListener) {
-		// createBricks(dataTable.getContentData(Set.CONTENT).getRecordVA());
+		// createBricks(table.getContentData(Set.CONTENT).getRecordVA());
 		createBricks(dimensionGroupData.getSummaryBrickVA());
 		init(gl);
 	}
@@ -776,7 +776,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		return glVisBricksView;
 	}
 
-	// public DataTable getDataTable() {
+	// public DataTable getTable() {
 	// return set;
 	// }
 
@@ -785,7 +785,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	 * 
 	 * @return
 	 */
-	public int getDataTableID() {
+	public int getTableID() {
 		return dimensionGroupData.getID();
 	}
 
@@ -886,7 +886,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	// return dataDomain;
 	// }
 
-	// public void setDataTable(DataTable set) {
+	// public void setTable(DataTable set) {
 	// this.set = set;
 	// }
 

@@ -151,14 +151,14 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
-		ParCoordsCreator parCoordsCreator = new ParCoordsCreator(dataTable);
+		ParCoordsCreator parCoordsCreator = new ParCoordsCreator(table);
 		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl, glMouseListener);
 		LayoutRenderer parCoordsLayoutRenderer = new ViewLayoutRenderer(parCoords);
 		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
 		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
 				parCoordsLayoutRenderer);
 
-		TagCloudCreator tagCloudCreator = new TagCloudCreator(dataTable);
+		TagCloudCreator tagCloudCreator = new TagCloudCreator(table);
 		AGLView tagCloud = tagCloudCreator.createRemoteView(brick, gl, glMouseListener);
 		LayoutRenderer tagCloudLayoutRenderer = new ViewLayoutRenderer(tagCloud);
 		views.put(EContainedViewType.TAGCLOUD_VIEW, tagCloud);

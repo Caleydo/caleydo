@@ -72,7 +72,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 		if (!detailViewState.isInitialized()) {
 			detailViewState.init(gl);
 		}
-		detailViewState.setDataTablesInFocus(setBar.getDataTablesInFocus());
+		detailViewState.setTablesInFocus(setBar.getTablesInFocus());
 		detailViewState.setupLayouts();
 
 		heatMapWrappers = overviewState.getHeatMapWrappers();
@@ -138,7 +138,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
 			heatMapWrapper.setLayout(layouts.get(i));
 			layouts.get(i).setHeatMapWrapper(heatMapWrapper);
-			setsInFocus.add(heatMapWrapper.getDataTable());
+			setsInFocus.add(heatMapWrapper.getTable());
 		}
 		setAllDisplayListsDirty();
 

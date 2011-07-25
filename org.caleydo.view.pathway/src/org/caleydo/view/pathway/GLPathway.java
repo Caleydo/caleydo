@@ -39,12 +39,12 @@ import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.RecordVAUpdateEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.RecordVAUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
@@ -52,10 +52,10 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceRecordVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
@@ -489,15 +489,15 @@ public class GLPathway extends AGLView implements
 			// values, depending on the IDType that has been specified when
 			// loading expression data.
 			// Possibly a different handling of the Set is required.
-			Set<Integer> dataTableIDs = idMappingManager.getIDAsSet(selectionDelta.getIDType(),
+			Set<Integer> tableIDs = idMappingManager.getIDAsSet(selectionDelta.getIDType(),
 					dataDomain.getDavidIDType(), item.getPrimaryID());
 
-			if (dataTableIDs == null || dataTableIDs.isEmpty()) {
+			if (tableIDs == null || tableIDs.isEmpty()) {
 				continue;
 				// throw new
 				// IllegalStateException("Cannot resolve RefSeq ID to David ID.");
 			}
-			Integer iDavidID = (Integer) dataTableIDs.toArray()[0];
+			Integer iDavidID = (Integer) tableIDs.toArray()[0];
 
 			pathwayVertexGraphItem = pathwayItemManager
 					.getPathwayVertexGraphItemByDavidId(iDavidID);
@@ -731,7 +731,7 @@ public class GLPathway extends AGLView implements
 						RecordContextMenuItemContainer geneContextMenuItemContainer = new RecordContextMenuItemContainer();
 						geneContextMenuItemContainer.setDataDomain(mappingDataDomain);
 						geneContextMenuItemContainer
-								.dataTableID(dataDomain.getDavidIDType(),
+								.tableID(dataDomain.getDavidIDType(),
 										pathwayItemManager
 												.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) pathwayVertexGraphItem));
 						contextMenu.addItemContanier(geneContextMenuItemContainer);

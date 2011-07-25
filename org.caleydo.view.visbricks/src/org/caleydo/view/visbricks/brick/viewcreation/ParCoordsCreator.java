@@ -42,7 +42,7 @@ public class ParCoordsCreator implements IRemoteViewCreator {
 								1, 0, 1, -1, 1));
 
 		parCoords.setRemoteRenderingGLView(remoteRenderingView);
-		parCoords.setDataTable(set);
+		parCoords.setTable(set);
 		parCoords.setDataDomain(remoteRenderingView.getDataDomain());
 		parCoords.initialize();
 		parCoords.initRemote(gl, remoteRenderingView, glMouseListener);

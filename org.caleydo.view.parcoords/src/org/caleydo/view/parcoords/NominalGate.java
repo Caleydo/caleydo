@@ -8,8 +8,8 @@ import gleem.linalg.Vec3f;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -37,11 +37,11 @@ public class NominalGate extends AGate {
 	 * @param renderStyle
 	 *            Render Style.
 	 */
-	public NominalGate(int gateID, int axisID, float bottom, float top, DataTable dataTable,
+	public NominalGate(int gateID, int axisID, float bottom, float top, DataTable table,
 			PCRenderStyle renderStyle) {
 		this.gateID = gateID;
 
-		this.dataTable = dataTable;
+		this.table = table;
 		this.renderStyle = renderStyle;
 		this.axisID = axisID;
 		this.top = top;
@@ -68,7 +68,7 @@ public class NominalGate extends AGate {
 	public void draw(GL2 gl, PickingManager pickingManager, TextureManager textureManager,
 			CaleydoTextRenderer textRenderer, int viewID) {
 
-		// top = (float) dataTable.getNormalizedForRaw(upperValue) *
+		// top = (float) table.getNormalizedForRaw(upperValue) *
 		// renderStyle.getAxisHeight();
 		// top = upperValue;
 
@@ -130,11 +130,11 @@ public class NominalGate extends AGate {
 				* GATE_WIDTH, unscaledTop + 0.02f);
 		gl.glPopName();
 
-		// if (dataTable.isSetHomogeneous())
+		// if (table.isSetHomogeneous())
 		// {
 		// // renderBoxedYValues(gl, fCurrentPosition, fTop,
 		// // getDecimalFormat().format(
-		// // dataTable.getRawForNormalized(fTop / renderStyle.getAxisHeight())),
+		// // table.getRawForNormalized(fTop / renderStyle.getAxisHeight())),
 		// // SelectionType.NORMAL);
 		// }
 		// else
@@ -302,7 +302,7 @@ public class NominalGate extends AGate {
 	 */
 	// public void setUpperValue(float upperValue) {
 	// this.upperValue = upperValue;
-	// top = (float) dataTable.getNormalizedForRaw(upperValue) *
+	// top = (float) table.getNormalizedForRaw(upperValue) *
 	// renderStyle.getAxisHeight();
 	// }
 
@@ -314,7 +314,7 @@ public class NominalGate extends AGate {
 	 */
 	// public void setLowerValue(float lowerValue) {
 	// this.lowerValue = lowerValue;
-	// bottom = (float) dataTable.getNormalizedForRaw(lowerValue) *
+	// bottom = (float) table.getNormalizedForRaw(lowerValue) *
 	// renderStyle.getAxisHeight();
 	// }
 

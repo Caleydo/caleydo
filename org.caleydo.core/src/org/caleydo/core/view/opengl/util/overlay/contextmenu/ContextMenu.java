@@ -8,9 +8,9 @@ import java.util.HashMap;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -25,7 +25,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
 /**
  * <p>
  * Renders a context menu of dynamically specified items. ContextMenu is based on {@link AOverlayManager}
- * where all the location relevant information is dataTable. Since only one context menu can be active at a time it
+ * where all the location relevant information is table. Since only one context menu can be active at a time it
  * is implemented as a singleton. It needs to be provided with a location and 1-n instances derived from
  * {@link AContextMenuItem}. On a left click it triggers the event specified in AContextMenuItem
  * </p>

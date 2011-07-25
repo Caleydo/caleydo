@@ -4,7 +4,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.histogram.UpdateColorMappingEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 
 /**

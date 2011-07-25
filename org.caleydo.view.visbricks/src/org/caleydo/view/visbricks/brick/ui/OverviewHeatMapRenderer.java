@@ -6,8 +6,8 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -39,7 +39,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 	 * @param showStandardDeviation
 	 */
 	public OverviewHeatMapRenderer(RecordVirtualArray recordVA,
-			DimensionVirtualArray dimensionVA, DataTable dataTable,
+			DimensionVirtualArray dimensionVA, DataTable table,
 			boolean showStandardDeviation) {
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
@@ -54,7 +54,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 
 			int index = 0;
 			for (int recordIndex : recordVA) {
-				expressionValues[index] = dataTable.get(dimensionIndex).getFloat(
+				expressionValues[index] = table.get(dimensionIndex).getFloat(
 						DataRepresentation.NORMALIZED, recordIndex);
 				index++;
 			}

@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.event.view.dimensionbased;
+package org.caleydo.core.manager.event.view.tablebased;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -6,13 +6,13 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event that switches between main and matrix-view in the Scatterplot.
+ * Event that Changes the Point-Type of a Scatterplot.
  * 
  * @author J�rgen Pillhofer
  */
 @XmlRootElement
 @XmlType
-public class SwitchMatrixViewEvent
+public class TogglePointTypeEvent
 	extends AEvent {
 
 	@Override

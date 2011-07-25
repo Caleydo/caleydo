@@ -1,17 +1,16 @@
 package org.caleydo.core.util.clusterer;
 
-import org.caleydo.core.data.collection.table.RecordData;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DimensionData;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.collection.table.RecordData;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.dimensionbased.UpdateViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.util.clusterer.nominal.AlphabeticalPartitioner;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -24,15 +23,15 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ClusterManager {
 
-	private DataTable dataTable;
+	private DataTable table;
 
 	/**
 	 * Constructor
 	 * 
 	 * @param set
 	 */
-	public ClusterManager(DataTable dataTable) {
-		this.dataTable = dataTable;
+	public ClusterManager(DataTable table) {
+		this.table = table;
 	}
 
 	/**
@@ -123,13 +122,13 @@ public class ClusterManager {
 		int progressBarOffset, int progressBarMulti) {
 
 		clusterer.setClusterState(clusterState);
-		TempResult tempResult = clusterer.getSortedVA(dataTable, clusterState, progressBarOffset, progressBarMulti);
+		TempResult tempResult = clusterer.getSortedVA(table, clusterState, progressBarOffset, progressBarMulti);
 		if (tempResult == null) {
 			Logger.log(new Status(IStatus.ERROR, toString(), "Clustering result was null, clusterer was: "
 				+ clusterer.toString()));
 			return;
 		}
-		result.contentResult = new RecordData(dataTable.getDataDomain().getRecordIDType());
+		result.contentResult = new RecordData(table.getDataDomain().getRecordIDType());
 		result.contentResult.setRecordVA(new RecordVirtualArray(clusterState.getRecordVAType(),
 			tempResult.indices));
 		result.contentResult.setRecordClusterSizes(tempResult.clusterSizes);
@@ -145,7 +144,7 @@ public class ClusterManager {
 		int progressBarOffset, int progressBarMulti) {
 		clusterer.setClusterState(clusterState);
 
-		TempResult tempResult = clusterer.getSortedVA(dataTable, clusterState, progressBarOffset, progressBarMulti);
+		TempResult tempResult = clusterer.getSortedVA(table, clusterState, progressBarOffset, progressBarMulti);
 		result.dimensionResult = new DimensionData();
 		result.dimensionResult.setDimensionVA(new DimensionVirtualArray(clusterState.getDimensionVAType(),
 			tempResult.indices));
@@ -157,7 +156,7 @@ public class ClusterManager {
 		}
 		else {
 			result.dimensionResult.setDimensionTree(tempResult.tree);
-			dataTable.getDataDomain().createDimensionGroupsFromDimensionTree(tempResult.tree);
+			table.getDataDomain().createDimensionGroupsFromDimensionTree(tempResult.tree);
 			result.dimensionResult.setDefaultTree(false);
 			result.dimensionResult.getDimensionTree().initializeIDTypes(clusterState.getDimensionIDType());
 		}

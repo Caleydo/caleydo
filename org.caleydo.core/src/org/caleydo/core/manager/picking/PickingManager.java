@@ -157,12 +157,12 @@ public class PickingManager {
 		 * @return all picking IDs
 		 */
 		public Set<Integer> getAllPickingIDs() {
-			Set<Integer> dataTable = new HashSet<Integer>();
+			Set<Integer> table = new HashSet<Integer>();
 			for (String type : hashTypeToPickingIDToExternalID.keySet()) {
-				dataTable.addAll(hashTypeToPickingIDToExternalID.get(type).keySet());
+				table.addAll(hashTypeToPickingIDToExternalID.get(type).keySet());
 			}
 
-			return dataTable;
+			return table;
 		}
 	}
 

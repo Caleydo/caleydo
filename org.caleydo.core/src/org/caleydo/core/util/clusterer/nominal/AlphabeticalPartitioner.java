@@ -14,11 +14,11 @@ public class AlphabeticalPartitioner
 	extends AClusterer {
 
 	@Override
-	public TempResult getSortedVA(DataTable dataTable, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(DataTable table, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
-		RecordVirtualArray recordVA = dataTable.getRecordData(DataTable.RECORD).getRecordVA();
+		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
 		NominalDimension<String> dimension =
-			(NominalDimension<String>) dataTable.get(dataTable.getDimensionData(DataTable.DIMENSION).getDimensionVA().get(0));
+			(NominalDimension<String>) table.get(table.getDimensionData(DataTable.DIMENSION).getDimensionVA().get(0));
 
 		HashMap<String, ArrayList<Integer>> letterBins = new HashMap<String, ArrayList<Integer>>(40);
 

@@ -17,15 +17,15 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.picking.PickingMode;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -770,7 +770,7 @@ public abstract class ACompareViewState {
 		return z;
 	}
 
-	public abstract void setDataTablesToCompare(ArrayList<DataTable> setsToCompare);
+	public abstract void setTablesToCompare(ArrayList<DataTable> setsToCompare);
 
 	public abstract void handlePickingEvents(PickingType ePickingType,
 			PickingMode pickingMode, int externalID, Pick pick, boolean isControlPressed);
@@ -779,10 +779,10 @@ public abstract class ACompareViewState {
 
 	public abstract boolean isInitialized();
 
-	public abstract void handleContentGroupListUpdate(int dataTableID,
+	public abstract void handleContentGroupListUpdate(int tableID,
 			RecordGroupList contentGroupList);
 
-	public abstract void handleReplaceRecordVA(int dataTableID, String dataDomain,
+	public abstract void handleReplaceRecordVA(int tableID, String dataDomain,
 			String vaType);
 
 	public abstract void init(GL2 gl);
@@ -801,7 +801,7 @@ public abstract class ACompareViewState {
 	public abstract void handleSelectionCommand(IDCategory category,
 			SelectionCommand selectionCommand);
 
-	public abstract void setDataTablesInFocus(ArrayList<DataTable> setsInFocus);
+	public abstract void setTablesInFocus(ArrayList<DataTable> setsInFocus);
 
 	public abstract void adjustPValue();
 
@@ -938,7 +938,7 @@ public abstract class ACompareViewState {
 		}
 	}
 
-	public void setDataTableBarDisplayListDirty() {
+	public void setTableBarDisplayListDirty() {
 		isSetBarDisplayListDirty = true;
 	}
 
@@ -1238,14 +1238,14 @@ public abstract class ACompareViewState {
 	//
 	// if (!renderPseudoHierarchy) {
 	// // Left hierarchy
-	// leftTree = heatMapWrapperLeft.getDataTable().getContentTree();
+	// leftTree = heatMapWrapperLeft.getTable().getContentTree();
 	// determineTreePositions(leftTree.getRoot(), leftTree, heatMapWrapperLeft,
 	// overviewDistance, true);
 	// // renderDendrogram(gl, leftTree.getRoot(), 1, leftTree,
 	// // xPosInitLeft, true);
 	//
 	// // Right hierarchy
-	// rightTree = heatMapWrapperRight.getDataTable().getContentTree();
+	// rightTree = heatMapWrapperRight.getTable().getContentTree();
 	// determineTreePositions(rightTree.getRoot(), rightTree,
 	// heatMapWrapperRight,
 	// overviewDistance, false);

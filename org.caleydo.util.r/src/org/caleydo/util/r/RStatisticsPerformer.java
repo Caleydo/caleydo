@@ -8,8 +8,8 @@ import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.RecordFilter;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -146,15 +146,15 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 	}
 
-	public void foldChange(DataTable dataTable1, DataTable dataTable2) {
+	public void foldChange(DataTable table1, DataTable table2) {
 
 		// Do nothing if the operations was already performed earlier
 		// if (set1.getStatisticsResult().getFoldChangeResult(set2) != null
 		// && set2.getStatisticsResult().getFoldChangeResult(set1) != null)
 		// return;
 
-		NumericalDimension meanDimensionVec1 = dataTable1.getMeanDimension();
-		NumericalDimension meanDimensionVec2 = dataTable2.getMeanDimension();
+		NumericalDimension meanDimensionVec1 = table1.getMeanDimension();
+		NumericalDimension meanDimensionVec2 = table2.getMeanDimension();
 
 		double[] meanDimension1 = new double[meanDimensionVec1.size()];
 		for (int recordIndex = 0; recordIndex < meanDimensionVec1.size(); recordIndex++) {
@@ -176,17 +176,17 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 		double[] resultVec = foldChangeResult.asDoubleArray();
 
-		dataTable1.getStatisticsResult().setFoldChangeResult(dataTable2, resultVec);
-		dataTable2.getStatisticsResult().setFoldChangeResult(dataTable1, resultVec);
+		table1.getStatisticsResult().setFoldChangeResult(table2, resultVec);
+		table2.getStatisticsResult().setFoldChangeResult(table1, resultVec);
 		
 		// FIXME: just for uncertainty paper so that the uncertainty view can access it via the main set
-		DataTable dataTable = dataTable1.getDataDomain().getDataTable();
-		dataTable.getStatisticsResult().setFoldChangeResult(dataTable1, resultVec);
+		DataTable table = table1.getDataDomain().getTable();
+		table.getStatisticsResult().setFoldChangeResult(table1, resultVec);
 
 		RecordFilter contentFilter = new RecordFilter();
-		contentFilter.setDataDomain(dataTable1.getDataDomain());
-		contentFilter.setLabel("Fold change " + dataTable1.getLabel() + " and "
-				+ dataTable2.getLabel());
+		contentFilter.setDataDomain(table1.getDataDomain());
+		contentFilter.setLabel("Fold change " + table1.getLabel() + " and "
+				+ table2.getLabel());
 		
 		
 		Histogram histogram = HistogramCreator.createLogHistogram(resultVec);
@@ -194,8 +194,8 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 		FilterRepresentationFoldChange filterRep = new FilterRepresentationFoldChange();
 		filterRep.setFilter(contentFilter);
-		filterRep.setDataTable1(dataTable1);
-		filterRep.setDataTable2(dataTable2);
+		filterRep.setTable1(table1);
+		filterRep.setTable2(table2);
 		filterRep.setHistogram(histogram);
 		contentFilter.setFilterRep(filterRep);
 		contentFilter.openRepresentation();
@@ -207,7 +207,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		// however, the evaluation must be done using the new pvalue
 		// boolean allCalculated = true;
 		// for (DataTable set : sets) {
-		// if (dataTable.getStatisticsResult().getOneSidedTTestResult() == null)
+		// if (table.getStatisticsResult().getOneSidedTTestResult() == null)
 		// continue;
 		//
 		// allCalculated = false;
@@ -226,24 +226,24 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 //			metaFilter.setFilterRep(filterRep);
 //		}
 
-		for (DataTable dataTable : sets) {
+		for (DataTable table : sets) {
 
-			RecordVirtualArray recordVA = dataTable.getBaseRecordVA();
+			RecordVirtualArray recordVA = table.getBaseRecordVA();
 			//getContentData(DataTable.CONTENT).getRecordVA();
 
-			double[] pValueVector = new double[dataTable.getBaseRecordVA().size()];
-			       //dataTable.getContentData(DataTable.CONTENT).getRecordVA().size()];
+			double[] pValueVector = new double[table.getBaseRecordVA().size()];
+			       //table.getContentData(DataTable.CONTENT).getRecordVA().size()];
 
 			for (int recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
 
-				DimensionVirtualArray dimensionVA1 = dataTable.getDimensionData(DataTable.DIMENSION)
+				DimensionVirtualArray dimensionVA1 = table.getDimensionData(DataTable.DIMENSION)
 						.getDimensionVA();
 
 				double[] compareVec1 = new double[dimensionVA1.size()];
 
 				int dimensionCount = 0;
 				for (Integer dimensionIndex : dimensionVA1) {
-					compareVec1[dimensionCount++] = dataTable.get(dimensionIndex).getFloat(
+					compareVec1[dimensionCount++] = table.get(dimensionIndex).getFloat(
 							DataRepresentation.RAW, recordIndex);
 				}
 
@@ -264,21 +264,21 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 				}
 			}
 
-			dataTable.getStatisticsResult().setOneSiddedTTestResult(pValueVector);
+			table.getStatisticsResult().setOneSiddedTTestResult(pValueVector);
 
 			RecordFilter contentFilter = new RecordFilter();
-			contentFilter.setDataDomain(dataTable.getDataDomain());
-			contentFilter.setLabel("p-Value Reduction of " + dataTable.getLabel());
+			contentFilter.setDataDomain(table.getDataDomain());
+			contentFilter.setLabel("p-Value Reduction of " + table.getLabel());
 
 			Histogram histogram = HistogramCreator.createHistogram(pValueVector);
 
 //			if (metaFilter != null) {
 //				metaFilter.getFilterList().add(contentFilter);
-//				metaFilter.setDataDomain(dataTable.getDataDomain());
+//				metaFilter.setDataDomain(table.getDataDomain());
 //			} else {
 				FilterRepresentationPValue filterRep = new FilterRepresentationPValue();
 				filterRep.setFilter(contentFilter);
-				filterRep.setDataTable(dataTable);
+				filterRep.setTable(table);
 				filterRep.setHistogram(histogram);
 				contentFilter.setFilterRep(filterRep);
 				contentFilter.openRepresentation();
@@ -347,8 +347,8 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 		FilterRepresentationTwoSidedTTest filterRep = new FilterRepresentationTwoSidedTTest();
 		filterRep.setFilter(contentFilter);
-		filterRep.setDataTable1(set1);
-		filterRep.setDataTable2(set2);
+		filterRep.setTable1(set1);
+		filterRep.setTable2(set2);
 		contentFilter.setFilterRep(filterRep);
 		contentFilter.openRepresentation();
 	}

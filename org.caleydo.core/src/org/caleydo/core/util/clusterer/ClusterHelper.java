@@ -128,15 +128,15 @@ public class ClusterHelper {
 	// }
 
 	public static void calculateClusterAverages(Tree<ClusterNode> tree, ClustererType eClustererType,
-		DataTable dataTable) {
+		DataTable table) {
 		// FIXME - direct references here - should be parameters
-		DimensionVirtualArray dimensionVA = dataTable.getDimensionData(DataTable.DIMENSION).getDimensionVA();
-		RecordVirtualArray recordVA = dataTable.getRecordData(DataTable.RECORD).getRecordVA();
-		calculateClusterAveragesRecursive(tree, tree.getRoot(), eClustererType, dataTable, dimensionVA, recordVA);
+		DimensionVirtualArray dimensionVA = table.getDimensionData(DataTable.DIMENSION).getDimensionVA();
+		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
+		calculateClusterAveragesRecursive(tree, tree.getRoot(), eClustererType, table, dimensionVA, recordVA);
 	}
 
 	private static float[] calculateClusterAveragesRecursive(Tree<ClusterNode> tree, ClusterNode node,
-		ClustererType clustererType, DataTable dataTable, DimensionVirtualArray dimensionVA, RecordVirtualArray recordVA) {
+		ClustererType clustererType, DataTable table, DimensionVirtualArray dimensionVA, RecordVirtualArray recordVA) {
 
 		float[] values;
 
@@ -159,7 +159,7 @@ public class ClusterHelper {
 
 			for (ClusterNode currentNode : tree.getChildren(node)) {
 				tempValues[cnt] =
-					calculateClusterAveragesRecursive(tree, currentNode, clustererType, dataTable, dimensionVA,
+					calculateClusterAveragesRecursive(tree, currentNode, clustererType, table, dimensionVA,
 						recordVA);
 				cnt++;
 			}
@@ -184,7 +184,7 @@ public class ClusterHelper {
 				int isto = 0;
 				for (Integer iDimensionIndex : dimensionVA) {
 					values[isto] =
-						dataTable.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED, node.getLeafID());
+						table.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED, node.getLeafID());
 					isto++;
 				}
 
@@ -195,7 +195,7 @@ public class ClusterHelper {
 				int icon = 0;
 				for (Integer recordIndex : recordVA) {
 					values[icon] =
-						dataTable.get(node.getLeafID()).getFloat(DataRepresentation.NORMALIZED, recordIndex);
+						table.get(node.getLeafID()).getFloat(DataRepresentation.NORMALIZED, recordIndex);
 					icon++;
 				}
 			}
@@ -211,18 +211,18 @@ public class ClusterHelper {
 		return values;
 	}
 
-	public static void calculateAggregatedUncertainties(Tree<ClusterNode> tree, DataTable dataTable) {
-		RecordVirtualArray recordVA = dataTable.getRecordData(DataTable.RECORD).getRecordVA();
-		calculateAggregatedUncertaintiesRecursive(tree, tree.getRoot(), dataTable, recordVA);
+	public static void calculateAggregatedUncertainties(Tree<ClusterNode> tree, DataTable table) {
+		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
+		calculateAggregatedUncertaintiesRecursive(tree, tree.getRoot(), table, recordVA);
 	}
 
 	private static Pair<Float, Integer> calculateAggregatedUncertaintiesRecursive(Tree<ClusterNode> tree,
-		ClusterNode node, DataTable dataTable, RecordVirtualArray recordVA) {
+		ClusterNode node, DataTable table, RecordVirtualArray recordVA) {
 
 		Pair<Float, Integer> result = new Pair<Float, Integer>();
 
 		if (node.isLeaf()) {
-			float uncertainty = (float)dataTable.getStatisticsResult().getAggregatedUncertainty()[node.getLeafID()];
+			float uncertainty = (float)table.getStatisticsResult().getAggregatedUncertainty()[node.getLeafID()];
 			result.setFirst(uncertainty);
 			result.setSecond(1);
 			node.setUncertainty(uncertainty);
@@ -233,7 +233,7 @@ public class ClusterHelper {
 		float uncertaintySum = 0;
 		for (ClusterNode child : node.getChildren()) {
 			Pair<Float, Integer> childResult =
-				calculateAggregatedUncertaintiesRecursive(tree, child, dataTable, recordVA);
+				calculateAggregatedUncertaintiesRecursive(tree, child, table, recordVA);
 			uncertaintySum += childResult.getFirst();
 			childCount += childResult.getSecond();
 
@@ -253,7 +253,7 @@ public class ClusterHelper {
 	 * @param examples
 	 * @param eClustererType
 	 */
-	public static void sortClusters(DataTable dataTable, RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA,
+	public static void sortClusters(DataTable table, RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA,
 		ArrayList<Integer> examples, ClustererType eClustererType) {
 
 		int iNrExamples = examples.size();
@@ -268,7 +268,7 @@ public class ClusterHelper {
 
 				for (Integer dimensionIndex : dimensionVA) {
 					float temp =
-						dataTable.get(dimensionIndex).getFloat(DataRepresentation.NORMALIZED,
+						table.get(dimensionIndex).getFloat(DataRepresentation.NORMALIZED,
 							recordVA.get(recordIndex));
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;
@@ -287,7 +287,7 @@ public class ClusterHelper {
 
 				for (Integer recordIndex : recordVA) {
 					float temp =
-						dataTable.get(dimensionVA.get(iDimensionIndex)).getFloat(DataRepresentation.NORMALIZED,
+						table.get(dimensionVA.get(iDimensionIndex)).getFloat(DataRepresentation.NORMALIZED,
 							recordIndex);
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;

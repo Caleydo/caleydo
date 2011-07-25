@@ -14,7 +14,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class UseSortingAction extends AToolBarAction implements IToolBarItem {
 	public static final String TEXT = "Use sorting to reduce clutter";
-	public static final String ICON = "resources/icons/view/dimensionbased/parcoords/angular_brush.png";
+	public static final String ICON = "resources/icons/view/tablebased/parcoords/angular_brush.png";
 
 	private boolean useSorting = true;
 

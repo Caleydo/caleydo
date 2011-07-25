@@ -71,7 +71,7 @@ public class MetaData {
 	public Histogram getHistogram() {
 		if (!table.isSetHomogeneous) {
 			throw new UnsupportedOperationException(
-				"Tried to calcualte a set-wide histogram on a not homogeneous dataTable. This makes no sense. Use dimension based histograms instead!");
+				"Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
 		}
 		Histogram histogram = new Histogram();
 
@@ -108,7 +108,7 @@ public class MetaData {
 	public Histogram getBaseHistogram() {
 		if (!table.isSetHomogeneous) {
 			throw new UnsupportedOperationException(
-				"Tried to calcualte a set-wide histogram on a not homogeneous dataTable. This makes no sense. Use dimension based histograms instead!");
+				"Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
 		}
 		Histogram histogram = new Histogram();
 
@@ -146,7 +146,7 @@ public class MetaData {
 		// FIXME put that back
 		// if (!isSetHomogeneous) {
 		// throw new UnsupportedOperationException(
-		// "Tried to calcualte a set-wide histogram on a not homogeneous dataTable. This makes no sense. Use dimension based histograms instead!");
+		// "Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
 		// }
 		Histogram histogram = new Histogram();
 
@@ -172,7 +172,7 @@ public class MetaData {
 	}
 
 	/**
-	 * Get the minimum value in the dataTable.
+	 * Get the minimum value in the table.
 	 * 
 	 * @throws OperationNotSupportedException
 	 *             when executed on nominal data
@@ -186,7 +186,7 @@ public class MetaData {
 	}
 
 	/**
-	 * Get the maximum value in the dataTable.
+	 * Get the maximum value in the table.
 	 * 
 	 * @throws OperationNotSupportedException
 	 *             when executed on nominal data
@@ -200,7 +200,7 @@ public class MetaData {
 	}
 
 	/**
-	 * Set an artificial minimum for the datadataTable. All elements smaller than that are clipped to this value in
+	 * Set an artificial minimum for the datatable. All elements smaller than that are clipped to this value in
 	 * the representation. This only affects the normalization, does not alter the raw data
 	 */
 	void setMin(double dMin) {
@@ -209,7 +209,7 @@ public class MetaData {
 	}
 
 	/**
-	 * Set an artificial maximum for the datadataTable. All elements smaller than that are clipped to this value in
+	 * Set an artificial maximum for the datatable. All elements smaller than that are clipped to this value in
 	 * the representation. This only affects the normalization, does not alter the raw data
 	 */
 	void setMax(double dMax) {
@@ -304,7 +304,7 @@ public class MetaData {
 	private void calculateGlobalExtrema() {
 		double dTemp = 1.0;
 
-		if (table.dataTableType.equals(DataTableDataType.NUMERIC)) {
+		if (table.tableType.equals(DataTableDataType.NUMERIC)) {
 			for (ADimension dimension : table.hashDimensions.values()) {
 				NumericalDimension nDimension = (NumericalDimension) dimension;
 				dTemp = nDimension.getMin();

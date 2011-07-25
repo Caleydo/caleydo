@@ -7,18 +7,10 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.util.HashMap;
 
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.collection.table.DataTableUtils;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.serialize.DataDomainSerializationData;
 import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -280,21 +272,21 @@ public class Connection {
 		// FIXME this should work for more than one use case now
 //		ATableBasedDataDomain useCase =
 //			(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.genetic");
-//		DataTable set = useCase.getDataTable();
+//		DataTable set = useCase.getTable();
 //
 //		initData.setDataDomain(useCase);
-//		initData.setDataTableFileContent(DataTableUtils.loadSetFile(useCase.getLoadDataParameters()));
+//		initData.setTableFileContent(DataTableUtils.loadSetFile(useCase.getLoadDataParameters()));
 //		initData.setGeneClusterTree(DataTableUtils.getGeneClusterXml(set));
 //		initData.setExperimentClusterTree(DataTableUtils.getExperimentClusterXml(set));
 //
 //		HashMap<String, ContentVirtualArray> recordVAMap = new HashMap<String, ContentVirtualArray>();
-//		for (String type : dataTable.getRegisteredRecordVATypes()) {
+//		for (String type : table.getRegisteredRecordVATypes()) {
 //			recordVAMap.put(type, useCase.getRecordVA(type));
 //		}
 //		initData.setRecordVAMap(recordVAMap);
 //
 //		HashMap<String, DimensionVirtualArray> dimensionVAMap = new HashMap<String, DimensionVirtualArray>();
-//		for (String type : dataTable.getRegisteredDimensionVATypes()) {
+//		for (String type : table.getRegisteredDimensionVATypes()) {
 //			dimensionVAMap.put(type, useCase.getDimensionVA(type));
 //		}
 //		initData.setDimensionVAMap(dimensionVAMap);

@@ -17,12 +17,12 @@ import org.caleydo.core.data.collection.DimensionType;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
-import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
-import org.caleydo.core.data.filter.event.ReEvaluateRecordFilterListEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateDimensionFilterListEvent;
+import org.caleydo.core.data.filter.event.ReEvaluateRecordFilterListEvent;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -33,9 +33,9 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.event.view.filterpipeline.SetFilterTypeEvent;
 import org.caleydo.core.manager.event.view.filterpipeline.SetFilterTypeEvent.FilterType;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -84,7 +84,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 	private SetFilterTypeListener setFilterTypeListener;
 	private ReEvaluateFilterListener reEvaluateFilterListener;
 
-	private FilterType filterType = FilterType.CONTENT;
+	private FilterType filterType = FilterType.RECORD;
 
 	/**
 	 * First filter to be displayed. All filters before are hidden and the
@@ -637,7 +637,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 		filterList.clear();
 		int filterID = 0;
 
-		for (Filter<?> filter : filterType == FilterType.CONTENT ? dataDomain
+		for (Filter<?> filter : filterType == FilterType.RECORD ? dataDomain
 				.getRecordFilterManager().getFilterPipe() : dataDomain
 				.getDimensionFilterManager().getFilterPipe()) {
 			FilterItem<?> filterItem = new FilterItem(filterID++, filter, pickingManager,
@@ -654,7 +654,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 		}
 
 		// TODO move to separate function...
-		VirtualArray<?, ?, ?> currentVA = filterType == FilterType.CONTENT ? dataDomain
+		VirtualArray<?, ?, ?> currentVA = filterType == FilterType.RECORD ? dataDomain
 				.getRecordFilterManager().getBaseVA().clone() : dataDomain
 				.getDimensionFilterManager().getBaseVA().clone();
 
@@ -676,7 +676,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 
 	private void performDataUncertaintyFilter() {
 
-		DataTable table = dataDomain.getDataTable();
+		DataTable table = dataDomain.getTable();
 		if (!table.containsUncertaintyData())
 			return;
 
@@ -693,7 +693,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 
 		FilterRepresentationSNR filterRep = new FilterRepresentationSNR();
 		filterRep.setFilter(contentFilter);
-		filterRep.setDataTable(table);
+		filterRep.setTable(table);
 		filterRep.setHistogram(histogram);
 		contentFilter.setFilterRep(filterRep);
 		contentFilter.openRepresentation();

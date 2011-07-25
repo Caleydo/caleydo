@@ -96,7 +96,7 @@ public class HeatMapRenderer extends AContentRenderer {
 			final float fFieldHeight, final float fFieldWidth) {
 
 		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
-		ADimension dimension = heatMap.getDataTable().get(iDimensionIndex);
+		ADimension dimension = heatMap.getTable().get(iDimensionIndex);
 		if (dimension == null)
 			return;
 		float value = dimension.getFloat(heatMap.getRenderingRepresentation(), recordIndex);

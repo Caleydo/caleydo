@@ -15,24 +15,24 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.ReplaceRecordVAInUseCaseListener;
-import org.caleydo.core.manager.event.data.ReplaceRecordVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.ReplaceDimensionVAInUseCaseEvent;
+import org.caleydo.core.manager.event.data.ReplaceRecordVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.datadomain.genetic.contextmenu.container.GeneRecordGroupMenuItemContainer;
 import org.caleydo.datadomain.genetic.contextmenu.container.GeneContextMenuItemContainer;
+import org.caleydo.datadomain.genetic.contextmenu.container.GeneRecordGroupMenuItemContainer;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -95,8 +95,8 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void setDataTable(DataTable set) {
-		super.setDataTable(set);
+	public void setTable(DataTable set) {
+		super.setTable(set);
 
 	}
 
@@ -262,7 +262,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void handleForeignRecordVAUpdate(int dataTableID, String dataDomainType,
+	public void handleForeignRecordVAUpdate(int tableID, String dataDomainType,
 			String vaType, RecordVirtualArray virtualArray) {
 
 		if (dataDomainType.equals(CLINICAL_DATADOMAIN_TYPE)) {
@@ -290,7 +290,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 		// FIXME - this is a hack for one special dataset (asslaber)
 		DataTable clinicalSet = ((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
-				CLINICAL_DATADOMAIN_TYPE)).getDataTable();
+				CLINICAL_DATADOMAIN_TYPE)).getTable();
 		int dimensionID = clinicalSet.getDimensionData(DataTable.DIMENSION).getDimensionVA().get(1);
 
 		NominalDimension clinicalDimension = (NominalDimension<String>) clinicalSet
@@ -318,7 +318,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE && idCategory == dimensionIDCategory) {
 			SelectionCommandEvent newCommandEvent = new SelectionCommandEvent();
 			newCommandEvent.setSelectionCommand(selectionCommand);
-			newCommandEvent.dataTableIDCategory(idCategory);
+			newCommandEvent.tableIDCategory(idCategory);
 			newCommandEvent.setDataDomainID(dataDomainType);
 			eventPublisher.triggerEvent(newCommandEvent);
 		}
@@ -362,7 +362,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 		GeneContextMenuItemContainer geneContainer = new GeneContextMenuItemContainer();
 		geneContainer.setDataDomain(this);
-		geneContainer.dataTableID(idType, id);
+		geneContainer.tableID(idType, id);
 		return geneContainer;
 	}
 

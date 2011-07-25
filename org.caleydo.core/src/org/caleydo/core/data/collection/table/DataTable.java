@@ -15,8 +15,8 @@ import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.collection.table.statistics.StatisticsResult;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.id.ManagedObjectType;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.data.dimension.DimensionManager;
@@ -33,7 +33,7 @@ import org.eclipse.core.runtime.Status;
  * <h2>General Information</h2>
  * <p>
  * A set is the main container for tabular data in Caleydo. A set is made up of {@link IDimension}s, where each
- * dimension corresponds to a column in a tabular data dataTable. Columns are therefore always referred to as
+ * dimension corresponds to a column in a tabular data table. Columns are therefore always referred to as
  * <b>Dimensions</b> and rows as <b>Record</b> The data should be accessed through {@link VirtualArray}s, which
  * are stored in {@link DimensionData}s for Dimensions and {@link RecordData}s for Record.
  * </p>
@@ -71,7 +71,7 @@ public class DataTable
 
 	protected StatisticsResult statisticsResult;
 
-	protected DataTableDataType dataTableType = DataTableDataType.NUMERIC;
+	protected DataTableDataType tableType = DataTableDataType.NUMERIC;
 
 	ATableBasedDataDomain dataDomain;
 
@@ -89,7 +89,7 @@ public class DataTable
 	}
 
 	/**
-	 * Constructor for the dataTable. Creates and initializes members and registers the set whit the set manager.
+	 * Constructor for the table. Creates and initializes members and registers the set whit the set manager.
 	 * Also creates a new default tree. This should not be called by implementing sub-classes.
 	 */
 	public DataTable(ATableBasedDataDomain dataDomain) {
@@ -132,8 +132,8 @@ public class DataTable
 		return metaData;
 	}
 
-	public DataTableDataType getDataTableType() {
-		return dataTableType;
+	public DataTableDataType getTableType() {
+		return tableType;
 	}
 
 	/**
@@ -292,7 +292,7 @@ public class DataTable
 
 	/**
 	 * Set a recordVA. The recordVA in the recordData object is replaced and the other elements in the
-	 * recordData are redataTable.
+	 * recordData are retable.
 	 * 
 	 * @param vaType
 	 * @param virtualArray
@@ -313,7 +313,7 @@ public class DataTable
 
 	/**
 	 * Sets a dimensionVA. The dimensionVA in the dimensionData object is replaced and the other elements in the
-	 * dimensionData are redataTable.
+	 * dimensionData are retable.
 	 * 
 	 * @param vaType
 	 * @param virtualArray
@@ -451,7 +451,7 @@ public class DataTable
 	}
 
 	/**
-	 * Returns a dimension containing the mean values of all the dimensions in the dataTable. The mean dimension contains
+	 * Returns a dimension containing the mean values of all the dimensions in the table. The mean dimension contains
 	 * raw and normalized values. The mean is calculated based on the raw data, that means for calculating the
 	 * means possibly specified cut-off values are not considered, since cut-off values are meant for
 	 * visualization only.
@@ -459,9 +459,9 @@ public class DataTable
 	 * @return the dimension containing means for all content elements
 	 */
 	public NumericalDimension getMeanDimension() {
-		if (!dataTableType.equals(DataTableDataType.NUMERIC) || !isSetHomogeneous)
+		if (!tableType.equals(DataTableDataType.NUMERIC) || !isSetHomogeneous)
 			throw new IllegalStateException(
-				"Can not provide a mean dimension if set is not numerical (Set type: " + dataTableType
+				"Can not provide a mean dimension if set is not numerical (Set type: " + tableType
 					+ ") or not homgeneous (isHomogeneous: " + isSetHomogeneous + ")");
 		if (meanDimension == null) {
 			meanDimension = new NumericalDimension();
@@ -506,7 +506,7 @@ public class DataTable
 
 	// -------------------- set creation ------------------------------
 	// Set creation is achieved by employing methods of SetUtils which utilizes package private methods in the
-	// dataTable.
+	// table.
 
 	/**
 	 * Add a dimension based on its id. The dimension has to be fully initialized with data
@@ -532,16 +532,16 @@ public class DataTable
 	void addDimension(ADimension dimension) {
 		// if (hashDimensions.isEmpty()) {
 		if (dimension instanceof NumericalDimension) {
-			if (dataTableType == null)
-				dataTableType = DataTableDataType.NUMERIC;
-			else if (dataTableType.equals(DataTableDataType.NOMINAL))
-				dataTableType = DataTableDataType.HYBRID;
+			if (tableType == null)
+				tableType = DataTableDataType.NUMERIC;
+			else if (tableType.equals(DataTableDataType.NOMINAL))
+				tableType = DataTableDataType.HYBRID;
 		}
 		else {
-			if (dataTableType == null)
-				dataTableType = DataTableDataType.NOMINAL;
-			else if (dataTableType.equals(DataTableDataType.NUMERIC))
-				dataTableType = DataTableDataType.HYBRID;
+			if (tableType == null)
+				tableType = DataTableDataType.NOMINAL;
+			else if (tableType.equals(DataTableDataType.NUMERIC))
+				tableType = DataTableDataType.HYBRID;
 		}
 
 		// rawDataType = dimension.getRawDataType();

@@ -47,7 +47,7 @@ public class ShowPathwaysByGenesItem extends AContextMenuItem {
 	 * @param david
 	 *            the int code associated with a refseq
 	 */
-	public void dataTableIDs(ATableBasedDataDomain dataDomain, IDType idType,
+	public void tableIDs(ATableBasedDataDomain dataDomain, IDType idType,
 			ArrayList<Integer> genes) {
 
 		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();

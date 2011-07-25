@@ -130,7 +130,7 @@ public class ScrollBar {
 	 * 
 	 * @param id
 	 */
-	public void dataTableID(int id) {
+	public void tableID(int id) {
 		this.id = id;
 	}
 

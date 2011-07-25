@@ -89,11 +89,11 @@ public class ClusterNode
 			return;
 		subDataTable = new SubDataTable(set, (ClusterTree) tree, this);
 		subDataTable.setLabel(label);
-		// subDataTable.setContentTree(dataTable.getContentTree());
+		// subDataTable.setContentTree(table.getContentTree());
 		// Tree<ClusterNode> subTree = tree.getSubTree();
 
 		ArrayList<Integer> dimensionIDs = this.getLeaveIds();
-		DataTableUtils.setDataTables(subDataTable, dimensionIDs);
+		DataTableUtils.setTables(subDataTable, dimensionIDs);
 	}
 
 	/**
@@ -117,18 +117,18 @@ public class ClusterNode
 	/**
 	 * Returns a metaset if this node or any of its sub-nodes contain the SubDataTable specified by the ID
 	 * 
-	 * @param dataTableID
+	 * @param tableID
 	 * @return
 	 */
-	public DataTable getSubDataTableFromSubTree(int dataTableID) {
+	public DataTable getSubDataTableFromSubTree(int tableID) {
 
-		if (subDataTable.getID() == dataTableID)
+		if (subDataTable.getID() == tableID)
 			return subDataTable;
 		else if (!this.hasChildren())
 			return null;
 		else {
 			for (ClusterNode child : getChildren()) {
-				DataTable tempSet = child.getSubDataTableFromSubTree(dataTableID);
+				DataTable tempSet = child.getSubDataTableFromSubTree(tableID);
 				if (tempSet != null)
 					return tempSet;
 			}

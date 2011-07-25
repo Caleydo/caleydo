@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Scale;
 public class LevelHighlightingAction extends ControlContribution implements IToolBarItem {
 
 	public static final String TEXT = "Hierarchy Level";
-//	public static final String ICON = "resources/icons/view/dimensionbased/clustering.png";
+//	public static final String ICON = "resources/icons/view/tablebased/clustering.png";
 	
 	public LevelHighlightingAction() {
 		super("");

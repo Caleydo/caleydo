@@ -19,15 +19,15 @@ import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.histogram.UpdateColorMappingEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.UpdateViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.treemap.LevelHighlightingEvent;
 import org.caleydo.core.manager.event.view.treemap.ToggleColoringModeEvent;
 import org.caleydo.core.manager.event.view.treemap.ToggleLabelEvent;
-import org.caleydo.core.manager.picking.PickingMode;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapper;
@@ -169,7 +169,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	public void initData() {
 		if (dataDomain == null)
 			return;
-		tree = dataDomain.getDataTable().getRecordData(recordVAType).getRecordTree();
+		tree = dataDomain.getTable().getRecordData(recordVAType).getRecordTree();
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 		int maxDepth = Integer.MAX_VALUE;
 		maxDepth = GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
@@ -298,7 +298,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 		eventPublisher.triggerEvent(event);
 
 		SelectionDelta newDelta = new SelectionDelta(treeSelectionManager.getIDType());
-		newDelta.dataTableIDType(dataDomain.getRecordIDType());
+		newDelta.tableIDType(dataDomain.getRecordIDType());
 		for (SelectionDeltaItem item : delta) {
 			ClusterNode node = tree.getNodeByNumber(item.getPrimaryID());
 			if (node.getLeafID() >= 0) {
@@ -378,7 +378,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		if (dataDomain != null) {
-			tree = dataDomain.getDataTable().getRecordData(recordVAType).getRecordTree();
+			tree = dataDomain.getTable().getRecordData(recordVAType).getRecordTree();
 			if (tree != null) {
 				treeSelectionManager = new SelectionManager(tree.getNodeIDType());
 			}

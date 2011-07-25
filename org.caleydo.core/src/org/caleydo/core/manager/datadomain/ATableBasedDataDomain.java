@@ -9,55 +9,55 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.DimensionType;
-import org.caleydo.core.data.collection.table.RecordData;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.filter.RecordFilterManager;
+import org.caleydo.core.data.collection.table.RecordData;
 import org.caleydo.core.data.filter.DimensionFilterManager;
+import org.caleydo.core.data.filter.RecordFilterManager;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.ESortingStrategy;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
-import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.SetBasedDimensionGroupData;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.DimensionGroupsChangedEvent;
-import org.caleydo.core.manager.event.data.ReplaceRecordVAEvent;
-import org.caleydo.core.manager.event.data.ReplaceRecordVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.ReplaceDimensionVAEvent;
 import org.caleydo.core.manager.event.data.ReplaceDimensionVAInUseCaseEvent;
+import org.caleydo.core.manager.event.data.ReplaceRecordVAEvent;
+import org.caleydo.core.manager.event.data.ReplaceRecordVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.RecordVAUpdateEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.DimensionVAUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.DimensionVAUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.RecordVAUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.ClustererType;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.DimensionVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.IDimensionVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.IDimensionVAUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.DimensionVAUpdateListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 
 @XmlType
@@ -155,24 +155,24 @@ public abstract class ATableBasedDataDomain
 	/**
 	 * Sets the set which is currently loaded and used inside the views for this use case.
 	 * 
-	 * @param dataTable
+	 * @param table
 	 *            The new set which replaced the currently loaded one.
 	 */
-	public void setDataTable(DataTable dataTable) {
-		assert (dataTable != null);
+	public void setTable(DataTable table) {
+		assert (table != null);
 
-		// dataTable.setDataDomain(this);
+		// table.setDataDomain(this);
 
 		DataTable oldSet = this.table;
-		this.table = dataTable;
+		this.table = table;
 		if (oldSet != null) {
 			oldSet.destroy();
 			oldSet = null;
 		}
 	}
 
-	public void addSubDataTable(DataTable dataTable) {
-		otherSubDataTables.put(dataTable.getID(), dataTable);
+	public void addSubDataTable(DataTable table) {
+		otherSubDataTables.put(table.getID(), table);
 	}
 
 	/**
@@ -181,19 +181,19 @@ public abstract class ATableBasedDataDomain
 	 * @return a data set
 	 */
 	@XmlTransient
-	public DataTable getDataTable() {
+	public DataTable getTable() {
 		return table;
 	}
 
-	public DataTable getDataTable(int dataTableID) {
-		if (table.getID() == dataTableID)
+	public DataTable getTable(int tableID) {
+		if (table.getID() == tableID)
 			return table;
 
 		ClusterNode root = table.getDimensionData(DataTable.DIMENSION).getDimensionTreeRoot();
-		DataTable set = root.getSubDataTableFromSubTree(dataTableID);
+		DataTable set = root.getSubDataTableFromSubTree(tableID);
 
 		if (set == null)
-			set = otherSubDataTables.get(dataTableID);
+			set = otherSubDataTables.get(tableID);
 		return set;
 
 	}
@@ -242,7 +242,7 @@ public abstract class ATableBasedDataDomain
 		//
 		// // Update set in the views
 		// for (IView view : alView) {
-		// view.setDataTable(set);
+		// view.setTable(set);
 		//
 
 		// TODO check
@@ -316,45 +316,45 @@ public abstract class ATableBasedDataDomain
 	 * Initiates clustering based on the parameters passed. Sends out an event to all affected views upon
 	 * positive completion to replace their VA.
 	 * 
-	 * @param dataTableID
+	 * @param tableID
 	 *            ID of the set to cluster
 	 * @param clusterState
 	 */
-	public void startClustering(int dataTableID, ClusterState clusterState) {
+	public void startClustering(int tableID, ClusterState clusterState) {
 
-		DataTable dataTable = null;
-		if (this.table.getID() == dataTableID)
-			dataTable = this.table;
+		DataTable table = null;
+		if (this.table.getID() == tableID)
+			table = this.table;
 		else
-			dataTable =
+			table =
 				this.table.getDimensionData(DataTable.DIMENSION).getDimensionTreeRoot()
-					.getSubDataTableFromSubTree(dataTableID);
+					.getSubDataTableFromSubTree(tableID);
 
 		// TODO: warning
-		if (dataTable == null)
+		if (table == null)
 			return;
 
-		dataTable.cluster(clusterState);
+		table.cluster(clusterState);
 
-		RecordData recordData = dataTable.getRecordData(DataTable.RECORD);
-		if (dataTable.containsUncertaintyData())
+		RecordData recordData = table.getRecordData(DataTable.RECORD);
+		if (table.containsUncertaintyData())
 		{
-			ClusterHelper.calculateAggregatedUncertainties(recordData.getRecordTree(), dataTable);
+			ClusterHelper.calculateAggregatedUncertainties(recordData.getRecordTree(), table);
 			ClusterHelper.calculateClusterAverages(recordData.getRecordTree(),
-				ClustererType.RECORD_CLUSTERING, dataTable);
+				ClustererType.RECORD_CLUSTERING, table);
 			recordData.getRecordTree().setSortingStrategy(ESortingStrategy.CERTAINTY);
 			recordData.updateVABasedOnSortingStrategy();
 		}
 
 		// This should be done to avoid problems with group info in HHM
 
-		eventPublisher.triggerEvent(new ReplaceRecordVAEvent(dataTable, dataDomainID, clusterState
+		eventPublisher.triggerEvent(new ReplaceRecordVAEvent(table, dataDomainID, clusterState
 			.getRecordVAType()));
-		eventPublisher.triggerEvent(new ReplaceDimensionVAEvent(dataTable, dataDomainID, DataTable.DIMENSION));
+		eventPublisher.triggerEvent(new ReplaceDimensionVAEvent(table, dataDomainID, DataTable.DIMENSION));
 
 		if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING
 			|| clusterState.getClustererType() == ClustererType.BI_CLUSTERING) {
-			((DataTable) dataTable).createSubDataTable();
+			((DataTable) table).createSubDataTable();
 		}
 	}
 
@@ -370,20 +370,20 @@ public abstract class ATableBasedDataDomain
 	 * from this class. Therefore it should not be called any time!
 	 */
 	@Override
-	public void replaceRecordVA(int dataTableID, String dataDomainType, String vaType) {
+	public void replaceRecordVA(int tableID, String dataDomainType, String vaType) {
 		throw new IllegalStateException("UseCases shouldn't react to this");
 
 	}
 
 	/**
-	 * Replace content VA for the default dataTable.
+	 * Replace content VA for the default table.
 	 */
 
 	public void replaceRecordVA(String dataDomainType, String vaType, RecordVirtualArray virtualArray) {
 
 		replaceRecordVA(table.getID(), dataDomainType, vaType, virtualArray);
 
-		// Tree<ClusterNode> dimensionTree = dataTable.getDimensionData(Set.STORAGE).getDimensionTree();
+		// Tree<ClusterNode> dimensionTree = table.getDimensionData(Set.STORAGE).getDimensionTree();
 		// if (dimensionTree == null)
 		// return;
 		// else {
@@ -397,37 +397,37 @@ public abstract class ATableBasedDataDomain
 	}
 
 	/**
-	 * Replace record VA for a specific dataTable.
+	 * Replace record VA for a specific table.
 	 * 
-	 * @param dataTableID
+	 * @param tableID
 	 * @param dataDomainType
 	 * @param vaType
 	 * @param virtualArray
 	 */
-	public void replaceRecordVA(int dataTableID, String dataDomainType, String vaType,
+	public void replaceRecordVA(int tableID, String dataDomainType, String vaType,
 		RecordVirtualArray virtualArray) {
 
 		if (dataDomainType != this.dataDomainID) {
-			handleForeignRecordVAUpdate(dataTableID, dataDomainType, vaType, virtualArray);
+			handleForeignRecordVAUpdate(tableID, dataDomainType, vaType, virtualArray);
 			return;
 		}
-		DataTable dataTable;
-		if (dataTableID == this.table.getID()) {
-			dataTable = this.table;
+		DataTable table;
+		if (tableID == this.table.getID()) {
+			table = this.table;
 		}
 		else {
-			dataTable =
+			table =
 				this.table.getDimensionData(DataTable.DIMENSION).getDimensionTreeRoot()
-					.getSubDataTableFromSubTree(dataTableID);
+					.getSubDataTableFromSubTree(tableID);
 		}
-		if (dataTable == null)
-			dataTable = otherSubDataTables.get(dataTableID);
+		if (table == null)
+			table = otherSubDataTables.get(tableID);
 
-		dataTable.setRecordVA(vaType, virtualArray.clone());
-		recordSelectionManager.setVA(dataTable.getRecordData(DataTable.RECORD).getRecordVA());
+		table.setRecordVA(vaType, virtualArray.clone());
+		recordSelectionManager.setVA(table.getRecordData(DataTable.RECORD).getRecordVA());
 
 		virtualArray.setGroupList(null);
-		eventPublisher.triggerEvent(new ReplaceRecordVAEvent(dataTable, dataDomainType, vaType));
+		eventPublisher.triggerEvent(new ReplaceRecordVAEvent(table, dataDomainType, vaType));
 	}
 
 	/**
@@ -451,7 +451,7 @@ public abstract class ATableBasedDataDomain
 		table.setDimensionVA(vaType, virtualArray);
 		dimensionSelectionManager.setVA(virtualArray);
 
-		// if (dataTable.getDimensionData(DimensionVAType.STORAGE).getDimensionTree() != null) {
+		// if (table.getDimensionData(DimensionVAType.STORAGE).getDimensionTree() != null) {
 		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
 		// public void run() {
 		// Shell shell = new Shell();
@@ -701,12 +701,12 @@ public abstract class ATableBasedDataDomain
 	 * This method is called if a record VA Update was requested, but the dataDomainType specified was not
 	 * this dataDomains type. Concrete handling can only be done in concrete dataDomains.
 	 * 
-	 * @param dataTableID
+	 * @param tableID
 	 * @param dataDomainType
 	 * @param vaType
 	 * @param virtualArray
 	 */
-	public abstract void handleForeignRecordVAUpdate(int dataTableID, String dataDomainType, String vaType,
+	public abstract void handleForeignRecordVAUpdate(int tableID, String dataDomainType, String vaType,
 		RecordVirtualArray virtualArray);
 
 	/**

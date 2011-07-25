@@ -250,7 +250,7 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 	// Vec3f detailPosition = getDetailPosition();
 	// float currentPositionY = detailPosition.y() + getDetailHeight();
 	//
-	// for (Group group : heatMapWrapper.getDataTable().getRecordVA(
+	// for (Group group : heatMapWrapper.getTable().getRecordVA(
 	// RecordVAType.CONTENT).getGroupList()) {
 	//
 	// if (!selectedGroups.containsKey(group))

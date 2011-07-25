@@ -40,7 +40,7 @@ public class LoadPathwaysByGeneItem extends AContextMenuItem {
 		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
 		loadPathwaysByGeneEvent.setSender(this);
 		loadPathwaysByGeneEvent.setGeneID(david);
-		loadPathwaysByGeneEvent.dataTableIDType(idType);
+		loadPathwaysByGeneEvent.tableIDType(idType);
 		registerEvent(loadPathwaysByGeneEvent);
 	}
 }

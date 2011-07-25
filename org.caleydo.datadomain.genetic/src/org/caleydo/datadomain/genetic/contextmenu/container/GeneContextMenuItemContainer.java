@@ -27,7 +27,7 @@ public class GeneContextMenuItemContainer extends AItemContainer {
 
 	}
 
-	public void dataTableID(IDType idType, int id) {
+	public void tableID(IDType idType, int id) {
 		Set<Integer> davids = GeneralManager.get().getIDMappingManager()
 				.getIDAsSet(idType, dataDomain.getPrimaryRecordMappingType(), id);
 		if (davids == null)

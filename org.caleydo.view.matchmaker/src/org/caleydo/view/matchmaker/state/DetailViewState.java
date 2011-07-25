@@ -15,10 +15,10 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.picking.PickingMode;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -505,9 +505,9 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 	// private void performPValueAdjustment(float pValue) {
 	//
-	// ContentVirtualArray pValueFilteredVA = heatMapWrappers.get(0).getDataTable()
+	// ContentVirtualArray pValueFilteredVA = heatMapWrappers.get(0).getTable()
 	// .getStatisticsResult().getVABasedOnTwoSidedTTestResult(
-	// heatMapWrappers.get(1).getDataTable(), pValue);
+	// heatMapWrappers.get(1).getTable(), pValue);
 	//
 	// for (Integer recordID : heatMapWrappers.get(0).getRecordVA()) {
 	//
@@ -615,7 +615,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void setDataTablesInFocus(ArrayList<DataTable> setsInFocus) {
+	public void setTablesInFocus(ArrayList<DataTable> setsInFocus) {
 
 		indexOfHeatMapWrapperWithDendrogram = -1;
 
@@ -656,7 +656,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 			for (int i = 0; i < heatMapWrappers.size(); i++) {
 				HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
-				heatMapWrapper.setDataTable(setsInFocus.get(i));
+				heatMapWrapper.setTable(setsInFocus.get(i));
 			}
 			setsChanged = true;
 			numSetsInFocus = setsInFocus.size();

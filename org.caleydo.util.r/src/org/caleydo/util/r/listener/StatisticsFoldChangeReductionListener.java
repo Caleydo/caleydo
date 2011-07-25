@@ -13,7 +13,7 @@ public class StatisticsFoldChangeReductionListener extends
 		StatisticsFoldChangeReductionEvent foldChangeReductionEvent = null;
 		if (event instanceof StatisticsFoldChangeReductionEvent) {
 			foldChangeReductionEvent = (StatisticsFoldChangeReductionEvent) event;
-			handler.foldChange(foldChangeReductionEvent.getDataTable1(), foldChangeReductionEvent.getDataTable2());
+			handler.foldChange(foldChangeReductionEvent.getTable1(), foldChangeReductionEvent.getTable2());
 		}
 	}
 }

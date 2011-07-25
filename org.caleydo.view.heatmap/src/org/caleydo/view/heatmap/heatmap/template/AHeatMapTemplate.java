@@ -6,9 +6,9 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.CaptionCageRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ContentCaptionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ContentSelectionRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.DimensionCaptionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.DimensionSelectionRenderer;
+import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.spacing.ContentSpacing;
 
 public abstract class AHeatMapTemplate extends LayoutTemplate {

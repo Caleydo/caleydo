@@ -5,8 +5,8 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.view.grouper.GrouperRenderStyle;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 
@@ -66,14 +66,14 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 
 		// gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
 
-		DataTable dataTable = groupRepresentation.getClusterNode().getSubDataTable();
-		DimensionVirtualArray dimensionVA = dataTable.getDimensionData(DataTable.DIMENSION).getDimensionVA();
+		DataTable table = groupRepresentation.getClusterNode().getSubDataTable();
+		DimensionVirtualArray dimensionVA = table.getDimensionData(DataTable.DIMENSION).getDimensionVA();
 
 		boolean isNominal = false;
 		boolean isNumerical = false;
 		for (Integer dimensionID : dimensionVA) {
 
-			if (dataTable.get(dimensionID) instanceof NominalDimension<?>) {
+			if (table.get(dimensionID) instanceof NominalDimension<?>) {
 				gl.glColor4f(116f / 255f, 196f / 255f, 118f / 255f, 1f);
 				isNominal = true;
 			} else {

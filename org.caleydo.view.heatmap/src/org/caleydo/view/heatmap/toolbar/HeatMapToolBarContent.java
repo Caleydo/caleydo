@@ -18,7 +18,7 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
  */
 public class HeatMapToolBarContent extends AToolBarContent {
 
-	public static final String IMAGE_PATH = "resources/icons/view/dimensionbased/heatmap/heatmap.png";
+	public static final String IMAGE_PATH = "resources/icons/view/tablebased/heatmap/heatmap.png";
 
 	public static final String VIEW_TITLE = "Heat Map";
 

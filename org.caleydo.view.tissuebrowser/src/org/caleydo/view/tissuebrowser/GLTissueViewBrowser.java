@@ -26,19 +26,19 @@ import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceVAEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.RecordVAUpdateEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.RecordVAUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AGLViewBrowser;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceRecordVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -270,7 +270,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	//
 	// ClinicalUseCase clinicalUseCase =
 	// (ClinicalUseCase) generalManager.getUseCase(EDataDomain.CLINICAL_DATA);
-	// DataTable clinicalSet = clinicalUseCase.getDataTable();
+	// DataTable clinicalSet = clinicalUseCase.getTable();
 	//
 	// if (clinicalSet.get(0) == null)
 	// return;
@@ -283,7 +283,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	//
 	// // for (Integer vaID : clinicalUseCase.getVA(EVAType.CONTENT))
 	// // {
-	// // dataTable.getDimensionFromVA(
+	// // table.getDimensionFromVA(
 	// // }
 	// //
 	// // for (IDimension dimension : set) {
@@ -396,7 +396,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	}
 
 	@Override
-	public void replaceRecordVA(int dataTableID, String dataDomainType, String vaType) {
+	public void replaceRecordVA(int tableID, String dataDomainType, String vaType) {
 		// if (idCategory != EIDCategory.EXPERIMENT)
 		// return;
 		// s
@@ -484,22 +484,22 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	}
 
 	private void setInfo(GLTexture tissueView, Integer experimentIndex) {
-		DimensionVirtualArray va = foreignDataDomain.getDataTable().getDimensionData(DataTable.DIMENSION)
+		DimensionVirtualArray va = foreignDataDomain.getTable().getDimensionData(DataTable.DIMENSION)
 				.getDimensionVA();
 
 		NominalDimension<String> dimension = (NominalDimension<String>) foreignDataDomain
-				.getDataTable().get(va.get(1));
+				.getTable().get(va.get(1));
 		String label = dimension.getRaw(experimentIndex);
 
 		tissueView.setInfo(label);
 	}
 
 	private void setInfo(SerializedTextureView tissueView, Integer experimentIndex) {
-		DimensionVirtualArray va = foreignDataDomain.getDataTable().getDimensionData(DataTable.DIMENSION)
+		DimensionVirtualArray va = foreignDataDomain.getTable().getDimensionData(DataTable.DIMENSION)
 				.getDimensionVA();
 
 		NominalDimension<String> dimension = (NominalDimension<String>) foreignDataDomain
-				.getDataTable().get(va.get(1));
+				.getTable().get(va.get(1));
 		String label = dimension.getRaw(experimentIndex);
 
 		tissueView.setInfo(label);

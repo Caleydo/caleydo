@@ -2,8 +2,8 @@ package org.caleydo.core.serialize;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 
 /**
@@ -39,11 +39,11 @@ public class DataDomainSerializationData {
 		this.dataDomain = dataDomain;
 	}
 
-	public byte[] getDataTableFileContent() {
+	public byte[] getTableFileContent() {
 		return setFileContent;
 	}
 
-	public void setDataTableFileContent(byte[] setFileContent) {
+	public void setTableFileContent(byte[] setFileContent) {
 		this.setFileContent = setFileContent;
 	}
 

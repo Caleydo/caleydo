@@ -37,7 +37,7 @@ public class CmdDataCreateTable
 		if (dimensionIDs.isEmpty())
 			throw new IllegalStateException("No data available for creating dimension.");
 
-		DataTableUtils.setDataTables(newSet, dimensionIDs);
+		DataTableUtils.setTables(newSet, dimensionIDs);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class CmdDataCreateTable
 		Logger.log(new Status(IStatus.INFO, this.toString(), "New Set with internal ID "
 			+ createdObject.getID() + " and external ID " + externalID + " created."));
 
-		dataDomain.setDataTable(createdObject);
+		dataDomain.setTable(createdObject);
 	}
 
 	@Override

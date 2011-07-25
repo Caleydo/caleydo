@@ -5,8 +5,8 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.ClustererType;
+import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.core.util.clusterer.ETreeClustererAlgo;
 import org.caleydo.data.loader.ResourceLoader;
@@ -47,7 +47,7 @@ public class StartClusteringDialogAction
 
 	public final static String ID = "org.caleydo.core.util.clusterer.gui.StartClusteringAction";
 	public static final String TEXT = "Clustering";
-	public static final String ICON = "resources/icons/view/dimensionbased/clustering.png";
+	public static final String ICON = "resources/icons/view/tablebased/clustering.png";
 
 	private Composite parentComposite;
 

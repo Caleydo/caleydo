@@ -23,7 +23,7 @@ public class ExportClustersItem
 	}
 
 	/**
-	 * Depending on which group info should be handled a boolean has to be dataTable. True for genes, false for
+	 * Depending on which group info should be handled a boolean has to be table. True for genes, false for
 	 * experiments
 	 * 
 	 * @param bGeneGroup

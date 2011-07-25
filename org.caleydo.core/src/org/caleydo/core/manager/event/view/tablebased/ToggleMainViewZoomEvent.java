@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.event.view.dimensionbased;
+package org.caleydo.core.manager.event.view.tablebased;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -6,13 +6,13 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event that Changes the mainview Color in the ScatterPlot.
+ * Event that en/disables the MainView zoom event in the ScatterPlot.
  * 
  * @author J�rgen Pillhofer
  */
 @XmlRootElement
 @XmlType
-public class ToggleColorModeEvent
+public class ToggleMainViewZoomEvent
 	extends AEvent {
 
 	@Override

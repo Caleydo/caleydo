@@ -46,7 +46,7 @@ public class ActivateViewListener
 				}
 
 				CompareGroupsEvent compareGroupsEvent =
-					new CompareGroupsEvent(((OpenMatchmakerViewEvent) event).getDataTablesToCompare());
+					new CompareGroupsEvent(((OpenMatchmakerViewEvent) event).getTablesToCompare());
 				compareGroupsEvent.setSender(this);
 				GeneralManager.get().getEventPublisher().triggerEvent(compareGroupsEvent);
 
@@ -55,7 +55,7 @@ public class ActivateViewListener
 					@Override
 					public void run() {
 						StartClusteringAction startClusteringAction = new StartClusteringAction();
-						startClusteringAction.setDataTables(((OpenMatchmakerViewEvent) event).getDataTablesToCompare());
+						startClusteringAction.setTables(((OpenMatchmakerViewEvent) event).getTablesToCompare());
 						startClusteringAction.run();
 					}
 				});

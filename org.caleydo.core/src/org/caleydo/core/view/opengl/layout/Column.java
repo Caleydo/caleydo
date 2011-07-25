@@ -167,7 +167,7 @@ public class Column
 			if (managingClassID != -1 && layoutID != -1) {
 				LayoutSizeCollisionEvent event = new LayoutSizeCollisionEvent();
 				event.setToBigBy(Math.abs(availableHeight));
-				event.dataTableIDs(managingClassID, layoutID);
+				event.tableIDs(managingClassID, layoutID);
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}
 

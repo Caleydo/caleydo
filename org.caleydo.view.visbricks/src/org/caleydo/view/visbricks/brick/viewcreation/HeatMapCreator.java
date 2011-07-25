@@ -42,7 +42,7 @@ public class HeatMapCreator implements IRemoteViewCreator {
 								1, 0, 1, -1, 1));
 
 		heatMap.setRemoteRenderingGLView(remoteRenderingView);
-		heatMap.setDataTable(set);
+		heatMap.setTable(set);
 		heatMap.setDataDomain(remoteRenderingView.getDataDomain());
 		heatMap.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		heatMap.initialize();

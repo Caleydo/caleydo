@@ -19,7 +19,7 @@ public class StartClusteringEvent
 
 	private ClusterState clusterState;
 
-	private Integer dataTableID;
+	private Integer tableID;
 
 	/**
 	 * default no-arg constructor
@@ -32,17 +32,17 @@ public class StartClusteringEvent
 	// this.ClusterState = state;
 	// }
 
-	public StartClusteringEvent(ClusterState state, Integer dataTableID) {
+	public StartClusteringEvent(ClusterState state, Integer tableID) {
 		this.clusterState = state;
-		this.dataTableID = dataTableID;
+		this.tableID = tableID;
 	}
 
-	public void setDataTable(Integer dataTableID) {
-		this.dataTableID = dataTableID;
+	public void setTable(Integer tableID) {
+		this.tableID = tableID;
 	}
 
-	public Integer getDataTableID() {
-		return dataTableID;
+	public Integer getTableID() {
+		return tableID;
 	}
 
 	public ClusterState getClusterState() {

@@ -4,29 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 
 public class SetBasedDimensionGroupData extends ADimensionGroupData {
 
 	private ATableBasedDataDomain dataDomain;
-	private DataTable dataTable;
+	private DataTable table;
 
-	public SetBasedDimensionGroupData(ATableBasedDataDomain dataDomain, DataTable dataTable) {
+	public SetBasedDimensionGroupData(ATableBasedDataDomain dataDomain, DataTable table) {
 		this.dataDomain = dataDomain;
-		this.dataTable = dataTable;
+		this.table = table;
 	}
 
 	@Override
 	public RecordVirtualArray getSummaryVA() {
-		return dataTable.getRecordData(DataTable.RECORD).getRecordVA();
+		return table.getRecordData(DataTable.RECORD).getRecordVA();
 	}
 
 	@Override
 	public ArrayList<RecordVirtualArray> getSegmentVAs() {
-		RecordVirtualArray recordVA = dataTable.getRecordData(DataTable.RECORD)
+		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD)
 				.getRecordVA();
 
 		if (recordVA.getGroupList() == null)
@@ -57,17 +57,17 @@ public class SetBasedDimensionGroupData extends ADimensionGroupData {
 		return dataDomain;
 	}
 
-	public void setDataTable(DataTable dataTable) {
-		this.dataTable = dataTable;
+	public void setTable(DataTable table) {
+		this.table = table;
 	}
 
-	public DataTable getDataTable() {
-		return dataTable;
+	public DataTable getTable() {
+		return table;
 	}
 
 	@Override
 	public ArrayList<Group> getGroups() {
-		RecordVirtualArray recordVA = dataTable.getRecordData(DataTable.RECORD)
+		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD)
 				.getRecordVA();
 
 		if (recordVA.getGroupList() == null)
@@ -81,13 +81,13 @@ public class SetBasedDimensionGroupData extends ADimensionGroupData {
 
 	@Override
 	public int getID() {
-		return dataTable.getID();
+		return table.getID();
 	}
 
 	@Override
 	public List<ISegmentData> getSegmentData() {
 
-		RecordVirtualArray recordVA = dataTable.getRecordData(DataTable.RECORD)
+		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD)
 				.getRecordVA();
 
 		if (recordVA.getGroupList() == null)
@@ -103,7 +103,7 @@ public class SetBasedDimensionGroupData extends ADimensionGroupData {
 			RecordVirtualArray subVA = new RecordVirtualArray("CONTENT",
 					recordVA.getVirtualArray().subList(group.getStartIndex(),
 							group.getEndIndex() + 1));
-			segmentBrickData.add(new SetBasedSegmentData(dataDomain, dataTable, subVA,
+			segmentBrickData.add(new SetBasedSegmentData(dataDomain, table, subVA,
 					group, this));
 		}
 
@@ -112,7 +112,7 @@ public class SetBasedDimensionGroupData extends ADimensionGroupData {
 
 	@Override
 	public String getLabel() {
-		return dataTable.getLabel();
+		return table.getLabel();
 	}
 
 }

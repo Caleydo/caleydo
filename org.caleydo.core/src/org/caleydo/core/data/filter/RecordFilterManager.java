@@ -3,8 +3,8 @@ package org.caleydo.core.data.filter;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.event.CombineRecordFilterEvent;
 import org.caleydo.core.data.filter.event.CombineRecordFilterListener;
-import org.caleydo.core.data.filter.event.MoveRecordtFilterEvent;
 import org.caleydo.core.data.filter.event.MoveRecordFilterListener;
+import org.caleydo.core.data.filter.event.MoveRecordtFilterEvent;
 import org.caleydo.core.data.filter.event.NewRecordFilterEvent;
 import org.caleydo.core.data.filter.event.NewRecordFilterListener;
 import org.caleydo.core.data.filter.event.ReEvaluateRecordFilterListEvent;
@@ -15,9 +15,9 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceRecordVAInUseCaseEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.RecordVAUpdateEvent;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
+import org.caleydo.core.manager.event.view.tablebased.RecordVAUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
 
 /**
  * Concrete implementation of {@link FilterManager} for {@link RecordVirtualArray}s.
@@ -36,11 +36,11 @@ public class RecordFilterManager
 	private ReEvaluateRecordFilterListListener reEvaluateContentFilterListListener;
 
 	public RecordFilterManager(ATableBasedDataDomain dataDomain) {
-		super(dataDomain, dataDomain.getDataTable().getBaseRecordVA(), new RecordFilterFactory());
+		super(dataDomain, dataDomain.getTable().getBaseRecordVA(), new RecordFilterFactory());
 	}
 
 	@Override
-	public void replaceRecordVA(int dataTableID, String dataDomainType, String vaType) {
+	public void replaceRecordVA(int tableID, String dataDomainType, String vaType) {
 		// TODO Auto-generated method stub
 
 	}

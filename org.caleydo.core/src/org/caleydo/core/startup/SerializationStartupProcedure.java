@@ -6,8 +6,8 @@ import java.util.Map.Entry;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -69,7 +69,7 @@ public class SerializationStartupProcedure
 				LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 				DataTableUtils.createDimensions(loadDataParameters);
 				
-				DataTable dataTable = DataTableUtils.createData(setBasedDataDomain);
+				DataTable table = DataTableUtils.createData(setBasedDataDomain);
 
 				HashMap<String, RecordVirtualArray> recordVAMap = dataSerializationData.getRecordVAMap();
 				for (Entry<String, RecordVirtualArray> entry : recordVAMap.entrySet()) {
@@ -81,7 +81,7 @@ public class SerializationStartupProcedure
 					setBasedDataDomain.setDimensionVirtualArray(entry.getKey(), entry.getValue());
 				}
 				// we need the VAs to be available before the tree is initialized
-				DataTableUtils.loadTrees(loadDataParameters, dataTable);
+				DataTableUtils.loadTrees(loadDataParameters, table);
 			}
 		}
 	}

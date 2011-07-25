@@ -1,9 +1,9 @@
-package org.caleydo.core.manager.event.view.dimensionbased;
+package org.caleydo.core.manager.event.view.tablebased;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
@@ -13,12 +13,16 @@ import org.caleydo.core.manager.event.AEvent;
  */
 @XmlRootElement
 @XmlType
-public class NewDimensionGroupInfoEvent
+public class NewRecordGroupInfoEvent
 	extends AEvent {
 
 	private String vaType = null;
-	private DimensionGroupList groupList = null;
+	private RecordGroupList groupList = null;
 	private boolean bDeleteTree = false;
+	private int tableID;
+
+	public NewRecordGroupInfoEvent() {
+	}
 
 	@Override
 	public boolean checkIntegrity() {
@@ -39,11 +43,11 @@ public class NewDimensionGroupInfoEvent
 		return vaType;
 	}
 
-	public void setGroupList(DimensionGroupList groupList) {
+	public void setGroupList(RecordGroupList groupList) {
 		this.groupList = groupList;
 	}
 
-	public DimensionGroupList getGroupList() {
+	public RecordGroupList getGroupList() {
 		return groupList;
 	}
 
@@ -53,6 +57,14 @@ public class NewDimensionGroupInfoEvent
 
 	public boolean isDeleteTree() {
 		return bDeleteTree;
+	}
+
+	public int getTableID() {
+		return tableID;
+	}
+
+	public void setTableID(int tableID) {
+		this.tableID = tableID;
 	}
 
 }

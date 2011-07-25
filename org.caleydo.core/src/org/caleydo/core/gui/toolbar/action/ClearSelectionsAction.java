@@ -10,7 +10,7 @@ public class ClearSelectionsAction
 	extends AToolBarAction {
 
 	public static final String TEXT = "Clear all selections";
-	public static final String ICON = "resources/icons/view/dimensionbased/clear_selections.png";
+	public static final String ICON = "resources/icons/view/tablebased/clear_selections.png";
 
 	public ClearSelectionsAction() {
 		setText(TEXT);

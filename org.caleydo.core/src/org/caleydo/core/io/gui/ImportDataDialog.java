@@ -87,7 +87,7 @@ public class ImportDataDialog
 
 	private ATableBasedDataDomain dataDomain = null;
 
-	// FIXME: this is never set to false. for loading general data this needs to be dataTable.
+	// FIXME: this is never set to false. for loading general data this needs to be table.
 	private boolean isGenetic = true;
 
 	public ImportDataDialog(Shell parentShell) {

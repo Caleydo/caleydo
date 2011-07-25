@@ -8,18 +8,18 @@ import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.ManagedObjectType;
-import org.caleydo.core.data.selection.RecordSelectionManager;
+import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.gui.util.LabelEditorDialog;
 import org.caleydo.core.manager.GeneralManager;
@@ -29,17 +29,17 @@ import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.ReplaceRecordVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.IDimensionVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.IDimensionVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceRecordVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
@@ -122,7 +122,7 @@ public class TabularDataView extends ASWTView implements
 
 	protected ATableBasedDataDomain dataDomain;
 
-	protected DataTable dataTable;
+	protected DataTable table;
 
 	/**
 	 * Constructor.
@@ -143,12 +143,12 @@ public class TabularDataView extends ASWTView implements
 
 	public void initData() {
 
-		dataTable = dataDomain.getDataTable();
+		table = dataDomain.getTable();
 
 		contentSelectionManager = dataDomain.getRecordSelectionManager();
 		dimensionSelectionManager = dataDomain.getDimensionSelectionManager();
 
-		if (dataTable == null) {
+		if (table == null) {
 			contentSelectionManager.resetSelectionManager();
 			dimensionSelectionManager.resetSelectionManager();
 			return;
@@ -315,7 +315,7 @@ public class TabularDataView extends ASWTView implements
 
 		for (final Integer iDimensionIndex : dimensionVA) {
 			final TableColumn col = new TableColumn(contentTable, SWT.NONE);
-			col.setText(dataTable.get(iDimensionIndex).getLabel());
+			col.setText(table.get(iDimensionIndex).getLabel());
 			col.setWidth(120);
 			col.setMoveable(true);
 
@@ -324,10 +324,10 @@ public class TabularDataView extends ASWTView implements
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					LabelEditorDialog dialog = new LabelEditorDialog(new Shell());
-					String sLabel = dialog.open(dataTable.get(iDimensionIndex).getLabel());
+					String sLabel = dialog.open(table.get(iDimensionIndex).getLabel());
 
 					if (sLabel != null && !sLabel.isEmpty()) {
-						dataTable.get(iDimensionIndex).setLabel(sLabel);
+						table.get(iDimensionIndex).setLabel(sLabel);
 						contentTable.getColumn(iDimensionIndex + 3).setText(sLabel);
 						RedrawViewEvent event = new RedrawViewEvent();
 						event.setSender(this);
@@ -348,7 +348,7 @@ public class TabularDataView extends ASWTView implements
 
 			int i = 3;
 			for (Integer iDimensionIndex : dimensionVA) {
-				fValue = dataTable.get(iDimensionIndex).getFloat(DataRepresentation.RAW,
+				fValue = table.get(iDimensionIndex).getFloat(DataRepresentation.RAW,
 						recordIndex);
 
 				item.setText(i++, Float.toString(fValue));
@@ -426,12 +426,12 @@ public class TabularDataView extends ASWTView implements
 			@Override
 			public void run() {
 				TableColumn column = new TableColumn(contentTable, SWT.NONE, index);
-				ADimension dimension = dataTable.get(dimensionNumber);
+				ADimension dimension = table.get(dimensionNumber);
 				column.setText(dimension.getLabel());
 				TableItem[] items = contentTable.getItems();
 				for (int i = 0; i < items.length; i++) {
 					TableItem item = items[i];
-					float value = dataTable.get(dimensionNumber).getFloat(
+					float value = table.get(dimensionNumber).getFloat(
 							DataRepresentation.RAW, recordVA.get(i));
 					item.setText(index, Float.toString(value));
 
@@ -632,7 +632,7 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void replaceRecordVA(int dataTableID, String dataDomainType, String vaType) {
+	public void replaceRecordVA(int tableID, String dataDomainType, String vaType) {
 
 		recordVA = dataDomain.getRecordVA(vaType);
 

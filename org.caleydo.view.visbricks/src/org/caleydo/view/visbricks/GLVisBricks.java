@@ -21,8 +21,8 @@ import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
@@ -31,11 +31,11 @@ import org.caleydo.core.manager.event.data.NewSubDataTablesEvent;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.DataDomainsChangedEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.ConnectionsModeEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.ConnectionsModeEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
@@ -43,7 +43,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.GLMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -1234,7 +1233,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 										1, 0, 1, -1, 1));
 
 				// dimensionGroup.setDataDomain(dataDomain);
-				// dimensionGroup.setDataTable(set);
+				// dimensionGroup.setTable(set);
 				dimensionGroup.setBrickDimensionGroupData(brickDimensionGroupData);
 				dimensionGroup.setRemoteRenderingGLView(this);
 				dimensionGroup.setVisBricks(this);
@@ -1256,7 +1255,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	public void subDataTablesUpdated() {
 
-		// ClusterTree dimensionTree = dataDomain.getDataTable()
+		// ClusterTree dimensionTree = dataDomain.getTable()
 		// .getDimensionData(dimensionVAType).getDimensionTree();
 		// if (dimensionTree == null)
 		// return;
@@ -1269,7 +1268,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		//
 		// for (DataTable subDataTable : allSubDataTables) {
 		// if (subDataTable.size() > 1
-		// && subDataTable.size() != dataDomain.getDataTable().size())
+		// && subDataTable.size() != dataDomain.getTable().size())
 		// filteredSubDataTables.add(subDataTable);
 		// }
 		// initializeBricks(filteredSubDataTables);
@@ -1285,7 +1284,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	// .iterator();
 	// while (dimensionGroupIterator.hasNext()) {
 	// DimensionGroup dimensionGroup = dimensionGroupIterator.next();
-	// DataTable subDataTable = dimensionGroup.getDataTable();
+	// DataTable subDataTable = dimensionGroup.getTable();
 	// if (!subDataTables.contains(subDataTable)) {
 	// dimensionGroupIterator.remove();
 	// } else {
@@ -1307,7 +1306,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	// 0, 1, 0, 1, -1, 1));
 	//
 	// dimensionGroup.setDataDomain(dataDomain);
-	// dimensionGroup.setDataTable(set);
+	// dimensionGroup.setTable(set);
 	// dimensionGroup.setRemoteRenderingGLView(this);
 	// dimensionGroup.setVisBricks(this);
 	// dimensionGroup.setVisBricksView(this);
@@ -1327,28 +1326,28 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	// // getParentGLCanvas(),
 	// // new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
 	// // -1, 1));
-	// // binGroup.dataTableIDTypes(dataDomain.getContentIDType(),
+	// // binGroup.tableIDTypes(dataDomain.getContentIDType(),
 	// // IDType.getIDType("GO_CC"));
 	// // binGroup.setDataDomain(dataDomain);
 	// //
-	// // // SubDataTable subDataTable = new SubDataTable(dataDomain.getDataTable(), null, null);
+	// // // SubDataTable subDataTable = new SubDataTable(dataDomain.getTable(), null, null);
 	// // Set set = new Set(dataDomain);
-	// // dataTable.setRecordVA(Set.CONTENT, dataDomain.getRecordVA(Set.CONTENT));
-	// // dataTable.setLabel("Chromosome");
-	// // // subDataTable.setContentTree(dataTable.getContentTree());
+	// // table.setRecordVA(Set.CONTENT, dataDomain.getRecordVA(Set.CONTENT));
+	// // table.setLabel("Chromosome");
+	// // // subDataTable.setContentTree(table.getContentTree());
 	// // // Tree<ClusterNode> subTree = tree.getSubTree();
 	// //
 	// // // ArrayList<Integer> dimensionIDs = new ArrayList<Integer>();
 	// // // SetUtils.setDimensions(set, dimensionIDs);
 	// //
 	// // dataDomain.addSubDataTable(set);
-	// // binGroup.setDataTable(set);
+	// // binGroup.setTable(set);
 	// // binGroup.setRemoteRenderingGLView(this);
 	// // binGroup.setVisBricks(this);
 	// // binGroup.setVisBricksView(this);
 	// // binGroup.initialize();
 	// //
-	// // relationAnalyzer.replaceRecordVA(dataTable.getID(),
+	// // relationAnalyzer.replaceRecordVA(table.getID(),
 	// // dataDomain.getDataDomainType(),
 	// // Set.CONTENT);
 	// //
@@ -1368,28 +1367,28 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	// // -1, 1));
 	// //
 	// // set = new Set(dataDomain);
-	// // dataTable.setRecordVA(Set.CONTENT, dataDomain.getRecordVA(Set.CONTENT));
-	// // dataTable.setLabel("Compartment");
-	// // binGroup.dataTableIDTypes(dataDomain.getContentIDType(),
+	// // table.setRecordVA(Set.CONTENT, dataDomain.getRecordVA(Set.CONTENT));
+	// // table.setLabel("Compartment");
+	// // binGroup.tableIDTypes(dataDomain.getContentIDType(),
 	// // IDType.getIDType("GO_CC"));
 	// // binGroup.setDataDomain(dataDomain);
 	// //
-	// // // SubDataTable subDataTable = new SubDataTable(dataDomain.getDataTable(), null, null);
+	// // // SubDataTable subDataTable = new SubDataTable(dataDomain.getTable(), null, null);
 	// //
-	// // // subDataTable.setContentTree(dataTable.getContentTree());
+	// // // subDataTable.setContentTree(table.getContentTree());
 	// // // Tree<ClusterNode> subTree = tree.getSubTree();
 	// //
 	// // // ArrayList<Integer> dimensionIDs = new ArrayList<Integer>();
 	// // // SetUtils.setDimensions(set, dimensionIDs);
 	// //
 	// // dataDomain.addSubDataTable(set);
-	// // binGroup.setDataTable(set);
+	// // binGroup.setTable(set);
 	// // binGroup.setRemoteRenderingGLView(this);
 	// // binGroup.setVisBricks(this);
 	// // binGroup.setVisBricksView(this);
 	// // binGroup.initialize();
 	// //
-	// // relationAnalyzer.replaceRecordVA(dataTable.getID(),
+	// // relationAnalyzer.replaceRecordVA(table.getID(),
 	// // dataDomain.getDataDomainType(),
 	// // Set.CONTENT);
 	// //

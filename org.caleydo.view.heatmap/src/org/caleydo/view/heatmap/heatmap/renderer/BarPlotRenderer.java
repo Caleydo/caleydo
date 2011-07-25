@@ -68,7 +68,7 @@ public class BarPlotRenderer extends AContentRenderer {
 				.getMultiLevelUncertainty();
 
 		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
-		DataTable set = heatMap.getDataTable();
+		DataTable set = heatMap.getTable();
 		if (set == null)
 			return;
 

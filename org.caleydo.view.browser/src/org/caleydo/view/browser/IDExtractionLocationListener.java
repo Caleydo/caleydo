@@ -106,7 +106,7 @@ public class IDExtractionLocationListener extends LocationAdapter {
 
 		// TODO reimplement
 		// Selection tmpSelectionSet = (Selection)
-		// generalManager.getDataTableManager().getItem(
+		// generalManager.getTableManager().getItem(
 		// iSelectionSetId);
 		// tmpSelectionSet.updateSelectionSet(iBrowserId, iAlSelectionId,
 		// iAlSelectionDepth,

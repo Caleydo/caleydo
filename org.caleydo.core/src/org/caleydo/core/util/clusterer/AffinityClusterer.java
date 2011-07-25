@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
@@ -83,11 +83,11 @@ public class AffinityClusterer
 	/**
 	 * Calculates the similarity vector for a given set and given VAs
 	 * 
-	 * @param dataTable
+	 * @param table
 	 * @param clusterState
 	 * @return in case of error a negative value will be returned.
 	 */
-	private int determineSimilarities(DataTable dataTable, ClusterState clusterState) {
+	private int determineSimilarities(DataTable table, ClusterState clusterState) {
 
 		RecordVirtualArray recordVA = clusterState.getRecordVA();
 		DimensionVirtualArray dimensionVA = clusterState.getDimensionVA();
@@ -130,7 +130,7 @@ public class AffinityClusterer
 					isto = 0;
 					for (Integer iDimensionIndex1 : dimensionVA) {
 						dArInstance1[isto] =
-							dataTable.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, recordIndex1);
+							table.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, recordIndex1);
 						isto++;
 					}
 
@@ -140,7 +140,7 @@ public class AffinityClusterer
 						isto = 0;
 						for (Integer iDimensionIndex2 : dimensionVA) {
 							dArInstance2[isto] =
-								dataTable.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
+								table.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
 									recordIndex2);
 							isto++;
 						}
@@ -200,7 +200,7 @@ public class AffinityClusterer
 					icnt = 0;
 					for (Integer recordIndex1 : recordVA) {
 						dArInstance1[icnt] =
-							dataTable.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, recordIndex1);
+							table.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, recordIndex1);
 						icnt++;
 					}
 
@@ -210,7 +210,7 @@ public class AffinityClusterer
 						icnt = 0;
 						for (Integer recordIndex2 : recordVA) {
 							dArInstance2[icnt] =
-								dataTable.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
+								table.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
 									recordIndex2);
 							icnt++;
 						}
@@ -517,9 +517,9 @@ public class AffinityClusterer
 
 		// IVirtualArray virtualArray = null;
 		// if (eClustererType == EClustererType.GENE_CLUSTERING)
-		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdContent).getVAType(), dataTable.depth(), indexes);
+		// virtualArray = new VirtualArray(table.getVA(iVAIdContent).getVAType(), table.depth(), indexes);
 		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdDimension).getVAType(), dataTable.size(), indexes);
+		// virtualArray = new VirtualArray(table.getVA(iVAIdDimension).getVAType(), table.size(), indexes);
 
 	}
 

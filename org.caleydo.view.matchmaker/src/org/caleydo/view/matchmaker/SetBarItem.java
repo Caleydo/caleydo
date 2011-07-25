@@ -10,8 +10,8 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
@@ -30,7 +30,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 	private static final float VERTICAL_TEXT_PADDING_PORTION = 0.7f;
 	private static final String TEXT_FOR_HEIGHT_CALCULATION = "Text without characters below the bottom textline";
 
-	private DataTable dataTable;
+	private DataTable table;
 	private Vec3f position;
 	private float height;
 	private float width;
@@ -68,7 +68,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 		gl.glPopName();
 
 		float fontScaling = determineFontScaling();
-		String caption = getTruncatedCaption(dataTable.getLabel(), fontScaling);
+		String caption = getTruncatedCaption(table.getLabel(), fontScaling);
 		Vec3f textPosition = calculateTextPosition(caption, fontScaling);
 
 		textRenderer.setColor(0, 0, 0, 1);
@@ -158,12 +158,12 @@ public class SetBarItem implements IDraggable, IDropArea {
 				+ (VERTICAL_TEXT_PADDING_PORTION / 2.0f * height), position.z() + 0.1f);
 	}
 
-	public DataTable getDataTable() {
-		return dataTable;
+	public DataTable getTable() {
+		return table;
 	}
 
-	public void setDataTable(DataTable dataTable) {
-		this.dataTable = dataTable;
+	public void setTable(DataTable table) {
+		this.table = table;
 	}
 
 	public Vec3f getPosition() {
@@ -277,7 +277,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 		return id;
 	}
 
-	public void dataTableID(int id) {
+	public void tableID(int id) {
 		this.id = id;
 	}
 

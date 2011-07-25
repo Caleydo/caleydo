@@ -8,13 +8,13 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -28,7 +28,7 @@ public class HeatMapOverview {
 	private AHeatMapLayout layout;
 	private VerticalSlider slider;
 	private ArrayList<ArrayList<Texture>> overviewTextures;
-	private DataTable dataTable;
+	private DataTable table;
 	private RecordVirtualArray recordVA;
 	private DimensionVirtualArray dimensionVA;
 	private HashMap<Group, Boolean> selectedGroups;
@@ -234,10 +234,10 @@ public class HeatMapOverview {
 		slider.handleSliderSelection(pickingType, pickingMode);
 	}
 
-	public void setDataTable(DataTable dataTable) {
-		this.dataTable = dataTable;
-		recordVA = dataTable.getRecordData(DataTable.RECORD).getRecordVA();
-		dimensionVA = dataTable.getDimensionData(DataTable.DIMENSION).getDimensionVA();
+	public void setTable(DataTable table) {
+		this.table = table;
+		recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
+		dimensionVA = table.getDimensionData(DataTable.DIMENSION).getDimensionVA();
 
 		updateHeatMapTextures(null);
 	}
@@ -269,7 +269,7 @@ public class HeatMapOverview {
 					break;
 				clusterVA.append(recordVA.get(i));
 			}
-			overviewTextures.add(HeatMapUtil.createHeatMapTextures(dataTable, clusterVA,
+			overviewTextures.add(HeatMapUtil.createHeatMapTextures(table, clusterVA,
 					dimensionVA, contentSelectionManager));
 		}
 	}

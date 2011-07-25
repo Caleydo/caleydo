@@ -68,7 +68,7 @@ public abstract class AView
 		SelectionCommandEvent event = new SelectionCommandEvent();
 		event.setSender(this);
 		event.setSelectionCommand(command);
-		event.dataTableIDCategory(genomeType.getIDCategory());
+		event.tableIDCategory(genomeType.getIDCategory());
 		eventPublisher.triggerEvent(event);
 	}
 

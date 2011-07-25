@@ -181,7 +181,7 @@ public class LookupTableLoader
 				}
 				catch (NoSuchElementException nsee) {
 					/*
-					 * no ABORT was dataTable. since no more tokens are in ParserTokenHandler skip rest of line..
+					 * no ABORT was table. since no more tokens are in ParserTokenHandler skip rest of line..
 					 */
 					bMaintainLoop = false;
 

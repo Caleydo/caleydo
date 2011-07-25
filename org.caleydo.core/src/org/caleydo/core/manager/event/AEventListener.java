@@ -7,7 +7,7 @@ package org.caleydo.core.manager.event;
  * within the event system.
  * </p>
  * <p>
- * Optionally, a listener can have a dataDomainType dataTable. As a consequence, it will receive only those events
+ * Optionally, a listener can have a dataDomainType table. As a consequence, it will receive only those events
  * that are of the same dataDomainType or have no dataDomainType specified.
  * </p>
  * <p>
@@ -43,7 +43,7 @@ public abstract class AEventListener<T extends IListenerOwner> {
 	 * Sets the related handler object to this listener. Usually listeners are created by its handler object.
 	 * 
 	 * @param handler
-	 *            related handler object to dataTable.
+	 *            related handler object to table.
 	 */
 	public void setHandler(T handler) {
 		this.handler = handler;

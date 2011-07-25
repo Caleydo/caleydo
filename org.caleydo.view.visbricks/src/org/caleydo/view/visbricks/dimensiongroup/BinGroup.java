@@ -28,7 +28,7 @@ public class BinGroup extends DimensionGroup {
 	
 
 
-	public void dataTableIDTypes(IDType recordIDType, IDType binnigIDType) {
+	public void tableIDTypes(IDType recordIDType, IDType binnigIDType) {
 		this.recordIDType = recordIDType;
 		this.binnigIDType = binnigIDType;
 	}
@@ -37,7 +37,7 @@ public class BinGroup extends DimensionGroup {
 	public void initialize() {
 
 		super.initialize();
-//		ContentVirtualArray originalRecordVA = dataTable.getContentData(Set.CONTENT).getRecordVA();
+//		ContentVirtualArray originalRecordVA = table.getContentData(Set.CONTENT).getRecordVA();
 //		binning = new IDBasedBinning();
 //		HashMap<String, ArrayList<Integer>> bin = binning.getBinning(recordIDType,
 //				binnigIDType, originalRecordVA);
@@ -53,10 +53,10 @@ public class BinGroup extends DimensionGroup {
 //
 //		}
 //		newRecordVA.setGroupList(groupList);
-//		dataTable.setRecordVA(Set.CONTENT, newRecordVA);
+//		table.setRecordVA(Set.CONTENT, newRecordVA);
 		
 		
-//		replaceRecordVA(dataTable.getID(), dataDomain.getDataDomainType(), Set.CONTENT);
+//		replaceRecordVA(table.getID(), dataDomain.getDataDomainType(), Set.CONTENT);
 //		ReplaceRecordVAInUseCaseEvent event = new ReplaceRecordVAInUseCaseEvent(set,
 //				dataDomain.getDataDomainType(), Set.CONTENT, newRecordVA);
 		// event.setVirtualArray(contentVirtualArray);
@@ -65,14 +65,14 @@ public class BinGroup extends DimensionGroup {
 
 //		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
-		// replaceRecordVA(dataTable.getID(),
-		// dataTable.getDataDomain().getDataDomainType(),
+		// replaceRecordVA(table.getID(),
+		// table.getDataDomain().getDataDomainType(),
 		// Set.CONTENT);
 
 	}
 
 	// @Override
-	// public void replaceRecordVA(int dataTableID, String dataDomainType, String
+	// public void replaceRecordVA(int tableID, String dataDomainType, String
 	// vaType) {
 	//
 	// topCol.clear();

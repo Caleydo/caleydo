@@ -69,7 +69,7 @@ public class RelationAnalyzer {
 //	}
 
 	
-	public synchronized void updateRelations(int dataTableID, RecordVirtualArray recordVA) {
+	public synchronized void updateRelations(int tableID, RecordVirtualArray recordVA) {
 
 //		try {
 //			Thread.sleep(1000);
@@ -79,20 +79,20 @@ public class RelationAnalyzer {
 //			e.printStackTrace();
 //		}
 //		
-//		DataTable set = dataDomain.getDataTable(dataTableID);
-//		ContentVirtualArray recordVA = dataTable.getContentData(Set.CONTENT).getRecordVA();
+//		DataTable set = dataDomain.getTable(tableID);
+//		ContentVirtualArray recordVA = table.getContentData(Set.CONTENT).getRecordVA();
 
 		// if this thing does not exist yet, we create it here, else we replace the pre-existing one
-		SimilarityMap currentMap = new SimilarityMap(dataTableID, recordVA);
+		SimilarityMap currentMap = new SimilarityMap(tableID, recordVA);
 
 		for (Entry<Integer, SimilarityMap> entry : hashSimilarityMaps.entrySet()) {
-			if (entry.getKey() == dataTableID)
+			if (entry.getKey() == tableID)
 				continue;
 			VASimilarity<RecordVirtualArray, RecordGroupList> similarity =
-				entry.getValue().calculateVASimilarity(dataTableID, recordVA);
+				entry.getValue().calculateVASimilarity(tableID, recordVA);
 			currentMap.setVaSimilarity(similarity);
 		}
-		hashSimilarityMaps.put(dataTableID, currentMap);
+		hashSimilarityMaps.put(tableID, currentMap);
 		RelationsUpdatedEvent event = new RelationsUpdatedEvent();
 //		event.setDataDomainType(dataDomain.getDataDomainType());
 		event.setSender(this);
@@ -100,13 +100,13 @@ public class RelationAnalyzer {
 	}
 
 	/**
-	 * Returns the similarity map for a specific dataTable.
+	 * Returns the similarity map for a specific table.
 	 * 
-	 * @param dataTableID
+	 * @param tableID
 	 *            The id of the set
 	 * @return the similarity map with info on all relations to other registered meta sets
 	 */
-	public synchronized SimilarityMap getSimilarityMap(Integer dataTableID) {
-		return hashSimilarityMaps.get(dataTableID);
+	public synchronized SimilarityMap getSimilarityMap(Integer tableID) {
+		return hashSimilarityMaps.get(tableID);
 	}
 }

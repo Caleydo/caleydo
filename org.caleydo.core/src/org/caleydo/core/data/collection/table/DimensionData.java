@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**

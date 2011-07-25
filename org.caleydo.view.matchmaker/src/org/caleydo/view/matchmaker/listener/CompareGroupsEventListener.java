@@ -11,7 +11,7 @@ public class CompareGroupsEventListener extends AEventListener<GLMatchmaker> {
 	public void handleEvent(AEvent event) {
 		if (event instanceof CompareGroupsEvent) {
 
-			handler.setDataTablesToCompare(((CompareGroupsEvent) event).getDataTables());
+			handler.setTablesToCompare(((CompareGroupsEvent) event).getTables());
 		}
 	}
 }

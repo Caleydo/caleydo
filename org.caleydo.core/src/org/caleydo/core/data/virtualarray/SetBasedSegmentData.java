@@ -10,13 +10,13 @@ public class SetBasedSegmentData implements ISegmentData {
 	private ATableBasedDataDomain dataDomain;
 	private RecordVirtualArray recordVA;
 	private Group group;
-	private DataTable dataTable;
+	private DataTable table;
 	private SetBasedDimensionGroupData dimensionGroupData;
 
-	public SetBasedSegmentData(ATableBasedDataDomain dataDomain, DataTable dataTable,
+	public SetBasedSegmentData(ATableBasedDataDomain dataDomain, DataTable table,
 			RecordVirtualArray recordVA, Group group,
 			SetBasedDimensionGroupData dimensionGroupData) {
-		this.dataTable = dataTable;
+		this.table = table;
 		this.dataDomain = dataDomain;
 		this.recordVA = recordVA;
 		this.group = group;
@@ -43,11 +43,11 @@ public class SetBasedSegmentData implements ISegmentData {
 
 	@Override
 	public String getLabel() {
-		return "Group " + group.getGroupID() + " in " + dataTable.getLabel();
+		return "Group " + group.getGroupID() + " in " + table.getLabel();
 	}
 
-	public DataTable getDataTable() {
-		return dataTable;
+	public DataTable getTable() {
+		return table;
 	}
 
 }

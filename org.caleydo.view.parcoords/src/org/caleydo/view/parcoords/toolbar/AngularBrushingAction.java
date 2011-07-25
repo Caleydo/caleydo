@@ -3,7 +3,7 @@ package org.caleydo.view.parcoords.toolbar;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.action.AToolBarAction;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.dimensionbased.AngularBrushingEvent;
+import org.caleydo.core.manager.event.view.tablebased.AngularBrushingEvent;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
@@ -12,7 +12,7 @@ public class AngularBrushingAction
 	extends AToolBarAction
 	implements IToolBarItem {
 	public static final String TEXT = "Set angular brush";
-	public static final String ICON = "resources/icons/view/dimensionbased/parcoords/angular_brush.png";
+	public static final String ICON = "resources/icons/view/tablebased/parcoords/angular_brush.png";
 
 	/**
 	 * Constructor.

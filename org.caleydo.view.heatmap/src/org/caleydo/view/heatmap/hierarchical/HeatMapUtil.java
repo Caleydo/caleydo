@@ -13,12 +13,12 @@ import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.picking.PickingType;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -34,7 +34,7 @@ public class HeatMapUtil {
 
 	public static int MAX_SAMPLES_PER_TEXTURE = 2000;
 
-	public static ArrayList<Texture> createHeatMapTextures(DataTable dataTable,
+	public static ArrayList<Texture> createHeatMapTextures(DataTable table,
 			RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA,
 			RecordSelectionManager contentSelectionManager) {
 
@@ -69,7 +69,7 @@ public class HeatMapUtil {
 								recordIndex)) {
 					fOpacity = 0.3f;
 				}
-				ADimension dimension = dataTable.get(dimensionIndex);
+				ADimension dimension = table.get(dimensionIndex);
 				float fLookupValue = dimension.getFloat(DataRepresentation.NORMALIZED,
 						recordIndex);
 

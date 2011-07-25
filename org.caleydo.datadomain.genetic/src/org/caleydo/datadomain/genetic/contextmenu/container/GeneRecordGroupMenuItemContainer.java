@@ -14,7 +14,7 @@ public class GeneRecordGroupMenuItemContainer extends AItemContainer {
 
 	public void setGeneIDs(IDType idType, ArrayList<Integer> genes) {
 		ShowPathwaysByGenesItem pathwaysItem = new ShowPathwaysByGenesItem();
-		pathwaysItem.dataTableIDs(dataDomain, idType, genes);
+		pathwaysItem.tableIDs(dataDomain, idType, genes);
 		addContextMenuItem(pathwaysItem);
 	}
 

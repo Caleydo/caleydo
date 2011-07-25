@@ -342,7 +342,7 @@ public class HandleBoxManip extends Manip {
 				dragState = TRANSLATE;
 				dragPlane.setPoint(hit.intPt.getIntersectionPoint());
 				dragPlane.setNormal(face.normal);
-				dragOffdataTable.sub(translation, hit.intPt.getIntersectionPoint());
+				dragOfftable.sub(translation, hit.intPt.getIntersectionPoint());
 				for (int j = 0; j < 4; j++) {
 					face.lineSegs[j].highlight();
 					draggedGeometry.add(face.lineSegs[j]);
@@ -434,7 +434,7 @@ public class HandleBoxManip extends Manip {
 					Vec2f foo = new Vec2f();
 					scaleAxisPlane.projectPoint(translation, newOrigin, foo);
 					scaleAxisPlane.setOrigin(newOrigin);
-					scaleAxisOffdataTable.sub(hit.intPt.getIntersectionPoint(),
+					scaleAxisOfftable.sub(hit.intPt.getIntersectionPoint(),
 							newOrigin);
 					// Now project intersection point onto plane
 					Vec3f bar = new Vec3f();
@@ -839,21 +839,21 @@ public class HandleBoxManip extends Manip {
 		ManipPartLineSeg lineSeg = new ManipPartLineSeg();
 		xform.addChild(lineSeg);
 		Mat4f offset = new Mat4f();
-		offdataTable.makeIdent();
+		offtable.makeIdent();
 		Vec3f zAxis = new Vec3f();
 		zAxis.cross(xAxis, yAxis);
-		offdataTable.set(0, 0, xAxis.x());
-		offdataTable.set(1, 0, xAxis.y());
-		offdataTable.set(2, 0, xAxis.z());
-		offdataTable.set(0, 1, yAxis.x());
-		offdataTable.set(1, 1, yAxis.y());
-		offdataTable.set(2, 1, yAxis.z());
-		offdataTable.set(0, 2, zAxis.x());
-		offdataTable.set(1, 2, zAxis.y());
-		offdataTable.set(2, 2, zAxis.z());
-		offdataTable.set(0, 3, translation.x());
-		offdataTable.set(1, 3, translation.y());
-		offdataTable.set(2, 3, translation.z());
+		offtable.set(0, 0, xAxis.x());
+		offtable.set(1, 0, xAxis.y());
+		offtable.set(2, 0, xAxis.z());
+		offtable.set(0, 1, yAxis.x());
+		offtable.set(1, 1, yAxis.y());
+		offtable.set(2, 1, yAxis.z());
+		offtable.set(0, 2, zAxis.x());
+		offtable.set(1, 2, zAxis.y());
+		offtable.set(2, 2, zAxis.z());
+		offtable.set(0, 3, translation.x());
+		offtable.set(1, 3, translation.y());
+		offtable.set(2, 3, translation.z());
 		xform.setOffsetTransform(offset);
 		return xform;
 	}
@@ -864,21 +864,21 @@ public class HandleBoxManip extends Manip {
 		square.setVisible(false);
 		xform.addChild(square);
 		Mat4f offset = new Mat4f();
-		offdataTable.makeIdent();
+		offtable.makeIdent();
 		Vec3f right = new Vec3f();
 		right.cross(up, normal);
-		offdataTable.set(0, 0, right.x());
-		offdataTable.set(1, 0, right.y());
-		offdataTable.set(2, 0, right.z());
-		offdataTable.set(0, 1, up.x());
-		offdataTable.set(1, 1, up.y());
-		offdataTable.set(2, 1, up.z());
-		offdataTable.set(0, 2, normal.x());
-		offdataTable.set(1, 2, normal.y());
-		offdataTable.set(2, 2, normal.z());
-		offdataTable.set(0, 3, translation.x());
-		offdataTable.set(1, 3, translation.y());
-		offdataTable.set(2, 3, translation.z());
+		offtable.set(0, 0, right.x());
+		offtable.set(1, 0, right.y());
+		offtable.set(2, 0, right.z());
+		offtable.set(0, 1, up.x());
+		offtable.set(1, 1, up.y());
+		offtable.set(2, 1, up.z());
+		offtable.set(0, 2, normal.x());
+		offtable.set(1, 2, normal.y());
+		offtable.set(2, 2, normal.z());
+		offtable.set(0, 3, translation.x());
+		offtable.set(1, 3, translation.y());
+		offtable.set(2, 3, translation.z());
 		xform.setOffsetTransform(offset);
 		return xform;
 	}
@@ -886,13 +886,13 @@ public class HandleBoxManip extends Manip {
 	private ManipPart createRotateHandle(Vec3f direction) {
 		ManipPartCube handle = new ManipPartCube();
 		Mat4f offset = new Mat4f();
-		offdataTable.makeIdent();
-		offdataTable.set(0, 0, 0.1f);
-		offdataTable.set(1, 1, 0.1f);
-		offdataTable.set(2, 2, 0.1f);
+		offtable.makeIdent();
+		offtable.set(0, 0, 0.1f);
+		offtable.set(1, 1, 0.1f);
+		offtable.set(2, 2, 0.1f);
 		Vec3f scaledDirection = new Vec3f(direction);
 		scaledDirection.scale(2.0f);
-		offdataTable.setTranslation(scaledDirection);
+		offtable.setTranslation(scaledDirection);
 		ManipPartTransform xform = new ManipPartTransform();
 		xform.addChild(handle);
 		xform.setOffsetTransform(offset);
@@ -902,11 +902,11 @@ public class HandleBoxManip extends Manip {
 	private ManipPart createScaleHandle(Vec3f position) {
 		ManipPartCube handle = new ManipPartCube();
 		Mat4f offset = new Mat4f();
-		offdataTable.makeIdent();
-		offdataTable.set(0, 0, 0.1f);
-		offdataTable.set(1, 1, 0.1f);
-		offdataTable.set(2, 2, 0.1f);
-		offdataTable.setTranslation(position);
+		offtable.makeIdent();
+		offtable.set(0, 0, 0.1f);
+		offtable.set(1, 1, 0.1f);
+		offtable.set(2, 2, 0.1f);
+		offtable.setTranslation(position);
 		ManipPartTransform xform = new ManipPartTransform();
 		xform.addChild(handle);
 		xform.setOffsetTransform(offset);

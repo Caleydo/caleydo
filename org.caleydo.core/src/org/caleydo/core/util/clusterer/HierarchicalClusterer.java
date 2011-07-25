@@ -27,7 +27,7 @@ public class HierarchicalClusterer
 		clusterer = new Cobweb();
 	}
 
-	private TempResult cluster(DataTable dataTable, ClusterState clusterState) {
+	private TempResult cluster(DataTable table, ClusterState clusterState) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -40,7 +40,7 @@ public class HierarchicalClusterer
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
 
-			tree = new ClusterTree(dataTable.getDataDomain().getRecordIDType());
+			tree = new ClusterTree(table.getDataDomain().getRecordIDType());
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
 
@@ -63,7 +63,7 @@ public class HierarchicalClusterer
 					}
 
 					for (Integer iDimensionIndex : dimensionVA) {
-						buffer.append(dataTable.get(iDimensionIndex).getFloat(DataRepresentation.RAW, recordIndex)
+						buffer.append(table.get(iDimensionIndex).getFloat(DataRepresentation.RAW, recordIndex)
 							+ ", ");
 
 					}
@@ -79,7 +79,7 @@ public class HierarchicalClusterer
 			}
 		}
 		else {
-			tree = new ClusterTree(dataTable.getDataDomain().getDimensionIDType());
+			tree = new ClusterTree(table.getDataDomain().getDimensionIDType());
 
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
@@ -102,7 +102,7 @@ public class HierarchicalClusterer
 					}
 
 					for (Integer recordIndex : recordVA) {
-						buffer.append(dataTable.get(iDimensionIndex).getFloat(DataRepresentation.RAW, recordIndex)
+						buffer.append(table.get(iDimensionIndex).getFloat(DataRepresentation.RAW, recordIndex)
 							+ ", ");
 
 					}
@@ -225,9 +225,9 @@ public class HierarchicalClusterer
 
 		// IVirtualArray virtualArray = null;
 		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdContent).getVAType(), dataTable.depth(), indices);
+		// virtualArray = new VirtualArray(table.getVA(iVAIdContent).getVAType(), table.depth(), indices);
 		// else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(dataTable.getVA(iVAIdDimension).getVAType(), dataTable.size(), indices);
+		// virtualArray = new VirtualArray(table.getVA(iVAIdDimension).getVAType(), table.size(), indices);
 
 		CNode node = clusterer.m_cobwebTree;
 
@@ -246,8 +246,8 @@ public class HierarchicalClusterer
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(90, false));
 
-		// dataTable.setAlClusterSizes(temp);
-		// dataTable.setAlExamples(alExamples);
+		// table.setAlClusterSizes(temp);
+		// table.setAlExamples(alExamples);
 
 		GeneralManager
 			.get()

@@ -15,11 +15,11 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.UpdateViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ColorMapper;
@@ -135,7 +135,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	public void initData() {
 		super.initData();
 		if (histogram == null) {
-			histogram = dataDomain.getDataTable().getMetaData().getHistogram();
+			histogram = dataDomain.getTable().getMetaData().getHistogram();
 		}
 	}
 
@@ -411,14 +411,14 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	private void renderCaption(GL2 gl, float normalizedValue) {
 
 		if (getParentGLCanvas().getSize().getWidth() < 500
-				|| dataDomain.getDataTable().getDataTableType() != DataTableDataType.NUMERIC)
+				|| dataDomain.getTable().getTableType() != DataTableDataType.NUMERIC)
 			return;
 
 		textRenderer.begin3DRendering();
 		textRenderer.setColor(0, 0, 0, 1);
 		gl.glDisable(GL2.GL_DEPTH_TEST);
 
-		double correspondingValue = dataDomain.getDataTable().getRawForNormalized(
+		double correspondingValue = dataDomain.getTable().getRawForNormalized(
 				normalizedValue);
 
 		String text = Formatter.formatNumber(correspondingValue);

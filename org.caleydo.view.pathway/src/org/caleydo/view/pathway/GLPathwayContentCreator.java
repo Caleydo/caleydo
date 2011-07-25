@@ -884,7 +884,7 @@ public class GLPathwayContentCreator {
 				return null;
 			for (Integer iExpressionIndex : ids) {
 
-				ADimension dimension = geneticDataDomain.getDataTable().get(
+				ADimension dimension = geneticDataDomain.getTable().get(
 						glPathwayView.iCurrentDimensionIndex);
 				if (dimension == null)
 					throw new IllegalStateException("No dimension in this set with id: "

@@ -24,9 +24,9 @@ import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.id.ManagedObjectType;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
@@ -164,8 +164,8 @@ public class DataTableUtils {
 		CmdDataCreateDimension cmdCreateDimension;
 		String dimensionLabel;
 
-		for (int dataTableIndex = 0; dataTableIndex < dataTypes.size(); dataTableIndex++) {
-			DimensionType dataType = dataTypes.get(dataTableIndex);
+		for (int tableIndex = 0; tableIndex < dataTypes.size(); tableIndex++) {
+			DimensionType dataType = dataTypes.get(tableIndex);
 			switch (dataType) {
 				case FLOAT:
 					cmdCreateDimension =
@@ -174,7 +174,7 @@ public class DataTableUtils {
 
 					if (createDimensionsFromExistingIDs)
 						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NUMERICAL,
-							dimensionIds.get(dataTableIndex));
+							dimensionIds.get(tableIndex));
 					else
 						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NUMERICAL);
 
@@ -194,7 +194,7 @@ public class DataTableUtils {
 
 					if (createDimensionsFromExistingIDs)
 						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NOMINAL,
-							dimensionIds.get(dataTableIndex));
+							dimensionIds.get(tableIndex));
 					else
 					{
 						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NOMINAL);
@@ -292,40 +292,40 @@ public class DataTableUtils {
 		}
 
 		// ----------------------------------------
-		DataTable dataTable = (DataTable) dataDomain.getDataTable();
+		DataTable table = (DataTable) dataDomain.getTable();
 
 		// loadTrees(loadDataParameters, set);
 
 		if (loadDataParameters.isMinDefined()) {
-			dataTable.getMetaData().setMin(loadDataParameters.getMin());
+			table.getMetaData().setMin(loadDataParameters.getMin());
 		}
 		if (loadDataParameters.isMaxDefined()) {
-			dataTable.getMetaData().setMax(loadDataParameters.getMax());
+			table.getMetaData().setMax(loadDataParameters.getMax());
 		}
 
 		boolean isSetHomogeneous = loadDataParameters.isDataHomogeneous();
 
 		if (loadDataParameters.getMathFilterMode().equals("Normal")) {
-			dataTable.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL, isSetHomogeneous);
+			table.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL, isSetHomogeneous);
 		}
 		else if (loadDataParameters.getMathFilterMode().equals("Log10")) {
-			dataTable.setExternalDataRepresentation(ExternalDataRepresentation.LOG10, isSetHomogeneous);
+			table.setExternalDataRepresentation(ExternalDataRepresentation.LOG10, isSetHomogeneous);
 		}
 		else if (loadDataParameters.getMathFilterMode().equals("Log2")) {
-			dataTable.setExternalDataRepresentation(ExternalDataRepresentation.LOG2, isSetHomogeneous);
+			table.setExternalDataRepresentation(ExternalDataRepresentation.LOG2, isSetHomogeneous);
 		}
 		else
 			throw new IllegalStateException("Unknown data representation type");
 
-		return dataTable;
+		return table;
 	}
 
-	public static void setDataTables(DataTable dataTable, ArrayList<Integer> dimensionIDs) {
+	public static void setTables(DataTable table, ArrayList<Integer> dimensionIDs) {
 		for (int iDimensionID : dimensionIDs) {
-			dataTable.addDimension(iDimensionID);
+			table.addDimension(iDimensionID);
 		}
 
-		dataTable.finalizeAddedDimensions();
+		table.finalizeAddedDimensions();
 	}
 
 	/**
@@ -335,11 +335,11 @@ public class DataTableUtils {
 	 *            {@link DataTable} to create the gene-cluster information of
 	 * @return xml-document representing the gene-cluster information
 	 */
-	public static String getGeneClusterXml(DataTable dataTable) {
+	public static String getGeneClusterXml(DataTable table) {
 		String xml = null;
 
 		try {
-			xml = getTreeClusterXml(dataTable.getRecordData(DataTable.RECORD).getRecordTree());
+			xml = getTreeClusterXml(table.getRecordData(DataTable.RECORD).getRecordTree());
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
@@ -358,11 +358,11 @@ public class DataTableUtils {
 	 *            {@link DataTable} to create the experiment-cluster information of
 	 * @return XML-document representing the experiment-cluster information
 	 */
-	public static String getExperimentClusterXml(DataTable dataTable) {
+	public static String getExperimentClusterXml(DataTable table) {
 		String xml = null;
 
 		try {
-			xml = getTreeClusterXml(dataTable.getDimensionData(DataTable.DIMENSION).getDimensionTree());
+			xml = getTreeClusterXml(table.getDimensionData(DataTable.DIMENSION).getDimensionTree());
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
@@ -441,13 +441,13 @@ public class DataTableUtils {
 	}
 
 	/**
-	 * Load trees as specified in loadDataParameters and write them to the dataTable. FIXME: this is not aware of
+	 * Load trees as specified in loadDataParameters and write them to the table. FIXME: this is not aware of
 	 * possibly alternative {@link RecordVAType}s or {@link DimensionVAType}s
 	 * 
 	 * @param loadDataParameters
 	 * @param set
 	 */
-	public static void loadTrees(LoadDataParameters loadDataParameters, DataTable dataTable) {
+	public static void loadTrees(LoadDataParameters loadDataParameters, DataTable table) {
 		// import gene tree
 		String geneTreeFileName = loadDataParameters.getGeneTreeFileName();
 		if (geneTreeFileName != null) {
@@ -456,13 +456,13 @@ public class DataTableUtils {
 					+ geneTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
-				treePorter.setDataDomain(dataTable.getDataDomain());
+				treePorter.setDataDomain(table.getDataDomain());
 				ClusterTree tree;
 				try {
 
-					tree = treePorter.importTree(geneTreeFileName, dataTable.getDataDomain().getRecordIDType());
+					tree = treePorter.importTree(geneTreeFileName, table.getDataDomain().getRecordIDType());
 					// tree.setSortingStrategy(ESortingStrategy.AVERAGE_VALUE);
-					dataTable.getRecordData(DataTable.RECORD).setRecordTree(tree);
+					table.getRecordData(DataTable.RECORD).setRecordTree(tree);
 				}
 				catch (JAXBException e) {
 					e.printStackTrace();
@@ -481,12 +481,12 @@ public class DataTableUtils {
 					+ experimentsTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
-				treePorter.setDataDomain(dataTable.getDataDomain());
+				treePorter.setDataDomain(table.getDataDomain());
 				ClusterTree tree;
 				try {
 					tree = treePorter.importDimensionTree(experimentsTreeFileName);
-					dataTable.getDimensionData(DataTable.DIMENSION).setDimensionTree(tree);
-					dataTable.getDataDomain().createDimensionGroupsFromDimensionTree(tree);
+					table.getDimensionData(DataTable.DIMENSION).setDimensionTree(tree);
+					table.getDataDomain().createDimensionGroupsFromDimensionTree(tree);
 				}
 				catch (JAXBException e) {
 					e.printStackTrace();
@@ -510,9 +510,9 @@ public class DataTableUtils {
 	 *            dimension is treated separately, has it's own min and max etc. Sets that contain nominal data
 	 *            MUST be inhomogeneous.
 	 */
-	public static void setExternalDataRepresentation(DataTable dataTable,
+	public static void setExternalDataRepresentation(DataTable table,
 		ExternalDataRepresentation externalDataRep, boolean isSetHomogeneous) {
-		dataTable.setExternalDataRepresentation(externalDataRep, isSetHomogeneous);
+		table.setExternalDataRepresentation(externalDataRep, isSetHomogeneous);
 	}
 
 	/**
@@ -524,11 +524,11 @@ public class DataTableUtils {
 	 * @param groupInfo
 	 *            the array list extracted from the file
 	 */
-	public static void setContentGroupList(DataTable dataTable, String vaType, int[] groupInfo) {
+	public static void setContentGroupList(DataTable table, String vaType, int[] groupInfo) {
 
 		int cluster = 0, cnt = 0;
 
-		RecordGroupList contentGroupList = dataTable.getRecordData(vaType).getRecordVA().getGroupList();
+		RecordGroupList contentGroupList = table.getRecordData(vaType).getRecordVA().getGroupList();
 		contentGroupList.clear();
 
 		for (int i = 0; i < groupInfo.length; i++) {
@@ -556,10 +556,10 @@ public class DataTableUtils {
 	 * @param groupInfo
 	 *            the array list extracted from the file
 	 */
-	public static void setDimensionGroupList(DataTable dataTable, String vaType, int[] groupInfo) {
+	public static void setDimensionGroupList(DataTable table, String vaType, int[] groupInfo) {
 		int cluster = 0, cnt = 0;
 
-		DimensionGroupList dimensionGroupList = dataTable.getDimensionData(vaType).getDimensionVA().getGroupList();
+		DimensionGroupList dimensionGroupList = table.getDimensionData(vaType).getDimensionVA().getGroupList();
 		dimensionGroupList.clear();
 
 		for (int i = 0; i < groupInfo.length; i++) {
@@ -585,11 +585,11 @@ public class DataTableUtils {
 	 * @param vaType
 	 * @param groupReps
 	 */
-	public static void setContentGroupRepresentatives(DataTable dataTable, String vaType, int[] groupReps) {
+	public static void setContentGroupRepresentatives(DataTable table, String vaType, int[] groupReps) {
 
 		int group = 0;
 
-		RecordGroupList contentGroupList = dataTable.getRecordData(vaType).getRecordVA().getGroupList();
+		RecordGroupList contentGroupList = table.getRecordData(vaType).getRecordVA().getGroupList();
 
 		contentGroupList.get(group).setRepresentativeElementIndex(0);
 		group++;
@@ -609,11 +609,11 @@ public class DataTableUtils {
 	 * @param vaType
 	 * @param groupReps
 	 */
-	public static void setDimensionGroupRepresentatives(DataTable dataTable, String vaType, int[] groupReps) {
+	public static void setDimensionGroupRepresentatives(DataTable table, String vaType, int[] groupReps) {
 
 		int group = 0;
 
-		DimensionGroupList dimensionGroupList = dataTable.getDimensionData(vaType).getDimensionVA().getGroupList();
+		DimensionGroupList dimensionGroupList = table.getDimensionData(vaType).getDimensionVA().getGroupList();
 
 		dimensionGroupList.get(group).setRepresentativeElementIndex(0);
 		group++;

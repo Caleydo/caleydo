@@ -64,7 +64,7 @@ public class TagRenderer extends LayoutRenderer {
 
 		if (!tagCloud.getRecordVA().contains(recordID))
 			return;
-		ADimension genericDimension = tagCloud.getDataTable().get(dimensionID);
+		ADimension genericDimension = tagCloud.getTable().get(dimensionID);
 		if (genericDimension instanceof NumericalDimension) {
 			NumericalDimension numericalDimension = (NumericalDimension) genericDimension;
 			text = new Float(

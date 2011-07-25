@@ -241,11 +241,11 @@ public class FilterRepresentationFoldChange extends
 		this.histogram = histogram;
 	}
 
-	public void setDataTable1(DataTable set1) {
+	public void setTable1(DataTable set1) {
 		this.set1 = set1;
 	}
 
-	public void setDataTable2(DataTable set2) {
+	public void setTable2(DataTable set2) {
 		this.set2 = set2;
 	}
 
@@ -362,8 +362,8 @@ public class FilterRepresentationFoldChange extends
 			set2.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
 			
 			// FIXME: just for uncertainty paper so that the uncertainty view can access it via the main set
-			DataTable dataTable = filter.getDataDomain().getDataTable();
-			dataTable.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
+			DataTable table = filter.getDataDomain().getTable();
+			table.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
 
 			createVADelta();
 			filter.updateFilterManager();

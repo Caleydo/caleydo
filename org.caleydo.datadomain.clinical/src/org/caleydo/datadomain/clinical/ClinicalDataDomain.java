@@ -8,8 +8,8 @@ import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -45,9 +45,9 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void setDataTable(DataTable set) {
+	public void setTable(DataTable set) {
 
-		super.setDataTable(set);
+		super.setTable(set);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void handleForeignRecordVAUpdate(int dataTableID, String dataDomainType,
+	public void handleForeignRecordVAUpdate(int tableID, String dataDomainType,
 			String vaType, RecordVirtualArray virtualArray) {
 		// TODO Auto-generated method stub
 

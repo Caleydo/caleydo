@@ -27,7 +27,7 @@ public class TabularAsciiDataReader
 	extends AbstractLoader {
 
 	/**
-	 * Imports data from file to this dataTable. uses first dimension and overwrites first selection.
+	 * Imports data from file to this table. uses first dimension and overwrites first selection.
 	 */
 	protected ArrayList<ADimension> targetDimensions;
 
@@ -306,7 +306,7 @@ public class TabularAsciiDataReader
 		int iStringArrayIndex = 0;
 		int dimensionIndex = 0;
 
-		DataTable set = dataDomain.getDataTable();
+		DataTable set = dataDomain.getTable();
 
 		for (DimensionType dimensionType : columnDataTypes) {
 			// if(iDimensionIndex + 1 == targetDimensions.size())
@@ -324,7 +324,7 @@ public class TabularAsciiDataReader
 					break;
 				case CERTAINTY:
 					targetDimensions.get(dimensionIndex-1).setUncertaintyData(floatArrays.get(iFloatArrayIndex));
-					dataDomain.getDataTable().setContainsUncertaintyData(true);
+					dataDomain.getTable().setContainsUncertaintyData(true);
 					iFloatArrayIndex++;
 					break;
 				case STRING:

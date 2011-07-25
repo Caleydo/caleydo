@@ -58,7 +58,7 @@ public class PathwayCreator implements IRemoteViewCreator {
 		pathwayView.enableNeighborhood(true);
 		pathwayView.enableGeneMapping(true);
 		pathwayView.setRemoteRenderingGLView(remoteRenderingView);
-		// pathway.setDataTable(remoteRenderingView.getDataTable());
+		// pathway.setTable(remoteRenderingView.getTable());
 		// parCoords.setDataDomain(remoteRenderingView.getDataDomain());
 		pathwayView.initialize();
 		pathwayView.initRemote(gl, remoteRenderingView, glMouseListener);

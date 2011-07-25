@@ -11,10 +11,10 @@ import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.picking.PickingMode;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -249,7 +249,7 @@ public class OverviewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void setDataTablesInFocus(ArrayList<DataTable> setsInFocus) {
+	public void setTablesInFocus(ArrayList<DataTable> setsInFocus) {
 		// FIXME: Maybe we can put this in the base class.
 
 		if (setsInFocus.size() >= getMinSetsInFocus()
@@ -288,7 +288,7 @@ public class OverviewState extends ACompareViewStateStatic {
 
 			for (int i = 0; i < heatMapWrappers.size(); i++) {
 				HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
-				heatMapWrapper.setDataTable(setsInFocus.get(i));
+				heatMapWrapper.setTable(setsInFocus.get(i));
 			}
 			setsChanged = true;
 			numSetsInFocus = setsInFocus.size();
@@ -354,7 +354,7 @@ public class OverviewState extends ACompareViewStateStatic {
 				* viewFrustum.getWidth() / (float) heatMapWrappers.size();
 		int numTotalExperiments = 0;
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-			numTotalExperiments += heatMapWrapper.getDataTable()
+			numTotalExperiments += heatMapWrapper.getTable()
 					.getDimensionData(DataTable.DIMENSION).getDimensionVA().size();
 		}
 		float heatMapWrapperGapWidth = (1 - HEATMAP_WRAPPER_SPACE_PORTION)
@@ -363,7 +363,7 @@ public class OverviewState extends ACompareViewStateStatic {
 		for (int i = 0; i < heatMapWrappers.size(); i++) {
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
 			AHeatMapLayout layout = layouts.get(i);
-			int numExperiments = heatMapWrapper.getDataTable()
+			int numExperiments = heatMapWrapper.getTable()
 					.getDimensionData(DataTable.DIMENSION).getDimensionVA().size();
 			// TODO: Maybe get info in layout from heatmapwrapper
 			layout.setTotalSpaceForAllHeatMapWrappers(spaceForHeatMapWrapperOverviews);

@@ -23,7 +23,7 @@ import org.caleydo.view.scatterplot.actions.TogglePointTypeAction;
  */
 public class ScatterplotToolBarContent extends AToolBarContent {
 
-	public static final String IMAGE_PATH = "resources/icons/view/dimensionbased/parcoords/parcoords.png";
+	public static final String IMAGE_PATH = "resources/icons/view/tablebased/parcoords/parcoords.png";
 
 	public static final String VIEW_TITLE = "Scatterplot";
 

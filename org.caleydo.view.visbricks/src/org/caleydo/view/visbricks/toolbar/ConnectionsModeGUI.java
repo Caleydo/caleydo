@@ -2,7 +2,7 @@ package org.caleydo.view.visbricks.toolbar;
 
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.dimensionbased.ConnectionsModeEvent;
+import org.caleydo.core.manager.event.view.tablebased.ConnectionsModeEvent;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;

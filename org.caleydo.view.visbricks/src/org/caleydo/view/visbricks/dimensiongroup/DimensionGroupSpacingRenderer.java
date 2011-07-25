@@ -79,13 +79,13 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			return;
 
 		SimilarityMap similarityMap = relationAnalyzer.getSimilarityMap(leftDimGroup
-				.getDataTableID());
+				.getTableID());
 
 		if (similarityMap == null)
 			return;
 
 		VASimilarity<RecordVirtualArray, RecordGroupList> vaSimilarityMap = similarityMap
-				.getVASimilarity(rightDimGroup.getDataTableID());
+				.getVASimilarity(rightDimGroup.getTableID());
 		if (vaSimilarityMap == null)
 			return;
 
@@ -97,7 +97,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			ElementLayout leftBrickElementLayout = leftBrick.getLayout();
 
 			GroupSimilarity<RecordVirtualArray, RecordGroupList> leftGroupSimilarity = vaSimilarityMap
-					.getGroupSimilarity(leftDimGroup.getDataTableID(), leftBrick.getGroupID());
+					.getGroupSimilarity(leftDimGroup.getTableID(), leftBrick.getGroupID());
 
 			float[] leftSimilarities = leftGroupSimilarity.getSimilarities();
 			float leftSimilarityOffsetY = 0;
@@ -131,7 +131,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			ElementLayout rightBrickElementLayout = rightBrick.getLayout();
 
 			GroupSimilarity<RecordVirtualArray, RecordGroupList> rightGroupSimilarity = vaSimilarityMap
-					.getGroupSimilarity(rightDimGroup.getDataTableID(), rightBrick.getGroupID());
+					.getGroupSimilarity(rightDimGroup.getTableID(), rightBrick.getGroupID());
 
 			float[] rightSimilarities = rightGroupSimilarity.getSimilarities();
 

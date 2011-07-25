@@ -17,9 +17,9 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.treemap.ZoomInEvent;
 import org.caleydo.core.manager.event.view.treemap.ZoomOutEvent;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.IDataDomainSetBasedView;
@@ -128,7 +128,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	}
 
 	public void initData() {
-		bDisplayData = dataDomain.getDataTable().getRecordData(recordVAType).getRecordTree() != null;
+		bDisplayData = dataDomain.getTable().getRecordData(recordVAType).getRecordTree() != null;
 		for (GLTreeMap view : thumbnailTreemapViews)
 			view.initData();
 	}
@@ -312,7 +312,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		Set<Integer> elements = mainTreeMapView.getSelectionManager().getElements(SelectionType.SELECTION);
 		if (elements.size() == 1 /* && thumbnailTreemapViews.size() < 3 */) {
 
-			ClusterNode dataRoot = dataDomain.getDataTable().getRecordData(recordVAType).getRecordTree().getNodeByNumber(elements.iterator().next());
+			ClusterNode dataRoot = dataDomain.getTable().getRecordData(recordVAType).getRecordTree().getNodeByNumber(elements.iterator().next());
 
 			mainTreeMapView.setRemotePickingManager(null, 0);
 			mainTreeMapView.clearAllSelections();
@@ -390,7 +390,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	@Override
 	public String getShortInfo() {
 
-		return "Hierarchical Tree Map (" + dataDomain.getDataTable().getBaseDimensionVA().size() + " nodes displayed)";
+		return "Hierarchical Tree Map (" + dataDomain.getTable().getBaseDimensionVA().size() + " nodes displayed)";
 	}
 
 	@Override
@@ -506,7 +506,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		if (dataDomain != null) {
-			if (dataDomain.getDataTable().getRecordData(recordVAType).getRecordTree() != null) {
+			if (dataDomain.getTable().getRecordData(recordVAType).getRecordTree() != null) {
 				for (GLTreeMap view : thumbnailTreemapViews) {
 					view.setDataDomain(dataDomain);
 				}

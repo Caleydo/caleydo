@@ -20,7 +20,7 @@ public class StartClusteringAction
 	implements IToolBarItem {
 
 	public static final String TEXT = "Clustering";
-	public static final String ICON = "resources/icons/view/dimensionbased/clustering.png";
+	public static final String ICON = "resources/icons/view/tablebased/clustering.png";
 
 	private ArrayList<DataTable> sets;
 
@@ -53,7 +53,7 @@ public class StartClusteringAction
 		if (sets == null || sets.size() == 0) {
 			sets = new ArrayList<DataTable>();
 
-			sets.add(dataDomain.getDataTable());
+			sets.add(dataDomain.getTable());
 		}
 		for (DataTable tmpSet : sets) {
 			event = new StartClusteringEvent(clusterState, tmpSet.getID());
@@ -62,7 +62,7 @@ public class StartClusteringAction
 		}
 	}
 
-	public void setDataTables(ArrayList<DataTable> sets) {
+	public void setTables(ArrayList<DataTable> sets) {
 		this.sets = sets;
 	}
 }

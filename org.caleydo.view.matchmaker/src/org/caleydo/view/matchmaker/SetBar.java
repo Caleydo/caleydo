@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.manager.picking.PickingMode;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.picking.PickingMode;
+import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
@@ -103,7 +103,7 @@ public class SetBar extends AGLGUIElement {
 		updateItemProperties();
 	}
 
-	public void setDataTables(ArrayList<DataTable> sets) {
+	public void setTables(ArrayList<DataTable> sets) {
 		// this.sets.clear();
 		// this.sets.addAll(sets);
 		items.clear();
@@ -116,7 +116,7 @@ public class SetBar extends AGLGUIElement {
 		for (DataTable set : sets) {
 			SetBarItem item = new SetBarItem(itemID, viewID, pickingManager,
 					textRenderer, this);
-			item.setDataTable(set);
+			item.setTable(set);
 			item.setHeight(height * ITEM_HEIGHT_PROTION);
 			item.setWidth(itemWidth);
 			item.setPosition(new Vec3f(currentPositionX, position.y()
@@ -160,13 +160,13 @@ public class SetBar extends AGLGUIElement {
 				currentMouseOverItem
 						.setSelectionStatus(SetBarItem.SELECTION_STATUS_NORMAL);
 			currentMouseOverItem = item;
-			viewState.setDataTableBarDisplayListDirty();
+			viewState.setTableBarDisplayListDirty();
 
 			break;
 		case RIGHT_CLICKED:
 			contextMenu.addContextMenueItem(new DuplicateSetBarElementItem(itemID));
 			ArrayList<DataTable> sets = new ArrayList<DataTable>();
-			sets.add(items.get(itemID).getDataTable());
+			sets.add(items.get(itemID).getTable());
 			contextMenu.addContextMenueItem(new ClusterSetItem(sets));
 			contextMenu.addContextMenueItem(new AdjustPValueItem());
 			contextMenu.setLocation(pick.getPickedPoint(), view.getParentGLCanvas()
@@ -205,7 +205,7 @@ public class SetBar extends AGLGUIElement {
 			updateSelectedItems(newSelection);
 		}
 
-		viewState.setDataTableBarDisplayListDirty();
+		viewState.setTableBarDisplayListDirty();
 	}
 
 	public void handleDuplicateSetBarItem(int itemID) {
@@ -215,7 +215,7 @@ public class SetBar extends AGLGUIElement {
 
 		SetBarItem clone = new SetBarItem(itemID, viewID, pickingManager, textRenderer,
 				this);
-		clone.setDataTable(item.getDataTable());
+		clone.setTable(item.getTable());
 
 		ArrayList<SetBarItem> oldSelection = selectionWindow.getSelectedItems();
 
@@ -229,7 +229,7 @@ public class SetBar extends AGLGUIElement {
 			updateSelectedItems(newSelection);
 		}
 
-		viewState.setDataTableBarDisplayListDirty();
+		viewState.setTableBarDisplayListDirty();
 	}
 
 	private void updateItemProperties() {
@@ -238,7 +238,7 @@ public class SetBar extends AGLGUIElement {
 		float itemWidth = width / (float) items.size();
 		float currentPositionX = position.x();
 		for (SetBarItem item : items) {
-			item.dataTableID(itemID);
+			item.tableID(itemID);
 			item.setHeight(height * ITEM_HEIGHT_PROTION);
 			item.setWidth(itemWidth);
 			item.setPosition(new Vec3f(currentPositionX, position.y()
@@ -252,9 +252,9 @@ public class SetBar extends AGLGUIElement {
 		ArrayList<DataTable> setsInFocus = new ArrayList<DataTable>();
 
 		for (SetBarItem item : itemsInFocus) {
-			setsInFocus.add(item.getDataTable());
+			setsInFocus.add(item.getTable());
 		}
-		viewState.setDataTablesInFocus(setsInFocus);
+		viewState.setTablesInFocus(setsInFocus);
 	}
 
 	public ACompareViewState getViewState() {
@@ -300,11 +300,11 @@ public class SetBar extends AGLGUIElement {
 		selectionWindow.adjustWindowSizeCentered(windowSize);
 	}
 
-	public ArrayList<DataTable> getDataTablesInFocus() {
+	public ArrayList<DataTable> getTablesInFocus() {
 		ArrayList<DataTable> setsInFocus = new ArrayList<DataTable>();
 
 		for (SetBarItem item : selectionWindow.getSelectedItems()) {
-			setsInFocus.add(item.getDataTable());
+			setsInFocus.add(item.getTable());
 		}
 
 		return setsInFocus;

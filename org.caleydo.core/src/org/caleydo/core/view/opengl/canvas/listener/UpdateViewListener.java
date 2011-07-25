@@ -2,8 +2,8 @@ package org.caleydo.core.view.opengl.canvas.listener;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.UpdateViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
 
 /**
  * Listener that signals that a major update of a view is required. In contrast to {@Re This listener

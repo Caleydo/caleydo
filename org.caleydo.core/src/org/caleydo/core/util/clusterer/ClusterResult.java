@@ -1,7 +1,7 @@
 package org.caleydo.core.util.clusterer;
 
-import org.caleydo.core.data.collection.table.RecordData;
 import org.caleydo.core.data.collection.table.DimensionData;
+import org.caleydo.core.data.collection.table.RecordData;
 
 public class ClusterResult {
 

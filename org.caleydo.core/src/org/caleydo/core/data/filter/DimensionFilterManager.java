@@ -13,9 +13,9 @@ import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceDimensionVAInUseCaseEvent;
-import org.caleydo.core.manager.event.view.dimensionbased.DimensionVAUpdateEvent;
-import org.caleydo.core.view.opengl.canvas.listener.IDimensionVAUpdateHandler;
+import org.caleydo.core.manager.event.view.tablebased.DimensionVAUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.DimensionVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.IDimensionVAUpdateHandler;
 
 /**
  * Concrete implementation of {@link FilterManager} for {@link DimensionVirtualArray}s.
@@ -33,7 +33,7 @@ public class DimensionFilterManager
 	private ReEvaluateDimensionFilterListListener reEvaluateDimensionFilterListListener;
 
 	public DimensionFilterManager(ATableBasedDataDomain dataDomain) {
-		super(dataDomain, dataDomain.getDataTable().getBaseDimensionVA(), new DimensionFilterFactory());
+		super(dataDomain, dataDomain.getTable().getBaseDimensionVA(), new DimensionFilterFactory());
 
 	}
 

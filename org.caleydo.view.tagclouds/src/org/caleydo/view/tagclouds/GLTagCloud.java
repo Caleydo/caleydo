@@ -17,14 +17,14 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IDataDomainSetBasedView;
@@ -66,7 +66,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 	private TagCloudRenderStyle renderStyle;
 
-	private DataTable dataTable;
+	private DataTable table;
 
 	private ATableBasedDataDomain dataDomain;
 
@@ -125,19 +125,19 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	@Override
 	@SuppressWarnings("unchecked")
 	public void initData() {
-		if (dataTable == null)
-			dataTable = dataDomain.getDataTable();
+		if (table == null)
+			table = dataDomain.getTable();
 		if (recordVA == null)
-			recordVA = dataTable.getRecordData(DataTable.RECORD).getRecordVA();
+			recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
 		if (dimensionVA == null)
-			dimensionVA = dataTable.getDimensionData(DataTable.DIMENSION).getDimensionVA();
+			dimensionVA = table.getDimensionData(DataTable.DIMENSION).getDimensionVA();
 		if (contentSelectionManager == null)
 			contentSelectionManager = dataDomain.getRecordSelectionManager();
 
 		for (Integer dimensionID : dimensionVA) {
 			HashMap<String, Integer> stringOccurences = new HashMap<String, Integer>();
 			stringOccurencesPerDimension.put(dimensionID, stringOccurences);
-			ADimension genericDimension = dataTable.get(dimensionID);
+			ADimension genericDimension = table.get(dimensionID);
 			NumericalDimension numericalDimension = null;
 			NominalDimension<String> dimension = null;
 			boolean isNumericalDimension = false;
@@ -291,7 +291,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 			dimensionCaptionLayout.setGrabX(true);
 
 			DimensionCaptionRenderer dimensionCaptionRenderer = new DimensionCaptionRenderer(
-					textRenderer, dataTable.get(dimensionID).getLabel());
+					textRenderer, table.get(dimensionID).getLabel());
 			dimensionCaptionLayout.setRenderer(dimensionCaptionRenderer);
 			// dimensionCaptionLayout.setDebug(true);
 
@@ -575,12 +575,12 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		return dataDomain;
 	}
 
-	public void setDataTable(DataTable dataTable) {
-		this.dataTable = dataTable;
+	public void setTable(DataTable table) {
+		this.table = table;
 	}
 
-	public DataTable getDataTable() {
-		return dataTable;
+	public DataTable getTable() {
+		return table;
 	}
 
 	public void setRecordVA(RecordVirtualArray recordVA) {
@@ -613,7 +613,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		case MEDIUM:
 			return 100;
 		case LOW:
-			return Math.max(150, 30 * dataTable.getMetaData().size());
+			return Math.max(150, 30 * table.getMetaData().size());
 		default:
 			return 100;
 		}

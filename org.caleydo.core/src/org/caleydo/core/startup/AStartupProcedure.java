@@ -1,6 +1,5 @@
 package org.caleydo.core.startup;
 
-import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.util.collection.Pair;

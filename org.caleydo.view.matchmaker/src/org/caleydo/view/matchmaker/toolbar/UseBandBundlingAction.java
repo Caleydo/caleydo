@@ -14,7 +14,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class UseBandBundlingAction extends AToolBarAction implements IToolBarItem {
 	public static final String TEXT = "Use ribbons";
-	public static final String ICON = "resources/icons/view/dimensionbased/parcoords/reset_axis_spacing.png";
+	public static final String ICON = "resources/icons/view/tablebased/parcoords/reset_axis_spacing.png";
 
 	private boolean renderBands = true;
 
