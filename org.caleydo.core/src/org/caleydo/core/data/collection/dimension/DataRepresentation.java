@@ -1,4 +1,4 @@
-package org.caleydo.core.data.collection.storage;
+package org.caleydo.core.data.collection.dimension;
 
 /**
  * Describes of what kind a container is, independent of its data type. Examples are raw data, normalized data

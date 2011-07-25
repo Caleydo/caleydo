@@ -1,4 +1,4 @@
-package org.caleydo.core.data.collection.storage;
+package org.caleydo.core.data.collection.dimension;
 
 import java.util.ArrayList;
 import java.util.HashMap;

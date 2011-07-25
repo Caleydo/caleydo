@@ -2,9 +2,9 @@ package org.caleydo.core.data.collection.table;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.storage.ADimension;
-import org.caleydo.core.data.collection.storage.DataRepresentation;
-import org.caleydo.core.data.collection.storage.NumericalDimension;
+import org.caleydo.core.data.collection.dimension.ADimension;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.NumericalDimension;
 
 /**
  * This class handles everything related to the normalization of DataTables

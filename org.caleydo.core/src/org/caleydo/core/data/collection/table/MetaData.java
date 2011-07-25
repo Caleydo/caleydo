@@ -4,9 +4,9 @@ import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.storage.ADimension;
-import org.caleydo.core.data.collection.storage.NominalDimension;
-import org.caleydo.core.data.collection.storage.NumericalDimension;
+import org.caleydo.core.data.collection.dimension.ADimension;
+import org.caleydo.core.data.collection.dimension.NominalDimension;
+import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 
 /**

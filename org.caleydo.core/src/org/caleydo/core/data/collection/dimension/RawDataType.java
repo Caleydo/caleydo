@@ -1,4 +1,4 @@
-package org.caleydo.core.data.collection.storage;
+package org.caleydo.core.data.collection.dimension;
 
 /**
  * The datatype of the raw storage

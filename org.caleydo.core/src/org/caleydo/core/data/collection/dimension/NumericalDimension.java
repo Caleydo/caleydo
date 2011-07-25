@@ -1,4 +1,4 @@
-package org.caleydo.core.data.collection.storage;
+package org.caleydo.core.data.collection.dimension;
 
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.Histogram;

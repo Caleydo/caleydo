@@ -1,8 +1,8 @@
 package org.caleydo.core.data.collection.table;
 
-import org.caleydo.core.data.collection.storage.ADimension;
-import org.caleydo.core.data.collection.storage.DataRepresentation;
-import org.caleydo.core.data.collection.storage.NumericalDimension;
+import org.caleydo.core.data.collection.dimension.ADimension;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 
 /**
