@@ -81,7 +81,7 @@ public class KMeansClusterer
 			if (iNrCluster >= iNrElements)
 				return null;
 
-			for (int nr = 0; nr < storageVA.size(); nr++) {
+			for (int nr = 0; nr < dimensionVA.size(); nr++) {
 				buffer.append("@attribute Patient" + nr + " real\n");
 			}
 
@@ -98,8 +98,8 @@ public class KMeansClusterer
 						iPercentage++;
 					}
 
-					for (Integer iStorageIndex : storageVA) {
-						buffer.append(set.get(iStorageIndex).getFloat(DataRepresentation.NORMALIZED,
+					for (Integer iDimensionIndex : dimensionVA) {
+						buffer.append(set.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED,
 							iContentIndex)
 							+ ", ");
 
@@ -121,7 +121,7 @@ public class KMeansClusterer
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
 
-			int iNrElements = storageVA.size();
+			int iNrElements = dimensionVA.size();
 
 			if (iNrCluster >= iNrElements)
 				return null;
@@ -133,7 +133,7 @@ public class KMeansClusterer
 			buffer.append("@data\n");
 
 			int isto = 0;
-			for (Integer iStorageIndex : storageVA) {
+			for (Integer iDimensionIndex : dimensionVA) {
 
 				if (bClusteringCanceled == false) {
 					int tempPercentage = (int) ((float) isto / contentVA.size() * 100);
@@ -144,7 +144,7 @@ public class KMeansClusterer
 					}
 
 					for (Integer iContentIndex : contentVA) {
-						buffer.append(set.get(iStorageIndex).getFloat(DataRepresentation.NORMALIZED,
+						buffer.append(set.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED,
 							iContentIndex)
 							+ ", ");
 
@@ -233,7 +233,7 @@ public class KMeansClusterer
 		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 		// currentVA = set.getVA(iVAIdContent);
 		// else
-		// currentVA = set.getVA(iVAIdStorage);
+		// currentVA = set.getVA(iVAIdDimension);
 
 		for (int cluster = 0; cluster < iNrCluster; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {
@@ -260,7 +260,7 @@ public class KMeansClusterer
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-		ClusterHelper.sortClusters(set, contentVA, storageVA, alExamples, clusterState.getClustererType());
+		ClusterHelper.sortClusters(set, contentVA, dimensionVA, alExamples, clusterState.getClustererType());
 
 		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
 			for (int cluster : alExamples) {
@@ -277,7 +277,7 @@ public class KMeansClusterer
 			for (int cluster : alExamples) {
 				for (int i = 0; i < data.numInstances(); i++) {
 					if (ClusterAssignments[i] == hashExamples.get(cluster)) {
-						indices.add(storageVA.get(i));
+						indices.add(dimensionVA.get(i));
 						count.set(hashExamples.get(cluster), count.get(hashExamples.get(cluster)) + 1);
 					}
 				}
@@ -288,7 +288,7 @@ public class KMeansClusterer
 		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 		// virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), indices);
 		// else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), indices);
+		// virtualArray = new VirtualArray(set.getVA(iVAIdDimension).getVAType(), set.size(), indices);
 
 		TempResult tempResult = new TempResult();
 		tempResult.indices = indices;

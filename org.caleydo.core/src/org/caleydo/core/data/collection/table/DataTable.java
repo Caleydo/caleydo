@@ -32,10 +32,10 @@ import org.eclipse.core.runtime.Status;
 /**
  * <h2>General Information</h2>
  * <p>
- * A set is the main container for tabular data in Caleydo. A set is made up of {@link IStorage}s, where each
- * storage corresponds to a column in a tabular data set. Columns are therefore always refered to as
- * <b>Storages</b> and rows as <b>Content</b> The data should be accessed through {@link VirtualArray}s, which
- * are stored in {@link DimensionData}s for Storages and {@link RecordData}s for Content.
+ * A set is the main container for tabular data in Caleydo. A set is made up of {@link IDimension}s, where each
+ * dimension corresponds to a column in a tabular data set. Columns are therefore always refered to as
+ * <b>Dimensions</b> and rows as <b>Content</b> The data should be accessed through {@link VirtualArray}s, which
+ * are stored in {@link DimensionData}s for Dimensions and {@link RecordData}s for Content.
  * </p>
  * <h2>Set Creation</h2>
  * <p>
@@ -49,7 +49,7 @@ public class DataTable
 	extends AUniqueObject
 	implements ICollection {
 
-	public static final String DIMENSION = "Storage";
+	public static final String DIMENSION = "Dimension";
 	public static final String RECORD = "Record";
 	public static final String RECORD_CONTEXT = "Record_Context";
 
@@ -60,7 +60,7 @@ public class DataTable
 	protected HashMap<String, RecordData> hashContentData;
 	protected HashMap<String, DimensionData> hashDimensionData;
 
-	protected NumericalDimension meanStorage;
+	protected NumericalDimension meanDimension;
 
 	protected DimensionData defaultDimensionData;
 	protected RecordData defaultRecordData;
@@ -71,7 +71,7 @@ public class DataTable
 
 	protected StatisticsResult statisticsResult;
 
-	protected EDataTableDataType dataTableType = EDataTableDataType.NUMERIC;
+	protected DataTableDataType dataTableType = DataTableDataType.NUMERIC;
 
 	ATableBasedDataDomain dataDomain;
 
@@ -100,12 +100,12 @@ public class DataTable
 
 	private void initWithDataDomain() {
 		init();
-		ClusterTree tree = new ClusterTree(dataDomain.getStorageIDType());
+		ClusterTree tree = new ClusterTree(dataDomain.getDimensionIDType());
 		ClusterNode root = new ClusterNode(tree, "Root", 1, true, -1);
 		tree.setRootNode(root);
-		defaultDimensionData.setStorageTree(tree);
-		dataDomain.createDimensionGroupsFromStorageTree(tree);
-		// hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
+		defaultDimensionData.setDimensionTree(tree);
+		dataDomain.createDimensionGroupsFromDimensionTree(tree);
+		// hashDimensionData.put(DimensionVAType.STORAGE, defaultDimensionData.clone());
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class DataTable
 		hashContentData = new HashMap<String, RecordData>(6);
 		hashDimensionData = new HashMap<String, DimensionData>(3);
 		defaultDimensionData = new DimensionData();
-		defaultDimensionData.setStorageVA(new DimensionVirtualArray(DIMENSION));
+		defaultDimensionData.setDimensionVA(new DimensionVirtualArray(DIMENSION));
 		statisticsResult = new StatisticsResult(this);
 		metaData = new MetaData(this);
 		normalization = new Normalization(this);
@@ -132,17 +132,17 @@ public class DataTable
 		return metaData;
 	}
 
-	public EDataTableDataType getSetType() {
+	public DataTableDataType getSetType() {
 		return dataTableType;
 	}
 
 	/**
-	 * Creates a {@link SubDataTable} for every node in the storage tree.
+	 * Creates a {@link SubDataTable} for every node in the dimension tree.
 	 */
 	public void createSubDataTable() {
-		// ClusterNode rootNode = hashStorageData.get(STORAGE).getStorageTreeRoot();
+		// ClusterNode rootNode = hashDimensionData.get(STORAGE).getDimensionTreeRoot();
 		// rootNode.createMetaSets(this);
-		defaultDimensionData.getStorageTree().createMetaSets(this);
+		defaultDimensionData.getDimensionTree().createMetaSets(this);
 	}
 
 	/**
@@ -167,14 +167,14 @@ public class DataTable
 	}
 
 	/**
-	 * Get the storage associated with the ID provided. Returns null if no such storage is registered.
+	 * Get the dimension associated with the ID provided. Returns null if no such dimension is registered.
 	 * 
-	 * @param storageID
-	 *            a unique storage ID
+	 * @param dimensionID
+	 *            a unique dimension ID
 	 * @return
 	 */
-	public ADimension get(Integer storageID) {
-		return hashDimensions.get(storageID);
+	public ADimension get(Integer dimensionID) {
+		return hashDimensions.get(dimensionID);
 	}
 
 	@Override
@@ -188,13 +188,13 @@ public class DataTable
 	}
 
 	/**
-	 * Iterate over the storages based on a virtual array
+	 * Iterate over the dimensions based on a virtual array
 	 * 
 	 * @param type
 	 * @return
 	 */
 	public Iterator<ADimension> iterator(String type) {
-		return new DimensionIterator(hashDimensions, hashDimensionData.get(type).getStorageVA());
+		return new DimensionIterator(hashDimensions, hashDimensionData.get(type).getDimensionVA());
 	}
 
 	/**
@@ -207,7 +207,7 @@ public class DataTable
 	public double getRawForNormalized(double dNormalized) {
 		if (!isSetHomogeneous)
 			throw new IllegalStateException(
-				"Can not produce raw data on set level for inhomogenous sets. Access via storages");
+				"Can not produce raw data on set level for inhomogenous sets. Access via dimensions");
 
 		double result;
 
@@ -239,7 +239,7 @@ public class DataTable
 	public double getNormalizedForRaw(double dRaw) {
 		if (!isSetHomogeneous)
 			throw new IllegalStateException(
-				"Can not produce normalized data on set level for inhomogenous sets. Access via storages");
+				"Can not produce normalized data on set level for inhomogenous sets. Access via dimensions");
 
 		double result;
 
@@ -271,16 +271,16 @@ public class DataTable
 	}
 
 	/**
-	 * Get a copy of the original storage VA (i.e., the va containing all storages in the order loaded
+	 * Get a copy of the original dimension VA (i.e., the va containing all dimensions in the order loaded
 	 * 
 	 * @return
 	 */
-	public DimensionVirtualArray getBaseStorageVA() {
-		return defaultDimensionData.getStorageVA().clone();
+	public DimensionVirtualArray getBaseDimensionVA() {
+		return defaultDimensionData.getDimensionVA().clone();
 	}
 
 	/**
-	 * Get a copy of the original content VA (i.e., the one equal to the actual content of the storages)
+	 * Get a copy of the original content VA (i.e., the one equal to the actual content of the dimensions)
 	 * 
 	 * @return
 	 */
@@ -312,20 +312,20 @@ public class DataTable
 	}
 
 	/**
-	 * Sets a storageVA. The storageVA in the storageData object is replaced and the other elements in the
-	 * storageData are reset.
+	 * Sets a dimensionVA. The dimensionVA in the dimensionData object is replaced and the other elements in the
+	 * dimensionData are reset.
 	 * 
 	 * @param vaType
 	 * @param virtualArray
 	 */
-	public void setStorageVA(String vaType, DimensionVirtualArray virtualArray) {
-		DimensionData storageData = hashDimensionData.get(vaType);
-		if (storageData == null)
-			storageData = defaultDimensionData.clone();
+	public void setDimensionVA(String vaType, DimensionVirtualArray virtualArray) {
+		DimensionData dimensionData = hashDimensionData.get(vaType);
+		if (dimensionData == null)
+			dimensionData = defaultDimensionData.clone();
 		// else
-		// storageData.reset();
-		storageData.setStorageVA(virtualArray);
-		hashDimensionData.put(vaType, storageData);
+		// dimensionData.reset();
+		dimensionData.setDimensionVA(virtualArray);
+		hashDimensionData.put(vaType, dimensionData);
 	}
 
 	/**
@@ -348,7 +348,7 @@ public class DataTable
 	}
 
 	/**
-	 * Clusters a Storage
+	 * Clusters a Dimension
 	 * 
 	 * @param clusterState
 	 * @return ArrayList<IVirtualArray> Virtual arrays holding cluster result
@@ -364,11 +364,11 @@ public class DataTable
 			// this.setContentGroupList(getContentVA(contentVAType).getGroupList());
 		}
 
-		String storageVAType = clusterState.getStorageVAType();
-		if (storageVAType != null) {
-			clusterState.setStorageVA(getStorageData(storageVAType).getStorageVA());
-			clusterState.setStorageIDType(dataDomain.getStorageIDType());
-			// this.setStorageGroupList(getStorageVA(storageVAType).getGroupList());
+		String dimensionVAType = clusterState.getDimensionVAType();
+		if (dimensionVAType != null) {
+			clusterState.setDimensionVA(getDimensionData(dimensionVAType).getDimensionVA());
+			clusterState.setDimensionIDType(dataDomain.getDimensionIDType());
+			// this.setDimensionGroupList(getDimensionVA(dimensionVAType).getGroupList());
 		}
 
 		ClusterManager clusterManager = new ClusterManager(this);
@@ -379,9 +379,9 @@ public class DataTable
 			if (contentResult != null) {
 				hashContentData.put(clusterState.getContentVAType(), contentResult);
 			}
-			DimensionData storageResult = result.getStorageResult();
-			if (storageResult != null) {
-				hashDimensionData.put(clusterState.getStorageVAType(), storageResult);
+			DimensionData dimensionResult = result.getDimensionResult();
+			if (dimensionResult != null) {
+				hashDimensionData.put(clusterState.getDimensionVAType(), dimensionResult);
 			}
 			// }
 			// else
@@ -391,7 +391,7 @@ public class DataTable
 
 	/**
 	 * Returns a {@link RecordData} object for the specified ContentVAType. The ContentData provides access
-	 * to all data on a storage, e.g., virtualArryay, cluster tree, group list etc.
+	 * to all data on a dimension, e.g., virtualArryay, cluster tree, group list etc.
 	 * 
 	 * @param vaType
 	 * @return
@@ -406,25 +406,25 @@ public class DataTable
 	}
 
 	/**
-	 * Returns a {@link DimensionData} object for the specified StorageVAType. The StorageData provides access
-	 * to all data on a storage, e.g., virtualArryay, cluster tree, group list etc.
+	 * Returns a {@link DimensionData} object for the specified DimensionVAType. The DimensionData provides access
+	 * to all data on a dimension, e.g., virtualArryay, cluster tree, group list etc.
 	 * 
 	 * @param vaType
 	 * @return
 	 */
-	public DimensionData getStorageData(String vaType) {
+	public DimensionData getDimensionData(String vaType) {
 		return hashDimensionData.get(vaType);
 	}
 
 	/**
-	 * Removes all data related to the set (Storages, Virtual Arrays and Sets) from the managers so that the
+	 * Removes all data related to the set (Dimensions, Virtual Arrays and Sets) from the managers so that the
 	 * garbage collector can handle it.
 	 */
 	public void destroy() {
 		GeneralManager gm = GeneralManager.get();
 		DimensionManager sm = gm.getDimensionManager();
-		for (Integer storageID : hashDimensions.keySet()) {
-			sm.unregisterItem(storageID);
+		for (Integer dimensionID : hashDimensions.keySet()) {
+			sm.unregisterItem(dimensionID);
 		}
 		// clearing the VAs. This should not be necessary since they should be destroyed automatically.
 		// However, to make sure.
@@ -437,7 +437,7 @@ public class DataTable
 
 	@Override
 	public String toString() {
-		return "Set " + getLabel() + " with " + hashDimensions.size() + " storages.";
+		return "Set " + getLabel() + " with " + hashDimensions.size() + " dimensions.";
 	}
 
 	/**
@@ -451,35 +451,35 @@ public class DataTable
 	}
 
 	/**
-	 * Returns a storage containing the mean values of all the storages in the set. The mean storage contains
+	 * Returns a dimension containing the mean values of all the dimensions in the set. The mean dimension contains
 	 * raw and normalized values. The mean is calculated based on the raw data, that means for calculating the
 	 * means possibly specified cut-off values are not considered, since cut-off values are meant for
 	 * visualization only.
 	 * 
-	 * @return the storage containing means for all content elements
+	 * @return the dimension containing means for all content elements
 	 */
-	public NumericalDimension getMeanStorage() {
-		if (!dataTableType.equals(EDataTableDataType.NUMERIC) || !isSetHomogeneous)
+	public NumericalDimension getMeanDimension() {
+		if (!dataTableType.equals(DataTableDataType.NUMERIC) || !isSetHomogeneous)
 			throw new IllegalStateException(
-				"Can not provide a mean storage if set is not numerical (Set type: " + dataTableType
+				"Can not provide a mean dimension if set is not numerical (Set type: " + dataTableType
 					+ ") or not homgeneous (isHomogeneous: " + isSetHomogeneous + ")");
-		if (meanStorage == null) {
-			meanStorage = new NumericalDimension();
-			meanStorage.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL);
+		if (meanDimension == null) {
+			meanDimension = new NumericalDimension();
+			meanDimension.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL);
 
 			float[] meanValues = new float[metaData.depth()];
-			DimensionVirtualArray storageVA = defaultDimensionData.getStorageVA();
+			DimensionVirtualArray dimensionVA = defaultDimensionData.getDimensionVA();
 			for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
 				float sum = 0;
-				for (int storageID : storageVA) {
-					sum += get(storageID).getFloat(DataRepresentation.RAW, contentCount);
+				for (int dimensionID : dimensionVA) {
+					sum += get(dimensionID).getFloat(DataRepresentation.RAW, contentCount);
 				}
 				meanValues[contentCount] = sum / metaData.size();
 			}
-			meanStorage.setRawData(meanValues);
-			// meanStorage.normalize();
+			meanDimension.setRawData(meanValues);
+			// meanDimension.normalize();
 		}
-		return meanStorage;
+		return meanDimension;
 	}
 
 	public void setStatisticsResult(StatisticsResult statisticsResult) {
@@ -509,55 +509,55 @@ public class DataTable
 	// set.
 
 	/**
-	 * Add a storage based on its id. The storage has to be fully initialized with data
+	 * Add a dimension based on its id. The dimension has to be fully initialized with data
 	 * 
-	 * @param storageID
+	 * @param dimensionID
 	 */
-	void addStorage(int iStorageID) {
-		DimensionManager storageManager = GeneralManager.get().getDimensionManager();
+	void addDimension(int iDimensionID) {
+		DimensionManager dimensionManager = GeneralManager.get().getDimensionManager();
 
-		if (!storageManager.hasItem(iStorageID))
-			throw new IllegalArgumentException("Requested Storage with ID " + iStorageID + " does not exist.");
+		if (!dimensionManager.hasItem(iDimensionID))
+			throw new IllegalArgumentException("Requested Dimension with ID " + iDimensionID + " does not exist.");
 
-		ADimension storage = storageManager.getItem(iStorageID);
-		addStorage(storage);
+		ADimension dimension = dimensionManager.getItem(iDimensionID);
+		addDimension(dimension);
 	}
 
 	/**
-	 * Add a storage by reference. The storage has to be fully initialized with data
+	 * Add a dimension by reference. The dimension has to be fully initialized with data
 	 * 
-	 * @param storage
-	 *            the storage
+	 * @param dimension
+	 *            the dimension
 	 */
-	void addStorage(ADimension storage) {
-		// if (hashStorages.isEmpty()) {
-		if (storage instanceof NumericalDimension) {
+	void addDimension(ADimension dimension) {
+		// if (hashDimensions.isEmpty()) {
+		if (dimension instanceof NumericalDimension) {
 			if (dataTableType == null)
-				dataTableType = EDataTableDataType.NUMERIC;
-			else if (dataTableType.equals(EDataTableDataType.NOMINAL))
-				dataTableType = EDataTableDataType.HYBRID;
+				dataTableType = DataTableDataType.NUMERIC;
+			else if (dataTableType.equals(DataTableDataType.NOMINAL))
+				dataTableType = DataTableDataType.HYBRID;
 		}
 		else {
 			if (dataTableType == null)
-				dataTableType = EDataTableDataType.NOMINAL;
-			else if (dataTableType.equals(EDataTableDataType.NUMERIC))
-				dataTableType = EDataTableDataType.HYBRID;
+				dataTableType = DataTableDataType.NOMINAL;
+			else if (dataTableType.equals(DataTableDataType.NUMERIC))
+				dataTableType = DataTableDataType.HYBRID;
 		}
 
-		// rawDataType = storage.getRawDataType();
-		// iDepth = storage.size();
+		// rawDataType = dimension.getRawDataType();
+		// iDepth = dimension.size();
 		// }
 		// else {
-		// if (!bIsNumerical && storage instanceof INumericalStorage)
+		// if (!bIsNumerical && dimension instanceof INumericalDimension)
 		// throw new IllegalArgumentException(
-		// "All storages in a set must be of the same basic type (nunmerical or nominal)");
-		// if (rawDataType != storage.getRawDataType())
-		// throw new IllegalArgumentException("All storages in a set must have the same raw data type");
-		// // if (iDepth != storage.size())
-		// // throw new IllegalArgumentException("All storages in a set must be of the same length");
+		// "All dimensions in a set must be of the same basic type (nunmerical or nominal)");
+		// if (rawDataType != dimension.getRawDataType())
+		// throw new IllegalArgumentException("All dimensions in a set must have the same raw data type");
+		// // if (iDepth != dimension.size())
+		// // throw new IllegalArgumentException("All dimensions in a set must be of the same length");
 		// }
-		hashDimensions.put(storage.getID(), storage);
-		defaultDimensionData.getStorageVA().append(storage.getID());
+		hashDimensions.put(dimension.getID(), dimension);
+		defaultDimensionData.getDimensionVA().append(dimension.getID());
 
 	}
 
@@ -565,11 +565,11 @@ public class DataTable
 		
 		// this needs only be done by the root set
 		if ((this.getClass().equals(DataTable.class))) {
-			ClusterTree tree = defaultDimensionData.getStorageTree();
+			ClusterTree tree = defaultDimensionData.getDimensionTree();
 			int count = 1;
-			for (Integer storageID : defaultDimensionData.getStorageVA()) {
+			for (Integer dimensionID : defaultDimensionData.getDimensionVA()) {
 				ClusterNode node =
-					new ClusterNode(tree, get(storageID).getLabel(), count++, false, storageID);
+					new ClusterNode(tree, get(dimensionID).getLabel(), count++, false, dimensionID);
 				tree.addChild(tree.getRoot(), node);
 			}
 
@@ -587,8 +587,8 @@ public class DataTable
 	 *            Determines how the data is visualized. For options see {@link ExternalDataRepresentation}
 	 * @param bIsSetHomogeneous
 	 *            Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
-	 *            maximum and minimum, meaning that all storages in the set contain equal data. If false, each
-	 *            storage is treated separately, has it's own min and max etc. Sets that contain nominal data
+	 *            maximum and minimum, meaning that all dimensions in the set contain equal data. If false, each
+	 *            dimension is treated separately, has it's own min and max etc. Sets that contain nominal data
 	 *            MUST be inhomogeneous.
 	 */
 	void setExternalDataRepresentation(ExternalDataRepresentation externalDataRep, boolean bIsSetHomogeneous) {
@@ -598,9 +598,9 @@ public class DataTable
 
 		this.externalDataRep = externalDataRep;
 
-		for (ADimension storage : hashDimensions.values()) {
-			if (storage instanceof NumericalDimension) {
-				((NumericalDimension) storage).setExternalDataRepresentation(externalDataRep);
+		for (ADimension dimension : hashDimensions.values()) {
+			if (dimension instanceof NumericalDimension) {
+				((NumericalDimension) dimension).setExternalDataRepresentation(externalDataRep);
 			}
 		}
 
@@ -641,8 +641,8 @@ public class DataTable
 	}
 
 	public boolean containsFoldChangeRepresentation() {
-		for (ADimension storage : hashDimensions.values()) {
-			return storage.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW);
+		for (ADimension dimension : hashDimensions.values()) {
+			return dimension.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW);
 		}
 		return false;
 	}
@@ -682,11 +682,11 @@ public class DataTable
 	}
 
 	/**
-	 * Return a list of storage VA types that have registered {@link DimensionData}
+	 * Return a list of dimension VA types that have registered {@link DimensionData}
 	 * 
 	 * @return
 	 */
-	public Set<String> getRegisteredStorageVATypes() {
+	public Set<String> getRegisteredDimensionVATypes() {
 		return hashDimensionData.keySet();
 	}
 }

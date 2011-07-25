@@ -26,13 +26,13 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.GroupList;
-import org.caleydo.core.data.virtualarray.group.StorageGroupList;
+import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
-import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;
-import org.caleydo.core.manager.event.view.storagebased.NewStorageGroupInfoEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.NewContentGroupInfoEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.NewDimensionGroupInfoEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.UpdateViewEvent;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -51,7 +51,7 @@ import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.DimensionContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.eclipse.swt.widgets.Composite;
 
@@ -1237,10 +1237,10 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				} else
 					renderSymbol(gl);
 			} else {
-				if (!table.getStorageData(storageVAType).isDefaultTree()
-						&& table.getStorageData(storageVAType).getStorageTree() != null) {
-					tree = table.getStorageData(storageVAType).getStorageTree();
-					groupList = (GroupType) new StorageGroupList();
+				if (!table.getDimensionData(dimensionVAType).isDefaultTree()
+						&& table.getDimensionData(dimensionVAType).getDimensionTree() != null) {
+					tree = table.getDimensionData(dimensionVAType).getDimensionTree();
+					groupList = (GroupType) new DimensionGroupList();
 					rootNode = tree.getRoot();
 				} else
 					renderSymbol(gl);
@@ -1356,7 +1356,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		if (bRenderContentTree)
 			groupList = (GroupType) contentVA.buildNewGroupList(iAlClusterNodes);
 		else
-			groupList = (GroupType) storageVA.buildNewGroupList(iAlClusterNodes);
+			groupList = (GroupType) dimensionVA.buildNewGroupList(iAlClusterNodes);
 
 		triggerGroupListEvent();
 
@@ -1372,10 +1372,10 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			newGroupInfoEvent.setSetID(table.getID());
 			eventPublisher.triggerEvent(newGroupInfoEvent);
 		} else {
-			NewStorageGroupInfoEvent newGroupInfoEvent = new NewStorageGroupInfoEvent();
+			NewDimensionGroupInfoEvent newGroupInfoEvent = new NewDimensionGroupInfoEvent();
 			newGroupInfoEvent.setSender(this);
-			newGroupInfoEvent.setVAType(storageVAType);
-			newGroupInfoEvent.setGroupList((StorageGroupList) groupList);
+			newGroupInfoEvent.setVAType(dimensionVAType);
+			newGroupInfoEvent.setGroupList((DimensionGroupList) groupList);
 			newGroupInfoEvent.setDeleteTree(false);
 			eventPublisher.triggerEvent(newGroupInfoEvent);
 		}
@@ -1482,7 +1482,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 				ClusterNode leafNode = tree.getNodeByNumber(externalID);
 				if (contentSelectionManager.checkStatus(leafNode.getLeafID()) == false
-						&& storageSelectionManager.checkStatus(leafNode.getLeafID()) == false)
+						&& dimensionSelectionManager.checkStatus(leafNode.getLeafID()) == false)
 					break;
 
 				// Prevent handling of non genetic data in context menu
@@ -1578,7 +1578,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				ClusterNode leafNode = tree.getNodeByNumber(externalID);
 
 				if (contentSelectionManager.checkStatus(leafNode.getLeafID()) == false
-						&& storageSelectionManager.checkStatus(leafNode.getLeafID()) == false)
+						&& dimensionSelectionManager.checkStatus(leafNode.getLeafID()) == false)
 					break;
 
 				if (!isRenderedRemote()) {
@@ -1587,7 +1587,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 					contextMenu.setMasterGLView(this);
 				}
 
-				StorageContextMenuItemContainer experimentContextMenuItemContainer = new StorageContextMenuItemContainer();
+				DimensionContextMenuItemContainer experimentContextMenuItemContainer = new DimensionContextMenuItemContainer();
 				experimentContextMenuItemContainer.setID(tree.getLeaveIDType(),
 						leafNode.getLeafID());
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
@@ -1605,7 +1605,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				ISelectionDelta selectionDelta = null;
 				VABasedSelectionManager selectionManager = null;
 
-				selectionManager = storageSelectionManager;
+				selectionManager = dimensionSelectionManager;
 
 				selectionManager.clearSelection(selectionType);
 				selectionManager.addToType(selectionType,
@@ -1659,7 +1659,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 	public void clearAllSelections() {
 
 		contentSelectionManager.clearSelections();
-		storageSelectionManager.clearSelections();
+		dimensionSelectionManager.clearSelections();
 	}
 
 	@Override
@@ -1680,7 +1680,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
-			int storageIndex) throws InvalidAttributeValueException {
+			int dimensionIndex) throws InvalidAttributeValueException {
 		return null;
 	}
 
@@ -1693,10 +1693,10 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		contentVAType = DataTable.RECORD;
 
 		contentVA = dataDomain.getContentVA(contentVAType);
-		storageVA = dataDomain.getStorageVA(storageVAType);
+		dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
 
 		contentSelectionManager.setVA(contentVA);
-		storageSelectionManager.setVA(storageVA);
+		dimensionSelectionManager.setVA(dimensionVA);
 	}
 
 	/**
@@ -1752,7 +1752,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 				resetAllTreeSelections();
 
-				java.util.Set<Integer> setMouseOverElements = storageSelectionManager
+				java.util.Set<Integer> setMouseOverElements = dimensionSelectionManager
 						.getElements(SelectionType.MOUSE_OVER);
 				for (Integer iSelectedID : setMouseOverElements) {
 
@@ -1768,7 +1768,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 				}
 
-				java.util.Set<Integer> setSelectionElements = storageSelectionManager
+				java.util.Set<Integer> setSelectionElements = dimensionSelectionManager
 						.getElements(SelectionType.SELECTION);
 				for (Integer iSelectedID : setSelectionElements) {
 					iIndex = iSelectedID;

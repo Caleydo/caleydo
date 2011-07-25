@@ -17,8 +17,8 @@ public class AlphabeticalPartitioner
 	public TempResult getSortedVA(DataTable set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 		ContentVirtualArray contentVA = set.getContentData(DataTable.RECORD).getContentVA();
-		NominalDimension<String> storage =
-			(NominalDimension<String>) set.get(set.getStorageData(DataTable.DIMENSION).getStorageVA().get(0));
+		NominalDimension<String> dimension =
+			(NominalDimension<String>) set.get(set.getDimensionData(DataTable.DIMENSION).getDimensionVA().get(0));
 
 		HashMap<String, ArrayList<Integer>> letterBins = new HashMap<String, ArrayList<Integer>>(40);
 
@@ -34,7 +34,7 @@ public class AlphabeticalPartitioner
 		letterBins.put(unknown, new ArrayList<Integer>());
 
 		for (Integer contentID : contentVA) {
-			String value = storage.getRaw(contentID);
+			String value = dimension.getRaw(contentID);
 			String firstLetter = value.substring(0, 1);
 			firstLetter = firstLetter.toLowerCase();
 			if (letterBins.containsKey(firstLetter))

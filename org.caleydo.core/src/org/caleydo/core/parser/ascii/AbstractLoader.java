@@ -205,7 +205,7 @@ public abstract class AbstractLoader {
 
 		Logger.log(new Status(IStatus.INFO, toString(), "File " + fileName + " successfully loaded."));
 
-		setArraysToStorages();
+		setArraysToDimensions();
 
 		return true;
 	}
@@ -213,5 +213,5 @@ public abstract class AbstractLoader {
 	protected abstract void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile)
 		throws IOException;
 
-	protected abstract void setArraysToStorages();
+	protected abstract void setArraysToDimensions();
 }

@@ -224,7 +224,7 @@ public class GLOffScreenTextureRenderer {
 
 	private int emptyTexture(GL2 gl) {
 		// Create An Empty Texture
-		// Create Storage Space For Texture Data (1024x1024x4)
+		// Create Dimension Space For Texture Data (1024x1024x4)
 		ByteBuffer data = ByteBuffer.allocate(1024 * 1024 * 4);
 		data.limit(data.capacity());
 

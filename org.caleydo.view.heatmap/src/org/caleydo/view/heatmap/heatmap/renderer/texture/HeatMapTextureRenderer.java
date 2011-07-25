@@ -52,7 +52,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 
 	private ContentVirtualArray contentVA;
 
-	private DimensionVirtualArray storageVA;
+	private DimensionVirtualArray dimensionVA;
 
 	private DataTable set;
 
@@ -69,10 +69,10 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 	 * Init textures, build array of textures used for holding the whole samples
 	 */
 	public void init(GLUncertaintyHeatMap uncertaintyHeatMap, DataTable set,
-			ContentVirtualArray contentVA, DimensionVirtualArray storageVA, int groupIndex) {
+			ContentVirtualArray contentVA, DimensionVirtualArray dimensionVA, int groupIndex) {
 
 		this.contentVA = contentVA;
-		this.storageVA = storageVA;
+		this.dimensionVA = dimensionVA;
 		this.set = set;
 
 		this.uncertaintyHeatMap = uncertaintyHeatMap;
@@ -80,7 +80,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 		this.groupIndex = groupIndex;
 
 		int textureHeight = numberOfElements = contentVA.size();
-		int textureWidth = numberOfExpirments = storageVA.size();
+		int textureWidth = numberOfExpirments = dimensionVA.size();
 
 		numberOfTextures = (int) Math.ceil((double) numberOfElements
 				/ MAX_SAMPLES_PER_TEXTURE);
@@ -121,7 +121,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 
 		for (Integer contentIndex : contentVA) {
 			contentCount++;
-			for (Integer storageIndex : storageVA) {
+			for (Integer dimensionIndex : dimensionVA) {
 				// if
 				// (contentSelectionManager.checkStatus(SelectionType.DESELECTED,
 				// iContentIndex)) {
@@ -130,7 +130,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 				// fOpacity = 1.0f;
 				// }
 
-				fLookupValue = set.get(storageIndex).getFloat(
+				fLookupValue = set.get(dimensionIndex).getFloat(
 						uncertaintyHeatMap.getRenderingRepresentation(), contentIndex);
 
 				float[] mappingColor = colorMapper.getColor(fLookupValue);
@@ -239,7 +239,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 				// byte[] abgr = new byte[4];
 
 				val = val
-						+ ((set.get(storageVA.get(exps)).getFloat(
+						+ ((set.get(dimensionVA.get(exps)).getFloat(
 								DataRepresentation.NORMALIZED, contentVA.get(i))));
 			}
 			// buffer.get(abgr, i * numberOfExpirments * 4 + exps * 4, 4);
@@ -249,7 +249,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 			// unc = difference
 			uncertainty = 0;
 			for (int i = startGene; i < endGene; i++) {
-				float tempVal = set.get(storageVA.get(exps)).getFloat(
+				float tempVal = set.get(dimensionVA.get(exps)).getFloat(
 						DataRepresentation.NORMALIZED, contentVA.get(i));
 				uncertainty = Math.abs(val - tempVal);
 				if (uncertainty > maxUncertainty) {

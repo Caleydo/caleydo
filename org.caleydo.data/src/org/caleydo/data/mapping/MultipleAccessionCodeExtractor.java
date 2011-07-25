@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 
 /**
  * Helper class that extracts multiple accession numbers mapped to the same
- * storage index. separated. EXAMPLE: Input NM_012156.2;NM_177996.1 1770 Output:
+ * dimension index. separated. EXAMPLE: Input NM_012156.2;NM_177996.1 1770 Output:
  * NM_012156.2;1770 NM_177996.1;1770
  * 
  * @author Marc Streit
@@ -42,7 +42,7 @@ public class MultipleAccessionCodeExtractor {
 
 		String sInputLine = "";
 		String sAccessionCodes = "";
-		String sMicroarrayExpressionStorageIndex = "";
+		String sMicroarrayExpressionDimensionIndex = "";
 
 		while ((sInputLine = in.readLine()) != null) {
 			sAccessionCodes = sInputLine.substring(0,
@@ -56,7 +56,7 @@ public class MultipleAccessionCodeExtractor {
 				// Write out original input line without modification
 				writer.println(sInputLine);
 			} else {
-				sMicroarrayExpressionStorageIndex = sInputLine
+				sMicroarrayExpressionDimensionIndex = sInputLine
 						.substring(
 								sInputLine
 										.indexOf(delimiter) + 1,
@@ -65,7 +65,7 @@ public class MultipleAccessionCodeExtractor {
 				while (strTokenText.hasMoreTokens()) {
 					writer.println(strTokenText.nextToken()
 							+ delimiter
-							+ sMicroarrayExpressionStorageIndex);
+							+ sMicroarrayExpressionDimensionIndex);
 				}
 			}
 		}

@@ -163,7 +163,7 @@ public abstract class AGLView
 	protected IDMappingManager idMappingManager;
 
 	/**
-	 * The virtual array that manages the contents (the indices) in the storages
+	 * The virtual array that manages the contents (the indices) in the dimensions
 	 */
 	protected ContentVirtualArray contentVA;
 	/**
@@ -172,13 +172,13 @@ public abstract class AGLView
 	protected String contentVAType = DataTable.RECORD;
 
 	/**
-	 * The id of the virtual array that manages the storage references in the set
+	 * The id of the virtual array that manages the dimension references in the set
 	 */
-	protected DimensionVirtualArray storageVA;
+	protected DimensionVirtualArray dimensionVA;
 	/**
-	 * The type of the storage VA
+	 * The type of the dimension VA
 	 */
-	protected String storageVAType = DataTable.DIMENSION;
+	protected String dimensionVAType = DataTable.DIMENSION;
 
 	/**
 	 * The context menu each view should implement. It has to be created in initLocal or is set via initRemote
@@ -1060,8 +1060,8 @@ public abstract class AGLView
 		return contentVA;
 	}
 
-	public final DimensionVirtualArray getStorageVA() {
-		return storageVA;
+	public final DimensionVirtualArray getDimensionVA() {
+		return dimensionVA;
 	}
 
 	public final DetailLevel getDetailLevel() {

@@ -27,9 +27,9 @@ public class ContentSpacing {
 		yDistances = new ArrayList<Float>();
 	}
 
-	public void calculateContentSpacing(int contentElements, int storageElements,
+	public void calculateContentSpacing(int contentElements, int dimensionElements,
 			float x, float y, float minSelectedFieldHeight) {
-		fieldWidth = x / storageElements;
+		fieldWidth = x / dimensionElements;
 
 		if (y / contentElements > minSelectedFieldHeight
 				|| heatMap.getZoomedElements().size() == 0) {

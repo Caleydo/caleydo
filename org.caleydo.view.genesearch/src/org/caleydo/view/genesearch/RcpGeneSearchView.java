@@ -629,7 +629,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 						loadGeneInHeatMapMenuItem.setImage(generalManager
 								.getResourceLoader()
 								.getImage(geneTable.getDisplay(),
-										"resources/icons/view/storagebased/heatmap/heatmap.png"));
+										"resources/icons/view/dimensionbased/heatmap/heatmap.png"));
 
 						loadGeneInHeatMapMenuItem
 								.addSelectionListener(new SelectionAdapter() {
@@ -661,7 +661,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 						loadGeneInParallelCoordinatesMenuItem.setImage(generalManager
 								.getResourceLoader()
 								.getImage(geneTable.getDisplay(),
-										"resources/icons/view/storagebased/parcoords/parcoords.png"));
+										"resources/icons/view/dimensionbased/parcoords/parcoords.png"));
 
 						loadGeneInParallelCoordinatesMenuItem
 								.addSelectionListener(new SelectionAdapter() {

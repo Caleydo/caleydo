@@ -6,7 +6,7 @@ import org.caleydo.core.data.collection.table.DimensionData;
 public class ClusterResult {
 
 	RecordData contentResult;
-	DimensionData storageResult;
+	DimensionData dimensionResult;
 
 	/**
 	 * Determines group information for virtual array. Used by affinity propagation and kMeans.
@@ -17,15 +17,15 @@ public class ClusterResult {
 	void finish() {
 		if (contentResult != null)
 			contentResult.finish();
-		if (storageResult != null)
-			storageResult.finish();
+		if (dimensionResult != null)
+			dimensionResult.finish();
 	}
 
 	public RecordData getContentResult() {
 		return contentResult;
 	}
 
-	public DimensionData getStorageResult() {
-		return storageResult;
+	public DimensionData getDimensionResult() {
+		return dimensionResult;
 	}
 }

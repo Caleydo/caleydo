@@ -57,14 +57,14 @@ public class DataDomainGraph {
 					ATableBasedDataDomain setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
 					ATableBasedDataDomain setBasedVertex = (ATableBasedDataDomain) vertex;
 
-					// TODO: Also mapping between content and storage?
+					// TODO: Also mapping between content and dimension?
 					boolean hasContentMapping =
 						idMappingManager.hasMapping(setBasedDataDomain.getPrimaryContentMappingType(),
 							setBasedVertex.getPrimaryContentMappingType());
-					boolean hasStorageMapping =
-						idMappingManager.hasMapping(setBasedDataDomain.getPrimaryStorageMappingType(),
-							setBasedVertex.getPrimaryStorageMappingType());
-					if (hasContentMapping || hasStorageMapping) {
+					boolean hasDimensionMapping =
+						idMappingManager.hasMapping(setBasedDataDomain.getPrimaryDimensionMappingType(),
+							setBasedVertex.getPrimaryDimensionMappingType());
+					if (hasContentMapping || hasDimensionMapping) {
 						mappingExists = true;
 					}
 				}

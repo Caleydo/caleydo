@@ -35,7 +35,7 @@ public class DefaultTemplate extends AHeatMapTemplate {
 		heatMapLayout.setRatioSizeY(heatMapSizeY);
 		heatMapLayout.setRenderer(heatMapRenderer);
 		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
-		heatMapLayout.addForeGroundRenderer(storageSelectionRenderer);
+		heatMapLayout.addForeGroundRenderer(dimensionSelectionRenderer);
 //		rendererParameters.add(heatMapLayout);
 		
 		

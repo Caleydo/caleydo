@@ -26,9 +26,9 @@ import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.event.view.matchmaker.AdjustPValueEvent;
 import org.caleydo.core.manager.event.view.matchmaker.CreateSelectionTypesEvent;
 import org.caleydo.core.manager.event.view.matchmaker.DuplicateSetBarItemEvent;
-import org.caleydo.core.manager.event.view.storagebased.HideHeatMapElementsEvent;
-import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.HideHeatMapElementsEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.NewContentGroupInfoEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -145,7 +145,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	@Override
 	public void init(GL2 gl) {
 		// contentVA = useCase.getContentVA(ContentVAType.CONTENT);
-		// storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
+		// dimensionVA = useCase.getDimensionVA(DimensionVAType.STORAGE);
 
 		textRenderer = new CaleydoTextRenderer(24);
 		

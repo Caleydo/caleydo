@@ -36,7 +36,7 @@ public class BucketTemplate extends AHeatMapTemplate {
 		heatMapLayout.setRatioSizeY(1f);
 		heatMapLayout.setRenderer(heatMapRenderer);
 		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
-		heatMapLayout.addForeGroundRenderer(storageSelectionRenderer);
+		heatMapLayout.addForeGroundRenderer(dimensionSelectionRenderer);
 
 		boolean renderCaptions = false;
 		if (heatMap.isShowCaptions())

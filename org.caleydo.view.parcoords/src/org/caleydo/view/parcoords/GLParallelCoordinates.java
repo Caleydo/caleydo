@@ -40,9 +40,9 @@ import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.ContentFilter;
-import org.caleydo.core.data.filter.StorageFilter;
+import org.caleydo.core.data.filter.DimensionFilter;
 import org.caleydo.core.data.filter.event.NewContentFilterEvent;
-import org.caleydo.core.data.filter.event.NewStorageFilterEvent;
+import org.caleydo.core.data.filter.event.NewDimensionFilterEvent;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
@@ -54,7 +54,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
-import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
+import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
@@ -62,14 +62,14 @@ import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.AngularBrushingEvent;
-import org.caleydo.core.manager.event.view.storagebased.ApplyCurrentSelectionToVirtualArrayEvent;
-import org.caleydo.core.manager.event.view.storagebased.BookmarkButtonEvent;
-import org.caleydo.core.manager.event.view.storagebased.ResetAxisSpacingEvent;
-import org.caleydo.core.manager.event.view.storagebased.ResetParallelCoordinatesEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
-import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.AngularBrushingEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.ApplyCurrentSelectionToVirtualArrayEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.BookmarkButtonEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.ResetAxisSpacingEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.ResetParallelCoordinatesEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.UpdateViewEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -85,7 +85,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.DimensionContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.parcoords.PCRenderStyle.PolyLineState;
@@ -410,7 +410,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	public void clearAllSelections() {
 
 		contentSelectionManager.clearSelections();
-		storageSelectionManager.clearSelections();
+		dimensionSelectionManager.clearSelections();
 
 		clearFilters();
 		setDisplayListDirty();
@@ -489,7 +489,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	/**
 	 * Initializes the array lists that contain the data. Must be run at program
 	 * start, every time you exchange axis and polylines and every time you
-	 * change storages or selections *
+	 * change dimensions or selections *
 	 */
 	@Override
 	protected void initLists() {
@@ -502,12 +502,12 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		// contentVA = dataDomain.getContentVA(contentVAType);
 		if (contentVA == null)
 			contentVA = table.getContentData(contentVAType).getContentVA();
-		if (storageVA == null)
-			storageVA = table.getStorageData(storageVAType).getStorageVA();
-		// storageVA = dataDomain.getStorageVA(storageVAType);
+		if (dimensionVA == null)
+			dimensionVA = table.getDimensionData(dimensionVAType).getDimensionVA();
+		// dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
 
 		contentSelectionManager.setVA(contentVA);
-		storageSelectionManager.setVA(storageVA);
+		dimensionSelectionManager.setVA(dimensionVA);
 
 		initGates();
 	}
@@ -627,7 +627,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		if (!(detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM))
 			renderCaption = false;
 
-		ADimension currentStorage = null;
+		ADimension currentDimension = null;
 
 		float previousX = 0;
 		float previousY = 0;
@@ -644,16 +644,16 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		}
 
 		// this loop executes once per axis
-		for (int storageCount = 0; storageCount < storageVA.size(); storageCount++) {
+		for (int dimensionCount = 0; dimensionCount < dimensionVA.size(); dimensionCount++) {
 
-			currentStorage = table.get(storageVA.get(storageCount));
+			currentDimension = table.get(dimensionVA.get(dimensionCount));
 
-			currentX = axisSpacings.get(storageCount);
-			currentY = currentStorage.getFloat(DataRepresentation.NORMALIZED, contentID);
+			currentX = axisSpacings.get(dimensionCount);
+			currentY = currentDimension.getFloat(DataRepresentation.NORMALIZED, contentID);
 			if (Float.isNaN(currentY)) {
 				currentY = NAN_Y_OFFSET / renderStyle.getAxisHeight();
 			}
-			if (storageCount != 0) {
+			if (dimensionCount != 0) {
 				if (renderCaption) {
 					gl.glBegin(GL2.GL_LINES);
 				}
@@ -671,15 +671,15 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 			if (renderCaption) {
 				String sRawValue;
-				if (currentStorage instanceof NumericalDimension) {
-					sRawValue = Formatter.formatNumber(currentStorage.getFloat(
+				if (currentDimension instanceof NumericalDimension) {
+					sRawValue = Formatter.formatNumber(currentDimension.getFloat(
 							DataRepresentation.RAW, contentID));
 
-				} else if (currentStorage instanceof NominalDimension) {
-					sRawValue = ((NominalDimension<String>) currentStorage)
+				} else if (currentDimension instanceof NominalDimension) {
+					sRawValue = ((NominalDimension<String>) currentDimension)
 							.getRaw(contentID);
 				} else
-					throw new IllegalStateException("Unknown Storage Type");
+					throw new IllegalStateException("Unknown Dimension Type");
 
 				renderBoxedYValues(gl, currentX, currentY * renderStyle.getAxisHeight(),
 						sRawValue, selectionType);
@@ -711,7 +711,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 		textRenderer.setColor(0, 0, 0, 1);
 
-		int numberOfAxis = storageVA.size();
+		int numberOfAxis = dimensionVA.size();
 		// draw X-Axis
 		gl.glColor4fv(X_AXIS_COLOR, 0);
 		gl.glLineWidth(X_AXIS_LINE_WIDTH);
@@ -727,20 +727,20 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		gl.glPopName();
 
 		// draw all Y-Axis
-		Set<Integer> selectedSet = storageSelectionManager
+		Set<Integer> selectedSet = dimensionSelectionManager
 				.getElements(SelectionType.SELECTION);
-		Set<Integer> mouseOverSet = storageSelectionManager
+		Set<Integer> mouseOverSet = dimensionSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
 
 		int iCount = 0;
 		while (iCount < numberOfAxis) {
 			float fXPosition = axisSpacings.get(iCount);
-			if (selectedSet.contains(storageVA.get(iCount))) {
+			if (selectedSet.contains(dimensionVA.get(iCount))) {
 				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 				gl.glLineWidth(Y_AXIS_SELECTED_LINE_WIDTH);
 				gl.glEnable(GL2.GL_LINE_STIPPLE);
 				gl.glLineStipple(2, (short) 0xAAAA);
-			} else if (mouseOverSet.contains(storageVA.get(iCount))) {
+			} else if (mouseOverSet.contains(dimensionVA.get(iCount))) {
 				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 				gl.glLineWidth(Y_AXIS_MOUSE_OVER_LINE_WIDTH);
 				gl.glEnable(GL2.GL_LINE_STIPPLE);
@@ -751,7 +751,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			}
 
 			int axisPickingID = pickingManager.getPickingID(uniqueID,
-					PickingType.Y_AXIS_SELECTION, storageVA.get(iCount));
+					PickingType.Y_AXIS_SELECTION, dimensionVA.get(iCount));
 			gl.glPushName(axisPickingID);
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(fXPosition, 0, AXIS_Z);
@@ -791,7 +791,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 									- fWidth - AXIS_MARKER_WIDTH, fCurrentHeight
 									- fHeightHalf);
 						} else {
-							// TODO: storage based access
+							// TODO: dimension based access
 						}
 					}
 					gl.glColor3fv(Y_AXIS_COLOR, 0);
@@ -805,12 +805,12 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 			String sAxisLabel = null;
 
-			sAxisLabel = table.get(storageVA.get(iCount)).getLabel();
+			sAxisLabel = table.get(dimensionVA.get(iCount)).getLabel();
 
 			gl.glTranslatef(fXPosition,
 					renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(), 0);
 
-			float width = renderStyle.getAxisSpacing(storageVA.size());
+			float width = renderStyle.getAxisSpacing(dimensionVA.size());
 			if (iCount == numberOfAxis - 1)
 				width = fYTranslation;
 			textRenderer.renderTextInBounds(gl, sAxisLabel, 0, 0, 0.02f, width,
@@ -859,7 +859,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 						PCRenderStyle.NAN_Y_OFFSET, PCRenderStyle.NAN_Z);
 
 				int iPickingID = pickingManager.getPickingID(uniqueID,
-						PickingType.REMOVE_NAN, storageVA.get(iCount));
+						PickingType.REMOVE_NAN, dimensionVA.get(iCount));
 				gl.glPushName(iPickingID);
 
 				textureManager.renderGUITexture(gl, EIconTextures.NAN, lowerLeftCorner,
@@ -878,7 +878,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				// the gate add button
 				float fYGateAddOrigin = renderStyle.getAxisHeight();
 				iPickingID = pickingManager.getPickingID(uniqueID, PickingType.ADD_GATE,
-						storageVA.get(iCount));
+						dimensionVA.get(iCount));
 
 				lowerLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin, AXIS_Z);
 				lowerRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
@@ -896,8 +896,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 				gl.glPopName();
 
-				if (selectedSet.contains(storageVA.get(iCount))
-						|| mouseOverSet.contains(storageVA.get(iCount))) {
+				if (selectedSet.contains(dimensionVA.get(iCount))
+						|| mouseOverSet.contains(dimensionVA.get(iCount))) {
 
 					lowerLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin - 0.3f,
 							AXIS_Z + 0.005f);
@@ -1015,7 +1015,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			// Pair<Float, Float> gate = hashGates.get(iGateID);
 			// TODO for all indices
 
-			ArrayList<Integer> iAlAxisIndex = storageVA.indicesOf(iAxisID);
+			ArrayList<Integer> iAlAxisIndex = dimensionVA.indicesOf(iAxisID);
 			for (int iAxisIndex : iAlAxisIndex) {
 				float fCurrentPosition = axisSpacings.get(iAxisIndex);
 				gate.setCurrentPosition(fCurrentPosition);
@@ -1123,7 +1123,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				PCRenderStyle.MIN_NUMBER_TEXT_SIZE);
 		float fSmallSpacing = renderStyle.getVerySmallSpacing();
 		float fBackPlaneWidth = (float) tempRectangle.getWidth();
-		float maxWidth = renderStyle.getAxisSpacing(storageVA.size());
+		float maxWidth = renderStyle.getAxisSpacing(dimensionVA.size());
 		if (fBackPlaneWidth > maxWidth)
 			fBackPlaneWidth = maxWidth;
 
@@ -1271,7 +1271,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			Gate gate = hashMasterGates.get(iGateID);
 			for (int iPolylineIndex : contentVA) {
 				boolean bIsBlocking = true;
-				for (int iAxisIndex : storageVA) {
+				for (int iAxisIndex : dimensionVA) {
 
 					fCurrentValue = table.get(iAxisIndex).getFloat(DataRepresentation.RAW,
 							iPolylineIndex);
@@ -1310,13 +1310,13 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	}
 
 	@Override
-	public void handleVAUpdate(StorageVADelta delta, String info) {
+	public void handleVAUpdate(DimensionVADelta delta, String info) {
 		for (VADeltaItem item : delta) {
 			if (item.getType() == EVAOperation.REMOVE) {
-				Integer id = storageVA.get(item.getIndex());
+				Integer id = dimensionVA.get(item.getIndex());
 
 				// resetAxisSpacing();
-				if (storageVA.occurencesOf(id) == 1) {
+				if (dimensionVA.occurencesOf(id) == 1) {
 					removeGate(id);
 				}
 			} else if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
@@ -1514,9 +1514,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 							.getWidth(), getParentGLCanvas().getHeight());
 					contextMenu.setMasterGLView(this);
 				}
-				StorageContextMenuItemContainer experimentContextMenuItemContainer = new StorageContextMenuItemContainer();
+				DimensionContextMenuItemContainer experimentContextMenuItemContainer = new DimensionContextMenuItemContainer();
 				experimentContextMenuItemContainer.setDataDomain(dataDomain);
-				experimentContextMenuItemContainer.setID(storageIDType, pickingID);
+				experimentContextMenuItemContainer.setID(dimensionIDType, pickingID);
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 
 			default:
@@ -1524,14 +1524,14 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 			}
 
-			storageSelectionManager.clearSelection(selectionType);
-			storageSelectionManager.addToType(selectionType, pickingID);
+			dimensionSelectionManager.clearSelection(selectionType);
+			dimensionSelectionManager.addToType(selectionType, pickingID);
 
-			storageSelectionManager.addConnectionID(generalManager.getIDCreator()
+			dimensionSelectionManager.addConnectionID(generalManager.getIDCreator()
 					.createID(ManagedObjectType.CONNECTION), pickingID);
 
 			connectedElementRepresentationManager.clear(
-					storageSelectionManager.getIDType(), selectionType);
+					dimensionSelectionManager.getIDType(), selectionType);
 
 			// triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
 			// axisSelectionManager
@@ -1541,8 +1541,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			// ESelectionCommandType.CLEAR, selectionType);
 			// sendSelectionCommandEvent(eAxisDataType, command);
 
-			ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
-			// if (storageSelectionManager.getIDType() ==
+			ISelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
+			// if (dimensionSelectionManager.getIDType() ==
 			// EIDType.EXPERIMENT_INDEX) {
 			handleConnectedElementReps(selectionDelta);
 			// }
@@ -1618,18 +1618,18 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				iChangeDropOnAxisNumber = pickingID;
 				break;
 			case CLICKED:
-				if (storageVA.occurencesOf(storageVA.get(pickingID)) == 1) {
-					removeGate(storageVA.get(pickingID));
+				if (dimensionVA.occurencesOf(dimensionVA.get(pickingID)) == 1) {
+					removeGate(dimensionVA.get(pickingID));
 				}
-				// Integer storageID = storageVA.remove(pickingID);
-				Integer storageID = storageVA.get(pickingID);
-				storageSelectionManager.remove(pickingID);
-				StorageVADelta vaDelta = new StorageVADelta(DataTable.DIMENSION, storageIDType);
+				// Integer dimensionID = dimensionVA.remove(pickingID);
+				Integer dimensionID = dimensionVA.get(pickingID);
+				dimensionSelectionManager.remove(pickingID);
+				DimensionVADelta vaDelta = new DimensionVADelta(DataTable.DIMENSION, dimensionIDType);
 				vaDelta.add(VADeltaItem.remove(pickingID));
 
-				triggerStorageFilterEvent(vaDelta,
-						"Removed " + dataDomain.getStorageLabel(storageID));
-				// sendStorageVAUpdateEvent(vaDelta);
+				triggerDimensionFilterEvent(vaDelta,
+						"Removed " + dataDomain.getDimensionLabel(dimensionID));
+				// sendDimensionVAUpdateEvent(vaDelta);
 				setDisplayListDirty();
 				resetAxisSpacing();
 				break;
@@ -1659,14 +1659,14 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				break;
 			case CLICKED:
 				if (pickingID >= 0) {
-					// storageVA.copy(pickingID);
-					StorageVADelta vaDelta = new StorageVADelta(DataTable.DIMENSION,
-							storageIDType);
+					// dimensionVA.copy(pickingID);
+					DimensionVADelta vaDelta = new DimensionVADelta(DataTable.DIMENSION,
+							dimensionIDType);
 					vaDelta.add(VADeltaItem.copy(pickingID));
-					triggerStorageFilterEvent(
+					triggerDimensionFilterEvent(
 							vaDelta,
 							"Copied "
-									+ dataDomain.getStorageLabel(storageVA.get(pickingID)));
+									+ dataDomain.getDimensionLabel(dimensionVA.get(pickingID)));
 
 					setDisplayListDirty();
 					// resetSelections();
@@ -1765,14 +1765,14 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		}
 	}
 
-	private void triggerStorageFilterEvent(StorageVADelta delta, String label) {
+	private void triggerDimensionFilterEvent(DimensionVADelta delta, String label) {
 
-		StorageFilter filter = new StorageFilter();
+		DimensionFilter filter = new DimensionFilter();
 		filter.setVADelta(delta);
 		filter.setLabel(label);
 		filter.setDataDomain(dataDomain);
 
-		NewStorageFilterEvent filterEvent = new NewStorageFilterEvent();
+		NewDimensionFilterEvent filterEvent = new NewDimensionFilterEvent();
 		filterEvent.setFilter(filter);
 		filterEvent.setSender(this);
 		filterEvent.setDataDomainID(dataDomain.getDataDomainID());
@@ -1804,17 +1804,17 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		float x = 0;
 		float y = 0;
 
-		if (idType == storageIDType
+		if (idType == dimensionIDType
 				&& dataDomain.getDataDomainID()
 						.equals("org.caleydo.datadomain.genetic")) {
 
-			int axisCount = storageVA.indexOf(id);
-			// for (int iAxisID : storageVA) {
-			x = axisCount * renderStyle.getAxisSpacing(storageVA.size());
+			int axisCount = dimensionVA.indexOf(id);
+			// for (int iAxisID : dimensionVA) {
+			x = axisCount * renderStyle.getAxisSpacing(dimensionVA.size());
 			axisCount++;
 			x = x + renderStyle.getXSpacing();
 			y = renderStyle.getBottomSpacing();
-			// y =set.get(storageVA.get(storageVA.size() - 1)).getFloat(
+			// y =set.get(dimensionVA.get(dimensionVA.size() - 1)).getFloat(
 			// EDataRepresentation.NORMALIZED, iAxisID);
 			alElementReps.add(new SelectedElementRep(idType, uniqueID, x, y, 0.0f));
 			// }
@@ -1835,20 +1835,20 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			// if (renderConnectionsLeft) {
 			// x = x + renderStyle.getXSpacing();
 			// y =
-			// set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
-			// iStorageIndex);
+			// set.get(dimensionVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
+			// iDimensionIndex);
 			// } else {
 			// if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
 			// fXValue = viewFrustum.getRight() - 0.2f;
 			// else
 			x = viewFrustum.getLeft() + renderStyle.getXSpacing();
-			y = table.get(storageVA.get(0)).getFloat(DataRepresentation.NORMALIZED, id);
+			y = table.get(dimensionVA.get(0)).getFloat(DataRepresentation.NORMALIZED, id);
 			// }
 
 			// // get the value on the leftmost axis
 			// fYValue =
-			// set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
-			// iStorageIndex);
+			// set.get(dimensionVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
+			// iDimensionIndex);
 
 			if (Float.isNaN(y)) {
 				y = NAN_Y_OFFSET * renderStyle.getAxisHeight()
@@ -1868,12 +1868,12 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		int iNumLines = contentVA.size();
 		if (displayEveryNthPolyline == 1) {
 			message = "Parallel Coordinates - " + iNumLines + " "
-					+ dataDomain.getContentName(false, true) + " / " + storageVA.size()
+					+ dataDomain.getContentName(false, true) + " / " + dimensionVA.size()
 					+ " experiments";
 		} else {
 			message = "Parallel Coordinates showing a sample of " + iNumLines
 					/ displayEveryNthPolyline + " out of " + iNumLines + " "
-					+ dataDomain.getContentName(false, true) + " / " + storageVA.size()
+					+ dataDomain.getContentName(false, true) + " / " + dimensionVA.size()
 					+ " experiments";
 		}
 		return message;
@@ -1885,7 +1885,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Parallel Coordinates\n");
 		sInfoText.append(contentVA.size() + dataDomain.getContentName(false, true)
-				+ " as polylines and " + storageVA.size() + " experiments as axis.\n");
+				+ " as polylines and " + dimensionVA.size() + " experiments as axis.\n");
 
 		if (bRenderOnlyContext) {
 			sInfoText
@@ -1940,8 +1940,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		int iAxisLeftIndex;
 		int iAxisRightIndex;
 
-		iAxisLeftIndex = storageVA.get(iPosition);
-		iAxisRightIndex = storageVA.get(iPosition + 1);
+		iAxisLeftIndex = dimensionVA.get(iPosition);
+		iAxisRightIndex = dimensionVA.get(iPosition + 1);
 
 		Vec3f vecLeftPoint = new Vec3f(0, 0, 0);
 		Vec3f vecRightPoint = new Vec3f(0, 0, 0);
@@ -2142,16 +2142,16 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		}
 
 		if (iSwitchAxisWithThis != -1) {
-			storageVA.move(iMovedAxisPosition, iSwitchAxisWithThis);
+			dimensionVA.move(iMovedAxisPosition, iSwitchAxisWithThis);
 			axisSpacings.remove(iMovedAxisPosition);
 			axisSpacings.add(iSwitchAxisWithThis, fWidth);
 
-			StorageVADelta vaDelta = new StorageVADelta(storageVAType, storageIDType);
+			DimensionVADelta vaDelta = new DimensionVADelta(dimensionVAType, dimensionIDType);
 			vaDelta.add(VADeltaItem.move(iMovedAxisPosition, iSwitchAxisWithThis));
-			triggerStorageFilterEvent(
+			triggerDimensionFilterEvent(
 					vaDelta,
 					"Moved "
-							+ dataDomain.getStorageLabel(storageVA
+							+ dataDomain.getDimensionLabel(dimensionVA
 									.get(iMovedAxisPosition)));
 			iMovedAxisPosition = iSwitchAxisWithThis;
 		}
@@ -2206,7 +2206,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			}
 		}
 
-		int iNumberOfAxis = storageVA.size();
+		int iNumberOfAxis = dimensionVA.size();
 
 		float fOriginalAxisSpacing = renderStyle.getAxisSpacing(iNumberOfAxis);
 
@@ -2231,7 +2231,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	public void resetAxisSpacing() {
 		axisSpacings.clear();
-		int numAxis = storageVA.size();
+		int numAxis = dimensionVA.size();
 		float initialAxisSpacing = renderStyle.getAxisSpacing(numAxis);
 		for (int count = 0; count < numAxis; count++) {
 			axisSpacings.add(initialAxisSpacing * count);
@@ -2333,8 +2333,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			SelectionCommand selectionCommand) {
 		if (category == contentSelectionManager.getIDType().getIDCategory())
 			contentSelectionManager.executeSelectionCommand(selectionCommand);
-		else if (category == storageSelectionManager.getIDType().getIDCategory())
-			storageSelectionManager.executeSelectionCommand(selectionCommand);
+		else if (category == dimensionSelectionManager.getIDType().getIDCategory())
+			dimensionSelectionManager.executeSelectionCommand(selectionCommand);
 		else
 			return;
 
@@ -2349,7 +2349,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		if (isRenderedRemote())
 			renderMode = "remote";
 		return ("PCs, " + renderMode + ", " + iNumElements + " elements" + " Axis DT: "
-				+ storageSelectionManager.getIDType() + " Polyline DT:" + contentSelectionManager
+				+ dimensionSelectionManager.getIDType() + " Polyline DT:" + contentSelectionManager
 				.getIDType());
 	}
 
@@ -2389,12 +2389,12 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		int vertexCounter = 0;
 
 		for (int index = 0; index < table.getMetaData().depth(); index++) {
-			int storageCounter = 0;
-			for (Integer storageID : storageVA) {
-				float xValue = 0.2f * storageCounter++;
-				NumericalDimension storage = (NumericalDimension) table.get(storageID);
+			int dimensionCounter = 0;
+			for (Integer dimensionID : dimensionVA) {
+				float xValue = 0.2f * dimensionCounter++;
+				NumericalDimension dimension = (NumericalDimension) table.get(dimensionID);
 
-				float yValue = storage.getFloat(DataRepresentation.NORMALIZED, index);
+				float yValue = dimension.getFloat(DataRepresentation.NORMALIZED, index);
 				vertices[vertexCounter++] = xValue;
 				vertices[vertexCounter++] = yValue;
 			}

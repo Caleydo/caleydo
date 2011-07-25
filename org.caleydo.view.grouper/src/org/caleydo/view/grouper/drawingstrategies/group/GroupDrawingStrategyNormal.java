@@ -67,13 +67,13 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 		// gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
 
 		DataTable set = groupRepresentation.getClusterNode().getMetaSet();
-		DimensionVirtualArray storageVA = set.getStorageData(DataTable.DIMENSION).getStorageVA();
+		DimensionVirtualArray dimensionVA = set.getDimensionData(DataTable.DIMENSION).getDimensionVA();
 
 		boolean isNominal = false;
 		boolean isNumerical = false;
-		for (Integer storageID : storageVA) {
+		for (Integer dimensionID : dimensionVA) {
 
-			if (set.get(storageID) instanceof NominalDimension<?>) {
+			if (set.get(dimensionID) instanceof NominalDimension<?>) {
 				gl.glColor4f(116f / 255f, 196f / 255f, 118f / 255f, 1f);
 				isNominal = true;
 			} else {

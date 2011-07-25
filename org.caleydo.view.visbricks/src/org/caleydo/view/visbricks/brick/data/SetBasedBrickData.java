@@ -50,21 +50,21 @@ public class SetBasedBrickData implements IBrickData {
 		// if (contentVA == null)
 		// throw new IllegalStateException("contentVA was null");
 		for (Integer contenID : getContentVA()) {
-			DimensionData storageData = segmentData.getSet().getStorageData(
+			DimensionData dimensionData = segmentData.getSet().getDimensionData(
 					DataTable.DIMENSION);
-			if (storageData == null) {
+			if (dimensionData == null) {
 				averageValue = 0;
 				return;
 			}
 
-			DimensionVirtualArray storageVA = storageData.getStorageVA();
+			DimensionVirtualArray dimensionVA = dimensionData.getDimensionVA();
 
-			if (storageVA == null) {
+			if (dimensionVA == null) {
 				averageValue = 0;
 				return;
 			}
-			for (Integer storageID : storageVA) {
-				float value = segmentData.getSet().get(storageID)
+			for (Integer dimensionID : dimensionVA) {
+				float value = segmentData.getSet().get(dimensionID)
 						.getFloat(DataRepresentation.NORMALIZED, contenID);
 				if (!Float.isNaN(value)) {
 					averageValue += value;

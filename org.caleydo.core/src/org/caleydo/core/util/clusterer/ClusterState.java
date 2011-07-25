@@ -18,7 +18,7 @@ import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 public class ClusterState {
 
 	private IDType contentIDType;
-	private IDType storageIDType;
+	private IDType dimensionIDType;
 	private EClustererAlgo clustererAlgo;
 	private EClustererType clustererType;
 	private EDistanceMeasure distanceMeasure;
@@ -29,10 +29,10 @@ public class ClusterState {
 	private float affinityPropClusterFactorExperiments;
 
 	private String contentVAType = DataTable.RECORD;
-	private String storageVAType = DataTable.DIMENSION;
+	private String dimensionVAType = DataTable.DIMENSION;
 
 	private ContentVirtualArray contentVA;
-	private DimensionVirtualArray storageVA;
+	private DimensionVirtualArray dimensionVA;
 
 	public ClusterState() {
 
@@ -52,12 +52,12 @@ public class ClusterState {
 		return contentIDType;
 	}
 
-	public void setStorageIDType(IDType storageIDType) {
-		this.storageIDType = storageIDType;
+	public void setDimensionIDType(IDType dimensionIDType) {
+		this.dimensionIDType = dimensionIDType;
 	}
 
-	public IDType getStorageIDType() {
-		return storageIDType;
+	public IDType getDimensionIDType() {
+		return dimensionIDType;
 	}
 
 	public void setContentVAType(String contentVAType) {
@@ -68,12 +68,12 @@ public class ClusterState {
 		return contentVAType;
 	}
 
-	public void setStorageVAType(String storageVAType) {
-		this.storageVAType = storageVAType;
+	public void setDimensionVAType(String dimensionVAType) {
+		this.dimensionVAType = dimensionVAType;
 	}
 
-	public String getStorageVAType() {
-		return storageVAType;
+	public String getDimensionVAType() {
+		return dimensionVAType;
 	}
 
 	public void setContentVA(ContentVirtualArray contentVA) {
@@ -84,12 +84,12 @@ public class ClusterState {
 		return contentVA;
 	}
 
-	public void setStorageVA(DimensionVirtualArray storageVA) {
-		this.storageVA = storageVA;
+	public void setDimensionVA(DimensionVirtualArray dimensionVA) {
+		this.dimensionVA = dimensionVA;
 	}
 
-	public DimensionVirtualArray getStorageVA() {
-		return storageVA;
+	public DimensionVirtualArray getDimensionVA() {
+		return dimensionVA;
 	}
 
 	public void setClustererAlgo(EClustererAlgo eClustererAlgo) {

@@ -14,7 +14,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class UseFishEyeAction extends AToolBarAction implements IToolBarItem {
 	public static final String TEXT = "Use fish eye";
-	public static final String ICON = "resources/icons/view/storagebased/parcoords/angular_brush.png";
+	public static final String ICON = "resources/icons/view/dimensionbased/parcoords/angular_brush.png";
 
 	private boolean useFishEye = true;
 

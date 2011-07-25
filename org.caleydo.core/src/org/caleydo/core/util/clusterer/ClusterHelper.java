@@ -130,13 +130,13 @@ public class ClusterHelper {
 	public static void calculateClusterAverages(Tree<ClusterNode> tree, EClustererType eClustererType,
 		DataTable set) {
 		// FIXME - direct references here - should be parameters
-		DimensionVirtualArray storageVA = set.getStorageData(DataTable.DIMENSION).getStorageVA();
+		DimensionVirtualArray dimensionVA = set.getDimensionData(DataTable.DIMENSION).getDimensionVA();
 		ContentVirtualArray contentVA = set.getContentData(DataTable.RECORD).getContentVA();
-		calculateClusterAveragesRecursive(tree, tree.getRoot(), eClustererType, set, storageVA, contentVA);
+		calculateClusterAveragesRecursive(tree, tree.getRoot(), eClustererType, set, dimensionVA, contentVA);
 	}
 
 	private static float[] calculateClusterAveragesRecursive(Tree<ClusterNode> tree, ClusterNode node,
-		EClustererType clustererType, DataTable set, DimensionVirtualArray storageVA, ContentVirtualArray contentVA) {
+		EClustererType clustererType, DataTable set, DimensionVirtualArray dimensionVA, ContentVirtualArray contentVA) {
 
 		float[] values;
 
@@ -147,7 +147,7 @@ public class ClusterHelper {
 			float[][] tempValues;
 
 			if (clustererType == EClustererType.CONTENT_CLUSTERING) {
-				numberOfElements = storageVA.size();
+				numberOfElements = dimensionVA.size();
 			}
 			else {
 				numberOfElements = contentVA.size();
@@ -159,7 +159,7 @@ public class ClusterHelper {
 
 			for (ClusterNode currentNode : tree.getChildren(node)) {
 				tempValues[cnt] =
-					calculateClusterAveragesRecursive(tree, currentNode, clustererType, set, storageVA,
+					calculateClusterAveragesRecursive(tree, currentNode, clustererType, set, dimensionVA,
 						contentVA);
 				cnt++;
 			}
@@ -179,12 +179,12 @@ public class ClusterHelper {
 		else {
 
 			if (clustererType == EClustererType.CONTENT_CLUSTERING) {
-				values = new float[storageVA.size()];
+				values = new float[dimensionVA.size()];
 
 				int isto = 0;
-				for (Integer iStorageIndex : storageVA) {
+				for (Integer iDimensionIndex : dimensionVA) {
 					values[isto] =
-						set.get(iStorageIndex).getFloat(DataRepresentation.NORMALIZED, node.getLeafID());
+						set.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED, node.getLeafID());
 					isto++;
 				}
 
@@ -249,11 +249,11 @@ public class ClusterHelper {
 	 * 
 	 * @param set
 	 * @param iVAIdContent
-	 * @param iVAIdStorage
+	 * @param iVAIdDimension
 	 * @param examples
 	 * @param eClustererType
 	 */
-	public static void sortClusters(DataTable set, ContentVirtualArray contentVA, DimensionVirtualArray storageVA,
+	public static void sortClusters(DataTable set, ContentVirtualArray contentVA, DimensionVirtualArray dimensionVA,
 		ArrayList<Integer> examples, EClustererType eClustererType) {
 
 		int iNrExamples = examples.size();
@@ -266,9 +266,9 @@ public class ClusterHelper {
 
 			for (Integer contentIndex : examples) {
 
-				for (Integer storageIndex : storageVA) {
+				for (Integer dimensionIndex : dimensionVA) {
 					float temp =
-						set.get(storageIndex).getFloat(DataRepresentation.NORMALIZED,
+						set.get(dimensionIndex).getFloat(DataRepresentation.NORMALIZED,
 							contentVA.get(contentIndex));
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;
@@ -283,11 +283,11 @@ public class ClusterHelper {
 			int icontent = 0;
 			fColorSum = new float[iNrExamples];
 
-			for (Integer iStorageIndex : examples) {
+			for (Integer iDimensionIndex : examples) {
 
 				for (Integer iContentIndex : contentVA) {
 					float temp =
-						set.get(storageVA.get(iStorageIndex)).getFloat(DataRepresentation.NORMALIZED,
+						set.get(dimensionVA.get(iDimensionIndex)).getFloat(DataRepresentation.NORMALIZED,
 							iContentIndex);
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;

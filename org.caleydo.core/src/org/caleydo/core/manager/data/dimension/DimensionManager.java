@@ -7,7 +7,7 @@ import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.AManager;
 
 /**
- * Manager for storage objects.
+ * Manager for dimension objects.
  * 
  * @author Alexander Lex
  * @author Marc Streit

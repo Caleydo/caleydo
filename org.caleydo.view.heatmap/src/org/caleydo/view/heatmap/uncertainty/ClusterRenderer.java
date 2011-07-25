@@ -67,7 +67,7 @@ public class ClusterRenderer extends LayoutRenderer {
 
 	public void init() {
 
-		DimensionVirtualArray storageVA = uncertaintyHeatMap.getStorageVA();
+		DimensionVirtualArray dimensionVA = uncertaintyHeatMap.getDimensionVA();
 		DataTable set = uncertaintyHeatMap.getDataDomain().getDataTable();
 
 		clusterHeatMapLayout = new Column("heatmap");
@@ -130,12 +130,12 @@ public class ClusterRenderer extends LayoutRenderer {
 
 		}
 
-		textureRenderer.init(uncertaintyHeatMap, set, clusterVA, storageVA, clusterIndex);
+		textureRenderer.init(uncertaintyHeatMap, set, clusterVA, dimensionVA, clusterIndex);
 
-		dataUncBarTextureRenderer.init(uncertaintyHeatMap, set, clusterVA, storageVA,
+		dataUncBarTextureRenderer.init(uncertaintyHeatMap, set, clusterVA, dimensionVA,
 				uncertaintyHeatMap.getColorMapper());
 
-		visUncBarTextureRenderer.init(uncertaintyHeatMap, set, clusterVA, storageVA,
+		visUncBarTextureRenderer.init(uncertaintyHeatMap, set, clusterVA, dimensionVA,
 				uncertaintyHeatMap.getColorMapper());
 
 		visUncBarTextureRenderer.setLightCertainColor(GLUncertaintyHeatMap.VIS_UNC);

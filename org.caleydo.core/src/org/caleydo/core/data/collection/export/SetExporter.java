@@ -36,10 +36,10 @@ public class SetExporter {
 
 		try {
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(sFileName)));
-			// Writing storage labels
+			// Writing dimension labels
 			out.print("Identifier \t");
-			for (Integer iStorageIndex : alExperiments) {
-				out.print(set.get(iStorageIndex).getLabel());
+			for (Integer iDimensionIndex : alExperiments) {
+				out.print(set.get(iDimensionIndex).getLabel());
 				out.print("\t");
 			}
 
@@ -68,9 +68,9 @@ public class SetExporter {
 							iContentIndex);
 				}
 				out.print(identifier + "\t");
-				for (Integer iStorageIndex : alExperiments) {
-					ADimension storage = set.get(iStorageIndex);
-					out.print(storage.getFloat(DataRepresentation.RAW, iContentIndex));
+				for (Integer iDimensionIndex : alExperiments) {
+					ADimension dimension = set.get(iDimensionIndex);
+					out.print(dimension.getFloat(DataRepresentation.RAW, iContentIndex));
 					out.print("\t");
 				}
 				out.println();
@@ -88,34 +88,34 @@ public class SetExporter {
 	public void export(DataTable set, String sFileName, EWhichViewToExport eWhichViewToExport,
 		IDType targetIDType) {
 		ContentVirtualArray contentVA = null;
-		DimensionVirtualArray storageVA = null;
+		DimensionVirtualArray dimensionVA = null;
 
 		ATableBasedDataDomain dataDomain = set.getDataDomain();
 
 		if (eWhichViewToExport == EWhichViewToExport.BUCKET) {
 
 			contentVA = dataDomain.getContentVA(DataTable.RECORD_CONTEXT);
-			storageVA = dataDomain.getStorageVA(DataTable.DIMENSION);
+			dimensionVA = dataDomain.getDimensionVA(DataTable.DIMENSION);
 		}
 		else if (eWhichViewToExport == EWhichViewToExport.WHOLE_DATA) {
 			contentVA = dataDomain.getContentVA(DataTable.RECORD);
-			storageVA = dataDomain.getStorageVA(DataTable.DIMENSION);
+			dimensionVA = dataDomain.getDimensionVA(DataTable.DIMENSION);
 		}
 
-		if (contentVA == null || storageVA == null)
+		if (contentVA == null || dimensionVA == null)
 			throw new IllegalStateException("Not sure which VA to take.");
 
 		try {
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(sFileName)));
 
-			// Writing storage labels
+			// Writing dimension labels
 			out.print("Identifier \t");
-			for (Integer iStorageIndex : storageVA) {
-				ADimension storage = set.get(iStorageIndex);
-				out.print(storage.getLabel());
+			for (Integer iDimensionIndex : dimensionVA) {
+				ADimension dimension = set.get(iDimensionIndex);
+				out.print(dimension.getLabel());
 				out.print("\t");
 
-				if (storage.containsDataRepresentation(DataRepresentation.UNCERTAINTY_RAW)) {
+				if (dimension.containsDataRepresentation(DataRepresentation.UNCERTAINTY_RAW)) {
 					out.print("Uncertainty\t");
 				}
 			}
@@ -169,13 +169,13 @@ public class SetExporter {
 							contentID);
 				}
 				out.print(identifier + "\t");
-				for (Integer iStorageIndex : storageVA) {
-					ADimension storage = set.get(iStorageIndex);
-					out.print(storage.getFloat(DataRepresentation.RAW, contentID));
+				for (Integer iDimensionIndex : dimensionVA) {
+					ADimension dimension = set.get(iDimensionIndex);
+					out.print(dimension.getFloat(DataRepresentation.RAW, contentID));
 					out.print("\t");
 
-					if (storage.containsDataRepresentation(DataRepresentation.UNCERTAINTY_RAW)) {
-						out.print(storage.getFloat(DataRepresentation.UNCERTAINTY_RAW, contentID));
+					if (dimension.containsDataRepresentation(DataRepresentation.UNCERTAINTY_RAW)) {
+						out.print(dimension.getFloat(DataRepresentation.UNCERTAINTY_RAW, contentID));
 						out.print("\t");
 					}
 				}
@@ -201,7 +201,7 @@ public class SetExporter {
 			}
 
 			// export partitional cluster info for experiments
-			if (storageVA.getGroupList() != null) {
+			if (dimensionVA.getGroupList() != null) {
 
 				String stClusterNr = "Cluster_Number\t";
 				String stClusterRep = "Cluster_Repr\t";
@@ -209,9 +209,9 @@ public class SetExporter {
 				cluster = 0;
 				cnt = -1;
 
-				for (Integer iStorageIndex : storageVA) {
-					if (cnt == storageVA.getGroupList().get(cluster).getSize() - 1) {
-						offset = offset + storageVA.getGroupList().get(cluster).getSize();
+				for (Integer iDimensionIndex : dimensionVA) {
+					if (cnt == dimensionVA.getGroupList().get(cluster).getSize() - 1) {
+						offset = offset + dimensionVA.getGroupList().get(cluster).getSize();
 						cluster++;
 						cnt = 0;
 					}
@@ -219,7 +219,7 @@ public class SetExporter {
 						cnt++;
 					}
 
-					iExample = storageVA.getGroupList().get(cluster).getRepresentativeElementIndex();
+					iExample = dimensionVA.getGroupList().get(cluster).getRepresentativeElementIndex();
 
 					stClusterNr += cluster + "\t";
 					stClusterRep += iExample + "\t";
@@ -242,7 +242,7 @@ public class SetExporter {
 
 	}
 
-	// FIXME: implement different content data / storage data instances
+	// FIXME: implement different content data / dimension data instances
 	public void exportTrees(DataTable set, String directory) {
 		try {
 			// export gene cluster tree to own xml file
@@ -253,7 +253,7 @@ public class SetExporter {
 				treePorter.exportTree(directory + "/horizontal_gene.xml", tree);
 			}
 			// export experiment cluster tree to own xml file
-			tree = set.getStorageData(DataTable.DIMENSION).getStorageTree();
+			tree = set.getDimensionData(DataTable.DIMENSION).getDimensionTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(set.getDataDomain());

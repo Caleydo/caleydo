@@ -2,7 +2,7 @@ package org.caleydo.view.scatterplot.toolbar;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.view.storagebased.InitAxisComboEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.InitAxisComboEvent;
 
 /**
  * Listener that reacts to Inititailaize The ComboBoxes For Axis Selection in

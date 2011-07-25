@@ -3,9 +3,9 @@ package org.caleydo.core.view.opengl.canvas.listener;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.ContentVAUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.VirtualArrayUpdateEvent;
 
 /**
  * Listener for virtual array update events. This listener gets the payload from a

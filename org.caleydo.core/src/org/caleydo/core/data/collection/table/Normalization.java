@@ -22,114 +22,114 @@ public class Normalization {
 	}
 
 	/**
-	 * Calculates log10 on all storages in the set. Take care that the set contains only numerical storages,
-	 * since nominal storages will cause a runtime exception. If you have mixed data you have to call log10 on
-	 * all the storages that support it manually.
+	 * Calculates log10 on all dimensions in the set. Take care that the set contains only numerical dimensions,
+	 * since nominal dimensions will cause a runtime exception. If you have mixed data you have to call log10 on
+	 * all the dimensions that support it manually.
 	 */
 	void log10() {
-		for (ADimension storage : table.hashDimensions.values()) {
-			if (storage instanceof NumericalDimension) {
-				NumericalDimension nStorage = (NumericalDimension) storage;
-				nStorage.log10();
+		for (ADimension dimension : table.hashDimensions.values()) {
+			if (dimension instanceof NumericalDimension) {
+				NumericalDimension nDimension = (NumericalDimension) dimension;
+				nDimension.log10();
 			}
 			else
 				throw new UnsupportedOperationException(
-					"Tried to calcualte log values on a set wich contains nominal storages. This is not possible!");
+					"Tried to calcualte log values on a set wich contains nominal dimensions. This is not possible!");
 		}
 	}
 
 	/**
-	 * Calculates log2 on all storages in the set. Take care that the set contains only numerical storages,
-	 * since nominal storages will cause a runtime exception. If you have mixed data you have to call log2 on
-	 * all the storages that support it manually.
+	 * Calculates log2 on all dimensions in the set. Take care that the set contains only numerical dimensions,
+	 * since nominal dimensions will cause a runtime exception. If you have mixed data you have to call log2 on
+	 * all the dimensions that support it manually.
 	 */
 	void log2() {
 
-		for (ADimension storage : table.hashDimensions.values()) {
-			if (storage instanceof NumericalDimension) {
-				NumericalDimension nStorage = (NumericalDimension) storage;
-				nStorage.log2();
+		for (ADimension dimension : table.hashDimensions.values()) {
+			if (dimension instanceof NumericalDimension) {
+				NumericalDimension nDimension = (NumericalDimension) dimension;
+				nDimension.log2();
 			}
 			else
 				throw new UnsupportedOperationException("Tried to calcualte log values on a set wich has"
-					+ "contains nominal storages. This is not possible!");
+					+ "contains nominal dimensions. This is not possible!");
 		}
 	}
 
 	/**
-	 * Normalize all storages in the set, based solely on the values within each storage. Operates with the
-	 * raw data as basis by default, however when a logarithmized representation is in the storage this is
+	 * Normalize all dimensions in the set, based solely on the values within each dimension. Operates with the
+	 * raw data as basis by default, however when a logarithmized representation is in the dimension this is
 	 * used.
 	 */
 	void normalizeLocally() {
 		table.isSetHomogeneous = false;
-		for (ADimension storage : table.hashDimensions.values()) {
-			storage.normalize();
+		for (ADimension dimension : table.hashDimensions.values()) {
+			dimension.normalize();
 		}
 	}
 
 	/**
-	 * Normalize all storages in the set, based on values of all storages. For a numerical storage, this would
+	 * Normalize all dimensions in the set, based on values of all dimensions. For a numerical dimension, this would
 	 * mean, that global minima and maxima are retrieved instead of local ones (as is done with normalize())
 	 * Operates with the raw data as basis by default, however when a logarithmized representation is in the
-	 * storage this is used. Make sure that all storages are logarithmized.
+	 * dimension this is used. Make sure that all dimensions are logarithmized.
 	 */
 	void normalizeGlobally() {
 
 		table.isSetHomogeneous = true;
-		for (ADimension storage : table.hashDimensions.values()) {
-			if (storage instanceof NumericalDimension) {
-				NumericalDimension nStorage = (NumericalDimension) storage;
-				nStorage.normalizeWithExternalExtrema(metaData.getMin(), metaData.getMax());
+		for (ADimension dimension : table.hashDimensions.values()) {
+			if (dimension instanceof NumericalDimension) {
+				NumericalDimension nDimension = (NumericalDimension) dimension;
+				nDimension.normalizeWithExternalExtrema(metaData.getMin(), metaData.getMax());
 			}
 			else
 				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"
-					+ "contains nominal storages, currently not supported!");
+					+ "contains nominal dimensions, currently not supported!");
 		}
 	}
 
 	void normalizeUsingFoldChange() {
-		for (ADimension storage : table.hashDimensions.values()) {
-			if (!storage.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW))
+		for (ADimension dimension : table.hashDimensions.values()) {
+			if (!dimension.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW))
 				calculateFoldChange();
 			break;
 		}
 
-		for (ADimension storage : table.hashDimensions.values()) {
-			if (storage instanceof NumericalDimension) {
-				NumericalDimension nStorage = (NumericalDimension) storage;
-				nStorage.normalizeWithExternalExtrema(DataRepresentation.FOLD_CHANGE_RAW,
+		for (ADimension dimension : table.hashDimensions.values()) {
+			if (dimension instanceof NumericalDimension) {
+				NumericalDimension nDimension = (NumericalDimension) dimension;
+				nDimension.normalizeWithExternalExtrema(DataRepresentation.FOLD_CHANGE_RAW,
 					DataRepresentation.FOLD_CHANGE_NORMALIZED, 1, 10);
 			}
 			else
 				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"
-					+ "contains nominal storages, currently not supported!");
+					+ "contains nominal dimensions, currently not supported!");
 		}
 
 	}
 
 	private void calculateFoldChange() {
-		HashMap<Integer, float[]> foldChangePerStorage =
+		HashMap<Integer, float[]> foldChangePerDimension =
 			new HashMap<Integer, float[]>(table.hashDimensions.size());
 
-		for (Integer storageKey : table.hashDimensions.keySet()) {
-			foldChangePerStorage.put(storageKey, new float[metaData.depth()]);
+		for (Integer dimensionKey : table.hashDimensions.keySet()) {
+			foldChangePerDimension.put(dimensionKey, new float[metaData.depth()]);
 		}
 
 		for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
 			float minValue = Float.MAX_VALUE;
 			// find out which is the smalles raw value
-			for (Integer storageKey : table.hashDimensions.keySet()) {
-				NumericalDimension nStorage = (NumericalDimension) table.hashDimensions.get(storageKey);
-				float rawValue = nStorage.getFloat(DataRepresentation.RAW, contentCount);
+			for (Integer dimensionKey : table.hashDimensions.keySet()) {
+				NumericalDimension nDimension = (NumericalDimension) table.hashDimensions.get(dimensionKey);
+				float rawValue = nDimension.getFloat(DataRepresentation.RAW, contentCount);
 				if (rawValue < minValue)
 					minValue = rawValue;
 			}
 			// set the fold changes
-			for (Integer storageKey : table.hashDimensions.keySet()) {
-				NumericalDimension nStorage = (NumericalDimension) table.hashDimensions.get(storageKey);
-				float rawValue = nStorage.getFloat(DataRepresentation.RAW, contentCount);
-				float[] foldChanges = foldChangePerStorage.get(storageKey);
+			for (Integer dimensionKey : table.hashDimensions.keySet()) {
+				NumericalDimension nDimension = (NumericalDimension) table.hashDimensions.get(dimensionKey);
+				float rawValue = nDimension.getFloat(DataRepresentation.RAW, contentCount);
+				float[] foldChanges = foldChangePerDimension.get(dimensionKey);
 				if (minValue == 0)
 					foldChanges[contentCount] = Float.POSITIVE_INFINITY;
 				else {
@@ -140,15 +140,15 @@ public class Normalization {
 			}
 		}
 
-		// set the float[] to the storages
-		for (Integer storageKey : table.hashDimensions.keySet()) {
-			NumericalDimension nStorage = (NumericalDimension) table.hashDimensions.get(storageKey);
-			if (!nStorage.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW))
-				nStorage.setNewRepresentation(DataRepresentation.FOLD_CHANGE_RAW,
-					foldChangePerStorage.get(storageKey));
+		// set the float[] to the dimensions
+		for (Integer dimensionKey : table.hashDimensions.keySet()) {
+			NumericalDimension nDimension = (NumericalDimension) table.hashDimensions.get(dimensionKey);
+			if (!nDimension.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW))
+				nDimension.setNewRepresentation(DataRepresentation.FOLD_CHANGE_RAW,
+					foldChangePerDimension.get(dimensionKey));
 			else
 				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"
-					+ "contains nominal storages, currently not supported!");
+					+ "contains nominal dimensions, currently not supported!");
 		}
 	}
 }

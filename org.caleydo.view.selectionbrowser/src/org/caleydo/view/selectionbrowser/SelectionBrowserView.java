@@ -8,7 +8,7 @@ import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
-import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
@@ -22,9 +22,9 @@ import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.VirtualArrayUpdateEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
@@ -78,7 +78,7 @@ public class SelectionBrowserView extends ASWTView implements
 	EventPublisher eventPublisher = null;
 
 	ContentSelectionManager contentSelectionManager;
-	StorageSelectionManager storageSelectionManager;
+	DimensionSelectionManager dimensionSelectionManager;
 
 	private Tree selectionTree;
 	private TreeItem contentTree;

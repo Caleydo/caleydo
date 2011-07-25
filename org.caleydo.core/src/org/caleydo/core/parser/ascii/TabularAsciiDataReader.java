@@ -27,9 +27,9 @@ public class TabularAsciiDataReader
 	extends AbstractLoader {
 
 	/**
-	 * Imports data from file to this set. uses first storage and overwrites first selection.
+	 * Imports data from file to this set. uses first dimension and overwrites first selection.
 	 */
-	protected ArrayList<ADimension> targetStorages;
+	protected ArrayList<ADimension> targetDimensions;
 
 	protected ArrayList<DimensionType> columnDataTypes;
 
@@ -52,7 +52,7 @@ public class TabularAsciiDataReader
 		super(sFileName);
 
 		this.dataDomain = dataDomain;
-		targetStorages = new ArrayList<ADimension>();
+		targetDimensions = new ArrayList<ADimension>();
 		columnDataTypes = new ArrayList<DimensionType>();
 
 		intArrays = new ArrayList<int[]>();
@@ -118,19 +118,19 @@ public class TabularAsciiDataReader
 		useExperimentClusterInfo = true;
 	}
 
-	public void setTargetStorages(final ArrayList<Integer> targetStorageIDs) {
-		for (int storageID : targetStorageIDs) {
-			targetStorages.add(GeneralManager.get().getDimensionManager().getItem(storageID));
+	public void setTargetDimensions(final ArrayList<Integer> targetDimensionIDs) {
+		for (int dimensionID : targetDimensionIDs) {
+			targetDimensions.add(GeneralManager.get().getDimensionManager().getItem(dimensionID));
 		}
 	}
 
-	protected void allocateStorageBufferForTokenPattern() {
+	protected void allocateDimensionBufferForTokenPattern() {
 
 		int lineCount = 0;
 
-		for (DimensionType storageType : columnDataTypes) {
+		for (DimensionType dimensionType : columnDataTypes) {
 
-			switch (storageType) {
+			switch (dimensionType) {
 				case GROUP_NUMBER:
 				case GROUP_REPRESENTATIVE:
 					if (useExperimentClusterInfo)
@@ -165,7 +165,7 @@ public class TabularAsciiDataReader
 
 				default:
 					throw new IllegalStateException("Unknown token pattern detected: "
-						+ storageType.toString());
+						+ dimensionType.toString());
 			}
 		}
 	}
@@ -173,7 +173,7 @@ public class TabularAsciiDataReader
 	@Override
 	protected void loadDataParseFile(BufferedReader bufferReader, final int numberOfLines) throws IOException {
 
-		allocateStorageBufferForTokenPattern();
+		allocateDimensionBufferForTokenPattern();
 
 		// Init progress bar
 		swtGuiManager.setProgressBarText("Load data file " + this.getFileName());
@@ -299,31 +299,31 @@ public class TabularAsciiDataReader
 
 	@Override
 	@SuppressWarnings("unchecked")
-	protected void setArraysToStorages() {
+	protected void setArraysToDimensions() {
 
 		int iIntArrayIndex = 0;
 		int iFloatArrayIndex = 0;
 		int iStringArrayIndex = 0;
-		int storageIndex = 0;
+		int dimensionIndex = 0;
 
 		DataTable set = dataDomain.getDataTable();
 
-		for (DimensionType storageType : columnDataTypes) {
-			// if(iStorageIndex + 1 == targetStorages.size())
+		for (DimensionType dimensionType : columnDataTypes) {
+			// if(iDimensionIndex + 1 == targetDimensions.size())
 			// break;
-			switch (storageType) {
+			switch (dimensionType) {
 				case INT:
-					targetStorages.get(storageIndex).setRawData(intArrays.get(iIntArrayIndex));
+					targetDimensions.get(dimensionIndex).setRawData(intArrays.get(iIntArrayIndex));
 					iIntArrayIndex++;
-					storageIndex++;
+					dimensionIndex++;
 					break;
 				case FLOAT:
-					targetStorages.get(storageIndex).setRawData(floatArrays.get(iFloatArrayIndex));
+					targetDimensions.get(dimensionIndex).setRawData(floatArrays.get(iFloatArrayIndex));
 					iFloatArrayIndex++;
-					storageIndex++;
+					dimensionIndex++;
 					break;
 				case CERTAINTY:
-					targetStorages.get(storageIndex-1).setUncertaintyData(floatArrays.get(iFloatArrayIndex));
+					targetDimensions.get(dimensionIndex-1).setUncertaintyData(floatArrays.get(iFloatArrayIndex));
 					dataDomain.getDataTable().setContainsUncertaintyData(true);
 					iFloatArrayIndex++;
 					break;
@@ -331,11 +331,11 @@ public class TabularAsciiDataReader
 
 					ArrayList<String> rawStringData = stringLists.get(iStringArrayIndex);
 					rawStringData = fillUp(rawStringData);
-					((NominalDimension<String>) targetStorages.get(storageIndex))
+					((NominalDimension<String>) targetDimensions.get(dimensionIndex))
 						.setRawNominalData(rawStringData);
 					// stringLists.add(new ArrayList<String>(iStopParsingAtLine - parsingStartLine));
 					iStringArrayIndex++;
-					storageIndex++;
+					dimensionIndex++;
 					break;
 				case SKIP: // do nothing
 					break;
@@ -356,15 +356,15 @@ public class TabularAsciiDataReader
 				case ABORT:
 					if (useExperimentClusterInfo) {
 						iArGroupInfo = groupInfo.get(2);
-						DataTableUtils.setStorageGroupList((DataTable) set, DataTable.DIMENSION, iArGroupInfo);
+						DataTableUtils.setDimensionGroupList((DataTable) set, DataTable.DIMENSION, iArGroupInfo);
 						iArGroupRepr = groupInfo.get(3);
-						DataTableUtils.setStorageGroupRepresentatives((DataTable) set, DataTable.DIMENSION, iArGroupRepr);
+						DataTableUtils.setDimensionGroupRepresentatives((DataTable) set, DataTable.DIMENSION, iArGroupRepr);
 					}
 					return;
 
 				default:
 					throw new IllegalStateException("Unknown token pattern detected: "
-						+ storageType.toString());
+						+ dimensionType.toString());
 			}
 		}
 	}

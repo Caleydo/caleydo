@@ -127,7 +127,7 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 		normalFieldHeight = normalFieldHeight > selectedFieldHeight ? selectedFieldHeight
 				: normalFieldHeight;
 
-		fieldWidth = getRenderWidth() / heatMap.getStorageVA().size();
+		fieldWidth = getRenderWidth() / heatMap.getDimensionVA().size();
 
 	}
 

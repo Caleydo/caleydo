@@ -43,20 +43,20 @@ import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
-import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
+import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
-import org.caleydo.core.manager.event.view.storagebased.SwitchMatrixViewEvent;
-import org.caleydo.core.manager.event.view.storagebased.Toggle2AxisEvent;
-import org.caleydo.core.manager.event.view.storagebased.ToggleColorModeEvent;
-import org.caleydo.core.manager.event.view.storagebased.ToggleMainViewZoomEvent;
-import org.caleydo.core.manager.event.view.storagebased.ToggleMatrixZoomEvent;
-import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
-import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
-import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
-import org.caleydo.core.manager.event.view.storagebased.YAxisSelectorEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SetPointSizeEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SwitchMatrixViewEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.Toggle2AxisEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.ToggleColorModeEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.ToggleMainViewZoomEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.ToggleMatrixZoomEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.TogglePointTypeEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.UseRandomSamplingEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.XAxisSelectorEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.YAxisSelectorEvent;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -111,7 +111,7 @@ public class GLScatterPlot extends ATableBasedView {
 	private ColorMapper colorMapper;
 
 	// private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
-	// private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
+	// private EIDType eDimensionDataType = EIDType.EXPERIMENT_INDEX;
 
 	private Vec3f vecTranslation;
 
@@ -258,11 +258,11 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	/**
-	 * Aligns the dimension of the Scatter-Matrix With the Storage-Size
+	 * Aligns the dimension of the Scatter-Matrix With the Dimension-Size
 	 */
 	private void updateMaxAxis() {
-		if (MAX_AXES > storageVA.size())
-			MAX_AXES = storageVA.size();
+		if (MAX_AXES > dimensionVA.size())
+			MAX_AXES = dimensionVA.size();
 
 	}
 
@@ -1293,9 +1293,9 @@ public class GLScatterPlot extends ATableBasedView {
 						int current_SELECTED_X_AXIS = iAxisX;
 						int current_SELECTED_Y_AXIS = iAxisY;
 
-						xnormalized = table.get(storageVA.get(current_SELECTED_X_AXIS))
+						xnormalized = table.get(dimensionVA.get(current_SELECTED_X_AXIS))
 								.getFloat(DataRepresentation.NORMALIZED, iContentIndex);
-						ynormalized = table.get(storageVA.get(current_SELECTED_Y_AXIS))
+						ynormalized = table.get(dimensionVA.get(current_SELECTED_Y_AXIS))
 								.getFloat(DataRepresentation.NORMALIZED, iContentIndex);
 
 						ix = (int) Math.floor(xnormalized * (double) (iTextureWidth - 1));
@@ -1437,10 +1437,10 @@ public class GLScatterPlot extends ATableBasedView {
 							int current_SELECTED_X_AXIS = iAxisX;
 							int current_SELECTED_Y_AXIS = iAxisY;
 
-							xnormalized = table.get(storageVA.get(current_SELECTED_X_AXIS))
+							xnormalized = table.get(dimensionVA.get(current_SELECTED_X_AXIS))
 									.getFloat(DataRepresentation.NORMALIZED,
 											iContentIndex);
-							ynormalized = table.get(storageVA.get(current_SELECTED_Y_AXIS))
+							ynormalized = table.get(dimensionVA.get(current_SELECTED_Y_AXIS))
 									.getFloat(DataRepresentation.NORMALIZED,
 											iContentIndex);
 
@@ -1863,7 +1863,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 		// TODO InsertHistogramm here
 
-		// String sLabel = set.get(storageVA.get(selected_Axis)).getLabel();
+		// String sLabel = set.get(dimensionVA.get(selected_Axis)).getLabel();
 
 		float fScaling = renderStyle.getSmallFontScalingFactor() * 0.7f;
 		if (isRenderedRemote())
@@ -2059,9 +2059,9 @@ public class GLScatterPlot extends ATableBasedView {
 			fScaling *= 1.5f;
 
 		String sAxisLabel = "X-Axis: "
-				+ table.get(storageVA.get(iSelectedAxisIndexX)).getLabel();
+				+ table.get(dimensionVA.get(iSelectedAxisIndexX)).getLabel();
 		if (bRender2Axis)
-			sAxisLabel += " / " + table.get(storageVA.get(iSelectedAxisIndexX2)).getLabel();
+			sAxisLabel += " / " + table.get(dimensionVA.get(iSelectedAxisIndexX2)).getLabel();
 
 		textRenderer.renderText(gl, sAxisLabel, 0, 0, 0, fScaling,
 				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
@@ -2089,9 +2089,9 @@ public class GLScatterPlot extends ATableBasedView {
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 
-		sAxisLabel = "Y-Axis: " + table.get(storageVA.get(iSelectedAxisIndexY)).getLabel();
+		sAxisLabel = "Y-Axis: " + table.get(dimensionVA.get(iSelectedAxisIndexY)).getLabel();
 		if (bRender2Axis)
-			sAxisLabel += " / " + table.get(storageVA.get(iSelectedAxisIndexY2)).getLabel();
+			sAxisLabel += " / " + table.get(dimensionVA.get(iSelectedAxisIndexY2)).getLabel();
 
 		// sAxisLabel
 		// ="Y-Achse: "+set.get(2).getLabel()+" (O) / "+set.get(3).getLabel()+" (X)";
@@ -2171,9 +2171,9 @@ public class GLScatterPlot extends ATableBasedView {
 				throw new IllegalStateException("No such element in virtual array");
 			}
 
-			xnormalized = table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
+			xnormalized = table.get(dimensionVA.get(iSelectedAxisIndexX)).getFloat(
 					DataRepresentation.NORMALIZED, iContentIndex);
-			ynormalized = table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
+			ynormalized = table.get(dimensionVA.get(iSelectedAxisIndexY)).getFloat(
 					DataRepresentation.NORMALIZED, iContentIndex);
 
 			x = transformOnXZoom(xnormalized) * XScale;
@@ -2192,9 +2192,9 @@ public class GLScatterPlot extends ATableBasedView {
 					iContentIndex, 1.0f); // scale
 
 			if (bRender2Axis) {
-				xnormalized = table.get(storageVA.get(iSelectedAxisIndexX2)).getFloat(
+				xnormalized = table.get(dimensionVA.get(iSelectedAxisIndexX2)).getFloat(
 						DataRepresentation.NORMALIZED, iContentIndex);
-				ynormalized = table.get(storageVA.get(iSelectedAxisIndexY2)).getFloat(
+				ynormalized = table.get(dimensionVA.get(iSelectedAxisIndexY2)).getFloat(
 						DataRepresentation.NORMALIZED, iContentIndex);
 
 				x_2 = transformOnXZoom(xnormalized) * XScale;
@@ -2245,9 +2245,9 @@ public class GLScatterPlot extends ATableBasedView {
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 
-		float xnormalized = table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
+		float xnormalized = table.get(dimensionVA.get(iSelectedAxisIndexX)).getFloat(
 				DataRepresentation.NORMALIZED, iContentIndex);
-		float ynormalized = table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
+		float ynormalized = table.get(dimensionVA.get(iSelectedAxisIndexY)).getFloat(
 				DataRepresentation.NORMALIZED, iContentIndex);
 
 		float x = transformOnXZoom(xnormalized) * XScale;
@@ -2325,29 +2325,29 @@ public class GLScatterPlot extends ATableBasedView {
 					+ " ("
 					+ genLabel
 					+ "):"
-					+ +table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
+					+ +table.get(dimensionVA.get(iSelectedAxisIndexX)).getFloat(
 							DataRepresentation.RAW, contentIndex)
 					+ " / "
-					+ table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
+					+ table.get(dimensionVA.get(iSelectedAxisIndexY)).getFloat(
 							DataRepresentation.RAW, contentIndex);
 		else if (contentSelectionManager.checkStatus(SelectionType.SELECTION,
 				contentIndex))
 			sLabel = "Selected Point ("
 					+ genLabel
 					+ "):"
-					+ +table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
+					+ +table.get(dimensionVA.get(iSelectedAxisIndexX)).getFloat(
 							DataRepresentation.RAW, contentIndex)
 					+ " / "
-					+ table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
+					+ table.get(dimensionVA.get(iSelectedAxisIndexY)).getFloat(
 							DataRepresentation.RAW, contentIndex);
 		else
 			sLabel = "Point ("
 					+ genLabel
 					+ "):"
-					+ +table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
+					+ +table.get(dimensionVA.get(iSelectedAxisIndexX)).getFloat(
 							DataRepresentation.RAW, contentIndex)
 					+ " / "
-					+ table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
+					+ table.get(dimensionVA.get(iSelectedAxisIndexY)).getFloat(
 							DataRepresentation.RAW, contentIndex);
 
 		float fScaling = renderStyle.getSmallFontScalingFactor();
@@ -2444,9 +2444,9 @@ public class GLScatterPlot extends ATableBasedView {
 				if (iContentIndex % iDisplayEveryNthPoint != 0)
 					continue;
 
-			float xnormalized = table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
+			float xnormalized = table.get(dimensionVA.get(iSelectedAxisIndexX)).getFloat(
 					DataRepresentation.NORMALIZED, iContentIndex);
-			float ynormalized = table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
+			float ynormalized = table.get(dimensionVA.get(iSelectedAxisIndexY)).getFloat(
 					DataRepresentation.NORMALIZED, iContentIndex);
 
 			x = transformOnXZoom(xnormalized) * XScale;
@@ -2509,9 +2509,9 @@ public class GLScatterPlot extends ATableBasedView {
 
 			for (int iContentIndex : selectionSet) {
 
-				float xnormalized = table.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
+				float xnormalized = table.get(dimensionVA.get(iSelectedAxisIndexX)).getFloat(
 						DataRepresentation.NORMALIZED, iContentIndex);
-				float ynormalized = table.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
+				float ynormalized = table.get(dimensionVA.get(iSelectedAxisIndexY)).getFloat(
 						DataRepresentation.NORMALIZED, iContentIndex);
 
 				x = transformOnXZoom(xnormalized) * XScale;
@@ -2780,11 +2780,11 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	// private String[] getAxisString() {
-	// String[] tmpString = new String[storageVA.size()];
+	// String[] tmpString = new String[dimensionVA.size()];
 	// int axisCount = 0;
-	// for (Integer iStorageIndex : storageVA) {
+	// for (Integer iDimensionIndex : dimensionVA) {
 	//
-	// tmpString[axisCount++] = set.get(iStorageIndex).getLabel();
+	// tmpString[axisCount++] = set.get(iDimensionIndex).getLabel();
 	//
 	// }
 	// return tmpString;
@@ -2792,25 +2792,25 @@ public class GLScatterPlot extends ATableBasedView {
 
 	public void selectAxesfromExternal() {
 
-		int iMouseOverSelections = storageSelectionManager
+		int iMouseOverSelections = dimensionSelectionManager
 				.getNumberOfElements(SelectionType.MOUSE_OVER);
 
-		int iSelectionSelections = storageSelectionManager
+		int iSelectionSelections = dimensionSelectionManager
 				.getNumberOfElements(SelectionType.SELECTION);
 
 		if (iSelectionSelections > 0) {
 
-			Set<Integer> axisSet = storageSelectionManager
+			Set<Integer> axisSet = dimensionSelectionManager
 					.getElements(SelectionType.SELECTION);
 
 			Iterator<Integer> axisIT = axisSet.iterator();
 			int itmpAxis = iSelectedAxisIndexX;
 
 			int i = axisIT.next();
-			iSelectedAxisIndexX = storageVA.indexOf(i);
+			iSelectedAxisIndexX = dimensionVA.indexOf(i);
 			if (axisIT.hasNext()) {
 				i = axisIT.next();
-				iSelectedAxisIndexY = storageVA.indexOf(i);
+				iSelectedAxisIndexY = dimensionVA.indexOf(i);
 			}
 
 			if (iSelectedAxisIndexX > iSelectedAxisIndexY) {
@@ -2828,16 +2828,16 @@ public class GLScatterPlot extends ATableBasedView {
 		if (iMouseOverSelections == 0)
 			return;
 
-		Set<Integer> axisSet = storageSelectionManager
+		Set<Integer> axisSet = dimensionSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
 		Iterator<Integer> axisIT = axisSet.iterator();
 		int itmpAxis = iMouseOverAxisIndexX;
 
 		int i = axisIT.next();
-		iMouseOverAxisIndexX = storageVA.indexOf(i);
+		iMouseOverAxisIndexX = dimensionVA.indexOf(i);
 		if (axisIT.hasNext()) {
 			i = axisIT.next();
-			iMouseOverAxisIndexY = storageVA.indexOf(i);
+			iMouseOverAxisIndexY = dimensionVA.indexOf(i);
 		}
 
 		if (iMouseOverAxisIndexX > iMouseOverAxisIndexY) {
@@ -2851,33 +2851,33 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	public void selectNewSelectionAxes() {
-		storageSelectionManager.clearSelection(SelectionType.SELECTION);
+		dimensionSelectionManager.clearSelection(SelectionType.SELECTION);
 
-		storageSelectionManager.addToType(SelectionType.SELECTION,
-				storageVA.get(iSelectedAxisIndexX));
-		storageSelectionManager.addToType(SelectionType.SELECTION,
-				storageVA.get(iSelectedAxisIndexY));
+		dimensionSelectionManager.addToType(SelectionType.SELECTION,
+				dimensionVA.get(iSelectedAxisIndexX));
+		dimensionSelectionManager.addToType(SelectionType.SELECTION,
+				dimensionVA.get(iSelectedAxisIndexY));
 
 		if (bRender2Axis) {
-			storageSelectionManager.addToType(SelectionType.SELECTION,
-					storageVA.get(iSelectedAxisIndexX2));
-			storageSelectionManager.addToType(SelectionType.SELECTION,
-					storageVA.get(iSelectedAxisIndexY2));
+			dimensionSelectionManager.addToType(SelectionType.SELECTION,
+					dimensionVA.get(iSelectedAxisIndexX2));
+			dimensionSelectionManager.addToType(SelectionType.SELECTION,
+					dimensionVA.get(iSelectedAxisIndexY2));
 		}
 
-		// storageSelectionManager.addToType(SelectionType.SELECTION,
+		// dimensionSelectionManager.addToType(SelectionType.SELECTION,
 		// SELECTED_X_AXIS);
-		// storageSelectionManager.addToType(SelectionType.SELECTION,
+		// dimensionSelectionManager.addToType(SelectionType.SELECTION,
 		// SELECTED_Y_AXIS);
 		//
 		// if (bRender2Axis) {
-		// storageSelectionManager.addToType(SelectionType.SELECTION,
+		// dimensionSelectionManager.addToType(SelectionType.SELECTION,
 		// SELECTED_X_AXIS_2);
-		// storageSelectionManager.addToType(SelectionType.SELECTION,
+		// dimensionSelectionManager.addToType(SelectionType.SELECTION,
 		// SELECTED_Y_AXIS_2);
 		// }
 
-		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
+		ISelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
 		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
@@ -2887,14 +2887,14 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	public void selectNewMouseOverAxes() {
-		storageSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
+		dimensionSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 
-		storageSelectionManager.addToType(SelectionType.MOUSE_OVER,
-				storageVA.get(iMouseOverAxisIndexX));
-		storageSelectionManager.addToType(SelectionType.MOUSE_OVER,
-				storageVA.get(iMouseOverAxisIndexY));
+		dimensionSelectionManager.addToType(SelectionType.MOUSE_OVER,
+				dimensionVA.get(iMouseOverAxisIndexX));
+		dimensionSelectionManager.addToType(SelectionType.MOUSE_OVER,
+				dimensionVA.get(iMouseOverAxisIndexY));
 
-		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
+		ISelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
 		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
@@ -2912,11 +2912,11 @@ public class GLScatterPlot extends ATableBasedView {
 			contentVAType = DataTable.RECORD;
 
 		contentVA = dataDomain.getContentVA(contentVAType);
-		storageVA = dataDomain.getStorageVA(storageVAType);
+		dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
 
 		contentSelectionManager.setVA(contentVA);
 
-		storageSelectionManager.setVA(storageVA);
+		dimensionSelectionManager.setVA(dimensionVA);
 		// AlSelectionTypes.clear();
 		// addSelectionType();
 		// AlSelectionTypes.add(SelectionType.SELECTION);
@@ -2932,19 +2932,19 @@ public class GLScatterPlot extends ATableBasedView {
 
 		// return "Scatterplot - " + contentVA.size() + " "
 		// + useCase.getContentLabel(false, true) + " / "
-		// + storageVA.size() + " experiments";
+		// + dimensionVA.size() + " experiments";
 
 		String tmpstring;
 		int iPointNr = contentVA.size();
 
 		if (iDisplayEveryNthPoint == 1) {
 			tmpstring = "Scatterplot - " + iPointNr + " "
-					+ dataDomain.getContentName(false, true) + " / " + storageVA.size()
+					+ dataDomain.getContentName(false, true) + " / " + dimensionVA.size()
 					+ " experiments";
 		} else {
 			tmpstring = "Scatterplot - " + iPointNr / iDisplayEveryNthPoint + " out of "
 					+ iPointNr + " " + dataDomain.getContentName(false, true) + " / \n "
-					+ storageVA.size() + " experiments";
+					+ dimensionVA.size() + " experiments";
 		}
 		return tmpstring;
 	}
@@ -2955,7 +2955,7 @@ public class GLScatterPlot extends ATableBasedView {
 		sInfoText.append("<b>Type:</b> Scatter Plot\n");
 
 		sInfoText.append(contentVA.size() + " " + dataDomain.getContentName(true, true)
-				+ " in rows and " + storageVA.size() + " experiments in columns.\n");
+				+ " in rows and " + dimensionVA.size() + " experiments in columns.\n");
 
 		if (bRenderOnlyContext) {
 			sInfoText.append("Showing only " + " "
@@ -3088,7 +3088,7 @@ public class GLScatterPlot extends ATableBasedView {
 			default:
 				return;
 			}
-			createStorageSelection(selectionType, externalID);
+			createDimensionSelection(selectionType, externalID);
 			break;
 		case SCATTER_MAIN_ZOOM:
 			switch (pickingMode) {
@@ -3113,7 +3113,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 	}
 
-	private void createStorageSelection(SelectionType selectionType, int contentID) {
+	private void createDimensionSelection(SelectionType selectionType, int contentID) {
 
 		if (selectionType == SelectionType.SELECTION) {
 
@@ -3212,7 +3212,7 @@ public class GLScatterPlot extends ATableBasedView {
 	@Override
 	public void clearAllSelections() {
 
-		storageSelectionManager.clearSelections();
+		dimensionSelectionManager.clearSelections();
 		contentSelectionManager.clearSelections();
 
 		ArrayList<SelectionType> sTypes = contentSelectionManager.getSelectionTypes();
@@ -3277,7 +3277,7 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	@Override
-	public void handleVAUpdate(StorageVADelta delta, String info) {
+	public void handleVAUpdate(DimensionVADelta delta, String info) {
 		super.handleVAUpdate(delta, info);
 		updateMaxAxis();
 		renderStyle.setTextureNr(MAX_AXES, MAX_AXES);
@@ -3338,8 +3338,8 @@ public class GLScatterPlot extends ATableBasedView {
 	@Override
 	public String toString() {
 		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote()
-				+ ", contentSize: " + contentVA.size() + ", storageSize: "
-				+ storageVA.size() + ", contentVAType: " + contentVAType
+				+ ", contentSize: " + contentVA.size() + ", dimensionSize: "
+				+ dimensionVA.size() + ", contentVAType: " + contentVAType
 				+ ", remoteRenderer:" + getRemoteRenderingGLCanvas();
 	}
 
@@ -3356,12 +3356,12 @@ public class GLScatterPlot extends ATableBasedView {
 
 	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
-			int iStorageIndex) throws InvalidAttributeValueException {
+			int iDimensionIndex) throws InvalidAttributeValueException {
 
 		SelectedElementRep elementRep;
 		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
 
-		for (int iContentIndex : contentVA.indicesOf(iStorageIndex)) {
+		for (int iContentIndex : contentVA.indicesOf(iDimensionIndex)) {
 			if (iContentIndex == -1) {
 				throw new IllegalStateException("No such element in virtual array");
 
@@ -3374,10 +3374,10 @@ public class GLScatterPlot extends ATableBasedView {
 			float fYValue = renderStyle.getYCenter();
 
 			// Set<Integer> mouseOver =
-			// storageSelectionManager.getElements(SelectionType.MOUSE_OVER);
+			// dimensionSelectionManager.getElements(SelectionType.MOUSE_OVER);
 			// for (int iLineIndex : mouseOver)
 			// {
-			// fYValue = storageVA.indexOf(iLineIndex) *
+			// fYValue = dimensionVA.indexOf(iLineIndex) *
 			// renderStyle.getFieldHeight() +
 			// renderStyle.getFieldHeight()/2;
 			// break;

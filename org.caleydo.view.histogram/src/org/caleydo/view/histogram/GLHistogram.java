@@ -10,13 +10,13 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.table.EDataTableDataType;
+import org.caleydo.core.data.collection.table.DataTableDataType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
-import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
-import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.UpdateViewEvent;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -411,7 +411,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	private void renderCaption(GL2 gl, float normalizedValue) {
 
 		if (getParentGLCanvas().getSize().getWidth() < 500
-				|| dataDomain.getDataTable().getSetType() != EDataTableDataType.NUMERIC)
+				|| dataDomain.getDataTable().getSetType() != DataTableDataType.NUMERIC)
 			return;
 
 		textRenderer.begin3DRendering();

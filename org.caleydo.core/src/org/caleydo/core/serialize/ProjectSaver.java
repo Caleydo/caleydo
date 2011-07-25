@@ -194,8 +194,8 @@ public class ProjectSaver {
 						saveContentVA(marshaller, extendedDirName, setBasedDataDomain, type);
 					}
 
-					for (String type : setBasedDataDomain.getDataTable().getRegisteredStorageVATypes()) {
-						saveStorageVA(marshaller, extendedDirName, setBasedDataDomain, type);
+					for (String type : setBasedDataDomain.getDataTable().getRegisteredDimensionVATypes()) {
+						saveDimensionVA(marshaller, extendedDirName, setBasedDataDomain, type);
 					}
 					TreePorter treePorter = new TreePorter();
 					Tree<ClusterNode> geneTree =
@@ -206,7 +206,7 @@ public class ProjectSaver {
 
 					treePorter = new TreePorter();
 					Tree<ClusterNode> expTree =
-						setBasedDataDomain.getDataTable().getStorageData(DataTable.DIMENSION).getStorageTree();
+						setBasedDataDomain.getDataTable().getDimensionData(DataTable.DIMENSION).getDimensionTree();
 					if (expTree != null) {
 						treePorter.exportTree(extendedDirName + EXP_TREE_FILE_NAME, expTree);
 					}
@@ -296,10 +296,10 @@ public class ProjectSaver {
 		marshaller.marshal(va, new File(fileName));
 	}
 
-	private void saveStorageVA(Marshaller marshaller, String dir, ATableBasedDataDomain dataDomain,
+	private void saveDimensionVA(Marshaller marshaller, String dir, ATableBasedDataDomain dataDomain,
 		String type) throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
-		DimensionVirtualArray va = (DimensionVirtualArray) dataDomain.getStorageVA(type);
+		DimensionVirtualArray va = (DimensionVirtualArray) dataDomain.getDimensionVA(type);
 		marshaller.marshal(va, new File(fileName));
 	}
 }

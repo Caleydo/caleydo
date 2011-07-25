@@ -75,18 +75,18 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		label.setText("Human readable ID type: "
 				+ dataDomain.getHumanReadableContentIDType().getTypeName());
 
-		// Tree<ClusterNode> storageTree =
-		// dataDomain.getSet().getStorageData(StorageVAType.STORAGE).getStorageTree();
+		// Tree<ClusterNode> dimensionTree =
+		// dataDomain.getSet().getDimensionData(DimensionVAType.STORAGE).getDimensionTree();
 
 		// label = new Label(parent, SWT.NONE);
-		// label.setText("Experiments clustered: "+storageTree == null ? "false"
+		// label.setText("Experiments clustered: "+dimensionTree == null ? "false"
 		// : "true");
 		//
 		// if
-		// (dataDomain.getSet().getStorageData(StorageVAType.STORAGE).getStorageClusterSizes()
+		// (dataDomain.getSet().getDimensionData(DimensionVAType.STORAGE).getDimensionClusterSizes()
 		// != null) {
 		// label = new Label(parent, SWT.NONE);
-		// label.setText("Number of clusters: "+dataDomain.getSet().getStorageData(StorageVAType.STORAGE).getStorageClusterSizes().size());
+		// label.setText("Number of clusters: "+dataDomain.getSet().getDimensionData(DimensionVAType.STORAGE).getDimensionClusterSizes().size());
 		// }
 
 		// label = new Label(parent, SWT.NONE);

@@ -9,7 +9,7 @@ import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
-import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
+import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -57,7 +57,7 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void handleVAUpdate(StorageVADelta vaDelta, String info) {
+	public void handleVAUpdate(DimensionVADelta vaDelta, String info) {
 		// TODO Auto-generated method stub
 
 	}
@@ -83,7 +83,7 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public String getStorageLabel(IDType idType, Object id) {
+	public String getDimensionLabel(IDType idType, Object id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -91,7 +91,7 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	@Override
 	protected void assignIDCategories() {
 		contentIDCategory = IDCategory.getIDCategory("EXPERIMENT");
-		storageIDCategory = IDCategory.getIDCategory("EXPERIMENT_DATA");
+		dimensionIDCategory = IDCategory.getIDCategory("EXPERIMENT_DATA");
 
 	}
 

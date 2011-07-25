@@ -31,7 +31,7 @@ public class MetaData {
 	}
 
 	/**
-	 * Get the number of storages in a set
+	 * Get the number of dimensions in a set
 	 * 
 	 * @return
 	 */
@@ -40,18 +40,18 @@ public class MetaData {
 	}
 
 	/**
-	 * Get the depth of the set, which is the length of the storages (i.e. the number of content elements)
+	 * Get the depth of the set, which is the length of the dimensions (i.e. the number of content elements)
 	 * 
-	 * @return the number of elements in the storages contained in the list
+	 * @return the number of elements in the dimensions contained in the list
 	 */
 	public int depth() {
 		if (depth == 0) {
-			for (ADimension storage : table.hashDimensions.values()) {
+			for (ADimension dimension : table.hashDimensions.values()) {
 				if (depth == 0)
-					depth = storage.size();
+					depth = dimension.size();
 				else {
-					if (depth != storage.size())
-						throw new IllegalArgumentException("All storages in a set must be of the same length");
+					if (depth != dimension.size())
+						throw new IllegalArgumentException("All dimensions in a set must be of the same length");
 				}
 
 			}
@@ -60,7 +60,7 @@ public class MetaData {
 	}
 
 	/**
-	 * Returns a histogram of the values of all storages in the set (not considering VAs). The number of the
+	 * Returns a histogram of the values of all dimensions in the set (not considering VAs). The number of the
 	 * bins is sqrt(numberOfElements). This only works for homogeneous sets, if used on other sets an
 	 * exception is thrown.
 	 * 
@@ -71,24 +71,24 @@ public class MetaData {
 	public Histogram getHistogram() {
 		if (!table.isSetHomogeneous) {
 			throw new UnsupportedOperationException(
-				"Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use storage based histograms instead!");
+				"Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use dimension based histograms instead!");
 		}
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
-		for (ADimension storage : table.hashDimensions.values()) {
-			NumericalDimension nStorage = (NumericalDimension) storage;
-			Histogram storageHistogram = nStorage.getHistogram();
+		for (ADimension dimension : table.hashDimensions.values()) {
+			NumericalDimension nDimension = (NumericalDimension) dimension;
+			Histogram dimensionHistogram = nDimension.getHistogram();
 
 			if (bIsFirstLoop) {
 				bIsFirstLoop = false;
-				for (int iCount = 0; iCount < storageHistogram.size(); iCount++) {
+				for (int iCount = 0; iCount < dimensionHistogram.size(); iCount++) {
 					histogram.add(0);
 				}
 			}
 			int iCount = 0;
 			for (Integer histoValue : histogram) {
-				histoValue += storageHistogram.get(iCount);
+				histoValue += dimensionHistogram.get(iCount);
 				histogram.set(iCount++, histoValue);
 			}
 		}
@@ -97,7 +97,7 @@ public class MetaData {
 	}
 
 	/**
-	 * Returns a histogram of the values of all storages in the set considering the VA of the default content
+	 * Returns a histogram of the values of all dimensions in the set considering the VA of the default content
 	 * data. The number of the bins is sqrt(VA size). This only works for homogeneous sets, if used on other
 	 * sets an exception is thrown.
 	 * 
@@ -108,24 +108,24 @@ public class MetaData {
 	public Histogram getBaseHistogram() {
 		if (!table.isSetHomogeneous) {
 			throw new UnsupportedOperationException(
-				"Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use storage based histograms instead!");
+				"Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use dimension based histograms instead!");
 		}
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
-		for (ADimension storage : table.hashDimensions.values()) {
-			NumericalDimension nStorage = (NumericalDimension) storage;
-			Histogram storageHistogram = nStorage.getHistogram(table.defaultRecordData.getContentVA());
+		for (ADimension dimension : table.hashDimensions.values()) {
+			NumericalDimension nDimension = (NumericalDimension) dimension;
+			Histogram dimensionHistogram = nDimension.getHistogram(table.defaultRecordData.getContentVA());
 
 			if (bIsFirstLoop) {
 				bIsFirstLoop = false;
-				for (int iCount = 0; iCount < storageHistogram.size(); iCount++) {
+				for (int iCount = 0; iCount < dimensionHistogram.size(); iCount++) {
 					histogram.add(0);
 				}
 			}
 			int iCount = 0;
 			for (Integer histoValue : histogram) {
-				histoValue += storageHistogram.get(iCount);
+				histoValue += dimensionHistogram.get(iCount);
 				histogram.set(iCount++, histoValue);
 			}
 		}
@@ -134,7 +134,7 @@ public class MetaData {
 	}
 
 	/**
-	 * Returns a histogram of the values of all storages in the set considering the specified VA. The number
+	 * Returns a histogram of the values of all dimensions in the set considering the specified VA. The number
 	 * of the bins is sqrt(VA size). This only works for homogeneous sets, if used on other sets an exception
 	 * is thrown.
 	 * 
@@ -146,24 +146,24 @@ public class MetaData {
 		// FIXME put that back
 		// if (!isSetHomogeneous) {
 		// throw new UnsupportedOperationException(
-		// "Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use storage based histograms instead!");
+		// "Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use dimension based histograms instead!");
 		// }
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
-		for (ADimension storage : table.hashDimensions.values()) {
-			NumericalDimension nStorage = (NumericalDimension) storage;
-			Histogram storageHistogram = nStorage.getHistogram(contentVA);
+		for (ADimension dimension : table.hashDimensions.values()) {
+			NumericalDimension nDimension = (NumericalDimension) dimension;
+			Histogram dimensionHistogram = nDimension.getHistogram(contentVA);
 
 			if (bIsFirstLoop) {
 				bIsFirstLoop = false;
-				for (int iCount = 0; iCount < storageHistogram.size(); iCount++) {
+				for (int iCount = 0; iCount < dimensionHistogram.size(); iCount++) {
 					histogram.add(0);
 				}
 			}
 			int iCount = 0;
 			for (Integer histoValue : histogram) {
-				histoValue += storageHistogram.get(iCount);
+				histoValue += dimensionHistogram.get(iCount);
 				histogram.set(iCount++, histoValue);
 			}
 		}
@@ -304,14 +304,14 @@ public class MetaData {
 	private void calculateGlobalExtrema() {
 		double dTemp = 1.0;
 
-		if (table.dataTableType.equals(EDataTableDataType.NUMERIC)) {
-			for (ADimension storage : table.hashDimensions.values()) {
-				NumericalDimension nStorage = (NumericalDimension) storage;
-				dTemp = nStorage.getMin();
+		if (table.dataTableType.equals(DataTableDataType.NUMERIC)) {
+			for (ADimension dimension : table.hashDimensions.values()) {
+				NumericalDimension nDimension = (NumericalDimension) dimension;
+				dTemp = nDimension.getMin();
 				if (!bArtificialMin && dTemp < min) {
 					min = dTemp;
 				}
-				dTemp = nStorage.getMax();
+				dTemp = nDimension.getMax();
 				if (!bArtificialMax && dTemp > max) {
 					max = dTemp;
 				}

@@ -21,8 +21,8 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
  * A Virtual Array provides an association between a modifiable index in the virtual arrays and the static
- * indices in the storages and sets. It therefore allows the virtual modification (deleting, adding,
- * duplicating) of entries in the storages.
+ * indices in the dimensions and sets. It therefore allows the virtual modification (deleting, adding,
+ * duplicating) of entries in the dimensions.
  * 
  * @author Alexander Lex
  */
@@ -398,9 +398,9 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	}
 
 	/**
-	 * Returns the array list which contains the list of storage indices. DO NOT EDIT THIS LIST
+	 * Returns the array list which contains the list of dimension indices. DO NOT EDIT THIS LIST
 	 * 
-	 * @return the list containing the storage indices
+	 * @return the list containing the dimension indices
 	 */
 	public ArrayList<Integer> getIndexList() {
 		return virtualArray;

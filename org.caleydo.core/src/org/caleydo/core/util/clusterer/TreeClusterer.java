@@ -70,7 +70,7 @@ public class TreeClusterer
 			}
 			else if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING) {
 				tree = new ClusterTree();
-				this.iNrSamples = clusterState.getStorageVA().size();
+				this.iNrSamples = clusterState.getDimensionVA().size();
 			}
 			else
 				throw new IllegalArgumentException("Can not handle cluster type "
@@ -111,8 +111,8 @@ public class TreeClusterer
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
 
-			float[] dArInstance1 = new float[storageVA.size()];
-			float[] dArInstance2 = new float[storageVA.size()];
+			float[] dArInstance1 = new float[dimensionVA.size()];
+			float[] dArInstance2 = new float[dimensionVA.size()];
 
 			for (Integer iContentIndex1 : contentVA) {
 
@@ -126,9 +126,9 @@ public class TreeClusterer
 					}
 
 					isto = 0;
-					for (Integer iStorageIndex1 : storageVA) {
+					for (Integer iDimensionIndex1 : dimensionVA) {
 						dArInstance1[isto] =
-							set.get(iStorageIndex1).getFloat(DataRepresentation.NORMALIZED, iContentIndex1);
+							set.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, iContentIndex1);
 						isto++;
 					}
 
@@ -138,9 +138,9 @@ public class TreeClusterer
 						isto = 0;
 
 						if (icnt2 < icnt1) {
-							for (Integer iStorageIndex2 : storageVA) {
+							for (Integer iDimensionIndex2 : dimensionVA) {
 								dArInstance2[isto] =
-									set.get(iStorageIndex2).getFloat(DataRepresentation.NORMALIZED,
+									set.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
 										iContentIndex2);
 								isto++;
 							}
@@ -168,10 +168,10 @@ public class TreeClusterer
 			float[] dArInstance1 = new float[contentVA.size()];
 			float[] dArInstance2 = new float[contentVA.size()];
 
-			for (Integer iStorageIndex1 : storageVA) {
+			for (Integer iDimensionIndex1 : dimensionVA) {
 
 				if (bClusteringCanceled == false) {
-					int tempPercentage = (int) ((float) icnt1 / storageVA.size() * 100);
+					int tempPercentage = (int) ((float) icnt1 / dimensionVA.size() * 100);
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher()
 							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
@@ -181,23 +181,23 @@ public class TreeClusterer
 					isto = 0;
 					for (Integer iContentIndex1 : contentVA) {
 						dArInstance1[isto] =
-							set.get(iStorageIndex1).getFloat(DataRepresentation.NORMALIZED, iContentIndex1);
+							set.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, iContentIndex1);
 						isto++;
 					}
 
 					icnt2 = 0;
-					for (Integer iStorageIndex2 : storageVA) {
+					for (Integer iDimensionIndex2 : dimensionVA) {
 						isto = 0;
 
 						if (icnt2 < icnt1) {
 							for (Integer iContentIndex2 : contentVA) {
 								dArInstance2[isto] =
-									set.get(iStorageIndex2).getFloat(DataRepresentation.NORMALIZED,
+									set.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
 										iContentIndex2);
 								isto++;
 							}
 
-							similarities[storageVA.indexOf(iStorageIndex1)][storageVA.indexOf(iStorageIndex2)] =
+							similarities[dimensionVA.indexOf(iDimensionIndex1)][dimensionVA.indexOf(iDimensionIndex2)] =
 								distanceMeasure.getMeasure(dArInstance1, dArInstance2);
 						}
 						icnt2++;
@@ -366,13 +366,13 @@ public class TreeClusterer
 		// if (eClustererType == EClustererType.GENE_CLUSTERING)
 		// set.setContentTree(tree);
 		// else
-		// set.setStorageTree(tree);
+		// set.setDimensionTree(tree);
 
 		// IVirtualArray virtualArray = null;
 		// if (eClustererType == EClustererType.GENE_CLUSTERING)
 		// virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), alIndices);
 		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), alIndices);
+		// virtualArray = new VirtualArray(set.getVA(iVAIdDimension).getVAType(), set.size(), alIndices);
 
 		GeneralManager
 			.get()
@@ -550,8 +550,8 @@ public class TreeClusterer
 	// float[][] fArTempValues;
 	//
 	// if (eClustererType == EClustererType.GENE_CLUSTERING) {
-	// IVirtualArray storageVA = set.getVA(iVAIdStorage);
-	// iNrElements = storageVA.size();
+	// IVirtualArray dimensionVA = set.getVA(iVAIdDimension);
+	// iNrElements = dimensionVA.size();
 	// }
 	// else {
 	// IVirtualArray contentVA = set.getVA(iVAIdContent);
@@ -582,13 +582,13 @@ public class TreeClusterer
 	// else {
 	//
 	// if (eClustererType == EClustererType.GENE_CLUSTERING) {
-	// IVirtualArray storageVA = set.getVA(iVAIdStorage);
-	// fArExpressionValues = new float[storageVA.size()];
+	// IVirtualArray dimensionVA = set.getVA(iVAIdDimension);
+	// fArExpressionValues = new float[dimensionVA.size()];
 	//
 	// int isto = 0;
-	// for (Integer iStorageIndex : storageVA) {
+	// for (Integer iDimensionIndex : dimensionVA) {
 	// fArExpressionValues[isto] =
-	// set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, node.getLeaveID());
+	// set.get(iDimensionIndex).getFloat(EDataRepresentation.NORMALIZED, node.getLeaveID());
 	// isto++;
 	// }
 	//
@@ -729,7 +729,7 @@ public class TreeClusterer
 		// if (eClustererType == EClustererType.GENE_CLUSTERING)
 		// virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), indices);
 		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), indices);
+		// virtualArray = new VirtualArray(set.getVA(iVAIdDimension).getVAType(), set.size(), indices);
 
 		GeneralManager
 			.get()
@@ -799,7 +799,7 @@ public class TreeClusterer
 			// }
 		}
 		else {
-			nodeName = set.get(storageVA.get(index)).getLabel();
+			nodeName = set.get(dimensionVA.get(index)).getLabel();
 		}
 
 		// check if current node name was already used. If yes we add signs to make it unique.
@@ -838,7 +838,7 @@ public class TreeClusterer
 			nodeNr = contentVA.get(index);
 		}
 		else {
-			nodeNr = storageVA.get(index);
+			nodeNr = dimensionVA.get(index);
 		}
 
 		return nodeNr;

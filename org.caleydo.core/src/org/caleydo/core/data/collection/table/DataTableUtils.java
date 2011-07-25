@@ -15,7 +15,7 @@ import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.CmdDataCreateDimension;
 import org.caleydo.core.command.data.CmdDataCreateTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
-import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
+import org.caleydo.core.command.data.parser.CmdLoadFileNDimensions;
 import org.caleydo.core.data.collection.DimensionType;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
@@ -26,7 +26,7 @@ import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.group.ContentGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.group.StorageGroupList;
+import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
@@ -37,7 +37,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Utility class that features creating, loading and saving sets and storages.
+ * Utility class that features creating, loading and saving sets and dimensions.
  * 
  * @author Werner Puff
  * @author Alexander Lex
@@ -51,7 +51,7 @@ public class DataTableUtils {
 	public static final String CONTENT_TREE_FILE_PREFIX = "contenttree";
 
 	/** prefix for temporary experiment-tree-file */
-	public static final String STORAGE_TREE_FILE_PREFIX = "storagetree";
+	public static final String STORAGE_TREE_FILE_PREFIX = "dimensiontree";
 
 	/**
 	 * Loads the set-file as specified in the {@link IDataDomain}'s {@link LoadDataParameters} and stores the
@@ -70,7 +70,7 @@ public class DataTableUtils {
 		try {
 			FileInputStream is = new FileInputStream(setFile);
 			if (setFile.length() > Integer.MAX_VALUE) {
-				throw new RuntimeException("set-file is larger than maximum internal file-storage-size");
+				throw new RuntimeException("set-file is larger than maximum internal file-dimension-size");
 			}
 			buffer = new byte[(int) setFile.length()];
 			is.read(buffer, 0, buffer.length);
@@ -136,23 +136,23 @@ public class DataTableUtils {
 	}
 
 	/**
-	 * Creates the storages from a previously prepared storage definition.
+	 * Creates the dimensions from a previously prepared dimension definition.
 	 * 
 	 * @param loadDataParameters
-	 *            definition how to create the storages
+	 *            definition how to create the dimensions
 	 * @return <code>true</code>if the creation was successful, <code>false</code> otherwise
 	 */
-	public static boolean createStorages(LoadDataParameters loadDataParameters) {
+	public static boolean createDimensions(LoadDataParameters loadDataParameters) {
 
-		ArrayList<Integer> storageIds = null;
-		boolean createStoragesFromExistingIDs = false;
+		ArrayList<Integer> dimensionIds = null;
+		boolean createDimensionsFromExistingIDs = false;
 		
-		if (loadDataParameters.getStorageIds() == null)
-			storageIds = new ArrayList<Integer>();
+		if (loadDataParameters.getDimensionIds() == null)
+			dimensionIds = new ArrayList<Integer>();
 		else
 		{
-			storageIds = loadDataParameters.getStorageIds();
-			createStoragesFromExistingIDs = true;
+			dimensionIds = loadDataParameters.getDimensionIds();
+			createDimensionsFromExistingIDs = true;
 		}
 
 		TabularAsciiDataReader reader = new TabularAsciiDataReader(null, loadDataParameters.getDataDomain());
@@ -160,55 +160,55 @@ public class DataTableUtils {
 		ArrayList<DimensionType> dataTypes = reader.getColumnDataTypes();
 
 		boolean abort = false;
-		Iterator<String> storageLabelIterator = loadDataParameters.getStorageLabels().iterator();
-		CmdDataCreateDimension cmdCreateStorage;
-		String storageLabel;
+		Iterator<String> dimensionLabelIterator = loadDataParameters.getDimensionLabels().iterator();
+		CmdDataCreateDimension cmdCreateDimension;
+		String dimensionLabel;
 
 		for (int dataTableIndex = 0; dataTableIndex < dataTypes.size(); dataTableIndex++) {
 			DimensionType dataType = dataTypes.get(dataTableIndex);
 			switch (dataType) {
 				case FLOAT:
-					cmdCreateStorage =
+					cmdCreateDimension =
 						(CmdDataCreateDimension) GeneralManager.get().getCommandManager()
 							.createCommandByType(CommandType.CREATE_DIMENSION);
 
-					if (createStoragesFromExistingIDs)
-						cmdCreateStorage.setAttributes(ManagedObjectType.DIMENSION_NUMERICAL,
-							storageIds.get(dataTableIndex));
+					if (createDimensionsFromExistingIDs)
+						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NUMERICAL,
+							dimensionIds.get(dataTableIndex));
 					else
-						cmdCreateStorage.setAttributes(ManagedObjectType.DIMENSION_NUMERICAL);
+						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NUMERICAL);
 
-					cmdCreateStorage.doCommand();
-					storageLabel = storageLabelIterator.next();
-					NumericalDimension storage = (NumericalDimension) cmdCreateStorage.getCreatedObject();
-					storage.setLabel(storageLabel);
+					cmdCreateDimension.doCommand();
+					dimensionLabel = dimensionLabelIterator.next();
+					NumericalDimension dimension = (NumericalDimension) cmdCreateDimension.getCreatedObject();
+					dimension.setLabel(dimensionLabel);
 					
-					if (!createStoragesFromExistingIDs)
-						storageIds.add(storage.getID());
+					if (!createDimensionsFromExistingIDs)
+						dimensionIds.add(dimension.getID());
 						
 					break;
 				case STRING:
-					cmdCreateStorage =
+					cmdCreateDimension =
 						(CmdDataCreateDimension) GeneralManager.get().getCommandManager()
 							.createCommandByType(CommandType.CREATE_DIMENSION);
 
-					if (createStoragesFromExistingIDs)
-						cmdCreateStorage.setAttributes(ManagedObjectType.DIMENSION_NOMINAL,
-							storageIds.get(dataTableIndex));
+					if (createDimensionsFromExistingIDs)
+						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NOMINAL,
+							dimensionIds.get(dataTableIndex));
 					else
 					{
-						cmdCreateStorage.setAttributes(ManagedObjectType.DIMENSION_NOMINAL);
+						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NOMINAL);
 					}
 
-					cmdCreateStorage.doCommand();
+					cmdCreateDimension.doCommand();
 
-					storageLabel = storageLabelIterator.next();
-					NominalDimension<?> nominalStorage =
-						(NominalDimension<?>) cmdCreateStorage.getCreatedObject();
-					nominalStorage.setLabel(storageLabel);
+					dimensionLabel = dimensionLabelIterator.next();
+					NominalDimension<?> nominalDimension =
+						(NominalDimension<?>) cmdCreateDimension.getCreatedObject();
+					nominalDimension.setLabel(dimensionLabel);
 					
-					if (!createStoragesFromExistingIDs)
-						storageIds.add(nominalStorage.getID());
+					if (!createDimensionsFromExistingIDs)
+						dimensionIds.add(nominalDimension.getID());
 
 				case SKIP:
 					// nothing to do, just skip
@@ -225,25 +225,25 @@ public class DataTableUtils {
 			}
 		}
 
-		loadDataParameters.setStorageIds(storageIds);
+		loadDataParameters.setDimensionIds(dimensionIds);
 
 		return true;
 	}
 
 	/**
-	 * Creates the set from a previously prepared storage definition.
+	 * Creates the set from a previously prepared dimension definition.
 	 */
 	public static DataTable createData(ATableBasedDataDomain dataDomain) {
 
 		LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
-		ArrayList<Integer> storageIDs = loadDataParameters.getStorageIds();
+		ArrayList<Integer> dimensionIDs = loadDataParameters.getDimensionIds();
 
 		// Create SET
 		CmdDataCreateTable cmdCreateSet =
 			(CmdDataCreateTable) GeneralManager.get().getCommandManager()
 				.createCommandByType(CommandType.CREATE_DATA_TABLE);
 
-		cmdCreateSet.setAttributes(storageIDs, dataDomain);
+		cmdCreateSet.setAttributes(dimensionIDs, dataDomain);
 		cmdCreateSet.doCommand();
 
 		// Load dynamic mapping
@@ -279,15 +279,15 @@ public class DataTableUtils {
 		// --------- data loading ---------------
 
 		// Trigger file loading command
-		CmdLoadFileNStorages cmdLoadCSV =
-			(CmdLoadFileNStorages) GeneralManager.get().getCommandManager()
+		CmdLoadFileNDimensions cmdLoadCSV =
+			(CmdLoadFileNDimensions) GeneralManager.get().getCommandManager()
 				.createCommandByType(CommandType.LOAD_DATA_FILE);
 
-		cmdLoadCSV.setAttributes(storageIDs, loadDataParameters);
+		cmdLoadCSV.setAttributes(dimensionIDs, loadDataParameters);
 		cmdLoadCSV.doCommand();
 
 		if (!cmdLoadCSV.isParsingOK()) {
-			// TODO: Clear created set and storages which are empty
+			// TODO: Clear created set and dimensions which are empty
 			return null;
 		}
 
@@ -320,9 +320,9 @@ public class DataTableUtils {
 		return dataTable;
 	}
 
-	public static void setDataTables(DataTable dataTable, ArrayList<Integer> storageIDs) {
-		for (int iStorageID : storageIDs) {
-			dataTable.addStorage(iStorageID);
+	public static void setDataTables(DataTable dataTable, ArrayList<Integer> dimensionIDs) {
+		for (int iDimensionID : dimensionIDs) {
+			dataTable.addDimension(iDimensionID);
 		}
 
 		dataTable.finalizeAddedDimensions();
@@ -362,7 +362,7 @@ public class DataTableUtils {
 		String xml = null;
 
 		try {
-			xml = getTreeClusterXml(set.getStorageData(DataTable.DIMENSION).getStorageTree());
+			xml = getTreeClusterXml(set.getDimensionData(DataTable.DIMENSION).getDimensionTree());
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
@@ -442,7 +442,7 @@ public class DataTableUtils {
 
 	/**
 	 * Load trees as specified in loadDataParameters and write them to the set. FIXME: this is not aware of
-	 * possibly alternative {@link ContentVAType}s or {@link StorageVAType}s
+	 * possibly alternative {@link ContentVAType}s or {@link DimensionVAType}s
 	 * 
 	 * @param loadDataParameters
 	 * @param set
@@ -484,9 +484,9 @@ public class DataTableUtils {
 				treePorter.setDataDomain(set.getDataDomain());
 				ClusterTree tree;
 				try {
-					tree = treePorter.importStorageTree(experimentsTreeFileName);
-					set.getStorageData(DataTable.DIMENSION).setStorageTree(tree);
-					set.getDataDomain().createDimensionGroupsFromStorageTree(tree);
+					tree = treePorter.importDimensionTree(experimentsTreeFileName);
+					set.getDimensionData(DataTable.DIMENSION).setDimensionTree(tree);
+					set.getDataDomain().createDimensionGroupsFromDimensionTree(tree);
 				}
 				catch (JAXBException e) {
 					e.printStackTrace();
@@ -506,8 +506,8 @@ public class DataTableUtils {
 	 *            Determines how the data is visualized. For options see {@link ExternalDataRepresentation}
 	 * @param bIsSetHomogeneous
 	 *            Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
-	 *            maximum and minimum, meaning that all storages in the set contain equal data. If false, each
-	 *            storage is treated separately, has it's own min and max etc. Sets that contain nominal data
+	 *            maximum and minimum, meaning that all dimensions in the set contain equal data. If false, each
+	 *            dimension is treated separately, has it's own min and max etc. Sets that contain nominal data
 	 *            MUST be inhomogeneous.
 	 */
 	public static void setExternalDataRepresentation(DataTable set,
@@ -548,7 +548,7 @@ public class DataTableUtils {
 	}
 
 	/**
-	 * Creates a storageGroupList from the group information read from a stored file
+	 * Creates a dimensionGroupList from the group information read from a stored file
 	 * 
 	 * @param set
 	 * @param vaType
@@ -556,24 +556,24 @@ public class DataTableUtils {
 	 * @param groupInfo
 	 *            the array list extracted from the file
 	 */
-	public static void setStorageGroupList(DataTable set, String vaType, int[] groupInfo) {
+	public static void setDimensionGroupList(DataTable set, String vaType, int[] groupInfo) {
 		int cluster = 0, cnt = 0;
 
-		StorageGroupList storageGroupList = set.getStorageData(vaType).getStorageVA().getGroupList();
-		storageGroupList.clear();
+		DimensionGroupList dimensionGroupList = set.getDimensionData(vaType).getDimensionVA().getGroupList();
+		dimensionGroupList.clear();
 
 		for (int i = 0; i < groupInfo.length; i++) {
 			Group group = null;
 			if (cluster != groupInfo[i]) {
 				group = new Group(cnt, 0);
-				storageGroupList.append(group);
+				dimensionGroupList.append(group);
 				cluster++;
 				cnt = 0;
 			}
 			cnt++;
 			if (i == groupInfo.length - 1) {
 				group = new Group(cnt, 0);
-				storageGroupList.append(group);
+				dimensionGroupList.append(group);
 			}
 		}
 	}
@@ -603,24 +603,24 @@ public class DataTableUtils {
 	}
 
 	/**
-	 * Set representative elements for storageGroupLists read from file
+	 * Set representative elements for dimensionGroupLists read from file
 	 * 
 	 * @param set
 	 * @param vaType
 	 * @param groupReps
 	 */
-	public static void setStorageGroupRepresentatives(DataTable set, String vaType, int[] groupReps) {
+	public static void setDimensionGroupRepresentatives(DataTable set, String vaType, int[] groupReps) {
 
 		int group = 0;
 
-		StorageGroupList storageGroupList = set.getStorageData(vaType).getStorageVA().getGroupList();
+		DimensionGroupList dimensionGroupList = set.getDimensionData(vaType).getDimensionVA().getGroupList();
 
-		storageGroupList.get(group).setRepresentativeElementIndex(0);
+		dimensionGroupList.get(group).setRepresentativeElementIndex(0);
 		group++;
 
 		for (int i = 1; i < groupReps.length; i++) {
 			if (groupReps[i] != groupReps[i - 1]) {
-				storageGroupList.get(group).setRepresentativeElementIndex(i);
+				dimensionGroupList.get(group).setRepresentativeElementIndex(i);
 				group++;
 			}
 		}

@@ -29,7 +29,7 @@ public class DataDomainSerializationData {
 
 	/** virtual arrays of this application stored in relation with their their-key */
 	private HashMap<String, ContentVirtualArray> contentVAMap;
-	private HashMap<String, DimensionVirtualArray> storageVAMap;
+	private HashMap<String, DimensionVirtualArray> dimensionVAMap;
 
 	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
@@ -55,12 +55,12 @@ public class DataDomainSerializationData {
 		this.contentVAMap = contentVAMap;
 	}
 
-	public HashMap<String, DimensionVirtualArray> getStorageVAMap() {
-		return storageVAMap;
+	public HashMap<String, DimensionVirtualArray> getDimensionVAMap() {
+		return dimensionVAMap;
 	}
 
-	public void setStorageVAMap(HashMap<String, DimensionVirtualArray> storageVAMap) {
-		this.storageVAMap = storageVAMap;
+	public void setDimensionVAMap(HashMap<String, DimensionVirtualArray> dimensionVAMap) {
+		this.dimensionVAMap = dimensionVAMap;
 	}
 
 	public String getGeneClusterTree() {

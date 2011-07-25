@@ -71,7 +71,7 @@ public class GeneralManager {
 
 	private BasicInformation basicInfo;
 
-	private DimensionManager storageManager;
+	private DimensionManager dimensionManager;
 	private CommandManager commandManager;
 	private SWTGUIManager sWTGUIManager;
 	private ViewManager viewGLCanvasManager;
@@ -95,7 +95,7 @@ public class GeneralManager {
 
 		basicInfo = new BasicInformation();
 
-		storageManager = new DimensionManager();
+		dimensionManager = new DimensionManager();
 		commandManager = new CommandManager();
 		eventPublisher = new EventPublisher();
 		viewGLCanvasManager = new ViewManager();
@@ -155,7 +155,7 @@ public class GeneralManager {
 	}
 
 	public DimensionManager getDimensionManager() {
-		return storageManager;
+		return dimensionManager;
 	}
 
 	public ViewManager getViewGLCanvasManager() {

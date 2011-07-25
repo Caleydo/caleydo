@@ -5,7 +5,7 @@ import java.util.Set;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event signaling that the groups specified should be aggregated into one storage
+ * Event signaling that the groups specified should be aggregated into one dimension
  * 
  * @author Alexander Lex
  */

@@ -11,7 +11,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * 
  * @author Alexander Lex
  */
-class StorageBookmark extends ABookmark {
+class DimensionBookmark extends ABookmark {
 
 	ElementLayout layout;
 
@@ -21,8 +21,8 @@ class StorageBookmark extends ABookmark {
 	 * @param textRenderer
 	 * @param davidID
 	 */
-	public StorageBookmark(GLBookmarkView manager,
-			StorageBookmarkContainer partentContainer, IDType idType,
+	public DimensionBookmark(GLBookmarkView manager,
+			DimensionBookmarkContainer partentContainer, IDType idType,
 			Integer experimentIndex, CaleydoTextRenderer textRenderer) {
 		super(manager, partentContainer, idType, textRenderer);
 		this.id = experimentIndex;
@@ -44,7 +44,7 @@ class StorageBookmark extends ABookmark {
 	public void render(GL2 gl) {
 
 		super.render(gl);
-		String label = manager.getDataDomain().getStorageLabel(id);
+		String label = manager.getDataDomain().getDimensionLabel(id);
 		gl.glPushName(manager.getBookmarkPickingIDManager().getPickingID(parentContainer,
 				id));
 		manager.getTextRenderer().renderTextInBounds(gl, label, 0 + xSpacing,

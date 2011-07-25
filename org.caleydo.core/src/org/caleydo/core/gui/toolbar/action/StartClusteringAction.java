@@ -20,7 +20,7 @@ public class StartClusteringAction
 	implements IToolBarItem {
 
 	public static final String TEXT = "Clustering";
-	public static final String ICON = "resources/icons/view/storagebased/clustering.png";
+	public static final String ICON = "resources/icons/view/dimensionbased/clustering.png";
 
 	private ArrayList<DataTable> sets;
 

@@ -9,11 +9,11 @@ import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
-import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
+import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
@@ -22,28 +22,28 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
-import org.caleydo.core.manager.event.data.ReplaceStorageVAEvent;
+import org.caleydo.core.manager.event.data.ReplaceDimensionVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.ContentVAUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.DimensionVAUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IDimensionVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceStorageVAListener;
+import org.caleydo.core.view.opengl.canvas.listener.ReplaceDimensionVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.StorageVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.DimensionVAUpdateListener;
 import org.caleydo.view.info.listener.InfoAreaUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -63,7 +63,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Alexander Lex
  */
 public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
-		ISelectionUpdateHandler, IContentVAUpdateHandler, IStorageVAUpdateHandler,
+		ISelectionUpdateHandler, IContentVAUpdateHandler, IDimensionVAUpdateHandler,
 		ISelectionCommandHandler, IViewCommandHandler {
 
 	GeneralManager generalManager = null;
@@ -74,16 +74,16 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	private Tree selectionTree;
 
 	private TreeItem contentTree;
-	private TreeItem storageTree;
+	private TreeItem dimensionTree;
 
 	private AGLView updateTriggeringView;
 	private Composite parentComposite;
 
 	protected SelectionUpdateListener selectionUpdateListener;
 	protected ContentVAUpdateListener contentVAUpdateListener;
-	protected StorageVAUpdateListener storageVAUpdateListener;
+	protected DimensionVAUpdateListener dimensionVAUpdateListener;
 	protected ReplaceContentVAListener replaceContentVAListener;
-	protected ReplaceStorageVAListener replaceStorageVAListener;
+	protected ReplaceDimensionVAListener replaceDimensionVAListener;
 	protected SelectionCommandListener selectionCommandListener;
 
 	protected RedrawViewListener redrawViewListener;
@@ -93,7 +93,7 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	protected ATableBasedDataDomain dataDomain;
 
 	ContentSelectionManager contentSelectionManager;
-	StorageSelectionManager storageSelectionManager;
+	DimensionSelectionManager dimensionSelectionManager;
 
 	/**
 	 * Constructor.
@@ -107,7 +107,7 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	public Control createControl(final Composite parent) {
 
 		contentSelectionManager = dataDomain.getContentSelectionManager();
-		storageSelectionManager = dataDomain.getStorageSelectionManager();
+		dimensionSelectionManager = dataDomain.getDimensionSelectionManager();
 
 		parentComposite = parent;
 
@@ -124,10 +124,10 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 
 		contentTree.setText(dataDomain.getContentName(true, true));
 
-		storageTree = new TreeItem(selectionTree, SWT.NONE);
-		storageTree.setExpanded(true);
-		storageTree.setData(-1);
-		storageTree.setText("Experiments");
+		dimensionTree = new TreeItem(selectionTree, SWT.NONE);
+		dimensionTree.setExpanded(true);
+		dimensionTree.setData(-1);
+		dimensionTree.setText("Experiments");
 
 		// pathwayTree = new TreeItem(selectionTree, SWT.NONE);
 		// pathwayTree.setText("Pathways");
@@ -161,9 +161,9 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 		
 		if (selectionDelta.getIDType() == contentSelectionManager.getIDType()) {
 
-		} else if (selectionDelta.getIDType() == storageSelectionManager.getIDType()) {
-			storageSelectionManager.setDelta(selectionDelta);
-			updateTree(false, storageSelectionManager, storageTree, info);
+		} else if (selectionDelta.getIDType() == dimensionSelectionManager.getIDType()) {
+			dimensionSelectionManager.setDelta(selectionDelta);
+			updateTree(false, dimensionSelectionManager, dimensionTree, info);
 		} else
 			throw new IllegalStateException(
 					"Mapping does not match, no selection manager can handle: "
@@ -212,7 +212,7 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 			if (isContent)
 				name = dataDomain.getContentLabel(id);
 			else
-				name = dataDomain.getStorageLabel(id);
+				name = dataDomain.getDimensionLabel(id);
 
 			TreeItem item = new TreeItem(tree, SWT.NONE);
 
@@ -273,9 +273,9 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	@Override
 	public void handleClearSelections() {
 		contentTree.removeAll();
-		storageTree.removeAll();
+		dimensionTree.removeAll();
 		contentSelectionManager.clearSelections();
-		storageSelectionManager.clearSelections();
+		dimensionSelectionManager.clearSelections();
 	}
 
 	/**
@@ -315,15 +315,15 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 		replaceContentVAListener.setDataDomainType(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
 
-		storageVAUpdateListener = new StorageVAUpdateListener();
-		storageVAUpdateListener.setHandler(this);
-		storageVAUpdateListener.setDataDomainType(dataDomain.getDataDomainID());
-		eventPublisher.addListener(StorageVAUpdateEvent.class, storageVAUpdateListener);
+		dimensionVAUpdateListener = new DimensionVAUpdateListener();
+		dimensionVAUpdateListener.setHandler(this);
+		dimensionVAUpdateListener.setDataDomainType(dataDomain.getDataDomainID());
+		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
 
-		replaceStorageVAListener = new ReplaceStorageVAListener();
-		replaceStorageVAListener.setHandler(this);
-		replaceStorageVAListener.setDataDomainType(dataDomain.getDataDomainID());
-		eventPublisher.addListener(ReplaceStorageVAEvent.class, replaceStorageVAListener);
+		replaceDimensionVAListener = new ReplaceDimensionVAListener();
+		replaceDimensionVAListener.setHandler(this);
+		replaceDimensionVAListener.setDataDomainType(dataDomain.getDataDomainID());
+		eventPublisher.addListener(ReplaceDimensionVAEvent.class, replaceDimensionVAListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
@@ -361,13 +361,13 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 			eventPublisher.removeListener(replaceContentVAListener);
 			replaceContentVAListener = null;
 		}
-		if (storageVAUpdateListener != null) {
-			eventPublisher.removeListener(storageVAUpdateListener);
-			storageVAUpdateListener = null;
+		if (dimensionVAUpdateListener != null) {
+			eventPublisher.removeListener(dimensionVAUpdateListener);
+			dimensionVAUpdateListener = null;
 		}
-		if (replaceStorageVAListener != null) {
-			eventPublisher.removeListener(replaceStorageVAListener);
-			replaceStorageVAListener = null;
+		if (replaceDimensionVAListener != null) {
+			eventPublisher.removeListener(replaceDimensionVAListener);
+			replaceDimensionVAListener = null;
 		}
 		if (selectionCommandListener != null) {
 			eventPublisher.removeListener(selectionCommandListener);
@@ -421,21 +421,21 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	}
 
 	@Override
-	public void handleVAUpdate(StorageVADelta vaDelta, String info) {
-		if (vaDelta.getIDType() != dataDomain.getStorageIDType())
+	public void handleVAUpdate(DimensionVADelta vaDelta, String info) {
+		if (vaDelta.getIDType() != dataDomain.getDimensionIDType())
 			return;
 		if (parentComposite.isDisposed())
 			return;
-		storageSelectionManager.setVADelta(vaDelta);
-		updateTree(false, storageSelectionManager, storageTree, info);
+		dimensionSelectionManager.setVADelta(vaDelta);
+		updateTree(false, dimensionSelectionManager, dimensionTree, info);
 	}
 
 	@Override
-	public void replaceStorageVA(String dataDomain, String vaType) {
+	public void replaceDimensionVA(String dataDomain, String vaType) {
 		if (parentComposite.isDisposed())
 			return;
-		storageSelectionManager.setVA(this.dataDomain.getStorageVA(vaType));
-		updateTree(false, storageSelectionManager, storageTree, "");
+		dimensionSelectionManager.setVA(this.dataDomain.getDimensionVA(vaType));
+		updateTree(false, dimensionSelectionManager, dimensionTree, "");
 	}
 
 	@Override

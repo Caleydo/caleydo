@@ -5,61 +5,61 @@ import java.util.ArrayList;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.group.StorageGroupList;
+import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
- * Class that summarizes all information around a storageVA and its tree. No field is initialized by default.
+ * Class that summarizes all information around a dimensionVA and its tree. No field is initialized by default.
  * 
  * @author Alexander Lex
  */
 public class DimensionData
 	implements Cloneable {
 
-	DimensionVirtualArray storageVA;
+	DimensionVirtualArray dimensionVA;
 
 	/** indices of examples (cluster centers) */
-	ArrayList<Integer> storageSampleElements;
+	ArrayList<Integer> dimensionSampleElements;
 	/** number of elements per cluster */
-	ArrayList<Integer> storageClusterSizes;
+	ArrayList<Integer> dimensionClusterSizes;
 
-	ClusterTree storageTree;
+	ClusterTree dimensionTree;
 
 	boolean isDefaultTree = true;
 
-	/** Root node for storage hierarchy which is only set in metaSets */
-	private ClusterNode storageTreeRoot = null;
+	/** Root node for dimension hierarchy which is only set in metaSets */
+	private ClusterNode dimensionTreeRoot = null;
 
-	public DimensionVirtualArray getStorageVA() {
-		return storageVA;
+	public DimensionVirtualArray getDimensionVA() {
+		return dimensionVA;
 	}
 
-	public void setStorageVA(DimensionVirtualArray storageVA) {
-		this.storageVA = storageVA;
+	public void setDimensionVA(DimensionVirtualArray dimensionVA) {
+		this.dimensionVA = dimensionVA;
 	}
 
-	public ArrayList<Integer> getStorageClusterSizes() {
-		return storageClusterSizes;
+	public ArrayList<Integer> getDimensionClusterSizes() {
+		return dimensionClusterSizes;
 	}
 
-	public void setStorageClusterSizes(ArrayList<Integer> storageClusterSizes) {
-		this.storageClusterSizes = storageClusterSizes;
+	public void setDimensionClusterSizes(ArrayList<Integer> dimensionClusterSizes) {
+		this.dimensionClusterSizes = dimensionClusterSizes;
 	}
 
-	public ArrayList<Integer> getStorageSampleElements() {
-		return storageSampleElements;
+	public ArrayList<Integer> getDimensionSampleElements() {
+		return dimensionSampleElements;
 	}
 
-	public void setStorageSampleElements(ArrayList<Integer> storageSampleElements) {
-		this.storageSampleElements = storageSampleElements;
+	public void setDimensionSampleElements(ArrayList<Integer> dimensionSampleElements) {
+		this.dimensionSampleElements = dimensionSampleElements;
 	}
 
-	public ClusterTree getStorageTree() {
-		return storageTree;
+	public ClusterTree getDimensionTree() {
+		return dimensionTree;
 	}
 
-	public void setStorageTree(ClusterTree storageTree) {
-		this.storageTree = storageTree;
+	public void setDimensionTree(ClusterTree dimensionTree) {
+		this.dimensionTree = dimensionTree;
 	}
 
 	public void setDefaultTree(boolean isDefaultTree) {
@@ -70,31 +70,31 @@ public class DimensionData
 		return isDefaultTree;
 	}
 
-	public ClusterNode getStorageTreeRoot() {
-		if (storageTreeRoot == null)
-			return storageTree.getRoot();
-		return storageTreeRoot;
+	public ClusterNode getDimensionTreeRoot() {
+		if (dimensionTreeRoot == null)
+			return dimensionTree.getRoot();
+		return dimensionTreeRoot;
 	}
 
-	public void setStorageTreeRoot(ClusterNode storageTreeRoot) {
-		this.storageTreeRoot = storageTreeRoot;
+	public void setDimensionTreeRoot(ClusterNode dimensionTreeRoot) {
+		this.dimensionTreeRoot = dimensionTreeRoot;
 	}
 
 	public void finish() {
 
-		if (storageVA != null && storageClusterSizes != null && storageSampleElements != null) {
-			StorageGroupList storageGroupList = new StorageGroupList();
+		if (dimensionVA != null && dimensionClusterSizes != null && dimensionSampleElements != null) {
+			DimensionGroupList dimensionGroupList = new DimensionGroupList();
 
 			int cnt = 0;
 			int iOffset = 0;
-			for (Integer size : storageClusterSizes) {
+			for (Integer size : dimensionClusterSizes) {
 
-				Group temp = new Group(size, storageSampleElements.get(cnt));
-				storageGroupList.append(temp);
+				Group temp = new Group(size, dimensionSampleElements.get(cnt));
+				dimensionGroupList.append(temp);
 				cnt++;
 				iOffset += size;
 			}
-			storageVA.setGroupList(storageGroupList);
+			dimensionVA.setGroupList(dimensionGroupList);
 		}
 	}
 
@@ -108,23 +108,23 @@ public class DimensionData
 		catch (CloneNotSupportedException e) {
 			// TODO: handle exception
 		}
-		if (storageClusterSizes != null)
-			clone.storageClusterSizes = (ArrayList<Integer>) storageClusterSizes.clone();
-		if (storageSampleElements != null)
-			clone.storageSampleElements = (ArrayList<Integer>) storageSampleElements.clone();
-		clone.storageVA = storageVA.clone();
+		if (dimensionClusterSizes != null)
+			clone.dimensionClusterSizes = (ArrayList<Integer>) dimensionClusterSizes.clone();
+		if (dimensionSampleElements != null)
+			clone.dimensionSampleElements = (ArrayList<Integer>) dimensionSampleElements.clone();
+		clone.dimensionVA = dimensionVA.clone();
 		// FIXME this is a bad hack since it is not a clone
-		clone.storageTree = storageTree;
+		clone.dimensionTree = dimensionTree;
 
 		return clone;
 
 	}
 
 	public void reset() {
-		storageVA = null;
-		storageClusterSizes = null;
-		storageSampleElements = null;
-		storageTree = null;
-		storageTreeRoot = null;
+		dimensionVA = null;
+		dimensionClusterSizes = null;
+		dimensionSampleElements = null;
+		dimensionTree = null;
+		dimensionTreeRoot = null;
 	}
 }

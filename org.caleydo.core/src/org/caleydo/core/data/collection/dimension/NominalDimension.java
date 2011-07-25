@@ -9,7 +9,7 @@ import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
- * The NominalStorage is an extension of the AStorage interface. It is meant for data which has no discrete
+ * The NominalDimension is an extension of the ADimension interface. It is meant for data which has no discrete
  * numerical values, such as nominal or ordinal data. Example cases are illness classifications, ratings such
  * as good, OK, bad etc. Normalization converts the entities into evenly spaced numerical values between 0 and
  * 1. One can provide a list of possible values, which is useful, if a list does not contain all possible
@@ -30,12 +30,12 @@ public class NominalDimension<T>
 	}
 	
 	/**
-	 * Constructor that takes a storage ID. This is needed for de-serialization.
+	 * Constructor that takes a dimension ID. This is needed for de-serialization.
 	 * 
-	 * @param storageID
+	 * @param dimensionID
 	 */
-	public NominalDimension(int storageID) {
-		super(storageID);
+	public NominalDimension(int dimensionID) {
+		super(dimensionID);
 	}	
 
 	/**
@@ -60,8 +60,8 @@ public class NominalDimension<T>
 				rawDataType = RawDataType.OBJECT;
 			}
 
-			NominalCContainer<T> sStorage = new NominalCContainer<T>(alData);
-			hashCContainers.put(DataRepresentation.RAW, sStorage);
+			NominalCContainer<T> sDimension = new NominalCContainer<T>(alData);
+			hashCContainers.put(DataRepresentation.RAW, sDimension);
 		}
 	}
 
@@ -92,7 +92,7 @@ public class NominalDimension<T>
 
 	@SuppressWarnings("unchecked")
 	/**
-	 * Create a histogram off all elements that actually occur in the storage The values in the histogram are
+	 * Create a histogram off all elements that actually occur in the dimension The values in the histogram are
 	 * normalized between 0 and 1, where 0 means one occurrence and 1 corresponds to the maximum number of
 	 * occurrences
 	 * 
@@ -106,7 +106,7 @@ public class NominalDimension<T>
 	public void setExternalDataRepresentation(ExternalDataRepresentation externalDataRep) {
 
 		if (externalDataRep != ExternalDataRepresentation.NORMAL)
-			throw new IllegalArgumentException("Nominal storages support only raw representations");
+			throw new IllegalArgumentException("Nominal dimensions support only raw representations");
 
 		dataRep = DataRepresentation.RAW;
 

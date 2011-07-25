@@ -67,7 +67,7 @@ public class SerializationStartupProcedure
 				ATableBasedDataDomain setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
 
 				LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
-				DataTableUtils.createStorages(loadDataParameters);
+				DataTableUtils.createDimensions(loadDataParameters);
 				
 				DataTable dataTable = DataTableUtils.createData(setBasedDataDomain);
 
@@ -76,9 +76,9 @@ public class SerializationStartupProcedure
 					setBasedDataDomain.setContentVirtualArray(entry.getKey(), entry.getValue());
 				}
 
-				HashMap<String, DimensionVirtualArray> storageVAMap = dataSerializationData.getStorageVAMap();
-				for (Entry<String, DimensionVirtualArray> entry : storageVAMap.entrySet()) {
-					setBasedDataDomain.setStorageVirtualArray(entry.getKey(), entry.getValue());
+				HashMap<String, DimensionVirtualArray> dimensionVAMap = dataSerializationData.getDimensionVAMap();
+				for (Entry<String, DimensionVirtualArray> entry : dimensionVAMap.entrySet()) {
+					setBasedDataDomain.setDimensionVirtualArray(entry.getKey(), entry.getValue());
 				}
 				// we need the VAs to be available before the tree is initialized
 				DataTableUtils.loadTrees(loadDataParameters, dataTable);

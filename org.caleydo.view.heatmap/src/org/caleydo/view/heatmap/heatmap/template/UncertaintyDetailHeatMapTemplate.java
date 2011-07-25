@@ -52,14 +52,14 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		barPlotLayout.setPixelGLConverter(heatMap.getPixelGLConverter());
 		barPlotLayout.setPixelSizeX(barPlotPixelWidth);
 		// barPlotLayout.addForeGroundRenderer(contentSelectionRenderer);
-		// barPlotLayout.addForeGroundRenderer(storageSelectionRenderer);
+		// barPlotLayout.addForeGroundRenderer(dimensionSelectionRenderer);
 
 		mainRow.append(barPlotLayout);
 
 		heatMapLayout = new ElementLayout("hmlayout");
 		heatMapLayout.setRenderer(heatMapRenderer);
 		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
-		heatMapLayout.addForeGroundRenderer(storageSelectionRenderer);
+		heatMapLayout.addForeGroundRenderer(dimensionSelectionRenderer);
 
 		mainRow.append(heatMapLayout);
 
@@ -84,30 +84,30 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		ySpacing.setAbsoluteSizeY(0.05f);
 		mainColumn.append(ySpacing);
 
-		Row storageCaptionRow = new Row("storageCaptionRow");
-		storageCaptionRow.setAbsoluteSizeY(0.35f);
+		Row dimensionCaptionRow = new Row("dimensionCaptionRow");
+		dimensionCaptionRow.setAbsoluteSizeY(0.35f);
 
-		ElementLayout storageCaptionLayout = new ElementLayout("storageCaption");
-		storageCaptionLayout.setRatioSizeY(1);
-		storageCaptionLayout.setGrabX(true);
-		storageCaptionLayout.setRenderer(storageCaptionRenderer);
+		ElementLayout dimensionCaptionLayout = new ElementLayout("dimensionCaption");
+		dimensionCaptionLayout.setRatioSizeY(1);
+		dimensionCaptionLayout.setGrabX(true);
+		dimensionCaptionLayout.setRenderer(dimensionCaptionRenderer);
 
 		ElementLayout leadSpacingLayout = new ElementLayout();
 
 		leadSpacingLayout.setPixelGLConverter(heatMap.getPixelGLConverter());
 		leadSpacingLayout.setPixelSizeX(barPlotPixelWidth);
 
-		storageCaptionRow.append(leadSpacingLayout);
+		dimensionCaptionRow.append(leadSpacingLayout);
 
-		storageCaptionRow.append(storageCaptionLayout);
+		dimensionCaptionRow.append(dimensionCaptionLayout);
 
 		ElementLayout postSpacingLayout = new ElementLayout();
 		postSpacingLayout.setPixelGLConverter(pixelGLConverter);
 		postSpacingLayout.setPixelSizeX(contentCaptionPixelWidth);
 
-		storageCaptionRow.append(postSpacingLayout);
+		dimensionCaptionRow.append(postSpacingLayout);
 
-		mainColumn.append(storageCaptionRow);
+		mainColumn.append(dimensionCaptionRow);
 	}
 
 	/**

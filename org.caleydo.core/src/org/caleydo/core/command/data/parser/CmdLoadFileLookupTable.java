@@ -48,9 +48,9 @@ public class CmdLoadFileLookupTable
 	/**
 	 * Default is -1 indicating read till end of file.
 	 * 
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#iStopParsingAtLine
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#getStopParsingAtLine()
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int,
+	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Dimension#iStopParsingAtLine
+	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Dimension#getStopParsingAtLine()
+	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Dimension#setStartParsingStopParsingAtLine(int,
 	 *      int)
 	 */
 	private int iStopParseFileAtLine = -1;

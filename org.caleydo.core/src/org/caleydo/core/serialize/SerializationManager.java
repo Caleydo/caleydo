@@ -150,7 +150,7 @@ public class SerializationManager {
 		// eventTypes.add(EnableTexturesEvent.class);
 		// eventTypes.add(InfoAreaUpdateEvent.class);
 		// eventTypes.add(InterchangeContentGroupsEvent.class);
-		// eventTypes.add(MergeStorageGroupsEvent.class);
+		// eventTypes.add(MergeDimensionGroupsEvent.class);
 		// eventTypes.add(ChangeQueryTypeEvent.class);
 		// eventTypes.add(ChangeURLEvent.class);
 		// eventTypes.add(ClustererCanceledEvent.class);

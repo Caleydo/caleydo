@@ -28,9 +28,9 @@ import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceDimensionVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
-import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.UpdateViewEvent;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
@@ -190,7 +190,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	 * Creates a new shallow tree for cluster nodes and GroupRepresentations.
 	 */
 	private void createNewHierarchy() {
-		ClusterTree tree = new ClusterTree(dataDomain.getStorageIDType());
+		ClusterTree tree = new ClusterTree(dataDomain.getDimensionIDType());
 		IGroupDrawingStrategy groupDrawingStrategy = drawingStrategyManager
 				.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
 		iLastUsedGroupID = 0;
@@ -202,7 +202,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 				drawingStrategyManager, this, false);
 		hashGroups.put(rootGroup.getID(), rootGroup);
 		// selectionManager.initialAdd(rootGroup.getID());
-		ArrayList<Integer> indexList = storageVA.getIndexList();
+		ArrayList<Integer> indexList = dimensionVA.getIndexList();
 
 		for (Integer currentIndex : indexList) {
 
@@ -225,8 +225,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		// ClusterHelper.determineHierarchyDepth(tree);
 		ClusterHelper.calculateClusterAverages(tree, EClustererType.STORAGE_CLUSTERING,
 				dataTable);
-		dataTable.getStorageData(storageVAType).setStorageTree(tree);
-		dataDomain.createDimensionGroupsFromStorageTree(tree);
+		dataTable.getDimensionData(dimensionVAType).setDimensionTree(tree);
+		dataDomain.createDimensionGroupsFromDimensionTree(tree);
 		// useCase.replaceVirtualArray(idCategory, vaType, virtualArray)
 	}
 
@@ -296,7 +296,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	 * according to the structure of the composite GroupRepresentation tree.
 	 */
 	public void updateClusterTreeAccordingToGroupHierarchy() {
-		tree = new ClusterTree(dataDomain.getStorageIDType());
+		tree = new ClusterTree(dataDomain.getDimensionIDType());
 		ClusterNode rootNode = rootGroup.getClusterNode();
 		rootNode.setTree(tree);
 		tree.setRootNode(rootNode);
@@ -318,22 +318,22 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 		// FIXME: do that differently.
-		// set = set.getStorageTree().getRoot().getMetaSet();
+		// set = set.getDimensionTree().getRoot().getMetaSet();
 		ClusterHelper.calculateClusterAverages(tree, EClustererType.STORAGE_CLUSTERING,
 				dataTable);
 		tree.setDirty();
 		tree.createMetaSets((org.caleydo.core.data.collection.table.DataTable) dataTable);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
-		storageVA = new DimensionVirtualArray(
+		dimensionVA = new DimensionVirtualArray(
 				org.caleydo.core.data.collection.table.DataTable.DIMENSION, alIndices);
 
 		eventPublisher.triggerEvent(new ReplaceDimensionVAInUseCaseEvent(dataTable, dataDomain
-				.getDataDomainID(), storageVAType, storageVA));
+				.getDataDomainID(), dimensionVAType, dimensionVA));
 
 		// FIXME no one is notified that there is a new tree
-		dataTable.getStorageData(storageVAType).setStorageTree(tree);
-		dataDomain.createDimensionGroupsFromStorageTree(tree);
+		dataTable.getDimensionData(dimensionVAType).setDimensionTree(tree);
+		dataDomain.createDimensionGroupsFromDimensionTree(tree);
 
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
@@ -805,7 +805,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		event.setSelectionDelta(clusterIDDelta);
 		eventPublisher.triggerEvent(event);
 
-		SelectionDelta delta = new SelectionDelta(dataDomain.getStorageIDType());
+		SelectionDelta delta = new SelectionDelta(dataDomain.getDimensionIDType());
 		for (SelectionDeltaItem item : clusterIDDelta.getAllItems()) {
 			GroupRepresentation groupRep = hashGroups.get(item.getPrimaryID());
 			if (groupRep != null && groupRep.isLeaf()) {
@@ -1069,7 +1069,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public void createNewGroup(Set<Integer> setContainedGroups) {
 
-		tree = new ClusterTree(dataDomain.getStorageIDType());
+		tree = new ClusterTree(dataDomain.getDimensionIDType());
 		GroupRepresentation newGroup = new GroupRepresentation(new ClusterNode(tree,
 				"group" + iLastUsedGroupID, iLastUsedGroupID++, false, -1), renderStyle,
 				drawingStrategyManager
@@ -1130,14 +1130,14 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	/**
 	 * Determine a node label for the new node
 	 * 
-	 * @param storageIDs
+	 * @param dimensionIDs
 	 * @return
 	 */
-	private String determineNodeLabel(ArrayList<ICompositeGraphic> storageIDs) {
+	private String determineNodeLabel(ArrayList<ICompositeGraphic> dimensionIDs) {
 
 		String baseLabel = null;
-		for (ICompositeGraphic storageID : storageIDs) {
-			String currentLabel = storageID.getName();
+		for (ICompositeGraphic dimensionID : dimensionIDs) {
+			String currentLabel = dimensionID.getName();
 			if (baseLabel == null)
 				baseLabel = currentLabel;
 			else {
@@ -1234,7 +1234,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	 *            ID of the group where the copied groups should be pasted in.
 	 */
 	public void pasteGroups(int iParentGroupID) {
-		tree = new ClusterTree(dataDomain.getStorageIDType());
+		tree = new ClusterTree(dataDomain.getDimensionIDType());
 		GroupRepresentation parent = hashGroups.get(iParentGroupID);
 
 		if (parent == null || setCopiedGroups == null || parent.isLeaf())
@@ -1287,10 +1287,10 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 			boolean scrollToSelection, String info) {
 
 		if (selectionDelta.getIDType() == selectionManager.getIDType()
-				|| selectionDelta.getIDType() == dataDomain.getStorageIDType()) {
+				|| selectionDelta.getIDType() == dataDomain.getDimensionIDType()) {
 			Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
-			Tree<ClusterNode> experimentTree = dataTable.getStorageData(storageVAType)
-					.getStorageTree();
+			Tree<ClusterNode> experimentTree = dataTable.getDimensionData(dimensionVAType)
+					.getDimensionTree();
 
 			if (experimentTree != null) {
 				// selectionManager.clearSelections();
@@ -1374,14 +1374,14 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		this.dataDomain = dataDomain;
 		dataTable = this.dataDomain.getDataTable();
 
-		storageVA = dataTable.getStorageData(
-				org.caleydo.core.data.collection.table.DataTable.DIMENSION).getStorageVA();
+		dimensionVA = dataTable.getDimensionData(
+				org.caleydo.core.data.collection.table.DataTable.DIMENSION).getDimensionVA();
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager, uniqueID,
 				renderStyle);
-		if (dataTable.getStorageData(storageVAType).getStorageTree() != null) {
+		if (dataTable.getDimensionData(dimensionVAType).getDimensionTree() != null) {
 			// FIXME: do that differently.
-			// set = set.getStorageTree().getRoot().getMetaSet();
-			tree = dataTable.getStorageData(storageVAType).getStorageTree();
+			// set = set.getDimensionTree().getRoot().getMetaSet();
+			tree = dataTable.getDimensionData(dimensionVAType).getDimensionTree();
 
 			initHierarchy(tree);
 		} else {

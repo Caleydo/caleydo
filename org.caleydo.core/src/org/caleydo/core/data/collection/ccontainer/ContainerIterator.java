@@ -6,7 +6,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**
  * Iterator for containers of the type ATypedCContainer. The iterator can handle virtual arrays (optionally),
- * thereby masking the real structure in the storage
+ * thereby masking the real structure in the dimension
  * 
  * @author Alexander Lex
  * @param <T>
@@ -50,7 +50,7 @@ public class ContainerIterator<T>
 	 */
 	@Override
 	public void add(T element) {
-		throw new UnsupportedOperationException("Adding is not supported on storages");
+		throw new UnsupportedOperationException("Adding is not supported on dimensions");
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class ContainerIterator<T>
 	@Override
 	public void set(T e) {
 		// we could allow that here (technically) but we probably don't want to
-		throw new UnsupportedOperationException("Modification is not supported on storages");
+		throw new UnsupportedOperationException("Modification is not supported on dimensions");
 	}
 
 }

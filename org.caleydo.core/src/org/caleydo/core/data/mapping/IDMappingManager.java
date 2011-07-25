@@ -188,8 +188,8 @@ public class IDMappingManager {
 
 		if (originKeyType == destKeyType) {
 			if (originValueType != destValueType) {
-				if (originKeyType.getStorageType() == DimensionType.INT
-					&& destValueType.getStorageType() == DimensionType.INT) {
+				if (originKeyType.getDimensionType() == DimensionType.INT
+					&& destValueType.getDimensionType() == DimensionType.INT) {
 					codeResolvedMap = new HashMap<Integer, Integer>();
 
 					if (!mappingType.isMultiMap()) {
@@ -225,20 +225,20 @@ public class IDMappingManager {
 						}
 					}
 				}
-				else if (originKeyType.getStorageType() == DimensionType.INT
-					&& destValueType.getStorageType() == DimensionType.STRING) {
+				else if (originKeyType.getDimensionType() == DimensionType.INT
+					&& destValueType.getDimensionType() == DimensionType.STRING) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
-				else if (originKeyType.getStorageType() == DimensionType.STRING
-					&& destValueType.getStorageType() == DimensionType.STRING) {
+				else if (originKeyType.getDimensionType() == DimensionType.STRING
+					&& destValueType.getDimensionType() == DimensionType.STRING) {
 					codeResolvedMap = new HashMap<String, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
-				else if (originKeyType.getStorageType() == DimensionType.STRING
-					&& destValueType.getStorageType() == DimensionType.INT) {
+				else if (originKeyType.getDimensionType() == DimensionType.STRING
+					&& destValueType.getDimensionType() == DimensionType.INT) {
 
 					if (!mappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<String, Integer>();
@@ -277,8 +277,8 @@ public class IDMappingManager {
 		}
 		else {
 			if (originValueType == destValueType) {
-				if (destKeyType.getStorageType() == DimensionType.INT
-					&& destValueType.getStorageType() == DimensionType.INT) {
+				if (destKeyType.getDimensionType() == DimensionType.INT
+					&& destValueType.getDimensionType() == DimensionType.INT) {
 					codeResolvedMap = new HashMap<Integer, Integer>();
 
 					MappingType conversionType = mappingType;// MappingType.valueOf(originKeyType + "_2_" +
@@ -320,8 +320,8 @@ public class IDMappingManager {
 						}
 					}
 				}
-				else if (destKeyType.getStorageType() == DimensionType.INT
-					&& destValueType.getStorageType() == DimensionType.STRING) {
+				else if (destKeyType.getDimensionType() == DimensionType.INT
+					&& destValueType.getDimensionType() == DimensionType.STRING) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
 					MappingType conversionType = mappingType;// MappingType.valueOf(originKeyType + "_2_" +
@@ -333,14 +333,14 @@ public class IDMappingManager {
 								conversionType.getToIDType(), key), srcMap.get(key));
 					}
 				}
-				else if (destKeyType.getStorageType() == DimensionType.STRING
-					&& destValueType.getStorageType() == DimensionType.STRING) {
+				else if (destKeyType.getDimensionType() == DimensionType.STRING
+					&& destValueType.getDimensionType() == DimensionType.STRING) {
 					codeResolvedMap = new HashMap<String, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
-				else if (destKeyType.getStorageType() == DimensionType.STRING
-					&& destValueType.getStorageType() == DimensionType.INT) {
+				else if (destKeyType.getDimensionType() == DimensionType.STRING
+					&& destValueType.getDimensionType() == DimensionType.INT) {
 					codeResolvedMap = new HashMap<String, Integer>();
 
 					throw new RuntimeException("Not implemented!");

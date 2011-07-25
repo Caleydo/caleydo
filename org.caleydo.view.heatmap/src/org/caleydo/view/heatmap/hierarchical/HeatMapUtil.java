@@ -35,11 +35,11 @@ public class HeatMapUtil {
 	public static int MAX_SAMPLES_PER_TEXTURE = 2000;
 
 	public static ArrayList<Texture> createHeatMapTextures(DataTable set,
-			ContentVirtualArray contentVA, DimensionVirtualArray storageVA,
+			ContentVirtualArray contentVA, DimensionVirtualArray dimensionVA,
 			ContentSelectionManager contentSelectionManager) {
 
 		int numSamples = contentVA.size();
-		int numStorages = storageVA.size();
+		int numDimensions = dimensionVA.size();
 
 		ArrayList<Texture> textures = new ArrayList<Texture>();
 		ColorMapper colorMapping = ColorMappingManager.get().getColorMapping(
@@ -55,12 +55,12 @@ public class HeatMapUtil {
 			if (isNewTexture) {
 				numSamplesInTexture = Math.min(MAX_SAMPLES_PER_TEXTURE, numSamples
 						- numSamplesProcessed);
-				textureBuffer = FloatBuffer.allocate(numSamplesInTexture * numStorages
+				textureBuffer = FloatBuffer.allocate(numSamplesInTexture * numDimensions
 						* 4);
 				isNewTexture = false;
 			}
 
-			for (Integer storageIndex : storageVA) {
+			for (Integer dimensionIndex : dimensionVA) {
 
 				float fOpacity = 1.0f;
 
@@ -69,8 +69,8 @@ public class HeatMapUtil {
 								contentIndex)) {
 					fOpacity = 0.3f;
 				}
-				ADimension storage = set.get(storageIndex);
-				float fLookupValue = storage.getFloat(DataRepresentation.NORMALIZED,
+				ADimension dimension = set.get(dimensionIndex);
+				float fLookupValue = dimension.getFloat(DataRepresentation.NORMALIZED,
 						contentIndex);
 
 				float[] fArMappingColor = colorMapping.getColor(fLookupValue);
@@ -83,7 +83,7 @@ public class HeatMapUtil {
 					textureBuffer.rewind();
 
 					TextureData texData = new TextureData(GLProfile.getDefault(),
-							GL2.GL_RGBA /* internalFormat */, numStorages /* height */,
+							GL2.GL_RGBA /* internalFormat */, numDimensions /* height */,
 							numSamplesInTexture /* width */, 0 /* border */,
 							GL2.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
 							false /* mipmap */, false /* dataIsCompressed */,

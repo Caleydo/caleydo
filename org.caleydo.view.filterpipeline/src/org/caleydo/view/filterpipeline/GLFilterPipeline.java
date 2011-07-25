@@ -22,7 +22,7 @@ import org.caleydo.core.data.filter.ContentMetaOrFilter;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateContentFilterListEvent;
-import org.caleydo.core.data.filter.event.ReEvaluateStorageFilterListEvent;
+import org.caleydo.core.data.filter.event.ReEvaluateDimensionFilterListEvent;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -599,7 +599,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 		reEvaluateFilterListener.setHandler(this);
 		eventPublisher.addListener(ReEvaluateContentFilterListEvent.class,
 				reEvaluateFilterListener);
-		eventPublisher.addListener(ReEvaluateStorageFilterListEvent.class,
+		eventPublisher.addListener(ReEvaluateDimensionFilterListEvent.class,
 				reEvaluateFilterListener);
 
 		setFilterTypeListener = new SetFilterTypeListener();
@@ -639,7 +639,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 
 		for (Filter<?> filter : filterType == FilterType.CONTENT ? dataDomain
 				.getContentFilterManager().getFilterPipe() : dataDomain
-				.getStorageFilterManager().getFilterPipe()) {
+				.getDimensionFilterManager().getFilterPipe()) {
 			FilterItem<?> filterItem = new FilterItem(filterID++, filter, pickingManager,
 					uniqueID);
 
@@ -656,7 +656,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 		// TODO move to separate function...
 		VirtualArray<?, ?, ?> currentVA = filterType == FilterType.CONTENT ? dataDomain
 				.getContentFilterManager().getBaseVA().clone() : dataDomain
-				.getStorageFilterManager().getBaseVA().clone();
+				.getDimensionFilterManager().getBaseVA().clone();
 
 		for (FilterItem<?> filter : filterList) {
 			// filter items

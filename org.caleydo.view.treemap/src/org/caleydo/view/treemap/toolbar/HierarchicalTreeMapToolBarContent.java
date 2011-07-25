@@ -23,7 +23,7 @@ import org.caleydo.view.treemap.actions.ZoomOutAction;
  */
 public class HierarchicalTreeMapToolBarContent extends AToolBarContent {
 
-	public static final String IMAGE_PATH = "resources/icons/view/storagebased/parcoords/parcoords.png";
+	public static final String IMAGE_PATH = "resources/icons/view/dimensionbased/parcoords/parcoords.png";
 
 	public static final String VIEW_TITLE = "Treemap";
 

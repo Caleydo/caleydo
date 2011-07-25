@@ -12,7 +12,7 @@ import org.caleydo.core.data.collection.DimensionType;
 import org.caleydo.core.data.collection.table.RecordData;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.ContentFilterManager;
-import org.caleydo.core.data.filter.StorageFilterManager;
+import org.caleydo.core.data.filter.DimensionFilterManager;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.ESortingStrategy;
 import org.caleydo.core.data.id.IDCategory;
@@ -21,7 +21,7 @@ import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
-import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
@@ -29,7 +29,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.SetBasedDimensionGroupData;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
-import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
+import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
@@ -37,13 +37,13 @@ import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.DimensionGroupsChangedEvent;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
-import org.caleydo.core.manager.event.data.ReplaceStorageVAEvent;
+import org.caleydo.core.manager.event.data.ReplaceDimensionVAEvent;
 import org.caleydo.core.manager.event.data.ReplaceDimensionVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.ContentVAUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.DimensionVAUpdateEvent;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
@@ -54,26 +54,26 @@ import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListen
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IDimensionVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.StorageVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.DimensionVAUpdateListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 
 @XmlType
 @XmlRootElement
 public abstract class ATableBasedDataDomain
 	extends ADataDomain
-	implements IContentVAUpdateHandler, IStorageVAUpdateHandler, ISelectionUpdateHandler,
+	implements IContentVAUpdateHandler, IDimensionVAUpdateHandler, ISelectionUpdateHandler,
 	ISelectionCommandHandler {
 
 	private SelectionUpdateListener selectionUpdateListener;
 	private SelectionCommandListener selectionCommandListener;
 	private StartClusteringListener startClusteringListener;
 	private ReplaceContentVAInUseCaseListener replaceContentVirtualArrayInUseCaseListener;
-	private ReplaceDimensionVAInUseCaseListener replaceStorageVirtualArrayInUseCaseListener;
+	private ReplaceDimensionVAInUseCaseListener replaceDimensionVirtualArrayInUseCaseListener;
 	private ContentVAUpdateListener contentVAUpdateListener;
-	private StorageVAUpdateListener storageVAUpdateListener;
+	private DimensionVAUpdateListener dimensionVAUpdateListener;
 	private AggregateGroupListener aggregateGroupListener;
 
 	protected List<ADimensionGroupData> dimensionGroups;
@@ -82,28 +82,28 @@ public abstract class ATableBasedDataDomain
 	protected DataTable table;
 
 	protected IDType humanReadableContentIDType;
-	protected IDType humanReadableStorageIDType;
+	protected IDType humanReadableDimensionIDType;
 
 	protected IDType primaryContentMappingType;
 
 	protected IDCategory contentIDCategory;
-	protected IDCategory storageIDCategory;
+	protected IDCategory dimensionIDCategory;
 
 	protected IDType contentIDType;
-	protected IDType storageIDType;
+	protected IDType dimensionIDType;
 
 	/** IDType used for {@link Group}s in this dataDomain */
 	protected IDType contentGroupIDType;
 
 	protected ContentSelectionManager contentSelectionManager;
-	protected StorageSelectionManager storageSelectionManager;
+	protected DimensionSelectionManager dimensionSelectionManager;
 	protected SelectionManager contentGroupSelectionManager;
 
 	/** central {@link EventPublisher} to receive and send events */
 	protected EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
 	protected ContentFilterManager contentFilterManager;
-	protected StorageFilterManager storageFilterManager;
+	protected DimensionFilterManager dimensionFilterManager;
 
 	// private RelationAnalyzer contentRelationAnalyzer;
 
@@ -128,16 +128,16 @@ public abstract class ATableBasedDataDomain
 		dimensionGroups = new ArrayList<ADimensionGroupData>();
 
 		assignIDCategories();
-		if (contentIDCategory == null || storageIDCategory == null) {
+		if (contentIDCategory == null || dimensionIDCategory == null) {
 			throw new IllegalStateException("A ID category in " + toString()
-				+ " was null, contentIDCategory: " + contentIDCategory + ", storageIDCategory: "
-				+ storageIDCategory);
+				+ " was null, contentIDCategory: " + contentIDCategory + ", dimensionIDCategory: "
+				+ dimensionIDCategory);
 		}
 		contentIDType =
 			IDType.registerType("content_" + dataDomainID + "_" + hashCode(), contentIDCategory,
 				DimensionType.INT);
-		storageIDType =
-			IDType.registerType("storage_" + dataDomainID + "_" + hashCode(), storageIDCategory,
+		dimensionIDType =
+			IDType.registerType("dimension_" + dataDomainID + "_" + hashCode(), dimensionIDCategory,
 				DimensionType.INT);
 
 		contentGroupIDType =
@@ -146,7 +146,7 @@ public abstract class ATableBasedDataDomain
 	}
 
 	/**
-	 * Assign {@link #contentIDCategory} and {@link #storageIDCategory} in the concrete implementing classes.
+	 * Assign {@link #contentIDCategory} and {@link #dimensionIDCategory} in the concrete implementing classes.
 	 * ID Categories should typically be already existing through the data mapping. Assign the correct types
 	 * using {@link IDCategory#getIDCategory(String)}.
 	 */
@@ -189,7 +189,7 @@ public abstract class ATableBasedDataDomain
 		if (table.getID() == setID)
 			return table;
 
-		ClusterNode root = table.getStorageData(DataTable.DIMENSION).getStorageTreeRoot();
+		ClusterNode root = table.getDimensionData(DataTable.DIMENSION).getDimensionTreeRoot();
 		DataTable set = root.getMetaSetFromSubTree(setID);
 
 		if (set == null)
@@ -206,8 +206,8 @@ public abstract class ATableBasedDataDomain
 		return contentIDType;
 	}
 
-	public IDType getStorageIDType() {
-		return storageIDType;
+	public IDType getDimensionIDType() {
+		return dimensionIDType;
 	}
 
 	/**
@@ -223,8 +223,8 @@ public abstract class ATableBasedDataDomain
 		return contentIDCategory;
 	}
 
-	public IDCategory getStorageIDCategory() {
-		return storageIDCategory;
+	public IDCategory getDimensionIDCategory() {
+		return dimensionIDCategory;
 	}
 
 	/**
@@ -236,7 +236,7 @@ public abstract class ATableBasedDataDomain
 		initSelectionManagers();
 
 		contentFilterManager = new ContentFilterManager(this);
-		storageFilterManager = new StorageFilterManager(this);
+		dimensionFilterManager = new DimensionFilterManager(this);
 
 		// GLRemoteRendering glRemoteRenderingView = null;
 		//
@@ -257,8 +257,8 @@ public abstract class ATableBasedDataDomain
 	protected void initSelectionManagers() {
 		contentSelectionManager = new ContentSelectionManager(contentIDType);
 		contentSelectionManager.setVA(table.getContentData(DataTable.RECORD).getContentVA());
-		storageSelectionManager = new StorageSelectionManager(storageIDType);
-		storageSelectionManager.setVA(table.getStorageData(DataTable.DIMENSION).getStorageVA());
+		dimensionSelectionManager = new DimensionSelectionManager(dimensionIDType);
+		dimensionSelectionManager.setVA(table.getDimensionData(DataTable.DIMENSION).getDimensionVA());
 		contentGroupSelectionManager = new SelectionManager(contentGroupIDType);
 	}
 
@@ -273,13 +273,13 @@ public abstract class ATableBasedDataDomain
 	}
 
 	/**
-	 * Returns a clone of the storage selection manager. You have to set your virtual array manually. This is
+	 * Returns a clone of the dimension selection manager. You have to set your virtual array manually. This is
 	 * the preferred way to initialize SelectionManagers.
 	 * 
-	 * @return a clone of the storage selection manager
+	 * @return a clone of the dimension selection manager
 	 */
-	public StorageSelectionManager getStorageSelectionManager() {
-		return storageSelectionManager.clone();
+	public DimensionSelectionManager getDimensionSelectionManager() {
+		return dimensionSelectionManager.clone();
 	}
 
 	public SelectionManager getContentGroupSelectionManager() {
@@ -306,8 +306,8 @@ public abstract class ATableBasedDataDomain
 	 *            the type of VA requested
 	 * @return
 	 */
-	public DimensionVirtualArray getStorageVA(String vaType) {
-		DimensionVirtualArray va = table.getStorageData(vaType).getStorageVA();
+	public DimensionVirtualArray getDimensionVA(String vaType) {
+		DimensionVirtualArray va = table.getDimensionData(vaType).getDimensionVA();
 		DimensionVirtualArray vaCopy = va.clone();
 		return vaCopy;
 	}
@@ -327,7 +327,7 @@ public abstract class ATableBasedDataDomain
 			set = this.table;
 		else
 			set =
-				this.table.getStorageData(DataTable.DIMENSION).getStorageTreeRoot()
+				this.table.getDimensionData(DataTable.DIMENSION).getDimensionTreeRoot()
 					.getMetaSetFromSubTree(setID);
 
 		// TODO: warning
@@ -350,7 +350,7 @@ public abstract class ATableBasedDataDomain
 
 		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, dataDomainID, clusterState
 			.getContentVAType()));
-		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, dataDomainID, DataTable.DIMENSION));
+		eventPublisher.triggerEvent(new ReplaceDimensionVAEvent(set, dataDomainID, DataTable.DIMENSION));
 
 		if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING
 			|| clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
@@ -383,13 +383,13 @@ public abstract class ATableBasedDataDomain
 
 		replaceContentVA(table.getID(), dataDomainType, vaType, virtualArray);
 
-		// Tree<ClusterNode> storageTree = set.getStorageData(Set.STORAGE).getStorageTree();
-		// if (storageTree == null)
+		// Tree<ClusterNode> dimensionTree = set.getDimensionData(Set.STORAGE).getDimensionTree();
+		// if (dimensionTree == null)
 		// return;
 		// else {
 		// // TODO check whether we need this for the meat sets, it fires a lot of unnecessar events in other
 		// // cases
-		// // for (DataTable tmpSet : storageTree.getRoot().getAllMetaSetsFromSubTree()) {
+		// // for (DataTable tmpSet : dimensionTree.getRoot().getAllMetaSetsFromSubTree()) {
 		// // tmpSet.setContentVA(vaType, virtualArray.clone());
 		// // eventPublisher.triggerEvent(new ReplaceContentVAEvent(tmpSet, dataDomainType, vaType));
 		// // }
@@ -417,7 +417,7 @@ public abstract class ATableBasedDataDomain
 		}
 		else {
 			set =
-				this.table.getStorageData(DataTable.DIMENSION).getStorageTreeRoot()
+				this.table.getDimensionData(DataTable.DIMENSION).getDimensionTreeRoot()
 					.getMetaSetFromSubTree(setID);
 		}
 		if (set == null)
@@ -431,7 +431,7 @@ public abstract class ATableBasedDataDomain
 	}
 
 	/**
-	 * Replaces the storage virtual array with the virtual array specified, if the dataDomain matches. If the
+	 * Replaces the dimension virtual array with the virtual array specified, if the dataDomain matches. If the
 	 * dataDomain doesn't match, the method
 	 * {@link #handleForeignContentVAUpdate(int, String, ContentVAType, ContentVirtualArray)} is called.
 	 * 
@@ -442,16 +442,16 @@ public abstract class ATableBasedDataDomain
 	 * @param virtualArray
 	 *            the new virtual array
 	 */
-	public void replaceStorageVA(String dataDomainType, String vaType) {
+	public void replaceDimensionVA(String dataDomainType, String vaType) {
 		throw new IllegalStateException("UseCases shouldn't react to this");
 	}
 
 	public void replaceDimensionVA(String dataDomainType, String vaType, DimensionVirtualArray virtualArray) {
 
-		table.setStorageVA(vaType, virtualArray);
-		storageSelectionManager.setVA(virtualArray);
+		table.setDimensionVA(vaType, virtualArray);
+		dimensionSelectionManager.setVA(virtualArray);
 
-		// if (set.getStorageData(StorageVAType.STORAGE).getStorageTree() != null) {
+		// if (set.getDimensionData(DimensionVAType.STORAGE).getDimensionTree() != null) {
 		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
 		// public void run() {
 		// Shell shell = new Shell();
@@ -463,7 +463,7 @@ public abstract class ATableBasedDataDomain
 		// }
 		// });
 		// }
-		ReplaceStorageVAEvent event = new ReplaceStorageVAEvent(table, dataDomainType, vaType);
+		ReplaceDimensionVAEvent event = new ReplaceDimensionVAEvent(table, dataDomainType, vaType);
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 
@@ -473,8 +473,8 @@ public abstract class ATableBasedDataDomain
 		table.setContentVA(vaType, virtualArray);
 	}
 
-	public void setStorageVirtualArray(String vaType, DimensionVirtualArray virtualArray) {
-		table.setStorageVA(vaType, virtualArray);
+	public void setDimensionVirtualArray(String vaType, DimensionVirtualArray virtualArray) {
+		table.setDimensionVA(vaType, virtualArray);
 	}
 
 	protected void initFullVA() {
@@ -509,12 +509,12 @@ public abstract class ATableBasedDataDomain
 	}
 
 	@Override
-	public void handleVAUpdate(StorageVADelta vaDelta, String info) {
+	public void handleVAUpdate(DimensionVADelta vaDelta, String info) {
 		IDCategory targetCategory = vaDelta.getIDType().getIDCategory();
-		if (targetCategory != storageIDCategory)
+		if (targetCategory != dimensionIDCategory)
 			return;
 
-		DimensionVirtualArray va = table.getStorageData(vaDelta.getVAType()).getStorageVA();
+		DimensionVirtualArray va = table.getDimensionData(vaDelta.getVAType()).getDimensionVA();
 
 		va.setDelta(vaDelta);
 	}
@@ -551,21 +551,21 @@ public abstract class ATableBasedDataDomain
 		eventPublisher.addListener(ReplaceContentVAInUseCaseEvent.class,
 			replaceContentVirtualArrayInUseCaseListener);
 
-		replaceStorageVirtualArrayInUseCaseListener = new ReplaceDimensionVAInUseCaseListener();
-		replaceStorageVirtualArrayInUseCaseListener.setHandler(this);
-		replaceStorageVirtualArrayInUseCaseListener.setDataDomainType(dataDomainID);
+		replaceDimensionVirtualArrayInUseCaseListener = new ReplaceDimensionVAInUseCaseListener();
+		replaceDimensionVirtualArrayInUseCaseListener.setHandler(this);
+		replaceDimensionVirtualArrayInUseCaseListener.setDataDomainType(dataDomainID);
 		eventPublisher.addListener(ReplaceDimensionVAInUseCaseEvent.class,
-			replaceStorageVirtualArrayInUseCaseListener);
+			replaceDimensionVirtualArrayInUseCaseListener);
 
 		contentVAUpdateListener = new ContentVAUpdateListener();
 		contentVAUpdateListener.setHandler(this);
 		contentVAUpdateListener.setDataDomainType(dataDomainID);
 		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
 
-		storageVAUpdateListener = new StorageVAUpdateListener();
-		storageVAUpdateListener.setHandler(this);
-		storageVAUpdateListener.setDataDomainType(dataDomainID);
-		eventPublisher.addListener(StorageVAUpdateEvent.class, storageVAUpdateListener);
+		dimensionVAUpdateListener = new DimensionVAUpdateListener();
+		dimensionVAUpdateListener.setHandler(this);
+		dimensionVAUpdateListener.setDataDomainType(dataDomainID);
+		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
 
 		aggregateGroupListener = new AggregateGroupListener();
 		aggregateGroupListener.setHandler(this);
@@ -596,9 +596,9 @@ public abstract class ATableBasedDataDomain
 			replaceContentVirtualArrayInUseCaseListener = null;
 		}
 
-		if (replaceStorageVirtualArrayInUseCaseListener != null) {
-			eventPublisher.removeListener(replaceStorageVirtualArrayInUseCaseListener);
-			replaceStorageVirtualArrayInUseCaseListener = null;
+		if (replaceDimensionVirtualArrayInUseCaseListener != null) {
+			eventPublisher.removeListener(replaceDimensionVirtualArrayInUseCaseListener);
+			replaceDimensionVirtualArrayInUseCaseListener = null;
 		}
 
 		if (contentVAUpdateListener != null) {
@@ -606,9 +606,9 @@ public abstract class ATableBasedDataDomain
 			contentVAUpdateListener = null;
 		}
 
-		if (storageVAUpdateListener != null) {
-			eventPublisher.removeListener(storageVAUpdateListener);
-			storageVAUpdateListener = null;
+		if (dimensionVAUpdateListener != null) {
+			eventPublisher.removeListener(dimensionVAUpdateListener);
+			dimensionVAUpdateListener = null;
 		}
 
 		if (aggregateGroupListener != null) {
@@ -656,8 +656,8 @@ public abstract class ATableBasedDataDomain
 		if (mappingManager.hasMapping(selectionDelta.getIDType(), contentSelectionManager.getIDType())) {
 			contentSelectionManager.setDelta(selectionDelta);
 		}
-		else if (mappingManager.hasMapping(selectionDelta.getIDType(), storageSelectionManager.getIDType())) {
-			storageSelectionManager.setDelta(selectionDelta);
+		else if (mappingManager.hasMapping(selectionDelta.getIDType(), dimensionSelectionManager.getIDType())) {
+			dimensionSelectionManager.setDelta(selectionDelta);
 		}
 
 		if (selectionDelta.getIDType() == contentGroupSelectionManager.getIDType()) {
@@ -734,19 +734,19 @@ public abstract class ATableBasedDataDomain
 	public abstract String getContentLabel(IDType idType, Object id);
 
 	/**
-	 * Get the human readable storage label for a specific id. The id has to be of the storageIDType of the
+	 * Get the human readable dimension label for a specific id. The id has to be of the dimensionIDType of the
 	 * dataDomain.
 	 * 
 	 * @param id
 	 *            the id to convert to a human readable label
 	 * @return the readable label
 	 */
-	public String getStorageLabel(Object id) {
-		return getStorageLabel(storageIDType, id);
+	public String getDimensionLabel(Object id) {
+		return getDimensionLabel(dimensionIDType, id);
 	}
 
 	/**
-	 * Get the human readable storage label for a specific id.
+	 * Get the human readable dimension label for a specific id.
 	 * 
 	 * @param idType
 	 *            specify of which id type the id is
@@ -754,7 +754,7 @@ public abstract class ATableBasedDataDomain
 	 *            the id to convert to a human readable label
 	 * @return the readable label
 	 */
-	public String getStorageLabel(IDType idType, Object id) {
+	public String getDimensionLabel(IDType idType, Object id) {
 		String label = table.get((Integer) id).getLabel();
 		if (label == null)
 			label = "";
@@ -792,8 +792,8 @@ public abstract class ATableBasedDataDomain
 		return primaryContentMappingType;
 	}
 
-	public IDType getPrimaryStorageMappingType() {
-		return storageIDType;
+	public IDType getPrimaryDimensionMappingType() {
+		return dimensionIDType;
 	}
 
 	/**
@@ -806,12 +806,12 @@ public abstract class ATableBasedDataDomain
 	}
 
 	/**
-	 * Filter manager holds all filter applied in the storage dimension.
+	 * Filter manager holds all filter applied in the dimension dimension.
 	 * 
 	 * @return
 	 */
-	public StorageFilterManager getStorageFilterManager() {
-		return storageFilterManager;
+	public DimensionFilterManager getDimensionFilterManager() {
+		return dimensionFilterManager;
 	}
 
 	/**
@@ -838,21 +838,21 @@ public abstract class ATableBasedDataDomain
 	// return contentRelationAnalyzer;
 	// }
 
-	public void createDimensionGroupsFromStorageTree(ClusterTree tree) {
+	public void createDimensionGroupsFromDimensionTree(ClusterTree tree) {
 		dimensionGroups.clear();
 		if (tree == null)
 			return;
 		ClusterNode rootNode = tree.getRoot();
 		if (rootNode != null && rootNode.hasChildren())
-			createDimensionGroupsFromStorageTree(rootNode);
+			createDimensionGroupsFromDimensionTree(rootNode);
 	}
 
-	private void createDimensionGroupsFromStorageTree(ClusterNode parent) {
+	private void createDimensionGroupsFromDimensionTree(ClusterNode parent) {
 
 		for (ClusterNode child : parent.getChildren()) {
 			if (child.hasChildren()) {
 				dimensionGroups.add(new SetBasedDimensionGroupData(this, child.getMetaSet()));
-				createDimensionGroupsFromStorageTree(child);
+				createDimensionGroupsFromDimensionTree(child);
 			}
 		}
 

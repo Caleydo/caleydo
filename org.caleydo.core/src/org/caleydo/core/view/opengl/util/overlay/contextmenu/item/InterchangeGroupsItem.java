@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
 import org.caleydo.core.manager.event.view.group.InterchangeContentGroupsEvent;
-import org.caleydo.core.manager.event.view.group.InterchangeStorageGroupsEvent;
+import org.caleydo.core.manager.event.view.group.InterchangeDimensionGroupsEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -37,7 +37,7 @@ public class InterchangeGroupsItem
 			registerEvent(interchangeGroupsEvent);
 		}
 		else {
-			InterchangeStorageGroupsEvent interchangeGroupsEvent = new InterchangeStorageGroupsEvent();
+			InterchangeDimensionGroupsEvent interchangeGroupsEvent = new InterchangeDimensionGroupsEvent();
 			interchangeGroupsEvent.setSender(this);
 			registerEvent(interchangeGroupsEvent);
 		}

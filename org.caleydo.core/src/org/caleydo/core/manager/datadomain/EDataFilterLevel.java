@@ -1,7 +1,7 @@
 package org.caleydo.core.manager.datadomain;
 
 /**
- * The level of data filtering. Determines whether all information contained in a storage (meaning put in the
+ * The level of data filtering. Determines whether all information contained in a dimension (meaning put in the
  * virtual array), or only information with some contextual information, such as mapping or occurence in other
  * data structures should be loaded.
  * 
@@ -9,7 +9,7 @@ package org.caleydo.core.manager.datadomain;
  */
 public enum EDataFilterLevel {
 	/**
-	 * All data in the storage is used
+	 * All data in the dimension is used
 	 */
 	COMPLETE,
 

@@ -124,9 +124,9 @@ public class ImportDataDialog
 	@Override
 	protected void okPressed() {
 
-		boolean success = readStorageDefinition();
+		boolean success = readDimensionDefinition();
 		if (success) {
-			success = DataTableUtils.createStorages(loadDataParameters);
+			success = DataTableUtils.createDimensions(loadDataParameters);
 		}
 		readParameters();
 
@@ -729,14 +729,14 @@ public class ImportDataDialog
 	}
 
 	/**
-	 * prepares the storage creation definition from the preview table. The storage creation definition
+	 * prepares the dimension creation definition from the preview table. The dimension creation definition
 	 * consists of the definition which columns in the data-CSV-file should be read, which should be skipped
-	 * and the storage-labels.
+	 * and the dimension-labels.
 	 * 
 	 * @return <code>true</code>if the preparation was successful, <code>false</code> otherwise
 	 */
-	private boolean readStorageDefinition() {
-		ArrayList<String> storageLabels = new ArrayList<String>();
+	private boolean readDimensionDefinition() {
+		ArrayList<String> dimensionLabels = new ArrayList<String>();
 
 		StringBuffer inputPattern = new StringBuffer("SKIP" + ";");
 
@@ -772,7 +772,7 @@ public class ImportDataDialog
 				inputPattern.append(dataType + ";");
 
 				String labelText = previewTable.getColumn(columnIndex).getText();
-				storageLabels.add(labelText);
+				dimensionLabels.add(labelText);
 			}
 		}
 
@@ -783,7 +783,7 @@ public class ImportDataDialog
 
 		loadDataParameters.setInputPattern(inputPattern.toString());
 		loadDataParameters.setFileName(txtFileName.getText());
-		loadDataParameters.setStorageLabels(storageLabels);
+		loadDataParameters.setDimensionLabels(dimensionLabels);
 		loadDataParameters.setUseExperimentClusterInfo(useExperimentClusterInfo);
 
 		if (loadDataParameters.getFileName().equals("")) {
@@ -831,7 +831,7 @@ public class ImportDataDialog
 
 			for (String currentID : idList) {
 
-				if (idType.getStorageType().equals(DimensionType.INT)) {
+				if (idType.getDimensionType().equals(DimensionType.INT)) {
 					try {
 						Integer idInt = Integer.valueOf(currentID);
 						if (idMappingManager.doesElementExist(idType, idInt)) {
@@ -841,7 +841,7 @@ public class ImportDataDialog
 					catch (NumberFormatException e) {
 					}
 				}
-				else if (idType.getStorageType().equals(DimensionType.STRING)) {
+				else if (idType.getDimensionType().equals(DimensionType.STRING)) {
 					if (idMappingManager.doesElementExist(idType, currentID)) {
 						currentCorrectElements++;
 					}

@@ -5,7 +5,7 @@ import java.util.Set;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapper;
@@ -80,11 +80,11 @@ public class ClusterTreeMapNode extends ATreeMapNode {
 
 	/**
 	 * Switch between coloring average value or only from selected experiments.
-	 * @param bUseStorage true when using only selected experiments.
+	 * @param bUseDimension true when using only selected experiments.
 	 * @param dataDomain Data for experiments.
 	 */
-	public void setColorData(boolean bUseStorage, ATableBasedDataDomain dataDomain){
-		referenzData.bUseExpressionValues=bUseStorage;
+	public void setColorData(boolean bUseDimension, ATableBasedDataDomain dataDomain){
+		referenzData.bUseExpressionValues=bUseDimension;
 		referenzData.dataDomain=dataDomain;
 	}
 	
@@ -95,14 +95,14 @@ public class ClusterTreeMapNode extends ATreeMapNode {
 	public float[] getColorAttribute() {
 		// TODO check how to handle when node is not leave
 		if (referenzData.bUseExpressionValues&& data.getLeafID()>=0) {
-			StorageSelectionManager storageSelectionManager = referenzData.dataDomain.getStorageSelectionManager();
-			Set<Integer> storageIDs = storageSelectionManager.getElements(SelectionType.SELECTION);
-			if (storageIDs != null && storageIDs.size() > 0) {
+			DimensionSelectionManager dimensionSelectionManager = referenzData.dataDomain.getDimensionSelectionManager();
+			Set<Integer> dimensionIDs = dimensionSelectionManager.getElements(SelectionType.SELECTION);
+			if (dimensionIDs != null && dimensionIDs.size() > 0) {
 				float expressionValue = 0;
-				for (Integer storageID : storageIDs) {
-					expressionValue += referenzData.dataDomain.getDataTable().get(storageID).getFloat(DataRepresentation.NORMALIZED, data.getLeafID());
+				for (Integer dimensionID : dimensionIDs) {
+					expressionValue += referenzData.dataDomain.getDataTable().get(dimensionID).getFloat(DataRepresentation.NORMALIZED, data.getLeafID());
 				}
-				expressionValue /= storageIDs.size();
+				expressionValue /= dimensionIDs.size();
 				return referenzData.colorMapper.getColor(expressionValue);
 			}
 		}

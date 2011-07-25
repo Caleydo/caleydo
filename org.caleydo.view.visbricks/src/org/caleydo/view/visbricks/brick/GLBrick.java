@@ -24,7 +24,7 @@ import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.APickingListener;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
@@ -167,9 +167,9 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		// if (contentVA == null)
 		// contentVA = set.getContentData(Set.CONTENT).getContentVA();
 		//
-		// if (storageVA == null) {
-		// if (set.getStorageData(Set.STORAGE) != null)
-		// storageVA = set.getStorageData(Set.STORAGE).getStorageVA();
+		// if (dimensionVA == null) {
+		// if (set.getDimensionData(Set.STORAGE) != null)
+		// dimensionVA = set.getDimensionData(Set.STORAGE).getDimensionVA();
 		// }
 
 		templateRenderer = new LayoutManager(viewFrustum);
@@ -794,20 +794,20 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	// if (contentVA == null)
 	// throw new IllegalStateException("contentVA was null");
 	// for (Integer contenID : contentVA) {
-	// StorageData storageData = set.getStorageData(Set.STORAGE);
-	// if (storageData == null) {
+	// DimensionData dimensionData = set.getDimensionData(Set.STORAGE);
+	// if (dimensionData == null) {
 	// averageValue = 0;
 	// return;
 	// }
 	//
-	// StorageVirtualArray storageVA = storageData.getStorageVA();
+	// DimensionVirtualArray dimensionVA = dimensionData.getDimensionVA();
 	//
-	// if (storageVA == null) {
+	// if (dimensionVA == null) {
 	// averageValue = 0;
 	// return;
 	// }
-	// for (Integer storageID : storageVA) {
-	// float value = set.get(storageID).getFloat(EDataRepresentation.NORMALIZED,
+	// for (Integer dimensionID : dimensionVA) {
+	// float value = set.get(dimensionID).getFloat(EDataRepresentation.NORMALIZED,
 	// contenID);
 	// if (!Float.isNaN(value)) {
 	// averageValue += value;

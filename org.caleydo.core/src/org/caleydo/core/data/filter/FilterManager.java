@@ -13,7 +13,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.VirtualArrayUpdateEvent;
 
 /**
  * <p>
@@ -42,7 +42,7 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 	protected ATableBasedDataDomain dataDomain;
 
 	// private ReplaceContentVAInUseCaseListener replaceContentVirtualArrayInUseCaseListener;
-	// private ReplaceStorageVAInUseCaseListener replaceStorageVirtualArrayInUseCaseListener;
+	// private ReplaceDimensionVAInUseCaseListener replaceDimensionVirtualArrayInUseCaseListener;
 
 	EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 

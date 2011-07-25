@@ -15,11 +15,11 @@ import org.caleydo.core.data.collection.ccontainer.NumericalCContainer;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
- * Interface for Storages A Storage is a container that holds various representations of a particular data
+ * Interface for Dimensions A Dimension is a container that holds various representations of a particular data
  * entity, for example a microarray experiment, or a column on illnesses in a clinical data file. It contains
  * all information considering one such entity, for example, the raw, normalized and logarithmized data as
  * well as metadata, such as the label of the experiment. Only the raw data and some metadata can be specified
- * manually, the rest is computed on on demand. One distinguishes between two basic storage types: numerical
+ * manually, the rest is computed on on demand. One distinguishes between two basic dimension types: numerical
  * and nominal. This is reflected in the two sub-interfaces INumericalSet and INominalSet. After construction
  * one of the setRawData methods has to be called. Notice, that only one setRawData may be called exactly
  * once, since a set is designed to contain only one raw data set at a time.
@@ -81,7 +81,7 @@ public abstract class ADimension
 	public void setRawData(float[] fArRawData) {
 
 		if (isRawDataSet)
-			throw new IllegalStateException("Raw data was already set in Storage " + uniqueID
+			throw new IllegalStateException("Raw data was already set in Dimension " + uniqueID
 				+ " , tried to set again.");
 
 		rawDataType = RawDataType.FLOAT;
@@ -111,7 +111,7 @@ public abstract class ADimension
 
 	public void setUncertaintyData(float[] uncertaintyData) {
 		if (hashCContainers.containsKey(DataRepresentation.UNCERTAINTY_RAW))
-			throw new IllegalStateException("Certainty data was already set in Storage " + uniqueID
+			throw new IllegalStateException("Certainty data was already set in Dimension " + uniqueID
 				+ " , tried to set again.");
 
 		FloatCContainer container = new FloatCContainer(uncertaintyData);
@@ -124,100 +124,100 @@ public abstract class ADimension
 	}
 
 	/**
-	 * Returns a float value from a storage of which the kind has to be specified Use iterator when you want
+	 * Returns a float value from a dimension of which the kind has to be specified Use iterator when you want
 	 * to iterate over the whole field, it has better performance
 	 * 
-	 * @param storageKind
-	 *            Specify which kind of storage (eg: raw, normalized)
+	 * @param dimensionKind
+	 *            Specify which kind of dimension (eg: raw, normalized)
 	 * @param iIndex
 	 *            The index of the requested Element
 	 * @return The associated value
 	 */
-	public float getFloat(DataRepresentation storageKind, int iIndex) {
-		if (!hashCContainers.containsKey(storageKind))
-			throw new IllegalArgumentException("Requested storage kind " + storageKind +" not produced");
-		if (!(hashCContainers.get(storageKind) instanceof FloatCContainer))
-			throw new IllegalArgumentException("Requested storage kind is not of type float");
+	public float getFloat(DataRepresentation dimensionKind, int iIndex) {
+		if (!hashCContainers.containsKey(dimensionKind))
+			throw new IllegalArgumentException("Requested dimension kind " + dimensionKind +" not produced");
+		if (!(hashCContainers.get(dimensionKind) instanceof FloatCContainer))
+			throw new IllegalArgumentException("Requested dimension kind is not of type float");
 
-		FloatCContainer container = (FloatCContainer) hashCContainers.get(storageKind);
+		FloatCContainer container = (FloatCContainer) hashCContainers.get(dimensionKind);
 		return container.get(iIndex);
 	}
 
 	/**
-	 * Returns a iterator to the storage of which the kind has to be specified Good performance
+	 * Returns a iterator to the dimension of which the kind has to be specified Good performance
 	 * 
-	 * @param storageKind
+	 * @param dimensionKind
 	 * @return
 	 */
-	public FloatCContainerIterator floatIterator(DataRepresentation storageKind) {
+	public FloatCContainerIterator floatIterator(DataRepresentation dimensionKind) {
 
-		if (!(hashCContainers.get(storageKind) instanceof FloatCContainer))
-			throw new IllegalArgumentException("Requested storage kind is not of type float");
+		if (!(hashCContainers.get(dimensionKind) instanceof FloatCContainer))
+			throw new IllegalArgumentException("Requested dimension kind is not of type float");
 
-		FloatCContainer container = (FloatCContainer) hashCContainers.get(storageKind);
+		FloatCContainer container = (FloatCContainer) hashCContainers.get(dimensionKind);
 		return container.iterator();
 	}
 
 	/**
-	 * Returns an int value from a storage of which the kind has to be specified Use iterator when you want to
+	 * Returns an int value from a dimension of which the kind has to be specified Use iterator when you want to
 	 * iterate over the whole field, it has better performance
 	 * 
-	 * @param storageKind
-	 *            Specify which kind of storage (eg: raw, normalized, log)
+	 * @param dimensionKind
+	 *            Specify which kind of dimension (eg: raw, normalized, log)
 	 * @param iIndex
 	 *            The index of the requested Element
 	 * @return The associated value
 	 */
-	public int getInt(DataRepresentation storageKind, int iIndex) {
-		if (!(hashCContainers.get(storageKind) instanceof IntCContainer))
-			throw new IllegalArgumentException("Requested storage kind is not of type int");
+	public int getInt(DataRepresentation dimensionKind, int iIndex) {
+		if (!(hashCContainers.get(dimensionKind) instanceof IntCContainer))
+			throw new IllegalArgumentException("Requested dimension kind is not of type int");
 
-		IntCContainer container = (IntCContainer) hashCContainers.get(storageKind);
+		IntCContainer container = (IntCContainer) hashCContainers.get(dimensionKind);
 		return container.get(iIndex);
 	}
 
 	/**
-	 * Returns a iterator to the storage of which the kind has to be specified Good performance
+	 * Returns a iterator to the dimension of which the kind has to be specified Good performance
 	 * 
-	 * @param storageKind
+	 * @param dimensionKind
 	 * @return
 	 */
-	public IntCContainerIterator intIterator(DataRepresentation storageKind) {
-		if (!(hashCContainers.get(storageKind) instanceof IntCContainer))
-			throw new IllegalArgumentException("Requested storage kind is not of type int");
+	public IntCContainerIterator intIterator(DataRepresentation dimensionKind) {
+		if (!(hashCContainers.get(dimensionKind) instanceof IntCContainer))
+			throw new IllegalArgumentException("Requested dimension kind is not of type int");
 
-		IntCContainer container = (IntCContainer) hashCContainers.get(storageKind);
+		IntCContainer container = (IntCContainer) hashCContainers.get(dimensionKind);
 		return container.iterator();
 	}
 
 	/**
-	 * Returns a value of the type Number, from the representation chosen in storageKind, at the index
+	 * Returns a value of the type Number, from the representation chosen in dimensionKind, at the index
 	 * specified in iIndex
 	 * 
-	 * @storageKind specifies which kind of storage (eg: raw, normalized)
+	 * @dimensionKind specifies which kind of dimension (eg: raw, normalized)
 	 * @iIndex the index of the element
 	 * @return the Number
 	 */
-	public Number get(DataRepresentation storageKind, int iIndex) {
-		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer<?>))
-			throw new IllegalArgumentException("Requested storage kind is not a subtype of Number");
+	public Number get(DataRepresentation dimensionKind, int iIndex) {
+		if (!(hashCContainers.get(dimensionKind) instanceof NumericalCContainer<?>))
+			throw new IllegalArgumentException("Requested dimension kind is not a subtype of Number");
 
-		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers.get(storageKind);
+		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers.get(dimensionKind);
 		return container.get(iIndex);
 	}
 
 	/**
-	 * Returns an iterator on the representation chosen in storageKind
+	 * Returns an iterator on the representation chosen in dimensionKind
 	 * 
-	 * @param storageKind
-	 *            specifies which kind of storage (eg: raw, normalized)
+	 * @param dimensionKind
+	 *            specifies which kind of dimension (eg: raw, normalized)
 	 * @return the iterator
 	 */
-	public Iterator<? extends Number> iterator(DataRepresentation storageKind) {
-		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer<?>))
-			throw new IllegalArgumentException("Requested storage kind is not a subtype of Number");
+	public Iterator<? extends Number> iterator(DataRepresentation dimensionKind) {
+		if (!(hashCContainers.get(dimensionKind) instanceof NumericalCContainer<?>))
+			throw new IllegalArgumentException("Requested dimension kind is not a subtype of Number");
 
-		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers.get(storageKind);
+		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers.get(dimensionKind);
 		return container.iterator();
 	}
 
@@ -232,13 +232,13 @@ public abstract class ADimension
 
 	@Override
 	public String toString() {
-		return "Storage for " + getRawDataType() + ", size: " + size();
+		return "Dimension for " + getRawDataType() + ", size: " + size();
 	}
 
 	/**
 	 * Brings any dataset into a format between 0 and 1. This is used for drawing. Works for nominal and
 	 * numerical data. Operates with the raw data as basis by default, however when a logarithmized
-	 * representation is in the storage this is used (only applies to numerical data). For nominal data the
+	 * representation is in the dimension this is used (only applies to numerical data). For nominal data the
 	 * first value is 0, the last value is 1
 	 */
 	public abstract void normalize();

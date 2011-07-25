@@ -293,11 +293,11 @@ public class Connection {
 //		}
 //		initData.setContentVAMap(contentVAMap);
 //
-//		HashMap<String, StorageVirtualArray> storageVAMap = new HashMap<String, StorageVirtualArray>();
-//		for (String type : set.getRegisteredStorageVATypes()) {
-//			storageVAMap.put(type, useCase.getStorageVA(type));
+//		HashMap<String, DimensionVirtualArray> dimensionVAMap = new HashMap<String, DimensionVirtualArray>();
+//		for (String type : set.getRegisteredDimensionVATypes()) {
+//			dimensionVAMap.put(type, useCase.getDimensionVA(type));
 //		}
-//		initData.setStorageVAMap(storageVAMap);
+//		initData.setDimensionVAMap(dimensionVAMap);
 
 		NetworkUtils utils = networkManager.getNetworkUtils();
 		utils.writeHandshake(initData, outputStream);

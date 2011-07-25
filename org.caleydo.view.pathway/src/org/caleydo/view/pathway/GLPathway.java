@@ -39,9 +39,9 @@ import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
-import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.ContentVAUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -120,7 +120,7 @@ public class GLPathway extends AGLView implements
 	private Vec3f vecScaling;
 	private Vec3f vecTranslation;
 
-	int iCurrentStorageIndex = -1;
+	int iCurrentDimensionIndex = -1;
 
 	// private TextRenderer textRenderer;
 	// private boolean bEnableTitleRendering = true;
@@ -363,10 +363,10 @@ public class GLPathway extends AGLView implements
 		// "Update called by " + eventTrigger.getClass().getSimpleName()
 		// + ", received in: " + this.getClass().getSimpleName());
 
-		if (selectionDelta.getIDType() == mappingDataDomain.getStorageIDType()) {
+		if (selectionDelta.getIDType() == mappingDataDomain.getDimensionIDType()) {
 			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
 				if (item.getSelectionType() == SelectionType.MOUSE_OVER) {
-					iCurrentStorageIndex = item.getPrimaryID();
+					iCurrentDimensionIndex = item.getPrimaryID();
 					break;
 				}
 			}
@@ -899,7 +899,7 @@ public class GLPathway extends AGLView implements
 	@Override
 	public void initData() {
 		connectedElementRepresentationManager.clear(mappingDataDomain.getContentIDType());
-		iCurrentStorageIndex = -1;
+		iCurrentDimensionIndex = -1;
 		super.initData();
 
 	}

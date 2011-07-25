@@ -133,8 +133,8 @@ public class TreePorter {
 		return tree;
 	}
 
-	public ClusterTree importStorageTree(String fileName) throws JAXBException, FileNotFoundException {
-		ClusterTree tree = importTree(fileName, dataDomain.getStorageIDType());
+	public ClusterTree importDimensionTree(String fileName) throws JAXBException, FileNotFoundException {
+		ClusterTree tree = importTree(fileName, dataDomain.getDimensionIDType());
 
 		org.caleydo.core.data.collection.table.DataTable set =
 			(org.caleydo.core.data.collection.table.DataTable) dataDomain.getDataTable();

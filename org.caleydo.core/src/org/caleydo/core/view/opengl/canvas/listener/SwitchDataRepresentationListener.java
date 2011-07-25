@@ -5,7 +5,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SwitchDataRepresentationEvent;
-import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 
 /**

@@ -19,7 +19,7 @@ public class TagRenderer extends LayoutRenderer {
 
 	private GLTagCloud tagCloud;
 	private ContentSelectionManager contentSelectionManager;
-	private Integer storageID;
+	private Integer dimensionID;
 
 	private float color[];
 
@@ -34,11 +34,11 @@ public class TagRenderer extends LayoutRenderer {
 	}
 
 	public TagRenderer(CaleydoTextRenderer textRenderer, GLTagCloud tagCloud,
-			Integer storageID) {
+			Integer dimensionID) {
 		this.textRenderer = textRenderer;
 		this.tagCloud = tagCloud;
 		this.contentSelectionManager = tagCloud.getContentSelectionManager();
-		this.storageID = storageID;
+		this.dimensionID = dimensionID;
 		color = SelectionType.MOUSE_OVER.getColor();
 	}
 
@@ -64,15 +64,15 @@ public class TagRenderer extends LayoutRenderer {
 
 		if (!tagCloud.getContentVA().contains(contentID))
 			return;
-		ADimension genericStorage = tagCloud.getSet().get(storageID);
-		if (genericStorage instanceof NumericalDimension) {
-			NumericalDimension numericalStorage = (NumericalDimension) genericStorage;
+		ADimension genericDimension = tagCloud.getSet().get(dimensionID);
+		if (genericDimension instanceof NumericalDimension) {
+			NumericalDimension numericalDimension = (NumericalDimension) genericDimension;
 			text = new Float(
-					numericalStorage.getFloat(DataRepresentation.RAW, contentID))
+					numericalDimension.getFloat(DataRepresentation.RAW, contentID))
 					.toString();
 		} else {
-			NominalDimension<String> storage = (NominalDimension<String>) genericStorage;
-			text = storage.getRaw(contentID);
+			NominalDimension<String> dimension = (NominalDimension<String>) genericDimension;
+			text = dimension.getRaw(contentID);
 		}
 
 	}

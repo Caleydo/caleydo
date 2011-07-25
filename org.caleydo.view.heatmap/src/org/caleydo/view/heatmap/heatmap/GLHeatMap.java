@@ -16,7 +16,7 @@ import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
@@ -25,8 +25,8 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
-import org.caleydo.core.manager.event.view.storagebased.HideHeatMapElementsEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.HideHeatMapElementsEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -47,7 +47,7 @@ import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.StorageContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.DimensionContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
@@ -276,8 +276,8 @@ public class GLHeatMap extends ATableBasedView {
 		return contentSelectionManager;
 	}
 
-	public StorageSelectionManager getStorageSelectionManager() {
-		return storageSelectionManager;
+	public DimensionSelectionManager getDimensionSelectionManager() {
+		return dimensionSelectionManager;
 	}
 
 	@Override
@@ -296,11 +296,11 @@ public class GLHeatMap extends ATableBasedView {
 
 		if (contentVA == null)
 			contentVA = table.getContentData(contentVAType).getContentVA();
-		if (storageVA == null)
-			storageVA = table.getStorageData(storageVAType).getStorageVA();
+		if (dimensionVA == null)
+			dimensionVA = table.getDimensionData(dimensionVAType).getDimensionVA();
 
 		contentSelectionManager.setVA(contentVA);
-		storageSelectionManager.setVA(storageVA);
+		dimensionSelectionManager.setVA(dimensionVA);
 
 		// FIXME: do we need to do this here?
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
@@ -316,7 +316,7 @@ public class GLHeatMap extends ATableBasedView {
 					+ " / 0 experiments";
 
 		return "Heat Map - " + contentVA.size() + " "
-				+ dataDomain.getContentName(false, true) + " / " + storageVA.size()
+				+ dataDomain.getContentName(false, true) + " / " + dimensionVA.size()
 				+ " experiments";
 	}
 
@@ -327,7 +327,7 @@ public class GLHeatMap extends ATableBasedView {
 		sInfoText.append("<b>Type:</b> Heat Map\n");
 
 		sInfoText.append(contentVA.size() + " " + dataDomain.getContentName(true, true)
-				+ " in rows and " + storageVA.size() + " experiments in columns.\n");
+				+ " in rows and " + dimensionVA.size() + " experiments in columns.\n");
 
 		if (bRenderOnlyContext) {
 			sInfoText.append("Showing only " + " "
@@ -416,15 +416,15 @@ public class GLHeatMap extends ATableBasedView {
 							.getWidth(), getParentGLCanvas().getHeight());
 					contextMenu.setMasterGLView(this);
 				}
-				StorageContextMenuItemContainer experimentContextMenuItemContainer = new StorageContextMenuItemContainer();
+				DimensionContextMenuItemContainer experimentContextMenuItemContainer = new DimensionContextMenuItemContainer();
 				experimentContextMenuItemContainer.setDataDomain(dataDomain);
-				experimentContextMenuItemContainer.setID(storageIDType, externalID);
+				experimentContextMenuItemContainer.setID(dimensionIDType, externalID);
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 			default:
 				return;
 			}
 
-			createStorageSelection(selectionType, externalID);
+			createDimensionSelection(selectionType, externalID);
 
 			break;
 
@@ -495,23 +495,23 @@ public class GLHeatMap extends ATableBasedView {
 		setDisplayListDirty();
 	}
 
-	private void createStorageSelection(SelectionType selectionType, int storageID) {
-		if (storageSelectionManager.checkStatus(selectionType, storageID))
+	private void createDimensionSelection(SelectionType selectionType, int dimensionID) {
+		if (dimensionSelectionManager.checkStatus(selectionType, dimensionID))
 			return;
 
 		// check if the mouse-overed element is already selected, and if it is,
 		// whether mouse over is clear.
 		// If that all is true we don't need to do anything
 		if (selectionType == SelectionType.MOUSE_OVER
-				&& storageSelectionManager
-						.checkStatus(SelectionType.SELECTION, storageID)
-				&& storageSelectionManager.getElements(SelectionType.MOUSE_OVER).size() == 0)
+				&& dimensionSelectionManager
+						.checkStatus(SelectionType.SELECTION, dimensionID)
+				&& dimensionSelectionManager.getElements(SelectionType.MOUSE_OVER).size() == 0)
 			return;
 
-		storageSelectionManager.clearSelection(selectionType);
-		storageSelectionManager.addToType(selectionType, storageID);
+		dimensionSelectionManager.clearSelection(selectionType);
+		dimensionSelectionManager.addToType(selectionType, dimensionID);
 
-		SelectionDelta selectionDelta = storageSelectionManager.getDelta();
+		SelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setDataDomainID(dataDomain.getDataDomainID());
@@ -532,28 +532,28 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	public void leftRightSelect(boolean isLeft) {
-		DimensionVirtualArray virtualArray = storageVA;
+		DimensionVirtualArray virtualArray = dimensionVA;
 		if (virtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for selectNext Operation");
-		int selectedElement = cursorSelect(virtualArray, storageSelectionManager, isLeft);
+		int selectedElement = cursorSelect(virtualArray, dimensionSelectionManager, isLeft);
 		if (selectedElement < 0)
 			return;
-		createStorageSelection(SelectionType.MOUSE_OVER, selectedElement);
+		createDimensionSelection(SelectionType.MOUSE_OVER, selectedElement);
 	}
 
 	public void enterPressedSelect() {
-		DimensionVirtualArray virtualArray = storageVA;
+		DimensionVirtualArray virtualArray = dimensionVA;
 		if (virtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for enterPressed Operation");
 
-		java.util.Set<Integer> elements = storageSelectionManager
+		java.util.Set<Integer> elements = dimensionSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
 		Integer selectedElement = -1;
 		if (elements.size() == 1) {
 			selectedElement = (Integer) elements.toArray()[0];
-			createStorageSelection(SelectionType.SELECTION, selectedElement);
+			createDimensionSelection(SelectionType.SELECTION, selectedElement);
 		}
 
 		ContentVirtualArray contentVirtualArray = contentVA;
@@ -644,13 +644,13 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	/**
-	 * Returns the x coordinate of the element rendered at storageIndex
+	 * Returns the x coordinate of the element rendered at dimensionIndex
 	 * 
-	 * @param storageIndex
+	 * @param dimensionIndex
 	 * @return
 	 */
-	public Float getXCoordinateByStorageIndex(int storageIndex) {
-		return template.getXCoordinateByStorageIndex(storageIndex);
+	public Float getXCoordinateByDimensionIndex(int dimensionIndex) {
+		return template.getXCoordinateByDimensionIndex(dimensionIndex);
 	}
 
 	@Override
@@ -683,11 +683,11 @@ public class GLHeatMap extends ATableBasedView {
 					EDistanceMeasure.EUCLIDEAN_DISTANCE);
 			int contentVAID = contentVA.getID();
 
-			if (contentVA.size() == 0 || storageVA.size() == 0)
+			if (contentVA.size() == 0 || dimensionVA.size() == 0)
 				return;
 
 			state.setContentVA(contentVA);
-			state.setStorageVA(storageVA);
+			state.setDimensionVA(dimensionVA);
 			state.setAffinityPropClusterFactorGenes(4.0f);
 
 			ClusterManager clusterManger = new ClusterManager(table);
@@ -724,8 +724,8 @@ public class GLHeatMap extends ATableBasedView {
 	@Override
 	public String toString() {
 		return "Standalone heat map, rendered remote: " + isRenderedRemote()
-				+ ", contentSize: " + contentVA.size() + ", storageSize: "
-				+ storageVA.size() + ", contentVAType: " + contentVAType
+				+ ", contentSize: " + contentVA.size() + ", dimensionSize: "
+				+ dimensionVA.size() + ", contentVAType: " + contentVAType
 				+ ", remoteRenderer:" + getRemoteRenderingGLCanvas();
 	}
 
@@ -844,8 +844,8 @@ public class GLHeatMap extends ATableBasedView {
 		return template.getElementHeight(contentID);
 	}
 
-	public float getFieldWidth(int storageID) {
-		return template.getElementWidth(storageID);
+	public float getFieldWidth(int dimensionID) {
+		return template.getElementWidth(dimensionID);
 	}
 
 	/**

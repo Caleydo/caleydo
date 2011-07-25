@@ -12,7 +12,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Command, creates a new storage.
+ * Command, creates a new dimension.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -22,7 +22,7 @@ public class CmdDataCreateTable
 	extends ACmdCreational<DataTable> {
 
 	private ATableBasedDataDomain dataDomain;
-	private ArrayList<Integer> storageIDs;
+	private ArrayList<Integer> dimensionIDs;
 
 	/**
 	 * Constructor.
@@ -30,14 +30,14 @@ public class CmdDataCreateTable
 	public CmdDataCreateTable() {
 		super(CommandType.CREATE_DATA_TABLE);
 
-		storageIDs = new ArrayList<Integer>();
+		dimensionIDs = new ArrayList<Integer>();
 	}
 
 	private void fillDataTables(DataTable newSet) {
-		if (storageIDs.isEmpty())
-			throw new IllegalStateException("No data available for creating storage.");
+		if (dimensionIDs.isEmpty())
+			throw new IllegalStateException("No data available for creating dimension.");
 
-		DataTableUtils.setDataTables(newSet, storageIDs);
+		DataTableUtils.setDataTables(newSet, dimensionIDs);
 	}
 
 	/**
@@ -64,8 +64,8 @@ public class CmdDataCreateTable
 	public void undoCommand() {
 	}
 
-	public void setAttributes(ArrayList<Integer> iAlStorageIDs, ATableBasedDataDomain dataDomain) {
+	public void setAttributes(ArrayList<Integer> iAlDimensionIDs, ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		this.storageIDs = iAlStorageIDs;
+		this.dimensionIDs = iAlDimensionIDs;
 	}
 }

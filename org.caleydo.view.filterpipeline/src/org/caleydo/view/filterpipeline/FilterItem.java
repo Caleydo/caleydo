@@ -6,15 +6,15 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.Filter;
-import org.caleydo.core.data.filter.StorageFilter;
+import org.caleydo.core.data.filter.DimensionFilter;
 import org.caleydo.core.data.filter.event.CombineContentFilterEvent;
 import org.caleydo.core.data.filter.event.CombineFilterEvent;
 import org.caleydo.core.data.filter.event.MoveContentFilterEvent;
 import org.caleydo.core.data.filter.event.MoveFilterEvent;
-import org.caleydo.core.data.filter.event.MoveStorageFilterEvent;
+import org.caleydo.core.data.filter.event.MoveDimensionFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveFilterEvent;
-import org.caleydo.core.data.filter.event.RemoveStorageFilterEvent;
+import org.caleydo.core.data.filter.event.RemoveDimensionFilterEvent;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.GeneralManager;
@@ -161,9 +161,9 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 		if (filter instanceof ContentFilter) {
 			filterEvent = new RemoveContentFilterEvent();
 			((RemoveContentFilterEvent) filterEvent).setFilter((ContentFilter) filter);
-		} else if (filter instanceof StorageFilter) {
-			filterEvent = new RemoveStorageFilterEvent();
-			((RemoveStorageFilterEvent) filterEvent).setFilter((StorageFilter) filter);
+		} else if (filter instanceof DimensionFilter) {
+			filterEvent = new RemoveDimensionFilterEvent();
+			((RemoveDimensionFilterEvent) filterEvent).setFilter((DimensionFilter) filter);
 		} else {
 			System.err.println(getClass() + "::triggerRemove(): Unimplemented...");
 		}
@@ -180,9 +180,9 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 		if (filter instanceof ContentFilter) {
 			filterEvent = new MoveContentFilterEvent();
 			((MoveContentFilterEvent) filterEvent).setFilter((ContentFilter) filter);
-		} else if (filter instanceof StorageFilter) {
-			filterEvent = new MoveStorageFilterEvent();
-			((MoveStorageFilterEvent) filterEvent).setFilter((StorageFilter) filter);
+		} else if (filter instanceof DimensionFilter) {
+			filterEvent = new MoveDimensionFilterEvent();
+			((MoveDimensionFilterEvent) filterEvent).setFilter((DimensionFilter) filter);
 		} else {
 			System.err.println(getClass() + "::triggerMove(): Unimplemented...");
 		}
@@ -238,7 +238,7 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 					.addCombineFilter((ContentFilter) getFilterRepresentation(draggables)
 							.getFilter().filter);
 		}
-		// else if( filter instanceof StorageFilter )
+		// else if( filter instanceof DimensionFilter )
 		// {
 		//
 		// }

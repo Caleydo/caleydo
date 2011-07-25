@@ -68,7 +68,7 @@ public class AffinityClusterer
 			if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING)
 				this.iNrSamples = clusterState.getContentVA().size();
 			else if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING)
-				this.iNrSamples = clusterState.getStorageVA().size();
+				this.iNrSamples = clusterState.getDimensionVA().size();
 
 			this.iNrSimilarities = iNrSamples * iNrSamples;
 			this.s = new float[this.iNrSimilarities];
@@ -90,7 +90,7 @@ public class AffinityClusterer
 	private int determineSimilarities(DataTable set, ClusterState clusterState) {
 
 		ContentVirtualArray contentVA = clusterState.getContentVA();
-		DimensionVirtualArray storageVA = clusterState.getStorageVA();
+		DimensionVirtualArray dimensionVA = clusterState.getDimensionVA();
 
 		IDistanceMeasure distanceMeasure;
 
@@ -110,8 +110,8 @@ public class AffinityClusterer
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
 
-			float[] dArInstance1 = new float[storageVA.size()];
-			float[] dArInstance2 = new float[storageVA.size()];
+			float[] dArInstance1 = new float[dimensionVA.size()];
+			float[] dArInstance2 = new float[dimensionVA.size()];
 
 			int icnt1 = 0, icnt2 = 0, isto = 0;
 			int count = 0;
@@ -128,9 +128,9 @@ public class AffinityClusterer
 					}
 
 					isto = 0;
-					for (Integer iStorageIndex1 : storageVA) {
+					for (Integer iDimensionIndex1 : dimensionVA) {
 						dArInstance1[isto] =
-							set.get(iStorageIndex1).getFloat(DataRepresentation.NORMALIZED, iContentIndex1);
+							set.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, iContentIndex1);
 						isto++;
 					}
 
@@ -138,9 +138,9 @@ public class AffinityClusterer
 					for (Integer iContentIndex2 : contentVA) {
 
 						isto = 0;
-						for (Integer iStorageIndex2 : storageVA) {
+						for (Integer iDimensionIndex2 : dimensionVA) {
 							dArInstance2[isto] =
-								set.get(iStorageIndex2).getFloat(DataRepresentation.NORMALIZED,
+								set.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
 									iContentIndex2);
 							isto++;
 						}
@@ -186,10 +186,10 @@ public class AffinityClusterer
 			int isto1 = 0, isto2 = 0, icnt = 0;
 			int count = 0;
 
-			for (Integer iStorageIndex1 : storageVA) {
+			for (Integer iDimensionIndex1 : dimensionVA) {
 
 				if (bClusteringCanceled == false) {
-					int tempPercentage = (int) ((float) isto1 / storageVA.size() * 100);
+					int tempPercentage = (int) ((float) isto1 / dimensionVA.size() * 100);
 
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher()
@@ -200,25 +200,25 @@ public class AffinityClusterer
 					icnt = 0;
 					for (Integer iContentIndex1 : contentVA) {
 						dArInstance1[icnt] =
-							set.get(iStorageIndex1).getFloat(DataRepresentation.NORMALIZED, iContentIndex1);
+							set.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, iContentIndex1);
 						icnt++;
 					}
 
 					isto2 = 0;
-					for (Integer iStorageIndex2 : storageVA) {
+					for (Integer iDimensionIndex2 : dimensionVA) {
 
 						icnt = 0;
 						for (Integer iContentIndex2 : contentVA) {
 							dArInstance2[icnt] =
-								set.get(iStorageIndex2).getFloat(DataRepresentation.NORMALIZED,
+								set.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
 									iContentIndex2);
 							icnt++;
 						}
 
 						if (isto1 != isto2) {
 							s[count] = -distanceMeasure.getMeasure(dArInstance1, dArInstance2);
-							i[count] = storageVA.indexOf(iStorageIndex1);
-							k[count] = storageVA.indexOf(iStorageIndex2);
+							i[count] = dimensionVA.indexOf(iDimensionIndex1);
+							k[count] = dimensionVA.indexOf(iDimensionIndex2);
 							count++;
 						}
 						isto2++;
@@ -237,10 +237,10 @@ public class AffinityClusterer
 			float median = ClusterHelper.median(s);
 
 			int sto = 0;
-			for (Integer iStorageIndex : storageVA) {
+			for (Integer iDimensionIndex : dimensionVA) {
 				s[count] = median * fClusterFactor;
-				i[count] = storageVA.indexOf(iStorageIndex);
-				k[count] = storageVA.indexOf(iStorageIndex);
+				i[count] = dimensionVA.indexOf(iDimensionIndex);
+				k[count] = dimensionVA.indexOf(iDimensionIndex);
 				count++;
 				sto++;
 			}
@@ -499,7 +499,7 @@ public class AffinityClusterer
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-		ClusterHelper.sortClusters(set, contentVA, storageVA, alExamples, eClustererType);
+		ClusterHelper.sortClusters(set, contentVA, dimensionVA, alExamples, eClustererType);
 
 		indices = getAl(alExamples, alClusterSizes, idxExamples, idx, eClustererType);
 
@@ -519,7 +519,7 @@ public class AffinityClusterer
 		// if (eClustererType == EClustererType.GENE_CLUSTERING)
 		// virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), indexes);
 		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), indexes);
+		// virtualArray = new VirtualArray(set.getVA(iVAIdDimension).getVAType(), set.size(), indexes);
 
 	}
 
@@ -549,7 +549,7 @@ public class AffinityClusterer
 		int idxCnt = 0;
 
 		ArrayList<Integer> alIndexListContent = contentVA.getIndexList();
-		ArrayList<Integer> alIndexListStorage = storageVA.getIndexList();
+		ArrayList<Integer> alIndexListDimension = dimensionVA.getIndexList();
 
 		if (eClustererType == EClustererType.CONTENT_CLUSTERING) {
 			for (Integer example : alExamples) {
@@ -569,13 +569,13 @@ public class AffinityClusterer
 		}
 		else {
 			for (Integer example : alExamples) {
-				for (int index = 0; index < alIndexListStorage.size(); index++) {
+				for (int index = 0; index < alIndexListDimension.size(); index++) {
 					if (idx[index] == example) {
-						indices.add(alIndexListStorage.get(index));
+						indices.add(alIndexListDimension.get(index));
 						alClusterSizes.set(counter, alClusterSizes.get(counter) + 1);
 					}
 					if (example == index) {
-						idxExamples.add(storageVA.get(example));
+						idxExamples.add(dimensionVA.get(example));
 						idxCnt = 0;
 					}
 					idxCnt++;

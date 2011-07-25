@@ -96,7 +96,7 @@ public class ClusteringProgressBar
 		shell = new Shell();
 		shell.setText(algorithmType.getName());
 		shell.setImage(GeneralManager.get().getResourceLoader()
-			.getImage(shell.getDisplay(), "resources/icons/view/storagebased/clustering.png"));
+			.getImage(shell.getDisplay(), "resources/icons/view/dimensionbased/clustering.png"));
 
 		// Center shell on screen
 		Monitor primary = shell.getDisplay().getPrimaryMonitor();
@@ -166,7 +166,7 @@ public class ClusteringProgressBar
 		// shell = new Shell();
 		// shell.setText(algorithmType.getName());
 		// shell.setImage(GeneralManager.get().getResourceLoader().getImage(shell.getDisplay(),
-		// "resources/icons/view/storagebased/clustering.png"));
+		// "resources/icons/view/dimensionbased/clustering.png"));
 		//
 		// // Center shell on screen
 		// Monitor primary = shell.getDisplay().getPrimaryMonitor();

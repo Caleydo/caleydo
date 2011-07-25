@@ -16,8 +16,8 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 /**
  * Renderer for an overview heatmap of values specified by contentVA and
- * storageVA. It shows the average values per storage and optionally the average
- * values + and - the standard deviation per storage.
+ * dimensionVA. It shows the average values per dimension and optionally the average
+ * values + and - the standard deviation per dimension.
  * 
  * @author Christian Partl
  * 
@@ -34,12 +34,12 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 	 * Constructor.
 	 * 
 	 * @param contentVA
-	 * @param storageVA
+	 * @param dimensionVA
 	 * @param set
 	 * @param showStandardDeviation
 	 */
 	public OverviewHeatMapRenderer(ContentVirtualArray contentVA,
-			DimensionVirtualArray storageVA, DataTable set,
+			DimensionVirtualArray dimensionVA, DataTable set,
 			boolean showStandardDeviation) {
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
@@ -50,11 +50,11 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 		heatMapValuesMeanMinusStdDev = new ArrayList<Float>();
 		heatMapValuesMeanPlusStdDev = new ArrayList<Float>();
 
-		for (int storageIndex : storageVA) {
+		for (int dimensionIndex : dimensionVA) {
 
 			int index = 0;
 			for (int contentIndex : contentVA) {
-				expressionValues[index] = set.get(storageIndex).getFloat(
+				expressionValues[index] = set.get(dimensionIndex).getFloat(
 						DataRepresentation.NORMALIZED, contentIndex);
 				index++;
 			}

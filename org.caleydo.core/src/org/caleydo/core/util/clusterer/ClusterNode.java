@@ -92,8 +92,8 @@ public class ClusterNode
 		// metaSet.setContentTree(set.getContentTree());
 		// Tree<ClusterNode> subTree = tree.getSubTree();
 
-		ArrayList<Integer> storageIDs = this.getLeaveIds();
-		DataTableUtils.setDataTables(metaSet, storageIDs);
+		ArrayList<Integer> dimensionIDs = this.getLeaveIds();
+		DataTableUtils.setDataTables(metaSet, dimensionIDs);
 	}
 
 	/**

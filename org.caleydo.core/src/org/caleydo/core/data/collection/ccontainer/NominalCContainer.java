@@ -104,20 +104,20 @@ public class NominalCContainer<T>
 	}
 
 	/**
-	 * Initialize the mapping of nominal to discrete values. Call it either with the member sAlStorage, or
+	 * Initialize the mapping of nominal to discrete values. Call it either with the member sAlDimension, or
 	 * with a list provided externally
 	 * 
-	 * @param sAlStorage
+	 * @param sAlDimension
 	 */
 	@SuppressWarnings("unchecked")
-	private void setUpMapping(ArrayList<T> tAlStorage) {
-		for (T tContent : tAlStorage) {
+	private void setUpMapping(ArrayList<T> tAlDimension) {
+		for (T tContent : tAlDimension) {
 			hashNominalToDiscrete.put(tContent, new Float(0));
 		}
 
 		float fDivisor = 1.0f / (hashNominalToDiscrete.size() - 1);
 
-		// float[] fArNormalized = new float[sAlStorage.size()];
+		// float[] fArNormalized = new float[sAlDimension.size()];
 
 		int iCount = 0;
 

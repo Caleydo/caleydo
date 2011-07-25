@@ -6,14 +6,14 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
-import org.caleydo.core.data.virtualarray.group.StorageGroupList;
+import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
+import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 @XmlType
 @XmlRootElement
 public class DimensionVirtualArray
-	extends VirtualArray<DimensionVirtualArray, StorageVADelta, StorageGroupList> {
+	extends VirtualArray<DimensionVirtualArray, DimensionVADelta, DimensionGroupList> {
 
 	public DimensionVirtualArray() {
 		super("STORAGE");
@@ -49,8 +49,8 @@ public class DimensionVirtualArray
 	 *            the list of cluster nodes on which the group list is based
 	 * @return a reference to the local groupList variable
 	 */
-	public StorageGroupList buildNewGroupList(ArrayList<ClusterNode> iAlClusterNodes) {
-		groupList = (StorageGroupList) buildNewGroupList(new StorageGroupList(), iAlClusterNodes);
+	public DimensionGroupList buildNewGroupList(ArrayList<ClusterNode> iAlClusterNodes) {
+		groupList = (DimensionGroupList) buildNewGroupList(new DimensionGroupList(), iAlClusterNodes);
 		return groupList;
 	}
 }

@@ -3,7 +3,7 @@ package org.caleydo.view.visbricks.brick.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.data.collection.table.EDataTableDataType;
+import org.caleydo.core.data.collection.table.DataTableDataType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.SetBasedDimensionGroupData;
@@ -26,7 +26,7 @@ public class SetBasedBrickDimensionGroupData implements
 			SetBasedDimensionGroupData dimensionGroupData) {
 		this.dimensionGroupData = dimensionGroupData;
 		if (dimensionGroupData.getSet().getSetType()
-				.equals(EDataTableDataType.NUMERIC)) {
+				.equals(DataTableDataType.NUMERIC)) {
 			setBasedDataConfigurer = new NumericalDataConfigurer(
 					dimensionGroupData.getSet());
 		} else {

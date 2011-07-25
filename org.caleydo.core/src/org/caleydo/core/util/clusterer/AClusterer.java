@@ -30,7 +30,7 @@ public abstract class AClusterer
 	protected int iProgressBarOffsetValue;
 
 	protected ContentVirtualArray contentVA;
-	protected DimensionVirtualArray storageVA;
+	protected DimensionVirtualArray dimensionVA;
 
 	protected ClusterState clusterState;
 
@@ -42,7 +42,7 @@ public abstract class AClusterer
 	public void setClusterState(ClusterState clusterState) {
 		this.clusterState = clusterState;
 		this.contentVA = clusterState.getContentVA();
-		this.storageVA = clusterState.getStorageVA();
+		this.dimensionVA = clusterState.getDimensionVA();
 	}
 
 	/**

@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
 import org.caleydo.core.manager.event.view.group.MergeContentGroupsEvent;
-import org.caleydo.core.manager.event.view.group.MergeStorageGroupsEvent;
+import org.caleydo.core.manager.event.view.group.MergeDimensionGroupsEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -36,7 +36,7 @@ public class MergeClustersItem
 			registerEvent(mergeGroupEvent);
 		}
 		else {
-			MergeStorageGroupsEvent mergeGroupEvent = new MergeStorageGroupsEvent();
+			MergeDimensionGroupsEvent mergeGroupEvent = new MergeDimensionGroupsEvent();
 			mergeGroupEvent.setSender(this);
 			registerEvent(mergeGroupEvent);
 		}

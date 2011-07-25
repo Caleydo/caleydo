@@ -11,7 +11,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
- * INumericalStorage is a specialization of IStorage. It is meant for numerical data of a continuous range,
+ * INumericalDimension is a specialization of IDimension. It is meant for numerical data of a continuous range,
  * equivalent to the set of real numbers. In terms of scales it can be interpreted as a data structure for an
  * absolute scale. As a consequence raw data for a numerical set can only be of a number format, such as int
  * or float
@@ -30,12 +30,12 @@ public class NumericalDimension
 	}
 
 	/**
-	 * Constructor that takes a storage ID. This is needed for de-serialization.
+	 * Constructor that takes a dimension ID. This is needed for de-serialization.
 	 * 
-	 * @param storageID
+	 * @param dimensionID
 	 */
-	public NumericalDimension(int storageID) {
-		super(storageID);
+	public NumericalDimension(int dimensionID) {
+		super(dimensionID);
 	}	
 
 	@Override
@@ -64,16 +64,16 @@ public class NumericalDimension
 	 */
 	public void normalizeWithExternalExtrema(DataRepresentation sourceRep, DataRepresentation targetRep,
 		double dMin, double dMax) {
-		INumericalCContainer rawStorage = (INumericalCContainer) hashCContainers.get(sourceRep);
+		INumericalCContainer rawDimension = (INumericalCContainer) hashCContainers.get(sourceRep);
 
-		INumericalCContainer numericalContainer = rawStorage.normalizeWithExternalExtrema(dMin, dMax);
+		INumericalCContainer numericalContainer = rawDimension.normalizeWithExternalExtrema(dMin, dMax);
 
 		hashCContainers.put(targetRep, numericalContainer);
 	}
 
 	/**
 	 * <p>
-	 * If you want to consider extremas for normalization which do not occur in this storage (e.g., because
+	 * If you want to consider extremas for normalization which do not occur in this dimension (e.g., because
 	 * the global extremas for the DataTable are used), use this method instead of normalize().
 	 * </p>
 	 * Values that are bigger or smaller then the extrema specified are set to 0 (minimum) or 1 (maximum) in
@@ -176,7 +176,7 @@ public class NumericalDimension
 	}
 
 	/**
-	 * Returns a histogram of the values in the storage for all values (not considering VAs). The number of
+	 * Returns a histogram of the values in the dimension for all values (not considering VAs). The number of
 	 * the bins is sqrt(numberOfElements)
 	 * 
 	 * @return
@@ -204,7 +204,7 @@ public class NumericalDimension
 	}
 
 	/**
-	 * Returns a histogram of the values in the storage for all values considering the specified VA. The
+	 * Returns a histogram of the values in the dimension for all values considering the specified VA. The
 	 * number of the bins is sqrt(VA size)
 	 * 
 	 * @param contentVA
@@ -240,7 +240,7 @@ public class NumericalDimension
 	 */
 	public void setNewRepresentation(DataRepresentation dataRepresentation, float[] representation) {
 		if (representation.length != size())
-			throw new IllegalArgumentException("The size of the storage (" + size()
+			throw new IllegalArgumentException("The size of the dimension (" + size()
 				+ ") is not equal the size of the given new representation (" + representation.length + ")");
 		if (hashCContainers.containsKey(dataRepresentation))
 			throw new IllegalStateException("The data representation " + dataRepresentation

@@ -6,11 +6,11 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.data.filter.ContentFilter;
 import org.caleydo.core.data.filter.ContentMetaFilter;
 import org.caleydo.core.data.filter.Filter;
-import org.caleydo.core.data.filter.StorageFilter;
-import org.caleydo.core.data.filter.StorageMetaFilter;
+import org.caleydo.core.data.filter.DimensionFilter;
+import org.caleydo.core.data.filter.DimensionMetaFilter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.filter.event.RemoveContentFilterEvent;
-import org.caleydo.core.data.filter.event.RemoveStorageFilterEvent;
+import org.caleydo.core.data.filter.event.RemoveDimensionFilterEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -83,8 +83,8 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 	private void updateTree() {
 
 		tree = new Tree(parentComposite, SWT.SINGLE | SWT.BORDER);
-		TreeItem storageFilterTreeItem = new TreeItem(tree, SWT.NONE, 0);
-		storageFilterTreeItem.setText("Experiment Filter");
+		TreeItem dimensionFilterTreeItem = new TreeItem(tree, SWT.NONE, 0);
+		dimensionFilterTreeItem.setText("Experiment Filter");
 
 		// Create the pop-up menu
 		contextMenu = new Menu(parentComposite);
@@ -118,22 +118,22 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 
 		TreeItem child;
 
-		for (StorageFilter filter : dataDomain.getStorageFilterManager().getFilterPipe()) {
-			if (filter instanceof StorageMetaFilter) {
+		for (DimensionFilter filter : dataDomain.getDimensionFilterManager().getFilterPipe()) {
+			if (filter instanceof DimensionMetaFilter) {
 
-				TreeItem metaStorageFilterTreeItem = new TreeItem(storageFilterTreeItem,
+				TreeItem metaDimensionFilterTreeItem = new TreeItem(dimensionFilterTreeItem,
 						SWT.NONE, 0);
-				metaStorageFilterTreeItem.setText(filter.getLabel());
-				metaStorageFilterTreeItem.setData(filter);
+				metaDimensionFilterTreeItem.setText(filter.getLabel());
+				metaDimensionFilterTreeItem.setData(filter);
 
-				for (StorageFilter subFilter : ((StorageMetaFilter) filter)
+				for (DimensionFilter subFilter : ((DimensionMetaFilter) filter)
 						.getFilterList()) {
-					child = new TreeItem(metaStorageFilterTreeItem, SWT.NONE, 0);
+					child = new TreeItem(metaDimensionFilterTreeItem, SWT.NONE, 0);
 					child.setText(subFilter.getLabel());
 					child.setData(subFilter);
 				}
 			} else {
-				child = new TreeItem(storageFilterTreeItem, SWT.NONE, 0);
+				child = new TreeItem(dimensionFilterTreeItem, SWT.NONE, 0);
 				child.setText(filter.getLabel());
 				child.setData(filter);
 			}
@@ -165,12 +165,12 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		}
 
 		contentFilterTreeItem.setExpanded(true);
-		storageFilterTreeItem.setExpanded(true);
+		dimensionFilterTreeItem.setExpanded(true);
 		for (int itemIndex = 0; itemIndex < contentFilterTreeItem.getItems().length; itemIndex++) {
 			contentFilterTreeItem.getItem(itemIndex).setExpanded(true);
 		}
-		for (int itemIndex = 0; itemIndex < storageFilterTreeItem.getItems().length; itemIndex++) {
-			storageFilterTreeItem.getItem(itemIndex).setExpanded(true);
+		for (int itemIndex = 0; itemIndex < dimensionFilterTreeItem.getItems().length; itemIndex++) {
+			dimensionFilterTreeItem.getItem(itemIndex).setExpanded(true);
 		}
 	}
 
@@ -204,10 +204,10 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 			public void widgetSelected(SelectionEvent e) {
 				TreeItem selectedTreeItem = tree.getSelection()[0];
 
-				if (selectedTreeItem.getData() instanceof StorageFilter) {
-					RemoveStorageFilterEvent filterEvent = new RemoveStorageFilterEvent();
+				if (selectedTreeItem.getData() instanceof DimensionFilter) {
+					RemoveDimensionFilterEvent filterEvent = new RemoveDimensionFilterEvent();
 					filterEvent.setDataDomainID(dataDomain.getDataDomainID());
-					filterEvent.setFilter((StorageFilter) selectedTreeItem.getData());
+					filterEvent.setFilter((DimensionFilter) selectedTreeItem.getData());
 					selectedTreeItem.dispose();
 					eventPublisher.triggerEvent(filterEvent);
 				} else if (selectedTreeItem.getData() instanceof ContentFilter) {

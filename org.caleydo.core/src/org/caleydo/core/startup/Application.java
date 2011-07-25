@@ -88,10 +88,10 @@ public class Application
 	// if (initData.getGeneClusterTree() != null) {
 	// SetUtils.saveExperimentsTreeFile(loadDataParameters, initData.getGeneClusterTree());
 	// }
-	// // TODO remove temporary files (after storage creation or on shutdown)
+	// // TODO remove temporary files (after dimension creation or on shutdown)
 	// // FIXME: restore plex client - this is to set specific to work from now on
 	// //
-	// // SetUtils.createStorages(loadDataParameters);
+	// // SetUtils.createDimensions(loadDataParameters);
 	// // DataTable set = SetUtils.createData(dataDomain);
 	// //
 	// // HashMap<ContentVAType, ContentVirtualArray> contentVAMap = initData.getContentVAMap();
@@ -99,9 +99,9 @@ public class Application
 	// // ((ADataDomain) dataDomain).setContentVirtualArray(entry.getKey(), entry.getValue());
 	// // }
 	// //
-	// // HashMap<StorageVAType, StorageVirtualArray> storageVAMap = initData.getStorageVAMap();
-	// // for (Entry<StorageVAType, StorageVirtualArray> entry : storageVAMap.entrySet()) {
-	// // ((ADataDomain) dataDomain).setStorageVirtualArray(entry.getKey(), entry.getValue());
+	// // HashMap<DimensionVAType, DimensionVirtualArray> dimensionVAMap = initData.getDimensionVAMap();
+	// // for (Entry<DimensionVAType, DimensionVirtualArray> entry : dimensionVAMap.entrySet()) {
+	// // ((ADataDomain) dataDomain).setDimensionVirtualArray(entry.getKey(), entry.getValue());
 	// // }
 	//
 	// // we need the VAs to be available before the tree is initialized

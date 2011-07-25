@@ -31,8 +31,8 @@ import org.caleydo.core.manager.event.data.NewMetaSetsEvent;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.DataDomainsChangedEvent;
-import org.caleydo.core.manager.event.view.storagebased.ConnectionsModeEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.ConnectionsModeEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -1256,12 +1256,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	public void metaSetsUpdated() {
 
-		// ClusterTree storageTree = dataDomain.getSet()
-		// .getStorageData(storageVAType).getStorageTree();
-		// if (storageTree == null)
+		// ClusterTree dimensionTree = dataDomain.getSet()
+		// .getDimensionData(dimensionVAType).getDimensionTree();
+		// if (dimensionTree == null)
 		// return;
 		//
-		// ArrayList<DataTable> allMetaSets = storageTree.getRoot()
+		// ArrayList<DataTable> allMetaSets = dimensionTree.getRoot()
 		// .getAllMetaSetsFromSubTree();
 		//
 		// ArrayList<DataTable> filteredMetaSets = new ArrayList<DataTable>(
@@ -1338,8 +1338,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	// // // metaSet.setContentTree(set.getContentTree());
 	// // // Tree<ClusterNode> subTree = tree.getSubTree();
 	// //
-	// // // ArrayList<Integer> storageIDs = new ArrayList<Integer>();
-	// // // SetUtils.setStorages(set, storageIDs);
+	// // // ArrayList<Integer> dimensionIDs = new ArrayList<Integer>();
+	// // // SetUtils.setDimensions(set, dimensionIDs);
 	// //
 	// // dataDomain.addMetaSet(set);
 	// // binGroup.setSet(set);
@@ -1379,8 +1379,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	// // // metaSet.setContentTree(set.getContentTree());
 	// // // Tree<ClusterNode> subTree = tree.getSubTree();
 	// //
-	// // // ArrayList<Integer> storageIDs = new ArrayList<Integer>();
-	// // // SetUtils.setStorages(set, storageIDs);
+	// // // ArrayList<Integer> dimensionIDs = new ArrayList<Integer>();
+	// // // SetUtils.setDimensions(set, dimensionIDs);
 	// //
 	// // dataDomain.addMetaSet(set);
 	// // binGroup.setSet(set);

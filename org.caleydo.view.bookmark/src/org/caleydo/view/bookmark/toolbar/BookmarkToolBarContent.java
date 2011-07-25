@@ -16,7 +16,7 @@ import org.caleydo.view.bookmark.GLBookmarkView;
  */
 public class BookmarkToolBarContent extends AToolBarContent {
 
-	public static final String IMAGE_PATH = "resources/icons/view/storagebased/parcoords/parcoords.png";
+	public static final String IMAGE_PATH = "resources/icons/view/dimensionbased/parcoords/parcoords.png";
 
 	public static final String VIEW_TITLE = "Parallel Coordinates";
 

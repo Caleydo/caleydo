@@ -56,7 +56,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	TreeMapRenderer painter;
 
 	// private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
-	// private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
+	// private EIDType eDimensionDataType = EIDType.EXPERIMENT_INDEX;
 
 	// toggleable feature flags
 
@@ -390,7 +390,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	@Override
 	public String getShortInfo() {
 
-		return "Hierarchical Tree Map (" + dataDomain.getDataTable().getBaseStorageVA().size() + " nodes displayed)";
+		return "Hierarchical Tree Map (" + dataDomain.getDataTable().getBaseDimensionVA().size() + " nodes displayed)";
 	}
 
 	@Override
@@ -439,7 +439,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	@Override
 	public String toString() {
-		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote() + ", contentSize: " + contentVA.size() + ", storageSize: " + storageVA.size()
+		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote() + ", contentSize: " + contentVA.size() + ", dimensionSize: " + dimensionVA.size()
 				+ ", contentVAType: " + contentVAType + ", remoteRenderer:" + getRemoteRenderingGLCanvas();
 	}
 

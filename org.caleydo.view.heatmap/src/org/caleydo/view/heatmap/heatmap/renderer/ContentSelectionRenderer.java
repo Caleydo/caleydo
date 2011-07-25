@@ -39,7 +39,7 @@ public class ContentSelectionRenderer extends AContentRenderer {
 			for (Integer currentLine : selectedSet) {
 				if (currentLine == contentIndex) {
 					float fieldHeight = contentSpacing.getFieldHeight(contentIndex);
-					// width = heatMap.getStorageVA().size() * fieldWidth;
+					// width = heatMap.getDimensionVA().size() * fieldWidth;
 					yPosition = contentSpacing.getYDistances().get(lineIndex);
 					xPosition = 0;
 					gl.glPushName(heatMap.getPickingManager().getPickingID(

@@ -22,7 +22,7 @@ import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
 import org.caleydo.core.manager.execution.ADisplayLoopEventHandler;
 import org.caleydo.core.manager.view.CanvasConnectionMap;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;

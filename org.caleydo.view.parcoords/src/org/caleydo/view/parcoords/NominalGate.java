@@ -139,7 +139,7 @@ public class NominalGate extends AGate {
 		// }
 		// else
 		// {
-		// // TODO storage based acces
+		// // TODO dimension based acces
 		// }
 
 		gl.glPushName(pickingManager.getPickingID(iViewID,

@@ -98,7 +98,7 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 	{
 		sizesDirty = false;
 
-		// TODO also handle storage filter
+		// TODO also handle dimension filter
 		@SuppressWarnings("unchecked")
 		VirtualArray<?, ContentVADelta, ?> input =
 			(VirtualArray<?, ContentVADelta, ?>)filter.getInput().clone();

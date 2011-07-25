@@ -12,14 +12,14 @@ import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
-import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
+import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.gui.util.LabelEditorDialog;
 import org.caleydo.core.manager.GeneralManager;
@@ -29,16 +29,16 @@ import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.VirtualArrayUpdateEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IDimensionVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
@@ -68,40 +68,40 @@ import org.eclipse.swt.widgets.Text;
  */
 public class TabularDataView extends ASWTView implements
 		IDataDomainBasedView<ATableBasedDataDomain>, ISelectionUpdateHandler,
-		IContentVAUpdateHandler, IStorageVAUpdateHandler, ISelectionCommandHandler,
+		IContentVAUpdateHandler, IDimensionVAUpdateHandler, ISelectionCommandHandler,
 		IViewCommandHandler {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.tabular";
 	private final static int COLUMN_OFFSET = 3;
 
 	/**
-	 * This manager is responsible for the content in the storages (the indices)
+	 * This manager is responsible for the content in the dimensions (the indices)
 	 */
 	protected ContentSelectionManager contentSelectionManager;
 
 	/**
-	 * This manager is responsible for the management of the storages in the set
+	 * This manager is responsible for the management of the dimensions in the set
 	 */
-	protected StorageSelectionManager storageSelectionManager;
+	protected DimensionSelectionManager dimensionSelectionManager;
 
 	/**
-	 * The virtual array that manages the contents (the indices) in the storages
+	 * The virtual array that manages the contents (the indices) in the dimensions
 	 */
 	protected ContentVirtualArray contentVA;
 
 	/**
-	 * The virtual array that manages the storage references in the set
+	 * The virtual array that manages the dimension references in the set
 	 */
-	protected DimensionVirtualArray storageVA;
+	protected DimensionVirtualArray dimensionVA;
 	/**
 	 * The type of the content VA
 	 */
 	protected String contentVAType = DataTable.RECORD;
 
 	/**
-	 * The type of the storage VA
+	 * The type of the dimension VA
 	 */
-	protected String storageVAType = DataTable.DIMENSION;
+	protected String dimensionVAType = DataTable.DIMENSION;
 
 	/**
 	 * Define what level of filtering on the data should be applied
@@ -146,28 +146,28 @@ public class TabularDataView extends ASWTView implements
 		dataTable = dataDomain.getDataTable();
 
 		contentSelectionManager = dataDomain.getContentSelectionManager();
-		storageSelectionManager = dataDomain.getStorageSelectionManager();
+		dimensionSelectionManager = dataDomain.getDimensionSelectionManager();
 
 		if (dataTable == null) {
 			contentSelectionManager.resetSelectionManager();
-			storageSelectionManager.resetSelectionManager();
+			dimensionSelectionManager.resetSelectionManager();
 			return;
 		}
 
 		contentVA = dataDomain.getContentVA(contentVAType);
-		storageVA = dataDomain.getStorageVA(storageVAType);
+		dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
 
 		contentSelectionManager.resetSelectionManager();
-		storageSelectionManager.resetSelectionManager();
+		dimensionSelectionManager.resetSelectionManager();
 
 		contentSelectionManager.setVA(contentVA);
-		storageSelectionManager.setVA(storageVA);
+		dimensionSelectionManager.setVA(dimensionVA);
 
 		// int iNumberOfColumns = contentVA.size();
-		// int iNumberOfRows = storageVA.size();
+		// int iNumberOfRows = dimensionVA.size();
 
 		// for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++) {
-		// storageSelectionManager.initialAdd(storageVA.get(iRowCount));
+		// dimensionSelectionManager.initialAdd(dimensionVA.get(iRowCount));
 		//
 		// }
 		//
@@ -262,7 +262,7 @@ public class TabularDataView extends ASWTView implements
 		// itemName.addSelectionListener(new SelectionAdapter() {
 		// @Override
 		// public void widgetSelected(SelectionEvent e) {
-		// storageVA.remove(0);
+		// dimensionVA.remove(0);
 		// // axisSelectionManager.remove(externalID, false);
 		// // IVirtualArrayDelta vaDelta = new
 		// // VirtualArrayDelta(axisVAType,
@@ -313,9 +313,9 @@ public class TabularDataView extends ASWTView implements
 					+ " is not implemented in the tabular data viewer.");
 		}
 
-		for (final Integer iStorageIndex : storageVA) {
+		for (final Integer iDimensionIndex : dimensionVA) {
 			final TableColumn col = new TableColumn(contentTable, SWT.NONE);
-			col.setText(dataTable.get(iStorageIndex).getLabel());
+			col.setText(dataTable.get(iDimensionIndex).getLabel());
 			col.setWidth(120);
 			col.setMoveable(true);
 
@@ -324,11 +324,11 @@ public class TabularDataView extends ASWTView implements
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					LabelEditorDialog dialog = new LabelEditorDialog(new Shell());
-					String sLabel = dialog.open(dataTable.get(iStorageIndex).getLabel());
+					String sLabel = dialog.open(dataTable.get(iDimensionIndex).getLabel());
 
 					if (sLabel != null && !sLabel.isEmpty()) {
-						dataTable.get(iStorageIndex).setLabel(sLabel);
-						contentTable.getColumn(iStorageIndex + 3).setText(sLabel);
+						dataTable.get(iDimensionIndex).setLabel(sLabel);
+						contentTable.getColumn(iDimensionIndex + 3).setText(sLabel);
 						RedrawViewEvent event = new RedrawViewEvent();
 						event.setSender(this);
 						eventPublisher.triggerEvent(event);
@@ -347,8 +347,8 @@ public class TabularDataView extends ASWTView implements
 			item.setText(1, dataDomain.getContentLabel(iContentIndex));
 
 			int i = 3;
-			for (Integer iStorageIndex : storageVA) {
-				fValue = dataTable.get(iStorageIndex).getFloat(DataRepresentation.RAW,
+			for (Integer iDimensionIndex : dimensionVA) {
+				fValue = dataTable.get(iDimensionIndex).getFloat(DataRepresentation.RAW,
 						iContentIndex);
 
 				item.setText(i++, Float.toString(fValue));
@@ -369,13 +369,13 @@ public class TabularDataView extends ASWTView implements
 				contentTable.setSelection(iRowIndex);
 
 				int iRefSeqID = contentVA.get(iRowIndex);
-				int iStorageIndex = storageVA.get(iColIndex);
+				int iDimensionIndex = dimensionVA.get(iColIndex);
 
-				triggerStorageSelectionEvent(iStorageIndex, SelectionType.SELECTION);
+				triggerDimensionSelectionEvent(iDimensionIndex, SelectionType.SELECTION);
 				triggerContentSelectionEvent(iRefSeqID, SelectionType.SELECTION);
 
 				// addContentRemoveIcon(iRowIndex);
-				// addStorageRemoveIcon(iStorageIndex);
+				// addDimensionRemoveIcon(iDimensionIndex);
 			}
 		});
 
@@ -402,8 +402,8 @@ public class TabularDataView extends ASWTView implements
 			SelectionCommand selectionCommand) {
 		if (dataDomain.getContentIDCategory() == category)
 			contentSelectionManager.executeSelectionCommand(selectionCommand);
-		else if (dataDomain.getStorageIDCategory() == category)
-			storageSelectionManager.executeSelectionCommand(selectionCommand);
+		else if (dataDomain.getDimensionIDCategory() == category)
+			dimensionSelectionManager.executeSelectionCommand(selectionCommand);
 	}
 
 	@Override
@@ -414,24 +414,24 @@ public class TabularDataView extends ASWTView implements
 				.getContentIDCategory()) {
 			contentSelectionManager.setDelta(selectionDelta);
 		} else if (selectionDelta.getIDType().getIDCategory() == dataDomain
-				.getStorageIDCategory()) {
-			storageSelectionManager.setDelta(selectionDelta);
+				.getDimensionIDCategory()) {
+			dimensionSelectionManager.setDelta(selectionDelta);
 		}
 
 		reactOnExternalSelection();
 	}
 
-	private void addColumn(final int index, final int storageNumber) {
+	private void addColumn(final int index, final int dimensionNumber) {
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				TableColumn column = new TableColumn(contentTable, SWT.NONE, index);
-				ADimension storage = dataTable.get(storageNumber);
-				column.setText(storage.getLabel());
+				ADimension dimension = dataTable.get(dimensionNumber);
+				column.setText(dimension.getLabel());
 				TableItem[] items = contentTable.getItems();
 				for (int i = 0; i < items.length; i++) {
 					TableItem item = items[i];
-					float value = dataTable.get(storageNumber).getFloat(
+					float value = dataTable.get(dimensionNumber).getFloat(
 							DataRepresentation.RAW, contentVA.get(i));
 					item.setText(index, Float.toString(value));
 
@@ -469,10 +469,10 @@ public class TabularDataView extends ASWTView implements
 
 				// FIXME: currently we do not handle multiple selections (->
 				// replace if with while)
-				Iterator<Integer> iterStorageIndex = storageSelectionManager.getElements(
+				Iterator<Integer> iterDimensionIndex = dimensionSelectionManager.getElements(
 						SelectionType.SELECTION).iterator();
-				while (iterStorageIndex.hasNext()) {
-					iColIndex = storageVA.indexOf(iterStorageIndex.next()) + 3;
+				while (iterDimensionIndex.hasNext()) {
+					iColIndex = dimensionVA.indexOf(iterDimensionIndex.next()) + 3;
 				}
 
 				contentTableCursor.setSelection(iRowIndex,
@@ -529,19 +529,19 @@ public class TabularDataView extends ASWTView implements
 		eventPublisher.triggerEvent(event);
 	}
 
-	private void triggerStorageSelectionEvent(int iStorageIndex,
+	private void triggerDimensionSelectionEvent(int iDimensionIndex,
 			SelectionType SelectionType) {
-		if (storageSelectionManager.checkStatus(SelectionType, iStorageIndex))
+		if (dimensionSelectionManager.checkStatus(SelectionType, iDimensionIndex))
 			return;
 
-		storageSelectionManager.clearSelection(SelectionType);
-		storageSelectionManager.addToType(SelectionType, iStorageIndex);
+		dimensionSelectionManager.clearSelection(SelectionType);
+		dimensionSelectionManager.addToType(SelectionType, iDimensionIndex);
 
 		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
 				SelectionType);
 		sendSelectionCommandEvent(dataDomain.getContentIDType(), command);
 
-		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
+		ISelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -550,7 +550,7 @@ public class TabularDataView extends ASWTView implements
 
 	private void clearAllSelections() {
 		contentSelectionManager.clearSelections();
-		storageSelectionManager.clearSelections();
+		dimensionSelectionManager.clearSelections();
 	}
 
 	@Override
@@ -642,9 +642,9 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void handleVAUpdate(StorageVADelta vaDelta, String info) {
-		if (vaDelta.getIDType() == dataDomain.getStorageIDType()) {
-			storageSelectionManager.setVADelta(vaDelta);
+	public void handleVAUpdate(DimensionVADelta vaDelta, String info) {
+		if (vaDelta.getIDType() == dataDomain.getDimensionIDType()) {
+			dimensionSelectionManager.setVADelta(vaDelta);
 
 			for (VADeltaItem deltaItem : vaDelta.getAllItems()) {
 				final int iVAIndex = deltaItem.getIndex();
@@ -664,7 +664,7 @@ public class TabularDataView extends ASWTView implements
 					break;
 				case COPY:
 					addColumn(deltaItem.getIndex() + 1 + COLUMN_OFFSET,
-							storageVA.get(deltaItem.getIndex()));
+							dimensionVA.get(deltaItem.getIndex()));
 
 					break;
 				case MOVE:
@@ -695,8 +695,8 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void replaceStorageVA(String dataDomainType, String vaType) {
-		storageVA = dataDomain.getStorageVA(vaType);
+	public void replaceDimensionVA(String dataDomainType, String vaType) {
+		dimensionVA = dataDomain.getDimensionVA(vaType);
 	}
 
 	@Override

@@ -1187,7 +1187,7 @@ public class VisLink {
 	//
 	// private int createBlurTexture(GL2 gl) { // Create An Empty Texture
 	//
-	// ByteBuffer data = BufferUtil.newByteBuffer(TEXTURE_SIZE * TEXTURE_SIZE); // Create Storage Space For
+	// ByteBuffer data = BufferUtil.newByteBuffer(TEXTURE_SIZE * TEXTURE_SIZE); // Create Dimension Space For
 	// Texture Data (128x128x4)
 	// data.limit(data.capacity());
 	//
@@ -1331,7 +1331,7 @@ public class VisLink {
 	// int[] depthBuffer = new int[1];
 	// gl.glGenRenderbuffersEXT(1, depthBuffer, 0);
 	// gl.glBindRenderbufferEXT(GL2.GL_RENDERBUFFER_EXT, depthBuffer[0]);
-	// gl.glRenderbufferStorageEXT(GL2.GL_RENDERBUFFER_EXT, GL2.GL_DEPTH_COMPONENT24, TEXTURE_SIZE,
+	// gl.glRenderbufferDimensionEXT(GL2.GL_RENDERBUFFER_EXT, GL2.GL_DEPTH_COMPONENT24, TEXTURE_SIZE,
 	// TEXTURE_SIZE);
 	//
 	// // Attach the newly created depth buffer to the FBO.

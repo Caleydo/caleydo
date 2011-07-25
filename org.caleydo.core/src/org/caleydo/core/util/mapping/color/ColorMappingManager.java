@@ -9,7 +9,7 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.histogram.UpdateColorMappingEvent;
-import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.RedrawViewEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.listener.IColorMappingHandler;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateColorMappingListener;

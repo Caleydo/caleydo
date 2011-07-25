@@ -35,7 +35,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 	private boolean orientation = true;
 
-	private DimensionVirtualArray storageVA;
+	private DimensionVirtualArray dimensionVA;
 
 	private ContentVirtualArray contentVA;
 
@@ -52,10 +52,10 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 	public void initTextures(ArrayList<Float> uncertaintyVA) {
 
-		if (storageVA == null || contentVA == null)
+		if (dimensionVA == null || contentVA == null)
 			return;
 
-		int textureWidth = storageVA.size();
+		int textureWidth = dimensionVA.size();
 		int textureHeight = numberOfElements = contentVA.size();
 		if (uncertaintyVA != null) {
 			textureHeight = numberOfElements = uncertaintyVA.size();
@@ -145,11 +145,11 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 	}
 
 	public void init(GLUncertaintyHeatMap glUncHeatmap, DataTable set,
-			ContentVirtualArray contentVA, DimensionVirtualArray storageVA,
+			ContentVirtualArray contentVA, DimensionVirtualArray dimensionVA,
 			ColorMapper colorMapper) {
 
 		this.glUncHeatmap = glUncHeatmap;
-		this.storageVA = storageVA;
+		this.dimensionVA = dimensionVA;
 		this.contentVA = contentVA;
 		this.set = set;
 

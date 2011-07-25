@@ -6,7 +6,7 @@ import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 /**
- * Renders the dimension bar, which indicates, which storages are currently
+ * Renders the dimension bar, which indicates, which dimensions are currently
  * shown within the brick.
  * 
  * @author Christian Partl
@@ -14,32 +14,32 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
  */
 public class DimensionBarRenderer extends LayoutRenderer {
 
-	private DimensionVirtualArray overallStorageVA;
-	private DimensionVirtualArray storageVA;
+	private DimensionVirtualArray overallDimensionVA;
+	private DimensionVirtualArray dimensionVA;
 
-	public DimensionBarRenderer(DimensionVirtualArray overallStorageVA, DimensionVirtualArray storageVA) {
-		this.overallStorageVA = overallStorageVA;
-		this.storageVA = storageVA;
+	public DimensionBarRenderer(DimensionVirtualArray overallDimensionVA, DimensionVirtualArray dimensionVA) {
+		this.overallDimensionVA = overallDimensionVA;
+		this.dimensionVA = dimensionVA;
 	}
 
 	@Override
 	public void render(GL2 gl) {
 
-//		StorageVirtualArray overallStorageVA = brick.getDataDomain()
-//				.getStorageVA(Set.STORAGE);
-//		StorageVirtualArray storageVA = brick.getStorageVA();
+//		DimensionVirtualArray overallDimensionVA = brick.getDataDomain()
+//				.getDimensionVA(Set.STORAGE);
+//		DimensionVirtualArray dimensionVA = brick.getDimensionVA();
 
-		if (overallStorageVA == null || storageVA == null)
+		if (overallDimensionVA == null || dimensionVA == null)
 			return;
 
-		int totalNumStorages = overallStorageVA.size();
+		int totalNumDimensions = overallDimensionVA.size();
 
-		float elementWidth = x / (float) totalNumStorages;
+		float elementWidth = x / (float) totalNumDimensions;
 
-		for (int i = 0; i < totalNumStorages; i++) {
+		for (int i = 0; i < totalNumDimensions; i++) {
 			float[] baseColor;
 			float colorOffset;
-			if (storageVA.contains(overallStorageVA.get(i))) {
+			if (dimensionVA.contains(overallDimensionVA.get(i))) {
 				baseColor = new float[] { 0.6f, 0.6f, 0.6f, 1f };
 				colorOffset = -0.25f;
 			} else {
@@ -61,9 +61,9 @@ public class DimensionBarRenderer extends LayoutRenderer {
 
 		}
 
-		// for (int i = 0; i < totalNumStorages; i++) {
+		// for (int i = 0; i < totalNumDimensions; i++) {
 		// float[] baseColor;
-		// if (storageVA.contains(overallStorageVA.get(i))) {
+		// if (dimensionVA.contains(overallDimensionVA.get(i))) {
 		// baseColor = SelectionType.SELECTION.getColor();
 		// } else {
 		// baseColor = new float[] { 0.3f, 0.3f, 0.3f, 1f };

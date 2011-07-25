@@ -1,6 +1,6 @@
 package org.caleydo.view.bookmark;
 
-import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.util.collection.UniqueList;
 
@@ -10,14 +10,14 @@ import org.caleydo.core.util.collection.UniqueList;
  * 
  * @author Alexander Lex
  */
-class StorageBookmarkContainer extends ABookmarkContainer<StorageSelectionManager> {
+class DimensionBookmarkContainer extends ABookmarkContainer<DimensionSelectionManager> {
 
-	StorageBookmarkContainer(GLBookmarkView manager) {
-		super(manager, manager.getDataDomain().getStorageIDCategory(), manager
-				.getDataDomain().getPrimaryStorageMappingType());
+	DimensionBookmarkContainer(GLBookmarkView manager) {
+		super(manager, manager.getDataDomain().getDimensionIDCategory(), manager
+				.getDataDomain().getPrimaryDimensionMappingType());
 		bookmarkItems = new UniqueList<ABookmark>();
 
-		selectionManager = manager.getDataDomain().getStorageSelectionManager();
+		selectionManager = manager.getDataDomain().getDimensionSelectionManager();
 
 	}
 
@@ -31,7 +31,7 @@ class StorageBookmarkContainer extends ABookmarkContainer<StorageSelectionManage
 			} else
 				throw new IllegalStateException("Can not handle strings for experiments");
 
-			StorageBookmark bookmark = new StorageBookmark(manager, this, internalIDType,
+			DimensionBookmark bookmark = new DimensionBookmark(manager, this, internalIDType,
 					id, manager.getMinSizeTextRenderer());
 			if (bookmarkItems.add(bookmark))
 				containerLayout.append(bookmark.getLayout());

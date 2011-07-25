@@ -19,7 +19,7 @@ public class CmdCreateIDType
 	extends ACmdCreational<IDType> {
 
 	private String typeName;
-	private DimensionType storageType;
+	private DimensionType dimensionType;
 	private IDCategory idCategory;
 
 	/**
@@ -35,7 +35,7 @@ public class CmdCreateIDType
 	@Override
 	public void doCommand() {
 
-		createdObject = IDType.registerType(typeName, idCategory, storageType);
+		createdObject = IDType.registerType(typeName, idCategory, dimensionType);
 
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Created ID Type " + createdObject));
 	}
@@ -50,13 +50,13 @@ public class CmdCreateIDType
 
 		typeName = detail;
 		idCategory = IDCategory.getIDCategory(attrib1);
-		storageType = DimensionType.valueOf(attrib2);
+		dimensionType = DimensionType.valueOf(attrib2);
 
 	}
 
-	public void setAttributes(String typeName, IDCategory idCategory, DimensionType storageType) {
+	public void setAttributes(String typeName, IDCategory idCategory, DimensionType dimensionType) {
 		this.typeName = typeName;
 		this.idCategory = idCategory;
-		this.storageType = storageType;
+		this.dimensionType = dimensionType;
 	}
 }

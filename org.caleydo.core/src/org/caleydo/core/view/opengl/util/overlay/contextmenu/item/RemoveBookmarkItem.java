@@ -17,9 +17,9 @@ public class RemoveBookmarkItem
 	extends AContextMenuItem {
 
 	/**
-	 * Constructor which takes a single storage index.
+	 * Constructor which takes a single dimension index.
 	 * 
-	 * @param iStorageIndex
+	 * @param iDimensionIndex
 	 */
 	public RemoveBookmarkItem(IDType idType, int id) {
 		super();
@@ -32,9 +32,9 @@ public class RemoveBookmarkItem
 	}
 
 	/**
-	 * Constructor which takes an array of storage indices.
+	 * Constructor which takes an array of dimension indices.
 	 * 
-	 * @param alStorageIndex
+	 * @param alDimensionIndex
 	 */
 	public RemoveBookmarkItem(IDType idType, ArrayList<Integer> ids) {
 		super();

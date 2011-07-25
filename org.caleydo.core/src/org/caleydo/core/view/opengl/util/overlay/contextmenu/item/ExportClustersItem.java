@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
 import org.caleydo.core.manager.event.view.group.ExportContentGroupsEvent;
-import org.caleydo.core.manager.event.view.group.ExportStorageGroupsEvent;
+import org.caleydo.core.manager.event.view.group.ExportDimensionGroupsEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -37,7 +37,7 @@ public class ExportClustersItem
 			registerEvent(exportGroupEvent);
 		}
 		else {
-			ExportStorageGroupsEvent exportGroupEvent = new ExportStorageGroupsEvent();
+			ExportDimensionGroupsEvent exportGroupEvent = new ExportDimensionGroupsEvent();
 			exportGroupEvent.setSender(this);
 			registerEvent(exportGroupEvent);
 		}

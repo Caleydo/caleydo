@@ -90,7 +90,7 @@ public class SelectionManager
 	}
 
 	/**
-	 * Returns the id type the storage is handling.
+	 * Returns the id type the dimension is handling.
 	 * 
 	 * @return
 	 */

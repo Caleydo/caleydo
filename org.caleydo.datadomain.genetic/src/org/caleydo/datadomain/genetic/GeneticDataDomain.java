@@ -26,7 +26,7 @@ import org.caleydo.core.manager.datadomain.ReplaceContentVAInUseCaseListener;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.ReplaceDimensionVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
@@ -80,7 +80,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
 		primaryContentMappingType = IDType.getIDType("DAVID");
 		humanReadableContentIDType = IDType.getIDType("GENE_SYMBOL");
-		humanReadableStorageIDType = IDType.getIDType("STORAGE");
+		humanReadableDimensionIDType = IDType.getIDType("STORAGE");
 
 		pathwayViewerMode = false;
 		contentLabelSingular = "gene";
@@ -145,7 +145,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 				if ((setDavidIDs != null && !setDavidIDs.isEmpty())) {
 					iDavidID = (Integer) setDavidIDs.toArray()[0];
 				}
-				// GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
+				// GeneticIDMappingHelper.get().getDavidIDFromDimensionIndex(iCount);
 
 				if (iDavidID == null) {
 					// generalManager.getLogger().log(new Status(Status.WARNING,
@@ -235,7 +235,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		// System.out
 		// .println("TODO Convert and re-send selection from clinical to genetic");
 
-		if (delta.getIDType() == storageIDType) {
+		if (delta.getIDType() == dimensionIDType) {
 			// for(ISeldelta)
 			SelectionUpdateEvent resendEvent = new SelectionUpdateEvent();
 			resendEvent.setDataDomainID(this.dataDomainID);
@@ -266,19 +266,19 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 			String vaType, ContentVirtualArray virtualArray) {
 
 		if (dataDomainType.equals(CLINICAL_DATADOMAIN_TYPE)) {
-			DimensionVirtualArray newStorageVirtualArray = new DimensionVirtualArray();
+			DimensionVirtualArray newDimensionVirtualArray = new DimensionVirtualArray();
 
 			for (Integer clinicalContentIndex : virtualArray) {
 				Integer converteID = convertClinicalExperimentToGeneticExperiment(clinicalContentIndex);
 				if (converteID != null)
-					newStorageVirtualArray.append(converteID);
+					newDimensionVirtualArray.append(converteID);
 
 			}
 
 			ReplaceDimensionVAInUseCaseEvent event = new ReplaceDimensionVAInUseCaseEvent();
 			event.setDataDomainID(this.dataDomainID);
 			event.setVAType(DataTable.DIMENSION);
-			event.setVirtualArray(newStorageVirtualArray);
+			event.setVirtualArray(newDimensionVirtualArray);
 
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 		}
@@ -291,21 +291,21 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		// FIXME - this is a hack for one special dataset (asslaber)
 		DataTable clinicalSet = ((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 				CLINICAL_DATADOMAIN_TYPE)).getDataTable();
-		int storageID = clinicalSet.getStorageData(DataTable.DIMENSION).getStorageVA().get(1);
+		int dimensionID = clinicalSet.getDimensionData(DataTable.DIMENSION).getDimensionVA().get(1);
 
-		NominalDimension clinicalStorage = (NominalDimension<String>) clinicalSet
-				.get(storageID);
-		DimensionVirtualArray origianlGeneticStorageVA = table.getStorageData(DataTable.DIMENSION)
-				.getStorageVA();
+		NominalDimension clinicalDimension = (NominalDimension<String>) clinicalSet
+				.get(dimensionID);
+		DimensionVirtualArray origianlGeneticDimensionVA = table.getDimensionData(DataTable.DIMENSION)
+				.getDimensionVA();
 
-		String label = (String) clinicalStorage.getRaw(clinicalContentIndex);
+		String label = (String) clinicalDimension.getRaw(clinicalContentIndex);
 
 		label = label.replace("\"", "");
 		// System.out.println(label);
 
-		for (Integer storageIndex : origianlGeneticStorageVA) {
-			if (label.equals(table.get(storageIndex).getLabel()))
-				return storageIndex;
+		for (Integer dimensionIndex : origianlGeneticDimensionVA) {
+			if (label.equals(table.get(dimensionIndex).getLabel()))
+				return dimensionIndex;
 		}
 
 		return null;
@@ -315,7 +315,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	public void handleForeignSelectionCommand(String dataDomainType,
 			IDCategory idCategory, SelectionCommand selectionCommand) {
 
-		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE && idCategory == storageIDCategory) {
+		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE && idCategory == dimensionIDCategory) {
 			SelectionCommandEvent newCommandEvent = new SelectionCommandEvent();
 			newCommandEvent.setSelectionCommand(selectionCommand);
 			newCommandEvent.setIDCategory(idCategory);
@@ -378,6 +378,6 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	@Override
 	protected void assignIDCategories() {
 		contentIDCategory = IDCategory.getIDCategory("GENE");
-		storageIDCategory = IDCategory.getIDCategory("EXPERIMENT");
+		dimensionIDCategory = IDCategory.getIDCategory("EXPERIMENT");
 	}
 }

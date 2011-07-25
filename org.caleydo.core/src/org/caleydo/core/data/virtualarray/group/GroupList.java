@@ -23,7 +23,7 @@ import org.caleydo.core.util.clusterer.ClusterHelper;
  * @author Alexander Lex
  */
 @XmlType
-@XmlSeeAlso({ ContentGroupList.class, StorageGroupList.class })
+@XmlSeeAlso({ ContentGroupList.class, DimensionGroupList.class })
 public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA, VADelta>, VA extends VirtualArray<?, ?, ?>, VADelta extends VirtualArrayDelta<?>>
 	implements Iterable<Group>
 // implements IGroupList<ConcreteType, VA, VADelta> {
@@ -557,7 +557,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	}
 
 	public ArrayList<Float> determineRepresentativeElement(DataTable set, ContentVirtualArray contentVA,
-		DimensionVirtualArray storageVA, int iGroupNr, boolean bGeneGroup) {
+		DimensionVirtualArray dimensionVA, int iGroupNr, boolean bGeneGroup) {
 
 		ArrayList<Float> representative = new ArrayList<Float>();
 
@@ -570,11 +570,11 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 		float[] fArExpressionValues = null;
 
 		if (bGeneGroup) {
-			for (Integer iStorageIndex : storageVA) {
+			for (Integer iDimensionIndex : dimensionVA) {
 				fArExpressionValues = new float[iNrElementsInGroup];
 				for (int index = 0; index < iNrElementsInGroup; index++) {
 					fArExpressionValues[index] +=
-						set.get(iStorageIndex).getFloat(DataRepresentation.NORMALIZED,
+						set.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED,
 							contentVA.get(iOffset + index));
 				}
 				representative.add(ClusterHelper.arithmeticMean(fArExpressionValues));
@@ -585,7 +585,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 				fArExpressionValues = new float[iNrElementsInGroup];
 				for (int index = 0; index < iNrElementsInGroup; index++) {
 					fArExpressionValues[index] +=
-						set.get(storageVA.get(iOffset + index)).getFloat(DataRepresentation.NORMALIZED,
+						set.get(dimensionVA.get(iOffset + index)).getFloat(DataRepresentation.NORMALIZED,
 							iContentIndex);
 				}
 				representative.add(ClusterHelper.arithmeticMean(fArExpressionValues));

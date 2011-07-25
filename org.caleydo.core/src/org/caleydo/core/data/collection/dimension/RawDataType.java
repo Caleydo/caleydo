@@ -1,16 +1,16 @@
 package org.caleydo.core.data.collection.dimension;
 
 /**
- * The datatype of the raw storage
+ * The datatype of the raw dimension
  * 
  * @author Alexander Lex
  */
 public enum RawDataType {
-	// For generic Nominal Storages
+	// For generic Nominal Dimensions
 	OBJECT,
-	// For generic Numerical Storages
+	// For generic Numerical Dimensions
 	NUMBER,
-	// For String Nominal Storages
+	// For String Nominal Dimensions
 	STRING,
 	// Primitive Float
 	FLOAT,

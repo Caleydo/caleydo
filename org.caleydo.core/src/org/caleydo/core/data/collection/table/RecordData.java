@@ -12,7 +12,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
- * Fixme: consolidate this and StorageData
+ * Fixme: consolidate this and DimensionData
  * 
  * @author Alexander Lex
  */

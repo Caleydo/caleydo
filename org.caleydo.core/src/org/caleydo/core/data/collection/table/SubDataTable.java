@@ -12,9 +12,9 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
  * <p>
- * A MetaSet is a set containing a sub-set of storages of a root set. Therefore, every MetaSet is associated
- * with a root set. The sub set is defined through the storageTree of a root set. The subset is defined by a
- * storage tree and a ClusterNode (which is part of the tree). The metaSet manages all storages which are
+ * A MetaSet is a set containing a sub-set of dimensions of a root set. Therefore, every MetaSet is associated
+ * with a root set. The sub set is defined through the dimensionTree of a root set. The subset is defined by a
+ * dimension tree and a ClusterNode (which is part of the tree). The metaSet manages all dimensions which are
  * below or at the level of the ClusterNode.
  * </p>
  * <p>
@@ -33,7 +33,7 @@ public class SubDataTable
 	// }
 
 	@SuppressWarnings("unchecked")
-	public SubDataTable(DataTable originalSet, ClusterTree storageTree, ClusterNode storageTreeRoot) {
+	public SubDataTable(DataTable originalSet, ClusterTree dimensionTree, ClusterNode dimensionTreeRoot) {
 		super();
 		this.dataDomain = originalSet.getDataDomain();
 		// init();
@@ -51,14 +51,14 @@ public class SubDataTable
 		this.hashDimensions = new HashMap<Integer, ADimension>();
 
 		defaultDimensionData = new DimensionData();
-		defaultDimensionData.setStorageVA(new DimensionVirtualArray(DIMENSION));
-		defaultDimensionData.setStorageTree(storageTree);
-		defaultDimensionData.setStorageTreeRoot(storageTreeRoot);
+		defaultDimensionData.setDimensionVA(new DimensionVirtualArray(DIMENSION));
+		defaultDimensionData.setDimensionTree(dimensionTree);
+		defaultDimensionData.setDimensionTreeRoot(dimensionTreeRoot);
 
 		hashDimensionData = new HashMap<String, DimensionData>();
 		hashDimensionData.put(DIMENSION, defaultDimensionData.clone());
 
-		defaultDimensionData.setStorageVA(new DimensionVirtualArray(DIMENSION));
+		defaultDimensionData.setDimensionVA(new DimensionVirtualArray(DIMENSION));
 		statisticsResult = new StatisticsResult(this);
 
 		metaData = new MetaData(this);

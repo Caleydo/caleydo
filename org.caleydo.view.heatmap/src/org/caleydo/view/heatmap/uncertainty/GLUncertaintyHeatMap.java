@@ -489,16 +489,16 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 			contentVAType = DataTable.RECORD;
 
 		contentVA = dataDomain.getContentVA(contentVAType);
-		storageVA = dataDomain.getStorageVA(storageVAType);
+		dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
 
 		// In case of importing group info
 		// if (set.isGeneClusterInfo())
 		// contentVA.setGroupList(set.getContentGroupList());
 		// if (set.isExperimentClusterInfo())
-		// storageVA.setGroupList(set.getStorageGroupList());
+		// dimensionVA.setGroupList(set.getDimensionGroupList());
 
 		contentSelectionManager.setVA(contentVA);
-		storageSelectionManager.setVA(storageVA);
+		dimensionSelectionManager.setVA(dimensionVA);
 		setDisplayListDirty();
 	}
 

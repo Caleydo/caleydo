@@ -42,7 +42,7 @@ public class BarPlotRenderer extends AContentRenderer {
 		}
 
 		contentSpacing.calculateContentSpacing(contentElements, heatMap
-				.getStorageVA().size(), parameters.getSizeScaledX(), parameters
+				.getDimensionVA().size(), parameters.getSizeScaledX(), parameters
 				.getSizeScaledY(), heatMapTemplate.getMinSelectedFieldHeight());
 		heatMapTemplate.setContentSpacing(contentSpacing);
 
@@ -141,7 +141,7 @@ public class BarPlotRenderer extends AContentRenderer {
 		float unCertainWidth = fFieldWidth * (uncertainty);
 
 		// gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
-		// EPickingType.HEAT_MAP_STORAGE_SELECTION, iStorageIndex));
+		// EPickingType.HEAT_MAP_STORAGE_SELECTION, iDimensionIndex));
 		// gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
 		// EPickingType.HEAT_MAP_LINE_SELECTION, iContentIndex));
 
@@ -197,8 +197,8 @@ public class BarPlotRenderer extends AContentRenderer {
 		return 0;
 	}
 
-	public float getXCoordinateByStorageIndex(int storageIndex) {
-		return contentSpacing.getFieldWidth() * storageIndex;
+	public float getXCoordinateByDimensionIndex(int dimensionIndex) {
+		return contentSpacing.getFieldWidth() * dimensionIndex;
 	}
 
 	@Override

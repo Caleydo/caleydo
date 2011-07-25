@@ -153,23 +153,23 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		// && set2.getStatisticsResult().getFoldChangeResult(set1) != null)
 		// return;
 
-		NumericalDimension meanStorageVec1 = set1.getMeanStorage();
-		NumericalDimension meanStorageVec2 = set2.getMeanStorage();
+		NumericalDimension meanDimensionVec1 = set1.getMeanDimension();
+		NumericalDimension meanDimensionVec2 = set2.getMeanDimension();
 
-		double[] meanStorage1 = new double[meanStorageVec1.size()];
-		for (int contentIndex = 0; contentIndex < meanStorageVec1.size(); contentIndex++) {
-			meanStorage1[contentIndex] = meanStorageVec1.getFloat(
+		double[] meanDimension1 = new double[meanDimensionVec1.size()];
+		for (int contentIndex = 0; contentIndex < meanDimensionVec1.size(); contentIndex++) {
+			meanDimension1[contentIndex] = meanDimensionVec1.getFloat(
 					DataRepresentation.RAW, contentIndex);
 		}
 
-		double[] meanStorage2 = new double[meanStorageVec2.size()];
-		for (int contentIndex = 0; contentIndex < meanStorageVec2.size(); contentIndex++) {
-			meanStorage2[contentIndex] = meanStorageVec2.getFloat(
+		double[] meanDimension2 = new double[meanDimensionVec2.size()];
+		for (int contentIndex = 0; contentIndex < meanDimensionVec2.size(); contentIndex++) {
+			meanDimension2[contentIndex] = meanDimensionVec2.getFloat(
 					DataRepresentation.RAW, contentIndex);
 		}
 
-		engine.assign("set_1", meanStorage1);
-		engine.assign("set_2", meanStorage2);
+		engine.assign("set_1", meanDimension1);
+		engine.assign("set_2", meanDimension2);
 		engine.eval("library(\"gtools\")");
 		REXP foldChangeResult = engine.eval("foldchange(set_1,set_2)");
 //		System.out.println("Fold change result: " + foldChangeResult);
@@ -236,14 +236,14 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 			for (int contentIndex = 0; contentIndex < contentVA.size(); contentIndex++) {
 
-				DimensionVirtualArray storageVA1 = set.getStorageData(DataTable.DIMENSION)
-						.getStorageVA();
+				DimensionVirtualArray dimensionVA1 = set.getDimensionData(DataTable.DIMENSION)
+						.getDimensionVA();
 
-				double[] compareVec1 = new double[storageVA1.size()];
+				double[] compareVec1 = new double[dimensionVA1.size()];
 
-				int storageCount = 0;
-				for (Integer storageIndex : storageVA1) {
-					compareVec1[storageCount++] = set.get(storageIndex).getFloat(
+				int dimensionCount = 0;
+				for (Integer dimensionIndex : dimensionVA1) {
+					compareVec1[dimensionCount++] = set.get(dimensionIndex).getFloat(
 							DataRepresentation.RAW, contentIndex);
 				}
 
@@ -303,25 +303,25 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		ArrayList<Double> pValueVector = new ArrayList<Double>();
 
 		for (int contentIndex = 0; contentIndex < set1.get(
-				set1.getStorageData(DataTable.DIMENSION).getStorageVA().get(0)).size(); contentIndex++) {
+				set1.getDimensionData(DataTable.DIMENSION).getDimensionVA().get(0)).size(); contentIndex++) {
 
-			DimensionVirtualArray storageVA1 = set1.getStorageData(DataTable.DIMENSION)
-					.getStorageVA();
-			DimensionVirtualArray storageVA2 = set2.getStorageData(DataTable.DIMENSION)
-					.getStorageVA();
+			DimensionVirtualArray dimensionVA1 = set1.getDimensionData(DataTable.DIMENSION)
+					.getDimensionVA();
+			DimensionVirtualArray dimensionVA2 = set2.getDimensionData(DataTable.DIMENSION)
+					.getDimensionVA();
 
-			double[] compareVec1 = new double[storageVA1.size()];
-			double[] compareVec2 = new double[storageVA2.size()];
+			double[] compareVec1 = new double[dimensionVA1.size()];
+			double[] compareVec2 = new double[dimensionVA2.size()];
 
-			int storageCount = 0;
-			for (Integer storageIndex : storageVA1) {
-				compareVec1[storageCount++] = set1.get(storageIndex).getFloat(
+			int dimensionCount = 0;
+			for (Integer dimensionIndex : dimensionVA1) {
+				compareVec1[dimensionCount++] = set1.get(dimensionIndex).getFloat(
 						DataRepresentation.RAW, contentIndex);
 			}
 
-			storageCount = 0;
-			for (Integer storageIndex : storageVA2) {
-				compareVec2[storageCount++] = set2.get(storageIndex).getFloat(
+			dimensionCount = 0;
+			for (Integer dimensionIndex : dimensionVA2) {
+				compareVec2[dimensionCount++] = set2.get(dimensionIndex).getFloat(
 						DataRepresentation.RAW, contentIndex);
 			}
 

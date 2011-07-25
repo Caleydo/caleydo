@@ -39,19 +39,19 @@ public class CmdDataCreateDimension
 		//generalManager.getIDCreator().mapInternalToExternalID(createdObject.getID(), externalID);
 
 		// generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-		// "Created Storage with ID: " + createdObject.getID()));
+		// "Created Dimension with ID: " + createdObject.getID()));
 	}
 
 	@Override
 	public void undoCommand() {
 	}
 
-	public void setAttributes(ManagedObjectType storageType, int storageID) {
-		this.dimensionType = storageType;
-		this.dimensionID = storageID;
+	public void setAttributes(ManagedObjectType dimensionType, int dimensionID) {
+		this.dimensionType = dimensionType;
+		this.dimensionID = dimensionID;
 	}
 	
-	public void setAttributes(ManagedObjectType storageType) {
-		this.dimensionType = storageType;
+	public void setAttributes(ManagedObjectType dimensionType) {
+		this.dimensionType = dimensionType;
 	}
 }

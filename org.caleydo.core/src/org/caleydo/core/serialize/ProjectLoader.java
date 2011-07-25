@@ -135,21 +135,21 @@ public class ProjectLoader {
 					// contentVAMap.put(type, loadContentVirtualArray(unmarshaller, dirName, type));
 					// }
 
-					HashMap<String, DimensionVirtualArray> storageVAMap =
+					HashMap<String, DimensionVirtualArray> dimensionVAMap =
 						new HashMap<String, DimensionVirtualArray>(2);
 
-					String tempStorageType = DataTable.DIMENSION;
-					storageVAMap.put(tempStorageType,
-						loadStorageVirtualArray(unmarshaller, extendedDirName, tempStorageType));
+					String tempDimensionType = DataTable.DIMENSION;
+					dimensionVAMap.put(tempDimensionType,
+						loadDimensionVirtualArray(unmarshaller, extendedDirName, tempDimensionType));
 
 					// FIXME: this should be done like this:
-					// for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
-					// storageVAMap.put(type, loadStorageVirtualArray(unmarshaller, dirName, type));
+					// for (DimensionVAType type : DimensionVAType.getRegisteredVATypes()) {
+					// dimensionVAMap.put(type, loadDimensionVirtualArray(unmarshaller, dirName, type));
 					// }
 
 					dataInitializationData.setDataDomain((ATableBasedDataDomain) dataDomain);
 					dataInitializationData.setContentVAMap(contentVAMap);
-					dataInitializationData.setStorageVAMap(storageVAMap);
+					dataInitializationData.setDimensionVAMap(dimensionVAMap);
 
 					dataDomain.getLoadDataParameters().setGeneTreeFileName(
 						extendedDirName + ProjectSaver.GENE_TREE_FILE_NAME);
@@ -235,7 +235,7 @@ public class ProjectLoader {
 		return va;
 	}
 
-	private DimensionVirtualArray loadStorageVirtualArray(Unmarshaller unmarshaller, String dir, String type)
+	private DimensionVirtualArray loadDimensionVirtualArray(Unmarshaller unmarshaller, String dir, String type)
 		throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
 		DimensionVirtualArray va = (DimensionVirtualArray) unmarshaller.unmarshal(new File(fileName));

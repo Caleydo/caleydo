@@ -22,7 +22,7 @@ import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 @XmlRootElement
 @XmlType
 public class ReplaceDimensionVAInUseCaseEvent
-	extends ReplaceStorageVAEvent {
+	extends ReplaceDimensionVAEvent {
 
 	public ReplaceDimensionVAInUseCaseEvent() {
 		// nothing to initialize here

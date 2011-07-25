@@ -3,7 +3,7 @@ package org.caleydo.view.parcoords.toolbar;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.action.AToolBarAction;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.storagebased.ApplyCurrentSelectionToVirtualArrayEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.ApplyCurrentSelectionToVirtualArrayEvent;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
@@ -11,7 +11,7 @@ import org.eclipse.ui.PlatformUI;
 public class SaveSelectionsAction extends AToolBarAction implements IToolBarItem {
 
 	public static final String TEXT = "Save Selections";
-	public static final String ICON = "resources/icons/view/storagebased/parcoords/save_selections.png";
+	public static final String ICON = "resources/icons/view/dimensionbased/parcoords/save_selections.png";
 
 	/**
 	 * Constructor.

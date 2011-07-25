@@ -11,13 +11,13 @@ public class IDType {
 	private String typeName;
 	private IDCategory idCategory;
 
-	private DimensionType storageType;
+	private DimensionType dimensionType;
 
 	/** flag determining whether a type is internal only (true), or publicly known (eg refseq) */
 	private boolean isInternalType = false;
 
 	/**
-	 * Constructor for de-serialization only. Use {@link #registerType(String, IDCategory, EStorageType)} to
+	 * Constructor for de-serialization only. Use {@link #registerType(String, IDCategory, EDimensionType)} to
 	 * create a new IDType.
 	 */
 //	public IDType() {
@@ -37,23 +37,23 @@ public class IDType {
 	 * 
 	 * @param idCategory
 	 */
-	public void setStorageType(DimensionType storageType) {
-		this.storageType = storageType;
+	public void setDimensionType(DimensionType dimensionType) {
+		this.dimensionType = dimensionType;
 	}
 
-	private IDType(String typeName, IDCategory idCategory, DimensionType storageType) {
+	private IDType(String typeName, IDCategory idCategory, DimensionType dimensionType) {
 		this.typeName = typeName;
 		this.idCategory = idCategory;
-		this.storageType = storageType;
+		this.dimensionType = dimensionType;
 
 	}
 
-	public static IDType registerType(String typeName, IDCategory idCategory, DimensionType storageType) {
+	public static IDType registerType(String typeName, IDCategory idCategory, DimensionType dimensionType) {
 
 		if (registeredTypes.containsKey(typeName))
 			return registeredTypes.get(typeName);
 
-		IDType idType = new IDType(typeName, idCategory, storageType);
+		IDType idType = new IDType(typeName, idCategory, dimensionType);
 		registeredTypes.put(typeName, idType);
 
 		return idType;
@@ -71,8 +71,8 @@ public class IDType {
 		this.typeName = typeName;
 	}
 
-	public DimensionType getStorageType() {
-		return storageType;
+	public DimensionType getDimensionType() {
+		return dimensionType;
 	}
 
 	public boolean isInternalType() {

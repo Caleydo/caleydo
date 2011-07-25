@@ -17,12 +17,12 @@ public class Uncertainty {
 	private MetaData metaData;
 
 	/**
-	 * the uncertainties for the whole storage aggregated across the storageVA based on the normalized
+	 * the uncertainties for the whole dimension aggregated across the dimensionVA based on the normalized
 	 * uncertainty values
 	 */
 	private float[] aggregatedNormalizedUncertainties;
 	/**
-	 * the uncertainties for the whole storage aggregated across the storageVA based on the raw uncertainty
+	 * the uncertainties for the whole dimension aggregated across the dimensionVA based on the raw uncertainty
 	 * values
 	 */
 	private float[] aggregatedRawUncertainties;
@@ -64,10 +64,10 @@ public class Uncertainty {
 
 	public void calculateNormalizedAverageUncertainty(float invalidThreshold, float validThreshold) {
 
-		for (ADimension storage : table.hashDimensions.values()) {
+		for (ADimension dimension : table.hashDimensions.values()) {
 
-			if (storage instanceof NumericalDimension)
-				((NumericalDimension) storage).normalizeUncertainty(invalidThreshold, validThreshold);
+			if (dimension instanceof NumericalDimension)
+				((NumericalDimension) dimension).normalizeUncertainty(invalidThreshold, validThreshold);
 		}
 
 		aggregatedNormalizedUncertainties = new float[metaData.depth()];
@@ -96,30 +96,30 @@ public class Uncertainty {
 
 	private float calcualteAverageUncertainty(int contentIndex, DataRepresentation dataRepresentation) {
 		float uncertaintySum = 0;
-		DimensionVirtualArray storageVA = table.hashDimensionData.get(DataTable.DIMENSION).getStorageVA();
-		for (Integer storageID : storageVA) {
+		DimensionVirtualArray dimensionVA = table.hashDimensionData.get(DataTable.DIMENSION).getDimensionVA();
+		for (Integer dimensionID : dimensionVA) {
 			try {
 				uncertaintySum +=
-					table.hashDimensions.get(storageID).getFloat(dataRepresentation, contentIndex);
+					table.hashDimensions.get(dimensionID).getFloat(dataRepresentation, contentIndex);
 			}
 			catch (Exception e) {
-				System.out.println("storageID: " + storageID);
+				System.out.println("dimensionID: " + dimensionID);
 			}
 		}
-		return uncertaintySum / storageVA.size();
+		return uncertaintySum / dimensionVA.size();
 	}
 
 	@SuppressWarnings("unused")
 	private float calculateMaxUncertainty(int contentIndex, DataRepresentation dataRepresentation) {
 		float maxUncertainty = Float.MAX_VALUE;
-		for (Integer storageID : table.hashDimensionData.get(DataTable.DIMENSION).getStorageVA()) {
+		for (Integer dimensionID : table.hashDimensionData.get(DataTable.DIMENSION).getDimensionVA()) {
 			float cellUncertainty = 0;
 			try {
 				cellUncertainty =
-					table.hashDimensions.get(storageID).getFloat(dataRepresentation, contentIndex);
+					table.hashDimensions.get(dimensionID).getFloat(dataRepresentation, contentIndex);
 			}
 			catch (Exception e) {
-				System.out.println("storageID: " + storageID);
+				System.out.println("dimensionID: " + dimensionID);
 
 			}
 			if (cellUncertainty < maxUncertainty) {

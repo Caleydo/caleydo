@@ -540,7 +540,7 @@ public class GLPathwayContentCreator {
 			short[][] shArCoords = vertexRep.getCoords();
 
 			gl.glLineWidth(3);
-			if (bEnableGeneMapping && glPathwayView.iCurrentStorageIndex != -1) {
+			if (bEnableGeneMapping && glPathwayView.iCurrentDimensionIndex != -1) {
 
 				tmpNodeColor = determineNodeColor(vertexRep);
 				gl.glLineWidth(4);
@@ -674,7 +674,7 @@ public class GLPathwayContentCreator {
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
 			gl.glLineWidth(1);
-			if (bEnableGeneMapping && glPathwayView.iCurrentStorageIndex != -1) {
+			if (bEnableGeneMapping && glPathwayView.iCurrentDimensionIndex != -1) {
 
 				tmpNodeColor = determineNodeColor(vertexRep);
 
@@ -884,12 +884,12 @@ public class GLPathwayContentCreator {
 				return null;
 			for (Integer iExpressionIndex : ids) {
 
-				ADimension storage = geneticDataDomain.getDataTable().get(
-						glPathwayView.iCurrentStorageIndex);
-				if (storage == null)
-					throw new IllegalStateException("No storage in this set with id: "
-							+ glPathwayView.iCurrentStorageIndex);
-				float expressionValue = storage.getFloat(DataRepresentation.NORMALIZED,
+				ADimension dimension = geneticDataDomain.getDataTable().get(
+						glPathwayView.iCurrentDimensionIndex);
+				if (dimension == null)
+					throw new IllegalStateException("No dimension in this set with id: "
+							+ glPathwayView.iCurrentDimensionIndex);
+				float expressionValue = dimension.getFloat(DataRepresentation.NORMALIZED,
 						iExpressionIndex);
 
 				return colorMapper.getColor(expressionValue);

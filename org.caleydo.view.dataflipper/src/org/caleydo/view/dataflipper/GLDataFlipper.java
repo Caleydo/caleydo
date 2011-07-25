@@ -1667,13 +1667,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID(dataDomainType)).getDataTable()
-					.getStorageData(DataTable.DIMENSION).getStorageVA().size();
+					.getDimensionData(DataTable.DIMENSION).getDimensionVA().size();
 			if (numberOfPatients > 40)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
 			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID("org.caleydo.datadomain.genetic")).getDataTable()
-					.getStorageData(DataTable.DIMENSION).getStorageVA().size();
+					.getDimensionData(DataTable.DIMENSION).getDimensionVA().size();
 			if (numberOfPatients > 20)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.pathway")) {
@@ -1882,7 +1882,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private String determineViewIconPath(String viewName) {
 
 		if (viewName.equals("org.caleydo.analytical.clustering"))
-			return "resources/icons/view/storagebased/clustering.png";
+			return "resources/icons/view/dimensionbased/clustering.png";
 
 		viewName = viewName.replace("org.caleydo.view.", "");
 
@@ -1898,7 +1898,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		String subfolder = "";
 		if (viewName.contains("parcoords") || viewName.contains("heatmap"))
-			subfolder = "storagebased/";
+			subfolder = "dimensionbased/";
 
 		return "resources/icons/view/" + subfolder + viewName + "/" + viewName + ".png";
 	}

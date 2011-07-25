@@ -21,7 +21,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -60,9 +60,9 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 	public final static int MIN_NUMBER_PIXELS_PER_DIMENSION = 100;
 
-	private DimensionVirtualArray clippedStorageVA;
-	private int firstStorageIndex = -1;
-	private int lastStorageIndex = -1;
+	private DimensionVirtualArray clippedDimensionVA;
+	private int firstDimensionIndex = -1;
+	private int lastDimensionIndex = -1;
 
 	private TagCloudRenderStyle renderStyle;
 
@@ -95,13 +95,13 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	Button nextButton = new Button(PickingType.TAG_DIMENSION_CHANGE, BUTTON_NEXT_ID,
 			EIconTextures.HEAT_MAP_ARROW);
 
-	// private StorageSelectionManager storageSelectionManager;
+	// private DimensionSelectionManager dimensionSelectionManager;
 
 	/**
-	 * Hash map mapping a storage ID to a hash map of occurring strings in the
-	 * storage to the count on how many occurences of this string are contained
+	 * Hash map mapping a dimension ID to a hash map of occurring strings in the
+	 * dimension to the count on how many occurences of this string are contained
 	 */
-	private HashMap<Integer, HashMap<String, Integer>> stringOccurencesPerStorage = new HashMap<Integer, HashMap<String, Integer>>();
+	private HashMap<Integer, HashMap<String, Integer>> stringOccurencesPerDimension = new HashMap<Integer, HashMap<String, Integer>>();
 
 	/**
 	 * Constructor.
@@ -129,34 +129,34 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 			set = dataDomain.getDataTable();
 		if (contentVA == null)
 			contentVA = set.getContentData(DataTable.RECORD).getContentVA();
-		if (storageVA == null)
-			storageVA = set.getStorageData(DataTable.DIMENSION).getStorageVA();
+		if (dimensionVA == null)
+			dimensionVA = set.getDimensionData(DataTable.DIMENSION).getDimensionVA();
 		if (contentSelectionManager == null)
 			contentSelectionManager = dataDomain.getContentSelectionManager();
 
-		for (Integer storageID : storageVA) {
+		for (Integer dimensionID : dimensionVA) {
 			HashMap<String, Integer> stringOccurences = new HashMap<String, Integer>();
-			stringOccurencesPerStorage.put(storageID, stringOccurences);
-			ADimension genericStorage = set.get(storageID);
-			NumericalDimension numericalStorage = null;
-			NominalDimension<String> storage = null;
-			boolean isNumericalStorage = false;
-			if (genericStorage instanceof NumericalDimension) {
-				isNumericalStorage = true;
-				numericalStorage = (NumericalDimension) genericStorage;
+			stringOccurencesPerDimension.put(dimensionID, stringOccurences);
+			ADimension genericDimension = set.get(dimensionID);
+			NumericalDimension numericalDimension = null;
+			NominalDimension<String> dimension = null;
+			boolean isNumericalDimension = false;
+			if (genericDimension instanceof NumericalDimension) {
+				isNumericalDimension = true;
+				numericalDimension = (NumericalDimension) genericDimension;
 			}
-			if (genericStorage instanceof NominalDimension<?>) {
-				storage = (NominalDimension<String>) genericStorage;
-				isNumericalStorage = false;
+			if (genericDimension instanceof NominalDimension<?>) {
+				dimension = (NominalDimension<String>) genericDimension;
+				isNumericalDimension = false;
 			}
 
 			for (Integer contentID : contentVA) {
 				String string = null;
-				if (isNumericalStorage) {
-					string = new Float(numericalStorage.getFloat(DataRepresentation.RAW,
+				if (isNumericalDimension) {
+					string = new Float(numericalDimension.getFloat(DataRepresentation.RAW,
 							contentID)).toString();
 				} else {
-					string = storage.getRaw(contentID);
+					string = dimension.getRaw(contentID);
 				}
 				if (string.isEmpty() || string.equals("NaN"))
 					string = "???";
@@ -173,37 +173,37 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	private void initMapping() {
-		if (stringOccurencesPerStorage.isEmpty()) {
+		if (stringOccurencesPerDimension.isEmpty()) {
 			initData();
 		}
 		Row baseRow = new Row("baseRow");
 		layoutTemplate.setBaseElementLayout(baseRow);
 		baseColumn = new Column("baseColumn");
 
-		DimensionVirtualArray visibleStorageVA;
+		DimensionVirtualArray visibleDimensionVA;
 
 		int numberOfVisibleDimensions = pixelGLConverter
 				.getPixelWidthForGLWidth(viewFrustum.getWidth())
 				/ MIN_NUMBER_PIXELS_PER_DIMENSION;
 
-		if (storageVA.size() > numberOfVisibleDimensions) {
-			if (clippedStorageVA == null) {
-				clippedStorageVA = new DimensionVirtualArray();
+		if (dimensionVA.size() > numberOfVisibleDimensions) {
+			if (clippedDimensionVA == null) {
+				clippedDimensionVA = new DimensionVirtualArray();
 
-				firstStorageIndex = 0;
-				lastStorageIndex = numberOfVisibleDimensions - 1;
+				firstDimensionIndex = 0;
+				lastDimensionIndex = numberOfVisibleDimensions - 1;
 				for (int count = 0; count < numberOfVisibleDimensions; count++) {
-					clippedStorageVA.append(storageVA.get(count));
+					clippedDimensionVA.append(dimensionVA.get(count));
 
 				}
-			} else if (clippedStorageVA.size() > numberOfVisibleDimensions) {
-				for (int count = clippedStorageVA.size() - 1; count > numberOfVisibleDimensions; count--) {
-					clippedStorageVA.remove(count);
-					lastStorageIndex--;
+			} else if (clippedDimensionVA.size() > numberOfVisibleDimensions) {
+				for (int count = clippedDimensionVA.size() - 1; count > numberOfVisibleDimensions; count--) {
+					clippedDimensionVA.remove(count);
+					lastDimensionIndex--;
 				}
 			}
 
-			visibleStorageVA = clippedStorageVA;
+			visibleDimensionVA = clippedDimensionVA;
 
 			Column previousDimensionColumn = new Column("previousDimensionColumn");
 			previousDimensionColumn.setPixelGLConverter(pixelGLConverter);
@@ -242,9 +242,9 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 			baseRow.append(nextDimensionColumn);
 
 		} else {
-			visibleStorageVA = storageVA;
+			visibleDimensionVA = dimensionVA;
 			baseRow.append(baseColumn);
-			clippedStorageVA = null;
+			clippedDimensionVA = null;
 		}
 
 		// baseColumn.setDebug(true);
@@ -285,25 +285,25 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 		// tagCloudRow.setDebug(true);
 
-		for (Integer storageID : visibleStorageVA) {
+		for (Integer dimensionID : visibleDimensionVA) {
 
-			ElementLayout storageCaptionLayout = new ElementLayout("storageCaptionLayout");
-			storageCaptionLayout.setGrabX(true);
+			ElementLayout dimensionCaptionLayout = new ElementLayout("dimensionCaptionLayout");
+			dimensionCaptionLayout.setGrabX(true);
 
-			StorageCaptionRenderer storageCaptionRenderer = new StorageCaptionRenderer(
-					textRenderer, set.get(storageID).getLabel());
-			storageCaptionLayout.setRenderer(storageCaptionRenderer);
-			// storageCaptionLayout.setDebug(true);
+			DimensionCaptionRenderer dimensionCaptionRenderer = new DimensionCaptionRenderer(
+					textRenderer, set.get(dimensionID).getLabel());
+			dimensionCaptionLayout.setRenderer(dimensionCaptionRenderer);
+			// dimensionCaptionLayout.setDebug(true);
 
-			captionRow.append(storageCaptionLayout);
+			captionRow.append(dimensionCaptionLayout);
 
 			sortedContent = new ArrayList<Pair<Integer, String>>();
-			HashMap<String, Integer> stringOccurences = stringOccurencesPerStorage
-					.get(storageID);
+			HashMap<String, Integer> stringOccurences = stringOccurencesPerDimension
+					.get(dimensionID);
 
-			Column storageColumn = new Column();
-			storageColumn.setGrabX(true);
-			tagCloudRow.append(storageColumn);
+			Column dimensionColumn = new Column();
+			dimensionColumn.setGrabX(true);
+			tagCloudRow.append(dimensionColumn);
 			float remainingRatio = 1;
 
 			for (Entry<String, Integer> entry : stringOccurences.entrySet()) {
@@ -350,7 +350,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 					tagRenderer.setAllowTextScaling(true);
 				isEven = !isEven;
 				tagLayout.setRenderer(tagRenderer);
-				storageColumn.append(tagLayout);
+				dimensionColumn.append(tagLayout);
 
 			}
 
@@ -359,7 +359,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 			// selectionTagLayout.setDebug(true);
 			selectionRow.setFrameColor(1, 0, 0, 1);
 			selectionRow.append(selectionTagLayout);
-			TagRenderer tagRenderer = new TagRenderer(textRenderer, this, storageID);
+			TagRenderer tagRenderer = new TagRenderer(textRenderer, this, dimensionID);
 			selectedTagRenderers.add(tagRenderer);
 			selectionTagLayout.setRenderer(tagRenderer);
 
@@ -451,15 +451,15 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 			switch (pickingMode) {
 			case CLICKED:
 				if (externalID == BUTTON_NEXT_ID) {
-					if (lastStorageIndex != storageVA.size() - 1) {
-						firstStorageIndex++;
-						lastStorageIndex++;
+					if (lastDimensionIndex != dimensionVA.size() - 1) {
+						firstDimensionIndex++;
+						lastDimensionIndex++;
 						updateClippedVA();
 					}
 				} else if (externalID == BUTTON_PREVIOUS_ID) {
-					if (firstStorageIndex != 0) {
-						firstStorageIndex--;
-						lastStorageIndex--;
+					if (firstDimensionIndex != 0) {
+						firstDimensionIndex--;
+						lastDimensionIndex--;
 						updateClippedVA();
 					}
 				}
@@ -479,9 +479,9 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	private void updateClippedVA() {
-		clippedStorageVA = new DimensionVirtualArray();
-		for (int count = firstStorageIndex; count <= lastStorageIndex; count++) {
-			clippedStorageVA.append(storageVA.get(count));
+		clippedDimensionVA = new DimensionVirtualArray();
+		for (int count = firstDimensionIndex; count <= lastDimensionIndex; count++) {
+			clippedDimensionVA.append(dimensionVA.get(count));
 		}
 	}
 

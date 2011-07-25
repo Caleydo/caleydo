@@ -19,7 +19,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
-import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;

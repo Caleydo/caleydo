@@ -7,8 +7,8 @@ import org.caleydo.view.heatmap.heatmap.renderer.CaptionCageRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ContentCaptionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ContentSelectionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.StorageCaptionRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.StorageSelectionRenderer;
+import org.caleydo.view.heatmap.heatmap.renderer.DimensionCaptionRenderer;
+import org.caleydo.view.heatmap.heatmap.renderer.DimensionSelectionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.spacing.ContentSpacing;
 
 public abstract class AHeatMapTemplate extends LayoutTemplate {
@@ -16,9 +16,9 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 	
 	protected HeatMapRenderer heatMapRenderer;
 	protected ContentCaptionRenderer contentCaptionRenderer;
-	protected StorageCaptionRenderer storageCaptionRenderer;
+	protected DimensionCaptionRenderer dimensionCaptionRenderer;
 	protected ContentSelectionRenderer contentSelectionRenderer;
-	protected StorageSelectionRenderer storageSelectionRenderer;
+	protected DimensionSelectionRenderer dimensionSelectionRenderer;
 	protected CaptionCageRenderer captionCageRenderer;
 
 	protected GLHeatMap heatMap;
@@ -43,12 +43,12 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 		
 		contentCaptionRenderer = new ContentCaptionRenderer(heatMap);
 		contentCaptionRenderer.setContentSpacing(contentSpacing);
-		storageCaptionRenderer = new StorageCaptionRenderer(heatMap);
-		storageCaptionRenderer.setContentSpacing(contentSpacing);
+		dimensionCaptionRenderer = new DimensionCaptionRenderer(heatMap);
+		dimensionCaptionRenderer.setContentSpacing(contentSpacing);
 		contentSelectionRenderer = new ContentSelectionRenderer(heatMap);
 		contentSelectionRenderer.setContentSpacing(contentSpacing);
-		storageSelectionRenderer = new StorageSelectionRenderer(heatMap);
-		storageSelectionRenderer.setContentSpacing(contentSpacing);
+		dimensionSelectionRenderer = new DimensionSelectionRenderer(heatMap);
+		dimensionSelectionRenderer.setContentSpacing(contentSpacing);
 		captionCageRenderer = new CaptionCageRenderer(heatMap);
 		captionCageRenderer.setContentSpacing(contentSpacing);
 	}
@@ -59,11 +59,11 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 						.getYCoordinateByContentIndex(contentIndex);
 	}
 
-	public Float getXCoordinateByStorageIndex(int storageIndex) {
+	public Float getXCoordinateByDimensionIndex(int dimensionIndex) {
 
 		return heatMapLayout.getTranslateX()
 				+ ((HeatMapRenderer) heatMapLayout.getRenderer())
-						.getXCoordinateByStorageIndex(storageIndex);
+						.getXCoordinateByDimensionIndex(dimensionIndex);
 	}
 
 	public float getElementHeight(int contentID) {
@@ -81,7 +81,7 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 		// return contentSpacing.getNormalFieldHeight();
 	}
 
-	public float getElementWidth(int storageID) {
+	public float getElementWidth(int dimensionID) {
 		return contentSpacing.getFieldWidth();
 	}
 

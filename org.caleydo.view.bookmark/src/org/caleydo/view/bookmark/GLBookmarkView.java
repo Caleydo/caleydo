@@ -17,7 +17,7 @@ import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.RemoveBookmarkEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -401,9 +401,9 @@ public class GLBookmarkView extends AGLView implements
 				geneContainer);
 		bookmarkContainers.add(geneContainer);
 
-		StorageBookmarkContainer experimentContainer = new StorageBookmarkContainer(this);
+		DimensionBookmarkContainer experimentContainer = new DimensionBookmarkContainer(this);
 		mainColumn.append(experimentContainer.getLayout());
-		hashCategoryToBookmarkContainer.put(dataDomain.getStorageIDCategory(),
+		hashCategoryToBookmarkContainer.put(dataDomain.getDimensionIDCategory(),
 				experimentContainer);
 		bookmarkContainers.add(experimentContainer);
 	}

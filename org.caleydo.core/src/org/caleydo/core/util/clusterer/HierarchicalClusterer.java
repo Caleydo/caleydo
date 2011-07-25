@@ -44,7 +44,7 @@ public class HierarchicalClusterer
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
 
-			for (int nr = 0; nr < storageVA.size(); nr++) {
+			for (int nr = 0; nr < dimensionVA.size(); nr++) {
 				buffer.append("@attribute Patient" + nr + " real\n");
 			}
 
@@ -62,8 +62,8 @@ public class HierarchicalClusterer
 						iPercentage++;
 					}
 
-					for (Integer iStorageIndex : storageVA) {
-						buffer.append(set.get(iStorageIndex).getFloat(DataRepresentation.RAW, iContentIndex)
+					for (Integer iDimensionIndex : dimensionVA) {
+						buffer.append(set.get(iDimensionIndex).getFloat(DataRepresentation.RAW, iContentIndex)
 							+ ", ");
 
 					}
@@ -79,7 +79,7 @@ public class HierarchicalClusterer
 			}
 		}
 		else {
-			tree = new ClusterTree(set.getDataDomain().getStorageIDType());
+			tree = new ClusterTree(set.getDataDomain().getDimensionIDType());
 
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
@@ -91,10 +91,10 @@ public class HierarchicalClusterer
 			buffer.append("@data\n");
 
 			int isto = 0;
-			for (Integer iStorageIndex : storageVA) {
+			for (Integer iDimensionIndex : dimensionVA) {
 				if (bClusteringCanceled == false) {
 
-					int tempPercentage = (int) ((float) isto / storageVA.size() * 100);
+					int tempPercentage = (int) ((float) isto / dimensionVA.size() * 100);
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher()
 							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
@@ -102,7 +102,7 @@ public class HierarchicalClusterer
 					}
 
 					for (Integer iContentIndex : contentVA) {
-						buffer.append(set.get(iStorageIndex).getFloat(DataRepresentation.RAW, iContentIndex)
+						buffer.append(set.get(iDimensionIndex).getFloat(DataRepresentation.RAW, iContentIndex)
 							+ ", ");
 
 					}
@@ -227,7 +227,7 @@ public class HierarchicalClusterer
 		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 		// virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), indices);
 		// else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), indices);
+		// virtualArray = new VirtualArray(set.getVA(iVAIdDimension).getVAType(), set.size(), indices);
 
 		CNode node = clusterer.m_cobwebTree;
 

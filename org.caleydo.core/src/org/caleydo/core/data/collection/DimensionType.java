@@ -1,7 +1,7 @@
 package org.caleydo.core.data.collection;
 
 /**
- * Collection of different types of storages.
+ * Collection of different types of dimensions.
  * 
  * @author Marc Streit
  * @author Alexander Lex

@@ -39,7 +39,7 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		heatMapLayout.setGrabX(true);
 		heatMapLayout.setRenderer(heatMapRenderer);
 		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
-		heatMapLayout.addForeGroundRenderer(storageSelectionRenderer);
+		heatMapLayout.addForeGroundRenderer(dimensionSelectionRenderer);
 
 		mainRow.append(heatMapLayout);
 
@@ -62,21 +62,21 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		ySpacing.setAbsoluteSizeY(0.05f);
 		mainColumn.append(ySpacing);
 
-		Row storageCaptionRow = new Row("storageCaptionRow");
-		storageCaptionRow.setAbsoluteSizeY(0.35f);
+		Row dimensionCaptionRow = new Row("dimensionCaptionRow");
+		dimensionCaptionRow.setAbsoluteSizeY(0.35f);
 
-		ElementLayout storageCaptionLayout = new ElementLayout("storageCaption");
-		storageCaptionLayout.setRatioSizeY(1);
-		storageCaptionLayout.setGrabX(true);
-		storageCaptionLayout.setRenderer(storageCaptionRenderer);
-		storageCaptionRow.append(storageCaptionLayout);
+		ElementLayout dimensionCaptionLayout = new ElementLayout("dimensionCaption");
+		dimensionCaptionLayout.setRatioSizeY(1);
+		dimensionCaptionLayout.setGrabX(true);
+		dimensionCaptionLayout.setRenderer(dimensionCaptionRenderer);
+		dimensionCaptionRow.append(dimensionCaptionLayout);
 
 		ElementLayout spacingLayout = new ElementLayout();
 		spacingLayout.setAbsoluteSizeX(0.65f);
 
-		storageCaptionRow.append(spacingLayout);
+		dimensionCaptionRow.append(spacingLayout);
 
-		mainColumn.append(storageCaptionRow);
+		mainColumn.append(dimensionCaptionRow);
 
 	}
 

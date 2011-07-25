@@ -47,7 +47,7 @@ public class StartClusteringDialogAction
 
 	public final static String ID = "org.caleydo.core.util.clusterer.gui.StartClusteringAction";
 	public static final String TEXT = "Clustering";
-	public static final String ICON = "resources/icons/view/storagebased/clustering.png";
+	public static final String ICON = "resources/icons/view/dimensionbased/clustering.png";
 
 	private Composite parentComposite;
 
@@ -543,7 +543,7 @@ public class StartClusteringDialogAction
 
 		// by default we use the main VAs for clustering
 		clusterState.setContentVAType(DataTable.RECORD);
-		clusterState.setStorageVAType(DataTable.DIMENSION);
+		clusterState.setDimensionVAType(DataTable.DIMENSION);
 
 		ClusteringProgressBar progressBar =
 			new ClusteringProgressBar(clusterState.getClustererAlgo(), clusterState.getClustererType());

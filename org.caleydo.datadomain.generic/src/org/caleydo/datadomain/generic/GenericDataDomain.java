@@ -7,7 +7,7 @@ import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
-import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
+import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 
 /**
@@ -40,7 +40,7 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 
 		primaryContentMappingType = IDType.getIDType("DAVID");
 		humanReadableContentIDType = IDType.getIDType("GENE_SYMBOL");
-		humanReadableStorageIDType = IDType.getIDType("STORAGE");
+		humanReadableDimensionIDType = IDType.getIDType("STORAGE");
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void handleVAUpdate(StorageVADelta vaDelta, String info) {
+	public void handleVAUpdate(DimensionVADelta vaDelta, String info) {
 		// TODO Auto-generated method stub
 
 	}
@@ -73,7 +73,7 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public String getStorageLabel(IDType idType, Object id) {
+	public String getDimensionLabel(IDType idType, Object id) {
 		String label = table.get((Integer) id).getLabel();
 		if (label == null)
 			label = "";
@@ -84,6 +84,6 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	protected void assignIDCategories() {
 
 		contentIDCategory = IDCategory.registerCategory("UNSPECIFIED_CONTENT");
-		storageIDCategory = IDCategory.registerCategory("UNSPECIFIED_STORAGE");
+		dimensionIDCategory = IDCategory.registerCategory("UNSPECIFIED_STORAGE");
 	}
 }

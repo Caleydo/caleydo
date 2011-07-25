@@ -26,9 +26,9 @@ import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceVAEvent;
-import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.ContentVAUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -283,11 +283,11 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	//
 	// // for (Integer vaID : clinicalUseCase.getVA(EVAType.CONTENT))
 	// // {
-	// // set.getStorageFromVA(
+	// // set.getDimensionFromVA(
 	// // }
 	// //
-	// // for (IStorage storage : set) {
-	// // String experiment = storage.getLabel();
+	// // for (IDimension dimension : set) {
+	// // String experiment = dimension.getLabel();
 	// // mapExperimentToTexturePath.put(experiment, )
 	// // }
 	//
@@ -484,23 +484,23 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	}
 
 	private void setInfo(GLTexture tissueView, Integer experimentIndex) {
-		DimensionVirtualArray va = foreignDataDomain.getDataTable().getStorageData(DataTable.DIMENSION)
-				.getStorageVA();
+		DimensionVirtualArray va = foreignDataDomain.getDataTable().getDimensionData(DataTable.DIMENSION)
+				.getDimensionVA();
 
-		NominalDimension<String> storage = (NominalDimension<String>) foreignDataDomain
+		NominalDimension<String> dimension = (NominalDimension<String>) foreignDataDomain
 				.getDataTable().get(va.get(1));
-		String label = storage.getRaw(experimentIndex);
+		String label = dimension.getRaw(experimentIndex);
 
 		tissueView.setInfo(label);
 	}
 
 	private void setInfo(SerializedTextureView tissueView, Integer experimentIndex) {
-		DimensionVirtualArray va = foreignDataDomain.getDataTable().getStorageData(DataTable.DIMENSION)
-				.getStorageVA();
+		DimensionVirtualArray va = foreignDataDomain.getDataTable().getDimensionData(DataTable.DIMENSION)
+				.getDimensionVA();
 
-		NominalDimension<String> storage = (NominalDimension<String>) foreignDataDomain
+		NominalDimension<String> dimension = (NominalDimension<String>) foreignDataDomain
 				.getDataTable().get(va.get(1));
-		String label = storage.getRaw(experimentIndex);
+		String label = dimension.getRaw(experimentIndex);
 
 		tissueView.setInfo(label);
 	}

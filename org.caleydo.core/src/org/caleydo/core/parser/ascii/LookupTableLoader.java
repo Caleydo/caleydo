@@ -67,7 +67,7 @@ public class LookupTableLoader
 					// Check if line consists of just one entity
 					if (sLine.length() != 0 && strTokenText.countTokens() == 1) {
 
-						// Special case for creating indexing of storages
+						// Special case for creating indexing of dimensions
 						if (mappingType.getToIDType().getTypeName().equals("content_")) {
 
 							// Remove multiple RefSeqs because all point to the
@@ -81,7 +81,7 @@ public class LookupTableLoader
 								sLine = sLine.substring(0, sLine.indexOf("."));
 							}
 
-							if (mappingType.getFromIDType().getStorageType() == DimensionType.INT) {
+							if (mappingType.getFromIDType().getDimensionType() == DimensionType.INT) {
 								try {
 									Integer id = Integer.parseInt(sLine);
 									genomeIdManager.getMap(mappingType).put(id,
@@ -90,7 +90,7 @@ public class LookupTableLoader
 								catch (NumberFormatException e) {
 								}
 							}
-							else if (mappingType.getFromIDType().getStorageType() == DimensionType.STRING) {
+							else if (mappingType.getFromIDType().getDimensionType() == DimensionType.STRING) {
 								genomeIdManager.getMap(mappingType).put(sLine,
 									iLineInFile - parsingStartLine);
 							}
@@ -106,7 +106,7 @@ public class LookupTableLoader
 						while (strTokenText.hasMoreTokens() && bMaintainLoop) {
 							String buffer = strTokenText.nextToken();
 
-							// Special case for creating indexing of storages
+							// Special case for creating indexing of dimensions
 							if (mappingType.getToIDType().getTypeName().contains("content_")) {
 
 								if (mappingType.getFromIDType().getTypeName().contains("REFSEQ")) {
@@ -127,7 +127,7 @@ public class LookupTableLoader
 								// cell is empty
 								try {
 									Float.valueOf(buffer);
-									if (mappingType.getFromIDType().getStorageType() == DimensionType.INT) {
+									if (mappingType.getFromIDType().getDimensionType() == DimensionType.INT) {
 										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											iLineInFile - parsingStartLine);
 									}
@@ -146,24 +146,24 @@ public class LookupTableLoader
 								break;
 							}
 							else {
-								if (mappingType.getFromIDType().getStorageType() == DimensionType.INT) {
-									if (mappingType.getToIDType().getStorageType() == DimensionType.INT) {
+								if (mappingType.getFromIDType().getDimensionType() == DimensionType.INT) {
+									if (mappingType.getToIDType().getDimensionType() == DimensionType.INT) {
 										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											Integer.valueOf(strTokenText.nextToken()));
 									}
-									else if (mappingType.getToIDType().getStorageType() == DimensionType.STRING) {
+									else if (mappingType.getToIDType().getDimensionType() == DimensionType.STRING) {
 										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											strTokenText.nextToken());
 									}
 									else
 										throw new IllegalStateException("Unsupported data type!");
 								}
-								else if (mappingType.getFromIDType().getStorageType() == DimensionType.STRING) {
-									if (mappingType.getToIDType().getStorageType() == DimensionType.INT) {
+								else if (mappingType.getFromIDType().getDimensionType() == DimensionType.STRING) {
+									if (mappingType.getToIDType().getDimensionType() == DimensionType.INT) {
 										genomeIdManager.getMap(mappingType).put(buffer,
 											Integer.valueOf(strTokenText.nextToken()));
 									}
-									else if (mappingType.getToIDType().getStorageType() == DimensionType.STRING) {
+									else if (mappingType.getToIDType().getDimensionType() == DimensionType.STRING) {
 										genomeIdManager.getMap(mappingType).put(buffer,
 											strTokenText.nextToken());
 									}
@@ -202,7 +202,7 @@ public class LookupTableLoader
 	}
 
 	@Override
-	protected void setArraysToStorages() {
+	protected void setArraysToDimensions() {
 		// TODO Auto-generated method stub
 
 	}

@@ -18,7 +18,7 @@ public class FloatCContainerIterator
 	/**
 	 * Constructor Pass the container you want to have an iterator on
 	 * 
-	 * @param primitiveFloatStorage
+	 * @param primitiveFloatDimension
 	 */
 	public FloatCContainerIterator(FloatCContainer floatCContainer) {
 		this.floatCContainer = floatCContainer;

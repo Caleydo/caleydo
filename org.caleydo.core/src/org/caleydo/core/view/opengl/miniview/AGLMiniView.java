@@ -18,9 +18,9 @@ public abstract class AGLMiniView
 
 	protected float fWidth;
 
-	protected ArrayList<ADimension> alStorage;
+	protected ArrayList<ADimension> alDimension;
 
-	public void setData(ArrayList<ADimension> alStorages) {
+	public void setData(ArrayList<ADimension> alDimensions) {
 
 	}
 

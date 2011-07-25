@@ -30,7 +30,7 @@ public class HeatMapOverview {
 	private ArrayList<ArrayList<Texture>> overviewTextures;
 	private DataTable set;
 	private ContentVirtualArray contentVA;
-	private DimensionVirtualArray storageVA;
+	private DimensionVirtualArray dimensionVA;
 	private HashMap<Group, Boolean> selectedGroups;
 
 	public HeatMapOverview(AHeatMapLayout layout) {
@@ -237,7 +237,7 @@ public class HeatMapOverview {
 	public void setSet(DataTable set) {
 		this.set = set;
 		contentVA = set.getContentData(DataTable.RECORD).getContentVA();
-		storageVA = set.getStorageData(DataTable.DIMENSION).getStorageVA();
+		dimensionVA = set.getDimensionData(DataTable.DIMENSION).getDimensionVA();
 
 		updateHeatMapTextures(null);
 	}
@@ -270,7 +270,7 @@ public class HeatMapOverview {
 				clusterVA.append(contentVA.get(i));
 			}
 			overviewTextures.add(HeatMapUtil.createHeatMapTextures(set, clusterVA,
-					storageVA, contentSelectionManager));
+					dimensionVA, contentSelectionManager));
 		}
 	}
 

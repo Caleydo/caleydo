@@ -10,7 +10,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.SelectionUpdateEvent;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
@@ -47,7 +47,7 @@ public class ExperimentClusterDataEventManager extends ADataEventManager impleme
 				clusterNode = (ClusterNode) hierarchyData;
 
 				SelectionDelta delta = new SelectionDelta(radialHierarchy.getDataDomain()
-						.getStorageIDType());
+						.getDimensionIDType());
 				delta.addSelection(clusterNode.getLeafID(), selectionType);
 				SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 				selectionUpdateEvent.setSender(this);
@@ -103,7 +103,7 @@ public class ExperimentClusterDataEventManager extends ADataEventManager impleme
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		if (selectionDelta.getIDType() == radialHierarchy.getDataDomain()
-				.getStorageIDType()) {
+				.getDimensionIDType()) {
 			SelectionManager selectionManager = radialHierarchy.getSelectionManager();
 			Collection<PartialDisc> partialDiscs = radialHierarchy.getPartialDiscs();
 

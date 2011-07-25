@@ -6,7 +6,7 @@ import org.caleydo.core.data.collection.table.DimensionData;
 import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
+import org.caleydo.core.manager.event.view.dimensionbased.UpdateViewEvent;
 import org.caleydo.core.util.clusterer.nominal.AlphabeticalPartitioner;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -37,11 +37,11 @@ public class ClusterManager {
 
 	/**
 	 * Depending on the cluster state the corresponding clusterer will be called. Virtual arrays for content
-	 * and storage will be returned.
+	 * and dimension will be returned.
 	 * 
 	 * @param clusterState
 	 *            All information needed ba cluster algorithm
-	 * @return array list of {@link IVirtualArray}s including VAs for content and storage.
+	 * @return array list of {@link IVirtualArray}s including VAs for content and dimension.
 	 */
 	public ClusterResult cluster(ClusterState clusterState) {
 
@@ -100,13 +100,13 @@ public class ClusterManager {
 			}
 			else if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING) {
 
-				runStorageClustering(clusterer, clusterState, result, 0, 2);
+				runDimensionClustering(clusterer, clusterState, result, 0, 2);
 			}
 			else if (clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
 
 				runContentClustering(clusterer, clusterState, result, 0, 1);
 
-				if (result.storageResult.getStorageVA() != null) {
+				if (result.dimensionResult.getDimensionVA() != null) {
 					runContentClustering(clusterer, clusterState, result, 50, 1);
 				}
 			}
@@ -141,25 +141,25 @@ public class ClusterManager {
 
 	}
 
-	private void runStorageClustering(AClusterer clusterer, ClusterState clusterState, ClusterResult result,
+	private void runDimensionClustering(AClusterer clusterer, ClusterState clusterState, ClusterResult result,
 		int progressBarOffset, int progressBarMulti) {
 		clusterer.setClusterState(clusterState);
 
 		TempResult tempResult = clusterer.getSortedVA(set, clusterState, progressBarOffset, progressBarMulti);
-		result.storageResult = new DimensionData();
-		result.storageResult.setStorageVA(new DimensionVirtualArray(clusterState.getStorageVAType(),
+		result.dimensionResult = new DimensionData();
+		result.dimensionResult.setDimensionVA(new DimensionVirtualArray(clusterState.getDimensionVAType(),
 			tempResult.indices));
-		result.storageResult.setStorageClusterSizes(tempResult.clusterSizes);
-		result.storageResult.setStorageSampleElements(tempResult.sampleElements);
+		result.dimensionResult.setDimensionClusterSizes(tempResult.clusterSizes);
+		result.dimensionResult.setDimensionSampleElements(tempResult.sampleElements);
 
 		if (tempResult.tree == null) {
-			result.storageResult.setDefaultTree(true);
+			result.dimensionResult.setDefaultTree(true);
 		}
 		else {
-			result.storageResult.setStorageTree(tempResult.tree);
-			set.getDataDomain().createDimensionGroupsFromStorageTree(tempResult.tree);
-			result.storageResult.setDefaultTree(false);
-			result.storageResult.getStorageTree().initializeIDTypes(clusterState.getStorageIDType());
+			result.dimensionResult.setDimensionTree(tempResult.tree);
+			set.getDataDomain().createDimensionGroupsFromDimensionTree(tempResult.tree);
+			result.dimensionResult.setDefaultTree(false);
+			result.dimensionResult.getDimensionTree().initializeIDTypes(clusterState.getDimensionIDType());
 		}
 	}
 }

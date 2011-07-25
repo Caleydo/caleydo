@@ -9,7 +9,7 @@ import org.caleydo.core.data.virtualarray.ContentVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.ContentVADelta;
-import org.caleydo.core.data.virtualarray.delta.StorageVADelta;
+import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -94,7 +94,7 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 		if (virtualArray instanceof ContentVirtualArray)
 			tempDelta = (VADelta) new ContentVADelta();
 		else
-			tempDelta = (VADelta) new StorageVADelta();
+			tempDelta = (VADelta) new DimensionVADelta();
 
 		tempDelta.setVAType(virtualArray.getVaType());
 		tempDelta.setIDType(iDType);

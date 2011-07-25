@@ -42,7 +42,7 @@ public class HeatMapRenderer extends AContentRenderer {
 					.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
 		}
 
-		contentSpacing.calculateContentSpacing(contentElements, heatMap.getStorageVA()
+		contentSpacing.calculateContentSpacing(contentElements, heatMap.getDimensionVA()
 				.size(), parameters.getSizeScaledX(), parameters.getSizeScaledY(),
 				heatMapTemplate.getMinSelectedFieldHeight());
 		heatMapTemplate.setContentSpacing(contentSpacing);
@@ -77,9 +77,9 @@ public class HeatMapRenderer extends AContentRenderer {
 			yPosition -= fieldHeight;
 			xPosition = 0;
 
-			for (Integer iStorageIndex : heatMap.getStorageVA()) {
+			for (Integer iDimensionIndex : heatMap.getDimensionVA()) {
 
-				renderElement(gl, iStorageIndex, contentID, yPosition, xPosition,
+				renderElement(gl, iDimensionIndex, contentID, yPosition, xPosition,
 						fieldHeight, fieldWidth);
 
 				xPosition += fieldWidth;
@@ -91,25 +91,25 @@ public class HeatMapRenderer extends AContentRenderer {
 		}
 	}
 
-	private void renderElement(final GL2 gl, final int iStorageIndex,
+	private void renderElement(final GL2 gl, final int iDimensionIndex,
 			final int iContentIndex, final float fYPosition, final float fXPosition,
 			final float fFieldHeight, final float fFieldWidth) {
 
 		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
-		ADimension storage = heatMap.getSet().get(iStorageIndex);
-		if (storage == null)
+		ADimension dimension = heatMap.getSet().get(iDimensionIndex);
+		if (dimension == null)
 			return;
-		float value = storage.getFloat(heatMap.getRenderingRepresentation(), iContentIndex);
+		float value = dimension.getFloat(heatMap.getRenderingRepresentation(), iContentIndex);
 
 		float fOpacity = 1.0f;
 
-		if (storage
+		if (dimension
 				.containsDataRepresentation(DataRepresentation.UNCERTAINTY_NORMALIZED)) {
 			// setSelectedElements = heatMap.getContentSelectionManager()
 			// .getElements(SelectionType.MOUSE_OVER);
 			// for (Integer selectedElement : setSelectedElements) {
 			// if (iContentIndex == selectedElement.intValue()) {
-			// fOpacity = storage.getFloat(
+			// fOpacity = dimension.getFloat(
 			// EDataRepresentation.UNCERTAINTY_NORMALIZED,
 			// iContentIndex);
 			// }
@@ -124,7 +124,7 @@ public class HeatMapRenderer extends AContentRenderer {
 		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
-				PickingType.HEAT_MAP_STORAGE_SELECTION, iStorageIndex));
+				PickingType.HEAT_MAP_STORAGE_SELECTION, iDimensionIndex));
 		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
 				PickingType.HEAT_MAP_LINE_SELECTION, iContentIndex));
 		gl.glBegin(GL2.GL_POLYGON);
@@ -147,8 +147,8 @@ public class HeatMapRenderer extends AContentRenderer {
 		return 0;
 	}
 
-	public float getXCoordinateByStorageIndex(int storageIndex) {
-		return contentSpacing.getFieldWidth() * storageIndex;
+	public float getXCoordinateByDimensionIndex(int dimensionIndex) {
+		return contentSpacing.getFieldWidth() * dimensionIndex;
 	}
 
 	@Override

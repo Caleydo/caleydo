@@ -24,7 +24,7 @@ public class LoadDataParameters {
 	private ATableBasedDataDomain dataDomain;
 
 	/** TODO doc */
-	private ArrayList<Integer> storageIds;
+	private ArrayList<Integer> dimensionIds;
 
 	/** Specifies the IDType that is used in the main data file */
 	@XmlElement
@@ -42,8 +42,8 @@ public class LoadDataParameters {
 	/** TODO doc */
 	private String inputPattern;
 
-	/** labels of the storages */
-	private List<String> storageLabels;
+	/** labels of the dimensions */
+	private List<String> dimensionLabels;
 
 	/** csv-delimiter between to values */
 	private String delimiter;
@@ -80,7 +80,7 @@ public class LoadDataParameters {
 		this.geneTreeFileName = null;
 		this.experimentsFileName = null;
 		this.inputPattern = "";
-		this.storageLabels = new ArrayList<String>();
+		this.dimensionLabels = new ArrayList<String>();
 		this.delimiter = "";
 		this.startParseFileAtLine = 1;
 		this.stopParseFileAtLine = -1;
@@ -96,12 +96,12 @@ public class LoadDataParameters {
 		return dataDomain;
 	}
 
-	public ArrayList<Integer> getStorageIds() {
-		return storageIds;
+	public ArrayList<Integer> getDimensionIds() {
+		return dimensionIds;
 	}
 
-	public void setStorageIds(ArrayList<Integer> storageIds) {
-		this.storageIds = storageIds;
+	public void setDimensionIds(ArrayList<Integer> dimensionIds) {
+		this.dimensionIds = dimensionIds;
 	}
 
 	public String getFileName() {
@@ -136,12 +136,12 @@ public class LoadDataParameters {
 		this.inputPattern = inputPattern;
 	}
 
-	public List<String> getStorageLabels() {
-		return storageLabels;
+	public List<String> getDimensionLabels() {
+		return dimensionLabels;
 	}
 
-	public void setStorageLabels(List<String> storageLabels) {
-		this.storageLabels = storageLabels;
+	public void setDimensionLabels(List<String> dimensionLabels) {
+		this.dimensionLabels = dimensionLabels;
 	}
 
 	public String getDelimiter() {
