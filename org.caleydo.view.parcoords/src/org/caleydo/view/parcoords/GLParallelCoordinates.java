@@ -1420,7 +1420,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				selectionType = SelectionType.SELECTION;
 
 				// Prevent handling of non genetic data in context menu
-				if (!dataDomain.getDataDomainID().equals(
+				if (!dataDomain.getDataDomainType().equals(
 						"org.caleydo.datadomain.genetic"))
 					break;
 
