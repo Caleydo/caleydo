@@ -306,7 +306,7 @@ public class TabularAsciiDataReader
 		int iStringArrayIndex = 0;
 		int dimensionIndex = 0;
 
-		DataTable set = dataDomain.getTable();
+		DataTable table = dataDomain.getTable();
 
 		for (DimensionType dimensionType : columnDataTypes) {
 			// if(iDimensionIndex + 1 == targetDimensions.size())
@@ -342,23 +342,23 @@ public class TabularAsciiDataReader
 				case GROUP_NUMBER:
 
 					int[] iArGroupInfo = groupInfo.get(0);
-					DataTableUtils.setContentGroupList((DataTable) set, DataTable.RECORD, iArGroupInfo);
+					DataTableUtils.setContentGroupList((DataTable) table, DataTable.RECORD, iArGroupInfo);
 
 					iIntArrayIndex++;
 					break;
 				case GROUP_REPRESENTATIVE:
 
 					int[] iArGroupRepr = groupInfo.get(1);
-					DataTableUtils.setContentGroupRepresentatives((DataTable) set, DataTable.RECORD, iArGroupRepr);
+					DataTableUtils.setContentGroupRepresentatives((DataTable) table, DataTable.RECORD, iArGroupRepr);
 
 					iIntArrayIndex++;
 					break;
 				case ABORT:
 					if (useExperimentClusterInfo) {
 						iArGroupInfo = groupInfo.get(2);
-						DataTableUtils.setDimensionGroupList((DataTable) set, DataTable.DIMENSION, iArGroupInfo);
+						DataTableUtils.setDimensionGroupList((DataTable) table, DataTable.DIMENSION, iArGroupInfo);
 						iArGroupRepr = groupInfo.get(3);
-						DataTableUtils.setDimensionGroupRepresentatives((DataTable) set, DataTable.DIMENSION, iArGroupRepr);
+						DataTableUtils.setDimensionGroupRepresentatives((DataTable) table, DataTable.DIMENSION, iArGroupRepr);
 					}
 					return;
 

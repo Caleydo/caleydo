@@ -94,6 +94,11 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	}
 
 	public Integer getID() {
+		
+		// FIXME: is it ok that the ID is null?
+		if (id == null)
+			return 0;
+		
 		return id;
 	}
 
@@ -332,6 +337,7 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 * @return a comparable ID
 	 */
 	public int getComparableValue() {
+		
 		return getID();
 	}
 

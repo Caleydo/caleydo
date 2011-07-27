@@ -136,9 +136,9 @@ public class TreePorter {
 	public ClusterTree importDimensionTree(String fileName) throws JAXBException, FileNotFoundException {
 		ClusterTree tree = importTree(fileName, dataDomain.getDimensionIDType());
 
-		org.caleydo.core.data.collection.table.DataTable set =
+		org.caleydo.core.data.collection.table.DataTable table =
 			(org.caleydo.core.data.collection.table.DataTable) dataDomain.getTable();
-		tree.createSubDataTables(set);
+		tree.createSubDataTables(table);
 		return tree;
 	}
 

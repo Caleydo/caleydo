@@ -116,9 +116,9 @@ public class ProjectLoader {
 
 					DataDomainSerializationData dataInitializationData = new DataDomainSerializationData();
 					
-					LoadDataParameters loadingParameters = dataDomain.getLoadDataParameters();
-					loadingParameters.setFileName(setFileName);
-					loadingParameters.setDataDomain((ATableBasedDataDomain) dataDomain);
+//					LoadDataParameters loadingParameters = dataDomain.getLoadDataParameters();
+//					loadingParameters.setFileName(setFileName);
+//					loadingParameters.setDataDomain((ATableBasedDataDomain) dataDomain);
 
 					HashMap<String, RecordVirtualArray> recordVAMap =
 						new HashMap<String, RecordVirtualArray>(6);
@@ -146,6 +146,9 @@ public class ProjectLoader {
 					// for (DimensionVAType type : DimensionVAType.getRegisteredVATypes()) {
 					// dimensionVAMap.put(type, loadDimensionVirtualArray(unmarshaller, dirName, type));
 					// }
+					
+					dimensionVAMap.put(tempDimensionType,
+						loadDimensionVirtualArray(unmarshaller, extendedDirName, tempDimensionType));
 
 					dataInitializationData.setDataDomain((ATableBasedDataDomain) dataDomain);
 					dataInitializationData.setRecordVAMap(recordVAMap);

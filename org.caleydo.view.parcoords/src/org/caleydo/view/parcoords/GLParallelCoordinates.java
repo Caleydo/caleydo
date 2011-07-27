@@ -1621,15 +1621,13 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				if (dimensionVA.occurencesOf(dimensionVA.get(pickingID)) == 1) {
 					removeGate(dimensionVA.get(pickingID));
 				}
-				// Integer dimensionID = dimensionVA.remove(pickingID);
-				Integer dimensionID = dimensionVA.get(pickingID);
-				dimensionSelectionManager.remove(pickingID);
+				
 				DimensionVADelta vaDelta = new DimensionVADelta(DataTable.DIMENSION, dimensionIDType);
 				vaDelta.add(VADeltaItem.remove(pickingID));
 
+				Integer dimensionID = dimensionVA.get(pickingID);
 				triggerDimensionFilterEvent(vaDelta,
 						"Removed " + dataDomain.getDimensionLabel(dimensionID));
-				// sendDimensionVAUpdateEvent(vaDelta);
 				setDisplayListDirty();
 				resetAxisSpacing();
 				break;

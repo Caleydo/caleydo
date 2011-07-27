@@ -197,6 +197,7 @@ public class ProjectSaver {
 					for (String type : setBasedDataDomain.getTable().getRegisteredDimensionVATypes()) {
 						saveDimensionVA(marshaller, extendedDirName, setBasedDataDomain, type);
 					}
+					
 					TreePorter treePorter = new TreePorter();
 					Tree<ClusterNode> geneTree =
 						setBasedDataDomain.getTable().getRecordData(DataTable.RECORD).getRecordTree();
@@ -291,6 +292,7 @@ public class ProjectSaver {
 	 */
 	private void saveRecordVA(Marshaller marshaller, String dir, ATableBasedDataDomain dataDomain,
 		String type) throws JAXBException {
+		
 		String fileName = dir + "va_" + type.toString() + ".xml";
 		RecordVirtualArray va = (RecordVirtualArray) dataDomain.getRecordVA(type);
 		marshaller.marshal(va, new File(fileName));
@@ -298,6 +300,7 @@ public class ProjectSaver {
 
 	private void saveDimensionVA(Marshaller marshaller, String dir, ATableBasedDataDomain dataDomain,
 		String type) throws JAXBException {
+		
 		String fileName = dir + "va_" + type.toString() + ".xml";
 		DimensionVirtualArray va = (DimensionVirtualArray) dataDomain.getDimensionVA(type);
 		marshaller.marshal(va, new File(fileName));

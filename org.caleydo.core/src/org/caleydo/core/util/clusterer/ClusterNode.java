@@ -228,6 +228,10 @@ public class ClusterNode
 	@Override
 	public int getComparableValue() {
 
+		// FIXME: is it ok that the ID is null?
+		if (id == null)
+			return 0;
+		
 		return id;
 	}
 

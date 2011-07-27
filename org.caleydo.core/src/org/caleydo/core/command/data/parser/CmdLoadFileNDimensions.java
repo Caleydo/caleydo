@@ -29,7 +29,7 @@ public class CmdLoadFileNDimensions
 
 	private LoadDataParameters loadDataParameters;
 
-	private boolean bParsingOK = false;
+	private boolean parsingOK = false;
 
 	private ATableBasedDataDomain dataDomain;
 
@@ -88,6 +88,8 @@ public class CmdLoadFileNDimensions
 			(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 				parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE4.getXmlKey()));
 		loadDataParameters.setDataDomain(dataDomain);
+		
+		dataDomain.setLoadDataParameters(loadDataParameters);
 
 	}
 
@@ -119,9 +121,7 @@ public class CmdLoadFileNDimensions
 			loader.setTokenSeperator(loadDataParameters.getDelimiter());
 		}
 
-		bParsingOK = loader.loadData();
-
-		dataDomain.setLoadDataParameters(loadDataParameters);
+		parsingOK = loader.loadData();
 
 		dataDomain.updateSetInViews();
 	}
@@ -132,6 +132,6 @@ public class CmdLoadFileNDimensions
 	}
 
 	public boolean isParsingOK() {
-		return bParsingOK;
+		return parsingOK;
 	}
 }

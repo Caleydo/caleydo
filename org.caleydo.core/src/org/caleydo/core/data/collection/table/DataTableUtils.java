@@ -164,8 +164,8 @@ public class DataTableUtils {
 		CmdDataCreateDimension cmdCreateDimension;
 		String dimensionLabel;
 
-		for (int tableIndex = 0; tableIndex < dataTypes.size(); tableIndex++) {
-			DimensionType dataType = dataTypes.get(tableIndex);
+		int dimensionCount = 0;
+		for (DimensionType dataType : dataTypes) {
 			switch (dataType) {
 				case FLOAT:
 					cmdCreateDimension =
@@ -174,7 +174,7 @@ public class DataTableUtils {
 
 					if (createDimensionsFromExistingIDs)
 						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NUMERICAL,
-							dimensionIds.get(tableIndex));
+							dimensionIds.get(dimensionCount++));
 					else
 						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NUMERICAL);
 
@@ -194,11 +194,9 @@ public class DataTableUtils {
 
 					if (createDimensionsFromExistingIDs)
 						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NOMINAL,
-							dimensionIds.get(tableIndex));
+							dimensionIds.get(dimensionCount++));
 					else
-					{
 						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NOMINAL);
-					}
 
 					cmdCreateDimension.doCommand();
 

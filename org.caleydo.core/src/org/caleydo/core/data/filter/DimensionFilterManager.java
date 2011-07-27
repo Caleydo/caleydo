@@ -119,7 +119,6 @@ public class DimensionFilterManager
 		event.setVirtualArray(currentVA);
 		event.setSender(this);
 		event.setDataDomainID(dataDomain.getDataDomainID());
-
 		eventPublisher.triggerEvent(event);
 	}
 

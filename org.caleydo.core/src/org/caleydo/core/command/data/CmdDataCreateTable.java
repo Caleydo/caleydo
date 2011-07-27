@@ -33,11 +33,11 @@ public class CmdDataCreateTable
 		dimensionIDs = new ArrayList<Integer>();
 	}
 
-	private void fillDataTables(DataTable newSet) {
+	private void fillDataTables(DataTable newTable) {
 		if (dimensionIDs.isEmpty())
 			throw new IllegalStateException("No data available for creating dimension.");
 
-		DataTableUtils.setTables(newSet, dimensionIDs);
+		DataTableUtils.setTables(newTable, dimensionIDs);
 	}
 
 	/**

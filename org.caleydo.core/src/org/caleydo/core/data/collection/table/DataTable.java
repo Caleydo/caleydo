@@ -79,11 +79,13 @@ public class DataTable
 
 	/** all metaData for this DataTable is held in or accessible through this object */
 	protected MetaData metaData;
+	
 	/** everything related to uncertainty is held in or accessible through this object */
 	private Uncertainty uncertainty;
+	
 	/** everything related to normalization of the data is held in or accessible through this object */
 	private Normalization normalization;
-
+	
 	public DataTable() {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.DATA_TABLE));
 	}

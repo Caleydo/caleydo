@@ -254,7 +254,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	 * the children.
 	 * 
 	 * @param parentNode
-	 *            the node of which the childs are requested
+	 *            the node of which the children are requested
 	 * @return the sorted list of children
 	 */
 	public ArrayList<NodeType> getChildren(NodeType parentNode) {

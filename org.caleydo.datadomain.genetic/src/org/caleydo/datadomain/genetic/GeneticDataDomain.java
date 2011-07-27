@@ -289,7 +289,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 			Integer clinicalContentIndex) {
 
 		// FIXME - this is a hack for one special dataset (asslaber)
-		DataTable clinicalSet = ((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+		DataTable clinicalSet = ((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByType(
 				CLINICAL_DATADOMAIN_TYPE)).getTable();
 		int dimensionID = clinicalSet.getDimensionData(DataTable.DIMENSION).getDimensionVA().get(1);
 
