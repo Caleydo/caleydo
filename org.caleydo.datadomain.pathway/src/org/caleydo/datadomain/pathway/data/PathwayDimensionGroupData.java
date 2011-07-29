@@ -184,7 +184,7 @@ public class PathwayDimensionGroupData extends
 	@Override
 	public List<ISegmentData> getSegmentData() {
 
-		List<ISegmentData> segmentBrickData = new ArrayList<ISegmentData>();
+		List<ISegmentData> segmentData = new ArrayList<ISegmentData>();
 
 		int groupID = 0;
 		int startIndex = 0;
@@ -228,13 +228,13 @@ public class PathwayDimensionGroupData extends
 			group.setSize(groupSize);
 			RecordVirtualArray recordVA = new RecordVirtualArray("CONTENT",
 					ids);
-			segmentBrickData.add(new PathwaySegmentData(dataDomain,
+			segmentData.add(new PathwaySegmentData(dataDomain,
 					mappingDataDomain, recordVA, group, pathway, this));
 			startIndex += groupSize;
 			groupID++;
 		}
 
-		return segmentBrickData;
+		return segmentData;
 	}
 
 	@Override

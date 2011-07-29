@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -21,7 +22,6 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
@@ -56,10 +56,13 @@ import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
+import org.caleydo.view.visbricks.dialog.CreatePathwayComparisonGroupDialog;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.caleydo.view.visbricks.listener.RelationsUpdatedListener;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * Individual Brick for VisBricks
@@ -126,7 +129,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	private boolean isSizeFixed = false;
 	private boolean isInitialized = false;
 
-	public GLBrick(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLBrick(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLBrick.VIEW_TYPE;
@@ -246,7 +250,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 				HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
 
 				for (Integer gene : recordVA) {
-					java.util.Set<Integer> davids = GeneralManager
+					Set<Integer> davids = GeneralManager
 							.get()
 							.getIDMappingManager()
 							.getIDAsSet(dataDomain.getRecordIDType(),
@@ -255,9 +259,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 					if (davids == null || davids.size() == 0)
 						continue;
 					for (Integer david : davids) {
-						java.util.Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper
-								.get()
-								.getPathwayGraphsByGeneID(
+						Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper
+								.get().getPathwayGraphsByGeneID(
 										dataDomain
 												.getPrimaryRecordMappingType(),
 										david);
@@ -285,27 +288,44 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 					}
 				}
 
-				ArrayList<PathwayGraph> pathways = new ArrayList<PathwayGraph>();
+				final ArrayList<PathwayGraph> pathways = new ArrayList<PathwayGraph>();
 
 				for (PathwayGraph pathway : hashPathwaysToOccurences.keySet()) {
-					if (hashPathwaysToOccurences.get(pathway) >= 10)
+					if (hashPathwaysToOccurences.get(pathway) >= 2)
 						pathways.add(pathway);
 				}
 
-				AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
-				ArrayList<ADimensionGroupData> dimensionGroupData = new ArrayList<ADimensionGroupData>();
-				//FIXME: DataDomainByType may be not appropriate
-				IDataDomain pathwayDataDomain = DataDomainManager.get()
-						.getDataDomainByType("org.caleydo.datadomain.pathway");
-				PathwayDimensionGroupData pathwayDimensionGroupData = new PathwayDimensionGroupData(
-						pathwayDataDomain, dataDomain, pathways, "PathwayGroup");
+				getParentComposite().getDisplay().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						Shell shell = new Shell();
+//						shell.setSize(500, 800);
+						CreatePathwayComparisonGroupDialog dialog = new CreatePathwayComparisonGroupDialog(
+								shell);
+						dialog.create();
+						dialog.setSourceDataDomain(dataDomain);
+						dialog.setBlockOnOpen(true);
+						
+						if(dialog.open() == Status.OK) {
+							AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
+							ArrayList<ADimensionGroupData> dimensionGroupData = new ArrayList<ADimensionGroupData>();
+							// FIXME: DataDomainByType may be not appropriate
+//							IDataDomain pathwayDataDomain = DataDomainManager.get()
+//									.getDataDomainByType("org.caleydo.datadomain.pathway");
+							PathwayDimensionGroupData pathwayDimensionGroupData = dialog.getPathwayDimensionGroupData();
 
-				pathwayDataDomain.addDimensionGroup(pathwayDimensionGroupData);
+							IDataDomain pathwayDataDomain = dialog.getPathwayDataDomain();
+							pathwayDataDomain.addDimensionGroup(pathwayDimensionGroupData);
 
-				dimensionGroupData.add(pathwayDimensionGroupData);
-				event.setDimensionGroupData(dimensionGroupData);
-				event.setSender(this);
-				eventPublisher.triggerEvent(event);
+							dimensionGroupData.add(pathwayDimensionGroupData);
+							event.setDimensionGroupData(dimensionGroupData);
+							event.setSender(this);
+							eventPublisher.triggerEvent(event);
+						}
+					}
+				});
+
+				
 
 			}
 
@@ -346,8 +366,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 				.getSelectionType();
 
 		if (!visBricks.getKeyListener().isCtrlDown()) {
-			recordSelectionManager
-					.clearSelection(selectedByGroupSelectionType);
+			recordSelectionManager.clearSelection(selectedByGroupSelectionType);
 
 			// ClearSelectionsEvent cse = new ClearSelectionsEvent();
 			// cse.setDataDomainType(getDataDomain().getDataDomainType());
@@ -628,8 +647,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		float newWidth = width + changeX;
 		float newHeight = height + changeY;
 
-		float minWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(brickLayout.getMinWidthPixels());
+		float minWidth = pixelGLConverter.getGLWidthForPixelWidth(brickLayout
+				.getMinWidthPixels());
 		float minHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(brickLayout.getMinHeightPixels());
 		// float minWidth = pixelGLConverter
@@ -807,7 +826,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	// return;
 	// }
 	// for (Integer dimensionID : dimensionVA) {
-	// float value = table.get(dimensionID).getFloat(EDataRepresentation.NORMALIZED,
+	// float value =
+	// table.get(dimensionID).getFloat(EDataRepresentation.NORMALIZED,
 	// contenID);
 	// if (!Float.isNaN(value)) {
 	// averageValue += value;
@@ -1128,11 +1148,11 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		} else {
 			setBrickLayoutTemplate(layoutTemplate, currentViewType);
 			float defaultHeight = pixelGLConverter
-					.getGLHeightForPixelHeight(
-							layoutTemplate.getDefaultHeightPixels());
+					.getGLHeightForPixelHeight(layoutTemplate
+							.getDefaultHeightPixels());
 			float defaultWidth = pixelGLConverter
-					.getGLWidthForPixelWidth(
-							layoutTemplate.getDefaultWidthPixels());
+					.getGLWidthForPixelWidth(layoutTemplate
+							.getDefaultWidthPixels());
 			wrappingLayout.setAbsoluteSizeY(defaultHeight);
 			wrappingLayout.setAbsoluteSizeX(defaultWidth);
 		}
