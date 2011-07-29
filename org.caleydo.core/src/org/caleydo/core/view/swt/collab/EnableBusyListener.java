@@ -22,7 +22,7 @@ public class EnableBusyListener
 	@Override
 	public void handleEvent(Event event) {
 		log.log(Level.INFO, "enable busy");
-		GeneralManager.get().getViewGLCanvasManager().requestBusyMode(requester);
+		GeneralManager.get().getViewManager().requestBusyMode(requester);
 	}
 
 	public void setRequester(Object requester) {

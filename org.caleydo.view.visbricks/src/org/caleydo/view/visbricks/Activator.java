@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.toolbar.VisBricksToolBarContent;
 import org.eclipse.core.runtime.Plugin;
@@ -29,8 +30,9 @@ public class Activator extends Plugin {
 		plugin = this;
 
 		registerDataDomains();
-		
-		ToolBarContentFactory.get().addToolBarContent(GLVisBricks.VIEW_TYPE, false, new VisBricksToolBarContent());
+
+		ToolBarContentFactory.get().addToolBarContent(GLVisBricks.VIEW_TYPE, false,
+				new VisBricksToolBarContent());
 	}
 
 	/*
@@ -66,12 +68,12 @@ public class Activator extends Plugin {
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLVisBricks.VIEW_TYPE);
-		
+
 		DataDomainManager
-		.get()
-		.getAssociationManager()
-		.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-				GLBrick.VIEW_TYPE);
+				.get()
+				.getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
+						GLBrick.VIEW_TYPE);
 
 	}
 }

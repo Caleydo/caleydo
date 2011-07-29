@@ -3,6 +3,7 @@ package org.caleydo.view.tagclouds;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.serialize.SerializationManager;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -53,7 +54,7 @@ public class Activator extends Plugin {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
-//		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		// dataDomainTypes.add("org.caleydo.datadomain.genetic");
 
 		DataDomainManager
 				.get()

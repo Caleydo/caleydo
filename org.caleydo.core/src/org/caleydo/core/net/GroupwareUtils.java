@@ -50,7 +50,7 @@ public class GroupwareUtils {
 		GeneralManager.get().setGroupwareManager(groupwareManager);
 		groupwareManager.setServerAddress(serverAddress);
 		groupwareManager.startClient();
-		GeneralManager.get().getViewGLCanvasManager().getDisplayLoopExecution()
+		GeneralManager.get().getViewManager().getDisplayLoopExecution()
 			.executeMultiple(groupwareManager);
 		return (groupwareManager.getSerializationData());
 	}

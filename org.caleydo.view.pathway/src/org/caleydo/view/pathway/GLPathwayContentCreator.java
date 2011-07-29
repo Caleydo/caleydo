@@ -450,7 +450,7 @@ public class GLPathwayContentCreator {
 		float[] tmpNodeColor = null;
 
 		gl.glPushName(generalManager
-				.getViewGLCanvasManager()
+				.getViewManager()
 				.getPickingManager()
 				.getPickingID(containingView.getID(),
 						PickingType.PATHWAY_ELEMENT_SELECTION, vertexRep.getId()));

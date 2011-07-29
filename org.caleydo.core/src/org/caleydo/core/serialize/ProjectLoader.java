@@ -2,6 +2,7 @@ package org.caleydo.core.serialize;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,7 +11,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -35,7 +35,7 @@ import org.osgi.framework.BundleException;
 public class ProjectLoader {
 
 	/** full path to directory to temporarily store the projects file before zipping */
-	public static final String TEMP_PROJECT_DIR_NAME = GeneralManager.CALEYDO_HOME_PATH + "tempLoad"
+	public static final String TEMP_PROJECT_ZIP_FOLDER = GeneralManager.CALEYDO_HOME_PATH + "temp_load"
 		+ File.separator;
 
 	/**
@@ -45,23 +45,12 @@ public class ProjectLoader {
 	 *            name of the file to load the project from
 	 * @return initialization data for the application from which it can restore itself
 	 */
-	public SerializationData load(String fileName) {
+	public void loadProjectFromZIP(String fileName) {
 
-		FileOperations.deleteDirectory(TEMP_PROJECT_DIR_NAME);
+		FileOperations.deleteDirectory(TEMP_PROJECT_ZIP_FOLDER);
 
 		ZipUtils zipUtils = new ZipUtils();
-		zipUtils.unzipToDirectory(fileName, TEMP_PROJECT_DIR_NAME);
-
-		return loadDirectory(TEMP_PROJECT_DIR_NAME);
-	}
-
-	/**
-	 * Loads the project from the recent-project saved automatically on exit
-	 * 
-	 * @return initialization data for the application from which it can restore itself
-	 */
-	public SerializationData loadRecent() {
-		return loadDirectory(ProjectSaver.RECENT_PROJECT_DIR_NAME);
+		zipUtils.unzipToDirectory(fileName, TEMP_PROJECT_ZIP_FOLDER);
 	}
 
 	/**
@@ -71,12 +60,48 @@ public class ProjectLoader {
 	 *            name of the directory to load the project from
 	 * @return initialization data for the application from which it can restore itself
 	 */
-	public SerializationData loadDirectory(String dirName) {
+	public SerializationData loadProjectData(String dirName) {
 
-		loadPlugins(dirName);
+		loadPluginData(dirName);
+		SerializationData serializationData = loadData(dirName);
 
+		return serializationData;
+	}
+
+	private void loadPluginData(String dirName) {
+		JAXBContext context;
+		PlugInList plugInList = null;
+		try {
+			context = JAXBContext.newInstance(PlugInList.class);
+
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+
+			plugInList =
+				(PlugInList) unmarshaller.unmarshal(new File(dirName + ProjectSaver.PLUG_IN_LIST_FILE));
+		}
+		catch (JAXBException e) {
+			throw new RuntimeException("Error while loading project", e);
+		}
+
+		ArrayList<String> plugIns = plugInList.plugIns;
+		for (String plugIn : plugIns) {
+			Bundle bundle = Platform.getBundle(plugIn);
+			if (bundle == null) {
+				Logger.log(new Status(IStatus.WARNING, toString(), "Could not load bundle: " + bundle));
+				continue;
+			}
+			try {
+				bundle.start();
+			}
+			catch (BundleException e) {
+				Logger.log(new Status(IStatus.ERROR, this.toString(), "Problem starting bundle " + plugIn
+					+ " at deserialization.", e));
+			}
+		}
+	}
+
+	private SerializationData loadData(String dirName) {
 		SerializationData serializationData = null;
-
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 
 		JAXBContext projectContext = serializationManager.getProjectContext();
@@ -87,7 +112,7 @@ public class ProjectLoader {
 			try {
 				GeneralManager.get().setBasicInfo(
 					(BasicInformation) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
-						.getResource(dirName + ProjectSaver.BASIC_INFORMATION_FILE_NAME)));
+						.getResource(dirName + ProjectSaver.BASIC_INFORMATION_FILE)));
 			}
 			catch (FileNotFoundException e) {
 				throw new IllegalStateException("Cannot load data domain list from project file");
@@ -97,7 +122,7 @@ public class ProjectLoader {
 			try {
 				dataDomainList =
 					(DataDomainList) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
-						.getResource(dirName + ProjectSaver.DATA_DOMAIN_FILE_NAME));
+						.getResource(dirName + ProjectSaver.DATA_DOMAIN_FILE));
 			}
 			catch (FileNotFoundException e1) {
 				throw new IllegalStateException("Cannot load data domain list from project file");
@@ -106,24 +131,20 @@ public class ProjectLoader {
 			serializationData = new SerializationData();
 
 			for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
-				
+
 				Thread thread = new Thread(dataDomain, dataDomain.getDataDomainID());
 				thread.start();
 				if (dataDomain instanceof ATableBasedDataDomain) {
 
 					String extendedDirName = dirName + dataDomain.getDataDomainID() + "_";
-					String setFileName = extendedDirName + ProjectSaver.DATA_TABLE_FILE_NAME;
 
 					DataDomainSerializationData dataInitializationData = new DataDomainSerializationData();
-					
-//					LoadDataParameters loadingParameters = dataDomain.getLoadDataParameters();
-//					loadingParameters.setFileName(setFileName);
-//					loadingParameters.setDataDomain((ATableBasedDataDomain) dataDomain);
 
 					HashMap<String, RecordVirtualArray> recordVAMap =
 						new HashMap<String, RecordVirtualArray>(6);
 					String tmpType = DataTable.RECORD;
-					recordVAMap.put(DataTable.RECORD, loadContentVirtualArray(unmarshaller, extendedDirName, tmpType));
+					recordVAMap.put(DataTable.RECORD,
+						loadContentVirtualArray(unmarshaller, extendedDirName, tmpType));
 					// tmpType = RecordVAType.CONTENT_CONTEXT;
 					// recordVAMap.put(RecordVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
 					// tmpType));
@@ -146,7 +167,7 @@ public class ProjectLoader {
 					// for (DimensionVAType type : DimensionVAType.getRegisteredVATypes()) {
 					// dimensionVAMap.put(type, loadDimensionVirtualArray(unmarshaller, dirName, type));
 					// }
-					
+
 					dimensionVAMap.put(tempDimensionType,
 						loadDimensionVirtualArray(unmarshaller, extendedDirName, tempDimensionType));
 
@@ -155,66 +176,45 @@ public class ProjectLoader {
 					dataInitializationData.setDimensionVAMap(dimensionVAMap);
 
 					dataDomain.getLoadDataParameters().setGeneTreeFileName(
-						extendedDirName + ProjectSaver.GENE_TREE_FILE_NAME);
+						extendedDirName + ProjectSaver.GENE_TREE_FILE);
 					dataDomain.getLoadDataParameters().setExperimentsFileName(
-						extendedDirName + ProjectSaver.EXP_TREE_FILE_NAME);
-					
-					serializationData.addDataSerializationData(dataInitializationData);
+						extendedDirName + ProjectSaver.EXP_TREE_FILE);
+
+					serializationData.addDataDomainSerializationData(dataInitializationData);
 				}
 			}
 
-			ViewList loadViews = null;
-			try {
-				loadViews =
-					(ViewList) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
-						.getResource(dirName + ProjectSaver.VIEWS_FILE_NAME));
-			}
-			catch (FileNotFoundException e) {
-				// do nothing - no view list available
-			}
+			// ViewList viewList = null;
+			// try {
+			// viewList =
+			// (ViewList) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
+			// .getResource(dirName + ProjectSaver.VIEWS_FILE_NAME));
+			// }
+			// catch (FileNotFoundException e1) {
+			// // do nothing
+			// //throw new IllegalStateException("Cannot load view list from project file");
+			// }
+			//
+			// serializationData.setViews(viewList.getViews());
 
-			if (loadViews != null) {
-				serializationData.setViews(loadViews.getViews());
-			}
 		}
 		catch (JAXBException ex) {
 			throw new RuntimeException("Error while loading project", ex);
 		}
-
+		
 		return serializationData;
 	}
 
-	private void loadPlugins(String dirName) {
-		JAXBContext context;
-		PlugInList plugInList = null;
+	public void loadWorkbenchData(String dirName) {
+				
 		try {
-			context = JAXBContext.newInstance(PlugInList.class);
-
-			Unmarshaller unmarshaller = context.createUnmarshaller();
-
-			plugInList =
-				(PlugInList) unmarshaller.unmarshal(new File(dirName + ProjectSaver.PLUG_IN_LIST_FILE_NAME));
+			FileOperations.copyFolder(
+				new File(dirName + ProjectSaver.WORKBENCH_MEMENTO_FILE), new File(
+					GeneralManager.CALEYDO_HOME_PATH + ProjectSaver.WORKBENCH_MEMENTO_FOLDER  + ProjectSaver.WORKBENCH_MEMENTO_FILE));
 		}
-		catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		catch (IOException e) {
+			throw new RuntimeException("Error loading workbench data (file access)", e);
 		}
-
-		ArrayList<String> plugIns = plugInList.plugIns;
-		for (String plugIn : plugIns) {
-			Bundle bundle = Platform.getBundle(plugIn);
-			if (bundle == null) {
-				Logger.log(new Status(IStatus.WARNING, toString(), "Could not load bundle: " + bundle));
-				continue;
-			}
-			try {
-				bundle.start();
-			}
-			catch (BundleException e) {
-				Logger.log(new Status(IStatus.ERROR, this.toString(), "Problem starting bundle " + plugIn +" at deserialization.", e));
-			}
-		}
-
 	}
 
 	/**

@@ -53,7 +53,7 @@ public class GLConnectionLineRendererDataFlipper extends AGLConnectionLineRender
 
 		VisLinkAnimationStage connectionLines = new VisLinkAnimationStage();
 
-		ViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
+		ViewManager viewGLCanvasManager = GeneralManager.get().getViewManager();
 		for (Entry<IDType, ConnectionMap> typeConnections : connectedElementRepManager
 				.getTransformedConnectionsByType().entrySet()) {
 			ArrayList<ArrayList<Vec3f>> alPointLists = null;

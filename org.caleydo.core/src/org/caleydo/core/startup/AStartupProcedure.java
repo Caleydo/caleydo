@@ -22,6 +22,14 @@ public abstract class AStartupProcedure {
 		initializeStartViews();
 	}
 
+	/**
+	 * Initialization stuff that has to be done before the workbench opens
+	 * (e.g., copying the workbench data from a serialized project).
+	 */
+	public void initPreWorkbenchOpen() {
+		
+	}
+	
 	public void execute() {
 		loadPathways();
 

@@ -33,7 +33,7 @@ public class ParCoordsCreator implements IRemoteViewCreator {
 		
 		GLParallelCoordinates parCoords = (GLParallelCoordinates) GeneralManager
 				.get()
-				.getViewGLCanvasManager()
+				.getViewManager()
 				.createGLView(
 						GLParallelCoordinates.class,
 						remoteRenderingView.getParentGLCanvas(),

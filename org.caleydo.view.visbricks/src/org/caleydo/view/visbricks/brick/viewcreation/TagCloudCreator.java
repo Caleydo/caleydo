@@ -26,7 +26,7 @@ public class TagCloudCreator implements IRemoteViewCreator {
 			GLMouseListener glMouseListener) {
 		GLTagCloud tagCloud = (GLTagCloud) GeneralManager
 				.get()
-				.getViewGLCanvasManager()
+				.getViewManager()
 				.createGLView(
 						GLTagCloud.class,
 						remoteRenderingView.getParentGLCanvas(),

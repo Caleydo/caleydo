@@ -3,6 +3,7 @@ package org.caleydo.view.datagraph;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.serialize.SerializationManager;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -10,9 +11,6 @@ import org.osgi.framework.BundleContext;
  * The activator class controls the plug-in life cycle
  */
 public class Activator extends AbstractUIPlugin {
-
-	// The plug-in ID
-	public static final String PLUGIN_ID = "org.caleydo.view.datagraph"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
@@ -76,7 +74,5 @@ public class Activator extends AbstractUIPlugin {
 				.getAssociationManager()
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLDataGraph.VIEW_TYPE);
-
 	}
-
 }

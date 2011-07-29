@@ -8,7 +8,9 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.specialized.Organism;
+import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.jface.window.Window;
 
 /**
@@ -37,6 +39,9 @@ public class GeneticGUIStartupProcedure
 				.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES, "KEGG;BioCarta");
 
 			GeneralManager.get().getBasicInfo().setOrganism(Organism.HOMO_SAPIENS);
+
+			// Delete old workbench state
+			FileOperations.deleteDirectory(GeneralManager.CALEYDO_HOME_PATH + ".metadata");
 		}
 
 		this.dataDomain =

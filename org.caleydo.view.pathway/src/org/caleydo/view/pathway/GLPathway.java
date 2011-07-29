@@ -165,7 +165,7 @@ public class GLPathway extends AGLView implements
 		// hashPathwayContainingSelectedVertex2VertexCount = new
 		// HashMap<Integer, Integer>();
 
-		connectedElementRepresentationManager = generalManager.getViewGLCanvasManager()
+		connectedElementRepresentationManager = generalManager.getViewManager()
 				.getConnectedElementRepresentationManager();
 
 		vecScaling = new Vec3f(1, 1, 1);

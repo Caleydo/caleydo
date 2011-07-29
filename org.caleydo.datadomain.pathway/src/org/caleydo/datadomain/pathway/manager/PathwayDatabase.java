@@ -32,19 +32,19 @@ public class PathwayDatabase implements Serializable {
 		this.sImagePath = sImagePath;
 		this.sImageMapPath = sImageMapPath;
 
-		String sUserHomePath = System.getProperty(GeneralManager.USER_HOME_TEMPLATE);
+		String sUserHomePath = System.getProperty(GeneralManager.USER_HOME);
 
 		this.sXMLPath = sXMLPath
-				.replace(GeneralManager.USER_HOME_TEMPLATE, sUserHomePath);
+				.replace(GeneralManager.USER_HOME, sUserHomePath);
 		this.sXMLPath = this.sXMLPath.replace(GeneralManager.CALEYDO_FOLDER_TEMPLATE,
 				GeneralManager.CALEYDO_FOLDER);
 
-		this.sImagePath = sImagePath.replace(GeneralManager.USER_HOME_TEMPLATE,
+		this.sImagePath = sImagePath.replace(GeneralManager.USER_HOME,
 				sUserHomePath);
 		this.sImagePath = this.sImagePath.replace(GeneralManager.CALEYDO_FOLDER_TEMPLATE,
 				GeneralManager.CALEYDO_FOLDER);
 
-		this.sImageMapPath = sImageMapPath.replace(GeneralManager.USER_HOME_TEMPLATE,
+		this.sImageMapPath = sImageMapPath.replace(GeneralManager.USER_HOME,
 				sUserHomePath);
 		this.sImageMapPath = this.sImageMapPath.replace(
 				GeneralManager.CALEYDO_FOLDER_TEMPLATE, GeneralManager.CALEYDO_FOLDER);

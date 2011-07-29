@@ -33,7 +33,7 @@ public class HeatMapCreator implements IRemoteViewCreator {
 
 		GLHeatMap heatMap = (GLHeatMap) GeneralManager
 				.get()
-				.getViewGLCanvasManager()
+				.getViewManager()
 				.createGLView(
 						GLHeatMap.class,
 						remoteRenderingView.getParentGLCanvas(),

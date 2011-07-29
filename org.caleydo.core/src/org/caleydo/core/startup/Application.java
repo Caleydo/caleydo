@@ -1,8 +1,9 @@
 package org.caleydo.core.startup;
 
-import java.io.File;
-
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ProjectLoader;
+import org.caleydo.core.serialize.ProjectSaver;
+import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
@@ -14,8 +15,6 @@ import org.eclipse.ui.PlatformUI;
  */
 public class Application
 	implements IApplication {
-
-	public static boolean bDeleteRestoredWorkbenchState = false;
 
 	/** initialization data received from a Caleydo-server-application during startup */
 //	public static DataInitializationData initData = null;
@@ -29,9 +28,7 @@ public class Application
 	public Object start(IApplicationContext context) throws Exception {
 
 		GeneralManager.get().getPreferenceStore();
-		GeneralManager.get().getViewGLCanvasManager().init();
-
-		removeStoredWorkbenchState();
+		GeneralManager.get().getViewManager().init();
 
 		StartupProcessor.get().initStartupProcudure(context.getArguments());
 
@@ -51,10 +48,6 @@ public class Application
 
 		// if (Application.applicationMode == ApplicationMode.PLEX_CLIENT) {
 		// Application.initData = GroupwareUtils.startPlexClient(serverAddress);
-
-		// if (bDeleteRestoredWorkbenchState) {
-		// removeStoredWorkbenchState();
-		// }
 
 		return IApplication.EXIT_OK;
 	}
@@ -124,32 +117,4 @@ public class Application
 	// bIsInterentConnectionOK = true;
 	// return true;
 	// }
-
-	private void removeStoredWorkbenchState() {
-
-//		IPath path = WorkbenchPlugin.getDefault().getDataLocation();
-//		if (path == null) {
-//			return;
-//		}
-//
-//		deleteDir(path.toFile());
-	}
-
-	// Deletes all files and subdirectories under dir.
-	// Returns true if all deletions were successful.
-	// If a deletion fails, the method stops attempting to delete and returns
-	// false.
-	public static boolean deleteDir(File dir) {
-		if (dir.isDirectory()) {
-			String[] children = dir.list();
-			for (String element : children) {
-				boolean success = deleteDir(new File(dir, element));
-				if (!success)
-					return false;
-			}
-		}
-
-		// The directory is now empty so delete it
-		return dir.delete();
-	}
 }

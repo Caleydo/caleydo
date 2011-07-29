@@ -111,7 +111,7 @@ public class ContextMenu
 
 		baseMenu = new SubMenu();
 
-		pickingManager = GeneralManager.get().getViewGLCanvasManager().getPickingManager();
+		pickingManager = GeneralManager.get().getViewManager().getPickingManager();
 
 		hashContextMenuItemToUniqueID = new HashMap<AContextMenuItem, Integer>();
 		hashUniqueIDToContextMenuItem = new HashMap<Integer, AContextMenuItem>();

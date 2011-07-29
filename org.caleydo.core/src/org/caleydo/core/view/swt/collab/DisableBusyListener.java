@@ -17,7 +17,7 @@ public class DisableBusyListener
 	@Override
 	public void handleEvent(Event event) {
 		log.log(Level.INFO, "enable busy");
-		GeneralManager.get().getViewGLCanvasManager().releaseBusyMode(requester);
+		GeneralManager.get().getViewManager().releaseBusyMode(requester);
 	}
 
 	public void setRequester(Object requester) {

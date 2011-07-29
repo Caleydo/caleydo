@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.view.matchmaker.toolbar.MatchmakerToolBarContent;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;

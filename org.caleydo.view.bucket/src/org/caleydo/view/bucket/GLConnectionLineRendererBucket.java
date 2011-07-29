@@ -52,7 +52,7 @@ public class GLConnectionLineRendererBucket
 
 	@Override
 	protected void renderConnectionLines(final GL2 gl) {
-		ViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
+		ViewManager viewGLCanvasManager = GeneralManager.get().getViewManager();
 
 		for (Entry<IDType, ConnectionMap> typeConnections : connectedElementRepManager
 			.getTransformedConnectionsByType().entrySet()) {

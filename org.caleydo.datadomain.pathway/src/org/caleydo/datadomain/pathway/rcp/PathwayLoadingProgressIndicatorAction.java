@@ -32,7 +32,7 @@ public class PathwayLoadingProgressIndicatorAction implements
 
 					// Turn on busy mode
 					ViewManager viewManager = GeneralManager.get()
-							.getViewGLCanvasManager();
+							.getViewManager();
 					viewManager.requestBusyMode(this);
 
 					monitor.beginTask("Loading pathways", 100);

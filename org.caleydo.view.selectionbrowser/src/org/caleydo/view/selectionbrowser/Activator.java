@@ -3,6 +3,7 @@ package org.caleydo.view.selectionbrowser;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.serialize.SerializationManager;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -24,7 +25,7 @@ public class Activator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		
+
 		registerDataDomains();
 	}
 
@@ -53,9 +54,12 @@ public class Activator extends Plugin {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
-		dataDomainTypes.add("org.caleydo.datadomain.generic");		
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
 
-		DataDomainManager.get().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, RcpSelectionBrowserView.VIEW_TYPE);
+		DataDomainManager
+				.get()
+				.getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
+						RcpSelectionBrowserView.VIEW_TYPE);
 	}
 }

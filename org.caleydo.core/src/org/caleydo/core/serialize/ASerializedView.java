@@ -18,6 +18,9 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 @XmlType
 public abstract class ASerializedView {
 
+	/**
+	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
+	 */
 	public ASerializedView() {
 	}
 
@@ -41,8 +44,8 @@ public abstract class ASerializedView {
 	 * 
 	 * @param dataDomain
 	 */
-	public void setDataDomainID(String dataDomainType) {
-		this.dataDomainID = dataDomainType;
+	public void setDataDomainID(String dataDomainID) {
+		this.dataDomainID = dataDomainID;
 	}
 
 	/**

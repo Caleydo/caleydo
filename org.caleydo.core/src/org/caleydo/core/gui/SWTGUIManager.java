@@ -49,9 +49,6 @@ public class SWTGUIManager {
 		loadingProgressBar.setSelection(iPercentage);
 	}
 
-	public void setProgressBarPercentageFromExternalThread(final int iPercentage) {
-	}
-
 	public void setProgressBarText(String sText) {
 
 		if (loadingProgressBarLabel.isDisposed())

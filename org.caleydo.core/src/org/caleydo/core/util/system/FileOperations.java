@@ -3,8 +3,12 @@ package org.caleydo.core.util.system;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class FileOperations {
 
@@ -24,7 +28,32 @@ public class FileOperations {
 		catch (IOException e) {
 		}
 	}
-	
+
+	/**
+	 * Renames a given folder.
+	 * 
+	 * @param fromDir
+	 *            source directory
+	 * @param toDir
+	 *            target directory
+	 */
+	public static void renameDirectory(String fromDir, String toDir) {
+
+		File from = new File(fromDir);
+
+		if (!from.exists() || !from.isDirectory()) {
+			throw new RuntimeException("Directory does not exist: " + fromDir);
+		}
+
+		File to = new File(toDir);
+		if (to.exists())
+			FileOperations.deleteDirectory(to);
+
+		// Rename
+		if (!from.renameTo(to))
+			throw new RuntimeException("Error moving folder: " + fromDir);
+	}
+
 	/**
 	 * Deletes the directory with the given name
 	 * 
@@ -35,31 +64,6 @@ public class FileOperations {
 	public static boolean deleteDirectory(String dirName) {
 		File directory = new File(dirName);
 		return deleteDirectory(directory);
-	}
-
-	/**
-	 * Renames a given folder.
-	 * 
-	 * @param fromDir
-	 * 			source directory
-	 * @param toDir
-	 * 			target directory
-	 */
-	public static void renameDirectory(String fromDir, String toDir) {
-
-		File from = new File(fromDir);
-
-		if (!from.exists() || !from.isDirectory()) {
-			throw new RuntimeException("Directory does not exist: " +fromDir);
-		}
-
-		File to = new File(toDir);
-		if (to.exists())
-			FileOperations.deleteDirectory(to);
-		
-		// Rename
-		if (!from.renameTo(to))
-			throw new RuntimeException("Error moving folder: " +fromDir);
 	}
 
 	/**
@@ -81,7 +85,7 @@ public class FileOperations {
 		}
 		return directory.delete();
 	}
-	
+
 	public static void createDirectory(String dirName) {
 		if (dirName.charAt(dirName.length() - 1) != File.separatorChar) {
 			dirName += File.separator;
@@ -90,4 +94,88 @@ public class FileOperations {
 		File tempDirFile = new File(dirName);
 		tempDirFile.mkdir();
 	}
+
+	public static void copyFolder(File src, File dest) throws IOException {
+
+		if (src.isDirectory()) {
+
+			// if directory not exists, create it
+			if (!dest.exists()) {
+				dest.mkdir();
+				System.out.println("Directory copied from " + src + "  to " + dest);
+			}
+
+			// list all the directory contents
+			String files[] = src.list();
+
+			for (String file : files) {
+				// construct the src and dest file structure
+				File srcFile = new File(src, file);
+				File destFile = new File(dest, file);
+				// recursive copy
+				copyFolder(srcFile, destFile);
+			}
+
+		}
+		else {
+			// if file, then copy it
+			// Use bytes stream to support all file types
+			InputStream in = new FileInputStream(src);
+			OutputStream out = new FileOutputStream(dest);
+
+			byte[] buffer = new byte[1024];
+
+			int length;
+			// copy the file content in bytes
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+
+			in.close();
+			out.close();
+			System.out.println("File copied from " + src + " to " + dest);
+		}
+	}
+
+	// /**
+	// * http://www.1your.com/drupal/copyfilefolderusingrecursionJava
+	// */
+	// public static void copyFolder(File srcFolder, File destFolder) throws IOException {
+	// if (srcFolder.isDirectory()) {
+	// if (!destFolder.exists()) {
+	// destFolder.mkdir();
+	// }
+	//
+	// String[] oChildren = srcFolder.list();
+	// for (int i = 0; i < oChildren.length; i++) {
+	// copyFolder(new File(srcFolder, oChildren[i]), new File(destFolder, oChildren[i]));
+	// }
+	// }
+	// else {
+	// if (destFolder.isDirectory()) {
+	// copyFile(srcFolder, new File(destFolder, srcFolder.getName()));
+	// }
+	// else {
+	// copyFile(srcFolder, destFolder);
+	// }
+	// }
+	// }
+	//
+	// /**
+	// * http://www.1your.com/drupal/copyfilefolderusingrecursionJava
+	// */
+	// public static void copyFile(File srcFile, File destFile) throws IOException {
+	// InputStream oInStream = new FileInputStream(srcFile);
+	// OutputStream oOutStream = new FileOutputStream(destFile);
+	//
+	// // Transfer bytes from in to out
+	// byte[] oBytes = new byte[1024];
+	// int nLength;
+	// BufferedInputStream oBuffInputStream = new BufferedInputStream(oInStream);
+	// while ((nLength = oBuffInputStream.read(oBytes)) < 0) {
+	// oOutStream.write(oBytes, 0, nLength);
+	// }
+	// oInStream.close();
+	// oOutStream.close();
+	// }
 }

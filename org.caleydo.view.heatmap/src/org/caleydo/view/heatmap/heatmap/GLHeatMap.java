@@ -219,7 +219,7 @@ public class GLHeatMap extends ATableBasedView {
 			checkForHits(gl);
 
 		ConnectedElementRepresentationManager cerm = GeneralManager.get()
-				.getViewGLCanvasManager().getConnectedElementRepresentationManager();
+				.getViewManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		if (eBusyModeState != EBusyModeState.OFF) {
@@ -236,7 +236,7 @@ public class GLHeatMap extends ATableBasedView {
 			templateRenderer.updateLayout();
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
-			generalManager.getViewGLCanvasManager()
+			generalManager.getViewManager()
 					.getConnectedElementRepresentationManager()
 					.clearTransformedConnections();
 		}

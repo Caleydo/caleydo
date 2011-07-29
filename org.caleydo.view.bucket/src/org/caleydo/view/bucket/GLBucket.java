@@ -344,7 +344,7 @@ public class GLBucket extends AGLView implements
 
 		display(gl);
 		ConnectedElementRepresentationManager cerm = GeneralManager.get()
-				.getViewGLCanvasManager().getConnectedElementRepresentationManager();
+				.getViewManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		if (eBusyModeState != EBusyModeState.OFF) {
@@ -421,7 +421,7 @@ public class GLBucket extends AGLView implements
 				}
 			}
 
-			generalManager.getViewGLCanvasManager()
+			generalManager.getViewManager()
 					.getConnectedElementRepresentationManager()
 					.clearTransformedConnections();
 			dragAndDrop.stopDragAction();
@@ -1554,7 +1554,7 @@ public class GLBucket extends AGLView implements
 
 		slerpMod.applySlerp(gl, transform, true, false);
 
-		generalManager.getViewGLCanvasManager().getGLView(viewID).displayRemote(gl);
+		generalManager.getViewManager().getGLView(viewID).displayRemote(gl);
 
 		gl.glPopMatrix();
 
@@ -1581,9 +1581,9 @@ public class GLBucket extends AGLView implements
 				glConnectionLineRenderer.enableRendering(true);
 			}
 
-			generalManager.getViewGLCanvasManager().getInfoAreaManager()
+			generalManager.getViewManager().getInfoAreaManager()
 					.enable(!bEnableNavigationOverlay);
-			generalManager.getViewGLCanvasManager()
+			generalManager.getViewManager()
 					.getConnectedElementRepresentationManager()
 					.clearTransformedConnections();
 		}
@@ -2110,7 +2110,7 @@ public class GLBucket extends AGLView implements
 
 	@Override
 	public String getShortInfo() {
-		AGLView activeView = GeneralManager.get().getViewGLCanvasManager()
+		AGLView activeView = GeneralManager.get().getViewManager()
 				.getGLView(iActiveViewID);
 		if (activeView == null)
 			return "Bucket";
@@ -2221,7 +2221,7 @@ public class GLBucket extends AGLView implements
 			newViews.clear();
 		}
 
-		ViewManager viewManager = generalManager.getViewGLCanvasManager();
+		ViewManager viewManager = generalManager.getViewManager();
 
 		if (reinitialize) {
 			ArrayList<AGLView> removeView = new ArrayList<AGLView>();
@@ -2266,7 +2266,7 @@ public class GLBucket extends AGLView implements
 			}
 		}
 
-		generalManager.getViewGLCanvasManager()
+		generalManager.getViewManager()
 				.getConnectedElementRepresentationManager().clearAll();
 	}
 
@@ -2553,7 +2553,7 @@ public class GLBucket extends AGLView implements
 					+ serView.getViewType());
 		}
 
-		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
+		AGLView glView = GeneralManager.get().getViewManager()
 				.createGLView(viewClass, parentGLCanvas, parentComposite, serView.getViewFrustum());
 		glView.setRemoteRenderingGLView(this);
 
@@ -2602,7 +2602,7 @@ public class GLBucket extends AGLView implements
 	 * Disables picking and enables busy mode
 	 */
 	public void disableUserInteraction() {
-		ViewManager canvasManager = generalManager.getViewGLCanvasManager();
+		ViewManager canvasManager = generalManager.getViewManager();
 		canvasManager.getPickingManager().enablePicking(false);
 		canvasManager.requestBusyMode(this);
 	}
@@ -2611,7 +2611,7 @@ public class GLBucket extends AGLView implements
 	 * Enables picking and disables busy mode
 	 */
 	public void enableUserInteraction() {
-		ViewManager canvasManager = generalManager.getViewGLCanvasManager();
+		ViewManager canvasManager = generalManager.getViewManager();
 		canvasManager.getPickingManager().enablePicking(true);
 		canvasManager.releaseBusyMode(this);
 	}

@@ -13,6 +13,7 @@ import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.serialize.DataDomainSerializationData;
 import org.caleydo.core.serialize.ProjectLoader;
+import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -28,35 +29,63 @@ public class SerializationStartupProcedure
 	private boolean loadSampleProject = false;
 	private boolean loadRecentProject = false;
 
+	private SerializationData serializationDataList;
+	
+	private ProjectLoader loader = new ProjectLoader();
+
 	@Override
-	public void init(ApplicationInitData appInitData) {
-
-		// super.init(appInitData);
-
-		this.appInitData = appInitData;
-		SerializationData serializationDataList;
-		Logger.log(new Status(IStatus.INFO, this.toString(), "Load sample project"));
-
-		ProjectLoader loader = new ProjectLoader();
+	public void initPreWorkbenchOpen() {
+		super.initPreWorkbenchOpen();
 
 		if (loadSampleProject) {
-			serializationDataList = loader.load(SAMPLE_PROJECT_LOCATION);
-			Application.bDeleteRestoredWorkbenchState = true;
+			loader.loadProjectFromZIP(SAMPLE_PROJECT_LOCATION);
+			loader.loadWorkbenchData(SAMPLE_PROJECT_LOCATION);
 		}
 		else {
 			if (loadRecentProject) {
-				serializationDataList = loader.loadRecent();
+				loader.loadWorkbenchData(ProjectSaver.RECENT_PROJECT_FOLDER);
 			}
 			else if (projectLocation != null || projectLocation.isEmpty()) {
-				serializationDataList = loader.load(projectLocation);
+				loader.loadProjectFromZIP(projectLocation);
+				loader.loadWorkbenchData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
+			}
+			else {
+				throw new IllegalArgumentException("encountered unknown project-load-type");
+			}
+		}
+	}
+	
+	@Override
+	public void init(ApplicationInitData appInitData) {
+
+		// not calling super.init() on purpose
+		
+		this.appInitData = appInitData;
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Load serialized project"));
+
+		if (loadSampleProject) {
+			serializationDataList = loader.loadProjectData(SAMPLE_PROJECT_LOCATION);
+		}
+		else {
+			if (loadRecentProject) {
+				serializationDataList = loader.loadProjectData(ProjectSaver.RECENT_PROJECT_FOLDER);
+			}
+			else if (projectLocation != null || projectLocation.isEmpty()) {
+				serializationDataList = loader.loadProjectData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
 			}
 			else {
 				throw new IllegalArgumentException("encoutnered unknown project-load-type");
 			}
 		}
+		
+		deserializeData(serializationDataList);
+	}
 
+
+	private void deserializeData(SerializationData serializationDataList) {
+		
 		for (DataDomainSerializationData dataSerializationData : serializationDataList
-			.getDataSerializationDataList()) {
+			.getDataDomainSerializationDataList()) {
 			ADataDomain dataDomain = dataSerializationData.getDataDomain();
 
 			// Register data domain by hand because it restored from the serialization and not created via the
@@ -69,7 +98,7 @@ public class SerializationStartupProcedure
 				LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 				loadDataParameters.setDataDomain(setBasedDataDomain);
 				DataTableUtils.createDimensions(loadDataParameters);
-				
+
 				DataTable table = DataTableUtils.createData(setBasedDataDomain);
 
 				HashMap<String, RecordVirtualArray> recordVAMap = dataSerializationData.getRecordVAMap();
@@ -77,11 +106,12 @@ public class SerializationStartupProcedure
 					setBasedDataDomain.setRecordVirtualArray(entry.getKey(), entry.getValue());
 				}
 
-				HashMap<String, DimensionVirtualArray> dimensionVAMap = dataSerializationData.getDimensionVAMap();
+				HashMap<String, DimensionVirtualArray> dimensionVAMap =
+					dataSerializationData.getDimensionVAMap();
 				for (Entry<String, DimensionVirtualArray> entry : dimensionVAMap.entrySet()) {
 					setBasedDataDomain.setDimensionVirtualArray(entry.getKey(), entry.getValue());
 				}
-				
+
 				// we need the VAs to be available before the tree is initialized
 				DataTableUtils.loadTrees(loadDataParameters, table);
 			}

@@ -1,5 +1,8 @@
 package org.caleydo.view.browser;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.serialize.ASerializedView;
 
 /**
@@ -7,6 +10,8 @@ import org.caleydo.core.serialize.ASerializedView;
  * 
  * @author Werner Puff
  */
+@XmlRootElement
+@XmlType
 public class SerializedHTMLBrowserView extends ASerializedView {
 
 	public SerializedHTMLBrowserView() {

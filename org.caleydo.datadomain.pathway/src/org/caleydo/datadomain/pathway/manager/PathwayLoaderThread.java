@@ -45,7 +45,7 @@ public class PathwayLoaderThread extends Thread {
 	public void run() {
 		super.run();
 
-		ViewManager viewManager = generalManager.getViewGLCanvasManager();
+		ViewManager viewManager = generalManager.getViewManager();
 		viewManager.requestBusyMode(this);
 
 		Iterator<PathwayDatabase> iterPathwayDatabase = pathwayDatabases.iterator();

@@ -18,7 +18,6 @@ import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.startup.StartupProcessor;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -147,6 +146,13 @@ public abstract class CaleydoRCPViewPart
 	 * Creates a default serialized form ({@link ASerializedView}) of the contained gl-view
 	 */
 	public abstract void createDefaultSerializedView();
+	
+	/**
+	 * Setting an external serialized view. Needed for RCP views that are embedded in another RCP view.
+	 */
+	public void setExternalSerializedView(ASerializedView serializedView) {
+		this.serializedView = serializedView;
+	}
 
 	@Override
 	public void init(IViewSite site, IMemento memento) throws PartInitException {
@@ -202,11 +208,7 @@ public abstract class CaleydoRCPViewPart
 
 		StringWriter xmlOutputWriter = new StringWriter();
 		try {
-
-			if (!(view instanceof AGLView))
-				return;
-
-			marshaller.marshal(((AGLView) view).getSerializableRepresentation(), xmlOutputWriter);
+			marshaller.marshal(serializedView, xmlOutputWriter);
 			String xmlOutput = xmlOutputWriter.getBuffer().toString();
 			memento.putString("serialized", xmlOutput);
 		}

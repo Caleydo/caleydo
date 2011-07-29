@@ -40,7 +40,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 
 	private GLUncertaintyHeatMap uncertaintyHeatMap;
 
-	private PickingManager pickingManager = GeneralManager.get().getViewGLCanvasManager()
+	private PickingManager pickingManager = GeneralManager.get().getViewManager()
 			.getPickingManager();
 
 	private int groupIndex;

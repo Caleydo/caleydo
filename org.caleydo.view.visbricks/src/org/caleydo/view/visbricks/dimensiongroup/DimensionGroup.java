@@ -367,7 +367,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 			IBrickData brickData) {
 		ViewFrustum brickFrustum = new ViewFrustum(
 				ECameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4, 4);
-		GLBrick brick = (GLBrick) GeneralManager.get().getViewGLCanvasManager()
+		GLBrick brick = (GLBrick) GeneralManager.get().getViewManager()
 				.createGLView(GLBrick.class, parentGLCanvas, parentComposite, brickFrustum);
 
 		brick.setBrickData(brickData);
@@ -420,13 +420,13 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	 */
 	private void destroyOldBricks() {
 		for (GLBrick brick : topBricks) {
-			GeneralManager.get().getViewGLCanvasManager()
+			GeneralManager.get().getViewManager()
 					.unregisterGLView(brick);
 			brick.unregisterEventListeners();
 			brick.destroy();
 		}
 		for (GLBrick brick : bottomBricks) {
-			GeneralManager.get().getViewGLCanvasManager()
+			GeneralManager.get().getViewManager()
 					.unregisterGLView(brick);
 			brick.unregisterEventListeners();
 			brick.destroy();
@@ -591,7 +591,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 			detailRow.clear();
 			detailRow.append(groupColumn);
 			if (detailBrick != null) {
-				GeneralManager.get().getViewGLCanvasManager()
+				GeneralManager.get().getViewManager()
 						.unregisterGLView(detailBrick);
 				detailBrick.unregisterEventListeners();
 				detailBrick.destroy();
@@ -961,7 +961,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	public void showDetailedBrick(GLBrick brick, boolean expandLeft) {
 
 		if (detailBrick != null) {
-			GeneralManager.get().getViewGLCanvasManager()
+			GeneralManager.get().getViewManager()
 					.unregisterGLView(detailBrick);
 			detailBrick.unregisterEventListeners();
 			detailBrick.destroy();

@@ -434,7 +434,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 				return;
 			}
 
-			GLTexture textureView = (GLTexture) generalManager.getViewGLCanvasManager()
+			GLTexture textureView = (GLTexture) generalManager.getViewManager()
 					.getGLView(externalID);
 			if (textureView == null) {
 				System.out.println("Warning, unrecognized view ID");

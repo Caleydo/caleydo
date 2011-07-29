@@ -435,7 +435,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 			throw new IllegalStateException("Cannot find class for view "+serView.getViewType());
 		}
 		
-		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
+		AGLView glView = GeneralManager.get().getViewManager()
 				.createGLView(viewClass, parentGLCanvas, parentComposite, viewFrustum);
 		//glView.setRemoteRenderingGLView(this);
 

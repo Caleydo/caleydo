@@ -83,7 +83,7 @@ public class StandardTransformer
 		final double[] wc = new double[4];
 		final GLU glu = new GLU();
 
-		ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+		ViewManager vm = GeneralManager.get().getViewManager();
 		AGLView view = vm.getGLView(viewID);
 		int canvasHeight = view.getParentGLCanvas().getHeight();
 

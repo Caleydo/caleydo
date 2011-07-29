@@ -91,7 +91,7 @@ public class HeatMapPreferencePage extends FieldEditorPreferencePage implements
 		boolean bReturn = super.performOk();
 
 		Collection<AGLView> eventListeners = GeneralManager.get()
-				.getViewGLCanvasManager().getAllGLViews();
+				.getViewManager().getAllGLViews();
 		for (AGLView glView : eventListeners) {
 			if (glView instanceof GLHierarchicalHeatMap) {
 				GLHierarchicalHeatMap heatMap = (GLHierarchicalHeatMap) glView;

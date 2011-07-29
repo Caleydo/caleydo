@@ -85,7 +85,7 @@ public abstract class ADataDomain
 	@Override
 	public EIconTextures getIcon() {
 		return icon;
-	};
+	}
 
 	public String getContentLabelSingular() {
 		return recordLabelSingular;

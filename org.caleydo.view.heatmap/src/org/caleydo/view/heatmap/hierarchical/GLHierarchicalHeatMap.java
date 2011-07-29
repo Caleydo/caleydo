@@ -766,7 +766,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		checkForHits(gl);
 
 		ConnectedElementRepresentationManager cerm = GeneralManager.get()
-				.getViewGLCanvasManager().getConnectedElementRepresentationManager();
+				.getViewManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 	}
@@ -2572,7 +2572,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		}
 
 		ConnectedElementRepresentationManager cerm = GeneralManager.get()
-				.getViewGLCanvasManager().getConnectedElementRepresentationManager();
+				.getViewManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		contextMenu.render(gl, this);

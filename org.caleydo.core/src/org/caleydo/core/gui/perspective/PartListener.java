@@ -38,7 +38,7 @@ public class PartListener
 
 		ARcpGLViewPart glView = (ARcpGLViewPart) activePart;
 
-		GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(glView.getGLCanvas());
+		GeneralManager.get().getViewManager().registerGLCanvasToAnimator(glView.getGLCanvas());
 	}
 
 	@Override

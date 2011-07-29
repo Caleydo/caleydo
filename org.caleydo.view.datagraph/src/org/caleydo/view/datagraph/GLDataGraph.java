@@ -160,7 +160,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		// allowedViewTypes.add("org.caleydo.view.bucket");
 
 		Collection<AGLView> views = GeneralManager.get()
-				.getViewGLCanvasManager().getAllGLViews();
+				.getViewManager().getAllGLViews();
 
 		for (AGLView view : views) {
 			addView(view);

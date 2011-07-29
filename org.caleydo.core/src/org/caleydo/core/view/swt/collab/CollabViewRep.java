@@ -249,7 +249,7 @@ public class CollabViewRep
 		label.setText("");
 
 		org.eclipse.swt.widgets.List viewList = new org.eclipse.swt.widgets.List(testControls, SWT.LEFT);
-		ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+		ViewManager vm = GeneralManager.get().getViewManager();
 		Collection<AGLView> views = vm.getAllGLViews();
 		int[] viewIds = new int[views.size()];
 		int viewIndex = 0;

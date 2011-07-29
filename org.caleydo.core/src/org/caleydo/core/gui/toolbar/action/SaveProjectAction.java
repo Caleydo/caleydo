@@ -30,12 +30,8 @@ public class SaveProjectAction
 	public void run() {
 		super.run();
 
-		// ExportDataDialog dialog = new ExportDataDialog(new Shell());
-		// dialog.open();
-
 		FileDialog fileDialog = new FileDialog(new Shell(), SWT.SAVE);
 		fileDialog.setText("Save Project");
-		// fileDialog.setFilterPath(sFilePath);
 		String[] filterExt = { "*.cal" };
 		fileDialog.setFilterExtensions(filterExt);
 
@@ -47,6 +43,5 @@ public class SaveProjectAction
 
 		ProjectSaver save = new ProjectSaver();
 		save.save(sFileName);
-		// txtFileName.setText(sFileName);
 	}
 }

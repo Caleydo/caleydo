@@ -73,7 +73,7 @@ public class DummyTransformer
 					connectionMap.put(connections.getKey(), repList);
 				}
 
-				ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+				ViewManager vm = GeneralManager.get().getViewManager();
 				for (SelectedElementRep sel : connections.getValue()) {
 					AGLView view = vm.getGLView(sel.getSourceViewID());
 					RemoteLevelElement rle = view.getRemoteLevelElement();

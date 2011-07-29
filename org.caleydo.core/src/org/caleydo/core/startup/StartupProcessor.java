@@ -1,19 +1,23 @@
 package org.caleydo.core.startup;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.PreferenceManager;
 import org.caleydo.core.net.IGroupwareManager;
+import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.startup.gui.CaleydoProjectWizard;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -84,29 +88,47 @@ public class StartupProcessor {
 					appInitData.addStartView(view, dataDomain);
 				}
 			}
+			
+			changeWorkspaceLocation();
+			GeneralManager.get().getSWTGUIManager();
 
-			display = PlatformUI.createDisplay();
+			if (startupProcedure == null) {
+				Shell shell = new Shell();
+				WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
 
-			initRCPWorkbench();
+				if (projectWizardDialog.open() == Window.CANCEL) {
+					shutdown();
+				}
+			}
+		
+			startupProcedure.initPreWorkbenchOpen();
+			initRCPWorkbench(); 
 		}
 	}
 
+	/**
+	 * Changing the workspace location in order to be able to store and restore the workbench state (also in
+	 * combination with serialized projects).
+	 */
+	private void changeWorkspaceLocation() {
+
+		final Location instanceLoc = Platform.getInstanceLocation();
+
+		String workspacePath = "file://"+GeneralManager.CALEYDO_HOME_PATH;
+		try {
+			URL workspaceURL = new URL(workspacePath);
+			instanceLoc.set(workspaceURL, false);
+		}
+		catch (Exception e) {
+			throw new IllegalStateException("Cannot set workspace location at "+workspacePath);
+		}
+	}
+	
 	/**
 	 * Static method for initializing the Caleydo core. Called when initializing the workbench because XML
 	 * startup the progress bar is needed
 	 */
 	public void initCore() {
-
-		GeneralManager.get().getSWTGUIManager();
-
-		if (startupProcedure == null) {
-			Shell shell = InteractiveSplashHandler.getShell();
-			WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
-
-			if (projectWizardDialog.open() == Window.CANCEL) {
-				shutdown();
-			}
-		}
 
 		startupProcedure.init(appInitData);
 		startupProcedure.execute();
@@ -117,13 +139,13 @@ public class StartupProcessor {
 	private void initRCPWorkbench() {
 
 		try {
+			display = PlatformUI.createDisplay();
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
-
 			PlatformUI.createAndRunWorkbench(display, applicationWorkbenchAdvisor);
-
+					
 			GeneralManager.get().getPreferenceStore().setValue("firstStart", false);
 		}
-		finally {
+		finally {	
 			shutdown();
 		}
 	}
@@ -169,7 +191,7 @@ public class StartupProcessor {
 			generalManager.setGroupwareManager(null);
 		}
 
-		generalManager.getViewGLCanvasManager().stopAnimator();
+		generalManager.getViewManager().stopAnimator();
 
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Bye bye!"));
 		// display.dispose();

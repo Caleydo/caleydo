@@ -309,7 +309,7 @@ public abstract class AGLViewBrowser
 		checkForHits(gl);
 
 		ConnectedElementRepresentationManager cerm =
-			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+			GeneralManager.get().getViewManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 	}
 
@@ -430,7 +430,7 @@ public abstract class AGLViewBrowser
 				}
 			}
 
-			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+			generalManager.getViewManager().getConnectedElementRepresentationManager()
 				.clearTransformedConnections();
 			dragAndDrop.stopDragAction();
 		}
@@ -1044,7 +1044,7 @@ public abstract class AGLViewBrowser
 
 		slerpMod.applySlerp(gl, transform, true, false);
 
-		generalManager.getViewGLCanvasManager().getGLView(viewID).displayRemote(gl);
+		generalManager.getViewManager().getGLView(viewID).displayRemote(gl);
 
 		gl.glPopMatrix();
 
@@ -1065,7 +1065,7 @@ public abstract class AGLViewBrowser
 			}
 
 			// generalManager.getViewGLCanvasManager().getInfoAreaManager().enable(!bEnableNavigationOverlay);
-			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+			generalManager.getViewManager().getConnectedElementRepresentationManager()
 				.clearTransformedConnections();
 		}
 	}
@@ -1295,7 +1295,7 @@ public abstract class AGLViewBrowser
 			newViews.clear();
 		}
 
-		ViewManager viewManager = generalManager.getViewGLCanvasManager();
+		ViewManager viewManager = generalManager.getViewManager();
 
 		if (reinitialize) {
 			ArrayList<AGLView> removeView = new ArrayList<AGLView>();
@@ -1337,7 +1337,7 @@ public abstract class AGLViewBrowser
 			}
 		}
 
-		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
+		generalManager.getViewManager().getConnectedElementRepresentationManager().clearAll();
 	}
 
 	@Override
@@ -1660,7 +1660,7 @@ public abstract class AGLViewBrowser
 			throw new IllegalStateException("Cannot find class for view "+serView.getViewType());
 		}
 		
-		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
+		AGLView glView = GeneralManager.get().getViewManager()
 				.createGLView(viewClass, parentGLCanvas, parentComposite, viewFrustum);
 		glView.setRemoteRenderingGLView(this);
 
@@ -1708,7 +1708,7 @@ public abstract class AGLViewBrowser
 	 * Disables picking and enables busy mode
 	 */
 	public void disableUserInteraction() {
-		ViewManager canvasManager = generalManager.getViewGLCanvasManager();
+		ViewManager canvasManager = generalManager.getViewManager();
 		canvasManager.getPickingManager().enablePicking(false);
 		canvasManager.requestBusyMode(this);
 	}
@@ -1717,7 +1717,7 @@ public abstract class AGLViewBrowser
 	 * Enables picking and disables busy mode
 	 */
 	public void enableUserInteraction() {
-		ViewManager canvasManager = generalManager.getViewGLCanvasManager();
+		ViewManager canvasManager = generalManager.getViewManager();
 		canvasManager.getPickingManager().enablePicking(true);
 		canvasManager.releaseBusyMode(this);
 	}

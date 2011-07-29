@@ -35,7 +35,7 @@ public abstract class AGLConnectionLineRenderer {
 	public AGLConnectionLineRenderer() {
 
 		connectedElementRepManager =
-			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+			GeneralManager.get().getViewManager().getConnectedElementRepresentationManager();
 
 		hashIDTypeToViewToPointLists = new HashMap<IDType, HashMap<Integer, ArrayList<ArrayList<Vec3f>>>>();
 	}

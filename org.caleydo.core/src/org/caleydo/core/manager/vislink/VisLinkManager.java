@@ -129,7 +129,7 @@ public class VisLinkManager
 		cse.setSender(this);
 		eventPublisher.triggerEvent(cse);
 
-		GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager()
+		GeneralManager.get().getViewManager().getConnectedElementRepresentationManager()
 			.clearTransformedConnections();
 
 		caleydoSelectionId = null;
@@ -232,7 +232,7 @@ public class VisLinkManager
 	@Override
 	public void run() {
 		ConnectedElementRepresentationManager cerm =
-			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+			GeneralManager.get().getViewManager().getConnectedElementRepresentationManager();
 		if (cerm.isNewCanvasVertices()) {
 			final CanvasConnectionMap ccm =
 				cerm.getCanvasConnectionsByType().get(dataDomain.getRecordIDType());
@@ -282,7 +282,7 @@ public class VisLinkManager
 	private SelectionPoint2DList canvasPointsToDisplay(SelectionPoint2DList canvasPoints) {
 		SelectionPoint2DList displayPoints = new SelectionPoint2DList();
 		for (SelectionPoint2D p : canvasPoints) {
-			ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+			ViewManager vm = GeneralManager.get().getViewManager();
 			AGLView view = vm.getGLView(p.getViewID());
 			Composite composite = view.getParentComposite();
 			Point dp = composite.toDisplay(p.getPoint());

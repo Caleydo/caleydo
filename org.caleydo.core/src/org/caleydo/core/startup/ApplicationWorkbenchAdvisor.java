@@ -1,5 +1,6 @@
 package org.caleydo.core.startup;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.AutoSaver;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.eclipse.jface.preference.IPreferenceNode;
@@ -17,13 +18,10 @@ public class ApplicationWorkbenchAdvisor
 
 	private AutoSaver autoSaver;
 
-	// private IWorkbenchWindowConfigurer workbenchConfigurer;
-
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		PlatformUI.getPreferenceStore()
 			.setValue(IWorkbenchPreferenceConstants.SHOW_PROGRESS_ON_STARTUP, true);
-		// workbenchConfigurer = configurer;
 
 		return new ApplicationWorkbenchWindowAdvisor(configurer);
 	}
@@ -42,21 +40,6 @@ public class ApplicationWorkbenchAdvisor
 	@Override
 	public void postStartup() {
 		super.postStartup();
-
-		// if (!Application.LAZY_VIEW_LOADING) {
-		// String[] serViews = new String[Application.initializedStartViews.size()];
-		// serViews = Application.initializedStartViews.toArray(serViews);
-		// IWorkbenchPage activePage = workbenchConfigurer.getWindow().getActivePage();
-		// for (String startView : serViews) {
-		// try {
-		// activePage.showView(startView);
-		// }
-		// catch (PartInitException ex) {
-		// ex.printStackTrace();
-		// }
-		// }
-		// }
-
 		// // Check if an early exit should be performed
 		// if (Application.bDoExit) {
 		// this.getWorkbenchConfigurer().getWorkbench().close();
@@ -64,11 +47,10 @@ public class ApplicationWorkbenchAdvisor
 		// }
 
 		filterPreferencePages();
-		// initializeViews();
 
 		autoSaver = new AutoSaver();
-		// ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
-		// vm.getDisplayLoopExecution().executeMultiple(autoSaver);
+		GeneralManager.get().getViewManager().getDisplayLoopExecution().executeMultiple(autoSaver);
+
 	}
 
 	private void filterPreferencePages() {
@@ -84,27 +66,15 @@ public class ApplicationWorkbenchAdvisor
 		}
 	}
 
-	// /**
-	// * Sets the views init-parameters. In case of a loaded project, the views are initialized from their
-	// * restored serialized-representation.
-	// */
-	// private void initializeViews() {
-	// // if (Application.applicationMode == ApplicationMode.LOAD_PROJECT) {
-	// //
-	// // }
-	// }
-
 	@Override
 	public boolean preShutdown() {
 		super.preShutdown();
 
-		// ViewManager vm = GeneralManager.get().getViewGLCanvasManager();
-		// vm.getDisplayLoopExecution().stopMultipleExecution(autoSaver);
+		GeneralManager.get().getViewManager().getDisplayLoopExecution().stopMultipleExecution(autoSaver);
 		autoSaver = null;
 
-		ProjectSaver saver = new ProjectSaver();
-		saver.saveRecentProject();
-
+		new ProjectSaver().saveRecentProject();	
+		
 		return true;
 	}
 }

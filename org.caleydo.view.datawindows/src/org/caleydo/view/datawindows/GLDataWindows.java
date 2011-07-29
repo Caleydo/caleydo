@@ -575,7 +575,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 					+ serView.getViewType());
 		}
 
-		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
+		AGLView glView = GeneralManager.get().getViewManager()
 				.createGLView(viewClass, parentGLCanvas, parentComposite, viewFrustum);
 		glView.setRemoteRenderingGLView(this);
 

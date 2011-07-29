@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * Bean that holds the initialization data for new started caleydo application. Used to store and restore
  * project or to sync remote clients.
- * 
  * @author Werner Puff
  * @author Alexander Lex
  */
@@ -20,22 +19,11 @@ public class SerializationData {
 	/** list of serialization data that makes up a data domain **/
 	List<DataDomainSerializationData> dataSerializationDataList = new ArrayList<DataDomainSerializationData>();
 	
-	/** list of views in use, not used to sync remote clients */
-	List<String> views;
-	
-	public List<String> getViewIDs() {
-		return views;
-	}
-
-	public void setViews(List<String> viewIDs) {
-		this.views = viewIDs;
-	}
-	
-	public void addDataSerializationData(DataDomainSerializationData dataSerializationData) {
+	public void addDataDomainSerializationData(DataDomainSerializationData dataSerializationData) {
 		dataSerializationDataList.add(dataSerializationData);
 	}
 	
-	public List<DataDomainSerializationData> getDataSerializationDataList() {
+	public List<DataDomainSerializationData> getDataDomainSerializationDataList() {
 		return dataSerializationDataList;
 	}
 }

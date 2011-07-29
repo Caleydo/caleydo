@@ -25,20 +25,21 @@ public class SerializationManager {
 	/** {link JAXBContext} for project (de-)serialization */
 	private JAXBContext projectContext;
 
-	private ArrayList<Class<?>> projectTypes;
+	private ArrayList<Class<?>> serializableTypes;
 
 	private SerializationManager() {
 		try {
 			Collection<Class<? extends AEvent>> eventTypes = getSerializeableEventTypes();
-			projectTypes = new ArrayList<Class<?>>();
-			projectTypes.add(SerializationData.class);
-			projectTypes.add(DataDomainSerializationData.class);
-			projectTypes.add(DataDomainList.class);
-			projectTypes.add(ViewList.class);
-			projectTypes.add(BasicInformation.class);
 			Class<?>[] classes = new Class<?>[eventTypes.size()];
 			classes = eventTypes.toArray(classes);
 			eventContext = JAXBContext.newInstance(classes);
+			
+			serializableTypes = new ArrayList<Class<?>>();
+			serializableTypes.add(SerializationData.class);
+			serializableTypes.add(DataDomainSerializationData.class);
+			serializableTypes.add(DataDomainList.class);
+			serializableTypes.add(BasicInformation.class);
+
 			createNewProjectContext();
 		}
 		catch (JAXBException ex) {
@@ -49,8 +50,8 @@ public class SerializationManager {
 
 	private void createNewProjectContext() {
 		try {
-			Class<?>[] projectClasses = new Class<?>[projectTypes.size()];
-			projectTypes.toArray(projectClasses);
+			Class<?>[] projectClasses = new Class<?>[serializableTypes.size()];
+			serializableTypes.toArray(projectClasses);
 			projectContext = JAXBContext.newInstance(projectClasses);
 		}
 		catch (JAXBException ex) {
@@ -85,21 +86,11 @@ public class SerializationManager {
 	public JAXBContext getProjectContext() {
 		return projectContext;
 	}
+	
 
-	/**
-	 * Generates and returns a {@link Collection} of all views that may be serialized. This list can e.g. be
-	 * used to get the list of views to save in a caledyo-project file.
-	 * 
-	 * @return {@link Collection} of serialized-view-classes that may be serialized.
-	 */
-	public Collection<Class<? extends ASerializedView>> getSerializeableViewTypes() {
-		Collection<Class<? extends ASerializedView>> viewTypes =
-			new ArrayList<Class<? extends ASerializedView>>();
-
-		// the list of views is maintained in the {@link ASerilializedView}'s {@link XmlSeeAlso} annotation.
-		viewTypes.add(ASerializedView.class);
-
-		return viewTypes;
+	public void registerSerializableType(Class<?> serializableClass) {
+		serializableTypes.add(serializableClass);
+		createNewProjectContext();
 	}
 
 	/**
@@ -112,65 +103,7 @@ public class SerializationManager {
 
 		// FIXME: check if the list of individual events needs to be provided here
 		eventTypes.add(AEvent.class);
-		// eventTypes.add(LoadPathwayEvent.class);
-		// eventTypes.add(SelectionCommandEvent.class);
-		// eventTypes.add(SelectionUpdateEvent.class);
-		// eventTypes.add(UpdateColorMappingEvent.class);
-		// eventTypes.add(CreateGUIViewEvent.class);
-		// eventTypes.add(EnableConnectionLinesEvent.class);
-		// eventTypes.add(DisableConnectionLinesEvent.class);
-		// eventTypes.add(LoadPathwaysByGeneEvent.class);
-		// eventTypes.add(ResetRemoteRendererEvent.class);
-		// eventTypes.add(ToggleNavigationModeEvent.class);
-		// eventTypes.add(ToggleZoomEvent.class);
-		// eventTypes.add(UseRandomSamplingEvent.class);
-		// eventTypes.add(AngularBrushingEvent.class);
-		// eventTypes.add(ApplyCurrentSelectionToVirtualArrayEvent.class);
-		// eventTypes.add(BookmarkButtonEvent.class);
-		// eventTypes.add(ChangeColorModeEvent.class);
-		// eventTypes.add(GoBackInHistoryEvent.class);
-		// eventTypes.add(GoForthInHistoryEvent.class);
-		// eventTypes.add(SetMaxDisplayedHierarchyDepthEvent.class);
-		// eventTypes.add(UpdateDepthSliderPositionEvent.class);
-		// eventTypes.add(RedrawViewEvent.class);
-		// eventTypes.add(ResetAxisSpacingEvent.class);
-		// eventTypes.add(ResetParallelCoordinatesEvent.class);
-		// eventTypes.add(UpdateViewEvent.class);
-		// eventTypes.add(VirtualArrayUpdateEvent.class);
-		// eventTypes.add(ClearSelectionsEvent.class);
-		// eventTypes.add(RemoveViewSpecificItemsEvent.class);
-		// eventTypes.add(ResetAllViewsEvent.class);
-		// eventTypes.add(ViewActivationEvent.class);
-		// eventTypes.add(TriggerPropagationCommandEvent.class);
-		// eventTypes.add(DisableGeneMappingEvent.class);
-		// eventTypes.add(DisableNeighborhoodEvent.class);
-		// eventTypes.add(DisableTexturesEvent.class);
-		// eventTypes.add(EnableGeneMappingEvent.class);
-		// eventTypes.add(EnableNeighborhoodEvent.class);
-		// eventTypes.add(EnableTexturesEvent.class);
-		// eventTypes.add(InfoAreaUpdateEvent.class);
-		// eventTypes.add(InterchangeContentGroupsEvent.class);
-		// eventTypes.add(MergeDimensionGroupsEvent.class);
-		// eventTypes.add(ChangeQueryTypeEvent.class);
-		// eventTypes.add(ChangeURLEvent.class);
-		// eventTypes.add(ClustererCanceledEvent.class);
-		// eventTypes.add(ClusterProgressEvent.class);
-		// eventTypes.add(RenameProgressBarEvent.class);
-		// eventTypes.add(ReplaceVAEvent.class);
-		// eventTypes.add(ReplaceRecordVAInUseCaseEvent.class);
-		// eventTypes.add(StartClusteringEvent.class);
-		// eventTypes.add(ClusterNodeSelectionEvent.class);
-		// eventTypes.add(ClientListEvent.class);
-		// eventTypes.add(AddConnectionLineVerticesEvent.class);
-		// eventTypes.add(ClearConnectionsEvent.class);
-
-		// eventTypes.add(NewSetEvent.class);
 
 		return eventTypes;
-	}
-
-	public void registerSerializableType(Class<?> serializableClass) {
-		projectTypes.add(serializableClass);
-		createNewProjectContext();
 	}
 }

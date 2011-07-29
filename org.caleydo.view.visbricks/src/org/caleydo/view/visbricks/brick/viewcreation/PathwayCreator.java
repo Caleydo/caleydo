@@ -42,7 +42,7 @@ public class PathwayCreator implements IRemoteViewCreator {
 
 		GLPathway pathwayView = (GLPathway) GeneralManager
 				.get()
-				.getViewGLCanvasManager()
+				.getViewManager()
 				.createGLView(
 						GLPathway.class,
 						remoteRenderingView.getParentGLCanvas(),

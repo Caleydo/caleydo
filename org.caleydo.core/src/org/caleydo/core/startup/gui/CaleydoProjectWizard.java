@@ -13,7 +13,6 @@ import org.caleydo.core.startup.StartupProcessor;
 import org.caleydo.core.startup.gui.ChooseProjectTypePage.EProjectLoadType;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
@@ -59,9 +58,6 @@ public class CaleydoProjectWizard
 			ProjectMode previousProjectMode =
 				ProjectMode.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE));
 
-			if (page.getProjectMode() != previousProjectMode)
-				Application.bDeleteRestoredWorkbenchState = true;
-
 			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, page.getOrganism().name());
 
 			ProjectMode projectMode = page.getProjectMode();
@@ -106,10 +102,6 @@ public class CaleydoProjectWizard
 					sNewPathwayDataSources += "BioCarta" + ";";
 				}
 
-				if (sNewPathwayDataSources != prefStore
-					.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES))
-					Application.bDeleteRestoredWorkbenchState = true;
-
 				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
 					sNewPathwayDataSources);
 
@@ -134,7 +126,7 @@ public class CaleydoProjectWizard
 			else {
 				throw new IllegalStateException("Not implemented!");
 			}
-
+			
 			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE, projectMode.name());
 
 			try {
@@ -163,14 +155,5 @@ public class CaleydoProjectWizard
 			return true;
 
 		return false;
-	}
-
-	/** Main method for testing */
-	public static void main(String args[]) {
-		while (true) {
-			Shell shell = new Shell();
-			WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
-			projectWizardDialog.open();
-		}
 	}
 }

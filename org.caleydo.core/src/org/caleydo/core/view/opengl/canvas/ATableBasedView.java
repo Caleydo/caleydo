@@ -134,7 +134,7 @@ public abstract class ATableBasedView
 		super(glCanvas, parentComposite, viewFrustum);
 
 		connectedElementRepresentationManager =
-			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
+			generalManager.getViewManager().getConnectedElementRepresentationManager();
 	}
 
 	@Override

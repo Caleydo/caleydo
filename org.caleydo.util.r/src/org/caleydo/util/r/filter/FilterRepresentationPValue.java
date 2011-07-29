@@ -146,7 +146,7 @@ public class FilterRepresentationPValue extends
 				// Because the GL2 histogram is no usual RCP view we have to do
 				// it on our
 				// own
-				GeneralManager.get().getViewGLCanvasManager()
+				GeneralManager.get().getViewManager()
 						.registerGLCanvasToAnimator(histogramView.getGLCanvas());
 			}
 		});

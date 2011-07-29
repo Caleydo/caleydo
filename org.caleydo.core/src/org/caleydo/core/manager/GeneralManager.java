@@ -46,20 +46,18 @@ public class GeneralManager {
 	public static final String PLUGIN_ID = "org.caleydo.core";
 
 	// public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
-	public static final String USER_HOME_TEMPLATE = "user.home";
 
 	/**
 	 * The template for the concrete caleydo folder, ie CALEYDO_FOLDER. This is used for example in XML files
 	 * and is then replaced with the concrete folder
 	 */
+	public static final String USER_HOME = "user.home";
 	public static final String CALEYDO_FOLDER_TEMPLATE = "caleydo.folder";
 	public static final String CALEYDO_FOLDER = ".caleydo_" + VERSION;
-	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME_TEMPLATE) + File.separator
+	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME) + File.separator
 		+ CALEYDO_FOLDER + File.separator;
 	public static final String CALEYDO_LOG_PATH = CALEYDO_HOME_PATH + "logs" + File.separator;
-	public static final String USER_HOME = "user.home";
 
-	public static final String sDelimiter_Paser_DataItemBlock = "@";
 	public static final String sDelimiter_Parser_DataItems = " ";
 	public static final String sDelimiter_Parser_DataType = ";";
 	public static final String sDelimiter_Parser_DataItems_Tab = "\t";
@@ -73,8 +71,8 @@ public class GeneralManager {
 
 	private DimensionManager dimensionManager;
 	private CommandManager commandManager;
-	private SWTGUIManager sWTGUIManager;
-	private ViewManager viewGLCanvasManager;
+	private SWTGUIManager swtGUIManager;
+	private ViewManager viewManager;
 	private EventPublisher eventPublisher;
 	private XmlParserManager xmlParserManager;
 	private IDMappingManager idMappingManager;
@@ -98,8 +96,8 @@ public class GeneralManager {
 		dimensionManager = new DimensionManager();
 		commandManager = new CommandManager();
 		eventPublisher = new EventPublisher();
-		viewGLCanvasManager = new ViewManager();
-		sWTGUIManager = new SWTGUIManager();
+		viewManager = new ViewManager();
+		swtGUIManager = new SWTGUIManager();
 		idMappingManager = new IDMappingManager();
 		xmlParserManager = new XmlParserManager();
 		idCreator = new IDCreator();
@@ -158,12 +156,12 @@ public class GeneralManager {
 		return dimensionManager;
 	}
 
-	public ViewManager getViewGLCanvasManager() {
-		return viewGLCanvasManager;
+	public ViewManager getViewManager() {
+		return viewManager;
 	}
 
 	public SWTGUIManager getSWTGUIManager() {
-		return sWTGUIManager;
+		return swtGUIManager;
 	}
 
 	public EventPublisher getEventPublisher() {

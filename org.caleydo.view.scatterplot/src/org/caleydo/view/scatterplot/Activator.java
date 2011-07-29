@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.view.scatterplot.toolbar.ScatterplotToolBarContent;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
@@ -26,10 +27,11 @@ public class Activator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		
+
 		registerDataDomains();
-		
-		ToolBarContentFactory.get().addToolBarContent(GLScatterPlot.VIEW_TYPE, false, new ScatterplotToolBarContent());
+
+		ToolBarContentFactory.get().addToolBarContent(GLScatterPlot.VIEW_TYPE, false,
+				new ScatterplotToolBarContent());
 	}
 
 	/*

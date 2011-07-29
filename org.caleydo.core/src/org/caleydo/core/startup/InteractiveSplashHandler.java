@@ -126,10 +126,7 @@ public class InteractiveSplashHandler
 
 	@Override
 	public void dispose() {
-		// if (!Application.bDoExit) {
-
 		// Start OpenGL2 rendering
-		GeneralManager.get().getViewGLCanvasManager().startAnimator();
-		// }
+		GeneralManager.get().getViewManager().startAnimator();
 	}
 }

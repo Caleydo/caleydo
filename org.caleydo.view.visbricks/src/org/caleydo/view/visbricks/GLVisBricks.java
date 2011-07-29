@@ -1053,7 +1053,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 						.getPickedPoint());
 				dragAndDropController
 						.addDraggable((DimensionGroup) generalManager
-								.getViewGLCanvasManager().getGLView(externalID));
+								.getViewManager().getGLView(externalID));
 				break;
 			case RIGHT_CLICKED:
 				break;
@@ -1224,7 +1224,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 				DimensionGroup dimensionGroup = (DimensionGroup) GeneralManager
 						.get()
-						.getViewGLCanvasManager()
+						.getViewManager()
 						.createGLView(
 								DimensionGroup.class,
 								getParentGLCanvas(), parentComposite,

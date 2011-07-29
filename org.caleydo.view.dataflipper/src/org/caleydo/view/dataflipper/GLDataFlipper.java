@@ -410,7 +410,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		checkForHits(gl);
 
 		ConnectedElementRepresentationManager cerm = GeneralManager.get()
-				.getViewGLCanvasManager().getConnectedElementRepresentationManager();
+				.getViewManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		// gl.glCallList(iGLDisplayListIndexLocal);
@@ -700,7 +700,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					+ serView.getViewType());
 		}
 
-		AGLView glView = GeneralManager.get().getViewGLCanvasManager()
+		AGLView glView = GeneralManager.get().getViewManager()
 				.createGLView(viewClass, parentGLCanvas, parentComposite, viewFrustum);
 		glView.setRemoteRenderingGLView(this);
 
@@ -717,7 +717,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	 * Disables picking and enables busy mode
 	 */
 	public void disableUserInteraction() {
-		ViewManager canvasManager = generalManager.getViewGLCanvasManager();
+		ViewManager canvasManager = generalManager.getViewManager();
 		canvasManager.getPickingManager().enablePicking(false);
 		canvasManager.requestBusyMode(this);
 	}
@@ -726,7 +726,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	 * Enables picking and disables busy mode
 	 */
 	public void enableUserInteraction() {
-		ViewManager canvasManager = generalManager.getViewGLCanvasManager();
+		ViewManager canvasManager = generalManager.getViewManager();
 		canvasManager.getPickingManager().enablePicking(true);
 		canvasManager.releaseBusyMode(this);
 	}
@@ -770,7 +770,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 				updateViewDetailLevels(tmpSlerpAction.getDestinationRemoteLevelElement());
 
-				AGLView glView = generalManager.getViewGLCanvasManager().getGLView(
+				AGLView glView = generalManager.getViewManager().getGLView(
 						tmpSlerpAction.getElementId());
 
 				// if (glView instanceof GLTissueViewBrowser)
@@ -840,7 +840,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		slerpMod.applySlerp(gl, transform, true, true);
 
 		renderBucketWall(gl, true);
-		generalManager.getViewGLCanvasManager().getGLView(viewID).displayRemote(gl);
+		generalManager.getViewManager().getGLView(viewID).displayRemote(gl);
 
 		gl.glPopMatrix();
 
@@ -1235,7 +1235,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private void chainMove(RemoteLevelElement selectedElement) {
 
 		// Clear connection lines
-		generalManager.getViewGLCanvasManager()
+		generalManager.getViewManager()
 				.getConnectedElementRepresentationManager().clearAll();
 
 		closeBrowserOverlay();
@@ -2464,7 +2464,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					browserOverlayShell.setBounds(x, y, 737, 735);
 
 					if (browserView == null) {
-						for (IView view : GeneralManager.get().getViewGLCanvasManager()
+						for (IView view : GeneralManager.get().getViewManager()
 								.getAllItems()) {
 							if (view instanceof HTMLBrowser) {
 								browserView = (HTMLBrowser) view;

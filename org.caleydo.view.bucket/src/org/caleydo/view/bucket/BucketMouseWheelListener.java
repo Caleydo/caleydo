@@ -115,10 +115,10 @@ public class BucketMouseWheelListener extends MouseAdapter implements MouseWheel
 			bucketLayoutRenderStyle.initMemoLevel();
 
 			// Turn off picking while zoom action is running
-			GeneralManager.get().getViewGLCanvasManager().getPickingManager()
+			GeneralManager.get().getViewManager().getPickingManager()
 					.enablePicking(false);
 		}
-		GeneralManager.get().getViewGLCanvasManager()
+		GeneralManager.get().getViewManager()
 				.getConnectedElementRepresentationManager().clearTransformedConnections();
 
 	}
@@ -174,11 +174,11 @@ public class BucketMouseWheelListener extends MouseAdapter implements MouseWheel
 			iAnimationZoomCounter = 0;
 			bZoomActionRunning = false;
 
-			GeneralManager.get().getViewGLCanvasManager()
+			GeneralManager.get().getViewManager()
 					.getConnectedElementRepresentationManager()
 					.clearTransformedConnections();
 			// Turn on picking after zoom action is done
-			GeneralManager.get().getViewGLCanvasManager().getPickingManager()
+			GeneralManager.get().getViewManager().getPickingManager()
 					.enablePicking(true);
 		}
 	}

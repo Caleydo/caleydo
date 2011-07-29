@@ -13,7 +13,6 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -206,7 +205,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDummyView serializedForm = new SerializedDummyView();
+		SerializedTextureView serializedForm = new SerializedTextureView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

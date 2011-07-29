@@ -1,5 +1,8 @@
 package org.caleydo.view.datameta;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -9,8 +12,11 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.view.filterpipeline.RcpGLFilterPipelineView;
+import org.caleydo.view.filterpipeline.SerializedFilterPipelineView;
 import org.caleydo.view.grouper.RcpGLGrouperView;
+import org.caleydo.view.grouper.SerializedGrouperView;
 import org.caleydo.view.histogram.RcpGLColorMapperHistogramView;
+import org.caleydo.view.histogram.SerializedHistogramView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -43,7 +49,15 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		super();
 
 		eventPublisher = GeneralManager.get().getEventPublisher();
+		
+		try {
+			viewContext = JAXBContext
+					.newInstance(SerializedDataMetaView.class);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContext", ex);
+		}
 	}
+
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -109,13 +123,14 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 
 		RcpGLColorMapperHistogramView histogramView = new RcpGLColorMapperHistogramView();
 		histogramView.setDataDomain(dataDomain);
-		histogramView.createDefaultSerializedView();
+		SerializedHistogramView serializedHistogramView = new SerializedHistogramView(dataDomain.getDataDomainID());
+		histogramView.setExternalSerializedView(serializedHistogramView);
 		histogramView.createPartControl(composite);
 		// Usually the canvas is registered to the GL2 animator in the
 		// PartListener.
 		// Because the GL2 histogram is no usual RCP view we have to do it on our
 		// own
-		GeneralManager.get().getViewGLCanvasManager()
+		GeneralManager.get().getViewManager()
 				.registerGLCanvasToAnimator(histogramView.getGLCanvas());
 		ExpandItem item2 = new ExpandItem (bar, SWT.NONE, 0);
 		item2.setText("Histogram");
@@ -126,10 +141,10 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		composite = new Composite (bar, SWT.NONE);
 		composite.setLayout(new FillLayout());
 		RcpGLFilterPipelineView filterPipelineView = new RcpGLFilterPipelineView();
-//		filterPipelineView.setDataDomain(dataDomain);
-		filterPipelineView.createDefaultSerializedView();
+		SerializedFilterPipelineView serializedFilterPipelineView = new SerializedFilterPipelineView(dataDomain.getDataDomainID());
+		filterPipelineView.setExternalSerializedView(serializedFilterPipelineView);
 		filterPipelineView.createPartControl(composite);
-		GeneralManager.get().getViewGLCanvasManager()
+		GeneralManager.get().getViewManager()
 				.registerGLCanvasToAnimator(filterPipelineView.getGLCanvas());
 		ExpandItem item3 = new ExpandItem (bar, SWT.NONE, 1);
 		item3.setText("Filter Pipeline");
@@ -140,10 +155,10 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		composite = new Composite (bar, SWT.NONE);
 		composite.setLayout(new FillLayout());
 		RcpGLGrouperView grouperView = new RcpGLGrouperView();
-//		grouperView.setDataDomain(dataDomain);
-		grouperView.createDefaultSerializedView();
+		SerializedGrouperView serializedGrouperView = new SerializedGrouperView(dataDomain.getDataDomainID());
+		grouperView.setExternalSerializedView(serializedGrouperView);
 		grouperView.createPartControl(composite);
-		GeneralManager.get().getViewGLCanvasManager()
+		GeneralManager.get().getViewManager()
 				.registerGLCanvasToAnimator(grouperView.getGLCanvas());
 		ExpandItem item4 = new ExpandItem (bar, SWT.NONE, 2);
 		item4.setText("Grouper");

@@ -25,8 +25,8 @@ public class SerializedHierarchicalHeatMapView extends ASerializedView {
 
 	@Override
 	public ViewFrustum getViewFrustum() {
-		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 8, 0,
-				8, -20, 20);
+		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
+				8, 0, 8, -20, 20);
 		return viewFrustum;
 	}
 

@@ -1,5 +1,8 @@
 package org.caleydo.view.info;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomain;
@@ -25,6 +28,20 @@ public class RcpInfoAreaView extends CaleydoRCPViewPart {
 
 	private InfoArea infoArea;
 
+	/**
+	 * Constructor.
+	 */
+	public RcpInfoAreaView() {
+		super();
+		
+		try {
+			viewContext = JAXBContext
+					.newInstance(SerializedInfoAreaView.class);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContext", ex);
+		}
+	}
+	
 	@Override
 	public void createPartControl(Composite parent) {
 		final Composite parentComposite = new Composite(parent, SWT.NULL);

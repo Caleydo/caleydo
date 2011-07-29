@@ -272,7 +272,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 	private void createDetailHeatMap(GL2 gl) {
 		detailHeatMap = (GLHeatMap) GeneralManager
 				.get()
-				.getViewGLCanvasManager()
+				.getViewManager()
 				.createGLView(
 						GLHeatMap.class,
 						parentGLCanvas, parentComposite,

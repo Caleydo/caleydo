@@ -195,8 +195,8 @@ public class HTMLBrowser extends ASWTView {
 			@Override
 			public void completed(ProgressEvent event) {
 				// Give the focus back to active view
-				if (GeneralManager.get().getViewGLCanvasManager().getActiveSWTView() != null) {
-					GeneralManager.get().getViewGLCanvasManager().getActiveSWTView()
+				if (GeneralManager.get().getViewManager().getActiveSWTView() != null) {
+					GeneralManager.get().getViewManager().getActiveSWTView()
 							.setFocus();
 				}
 			}
@@ -204,8 +204,8 @@ public class HTMLBrowser extends ASWTView {
 			@Override
 			public void changed(ProgressEvent event) {
 				// Give the focus back to active view
-				if (GeneralManager.get().getViewGLCanvasManager().getActiveSWTView() != null) {
-					GeneralManager.get().getViewGLCanvasManager().getActiveSWTView()
+				if (GeneralManager.get().getViewManager().getActiveSWTView() != null) {
+					GeneralManager.get().getViewManager().getActiveSWTView()
 							.setFocus();
 				}
 			}

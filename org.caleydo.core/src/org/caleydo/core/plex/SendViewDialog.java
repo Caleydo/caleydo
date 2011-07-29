@@ -44,7 +44,7 @@ public class SendViewDialog
 	public SendViewDialog(Shell parentShell) {
 		super(parentShell);
 
-		viewManager = GeneralManager.get().getViewGLCanvasManager();
+		viewManager = GeneralManager.get().getViewManager();
 		groupwareManager = GeneralManager.get().getGroupwareManager();
 
 		clientList = null;

@@ -33,7 +33,7 @@ public class HistogramCreator implements IRemoteViewCreator {
 
 		GLHistogram histogram = (GLHistogram) GeneralManager
 				.get()
-				.getViewGLCanvasManager()
+				.getViewManager()
 				.createGLView(
 						GLHistogram.class,
 						remoteRenderingView.getParentGLCanvas(),

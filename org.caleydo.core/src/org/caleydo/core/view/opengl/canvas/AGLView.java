@@ -220,7 +220,7 @@ public abstract class AGLView
 
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), parentComposite);
 
-		GeneralManager.get().getViewGLCanvasManager().registerGLView(this);
+		GeneralManager.get().getViewManager().registerGLView(this);
 		parentGLCanvas = glCanvas;
 
 		glMouseListener = new GLMouseListener();
@@ -237,7 +237,7 @@ public abstract class AGLView
 		this.viewFrustum = viewFrustum;
 		viewCamera = new ViewCameraBase(uniqueID);
 
-		pickingManager = generalManager.getViewGLCanvasManager().getPickingManager();
+		pickingManager = generalManager.getViewManager().getPickingManager();
 		idMappingManager = generalManager.getIDMappingManager();
 		textureManager = new TextureManager();
 		contextMenu = ContextMenu.get();
@@ -257,7 +257,7 @@ public abstract class AGLView
 		registerEventListeners();
 		
 		 if (glRemoteRenderingView == null)
-             GeneralManager.get().getViewGLCanvasManager()
+             GeneralManager.get().getViewManager()
                      .registerGLEventListenerByGLCanvas(parentGLCanvas, this);
 	}
 
@@ -1077,8 +1077,8 @@ public abstract class AGLView
 		// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
 		// .clearByView(EIDType.REFSEQ_MRNA_INT, uniqueID);
 
-		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
-		generalManager.getViewGLCanvasManager().unregisterGLView(this);
+		generalManager.getViewManager().getConnectedElementRepresentationManager().clearAll();
+		generalManager.getViewManager().unregisterGLView(this);
 		unregisterEventListeners();
 	}
 

@@ -16,7 +16,7 @@ public abstract class ASWTView
 	 */
 	public ASWTView(int viewID, Composite parentComposite) {
 		super(viewID, parentComposite);
-		GeneralManager.get().getViewGLCanvasManager().registerItem(this);
+		GeneralManager.get().getViewManager().registerItem(this);
 	}
 	
 	public abstract void draw();
