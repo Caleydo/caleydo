@@ -11,11 +11,11 @@ public class SetBasedSegmentData implements ISegmentData {
 	private RecordVirtualArray recordVA;
 	private Group group;
 	private DataTable table;
-	private SetBasedDimensionGroupData dimensionGroupData;
+	private TableBasedDimensionGroupData dimensionGroupData;
 
 	public SetBasedSegmentData(ATableBasedDataDomain dataDomain, DataTable table,
 			RecordVirtualArray recordVA, Group group,
-			SetBasedDimensionGroupData dimensionGroupData) {
+			TableBasedDimensionGroupData dimensionGroupData) {
 		this.table = table;
 		this.dataDomain = dataDomain;
 		this.recordVA = recordVA;

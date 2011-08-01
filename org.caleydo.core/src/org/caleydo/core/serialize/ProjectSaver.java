@@ -345,7 +345,7 @@ public class ProjectSaver {
 		if (path == null) {
 			return null;
 		}
-		path = path.append("workbench.xml");
+		path = path.append(WORKBENCH_MEMENTO_FILE);
 		return path.toFile();
 	}
 }

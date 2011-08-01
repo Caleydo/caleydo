@@ -11,6 +11,7 @@ import org.caleydo.core.data.mapping.IDMappingLoader;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.data.DimensionGroupsChangedEvent;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -29,8 +30,6 @@ public class PathwayDataDomain extends ADataDomain {
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.pathway";
 
 	IDType primaryIDType;
-	
-	protected List<ADimensionGroupData> dimensionGroups;
 
 	/**
 	 * Counter used for determining the extension that together with the type
@@ -43,7 +42,7 @@ public class PathwayDataDomain extends ADataDomain {
 	 */
 	public PathwayDataDomain() {
 		
-		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + ":" + extensionID++);
+		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
 		
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
@@ -53,8 +52,6 @@ public class PathwayDataDomain extends ADataDomain {
 		new PathwayLoadingProgressIndicatorAction().run(null);
 
 		primaryIDType = IDType.getIDType("PATHWAY_VERTEX");
-		
-		dimensionGroups = new ArrayList<ADimensionGroupData>();
 	}
 
 	@Override
@@ -80,25 +77,25 @@ public class PathwayDataDomain extends ADataDomain {
 	public void unregisterEventListeners() {
 		// TODO Auto-generated method stub		
 	}
-	
-	@Override
-	public List<ADimensionGroupData> getDimensionGroups() {
-		return dimensionGroups;
-	}
-	
-	@Override
-	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups) {
-		this.dimensionGroups = dimensionGroups;
-		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
-	}
-	
-	@Override
-	public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
-		dimensionGroups.add(dimensionGroup);
-		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
-	}
+//	
+//	@Override
+//	public List<ADimensionGroupData> getDimensionGroups() {
+//		return dimensionGroups;
+//	}
+//	
+//	@Override
+//	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups) {
+//		this.dimensionGroups = dimensionGroups;
+//		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
+//		event.setSender(this);
+//		GeneralManager.get().getEventPublisher().triggerEvent(event);
+//	}
+//	
+//	@Override
+//	public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
+//		dimensionGroups.add(dimensionGroup);
+//		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
+//		event.setSender(this);
+//		GeneralManager.get().getEventPublisher().triggerEvent(event);
+//	}
 }

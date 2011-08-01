@@ -9,6 +9,7 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 
 /**
  * Use case for generic set-based data which is not further specified.
@@ -33,7 +34,7 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	 */
 	public GenericDataDomain() {
 
-		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + ":" + extensionID++);
+		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
 
 		recordLabelSingular = "entity";
 		recordLabelPlural = "entities";

@@ -2,7 +2,6 @@ package org.caleydo.core.manager.datadomain;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -24,10 +23,9 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.SetBasedDimensionGroupData;
+import org.caleydo.core.data.virtualarray.TableBasedDimensionGroupData;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -76,8 +74,6 @@ public abstract class ATableBasedDataDomain
 	private DimensionVAUpdateListener dimensionVAUpdateListener;
 	private AggregateGroupListener aggregateGroupListener;
 
-	protected List<ADimensionGroupData> dimensionGroups;
-
 	/** The set which is currently loaded and used inside the views for this use case. */
 	protected DataTable table;
 
@@ -124,8 +120,6 @@ public abstract class ATableBasedDataDomain
 	}
 
 	private void init() {
-
-		dimensionGroups = new ArrayList<ADimensionGroupData>();
 
 		assignIDCategories();
 		if (recordIDCategory == null || dimensionIDCategory == null) {
@@ -851,7 +845,7 @@ public abstract class ATableBasedDataDomain
 
 		for (ClusterNode child : parent.getChildren()) {
 			if (child.hasChildren()) {
-				dimensionGroups.add(new SetBasedDimensionGroupData(this, child.getSubDataTable()));
+				dimensionGroups.add(new TableBasedDimensionGroupData(this, child.getSubDataTable()));
 				createDimensionGroupsFromDimensionTree(child);
 			}
 		}
@@ -861,29 +855,7 @@ public abstract class ATableBasedDataDomain
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
-	@Override
-	public List<ADimensionGroupData> getDimensionGroups() {
-		return dimensionGroups;
-	}
-
-	@Override
-	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups) {
-		this.dimensionGroups = dimensionGroups;
-		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
-	}
-
-	@Override
-	public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
-		dimensionGroups.add(dimensionGroup);
-		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
-	}
-
 	public void aggregateGroups(java.util.Set<Integer> groups) {
 		System.out.println("Received command to aggregate experiments, not implemented yet");
-
 	}
 }

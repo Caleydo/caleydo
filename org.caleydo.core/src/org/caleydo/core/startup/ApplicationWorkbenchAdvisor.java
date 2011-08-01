@@ -48,8 +48,8 @@ public class ApplicationWorkbenchAdvisor
 
 		filterPreferencePages();
 
-		autoSaver = new AutoSaver();
-		GeneralManager.get().getViewManager().getDisplayLoopExecution().executeMultiple(autoSaver);
+//		autoSaver = new AutoSaver();
+//		GeneralManager.get().getViewManager().getDisplayLoopExecution().executeMultiple(autoSaver);
 
 	}
 

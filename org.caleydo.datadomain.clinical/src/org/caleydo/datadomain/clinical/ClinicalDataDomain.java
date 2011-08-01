@@ -11,6 +11,7 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
@@ -35,7 +36,7 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	 */
 	public ClinicalDataDomain() {
 
-		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + ":" + extensionID++);
+		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
 		icon = EIconTextures.DATA_DOMAIN_CLINICAL;
 	}
 

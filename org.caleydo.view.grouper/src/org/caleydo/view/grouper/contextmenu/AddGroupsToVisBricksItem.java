@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
-import org.caleydo.core.data.virtualarray.SetBasedDimensionGroupData;
+import org.caleydo.core.data.virtualarray.TableBasedDimensionGroupData;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 
@@ -19,7 +19,7 @@ public class AddGroupsToVisBricksItem extends AContextMenuItem {
 				setsToShow.size());
 
 		for (DataTable table : setsToShow) {
-			SetBasedDimensionGroupData data = new SetBasedDimensionGroupData(table.getDataDomain(), table);
+			TableBasedDimensionGroupData data = new TableBasedDimensionGroupData(table.getDataDomain(), table);
 			dimensionGroupData.add(data);
 		}
 		

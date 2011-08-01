@@ -6,7 +6,7 @@ import java.util.List;
 import org.caleydo.core.data.collection.table.DataTableDataType;
 import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.SetBasedDimensionGroupData;
+import org.caleydo.core.data.virtualarray.TableBasedDimensionGroupData;
 import org.caleydo.core.data.virtualarray.SetBasedSegmentData;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
@@ -19,11 +19,11 @@ import org.caleydo.view.visbricks.brick.layout.NumericalDataConfigurer;
 public class SetBasedBrickDimensionGroupData implements
 		IBrickDimensionGroupData {
 
-	private SetBasedDimensionGroupData dimensionGroupData;
+	private TableBasedDimensionGroupData dimensionGroupData;
 	private ASetBasedDataConfigurer setBasedDataConfigurer;
 
 	public SetBasedBrickDimensionGroupData(
-			SetBasedDimensionGroupData dimensionGroupData) {
+			TableBasedDimensionGroupData dimensionGroupData) {
 		this.dimensionGroupData = dimensionGroupData;
 		if (dimensionGroupData.getTable().getTableType()
 				.equals(DataTableDataType.NUMERIC)) {

@@ -29,6 +29,8 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class DataDomainManager {
 
+	public final static String DATA_DOMAIN_INSTANCE_DELIMITER = "_";
+	
 	private static DataDomainManager dataDomainManager;
 	private HashMap<String, IDataDomain> registeredDataDomainsByID = new HashMap<String, IDataDomain>(8);
 	private HashMap<String, ArrayList<IDataDomain>> registeredDataDomainsByType =

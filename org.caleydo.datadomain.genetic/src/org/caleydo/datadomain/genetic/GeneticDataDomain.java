@@ -75,7 +75,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	 */
 	public GeneticDataDomain() {
 
-		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + ":" + extensionID++);
+		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
 		
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
 		primaryRecordMappingType = IDType.getIDType("DAVID");

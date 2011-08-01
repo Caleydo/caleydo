@@ -3,18 +3,21 @@ package org.caleydo.core.data.virtualarray;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 
-public class SetBasedDimensionGroupData extends ADimensionGroupData {
+public class TableBasedDimensionGroupData extends ADimensionGroupData {
 
 	private ATableBasedDataDomain dataDomain;
 	private DataTable table;
 
-	public SetBasedDimensionGroupData(ATableBasedDataDomain dataDomain, DataTable table) {
+	public TableBasedDimensionGroupData(ATableBasedDataDomain dataDomain, DataTable table) {
 		this.dataDomain = dataDomain;
 		this.table = table;
 	}
