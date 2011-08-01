@@ -189,37 +189,37 @@ public class GLMouseListener
 
 		bMouseDoubleClick = false;
 
-		if ((mouseEvent.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
-			bMouseLeft_StandbyZoom = false;
-			bMouseMiddleButtonPressed = false;
+//		if ((mouseEvent.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
+//			bMouseLeft_StandbyZoom = false;
+//			bMouseMiddleButtonPressed = false;
+//
+//			if (bMouseRight_StandbyRotate) {
+//				/*
+//				 * first button pressed was "right" and now "left" button is released ==> same state as if
+//				 * only "right" button was pressed.
+//				 */
+////				bRightMouseButtonPressed = true;
+//			}
+//		}
 
-			if (bMouseRight_StandbyRotate) {
-				/*
-				 * first button pressed was "right" and now "left" button is released ==> same state as if
-				 * only "right" button was pressed.
-				 */
-				bRightMouseButtonPressed = true;
-			}
-		}
-
-		if ((mouseEvent.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
-
-			if (bMouseLeft_StandbyZoom) {
-				/*
-				 * First "left" button was pressed and not released since and "right" button was pressed now
-				 * ==> emmulate "middle" button
-				 */
-				bMouseMiddleButtonPressed = false;
-			}
-			else {
-				bRightMouseButtonPressed = false;
-
-				/*
-				 * Now "right" button is released ==> no more standby RightButton.
-				 */
-				bMouseRight_StandbyRotate = false;
-			}
-		}
+//		if ((mouseEvent.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
+//
+//			if (bMouseLeft_StandbyZoom) {
+//				/*
+//				 * First "left" button was pressed and not released since and "right" button was pressed now
+//				 * ==> emmulate "middle" button
+//				 */
+//				bMouseMiddleButtonPressed = false;
+//			}
+//			else {
+//				bRightMouseButtonPressed = false;
+//
+//				/*
+//				 * Now "right" button is released ==> no more standby RightButton.
+//				 */
+//				bMouseRight_StandbyRotate = false;
+//			}
+//		}
 
 		if ((mouseEvent.getModifiers() & InputEvent.BUTTON2_MASK) != 0) {
 			bMouseMiddleButtonPressed = false;
