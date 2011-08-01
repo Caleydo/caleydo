@@ -328,8 +328,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		dimensionVA = new DimensionVirtualArray(
 				org.caleydo.core.data.collection.table.DataTable.DIMENSION, alIndices);
 
-		eventPublisher.triggerEvent(new ReplaceDimensionVAInUseCaseEvent(table, dataDomain
-				.getDataDomainID(), dimensionVAType, dimensionVA));
+		eventPublisher.triggerEvent(new ReplaceDimensionVAInUseCaseEvent(table,
+				dataDomain.getDataDomainID(), dimensionVAType, dimensionVA));
 
 		// FIXME no one is notified that there is a new tree
 		table.getDimensionData(dimensionVAType).setDimensionTree(tree);
@@ -675,9 +675,18 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 								selectedTables);
 						contextMenu.addContextMenueItem(addGroupsToVisBricksItem);
 
-						if (Platform.getBundle("org.caleydo.util.r") != null) {
+						if (orderedComposites.size() >= 2) {
 
-							contextMenu.addSeparator();
+							CompareGroupsItem compareGroupsItem = new CompareGroupsItem(
+									selectedTables);
+							contextMenu.addContextMenueItem(compareGroupsItem);
+						}
+
+						contextMenu.addSeparator();
+
+						bContextMenueItemsAvailable = true;
+
+						if (Platform.getBundle("org.caleydo.util.r") != null) {
 
 							// Lazy loading of R
 							GeneralManager.get().getRStatisticsPerformer();
@@ -700,22 +709,11 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 								contextMenu
 										.addContextMenueItem(twoSidedTTestReductionItem);
 							}
+
+							Log2ForSetItem log2ForSetItem = new Log2ForSetItem(
+									selectedTables.get(0));
+							contextMenu.addContextMenueItem(log2ForSetItem);
 						}
-
-						if (orderedComposites.size() >= 2) {
-
-							contextMenu.addSeparator();
-
-							CompareGroupsItem compareGroupsItem = new CompareGroupsItem(
-									selectedTables);
-							contextMenu.addContextMenueItem(compareGroupsItem);
-						}
-
-						Log2ForSetItem log2ForSetItem = new Log2ForSetItem(
-								selectedTables.get(0));
-						contextMenu.addContextMenueItem(log2ForSetItem);
-
-						bContextMenueItemsAvailable = true;
 
 					}
 					if (setCopiedGroups != null
@@ -1375,7 +1373,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		table = this.dataDomain.getTable();
 
 		dimensionVA = table.getDimensionData(
-				org.caleydo.core.data.collection.table.DataTable.DIMENSION).getDimensionVA();
+				org.caleydo.core.data.collection.table.DataTable.DIMENSION)
+				.getDimensionVA();
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager, uniqueID,
 				renderStyle);
 		if (table.getDimensionData(dimensionVAType).getDimensionTree() != null) {

@@ -55,7 +55,7 @@ public class HTMLBrowser extends ASWTView {
 	 */
 	protected Composite subContributionComposite;
 
-	protected String url = CALEYDO_HOME + "/help/user_interface.html";
+	protected String url = CALEYDO_HOME;// + "/help/user_interface.html";
 
 	protected Text textURL;
 
