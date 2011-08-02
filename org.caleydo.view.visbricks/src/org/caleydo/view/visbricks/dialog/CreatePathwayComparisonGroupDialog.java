@@ -44,7 +44,7 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 	private Table pathwayTable;
 
 	private PathwayTableSorter pathwayTableSorter;
-	private Control parent;
+	private Composite parent;
 
 	private PathwayDimensionGroupData pathwayDimensionGroupData;
 
@@ -210,7 +210,7 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 		}
 
 		pathwayTable.pack();
-		// parent.pack();
+		parent.layout();
 	}
 
 	@Override
