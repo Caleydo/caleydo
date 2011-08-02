@@ -12,6 +12,8 @@ public class AWTBridgePopupFix {
 	private static final int MAX_ATTEMPTS = 200;
 	private static final int MAX_RETRIES = 5;
 
+	public static Shell popupShell = null;
+
 	public static void showMenu(final ContextMenuCreator mc) {
 		showMenu(mc, MAX_RETRIES);
 	}
@@ -25,7 +27,7 @@ public class AWTBridgePopupFix {
 		final Display display = menuCreator.getParent().getDisplay();
 
 		final Shell activeShell = menuCreator.getParent().getShell();
-		final Shell popupShell = new Shell(display, SWT.NO_TRIM | SWT.NO_FOCUS | SWT.ON_TOP);
+		popupShell = new Shell(display, SWT.NO_TRIM | SWT.NO_FOCUS | SWT.ON_TOP);
 
 		Point l = display.getCursorLocation();
 		l.x -= 2;
@@ -69,7 +71,8 @@ public class AWTBridgePopupFix {
 								if (!menu.isVisible())
 									menu.setVisible(true);
 								else {
-									//System.out.println("menu shown " + (count[0]) + " " + menu.isVisible());
+									// System.out.println("menu shown " + (count[0]) + " " +
+									// menu.isVisible());
 								}
 							}
 						};
@@ -81,5 +84,12 @@ public class AWTBridgePopupFix {
 			}
 		};
 		display.asyncExec(r);
+	}
+
+	public static void closePopupShell() {
+		
+		
+		if (popupShell != null)
+			popupShell.dispose();
 	}
 }

@@ -64,7 +64,6 @@ import org.caleydo.view.grouper.contextmenu.CompareGroupsItem;
 import org.caleydo.view.grouper.contextmenu.CopyGroupsItem;
 import org.caleydo.view.grouper.contextmenu.CreateGroupItem;
 import org.caleydo.view.grouper.contextmenu.DeleteGroupsItem;
-import org.caleydo.view.grouper.contextmenu.Log2ForSetItem;
 import org.caleydo.view.grouper.contextmenu.PasteGroupsItem;
 import org.caleydo.view.grouper.contextmenu.RenameGroupItem;
 import org.caleydo.view.grouper.drawingstrategies.DrawingStrategyManager;
@@ -709,10 +708,6 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 								contextMenuCreator
 										.addContextMenuItem(twoSidedTTestReductionItem);
 							}
-
-							Log2ForSetItem log2ForSetItem = new Log2ForSetItem(
-									selectedTables.get(0));
-							contextMenuCreator.addContextMenuItem(log2ForSetItem);
 						}
 
 					}

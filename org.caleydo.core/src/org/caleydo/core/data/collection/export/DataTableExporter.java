@@ -133,7 +133,7 @@ public class DataTableExporter {
 			String identifier;
 			IDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer recordID : recordVA) {
-				if (dataDomain.getDataDomainID().equals("org.caleydo.datadomain.genetic")) {
+				if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 
 					// FIXME: Due to new mapping system, a mapping involving expression index can return a Set
 					// of

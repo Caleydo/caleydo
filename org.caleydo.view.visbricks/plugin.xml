@@ -11,14 +11,6 @@
             id="org.caleydo.view.visbricks"
             name="VisBricks">
       </view>
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.visbricks.brick.RcpGLBrickView"
-            icon="resources/icons/icon.png"
-            id="org.caleydo.view.brick"
-            name="Single Brick">
-      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -40,20 +32,6 @@
                   </with>
                </visibleWhen>
             </command>
-            <command
-                  commandId="org.caleydo.view.visbricks.command.openbrick"
-                  icon="resources/icons/icon.png"
-                  style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="org.caleydo.core.isReleaseState">
-                     <equals
-                           value="releaseVersion">
-                     </equals>
-                  </with>
-               </visibleWhen>
-            </command>
          </menu>
       </menuContribution>
    </extension>
@@ -63,11 +41,6 @@
             defaultHandler="org.caleydo.view.visbricks.command.handler.OpenVisBricksHandler"
             id="org.caleydo.view.visbricks.command.openvisbricks"
             name="Visbricks">
-      </command>
-      <command
-            defaultHandler="org.caleydo.view.visbricks.command.handler.OpenBrickHandler"
-            id="org.caleydo.view.visbricks.command.openbrick"
-            name="Bricks">
       </command>
    </extension>
    <extension
