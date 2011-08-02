@@ -20,7 +20,6 @@ import org.eclipse.ui.PlatformUI;
 public class ActivateViewListener
 	extends AEventListener<IListenerOwner> {
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void handleEvent(final AEvent event) {
 

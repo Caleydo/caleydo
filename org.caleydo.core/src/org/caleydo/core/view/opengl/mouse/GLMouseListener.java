@@ -77,9 +77,10 @@ public class GLMouseListener
 			return;
 		}
 
-		if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
+		if (mouseEvent.getButton() == MouseEvent.BUTTON1)
 			leftMouseButtonPressed = true;
-		}
+		else if (mouseEvent.getButton() == MouseEvent.BUTTON3)
+			rightMouseButtonPressed = true;
 	}
 
 	@Override
@@ -179,8 +180,8 @@ public class GLMouseListener
 			 * --- PANING ---
 			 */
 			Vec3f addVec3f =
-				new Vec3f(panScale * (x - prevMouseX) / size.width, panScale * (prevMouseY - y)
-					/ size.height, 0.0f);
+				new Vec3f(panScale * (x - prevMouseX) / size.width,
+					panScale * (prevMouseY - y) / size.height, 0.0f);
 
 			prevMouseX = x;
 			prevMouseY = y;
