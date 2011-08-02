@@ -30,86 +30,41 @@ public class GLMouseListener
 	/**
 	 * All canvas objects which camera is manipulated by the mouse listener
 	 */
-	private ArrayList<AGLView> alGlCanvas;
+	private ArrayList<AGLView> glCanvasList = new ArrayList<AGLView>();
 
-	private Point pickedPointDragStart;
+	private Point pickedPointDragStart = new Point();
 	private Point pickedPointCurrent;
 
-	private boolean bLeftMouseButtonPressed = false;
-	private boolean bRightMouseButtonPressed = false;
-	private boolean bMouseMiddleButtonPressed = false;
-	private boolean bMouseReleased = false;
-	private boolean bMouseDragged = false;
-	private boolean bMouseMoved = false;
-	private boolean bMouseDoubleClick = false;
-
-	private boolean bMouseLeft_StandbyZoom = false;
-	private boolean bMouseRight_StandbyRotate = false;
+	private boolean leftMouseButtonPressed = false;
+	private boolean rightMouseButtonPressed = false;
+	private boolean mouseMiddleButtonPressed = false;
+	private boolean mouseReleased = false;
+	private boolean mouseDragged = false;
+	private boolean mouseMoved = false;
+	private boolean mouseDoubleClick = false;
 
 	private int prevMouseX, prevMouseY;
 
-	private float fZoomScale = 0.072f;
-	private float fPanScale = 3.1f;
+	private float zoomScale = 0.072f;
+	private float panScale = 3.1f;
 
-	private boolean bEnablePan = true;
-	private boolean bEnableRotate = true;
-	private boolean bEnableZoom = true;
+	private boolean enablePan = true;
+	private boolean enableRotate = true;
+	private boolean enableZoom = true;
 
-	public int[] mousePosition;
+	public int[] mousePosition = new int[2];;
 
 	/**
 	 * Define mouse sensitivity. Higher value indicates more degrees of rotation. Default value 1.0
 	 */
-	private float fMouseSensitivityRotation = 1.0f;
-
-	/**
-	 * Constructor.
-	 */
-	public GLMouseListener() {
-		super();
-		pickedPointDragStart = new Point();
-
-		alGlCanvas = new ArrayList<AGLView>();
-		mousePosition = new int[2];
-	}
+	private float mouseSensitivityRotation = 1.0f;
 
 	@Override
 	public void mousePressed(MouseEvent mouseEvent) {
 
-		// PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-		// @Override
-		// public void run() {
-		//
-		// AGLView canvas = alGlCanvas.get(0);
-		// Menu menu = new Menu(canvas.getParentComposite().getShell(), SWT.POP_UP);
-		// // int x =
-		// // Point point = canvas.getParentComposite()
-		// // .toDisplay(0, 0);
-		// // System.out.println(point);
-		// // menu.setLocation(point.x + pick.getPickedPoint().x,
-		// // point.y + pick.getPickedPoint().y);
-		// menu.setLocation(100, 100);
-		// MenuItem item = new MenuItem(menu, SWT.PUSH);
-		// item.setText("Popup");
-		// item = new MenuItem(menu, SWT.PUSH);
-		// item.setText("Popup1");
-		// item = new MenuItem(menu, SWT.PUSH);
-		// item.setText("Popup2");
-		// item = new MenuItem(menu, SWT.PUSH);
-		// item.setText("Popup3");
-		// item = new MenuItem(menu, SWT.PUSH);
-		// item.setText("Popup4");
-		// item = new MenuItem(menu, SWT.PUSH);
-		// item.setText("Popup5");
-		// // manager.getParentComposite().setMenu(menu);
-		// menu.setVisible(true);
-		//
-		// }
-		// });
-
-		bMouseReleased = false;
-		bLeftMouseButtonPressed = false;
-		bRightMouseButtonPressed = false;
+		mouseReleased = false;
+		leftMouseButtonPressed = false;
+		rightMouseButtonPressed = false;
 
 		pickedPointDragStart.setLocation(mouseEvent.getPoint());
 
@@ -117,49 +72,13 @@ public class GLMouseListener
 		prevMouseY = mouseEvent.getY();
 
 		if (mouseEvent.getClickCount() > 1) {
-			bMouseDoubleClick = true;
+			mouseDoubleClick = true;
 			// System.out.println("Double click!");
 			return;
 		}
 
 		if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
-			bLeftMouseButtonPressed = true;
-		}
-		else if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
-
-			if (bMouseLeft_StandbyZoom) {
-				/*
-				 * first button pressed was "middle" and it is still pressed, but also "right" button is
-				 * pressed now..
-				 */
-				bMouseMiddleButtonPressed = true;
-			}
-			else {
-				/*
-				 * first button pressed was NOT "middle" and but now "right" button is pressed..
-				 */
-				bRightMouseButtonPressed = true;
-				bMouseRight_StandbyRotate = true;
-			}
-		}
-
-		/* --- Middle -- Mouse Button --- */
-		if ((mouseEvent.getModifiers() & InputEvent.BUTTON2_MASK) != 0) {
-			bMouseMiddleButtonPressed = true;
-			// System.err.println(" -- Middle --");
-
-			if (bMouseRight_StandbyRotate) {
-				/*
-				 * first button was "right" and "right"-button is still pressed
-				 */
-				bRightMouseButtonPressed = false;
-			}
-			else {
-				/*
-				 * enable standby zoom... First button pressed is "middle"
-				 */
-				bMouseLeft_StandbyZoom = true;
-			}
+			leftMouseButtonPressed = true;
 		}
 	}
 
@@ -168,7 +87,7 @@ public class GLMouseListener
 		this.mousePosition[0] = mouseEvent.getXOnScreen();
 		this.mousePosition[1] = mouseEvent.getYOnScreen();
 
-		bMouseMoved = true;
+		mouseMoved = true;
 		pickedPointCurrent = mouseEvent.getPoint();
 	}
 
@@ -179,65 +98,33 @@ public class GLMouseListener
 	@Override
 	public void mouseReleased(MouseEvent mouseEvent) {
 
-		bMouseDragged = false;
+		mouseDragged = false;
 
 		if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
 			pickedPointCurrent = mouseEvent.getPoint();
 		}
 
-		bMouseReleased = true;
+		mouseReleased = true;
 
-		bMouseDoubleClick = false;
-
-//		if ((mouseEvent.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
-//			bMouseLeft_StandbyZoom = false;
-//			bMouseMiddleButtonPressed = false;
-//
-//			if (bMouseRight_StandbyRotate) {
-//				/*
-//				 * first button pressed was "right" and now "left" button is released ==> same state as if
-//				 * only "right" button was pressed.
-//				 */
-////				bRightMouseButtonPressed = true;
-//			}
-//		}
-
-//		if ((mouseEvent.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
-//
-//			if (bMouseLeft_StandbyZoom) {
-//				/*
-//				 * First "left" button was pressed and not released since and "right" button was pressed now
-//				 * ==> emmulate "middle" button
-//				 */
-//				bMouseMiddleButtonPressed = false;
-//			}
-//			else {
-//				bRightMouseButtonPressed = false;
-//
-//				/*
-//				 * Now "right" button is released ==> no more standby RightButton.
-//				 */
-//				bMouseRight_StandbyRotate = false;
-//			}
-//		}
+		mouseDoubleClick = false;
 
 		if ((mouseEvent.getModifiers() & InputEvent.BUTTON2_MASK) != 0) {
-			bMouseMiddleButtonPressed = false;
+			mouseMiddleButtonPressed = false;
 		}
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent mouseEvent) {
 
-		bMouseDragged = true;
+		mouseDragged = true;
 		pickedPointCurrent = mouseEvent.getPoint();
 
 		int x = mouseEvent.getX();
 		int y = mouseEvent.getY();
 		Dimension size = mouseEvent.getComponent().getSize();
 
-		if (!bRightMouseButtonPressed) {
-			if (!bMouseMiddleButtonPressed && bEnableRotate) {
+		if (!rightMouseButtonPressed) {
+			if (!mouseMiddleButtonPressed && enableRotate) {
 
 				/**
 				 * --- ROTATION ---
@@ -245,8 +132,8 @@ public class GLMouseListener
 				Rotf currentRotX = new Rotf();
 				Rotf currentRotY = new Rotf();
 
-				float fpercentX = (float) (x - prevMouseX) / (float) size.width * fMouseSensitivityRotation;
-				float fpercentY = (float) (y - prevMouseY) / (float) size.height * fMouseSensitivityRotation;
+				float fpercentX = (float) (x - prevMouseX) / (float) size.width * mouseSensitivityRotation;
+				float fpercentY = (float) (y - prevMouseY) / (float) size.height * mouseSensitivityRotation;
 
 				currentRotX.set(new Vec3f(0, 1, 0), fpercentX * (float) Math.PI);
 				currentRotY.set(new Vec3f(1, 0, 0), fpercentY * (float) Math.PI);
@@ -258,18 +145,18 @@ public class GLMouseListener
 				prevMouseY = y;
 
 				/* set new paramters to ViewCamera */
-				Iterator<AGLView> iterGLCanvas = alGlCanvas.iterator();
+				Iterator<AGLView> iterGLCanvas = glCanvasList.iterator();
 
 				while (iterGLCanvas.hasNext()) {
 					iterGLCanvas.next().getViewCamera().addCameraRotation(currentRotX);
 				}
 			}
-			else if (bEnableZoom) {
+			else if (enableZoom) {
 				/**
 				 * --- ZOOMING ---
 				 */
-				float zoomX = fZoomScale * (x - prevMouseX);
-				float zoomY = fZoomScale * (prevMouseY - y);
+				float zoomX = zoomScale * (x - prevMouseX);
+				float zoomY = zoomScale * (prevMouseY - y);
 
 				/* take abs(zoomX) */
 				if (zoomX < 0.0f && zoomY > 0.0f) {
@@ -280,26 +167,26 @@ public class GLMouseListener
 				prevMouseY = y;
 
 				/* set new paramters to ViewCamera */
-				Iterator<AGLView> iterGLCanvas = alGlCanvas.iterator();
+				Iterator<AGLView> iterGLCanvas = glCanvasList.iterator();
 
 				while (iterGLCanvas.hasNext()) {
 					iterGLCanvas.next().getViewCamera().addCameraScale(new Vec3f(0, 0, zoomY + zoomX));
 				}
 			}
 		}
-		else if (bEnablePan) {
+		else if (enablePan) {
 			/**
 			 * --- PANING ---
 			 */
 			Vec3f addVec3f =
-				new Vec3f(fPanScale * (x - prevMouseX) / size.width, fPanScale * (prevMouseY - y)
+				new Vec3f(panScale * (x - prevMouseX) / size.width, panScale * (prevMouseY - y)
 					/ size.height, 0.0f);
 
 			prevMouseX = x;
 			prevMouseY = y;
 
 			/* set new paramters to ViewCamera */
-			Iterator<AGLView> iterGLCanvas = alGlCanvas.iterator();
+			Iterator<AGLView> iterGLCanvas = glCanvasList.iterator();
 
 			while (iterGLCanvas.hasNext()) {
 				iterGLCanvas.next().getViewCamera().addCameraPosition(addVec3f);
@@ -309,15 +196,15 @@ public class GLMouseListener
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		if (!bEnableZoom)
+		if (!enableZoom)
 			return;
 
 		/**
 		 * --- NORMAL ZOOM ---
 		 */
-		float fZoom = fZoomScale * e.getWheelRotation();
+		float fZoom = zoomScale * e.getWheelRotation();
 
-		Iterator<AGLView> iterGLCanvas = alGlCanvas.iterator();
+		Iterator<AGLView> iterGLCanvas = glCanvasList.iterator();
 
 		while (iterGLCanvas.hasNext()) {
 			iterGLCanvas.next().getViewCamera().addCameraScale(new Vec3f(0, 0, fZoom));
@@ -326,7 +213,7 @@ public class GLMouseListener
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		Iterator<AGLView> iterGLCanvas = alGlCanvas.iterator();
+		Iterator<AGLView> iterGLCanvas = glCanvasList.iterator();
 
 		while (iterGLCanvas.hasNext()) {
 			iterGLCanvas.next().setLazyMode(false);
@@ -335,7 +222,7 @@ public class GLMouseListener
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		Iterator<AGLView> iterGLCanvas = alGlCanvas.iterator();
+		Iterator<AGLView> iterGLCanvas = glCanvasList.iterator();
 
 		while (iterGLCanvas.hasNext()) {
 			iterGLCanvas.next().setLazyMode(true);
@@ -343,33 +230,33 @@ public class GLMouseListener
 	}
 
 	public final boolean wasLeftMouseButtonPressed() {
-		boolean bTmp = bLeftMouseButtonPressed;
-		bLeftMouseButtonPressed = false;
+		boolean bTmp = leftMouseButtonPressed;
+		leftMouseButtonPressed = false;
 		return bTmp;
 	}
 
 	public final boolean wasMouseDoubleClicked() {
-		return bMouseDoubleClick;
+		return mouseDoubleClick;
 	}
 
 	public final boolean wasRightMouseButtonPressed() {
-		boolean bTmp = bRightMouseButtonPressed;
-		bRightMouseButtonPressed = false;
+		boolean bTmp = rightMouseButtonPressed;
+		rightMouseButtonPressed = false;
 		return bTmp;
 	}
 
 	public final boolean wasMouseMoved() {
-		boolean bTmp = bMouseMoved;
-		bMouseMoved = false;
+		boolean bTmp = mouseMoved;
+		mouseMoved = false;
 		return bTmp;
 	}
 
 	public final boolean wasMouseReleased() {
-		return bMouseReleased;
+		return mouseReleased;
 	}
 
 	public final boolean wasMouseDragged() {
-		return bMouseDragged;
+		return mouseDragged;
 	}
 
 	public final Point getPickedPoint() {
@@ -381,13 +268,13 @@ public class GLMouseListener
 	}
 
 	public void setNavigationModes(boolean bEnablePan, boolean bEnableRotate, boolean bEnableZoom) {
-		this.bEnablePan = bEnablePan;
-		this.bEnableRotate = bEnableRotate;
-		this.bEnableZoom = bEnableZoom;
+		this.enablePan = bEnablePan;
+		this.enableRotate = bEnableRotate;
+		this.enableZoom = bEnableZoom;
 	}
 
 	public void addGLCanvas(final AGLView gLCanvas) {
 
-		alGlCanvas.add(gLCanvas);
+		glCanvasList.add(gLCanvas);
 	}
 }
