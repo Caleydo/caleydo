@@ -8,6 +8,8 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.ExportClusters
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.InterchangeGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.MergeClustersItem;
 
+import weka.filters.unsupervised.attribute.Add;
+
 /**
  * Implementation of AItemContainer for groups/clusters. In this context menu all operations related to group
  * handling are included.

@@ -6,7 +6,6 @@ import java.util.Collection;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.data.virtualarray.TableBasedDimensionGroupData;
 import org.caleydo.core.manager.BasicInformation;
 import org.caleydo.core.manager.event.AEvent;
 

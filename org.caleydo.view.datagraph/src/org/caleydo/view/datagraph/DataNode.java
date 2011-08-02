@@ -10,7 +10,7 @@ import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -130,7 +130,7 @@ public class DataNode extends ADraggableDataGraphNode {
 		// -1, 20));
 		layoutManager
 				.setViewFrustum(new ViewFrustum(
-						ECameraProjectionMode.ORTHOGRAPHIC, 0, width, 0,
+						CameraProjectionMode.ORTHOGRAPHIC, 0, width, 0,
 						height, -1, 20));
 
 		layoutManager.render(gl);

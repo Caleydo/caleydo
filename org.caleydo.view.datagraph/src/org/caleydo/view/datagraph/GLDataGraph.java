@@ -303,10 +303,6 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		gl.glCallList(iGLDisplayListToCall);
 
 		dragAndDropController.handleDragging(gl, glMouseListener);
-
-		if (!isRenderedRemote())
-			contextMenu.render(gl, this);
-
 	}
 
 	/**

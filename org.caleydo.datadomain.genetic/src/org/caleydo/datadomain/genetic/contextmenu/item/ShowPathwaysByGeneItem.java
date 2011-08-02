@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
@@ -24,7 +24,7 @@ import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
  * 
  * @author Alexander Lex
  */
-public class ShowPathwaysByGeneItem extends AContextMenuItem {
+public class ShowPathwaysByGeneItem extends ContextMenuItem {
 
 	/**
 	 * Constructor which sets the default values for icon and text
@@ -58,7 +58,7 @@ public class ShowPathwaysByGeneItem extends AContextMenuItem {
 			Arrays.sort(pathways);
 
 			for (PathwayGraph pathwayGraph : pathways) {
-				addSubItem(new LoadPathwaysByPathwayIDItem(pathwayGraph.getID()));
+				addSubItem(new LoadPathwaysByPathwayItem(pathwayGraph.getID()));
 			}
 
 		}

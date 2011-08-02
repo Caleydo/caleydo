@@ -1248,16 +1248,10 @@ public abstract class AGLViewBrowser
 
 						break;
 					case RIGHT_CLICKED:
-						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-							getParentGLCanvas().getHeight());
-						contextMenu.setMasterGLView(this);
+
 						break;
 
 				}
-				break;
-
-			case CONTEXT_MENU_SELECTION:
-				System.out.println("Waa");
 				break;
 		}
 	}

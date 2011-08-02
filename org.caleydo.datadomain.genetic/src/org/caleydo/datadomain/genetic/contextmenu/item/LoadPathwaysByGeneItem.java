@@ -2,7 +2,7 @@ package org.caleydo.datadomain.genetic.contextmenu.item;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
@@ -18,7 +18,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  * 
  * @author Alexander Lex
  */
-public class LoadPathwaysByGeneItem extends AContextMenuItem {
+public class LoadPathwaysByGeneItem extends ContextMenuItem {
 
 	/**
 	 * Constructor which sets the default values for icon and text

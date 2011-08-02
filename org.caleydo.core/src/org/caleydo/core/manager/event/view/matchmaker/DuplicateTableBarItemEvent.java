@@ -2,12 +2,12 @@ package org.caleydo.core.manager.event.view.matchmaker;
 
 import org.caleydo.core.manager.event.AEvent;
 
-public class DuplicateSetBarItemEvent
+public class DuplicateTableBarItemEvent
 	extends AEvent {
 
 	private Integer itemID;
 
-	public DuplicateSetBarItemEvent(int itemID) {
+	public DuplicateTableBarItemEvent(int itemID) {
 		this.itemID = itemID;
 	}
 

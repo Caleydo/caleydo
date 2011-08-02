@@ -38,7 +38,7 @@ import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IDataDomainSetBasedView;
-import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -1229,7 +1229,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 								DimensionGroup.class,
 								getParentGLCanvas(), parentComposite,
 								new ViewFrustum(
-										ECameraProjectionMode.ORTHOGRAPHIC, 0,
+										CameraProjectionMode.ORTHOGRAPHIC, 0,
 										1, 0, 1, -1, 1));
 
 				// dimensionGroup.setDataDomain(dataDomain);

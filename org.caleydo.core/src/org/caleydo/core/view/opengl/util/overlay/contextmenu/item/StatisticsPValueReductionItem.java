@@ -4,14 +4,15 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.event.data.StatisticsPValueReductionEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
 
 public class StatisticsPValueReductionItem
-	extends AContextMenuItem {
+	extends ContextMenuItem {
 
 	public StatisticsPValueReductionItem(ArrayList<DataTable> sets) {
-		super();
-		setText("Variance Filter");
+
+		setLabel("Variance Filter");
+
 		StatisticsPValueReductionEvent event = new StatisticsPValueReductionEvent(sets);
 		event.setSender(this);
 		registerEvent(event);

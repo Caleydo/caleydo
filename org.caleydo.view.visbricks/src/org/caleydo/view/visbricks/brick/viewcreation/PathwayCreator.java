@@ -6,7 +6,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -47,7 +47,7 @@ public class PathwayCreator implements IRemoteViewCreator {
 						GLPathway.class,
 						remoteRenderingView.getParentGLCanvas(),
 						remoteRenderingView.getParentComposite(),
-						new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
+						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 								1, 0, 1, -1, 1));
 
 		pathwayView.setPathway(pathway);

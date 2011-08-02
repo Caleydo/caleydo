@@ -46,8 +46,8 @@ import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.DimensionContextMenuItemContainer;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.RecordContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
@@ -252,9 +252,6 @@ public class GLHeatMap extends ATableBasedView {
 	@Override
 	public void display(GL2 gl) {
 		gl.glCallList(iGLDisplayListToCall);
-
-		if (!isRenderedRemote())
-			contextMenu.render(gl, this);
 	}
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
@@ -363,6 +360,7 @@ public class GLHeatMap extends ATableBasedView {
 		}
 
 		SelectionType selectionType;
+		
 		switch (pickingType) {
 		case HEAT_MAP_LINE_SELECTION:
 			iCurrentMouseOverElement = externalID;
@@ -379,17 +377,12 @@ public class GLHeatMap extends ATableBasedView {
 
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
-
-				if (!isRenderedRemote()) {
-					contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-							.getWidth(), getParentGLCanvas().getHeight());
-					contextMenu.setMasterGLView(this);
-				}
-
-				RecordContextMenuItemContainer contentContextMenuItemContainer = new RecordContextMenuItemContainer();
-				contentContextMenuItemContainer.setDataDomain(dataDomain);
-				contentContextMenuItemContainer.tableID(recordIDType, externalID);
-				contextMenu.addItemContanier(contentContextMenuItemContainer);
+				
+				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+						+ dataDomain.getRecordLabel(recordIDType, externalID),
+						recordIDType, externalID);
+				contextMenuCreator.addContextMenuItem(menuItem);
+				
 				break;
 
 			default:
@@ -411,15 +404,11 @@ public class GLHeatMap extends ATableBasedView {
 				selectionType = SelectionType.MOUSE_OVER;
 				break;
 			case RIGHT_CLICKED:
-				if (!isRenderedRemote()) {
-					contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-							.getWidth(), getParentGLCanvas().getHeight());
-					contextMenu.setMasterGLView(this);
-				}
-				DimensionContextMenuItemContainer experimentContextMenuItemContainer = new DimensionContextMenuItemContainer();
-				experimentContextMenuItemContainer.setDataDomain(dataDomain);
-				experimentContextMenuItemContainer.tableID(dimensionIDType, externalID);
-				contextMenu.addItemContanier(experimentContextMenuItemContainer);
+				
+				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark " + dataDomain.getDimensionLabel(dimensionIDType, externalID), dimensionIDType,
+						externalID);
+				contextMenuCreator.addContextMenuItem(menuItem);
+				
 			default:
 				return;
 			}

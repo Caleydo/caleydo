@@ -32,7 +32,6 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
@@ -364,10 +363,6 @@ public class GLBookmarkView extends AGLView implements
 		setDisplayListDirty();
 	}
 
-	ContextMenu getContextMenu() {
-		return contextMenu;
-	}
-
 	CaleydoTextRenderer getMinSizeTextRenderer() {
 		return textRenderer;
 	}
@@ -419,12 +414,5 @@ public class GLBookmarkView extends AGLView implements
 		quickMenu.setLocation(location);
 		quickMenu.setVisible(true);
 		return quickMenu;
-
-		// final Menu contextMenu = new
-		// Menu(getParentGLCanvas().getParentComposite());
-
-		// item.setText("Text");
-		// return contextMenu;
-
 	}
 }

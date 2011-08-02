@@ -25,7 +25,7 @@ import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.event.view.matchmaker.AdjustPValueEvent;
 import org.caleydo.core.manager.event.view.matchmaker.CreateSelectionTypesEvent;
-import org.caleydo.core.manager.event.view.matchmaker.DuplicateSetBarItemEvent;
+import org.caleydo.core.manager.event.view.matchmaker.DuplicateTableBarItemEvent;
 import org.caleydo.core.manager.event.view.tablebased.HideHeatMapElementsEvent;
 import org.caleydo.core.manager.event.view.tablebased.NewRecordGroupInfoEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
@@ -54,7 +54,7 @@ import org.caleydo.view.matchmaker.event.UseZoomEvent;
 import org.caleydo.view.matchmaker.listener.AdjustPValueOfSetEventListener;
 import org.caleydo.view.matchmaker.listener.CompareGroupsEventListener;
 import org.caleydo.view.matchmaker.listener.CreateSelectionTypesListener;
-import org.caleydo.view.matchmaker.listener.DuplicateSetBarItemEventListener;
+import org.caleydo.view.matchmaker.listener.DuplicateTableBarItemEventListener;
 import org.caleydo.view.matchmaker.listener.HideHeatMapElementsEventListener;
 import org.caleydo.view.matchmaker.listener.NewContentGroupInfoEventListener;
 import org.caleydo.view.matchmaker.listener.UseBandBundlingListener;
@@ -83,7 +83,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	private CompareViewStateController compareViewStateController;
 
 	private CompareGroupsEventListener compareGroupsEventListener;
-	private DuplicateSetBarItemEventListener duplicateSetBarItemEventListener;
+	private DuplicateTableBarItemEventListener duplicateSetBarItemEventListener;
 	private SelectionUpdateListener selectionUpdateListener;
 	private AdjustPValueOfSetEventListener adjustPValueOfSetEventListener;
 	private SelectionCommandListener selectionCommandListener;
@@ -150,8 +150,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		textRenderer = new CaleydoTextRenderer(24);
 		
 		compareViewStateController = new CompareViewStateController(this, uniqueID,
-				textRenderer, textureManager, pickingManager, glMouseListener,
-				contextMenu, dataDomain);
+				textRenderer, textureManager, pickingManager, glMouseListener, dataDomain);
 
 		compareViewStateController.init(gl);
 
@@ -274,9 +273,6 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 		compareViewStateController.handleDragging(gl);
 
-		if (!isRenderedRemote())
-			contextMenu.render(gl, this);
-
 		checkForHits(gl);
 	}
 
@@ -299,9 +295,6 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
-		contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-				getParentGLCanvas().getHeight());
-		contextMenu.setMasterGLView(this);
 		compareViewStateController.handlePickingEvents(pickingType, pickingMode,
 				externalID, pick, isControlPressed);
 	}
@@ -364,9 +357,9 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		compareGroupsEventListener.setHandler(this);
 		eventPublisher.addListener(CompareGroupsEvent.class, compareGroupsEventListener);
 
-		duplicateSetBarItemEventListener = new DuplicateSetBarItemEventListener();
+		duplicateSetBarItemEventListener = new DuplicateTableBarItemEventListener();
 		duplicateSetBarItemEventListener.setHandler(this);
-		eventPublisher.addListener(DuplicateSetBarItemEvent.class,
+		eventPublisher.addListener(DuplicateTableBarItemEvent.class,
 				duplicateSetBarItemEventListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();

@@ -51,7 +51,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLMagnifyingGlass;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -67,10 +67,9 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * </p>
  * <h2>Creating a View</h2>
  * <p>
- * Views may only be instantiated using the
- * {@link ViewManager#createGLView(Class, GLCanvas, ViewFrustum)}. As a consequence, the constructor of
- * the view may have only those two arguments (GLCanvas, ViewFrustum). Otherwise, the creation will
- * fail.
+ * Views may only be instantiated using the {@link ViewManager#createGLView(Class, GLCanvas, ViewFrustum)}. As
+ * a consequence, the constructor of the view may have only those two arguments (GLCanvas, ViewFrustum).
+ * Otherwise, the creation will fail.
  * </p>
  * <p>
  * After the object is created, set the dataDomain (if your view is a {@link IDataDomainBasedView}). If your
@@ -114,8 +113,8 @@ public abstract class AGLView
 	protected ViewFrustum viewFrustum;
 
 	protected IViewCamera viewCamera;
-	
-//	private FPSCounter fpsCounter;
+
+	// private FPSCounter fpsCounter;
 
 	protected PixelGLConverter pixelGLConverter = null;
 
@@ -151,7 +150,7 @@ public abstract class AGLView
 	private int iFrameCounter = 0;
 	private int iRotationFrameCounter = 0;
 	private static final int NUMBER_OF_FRAMES = 15;
-	
+
 	protected GLMagnifyingGlass magnifyingGlass;
 
 	private ToggleMagnifyingGlassListener magnifyingGlassListener;
@@ -180,10 +179,7 @@ public abstract class AGLView
 	 */
 	protected String dimensionVAType = DataTable.DIMENSION;
 
-	/**
-	 * The context menu each view should implement. It has to be created in initLocal or is set via initRemote
-	 */
-	protected ContextMenu contextMenu;
+	protected ContextMenuCreator contextMenuCreator = new ContextMenuCreator();
 
 	/**
 	 * The queue which holds the events
@@ -210,7 +206,7 @@ public abstract class AGLView
 	private int currentScrollBarID = 0;
 
 	private HashSet<IMouseWheelHandler> mouseWheelListeners;
-	
+
 	protected GLMouseWheelListener glMouseWheelListener;
 
 	/**
@@ -225,12 +221,12 @@ public abstract class AGLView
 
 		glMouseListener = new GLMouseListener();
 		glMouseListener.setNavigationModes(false, false, false);
-		
+
 		// Register mouse listener to GL2 canvas
 		glCanvas.addMouseListener(glMouseListener);
 		glCanvas.addMouseMotionListener(glMouseListener);
 		glCanvas.addMouseWheelListener(glMouseListener);
-		
+
 		singleIDPickingListeners = new HashMap<String, HashMap<Integer, Set<IPickingListener>>>();
 		multiIDPickingListeners = new HashMap<String, Set<IPickingListener>>();
 
@@ -240,8 +236,7 @@ public abstract class AGLView
 		pickingManager = generalManager.getViewManager().getPickingManager();
 		idMappingManager = generalManager.getIDMappingManager();
 		textureManager = new TextureManager();
-		contextMenu = ContextMenu.get();
-		
+
 		glMouseWheelListener = new GLMouseWheelListener(this);
 
 		bShowMagnifyingGlass = false;
@@ -255,17 +250,16 @@ public abstract class AGLView
 	@Override
 	public void initialize() {
 		registerEventListeners();
-		
-		 if (glRemoteRenderingView == null)
-             GeneralManager.get().getViewManager()
-                     .registerGLEventListenerByGLCanvas(parentGLCanvas, this);
+
+		if (glRemoteRenderingView == null)
+			GeneralManager.get().getViewManager().registerGLEventListenerByGLCanvas(parentGLCanvas, this);
 	}
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
 
 		GL2 gl = drawable.getGL().getGL2();
-		
+
 		// This is specially important for Windows. Otherwise JOGL2 internally
 		// slows down dramatically (factor of 10).
 		gl.setSwapInterval(0);
@@ -295,7 +289,7 @@ public abstract class AGLView
 
 		gl.glEnable(GL2.GL_COLOR_MATERIAL);
 		gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_DIFFUSE);
-		
+
 		glMouseListener.addGLCanvas(this);
 
 		initLocal(gl);
@@ -316,10 +310,10 @@ public abstract class AGLView
 			// load identity matrix
 			gl.glMatrixMode(GL2.GL_MODELVIEW);
 			gl.glLoadIdentity();
-	
+
 			// clear screen
 			gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
-			
+
 			gl.glTranslatef(position.x(), position.y(), position.z());
 			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(),
 				rot_Vec3f.z());
@@ -332,7 +326,7 @@ public abstract class AGLView
 			// }
 			// magnifyingGlass.draw(gl, glMouseListener);
 			// }
-			
+
 			// fpsCounter.draw();
 		}
 		catch (RuntimeException exception) {
@@ -573,6 +567,9 @@ public abstract class AGLView
 		Set<String> hitTypes = pickingManager.getHitTypes(uniqueID);
 		if (hitTypes == null)
 			return;
+		
+		contextMenuCreator.clear();
+		
 		for (String pickingType : hitTypes) {
 
 			ArrayList<Pick> alHits = null;
@@ -588,29 +585,23 @@ public abstract class AGLView
 					}
 
 					PickingMode ePickingMode = tempPick.getPickingMode();
-					if (pickingType == PickingType.CONTEXT_MENU_SELECTION.name()
-						|| pickingType == PickingType.CONTEXT_MENU_SCROLL_DOWN.name()
-						|| pickingType == PickingType.CONTEXT_MENU_SCROLL_UP.name()) {
-						contextMenu.handlePickingEvents(PickingType.valueOf(pickingType), ePickingMode,
-							externalID);
-					}
-					else {
-						if (tempPick.getPickingMode() != PickingMode.RIGHT_CLICKED)
-							contextMenu.flush();
-						handlePicking(pickingType, ePickingMode, externalID, tempPick);
-						// FIXME: This is for legacy support -> picking listeners should be used
-						try {
-							handlePickingEvents(PickingType.valueOf(pickingType), ePickingMode, externalID,
-								tempPick);
-						}
-						catch (Exception e) {
 
-						}
+					handlePicking(pickingType, ePickingMode, externalID, tempPick);
+					// FIXME: This is for legacy support -> picking listeners should be used
+					try {
+						handlePickingEvents(PickingType.valueOf(pickingType), ePickingMode, externalID,
+							tempPick);
+					}
+					catch (Exception e) {
+						System.out.println("ERROR" + e.toString());
 					}
 					pickingManager.flushHits(uniqueID, pickingType);
 				}
 			}
 		}
+		
+		if (contextMenuCreator.hasMenuItems())
+			contextMenuCreator.open(parentComposite);
 	}
 
 	protected void handlePicking(String pickingType, PickingMode pickingMode, int pickingID, Pick pick) {
@@ -814,7 +805,7 @@ public abstract class AGLView
 		}
 		pickingListeners.clear();
 	}
-	
+
 	/**
 	 * Removes all Multiple ID picking listeners for a specific picking type.
 	 * 
@@ -843,8 +834,8 @@ public abstract class AGLView
 	 *            the pick object which can be useful to retrieve for example the mouse position when the pick
 	 *            occurred
 	 */
-	abstract protected void handlePickingEvents(final PickingType pickingType,
-		final PickingMode pickingMode, final int pickingID, final Pick pick);
+	abstract protected void handlePickingEvents(final PickingType pickingType, final PickingMode pickingMode,
+		final int pickingID, final Pick pick);
 
 	/**
 	 * Returns a short info string about the view. Typically this should mention the name of the view plus the
@@ -1290,5 +1281,12 @@ public abstract class AGLView
 	 */
 	public PixelGLConverter getPixelGLConverter() {
 		return pixelGLConverter;
+	}
+	
+	/**
+	 * Returns the instance that is responsible for creating the context menu.
+	 */
+	public ContextMenuCreator getContextMenuCreator() {
+		return contextMenuCreator;
 	}
 }

@@ -5,7 +5,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -38,7 +38,7 @@ public class ParCoordsCreator implements IRemoteViewCreator {
 						GLParallelCoordinates.class,
 						remoteRenderingView.getParentGLCanvas(),
 						remoteRenderingView.getParentComposite(),
-						new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
+						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 								1, 0, 1, -1, 1));
 
 		parCoords.setRemoteRenderingGLView(remoteRenderingView);

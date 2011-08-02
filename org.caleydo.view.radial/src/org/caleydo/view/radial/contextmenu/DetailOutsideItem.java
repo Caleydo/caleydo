@@ -1,14 +1,13 @@
-package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
+package org.caleydo.view.radial.contextmenu;
 
 import org.caleydo.core.manager.event.view.radial.DetailOutsideEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
 
-public class DetailOutsideItem
-	extends AContextMenuItem {
+public class DetailOutsideItem extends ContextMenuItem {
 
 	public DetailOutsideItem(int elementID) {
-		super();
-		setText("Toggle Detail View (D)");
+		setLabel("Toggle Detail View (D)");
+
 		DetailOutsideEvent event = new DetailOutsideEvent();
 		event.setElementID(elementID);
 		event.setSender(this);

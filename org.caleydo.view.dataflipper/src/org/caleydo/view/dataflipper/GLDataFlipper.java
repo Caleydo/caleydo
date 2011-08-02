@@ -460,12 +460,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glScalef(1 / 0.98f, 1 / 0.98f, 1 / 0.98f);
 		gl.glTranslatef(0, -0.08f, 0);
 
-		float fZTranslation = 0;
-		fZTranslation = 4f;
-
-		gl.glTranslatef(0, 0, fZTranslation);
-		contextMenu.render(gl, this);
-		gl.glTranslatef(0, 0, -fZTranslation);
 	}
 
 	private void renderDataDomains(GL2 gl, String dataDomainType, float x, float y) {
@@ -926,13 +920,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 				setDisplayListDirty();
 				break;
-
 			case CLICKED:
 				break;
 			case RIGHT_CLICKED:
-				contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-						.getWidth(), getParentGLCanvas().getHeight());
-				contextMenu.setMasterGLView(this);
 				break;
 
 			}

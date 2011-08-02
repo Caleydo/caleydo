@@ -421,8 +421,7 @@ public class GLBucket extends AGLView implements
 				}
 			}
 
-			generalManager.getViewManager()
-					.getConnectedElementRepresentationManager()
+			generalManager.getViewManager().getConnectedElementRepresentationManager()
 					.clearTransformedConnections();
 			dragAndDrop.stopDragAction();
 			bUpdateOffScreenTextures = true;
@@ -511,14 +510,6 @@ public class GLBucket extends AGLView implements
 			// added
 			glConnectionLineRenderer.render(gl);
 		}
-
-		float fZTranslation = 0;
-		if (!bucketMouseWheelListener.isZoomedIn())
-			fZTranslation = 4f;
-
-		gl.glTranslatef(0, 0, fZTranslation);
-		contextMenu.render(gl, this);
-		gl.glTranslatef(0, 0, -fZTranslation);
 	}
 
 	public void renderBucketWall(final GL2 gl, boolean bRenderBorder,
@@ -944,8 +935,8 @@ public class GLBucket extends AGLView implements
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.REMOTE_VIEW_DRAG, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_DRAG,
+				element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);
@@ -1583,8 +1574,7 @@ public class GLBucket extends AGLView implements
 
 			generalManager.getViewManager().getInfoAreaManager()
 					.enable(!bEnableNavigationOverlay);
-			generalManager.getViewManager()
-					.getConnectedElementRepresentationManager()
+			generalManager.getViewManager().getConnectedElementRepresentationManager()
 					.clearTransformedConnections();
 		}
 	}
@@ -1792,8 +1782,8 @@ public class GLBucket extends AGLView implements
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 
 		switch (pickingType) {
 		case REMOTE_VIEW_DRAG:
@@ -1910,9 +1900,6 @@ public class GLBucket extends AGLView implements
 
 				break;
 			case RIGHT_CLICKED:
-				contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-						.getWidth(), getParentGLCanvas().getHeight());
-				contextMenu.setMasterGLView(this);
 				break;
 
 			}
@@ -2102,9 +2089,6 @@ public class GLBucket extends AGLView implements
 				break;
 			}
 			break;
-		case CONTEXT_MENU_SELECTION:
-			System.out.println("Waa");
-			break;
 		}
 	}
 
@@ -2266,8 +2250,8 @@ public class GLBucket extends AGLView implements
 			}
 		}
 
-		generalManager.getViewManager()
-				.getConnectedElementRepresentationManager().clearAll();
+		generalManager.getViewManager().getConnectedElementRepresentationManager()
+				.clearAll();
 	}
 
 	@Override
@@ -2553,8 +2537,11 @@ public class GLBucket extends AGLView implements
 					+ serView.getViewType());
 		}
 
-		AGLView glView = GeneralManager.get().getViewManager()
-				.createGLView(viewClass, parentGLCanvas, parentComposite, serView.getViewFrustum());
+		AGLView glView = GeneralManager
+				.get()
+				.getViewManager()
+				.createGLView(viewClass, parentGLCanvas, parentComposite,
+						serView.getViewFrustum());
 		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof IDataDomainBasedView<?>) {
@@ -2625,10 +2612,10 @@ public class GLBucket extends AGLView implements
 		}
 
 		if (!newViews.isEmpty()) {
-//			// Zoom out of the bucket when loading pathways
-//			if (bucketMouseWheelListener.isZoomedIn()) {
-//				bucketMouseWheelListener.triggerZoom(false);
-//			}
+			// // Zoom out of the bucket when loading pathways
+			// if (bucketMouseWheelListener.isZoomedIn()) {
+			// bucketMouseWheelListener.triggerZoom(false);
+			// }
 			disableUserInteraction();
 		}
 	}

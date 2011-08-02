@@ -7,7 +7,6 @@ import java.util.Map;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.PreferenceManager;
 import org.caleydo.core.net.IGroupwareManager;
-import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.startup.gui.CaleydoProjectWizard;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;

@@ -3,23 +3,20 @@ package org.caleydo.view.grouper.contextmenu;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
 
-public class Log2ForSetItem extends AContextMenuItem {
+public class Log2ForSetItem extends ContextMenuItem {
 
+	private DataTable table;
 
-	DataTable set;
+	public Log2ForSetItem(DataTable table) {
 
-	public Log2ForSetItem(DataTable set) {
-		super();
-		this.set = (DataTable)set;
-		setText("Run log2 for set");
-
+		this.table = (DataTable)table;
+		setLabel("Run log2 for set");
 	}
 
 	public void triggerEvent() {
-		DataTableUtils.setExternalDataRepresentation((DataTable) set,
+		DataTableUtils.setExternalDataRepresentation((DataTable) table,
 				ExternalDataRepresentation.LOG2, false);
-
 	};
 }

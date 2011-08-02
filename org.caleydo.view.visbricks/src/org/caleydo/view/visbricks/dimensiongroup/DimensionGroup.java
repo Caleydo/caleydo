@@ -24,7 +24,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
@@ -366,7 +366,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	private GLBrick createBrick(ElementLayout wrappingLayout,
 			IBrickData brickData) {
 		ViewFrustum brickFrustum = new ViewFrustum(
-				ECameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4, 4);
+				CameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4, 4);
 		GLBrick brick = (GLBrick) GeneralManager.get().getViewManager()
 				.createGLView(GLBrick.class, parentGLCanvas, parentComposite, brickFrustum);
 

@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.net.StandardGroupwareManager;
-import org.caleydo.core.startup.Application;
 import org.caleydo.core.startup.ApplicationMode;
 import org.caleydo.core.startup.GeneticGUIStartupProcedure;
 import org.caleydo.core.startup.SerializationStartupProcedure;

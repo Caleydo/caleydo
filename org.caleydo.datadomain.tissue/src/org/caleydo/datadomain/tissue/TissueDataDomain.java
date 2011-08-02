@@ -1,16 +1,10 @@
 package org.caleydo.datadomain.tissue;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.virtualarray.ADimensionGroupData;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.event.data.DimensionGroupsChangedEvent;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**

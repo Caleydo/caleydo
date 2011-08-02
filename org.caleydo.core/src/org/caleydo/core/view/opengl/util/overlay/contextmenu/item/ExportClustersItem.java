@@ -2,8 +2,7 @@ package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
 import org.caleydo.core.manager.event.view.group.ExportContentGroupsEvent;
 import org.caleydo.core.manager.event.view.group.ExportDimensionGroupsEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
 
 /**
  * Item for exporting groups/clusters
@@ -11,15 +10,14 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  * @author Bernhard Schlegl
  */
 public class ExportClustersItem
-	extends AContextMenuItem {
+	extends ContextMenuItem {
 
 	/**
 	 * Constructor which sets the default values for icon and text
 	 */
 	public ExportClustersItem() {
-		super();
-		setIconTexture(EIconTextures.CM_LOAD_DEPENDING_PATHWAYS);
-		setText("Export Groups");
+		// setIconTexture(EIconTextures.CM_LOAD_DEPENDING_PATHWAYS);
+		setLabel("Export Groups");
 	}
 
 	/**

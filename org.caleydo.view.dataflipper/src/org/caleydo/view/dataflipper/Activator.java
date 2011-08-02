@@ -1,6 +1,5 @@
 package org.caleydo.view.dataflipper;
 
-import org.caleydo.core.serialize.SerializationManager;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 

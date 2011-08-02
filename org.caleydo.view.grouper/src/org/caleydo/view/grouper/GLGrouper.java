@@ -51,6 +51,7 @@ import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.StatisticsFoldChangeReductionItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.StatisticsPValueReductionItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.StatisticsTwoSidedTTestReductionItem;
@@ -464,9 +465,6 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 			setDisplayListDirty();
 		}
 		dragAndDropController.handleDragging(gl, glMouseListener);
-
-		if (!isRenderedRemote())
-			contextMenu.render(gl, this);
 	}
 
 	/**
@@ -643,7 +641,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 						}
 
 						RenameGroupItem renameItem = new RenameGroupItem(externalID);
-						contextMenu.addContextMenueItem(renameItem);
+						contextMenuCreator.addContextMenuItem(renameItem);
 						// groupRep.addAsDraggable(dragAndDropController);
 						//
 						// groupRep.setSelectionTypeRec(SelectionType.SELECTION,
@@ -658,31 +656,31 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 						CreateGroupItem createGroupItem = new CreateGroupItem(
 								selectedGroups);
-						contextMenu.addContextMenueItem(createGroupItem);
+						contextMenuCreator.addContextMenuItem(createGroupItem);
 
 						CopyGroupsItem copyGroupsItem = new CopyGroupsItem(selectedGroups);
-						contextMenu.addContextMenueItem(copyGroupsItem);
+						contextMenuCreator.addContextMenuItem(copyGroupsItem);
 
 						DeleteGroupsItem deleteGroupsItem = new DeleteGroupsItem(
 								selectedGroups);
-						contextMenu.addContextMenueItem(deleteGroupsItem);
+						contextMenuCreator.addContextMenuItem(deleteGroupsItem);
 
 						AggregateGroupItem aggregateGroupItem = new AggregateGroupItem(
 								selectedGroups);
-						contextMenu.addContextMenueItem(aggregateGroupItem);
+						contextMenuCreator.addContextMenuItem(aggregateGroupItem);
 
 						AddGroupsToVisBricksItem addGroupsToVisBricksItem = new AddGroupsToVisBricksItem(
 								selectedTables);
-						contextMenu.addContextMenueItem(addGroupsToVisBricksItem);
+						contextMenuCreator.addContextMenuItem(addGroupsToVisBricksItem);
 
 						if (orderedComposites.size() >= 2) {
 
 							CompareGroupsItem compareGroupsItem = new CompareGroupsItem(
 									selectedTables);
-							contextMenu.addContextMenueItem(compareGroupsItem);
+							contextMenuCreator.addContextMenuItem(compareGroupsItem);
 						}
 
-						contextMenu.addSeparator();
+						contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
 
 						bContextMenueItemsAvailable = true;
 
@@ -696,23 +694,25 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 							if (!isLeafContained && orderedComposites.size() < 2) {
 								StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
 										selectedTables);
-								contextMenu.addContextMenueItem(pValueReductionItem);
+								contextMenuCreator
+										.addContextMenuItem(pValueReductionItem);
 							}
 
 							if (orderedComposites.size() == 2) {
 								StatisticsFoldChangeReductionItem foldChangeReductionItem = new StatisticsFoldChangeReductionItem(
 										selectedTables.get(0), selectedTables.get(1));
-								contextMenu.addContextMenueItem(foldChangeReductionItem);
+								contextMenuCreator
+										.addContextMenuItem(foldChangeReductionItem);
 
 								StatisticsTwoSidedTTestReductionItem twoSidedTTestReductionItem = new StatisticsTwoSidedTTestReductionItem(
 										selectedTables);
-								contextMenu
-										.addContextMenueItem(twoSidedTTestReductionItem);
+								contextMenuCreator
+										.addContextMenuItem(twoSidedTTestReductionItem);
 							}
 
 							Log2ForSetItem log2ForSetItem = new Log2ForSetItem(
 									selectedTables.get(0));
-							contextMenu.addContextMenueItem(log2ForSetItem);
+							contextMenuCreator.addContextMenuItem(log2ForSetItem);
 						}
 
 					}
@@ -721,17 +721,9 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 							&& !groupRep.isLeaf()) {
 						PasteGroupsItem pasteGroupItem = new PasteGroupsItem(
 								groupRep.getID());
-						contextMenu.addContextMenueItem(pasteGroupItem);
+						contextMenuCreator.addContextMenuItem(pasteGroupItem);
 						bContextMenueItemsAvailable = true;
 					}
-
-					if (!isRenderedRemote() && bContextMenueItemsAvailable) {
-						contextMenu.setLocation(pick.getPickedPoint(),
-								getParentGLCanvas().getWidth(), getParentGLCanvas()
-										.getHeight());
-						contextMenu.setMasterGLView(this);
-					}
-
 				}
 				break;
 			default:

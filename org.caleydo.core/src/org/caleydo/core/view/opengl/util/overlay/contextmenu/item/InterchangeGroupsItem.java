@@ -2,8 +2,7 @@ package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
 import org.caleydo.core.manager.event.view.group.InterchangeContentGroupsEvent;
 import org.caleydo.core.manager.event.view.group.InterchangeDimensionGroupsEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
 
 /**
  * Item for interchanging to groups/clusters
@@ -11,15 +10,14 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  * @author Bernhard Schlegl
  */
 public class InterchangeGroupsItem
-	extends AContextMenuItem {
+	extends ContextMenuItem {
 
 	/**
 	 * Constructor which sets the default values for icon and text
 	 */
 	public InterchangeGroupsItem() {
-		super();
-		setIconTexture(EIconTextures.CM_LOAD_DEPENDING_PATHWAYS);
-		setText("Interchange Groups");
+		// setIconTexture(EIconTextures.CM_LOAD_DEPENDING_PATHWAYS);
+		setLabel("Interchange Groups");
 	}
 
 	/**

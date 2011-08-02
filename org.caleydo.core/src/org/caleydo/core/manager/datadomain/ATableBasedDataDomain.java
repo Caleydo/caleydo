@@ -1,6 +1,5 @@
 package org.caleydo.core.manager.datadomain;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -56,7 +55,6 @@ import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 
 @XmlType
 @XmlRootElement
@@ -267,8 +265,8 @@ public abstract class ATableBasedDataDomain
 	}
 
 	/**
-	 * Returns a clone of the dimension selection manager. You have to set your virtual array manually. This is
-	 * the preferred way to initialize SelectionManagers.
+	 * Returns a clone of the dimension selection manager. You have to set your virtual array manually. This
+	 * is the preferred way to initialize SelectionManagers.
 	 * 
 	 * @return a clone of the dimension selection manager
 	 */
@@ -331,8 +329,7 @@ public abstract class ATableBasedDataDomain
 		table.cluster(clusterState);
 
 		RecordData recordData = table.getRecordData(DataTable.RECORD);
-		if (table.containsUncertaintyData())
-		{
+		if (table.containsUncertaintyData()) {
 			ClusterHelper.calculateAggregatedUncertainties(recordData.getRecordTree(), table);
 			ClusterHelper.calculateClusterAverages(recordData.getRecordTree(),
 				ClustererType.RECORD_CLUSTERING, table);
@@ -425,8 +422,8 @@ public abstract class ATableBasedDataDomain
 	}
 
 	/**
-	 * Replaces the dimension virtual array with the virtual array specified, if the dataDomain matches. If the
-	 * dataDomain doesn't match, the method
+	 * Replaces the dimension virtual array with the virtual array specified, if the dataDomain matches. If
+	 * the dataDomain doesn't match, the method
 	 * {@link #handleForeignRecordVAUpdate(int, String, RecordVAType, RecordVirtualArray)} is called.
 	 * 
 	 * @param idCategory
@@ -633,8 +630,7 @@ public abstract class ATableBasedDataDomain
 
 			// Make first char capitalized
 			recordLabel =
-				recordLabel.substring(0, 1).toUpperCase()
-					+ recordLabel.substring(1, recordLabel.length());
+				recordLabel.substring(0, 1).toUpperCase() + recordLabel.substring(1, recordLabel.length());
 		}
 
 		return recordLabel;
@@ -728,8 +724,8 @@ public abstract class ATableBasedDataDomain
 	public abstract String getRecordLabel(IDType idType, Object id);
 
 	/**
-	 * Get the human readable dimension label for a specific id. The id has to be of the dimensionIDType of the
-	 * dataDomain.
+	 * Get the human readable dimension label for a specific id. The id has to be of the dimensionIDType of
+	 * the dataDomain.
 	 * 
 	 * @param id
 	 *            the id to convert to a human readable label
@@ -755,26 +751,28 @@ public abstract class ATableBasedDataDomain
 		return label;
 	}
 
-	/**
-	 * A dataDomain may contribute to the context menu. This function returns the recordItemContainer of the
-	 * context menu if one was specified. This should be overridden by subclasses if needed.
-	 * 
-	 * @return a context menu item container related to record items
-	 */
-	public AItemContainer getRecordItemContainer(IDType idType, int id) {
-		return null;
-	}
+	// FIXME CONTEXT MENU
+	// /**
+	// * A dataDomain may contribute to the context menu. This function returns the recordItemContainer of the
+	// * context menu if one was specified. This should be overridden by subclasses if needed.
+	// *
+	// * @return a context menu item container related to record items
+	// */
+	// public AItemContainer getRecordItemContainer(IDType idType, int id) {
+	// return null;
+	// }
 
-	/**
-	 * A dataDomain may contribute to the context menu. This function returns dataDomain specific
-	 * implementations of a context menu for content groups. * @param idType
-	 * 
-	 * @param ids
-	 * @return
-	 */
-	public AItemContainer getRecordGroupItemContainer(IDType idType, ArrayList<Integer> ids) {
-		return null;
-	}
+	// FIXME CONTEXT MENU
+	// /**
+	// * A dataDomain may contribute to the context menu. This function returns dataDomain specific
+	// * implementations of a context menu for content groups. * @param idType
+	// *
+	// * @param ids
+	// * @return
+	// */
+	// public AItemContainer getRecordGroupItemContainer(IDType idType, ArrayList<Integer> ids) {
+	// return null;
+	// }
 
 	/**
 	 * Returns the primary mapping type of the record. This type is not determined at run-time but something

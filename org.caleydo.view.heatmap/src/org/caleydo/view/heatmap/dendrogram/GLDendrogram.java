@@ -50,8 +50,9 @@ import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.DimensionContextMenuItemContainer;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.RecordContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuCreator;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.eclipse.swt.widgets.Composite;
 
@@ -131,8 +132,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 	 *            boolean to determine whether a gene(horizontal) or a
 	 *            experiment(vertical) dendrogram should be rendered
 	 */
-	public GLDendrogram(final GLCanvas glCanvas, Composite parentComposite, final ViewFrustum viewFrustum,
-			final boolean bRenderGeneTree) {
+	public GLDendrogram(final GLCanvas glCanvas, Composite parentComposite,
+			final ViewFrustum viewFrustum, final boolean bRenderGeneTree) {
 		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = GLDendrogram.VIEW_TYPE;
@@ -270,9 +271,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 		// display list for cut off value
 		gl.glCallList(iGLDisplayListCutOffValue);
-
-		if (!isRenderedRemote())
-			contextMenu.render(gl, this);
 	}
 
 	/**
@@ -587,7 +585,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 		gl.glTranslatef(0, +fSampleHeightSubTree / 2, 0);
 	}
-
 
 	/**
 	 * Recursive function responsible for determine sub dendrogram.
@@ -1164,8 +1161,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			fDiff = fTemp - ymax;
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.DENDROGRAM_EXPERIMENT_NODE_SELECTION,
-					currentNode.getID()));
+					PickingType.DENDROGRAM_EXPERIMENT_NODE_SELECTION, currentNode.getID()));
 
 			// horizontal line connecting all child nodes
 			gl.glBegin(GL2.GL_LINES);
@@ -1193,8 +1189,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 		} else {
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.DENDROGRAM_EXPERIMENT_LEAF_SELECTION,
-					currentNode.getID()));
+					PickingType.DENDROGRAM_EXPERIMENT_LEAF_SELECTION, currentNode.getID()));
 
 			// vertical line visualizing leaf nodes
 			gl.glBegin(GL2.GL_LINES);
@@ -1225,7 +1220,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		}
 
 		if (tree == null || tree.getRoot() == null) {
-	
 
 			iAlClusterNodes.clear();
 
@@ -1441,13 +1435,14 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
 
 		SelectionType selectionType = SelectionType.NORMAL;
+		ContextMenuCreator contextMenuCreator = new ContextMenuCreator();
 
 		switch (pickingType) {
 
@@ -1486,21 +1481,13 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 					break;
 
 				// Prevent handling of non genetic data in context menu
-				if (!dataDomain.getDataDomainID().equals(
-						"org.caleydo.datadomain.genetic"))
+				if (!dataDomain.getDataDomainID()
+						.equals("org.caleydo.datadomain.genetic"))
 					break;
-
-				if (!isRenderedRemote()) {
-					contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-							.getWidth(), getParentGLCanvas().getHeight());
-					contextMenu.setMasterGLView(this);
-				}
-
-				RecordContextMenuItemContainer contentContextMenuItemContainer = new RecordContextMenuItemContainer();
-				contentContextMenuItemContainer.setDataDomain(dataDomain);
-				contentContextMenuItemContainer
-						.tableID(recordIDType, leafNode.getLeafID());
-				contextMenu.addItemContanier(contentContextMenuItemContainer);
+				
+				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark " + dataDomain.getRecordLabel(recordIDType, leafNode.getLeafID()), recordIDType,
+						leafNode.getLeafID());
+				contextMenuCreator.addContextMenuItem(menuItem);
 
 				break;
 			}
@@ -1518,8 +1505,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				selectionManager = recordSelectionManager;
 
 				selectionManager.clearSelection(selectionType);
-				selectionManager.addToType(selectionType,
-						tree.getNodeByNumber(externalID).getLeafID());
+				selectionManager.addToType(selectionType, tree
+						.getNodeByNumber(externalID).getLeafID());
 				selectionDelta = selectionManager.getDelta();
 
 				handleConnectedElementReps(selectionDelta);
@@ -1581,16 +1568,10 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 						&& dimensionSelectionManager.checkStatus(leafNode.getLeafID()) == false)
 					break;
 
-				if (!isRenderedRemote()) {
-					contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-							.getWidth(), getParentGLCanvas().getHeight());
-					contextMenu.setMasterGLView(this);
-				}
-
-				DimensionContextMenuItemContainer experimentContextMenuItemContainer = new DimensionContextMenuItemContainer();
-				experimentContextMenuItemContainer.tableID(tree.getLeaveIDType(),
-						leafNode.getLeafID());
-				contextMenu.addItemContanier(experimentContextMenuItemContainer);
+				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+						+ dataDomain.getRecordLabel(tree.getLeaveIDType(), leafNode.getLeafID()),
+						tree.getLeaveIDType(), leafNode.getLeafID());
+				contextMenuCreator.addContextMenuItem(menuItem);
 
 				break;
 			}
@@ -1608,8 +1589,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				selectionManager = dimensionSelectionManager;
 
 				selectionManager.clearSelection(selectionType);
-				selectionManager.addToType(selectionType,
-						tree.getNodeByNumber(externalID).getLeafID());
+				selectionManager.addToType(selectionType, tree
+						.getNodeByNumber(externalID).getLeafID());
 				selectionDelta = selectionManager.getDelta();
 
 				handleConnectedElementReps(selectionDelta);
@@ -1623,6 +1604,9 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			}
 			break;
 		}
+		
+		if (contextMenuCreator.hasMenuItems())
+			contextMenuCreator.open(parentComposite);
 	}
 
 	@Override
@@ -1885,7 +1869,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		tree = null;
 		rootNode = null;
 	}
-	
+
 	public boolean isDataView() {
 		return false;
 	}

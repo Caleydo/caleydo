@@ -4,19 +4,13 @@ import java.util.ArrayList;
 
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
-import org.caleydo.view.heatmap.dendrogram.SerializedDendogramHorizontalView;
-import org.caleydo.view.heatmap.dendrogram.SerializedDendogramVerticalView;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
 import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
-import org.caleydo.view.heatmap.hierarchical.SerializedHierarchicalHeatMapView;
 import org.caleydo.view.heatmap.toolbar.HeatMapToolBarContent;
 import org.caleydo.view.heatmap.toolbar.HierarchicalHeatMapToolBarContent;
 import org.caleydo.view.heatmap.toolbar.UncertaintyHeatMapToolBarContent;
 import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
-import org.caleydo.view.heatmap.uncertainty.SerializedUncertaintyHeatMapView;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 

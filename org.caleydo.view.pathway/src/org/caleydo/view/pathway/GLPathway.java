@@ -61,7 +61,9 @@ import org.caleydo.core.view.opengl.canvas.listener.ReplaceRecordVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.RecordContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkMenuItem;
+import org.caleydo.datadomain.genetic.contextmenu.item.LoadPathwaysByPathwayItem;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
@@ -73,7 +75,6 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
-import org.caleydo.view.pathway.contextmenu.EmbeddedPathwayContextMenuItemContainer;
 import org.caleydo.view.pathway.listener.DisableGeneMappingListener;
 import org.caleydo.view.pathway.listener.DisableNeighborhoodListener;
 import org.caleydo.view.pathway.listener.DisableTexturesListener;
@@ -718,23 +719,22 @@ public class GLPathway extends AGLView implements
 				selectionType = SelectionType.SELECTION;
 
 				if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
-
-					EmbeddedPathwayContextMenuItemContainer pathwayContextMenuItemContainer = new EmbeddedPathwayContextMenuItemContainer();
-					pathwayContextMenuItemContainer.setPathway(pathwayManager
+					
+					LoadPathwaysByPathwayItem menuItem = new LoadPathwaysByPathwayItem(pathwayManager
 							.searchPathwayByName(tmpVertexGraphItemRep.getName(),
 									EPathwayDatabaseType.KEGG));
-					contextMenu.addItemContanier(pathwayContextMenuItemContainer);
+					contextMenuCreator.addContextMenuItem(menuItem);
+					
+					
 				} else if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.gene) {
 					for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 
-						RecordContextMenuItemContainer geneContextMenuItemContainer = new RecordContextMenuItemContainer();
-						geneContextMenuItemContainer.setDataDomain(mappingDataDomain);
-						geneContextMenuItemContainer
-								.tableID(dataDomain.getDavidIDType(),
-										pathwayItemManager
-												.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) pathwayVertexGraphItem));
-						contextMenu.addItemContanier(geneContextMenuItemContainer);
+						ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+								+ pathwayVertexGraphItem.getId(),
+								dataDomain.getDavidIDType(), pathwayItemManager
+								.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) pathwayVertexGraphItem));
+						contextMenuCreator.addContextMenuItem(menuItem);
 					}
 				} else {
 					// do nothing if the type is neither a gene nor an

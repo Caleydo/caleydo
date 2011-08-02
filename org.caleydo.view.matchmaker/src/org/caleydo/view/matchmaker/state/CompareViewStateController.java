@@ -20,7 +20,6 @@ import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.matchmaker.GLMatchmaker;
 import org.caleydo.view.matchmaker.SetBar;
@@ -36,11 +35,10 @@ public class CompareViewStateController {
 
 	public CompareViewStateController(GLMatchmaker view, int viewID,
 			TextRenderer textRenderer, TextureManager textureManager,
-			PickingManager pickingManager, GLMouseListener glMouseListener,
-			ContextMenu contextMenu, ATableBasedDataDomain dataDomain) {
+			PickingManager pickingManager, GLMouseListener glMouseListener, ATableBasedDataDomain dataDomain) {
 		DragAndDropController dragAndDropController = new DragAndDropController(view);
 		SetBar setBar = new SetBar(viewID, pickingManager, textRenderer,
-				dragAndDropController, glMouseListener, view, contextMenu, textureManager);
+				dragAndDropController, glMouseListener, view, textureManager);
 		setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.01f));
 		RenderCommandFactory renderCommandFactory = new RenderCommandFactory(viewID,
 				pickingManager, textureManager, textRenderer);

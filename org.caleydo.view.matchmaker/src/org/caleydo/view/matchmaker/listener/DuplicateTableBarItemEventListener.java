@@ -2,19 +2,17 @@ package org.caleydo.view.matchmaker.listener;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.view.matchmaker.DuplicateSetBarItemEvent;
+import org.caleydo.core.manager.event.view.matchmaker.DuplicateTableBarItemEvent;
 import org.caleydo.view.matchmaker.GLMatchmaker;
 
-public class DuplicateSetBarItemEventListener extends AEventListener<GLMatchmaker> {
+public class DuplicateTableBarItemEventListener extends AEventListener<GLMatchmaker> {
 
 	@Override
 	public void handleEvent(AEvent event) {
 
-		if (event instanceof DuplicateSetBarItemEvent) {
-			DuplicateSetBarItemEvent duplicateSetBarItemEvent = (DuplicateSetBarItemEvent) event;
+		if (event instanceof DuplicateTableBarItemEvent) {
+			DuplicateTableBarItemEvent duplicateSetBarItemEvent = (DuplicateTableBarItemEvent) event;
 			handler.handleDuplicateSetBarItem(duplicateSetBarItemEvent.getItemID());
 		}
-
 	}
-
 }

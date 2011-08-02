@@ -10,7 +10,7 @@ import javax.media.opengl.GL2;
  * @author Alexander Lex
  */
 public class ViewFrustum {
-	private ECameraProjectionMode projectionMode;
+	private CameraProjectionMode projectionMode;
 
 	private float left = 0;
 	private float right = 0;
@@ -22,11 +22,11 @@ public class ViewFrustum {
 	private boolean bConsiderAspectRatio = false;
 
 	/**
-	 * Constructor setting a default frustum with {@link ECameraProjectionMode#ORTHOGRAPHIC} and all other
+	 * Constructor setting a default frustum with {@link CameraProjectionMode#ORTHOGRAPHIC} and all other
 	 * values to 0
 	 */
 	public ViewFrustum() {
-		projectionMode = ECameraProjectionMode.ORTHOGRAPHIC;
+		projectionMode = CameraProjectionMode.ORTHOGRAPHIC;
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class ViewFrustum {
 	 * @param near
 	 * @param far
 	 */
-	public ViewFrustum(ECameraProjectionMode eProjectionMode, float left, float right, float bottom,
+	public ViewFrustum(CameraProjectionMode eProjectionMode, float left, float right, float bottom,
 		float top, float near, float far) {
 		this.projectionMode = eProjectionMode;
 
@@ -52,11 +52,11 @@ public class ViewFrustum {
 		this.far = far;
 	}
 
-	public ECameraProjectionMode getProjectionMode() {
+	public CameraProjectionMode getProjectionMode() {
 		return projectionMode;
 	}
 
-	public void setProjectionMode(final ECameraProjectionMode eProjectionMode) {
+	public void setProjectionMode(final CameraProjectionMode eProjectionMode) {
 		this.projectionMode = eProjectionMode;
 	}
 
@@ -162,7 +162,7 @@ public class ViewFrustum {
 			// System.out.println(fLeft + "," +fRight + "," +fTop + "," +fBottom);
 		}
 
-		if (getProjectionMode().equals(ECameraProjectionMode.ORTHOGRAPHIC)) {
+		if (getProjectionMode().equals(CameraProjectionMode.ORTHOGRAPHIC)) {
 			gl.glOrtho(left, right, bottom, top, getNear(), getFar());
 		}
 		else {

@@ -15,11 +15,10 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.AdjustPValueItem;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.ClusterSetItem;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DuplicateSetBarElementItem;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.view.matchmaker.contextmenu.AdjustPValueItem;
+import org.caleydo.view.matchmaker.contextmenu.ClusterTableItem;
+import org.caleydo.view.matchmaker.contextmenu.DuplicateTableBarElementItem;
 import org.caleydo.view.matchmaker.state.ACompareViewState;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
@@ -40,7 +39,6 @@ public class SetBar extends AGLGUIElement {
 	private DragAndDropController dragAndDropController;
 	// private GLMouseListener glMouseListener;
 	private SetBarItem currentMouseOverItem;
-	private ContextMenu contextMenu;
 	private int viewID;
 	private AGLView view;
 	private SetBarSelectionWindow selectionWindow;
@@ -48,14 +46,13 @@ public class SetBar extends AGLGUIElement {
 
 	public SetBar(int viewID, PickingManager pickingManager, TextRenderer textRenderer,
 			DragAndDropController dragAndDropController, GLMouseListener glMouseListener,
-			AGLView view, ContextMenu contextMenu, TextureManager textureManager) {
+			AGLView view, TextureManager textureManager) {
 		this.viewID = viewID;
 		this.pickingManager = pickingManager;
 		this.textRenderer = textRenderer;
 		this.dragAndDropController = dragAndDropController;
 		// this.glMouseListener = glMouseListener;
 		this.view = view;
-		this.contextMenu = contextMenu;
 		// this.textureManager = textureManager;
 		items = new ArrayList<SetBarItem>();
 		selectionWindow = new SetBarSelectionWindow(0, viewID, this, items,
@@ -164,14 +161,16 @@ public class SetBar extends AGLGUIElement {
 
 			break;
 		case RIGHT_CLICKED:
-			contextMenu.addContextMenueItem(new DuplicateSetBarElementItem(itemID));
-			ArrayList<DataTable> sets = new ArrayList<DataTable>();
-			sets.add(items.get(itemID).getTable());
-			contextMenu.addContextMenueItem(new ClusterSetItem(sets));
-			contextMenu.addContextMenueItem(new AdjustPValueItem());
-			contextMenu.setLocation(pick.getPickedPoint(), view.getParentGLCanvas()
-					.getWidth(), view.getParentGLCanvas().getHeight());
-			contextMenu.setMasterGLView(view);
+
+			view.getContextMenuCreator().addContextMenuItem(
+					new DuplicateTableBarElementItem(itemID));
+
+			ArrayList<DataTable> tables = new ArrayList<DataTable>();
+			tables.add(items.get(itemID).getTable());
+			view.getContextMenuCreator().addContextMenuItem(new ClusterTableItem(tables));
+
+			view.getContextMenuCreator().addContextMenuItem(new AdjustPValueItem());
+
 			break;
 		case DRAGGED:
 			if (dragAndDropController.hasDraggables()) {

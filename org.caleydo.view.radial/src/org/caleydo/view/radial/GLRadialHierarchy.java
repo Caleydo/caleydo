@@ -42,9 +42,10 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.RecordContextMenuItemContainer;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DetailOutsideItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.view.radial.contextmenu.DetailOutsideItem;
 import org.caleydo.view.radial.listener.ChangeColorModeListener;
 import org.caleydo.view.radial.listener.DetailOutsideListener;
 import org.caleydo.view.radial.listener.GoBackInHistoryListener;
@@ -406,9 +407,6 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 				drawingController.draw(fXCenter, fYCenter, gl, new GLU());
 			} else
 				gl.glCallList(iGLDisplayListToCall);
-
-			if (!isRenderedRemote())
-				contextMenu.render(gl, this);
 		} else {
 			renderSymbol(gl, EIconTextures.RADIAL_SYMBOL, 0.5f);
 		}
@@ -513,24 +511,17 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 					if (!dataDomain.getDataDomainID().equals(
 							"org.caleydo.datadomain.genetic"))
 						break;
+					
 					if (!pdPickedElement.hasChildren()) {
-						RecordContextMenuItemContainer geneContextMenuItemContainer = new RecordContextMenuItemContainer();
-						geneContextMenuItemContainer.setDataDomain(dataDomain);
-						geneContextMenuItemContainer.tableID(dataDomain.getRecordIDType(),
-								externalID);
-						contextMenu.addItemContanier(geneContextMenuItemContainer);
+						ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+								+ dataDomain.getRecordLabel(dataDomain.getRecordIDType(), externalID),
+								dataDomain.getRecordIDType(), externalID);
+						contextMenuCreator.addContextMenuItem(menuItem);	
 					} else {
-						DetailOutsideItem detailOutsideItem = new DetailOutsideItem(
-								externalID);
-						contextMenu.addContextMenueItem(detailOutsideItem);
+						ContextMenuItem menuItem = new DetailOutsideItem(externalID);
+						contextMenuCreator.addContextMenuItem(menuItem);	
 					}
 
-					if (!isRenderedRemote()) {
-						contextMenu.setLocation(pick.getPickedPoint(),
-								getParentGLCanvas().getWidth(), getParentGLCanvas()
-										.getHeight());
-						contextMenu.setMasterGLView(this);
-					}
 					break;
 				}
 				drawingController.handleAlternativeSelection(pdPickedElement);

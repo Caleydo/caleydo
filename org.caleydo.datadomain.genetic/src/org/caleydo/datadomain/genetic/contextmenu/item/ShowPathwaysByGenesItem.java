@@ -10,7 +10,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
@@ -29,7 +29,7 @@ import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
  * 
  * @author Alexander Lex
  */
-public class ShowPathwaysByGenesItem extends AContextMenuItem {
+public class ShowPathwaysByGenesItem extends ContextMenuItem {
 
 	/**
 	 * Constructor which sets the default values for icon and text
@@ -89,7 +89,7 @@ public class ShowPathwaysByGenesItem extends AContextMenuItem {
 		for (int count = pathways.size() - 1; count >= 0; count--) {
 			Pair<Integer, PathwayGraph> pair = pathways.get(count);
 			if (pair.getFirst() > 1) {
-				LoadPathwaysByPathwayIDItem item = new LoadPathwaysByPathwayIDItem(pair
+				LoadPathwaysByPathwayItem item = new LoadPathwaysByPathwayItem(pair
 						.getSecond().getID(), pair.getFirst());
 				addSubItem(item);
 			}

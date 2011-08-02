@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.event.view.OpenMatchmakerViewEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
 
-public class CompareGroupsItem extends AContextMenuItem {
+public class CompareGroupsItem extends ContextMenuItem {
 
 	public CompareGroupsItem(ArrayList<DataTable> setsToCompare) {
-		super();
 
-		setText("Compare Groups in Matchmaker");
+		setLabel("Compare Groups in Matchmaker");
 
 		OpenMatchmakerViewEvent openViewEvent = new OpenMatchmakerViewEvent();
 		openViewEvent.setViewType("org.caleydo.view.matchmaker");

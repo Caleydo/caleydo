@@ -60,7 +60,7 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -82,8 +82,6 @@ import org.caleydo.core.view.opengl.canvas.remote.receiver.INewContentGroupInfoH
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GroupContextMenuItemContainer;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
@@ -662,7 +660,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
-		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
+		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
 		glHeatMapView = new GLHeatMap(parentGLCanvas, parentComposite, viewFrustum);
@@ -690,7 +688,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
-		ViewFrustum viewFrustum = new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0,
+		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
 		glContentDendrogramView = new GLDendrogram<RecordGroupList>(parentGLCanvas,
@@ -2575,8 +2573,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				.getViewManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
-		contextMenu.render(gl, this);
-
 	}
 
 	private void renderRemoteViewsLevel_1_2_3_Active(GL2 gl) {
@@ -3747,7 +3743,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			int iFirstSample = (int) Math.floor((double) fXPosDrag / fWidthSample);
 			int iLastSample = (int) Math.ceil((double) fXPosRelease / fWidthSample);
 
-			if (dimensionVA.getGroupList().split(iGroupToSplit, iLastSample, iFirstSample) == false)
+			if (dimensionVA.getGroupList()
+					.split(iGroupToSplit, iLastSample, iFirstSample) == false)
 				System.out.println("Operation not allowed!!");
 		}
 	}
@@ -4046,21 +4043,27 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 						bEnableInterchange = true;
 				}
 
-				GroupContextMenuItemContainer groupContextMenuItemContainer = new GroupContextMenuItemContainer();
-				groupContextMenuItemContainer.initContextMenu(true, bEnableMerge,
-						bEnableInterchange, bEnableExport);
-				groupContextMenuItemContainer.setDataDomain(dataDomain);
-				groupContextMenuItemContainer.setContentIDs(recordIDType,
-						recordVA.getIDsOfGroup(externalID));
+				// FIXME CONTEXT MENU
+				// GroupContextMenuItemContainer groupContextMenuItemContainer =
+				// new GroupContextMenuItemContainer();
+				// groupContextMenuItemContainer.initContextMenu(true,
+				// bEnableMerge,
+				// bEnableInterchange, bEnableExport);
+				// groupContextMenuItemContainer.setDataDomain(dataDomain);
+				// groupContextMenuItemContainer.setContentIDs(recordIDType,
+				// recordVA.getIDsOfGroup(externalID));
 
-				BookmarkItem bookmarkItem = new BookmarkItem(recordIDType,
-						recordVA.getIDsOfGroup(externalID));
-				groupContextMenuItemContainer.addContextMenuItem(bookmarkItem);
-
-				contextMenu.addItemContanier(groupContextMenuItemContainer);
-				contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-						.getWidth(), getParentGLCanvas().getHeight());
-				contextMenu.setMasterGLView(this);
+				// FIXME CONTEXT MENU
+				// BookmarkMenuItem bookmarkItem = new
+				// BookmarkMenuItem(recordIDType,
+				// recordVA.getIDsOfGroup(externalID));
+				// groupContextMenuItemContainer.addContextMenuItem(bookmarkItem);
+				//
+				// contextMenu.addItemContanier(groupContextMenuItemContainer);
+				// contextMenu.setLocation(pick.getPickedPoint(),
+				// getParentGLCanvas()
+				// .getWidth(), getParentGLCanvas().getHeight());
+				// contextMenu.setMasterGLView(this);
 
 				if (recordVA.getGroupList().get(externalID).getSelectionType() == SelectionType.SELECTION)
 					break;
@@ -4151,14 +4154,15 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					if (iNrSelectedGroups == 2)
 						bEnableInterchange = true;
 				}
-				GroupContextMenuItemContainer groupContextMenuItemContainer = new GroupContextMenuItemContainer();
-				groupContextMenuItemContainer.initContextMenu(false, bEnableMerge,
-						bEnableInterchange, bEnableExport);
 
-				contextMenu.addItemContanier(groupContextMenuItemContainer);
-				contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-						.getWidth(), getParentGLCanvas().getHeight());
-				contextMenu.setMasterGLView(this);
+				// FIXME CONTEXT MENU
+				// GroupContextMenuItemContainer groupContextMenuItemContainer =
+				// new GroupContextMenuItemContainer();
+				// groupContextMenuItemContainer.initContextMenu(false,
+				// bEnableMerge,
+				// bEnableInterchange, bEnableExport);
+				//
+				// contextMenu.addItemContanier(groupContextMenuItemContainer);
 
 				if (dimensionVA.getGroupList().get(externalID).getSelectionType() == SelectionType.SELECTION)
 					break;
@@ -4407,9 +4411,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		case HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION:
 			switch (pickingMode) {
 			case RIGHT_CLICKED:
-				contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-						.getWidth(), getParentGLCanvas().getHeight());
-				contextMenu.setMasterGLView(this);
+
+				// FIXME CONTEXT MENU
+				// contextMenu.setLocation(pick.getPickedPoint(),
+				// getParentGLCanvas()
+				// .getWidth(), getParentGLCanvas().getHeight());
+				// contextMenu.setMasterGLView(this);
 				break;
 			}
 			break;
@@ -4418,9 +4425,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		case HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION:
 			switch (pickingMode) {
 			case RIGHT_CLICKED:
-				contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-						.getWidth(), getParentGLCanvas().getHeight());
-				contextMenu.setMasterGLView(this);
+
+				// FIXME CONTEXT MENU
+				// contextMenu.setLocation(pick.getPickedPoint(),
+				// getParentGLCanvas()
+				// .getWidth(), getParentGLCanvas().getHeight());
+				// contextMenu.setMasterGLView(this);
 				break;
 			}
 			break;
@@ -4429,9 +4439,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		case HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION:
 			switch (pickingMode) {
 			case RIGHT_CLICKED:
-				contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-						.getWidth(), getParentGLCanvas().getHeight());
-				contextMenu.setMasterGLView(this);
+
+				// FIXME CONTEXT MENU
+				// contextMenu.setLocation(pick.getPickedPoint(),
+				// getParentGLCanvas()
+				// .getWidth(), getParentGLCanvas().getHeight());
+				// contextMenu.setMasterGLView(this);
 				break;
 			}
 			break;

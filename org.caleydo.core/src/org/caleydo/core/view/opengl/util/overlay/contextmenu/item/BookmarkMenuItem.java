@@ -4,26 +4,22 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
 
 /**
  * Item that adds a selected element to the bookmark container
  * 
  * @author Alexander Lex
+ * @author Marc Streit
  */
-public class BookmarkItem
-	extends AContextMenuItem {
+public class BookmarkMenuItem
+	extends ContextMenuItem {
 
 	/**
 	 * Constructor which takes a single dimension index.
-	 * 
-	 * @param iDimensionIndex
 	 */
-	public BookmarkItem(IDType idType, int id) {
-		super();
-		setIconTexture(EIconTextures.CM_BOOKMARK);
-		setText("Bookmark");
+	public BookmarkMenuItem(String label, IDType idType, int id) {
+		setLabel(label);
 
 		BookmarkEvent<Integer> event = new BookmarkEvent<Integer>(idType);
 		event.addBookmark(id);
@@ -33,14 +29,10 @@ public class BookmarkItem
 
 	/**
 	 * Constructor which takes an array of dimension indices.
-	 * 
-	 * @param alDimensionIndex
 	 */
-	public BookmarkItem(IDType idType, ArrayList<Integer> ids) {
-		super();
-		setIconTexture(EIconTextures.CM_BOOKMARK);
-		setText("Bookmark");
-		
+	public BookmarkMenuItem(String label, IDType idType, ArrayList<Integer> ids) {
+		setLabel(label);
+
 		BookmarkEvent<Integer> event = new BookmarkEvent<Integer>(idType);
 		event.setSender(this);
 
@@ -48,5 +40,4 @@ public class BookmarkItem
 			event.addBookmark(id);
 		registerEvent(event);
 	}
-
 }

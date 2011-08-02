@@ -84,8 +84,8 @@ import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.DimensionContextMenuItemContainer;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.RecordContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.parcoords.PCRenderStyle.PolyLineState;
@@ -373,9 +373,6 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		}
 
 		gl.glTranslatef(-xSideSpacing, -fYTranslation, 0.0f);
-
-		if (!isRenderedRemote())
-			contextMenu.render(gl, this);
 
 	}
 
@@ -1419,16 +1416,13 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
-				RecordContextMenuItemContainer recordContextMenuItemContainer = new RecordContextMenuItemContainer();
-				recordContextMenuItemContainer.setDataDomain(dataDomain);
-				recordContextMenuItemContainer.tableID(recordIDType, pickingID);
-				contextMenu.addItemContanier(recordContextMenuItemContainer);
+				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+						+ dataDomain.getRecordLabel(recordIDType, pickingID),
+						recordIDType, pickingID);
+				contextMenuCreator.addContextMenuItem(menuItem);
 
-				if (!isRenderedRemote()) {
-					contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-							.getWidth(), getParentGLCanvas().getHeight());
-					contextMenu.setMasterGLView(this);
-				}
+
+				
 				break;
 
 			default:
@@ -1509,15 +1503,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				break;
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
-				if (!isRenderedRemote()) {
-					contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-							.getWidth(), getParentGLCanvas().getHeight());
-					contextMenu.setMasterGLView(this);
-				}
-				DimensionContextMenuItemContainer experimentContextMenuItemContainer = new DimensionContextMenuItemContainer();
-				experimentContextMenuItemContainer.setDataDomain(dataDomain);
-				experimentContextMenuItemContainer.tableID(dimensionIDType, pickingID);
-				contextMenu.addItemContanier(experimentContextMenuItemContainer);
+				
+				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark " + dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType,
+						pickingID);
+				contextMenuCreator.addContextMenuItem(menuItem);
 
 			default:
 				return;

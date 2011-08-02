@@ -2,8 +2,7 @@ package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
 import org.caleydo.core.manager.event.view.group.MergeContentGroupsEvent;
 import org.caleydo.core.manager.event.view.group.MergeDimensionGroupsEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
 
 /**
  * Item for merging to groups/clusters
@@ -11,15 +10,14 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  * @author Bernhard Schlegl
  */
 public class MergeClustersItem
-	extends AContextMenuItem {
+	extends ContextMenuItem {
 
 	/**
 	 * Constructor which sets the default values for icon and text
 	 */
 	public MergeClustersItem() {
-		super();
-		setIconTexture(EIconTextures.CM_LOAD_DEPENDING_PATHWAYS);
-		setText("Merge Groups");
+		// setIconTexture(EIconTextures.CM_LOAD_DEPENDING_PATHWAYS);
+		setLabel("Merge Groups");
 	}
 
 	/**

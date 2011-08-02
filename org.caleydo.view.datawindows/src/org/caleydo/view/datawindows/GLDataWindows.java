@@ -322,8 +322,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 				this.evaluateUserSelection();
 			}
 		}
-
-		contextMenu.render(gl, this);
 	}
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
@@ -406,9 +404,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 				evaluateUserSelection();
 				break;
 			case RIGHT_CLICKED:
-				contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-						.getWidth(), getParentGLCanvas().getHeight());
-				contextMenu.setMasterGLView(this);
 				break;
 			}
 			break;

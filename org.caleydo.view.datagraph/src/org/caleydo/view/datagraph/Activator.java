@@ -3,7 +3,6 @@ package org.caleydo.view.datagraph;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.serialize.SerializationManager;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 

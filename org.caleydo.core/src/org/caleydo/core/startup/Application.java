@@ -1,9 +1,6 @@
 package org.caleydo.core.startup;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ProjectLoader;
-import org.caleydo.core.serialize.ProjectSaver;
-import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;

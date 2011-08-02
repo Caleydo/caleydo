@@ -14,7 +14,7 @@ import org.caleydo.core.manager.picking.APickingListener;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.camera.ECameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -155,7 +155,7 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 		// + spacingWidth, y - spacingHeight, y + spacingHeight,
 		// -1, 20));
 		layoutManager.setViewFrustum(new ViewFrustum(
-				ECameraProjectionMode.ORTHOGRAPHIC, 0, spacingWidth, 0,
+				CameraProjectionMode.ORTHOGRAPHIC, 0, spacingWidth, 0,
 				spacingHeight, -1, 20));
 
 		layoutManager.render(gl);

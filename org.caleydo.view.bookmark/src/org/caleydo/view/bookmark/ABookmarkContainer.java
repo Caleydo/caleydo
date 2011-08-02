@@ -22,19 +22,9 @@ import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.GTKAWTBridgePopupFix;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.MenuCreator;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MenuEvent;
-import org.eclipse.swt.events.MenuListener;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * <p>
@@ -197,70 +187,13 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 			case MOUSE_OVER:
 				selectionType = SelectionType.MOUSE_OVER;
 
-				// PlatformUI.getWorkbench().getDisplay().asyncExec(new
-				// Runnable() {
-				// @Override
-				// public void run() {
-				// manager.getParentComposite()
-				// .notifyListeners(SWT.MouseDown, new Event());
-				//
-				// Menu menu = new Menu(manager.getParentComposite().getShell(),
-				// SWT.POP_UP);
-				// Point point =
-				// manager.getParentComposite()
-				// .toDisplay(0, 0);
-				// System.out.println(point);
-				// menu.setLocation(point.x + pick.getPickedPoint().x, point.y
-				// + pick.getPickedPoint().y);
-				// MenuItem item = new MenuItem(menu, SWT.PUSH);
-				// item.setText("Popup");
-				// item = new MenuItem(menu, SWT.PUSH);
-				// item.setText("Popup1");
-				// item = new MenuItem(menu, SWT.PUSH);
-				// item.setText("Popup2");
-				// item = new MenuItem(menu, SWT.PUSH);
-				// item.setText("Popup3");
-				// item = new MenuItem(menu, SWT.PUSH);
-				// item.setText("Popup4");
-				// item = new MenuItem(menu, SWT.PUSH);
-				// item.setText("Popup5");
-				// //
-				// manager.getParentComposite().setMenu(menu);
-				// menu.setVisible(true);
-				// }
-				// });
-
 				break;
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
-				Runnable r = new Runnable() {
-					public void run() {
-						GTKAWTBridgePopupFix.showMenu(new MenuCreator());
-					}
-				};
-				PlatformUI.getWorkbench().getDisplay().asyncExec(r);
+				ContextMenuItem menuItem = new BookmarkMenuItem("Remove", internalIDType, externalID);
+				manager.getContextMenuCreator().addContextMenuItem(menuItem);
 
-				// PopupMenu menu = new PopupMenu();
-				// MenuItem item = new MenuItem();
-				// menu.add(item);
-				// menu.addNotify();
-				// menu.show(manager.getParentGLCanvas(), 0, 0);
-
-				// BookmarkContextMenuItemContainer
-				// bookmarkContextMenuItemContainer = new
-				// BookmarkContextMenuItemContainer();
-				// bookmarkContextMenuItemContainer.tableID(internalIDType,
-				// externalID);
-				// ContextMenu contextMenu = manager.getContextMenu();
-				// contextMenu.addItemContanier(bookmarkContextMenuItemContainer);
-				//
-				// if (manager.isRenderedRemote()) {
-				// contextMenu.setLocation(pick.getPickedPoint(), manager
-				// .getParentGLCanvas().getWidth(), manager.getParentGLCanvas()
-				// .getHeight());
-				// contextMenu.setMasterGLView(manager);
-				// }
 				break;
 
 			default:
