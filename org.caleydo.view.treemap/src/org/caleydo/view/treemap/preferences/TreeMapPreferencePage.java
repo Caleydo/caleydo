@@ -23,7 +23,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * @author Oliver Pimas
  * @author Alexander Lex
  */
-public class TreemapPreferencePage
+public class TreeMapPreferencePage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage {
 
@@ -36,7 +36,7 @@ public class TreemapPreferencePage
 
 	private static final String LAYOUT_ALGORITHM_DISPLAYNAME[] = {"Simple Layout Algorithm", "Squarified Treemap Layout Algorithm"};
 	
-	public TreemapPreferencePage() {
+	public TreeMapPreferencePage() {
 		super(GRID);
 		preferenceStore = GeneralManager.get().getPreferenceStore();
 		setPreferenceStore(preferenceStore);
