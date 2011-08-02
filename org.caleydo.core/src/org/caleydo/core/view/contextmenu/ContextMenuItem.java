@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.util.overlay.contextmenu;
+package org.caleydo.core.view.contextmenu;
 
 import java.util.ArrayList;
 

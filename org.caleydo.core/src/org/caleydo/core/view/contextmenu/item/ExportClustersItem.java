@@ -1,8 +1,8 @@
-package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
+package org.caleydo.core.view.contextmenu.item;
 
 import org.caleydo.core.manager.event.view.group.ExportContentGroupsEvent;
 import org.caleydo.core.manager.event.view.group.ExportDimensionGroupsEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.ContextMenuItem;
 
 /**
  * Item for exporting groups/clusters

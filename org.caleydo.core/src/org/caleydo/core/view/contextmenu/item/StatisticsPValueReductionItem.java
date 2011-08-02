@@ -1,10 +1,10 @@
-package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
+package org.caleydo.core.view.contextmenu.item;
 
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.event.data.StatisticsPValueReductionEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.ContextMenuItem;
 
 public class StatisticsPValueReductionItem
 	extends ContextMenuItem {

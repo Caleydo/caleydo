@@ -19,12 +19,12 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.collection.UniqueList;
+import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
+import org.caleydo.core.view.contextmenu.item.RemoveBookmarkItem;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkMenuItem;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.RemoveBookmarkItem;
 import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
 
 /**

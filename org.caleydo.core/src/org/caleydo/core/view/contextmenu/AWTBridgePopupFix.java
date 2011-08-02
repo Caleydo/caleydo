@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.util.overlay.contextmenu;
+package org.caleydo.core.view.contextmenu;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;

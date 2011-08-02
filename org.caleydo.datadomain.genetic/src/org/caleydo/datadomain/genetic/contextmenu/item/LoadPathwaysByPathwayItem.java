@@ -1,7 +1,7 @@
 package org.caleydo.datadomain.genetic.contextmenu.item;
 
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.ContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 /**

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.event.view.OpenMatchmakerViewEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.ContextMenuItem;
 
 public class CompareGroupsItem extends ContextMenuItem {
 

@@ -1,8 +1,8 @@
-package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
+package org.caleydo.core.view.contextmenu.item;
 
 import org.caleydo.core.manager.event.view.group.InterchangeContentGroupsEvent;
 import org.caleydo.core.manager.event.view.group.InterchangeDimensionGroupsEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.ContextMenuItem;
 
 /**
  * Item for interchanging to groups/clusters

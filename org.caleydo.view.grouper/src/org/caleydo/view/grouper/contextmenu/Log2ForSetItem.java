@@ -3,7 +3,7 @@ package org.caleydo.view.grouper.contextmenu;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.ContextMenuItem;
 
 public class Log2ForSetItem extends ContextMenuItem {
 
