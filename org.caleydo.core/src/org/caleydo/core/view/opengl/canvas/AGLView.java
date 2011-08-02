@@ -593,7 +593,7 @@ public abstract class AGLView
 							tempPick);
 					}
 					catch (Exception e) {
-						System.out.println("ERROR" + e.toString());
+						System.out.println("ERROR in picking caught:" + e.toString());
 					}
 					pickingManager.flushHits(uniqueID, pickingType);
 				}

@@ -1604,9 +1604,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			}
 			break;
 		}
-		
-		if (contextMenuCreator.hasMenuItems())
-			contextMenuCreator.open(parentComposite);
 	}
 
 	@Override

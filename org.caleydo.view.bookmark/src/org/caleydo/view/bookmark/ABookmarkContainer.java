@@ -24,6 +24,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkMenuItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.RemoveBookmarkItem;
 import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
 
 /**
@@ -173,8 +174,6 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 			Integer externalID, final Pick pick) {
 		SelectionType selectionType;
 
-		System.out.println(pickingMode);
-
 		switch (ePickingType) {
 
 		case BOOKMARK_ELEMENT:
@@ -191,7 +190,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
-				ContextMenuItem menuItem = new BookmarkMenuItem("Remove", internalIDType, externalID);
+				RemoveBookmarkItem menuItem = new RemoveBookmarkItem("Remove", internalIDType, externalID);
 				manager.getContextMenuCreator().addContextMenuItem(menuItem);
 
 				break;

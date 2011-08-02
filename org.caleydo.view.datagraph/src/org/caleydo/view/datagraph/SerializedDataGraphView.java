@@ -9,6 +9,7 @@ import org.caleydo.core.serialize.ASerializedView;
  * Serialized VisBricks view.
  * 
  * @author Alexander Lex
+ * @author Marc Streit
  */
 @XmlRootElement
 @XmlType
@@ -18,10 +19,6 @@ public class SerializedDataGraphView extends ASerializedView {
 	 * Default constructor with default initialization
 	 */
 	public SerializedDataGraphView() {
-	}
-
-	public SerializedDataGraphView(String dataDomainType) {
-		super(dataDomainType);
 	}
 
 	@Override

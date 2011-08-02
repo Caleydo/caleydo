@@ -256,8 +256,6 @@ public class GLBookmarkView extends AGLView implements
 			Pair<IDCategory, Integer> pair = pickingIDManager.getPrivateID(externalID);
 			hashCategoryToBookmarkContainer.get(pair.getFirst()).handleEvents(
 					pickingType, pickingMode, pair.getSecond(), pick);
-			
-			createEditPopup();
 		}
 	}
 
@@ -401,18 +399,5 @@ public class GLBookmarkView extends AGLView implements
 		hashCategoryToBookmarkContainer.put(dataDomain.getDimensionIDCategory(),
 				experimentContainer);
 		bookmarkContainers.add(experimentContainer);
-	}
-
-	public Menu createEditPopup() {
-		Composite comp = getParentComposite();
-
-		MenuManager menu = new MenuManager();
-		Menu quickMenu = menu.createContextMenu(comp);
-		Point location = new Point(100, 100);
-		final MenuItem item = new MenuItem(quickMenu, SWT.PUSH);
-		item.setText("Text");
-		quickMenu.setLocation(location);
-		quickMenu.setVisible(true);
-		return quickMenu;
 	}
 }

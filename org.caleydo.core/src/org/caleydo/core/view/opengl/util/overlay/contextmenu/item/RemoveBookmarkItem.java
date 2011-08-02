@@ -34,10 +34,10 @@ public class RemoveBookmarkItem
 	public RemoveBookmarkItem(String label, IDType idType, ArrayList<Integer> ids) {
 		setLabel(label);
 
-		BookmarkEvent<Integer> event = new BookmarkEvent<Integer>(idType);
+		RemoveBookmarkEvent<Integer> event = new RemoveBookmarkEvent<Integer>(idType);
+		event.setSender(this);
 		for (Integer id : ids)
 			event.addBookmark(id);
 		registerEvent(event);
 	}
-
 }
