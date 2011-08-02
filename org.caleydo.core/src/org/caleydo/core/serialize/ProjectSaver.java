@@ -264,7 +264,7 @@ public class ProjectSaver {
 		DimensionVirtualArray va = (DimensionVirtualArray) dataDomain.getDimensionVA(type);
 		marshaller.marshal(va, new File(fileName));
 	}
-	
+
 	/**
 	 * Saves all the view's serialized forms to the given directory. The directory must exist.
 	 * 
@@ -273,15 +273,11 @@ public class ProjectSaver {
 	 */
 	private void saveWorkbenchData(String dirName) {
 
-//		SaveStateAction saveAction = new SaveStateAction();
-//		saveAction.setSaveFolder(dirName);
-//		saveAction.run(null);
-		
 		// Activator.trace( "Saving state." );
 		XMLMemento memento = XMLMemento.createWriteRoot(IWorkbenchConstants.TAG_WORKBENCH);
 		saveState(memento);
 		saveMementoToFile(memento);
-		
+
 		try {
 			FileOperations.copyFolder(new File(GeneralManager.CALEYDO_HOME_PATH
 				+ ProjectSaver.WORKBENCH_MEMENTO_FOLDER + ProjectSaver.WORKBENCH_MEMENTO_FILE), new File(
@@ -291,7 +287,7 @@ public class ProjectSaver {
 			throw new RuntimeException("Error saving workbench data (file access)", e);
 		}
 	}
-	
+
 	/**
 	 * Method from http://eclipsenuggets.blogspot.com/2007/09/how-to-save-eclipse-ui-workbench-state_6644.html
 	 */

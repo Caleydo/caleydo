@@ -7,6 +7,7 @@ import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Saves the project-state periodically. Should only be added as multiple-execution object to a
@@ -36,17 +37,25 @@ public class AutoSaver
 	 */
 	@Override
 	public void run() {
-		if ((new Date()).getTime() > lastSaveTimeStamp.getTime() + DEFAULT_INTERVAL) {
-			ProjectSaver projectSaver = new ProjectSaver();
 
-			Date start = new Date();
-			projectSaver.saveRecentProject();
-			Date stop = new Date();
-			Logger.log(new Status(IStatus.INFO, this.toString(), "AutoSaver: auto save took "
-				+ (stop.getTime() - start.getTime()) + " ms"));
+		// Call this the memento saver with async because otherwise the render thread crashes
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 
-			lastSaveTimeStamp = new Date();
-		}
+			@Override
+			public void run() {
+				if ((new Date()).getTime() > lastSaveTimeStamp.getTime() + DEFAULT_INTERVAL) {
+
+					Date start = new Date();
+					ProjectSaver projectSaver = new ProjectSaver();
+					projectSaver.saveRecentProject();
+					Date stop = new Date();
+					Logger.log(new Status(IStatus.INFO, this.toString(), "AutoSaver: auto save took "
+						+ (stop.getTime() - start.getTime()) + " ms"));
+
+					lastSaveTimeStamp = new Date();
+				}
+			}
+		});
 	}
 
 	/**
