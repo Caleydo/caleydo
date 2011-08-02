@@ -28,6 +28,12 @@ public class GeneticGUIStartupProcedure
 
 	// "data/genome/microarray/kashofer/mouse/all_mice_plus_SN_only_with_mapping.csv";
 
+	public GeneticGUIStartupProcedure() {
+
+		// Delete old workbench state
+		FileOperations.deleteDirectory(GeneralManager.CALEYDO_HOME_PATH + ".metadata");
+	}
+	
 	@Override
 	public void init(ApplicationInitData appInitData) {
 
@@ -38,9 +44,6 @@ public class GeneticGUIStartupProcedure
 				.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES, "KEGG;BioCarta");
 
 			GeneralManager.get().getBasicInfo().setOrganism(Organism.HOMO_SAPIENS);
-
-			// Delete old workbench state
-			FileOperations.deleteDirectory(GeneralManager.CALEYDO_HOME_PATH + ".metadata");
 		}
 
 		this.dataDomain =

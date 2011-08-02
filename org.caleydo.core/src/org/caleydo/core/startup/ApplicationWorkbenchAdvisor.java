@@ -40,17 +40,11 @@ public class ApplicationWorkbenchAdvisor
 	@Override
 	public void postStartup() {
 		super.postStartup();
-		// // Check if an early exit should be performed
-		// if (Application.bDoExit) {
-		// this.getWorkbenchConfigurer().getWorkbench().close();
-		// return;
-		// }
 
 		filterPreferencePages();
 
-//		autoSaver = new AutoSaver();
-//		GeneralManager.get().getViewManager().getDisplayLoopExecution().executeMultiple(autoSaver);
-
+		autoSaver = new AutoSaver();
+		GeneralManager.get().getViewManager().getDisplayLoopExecution().executeMultiple(autoSaver);
 	}
 
 	private void filterPreferencePages() {
