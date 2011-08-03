@@ -296,7 +296,6 @@ public class PickingManager {
 		else if (glMouseListener.wasLeftMouseButtonPressed()) {
 			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.CLICKED;
-			// ContextMenu.get().flush();
 		}
 		else if (glMouseListener.wasRightMouseButtonPressed()) {
 			pickPoint = glMouseListener.getPickedPoint();

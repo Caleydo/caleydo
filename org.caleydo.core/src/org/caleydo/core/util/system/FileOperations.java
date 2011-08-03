@@ -10,6 +10,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+
 public class FileOperations {
 
 	public static void writeInputStreamToFile(String fileName, BufferedReader bufferedReader) {
@@ -133,49 +138,9 @@ public class FileOperations {
 
 			in.close();
 			out.close();
-			System.out.println("File copied from " + src + " to " + dest);
+
+			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "File copied from " + src + " to "
+				+ dest));
 		}
 	}
-
-	// /**
-	// * http://www.1your.com/drupal/copyfilefolderusingrecursionJava
-	// */
-	// public static void copyFolder(File srcFolder, File destFolder) throws IOException {
-	// if (srcFolder.isDirectory()) {
-	// if (!destFolder.exists()) {
-	// destFolder.mkdir();
-	// }
-	//
-	// String[] oChildren = srcFolder.list();
-	// for (int i = 0; i < oChildren.length; i++) {
-	// copyFolder(new File(srcFolder, oChildren[i]), new File(destFolder, oChildren[i]));
-	// }
-	// }
-	// else {
-	// if (destFolder.isDirectory()) {
-	// copyFile(srcFolder, new File(destFolder, srcFolder.getName()));
-	// }
-	// else {
-	// copyFile(srcFolder, destFolder);
-	// }
-	// }
-	// }
-	//
-	// /**
-	// * http://www.1your.com/drupal/copyfilefolderusingrecursionJava
-	// */
-	// public static void copyFile(File srcFile, File destFile) throws IOException {
-	// InputStream oInStream = new FileInputStream(srcFile);
-	// OutputStream oOutStream = new FileOutputStream(destFile);
-	//
-	// // Transfer bytes from in to out
-	// byte[] oBytes = new byte[1024];
-	// int nLength;
-	// BufferedInputStream oBuffInputStream = new BufferedInputStream(oInStream);
-	// while ((nLength = oBuffInputStream.read(oBytes)) < 0) {
-	// oOutStream.write(oBytes, 0, nLength);
-	// }
-	// oInStream.close();
-	// oOutStream.close();
-	// }
 }

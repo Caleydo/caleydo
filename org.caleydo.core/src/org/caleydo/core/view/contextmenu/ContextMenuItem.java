@@ -29,11 +29,11 @@ public abstract class ContextMenuItem {
 	private int style = SWT.PUSH;
 
 	private String label = "<not set>";
-	
+
 	public void setStyle(int style) {
 		this.style = style;
 	}
-	
+
 	public void setLabel(String label) {
 		this.label = label;
 	}

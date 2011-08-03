@@ -301,7 +301,7 @@ public class GLHeatMap extends ATableBasedView {
 
 		// FIXME: do we need to do this here?
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
-		if (getRemoteRenderingGLCanvas() instanceof GLHierarchicalHeatMap)
+		if (getRemoteRenderingGLView() instanceof GLHierarchicalHeatMap)
 			renderStyle.setUseFishEye(false);
 	}
 
@@ -715,7 +715,7 @@ public class GLHeatMap extends ATableBasedView {
 		return "Standalone heat map, rendered remote: " + isRenderedRemote()
 				+ ", contentSize: " + recordVA.size() + ", dimensionSize: "
 				+ dimensionVA.size() + ", recordVAType: " + recordVAType
-				+ ", remoteRenderer:" + getRemoteRenderingGLCanvas();
+				+ ", remoteRenderer:" + getRemoteRenderingGLView();
 	}
 
 	@Override

@@ -83,7 +83,7 @@ public class RemoteRenderingTransformer
 						for (Vec3f vec : sel.getPoints()) {
 							transformedPoints.add(transform(vec, rle));
 						}
-						if (((AGLView) view.getRemoteRenderingGLCanvas()).isRenderedRemote()) {
+						if (((AGLView) view.getRemoteRenderingGLView()).isRenderedRemote()) {
 							SelectedElementRep trans =
 								new SelectedElementRep(sel.getIDType(), viewID, viewID, transformedPoints);
 							newSourceConnections.add(trans);

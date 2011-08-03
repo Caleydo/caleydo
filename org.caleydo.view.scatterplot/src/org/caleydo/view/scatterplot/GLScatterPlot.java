@@ -3340,7 +3340,7 @@ public class GLScatterPlot extends ATableBasedView {
 		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote()
 				+ ", contentSize: " + recordVA.size() + ", dimensionSize: "
 				+ dimensionVA.size() + ", recordVAType: " + recordVAType
-				+ ", remoteRenderer:" + getRemoteRenderingGLCanvas();
+				+ ", remoteRenderer:" + getRemoteRenderingGLView();
 	}
 
 	@Override

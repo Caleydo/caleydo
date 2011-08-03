@@ -728,10 +728,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		if (table == null)
 			return;
-
-		if (!lazyMode)
+		
+		if (!lazyMode) {
 			pickingManager.handlePicking(this, gl);
-
+		}
+		
 		if (bIsDisplayListDirtyLocal) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
@@ -3369,7 +3370,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		return "Standalone hierarchical heat map, rendered remote: " + isRenderedRemote()
 				+ ", contentSize: " + recordVA.size() + ", dimensionSize: "
 				+ dimensionVA.size() + ", recordVAType: " + recordVAType
-				+ ", remoteRenderer: " + getRemoteRenderingGLCanvas();
+				+ ", remoteRenderer: " + getRemoteRenderingGLView();
 	}
 
 	@Override

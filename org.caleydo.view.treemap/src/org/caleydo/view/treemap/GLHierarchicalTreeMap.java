@@ -440,7 +440,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	@Override
 	public String toString() {
 		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote() + ", contentSize: " + recordVA.size() + ", dimensionSize: " + dimensionVA.size()
-				+ ", recordVAType: " + recordVAType + ", remoteRenderer:" + getRemoteRenderingGLCanvas();
+				+ ", recordVAType: " + recordVAType + ", remoteRenderer:" + getRemoteRenderingGLView();
 	}
 
 	@Override

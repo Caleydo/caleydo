@@ -2,6 +2,8 @@ package org.caleydo.core.view.contextmenu;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.listener.IRemoteRenderingHandler;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
@@ -12,9 +14,16 @@ public class ContextMenuCreator {
 	
 	private Composite parent;
 	
-	public void open(Composite parent) {
+	private AGLView view;
+	
+	public void open(AGLView view) {
 
-		this.parent = parent;
+		if (view.isRenderedRemote())
+			this.view = (AGLView) view.getRemoteRenderingGLView();
+		else
+			this.view = view;
+		
+		this.parent = view.getParentComposite();
 		
 		final ContextMenuCreator menuCreator = this;
 
@@ -54,5 +63,9 @@ public class ContextMenuCreator {
 		}
 
 		return menu;
+	}
+	
+	public AGLView getView() {
+		return view;
 	}
 }

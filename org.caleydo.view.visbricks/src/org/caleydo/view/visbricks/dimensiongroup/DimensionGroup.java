@@ -372,7 +372,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 
 		brick.setBrickData(brickData);
 		brick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
-		brick.setRemoteRenderingGLView(getRemoteRenderingGLCanvas());
+		brick.setRemoteRenderingGLView(getRemoteRenderingGLView());
 		// brick.setDataDomain(dataDomain);
 		// brick.setTable(set);
 		brick.setVisBricks(visBricks);

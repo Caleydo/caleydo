@@ -883,7 +883,7 @@ public class GLPathway extends AGLView implements
 	public String getDetailedInfo() {
 
 		if (isRenderedRemote())
-			return (((AGLView) getRemoteRenderingGLCanvas()).getDetailedInfo());
+			return (((AGLView) getRemoteRenderingGLView()).getDetailedInfo());
 
 		StringBuffer sInfoText = new StringBuffer();
 

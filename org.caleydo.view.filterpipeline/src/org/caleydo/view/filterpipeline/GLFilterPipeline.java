@@ -37,7 +37,6 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -57,8 +56,6 @@ import org.caleydo.view.filterpipeline.representation.Background;
 import org.caleydo.view.filterpipeline.representation.FilterRepresentation;
 import org.caleydo.view.filterpipeline.representation.FilterRepresentationMetaOrAdvanced;
 import org.caleydo.view.filterpipeline.representation.FilterRepresentationSNR;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -129,7 +126,8 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 	 * Constructor.
 	 * 
 	 */
-	public GLFilterPipeline(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLFilterPipeline(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 
@@ -383,8 +381,8 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		int newFullSizedFilter = -1;
 
 		switch (pickingMode) {
@@ -508,11 +506,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 			selectionManager.removeFromType(SelectionType.SELECTION, externalId);
 			break;
 		case 1:
-			try {
-				filter.showDetailsDialog();
-			} catch (Exception e) {
-				System.out.println("Failed to show details dialog: " + e);
-			}
+			filter.showDetailsDialog();
 			break;
 		}
 	}
@@ -631,8 +625,9 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 	public void updateFilterPipeline() {
 		pipelineNeedsUpdate = false;
 
-		Logger.log(new Status(IStatus.INFO, this.toString(), "Filter update: filterType="
-				+ filterType));
+		// Logger.log(new Status(IStatus.INFO, this.toString(),
+		// "Filter update: filterType="
+		// + filterType));
 
 		filterList.clear();
 		int filterID = 0;
@@ -689,7 +684,8 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 
 		table.getUncertainty().calculateRawAverageUncertainty();
 
-		Histogram histogram = HistogramCreator.createHistogram(table.getUncertainty().getRawUncertainty());
+		Histogram histogram = HistogramCreator.createHistogram(table.getUncertainty()
+				.getRawUncertainty());
 
 		FilterRepresentationSNR filterRep = new FilterRepresentationSNR();
 		filterRep.setFilter(contentFilter);

@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
 public class AWTBridgePopupFix {
@@ -14,8 +15,8 @@ public class AWTBridgePopupFix {
 
 	public static Shell popupShell = null;
 
-	public static void showMenu(final ContextMenuCreator mc) {
-		showMenu(mc, MAX_RETRIES);
+	public static void showMenu(final ContextMenuCreator menuCreator) {
+		showMenu(menuCreator, MAX_RETRIES);
 	}
 
 	public static void showMenu(final ContextMenuCreator menuCreator, final int retriesLeft) {
@@ -27,7 +28,7 @@ public class AWTBridgePopupFix {
 		final Display display = menuCreator.getParent().getDisplay();
 
 		final Shell activeShell = menuCreator.getParent().getShell();
-		popupShell = new Shell(display, SWT.NO_TRIM | SWT.NO_FOCUS | SWT.ON_TOP);
+		popupShell = new Shell(activeShell, SWT.NO_TRIM | SWT.NO_FOCUS | SWT.ON_TOP);
 
 		Point l = display.getCursorLocation();
 		l.x -= 2;
@@ -46,6 +47,7 @@ public class AWTBridgePopupFix {
 						// System.out.println("menu hidden");
 						// popupShell.dispose();
 						activeShell.setActive();
+
 					}
 				});
 				menu.addListener(SWT.Show, new Listener() {
@@ -80,16 +82,22 @@ public class AWTBridgePopupFix {
 					}
 				});
 
+				popupShell.addListener(SWT.Deactivate, new Listener() {
+
+					@Override
+					public void handleEvent(Event event) {
+						popupShell.close();
+						popupShell.dispose();
+
+						// Set lazy mode to false because in the case of an ignored context menu, the state is
+						// falsly set to true.
+						menuCreator.getView().setLazyMode(false);
+					}
+				});
+
 				menu.setVisible(true);
 			}
 		};
 		display.asyncExec(r);
-	}
-
-	public static void closePopupShell() {
-		
-		
-		if (popupShell != null)
-			popupShell.dispose();
 	}
 }

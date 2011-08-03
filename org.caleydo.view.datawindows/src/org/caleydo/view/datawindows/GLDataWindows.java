@@ -472,7 +472,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote()
 				+ ", contentSize: " + recordVA.size() + ", dimensionSize: "
 				+ dimensionVA.size() + ", recordVAType: " + recordVAType
-				+ ", remoteRenderer:" + getRemoteRenderingGLCanvas();
+				+ ", remoteRenderer:" + getRemoteRenderingGLView();
 	}
 
 	@Override

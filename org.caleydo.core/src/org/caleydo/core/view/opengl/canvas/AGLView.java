@@ -523,7 +523,7 @@ public abstract class AGLView
 
 	public final GLCanvas getParentGLCanvas() {
 		if (this.isRenderedRemote())
-			return getRemoteRenderingGLCanvas().getParentGLCanvas();
+			return getRemoteRenderingGLView().getParentGLCanvas();
 
 		return parentGLCanvas;
 	}
@@ -601,7 +601,7 @@ public abstract class AGLView
 		}
 		
 		if (contextMenuCreator.hasMenuItems())
-			contextMenuCreator.open(parentComposite);
+			contextMenuCreator.open(this);
 	}
 
 	protected void handlePicking(String pickingType, PickingMode pickingMode, int pickingID, Pick pick) {
@@ -854,7 +854,7 @@ public abstract class AGLView
 	 */
 	protected String getShortInfoLocal() {
 		if (isRenderedRemote())
-			return (((AGLView) getRemoteRenderingGLCanvas()).getShortInfo());
+			return (((AGLView) getRemoteRenderingGLView()).getShortInfo());
 		else
 			return getShortInfo();
 	}
@@ -877,7 +877,7 @@ public abstract class AGLView
 	 */
 	protected String getDetailInfoLocal() {
 		if (isRenderedRemote())
-			return (((AGLView) getRemoteRenderingGLCanvas()).getDetailedInfo());
+			return (((AGLView) getRemoteRenderingGLView()).getDetailedInfo());
 		else
 			return getDetailedInfo();
 	}
@@ -925,7 +925,7 @@ public abstract class AGLView
 		pixelGLConverter = new PixelGLConverter(glRemoteRenderingView.getViewFrustum(), parentGLCanvas);
 	}
 
-	public final IGLRemoteRenderingView getRemoteRenderingGLCanvas() {
+	public final IGLRemoteRenderingView getRemoteRenderingGLView() {
 		return glRemoteRenderingView;
 	}
 

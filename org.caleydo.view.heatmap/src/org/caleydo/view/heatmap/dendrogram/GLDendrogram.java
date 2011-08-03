@@ -1633,7 +1633,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				+ " dendrogram, rendered remote: " + isRenderedRemote() + ", Tree with: "
 				+ rootNode.getNrLeaves()
 				+ ((bRenderContentTree) ? " genes" : " experiments")
-				+ ", remoteRenderer: " + getRemoteRenderingGLCanvas();
+				+ ", remoteRenderer: " + getRemoteRenderingGLView();
 	}
 
 	@Override
