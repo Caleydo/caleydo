@@ -275,10 +275,10 @@ public class PickingManager {
 	 *            the GL2 context
 	 */
 	public void handlePicking(final AGLView glView, final GL2 gl) {
-
+		
 		if (bEnablePicking == false)
 			return;
-
+		
 		GLMouseListener glMouseListener = glView.getGLMouseListener();
 
 		Point pickPoint = null;
@@ -317,7 +317,7 @@ public class PickingManager {
 
 		if (pickPoint == null)
 			return;
-
+		
 		hashViewIDToIsMouseOverPickingEvent.put(glView.getID(), false);
 
 		int PICKING_BUFSIZE = 1024;
@@ -370,6 +370,10 @@ public class PickingManager {
 		// ePickingMode);
 		ArrayList<Integer> iAlPickedObjectId = processHits(iHitCount, iArPickingBuffer);
 
+		System.out.println("\n");
+		System.out.println(iAlPickedObjectId);
+		
+		
 		if (iAlPickedObjectId.size() > 0) {
 			processPicks(iAlPickedObjectId, ePickingMode, tmpPickPoint,
 				glMouseListener.getPickedPointDragStart());

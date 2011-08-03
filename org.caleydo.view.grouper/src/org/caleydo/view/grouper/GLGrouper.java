@@ -478,22 +478,25 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
+		// FIXME: on intel graphics card we cannot use Z=0!
+		float Z = 0.0001f;
+	
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				PickingType.GROUPER_BACKGROUND_SELECTION, 0));
 
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 		gl.glColor3f(1.0f, 1.0f, 1.0f);
 		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex3f(0.0f, 0.0f, 0.0f);
-		gl.glVertex3f(viewFrustum.getWidth(), 0.0f, 0.0f);
-		gl.glVertex3f(viewFrustum.getWidth(), viewFrustum.getHeight(), 0.0f);
-		gl.glVertex3f(0.0f, viewFrustum.getHeight(), 0.0f);
+		gl.glVertex3f(0.0f, 0.0f, Z);
+		gl.glVertex3f(viewFrustum.getWidth(), 0.0f, Z);
+		gl.glVertex3f(viewFrustum.getWidth(), viewFrustum.getHeight(), Z);
+		gl.glVertex3f(0.0f, viewFrustum.getHeight(), Z);
 		gl.glEnd();
 		gl.glPopAttrib();
 
 		gl.glPopName();
 
-		Vec3f vecPosition = new Vec3f(0.0f, viewFrustum.getHeight(), 0.001f);
+		Vec3f vecPosition = new Vec3f(0.0f, viewFrustum.getHeight(), 0.1f);
 		rootGroup.setPosition(vecPosition);
 		rootGroup.setHierarchyPosition(vecPosition);
 
@@ -510,8 +513,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 			float fHierarchyHeight = rootGroup.getScaledHeight(parentGLCanvas.getWidth());
 			float fHierarchyWidth = rootGroup.getScaledWidth(parentGLCanvas.getWidth());
 
-			System.out.println(fHierarchyHeight);
-			System.out.println(fHierarchyWidth);
+//			System.out.println(fHierarchyHeight);
+//			System.out.println(fHierarchyWidth);
 
 			int minViewportHeight = (int) (parentGLCanvas.getHeight()
 					/ viewFrustum.getHeight() * fHierarchyHeight) + 10;
