@@ -180,13 +180,13 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	private boolean bIsHeatmapInFocus = false;
 
 	/** embedded dendrogram */
-	private GLDendrogram<RecordGroupList> glContentDendrogramView;
-	private boolean bGeneDendrogramActive = false;
-	private boolean bGeneDendrogramRenderCut = false;
+	private GLDendrogram<RecordGroupList> glRecordDendrogramView;
+	private boolean recordDendrogramActive = false;
+	private boolean recordDendrogramRenderCut = false;
 	private boolean bFirstStartGeneDendrogram = true;
-	private GLDendrogram<DimensionGroupList> glExperimentDendrogramView;
-	private boolean bExperimentDendrogramActive = false;
-	private boolean bExperimentDendrogramRenderCut = false;
+	private GLDendrogram<DimensionGroupList> glDimensionDendrogramView;
+	private boolean dimensionDendrogramActive = false;
+	private boolean dimensionDendrogramRenderCut = false;
 	private boolean bFirstStartExperimentDendrogram = true;
 
 	private boolean bRedrawTextures = false;
@@ -302,8 +302,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		glHeatMapView.initRemote(gl, this, glMouseListener);
 		glHeatMapView.useFishEye(false);
-		glContentDendrogramView.initRemote(gl, this, glMouseListener);
-		glExperimentDendrogramView.initRemote(gl, this, glMouseListener);
+		glRecordDendrogramView.initRemote(gl, this, glMouseListener);
+		glDimensionDendrogramView.initRemote(gl, this, glMouseListener);
 
 		initTextures(gl);
 		// activateGroupHandling();
@@ -691,24 +691,24 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
 
-		glContentDendrogramView = new GLDendrogram<RecordGroupList>(parentGLCanvas,
+		glRecordDendrogramView = new GLDendrogram<RecordGroupList>(parentGLCanvas,
 				parentComposite, viewFrustum, true);
-		glContentDendrogramView.setRemoteRenderingGLView(this);
-		glContentDendrogramView.setDataDomain(dataDomain);
+		glRecordDendrogramView.setRemoteRenderingGLView(this);
+		glRecordDendrogramView.setDataDomain(dataDomain);
 
-		glExperimentDendrogramView = new GLDendrogram<DimensionGroupList>(parentGLCanvas,
+		glDimensionDendrogramView = new GLDendrogram<DimensionGroupList>(parentGLCanvas,
 				parentComposite, viewFrustum, false);
-		glExperimentDendrogramView.setRemoteRenderingGLView(this);
-		glExperimentDendrogramView.setDataDomain(dataDomain);
-		glExperimentDendrogramView.setRemoteRenderingGLView(this);
+		glDimensionDendrogramView.setRemoteRenderingGLView(this);
+		glDimensionDendrogramView.setDataDomain(dataDomain);
+		glDimensionDendrogramView.setRemoteRenderingGLView(this);
 
-		glContentDendrogramView.setRecordVAType(DataTable.RECORD);
-		glContentDendrogramView.initData();
-		glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
+		glRecordDendrogramView.setRecordVAType(DataTable.RECORD);
+		glRecordDendrogramView.initData();
+		glRecordDendrogramView.setRenderUntilCut(recordDendrogramRenderCut);
 
-		glExperimentDendrogramView.setRecordVAType(DataTable.RECORD);
-		glExperimentDendrogramView.initData();
-		glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
+		glDimensionDendrogramView.setRecordVAType(DataTable.RECORD);
+		glDimensionDendrogramView.initData();
+		glDimensionDendrogramView.setRenderUntilCut(dimensionDendrogramRenderCut);
 	}
 
 	@Override
@@ -719,20 +719,20 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	@Override
 	public void displayLocal(GL2 gl) {
 
-		if (glExperimentDendrogramView != null)
-			glExperimentDendrogramView.processEvents();
-		if (glContentDendrogramView != null)
-			glContentDendrogramView.processEvents();
+		if (glDimensionDendrogramView != null)
+			glDimensionDendrogramView.processEvents();
+		if (glRecordDendrogramView != null)
+			glRecordDendrogramView.processEvents();
 		if (glHeatMapView != null)
 			glHeatMapView.processEvents();
 
 		if (table == null)
 			return;
-		
+
 		if (!lazyMode) {
 			pickingManager.handlePicking(this, gl);
 		}
-		
+
 		if (bIsDisplayListDirtyLocal) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
@@ -887,7 +887,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		bRedrawTextures = true;
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
-		bGeneDendrogramActive = false;
+		recordDendrogramActive = false;
 		setDisplayListDirty();
 
 		initData();
@@ -1223,7 +1223,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float fHeight = 0;
 		float fHeightClusterVisualization = renderStyle.getWidthClusterVisualization();
 
-		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
+		if (dimensionDendrogramActive || dimensionDendrogramRenderCut)
 			fHeight = viewFrustum.getHeight()
 					- renderStyle.getHeightExperimentDendrogram();
 		else
@@ -1515,7 +1515,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		float fHeight = 0;
 
-		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
+		if (dimensionDendrogramActive || dimensionDendrogramRenderCut)
 			fHeight = viewFrustum.getHeight()
 					- renderStyle.getHeightExperimentDendrogram();
 		else
@@ -2046,7 +2046,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			float fHeightSubTree = viewFrustum.getHeight();
 
-			glContentDendrogramView.renderSubTreeFromIndexToIndex(gl, iFirstSampleLevel1,
+			glRecordDendrogramView.renderSubTreeFromIndexToIndex(gl, iFirstSampleLevel1,
 					iLastSampleLevel1, iSamplesLevel2, GAP_BETWEEN_LEVELS / 2,
 					fHeightSubTree);
 
@@ -2066,7 +2066,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glTranslatef(2 * renderStyle.getWidthClusterVisualization(), 0, 0);
 
 			float fHeightSubTree = 0;
-			if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
+			if (dimensionDendrogramActive || dimensionDendrogramRenderCut)
 				fHeightSubTree = viewFrustum.getHeight()
 						- renderStyle.getHeightExperimentDendrogram();
 			else
@@ -2075,7 +2075,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			int from = iFirstSampleLevel1 + iFirstSampleLevel2;
 			int to = iFirstSampleLevel1 + iLastSampleLevel2;
 
-			glContentDendrogramView.renderSubTreeFromIndexToIndex(gl, from, to,
+			glRecordDendrogramView.renderSubTreeFromIndexToIndex(gl, from, to,
 					iSamplesPerHeatmap, GAP_BETWEEN_LEVELS / 2, fHeightSubTree);
 
 			if (recordVA.getGroupList() != null)
@@ -2127,7 +2127,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		startpoint1 = new Vec3f(fWidthLevel2 + fOffsetClusterVis, viewFrustum.getHeight()
 				- iFirstSampleLevel2 * fHeightSampleLevel2, 0);
 
-		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
+		if (dimensionDendrogramActive || dimensionDendrogramRenderCut)
 			endpoint1 = new Vec3f(
 					fWidthLevel2 + GAP_BETWEEN_LEVELS + fOffsetClusterVis,
 					viewFrustum.getHeight() - renderStyle.getHeightExperimentDendrogram(),
@@ -2583,7 +2583,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float fleftOffset = 0.1f + renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS
 				+ renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS;
 
-		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
+		if (recordDendrogramActive || recordDendrogramRenderCut)
 			fleftOffset += renderStyle.getWidthGeneDendrogram();
 
 		if (recordVA.getGroupList() != null)
@@ -2597,7 +2597,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		// gl.glTranslatef(fleftOffset, -0.2f, 0);
 
 		// render embedded heat map
-		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
+		if (dimensionDendrogramActive || dimensionDendrogramRenderCut)
 			ftop -= renderStyle.getHeightExperimentDendrogram();
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
@@ -2635,26 +2635,26 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		renderStyle.setWidthLevel3(glHeatMapView.getViewFrustum().getWidth() - 0.72f);
 
 		// render embedded experiment dendrogram
-		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut) {
+		if (dimensionDendrogramActive || dimensionDendrogramRenderCut) {
 
 			float fOffsety = viewFrustum.getTop() - 1.65f;// renderStyle.getHeightExperimentDendrogram();
 
 			gl.glTranslatef(0f, fOffsety, 0f);
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					PickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION,
-					glExperimentDendrogramView.getID()));
-			glExperimentDendrogramView.getViewFrustum().setTop(1.65f);
-			glExperimentDendrogramView.getViewFrustum().setRight(
+					glDimensionDendrogramView.getID()));
+			glDimensionDendrogramView.getViewFrustum().setTop(1.65f);
+			glDimensionDendrogramView.getViewFrustum().setRight(
 					renderStyle.getWidthLevel3());
-			glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
+			glDimensionDendrogramView.setRenderUntilCut(dimensionDendrogramRenderCut);
 
 			if (bFirstStartExperimentDendrogram) {
-				if (glExperimentDendrogramView.setInitialPositionOfCut()) {
+				if (glDimensionDendrogramView.setInitialPositionOfCut()) {
 					bFirstStartExperimentDendrogram = false;
 				}
 			}
 
-			glExperimentDendrogramView.displayRemote(gl);
+			glDimensionDendrogramView.displayRemote(gl);
 			gl.glPopName();
 			gl.glTranslatef(0f, -fOffsety, 0f);
 		}
@@ -2662,23 +2662,23 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glTranslatef(-translation.x(), -translation.y(), 0);
 
 		// render embedded gene dendrogram
-		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
+		if (recordDendrogramActive || recordDendrogramRenderCut) {
 
 			gl.glTranslatef(0f, 0.4f, 0f);
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					PickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION,
-					glContentDendrogramView.getID()));
-			glContentDendrogramView.getViewFrustum().setTop(viewFrustum.getTop() - 0.6f);
-			glContentDendrogramView.getViewFrustum().setRight(1.7f);
-			glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
+					glRecordDendrogramView.getID()));
+			glRecordDendrogramView.getViewFrustum().setTop(viewFrustum.getTop() - 0.6f);
+			glRecordDendrogramView.getViewFrustum().setRight(1.7f);
+			glRecordDendrogramView.setRenderUntilCut(recordDendrogramRenderCut);
 
 			if (bFirstStartGeneDendrogram) {
-				if (glContentDendrogramView.setInitialPositionOfCut()) {
+				if (glRecordDendrogramView.setInitialPositionOfCut()) {
 					bFirstStartGeneDendrogram = false;
 				}
 			}
 
-			glContentDendrogramView.displayRemote(gl);
+			glRecordDendrogramView.displayRemote(gl);
 			gl.glPopName();
 			gl.glTranslatef(0f, -0.4f, 0f);
 		}
@@ -2695,7 +2695,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (recordVA.getGroupList() != null)
 			fleftOffset += renderStyle.getWidthClusterVisualization();
 
-		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
+		if (recordDendrogramActive || recordDendrogramRenderCut)
 			fleftOffset += renderStyle.getWidthGeneDendrogram();
 
 		if (!bIsHeatmapInFocus)
@@ -2706,7 +2706,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glTranslatef(fleftOffset, 0, 0);
 
 		// render embedded heat map
-		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
+		if (dimensionDendrogramActive || dimensionDendrogramRenderCut)
 			ftop -= renderStyle.getHeightExperimentDendrogram();
 
 		glHeatMapView.getViewFrustum().setTop(ftop);
@@ -2720,25 +2720,25 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		renderStyle.setWidthLevel3(glHeatMapView.getViewFrustum().getWidth() - 0.72f);
 
 		// render embedded experiment dendrogram
-		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut) {
+		if (dimensionDendrogramActive || dimensionDendrogramRenderCut) {
 			float fOffsety = viewFrustum.getTop() - 1.65f;
 
 			gl.glTranslatef(0f, fOffsety, 0f);
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					PickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION,
-					glExperimentDendrogramView.getID()));
-			glExperimentDendrogramView.getViewFrustum().setTop(1.65f);
-			glExperimentDendrogramView.getViewFrustum().setRight(
+					glDimensionDendrogramView.getID()));
+			glDimensionDendrogramView.getViewFrustum().setTop(1.65f);
+			glDimensionDendrogramView.getViewFrustum().setRight(
 					renderStyle.getWidthLevel3());
-			glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
+			glDimensionDendrogramView.setRenderUntilCut(dimensionDendrogramRenderCut);
 
 			if (bFirstStartExperimentDendrogram) {
-				if (glExperimentDendrogramView.setInitialPositionOfCut()) {
+				if (glDimensionDendrogramView.setInitialPositionOfCut()) {
 					bFirstStartExperimentDendrogram = false;
 				}
 			}
 
-			glExperimentDendrogramView.displayRemote(gl);
+			glDimensionDendrogramView.displayRemote(gl);
 			gl.glPopName();
 			gl.glTranslatef(0f, -fOffsety, 0f);
 		}
@@ -2746,23 +2746,23 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glTranslatef(-fleftOffset, 0, 0);
 
 		// render embedded gene dendrogram
-		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
+		if (recordDendrogramActive || recordDendrogramRenderCut) {
 
 			gl.glTranslatef(0f, 0.4f, 0f);
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					PickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION,
-					glContentDendrogramView.getID()));
-			glContentDendrogramView.getViewFrustum().setTop(viewFrustum.getTop() - 0.6f);
-			glContentDendrogramView.getViewFrustum().setRight(1.7f);
-			glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
+					glRecordDendrogramView.getID()));
+			glRecordDendrogramView.getViewFrustum().setTop(viewFrustum.getTop() - 0.6f);
+			glRecordDendrogramView.getViewFrustum().setRight(1.7f);
+			glRecordDendrogramView.setRenderUntilCut(recordDendrogramRenderCut);
 
 			if (bFirstStartGeneDendrogram) {
-				if (glContentDendrogramView.setInitialPositionOfCut()) {
+				if (glRecordDendrogramView.setInitialPositionOfCut()) {
 					bFirstStartGeneDendrogram = false;
 				}
 			}
 
-			glContentDendrogramView.displayRemote(gl);
+			glRecordDendrogramView.displayRemote(gl);
 			gl.glPopName();
 			gl.glTranslatef(0f, -0.4f, 0f);
 		}
@@ -2775,7 +2775,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		float fleftOffset = 0.1f;
 
-		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
+		if (recordDendrogramActive || recordDendrogramRenderCut) {
 			fleftOffset += renderStyle.getWidthGeneDendrogram();
 		}
 
@@ -2784,7 +2784,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glTranslatef(fleftOffset, 0f, 0);
 
 		// render embedded heat map
-		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
+		if (dimensionDendrogramActive || dimensionDendrogramRenderCut)
 			ftop -= renderStyle.getHeightExperimentDendrogram();
 
 		glHeatMapView.getViewFrustum().setTop(ftop);
@@ -2798,26 +2798,26 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		renderStyle.setWidthLevel3(glHeatMapView.getViewFrustum().getWidth() - 0.95f);
 
 		// render embedded experiment dendrogram
-		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut) {
+		if (dimensionDendrogramActive || dimensionDendrogramRenderCut) {
 			float fOffsety = viewFrustum.getTop() - 1.45f;// -
 			// renderStyle.getHeightExperimentDendrogram();
 
 			gl.glTranslatef(0f, fOffsety, 0f);
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					PickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION,
-					glExperimentDendrogramView.getID()));
-			glExperimentDendrogramView.getViewFrustum().setTop(1.45f);
-			glExperimentDendrogramView.getViewFrustum().setRight(
+					glDimensionDendrogramView.getID()));
+			glDimensionDendrogramView.getViewFrustum().setTop(1.45f);
+			glDimensionDendrogramView.getViewFrustum().setRight(
 					renderStyle.getWidthLevel3());
-			glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
+			glDimensionDendrogramView.setRenderUntilCut(dimensionDendrogramRenderCut);
 
 			if (bFirstStartExperimentDendrogram) {
-				if (glExperimentDendrogramView.setInitialPositionOfCut()) {
+				if (glDimensionDendrogramView.setInitialPositionOfCut()) {
 					bFirstStartExperimentDendrogram = false;
 				}
 			}
 
-			glExperimentDendrogramView.displayRemote(gl);
+			glDimensionDendrogramView.displayRemote(gl);
 			gl.glPopName();
 			gl.glTranslatef(0f, -fOffsety, 0f);
 		}
@@ -2825,23 +2825,23 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glTranslatef(-fleftOffset, 0, 0);
 
 		// render embedded gene dendrogram
-		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
+		if (recordDendrogramActive || recordDendrogramRenderCut) {
 
 			gl.glTranslatef(0f, 0.4f, 0f);
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					PickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION,
-					glContentDendrogramView.getID()));
-			glContentDendrogramView.getViewFrustum().setTop(ftop - 0.6f);
-			glContentDendrogramView.getViewFrustum().setRight(1.7f);
-			glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
+					glRecordDendrogramView.getID()));
+			glRecordDendrogramView.getViewFrustum().setTop(ftop - 0.6f);
+			glRecordDendrogramView.getViewFrustum().setRight(1.7f);
+			glRecordDendrogramView.setRenderUntilCut(recordDendrogramRenderCut);
 
 			if (bFirstStartGeneDendrogram) {
-				if (glContentDendrogramView.setInitialPositionOfCut()) {
+				if (glRecordDendrogramView.setInitialPositionOfCut()) {
 					bFirstStartGeneDendrogram = false;
 				}
 			}
 
-			glContentDendrogramView.displayRemote(gl);
+			glRecordDendrogramView.displayRemote(gl);
 			gl.glPopName();
 			gl.glTranslatef(0f, -0.4f, 0f);
 		}
@@ -2857,8 +2857,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		if (bHasFrustumChanged) {
 			glHeatMapView.setDisplayListDirty();
-			glContentDendrogramView.setRedrawDendrogram();
-			glExperimentDendrogramView.setRedrawDendrogram();
+			glRecordDendrogramView.setRedrawDendrogram();
+			glDimensionDendrogramView.setRedrawDendrogram();
 			bHasFrustumChanged = false;
 		}
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
@@ -2884,7 +2884,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		updateLevels();
 
-		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
+		if (recordDendrogramActive || recordDendrogramRenderCut)
 			gl.glTranslatef(+renderStyle.getWidthGeneDendrogram(), 0, 0);
 
 		// all levels active (no one skipped)
@@ -2902,7 +2902,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			throw new IllegalStateException();
 		}
 
-		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
+		if (recordDendrogramActive || recordDendrogramRenderCut)
 			gl.glTranslatef(-renderStyle.getWidthGeneDendrogram(), 0, 0);
 
 		gl.glTranslatef(-0.1f, -0.4f, 0);
@@ -2934,7 +2934,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					+ GAP_BETWEEN_LEVELS;
 		}
 
-		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
+		if (recordDendrogramActive || recordDendrogramRenderCut)
 			fleftOffset += renderStyle.getWidthGeneDendrogram();
 
 		if (recordVA.getGroupList() != null && bSkipLevel1 == false
@@ -3074,11 +3074,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float fWidthCurveTexture = GAP_BETWEEN_LEVELS / 4;
 
 		if (bSkipLevel1 && bSkipLevel2
-				&& (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)) {
+				&& (dimensionDendrogramActive || dimensionDendrogramRenderCut)) {
 			fHeight -= renderStyle.getHeightExperimentDendrogram();
 		}
 
-		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
+		if (recordDendrogramActive || recordDendrogramRenderCut) {
 
 			gl.glColor4f(1, 1, 1, 1);
 			gl.glBegin(GL2.GL_QUADS);
@@ -3156,7 +3156,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					PickingType.HIER_HEAT_MAP_ACTIVATE_HORIZONTAL_DENDROGRAM, 1));
-			if (bGeneDendrogramActive) {
+			if (recordDendrogramActive) {
 				gl.glBegin(GL2.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
 				gl.glVertex3f(-fWidthGeneDendrogram, -0.4f, BUTTON_Z);
@@ -3197,7 +3197,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		float fWidthCurveTexture = GAP_BETWEEN_LEVELS / 4;
 
-		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut) {
+		if (dimensionDendrogramActive || dimensionDendrogramRenderCut) {
 
 			gl.glColor4f(1, 1, 1, 1);
 			gl.glBegin(GL2.GL_QUADS);
@@ -3273,7 +3273,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					PickingType.HIER_HEAT_MAP_ACTIVATE_STORAGE_DENDROGRAM, 1));
-			if (bExperimentDendrogramActive) {
+			if (dimensionDendrogramActive) {
 				gl.glBegin(GL2.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
 				gl.glVertex3f(fWidthLevel3 + 0.4f - fSizeHeatmapArrow, fHeight, BUTTON_Z);
@@ -4227,8 +4227,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 				bIsHeatmapInFocus = bIsHeatmapInFocus == true ? false : true;
 				glHeatMapView.setDisplayListDirty();
-				glContentDendrogramView.setDisplayListDirty();
-				glExperimentDendrogramView.setRedrawDendrogram();
+				glRecordDendrogramView.setDisplayListDirty();
+				glDimensionDendrogramView.setRedrawDendrogram();
 				setDisplayListDirty();
 				break;
 			}
@@ -4239,30 +4239,30 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			switch (pickingMode) {
 
 			case CLICKED:
-				bExperimentDendrogramActive = bExperimentDendrogramActive == true ? false
+				dimensionDendrogramActive = dimensionDendrogramActive == true ? false
 						: true;
 
-				if (bExperimentDendrogramActive == true) {
-					float highDendro = glExperimentDendrogramView.getViewFrustum()
+				if (dimensionDendrogramActive == true) {
+					float highDendro = glDimensionDendrogramView.getViewFrustum()
 							.getHeight();
 
 					if (highDendro > 0.5 && highDendro <= 1.5f)
 						renderStyle.setHeightExperimentDendrogram(highDendro);
 
-					bExperimentDendrogramRenderCut = false;
+					dimensionDendrogramRenderCut = false;
 
 				} else {
-					float fPosCut = glExperimentDendrogramView.getPositionOfCut();
-					float highDendro = glExperimentDendrogramView.getViewFrustum()
+					float fPosCut = glDimensionDendrogramView.getPositionOfCut();
+					float highDendro = glDimensionDendrogramView.getViewFrustum()
 							.getHeight();
 					renderStyle
 							.setHeightExperimentDendrogram(highDendro - fPosCut + 0.1f);
-					bExperimentDendrogramRenderCut = true;
+					dimensionDendrogramRenderCut = true;
 				}
 
-				glExperimentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
-				glExperimentDendrogramView.setDisplayListDirty();
-				glContentDendrogramView.setRedrawDendrogram();
+				glDimensionDendrogramView.setRenderUntilCut(recordDendrogramRenderCut);
+				glDimensionDendrogramView.setDisplayListDirty();
+				glRecordDendrogramView.setRedrawDendrogram();
 				glHeatMapView.setDisplayListDirty();
 				setDisplayListDirty();
 				break;
@@ -4274,25 +4274,25 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			switch (pickingMode) {
 
 			case CLICKED:
-				bGeneDendrogramActive = bGeneDendrogramActive == true ? false : true;
+				recordDendrogramActive = recordDendrogramActive == true ? false : true;
 
-				if (bGeneDendrogramActive == true) {
-					float widthDendro = glContentDendrogramView.getViewFrustum()
+				if (recordDendrogramActive == true) {
+					float widthDendro = glRecordDendrogramView.getViewFrustum()
 							.getWidth();
 
 					if (widthDendro > 0.5 && widthDendro <= 1.7f)
 						renderStyle.setWidthGeneDendrogram(widthDendro - 0.1f);
 
-					bGeneDendrogramRenderCut = false;
+					recordDendrogramRenderCut = false;
 				} else {
-					float temp = glContentDendrogramView.getPositionOfCut();
+					float temp = glRecordDendrogramView.getPositionOfCut();
 					renderStyle.setWidthGeneDendrogram(temp);
-					bGeneDendrogramRenderCut = true;
+					recordDendrogramRenderCut = true;
 				}
 
-				glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
-				glContentDendrogramView.setDisplayListDirty();
-				glExperimentDendrogramView.setRedrawDendrogram();
+				glRecordDendrogramView.setRenderUntilCut(recordDendrogramRenderCut);
+				glRecordDendrogramView.setDisplayListDirty();
+				glDimensionDendrogramView.setRedrawDendrogram();
 				glHeatMapView.setDisplayListDirty();
 				setDisplayListDirty();
 				break;
@@ -4478,8 +4478,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		setDisplayListDirty();
 
 		glHeatMapView.setDisplayListDirty();
-		glContentDendrogramView.setDisplayListDirty();
-		glExperimentDendrogramView.setDisplayListDirty();
+		glRecordDendrogramView.setDisplayListDirty();
+		glDimensionDendrogramView.setDisplayListDirty();
 
 		// group/cluster selections
 		if (dimensionVA.getGroupList() != null) {
@@ -4645,24 +4645,27 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			initPosCursorLevel2();
 		}
 
-		if (table.getRecordData(recordVAType).getRecordTree() != null) {
-			bGeneDendrogramActive = true;
-			bGeneDendrogramRenderCut = false;
+		// Check if record tree is available and is deeper than three (in this
+		// case we have a hierarchical clustering)
+		if (table.getRecordData(recordVAType).getRecordTree() != null
+				&& table.getRecordData(recordVAType).getRecordTree().getDepth() > 3) {
+			recordDendrogramActive = true;
+			recordDendrogramRenderCut = false;
 			bFirstStartGeneDendrogram = true;
 			renderStyle.setWidthGeneDendrogram(1.6f);
 		} else {
-			bGeneDendrogramActive = false;
-			bGeneDendrogramRenderCut = false;
+			recordDendrogramActive = false;
+			recordDendrogramRenderCut = false;
 		}
 
 		if (!table.getDimensionData(dimensionVAType).isDefaultTree()) {
-			bExperimentDendrogramActive = true;
-			bExperimentDendrogramRenderCut = false;
+			dimensionDendrogramActive = true;
+			dimensionDendrogramRenderCut = false;
 			bFirstStartExperimentDendrogram = true;
 			renderStyle.setHeightExperimentDendrogram(1.45f);
 		} else {
-			bExperimentDendrogramActive = false;
-			bExperimentDendrogramRenderCut = false;
+			dimensionDendrogramActive = false;
+			dimensionDendrogramRenderCut = false;
 		}
 
 		if (bSkipLevel2 == false)
@@ -4699,8 +4702,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		if (tree != null) {
 			warn();
-			bGeneDendrogramActive = false;
-			bGeneDendrogramRenderCut = false;
+			recordDendrogramActive = false;
+			recordDendrogramRenderCut = false;
 			table.getRecordData(recordVAType).setRecordTree(null);
 
 		}
@@ -4913,25 +4916,25 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (bGeneDendrogram) {
 			if (table.getRecordData(recordVAType).getRecordTree() == null)
 				return;
-			bGeneDendrogramActive = bGeneDendrogramActive == true ? false : true;
+			recordDendrogramActive = recordDendrogramActive == true ? false : true;
 
-			if (bGeneDendrogramActive == true) {
-				float widthDendro = glContentDendrogramView.getViewFrustum().getWidth();
+			if (recordDendrogramActive == true) {
+				float widthDendro = glRecordDendrogramView.getViewFrustum().getWidth();
 
 				if (widthDendro > 0.5f && widthDendro <= 1.7f)
 					renderStyle.setWidthGeneDendrogram(widthDendro - 0.1f);
 
-				bGeneDendrogramRenderCut = false;
+				recordDendrogramRenderCut = false;
 			} else {
-				float temp = glContentDendrogramView.getPositionOfCut();
+				float temp = glRecordDendrogramView.getPositionOfCut();
 				renderStyle.setWidthGeneDendrogram(temp);
-				bGeneDendrogramRenderCut = true;
+				recordDendrogramRenderCut = true;
 			}
 
-			glExperimentDendrogramView.setRedrawDendrogram();
+			glDimensionDendrogramView.setRedrawDendrogram();
 
-			glContentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
-			glContentDendrogramView.setRedrawDendrogram();
+			glRecordDendrogramView.setRenderUntilCut(recordDendrogramRenderCut);
+			glRecordDendrogramView.setRedrawDendrogram();
 
 			glHeatMapView.setDisplayListDirty();
 
@@ -4939,30 +4942,27 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		} else {
 			if (table.getDimensionData(dimensionVAType).getDimensionTree() == null)
 				return;
-			bExperimentDendrogramActive = bExperimentDendrogramActive == true ? false
-					: true;
+			dimensionDendrogramActive = dimensionDendrogramActive == true ? false : true;
 
-			if (bExperimentDendrogramActive == true) {
-				float highDendro = glExperimentDendrogramView.getViewFrustum()
-						.getHeight();
+			if (dimensionDendrogramActive == true) {
+				float highDendro = glDimensionDendrogramView.getViewFrustum().getHeight();
 
 				if (highDendro > 0.5 && highDendro <= 1.5f)
 					renderStyle.setHeightExperimentDendrogram(highDendro);
 
-				bExperimentDendrogramRenderCut = false;
+				dimensionDendrogramRenderCut = false;
 
 			} else {
-				float fPosCut = glExperimentDendrogramView.getPositionOfCut();
-				float highDendro = glExperimentDendrogramView.getViewFrustum()
-						.getHeight();
+				float fPosCut = glDimensionDendrogramView.getPositionOfCut();
+				float highDendro = glDimensionDendrogramView.getViewFrustum().getHeight();
 				renderStyle.setHeightExperimentDendrogram(highDendro - fPosCut + 0.1f);
-				bExperimentDendrogramRenderCut = true;
+				dimensionDendrogramRenderCut = true;
 			}
 
-			glContentDendrogramView.setRedrawDendrogram();
+			glRecordDendrogramView.setRedrawDendrogram();
 
-			glExperimentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
-			glExperimentDendrogramView.setRedrawDendrogram();
+			glDimensionDendrogramView.setRenderUntilCut(recordDendrogramRenderCut);
+			glDimensionDendrogramView.setRedrawDendrogram();
 
 			glHeatMapView.setDisplayListDirty();
 
@@ -4997,7 +4997,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			bIsHeatmapInFocus = false;
 		}
 
-		glExperimentDendrogramView.setRedrawDendrogram();
+		glDimensionDendrogramView.setRedrawDendrogram();
 
 		updateLevels();
 		setDisplayListDirty();
@@ -5076,8 +5076,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (bDeleteTree && tree != null) {
 			warn();
 
-			bGeneDendrogramActive = false;
-			bGeneDendrogramRenderCut = false;
+			recordDendrogramActive = false;
+			recordDendrogramRenderCut = false;
 			table.getRecordData(recordVAType).setRecordTree(null);
 
 		}
@@ -5211,8 +5211,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			warn();
 
-			bGeneDendrogramActive = false;
-			bGeneDendrogramRenderCut = false;
+			recordDendrogramActive = false;
+			recordDendrogramRenderCut = false;
 			table.getRecordData(recordVAType).setRecordTree(null);
 
 		}
@@ -5262,8 +5262,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			warn();
 
-			bExperimentDendrogramActive = false;
-			bExperimentDendrogramRenderCut = false;
+			dimensionDendrogramActive = false;
+			dimensionDendrogramRenderCut = false;
 			table.getDimensionData(dimensionVAType).setDimensionTree(null);
 			dataDomain.createDimensionGroupsFromDimensionTree(null);
 		}
