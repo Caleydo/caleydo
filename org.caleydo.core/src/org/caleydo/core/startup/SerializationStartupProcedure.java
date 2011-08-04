@@ -39,7 +39,7 @@ public class SerializationStartupProcedure
 
 		if (loadSampleProject) {
 			loader.loadProjectFromZIP(SAMPLE_PROJECT_LOCATION);
-			loader.loadWorkbenchData(SAMPLE_PROJECT_LOCATION);
+			loader.loadWorkbenchData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
 		}
 		else {
 			if (loadRecentProject) {
@@ -64,7 +64,7 @@ public class SerializationStartupProcedure
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Load serialized project"));
 
 		if (loadSampleProject) {
-			serializationDataList = loader.loadProjectData(SAMPLE_PROJECT_LOCATION);
+			serializationDataList = loader.loadProjectData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
 		}
 		else {
 			if (loadRecentProject) {

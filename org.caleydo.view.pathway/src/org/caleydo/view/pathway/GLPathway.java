@@ -559,9 +559,6 @@ public class GLPathway extends AGLView implements
 		int iImageWidth = pathway.getWidth();
 		int iImageHeight = pathway.getHeight();
 
-		Logger.log(new Status(IStatus.INFO, this.toString(), "Pathway texture width="
-				+ iImageWidth + " / height=" + iImageHeight));
-
 		if (iImageWidth == -1 || iImageHeight == -1) {
 			Logger.log(new Status(IStatus.ERROR, this.toString(),
 					"Problem because pathway texture width or height is invalid!"));

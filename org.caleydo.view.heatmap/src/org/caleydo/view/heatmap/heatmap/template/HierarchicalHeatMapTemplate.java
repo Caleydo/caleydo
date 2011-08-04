@@ -44,13 +44,13 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		mainRow.append(heatMapLayout);
 
 		ElementLayout spacing = new ElementLayout();
-		spacing.setAbsoluteSizeX(0.05f);
+		spacing.setAbsoluteSizeX(0.12f);
 		mainRow.append(spacing);
 
 		// record captions
 		ElementLayout recordCaptionLayout = new ElementLayout("recordCaption");
 		recordCaptionLayout.setRatioSizeY(1);
-		recordCaptionLayout.setAbsoluteSizeX(0.7f);
+		recordCaptionLayout.setAbsoluteSizeX(0.6f);
 		recordCaptionLayout.setRenderer(recordCaptionRenderer);
 		mainRow.append(recordCaptionLayout);
 		
