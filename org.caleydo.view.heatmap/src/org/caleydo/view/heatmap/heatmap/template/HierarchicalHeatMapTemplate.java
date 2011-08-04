@@ -38,24 +38,22 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		heatMapLayout = new ElementLayout("hmlayout");
 		heatMapLayout.setGrabX(true);
 		heatMapLayout.setRenderer(heatMapRenderer);
-		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
+		heatMapLayout.addForeGroundRenderer(recordSelectionRenderer);
 		heatMapLayout.addForeGroundRenderer(dimensionSelectionRenderer);
 
 		mainRow.append(heatMapLayout);
 
 		ElementLayout spacing = new ElementLayout();
-		spacing.setAbsoluteSizeX(0.12f);
+		spacing.setAbsoluteSizeX(0.05f);
 		mainRow.append(spacing);
 
-		// content captions
-		ElementLayout contentCaptionLayout = new ElementLayout("contentCaption");
-		// contentCaptionLayout.setRatioSizeX(heatMapSizeX);
-		contentCaptionLayout.setRatioSizeY(1);
-		contentCaptionLayout.setAbsoluteSizeX(0.6f);
-		contentCaptionLayout.setRenderer(contentCaptionRenderer);
-
-		mainRow.append(contentCaptionLayout);
-
+		// record captions
+		ElementLayout recordCaptionLayout = new ElementLayout("recordCaption");
+		recordCaptionLayout.setRatioSizeY(1);
+		recordCaptionLayout.setAbsoluteSizeX(0.7f);
+		recordCaptionLayout.setRenderer(recordCaptionRenderer);
+		mainRow.append(recordCaptionLayout);
+		
 		mainColumn.append(mainRow);
 
 		ElementLayout ySpacing = new ElementLayout();

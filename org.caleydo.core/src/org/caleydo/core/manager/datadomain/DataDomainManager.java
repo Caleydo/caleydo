@@ -154,7 +154,7 @@ public class DataDomainManager {
 	public void unregister(IDataDomain dataDomain) {
 
 		if (registeredDataDomainsByID.containsKey(dataDomain.getDataDomainID()))
-			registeredDataDomainsByID.remove(dataDomain);
+			registeredDataDomainsByID.remove(dataDomain.getDataDomainID());
 		
 		if (registeredDataDomainsByType.get(dataDomain.getDataDomainType()) != null) {
 			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).remove(dataDomain);

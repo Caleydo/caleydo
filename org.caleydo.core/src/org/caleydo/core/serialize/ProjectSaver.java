@@ -31,6 +31,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -48,6 +50,7 @@ import org.osgi.framework.Bundle;
  * 
  * @author Alexander Lex
  * @author Werner Puff
+ * @author Marc Streit
  */
 @SuppressWarnings("restriction")
 public class ProjectSaver {
@@ -104,6 +107,15 @@ public class ProjectSaver {
 		zipUtils.zipDirectory(TEMP_PROJECT_FOLDER, fileName);
 
 		FileOperations.deleteDirectory(TEMP_PROJECT_FOLDER);
+		
+		String message = "Caleydo project successfully written to\n" + TEMP_PROJECT_FOLDER;
+
+		Logger.log(new Status(IStatus.INFO, this.toString(), message));
+
+		MessageBox messageBox = new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK);
+		messageBox.setText("Project Save");
+		messageBox.setMessage(message);
+		messageBox.open();
 	}
 
 	/**

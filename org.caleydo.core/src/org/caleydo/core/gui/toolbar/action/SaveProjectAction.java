@@ -39,9 +39,12 @@ public class SaveProjectAction
 			"caleydo_project" + new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date()) + ".cal";
 
 		fileDialog.setFileName(sFilePath);
-		String sFileName = fileDialog.open();
+		String fileName = fileDialog.open();
 
+		if (fileName == null)
+			return;
+		
 		ProjectSaver save = new ProjectSaver();
-		save.save(sFileName);
+		save.save(fileName);
 	}
 }

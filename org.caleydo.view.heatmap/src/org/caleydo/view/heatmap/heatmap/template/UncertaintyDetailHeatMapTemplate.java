@@ -58,7 +58,7 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 
 		heatMapLayout = new ElementLayout("hmlayout");
 		heatMapLayout.setRenderer(heatMapRenderer);
-		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
+		heatMapLayout.addForeGroundRenderer(recordSelectionRenderer);
 		heatMapLayout.addForeGroundRenderer(dimensionSelectionRenderer);
 
 		mainRow.append(heatMapLayout);
@@ -74,7 +74,7 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		contentCaptionLayout.setPixelGLConverter(pixelGLConverter);
 		// contentCaptionLayout.setRatioSizeX(heatMapSizeX);
 		contentCaptionLayout.setPixelSizeX(contentCaptionPixelWidth);
-		contentCaptionLayout.setRenderer(contentCaptionRenderer);
+		contentCaptionLayout.setRenderer(recordCaptionRenderer);
 
 		mainRow.append(contentCaptionLayout);
 

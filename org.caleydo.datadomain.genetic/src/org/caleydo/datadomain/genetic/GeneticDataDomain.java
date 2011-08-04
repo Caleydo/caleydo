@@ -330,12 +330,12 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		String geneSymbol = null;
 		String refSeq = null;
 
-		java.util.Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(idType,
-				IDType.getIDType("REFSEQ_MRNA"), id);
-
-		if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-			refSeq = (String) setRefSeqIDs.toArray()[0];
-		}
+//		java.util.Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(idType,
+//				IDType.getIDType("REFSEQ_MRNA"), id);
+//
+//		if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+//			refSeq = (String) setRefSeqIDs.toArray()[0];
+//		}
 
 		// FIXME: Due to new mapping system, a mapping involving
 		// expression index can return a Set of
@@ -350,11 +350,11 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		}
 
 		if (geneSymbol != null)
-			return geneSymbol + " | " + refSeq;
-		else if (refSeq != null)
-			return refSeq;
+			return geneSymbol;// + " | " + refSeq;
+//		else if (refSeq != null)
+//			return refSeq;
 		else
-			return "Unknown";
+			return "No mapping";
 
 	}
 

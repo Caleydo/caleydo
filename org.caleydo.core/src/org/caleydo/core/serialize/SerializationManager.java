@@ -14,6 +14,7 @@ import org.caleydo.core.manager.event.AEvent;
  * 
  * @author Werner Puff
  * @author Alexander Lex
+ * @author Marc Streit
  */
 public class SerializationManager {
 
@@ -33,7 +34,7 @@ public class SerializationManager {
 			Class<?>[] classes = new Class<?>[eventTypes.size()];
 			classes = eventTypes.toArray(classes);
 			eventContext = JAXBContext.newInstance(classes);
-			
+
 			serializableTypes = new ArrayList<Class<?>>();
 			serializableTypes.add(SerializationData.class);
 			serializableTypes.add(DataDomainSerializationData.class);
@@ -46,7 +47,6 @@ public class SerializationManager {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
 	}
-
 
 	private void createNewProjectContext() {
 		try {
@@ -86,7 +86,6 @@ public class SerializationManager {
 	public JAXBContext getProjectContext() {
 		return projectContext;
 	}
-	
 
 	public void registerSerializableType(Class<?> serializableClass) {
 		serializableTypes.add(serializableClass);

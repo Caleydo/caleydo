@@ -6,13 +6,13 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
-public class ContentCaptionRenderer extends AContentRenderer {
+public class RecordCaptionRenderer extends AContentRenderer {
 
 	float fontScaling = HeatMapRenderStyle.SMALL_FONT_SCALING_FACTOR;
 	int fontSize = 24;
 	float spacing = 0;
 
-	public ContentCaptionRenderer(GLHeatMap heatMap) {
+	public RecordCaptionRenderer(GLHeatMap heatMap) {
 		super(heatMap);
 	}
 
@@ -46,7 +46,6 @@ public class ContentCaptionRenderer extends AContentRenderer {
 			heatMap.getTextRenderer().setColor(0, 0, 0, 1);
 
 			renderCaption(gl, recordID, 0, yPosition, 0);
-
 		}
 	}
 
@@ -57,9 +56,9 @@ public class ContentCaptionRenderer extends AContentRenderer {
 	private void renderCaption(GL2 gl, int recordIndex, float xOrigin, float yOrigin,
 			float zOrigin) {
 
-		String sLabel = getID(recordIndex, false);
-		if (sLabel == null)
-			sLabel = "Unknown";
+		String label = getID(recordIndex, false);
+		if (label == null)
+			label = "Unknown";
 
 		spacing = (contentSpacing.getFieldHeight(recordIndex));
 
@@ -69,7 +68,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 		if (spacing >0.1f)
 			spacing = 0.1f;
 
-		heatMap.getTextRenderer().renderTextInBounds(gl, sLabel, xOrigin, yOrigin, 0, x,
+		heatMap.getTextRenderer().renderTextInBounds(gl, label, xOrigin, yOrigin, 0, x,
 				spacing);
 	}
 

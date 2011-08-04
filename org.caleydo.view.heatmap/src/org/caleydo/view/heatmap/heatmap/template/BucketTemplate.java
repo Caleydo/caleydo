@@ -35,7 +35,7 @@ public class BucketTemplate extends AHeatMapTemplate {
 		heatMapLayout.setGrabX(true);
 		heatMapLayout.setRatioSizeY(1f);
 		heatMapLayout.setRenderer(heatMapRenderer);
-		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
+		heatMapLayout.addForeGroundRenderer(recordSelectionRenderer);
 		heatMapLayout.addForeGroundRenderer(dimensionSelectionRenderer);
 
 		boolean renderCaptions = false;
@@ -52,7 +52,7 @@ public class BucketTemplate extends AHeatMapTemplate {
 			caption = new ElementLayout();
 			caption.setAbsoluteSizeX(1f);
 			caption.setRatioSizeY(1f);
-			caption.setRenderer(contentCaptionRenderer);
+			caption.setRenderer(recordCaptionRenderer);
 			caption.addBackgroundRenderer(captionCageRenderer);
 
 			// rendererParameters.add(caption);

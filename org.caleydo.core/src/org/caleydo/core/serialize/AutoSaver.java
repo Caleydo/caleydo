@@ -14,6 +14,7 @@ import org.eclipse.ui.PlatformUI;
  * {@link DisplayLoopExecution} as usually managed by {@link ViewManager}.
  * 
  * @author Werner Puff
+ * @author Marc Streit
  */
 public class AutoSaver
 	implements Runnable {

@@ -71,9 +71,6 @@ public class TakeSnapshotAction
 			bounds = composite.getBounds();
 			gc = new GC(composite);
 		}
-		// Point screenLocation = composite.toDisplay(0, 0);
-		// bounds = new Rectangle(screenLocation.x, screenLocation.y, screenLocation.x + bounds.width,
-		// screenLocation.y +bounds.height);
 
 		final Image image = new Image(display, bounds);
 		gc.copyArea(image, 0, 0);
@@ -92,7 +89,7 @@ public class TakeSnapshotAction
 
 		loader.save(path, SWT.IMAGE_PNG);
 
-		String message = "Screenshot successfully written to " + path;
+		String message = "Screenshot successfully written to\n" + path;
 
 		Logger.log(new Status(IStatus.INFO, this.toString(), message));
 

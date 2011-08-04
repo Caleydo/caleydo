@@ -31,6 +31,7 @@ import org.osgi.framework.BundleException;
  * 
  * @author Werner Puff
  * @author Alexander Lex
+ * @author Marc Streit
  */
 public class ProjectLoader {
 

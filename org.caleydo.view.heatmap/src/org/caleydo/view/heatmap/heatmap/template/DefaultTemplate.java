@@ -34,7 +34,7 @@ public class DefaultTemplate extends AHeatMapTemplate {
 		heatMapLayout.setRatioSizeX(heatMapSizeX);
 		heatMapLayout.setRatioSizeY(heatMapSizeY);
 		heatMapLayout.setRenderer(heatMapRenderer);
-		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
+		heatMapLayout.addForeGroundRenderer(recordSelectionRenderer);
 		heatMapLayout.addForeGroundRenderer(dimensionSelectionRenderer);
 //		rendererParameters.add(heatMapLayout);
 		
@@ -45,15 +45,15 @@ public class DefaultTemplate extends AHeatMapTemplate {
 		spacing.setAbsoluteSizeX(0.01f);
 		heatMapRow.append(spacing);
 
-		// content captions
-		ElementLayout contentCaptionLayout = new ElementLayout();
-		contentCaptionLayout.setRatioSizeX(heatMapSizeX);
-		contentCaptionLayout.setRatioSizeY(heatMapSizeY);
-		contentCaptionLayout.setRenderer(contentCaptionRenderer);
+		// record captions
+		ElementLayout recordCaptionLayout = new ElementLayout();
+		recordCaptionLayout.setRatioSizeX(heatMapSizeX);
+		recordCaptionLayout.setRatioSizeY(heatMapSizeY);
+		recordCaptionLayout.setRenderer(recordCaptionRenderer);
 
 //		rendererParameters.add(contentCaptionLayout);
 
-		heatMapRow.append(contentCaptionLayout);
+		heatMapRow.append(recordCaptionLayout);
 
 		mainColumn.append(heatMapRow);
 

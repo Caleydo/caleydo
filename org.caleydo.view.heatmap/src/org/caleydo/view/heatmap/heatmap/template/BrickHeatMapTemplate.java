@@ -38,7 +38,7 @@ public class BrickHeatMapTemplate extends AHeatMapTemplate {
 		heatMapLayout.setGrabX(true);
 		heatMapLayout.setRatioSizeY(1f);
 		heatMapLayout.setRenderer(heatMapRenderer);
-		heatMapLayout.addForeGroundRenderer(contentSelectionRenderer);
+		heatMapLayout.addForeGroundRenderer(recordSelectionRenderer);
 		heatMapLayout.addForeGroundRenderer(dimensionSelectionRenderer);
 
 		boolean renderCaptions = false;
@@ -57,7 +57,7 @@ public class BrickHeatMapTemplate extends AHeatMapTemplate {
 			caption.setRatioSizeX(0.29f);
 			caption.setRatioSizeY(1);
 
-			caption.setRenderer(contentCaptionRenderer);
+			caption.setRenderer(recordCaptionRenderer);
 //			caption.addBackgroundRenderer(captionCageRenderer);
 
 			// rendererParameters.add(caption);

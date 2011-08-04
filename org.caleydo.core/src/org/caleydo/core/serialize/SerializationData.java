@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlType;
  * project or to sync remote clients.
  * @author Werner Puff
  * @author Alexander Lex
+ * @author Marc Streit
  */
 @XmlType
 @XmlRootElement

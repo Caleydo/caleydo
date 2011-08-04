@@ -179,9 +179,14 @@ public class ImportDataDialog
 				fileDialog.setFilterPath(filePath);
 				String[] filterExt = { "*.csv", "*.txt", "*.*" };
 				fileDialog.setFilterExtensions(filterExt);
-				loadDataParameters.setFileName(fileDialog.open());
-
-				txtFileName.setText(loadDataParameters.getFileName());
+				
+				String fileName = fileDialog.open();
+				
+				if (fileName == null)
+					return;
+				
+				loadDataParameters.setFileName(fileName);
+				txtFileName.setText(fileName);
 
 				createDataPreviewTable("\t");
 

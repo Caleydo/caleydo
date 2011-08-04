@@ -11,9 +11,9 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
-public class ContentSelectionRenderer extends AContentRenderer {
+public class RecordSelectionRenderer extends AContentRenderer {
 
-	public ContentSelectionRenderer(GLHeatMap heatMap) {
+	public RecordSelectionRenderer(GLHeatMap heatMap) {
 		super(heatMap);
 	}
 

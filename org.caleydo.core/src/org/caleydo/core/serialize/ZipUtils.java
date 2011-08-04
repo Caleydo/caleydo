@@ -13,6 +13,7 @@ import org.caleydo.core.manager.GeneralManager;
  * Utility class for zipping and deleting directories.
  * 
  * @author Werner Puff
+ * @author Marc Streit
  */
 public class ZipUtils {
 

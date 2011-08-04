@@ -4,20 +4,19 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.CaptionCageRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.ContentCaptionRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.ContentSelectionRenderer;
+import org.caleydo.view.heatmap.heatmap.renderer.RecordCaptionRenderer;
+import org.caleydo.view.heatmap.heatmap.renderer.RecordSelectionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.DimensionCaptionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.DimensionSelectionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.spacing.ContentSpacing;
 
 public abstract class AHeatMapTemplate extends LayoutTemplate {
-
 	
 	protected HeatMapRenderer heatMapRenderer;
-	protected ContentCaptionRenderer contentCaptionRenderer;
+	protected RecordCaptionRenderer recordCaptionRenderer;
 	protected DimensionCaptionRenderer dimensionCaptionRenderer;
-	protected ContentSelectionRenderer contentSelectionRenderer;
+	protected RecordSelectionRenderer recordSelectionRenderer;
 	protected DimensionSelectionRenderer dimensionSelectionRenderer;
 	protected CaptionCageRenderer captionCageRenderer;
 
@@ -41,12 +40,12 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 		heatMapRenderer = new HeatMapRenderer(heatMap);
 		heatMapRenderer.setContentSpacing(contentSpacing);
 		
-		contentCaptionRenderer = new ContentCaptionRenderer(heatMap);
-		contentCaptionRenderer.setContentSpacing(contentSpacing);
+		recordCaptionRenderer = new RecordCaptionRenderer(heatMap);
+		recordCaptionRenderer.setContentSpacing(contentSpacing);
 		dimensionCaptionRenderer = new DimensionCaptionRenderer(heatMap);
 		dimensionCaptionRenderer.setContentSpacing(contentSpacing);
-		contentSelectionRenderer = new ContentSelectionRenderer(heatMap);
-		contentSelectionRenderer.setContentSpacing(contentSpacing);
+		recordSelectionRenderer = new RecordSelectionRenderer(heatMap);
+		recordSelectionRenderer.setContentSpacing(contentSpacing);
 		dimensionSelectionRenderer = new DimensionSelectionRenderer(heatMap);
 		dimensionSelectionRenderer.setContentSpacing(contentSpacing);
 		captionCageRenderer = new CaptionCageRenderer(heatMap);
