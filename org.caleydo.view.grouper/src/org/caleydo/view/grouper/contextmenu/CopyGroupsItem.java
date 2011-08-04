@@ -7,12 +7,13 @@ import org.caleydo.view.grouper.event.CopyGroupsEvent;
 
 public class CopyGroupsItem extends ContextMenuItem {
 
-	public CopyGroupsItem(Set<Integer> setGroupsToCopy) {
+	public CopyGroupsItem(Set<Integer> setGroupsToCopy, String dataDomainID) {
 
 		setLabel("Copy");
 		
 		CopyGroupsEvent event = new CopyGroupsEvent(setGroupsToCopy);
 		event.setSender(this);
+		event.setDataDomainID(dataDomainID);
 		registerEvent(event);
 	}
 }

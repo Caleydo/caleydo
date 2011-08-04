@@ -48,27 +48,27 @@ public class DimensionFilterManager
 
 		dimensionVAUpdateListener = new DimensionVAUpdateListener();
 		dimensionVAUpdateListener.setHandler(this);
-		dimensionVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		dimensionVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
 
 		removeDimensionFilterListener = new RemoveDimensionFilterListener();
 		removeDimensionFilterListener.setHandler(this);
-		removeDimensionFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		removeDimensionFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RemoveDimensionFilterEvent.class, removeDimensionFilterListener);
 		
 		moveDimensionFilterListener = new MoveDimensionFilterListener();
 		moveDimensionFilterListener.setHandler(this);
-		moveDimensionFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		moveDimensionFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(MoveDimensionFilterEvent.class, moveDimensionFilterListener);
 
 		newDimensionFilterListener = new NewDimensionFilterListener();
 		newDimensionFilterListener.setHandler(this);
-		newDimensionFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		newDimensionFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(NewDimensionFilterEvent.class, newDimensionFilterListener);
 
 		reEvaluateDimensionFilterListListener = new ReEvaluateDimensionFilterListListener();
 		reEvaluateDimensionFilterListListener.setHandler(this);
-		reEvaluateDimensionFilterListListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		reEvaluateDimensionFilterListListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ReEvaluateDimensionFilterListEvent.class,
 			reEvaluateDimensionFilterListListener);
 

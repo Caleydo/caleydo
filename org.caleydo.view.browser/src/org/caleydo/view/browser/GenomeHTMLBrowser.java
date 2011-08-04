@@ -49,15 +49,13 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 
 		super(GeneralManager.get().getIDCreator()
 				.createID(ManagedObjectType.VIEW_SWT_BROWSER_GENOME), parentComposite);
-
-		registerEventListeners();
 	}
 
 	@Override
 	public void draw() {
 
 		super.draw();
-		
+
 		final Combo comboQueryDatabaseType = new Combo(subContributionComposite,
 				SWT.READ_ONLY);
 		comboQueryIDType = new Combo(subContributionComposite, SWT.READ_ONLY);
@@ -214,8 +212,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener
-				.setExclusiveDataDomainType("org.caleydo.datadomain.genetic");
+		selectionUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 	}
 
@@ -241,6 +238,8 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 	@Override
 	public void setDataDomain(GeneticDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
+		
+		registerEventListeners();
 	}
 
 	@Override

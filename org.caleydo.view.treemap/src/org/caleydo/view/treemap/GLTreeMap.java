@@ -494,7 +494,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 		eventPublisher.addListener(LevelHighlightingEvent.class, levelHighlightingListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
-		selectionUpdateListener.setDataDomainType(dataDomain.getDataDomainID());
+		selectionUpdateListener.setDataDomainID(dataDomain.getDataDomainID());
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 

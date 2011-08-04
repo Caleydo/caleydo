@@ -502,7 +502,7 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		super.registerEventListeners();
 
 		selectionUpdateListener = new SelectionUpdateListener();
-		selectionUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		selectionUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 

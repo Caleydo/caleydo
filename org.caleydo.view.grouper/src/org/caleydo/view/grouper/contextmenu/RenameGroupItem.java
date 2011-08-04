@@ -5,12 +5,13 @@ import org.caleydo.view.grouper.event.RenameGroupEvent;
 
 public class RenameGroupItem extends ContextMenuItem {
 
-	public RenameGroupItem(int groupID) {
+	public RenameGroupItem(int groupID, String dataDomainID) {
 
 		setLabel("Rename Group");
 
 		RenameGroupEvent event = new RenameGroupEvent(groupID);
 		event.setSender(this);
+		event.setDataDomainID(dataDomainID);
 		registerEvent(event);
 	}
 }

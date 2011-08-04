@@ -484,37 +484,37 @@ public abstract class ATableBasedView
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		selectionUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		recordVAUpdateListener = new RecordVAUpdateListener();
 		recordVAUpdateListener.setHandler(this);
-		recordVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		recordVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
 
 		replaceRecordVAListener = new ReplaceRecordVAListener();
 		replaceRecordVAListener.setHandler(this);
-		replaceRecordVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		replaceRecordVAListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ReplaceRecordVAEvent.class, replaceRecordVAListener);
 
 		dimensionVAUpdateListener = new DimensionVAUpdateListener();
 		dimensionVAUpdateListener.setHandler(this);
-		dimensionVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		dimensionVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
 
 		replaceDimensionVAListener = new ReplaceDimensionVAListener();
 		replaceDimensionVAListener.setHandler(this);
-		replaceDimensionVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		replaceDimensionVAListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ReplaceDimensionVAEvent.class, replaceDimensionVAListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		selectionCommandListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
-		redrawViewListener.setDataDomainType(dataDomain.getDataDomainID());
+		redrawViewListener.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
 
 		clearSelectionsListener = new ClearSelectionsListener();

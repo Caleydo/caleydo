@@ -7,12 +7,12 @@ package org.caleydo.core.manager.event;
  * within the event system.
  * </p>
  * <p>
- * Optionally, a listener can have a dataDomainType table. As a consequence, it will receive only those events
- * that are of the same dataDomainType or have no dataDomainType specified.
+ * Optionally, a listener can have a dataDomainID table. As a consequence, it will receive only those events
+ * that are of the same dataDomainID or have no dataDomainID specified.
  * </p>
  * <p>
  * It is also possible to set a listener to receive exclusively events for the designated dataDomain, using
- * the method {@link #setExclusiveDataDomainType(String)} instead of {@link #setDataDomainType(String)}.
+ * the method {@link #setExclusiveDataDomainType(String)} instead of {@link #setDataDomainID(String)}.
  * </p>
  * 
  * @author Werner Puff
@@ -22,8 +22,9 @@ public abstract class AEventListener<T extends IListenerOwner> {
 
 	/** related handling object, usually a view or manager-type class */
 	protected T handler = null;
-	/** the dataDomainType string that decides whether a listener listens for events for this data domain */
-	protected String dataDomainType = null;
+	
+	/** the dataDomainID string that decides whether a listener listens for events for this data domain */
+	protected String dataDomainID = null;
 	/**
 	 * flag determining whether a listener is listening to both it's dataDomain events and events where no
 	 * dataDomain is specified (false), or only to events with the dataDomain specified
@@ -50,14 +51,14 @@ public abstract class AEventListener<T extends IListenerOwner> {
 	}
 
 	/**
-	 * Set the dataDomainType - if this is set the listener will receive only events that have this or no
-	 * dataDomainType. Notice that this has to be set before the listener is registered with the event
+	 * Set the dataDomainID - if this is set the listener will receive only events that have this or no
+	 * dataDomainID. Notice that this has to be set before the listener is registered with the event
 	 * publisher.
 	 * 
-	 * @param dataDomainType
+	 * @param dataDomainID
 	 */
-	public void setDataDomainType(String dataDomainType) {
-		this.dataDomainType = dataDomainType;
+	public void setDataDomainID(String dataDomainID) {
+		this.dataDomainID = dataDomainID;
 	}
 
 	/**
@@ -65,19 +66,19 @@ public abstract class AEventListener<T extends IListenerOwner> {
 	 * 
 	 * @return
 	 */
-	public String getDataDomainType() {
-		return dataDomainType;
+	public String getDataDomainID() {
+		return dataDomainID;
 	}
 
 	/**
-	 * Behaves similar to {@link #setDataDomainType(String)} in that it set's the dataDomainType, however, for
-	 * setDataDomainType, the listener receives events with not dataDomain specified, while, when using this
+	 * Behaves similar to {@link #setDataDomainID(String)} in that it set's the dataDomainID, however, for
+	 * setDataDomainID, the listener receives events with not dataDomain specified, while, when using this
 	 * method, only events specifying a matching dataDomain are forwarded.
 	 * 
-	 * @param dataDomainType
+	 * @param dataDomainID
 	 */
-	public void setExclusiveDataDomainType(String dataDomainType) {
-		this.dataDomainType = dataDomainType;
+	public void setExclusiveDataDomainID(String dataDomainID) {
+		this.dataDomainID = dataDomainID;
 		isExclusiveDataDomain = true;
 	}
 

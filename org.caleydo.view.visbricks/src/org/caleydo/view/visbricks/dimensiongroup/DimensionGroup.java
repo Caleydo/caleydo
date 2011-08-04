@@ -472,14 +472,14 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 
 		recordVAUpdateListener = new RecordVAUpdateListener();
 		recordVAUpdateListener.setHandler(this);
-		recordVAUpdateListener.setExclusiveDataDomainType(dataDomain
+		recordVAUpdateListener.setExclusiveDataDomainID(dataDomain
 				.getDataDomainID());
 		eventPublisher.addListener(RecordVAUpdateEvent.class,
 				recordVAUpdateListener);
 
 		replaceRecordVAListener = new ReplaceRecordVAListener();
 		replaceRecordVAListener.setHandler(this);
-		replaceRecordVAListener.setExclusiveDataDomainType(dataDomain
+		replaceRecordVAListener.setExclusiveDataDomainID(dataDomain
 				.getDataDomainID());
 		eventPublisher.addListener(ReplaceRecordVAEvent.class,
 				replaceRecordVAListener);

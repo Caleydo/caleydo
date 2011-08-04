@@ -972,7 +972,7 @@ public class GLPathway extends AGLView implements
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setExclusiveDataDomainType(mappingDataDomain
+		selectionUpdateListener.setExclusiveDataDomainID(mappingDataDomain
 				.getDataDomainID());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
@@ -987,12 +987,12 @@ public class GLPathway extends AGLView implements
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
-		clearSelectionsListener.setDataDomainType(mappingDataDomain.getDataDomainID());
+		clearSelectionsListener.setDataDomainID(mappingDataDomain.getDataDomainID());
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setDataDomainType(mappingDataDomain.getDataDomainID());
+		selectionCommandListener.setDataDomainID(mappingDataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		// replaceVirtualArrayListener = new ReplaceRecordVAListener();

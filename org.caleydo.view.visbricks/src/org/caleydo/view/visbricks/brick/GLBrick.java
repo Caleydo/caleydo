@@ -970,7 +970,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		relationsUpdateListener = new RelationsUpdatedListener();
 		relationsUpdateListener.setHandler(this);
 
-		relationsUpdateListener.setExclusiveDataDomainType(dataDomain
+		relationsUpdateListener.setExclusiveDataDomainID(dataDomain
 				.getDataDomainID());
 		eventPublisher.addListener(RelationsUpdatedEvent.class,
 				relationsUpdateListener);
@@ -978,7 +978,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 
-		selectionUpdateListener.setExclusiveDataDomainType(dataDomain
+		selectionUpdateListener.setExclusiveDataDomainID(dataDomain
 				.getDataDomainID());
 		eventPublisher.addListener(SelectionUpdateEvent.class,
 				selectionUpdateListener);

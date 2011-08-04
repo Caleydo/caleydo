@@ -506,7 +506,6 @@ public abstract class ATableBasedDataDomain
 			return;
 
 		DimensionVirtualArray va = table.getDimensionData(vaDelta.getVAType()).getDimensionVA();
-
 		va.setDelta(vaDelta);
 	}
 
@@ -523,39 +522,39 @@ public abstract class ATableBasedDataDomain
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setExclusiveDataDomainType(dataDomainID);
+		selectionUpdateListener.setExclusiveDataDomainID(dataDomainID);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setDataDomainType(dataDomainID);
+		selectionCommandListener.setDataDomainID(dataDomainID);
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		startClusteringListener = new StartClusteringListener();
 		startClusteringListener.setHandler(this);
-		startClusteringListener.setDataDomainType(dataDomainID);
+		startClusteringListener.setDataDomainID(dataDomainID);
 		eventPublisher.addListener(StartClusteringEvent.class, startClusteringListener);
 
 		replaceRecordVirtualArrayInUseCaseListener = new ReplaceRecordVAInUseCaseListener();
 		replaceRecordVirtualArrayInUseCaseListener.setHandler(this);
-		replaceRecordVirtualArrayInUseCaseListener.setDataDomainType(dataDomainID);
+		replaceRecordVirtualArrayInUseCaseListener.setDataDomainID(dataDomainID);
 		eventPublisher.addListener(ReplaceRecordVAInUseCaseEvent.class,
 			replaceRecordVirtualArrayInUseCaseListener);
 
 		replaceDimensionVirtualArrayInUseCaseListener = new ReplaceDimensionVAInUseCaseListener();
 		replaceDimensionVirtualArrayInUseCaseListener.setHandler(this);
-		replaceDimensionVirtualArrayInUseCaseListener.setDataDomainType(dataDomainID);
+		replaceDimensionVirtualArrayInUseCaseListener.setDataDomainID(dataDomainID);
 		eventPublisher.addListener(ReplaceDimensionVAInUseCaseEvent.class,
 			replaceDimensionVirtualArrayInUseCaseListener);
 
 		recordVAUpdateListener = new RecordVAUpdateListener();
 		recordVAUpdateListener.setHandler(this);
-		recordVAUpdateListener.setDataDomainType(dataDomainID);
+		recordVAUpdateListener.setDataDomainID(dataDomainID);
 		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
 
 		dimensionVAUpdateListener = new DimensionVAUpdateListener();
 		dimensionVAUpdateListener.setHandler(this);
-		dimensionVAUpdateListener.setDataDomainType(dataDomainID);
+		dimensionVAUpdateListener.setDataDomainID(dataDomainID);
 		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
 
 		aggregateGroupListener = new AggregateGroupListener();

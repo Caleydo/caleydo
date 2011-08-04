@@ -13,12 +13,13 @@ import org.caleydo.core.view.contextmenu.ContextMenuItem;
  */
 public class AggregateGroupItem extends ContextMenuItem {
 
-	public AggregateGroupItem(Set<Integer> groups) {
+	public AggregateGroupItem(Set<Integer> groups, String dataDomainID) {
 
 		setLabel("Aggregate Group");
 	
 		AggregateGroupEvent event = new AggregateGroupEvent(groups);
 		event.setSender(this);
+		event.setDataDomainID(dataDomainID);
 		registerEvent(event);
 	}
 }

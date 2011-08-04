@@ -302,32 +302,32 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	public void registerEventListeners() {
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setDataDomainType(dataDomain.getDataDomainID());
+		selectionUpdateListener.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		recordVAUpdateListener = new RecordVAUpdateListener();
 		recordVAUpdateListener.setHandler(this);
-		recordVAUpdateListener.setDataDomainType(dataDomain.getDataDomainID());
+		recordVAUpdateListener.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
 
 		replaceRecordVAListener = new ReplaceRecordVAListener();
 		replaceRecordVAListener.setHandler(this);
-		replaceRecordVAListener.setDataDomainType(dataDomain.getDataDomainID());
+		replaceRecordVAListener.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ReplaceRecordVAEvent.class, replaceRecordVAListener);
 
 		dimensionVAUpdateListener = new DimensionVAUpdateListener();
 		dimensionVAUpdateListener.setHandler(this);
-		dimensionVAUpdateListener.setDataDomainType(dataDomain.getDataDomainID());
+		dimensionVAUpdateListener.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
 
 		replaceDimensionVAListener = new ReplaceDimensionVAListener();
 		replaceDimensionVAListener.setHandler(this);
-		replaceDimensionVAListener.setDataDomainType(dataDomain.getDataDomainID());
+		replaceDimensionVAListener.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ReplaceDimensionVAEvent.class, replaceDimensionVAListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setDataDomainType(dataDomain.getDataDomainID());
+		selectionCommandListener.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		redrawViewListener = new RedrawViewListener();

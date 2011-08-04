@@ -50,32 +50,32 @@ public class RecordFilterManager
 		super.registerEventListeners();
 		recordVAUpdateListener = new RecordVAUpdateListener();
 		recordVAUpdateListener.setHandler(this);
-		recordVAUpdateListener.setDataDomainType(dataDomain.getDataDomainID());
+		recordVAUpdateListener.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
 
 		removeContentFilterListener = new RemoveRecordFilterListener();
 		removeContentFilterListener.setHandler(this);
-		removeContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		removeContentFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RemoveRecordFilterEvent.class, removeContentFilterListener);
 		
 		moveContentFilterListener = new MoveRecordFilterListener();
 		moveContentFilterListener.setHandler(this);
-		moveContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		moveContentFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(MoveRecordtFilterEvent.class, moveContentFilterListener);
 		
 		combineContentFilterListener = new CombineRecordFilterListener();
 		combineContentFilterListener.setHandler(this);
-		combineContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		combineContentFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(CombineRecordFilterEvent.class, combineContentFilterListener);
 
 		newContentFilterListener = new NewRecordFilterListener();
 		newContentFilterListener.setHandler(this);
-		newContentFilterListener.setExclusiveDataDomainType(dataDomain.getDataDomainID());
+		newContentFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(NewRecordFilterEvent.class, newContentFilterListener);
 
 		reEvaluateContentFilterListListener = new ReEvaluateRecordFilterListListener();
 		reEvaluateContentFilterListListener.setHandler(this);
-		reEvaluateContentFilterListListener.setDataDomainType(dataDomain.getDataDomainID());
+		reEvaluateContentFilterListListener.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ReEvaluateRecordFilterListEvent.class,
 			reEvaluateContentFilterListListener);
 

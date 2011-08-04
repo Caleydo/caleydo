@@ -324,18 +324,18 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setDataDomainType(FOREIGN_DATADOMAIN_TYPE);
+		selectionUpdateListener.setDataDomainID(FOREIGN_DATADOMAIN_TYPE);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		virtualArrayUpdateListener = new RecordVAUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
-		virtualArrayUpdateListener.setDataDomainType(FOREIGN_DATADOMAIN_TYPE);
+		virtualArrayUpdateListener.setDataDomainID(FOREIGN_DATADOMAIN_TYPE);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class,
 				virtualArrayUpdateListener);
 
 		replaceVirtualArrayListener = new ReplaceRecordVAListener();
 		replaceVirtualArrayListener.setHandler(this);
-		replaceVirtualArrayListener.setDataDomainType(FOREIGN_DATADOMAIN_TYPE);
+		replaceVirtualArrayListener.setDataDomainID(FOREIGN_DATADOMAIN_TYPE);
 		eventPublisher.addListener(ReplaceVAEvent.class, replaceVirtualArrayListener);
 
 	}

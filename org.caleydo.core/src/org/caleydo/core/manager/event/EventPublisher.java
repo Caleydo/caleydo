@@ -41,10 +41,10 @@ public class EventPublisher {
 			listenerMap.put(eventClass, allListeners);
 		}
 		Collection<AEventListener<?>> domainSpecificListeners =
-			allListeners.get(listener.getDataDomainType());
+			allListeners.get(listener.getDataDomainID());
 		if (domainSpecificListeners == null) {
 			domainSpecificListeners = new ArrayList<AEventListener<?>>();
-			allListeners.put(listener.getDataDomainType(), domainSpecificListeners);
+			allListeners.put(listener.getDataDomainID(), domainSpecificListeners);
 		}
 
 		domainSpecificListeners.add(listener);
@@ -60,7 +60,7 @@ public class EventPublisher {
 	 */
 	public synchronized void removeListener(Class<? extends AEvent> eventClass, AEventListener<?> listener) {
 		Collection<AEventListener<?>> listeners =
-			listenerMap.get(eventClass).get(listener.getDataDomainType());
+			listenerMap.get(eventClass).get(listener.getDataDomainID());
 		listeners.remove(listener);
 	}
 
@@ -73,7 +73,7 @@ public class EventPublisher {
 	public synchronized void removeListener(AEventListener<?> listener) {
 		for (HashMap<String, Collection<AEventListener<?>>> allListeners : listenerMap.values()) {
 
-			Collection<AEventListener<?>> listeners = allListeners.get(listener.getDataDomainType());
+			Collection<AEventListener<?>> listeners = allListeners.get(listener.getDataDomainID());
 			if (listeners == null)
 				continue;
 			listeners.remove(listener);
@@ -91,17 +91,17 @@ public class EventPublisher {
 		if (!event.checkIntegrity()) {
 			throw new IllegalStateException("Event " + event + " has failed integrity check");
 		}
-		String dataDomainType = event.getDataDomainID();
+		String dataDomainID = event.getDataDomainID();
 		HashMap<String, Collection<AEventListener<?>>> dataDomainToListenersMap =
 			listenerMap.get(event.getClass());
 		if (dataDomainToListenersMap == null)
 			return;
 		// if we have a dataDomainType we also want to notify those listeners that did not register for a
 		// dataDomain
-		if (dataDomainType != null)
+		if (dataDomainID != null)
 			triggerEvents(event, dataDomainToListenersMap.get(null));
 
-		triggerEvents(event, dataDomainToListenersMap.get(dataDomainType));
+		triggerEvents(event, dataDomainToListenersMap.get(dataDomainID));
 		// Collection<AEventListener<?>> listeners = listenerMap.get(event.getClass()).get();
 
 	}

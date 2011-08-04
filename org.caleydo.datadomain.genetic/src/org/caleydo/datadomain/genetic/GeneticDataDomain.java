@@ -184,23 +184,28 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
+		if (DataDomainManager.get().getDataDomainByType(CLINICAL_DATADOMAIN_TYPE) == null)
+			return;
+
+		String clinicalDataDomainID = DataDomainManager.get()
+				.getDataDomainByType(CLINICAL_DATADOMAIN_TYPE).getDataDomainID();
+
 		clinicalReplaceContentVirtualArrayInUseCaseListener = new ReplaceRecordVAInUseCaseListener();
 		clinicalReplaceContentVirtualArrayInUseCaseListener.setHandler(this);
 		clinicalReplaceContentVirtualArrayInUseCaseListener
-				.setExclusiveDataDomainType(CLINICAL_DATADOMAIN_TYPE);
+				.setExclusiveDataDomainID(clinicalDataDomainID);
 		eventPublisher.addListener(ReplaceRecordVAInUseCaseEvent.class,
 				clinicalReplaceContentVirtualArrayInUseCaseListener);
 
 		clinicalSelectionUpdateListener = new ForeignSelectionUpdateListener();
 		clinicalSelectionUpdateListener.setHandler(this);
-		clinicalSelectionUpdateListener
-				.setExclusiveDataDomainType(CLINICAL_DATADOMAIN_TYPE);
+		clinicalSelectionUpdateListener.setExclusiveDataDomainID(clinicalDataDomainID);
 		eventPublisher.addListener(SelectionUpdateEvent.class,
 				clinicalSelectionUpdateListener);
 
 		clinicalSelectionCommandListener = new ForeignSelectionCommandListener();
 		clinicalSelectionCommandListener.setHandler(this);
-		clinicalSelectionCommandListener.setDataDomainType(CLINICAL_DATADOMAIN_TYPE);
+		clinicalSelectionCommandListener.setDataDomainID(clinicalDataDomainID);
 		eventPublisher.addListener(SelectionCommandEvent.class,
 				clinicalSelectionCommandListener);
 	}
@@ -328,14 +333,15 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	@Override
 	public String getRecordLabel(IDType idType, Object id) {
 		String geneSymbol = null;
-		String refSeq = null;
+		// String refSeq = null;
 
-//		java.util.Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(idType,
-//				IDType.getIDType("REFSEQ_MRNA"), id);
-//
-//		if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-//			refSeq = (String) setRefSeqIDs.toArray()[0];
-//		}
+		// java.util.Set<String> setRefSeqIDs =
+		// idMappingManager.getIDAsSet(idType,
+		// IDType.getIDType("REFSEQ_MRNA"), id);
+		//
+		// if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+		// refSeq = (String) setRefSeqIDs.toArray()[0];
+		// }
 
 		// FIXME: Due to new mapping system, a mapping involving
 		// expression index can return a Set of
@@ -351,8 +357,8 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 		if (geneSymbol != null)
 			return geneSymbol;// + " | " + refSeq;
-//		else if (refSeq != null)
-//			return refSeq;
+		// else if (refSeq != null)
+		// return refSeq;
 		else
 			return "No mapping";
 
