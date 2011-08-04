@@ -3,10 +3,10 @@ package org.caleydo.view.scatterplot.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.ActionToolBarContainer;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
-import org.caleydo.core.gui.toolbar.content.AToolBarContent;
 import org.caleydo.view.scatterplot.GLScatterPlot;
 import org.caleydo.view.scatterplot.actions.Toggle2AxisModeAction;
 import org.caleydo.view.scatterplot.actions.ToggleColorModeAction;

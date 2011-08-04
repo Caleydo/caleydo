@@ -82,15 +82,15 @@ public class DataDomainGraph {
 					mappingExists = true;
 				}
 
-				if ((dataDomain.getDataDomainID().startsWith(GENETIC) && vertex.getDataDomainID()
-					.startsWith(PATHWAY))
+				if ((dataDomain.getDataDomainID().startsWith(GENETIC) && vertex.getDataDomainID().startsWith(
+					PATHWAY))
 					|| (vertex.getDataDomainID().startsWith(GENETIC) && dataDomain.getDataDomainID()
 						.startsWith(PATHWAY))) {
 					mappingExists = true;
 				}
 
-				if ((dataDomain.getDataDomainID().startsWith(GENETIC) && vertex.getDataDomainID()
-					.startsWith(TISSUE))
+				if ((dataDomain.getDataDomainID().startsWith(GENETIC) && vertex.getDataDomainID().startsWith(
+					TISSUE))
 					|| (vertex.getDataDomainID().startsWith(GENETIC) && dataDomain.getDataDomainID()
 						.startsWith(TISSUE))) {
 					mappingExists = true;
@@ -106,7 +106,13 @@ public class DataDomainGraph {
 
 			}
 		}
+	}
 
+	public void removeDataDomain(IDataDomain dataDomain) {
+		if (dataDomainGraph.containsVertex(dataDomain)) {
+			dataDomainGraph.removeAllEdges(dataDomainGraph.edgesOf(dataDomain));
+			dataDomainGraph.removeVertex(dataDomain);
+		}
 	}
 
 	public Set<IDataDomain> getNeighboursOf(IDataDomain vertex) {

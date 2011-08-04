@@ -142,8 +142,7 @@ public class RemoteRenderingToolBarMediator implements IRemoteRenderingHandler {
 	}
 
 	@Override
-	public void addPathwayView(int pathwayID) {
-		// TODO Auto-generated method stub
+	public void addPathwayView(final int iPathwayID, String dataDomainID) {
 
 	}
 

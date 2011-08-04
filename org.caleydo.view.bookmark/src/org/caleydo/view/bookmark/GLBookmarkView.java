@@ -265,6 +265,9 @@ public class GLBookmarkView extends AGLView implements
 	 */
 	public <IDDataType> void handleNewBookmarkEvent(BookmarkEvent<IDDataType> event) {
 
+		if (dataDomain.getDataDomainID() != event.getDataDomainID())
+			return;
+		
 		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(event
 				.getIDType().getIDCategory());
 		if (container == null)

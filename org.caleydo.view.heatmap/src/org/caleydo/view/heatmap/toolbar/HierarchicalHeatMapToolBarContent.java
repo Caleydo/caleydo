@@ -3,17 +3,20 @@ package org.caleydo.view.heatmap.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.ActionToolBarContainer;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
-import org.caleydo.core.gui.toolbar.content.AToolBarContent;
+import org.caleydo.core.gui.toolbar.action.TakeSnapshotAction;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 
 /**
- * THIS IS DEAD AT THE MOMENT ToolBarContent implementation for heatmap specific
- * toolbar items.
+ * ToolBarContent implementation for heatmap specific toolbar items.
  * 
  * @author Werner Puff
+ * @author Marc Streit
  */
 public class HierarchicalHeatMapToolBarContent extends AToolBarContent {
 
@@ -35,18 +38,8 @@ public class HierarchicalHeatMapToolBarContent extends AToolBarContent {
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		// int targetViewID = getTargetViewData().getViewID();
-
-		// IToolBarItem startClustering = new
-		// StartClusteringDialogAction(targetViewID);
-		// actionList.add(startClustering);
-
-		// IToolBarItem mergeGroup = new MergeClasses(targetViewID);
-		// actionList.add(mergeGroup);
-
-		// after release 1.2 this should be enabled by default
-		// IToolBarItem activateGroup = new ActivateGroupHandling(targetViewID);
-		// actionList.add(activateGroup);
+		AGLView view = GeneralManager.get().getViewManager().getGLView(targetViewData.getViewID());
+		actionList.add(new TakeSnapshotAction(view.getParentComposite()));
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);

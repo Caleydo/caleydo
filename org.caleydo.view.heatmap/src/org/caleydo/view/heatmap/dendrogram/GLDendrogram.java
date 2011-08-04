@@ -1486,7 +1486,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 					break;
 				
 				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark " + dataDomain.getRecordLabel(recordIDType, leafNode.getLeafID()), recordIDType,
-						leafNode.getLeafID());
+						leafNode.getLeafID(), dataDomain.getDataDomainID());
 				contextMenuCreator.addContextMenuItem(menuItem);
 
 				break;
@@ -1570,7 +1570,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
 						+ dataDomain.getRecordLabel(tree.getLeaveIDType(), leafNode.getLeafID()),
-						tree.getLeaveIDType(), leafNode.getLeafID());
+						tree.getLeaveIDType(), leafNode.getLeafID(), dataDomain.getDataDomainID());
 				contextMenuCreator.addContextMenuItem(menuItem);
 
 				break;

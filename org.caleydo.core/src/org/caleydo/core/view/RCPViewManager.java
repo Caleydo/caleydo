@@ -47,7 +47,7 @@ public class RCPViewManager
 	public void registerEventListeners() {
 		activateViewListener = new ActivateViewListener();
 		activateViewListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(LoadPathwayEvent.class, activateViewListener);
+		//GeneralManager.get().getEventPublisher().addListener(LoadPathwayEvent.class, activateViewListener);
 		GeneralManager.get().getEventPublisher()
 			.addListener(LoadPathwaysByGeneEvent.class, activateViewListener);
 		GeneralManager.get().getEventPublisher().addListener(OpenViewEvent.class, activateViewListener);

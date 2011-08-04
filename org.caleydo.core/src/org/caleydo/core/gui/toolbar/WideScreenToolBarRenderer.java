@@ -9,7 +9,6 @@ import org.caleydo.core.gui.toolbar.action.SaveProjectAction;
 import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 import org.caleydo.core.gui.toolbar.action.SwitchDataRepresentationAction;
 import org.caleydo.core.gui.toolbar.action.TakeSnapshotAction;
-import org.caleydo.core.gui.toolbar.content.AToolBarContent;
 import org.caleydo.core.io.gui.ExportDataAction;
 import org.caleydo.core.io.gui.ImportDataAction;
 import org.eclipse.jface.action.IToolBarManager;

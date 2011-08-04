@@ -11,6 +11,7 @@ import org.eclipse.ui.PlatformUI;
 public class AngularBrushingAction
 	extends AToolBarAction
 	implements IToolBarItem {
+	
 	public static final String TEXT = "Set angular brush";
 	public static final String ICON = "resources/icons/view/tablebased/parcoords/angular_brush.png";
 

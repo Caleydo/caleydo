@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.caleydo.core.gui.toolbar.content.AToolBarContent;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.CaleydoRCPViewPart;

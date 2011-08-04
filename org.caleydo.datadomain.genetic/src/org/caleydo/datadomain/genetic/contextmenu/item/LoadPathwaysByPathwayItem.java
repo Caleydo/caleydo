@@ -15,18 +15,23 @@ public class LoadPathwaysByPathwayItem extends ContextMenuItem {
 
 	private int numberOfOccurences = 0;
 
+	private String dataDomainID; 
+	
 	/**
 	 * Constructor. Creates the events associated with the item.
 	 */
-	public LoadPathwaysByPathwayItem(PathwayGraph pathway) {
+	public LoadPathwaysByPathwayItem(PathwayGraph pathway, String dataDomainID) {
 		setPathway(pathway);
+		this.dataDomainID = dataDomainID;
 	}
 
 	/**
 	 * Constructor. Creates the events associated with the item and the number of occurrences.
 	 */
-	public LoadPathwaysByPathwayItem(String label, PathwayGraph pathway, int numberOfOccurences) {
+	public LoadPathwaysByPathwayItem(String label, PathwayGraph pathway, String dataDomainID, int numberOfOccurences) {
+		
 		this.numberOfOccurences = numberOfOccurences;
+		this.dataDomainID = dataDomainID;
 		setPathway(pathway);
 	}
 
@@ -46,6 +51,7 @@ public class LoadPathwaysByPathwayItem extends ContextMenuItem {
 		LoadPathwayEvent loadPathwayEvent = new LoadPathwayEvent();
 		loadPathwayEvent.setSender(this);
 		loadPathwayEvent.setPathwayID(pathway.getID());
+		loadPathwayEvent.setDataDomainID(dataDomainID);
 		registerEvent(loadPathwayEvent);
 	}
 

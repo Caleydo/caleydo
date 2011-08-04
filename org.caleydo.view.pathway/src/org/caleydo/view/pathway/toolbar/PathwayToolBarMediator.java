@@ -1,5 +1,7 @@
 package org.caleydo.view.pathway.toolbar;
 
+import javax.xml.crypto.Data;
+
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
@@ -12,22 +14,26 @@ import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 /**
- * mediator for pathway-related toolbar items
+ * Mediator for pathway-related toolbar items
  * 
  * @author Werner Puff
  */
 public class PathwayToolBarMediator {
 
-	EventPublisher eventPublisher;
+	private EventPublisher eventPublisher;
 
-	public PathwayToolBarMediator() {
+	private String mappingDataDomainID;
+	
+	public PathwayToolBarMediator(String mappingDataDomainID) {
 		eventPublisher = GeneralManager.get().getEventPublisher();
+		this.mappingDataDomainID = mappingDataDomainID;
 	}
 
 	public void loadPathway(PathwayGraph pathway) {
 		LoadPathwayEvent event = new LoadPathwayEvent();
 		event.setSender(this);
 		event.setPathwayID(pathway.getID());
+		event.setDataDomainID(mappingDataDomainID);
 		eventPublisher.triggerEvent(event);
 	}
 

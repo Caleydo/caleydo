@@ -67,12 +67,8 @@ public class SerializedBucketView extends ASerializedView {
 
 		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
 
-		if (DataDomainManager.get().getDataDomainByType(
-				"org.caleydo.datadomain.genetic") != null) {
-			SerializedHeatMapView heatMap = new SerializedHeatMapView(
-					DataDomainManager.get().getDataDomainByType("org.caleydo.datadomain.genetic").getDataDomainID());
-			remoteViews.add(heatMap);
-		}
+		SerializedHeatMapView heatMap = new SerializedHeatMapView(dataDomainID);
+		remoteViews.add(heatMap);
 
 		ArrayList<ASerializedView> focusLevel = new ArrayList<ASerializedView>();
 		if (remoteViews.size() > 0) {
@@ -136,9 +132,10 @@ public class SerializedBucketView extends ASerializedView {
 	public String getViewType() {
 		return GLBucket.VIEW_TYPE;
 	}
-	
+
 	@Override
 	public ViewFrustum getViewFrustum() {
-		return new ViewFrustum(CameraProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100);
+		return new ViewFrustum(CameraProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f,
+				100);
 	}
 }

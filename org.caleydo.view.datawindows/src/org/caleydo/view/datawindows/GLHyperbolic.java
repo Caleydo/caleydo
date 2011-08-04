@@ -92,7 +92,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	 * @param glCanvas
 	 * @param viewFrustum
 	 */
-	public GLHyperbolic(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLHyperbolic(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLHyperbolic.VIEW_TYPE;
@@ -310,8 +311,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -432,18 +433,19 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 		try {
 			viewClass = Class.forName(serView.getViewClassType());
 		} catch (ClassNotFoundException e) {
-			throw new IllegalStateException("Cannot find class for view "+serView.getViewType());
+			throw new IllegalStateException("Cannot find class for view "
+					+ serView.getViewType());
 		}
-		
+
 		AGLView glView = GeneralManager.get().getViewManager()
 				.createGLView(viewClass, parentGLCanvas, parentComposite, viewFrustum);
-		//glView.setRemoteRenderingGLView(this);
+		// glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
 					.get().getDataDomainByID(serView.getDataDomainID()));
 		}
-		
+
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
 
@@ -454,7 +456,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 		}
 		glView.initialize();
 		glView.initRemote(gl, this, glMouseListener);
-		
+
 		return glView;
 	}
 
@@ -609,7 +611,10 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	}
 
 	@Override
-	public void addPathwayView(int iPathwayID) {
+	public void addPathwayView(final int iPathwayID, String dataDomainID) {
+
+		// if (dataDomain.getDataDomainID() != dataDomainID)
+		// return;
 
 		if (!PathwayManager.get().isPathwayVisible(
 				PathwayManager.get().getItem(iPathwayID))) {
@@ -624,7 +629,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
 
 		for (PathwayGraph pathway : newPathwayGraphs) {
-			addPathwayView(pathway.getID());
+			addPathwayView(pathway.getID(), null); // FIXME set data domain for pathway
 		}
 	}
 

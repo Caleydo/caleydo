@@ -380,7 +380,7 @@ public class GLHeatMap extends ATableBasedView {
 				
 				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
 						+ dataDomain.getRecordLabel(recordIDType, externalID),
-						recordIDType, externalID);
+						recordIDType, externalID, dataDomain.getDataDomainID());
 				contextMenuCreator.addContextMenuItem(menuItem);
 				
 				break;
@@ -406,7 +406,7 @@ public class GLHeatMap extends ATableBasedView {
 			case RIGHT_CLICKED:
 				
 				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark " + dataDomain.getDimensionLabel(dimensionIDType, externalID), dimensionIDType,
-						externalID);
+						externalID, dataDomain.getDataDomainID());
 				contextMenuCreator.addContextMenuItem(menuItem);
 				
 			default:

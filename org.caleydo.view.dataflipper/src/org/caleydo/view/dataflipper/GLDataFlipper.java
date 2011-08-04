@@ -2190,7 +2190,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public void addPathwayView(int iPathwayID) {
+	public void addPathwayView(int iPathwayID, String dataDomainID) {
 		// isPathwayContentAvailable = true;
 
 	}

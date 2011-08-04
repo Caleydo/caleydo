@@ -30,6 +30,8 @@ public abstract class ContextMenuItem {
 
 	private String label = "<not set>";
 
+	private ArrayList<AEvent> events = new ArrayList<AEvent>();
+
 	public void setStyle(int style) {
 		this.style = style;
 	}
@@ -50,8 +52,6 @@ public abstract class ContextMenuItem {
 			}
 		});
 	}
-
-	private ArrayList<AEvent> events = new ArrayList<AEvent>();
 
 	/**
 	 * Sets the event which is associated with the item. This event will be triggered when requested by the

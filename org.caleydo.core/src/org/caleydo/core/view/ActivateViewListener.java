@@ -11,9 +11,12 @@ import org.caleydo.core.manager.event.view.OpenViewEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -30,8 +33,8 @@ public class ActivateViewListener
 				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.findView("org.caleydo.view.dataflipper") == null) {
 
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.showView("org.caleydo.view.bucket");
+				// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				// .showView("org.caleydo.view.bucket");
 			}
 			else if (event instanceof OpenMatchmakerViewEvent) {
 
@@ -54,7 +57,8 @@ public class ActivateViewListener
 					@Override
 					public void run() {
 						StartClusteringAction startClusteringAction = new StartClusteringAction();
-						startClusteringAction.setTables(((OpenMatchmakerViewEvent) event).getTablesToCompare());
+						startClusteringAction.setTables(((OpenMatchmakerViewEvent) event)
+							.getTablesToCompare());
 						startClusteringAction.run();
 					}
 				});
@@ -62,8 +66,26 @@ public class ActivateViewListener
 			}
 			else if (event instanceof BookmarkEvent<?>) {
 
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.showView("org.caleydo.view.bookmark");
+				IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+				String viewType = "org.caleydo.view.bookmark";
+				boolean viewExists = false;
+				for (IViewPart viewPart : page.getViews()) {
+					if (!(viewPart instanceof CaleydoRCPViewPart))
+						continue;
+					ASerializedView serView = ((CaleydoRCPViewPart) viewPart).getSerializedView();
+
+					if (event.getDataDomainID().equals(serView.getDataDomainID())
+						&& serView.getViewType().equals(viewType)) {
+						viewExists = true;
+						break;
+					}
+				}
+
+				if (!viewExists) {
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+						.showView("org.caleydo.view.bookmark");
+				}
 
 				// TODO only re-trigger event if view is initially opened
 

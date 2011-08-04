@@ -138,6 +138,14 @@ public class ImportDataDialog
 
 		super.okPressed();
 	}
+	
+	@Override
+	protected void cancelPressed() {
+
+		DataDomainManager.get().unregister(dataDomain);
+		
+		super.cancelPressed();
+	}
 
 	private void createGUI(Composite parent) {
 		int numGridCols = 5;
@@ -248,7 +256,7 @@ public class ImportDataDialog
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = numGridCols;
 		gridData.heightHint = 400;
-		gridData.widthHint = 1000;
+		gridData.widthHint = 800;
 		previewTable.setLayoutData(gridData);
 
 		// Check if an external file name is given to the action

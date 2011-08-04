@@ -3,10 +3,10 @@ package org.caleydo.view.bucket.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.ActionToolBarContainer;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
-import org.caleydo.core.gui.toolbar.content.AToolBarContent;
 import org.caleydo.view.bucket.GLBucket;
 import org.caleydo.view.bucket.SerializedBucketView;
 import org.caleydo.view.bucket.toolbar.actions.CloseOrResetContainedViews;
@@ -95,7 +95,7 @@ public class RemoteRenderingToolBarContent extends AToolBarContent {
 		container.setImagePath(PATHWAY_IMAGE_PATH);
 		container.setTitle(PATHWAY_VIEW_TITLE);
 
-		container.setPathwayToolBarMediator(new PathwayToolBarMediator());
+		container.setPathwayToolBarMediator(new PathwayToolBarMediator(targetViewData.getDataDomainID()));
 		container.setTargetViewData((SerializedBucketView) getTargetViewData());
 
 		return container;

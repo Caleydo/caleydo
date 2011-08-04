@@ -2,11 +2,11 @@ package org.caleydo.core.gui.perspective;
 
 import java.util.List;
 
+import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.RcpToolBarView;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
-import org.caleydo.core.gui.toolbar.content.AToolBarContent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.CaleydoRCPViewPart;

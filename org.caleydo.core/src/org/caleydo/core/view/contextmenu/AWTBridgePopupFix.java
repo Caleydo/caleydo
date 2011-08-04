@@ -6,7 +6,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
 public class AWTBridgePopupFix {
@@ -90,7 +89,7 @@ public class AWTBridgePopupFix {
 						popupShell.dispose();
 
 						// Set lazy mode to false because in the case of an ignored context menu, the state is
-						// falsly set to true.
+						// erroneously set to true.
 						menuCreator.getView().setLazyMode(false);
 					}
 				});

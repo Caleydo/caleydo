@@ -28,7 +28,7 @@ import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -158,10 +158,6 @@ public class GLPathway extends AGLView implements
 		pathwayManager = PathwayManager.get();
 		pathwayItemManager = PathwayItemManager.get();
 
-		mappingDataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByType(
-				"org.caleydo.datadomain.genetic");
-
-		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum, this);
 		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 		// hashPathwayContainingSelectedVertex2VertexCount = new
 		// HashMap<Integer, Integer>();
@@ -173,7 +169,12 @@ public class GLPathway extends AGLView implements
 		vecTranslation = new Vec3f(0, 0, 0);
 
 		recordVAType = DataTable.RECORD_CONTEXT;
+	}
 
+	public void setMappingDataDomain(ATableBasedDataDomain dataDomain) {
+		this.mappingDataDomain = dataDomain;
+
+		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum, this);
 	}
 
 	public void setPathway(final PathwayGraph pathway) {
@@ -275,7 +276,7 @@ public class GLPathway extends AGLView implements
 		// Initialize all elements in selection manager
 		// Iterator<IGraphItem> iterPathwayVertexGraphItem =
 		// pathway.getAllItemsByKind(
-		//	EGraphItemKind.NODE).iterator();
+		// EGraphItemKind.NODE).iterator();
 		// PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
 		// while (iterPathwayVertexGraphItem.hasNext()) {
 		// tmpPathwayVertexGraphItemRep = (PathwayVertexGraphItemRep)
@@ -429,7 +430,8 @@ public class GLPathway extends AGLView implements
 				continue;
 			}
 
-			// Set<Integer> DataTableRefSeq = idMappingManager.getID(EIDType.DAVID,
+			// Set<Integer> DataTableRefSeq =
+			// idMappingManager.getID(EIDType.DAVID,
 			// EIDType.REFSEQ_MRNA_INT, iDavidID);
 			//
 			// if (DataTableRefSeq == null) {
@@ -490,8 +492,9 @@ public class GLPathway extends AGLView implements
 			// values, depending on the IDType that has been specified when
 			// loading expression data.
 			// Possibly a different handling of the Set is required.
-			Set<Integer> tableIDs = idMappingManager.getIDAsSet(selectionDelta.getIDType(),
-					dataDomain.getDavidIDType(), item.getPrimaryID());
+			Set<Integer> tableIDs = idMappingManager.getIDAsSet(
+					selectionDelta.getIDType(), dataDomain.getDavidIDType(),
+					item.getPrimaryID());
 
 			if (tableIDs == null || tableIDs.isEmpty()) {
 				continue;
@@ -657,8 +660,8 @@ public class GLPathway extends AGLView implements
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -688,6 +691,7 @@ public class GLPathway extends AGLView implements
 						LoadPathwayEvent event = new LoadPathwayEvent();
 						event.setSender(this);
 						event.setPathwayID(pathway.getID());
+						event.setDataDomainID(mappingDataDomain.getDataDomainID());
 						eventPublisher.triggerEvent(event);
 					}
 				} else {
@@ -719,21 +723,22 @@ public class GLPathway extends AGLView implements
 				selectionType = SelectionType.SELECTION;
 
 				if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
-					
-					LoadPathwaysByPathwayItem menuItem = new LoadPathwaysByPathwayItem(pathwayManager
-							.searchPathwayByName(tmpVertexGraphItemRep.getName(),
-									EPathwayDatabaseType.KEGG));
+
+					LoadPathwaysByPathwayItem menuItem = new LoadPathwaysByPathwayItem(
+							pathwayManager.searchPathwayByName(
+									tmpVertexGraphItemRep.getName(),
+									EPathwayDatabaseType.KEGG), mappingDataDomain.getDataDomainID());
 					contextMenuCreator.addContextMenuItem(menuItem);
-					
-					
+
 				} else if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.gene) {
 					for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 
-						ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-								+ pathwayVertexGraphItem.getId(),
-								dataDomain.getDavidIDType(), pathwayItemManager
-								.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) pathwayVertexGraphItem));
+						ContextMenuItem menuItem = new BookmarkMenuItem(
+								"Bookmark " + pathwayVertexGraphItem.getId(),
+								dataDomain.getDavidIDType(),
+								pathwayItemManager
+										.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) pathwayVertexGraphItem), dataDomain.getDataDomainID());
 						contextMenuCreator.addContextMenuItem(menuItem);
 					}
 				} else {
@@ -831,8 +836,7 @@ public class GLPathway extends AGLView implements
 	@Override
 	public void broadcastElements(EVAOperation type) {
 
-		RecordVADelta delta = new RecordVADelta(recordVAType,
-				dataDomain.getDavidIDType());
+		RecordVADelta delta = new RecordVADelta(recordVAType, dataDomain.getDavidIDType());
 
 		for (IGraphItem tmpPathwayVertexGraphItemRep : pathway
 				.getAllItemsByKind(EGraphItemKind.NODE)) {
@@ -1097,7 +1101,7 @@ public class GLPathway extends AGLView implements
 		float aspectRatio = (float) pathway.getWidth() / (float) pathway.getHeight();
 		return (int) (60.0f * aspectRatio);
 	}
-	
+
 	@Override
 	public boolean isDataView() {
 		return true;

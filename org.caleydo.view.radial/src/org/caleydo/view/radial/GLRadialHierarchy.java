@@ -515,7 +515,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 					if (!pdPickedElement.hasChildren()) {
 						ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
 								+ dataDomain.getRecordLabel(dataDomain.getRecordIDType(), externalID),
-								dataDomain.getRecordIDType(), externalID);
+								dataDomain.getRecordIDType(), externalID, dataDomain.getDataDomainID());
 						contextMenuCreator.addContextMenuItem(menuItem);	
 					} else {
 						ContextMenuItem menuItem = new DetailOutsideItem(externalID);

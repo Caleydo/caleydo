@@ -1768,7 +1768,10 @@ public class GLBucket extends AGLView implements
 	 * @param iPathwayID
 	 */
 	@Override
-	public void addPathwayView(final int iPathwayID) {
+	public void addPathwayView(final int iPathwayID, String dataDomainID) {
+
+		if (dataDomain.getDataDomainID() != dataDomainID)
+			return;
 
 		if (!PathwayManager.get().isPathwayVisible(
 				PathwayManager.get().getItem(iPathwayID))) {
@@ -2558,6 +2561,7 @@ public class GLBucket extends AGLView implements
 			GLPathway glPathway = (GLPathway) glView;
 
 			glPathway.setPathway(((SerializedPathwayView) serView).getPathwayID());
+			glPathway.setMappingDataDomain(dataDomain);
 			glPathway.enablePathwayTextures(pathwayTexturesEnabled);
 			glPathway.enableNeighborhood(neighborhoodEnabled);
 			glPathway.enableGeneMapping(geneMappingEnabled);
@@ -2608,7 +2612,7 @@ public class GLBucket extends AGLView implements
 
 		// add new pathways to bucket
 		for (PathwayGraph pathway : newPathwayGraphs) {
-			addPathwayView(pathway.getID());
+			addPathwayView(pathway.getID(), dataDomain.getDataDomainID());
 		}
 
 		if (!newViews.isEmpty()) {
@@ -2910,8 +2914,10 @@ public class GLBucket extends AGLView implements
 
 	@Override
 	public void destroy() {
-		selectionTransformer.destroy();
-		selectionTransformer = null;
+		if (selectionTransformer != null) {
+			selectionTransformer.destroy();
+			selectionTransformer = null;
+		}
 		super.destroy();
 	}
 

@@ -121,7 +121,7 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * register a concrete data domain
+	 * Register a concrete data domain
 	 * 
 	 * @param dataDomain
 	 */
@@ -146,6 +146,23 @@ public class DataDomainManager {
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
+	/**
+	 * Unregister a concrete data domain
+	 * 
+	 * @param dataDomain
+	 */
+	public void unregister(IDataDomain dataDomain) {
+
+		if (registeredDataDomainsByID.containsKey(dataDomain.getDataDomainID()))
+			registeredDataDomainsByID.remove(dataDomain);
+		
+		if (registeredDataDomainsByType.get(dataDomain.getDataDomainType()) != null) {
+			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).remove(dataDomain);
+		}
+
+		dataDomainGraph.removeDataDomain(dataDomain);
+	}
+	
 	/**
 	 * Returns the default association manager which is valid system-wide.
 	 * 

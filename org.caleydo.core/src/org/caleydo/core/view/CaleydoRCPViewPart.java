@@ -216,4 +216,8 @@ public abstract class CaleydoRCPViewPart
 			ex.printStackTrace();
 		}
 	}
+	
+	public ASerializedView getSerializedView() {
+		return serializedView;
+	}
 }

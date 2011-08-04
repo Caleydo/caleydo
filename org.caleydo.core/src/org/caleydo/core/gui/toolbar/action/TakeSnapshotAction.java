@@ -4,25 +4,37 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.caleydo.core.gui.toolbar.IToolBarItem;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.data.loader.ResourceLoader;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 public class TakeSnapshotAction
-	extends AToolBarAction {
-	
+	extends AToolBarAction
+	implements IToolBarItem {
+
 	public static final String TEXT = "Take snapshot";
 	public static final String ICON = "resources/icons/general/snapshot.png";
 
+	private Composite composite;
+
 	/**
-	 * Constructor.
+	 * Constructor without arguments. In this case a snapshot from the whole workbench is made.
 	 */
 	public TakeSnapshotAction() {
 
@@ -32,35 +44,62 @@ public class TakeSnapshotAction
 			.getWorkbench().getDisplay(), ICON)));
 	}
 
+	/**
+	 * Constructor that takes a composite which which the screenshot is taken.
+	 */
+	public TakeSnapshotAction(Composite composite) {
+
+		this();
+		this.composite = composite;
+	}
+
 	@Override
 	public void run() {
 		super.run();
 
-		String sFilePath = "screenshot_" + getDateTime() + ".png";
+		String path = "screenshot_" + getDateTime() + ".png";
 
-		Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+		Display display = PlatformUI.getWorkbench().getDisplay();
+		Shell shell = display.getActiveShell();
+		Rectangle bounds = null;
+		GC gc = null;
+		if (composite == null) {
+			bounds = shell.getBounds();
+			gc = new GC(shell);
+		}
+		else {
+			bounds = composite.getBounds();
+			gc = new GC(composite);
+		}
+		// Point screenLocation = composite.toDisplay(0, 0);
+		// bounds = new Rectangle(screenLocation.x, screenLocation.y, screenLocation.x + bounds.width,
+		// screenLocation.y +bounds.height);
 
-		GC gc = new GC(PlatformUI.getWorkbench().getDisplay());
-		final Image image = new Image(shell.getDisplay(), shell.getBounds());
-		gc.copyArea(image, shell.getBounds().x, shell.getBounds().y);
+		final Image image = new Image(display, bounds);
+		gc.copyArea(image, 0, 0);
 		gc.dispose();
 
 		FileDialog saveFileDialog = new FileDialog(shell, SWT.SAVE);
-		saveFileDialog.setFileName(sFilePath);
-		sFilePath = saveFileDialog.open();
+		saveFileDialog.setFileName(path);
+		path = saveFileDialog.open();
 
 		ImageLoader loader = new ImageLoader();
 		loader.data = new ImageData[] { image.getImageData() };
 
 		// check if file dialog was canceled
-		if (sFilePath != null)
-			loader.save(sFilePath, SWT.IMAGE_PNG);
+		if (path == null)
+			return;
 
-		// MessageBox messageBox = new MessageBox(swtShell, SWT.OK);
-		// messageBox.setText("Message from SWT");
-		// messageBox.setMessage("Screenshot successfully written to " +
-		// sFilePath);
-		// messageBox.open();
+		loader.save(path, SWT.IMAGE_PNG);
+
+		String message = "Screenshot successfully written to " + path;
+
+		Logger.log(new Status(IStatus.INFO, this.toString(), message));
+
+		MessageBox messageBox = new MessageBox(shell, SWT.OK);
+		messageBox.setText("Screenshot");
+		messageBox.setMessage(message);
+		messageBox.open();
 	}
 
 	private String getDateTime() {

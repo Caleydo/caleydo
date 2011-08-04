@@ -1418,7 +1418,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
 						+ dataDomain.getRecordLabel(recordIDType, pickingID),
-						recordIDType, pickingID);
+						recordIDType, pickingID, dataDomain.getDataDomainID());
 				contextMenuCreator.addContextMenuItem(menuItem);
 
 
@@ -1505,7 +1505,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				selectionType = SelectionType.SELECTION;
 				
 				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark " + dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType,
-						pickingID);
+						pickingID, dataDomain.getDataDomainID());
 				contextMenuCreator.addContextMenuItem(menuItem);
 
 			default:

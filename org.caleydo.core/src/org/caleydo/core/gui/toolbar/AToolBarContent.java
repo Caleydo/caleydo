@@ -1,9 +1,8 @@
-package org.caleydo.core.gui.toolbar.content;
+package org.caleydo.core.gui.toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.gui.toolbar.ToolBarContainer;
 import org.caleydo.core.serialize.ASerializedView;
 
 /**
@@ -118,5 +117,4 @@ public abstract class AToolBarContent {
 	public void setAttached(boolean attached) {
 		this.attached = attached;
 	}
-
 }

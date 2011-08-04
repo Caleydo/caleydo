@@ -3,10 +3,10 @@ package org.caleydo.view.radial.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.ActionToolBarContainer;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
-import org.caleydo.core.gui.toolbar.content.AToolBarContent;
 import org.caleydo.view.radial.GLRadialHierarchy;
 import org.caleydo.view.radial.SerializedRadialHierarchyView;
 import org.caleydo.view.radial.actions.ChangeColorModeAction;

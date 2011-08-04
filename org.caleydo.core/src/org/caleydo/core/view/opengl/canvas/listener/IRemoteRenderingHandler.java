@@ -7,7 +7,7 @@ public interface IRemoteRenderingHandler
 
 	public void setConnectionLinesEnabled(boolean enabled);
 
-	public void addPathwayView(final int iPathwayID);
+	public void addPathwayView(final int iPathwayID, String dataDomainID);
 
 	public void setGeneMappingEnabled(boolean geneMappingEnabled);
 

@@ -34,7 +34,8 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 	private LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
 	private AddPathwayListener addPathwayListener = null;
 
-	public GLPathwayViewBrowser(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLPathwayViewBrowser(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 
@@ -187,7 +188,11 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 	}
 
 	@Override
-	public void addPathwayView(int iPathwayID) {
+	public void addPathwayView(int iPathwayID, String dataDomainID) {
+
+		if (dataDomain.getDataDomainID() != dataDomainID)
+			return;
+
 		if (!PathwayManager.get().isPathwayVisible(
 				PathwayManager.get().getItem(iPathwayID))) {
 			SerializedPathwayView serPathway = new SerializedPathwayView(
@@ -202,7 +207,7 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 
 		// add new pathways to bucket
 		for (PathwayGraph pathway : newPathwayGraphs) {
-			addPathwayView(pathway.getID());
+			addPathwayView(pathway.getID(), dataDomain.getDataDomainID());
 		}
 
 		if (!newViews.isEmpty()) {

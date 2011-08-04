@@ -18,24 +18,25 @@ public class BookmarkMenuItem
 	/**
 	 * Constructor which takes a single dimension index.
 	 */
-	public BookmarkMenuItem(String label, IDType idType, int id) {
+	public BookmarkMenuItem(String label, IDType idType, int id, String dataDomainID) {
 		setLabel(label);
 
 		BookmarkEvent<Integer> event = new BookmarkEvent<Integer>(idType);
 		event.addBookmark(id);
 		event.setSender(this);
+		event.setDataDomainID(dataDomainID);
 		registerEvent(event);
 	}
 
 	/**
 	 * Constructor which takes an array of dimension indices.
 	 */
-	public BookmarkMenuItem(String label, IDType idType, ArrayList<Integer> ids) {
+	public BookmarkMenuItem(String label, IDType idType, ArrayList<Integer> ids, String dataDomainID) {
 		setLabel(label);
 
 		BookmarkEvent<Integer> event = new BookmarkEvent<Integer>(idType);
 		event.setSender(this);
-
+		event.setDataDomainID(dataDomainID);
 		for (Integer id : ids)
 			event.addBookmark(id);
 		registerEvent(event);

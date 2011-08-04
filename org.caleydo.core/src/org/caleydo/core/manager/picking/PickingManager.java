@@ -369,10 +369,6 @@ public class PickingManager {
 		// processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint,
 		// ePickingMode);
 		ArrayList<Integer> iAlPickedObjectId = processHits(iHitCount, iArPickingBuffer);
-
-		System.out.println("\n");
-		System.out.println(iAlPickedObjectId);
-		
 		
 		if (iAlPickedObjectId.size() > 0) {
 			processPicks(iAlPickedObjectId, ePickingMode, tmpPickPoint,
