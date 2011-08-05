@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.data.virtualarray.TableBasedDimensionGroupData;
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 
-public class AddGroupsToVisBricksItem extends ContextMenuItem {
+public class AddGroupsToVisBricksItem extends AContextMenuItem {
 
 	public AddGroupsToVisBricksItem(ArrayList<DataTable> setsToShow) {
 

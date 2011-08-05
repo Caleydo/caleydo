@@ -19,7 +19,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingMode;
 import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.collection.UniqueList;
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.contextmenu.item.RemoveBookmarkItem;
 import org.caleydo.core.view.opengl.layout.Column;

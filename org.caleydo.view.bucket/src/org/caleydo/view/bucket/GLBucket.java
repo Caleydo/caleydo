@@ -1765,22 +1765,23 @@ public class GLBucket extends AGLView implements
 	/**
 	 * Add pathway view. Also used when serialized pathways are loaded.
 	 * 
-	 * @param iPathwayID
+	 * @param pathwayID
 	 */
 	@Override
-	public void addPathwayView(final int iPathwayID, String dataDomainID) {
-
-		if (dataDomain.getDataDomainID() != dataDomainID)
-			return;
+	public void addPathwayView(final int pathwayID, String dataDomainID) {
 
 		if (!PathwayManager.get().isPathwayVisible(
-				PathwayManager.get().getItem(iPathwayID))) {
+				PathwayManager.get().getItem(pathwayID))) {
 			SerializedPathwayView serPathway = new SerializedPathwayView();
 			serPathway.setDataDomainID(DataDomainManager.get()
 					.getDataDomainByType("org.caleydo.datadomain.pathway")
 					.getDataDomainID());
-			serPathway.setPathwayID(iPathwayID);
+			serPathway.setPathwayID(pathwayID);
 			newViews.add(serPathway);
+		
+			if (!newViews.isEmpty()) {
+				disableUserInteraction();
+			}
 		}
 	}
 
@@ -2613,14 +2614,6 @@ public class GLBucket extends AGLView implements
 		// add new pathways to bucket
 		for (PathwayGraph pathway : newPathwayGraphs) {
 			addPathwayView(pathway.getID(), dataDomain.getDataDomainID());
-		}
-
-		if (!newViews.isEmpty()) {
-			// // Zoom out of the bucket when loading pathways
-			// if (bucketMouseWheelListener.isZoomedIn()) {
-			// bucketMouseWheelListener.triggerZoom(false);
-			// }
-			disableUserInteraction();
 		}
 	}
 

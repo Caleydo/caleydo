@@ -1,7 +1,7 @@
 package org.caleydo.datadomain.genetic.contextmenu.item;
 
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 /**
@@ -11,7 +11,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class LoadPathwaysByPathwayItem extends ContextMenuItem {
+public class LoadPathwaysByPathwayItem extends AContextMenuItem {
 
 	private int numberOfOccurences = 0;
 
@@ -21,8 +21,8 @@ public class LoadPathwaysByPathwayItem extends ContextMenuItem {
 	 * Constructor. Creates the events associated with the item.
 	 */
 	public LoadPathwaysByPathwayItem(PathwayGraph pathway, String dataDomainID) {
-		setPathway(pathway);
 		this.dataDomainID = dataDomainID;
+		setPathway(pathway);
 	}
 
 	/**

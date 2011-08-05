@@ -42,7 +42,7 @@ import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -1485,7 +1485,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 						.equals("org.caleydo.datadomain.genetic"))
 					break;
 				
-				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark " + dataDomain.getRecordLabel(recordIDType, leafNode.getLeafID()), recordIDType,
+				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark " + dataDomain.getRecordLabel(recordIDType, leafNode.getLeafID()), recordIDType,
 						leafNode.getLeafID(), dataDomain.getDataDomainID());
 				contextMenuCreator.addContextMenuItem(menuItem);
 
@@ -1568,7 +1568,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 						&& dimensionSelectionManager.checkStatus(leafNode.getLeafID()) == false)
 					break;
 
-				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
 						+ dataDomain.getRecordLabel(tree.getLeaveIDType(), leafNode.getLeafID()),
 						tree.getLeaveIDType(), leafNode.getLeafID(), dataDomain.getDataDomainID());
 				contextMenuCreator.addContextMenuItem(menuItem);

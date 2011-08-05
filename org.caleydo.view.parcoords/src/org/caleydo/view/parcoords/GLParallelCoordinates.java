@@ -61,6 +61,7 @@ import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
+import org.caleydo.core.manager.event.view.grouper.DeleteGroupsEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
 import org.caleydo.core.manager.event.view.tablebased.AngularBrushingEvent;
 import org.caleydo.core.manager.event.view.tablebased.ApplyCurrentSelectionToVirtualArrayEvent;
@@ -76,7 +77,7 @@ import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.view.StandardTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -88,6 +89,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.genetic.contextmenu.container.GeneRecordContextMenuItemContainer;
 import org.caleydo.view.parcoords.PCRenderStyle.PolyLineState;
 import org.caleydo.view.parcoords.listener.AngularBrushingListener;
 import org.caleydo.view.parcoords.listener.ApplyCurrentSelectionToVirtualArrayListener;
@@ -1416,12 +1418,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
-				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-						+ dataDomain.getRecordLabel(recordIDType, pickingID),
-						recordIDType, pickingID, dataDomain.getDataDomainID());
-				contextMenuCreator.addContextMenuItem(menuItem);
-
-
+				GeneRecordContextMenuItemContainer contexMenuItemContainer = new GeneRecordContextMenuItemContainer();
+				contexMenuItemContainer.setDataDomain(dataDomain);
+				contexMenuItemContainer.setData(recordIDType, pickingID);
+				contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
 				
 				break;
 
@@ -1504,7 +1504,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 				
-				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark " + dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType,
+				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark " + dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType,
 						pickingID, dataDomain.getDataDomainID());
 				contextMenuCreator.addContextMenuItem(menuItem);
 

@@ -3,28 +3,27 @@ package org.caleydo.core.view.contextmenu;
 import java.util.ArrayList;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.listener.IRemoteRenderingHandler;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 
 public class ContextMenuCreator {
 
-	private ArrayList<ContextMenuItem> menuItems = new ArrayList<ContextMenuItem>();
-	
+	private ArrayList<AContextMenuItem> menuItems = new ArrayList<AContextMenuItem>();
+
 	private Composite parent;
-	
+
 	private AGLView view;
-	
+
 	public void open(AGLView view) {
 
 		if (view.isRenderedRemote())
 			this.view = (AGLView) view.getRemoteRenderingGLView();
 		else
 			this.view = view;
-		
+
 		this.parent = view.getParentComposite();
-		
+
 		final ContextMenuCreator menuCreator = this;
 
 		Runnable runnable = new Runnable() {
@@ -38,13 +37,17 @@ public class ContextMenuCreator {
 	public Composite getParent() {
 		return parent;
 	}
-	
+
 	public void clear() {
 		menuItems.clear();
 	}
-	
-	public void addContextMenuItem(ContextMenuItem menuItem) {
+
+	public void addContextMenuItem(AContextMenuItem menuItem) {
 		menuItems.add(menuItem);
+	}
+
+	public void addContextMenuItemContainer(AContextMenuItemContainer menuItemContainer) {
+		menuItems.addAll(menuItemContainer.getContextMenuItems());
 	}
 
 	public boolean hasMenuItems() {
@@ -58,13 +61,13 @@ public class ContextMenuCreator {
 
 		Menu menu = new Menu(parent);
 
-		for (ContextMenuItem menuItem : menuItems) {
+		for (AContextMenuItem menuItem : menuItems) {
 			menuItem.create(menu);
 		}
 
 		return menu;
 	}
-	
+
 	public AGLView getView() {
 		return view;
 	}

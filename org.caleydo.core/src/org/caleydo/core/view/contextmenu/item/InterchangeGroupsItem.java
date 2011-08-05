@@ -2,7 +2,7 @@ package org.caleydo.core.view.contextmenu.item;
 
 import org.caleydo.core.manager.event.view.group.InterchangeContentGroupsEvent;
 import org.caleydo.core.manager.event.view.group.InterchangeDimensionGroupsEvent;
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 /**
  * Item for interchanging to groups/clusters
@@ -10,7 +10,7 @@ import org.caleydo.core.view.contextmenu.ContextMenuItem;
  * @author Bernhard Schlegl
  */
 public class InterchangeGroupsItem
-	extends ContextMenuItem {
+	extends AContextMenuItem {
 
 	/**
 	 * Constructor which sets the default values for icon and text

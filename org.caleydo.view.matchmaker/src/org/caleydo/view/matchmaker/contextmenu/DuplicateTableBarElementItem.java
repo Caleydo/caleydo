@@ -1,10 +1,10 @@
 package org.caleydo.view.matchmaker.contextmenu;
 
 import org.caleydo.core.manager.event.view.matchmaker.DuplicateTableBarItemEvent;
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 public class DuplicateTableBarElementItem
-	extends ContextMenuItem {
+	extends AContextMenuItem {
 
 	public DuplicateTableBarElementItem(int itemID) {
 

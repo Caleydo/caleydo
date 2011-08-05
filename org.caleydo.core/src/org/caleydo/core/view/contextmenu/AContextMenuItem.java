@@ -6,12 +6,8 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
@@ -22,9 +18,11 @@ import org.eclipse.swt.widgets.MenuItem;
  * 
  * @author Marc Streit
  */
-public abstract class ContextMenuItem {
+public abstract class AContextMenuItem {
 
 	private MenuItem menuItem;
+
+	private ArrayList<AContextMenuItem> subMenuItems = new ArrayList<AContextMenuItem>();
 
 	private int style = SWT.PUSH;
 
@@ -41,7 +39,21 @@ public abstract class ContextMenuItem {
 	}
 
 	public void create(Menu parent) {
-		menuItem = new MenuItem(parent, style);
+
+		if (!subMenuItems.isEmpty()) {
+			
+			menuItem = new MenuItem(parent, SWT.CASCADE);
+			final Menu submenu = new Menu(parent.getParent(), SWT.DROP_DOWN);
+			menuItem.setMenu(submenu);
+
+			for (AContextMenuItem subMenuItem : subMenuItems) {
+				subMenuItem.create(submenu);
+			}
+		}
+		else 
+			menuItem = new MenuItem(parent, style);
+
+	
 		menuItem.setText(label);
 
 		menuItem.addSelectionListener(new SelectionAdapter() {
@@ -51,6 +63,7 @@ public abstract class ContextMenuItem {
 				menuItem.getParent().getShell().dispose();
 			}
 		});
+
 	}
 
 	/**
@@ -73,5 +86,9 @@ public abstract class ContextMenuItem {
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}
 		}
+	}
+
+	protected void addSubItem(AContextMenuItem contextMenuItem) {
+		subMenuItems.add(contextMenuItem);
 	}
 }

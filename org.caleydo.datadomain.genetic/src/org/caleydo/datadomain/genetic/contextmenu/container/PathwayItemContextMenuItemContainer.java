@@ -7,6 +7,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
  * ID all relevant context menu items are constructed automatically
  * 
  * @author Alexander Lex
+ * @author Marc Streit
  */
 public class PathwayItemContextMenuItemContainer extends AItemContainer {
 	/**

@@ -29,18 +29,28 @@ public class ActivateViewListener
 		try {
 			if ((event instanceof LoadPathwayEvent || event instanceof LoadPathwaysByGeneEvent)
 				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.findView("org.caleydo.view.bucket") == null
+				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.findView("org.caleydo.view.datawindows") == null
 				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.findView("org.caleydo.view.dataflipper") == null) {
 
-				// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				// .showView("org.caleydo.view.bucket");
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.showView("org.caleydo.view.bucket");
+
+				event.setSender(handler);
+
+				// Re-trigger event so that the opened view receives it
+				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}
 			else if (event instanceof OpenMatchmakerViewEvent) {
 
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 						.showView("org.caleydo.view.matchmaker");
+
+					// Re-trigger event so that view receives it
+					GeneralManager.get().getEventPublisher().triggerEvent(event);
 				}
 				catch (PartInitException e) {
 					// TODO Auto-generated catch block
@@ -88,10 +98,9 @@ public class ActivateViewListener
 				}
 
 				// TODO only re-trigger event if view is initially opened
-
 				event.setSender(handler);
 
-				// Re-trigger event so that view receives the initial bookmarks
+				// Re-trigger event so that the opened view receives it
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}
 			else if (event instanceof OpenViewEvent) {

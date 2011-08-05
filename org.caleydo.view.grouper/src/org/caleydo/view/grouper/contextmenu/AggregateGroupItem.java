@@ -3,7 +3,7 @@ package org.caleydo.view.grouper.contextmenu;
 import java.util.Set;
 
 import org.caleydo.core.manager.datadomain.AggregateGroupEvent;
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 /**
  * Context menu item for aggregating groups
@@ -11,7 +11,7 @@ import org.caleydo.core.view.contextmenu.ContextMenuItem;
  * @author Alexander Lex
  * 
  */
-public class AggregateGroupItem extends ContextMenuItem {
+public class AggregateGroupItem extends AContextMenuItem {
 
 	public AggregateGroupItem(Set<Integer> groups, String dataDomainID) {
 

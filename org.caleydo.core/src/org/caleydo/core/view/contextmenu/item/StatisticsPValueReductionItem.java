@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.event.data.StatisticsPValueReductionEvent;
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 public class StatisticsPValueReductionItem
-	extends ContextMenuItem {
+	extends AContextMenuItem {
 
 	public StatisticsPValueReductionItem(ArrayList<DataTable> sets) {
 

@@ -18,6 +18,7 @@ import org.caleydo.core.manager.BasicInformation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.IStatus;
@@ -133,6 +134,10 @@ public class ProjectLoader {
 
 			for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
 
+				// Register data domain by hand because it restored from the serialization and not created via the
+				// DataDomainManager
+				DataDomainManager.get().register(dataDomain);
+				
 				Thread thread = new Thread(dataDomain, dataDomain.getDataDomainID());
 				thread.start();
 				if (dataDomain instanceof ATableBasedDataDomain) {

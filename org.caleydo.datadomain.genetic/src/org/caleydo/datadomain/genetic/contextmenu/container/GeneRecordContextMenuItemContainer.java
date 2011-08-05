@@ -4,9 +4,9 @@ import java.util.Set;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItemContainer;
+import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.datadomain.genetic.contextmenu.item.LoadPathwaysByGeneItem;
 import org.caleydo.datadomain.genetic.contextmenu.item.ShowPathwaysByGeneItem;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -16,18 +16,28 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
  * relevant context menu items are constructed automatically
  * 
  * @author Alexander Lex
+ * @author Marc Streit
  */
-public class GeneContextMenuItemContainer extends AItemContainer {
+public class GeneRecordContextMenuItemContainer extends AContextMenuItemContainer {
 
+	private IDType idType;
+	
 	/**
 	 * Constructor.
 	 */
-	public GeneContextMenuItemContainer() {
+	public GeneRecordContextMenuItemContainer() {
 		super();
-
 	}
 
-	public void tableID(IDType idType, int id) {
+	public void setData(IDType idType, int id) {
+		
+		this.idType = idType;
+		
+		AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark Gene: "
+				+ dataDomain.getRecordLabel(idType, id),
+				idType, id, dataDomain.getDataDomainID());
+		addContextMenuItem(menuItem);
+		
 		Set<Integer> davids = GeneralManager.get().getIDMappingManager()
 				.getIDAsSet(idType, dataDomain.getPrimaryRecordMappingType(), id);
 		if (davids == null)
@@ -35,35 +45,29 @@ public class GeneContextMenuItemContainer extends AItemContainer {
 		for (Integer david : davids) {
 			createMenuContent(david);
 		}
-
 	}
 
 	private void createMenuContent(int davidID) {
-		GeneralManager generalManager = GeneralManager.get();
-
-		String sGeneSymbol = generalManager.getIDMappingManager().getID(
-				dataDomain.getPrimaryRecordMappingType(),
-				((GeneticDataDomain) (DataDomainManager.get().getDataDomainByID(dataDomain
-						.getDataDomainID()))).getHumanReadableRecordIDType(), davidID);
-		if (sGeneSymbol == "" || sGeneSymbol == null)
-			sGeneSymbol = "Unkonwn Gene";
-		addHeading(sGeneSymbol);
-
+		
+//		String sGeneSymbol = generalManager.getIDMappingManager().getID(
+//				dataDomain.getPrimaryRecordMappingType(),
+//				((GeneticDataDomain) (DataDomainManager.get().getDataDomainByID(dataDomain
+//						.getDataDomainID()))).getHumanReadableRecordIDType(), davidID);
+//		if (sGeneSymbol == "" || sGeneSymbol == null)
+//			sGeneSymbol = "Unkonwn Gene";
+//		addHeading(sGeneSymbol);
+		
 		if (PathwayManager.get().isPathwayLoadingFinished()) {
 			LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
 			loadPathwaysByGeneItem.setDavid(dataDomain.getPrimaryRecordMappingType(),
-					davidID);
+					davidID, dataDomain.getDataDomainID());
 			addContextMenuItem(loadPathwaysByGeneItem);
 
+			// FIXME: make setter consistent
 			ShowPathwaysByGeneItem showPathwaysByGeneItem = new ShowPathwaysByGeneItem();
-			showPathwaysByGeneItem.setDavid(dataDomain.getPrimaryRecordMappingType(),
-					davidID);
+			showPathwaysByGeneItem.setDavidID(dataDomain.getPrimaryRecordMappingType(),
+					davidID, dataDomain.getDataDomainID());
 			addContextMenuItem(showPathwaysByGeneItem);
 		}
-
-		// BookmarkItem addToListItem = new BookmarkItem(
-		// dataDomain.getPrimaryContentMappingType(), davidID);
-
-		// addContextMenuItem(addToListItem);
 	}
 }

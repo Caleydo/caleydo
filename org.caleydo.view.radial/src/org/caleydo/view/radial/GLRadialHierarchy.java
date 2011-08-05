@@ -34,7 +34,7 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 import org.caleydo.core.view.IDataDomainSetBasedView;
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -513,12 +513,12 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 						break;
 					
 					if (!pdPickedElement.hasChildren()) {
-						ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+						AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
 								+ dataDomain.getRecordLabel(dataDomain.getRecordIDType(), externalID),
 								dataDomain.getRecordIDType(), externalID, dataDomain.getDataDomainID());
 						contextMenuCreator.addContextMenuItem(menuItem);	
 					} else {
-						ContextMenuItem menuItem = new DetailOutsideItem(externalID);
+						AContextMenuItem menuItem = new DetailOutsideItem(externalID);
 						contextMenuCreator.addContextMenuItem(menuItem);	
 					}
 

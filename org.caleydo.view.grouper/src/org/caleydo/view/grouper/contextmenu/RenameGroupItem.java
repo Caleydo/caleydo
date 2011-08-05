@@ -1,9 +1,9 @@
 package org.caleydo.view.grouper.contextmenu;
 
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.grouper.event.RenameGroupEvent;
 
-public class RenameGroupItem extends ContextMenuItem {
+public class RenameGroupItem extends AContextMenuItem {
 
 	public RenameGroupItem(int groupID, String dataDomainID) {
 

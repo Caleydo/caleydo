@@ -48,7 +48,7 @@ import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -731,7 +731,7 @@ public class GLPathway extends AGLView implements
 					for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 
-						ContextMenuItem menuItem = new BookmarkMenuItem(
+						AContextMenuItem menuItem = new BookmarkMenuItem(
 								"Bookmark " + pathwayVertexGraphItem.getId(),
 								dataDomain.getDavidIDType(),
 								pathwayItemManager

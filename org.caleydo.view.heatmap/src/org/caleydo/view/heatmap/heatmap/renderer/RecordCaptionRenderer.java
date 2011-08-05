@@ -58,13 +58,14 @@ public class RecordCaptionRenderer extends AContentRenderer {
 
 		String label = getID(recordIndex, false);
 		if (label == null)
-			label = "Unknown";
+			label = "No mapping";
 
 		spacing = (contentSpacing.getFieldHeight(recordIndex));
 
 		if (spacing < 0)
 			spacing = 0;
-		//FIXME just for karl big captions
+		
+//		//FIXME just for karl big captions
 		if (spacing >0.1f)
 			spacing = 0.1f;
 

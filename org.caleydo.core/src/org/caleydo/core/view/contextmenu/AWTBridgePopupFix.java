@@ -69,7 +69,7 @@ public class AWTBridgePopupFix {
 
 						Runnable runnable = new Runnable() {
 							public void run() {
-								if (!menu.isVisible())
+								if (!menu.isDisposed() && !menu.isVisible())
 									menu.setVisible(true);
 								else {
 									// System.out.println("menu shown " + (count[0]) + " " +
@@ -85,9 +85,12 @@ public class AWTBridgePopupFix {
 
 					@Override
 					public void handleEvent(Event event) {
-						popupShell.close();
-						popupShell.dispose();
 
+						if (!popupShell.isDisposed()) {
+							popupShell.close();
+							popupShell.dispose();
+						}
+						
 						// Set lazy mode to false because in the case of an ignored context menu, the state is
 						// erroneously set to true.
 						menuCreator.getView().setLazyMode(false);

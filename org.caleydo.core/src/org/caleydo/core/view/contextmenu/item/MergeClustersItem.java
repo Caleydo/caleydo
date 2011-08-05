@@ -2,7 +2,7 @@ package org.caleydo.core.view.contextmenu.item;
 
 import org.caleydo.core.manager.event.view.group.MergeContentGroupsEvent;
 import org.caleydo.core.manager.event.view.group.MergeDimensionGroupsEvent;
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 /**
  * Item for merging to groups/clusters
@@ -10,7 +10,7 @@ import org.caleydo.core.view.contextmenu.ContextMenuItem;
  * @author Bernhard Schlegl
  */
 public class MergeClustersItem
-	extends ContextMenuItem {
+	extends AContextMenuItem {
 
 	/**
 	 * Constructor which sets the default values for icon and text

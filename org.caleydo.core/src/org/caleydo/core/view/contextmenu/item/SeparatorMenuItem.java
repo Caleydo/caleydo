@@ -1,6 +1,6 @@
 package org.caleydo.core.view.contextmenu.item;
 
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.eclipse.swt.SWT;
 
 /**
@@ -9,7 +9,7 @@ import org.eclipse.swt.SWT;
  * @author Marc Streit
  */
 public class SeparatorMenuItem
-	extends ContextMenuItem {
+	extends AContextMenuItem {
 
 	public SeparatorMenuItem() {
 		setStyle(SWT.SEPARATOR);

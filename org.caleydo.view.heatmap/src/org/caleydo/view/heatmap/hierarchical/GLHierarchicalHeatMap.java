@@ -4009,7 +4009,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int externalID, Pick pick) {
+			int pickingID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -4066,11 +4066,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				// .getWidth(), getParentGLCanvas().getHeight());
 				// contextMenu.setMasterGLView(this);
 
-				if (recordVA.getGroupList().get(externalID).getSelectionType() == SelectionType.SELECTION)
+				if (recordVA.getGroupList().get(pickingID).getSelectionType() == SelectionType.SELECTION)
 					break;
 				// else we want to go to clicked as well
 			case CLICKED:
-				recordVA.getGroupList().get(externalID).togglSelectionType();
+				recordVA.getGroupList().get(pickingID).togglSelectionType();
 				deactivateAllDraggingCursor();
 				bActivateDraggingGenes = true;
 
@@ -4108,7 +4108,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				if (bDragDropGeneGroup == false) {
 					bDragDropGeneGroup = true;
 					bDragDropExpGroup = false;
-					iGeneGroupToDrag = externalID;
+					iGeneGroupToDrag = pickingID;
 				}
 
 				// group splitting
@@ -4165,11 +4165,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				//
 				// contextMenu.addItemContanier(groupContextMenuItemContainer);
 
-				if (dimensionVA.getGroupList().get(externalID).getSelectionType() == SelectionType.SELECTION)
+				if (dimensionVA.getGroupList().get(pickingID).getSelectionType() == SelectionType.SELECTION)
 					break;
 				// else we want to do clicked here as well
 			case CLICKED:
-				dimensionVA.getGroupList().get(externalID).togglSelectionType();
+				dimensionVA.getGroupList().get(pickingID).togglSelectionType();
 				deactivateAllDraggingCursor();
 				bActivateDraggingExperiments = true;
 
@@ -4205,7 +4205,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				if (bDragDropExpGroup == false) {
 					bDragDropExpGroup = true;
 					bDragDropGeneGroup = false;
-					iExpGroupToDrag = externalID;
+					iExpGroupToDrag = pickingID;
 				}
 
 				// group splitting
@@ -4315,7 +4315,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					return;
 				bIsDraggingActiveLevel1 = true;
 				bDisableBlockDraggingLevel1 = true;
-				iDraggedCursorLevel1 = externalID;
+				iDraggedCursorLevel1 = pickingID;
 				setDisplayListDirty();
 				break;
 			}
@@ -4336,7 +4336,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					return;
 				bIsDraggingWholeBlockLevel1 = true;
 				bDisableCursorDraggingLevel1 = true;
-				iDraggedCursorLevel1 = externalID;
+				iDraggedCursorLevel1 = pickingID;
 				setDisplayListDirty();
 				break;
 			}
@@ -4358,7 +4358,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					return;
 				bIsDraggingActiveLevel2 = true;
 				bDisableBlockDraggingLevel2 = true;
-				iDraggedCursorLevel2 = externalID;
+				iDraggedCursorLevel2 = pickingID;
 				setDisplayListDirty();
 				break;
 			}
@@ -4379,7 +4379,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					return;
 				bIsDraggingWholeBlockLevel2 = true;
 				bDisableCursorDraggingLevel2 = true;
-				iDraggedCursorLevel2 = externalID;
+				iDraggedCursorLevel2 = pickingID;
 				setDisplayListDirty();
 				break;
 			}

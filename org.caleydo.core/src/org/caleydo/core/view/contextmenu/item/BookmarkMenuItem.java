@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 /**
  * Item that adds a selected element to the bookmark container
@@ -13,7 +13,7 @@ import org.caleydo.core.view.contextmenu.ContextMenuItem;
  * @author Marc Streit
  */
 public class BookmarkMenuItem
-	extends ContextMenuItem {
+	extends AContextMenuItem {
 
 	/**
 	 * Constructor which takes a single dimension index.

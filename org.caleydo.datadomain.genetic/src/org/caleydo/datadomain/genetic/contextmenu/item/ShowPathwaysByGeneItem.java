@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.Set;
 
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
 
@@ -23,26 +23,25 @@ import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
  * </p>
  * 
  * @author Alexander Lex
+ * @author Marc Streit
  */
-public class ShowPathwaysByGeneItem extends ContextMenuItem {
+public class ShowPathwaysByGeneItem extends AContextMenuItem {
 
 	/**
 	 * Constructor which sets the default values for icon and text
 	 */
 	public ShowPathwaysByGeneItem() {
 		super();
-		setIconTexture(EIconTextures.CM_DEPENDING_PATHWAYS);
-		setText("Pathways");
+		//setIconTexture(EIconTextures.CM_DEPENDING_PATHWAYS);
+		setLabel("Pathways");
 	}
 
 	/**
 	 * Convenience method that automatically creates a
 	 * {@link LoadPathwaysByGeneEvent} based on a david ID
 	 * 
-	 * @param david
-	 *            the int code associated with a refseq
 	 */
-	public void setDavid(IDType idType, int david) {
+	public void setDavidID(IDType idType, int david, String dataDomainID) {
 
 		Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper.get()
 				.getPathwayGraphsByGeneID(idType, david);
@@ -58,11 +57,10 @@ public class ShowPathwaysByGeneItem extends ContextMenuItem {
 			Arrays.sort(pathways);
 
 			for (PathwayGraph pathwayGraph : pathways) {
-				addSubItem(new LoadPathwaysByPathwayItem(pathwayGraph.getID()));
+				addSubItem(new LoadPathwaysByPathwayItem(pathwayGraph, dataDomainID));
 			}
-
 		}
 
-		setText("Pathways (" + iPathwayCount + ")");
+		setLabel("Pathways (" + iPathwayCount + ")");
 	}
 }

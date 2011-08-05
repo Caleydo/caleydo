@@ -88,10 +88,6 @@ public class SerializationStartupProcedure
 			.getDataDomainSerializationDataList()) {
 			ADataDomain dataDomain = dataSerializationData.getDataDomain();
 
-			// Register data domain by hand because it restored from the serialization and not created via the
-			// DataDomainManager
-			DataDomainManager.get().register(dataDomain);
-
 			if (dataDomain instanceof ATableBasedDataDomain) {
 				ATableBasedDataDomain setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
 

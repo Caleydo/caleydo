@@ -2,10 +2,10 @@ package org.caleydo.view.grouper.contextmenu;
 
 import java.util.Set;
 
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.grouper.event.CopyGroupsEvent;
 
-public class CopyGroupsItem extends ContextMenuItem {
+public class CopyGroupsItem extends AContextMenuItem {
 
 	public CopyGroupsItem(Set<Integer> setGroupsToCopy, String dataDomainID) {
 

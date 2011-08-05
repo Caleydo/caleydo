@@ -40,8 +40,9 @@ import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.ClustererType;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
-import org.caleydo.core.view.contextmenu.ContextMenuItem;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
+import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -50,11 +51,13 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.genetic.contextmenu.container.GeneRecordContextMenuItemContainer;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 import org.caleydo.view.heatmap.heatmap.template.DefaultTemplate;
 import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 import org.caleydo.view.heatmap.listener.GLHeatMapKeyListener;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
@@ -354,7 +357,7 @@ public class GLHeatMap extends ATableBasedView {
 
 	@Override
 	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+			PickingMode pickingMode, int pickingID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -363,7 +366,7 @@ public class GLHeatMap extends ATableBasedView {
 		
 		switch (pickingType) {
 		case HEAT_MAP_LINE_SELECTION:
-			iCurrentMouseOverElement = externalID;
+			iCurrentMouseOverElement = pickingID;
 			switch (pickingMode) {
 
 			case CLICKED:
@@ -377,11 +380,12 @@ public class GLHeatMap extends ATableBasedView {
 
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
-				
-				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-						+ dataDomain.getRecordLabel(recordIDType, externalID),
-						recordIDType, externalID, dataDomain.getDataDomainID());
-				contextMenuCreator.addContextMenuItem(menuItem);
+
+				GeneRecordContextMenuItemContainer contexMenuItemContainer = new GeneRecordContextMenuItemContainer();
+				contexMenuItemContainer.setDataDomain(dataDomain);
+				contexMenuItemContainer.setData(recordIDType, pickingID);
+				contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
+				contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
 				
 				break;
 
@@ -390,7 +394,7 @@ public class GLHeatMap extends ATableBasedView {
 
 			}
 
-			createContentSelection(selectionType, externalID);
+			createContentSelection(selectionType, pickingID);
 
 			break;
 
@@ -405,15 +409,15 @@ public class GLHeatMap extends ATableBasedView {
 				break;
 			case RIGHT_CLICKED:
 				
-				ContextMenuItem menuItem = new BookmarkMenuItem("Bookmark " + dataDomain.getDimensionLabel(dimensionIDType, externalID), dimensionIDType,
-						externalID, dataDomain.getDataDomainID());
+				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark Experiment: " + dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType,
+						pickingID, dataDomain.getDataDomainID());
 				contextMenuCreator.addContextMenuItem(menuItem);
 				
 			default:
 				return;
 			}
 
-			createDimensionSelection(selectionType, externalID);
+			createDimensionSelection(selectionType, pickingID);
 
 			break;
 

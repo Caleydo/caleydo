@@ -39,7 +39,7 @@ public class SearchViewMediator {
 		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
 		loadPathwaysByGeneEvent.setSender(this);
 		loadPathwaysByGeneEvent.setGeneID((davidID));
-		loadPathwaysByGeneEvent.tableIDType(IDType.getIDType("DAVID"));
+		loadPathwaysByGeneEvent.setTableIDType(IDType.getIDType("DAVID"));
 		eventPublisher.triggerEvent(loadPathwaysByGeneEvent);
 	}
 

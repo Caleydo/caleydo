@@ -2,8 +2,7 @@ package org.caleydo.datadomain.genetic.contextmenu.item;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 /**
  * <p>
@@ -17,16 +16,17 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  * </p>
  * 
  * @author Alexander Lex
+ * @author Marc Streit
  */
-public class LoadPathwaysByGeneItem extends ContextMenuItem {
+public class LoadPathwaysByGeneItem extends AContextMenuItem {
 
 	/**
 	 * Constructor which sets the default values for icon and text
 	 */
 	public LoadPathwaysByGeneItem() {
 		super();
-		setIconTexture(EIconTextures.CM_LOAD_DEPENDING_PATHWAYS);
-		setText("Load depending Pathways");
+		//setIconTexture(EIconTextures.CM_LOAD_DEPENDING_PATHWAYS);
+		setLabel("Load depending Pathways");
 	}
 
 	/**
@@ -36,11 +36,13 @@ public class LoadPathwaysByGeneItem extends ContextMenuItem {
 	 * @param david
 	 *            the david ID
 	 */
-	public void setDavid(IDType idType, int david) {
+	public void setDavid(IDType idType, int david, String dataDomainID) {
+		
 		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
 		loadPathwaysByGeneEvent.setSender(this);
 		loadPathwaysByGeneEvent.setGeneID(david);
-		loadPathwaysByGeneEvent.tableIDType(idType);
+		loadPathwaysByGeneEvent.setTableIDType(idType);
+		loadPathwaysByGeneEvent.setDataDomainID(dataDomainID);
 		registerEvent(loadPathwaysByGeneEvent);
 	}
 }
