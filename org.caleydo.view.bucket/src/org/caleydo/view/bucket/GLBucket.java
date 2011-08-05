@@ -1778,10 +1778,6 @@ public class GLBucket extends AGLView implements
 					.getDataDomainID());
 			serPathway.setPathwayID(pathwayID);
 			newViews.add(serPathway);
-		
-			if (!newViews.isEmpty()) {
-				disableUserInteraction();
-			}
 		}
 	}
 
@@ -2615,6 +2611,11 @@ public class GLBucket extends AGLView implements
 		for (PathwayGraph pathway : newPathwayGraphs) {
 			addPathwayView(pathway.getID(), dataDomain.getDataDomainID());
 		}
+
+		// FIXME: makes problems with heatmap when activated
+		// if (!newViews.isEmpty()) {
+		// disableUserInteraction();
+		// }
 	}
 
 	@Override

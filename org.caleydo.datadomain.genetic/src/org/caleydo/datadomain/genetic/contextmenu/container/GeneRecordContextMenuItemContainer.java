@@ -12,7 +12,7 @@ import org.caleydo.datadomain.genetic.contextmenu.item.ShowPathwaysByGeneItem;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
- * Implementation of AItemContainer for Genes. By passing a RefSeq int code all
+ * Implementation of AItemContainer for Genes. By passing an ID all
  * relevant context menu items are constructed automatically
  * 
  * @author Alexander Lex
@@ -20,18 +20,7 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
  */
 public class GeneRecordContextMenuItemContainer extends AContextMenuItemContainer {
 
-	private IDType idType;
-	
-	/**
-	 * Constructor.
-	 */
-	public GeneRecordContextMenuItemContainer() {
-		super();
-	}
-
 	public void setData(IDType idType, int id) {
-		
-		this.idType = idType;
 		
 		AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark Gene: "
 				+ dataDomain.getRecordLabel(idType, id),

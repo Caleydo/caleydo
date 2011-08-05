@@ -358,7 +358,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 		switch (pickingType) {
 
 		// handling the groups/clusters of genes
-		case HEAT_MAP_CLUSTER_GROUP:
+		case HEAT_MAP_RECORD_GROUP:
 			switch (pickingMode) {
 			case CLICKED:
 

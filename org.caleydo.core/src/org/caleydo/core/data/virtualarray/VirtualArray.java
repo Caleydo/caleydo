@@ -509,7 +509,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 			if (igroup.getID() < groupID) {
 				offset += igroup.getSize();
 			}
-			else if (igroup.getID() == groupID) {
+			else if (igroup.getGroupID() == groupID) {
 				group = igroup;
 				break;
 			}

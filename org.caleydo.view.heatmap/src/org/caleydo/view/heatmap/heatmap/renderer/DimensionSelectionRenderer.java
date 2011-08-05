@@ -51,7 +51,7 @@ public class DimensionSelectionRenderer extends AContentRenderer {
 					float z = SELECTION_Z * selectionType.getPriority();
 
 					gl.glPushName(heatMap.getPickingManager().getPickingID(
-							heatMap.getID(), PickingType.HEAT_MAP_STORAGE_SELECTION,
+							heatMap.getID(), PickingType.HEAT_MAP_DIMENSION_SELECTION,
 							selectedColumn));
 					gl.glBegin(GL2.GL_LINE_LOOP);
 					gl.glVertex3f(xPosition, y, z);

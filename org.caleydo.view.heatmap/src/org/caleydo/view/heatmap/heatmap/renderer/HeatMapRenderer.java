@@ -124,7 +124,7 @@ public class HeatMapRenderer extends AContentRenderer {
 		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
-				PickingType.HEAT_MAP_STORAGE_SELECTION, iDimensionIndex));
+				PickingType.HEAT_MAP_DIMENSION_SELECTION, iDimensionIndex));
 		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
 				PickingType.HEAT_MAP_LINE_SELECTION, recordIndex));
 		gl.glBegin(GL2.GL_POLYGON);

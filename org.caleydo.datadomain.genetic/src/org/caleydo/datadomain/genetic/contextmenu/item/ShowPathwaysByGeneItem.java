@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Set;
 
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -33,7 +32,7 @@ public class ShowPathwaysByGeneItem extends AContextMenuItem {
 	public ShowPathwaysByGeneItem() {
 		super();
 		//setIconTexture(EIconTextures.CM_DEPENDING_PATHWAYS);
-		setLabel("Pathways");
+		setLabel("Load Pathways");
 	}
 
 	/**
@@ -46,11 +45,11 @@ public class ShowPathwaysByGeneItem extends AContextMenuItem {
 		Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper.get()
 				.getPathwayGraphsByGeneID(idType, david);
 
-		int iPathwayCount = 0;
+		int pathwayCount = 0;
 
 		if (pathwayGraphs != null) {
 
-			iPathwayCount = pathwayGraphs.size();
+			pathwayCount = pathwayGraphs.size();
 
 			PathwayGraph[] pathways = new PathwayGraph[pathwayGraphs.size()];
 			pathwayGraphs.toArray(pathways);
@@ -61,6 +60,6 @@ public class ShowPathwaysByGeneItem extends AContextMenuItem {
 			}
 		}
 
-		setLabel("Pathways (" + iPathwayCount + ")");
+		setLabel("Load Pathways (" + pathwayCount + ")");
 	}
 }

@@ -84,6 +84,7 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.genetic.contextmenu.container.GeneRecordGroupContextMenuItemContainer;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -1170,7 +1171,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			}
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
+					PickingType.HIER_HEAT_MAP_DIMENSION_GROUP, i));
 
 			tempTexture.enable();
 			tempTexture.bind();
@@ -1251,7 +1252,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			}
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
+					PickingType.HIER_HEAT_MAP_DIMENSION_GROUP, i));
 
 			tempTexture.enable();
 			tempTexture.bind();
@@ -1332,7 +1333,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			}
 
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.HEAT_MAP_CLUSTER_GROUP, i));
+					PickingType.HEAT_MAP_RECORD_GROUP, i));
 
 			tempTexture.enable();
 			tempTexture.bind();
@@ -1420,7 +1421,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 							EIconTextures.HEAT_MAP_GROUP_NORMAL);
 				}
 				gl.glPushName(pickingManager.getPickingID(uniqueID,
-						PickingType.HEAT_MAP_CLUSTER_GROUP, iIdxCluster));
+						PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
 
 				tempTexture.enable();
 				tempTexture.bind();
@@ -1477,7 +1478,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		}
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.HEAT_MAP_CLUSTER_GROUP, iIdxCluster));
+				PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
 
 		tempTexture.enable();
 		tempTexture.bind();
@@ -1557,7 +1558,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				}
 
 				gl.glPushName(pickingManager.getPickingID(uniqueID,
-						PickingType.HEAT_MAP_CLUSTER_GROUP, iIdxCluster));
+						PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
 
 				tempTexture.enable();
 				tempTexture.bind();
@@ -1612,7 +1613,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		}
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.HEAT_MAP_CLUSTER_GROUP, iIdxCluster));
+				PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
 
 		tempTexture.enable();
 		tempTexture.bind();
@@ -4017,7 +4018,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		switch (pickingType) {
 
 		// handling the groups/clusters of genes
-		case HEAT_MAP_CLUSTER_GROUP:
+		case HEAT_MAP_RECORD_GROUP:
 			switch (pickingMode) {
 			case RIGHT_CLICKED:
 
@@ -4044,36 +4045,29 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 						bEnableInterchange = true;
 				}
 
-				// FIXME CONTEXT MENU
-				// GroupContextMenuItemContainer groupContextMenuItemContainer =
-				// new GroupContextMenuItemContainer();
+				GeneRecordGroupContextMenuItemContainer groupContextMenuItemContainer = new GeneRecordGroupContextMenuItemContainer();
 				// groupContextMenuItemContainer.initContextMenu(true,
 				// bEnableMerge,
 				// bEnableInterchange, bEnableExport);
-				// groupContextMenuItemContainer.setDataDomain(dataDomain);
-				// groupContextMenuItemContainer.setContentIDs(recordIDType,
-				// recordVA.getIDsOfGroup(externalID));
-
-				// FIXME CONTEXT MENU
-				// BookmarkMenuItem bookmarkItem = new
-				// BookmarkMenuItem(recordIDType,
-				// recordVA.getIDsOfGroup(externalID));
-				// groupContextMenuItemContainer.addContextMenuItem(bookmarkItem);
-				//
-				// contextMenu.addItemContanier(groupContextMenuItemContainer);
-				// contextMenu.setLocation(pick.getPickedPoint(),
-				// getParentGLCanvas()
-				// .getWidth(), getParentGLCanvas().getHeight());
-				// contextMenu.setMasterGLView(this);
+				groupContextMenuItemContainer.setDataDomain(dataDomain);
+				groupContextMenuItemContainer.setData(recordIDType,
+						recordVA.getIDsOfGroup(pickingID));
+				contextMenuCreator
+						.addContextMenuItemContainer(groupContextMenuItemContainer);
 
 				if (recordVA.getGroupList().get(pickingID).getSelectionType() == SelectionType.SELECTION)
 					break;
 				// else we want to go to clicked as well
 			case CLICKED:
+				
+				// Reset group states before selecting the newly selected
+				for (Group group : recordVA.getGroupList())
+					group.setSelectionType(SelectionType.NORMAL);
+				
 				recordVA.getGroupList().get(pickingID).togglSelectionType();
 				deactivateAllDraggingCursor();
 				bActivateDraggingGenes = true;
-
+				
 				// ArrayList<Integer> temp =
 				// recordVA.getGeneIdsOfGroup( externalID);
 				// for (int i = 0; i < temp.size(); i++) {
@@ -4132,7 +4126,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			break;
 
 		// handling the groups/clusters of experiments
-		case HIER_HEAT_MAP_EXPERIMENTS_GROUP:
+		case HIER_HEAT_MAP_DIMENSION_GROUP:
 			switch (pickingMode) {
 			case RIGHT_CLICKED:
 
@@ -4408,47 +4402,32 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			}
 			break;
 
-		// handle click on level 3 (EHM)
-		case HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION:
-			switch (pickingMode) {
-			case RIGHT_CLICKED:
-
-				// FIXME CONTEXT MENU
-				// contextMenu.setLocation(pick.getPickedPoint(),
-				// getParentGLCanvas()
-				// .getWidth(), getParentGLCanvas().getHeight());
-				// contextMenu.setMasterGLView(this);
-				break;
-			}
-			break;
-
-		// handle click on gene dendrogram
-		case HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION:
-			switch (pickingMode) {
-			case RIGHT_CLICKED:
-
-				// FIXME CONTEXT MENU
-				// contextMenu.setLocation(pick.getPickedPoint(),
-				// getParentGLCanvas()
-				// .getWidth(), getParentGLCanvas().getHeight());
-				// contextMenu.setMasterGLView(this);
-				break;
-			}
-			break;
-
-		// handle click on gene dendrogram
-		case HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION:
-			switch (pickingMode) {
-			case RIGHT_CLICKED:
-
-				// FIXME CONTEXT MENU
-				// contextMenu.setLocation(pick.getPickedPoint(),
-				// getParentGLCanvas()
-				// .getWidth(), getParentGLCanvas().getHeight());
-				// contextMenu.setMasterGLView(this);
-				break;
-			}
-			break;
+		// // handle click on level 3 (EHM)
+		// case HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION:
+		// switch (pickingMode) {
+		// case RIGHT_CLICKED:
+		//
+		// break;
+		// }
+		// break;
+		//
+		// // handle click on gene dendrogram
+		// case HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION:
+		// switch (pickingMode) {
+		// case RIGHT_CLICKED:
+		//
+		// break;
+		// }
+		// break;
+		//
+		// // handle click on gene dendrogram
+		// case HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION:
+		// switch (pickingMode) {
+		// case RIGHT_CLICKED:
+		//
+		// break;
+		// }
+		// break;
 		}
 		// setDisplayListDirty();
 	}

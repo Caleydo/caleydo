@@ -198,7 +198,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 		TextureCoords texCoords = texture.getImageTexCoords();
 
 		gl.glPushName(pickingManager.getPickingID(uncertaintyHeatMap.getID(),
-				PickingType.HEAT_MAP_CLUSTER_GROUP, groupIndex));
+				PickingType.HEAT_MAP_RECORD_GROUP, groupIndex));
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glTexCoord2d(texCoords.left(), texCoords.top());
 		gl.glVertex3f(x, y, 0);

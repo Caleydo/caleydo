@@ -398,7 +398,7 @@ public class GLHeatMap extends ATableBasedView {
 
 			break;
 
-		case HEAT_MAP_STORAGE_SELECTION:
+		case HEAT_MAP_DIMENSION_SELECTION:
 
 			switch (pickingMode) {
 			case CLICKED:

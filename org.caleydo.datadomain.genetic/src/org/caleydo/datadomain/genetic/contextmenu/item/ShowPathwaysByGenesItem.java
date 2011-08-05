@@ -10,8 +10,8 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenuItem;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.datadomain.genetic.contextmenu.item.LoadPathwaysByPathwayItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
 
@@ -29,15 +29,15 @@ import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
  * 
  * @author Alexander Lex
  */
-public class ShowPathwaysByGenesItem extends ContextMenuItem {
+public class ShowPathwaysByGenesItem extends AContextMenuItem {
 
 	/**
 	 * Constructor which sets the default values for icon and text
 	 */
 	public ShowPathwaysByGenesItem() {
 		super();
-		setIconTexture(EIconTextures.CM_DEPENDING_PATHWAYS);
-		setText("Pathways");
+		// setIconTexture(EIconTextures.CM_DEPENDING_PATHWAYS);
+		setLabel("Pathways");
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class ShowPathwaysByGenesItem extends ContextMenuItem {
 	 * @param david
 	 *            the int code associated with a refseq
 	 */
-	public void tableIDs(ATableBasedDataDomain dataDomain, IDType idType,
+	public void setTableIDs(ATableBasedDataDomain dataDomain, IDType idType,
 			ArrayList<Integer> genes) {
 
 		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
@@ -85,16 +85,21 @@ public class ShowPathwaysByGenesItem extends ContextMenuItem {
 			pathways.add(new Pair<Integer, PathwayGraph>(hashPathwaysToOccurences
 					.get(pathway), pathway));
 		}
+		
 		Collections.sort(pathways);
+		int pathwayCount = 0;
+		
 		for (int count = pathways.size() - 1; count >= 0; count--) {
 			Pair<Integer, PathwayGraph> pair = pathways.get(count);
 			if (pair.getFirst() > 1) {
-				LoadPathwaysByPathwayItem item = new LoadPathwaysByPathwayItem(pair
-						.getSecond().getID(), pair.getFirst());
+				LoadPathwaysByPathwayItem item = new LoadPathwaysByPathwayItem(
+						pair.getSecond(), dataDomain.getDataDomainID(), pair.getFirst());
 				addSubItem(item);
+				
+				pathwayCount++;
 			}
 		}
-		// setText("Pathways (" + iPathwayCount + ")");
-	}
 
+		 setLabel("Load Pathways (" + pathwayCount + ")");
+	}
 }
