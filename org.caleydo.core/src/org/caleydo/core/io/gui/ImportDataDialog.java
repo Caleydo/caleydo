@@ -656,9 +656,13 @@ public class ImportDataDialog
 			while ((line = file.readLine()) != null) {
 
 				tokenizer = new StringTokenizer(line, sDelimiter, true);
+				
+				if (!tokenizer.hasMoreTokens())
+					continue;
+				
 				nextToken = tokenizer.nextToken();
 
-				// probably weeks performance
+				// probably weaks performance
 				if (nextToken.equals("Cluster_Number") || nextToken.equals("Cluster_Repr"))
 					useExperimentClusterInfo = true;
 			}

@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -173,6 +174,7 @@ public class ProjectSaver {
 		saveWorkbenchData(dirName);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void saveData(String dirName) {
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
@@ -182,22 +184,17 @@ public class ProjectSaver {
 			Marshaller marshaller = projectContext.createMarshaller();
 
 			File dataDomainFile = new File(dirName + DATA_DOMAIN_FILE);
-
-			ArrayList<ADataDomain> dataDomains = new ArrayList<ADataDomain>();
-			for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
-				dataDomains.add((ADataDomain) dataDomain);
-			}
-			DataDomainList dataDomainList = new DataDomainList();
-			dataDomainList.setDataDomains(dataDomains);
-
-			marshaller.marshal(dataDomainList, dataDomainFile);
-
+			List<ADataDomain> dataDomains = new ArrayList<ADataDomain>();
+			
 			for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
 
+				dataDomains.add((ADataDomain)dataDomain);
+				
 				if (dataDomain instanceof ATableBasedDataDomain) {
 
 					String extendedDirName = dirName + dataDomain.getDataDomainID() + "_";
-
+					String dataDomainFileName = extendedDirName + DATA_TABLE_FILE;
+					
 					LoadDataParameters parameters = dataDomain.getLoadDataParameters();
 					String sourceFileName = parameters.getFileName();
 
@@ -206,13 +203,13 @@ public class ProjectSaver {
 							sourceFileName.replace(RECENT_PROJECT_FOLDER, RECENT_PROJECT_FOLDER_TMP);
 
 					try {
-						FileOperations.writeInputStreamToFile(extendedDirName + DATA_TABLE_FILE,
+						FileOperations.writeInputStreamToFile(dataDomainFileName,
 							GeneralManager.get().getResourceLoader().getResource(sourceFileName));
 					}
 					catch (FileNotFoundException e) {
 						throw new IllegalStateException("Error saving project file", e);
 					}
-
+					
 					ATableBasedDataDomain setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
 
 					for (String type : setBasedDataDomain.getTable().getRegisteredRecordVATypes()) {
@@ -242,6 +239,11 @@ public class ProjectSaver {
 				String fileName = dirName + BASIC_INFORMATION_FILE;
 				marshaller.marshal(GeneralManager.get().getBasicInfo(), new File(fileName));
 			}
+			
+			DataDomainList dataDomainList = new DataDomainList();
+			dataDomainList.setDataDomains(dataDomains);
+
+			marshaller.marshal(dataDomainList, dataDomainFile);
 		}
 		catch (JAXBException ex) {
 			throw new RuntimeException("Error saving project files (xml serialization)", ex);

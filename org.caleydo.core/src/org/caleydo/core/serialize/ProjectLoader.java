@@ -139,6 +139,10 @@ public class ProjectLoader {
 
 					String extendedDirName = dirName + dataDomain.getDataDomainID() + "_";
 
+					// Overwrite filename with nwe one in caleydo project (data.csv)
+					dataDomain.setFileName(extendedDirName + ProjectSaver.DATA_TABLE_FILE);
+					dataDomain.getLoadDataParameters().setFileName(extendedDirName + ProjectSaver.DATA_TABLE_FILE);
+					
 					DataDomainSerializationData dataInitializationData = new DataDomainSerializationData();
 
 					HashMap<String, RecordVirtualArray> recordVAMap =

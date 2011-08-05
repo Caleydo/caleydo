@@ -178,29 +178,31 @@ public class TabularAsciiDataReader
 		// Init progress bar
 		swtGuiManager.setProgressBarText("Load data file " + this.getFileName());
 
-		String sLine;
+		String line;
 		String tempToken;
 		int columnIndex = 0;
 		float fProgressBarFactor = 100f / iStopParsingAtLine;
 
 		int max = iStopParsingAtLine - parsingStartLine + 1;
 
-		while ((sLine = bufferReader.readLine()) != null && lineInFile <= iStopParsingAtLine) {
+		while ((line = bufferReader.readLine()) != null && lineInFile <= iStopParsingAtLine) {
+			
 			// Check if line should be ignored
-			if (lineInFile < this.parsingStartLine) {
+			if (lineInFile < this.parsingStartLine || line.isEmpty()) {
 				lineInFile++;
 				continue;
 			}
 
 			// Replace empty cells with NaN
-			sLine = sLine.replace(tokenSeperator + tokenSeperator, tokenSeperator + "NaN" + tokenSeperator);
-//			sLine = sLine.replace(tokenSeperator + System.getProperty("line.separator"), tokenSeperator + "NaN" + System.getProperty("line.separator"));
+			line = line.replace(tokenSeperator + tokenSeperator, tokenSeperator + "NaN" + tokenSeperator);
+//			line = line.replace(tokenSeperator + System.getProperty("line.separator"), tokenSeperator + "NaN" + System.getProperty("line.separator"));
+			
 			// Take care of empty cells in first column because they are not embedded between two token
 			// separators
-			if (sLine.substring(0, 1).equals(tokenSeperator))
-				sLine = "NaN" + sLine;
+			if (line.substring(0, 1).equals(tokenSeperator))
+				line = "NaN" + line;
 
-			StringTokenizer strTokenLine = new StringTokenizer(sLine, tokenSeperator);
+			StringTokenizer strTokenLine = new StringTokenizer(line, tokenSeperator);
 
 			columnIndex = 0;
 			int intIndex = 0;
