@@ -151,6 +151,8 @@ public class Zoomer
 		float x = parentLayout.getSizeScaledX();
 		float y = parentLayout.getSizeScaledY();
 
+//		System.out.println(currentZoomScale);
+		
 		if (currentZoomScale == 1.0f) {
 			relativeViewTranlateX = 0;
 			relativeViewTranlateY = 0;
@@ -337,5 +339,4 @@ public class Zoomer
 		hScrollBarLayoutManager.updateLayout();
 		vScrollBarLayoutManager.updateLayout();
 	}
-
 }

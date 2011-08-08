@@ -48,7 +48,7 @@
 
 	<Cmd type="CREATE_ID_CATEGORY" detail="EXPERIMENT" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="STORAGE" attrib1="EXPERIMENT"
+	<Cmd type="CREATE_ID_TYPE" detail="DIMENSION" attrib1="EXPERIMENT"
 		attrib2="STRING" />
 
 	<!-- TODO this should created dynamically when creating a new tree! -->

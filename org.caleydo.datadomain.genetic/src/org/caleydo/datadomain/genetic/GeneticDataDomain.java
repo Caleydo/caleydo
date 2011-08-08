@@ -78,7 +78,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
 		primaryRecordMappingType = IDType.getIDType("DAVID");
 		humanReadableRecordIDType = IDType.getIDType("GENE_SYMBOL");
-		humanReadableDimensionIDType = IDType.getIDType("STORAGE");
+		humanReadableDimensionIDType = IDType.getIDType("DIMENSION");
 
 		pathwayViewerMode = false;
 		recordLabelSingular = "gene";

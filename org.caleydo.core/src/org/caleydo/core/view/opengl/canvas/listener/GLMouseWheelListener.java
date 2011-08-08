@@ -26,5 +26,4 @@ public class GLMouseWheelListener
 	public void mouseWheelMoved(MouseWheelEvent event) {
 		handler.handleMouseWheel(event.getWheelRotation(), event.getPoint());
 	}
-
 }

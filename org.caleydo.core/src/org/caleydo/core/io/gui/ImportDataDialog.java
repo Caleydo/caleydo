@@ -87,8 +87,7 @@ public class ImportDataDialog
 
 	private ATableBasedDataDomain dataDomain = null;
 
-	// FIXME: this is never set to false. for loading general data this needs to be table.
-	private boolean isGenetic = true;
+	private boolean isGenetic = false;
 
 	public ImportDataDialog(Shell parentShell) {
 		super(parentShell);
@@ -96,18 +95,23 @@ public class ImportDataDialog
 		this.dataDomain =
 			(ATableBasedDataDomain) DataDomainManager.get()
 				.createDataDomain("org.caleydo.datadomain.genetic");
+		
+		isGenetic = true;
 	}
 
 	public ImportDataDialog(Shell parentShell, IDataDomain dataDomain) {
 		super(parentShell);
 		this.dataDomain = (ATableBasedDataDomain) dataDomain;
+
+		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
+			isGenetic = true;
 	}
 
 	public ImportDataDialog(Shell parentShell, String inputFile, IDataDomain dataDomain) {
 		this(parentShell, dataDomain);
 		this.inputFile = inputFile;
 	}
-
+	
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
@@ -189,9 +193,6 @@ public class ImportDataDialog
 				txtFileName.setText(fileName);
 
 				createDataPreviewTable("\t");
-
-//				if (isGenetic)
-//					determineFileIDType();
 			}
 		});
 
@@ -737,9 +738,10 @@ public class ImportDataDialog
 			}
 		}
 
-		if (isGenetic) {
+		if (isGenetic)
 			loadDataParameters.setFileIDType(idTypes.get(idCombo.getSelectionIndex()));
-		}
+		else 
+			loadDataParameters.setFileIDType(dataDomain.getHumanReadableRecordIDType());
 
 		loadDataParameters.setMathFilterMode(mathFilterMode);
 		loadDataParameters.setIsDataHomogeneous(buttonHomogeneous.getSelection());

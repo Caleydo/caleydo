@@ -16,7 +16,7 @@ public class DimensionVirtualArray
 	extends VirtualArray<DimensionVirtualArray, DimensionVADelta, DimensionGroupList> {
 
 	public DimensionVirtualArray() {
-		super("STORAGE");
+		super("DIMENSION");
 	}
 
 	/**
@@ -45,12 +45,12 @@ public class DimensionVirtualArray
 	 * Creates a new group list based on the cluster nodes supplied and sets it to the group list memeber of
 	 * this virtual array
 	 * 
-	 * @param iAlClusterNodes
+	 * @param clusterNodes
 	 *            the list of cluster nodes on which the group list is based
 	 * @return a reference to the local groupList variable
 	 */
-	public DimensionGroupList buildNewGroupList(ArrayList<ClusterNode> iAlClusterNodes) {
-		groupList = (DimensionGroupList) buildNewGroupList(new DimensionGroupList(), iAlClusterNodes);
+	public DimensionGroupList buildNewGroupList(ArrayList<ClusterNode> clusterNodes) {
+		groupList = (DimensionGroupList) buildNewGroupList(new DimensionGroupList(), clusterNodes);
 		return groupList;
 	}
 }

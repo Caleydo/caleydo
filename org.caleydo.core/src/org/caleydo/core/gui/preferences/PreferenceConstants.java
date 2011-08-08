@@ -16,12 +16,6 @@ public class PreferenceConstants {
 	public static final String FIRST_START = "firstStart";
 	public static final String VERSION = "version";
 
-	// Project mode
-	// public static final String GENETIC_DATA_MODE = "gene";
-	// public static final String UNSPECIFIED_DATA_MODE = "general";
-	// public static final String COLLABORATION_DATA_MODE = "collaboration";
-	// public static final String LOAD_PROJECT_MODE = "load_project";
-
 	// Pathway
 	public static final String PATHWAY_DATA_OK = "pathwayDataOK";
 	public static final String LAST_CHOSEN_PATHWAY_DATA_SOURCES = "lastLoadedPathwayDataSources";

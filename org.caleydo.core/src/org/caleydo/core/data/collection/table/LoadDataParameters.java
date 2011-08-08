@@ -33,11 +33,11 @@ public class LoadDataParameters {
 	/** path to main data file */
 	private String fileName;
 
-	/** path to gene-cluster-tree file */
-	private String geneTreeFileName;
+	/** path to record-cluster-tree file */
+	private String recordTreeFileName;
 
-	/** path to experiment-cluster-tree file */
-	private String experimentsFileName;
+	/** path to dimension-cluster-tree file */
+	private String dimensioTreenFileName;
 
 	/** TODO doc */
 	private String inputPattern;
@@ -77,8 +77,8 @@ public class LoadDataParameters {
 
 	public LoadDataParameters() {
 		this.fileName = null;
-		this.geneTreeFileName = null;
-		this.experimentsFileName = null;
+		this.recordTreeFileName = null;
+		this.dimensioTreenFileName = null;
 		this.inputPattern = "";
 		this.dimensionLabels = new ArrayList<String>();
 		this.delimiter = "";
@@ -113,19 +113,19 @@ public class LoadDataParameters {
 	}
 
 	public String getGeneTreeFileName() {
-		return geneTreeFileName;
+		return recordTreeFileName;
 	}
 
 	public void setGeneTreeFileName(String geneTreeFileName) {
-		this.geneTreeFileName = geneTreeFileName;
+		this.recordTreeFileName = geneTreeFileName;
 	}
 
 	public String getExperimentsFileName() {
-		return experimentsFileName;
+		return dimensioTreenFileName;
 	}
 
 	public void setExperimentsFileName(String experimentsFileName) {
-		this.experimentsFileName = experimentsFileName;
+		this.dimensioTreenFileName = experimentsFileName;
 	}
 
 	public String getInputPattern() {

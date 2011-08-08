@@ -48,10 +48,10 @@ public class DataTableUtils {
 	public static final String DATA_FILE_PREFIX = "setfile";
 
 	/** prefix for temporary gene-tree--file */
-	public static final String CONTENT_TREE_FILE_PREFIX = "contenttree";
+	public static final String RECORD_TREE_FILE_PREFIX = "recordtree";
 
 	/** prefix for temporary experiment-tree-file */
-	public static final String STORAGE_TREE_FILE_PREFIX = "dimensiontree";
+	public static final String DIMENSION_TREE_FILE_PREFIX = "dimensiontree";
 
 	/**
 	 * Loads the set-file as specified in the {@link IDataDomain}'s {@link LoadDataParameters} and stores the
@@ -90,7 +90,7 @@ public class DataTableUtils {
 	 * @param data
 	 *            set-data to save
 	 */
-	public static void saveSetFile(LoadDataParameters parameters, byte[] data) {
+	public static void saveTableFile(LoadDataParameters parameters, byte[] data) {
 		File homeDir = new File(GeneralManager.CALEYDO_HOME_PATH);
 		File setFile;
 		try {
@@ -146,11 +146,10 @@ public class DataTableUtils {
 
 		ArrayList<Integer> dimensionIds = null;
 		boolean createDimensionsFromExistingIDs = false;
-		
+
 		if (loadDataParameters.getDimensionIds() == null)
 			dimensionIds = new ArrayList<Integer>();
-		else
-		{
+		else {
 			dimensionIds = loadDataParameters.getDimensionIds();
 			createDimensionsFromExistingIDs = true;
 		}
@@ -182,10 +181,10 @@ public class DataTableUtils {
 					dimensionLabel = dimensionLabelIterator.next();
 					NumericalDimension dimension = (NumericalDimension) cmdCreateDimension.getCreatedObject();
 					dimension.setLabel(dimensionLabel);
-					
+
 					if (!createDimensionsFromExistingIDs)
 						dimensionIds.add(dimension.getID());
-						
+
 					break;
 				case STRING:
 					cmdCreateDimension =
@@ -204,7 +203,7 @@ public class DataTableUtils {
 					NominalDimension<?> nominalDimension =
 						(NominalDimension<?>) cmdCreateDimension.getCreatedObject();
 					nominalDimension.setLabel(dimensionLabel);
-					
+
 					if (!createDimensionsFromExistingIDs)
 						dimensionIds.add(nominalDimension.getID());
 
@@ -236,7 +235,7 @@ public class DataTableUtils {
 		LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 		ArrayList<Integer> dimensionIDs = loadDataParameters.getDimensionIds();
 
-		// Create SET
+		// Create table
 		CmdDataCreateTable cmdCreateSet =
 			(CmdDataCreateTable) GeneralManager.get().getCommandManager()
 				.createCommandByType(CommandType.CREATE_DATA_TABLE);
@@ -249,30 +248,15 @@ public class DataTableUtils {
 			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager()
 				.createCommandByType(CommandType.LOAD_LOOKUP_TABLE_FILE);
 
-		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
-			String lookupTableInfo =
-				loadDataParameters.getFileIDTypeName() + "_2_" + dataDomain.getRecordIDType().getTypeName()
-					+ " REVERSE";
+		String lookupTableInfo =
+			loadDataParameters.getFileIDTypeName() + "_2_" + dataDomain.getRecordIDType().getTypeName()
+				+ " REVERSE";
 
-			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
-				loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
-				loadDataParameters.getDelimiter(), "");
+		cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
+			loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
+			loadDataParameters.getDelimiter(), "");
 
-			cmdLoadLookupTableFile.doCommand();
-		}
-		// FIXME: general data loading (non genetic)
-		// else if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
-		// String lookupTableInfo =
-		// loadDataParameters.getFileIDTypeName() + "_2_" + dataDomain.getContentIDType().getTypeName()
-		// + " REVERSE";
-		//
-		// cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
-		// loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
-		// loadDataParameters.getDelimiter(), "");
-		// }
-		// else {
-		// throw new IllegalStateException("Not implemented for " + dataDomain);
-		// }
+		cmdLoadLookupTableFile.doCommand();
 
 		// --------- data loading ---------------
 
@@ -333,7 +317,7 @@ public class DataTableUtils {
 	 *            {@link DataTable} to create the gene-cluster information of
 	 * @return xml-document representing the gene-cluster information
 	 */
-	public static String getGeneClusterXml(DataTable table) {
+	public static String getRecordClusterXml(DataTable table) {
 		String xml = null;
 
 		try {
@@ -356,7 +340,7 @@ public class DataTableUtils {
 	 *            {@link DataTable} to create the experiment-cluster information of
 	 * @return XML-document representing the experiment-cluster information
 	 */
-	public static String getExperimentClusterXml(DataTable table) {
+	public static String getDimensionClusterXml(DataTable table) {
 		String xml = null;
 
 		try {
@@ -408,7 +392,7 @@ public class DataTableUtils {
 		File homeDir = new File(GeneralManager.CALEYDO_HOME_PATH);
 		File geneFile;
 		try {
-			geneFile = File.createTempFile(CONTENT_TREE_FILE_PREFIX, "xml", homeDir);
+			geneFile = File.createTempFile(RECORD_TREE_FILE_PREFIX, "xml", homeDir);
 			parameters.setGeneTreeFileName(geneFile.getCanonicalPath());
 		}
 		catch (IOException ex) {
@@ -429,7 +413,7 @@ public class DataTableUtils {
 		File homeDir = new File(GeneralManager.CALEYDO_HOME_PATH);
 		File expFile;
 		try {
-			expFile = File.createTempFile(STORAGE_TREE_FILE_PREFIX, "xml", homeDir);
+			expFile = File.createTempFile(DIMENSION_TREE_FILE_PREFIX, "xml", homeDir);
 			parameters.setExperimentsFileName(expFile.getCanonicalPath());
 		}
 		catch (IOException ex) {
@@ -504,9 +488,9 @@ public class DataTableUtils {
 	 *            Determines how the data is visualized. For options see {@link ExternalDataRepresentation}
 	 * @param bIsSetHomogeneous
 	 *            Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
-	 *            maximum and minimum, meaning that all dimensions in the set contain equal data. If false, each
-	 *            dimension is treated separately, has it's own min and max etc. Sets that contain nominal data
-	 *            MUST be inhomogeneous.
+	 *            maximum and minimum, meaning that all dimensions in the set contain equal data. If false,
+	 *            each dimension is treated separately, has it's own min and max etc. Sets that contain
+	 *            nominal data MUST be inhomogeneous.
 	 */
 	public static void setExternalDataRepresentation(DataTable table,
 		ExternalDataRepresentation externalDataRep, boolean isSetHomogeneous) {
@@ -557,7 +541,8 @@ public class DataTableUtils {
 	public static void setDimensionGroupList(DataTable table, String vaType, int[] groupInfo) {
 		int cluster = 0, cnt = 0;
 
-		DimensionGroupList dimensionGroupList = table.getDimensionData(vaType).getDimensionVA().getGroupList();
+		DimensionGroupList dimensionGroupList =
+			table.getDimensionData(vaType).getDimensionVA().getGroupList();
 		dimensionGroupList.clear();
 
 		for (int i = 0; i < groupInfo.length; i++) {
@@ -611,7 +596,8 @@ public class DataTableUtils {
 
 		int group = 0;
 
-		DimensionGroupList dimensionGroupList = table.getDimensionData(vaType).getDimensionVA().getGroupList();
+		DimensionGroupList dimensionGroupList =
+			table.getDimensionData(vaType).getDimensionVA().getGroupList();
 
 		dimensionGroupList.get(group).setRepresentativeElementIndex(0);
 		group++;

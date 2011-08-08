@@ -131,7 +131,7 @@ public class LookupTableLoader
 										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											iLineInFile - parsingStartLine);
 									}
-									else if (mappingType.getFromIDType().getTypeName().equals("UNSPECIFIED")) {
+									else if (mappingType.getFromIDType().getTypeName().contains("UNSPECIFIED")) {
 										genomeIdManager.getMap(mappingType).put(buffer,
 											iLineInFile - parsingStartLine);
 									}

@@ -8,6 +8,7 @@ import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.system.FileOperations;
+import org.eclipse.jface.window.Window;
 
 /**
  * Startup procedure for project wizard.
@@ -37,7 +38,11 @@ public class GenericGUIStartupProcedure
 	public void execute() {
 		super.execute();
 
-		new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(), dataDomain);
+		ImportDataDialog dialog =
+			new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(), dataDomain);
+
+		if (Window.CANCEL == dialog.open())
+			StartupProcessor.get().shutdown();
 	}
 
 	@Override
