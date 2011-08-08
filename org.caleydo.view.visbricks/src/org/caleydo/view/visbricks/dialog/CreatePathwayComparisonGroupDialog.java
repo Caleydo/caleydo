@@ -109,11 +109,6 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 		parent.setLayout(new GridLayout());
 
 		GridData data = new GridData();
-		// data.grabExcessHorizontalSpace = true;
-		// data.grabExcessVerticalSpace = true;
-		// data.horizontalAlignment = GridData.FILL;
-		// Composite composite = new Composite(parent, SWT.NONE);
-		// composite.setLayoutData(data);
 		GridLayout layout = new GridLayout(1, true);
 
 		parent.setLayout(layout);
@@ -192,9 +187,6 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 			return;
 
 		pathwayTable.removeAll();
-		// for(TableItem item : pathwayTable.getItems()) {
-		// item.dispose();
-		// }
 
 		for (PathwayGraph pathway : pathways) {
 			TableItem item = new TableItem(pathwayTable, SWT.NONE);
@@ -258,6 +250,14 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 
 	public IDataDomain getPathwayDataDomain() {
 		return pathwayDataDomain;
+	}
+
+	public void setSourceVA(RecordVirtualArray sourceVA) {
+		this.sourceVA = sourceVA;
+	}
+
+	public RecordVirtualArray getSourceVA() {
+		return sourceVA;
 	}
 
 }

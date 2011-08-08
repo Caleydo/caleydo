@@ -49,6 +49,7 @@ import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
 import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.visbricks.brick.contextmenu.CreatePathwayGroupFromDataItem;
 import org.caleydo.view.visbricks.brick.data.IBrickData;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
@@ -59,8 +60,11 @@ import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
 import org.caleydo.view.visbricks.dialog.CreatePathwayComparisonGroupDialog;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
+import org.caleydo.view.visbricks.event.OpenCreatePathwayGroupDialogEvent;
+import org.caleydo.view.visbricks.listener.OpenCreatePathwayGroupDialogListener;
 import org.caleydo.view.visbricks.listener.RelationsUpdatedListener;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.viewers.ContentViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -103,6 +107,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	private RelationsUpdatedListener relationsUpdateListener;
 	private SelectionUpdateListener selectionUpdateListener;
+	private OpenCreatePathwayGroupDialogListener openCreatePathwayGroupDialogListener;
 
 	private BrickState expandedBrickState;
 
@@ -247,6 +252,8 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 			@Override
 			public void rightClicked(Pick pick) {
 
+				contextMenuCreator.addContextMenuItem(new CreatePathwayGroupFromDataItem(dataDomain, recordVA));
+
 				HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
 
 				for (Integer gene : recordVA) {
@@ -294,38 +301,6 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 					if (hashPathwaysToOccurences.get(pathway) >= 2)
 						pathways.add(pathway);
 				}
-
-				getParentComposite().getDisplay().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						Shell shell = new Shell();
-//						shell.setSize(500, 800);
-						CreatePathwayComparisonGroupDialog dialog = new CreatePathwayComparisonGroupDialog(
-								shell);
-						dialog.create();
-						dialog.setSourceDataDomain(dataDomain);
-						dialog.setBlockOnOpen(true);
-						
-						if(dialog.open() == Status.OK) {
-							AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
-							ArrayList<ADimensionGroupData> dimensionGroupData = new ArrayList<ADimensionGroupData>();
-							// FIXME: DataDomainByType may be not appropriate
-//							IDataDomain pathwayDataDomain = DataDomainManager.get()
-//									.getDataDomainByType("org.caleydo.datadomain.pathway");
-							PathwayDimensionGroupData pathwayDimensionGroupData = dialog.getPathwayDimensionGroupData();
-
-							IDataDomain pathwayDataDomain = dialog.getPathwayDataDomain();
-							pathwayDataDomain.addDimensionGroup(pathwayDimensionGroupData);
-
-							dimensionGroupData.add(pathwayDimensionGroupData);
-							event.setDimensionGroupData(dimensionGroupData);
-							event.setSender(this);
-							eventPublisher.triggerEvent(event);
-						}
-					}
-				});
-
-				
 
 			}
 
@@ -982,6 +957,11 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 				.getDataDomainID());
 		eventPublisher.addListener(SelectionUpdateEvent.class,
 				selectionUpdateListener);
+		
+		openCreatePathwayGroupDialogListener = new OpenCreatePathwayGroupDialogListener();
+		openCreatePathwayGroupDialogListener.setHandler(this);
+		eventPublisher.addListener(OpenCreatePathwayGroupDialogEvent.class,
+				openCreatePathwayGroupDialogListener);
 
 	}
 
@@ -996,6 +976,11 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
+		}
+		
+		if (openCreatePathwayGroupDialogListener != null) {
+			eventPublisher.removeListener(openCreatePathwayGroupDialogListener);
+			openCreatePathwayGroupDialogListener = null;
 		}
 
 		// if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
@@ -1230,6 +1215,43 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 
 	public void setBrickConfigurer(IBrickConfigurer brickConfigurer) {
 		this.brickConfigurer = brickConfigurer;
+	}
+
+	public void openCreatePathwayGroupDialog(final IDataDomain sourceDataDomain,
+			final RecordVirtualArray sourceRecordVA) {
+		getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				Shell shell = new Shell();
+				// shell.setSize(500, 800);
+				CreatePathwayComparisonGroupDialog dialog = new CreatePathwayComparisonGroupDialog(
+						shell);
+				dialog.create();
+				dialog.setSourceDataDomain(sourceDataDomain);
+				dialog.setSourceVA(sourceRecordVA);
+				dialog.setBlockOnOpen(true);
+
+				if (dialog.open() == Status.OK) {
+					AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
+					ArrayList<ADimensionGroupData> dimensionGroupData = new ArrayList<ADimensionGroupData>();
+					// FIXME: DataDomainByType may be not appropriate
+					// IDataDomain pathwayDataDomain = DataDomainManager.get()
+					// .getDataDomainByType("org.caleydo.datadomain.pathway");
+					PathwayDimensionGroupData pathwayDimensionGroupData = dialog
+							.getPathwayDimensionGroupData();
+
+					IDataDomain pathwayDataDomain = dialog
+							.getPathwayDataDomain();
+					pathwayDataDomain
+							.addDimensionGroup(pathwayDimensionGroupData);
+
+					dimensionGroupData.add(pathwayDimensionGroupData);
+					event.setDimensionGroupData(dimensionGroupData);
+					event.setSender(this);
+					eventPublisher.triggerEvent(event);
+				}
+			}
+		});
 	}
 
 }

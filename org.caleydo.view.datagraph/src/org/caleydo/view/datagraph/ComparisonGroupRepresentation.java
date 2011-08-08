@@ -4,6 +4,7 @@ import java.awt.geom.Point2D;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -21,6 +22,7 @@ public class ComparisonGroupRepresentation implements IDraggable {
 	private float prevDraggingMouseX;
 	private float prevDraggingMouseY;
 	private Point2D draggingPosition;
+	private SelectionType selectionType;
 
 	public ComparisonGroupRepresentation(
 			ADimensionGroupData dimensionGroupData, AGLView view,
@@ -40,6 +42,20 @@ public class ComparisonGroupRepresentation implements IDraggable {
 		gl.glVertex3f(x, y, 0.1f);
 		gl.glVertex3f(0, y, 0.1f);
 		gl.glEnd();
+
+		if (selectionType != null && selectionType != SelectionType.NORMAL) {
+			gl.glColor4fv(selectionType.getColor(), 0);
+			gl.glPushAttrib(GL2.GL_LINE_BIT);
+			gl.glLineWidth(3);
+			gl.glBegin(GL2.GL_LINE_LOOP);
+			gl.glVertex3f(0, 0, 0.1f);
+			gl.glVertex3f(x, 0, 0.1f);
+			gl.glVertex3f(x, y, 0.1f);
+			gl.glVertex3f(0, y, 0.1f);
+			gl.glEnd();
+			gl.glPopAttrib();
+		}
+
 		gl.glPushMatrix();
 		gl.glTranslatef(0, y, 0.1f);
 		gl.glRotatef(-90, 0, 0, 1);
@@ -48,7 +64,6 @@ public class ComparisonGroupRepresentation implements IDraggable {
 				0, 0, y, x);
 		gl.glPopMatrix();
 
-		gl.glPopName();
 	}
 
 	public void setDimensionGroupData(ADimensionGroupData dimensionGroupData) {
@@ -120,7 +135,15 @@ public class ComparisonGroupRepresentation implements IDraggable {
 	@Override
 	public void handleDrop(GL2 gl, float mouseCoordinateX,
 			float mouseCoordinateY) {
-		draggingPosition.setLocation(0,0);
+		draggingPosition.setLocation(0, 0);
+	}
+
+	public void setSelectionType(SelectionType selectionType) {
+		this.selectionType = selectionType;
+	}
+
+	public SelectionType getSelectionType() {
+		return selectionType;
 	}
 
 }

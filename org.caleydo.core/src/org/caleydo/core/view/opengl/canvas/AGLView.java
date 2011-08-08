@@ -567,9 +567,9 @@ public abstract class AGLView
 		Set<String> hitTypes = pickingManager.getHitTypes(uniqueID);
 		if (hitTypes == null)
 			return;
-		
+
 		contextMenuCreator.clear();
-		
+
 		for (String pickingType : hitTypes) {
 
 			ArrayList<Pick> alHits = null;
@@ -588,18 +588,25 @@ public abstract class AGLView
 
 					handlePicking(pickingType, ePickingMode, externalID, tempPick);
 					// FIXME: This is for legacy support -> picking listeners should be used
+
 					try {
-						handlePickingEvents(PickingType.valueOf(pickingType), ePickingMode, externalID,
-							tempPick);
+						PickingType type = PickingType.valueOf(pickingType);
+						try {
+							handlePickingEvents(type, ePickingMode, externalID, tempPick);
+						}
+						catch (Exception e) {
+							System.out.println("ERROR in picking caught:" + e.toString());
+						}
 					}
-					catch (Exception e) {
-						System.out.println("ERROR in picking caught:" + e.toString());
+					catch (IllegalArgumentException e) {
 					}
+					
 					pickingManager.flushHits(uniqueID, pickingType);
+
 				}
 			}
 		}
-		
+
 		if (contextMenuCreator.hasMenuItems())
 			contextMenuCreator.open(this);
 	}
@@ -834,6 +841,7 @@ public abstract class AGLView
 	 *            the pick object which can be useful to retrieve for example the mouse position when the pick
 	 *            occurred
 	 */
+	@Deprecated
 	abstract protected void handlePickingEvents(final PickingType pickingType, final PickingMode pickingMode,
 		final int pickingID, final Pick pick);
 
@@ -1282,7 +1290,7 @@ public abstract class AGLView
 	public PixelGLConverter getPixelGLConverter() {
 		return pixelGLConverter;
 	}
-	
+
 	/**
 	 * Returns the instance that is responsible for creating the context menu.
 	 */

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.manager.picking.APickingListener;
 import org.caleydo.core.manager.picking.Pick;
@@ -66,12 +67,15 @@ public class ComparisonGroupOverviewRenderer extends LayoutRenderer {
 				}
 				if (draggedComparisonGroupRepresentation == null)
 					return;
+				
+				draggedComparisonGroupRepresentation.setSelectionType(SelectionType.SELECTION);
 
 				dragAndDropController.clearDraggables();
 				dragAndDropController.setDraggingStartPosition(pick
 						.getPickedPoint());
 				dragAndDropController
 						.addDraggable(draggedComparisonGroupRepresentation);
+				view.setDisplayListDirty();
 
 			}
 
