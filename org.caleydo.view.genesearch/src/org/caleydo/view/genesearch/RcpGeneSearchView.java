@@ -61,8 +61,7 @@ import org.eclipse.ui.PlatformUI;
 public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 		IDataDomainBasedView<GeneticDataDomain> {
 
-	private GeneticDataDomain dataDomain = (GeneticDataDomain) DataDomainManager
-			.get().getDataDomainByID("org.caleydo.datadomain.genetic");
+	private GeneticDataDomain dataDomain;
 
 	public static final String VIEW_TYPE = "org.caleydo.view.genesearch";
 
@@ -115,6 +114,9 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 	@Override
 	public void createPartControl(Composite parent) {
 
+		dataDomain = (GeneticDataDomain) DataDomainManager.get().getDataDomainByID(
+				serializedView.getDataDomainID());
+		
 		generalManager = GeneralManager.get();
 		idMappingManager = generalManager.getIDMappingManager();
 
@@ -268,9 +270,9 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 
-					if (pathwayContainingGeneTable == null
-							|| pathwayContainingGeneTable.getItemCount() <= 0)
-						return;
+//					if (pathwayContainingGeneTable == null
+//							|| pathwayContainingGeneTable.getItemCount() <= 0)
+//						return;
 
 					// Flush old pathway results
 					for (TableItem item : pathwayContainingGeneTable.getItems())
@@ -426,33 +428,33 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 		pathwayTable.getColumn(1).pack();
 	}
 
-	private void searchForGene(final String sSearchQuery) {
+	private void searchForGene(final String searchQuery) {
 
 		// Flush old pathway results
 		for (TableItem item : geneTable.getItems())
 			item.dispose();
 
-		Pattern pattern = Pattern.compile(sSearchQuery, Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile(searchQuery, Pattern.CASE_INSENSITIVE);
 		Matcher regexMatcher;
-		ArrayList<Integer> iArDavidGeneResults = new ArrayList<Integer>();
+		ArrayList<Integer> davidGeneResults = new ArrayList<Integer>();
 
 		if (useGeneSymbol.getSelection()) {
 			for (Object sGeneSymbol : idMappingManager.getMap(
 					MappingType.getType(geneSymbolIDType, davidIDType)).keySet()) {
 				regexMatcher = pattern.matcher((String) sGeneSymbol);
 				if (regexMatcher.find())
-					iArDavidGeneResults.add((Integer) idMappingManager.getID(geneSymbolIDType,
+					davidGeneResults.add((Integer) idMappingManager.getID(geneSymbolIDType,
 							davidIDType, sGeneSymbol));
 			}
 		}
 
 		if (useGeneEntrezGeneID.getSelection()) {
-			for (Object iEntrezGeneID : idMappingManager.getMap(
+			for (Object entrezGeneID : idMappingManager.getMap(
 					MappingType.getType(entrez, davidIDType)).keySet()) {
-				regexMatcher = pattern.matcher(iEntrezGeneID.toString());
+				regexMatcher = pattern.matcher(entrezGeneID.toString());
 				if (regexMatcher.find())
-					iArDavidGeneResults.add((Integer) idMappingManager.getID(entrez,
-							davidIDType, iEntrezGeneID));
+					davidGeneResults.add((Integer) idMappingManager.getID(entrez,
+							davidIDType, entrezGeneID));
 			}
 		}
 
@@ -461,76 +463,76 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 					MappingType.getType(refseqMrnaIDTYpe, davidIDType)).keySet()) {
 				regexMatcher = pattern.matcher((String) refSeqMrna);
 				if (regexMatcher.find())
-					iArDavidGeneResults.addAll((Collection<? extends Integer>) idMappingManager.getID(refseqMrnaIDTYpe,
+					davidGeneResults.addAll((Collection<? extends Integer>) idMappingManager.getID(refseqMrnaIDTYpe,
 							davidIDType, refSeqMrna));
 			}
 		}
 
 		if (useGeneName.getSelection()) {
-			for (Object sGeneName : idMappingManager.getMap(
+			for (Object geneName : idMappingManager.getMap(
 					MappingType.getType(geneNameIDType, davidIDType)).keySet()) {
-				regexMatcher = pattern.matcher((String) sGeneName);
+				regexMatcher = pattern.matcher((String) geneName);
 				if (regexMatcher.find())
-					iArDavidGeneResults.add((Integer) generalManager
-							.getIDMappingManager().getID(geneNameIDType, davidIDType, sGeneName));
+					davidGeneResults.add((Integer) generalManager
+							.getIDMappingManager().getID(geneNameIDType, davidIDType, geneName));
 			}
 		}
 
 		// Fill results in table
-		for (Integer iDavidID : iArDavidGeneResults) {
+		for (Integer davidID : davidGeneResults) {
 
 			// When gene filter is on and gene is not contained in any pathway
 			// -> ignore
 			if (showOnlyGenesContainedInAnyPathway.getSelection()
-					&& getPathwaysContainingGene(iDavidID).size() == 0)
+					&& getPathwaysContainingGene(davidID).size() == 0)
 				continue;
 
 			String sRefSeqIDs = "";
 
 			try {
-				for (Object sRefSeqID : idMappingManager.<Integer, Set<Object>> getID(
-						davidIDType, refseqMrnaIDTYpe, iDavidID)) {
-					sRefSeqIDs += sRefSeqID + " ";
+				for (Object refSeqID : idMappingManager.<Integer, Set<Object>> getID(
+						davidIDType, refseqMrnaIDTYpe, davidID)) {
+					sRefSeqIDs += refSeqID + " ";
 				}
 			} catch (NullPointerException npe) {
 				sRefSeqIDs = "<No Mapping>";
 			}
 
-			String sEntrezGeneID = "";
-			Integer iEntrezGeneID = idMappingManager.getID(davidIDType, entrez, iDavidID);
+			String entrezGeneID = "";
+			Integer iEntrezGeneID = idMappingManager.getID(davidIDType, entrez, davidID);
 			if (iEntrezGeneID == null)
-				sEntrezGeneID = "<No Mapping>";
+				entrezGeneID = "<No Mapping>";
 			else
-				sEntrezGeneID = iEntrezGeneID.toString();
+				entrezGeneID = iEntrezGeneID.toString();
 
-			String sGeneSymbol = idMappingManager.getID(davidIDType, geneSymbolIDType, iDavidID);
-			if (sGeneSymbol == null)
-				sGeneSymbol = "<Unknown>";
+			String geneSymbol = idMappingManager.getID(davidIDType, geneSymbolIDType, davidID);
+			if (geneSymbol == null)
+				geneSymbol = "<Unknown>";
 
-			String sGeneName = idMappingManager.getID(davidIDType, geneNameIDType, iDavidID);
-			if (sGeneName == null)
-				sGeneName = "<Unknown>";
+			String geneName = idMappingManager.getID(davidIDType, geneNameIDType, davidID);
+			if (geneName == null)
+				geneName = "<Unknown>";
 
 			// Determine whether the gene has a valid expression value in the
 			// current data set
-			String sExpressionValueInCurrentDataSet = "NOT FOUND";
+			String expressionValueInCurrentDataSet = "NOT FOUND";
 
 			Set<Integer> setExpIndex = idMappingManager.getIDAsSet(davidIDType,
-					dataDomain.getRecordIDType(), iDavidID);
+					dataDomain.getRecordIDType(), davidID);
 			// h.getExpressionIndicesFromDavid(iDavidID);
 
 			if (setExpIndex != null && setExpIndex.size() > 0)
-				sExpressionValueInCurrentDataSet = "FOUND";
+				expressionValueInCurrentDataSet = "FOUND";
 
 			TableItem item = new TableItem(geneTable, SWT.NULL);
-			item.setText(0, new String(sExpressionValueInCurrentDataSet));
+			item.setText(0, new String(expressionValueInCurrentDataSet));
 			item.setText(1, sRefSeqIDs);
-			item.setText(2, Integer.toString(iDavidID));
-			item.setText(3, sEntrezGeneID);
-			item.setText(4, sGeneSymbol);
-			item.setText(5, sGeneName);
+			item.setText(2, Integer.toString(davidID));
+			item.setText(3, entrezGeneID);
+			item.setText(4, geneSymbol);
+			item.setText(5, geneName);
 
-			item.setData(iDavidID);
+			item.setData(davidID);
 		}
 
 		// Sort gene table using the info whether expression data is available
@@ -761,7 +763,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 
 	private Set<PathwayGraph> getPathwaysContainingGene(int iDavidID) {
 
-		// set to avoid duplicate pathways
+		// set to avoid duplicate pathwaysserializedView
 		Set<PathwayGraph> pathwaysContainingGene = new HashSet<PathwayGraph>();
 
 		PathwayVertexGraphItem pathwayGraphItem = PathwayItemManager.get()
@@ -778,7 +780,6 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 				pathwaysContainingGene.add(pathwayGraph);
 			}
 		}
-
 		return pathwaysContainingGene;
 	}
 
@@ -820,7 +821,6 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 	@Override
 	public void setDataDomain(GeneticDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-
 	}
 
 	@Override

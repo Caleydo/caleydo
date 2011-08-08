@@ -6,9 +6,9 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.serialize.ASerializedView;
 
 /**
- * Serialized <INSERT VIEW NAME> view.
+ * Serialized gene search view.
  * 
- * @author <INSERT_YOUR_NAME>
+ * @author Marc Streit
  */
 @XmlRootElement
 @XmlType
