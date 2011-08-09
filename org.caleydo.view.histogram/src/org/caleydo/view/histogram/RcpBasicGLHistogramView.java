@@ -66,7 +66,6 @@ public class RcpBasicGLHistogramView extends ARcpGLViewPart implements
 	public void createPartControl(Composite parent) {
 
 		minSizeComposite = new MinimumSizeComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
-		// fillToolBar();
 		histoComposite = new Composite(minSizeComposite, SWT.NULL);
 		minSizeComposite.setContent(histoComposite);
 		minSizeComposite.setMinSize(160, 80);

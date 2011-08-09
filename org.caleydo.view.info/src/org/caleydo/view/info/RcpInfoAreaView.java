@@ -106,21 +106,4 @@ public class RcpInfoAreaView extends CaleydoRCPViewPart {
 		serializedView = new SerializedInfoAreaView();
 		determineDataDomain(serializedView);
 	}
-
-	// @Override
-	// public int computePreferredSize(boolean width, int availableParallel, int
-	// availablePerpendicular,
-	// int preferredResult) {
-	// // Set minimum size of the view
-	// if (width == true)
-	// return (int) SearchView.TOOLBAR_WIDTH;
-	//
-	// return (int) SearchView.TOOLBAR_HEIGHT;
-	// }
-
-	// @Override
-	// public int getSizeFlags(boolean width) {
-	// return SWT.MIN;
-	// }
-
 }

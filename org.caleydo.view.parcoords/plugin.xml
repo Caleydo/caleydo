@@ -31,7 +31,7 @@
          point="org.eclipse.ui.commands">
       <command
             defaultHandler="org.caleydo.view.parcoords.command.handler.OpenParCoordsHandler"
-            id="org.caleydo.view.heatmap.command.openparcoords"
+            id="org.caleydo.view.pathway.command.openparcoords"
             name="Parallel Coordinates">
       </command>
    </extension>

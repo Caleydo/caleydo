@@ -45,7 +45,6 @@ public abstract class ARcpGLViewPart
 	@Override
 	public void createPartControl(Composite parent) {
 		minSizeComposite = new MinimumSizeComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
-		// fillToolBar();
 		parentComposite = new Composite(minSizeComposite, SWT.EMBEDDED);
 		minSizeComposite.setContent(parentComposite);
 		minSizeComposite.setMinSize(0, 0);
@@ -54,7 +53,7 @@ public abstract class ARcpGLViewPart
 	}
 
 	public void createPartControlGL() {
-		
+
 		if (frameGL == null) {
 			frameGL = SWT_AWT.new_Frame(parentComposite);
 		}

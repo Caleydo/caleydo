@@ -95,7 +95,8 @@ public class RemoteRenderingToolBarContent extends AToolBarContent {
 		container.setImagePath(PATHWAY_IMAGE_PATH);
 		container.setTitle(PATHWAY_VIEW_TITLE);
 
-		container.setPathwayToolBarMediator(new PathwayToolBarMediator(targetViewData.getDataDomainID()));
+		container.setPathwayToolBarMediator(new PathwayToolBarMediator(targetViewData
+				.getDataDomainID()));
 		container.setTargetViewData((SerializedBucketView) getTargetViewData());
 
 		return container;

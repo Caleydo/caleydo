@@ -95,7 +95,7 @@ public class ImportDataDialog
 		this.dataDomain =
 			(ATableBasedDataDomain) DataDomainManager.get()
 				.createDataDomain("org.caleydo.datadomain.genetic");
-		
+
 		isGenetic = true;
 	}
 
@@ -111,7 +111,7 @@ public class ImportDataDialog
 		this(parentShell, dataDomain);
 		this.inputFile = inputFile;
 	}
-	
+
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
@@ -142,12 +142,12 @@ public class ImportDataDialog
 
 		super.okPressed();
 	}
-	
+
 	@Override
 	protected void cancelPressed() {
 
 		DataDomainManager.get().unregister(dataDomain);
-		
+
 		super.cancelPressed();
 	}
 
@@ -183,12 +183,12 @@ public class ImportDataDialog
 				fileDialog.setFilterPath(filePath);
 				String[] filterExt = { "*.csv", "*.txt", "*.*" };
 				fileDialog.setFilterExtensions(filterExt);
-				
+
 				String fileName = fileDialog.open();
-				
+
 				if (fileName == null)
 					return;
-				
+
 				loadDataParameters.setFileName(fileName);
 				txtFileName.setText(fileName);
 
@@ -218,39 +218,36 @@ public class ImportDataDialog
 			}
 		});
 
-		if (isGenetic) {
+		Group idTypeGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		idTypeGroup.setText("ID type");
+		idTypeGroup.setLayout(new RowLayout());
 
-			Group idTypeGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-			idTypeGroup.setText("ID type");
-			idTypeGroup.setLayout(new RowLayout());
+		idCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
+		idTypes = new ArrayList<IDType>();
 
-			idCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
-			idTypes = new ArrayList<IDType>();
+		HashSet<IDType> tempIDTypes = GeneralManager.get().getIDMappingManager().getIDTypes();
 
-			HashSet<IDType> tempIDTypes = GeneralManager.get().getIDMappingManager().getIDTypes();
-
-			for (IDType idType : tempIDTypes) {
-				if (!idType.isInternalType())
-					idTypes.add(idType);
-			}
-
-			String[] idTypesAsString = new String[idTypes.size()];
-			int index = 0;
-			for (IDType idType : idTypes) {
-				idTypesAsString[index] = idType.getTypeName();
-				index++;
-			}
-			idCombo.setItems(idTypesAsString);
-			idCombo.setEnabled(true);
-			idCombo.select(0);
-			idCombo.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					TableColumn idColumn = previewTable.getColumn(1);
-					idColumn.setText(idCombo.getText());
-				}
-			});
+		for (IDType idType : tempIDTypes) {
+			if (!idType.isInternalType())
+				idTypes.add(idType);
 		}
+
+		String[] idTypesAsString = new String[idTypes.size()];
+		int index = 0;
+		for (IDType idType : idTypes) {
+			idTypesAsString[index] = idType.getTypeName();
+			index++;
+		}
+		idCombo.setItems(idTypesAsString);
+		idCombo.setEnabled(true);
+		idCombo.select(0);
+		idCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				TableColumn idColumn = previewTable.getColumn(1);
+				idColumn.setText(idCombo.getText());
+			}
+		});
 
 		createDelimiterGroup();
 		createFilterGroup();
@@ -657,10 +654,10 @@ public class ImportDataDialog
 			while ((line = file.readLine()) != null) {
 
 				tokenizer = new StringTokenizer(line, sDelimiter, true);
-				
+
 				if (!tokenizer.hasMoreTokens())
 					continue;
-				
+
 				nextToken = tokenizer.nextToken();
 
 				// probably weaks performance
@@ -675,7 +672,7 @@ public class ImportDataDialog
 		catch (IOException ioe) {
 			throw new IllegalStateException("Input/output problem!");
 		}
-		
+
 		if (isGenetic)
 			determineFileIDType();
 	}
@@ -740,7 +737,7 @@ public class ImportDataDialog
 
 		if (isGenetic)
 			loadDataParameters.setFileIDType(idTypes.get(idCombo.getSelectionIndex()));
-		else 
+		else
 			loadDataParameters.setFileIDType(dataDomain.getHumanReadableRecordIDType());
 
 		loadDataParameters.setMathFilterMode(mathFilterMode);

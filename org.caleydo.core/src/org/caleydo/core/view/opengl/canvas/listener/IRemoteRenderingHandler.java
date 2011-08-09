@@ -2,6 +2,7 @@ package org.caleydo.core.view.opengl.canvas.listener;
 
 import org.caleydo.core.manager.event.IListenerOwner;
 
+// FIXME: split up interface. bucket and pathway events should be handled separately.
 public interface IRemoteRenderingHandler
 	extends IListenerOwner {
 

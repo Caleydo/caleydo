@@ -35,13 +35,13 @@ public class ActivateViewListener
 				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.findView("org.caleydo.view.dataflipper") == null) {
 
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.showView("org.caleydo.view.bucket");
-
-				event.setSender(handler);
-
-				// Re-trigger event so that the opened view receives it
-				GeneralManager.get().getEventPublisher().triggerEvent(event);
+//				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+//					.showView("org.caleydo.view.bucket");
+//
+//				event.setSender(handler);
+//
+//				// Re-trigger event so that the opened view receives it
+//				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}
 			else if (event instanceof OpenMatchmakerViewEvent) {
 

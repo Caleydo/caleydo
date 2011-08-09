@@ -218,7 +218,7 @@ public class GLPathway extends AGLView implements
 	@Override
 	public void init(final GL2 gl) {
 		// Check if pathway exists or if it's already loaded
-		if (!pathwayManager.hasItem(pathway.getID()))
+		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
 			return;
 
 		initPathwayData(gl);
@@ -228,10 +228,12 @@ public class GLPathway extends AGLView implements
 	public void displayLocal(final GL2 gl) {
 
 		// Check if pathway exists or if it's already loaded
-		// FIXME: not good because check in every rendered frame
-		if (!pathwayManager.hasItem(pathway.getID()))
+		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
 			return;
-
+		
+		// FIXME - check if already initialized with dirty flag
+		initPathwayData(gl);
+		
 		pickingManager.handlePicking(this, gl);
 		if (bIsDisplayListDirtyLocal) {
 			rebuildPathwayDisplayList(gl, iGLDisplayListIndexLocal);
@@ -360,11 +362,10 @@ public class GLPathway extends AGLView implements
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
-		// generalManager.getLogger().log(
-		// Level.INFO,
-		// "Update called by " + eventTrigger.getClass().getSimpleName()
-		// + ", received in: " + this.getClass().getSimpleName());
 
+		if (pathway == null)
+			return;
+		
 		if (selectionDelta.getIDType() == mappingDataDomain.getDimensionIDType()) {
 			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
 				if (item.getSelectionType() == SelectionType.MOUSE_OVER) {
@@ -477,7 +478,7 @@ public class GLPathway extends AGLView implements
 	}
 
 	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta) {
-
+		
 		ISelectionDelta newSelectionDelta = new SelectionDelta(
 				dataDomain.getPrimaryIDType(), dataDomain.getDavidIDType());
 
@@ -724,7 +725,8 @@ public class GLPathway extends AGLView implements
 					LoadPathwaysByPathwayItem menuItem = new LoadPathwaysByPathwayItem(
 							pathwayManager.searchPathwayByName(
 									tmpVertexGraphItemRep.getName(),
-									EPathwayDatabaseType.KEGG), mappingDataDomain.getDataDomainID());
+									EPathwayDatabaseType.KEGG),
+							mappingDataDomain.getDataDomainID());
 					contextMenuCreator.addContextMenuItem(menuItem);
 
 				} else if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.gene) {
@@ -735,7 +737,8 @@ public class GLPathway extends AGLView implements
 								"Bookmark " + pathwayVertexGraphItem.getId(),
 								dataDomain.getDavidIDType(),
 								pathwayItemManager
-										.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) pathwayVertexGraphItem), dataDomain.getDataDomainID());
+										.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) pathwayVertexGraphItem),
+								dataDomain.getDataDomainID());
 						contextMenuCreator.addContextMenuItem(menuItem);
 					}
 				} else {
@@ -1059,7 +1062,10 @@ public class GLPathway extends AGLView implements
 		SerializedPathwayView serializedForm = new SerializedPathwayView(
 				dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
-		serializedForm.setPathwayID(pathway.getID());
+
+		if (pathway != null)
+			serializedForm.setPathwayID(pathway.getID());
+
 		return serializedForm;
 	}
 

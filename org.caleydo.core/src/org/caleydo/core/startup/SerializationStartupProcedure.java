@@ -10,7 +10,6 @@ import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.serialize.DataDomainSerializationData;
 import org.caleydo.core.serialize.ProjectLoader;
 import org.caleydo.core.serialize.ProjectSaver;
