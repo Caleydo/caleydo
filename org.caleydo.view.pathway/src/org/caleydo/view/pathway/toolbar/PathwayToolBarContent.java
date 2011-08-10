@@ -49,6 +49,7 @@ public class PathwayToolBarContent extends AToolBarContent {
 
 		container.setPathwayToolBarMediator(new PathwayToolBarMediator(targetViewData
 				.getDataDomainID()));
+		container.setTargetViewData(targetViewData);
 
 		return container;
 	}
