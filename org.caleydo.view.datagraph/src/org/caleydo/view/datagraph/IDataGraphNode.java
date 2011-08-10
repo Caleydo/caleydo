@@ -1,6 +1,7 @@
 package org.caleydo.view.datagraph;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -44,4 +45,6 @@ public interface IDataGraphNode extends IDraggable {
 	public void destroy();
 	
 	public void update();
+	
+	public Rectangle2D getBoundingBox();
 }

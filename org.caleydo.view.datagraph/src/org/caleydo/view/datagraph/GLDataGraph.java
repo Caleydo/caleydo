@@ -1,6 +1,9 @@
 package org.caleydo.view.datagraph;
 
+import gleem.linalg.Vec3f;
+
 import java.awt.Rectangle;
+import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainGraph;
@@ -38,6 +42,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.datagraph.bandlayout.AConnectionBandCreator;
 import org.caleydo.view.datagraph.bandlayout.BandInfo;
 import org.caleydo.view.datagraph.bandlayout.ConnectionBandCreatorFactory;
@@ -159,8 +164,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		// allowedViewTypes.add("org.caleydo.view.tabular");
 		// allowedViewTypes.add("org.caleydo.view.bucket");
 
-		Collection<AGLView> views = GeneralManager.get()
-				.getViewManager().getAllGLViews();
+		Collection<AGLView> views = GeneralManager.get().getViewManager()
+				.getAllGLViews();
 
 		for (AGLView view : views) {
 			addView(view);
@@ -356,8 +361,92 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		}
 		renderEdges(gl);
+
+		// renderTestCurve(gl);
+
 		gl.glEndList();
 
+	}
+
+	private void renderTestCurve(GL2 gl) {
+
+		Point2D v0 = new Point2D.Double(0.5, 0.5);
+		Point2D v1 = new Point2D.Double(1, 0.5);
+		Point2D v2 = new Point2D.Double(2, 3);
+		Point2D v3 = new Point2D.Double(2.5, 1);
+
+		computeOneSpline(v0, v0, v1, v2, gl);
+		computeOneSpline(v0, v1, v2, v3, gl);
+		computeOneSpline(v1, v2, v3, v3, gl);
+
+		gl.glPointSize(5);
+		gl.glColor3f(1, 0, 0);
+		gl.glBegin(GL2.GL_POINTS);
+		gl.glVertex2d(v0.getX(), v0.getY());
+		gl.glVertex2d(v1.getX(), v1.getY());
+		gl.glVertex2d(v2.getX(), v2.getY());
+		gl.glVertex2d(v3.getX(), v3.getY());
+		gl.glEnd();
+
+	}
+
+	private void computeOneSpline(Point2D v0, Point2D v1, Point2D v2,
+			Point2D v3, GL2 gl) {
+
+		// double ctrlx1 = (-Math.abs(v0.getX() - v1.getX()) / 4) + v1.getX()
+		// + (Math.abs(v2.getX() - v1.getX()) / 4);
+		// double ctrly1 = (-Math.abs(v0.getY() - v1.getY()) / 4) + v1.getY()
+		// + (Math.abs(v2.getY() - v1.getY()) / 4);
+		// double ctrlx2 = (-Math.abs(v1.getX() - v2.getX()) / 4) + v2.getX()
+		// + (Math.abs(v3.getX() - v2.getX()) / 4);
+		// double ctrly2 = (-Math.abs(v1.getY() - v2.getY()) / 4) + v2.getY()
+		// + (Math.abs(v3.getY() - v2.getY()) / 4);
+
+		// double dx = Math.abs(v1.getX() - v2.getX())
+		// * Math.abs(v1.getX() - v2.getX())
+		// + Math.abs(v1.getY() - v2.getY())
+		// * Math.abs(v1.getY() - v2.getY());
+		// double dy = dx;
+		//
+		// double ctrlx1 = (-v0.getX() / dx) + v1.getX() + v2.getX() / dx;
+		// double ctrly1 = (-v0.getY() / dy) + v1.getY() + v2.getY() / dy;
+		//
+		// double ctrlx2 = (v1.getX() / dx) + v2.getX() - v3.getX() / dx;
+		// double ctrly2 = (v1.getY() / dy) + v2.getY() - v3.getY() / dy;
+
+		double k = 12;
+		double ctrlx1 = (-v0.getX() / k) + v1.getX() + v2.getX() / k;
+		double ctrly1 = (-v0.getY() / k) + v1.getY() + v2.getY() / k;
+
+		double ctrlx2 = (v1.getX() / k) + v2.getX() - v3.getX() / k;
+		double ctrly2 = (v1.getY() / k) + v2.getY() - v3.getY() / k;
+
+		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
+		inputPoints.add(new Vec3f((float) v1.getX(), (float) v1.getY(), 0));
+		inputPoints.add(new Vec3f((float) ctrlx1, (float) ctrly1, 0));
+		inputPoints.add(new Vec3f((float) ctrlx2, (float) ctrly2, 0));
+		inputPoints.add(new Vec3f((float) v2.getX(), (float) v2.getY(), 0));
+
+		NURBSCurve nurb = new NURBSCurve(inputPoints, 30);
+		ArrayList<Vec3f> outputPoints = nurb.getCurvePoints();
+
+		// Band border
+		gl.glLineWidth(1);
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (int i = 0; i < outputPoints.size(); i++) {
+			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(),
+					outputPoints.get(i).z());
+		}
+		gl.glEnd();
+
+		gl.glPointSize(5);
+		gl.glColor3f(0, 0, 1);
+		gl.glBegin(GL2.GL_POINTS);
+		gl.glVertex2d(ctrlx1, ctrly1);
+		gl.glVertex2d(ctrlx2, ctrly2);
+		gl.glEnd();
+		// curve.setCurve(v1.getX(), v1.getY(), ctrlx1, ctrly1, ctrlx2, ctrly2,
+		// v2.getX(), v2.getY());
 	}
 
 	private void renderEdges(GL2 gl) {
@@ -370,7 +459,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			// Works because there are no edges between view nodes
 			if ((edge.getFirst() instanceof ViewNode)
 					|| (edge.getSecond() instanceof ViewNode)) {
-				//Render later in transparent in foreground
+				// Render later in transparent in foreground
 				bandConnectedNodes.add(edge);
 			} else {
 
@@ -398,8 +487,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				gl.glPopAttrib();
 			}
 		}
-		
-		for(Pair<IDataGraphNode, IDataGraphNode> edge : bandConnectedNodes) {
+
+		for (Pair<IDataGraphNode, IDataGraphNode> edge : bandConnectedNodes) {
 			renderConnectionBands(gl, edge.getFirst(), edge.getSecond());
 		}
 
@@ -408,15 +497,50 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private void renderConnectionBands(GL2 gl, IDataGraphNode node1,
 			IDataGraphNode node2) {
 
-		AConnectionBandCreator bandCreator = ConnectionBandCreatorFactory
-				.getConnectionBandCreator(node1, node2, pixelGLConverter);
+		// AConnectionBandCreator bandCreator = ConnectionBandCreatorFactory
+		// .getConnectionBandCreator(node1, node2, pixelGLConverter);
+		//
+		// for (List<Pair<Point2D, Point2D>> anchorPoints : bandCreator
+		// .calcConnectionBands()) {
+		// connectionBandRenderer.init(gl);
+		// connectionBandRenderer.renderComplexBand(gl, anchorPoints, false,
+		// new float[] { 0, 0, 0 }, 0.2f);
+		// }
 
-		for (List<Pair<Point2D, Point2D>> anchorPoints : bandCreator
-				.calcConnectionBands()) {
-			connectionBandRenderer.init(gl);
-			connectionBandRenderer.renderComplexBand(gl, anchorPoints, false,
-					new float[] { 0, 0, 0 }, 0.2f);
+		List<ADimensionGroupData> dimensionGroups1 = node1.getDimensionGroups();
+		List<ADimensionGroupData> dimensionGroups2 = node2.getDimensionGroups();
+
+		Point2D node1BundlingPoint = new Point2D.Double(node1.getPosition()
+				.getX(), node1.getPosition().getY() - node1.getHeight() / 2.0f
+				- 0.2f);
+		Point2D node2BundlingPoint = new Point2D.Double(node2.getPosition()
+				.getX(), node2.getPosition().getY() - node2.getHeight() / 2.0f
+				- 0.2f);
+
+		if (dimensionGroups1 != null && !dimensionGroups1.isEmpty()
+				&& dimensionGroups2 != null && !dimensionGroups2.isEmpty()) {
+
+			for (ADimensionGroupData dimGroupData1 : dimensionGroups1) {
+				for (ADimensionGroupData dimGroupData2 : dimensionGroups2) {
+					if (dimGroupData1.getID() == dimGroupData2.getID()) {
+
+					}
+				}
+			}
 		}
+
+		gl.glPointSize(5);
+		gl.glColor3f(1, 0, 0);
+		gl.glBegin(GL2.GL_POINTS);
+		gl.glVertex2d(node1BundlingPoint.getX(), node1BundlingPoint.getY());
+		gl.glVertex2d(node2BundlingPoint.getX(), node2BundlingPoint.getY());
+		gl.glEnd();
+
+		ArrayList<Point2D> edgePoints = new ArrayList<Point2D>();
+		edgePoints.add(node1BundlingPoint);
+		edgePoints.add(node2BundlingPoint);
+
+		createEdge(gl, edgePoints);
 
 		// Set<ADimensionGroupData> dimensionGroups1 =
 		// node1.getDimensionGroups();
@@ -533,6 +657,141 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		// }
 		// }
 
+	}
+
+	private void createEdge(GL2 gl, List<Point2D> edgePoints) {
+
+		if (edgePoints == null || edgePoints.size() < 2)
+			return;
+
+		for (int i = 1; i < edgePoints.size(); i++) {
+			Point2D point1 = edgePoints.get(i - 1);
+			Point2D point2 = edgePoints.get(i);
+
+			for (IDataGraphNode node : dataGraph.getNodes()) {
+				Rectangle2D box = node.getBoundingBox();
+				int code1 = box.outcode(point1);
+				int code2 = box.outcode(point2);
+
+				if (((code1 & code2) != 0) || (code1 == 0) || (code2 == 0)) {
+					continue;
+				}
+
+				Point2D intersection1 = calcIntersectionPoint(point1, point2,
+						box, code1);
+				Point2D intersection2 = calcIntersectionPoint(point2, point1,
+						box, code2);
+
+				if (intersection1 != null && intersection2 != null) {
+
+					Point2D[] corners = new Point2D[4];
+					corners[0] = new Point2D.Double(box.getMinX() - 0.001,
+							box.getMinY() - 0.001);
+					corners[1] = new Point2D.Double(box.getMaxX() + 0.001,
+							box.getMinY() - 0.001);
+					corners[2] = new Point2D.Double(box.getMaxX() + 0.001,
+							box.getMaxY() + 0.001);
+					corners[3] = new Point2D.Double(box.getMinX() - 0.001,
+							box.getMaxY() + 0.001);
+
+					double minDistance = Double.MAX_VALUE;
+					Point2D bendPoint = null;
+
+					for (int j = 0; j < 4; j++) {
+						if ((corners[j].getX() == point1.getX() && corners[j]
+								.getY() == point1.getY())
+								|| (corners[j].getX() == point2.getX() && corners[j]
+										.getY() == point2.getY())) {
+							continue;
+						}
+						double currentSummedDistance = intersection1
+								.distanceSq(corners[j])
+								+ intersection2.distanceSq(corners[j]);
+						if (currentSummedDistance < minDistance) {
+							minDistance = currentSummedDistance;
+							bendPoint = corners[j];
+
+						}
+					}
+					if (bendPoint == null) {
+						System.out.println("null");
+					}
+
+					edgePoints.add(i, bendPoint);
+					i--;
+
+					gl.glPointSize(5);
+					gl.glColor3f(0, 0, 1);
+					gl.glBegin(GL2.GL_POINTS);
+					gl.glVertex2d(intersection1.getX(), intersection1.getY());
+					gl.glVertex2d(intersection2.getX(), intersection2.getY());
+					gl.glEnd();
+
+					gl.glColor3f(0, 0, 1);
+					gl.glBegin(GL2.GL_LINE_LOOP);
+					gl.glVertex2d(box.getMinX(), box.getMinY());
+					gl.glVertex2d(box.getMaxX(), box.getMinY());
+					gl.glVertex2d(box.getMaxX(), box.getMaxY());
+					gl.glVertex2d(box.getMinX(), box.getMaxY());
+					gl.glEnd();
+
+					break;
+				}
+			}
+		}
+
+		gl.glColor3f(1, 0, 1);
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (Point2D point : edgePoints) {
+			gl.glVertex2d(point.getX(), point.getY());
+		}
+		gl.glEnd();
+	}
+
+	private Point2D calcIntersectionPoint(Point2D point1, Point2D point2,
+			Rectangle2D rect, int code1) {
+
+		double k = 0;
+
+		if (point1.getX() != point2.getX()) {
+			k = (point2.getY() - point1.getY())
+					/ (point2.getX() - point1.getX());
+		}
+
+		if ((code1 & Rectangle2D.OUT_LEFT) != 0) {
+			double y = point1.getY() + ((rect.getMinX() - point1.getX()) * k);
+
+			if (y <= rect.getMaxY() && y >= rect.getMinY())
+				return new Point2D.Double(rect.getMinX(), y);
+		}
+
+		if ((code1 & Rectangle2D.OUT_RIGHT) != 0) {
+			double y = point1.getY() + ((rect.getMaxX() - point1.getX()) * k);
+			if (y <= rect.getMaxY() && y >= rect.getMinY())
+				return new Point2D.Double(rect.getMaxX(), y);
+		}
+
+		if ((code1 & Rectangle2D.OUT_TOP) != 0) {
+			double x = point1.getX();
+			if (k != 0) {
+				x += (rect.getMinY() - point1.getY()) / k;
+			}
+
+			if (x <= rect.getMaxX() && x >= rect.getMinX())
+				return new Point2D.Double(x, rect.getMinY());
+		}
+
+		if ((code1 & Rectangle2D.OUT_BOTTOM) != 0) {
+			double x = point1.getX();
+			if (k != 0) {
+				x += (rect.getMaxY() - point1.getY()) / k;
+			}
+
+			if (x <= rect.getMaxX() && x >= rect.getMinX())
+				return new Point2D.Double(x, rect.getMaxY());
+		}
+
+		return null;
 	}
 
 	private void renderBand(GL2 gl, BandInfo bandInfo) {
