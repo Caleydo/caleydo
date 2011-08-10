@@ -368,8 +368,9 @@ public class GLPathway extends AGLView implements
 		
 		if (selectionDelta.getIDType() == mappingDataDomain.getDimensionIDType()) {
 			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
-				if (item.getSelectionType() == SelectionType.MOUSE_OVER) {
+				if (item.getSelectionType() == SelectionType.MOUSE_OVER && !item.isRemove()) {
 					iCurrentDimensionIndex = item.getPrimaryID();
+					System.out.println(item);
 					break;
 				}
 			}
