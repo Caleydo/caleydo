@@ -28,7 +28,6 @@ import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -48,8 +47,6 @@ import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -63,6 +60,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ReplaceRecordVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.datadomain.genetic.contextmenu.container.GeneRecordContextMenuItemContainer;
 import org.caleydo.datadomain.genetic.contextmenu.item.LoadPathwaysByPathwayItem;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -733,14 +731,12 @@ public class GLPathway extends AGLView implements
 				} else if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.gene) {
 					for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
-
-						AContextMenuItem menuItem = new BookmarkMenuItem(
-								"Bookmark " + pathwayVertexGraphItem.getId(),
-								dataDomain.getDavidIDType(),
-								pathwayItemManager
-										.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) pathwayVertexGraphItem),
-								dataDomain.getDataDomainID());
-						contextMenuCreator.addContextMenuItem(menuItem);
+						
+						GeneRecordContextMenuItemContainer contexMenuItemContainer = new GeneRecordContextMenuItemContainer();
+						contexMenuItemContainer.setDataDomain((ATableBasedDataDomain)mappingDataDomain);
+						contexMenuItemContainer.setData(dataDomain.getDavidIDType(), pathwayItemManager
+								.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) pathwayVertexGraphItem));
+						contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
 					}
 				} else {
 					// do nothing if the type is neither a gene nor an

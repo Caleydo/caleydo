@@ -47,7 +47,7 @@ public class PathwaySearchBox extends ControlContribution implements IToolBarIte
 
 		String items[] = { "No pathways available!" };
 		pathwaySearchBox.setItems(items);
-		pathwaySearchBox.setTextLimit(21);
+		pathwaySearchBox.setTextLimit(65);
 
 		if (!GeneralManager.get().getPreferenceStore()
 				.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES)
@@ -67,7 +67,7 @@ public class PathwaySearchBox extends ControlContribution implements IToolBarIte
 
 					Collection<PathwayGraph> allPathways = PathwayManager.get()
 							.getAllItems();
-					String[] sArSearchItems = new String[allPathways.size()];
+					String[] searchItems = new String[allPathways.size()];
 					int iIndex = 0;
 					String sPathwayTitle = "";
 					for (PathwayGraph pathway : allPathways) {
@@ -81,12 +81,12 @@ public class PathwaySearchBox extends ControlContribution implements IToolBarIte
 						// sArSearchItems[iIndex] = pathway.getType().toString()
 						// + " - " + sPathwayTitle;
 
-						sArSearchItems[iIndex] = sPathwayTitle + " ("
+						searchItems[iIndex] = sPathwayTitle + " ("
 								+ pathway.getType().getName() + ")";
 						iIndex++;
 					}
 
-					pathwaySearchBox.setItems(sArSearchItems);
+					pathwaySearchBox.setItems(searchItems);
 					pathwaySearchBox.removeFocusListener(this);
 				}
 			});
@@ -141,23 +141,23 @@ public class PathwaySearchBox extends ControlContribution implements IToolBarIte
 	 * Method gets a pathway title and tries to determine the pathway ID. If
 	 * this is successful the load pathway event is triggered.
 	 * 
-	 * @param sEntity
+	 * @param entity
 	 *            Pathway search title
 	 * @return
 	 */
-	private boolean loadPathway(String sEntity) {
+	private boolean loadPathway(String entity) {
 		EPathwayDatabaseType ePathwayDatabaseType;
 
-		if (sEntity.contains(EPathwayDatabaseType.KEGG.getName())) {
+		if (entity.contains(EPathwayDatabaseType.KEGG.getName())) {
 			ePathwayDatabaseType = EPathwayDatabaseType.KEGG;
-		} else if (sEntity.contains(EPathwayDatabaseType.BIOCARTA.getName())) {
+		} else if (entity.contains(EPathwayDatabaseType.BIOCARTA.getName())) {
 			ePathwayDatabaseType = EPathwayDatabaseType.BIOCARTA;
 		} else
 			return false;
 
-		sEntity = sEntity.substring(0, sEntity.indexOf(" ("));
+		entity = entity.substring(0, entity.indexOf(" ("));
 
-		PathwayGraph pathway = PathwayManager.get().searchPathwayByName(sEntity,
+		PathwayGraph pathway = PathwayManager.get().searchPathwayByName(entity,
 				ePathwayDatabaseType);
 
 		if (pathway == null)
