@@ -1,33 +1,33 @@
 <?xml version="1.0"?>
-<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.0_.dtd">
-<!-- Creation date: Mar 31, 2009 10:07:55 +0900 (JST) -->
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Jan 15, 2010 16:15:43 +0900 (JST) -->
 <pathway name="path:mmu04614" org="mmu" number="04614"
          title="Renin-angiotensin system"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu04614.png"
          link="http://www.genome.jp/kegg-bin/show_pathway?mmu04614">
     <entry id="1" name="mmu:70008" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:70008">
-        <graphics name="Ace2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ace2, 2010305L05Rik" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="481" y="247" width="46" height="17"/>
     </entry>
     <entry id="2" name="mmu:70008" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:70008">
-        <graphics name="Ace2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ace2, 2010305L05Rik" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="268" y="212" width="46" height="17"/>
     </entry>
     <entry id="3" name="mmu:11421" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11421">
-        <graphics name="Ace" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ace, AW208573, CD143, MGC117827" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="481" y="142" width="46" height="17"/>
     </entry>
     <entry id="4" name="mmu:11421" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11421">
-        <graphics name="Ace" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ace, AW208573, CD143, MGC117827" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="389" y="147" width="46" height="17"/>
     </entry>
     <entry id="5" name="mmu:11421" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11421">
-        <graphics name="Ace" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ace, AW208573, CD143, MGC117827" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="327" y="365" width="46" height="17"/>
     </entry>
     <entry id="6" name="cpd:C02135" type="compound"
@@ -67,67 +67,67 @@
     </entry>
     <entry id="13" name="mmu:11607 mmu:11608" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11607+mmu:11608">
-        <graphics name="Agtr1a..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Agtr1a, 1810074K20Rik, AG2S, AI551199, AT1, AT1a, AT2R1, AT2R1A, Agtr-1a, Agtr1, Angtr-1a, MGC37610..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="599" y="331" width="46" height="17"/>
     </entry>
     <entry id="14" name="mmu:11609" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11609">
-        <graphics name="Agtr2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Agtr2, AI316812, AW107640" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="599" y="284" width="46" height="17"/>
     </entry>
     <entry id="15" name="mmu:75805" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:75805">
-        <graphics name="Nln" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Nln, 4930472G13Rik, C79345" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="366" y="245" width="46" height="17"/>
     </entry>
     <entry id="16" name="mmu:50492" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:50492">
-        <graphics name="Thop1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Thop1, AI131655, AI327041, EP24.15" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="366" y="225" width="46" height="17"/>
     </entry>
     <entry id="17" name="mmu:17380" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17380">
-        <graphics name="Mme" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Mme, 6030454K05Rik, C85356, CALLA, CD10, NEP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="366" y="265" width="46" height="17"/>
     </entry>
     <entry id="18" name="mmu:16790" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16790">
-        <graphics name="Anpep" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Anpep, Apn, Cd13, Lap-1, Lap1, P150" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="430" y="428" width="46" height="17"/>
     </entry>
     <entry id="19" name="mmu:13809" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13809">
-        <graphics name="Enpep" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Enpep, 6030431M22Rik, APA, Bp-1/6C3, Ly-51, Ly51" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="430" y="346" width="46" height="17"/>
     </entry>
     <entry id="20" name="mmu:19025" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19025">
-        <graphics name="Ctsa" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ctsa, AU019505, PPCA, Ppgb" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="268" y="232" width="46" height="17"/>
     </entry>
     <entry id="21" name="mmu:12873" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12873">
-        <graphics name="Cpa3" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cpa3, MC-CPA, mMC-CPA" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="268" y="252" width="46" height="17"/>
     </entry>
-    <entry id="22" name="mmu:100048871 mmu:17171" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100048871+mmu:17171">
-        <graphics name="100048871..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="22" name="mmu:17171" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17171">
+        <graphics name="Mas1, Mas-1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="599" y="178" width="46" height="17"/>
     </entry>
     <entry id="23" name="mmu:17380" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17380">
-        <graphics name="Mme" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Mme, 6030454K05Rik, C85356, CALLA, CD10, NEP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="389" y="167" width="46" height="17"/>
     </entry>
     <entry id="24" name="mmu:240028" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:240028">
-        <graphics name="Lnpep" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Lnpep, 2010309L07Rik, 4732490P18Rik, CAP, IRAP, PLAP, gp160, vp165" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="599" y="473" width="46" height="17"/>
     </entry>
     <entry id="25" name="mmu:17228" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17228">
-        <graphics name="Cma1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cma1, MMCP-5, Mcp-5, Mcpt5" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="328" y="319" width="46" height="17"/>
     </entry>
     <entry id="26" name="mmu:13035" type="gene"
@@ -137,16 +137,16 @@
     </entry>
     <entry id="27" name="mmu:11606" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11606">
-        <graphics name="Agt" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Agt, AI265500, AngII, Aogen, Serpina8" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="93" y="307" width="46" height="17"/>
     </entry>
     <entry id="28" name="mmu:19701 mmu:19702" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19701+mmu:19702">
-        <graphics name="Ren1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ren1, D19352, Ren, Ren-1, Ren-A, Ren1c, Ren1d, Rn-1, Rnr..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="168" y="319" width="46" height="17"/>
     </entry>
     <entry id="29" name="path:mmu04614" type="map"
-        link="http://www.kegg.jp/dbget-bin/www_bget?pathway+mmu04614">
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu04614">
         <graphics name="TITLE:Renin-angiotensin system" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="159" y="58" width="237" height="25"/>
     </entry>
