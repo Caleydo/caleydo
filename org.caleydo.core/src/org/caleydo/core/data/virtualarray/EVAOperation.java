@@ -33,14 +33,6 @@ public enum EVAOperation {
 	 */
 	MOVE,
 	/**
-	 * Move an element at a specific index one to the right
-	 */
-	MOVE_RIGHT,
-	/**
-	 * Move an element at a specific index one to the left
-	 */
-	MOVE_LEFT,
-	/**
 	 * Copy an element at a specific index. The result will be added at index + 1, the rest will be moved one
 	 * to the right
 	 */

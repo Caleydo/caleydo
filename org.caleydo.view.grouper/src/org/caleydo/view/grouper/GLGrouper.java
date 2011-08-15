@@ -18,7 +18,6 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -796,7 +795,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 		SelectionDelta delta = new SelectionDelta(dataDomain.getDimensionIDType());
 		for (SelectionDeltaItem item : clusterIDDelta.getAllItems()) {
-			GroupRepresentation groupRep = hashGroups.get(item.getPrimaryID());
+			GroupRepresentation groupRep = hashGroups.get(item.getID());
 			if (groupRep != null && groupRep.isLeaf()) {
 				ClusterNode clusterNode = groupRep.getClusterNode();
 				if (item.isRemove())
@@ -1277,7 +1276,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 
 		if (selectionDelta.getIDType() == selectionManager.getIDType()
@@ -1292,7 +1291,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 				for (SelectionDeltaItem item : deltaItems) {
 					ArrayList<Integer> alNodeIDs = experimentTree
-							.getNodeIDsFromLeafID(item.getPrimaryID());
+							.getNodeIDsFromLeafID(item.getID());
 
 					for (Integer nodeID : alNodeIDs) {
 						GroupRepresentation groupRep = hashGroups.get(nodeID);

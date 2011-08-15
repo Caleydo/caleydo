@@ -40,7 +40,6 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
@@ -2461,7 +2460,7 @@ public class GLScatterPlot extends ATableBasedView {
 				recordSelectionManager.addToType(currentSelection, recordIndex);
 			}
 		}
-		ISelectionDelta selectionDelta = recordSelectionManager.getDelta();
+		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
 		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
@@ -2877,7 +2876,7 @@ public class GLScatterPlot extends ATableBasedView {
 		// SELECTED_Y_AXIS_2);
 		// }
 
-		ISelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
+		SelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
 		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
@@ -2894,7 +2893,7 @@ public class GLScatterPlot extends ATableBasedView {
 		dimensionSelectionManager.addToType(SelectionType.MOUSE_OVER,
 				dimensionVA.get(iMouseOverAxisIndexY));
 
-		ISelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
+		SelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
 		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
@@ -3021,7 +3020,7 @@ public class GLScatterPlot extends ATableBasedView {
 		// AlSelectionTypes.remove(iSlectionNr - 1);
 		// currentSelection = AlSelectionTypes.get(iSlectionNr - 2);
 		//
-		// ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+		// SelectionDelta selectionDelta = contentSelectionManager.getDelta();
 		// handleConnectedElementRep(selectionDelta);
 		// SelectionUpdateEvent event2 = new SelectionUpdateEvent();
 		// event2.setSender(this);
@@ -3191,7 +3190,7 @@ public class GLScatterPlot extends ATableBasedView {
 		if ((selectionType == SelectionType.MOUSE_OVER))
 			recordSelectionManager.addToType(selectionType, recordID);
 
-		ISelectionDelta selectionDelta = recordSelectionManager.getDelta();
+		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
 		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
@@ -3240,7 +3239,7 @@ public class GLScatterPlot extends ATableBasedView {
 		// AlSelectionTypes.clear();
 		// AlSelectionTypes.add(SelectionType.SELECTION);
 		// addSelectionType();
-		ISelectionDelta selectionDelta = recordSelectionManager.getDelta();
+		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
 		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event2 = new SelectionUpdateEvent();
 		event2.setSender(this);
@@ -3257,7 +3256,7 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	@Override
-	protected void reactOnExternalSelection(ISelectionDelta delta,
+	protected void reactOnExternalSelection(SelectionDelta delta,
 			boolean scrollToSelection) {
 		selectAxesfromExternal();
 		bUpdateSelection = true;
@@ -3289,7 +3288,7 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	@Override
-	protected void handleConnectedElementReps(ISelectionDelta selectionDelta) {
+	protected void handleConnectedElementReps(SelectionDelta selectionDelta) {
 		// Not Used in this View..
 	}
 

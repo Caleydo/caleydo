@@ -2,7 +2,6 @@ package org.caleydo.view.genesearch;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
@@ -56,7 +55,7 @@ public class SearchViewMediator {
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 		selectionUpdateEvent.setSender(this);
 		selectionUpdateEvent.setDataDomainID(dataDomain.getDataDomainID());
-		ISelectionDelta delta = new SelectionDelta(recordIDType);
+		SelectionDelta delta = new SelectionDelta(recordIDType);
 //		Set<Integer> setExpIndex = GeneralManager.get().getIDMappingManager()
 //				.getIDAsSet(IDType.getIDType("DAVID"), recordIDType, davidID);
 

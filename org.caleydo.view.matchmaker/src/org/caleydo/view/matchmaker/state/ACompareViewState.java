@@ -15,7 +15,7 @@ import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
@@ -795,7 +795,7 @@ public abstract class ACompareViewState {
 
 	public abstract void duplicateSetBarItem(int itemID);
 
-	public abstract void handleSelectionUpdate(ISelectionDelta selectionDelta,
+	public abstract void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info);
 
 	public abstract void handleSelectionCommand(IDCategory category,

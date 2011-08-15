@@ -15,7 +15,7 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
@@ -208,7 +208,7 @@ public abstract class ATableBasedView
 		throws InvalidAttributeValueException;
 
 	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 
 		if (selectionDelta.getIDType().getIDCategory().equals(recordIDType.getIDCategory())) {
 			// Check for type that can be handled
@@ -217,7 +217,7 @@ public abstract class ATableBasedView
 			}
 
 			recordSelectionManager.setDelta(selectionDelta);
-			// ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
+			// SelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
 			handleConnectedElementReps(selectionDelta);
 			reactOnExternalSelection(selectionDelta, scrollToSelection);
@@ -290,7 +290,7 @@ public abstract class ATableBasedView
 	/**
 	 * Is called any time a update is triggered externally. Should be implemented by inheriting views.
 	 */
-	protected void reactOnExternalSelection(ISelectionDelta selectionDelta, boolean scrollToSelection) {
+	protected void reactOnExternalSelection(SelectionDelta selectionDelta, boolean scrollToSelection) {
 
 	}
 
@@ -377,11 +377,10 @@ public abstract class ATableBasedView
 	 * @param selectionDelta
 	 *            the selection data that should be handled
 	 */
-	protected void handleConnectedElementReps(ISelectionDelta selectionDelta) {
+	protected void handleConnectedElementReps(SelectionDelta selectionDelta) {
 		try {
 			int id = -1;
 
-			int iID = -1;
 			IDType idType;
 
 			if (selectionDelta.size() > 0) {
@@ -390,15 +389,12 @@ public abstract class ATableBasedView
 						.getSelectionType()) || item.isRemove())
 						continue;
 					if (selectionDelta.getIDType() == recordIDType) {
-						id = item.getPrimaryID();
-
-						iID = item.getSecondaryID();
+						id = item.getID();
 						idType = recordIDType;
 
 					}
 					else if (selectionDelta.getIDType() == dimensionIDType) {
-						iID = item.getPrimaryID();
-						id = iID;
+						id = item.getID();						
 						idType = dimensionIDType;
 					}
 					else

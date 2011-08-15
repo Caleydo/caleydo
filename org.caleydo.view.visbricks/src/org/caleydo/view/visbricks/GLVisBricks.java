@@ -18,7 +18,6 @@ import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -1152,7 +1151,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		// TODO Auto-generated method stub
 

@@ -12,7 +12,6 @@ import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
@@ -87,7 +86,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			contentSelectionManager.clearSelection(selectionType);
 			contentSelectionManager.addToType(selectionType, externalID);
 
-			ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+			SelectionDelta selectionDelta = contentSelectionManager.getDelta();
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
 			event.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -101,7 +100,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			// SelectionCommand(ESelectionCommandType.CLEAR, selectionType));
 			// eventPublisher.triggerEvent(selectionCommandEvent);
 			//
-			// ISelectionDelta selectionDelta = new
+			// SelectionDelta selectionDelta = new
 			// SelectionDelta(EIDType.EXPRESSION_INDEX);
 			// selectionDelta.addSelection(externalID, selectionType);
 			// SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -140,7 +139,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 						ESelectionCommandType.CLEAR, ACTIVE_HEATMAP_SELECTION_TYPE));
 				eventPublisher.triggerEvent(selectionCommandEvent);
 
-				ISelectionDelta bandSelectionDelta = new SelectionDelta(
+				SelectionDelta bandSelectionDelta = new SelectionDelta(
 						dataDomain.getRecordIDType());
 
 				for (Integer recordID : activeDetailBand.getContentIDs())

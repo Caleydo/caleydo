@@ -28,7 +28,7 @@ import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.event.view.filterpipeline.SetFilterTypeEvent;
@@ -709,7 +709,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 	}
 
 	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		// TODO Auto-generated method stub
 

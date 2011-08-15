@@ -21,7 +21,6 @@ import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.VABasedSelectionManager;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
@@ -41,8 +40,8 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -1499,7 +1498,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				if (tree.getNodeByNumber(externalID) != null)
 					tree.getNodeByNumber(externalID).setSelectionType(selectionType);
 
-				ISelectionDelta selectionDelta = null;
+				SelectionDelta selectionDelta = null;
 				VABasedSelectionManager selectionManager = null;
 
 				selectionManager = recordSelectionManager;
@@ -1583,7 +1582,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				if (tree.getNodeByNumber(externalID) != null)
 					tree.getNodeByNumber(externalID).setSelectionType(selectionType);
 
-				ISelectionDelta selectionDelta = null;
+				SelectionDelta selectionDelta = null;
 				VABasedSelectionManager selectionManager = null;
 
 				selectionManager = dimensionSelectionManager;
@@ -1686,7 +1685,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 	 * @param
 	 */
 	@Override
-	protected void reactOnExternalSelection(ISelectionDelta delta,
+	protected void reactOnExternalSelection(SelectionDelta delta,
 			boolean scrollToSelection) {
 
 		if (bRenderContentTree == true) {
@@ -1825,7 +1824,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
 
 				for (SelectionDeltaItem item : deltaItems) {
-					int clusterNr = item.getPrimaryID();
+					int clusterNr = item.getID();
 					if (tree.getNodeByNumber(clusterNr) != null)
 						tree.getNodeByNumber(clusterNr).setSelectionType(
 								item.getSelectionType());

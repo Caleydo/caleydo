@@ -20,7 +20,6 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -358,7 +357,7 @@ public class GLPathway extends AGLView implements
 	}
 
 	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 
 		if (pathway == null)
@@ -367,7 +366,7 @@ public class GLPathway extends AGLView implements
 		if (selectionDelta.getIDType() == mappingDataDomain.getDimensionIDType()) {
 			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
 				if (item.getSelectionType() == SelectionType.MOUSE_OVER && !item.isRemove()) {
-					iCurrentDimensionIndex = item.getPrimaryID();
+					iCurrentDimensionIndex = item.getID();
 					System.out.println(item);
 					break;
 				}
@@ -377,7 +376,7 @@ public class GLPathway extends AGLView implements
 		} else if (selectionDelta.getIDType().getIDCategory() == mappingDataDomain
 				.getRecordIDCategory()) {
 
-			ISelectionDelta resolvedDelta = resolveExternalSelectionDelta(selectionDelta);
+			SelectionDelta resolvedDelta = resolveExternalSelectionDelta(selectionDelta);
 			selectionManager.setDelta(resolvedDelta);
 
 			setDisplayListDirty();
@@ -390,7 +389,7 @@ public class GLPathway extends AGLView implements
 				}
 
 				PathwayVertexGraphItemRep vertexRep = (PathwayVertexGraphItemRep) pathwayItemManager
-						.getItem(item.getPrimaryID());
+						.getItem(item.getID());
 
 				int viewID = uniqueID;
 				// If rendered remote (hierarchical heat map) - use the remote
@@ -455,20 +454,20 @@ public class GLPathway extends AGLView implements
 		return alExpressionIndex;
 	}
 
-	private ISelectionDelta createExternalSelectionDelta(ISelectionDelta selectionDelta) {
-		ISelectionDelta newSelectionDelta = new SelectionDelta(
+	private SelectionDelta createExternalSelectionDelta(SelectionDelta selectionDelta) {
+		SelectionDelta newSelectionDelta = new SelectionDelta(
 				mappingDataDomain.getRecordIDType());
 
 		for (SelectionDeltaItem item : selectionDelta) {
-			for (int iExpressionIndex : getExpressionIndicesFromPathwayVertexGraphItemRep(item
-					.getPrimaryID())) {
+			for (Integer expressionIndex : getExpressionIndicesFromPathwayVertexGraphItemRep(item
+					.getID())) {
 
 				SelectionDeltaItem newItem = newSelectionDelta.addSelection(
-						iExpressionIndex, item.getSelectionType(), item.getPrimaryID());
+						expressionIndex, item.getSelectionType());
 				newItem.setRemove(item.isRemove());
 
 				for (Integer iConnectionID : item.getConnectionIDs()) {
-					newSelectionDelta.addConnectionID(iExpressionIndex, iConnectionID);
+					newSelectionDelta.addConnectionID(expressionIndex, iConnectionID);
 				}
 			}
 		}
@@ -476,10 +475,10 @@ public class GLPathway extends AGLView implements
 		return newSelectionDelta;
 	}
 
-	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta) {
+	private SelectionDelta resolveExternalSelectionDelta(SelectionDelta selectionDelta) {
 		
-		ISelectionDelta newSelectionDelta = new SelectionDelta(
-				dataDomain.getPrimaryIDType(), dataDomain.getDavidIDType());
+		SelectionDelta newSelectionDelta = new SelectionDelta(
+				dataDomain.getPrimaryIDType());
 
 		PathwayVertexGraphItem pathwayVertexGraphItem;
 
@@ -494,7 +493,7 @@ public class GLPathway extends AGLView implements
 			// Possibly a different handling of the Set is required.
 			Set<Integer> tableIDs = idMappingManager.getIDAsSet(
 					selectionDelta.getIDType(), dataDomain.getDavidIDType(),
-					item.getPrimaryID());
+					item.getID());
 
 			if (tableIDs == null || tableIDs.isEmpty()) {
 				continue;
@@ -519,7 +518,7 @@ public class GLPathway extends AGLView implements
 				}
 
 				SelectionDeltaItem newItem = newSelectionDelta.addSelection(
-						tmpGraphItemRep.getId(), item.getSelectionType(), iDavidID);
+						tmpGraphItemRep.getId(), item.getSelectionType());
 				newItem.setRemove(item.isRemove());
 				for (int iConnectionID : item.getConnectionIDs()) {
 					newItem.addConnectionID(iConnectionID);
@@ -772,7 +771,7 @@ public class GLPathway extends AGLView implements
 
 			createConnectionLines(selectionType, iConnectionID);
 
-			ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager
+			SelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager
 					.getDelta());
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);

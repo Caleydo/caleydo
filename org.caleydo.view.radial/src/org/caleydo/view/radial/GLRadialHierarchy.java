@@ -1101,7 +1101,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	}
 
 	// @Override
-	// public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean
+	// public void handleSelectionUpdate(SelectionDelta selectionDelta, boolean
 	// scrollToSelection, String
 	// info) {
 	// if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {

@@ -8,7 +8,6 @@ import java.util.Set;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.GeneralManager;
@@ -439,16 +438,13 @@ public class SelectionManager
 			if (selectionType == SelectionType.NORMAL || deltaBlackList.containsKey(selectionType))
 				continue;
 			tempHash = hashSelectionTypes.get(selectionType);
-			for (Integer iElement : tempHash.keySet()) {
-				Integer iSelectionID = -1;
+			for (Integer selectionID : tempHash.keySet()) {
 
-				iSelectionID = iElement;
-
-				tempDelta.addSelection(iSelectionID, selectionType, iElement);
+				tempDelta.addSelection(selectionID, selectionType);
 				// connection ids
 				if (selectionType.isConnected()) {
-					for (Integer iConnectionID : getConnectionForElementID(iElement)) {
-						tempDelta.addConnectionID(iSelectionID, iConnectionID);
+					for (Integer iConnectionID : getConnectionForElementID(selectionID)) {
+						tempDelta.addConnectionID(selectionID, iConnectionID);
 					}
 				}
 
@@ -477,9 +473,9 @@ public class SelectionManager
 	 * 
 	 * @param selectionDelta
 	 *            the selection delta
-	 * @return a ISelectionDelta that contains the internal ID of the manager as its primary ID
+	 * @return a SelectionDelta that contains the internal ID of the manager as its primary ID
 	 */
-	public void setDelta(ISelectionDelta selectionDelta) {
+	public void setDelta(SelectionDelta selectionDelta) {
 		bIsDeltaWritingEnabled = false;
 		if (selectionDelta.getIDType() != iDType)
 			selectionDelta = DeltaConverter.convertDelta(iDType, selectionDelta);
@@ -487,11 +483,11 @@ public class SelectionManager
 
 			// if (selectionDelta.getIDType() == internalIDType) {
 			int selectionID = 0;
-			selectionID = item.getPrimaryID();
+			selectionID = item.getID();
 
 			if (selectionID == -1) {
-				Logger.log(new Status(IStatus.WARNING, this.toString(), "No internal id for "
-					+ item.getPrimaryID()));
+				Logger
+					.log(new Status(IStatus.WARNING, this.toString(), "No internal id for " + item.getID()));
 
 				continue;
 			}
@@ -555,7 +551,7 @@ public class SelectionManager
 		hashConnectionToElementID.get(iConnectionID).add(iSelectionID);
 
 		for (SelectionDeltaItem item : selectionDelta) {
-			if (item.getPrimaryID() == iSelectionID) {
+			if (item.getID() == iSelectionID) {
 				item.addConnectionID(iConnectionID);
 			}
 		}

@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
@@ -25,7 +25,7 @@ public class SelectionUpdateListener
 	public void handleEvent(AEvent event) {
 		if (event instanceof SelectionUpdateEvent) {
 			SelectionUpdateEvent selectioUpdateEvent = (SelectionUpdateEvent) event;
-			ISelectionDelta delta = selectioUpdateEvent.getSelectionDelta();
+			SelectionDelta delta = selectioUpdateEvent.getSelectionDelta();
 			boolean scrollToSelection = selectioUpdateEvent.isScrollToSelection();
 			String info = selectioUpdateEvent.getInfo();
 			handler.handleSelectionUpdate(delta, scrollToSelection, info);

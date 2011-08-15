@@ -14,7 +14,6 @@ import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -64,7 +63,6 @@ import org.caleydo.view.visbricks.event.OpenCreatePathwayGroupDialogEvent;
 import org.caleydo.view.visbricks.listener.OpenCreatePathwayGroupDialogListener;
 import org.caleydo.view.visbricks.listener.RelationsUpdatedListener;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.viewers.ContentViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -1053,7 +1051,7 @@ public class GLBrick extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		if (selectionDelta.getIDType() == contentGroupSelectionManager
 				.getIDType()) {

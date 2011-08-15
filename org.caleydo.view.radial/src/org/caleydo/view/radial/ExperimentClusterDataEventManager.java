@@ -5,7 +5,6 @@ import java.util.Collection;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
@@ -100,7 +99,7 @@ public class ExperimentClusterDataEventManager extends ADataEventManager impleme
 	}
 
 	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		if (selectionDelta.getIDType() == radialHierarchy.getDataDomain()
 				.getDimensionIDType()) {
@@ -119,7 +118,7 @@ public class ExperimentClusterDataEventManager extends ADataEventManager impleme
 					if (hierarchyData instanceof ClusterNode) {
 						clusterNode = (ClusterNode) hierarchyData;
 
-						if (clusterNode.getLeafID() == item.getPrimaryID()) {
+						if (clusterNode.getLeafID() == item.getID()) {
 							selectionManager.addToType(item.getSelectionType(),
 									clusterNode.getID());
 						}

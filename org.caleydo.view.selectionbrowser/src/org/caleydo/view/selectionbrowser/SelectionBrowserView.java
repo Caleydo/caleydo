@@ -9,7 +9,6 @@ import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
@@ -273,7 +272,7 @@ public class SelectionBrowserView extends ASWTView implements
 			eventPublisher.triggerEvent(event);
 		}
 
-		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+		SelectionDelta selectionDelta = contentSelectionManager.getDelta();
 		SelectionUpdateEvent event2 = new SelectionUpdateEvent();
 		event2.setSender(this);
 		event2.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -309,7 +308,7 @@ public class SelectionBrowserView extends ASWTView implements
 			}
 		}
 
-		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+		SelectionDelta selectionDelta = contentSelectionManager.getDelta();
 		SelectionUpdateEvent event2 = new SelectionUpdateEvent();
 		event2.setSender(this);
 		event2.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -348,7 +347,7 @@ public class SelectionBrowserView extends ASWTView implements
 	}
 
 	@Override
-	public void handleSelectionUpdate(final ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(final SelectionDelta selectionDelta,
 			final boolean scrollToSelection, final String info) {
 		contentSelectionManager.setDelta(selectionDelta);
 		parentComposite.getDisplay().asyncExec(new Runnable() {

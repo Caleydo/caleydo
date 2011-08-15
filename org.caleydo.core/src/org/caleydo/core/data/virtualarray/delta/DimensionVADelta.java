@@ -12,10 +12,6 @@ public class DimensionVADelta
 		super(vaType, idType);
 	}
 
-	public DimensionVADelta(String vaType, IDType idType, IDType secondaryIDType) {
-		super(vaType, idType, secondaryIDType);
-	}
-
 	@Override
 	public DimensionVADelta getInstance() {
 		return new DimensionVADelta();

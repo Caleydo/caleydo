@@ -29,14 +29,7 @@ public interface IDelta<T extends IDeltaItem>
 	 */
 	public IDType getIDType();
 
-	/**
-	 * Get the type of the secondary ID, which has to be listed in {@link EIDType}. Returns null if no
-	 * internal ID type was set
-	 * 
-	 * @return the type of the internal id
-	 */
-	public IDType getSecondaryIDType();
-
+	
 	/**
 	 * Returns the number of elements in the selection delta
 	 * 

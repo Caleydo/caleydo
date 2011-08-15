@@ -19,7 +19,6 @@ public class SelectionDeltaItem
 
 	private int primaryID = -1;
 	private SelectionType selectionType;
-	private int secondaryID = -1;
 	private boolean remove = false;
 
 	private ArrayList<Integer> connectionIDs;
@@ -45,21 +44,6 @@ public class SelectionDeltaItem
 		connectionIDs = new ArrayList<Integer>();
 	}
 
-	/**
-	 * Constructor. This constructor allows to specify the optional internal id in the selection
-	 * 
-	 * @param selectionID
-	 *            the id of the selected element
-	 * @param selectionType
-	 *            the type of the selection
-	 * @param internalID
-	 *            the internal id which maps to the selectionID
-	 */
-	public SelectionDeltaItem(int selectionID, SelectionType selectionType, int internalID) {
-		this(selectionID, selectionType);
-		this.secondaryID = internalID;
-		connectionIDs = new ArrayList<Integer>();
-	}
 
 	/**
 	 * Set a connection ID which is meant to be persistent over conversion steps
@@ -72,7 +56,7 @@ public class SelectionDeltaItem
 	}
 
 	@Override
-	public int getPrimaryID() {
+	public int getID() {
 		return primaryID;
 	}
 
@@ -85,15 +69,7 @@ public class SelectionDeltaItem
 		return selectionType;
 	}
 
-	/**
-	 * Returns the internal id, which must not be table. Returns -1 if no internal id was set
-	 * 
-	 * @return the internal id
-	 */
-	@Override
-	public int getSecondaryID() {
-		return secondaryID;
-	}
+
 
 	/**
 	 * Returns the connection ID of the element.
@@ -120,9 +96,9 @@ public class SelectionDeltaItem
 	}
 
 	@Override
-	public Object clone() {
+	public SelectionDeltaItem clone() {
 		try {
-			return super.clone();
+			return (SelectionDeltaItem) super.clone();
 		}
 		catch (CloneNotSupportedException e) {
 			throw new IllegalStateException(
@@ -131,13 +107,8 @@ public class SelectionDeltaItem
 	}
 
 	@Override
-	public void setPrimaryID(int iPrimaryID) {
+	public void setID(Integer iPrimaryID) {
 		this.primaryID = iPrimaryID;
-	}
-
-	@Override
-	public void setSecondaryID(int iSecondaryID) {
-		this.secondaryID = iSecondaryID;
 	}
 
 	public void setRemove(boolean remove) {

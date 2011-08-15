@@ -15,7 +15,6 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
@@ -163,7 +162,7 @@ public class GLBucket extends AGLView implements
 
 	// private int iGLDisplayList;
 
-	private ISelectionDelta lastSelectionDelta;
+	private SelectionDelta lastSelectionDelta;
 
 	/**
 	 * Used for dragging views to the pool area.
@@ -1751,7 +1750,7 @@ public class GLBucket extends AGLView implements
 	}
 
 	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		lastSelectionDelta = selectionDelta;
 		bUpdateOffScreenTextures = true;

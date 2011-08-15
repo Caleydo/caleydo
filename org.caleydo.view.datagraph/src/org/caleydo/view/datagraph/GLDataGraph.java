@@ -3,7 +3,6 @@ package org.caleydo.view.datagraph;
 import gleem.linalg.Vec3f;
 
 import java.awt.Rectangle;
-import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -43,9 +42,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
-import org.caleydo.view.datagraph.bandlayout.AConnectionBandCreator;
 import org.caleydo.view.datagraph.bandlayout.BandInfo;
-import org.caleydo.view.datagraph.bandlayout.ConnectionBandCreatorFactory;
 import org.caleydo.view.datagraph.listener.DataDomainsChangedEventListener;
 import org.caleydo.view.datagraph.listener.DimensionGroupsChangedEventListener;
 import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;

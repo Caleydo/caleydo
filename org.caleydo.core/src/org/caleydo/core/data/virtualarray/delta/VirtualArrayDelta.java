@@ -26,9 +26,6 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 	private IDType idType;
 
 	@XmlElement
-	private IDType secondaryIDType;
-
-	@XmlElement
 	private String vaType;
 
 	public VirtualArrayDelta() {
@@ -39,11 +36,6 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 		this.vaType = vaType;
 		this.idType = idType;
 		deltaItems = new UniqueList<VADeltaItem>();
-	}
-
-	public VirtualArrayDelta(String vaType, IDType idType, IDType secondaryIDType) {
-		this(vaType, idType);
-		this.secondaryIDType = secondaryIDType;
 	}
 
 	public abstract ConcreteType getInstance();
@@ -76,10 +68,6 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 		return idType;
 	}
 
-	@Override
-	public IDType getSecondaryIDType() {
-		return secondaryIDType;
-	}
 
 	@Override
 	public void add(VADeltaItem item) {

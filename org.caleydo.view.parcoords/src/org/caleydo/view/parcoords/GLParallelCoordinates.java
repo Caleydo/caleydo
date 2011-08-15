@@ -49,7 +49,6 @@ import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -61,7 +60,6 @@ import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
-import org.caleydo.core.manager.event.view.grouper.DeleteGroupsEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
 import org.caleydo.core.manager.event.view.tablebased.AngularBrushingEvent;
 import org.caleydo.core.manager.event.view.tablebased.ApplyCurrentSelectionToVirtualArrayEvent;
@@ -461,7 +459,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			BookmarkEvent<Integer> bookmarkEvent = new BookmarkEvent<Integer>(
 					recordIDType);
 			for (VADeltaItem item : delta.getAllItems()) {
-				bookmarkEvent.addBookmark(item.getPrimaryID());
+				bookmarkEvent.addBookmark(item.getID());
 			}
 			eventPublisher.triggerEvent(bookmarkEvent);
 			resetAxisSpacing();
@@ -1295,7 +1293,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	}
 
 	@Override
-	protected void reactOnExternalSelection(ISelectionDelta delta,
+	protected void reactOnExternalSelection(SelectionDelta delta,
 			boolean scrollToSelection) {
 		handleUnselection();
 		resetAxisSpacing();
@@ -1320,7 +1318,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				}
 			} else if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
 
-				removeGate(item.getPrimaryID());
+				removeGate(item.getID());
 			}
 		}
 		super.handleVAUpdate(delta, info);
@@ -1476,7 +1474,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				// ESelectionCommandType.CLEAR, selectionType);
 				// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
-				ISelectionDelta selectionDelta = recordSelectionManager.getDelta();
+				SelectionDelta selectionDelta = recordSelectionManager.getDelta();
 				handleConnectedElementReps(selectionDelta);
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
@@ -1530,7 +1528,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			// ESelectionCommandType.CLEAR, selectionType);
 			// sendSelectionCommandEvent(eAxisDataType, command);
 
-			ISelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
+			SelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
 			// if (dimensionSelectionManager.getIDType() ==
 			// EIDType.EXPERIMENT_INDEX) {
 			handleConnectedElementReps(selectionDelta);

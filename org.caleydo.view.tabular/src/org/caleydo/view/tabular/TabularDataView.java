@@ -14,7 +14,6 @@ import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -407,7 +406,7 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scroolToSelection, String info) {
 		// Check for type that can be handled
 		if (selectionDelta.getIDType().getIDCategory() == dataDomain
@@ -514,7 +513,7 @@ public class TabularDataView extends ASWTView implements
 		// }
 		// }
 
-		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+		SelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
 		// SelectionCommand command = new
 		// SelectionCommand(ESelectionCommandType.CLEAR,
@@ -541,7 +540,7 @@ public class TabularDataView extends ASWTView implements
 				SelectionType);
 		sendSelectionCommandEvent(dataDomain.getRecordIDType(), command);
 
-		ISelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
+		SelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -660,7 +659,7 @@ public class TabularDataView extends ASWTView implements
 					break;
 				case ADD:
 					addColumn(deltaItem.getIndex() + COLUMN_OFFSET,
-							deltaItem.getPrimaryID());
+							deltaItem.getID());
 					break;
 				case COPY:
 					addColumn(deltaItem.getIndex() + 1 + COLUMN_OFFSET,

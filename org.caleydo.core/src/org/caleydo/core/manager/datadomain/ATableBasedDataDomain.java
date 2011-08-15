@@ -21,7 +21,7 @@ import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.TableBasedDimensionGroupData;
@@ -636,7 +636,7 @@ public abstract class ATableBasedDataDomain
 	}
 
 	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 
 		if (recordSelectionManager == null)
 			return;
@@ -671,7 +671,7 @@ public abstract class ATableBasedDataDomain
 	 * @param scrollToSelection
 	 * @param info
 	 */
-	public void handleForeignSelectionUpdate(String dataDomainType, ISelectionDelta delta,
+	public void handleForeignSelectionUpdate(String dataDomainType, SelectionDelta delta,
 		boolean scrollToSelection, String info) {
 		// may be interesting to implement in sub-class
 

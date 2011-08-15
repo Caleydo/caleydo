@@ -14,7 +14,6 @@ import java.util.HashSet;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.GeneralManager;
@@ -168,7 +167,7 @@ public class VisLinkManager
 	}
 
 	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		System.out.println("VisLinkManager: handleSelectionUpdate");
 
 		for (SelectionDeltaItem deltaItem : selectionDelta.getAllItems()) {
@@ -181,11 +180,11 @@ public class VisLinkManager
 			//
 			caleydoSelectionId =
 				idmm.getID(selectionDelta.getIDType(), IDType.getIDType("UNSPECIFIED"),
-					deltaItem.getPrimaryID());
+					deltaItem.getID());
 			if (caleydoSelectionId == null) {
 				caleydoSelectionId =
 					idmm.getID(selectionDelta.getIDType(), IDType.getIDType("GENE_SYMBOL"),
-						deltaItem.getPrimaryID());
+						deltaItem.getID());
 			}
 		}
 	}

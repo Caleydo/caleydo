@@ -11,7 +11,6 @@ import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -300,7 +299,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 		SelectionDelta newDelta = new SelectionDelta(treeSelectionManager.getIDType());
 		newDelta.tableIDType(dataDomain.getRecordIDType());
 		for (SelectionDeltaItem item : delta) {
-			ClusterNode node = tree.getNodeByNumber(item.getPrimaryID());
+			ClusterNode node = tree.getNodeByNumber(item.getID());
 			if (node.getLeafID() >= 0) {
 				SelectionDeltaItem newItem = new SelectionDeltaItem(node.getLeafID(), item.getSelectionType());
 				newItem.setRemove(item.isRemove());
@@ -546,12 +545,12 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	}
 
 	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		if (bIsInteractive) {
 			if (dataDomain.getRecordIDType() == selectionDelta.getIDType()) {
 				SelectionDelta newDelta = new SelectionDelta(treeSelectionManager.getIDType());
 				for (SelectionDeltaItem item : selectionDelta) {
-					ArrayList<Integer> nodeIDs = tree.getNodeIDsFromLeafID(item.getPrimaryID());
+					ArrayList<Integer> nodeIDs = tree.getNodeIDsFromLeafID(item.getID());
 					if (nodeIDs != null && nodeIDs.size() > 0) {
 						SelectionDeltaItem newItem = new SelectionDeltaItem(nodeIDs.get(0), item.getSelectionType());
 						newItem.setRemove(item.isRemove());

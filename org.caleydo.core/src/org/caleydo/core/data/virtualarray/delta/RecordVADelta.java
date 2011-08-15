@@ -12,10 +12,6 @@ public class RecordVADelta
 		super(vaType, idType);
 	}
 
-	public RecordVADelta(String vaType, IDType idType, IDType secondaryIDType) {
-		super(vaType, idType, secondaryIDType);
-	}
-
 	@Override
 	public RecordVADelta getInstance() {
 		return new RecordVADelta();

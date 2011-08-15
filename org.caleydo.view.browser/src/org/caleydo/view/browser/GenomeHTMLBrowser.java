@@ -5,7 +5,7 @@ import java.util.Set;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
@@ -131,7 +131,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 	}
 
 	@Override
-	public void handleSelectionUpdate(final ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(final SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		if (selectionDelta.getIDType().getIDCategory() != dataDomain
 				.getRecordIDCategory())
@@ -151,7 +151,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 								.getItem(comboQueryIDType.getSelectionIndex()));
 
 						sourceIDType = selectionDelta.getIDType();
-						sourceID = selectionDeltaItem.getPrimaryID();
+						sourceID = selectionDeltaItem.getID();
 
 						updateURL(targetIDType);
 					}

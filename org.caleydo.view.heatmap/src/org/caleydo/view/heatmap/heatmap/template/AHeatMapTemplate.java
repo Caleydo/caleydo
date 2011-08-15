@@ -4,11 +4,11 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.CaptionCageRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.RecordCaptionRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.RecordSelectionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.DimensionCaptionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.DimensionSelectionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;
+import org.caleydo.view.heatmap.heatmap.renderer.RecordCaptionRenderer;
+import org.caleydo.view.heatmap.heatmap.renderer.RecordSelectionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.spacing.ContentSpacing;
 
 public abstract class AHeatMapTemplate extends LayoutTemplate {

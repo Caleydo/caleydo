@@ -37,7 +37,7 @@ public class DeltaConverter {
 	public static <T extends IDelta> T convertDelta(IDType targetType, T delta) {
 		T newDelta = null;
 		if (delta instanceof SelectionDelta) {
-			newDelta = (T) new SelectionDelta(targetType, delta.getIDType());
+			newDelta = (T) new SelectionDelta(targetType);
 		}
 		else if (delta instanceof VirtualArrayDelta) {
 
@@ -56,14 +56,13 @@ public class DeltaConverter {
 			IDeltaItem item = (IDeltaItem) tempItem;
 			Set<Integer> tableIDs =
 				GeneralManager.get().getIDMappingManager()
-					.getIDAsSet(delta.getIDType(), targetType, item.getPrimaryID());
+					.getIDAsSet(delta.getIDType(), targetType, item.getID());
 			if (tableIDs == null) {
 				continue;
 			}
 			for (Integer id : tableIDs) {
 				IDeltaItem clonedItem = (IDeltaItem) item.clone();
-				clonedItem.setPrimaryID(id);
-				clonedItem.setSecondaryID(item.getPrimaryID());
+				clonedItem.setID(id);
 				newDelta.add(clonedItem);
 			}
 		}

@@ -85,11 +85,12 @@ public class GeneticGUIStartupProcedure
 		if (!startViewWithDataDomain.isEmpty())
 			return;
 
-		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.browser",
-			"org.caleydo.datadomain.genetic"));
+		
 		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.heatmap.hierarchical",
 			"org.caleydo.datadomain.genetic"));
 		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.parcoords",
+			"org.caleydo.datadomain.genetic"));
+		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.browser",
 			"org.caleydo.datadomain.genetic"));
 
 		if (appInitData.isLoadPathways()) {

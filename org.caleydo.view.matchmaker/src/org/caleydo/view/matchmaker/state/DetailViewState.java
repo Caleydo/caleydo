@@ -11,7 +11,7 @@ import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
@@ -442,7 +442,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
@@ -519,7 +519,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 	// .removeFromType(SelectionType.DESELECTED, recordID);
 	// }
 	//
-	// ISelectionDelta selectionDelta = heatMapWrappers.get(0)
+	// SelectionDelta selectionDelta = heatMapWrappers.get(0)
 	// .getContentSelectionManager().getDelta();
 	// SelectionUpdateEvent event = new SelectionUpdateEvent();
 	// event.setSender(this);

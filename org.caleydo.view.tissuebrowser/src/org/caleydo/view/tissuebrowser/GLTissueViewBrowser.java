@@ -16,7 +16,6 @@ import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -294,13 +293,13 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	// }
 
 	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		if (selectionDelta.getIDType() == primaryIDType) {
 			experiementSelectionManager.setDelta(selectionDelta);
 
 			for (SelectionDeltaItem item : selectionDelta) {
-				int id = item.getPrimaryID() % MAX_VIEWS;
+				int id = item.getID() % MAX_VIEWS;
 				GLTexture textureView = ((GLTexture) containedGLViews.get(id));
 				SelectionType selectionType = item.getSelectionType();
 				if (item.isRemove())

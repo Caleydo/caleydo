@@ -28,7 +28,7 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -777,7 +777,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 * @param
 	 */
 	@Override
-	protected void reactOnExternalSelection(ISelectionDelta delta,
+	protected void reactOnExternalSelection(SelectionDelta delta,
 			boolean scrollToSelection) {
 
 		if (delta.getIDType() != recordIDType)
@@ -792,7 +792,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				if (item.isRemove())
 					continue;
 				if (item.getSelectionType().getPriority() > type.getPriority()) {
-					mouseOverElement = item.getPrimaryID();
+					mouseOverElement = item.getID();
 					type = item.getSelectionType();
 				}
 

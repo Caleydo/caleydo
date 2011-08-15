@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.IListenerOwner;
 
 /**
@@ -23,6 +23,6 @@ public interface ISelectionUpdateHandler
 	 * @param info
 	 *            info about the selection (e.g. the name of triggering view to display in the info-box)
 	 */
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info);
+	public void handleSelectionUpdate(SelectionDelta selectionDelta, boolean scrollToSelection, String info);
 
 }

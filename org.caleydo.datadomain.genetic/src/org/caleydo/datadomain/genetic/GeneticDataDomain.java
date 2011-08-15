@@ -12,7 +12,6 @@ import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingLoader;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -234,7 +233,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 	@Override
 	public void handleForeignSelectionUpdate(String dataDomainType,
-			ISelectionDelta delta, boolean scrollToSelection, String info) {
+			SelectionDelta delta, boolean scrollToSelection, String info) {
 		// if (dataDomainType == CLINICAL_DATADOMAIN_TYPE)
 		// System.out
 		// .println("TODO Convert and re-send selection from clinical to genetic");
@@ -249,11 +248,11 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 				SelectionDeltaItem convertedItem = new SelectionDeltaItem();
 				convertedItem.setSelectionType(item.getSelectionType());
 				Integer converteID = convertClinicalExperimentToGeneticExperiment(item
-						.getPrimaryID());
+						.getID());
 				if (converteID == null)
 					continue;
 
-				convertedItem.setPrimaryID(converteID);
+				convertedItem.setID(converteID);
 				convertedItem.setConnectionIDs(item.getConnectionIDs());
 				convertedItem.setRemove(item.isRemove());
 				convertedDelta.add(convertedItem);

@@ -187,35 +187,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		virtualArray.add(iTargetIndex, iElement);
 	}
 
-	/**
-	 * Moves the element at iIndex to the left
-	 * 
-	 * @param iIndex
-	 *            the index of the element to be moved
-	 */
-	public void moveLeft(int iIndex) {
-		isHashIDToIndexDirty = true;
-		if (iIndex == 0)
-			return;
-		int iTemp = virtualArray.get(iIndex - 1);
-		virtualArray.set(iIndex - 1, virtualArray.get(iIndex));
-		virtualArray.set(iIndex, iTemp);
-	}
 
-	/**
-	 * Moves the element at iIndex to the right
-	 * 
-	 * @param iIndex
-	 *            the index of the element to be moved
-	 */
-	public void moveRight(int iIndex) {
-		isHashIDToIndexDirty = true;
-		if (iIndex == size() - 1)
-			return;
-		int iTemp = virtualArray.get(iIndex + 1);
-		virtualArray.set(iIndex + 1, virtualArray.get(iIndex));
-		virtualArray.set(iIndex, iTemp);
-	}
+
 
 	/**
 	 * Removes the element at the specified index. Shifts any subsequent elements to the left (subtracts one
@@ -415,13 +388,13 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		for (VADeltaItem item : delta) {
 			switch (item.getType()) {
 				case ADD:
-					add(item.getIndex(), item.getPrimaryID());
+					add(item.getIndex(), item.getID());
 					break;
 				case APPEND:
-					append(item.getPrimaryID());
+					append(item.getID());
 					break;
 				case APPEND_UNIQUE:
-					appendUnique(item.getPrimaryID());
+					appendUnique(item.getID());
 					break;
 				case REMOVE:
 					int iIndex = item.getIndex();
@@ -432,19 +405,13 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 					remove(item.getIndex());
 					break;
 				case REMOVE_ELEMENT:
-					removeByElement(item.getPrimaryID());
+					removeByElement(item.getID());
 					break;
 				case COPY:
 					copy(item.getIndex());
 					break;
 				case MOVE:
 					move(item.getIndex(), item.getTargetIndex());
-					break;
-				case MOVE_LEFT:
-					moveLeft(item.getIndex());
-					break;
-				case MOVE_RIGHT:
-					moveRight(item.getIndex());
 					break;
 				default:
 					throw new IllegalStateException("Unhandled EVAOperation: " + item.getType());

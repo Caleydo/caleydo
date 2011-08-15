@@ -10,19 +10,19 @@ import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionType;
 
 /**
- * HashMap based implementation of ISelectionDelta. Therefore all elements are unique and no ordering is
+ * HashMap based implementation of SelectionDelta. Therefore all elements are unique and no ordering is
  * preserved.
  * 
  * @author Alexander Lex
  */
 @XmlType(name = "SelectionDelta")
 public class SelectionDelta
-	implements ISelectionDelta, Iterable<SelectionDeltaItem> {
+	implements IDelta<SelectionDeltaItem>, Iterable<SelectionDeltaItem> {
 
 	private HashMap<Integer, SelectionDeltaItem> selectionItems = null;
 
 	private IDType idType;
-	private IDType secondaryIDType = null;
+//	private IDType secondaryIDType = null;
 
 	/**
 	 * Default Constructor.
@@ -38,19 +38,26 @@ public class SelectionDelta
 		this.idType = idType;
 	}
 
-	public SelectionDelta(IDType idType, IDType internalIDType) {
-		this(idType);
-
-		this.secondaryIDType = internalIDType;
-	}
+//	public SelectionDelta(IDType idType, IDType internalIDType) {
+//		this(idType);
+//
+//		this.secondaryIDType = internalIDType;
+//	}
 
 	@Override
 	public Collection<SelectionDeltaItem> getAllItems() {
 		return selectionItems.values();
 	}
 
-	@Override
-	public SelectionDeltaItem addSelection(int selectionID, SelectionType selectionType) {
+	/**
+	 * Add a new selection to the delta. Notice that a selection delta allows only unique ids.
+	 * 
+	 * @param iSelectionID
+	 *            the selection id
+	 * @param selectionType
+	 *            the selection type
+	 */
+	public SelectionDeltaItem addSelection(Integer selectionID, SelectionType selectionType) {
 
 		if (selectionType.equals(SelectionType.NORMAL)) {
 			throw new IllegalStateException("Cann not add a selection to NORMAL");
@@ -64,8 +71,19 @@ public class SelectionDelta
 		//
 	}
 
-	@Override
-	public SelectionDeltaItem removeSelection(int selectionID, SelectionType selectionType) {
+
+	
+	/**
+	 * Stores a selectionDeltaItem in the delta that triggers a removal of a particular element from a
+	 * selection type in the receiving selection manager
+	 * 
+	 * @param selectionID
+	 *            the element to be removed
+	 * @param selectionType
+	 *            the selection type from which the element should be removed
+	 * @return the {@link SelectionDeltaItem} that reflects this operation
+	 */
+	public SelectionDeltaItem removeSelection(Integer selectionID, SelectionType selectionType) {
 		SelectionDeltaItem item = new SelectionDeltaItem(selectionID, selectionType);
 		item.setRemove(true);
 		selectionItems.put(selectionID, item);
@@ -78,23 +96,16 @@ public class SelectionDelta
 	}
 
 	@Override
-	public SelectionDeltaItem addSelection(int selectionID, SelectionType selectionType, int iSecondaryID) {
-		SelectionDeltaItem item = new SelectionDeltaItem(selectionID, selectionType, iSecondaryID);
-		selectionItems.put(selectionID, item);
-		return item;
-	}
-
-	@Override
 	public int size() {
 		return selectionItems.size();
 	}
 
 	@Override
 	public SelectionDelta clone() {
-		SelectionDelta newDelta = new SelectionDelta(idType, secondaryIDType);
+		SelectionDelta newDelta = new SelectionDelta(idType);
 		for (SelectionDeltaItem item : selectionItems.values()) {
 			SelectionDeltaItem newItem =
-				newDelta.addSelection(item.getPrimaryID(), item.getSelectionType(), item.getSecondaryID());
+				newDelta.addSelection(item.getID(), item.getSelectionType());
 			for (Integer iConnetionID : item.getConnectionIDs()) {
 				newItem.addConnectionID(iConnetionID);
 			}
@@ -103,18 +114,31 @@ public class SelectionDelta
 		return newDelta;
 	}
 
-	@Override
-	public void addConnectionID(int iSelectionID, int iConnectionID) {
-		SelectionDeltaItem item = selectionItems.get(iSelectionID);
+	/**
+	 * Add an ID for connections to the delta, based on a selection id that is already stored in a delta. This
+	 * id is meant to be persistent across conversion processes
+	 * 
+	 * @param selectionID
+	 *            the original selection id
+	 * @param connectionID
+	 *            the connection id
+	 */
+	public void addConnectionID(Integer selectionID, Integer connectionID) {
+		SelectionDeltaItem item = selectionItems.get(selectionID);
 		if (item == null)
 			throw new IllegalStateException("Supplied selection ID is not in delta.");
 
-		item.addConnectionID(iConnectionID);
+		item.addConnectionID(connectionID);
 	}
 
-	@Override
-	public void addConnectionIDs(int iSelectionID, Collection<Integer> connectionIDs) {
-		SelectionDeltaItem item = selectionItems.get(iSelectionID);
+	/**
+	 * Does the same as {@link #addConnectionID(Integer, Integer)} but for a bunch of connection ids at a time.
+	 * 
+	 * @param selectionID
+	 * @param connectionIDs
+	 */
+	public void addConnectionIDs(Integer selectionID, Collection<Integer> connectionIDs) {
+		SelectionDeltaItem item = selectionItems.get(selectionID);
 		if (item == null)
 			throw new IllegalStateException("Supplied selection ID is not in delta.");
 
@@ -125,7 +149,7 @@ public class SelectionDelta
 
 	@Override
 	public void add(SelectionDeltaItem deltaItem) {
-		selectionItems.put(deltaItem.getPrimaryID(), deltaItem);
+		selectionItems.put(deltaItem.getID(), deltaItem);
 	}
 
 	@Override
@@ -138,15 +162,7 @@ public class SelectionDelta
 		this.idType = idType;
 	}
 
-	@Override
-	public IDType getSecondaryIDType() {
-		return secondaryIDType;
-	}
-
-	public void setSecondaryIDType(IDType secondaryIDType) {
-		this.secondaryIDType = secondaryIDType;
-	}
-
+	
 	public HashMap<Integer, SelectionDeltaItem> getSelectionItems() {
 		return selectionItems;
 	}

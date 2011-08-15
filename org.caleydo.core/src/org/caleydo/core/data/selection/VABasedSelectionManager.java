@@ -130,7 +130,7 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 			switch (item.getType()) {
 
 				case REMOVE_ELEMENT:
-					remove(item.getPrimaryID());
+					remove(item.getID());
 					break;
 				case REMOVE:
 					remove(virtualArray.get(item.getIndex()));

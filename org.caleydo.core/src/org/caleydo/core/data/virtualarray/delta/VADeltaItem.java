@@ -15,11 +15,10 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 
 public class VADeltaItem
 	implements IDeltaItem {
-	private EVAOperation vAOperation;
-	private int iPrimaryID = -1;
-	private int iSecondaryID = -1;
-	private int iIndex = -1;
-	private int iTargetIndex = -1;
+	private EVAOperation vaOperation;
+	private Integer elementID = -1;
+	private int index = -1;
+	private int targetIndex = -1;
 
 	/**
 	 * Constructor. Constructing a VAItem externally is forbidden.
@@ -28,17 +27,16 @@ public class VADeltaItem
 	}
 
 	/**
-	 * Static factory for a new delta item that appends an element to the end of a virtual array (see
-	 * {@link IVirtualArray#append(Integer)})
+	 * Static factory for a new delta item that appends an element to the end of a virtual array 
 	 * 
-	 * @param iNewElement
+	 * @param elementID
 	 *            the new element
 	 * @return the created object
 	 */
-	public static VADeltaItem append(int iNewElement) {
+	public static VADeltaItem append(Integer elementID) {
 		VADeltaItem newItem = new VADeltaItem();
-		newItem.vAOperation = EVAOperation.APPEND;
-		newItem.iPrimaryID = iNewElement;
+		newItem.vaOperation = EVAOperation.APPEND;
+		newItem.elementID = elementID;
 		return newItem;
 	}
 
@@ -50,27 +48,27 @@ public class VADeltaItem
 	 *            the new element
 	 * @return the created object
 	 */
-	public static VADeltaItem appendUnique(int iNewElement) {
+	public static VADeltaItem appendUnique(Integer newElementID) {
 		VADeltaItem newItem = new VADeltaItem();
-		newItem.vAOperation = EVAOperation.APPEND_UNIQUE;
-		newItem.iPrimaryID = iNewElement;
+		newItem.vaOperation = EVAOperation.APPEND_UNIQUE;
+		newItem.elementID = newElementID;
 		return newItem;
 	}
 
 	/**
 	 * Static factory for a new delta item that adds an element at a specific position of a virtual array
 	 * 
-	 * @param iIndex
+	 * @param index
 	 *            the place where the element is added (see {@link VirtualArray#add(int, Integer)})
-	 * @param iNewElement
+	 * @param newElementID
 	 *            the new element
 	 * @return the created object
 	 */
-	public static VADeltaItem add(int iIndex, int iNewElement) {
+	public static VADeltaItem add(int index, int newElementID) {
 		VADeltaItem newItem = new VADeltaItem();
-		newItem.vAOperation = EVAOperation.ADD;
-		newItem.iPrimaryID = iNewElement;
-		newItem.iIndex = iIndex;
+		newItem.vaOperation = EVAOperation.ADD;
+		newItem.elementID = newElementID;
+		newItem.index = index;
 		return newItem;
 	}
 
@@ -79,14 +77,14 @@ public class VADeltaItem
 	 * Take good care to remove items in the correct order, from back to front. Otherwise this can corrupt
 	 * your data.
 	 * 
-	 * @param iIndex
+	 * @param index
 	 *            the place where the element is added (see {@link IVirtualArray#remove(int)})
 	 * @return the created object
 	 */
-	public static VADeltaItem remove(int iIndex) {
+	public static VADeltaItem remove(int index) {
 		VADeltaItem newItem = new VADeltaItem();
-		newItem.vAOperation = EVAOperation.REMOVE;
-		newItem.iIndex = iIndex;
+		newItem.vaOperation = EVAOperation.REMOVE;
+		newItem.index = index;
 		return newItem;
 	}
 
@@ -94,62 +92,32 @@ public class VADeltaItem
 	 * Static Factory for new delta item that removes all instances of a specific element. See
 	 * {@link IVirtualArray#removeByElement(int)} for further details.
 	 * 
-	 * @param iElement
+	 * @param elementID
 	 *            the element to be removed
 	 * @return the created object
 	 */
-	public static VADeltaItem removeElement(int iElement) {
+	public static VADeltaItem removeElement(Integer elementID) {
 		VADeltaItem newItem = new VADeltaItem();
-		newItem.vAOperation = EVAOperation.REMOVE_ELEMENT;
-		newItem.iPrimaryID = iElement;
+		newItem.vaOperation = EVAOperation.REMOVE_ELEMENT;
+		newItem.elementID = elementID;
 		return newItem;
 	}
 
-	/**
-	 * Static Factory for new delta item that moves the element at the specified index one to the right See
-	 * {@link IVirtualArray#moveRight(int)} for further details.
-	 * 
-	 * @param iIndex
-	 *            the element to be moved
-	 * @return the created object
-	 */
-	public static VADeltaItem moveRight(int iIndex) {
-		VADeltaItem newItem = new VADeltaItem();
-		newItem.vAOperation = EVAOperation.MOVE_RIGHT;
-		newItem.iIndex = iIndex;
-		return newItem;
-	}
-
-	/**
-	 * Static Factory for new delta item that moves the element at the specified index one to the left See
-	 * {@link IVirtualArray#moveLeft(int)} for further details.
-	 * 
-	 * @param iIndex
-	 *            the element to be moved
-	 * @return the created object
-	 */
-	public static VADeltaItem moveLeft(int iIndex) {
-		VADeltaItem newItem = new VADeltaItem();
-		newItem.vAOperation = EVAOperation.MOVE_LEFT;
-		newItem.iIndex = iIndex;
-		return newItem;
-	}
-
-	/**
+   /**
 	 * Static Factory for new delta item that moves the element at the specified src index to the specified
 	 * target index. See {@link IVirtualArray#move(int, int)} for further details.
 	 * 
-	 * @param iSrcIndex
+	 * @param srcIndex
 	 *            the src index
-	 * @param iTragetIndex
+	 * @param targetIndex
 	 *            the target index
 	 * @return the created object
 	 */
-	public static VADeltaItem move(int iSrcIndex, int iTragetIndex) {
+	public static VADeltaItem move(int srcIndex, int targetIndex) {
 		VADeltaItem newItem = new VADeltaItem();
-		newItem.vAOperation = EVAOperation.MOVE;
-		newItem.iIndex = iSrcIndex;
-		newItem.iTargetIndex = iTragetIndex;
+		newItem.vaOperation = EVAOperation.MOVE;
+		newItem.index = srcIndex;
+		newItem.targetIndex = targetIndex;
 		return newItem;
 	}
 
@@ -157,14 +125,14 @@ public class VADeltaItem
 	 * Static Factory for new delta item that copies the element at the specified index and adds the new
 	 * element at iIndex + 1 {@link IVirtualArray#copy(int)} for further details.
 	 * 
-	 * @param iIndex
+	 * @param index
 	 *            the element to be copied
 	 * @return the created object
 	 */
-	public static VADeltaItem copy(int iIndex) {
+	public static VADeltaItem copy(int index) {
 		VADeltaItem newItem = new VADeltaItem();
-		newItem.vAOperation = EVAOperation.COPY;
-		newItem.iIndex = iIndex;
+		newItem.vaOperation = EVAOperation.COPY;
+		newItem.index = index;
 		return newItem;
 	}
 
@@ -175,26 +143,22 @@ public class VADeltaItem
 	 * 
 	 * @param operation
 	 *            the operation the delta item should carry out
-	 * @param iVariable
+	 * @param value
 	 *            a integer variable, which can be either an index or an element id, depending on the use case
 	 * @return the created object with the properties specified in operation
 	 */
-	public static VADeltaItem create(EVAOperation operation, int iVariable) {
+	public static VADeltaItem create(EVAOperation operation, Integer value) {
 		switch (operation) {
 			case APPEND:
-				return append(iVariable);
+				return append(value);
 			case APPEND_UNIQUE:
-				return appendUnique(iVariable);
+				return appendUnique(value);
 			case REMOVE:
-				return remove(iVariable);
+				return remove(value);
 			case REMOVE_ELEMENT:
-				return removeElement(iVariable);
-			case MOVE_LEFT:
-				return moveLeft(iVariable);
-			case MOVE_RIGHT:
-				return moveRight(iVariable);
+				return removeElement(value);
 			case COPY:
-				return copy(iVariable);
+				return copy(value);
 			default:
 				throw new IllegalArgumentException("Illegal number of arguments for operation " + operation
 					+ ".");
@@ -207,7 +171,7 @@ public class VADeltaItem
 	 * @return the type
 	 */
 	public EVAOperation getType() {
-		return vAOperation;
+		return vaOperation;
 	}
 
 	/**
@@ -218,10 +182,10 @@ public class VADeltaItem
 	 *             if operation does not use an index
 	 */
 	public int getIndex() {
-		if (iIndex == -1)
-			throw new IllegalStateException("Operation " + vAOperation + " does not need an index");
+		if (index == -1)
+			throw new IllegalStateException("Operation " + vaOperation + " does not need an index");
 
-		return iIndex;
+		return index;
 	}
 
 	/**
@@ -232,9 +196,9 @@ public class VADeltaItem
 	 *             if operation does not use a target index
 	 */
 	public int getTargetIndex() {
-		if (iTargetIndex == -1)
-			throw new IllegalStateException("Operation " + vAOperation + " does not need a target index");
-		return iTargetIndex;
+		if (targetIndex == -1)
+			throw new IllegalStateException("Operation " + vaOperation + " does not need a target index");
+		return targetIndex;
 	}
 
 	/**
@@ -245,44 +209,32 @@ public class VADeltaItem
 	 *             if operation does not use an element
 	 */
 	@Override
-	public int getPrimaryID() {
-		if (iPrimaryID == -1)
-			throw new IllegalStateException("Operation " + vAOperation + " does not need an element");
+	public int getID() {
+		if (elementID == -1)
+			throw new IllegalStateException("Operation " + vaOperation + " does not need an element");
 
-		return iPrimaryID;
+		return elementID;
 	}
 
 	@Override
-	public int getSecondaryID() {
-		return iSecondaryID;
-	}
+	public void setID(Integer elementID) {
+		this.elementID = elementID;
+	}	
 
 	@Override
-	public void setPrimaryID(int iPrimaryID) {
-		this.iPrimaryID = iPrimaryID;
-	}
-
-	@Override
-	public void setSecondaryID(int iSecondaryID) {
-		this.iSecondaryID = iSecondaryID;
-
-	}
-
-	@Override
-	public Object clone() {
+	public VADeltaItem clone() {
 		try {
-			return super.clone();
+			return (VADeltaItem) super.clone();
 		}
 		catch (CloneNotSupportedException e) {
 			throw new IllegalStateException(
 				"Something went wrong with the cloning, caught CloneNotSupportedException");
 		}
-
 	}
 
 	@Override
 	public int hashCode() {
-		return iPrimaryID;
+		return elementID;
 	}
 
 	@Override
@@ -292,13 +244,13 @@ public class VADeltaItem
 
 	@Override
 	public String toString() {
-		String message = vAOperation.toString();
-		switch (vAOperation) {
+		String message = vaOperation.toString();
+		switch (vaOperation) {
 			case MOVE:
-				message += " from: " + iIndex + " to: " + iTargetIndex;
+				message += " from: " + index + " to: " + targetIndex;
 				break;
 			case REMOVE:
-				message += "; Index: " + iIndex;
+				message += "; Index: " + index;
 				break;
 
 		}
