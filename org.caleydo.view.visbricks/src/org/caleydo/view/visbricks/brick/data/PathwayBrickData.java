@@ -1,8 +1,8 @@
 package org.caleydo.view.visbricks.brick.data;
 
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwaySegmentData;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.visbricks.brick.GLBrick;

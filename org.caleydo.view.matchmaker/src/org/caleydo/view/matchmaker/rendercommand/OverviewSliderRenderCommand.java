@@ -2,7 +2,7 @@ package org.caleydo.view.matchmaker.rendercommand;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.matchmaker.HeatMapWrapper;
 import org.caleydo.view.matchmaker.VerticalSlider;

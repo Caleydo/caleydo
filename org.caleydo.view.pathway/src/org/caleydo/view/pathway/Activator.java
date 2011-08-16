@@ -2,8 +2,8 @@ package org.caleydo.view.pathway;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.view.pathway.toolbar.PathwayToolBarContent;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;

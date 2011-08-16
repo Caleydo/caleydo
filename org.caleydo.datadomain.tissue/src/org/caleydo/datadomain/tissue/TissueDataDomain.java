@@ -3,8 +3,8 @@ package org.caleydo.datadomain.tissue;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.manager.datadomain.ADataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.data.datadomain.ADataDomain;
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**

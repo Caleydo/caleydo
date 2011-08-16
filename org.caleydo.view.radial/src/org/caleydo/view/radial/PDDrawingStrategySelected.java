@@ -4,9 +4,9 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
+import org.caleydo.core.view.opengl.picking.PickingManager;
+import org.caleydo.core.view.opengl.picking.PickingType;
 
 /**
  * PDDrawingStrategySelected is responsible for drawing partial discs which have

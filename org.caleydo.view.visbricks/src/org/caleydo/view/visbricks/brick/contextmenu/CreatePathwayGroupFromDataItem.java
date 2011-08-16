@@ -1,7 +1,7 @@
 package org.caleydo.view.visbricks.brick.contextmenu;
 
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.visbricks.event.OpenCreatePathwayGroupDialogEvent;
 

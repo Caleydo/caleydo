@@ -1,10 +1,10 @@
 package org.caleydo.datadomain.pathway.data;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 public class PathwaySegmentData implements ISegmentData {

@@ -11,11 +11,11 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.picking.PickingManager;
+import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
 
 import com.jogamp.opengl.util.texture.Texture;

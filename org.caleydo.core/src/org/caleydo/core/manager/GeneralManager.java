@@ -3,11 +3,11 @@ package org.caleydo.core.manager;
 import java.io.File;
 
 import org.caleydo.core.command.CommandManager;
+import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.dimension.DimensionManager;
 import org.caleydo.core.data.id.IDCreator;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.gui.SWTGUIManager;
-import org.caleydo.core.manager.data.dimension.DimensionManager;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.net.IGroupwareManager;

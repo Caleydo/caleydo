@@ -1,8 +1,8 @@
 package org.caleydo.core.startup;
 
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.perspective.PartListener;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;

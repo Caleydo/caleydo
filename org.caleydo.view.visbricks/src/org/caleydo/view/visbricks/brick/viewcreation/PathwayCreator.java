@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;

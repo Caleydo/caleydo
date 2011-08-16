@@ -2,11 +2,11 @@ package org.caleydo.core.startup;
 
 import java.util.List;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.io.gui.ImportDataDialog;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.system.FileOperations;

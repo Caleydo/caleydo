@@ -3,8 +3,8 @@ package org.caleydo.core.data.virtualarray;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.datadomain.IDataDomain;
 
 public abstract class ADimensionGroupData {
 

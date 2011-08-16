@@ -2,8 +2,8 @@ package org.caleydo.view.radial;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
+import org.caleydo.core.view.opengl.picking.PickingManager;
 
 /**
  * The DrawingStrategyFactory (Singleton) holds the instance of the current

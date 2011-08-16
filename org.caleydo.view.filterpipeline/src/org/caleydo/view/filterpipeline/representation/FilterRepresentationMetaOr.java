@@ -11,8 +11,8 @@ import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
-import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.manager.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.PickingManager;
+import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 

@@ -8,7 +8,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
-import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.view.heatmap.hierarchical.HeatMapUtil;
 import org.caleydo.view.matchmaker.HeatMapWrapper;
 import org.caleydo.view.matchmaker.layout.AHeatMapLayout;

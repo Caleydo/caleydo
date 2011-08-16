@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.util.scrollbar;
 
-import org.caleydo.core.manager.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.PickingType;
 
 /**
  * Class that holds all non-visual properties of a scroll bar. The rendering should be done by a

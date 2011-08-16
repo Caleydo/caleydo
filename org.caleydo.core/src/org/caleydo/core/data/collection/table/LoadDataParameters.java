@@ -7,8 +7,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 
 /**
  * Parameters to load the initial data-{@link DataTable}.

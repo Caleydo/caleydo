@@ -2,7 +2,7 @@ package org.caleydo.view.matchmaker.rendercommand;
 
 import java.util.HashMap;
 
-import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 import com.jogamp.opengl.util.awt.TextRenderer;

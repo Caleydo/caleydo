@@ -2,7 +2,7 @@ package org.caleydo.view.matchmaker.layout;
 
 import gleem.linalg.Vec3f;
 
-import org.caleydo.core.manager.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.matchmaker.rendercommand.RenderCommandFactory;
 
 public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {

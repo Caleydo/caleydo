@@ -2,7 +2,7 @@ package org.caleydo.core.gui.dialog;
 
 import java.util.Collection;
 
-import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

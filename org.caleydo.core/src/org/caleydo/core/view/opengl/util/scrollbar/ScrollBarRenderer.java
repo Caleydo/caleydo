@@ -2,10 +2,10 @@ package org.caleydo.core.view.opengl.util.scrollbar;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.APickingListener;
-import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 

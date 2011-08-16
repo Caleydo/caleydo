@@ -1,6 +1,7 @@
 package org.caleydo.core.data.filter;
 
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.event.CombineRecordFilterEvent;
 import org.caleydo.core.data.filter.event.CombineRecordFilterListener;
 import org.caleydo.core.data.filter.event.MoveRecordFilterListener;
@@ -13,7 +14,6 @@ import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveRecordFilterListener;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
-import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceRecordVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.tablebased.RecordVAUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;

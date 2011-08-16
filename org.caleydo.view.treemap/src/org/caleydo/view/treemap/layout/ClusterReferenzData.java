@@ -1,6 +1,6 @@
 package org.caleydo.view.treemap.layout;
 
-import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 
 

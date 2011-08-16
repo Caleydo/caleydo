@@ -2,7 +2,7 @@ package org.caleydo.view.tissuebrowser;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 

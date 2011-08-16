@@ -2,8 +2,8 @@ package org.caleydo.view.heatmap;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;

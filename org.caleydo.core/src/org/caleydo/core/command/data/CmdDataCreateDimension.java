@@ -3,8 +3,8 @@ package org.caleydo.core.command.data;
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.collection.dimension.ADimension;
+import org.caleydo.core.data.dimension.DimensionManager;
 import org.caleydo.core.data.id.ManagedObjectType;
-import org.caleydo.core.manager.data.dimension.DimensionManager;
 
 /**
  * Command creates a new dimension.

@@ -1,6 +1,6 @@
 package org.caleydo.view.visbricks.brick.ui;
 
-import org.caleydo.core.manager.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.brick.EContainedViewType;

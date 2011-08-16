@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.manager.datadomain.ADataDomain;
+import org.caleydo.core.data.datadomain.ADataDomain;
 
 /**
  * Collection-class for a list of all data domains to store

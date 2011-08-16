@@ -1,7 +1,7 @@
 package org.caleydo.core.view;
 
-import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 
 /**
  * Interface for views that show data which is stored in sets.

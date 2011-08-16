@@ -2,9 +2,9 @@ package org.caleydo.core.serialize;
 
 import java.util.HashMap;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 
 /**
  * Bean that holds the initialization data for new started caleydo application. Used to store and restore

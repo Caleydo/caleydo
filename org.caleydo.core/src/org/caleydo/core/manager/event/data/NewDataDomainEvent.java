@@ -1,6 +1,6 @@
 package org.caleydo.core.manager.event.data;
 
-import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.AEvent;
 
 public class NewDataDomainEvent

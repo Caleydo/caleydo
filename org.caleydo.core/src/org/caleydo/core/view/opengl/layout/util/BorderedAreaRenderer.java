@@ -2,9 +2,9 @@ package org.caleydo.core.view.opengl.layout.util;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.picking.PickingType;
 
 /**
  * Renders a bordered area.

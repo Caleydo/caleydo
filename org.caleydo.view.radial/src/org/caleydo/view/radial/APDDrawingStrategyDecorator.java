@@ -3,7 +3,7 @@ package org.caleydo.view.radial;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.picking.PickingManager;
 
 /**
  * Abstract base class for all decorators for partial disc drawing strategies.

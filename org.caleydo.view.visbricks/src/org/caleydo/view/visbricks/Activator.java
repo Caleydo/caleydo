@@ -2,8 +2,8 @@ package org.caleydo.view.visbricks;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.toolbar.VisBricksToolBarContent;
 import org.eclipse.core.runtime.Plugin;

@@ -1,8 +1,8 @@
 package org.caleydo.view.visbricks.brick.ui;
 
-import org.caleydo.core.manager.picking.PickingType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
+import org.caleydo.core.view.opengl.picking.PickingType;
 
 public class PathwaysSummaryRenderer extends LabelRenderer {
 

@@ -1,8 +1,8 @@
 package org.caleydo.core.data.filter;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
-import org.caleydo.core.manager.datadomain.ATableBasedDataDomain;
 
 /**
  * Generic base class for Filters. A Filter contains changes made to a virtual array. Sub-classes may

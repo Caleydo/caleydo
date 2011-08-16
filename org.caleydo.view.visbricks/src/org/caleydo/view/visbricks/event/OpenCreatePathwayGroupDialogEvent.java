@@ -1,7 +1,7 @@
 package org.caleydo.view.visbricks.event;
 
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.manager.datadomain.IDataDomain;
 import org.caleydo.core.manager.event.AEvent;
 
 public class OpenCreatePathwayGroupDialogEvent extends AEvent {

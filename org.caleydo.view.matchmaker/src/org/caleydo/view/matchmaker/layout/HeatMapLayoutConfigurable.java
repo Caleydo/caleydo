@@ -5,7 +5,7 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.caleydo.core.manager.picking.PickingType;
+import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.matchmaker.rendercommand.IHeatMapRenderCommand;
 import org.caleydo.view.matchmaker.rendercommand.RenderCommandFactory;
 

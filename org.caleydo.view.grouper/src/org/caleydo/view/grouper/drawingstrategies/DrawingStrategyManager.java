@@ -2,7 +2,7 @@ package org.caleydo.view.grouper.drawingstrategies;
 
 import java.util.HashMap;
 
-import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.view.grouper.GrouperRenderStyle;
 import org.caleydo.view.grouper.drawingstrategies.group.EGroupDrawingStrategyType;
 import org.caleydo.view.grouper.drawingstrategies.group.GroupDrawingStrategyDragged;

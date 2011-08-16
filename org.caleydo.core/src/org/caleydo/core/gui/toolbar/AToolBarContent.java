@@ -56,20 +56,6 @@ public abstract class AToolBarContent {
 	protected abstract List<ToolBarContainer> getToolBarContent();
 
 	/**
-	 * Delivers the content for the toolbar view for special behaviour sub classes should override this method
-	 * 
-	 * @return list of actions for a toolbar
-	 */
-	public List<ToolBarContainer> getDefaultToolBar() {
-		if (attached) {
-			return getToolBarContent();
-		}
-		else {
-			return new ArrayList<ToolBarContainer>();
-		}
-	}
-
-	/**
 	 * Delivers the content for the view-inline toolbar for special behavior sub classes should override this
 	 * method
 	 * 
