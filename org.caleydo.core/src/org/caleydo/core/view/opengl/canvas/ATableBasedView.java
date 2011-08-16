@@ -76,14 +76,15 @@ public abstract class ATableBasedView
 	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 	/**
-	 * This manager is responsible for the content in the dimensions (the indices). The contentSelectionManager
-	 * is initialized when the useCase is set ({@link #setDataDomain(IDataDomain)}).
+	 * This manager is responsible for the content in the dimensions (the indices). The
+	 * contentSelectionManager is initialized when the useCase is set ({@link #setDataDomain(IDataDomain)}).
 	 */
 	protected RecordSelectionManager recordSelectionManager;
 
 	/**
-	 * This manager is responsible for the management of the dimensions in the table. The dimensionSelectionManager
-	 * is initialized when the useCase is set ( {@link #setDataDomain(IDataDomain)}).
+	 * This manager is responsible for the management of the dimensions in the table. The
+	 * dimensionSelectionManager is initialized when the useCase is set ( {@link #setDataDomain(IDataDomain)}
+	 * ).
 	 */
 	protected DimensionSelectionManager dimensionSelectionManager;
 
@@ -121,7 +122,7 @@ public abstract class ATableBasedView
 	protected IDType recordIDType;
 	protected IDType dimensionIDType;
 
-	protected DataRepresentation renderingRepresentation = DataRepresentation.NORMALIZED;
+	protected DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
 	/**
 	 * Constructor for dimension based views
@@ -394,7 +395,7 @@ public abstract class ATableBasedView
 
 					}
 					else if (selectionDelta.getIDType() == dimensionIDType) {
-						id = item.getID();						
+						id = item.getID();
 						idType = dimensionIDType;
 					}
 					else
@@ -619,17 +620,19 @@ public abstract class ATableBasedView
 	}
 
 	public void switchDataRepresentation() {
-		if (renderingRepresentation.equals(DataRepresentation.NORMALIZED)) {
+		if (dimensionDataRepresentation.equals(DataRepresentation.NORMALIZED)) {
 			if (!table.containsFoldChangeRepresentation())
 				table.createFoldChangeRepresentation();
-			renderingRepresentation = DataRepresentation.FOLD_CHANGE_NORMALIZED;
+			dimensionDataRepresentation = DataRepresentation.FOLD_CHANGE_NORMALIZED;
 		}
 		else
-			renderingRepresentation = DataRepresentation.NORMALIZED;
+			dimensionDataRepresentation = DataRepresentation.NORMALIZED;
+
+		setDisplayListDirty();
 	}
 
 	public DataRepresentation getRenderingRepresentation() {
-		return renderingRepresentation;
+		return dimensionDataRepresentation;
 	}
 
 }

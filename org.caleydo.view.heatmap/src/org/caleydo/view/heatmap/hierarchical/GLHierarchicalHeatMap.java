@@ -22,7 +22,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -550,7 +549,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					}
 
 					fLookupValue = table.get(iDimensionIndex).getFloat(
-							renderingRepresentation, recordIndex);
+							dimensionDataRepresentation, recordIndex);
 
 					float[] fArMappingColor = colorMapper.getColor(fLookupValue);
 
@@ -620,7 +619,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					}
 
 					fLookupValue = table.get(iDimensionIndex).getFloat(
-							DataRepresentation.NORMALIZED, recordIndex);
+							dimensionDataRepresentation, recordIndex);
 
 					float[] fArMappingColor = colorMapper.getColor(fLookupValue);
 
@@ -5271,6 +5270,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		java.util.Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
 		dataDomains.add(dataDomain);
 		return dataDomains;
+	}
+	
+	@Override
+	public void switchDataRepresentation() {
+		bRedrawTextures = true;
+		super.switchDataRepresentation();
 	}
 
 }

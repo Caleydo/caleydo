@@ -30,6 +30,7 @@ import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
+import org.caleydo.core.manager.event.view.SwitchDataRepresentationEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
@@ -78,6 +79,7 @@ import org.caleydo.view.pathway.listener.DisableTexturesListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
 import org.caleydo.view.pathway.listener.EnableNeighborhoodListener;
 import org.caleydo.view.pathway.listener.EnableTexturesListener;
+import org.caleydo.view.pathway.listener.SwitchDataRepresentationListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
@@ -143,6 +145,8 @@ public class GLPathway extends AGLView implements
 	protected ClearSelectionsListener clearSelectionsListener;
 
 	protected SelectionCommandListener selectionCommandListener;
+	
+	protected SwitchDataRepresentationListener switchDataRepresentationListener;
 
 	/**
 	 * Constructor.
@@ -998,6 +1002,10 @@ public class GLPathway extends AGLView implements
 		// replaceVirtualArrayListener.setHandler(this);
 		// eventPublisher.addListener(ReplaceVAEvent.class,
 		// replaceVirtualArrayListener);
+		
+		switchDataRepresentationListener = new SwitchDataRepresentationListener();
+		switchDataRepresentationListener.setHandler(this);
+		eventPublisher.addListener(SwitchDataRepresentationEvent.class, switchDataRepresentationListener);
 	}
 
 	@Override
@@ -1050,6 +1058,11 @@ public class GLPathway extends AGLView implements
 		if (replaceVirtualArrayListener != null) {
 			eventPublisher.removeListener(replaceVirtualArrayListener);
 			replaceVirtualArrayListener = null;
+		}
+		
+		if (switchDataRepresentationListener != null) {
+			eventPublisher.removeListener(switchDataRepresentationListener);
+			switchDataRepresentationListener = null;
 		}
 	}
 
@@ -1106,4 +1119,8 @@ public class GLPathway extends AGLView implements
 		return true;
 	}
 
+	public void switchDataRepresentation() {
+		gLPathwayContentCreator.switchDataRepresentation();
+		setDisplayListDirty();
+	}
 }

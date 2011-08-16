@@ -77,6 +77,8 @@ public class GLPathwayContentCreator {
 	private PathwayItemManager pathwayItemManager;
 
 	private ATableBasedDataDomain geneticDataDomain;
+	
+	private DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
 	/**
 	 * Constructor.
@@ -889,7 +891,7 @@ public class GLPathwayContentCreator {
 				if (dimension == null)
 					throw new IllegalStateException("No dimension in this set with id: "
 							+ glPathwayView.iCurrentDimensionIndex);
-				float expressionValue = dimension.getFloat(DataRepresentation.NORMALIZED,
+				float expressionValue = dimension.getFloat(dimensionDataRepresentation,
 						iExpressionIndex);
 
 				return colorMapper.getColor(expressionValue);
@@ -921,5 +923,15 @@ public class GLPathwayContentCreator {
 	}
 
 	public void setMappingRowCount(final int iMappingRowCount) {
+	}
+	
+	public void switchDataRepresentation() {
+		if (dimensionDataRepresentation.equals(DataRepresentation.NORMALIZED)) {
+			if (!geneticDataDomain.getTable().containsFoldChangeRepresentation())
+				geneticDataDomain.getTable().createFoldChangeRepresentation();
+			dimensionDataRepresentation = DataRepresentation.FOLD_CHANGE_NORMALIZED;
+		}
+		else
+			dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 	}
 }

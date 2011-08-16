@@ -1,10 +1,10 @@
-package org.caleydo.core.view.opengl.canvas.listener;
+package org.caleydo.view.pathway.listener;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.SwitchDataRepresentationEvent;
-import org.caleydo.core.view.opengl.canvas.ATableBasedView;
+import org.caleydo.view.pathway.GLPathway;
 
 /**
  * Listener for switches of data representation (see {@link DataRepresentation})
@@ -12,7 +12,7 @@ import org.caleydo.core.view.opengl.canvas.ATableBasedView;
  * @author Alexander Lex
  */
 public class SwitchDataRepresentationListener
-	extends AEventListener<ATableBasedView> {
+	extends AEventListener<GLPathway> {
 
 	/**
 	 * Handles {@link SwitchDataRepresentationEvent}s calling the related handler
