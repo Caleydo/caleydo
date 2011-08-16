@@ -26,11 +26,7 @@ import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
-import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
-import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
-import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
-import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.event.view.remote.DisableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.EnableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
@@ -79,12 +75,8 @@ import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneListener;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.bucket.listener.DisableConnectionLinesListener;
 import org.caleydo.view.bucket.listener.DisableGeneMappingListener;
-import org.caleydo.view.bucket.listener.DisableNeighborhoodListener;
-import org.caleydo.view.bucket.listener.DisableTexturesListener;
 import org.caleydo.view.bucket.listener.EnableConnectionLinesListener;
 import org.caleydo.view.bucket.listener.EnableGeneMappingListener;
-import org.caleydo.view.bucket.listener.EnableNeighborhoodListener;
-import org.caleydo.view.bucket.listener.EnableTexturesListener;
 import org.caleydo.view.bucket.listener.ToggleNavigationModeListener;
 import org.caleydo.view.bucket.listener.ToggleZoomListener;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -198,10 +190,6 @@ public class GLBucket extends AGLView implements
 	protected LoadPathwaysByGeneListener loadPathwaysByGeneListener;
 	protected EnableGeneMappingListener enableGeneMappingListener;
 	protected DisableGeneMappingListener disableGeneMappingListener;
-	protected EnableTexturesListener enableTexturesListener;
-	protected DisableTexturesListener disableTexturesListener;
-	protected EnableNeighborhoodListener enableNeighborhoodListener;
-	protected DisableNeighborhoodListener disableNeighborhoodListener;
 	protected ToggleNavigationModeListener toggleNavigationModeListener;
 	protected ToggleZoomListener toggleZoomListener;
 	protected EnableConnectionLinesListener enableConnectionLinesListener;
@@ -2726,14 +2714,6 @@ public class GLBucket extends AGLView implements
 		eventPublisher.addListener(LoadPathwaysByGeneEvent.class,
 				loadPathwaysByGeneListener);
 
-		enableTexturesListener = new EnableTexturesListener();
-		enableTexturesListener.setHandler(this);
-		eventPublisher.addListener(EnableTexturesEvent.class, enableTexturesListener);
-
-		disableTexturesListener = new DisableTexturesListener();
-		disableTexturesListener.setHandler(this);
-		eventPublisher.addListener(DisableTexturesEvent.class, disableTexturesListener);
-
 		enableGeneMappingListener = new EnableGeneMappingListener();
 		enableGeneMappingListener.setHandler(this);
 		eventPublisher.addListener(EnableGeneMappingEvent.class,
@@ -2743,16 +2723,6 @@ public class GLBucket extends AGLView implements
 		disableGeneMappingListener.setHandler(this);
 		eventPublisher.addListener(DisableGeneMappingEvent.class,
 				disableGeneMappingListener);
-
-		enableNeighborhoodListener = new EnableNeighborhoodListener();
-		enableNeighborhoodListener.setHandler(this);
-		eventPublisher.addListener(EnableNeighborhoodEvent.class,
-				enableNeighborhoodListener);
-
-		disableNeighborhoodListener = new DisableNeighborhoodListener();
-		disableNeighborhoodListener.setHandler(this);
-		eventPublisher.addListener(DisableNeighborhoodEvent.class,
-				disableNeighborhoodListener);
 
 		enableConnectionLinesListener = new EnableConnectionLinesListener();
 		enableConnectionLinesListener.setHandler(this);
@@ -2806,14 +2776,6 @@ public class GLBucket extends AGLView implements
 			eventPublisher.removeListener(loadPathwaysByGeneListener);
 			loadPathwaysByGeneListener = null;
 		}
-		if (enableTexturesListener != null) {
-			eventPublisher.removeListener(enableTexturesListener);
-			enableTexturesListener = null;
-		}
-		if (disableTexturesListener != null) {
-			eventPublisher.removeListener(disableTexturesListener);
-			disableTexturesListener = null;
-		}
 		if (enableGeneMappingListener != null) {
 			eventPublisher.removeListener(enableGeneMappingListener);
 			enableGeneMappingListener = null;
@@ -2821,14 +2783,6 @@ public class GLBucket extends AGLView implements
 		if (disableGeneMappingListener != null) {
 			eventPublisher.removeListener(disableGeneMappingListener);
 			disableGeneMappingListener = null;
-		}
-		if (enableNeighborhoodListener != null) {
-			eventPublisher.removeListener(enableNeighborhoodListener);
-			enableNeighborhoodListener = null;
-		}
-		if (disableNeighborhoodListener != null) {
-			eventPublisher.removeListener(disableNeighborhoodListener);
-			disableNeighborhoodListener = null;
 		}
 		if (enableConnectionLinesListener != null) {
 			eventPublisher.removeListener(enableConnectionLinesListener);

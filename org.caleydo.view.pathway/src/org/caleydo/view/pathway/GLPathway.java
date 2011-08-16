@@ -32,11 +32,7 @@ import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.SwitchDataRepresentationEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
-import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
-import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
-import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
-import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.tablebased.RecordVAUpdateEvent;
 import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
@@ -74,11 +70,7 @@ import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
 import org.caleydo.view.pathway.listener.DisableGeneMappingListener;
-import org.caleydo.view.pathway.listener.DisableNeighborhoodListener;
-import org.caleydo.view.pathway.listener.DisableTexturesListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
-import org.caleydo.view.pathway.listener.EnableNeighborhoodListener;
-import org.caleydo.view.pathway.listener.EnableTexturesListener;
 import org.caleydo.view.pathway.listener.SwitchDataRepresentationListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -121,20 +113,9 @@ public class GLPathway extends AGLView implements
 	private Vec3f vecTranslation;
 
 	int iCurrentDimensionIndex = -1;
-
-	// private TextRenderer textRenderer;
-	// private boolean bEnableTitleRendering = true;
-	// private int iHorizontalTextAlignment = SWT.CENTER;
-	// private int iVerticalTextAlignment = SWT.BOTTOM;
-
-	protected EnableTexturesListener enableTexturesListener;
-	protected DisableTexturesListener disableTexturesListener;
-
+	
 	protected EnableGeneMappingListener enableGeneMappingListener;
 	protected DisableGeneMappingListener disableGeneMappingListener;
-
-	protected EnableNeighborhoodListener enableNeighborhoodListener;
-	protected DisableNeighborhoodListener disableNeighborhoodListener;
 
 	protected SelectionUpdateListener selectionUpdateListener;
 	protected RecordVAUpdateListener virtualArrayUpdateListener;
@@ -945,24 +926,6 @@ public class GLPathway extends AGLView implements
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		enableTexturesListener = new EnableTexturesListener();
-		enableTexturesListener.setHandler(this);
-		eventPublisher.addListener(EnableTexturesEvent.class, enableTexturesListener);
-
-		disableTexturesListener = new DisableTexturesListener();
-		disableTexturesListener.setHandler(this);
-		eventPublisher.addListener(DisableTexturesEvent.class, disableTexturesListener);
-
-		enableNeighborhoodListener = new EnableNeighborhoodListener();
-		enableNeighborhoodListener.setHandler(this);
-		eventPublisher.addListener(EnableNeighborhoodEvent.class,
-				enableNeighborhoodListener);
-
-		disableNeighborhoodListener = new DisableNeighborhoodListener();
-		disableNeighborhoodListener.setHandler(this);
-		eventPublisher.addListener(DisableNeighborhoodEvent.class,
-				disableNeighborhoodListener);
-
 		enableGeneMappingListener = new EnableGeneMappingListener();
 		enableGeneMappingListener.setHandler(this);
 		eventPublisher.addListener(EnableGeneMappingEvent.class,
@@ -1012,26 +975,6 @@ public class GLPathway extends AGLView implements
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
-		if (enableTexturesListener != null) {
-			eventPublisher.removeListener(EnableTexturesEvent.class,
-					enableTexturesListener);
-			enableTexturesListener = null;
-		}
-		if (disableTexturesListener != null) {
-			eventPublisher.removeListener(DisableTexturesEvent.class,
-					disableTexturesListener);
-			disableTexturesListener = null;
-		}
-		if (enableNeighborhoodListener != null) {
-			eventPublisher.removeListener(EnableNeighborhoodEvent.class,
-					enableNeighborhoodListener);
-			enableNeighborhoodListener = null;
-		}
-		if (disableNeighborhoodListener != null) {
-			eventPublisher.removeListener(DisableNeighborhoodEvent.class,
-					disableNeighborhoodListener);
-			disableNeighborhoodListener = null;
-		}
 		if (enableGeneMappingListener != null) {
 			eventPublisher.removeListener(EnableGeneMappingEvent.class,
 					enableGeneMappingListener);
