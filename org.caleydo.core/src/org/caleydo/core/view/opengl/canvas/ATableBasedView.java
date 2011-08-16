@@ -21,17 +21,19 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
+import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateListener;
+import org.caleydo.core.data.virtualarray.events.IDimensionVAUpdateHandler;
+import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
+import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.data.ReplaceDimensionVAEvent;
-import org.caleydo.core.manager.event.data.ReplaceRecordVAEvent;
+import org.caleydo.core.manager.event.data.DimensionReplaceVAEvent;
+import org.caleydo.core.manager.event.data.RecordReplaceVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.DataDomainsChangedEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.SwitchDataRepresentationEvent;
-import org.caleydo.core.manager.event.view.tablebased.DimensionVAUpdateEvent;
-import org.caleydo.core.manager.event.view.tablebased.RecordVAUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.DimensionVADeltaEvent;
+import org.caleydo.core.manager.event.view.tablebased.RecordVADeltaEvent;
 import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
@@ -39,16 +41,13 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IDataDomainSetBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.DimensionVAUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.IDimensionVAUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.DimensionVADeltaListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordVADeltaListener;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceDimensionVAListener;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceRecordVAListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordReplaceVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.SwitchDataRepresentationListener;
@@ -114,8 +113,6 @@ public abstract class ATableBasedView
 
 	protected RecordVAUpdateListener recordVAUpdateListener;
 	protected DimensionVAUpdateListener dimensionVAUpdateListener;
-	protected ReplaceRecordVAListener replaceRecordVAListener;
-	protected ReplaceDimensionVAListener replaceDimensionVAListener;
 
 	protected SwitchDataRepresentationListener switchDataRepresentationListener;
 
@@ -267,24 +264,26 @@ public abstract class ATableBasedView
 	}
 
 	@Override
-	public void handleVAUpdate(RecordVADelta delta, String info) {
-		if (!delta.getVAType().equals(recordVAType))
-			return;
+	public void handleRecordVAUpdate(String info) {
+		// if (!delta.getVAType().equals(recordVAType))
+		// return;
 
-		recordVA.setGroupList(null);
-		recordSelectionManager.setVADelta(delta);
+		// recordVA.setGroupList(null);
+		recordVA = dataDomain.getRecordVA(DataTable.RECORD);
+		recordSelectionManager.virtualArrayUpdated(recordVA);
 
-		reactOnRecordVAChanges(delta);
+		reactOnRecordVAChanges();
 
 		// reactOnExternalSelection();
 		setDisplayListDirty();
 	}
 
 	@Override
-	public void handleVAUpdate(DimensionVADelta delta, String info) {
-		dimensionVA.setGroupList(null);
-		// reactOnDimensionVAChanges(delta);
-		dimensionSelectionManager.setVADelta(delta);
+	public void handleDimensionVAUpdate(String info) {
+		// dimensionVA.setGroupList(null);
+		// // reactOnDimensionVAChanges(delta);
+		// dimensionSelectionManager.setVADelta(delta);
+		dimensionVA = dataDomain.getDimensionVA(DataTable.DIMENSION);
 		setDisplayListDirty();
 	}
 
@@ -301,7 +300,7 @@ public abstract class ATableBasedView
 	 * 
 	 * @param delta
 	 */
-	protected void reactOnRecordVAChanges(RecordVADelta delta) {
+	protected void reactOnRecordVAChanges() {
 
 	}
 
@@ -487,22 +486,12 @@ public abstract class ATableBasedView
 		recordVAUpdateListener = new RecordVAUpdateListener();
 		recordVAUpdateListener.setHandler(this);
 		recordVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
-
-		replaceRecordVAListener = new ReplaceRecordVAListener();
-		replaceRecordVAListener.setHandler(this);
-		replaceRecordVAListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(ReplaceRecordVAEvent.class, replaceRecordVAListener);
+		eventPublisher.addListener(RecordVADeltaEvent.class, recordVAUpdateListener);
 
 		dimensionVAUpdateListener = new DimensionVAUpdateListener();
 		dimensionVAUpdateListener.setHandler(this);
 		dimensionVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
-
-		replaceDimensionVAListener = new ReplaceDimensionVAListener();
-		replaceDimensionVAListener.setHandler(this);
-		replaceDimensionVAListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(ReplaceDimensionVAEvent.class, replaceDimensionVAListener);
+		eventPublisher.addListener(DimensionVADeltaEvent.class, dimensionVAUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
@@ -555,43 +544,12 @@ public abstract class ATableBasedView
 			eventPublisher.removeListener(dimensionVAUpdateListener);
 			dimensionVAUpdateListener = null;
 		}
-		if (replaceRecordVAListener != null) {
-			eventPublisher.removeListener(replaceRecordVAListener);
-			replaceRecordVAListener = null;
-		}
-
-		if (replaceDimensionVAListener != null) {
-			eventPublisher.removeListener(replaceDimensionVAListener);
-			replaceDimensionVAListener = null;
-		}
 
 		if (switchDataRepresentationListener != null) {
 			eventPublisher.removeListener(switchDataRepresentationListener);
 			switchDataRepresentationListener = null;
 		}
 
-	}
-
-	@Override
-	public void replaceRecordVA(int tableID, String dataDomainType, String vaType) {
-
-		if (table.getID() != tableID || this.recordVAType != vaType)
-			return;
-
-		recordVA = table.getRecordData(vaType).getRecordVA();
-		recordSelectionManager.setVA(recordVA);
-
-		initData();
-	}
-
-	@Override
-	public void replaceDimensionVA(String dataDomain, String vaType) {
-		if (vaType != dimensionVAType)
-			return;
-
-		dimensionVA = table.getDimensionData(vaType).getDimensionVA();
-
-		initData();
 	}
 
 	/**

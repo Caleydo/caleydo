@@ -34,7 +34,7 @@ import org.caleydo.core.manager.event.view.SwitchDataRepresentationEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
-import org.caleydo.core.manager.event.view.tablebased.RecordVAUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.RecordVADeltaEvent;
 import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
@@ -47,9 +47,9 @@ import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordVADeltaListener;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceRecordVAListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordReplaceVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -118,9 +118,9 @@ public class GLPathway extends AGLView implements
 	protected DisableGeneMappingListener disableGeneMappingListener;
 
 	protected SelectionUpdateListener selectionUpdateListener;
-	protected RecordVAUpdateListener virtualArrayUpdateListener;
+	protected RecordVADeltaListener virtualArrayUpdateListener;
 
-	protected ReplaceRecordVAListener replaceVirtualArrayListener;
+	protected RecordReplaceVAListener replaceVirtualArrayListener;
 
 	protected RedrawViewListener redrawViewListener;
 	protected ClearSelectionsListener clearSelectionsListener;
@@ -851,7 +851,7 @@ public class GLPathway extends AGLView implements
 			}
 		}
 
-		RecordVAUpdateEvent virtualArrayUpdateEvent = new RecordVAUpdateEvent();
+		RecordVADeltaEvent virtualArrayUpdateEvent = new RecordVADeltaEvent();
 		virtualArrayUpdateEvent.setSender(this);
 		virtualArrayUpdateEvent.setDataDomainID(mappingDataDomain.getDataDomainID());
 		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);

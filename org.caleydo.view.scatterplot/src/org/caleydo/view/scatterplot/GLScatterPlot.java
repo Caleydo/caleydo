@@ -42,8 +42,6 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.tablebased.SetPointSizeEvent;
@@ -213,7 +211,8 @@ public class GLScatterPlot extends ATableBasedView {
 	 * @param glCanvas
 	 * @param viewFrustum
 	 */
-	public GLScatterPlot(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLScatterPlot(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLScatterPlot.VIEW_TYPE;
@@ -320,14 +319,12 @@ public class GLScatterPlot extends ATableBasedView {
 			final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentComposite().getDisplay()
-				.asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						glParentView.getParentComposite()
-								.addKeyListener(glKeyListener);
-					}
-				});
+		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				glParentView.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		this.glMouseListener = glMouseListener;
 
@@ -1436,12 +1433,12 @@ public class GLScatterPlot extends ATableBasedView {
 							int current_SELECTED_X_AXIS = iAxisX;
 							int current_SELECTED_Y_AXIS = iAxisY;
 
-							xnormalized = table.get(dimensionVA.get(current_SELECTED_X_AXIS))
-									.getFloat(DataRepresentation.NORMALIZED,
-											recordIndex);
-							ynormalized = table.get(dimensionVA.get(current_SELECTED_Y_AXIS))
-									.getFloat(DataRepresentation.NORMALIZED,
-											recordIndex);
+							xnormalized = table.get(
+									dimensionVA.get(current_SELECTED_X_AXIS)).getFloat(
+									DataRepresentation.NORMALIZED, recordIndex);
+							ynormalized = table.get(
+									dimensionVA.get(current_SELECTED_Y_AXIS)).getFloat(
+									DataRepresentation.NORMALIZED, recordIndex);
 
 							ix = (int) Math.floor(xnormalized
 									* (double) (iTextureWidth - 1));
@@ -2060,7 +2057,8 @@ public class GLScatterPlot extends ATableBasedView {
 		String sAxisLabel = "X-Axis: "
 				+ table.get(dimensionVA.get(iSelectedAxisIndexX)).getLabel();
 		if (bRender2Axis)
-			sAxisLabel += " / " + table.get(dimensionVA.get(iSelectedAxisIndexX2)).getLabel();
+			sAxisLabel += " / "
+					+ table.get(dimensionVA.get(iSelectedAxisIndexX2)).getLabel();
 
 		textRenderer.renderText(gl, sAxisLabel, 0, 0, 0, fScaling,
 				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
@@ -2088,9 +2086,11 @@ public class GLScatterPlot extends ATableBasedView {
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 
-		sAxisLabel = "Y-Axis: " + table.get(dimensionVA.get(iSelectedAxisIndexY)).getLabel();
+		sAxisLabel = "Y-Axis: "
+				+ table.get(dimensionVA.get(iSelectedAxisIndexY)).getLabel();
 		if (bRender2Axis)
-			sAxisLabel += " / " + table.get(dimensionVA.get(iSelectedAxisIndexY2)).getLabel();
+			sAxisLabel += " / "
+					+ table.get(dimensionVA.get(iSelectedAxisIndexY2)).getLabel();
 
 		// sAxisLabel
 		// ="Y-Achse: "+table.get(2).getLabel()+" (O) / "+table.get(3).getLabel()+" (X)";
@@ -2329,8 +2329,7 @@ public class GLScatterPlot extends ATableBasedView {
 					+ " / "
 					+ table.get(dimensionVA.get(iSelectedAxisIndexY)).getFloat(
 							DataRepresentation.RAW, recordIndex);
-		else if (recordSelectionManager.checkStatus(SelectionType.SELECTION,
-				recordIndex))
+		else if (recordSelectionManager.checkStatus(SelectionType.SELECTION, recordIndex))
 			sLabel = "Selected Point ("
 					+ genLabel
 					+ "):"
@@ -2508,10 +2507,10 @@ public class GLScatterPlot extends ATableBasedView {
 
 			for (int recordIndex : selectionSet) {
 
-				float xnormalized = table.get(dimensionVA.get(iSelectedAxisIndexX)).getFloat(
-						DataRepresentation.NORMALIZED, recordIndex);
-				float ynormalized = table.get(dimensionVA.get(iSelectedAxisIndexY)).getFloat(
-						DataRepresentation.NORMALIZED, recordIndex);
+				float xnormalized = table.get(dimensionVA.get(iSelectedAxisIndexX))
+						.getFloat(DataRepresentation.NORMALIZED, recordIndex);
+				float ynormalized = table.get(dimensionVA.get(iSelectedAxisIndexY))
+						.getFloat(DataRepresentation.NORMALIZED, recordIndex);
 
 				x = transformOnXZoom(xnormalized) * XScale;
 				y = transformOnYZoom(ynormalized) * YScale;
@@ -3035,8 +3034,8 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -3172,8 +3171,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 		if (recordSelectionManager.checkStatus(SelectionType.SELECTION, recordID)) {
 			if (selectionType == SelectionType.DESELECTED) {
-				recordSelectionManager
-						.removeFromType(SelectionType.SELECTION, recordID);
+				recordSelectionManager.removeFromType(SelectionType.SELECTION, recordID);
 				setDisplayListDirty();
 				bUpdateSelection = true;
 				// return;
@@ -3266,18 +3264,15 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	@Override
-	protected void reactOnRecordVAChanges(RecordVADelta delta) {
-
-		recordSelectionManager.setVADelta(delta);
+	protected void reactOnRecordVAChanges() {
 		bUpdateSelection = true;
 		bUpdateSelectionTexures = true;
 		setDisplayListDirty();
-
 	}
 
 	@Override
-	public void handleVAUpdate(DimensionVADelta delta, String info) {
-		super.handleVAUpdate(delta, info);
+	public void handleDimensionVAUpdate(String info) {
+		super.handleDimensionVAUpdate(info);
 		updateMaxAxis();
 		renderStyle.setTextureNr(MAX_AXES, MAX_AXES);
 		resetFullTextures();

@@ -7,7 +7,7 @@ import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 
 @XmlRootElement
 @XmlType
-public class RecordVAUpdateEvent
-	extends VirtualArrayUpdateEvent<RecordVADelta> {
+public class RecordVADeltaEvent
+	extends VirtualArrayDeltaEvent<RecordVADelta> {
 
 }

@@ -20,7 +20,7 @@
                id="org.caleydo.menu.view"
                label="View">
             <command
-                  commandId="org.caleydo.view.heatmap.command.openparcoords"
+                  commandId="org.caleydo.view.parcoords.command.openparcoords"
                   icon="resources/icons/parcoords.png"
                   style="push">
             </command>
@@ -31,7 +31,7 @@
          point="org.eclipse.ui.commands">
       <command
             defaultHandler="org.caleydo.view.parcoords.command.handler.OpenParCoordsHandler"
-            id="org.caleydo.view.pathway.command.openparcoords"
+            id="org.caleydo.view.parcoords.command.openparcoords"
             name="Parallel Coordinates">
       </command>
    </extension>

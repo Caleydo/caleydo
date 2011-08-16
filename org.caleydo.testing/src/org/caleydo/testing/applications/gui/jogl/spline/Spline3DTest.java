@@ -1,7 +1,9 @@
 package org.caleydo.testing.applications.gui.jogl.spline;
 
 import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.util.spline.Spline3D;
 
@@ -30,7 +32,7 @@ public class Spline3DTest
 	    spline = new Spline3D(vecs, accuracy, margin);
 	}
 	
-	public void display(final GL gl)
+	public void display(final GL2 gl)
 	{
 		gl.glClearColor(1, 1, 1, 1);
 		

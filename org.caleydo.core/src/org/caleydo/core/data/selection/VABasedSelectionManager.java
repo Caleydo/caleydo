@@ -1,9 +1,11 @@
 package org.caleydo.core.data.selection;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -114,32 +116,22 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 	 * @param delta
 	 *            the delta containing the changes
 	 */
-	public void setVADelta(VADelta delta) {
-		if (virtualArray == null)
-			return;
-		VADelta localDelta;
-		if (delta.getIDType().getIDCategory() != iDType.getIDCategory())
-			throw new IllegalStateException("Not compatibel id types");
+	public void virtualArrayUpdated(VA virtualArray) {
+		this.virtualArray = virtualArray;
 
-		if (delta.getIDType() != iDType)
-			localDelta = DeltaConverter.convertDelta(iDType, delta);
-		else
-			localDelta = delta;
+		// if (delta.getIDType() != iDType)
+		// localDelta = DeltaConverter.convertDelta(iDType, delta);
+		// else
+		// localDelta = delta;
+		for (SelectionType selectionType : hashSelectionTypes.keySet()) {
+			HashMap<Integer, Integer> selections = hashSelectionTypes.get(selectionType);
+			Iterator<Entry<Integer, Integer>> iterator = selections.entrySet().iterator();
 
-		for (VADeltaItem item : localDelta) {
-			switch (item.getType()) {
-
-				case REMOVE_ELEMENT:
-					remove(item.getID());
-					break;
-				case REMOVE:
-					remove(virtualArray.get(item.getIndex()));
-					break;
-
+			while (iterator.hasNext()) {
+				if (!virtualArray.contains(iterator.next().getKey()))
+					iterator.remove();
 			}
 		}
-		virtualArray.setDelta(localDelta);
-
 	}
 
 	@Override

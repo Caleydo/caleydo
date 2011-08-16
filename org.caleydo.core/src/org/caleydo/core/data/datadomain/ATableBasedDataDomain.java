@@ -27,32 +27,33 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.TableBasedDimensionGroupData;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
+import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
+import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.DimensionGroupsChangedEvent;
-import org.caleydo.core.manager.event.data.ReplaceDimensionVAEvent;
-import org.caleydo.core.manager.event.data.ReplaceDimensionVAInUseCaseEvent;
-import org.caleydo.core.manager.event.data.ReplaceRecordVAEvent;
-import org.caleydo.core.manager.event.data.ReplaceRecordVAInUseCaseEvent;
+import org.caleydo.core.manager.event.data.DimensionReplaceVAEvent;
+import org.caleydo.core.manager.event.data.RecordReplaceVAEvent;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.tablebased.DimensionVAUpdateEvent;
-import org.caleydo.core.manager.event.view.tablebased.RecordVAUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.RecordVADeltaEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.ClustererType;
-import org.caleydo.core.view.opengl.canvas.listener.DimensionVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.DimensionReplaceVAListener;
+import org.caleydo.core.view.opengl.canvas.listener.DimensionVADeltaListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.IDimensionVAUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IDimensionVADeltaHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IRecordVADeltaHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordReplaceVAListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordVADeltaListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 
@@ -60,16 +61,16 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 @XmlRootElement
 public abstract class ATableBasedDataDomain
 	extends ADataDomain
-	implements IRecordVAUpdateHandler, IDimensionVAUpdateHandler, ISelectionUpdateHandler,
+	implements IRecordVADeltaHandler, IDimensionVADeltaHandler, ISelectionUpdateHandler,
 	ISelectionCommandHandler {
 
 	private SelectionUpdateListener selectionUpdateListener;
 	private SelectionCommandListener selectionCommandListener;
 	private StartClusteringListener startClusteringListener;
-	private ReplaceRecordVAInUseCaseListener replaceRecordVirtualArrayInUseCaseListener;
-	private ReplaceDimensionVAInUseCaseListener replaceDimensionVirtualArrayInUseCaseListener;
-	private RecordVAUpdateListener recordVAUpdateListener;
-	private DimensionVAUpdateListener dimensionVAUpdateListener;
+	private RecordReplaceVAListener recordReplaceVAListener;
+	private DimensionReplaceVAListener replaceDimensionVirtualArrayInUseCaseListener;
+	private RecordVADeltaListener recordVAUpdateListener;
+	private DimensionVADeltaListener dimensionVAUpdateListener;
 	private AggregateGroupListener aggregateGroupListener;
 
 	/** The set which is currently loaded and used inside the views for this use case. */
@@ -287,8 +288,7 @@ public abstract class ATableBasedDataDomain
 	 */
 	public RecordVirtualArray getRecordVA(String vaType) {
 		RecordVirtualArray va = table.getRecordData(vaType).getRecordVA();
-		RecordVirtualArray vaCopy = va.clone();
-		return vaCopy;
+		return va;
 	}
 
 	/**
@@ -300,8 +300,7 @@ public abstract class ATableBasedDataDomain
 	 */
 	public DimensionVirtualArray getDimensionVA(String vaType) {
 		DimensionVirtualArray va = table.getDimensionData(vaType).getDimensionVA();
-		DimensionVirtualArray vaCopy = va.clone();
-		return vaCopy;
+		return va;
 	}
 
 	/**
@@ -339,9 +338,9 @@ public abstract class ATableBasedDataDomain
 
 		// This should be done to avoid problems with group info in HHM
 
-		eventPublisher.triggerEvent(new ReplaceRecordVAEvent(table, dataDomainID, clusterState
+		eventPublisher.triggerEvent(new RecordReplaceVAEvent(table, dataDomainID, clusterState
 			.getRecordVAType()));
-		eventPublisher.triggerEvent(new ReplaceDimensionVAEvent(table, dataDomainID, DataTable.DIMENSION));
+		eventPublisher.triggerEvent(new DimensionReplaceVAEvent(table, dataDomainID, DataTable.DIMENSION));
 
 		if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING
 			|| clusterState.getClustererType() == ClustererType.BI_CLUSTERING) {
@@ -418,7 +417,7 @@ public abstract class ATableBasedDataDomain
 		recordSelectionManager.setVA(table.getRecordData(DataTable.RECORD).getRecordVA());
 
 		virtualArray.setGroupList(null);
-		eventPublisher.triggerEvent(new ReplaceRecordVAEvent(table, dataDomainType, vaType));
+		eventPublisher.triggerEvent(new RecordReplaceVAEvent(table, dataDomainType, vaType));
 	}
 
 	/**
@@ -430,7 +429,7 @@ public abstract class ATableBasedDataDomain
 	 *            the type of id
 	 * @param the
 	 *            type of the virtual array
-	 * @param virtualArray
+	 * @param virtualArrayList
 	 *            the new virtual array
 	 */
 	public void replaceDimensionVA(String dataDomainType, String vaType) {
@@ -442,24 +441,14 @@ public abstract class ATableBasedDataDomain
 		table.setDimensionVA(vaType, virtualArray);
 		dimensionSelectionManager.setVA(virtualArray);
 
-		// if (table.getDimensionData(DimensionVAType.STORAGE).getDimensionTree() != null) {
-		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
-		// public void run() {
-		// Shell shell = new Shell();
-		// MessageBox messageBox = new MessageBox(shell, SWT.CANCEL);
-		// messageBox.setText("Warning");
-		// messageBox
-		// .setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
-		// messageBox.open();
-		// }
-		// });
-		// }
-		ReplaceDimensionVAEvent event = new ReplaceDimensionVAEvent(table, dataDomainType, vaType);
+		DimensionVAUpdateEvent event = new DimensionVAUpdateEvent();
+		event.setDataDomainID(dataDomainID);
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 
 	}
 
+	// FIXME: do we need those methods or can we just use the replaceDimensionVA?
 	public void setRecordVirtualArray(String vaType, RecordVirtualArray virtualArray) {
 		table.setRecordVA(vaType, virtualArray);
 	}
@@ -479,14 +468,13 @@ public abstract class ATableBasedDataDomain
 	public void restoreOriginalRecordVA() {
 		initFullVA();
 
-		ReplaceRecordVAEvent event = new ReplaceRecordVAEvent(table, dataDomainID, DataTable.RECORD);
-
+		RecordReplaceVAEvent event = new RecordReplaceVAEvent(table, dataDomainID, DataTable.RECORD);
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
 
 	@Override
-	public void handleVAUpdate(RecordVADelta vaDelta, String info) {
+	public void handleRecordVADelta(RecordVADelta vaDelta, String info) {
 		IDCategory targetCategory = vaDelta.getIDType().getIDCategory();
 		if (targetCategory != recordIDCategory)
 			return;
@@ -497,17 +485,28 @@ public abstract class ATableBasedDataDomain
 		recordData.reset();
 		recordData.setVADelta(vaDelta);
 
-	}
+		RecordVAUpdateEvent event = new RecordVAUpdateEvent();
+		event.setSender(this);
+		event.setDataDomainID(dataDomainID);
+		eventPublisher.triggerEvent(event);
 
+	}
+	
 	@Override
-	public void handleVAUpdate(DimensionVADelta vaDelta, String info) {
-		IDCategory targetCategory = vaDelta.getIDType().getIDCategory();
-		if (targetCategory != dimensionIDCategory)
-			return;
-
-		DimensionVirtualArray va = table.getDimensionData(vaDelta.getVAType()).getDimensionVA();
-		va.setDelta(vaDelta);
+	public void handleDimensionVADelta(DimensionVADelta vaDelta, String info) {
+		// TODO Auto-generated method stub
+		
 	}
+
+	// @Override
+	// public void handleVAUpdate(DimensionVADelta vaDelta, String info) {
+	// IDCategory targetCategory = vaDelta.getIDType().getIDCategory();
+	// if (targetCategory != dimensionIDCategory)
+	// return;
+	//
+	// DimensionVirtualArray va = table.getDimensionData(vaDelta.getVAType()).getDimensionVA();
+	// va.setDelta(vaDelta);
+	// }
 
 	@Override
 	public void registerEventListeners() {
@@ -535,27 +534,26 @@ public abstract class ATableBasedDataDomain
 		startClusteringListener.setDataDomainID(dataDomainID);
 		eventPublisher.addListener(StartClusteringEvent.class, startClusteringListener);
 
-		replaceRecordVirtualArrayInUseCaseListener = new ReplaceRecordVAInUseCaseListener();
-		replaceRecordVirtualArrayInUseCaseListener.setHandler(this);
-		replaceRecordVirtualArrayInUseCaseListener.setDataDomainID(dataDomainID);
-		eventPublisher.addListener(ReplaceRecordVAInUseCaseEvent.class,
-			replaceRecordVirtualArrayInUseCaseListener);
+		recordReplaceVAListener = new RecordReplaceVAListener();
+		recordReplaceVAListener.setHandler(this);
+		recordReplaceVAListener.setDataDomainID(dataDomainID);
+		eventPublisher.addListener(RecordReplaceVAEvent.class, recordReplaceVAListener);
 
-		replaceDimensionVirtualArrayInUseCaseListener = new ReplaceDimensionVAInUseCaseListener();
+		replaceDimensionVirtualArrayInUseCaseListener = new DimensionReplaceVAListener();
 		replaceDimensionVirtualArrayInUseCaseListener.setHandler(this);
 		replaceDimensionVirtualArrayInUseCaseListener.setDataDomainID(dataDomainID);
-		eventPublisher.addListener(ReplaceDimensionVAInUseCaseEvent.class,
+		eventPublisher.addListener(DimensionReplaceVAEvent.class,
 			replaceDimensionVirtualArrayInUseCaseListener);
 
-		recordVAUpdateListener = new RecordVAUpdateListener();
+		recordVAUpdateListener = new RecordVADeltaListener();
 		recordVAUpdateListener.setHandler(this);
 		recordVAUpdateListener.setDataDomainID(dataDomainID);
-		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
+		eventPublisher.addListener(RecordVADeltaEvent.class, recordVAUpdateListener);
 
-		dimensionVAUpdateListener = new DimensionVAUpdateListener();
-		dimensionVAUpdateListener.setHandler(this);
-		dimensionVAUpdateListener.setDataDomainID(dataDomainID);
-		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
+		// dimensionVAUpdateListener = new DimensionVAUpdateListener();
+		// dimensionVAUpdateListener.setHandler(this);
+		// dimensionVAUpdateListener.setDataDomainID(dataDomainID);
+		// eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
 
 		aggregateGroupListener = new AggregateGroupListener();
 		aggregateGroupListener.setHandler(this);
@@ -581,9 +579,9 @@ public abstract class ATableBasedDataDomain
 			startClusteringListener = null;
 		}
 
-		if (replaceRecordVirtualArrayInUseCaseListener != null) {
-			eventPublisher.removeListener(replaceRecordVirtualArrayInUseCaseListener);
-			replaceRecordVirtualArrayInUseCaseListener = null;
+		if (recordReplaceVAListener != null) {
+			eventPublisher.removeListener(recordReplaceVAListener);
+			recordReplaceVAListener = null;
 		}
 
 		if (replaceDimensionVirtualArrayInUseCaseListener != null) {

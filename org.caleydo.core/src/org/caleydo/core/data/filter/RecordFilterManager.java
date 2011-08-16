@@ -14,10 +14,10 @@ import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveRecordFilterListener;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
-import org.caleydo.core.manager.event.data.ReplaceRecordVAInUseCaseEvent;
-import org.caleydo.core.manager.event.view.tablebased.RecordVAUpdateEvent;
-import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
+import org.caleydo.core.manager.event.data.RecordReplaceVAEvent;
+import org.caleydo.core.manager.event.view.tablebased.RecordVADeltaEvent;
+import org.caleydo.core.view.opengl.canvas.listener.IRecordVADeltaHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RecordVADeltaListener;
 
 /**
  * Concrete implementation of {@link FilterManager} for {@link RecordVirtualArray}s.
@@ -26,9 +26,9 @@ import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
  */
 public class RecordFilterManager
 	extends FilterManager<RecordVADelta, RecordFilter, RecordVirtualArray>
-	implements IRecordVAUpdateHandler {
+	implements IRecordVADeltaHandler {
 
-	private RecordVAUpdateListener recordVAUpdateListener;
+	private RecordVADeltaListener recordVAUpdateListener;
 	private RemoveRecordFilterListener removeContentFilterListener;
 	private MoveRecordFilterListener moveContentFilterListener;
 	private CombineRecordFilterListener combineContentFilterListener;
@@ -40,29 +40,23 @@ public class RecordFilterManager
 	}
 
 	@Override
-	public void replaceRecordVA(int tableID, String dataDomainType, String vaType) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-		recordVAUpdateListener = new RecordVAUpdateListener();
+		recordVAUpdateListener = new RecordVADeltaListener();
 		recordVAUpdateListener.setHandler(this);
 		recordVAUpdateListener.setDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
+		eventPublisher.addListener(RecordVADeltaEvent.class, recordVAUpdateListener);
 
 		removeContentFilterListener = new RemoveRecordFilterListener();
 		removeContentFilterListener.setHandler(this);
 		removeContentFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RemoveRecordFilterEvent.class, removeContentFilterListener);
-		
+
 		moveContentFilterListener = new MoveRecordFilterListener();
 		moveContentFilterListener.setHandler(this);
 		moveContentFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(MoveRecordtFilterEvent.class, moveContentFilterListener);
-		
+
 		combineContentFilterListener = new CombineRecordFilterListener();
 		combineContentFilterListener.setHandler(this);
 		combineContentFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
@@ -76,8 +70,8 @@ public class RecordFilterManager
 		reEvaluateContentFilterListListener = new ReEvaluateRecordFilterListListener();
 		reEvaluateContentFilterListListener.setHandler(this);
 		reEvaluateContentFilterListListener.setDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(ReEvaluateRecordFilterListEvent.class,
-			reEvaluateContentFilterListListener);
+		eventPublisher
+			.addListener(ReEvaluateRecordFilterListEvent.class, reEvaluateContentFilterListListener);
 
 	}
 
@@ -93,12 +87,12 @@ public class RecordFilterManager
 			eventPublisher.removeListener(removeContentFilterListener);
 			removeContentFilterListener = null;
 		}
-		
+
 		if (moveContentFilterListener != null) {
 			eventPublisher.removeListener(moveContentFilterListener);
 			moveContentFilterListener = null;
 		}
-		
+
 		if (combineContentFilterListener != null) {
 			eventPublisher.removeListener(combineContentFilterListener);
 			combineContentFilterListener = null;
@@ -115,23 +109,40 @@ public class RecordFilterManager
 		}
 	}
 
-	@Override
-	protected void triggerVAUpdateEvent(RecordVADelta delta) {
-		RecordVAUpdateEvent event = new RecordVAUpdateEvent();
-		event.setSender(this);
-		event.setDataDomainID(dataDomain.getDataDomainID());
-		event.setVirtualArrayDelta(delta);
-		eventPublisher.triggerEvent(event);
-	}
+	// @Override
+	// protected void triggerVAUpdateEvent(RecordVADelta delta) {
+	// RecordVADeltaEvent event = new RecordVADeltaEvent();
+	// event.setSender(this);
+	// event.setDataDomainID(dataDomain.getDataDomainID());
+	// event.setVirtualArrayDelta(delta);
+	// eventPublisher.triggerEvent(event);
+	// }
 
 	@Override
 	protected void triggerReplaceVAEvent() {
-		ReplaceRecordVAInUseCaseEvent event = new ReplaceRecordVAInUseCaseEvent();
+		RecordReplaceVAEvent event = new RecordReplaceVAEvent();
 		event.setVAType(DataTable.RECORD);
 		event.setVirtualArray(currentVA);
 		event.setSender(this);
 		event.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.triggerEvent(event);
+	}
+
+	@Override
+	public void handleRecordVADelta(RecordVADelta vaDelta, String info) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void replaceRecordVA(int tableID, String dataDomainType, String vaType) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	protected void triggerVAUpdateEvent(RecordVADelta delta) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

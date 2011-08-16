@@ -12,10 +12,9 @@ import org.caleydo.core.data.filter.event.RemoveDimensionFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveDimensionFilterListener;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
-import org.caleydo.core.manager.event.data.ReplaceDimensionVAInUseCaseEvent;
-import org.caleydo.core.manager.event.view.tablebased.DimensionVAUpdateEvent;
-import org.caleydo.core.view.opengl.canvas.listener.DimensionVAUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.IDimensionVAUpdateHandler;
+import org.caleydo.core.manager.event.data.DimensionReplaceVAEvent;
+import org.caleydo.core.manager.event.view.tablebased.DimensionVADeltaEvent;
+import org.caleydo.core.view.opengl.canvas.listener.DimensionVADeltaListener;
 
 /**
  * Concrete implementation of {@link FilterManager} for {@link DimensionVirtualArray}s.
@@ -23,10 +22,9 @@ import org.caleydo.core.view.opengl.canvas.listener.IDimensionVAUpdateHandler;
  * @author Alexander Lex
  */
 public class DimensionFilterManager
-	extends FilterManager<DimensionVADelta, DimensionFilter, DimensionVirtualArray>
-	implements IDimensionVAUpdateHandler {
+	extends FilterManager<DimensionVADelta, DimensionFilter, DimensionVirtualArray> {
 
-	private DimensionVAUpdateListener dimensionVAUpdateListener;
+	private DimensionVADeltaListener dimensionVAUpdateListener;
 	private RemoveDimensionFilterListener removeDimensionFilterListener;
 	private MoveDimensionFilterListener moveDimensionFilterListener;
 	private NewDimensionFilterListener newDimensionFilterListener;
@@ -46,16 +44,16 @@ public class DimensionFilterManager
 		// dimensionVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		// eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
 
-		dimensionVAUpdateListener = new DimensionVAUpdateListener();
-		dimensionVAUpdateListener.setHandler(this);
-		dimensionVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
+		// dimensionVAUpdateListener = new DimensionVAUpdateListener();
+		// dimensionVAUpdateListener.setHandler(this);
+		// dimensionVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		// eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
 
 		removeDimensionFilterListener = new RemoveDimensionFilterListener();
 		removeDimensionFilterListener.setHandler(this);
 		removeDimensionFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RemoveDimensionFilterEvent.class, removeDimensionFilterListener);
-		
+
 		moveDimensionFilterListener = new MoveDimensionFilterListener();
 		moveDimensionFilterListener.setHandler(this);
 		moveDimensionFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
@@ -99,13 +97,8 @@ public class DimensionFilterManager
 	}
 
 	@Override
-	public void replaceDimensionVA(String dataDomain, String vaType) {
-
-	}
-
-	@Override
 	protected void triggerVAUpdateEvent(DimensionVADelta delta) {
-		DimensionVAUpdateEvent event = new DimensionVAUpdateEvent();
+		DimensionVADeltaEvent event = new DimensionVADeltaEvent();
 		event.setSender(this);
 		event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setVirtualArrayDelta(delta);
@@ -114,7 +107,7 @@ public class DimensionFilterManager
 
 	@Override
 	protected void triggerReplaceVAEvent() {
-		ReplaceDimensionVAInUseCaseEvent event = new ReplaceDimensionVAInUseCaseEvent();
+		DimensionReplaceVAEvent event = new DimensionReplaceVAEvent();
 		event.setVAType(DataTable.DIMENSION);
 		event.setVirtualArray(currentVA);
 		event.setSender(this);

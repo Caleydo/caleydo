@@ -9,22 +9,22 @@ import org.caleydo.core.manager.event.data.ReplaceVAEvent;
  * 
  * @author Alexander Lex
  */
-public interface IDimensionVAUpdateHandler
+public interface IDimensionVADeltaHandler
 	extends IListenerOwner {
 
 	/**
 	 * Handler method to be called when a virtual array update event is catched by a related
-	 * {@link RecordVAUpdateListener}.
+	 * {@link RecordVADeltaListener}.
 	 * 
 	 * @param delta
 	 *            difference in the old and new virtual array
 	 * @param info
 	 *            info about the selection (e.g. the name of triggering view to display in the info-box)
 	 */
-	public void handleVAUpdate(DimensionVADelta vaDelta, String info);
+	public void handleDimensionVADelta(DimensionVADelta vaDelta, String info);
 
 	/**
-	 * Handler method to be called by the {@link ReplaceRecordVAListener} when a {@link ReplaceVAEvent} was
+	 * Handler method to be called by the {@link RecordReplaceVAListener} when a {@link ReplaceVAEvent} was
 	 * received.
 	 * 
 	 * @param vaType

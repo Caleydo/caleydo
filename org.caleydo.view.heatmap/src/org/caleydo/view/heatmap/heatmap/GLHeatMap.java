@@ -237,8 +237,7 @@ public class GLHeatMap extends ATableBasedView {
 			templateRenderer.updateLayout();
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
-			generalManager.getViewManager()
-					.getConnectedElementRepresentationManager()
+			generalManager.getViewManager().getConnectedElementRepresentationManager()
 					.clearTransformedConnections();
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
@@ -354,14 +353,14 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int pickingID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int pickingID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
 
 		SelectionType selectionType;
-		
+
 		switch (pickingType) {
 		case HEAT_MAP_LINE_SELECTION:
 			iCurrentMouseOverElement = pickingID;
@@ -384,7 +383,7 @@ public class GLHeatMap extends ATableBasedView {
 				contexMenuItemContainer.setData(recordIDType, pickingID);
 				contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
 				contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
-				
+
 				break;
 
 			default:
@@ -406,11 +405,12 @@ public class GLHeatMap extends ATableBasedView {
 				selectionType = SelectionType.MOUSE_OVER;
 				break;
 			case RIGHT_CLICKED:
-				
-				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark Experiment: " + dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType,
-						pickingID, dataDomain.getDataDomainID());
+
+				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark Experiment: "
+						+ dataDomain.getDimensionLabel(dimensionIDType, pickingID),
+						dimensionIDType, pickingID, dataDomain.getDataDomainID());
 				contextMenuCreator.addContextMenuItem(menuItem);
-				
+
 			default:
 				return;
 			}
@@ -457,8 +457,7 @@ public class GLHeatMap extends ATableBasedView {
 		// whether mouse over is clear.
 		// If that all is true we don't need to do anything
 		if (selectionType == SelectionType.MOUSE_OVER
-				&& recordSelectionManager
-						.checkStatus(SelectionType.SELECTION, recordID)
+				&& recordSelectionManager.checkStatus(SelectionType.SELECTION, recordID)
 				&& recordSelectionManager.getElements(SelectionType.MOUSE_OVER).size() == 0)
 			return;
 
@@ -494,8 +493,8 @@ public class GLHeatMap extends ATableBasedView {
 		// whether mouse over is clear.
 		// If that all is true we don't need to do anything
 		if (selectionType == SelectionType.MOUSE_OVER
-				&& dimensionSelectionManager
-						.checkStatus(SelectionType.SELECTION, dimensionID)
+				&& dimensionSelectionManager.checkStatus(SelectionType.SELECTION,
+						dimensionID)
 				&& dimensionSelectionManager.getElements(SelectionType.MOUSE_OVER).size() == 0)
 			return;
 
@@ -527,7 +526,8 @@ public class GLHeatMap extends ATableBasedView {
 		if (virtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for selectNext Operation");
-		int selectedElement = cursorSelect(virtualArray, dimensionSelectionManager, isLeft);
+		int selectedElement = cursorSelect(virtualArray, dimensionSelectionManager,
+				isLeft);
 		if (selectedElement < 0)
 			return;
 		createDimensionSelection(SelectionType.MOUSE_OVER, selectedElement);
@@ -607,8 +607,7 @@ public class GLHeatMap extends ATableBasedView {
 
 			yValue = getYCoordinateByContentIndex(recordIndex);
 			yValue = viewFrustum.getHeight() - yValue;
-			elementRep = new SelectedElementRep(recordIDType, uniqueID, xValue, yValue,
-					0);
+			elementRep = new SelectedElementRep(recordIDType, uniqueID, xValue, yValue, 0);
 
 			alElementReps.add(elementRep);
 		}
@@ -663,31 +662,32 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	@Override
-	public void handleVAUpdate(RecordVADelta delta, String info) {
+	public void handleRecordVAUpdate(String info) {
 
-		super.handleVAUpdate(delta, info);
-
-		if (delta.getVAType().equals(DataTable.RECORD_CONTEXT)
-				&& recordVAType.equals(DataTable.RECORD_CONTEXT)) {
-			ClusterState state = new ClusterState(EClustererAlgo.AFFINITY_PROPAGATION,
-					ClustererType.RECORD_CLUSTERING,
-					EDistanceMeasure.EUCLIDEAN_DISTANCE);
-			int recordVAID = recordVA.getID();
-
-			if (recordVA.size() == 0 || dimensionVA.size() == 0)
-				return;
-
-			state.setRecordVA(recordVA);
-			state.setDimensionVA(dimensionVA);
-			state.setAffinityPropClusterFactorGenes(4.0f);
-
-			ClusterManager clusterManger = new ClusterManager(table);
-			ClusterResult result = clusterManger.cluster(state);
-
-			recordVA = result.getRecordResult().getRecordVA();
-			recordSelectionManager.setVA(recordVA);
-			recordVA.tableID(recordVAID);
-		}
+		super.handleRecordVAUpdate(info);
+		// FIXME clustering for context heat map
+		// if (delta.getVAType().equals(DataTable.RECORD_CONTEXT)
+		// && recordVAType.equals(DataTable.RECORD_CONTEXT)) {
+		// ClusterState state = new
+		// ClusterState(EClustererAlgo.AFFINITY_PROPAGATION,
+		// ClustererType.RECORD_CLUSTERING,
+		// EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		// int recordVAID = recordVA.getID();
+		//
+		// if (recordVA.size() == 0 || dimensionVA.size() == 0)
+		// return;
+		//
+		// state.setRecordVA(recordVA);
+		// state.setDimensionVA(dimensionVA);
+		// state.setAffinityPropClusterFactorGenes(4.0f);
+		//
+		// ClusterManager clusterManger = new ClusterManager(table);
+		// ClusterResult result = clusterManger.cluster(state);
+		//
+		// recordVA = result.getRecordResult().getRecordVA();
+		// recordSelectionManager.setVA(recordVA);
+		// recordVA.tableID(recordVAID);
+		// }
 	}
 
 	@Override

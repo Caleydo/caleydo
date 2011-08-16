@@ -18,15 +18,15 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.event.data.ReplaceRecordVAEvent;
-import org.caleydo.core.manager.event.view.tablebased.RecordVAUpdateEvent;
+import org.caleydo.core.manager.event.data.RecordReplaceVAEvent;
+import org.caleydo.core.manager.event.view.tablebased.RecordVADeltaEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceRecordVAListener;
+import org.caleydo.core.view.opengl.canvas.listener.IRecordVADeltaHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RecordVADeltaListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordReplaceVAListener;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -65,7 +65,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  * 
  */
-public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
+public class DimensionGroup extends AGLView implements IRecordVADeltaHandler,
 		ILayoutSizeCollisionHandler, ILayoutedElement, IDraggable {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.dimensiongroup";
@@ -97,8 +97,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 
 	private EventPublisher eventPublisher = GeneralManager.get()
 			.getEventPublisher();
-	private RecordVAUpdateListener recordVAUpdateListener;
-	private ReplaceRecordVAListener replaceRecordVAListener;
+	private RecordVADeltaListener recordVAUpdateListener;
+	private RecordReplaceVAListener replaceRecordVAListener;
 	private LayoutSizeCollisionListener layoutSizeCollisionListener;
 	private IBrickSortingStrategy brickSortingStrategy;
 
@@ -470,18 +470,18 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	@Override
 	public void registerEventListeners() {
 
-		recordVAUpdateListener = new RecordVAUpdateListener();
+		recordVAUpdateListener = new RecordVADeltaListener();
 		recordVAUpdateListener.setHandler(this);
 		recordVAUpdateListener.setExclusiveDataDomainID(dataDomain
 				.getDataDomainID());
-		eventPublisher.addListener(RecordVAUpdateEvent.class,
+		eventPublisher.addListener(RecordVADeltaEvent.class,
 				recordVAUpdateListener);
 
-		replaceRecordVAListener = new ReplaceRecordVAListener();
+		replaceRecordVAListener = new RecordReplaceVAListener();
 		replaceRecordVAListener.setHandler(this);
 		replaceRecordVAListener.setExclusiveDataDomainID(dataDomain
 				.getDataDomainID());
-		eventPublisher.addListener(ReplaceRecordVAEvent.class,
+		eventPublisher.addListener(RecordReplaceVAEvent.class,
 				replaceRecordVAListener);
 
 		layoutSizeCollisionListener = new LayoutSizeCollisionListener();
@@ -509,7 +509,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	}
 
 	@Override
-	public void handleVAUpdate(RecordVADelta vaDelta, String info) {
+	public void handleRecordVADelta(RecordVADelta vaDelta, String info) {
 	}
 
 	/**

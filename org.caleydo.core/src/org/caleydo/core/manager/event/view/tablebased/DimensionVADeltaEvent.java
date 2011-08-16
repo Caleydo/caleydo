@@ -13,7 +13,7 @@ import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
  */
 @XmlRootElement
 @XmlType
-public class DimensionVAUpdateEvent
-	extends VirtualArrayUpdateEvent<DimensionVADelta> {
+public class DimensionVADeltaEvent
+	extends VirtualArrayDeltaEvent<DimensionVADelta> {
 
 }

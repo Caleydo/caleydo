@@ -3,23 +3,23 @@ package org.caleydo.core.manager.event.data;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 
-public class ReplaceRecordVAEvent
+public class RecordReplaceVAEvent
 	extends ReplaceVAEvent<RecordVirtualArray> {
 
-	public ReplaceRecordVAEvent() {
+	public RecordReplaceVAEvent() {
 		// nothing to initialize here
 	}
 
-	public ReplaceRecordVAEvent(DataTable set, String dataDomainType, String vaType) {
+	public RecordReplaceVAEvent(DataTable set, String dataDomainType, String vaType) {
 		super(set, dataDomainType, vaType);
 	}
 
-	protected ReplaceRecordVAEvent(DataTable set, String dataDomainType, String vaType,
+	protected RecordReplaceVAEvent(DataTable set, String dataDomainType, String vaType,
 		RecordVirtualArray virtualArray) {
 		super(set, dataDomainType, vaType, virtualArray);
 	}
 
-	protected ReplaceRecordVAEvent(String dataDomainType, String vaType, RecordVirtualArray virtualArray) {
+	protected RecordReplaceVAEvent(String dataDomainType, String vaType, RecordVirtualArray virtualArray) {
 		super(dataDomainType, vaType, virtualArray);
 	}
 }

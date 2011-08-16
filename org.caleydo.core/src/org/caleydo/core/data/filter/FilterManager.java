@@ -13,7 +13,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.view.tablebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.VirtualArrayDeltaEvent;
 
 /**
  * <p>
@@ -65,7 +65,7 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 	}
 
 	/**
-	 * Adds a filter and triggers a {@link VirtualArrayUpdateEvent} with the {@link VirtualArrayDelta} in the
+	 * Adds a filter and triggers a {@link VirtualArrayDeltaEvent} with the {@link VirtualArrayDelta} in the
 	 * filter.
 	 * 
 	 * @param filter

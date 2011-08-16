@@ -2,6 +2,7 @@ package org.caleydo.view.info;
 
 import java.util.Set;
 
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.id.IDCategory;
@@ -14,34 +15,28 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
+import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateListener;
+import org.caleydo.core.data.virtualarray.events.IDimensionVAUpdateHandler;
+import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
+import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.data.ReplaceDimensionVAEvent;
-import org.caleydo.core.manager.event.data.ReplaceRecordVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
-import org.caleydo.core.manager.event.view.tablebased.DimensionVAUpdateEvent;
-import org.caleydo.core.manager.event.view.tablebased.RecordVAUpdateEvent;
+import org.caleydo.core.manager.event.view.tablebased.DimensionVADeltaEvent;
+import org.caleydo.core.manager.event.view.tablebased.RecordVADeltaEvent;
 import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.DimensionVAUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.IDimensionVAUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceDimensionVAListener;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceRecordVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.view.info.listener.InfoAreaUpdateListener;
@@ -82,8 +77,6 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	protected SelectionUpdateListener selectionUpdateListener;
 	protected RecordVAUpdateListener recordVAUpdateListener;
 	protected DimensionVAUpdateListener dimensionVAUpdateListener;
-	protected ReplaceRecordVAListener replaceRecordVAListener;
-	protected ReplaceDimensionVAListener replaceDimensionVAListener;
 	protected SelectionCommandListener selectionCommandListener;
 
 	protected RedrawViewListener redrawViewListener;
@@ -92,7 +85,7 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 
 	protected ATableBasedDataDomain dataDomain;
 
-	RecordSelectionManager contentSelectionManager;
+	RecordSelectionManager recordSelectionManager;
 	DimensionSelectionManager dimensionSelectionManager;
 
 	/**
@@ -106,7 +99,7 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 
 	public Control createControl(final Composite parent) {
 
-		contentSelectionManager = dataDomain.getRecordSelectionManager();
+		recordSelectionManager = dataDomain.getRecordSelectionManager();
 		dimensionSelectionManager = dataDomain.getDimensionSelectionManager();
 
 		parentComposite = parent;
@@ -147,19 +140,21 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			final boolean scrollToSelection, final String info) {
-		
+
 		IDType recordIDType = dataDomain.getRecordIDType();
-		if (selectionDelta.getIDType().getIDCategory().equals(recordIDType.getIDCategory())) {
+		if (selectionDelta.getIDType().getIDCategory()
+				.equals(recordIDType.getIDCategory())) {
 			// Check for type that can be handled
 			if (selectionDelta.getIDType() != recordIDType) {
-				selectionDelta = DeltaConverter.convertDelta(recordIDType, selectionDelta);
+				selectionDelta = DeltaConverter
+						.convertDelta(recordIDType, selectionDelta);
 			}
-			
-			contentSelectionManager.setDelta(selectionDelta);
-			updateTree(true, contentSelectionManager, contentTree, info);
+
+			recordSelectionManager.setDelta(selectionDelta);
+			updateTree(true, recordSelectionManager, contentTree, info);
 		}
-		
-		if (selectionDelta.getIDType() == contentSelectionManager.getIDType()) {
+
+		if (selectionDelta.getIDType() == recordSelectionManager.getIDType()) {
 
 		} else if (selectionDelta.getIDType() == dimensionSelectionManager.getIDType()) {
 			dimensionSelectionManager.setDelta(selectionDelta);
@@ -274,7 +269,7 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	public void handleClearSelections() {
 		contentTree.removeAll();
 		dimensionTree.removeAll();
-		contentSelectionManager.clearSelections();
+		recordSelectionManager.clearSelections();
 		dimensionSelectionManager.clearSelections();
 	}
 
@@ -308,22 +303,19 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 		recordVAUpdateListener = new RecordVAUpdateListener();
 		recordVAUpdateListener.setHandler(this);
 		recordVAUpdateListener.setDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
-
-		replaceRecordVAListener = new ReplaceRecordVAListener();
-		replaceRecordVAListener.setHandler(this);
-		replaceRecordVAListener.setDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(ReplaceRecordVAEvent.class, replaceRecordVAListener);
+		eventPublisher.addListener(RecordVADeltaEvent.class, recordVAUpdateListener);
 
 		dimensionVAUpdateListener = new DimensionVAUpdateListener();
 		dimensionVAUpdateListener.setHandler(this);
 		dimensionVAUpdateListener.setDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
+		eventPublisher
+				.addListener(DimensionVADeltaEvent.class, dimensionVAUpdateListener);
 
-		replaceDimensionVAListener = new ReplaceDimensionVAListener();
-		replaceDimensionVAListener.setHandler(this);
-		replaceDimensionVAListener.setDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(ReplaceDimensionVAEvent.class, replaceDimensionVAListener);
+		// replaceDimensionVAListener = new ReplaceDimensionVAListener();
+		// replaceDimensionVAListener.setHandler(this);
+		// replaceDimensionVAListener.setDataDomainID(dataDomain.getDataDomainID());
+		// eventPublisher.addListener(ReplaceDimensionVAEvent.class,
+		// replaceDimensionVAListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
@@ -357,17 +349,10 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 			eventPublisher.removeListener(recordVAUpdateListener);
 			recordVAUpdateListener = null;
 		}
-		if (replaceRecordVAListener != null) {
-			eventPublisher.removeListener(replaceRecordVAListener);
-			replaceRecordVAListener = null;
-		}
+
 		if (dimensionVAUpdateListener != null) {
 			eventPublisher.removeListener(dimensionVAUpdateListener);
 			dimensionVAUpdateListener = null;
-		}
-		if (replaceDimensionVAListener != null) {
-			eventPublisher.removeListener(replaceDimensionVAListener);
-			replaceDimensionVAListener = null;
 		}
 		if (selectionCommandListener != null) {
 			eventPublisher.removeListener(selectionCommandListener);
@@ -404,38 +389,20 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	}
 
 	@Override
-	public void handleVAUpdate(RecordVADelta vaDelta, final String info) {
-		if (vaDelta.getIDType() != dataDomain.getRecordIDType())
-			return;
-		if (parentComposite.isDisposed())
-			return;
-
-		contentSelectionManager.setVADelta(vaDelta);
-		updateTree(true, contentSelectionManager, contentTree, info);
+	public void handleRecordVAUpdate(final String info) {
+		recordSelectionManager.virtualArrayUpdated(dataDomain
+				.getRecordVA(DataTable.RECORD));
+		updateTree(true, recordSelectionManager, contentTree, info);
 	}
 
 	@Override
-	public void replaceRecordVA(int tableID, String dataDomain, String vaType) {
-		contentSelectionManager.setVA(this.dataDomain.getRecordVA(vaType));
-		updateTree(true, contentSelectionManager, contentTree, "");
-	}
-
-	@Override
-	public void handleVAUpdate(DimensionVADelta vaDelta, String info) {
-		if (vaDelta.getIDType() != dataDomain.getDimensionIDType())
-			return;
+	public void handleDimensionVAUpdate(String info) {
 		if (parentComposite.isDisposed())
 			return;
-		dimensionSelectionManager.setVADelta(vaDelta);
+
+		dimensionSelectionManager.virtualArrayUpdated(dataDomain
+				.getDimensionVA(DataTable.DIMENSION));
 		updateTree(false, dimensionSelectionManager, dimensionTree, info);
-	}
-
-	@Override
-	public void replaceDimensionVA(String dataDomain, String vaType) {
-		if (parentComposite.isDisposed())
-			return;
-		dimensionSelectionManager.setVA(this.dataDomain.getDimensionVA(vaType));
-		updateTree(false, dimensionSelectionManager, dimensionTree, "");
 	}
 
 	@Override

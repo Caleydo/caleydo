@@ -13,6 +13,7 @@ public class VAIterator
 	int iCount = -1;
 	VirtualArray virtualArray;
 	boolean bLastMoveOperationWasPrevious = false;
+	ListIterator<Integer> backingListIterator;
 
 	/**
 	 * Constructor
@@ -22,74 +23,55 @@ public class VAIterator
 	 */
 	public VAIterator(VirtualArray virtualArray) {
 		this.virtualArray = virtualArray;
+		backingListIterator = virtualArray.virtualArrayList.listIterator();
 	}
 
 	@Override
-	public void add(Integer iNewElement) {
-		virtualArray.add(++iCount, iNewElement);
+	public void add(Integer newElement) {
+		backingListIterator.add(newElement);
+		virtualArray.setHashDirty();
 	}
 
 	@Override
 	public boolean hasNext() {
-		if (iCount < virtualArray.size() - 1)
-			return true;
-
-		return false;
+		return backingListIterator.hasNext();
 	}
 
 	@Override
 	public boolean hasPrevious() {
-		if (iCount > 0)
-			return true;
-
-		return false;
+		return backingListIterator.hasPrevious();
 	}
 
 	@Override
 	public Integer next() {
-		bLastMoveOperationWasPrevious = false;
-		return virtualArray.get(++iCount);
-
+		return backingListIterator.next();
 	}
 
 	@Override
 	public int nextIndex() {
-		return iCount + 1;
+		return backingListIterator.nextIndex();
 	}
 
 	@Override
 	public Integer previous() {
-		bLastMoveOperationWasPrevious = true;
-		return virtualArray.get(iCount--);
+		return backingListIterator.previous();
 	}
 
 	@Override
 	public int previousIndex() {
-		if (iCount < 0)
-			return -1;
-
-		return iCount;
+		return backingListIterator.previousIndex();
 	}
 
 	@Override
 	public void remove() {
-		if (bLastMoveOperationWasPrevious) {
-			virtualArray.remove(iCount);
-		}
-		else {
-			virtualArray.remove(--iCount);
-		}
+		backingListIterator.remove();
+		virtualArray.setHashDirty();
 	}
 
 	@Override
-	public void set(Integer iNewElement) {
-		if (bLastMoveOperationWasPrevious) {
-			virtualArray.set(iCount, iNewElement);
-		}
-		else {
-			virtualArray.set(iCount - 1, iNewElement);
-		}
-
+	public void set(Integer newElementID) {
+		backingListIterator.set(newElementID);
+		virtualArray.setHashDirty();
 	}
 
 }

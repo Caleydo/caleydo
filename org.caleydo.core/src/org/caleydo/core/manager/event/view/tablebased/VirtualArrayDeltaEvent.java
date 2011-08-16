@@ -15,7 +15,7 @@ import org.caleydo.core.manager.event.AEvent;
  */
 @XmlRootElement
 @XmlType
-public abstract class VirtualArrayUpdateEvent<T extends VirtualArrayDelta<?>>
+public abstract class VirtualArrayDeltaEvent<T extends VirtualArrayDelta<?>>
 	extends AEvent {
 
 	/** delta between old and new selection */

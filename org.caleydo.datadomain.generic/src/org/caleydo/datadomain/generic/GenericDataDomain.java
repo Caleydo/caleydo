@@ -53,13 +53,13 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void handleVAUpdate(RecordVADelta vaDelta, String info) {
+	public void handleRecordVADelta(RecordVADelta vaDelta, String info) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void handleVAUpdate(DimensionVADelta vaDelta, String info) {
+	public void handleDimensionVADelta(DimensionVADelta vaDelta, String info) {
 		// TODO Auto-generated method stub
 
 	}

@@ -111,7 +111,8 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLUncertaintyHeatMap(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLUncertaintyHeatMap(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLUncertaintyHeatMap.VIEW_TYPE;
@@ -275,7 +276,8 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 				.getViewManager()
 				.createGLView(
 						GLHeatMap.class,
-						parentGLCanvas, parentComposite,
+						parentGLCanvas,
+						parentComposite,
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
 								-1, 1));
 
@@ -352,8 +354,8 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 
 		switch (pickingType) {
 
@@ -371,8 +373,8 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 
 				ArrayList<Integer> clusterElements = recordVA.getIDsOfGroup(groupList
 						.get(externalID).getID());
-				RecordVirtualArray clusterVA = new RecordVirtualArray(
-						DataTable.RECORD, clusterElements);
+				RecordVirtualArray clusterVA = new RecordVirtualArray(DataTable.RECORD,
+						clusterElements);
 				detailHeatMap.setRecordVA(clusterVA);
 
 				setDisplayListDirty();
@@ -470,9 +472,9 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 	}
 
 	@Override
-	protected void reactOnRecordVAChanges(RecordVADelta delta) {
+	protected void reactOnRecordVAChanges() {
 
-		super.reactOnRecordVAChanges(delta);
+		super.reactOnRecordVAChanges();
 
 		setDisplayListDirty();
 		initMultiLevelUncertainty();
@@ -513,15 +515,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 		return colorMapper;
 	}
 
-	@Override
-	public void replaceRecordVA(int tableID, String dataDomainType, String vaType) {
-
-		super.replaceRecordVA(tableID, dataDomainType, vaType);
-
-		initMultiLevelUncertainty();
-		overviewHeatMap.init();
-		updateVisualUncertainty = true;
-	}
+	
 
 	public HeatMapRenderStyle getRenderStyle() {
 		return renderStyle;
@@ -536,7 +530,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 
 		if (table.getUncertainty() == null)
 			return;
-		
+
 		float[] SNR = table.getUncertainty().getNormalizedUncertainty();
 		aggregatedUncertainty = new double[SNR.length];
 		multiLevelUncertainty.clear();

@@ -4,7 +4,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
 
 /**
  * Interface for view classes that need to get information on when to update a view. Implementation of this
- * interface are called by {@link RecordVAUpdateListener}s.
+ * interface are called by {@link RecordVADeltaListener}s.
  * 
  * @author Werner Puff
  */

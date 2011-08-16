@@ -100,21 +100,21 @@ public class SelectionManager
 	/**
 	 * Removes a particular element from the selection manager, no matter what the type
 	 * 
-	 * @param iElementID
+	 * @param elementID
 	 *            the element to be removed
 	 */
-	public void remove(int iElementID) {
+	public void remove(int elementID) {
 
 		for (SelectionType selectionType : selectionTypes) {
-			if (checkStatus(selectionType, iElementID)) {
+			if (checkStatus(selectionType, elementID)) {
 
-				int iNumTimesAdded = hashSelectionTypes.get(selectionType).get(iElementID) - 1;
+				int iNumTimesAdded = hashSelectionTypes.get(selectionType).get(elementID) - 1;
 				if (iNumTimesAdded == 0) {
-					hashSelectionTypes.get(selectionType).remove(iElementID);
+					hashSelectionTypes.get(selectionType).remove(elementID);
 
 				}
 				else {
-					hashSelectionTypes.get(selectionType).put(iElementID, iNumTimesAdded);
+					hashSelectionTypes.get(selectionType).put(elementID, iNumTimesAdded);
 				}
 			}
 		}
@@ -125,7 +125,7 @@ public class SelectionManager
 	 * 
 	 * @param type
 	 *            the type of the selection which should be purged
-	 * @return a VirtualArrayDelta containing all the indices which should be removed
+	 *
 	 */
 	public void removeElements(SelectionType type) {
 		HashMap<Integer, Integer> elementMap = hashSelectionTypes.get(type);

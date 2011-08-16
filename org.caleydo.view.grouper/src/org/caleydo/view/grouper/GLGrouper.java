@@ -24,7 +24,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.data.ReplaceDimensionVAInUseCaseEvent;
+import org.caleydo.core.manager.event.data.DimensionReplaceVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
@@ -328,8 +328,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		dimensionVA = new DimensionVirtualArray(
 				org.caleydo.core.data.collection.table.DataTable.DIMENSION, alIndices);
 
-		eventPublisher.triggerEvent(new ReplaceDimensionVAInUseCaseEvent(table,
-				dataDomain.getDataDomainID(), dimensionVAType, dimensionVA));
+		eventPublisher.triggerEvent(new DimensionReplaceVAEvent(table, dataDomain
+				.getDataDomainID(), dimensionVAType, dimensionVA));
 
 		// FIXME no one is notified that there is a new tree
 		table.getDimensionData(dimensionVAType).setDimensionTree(tree);
@@ -480,7 +480,7 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 
 		// FIXME: on intel graphics card we cannot use Z=0!
 		float Z = 0.0001f;
-	
+
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				PickingType.GROUPER_BACKGROUND_SELECTION, 0));
 
@@ -513,8 +513,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 			float fHierarchyHeight = rootGroup.getScaledHeight(parentGLCanvas.getWidth());
 			float fHierarchyWidth = rootGroup.getScaledWidth(parentGLCanvas.getWidth());
 
-//			System.out.println(fHierarchyHeight);
-//			System.out.println(fHierarchyWidth);
+			// System.out.println(fHierarchyHeight);
+			// System.out.println(fHierarchyWidth);
 
 			int minViewportHeight = (int) (parentGLCanvas.getHeight()
 					/ viewFrustum.getHeight() * fHierarchyHeight) + 10;
@@ -642,7 +642,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 								isLeafContained = composite.isLeaf();
 						}
 
-						RenameGroupItem renameItem = new RenameGroupItem(externalID, dataDomain.getDataDomainID());
+						RenameGroupItem renameItem = new RenameGroupItem(externalID,
+								dataDomain.getDataDomainID());
 						contextMenuCreator.addContextMenuItem(renameItem);
 						// groupRep.addAsDraggable(dragAndDropController);
 						//
@@ -660,7 +661,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 								selectedGroups, dataDomain.getDataDomainID());
 						contextMenuCreator.addContextMenuItem(createGroupItem);
 
-						CopyGroupsItem copyGroupsItem = new CopyGroupsItem(selectedGroups, dataDomain.getDataDomainID());
+						CopyGroupsItem copyGroupsItem = new CopyGroupsItem(
+								selectedGroups, dataDomain.getDataDomainID());
 						contextMenuCreator.addContextMenuItem(copyGroupsItem);
 
 						DeleteGroupsItem deleteGroupsItem = new DeleteGroupsItem(

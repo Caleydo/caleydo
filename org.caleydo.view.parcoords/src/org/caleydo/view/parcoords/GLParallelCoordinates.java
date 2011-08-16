@@ -52,7 +52,6 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
@@ -1299,29 +1298,23 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		resetAxisSpacing();
 	}
 
-	@Override
-	protected void reactOnRecordVAChanges(RecordVADelta delta) {
-
-		recordSelectionManager.setVADelta(delta);
-
-	}
 
 	@Override
-	public void handleVAUpdate(DimensionVADelta delta, String info) {
-		for (VADeltaItem item : delta) {
-			if (item.getType() == EVAOperation.REMOVE) {
-				Integer id = dimensionVA.get(item.getIndex());
-
-				// resetAxisSpacing();
-				if (dimensionVA.occurencesOf(id) == 1) {
-					removeGate(id);
-				}
-			} else if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
-
-				removeGate(item.getID());
-			}
-		}
-		super.handleVAUpdate(delta, info);
+	public void handleDimensionVAUpdate(String info) {
+//		for (VADeltaItem item : delta) {
+//			if (item.getType() == EVAOperation.REMOVE) {
+//				Integer id = dimensionVA.get(item.getIndex());
+//
+//				// resetAxisSpacing();
+//				if (dimensionVA.occurencesOf(id) == 1) {
+//					removeGate(id);
+//				}
+//			} else if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
+//
+//				removeGate(item.getID());
+//			}
+//		}
+		super.handleDimensionVAUpdate(info);
 		resetAxisSpacing();
 	}
 

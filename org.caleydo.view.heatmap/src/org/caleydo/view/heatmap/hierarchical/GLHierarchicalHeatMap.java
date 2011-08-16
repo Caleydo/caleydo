@@ -862,10 +862,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	protected void reactOnRecordVAChanges(RecordVADelta delta) {
-
-		if (delta.getVAType().equals(recordVAType))
-			recordVA.setGroupList(null);
+	protected void reactOnRecordVAChanges() {
 
 		// glHeatMapView.handleVirtualArrayUpdate(delta, getShortInfo());
 		bRedrawTextures = true;
@@ -874,16 +871,14 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	public void handleVAUpdate(DimensionVADelta delta, String info) {
-		super.handleVAUpdate(delta, info);
+	public void handleDimensionVAUpdate(String info) {
+		super.handleDimensionVAUpdate(info);
 		bRedrawTextures = true;
 	}
 
 	@Override
-	public void handleVAUpdate(RecordVADelta delta, String info) {
-		if (!delta.getVAType().equals(recordVAType))
-			return;
-		super.handleVAUpdate(delta, info);
+	public void handleRecordVAUpdate(String info) {
+		super.handleRecordVAUpdate(info);
 		bRedrawTextures = true;
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
@@ -891,24 +886,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		setDisplayListDirty();
 
 		initData();
-	}
-
-	@Override
-	public void replaceRecordVA(int tableID, String dataDomain, String vaType) {
-		if (!vaType.equals(recordVAType))
-			return;
-		super.replaceRecordVA(tableID, dataDomain, vaType);
-		hasDataWindowChanged = true;
-		iPickedSampleLevel1 = 0;
-		setDisplayListDirty();
-	}
-
-	@Override
-	public void replaceDimensionVA(String dataDomain, String vaType) {
-		super.replaceDimensionVA(dataDomain, vaType);
-		hasDataWindowChanged = true;
-		iPickedSampleLevel1 = 0;
-		setDisplayListDirty();
 	}
 
 	/**
@@ -4058,15 +4035,15 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					break;
 				// else we want to go to clicked as well
 			case CLICKED:
-				
+
 				// Reset group states before selecting the newly selected
 				for (Group group : recordVA.getGroupList())
 					group.setSelectionType(SelectionType.NORMAL);
-				
+
 				recordVA.getGroupList().get(pickingID).togglSelectionType();
 				deactivateAllDraggingCursor();
 				bActivateDraggingGenes = true;
-				
+
 				// ArrayList<Integer> temp =
 				// recordVA.getGeneIdsOfGroup( externalID);
 				// for (int i = 0; i < temp.size(); i++) {
@@ -5271,7 +5248,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		dataDomains.add(dataDomain);
 		return dataDomains;
 	}
-	
+
 	@Override
 	public void switchDataRepresentation() {
 		bRedrawTextures = true;

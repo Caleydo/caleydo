@@ -24,18 +24,16 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
-import org.caleydo.core.manager.event.data.ReplaceVAEvent;
-import org.caleydo.core.manager.event.view.tablebased.RecordVAUpdateEvent;
+import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
+import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
+import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
+import org.caleydo.core.manager.event.view.tablebased.RecordVADeltaEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.tablebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AGLViewBrowser;
-import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVAUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceRecordVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -55,8 +53,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  * 
  */
-public class GLTissueViewBrowser extends AGLViewBrowser implements
-		IRecordVAUpdateHandler {
+public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpdateHandler {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.tissuebrowser";
 
@@ -72,8 +69,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	private RecordSelectionManager experiementSelectionManager;
 
 	private SelectionUpdateListener selectionUpdateListener;
-	private RecordVAUpdateListener virtualArrayUpdateListener;
-	private ReplaceRecordVAListener replaceVirtualArrayListener;
+	private RecordVAUpdateListener recordVAUpdateListener;
 
 	private IDType primaryIDType;
 
@@ -81,7 +77,8 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 	private boolean poolLeft = false;
 
-	public GLTissueViewBrowser(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLTissueViewBrowser(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 
@@ -326,17 +323,10 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		selectionUpdateListener.setDataDomainID(FOREIGN_DATADOMAIN_TYPE);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
-		virtualArrayUpdateListener = new RecordVAUpdateListener();
-		virtualArrayUpdateListener.setHandler(this);
-		virtualArrayUpdateListener.setDataDomainID(FOREIGN_DATADOMAIN_TYPE);
-		eventPublisher.addListener(VirtualArrayUpdateEvent.class,
-				virtualArrayUpdateListener);
-
-		replaceVirtualArrayListener = new ReplaceRecordVAListener();
-		replaceVirtualArrayListener.setHandler(this);
-		replaceVirtualArrayListener.setDataDomainID(FOREIGN_DATADOMAIN_TYPE);
-		eventPublisher.addListener(ReplaceVAEvent.class, replaceVirtualArrayListener);
-
+		recordVAUpdateListener = new RecordVAUpdateListener();
+		recordVAUpdateListener.setHandler(this);
+		recordVAUpdateListener.setDataDomainID(FOREIGN_DATADOMAIN_TYPE);
+		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
 	}
 
 	/**
@@ -353,14 +343,9 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 			selectionUpdateListener = null;
 		}
 
-		if (virtualArrayUpdateListener != null) {
-			eventPublisher.removeListener(virtualArrayUpdateListener);
-			virtualArrayUpdateListener = null;
-		}
-
-		if (replaceVirtualArrayListener != null) {
-			eventPublisher.removeListener(replaceVirtualArrayListener);
-			replaceVirtualArrayListener = null;
+		if (recordVAUpdateListener != null) {
+			eventPublisher.removeListener(recordVAUpdateListener);
+			recordVAUpdateListener = null;
 		}
 
 	}
@@ -380,7 +365,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		RecordVADelta vaDelta = new RecordVADelta(DataTable.RECORD, primaryIDType);
 		vaDelta.add(VADeltaItem.removeElement(iElementID));
 
-		RecordVAUpdateEvent virtualArrayUpdateEvent = new RecordVAUpdateEvent();
+		RecordVADeltaEvent virtualArrayUpdateEvent = new RecordVADeltaEvent();
 		virtualArrayUpdateEvent.setSender(this);
 		virtualArrayUpdateEvent.setVirtualArrayDelta(vaDelta);
 		virtualArrayUpdateEvent.setInfo(getShortInfo());
@@ -388,35 +373,16 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	}
 
 	@Override
-	public void handleVAUpdate(RecordVADelta vaDelta, String info) {
-		if (vaDelta.getIDType() == primaryIDType) {
-			experiementSelectionManager.setVADelta(vaDelta);
-		}
+	public void handleRecordVAUpdate(String info) {
+		System.out.println("What to do?");
+//		experiementSelectionManager.virtualArrayUpdated(dataDomain
+//				.getRecordVA(DataTable.DIMENSION));
+
 	}
 
 	@Override
-	public void replaceRecordVA(int tableID, String dataDomainType, String vaType) {
-		// if (idCategory != EIDCategory.EXPERIMENT)
-		// return;
-		// s
-		// IDataDomain clinicalUseCase = GeneralManager.get().getUseCase(
-		// EDataDomain.CLINICAL_DATA);
-		//
-		// String primaryVAType =
-		// clinicalUseCase.getVATypeForIDCategory(idCategory);
-		// if (primaryVAType == null)
-		// return;
-		//
-		// recordVA = clinicalUseCase.getRecordVA(vaType);
-		// // contentSelectionManager.setVA(recordVA);
-		//
-		// initData();
-		// updateViews();
-	}
-
-	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		super.handlePickingEvents(pickingType, pickingMode, externalID, pick);
 
 		switch (pickingType) {
@@ -483,8 +449,8 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	}
 
 	private void setInfo(GLTexture tissueView, Integer experimentIndex) {
-		DimensionVirtualArray va = foreignDataDomain.getTable().getDimensionData(DataTable.DIMENSION)
-				.getDimensionVA();
+		DimensionVirtualArray va = foreignDataDomain.getTable()
+				.getDimensionData(DataTable.DIMENSION).getDimensionVA();
 
 		NominalDimension<String> dimension = (NominalDimension<String>) foreignDataDomain
 				.getTable().get(va.get(1));
@@ -494,8 +460,8 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	}
 
 	private void setInfo(SerializedTextureView tissueView, Integer experimentIndex) {
-		DimensionVirtualArray va = foreignDataDomain.getTable().getDimensionData(DataTable.DIMENSION)
-				.getDimensionVA();
+		DimensionVirtualArray va = foreignDataDomain.getTable()
+				.getDimensionData(DataTable.DIMENSION).getDimensionVA();
 
 		NominalDimension<String> dimension = (NominalDimension<String>) foreignDataDomain
 				.getTable().get(va.get(1));

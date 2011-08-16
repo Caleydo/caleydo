@@ -2,7 +2,6 @@ package org.caleydo.core.data.virtualarray;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -11,6 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.collection.dimension.ADimension;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
@@ -18,11 +18,17 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.custom.Bullet;
 
 /**
- * A Virtual Array provides an association between a modifiable index in the virtual arrays and the static
- * indices in the dimensions and sets. It therefore allows the virtual modification (deleting, adding,
- * duplicating) of entries in the dimensions.
+ * <p>
+ * A VirtualArray is a list of indices referring to a collection. It is most commonly used in combination with
+ * {@link ADimension}s or Records (which are the records in the ADimensions). A VirtualArray is of use when
+ * the collections themselves are immutable, or are shared between multiple clients (i.e. views) using
+ * different VirtualArrays on them.
+ * </p>
  * 
  * @author Alexander Lex
  */
@@ -32,20 +38,16 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	extends AUniqueObject
 	implements Iterable<Integer>, IUniqueObject, Cloneable {
 
-	ArrayList<Integer> virtualArray;
-	HashMap<Integer, ArrayList<Integer>> hashIDToIndex;
-	boolean isHashIDToIndexDirty = true;
+	ArrayList<Integer> virtualArrayList;
+	boolean useHashBacking = true;
+	IDMap idMap;
 
 	GroupType groupList = null;
-
-	/** Used to check whether elements to be removed are in descending order */
-	int lastRemovedIndex = -1;
 
 	private String vaType;
 
 	public VirtualArray() {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
-		this.virtualArray = new ArrayList<Integer>();
 	}
 
 	/**
@@ -54,8 +56,16 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	public VirtualArray(String vaType) {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
 		this.vaType = vaType;
-		this.virtualArray = new ArrayList<Integer>();
-		// init();
+
+	}
+
+	{
+		this.virtualArrayList = new ArrayList<Integer>();
+		idMap = new IDMap(virtualArrayList);
+	}
+
+	void setHashDirty() {
+		idMap.setDirty();
 	}
 
 	public abstract ConcreteType getNewInstance();
@@ -69,8 +79,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	public VirtualArray(String vaType, List<Integer> initialList) {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
 		this.vaType = vaType;
-		this.virtualArray = new ArrayList<Integer>();
-		virtualArray.addAll(initialList);
+		virtualArrayList.addAll(initialList);
 	}
 
 	public String getVaType() {
@@ -87,44 +96,44 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	/**
 	 * Returns the element at the specified index in the virtual array
 	 * 
-	 * @param iIndex
+	 * @param index
 	 *            the index
 	 * @return the element at the index
 	 */
-	public Integer get(int iIndex) {
-		return virtualArray.get(iIndex);
+	public Integer get(int index) {
+		return virtualArrayList.get(index);
 	}
 
 	/**
 	 * Adds an element to the end of the list.
 	 * 
-	 * @param iNewElement
-	 *            the index to the collection
+	 * @param newElementID
+	 *            the id of the new element (which corresponds to the index of the collection)
 	 * @exception IllegalArgumentException
 	 *                if the value of the new element is larger than allowed. The maximum allowed value is the
 	 *                length of the collection which is managed - 1
 	 */
-	public void append(Integer iNewElement) {
-		isHashIDToIndexDirty = true;
-		virtualArray.add(iNewElement);
+	public void append(Integer newElementID) {
+		idMap.setDirty();
+		virtualArrayList.add(newElementID);
 	}
 
 	/**
 	 * Adds an element to the end of the list, if the element is not already contained.
 	 * 
-	 * @param iNewElement
+	 * @param newElement
 	 *            the index to the collection
 	 * @exception IllegalArgumentException
 	 *                if the value of the new element is larger than allowed. The maximum allowed value is the
 	 *                length of the collection which is managed - 1
 	 * @return true if the array was modified, else false
 	 */
-	public boolean appendUnique(Integer iNewElement) {
-		isHashIDToIndexDirty = true;
-		if (indexOf(iNewElement) != -1)
+	public boolean appendUnique(Integer newElement) {
+		idMap.setDirty();
+		if (indexOf(newElement) != -1)
 			return false;
 
-		append(iNewElement);
+		append(newElement);
 		return true;
 
 	}
@@ -133,62 +142,53 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * Inserts the specified element at the specified position in this list. Shifts the element currently at
 	 * that position (if any) and any subsequent elements to the right (adds one to their indices).
 	 * 
-	 * @param iIndex
+	 * @param index
 	 *            the position on which to insert the new element
-	 * @param iNewElement
-	 *            the index to the collection
-	 * @throws IllegalArgumentException
-	 *             if the value of the new element is larger than allowed. The maximum allowed value is the
-	 *             length of the collection which is managed - 1
+	 * @param newElement
+	 *            the id refering to the index of the collection
 	 */
-	public void add(int iIndex, Integer iNewElement) {
-		isHashIDToIndexDirty = true;
-		virtualArray.add(iIndex, iNewElement);
+	public void add(int index, Integer newElement) {
+		idMap.setDirty();
+		virtualArrayList.add(index, newElement);
 	}
 
 	/**
 	 * Replaces the element at the specified position in this list with the specified element.
 	 * 
-	 * @param iIndex
-	 * @param iNewElement
-	 * @throws CaleydoRuntimeException
-	 *             if the value of the new element is larger than allowed. The maximum allowed value is the
-	 *             length of the collection which is managed - 1
+	 * @param index
+	 * @param newElement
 	 */
-	public void set(int iIndex, Integer iNewElement) {
-		isHashIDToIndexDirty = true;
-		virtualArray.set(iIndex, iNewElement);
+	public void set(int index, Integer newElement) {
+		idMap.setDirty();
+		virtualArrayList.set(index, newElement);
 	}
 
 	/**
-	 * Copies the element at index iIndex to the next index. Shifts the element currently at that position (if
-	 * any) and any subsequent elements to the right (adds one to their indices).
+	 * Copies the element at index to the next index. Shifts the element currently at that position (if any)
+	 * and any subsequent elements to the right (adds one to their indices).
 	 * 
-	 * @param iIndex
+	 * @param index
 	 *            the index of the element to be copied
 	 */
-	public void copy(int iIndex) {
-		isHashIDToIndexDirty = true;
-		virtualArray.add(iIndex + 1, virtualArray.get(iIndex));
+	public void copy(int index) {
+		virtualArrayList.add(index + 1, virtualArrayList.get(index));
+		idMap.setDirty();
 	}
 
 	/**
-	 * Moves the element at the specified src index to the target index. The element formerly at iSrcIndex is
-	 * at iTargetIndex after this operation. The rest of the elements can change the index.
+	 * Moves the element at the specified source index to the target index. The element formerly at srcIndex
+	 * is at targetIndex after this operation.
 	 * 
-	 * @param iSrcIndex
+	 * @param srcIndex
 	 *            the src index of the element
-	 * @param iTargetIndex
+	 * @param targetIndex
 	 *            the target index of the element
 	 */
-	public void move(int iSrcIndex, int iTargetIndex) {
-		isHashIDToIndexDirty = true;
-		Integer iElement = virtualArray.remove(iSrcIndex);
-		virtualArray.add(iTargetIndex, iElement);
+	public void move(int srcIndex, int targetIndex) {
+		idMap.setDirty();
+		Integer element = virtualArrayList.remove(srcIndex);
+		virtualArrayList.add(targetIndex, element);
 	}
-
-
-
 
 	/**
 	 * Removes the element at the specified index. Shifts any subsequent elements to the left (subtracts one
@@ -198,14 +198,24 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 *            the index of the element to be removed
 	 * @return the Element that was removed from the list
 	 */
-	public Integer remove(int iIndex) {
-		isHashIDToIndexDirty = true;
-		// if(groupList != null){
-		// groupList.removeElementOfVA(iIndex);
-		// }
-		Integer id = virtualArray.remove(iIndex);
+	public Integer remove(int index) {
+		idMap.setDirty();
+		return virtualArrayList.remove(index);
+	}
 
-		return id;
+	public void removeInBulk(ArrayList<Integer> indices) {
+		Collections.sort(indices);
+		int previousIndex = Integer.MAX_VALUE;
+		for (int count = indices.size() - 1; count >= 0; count--) {
+			Integer currentIndex = indices.get(count);
+			if (currentIndex == previousIndex || currentIndex < 0 || currentIndex > previousIndex) {
+				Logger.log(new Status(Status.INFO, "org.caleydo.core", "Cannot remove index: " + currentIndex
+					+ " from VA " + this));
+				continue;
+			}
+			previousIndex = currentIndex;
+			remove(currentIndex);
+		}
 	}
 
 	/**
@@ -217,30 +227,13 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * The implementation if based on a hash-table, performance is in constant time.
 	 * </p>
 	 * 
-	 * @param iElement
+	 * @param element
 	 *            the element to be removed
 	 */
-	public void removeByElement(int iElement) {
-		ArrayList<Integer> indices = indicesOf(iElement);
-		isHashIDToIndexDirty = true;
-		if (indices.size() > 1) {
-			System.out.println(indices);
-			Collections.sort(indices);
-			// for(Integer index : indices)
-			// {
-			// System.out.println("in va: " + virtualArray.get(index));
-			// }
-			// System.out.println(indices);
-		}
-		for (int count = indices.size() - 1; count >= 0; count--) {
-			int index = indices.get(count);
-			if (index < 0 || index > virtualArray.size()) {
-//				Logger.log(new Status(Status.WARNING, "core", "When removing element in VA, id: " + iElement
-//					+ " does not map to an index, produces: " + index));
-				continue;
-			}
-			remove(index);
-		}
+	public void removeByElement(Integer element) {
+		ArrayList<Integer> indices = indicesOf(element);
+		removeInBulk(indices);
+		idMap.setDirty();
 	}
 
 	/**
@@ -249,15 +242,15 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * @return the size
 	 */
 	public Integer size() {
-		return virtualArray.size();
+		return virtualArrayList.size();
 	}
 
 	/**
 	 * Reset the virtual array to contain no elements
 	 */
 	public void clear() {
-		isHashIDToIndexDirty = true;
-		virtualArray.clear();
+		idMap.setDirty();
+		virtualArrayList.clear();
 	}
 
 	/**
@@ -278,37 +271,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 *         does not contain the element
 	 */
 	public int indexOf(Integer id) {
-
-		return virtualArray.indexOf(id);
-
-		// if (isHashIDToIndexDirty)
-		// buildIDMap();
-		//
-		// ArrayList<Integer> results = hashIDToIndex.get(id);
-		// if (results != null) {
-		// if (results.size() > 1)
-		// System.out.println("Ignored multi-mapping");
-		// return results.get(0);
-		// }
-		// else
-		// return -1;
-	}
-
-	private void buildIDMap() {
-		if (hashIDToIndex == null)
-			hashIDToIndex = new HashMap<Integer, ArrayList<Integer>>((int) (virtualArray.size() * 1.6));
-		else
-			hashIDToIndex.clear();
-
-		for (int index = 0; index < virtualArray.size(); index++) {
-			Integer id = virtualArray.get(index);
-			ArrayList<Integer> indexList = hashIDToIndex.get(id);
-			if (indexList == null)
-				indexList = new ArrayList<Integer>(5);
-			indexList.add(index);
-			hashIDToIndex.put(id, indexList);
-		}
-		isHashIDToIndexDirty = false;
+		return idMap.indexOf(id);
 	}
 
 	/**
@@ -328,20 +291,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 *         elements exist
 	 */
 	public ArrayList<Integer> indicesOf(Integer id) {
-
-		ArrayList<Integer> indices = new ArrayList<Integer>();
-		indices.add(indexOf(id));
-		return indices;
-		//
-
-		//
-		// if (isHashIDToIndexDirty)
-		// buildIDMap();
-		// ArrayList<Integer> list = hashIDToIndex.get(id);
-		// if (list != null)
-		// return list;
-		// else
-		// return new ArrayList<Integer>(1);
+		return idMap.indicesOf(id);
 	}
 
 	/**
@@ -352,9 +302,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * @return true if element occurs at least once, else false
 	 */
 	public boolean contains(Integer id) {
-		if (isHashIDToIndexDirty)
-			buildIDMap();
-		return hashIDToIndex.get(id) == null ? false : true;
+		return idMap.contains(id);
 	}
 
 	/**
@@ -365,9 +313,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * @return the number of occurrences (0 if none)
 	 */
 	public int occurencesOf(Integer id) {
-		if (isHashIDToIndexDirty)
-			buildIDMap();
-		return hashIDToIndex.get(id).size();
+		return idMap.occurencesOf(id);
 	}
 
 	/**
@@ -376,7 +322,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * @return the list containing the dimension indices
 	 */
 	public ArrayList<Integer> getIndexList() {
-		return virtualArray;
+		return virtualArrayList;
 	}
 
 	/**
@@ -385,6 +331,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * @param delta
 	 */
 	public void setDelta(VADelta delta) {
+		ArrayList<Integer> indicesToBeRemoved = new ArrayList<Integer>();
 		for (VADeltaItem item : delta) {
 			switch (item.getType()) {
 				case ADD:
@@ -397,15 +344,10 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 					appendUnique(item.getID());
 					break;
 				case REMOVE:
-					int iIndex = item.getIndex();
-					if (iIndex < lastRemovedIndex)
-						throw new IllegalStateException(
-							"Index of remove operation was smaller than previously used index. This is likely not intentional. Take care to remove indices from back to front.");
-					lastRemovedIndex = iIndex;
-					remove(item.getIndex());
+					indicesToBeRemoved.add(item.getIndex());
 					break;
 				case REMOVE_ELEMENT:
-					removeByElement(item.getID());
+					indicesToBeRemoved.add(indexOf(item.getID()));
 					break;
 				case COPY:
 					copy(item.getIndex());
@@ -417,7 +359,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 					throw new IllegalStateException("Unhandled EVAOperation: " + item.getType());
 			}
 		}
-		lastRemovedIndex = -1;
+		removeInBulk(indicesToBeRemoved);
 	}
 
 	/**
@@ -514,11 +456,11 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 			throw new IllegalStateException("Clone not supportet: " + e.getMessage());
 		}
 		// va.iUniqueID = (GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
-		va.virtualArray = (ArrayList<Integer>) virtualArray.clone();
+		va.virtualArrayList = (ArrayList<Integer>) virtualArrayList.clone();
 		if (groupList != null)
 			va.setGroupList(groupList.clone());
-		va.lastRemovedIndex = lastRemovedIndex;
-		va.isHashIDToIndexDirty = true;
+		va.idMap = new IDMap(va.virtualArrayList);
+		va.idMap.setDirty();
 		return va;
 	}
 
@@ -533,21 +475,14 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	@XmlElementWrapper
 	public ArrayList<Integer> getVirtualArray() {
-		return virtualArray;
+		return virtualArrayList;
 	}
 
 	public void setVirtualArray(ArrayList<Integer> virtualArray) {
-		this.virtualArray = virtualArray;
-		isHashIDToIndexDirty = true;
+		this.virtualArrayList = virtualArray;
+		idMap.virtualArrayList = virtualArray;
+		idMap.setDirty();
 	}
-
-	public int getLastRemovedIndex() {
-		return lastRemovedIndex;
-	}
-
-	// public void setLastRemovedIndex(int lastRemovedIndex) {
-	// this.lastRemovedIndex = lastRemovedIndex;
-	// }
 
 	public void setVaType(String vaType) {
 		this.vaType = vaType;
@@ -560,7 +495,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		if (groupList != null)
 			hasGrouping = true;
 
-		return "ID: " + getID() + ", Type: " + vaType + ", size: " + virtualArray.size() + ", hasGrouping: "
+		return "ID: " + getID() + ", Type: " + vaType + ", size: " + virtualArrayList.size() + ", hasGrouping: "
 			+ hasGrouping;
 	}
 

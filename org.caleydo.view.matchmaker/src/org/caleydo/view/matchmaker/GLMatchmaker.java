@@ -19,7 +19,7 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.data.ReplaceRecordVAEvent;
+import org.caleydo.core.manager.event.data.RecordReplaceVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
@@ -34,11 +34,11 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.IRecordVAUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IRecordVADeltaHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceRecordVAListener;
+import org.caleydo.core.view.opengl.canvas.listener.RecordReplaceVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -76,7 +76,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		IGLRemoteRenderingView, ISelectionUpdateHandler, ISelectionCommandHandler,
-		IRecordVAUpdateHandler, IDataDomainBasedView<ATableBasedDataDomain> {
+		IRecordVADeltaHandler, IDataDomainBasedView<ATableBasedDataDomain> {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.matchmaker";
 
@@ -88,7 +88,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	private AdjustPValueOfSetEventListener adjustPValueOfSetEventListener;
 	private SelectionCommandListener selectionCommandListener;
 	private CompareMouseWheelListener compareMouseWheelListener;
-	private ReplaceRecordVAListener replaceRecordVAListener;
+	private RecordReplaceVAListener replaceRecordVAListener;
 	private UseSortingListener useSortingListener;
 	private UseZoomListener useZoomListener;
 	private UseBandBundlingListener useBandBundlingListener;
@@ -375,9 +375,9 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		selectionCommandListener.setHandler(this);
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
-		replaceRecordVAListener = new ReplaceRecordVAListener();
+		replaceRecordVAListener = new RecordReplaceVAListener();
 		replaceRecordVAListener.setHandler(this);
-		eventPublisher.addListener(ReplaceRecordVAEvent.class, replaceRecordVAListener);
+		eventPublisher.addListener(RecordReplaceVAEvent.class, replaceRecordVAListener);
 
 		useSortingListener = new UseSortingListener();
 		useSortingListener.setHandler(this);
@@ -528,7 +528,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void handleVAUpdate(RecordVADelta vaDelta, String info) {
+	public void handleRecordVADelta(RecordVADelta vaDelta, String info) {
 		System.out.println("COMPARER IGNORES CONTENT VA UPDATE");
 	}
 
