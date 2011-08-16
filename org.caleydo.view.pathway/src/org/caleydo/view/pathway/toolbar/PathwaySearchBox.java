@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Control;
  */
 public class PathwaySearchBox extends ControlContribution implements IToolBarItem {
 
-	public static final int TOOLBAR_WIDTH = 500;
+	public static final int TOOLBAR_WIDTH = 700;
 
 	/** mediator to handle actions triggered by the contributed element */
 	PathwayToolBarMediator pathwayToolBarMediator;
@@ -47,7 +47,7 @@ public class PathwaySearchBox extends ControlContribution implements IToolBarIte
 
 		String items[] = { "No pathways available!" };
 		pathwaySearchBox.setItems(items);
-		pathwaySearchBox.setTextLimit(65);
+		pathwaySearchBox.setTextLimit(90);
 
 		if (!GeneralManager.get().getPreferenceStore()
 				.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES)
