@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Caleydo TCGA Data Importer
+Bundle-SymbolicName: org.caleydo.data.importer.tcga;singleton:=true
+Bundle-Version: 2.0
+Export-Package: 
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: Graz University of Technology
