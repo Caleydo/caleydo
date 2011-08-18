@@ -940,9 +940,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 						continue;
 					}
 
-					
-					if (intersection1.getX() == intersection2.getX()
-							&& intersection1.getY() == intersection2.getY()) {
+					if (intersection1.distance(intersection2) < 0.000001
+							&& (isPoint1OnBoundingBox || isPoint2OnBoundingBox)) {
 						continue;
 					}
 
@@ -952,7 +951,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 				if (!hasIntersection) {
 					for (int j = i + 1; j < i + step; j++) {
-						edgePoints.remove(j);
+						edgePoints.remove(i+1);
 					}
 					step = edgePoints.size() - 2;
 					break;
