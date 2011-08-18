@@ -33,6 +33,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -424,17 +425,19 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		inputPoints.add(new Vec3f((float) ctrlx2, (float) ctrly2, 0));
 		inputPoints.add(new Vec3f((float) v2.getX(), (float) v2.getY(), 0));
 
-		NURBSCurve nurb = new NURBSCurve(inputPoints, 30);
+		NURBSCurve nurb = new NURBSCurve(inputPoints, 10);
 		ArrayList<Vec3f> outputPoints = nurb.getCurvePoints();
 
 		// Band border
 		gl.glLineWidth(1);
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL2.GL_POINTS);
 		for (int i = 0; i < outputPoints.size(); i++) {
 			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(),
 					outputPoints.get(i).z());
 		}
 		gl.glEnd();
+
+		renderBand(gl, outputPoints, 30);
 
 		// gl.glPointSize(5);
 		// gl.glColor3f(0, 0, 1);
@@ -444,6 +447,118 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		// gl.glEnd();
 		// curve.setCurve(v1.getX(), v1.getY(), ctrlx1, ctrly1, ctrlx2, ctrly2,
 		// v2.getX(), v2.getY());
+	}
+
+	private void renderBand(GL2 gl, ArrayList<Vec3f> linePoints, int pixelWidth) {
+
+		if (linePoints.size() < 2)
+			return;
+
+		float xRelativeGLBandWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(pixelWidth / 2);
+
+		ArrayList<Vec3f> bandPoints1 = new ArrayList<Vec3f>();
+		ArrayList<Vec3f> bandPoints2 = new ArrayList<Vec3f>();
+
+		Vec3f prevLinePoint = linePoints.get(0);
+
+		for (int i = 1; i < linePoints.size(); i++) {
+			Vec3f currentLinePoint = linePoints.get(i);
+			if (prevLinePoint.x() == currentLinePoint.x()
+					&& prevLinePoint.y() == currentLinePoint.y()) {
+				linePoints.remove(i);
+				i--;
+			} else {
+				prevLinePoint = currentLinePoint;
+			}
+		}
+
+		for (int i = 0; i < linePoints.size(); i++) {
+
+			Vec3f tangentVec = null;
+			Vec3f currentLinePoint = linePoints.get(i);
+
+			if (i == 0) {
+				tangentVec = new Vec3f(linePoints.get(i + 1).x()
+						- currentLinePoint.x(), linePoints.get(i + 1).y()
+						- currentLinePoint.y(), linePoints.get(i + 1).z());
+			} else if (i == linePoints.size() - 1) {
+				tangentVec = new Vec3f(currentLinePoint.x()
+						- linePoints.get(i - 1).x(), currentLinePoint.y()
+						- linePoints.get(i - 1).y(), currentLinePoint.z());
+			} else {
+
+				tangentVec = new Vec3f(linePoints.get(i + 1).x()
+						- linePoints.get(i - 1).x(), linePoints.get(i + 1).y()
+						- linePoints.get(i - 1).y(), linePoints.get(i + 1).z());
+			}
+
+			// float convTangentVecX = pixelGLConverter
+			// .getGLWidthForGLHeight(tangentVec.y());
+			float xRelativeTangentVecY = pixelGLConverter
+					.getGLWidthForGLHeight(Math.abs(tangentVec.y()));
+			if (tangentVec.y() < 0)
+				xRelativeTangentVecY = -xRelativeTangentVecY;
+
+			Vec3f xRelativeOrdinalVec = new Vec3f(xRelativeTangentVecY,
+					-tangentVec.x(), tangentVec.z());
+
+			xRelativeOrdinalVec.normalize();
+
+			xRelativeOrdinalVec.setX(xRelativeOrdinalVec.x()
+					* xRelativeGLBandWidth);
+			xRelativeOrdinalVec.setY(xRelativeOrdinalVec.y()
+					* xRelativeGLBandWidth);
+
+			float yRelativeOrdinalVecY = pixelGLConverter
+					.getGLHeightForGLWidth(Math.abs(xRelativeOrdinalVec.y()));
+
+			if (xRelativeOrdinalVec.y() < 0)
+				yRelativeOrdinalVecY = -yRelativeOrdinalVecY;
+
+			Vec3f bandPoint1 = new Vec3f(currentLinePoint.x()
+					+ xRelativeOrdinalVec.x(), currentLinePoint.y()
+					+ yRelativeOrdinalVecY, currentLinePoint.z());
+
+			Vec3f bandPoint2 = new Vec3f(currentLinePoint.x()
+					- xRelativeOrdinalVec.x(), currentLinePoint.y()
+					- yRelativeOrdinalVecY, currentLinePoint.z());
+
+			bandPoints1.add(bandPoint1);
+			bandPoints2.add(bandPoint2);
+
+		}
+
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (int i = 0; i < bandPoints1.size(); i++) {
+			gl.glVertex3f(bandPoints1.get(i).x(), bandPoints1.get(i).y(),
+					bandPoints1.get(i).z());
+
+		}
+		gl.glEnd();
+
+		gl.glBegin(GL2.GL_LINES);
+		for (int i = 0; i < bandPoints1.size(); i++) {
+			gl.glVertex3f(bandPoints1.get(i).x(), bandPoints1.get(i).y(),
+					bandPoints1.get(i).z());
+			gl.glVertex3f(bandPoints2.get(i).x(), bandPoints2.get(i).y(),
+					bandPoints2.get(i).z());
+		}
+		gl.glEnd();
+
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (int i = 0; i < bandPoints2.size(); i++) {
+			gl.glVertex3f(bandPoints2.get(i).x(), bandPoints2.get(i).y(),
+					bandPoints2.get(i).z());
+		}
+		gl.glEnd();
+
+		// for(int i = bandPoints2.size()-1; i >= 0; i --) {
+		// bandPoints1.add(bandPoints2.get(i));
+		// }
+		//
+		// connectionBandRenderer.init(gl);
+		// connectionBandRenderer.render(gl, bandPoints1);
 	}
 
 	private void renderEdges(GL2 gl) {
@@ -764,13 +879,15 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 					pointsOnBoundingBoxes.put(bendPoint, node);
 					i--;
 
-					gl.glPointSize(5);
-					gl.glColor3f(0, 0, 1);
-					gl.glBegin(GL2.GL_POINTS);
-					gl.glVertex2d(intersection1.getX(), intersection1.getY());
-					gl.glVertex2d(intersection2.getX(), intersection2.getY());
-					gl.glEnd();
-
+					// gl.glPointSize(5);
+					// gl.glColor3f(0, 0, 1);
+					// gl.glBegin(GL2.GL_POINTS);
+					// gl.glVertex2d(intersection1.getX(),
+					// intersection1.getY());
+					// gl.glVertex2d(intersection2.getX(),
+					// intersection2.getY());
+					// gl.glEnd();
+					//
 					gl.glLineWidth(1);
 					gl.glColor3f(0, 0, 1);
 					gl.glBegin(GL2.GL_LINE_LOOP);
@@ -780,6 +897,64 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 					gl.glVertex2d(box.getMinX(), box.getMaxY());
 					gl.glEnd();
 
+					break;
+				}
+			}
+		}
+
+		for (int step = edgePoints.size() - 2; step >= 2; step--) {
+
+			for (int i = 0; i + step < edgePoints.size(); i++) {
+				Point2D point1 = edgePoints.get(i);
+				Point2D point2 = edgePoints.get(i + step);
+
+				boolean hasIntersection = false;
+
+				for (IDataGraphNode node : dataGraph.getNodes()) {
+					Rectangle2D box = node.getBoundingBox();
+					int code1 = box.outcode(point1);
+					int code2 = box.outcode(point2);
+
+					boolean isPoint1OnBoundingBox = (pointsOnBoundingBoxes
+							.get(point1) == node);
+					boolean isPoint2OnBoundingBox = (pointsOnBoundingBoxes
+							.get(point2) == node);
+
+					if ((code1 & code2) != 0) {
+						continue;
+					}
+
+					if ((code1 == 0 && !isPoint1OnBoundingBox)
+							|| (code2 == 0 && !isPoint2OnBoundingBox)
+							|| (isPoint1OnBoundingBox && isPoint2OnBoundingBox)) {
+						hasIntersection = true;
+						break;
+					}
+
+					Point2D intersection1 = (isPoint1OnBoundingBox) ? (point1)
+							: (calcIntersectionPoint(point1, point2, box, code1));
+					Point2D intersection2 = (isPoint2OnBoundingBox) ? (point2)
+							: (calcIntersectionPoint(point2, point1, box, code2));
+
+//					if (intersection1 == null || intersection2 == null) {
+//						continue;
+//					}
+
+					
+					if (intersection1.getX() == intersection2.getX()
+							&& intersection1.getY() == intersection2.getY()) {
+						continue;
+					}
+
+					hasIntersection = true;
+					break;
+				}
+
+				if (!hasIntersection) {
+					for (int j = i + 1; j < i + step; j++) {
+						edgePoints.remove(j);
+					}
+					step = edgePoints.size() - 2;
 					break;
 				}
 			}
