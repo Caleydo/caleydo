@@ -936,9 +936,9 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 					Point2D intersection2 = (isPoint2OnBoundingBox) ? (point2)
 							: (calcIntersectionPoint(point2, point1, box, code2));
 
-//					if (intersection1 == null || intersection2 == null) {
-//						continue;
-//					}
+					if (intersection1 == null || intersection2 == null) {
+						continue;
+					}
 
 					
 					if (intersection1.getX() == intersection2.getX()
