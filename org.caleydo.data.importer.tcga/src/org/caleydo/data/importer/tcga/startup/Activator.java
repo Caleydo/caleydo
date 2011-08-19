@@ -1,5 +1,9 @@
 package org.caleydo.data.importer.tcga.startup;
 
+import org.caleydo.core.serialize.SerializationManager;
+import org.eclipse.core.runtime.Plugin;
+import org.osgi.framework.BundleContext;
+
 
 /**
  * The activator class controls the plug-in life cycle
@@ -29,7 +33,7 @@ public class Activator extends Plugin {
 		super.start(context);
 		plugin = this;
 		
-		SerializationManager.get().registerSerializableType(GenericDataDomain.class);
+//		SerializationManager.get().registerSerializableType(GenericDataDomain.class);
 	}
 
 	/*
